@@ -1606,6 +1606,35 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20171228)
+				{
+					var chargeTime = node.Value.Nodes.FirstOrDefault(n => n.Key == "ChargeTime");
+					if (chargeTime != null)
+					{
+						var chargeTimeValue = FieldLoader.GetValue<int>("ChargeTime", chargeTime.Value.Value);
+						if (chargeTimeValue > 0)
+							chargeTime.Value.Value = (chargeTimeValue * 25).ToString();
+
+						RenameNodeKey(chargeTime, "ChargeInterval");
+					}
+
+					if (node.Key.StartsWith("GpsPower", StringComparison.Ordinal))
+					{
+						var revealDelay = node.Value.Nodes.FirstOrDefault(n => n.Key == "RevealDelay");
+						var revealDelayValue = revealDelay != null ? FieldLoader.GetValue<int>("RevealDelay", revealDelay.Value.Value) : 0;
+						if (revealDelay != null && revealDelayValue > 0)
+							revealDelay.Value.Value = (revealDelayValue * 25).ToString();
+					}
+
+					if (node.Key.StartsWith("ChronoshiftPower", StringComparison.Ordinal))
+					{
+						var duration = node.Value.Nodes.FirstOrDefault(n => n.Key == "Duration");
+						var durationValue = duration != null ? FieldLoader.GetValue<int>("Duration", duration.Value.Value) : 0;
+						if (duration != null && durationValue > 0)
+							duration.Value.Value = (durationValue * 25).ToString();
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

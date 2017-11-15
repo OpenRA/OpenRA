@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Target actor selection radius in cells.")]
 		public readonly int Range = 1;
 
-		[Desc("Seconds until returning after teleportation.")]
-		public readonly int Duration = 30;
+		[Desc("Ticks until returning after teleportation.")]
+		public readonly int Duration = 750;
 
 		[PaletteReference] public readonly string TargetOverlayPalette = TileSet.TerrainPaletteInternalName;
 
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var cpi = Info as ChronoshiftPowerInfo;
 
 				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
-					cs.Teleport(target, targetCell, cpi.Duration * 25, cpi.KillCargo, self);
+					cs.Teleport(target, targetCell, cpi.Duration, cpi.KillCargo, self);
 			}
 		}
 
