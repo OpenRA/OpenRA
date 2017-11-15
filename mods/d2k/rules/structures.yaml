@@ -766,7 +766,7 @@ large_gun_turret:
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	AttackTurreted:
-		RequiresCondition: !disabled
+		PauseOnCondition: disabled
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium

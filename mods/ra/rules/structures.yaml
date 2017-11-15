@@ -92,6 +92,7 @@ GAP:
 		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
+		RequiresCondition: !disabled
 	RenderShroudCircle:
 	Power:
 		RequiresCondition: !powerdown
@@ -490,7 +491,7 @@ TSLA:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,896
 	AttackTesla:
-		RequiresCondition: !disabled
+		PauseOnCondition: disabled
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadDelay: 120
@@ -540,7 +541,7 @@ AGUN:
 		LocalOffset: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
 	AttackTurreted:
-		RequiresCondition: !disabled
+		PauseOnCondition: disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
 		RangeCircleType: aa
@@ -833,7 +834,7 @@ SAM:
 		LocalOffset: 0,0,320
 		MuzzleSequence: muzzle
 	AttackTurreted:
-		RequiresCondition: !disabled
+		PauseOnCondition: disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
 		RangeCircleType: aa
