@@ -534,7 +534,7 @@ HQ:
 		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
-		ChargeTime: 240
+		ChargeInterval: 6000
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike
@@ -645,7 +645,7 @@ EYE:
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
-		ChargeTime: 270
+		ChargeInterval: 6750
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
@@ -700,7 +700,7 @@ TMPL:
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
-		ChargeTime: 360
+		ChargeInterval: 9000
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
