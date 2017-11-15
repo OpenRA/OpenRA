@@ -48,7 +48,7 @@ NAPULS:
 		PauseOnCondition: empdisable || disabled
 		Cursor: emp
 		Icon: emp
-		ChargeTime: 135
+		ChargeInterval: 3375
 		Description: E.M. Pulse
 		LongDesc: Fires a pulse blast which disables\nall mechanical units in the area.
 		EndChargeSpeechNotification: EmPulseCannonReady
