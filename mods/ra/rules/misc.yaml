@@ -322,7 +322,7 @@ powerproxy.sonarpulse:
 		Icon: sonar
 		Description: Sonar Pulse
 		LongDesc: Reveals all submarines in the vicinity for a \nshort time.
-		ChargeTime: 30
+		ChargeInterval: 750
 		EndChargeSpeechNotification: SonarPulseReady
 		SelectTargetSpeechNotification: SelectTarget
 		Actor: sonar
