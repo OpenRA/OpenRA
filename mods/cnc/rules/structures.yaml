@@ -804,7 +804,7 @@ SAM:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
-		RequiresCondition: !lowpower
+		PauseOnCondition: lowpower
 	WithMuzzleOverlay:
 	-RenderDetectionCircle:
 	Power:
@@ -844,7 +844,7 @@ OBLI:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 	AttackCharges:
-		RequiresCondition: !lowpower
+		PauseOnCondition: lowpower
 		ChargeLevel: 50
 		ChargingCondition: charging
 	AmbientSound:
@@ -932,7 +932,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
-		RequiresCondition: !lowpower
+		PauseOnCondition: lowpower
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
