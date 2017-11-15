@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Common.Warheads
 			foreach (var victim in hitActors)
 			{
 				// Cannot be damaged without a Health trait
-				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo == null)
+				if (!victim.Info.HasTraitInfo<HealthInfo>())
 					continue;
 
 				// Cannot be damaged without an active HitShape
@@ -74,10 +73,11 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!activeShapes.Any())
 					continue;
 
-				var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(pos, victim));
+				var closestActiveShape = activeShapes.MinBy(t => t.Info.Type.DistanceFromEdge(pos, victim));
+				var distance = closestActiveShape.Info.Type.DistanceFromEdge(pos, victim);
 				var localModifiers = damageModifiers.Append(GetDamageFalloff(distance.Length));
 
-				DoImpact(victim, firedBy, localModifiers);
+				DoImpact(victim, firedBy, closestActiveShape.Info, localModifiers);
 			}
 		}
 

@@ -25,6 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
 		public readonly bool UseTargetableCellsOffsets = false;
 
+		[Desc("Defines which Armor types apply when the actor receives damage to this HitShape.",
+			"If none specified, all armor types the actor has are valid.")]
+		public readonly HashSet<string> ArmorTypes = new HashSet<string>();
+
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Type;
 

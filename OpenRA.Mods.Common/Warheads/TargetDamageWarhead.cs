@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Warheads
 	{
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			// Damages a single actor, rather than a position. Only support by InstantHit for now.
+			// Damages a single actor, rather than a position. Only supported by InstantHit for now.
 			// TODO: Add support for 'area of damage'
 			if (target.Type == TargetType.Actor)
 				DoImpact(target.Actor, firedBy, damageModifiers);
@@ -42,7 +43,18 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!IsValidAgainst(victim, firedBy))
 				return;
 
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
+			// Cannot be damaged without a Health trait
+			if (!victim.Info.HasTraitInfo<HealthInfo>())
+				return;
+
+			var closestActiveShape = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled)
+				.MinByOrDefault(t => t.Info.Type.DistanceFromEdge(victim.CenterPosition, victim));
+
+			// Cannot be damaged without an active HitShape
+			if (closestActiveShape == null)
+				return;
+
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, closestActiveShape.Info)));
 			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 
 			var world = firedBy.World;
