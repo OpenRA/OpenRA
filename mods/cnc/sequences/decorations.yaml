@@ -341,8 +341,6 @@ t08:
 t08.husk:
 	Defaults: t08
 		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
 	idle:
 		Start: 1
 	dead:
