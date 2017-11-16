@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			if (attack == null || attack.IsTraitDisabled)
+			if (attack == null || attack.IsTraitDisabled || attack.IsTraitPaused)
 				return false;
 
 			var pos = self.CenterPosition;
