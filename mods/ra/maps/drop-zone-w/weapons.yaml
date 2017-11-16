@@ -2,42 +2,20 @@
 	ReloadDelay: 200
 	Range: 32c0
 	Burst: 4
-	Report: turret1.aud
 	Projectile: Bullet
 		Speed: 546
-		Blockable: false
 		LaunchAngle: 62
 		Inaccuracy: 3c341
-		Image: 120MM
-		ContrailLength: 30
 	Warhead: SpreadDamage
 		Spread: 128
-		Versus:
-			None: 60
-			Wood: 75
-			Light: 60
-			Heavy: 25
 		Damage: 250
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
 SubMissile:
 	ReloadDelay: 250
 	Range: 32c0
 	Burst: 4
-	Report: missile6.aud
 	Projectile: Bullet
 		Speed: 409
-		Blockable: false
 		LaunchAngle: 62
-		Inaccuracy: 2c938
-		Image: MISSILE
-		TrailImage: smokey
-		ContrailLength: 30
 	Warhead: SpreadDamage
-		Spread: 426
-		Versus:
-			None: 40
-			Light: 30
-			Heavy: 30
 		Damage: 400
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
