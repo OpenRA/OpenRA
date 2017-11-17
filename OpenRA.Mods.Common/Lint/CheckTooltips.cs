@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (buildable == null)
 					continue;
 
-				var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
+				var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstEnabledTraitOrDefault();
 				if (tooltip == null)
 					emitError("The following buildable actor has no (enabled) Tooltip: " + actorInfo.Key);
 			}

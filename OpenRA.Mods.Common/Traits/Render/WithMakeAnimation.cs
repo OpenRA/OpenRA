@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
 				token = conditionManager.GrantCondition(self, info.Condition);
 
-			var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
 			if (wsb == null)
 				return;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
 				token = conditionManager.GrantCondition(self, info.Condition);
 
-			var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
 			if (wsb == null)
 				return;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			Reverse(self, () =>
 			{
-				var wsb = wsbs.FirstOrDefault(Exts.IsTraitEnabled);
+				var wsb = wsbs.FirstEnabledTraitOrDefault();
 
 				// HACK: The actor remains alive and active for one tick before the followup activity
 				// (sell/transform/etc) runs. This causes visual glitches that we attempt to minimize

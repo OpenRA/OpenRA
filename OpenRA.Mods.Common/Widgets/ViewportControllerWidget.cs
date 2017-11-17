@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (underCursor != null)
 			{
-				ActorTooltip = underCursor.TraitsImplementing<ITooltip>().FirstOrDefault(Exts.IsTraitEnabled);
+				ActorTooltip = underCursor.TraitsImplementing<ITooltip>().FirstEnabledTraitOrDefault();
 				if (ActorTooltip != null)
 				{
 					ActorTooltipExtra = underCursor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
