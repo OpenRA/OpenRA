@@ -5,7 +5,7 @@
 	Projectile: Bullet
 		Speed: 546
 		Inaccuracy: 3c341
-	Warhead: SpreadDamage
+	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 250
 
@@ -16,5 +16,5 @@ SubMissile:
 	Projectile: Bullet
 		Speed: 409
 		LaunchAngle: 62
-	Warhead: SpreadDamage
+	Warhead@1Dam: SpreadDamage
 		Damage: 400
