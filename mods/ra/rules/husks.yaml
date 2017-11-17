@@ -84,7 +84,7 @@ MGG.Husk:
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Transport Helicopter
+		Name: Chinook
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 149
@@ -107,14 +107,14 @@ TRAN.Husk:
 TRAN.Husk1:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Transport Helicopter)
+		Name: Husk (Chinook)
 	RenderSprites:
 		Image: tran1husk
 
 TRAN.Husk2:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Transport Helicopter)
+		Name: Husk (Chinook)
 	RenderSprites:
 		Image: tran2husk
 
@@ -140,7 +140,7 @@ BADR.Husk:
 MIG.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
-		Name: Mig Attack Plane
+		Name: MiG Attack Plane
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
