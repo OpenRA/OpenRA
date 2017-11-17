@@ -496,6 +496,7 @@ TSLA:
 		Amount: -100
 	DetectCloaked:
 		Range: 6c0
+		RequiresCondition: !disabled
 	ProvidesPrerequisite@buildingname:
 
 AGUN:
