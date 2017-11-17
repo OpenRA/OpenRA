@@ -503,6 +503,26 @@ namespace OpenRA
 		{
 			return IsTraitEnabled(t as object);
 		}
+
+		public static T FirstEnabledTraitOrDefault<T>(this IEnumerable<T> ts)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var t in ts)
+				if (t.IsTraitEnabled())
+					return t;
+
+			return default(T);
+		}
+
+		public static T FirstEnabledTraitOrDefault<T>(this T[] ts)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var t in ts)
+				if (t.IsTraitEnabled())
+					return t;
+
+			return default(T);
+		}
 	}
 
 	public static class Enum<T>

@@ -103,7 +103,7 @@ namespace OpenRA.Traits
 				DamageState = health.DamageState;
 			}
 
-			var tooltip = tooltips.FirstOrDefault(Exts.IsTraitEnabled);
+			var tooltip = tooltips.FirstEnabledTraitOrDefault();
 			if (tooltip != null)
 			{
 				TooltipInfo = tooltip.TooltipInfo;
