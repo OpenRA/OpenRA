@@ -665,7 +665,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos TopLeft { get { return ToCell; } }
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
+		public Pair<CPos, SubCell>[] OccupiedCells()
 		{
 			if (FromCell == ToCell)
 				return new[] { Pair.New(FromCell, FromSubCell) };

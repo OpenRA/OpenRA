@@ -383,7 +383,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface ITargetableCells
 	{
-		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
+		Pair<CPos, SubCell>[] TargetableCells();
 	}
 
 	[RequireExplicitImplementation]
