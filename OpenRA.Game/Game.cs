@@ -170,8 +170,12 @@ namespace OpenRA
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
+			GC.Collect();
+
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
+
+			GC.Collect();
 
 			if (OrderManager.GameStarted)
 				return;
