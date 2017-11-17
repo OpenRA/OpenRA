@@ -88,7 +88,7 @@ MIG:
 		BuildPaletteOrder: 50
 		Prerequisites: ~afld, stek, ~techlevel.high
 		BuildDuration: 1750
-		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -150,7 +150,7 @@ YAK:
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 30
 		Prerequisites: ~afld, ~techlevel.medium
-		Description: Attack Plane armed with\ndual machineguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: Attack Plane armed with\ndual machine guns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -272,7 +272,7 @@ HELI:
 		BuildPaletteOrder: 40
 		Prerequisites: ~hpad, atek, ~techlevel.high
 		BuildDuration: 1750
-		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Buildings, Aircraft\n  Weak vs Infantry
+		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Buildings, Vehicles, Aircraft\n  Weak vs Infantry
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -335,7 +335,7 @@ HIND:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
 		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
+		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
