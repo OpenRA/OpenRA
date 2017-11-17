@@ -92,7 +92,7 @@ MIG:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mig Attack Plane
+		Name: MiG Attack Plane
 	Health:
 		HP: 70
 	Armor:
@@ -150,7 +150,7 @@ YAK:
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 30
 		Prerequisites: ~afld, ~techlevel.medium
-		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
+		Description: Attack Plane armed with\ndual machineguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -272,7 +272,7 @@ HELI:
 		BuildPaletteOrder: 40
 		Prerequisites: ~hpad, atek, ~techlevel.high
 		BuildDuration: 1750
-		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Buildings, Aircraft\n  Weak vs Infantry
 	Valued:
 		Cost: 2000
 	Tooltip:

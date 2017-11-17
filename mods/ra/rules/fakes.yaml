@@ -291,7 +291,7 @@ PDOF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Looks like a Chronosphere.
+		Description: Looks like a Chronosphere.\nMaximum 1 can be built.
 		Icon: fake-icon
 	Building:
 		Footprint: xx xx
@@ -323,7 +323,7 @@ MSLF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Looks like a Missile Silo.
+		Description: Looks like a Missile Silo.\nMaximum 1 can be built.
 		Icon: fake-icon
 	Building:
 		Footprint: xx

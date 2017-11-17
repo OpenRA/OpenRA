@@ -296,7 +296,7 @@ powerproxy.parabombs:
 	AirstrikePower:
 		Icon: parabombs
 		Description: Parabombs (Single Use)
-		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		LongDesc: Three Badgers drops a load of parachuted\nbombs on your target.
 		OneShot: true
 		AllowMultiple: true
 		UnitType: badr.bomber

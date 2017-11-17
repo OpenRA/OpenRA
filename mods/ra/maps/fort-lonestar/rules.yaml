@@ -332,7 +332,7 @@ BADR.Bomber:
 	AmmoPool:
 		Ammo: 30
 	Tooltip:
-		Name: Mig Bomber
+		Name: MiG Bomber
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	RenderSprites:
