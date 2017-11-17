@@ -28,8 +28,9 @@ namespace OpenRA
 		internal struct SyncHash
 		{
 			public readonly ISync Trait;
-			public readonly int Hash;
-			public SyncHash(ISync trait, int hash) { Trait = trait; Hash = hash; }
+			readonly Func<object, int> hashFunction;
+			public SyncHash(ISync trait) { Trait = trait; hashFunction = Sync.GetHashFunction(trait); }
+			public int Hash() { return hashFunction(Trait); }
 		}
 
 		public readonly ActorInfo Info;
@@ -70,7 +71,7 @@ namespace OpenRA
 			}
 		}
 
-		internal IEnumerable<SyncHash> SyncHashes { get; private set; }
+		internal SyncHash[] SyncHashes { get; private set; }
 
 		readonly IFacing facing;
 		readonly IHealth health;
@@ -129,11 +130,7 @@ namespace OpenRA
 			defaultVisibility = Trait<IDefaultVisibility>();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 
-			SyncHashes =
-				TraitsImplementing<ISync>()
-				.Select(sync => Pair.New(sync, Sync.GetHashFunction(sync)))
-				.ToArray()
-				.Select(pair => new SyncHash(pair.First, pair.Second(pair.First)));
+			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
 		}
 
 		Rectangle DetermineRenderBounds()
