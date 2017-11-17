@@ -857,6 +857,8 @@
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
+	RenderSprites:
+		Palette: terrain
 	AppearsOnRadar:
 	Building:
 		Footprint: x
