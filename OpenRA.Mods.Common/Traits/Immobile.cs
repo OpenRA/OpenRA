@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Sync] readonly CPos location;
 		[Sync] readonly WPos position;
-		readonly IEnumerable<Pair<CPos, SubCell>> occupied;
+		readonly Pair<CPos, SubCell>[] occupied;
 
 		public Immobile(ActorInitializer init, ImmobileInfo info)
 		{
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos TopLeft { get { return location; } }
 		public WPos CenterPosition { get { return position; } }
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupied; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return occupied; }
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{

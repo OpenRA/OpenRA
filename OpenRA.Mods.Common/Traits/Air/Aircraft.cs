@@ -460,7 +460,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return NoCells; }
 
 		public WVec FlyStep(int facing)
 		{

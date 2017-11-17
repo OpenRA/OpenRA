@@ -291,9 +291,9 @@ namespace OpenRA.Mods.Common.Traits
 			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return occupiedCells; }
 
-		IEnumerable<Pair<CPos, SubCell>> ITargetableCells.TargetableCells() { return targetableCells; }
+		Pair<CPos, SubCell>[] ITargetableCells.TargetableCells() { return targetableCells; }
 
 		void INotifyCreated.Created(Actor self)
 		{
