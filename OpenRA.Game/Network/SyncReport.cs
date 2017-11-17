@@ -68,28 +68,37 @@ namespace OpenRA.Network
 			report.Effects.Clear();
 
 			foreach (var actor in orderManager.World.ActorsHavingTrait<ISync>())
+			{
 				foreach (var syncHash in actor.SyncHashes)
-					if (syncHash.Hash != 0)
+				{
+					var hash = syncHash.Hash();
+					if (hash != 0)
+					{
 						report.Traits.Add(new TraitReport()
 						{
 							ActorID = actor.ActorID,
 							Type = actor.Info.Name,
 							Owner = (actor.Owner == null) ? "null" : actor.Owner.PlayerName,
 							Trait = syncHash.Trait.GetType().Name,
-							Hash = syncHash.Hash,
+							Hash = hash,
 							NamesValues = DumpSyncTrait(syncHash.Trait)
 						});
+					}
+				}
+			}
 
 			foreach (var sync in orderManager.World.SyncedEffects)
 			{
 				var hash = Sync.Hash(sync);
 				if (hash != 0)
+				{
 					report.Effects.Add(new EffectReport()
 					{
 						Name = sync.GetType().Name,
 						Hash = hash,
 						NamesValues = DumpSyncTrait(sync)
 					});
+				}
 			}
 		}
 
