@@ -4,7 +4,6 @@
 	Burst: 4
 	Projectile: Bullet
 		Speed: 546
-		LaunchAngle: 62
 		Inaccuracy: 3c341
 	Warhead: SpreadDamage
 		Spread: 128
