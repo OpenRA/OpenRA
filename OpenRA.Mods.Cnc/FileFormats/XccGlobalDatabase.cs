@@ -28,15 +28,16 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			while (s.Peek() > -1)
 			{
 				var count = s.ReadInt32();
+				var chars = new List<char>();
 				for (var i = 0; i < count; i++)
 				{
-					var chars = new List<char>();
 					byte c;
 
 					// Read filename
 					while ((c = s.ReadUInt8()) != 0)
 						chars.Add((char)c);
 					entries.Add(new string(chars.ToArray()));
+					chars.Clear();
 
 					// Skip comment
 					while ((c = s.ReadUInt8()) != 0) { }

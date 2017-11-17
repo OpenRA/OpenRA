@@ -26,14 +26,15 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			var reader = new BinaryReader(s);
 			var count = reader.ReadInt32();
 			Entries = new string[count];
+			var chars = new List<char>();
 			for (var i = 0; i < count; i++)
 			{
-				var chars = new List<char>();
 				char c;
 				while ((c = reader.ReadChar()) != 0)
 					chars.Add(c);
 
 				Entries[i] = new string(chars.ToArray());
+				chars.Clear();
 			}
 		}
 
