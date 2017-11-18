@@ -100,7 +100,7 @@ namespace OpenRA.Graphics
 				palettes[name].Palette = pal;
 		}
 
-		List<IFinalizedRenderable> GenerateRenderables(IEnumerable<Actor> actorsInBox)
+		List<IFinalizedRenderable> GenerateRenderables(HashSet<Actor> actorsInBox)
 		{
 			var actors = actorsInBox.Append(World.WorldActor);
 			if (World.RenderPlayer != null)
@@ -126,7 +126,7 @@ namespace OpenRA.Graphics
 			return renderables;
 		}
 
-		List<IFinalizedRenderable> GenerateOverlayRenderables(IEnumerable<Actor> actorsInBox)
+		List<IFinalizedRenderable> GenerateOverlayRenderables(HashSet<Actor> actorsInBox)
 		{
 			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>()
 				.Where(a => a.Actor.IsInWorld && !a.Actor.Disposed && (!a.Trait.SpatiallyPartitionable || actorsInBox.Contains(a.Actor)))
@@ -171,7 +171,7 @@ namespace OpenRA.Graphics
 
 			RefreshPalette();
 
-			var onScreenActors = World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight);
+			var onScreenActors = World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight).ToHashSet();
 			var renderables = GenerateRenderables(onScreenActors);
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
