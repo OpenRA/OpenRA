@@ -152,3 +152,4 @@ Player:
 	ConditionManager:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:
+	ViewportTracker:
