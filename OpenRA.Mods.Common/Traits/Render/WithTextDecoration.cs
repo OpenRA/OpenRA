@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyCapture
+	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
 		Color color;
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return new IRenderable[] { new TextRenderable(font, wr.ProjectedPosition(screenPos), Info.ZOffset, color, Info.Text) };
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (Info.UsePlayerColor)
 				color = newOwner.Color.RGB;
