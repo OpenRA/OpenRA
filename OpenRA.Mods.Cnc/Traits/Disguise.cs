@@ -122,6 +122,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			this.self = self;
 			this.info = info;
+
+			AsActor = self.Info;
 		}
 
 		void INotifyCreated.Created(Actor self)
