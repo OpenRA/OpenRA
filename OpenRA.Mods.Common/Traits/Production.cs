@@ -19,27 +19,26 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit has access to build queues.")]
-	public class ProductionInfo : ITraitInfo
+	public class ProductionInfo : PausableConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 
-		public virtual object Create(ActorInitializer init) { return new Production(init, this); }
+		public override object Create(ActorInitializer init) { return new Production(init, this); }
 	}
 
-	public class Production : INotifyCreated
+	public class Production : PausableConditionalTrait<ProductionInfo>, INotifyCreated
 	{
 		readonly Lazy<RallyPoint> rp;
 
-		public readonly ProductionInfo Info;
 		public string Faction { get; private set; }
 
 		Building building;
 
 		public Production(ActorInitializer init, ProductionInfo info)
+			: base(info)
 		{
-			Info = info;
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
@@ -132,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
-			if (Reservable.IsReserved(self) || (building != null && building.Locked))
+			if (IsTraitDisabled || IsTraitPaused || Reservable.IsReserved(self) || (building != null && building.Locked))
 				return false;
 
 			// Pick a spawn/exit point pair

@@ -46,42 +46,50 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		[Sync] bool isActive = false;
-
 		protected override void Tick(Actor self)
 		{
 			// PERF: Avoid LINQ.
-			isActive = false;
+			Enabled = false;
+			var isActive = false;
 			foreach (var x in self.World.ActorsWithTrait<Production>())
 			{
-				if (x.Actor.Owner == self.Owner && x.Trait.Info.Produces.Contains(Info.Type))
-				{
-					isActive = true;
-					break;
-				}
+				if (x.Trait.IsTraitDisabled)
+					continue;
+
+				if (x.Actor.Owner != self.Owner || !x.Trait.Info.Produces.Contains(Info.Type))
+					continue;
+
+				Enabled |= IsValidFaction;
+				isActive |= !x.Trait.IsTraitPaused;
 			}
 
-			base.Tick(self);
+			if (!Enabled)
+				ClearQueue();
+
+			TickInner(self, !isActive);
 		}
 
 		public override IEnumerable<ActorInfo> AllItems()
 		{
-			return isActive ? base.AllItems() : NoItems;
+			return Enabled ? base.AllItems() : NoItems;
 		}
 
 		public override IEnumerable<ActorInfo> BuildableItems()
 		{
-			return isActive ? base.BuildableItems() : NoItems;
+			return Enabled ? base.BuildableItems() : NoItems;
 		}
 
 		public override TraitPair<Production> MostLikelyProducer()
 		{
-			return self.World.ActorsWithTrait<Production>()
+			var productionActors = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					&& x.Trait.Info.Produces.Contains(Info.Type))
+					&& !x.Trait.IsTraitDisabled && x.Trait.Info.Produces.Contains(Info.Type))
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID)
-				.FirstOrDefault();
+				.ToList();
+
+			var unpaused = productionActors.FirstOrDefault(a => !a.Trait.IsTraitPaused);
+			return unpaused.Trait != null ? unpaused : productionActors.FirstOrDefault();
 		}
 
 		protected override bool BuildUnit(ActorInfo unit)
@@ -94,6 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
+					&& !x.Trait.IsTraitDisabled
 					&& x.Trait.Info.Produces.Contains(type))
 					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 					.ThenByDescending(x => x.Actor.ActorID);
@@ -104,8 +113,11 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 			}
 
-			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
+			foreach (var p in producers)
 			{
+				if (p.Trait.IsTraitPaused)
+					continue;
+
 				var inits = new TypeDictionary
 				{
 					new OwnerInit(self.Owner),
@@ -134,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 				var type = bi.BuildAtProductionType ?? info.Type;
 
 				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
-					.Count(p => p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
+					.Count(p => !p.Trait.IsTraitDisabled && !p.Trait.IsTraitPaused && p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
 
 				var speedModifier = selfsameProductionsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
 				time = (time * info.BuildTimeSpeedReduction[speedModifier]) / 100;
