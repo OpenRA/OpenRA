@@ -19,6 +19,7 @@ GACNST:
 		MaxHeightDelta: 3
 	Production:
 		Produces: Building,Defense
+		PauseOnCondition: empdisable
 	Valued:
 		Cost: 2500
 	Tooltip:

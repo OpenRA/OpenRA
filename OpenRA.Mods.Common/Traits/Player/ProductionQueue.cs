@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.Self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform, INotifyCreated
 	{
 		public readonly ProductionQueueInfo Info;
 		readonly Actor self;
@@ -75,6 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly List<ProductionItem> queue = new List<ProductionItem>();
 		readonly IEnumerable<ActorInfo> allProducibles;
 		readonly IEnumerable<ActorInfo> buildableProducibles;
+
+		Production[] productionTraits;
 
 		// Will change if the owner changes
 		PowerManager playerPower;
@@ -89,9 +91,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public int CurrentSlowdown { get { return QueueLength == 0 ? 0 : queue[0].Slowdown; } }
 		[Sync] public bool CurrentPaused { get { return QueueLength != 0 && queue[0].Paused; } }
 		[Sync] public bool CurrentDone { get { return QueueLength != 0 && queue[0].Done; } }
-		[Sync] public bool Enabled { get; private set; }
+		[Sync] public bool Enabled { get; protected set; }
 
 		public string Faction { get; private set; }
+		[Sync] public bool IsValidFaction { get; private set; }
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{
@@ -102,14 +105,20 @@ namespace OpenRA.Mods.Common.Traits
 			developerMode = playerActor.Trait<DeveloperMode>();
 
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
-			Enabled = !info.Factions.Any() || info.Factions.Contains(Faction);
+			IsValidFaction = !info.Factions.Any() || info.Factions.Contains(Faction);
+			Enabled = IsValidFaction;
 
 			CacheProducibles(playerActor);
 			allProducibles = producible.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
 			buildableProducibles = producible.Where(a => a.Value.Buildable).Select(a => a.Key);
 		}
 
-		void ClearQueue()
+		void INotifyCreated.Created(Actor self)
+		{
+			productionTraits = self.TraitsImplementing<Production>().ToArray();
+		}
+
+		protected void ClearQueue()
 		{
 			if (queue.Count == 0)
 				return;
@@ -130,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Sticky)
 			{
 				Faction = self.Owner.Faction.InternalName;
-				Enabled = !Info.Factions.Any() || Info.Factions.Contains(Faction);
+				IsValidFaction = !Info.Factions.Any() || Info.Factions.Contains(Faction);
 			}
 
 			// Regenerate the producibles and tech tree state
@@ -237,6 +246,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Tick(Actor self)
 		{
+			// PERF: Avoid LINQ when checking whether all production traits are disabled/paused
+			var anyEnabledProduction = false;
+			var anyUnpausedProduction = false;
+			foreach (var p in productionTraits)
+			{
+				anyEnabledProduction |= !p.IsTraitDisabled;
+				anyUnpausedProduction |= !p.IsTraitPaused;
+			}
+
+			if (!anyEnabledProduction)
+				ClearQueue();
+
+			Enabled = IsValidFaction && anyEnabledProduction;
+
+			TickInner(self, !anyUnpausedProduction);
+		}
+
+		protected virtual void TickInner(Actor self, bool allProductionPaused)
+		{
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
 				// Refund what's been paid so far
@@ -244,7 +272,7 @@ namespace OpenRA.Mods.Common.Traits
 				FinishProduction();
 			}
 
-			if (queue.Count > 0)
+			if (queue.Count > 0 && !allProductionPaused)
 				queue[0].Tick(playerResources);
 		}
 
@@ -367,16 +395,19 @@ namespace OpenRA.Mods.Common.Traits
 		// Returns the actor/trait that is most likely (but not necessarily guaranteed) to produce something in this queue
 		public virtual TraitPair<Production> MostLikelyProducer()
 		{
-			var trait = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			return new TraitPair<Production>(self, trait);
+			var traits = productionTraits.Where(p => !p.IsTraitDisabled && p.Info.Produces.Contains(Info.Type));
+			var unpaused = traits.FirstOrDefault(a => !a.IsTraitPaused);
+			return new TraitPair<Production>(self, unpaused != null ? unpaused : traits.FirstOrDefault());
 		}
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)
 		// Returns false if the unit can't be built
 		protected virtual bool BuildUnit(ActorInfo unit)
 		{
-			// Cannot produce if I'm dead
-			if (!self.IsInWorld || self.IsDead)
+			var mostLikelyProducerTrait = MostLikelyProducer().Trait;
+
+			// Cannot produce if I'm dead or trait is disabled
+			if (!self.IsInWorld || self.IsDead || mostLikelyProducerTrait == null)
 			{
 				CancelProduction(unit.Name, 1);
 				return false;
@@ -388,8 +419,7 @@ namespace OpenRA.Mods.Common.Traits
 				new FactionInit(BuildableInfo.GetInitialFaction(unit, Faction))
 			};
 
-			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, unit, developerMode.AllTech ? null : Info.Type, inits))
+			if (!mostLikelyProducerTrait.IsTraitPaused && mostLikelyProducerTrait.Produce(self, unit, developerMode.AllTech ? null : Info.Type, inits))
 			{
 				FinishProduction();
 				return true;
