@@ -27,12 +27,14 @@ namespace OpenRA.Mods.Common.Scripting
 			pp = self.TraitsImplementing<ParatroopersPower>().First();
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units.")]
 		public Actor[] SendParatroopers(WPos target, bool randomize = true, int facing = 0)
 		{
 			return pp.SendParatroopers(Self, target, randomize, facing);
 		}
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Activate the actor's Paratroopers Power. Returns the dropped units.")]
 		public Actor[] SendParatroopersFrom(CPos from, CPos to)
 		{

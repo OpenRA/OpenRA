@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 		public ChronsphereProperties(ScriptContext context, Actor self)
 			: base(context, self) { }
 
+		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Chronoshift a group of actors. A duration of 0 will teleport the actors permanently.")]
 		public void Chronoshift(LuaTable unitLocationPairs, int duration = 0, bool killCargo = false)
 		{
