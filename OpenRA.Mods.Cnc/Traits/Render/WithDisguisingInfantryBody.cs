@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				disguisePlayer = disguise.AsPlayer;
 				disguiseImage = null;
 
-				if (disguiseActor != null)
+				if (disguisePlayer != null)
 				{
 					var renderSprites = disguiseActor.TraitInfoOrDefault<RenderSpritesInfo>();
 					if (renderSprites != null)
