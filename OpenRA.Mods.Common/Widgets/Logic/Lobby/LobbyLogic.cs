@@ -379,7 +379,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "STARTINGUNITS", "startingunits" },
 				{ "STARTINGCASH", "startingcash" },
 				{ "DIFFICULTY", "difficulty" },
-				{ "GAMESPEED", "gamespeed" }
+				{ "GAMESPEED", "gamespeed" },
+				{ "DROPOUTBOTREPLACEMENT", "dropoutbotreplacment" }
 			};
 
 			var allOptions = new CachedTransform<MapPreview, LobbyOption[]>(

@@ -21,6 +21,7 @@ using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Server
 {
@@ -559,24 +560,45 @@ namespace OpenRA.Server
 				// Send disconnected order, even if still in the lobby
 				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
-				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
-				LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
+				var botController = LobbyInfo.Clients.First(c => c.IsAdmin);
 
-				// Client was the server admin
-				// TODO: Reassign admin for game in progress via an order
-				if (Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				// Client was the server admin, but the game isn't over yet.
+				if (Dedicated && dropClient.IsAdmin)
 				{
-					// Remove any bots controlled by the admin
-					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+					// Pick the human player who joined right after the previous admin.
+					var nextAdmin = LobbyInfo.Clients.Where(c => c.Bot == null && c != dropClient).MinByOrDefault(c => c.Index);
+					botController = nextAdmin;
 
-					var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
-						.MinByOrDefault(c => c.Index);
-
-					if (nextAdmin != null)
+					// Still in the lobby so handle things directly.
+					if (State == ServerState.WaitingPlayers)
 					{
-						nextAdmin.IsAdmin = true;
-						SendMessage("{0} is now the admin.".F(nextAdmin.Name));
+						// Remove the previous admin.
+						LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+
+						// Stop pinging when a player drops from the server.
+						LobbyInfo.ClientPings.RemoveAll(p => p.Index == toDrop.PlayerIndex);
+
+						// Remove any bots controlled by the previous admin.
+						LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+
+						if (nextAdmin != null)
+						{
+							nextAdmin.IsAdmin = true;
+							SendMessage("{0} is now the admin.".F(nextAdmin.Name));
+						}
 					}
+					else
+						DispatchOrdersToClients(toDrop, 0, Order.NewAdmin(nextAdmin.Index).Serialize());
+				}
+
+				var replaceWithBot = Settings.BotsForDisconnectedClients && State == ServerState.GameStarted;
+				if (replaceWithBot)
+				{
+					Session.LobbyOptionState dropoutReplacement;
+					var dropoutBotAvailable = LobbyInfo.GlobalSettings.LobbyOptions.TryGetValue("dropoutbotreplacment", out dropoutReplacement);
+					var botTypes = Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(b => b.Type);
+					if (dropoutBotAvailable && botTypes.Contains(dropoutReplacement.Value))
+						DispatchOrdersToClients(toDrop, 0, Order.ReplacePlayerWithBot(dropoutReplacement.Value, botController.Index).Serialize());
 				}
 
 				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });

@@ -142,19 +142,28 @@ namespace OpenRA
 
 			// Enable the bot logic on the host
 			IsBot = BotType != null;
-			if (IsBot && Game.IsHost)
-			{
-				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == BotType);
-				if (logic == null)
-					Log.Write("debug", "Invalid bot type: {0}", BotType);
-				else
-					logic.Activate(this);
-			}
+			if (IsBot)
+				ActivateBot(BotType);
 
 			stanceColors.Self = ChromeMetrics.Get<Color>("PlayerStanceColorSelf");
 			stanceColors.Allies = ChromeMetrics.Get<Color>("PlayerStanceColorAllies");
 			stanceColors.Enemies = ChromeMetrics.Get<Color>("PlayerStanceColorEnemies");
 			stanceColors.Neutrals = ChromeMetrics.Get<Color>("PlayerStanceColorNeutrals");
+		}
+
+		public void ActivateBot(string botType)
+		{
+			if (string.IsNullOrEmpty(botType) || !Game.IsHost)
+				return;
+
+			var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == botType);
+			if (logic == null)
+				Log.Write("debug", "Invalid bot type: {0}", botType);
+			else
+			{
+				logic.Activate(this);
+				Log.Write("debug", "Activated bot {0} on player {1}".F(botType, InternalName));
+			}
 		}
 
 		public override string ToString()

@@ -36,6 +36,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the game speed from being changed in the lobby.")]
 		public readonly bool GameSpeedLocked = false;
 
+		[Desc("Replace disconnected players with this bot type.")]
+		public readonly string DropoutBotReplacement = "none";
+
+		[Desc("Prevent the dropout replacement from being changed in the lobby.")]
+		public readonly bool DropoutBotReplacementLocked = false;
+
+		[Desc("Display the dropout replacement checkbox in the lobby.")]
+		public readonly bool DropoutBotReplacementEnabled = true;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyBooleanOption("shortgame", "Short Game", ShortGameEnabled, ShortGameLocked);
@@ -55,6 +64,15 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyOption("gamespeed", "Game Speed",
 				new ReadOnlyDictionary<string, string>(gameSpeeds),
 				GameSpeed, GameSpeedLocked);
+
+			var bots = rules.Actors["player"].TraitInfos<IBotInfo>()
+				.ToDictionary(t => t.Type, t => t.Name);
+			bots.Add("none", "Disabled");
+
+			if (DropoutBotReplacementEnabled)
+				yield return new LobbyOption("dropoutbotreplacment", "Dropout Bot Replacement",
+					new ReadOnlyDictionary<string, string>(bots),
+					DropoutBotReplacement, DropoutBotReplacementLocked);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
@@ -74,6 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool ShortGame { get; private set; }
 		public string TechLevel { get; private set; }
 		public GameSpeed GameSpeed { get; private set; }
+		public string DropoutBotReplacement { get; private set; }
 
 		public MapOptions(MapOptionsInfo info)
 		{
@@ -92,6 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 				.OptionOrDefault("gamespeed", info.GameSpeed);
 
 			GameSpeed = Game.ModData.Manifest.Get<GameSpeeds>().Speeds[speed];
+
+			DropoutBotReplacement = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("dropoutbotreplacment", info.DropoutBotReplacement);
 		}
 	}
 }

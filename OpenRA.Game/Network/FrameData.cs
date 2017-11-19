@@ -48,6 +48,11 @@ namespace OpenRA.Network
 			clientQuitTimes[clientId] = lastClientFrame;
 		}
 
+		public void RemoveClient(int clientId)
+		{
+			clientQuitTimes.Remove(clientId);
+		}
+
 		public void AddFrameOrders(int clientId, int frame, byte[] orders)
 		{
 			var frameData = framePackets.GetOrAdd(frame);

@@ -26,6 +26,7 @@ World:
 		TechLevelLocked: True
 		ShortGameLocked: True
 		ShortGameEnabled: False
+		DropoutBotReplacementEnabled: False
 
 E7:
 	-Crushable:
