@@ -151,8 +151,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (order.OrderString == "Disguise")
 			{
-				var target = order.TargetActor != self && order.TargetActor.IsInWorld ? order.TargetActor : null;
-				DisguiseAs(target);
+				var target = order.Target;
+				if (target.Type == TargetType.Actor)
+					DisguiseAs((target.Actor != self && target.Actor.IsInWorld) ? target.Actor : null);
+
+				if (target.Type == TargetType.FrozenActor)
+					DisguiseAs(target.FrozenActor.Info, target.FrozenActor.Owner);
 			}
 		}
 
