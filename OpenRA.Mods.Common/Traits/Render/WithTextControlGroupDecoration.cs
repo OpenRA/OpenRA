@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithTextControlGroupDecoration(init.Self, this); }
 	}
 
-	public class WithTextControlGroupDecoration : IRenderAboveShroudWhenSelected, INotifyCapture
+	public class WithTextControlGroupDecoration : IRenderAboveShroudWhenSelected, INotifyOwnerChanged
 	{
 		readonly WithTextControlGroupDecorationInfo info;
 		readonly SpriteFont font;
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			yield return new TextRenderable(font, wr.ProjectedPosition(screenPos), info.ZOffset, color, number);
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (info.UsePlayerColor)
 				color = newOwner.Color.RGB;
