@@ -18,6 +18,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the game speed, tech level, and short game lobby options.")]
 	public class MapOptionsInfo : ITraitInfo, ILobbyOptions, IRulesetLoaded
 	{
+		[Translate]
+		[Desc("Descriptive label for the short game checkbox in the lobby.")]
+		public readonly string ShortGameLabel = "Short Game";
+
+		[Translate]
+		[Desc("Tooltip description for the short game checkbox in the lobby.")]
+		public readonly string ShortGameDescription = "Players are defeated when their bases are destroyed";
+
 		[Desc("Default value of the short game checkbox in the lobby.")]
 		public readonly bool ShortGameEnabled = true;
 
@@ -30,6 +38,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the short game checkbox in the lobby.")]
 		public readonly int ShortGameDisplayOrder = 0;
 
+		[Translate]
+		[Desc("Descriptive label for the tech level option in the lobby.")]
+		public readonly string TechLevelLabel = "Tech Level";
+
+		[Translate]
+		[Desc("Tooltip description for the tech level option in the lobby.")]
+		public readonly string TechLevelDescription = "Change the units and abilities at your disposal";
+
 		[Desc("Default tech level.")]
 		public readonly string TechLevel = "unrestricted";
 
@@ -41,6 +57,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Display order for the tech level option in the lobby.")]
 		public readonly int TechLevelDisplayOrder = 0;
+
+		[Translate]
+		[Desc("Tooltip description for the game speed option in the lobby.")]
+		public readonly string GameSpeedLabel = "Game Speed";
+
+		[Translate]
+		[Desc("Description of the game speed option in the lobby.")]
+		public readonly string GameSpeedDescription = "Change the rate at which time passes";
 
 		[Desc("Default game speed.")]
 		public readonly string GameSpeed = "default";
@@ -56,27 +80,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("shortgame", "Short Game", "Players are defeated when their bases are destroyed",
-				ShortGameVisible, ShortGameDisplayOrder,
-				ShortGameEnabled, ShortGameLocked);
+			yield return new LobbyBooleanOption("shortgame", ShortGameLabel, ShortGameDescription,
+				ShortGameVisible, ShortGameDisplayOrder, ShortGameEnabled, ShortGameLocked);
 
 			var techLevels = rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>()
 				.ToDictionary(t => t.Id, t => t.Name);
 
 			if (techLevels.Any())
-				yield return new LobbyOption("techlevel", "Tech Level", "Change the units and abilities at your disposal",
-					TechLevelVisible, TechLevelDisplayOrder,
-					new ReadOnlyDictionary<string, string>(techLevels),
-					TechLevel, TechLevelLocked);
+				yield return new LobbyOption("techlevel", TechLevelLabel, TechLevelDescription,	TechLevelVisible, TechLevelDisplayOrder,
+					new ReadOnlyDictionary<string, string>(techLevels),	TechLevel, TechLevelLocked);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds
 				.ToDictionary(s => s.Key, s => s.Value.Name);
 
 			// NOTE: The server hardcodes special-case logic for this option id
-			yield return new LobbyOption("gamespeed", "Game Speed", "Change the rate at which time passes",
-				GameSpeedVisible, GameSpeedDisplayOrder,
-				new ReadOnlyDictionary<string, string>(gameSpeeds),
-				GameSpeed, GameSpeedLocked);
+			yield return new LobbyOption("gamespeed", GameSpeedLabel, GameSpeedDescription, GameSpeedVisible, GameSpeedDisplayOrder,
+				new ReadOnlyDictionary<string, string>(gameSpeeds), GameSpeed, GameSpeedLocked);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)

@@ -17,6 +17,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
 	public class MapBuildRadiusInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the ally build radius checkbox in the lobby.")]
+		public readonly string AllyBuildRadiusLabel = "Build off Allies";
+
+		[Translate]
+		[Desc("Tooltip description for the ally build radius checkbox in the lobby.")]
+		public readonly string AllyBuildRadiusDescription = "Allow allies to place structures inside your build area";
+
 		[Desc("Default value of the ally build radius checkbox in the lobby.")]
 		public readonly bool AllyBuildRadiusEnabled = true;
 
@@ -28,6 +36,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Display order for the ally build radius checkbox in the lobby.")]
 		public readonly int AllyBuildRadiusDisplayOrder = 0;
+
+		[Translate]
+		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
+		public readonly string BuildRadiusLabel = "Limit Build Area";
+
+		[Translate]
+		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
+		public readonly string BuildRadiusDescription = "Limits structure placement to areas around Construction Yards";
 
 		[Desc("Default value of the build radius checkbox in the lobby.")]
 		public readonly bool BuildRadiusEnabled = true;
@@ -43,13 +59,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("allybuild", "Build off Allies", "Allow allies to place structures inside your build area",
-				AllyBuildRadiusVisible, AllyBuildRadiusDisplayOrder,
-				AllyBuildRadiusEnabled, AllyBuildRadiusLocked);
+			yield return new LobbyBooleanOption("allybuild", AllyBuildRadiusLabel, AllyBuildRadiusDescription,
+				AllyBuildRadiusVisible, AllyBuildRadiusDisplayOrder, AllyBuildRadiusEnabled, AllyBuildRadiusLocked);
 
-			yield return new LobbyBooleanOption("buildradius", "Limit Build Area", "Limits structure placement to areas around Construction Yards",
-				BuildRadiusVisible, BuildRadiusDisplayOrder,
-				BuildRadiusEnabled, BuildRadiusLocked);
+			yield return new LobbyBooleanOption("buildradius", BuildRadiusLabel, BuildRadiusDescription,
+				BuildRadiusVisible, BuildRadiusDisplayOrder, BuildRadiusEnabled, BuildRadiusLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapBuildRadius(this); }

@@ -96,6 +96,8 @@ World:
 		Sequence: sandcraters
 		SmokePercentage: 0
 	MapCreeps:
+		Label: Worms
+		Description: Worms roam the map and devour unprepared forces
 		DisplayOrder: 5
 	SpawnMapActors:
 	MapBuildRadius:

@@ -17,6 +17,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the 'Creeps' checkbox in the lobby options.")]
 	public class MapCreepsInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the creeps checkbox in the lobby.")]
+		public readonly string Label = "Creep Actors";
+
+		[Translate]
+		[Desc("Tooltip description for the creeps checkbox in the lobby.")]
+		public readonly string Description = "Hostile forces spawn on the battlefield";
+
 		[Desc("Default value of the creeps checkbox in the lobby.")]
 		public readonly bool Enabled = true;
 
@@ -31,8 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("creeps", "Worms", "Worms roam the map and devour unprepared forces",
-				Visible, DisplayOrder, Enabled, Locked);
+			yield return new LobbyBooleanOption("creeps", Label, Description, Visible, DisplayOrder, Enabled, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapCreeps(this); }

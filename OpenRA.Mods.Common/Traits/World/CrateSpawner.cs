@@ -21,6 +21,14 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class CrateSpawnerInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the crates checkbox in the lobby.")]
+		public readonly string Label = "Crates";
+
+		[Translate]
+		[Desc("Tooltip description for the crates checkbox in the lobby.")]
+		public readonly string Description = "Collect crates with units to recieve random bonuses or penalties";
+
 		[Desc("Default value of the crates checkbox in the lobby.")]
 		public readonly bool Enabled = true;
 
@@ -73,9 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("crates", "Crates",
-				"Collect crates with units to recieve random bonuses or penalties",
-				Visible, DisplayOrder, Enabled, Locked);
+			yield return new LobbyBooleanOption("crates", Label, Description, Visible, DisplayOrder, Enabled, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }
