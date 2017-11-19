@@ -23,6 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string StartingUnitsClass = "none";
 
+		[Translate]
+		[Desc("Descriptive label for the starting units option in the lobby.")]
+		public readonly string Label = "Starting Units";
+
+		[Translate]
+		[Desc("Tooltip description for the starting units option in the lobby.")]
+		public readonly string Description = "Change the units that you start the game with";
+
 		[Desc("Prevent the starting units option from being changed in the lobby.")]
 		public readonly bool Locked = false;
 
@@ -41,10 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 				startingUnits[t.Class] = t.ClassName;
 
 			if (startingUnits.Any())
-				yield return new LobbyOption("startingunits", "Starting Units", "Change the units that you start the game with",
-					Visible, DisplayOrder,
-					new ReadOnlyDictionary<string, string>(startingUnits),
-					StartingUnitsClass, Locked);
+				yield return new LobbyOption("startingunits", Label, Description, Visible, DisplayOrder,
+					new ReadOnlyDictionary<string, string>(startingUnits), StartingUnitsClass, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new SpawnMPUnits(this); }

@@ -17,6 +17,14 @@ namespace OpenRA.Traits
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the fog checkbox in the lobby.")]
+		public readonly string FogLabel = "Fog of War";
+
+		[Translate]
+		[Desc("Tooltip description for the fog checkbox in the lobby.")]
+		public readonly string FogDescription = "Line of sight is required to view enemy forces";
+
 		[Desc("Default value of the fog checkbox in the lobby.")]
 		public readonly bool FogEnabled = true;
 
@@ -28,6 +36,14 @@ namespace OpenRA.Traits
 
 		[Desc("Display order for the fog checkbox in the lobby.")]
 		public readonly int FogDisplayOrder = 0;
+
+		[Translate]
+		[Desc("Descriptive label for the explored map checkbox in the lobby.")]
+		public readonly string ExploredMapLabel = "Explored Map";
+
+		[Translate]
+		[Desc("Tooltip description for the explored map checkbox in the lobby.")]
+		public readonly string ExploredMapDescription = "Initial map shroud is revealed";
 
 		[Desc("Default value of the explore map checkbox in the lobby.")]
 		public readonly bool ExploredMapEnabled = false;
@@ -43,12 +59,10 @@ namespace OpenRA.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("explored", "Explored Map", "Initial map shroud is revealed",
-				ExploredMapVisible, ExploredMapDisplayOrder,
-				ExploredMapEnabled, ExploredMapLocked);
-			yield return new LobbyBooleanOption("fog", "Fog of War", "Line of sight is required to view enemy forces",
-				FogVisible, FogDisplayOrder,
-				FogEnabled, FogLocked);
+			yield return new LobbyBooleanOption("explored", ExploredMapLabel, ExploredMapDescription,
+				ExploredMapVisible, ExploredMapDisplayOrder, ExploredMapEnabled, ExploredMapLocked);
+			yield return new LobbyBooleanOption("fog", FogLabel, FogDescription,
+				FogVisible, FogDisplayOrder, FogEnabled, FogLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new Shroud(init.Self, this); }

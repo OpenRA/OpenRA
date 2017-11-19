@@ -17,6 +17,14 @@ namespace OpenRA.Traits
 {
 	public class PlayerResourcesInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the starting cash option in the lobby.")]
+		public readonly string Label = "Starting Cash";
+
+		[Translate]
+		[Desc("Tooltip description for the starting cash option in the lobby.")]
+		public readonly string Description = "Change the amount of cash that players start with";
+
 		[Desc("Starting cash options that are available in the lobby options.")]
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
 
@@ -43,10 +51,8 @@ namespace OpenRA.Traits
 			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
 
 			if (startingCash.Any())
-				yield return new LobbyOption("startingcash", "Starting Cash", "Change the amount of cash that players start with",
-					DefaultCashVisible, DefaultCashDisplayOrder,
-					new ReadOnlyDictionary<string, string>(startingCash),
-					DefaultCash.ToString(), DefaultCashLocked);
+				yield return new LobbyOption("startingcash", Label, Description, DefaultCashVisible, DefaultCashDisplayOrder,
+					new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }

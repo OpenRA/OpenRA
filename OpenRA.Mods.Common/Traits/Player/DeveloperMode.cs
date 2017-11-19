@@ -18,6 +18,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
+		public readonly string Label = "Debug Menu";
+
+		[Translate]
+		[Desc("Tooltip description for the developer mode checkbox in the lobby.")]
+		public readonly string Description = "Enables cheats and developer commands";
+
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
 		public readonly bool Enabled = false;
 
@@ -56,9 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("cheats", "Debug Menu",
-				"Enables cheats and developer commands",
-				Visible, DisplayOrder, Enabled, Locked);
+			yield return new LobbyBooleanOption("cheats", Label, Description, Visible, DisplayOrder, Enabled, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
