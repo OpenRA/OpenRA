@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Will open and be passable for actors that appear friendly when there are no enemies in range.")]
-	public class GateInfo : BuildingInfo, IBlocksProjectilesInfo
+	public class GateInfo : PausableConditionalTraitInfo, IBlocksProjectilesInfo, Requires<BuildingInfo>
 	{
 		public readonly string OpeningSound = null;
 		public readonly string ClosingSound = null;
@@ -33,11 +33,13 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Gate(init, this); }
 	}
 
-	public class Gate : Building, ITick, ITemporaryBlocker, IBlocksProjectiles, INotifyBlockingMove, ISync
+	public class Gate : PausableConditionalTrait<GateInfo>, ITick, ITemporaryBlocker, IBlocksProjectiles,
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, ISync
 	{
-		readonly GateInfo info;
 		readonly Actor self;
+		readonly Building building;
 		IEnumerable<CPos> blockedPositions;
+		public readonly IEnumerable<CPos> Footprint;
 
 		public readonly int OpenPosition;
 		[Sync] public int Position { get; private set; }
@@ -45,16 +47,18 @@ namespace OpenRA.Mods.Common.Traits
 		int remainingOpenTime;
 
 		public Gate(ActorInitializer init, GateInfo info)
-			: base(init, info)
+			: base(info)
 		{
-			this.info = info;
 			self = init.Self;
-			OpenPosition = info.TransitionDelay;
+			OpenPosition = Info.TransitionDelay;
+			building = self.Trait<Building>();
+			blockedPositions = building.Info.Tiles(self.Location);
+			Footprint = blockedPositions;
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (self.IsDisabled() || Locked || !BuildComplete)
+			if (IsTraitDisabled || IsTraitPaused || building.Locked || !building.BuildComplete)
 				return;
 
 			if (desiredPosition < Position)
@@ -62,8 +66,8 @@ namespace OpenRA.Mods.Common.Traits
 				// Gate was fully open
 				if (Position == OpenPosition)
 				{
-					Game.Sound.Play(SoundType.World, info.ClosingSound, self.CenterPosition);
-					self.World.ActorMap.AddInfluence(self, this);
+					Game.Sound.Play(SoundType.World, Info.ClosingSound, self.CenterPosition);
+					self.World.ActorMap.AddInfluence(self, building);
 				}
 
 				Position--;
@@ -72,22 +76,22 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Gate was fully closed
 				if (Position == 0)
-					Game.Sound.Play(SoundType.World, info.OpeningSound, self.CenterPosition);
+					Game.Sound.Play(SoundType.World, Info.OpeningSound, self.CenterPosition);
 
 				Position++;
 
 				// Gate is now fully open
 				if (Position == OpenPosition)
 				{
-					self.World.ActorMap.RemoveInfluence(self, this);
-					remainingOpenTime = info.CloseDelay;
+					self.World.ActorMap.RemoveInfluence(self, building);
+					remainingOpenTime = Info.CloseDelay;
 				}
 			}
 
 			if (Position == OpenPosition)
 			{
 				if (IsBlocked())
-					remainingOpenTime = info.CloseDelay;
+					remainingOpenTime = Info.CloseDelay;
 				else if (--remainingOpenTime <= 0)
 					desiredPosition = 0;
 			}
@@ -109,15 +113,19 @@ namespace OpenRA.Mods.Common.Traits
 				desiredPosition = OpenPosition;
 		}
 
-		bool CanRemoveBlockage(Actor self, Actor blocking)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			return !self.IsDisabled() && BuildComplete && blocking.AppearsFriendlyTo(self);
+			blockedPositions = Footprint;
 		}
 
-		protected override void AddedToWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			base.AddedToWorld(self);
-			blockedPositions = Info.Tiles(self.Location);
+			blockedPositions = Enumerable.Empty<CPos>();
+		}
+
+		bool CanRemoveBlockage(Actor self, Actor blocking)
+		{
+			return !IsTraitDisabled && !IsTraitPaused && building.BuildComplete && !building.Locked && blocking.AppearsFriendlyTo(self);
 		}
 
 		bool IsBlocked()
@@ -129,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return new WDist(info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
+				return new WDist(Info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
 			}
 		}
 	}

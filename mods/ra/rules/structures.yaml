@@ -1912,7 +1912,7 @@ VGATE:
 		Type: Rectangle
 			TopLeft: -512, -1536
 			BottomRight: 512, 1536
-	Gate:
+	Building:
 		Footprint: x x x
 		Dimensions: 1,3
 	WithGateSpriteBody:
@@ -1929,7 +1929,7 @@ HGATE:
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512
-	Gate:
+	Building:
 		Footprint: xxx
 		Dimensions: 3,1
 	WithGateSpriteBody:
