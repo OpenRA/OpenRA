@@ -307,7 +307,7 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		TerrainTypes: Clear, Road, DirtRoad, Rough
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
@@ -1128,6 +1128,7 @@
 
 ^Gate:
 	Inherits: ^Building
+	Inherits@EMPDISABLE: ^EmpDisable
 	Huntable:
 	Valued:
 		Cost: 250
@@ -1137,7 +1138,6 @@
 		Type: Heavy
 	LineBuildNode:
 		Types: wall, gate
-	-Building:
 	-Capturable:
 	-GivesBuildableArea:
 	-MustBeDestroyed:
@@ -1145,12 +1145,6 @@
 	WithGateSpriteBody:
 		OpenSequence: open
 	Tooltip:
-	Gate:
-		BuildSounds: place2.aud
-		OpeningSound: gateup1.aud
-		ClosingSound: gatedwn1.aud
-		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
-		BlocksProjectilesHeight: 768
 	Buildable:
 		Description: Automated barrier that opens for allied units.
 	HitShape:
@@ -1161,12 +1155,17 @@
 			VerticalTopOffset: 768
 	EditorTilesetFilter:
 		Categories: Wall
+	Gate:
+		OpeningSound: gateup1.aud
+		ClosingSound: gatedwn1.aud
+		BlocksProjectilesHeight: 768
+		PauseOnCondition: empdisable
 
 ^Gate_A:
 	Inherits: ^Gate
 	Inherits@shape: ^3x1Shape
 	Health:
-	Gate:
+	Building:
 		Dimensions: 3,1
 		Footprint: xxx
 	WithGateSpriteBody:
@@ -1178,7 +1177,7 @@
 	Inherits: ^Gate
 	Inherits@shape: ^1x3Shape
 	Health:
-	Gate:
+	Building:
 		Dimensions: 1,3
 		Footprint: x x x
 	WithGateSpriteBody:

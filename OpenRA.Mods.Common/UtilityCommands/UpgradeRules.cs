@@ -1498,6 +1498,55 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Made Gate not inherit Building
+				if (engineVersion < 20171119)
+				{
+					var gate = node.Value.Nodes.FirstOrDefault(n => n.Key == "Gate");
+					if (gate != null)
+					{
+						var openSound = gate.Value.Nodes.FirstOrDefault(n => n.Key == "OpeningSound");
+						var closeSound = gate.Value.Nodes.FirstOrDefault(n => n.Key == "ClosingSound");
+						var closeDelay = gate.Value.Nodes.FirstOrDefault(n => n.Key == "CloseDelay");
+						var transitDelay = gate.Value.Nodes.FirstOrDefault(n => n.Key == "TransitionDelay");
+						var blockHeight = gate.Value.Nodes.FirstOrDefault(n => n.Key == "BlocksProjectilesHeight");
+
+						gate.Key = "Building";
+						var newGate = new MiniYamlNode("Gate", "");
+
+						if (openSound != null)
+						{
+							newGate.Value.Nodes.Add(openSound);
+							gate.Value.Nodes.Remove(openSound);
+						}
+
+						if (closeSound != null)
+						{
+							newGate.Value.Nodes.Add(closeSound);
+							gate.Value.Nodes.Remove(closeSound);
+						}
+
+						if (closeDelay != null)
+						{
+							newGate.Value.Nodes.Add(closeDelay);
+							gate.Value.Nodes.Remove(closeDelay);
+						}
+
+						if (transitDelay != null)
+						{
+							newGate.Value.Nodes.Add(transitDelay);
+							gate.Value.Nodes.Remove(transitDelay);
+						}
+
+						if (blockHeight != null)
+						{
+							newGate.Value.Nodes.Add(blockHeight);
+							gate.Value.Nodes.Remove(blockHeight);
+						}
+
+						node.Value.Nodes.Add(newGate);
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

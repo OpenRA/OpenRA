@@ -707,22 +707,22 @@
 		Type: Heavy
 	LineBuildNode:
 		Types: concrete, gate
-	-Building:
 	-WithSpriteBody:
 	WithGateSpriteBody:
 	Tooltip:
 		Name: Gate
-	Gate:
-		BlocksProjectilesHeight: 0
+	Building:
 		BuildSounds: place2.aud
-		OpeningSound: cashturn.aud
-		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
 	EditorTilesetFilter:
 		Categories: Wall
+	Gate:
+		OpeningSound: cashturn.aud
+		ClosingSound: cashturn.aud
+		BlocksProjectilesHeight: 0
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
