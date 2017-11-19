@@ -92,8 +92,6 @@
 	WithColoredOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
 		Palette: disabled
-	DisableOnCondition@EMPDISABLE:
-		RequiresCondition: empdisable
 	TimedConditionBar@EMPDISABLE:
 		Condition: empdisable
 		Color: FFFFFF
