@@ -1547,6 +1547,28 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed IDisable interface and all remaining usages
+				if (engineVersion < 20171119)
+				{
+					var doc = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("DisableOnCondition", StringComparison.Ordinal));
+					if (doc != null)
+					{
+						Console.WriteLine("Actor.IsDisabled has been removed in favor of pausing/disabling traits via conditions.");
+						Console.WriteLine("DisableOnCondition was a stop-gap solution that has been removed along with it.");
+						Console.WriteLine("You'll have to use RequiresCondition or PauseOnCondition on individual traits to 'disable' actors.");
+						node.Value.Nodes.Remove(doc);
+					}
+
+					var grant = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("GrantConditionOnDisabled", StringComparison.Ordinal));
+					if (grant != null)
+					{
+						Console.WriteLine("Actor.IsDisabled has been removed in favor of pausing/disabling traits via conditions.");
+						Console.WriteLine("GrantConditionOnDisabled was a stop-gap solution that has been removed along with it.");
+						Console.WriteLine("You'll have to use RequiresCondition or PauseOnCondition on individual traits to 'disable' actors.");
+						node.Value.Nodes.Remove(grant);
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

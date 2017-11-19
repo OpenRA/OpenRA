@@ -189,7 +189,6 @@ namespace OpenRA.Traits
 	}
 
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
-	public interface IDisable { bool Disabled { get; } }
 
 	public interface IDefaultVisibilityInfo : ITraitInfoInterface { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
