@@ -112,6 +112,8 @@ WorldLoaded = function()
 	CaptureOutpost = player.AddPrimaryObjective("Capture the Smuggler Outpost.")
 	KillHarkonnen = player.AddSecondaryObjective("Destroy the Harkonnen.")
 
+	SOutpost.GrantCondition("modified")
+
 	Camera.Position = OConyard.CenterPosition
 	HarkonnenAttackLocation = OConyard.Location
 
