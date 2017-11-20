@@ -79,6 +79,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
 
+		int2 IAutoSelectionSize.SelectionOffset(Actor self) { return int2.Zero; }
+
 		void ITick.Tick(Actor self)
 		{
 			if (movement.IsMoving || facing.Facing != oldFacing)

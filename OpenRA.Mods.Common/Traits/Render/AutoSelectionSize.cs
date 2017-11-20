@@ -23,10 +23,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		public AutoSelectionSize(AutoSelectionSizeInfo info) { }
 
-		public int2 SelectionSize(Actor self)
+		int2 IAutoSelectionSize.SelectionSize(Actor self)
 		{
 			var rs = self.Trait<RenderSprites>();
 			return rs.AutoSelectionSize(self);
+		}
+
+		int2 IAutoSelectionSize.SelectionOffset(Actor self)
+		{
+			var rs = self.Trait<RenderSprites>();
+			return rs.AutoSelectionOffset(self);
 		}
 	}
 }

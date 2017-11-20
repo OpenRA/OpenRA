@@ -99,7 +99,13 @@ namespace OpenRA.Traits
 	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
 
 	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
-	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface IAutoSelectionSize
+	{
+		int2 SelectionSize(Actor self);
+		int2 SelectionOffset(Actor self);
+	}
 
 	public interface IIssueOrder
 	{

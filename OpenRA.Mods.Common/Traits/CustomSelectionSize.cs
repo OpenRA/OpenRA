@@ -17,6 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class CustomSelectionSizeInfo : ITraitInfo, IAutoSelectionSizeInfo
 	{
 		[FieldLoader.Require]
+		[Desc("First two comma separated values is the size. Optional second pair defines offsets.")]
 		public readonly int[] CustomBounds = null;
 
 		public object Create(ActorInitializer init) { return new CustomSelectionSize(this); }
@@ -27,9 +28,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CustomSelectionSizeInfo info;
 		public CustomSelectionSize(CustomSelectionSizeInfo info) { this.info = info; }
 
-		public int2 SelectionSize(Actor self)
+		int2 IAutoSelectionSize.SelectionSize(Actor self)
 		{
 			return new int2(info.CustomBounds[0], info.CustomBounds[1]);
+		}
+
+		int2 IAutoSelectionSize.SelectionOffset(Actor self)
+		{
+			return info.CustomBounds.Length > 3 ? new int2(info.CustomBounds[2], info.CustomBounds[3]) : int2.Zero;
 		}
 	}
 }

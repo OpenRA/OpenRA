@@ -245,6 +245,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 					.FirstOrDefault();
 		}
 
+		public int2 AutoSelectionOffset(Actor self)
+		{
+			return anims.Where(b => b.IsVisible
+				&& b.Animation.Animation.CurrentSequence != null)
+					.Select(a => (a.Animation.Animation.Image.Offset.XY * info.Scale).ToInt2())
+					.FirstOrDefault();
+		}
+
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<FactionInit>())
