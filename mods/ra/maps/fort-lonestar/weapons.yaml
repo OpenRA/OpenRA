@@ -142,7 +142,6 @@ FLAK-23:
 		Explosions: med_explosion
 
 SCUD:
-	ReloadDelay: 280
 	Range: 7c0
 	Projectile: Bullet
 		Arm: 10
