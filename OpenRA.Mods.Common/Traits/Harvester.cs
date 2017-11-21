@@ -127,23 +127,9 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.AddFrameEndTask(w => self.QueueActivity(new FindResources(self)));
 		}
 
-		public void SetProcLines(Actor proc)
-		{
-			if (proc == null || proc.IsDead)
-				return;
-
-			var linkedHarvs = proc.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == proc)
-				.Select(a => Target.FromActor(a))
-				.ToList();
-
-		}
-
 		public void LinkProc(Actor self, Actor proc)
 		{
-			var oldProc = LinkedProc;
 			LinkedProc = proc;
-			SetProcLines(oldProc);
-			SetProcLines(proc);
 		}
 
 		public void UnlinkProc(Actor self, Actor proc)
