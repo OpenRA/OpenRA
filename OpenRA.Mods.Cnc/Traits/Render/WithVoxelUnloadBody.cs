@@ -20,7 +20,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo
+	// TODO: This trait is hacky and should go away as soon as we support granting a condition on docking, in favor of toggling two regular WithVoxelBodies
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo, IAutoRenderSizeInfo
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
@@ -44,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoSelectionSize
+	public class WithVoxelUnloadBody : IAutoSelectionSize, IAutoRenderSize
 	{
 		public bool Docked;
 
@@ -73,6 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				() => 0, info.ShowShadow));
 		}
 
-		public int2 SelectionSize(Actor self) { return size; }
+		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
+		int2 IAutoRenderSize.RenderSize(Actor self) { return size; }
 	}
 }
