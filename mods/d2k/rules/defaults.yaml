@@ -232,8 +232,6 @@
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
-	Tooltip:
-		Name: Wreck
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
