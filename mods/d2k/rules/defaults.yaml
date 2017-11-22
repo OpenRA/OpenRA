@@ -261,23 +261,6 @@
 		Moves: True
 		Explosion: UnitExplodeLarge
 
-^TowerHusk:
-	Health:
-		HP: 125
-	Armor:
-		Type: concrete
-	Husk:
-	AppearsOnRadar:
-	HiddenUnderFog:
-	Burns:
-		Interval: 2
-	Tooltip:
-		Name: Destroyed Tower
-	ScriptTriggers:
-	HitShape:
-	EditorTilesetFilter:
-		Categories: Husk
-
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
