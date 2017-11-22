@@ -454,8 +454,7 @@ heavy_factory:
 		BuildDurationModifier: 40
 		Description: Produces heavy vehicles.
 	Selectable:
-		Bounds: 96,68,0,12
-		DecorationBounds: 96,96
+		Bounds: 96,96
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -516,7 +515,6 @@ heavy_factory:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.heavy
 		Condition: stardecoration
@@ -545,7 +543,7 @@ outpost:
 		BuildDurationModifier: 40
 		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
 	Selectable:
-		Bounds: 96,72,0,-8
+		Bounds: 96,64
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -602,7 +600,7 @@ starport:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Selectable:
-		Bounds: 96,64
+		Bounds: 96,96
 	Health:
 		HP: 3500
 	HitShape:
@@ -741,8 +739,8 @@ medium_gun_turret:
 		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,32
-		Priority: 3
 		DecorationBounds: 32,40,0,-8
+		Priority: 3
 	Health:
 		HP: 2700
 	Armor:
@@ -761,7 +759,6 @@ medium_gun_turret:
 		MuzzleSequence: muzzle
 	Power:
 		Amount: -50
-	SelectionDecorations:
 
 large_gun_turret:
 	Inherits: ^Defense
@@ -788,8 +785,8 @@ large_gun_turret:
 		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,32
-		Priority: 3
 		DecorationBounds: 32,40,0,-8
+		Priority: 3
 	Health:
 		HP: 3000
 	Armor:
@@ -806,7 +803,6 @@ large_gun_turret:
 		InitialFacing: 128
 	Power:
 		Amount: -60
-	SelectionDecorations:
 	RevealOnDeath:
 		Radius: 5c768
 
@@ -841,9 +837,7 @@ repair_pad:
 	RevealsShroud:
 		Range: 4c768
 	Selectable:
-		Bounds: 96,64
-		DecorationBounds: 96,80
-	SelectionDecorations:
+		Bounds: 96,96
 	Reservable:
 	RepairsUnits:
 		Interval: 10
@@ -875,8 +869,7 @@ high_tech_factory:
 		BuildDurationModifier: 40
 		Description: Unlocks advanced technology.
 	Selectable:
-		Bounds: 96,68,0,12
-		DecorationBounds: 96,96
+		Bounds: 96,96
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -935,7 +928,6 @@ high_tech_factory:
 		Sequence: production-welding
 	Power:
 		Amount: -75
-	SelectionDecorations:
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.hightech
 		Condition: stardecoration
@@ -957,8 +949,7 @@ research_centre:
 		BuildDurationModifier: 40
 		Description: Unlocks advanced tanks.
 	Selectable:
-		Bounds: 96,64,0,16
-		DecorationBounds: 96,80
+		Bounds: 96,96
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -996,7 +987,6 @@ research_centre:
 	Power:
 		Amount: -175
 	ProvidesPrerequisite@buildingname:
-	SelectionDecorations:
 
 palace:
 	Inherits: ^Building
