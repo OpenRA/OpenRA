@@ -193,7 +193,7 @@ namespace OpenRA.Platforms.Default
 
 		public ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate)
 		{
-			return new OpenAlSoundSource(data, channels, sampleBits, sampleRate);
+			return new OpenAlSoundSource(data, data.Length, channels, sampleBits, sampleRate);
 		}
 
 		public ISound Play2D(ISoundSource soundSource, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume)
@@ -389,11 +389,11 @@ namespace OpenRA.Platforms.Default
 		public uint Buffer { get { return buffer; } }
 		public int SampleRate { get; private set; }
 
-		public OpenAlSoundSource(byte[] data, int channels, int sampleBits, int sampleRate)
+		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
 		{
 			SampleRate = sampleRate;
 			AL10.alGenBuffers(new IntPtr(1), out buffer);
-			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, new IntPtr(data.Length), new IntPtr(sampleRate));
+			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, new IntPtr(byteCount), new IntPtr(sampleRate));
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -502,7 +502,7 @@ namespace OpenRA.Platforms.Default
 		{
 			// Load a silent buffer into the source. Without this,
 			// attempting to change the state (i.e. play/pause) the source fails on some systems.
-			var silentSource = new OpenAlSoundSource(SilentData, channels, sampleBits, sampleRate);
+			var silentSource = new OpenAlSoundSource(SilentData, SilentData.Length, channels, sampleBits, sampleRate);
 			AL10.alSourcei(source, AL10.AL_BUFFER, (int)silentSource.Buffer);
 
 			playTask = Task.Run(async () =>
@@ -510,7 +510,16 @@ namespace OpenRA.Platforms.Default
 				MemoryStream memoryStream;
 				using (stream)
 				{
-					memoryStream = new MemoryStream();
+					try
+					{
+						memoryStream = new MemoryStream((int)stream.Length);
+					}
+					catch (NotSupportedException)
+					{
+						// Fallback for stream types that don't support Length.
+						memoryStream = new MemoryStream();
+					}
+
 					try
 					{
 						await stream.CopyToAsync(memoryStream, 81920, cts.Token);
@@ -525,10 +534,11 @@ namespace OpenRA.Platforms.Default
 					}
 				}
 
-				var data = memoryStream.ToArray();
+				var data = memoryStream.GetBuffer();
+				var dataLength = (int)memoryStream.Length;
 				var bytesPerSample = sampleBits / 8f;
-				var lengthInSecs = data.Length / (channels * bytesPerSample * sampleRate);
-				using (var soundSource = new OpenAlSoundSource(data, channels, sampleBits, sampleRate))
+				var lengthInSecs = dataLength / (channels * bytesPerSample * sampleRate);
+				using (var soundSource = new OpenAlSoundSource(data, dataLength, channels, sampleBits, sampleRate))
 				{
 					// Need to stop the source, before attaching the real input and deleting the silent one.
 					AL10.alSourceStop(source);
