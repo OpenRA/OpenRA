@@ -170,6 +170,11 @@ namespace OpenRA.Mods.Common.FileFormats
 				this.dataSize = dataSize;
 			}
 
+			public override long Length
+			{
+				get { return outputSize; }
+			}
+
 			protected override bool BufferData(Stream baseStream, Queue<byte> data)
 			{
 				if (dataSize <= 0)
