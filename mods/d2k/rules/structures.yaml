@@ -13,6 +13,7 @@
 		TerrainTypes: Rock
 	Tooltip:
 		Name: Concrete
+		GenericName: Structure
 	RenderSprites:
 	KillsSelf:
 		RemoveInstead: true
@@ -698,6 +699,7 @@ wall:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
+		GenericName: Structure
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
