@@ -429,7 +429,7 @@ namespace OpenRA
 			{
 				var uv = cell.ToMPos(Grid.Type);
 				cellProjection[uv] = new PPos[0];
-				inverseCellProjection[uv] = new List<MPos>();
+				inverseCellProjection[uv] = new List<MPos>(1);
 			}
 
 			// Initialize projections
