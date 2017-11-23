@@ -418,7 +418,7 @@ namespace OpenRA
 
 		public void Install(string mapRepositoryUrl, Action onSuccess)
 		{
-			if (Status != MapStatus.DownloadAvailable || !Game.Settings.Game.AllowDownloading)
+			if ((Status != MapStatus.DownloadError && Status != MapStatus.DownloadAvailable) || !Game.Settings.Game.AllowDownloading)
 				return;
 
 			innerData.Status = MapStatus.Downloading;
