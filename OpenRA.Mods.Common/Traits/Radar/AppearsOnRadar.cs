@@ -30,11 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 
 	public class AppearsOnRadar : ConditionalTrait<AppearsOnRadarInfo>, IRadarSignature
 	{
-		static readonly IEnumerable<Pair<CPos, Color>> NoCells = Enumerable.Empty<Pair<CPos, Color>>();
 		IRadarColorModifier modifier;
-
-		Color currentColor = Color.Transparent;
-		Func<Pair<CPos, SubCell>, Pair<CPos, Color>> cellToSignature;
 
 		public AppearsOnRadar(AppearsOnRadarInfo info)
 			: base(info) { }
@@ -45,27 +41,24 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			modifier = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 		}
 
-		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
+		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
 			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.Stances[viewer])))
-				return NoCells;
+				return;
 
 			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color.RGB;
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 
 			if (Info.UseLocation)
-				return new[] { Pair.New(self.Location, color) };
-
-			// PERF: Cache cellToSignature delegate to avoid allocations as color does not change often.
-			if (currentColor != color)
 			{
-				currentColor = color;
-				cellToSignature = c => Pair.New(c.First, color);
+				destinationBuffer.Add(Pair.New(self.Location, color));
+				return;
 			}
 
-			return self.OccupiesSpace.OccupiedCells().Select(cellToSignature);
+			foreach (var cell in self.OccupiesSpace.OccupiedCells())
+				destinationBuffer.Add(Pair.New(cell.First, color));
 		}
 	}
 }

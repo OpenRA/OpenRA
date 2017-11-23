@@ -272,9 +272,11 @@ namespace OpenRA.Mods.Common.Traits
 			return nodes;
 		}
 
-		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
+		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
-			return cellMap.SelectMany(c => c.Value.Select(p => Pair.New(c.Key, p.Owner.Color.RGB)));
+			foreach (var previewsForCell in cellMap)
+				foreach (var preview in previewsForCell.Value)
+					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color.RGB));
 		}
 	}
 }

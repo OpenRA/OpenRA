@@ -354,7 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IRadarSignature
 	{
-		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
+		void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer);
 	}
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
