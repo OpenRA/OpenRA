@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
-	public class PowerManager : ITick, ISync, IResolveOrder
+	public class PowerManager : INotifyCreated, ITick, ISync, IResolveOrder
 	{
 		readonly Actor self;
 		readonly PowerManagerInfo info;
@@ -56,6 +56,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			devMode = self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			// Map placed actors will query an inconsistent power state when they are created
+			// (it will depend on the order that they are spawned by the world)
+			// Tell them to query the correct state once the world has been fully created
+			self.World.AddFrameEndTask(w => UpdatePowerRequiringActors());
 		}
 
 		public void UpdateActor(Actor a)
