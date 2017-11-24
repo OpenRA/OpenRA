@@ -1276,12 +1276,14 @@ AFLD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 130
-		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
+		Prerequisites: dome, ~structures.soviet, ~techlevel.medium, ~!structures.ukraine
 		Description: Produces and reloads aircraft.\n  Special Ability: Spy Plane\n  Special Ability: Paratroopers
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Airfield
+	Selectable:
+		Class: afld
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
@@ -1368,7 +1370,7 @@ AFLD:
 		Icon: parabombs
 		ChargeTime: 300
 		Description: Parabombs
-		LongDesc: A squad of Badgers drops parachuted\nbombs on your target.
+		LongDesc: A squad of Badgers drop parachuted\nbombs on your target.
 		SelectTargetSpeechNotification: SelectTarget
 		CameraActor: camera
 		CameraRemoveDelay: 150
@@ -1400,6 +1402,14 @@ AFLD:
 		ZOffset: 256
 		RequiresCondition: primary
 	WithRearmAnimation:
+
+AFLD.Ukraine:
+	Inherits: AFLD
+	Buildable:
+		Prerequisites: dome, ~techlevel.medium, ~structures.ukraine
+		Description: Produces and reloads aircraft.\n  Special Ability: Spy Plane\n  Special Ability: Paratroopers\n  Special Ability: Parabombs
+	RenderSprites:
+		Image: afld
 
 POWR:
 	Inherits: ^Building
