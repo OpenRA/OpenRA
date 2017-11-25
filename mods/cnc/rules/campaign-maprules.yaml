@@ -10,6 +10,8 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusLocked: True
 		AllyBuildRadiusEnabled: False
+		BuildRadiusLocked: True
+		BuildRadiusEnabled: True
 	MapOptions:
 		ShortGameLocked: True
 		ShortGameEnabled: False

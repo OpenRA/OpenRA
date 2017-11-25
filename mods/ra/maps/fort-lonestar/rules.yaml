@@ -31,6 +31,8 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusLocked: True
 		AllyBuildRadiusEnabled: True
+		BuildRadiusLocked: True
+		BuildRadiusEnabled: True
 	SpawnMPUnits:
 		Locked: True
 	MapOptions:
