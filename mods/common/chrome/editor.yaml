@@ -5,10 +5,6 @@ Background@NEW_MAP_BG:
 	Width: 300
 	Height: 185
 	Children:
-		Container@MUSICBUTTONS:
-			Logic: MusicControllerLogic
-			Children:
-				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
 		Label@LABEL_TITLE:
 			X: 0
 			Y: 20
@@ -186,12 +182,21 @@ ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
 Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
 	Children:
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic
+				StopMusicKey: StopMusic
+				PauseMusicKey: PauseMusic
+				PrevMusicKey: PrevMusic
+				NextMusicKey: NextMusic
+				TakeScreenshotKey: TakeScreenshot
+				MuteAudioKey: ToggleMute
 		Container@WORLD_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic
+		ChangeZoomKey: TogglePixelDouble
 	Children:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
@@ -210,6 +215,17 @@ Container@EDITOR_WORLD_ROOT:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
+			ScrollUpKey: MapScrollUp
+			ScrollDownKey: MapScrollDown
+			ScrollLeftKey: MapScrollLeft
+			ScrollRightKey: MapScrollRight
+			JumpToTopEdgeKey: MapJumpToTopEdge
+			JumpToBottomEdgeKey: MapJumpToBottomEdge
+			JumpToLeftEdgeKey: MapJumpToLeftEdge
+			JumpToRightEdgeKey: MapJumpToRightEdge
+			BookmarkSaveKeyPrefix: MapBookmarkSave
+			BookmarkRestoreKeyPrefix: MapBookmarkRestore
+			BookmarkKeyCount: 4
 		Background@RADAR_BG:
 			X: WINDOW_RIGHT - 255
 			Y: 5
@@ -230,17 +246,36 @@ Container@EDITOR_WORLD_ROOT:
 					Width: 240
 					Height: WINDOW_BOTTOM - 382
 					Children:
-						DropDownButton@TILE_CATEGORY:
-							X: 10
+						Label@SEARCH_LABEL:
 							Y: 10
-							Width: 220
+							Width: 55
+							Height: 25
+							Text: Search:
+							Align: Right
+							Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Y: 10
+							Width: PARENT_RIGHT - 70
+							Height: 25
+						Label@CATEGORIES_LABEL:
+							Y: 34
+							Width: 55
+							Height: 25
+							Text: Filter:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 34
+							Width: PARENT_RIGHT - 70
 							Height: 25
 							Font: Bold
 						ScrollPanel@TILETEMPLATE_LIST:
 							X: 10
-							Y: 35
+							Y: 58
 							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 45
+							Height: PARENT_BOTTOM - 68
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -289,17 +324,49 @@ Container@EDITOR_WORLD_ROOT:
 					Width: 240
 					Height: WINDOW_BOTTOM - 382
 					Children:
-						DropDownButton@OWNERS_DROPDOWN:
-							X: 10
+						Label@SEARCH_LABEL:
 							Y: 10
-							Width: 220
+							Width: 55
+							Height: 25
+							Text: Search:
+							Align: Right
+							Font: TinyBold
+						TextField@SEARCH_TEXTFIELD:
+							X: 60
+							Y: 10
+							Width: PARENT_RIGHT - 70
+							Height: 25
+						Label@CATEGORIES_LABEL:
+							Y: 34
+							Width: 55
+							Height: 25
+							Text: Filter:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@CATEGORIES_DROPDOWN:
+							X: 60
+							Y: 34
+							Width: PARENT_RIGHT - 70
+							Height: 25
+							Font: Bold
+						Label@OWNERS_LABEL:
+							Y: 58
+							Width: 55
+							Height: 25
+							Text: Owner:
+							Align: Right
+							Font: TinyBold
+						DropDownButton@OWNERS_DROPDOWN:
+							X: 60
+							Y: 58
+							Width: PARENT_RIGHT - 70
 							Height: 25
 							Font: Bold
 						ScrollPanel@ACTORTEMPLATE_LIST:
 							X: 10
-							Y: 35
+							Y: 82
 							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 45
+							Height: PARENT_BOTTOM - 92
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -380,6 +447,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Height: 25
 			Font: Bold
+			Key: TogglePixelDouble
 		Label@COORDINATE_LABEL:
 			X: 485
 			Width: 50
@@ -388,9 +456,37 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 570
+			X: 600
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
+
+ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
+	Width: 170
+	Children:
+		Container@SELECT_CATEGORIES_BUTTONS:
+			Width: PARENT_RIGHT
+			Height: 29
+			Children:
+				Button@SELECT_ALL:
+					X: 10
+					Y: 2
+					Width: 60
+					Height: 25
+					Text: All
+					Font: Bold
+				Button@SELECT_NONE:
+					X: PARENT_RIGHT - WIDTH - 34
+					Y: 2
+					Width: 60
+					Height: 25
+					Text: None
+					Font: Bold
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Visible: false

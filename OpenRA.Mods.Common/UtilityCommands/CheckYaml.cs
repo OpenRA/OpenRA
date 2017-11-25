@@ -12,7 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
+using OpenRA.FileSystem;
+using OpenRA.Mods.Common.Lint;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -76,13 +77,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 					}
 
-					modData.MapCache.LoadMaps();
-					maps.AddRange(modData.MapCache
-						.Where(m => m.Status == MapStatus.Available)
-						.Select(m => new Map(modData, m.Package)));
+					// Use all system maps for lint checking
+					maps = modData.MapCache.EnumerateMapsWithoutCaching().ToList();
 				}
 				else
-					maps.Add(new Map(modData, modData.ModFiles.OpenPackage(args[1], new FileSystem.Folder("."))));
+					maps.Add(new Map(modData, new Folder(".").OpenPackage(args[1], modData.ModFiles)));
 
 				foreach (var testMap in maps)
 				{

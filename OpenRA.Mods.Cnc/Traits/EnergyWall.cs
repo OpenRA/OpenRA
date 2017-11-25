@@ -103,10 +103,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			return !active;
 		}
 
-		public override void AddedToWorld(Actor self)
+		protected override void AddedToWorld(Actor self)
 		{
 			base.AddedToWorld(self);
-			blockedPositions = FootprintUtils.Tiles(self);
+			blockedPositions = info.Tiles(self.Location);
 		}
 	}
 }

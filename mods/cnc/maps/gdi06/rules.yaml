@@ -74,8 +74,8 @@ RMBO:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: true
+		EnableStances: false
+		InitialStance: ReturnFire
 	Health:
 		HP: 150
 
@@ -93,6 +93,8 @@ RMBO.easy:
 RMBO.hard:
 	Inherits: RMBO
 	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
 	-AttackMove:
 	RenderSprites:
 		Image: RMBO

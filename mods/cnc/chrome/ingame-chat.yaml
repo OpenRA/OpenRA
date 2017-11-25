@@ -1,6 +1,6 @@
 Container@CHAT_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: WINDOW_BOTTOM - HEIGHT - 15
+	Y: WINDOW_BOTTOM - HEIGHT - 45
 	Width: 550
 	Height: 194
 	Logic: IngameChatLogic

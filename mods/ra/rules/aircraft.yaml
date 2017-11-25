@@ -81,16 +81,18 @@ BADR.Bomber:
 
 MIG:
 	Inherits: ^Plane
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 50
 		Prerequisites: ~afld, stek, ~techlevel.high
-		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
+		BuildDuration: 1750
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mig Attack Plane
+		Name: MiG Attack Plane
 	Health:
 		HP: 70
 	Armor:
@@ -106,9 +108,11 @@ MIG:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
+		PauseOnCondition: !ammo
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -116,11 +120,11 @@ MIG:
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: false
-		EnableStances: false
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 8
+		AmmoCondition: ammo
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
@@ -140,12 +144,13 @@ MIG:
 
 YAK:
 	Inherits: ^Plane
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 30
 		Prerequisites: ~afld, ~techlevel.medium
-		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
+		Description: Attack Plane armed with\ndual machine guns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -165,14 +170,17 @@ YAK:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -180,13 +188,13 @@ YAK:
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
-		TargetWhenIdle: false
-		TargetWhenDamaged: false
-		EnableStances: false
+		InitialStance: HoldFire
+		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 18
 		PipCount: 6
 		ReloadDelay: 11
+		AmmoCondition: ammo
 	ReturnOnIdle:
 	SelectionDecorations:
 		VisualBounds: 30,28,0,2
@@ -214,22 +222,22 @@ TRAN:
 	Tooltip:
 		Name: Chinook
 	Health:
-		HP: 120
+		HP: 140
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 8c0
+		Range: 6c0
 		Type: GroundPosition
 	Aircraft:
 		InitialFacing: 224
 		TurnSpeed: 5
-		Speed: 112
+		Speed: 128
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
-		AltitudeVelocity: 0c100
+		AltitudeVelocity: 0c58
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,213
 		Sequence: rotor
@@ -257,12 +265,14 @@ TRAN:
 
 HELI:
 	Inherits: ^Helicopter
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 40
 		Prerequisites: ~hpad, atek, ~techlevel.high
-		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		BuildDuration: 1750
+		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Buildings, Vehicles, Aircraft\n  Weak vs Infantry
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -281,12 +291,15 @@ HELI:
 	Armament@PRIMARY:
 		Weapon: HellfireAA
 		LocalOffset: 0,-213,-85
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -304,6 +317,7 @@ HELI:
 		RequiresCondition: !airborne
 	AmmoPool:
 		Ammo: 8
+		AmmoCondition: ammo
 	SelectionDecorations:
 		VisualBounds: 36,28
 	SpawnActorOnDeath:
@@ -315,12 +329,13 @@ HELI:
 
 HIND:
 	Inherits: ^Helicopter
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
 		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
+		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -340,14 +355,17 @@ HIND:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
 		LocalOffset: 85,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -365,6 +383,7 @@ HIND:
 		Ammo: 24
 		PipCount: 6
 		ReloadDelay: 8
+		AmmoCondition: ammo
 	SelectionDecorations:
 		VisualBounds: 38,32
 	WithMuzzleOverlay:

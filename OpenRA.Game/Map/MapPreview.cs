@@ -28,7 +28,14 @@ namespace OpenRA
 	public enum MapStatus { Available, Unavailable, Searching, DownloadAvailable, Downloading, DownloadError }
 
 	// Used for grouping maps in the UI
-	public enum MapClassification { Unknown, System, User, Remote }
+	[Flags]
+	public enum MapClassification
+	{
+		Unknown = 0,
+		System = 1,
+		User = 2,
+		Remote = 4
+	}
 
 	// Used for verifying map availability in the lobby
 	public enum MapRuleStatus { Unknown, Cached, Invalid }
@@ -307,8 +314,9 @@ namespace OpenRA
 				var musicDefinitions = LoadRuleSection(yaml, "Music");
 				var notificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				var sequenceDefinitions = LoadRuleSection(yaml, "Sequences");
+				var modelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
 				var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+					voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 				var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 					weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
 				return Pair.New(rules, flagged);
@@ -390,8 +398,9 @@ namespace OpenRA
 						var musicDefinitions = LoadRuleSection(rulesYaml, "Music");
 						var notificationDefinitions = LoadRuleSection(rulesYaml, "Notifications");
 						var sequenceDefinitions = LoadRuleSection(rulesYaml, "Sequences");
+						var modelSequenceDefinitions = LoadRuleSection(rulesYaml, "ModelSequences");
 						var rules = Ruleset.Load(modData, this, TileSet, ruleDefinitions, weaponDefinitions,
-							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions);
+							voiceDefinitions, notificationDefinitions, musicDefinitions, sequenceDefinitions, modelSequenceDefinitions);
 						var flagged = Ruleset.DefinesUnsafeCustomRules(modData, this, ruleDefinitions,
 							weaponDefinitions, voiceDefinitions, notificationDefinitions, sequenceDefinitions);
 						return Pair.New(rules, flagged);
@@ -471,7 +480,7 @@ namespace OpenRA
 						Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
 						Game.RunAfterTick(() =>
 						{
-							var package = modData.ModFiles.OpenPackage(mapFilename, mapInstallPackage);
+							var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
 							if (package == null)
 								innerData.Status = MapStatus.DownloadError;
 							else

@@ -5,36 +5,60 @@ Cursors:
 	mouse2.shp: cursor
 		scroll-t:
 			Start: 1
+			Y: -12
 		scroll-tr:
 			Start: 2
+			X: 14
+			Y: -12
 		scroll-r:
 			Start: 3
+			X: 14
 		scroll-br:
 			Start: 4
+			X: 14
+			Y: 11
 		scroll-b:
 			Start: 5
+			Y: 11
 		scroll-bl:
 			Start: 6
+			X: -15
+			Y: 11
 		scroll-l:
 			Start: 7
+			X: -15
 		scroll-tl:
 			Start: 8
+			X: -15
+			Y: -12
 		scroll-t-blocked:
 			Start: 130
+			Y: -12
 		scroll-tr-blocked:
 			Start: 131
+			X: 14
+			Y: -12
 		scroll-r-blocked:
 			Start: 132
+			X: 14
 		scroll-br-blocked:
 			Start: 133
+			X: 14
+			Y: 11
 		scroll-b-blocked:
 			Start: 134
+			Y: 11
 		scroll-bl-blocked:
 			Start: 135
+			X: -15
+			Y: 11
 		scroll-l-blocked:
 			Start: 136
+			X: -15
 		scroll-tl-blocked:
 			Start: 137
+			X: -15
+			Y: -12
 		select:
 			Start: 12
 			Length: 6
@@ -131,23 +155,41 @@ Cursors:
 		move:
 			Start: 0
 			Length: 8
-		move-minimap:
-			Start: 8
-			Length: 4
 		move-rough:
 			Start: 0
 			Length: 8
+		move-minimap:
+			Start: 8
+			Length: 4
 		attackmove:
 			Start: 12
 			Length: 8
 		attackmove-minimap:
 			Start: 20
 			Length: 4
-		move-blocked:
+		assaultmove:
 			Start: 24
+			Length: 8
+		assaultmove-minimap:
+			Start: 32
+			Length: 4
+		move-blocked:
+			Start: 36
+			Length: 1
+		attackmove-blocked:
+			Start: 37
+			Length: 1
+		assaultmove-blocked:
+			Start: 38
 			Length: 1
 		move-blocked-minimap:
-			Start: 25
+			Start: 39
+			Length: 1
+		attackmove-blocked-minimap:
+			Start: 39
+			Length: 1
+		assaultmove-blocked-minimap:
+			Start: 40
 			Length: 1
 	mouse5.shp: cursor
 		guard:

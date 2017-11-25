@@ -112,9 +112,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LoadWidget(null, "GLOBALCHAT_PANEL", widget.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
 
 			lanGameLocations = new List<BeaconLocation>();
-			lanGameProbe = new Probe("OpenRALANGame");
-			lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
-			lanGameProbe.Start();
+			try
+			{
+				lanGameProbe = new Probe("OpenRALANGame");
+				lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
+				lanGameProbe.Start();
+			}
+			catch (Exception ex)
+			{
+				Log.Write("debug", "BeaconLib.Probe: " + ex.Message);
+			}
 
 			RefreshServerList();
 
@@ -349,13 +356,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				lanGames = lanGames.GroupBy(gs => gs.Address).Select(g => g.Last()).ToList();
+				var groupedLanGames = lanGames.GroupBy(gs => gs.Address).Select(g => g.Last());
+				if (games != null)
+					games.AddRange(groupedLanGames);
+				else if (groupedLanGames.Any())
+					games = groupedLanGames.ToList();
 
-				Game.RunAfterTick(() => RefreshServerListInner(games.Concat(lanGames).ToList()));
+				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
 			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
-				Uri.EscapeUriString(Game.Mods["modcontent"].Metadata.Version),
+				Uri.EscapeUriString(Game.EngineVersion),
 				Uri.EscapeUriString(Game.ModData.Manifest.Id),
 				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
 
@@ -366,14 +377,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// Games that we can't join are sorted last
 			if (!testEntry.IsCompatible)
-				return 0;
+				return testEntry.ModId == modData.Manifest.Id ? 1 : 0;
 
 			// Games for the current mod+version are sorted first
 			if (testEntry.ModId == modData.Manifest.Id)
-				return 2;
+				return testEntry.ModVersion == modData.Manifest.Metadata.Version ? 4 : 3;
 
 			// Followed by games for different mods that are joinable
-			return 1;
+			return 2;
 		}
 
 		void SelectServer(GameServer server)
@@ -384,15 +395,51 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void RefreshServerListInner(List<GameServer> games)
 		{
-			if (games == null)
-				return;
+			ScrollItemWidget nextServerRow = null;
+			List<Widget> rows = null;
 
+			if (games != null)
+				rows = LoadGameRows(games, out nextServerRow);
+
+			Game.RunAfterTick(() =>
+			{
+				serverList.RemoveChildren();
+				SelectServer(null);
+
+				if (games == null)
+				{
+					searchStatus = SearchStatus.Failed;
+					return;
+				}
+
+				if (!rows.Any())
+				{
+					searchStatus = SearchStatus.NoGames;
+					return;
+				}
+
+				searchStatus = SearchStatus.Hidden;
+
+				// Search for any unknown maps
+				if (Game.Settings.Game.AllowDownloading)
+					modData.MapCache.QueryRemoteMapDetails(services.MapRepository, games.Where(g => !Filtered(g)).Select(g => g.Map));
+
+				foreach (var row in rows)
+					serverList.AddChild(row);
+
+				if (nextServerRow != null)
+					nextServerRow.OnClick();
+			});
+		}
+
+		List<Widget> LoadGameRows(List<GameServer> games, out ScrollItemWidget nextServerRow)
+		{
+			nextServerRow = null;
+			var rows = new List<Widget>();
 			var mods = games.GroupBy(g => g.Mods)
 				.OrderByDescending(g => GroupSortOrder(g.First()))
 				.ThenByDescending(g => g.Count());
 
-			ScrollItemWidget nextServerRow = null;
-			var rows = new List<Widget>();
 			foreach (var modGames in mods)
 			{
 				if (modGames.All(Filtered))
@@ -487,35 +534,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			Game.RunAfterTick(() =>
-			{
-				serverList.RemoveChildren();
-				SelectServer(null);
-
-				if (games == null)
-				{
-					searchStatus = SearchStatus.Failed;
-					return;
-				}
-
-				if (!rows.Any())
-				{
-					searchStatus = SearchStatus.NoGames;
-					return;
-				}
-
-				searchStatus = SearchStatus.Hidden;
-
-				// Search for any unknown maps
-				if (Game.Settings.Game.AllowDownloading)
-					modData.MapCache.QueryRemoteMapDetails(services.MapRepository, games.Where(g => !Filtered(g)).Select(g => g.Map));
-
-				foreach (var row in rows)
-					serverList.AddChild(row);
-
-				if (nextServerRow != null)
-					nextServerRow.OnClick();
-			});
+			return rows;
 		}
 
 		void OpenLobby()
@@ -626,6 +645,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 
 			return false;
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				if (lanGameProbe != null)
+					lanGameProbe.Dispose();
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 }

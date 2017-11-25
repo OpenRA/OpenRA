@@ -26,8 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int flashesDelay;
 		readonly int flashInterval;
 		readonly int flashDuration;
-
-		readonly Cloak cloak;
+		readonly INotifyDemolition[] notifiers;
 
 		public Demolish(Actor self, Actor target, EnterBehaviour enterBehaviour, int delay,
 			int flashes, int flashesDelay, int flashInterval, int flashDuration)
@@ -35,12 +34,12 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			demolishables = target.TraitsImplementing<IDemolishable>().ToArray();
+			notifiers = self.TraitsImplementing<INotifyDemolition>().ToArray();
 			this.delay = delay;
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
 			this.flashInterval = flashInterval;
 			this.flashDuration = flashDuration;
-			cloak = self.TraitOrDefault<Cloak>();
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -55,12 +54,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (target.IsDead)
 					return;
 
-				if (cloak != null && cloak.Info.UncloakOn.HasFlag(UncloakType.Demolish))
-					cloak.Uncloak();
-
-				var building = target.TraitOrDefault<Building>();
-				if (building != null)
-					building.Lock();
+				foreach (var ind in notifiers)
+					ind.Demolishing(self);
 
 				for (var f = 0; f < flashes; f++)
 					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>

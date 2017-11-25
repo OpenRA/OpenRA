@@ -11,9 +11,11 @@
 ^SpriteActor:
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
+		CameraPitch: 85
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
+	AutoRenderSize:
 
 ^GainsExperience:
 	GainsExperience:
@@ -123,6 +125,168 @@
 	ExternalCondition@CRATE-CLOAK:
 		Condition: crate-cloak
 
+^AutoTargetGround:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetGroundAssaultMove:
+	Inherits: ^AutoTargetGround
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		InvalidTargets: NoAutoTarget
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAllAssaultMove:
+	Inherits: ^AutoTargetAll
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
+^2x1Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 512
+
+^1x2Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -1024
+			BottomRight: 512, 1024
+
+^2x2Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+
+^1x3Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, 1536
+
+^3x1Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 512
+
+^3x2Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
+
+^2x3Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -1536
+			BottomRight: 1024, 1536
+
+^3x3Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 1536, 1536
+
+^2x4Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -2048
+			BottomRight: 1024, 2048
+
+^4x2Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -1024
+			BottomRight: 2048, 1024
+
+^3x4Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -2048
+			BottomRight: 1536, 2048
+
+^4x3FactoryWithBibShape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -1536
+			BottomRight: 1024, 1536
+
+^4x3Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -1536
+			BottomRight: 2048, 1536
+
+^4x4Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -2048
+			BottomRight: 2048, 2048
+
+^3x5Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -2560
+			BottomRight: 1536, 2560
+
+^5x3Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2560, -1536
+			BottomRight: 2560, 1536
+
+^2x5Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -2560
+			BottomRight: 1024, 2560
+
+^2x6Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -3072
+			BottomRight: 1024, 3072
+
+^6x4Shape:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -3072, -2048
+			BottomRight: 3072, 2048
+
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
@@ -135,11 +299,19 @@
 		Priority: 3
 	Targetable:
 		TargetTypes: Ground, Building, C4
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			LocalYaw: -128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road, DirtRoad, Rough
+	RequiresBuildableArea:
+		AreaTypes: building
 		Adjacent: 4
 	FrozenUnderFog:
 	SoundOnDamageTransition:
@@ -163,11 +335,15 @@
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
+	EditorTilesetFilter:
+		Categories: Building
+	CommandBarBlacklist:
 
 ^Building:
 	Inherits@1: ^BasicBuilding
 	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
+		AreaTypes: building
 	Capturable:
 	RepairableBuilding:
 		IndicatorPalette: mouse
@@ -204,9 +380,12 @@
 		MaxHeightDelta: 3
 	RenderSprites:
 		Palette: terraindecoration
+	EditorTilesetFilter:
+		Categories: Civilian building
 
 ^OldBase:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^2x2Shape
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -235,6 +414,8 @@
 		Pieces: 1, 3
 	ThrowsShrapnel@LARGE:
 		Pieces: 1, 1
+	EditorTilesetFilter:
+		Categories: Billboard
 
 ^Crate:
 	HiddenUnderFog:
@@ -249,6 +430,10 @@
 		Images: crate
 	CustomSelectionSize:
 		CustomBounds: 24,24
+	EditorTilesetFilter:
+		Categories: System
+	CustomRenderSize:
+		CustomBounds: 24,24
 
 ^Wall:
 	Inherits@1: ^SpriteActor
@@ -260,8 +445,10 @@
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		Adjacent: 7
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
@@ -276,18 +463,26 @@
 		TargetTypes: Ground, Wall, C4
 	WithWallSpriteBody:
 		Type: wall
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Demolishable:
 	ScriptTriggers:
 	ConditionManager:
 	Health:
-		Shape: Rectangle
+	HitShape:
+		Type: Rectangle
 			LocalYaw: 128
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
+	EditorTilesetFilter:
+		Categories: Wall
+	Valued:
+		Cost: 50
+	CustomSellValue:
+		Value: 0
+	BlocksProjectiles:
+		Height: 768
 
 ^BuildingPlug:
 	AlwaysVisible:
@@ -306,8 +501,6 @@
 	DrawLineToTarget:
 	Health:
 		HP: 50
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: None
 	Valued:
@@ -347,7 +540,6 @@
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
-	AutoTarget:
 	AttackMove:
 		Voice: Move
 	Passenger:
@@ -382,6 +574,11 @@
 	RevealOnFire:
 	EntersTunnels:
 		Voice: Move
+	HitShape:
+		Type: Circle
+			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -487,6 +684,8 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	EditorTilesetFilter:
+		Categories: Civilian infantry
 
 ^Vehicle:
 	Inherits@2: ^ExistsInWorld
@@ -534,7 +733,7 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	Capturable:
-		Type: Vehicle
+		Types: Vehicle
 		CaptureThreshold: 100
 		CancelActivity: True
 	Guard:
@@ -568,6 +767,9 @@
 	RevealOnFire:
 	EntersTunnels:
 		Voice: Move
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -620,7 +822,6 @@
 	Aircraft:
 		AirborneCondition: airborne
 		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
@@ -630,6 +831,7 @@
 		Type: GroundPosition
 	AttackMove:
 		Voice: Move
+		MoveIntoShroud: false
 	ActorLostNotification:
 	BodyOrientation:
 		QuantizedFacings: 0
@@ -641,6 +843,9 @@
 	RenderVoxels:
 	WithVoxelBody:
 	RevealOnFire:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -648,6 +853,8 @@
 		CruiseAltitude: 2048
 		CanHover: True
 		CruisingCondition: cruising
+		TakeOffOnResupply: true
+		VTOL: true
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 
@@ -665,7 +872,6 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: GroundPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
 		GenericName: Destroyed Aircraft
@@ -673,6 +879,9 @@
 		Spins: true
 		Moves: true
 		Velocity: 86
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
@@ -681,9 +890,6 @@
 	Huntable:
 	DrawLineToTarget:
 	Health:
-		Shape: Circle
-			Radius: 256
-			VerticalTopOffset: 512
 	Armor:
 		Type: Light
 	Mobile:
@@ -715,6 +921,12 @@
 	RevealOnFire:
 	EntersTunnels:
 		Voice: Move
+	HitShape:
+		Type: Circle
+			Radius: 256
+			VerticalTopOffset: 512
+	EditorTilesetFilter:
+		Categories: Critter
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -734,6 +946,8 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithIdleAnimation:
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 ^Tree:
 	Inherits@1: ^SpriteActor
@@ -749,6 +963,8 @@
 		Terrain: Tree
 	Tooltip:
 		Name: Tree
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -764,6 +980,8 @@
 		Terrain: Rock
 	Tooltip:
 		Name: Rock
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
@@ -774,6 +992,8 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
+	EditorTilesetFilter:
+		Categories: Decoration
 
 ^Box:
 	Inherits: ^Decoration
@@ -793,14 +1013,18 @@
 ^Defense:
 	Inherits: ^Building
 	-GivesBuildableArea:
-	AutoTarget:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	RevealsShroud:
 		Range: 6c0
 	DetectCloaked:
 		Range: 5c0
+	Targetable:
+		TargetTypes: Ground, Building, C4, Defense
 	RevealOnFire:
+	EditorTilesetFilter:
+		Categories: Defense
+	-CommandBarBlacklist:
 
 ^Train:
 	Inherits@1: ^EmpDisable
@@ -854,6 +1078,9 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Railway
 
 ^TerrainOverlay:
 	AlwaysVisible:
@@ -873,6 +1100,9 @@
 	AutoSelectionSize:
 	ChangesTerrain:
 		TerrainType: Rail
+	EditorTilesetFilter:
+		Categories: Railway
+	AutoRenderSize:
 
 ^Tunnel:
 	RenderSprites:
@@ -890,6 +1120,10 @@
 	AlwaysVisible:
 	TunnelEntrance:
 		Dimensions: 3, 3
+	EditorTilesetFilter:
+		Categories: Tunnel
+	CustomRenderSize:
+		CustomBounds: 144, 144
 
 ^Gate:
 	Inherits: ^Building
@@ -898,11 +1132,6 @@
 		Cost: 250
 	Health:
 		HP: 350
-		Shape: Rectangle
-			LocalYaw: 128
-			TopLeft: -512, -512
-			BottomRight: 512, 512
-			VerticalTopOffset: 768
 	Armor:
 		Type: Heavy
 	LineBuildNode:
@@ -916,7 +1145,6 @@
 		OpenSequence: open
 	Tooltip:
 	Gate:
-		Adjacent: 4
 		BuildSounds: place2.aud
 		OpeningSound: gateup1.aud
 		ClosingSound: gatedwn1.aud
@@ -924,13 +1152,19 @@
 		BlocksProjectilesHeight: 768
 	Buildable:
 		Description: Automated barrier that opens for allied units.
+	HitShape:
+		Type: Rectangle
+			LocalYaw: -128
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+			VerticalTopOffset: 768
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^Gate_A:
 	Inherits: ^Gate
+	Inherits@shape: ^3x1Shape
 	Health:
-		Shape: Rectangle
-			TopLeft: -512, -1536
-			BottomRight: 512, 1536
 	Gate:
 		Dimensions: 3,1
 		Footprint: xxx
@@ -941,10 +1175,8 @@
 
 ^Gate_B:
 	Inherits: ^Gate
+	Inherits@shape: ^1x3Shape
 	Health:
-		Shape: Rectangle
-			TopLeft: -1536, -512
-			BottomRight: 1536, 512
 	Gate:
 		Dimensions: 1,3
 		Footprint: x x x
@@ -978,18 +1210,38 @@
 		SpawnAtLastPosition: false
 		RequiresCondition: !inside-tunnel
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
 
-^DisabledByPowerOutage:
-	AffectedByPowerOutage:
-		Condition: power-outage
-	InfiltrateForPowerOutage:
-	DisableOnCondition@POWER_OUTAGE:
-		RequiresCondition: power-outage
-	Power:
-		RequiresCondition: !power-outage
+^DisableOnPowerDown:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantCondition@IDISABLE:
+		RequiresCondition: powerdown
+		Condition: disabled
+	CanPowerDown:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+		PowerdownCondition: powerdown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: mouse
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+
+^DisableOnLowPowerOrPowerDown:
+	Inherits@LOWPOWER: ^DisableOnLowPower
+	Inherits@POWERDOWN: ^DisableOnPowerDown
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled

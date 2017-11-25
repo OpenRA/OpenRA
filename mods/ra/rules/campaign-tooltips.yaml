@@ -18,7 +18,7 @@
 		GenericVisibility: Enemy
 		ShowOwnerRow: false
 
-^Plane:
+^NeutralPlane:
 	Tooltip:
 		GenericVisibility: Enemy
 		ShowOwnerRow: false

@@ -18,6 +18,7 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		SpeedUp: True
+		BuildTimeSpeedReduction: 100, 75, 60, 50
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		LowPowerSlowdown: 3

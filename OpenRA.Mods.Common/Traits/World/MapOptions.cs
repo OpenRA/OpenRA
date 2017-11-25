@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Controls the game speed, tech level, and short game lobby options.")]
-	public class MapOptionsInfo : ITraitInfo, ILobbyOptions
+	public class MapOptionsInfo : ITraitInfo, ILobbyOptions, IRulesetLoaded
 	{
 		[Desc("Default value of the short game checkbox in the lobby.")]
 		public readonly bool ShortGameEnabled = true;
@@ -55,6 +55,13 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyOption("gamespeed", "Game Speed",
 				new ReadOnlyDictionary<string, string>(gameSpeeds),
 				GameSpeed, GameSpeedLocked);
+		}
+
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+			if (!gameSpeeds.ContainsKey(GameSpeed))
+				throw new YamlException("Invalid default game speed '{0}'.".F(GameSpeed));
 		}
 
 		public object Create(ActorInitializer init) { return new MapOptions(this); }

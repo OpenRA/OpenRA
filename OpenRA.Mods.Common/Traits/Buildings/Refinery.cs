@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
+		[Desc("Store resources in silos. Adds cash directly without storing if set to false.")]
+		public readonly bool UseStorage = true;
+
 		[Desc("Discard resources once silo capacity has been reached.")]
 		public readonly bool DiscardExcessResources = false;
 
@@ -52,7 +55,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
-		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
 		int currentDisplayTick = 0;
@@ -75,7 +77,6 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
-			wsb = self.Trait<WithSpriteBody>();
 		}
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
@@ -89,13 +90,20 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Trait.LinkedProc == self);
 		}
 
-		public bool CanGiveResource(int amount) { return info.DiscardExcessResources || playerResources.CanGiveResources(amount); }
+		public bool CanGiveResource(int amount) { return !info.UseStorage || info.DiscardExcessResources || playerResources.CanGiveResources(amount); }
 
 		public void GiveResource(int amount)
 		{
-			if (info.DiscardExcessResources)
-				amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
-			playerResources.GiveResources(amount);
+			if (info.UseStorage)
+			{
+				if (info.DiscardExcessResources)
+					amount = Math.Min(amount, playerResources.ResourceCapacity - playerResources.Resources);
+
+				playerResources.GiveResources(amount);
+			}
+			else
+				playerResources.GiveCash(amount);
+
 			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}
@@ -113,10 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Harvester was killed while unloading
 			if (dockedHarv != null && dockedHarv.IsDead)
-			{
-				wsb.CancelCustomAnimation(self);
 				dockedHarv = null;
-			}
 
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
@@ -139,12 +144,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!preventDock)
 			{
-				harv.QueueActivity(new CallFunc(() => dockedHarv = harv, false));
-				harv.QueueActivity(DockSequence(harv, self));
-				harv.QueueActivity(new CallFunc(() => dockedHarv = null, false));
+				dockOrder.Queue(new CallFunc(() => dockedHarv = harv, false));
+				dockOrder.Queue(DockSequence(harv, self));
+				dockOrder.Queue(new CallFunc(() => dockedHarv = null, false));
 			}
 
-			harv.QueueActivity(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
+			dockOrder.Queue(new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

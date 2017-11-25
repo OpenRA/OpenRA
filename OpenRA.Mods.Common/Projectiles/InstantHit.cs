@@ -30,15 +30,15 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The width of the projectile.")]
 		public readonly WDist Width = new WDist(1);
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
 			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
+		public WDist BlockerScanRadius = new WDist(-1);
 
 		public IProjectile Create(ProjectileArgs args) { return new InstantHit(this, args); }
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
-			if (BlockerScanRadius == WDist.Zero)
+			if (BlockerScanRadius < WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
 		}
 	}
@@ -57,14 +57,16 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			source = args.Source;
 
-			if (info.Inaccuracy.Length > 0)
+			if (args.Weapon.TargetActorCenter)
+				target = args.GuidedTarget;
+			else if (info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				var maxOffset = inaccuracy * (args.PassiveTarget - source).Length / args.Weapon.Range.Length;
 				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
 			}
 			else
-				target = args.GuidedTarget;
+				target = Target.FromPos(args.PassiveTarget);
 		}
 
 		public void Tick(World world)

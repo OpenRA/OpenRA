@@ -90,9 +90,14 @@ namespace OpenRA.Network
 			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null && s.Value.AllowBots).Key;
 		}
 
-		public bool IsSinglePlayer
+		public IEnumerable<Client> NonBotClients
 		{
-			get { return Clients.Count(c => c.Bot == null) == 1; }
+			get { return Clients.Where(c => c.Bot == null); }
+		}
+
+		public IEnumerable<Client> NonBotPlayers
+		{
+			get { return Clients.Where(c => c.Bot == null && c.Slot != null); }
 		}
 
 		public enum ClientState { NotReady, Invalid, Ready, Disconnected = 1000 }

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				try
 				{
-					map = new Map(modData, modData.ModFiles.OpenPackage(mapPath, new Folder(".")));
+					map = new Map(modData, new Folder(".").OpenPackage(mapPath, modData.ModFiles));
 				}
 				catch (InvalidDataException ex)
 				{

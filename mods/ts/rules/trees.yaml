@@ -116,6 +116,9 @@ VEINHOLE:
 		Palette: player
 	WithSpriteBody:
 	AutoSelectionSize:
+	EditorTilesetFilter:
+		Categories: Resource spawn
+	AutoRenderSize:
 
 ^TibFlora:
 	Inherits: ^Tree

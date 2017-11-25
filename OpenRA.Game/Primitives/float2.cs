@@ -20,7 +20,7 @@ namespace OpenRA
 	[StructLayout(LayoutKind.Sequential)]
 	public struct float2 : IEquatable<float2>
 	{
-		public float X, Y;
+		public readonly float X, Y;
 
 		public float2(float x, float y) { X = x; Y = y; }
 		public float2(PointF p) { X = p.X; Y = p.Y; }

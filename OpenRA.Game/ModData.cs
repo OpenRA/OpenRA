@@ -30,8 +30,8 @@ namespace OpenRA
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
+		public readonly IModelSequenceLoader ModelSequenceLoader;
 		public ILoadScreen LoadScreen { get; private set; }
-		public VoxelLoader VoxelLoader { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
 		public IReadOnlyFileSystem DefaultFileSystem { get { return ModFiles; } }
@@ -73,12 +73,21 @@ namespace OpenRA
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
-			var ctor = sequenceLoader != null ? sequenceLoader.GetConstructor(new[] { typeof(ModData) }) : null;
-			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || ctor == null)
+			var sequenceCtor = sequenceLoader != null ? sequenceLoader.GetConstructor(new[] { typeof(ModData) }) : null;
+			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || sequenceCtor == null)
 				throw new InvalidOperationException("Unable to find a sequence loader for type '{0}'.".F(sequenceFormat.Type));
 
-			SpriteSequenceLoader = (ISpriteSequenceLoader)ctor.Invoke(new[] { this });
+			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke(new[] { this });
 			SpriteSequenceLoader.OnMissingSpriteError = s => Log.Write("debug", s);
+
+			var modelFormat = Manifest.Get<ModelSequenceFormat>();
+			var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");
+			var modelCtor = modelLoader != null ? modelLoader.GetConstructor(new[] { typeof(ModData) }) : null;
+			if (modelLoader == null || !modelLoader.GetInterfaces().Contains(typeof(IModelSequenceLoader)) || modelCtor == null)
+				throw new InvalidOperationException("Unable to find a model loader for type '{0}'.".F(modelFormat.Type));
+
+			ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
+			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTileSets = Exts.Lazy(() =>
@@ -121,10 +130,6 @@ namespace OpenRA
 			ChromeProvider.Initialize(this);
 
 			Game.Sound.Initialize(SoundLoaders, fileSystem);
-
-			if (VoxelLoader != null)
-				VoxelLoader.Dispose();
-			VoxelLoader = new VoxelLoader(fileSystem);
 
 			CursorProvider = new CursorProvider(this);
 		}
@@ -189,9 +194,6 @@ namespace OpenRA
 				foreach (var entry in map.Rules.Music)
 					entry.Value.Load(map);
 
-			VoxelProvider.Initialize(VoxelLoader, map, MiniYaml.Load(map, Manifest.VoxelSequences, map.VoxelSequenceDefinitions));
-			VoxelLoader.Finish();
-
 			return map;
 		}
 
@@ -200,8 +202,6 @@ namespace OpenRA
 			if (LoadScreen != null)
 				LoadScreen.Dispose();
 			MapCache.Dispose();
-			if (VoxelLoader != null)
-				VoxelLoader.Dispose();
 
 			if (ObjectCreator != null)
 				ObjectCreator.Dispose();

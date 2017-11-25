@@ -41,6 +41,9 @@ HelicopterUnitTypes = { "e1", "e1", "e1", "e1", "e3", "e3" };
 
 ParadropWaypoints = { Paradrop1, Paradrop2, Paradrop3, Paradrop4, Paradrop5, Paradrop6, Paradrop7, Paradrop8 }
 
+Mig1Waypoints = { Mig11, Mig12, Mig13, Mig14 }
+Mig2Waypoints = { Mig21, Mig22, Mig23, Mig24 }
+
 BindActorTriggers = function(a)
 	if a.HasProperty("Hunt") then
 		if a.Owner == allies then
@@ -74,6 +77,18 @@ SendSovietUnits = function(entryCell, unitTypes, interval)
 		BindActorTriggers(unit)
 	end)
 	Trigger.OnAllKilled(units, function() SendSovietUnits(entryCell, unitTypes, interval) end)
+end
+
+SendMigs = function(waypoints)
+	local migEntryPath = { waypoints[1].Location, waypoints[2].Location }
+	local migs = Reinforcements.Reinforce(soviets, { "mig" }, migEntryPath, 4)
+	Utils.Do(migs, function(mig)
+		mig.Move(waypoints[3].Location)
+		mig.Move(waypoints[4].Location)
+		mig.Destroy()
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(40), function() SendMigs(waypoints) end)
 end
 
 ShipAlliedUnits = function()
@@ -170,6 +185,9 @@ WorldLoaded = function()
 	ParadropSovietUnits()
 	Trigger.AfterDelay(DateTime.Seconds(5), ChronoshiftAlliedUnits)
 	Utils.Do(ProducedUnitTypes, ProduceUnits)
+
+	Trigger.AfterDelay(DateTime.Seconds(30), function() SendMigs(Mig1Waypoints) end)
+	Trigger.AfterDelay(DateTime.Seconds(30), function() SendMigs(Mig2Waypoints) end)
 
 	SendSovietUnits(Entry1.Location, UnitTypes, 50)
 	SendSovietUnits(Entry2.Location, UnitTypes, 50)

@@ -23,6 +23,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: flamer2.aud
+		VictimScanRadius: 0
 
 Flamethrower:
 	Inherits: ^FlameWeapon
@@ -34,7 +35,7 @@ BigFlamer:
 	Projectile: Bullet
 		Speed: 341
 	Burst: 2
-	BurstDelay: 25
+	BurstDelays: 25
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
 		Damage: 75
@@ -67,7 +68,7 @@ Napalm:
 	ReloadDelay: 4
 	Range: 2c0
 	Burst: 2
-	BurstDelay: 2
+	BurstDelays: 2
 	-Projectile:
 	Projectile: GravityBomb
 		Image: BOMBLET
@@ -77,6 +78,7 @@ Napalm:
 		Damage: 30
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
+			Wood: 35
 			Heavy: 80
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
@@ -139,3 +141,4 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: xplobig6.aud
+		VictimScanRadius: 0

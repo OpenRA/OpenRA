@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>openra-{MOD}.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>OpenRA - {MOD_NAME}</name>
+  <summary>Reimagining of early Westwood real-time strategy games</summary>
+  <description>
+    <p>
+      OpenRA is a project that recreates and modernizes the classic Command &amp; Conquer real time strategy games. We have developed a flexible open source game engine (the OpenRA engine) that provides a common platform for rebuilding and reimagining classic 2D and 2.5D RTS games (the OpenRA mods).
+    </p>
+    <p>
+      The OpenRA mods include new features and gameplay improvements that bring them into the modern era:
+    </p>
+    <ul>
+      <li>A choice between “right click” and classic “left click” control schemes</li>
+      <li>Overhauled sidebar interfaces for managing production</li>
+      <li>Support for game replays and an observer interface designed for streaming games online</li>
+      <li>The “fog of war” that obscures the battlefield outside your units' line of sight</li>
+      <li>Civilian structures that can be captured to provide benefits</li>
+      <li>Units gain experience as they fight and improve when they earn new ranks</li>
+    </ul>
+    <p>
+      OpenRA is 100% free, and comes bundled with three distinct mods. When you run a mod for the first time the game can automatically download the original game assets, or you can use the original game disks. 
+    </p>
+  </description>
+  <screenshots>
+    <screenshot{SCREENSHOT_RA}>
+      <image>http://www.openra.net/images/appdata/ingame-ra.png</image>
+      <caption>Red Alert mod</caption>
+    </screenshot>
+    <screenshot{SCREENSHOT_CNC}>
+      <image>http://www.openra.net/images/appdata/ingame-cnc.png</image>
+      <caption>Tiberian Dawn mod</caption>
+    </screenshot>
+    <screenshot{SCREENSHOT_D2K}>
+      <image>http://www.openra.net/images/appdata/ingame-d2k.png</image>
+      <caption>Dune 2000 Mod</caption>
+    </screenshot>
+    <screenshot>
+      <image>http://www.openra.net/images/appdata/multiplayer.png</image>
+      <caption>Multiplayer lobby in the Tiberian Dawn mod</caption>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">http://www.openra.net</url>
+  <update_contact>paul_at_chote.net</update_contact>
+  <content_rating type="oars-1.0">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">moderate</content_attribute>
+    <content_attribute id="violence-bloodshed">moderate</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">moderate</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="language-profanity">mild</content_attribute>
+    <content_attribute id="language-humor">mild</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+</component>

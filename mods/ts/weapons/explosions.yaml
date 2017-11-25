@@ -1,8 +1,8 @@
 ^DamagingExplosion:
 	Warhead@1Dam: SpreadDamage
-		Spread: 192
+		Spread: 256
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 50
+		Damage: 500
 		Versus:
 			None: 90
 			Wood: 75
@@ -10,9 +10,9 @@
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: large_twlt
+		Explosions: large_brnl, large_bang, medium_twlt
 		ExplosionPalette: effect-ignore-lighting-alpha75
-		ImpactSounds: expnew09.aud
+		ImpactSounds: expnew09.aud, expnew10.aud, expnew12.aud
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Building, Wall
@@ -23,6 +23,7 @@ UnitExplode:
 UnitExplodeSmall:
 	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
+		Spread: 192
 		Damage: 40
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_brnl
@@ -42,6 +43,7 @@ CyborgExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: medium_bang
 		ImpactSounds: expnew10.aud
+		ExplosionPalette: effect-ignore-lighting-alpha75
 
 TiberiumExplosion:
 	Inherits: ^DamagingExplosion
@@ -54,6 +56,7 @@ TiberiumExplosion:
 		Size: 1,1
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
+		ExplosionPalette: effect-ignore-lighting-alpha75
 	-Warhead@4Smu: LeaveSmudge
 
 Demolish:

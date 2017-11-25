@@ -160,12 +160,20 @@ InitTriggers = function()
 		end
 	end)
 
+	local baseTrigger = Trigger.OnEnteredFootprint(CameraTriggerArea, function(a, id)
+		if a.Owner == player and not baseCamera then
+			Trigger.RemoveFootprintTrigger(id)
+			baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
+		end
+	end)
+
 	Utils.Do(FirstUSSRBase, function(unit)
 		Trigger.OnDamaged(unit, function()
 			if not FirstBaseAlert then
 				FirstBaseAlert = true
-				if not baseCamera then -- TODO: remove the Trigger
+				if not baseCamera then
 					baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
+					Trigger.RemoveFootprintTrigger(baseTrigger)
 				end
 				Utils.Do(FirstUSSRBase, function(unit)
 					if unit.HasProperty("Move") then
@@ -181,8 +189,10 @@ InitTriggers = function()
 			end
 		end)
 	end)
-	Trigger.OnAllRemovedFromWorld(FirstUSSRBase, function() -- The camera can remain when one building is captured
-		if baseCamera then baseCamera.Destroy() end
+	Trigger.OnAllRemovedFromWorld(FirstUSSRBase, function()
+		if baseCamera then
+			baseCamera.Destroy()
+		end
 	end)
 
 	Utils.Do(SecondUSSRBase, function(unit)
@@ -215,12 +225,6 @@ InitTriggers = function()
 		end)
 	end)
 
-	Trigger.OnEnteredFootprint(CameraTriggerArea, function(a, id)
-		if a.Owner == player and not baseCamera then
-			Trigger.RemoveFootprintTrigger(id)
-			baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
-		end
-	end)
 	Trigger.OnEnteredFootprint(WaterTransportTriggerArea, function(a, id)
 		if a.Owner == player and not waterTransportTriggered then
 			waterTransportTriggered = true
@@ -249,7 +253,11 @@ InitTriggers = function()
 		Trigger.OnAllKilled(bridges, function()
 			player.MarkCompletedObjective(KillBridges)
 			player.MarkCompletedObjective(TanyaSurvive)
-			player.MarkCompletedObjective(FreePrisoners)
+
+			-- The prisoners are free once their guards are dead
+			if PGuard1.IsDead and PGuard2.IsDead then
+				player.MarkCompletedObjective(FreePrisoners)
+			end
 		end)
 
 		local oilPumps = ussr.GetActorsByType("v19")

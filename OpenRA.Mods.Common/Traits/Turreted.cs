@@ -11,12 +11,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>
+	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>, IActorPreviewInitInfo
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
@@ -29,12 +30,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new TurretFacingInit(PreviewFacing);
+		}
+
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
 	public class Turreted : ITick, ISync, INotifyCreated, IDeathActorInitModifier, IActorPreviewInitModifier
 	{
-		readonly TurretedInfo info;
+		public readonly TurretedInfo Info;
 		AttackTurreted attack;
 		IFacing facing;
 		BodyOrientation body;
@@ -47,8 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 		// For subclasses that want to move the turret relative to the body
 		protected WVec localOffset = WVec.Zero;
 
-		public WVec Offset { get { return info.Offset + localOffset; } }
-		public string Name { get { return info.Turret; } }
+		public WVec Offset { get { return Info.Offset + localOffset; } }
+		public string Name { get { return Info.Turret; } }
 
 		public static Func<int> TurretFacingFromInit(IActorInitializer init, int def, string turret = null)
 		{
@@ -86,31 +95,37 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
 		{
-			this.info = info;
-			TurretFacing = TurretFacingFromInit(init, info.InitialFacing, info.Turret)();
+			Info = info;
+			TurretFacing = TurretFacingFromInit(init, Info.InitialFacing, Info.Turret)();
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
-			attack = self.TraitOrDefault<AttackTurreted>();
+			attack = self.TraitsImplementing<AttackTurreted>().SingleOrDefault(at => ((AttackTurretedInfo)at.Info).Turrets.Contains(Info.Turret));
 			facing = self.TraitOrDefault<IFacing>();
 			body = self.Trait<BodyOrientation>();
 		}
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			// NOTE: FaceTarget is called in AttackTurreted.CanAttack if the turret has a target.
 			if (attack != null)
 			{
-				if (!attack.IsAttacking)
-				{
-					if (realignTick < info.RealignDelay)
-						realignTick++;
-					else if (info.RealignDelay > -1)
-						DesiredFacing = null;
+				// Only realign while not attacking anything
+				if (attack.IsAttacking)
+					return;
 
-					MoveTurret();
-				}
+				if (realignTick < Info.RealignDelay)
+					realignTick++;
+				else if (Info.RealignDelay > -1)
+					DesiredFacing = null;
+
+				MoveTurret();
 			}
 			else
 			{
@@ -122,15 +137,17 @@ namespace OpenRA.Mods.Common.Traits
 		void MoveTurret()
 		{
 			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
-			TurretFacing = Util.TickFacing(TurretFacing, df, info.TurnSpeed);
+			TurretFacing = Util.TickFacing(TurretFacing, df, Info.TurnSpeed);
 		}
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			if (self.IsDisabled())
+			if (attack == null || attack.IsTraitDisabled || attack.IsTraitPaused)
 				return false;
 
-			var delta = target.CenterPosition - self.CenterPosition;
+			var pos = self.CenterPosition;
+			var targetPos = attack.GetTargetPosition(pos, target);
+			var delta = targetPos - pos;
 			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
 			MoveTurret();
 			return HasAchievedDesiredFacing;

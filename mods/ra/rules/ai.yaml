@@ -1,6 +1,7 @@
 Player:
 	HackyAI@RushAI:
 		Name: Rush AI
+		Type: rush
 		MinimumExcessPower: 40
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -8,10 +9,11 @@ Player:
 			Power: powr,apwr
 			Barracks: barr,tent
 			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
+			Production: barr,tent,weap
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			NavalUnits: ss,msub,dd,ca,lst,pt
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -114,6 +116,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@NormalAI:
 		Name: Normal AI
+		Type: normal
 		MinimumExcessPower: 60
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -126,6 +129,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			NavalUnits: ss,msub,dd,ca,lst,pt
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -245,6 +249,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@TurtleAI:
 		Name: Turtle AI
+		Type: turtle
 		MinimumExcessPower: 100
 		BuildingCommonNames:
 			ConstructionYard: fact
@@ -257,6 +262,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			NavalUnits: ss,msub,dd,ca,lst,pt
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -376,6 +382,7 @@ Player:
 				CheckRadius: 7c0
 	HackyAI@NavalAI:
 		Name: Naval AI
+		Type: naval
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -387,6 +394,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			NavalUnits: ss,msub,dd,ca,lst,pt
 		BuildingLimits:
 			proc: 4
 			dome: 1

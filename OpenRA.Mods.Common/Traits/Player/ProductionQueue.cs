@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -229,7 +230,12 @@ namespace OpenRA.Mods.Common.Traits
 			return ps.Buildable || developerMode.AllTech;
 		}
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			while (queue.Count > 0 && BuildableItems().All(b => b.Name != queue[0].Item))
 			{
@@ -373,11 +379,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsInWorld || self.IsDead)
 			{
 				CancelProduction(unit.Name, 1);
-				return true;
+				return false;
 			}
 
+			var inits = new TypeDictionary
+			{
+				new OwnerInit(self.Owner),
+				new FactionInit(BuildableInfo.GetInitialFaction(unit, Faction))
+			};
+
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, unit, Faction))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, unit, inits))
 			{
 				FinishProduction();
 				return true;

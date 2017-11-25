@@ -19,13 +19,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
+	public enum RangeCircleMode { Maximum, Minimum }
+
 	[Desc("Draw a circle indicating my weapon's range.")]
 	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo, IRulesetLoaded, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
-		[Desc("Range to draw if no armaments are available")]
+		[Desc("Range to draw if no armaments are available.")]
 		public readonly WDist FallbackRange = WDist.Zero;
+
+		[Desc("Which circle to show. Valid values are `Maximum`, and `Minimum`.")]
+		public readonly RangeCircleMode RangeCircleMode = RangeCircleMode.Maximum;
+
+		[Desc("Color of the circle.")]
+		public readonly Color Color = Color.FromArgb(128, Color.Yellow);
+
+		[Desc("Color of the border of the circle.")]
+		public readonly Color BorderColor = Color.FromArgb(96, Color.Black);
 
 		// Computed range
 		Lazy<WDist> range;
@@ -39,8 +50,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				centerPosition,
 				range.Value,
 				0,
-				Color.FromArgb(128, Color.Yellow),
-				Color.FromArgb(96, Color.Black));
+				this.Color,
+				this.BorderColor);
 
 			var otherRanges = w.ActorsWithTrait<RenderRangeCircle>()
 				.Where(a => a.Trait.Info.RangeCircleType == RangeCircleType)
@@ -85,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
-			var range = attack.GetMaximumRange();
+			var range = Info.RangeCircleMode == RangeCircleMode.Minimum ? attack.GetMinimumRange() : attack.GetMaximumRange();
 			if (range == WDist.Zero)
 				yield break;
 
@@ -93,8 +104,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				self.CenterPosition,
 				range,
 				0,
-				Color.FromArgb(128, Color.Yellow),
-				Color.FromArgb(96, Color.Black));
+				Info.Color,
+				Info.BorderColor);
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)

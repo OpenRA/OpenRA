@@ -86,14 +86,24 @@ namespace OpenRA
 		public bool LuaDebug = false;
 		public bool PerfText = false;
 		public bool PerfGraph = false;
+
+		[Desc("Amount of time required for triggering perf.log output.")]
 		public float LongTickThresholdMs = 1;
+
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
+
+		[Desc("Show incompatible games in server browser.")]
 		public bool IgnoreVersionMismatch = false;
+
 		public bool StrictActivityChecking = false;
+
+		[Desc("Allow the collection of anonymous data such as Operating System, .NET runtime, OpenGL version and language settings.")]
 		public bool SendSystemInformation = true;
+
 		public int SystemInformationVersionPrompt = 0;
 		public string UUID = System.Guid.NewGuid().ToString();
+		public bool EnableDebugCommandsInReplays = false;
 	}
 
 	public class GraphicSettings
@@ -147,6 +157,7 @@ namespace OpenRA
 
 	public class PlayerSettings
 	{
+		[Desc("Sets the player nickname for in-game and IRC chat.")]
 		public string Name = "Newbie";
 		public HSLColor Color = new HSLColor(75, 255, 180);
 		public string LastServer = "localhost:1234";
@@ -157,6 +168,8 @@ namespace OpenRA
 		public string Platform = "Default";
 
 		public bool ViewportEdgeScroll = true;
+		public int ViewportEdgeScrollMargin = 5;
+
 		public bool LockMouseWindow = false;
 		public MouseScrollType MiddleMouseScroll = MouseScrollType.Standard;
 		public MouseScrollType RightMouseScroll = MouseScrollType.Disabled;
@@ -189,25 +202,25 @@ namespace OpenRA
 		public Hotkey SelectAllUnitsKey = new Hotkey(Keycode.Q, Modifiers.None);
 		public Hotkey SelectUnitsByTypeKey = new Hotkey(Keycode.W, Modifiers.None);
 
-		public Hotkey MapScrollUp = new Hotkey(Keycode.UP, Modifiers.None);
-		public Hotkey MapScrollDown = new Hotkey(Keycode.DOWN, Modifiers.None);
-		public Hotkey MapScrollLeft = new Hotkey(Keycode.LEFT, Modifiers.None);
-		public Hotkey MapScrollRight = new Hotkey(Keycode.RIGHT, Modifiers.None);
+		public Hotkey MapScrollUpKey = new Hotkey(Keycode.UP, Modifiers.None);
+		public Hotkey MapScrollDownKey = new Hotkey(Keycode.DOWN, Modifiers.None);
+		public Hotkey MapScrollLeftKey = new Hotkey(Keycode.LEFT, Modifiers.None);
+		public Hotkey MapScrollRightKey = new Hotkey(Keycode.RIGHT, Modifiers.None);
 
-		public Hotkey MapPushTop = new Hotkey(Keycode.UP, Modifiers.Alt);
-		public Hotkey MapPushBottom = new Hotkey(Keycode.DOWN, Modifiers.Alt);
-		public Hotkey MapPushLeftEdge = new Hotkey(Keycode.LEFT, Modifiers.Alt);
-		public Hotkey MapPushRightEdge = new Hotkey(Keycode.RIGHT, Modifiers.Alt);
+		public Hotkey MapJumpToTopEdgeKey = new Hotkey(Keycode.UP, Modifiers.Alt);
+		public Hotkey MapJumpToBottomEdgeKey = new Hotkey(Keycode.DOWN, Modifiers.Alt);
+		public Hotkey MapJumpToLeftEdgeKey = new Hotkey(Keycode.LEFT, Modifiers.Alt);
+		public Hotkey MapJumpToRightEdgeKey = new Hotkey(Keycode.RIGHT, Modifiers.Alt);
 
-		public Hotkey ViewPortBookmarkSaveSlot1 = new Hotkey(Keycode.Q, Modifiers.Ctrl);
-		public Hotkey ViewPortBookmarkSaveSlot2 = new Hotkey(Keycode.W, Modifiers.Ctrl);
-		public Hotkey ViewPortBookmarkSaveSlot3 = new Hotkey(Keycode.E, Modifiers.Ctrl);
-		public Hotkey ViewPortBookmarkSaveSlot4 = new Hotkey(Keycode.R, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave01Key = new Hotkey(Keycode.Q, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave02Key = new Hotkey(Keycode.W, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave03Key = new Hotkey(Keycode.E, Modifiers.Ctrl);
+		public Hotkey MapBookmarkSave04Key = new Hotkey(Keycode.R, Modifiers.Ctrl);
 
-		public Hotkey ViewPortBookmarkUseSlot1 = new Hotkey(Keycode.Q, Modifiers.Alt);
-		public Hotkey ViewPortBookmarkUseSlot2 = new Hotkey(Keycode.W, Modifiers.Alt);
-		public Hotkey ViewPortBookmarkUseSlot3 = new Hotkey(Keycode.E, Modifiers.Alt);
-		public Hotkey ViewPortBookmarkUseSlot4 = new Hotkey(Keycode.R, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore01Key = new Hotkey(Keycode.Q, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore02Key = new Hotkey(Keycode.W, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore03Key = new Hotkey(Keycode.E, Modifiers.Alt);
+		public Hotkey MapBookmarkRestore04Key = new Hotkey(Keycode.R, Modifiers.Alt);
 
 		public Hotkey PauseKey = new Hotkey(Keycode.PAUSE, Modifiers.None);
 		public Hotkey PlaceBeaconKey = new Hotkey(Keycode.B, Modifiers.None);
@@ -223,18 +236,24 @@ namespace OpenRA
 		public Hotkey StopKey = new Hotkey(Keycode.S, Modifiers.None);
 		public Hotkey ScatterKey = new Hotkey(Keycode.X, Modifiers.Ctrl);
 		public Hotkey DeployKey = new Hotkey(Keycode.F, Modifiers.None);
-		public Hotkey StanceCycleKey = new Hotkey(Keycode.Z, Modifiers.Ctrl);
+		public Hotkey StanceHoldFireKey = new Hotkey(Keycode.F, Modifiers.Alt);
+		public Hotkey StanceReturnFireKey = new Hotkey(Keycode.D, Modifiers.Alt);
+		public Hotkey StanceDefendKey = new Hotkey(Keycode.S, Modifiers.Alt);
+		public Hotkey StanceAttackAnythingKey = new Hotkey(Keycode.A, Modifiers.Alt);
 		public Hotkey GuardKey = new Hotkey(Keycode.D, Modifiers.None);
 
-		public Hotkey ObserverCombinedView = new Hotkey(Keycode.MINUS, Modifiers.None);
-		public Hotkey ObserverWorldView = new Hotkey(Keycode.EQUALS, Modifiers.None);
+		public Hotkey ObserverCombinedViewKey = new Hotkey(Keycode.MINUS, Modifiers.None);
+		public Hotkey ObserverWorldViewKey = new Hotkey(Keycode.EQUALS, Modifiers.None);
+		public Hotkey StatisticsBasicKey = new Hotkey(Keycode.F1, Modifiers.None);
+		public Hotkey StatisticsEconomyKey = new Hotkey(Keycode.F2, Modifiers.None);
+		public Hotkey StatisticsProductionKey = new Hotkey(Keycode.F3, Modifiers.None);
+		public Hotkey StatisticsCombatKey = new Hotkey(Keycode.F4, Modifiers.None);
+		public Hotkey StatisticsGraphKey = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 
 		public Hotkey CycleStatusBarsKey = new Hotkey(Keycode.COMMA, Modifiers.None);
 		public Hotkey TogglePixelDoubleKey = new Hotkey(Keycode.PERIOD, Modifiers.None);
-		public Hotkey TogglePlayerStanceColorsKey = new Hotkey(Keycode.COMMA, Modifiers.Ctrl);
+		public Hotkey TogglePlayerStanceColorKey = new Hotkey(Keycode.COMMA, Modifiers.Ctrl);
 
-		public Hotkey DevReloadChromeKey = new Hotkey(Keycode.C, Modifiers.Ctrl | Modifiers.Shift);
-		public Hotkey HideUserInterfaceKey = new Hotkey(Keycode.H, Modifiers.Ctrl | Modifiers.Shift);
 		public Hotkey TakeScreenshotKey = new Hotkey(Keycode.P, Modifiers.Ctrl);
 		public Hotkey ToggleMuteKey = new Hotkey(Keycode.M, Modifiers.None);
 
@@ -286,37 +305,18 @@ namespace OpenRA
 		public Hotkey ReplaySpeedFastKey = new Hotkey(Keycode.F7, Modifiers.None);
 		public Hotkey ReplaySpeedMaxKey = new Hotkey(Keycode.F8, Modifiers.None);
 
-		public Hotkey NextTrack = new Hotkey(Keycode.AUDIONEXT, Modifiers.None);
-		public Hotkey PreviousTrack = new Hotkey(Keycode.AUDIOPREV, Modifiers.None);
-		public Hotkey StopMusic = new Hotkey(Keycode.AUDIOSTOP, Modifiers.None);
-		public Hotkey PauseMusic = new Hotkey(Keycode.AUDIOPLAY, Modifiers.None);
+		public Hotkey StopMusicKey = new Hotkey(Keycode.AUDIOSTOP, Modifiers.None);
+		public Hotkey PauseMusicKey = new Hotkey(Keycode.AUDIOPLAY, Modifiers.None);
+		public Hotkey PrevMusicKey = new Hotkey(Keycode.AUDIOPREV, Modifiers.None);
+		public Hotkey NextMusicKey = new Hotkey(Keycode.AUDIONEXT, Modifiers.None);
 
-		static readonly Func<KeySettings, Hotkey>[] ProductionKeys = GetKeys(24, "Production");
-		static readonly Func<KeySettings, Hotkey>[] SupportPowerKeys = GetKeys(6, "SupportPower");
-
-		static Func<KeySettings, Hotkey>[] GetKeys(int count, string prefix)
+		internal Func<Hotkey> GetHotkeyReference(string name)
 		{
-			var keySettings = Expression.Parameter(typeof(KeySettings), "keySettings");
-			return Exts.MakeArray(count, i => Expression.Lambda<Func<KeySettings, Hotkey>>(
-				Expression.Field(keySettings, "{0}{1:D2}Key".F(prefix, i + 1)), keySettings).Compile());
-		}
+			var field = typeof(KeySettings).GetField(name + "Key");
+			if (field == null)
+				return null;
 
-		public Hotkey GetProductionHotkey(int index)
-		{
-			return GetKey(ProductionKeys, index);
-		}
-
-		public Hotkey GetSupportPowerHotkey(int index)
-		{
-			return GetKey(SupportPowerKeys, index);
-		}
-
-		Hotkey GetKey(Func<KeySettings, Hotkey>[] keys, int index)
-		{
-			if (index < 0 || index >= keys.Length)
-				return Hotkey.Invalid;
-
-			return keys[index](this);
+			return () => (Hotkey)field.GetValue(this);
 		}
 	}
 
@@ -332,18 +332,23 @@ namespace OpenRA
 
 	public class Settings
 	{
-		string settingsFile;
+		readonly string settingsFile;
 
-		public PlayerSettings Player = new PlayerSettings();
-		public GameSettings Game = new GameSettings();
-		public SoundSettings Sound = new SoundSettings();
-		public GraphicSettings Graphics = new GraphicSettings();
-		public ServerSettings Server = new ServerSettings();
-		public DebugSettings Debug = new DebugSettings();
-		public KeySettings Keys = new KeySettings();
-		public ChatSettings Chat = new ChatSettings();
+		public readonly PlayerSettings Player = new PlayerSettings();
+		public readonly GameSettings Game = new GameSettings();
+		public readonly SoundSettings Sound = new SoundSettings();
+		public readonly GraphicSettings Graphics = new GraphicSettings();
+		public readonly ServerSettings Server = new ServerSettings();
+		public readonly DebugSettings Debug = new DebugSettings();
+		public readonly KeySettings Keys = new KeySettings();
+		public readonly ChatSettings Chat = new ChatSettings();
 
-		public Dictionary<string, object> Sections;
+		public readonly Dictionary<string, object> Sections;
+
+		// A direct clone of the file loaded from disk.
+		// Any changed settings will be merged over this on save,
+		// allowing us to persist any unknown configuration keys
+		readonly List<MiniYamlNode> yamlCache = new List<MiniYamlNode>();
 
 		public Settings(string file, Arguments args)
 		{
@@ -369,11 +374,13 @@ namespace OpenRA
 
 				if (File.Exists(settingsFile))
 				{
-					var yaml = MiniYaml.DictFromFile(settingsFile);
-
-					foreach (var kv in Sections)
-						if (yaml.ContainsKey(kv.Key))
-							LoadSectionYaml(yaml[kv.Key], kv.Value);
+					yamlCache = MiniYaml.FromFile(settingsFile);
+					foreach (var yamlSection in yamlCache)
+					{
+						object settingsSection;
+						if (Sections.TryGetValue(yamlSection.Key, out settingsSection))
+							LoadSectionYaml(yamlSection.Value, settingsSection);
+					}
 				}
 
 				// Override with commandline args
@@ -391,11 +398,39 @@ namespace OpenRA
 
 		public void Save()
 		{
-			var root = new List<MiniYamlNode>();
 			foreach (var kv in Sections)
-				root.Add(new MiniYamlNode(kv.Key, FieldSaver.SaveDifferences(kv.Value, Activator.CreateInstance(kv.Value.GetType()))));
+			{
+				var sectionYaml = yamlCache.FirstOrDefault(x => x.Key == kv.Key);
+				if (sectionYaml == null)
+				{
+					sectionYaml = new MiniYamlNode(kv.Key, new MiniYaml(""));
+					yamlCache.Add(sectionYaml);
+				}
 
-			root.WriteToFile(settingsFile);
+				var defaultValues = Activator.CreateInstance(kv.Value.GetType());
+				var fields = FieldLoader.GetTypeLoadInfo(kv.Value.GetType());
+				foreach (var fli in fields)
+				{
+					var serialized = FieldSaver.FormatValue(kv.Value, fli.Field);
+					var defaultSerialized = FieldSaver.FormatValue(defaultValues, fli.Field);
+
+					// Fields with their default value are not saved in the settings yaml
+					// Make sure that we erase any previously defined custom values
+					if (serialized == defaultSerialized)
+						sectionYaml.Value.Nodes.RemoveAll(n => n.Key == fli.YamlName);
+					else
+					{
+						// Update or add the custom value
+						var fieldYaml = sectionYaml.Value.Nodes.FirstOrDefault(n => n.Key == fli.YamlName);
+						if (fieldYaml != null)
+							fieldYaml.Value.Value = serialized;
+						else
+							sectionYaml.Value.Nodes.Add(new MiniYamlNode(fli.YamlName, new MiniYaml(serialized)));
+					}
+				}
+			}
+
+			yamlCache.WriteToFile(settingsFile);
 		}
 
 		static string SanitizedName(string dirty)

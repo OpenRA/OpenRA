@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		[PaletteReference] public readonly string Palette = "chrome";
 
-		[Desc("Visual bounds for selection box. If null, it uses AutoSelectionSize.",
+		[Desc("Bounds for visual selection box. If null, it uses AutoSelectionSize.",
 		"The first two values define the bounds' size, the optional third and fourth",
 		"values specify the position relative to the actors' center. Defaults to selectable bounds.")]
 		public readonly int[] VisualBounds = null;
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (pipSources.Length == 0)
 				return Enumerable.Empty<IRenderable>();
 
-			var b = self.VisualBounds;
+			var b = self.SelectionOverlayBounds;
 			var pos = wr.ScreenPxPosition(self.CenterPosition);
 			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
 			var pal = wr.Palette(Info.Palette);
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var pipSize = pipImages.Image.Size.XY.ToInt2();
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
-			var width = self.VisualBounds.Width;
+			var width = self.SelectionOverlayBounds.Width;
 
 			foreach (var pips in pipSources)
 			{

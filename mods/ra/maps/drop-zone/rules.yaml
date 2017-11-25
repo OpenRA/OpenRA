@@ -46,6 +46,7 @@ UNITCRATE:
 		Percentage: 0
 
 APC:
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Health:
 		HP: 1000
 	MustBeDestroyed:

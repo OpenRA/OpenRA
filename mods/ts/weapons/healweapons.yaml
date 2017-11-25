@@ -3,6 +3,7 @@
 	Range: 2c849
 	Report: healer1.aud
 	ValidTargets: Infantry
+	TargetActorCenter: true
 	Projectile: InstantHit
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: 00FF00

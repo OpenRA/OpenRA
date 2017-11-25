@@ -1,10 +1,24 @@
 Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
-		Container@MUSICBUTTONS:
-			Logic: MusicControllerLogic
-			Children:
-				LogicKeyListener@MUSICCONTROLLER_KEYHANDLER:
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic
+				StopMusicKey: StopMusic
+				PauseMusicKey: PauseMusic
+				PrevMusicKey: PrevMusic
+				NextMusicKey: NextMusic
+				TakeScreenshotKey: TakeScreenshot
+				MuteAudioKey: ToggleMute
+		LogicKeyListener@WORLD_KEYHANDLER:
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic
+				CycleBasesKey: CycleBase
+				CycleProductionActorsKey: CycleProductionBuildings
+				JumpToLastEventKey: ToLastEvent
+				JumpToSelectedActorsKey: ToSelection
+				TogglePixelDoubleKey: TogglePixelDouble
+				TogglePlayerStanceColorKey: TogglePlayerStanceColor
+				CycleStatusBarsKey: CycleStatusBars
+				PauseKey: Pause
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
@@ -21,13 +35,23 @@ Container@INGAME_ROOT:
 				WorldInteractionController@INTERACTION_CONTROLLER:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
+					SelectAllKey: SelectAllUnits
+					SelectSameTypeKey: SelectUnitsByType
 				ViewportController:
 					Width: WINDOW_RIGHT
 					Height: WINDOW_BOTTOM
 					TooltipContainer: TOOLTIP_CONTAINER
-				WorldCommand:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
+					ScrollUpKey: MapScrollUp
+					ScrollDownKey: MapScrollDown
+					ScrollLeftKey: MapScrollLeft
+					ScrollRightKey: MapScrollRight
+					JumpToTopEdgeKey: MapJumpToTopEdge
+					JumpToBottomEdgeKey: MapJumpToBottomEdge
+					JumpToLeftEdgeKey: MapJumpToLeftEdge
+					JumpToRightEdgeKey: MapJumpToRightEdge
+					BookmarkSaveKeyPrefix: MapBookmarkSave
+					BookmarkRestoreKeyPrefix: MapBookmarkRestore
+					BookmarkKeyCount: 4
 				StrategicProgress@STRATEGIC_PROGRESS:
 					X: WINDOW_RIGHT / 2
 					Y: 40

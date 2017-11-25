@@ -23,6 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference("Image")] public readonly string FlagSequence = "flag";
 		[SequenceReference("Image")] public readonly string CirclesSequence = "circles";
 
+		public readonly string Cursor = "ability";
+
 		[Desc("Custom indicator palette name")]
 		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
 
@@ -56,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
 		}
@@ -71,13 +73,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new RallyPointOrderTargeter(); }
+			get { yield return new RallyPointOrderTargeter(Info.Cursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == OrderID)
-				return new Order(order.OrderID, self, false) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition), SuppressVisualFeedback = true,
+				return new Order(order.OrderID, self, target, false) { SuppressVisualFeedback = true,
 					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0 };
 
 			return null;
@@ -96,6 +98,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		class RallyPointOrderTargeter : IOrderTargeter
 		{
+			readonly string cursor;
+
+			public RallyPointOrderTargeter(string cursor)
+			{
+				this.cursor = cursor;
+			}
+
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
@@ -109,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				if (self.World.Map.Contains(location))
 				{
-					cursor = "ability";
+					cursor = this.cursor;
 
 					// Notify force-set 'RallyPoint' order watchers with Ctrl and only if this is the only building of its type selected
 					if (modifiers.HasModifier(TargetModifiers.ForceAttack))

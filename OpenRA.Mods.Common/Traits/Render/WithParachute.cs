@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				anim.Animation.PlayBackwardsThen(info.OpeningSequence, () => renderProlonged = false);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (shadow != null)
 				shadow.Tick();
@@ -159,10 +159,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (info.ShadowImage == null)
 				return Enumerable.Empty<IRenderable>();
 
-			if (IsTraitDisabled)
-				return Enumerable.Empty<IRenderable>();
-
-			if (self.IsDead || !self.IsInWorld)
+			if (IsTraitDisabled || self.IsDead || !self.IsInWorld)
 				return Enumerable.Empty<IRenderable>();
 
 			if (self.World.FogObscures(self))

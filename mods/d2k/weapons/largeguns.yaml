@@ -25,6 +25,7 @@
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
+		VictimScanRadius: 0
 
 110mm_Gun:
 	Inherits: ^Cannon

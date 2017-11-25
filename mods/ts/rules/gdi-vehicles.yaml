@@ -51,6 +51,7 @@ HVR:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -89,7 +90,7 @@ HVR:
 		Offset: -128,0,85
 	AttackTurreted:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
 	WithVoxelTurret:
 	Hovers:
 	LeavesTrails:
@@ -106,6 +107,7 @@ HVR:
 SMECH:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -128,7 +130,7 @@ SMECH:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
 	Armament:
 		Weapon: AssaultCannon
 	Voiced:
@@ -140,7 +142,7 @@ SMECH:
 	WithAttackAnimation:
 		AttackSequence: shoot
 	WithMoveAnimation:
-		MoveSequence: run
+		MoveSequence: walk
 	Selectable:
 		Bounds: 20, 32, 0, -8
 	-DamagedByTerrain@VEINS:
@@ -149,6 +151,7 @@ SMECH:
 MMCH:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -173,11 +176,15 @@ MMCH:
 	BodyOrientation:
 		QuantizedFacings: 32
 		UseClassicPerspectiveFudge: False
-	WithInfantryBody:
+	WithFacingSpriteBody:
+		Sequence: stand
+	WithMoveAnimation:
+		MoveSequence: walk
 	Turreted:
 		TurnSpeed: 5
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithSpriteTurret:
 		Recoils: false
 	Armament:
@@ -186,12 +193,15 @@ MMCH:
 		MuzzlePalette: effect-ignore-lighting
 		Recoil: 128
 		RecoilRecovery: 32
-		LocalOffset: 905,272,1177
+		LocalOffset: 1024,272,1216
+	DetectCloaked:
+		Range: 1c768
+		RequiresCondition: rank-elite
+	RenderDetectionCircle:
 	WithMuzzleOverlay:
 	RenderVoxels:
 	WithVoxelBarrel:
-		LocalOffset: -91,91,362
-	AutoTarget:
+		LocalOffset: 0,51,256
 	Selectable:
 		Bounds: 30, 42, 0, -8
 	Carryable:
@@ -201,6 +211,7 @@ HMEC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -226,7 +237,7 @@ HMEC:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
 	Armament@MISSILES:
 		Weapon: MammothTusk
 		LocalOffset: -243,-368,1208, -243,368,1208
@@ -245,6 +256,7 @@ SONIC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1300
 	Tooltip:
@@ -273,16 +285,22 @@ SONIC:
 		LocalOffset: -71,0,580
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Turreted:
 		TurnSpeed: 5
 		Offset: -170,0,0
-	AutoTarget:
 	WithVoxelTurret:
+	Explodes:
+		RequiresCondition: !rank-elite
+	Explodes@ELITE:
+		RequiresCondition: rank-elite
+		Weapon: UnitExplode
 
 JUGG:
 	Inherits: ^Tank
 	Inherits@SPRITES: ^SpriteActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -318,7 +336,7 @@ JUGG:
 		Sequence: stand
 		RequiresCondition: undeployed
 	WithMoveAnimation:
-		MoveSequence: run
+		MoveSequence: walk
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
@@ -351,7 +369,9 @@ JUGG:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -361,7 +381,6 @@ JUGG:
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 	WithMuzzleOverlay:
-	AutoTarget:
 	Carryable:
 		RequiresCondition: undeployed
 	RevealOnFire:

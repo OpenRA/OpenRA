@@ -67,6 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Dictionary<CPos, SpawnOccupant>> SpawnOccupants = () => new Dictionary<CPos, SpawnOccupant>();
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public int TooltipSpawnIndex = -1;
+		public bool ShowUnoccupiedSpawnpoints = true;
 
 		Rectangle mapRect;
 		float previewScale = 0;
@@ -122,7 +123,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void MouseEntered()
 		{
 			if (TooltipContainer != null)
-				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "preview", this } });
+				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs()
+					{
+						{ "preview", this },
+						{ "showUnoccupiedSpawnpoints", ShowUnoccupiedSpawnpoints }
+					});
 		}
 
 		public override void MouseExited()

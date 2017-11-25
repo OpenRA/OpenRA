@@ -5,10 +5,6 @@ Colt45:
 		Versus:
 			Truk: 50
 
-FireballLauncher:
-	Projectile:
-		High: True
-
 BarrelExplode:
 	Warhead@1Dam:
 		ValidTargets: Ground, Prisoner

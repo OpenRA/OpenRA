@@ -21,7 +21,7 @@ namespace OpenRA.Orders
 		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => !world.FogObscures(a) && a.Info.HasTraitInfo<ITargetableInfo>())
+				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a))
 				.WithHighestSelectionPriority(worldPixel);
 
 			if (actor != null)
@@ -49,11 +49,6 @@ namespace OpenRA.Orders
 			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
 			if (!actorsInvolved.Any())
 				yield break;
-
-			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false)
-			{
-				TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
-			};
 
 			foreach (var o in orders)
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
@@ -139,8 +134,15 @@ namespace OpenRA.Orders
 			if (mi.Modifiers.HasModifier(Modifiers.Alt))
 				modifiers |= TargetModifiers.ForceMove;
 
+			// The Select(x => x) is required to work around an issue on mono 5.0
+			// where calling OrderBy* on SelectManySingleSelectorIterator can in some
+			// circumstances (which we were unable to identify) replace entries in the
+			// enumeration with duplicates of other entries.
+			// Other action that replace the SelectManySingleSelectorIterator with a
+			// different enumerator type (e.g. .Where(true) or .ToList()) also work.
 			var orders = self.TraitsImplementing<IIssueOrder>()
 				.SelectMany(trait => trait.Orders.Select(x => new { Trait = trait, Order = x }))
+				.Select(x => x)
 				.OrderByDescending(x => x.Order.OrderPriority);
 
 			for (var i = 0; i < 2; i++)

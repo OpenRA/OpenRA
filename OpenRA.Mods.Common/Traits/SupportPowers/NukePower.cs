@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Also image to use for the missile.")]
 		public readonly string MissileWeapon = "";
 
+		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
+		public readonly int MissileDelay = 0;
+
 		[Desc("Sprite sequence for the ascending missile.")]
 		[SequenceReference("MissileWeapon")] public readonly string MissileUp = "up";
 
@@ -72,16 +75,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Corresponds to `Type` from `FlashPaletteEffect` on the world actor.")]
 		public readonly string FlashType = null;
 
-		[SequenceReference]
-		[Desc("Sequence the launching actor should play when activating this power.")]
-		public readonly string ActivationSequence = "active";
-
 		public WeaponInfo WeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfo = rules.Weapons[MissileWeapon.ToLowerInvariant()];
+			WeaponInfo weapon;
+			var weaponToLower = (MissileWeapon ?? string.Empty).ToLowerInvariant();
+			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+
+			WeaponInfo = weapon;
+
 			base.RulesetLoaded(rules, ai);
 		}
 	}
@@ -103,11 +108,8 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 			PlayLaunchSounds();
 
-			if (!string.IsNullOrEmpty(info.ActivationSequence))
-			{
-				var wsb = self.Trait<WithSpriteBody>();
-				wsb.PlayCustomAnimation(self, info.ActivationSequence, () => wsb.CancelCustomAnimation(self));
-			}
+			foreach (var launchpad in self.TraitsImplementing<INotifyNuke>())
+				launchpad.Launching(self);
 
 			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
 				info.FlashType);
 
-			self.World.AddFrameEndTask(w => w.Add(missile));
+			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.MissileDelay, () => self.World.Add(missile))));
 
 			if (info.CameraRange != WDist.Zero)
 			{

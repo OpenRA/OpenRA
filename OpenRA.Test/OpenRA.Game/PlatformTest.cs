@@ -39,6 +39,9 @@ namespace OpenRA.Test
 			Assert.That(Platform.ResolvePath("./testpath"),
 				Is.EqualTo(Path.Combine(gameDir, "testpath")));
 
+			Assert.That(Platform.ResolvePath(Path.Combine(".", "Foo.dll")),
+				Is.EqualTo(Path.Combine(gameDir, "Foo.dll")));
+
 			Assert.That(Platform.ResolvePath("testpath"),
 				Is.EqualTo("testpath"));
 		}

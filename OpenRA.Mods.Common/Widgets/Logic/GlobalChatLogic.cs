@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			inputBox.IsDisabled = () => Game.GlobalChat.ConnectionStatus != ChatConnectionStatus.Joined;
 			inputBox.OnEnterKey = EnterPressed;
 
+			// IRC protocol limits messages to 510 characters + CRLF
+			inputBox.MaxLength = 510;
+
 			var nickName = Game.GlobalChat.SanitizedName(Game.Settings.Player.Name);
 			var nicknameBox = widget.Get<TextFieldWidget>("NICKNAME_TEXTFIELD");
 			nicknameBox.Text = nickName;
@@ -80,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var color = message.Type == ChatMessageType.Notification ? ChromeMetrics.Get<Color>("GlobalChatNotificationColor")
 				: ChromeMetrics.Get<Color>("GlobalChatPlayerNameColor");
 			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, color, from, message.Message);
+			LobbyUtils.SetupChatLine(template, color, message.Time, from, message.Message);
 
 			template.Id = message.UID;
 			return template;

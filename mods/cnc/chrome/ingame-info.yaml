@@ -39,6 +39,12 @@ Container@GAME_INFO_PANEL:
 					Width: 140
 					Height: 35
 					Visible: False
+				Button@BUTTON4:
+					X: 450
+					Y: 5
+					Width: 140
+					Height: 35
+					Visible: False
 		Background@BACKGROUND:
 			Y: 39
 			Width: PARENT_RIGHT
@@ -52,5 +58,8 @@ Container@GAME_INFO_PANEL:
 				Container@OBJECTIVES_PANEL:
 					Width: PARENT_RIGHT
 				Container@DEBUG_PANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+				Container@CHAT_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM

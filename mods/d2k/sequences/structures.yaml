@@ -426,32 +426,28 @@ silo.atreides:
 		Offset: -30,-24
 
 hightech.atreides:
+	Defaults:
+		Offset: -48,84
 	idle: DATA.R8
 		Start: 2812
-		Offset: -48,80
 	make: DATA.R8
 		Start: 4538
 		Length: 10
-		Offset: -48,80
 	crumble-overlay: DATA.R8
 		Start: 4548
 		Length: 10
-		Offset: -48,80
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2813
-		Offset: -48,80
 	production-welding: DATA.R8
 		Start: 4878
 		Length: 10
-		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
 	damaged-production-welding: DATA.R8
 		Frames: 4878, 4879, 4880, 4881, 4882, 4884, 4885, 4886, 4887
 		Length: 9
-		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
@@ -568,6 +564,9 @@ research.ordos:
 
 palace.atreides:
 	idle: DATA.R8
+		Start: 2924
+		Offset: -48,48
+	active: DATA.R8
 		Start: 2924
 		Offset: -48,48
 	make: DATA.R8
@@ -937,25 +936,22 @@ silo.harkonnen:
 		Offset: -30,-24
 
 hightech.harkonnen:
+	Defaults:
+		Offset: -48,84
 	idle: DATA.R8
 		Start: 2972
-		Offset: -48,80
 	make: DATA.R8
 		Start: 4538
 		Length: 10
-		Offset: -48,80
 	crumble-overlay: DATA.R8
 		Start: 4548
 		Length: 10
-		Offset: -48,80
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 2973
-		Offset: -48,80
 	production-welding: DATA.R8
 		Start: 4888
 		Length: 10
-		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
@@ -987,10 +983,10 @@ palace.harkonnen:
 	damaged-idle: DATA.R8
 		Start: 3085
 		Offset: -48,48
-#	active: DATA.R8 # TODO: overlay
-#		Start:  5084
-#		Length: 20
-#		Offset: -48,64
+	active: DATA.R8
+		Start:  5084
+		Length: 20
+		Offset: -48,48
 	damaged-active: DATA.R8
 		Start: 5084
 		Length: 20
@@ -1343,25 +1339,22 @@ silo.ordos:
 		Offset: -30,-24
 
 hightech.ordos:
+	Defaults:
+		Offset: -48,84
 	idle: DATA.R8
 		Start: 3132
-		Offset: -48,80
 	make: DATA.R8
 		Start: 4538
 		Length: 10
-		Offset: -48,80
 	crumble-overlay: DATA.R8
 		Start: 4548
 		Length: 10
-		Offset: -48,80
 		Tick: 100
 	damaged-idle: DATA.R8
 		Start: 3133
-		Offset: -48,80
 	production-welding: DATA.R8
 		Start: 4898
 		Length: 10
-		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
@@ -1379,6 +1372,9 @@ hightech.ordos:
 
 palace.ordos:
 	idle: DATA.R8
+		Start: 3244
+		Offset: -48,48
+	active: DATA.R8
 		Start: 3244
 		Offset: -48,48
 	make: DATA.R8
@@ -1493,6 +1489,9 @@ heavy.ordos:
 
 palace.corrino:
 	idle: DATA.R8
+		Start: 3252
+		Offset: -48,48
+	active: DATA.R8
 		Start: 3252
 		Offset: -48,48
 	damaged-idle: DATA.R8

@@ -957,6 +957,8 @@ v37:
 		Start: 1
 
 snowhut:
+	Defaults:
+		Offset: 0,-5
 	idle:
 		Length: 3
 		Tick: 360

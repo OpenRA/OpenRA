@@ -10,17 +10,27 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
 	public class LogicKeyListenerWidget : Widget
 	{
-		public Func<KeyInput, bool> OnKeyPress = _ => false;
+		List<Func<KeyInput, bool>> handlers = new List<Func<KeyInput, bool>>();
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			return OnKeyPress(e);
+			foreach (var handler in handlers)
+				if (handler(e))
+					return true;
+
+			return false;
+		}
+
+		public void AddHandler(Func<KeyInput, bool> func)
+		{
+			handlers.Add(func);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -57,6 +58,9 @@ MEDIC:
 		ForceTargetStances: None
 		Cursor: heal
 		OutsideRangeCursor: heal
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: heal
@@ -68,6 +72,7 @@ MEDIC:
 JUMPJET:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -144,6 +149,8 @@ JUMPJET:
 		RequiresCondition: !airborne
 	SpawnActorOnDeath@FLAMEGUY:
 		RequiresCondition: !airborne
+	WithShadow@airborne:
+		RequiresCondition: airborne
 
 JUMPJET.Husk:
 	RenderSprites:
@@ -152,7 +159,6 @@ JUMPJET.Husk:
 	Aircraft:
 	HiddenUnderFog:
 		Type: GroundPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	Tooltip:
 		Name: Jumpjet Infantry
@@ -162,12 +168,14 @@ JUMPJET.Husk:
 	Aircraft:
 		Speed: 186
 		CanHover: True
+		VTOL: true
 	RenderSprites:
 		Image: jumpjet
 	AutoSelectionSize:
 	WithSpriteBody:
 		Sequence: die-falling
 	Health:
+	HitShape:
 	ConditionManager:
 	GrantConditionOnTerrain:
 		TerrainTypes: Water
@@ -178,11 +186,15 @@ JUMPJET.Husk:
 	WithDeathAnimation@SPLASH:
 		RequiresCondition: water-death
 		FallbackSequence: die-splash
+	EditorTilesetFilter:
+		Categories: Husk
+	AutoRenderSize:
 
 GHOST:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@2: ^HealsOnTiberium
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1750
 	Tooltip:

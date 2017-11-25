@@ -122,9 +122,9 @@ Background@SERVER_LOBBY:
 							Text: Chat:
 		Container@GLOBALCHAT_ROOT:
 			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 50
+			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: PARENT_RIGHT - 40
-			Height: 229
+			Height: 259
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 150
 			Y: PARENT_BOTTOM - HEIGHT - 20

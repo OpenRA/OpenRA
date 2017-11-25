@@ -16,9 +16,6 @@ World:
 			hard: Hard
 		Default: easy
 
-^TechBuilding:
-	AutoTargetIgnore:
-
 ^Infantry:
 	-GivesBounty:
 
@@ -29,18 +26,6 @@ World:
 	-GivesBounty:
 	Health:
 		HP: 9000
-
-BARL:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplode
-
-BRL3:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplode
 
 FENC:
 	Health:

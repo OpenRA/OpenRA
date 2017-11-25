@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			Game.ModData = utility.ModData;
 			Console.WriteLine(
-				"This documentation is aimed at server administrators. It displays all settings with default values and description. " +
+				"This documentation displays annotated settings with default values and description. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
 				"automatically generated for version {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
 			Console.WriteLine();
@@ -45,7 +45,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 
 			var sections = new Settings(null, new Arguments()).Sections;
-			sections.Add("Launch", new LaunchArguments(new Arguments(new string[0])));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
 				var fields = section.Value.GetType().GetFields();
@@ -75,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("```yaml");
 						Console.WriteLine("{0}: ", section.Key);
 						Console.WriteLine("\t{0}: {1}", field.Name, value);
-						Console.WriteLine("```  ");
+						Console.WriteLine("```");
 					}
 					else
 						Console.WriteLine();

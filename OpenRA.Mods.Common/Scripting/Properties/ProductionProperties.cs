@@ -15,6 +15,7 @@ using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -39,7 +40,14 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
-			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, factionVariant)));
+			var faction = factionVariant ?? BuildableInfo.GetInitialFaction(actorInfo, p.Faction);
+			var inits = new TypeDictionary
+			{
+				new OwnerInit(Self.Owner),
+				new FactionInit(faction)
+			};
+
+			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, inits)));
 		}
 	}
 

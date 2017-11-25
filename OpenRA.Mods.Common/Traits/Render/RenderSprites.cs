@@ -181,7 +181,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			foreach (var a in anims)
 				a.Animation.Animation.Tick();
@@ -233,6 +238,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		// Required by WithSpriteBody and WithInfantryBody
 		public int2 AutoSelectionSize(Actor self)
+		{
+			return AutoRenderSize(self);
+		}
+
+		// Required by WithSpriteBody and WithInfantryBody
+		public int2 AutoRenderSize(Actor self)
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)

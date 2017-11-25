@@ -1,6 +1,7 @@
 MSLO:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@shape: ^2x1Shape
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -10,7 +11,7 @@ MSLO:
 		BuildPaletteOrder: 140
 		Prerequisites: techcenter, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Provides an atomic bomb.\nRequires power to operate.\n  Special Ability: Atom Bomb\nMaximum 1 can be built.
+		Description: Provides an atomic bomb.\nRequires power to operate.\nMaximum 1 can be built.\n  Special Ability: Atom Bomb
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -19,7 +20,15 @@ MSLO:
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		Range: 6c0
+		RequiresCondition: !disabled
+		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
 		Range: 5c0
+		RequiresCondition: disabled
+	RevealsShroud@GAPGEN:
+		Range: 5c0
+		RequiresCondition: !disabled
 	NukePower:
 		PauseOnCondition: disabled
 		Cursor: nuke
@@ -33,7 +42,8 @@ MSLO:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
-		SpawnOffset: 0,427,0
+		MissileDelay: 5
+		SpawnOffset: 1c0,427,0
 		DisplayTimerStances: Ally, Neutral, Enemy
 		DisplayBeacon: True
 		DisplayRadarPing: True
@@ -43,19 +53,17 @@ MSLO:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-	RequiresPower:
 	SupportPowerChargeBar:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	WithNukeLaunchAnimation:
 
 GAP:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -69,33 +77,36 @@ GAP:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 24,48,0,-12
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	WithSpriteBody:
-		PauseAnimationWhenDisabled: true
+		PauseOnCondition: disabled
 	Health:
-		HP: 1000
+		HP: 500
 	Armor:
-		Type: Wood
+		Type: Heavy
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	CreatesShroud:
 		Range: 6c0
+		RequiresCondition: !disabled
 	RenderShroudCircle:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	-AcceptsDeliveredCash:
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
 
 SPEN:
 	Inherits: ^Building
@@ -111,18 +122,23 @@ SPEN:
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
 		Description: Produces and repairs\nsubmarines and transports.
 	Targetable:
-		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, Structure, WaterStructure, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 8
 	-GivesBuildableArea:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
 		SpawnOffset: 0,-213,0
@@ -186,6 +202,15 @@ SPEN:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -598
+			BottomRight: 1536, 598
+	HitShape@TOPANDBOTTOM:
+		TargetableOffsets: 811,0,0, -811,0,0
+		Type: Rectangle
+			TopLeft: -555, -1110
+			BottomRight: 555, 1110
 
 SYRD:
 	Inherits: ^Building
@@ -195,24 +220,28 @@ SYRD:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
-		Description: Produces and repairs ships\nand transports.
+		Description: Produces and repairs\nships and transports.
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Naval Yard
 	Targetable:
-		TargetTypes: Ground, Water, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Water, Structure, WaterStructure, C4, DetonateAttack, SpyInfiltrate
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		Adjacent: 8
 	-GivesBuildableArea:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
 		SpawnOffset: -1024,1024,0
@@ -282,16 +311,27 @@ SYRD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	HitShape:
+		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -1152
+			BottomRight: 1536, 598
+	HitShape@BOTTOM:
+		TargetableOffsets: -768,0,0
+		Type: Rectangle
+			TopLeft: -512, 598
+			BottomRight: 512, 1110
 
 IRON:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@shape: ^2x1Shape
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
 		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\n  Special Ability: Invulnerability\nMaximum 1 can be built.
+		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\nMaximum 1 can be built.\n  Special Ability: Invulnerability
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -299,10 +339,6 @@ IRON:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Selectable:
 		Bounds: 48,28,0,2
 	SelectionDecorations:
@@ -312,11 +348,16 @@ IRON:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10c0
-		RevealGeneratedShroud: False
-	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+		RequiresCondition: !disabled
+		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
+		Range: 5c0
+		RequiresCondition: disabled
+	RevealsShroud@GAPGEN:
+		Range: 5c0
+		RequiresCondition: !disabled
+	WithBuildingBib:
 		HasMinibib: Yes
 	GrantExternalConditionPower@IRONCURTAIN:
 		PauseOnCondition: disabled
@@ -334,19 +375,21 @@ IRON:
 		OnFireSound: ironcur9.aud
 	SupportPowerChargeBar:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
 
 PDOX:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@shape: ^2x2Shape
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\n  Special Ability: Chronoshift\nMaximum 1 can be built.
+		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\nMaximum 1 can be built.\n  Special Ability: Chronoshift
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -354,20 +397,21 @@ PDOX:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 1000
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10c0
-		RevealGeneratedShroud: False
-	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+		RequiresCondition: !disabled
+		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
+		Range: 5c0
+		RequiresCondition: disabled
+	RevealsShroud@GAPGEN:
+		Range: 5c0
+		RequiresCondition: !disabled
+	WithBuildingBib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@germany:
 		Factions: germany
@@ -407,8 +451,8 @@ PDOX:
 		DisplayRadarPing: True
 		Range: 2
 	SupportPowerChargeBar:
-	-AcceptsDeliveredCash:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -416,7 +460,8 @@ PDOX:
 
 TSLA:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
@@ -426,14 +471,10 @@ TSLA:
 		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
-	RequiresPower:
 	Selectable:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 24,40,0,-8
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 400
 	Armor:
@@ -443,30 +484,34 @@ TSLA:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithTeslaChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,896
 	AttackTesla:
+		PauseOnCondition: disabled
 		ChargeAudio: tslachg2.aud
 		MaxCharges: 3
 		ReloadDelay: 120
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -100
 	DetectCloaked:
-		Range: 8c0
+		Range: 6c0
+		RequiresCondition: !disabled
 	ProvidesPrerequisite@buildingname:
 
 AGUN:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@AUTOTARGET: ^AutoTargetAir
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
-		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
+		Description: Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -475,10 +520,6 @@ AGUN:
 		Bounds: 24,24
 	SelectionDecorations:
 		VisualBounds: 24,32,0,-4
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 400
 	Armor:
@@ -488,75 +529,82 @@ AGUN:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 15
 		InitialFacing: 224
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: ZSU-23
 		LocalOffset: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		PauseOnCondition: disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -50
-	DetectCloaked:
-		Range: 6c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
 DOME:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
-		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\n  Requires power to operate.
+		Description: Provides an overview\nof the battlefield.\nCan detect cloaked units.\nRequires power to operate.
 	Valued:
 		Cost: 1800
 	Tooltip:
 		Name: Radar Dome
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 1000
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
+		RequiresCondition: !disabled
 		RevealGeneratedShroud: False
+	RevealsShroud@Offline:
+		Range: 5c0
+		RequiresCondition: disabled
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+		RequiresCondition: !disabled
+	WithBuildingBib:
 	ProvidesRadar:
 		RequiresCondition: !jammed && !disabled
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
+		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled
 	ExternalCondition@JAMMED:
 		Condition: jammed
 
 PBOX:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Tooltip:
 		Name: Pillbox
 	Building:
@@ -564,7 +612,7 @@ PBOX:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
-		Description: Static defense with a fireport for a\ngarrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: Static defense with a fireport for\na garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 600
 	CustomSellValue:
@@ -578,7 +626,7 @@ PBOX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
@@ -605,6 +653,7 @@ PBOX:
 
 HBOX:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Tooltip:
 		Name: Camo Pillbox
 	Building:
@@ -614,11 +663,11 @@ HBOX:
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 800
+		Cost: 700
 	CustomSellValue:
-		Value: 600
+		Value: 500
 	Health:
-		HP: 450
+		HP: 400
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -660,6 +709,7 @@ HBOX:
 
 GUN:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
@@ -679,13 +729,13 @@ GUN:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -695,12 +745,13 @@ GUN:
 	Power:
 		Amount: -40
 	DetectCloaked:
-		Range: 7c0
+		Range: 6c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
 FTUR:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
@@ -720,7 +771,7 @@ FTUR:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 255
@@ -743,53 +794,60 @@ FTUR:
 
 SAM:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@AUTOTARGET: ^AutoTargetAir
+	Inherits@shape: ^2x1Shape
+	HitShape:
+		Type: Rectangle
+			TopLeft: -768,-512
+			BottomRight: 768,512
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
-		Description: Anti-Air base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Aircraft\n  Weak vs Ground units
+		Description: Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Valued:
-		Cost: 750
+		Cost: 700
 	Tooltip:
 		Name: SAM Site
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
 		HP: 400
 	Armor:
 		Type: Heavy
 	RevealsShroud:
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Turreted:
 		TurnSpeed: 30
 		InitialFacing: 0
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: Nike
+		LocalOffset: 0,0,320
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		PauseOnCondition: disabled
 	WithMuzzleOverlay:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
+		RequiresCondition: !powerdown
 		Amount: -40
-	DetectCloaked:
-		Range: 5c0
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
 ATEK:
 	Inherits: ^ScienceBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
+	Inherits@shape: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 140
@@ -802,8 +860,9 @@ ATEK:
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
@@ -813,7 +872,7 @@ ATEK:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
-	Bib:
+	WithBuildingBib:
 	GpsPower:
 		PauseOnCondition: disabled
 		Icon: gps
@@ -825,13 +884,13 @@ ATEK:
 		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimerStances: Ally, Neutral, Enemy
 	SupportPowerChargeBar:
-	RequiresPower:
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@buildingname:
 
 WEAP:
 	Inherits: ^Building
+	Inherits@shape: ^3x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 80
@@ -842,15 +901,19 @@ WEAP:
 	Tooltip:
 		Name: War Factory
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 1500
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	WithProductionDoorOverlay:
 		Sequence: build-top
 	RallyPoint:
@@ -934,8 +997,9 @@ WEAP:
 FACT:
 	Inherits: ^Building
 	Building:
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxX xxx XxX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -977,7 +1041,7 @@ FACT:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Production:
 		Produces: Building,Defense
 	Valued:
@@ -1007,6 +1071,11 @@ FACT:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	HitShape:
+		TargetableOffsets: 1273,939,0, -980,-640,0, -980,640,0
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 1536, 1536
 
 PROC:
 	Inherits: ^Building
@@ -1020,8 +1089,9 @@ PROC:
 	Tooltip:
 		Name: Ore Refinery
 	Building:
-		Footprint: _x_ xxx x==
-		Dimensions: 3,3
+		Footprint: _X_ xxx X== ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,50,0,12
 	SelectionDecorations:
@@ -1033,11 +1103,11 @@ PROC:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6c0
+		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Refinery:
 		DockAngle: 64
 		DockOffset: 1,2
@@ -1062,6 +1132,20 @@ PROC:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 598
+	HitShape@TOP:
+		TargetableOffsets: 1680,0,0
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, -512
+	HitShape@BOTTOMLEFT:
+		TargetableOffsets: -1260,-1024,0
+		Type: Rectangle
+			TopLeft: -1536, 598
+			BottomRight: -512, 1280
 
 SILO:
 	Inherits: ^Building
@@ -1074,7 +1158,6 @@ SILO:
 		Cost: 150
 	Tooltip:
 		Name: Silo
-	Building:
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1082,12 +1165,12 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithSiloAnimation:
 	StoresResources:
 		PipCount: 5
-		Capacity: 1500
+		Capacity: 3000
 	-EmitInfantryOnSell:
 	Power:
 		Amount: -10
@@ -1097,6 +1180,10 @@ SILO:
 
 HPAD:
 	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
@@ -1107,8 +1194,9 @@ HPAD:
 	Tooltip:
 		Name: Helipad
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 800
 	Armor:
@@ -1118,7 +1206,7 @@ HPAD:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Exit@1:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
@@ -1179,11 +1267,15 @@ HPAD:
 
 AFLD:
 	Inherits: ^Building
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 420,0,0, 420,-1024,0, 420,1024,0, -777,0,0, -777,-1024,0, -777,1024,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
-		Description: Produces and reloads aircraft.\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+		Description: Produces and reloads aircraft.\n  Special Ability: Spy Plane\n  Special Ability: Paratroopers
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -1236,7 +1328,7 @@ AFLD:
 		OrderName: SovietSpyPlane
 		Prerequisites: aircraft.soviet
 		Icon: spyplane
-		ChargeTime: 180
+		ChargeTime: 150
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map\nand cloaked enemy units.
 		SelectTargetSpeechNotification: SelectTarget
@@ -1254,10 +1346,11 @@ AFLD:
 		OrderName: SovietParatroopers
 		Prerequisites: aircraft.soviet
 		Icon: paratroopers
-		ChargeTime: 360
+		ChargeTime: 300
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
+		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
 		SelectTargetSpeechNotification: SelectTarget
 		AllowImpassableCells: false
 		QuantizedFacings: 8
@@ -1271,7 +1364,7 @@ AFLD:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
 		Icon: parabombs
-		ChargeTime: 360
+		ChargeTime: 300
 		Description: Parabombs
 		LongDesc: A squad of Badgers drops parachuted\nbombs on your target.
 		SelectTargetSpeechNotification: SelectTarget
@@ -1308,8 +1401,11 @@ AFLD:
 
 POWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -1322,15 +1418,16 @@ POWR:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 400
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 100
 	Targetable:
@@ -1342,13 +1439,15 @@ POWR:
 
 APWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		TargetableOffsets: -355,-1024,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: dome, ~techlevel.medium
-		Description: Provides double the power of a\nstandard Power Plant.
+		Description: Provides double the power of\na standard Power Plant.
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -1356,8 +1455,9 @@ APWR:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx Xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
 	SelectionDecorations:
@@ -1368,7 +1468,7 @@ APWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: 200
 	Targetable:
@@ -1380,6 +1480,9 @@ APWR:
 
 STEK:
 	Inherits: ^ScienceBuilding
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		TargetableOffsets: 420,-768,0, 420,768,0, -770,-768,0, -770,768,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 150
@@ -1392,33 +1495,42 @@ STEK:
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: XxX XxX ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 800
 	Armor:
 		Type: Wood
 	RevealsShroud:
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	Power:
 		Amount: -100
 	ProvidesPrerequisite@buildingname:
 
 BARR:
 	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 490,-470,0, 355,512,0, -355,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
 		Description: Trains infantry.
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Soviet Barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
@@ -1428,7 +1540,7 @@ BARR:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -170,810,0
@@ -1493,7 +1605,6 @@ KENN:
 		Cost: 100
 	Tooltip:
 		Name: Kennel
-	Building:
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -1501,7 +1612,7 @@ KENN:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: True
 	RallyPoint:
 		Offset: 0,2
@@ -1530,18 +1641,23 @@ KENN:
 
 TENT:
 	Inherits: ^Building
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
 		Description: Trains infantry.
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Allied Barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Health:
 		HP: 600
 	Armor:
@@ -1551,7 +1667,7 @@ TENT:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -42,810,0
@@ -1623,7 +1739,7 @@ FIX:
 	Tooltip:
 		Name: Service Depot
 	Building:
-		Footprint: _x_ xxx _x_
+		Footprint: _=_ xxx _=_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 68,34,0,3
@@ -1638,12 +1754,12 @@ FIX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
 	RepairsUnits:
-		Interval: 10
+		Interval: 7
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	WithRepairAnimation:
@@ -1651,6 +1767,15 @@ FIX:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -683
+			BottomRight: 1536, 853
+	HitShape@TOPANDBOTTOM:
+		TargetableOffsets: 840,0,0, -1060,0,0
+		Type: Rectangle
+			TopLeft: -640, -768
+			BottomRight: 640, 1024
 
 SBAG:
 	Inherits: ^Wall
@@ -1666,7 +1791,7 @@ SBAG:
 	Tooltip:
 		Name: Sandbag Wall
 	Health:
-		HP: 300
+		HP: 150
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1691,7 +1816,7 @@ FENC:
 	Tooltip:
 		Name: Wire Fence
 	Health:
-		HP: 300
+		HP: 150
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -1719,7 +1844,7 @@ BRIK:
 		DamagedSounds: crmble2.aud
 		DestroyedSounds: kaboom30.aud
 	Health:
-		HP: 500
+		HP: 400
 	Armor:
 		Type: Concrete
 	Crushable:
@@ -1735,6 +1860,11 @@ BRIK:
 
 VGATE:
 	Inherits: ^Gate
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, 1536
 	Gate:
 		Footprint: x x x
 		Dimensions: 1,3
@@ -1747,6 +1877,11 @@ VGATE:
 
 HGATE:
 	Inherits: ^Gate
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 512
 	Gate:
 		Footprint: xxx
 		Dimensions: 3,1

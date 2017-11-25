@@ -1,18 +1,22 @@
 E1:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
 		Name: Minigunner
 	Buildable:
 		BuildPaletteOrder: 10
+		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Mobile:
 		Speed: 56
 	Health:
 		HP: 50
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: M16
 	AttackFrontal:
@@ -23,6 +27,7 @@ E1:
 E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -36,6 +41,8 @@ E2:
 		Speed: 71
 	Health:
 		HP: 50
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: Grenade
 		LocalOffset: 0,0,427
@@ -53,12 +60,14 @@ E2:
 E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
 	Buildable:
 		BuildPaletteOrder: 20
+		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
 		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Mobile:
@@ -80,6 +89,7 @@ E3:
 E4:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -93,6 +103,8 @@ E4:
 		Speed: 56
 	Health:
 		HP: 90
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: Flamethrower
 		LocalOffset: 341,0,256
@@ -108,6 +120,7 @@ E4:
 E5:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -126,6 +139,8 @@ E5:
 				PathingCost: 90
 	Health:
 		HP: 90
+	AutoTarget:
+		ScanRadius: 4
 	Armament:
 		Weapon: Chemspray
 		LocalOffset: 341,0,256
@@ -147,10 +162,11 @@ E6:
 		Name: Engineer
 	Buildable:
 		BuildPaletteOrder: 30
+		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
-		Description: Damages and captures enemy structures.\n  Unarmed
+		Description: Damages and captures enemy structures.\n  Repairs destroyed vehicles\n  Unarmed
 	Mobile:
-		Speed: 56
+		Speed: 48
 	Health:
 		HP: 30
 	Passenger:
@@ -160,11 +176,11 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	-AutoTarget:
 
 RMBO:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 2000
 	Tooltip:

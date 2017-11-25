@@ -50,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var location = self.World.Map.CenterOfCell(order.TargetLocation);
 
+					PlayLaunchSounds();
 					Game.Sound.Play(SoundType.World, info.DeploySound, location);
 
 					if (!string.IsNullOrEmpty(info.EffectSequence) && !string.IsNullOrEmpty(info.EffectPalette))

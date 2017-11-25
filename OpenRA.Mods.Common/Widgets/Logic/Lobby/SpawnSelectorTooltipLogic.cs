@@ -18,9 +18,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SpawnSelectorTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SpawnSelectorTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview)
+		public SpawnSelectorTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview, bool showUnoccupiedSpawnpoints)
 		{
-			widget.IsVisible = () => preview.TooltipSpawnIndex != -1;
+			bool showTooltip = true;
+			widget.IsVisible = () => preview.TooltipSpawnIndex != -1 && showTooltip;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var team = widget.Get<LabelWidget>("TEAM");
@@ -39,11 +40,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tooltipContainer.BeforeRender = () =>
 			{
+				showTooltip = true;
 				var occupant = preview.SpawnOccupants().Values.FirstOrDefault(c => c.SpawnPoint == preview.TooltipSpawnIndex);
 
 				var teamWidth = 0;
 				if (occupant == null)
 				{
+					if (!showUnoccupiedSpawnpoints)
+					{
+						showTooltip = false;
+						return;
+					}
+
 					labelText = "Available spawn";
 					playerFaction = null;
 					playerTeam = 0;

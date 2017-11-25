@@ -66,7 +66,9 @@ namespace OpenRA.Mods.Common.Traits
 					dudesValue = 0;
 			}
 
-			var eligibleLocations = FootprintUtils.Tiles(self).ToList();
+			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
+
+			var eligibleLocations = buildingInfo != null ? buildingInfo.Tiles(self.Location).ToList() : new List<CPos>();
 			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].TraitInfo<ValuedInfo>().Cost }).ToList();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))

@@ -15,7 +15,6 @@ World:
 		TechLevelLocked: True
 		TechLevel: unrestricted
 
-		
 UNITCRATE:
 	Inherits: ^Crate
 	GiveUnitCrateAction@stnk:
@@ -35,9 +34,10 @@ UNITCRATE:
 		Units: e1
 	GiveUnitCrateAction@e3:
 		SelectionShares: 1
-		Units: e3		
+		Units: e3
 
 APC:
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	Health:
 		HP: 1000
 	MustBeDestroyed:

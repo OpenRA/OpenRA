@@ -51,10 +51,13 @@ namespace OpenRA
 			var exceptionName = "exception-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
 			Log.AddChannel("exception", exceptionName);
 
+			if (Game.EngineVersion != null)
+				Log.Write("exception", "OpenRA engine version {0}", Game.EngineVersion);
+
 			if (Game.ModData != null)
 			{
 				var mod = Game.ModData.Manifest.Metadata;
-				Log.Write("exception", "{0} Mod at Version {1}", mod.Title, mod.Version);
+				Log.Write("exception", "{0} mod version {1}", mod.Title, mod.Version);
 			}
 
 			if (Game.OrderManager != null && Game.OrderManager.World != null && Game.OrderManager.World.Map != null)

@@ -205,21 +205,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "PickupUnit")
-			{
-				if (target.Type == TargetType.FrozenActor)
-					return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-			}
-			else if (order.OrderID == "DeliverUnit")
-			{
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
-			}
-			else if (order.OrderID == "Unload")
-			{
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
-			}
+			if (order.OrderID == "PickupUnit" || order.OrderID == "DeliverUnit" || order.OrderID == "Unload")
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -288,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			static bool CanTarget(Actor self, Actor target)
 			{
-				if (!target.AppearsFriendlyTo(self))
+				if (target == null || !target.AppearsFriendlyTo(self))
 					return false;
 
 				var carryable = target.TraitOrDefault<Carryable>();

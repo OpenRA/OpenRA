@@ -19,19 +19,19 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class AircraftProperties : ScriptActorProperties, Requires<AircraftInfo>
 	{
-		readonly bool isPlane;
+		readonly AircraftInfo aircraftInfo;
 
 		public AircraftProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			isPlane = self.Trait<Aircraft>().IsPlane;
+			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Fly within the cell grid.")]
 		public void Move(CPos cell)
 		{
-			if (isPlane)
+			if (!aircraftInfo.CanHover)
 				Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 			else
 				Self.QueueActivity(new HeliFly(Self, Target.FromCell(Self.World, cell)));
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Return to the base, which is either the destination given, or an auto-selected one otherwise.")]
 		public void ReturnToBase(Actor destination = null)
 		{
-			if (isPlane)
+			if (!aircraftInfo.CanHover)
 				Self.QueueActivity(new ReturnToBase(Self, false, destination));
 			else
 				Self.QueueActivity(new HeliReturnToBase(Self, false, destination));

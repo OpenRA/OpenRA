@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
-	public class Transforms : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Transforms : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly Actor self;
 		readonly TransformsInfo info;
@@ -92,6 +92,11 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, queued);
 
 			return null;
+		}
+
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("DeployTransform", self, false);
 		}
 
 		public void DeployTransform(bool queued)

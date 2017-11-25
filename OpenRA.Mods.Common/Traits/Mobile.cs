@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
-		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IActorPreviewInitInfo
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -69,8 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TurnSpeed = 255;
 
 		public readonly int Speed = 1;
-
-		public readonly bool OnRails = false;
 
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
@@ -133,6 +131,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool JumpjetTransitionOnRamps = true;
+
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new FacingInit(PreviewFacing);
+		}
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -478,9 +484,11 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			base.Created(self);
 		}
 
 		// Returns a valid sub-cell
@@ -561,12 +569,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
 		}
@@ -577,12 +585,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is MoveOrderTargeter)
-			{
-				if (Info.OnRails)
-					return null;
-
-				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
-			}
+				return new Order("Move", self, target, queued);
 
 			return null;
 		}
@@ -619,42 +622,22 @@ namespace OpenRA.Mods.Common.Traits
 			return target;
 		}
 
-		void PerformMoveInner(Actor self, CPos targetLocation, bool queued)
-		{
-			var currentLocation = NearestMoveableCell(targetLocation);
-
-			if (!CanEnterCell(currentLocation))
-			{
-				if (queued) self.CancelActivity();
-				return;
-			}
-
-			if (!queued) self.CancelActivity();
-
-			TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
-
-			self.QueueActivity(new Move(self, currentLocation, WDist.FromCells(8)));
-
-			self.SetTargetLine(Target.FromCell(self.World, currentLocation), Color.Green);
-		}
-
-		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
-		{
-			if (queued)
-				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, true)));
-			else
-				PerformMoveInner(self, targetLocation, false);
-		}
-
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Move")
 			{
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				var loc = self.World.Map.Clamp(order.TargetLocation);
+
+				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(loc))
 					return;
 
-				PerformMove(self, self.World.Map.Clamp(order.TargetLocation),
-					order.Queued && !self.IsIdle);
+				if (!order.Queued)
+					self.CancelActivity();
+
+				TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
+
+				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Green);
+				self.QueueActivity(order.Queued, new Move(self, loc, WDist.FromCells(8), null, true));
 			}
 
 			if (order.OrderString == "Stop")
@@ -666,6 +649,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Move":
@@ -957,7 +943,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Type == TargetType.Invalid)
 				return null;
 
-			return VisualMove(self, self.CenterPosition, target.CenterPosition);
+			return VisualMove(self, self.CenterPosition, target.Positions.PositionClosestTo(self.CenterPosition));
 		}
 
 		public bool CanEnterTargetNow(Actor self, Target target)

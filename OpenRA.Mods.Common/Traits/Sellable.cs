@@ -22,6 +22,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
+		public readonly bool ShowTicks = true;
+
+		[Desc("Skip playing (reversed) make animation.")]
+		public readonly bool SkipMakeAnimation = false;
+
+		[Desc("Cursor type to use when the sell order generator hovers over this actor.")]
+		public readonly string Cursor = "sell";
 
 		public override object Create(ActorInitializer init) { return new Sellable(init.Self, this); }
 	}
@@ -63,16 +70,22 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);
 
-			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
-			if (makeAnimation != null)
-				makeAnimation.Reverse(self, new Sell(self), false);
-			else
-				self.QueueActivity(false, new Sell(self));
+			if (!info.SkipMakeAnimation)
+			{
+				var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+				if (makeAnimation != null)
+				{
+					makeAnimation.Reverse(self, new Sell(self, info.ShowTicks), false);
+					return;
+				}
+			}
+
+			self.QueueActivity(false, new Sell(self, info.ShowTicks));
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
 		{
-			if (self.World.OrderGenerator is SellOrderGenerator)
+			if (!IsTraitDisabled && self.World.OrderGenerator is SellOrderGenerator)
 				return forPlayer == self.Owner;
 			return false;
 		}

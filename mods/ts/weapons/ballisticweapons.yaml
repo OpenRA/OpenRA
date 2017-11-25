@@ -23,12 +23,13 @@
 		Explosions: medium_clsn
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew14.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
@@ -44,6 +45,7 @@
 	Inherits: ^Cannon
 	ReloadDelay: 80
 	Projectile: Bullet
+		-Image:
 		Speed: 1c512
 		Blockable: false
 		LaunchAngle: 0
@@ -54,7 +56,7 @@
 	Inherits: ^Cannon
 	ReloadDelay: 80
 	Burst: 2
-	BurstDelay: 5
+	BurstDelays: 5
 	Warhead@1Dam: SpreadDamage
 		Damage: 50
 
@@ -98,6 +100,7 @@ RPGTower:
 	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 110
 	Range: 18c0
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
 		LaunchAngle: 165
@@ -114,9 +117,9 @@ Jugg90mm:
 	Range: 18c0
 	MinRange: 5c0
 	Burst: 3
-	BurstDelay: 3
-	-Report:
-	StartBurstReport: jugger1.aud
+	BurstDelays: 3, 5
+	Report: jugger1-single.aud
+	TargetActorCenter: true
 	Projectile: Bullet
 		Speed: 384
 		LaunchAngle: 165
@@ -149,5 +152,5 @@ Grenade:
 			Concrete: 28
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: large_grey_explosion
+		Explosions: small_grey_explosion
 		ImpactSounds: expnew13.aud

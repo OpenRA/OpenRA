@@ -2,14 +2,13 @@
 	ReloadDelay: 60
 	Range: 6c0
 	Report: bigggun1.aud
-	Projectile: AreaBeam
+	Projectile: Railgun
 		Speed: 20c0
-		Duration: 3
-		DamageInterval: 2
+		Duration: 15
 		Width: 80
-		BeyondTargetRange: 0c64
 		Blockable: true
-		Color: 0080FFC8
+		DamageActorsInLine: true
+		BeamColor: 0080FFC8
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
@@ -46,10 +45,10 @@ MechRailgun:
 	Inherits: ^Railgun
 	Range: 8c0
 	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
-	BurstDelay: 60
+	BurstDelays: 60
 	Report: railuse5.aud
-	Projectile: AreaBeam
-		Color: 00FFFFC8
+	Projectile: Railgun
+		BeamColor: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
 		Damage: 200
 		Versus:
@@ -107,12 +106,13 @@ SonicZap:
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew12.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
@@ -128,6 +128,7 @@ CyCannon:
 		MinimumLaunchSpeed: 75
 		Speed: 384
 		RangeLimit: 8c0
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
 		Damage: 120
@@ -143,7 +144,7 @@ Proton:
 	Inherits: ^EnergyBlast
 	Range: 5c0
 	Burst: 5
-	BurstDelay: 3
+	BurstDelays: 3
 	Projectile: Bullet
 		Speed: 341
 		Blockable: false
@@ -200,6 +201,7 @@ TurretLaserFire:
 		Damage: 30
 
 LaserFence:
+	TargetActorCenter: true
 	Projectile: InstantHit
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: FF0000

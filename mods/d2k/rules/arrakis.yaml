@@ -20,10 +20,13 @@ spicebloom.spawnpoint:
 		Actor: spicebloom
 	Health:
 		HP: 9999
-		Shape: Circle
-			Radius: 1
 	Immobile:
 		OccupiesSpace: false
+	HitShape:
+		Type: Circle
+			Radius: 1
+	EditorTilesetFilter:
+		Categories: System
 
 spicebloom:
 	HiddenUnderShroud:
@@ -48,8 +51,6 @@ spicebloom:
 	Immobile:
 	Health:
 		HP: 1
-		Shape: Circle
-			Radius: 512
 	Targetable:
 		TargetTypes: Ground
 		RequiresForceFire: true
@@ -57,6 +58,12 @@ spicebloom:
 		Type: none
 	SpawnActorOnDeath:
 		Actor: spicebloom.spawnpoint
+	HitShape:
+		Type: Circle
+			Radius: 512
+	EditorTilesetFilter:
+		Categories: System
+	AutoRenderSize:
 
 sandworm:
 	Inherits@1: ^SpriteActor
@@ -64,7 +71,9 @@ sandworm:
 		Name: Sandworm
 	Health:
 		HP: 9990
-		Radius: 256
+	HitShape:
+		Type: Circle
+			Radius: 256
 	Armor:
 		Type: heavy
 	Mobile:
@@ -75,7 +84,7 @@ sandworm:
 			SpiceSand: 100
 			Spice: 100
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Creep
 	WithSpriteBody:
 	WithIdleAnimation:
 		Interval: 160
@@ -137,8 +146,7 @@ sietch:
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:
-	Power:
-		Amount: 0
+	-RepairableBuilding:
 	ProvidesPrerequisite@buildingname:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:

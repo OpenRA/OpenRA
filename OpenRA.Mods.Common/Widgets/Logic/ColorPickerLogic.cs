@@ -30,9 +30,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var actor = world.Map.Rules.Actors[actorType];
 
 			var td = new TypeDictionary();
-			td.Add(new HideBibPreviewInit());
 			td.Add(new OwnerInit(world.WorldActor.Owner));
 			td.Add(new FactionInit(world.WorldActor.Owner.PlayerReference.Faction));
+			foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+				foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.ColorPicker))
+					td.Add(o);
 
 			if (preview != null)
 				preview.SetPreview(actor, td);

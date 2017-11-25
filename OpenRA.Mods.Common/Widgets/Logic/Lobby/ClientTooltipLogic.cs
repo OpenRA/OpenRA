@@ -48,9 +48,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var margin = widget.Bounds.Width;
 
-			tooltipContainer.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
+			widget.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
 			tooltipContainer.BeforeRender = () =>
 			{
+				if (!widget.IsVisible())
+					return;
+
 				var latencyPrefixSize = latencyPrefix == null ? 0 : latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText() + " ").X;
 				var locationWidth = locationFont.Measure(location.GetText()).X;
 				var adminWidth = adminFont.Measure(admin.GetText()).X;

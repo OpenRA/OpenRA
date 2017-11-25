@@ -1,5 +1,6 @@
 light_inf:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
@@ -43,13 +44,13 @@ engineer:
 	Captures:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	-AutoTarget:
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
 
 trooper:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -78,7 +79,6 @@ trooper:
 
 thumper:
 	Inherits: ^Infantry
-	-AutoTarget:
 	-RevealOnFire:
 	Buildable:
 		Queue: Infantry
@@ -97,16 +97,19 @@ thumper:
 		Range: 2c768
 	Mobile:
 		Speed: 43
-		RequiresCondition: !deployed
+		RequiresCondition: undeployed
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
+		UndeployedCondition: undeployed
 		Facing: 128
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:
-		RequiresCondition: !deployed
+		RequiresCondition: undeployed
 	WithSpriteBody@DEPLOYED:
 		Sequence: thump
-		RequiresCondition: deployed
+		RequiresCondition: !undeployed
+	WithMakeAnimation@DEPLOYING:
+		Sequence: deploy
 	WithIdleOverlay@DEPLOYED:
 		Sequence: thump-sand
 		RequiresCondition: deployed
@@ -121,6 +124,7 @@ thumper:
 
 fremen:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Fremen
 	Buildable:
@@ -151,8 +155,6 @@ fremen:
 		InitialDelay: 85
 		CloakDelay: 85
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
-		CloakSound: STEALTH1.WAV
-		UncloakSound: STEALTH2.WAV
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
@@ -164,6 +166,7 @@ fremen:
 
 grenadier:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -194,6 +197,7 @@ grenadier:
 
 sardaukar:
 	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -244,13 +248,11 @@ saboteur:
 		DetonationDelay: 0
 		Flashes: 0
 		EnterBehaviour: Suicide
-	-AutoTarget:
 	-RevealOnFire:
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
 		CloakSound: STEALTH1.WAV
-		UncloakSound: STEALTH2.WAV
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
 		IsPlayerPalette: true
 		RequiresCondition: !cloak-force-disabled

@@ -2,12 +2,11 @@ DOGGIE:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
 		HP: 250
-		Shape: Circle
-			Radius: 213
 	Selectable:
 		Bounds: 24,24
 	Valued:
@@ -35,6 +34,9 @@ DOGGIE:
 		DeathSequence: die-
 		DeathTypes:
 			FireDeath: burning
+	HitShape:
+		Type: Circle
+			Radius: 213
 
 VISC_SML:
 	Inherits: ^Visceroid
@@ -52,6 +54,7 @@ VISC_SML:
 VISC_LRG:
 	Inherits: ^Visceroid
 	Inherits@CRATESTATS: ^CrateStatModifiers
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Adult Visceroid
 	Health:
@@ -81,13 +84,11 @@ VISC_LRG:
 JFISH:
 	Inherits: ^Visceroid
 	Inherits@CRATESTATS: ^CrateStatModifiers
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Tiberium Floater
 	Health:
 		HP: 500
-		Shape: Circle
-			Radius: 363
-			VerticalTopOffset: 768
 	RevealsShroud:
 		Range: 5c0
 	Mobile:
@@ -119,3 +120,7 @@ JFISH:
 		SoundFiles: floatmov.aud, flotmov2.aud, flotmov3.aud, flotmov4.aud
 		Delay: 150, 450
 		Interval: 300, 800
+	HitShape:
+		Type: Circle
+			Radius: 363
+			VerticalTopOffset: 768

@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 		readonly HardwarePalette palette = new HardwarePalette();
 		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
 		readonly TerrainRenderer terrainRenderer;
-		readonly Lazy<DeveloperMode> devTrait;
+		readonly Lazy<DebugVisualizations> debugVis;
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
 
@@ -61,7 +61,7 @@ namespace OpenRA.Graphics
 			Theater = new Theater(world.Map.Rules.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 
-			devTrait = Exts.Lazy(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
+			debugVis = Exts.Lazy(() => world.WorldActor.TraitOrDefault<DebugVisualizations>());
 		}
 
 		public void UpdatePalettesForPlayer(string internalName, HSLColor color, bool replaceExisting)
@@ -110,12 +110,18 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
 
-			worldRenderables = worldRenderables.Concat(World.Effects.SelectMany(e => e.Render(this)));
+			// Unpartitioned effects
+			worldRenderables = worldRenderables.Concat(World.UnpartitionedEffects.SelectMany(e => e.Render(this)));
+
+			// Partitioned, currently on-screen effects
+			var effectRenderables = World.ScreenMap.EffectsInBox(Viewport.TopLeft, Viewport.BottomRight);
+			worldRenderables = worldRenderables.Concat(effectRenderables.SelectMany(e => e.Render(this)));
+
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
-			Game.Renderer.WorldVoxelRenderer.BeginFrame();
+			Game.Renderer.WorldModelRenderer.BeginFrame();
 			var renderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
-			Game.Renderer.WorldVoxelRenderer.EndFrame();
+			Game.Renderer.WorldModelRenderer.EndFrame();
 
 			return renderables;
 		}
@@ -125,11 +131,11 @@ namespace OpenRA.Graphics
 			if (World.WorldActor.Disposed)
 				return;
 
-			if (devTrait.Value != null)
+			if (debugVis.Value != null)
 			{
-				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
-				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
-				Game.Renderer.WorldRgbaColorRenderer.SetDepthPreviewEnabled(devTrait.Value.ShowDepthPreview);
+				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
+				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
+				Game.Renderer.WorldRgbaColorRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
 			}
 
 			RefreshPalette();
@@ -182,21 +188,21 @@ namespace OpenRA.Graphics
 			if (World.OrderGenerator != null)
 				aboveShroudOrderGenerator = World.OrderGenerator.RenderAboveShroud(this, World);
 
-			Game.Renderer.WorldVoxelRenderer.BeginFrame();
+			Game.Renderer.WorldModelRenderer.BeginFrame();
 			var finalOverlayRenderables = aboveShroud
 				.Concat(aboveShroudSelected)
 				.Concat(aboveShroudEffects)
 				.Concat(aboveShroudOrderGenerator)
 				.Select(r => r.PrepareRender(this))
 				.ToList();
-			Game.Renderer.WorldVoxelRenderer.EndFrame();
+			Game.Renderer.WorldModelRenderer.EndFrame();
 
 			// HACK: Keep old grouping behaviour
 			foreach (var g in finalOverlayRenderables.GroupBy(prs => prs.GetType()))
 				foreach (var r in g)
 					r.Render(this);
 
-			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
 			{
 				for (var i = 0; i < renderables.Count; i++)
 					renderables[i].RenderDebugGeometry(this);
@@ -241,7 +247,7 @@ namespace OpenRA.Graphics
 			return new float3((float)Math.Round(px.X), (float)Math.Round(px.Y), px.Z);
 		}
 
-		// For scaling vectors to pixel sizes in the voxel renderer
+		// For scaling vectors to pixel sizes in the model renderer
 		public float3 ScreenVectorComponents(WVec vec)
 		{
 			return new float3(
@@ -250,7 +256,7 @@ namespace OpenRA.Graphics
 				(float)TileSize.Height * vec.Z / TileScale);
 		}
 
-		// For scaling vectors to pixel sizes in the voxel renderer
+		// For scaling vectors to pixel sizes in the model renderer
 		public float[] ScreenVector(WVec vec)
 		{
 			var xyz = ScreenVectorComponents(vec);

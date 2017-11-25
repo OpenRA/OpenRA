@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
@@ -21,19 +22,27 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CreateMPPlayers : ICreatePlayers
 	{
-		public void CreatePlayers(World w)
+		void ICreatePlayers.CreatePlayers(World w)
 		{
 			var players = new MapPlayers(w.Map.PlayerDefinitions).Players;
 			var worldPlayers = new List<Player>();
+			var worldOwnerFound = false;
 
 			// Create the unplayable map players -- neutral, shellmap, scripted, etc.
 			foreach (var kv in players.Where(p => !p.Value.Playable))
 			{
 				var player = new Player(w, null, kv.Value);
 				worldPlayers.Add(player);
+
 				if (kv.Value.OwnsWorld)
+				{
+					worldOwnerFound = true;
 					w.SetWorldOwner(player);
+				}
 			}
+
+			if (!worldOwnerFound)
+				throw new InvalidOperationException("Map {0} does not define a player actor owning the world.".F(w.Map.Title));
 
 			Player localPlayer = null;
 

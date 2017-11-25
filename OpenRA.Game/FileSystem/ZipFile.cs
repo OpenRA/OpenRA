@@ -13,9 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using SZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
+using OpenRA.Primitives;
 
 namespace OpenRA.FileSystem
 {
@@ -23,38 +22,18 @@ namespace OpenRA.FileSystem
 	{
 		static readonly string[] Extensions = { ".zip", ".oramap" };
 
-		sealed class ZipFile : IReadWritePackage
+		class ReadOnlyZipFile : IReadOnlyPackage
 		{
-			public IReadWritePackage Parent { get; private set; }
-			public string Name { get; private set; }
-			readonly Stream pkgStream;
-			readonly SZipFile pkg;
+			public string Name { get; protected set; }
+			protected ZipFile pkg;
 
-			static ZipFile()
+			// Dummy constructor for use with ReadWriteZipFile
+			protected ReadOnlyZipFile() { }
+
+			public ReadOnlyZipFile(Stream s, string filename)
 			{
-				ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
-			}
-
-			public ZipFile(Stream stream, string name, IReadOnlyPackage parent = null)
-			{
-				// SharpZipLib breaks when asked to update archives loaded from outside streams or files
-				// We can work around this by creating a clean in-memory-only file, cutting all outside references
-				pkgStream = new MemoryStream();
-				stream.CopyTo(pkgStream);
-				pkgStream.Position = 0;
-
-				Name = name;
-				Parent = parent as IReadWritePackage;
-				pkg = new SZipFile(pkgStream);
-			}
-
-			public ZipFile(string filename, IReadWritePackage parent)
-			{
-				pkgStream = new MemoryStream();
-
 				Name = filename;
-				Parent = parent;
-				pkg = SZipFile.Create(pkgStream);
+				pkg = ZipFileHelper.Create(s);
 			}
 
 			public Stream GetStream(string filename)
@@ -86,14 +65,57 @@ namespace OpenRA.FileSystem
 				return pkg.GetEntry(filename) != null;
 			}
 
+			public void Dispose()
+			{
+				if (pkg != null)
+					pkg.Close();
+			}
+
+			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
+			{
+				// Directories are stored with a trailing "/" in the index
+				var entry = pkg.GetEntry(filename) ?? pkg.GetEntry(filename + "/");
+				if (entry == null)
+					return null;
+
+				if (entry.IsDirectory)
+					return new ZipFolder(this, filename);
+
+				// Other package types can be loaded normally
+				IReadOnlyPackage package;
+				var s = GetStream(filename);
+				if (s == null)
+					return null;
+
+				if (context.TryParsePackage(s, filename, out package))
+					return package;
+
+				s.Dispose();
+				return null;
+			}
+		}
+
+		sealed class ReadWriteZipFile : ReadOnlyZipFile, IReadWritePackage
+		{
+			readonly MemoryStream pkgStream = new MemoryStream();
+
+			public ReadWriteZipFile(string filename, bool create = false)
+			{
+				// SharpZipLib breaks when asked to update archives loaded from outside streams or files
+				// We can work around this by creating a clean in-memory-only file, cutting all outside references
+				if (!create)
+					new MemoryStream(File.ReadAllBytes(filename)).CopyTo(pkgStream);
+
+				pkgStream.Position = 0;
+				pkg = ZipFileHelper.Create(pkgStream);
+				Name = filename;
+			}
+
 			void Commit()
 			{
-				if (Parent == null)
-					throw new InvalidDataException("Cannot update ZipFile without writable parent");
-
 				var pos = pkgStream.Position;
 				pkgStream.Position = 0;
-				Parent.Update(Name, pkgStream.ReadBytes((int)pkgStream.Length));
+				File.WriteAllBytes(Name, pkgStream.ReadBytes((int)pkgStream.Length));
 				pkgStream.Position = pos;
 			}
 
@@ -112,55 +134,15 @@ namespace OpenRA.FileSystem
 				pkg.CommitUpdate();
 				Commit();
 			}
-
-			public void Dispose()
-			{
-				if (pkg != null)
-					pkg.Close();
-
-				if (pkgStream != null)
-					pkgStream.Dispose();
-			}
-
-			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
-			{
-				// Directories are stored with a trailing "/" in the index
-				var entry = pkg.GetEntry(filename) ?? pkg.GetEntry(filename + "/");
-				if (entry == null)
-					return null;
-
-				if (entry.IsDirectory)
-					return new ZipFolder(this, filename);
-
-				if (Extensions.Any(e => filename.EndsWith(e, StringComparison.InvariantCultureIgnoreCase)))
-					return new ZipFile(GetStream(filename), filename, this);
-
-				// Other package types can be loaded normally
-				IReadOnlyPackage package;
-				var s = GetStream(filename);
-				if (s == null)
-					return null;
-
-				if (context.TryParsePackage(s, filename, out package))
-					return package;
-
-				s.Dispose();
-				return null;
-			}
 		}
 
 		sealed class ZipFolder : IReadOnlyPackage
 		{
 			public string Name { get { return path; } }
-			public ZipFile Parent { get; private set; }
+			public ReadOnlyZipFile Parent { get; private set; }
 			readonly string path;
 
-			static ZipFolder()
-			{
-				ZipConstants.DefaultCodePage = Encoding.UTF8.CodePage;
-			}
-
-			public ZipFolder(ZipFile parent, string path)
+			public ZipFolder(ReadOnlyZipFile parent, string path)
 			{
 				if (path.EndsWith("/", StringComparison.Ordinal))
 					path = path.Substring(0, path.Length - 1);
@@ -227,19 +209,25 @@ namespace OpenRA.FileSystem
 				return false;
 			}
 
-			string name;
-			IReadOnlyPackage p;
-			if (context.TryGetPackageContaining(filename, out p, out name))
-				package = new ZipFile(p.GetStream(name), name, p);
-			else
-				package = new ZipFile(s, filename, null);
-
+			package = new ReadOnlyZipFile(s, filename);
 			return true;
 		}
 
-		public static IReadWritePackage Create(string filename, IReadWritePackage parent)
+		public static bool TryParseReadWritePackage(string filename, out IReadWritePackage package)
 		{
-			return new ZipFile(filename, parent);
+			if (!Extensions.Any(e => filename.EndsWith(e, StringComparison.InvariantCultureIgnoreCase)))
+			{
+				package = null;
+				return false;
+			}
+
+			package = new ReadWriteZipFile(filename);
+			return true;
+		}
+
+		public static IReadWritePackage Create(string filename)
+		{
+			return new ReadWriteZipFile(filename, true);
 		}
 	}
 }

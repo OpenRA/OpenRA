@@ -61,10 +61,18 @@ function Version-Command
 	}
 	elseif (Get-Command 'git' -ErrorAction SilentlyContinue)
 	{
-		$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
-		if ($version -eq $null)
+		$gitRepo = git rev-parse --is-inside-work-tree
+		if ($gitRepo)
 		{
-			$version = "git-" + (git rev-parse --short HEAD)
+			$version = git name-rev --name-only --tags --no-undefined HEAD 2>$null
+			if ($version -eq $null)
+			{
+				$version = "git-" + (git rev-parse --short HEAD)
+			}
+		}
+		else
+		{
+			echo "Not a git repository. The version will remain unchanged."
 		}
 	}
 	else
@@ -74,6 +82,7 @@ function Version-Command
 	
 	if ($version -ne $null)
 	{
+		$version | out-file ".\VERSION"
 		$mods = @("mods/ra/mod.yaml", "mods/cnc/mod.yaml", "mods/d2k/mod.yaml", "mods/ts/mod.yaml", "mods/modcontent/mod.yaml", "mods/all/mod.yaml")
 		foreach ($mod in $mods)
 		{
@@ -128,24 +137,32 @@ function Check-Command {
 	{
 		echo "Checking for explicit interface violations..."
 		./OpenRA.Utility.exe all --check-explicit-interfaces
-		echo "Checking for code style violations in OpenRA.Platforms.Default..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.Game..."
-		./OpenRA.Utility.exe ra --check-code-style OpenRA.Game
-		echo "Checking for code style violations in OpenRA.Mods.Common..."
-		./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
-		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
-		echo "Checking for code style violations in OpenRA.Mods.D2k..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
-		echo "Checking for code style violations in OpenRA.Utility..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
-		echo "Checking for code style violations in OpenRA.Test..."
-		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
 	}
 	else
 	{
 		UtilityNotFound
+	}
+
+	if (Test-Path OpenRA.StyleCheck.exe)
+	{
+		echo "Checking for code style violations in OpenRA.Platforms.Default..."
+		./OpenRA.StyleCheck.exe OpenRA.Platforms.Default
+		echo "Checking for code style violations in OpenRA.Game..."
+		./OpenRA.StyleCheck.exe OpenRA.Game
+		echo "Checking for code style violations in OpenRA.Mods.Common..."
+		./OpenRA.StyleCheck.exe OpenRA.Mods.Common
+		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
+		./OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
+		echo "Checking for code style violations in OpenRA.Mods.D2k..."
+		./OpenRA.StyleCheck.exe OpenRA.Mods.D2k
+		echo "Checking for code style violations in OpenRA.Utility..."
+		./OpenRA.StyleCheck.exe OpenRA.Utility
+		echo "Checking for code style violations in OpenRA.Test..."
+		./OpenRA.StyleCheck.exe OpenRA.Test
+	}
+	else
+	{
+		echo "OpenRA.StyleCheck.exe could not be found. Build the project first using the `"all`" command."
 	}
 }
 
@@ -176,7 +193,9 @@ function Docs-Command
 	{
 		./make.ps1 version
 		./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
+		./OpenRA.Utility.exe all --weapon-docs | Out-File -Encoding "UTF8" WEAPONS.md
 		./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
+		./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
 	}
 	else
 	{
@@ -186,21 +205,19 @@ function Docs-Command
 
 function FindMSBuild
 {
-	$msBuildVersions = @("4.0")
-	foreach ($msBuildVersion in $msBuildVersions)
+	$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0"
+	$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
+	if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
 	{
-		$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\{0}" -f $msBuildVersion
-		$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-		if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
-		{
-			continue
-		}
-		$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-		if (Test-Path $path)
-		{
-			return $path
-		}
+		return $null
 	}
+
+	$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
+	if (Test-Path $path)
+	{
+		return $path
+	}
+
 	return $null
 }
 
@@ -233,7 +250,13 @@ else
 	$command = $args
 }
 
-switch ($command) 
+$execute = $command
+if ($command.Length -gt 1)
+{
+	$execute = $command[0]
+}
+
+switch ($execute)
 {
 	"all" { All-Command }
 	"dependencies" { Dependencies-Command }

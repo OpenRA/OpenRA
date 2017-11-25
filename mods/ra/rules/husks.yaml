@@ -84,7 +84,7 @@ MGG.Husk:
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Transport Helicopter
+		Name: Chinook
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 149
@@ -95,11 +95,11 @@ TRAN.Husk:
 		Offset: 597,0,213
 		Sequence: rotor2
 	RevealsShroud:
-		Range: 10c0
+		Range: 8c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 8c0
+		Range: 6c0
 		Type: GroundPosition
 	RenderSprites:
 		Image: tran
@@ -107,14 +107,14 @@ TRAN.Husk:
 TRAN.Husk1:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Transport Helicopter)
+		Name: Husk (Chinook)
 	RenderSprites:
 		Image: tran1husk
 
 TRAN.Husk2:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Transport Helicopter)
+		Name: Husk (Chinook)
 	RenderSprites:
 		Image: tran2husk
 
@@ -135,11 +135,12 @@ BADR.Husk:
 		MinDamage: Undamaged
 	RenderSprites:
 		Image: badr
+	-RevealOnDeath:
 
 MIG.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
-		Name: Mig Attack Plane
+		Name: MiG Attack Plane
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:

@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly CellLayer<CellContents> Content;
 		protected readonly CellLayer<CellContents> RenderContent;
 
+		bool disposed;
+
 		public ResourceLayer(Actor self)
 		{
 			world = self.World;
@@ -60,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Render(WorldRenderer wr)
+		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			foreach (var kv in spriteLayers.Values)
 				kv.Draw(wr.Viewport);
@@ -160,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
 			foreach (var c in dirty)
@@ -286,8 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Content[cell].Type.Info.MaxDensity;
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;

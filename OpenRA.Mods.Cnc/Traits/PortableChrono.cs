@@ -45,6 +45,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Cursor to display when the targeted location is blocked.")]
 		public readonly string TargetBlockedCursor = "move-blocked";
 
+		[Desc("Kill cargo on teleporting.")]
+		public readonly bool KillCargo = true;
+
+		[Desc("Flash the screen on teleporting.")]
+		public readonly bool FlashScreen = false;
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
@@ -60,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (chargeTick > 0)
 				chargeTick--;
@@ -82,9 +88,9 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
 
 			if (order.OrderID == "PortableChronoTeleport")
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				return new Order(order.OrderID, self, target, queued);
 
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -93,11 +99,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, true, false, Info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
 			}
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? Info.Voice : null;
 		}
@@ -137,8 +143,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
-			// TODO: When target modifiers are configurable this needs to be revisited
-			if (modifiers.HasModifier(TargetModifiers.ForceMove) || modifiers.HasModifier(TargetModifiers.ForceQueue))
+			if (modifiers.HasModifier(TargetModifiers.ForceMove))
 			{
 				var xy = self.World.Map.CellContaining(target.CenterPosition);
 
@@ -180,7 +185,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
 			{
 				world.CancelInputMode();
-				yield return new Order("PortableChronoTeleport", self, mi.Modifiers.HasModifier(Modifiers.Shift)) { TargetLocation = cell };
+				yield return new Order("PortableChronoTeleport", self, Target.FromCell(world, cell), mi.Modifiers.HasModifier(Modifiers.Shift));
 			}
 		}
 

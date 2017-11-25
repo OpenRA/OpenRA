@@ -47,12 +47,12 @@ namespace OpenRA.Traits
 
 		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors, int2 selectionPixel)
 		{
-			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.Bounds, selectionPixel));
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.SelectableBounds, selectionPixel));
 		}
 
 		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel)
 		{
-			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.Bounds, selectionPixel));
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.SelectableBounds, selectionPixel));
 		}
 
 		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel)

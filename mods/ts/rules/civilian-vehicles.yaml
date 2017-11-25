@@ -2,6 +2,7 @@
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1700
 	Tooltip:
@@ -30,7 +31,7 @@
 		LocalOffset: 0,283,580, 0,-283,580
 	AttackTurreted:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50

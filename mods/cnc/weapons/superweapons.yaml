@@ -6,6 +6,7 @@ Atomic:
 		Damage: 150
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -15,12 +16,14 @@ Atomic:
 	Warhead@2Eff_impact: CreateEffect
 		Explosions: nuke_explosion
 		ImpactSounds: nukexplo.aud
+		VictimScanRadius: 0
 	Warhead@3Dam_areanukea: SpreadDamage
 		Spread: 2c512
 		Damage: 110
 		Falloff: 1000, 700, 500, 300, 150, 50, 0
 		Delay: 3
 		ValidTargets: Ground, Air
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -38,12 +41,14 @@ Atomic:
 	Warhead@6Eff_areanukea: CreateEffect
 		ImpactSounds: xplobig4.aud
 		Delay: 3
+		VictimScanRadius: 0
 	Warhead@7Dam_areanukeb: SpreadDamage
 		Spread: 3c768
 		Damage: 50
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 6
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -64,6 +69,7 @@ Atomic:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 9
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		Versus:
 			None: 100
 			Wood: 100
@@ -86,6 +92,7 @@ IonCannon:
 		Damage: 100
 		Falloff: 1000, 1000, 250, 100
 		ValidTargets: Ground, Air, Trees
+		AffectsParent: True
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu_impact: LeaveSmudge
 		SmudgeType: Scorch

@@ -18,11 +18,6 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class AttackBomberInfo : AttackBaseInfo
 	{
-		[Desc("Armament name")]
-		public readonly string Bombs = "primary";
-
-		[Desc("Armament name")]
-		public readonly string Guns = "secondary";
 		public readonly int FacingTolerance = 2;
 
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
@@ -30,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
 	{
-		AttackBomberInfo info;
+		readonly AttackBomberInfo info;
 		[Sync] Target target;
 		[Sync] bool inAttackRange;
 		[Sync] bool facingTarget = true;
@@ -45,44 +40,27 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
-			var bombHeight = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
-			var bombTarget = Target.FromPos(self.CenterPosition - new WVec(WDist.Zero, WDist.Zero, bombHeight));
+			var dat = self.World.Map.DistanceAboveTerrain(target.CenterPosition);
+			target = Target.FromPos(target.CenterPosition - new WVec(WDist.Zero, WDist.Zero, dat));
 			var wasInAttackRange = inAttackRange;
 			var wasFacingTarget = facingTarget;
 
 			inAttackRange = false;
 
-			var f = facing.Value.Facing;
+			var f = facing.Facing;
 			var delta = target.CenterPosition - self.CenterPosition;
 			var facingToTarget = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : f;
 			facingTarget = Math.Abs(facingToTarget - f) % 256 <= info.FacingTolerance;
 
-			// Bombs drop anywhere in range
-			foreach (var a in Armaments.Where(a => a.Info.Name == info.Bombs))
+			foreach (var a in Armaments)
 			{
 				if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
 					continue;
 
 				inAttackRange = true;
-				a.CheckFire(self, facing.Value, bombTarget);
-			}
-
-			// Guns only fire when approaching the target
-			if (facingTarget)
-			{
-				foreach (var a in Armaments.Where(a => a.Info.Name == info.Guns))
-				{
-					if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
-						continue;
-
-					inAttackRange = true;
-
-					var gunPos = self.CenterPosition - new WVec(0, a.MaxRange().Length / 2, 0).Rotate(WRot.FromFacing(f));
-					var gunHeight = self.World.Map.DistanceAboveTerrain(gunPos);
-					a.CheckFire(self, facing.Value, Target.FromPos(gunPos - new WVec(WDist.Zero, WDist.Zero, gunHeight)));
-				}
+				a.CheckFire(self, facing, target);
 			}
 
 			// Actors without armaments may want to trigger an action when it passes the target
@@ -98,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetTarget(World w, WPos pos) { target = Target.FromPos(pos); }
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			OnRemovedFromWorld(self);
 		}

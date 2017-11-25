@@ -42,6 +42,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			// Refuse to take off if it would land immediately again.
+			// Special case: Don't kill other deploy hotkey activities.
+			if (heli.ForceLanding)
+				return NextActivity;
+
 			if (IsCanceled)
 				return NextActivity;
 
@@ -104,7 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			return heli.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
-					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
+					.Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 	}
 }

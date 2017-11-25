@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -22,6 +23,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class WorldInteractionControllerWidget : Widget
 	{
+		public readonly NamedHotkey SelectAllKey = new NamedHotkey();
+		public readonly NamedHotkey SelectSameTypeKey = new NamedHotkey();
+
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
 		int2 dragStart, mousePos;
@@ -242,10 +246,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var key = Hotkey.FromKeyInput(e);
 
-				if (key == Game.Settings.Keys.PauseKey
-					&& (Game.IsHost || (World.LocalPlayer != null && World.LocalPlayer.WinState != WinState.Lost))) // Disable pausing for spectators and defeated players
-					World.SetPauseState(!World.Paused);
-				else if (key == Game.Settings.Keys.SelectAllUnitsKey && !World.IsGameOver)
+				if (key == SelectAllKey.GetValue() && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
 					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
@@ -262,7 +263,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == Game.Settings.Keys.SelectUnitsByTypeKey && !World.IsGameOver)
+				else if (key == SelectSameTypeKey.GetValue() && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
 						return false;
@@ -288,14 +289,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 					World.Selection.Combine(World, newSelection, true, false);
 				}
-				else if (key == Game.Settings.Keys.CycleStatusBarsKey)
-					return CycleStatusBars();
-				else if (key == Game.Settings.Keys.TogglePixelDoubleKey)
-					return TogglePixelDouble();
-				else if (key == Game.Settings.Keys.ToggleMuteKey)
-					return ToggleMute();
-				else if (key == Game.Settings.Keys.TogglePlayerStanceColorsKey)
-					return TogglePlayerStanceColors();
 			}
 
 			return false;
@@ -334,59 +327,6 @@ namespace OpenRA.Mods.Common.Widgets
 			return world.ScreenMap.ActorsInBox(a, b)
 				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
 				.SubsetWithHighestSelectionPriority();
-		}
-
-		bool CycleStatusBars()
-		{
-			if (Game.Settings.Game.StatusBars == StatusBarsType.Standard)
-				Game.Settings.Game.StatusBars = StatusBarsType.DamageShow;
-			else if (Game.Settings.Game.StatusBars == StatusBarsType.DamageShow)
-				Game.Settings.Game.StatusBars = StatusBarsType.AlwaysShow;
-			else if (Game.Settings.Game.StatusBars == StatusBarsType.AlwaysShow)
-				Game.Settings.Game.StatusBars = StatusBarsType.Standard;
-
-			return true;
-		}
-
-		bool TogglePixelDouble()
-		{
-			if (worldRenderer.Viewport.Zoom == 1f)
-				worldRenderer.Viewport.Zoom = 2f;
-			else
-			{
-				// Reset zoom to regular view if it was anything else before
-				// (like a zoom level only reachable by using the scroll wheel).
-				worldRenderer.Viewport.Zoom = 1f;
-			}
-
-			Game.Settings.Graphics.PixelDouble = worldRenderer.Viewport.Zoom == 2f;
-
-			return true;
-		}
-
-		bool ToggleMute()
-		{
-			Game.Settings.Sound.Mute ^= true;
-
-			if (Game.Settings.Sound.Mute)
-			{
-				Game.Sound.MuteAudio();
-				Game.AddChatLine(Color.White, "Battlefield Control", "Audio muted");
-			}
-			else
-			{
-				Game.Sound.UnmuteAudio();
-				Game.AddChatLine(Color.White, "Battlefield Control", "Audio unmuted");
-			}
-
-			return true;
-		}
-
-		bool TogglePlayerStanceColors()
-		{
-			Game.Settings.Game.UsePlayerStanceColors ^= true;
-
-			return true;
 		}
 	}
 }

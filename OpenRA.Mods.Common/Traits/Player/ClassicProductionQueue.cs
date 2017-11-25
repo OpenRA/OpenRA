@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync] bool isActive = false;
 
-		public override void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			// PERF: Avoid LINQ.
 			isActive = false;
@@ -100,12 +101,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (!producers.Any())
 			{
 				CancelProduction(unit.Name, 1);
-				return true;
+				return false;
 			}
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, unit, p.Trait.Faction))
+				var inits = new TypeDictionary
+				{
+					new OwnerInit(self.Owner),
+					new FactionInit(BuildableInfo.GetInitialFaction(unit, p.Trait.Faction))
+				};
+
+				if (p.Trait.Produce(p.Actor, unit, inits))
 				{
 					FinishProduction();
 					return true;

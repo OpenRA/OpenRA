@@ -33,9 +33,6 @@ IntroReinforcements = { "e1", "e1", "e1", "e1", "e1", "e1", "e3", "e3", "e3", "e
 
 NodBaseTrigger = { CPos.New(52, 2), CPos.New(52, 3), CPos.New(52, 4), CPos.New(52, 5), CPos.New(52, 6), CPos.New(52, 7), CPos.New(52, 8) }
 
-Gunboat1PatrolPath = { GunboatLeft1.Location, GunboatRight1.Location }
-Gunboat2PatrolPath = { GunboatLeft2.Location, GunboatRight2.Location }
-
 AirstrikeDelay = DateTime.Minutes(2) + DateTime.Seconds(30)
 
 NodBaseCapture = function()
@@ -194,13 +191,6 @@ Trigger.OnEnteredFootprint(NodBaseTrigger, function(a, id)
 	end
 end)
 
-Trigger.OnKilled(Gunboat1, function()
-	Gunboat1Camera.Destroy()
-end)
-Trigger.OnKilled(Gunboat2, function()
-	Gunboat2Camera.Destroy()
-end)
-
 WorldLoaded = function()
 	player = Player.GetPlayer("Nod")
 	enemy = Player.GetPlayer("GDI")
@@ -210,11 +200,6 @@ WorldLoaded = function()
 
 	StartAI(GDICYard)
 	AutoGuard(enemy.GetGroundAttackers())
-
-	Gunboat1Camera = Actor.Create("camera.boat", true, { Owner = player, Location = Gunboat1.Location })
-	Gunboat2Camera = Actor.Create("camera.boat", true, { Owner = player, Location = Gunboat2.Location })
-	Trigger.OnIdle(Gunboat1, function() Gunboat1.Patrol(Gunboat1PatrolPath) end)
-	Trigger.OnIdle(Gunboat2, function() Gunboat2.Patrol(Gunboat2PatrolPath) end)
 
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -243,14 +228,6 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if not Gunboat1.IsDead then
-		Gunboat1Camera.Teleport(Gunboat1.Location)
-	end
-
-	if not Gunboat2.IsDead then
-		Gunboat2Camera.Teleport(Gunboat2.Location)
-	end
-
 	if DateTime.GameTime > 2 and player.HasNoRequiredUnits() then
 		enemy.MarkCompletedObjective(GDIObjective)
 	end

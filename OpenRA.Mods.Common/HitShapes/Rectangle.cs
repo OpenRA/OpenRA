@@ -13,6 +13,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.HitShapes
@@ -36,10 +37,6 @@ namespace OpenRA.Mods.Common.HitShapes
 		[Desc("Rotates shape by an angle relative to actor facing. Mostly required for buildings on isometric terrain.",
 			"Mobile actors do NOT need this!")]
 		public readonly WAngle LocalYaw = WAngle.Zero;
-
-		// This is just a temporary work-around until we have a customizable PolygonShape
-		[Desc("Applies shape to every TargetablePosition instead of just CenterPosition.")]
-		public readonly bool ApplyToAllTargetablePositions = false;
 
 		int2 quadrantSize;
 		int2 center;
@@ -66,7 +63,10 @@ namespace OpenRA.Mods.Common.HitShapes
 			quadrantSize = (BottomRight - TopLeft) / 2;
 			center = TopLeft + quadrantSize;
 
-			OuterRadius = new WDist(Math.Max(TopLeft.Length, BottomRight.Length));
+			var topRight = new int2(BottomRight.X, TopLeft.Y);
+			var bottomLeft = new int2(TopLeft.X, BottomRight.Y);
+			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
+			OuterRadius = new WDist(corners.Select(x => x.Length).Max());
 
 			combatOverlayVertsTop = new WVec[]
 			{
@@ -87,24 +87,17 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(WVec v)
 		{
-			var r = new int2(
+			var r = new WVec(
 				Math.Max(Math.Abs(v.X - center.X) - quadrantSize.X, 0),
-				Math.Max(Math.Abs(v.Y - center.Y) - quadrantSize.Y, 0));
+				Math.Max(Math.Abs(v.Y - center.Y) - quadrantSize.Y, 0), 0);
 
-			return new WDist(r.Length);
+			return new WDist(r.HorizontalLength);
 		}
 
 		public WDist DistanceFromEdge(WPos pos, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
 			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
-
-			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>();
-			if (ApplyToAllTargetablePositions && targetablePositions.Any())
-			{
-				var positions = targetablePositions.SelectMany(tp => tp.TargetablePositions(actor));
-				actorPos = positions.PositionClosestTo(pos);
-			}
 
 			if (pos.Z > actorPos.Z + VerticalTopOffset)
 				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
@@ -120,25 +113,12 @@ namespace OpenRA.Mods.Common.HitShapes
 			var actorPos = actor.CenterPosition;
 			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
 
-			var targetablePositions = actor.TraitsImplementing<ITargetablePositions>();
-			if (ApplyToAllTargetablePositions && targetablePositions.Any())
-			{
-				var positions = targetablePositions.SelectMany(tp => tp.TargetablePositions(actor));
-				foreach (var pos in positions)
-				{
-					var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(pos + v.Rotate(orientation)));
-					var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(pos + v.Rotate(orientation)));
-					wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
-					wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
-				}
-			}
-			else
-			{
-				var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-				var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-				wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
-				wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
-			}
+			var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
+			var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
+			wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
+			wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
+
+			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			base.RulesetLoaded(rules, ai);
-			PausedByDefault = PauseOnCondition != null && PauseOnCondition.Evaluate(NoConditions);
+			PausedByDefault = PauseOnCondition != null && PauseOnCondition.Evaluate(VariableExpression.NoVariables);
 		}
 	}
 

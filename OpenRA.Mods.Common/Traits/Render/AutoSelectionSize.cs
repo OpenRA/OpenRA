@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Automatically calculates the targetable area and screen map boundaries from the sprite size.")]
-	public class AutoSelectionSizeInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class AutoSelectionSizeInfo : ITraitInfo, Requires<RenderSpritesInfo>, IAutoSelectionSizeInfo
 	{
 		public object Create(ActorInitializer init) { return new AutoSelectionSize(this); }
 	}

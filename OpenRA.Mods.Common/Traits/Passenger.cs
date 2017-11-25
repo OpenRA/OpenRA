@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "EnterTransport" || order.OrderID == "EnterTransports")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.CancelActivity();
 				var transports = order.OrderString == "EnterTransports";
-				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, transports));
+				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
 			}
 		}
 
@@ -120,7 +120,8 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void RemovedFromWorld(Actor self) { Unreserve(self); }
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { Unreserve(self); }
+
 		public void Unreserve(Actor self)
 		{
 			if (ReservedCargo == null)

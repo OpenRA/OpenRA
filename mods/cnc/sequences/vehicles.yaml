@@ -336,3 +336,15 @@ apc.destroyed:
 	turret: apctur
 		Facings: 32
 		ZOffset: -512
+
+truck:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	icon: truckicon
+
+truck.destroyed:
+	idle: truck
+		Facings: 32
+		UseClassicFacingFudge: True
+		ZOffset: -512

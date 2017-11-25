@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				chronosphere = init.Get<ChronoshiftChronosphereInit, Actor>();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			iPositionable = self.TraitOrDefault<IPositionable>();
 		}
@@ -101,8 +101,14 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 
 			// Set up return-to-origin info
-			Origin = self.Location;
-			ReturnTicks = duration;
+			// If this actor is already counting down to return to
+			// an existing location then we shouldn't override it
+			if (ReturnTicks <= 0)
+			{
+				Origin = self.Location;
+				ReturnTicks = duration;
+			}
+
 			this.duration = duration;
 			this.chronosphere = chronosphere;
 			this.killCargo = killCargo;

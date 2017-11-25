@@ -2,6 +2,7 @@ BGGY:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -30,7 +31,7 @@ BGGY:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
@@ -39,6 +40,7 @@ BIKE:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -69,12 +71,17 @@ BIKE:
 		LocalOffset: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
+	DamagedByTerrain@VEINS:
+		RequiresCondition: !inside-tunnel && !rank-elite
+	LeavesTrails@VEINS:
+		RequiresCondition: !inside-tunnel && !rank-elite
 
 TTNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -134,6 +141,7 @@ TTNK:
 	AttackFrontal:
 		Voice: Attack
 		RequiresCondition: undeployed
+		PauseOnCondition: empdisable
 	Turreted:
 		TurnSpeed: 6
 		Turret: deployed
@@ -150,7 +158,9 @@ TTNK:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -170,7 +180,10 @@ TTNK:
 	Armor@deployed:
 		Type: Concrete
 		RequiresCondition: deployed
-	AutoTarget:
+	DetectCloaked:
+		Range: 1c768
+		RequiresCondition: rank-elite
+	RenderDetectionCircle:
 	Carryable:
 		RequiresCondition: undeployed
 	RevealOnFire:
@@ -182,6 +195,7 @@ ART2:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -242,7 +256,9 @@ ART2:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -252,7 +268,6 @@ ART2:
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 	WithMuzzleOverlay:
-	AutoTarget:
 	Carryable:
 		RequiresCondition: undeployed
 	RevealOnFire:
@@ -287,6 +302,10 @@ REPAIR:
 		ForceTargetStances: None
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Vehicles
 
 WEED:
 	Inherits: ^Tank
@@ -379,6 +398,7 @@ SUBTANK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -413,7 +433,7 @@ SUBTANK:
 		Weapon: FireballLauncher
 	AttackFrontal:
 		Voice: Attack
-	AutoTarget:
+		PauseOnCondition: empdisable
 	WithVoxelBody:
 		RequiresCondition: !submerged
 	Targetable:
@@ -423,6 +443,7 @@ STNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -451,7 +472,7 @@ STNK:
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
-		RequiresCondition: !cloak-force-disabled
+		RequiresCondition: !cloak-force-disabled && !empdisable
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -460,7 +481,13 @@ STNK:
 		LocalOffset: 301,61,421, 301,-61,421
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	-MustBeDestroyed:
+	Explodes:
+		RequiresCondition: !rank-elite
+	Explodes@ELITE:
+		RequiresCondition: rank-elite
+		Weapon: UnitExplode

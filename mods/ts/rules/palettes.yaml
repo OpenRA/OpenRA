@@ -126,12 +126,12 @@
 	FixedColorPalette@GreenTiberium:
 		Base: player
 		Name: greentiberium
-		Color: 7EFF01
+		Color: 20CF08
 		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 	FixedColorPalette@BlueTiberium:
 		Base: player
 		Name: bluetiberium
-		Color: 5980FF
+		Color: 4040E8
 		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 	PlayerColorPalette:
 		BasePalette: player
@@ -147,4 +147,4 @@
 	PlayerHighlightPalette:
 	MenuPaletteEffect:
 	GlobalLightingPaletteEffect:
-		ExcludePalettes: cursor, chrome, colorpicker, fog, shroud, alpha, effect-ignore-lighting, effect-ignore-lighting-alpha25, effect-ignore-lighting-alpha50, effect-ignore-lighting-alpha75
+		ExcludePalettes: cursor, chrome, colorpicker, fog, shroud, alpha, effect-ignore-lighting, effect-ignore-lighting-alpha25, effect-ignore-lighting-alpha50, effect-ignore-lighting-alpha75, greentiberium, bluetiberium

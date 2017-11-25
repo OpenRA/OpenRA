@@ -145,7 +145,7 @@ Background@MUSIC_PANEL:
 			X: 15
 			Y: 135
 			Width: 330
-			Height: 80
+			Height: 60
 			Visible: false
 			Children:
 				Label@TITLE:
@@ -165,13 +165,7 @@ Background@MUSIC_PANEL:
 					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
-					Text: from the "Manage Content" menu
-				Label@DESCC:
-					Y: 60
-					Width: PARENT_RIGHT - 24
-					Height: 25
-					Align: Center
-					Text: in the mod chooser.
+					Text: from the "Manage Content" menu.
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 140
 			Y: PARENT_BOTTOM - 45

@@ -62,13 +62,13 @@ namespace OpenRA.Mods.Common.Traits
 			cachedVRange = WDist.Zero;
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
 			proximityTrigger = self.World.ActorMap.AddProximityTrigger(cachedPosition, cachedRange, cachedVRange, ActorEntered, ActorExited);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.ActorMap.RemoveProximityTrigger(proximityTrigger);
 		}
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			desiredVRange = WDist.Zero;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (self.CenterPosition != cachedPosition || desiredRange != cachedRange || desiredVRange != cachedVRange)
 			{
@@ -156,7 +156,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			tokens.Remove(a);
 			foreach (var external in a.TraitsImplementing<ExternalCondition>())
-				external.TryRevokeCondition(a, self, token);
+				if (external.TryRevokeCondition(a, self, token))
+					break;
 		}
 	}
 }

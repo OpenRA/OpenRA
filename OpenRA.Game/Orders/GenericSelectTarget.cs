@@ -10,13 +10,14 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
 	public class GenericSelectTarget : UnitOrderGenerator
 	{
+		public readonly string OrderName;
 		protected readonly IEnumerable<Actor> Subjects;
-		protected readonly string OrderName;
 		protected readonly string Cursor;
 		protected readonly MouseButton ExpectedButton;
 
@@ -49,8 +50,10 @@ namespace OpenRA.Orders
 			if (mi.Button == ExpectedButton && world.Map.Contains(cell))
 			{
 				world.CancelInputMode();
+
+				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 				foreach (var subject in Subjects)
-					yield return new Order(OrderName, subject, false) { TargetLocation = cell };
+					yield return new Order(OrderName, subject, Target.FromCell(world, cell), queued);
 			}
 		}
 

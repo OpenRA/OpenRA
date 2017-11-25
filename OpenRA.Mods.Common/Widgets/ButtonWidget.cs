@@ -19,13 +19,10 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
-		public Func<ButtonWidget, Hotkey> GetKey = _ => Hotkey.Invalid;
 
-		public Hotkey Key
-		{
-			get { return GetKey(this); }
-			set { GetKey = _ => value; }
-		}
+		public NamedHotkey Key = new NamedHotkey();
+		public bool DisableKeyRepeat = false;
+		public bool DisableKeySound = false;
 
 		[Translate] public string Text = "";
 		public string Background = "button";
@@ -54,6 +51,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		[Translate] public string TooltipText;
 		public Func<string> GetTooltipText;
+		[Translate] public string TooltipDesc;
+		public Func<string> GetTooltipDesc;
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => { };
@@ -77,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
 			GetTooltipText = () => TooltipText;
+			GetTooltipDesc = () => TooltipDesc;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -115,6 +115,8 @@ namespace OpenRA.Mods.Common.Widgets
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipText = other.TooltipText;
 			GetTooltipText = other.GetTooltipText;
+			TooltipDesc = other.TooltipDesc;
+			GetTooltipDesc = other.GetTooltipDesc;
 			TooltipContainer = other.TooltipContainer;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -128,15 +130,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != Key || e.Event != KeyInputEvent.Down)
+			if (Hotkey.FromKeyInput(e) != Key.GetValue() || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
 
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
+				if (!DisableKeySound)
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
 			}
-			else
+			else if (!DisableKeySound)
 				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
 
 			return true;
@@ -195,7 +198,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs { { "button", this }, { "getText", GetTooltipText } });
+				new WidgetArgs { { "button", this }, { "getText", GetTooltipText }, { "getDesc", GetTooltipDesc } });
 		}
 
 		public override void MouseExited()

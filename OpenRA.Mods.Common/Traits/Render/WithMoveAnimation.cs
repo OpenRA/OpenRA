@@ -14,44 +14,49 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithMoveAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<IMoveInfo>
+	public class WithMoveAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<IMoveInfo>
 	{
 		[Desc("Displayed while moving.")]
 		[SequenceReference] public readonly string MoveSequence = "move";
 
 		[Desc("Which sprite body to modify.")]
-		public readonly string[] BodyNames = { "body" };
+		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			var matches = ai.TraitInfos<WithSpriteBodyInfo>().Count(w => w.Name == Body);
+			if (matches != 1)
+				throw new YamlException("WithMoveAnimation needs exactly one sprite body with matching name.");
+
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
-	public class WithMoveAnimation : ITick
+	public class WithMoveAnimation : ConditionalTrait<WithMoveAnimationInfo>, ITick
 	{
-		readonly WithMoveAnimationInfo info;
 		readonly IMove movement;
-		readonly WithSpriteBody[] wsbs;
+		readonly WithSpriteBody wsb;
 
 		public WithMoveAnimation(ActorInitializer init, WithMoveAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			movement = init.Self.Trait<IMove>();
-			wsbs = init.Self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.Body);
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			if (IsTraitDisabled || wsb.IsTraitDisabled)
+				return;
+
 			var isMoving = movement.IsMoving && !self.IsDead;
 
-			foreach (var wsb in wsbs)
-			{
-				if (wsb.IsTraitDisabled)
-					continue;
+			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != Info.MoveSequence))
+				return;
 
-				if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != info.MoveSequence))
-					continue;
-
-				wsb.DefaultAnimation.ReplaceAnim(isMoving ? info.MoveSequence : wsb.Info.Sequence);
-			}
+			wsb.DefaultAnimation.ReplaceAnim(isMoving ? Info.MoveSequence : wsb.Info.Sequence);
 		}
 	}
 }

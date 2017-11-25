@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 
-			Map.Save(ZipFileLoader.Create(dest, new Folder(".")));
+			Map.Save(ZipFileLoader.Create(dest));
 			Console.WriteLine(dest + " saved.");
 		}
 

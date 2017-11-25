@@ -7,7 +7,7 @@ FireballLauncher:
 		Image: FLAMEALL
 		Inaccuracy: 384
 	Burst: 5
-	BurstDelay: 5
+	BurstDelays: 5
 	Warhead@1Dam: SpreadDamage
 		Spread: 288
 		Falloff: 100, 50, 25, 12, 6, 3, 0
@@ -26,8 +26,9 @@ FireballLauncher:
 Bomb:
 	ReloadDelay: 60
 	Burst: 5
-	BurstDelay: 6
+	BurstDelays: 6
 	Range: 2c512
+	TargetActorCenter: true
 	Projectile: GravityBomb
 		Velocity: 72, 0, -90
 		Acceleration: 0, 0, -8
@@ -49,12 +50,13 @@ Bomb:
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew09.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
@@ -84,15 +86,18 @@ FiendShard:
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 
 SlimeAttack:
 	ReloadDelay: 80
 	Range: 1c384
 	Report: vicer1.aud
 	Projectile: InstantHit
-	Warhead@1Dam: TargetDamage
+	InvalidTargets: Wall, Bridge
+	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		InvalidTargets: Wall, Bridge
 		Versus:
 			Light: 60
 			Heavy: 40
@@ -105,7 +110,7 @@ Tentacle:
 	Report: floatk1.aud
 	Projectile: InstantHit
 	InvalidTargets: Wall, Bridge
-	Warhead@1Dam: TargetDamage
+	Warhead@1Dam: SpreadDamage
 		Damage: 160
 		InvalidTargets: Wall, Bridge
 		Versus:
@@ -148,12 +153,13 @@ Veins:
 	Warhead@2Eff: CreateEffect
 		Explosions: tiny_twlt
 		ExplosionPalette: effect-ignore-lighting-alpha75
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall

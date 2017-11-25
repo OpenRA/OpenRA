@@ -62,15 +62,17 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage,
-	INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
+	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
 		bool isDocking;
 		ConditionManager conditionManager;
+		Cloak[] otherCloaks;
 
 		CPos? lastPos;
 		bool wasCloaked = false;
+		bool firstTick = true;
 		int cloakedToken = ConditionManager.InvalidConditionToken;
 
 		public Cloak(CloakInfo info)
@@ -79,9 +81,12 @@ namespace OpenRA.Mods.Common.Traits
 			remainingTime = info.InitialDelay;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			otherCloaks = self.TraitsImplementing<Cloak>()
+				.Where(c => c != this)
+				.ToArray();
 
 			if (Cloaked)
 			{
@@ -89,6 +94,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 			}
+
+			base.Created(self);
 		}
 
 		public bool Cloaked { get { return !IsTraitDisabled && remainingTime <= 0; } }
@@ -137,9 +144,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (remainingTime > 0 && !isDocking)
 					remainingTime--;
 
-				if (self.IsDisabled())
-					Uncloak();
-
 				if (Info.UncloakOn.HasFlag(UncloakType.Move) && (lastPos == null || lastPos.Value != self.Location))
 				{
 					Uncloak();
@@ -153,7 +157,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (conditionManager != null && cloakedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CloakedCondition))
 					cloakedToken = conditionManager.GrantCondition(self, Info.CloakedCondition);
 
-				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
+				// Sounds shouldn't play if the actor starts cloaked
+				if (!(firstTick && Info.InitialDelay == 0) && !otherCloaks.Any(a => a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.CloakSound, self.CenterPosition);
 			}
 			else if (!isCloaked && wasCloaked)
@@ -161,12 +166,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (cloakedToken != ConditionManager.InvalidConditionToken)
 					cloakedToken = conditionManager.RevokeCondition(self, cloakedToken);
 
-				if (!self.TraitsImplementing<Cloak>().Any(a => a != this && a.Cloaked))
+				if (!(firstTick && Info.InitialDelay == 0) && !otherCloaks.Any(a => a.Cloaked))
 					Game.Sound.Play(SoundType.World, Info.UncloakSound, self.CenterPosition);
 			}
 
 			wasCloaked = isCloaked;
+			firstTick = false;
 		}
+
+		protected override void TraitDisabled(Actor self) { Uncloak(); }
 
 		public bool IsVisible(Actor self, Player viewer)
 		{
@@ -206,6 +214,24 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyHarvesterAction.Undocked()
 		{
 			isDocking = false;
+		}
+
+		void INotifyUnload.Unloading(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Unload))
+				Uncloak();
+		}
+
+		void INotifyDemolition.Demolishing(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Demolish))
+				Uncloak();
+		}
+
+		void INotifyInfiltration.Infiltrating(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
+				Uncloak();
 		}
 	}
 }

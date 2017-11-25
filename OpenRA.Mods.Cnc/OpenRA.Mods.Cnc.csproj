@@ -41,6 +41,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -64,9 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CncLoadScreen.cs" />
-    <Compile Include="Traits\AttackPopupTurreted.cs" />
+    <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
+    <Compile Include="Traits\Render\WithEmbeddedTurretSpriteBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
     <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
     <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
     <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
+    <Compile Include="Traits\Render\WithBuildingBib.cs" />
     <Compile Include="Traits\Render\WithDockingOverlay.cs" />
     <Compile Include="Traits\Render\WithPermanentInjury.cs" />
     <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
@@ -97,7 +100,7 @@
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Effects\GpsDot.cs" />
+    <Compile Include="Effects\GpsDotEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Projectiles\TeslaZap.cs" />
@@ -134,6 +137,28 @@
     <Compile Include="UtilityCommands\ImportRedAlertLegacyMapCommand.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />
     <Compile Include="TraitsInterfaces.cs" />
+    <Compile Include="FileSystem\BagFile.cs" />
+    <Compile Include="FileSystem\BigFile.cs" />
+    <Compile Include="FileSystem\MixFile.cs" />
+    <Compile Include="FileSystem\PackageEntry.cs" />
+    <Compile Include="FileSystem\Pak.cs" />
+    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
+    <Compile Include="FileFormats\Blowfish.cs" />
+    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
+    <Compile Include="FileFormats\IdxEntry.cs" />
+    <Compile Include="FileFormats\IdxReader.cs" />
+    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
+    <Compile Include="FileFormats\XccLocalDatabase.cs" />
+    <Compile Include="FileFormats\CRC32.cs" />
+    <Compile Include="Graphics\VoxelModelSequenceLoader.cs" />
+    <Compile Include="Graphics\VoxelLoader.cs" />
+    <Compile Include="Graphics\Voxel.cs" />
+    <Compile Include="FileFormats\HvaReader.cs" />
+    <Compile Include="FileFormats\VxlReader.cs" />
+    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
+    <Compile Include="Traits\TDGunboat.cs" />
+    <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
+    <Compile Include="Traits\GpsDot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
@@ -171,17 +196,17 @@
       SourceFiles="$(TargetPath)"
       DestinationFolder="$(SolutionDir)mods/common/"/>
     <!--
-        We need to copy OpenRA.Mods.Cnc.pdb (not `.dll.pdb`). This is only necessary on Windows.
-        Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
+      csc generates .pdb symbol files (not `.dll.pdb`).
+      mcs generates .dll.mdb symbol files.
     -->
     <Copy
       SourceFiles="$(TargetDir)$(TargetName).pdb"
       DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Windows_NT'"/>
+      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
     <Copy
       SourceFiles="$(TargetPath).mdb"
       DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Unix'"/>
+      Condition="Exists('$(TargetPath).mdb')"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

@@ -1,10 +1,12 @@
 ^concrete:
 	AlwaysVisible:
 	Building:
-		Adjacent: 4
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	LaysTerrain:
 		Template: 88
 		TerrainTypes: Rock
@@ -53,17 +55,21 @@ construction_yard:
 		Description: Produces structures.
 	-DamagedByTerrain:
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-		Adjacent: 4
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	LaysTerrain:
 		TerrainTypes: Rock
 		Template: 88
-	Bib:
+	WithBuildingBib:
 	Selectable:
 		Bounds: 96,64
 	Health:
 		HP: 3000
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
 	Armor:
 		Type: cy
 	RevealsShroud:
@@ -129,11 +135,16 @@ wind_trap:
 	Tooltip:
 		Name: Wind Trap
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3000
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -170,11 +181,16 @@ barracks:
 	Tooltip:
 		Name: Barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
-	Bib:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3200
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -246,11 +262,20 @@ refinery:
 	Tooltip:
 		Name: Spice Refinery
 	Building:
-		Footprint: =xx xx=
-		Dimensions: 3,2
-	Bib:
+		Footprint: =xx xx= ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3000
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -1024
+			BottomRight: 1536, 0
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1536, 0
+			BottomRight: 512, 1024
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -300,7 +325,7 @@ silo:
 		Cost: 120
 	Tooltip:
 		Name: Silo
-	Building:
+	RequiresBuildableArea:
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
@@ -350,11 +375,17 @@ light_factory:
 	Tooltip:
 		Name: Light Factory
 	Building:
-		Footprint: xxx xx=
-		Dimensions: 3,2
-	Bib:
+		Footprint: xxx xx= ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3300
+	HitShape:
+		TargetableOffsets: -210,608,0
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
 	Armor:
 		Type: light
 	RevealsShroud:
@@ -428,11 +459,21 @@ heavy_factory:
 	Tooltip:
 		Name: Heavy Factory
 	Building:
-		Footprint: _x_ xxx =xx
-		Dimensions: 3,3
-	Bib:
+		Footprint: _x_ xxx =xX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3500
+	HitShape:
+		TargetableOffsets: -1155,-704,0, -1365,832,0
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 1536
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, -512
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -494,11 +535,7 @@ heavy_factory:
 
 outpost:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
@@ -513,11 +550,16 @@ outpost:
 	Tooltip:
 		Name: Outpost
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Bib:
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3500
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
 	Armor:
 		Type: light
 	RevealsShroud:
@@ -544,7 +586,6 @@ outpost:
 
 starport:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
 	Tooltip:
 		Name: Starport
 	Buildable:
@@ -563,6 +604,14 @@ starport:
 		Bounds: 96,64
 	Health:
 		HP: 3500
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 1536, 512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -512, 512
+			BottomRight: 512, 1536
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -629,13 +678,12 @@ wall:
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
-		Adjacent: 7
 		TerrainTypes: Rock, Concrete
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	Health:
 		HP: 2000
-		Shape: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
 	Armor:
 		Type: wall
 	RevealsShroud:
@@ -652,7 +700,6 @@ wall:
 	Targetable:
 		TargetTypes: Ground, Wall
 	WithWallSpriteBody:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
@@ -663,9 +710,16 @@ wall:
 		Weapons: Debris2, Debris3
 		Pieces: 1, 1
 		Range: 1c512, 2c768
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	EditorTilesetFilter:
+		Categories: Defense
 
 medium_gun_turret:
 	Inherits: ^Defense
+	Inherits@AUTOTARGET: ^AutoTargetGround
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
@@ -678,8 +732,9 @@ medium_gun_turret:
 	Tooltip:
 		Name: Gun Turret
 	Building:
-		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	RequiresBuildableArea:
+		Adjacent: 4
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
@@ -708,7 +763,10 @@ medium_gun_turret:
 
 large_gun_turret:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@AUTOTARGET: ^AutoTargetGround
+	AttackTurreted:
+		PauseOnCondition: disabled
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
@@ -721,8 +779,9 @@ large_gun_turret:
 	Tooltip:
 		Name: Rocket Turret
 	Building:
-		Adjacent: 4
 		BuildSounds: CHUNG.WAV
+	RequiresBuildableArea:
+		Adjacent: 4
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Selectable:
@@ -742,10 +801,6 @@ large_gun_turret:
 	Turreted:
 		TurnSpeed: 8
 		InitialFacing: 128
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Power:
 		Amount: -60
 	SelectionDecorations:
@@ -767,10 +822,18 @@ repair_pad:
 	Tooltip:
 		Name: Repair Pad
 	Building:
-		Footprint: =x= =x= ===
+		Footprint: =x= xxx =x=
 		Dimensions: 3,3
 	Health:
 		HP: 3000
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 512
+	HitShape@TOPANDBOTTOM:
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, 1536
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -821,11 +884,22 @@ high_tech_factory:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
 	Building:
-		Footprint: _x_ xxx xxx
-		Dimensions: 3,3
-	Bib:
+		Footprint: _X_ xxx XXX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 3500
+	HitShape:
+		TargetableOffsets: -1312,0,0, -1312,-1024,0, -1312,1024,0
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 1536
+	HitShape@TOP:
+		TargetableOffsets: 1280,0,0
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, -512
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -887,11 +961,22 @@ research_centre:
 	Tooltip:
 		Name: IX Research Center
 	Building:
-		Footprint: _x_ xxx xxx
-		Dimensions: 3,3
-	Bib:
+		Footprint: _X_ xxx XXX ===
+		Dimensions: 3,4
+		LocalCenterOffset: 0,-512,0
+	WithBuildingBib:
 	Health:
 		HP: 2500
+	HitShape:
+		TargetableOffsets: -1574,-158,0, -1050,-1024,0, -1155,960,0
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 1536
+	HitShape@TOP:
+		TargetableOffsets: 1312,0,0
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 512, -512
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -913,7 +998,7 @@ research_centre:
 
 palace:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
@@ -930,10 +1015,22 @@ palace:
 	Building:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
-	Bib:
+	WithBuildingBib:
 		HasMinibib: True
 	Health:
 		HP: 4000
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -512
+			BottomRight: 1536, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 512, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -512, 512
+			BottomRight: 1536, 1536
 	Armor:
 		Type: wood
 	RevealsShroud:
@@ -969,13 +1066,18 @@ palace:
 		EndChargeSpeechNotification: DeathHandMissileReady
 		MissileLaunchDetected: MissileLaunchDetected
 		MissileWeapon: atomic
+		MissileDelay: 19
 		SpawnOffset: -512,1c171,0
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraRange: 10c0
-		ActivationSequence:
 		ArrowSequence: arrow
 		CircleSequence: circles
+	WithNukeLaunchOverlay:
+		RequiresCondition: !launchpad-damaged
+	GrantConditionOnDamageState@LAUNCHPADDAMAGED:
+		Condition: launchpad-damaged
+		ValidDamageState: Medium, Heavy, Critical
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
@@ -1011,10 +1113,6 @@ palace:
 		ExitCell: 0,3
 	Production:
 		Produces: Palace
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-	RequiresPower:
 	SupportPowerChargeBar:
 	ProvidesPrerequisite@buildingname:
 

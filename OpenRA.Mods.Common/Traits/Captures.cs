@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can capture other actors which have the Capturable: trait.")]
-	public class CapturesInfo : ITraitInfo
+	public class CapturesInfo : ConditionalTraitInfo
 	{
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
 		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
@@ -41,22 +41,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new Captures(this); }
+		public override object Create(ActorInitializer init) { return new Captures(this); }
 	}
 
-	public class Captures : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Captures : ConditionalTrait<CapturesInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public readonly CapturesInfo Info;
-
 		public Captures(CapturesInfo info)
-		{
-			Info = info;
-		}
+			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					yield break;
+
 				yield return new CaptureOrderTargeter(Info);
 			}
 		}
@@ -66,10 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID != "CaptureActor")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -79,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "CaptureActor")
+			if (order.OrderString != "CaptureActor" || IsTraitDisabled)
 				return;
 
 			var target = self.ResolveFrozenActorOrder(order, Color.Red);
@@ -105,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
+				var c = target.TraitOrDefault<Capturable>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
 					cursor = capturesInfo.EnterBlockedCursor;
@@ -113,15 +109,18 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var health = target.Trait<Health>();
-				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP / 100;
+				var lowEnoughHealth = health.HP <= c.Info.CaptureThreshold * health.MaxHP / 100;
 
 				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
+
 				return true;
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
+				// TODO: This doesn't account for disabled traits.
+				// Actors with FrozenUnderFog should not disable the Capturable trait.
 				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
 				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{

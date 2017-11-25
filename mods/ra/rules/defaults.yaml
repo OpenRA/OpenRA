@@ -12,6 +12,35 @@
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
+	AutoRenderSize:
+
+^1x1Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+
+^2x1Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 512
+
+^2x2Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+
+^3x2Shape:
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 1536, 1024
 
 ^GainsExperience:
 	GainsExperience:
@@ -129,11 +158,58 @@
 	ExternalCondition@INVULNERABILITY:
 		Condition: invulnerability
 
+^AutoTargetGround:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Defense
+		InvalidTargets: NoAutoTarget, WaterStructure
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetGroundAssaultMove:
+	Inherits: ^AutoTargetGround
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
+^AutoTargetAir:
+	AutoTarget:
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Air
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAll:
+	AutoTarget:
+		AttackAnythingCondition: stance-attackanything
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Defense
+		InvalidTargets: NoAutoTarget, WaterStructure
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything
+		ValidTargets: Infantry, Vehicle, Tank, Water, Underwater, Air, Structure, Defense
+		InvalidTargets: NoAutoTarget
+
+^AutoTargetAllAssaultMove:
+	Inherits: ^AutoTargetAll
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
-	Inherits@3: ^IronCurtainable
-	Inherits@4: ^SpriteActor
+	Inherits@2: ^IronCurtainable
+	Inherits@3: ^SpriteActor
 	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
@@ -172,14 +248,8 @@
 	Guardable:
 	Tooltip:
 		GenericName: Vehicle
-	EjectOnDeath:
-		PilotActor: e1
-		SuccessRate: 20
-		EjectOnGround: true
-		EjectInAir: false
-		AllowUnsuitableCell: false
 	Capturable:
-		Type: vehicle
+		Types: vehicle
 		CaptureThreshold: 100
 		CancelActivity: True
 	CaptureNotification:
@@ -209,6 +279,9 @@
 		RequiresCondition: parachute
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -237,8 +310,6 @@
 	DrawLineToTarget:
 	Health:
 		HP: 25
-		Shape: Circle
-			Radius: 128
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -324,12 +395,16 @@
 		OpeningSequence: open
 		Offset: 0,0,427
 		RequiresCondition: parachute
+	HitShape:
+		Type: Circle
+			Radius: 128
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^Soldier:
 	Inherits: ^Infantry
 	UpdatesPlayerStatistics:
 	MustBeDestroyed:
-	AutoTarget:
 	ProximityCaptor:
 		Types: Infantry
 	TakeCover:
@@ -352,7 +427,7 @@
 		Name: Civilian
 		GenericVisibility: None
 	RevealsShroud:
-		Range: 2c0
+		Range: 3c0
 	ProximityCaptor:
 		Types: CivilianInfantry
 	ScaredyCat:
@@ -361,8 +436,11 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	EditorTilesetFilter:
+		Categories: Civilian infantry
 
 ^ArmedCivilian:
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Armament:
 		Weapon: Pistol
 	AttackFrontal:
@@ -386,7 +464,7 @@
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground, Water, Repair
+		TargetTypes: Ground, Water, Ship, Repair
 	HiddenUnderFog:
 	AttackMove:
 	ActorLostNotification:
@@ -409,9 +487,11 @@
 	MustBeDestroyed:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Naval
 	Voiced:
 		VoiceSet: VehicleVoice
 	WithFacingSpriteBody:
+	HitShape:
 
 ^NeutralPlane:
 	Inherits@1: ^ExistsInWorld
@@ -428,7 +508,6 @@
 		Bounds: 24,24
 	Aircraft:
 		RepairBuildings: fix
-		RearmBuildings: afld
 		AirborneCondition: airborne
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
@@ -463,6 +542,14 @@
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: GenericVoice
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
+	SpawnActorOnDeath:
+		RequiresCondition: airborne
+	Explodes:
+		Weapon: UnitExplode
+		RequiresCondition: !airborne
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -473,9 +560,11 @@
 	Tooltip:
 		GenericName: Helicopter
 	Aircraft:
-		RearmBuildings: hpad
 		CanHover: True
 		CruisingCondition: cruising
+		WaitDistanceFromResupplyBase: 4c0
+		TakeOffOnResupply: true
+		VTOL: true
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
@@ -487,6 +576,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -498,6 +588,8 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+	RequiresBuildableArea:
+		AreaTypes: building
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
@@ -518,12 +610,16 @@
 	Tooltip:
 		GenericName: Structure
 	Demolishable:
+	EditorTilesetFilter:
+		Categories: Building
+	CommandBarBlacklist:
 
 ^Building:
 	Inherits: ^BasicBuilding
 	Huntable:
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
+		AreaTypes: building
 	RepairableBuilding:
 		PlayerExperience: 25
 	EngineerRepairable:
@@ -551,7 +647,6 @@
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	AutoTarget:
 	-GivesBuildableArea:
 	-AcceptsDeliveredCash:
 	DrawLineToTarget:
@@ -559,16 +654,22 @@
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
+	EditorTilesetFilter:
+		Categories: Defense
+	-CommandBarBlacklist:
 
 ^Wall:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: placbldg.aud
-		Adjacent: 7
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	SoundOnDamageTransition:
 		DamagedSounds: sandbag2.aud
 		DestroyedSounds: sandbag2.aud
@@ -580,11 +681,11 @@
 	LineBuildNode:
 		Types: wall
 	Targetable:
-		TargetTypes: Ground, DetonateAttack, Wall
+		TargetTypes: Ground, DetonateAttack, Wall, NoAutoTarget
+	-GivesExperience:
 	RenderSprites:
 		Palette: effect
 	WithWallSpriteBody:
-	AutoTargetIgnore:
 	Sellable:
 		SellSounds: cashturn.aud
 	Guardable:
@@ -592,9 +693,8 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 100
-		Shape: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^Gate:
 	Inherits: ^BasicBuilding
@@ -612,12 +712,16 @@
 	Tooltip:
 		Name: Gate
 	Gate:
-		Adjacent: 4
 		BlocksProjectilesHeight: 0
 		BuildSounds: place2.aud
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
+	EditorTilesetFilter:
+		Categories: Wall
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -630,6 +734,8 @@
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
+	EditorTilesetFilter:
+		Categories: Tech building
 
 ^FakeBuilding:
 	Inherits: ^Building
@@ -649,6 +755,8 @@
 		ZOffset: 256
 	-EmitInfantryOnSell:
 	-MustBeDestroyed:
+	EditorTilesetFilter:
+		Categories: Fake
 
 ^InfiltratableFake:
 	Targetable:
@@ -673,11 +781,14 @@
 		Weapon: UnitExplode
 	Tooltip:
 		Name: Ammo Box
-	AutoTargetIgnore:
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
 		Type: Light
-	Targetable:
-		TargetTypes: Ground, DetonateAttack
+	EditorTilesetFilter:
+		Categories: Decoration
+	CustomRenderSize:
+		CustomBounds: 24,24
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -685,6 +796,7 @@
 		Palette: terrain
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Civilian building
 	SpawnActorOnDeath@1:
 		Actor: c1
 		Probability: 40
@@ -699,6 +811,9 @@
 
 ^CivField:
 	Inherits: ^CivBuilding
+	-HitShape:
+	-Health:
+	-Explodes:
 	-Selectable:
 	-SelectionDecorations:
 	Tooltip:
@@ -710,6 +825,7 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	Tooltip:
 		Name: Tree
 		ShowOwnerRow: false
@@ -743,14 +859,16 @@
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
-	AutoTargetIgnore:
 	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Tree
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
+	RenderSprites:
+		Palette: terrain
 	AppearsOnRadar:
 	Building:
 		Footprint: x
@@ -761,6 +879,8 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
+	EditorTilesetFilter:
+		Categories: Tree
 
 ^BasicHusk:
 	Inherits@1: ^SpriteActor
@@ -770,9 +890,11 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
-	AutoTargetIgnore:
 	ScriptTriggers:
 	WithFacingSpriteBody:
+	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^Husk:
 	Inherits: ^BasicHusk
@@ -781,15 +903,15 @@
 	Burns:
 		Damage: 2
 	Capturable:
-		Type: husk
-		AllowAllies: true
+		Types: husk
 		CaptureThreshold: 100
+		ValidStances: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	WithColoredOverlay@IDISABLE:
 		Palette: disabled
 	Targetable:
-		TargetTypes: Ground, Husk
+		TargetTypes: Ground, Husk, NoAutoTarget
 		RequiresForceFire: true
 	Chronoshiftable:
 	Tooltip:
@@ -809,6 +931,12 @@
 		Spins: False
 		Moves: True
 		Velocity: 86
+		Explosion: UnitExplodePlane
+	EditorTilesetFilter:
+		Categories: Husk
+	RevealOnDeath:
+		Duration: 60
+		Radius: 4c0
 
 ^HelicopterHusk:
 	Inherits: ^BasicHusk
@@ -819,17 +947,23 @@
 		GenericName: Destroyed Helicopter
 	Aircraft:
 		CanHover: True
+		VTOL: true
 	FallsToEarth:
+		Explosion: UnitExplodeHeli
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	RevealOnDeath:
+		Duration: 60
+		Radius: 4c0
 
 ^Bridge:
+	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
 		ShowOwnerRow: false
 	Targetable:
-		TargetTypes: Ground, Water
+		TargetTypes: Ground, Water, Bridge
 		RequiresForceFire: true
 	Building:
 		Footprint: ____ ____
@@ -840,8 +974,11 @@
 		HP: 1000
 	Armor:
 		Type: Concrete
-	AutoTargetIgnore:
 	ScriptTriggers:
+	BodyOrientation:
+		QuantizedFacings: 1
+	CustomRenderSize:
+		CustomBounds: 96,48
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -861,6 +998,7 @@
 	ScriptTriggers:
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
+		Categories: Decoration
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
@@ -899,6 +1037,8 @@
 		ShadowSequence: idle
 		RequiresCondition: parachute
 	ConditionManager:
+	EditorTilesetFilter:
+		Categories: System
 
 ^Mine:
 	Inherits: ^SpriteActor
@@ -926,19 +1066,46 @@
 		TargetTypes: Ground
 	Immobile:
 		OccupiesSpace: true
+	HitShape:
+	EditorTilesetFilter:
+		Categories: System
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
 
+^DisableOnLowPowerOrPowerDown:
+	Inherits: ^DisableOnLowPower
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled
+	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
+		PowerdownCondition: powerdown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: chrome
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+
 ^DisabledByPowerOutage:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantCondition@IDISABLE:
+		RequiresCondition: power-outage
+		Condition: disabled
 	AffectedByPowerOutage:
 		Condition: power-outage
 	InfiltrateForPowerOutage:
-	DisableOnCondition@POWER_OUTAGE:
-		RequiresCondition: power-outage
 	Power:
-		RequiresCondition: !power-outage
+		RequiresCondition: !disabled

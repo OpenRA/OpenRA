@@ -6,18 +6,12 @@ GAWALL:
 		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
-	Valued:
-		Cost: 50
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Concrete Wall
 	Health:
 		HP: 225
 	Armor:
 		Type: Concrete
-	BlocksProjectiles:
-		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -43,7 +37,8 @@ GAGATE_B:
 
 GACTWR:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnPowerDown
+	Inherits@AUTOTARGET: ^AutoTargetAll
 	-WithSpriteBody:
 	WithWallSpriteBody:
 		Type: wall
@@ -68,16 +63,13 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: !empdisable && (tower.vulcan || tower.rocket || tower.sam)
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
 		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
+		PauseOnCondition: empdisable
 	WithSpriteTurret@VULC:
 		RequiresCondition: tower.vulcan
 		Recoils: false
@@ -122,11 +114,12 @@ GACTWR:
 		Types: turret
 	Power@base:
 		Amount: -10
+		RequiresCondition: !powerdown
 	Power@turrets:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: (tower.vulcan || tower.rocket || tower.sam) && !powerdown
 		Amount: -20
 	Power@samextra:
-		RequiresCondition: tower.sam
+		RequiresCondition: tower.sam && !powerdown
 		Amount: -10
 	Pluggable:
 		Conditions:

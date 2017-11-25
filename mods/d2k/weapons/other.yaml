@@ -15,10 +15,13 @@ Sound:
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 150
+		Damage: 86
 		AffectsParent: false
 		ValidStances: Neutral, Enemy
 		Versus:
+			none: 200
+			light: 110
+			wood: 110
 			wall: 50
 			building: 60
 			heavy: 60
@@ -28,11 +31,14 @@ Sound:
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
-		Falloff: 50, 50 # Only does half damage to friendly units
-		Damage: 150
+		Falloff: 100, 100
+		Damage: 43 # Only does half damage to friendly units
 		AffectsParent: false
 		ValidStances: Ally
 		Versus:
+			none: 200
+			light: 110
+			wood: 110
 			wall: 50
 			building: 60
 			heavy: 60
@@ -51,8 +57,8 @@ WormJaw:
 OrniBomb:
 	ReloadDelay: 25
 	Burst: 5
-	BurstDelay: 4
-	Range: 2c0
+	BurstDelays: 6
+	Range: 3c0
 	Projectile: GravityBomb
 		Image: BOMBS
 		Velocity: 0, 0, -64
@@ -61,7 +67,7 @@ OrniBomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Falloff: 100, 60, 30, 15, 0
-		Damage: 1000 #400 in original, reduce when bombers can do multiple passes
+		Damage: 750 #400 in original, reduce when bombers can do multiple passes
 		Versus:
 			none: 90
 			wall: 50
@@ -79,6 +85,7 @@ OrniBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
+		VictimScanRadius: 0
 
 Crush:
 	Warhead@1Dam: SpreadDamage
@@ -93,6 +100,7 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLLG2.WAV
+		VictimScanRadius: 0
 
 Atomic:
 	Warhead@1Dam: SpreadDamage
@@ -113,6 +121,7 @@ Atomic:
 	Warhead@2Eff: CreateEffect
 		Explosions: nuke
 		ImpactSounds: EXPLLG2.WAV
+		VictimScanRadius: 0
 
 CrateNuke:
 	Inherits: Atomic
@@ -142,30 +151,36 @@ CrateExplosion:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
+		VictimScanRadius: 0
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: EXPLSML1.WAV
+		VictimScanRadius: 0
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML2.WAV
+		VictimScanRadius: 0
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLLG2.WAV
+		VictimScanRadius: 0
 
 BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, self_destruct, large_explosion
+		VictimScanRadius: 0
 
 WallExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: wall_explosion
 		ImpactSounds: EXPLHG1.WAV
+		VictimScanRadius: 0
 
 grenade:
 	ReloadDelay: 50
@@ -196,6 +211,7 @@ grenade:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV
+		VictimScanRadius: 0
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
@@ -216,6 +232,7 @@ GrenDeath:
 	Warhead@3Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML4.WAV
+		VictimScanRadius: 0
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
@@ -237,6 +254,7 @@ SardDeath:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: EXPLSML2.WAV
+		VictimScanRadius: 0
 
 SpiceExplosion:
 	Projectile: Bullet
@@ -266,6 +284,7 @@ SpiceExplosion:
 		Size: 1
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
+		VictimScanRadius: 0
 
 BloomExplosion:
 	Report: EXPLMD1.WAV
@@ -287,3 +306,20 @@ BloomExplosion:
 			harvester: 25
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		AffectsParent: true
+
+PlasmaExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 2c0
+		Falloff: 100, 37, 0
+		Damage: 2000
+		Versus:
+			None: 100
+			Wood: 100
+			Light: 100
+			Heavy: 100
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+	Warhead@3Eff: CreateEffect
+		Explosions: devastator

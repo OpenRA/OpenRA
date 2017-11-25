@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
+		readonly int facingTolerance;
 
 		WDist minRange;
 		WDist maxRange;
@@ -36,11 +37,12 @@ namespace OpenRA.Mods.Common.Activities
 		Activity moveActivity;
 		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
-		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack)
+		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack, int facingTolerance)
 		{
 			Target = target;
 
 			this.forceAttack = forceAttack;
+			this.facingTolerance = facingTolerance;
 
 			attackTraits = self.TraitsImplementing<AttackBase>().ToArray();
 			facing = self.Trait<IFacing>();
@@ -88,7 +90,9 @@ namespace OpenRA.Mods.Common.Activities
 			// HACK: This would otherwise break targeting frozen actors
 			// The problem is that Shroud.IsTargetable returns false (as it should) for
 			// frozen actors, but we do want to explicitly target the underlying actor here.
-			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor && !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !self.Owner.CanTargetActor(Target.Actor))
+			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor
+					&& !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>()
+					&& !Target.Actor.CanBeViewedByPlayer(self.Owner))
 				return NextActivity;
 
 			// Drop the target once none of the weapons are effective against it
@@ -100,8 +104,10 @@ namespace OpenRA.Mods.Common.Activities
 			minRange = armaments.Max(a => a.Weapon.MinRange);
 			maxRange = armaments.Min(a => a.MaxRange());
 
+			var pos = self.CenterPosition;
 			var mobile = move as Mobile;
-			if (!Target.IsInRange(self.CenterPosition, maxRange) || Target.IsInRange(self.CenterPosition, minRange)
+			if (!Target.IsInRange(pos, maxRange)
+				|| (minRange.Length != 0 && Target.IsInRange(pos, minRange))
 				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
@@ -113,8 +119,9 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var desiredFacing = (Target.CenterPosition - self.CenterPosition).Yaw.Facing;
-			if (facing.Facing != desiredFacing)
+			var targetedPosition = attack.GetTargetPosition(pos, Target);
+			var desiredFacing = (targetedPosition - pos).Yaw.Facing;
+			if (!Util.FacingWithinTolerance(facing.Facing, desiredFacing, facingTolerance))
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
 				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);

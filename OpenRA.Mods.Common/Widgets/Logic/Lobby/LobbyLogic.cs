@@ -131,8 +131,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
-				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, map, mi) => LobbyUtils.SelectSpawnPoint(orderManager, preview, map, mi)) },
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(map => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, map)) },
+				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
+					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi)) },
+				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
+				{ "showUnoccupiedSpawnpoints", true },
 			});
 
 			UpdateCurrentMap();
@@ -197,7 +199,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				slotsButton.OnMouseDown = _ =>
 				{
-					var botNames = map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
+					var botTypes = map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Type);
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
@@ -213,7 +215,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								{
 									foreach (var slot in orderManager.LobbyInfo.Slots)
 									{
-										var bot = botNames.Random(Game.CosmeticRandom);
+										var bot = botTypes.Random(Game.CosmeticRandom);
 										var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
 										if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
 											orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key, botController.Index, bot)));
@@ -320,7 +322,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				startGameButton.IsDisabled = () => configurationDisabled() || map.Status != MapStatus.Available ||
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
-					(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.IsSinglePlayer);
+					(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.NonBotPlayers.Count() < 2);
 
 				startGameButton.OnClick = () =>
 				{
@@ -348,6 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "ALLYBUILDRADIUS_CHECKBOX", "allybuild" },
 				{ "ALLOWCHEATS_CHECKBOX", "cheats" },
 				{ "CREEPS_CHECKBOX", "creeps" },
+				{ "BUILDRADIUS_CHECKBOX", "buildradius" },
 			};
 
 			foreach (var kv in optionCheckboxes)
@@ -380,9 +383,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var allOptions = new CachedTransform<MapPreview, LobbyOption[]>(
-				map => map.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(map.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(map.Rules))
+				mapPreview => mapPreview.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
+					.Concat(mapPreview.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
 					.ToArray());
 
 			foreach (var kv in optionDropdowns)
@@ -394,7 +397,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						gs => gs.LobbyOptions[kv.Value]);
 
 					var option = new CachedTransform<MapPreview, LobbyOption>(
-						map => allOptions.Update(map).FirstOrDefault(o => o.Id == kv.Value));
+						mapPreview => allOptions.Update(mapPreview).FirstOrDefault(o => o.Id == kv.Value));
 
 					var getOptionLabel = new CachedTransform<string, string>(id =>
 					{
@@ -467,6 +470,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+			chatTextField.MaxLength = UnitOrders.ChatMessageMaxLength;
+
 			chatTextField.TakeKeyboardFocus();
 			chatTextField.OnEnterKey = () =>
 			{
@@ -565,7 +570,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			lobbyChatUnreadMessages += 1;
 
 			var template = (ContainerWidget)chatTemplate.Clone();
-			LobbyUtils.SetupChatLine(template, c, from, text);
+			LobbyUtils.SetupChatLine(template, c, DateTime.Now, from, text);
 
 			var scrolledToBottom = lobbyChatPanel.ScrolledToBottom;
 			lobbyChatPanel.AddChild(template);
@@ -619,7 +624,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (addBotOnMapLoad)
 						{
 							var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-							var bot = currentMap.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+							var bot = currentMap.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Type).FirstOrDefault();
 							var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
 							if (slot != null && bot != null)
 								orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));

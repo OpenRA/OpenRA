@@ -22,6 +22,7 @@ TRAN.Extraction:
 	AutoSelectionSize:
 	RenderSprites:
 		Image: tran
+	AutoRenderSize:
 
 TRAN.Insertion:
 	Inherits: TRAN.Extraction
@@ -31,6 +32,7 @@ TRAN.Insertion:
 	AutoSelectionSize:
 	RenderSprites:
 		Image: tran
+	AutoRenderSize:
 
 EINSTEIN:
 	Passenger:
@@ -42,7 +44,6 @@ EINSTEIN:
 
 C8:
 	Inherits@2: ^ArmedCivilian
-	AutoTarget:
 
 JEEP:
 	Cargo:

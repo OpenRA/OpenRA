@@ -49,25 +49,35 @@ CRATE:
 		NoBaseSelectionShares: 100
 		Units: mcv
 	GiveUnitCrateAction@jeep:
-		SelectionShares: 7
+		SelectionShares: 6
 		Units: jeep
 		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.low
-	GiveUnitCrateAction@arty:
+	GiveUnitCrateAction@1tnk:
 		SelectionShares: 6
+		Units: 1tnk
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@apc:
+		SelectionShares: 6
+		Units: apc
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@ftrk:
+		SelectionShares: 6
+		Units: ftrk
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@arty:
+		SelectionShares: 5
 		Units: arty
 		ValidFactions: allies, england, france, germany
 		Prerequisites: techlevel.medium, dome
 	GiveUnitCrateAction@v2rl:
-		SelectionShares: 6
+		SelectionShares: 5
 		Units: v2rl
 		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.medium, dome
-	GiveUnitCrateAction@1tnk:
-		SelectionShares: 5
-		Units: 1tnk
-		ValidFactions: allies, england, france, germany
-		Prerequisites: techlevel.low
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
 		Units: 2tnk
@@ -78,13 +88,8 @@ CRATE:
 		Units: 3tnk
 		ValidFactions: soviet, russia, ukraine
 		Prerequisites: techlevel.medium, fix
-	GiveUnitCrateAction@4tnk:
-		SelectionShares: 3
-		Units: 4tnk
-		ValidFactions: soviet, russia, ukraine
-		Prerequisites: techlevel.high, fix, techcenter
 	GiveUnitCrateAction@squadlight:
-		SelectionShares: 7
+		SelectionShares: 10
 		Units: e1,e1,e1,e3,e3
 		ValidFactions: allies, england, france, germany, soviet, russia, ukraine
 	GiveUnitCrateAction@squadheavyallies:
@@ -94,7 +99,7 @@ CRATE:
 		TimeDelay: 4500
 	GiveUnitCrateAction@squadheavysoviet:
 		SelectionShares: 7
-		Units: e1,e1,e4,e4,e3,e3,e3
+		Units: e1,e1,e4,e4,e3,e3,e3,e6
 		ValidFactions: soviet, russia, ukraine
 		TimeDelay: 4500
 	GrantExternalConditionCrateAction@invuln:
@@ -150,6 +155,8 @@ CAMERA:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 		Image: camera
+	EditorTilesetFilter:
+		Categories: System
 
 camera.paradrop:
 	Inherits: CAMERA
@@ -192,6 +199,9 @@ FLARE:
 		Name: Flare
 		ShowOwnerRow: false
 	AutoSelectionSize:
+	EditorTilesetFilter:
+		Categories: Decoration
+	AutoRenderSize:
 
 MINE:
 	Inherits@1: ^SpriteActor
@@ -207,8 +217,9 @@ MINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
-	AutoTargetIgnore:
 	SeedsResource:
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 GMINE:
 	Inherits@1: ^SpriteActor
@@ -224,9 +235,10 @@ GMINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Gems
-	AutoTargetIgnore:
 	SeedsResource:
 		ResourceType: Gems
+	EditorTilesetFilter:
+		Categories: Resource spawn
 
 RAILMINE:
 	Inherits@1: ^SpriteActor
@@ -239,12 +251,13 @@ RAILMINE:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	AutoTargetIgnore:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+		Categories: Civilian building
 
 QUEE:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^2x1Shape
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Queen Ant
@@ -255,9 +268,11 @@ QUEE:
 	AppearsOnRadar:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
+		Categories: Critter
 
 LAR1:
 	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
 	HiddenUnderShroud:
 	Tooltip:
 		Name: Ant Larva
@@ -270,6 +285,7 @@ LAR1:
 	AppearsOnRadar:
 	EditorTilesetFilter:
 		RequireTilesets: INTERIOR
+		Categories: Critter
 
 LAR2:
 	Inherits@1: LAR1
@@ -281,7 +297,7 @@ powerproxy.parabombs:
 	AirstrikePower:
 		Icon: parabombs
 		Description: Parabombs (Single Use)
-		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		LongDesc: Three Badgers drops a load of parachuted\nbombs on your target.
 		OneShot: true
 		AllowMultiple: true
 		UnitType: badr.bomber
@@ -348,6 +364,8 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 waypoint:
 	EditorOnlyTooltip:
@@ -359,6 +377,8 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 ^fact.colorpicker:
 	Inherits: FACT
@@ -373,10 +393,13 @@ CTFLAG:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Flag
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
-	DamageMultiplier@INVULNERABLE:
-		Modifier: 0
+	-HitShape:
+	-Health:
+	-Explodes:
 	-Selectable:
 	-SelectionDecorations:
 	-Targetable:
+	EditorTilesetFilter:
+		Categories: Decoration

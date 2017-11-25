@@ -116,7 +116,6 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 							PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
 							Children:
 								Image@FACTIONFLAG:

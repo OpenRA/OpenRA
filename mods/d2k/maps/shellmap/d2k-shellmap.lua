@@ -14,7 +14,7 @@ IdlingUnits =
 	Atreides = { },
 	Harkonnen = { },
 	Ordos = { },
-	Emperor = { }
+	Corrino = { }
 }
 
 HoldProduction =
@@ -22,7 +22,7 @@ HoldProduction =
 	Atreides = false,
 	Harkonnen = false,
 	Ordos = false,
-	Emperor = false
+	Corrino = false
 }
 
 IsAttacking =
@@ -30,7 +30,7 @@ IsAttacking =
 	Atreides = false,
 	Harkonnen = false,
 	Ordos = false,
-	Emperor = false
+	Corrino = false
 }
 
 AtreidesInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper", "grenadier", "grenadier" }
@@ -48,10 +48,10 @@ OrdosVehicleTypes = { "raider", "raider", "quad", "stealth_raider" }
 OrdosTankTypes = { "combat_tank_o", "combat_tank_o", "combat_tank_o", "siege_tank" }
 OrdosStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_o.starport" }
 
-EmperorInfantryTypes = { "light_inf", "trooper", "sardaukar", "sardaukar", "sardaukar", "sardaukar" }
-EmperorVehicleTypes = { "trike", "quad", "quad" }
-EmperorTankTypes = { "combat_tank_h", "combat_tank_h", "combat_tank_h", "siege_tank" }
-EmperorStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_h.starport" }
+CorrinoInfantryTypes = { "light_inf", "trooper", "sardaukar", "sardaukar", "sardaukar", "sardaukar" }
+CorrinoVehicleTypes = { "trike", "quad", "quad" }
+CorrinoTankTypes = { "combat_tank_h", "combat_tank_h", "combat_tank_h", "siege_tank" }
+CorrinoStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_h.starport" }
 
 Upgrades = { "upgrade.barracks", "upgrade.light", "upgrade.conyard", "upgrade.heavy", "upgrade.hightech" }
 
@@ -60,7 +60,7 @@ Harvester = { "harvester" }
 AtrCarryHarvWaypoints = { atr_harvcarry_2.Location, atr_harvcarry_1.Location }
 HarCarryHarvWaypoints = { har_harvcarry_2.Location, har_harvcarry_1.Location }
 OrdCarryHarvWaypoints = { ord_harvcarry_2.Location, ord_harvcarry_1.Location }
-EmpCarryHarvWaypoints = { emp_harvcarry_2.Location, emp_harvcarry_1.Location }
+CorCarryHarvWaypoints = { cor_harvcarry_2.Location, cor_harvcarry_1.Location }
 SmgCarryHarvWaypoints = { smg_harvcarry_2.Location, smg_harvcarry_1.Location }
 
 IdleHunt = function(unit) if not unit.IsDead then Trigger.OnIdle(unit, unit.Hunt) end end
@@ -155,7 +155,7 @@ WorldLoaded = function()
 	atreides = Player.GetPlayer("Atreides")
 	harkonnen = Player.GetPlayer("Harkonnen")
 	ordos = Player.GetPlayer("Ordos")
-	emperor = Player.GetPlayer("Emperor")
+	corrino = Player.GetPlayer("Corrino")
 	smugglers = Player.GetPlayer("Smugglers")
 
 	viewportOrigin = Camera.Position
@@ -164,7 +164,7 @@ WorldLoaded = function()
 		atr_cyard.Produce(upgrade)
 		har_cyard.Produce(upgrade)
 		ord_cyard.Produce(upgrade)
-		emp_cyard.Produce(upgrade)
+		cor_cyard.Produce(upgrade)
 	end)
 	atr_cyard.Produce(Upgrades[5])
 
@@ -172,7 +172,7 @@ WorldLoaded = function()
 		SendNewHarv(atreides, AtrCarryHarvWaypoints, 3)
 		SendNewHarv(harkonnen, HarCarryHarvWaypoints, 3)
 		SendNewHarv(ordos, OrdCarryHarvWaypoints, 3)
-		SendNewHarv(emperor, EmpCarryHarvWaypoints, 3)
+		SendNewHarv(corrino, CorCarryHarvWaypoints, 3)
 		SendNewHarv(smugglers, SmgCarryHarvWaypoints, 1)
 	end)
 
@@ -192,9 +192,9 @@ WorldLoaded = function()
 		Produce(ordos, OrdosTankTypes)
 		Produce(ordos, OrdosStarportTypes)
 
-		Produce(emperor, EmperorInfantryTypes)
-		Produce(emperor, EmperorVehicleTypes)
-		Produce(emperor, EmperorTankTypes)
-		Produce(emperor, EmperorStarportTypes)
+		Produce(corrino, CorrinoInfantryTypes)
+		Produce(corrino, CorrinoVehicleTypes)
+		Produce(corrino, CorrinoTankTypes)
+		Produce(corrino, CorrinoStarportTypes)
 	end)
 end

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			Color.FromArgb(178, 205, 250, 220),
 		};
 
-		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
+		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{
 			var i = (int)t;
 			var p = b[paletteName];
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			t += 0.25f;
 			if (t >= 256) t = 0;

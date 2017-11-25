@@ -30,6 +30,7 @@ namespace OpenRA
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
 		readonly SortedDictionary<uint, Actor> actors = new SortedDictionary<uint, Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
+		readonly List<IEffect> unpartitionedEffects = new List<IEffect>();
 		readonly List<ISync> syncedEffects = new List<ISync>();
 
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
@@ -40,6 +41,7 @@ namespace OpenRA
 		public Session LobbyInfo { get { return OrderManager.LobbyInfo; } }
 
 		public readonly MersenneTwister SharedRandom;
+		public readonly IModelCache ModelCache;
 
 		public Player[] Players = new Player[0];
 
@@ -75,7 +77,7 @@ namespace OpenRA
 			set { renderPlayer = value; }
 		}
 
-		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.CanViewActor(a); }
+		public bool FogObscures(Actor a) { return RenderPlayer != null && !a.CanBeViewedByPlayer(RenderPlayer); }
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool FogObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(pos); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
@@ -129,7 +131,7 @@ namespace OpenRA
 			}
 		}
 
-		public Selection Selection = new Selection();
+		public readonly Selection Selection = new Selection();
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
 
@@ -147,7 +149,7 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Map map, OrderManager orderManager, WorldType type)
+		internal World(ModData modData, Map map, OrderManager orderManager, WorldType type)
 		{
 			Type = type;
 			OrderManager = orderManager;
@@ -155,6 +157,8 @@ namespace OpenRA
 			Map = map;
 			Timestep = orderManager.LobbyInfo.GlobalSettings.Timestep;
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
+
+			ModelCache = modData.ModelSequenceLoader.CacheModels(map, modData, map.Rules.ModelSequences);
 
 			var worldActorType = type == WorldType.Editor ? "EditorWorld" : "World";
 			WorldActor = CreateActor(worldActorType, new TypeDictionary());
@@ -188,7 +192,7 @@ namespace OpenRA
 			ActorMap.AddInfluence(self, ios);
 			ActorMap.AddPosition(self, ios);
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				ScreenMap.Add(self);
 		}
 
@@ -197,7 +201,7 @@ namespace OpenRA
 			if (!self.IsInWorld)
 				return;
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				ScreenMap.Update(self);
 
 			ActorMap.UpdatePosition(self, ios);
@@ -208,7 +212,7 @@ namespace OpenRA
 			ActorMap.RemoveInfluence(self, ios);
 			ActorMap.RemovePosition(self, ios);
 
-			if (!self.Bounds.Size.IsEmpty)
+			if (!self.RenderBounds.Size.IsEmpty)
 				ScreenMap.Remove(self);
 		}
 
@@ -282,6 +286,11 @@ namespace OpenRA
 		public void Add(IEffect e)
 		{
 			effects.Add(e);
+
+			var sp = e as ISpatiallyPartitionable;
+			if (sp == null)
+				unpartitionedEffects.Add(e);
+
 			var se = e as ISync;
 			if (se != null)
 				syncedEffects.Add(se);
@@ -290,6 +299,11 @@ namespace OpenRA
 		public void Remove(IEffect e)
 		{
 			effects.Remove(e);
+
+			var sp = e as ISpatiallyPartitionable;
+			if (sp == null)
+				unpartitionedEffects.Remove(e);
+
 			var se = e as ISync;
 			if (se != null)
 				syncedEffects.Remove(se);
@@ -298,6 +312,7 @@ namespace OpenRA
 		public void RemoveAll(Predicate<IEffect> predicate)
 		{
 			effects.RemoveAll(predicate);
+			unpartitionedEffects.RemoveAll(e => predicate((IEffect)e));
 			syncedEffects.RemoveAll(e => predicate((IEffect)e));
 		}
 
@@ -358,6 +373,7 @@ namespace OpenRA
 
 		public IEnumerable<Actor> Actors { get { return actors.Values; } }
 		public IEnumerable<IEffect> Effects { get { return effects; } }
+		public IEnumerable<IEffect> UnpartitionedEffects { get { return unpartitionedEffects; } }
 		public IEnumerable<ISync> SyncedEffects { get { return syncedEffects; } }
 
 		public Actor GetActorById(uint actorId)
@@ -436,6 +452,8 @@ namespace OpenRA
 
 			Game.Sound.StopAudio();
 			Game.Sound.StopVideo();
+
+			ModelCache.Dispose();
 
 			// Dispose newer actors first, and the world actor last
 			foreach (var a in actors.Values.Reverse())

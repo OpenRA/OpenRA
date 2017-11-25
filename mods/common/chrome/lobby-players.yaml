@@ -112,7 +112,6 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 							PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
 							Children:
 								Image@FACTIONFLAG:
@@ -412,7 +411,6 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 			Y: 0
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
-			TooltipTemplate: FACTION_DESCRIPTION_TOOLTIP
 			Children:
 				Image@FLAG:
 					X: 5

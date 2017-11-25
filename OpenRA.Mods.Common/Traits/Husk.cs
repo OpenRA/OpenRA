@@ -18,9 +18,17 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
-	public class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo
+	public class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IActorPreviewInitInfo
 	{
 		public readonly HashSet<string> AllowedTerrain = new HashSet<string>();
+
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new FacingInit(PreviewFacing);
+		}
 
 		public object Create(ActorInitializer init) { return new Husk(init, this); }
 
@@ -62,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			var distance = (finalPosition - CenterPosition).Length;
 			if (dragSpeed > 0 && distance > 0)
@@ -110,12 +118,12 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.UpdateMaps(self, this);
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
 		}

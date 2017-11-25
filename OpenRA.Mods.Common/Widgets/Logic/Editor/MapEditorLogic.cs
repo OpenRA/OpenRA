@@ -10,18 +10,26 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[ChromeLogicArgsHotkeys("ChangeZoomKey")]
 	public class MapEditorLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer)
+		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
+			MiniYaml yaml;
+			var changeZoomKey = new NamedHotkey();
+			if (logicArgs.TryGetValue("ChangeZoomKey", out yaml))
+				changeZoomKey = new NamedHotkey(yaml.Value, Game.Settings.Keys);
+
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
 			var gridButton = widget.GetOrNull<ButtonWidget>("GRID_BUTTON");
@@ -62,11 +70,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var options = worldRenderer.Viewport.AvailableZoomSteps;
 				zoomDropdown.OnMouseDown = _ => zoomDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
-				zoomDropdown.GetKey = _ => Game.Settings.Keys.TogglePixelDoubleKey;
 				zoomDropdown.OnKeyPress = e =>
 				{
 					var key = Hotkey.FromKeyInput(e);
-					if (key != Game.Settings.Keys.TogglePixelDoubleKey)
+					if (key != changeZoomKey.GetValue())
 						return;
 
 					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;
@@ -91,8 +98,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 					var map = worldRenderer.World.Map;
-					var height = map.Height.Contains(cell) ? map.Height[cell] : 0;
-					return "{0},{1}".F(cell, height);
+					return map.Height.Contains(cell) ?
+						"{0},{1} ({2})".F(cell, map.Height[cell], map.Tiles[cell].Type) : "";
 				};
 			}
 

@@ -36,9 +36,9 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (shakeEffects.Any())
 			{

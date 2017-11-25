@@ -54,6 +54,7 @@ TRAN:
 HELI:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -64,7 +65,6 @@ HELI:
 		Queue: Aircraft.Nod
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
-		RearmBuildings: hpad
 		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 180
@@ -79,19 +79,19 @@ HELI:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: HeliAAGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
 		PipCount: 5
-		SelfReloads: true
-		ReloadCount: 10
-		SelfReloadDelay: 200
+		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 0,0,85
 		Sequence: rotor
@@ -103,16 +103,19 @@ HELI:
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
-	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	SelectionDecorations:
 		VisualBounds: 30,24
+	ReloadAmmoPool:
+		Delay: 40
+		Count: 1
 
 ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -123,7 +126,6 @@ ORCA:
 		Queue: Aircraft.GDI
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
-		RearmBuildings: hpad
 		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 186
@@ -137,20 +139,19 @@ ORCA:
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 6
 		PipCount: 6
-		SelfReloads: true
-		ReloadCount: 2
-		SelfReloadDelay: 100
+		AmmoCondition: ammo
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
-	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -158,6 +159,9 @@ ORCA:
 		MoveSequence: move
 	SelectionDecorations:
 		VisualBounds: 30,24
+	ReloadAmmoPool:
+		Delay: 100
+		Count: 2
 
 C17:
 	Inherits: ^Plane
@@ -170,10 +174,6 @@ C17:
 		Speed: 326
 		Repulsable: False
 		MaximumPitch: 36
-	Health:
-		HP: 25
-	Armor:
-		Type: Heavy
 	HiddenUnderFog:
 		AlwaysVisibleStances: None
 		Type: CenterPosition
@@ -207,14 +207,8 @@ A10:
 		TurnSpeed: 4
 		Speed: 373
 		Repulsable: False
-	Health:
-		HP: 150
-	Armor:
-		Type: Heavy
 	AttackBomber:
 		Armaments: gun, bombs
-		Guns: gun
-		Bombs: bombs
 	Armament@GUNS:
 		Name: gun
 		Weapon: Vulcan

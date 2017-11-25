@@ -19,12 +19,13 @@
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion_air
+		ValidTargets: Air, Ground, Water, Trees
 
 ZSU-23:
 	Inherits: ^AACannon
 	Burst: 2
-	BurstDelay: 5
-	ReloadDelay: 0
+	BurstDelays: 0
+	ReloadDelay: 5
 	Range: 10c0
 	Projectile: Bullet
 		Speed: 3c340
@@ -49,10 +50,12 @@ FLAK-23-AG:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air, Ground, Water
 	Warhead@2Eff: CreateEffect
-		InvalidImpactTypes: Water
+		Explosions: flak_explosion_ground
+		ValidTargets: Ground, Ship, Air, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_splash
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 
 ^HeavyMG:
 	ReloadDelay: 30
@@ -72,10 +75,11 @@ FLAK-23-AG:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -93,6 +97,7 @@ Vulcan:
 		Damage: 10
 		Versus:
 			None: 200
+			Light: 50
 	Warhead@4Dam_2: SpreadDamage
 		Spread: 128
 		Damage: 10
@@ -100,17 +105,18 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Trees
 		Delay: 2
 	Warhead@4Eff_2Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
@@ -119,17 +125,18 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Trees
 		Delay: 4
 	Warhead@6Eff_3Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
@@ -138,17 +145,18 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Trees
 		Delay: 6
 	Warhead@8Eff_4Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
@@ -157,17 +165,18 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Trees
 		Delay: 8
 	Warhead@10Eff_5Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
@@ -176,17 +185,18 @@ Vulcan:
 		Versus:
 			None: 200
 			Wood: 50
-			Light: 60
+			Light: 50
 			Heavy: 25
 			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Trees
 		Delay: 10
 	Warhead@12Eff_6Water: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 		Delay: 10
 
 ChainGun:
@@ -259,10 +269,11 @@ SilencedPPK:
 		Spread: 128
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 
 Colt45:
 	Inherits: ^SnipeWeapon
@@ -272,10 +283,11 @@ Colt45:
 		Damage: 50
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Air, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piff
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 
 Sniper:
 	Inherits: ^SnipeWeapon

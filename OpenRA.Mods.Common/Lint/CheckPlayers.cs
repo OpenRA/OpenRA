@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Lint
 		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
 		{
 			var players = new MapPlayers(map.PlayerDefinitions).Players;
+			var worldOwnerFound = false;
 
 			var playerNames = players.Values.Select(p => p.Name).ToHashSet();
 			foreach (var player in players.Values)
@@ -34,9 +35,19 @@ namespace OpenRA.Mods.Common.Lint
 					if (!playerNames.Contains(enemy))
 						emitError("Enemies contains player {0} that is not in list.".F(enemy));
 
-				if (player.OwnsWorld && (player.Enemies.Any() || player.Allies.Any()))
-					emitWarning("The player {0} owning the world should not have any allies or enemies.".F(player.Name));
+				if (player.OwnsWorld)
+				{
+					worldOwnerFound = true;
+					if (player.Enemies.Any() || player.Allies.Any())
+						emitWarning("The player {0} owning the world should not have any allies or enemies.".F(player.Name));
+
+					if (player.Playable)
+						emitError("The player {0} owning the world can't be playable.".F(player.Name));
+				}
 			}
+
+			if (!worldOwnerFound)
+				emitError("Found no player owning the world.");
 
 			var worldActor = map.Rules.Actors["world"];
 

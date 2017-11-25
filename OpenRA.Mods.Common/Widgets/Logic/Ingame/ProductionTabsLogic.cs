@@ -34,20 +34,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				tabs.PickUpCompletedBuilding();
 			};
 
-			Func<ButtonWidget, Hotkey> getKey = _ => Hotkey.Invalid;
-			if (!string.IsNullOrEmpty(button.HotkeyName))
-			{
-				var ks = Game.Settings.Keys;
-				var field = ks.GetType().GetField(button.HotkeyName);
-				if (field != null)
-					getKey = _ => (Hotkey)field.GetValue(ks);
-			}
-
 			button.IsDisabled = () => tabs.Groups[button.ProductionGroup].Tabs.Count == 0;
 			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
 			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
 			button.IsHighlighted = () => tabs.QueueGroup == button.ProductionGroup;
-			button.GetKey = getKey;
 
 			var chromeName = button.ProductionGroup.ToLowerInvariant();
 			var icon = button.Get<ImageWidget>("ICON");

@@ -24,6 +24,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -41,9 +42,9 @@
       <HintPath>..\thirdparty\download\FuzzyLogicLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="rix0rrr.BeaconLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="rix0rrr.BeaconLib">
       <HintPath>..\thirdparty\download\rix0rrr.BeaconLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,9 +55,6 @@
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="StyleCop">
-      <HintPath>..\thirdparty\download\StyleCop.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -92,7 +90,9 @@
     <Compile Include="Activities\CaptureActor.cs" />
     <Compile Include="Activities\DeliverResources.cs" />
     <Compile Include="Activities\Demolish.cs" />
+    <Compile Include="Activities\DeployForGrantedCondition.cs" />
     <Compile Include="Activities\DonateCash.cs" />
+    <Compile Include="Activities\DonateExperience.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\ExternalCaptureActor.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="Activities\SpriteHarvesterDockSequence.cs" />
     <Compile Include="Activities\Transform.cs" />
     <Compile Include="Activities\Turn.cs" />
+    <Compile Include="Activities\UndeployForGrantedCondition.cs" />
     <Compile Include="Activities\UnloadCargo.cs" />
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="Activities\WaitForTransport.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
     <Compile Include="AI\States\GroundStates.cs" />
+    <Compile Include="AI\States\NavyStates.cs" />
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\StateBase.cs" />
     <Compile Include="AI\SupportPowerDecision.cs" />
@@ -135,17 +137,16 @@
     <Compile Include="AudioLoaders\VocLoader.cs" />
     <Compile Include="AudioLoaders\WavLoader.cs" />
     <Compile Include="Effects\Beacon.cs" />
-    <Compile Include="Effects\Contrail.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
     <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\RevealShroudEffect.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\MapNotificationEffect.cs" />
-    <Compile Include="Effects\PowerdownIndicator.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\RepairIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
+    <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
     <Compile Include="Projectiles\InstantHit.cs" />
@@ -157,20 +158,21 @@
     <Compile Include="Commands\DevCommands.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\PlayerCommands.cs" />
+    <Compile Include="Commands\DebugVisualizationCommands.cs" />
     <Compile Include="Graphics\ActorPreview.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Graphics\RangeCircleRenderable.cs" />
+    <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\SelectionBoxRenderable.cs" />
     <Compile Include="Graphics\SpriteActorPreview.cs" />
     <Compile Include="Graphics\TextRenderable.cs" />
-    <Compile Include="Graphics\VoxelActorPreview.cs" />
-    <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Graphics\ModelActorPreview.cs" />
+    <Compile Include="Graphics\ModelRenderable.cs" />
     <Compile Include="HitShapes\IHitShape.cs" />
     <Compile Include="HitShapes\Rectangle.cs" />
     <Compile Include="HitShapes\Capsule.cs" />
     <Compile Include="HitShapes\Circle.cs" />
-    <Compile Include="Lint\CheckBuildingFootprint.cs" />
     <Compile Include="Lint\CheckAngle.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Lint\CheckPalettes.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModContentLoadScreen.cs" />
     <Compile Include="ActorInitializer.cs" />
+    <Compile Include="Projectiles\Railgun.cs" />
     <Compile Include="Scripting\Properties\AmmoPoolProperties.cs" />
     <Compile Include="ShroudExts.cs" />
     <Compile Include="Orders\BeaconOrderGenerator.cs" />
@@ -252,6 +255,7 @@
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AcceptsDeliveredCash.cs" />
+    <Compile Include="Traits\AcceptsDeliveredExperience.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
     <Compile Include="Traits\Air\AttackHeli.cs" />
@@ -275,16 +279,15 @@
     <Compile Include="Traits\Buildable.cs" />
     <Compile Include="Traits\Buildings\BaseBuilding.cs" />
     <Compile Include="Traits\Buildings\BaseProvider.cs" />
-    <Compile Include="Traits\Buildings\Bib.cs" />
     <Compile Include="Traits\Buildings\Bridge.cs" />
     <Compile Include="Traits\Buildings\LegacyBridgeHut.cs" />
     <Compile Include="Traits\Buildings\Building.cs" />
     <Compile Include="Traits\Buildings\BuildingInfluence.cs" />
     <Compile Include="Traits\Buildings\BuildingUtils.cs" />
     <Compile Include="Traits\Buildings\Exit.cs" />
-    <Compile Include="Traits\Buildings\FootprintUtils.cs" />
     <Compile Include="Traits\Buildings\FreeActor.cs" />
     <Compile Include="Traits\Buildings\Gate.cs" />
+    <Compile Include="Traits\Buildings\GivesBuildableArea.cs" />
     <Compile Include="Traits\Buildings\LineBuild.cs" />
     <Compile Include="Traits\Buildings\LineBuildNode.cs" />
     <Compile Include="Traits\Buildings\PrimaryBuilding.cs" />
@@ -292,10 +295,15 @@
     <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RepairsUnits.cs" />
+    <Compile Include="Traits\Buildings\RequiresBuildableArea.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
+    <Compile Include="Traits\CommandBarBlacklist.cs" />
+    <Compile Include="Traits\Contrail.cs" />
     <Compile Include="Traits\Health.cs" />
+    <Compile Include="Traits\HitShape.cs" />
+    <Compile Include="Traits\Player\DeveloperMode.cs" />
     <Compile Include="Traits\PowerTooltip.cs" />
     <Compile Include="Traits\Render\VeteranProductionIconOverlay.cs" />
     <Compile Include="Traits\Capturable.cs" />
@@ -320,7 +328,10 @@
     <Compile Include="Traits\Crushable.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
+    <Compile Include="Traits\Render\CustomRenderSize.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
+    <Compile Include="Traits\DeliversCash.cs" />
+    <Compile Include="Traits\DeliversExperience.cs" />
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
@@ -351,6 +362,7 @@
     <Compile Include="Traits\JamsMissiles.cs" />
     <Compile Include="Traits\KillsSelf.cs" />
     <Compile Include="Traits\AmmoPool.cs" />
+    <Compile Include="Traits\ReloadAmmoPool.cs" />
     <Compile Include="Traits\Mobile.cs" />
     <Compile Include="Traits\Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Traits\Modifiers\HiddenUnderFog.cs" />
@@ -395,7 +407,7 @@
     <Compile Include="Traits\Power\CanPowerDown.cs" />
     <Compile Include="Traits\Power\Player\PowerManager.cs" />
     <Compile Include="Traits\Power\Power.cs" />
-    <Compile Include="Traits\Power\RequiresPower.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnPowerState.cs" />
     <Compile Include="Traits\Power\ScalePowerWithHealth.cs" />
     <Compile Include="Traits\Production.cs" />
     <Compile Include="Traits\ProductionFromMapEdge.cs" />
@@ -406,12 +418,14 @@
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Traits\QuantizeFacingsFromSequence.cs" />
     <Compile Include="Traits\Render\AutoSelectionSize.cs" />
+    <Compile Include="Traits\Render\AutoRenderSize.cs" />
+    <Compile Include="Traits\Render\CashTricklerBar.cs" />
     <Compile Include="Traits\Render\CustomTerrainDebugOverlay.cs" />
     <Compile Include="Traits\Render\Hovers.cs" />
     <Compile Include="Traits\Render\LeavesTrails.cs" />
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
-    <Compile Include="Traits\Render\WithTurretedAttackAnimation.cs" />
-    <Compile Include="Traits\Render\WithTurretedSpriteBody.cs" />
+    <Compile Include="Traits\Render\WithTurretAttackAnimation.cs" />
+    <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
     <Compile Include="Traits\Render\RenderUtils.cs" />
     <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
@@ -441,6 +455,8 @@
     <Compile Include="Traits\Render\WithHarvestOverlay.cs" />
     <Compile Include="Traits\Render\WithIdleOverlay.cs" />
     <Compile Include="Traits\Render\WithMuzzleOverlay.cs" />
+    <Compile Include="Traits\Render\WithNukeLaunchAnimation.cs" />
+    <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
     <Compile Include="Traits\Render\WithRearmAnimation.cs" />
@@ -480,7 +496,6 @@
     <Compile Include="Traits\Sound\DeathSounds.cs" />
     <Compile Include="Traits\Sound\SoundOnDamageTransition.cs" />
     <Compile Include="Traits\Sound\AttackSounds.cs" />
-    <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\SupportPowers\AirstrikePower.cs" />
     <Compile Include="Traits\SupportPowers\GrantExternalConditionPower.cs" />
     <Compile Include="Traits\SupportPowers\NukePower.cs" />
@@ -500,6 +515,7 @@
     <Compile Include="Traits\Conditions\ConditionalTrait.cs" />
     <Compile Include="Traits\Conditions\PausableConditionalTrait.cs" />
     <Compile Include="Traits\Conditions\ProximityExternalCondition.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnAttack.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDamageState.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnTerrain.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
@@ -519,7 +535,6 @@
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\World\ValidateOrder.cs" />
-    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
     <Compile Include="Pathfinder\PathGraph.cs" />
@@ -528,9 +543,7 @@
     <Compile Include="Traits\World\PathFinder.cs" />
     <Compile Include="Pathfinder\PathSearch.cs" />
     <Compile Include="Pathfinder\BasePathSearch.cs" />
-    <Compile Include="Traits\World\PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\RadarPings.cs" />
-    <Compile Include="Traits\World\ResourceClaim.cs" />
     <Compile Include="Traits\World\ResourceClaimLayer.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ShroudPalette.cs" />
@@ -543,7 +556,6 @@
     <Compile Include="Traits\World\WarheadDebugOverlay.cs" />
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
-    <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
     <Compile Include="UtilityCommands\CreateManPage.cs" />
@@ -554,8 +566,8 @@
     <Compile Include="UtilityCommands\ExtractSettingsDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractZeroBraneStudioLuaAPI.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
-    <Compile Include="Widgets\Logic\Ingame\MusicControllerLogic.cs" />
-    <Compile Include="Widgets\UnitCommandWidget.cs" />
+    <Compile Include="UtilityCommands\ExtractWeaponDocsCommand.cs" />
+    <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />
@@ -588,7 +600,6 @@
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\FactionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Widgets\Logic\DisconnectWatcherLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\AddFactionSuffixLogic.cs" />
@@ -654,7 +665,6 @@
     <Compile Include="Widgets\SupportPowersWidget.cs" />
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\TerrainTemplatePreviewWidget.cs" />
-    <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldInteractionControllerWidget.cs" />
     <Compile Include="SpriteLoaders\ShpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpTSLoader.cs" />
@@ -716,6 +726,7 @@
     <Compile Include="Traits\CreatesShroud.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />
     <Compile Include="Lint\CheckRevealFootprint.cs" />
+    <Compile Include="Lint\CheckHitShapes.cs" />
     <Compile Include="Traits\ThrowsShrapnel.cs" />
     <Compile Include="Traits\World\MusicPlaylist.cs" />
     <Compile Include="Traits\SpawnActorOnDeath.cs" />
@@ -760,7 +771,6 @@
     <Compile Include="Widgets\Logic\Installation\ModContentDiscTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\InstallFromDiscLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\ModContentPromptLogic.cs" />
-    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
     <Compile Include="UtilityCommands\ListMSCabContentsCommand.cs" />
     <Compile Include="FileFormats\MSCabCompression.cs" />
     <Compile Include="Traits\World\ScriptLobbyDropdown.cs" />
@@ -771,7 +781,6 @@
     <Compile Include="Traits\Buildings\FreeActorWithDelivery.cs" />
     <Compile Include="Traits\ExitsDebugOverlay.cs" />
     <Compile Include="Traits\World\ExitsDebugOverlayManager.cs" />
-    <Compile Include="Activities\Air\FlyCircleTimed.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldCabContentsCommand.cs" />
     <Compile Include="FileFormats\InstallShieldCABCompression.cs" />
     <Compile Include="ModContent.cs" />
@@ -808,6 +817,28 @@
     <Compile Include="Traits\Conditions\LineBuildSegmentExternalCondition.cs" />
     <Compile Include="Traits\EntersTunnels.cs" />
     <Compile Include="Traits\TunnelEntrance.cs" />
+    <Compile Include="FileSystem\InstallShieldPackage.cs" />
+    <Compile Include="FileFormats\Blast.cs" />
+    <Compile Include="Orders\ForceModifiersOrderGenerator.cs" />
+    <Compile Include="Widgets\Logic\Ingame\CommandBarLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\StanceSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\ButtonTooltipWithDescHighlightLogic.cs" />
+    <Compile Include="Traits\AutoTargetPriority.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnBotOwner.cs" />
+    <Compile Include="Traits\Render\ReloadArmamentsBar.cs" />
+    <Compile Include="Lint\CheckChromeHotkeys.cs" />
+    <Compile Include="UtilityCommands\LintInterfaces.cs" />
+    <Compile Include="Widgets\Logic\SingleHotkeyBaseLogic.cs" />
+    <Compile Include="Widgets\Logic\ScreenshotHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\MuteHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleBasesHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleProductionActorsHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\JumpToLastEventHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\JumpToSelectedActorsHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\TogglePixelDoubleHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\TogglePlayerStanceColorHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\PauseHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleStatusBarsHotkeyLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
@@ -816,17 +847,17 @@
       SourceFiles="$(TargetPath)"
       DestinationFolder="$(SolutionDir)mods/common/"/>
     <!--
-        We need to copy OpenRA.Mods.Common.pdb (not `.dll.pdb`). This is only necessary on Windows.
-        Mono outputs a `.dll.mdb` so we can just append `.mdb` directly.
+      csc generates .pdb symbol files (not `.dll.pdb`).
+      mcs generates .dll.mdb symbol files.
     -->
     <Copy
       SourceFiles="$(TargetDir)$(TargetName).pdb"
       DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Windows_NT'"/>
+      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
     <Copy
       SourceFiles="$(TargetPath).mdb"
       DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="'$(OS)' == 'Unix'"/>
+      Condition="Exists('$(TargetPath).mdb')"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

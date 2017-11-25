@@ -51,10 +51,15 @@ namespace OpenRA.Primitives
 			MutateBins(item, itemBounds[item] = bounds, addItem);
 		}
 
-		public void Remove(T item)
+		public bool Remove(T item)
 		{
-			MutateBins(item, itemBounds[item], removeItem);
+			Rectangle bounds;
+			if (!itemBounds.TryGetValue(item, out bounds))
+				return false;
+
+			MutateBins(item, bounds, removeItem);
 			itemBounds.Remove(item);
+			return true;
 		}
 
 		Dictionary<T, Rectangle> BinAt(int row, int col)

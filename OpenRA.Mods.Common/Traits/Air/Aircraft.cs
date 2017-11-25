@@ -17,38 +17,44 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		UsesInit<LocationInit>, UsesInit<FacingInit>
+		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
-		public readonly WDist IdealSeparation = new WDist(1706);
+
 		[Desc("Whether the aircraft can be repulsed.")]
 		public readonly bool Repulsable = true;
+
+		[Desc("The distance it tries to maintain from other aircraft if repulsable.")]
+		public readonly WDist IdealSeparation = new WDist(1706);
+
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
 		[ActorReference]
 		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
+
 		[ActorReference]
 		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
+
 		public readonly int InitialFacing = 0;
+
 		public readonly int TurnSpeed = 255;
+
 		public readonly int Speed = 1;
 
-		[Desc("Minimum altitude where this aircraft is considered airborne")]
+		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
+
 		public readonly HashSet<string> LandableTerrainTypes = new HashSet<string>();
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
-
-		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
-		public int GetInitialFacing() { return InitialFacing; }
-		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -63,6 +69,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
 
+		[Desc("Does the actor land and take off vertically?")]
+		public readonly bool VTOL = false;
+
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
@@ -72,6 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
 
+		[Desc("Does this actor automatically take off after resupplying?")]
+		public readonly bool TakeOffOnResupply = false;
+
+		[Desc("Does this actor automatically take off after creation?")]
+		public readonly bool TakeOffOnCreation = true;
+
+		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
 		[Desc("How fast this actor ascends or descends when using horizontal take off/landing.")]
@@ -92,7 +108,25 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The number of ticks that a airplane will wait to make a new search for an available airport.")]
 		public readonly int NumberOfTicksToVerifyAvailableAirport = 150;
 
+		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
+		public readonly int PreviewFacing = 92;
+
+		public int GetInitialFacing() { return InitialFacing; }
+		public WDist GetCruiseAltitude() { return CruiseAltitude; }
+
+		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
+
+		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
+		{
+			yield return new FacingInit(PreviewFacing);
+		}
+
+		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
+			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
+		public readonly BooleanExpression LandOnCondition;
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
+
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
 		// Used to determine if an aircraft can spawn landed
@@ -116,11 +150,10 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, IActorPreviewInitModifier
+		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
-		public readonly bool IsPlane;
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
@@ -134,6 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
+		public bool ForceLanding { get; private set; }
 
 		bool airborne;
 		bool cruising;
@@ -144,6 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool isMoving;
 		bool isMovingVertically;
 		WPos cachedPosition;
+		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
@@ -156,21 +191,38 @@ namespace OpenRA.Mods.Common.Traits
 			if (init.Contains<CenterPositionInit>())
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
-			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
-
-			// TODO: HACK: This is a hack until we can properly distinguish between airplane and helicopter!
-			// Or until the activities get unified enough so that it doesn't matter.
-			IsPlane = !info.CanHover;
+			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
 		}
 
-		public void Created(Actor self)
+		public virtual IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			if (Info.LandOnCondition != null)
+				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
+		}
+
+		void ForceLandConditionChanged(Actor self, IReadOnlyDictionary<string, int> variables)
+		{
+			landNow = Info.LandOnCondition.Evaluate(variables);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			Created(self);
+		}
+
+		protected virtual void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			AddedToWorld(self);
+		}
+
+		protected virtual void AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 
@@ -181,7 +233,26 @@ namespace OpenRA.Mods.Common.Traits
 				OnCruisingAltitudeReached();
 		}
 
-		public virtual void Tick(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			RemovedFromWorld(self);
+		}
+
+		protected virtual void RemovedFromWorld(Actor self)
+		{
+			UnReserve();
+			self.World.RemoveFromMaps(self, this);
+
+			OnCruisingAltitudeLeft();
+			OnAirborneAltitudeLeft();
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (firstTick)
 			{
@@ -197,7 +268,35 @@ namespace OpenRA.Mods.Common.Traits
 				if (host == null)
 					return;
 
-				self.QueueActivity(new TakeOff(self));
+				if (Info.TakeOffOnCreation)
+					self.QueueActivity(new TakeOff(self));
+			}
+
+			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.
+			if (landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
+				&& !(self.CurrentActivity is HeliLand || self.CurrentActivity is Turn))
+			{
+				self.CancelActivity();
+
+				if (Info.TurnToLand)
+					self.QueueActivity(new Turn(self, Info.InitialFacing));
+
+				self.QueueActivity(new HeliLand(self, true));
+
+				ForceLanding = true;
+			}
+
+			// Add takeoff activity if LandOnCondidion resolves to false and the actor should not land when idle.
+			if (landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
+			{
+				ForceLanding = false;
+
+				if (!Info.LandWhenIdle)
+				{
+					self.CancelActivity();
+
+					self.QueueActivity(new TakeOff(self));
+				}
 			}
 
 			var oldCachedPosition = cachedPosition;
@@ -391,8 +490,10 @@ namespace OpenRA.Mods.Common.Traits
 			var name = a.Info.Name;
 			if (Info.RearmBuildings.Contains(name))
 				yield return new Rearm(self);
+
+			// The ResupplyAircraft activity guarantees that we're on the helipad
 			if (Info.RepairBuildings.Contains(name))
-				yield return new Repair(self, a);
+				yield return new Repair(self, a, WDist.Zero);
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
@@ -447,7 +548,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
@@ -455,7 +556,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, Actor ignoreActor)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
@@ -463,7 +564,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveWithinRange(Target target, WDist range)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, target, WDist.Zero, range);
 
 			return new HeliFly(self, target, WDist.Zero, range);
@@ -471,7 +572,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, target, minRange, maxRange);
 
 			return new HeliFly(self, target, minRange, maxRange);
@@ -479,7 +580,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new FlyFollow(self, target, minRange, maxRange);
 
 			return new Follow(self, target, minRange, maxRange);
@@ -487,7 +588,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
@@ -495,7 +596,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveToTarget(Actor self, Target target)
 		{
-			if (IsPlane)
+			if (!Info.CanHover)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
 
 			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
@@ -503,7 +604,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveIntoTarget(Actor self, Target target)
 		{
-			if (IsPlane)
+			if (!Info.VTOL)
 				return new Land(self, target);
 
 			return new HeliLand(self, false);
@@ -512,12 +613,13 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			if (IsPlane)
+			if (!Info.CanHover)
 				return ActivityUtils.SequenceActivities(
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
 
-			return ActivityUtils.SequenceActivities(new CallFunc(() => SetVisualPosition(self, fromPos)),
+			return ActivityUtils.SequenceActivities(
+				new CallFunc(() => SetVisualPosition(self, fromPos)),
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
@@ -553,17 +655,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			if (order.OrderID == "Move")
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+			if (order.OrderID == "Enter" || order.OrderID == "Move")
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
 
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("ReturnToBase", self, false);
+		}
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Move":
@@ -591,7 +698,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(target, Color.Green);
 
-				if (IsPlane)
+				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
@@ -603,7 +710,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (Reservable.IsReserved(order.TargetActor))
 				{
-					if (IsPlane)
+					if (!Info.CanHover)
 						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
 					else
 						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
@@ -612,7 +719,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
-					if (IsPlane)
+					if (!Info.CanHover && !Info.VTOL)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
 							new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor),
@@ -631,7 +738,6 @@ namespace OpenRA.Mods.Common.Traits
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
-							self.QueueActivity(new TakeOff(self));
 						};
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));
@@ -650,7 +756,7 @@ namespace OpenRA.Mods.Common.Traits
 				UnReserve();
 
 				// TODO: Implement INotifyBecomingIdle instead
-				if (!IsPlane && Info.LandWhenIdle)
+				if (Info.VTOL && Info.LandWhenIdle)
 				{
 					if (Info.TurnToLand)
 						self.QueueActivity(new Turn(self, Info.InitialFacing));
@@ -662,7 +768,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				UnReserve();
 				self.CancelActivity();
-				if (IsPlane)
+				if (!Info.CanHover)
 					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
 				else
 					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, null, false));
@@ -670,15 +776,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		#endregion
-
-		public void RemovedFromWorld(Actor self)
-		{
-			UnReserve();
-			self.World.RemoveFromMaps(self, this);
-
-			OnCruisingAltitudeLeft();
-			OnAirborneAltitudeLeft();
-		}
 
 		#region Airborne conditions
 
@@ -727,7 +824,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#endregion
 
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			UnReserve();
 		}

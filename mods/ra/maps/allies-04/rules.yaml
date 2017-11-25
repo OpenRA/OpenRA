@@ -20,6 +20,7 @@ World:
 			easy: Easy
 			normal: Normal
 			hard: Hard
+			tough: Real tough guy
 		Default: easy
 
 powerproxy.paratroopers:

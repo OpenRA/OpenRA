@@ -100,6 +100,7 @@ Player:
 	-HackyAI@TurtleAI:
 	DummyAI@LonestarAI:
 		Name: Lonestar AI
+		Type: lonestar
 
 ^Infantry:
 	Inherits@IC: ^IronCurtainable
@@ -113,7 +114,7 @@ OILB:
 		HP: 3000
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RevealsShroud:
 		Range: 3c0
 	CashTrickler:
@@ -174,6 +175,7 @@ FTUR:
 	Power:
 		Amount: 0
 	GivesBuildableArea:
+		AreaTypes: building
 
 PBOX:
 	Buildable:
@@ -187,6 +189,7 @@ PBOX:
 	Power:
 		Amount: 0
 	GivesBuildableArea:
+		AreaTypes: building
 
 DOG:
 	Buildable:
@@ -331,7 +334,7 @@ BADR.Bomber:
 	AmmoPool:
 		Ammo: 30
 	Tooltip:
-		Name: Mig Bomber
+		Name: MiG Bomber
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	RenderSprites:

@@ -37,6 +37,8 @@ namespace OpenRA
 	public sealed class Sound : IDisposable
 	{
 		readonly ISoundEngine soundEngine;
+		ISoundLoader[] loaders;
+		IReadOnlyFileSystem fileSystem;
 		Cache<string, ISoundSource> sounds;
 		ISoundSource rawSource;
 		ISound music;
@@ -52,12 +54,12 @@ namespace OpenRA
 				MuteAudio();
 		}
 
-		ISoundSource LoadSound(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem, string filename)
+		T LoadSound<T>(string filename, Func<ISoundFormat, T> loadFormat)
 		{
 			if (!fileSystem.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
-				return null;
+				return default(T);
 			}
 
 			using (var stream = fileSystem.Open(filename))
@@ -68,8 +70,7 @@ namespace OpenRA
 					stream.Position = 0;
 					if (loader.TryParseSound(stream, out soundFormat))
 					{
-						var source = soundEngine.AddSoundSourceFromMemory(
-							soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
+						var source = loadFormat(soundFormat);
 						soundFormat.Dispose();
 						return source;
 					}
@@ -81,10 +82,20 @@ namespace OpenRA
 
 		public void Initialize(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem)
 		{
-			sounds = new Cache<string, ISoundSource>(s => LoadSound(loaders, fileSystem, s));
+			StopMusic();
+			soundEngine.StopAllSounds();
+
+			if (sounds != null)
+				foreach (var soundSource in sounds.Values)
+					if (soundSource != null)
+						soundSource.Dispose();
+
+			this.loaders = loaders;
+			this.fileSystem = fileSystem;
+			Func<ISoundFormat, ISoundSource> loadIntoMemory = soundFormat => soundEngine.AddSoundSourceFromMemory(
+				soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
+			sounds = new Cache<string, ISoundSource>(filename => LoadSound(filename, loadIntoMemory));
 			currentSounds = new Dictionary<uint, ISound>();
-			music = null;
-			currentMusic = null;
 			video = null;
 		}
 
@@ -163,7 +174,7 @@ namespace OpenRA
 		public void Tick()
 		{
 			// Song finished
-			if (MusicPlaying && !music.Playing)
+			if (MusicPlaying && music.Complete)
 			{
 				StopMusic();
 				onMusicComplete();
@@ -195,11 +206,17 @@ namespace OpenRA
 
 			StopMusic();
 
-			var sound = sounds[m.Filename];
-			if (sound == null)
-				return;
+			Func<ISoundFormat, ISound> stream = soundFormat => soundEngine.Play2DStream(
+				soundFormat.GetPCMInputStream(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate,
+				false, true, WPos.Zero, MusicVolume);
+			music = LoadSound(m.Filename, stream);
 
-			music = soundEngine.Play2D(sound, false, true, WPos.Zero, MusicVolume, false);
+			if (music == null)
+			{
+				onMusicComplete = null;
+				return;
+			}
+
 			currentMusic = m;
 			MusicPlaying = true;
 		}
@@ -222,10 +239,13 @@ namespace OpenRA
 		public void StopMusic()
 		{
 			if (music != null)
+			{
 				soundEngine.StopSound(music);
+				music = null;
+			}
 
-			MusicPlaying = false;
 			currentMusic = null;
+			MusicPlaying = false;
 		}
 
 		public void PauseMusic()
@@ -388,6 +408,11 @@ namespace OpenRA
 
 		public void Dispose()
 		{
+			StopAudio();
+			if (sounds != null)
+				foreach (var soundSource in sounds.Values)
+					if (soundSource != null)
+						soundSource.Dispose();
 			soundEngine.Dispose();
 		}
 	}

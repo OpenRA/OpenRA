@@ -90,16 +90,17 @@ ChromeLayout:
 	common|chrome/ingame-menu.yaml
 	ra|chrome/ingame-observer.yaml
 	common|chrome/ingame-observerstats.yaml
-	common|chrome/ingame-player.yaml
+	ra|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	common|chrome/ingame-debug.yaml
+	common|chrome/ingame-infochat.yaml
 	common|chrome/mainmenu.yaml
 	common|chrome/settings.yaml
 	common|chrome/credits.yaml
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml
 	common|chrome/lobby-players.yaml
-	common|chrome/lobby-options.yaml
+	ra|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
 	common|chrome/lobby-kickdialogs.yaml
 	common|chrome/lobby-globalchat.yaml
@@ -199,6 +200,8 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		SNOW: .sno
 		INTERIOR: .int
 		DESERT: .des
+
+ModelSequenceFormat: PlaceholderModelSequence
 
 GameSpeeds:
 	slower:

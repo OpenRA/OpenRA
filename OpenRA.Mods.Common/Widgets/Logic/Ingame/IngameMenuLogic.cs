@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 					var exitDelay = iop != null ? iop.ExitDelay : 0;
 
-					if (world.LobbyInfo.IsSinglePlayer)
+					if (world.LobbyInfo.NonBotClients.Count() == 1)
 					{
 						restartAction = () =>
 						{

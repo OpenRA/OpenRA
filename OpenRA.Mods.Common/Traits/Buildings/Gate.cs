@@ -114,10 +114,10 @@ namespace OpenRA.Mods.Common.Traits
 			return !self.IsDisabled() && BuildComplete && blocking.AppearsFriendlyTo(self);
 		}
 
-		public override void AddedToWorld(Actor self)
+		protected override void AddedToWorld(Actor self)
 		{
 			base.AddedToWorld(self);
-			blockedPositions = FootprintUtils.Tiles(self);
+			blockedPositions = Info.Tiles(self.Location);
 		}
 
 		bool IsBlocked()

@@ -15,8 +15,14 @@ namespace OpenRA.Mods.Common.AI
 {
 	public sealed class DummyAIInfo : ITraitInfo, IBotInfo
 	{
-		[Desc("Ingame name this bot uses.")]
+		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
+
+		[FieldLoader.Require]
+		[Desc("Internal id for this bot.")]
+		public readonly string Type = null;
+
+		string IBotInfo.Type { get { return Type; } }
 
 		string IBotInfo.Name { get { return Name; } }
 

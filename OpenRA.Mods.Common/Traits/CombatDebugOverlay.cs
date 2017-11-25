@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
@@ -27,10 +26,14 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CombatDebugOverlay : IRenderAboveWorld, INotifyDamage, INotifyCreated
 	{
-		readonly DeveloperMode devMode;
+		static readonly WVec TargetPosHLine = new WVec(0, 128, 0);
+		static readonly WVec TargetPosVLine = new WVec(128, 0, 0);
+
+		readonly DebugVisualizations debugVis;
 		readonly HealthInfo healthInfo;
 		readonly Lazy<BodyOrientation> coords;
 
+		HitShape[] shapes;
 		IBlocksProjectiles[] allBlockers;
 
 		public CombatDebugOverlay(Actor self)
@@ -38,25 +41,22 @@ namespace OpenRA.Mods.Common.Traits
 			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
 			coords = Exts.Lazy(self.Trait<BodyOrientation>);
 
-			var localPlayer = self.World.LocalPlayer;
-			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
+			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			shapes = self.TraitsImplementing<HitShape>().ToArray();
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 		}
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
-			if (devMode == null || !devMode.ShowCombatGeometry)
+			if (debugVis == null || !debugVis.CombatGeometry)
 				return;
 
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 			var iz = 1 / wr.Viewport.Zoom;
-
-			if (healthInfo != null)
-				healthInfo.Shape.DrawCombatOverlay(wr, wcr, self);
 
 			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
 			if (blockers.Count > 0)
@@ -68,6 +68,20 @@ namespace OpenRA.Mods.Common.Traits
 				wcr.DrawLine(ha, hb, iz, hc);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, ha);
 				TargetLineRenderable.DrawTargetMarker(wr, hc, hb);
+			}
+
+			var activeShapes = shapes.Where(Exts.IsTraitEnabled);
+			foreach (var s in activeShapes)
+				s.Info.Type.DrawCombatOverlay(wr, wcr, self);
+
+			var tc = Color.Lime;
+			var positions = Target.FromActor(self).Positions;
+			foreach (var p in positions)
+			{
+				var center = wr.Screen3DPosition(p);
+				TargetLineRenderable.DrawTargetMarker(wr, tc, center);
+				wcr.DrawLine(wr.Screen3DPosition(p - TargetPosHLine), wr.Screen3DPosition(p + TargetPosHLine), iz, tc);
+				wcr.DrawLine(wr.Screen3DPosition(p - TargetPosVLine), wr.Screen3DPosition(p + TargetPosVLine), iz, tc);
 			}
 
 			foreach (var attack in self.TraitsImplementing<AttackBase>().Where(x => !x.IsTraitDisabled))
@@ -101,6 +115,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in attack.Armaments)
 			{
+				if (a.IsTraitDisabled)
+					continue;
+
 				foreach (var b in a.Barrels)
 				{
 					var muzzle = self.CenterPosition + a.MuzzleOffset(self, b);
@@ -116,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (devMode == null || !devMode.ShowCombatGeometry || e.Damage.Value == 0)
+			if (debugVis == null || !debugVis.CombatGeometry || e.Damage.Value == 0)
 				return;
 
 			if (healthInfo == null)

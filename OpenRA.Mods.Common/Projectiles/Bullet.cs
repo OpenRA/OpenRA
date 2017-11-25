@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -92,22 +93,22 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ContrailDelay = 1;
 		public readonly WDist ContrailWidth = new WDist(64);
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
+		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
 			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
+		public WDist BlockerScanRadius = new WDist(-1);
 
-		[Desc("Extra search radius beyond path for actors with ValidBounceBlockerStances. If set to zero (default), ",
+		[Desc("Extra search radius beyond path for actors with ValidBounceBlockerStances. If set to a negative value (default), ",
 			"it will automatically scale to the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BounceBlockerScanRadius = WDist.Zero;
+		public WDist BounceBlockerScanRadius = new WDist(-1);
 
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
 
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
 		{
-			if (BlockerScanRadius == WDist.Zero)
+			if (BlockerScanRadius < WDist.Zero)
 				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
 
-			if (BounceBlockerScanRadius == WDist.Zero)
+			if (BounceBlockerScanRadius < WDist.Zero)
 				BounceBlockerScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
@@ -302,12 +303,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				if (!info.ValidBounceBlockerStances.HasStance(victim.Owner.Stances[firedBy.Owner]))
 					continue;
 
-				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
-				if (healthInfo == null)
-					continue;
-
 				// If the impact position is within any actor's HitShape, we have a direct hit
-				if (healthInfo.Shape.DistanceFromEdge(pos, victim).Length <= 0)
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (activeShapes.Any(i => i.Info.Type.DistanceFromEdge(pos, victim).Length <= 0))
 					return true;
 			}
 

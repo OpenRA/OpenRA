@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.AudioLoaders
 {
@@ -41,17 +42,17 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int Channels { get { return 1; } }
 		public int SampleRate { get; private set; }
 		public float LengthInSeconds { get { return (float)totalSamples / SampleRate; } }
-		public Stream GetPCMInputStream() { return new VocStream(this); }
+		public Stream GetPCMInputStream() { return new VocStream(new VocFormat(this)); }
 		public void Dispose() { stream.Dispose(); }
 
-		int totalSamples = 0;
-		int samplePosition = 0;
+		readonly byte[] buffer = new byte[4096];
+		readonly Stream stream;
+		readonly VocBlock[] blocks;
+		readonly int totalSamples;
 
-		Stream stream;
-		List<VocBlock> blocks = new List<VocBlock>();
 		IEnumerator<VocBlock> currentBlock;
-		int samplesLeftInBlock = 0;
-		byte[] buffer = new byte[4096];
+		int samplesLeftInBlock;
+		int samplePosition;
 
 		struct VocFileHeader
 		{
@@ -95,11 +96,23 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		{
 			this.stream = stream;
 
-			CheckVocHeader();
-			Preload();
+			CheckVocHeader(stream);
+			int sampleRate;
+			Preload(stream, out blocks, out totalSamples, out sampleRate);
+			SampleRate = sampleRate;
+			Rewind();
 		}
 
-		void CheckVocHeader()
+		VocFormat(VocFormat cloneFrom)
+		{
+			SampleRate = cloneFrom.SampleRate;
+			stream = SegmentStream.CreateWithoutOwningStream(cloneFrom.stream, 0, (int)cloneFrom.stream.Length);
+			blocks = cloneFrom.blocks;
+			totalSamples = cloneFrom.totalSamples;
+			Rewind();
+		}
+
+		static void CheckVocHeader(Stream stream)
 		{
 			var vfh = VocFileHeader.Read(stream);
 
@@ -114,7 +127,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					(~vfh.Version + 0x1234).ToString("X") + " but value is : " + vfh.ID.ToString("X"));
 		}
 
-		int GetSampleRateFromVocRate(int vocSampleRate)
+		static int GetSampleRateFromVocRate(int vocSampleRate)
 		{
 			if (vocSampleRate == 256)
 				throw new InvalidDataException("Invalid frequency divisor 256 in voc file");
@@ -126,8 +139,12 @@ namespace OpenRA.Mods.Common.AudioLoaders
 				return (int)(1000000L / (256L - vocSampleRate));
 		}
 
-		void Preload()
+		static void Preload(Stream stream, out VocBlock[] blocks, out int totalSamples, out int sampleRate)
 		{
+			var blockList = new List<VocBlock>();
+			totalSamples = 0;
+			sampleRate = 0;
+
 			while (true)
 			{
 				VocBlock block = new VocBlock();
@@ -167,17 +184,17 @@ namespace OpenRA.Mods.Common.AudioLoaders
 							block.SampleBlock.Offset = stream.Position;
 
 							// See if last block contained additional information
-							if (blocks.Count > 0)
+							if (blockList.Count > 0)
 							{
-								var b = blocks.Last();
+								var b = blockList.Last();
 								if (b.Code == 8)
 								{
 									block.SampleBlock.Rate = b.SampleBlock.Rate;
-									blocks.Remove(b);
+									blockList.Remove(b);
 								}
 							}
 
-							SampleRate = Math.Max(SampleRate, block.SampleBlock.Rate);
+							sampleRate = Math.Max(sampleRate, block.SampleBlock.Rate);
 							break;
 						}
 
@@ -234,27 +251,27 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 				if (skip > 0)
 					stream.Seek(skip, SeekOrigin.Current);
-				blocks.Add(block);
+				blockList.Add(block);
 			}
 
 			// Check validity and calculated total number of samples
-			foreach (var b in blocks)
+			foreach (var b in blockList)
 			{
 				if (b.Code == 8)
 					throw new InvalidDataException("Unused block 8 in voc file");
 				if (b.Code != 1 && b.Code != 9)
 					continue;
-				if (b.SampleBlock.Rate != SampleRate)
+				if (b.SampleBlock.Rate != sampleRate)
 					throw new InvalidDataException("Voc file contains chunks with different sample rate");
 				totalSamples += b.SampleBlock.Samples;
 			}
 
-			Rewind();
+			blocks = blockList.ToArray();
 		}
 
 		void Rewind()
 		{
-			currentBlock = blocks.GetEnumerator();
+			currentBlock = (IEnumerator<VocBlock>)blocks.GetEnumerator();
 			samplesLeftInBlock = 0;
 			samplePosition = 0;
 
@@ -356,6 +373,13 @@ namespace OpenRA.Mods.Common.AudioLoaders
 			public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
 			public override void SetLength(long value) { throw new NotImplementedException(); }
 			public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+
+			protected override void Dispose(bool disposing)
+			{
+				if (disposing)
+					format.Dispose();
+				base.Dispose(disposing);
+			}
 		}
 	}
 }
