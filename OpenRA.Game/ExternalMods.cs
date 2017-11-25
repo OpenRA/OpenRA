@@ -70,7 +70,7 @@ namespace OpenRA
 			}
 		}
 
-		void LoadMod(MiniYaml yaml, string path = null)
+		void LoadMod(MiniYaml yaml, string path = null, bool forceRegistration = false)
 		{
 			var mod = FieldLoader.Load<ExternalMod>(yaml);
 			var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
@@ -83,7 +83,7 @@ namespace OpenRA
 
 			// Avoid possibly overwriting a valid mod with an obviously bogus one
 			var key = ExternalMod.MakeKey(mod);
-			if (File.Exists(mod.LaunchPath) && (path == null || Path.GetFileNameWithoutExtension(path) == key))
+			if ((forceRegistration || File.Exists(mod.LaunchPath)) && (path == null || Path.GetFileNameWithoutExtension(path) == key))
 				mods[key] = mod;
 		}
 
@@ -119,7 +119,7 @@ namespace OpenRA
 				sources.Add(Platform.SupportDir);
 
 			// Make sure the mod is available for this session, even if saving it fails
-			LoadMod(yaml.First().Value);
+			LoadMod(yaml.First().Value, forceRegistration: true);
 
 			foreach (var source in sources.Distinct())
 			{
@@ -154,6 +154,7 @@ namespace OpenRA
 			if (registration.HasFlag(ModRegistration.User))
 				sources.Add(Platform.SupportDir);
 
+			var activeModKey = ExternalMod.MakeKey(activeMod);
 			foreach (var source in sources.Distinct())
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
@@ -168,6 +169,10 @@ namespace OpenRA
 						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
 						var m = FieldLoader.Load<ExternalMod>(yaml);
 						modKey = ExternalMod.MakeKey(m);
+
+						// Continue to the next entry if it is the active mod (even if the LaunchPath is bogus)
+						if (modKey == activeModKey)
+							continue;
 
 						// Continue to the next entry if this one is valid
 						if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey &&
