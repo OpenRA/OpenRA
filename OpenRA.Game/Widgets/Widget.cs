@@ -284,8 +284,15 @@ namespace OpenRA.Widgets
 			// PERF: Avoid LINQ.
 			var bounds = EventBounds;
 			foreach (var child in Children)
+			{
 				if (child.IsVisible())
-					bounds = Rectangle.Union(bounds, child.GetEventBounds());
+				{
+					var childBounds = child.GetEventBounds();
+					if (childBounds != Rectangle.Empty)
+						bounds = Rectangle.Union(bounds, childBounds);
+				}
+			}
+
 			return bounds;
 		}
 
