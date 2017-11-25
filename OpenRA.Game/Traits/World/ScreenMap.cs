@@ -94,7 +94,9 @@ namespace OpenRA.Traits
 		public void Add(IEffect effect, WPos position, Size size)
 		{
 			var screenPos = worldRenderer.ScreenPxPosition(position);
-			var screenBounds = new Rectangle(screenPos.X - size.Width / 2, screenPos.Y - size.Height / 2, size.Width, size.Height);
+			var screenWidth = Math.Abs(size.Width);
+			var screenHeight = Math.Abs(size.Height);
+			var screenBounds = new Rectangle(screenPos.X - screenWidth / 2, screenPos.Y - screenHeight / 2, screenWidth, screenHeight);
 			if (ValidBounds(screenBounds))
 				partitionedEffects.Add(effect, screenBounds);
 		}
@@ -107,11 +109,8 @@ namespace OpenRA.Traits
 
 		public void Update(IEffect effect, WPos position, Size size)
 		{
-			var screenPos = worldRenderer.ScreenPxPosition(position);
-			var screenBounds = new Rectangle(screenPos.X - size.Width / 2, screenPos.Y - size.Height / 2, size.Width, size.Height);
-			partitionedEffects.Remove(effect);
-			if (ValidBounds(screenBounds))
-				partitionedEffects.Add(effect, screenBounds);
+			Remove(effect);
+			Add(effect, position, size);
 		}
 
 		public void Update(IEffect effect, WPos position, Sprite sprite)
