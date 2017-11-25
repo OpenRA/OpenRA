@@ -5,6 +5,8 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusLocked: True
 		AllyBuildRadiusEnabled: False
+		BuildRadiusLocked: True
+		BuildRadiusEnabled: True
 	MapOptions:
 		TechLevelLocked: True
 		TechLevel: unrestricted
