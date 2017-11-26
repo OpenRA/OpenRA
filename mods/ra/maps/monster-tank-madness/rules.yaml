@@ -126,7 +126,7 @@ PBOX:
 		Name: Super Tank
 		GenericName: Super Tank
 	Health:
-		HP: 20000
+		HP: 2000000
 	Armor:
 		Type: Concrete
 	Mobile:
@@ -165,7 +165,7 @@ PBOX:
 	SpawnActorOnDeath:
 		Actor: 5TNK.Husk
 	SelfHealing:
-		Step: 1
+		Step: 100
 		Delay: 1
 		HealIfBelow: 100
 		DamageCooldown: 150
@@ -181,7 +181,7 @@ PBOX:
 	ThrowsParticle@turret:
 		Anim: turret
 	Health:
-		HP: 2000
+		HP: 200000
 	RenderSprites:
 		Image: 4TNK
 

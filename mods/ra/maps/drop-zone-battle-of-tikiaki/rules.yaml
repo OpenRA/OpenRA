@@ -50,7 +50,7 @@ UNITCRATE:
 APC:
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Health:
-		HP: 1000
+		HP: 100000
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	-AttackMove:
@@ -59,7 +59,7 @@ HARV:
 	Tooltip:
 		Name: Bomb Truck
 	Health:
-		HP: 100
+		HP: 10000
 	Explodes:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
@@ -69,11 +69,11 @@ HARV:
 
 SHOK:
 	Health:
-		HP: 800
+		HP: 80000
 
 DOG:
 	Health:
-		HP: 120
+		HP: 12000
 	Mobile:
 		Speed: 99
 

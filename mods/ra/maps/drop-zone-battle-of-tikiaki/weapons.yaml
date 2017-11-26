@@ -2,4 +2,4 @@ PortaTesla:
 	ReloadDelay: 20
 	Range: 10c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 80
+		Damage: 8000

@@ -15,7 +15,7 @@
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Ground, Water, Air
 		Versus:
 			None: 10
@@ -57,7 +57,7 @@ Maverick:
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
-		Damage: 70
+		Damage: 7000
 		Versus:
 			None: 30
 			Wood: 90
@@ -81,7 +81,7 @@ HellfireAG:
 		HorizontalRateOfTurn: 10
 		RangeLimit: 8c512
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 30
 			Wood: 90
@@ -100,7 +100,7 @@ HellfireAA:
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			Light: 75
@@ -119,7 +119,7 @@ MammothTusk:
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air, Infantry
 		Versus:
 			None: 100
@@ -148,7 +148,7 @@ Nike:
 		RangeLimit: 9c0
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -166,7 +166,7 @@ RedEye:
 		HorizontalRateOfTurn: 20
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			Wood: 75
@@ -188,7 +188,7 @@ Stinger:
 		Speed: 170
 		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 3000
 		Versus:
 			None: 30
 			Light: 75
@@ -214,7 +214,7 @@ APTusk:
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 3000
 		Versus:
 			None: 25
 			Light: 75
@@ -240,7 +240,7 @@ TorpTube:
 		CruiseAltitude: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 180
+		Damage: 18000
 		ValidTargets: Water, Underwater, Bridge
 		Versus:
 			None: 30
@@ -275,7 +275,7 @@ TorpTube:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 25
+		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
@@ -310,7 +310,7 @@ SubMissileAA:
 	Inherits: ^SubMissileDefault
 	ValidTargets: Air
 	Warhead@1Dam: SpreadDamage
-		Damage: 15
+		Damage: 1500
 
 SCUD:
 	Inherits: ^AntiGroundMissile
@@ -330,7 +330,7 @@ SCUD:
 		LaunchAngle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 45
+		Damage: 4500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Water, Trees
 		Versus:

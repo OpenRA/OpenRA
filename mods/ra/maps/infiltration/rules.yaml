@@ -54,7 +54,7 @@ SPY.Strong:
 	RenderSprites:
 		Image: SPY
 	Health:
-		HP: 100
+		HP: 10000
 	RevealsShroud:
 		Range: 6c0
 	Infiltrates:

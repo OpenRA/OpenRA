@@ -111,7 +111,7 @@
 		RequiresCondition: rank-elite
 		Modifier: 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -307,7 +307,7 @@
 	Huntable:
 	DrawLineToTarget:
 	Health:
-		HP: 25
+		HP: 2500
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -359,7 +359,7 @@
 	Tooltip:
 		GenericName: Soldier
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -621,6 +621,7 @@
 		AreaTypes: building
 	RepairableBuilding:
 		PlayerExperience: 25
+		RepairStep: 700
 	EngineerRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
@@ -692,7 +693,7 @@
 	FrozenUnderFog:
 	FrozenUnderFogUpdatedByGps:
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		Categories: Wall
 
@@ -701,7 +702,7 @@
 	Valued:
 		Cost: 250
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	LineBuildNode:
@@ -727,7 +728,7 @@
 	Inherits: ^BasicBuilding
 	Huntable:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -741,7 +742,7 @@
 	Inherits: ^Building
 	-GivesBuildableArea:
 	Health:
-		HP: 100
+		HP: 10000
 	Explodes:
 		Weapon: Demolish
 		DamageThreshold: 70
@@ -774,7 +775,7 @@
 	SelectionDecorations:
 		RenderSelectionBars: False
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: UnitExplode
 	Tooltip:
@@ -840,7 +841,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	Targetable:
@@ -888,7 +889,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
-		HP: 280
+		HP: 28000
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
@@ -973,7 +974,7 @@
 		Footprint: ____ ____
 		Dimensions: 4,2
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Concrete
 	ScriptTriggers:
@@ -1055,7 +1056,7 @@
 		AvoidFriendly: false
 		BlockFriendly: false
 	Health:
-		HP: 100
+		HP: 10000
 		NotifyAppliedDamage: false
 	Armor:
 		Type: Light

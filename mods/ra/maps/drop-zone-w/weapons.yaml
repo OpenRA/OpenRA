@@ -7,7 +7,7 @@
 		Inaccuracy: 3c341
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 250
+		Damage: 25000
 
 SubMissile:
 	ReloadDelay: 250
@@ -17,4 +17,4 @@ SubMissile:
 		Speed: 409
 		LaunchAngle: 62
 	Warhead@1Dam: SpreadDamage
-		Damage: 400
+		Damage: 40000

@@ -12,7 +12,7 @@ SS:
 	Tooltip:
 		Name: Submarine
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Light
 	Mobile:
@@ -80,7 +80,7 @@ MSUB:
 	Tooltip:
 		Name: Missile Submarine
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Light
 	Mobile:
@@ -147,7 +147,7 @@ DD:
 	Tooltip:
 		Name: Destroyer
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -198,7 +198,7 @@ CA:
 	Tooltip:
 		Name: Cruiser
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -254,7 +254,7 @@ LST:
 	Tooltip:
 		Name: Transport
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -295,7 +295,7 @@ PT:
 	Tooltip:
 		Name: Gunboat
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	Mobile:

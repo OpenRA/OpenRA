@@ -8,7 +8,7 @@
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 20
+		Damage: 2000
 		ValidTargets: Air
 		Versus:
 			None: 40
@@ -30,7 +30,7 @@ ZSU-23:
 	Projectile: Bullet
 		Speed: 3c340
 	Warhead@1Dam: SpreadDamage
-		Damage: 12
+		Damage: 1200
 		Versus:
 			None: 30
 			Wood: 75
@@ -65,7 +65,7 @@ FLAK-23-AG:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 30
+		Damage: 3000
 		Versus:
 			None: 100
 			Wood: 50
@@ -84,7 +84,7 @@ FLAK-23-AG:
 ^LightMG:
 	Inherits: ^HeavyMG
 	Warhead@1Dam: SpreadDamage
-		Damage: 15
+		Damage: 1500
 		Versus:
 			Wood: 10
 			Light: 30
@@ -94,13 +94,13 @@ FLAK-23-AG:
 Vulcan:
 	Inherits: ^HeavyMG
 	Warhead@1Dam: SpreadDamage
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 200
 			Light: 50
 	Warhead@4Dam_2: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 2
 		Versus:
 			None: 200
@@ -120,7 +120,7 @@ Vulcan:
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 4
 		Versus:
 			None: 200
@@ -140,7 +140,7 @@ Vulcan:
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 6
 		Versus:
 			None: 200
@@ -160,7 +160,7 @@ Vulcan:
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 8
 		Versus:
 			None: 200
@@ -180,7 +180,7 @@ Vulcan:
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
-		Damage: 10
+		Damage: 1000
 		Delay: 10
 		Versus:
 			None: 200
@@ -218,7 +218,7 @@ ChainGun.Yak:
 	Projectile: Bullet
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 
 Pistol:
 	Inherits: ^LightMG
@@ -226,7 +226,7 @@ Pistol:
 	Range: 3c0
 	Report: gun27.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 1
+		Damage: 100
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
 	Warhead@3EffWater: CreateEffect
@@ -258,7 +258,7 @@ M60mg:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 150
+		Damage: 15000
 		ValidTargets: Barrel, Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 
@@ -280,7 +280,7 @@ Colt45:
 	ReloadDelay: 5
 	Range: 7c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
 		ValidTargets: Ground, Ship, Air, Trees
@@ -294,4 +294,4 @@ Sniper:
 	ReloadDelay: 70
 	Range: 10c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 140
+		Damage: 14000
