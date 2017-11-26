@@ -12,7 +12,7 @@ V2RL:
 	Tooltip:
 		Name: V2 Rocket Launcher
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -60,7 +60,7 @@ V2RL:
 	Tooltip:
 		Name: Light Tank
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -101,7 +101,7 @@ V2RL:
 	Tooltip:
 		Name: Medium Tank
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -145,7 +145,7 @@ V2RL:
 	Tooltip:
 		Name: Heavy Tank
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -191,7 +191,7 @@ V2RL:
 	Tooltip:
 		Name: Mammoth Tank
 	Health:
-		HP: 900
+		HP: 90000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -223,7 +223,7 @@ V2RL:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
 	SelfHealing:
-		Step: 1
+		Step: 100
 		Delay: 3
 		HealIfBelow: 50
 		DamageCooldown: 150
@@ -249,7 +249,7 @@ ARTY:
 	Tooltip:
 		Name: Artillery
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	Mobile:
@@ -296,7 +296,7 @@ HARV:
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 11
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -315,7 +315,7 @@ HARV:
 		FullActor: HARV.FullHusk
 		FullnessThreshold: 50
 	SelfHealing:
-		Step: 1
+		Step: 100
 		Delay: 25
 		HealIfBelow: 50
 		DamageCooldown: 500
@@ -340,7 +340,7 @@ MCV:
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Light
 	Mobile:
@@ -374,7 +374,7 @@ JEEP:
 	Tooltip:
 		Name: Ranger
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	Mobile:
@@ -418,7 +418,7 @@ APC:
 	Tooltip:
 		Name: Armored Personnel Carrier
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -456,7 +456,7 @@ MNLY:
 	Tooltip:
 		Name: Minelayer
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -496,7 +496,7 @@ TRUK:
 	Selectable:
 		Priority: 6
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	Mobile:
@@ -523,7 +523,7 @@ MGG:
 	Tooltip:
 		Name: Mobile Gap Generator
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -556,7 +556,7 @@ MRJ:
 		BuildDurationModifier: 40
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -596,7 +596,7 @@ TTNK:
 	Tooltip:
 		Name: Tesla Tank
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Light
 	Mobile:
@@ -634,7 +634,7 @@ FTRK:
 	Tooltip:
 		Name: Mobile Flak
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	Mobile:
@@ -679,7 +679,7 @@ DTRK:
 	Tooltip:
 		Name: Demolition Truck
 	Health:
-		HP: 50
+		HP: 5000
 	Armor:
 		Type: Light
 	Mobile:
@@ -712,7 +712,7 @@ CTNK:
 		Name: Chrono Tank
 	SelectionDecorations:
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Light
 	Mobile:
@@ -751,7 +751,7 @@ QTNK:
 	Tooltip:
 		Name: MAD Tank
 	Health:
-		HP: 900
+		HP: 90000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -784,7 +784,7 @@ STNK:
 	Tooltip:
 		Name: Phase Transport
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Mobile:

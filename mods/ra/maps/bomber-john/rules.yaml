@@ -99,7 +99,7 @@ MNLYR:
 	Tooltip:
 		Name: Bomber
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -126,7 +126,7 @@ MNLYR:
 
 FTUR:
 	Health:
-		HP: 1000
+		HP: 100000
 	Transforms:
 		IntoActor: mnlyr
 		Offset: 0,0
@@ -150,14 +150,14 @@ MINVV:
 	Valued:
 		Cost: 30
 	Health:
-		HP: 200
+		HP: 20000
 	RenderSprites:
 		Image: miner
 	WithSpriteBody:
 	Tooltip:
 		Name: Bomb
 	SelfHealing:
-		Step: -1
+		Step: -100
 		Delay: 1
 		HealIfBelow: 101
 	Explodes:

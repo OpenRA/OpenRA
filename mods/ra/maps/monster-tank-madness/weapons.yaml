@@ -11,5 +11,5 @@ SuperTankPrimary:
 	ReloadDelay: 70
 	Report: turret1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 500
+		Damage: 50000
 		InvalidTargets: Air, Infantry

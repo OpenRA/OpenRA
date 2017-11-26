@@ -8,7 +8,7 @@
 		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 30
 			Wood: 75
@@ -37,7 +37,7 @@
 		Speed: 853
 		Image: 50CAL
 	Warhead@1Dam: SpreadDamage
-		Damage: 27
+		Damage: 2700
 		Versus:
 			Wood: 50
 			Light: 110
@@ -70,7 +70,7 @@
 	Burst: 2
 	InvalidTargets: Air, Infantry
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 		Versus:
 			Heavy: 115
 		InvalidTargets: Air
@@ -81,7 +81,7 @@ TurretGun:
 	Range: 7c0
 	Report: turret1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 		Versus:
 			Wood: 50
 			None: 20
@@ -97,7 +97,7 @@ TurretGun:
 		Inaccuracy: 1c938
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 230
+		Damage: 23000
 		Versus:
 			None: 90
 			Wood: 40
@@ -132,7 +132,7 @@ TurretGun:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 25
+		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 60
@@ -152,7 +152,7 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
-		Damage: 25
+		Damage: 2500
 
 Grenade:
 	Inherits: ^Artillery
@@ -165,7 +165,7 @@ Grenade:
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 60
 			Wood: 100
@@ -190,7 +190,7 @@ DepthCharge:
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 80
+		Damage: 8000
 		ValidTargets: Submarine
 		Versus:
 			None: 30

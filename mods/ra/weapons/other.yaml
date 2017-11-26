@@ -4,7 +4,7 @@
 	Range: 5c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 150
+		Damage: 15000
 		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
@@ -46,7 +46,7 @@ Flamer:
 		Inaccuracy: 853
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 8
+		Damage: 800
 		Versus:
 			Wood: 100
 	Warhead@3Eff: CreateEffect
@@ -62,7 +62,7 @@ Napalm:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 100
+		Damage: 10000
 		Versus:
 			Wood: 100
 			Concrete: 50
@@ -74,7 +74,7 @@ Napalm:
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 100
+		Damage: 10000
 		Versus:
 			None: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
@@ -90,7 +90,7 @@ PortaTesla:
 	ReloadDelay: 70
 	Range: 6c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 45
+		Damage: 4500
 		Versus:
 			Wood: 75
 			Heavy: 60
@@ -107,7 +107,7 @@ DogJaw:
 	Report: dogg5p.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 100
+		Damage: 10000
 		ValidTargets: Infantry
 		InvalidTargets: Ant
 		DamageTypes: DefaultDeath
@@ -121,7 +121,7 @@ Heal:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: -50
+		Damage: -5000
 		ValidStances: Ally
 		ValidTargets: Infantry
 		DebugOverlayColor: 00FF00
@@ -131,12 +131,12 @@ Repair:
 	Report: fixit1.aud
 	ValidTargets: Repair
 	Warhead@1Dam: SpreadDamage
-		Damage: -20
+		Damage: -2000
 		ValidTargets: Repair
 
 Crush:
 	Warhead@1Dam: SpreadDamage
-		Damage: 100
+		Damage: 10000
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: squishy2.aud
@@ -155,7 +155,7 @@ Claw:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 33
+		Damage: 3300
 		Versus:
 			None: 90
 			Wood: 10
@@ -168,7 +168,7 @@ Mandible:
 	Inherits: Claw
 	ReloadDelay: 10
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 
 MADTankThump:
 	InvalidTargets: MADTank, Infantry

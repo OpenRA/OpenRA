@@ -2,7 +2,7 @@
 	ValidTargets: Ground, Water, Air
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 90
 			Wood: 75
@@ -28,7 +28,7 @@ CrateNapalm:
 	ValidTargets: Ground, Trees
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees
 		Versus:
@@ -94,7 +94,7 @@ UnitExplodeSubmarine:
 UnitExplodeSmall:
 	Inherits: ^Explosion
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: kaboom15.aud
@@ -102,7 +102,7 @@ UnitExplodeSmall:
 ArtilleryExplode:
 	Inherits: ^Explosion
 	Warhead@1Dam: SpreadDamage
-		Damage: 150
+		Damage: 15000
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom22.aud
@@ -127,7 +127,7 @@ CivBuildingExplosion:
 	Inherits: SmallBuildingExplode
 	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
 		Spread: 64
-		Damage: 1
+		Damage: 100
 		Delay: 1
 
 BarrelExplode:
@@ -155,7 +155,7 @@ BarrelExplode:
 ATMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 400
+		Damage: 40000
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
@@ -178,7 +178,7 @@ APMine:
 OreExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 90
 			Wood: 75
@@ -196,7 +196,7 @@ CrateNuke:
 	ValidTargets: Ground, Trees, Water, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 100
+		Damage: 10000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
@@ -210,7 +210,7 @@ CrateNuke:
 		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 1c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 5
 		ValidTargets: Ground, Water, Air
@@ -232,7 +232,7 @@ CrateNuke:
 		Delay: 5
 	Warhead@TREEKILL: SpreadDamage
 		Spread: 1c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 5
 		ValidTargets: Trees
@@ -242,7 +242,7 @@ MiniNuke:
 	ValidTargets: Ground, Trees, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
@@ -258,7 +258,7 @@ MiniNuke:
 		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -276,7 +276,7 @@ MiniNuke:
 		VictimScanRadius: 0
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Ground, Water, Underwater, Air
@@ -287,7 +287,7 @@ MiniNuke:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@8Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Trees
@@ -297,7 +297,7 @@ MiniNuke:
 		Delay: 10
 	Warhead@10Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Ground, Water, Underwater
@@ -307,7 +307,7 @@ MiniNuke:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@11Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 180
+		Damage: 18000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Trees

@@ -3,7 +3,7 @@ BADR:
 	ParaDrop:
 		DropRange: 4c0
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Aircraft:
@@ -44,7 +44,7 @@ BADR.Bomber:
 	Armament:
 		Weapon: ParaBomb
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Aircraft:
@@ -96,7 +96,7 @@ MIG:
 	Tooltip:
 		Name: MiG Attack Plane
 	Health:
-		HP: 75
+		HP: 7000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -158,7 +158,7 @@ YAK:
 	Tooltip:
 		Name: Yak Attack Plane
 	Health:
-		HP: 60
+		HP: 6000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -225,7 +225,7 @@ TRAN:
 	Tooltip:
 		Name: Chinook
 	Health:
-		HP: 140
+		HP: 14000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -282,7 +282,7 @@ HELI:
 	Tooltip:
 		Name: Longbow
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -346,7 +346,7 @@ HIND:
 	Tooltip:
 		Name: Hind
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -403,7 +403,7 @@ HIND:
 U2:
 	Inherits: ^NeutralPlane
 	Health:
-		HP: 2000
+		HP: 200000
 	Tooltip:
 		Name: Spy Plane
 	Armor:

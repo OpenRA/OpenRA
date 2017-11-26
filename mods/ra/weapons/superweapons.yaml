@@ -10,7 +10,7 @@ ParaBomb:
 		Shadow: False
 	Warhead@1Dam: SpreadDamage
 		Spread: 768
-		Damage: 300
+		Damage: 30000
 		Versus:
 			None: 30
 			Wood: 30
@@ -34,7 +34,7 @@ Atomic:
 	ValidTargets: Ground, Trees, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
@@ -54,7 +54,7 @@ Atomic:
 		ValidTargets: Ground, Water, Air
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
@@ -76,7 +76,7 @@ Atomic:
 		VictimScanRadius: 0
 	Warhead@9Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Ground, Water, Underwater, Air
@@ -86,7 +86,7 @@ Atomic:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@10Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Trees
@@ -101,7 +101,7 @@ Atomic:
 		Delay: 10
 	Warhead@13Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Ground, Water, Underwater, Air
@@ -110,7 +110,7 @@ Atomic:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@14Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Trees
@@ -125,7 +125,7 @@ Atomic:
 		Delay: 15
 	Warhead@17Dam_areanuke4: SpreadDamage
 		Spread: 5c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
 		ValidTargets: Ground, Water, Underwater, Air
@@ -134,7 +134,7 @@ Atomic:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@18Dam_areanuke4: SpreadDamage
 		Spread: 5c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 20
 		ValidTargets: Trees

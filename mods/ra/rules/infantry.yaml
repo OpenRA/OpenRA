@@ -16,7 +16,7 @@ DOG:
 		DecorationBounds: 12,17,-1,-4
 	SelectionDecorations:
 	Health:
-		HP: 18
+		HP: 1800
 	Mobile:
 		Speed: 99
 		Voice: Move
@@ -64,7 +64,7 @@ E1:
 	Tooltip:
 		Name: Rifle Infantry
 	Health:
-		HP: 50
+		HP: 5000
 	Armament@PRIMARY:
 		Weapon: M1Carbine
 	Armament@GARRISONED:
@@ -100,7 +100,7 @@ E2:
 	Tooltip:
 		Name: Grenadier
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 71
 	Armament@PRIMARY:
@@ -138,7 +138,7 @@ E3:
 	Tooltip:
 		Name: Rocket Soldier
 	Health:
-		HP: 45
+		HP: 4500
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -182,7 +182,7 @@ E4:
 	Tooltip:
 		Name: Flamethrower
 	Health:
-		HP: 40
+		HP: 4000
 	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 700,0,500
@@ -308,7 +308,7 @@ E7:
 	Tooltip:
 		Name: Tanya
 	Health:
-		HP: 100
+		HP: 10000
 	Mobile:
 		Speed: 71
 		Voice: Move
@@ -356,7 +356,7 @@ MEDI:
 	Tooltip:
 		Name: Medic
 	Health:
-		HP: 60
+		HP: 6000
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -390,7 +390,7 @@ MECH:
 	Tooltip:
 		Name: Mechanic
 	Health:
-		HP: 80
+		HP: 8000
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -507,7 +507,7 @@ HIJACKER:
 	Tooltip:
 		Name: Hijacker
 	Health:
-		HP: 50
+		HP: 5000
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -550,7 +550,7 @@ SHOK:
 	Tooltip:
 		Name: Shock Trooper
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -591,7 +591,7 @@ SNIPER:
 		Prerequisites: ~disabled
 		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 80
+		HP: 8000
 	Passenger:
 		PipType: Red
 	RevealsShroud:
@@ -642,7 +642,7 @@ Zombie:
 		Prerequisites: ~barracks, ~bio
 		Description: Slow undead. Attacks in close combat.
 	Health:
-		HP: 250
+		HP: 25000
 	Mobile:
 		Speed: 42
 	AutoTarget:
@@ -676,7 +676,7 @@ Ant:
 		DecorationBounds: 30,30,0,-2
 	SelectionDecorations:
 	Health:
-		HP: 750
+		HP: 75000
 	Mobile:
 		Speed: 99
 		TurnSpeed: 12

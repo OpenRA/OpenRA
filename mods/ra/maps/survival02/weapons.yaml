@@ -7,7 +7,7 @@ ParaBomb:
 		-OpenSequence:
 	Warhead@1Dam: SpreadDamage
 		Spread: 150
-		Damage: 3500
+		Damage: 350000
 		Versus:
 			None: 125
 			Wood: 100

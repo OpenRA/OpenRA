@@ -70,7 +70,7 @@ FCOM:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -104,7 +104,7 @@ HOSP:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
@@ -304,7 +304,7 @@ BARL:
 	SelectionDecorations:
 		RenderSelectionBars: False
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
@@ -329,7 +329,7 @@ BRL3:
 	SelectionDecorations:
 		RenderSelectionBars: False
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
@@ -370,7 +370,7 @@ MISS:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 10c0
 		RevealGeneratedShroud: False
@@ -423,7 +423,7 @@ OILB:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	RevealsShroud:
 		Range: 4c0
 	ExternalCapturable:
