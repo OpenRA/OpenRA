@@ -620,8 +620,8 @@
 	GivesBuildableArea:
 		AreaTypes: building
 	RepairableBuilding:
-		PlayerExperience: 25
 		RepairStep: 700
+		PlayerExperience: 25
 	EngineerRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
@@ -905,7 +905,7 @@
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
-		Damage: 2
+		Damage: 200
 	Capturable:
 		Types: husk
 		CaptureThreshold: 100

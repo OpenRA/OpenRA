@@ -37,12 +37,13 @@
 		Speed: 853
 		Image: 50CAL
 	Warhead@1Dam: SpreadDamage
-		Damage: 2700
+		Damage: 2500
 		Versus:
-			Wood: 50
-			Light: 110
-			Heavy: 45
-			Concrete: 30
+			None: 32
+			Wood: 40
+			Light: 116
+			Heavy: 48
+			Concrete: 32
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		-ImpactSounds:
@@ -83,8 +84,8 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
 		Versus:
-			Wood: 50
 			None: 20
+			Wood: 50
 
 ^Artillery:
 	Inherits: ^Cannon
@@ -153,6 +154,11 @@ TurretGun:
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
+		Versus:
+			None: 28
+			Wood: 72
+			Light: 72
+			Concrete: 48
 
 Grenade:
 	Inherits: ^Artillery

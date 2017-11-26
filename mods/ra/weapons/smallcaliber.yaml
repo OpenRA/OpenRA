@@ -32,7 +32,7 @@ ZSU-23:
 	Warhead@1Dam: SpreadDamage
 		Damage: 1200
 		Versus:
-			None: 30
+			None: 25
 			Wood: 75
 			Light: 75
 			Heavy: 100
@@ -65,13 +65,13 @@ FLAK-23-AG:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 3000
+		Damage: 2500
 		Versus:
-			None: 100
-			Wood: 50
-			Light: 60
-			Heavy: 25
-			Concrete: 25
+			None: 120
+			Wood: 60
+			Light: 72
+			Heavy: 28
+			Concrete: 28
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
@@ -84,10 +84,11 @@ FLAK-23-AG:
 ^LightMG:
 	Inherits: ^HeavyMG
 	Warhead@1Dam: SpreadDamage
-		Damage: 1500
+		Damage: 1000
 		Versus:
+			None: 150
 			Wood: 10
-			Light: 30
+			Light: 40
 			Heavy: 10
 			Concrete: 10
 
@@ -97,7 +98,10 @@ Vulcan:
 		Damage: 1000
 		Versus:
 			None: 200
+			Wood: 50
 			Light: 50
+			Heavy: 20
+			Concrete: 20
 	Warhead@4Dam_2: SpreadDamage
 		Spread: 128
 		Damage: 1000
@@ -106,8 +110,8 @@ Vulcan:
 			None: 200
 			Wood: 50
 			Light: 50
-			Heavy: 25
-			Concrete: 25
+			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@4Eff_2: CreateEffect
 		Explosions: piffs
@@ -126,8 +130,8 @@ Vulcan:
 			None: 200
 			Wood: 50
 			Light: 50
-			Heavy: 25
-			Concrete: 25
+			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@6Eff_3: CreateEffect
 		Explosions: piffs
@@ -146,8 +150,8 @@ Vulcan:
 			None: 200
 			Wood: 50
 			Light: 50
-			Heavy: 25
-			Concrete: 25
+			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@8Eff_4: CreateEffect
 		Explosions: piffs
@@ -166,8 +170,8 @@ Vulcan:
 			None: 200
 			Wood: 50
 			Light: 50
-			Heavy: 25
-			Concrete: 25
+			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@10Eff_5: CreateEffect
 		Explosions: piffs
@@ -186,8 +190,8 @@ Vulcan:
 			None: 200
 			Wood: 50
 			Light: 50
-			Heavy: 25
-			Concrete: 25
+			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@12Eff_6: CreateEffect
 		Explosions: piffs
@@ -208,7 +212,7 @@ ChainGun:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			None: 120
+			None: 144
 
 ChainGun.Yak:
 	Inherits: ^HeavyMG
@@ -219,6 +223,12 @@ ChainGun.Yak:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
+		Versus:
+			None: 100
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
 
 Pistol:
 	Inherits: ^LightMG
@@ -227,6 +237,8 @@ Pistol:
 	Report: gun27.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		Versus:
+			None: 100
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
 	Warhead@3EffWater: CreateEffect
@@ -239,7 +251,7 @@ M1Carbine:
 	Report: gun11.aud
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			Wood: 25
+			Wood: 30
 
 M60mg:
 	Inherits: ^LightMG

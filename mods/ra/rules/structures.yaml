@@ -162,9 +162,9 @@ SPEN:
 		PrimaryCondition: primary
 	-EmitInfantryOnSell:
 	RepairsUnits:
+		HpPerStep: 1000
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
-		HpPerStep: 1000
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -266,9 +266,9 @@ SYRD:
 		PrimaryCondition: primary
 	-EmitInfantryOnSell:
 	RepairsUnits:
+		HpPerStep: 1000
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
-		HpPerStep: 1000
 	RallyPoint:
 	ProductionBar:
 	Power:
@@ -1761,10 +1761,10 @@ FIX:
 	Reservable:
 	RallyPoint:
 	RepairsUnits:
+		HpPerStep: 1000
 		Interval: 7
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
-		HpPerStep: 1000
 	WithRepairAnimation:
 	WithRearmAnimation:
 	Power:

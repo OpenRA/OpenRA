@@ -127,7 +127,7 @@ CivBuildingExplosion:
 	Inherits: SmallBuildingExplode
 	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
 		Spread: 64
-		Damage: 100
+		Damage: 1
 		Delay: 1
 
 BarrelExplode:
@@ -181,9 +181,9 @@ OreExplosion:
 		Damage: 1000
 		Versus:
 			None: 90
-			Wood: 75
+			Wood: 70
 			Light: 60
-			Heavy: 25
+			Heavy: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Res: CreateResource
 		AddsResourceType: Ore
