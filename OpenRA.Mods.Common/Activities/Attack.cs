@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var attack in attackTraits.Where(x => !x.IsTraitDisabled))
 			{
 				var status = TickAttack(self, attack);
-				attack.IsAttacking = status == AttackStatus.Attacking || status == AttackStatus.NeedsToTurn;
+				attack.IsAiming = status == AttackStatus.Attacking || status == AttackStatus.NeedsToTurn;
 			}
 
 			if (attackStatus.HasFlag(AttackStatus.Attacking))

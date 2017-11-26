@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (attack != null)
 			{
 				// Only realign while not attacking anything
-				if (attack.IsAttacking)
+				if (attack.IsAiming)
 					return;
 
 				if (realignTick < Info.RealignDelay)
