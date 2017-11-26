@@ -226,12 +226,24 @@ msam:
 		Start: 32
 		Facings: 32
 		UseClassicFacingFudge: True
-	empty-aim:
+	turret8:
+		Start: 32
+		Facings: 32
+		UseClassicFacingFudge: True
+	turret6:
 		Start: 64
 		Facings: 32
 		UseClassicFacingFudge: True
-	aim:
+	turret4:
 		Start: 64
+		Facings: 32
+		UseClassicFacingFudge: True
+	turret2:
+		Start: 64
+		Facings: 32
+		UseClassicFacingFudge: True
+	turret0:
+		Start: 32
 		Facings: 32
 		UseClassicFacingFudge: True
 	icon: msamicnh.tem
