@@ -452,7 +452,7 @@ MSAM:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
-		Description: Long range rocket artillery.\n  Strong vs all Ground units.
+		Description: Long-range rocket artillery.\n  Strong vs all Ground units
 	Mobile:
 		Speed: 85
 		TurnSpeed: 4
@@ -468,12 +468,21 @@ MSAM:
 	Armament@PRIMARY:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
+		PauseOnCondition: !ammo
+	AmmoPool:
+		Ammo: 8
+		PipCount: 0
+		AmmoCondition: ammo
+	ReloadAmmoPool:
+		Delay: 100
+		Count: 8
 	AttackFrontal:
-	WithSpriteTurret:
-		AimSequence: aim
+	WithReloadingSpriteTurret:
+		AmmoPoolName: primary
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
 
