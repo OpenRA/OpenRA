@@ -394,8 +394,8 @@ refinery.atreides:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.atreides:
@@ -904,8 +904,8 @@ refinery.harkonnen:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.harkonnen:
@@ -1307,8 +1307,8 @@ refinery.ordos:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.ordos:
