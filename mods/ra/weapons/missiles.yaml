@@ -19,8 +19,8 @@
 		ValidTargets: Ground, Water, Air
 		Versus:
 			None: 10
-			Wood: 75
-			Light: 35
+			Wood: 74
+			Light: 34
 			Heavy: 100
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
@@ -103,6 +103,7 @@ HellfireAA:
 		Damage: 4000
 		ValidTargets: Air
 		Versus:
+			Wood: 75
 			Light: 75
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
@@ -124,7 +125,7 @@ MammothTusk:
 		Versus:
 			None: 100
 			Light: 60
-			Heavy: 25
+			Heavy: 24
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
@@ -188,11 +189,13 @@ Stinger:
 		Speed: 170
 		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
-		Damage: 3000
+		Damage: 2500
 		Versus:
-			None: 30
-			Light: 75
-			Concrete: 50
+			None: 36
+			Wood: 88
+			Light: 88
+			Heavy: 120
+			Concrete: 60
 
 StingerAA:
 	Inherits: Stinger
@@ -214,11 +217,13 @@ APTusk:
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
-		Damage: 3000
+		Damage: 2500
 		Versus:
-			None: 25
-			Light: 75
-			Concrete: 50
+			None: 28
+			Wood: 88
+			Light: 88
+			Heavy: 120
+			Concrete: 60
 
 TorpTube:
 	ReloadDelay: 100
@@ -335,6 +340,7 @@ SCUD:
 		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
+			Wood: 75
 			Light: 70
 			Heavy: 40
 			Concrete: 100
