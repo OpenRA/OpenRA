@@ -3439,12 +3439,12 @@ Templates:
 		Size: 2,3
 		Categories: Rock-Detail
 		Tiles:
-			0: Sand
-			1: Sand
-			2: Sand
-			3: Sand
-			4: Sand
-			5: Sand
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Rough
+			5: Rough
 	Template@402:
 		Id: 402
 		Images: BLOXICE.R8
