@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			DoAttack(self, Target);
-			IsAttacking = Target.IsValidFor(self);
+			IsAiming = Target.IsValidFor(self);
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
