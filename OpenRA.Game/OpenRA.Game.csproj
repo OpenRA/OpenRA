@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -44,6 +42,8 @@
     <StartArguments>Game.Mod=ra</StartArguments>
     <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
     <LangVersion>5</LangVersion>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +57,7 @@
     <Optimize>true</Optimize>
     <StartArguments>Game.Mod=ra</StartArguments>
     <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <StartAction>Project</StartAction>
@@ -79,7 +80,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="SharpFont">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\download\SharpFont.dll</HintPath>
       <Private>False</Private>
     </Reference>
