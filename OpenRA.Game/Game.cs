@@ -249,7 +249,14 @@ namespace OpenRA
 			Settings = new Settings(Platform.ResolvePath(Path.Combine("^", "settings.yaml")), args);
 		}
 
-		internal static void Initialize(Arguments args)
+		public static RunStatus InitializeAndRun(string[] args)
+		{
+			Initialize(new Arguments(args));
+			GC.Collect();
+			return Run();
+		}
+
+		static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
@@ -790,7 +797,7 @@ namespace OpenRA
 			}
 		}
 
-		internal static RunStatus Run()
+		static RunStatus Run()
 		{
 			if (Settings.Graphics.MaxFramerate < 1)
 			{
