@@ -16,41 +16,12 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace OpenRA
 {
 	class WindowsLauncher
 	{
-		[DllImport("user32.dll")]
-		static extern int SendMessage(IntPtr hwnd, uint message, uint wParam, IntPtr lParam);
-
-		[DllImport("shell32.dll")]
-		static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
-
-		[DllImport("user32.dll")]
-		public extern static bool DestroyIcon(IntPtr handle);
-
-		struct SHFILEINFO
-		{
-			// Native type: HICON
-			public IntPtr hIcon;
-
-			public int iIcon;
-			public uint dwAttributes;
-
-			// Native type: TCHAR[MAX_PATH]
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-
-			public string szDisplayName;
-
-			// Native type: TCHAR[80]
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-
-			public string szTypeName;
-		}
-
 		static Process gameProcess;
 
 		// Constants to be replaced by the wrapper / compilation script
@@ -58,26 +29,44 @@ namespace OpenRA
 		const string DisplayName = "DISPLAY_NAME";
 		const string FaqUrl = "FAQ_URL";
 
-		// References to the OpenRA.Game.exe icons for later cleanup
-		static IntPtr[] iconHandle = { IntPtr.Zero, IntPtr.Zero };
-
 		[STAThread]
-		static void Main(string[] args)
+		static int Main(string[] args)
+		{
+			if (args.Any(x => x.Contains("Engine.LaunchPath")))
+				return RunGame(args);
+
+			return RunInnerLauncher();
+		}
+
+		static int RunGame(string[] args)
 		{
 			var launcherPath = Assembly.GetExecutingAssembly().Location;
 			var directory = Path.GetDirectoryName(launcherPath);
-			var enginePath = Path.Combine(directory, "OpenRA.Game.exe");
-
 			Directory.SetCurrentDirectory(directory);
+			
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => ExceptionHandler.HandleFatalError((Exception)e.ExceptionObject);
 
+			try
+			{
+				return (int)Game.InitializeAndRun(args);
+			}
+			catch (Exception e)
+			{
+				ExceptionHandler.HandleFatalError(e);
+				return (int)RunStatus.Error;
+			}
+		}
+
+		static int RunInnerLauncher()
+		{
+			var launcherPath = Assembly.GetExecutingAssembly().Location;
+			var args = new[] { "Engine.LaunchPath=" + launcherPath };
 			if (!string.IsNullOrEmpty(ModID))
 				args = args.Append("Game.Mod=" + ModID).ToArray();
 
-			var engineArgs = args
-				.Append("Engine.LaunchPath=" + launcherPath)
-				.Select(arg => "\"" + arg + "\"");
+			args = args.Select(arg => "\"" + arg + "\"").ToArray();
 
-			var psi = new ProcessStartInfo(enginePath, string.Join(" ", engineArgs));
+			var psi = new ProcessStartInfo(launcherPath, string.Join(" ", args));
 
 			try
 			{
@@ -85,31 +74,18 @@ namespace OpenRA
 			}
 			catch
 			{
-				return;
+				return 1;
 			}
 
 			if (gameProcess == null)
-				return;
-
-			if (Platform.CurrentPlatform == PlatformType.Windows)
-			{
-				// Set the OpenRA.Game.exe icon to match the mod
-				// Icon.ExtractAssociatedIcon sets only the 32px icon,
-				// so we use native functions to set both 16 and 32px versions.
-				gameProcess.WaitForInputIdle();
-				SHFILEINFO sfi = new SHFILEINFO();
-				for (var i = 0; i < 2; i++)
-				{
-					SHGetFileInfo(Assembly.GetExecutingAssembly().Location, 0, ref sfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), (uint)(0x100 + i));
-					iconHandle[i] = sfi.hIcon;
-					SendMessage(gameProcess.MainWindowHandle, 0x80, (uint)(1 - i), sfi.hIcon);
-				}
-			}
+				return 1;
 
 			gameProcess.EnableRaisingEvents = true;
 			gameProcess.Exited += GameProcessExited;
 
 			Application.Run();
+
+			return 0;
 		}
 
 		static void ShowErrorDialog()
@@ -192,11 +168,6 @@ namespace OpenRA
 		{
 			if (gameProcess.ExitCode != (int)RunStatus.Success)
 				ShowErrorDialog();
-
-			if (Platform.CurrentPlatform == PlatformType.Windows)
-				foreach (var handle in iconHandle)
-					if (handle != IntPtr.Zero)
-						DestroyIcon(handle);
 
 			Exit();
 		}
