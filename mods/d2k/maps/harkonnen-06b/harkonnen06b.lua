@@ -143,7 +143,7 @@ CheckSmugglerEnemies = function()
 			end
 
 			if unit.Owner == smuggler_harkonnen and (attacker.Owner == ordos_main or attacker.Owner == ordos_small) then
-				ChangeOwner(smuggler_harkonnen, smuggler_ordos)
+				ChangeOwner(smuggler_harkonnen, smuggler_both)
 			end
 
 			if attacker.Owner == player and not message_check then
