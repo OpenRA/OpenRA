@@ -158,11 +158,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
 			save.OnClick = () =>
 			{
-				
 				if (string.IsNullOrEmpty(filename.Text))
 					return;
 
-				//A question mark in the filename can cause problems on windows.
+				// A question mark in the filename can cause problems on windows.
 				if (filename.Text.Contains("?"))
 				{
 					return;
