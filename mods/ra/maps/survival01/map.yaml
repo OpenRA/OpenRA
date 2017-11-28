@@ -1180,10 +1180,10 @@ Actors:
 	AirReinforcementsEntry1: waypoint
 		Location: 91,55
 		Owner: Neutral
-	AirReinforcementsEntry2: waypoint
+	AirReinforcementsRally1: waypoint
 		Location: 63,26
 		Owner: Neutral
-	AirReinforcementsRally1: waypoint
+	AirReinforcementsEntry2: waypoint
 		Location: 83,59
 		Owner: Neutral
 	AirReinforcementsRally2: waypoint
