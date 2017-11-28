@@ -53,6 +53,9 @@ UnitExplode:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000
+		Versus:
+			Wood: 74
+			Heavy: 24
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplobig6.aud
 
@@ -60,6 +63,9 @@ UnitExplodeShip:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000
+		Versus:
+			Wood: 74
+			Heavy: 24
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: xplobig6.aud
@@ -75,6 +81,9 @@ GrenadierExplode:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 1000
+		Versus:
+			Wood: 70
+			Heavy: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplosml2.aud
@@ -109,6 +118,9 @@ TiberiumExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
 		Damage: 1000
+		Versus:
+			Wood: 70
+			Heavy: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: chemball

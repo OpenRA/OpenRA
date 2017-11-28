@@ -38,9 +38,12 @@ BigFlamer:
 	BurstDelays: 25
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
-		Damage: 7500
+		Damage: 10000
 		Versus:
-			Heavy: 25
+			None: 82
+			Wood: 75
+			Light: 75
+			Heavy: 18
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
 

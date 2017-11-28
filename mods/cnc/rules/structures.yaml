@@ -468,8 +468,8 @@ HPAD:
 		Produces: Aircraft.GDI, Aircraft.Nod
 	Reservable:
 	RepairsUnits:
-		PlayerExperience: 25
 		HpPerStep: 1000
+		PlayerExperience: 25
 	WithRepairAnimation:
 	RallyPoint:
 	ProductionQueue@GDI:
@@ -591,9 +591,9 @@ FIX:
 		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		Interval: 15
 		PlayerExperience: 25
-		HpPerStep: 1000
 	RallyPoint:
 	WithRepairAnimation:
 	Power:
