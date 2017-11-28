@@ -226,7 +226,7 @@ ModContent:
 	Downloads:
 		d2k|installer/downloads.yaml
 	Sources:
-		d2k|installer/d2ka.yaml
-		d2k|installer/d2kb.yaml
+		d2k|installer/d2k-a.yaml
+		d2k|installer/d2k-b.yaml
 		d2k|installer/downloads.yaml
 		d2k|installer/gruntmods.yaml
