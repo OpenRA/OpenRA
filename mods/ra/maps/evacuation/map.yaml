@@ -1560,7 +1560,7 @@ Actors:
 		Location: 31,111
 		Owner: Neutral
 	ExtractionLZEntryPoint: waypoint
-		Location: 9,9
+		Location: 16,16
 		Owner: Neutral
 	ExtractionLZ: waypoint
 		Location: 30,38
@@ -1581,10 +1581,10 @@ Actors:
 		Location: 86,78
 		Owner: Neutral
 	BadgerEntryPoint1: waypoint
-		Location: 40,12
+		Location: 40,16
 		Owner: Neutral
 	BadgerEntryPoint2: waypoint
-		Location: 119,77
+		Location: 111,77
 		Owner: Neutral
 	BadgerDropPoint1: waypoint
 		Location: 19,96
@@ -1602,7 +1602,7 @@ Actors:
 		Location: 39,108
 		Owner: Neutral
 	YakEntryPoint: waypoint
-		Location: 99,10
+		Location: 99,16
 		Owner: Neutral
 	YakAttackPoint: waypoint
 		Location: 78,62
