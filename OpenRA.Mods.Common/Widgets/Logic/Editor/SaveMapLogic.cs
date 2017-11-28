@@ -161,6 +161,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (string.IsNullOrEmpty(filename.Text))
 					return;
 
+				if (filename.Text.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+					return;
+
 				map.Title = title.Text;
 				map.Author = author.Text;
 
