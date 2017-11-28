@@ -1094,10 +1094,10 @@ Actors:
 		Location: 16,14
 		Owner: Soviets
 	BadgerEntryPoint1: waypoint
-		Location: 1,54
+		Location: 4,54
 		Owner: Neutral
 	BadgerEntryPoint2: waypoint
-		Location: 1,47
+		Location: 4,47
 		Owner: Neutral
 	ParaDrop1: waypoint
 		Location: 54,51
@@ -1178,13 +1178,13 @@ Actors:
 		Location: 42,53
 		Owner: Neutral
 	AirReinforcementsEntry1: waypoint
-		Location: 95,59
+		Location: 91,55
 		Owner: Neutral
 	AirReinforcementsEntry2: waypoint
 		Location: 63,26
 		Owner: Neutral
 	AirReinforcementsRally1: waypoint
-		Location: 88,63
+		Location: 83,59
 		Owner: Neutral
 	AirReinforcementsRally2: waypoint
 		Location: 17,31
