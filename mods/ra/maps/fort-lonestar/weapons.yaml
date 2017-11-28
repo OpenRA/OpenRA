@@ -11,9 +11,12 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Versus:
-			None: 75
-			Concrete: 100
-		Damage: 15000
+			None: 56
+			Wood: 56
+			Light: 56
+			Heavy: 86
+			Concrete: 75
+		Damage: 20000
 	Warhead@3Eff: CreateEffect
 		Explosions: self_destruct
 
@@ -60,12 +63,12 @@ TankNapalm:
 		Spread: 341
 		ValidTargets: Ground
 		Versus:
-			None: 90
-			Wood: 170
-			Light: 100
-			Heavy: 100
-			Concrete: 100
-		Damage: 1500
+			None: 65
+			Wood: 125
+			Light: 75
+			Heavy: 75
+			Concrete: 75
+		Damage: 2000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -129,11 +132,11 @@ FLAK-23:
 		Spread: 213
 		ValidTargets: Air, Ground
 		Versus:
-			None: 35
-			Wood: 30
-			Light: 30
+			None: 32
+			Wood: 28
+			Light: 28
 			Heavy: 40
-			Concrete: 30
+			Concrete: 28
 		Damage: 2500
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Smu: LeaveSmudge
