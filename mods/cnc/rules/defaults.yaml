@@ -366,7 +366,7 @@
 	HiddenUnderFog:
 	DamagedByTerrain:
 		Terrain: Tiberium, BlueTiberium
-		Damage: 2
+		Damage: 200
 		DamageInterval: 16
 		DamageTypes: TiberiumDeath
 		RequiresCondition: !hazmatsuits
@@ -584,7 +584,7 @@
 		Voice: Move
 	Guardable:
 	DamagedByTerrain:
-		Damage: -1
+		Damage: -100
 		DamageInterval: 4
 		DamageTypes: TiberiumDeath
 		Terrain: Tiberium, BlueTiberium
@@ -949,8 +949,8 @@
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	Burns:
-		Interval: 6
 		Damage: 100
+		Interval: 6
 	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk

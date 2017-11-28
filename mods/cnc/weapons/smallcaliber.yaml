@@ -87,6 +87,8 @@ Pistol:
 	Report: gun18.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 100
+		Versus:
+			None: 100
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -96,12 +98,12 @@ Pistol:
 	Report: mgun2.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 1500
+		Damage: 1000
 		InvalidTargets: Wall
 		Versus:
-			None: 100
-			Wood: 25
-			Light: 30
+			None: 150
+			Wood: 30
+			Light: 40
 			Heavy: 10
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
@@ -116,7 +118,7 @@ MachineGun:
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Wood: 10
-			Light: 50
+			Light: 70
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 
@@ -124,7 +126,7 @@ MachineGunH:
 	Inherits: MachineGun
 	Warhead@1Dam: SpreadDamage
 		Versus:
-			Light: 55
+			Light: 80
 
 APCGun:
 	ReloadDelay: 18
@@ -134,12 +136,12 @@ APCGun:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 1500
+		Damage: 2000
 		Versus:
-			None: 50
-			Wood: 50
-			Light: 100
-			Heavy: 50
+			None: 35
+			Wood: 35
+			Light: 75
+			Heavy: 35
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
@@ -153,9 +155,11 @@ APCGun.AA:
 		Speed: 2c0
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Damage: 2500
 		ValidTargets: Air
 		Versus:
-			Light: 100
+			None: 60
+			Wood: 60
+			Light: 125
+			Heavy: 60
 	Warhead@2Eff: CreateEffect
 		Explosions: small_frag

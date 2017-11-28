@@ -17,13 +17,13 @@
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 3500
+		Damage: 2500
 		ValidTargets: Ground, Air
 		Versus:
-			None: 20
-			Wood: 85
-			Light: 100
-			Heavy: 100
+			None: 28
+			Wood: 116
+			Light: 140
+			Heavy: 140
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -49,10 +49,9 @@ Dragon:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
-			Heavy: 75
+			None: 140
+			Wood: 140
+			Heavy: 104
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
 
@@ -67,10 +66,11 @@ BikeRockets:
 		HorizontalRateOfTurn: 10
 		Speed: 213
 	Warhead@1Dam: SpreadDamage
-		Damage: 3100
 		Versus:
-			None: 25
-			Wood: 75
+			None: 28
+			Wood: 92
+			Light: 124
+			Heavy: 124
 
 OrcaAGMissiles:
 	Inherits: ^MissileWeapon
@@ -86,13 +86,12 @@ OrcaAGMissiles:
 		Speed: 256
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 2800
 		ValidTargets: Ground
 		Versus:
-			None: 30
-			Wood: 100
-			Light: 100
-			Heavy: 75
+			None: 32
+			Wood: 112
+			Light: 112
+			Heavy: 84
 
 OrcaAAMissiles:
 	Inherits: OrcaAGMissiles
@@ -103,8 +102,8 @@ OrcaAAMissiles:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			Light: 75
-			Heavy: 50
+			Light: 84
+			Heavy: 56
 	-Warhead@2Smu: LeaveSmudge
 
 MammothMissiles:
@@ -120,12 +119,12 @@ MammothMissiles:
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
-		Damage: 4500
+		Damage: 5000
 		Versus:
-			None: 50
-			Wood: 75
-			Light: 100
-			Heavy: 50
+			None: 44
+			Wood: 66
+			Light: 90
+			Heavy: 44
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplos.aud
@@ -153,13 +152,12 @@ MammothMissiles:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 2500
 		ValidTargets: Ground
 		Versus:
-			None: 25
+			None: 24
 			Wood: 60
 			Light: 100
-			Heavy: 50
+			Heavy: 48
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
 		ImpactSounds: xplos.aud
@@ -227,11 +225,12 @@ TowerMissile:
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 2500
 		ValidTargets: Ground
 		Versus:
-			None: 50
-			Wood: 25
+			None: 48
+			Wood: 24
+			Light: 100
+			Heavy: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
@@ -251,13 +250,12 @@ TowerAAMissile:
 		Inaccuracy: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
-		Damage: 3500
 		ValidTargets: Air
 		Versus:
-			None: 100
-			Wood: 100
-			Light: 100
-			Heavy: 75
+			None: 140
+			Wood: 140
+			Light: 140
+			Heavy: 104
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
@@ -281,7 +279,10 @@ Patriot:
 		Damage: 5000
 		ValidTargets: Air
 		Versus:
-			Heavy: 75
+			None: 20
+			Wood: 84
+			Light: 100
+			Heavy: 74
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
