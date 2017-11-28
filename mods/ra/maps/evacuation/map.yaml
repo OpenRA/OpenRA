@@ -1523,9 +1523,6 @@ Actors:
 	Actor290: pbox
 		Location: 39,92
 		Owner: Allies
-	Actor1000: camera
-		Location: 1,1
-		Owner: Soviets
 	ChinookHusk: tran.husk2
 		Location: 108,87
 		Owner: Neutral
