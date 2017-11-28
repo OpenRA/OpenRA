@@ -109,7 +109,7 @@ CAMERA.small:
 	Immobile:
 		OccupiesSpace: false
 	Health:
-		HP: 1000
+		HP: 100000
 	HitShape:
 	RevealsShroud:
 		Range: 6c0

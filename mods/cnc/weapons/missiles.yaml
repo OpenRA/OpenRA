@@ -17,7 +17,7 @@
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 35
+		Damage: 3500
 		ValidTargets: Ground, Air
 		Versus:
 			None: 20
@@ -67,7 +67,7 @@ BikeRockets:
 		HorizontalRateOfTurn: 10
 		Speed: 213
 	Warhead@1Dam: SpreadDamage
-		Damage: 31
+		Damage: 3100
 		Versus:
 			None: 25
 			Wood: 75
@@ -86,7 +86,7 @@ OrcaAGMissiles:
 		Speed: 256
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 28
+		Damage: 2800
 		ValidTargets: Ground
 		Versus:
 			None: 30
@@ -120,7 +120,7 @@ MammothMissiles:
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 298
-		Damage: 45
+		Damage: 4500
 		Versus:
 			None: 50
 			Wood: 75
@@ -153,7 +153,7 @@ MammothMissiles:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground
 		Versus:
 			None: 25
@@ -177,7 +177,7 @@ MammothMissiles:
 		Speed: 213
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 25
 			Wood: 75
@@ -198,7 +198,7 @@ BoatMissile:
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 90
 			Wood: 75
@@ -227,7 +227,7 @@ TowerMissile:
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground
 		Versus:
 			None: 50
@@ -251,7 +251,7 @@ TowerAAMissile:
 		Inaccuracy: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
-		Damage: 35
+		Damage: 3500
 		ValidTargets: Air
 		Versus:
 			None: 100
@@ -278,7 +278,7 @@ Patriot:
 		Inaccuracy: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air
 		Versus:
 			Heavy: 75

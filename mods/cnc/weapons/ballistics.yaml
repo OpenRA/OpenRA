@@ -8,7 +8,7 @@
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 25
 			Wood: 100
@@ -31,7 +31,7 @@
 	Projectile: Bullet
 		Speed: 853
 	Warhead@1Dam: SpreadDamage
-		Damage: 25
+		Damage: 2500
 		Versus:
 			None: 25
 			Wood: 75
@@ -74,7 +74,7 @@ ArtilleryShell:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 150
+		Damage: 15000
 		Versus:
 			None: 100
 			Wood: 80
@@ -98,7 +98,7 @@ Grenade:
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 100
 			Wood: 50

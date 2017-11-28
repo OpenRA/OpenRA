@@ -112,7 +112,7 @@
 		RequiresCondition: rank-elite
 		Modifier: 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -391,7 +391,7 @@
 		CrushSound: squish2.aud
 	Guardable:
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -448,7 +448,7 @@
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 25
+		HP: 2500
 	RevealsShroud:
 		Range: 2c0
 	ActorLostNotification:
@@ -478,7 +478,7 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	Buildable:
@@ -539,7 +539,7 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -659,7 +659,7 @@
 	Armor:
 		Type: Wood
 	Health:
-		HP: 400
+		HP: 40000
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -701,7 +701,7 @@
 		RequiredForShortGame: true
 	RepairableBuilding:
 		RepairPercent: 40
-		RepairStep: 14
+		RepairStep: 1400
 		PlayerExperience: 15
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -751,7 +751,7 @@
 		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
 		RepairPercent: 40
-		RepairStep: 14
+		RepairStep: 1400
 		PlayerExperience: 15
 	EngineerRepairable:
 	RevealsShroud:
@@ -827,7 +827,7 @@
 	FrozenUnderFog:
 	ScriptTriggers:
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		Categories: Wall
 
@@ -847,7 +847,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	Targetable:
@@ -934,7 +934,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
-		HP: 140
+		HP: 14000
 	Armor:
 		Type: Light
 	HiddenUnderFog:
@@ -950,6 +950,7 @@
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	Burns:
 		Interval: 6
+		Damage: 100
 	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk
@@ -997,7 +998,7 @@
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	SoundOnDamageTransition:
