@@ -1,7 +1,7 @@
 ^DamagingExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 40
+		Damage: 4000
 		Versus:
 			None: 100
 			Wood: 100
@@ -29,7 +29,7 @@ FlametankExplode:
 	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
-		Damage: 115
+		Damage: 11500
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: big_napalm
@@ -40,7 +40,7 @@ FlametankExplode:
 HeliCrash:
 	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
-		Damage: 100
+		Damage: 10000
 
 HeliExplode:
 	Warhead@1Dam: SpreadDamage
@@ -52,14 +52,14 @@ HeliExplode:
 UnitExplode:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplobig6.aud
 
 UnitExplodeShip:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: xplobig6.aud
@@ -74,7 +74,7 @@ GrenadierExplode:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 10
+		Damage: 1000
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplosml2.aud
@@ -92,7 +92,7 @@ Napalm.Crate:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 50
+		Damage: 5000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			Wood: 100
@@ -108,7 +108,7 @@ TiberiumExplosion:
 	Inherits: ^DamagingExplosionHE
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: chemball

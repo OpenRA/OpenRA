@@ -78,16 +78,17 @@ RMBO:
 		EnableStances: false
 		InitialStance: ReturnFire
 	Health:
-		HP: 150
+		HP: 15000
 
 RMBO.easy:
 	Inherits: RMBO
 	Health:
-		HP: 300
+		HP: 30000
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	RenderSprites:
 		Image: RMBO
 

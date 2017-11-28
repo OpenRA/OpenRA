@@ -114,7 +114,7 @@ HQ:
 
 BOAT:
 	Health:
-		HP: 1500
+		HP: 150000
 	RevealsShroud:
 		ValidStances: Ally, Neutral, Enemy
 		Range: 4c0

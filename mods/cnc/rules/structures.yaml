@@ -10,7 +10,7 @@ FACT:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 2100
+		HP: 210000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -114,7 +114,7 @@ NUKE:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -143,7 +143,7 @@ NUK2:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 700
+		HP: 70000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -175,7 +175,7 @@ PROC:
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
@@ -222,7 +222,7 @@ SILO:
 		Dimensions: 2,1
 	-GivesBuildableArea:
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -268,7 +268,7 @@ PYLE:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
@@ -315,7 +315,7 @@ HAND:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
@@ -363,7 +363,7 @@ AFLD:
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 1100
+		HP: 110000
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
@@ -416,7 +416,7 @@ WEAP:
 		DecorationBounds: 72,64,0,-16
 	SelectionDecorations:
 	Health:
-		HP: 1100
+		HP: 110000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -459,7 +459,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -469,6 +469,7 @@ HPAD:
 	Reservable:
 	RepairsUnits:
 		PlayerExperience: 25
+		HpPerStep: 1000
 	WithRepairAnimation:
 	RallyPoint:
 	ProductionQueue@GDI:
@@ -519,7 +520,7 @@ HQ:
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
-		HP: 800
+		HP: 80000
 	RevealsShroud:
 		Range: 10c0
 	WithBuildingBib:
@@ -583,7 +584,7 @@ FIX:
 		DecorationBounds: 72,48
 	SelectionDecorations:
 	Health:
-		HP: 800
+		HP: 80000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
@@ -592,6 +593,7 @@ FIX:
 	RepairsUnits:
 		Interval: 15
 		PlayerExperience: 25
+		HpPerStep: 1000
 	RallyPoint:
 	WithRepairAnimation:
 	Power:
@@ -628,7 +630,7 @@ EYE:
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
-		HP: 1300
+		HP: 130000
 	RevealsShroud:
 		Range: 10c0
 	WithBuildingBib:
@@ -685,7 +687,7 @@ TMPL:
 		DecorationBounds: 72,68,0,-12
 	SelectionDecorations:
 	Health:
-		HP: 2100
+		HP: 210000
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
@@ -741,7 +743,7 @@ GUN:
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Building:
 	Health:
-		HP: 410
+		HP: 41000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -791,7 +793,7 @@ SAM:
 		Footprint: xx
 		Dimensions: 2,1
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -834,7 +836,7 @@ OBLI:
 		DecorationBounds: 22,44,0,-10
 	SelectionDecorations:
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -876,7 +878,7 @@ GTWR:
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Building:
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
@@ -916,7 +918,7 @@ ATWR:
 		DecorationBounds: 22,48,0,-12
 	SelectionDecorations:
 	Health:
-		HP: 550
+		HP: 55000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -1006,7 +1008,7 @@ BRIK:
 		BuildDurationModifier: 40
 		Description: Stops infantry and most tanks.\nBlocks some projectiles.
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Heavy
 	BlocksProjectiles:

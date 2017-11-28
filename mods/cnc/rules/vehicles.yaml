@@ -18,7 +18,7 @@ MCV:
 		Speed: 71
 		Crushes: crate, infantry
 	Health:
-		HP: 1200
+		HP: 120000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -65,7 +65,7 @@ HARV:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 625
+		HP: 62500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -97,7 +97,7 @@ APC:
 		Speed: 132
 		RequiresCondition: !notmobile
 	Health:
-		HP: 215
+		HP: 21500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -146,7 +146,7 @@ ARTY:
 		TurnSpeed: 4
 		Speed: 85
 	Health:
-		HP: 75
+		HP: 7500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -184,7 +184,7 @@ FTNK:
 		TurnSpeed: 7
 		Speed: 99
 	Health:
-		HP: 270
+		HP: 27000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -219,7 +219,7 @@ BGGY:
 		TurnSpeed: 10
 		Speed: 170
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -262,7 +262,7 @@ BIKE:
 			BlueTiberium: 35
 			Beach: 35
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -293,7 +293,7 @@ JEEP:
 		TurnSpeed: 10
 		Speed: 156
 	Health:
-		HP: 160
+		HP: 16000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -331,7 +331,7 @@ LTNK:
 		TurnSpeed: 7
 		Speed: 110
 	Health:
-		HP: 340
+		HP: 34000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -367,7 +367,7 @@ MTNK:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -408,7 +408,7 @@ HTNK:
 		Speed: 56
 		TurnSpeed: 3
 	Health:
-		HP: 870
+		HP: 87000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -435,6 +435,7 @@ HTNK:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
 	SelectionDecorations:
@@ -459,7 +460,7 @@ MSAM:
 		Speed: 85
 		TurnSpeed: 4
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -497,7 +498,7 @@ MLRS:
 		Speed: 99
 		TurnSpeed: 7
 	Health:
-		HP: 180
+		HP: 18000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -542,7 +543,7 @@ STNK:
 		Speed: 142
 		Crushes: crate, infantry
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -575,7 +576,7 @@ MHQ:
 	Tooltip:
 		Name: Mobile HQ
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -602,7 +603,7 @@ TRUCK:
 	Selectable:
 		Priority: 6
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	Mobile:

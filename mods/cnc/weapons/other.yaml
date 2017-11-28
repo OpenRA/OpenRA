@@ -8,7 +8,7 @@
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 468
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Ground, Water, Trees
 		InvalidTargets: Wall
 		Versus:
@@ -38,7 +38,7 @@ BigFlamer:
 	BurstDelays: 25
 	Warhead@1Dam: SpreadDamage
 		Spread: 400
-		Damage: 75
+		Damage: 7500
 		Versus:
 			Heavy: 25
 	Warhead@3Eff: CreateEffect
@@ -51,7 +51,7 @@ Chemspray:
 	InvalidTargets:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 80
+		Damage: 8000
 		InvalidTargets:
 		Versus:
 			None: 70
@@ -75,7 +75,7 @@ Napalm:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 30
+		Damage: 3000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			Wood: 35
@@ -93,7 +93,7 @@ Laser:
 		ZOffset: 2047
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 360
+		Damage: 36000
 		Versus:
 			Wood: 50
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
@@ -109,7 +109,7 @@ Laser:
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 180
+		Damage: 18000
 		Versus:
 			None: 90
 			Wood: 10
@@ -124,7 +124,7 @@ Horn:
 	Inherits: ^DinoWeapon
 	ReloadDelay: 20
 	Warhead@1Dam: SpreadDamage
-		Damage: 120
+		Damage: 12000
 
 Teeth:
 	Inherits: ^DinoWeapon
@@ -133,7 +133,7 @@ Claw:
 	Inherits: ^DinoWeapon
 	ReloadDelay: 10
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 
 Demolish:
 	Warhead@1Dam: SpreadDamage
