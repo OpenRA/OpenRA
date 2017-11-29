@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Threading;
 using OpenRA.Server;
 
@@ -142,14 +144,14 @@ namespace OpenRA.Network
 		volatile int clientId;
 		bool disposed;
 
-		public NetworkConnection(string host, int port)
+		public NetworkConnection(ConnectionAddress address)
 		{
 			try
 			{
-				tcp = new TcpClient(host, port) { NoDelay = true };
+				tcp = new TcpClient(address.Host, address.Port) { NoDelay = true };
 				new Thread(NetworkConnectionReceive)
 				{
-					Name = GetType().Name + " " + host + ":" + port,
+					Name = GetType().Name + " " + address,
 					IsBackground = true
 				}.Start(tcp.GetStream());
 			}
@@ -241,6 +243,42 @@ namespace OpenRA.Network
 				tcp.Close();
 
 			base.Dispose(disposing);
+		}
+	}
+
+	public class ConnectionAddress
+	{
+		public readonly string Host;
+		public readonly int Port;
+		public readonly bool IsValid;
+		public readonly bool IsIpV6;
+
+		public ConnectionAddress(string address) : this(address, 0)
+		{
+		}
+
+		public ConnectionAddress(string host, int port)
+		{
+			if (port == 0 && new Regex(":[0-9]+$").IsMatch(host))
+			{
+				var portPosition = host.LastIndexOf(":", StringComparison.Ordinal);
+				int.TryParse(host.Substring(portPosition + 1), out port);
+				host = host.Substring(0, portPosition);
+			}
+
+			if (host.StartsWith("[") && host.EndsWith("]"))
+				host = host.Substring(1, host.Length - 2);
+
+			var type = Uri.CheckHostName(host);
+			IsIpV6 = type == UriHostNameType.IPv6;
+			Host = host;
+			Port = port;
+			IsValid = type != UriHostNameType.Unknown && Port > 0x0000 && Port < 0xffff;
+		}
+
+		public override string ToString()
+		{
+			return (IsIpV6 ? "[" + Host + "]" : Host) + ":" + Port;
 		}
 	}
 }

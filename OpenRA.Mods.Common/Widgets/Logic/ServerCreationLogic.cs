@@ -11,6 +11,7 @@
 
 using System;
 using System.Net;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -147,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 			}
 
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
+			ConnectionLogic.Connect(new ConnectionAddress("localhost", Game.Settings.Server.ListenPort), password, onCreate, onExit);
 		}
 	}
 }

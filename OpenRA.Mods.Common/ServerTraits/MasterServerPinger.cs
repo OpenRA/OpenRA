@@ -16,6 +16,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using BeaconLib;
+using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public void ServerStarted(S server)
 		{
-			if (!server.Ip.Equals(IPAddress.Loopback) && LanGameBeacon != null)
+			if (!server.Address.Host.Equals("localhost") && LanGameBeacon != null)
 				LanGameBeacon.Start();
 		}
 
@@ -192,16 +193,16 @@ namespace OpenRA.Mods.Common.Server
 @"Game:
 	Id: {0}
 	Name: {1}
-	Address: {2}:{3}
-	State: {4}
-	Players: {5}
-	MaxPlayers: {6}
-	Bots: {7}
-	Spectators: {8}
-	Map: {9}
-	Mods: {10}@{11}
-	Protected: {12}".F(Platform.SessionGUID, settings.Name, server.Ip, settings.ListenPort, (int)server.State, numPlayers, numSlots, numBots, numSpectators,
-				server.Map.Uid, mod.Id, mod.Metadata.Version, passwordProtected);
+	Address: {2}
+	State: {3}
+	Players: {4}
+	MaxPlayers: {5}
+	Bots: {6}
+	Spectators: {7}
+	Map: {8}
+	Mods: {9}@{10}
+	Protected: {11}".F(Platform.SessionGUID, settings.Name, new ConnectionAddress(server.Address.Host, settings.ListenPort).ToString(), (int)server.State, numPlayers, numSlots,
+				numBots, numSpectators, server.Map.Uid, mod.Id, mod.Metadata.Version, passwordProtected);
 
 			LanGameBeacon.BeaconData = lanGameYaml;
 		}

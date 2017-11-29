@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ConnectionLogic(Widget widget, string host, int port, Action onConnect, Action onAbort, Action<string> onRetry)
+		public ConnectionLogic(Widget widget, ConnectionAddress address, Action onConnect, Action onAbort, Action<string> onRetry)
 		{
 			this.onConnect = onConnect;
 			this.onAbort = onAbort;
@@ -61,18 +61,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Connecting to {0}:{1}...".F(host, port);
+				"Connecting to {0}...".F(address.ToString());
 		}
 
-		public static void Connect(string host, int port, string password, Action onConnect, Action onAbort)
+		public static void Connect(ConnectionAddress address, string password, Action onConnect, Action onAbort)
 		{
-			Game.JoinServer(host, port, password);
-			Action<string> onRetry = newPassword => Connect(host, port, newPassword, onConnect, onAbort);
+			Game.JoinServer(address, password);
+			Action<string> onRetry = newPassword => Connect(address, newPassword, onConnect, onAbort);
 
 			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
 			{
-				{ "host", host },
-				{ "port", port },
+				{ "address", address },
 				{ "onConnect", onConnect },
 				{ "onAbort", onAbort },
 				{ "onRetry", onRetry }
@@ -105,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Could not connect to {0}:{1}".F(orderManager.Host, orderManager.Port);
+				"Could not connect to {0}".F(orderManager.Address);
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
 			connectionError.GetText = () => orderManager.ServerError;
@@ -165,7 +164,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			switchButton.OnClick = () =>
 			{
-				var launchCommand = "Launch.Connect=" + orderManager.Host + ":" + orderManager.Port;
+				var launchCommand = "Launch.Connect=" + orderManager.Address;
 				Game.SwitchToExternalMod(orderManager.ServerExternalMod, new[] { launchCommand }, () =>
 				{
 					orderManager.ServerError = "Failed to switch mod.";

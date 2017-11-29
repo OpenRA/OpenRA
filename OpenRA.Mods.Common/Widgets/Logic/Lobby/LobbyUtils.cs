@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (ip == null)
 				return "Unknown Host";
-			if (ip == IPAddress.Loopback.ToString())
+			if (ip == "localhost")
 				return "Local Host";
 			return ip;
 		}
@@ -532,7 +532,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var client = orderManager.LobbyInfo.ClientWithIndex(clientIndex);
 			var address = client != null ? client.IpAddress : "";
 			var lc = orderManager.LocalClient;
-			if (lc != null && lc.Index == clientIndex && address == IPAddress.Loopback.ToString())
+			if (lc != null && lc.Index == clientIndex && address == "localhost")
 			{
 				var externalIP = UPnP.ExternalIP;
 				if (externalIP != null)

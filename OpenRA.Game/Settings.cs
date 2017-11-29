@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using OpenRA.Graphics;
+using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -322,8 +323,7 @@ namespace OpenRA
 
 	public class ChatSettings
 	{
-		public string Hostname = "irc.openra.net";
-		public int Port = 6667;
+		public ConnectionAddress Address = new ConnectionAddress("irc.openra.net", 6667);
 		public string Channel = "lobby";
 		public string QuitMessage = "Battle control terminated!";
 		public string TimestampFormat = "HH:mm";

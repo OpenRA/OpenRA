@@ -63,6 +63,9 @@ namespace OpenRA.Network
 				}
 			}
 
+			if (!new ConnectionAddress(Address).IsValid)
+				IsCompatible = false;
+
 			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
 			IsJoinable = IsCompatible && State == 1 && mapAvailable;
 		}

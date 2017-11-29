@@ -141,7 +141,7 @@ namespace OpenRA.Chat
 			{
 				try
 				{
-					client.Connect(Game.Settings.Chat.Hostname, Game.Settings.Chat.Port);
+					client.Connect(Game.Settings.Chat.Address.Host, Game.Settings.Chat.Address.Port);
 				}
 				catch (Exception e)
 				{
@@ -178,7 +178,7 @@ namespace OpenRA.Chat
 
 		void OnConnecting(object sender, EventArgs e)
 		{
-			AddNotification("Connecting to {0}:{1}...".F(Game.Settings.Chat.Hostname, Game.Settings.Chat.Port));
+			AddNotification("Connecting to {0}...".F(Game.Settings.Chat.Address.ToString()));
 			connectionStatus = ChatConnectionStatus.Connecting;
 		}
 
