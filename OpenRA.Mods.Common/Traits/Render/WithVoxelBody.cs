@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			size = new int2(s, s);
 		}
 
-		public int2 SelectionSize(Actor self) { return size; }
-		public int2 RenderSize(Actor self) { return size; }
+		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
+		int2 IAutoRenderSize.RenderSize(Actor self) { return size; }
 	}
 }

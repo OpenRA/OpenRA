@@ -15,7 +15,6 @@
 	QuantizeFacingsFromSequence:
 	AutoSelectionSize:
 	RenderSprites:
-	AutoRenderSize:
 
 ^GainsExperience:
 	GainsExperience:
@@ -1102,7 +1101,6 @@
 		TerrainType: Rail
 	EditorTilesetFilter:
 		Categories: Railway
-	AutoRenderSize:
 
 ^Tunnel:
 	RenderSprites:

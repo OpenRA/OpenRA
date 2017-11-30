@@ -188,7 +188,6 @@ JUMPJET.Husk:
 		FallbackSequence: die-splash
 	EditorTilesetFilter:
 		Categories: Husk
-	AutoRenderSize:
 
 GHOST:
 	Inherits: ^Soldier

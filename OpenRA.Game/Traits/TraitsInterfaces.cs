@@ -102,7 +102,11 @@ namespace OpenRA.Traits
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
 
 	public interface IAutoRenderSizeInfo : ITraitInfoInterface { }
-	public interface IAutoRenderSize { int2 RenderSize(Actor self); }
+	[RequireExplicitImplementation]
+	public interface IAutoRenderSize
+	{
+		int2 RenderSize(Actor self);
+	}
 
 	public interface IIssueOrder
 	{

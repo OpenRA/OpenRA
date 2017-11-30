@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithInfantryBodyInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<IMoveInfo>, Requires<RenderSpritesInfo>
+	public class WithInfantryBodyInfo : ConditionalTraitInfo, IAutoRenderSizeInfo, IRenderActorPreviewSpritesInfo, Requires<IMoveInfo>, Requires<RenderSpritesInfo>
 	{
 		public readonly int MinIdleDelay = 30;
 		public readonly int MaxIdleDelay = 110;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
+	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle, IAutoRenderSize
 	{
 		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
@@ -68,6 +68,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			state = AnimationState.Waiting;
 			move = init.Self.Trait<IMove>();
+		}
+
+		int2 IAutoRenderSize.RenderSize(Actor self)
+		{
+			var rs = self.Trait<RenderSprites>();
+			return rs.AutoRenderSize(self);
 		}
 
 		public void PlayStandAnimation(Actor self)

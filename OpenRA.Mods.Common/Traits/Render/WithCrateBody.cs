@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders crates with both water and land variants.")]
-	class WithCrateBodyInfo : ITraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
+	class WithCrateBodyInfo : ITraitInfo, IAutoRenderSizeInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
 	{
 		[Desc("Easteregg sequences to use in December.")]
 		public readonly string[] XmasImages = { };
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithCrateBody : INotifyParachute, INotifyAddedToWorld
+	class WithCrateBody : INotifyParachute, INotifyAddedToWorld, IAutoRenderSize
 	{
 		readonly Actor self;
 		readonly Animation anim;
@@ -59,6 +59,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play(info.IdleSequence);
 			rs.Add(anim);
+		}
+
+		int2 IAutoRenderSize.RenderSize(Actor self)
+		{
+			var rs = self.Trait<RenderSprites>();
+			return rs.AutoRenderSize(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

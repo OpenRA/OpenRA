@@ -1237,10 +1237,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Split Selection- and RenderSize
 				if (engineVersion < 20171115)
 				{
-					var autoSelSize = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AutoSelectionSize", StringComparison.Ordinal));
-					if (autoSelSize != null)
-						node.Value.Nodes.Add(new MiniYamlNode("AutoRenderSize", ""));
-
 					var customSelSize = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CustomSelectionSize", StringComparison.Ordinal));
 					if (customSelSize != null)
 					{

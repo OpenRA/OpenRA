@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CustomRenderSizeInfo info;
 		public CustomRenderSize(CustomRenderSizeInfo info) { this.info = info; }
 
-		public int2 RenderSize(Actor self)
+		int2 IAutoRenderSize.RenderSize(Actor self)
 		{
 			return new int2(info.CustomBounds[0], info.CustomBounds[1]);
 		}

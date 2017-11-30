@@ -34,7 +34,6 @@ CABHUT:
 		Name: Bridge
 	EditorTilesetFilter:
 		Categories: Bridge
-	AutoRenderSize:
 
 ^LowBridge:
 	Inherits: ^LowBridgeRamp
