@@ -76,7 +76,3 @@ siege_tank:
 missile_tank:
 	Buildable:
 		Prerequisites: upgrade.heavy, research_centre
-
-combat_tank_o.starport:
-	Buildable:
-		Prerequisites: starport
