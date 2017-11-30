@@ -56,7 +56,7 @@ starport:
 
 missile_tank:
 	Buildable:
-		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
 
 sardaukar:
 	Buildable:

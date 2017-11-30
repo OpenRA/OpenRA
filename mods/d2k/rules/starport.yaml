@@ -61,7 +61,7 @@ missile_tank.starport:
 combat_tank_a.starport:
 	Inherits: combat_tank_a
 	Buildable:
-		Prerequisites: ~starport.atreides
+		Prerequisites: ~starport.atreides_combat
 		Queue: Starport
 	Valued:
 		Cost: 875
@@ -71,7 +71,7 @@ combat_tank_a.starport:
 combat_tank_h.starport:
 	Inherits: combat_tank_h
 	Buildable:
-		Prerequisites: ~starport.harkonnen
+		Prerequisites: ~starport.harkonnen_combat
 		Queue: Starport
 	Valued:
 		Cost: 875
@@ -81,7 +81,7 @@ combat_tank_h.starport:
 combat_tank_o.starport:
 	Inherits: combat_tank_o
 	Buildable:
-		Prerequisites: ~starport.ordos
+		Prerequisites: ~starport.ordos_combat
 		Queue: Starport
 	Valued:
 		Cost: 875
