@@ -1556,8 +1556,8 @@ starport.smuggler:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA.R8 # TODO: blank
-		Start: 4281
+	icon: DATA.R8
+		Start: 4358
 		Offset: -30,-24
 
 heavy.mercenary:
@@ -1606,8 +1606,8 @@ heavy.mercenary:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA.R8 # TODO: blank
-		Start: 4281
+	icon: DATA.R8
+		Start: 4353
 		Offset: -30,-24
 
 plates: # TODO: unused
