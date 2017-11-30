@@ -66,7 +66,7 @@ construction_yard:
 	Selectable:
 		Bounds: 96,64
 	Health:
-		HP: 3000
+		HP: 30000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -1024
@@ -141,7 +141,7 @@ wind_trap:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3000
+		HP: 30000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1024, -1024
@@ -187,7 +187,7 @@ barracks:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3200
+		HP: 32000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1024, -1024
@@ -268,7 +268,7 @@ refinery:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3000
+		HP: 30000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -512, -1024
@@ -330,7 +330,7 @@ silo:
 		Adjacent: 4
 	-GivesBuildableArea:
 	Health:
-		HP: 1500
+		HP: 15000
 	Armor:
 		Type: wall
 	RevealsShroud:
@@ -381,7 +381,7 @@ light_factory:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3300
+		HP: 33000
 	HitShape:
 		TargetableOffsets: -210,608,0
 		Type: Rectangle
@@ -465,7 +465,7 @@ heavy_factory:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3500
+		HP: 35000
 	HitShape:
 		TargetableOffsets: -1155,-704,0, -1365,832,0
 		Type: Rectangle
@@ -554,7 +554,7 @@ outpost:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3500
+		HP: 35000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -1024
@@ -602,7 +602,7 @@ starport:
 	Selectable:
 		Bounds: 96,96
 	Health:
-		HP: 3500
+		HP: 35000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -1536
@@ -683,7 +683,7 @@ wall:
 		AreaTypes: building
 		Adjacent: 7
 	Health:
-		HP: 2000
+		HP: 20000
 	Armor:
 		Type: wall
 	RevealsShroud:
@@ -742,7 +742,7 @@ medium_gun_turret:
 		DecorationBounds: 32,40,0,-8
 		Priority: 3
 	Health:
-		HP: 2700
+		HP: 27000
 	Armor:
 		Type: heavy
 	RevealsShroud:
@@ -788,7 +788,7 @@ large_gun_turret:
 		DecorationBounds: 32,40,0,-8
 		Priority: 3
 	Health:
-		HP: 3000
+		HP: 30000
 	Armor:
 		Type: concrete
 	RevealsShroud:
@@ -823,7 +823,7 @@ repair_pad:
 		Footprint: =x= xxx =x=
 		Dimensions: 3,3
 	Health:
-		HP: 3000
+		HP: 30000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -512
@@ -841,7 +841,7 @@ repair_pad:
 	Reservable:
 	RepairsUnits:
 		Interval: 10
-		HpPerStep: 80
+		HpPerStep: 800
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
@@ -885,7 +885,7 @@ high_tech_factory:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 3500
+		HP: 35000
 	HitShape:
 		TargetableOffsets: -1312,0,0, -1312,-1024,0, -1312,1024,0
 		Type: Rectangle
@@ -960,7 +960,7 @@ research_centre:
 		LocalCenterOffset: 0,-512,0
 	WithBuildingBib:
 	Health:
-		HP: 2500
+		HP: 25000
 	HitShape:
 		TargetableOffsets: -1574,-158,0, -1050,-1024,0, -1155,960,0
 		Type: Rectangle
@@ -1010,7 +1010,7 @@ palace:
 	WithBuildingBib:
 		HasMinibib: True
 	Health:
-		HP: 4000
+		HP: 40000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1536, -512

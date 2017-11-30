@@ -6,7 +6,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Falloff: 100, 50, 25, 0
-		Damage: 125
+		Damage: 1250
 		Versus:
 			wall: 10
 			building: 25
@@ -42,7 +42,7 @@ M_HMG:
 	Report: 20MMGUN1.WAV
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 25
 			wall: 100
@@ -70,7 +70,7 @@ HMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 60, 30, 0
-		Damage: 180
+		Damage: 1800
 
 HMGo:
 	Inherits: HMG

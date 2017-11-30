@@ -13,7 +13,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
 		Falloff: 100, 50, 25, 0
-		Damage: 300
+		Damage: 3000
 		Versus:
 			none: 8
 			wall: 75
@@ -51,7 +51,7 @@
 		Speed: 288
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 480
+		Damage: 4800
 		Versus:
 			none: 15
 			wall: 75
@@ -77,7 +77,7 @@ Rocket:
 		Speed: 352
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
-		Damage: 250
+		Damage: 2500
 		Versus:
 			none: 25
 			wall: 100
@@ -115,7 +115,7 @@ mtank_pri:
 		Inaccuracy: 96
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
-		Damage: 600
+		Damage: 6000
 		ValidTargets: Ground, Air
 
 DeviatorMissile:
@@ -130,7 +130,7 @@ DeviatorMissile:
 		TrailPalette: deviatorgas
 		TrailUsePlayerPalette: true
 	Warhead@1Dam: SpreadDamage
-		Damage: 500
+		Damage: 5000
 		Versus:
 			none: 20
 			wall: 20

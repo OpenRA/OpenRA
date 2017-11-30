@@ -226,7 +226,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
-		HP: 75
+		HP: 750
 	Armor:
 		Type: light
 	HiddenUnderFog:
@@ -243,6 +243,7 @@
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
 	Burns:
 		Interval: 4
+		Damage: 10
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true
@@ -394,7 +395,7 @@
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
-		RepairStep: 50
+		RepairStep: 500
 		PlayerExperience: 25
 	EmitInfantryOnSell:
 		ActorTypes: light_inf
@@ -412,7 +413,7 @@
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedByTerrain:
-		Damage: 50
+		Damage: 500
 		DamageInterval: 100
 		Terrain: Rock
 		DamageThreshold: 50
