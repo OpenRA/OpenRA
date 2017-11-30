@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -169,6 +170,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
 			var palette = wr.Palette(info.ShadowPalette);
 			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, true) };
+		}
+
+		Rectangle IRender.AutoRenderBounds(Actor self)
+		{
+			// Actor.RenderBounds unions all non-empty sprite bounds, so this wouldn't have an effect on the final bounds anyway as RenderSprites/RenderBounds take care of that
+			return Rectangle.Empty;
 		}
 	}
 }

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Default trait for rendering sprite-based actors.")]
-	public class WithSpriteBodyInfo : PausableConditionalTraitInfo, IAutoRenderSizeInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
+	public class WithSpriteBodyInfo : PausableConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[Desc("Animation to play when the actor is created."), SequenceReference]
 		public readonly string StartSequence = null;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete, IAutoRenderSize
+	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		public readonly Animation DefaultAnimation;
 
@@ -66,12 +66,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 					() => PlayCustomAnimationRepeating(init.Self, info.Sequence));
 			else
 				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence));
-		}
-
-		int2 IAutoRenderSize.RenderSize(Actor self)
-		{
-			var rs = self.Trait<RenderSprites>();
-			return rs.AutoRenderSize(self);
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)

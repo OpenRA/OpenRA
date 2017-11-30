@@ -96,17 +96,14 @@ namespace OpenRA.Traits
 	public interface ITick { void Tick(Actor self); }
 	[RequireExplicitImplementation]
 	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
-	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
+	public interface IRender
+	{
+		IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr);
+		Rectangle AutoRenderBounds(Actor self);
+	}
 
 	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
-
-	public interface IAutoRenderSizeInfo : ITraitInfoInterface { }
-	[RequireExplicitImplementation]
-	public interface IAutoRenderSize
-	{
-		int2 RenderSize(Actor self);
-	}
 
 	public interface IIssueOrder
 	{

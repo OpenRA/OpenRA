@@ -9,12 +9,15 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Special case trait for actors that need to define targetable area and screen map bounds manually.")]
-	public class CustomRenderBoundsInfo : ITraitInfo, IAutoRenderSizeInfo
+	[Desc("Special case trait for actors that need to define screen map bounds manually.")]
+	public class CustomRenderBoundsInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly int[] Bounds = null;
@@ -22,14 +25,24 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CustomRenderBounds(this); }
 	}
 
-	public class CustomRenderBounds : IAutoRenderSize
+	public class CustomRenderBounds : IRender
 	{
 		readonly CustomRenderBoundsInfo info;
 		public CustomRenderBounds(CustomRenderBoundsInfo info) { this.info = info; }
 
-		int2 IAutoRenderSize.RenderSize(Actor self)
+		Rectangle IRender.AutoRenderBounds(Actor self)
 		{
-			return new int2(info.Bounds[0], info.Bounds[1]);
+			var size = new int2(info.Bounds[0], info.Bounds[1]);
+			var offset = -size / 2;
+			if (info.Bounds.Length > 2)
+				offset += new int2(info.Bounds[2], info.Bounds[3]);
+
+			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+		}
+
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
+		{
+			return SpriteRenderable.None;
 		}
 	}
 }

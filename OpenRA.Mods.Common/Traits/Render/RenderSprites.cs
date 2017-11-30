@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -236,14 +237,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return sequence;
 		}
 
-		// Required by WithSpriteBody and WithInfantryBody
 		public int2 AutoSelectionSize(Actor self)
-		{
-			return AutoRenderSize(self);
-		}
-
-		// Required by WithSpriteBody and WithInfantryBody
-		public int2 AutoRenderSize(Actor self)
 		{
 			var visibleAnims = anims.Where(b => b.IsVisible && b.Animation.Animation.CurrentSequence != null).ToArray();
 			var aggregateSize = int2.Zero;
@@ -257,6 +251,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			return aggregateSize;
+		}
+
+		Rectangle IRender.AutoRenderBounds(Actor self)
+		{
+			var visibleAnims = anims.Where(b => b.IsVisible && b.Animation.Animation.CurrentSequence != null).ToArray();
+			var aggregateSize = int2.Zero;
+			foreach (var a in visibleAnims)
+			{
+				var size = (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2();
+				if (size.X * size.X > aggregateSize.X * aggregateSize.X)
+					aggregateSize = new int2(size.X, aggregateSize.Y);
+				if (size.Y * size.Y > aggregateSize.Y * aggregateSize.Y)
+					aggregateSize = new int2(aggregateSize.X, size.Y);
+			}
+
+			var offset = -aggregateSize / 2;
+
+			return new Rectangle(offset.X, offset.Y, aggregateSize.X, aggregateSize.Y);
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
