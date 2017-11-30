@@ -91,12 +91,12 @@ construction_yard:
 	Power:
 		Amount: 20
 	RenderSprites:
-		Image: conyard.harkonnen
+		Image: conyard.ordos
 		FactionImages:
 			atreides: conyard.atreides
-			ordos: conyard.ordos
-			smuggler: conyard.ordos
-			mercenary: conyard.ordos
+			fremen: conyard.atreides
+			harkonnen: conyard.harkonnen
+			corrino: conyard.harkonnen
 	WithBuildingPlacedOverlay:
 		Palette: d2k
 	PrimaryBuilding:
@@ -151,12 +151,12 @@ wind_trap:
 	RevealsShroud:
 		Range: 3c768
 	RenderSprites:
-		Image: power.harkonnen
+		Image: power.ordos
 		FactionImages:
 			atreides: power.atreides
-			ordos: power.ordos
-			smuggler: power.ordos
-			mercenary: power.ordos
+			fremen: power.atreides
+			harkonnen: power.harkonnen
+			corrino: power.harkonnen
 	WithIdleOverlay@ZAPS:
 		Sequence: idle-zaps
 	Power:
@@ -221,12 +221,12 @@ barracks:
 	Power:
 		Amount: -30
 	RenderSprites:
-		Image: barracks.harkonnen
+		Image: barracks.ordos
 		FactionImages:
 			atreides: barracks.atreides
-			ordos: barracks.ordos
-			smuggler: barracks.ordos
-			mercenary: barracks.ordos
+			fremen: barracks.atreides
+			harkonnen: barracks.harkonnen
+			corrino: barracks.harkonnen
 	ProvidesPrerequisite@buildingname:
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.barracks
@@ -297,12 +297,12 @@ refinery:
 		DeliveringActor: carryall.reinforce
 		Facing: 160
 	RenderSprites:
-		Image: refinery.harkonnen
+		Image: refinery.ordos
 		FactionImages:
 			atreides: refinery.atreides
-			ordos: refinery.ordos
-			smuggler: refinery.ordos
-			mercenary: refinery.ordos
+			fremen: refinery.atreides
+			harkonnen: refinery.harkonnen
+			corrino: refinery.harkonnen
 	WithDockedOverlay@SMOKE:
 		Sequence: smoke
 	Power:
@@ -336,12 +336,12 @@ silo:
 	RevealsShroud:
 		Range: 2c768
 	RenderSprites:
-		Image: silo.harkonnen
+		Image: silo.ordos
 		FactionImages:
 			atreides: silo.atreides
-			ordos: silo.ordos
-			smuggler: silo.ordos
-			mercenary: silo.ordos
+			fremen: silo.atreides
+			harkonnen: silo.harkonnen
+			corrino: silo.harkonnen
 	WithSpriteBody:
 	WithSiloAnimation:
 	StoresResources:
@@ -392,12 +392,12 @@ light_factory:
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
-		Image: light.harkonnen
+		Image: light.ordos
 		FactionImages:
 			atreides: light.atreides
-			ordos: light.ordos
-			smuggler: light.ordos
-			mercenary: light.ordos
+			fremen: light.atreides
+			harkonnen: light.harkonnen
+			corrino: light.harkonnen
 	RallyPoint:
 		Offset: 2,2
 	Exit@1:
@@ -502,12 +502,13 @@ heavy_factory:
 		Prerequisite: heavy.missiletank
 		Factions: atreides, harkonnen
 	RenderSprites:
-		Image: heavy.harkonnen
+		Image: heavy.ordos
 		FactionImages:
 			atreides: heavy.atreides
-			ordos: heavy.ordos
+			fremen: heavy.atreides
+			harkonnen: heavy.harkonnen
+			corrino: heavy.harkonnen
 			mercenary: heavy.mercenary
-			smuggler: heavy.ordos
 	WithProductionOverlay@WELDING:
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
@@ -566,12 +567,12 @@ outpost:
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderSprites:
-		Image: outpost.harkonnen
+		Image: outpost.ordos
 		FactionImages:
 			atreides: outpost.atreides
-			ordos: outpost.ordos
-			smuggler: outpost.ordos
-			mercenary: outpost.ordos
+			fremen: outpost.atreides
+			harkonnen: outpost.harkonnen
+			corrino: outpost.harkonnen
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
 		PauseOnCondition: disabled
@@ -627,12 +628,13 @@ starport:
 		Produces: Starport
 		ActorType: frigate
 	RenderSprites:
-		Image: starport.harkonnen
+		Image: starport.ordos
 		FactionImages:
 			atreides: starport.atreides
-			ordos: starport.ordos
+			fremen: starport.atreides
+			harkonnen: starport.harkonnen
+			corrino: starport.harkonnen
 			smuggler: starport.smuggler
-			mercenary: starport.ordos
 	WithDeliveryOverlay:
 		Palette: starportlights
 	ProductionBar:
@@ -847,12 +849,12 @@ repair_pad:
 	RallyPoint:
 		Offset: 1,3
 	RenderSprites:
-		Image: repair_pad.harkonnen
+		Image: repair_pad.ordos
 		FactionImages:
 			atreides: repair_pad.atreides
-			ordos: repair_pad.ordos
-			smuggler: repair_pad.ordos
-			mercenary: repair_pad.ordos
+			fremen: repair_pad.atreides
+			harkonnen: repair_pad.harkonnen
+			corrino: repair_pad.harkonnen
 	WithRepairOverlay:
 		Palette: effect75alpha
 	Power:
@@ -901,12 +903,12 @@ high_tech_factory:
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
-		Image: hightech.harkonnen
+		Image: hightech.ordos
 		FactionImages:
 			atreides: hightech.atreides
-			ordos: hightech.ordos
-			smuggler: hightech.ordos
-			mercenary: hightech.ordos
+			fremen: hightech.atreides
+			harkonnen: hightech.harkonnen
+			corrino: hightech.harkonnen
 	ProvidesPrerequisite@upgrade:
 		Prerequisite: hightech.atreides
 		Factions: atreides
@@ -976,12 +978,12 @@ research_centre:
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
-		Image: research.harkonnen
+		Image: research.ordos
 		FactionImages:
 			atreides: research.atreides
-			ordos: research.ordos
-			smuggler: research.ordos
-			mercenary: research.ordos
+			fremen: research.atreides
+			harkonnen: research.harkonnen
+			corrino: research.harkonnen
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	Power:
@@ -1028,13 +1030,12 @@ palace:
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
-		Image: palace.harkonnen
+		Image: palace.ordos
 		FactionImages:
 			atreides: palace.atreides
-			ordos: palace.ordos
+			fremen: palace.atreides
+			harkonnen: palace.harkonnen
 			corrino: palace.corrino
-			smuggler: palace.ordos
-			mercenary: palace.ordos
 	Power:
 		Amount: -200
 	ProvidesPrerequisite@nuke:
