@@ -2486,10 +2486,10 @@ Templates:
 		Size: 2,2
 		Categories: Dead-Worm
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Cliff
+			1: Cliff
 			2: Sand
-			3: Sand
+			3: Cliff
 	Template@308:
 		Id: 308
 		Images: BLOXBAT.R8
@@ -5895,10 +5895,10 @@ Templates:
 		Size: 2,2
 		Categories: Dead-Worm
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Cliff
+			1: Cliff
 			2: Sand
-			3: Sand
+			3: Cliff
 	Template@1061:
 		Id: 1061
 		Images: BLOXWAST.R8
