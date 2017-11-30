@@ -14,22 +14,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Special case trait for actors that need to define targetable area and screen map bounds manually.")]
-	public class CustomRenderSizeInfo : ITraitInfo, IAutoRenderSizeInfo
+	public class CustomRenderBoundsInfo : ITraitInfo, IAutoRenderSizeInfo
 	{
 		[FieldLoader.Require]
-		public readonly int[] CustomBounds = null;
+		public readonly int[] Bounds = null;
 
-		public object Create(ActorInitializer init) { return new CustomRenderSize(this); }
+		public object Create(ActorInitializer init) { return new CustomRenderBounds(this); }
 	}
 
-	public class CustomRenderSize : IAutoRenderSize
+	public class CustomRenderBounds : IAutoRenderSize
 	{
-		readonly CustomRenderSizeInfo info;
-		public CustomRenderSize(CustomRenderSizeInfo info) { this.info = info; }
+		readonly CustomRenderBoundsInfo info;
+		public CustomRenderBounds(CustomRenderBoundsInfo info) { this.info = info; }
 
 		int2 IAutoRenderSize.RenderSize(Actor self)
 		{
-			return new int2(info.CustomBounds[0], info.CustomBounds[1]);
+			return new int2(info.Bounds[0], info.Bounds[1]);
 		}
 	}
 }

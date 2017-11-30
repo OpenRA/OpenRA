@@ -328,7 +328,7 @@
     <Compile Include="Traits\Crushable.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\CustomSelectionSize.cs" />
-    <Compile Include="Traits\Render\CustomRenderSize.cs" />
+    <Compile Include="Traits\Render\CustomRenderBounds.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
     <Compile Include="Traits\DeliversCash.cs" />
     <Compile Include="Traits\DeliversExperience.cs" />

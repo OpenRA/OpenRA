@@ -81,8 +81,8 @@ LOBRDG_A_D:
 		BOffset: 1,1
 	CustomSelectionSize:
 		CustomBounds: 96, 48
-	CustomRenderSize:
-		CustomBounds: 96, 48
+	CustomRenderBounds:
+		Bounds: 96, 48
 
 LOBRDG_B:
 	Inherits: ^LowBridge
@@ -119,8 +119,8 @@ LOBRDG_B_D:
 		BOffset: -1,1
 	CustomSelectionSize:
 		CustomBounds: 96, 48
-	CustomRenderSize:
-		CustomBounds: 96, 48
+	CustomRenderBounds:
+		Bounds: 96, 48
 
 LOBRDG_R_SE:
 	Inherits: ^LowBridgeRamp
@@ -181,8 +181,8 @@ LOBRDG_R_SW:
 		CustomBounds: 96, 144
 	EditorTilesetFilter:
 		Categories: Bridge
-	CustomRenderSize:
-		CustomBounds: 96, 144
+	CustomRenderBounds:
+		Bounds: 96, 144
 
 BRIDGE1:
 	Inherits: ^ElevatedBridgePlaceholder

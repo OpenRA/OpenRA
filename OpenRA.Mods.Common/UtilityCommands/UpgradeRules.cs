@@ -1240,12 +1240,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var customSelSize = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CustomSelectionSize", StringComparison.Ordinal));
 					if (customSelSize != null)
 					{
-						var bounds = customSelSize.Value.Nodes.FirstOrDefault(n => n.Key == "CustomBounds");
-						var customRenderSize = new MiniYamlNode("CustomRenderSize", "");
-						if (bounds != null)
-							customRenderSize.Value.Nodes.Add(bounds);
+						// Has FieldLoader.Require, so can't be null unless rules are flawed to begin with
+						var boundsNode = customSelSize.Value.Nodes.First(n => n.Key == "CustomBounds");
+						var bounds = FieldLoader.GetValue<string>("CustomBounds", boundsNode.Value.Value);
+						var customRenderBounds = new MiniYamlNode("CustomRenderBounds", "");
+						var newBounds = new MiniYamlNode("Bounds", bounds);
 
-						node.Value.Nodes.Add(customRenderSize);
+						customRenderBounds.Value.Nodes.Add(newBounds);
+						node.Value.Nodes.Add(customRenderBounds);
 					}
 				}
 

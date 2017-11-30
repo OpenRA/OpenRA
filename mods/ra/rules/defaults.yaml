@@ -786,8 +786,8 @@
 		Type: Light
 	EditorTilesetFilter:
 		Categories: Decoration
-	CustomRenderSize:
-		CustomBounds: 24,24
+	CustomRenderBounds:
+		Bounds: 24,24
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -976,8 +976,8 @@
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
-	CustomRenderSize:
-		CustomBounds: 96,48
+	CustomRenderBounds:
+		Bounds: 96,48
 
 ^Rock:
 	Inherits@1: ^SpriteActor
