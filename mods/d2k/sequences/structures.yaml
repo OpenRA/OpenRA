@@ -427,7 +427,7 @@ silo.atreides:
 
 hightech.atreides:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 2812
 	make: DATA.R8
@@ -937,7 +937,7 @@ silo.harkonnen:
 
 hightech.harkonnen:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 2972
 	make: DATA.R8
@@ -1340,7 +1340,7 @@ silo.ordos:
 
 hightech.ordos:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 3132
 	make: DATA.R8
