@@ -221,9 +221,16 @@ namespace OpenRA.Mods.Common.AI
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
 				{
+					var burst = arm.Weapon.Burst;
+
+					// For simplicity's sake, we're only factoring in the first burst delay, as more than one burst delay is extremely rare.
+					// Additionally, clamping total delay to minimum of 1 (ReloadDelay: 0 is technically possible) and maximum of 200.
+					// High dmg/low ROF weapons shouldn't be rated too low as high dmg/shot can outweigh mere dps due to likelier 1-hit-kills.
+					// TODO: Revisit this at some point to replace the arbitrary cap with something smarter.
+					var totalReloadDelay = arm.Weapon.ReloadDelay + (arm.Weapon.BurstDelays[0] * (burst - 1)).Clamp(1, 200);
 					var damageWarheads = arm.Weapon.Warheads.OfType<DamageWarhead>();
 					foreach (var warhead in damageWarheads)
-						sumOfDamage += warhead.Damage;
+						sumOfDamage += (warhead.Damage * burst / totalReloadDelay) * 100;
 				}
 
 				return sumOfDamage;
