@@ -820,15 +820,15 @@ namespace OpenRA.Mods.Common.AI
 				if (harv == null)
 					continue;
 
+				if (!harv.IsEmpty)
+					continue;
+
 				if (!harvester.IsIdle)
 				{
 					var act = harvester.CurrentActivity;
 					if (act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
 						continue;
 				}
-
-				if (!harv.IsEmpty)
-					continue;
 
 				// Tell the idle harvester to quit slacking:
 				var newSafeResourcePatch = FindNextResource(harvester, harv);
