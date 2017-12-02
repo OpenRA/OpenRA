@@ -221,8 +221,8 @@ namespace OpenRA.Mods.Common.AI
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
 				{
-					var warhead = arm.Weapon.Warheads.OfType<DamageWarhead>().FirstOrDefault();
-					if (warhead != null)
+					var damageWarheads = arm.Weapon.Warheads.OfType<DamageWarhead>();
+					foreach (var warhead in damageWarheads)
 						sumOfDamage += warhead.Damage;
 				}
 
