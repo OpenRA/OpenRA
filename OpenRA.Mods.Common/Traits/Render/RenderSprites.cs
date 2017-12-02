@@ -245,10 +245,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 		// Required by WithSpriteBody and WithInfantryBody
 		public int2 AutoRenderSize(Actor self)
 		{
-			return anims.Where(b => b.IsVisible
-				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2())
-					.FirstOrDefault();
+			var visibleAnims = anims.Where(b => b.IsVisible && b.Animation.Animation.CurrentSequence != null).ToArray();
+			var aggregateSize = int2.Zero;
+			foreach (var a in visibleAnims)
+			{
+				var size = (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2();
+				if (size.X * size.X > aggregateSize.X * aggregateSize.X)
+					aggregateSize = new int2(size.X, aggregateSize.Y);
+				if (size.Y * size.Y > aggregateSize.Y * aggregateSize.Y)
+					aggregateSize = new int2(aggregateSize.X, size.Y);
+			}
+
+			return aggregateSize;
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
