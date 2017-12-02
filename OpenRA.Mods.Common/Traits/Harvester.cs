@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool idleSmart = true;
 		int idleDuration;
 
+		[Sync] public bool LastSearchFailed;
 		[Sync] public Actor OwnerLinkedProc = null;
 		[Sync] public Actor LastLinkedProc = null;
 		[Sync] public Actor LinkedProc = null;
