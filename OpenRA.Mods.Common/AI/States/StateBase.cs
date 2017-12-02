@@ -70,8 +70,13 @@ namespace OpenRA.Mods.Common.AI
 
 			var arms = a.TraitsImplementing<Armament>();
 			foreach (var arm in arms)
+			{
+				if (arm.IsTraitDisabled)
+					continue;
+
 				if (arm.Weapon.IsValidTarget(targetTypes))
 					return true;
+			}
 
 			return false;
 		}
