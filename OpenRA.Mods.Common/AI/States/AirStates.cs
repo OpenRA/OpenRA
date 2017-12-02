@@ -63,13 +63,14 @@ namespace OpenRA.Mods.Common.AI
 		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
 		{
 			var map = owner.World.Map;
+			var dangerRadius = owner.Bot.Info.DangerScanRadius;
 			detectedEnemyTarget = null;
-			var x = (map.MapSize.X % DangerRadius) == 0 ? map.MapSize.X : map.MapSize.X + DangerRadius;
-			var y = (map.MapSize.Y % DangerRadius) == 0 ? map.MapSize.Y : map.MapSize.Y + DangerRadius;
+			var x = (map.MapSize.X % dangerRadius) == 0 ? map.MapSize.X : map.MapSize.X + dangerRadius;
+			var y = (map.MapSize.Y % dangerRadius) == 0 ? map.MapSize.Y : map.MapSize.Y + dangerRadius;
 
-			for (var i = 0; i < x; i += DangerRadius * 2)
+			for (var i = 0; i < x; i += dangerRadius * 2)
 			{
-				for (var j = 0; j < y; j += DangerRadius * 2)
+				for (var j = 0; j < y; j += dangerRadius * 2)
 				{
 					var pos = new CPos(i, j);
 					if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
@@ -94,7 +95,8 @@ namespace OpenRA.Mods.Common.AI
 		protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 		{
 			detectedEnemyTarget = null;
-			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WDist.FromCells(DangerRadius))
+			var dangerRadius = owner.Bot.Info.DangerScanRadius;
+			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WDist.FromCells(dangerRadius))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (!unitsAroundPos.Any())
