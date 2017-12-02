@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.AI
 			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.Bot.Info.IdleScanRadius))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
-			if (!enemyUnits.Any())
+			if (enemyUnits.Count == 0)
 				return;
 
 			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
