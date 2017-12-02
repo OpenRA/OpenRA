@@ -72,13 +72,7 @@ namespace OpenRA.Mods.Common.AI
 			"then AttackOrFlee is Attack",
 
 			"if ((OwnHealth is NearDead) " +
-			"and (EnemyHealth is NearDead) " +
-			"and (RelativeAttackPower is Weak) " +
-			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-			"then AttackOrFlee is Flee",
-
-			"if ((OwnHealth is NearDead) " +
-			"and (EnemyHealth is Injured) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured)) " +
 			"and (RelativeAttackPower is Weak) " +
 			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
 			"then AttackOrFlee is Flee",
@@ -91,13 +85,7 @@ namespace OpenRA.Mods.Common.AI
 
 			"if (OwnHealth is NearDead) " +
 			"and (EnemyHealth is Normal) " +
-			"and (RelativeAttackPower is Equal) " +
-			"and (RelativeSpeed is Fast) " +
-			"then AttackOrFlee is Flee",
-
-			"if (OwnHealth is NearDead) " +
-			"and (EnemyHealth is Normal) " +
-			"and (RelativeAttackPower is Strong) " +
+			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and (RelativeSpeed is Fast) " +
 			"then AttackOrFlee is Flee",
 
