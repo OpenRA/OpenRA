@@ -34,7 +34,7 @@ T04:
 		Footprint: __ x_
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		ExcludeTilesets: INTERIOR
+		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T04.Husk
 
