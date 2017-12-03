@@ -647,7 +647,7 @@ PBOX:
 	RenderRangeCircle:
 		FallbackRange: 6c0
 	Power:
-		Amount: -15
+		Amount: -20
 	DetectCloaked:
 		Range: 6c0
 
@@ -704,7 +704,7 @@ HBOX:
 		PortYaws: 0, 176, 341, 512, 682, 853
 		PortCones: 88, 88, 88, 88, 88, 88
 	Power:
-		Amount: -15
+		Amount: -20
 	-MustBeDestroyed:
 
 GUN:

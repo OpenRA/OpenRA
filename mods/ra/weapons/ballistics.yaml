@@ -30,7 +30,7 @@
 
 25mm:
 	Inherits: ^Cannon
-	ReloadDelay: 22
+	ReloadDelay: 21
 	Range: 4c0
 	Report: cannon2.aud
 	Projectile: Bullet
@@ -39,7 +39,7 @@
 	Warhead@1Dam: SpreadDamage
 		Damage: 27
 		Versus:
-			Wood: 40
+			Wood: 50
 			Light: 110
 			Heavy: 45
 			Concrete: 30
@@ -113,7 +113,7 @@ TurretGun:
 
 155mm:
 	Inherits: ^Artillery
-	MinRange: 3c0
+	MinRange: 5c0
 	Report: tank5.aud
 	TargetActorCenter: true
 	Projectile: Bullet
@@ -123,12 +123,12 @@ TurretGun:
 	Inherits: ^Artillery
 	MinRange: 3c0
 	ReloadDelay: 250
-	Range: 16c0
+	Range: 20c0
 	Burst: 2
 	Report: turret1.aud
 	TargetActorCenter: true
 	Projectile: Bullet
-		Inaccuracy: 2c938
+		Inaccuracy: 1c938
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
@@ -185,7 +185,7 @@ DepthCharge:
 	Range: 5c0
 	ValidTargets: Underwater
 	Projectile: Bullet
-		Speed: 85
+		Speed: 125
 		Image: BOMB
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage

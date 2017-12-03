@@ -19,7 +19,7 @@ SS:
 		TurnSpeed: 4
 		Speed: 71
 	RevealsShroud:
-		Range: 6c0
+		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
