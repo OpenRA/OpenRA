@@ -18,6 +18,7 @@ namespace OpenRA.Traits
 	{
 		public bool CombatGeometry;
 		public bool RenderGeometry;
+		public bool ScreenMap;
 		public bool DepthBuffer;
 		public bool ActorTags;
 	}

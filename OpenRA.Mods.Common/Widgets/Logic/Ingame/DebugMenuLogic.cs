@@ -77,6 +77,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showGeometryCheckbox.OnClick = () => debugVis.RenderGeometry ^= true;
 			}
 
+			var showScreenMapCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_SCREENMAP");
+			if (showScreenMapCheckbox != null)
+			{
+				showScreenMapCheckbox.Disabled = debugVis == null;
+				showScreenMapCheckbox.IsChecked = () => debugVis != null && debugVis.ScreenMap;
+				showScreenMapCheckbox.OnClick = () => debugVis.ScreenMap ^= true;
+			}
+
 			var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 			var showTerrainGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_TERRAIN_OVERLAY");
 			if (showTerrainGeometryCheckbox != null && terrainGeometryTrait != null)

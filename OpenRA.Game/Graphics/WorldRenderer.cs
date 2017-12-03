@@ -212,6 +212,13 @@ namespace OpenRA.Graphics
 						r.RenderDebugGeometry(this);
 			}
 
+			if (debugVis.Value != null && debugVis.Value.ScreenMap)
+				foreach (var r in World.ScreenMap.ItemBounds(World.RenderPlayer))
+					Game.Renderer.WorldRgbaColorRenderer.DrawRect(
+						new float3(r.Left, r.Top, r.Bottom),
+						new float3(r.Right, r.Bottom, r.Bottom),
+						1 / Viewport.Zoom, Color.MediumSpringGreen);
+
 			Game.Renderer.Flush();
 		}
 
