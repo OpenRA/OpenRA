@@ -3,10 +3,10 @@ Container@DEBUG_PANEL:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:
-		Label@CHEATS_TITLE:
+		Label@TITLE:
 			Y: 25
 			Font: Bold
-			Text: Cheats
+			Text: Debug Options
 			Align: Center
 			Width: PARENT_RIGHT
 		Checkbox@INSTANT_BUILD:
@@ -95,6 +95,13 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Custom Terrain
+		Checkbox@SHOW_ACTOR_TAGS:
+			X: 45
+			Y: 335
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Actor Tags
 		Checkbox@SHOW_COMBATOVERLAY:
 			X: 290
 			Y: 275
@@ -116,10 +123,3 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Terrain Geometry
-		Checkbox@SHOW_ACTOR_TAGS:
-			X: 45
-			Y: 335
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: Show Actor Tags
