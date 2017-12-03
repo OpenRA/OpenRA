@@ -311,19 +311,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RemoveSmudgesOnBuild)
 				RemoveSmudges();
 
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-			self.World.ScreenMap.Add(self);
-
+			self.World.AddToMaps(self, this);
 			influence.AddInfluence(self, Info.Tiles(self.Location));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-			self.World.ScreenMap.Remove(self);
-
+			self.World.RemoveFromMaps(self, this);
 			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
