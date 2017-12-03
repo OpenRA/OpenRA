@@ -128,3 +128,10 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Terrain Geometry
+		Checkbox@SHOW_SCREENMAP:
+			X: 290
+			Y: 365
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Screen Map

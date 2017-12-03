@@ -187,5 +187,13 @@ namespace OpenRA.Traits
 				return NoFrozenActors;
 			return partitionedFrozenActors[p].InBox(r).Where(frozenActorIsValid);
 		}
+
+		public IEnumerable<Rectangle> ItemBounds(Player viewer)
+		{
+			var bounds = partitionedActors.ItemBounds
+				.Concat(partitionedEffects.ItemBounds);
+
+			return viewer != null ? bounds.Concat(partitionedFrozenActors[viewer].ItemBounds) : bounds;
+		}
 	}
 }
