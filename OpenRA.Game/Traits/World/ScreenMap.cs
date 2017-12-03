@@ -78,12 +78,16 @@ namespace OpenRA.Traits
 
 		public void Add(Actor a)
 		{
-			partitionedActors.Add(a, ActorBounds(a));
+			var bounds = ActorBounds(a);
+			if (!bounds.Size.IsEmpty)
+				partitionedActors.Add(a, ActorBounds(a));
 		}
 
 		public void Update(Actor a)
 		{
-			partitionedActors.Update(a, ActorBounds(a));
+			var bounds = ActorBounds(a);
+			if (!bounds.Size.IsEmpty)
+				partitionedActors.Update(a, ActorBounds(a));
 		}
 
 		public void Remove(Actor a)
