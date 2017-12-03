@@ -31,8 +31,6 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
-		public readonly Rectangle RenderBounds;
-		public readonly Rectangle SelectableBounds;
 		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
 		readonly Shroud shroud;
@@ -78,8 +76,6 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
-			RenderBounds = self.RenderBounds;
-			SelectableBounds = self.SelectableBounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
 			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
