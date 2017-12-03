@@ -4,7 +4,7 @@ Container@DEBUG_PANEL:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:
-		Label@LABLE_TITLE:
+		Label@TITLE:
 			Y: 25
 			Font: Bold
 			Text: Debug Options
@@ -51,7 +51,7 @@ Container@DEBUG_PANEL:
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Disable visibility checks
+			Text: Disable Visibility Checks
 		Button@GIVE_CASH:
 			X: 90
 			Y: 150
@@ -100,9 +100,16 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Custom Terrain
-		Checkbox@SHOW_DEPTH_PREVIEW:
+		Checkbox@SHOW_ACTOR_TAGS:
 			X: 45
 			Y: 335
+			Height: 20
+			Width: 200
+			Font: Regular
+			Text: Show Actor Tags
+		Checkbox@SHOW_DEPTH_PREVIEW:
+			X: 45
+			Y: 365
 			Height: 20
 			Width: 200
 			Font: Regular
@@ -128,10 +135,3 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: Show Terrain Geometry
-		Checkbox@SHOW_ACTOR_TAGS:
-			X: 45
-			Y: 365
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: Show Actor Tags
