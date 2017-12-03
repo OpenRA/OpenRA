@@ -57,8 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.AddInfluence(self, this);
 			self.World.ActorMap.AddPosition(self, this);
 
-			if (!self.RenderBounds.Size.IsEmpty)
-				self.World.ScreenMap.Add(self);
+			self.World.ScreenMap.Add(self);
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
@@ -66,8 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ActorMap.RemoveInfluence(self, this);
 			self.World.ActorMap.RemovePosition(self, this);
 
-			if (!self.RenderBounds.Size.IsEmpty)
-				self.World.ScreenMap.Remove(self);
+			self.World.ScreenMap.Remove(self);
 		}
 	}
 }
