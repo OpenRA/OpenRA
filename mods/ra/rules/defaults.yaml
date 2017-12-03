@@ -744,7 +744,7 @@
 		HP: 100
 	Explodes:
 		Weapon: Demolish
-		DamageThreshold: 90
+		DamageThreshold: 70
 	RevealsShroud:
 		Range: 4c0
 	WithDecoration@fake:

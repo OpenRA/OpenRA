@@ -62,6 +62,7 @@ Maverick:
 			None: 30
 			Wood: 90
 			Light: 90
+			Heavy: 115
 			Concrete: 100
 
 Dragon:
@@ -292,14 +293,14 @@ TorpTube:
 
 SubMissile:
 	Inherits: ^SubMissileDefault
-	Range: 16c0
+	Range: 20c0
 	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
 		Speed: 162
 		Blockable: false
 		LaunchAngle: 120
-		Inaccuracy: 2c938
+		Inaccuracy: 0c614
 		Image: MISSILE
 		Shadow: True
 		TrailImage: smokey
@@ -315,7 +316,7 @@ SCUD:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 0
 	Range: 10c0
-	MinRange: 3c0
+	MinRange: 5c0
 	Report: missile1.aud
 	-Projectile:
 	Projectile: Bullet
