@@ -17,7 +17,7 @@ namespace OpenRA.Mods.AS.Warheads
 		public readonly WDist Range = new WDist(1024);
 
 		[Desc("Trigger weapon after x ticks.")]
-		public readonly int TriggerTimer = 100;
+		public readonly int TriggerTime = 30;
 
 		[Desc("DeathType(s) that trigger the weapon. Leave empty to always trigger the weapon on death.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.AS.Warheads
 					continue;
 
 				var attachable = actor.TraitOrDefault<DelayedWeaponAttachable>();
-				attachable.Attach(new DelayedWeaponTrigger(TriggerTimer, DeathTypes, WeaponInfo, firedBy));
+				attachable.Attach(new DelayedWeaponTrigger(TriggerTime, DeathTypes, WeaponInfo, firedBy));
 			}
 		}
 

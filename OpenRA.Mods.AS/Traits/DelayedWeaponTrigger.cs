@@ -9,7 +9,9 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		public readonly HashSet<string> DeathTypes;
 
-		private int triggerTimer;
+		public readonly int TriggerTime;
+
+		public int RemainingTime { get; private set; }
 
 		private WeaponInfo weaponInfo;
 
@@ -19,7 +21,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		public DelayedWeaponTrigger(int triggerTimer, HashSet<string> deathTypes, WeaponInfo weaponInfo, Actor attachedBy)
 		{
-			this.triggerTimer = triggerTimer;
+			this.TriggerTime = triggerTimer;
+			this.RemainingTime = triggerTimer;
 			this.DeathTypes = deathTypes;
 			this.weaponInfo = weaponInfo;
 			this.attachedBy = attachedBy;
@@ -27,10 +30,10 @@ namespace OpenRA.Mods.AS.Traits
 
 		public void Tick(Actor attachable)
 		{
-			triggerTimer--;
+			RemainingTime--;
 			if (!attachable.IsDead && attachable.IsInWorld)
 			{
-				if (triggerTimer == 0)
+				if (RemainingTime == 0)
 				{
 					Activate(attachable);
 				}

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -12,18 +14,25 @@ namespace OpenRA.Mods.AS.Traits
 
 		[Desc("Defines how many objects can be attached at any given time.")]
 		public readonly int AttachLimit = 1;
-		
+
+		[Desc("Show a bar indicating the progress until triggering the with the smallest remaining time.")]
+		public readonly bool ShowProgressBar = true;
+
+		public readonly Color ProgressBarColor = Color.DarkRed;
+
 		public object Create(ActorInitializer init) { return new DelayedWeaponAttachable(this); }
 	}
 
-	public class DelayedWeaponAttachable : ITick, INotifyKilled
+	public class DelayedWeaponAttachable : ITick, INotifyKilled, ISelectionBar
 	{
 		public readonly DelayedWeaponAttachableInfo Info;
 
 		public DelayedWeaponAttachable(DelayedWeaponAttachableInfo info) { Info = info; }
 
 		private HashSet<DelayedWeaponTrigger> container = new HashSet<DelayedWeaponTrigger>();
-		
+
+		public bool DisplayWhenEmpty => false;
+
 		public void Tick(Actor self)
 		{
 			foreach (var trigger in container)
@@ -55,6 +64,21 @@ namespace OpenRA.Mods.AS.Traits
 		public void Attach(DelayedWeaponTrigger bomb)
 		{
 			container.Add(bomb);
+		}
+
+		public float GetValue()
+		{
+			var value = 0f;
+
+			if (!Info.ShowProgressBar || container.Count == 0)
+				return value;
+			var smallestTrigger = container.MinBy(t => t.RemainingTime);
+			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
+		}
+
+		public Color GetColor()
+		{
+			return Info.ProgressBarColor;
 		}
 	}
 }
