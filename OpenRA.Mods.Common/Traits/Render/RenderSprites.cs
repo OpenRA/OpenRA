@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -179,6 +180,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, info.Scale))
 					yield return r;
 			}
+		}
+
+		public virtual IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			foreach (var a in anims)
+				if (a.IsVisible)
+					yield return a.Animation.ScreenBounds(self, wr, info.Scale);
 		}
 
 		void ITick.Tick(Actor self)

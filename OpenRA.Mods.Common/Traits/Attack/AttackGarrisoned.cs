@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
@@ -189,7 +190,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			var pal = wr.Palette(Info.MuzzlePalette);
 
@@ -197,6 +198,12 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var m in muzzles)
 				foreach (var r in m.Render(self, wr, pal, 1f))
 					yield return r;
+		}
+
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Muzzle flashes don't contribute to actor bounds
+			yield break;
 		}
 
 		protected override void Tick(Actor self)

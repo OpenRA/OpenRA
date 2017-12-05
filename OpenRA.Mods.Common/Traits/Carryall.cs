@@ -192,6 +192,17 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			if (carryablePreview == null)
+				yield break;
+
+			var pos = self.CenterPosition;
+			foreach (var p in carryablePreview)
+				foreach (var b in p.ScreenBounds(wr, pos))
+					yield return b;
+		}
+
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get

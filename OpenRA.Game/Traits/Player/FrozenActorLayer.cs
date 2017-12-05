@@ -302,6 +302,12 @@ namespace OpenRA.Traits
 				.SelectMany(ff => ff.Render(wr));
 		}
 
+		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Player-actor render traits don't require screen bounds
+			yield break;
+		}
+
 		public FrozenActor FromID(uint id)
 		{
 			FrozenActor fa;

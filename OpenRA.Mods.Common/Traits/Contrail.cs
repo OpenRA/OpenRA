@@ -71,6 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 			return new IRenderable[] { trail };
 		}
 
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Contrails don't contribute to actor bounds
+			yield break;
+		}
+
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
