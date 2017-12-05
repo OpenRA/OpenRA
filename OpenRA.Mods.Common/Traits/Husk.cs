@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
-			self.World.ScreenMap.Update(self);
+			self.World.ScreenMap.AddOrUpdate(self);
 		}
 
 		public void SetPosition(Actor self, WPos pos)
