@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
@@ -23,6 +24,9 @@ namespace OpenRA.Graphics
 		float[] Size { get; }
 		float[] Bounds(uint frame);
 		ModelRenderData RenderData(uint section);
+
+		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model</summary>
+		Rectangle AggregateBounds { get; }
 	}
 
 	public struct ModelRenderData

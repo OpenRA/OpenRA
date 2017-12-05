@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace OpenRA.Graphics
 {
@@ -31,6 +32,19 @@ namespace OpenRA.Graphics
 			DisableFunc = disable;
 			FrameFunc = frame;
 			ShowShadow = showshadow;
+		}
+
+		public Rectangle ScreenBounds(WPos pos, WorldRenderer wr, float scale)
+		{
+			var r = Model.AggregateBounds;
+			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
+			var xy = wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset);
+
+			return Rectangle.FromLTRB(
+				xy.X + (int)(r.Left * scale),
+				xy.Y + (int)(r.Top * scale),
+				xy.X + (int)(r.Right * scale),
+				xy.Y + (int)(r.Bottom * scale));
 		}
 
 		public bool IsVisible
