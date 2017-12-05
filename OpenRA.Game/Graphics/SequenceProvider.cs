@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 using OpenRA.FileSystem;
 
 namespace OpenRA.Graphics
@@ -31,6 +31,7 @@ namespace OpenRA.Graphics
 		int ShadowStart { get; }
 		int ShadowZOffset { get; }
 		int[] Frames { get; }
+		Rectangle Bounds { get; }
 
 		Sprite GetSprite(int frame);
 		Sprite GetSprite(int frame, int facing);

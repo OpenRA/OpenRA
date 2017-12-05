@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Support;
 
@@ -64,6 +65,17 @@ namespace OpenRA.Graphics
 			}
 
 			return new IRenderable[] { imageRenderable };
+		}
+
+		public Rectangle ScreenBounds(WorldRenderer wr, WPos pos, WVec offset, float scale)
+		{
+			var xy = wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset);
+			var cb = CurrentSequence.Bounds;
+			return Rectangle.FromLTRB(
+				xy.X + (int)(cb.Left * scale),
+				xy.Y + (int)(cb.Top * scale),
+				xy.X + (int)(cb.Right * scale),
+				xy.Y + (int)(cb.Bottom * scale));
 		}
 
 		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)
