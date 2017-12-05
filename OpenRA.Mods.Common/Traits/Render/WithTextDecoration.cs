@@ -75,6 +75,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return !Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
 		}
 
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Text decorations don't contribute to actor bounds
+			yield break;
+		}
+
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			return Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;

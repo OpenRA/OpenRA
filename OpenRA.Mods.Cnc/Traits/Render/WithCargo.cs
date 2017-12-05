@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
@@ -96,6 +97,14 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				foreach (var pp in p.Render(wr, pos + body.LocalToWorld(localOffset.Rotate(bodyOrientation))))
 					yield return pp.WithZOffset(1);
 			}
+		}
+
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			var pos = self.CenterPosition;
+			foreach (var p in previews.Values.SelectMany(p => p))
+				foreach (var b in p.ScreenBounds(wr, pos))
+					yield return b;
 		}
 
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)

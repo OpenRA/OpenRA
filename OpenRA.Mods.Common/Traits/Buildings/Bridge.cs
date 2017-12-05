@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
@@ -214,6 +215,25 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return renderables[template];
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			foreach (var kv in footprint)
+			{
+				var xy = wr.ScreenPxPosition(wr.World.Map.CenterOfCell(kv.Key));
+				var size = wr.Theater.TileSprite(new TerrainTile(template, kv.Value)).Bounds.Size;
+
+				// Add an extra pixel padding to avoid issues with odd-sized sprites
+				var halfWidth = size.Width / 2 + 1;
+				var halfHeight = size.Height / 2 + 1;
+
+				yield return Rectangle.FromLTRB(
+					xy.X - halfWidth,
+					xy.Y - halfHeight,
+					xy.X + halfWidth,
+					xy.Y + halfHeight);
+			}
 		}
 
 		void KillUnitsOnBridge()

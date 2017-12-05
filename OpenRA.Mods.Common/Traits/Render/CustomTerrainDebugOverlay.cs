@@ -75,5 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new TextRenderable(font, center, 0, info.Color, info.Type);
 			}
 		}
+
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// World-actor render traits don't require screen bounds
+			yield break;
+		}
 	}
 }

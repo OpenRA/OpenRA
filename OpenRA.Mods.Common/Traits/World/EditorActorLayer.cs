@@ -98,6 +98,12 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(p => p.Render());
 		}
 
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// World-actor render traits don't require screen bounds
+			yield break;
+		}
+
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
 		EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -91,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { initializePalettes = true; }
 
 		protected PaletteReference colorPalette, normalsPalette, shadowPalette;
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			if (initializePalettes)
 			{
@@ -106,6 +107,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 				components, self.CenterPosition, 0, camera, info.Scale,
 				lightSource, info.LightAmbientColor, info.LightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette) };
+		}
+
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			var pos = self.CenterPosition;
+			foreach (var c in components)
+				if (c.IsVisible)
+					yield return c.ScreenBounds(pos, wr, info.Scale);
 		}
 
 		public string Image { get { return info.Image ?? self.Info.Name; } }

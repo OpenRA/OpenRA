@@ -54,5 +54,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			return new IRenderable[] { new TextRenderable(font, effectPos, 0, color, name) };
 		}
+
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Name tags don't contribute to actor bounds
+			yield break;
+		}
 	}
 }
