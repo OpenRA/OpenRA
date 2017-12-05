@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Map player to use when 'InternalName' is defined on 'OwnerType'.")]
 		public readonly string InternalOwner = "Neutral";
 
+		[Desc("Changes the effective (displayed) owner of the spawned actor to the old owner (victim).")]
+		public readonly bool EffectiveOwnerFromOwner = false;
+
 		[Desc("DeathType that triggers the actor spawn. " +
 			"Leave empty to spawn an actor ignoring the DeathTypes.")]
 		public readonly string DeathType = null;
@@ -108,6 +111,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised)
 				td.Add(new EffectiveOwnerInit(self.EffectiveOwner.Owner));
+			else if (Info.EffectiveOwnerFromOwner)
+				td.Add(new EffectiveOwnerInit(self.Owner));
 
 			if (Info.OwnerType == OwnerType.Victim)
 			{
