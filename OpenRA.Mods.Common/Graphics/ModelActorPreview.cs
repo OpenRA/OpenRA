@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
@@ -55,6 +56,12 @@ namespace OpenRA.Mods.Common.Graphics
 			yield return new ModelRenderable(components, pos + offset, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr, WPos pos)
+		{
+			foreach (var c in components)
+				yield return c.ScreenBounds(pos, wr, scale);
 		}
 	}
 }

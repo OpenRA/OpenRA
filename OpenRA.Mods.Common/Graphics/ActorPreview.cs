@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -22,6 +23,7 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		void Tick();
 		IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos);
+		IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr, WPos pos);
 	}
 
 	public class ActorPreviewInitializer : IActorInitializer
