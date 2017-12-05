@@ -84,6 +84,8 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 1TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -125,6 +127,8 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -169,6 +173,8 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -222,6 +228,8 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelfHealing:
 		Step: 100
 		Delay: 3
@@ -311,6 +319,8 @@ HARV:
 		String: Harvester
 	SpawnActorOnDeath:
 		Actor: HARV.EmptyHusk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	HarvesterHuskModifier:
 		FullActor: HARV.FullHusk
 		FullnessThreshold: 50
@@ -359,6 +369,8 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 JEEP:
 	Inherits: ^Vehicle
@@ -541,6 +553,8 @@ MGG:
 	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 MRJ:
 	Inherits: ^Vehicle

@@ -34,6 +34,8 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 
 HARV:
@@ -72,6 +74,8 @@ HARV:
 		Range: 4c0
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	WithHarvestAnimation:
 	WithDockingAnimation:
 	Explodes:
@@ -127,6 +131,8 @@ APC:
 		LoadingCondition: notmobile
 	SpawnActorOnDeath:
 		Actor: APC.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 ARTY:
 	Inherits: ^Tank
@@ -161,6 +167,8 @@ ARTY:
 		InitialStanceAI: Defend
 	SpawnActorOnDeath:
 		Actor: ARTY.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	Explodes:
 		Weapon: ArtilleryShell
 		EmptyWeapon: UnitExplode
@@ -200,6 +208,8 @@ FTNK:
 		EmptyWeapon: FlametankExplode
 	SpawnActorOnDeath:
 		Actor: FTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 BGGY:
 	Inherits: ^Vehicle
@@ -236,6 +246,8 @@ BGGY:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: BGGY.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 BIKE:
 	Inherits: ^Vehicle
@@ -274,6 +286,8 @@ BIKE:
 	AttackFrontal:
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 JEEP:
 	Inherits: ^Vehicle
@@ -310,6 +324,8 @@ JEEP:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: JEEP.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 LTNK:
 	Inherits: ^Tank
@@ -349,6 +365,8 @@ LTNK:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: LTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 MTNK:
 	Inherits: ^Tank
@@ -385,6 +403,8 @@ MTNK:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 28,28
@@ -438,6 +458,8 @@ HTNK:
 		DamageCooldown: 200
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 34,34,0,-3
@@ -479,6 +501,8 @@ MSAM:
 		AimSequence: aim
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 MLRS:
 	Inherits: ^Tank
@@ -521,6 +545,8 @@ MLRS:
 	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	ReloadAmmoPool:
 		Delay: 45
 		Count: 1
@@ -567,6 +593,8 @@ STNK:
 	Targetable:
 	SpawnActorOnDeath:
 		Actor: STNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	-MustBeDestroyed:
 
 MHQ:
@@ -615,3 +643,5 @@ TRUCK:
 		PlayerExperience: 50
 	SpawnActorOnDeath:
 		Actor: TRUCK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true

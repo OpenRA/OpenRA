@@ -38,6 +38,8 @@ mcv:
 		NoTransformNotification: CannotDeploy
 	SpawnActorOnDeath:
 		Actor: mcv.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
@@ -86,6 +88,8 @@ harvester:
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: harvester.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	WithHarvestOverlay:
 		Palette: effect50alpha
 	WithDockingAnimation:
@@ -220,6 +224,8 @@ siege_tank:
 		Class: siegetank
 	SpawnActorOnDeath:
 		Actor: siege_tank.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
 
@@ -260,6 +266,8 @@ missile_tank:
 		Class: missiletank
 	SpawnActorOnDeath:
 		Actor: missile_tank.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
 
@@ -296,6 +304,8 @@ sonic_tank:
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: sonic_tank.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
 
@@ -340,6 +350,8 @@ devastator:
 		RequiresCondition: !overload
 	SpawnActorOnDeath:
 		Actor: devastator.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	Explodes@OVERLOAD:
 		Weapon: PlasmaExplosion
 		EmptyWeapon: PlasmaExplosion
@@ -467,6 +479,8 @@ deviator:
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: deviator.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
 
@@ -512,6 +526,9 @@ deviator:
 		Class: combat
 	AttractsWorms:
 		Intensity: 520
+	SpawnActorOnDeath:
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 combat_tank_a:
 	Inherits: ^combat_tank
