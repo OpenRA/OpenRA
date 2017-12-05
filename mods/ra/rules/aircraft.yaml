@@ -96,7 +96,7 @@ MIG:
 	Tooltip:
 		Name: MiG Attack Plane
 	Health:
-		HP: 7000
+		HP: 7500
 	Armor:
 		Type: Light
 	RevealsShroud:
