@@ -210,7 +210,7 @@ namespace OpenRA.Traits
 		public void Add(FrozenActor fa)
 		{
 			frozenActorsById.Add(fa.ID, fa);
-			world.ScreenMap.Add(owner, fa);
+			world.ScreenMap.AddOrUpdate(owner, fa);
 			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
 		}
 

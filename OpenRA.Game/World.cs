@@ -191,7 +191,7 @@ namespace OpenRA
 		{
 			ActorMap.AddInfluence(self, ios);
 			ActorMap.AddPosition(self, ios);
-			ScreenMap.Add(self);
+			ScreenMap.AddOrUpdate(self);
 		}
 
 		public void UpdateMaps(Actor self, IOccupySpace ios)
@@ -199,7 +199,7 @@ namespace OpenRA
 			if (!self.IsInWorld)
 				return;
 
-			ScreenMap.Update(self);
+			ScreenMap.AddOrUpdate(self);
 			ActorMap.UpdatePosition(self, ios);
 		}
 
@@ -353,6 +353,7 @@ namespace OpenRA
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
 
 				effects.DoTimed(e => e.Tick(this), "Effect");
+				ScreenMap.Tick();
 			}
 
 			while (frameEndActions.Count != 0)

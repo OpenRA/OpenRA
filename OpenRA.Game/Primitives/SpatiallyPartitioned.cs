@@ -62,6 +62,11 @@ namespace OpenRA.Primitives
 			return true;
 		}
 
+		public bool Contains(T item)
+		{
+			return itemBounds.ContainsKey(item);
+		}
+
 		Dictionary<T, Rectangle> BinAt(int row, int col)
 		{
 			return itemBoundsBins[row * cols + col];

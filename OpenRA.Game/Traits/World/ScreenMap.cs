@@ -35,6 +35,13 @@ namespace OpenRA.Traits
 		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedFrozenActors;
 		readonly SpatiallyPartitioned<Actor> partitionedActors;
 		readonly SpatiallyPartitioned<IEffect> partitionedEffects;
+
+		// Updates are done in one pass to ensure all bound changes have been applied
+		readonly HashSet<Actor> addOrUpdateActors = new HashSet<Actor>();
+		readonly HashSet<Actor> removeActors = new HashSet<Actor>();
+		readonly Cache<Player, HashSet<FrozenActor>> addOrUpdateFrozenActors;
+		readonly Cache<Player, HashSet<FrozenActor>> removeFrozenActors;
+
 		WorldRenderer worldRenderer;
 
 		public ScreenMap(World world, ScreenMapInfo info)
@@ -44,6 +51,10 @@ namespace OpenRA.Traits
 			var height = world.Map.MapSize.Y * size.Height;
 			partitionedFrozenActors = new Cache<Player, SpatiallyPartitioned<FrozenActor>>(
 				_ => new SpatiallyPartitioned<FrozenActor>(width, height, info.BinSize));
+
+			addOrUpdateFrozenActors = new Cache<Player, HashSet<FrozenActor>>(_ => new HashSet<FrozenActor>());
+			removeFrozenActors = new Cache<Player, HashSet<FrozenActor>>(_ => new HashSet<FrozenActor>());
+
 			partitionedActors = new SpatiallyPartitioned<Actor>(width, height, info.BinSize);
 			partitionedEffects = new SpatiallyPartitioned<IEffect>(width, height, info.BinSize);
 		}
@@ -66,33 +77,30 @@ namespace OpenRA.Traits
 			return bounds;
 		}
 
-		public void Add(Player viewer, FrozenActor fa)
+		public void AddOrUpdate(Player viewer, FrozenActor fa)
 		{
-			partitionedFrozenActors[viewer].Add(fa, FrozenActorBounds(fa));
+			if (removeFrozenActors[viewer].Contains(fa))
+				removeFrozenActors[viewer].Remove(fa);
+
+			addOrUpdateFrozenActors[viewer].Add(fa);
 		}
 
 		public void Remove(Player viewer, FrozenActor fa)
 		{
-			partitionedFrozenActors[viewer].Remove(fa);
+			removeFrozenActors[viewer].Add(fa);
 		}
 
-		public void Add(Actor a)
+		public void AddOrUpdate(Actor a)
 		{
-			var bounds = ActorBounds(a);
-			if (!bounds.Size.IsEmpty)
-				partitionedActors.Add(a, ActorBounds(a));
-		}
+			if (removeActors.Contains(a))
+				removeActors.Remove(a);
 
-		public void Update(Actor a)
-		{
-			var bounds = ActorBounds(a);
-			if (!bounds.Size.IsEmpty)
-				partitionedActors.Update(a, ActorBounds(a));
+			addOrUpdateActors.Add(a);
 		}
 
 		public void Remove(Actor a)
 		{
-			partitionedActors.Remove(a);
+			removeActors.Add(a);
 		}
 
 		public void Add(IEffect effect, WPos position, Size size)
@@ -190,6 +198,56 @@ namespace OpenRA.Traits
 			if (p == null)
 				return NoFrozenActors;
 			return partitionedFrozenActors[p].InBox(r).Where(frozenActorIsValid);
+		}
+
+		public void Tick()
+		{
+			foreach (var a in addOrUpdateActors)
+			{
+				var bounds = ActorBounds(a);
+				if (!bounds.Size.IsEmpty)
+				{
+					if (partitionedActors.Contains(a))
+						partitionedActors.Update(a, bounds);
+					else
+						partitionedActors.Add(a, bounds);
+				}
+				else
+					partitionedActors.Remove(a);
+			}
+
+			foreach (var a in removeActors)
+				partitionedActors.Remove(a);
+
+			addOrUpdateActors.Clear();
+			removeActors.Clear();
+
+			foreach (var kv in addOrUpdateFrozenActors)
+			{
+				foreach (var fa in kv.Value)
+				{
+					var bounds = FrozenActorBounds(fa);
+					if (!bounds.Size.IsEmpty)
+					{
+						if (partitionedFrozenActors[kv.Key].Contains(fa))
+							partitionedFrozenActors[kv.Key].Update(fa, bounds);
+						else
+							partitionedFrozenActors[kv.Key].Add(fa, bounds);
+					}
+					else
+						partitionedFrozenActors[kv.Key].Remove(fa);
+				}
+
+				kv.Value.Clear();
+			}
+
+			foreach (var kv in removeFrozenActors)
+			{
+				foreach (var fa in kv.Value)
+					partitionedFrozenActors[kv.Key].Remove(fa);
+
+				kv.Value.Clear();
+			}
 		}
 
 		public IEnumerable<Rectangle> ItemBounds(Player viewer)
