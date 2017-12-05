@@ -16,8 +16,11 @@ namespace OpenRA.Mods.AS.Warheads
 		[Desc("Range of targets to be attached.")]
 		public readonly WDist Range = new WDist(1024);
 
-		[Desc("Trigger weapon after x Ticks.")]
+		[Desc("Trigger weapon after x ticks.")]
 		public int TriggerTimer = 100;
+
+		[Desc("Trigger weapon if target actor is killed.")]
+		public bool ActivateOnKill = false;
 
 		public WeaponInfo WeaponInfo;
 
@@ -44,7 +47,7 @@ namespace OpenRA.Mods.AS.Warheads
 					continue;
 
 				var attachable = actor.TraitOrDefault<DelayedWeaponAttachable>();
-				attachable.Attach(new DelayedWeaponTrigger(TriggerTimer, WeaponInfo, firedBy));
+				attachable.Attach(new DelayedWeaponTrigger(TriggerTimer, ActivateOnKill, WeaponInfo, firedBy));
 			}
 		}
 

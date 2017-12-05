@@ -6,17 +6,20 @@ namespace OpenRA.Mods.AS.Traits
 {
 	public class DelayedWeaponTrigger
 	{
+		public readonly bool ActivateOnKill;
+
 		private int triggerTimer;
 
 		private WeaponInfo weaponInfo;
 
-		private Actor attachedBy;
+		private Actor attachedBy;		
 
 		public bool IsValid { get; private set; } = true;
 
-		public DelayedWeaponTrigger(int triggerTimer, WeaponInfo weaponInfo, Actor attachedBy)
+		public DelayedWeaponTrigger(int triggerTimer, bool activateOnKill, WeaponInfo weaponInfo, Actor attachedBy)
 		{
 			this.triggerTimer = triggerTimer;
+			this.ActivateOnKill = activateOnKill;
 			this.weaponInfo = weaponInfo;
 			this.attachedBy = attachedBy;
 		}
@@ -28,14 +31,14 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				if (triggerTimer == 0)
 				{
-					IsValid = false;
-					Trigger(attachable);
+					Activate(attachable);
 				}
 			}
 		}
 
-		private void Trigger(Actor attachable)
+		public void Activate(Actor attachable)
 		{
+			IsValid = false;
 			var target = Target.FromPos(attachable.CenterPosition);
 			attachable.World.AddFrameEndTask(w => weaponInfo.Impact(target, attachedBy, Enumerable.Empty<int>()));
 		}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -15,7 +16,7 @@ namespace OpenRA.Mods.AS.Traits
 		public object Create(ActorInitializer init) { return new DelayedWeaponAttachable(this); }
 	}
 
-	public class DelayedWeaponAttachable : ITick
+	public class DelayedWeaponAttachable : ITick, INotifyKilled
 	{
 		public readonly DelayedWeaponAttachableInfo Info;
 
@@ -25,9 +26,20 @@ namespace OpenRA.Mods.AS.Traits
 		
 		public void Tick(Actor self)
 		{
-			foreach (var bomb in container)
+			foreach (var trigger in container)
 			{
-				bomb.Tick(self);
+				trigger.Tick(self);
+			}
+
+			container.RemoveWhere(p => !p.IsValid);
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			foreach (var trigger in container)
+			{
+				if (trigger.ActivateOnKill)
+					trigger.Activate(self);
 			}
 
 			container.RemoveWhere(p => !p.IsValid);
