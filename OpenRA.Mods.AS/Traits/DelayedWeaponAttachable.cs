@@ -38,8 +38,10 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			foreach (var trigger in container)
 			{
-				if (trigger.ActivateOnKill)
-					trigger.Activate(self);
+				if (trigger.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(trigger.DeathTypes))
+					continue;
+
+				trigger.Activate(self);
 			}
 
 			container.RemoveWhere(p => !p.IsValid);

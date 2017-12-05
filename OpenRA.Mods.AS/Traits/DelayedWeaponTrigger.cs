@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -6,7 +7,7 @@ namespace OpenRA.Mods.AS.Traits
 {
 	public class DelayedWeaponTrigger
 	{
-		public readonly bool ActivateOnKill;
+		public readonly HashSet<string> DeathTypes;
 
 		private int triggerTimer;
 
@@ -16,10 +17,10 @@ namespace OpenRA.Mods.AS.Traits
 
 		public bool IsValid { get; private set; } = true;
 
-		public DelayedWeaponTrigger(int triggerTimer, bool activateOnKill, WeaponInfo weaponInfo, Actor attachedBy)
+		public DelayedWeaponTrigger(int triggerTimer, HashSet<string> deathTypes, WeaponInfo weaponInfo, Actor attachedBy)
 		{
 			this.triggerTimer = triggerTimer;
-			this.ActivateOnKill = activateOnKill;
+			this.DeathTypes = deathTypes;
 			this.weaponInfo = weaponInfo;
 			this.attachedBy = attachedBy;
 		}
