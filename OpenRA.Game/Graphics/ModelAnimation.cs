@@ -32,5 +32,13 @@ namespace OpenRA.Graphics
 			FrameFunc = frame;
 			ShowShadow = showshadow;
 		}
+
+		public bool IsVisible
+		{
+			get
+			{
+				return DisableFunc == null || !DisableFunc();
+			}
+		}
 	}
 }
