@@ -31,6 +31,7 @@ namespace OpenRA
 		public readonly ISpriteLoader[] SpriteLoaders;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IModelSequenceLoader ModelSequenceLoader;
+		public readonly HotkeyManager Hotkeys;
 		public ILoadScreen LoadScreen { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
@@ -88,6 +89,8 @@ namespace OpenRA
 
 			ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
 			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
+
+			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTileSets = Exts.Lazy(() =>

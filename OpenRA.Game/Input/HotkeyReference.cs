@@ -27,6 +27,11 @@ namespace OpenRA
 			getValue = Invalid;
 		}
 
+		internal HotkeyReference(Func<Hotkey> getValue)
+		{
+			this.getValue = getValue;
+		}
+
 		public HotkeyReference(string name, KeySettings settings)
 		{
 			// Try parsing the value as a reference to a named hotkey
