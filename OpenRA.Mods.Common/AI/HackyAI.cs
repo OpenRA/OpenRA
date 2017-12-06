@@ -264,6 +264,7 @@ namespace OpenRA.Mods.Common.AI
 		public Player Player { get; private set; }
 
 		readonly DomainIndex domainIndex;
+		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathfinder;
 
@@ -311,6 +312,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			domainIndex = World.WorldActor.Trait<DomainIndex>();
+			resLayer = World.WorldActor.TraitOrDefault<ResourceLayer>();
 			claimLayer = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathfinder = World.WorldActor.Trait<IPathFinder>();
 
@@ -667,7 +669,8 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
-				GiveOrdersToIdleHarvesters();
+				if (resLayer != null && !resLayer.IsResourceLayerEmpty)
+					GiveOrdersToIdleHarvesters();
 				FindNewUnits(self);
 				FindAndDeployBackupMcv(self);
 			}
