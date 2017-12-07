@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.AS.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -19,12 +20,12 @@ namespace OpenRA.Mods.AS.Traits
 
 		public bool IsValid { get; private set; } = true;
 
-		public DelayedWeaponTrigger(int triggerTimer, HashSet<string> deathTypes, WeaponInfo weaponInfo, Actor attachedBy)
+		public DelayedWeaponTrigger(AttachDelayedWeaponWarhead warhead, Actor attachedBy)
 		{
-			this.TriggerTime = triggerTimer;
-			this.RemainingTime = triggerTimer;
-			this.DeathTypes = deathTypes;
-			this.weaponInfo = weaponInfo;
+			this.TriggerTime = warhead.TriggerTime;
+			this.RemainingTime = TriggerTime;
+			this.DeathTypes = warhead.DeathTypes;
+			this.weaponInfo = warhead.WeaponInfo;
 			this.attachedBy = attachedBy;
 		}
 

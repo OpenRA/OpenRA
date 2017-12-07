@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.AS.Traits;
 using OpenRA.Traits;
@@ -40,24 +41,13 @@ namespace OpenRA.Mods.AS.Warheads
 			var availableActors = firedBy.World.FindActorsInCircle(pos, Range + VictimScanRadius);
 			foreach (var actor in availableActors)
 			{
-				if (!IsValidAgainst(actor, firedBy))
-					continue;
-
 				if (actor.IsDead)
 					continue;
 
-				var attachable = actor.TraitOrDefault<DelayedWeaponAttachable>();
-				attachable.Attach(new DelayedWeaponTrigger(TriggerTime, DeathTypes, WeaponInfo, firedBy));
+				var attachable = actor.TraitsImplementing<DelayedWeaponAttachable>().FirstOrDefault(a => a.CanAttach(Type));
+				if (attachable != null)
+					attachable.Attach(new DelayedWeaponTrigger(this, firedBy));
 			}
-		}
-
-		public override bool IsValidAgainst(Actor victim, Actor firedBy)
-		{
-			var attachable = victim.TraitOrDefault<DelayedWeaponAttachable>();
-			if (attachable == null || !attachable.CanAttach(Type))
-				return false;
-
-			return base.IsValidAgainst(victim, firedBy);
 		}
 	}
 }
