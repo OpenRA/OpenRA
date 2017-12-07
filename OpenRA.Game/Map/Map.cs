@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -253,16 +254,27 @@ namespace OpenRA
 				if (!contents.Contains(required))
 					throw new FileNotFoundException("Required file {0} not present in this map".F(required));
 
-			using (var ms = new MemoryStream())
+			var streams = new List<Stream>();
+			try
 			{
 				foreach (var filename in contents)
 					if (filename.EndsWith(".yaml") || filename.EndsWith(".bin") || filename.EndsWith(".lua"))
-						using (var s = package.GetStream(filename))
-							s.CopyTo(ms);
+						streams.Add(package.GetStream(filename));
 
 				// Take the SHA1
-				ms.Seek(0, SeekOrigin.Begin);
-				return CryptoUtil.SHA1Hash(ms);
+				if (streams.Count == 0)
+					return CryptoUtil.SHA1Hash(new byte[0]);
+
+				var merged = streams[0];
+				for (var i = 1; i < streams.Count; i++)
+					merged = new MergedStream(merged, streams[i]);
+
+				return CryptoUtil.SHA1Hash(merged);
+			}
+			finally
+			{
+				foreach (var stream in streams)
+					stream.Dispose();
 			}
 		}
 
