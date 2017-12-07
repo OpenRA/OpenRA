@@ -127,10 +127,10 @@ namespace OpenRA.Network
 
 		public void SendSync(int frame, byte[] syncData)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(4 + syncData.Length);
 			ms.Write(BitConverter.GetBytes(frame));
 			ms.Write(syncData);
-			sync.Add(ms.ToArray());
+			sync.Add(ms.GetBuffer());
 
 			// Store the current frame so Receive() can return the next chunk of orders.
 			ordersFrame = frame + LobbyInfo.GlobalSettings.OrderLatency;
