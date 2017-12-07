@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actor == lastActor && hotkey == lastHotkey && pm.PowerState == lastPowerState)
 					return;
 
-				var tooltip = actor.TraitInfos<TooltipInfo>().FirstEnabledTraitOrDefault();
+				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				var name = tooltip != null ? tooltip.Name : actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
 				var cost = actor.TraitInfo<ValuedInfo>().Cost;
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ActorInfo ai;
 			if (rules.Actors.TryGetValue(a.ToLowerInvariant(), out ai))
 			{
-				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstEnabledTraitOrDefault();
+				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				if (actorTooltip != null)
 					return actorTooltip.Name;
 			}
