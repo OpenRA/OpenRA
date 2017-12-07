@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -39,21 +40,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize, IAutoRenderSize
+	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize, IAutoRenderSize, IAutoMouseBounds
 	{
 		readonly int2 size;
+		readonly ModelAnimation modelAnimation;
+		readonly RenderVoxels rv;
 
 		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
 			: base(info)
 		{
 			var body = self.Trait<BodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderVoxels>();
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
-			rv.Add(new ModelAnimation(model, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => IsTraitDisabled, () => 0, info.ShowShadow));
+				() => IsTraitDisabled, () => 0, info.ShowShadow);
 
+			rv.Add(modelAnimation);
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
 			var s = (int)(rvi.Scale * model.Size.Aggregate(Math.Max));
@@ -62,5 +66,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public int2 SelectionSize(Actor self) { return size; }
 		public int2 RenderSize(Actor self) { return size; }
+
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return modelAnimation.ScreenBounds(self.CenterPosition, wr, rv.Info.Scale);
+		}
 	}
 }

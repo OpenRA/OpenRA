@@ -76,6 +76,7 @@ namespace OpenRA
 		readonly IHealth health;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
+		readonly IMouseBounds[] mouseBounds;
 		readonly IDisable[] disables;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
@@ -124,6 +125,7 @@ namespace OpenRA
 			health = TraitOrDefault<IHealth>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
+			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
 			disables = TraitsImplementing<IDisable>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
@@ -222,6 +224,18 @@ namespace OpenRA
 				foreach (var r in render.ScreenBounds(this, wr))
 					if (!r.IsEmpty)
 						yield return r;
+		}
+
+		public Rectangle MouseBounds(WorldRenderer wr)
+		{
+			foreach (var mb in mouseBounds)
+			{
+				var bounds = mb.MouseoverBounds(this, wr);
+				if (!bounds.IsEmpty)
+					return bounds;
+			}
+
+			return Rectangle.Empty;
 		}
 
 		public void QueueActivity(bool queued, Activity nextActivity)

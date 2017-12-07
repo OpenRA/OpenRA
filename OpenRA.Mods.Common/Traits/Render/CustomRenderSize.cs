@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Drawing;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CustomRenderSize(this); }
 	}
 
-	public class CustomRenderSize : IAutoRenderSize
+	public class CustomRenderSize : IAutoRenderSize, IMouseBounds
 	{
 		readonly CustomRenderSizeInfo info;
 		public CustomRenderSize(CustomRenderSizeInfo info) { this.info = info; }
@@ -30,6 +32,21 @@ namespace OpenRA.Mods.Common.Traits
 		public int2 RenderSize(Actor self)
 		{
 			return new int2(info.CustomBounds[0], info.CustomBounds[1]);
+		}
+
+		Rectangle IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			if (info.CustomBounds == null)
+				return Rectangle.Empty;
+
+			var size = new int2(info.CustomBounds[0], info.CustomBounds[1]);
+
+			var offset = -size / 2;
+			if (info.CustomBounds.Length > 2)
+				offset += new int2(info.CustomBounds[2], info.CustomBounds[3]);
+
+			var xy = wr.ScreenPxPosition(self.CenterPosition);
+			return new Rectangle(xy.X, xy.Y, size.X, size.Y);
 		}
 	}
 }

@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button != MouseButton.Left)
 				yield break;
 
-			var underCursor = world.ScreenMap.ActorsAt(mi)
+			var underCursor = world.ScreenMap.ActorsAtMouse(mi)
+				.Select(a => a.Actor)
 				.FirstOrDefault(a => a.AppearsFriendlyTo(world.LocalPlayer.PlayerActor) && !world.FogObscures(a));
 
 			if (underCursor == null)

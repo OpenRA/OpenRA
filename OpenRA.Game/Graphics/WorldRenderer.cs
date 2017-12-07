@@ -102,7 +102,7 @@ namespace OpenRA.Graphics
 
 		List<IFinalizedRenderable> GenerateRenderables()
 		{
-			var actors = World.ScreenMap.ActorsInBox(Viewport.TopLeft, Viewport.BottomRight).Append(World.WorldActor);
+			var actors = World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight).Append(World.WorldActor);
 			if (World.RenderPlayer != null)
 				actors = actors.Append(World.RenderPlayer.PlayerActor);
 
@@ -114,7 +114,7 @@ namespace OpenRA.Graphics
 			worldRenderables = worldRenderables.Concat(World.UnpartitionedEffects.SelectMany(e => e.Render(this)));
 
 			// Partitioned, currently on-screen effects
-			var effectRenderables = World.ScreenMap.EffectsInBox(Viewport.TopLeft, Viewport.BottomRight);
+			var effectRenderables = World.ScreenMap.RenderableEffectsInBox(Viewport.TopLeft, Viewport.BottomRight);
 			worldRenderables = worldRenderables.Concat(effectRenderables.SelectMany(e => e.Render(this)));
 
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
@@ -213,11 +213,19 @@ namespace OpenRA.Graphics
 			}
 
 			if (debugVis.Value != null && debugVis.Value.ScreenMap)
-				foreach (var r in World.ScreenMap.ItemBounds(World.RenderPlayer))
+			{
+				foreach (var r in World.ScreenMap.RenderBounds(World.RenderPlayer))
 					Game.Renderer.WorldRgbaColorRenderer.DrawRect(
 						new float3(r.Left, r.Top, r.Bottom),
 						new float3(r.Right, r.Bottom, r.Bottom),
 						1 / Viewport.Zoom, Color.MediumSpringGreen);
+
+				foreach (var r in World.ScreenMap.MouseBounds(World.RenderPlayer))
+					Game.Renderer.WorldRgbaColorRenderer.DrawRect(
+						new float3(r.Left, r.Top, r.Bottom),
+						new float3(r.Right, r.Bottom, r.Bottom),
+						1 / Viewport.Zoom, Color.OrangeRed);
+			}
 
 			Game.Renderer.Flush();
 		}

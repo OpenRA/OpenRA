@@ -37,7 +37,8 @@ namespace OpenRA.Mods.Common.Orders
 		{
 			if (mi.Button == MouseButton.Left)
 			{
-				var underCursor = world.ScreenMap.ActorsAt(mi)
+				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
+					.Select(a => a.Actor)
 					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsImplementing<T>()
 						.Any(Exts.IsTraitEnabled));
 

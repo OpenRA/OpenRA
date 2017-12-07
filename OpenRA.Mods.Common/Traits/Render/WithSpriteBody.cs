@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -43,9 +44,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete
+	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, INotifyBuildComplete, IAutoMouseBounds
 	{
 		public readonly Animation DefaultAnimation;
+		readonly RenderSprites rs;
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
 			: this(init, info, () => 0) { }
@@ -53,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info, Func<int> baseFacing)
 			: base(info)
 		{
-			var rs = init.Self.Trait<RenderSprites>();
+			rs = init.Self.Trait<RenderSprites>();
 
 			Func<bool> paused = () => IsTraitPaused &&
 				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
@@ -124,6 +126,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			DamageStateChanged(self);
+		}
+
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return DefaultAnimation != null ? DefaultAnimation.ScreenBounds(wr, self.CenterPosition, WVec.Zero, rs.Info.Scale) : Rectangle.Empty;
 		}
 	}
 }

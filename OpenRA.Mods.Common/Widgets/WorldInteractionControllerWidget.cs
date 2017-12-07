@@ -107,11 +107,11 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 						{
-							var selectableActor = World.ScreenMap.ActorsAt(mousePos).Any(x =>
+							var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
 								x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
 
 							var uog = (UnitOrderGenerator)World.OrderGenerator;
-							if (!selectableActor || uog.InputOverridesSelection(World, mousePos, mi))
+							if (!selectableActor || uog.InputOverridesSelection(worldRenderer, World, mousePos, mi))
 							{
 								// Order units instead of selecting
 								ApplyOrders(World, mi);
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (multiClick)
 					{
-						var unit = World.ScreenMap.ActorsAt(mousePos)
+						var unit = World.ScreenMap.ActorsAtMouse(mousePos)
 							.WithHighestSelectionPriority(mousePos);
 
 						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
@@ -294,7 +294,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		static IEnumerable<Actor> SelectActorsOnScreen(World world, WorldRenderer wr, IEnumerable<string> selectionClasses, Player player)
 		{
-			return SelectActorsByOwnerAndSelectionClass(world.ScreenMap.ActorsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight), player, selectionClasses);
+			var actors = world.ScreenMap.ActorsInMouseBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight).Select(a => a.Actor);
+			return SelectActorsByOwnerAndSelectionClass(actors, player, selectionClasses);
 		}
 
 		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
@@ -322,7 +323,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)
 				a = b;
 
-			return world.ScreenMap.ActorsInBox(a, b)
+			return world.ScreenMap.ActorsInMouseBox(a, b)
+				.Select(x => x.Actor)
 				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
 				.SubsetWithHighestSelectionPriority();
 		}
