@@ -49,7 +49,7 @@ namespace OpenRA.Server
 
 		public byte[] Serialize()
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(1 + Name.Length + 1 + Data.Length + 1);
 			var bw = new BinaryWriter(ms);
 
 			bw.Write((byte)0xfe);

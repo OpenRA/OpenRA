@@ -77,10 +77,10 @@ namespace OpenRA.Network
 
 		public virtual void SendSync(int frame, byte[] syncData)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(4 + syncData.Length);
 			ms.Write(BitConverter.GetBytes(frame));
 			ms.Write(syncData);
-			Send(ms.ToArray());
+			Send(ms.GetBuffer());
 		}
 
 		protected virtual void Send(byte[] packet)
@@ -197,10 +197,10 @@ namespace OpenRA.Network
 
 		public override void SendSync(int frame, byte[] syncData)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(4 + syncData.Length);
 			ms.Write(BitConverter.GetBytes(frame));
 			ms.Write(syncData);
-			queuedSyncPackets.Add(ms.ToArray());
+			queuedSyncPackets.Add(ms.GetBuffer());
 		}
 
 		protected override void Send(byte[] packet)

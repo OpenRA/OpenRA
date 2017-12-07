@@ -240,7 +240,7 @@ namespace OpenRA
 		{
 			if (IsImmediate)
 			{
-				var ret = new MemoryStream();
+				var ret = new MemoryStream(1 + OrderString.Length + 1 + TargetString.Length + 1);
 				var w = new BinaryWriter(ret);
 				w.Write((byte)0xfe);
 				w.Write(OrderString);
