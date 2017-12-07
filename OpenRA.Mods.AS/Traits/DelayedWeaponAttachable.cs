@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -20,16 +21,18 @@ namespace OpenRA.Mods.AS.Traits
 
 		public readonly Color ProgressBarColor = Color.DarkRed;
 
-		public object Create(ActorInitializer init) { return new DelayedWeaponAttachable(this); }
+		public object Create(ActorInitializer init) { return new DelayedWeaponAttachable(init.Self, this); }
 	}
 
 	public class DelayedWeaponAttachable : ITick, INotifyKilled, ISelectionBar
 	{
 		public readonly DelayedWeaponAttachableInfo Info;
 
-		public DelayedWeaponAttachable(DelayedWeaponAttachableInfo info) { Info = info; }
+		public DelayedWeaponAttachable(Actor self, DelayedWeaponAttachableInfo info) { this.self = self; Info = info; }
 
 		private HashSet<DelayedWeaponTrigger> container = new HashSet<DelayedWeaponTrigger>();
+
+		private Actor self;
 
 		public bool DisplayWhenEmpty => false;
 
@@ -72,7 +75,9 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (!Info.ShowProgressBar || container.Count == 0)
 				return value;
-			var smallestTrigger = container.MinBy(t => t.RemainingTime);
+			var smallestTrigger = container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.RenderPlayer)).MinByOrDefault(t => t.RemainingTime);
+			if (smallestTrigger == null)
+				return value;
 			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
 		}
 

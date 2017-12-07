@@ -14,9 +14,9 @@ namespace OpenRA.Mods.AS.Traits
 
 		public int RemainingTime { get; private set; }
 
-		private WeaponInfo weaponInfo;
+		public Actor AttachedBy { get; private set; }
 
-		private Actor attachedBy;		
+		private WeaponInfo weaponInfo;
 
 		public bool IsValid { get; private set; } = true;
 
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.RemainingTime = TriggerTime;
 			this.DeathTypes = warhead.DeathTypes;
 			this.weaponInfo = warhead.WeaponInfo;
-			this.attachedBy = attachedBy;
+			this.AttachedBy = attachedBy;
 		}
 
 		public void Tick(Actor attachable)
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			IsValid = false;
 			var target = Target.FromPos(attachable.CenterPosition);
-			attachable.World.AddFrameEndTask(w => weaponInfo.Impact(target, attachedBy, Enumerable.Empty<int>()));
+			attachable.World.AddFrameEndTask(w => weaponInfo.Impact(target, AttachedBy, Enumerable.Empty<int>()));
 		}
 	}
 }
