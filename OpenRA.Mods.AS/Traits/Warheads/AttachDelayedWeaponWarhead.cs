@@ -41,6 +41,9 @@ namespace OpenRA.Mods.AS.Warheads
 			var availableActors = firedBy.World.FindActorsInCircle(pos, Range + VictimScanRadius);
 			foreach (var actor in availableActors)
 			{
+				if (!IsValidAgainst(actor, firedBy))
+					continue;
+				
 				if (actor.IsDead)
 					continue;
 
