@@ -9,6 +9,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -16,17 +20,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Automatically calculates the screen map boundaries from the sprite size.")]
 	public class AutoRenderSizeInfo : ITraitInfo, Requires<RenderSpritesInfo>, IAutoRenderSizeInfo
 	{
-		public object Create(ActorInitializer init) { return new AutoRenderSize(this); }
+		public object Create(ActorInitializer init) { return new AutoRenderSize(init.Self); }
 	}
 
-	public class AutoRenderSize : IAutoRenderSize
+	public class AutoRenderSize : IAutoRenderSize, IMouseBounds
 	{
-		public AutoRenderSize(AutoRenderSizeInfo info) { }
+		readonly RenderSprites rs;
+
+		public AutoRenderSize(Actor self)
+		{
+			rs = self.Trait<RenderSprites>();
+		}
 
 		public int2 RenderSize(Actor self)
 		{
-			var rs = self.Trait<RenderSprites>();
 			return rs.AutoRenderSize(self);
+		}
+
+		Rectangle IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return self.TraitsImplementing<IAutoMouseBounds>()
+				.Select(s => s.AutoMouseoverBounds(self, wr))
+				.FirstOrDefault(r => !r.IsEmpty);
 		}
 	}
 }

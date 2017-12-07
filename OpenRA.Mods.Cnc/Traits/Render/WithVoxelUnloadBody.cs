@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -45,22 +46,26 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoSelectionSize, IAutoRenderSize
+	public class WithVoxelUnloadBody : IAutoSelectionSize, IAutoRenderSize, IAutoMouseBounds
 	{
 		public bool Docked;
 
 		readonly int2 size;
+		readonly ModelAnimation modelAnimation;
+		readonly RenderVoxels rv;
 
 		public WithVoxelUnloadBody(Actor self, WithVoxelUnloadBodyInfo info)
 		{
 			var body = self.Trait<BodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderVoxels>();
 
 			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
-			rv.Add(new ModelAnimation(idleModel, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(idleModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
-				() => 0, info.ShowShadow));
+				() => 0, info.ShowShadow);
+
+			rv.Add(modelAnimation);
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
@@ -76,5 +81,10 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
 		int2 IAutoRenderSize.RenderSize(Actor self) { return size; }
+
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return modelAnimation.ScreenBounds(self.CenterPosition, wr, rv.Info.Scale);
+		}
 	}
 }

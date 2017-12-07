@@ -151,8 +151,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
+		public readonly RenderSpritesInfo Info;
 		readonly string faction;
-		readonly RenderSpritesInfo info;
 		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
 		string cachedImage;
 
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
-			this.info = info;
+			Info = info;
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = info.GetImage(self.Info, self.World.Map.Rules.Sequences, faction);
+			return cachedImage = Info.GetImage(self.Info, self.World.Map.Rules.Sequences, faction);
 		}
 
 		public void UpdatePalette()
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					a.CachePalette(wr, owner);
 				}
 
-				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, info.Scale))
+				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, Info.Scale))
 					yield return r;
 			}
 		}
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			foreach (var a in anims)
 				if (a.IsVisible)
-					yield return a.Animation.ScreenBounds(self, wr, info.Scale);
+					yield return a.Animation.ScreenBounds(self, wr, Info.Scale);
 		}
 
 		void ITick.Tick(Actor self)
@@ -231,8 +231,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Use defaults
 			if (palette == null)
 			{
-				palette = info.Palette ?? info.PlayerPalette;
-				isPlayerPalette = info.Palette == null;
+				palette = Info.Palette ?? Info.PlayerPalette;
+				isPlayerPalette = Info.Palette == null;
 			}
 
 			anims.Add(new AnimationWrapper(anim, palette, isPlayerPalette));
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.Size.XY * Info.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 

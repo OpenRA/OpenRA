@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
@@ -45,21 +47,29 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public static Actor WithHighestSelectionPriority(this IEnumerable<Actor> actors, int2 selectionPixel)
+		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, int2 selectionPixel)
 		{
-			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.SelectableBounds, selectionPixel));
+			if (!actors.Any())
+				return null;
+
+			return actors.MaxBy(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel)).Actor;
 		}
 
 		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel)
 		{
-			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.SelectableBounds, selectionPixel));
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel));
 		}
 
 		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel)
 		{
-			var centerPixel = new int2(bounds.X, bounds.Y);
-			var pixelDistance = (centerPixel - selectionPixel).Length;
+			if (bounds.IsEmpty)
+				return info.SelectionPriority();
 
+			var centerPixel = new int2(
+				bounds.Left + bounds.Size.Width / 2,
+				bounds.Top + bounds.Size.Height / 2);
+
+			var pixelDistance = (centerPixel - selectionPixel).Length;
 			return ((long)-pixelDistance << 32) + info.SelectionPriority();
 		}
 

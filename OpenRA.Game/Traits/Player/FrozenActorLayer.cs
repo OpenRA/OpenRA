@@ -52,6 +52,9 @@ namespace OpenRA.Traits
 		public IRenderable[] Renderables = NoRenderables;
 		public Rectangle[] ScreenBounds = NoBounds;
 
+		// TODO: Replace this with an int2[] polygon
+		public Rectangle MouseBounds = Rectangle.Empty;
+
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
 		static readonly Rectangle[] NoBounds = new Rectangle[0];
 
@@ -298,7 +301,7 @@ namespace OpenRA.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return world.ScreenMap.FrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.Where(f => f.Visible)
 				.SelectMany(ff => ff.Render(wr));
 		}

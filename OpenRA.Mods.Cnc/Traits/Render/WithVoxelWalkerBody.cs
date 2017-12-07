@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
@@ -47,12 +48,15 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier, IAutoRenderSize
+	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier, IAutoRenderSize, IAutoMouseBounds
 	{
 		readonly WithVoxelWalkerBodyInfo info;
 		readonly IMove movement;
 		readonly IFacing facing;
 		readonly int2 size;
+		readonly ModelAnimation modelAnimation;
+		readonly RenderVoxels rv;
+
 		int oldFacing;
 		uint tick, frame, frames;
 
@@ -63,13 +67,15 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			facing = self.Trait<IFacing>();
 
 			var body = self.Trait<BodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderVoxels>();
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = model.Frames;
-			rv.Add(new ModelAnimation(model, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => false, () => frame, info.ShowShadow));
+				() => false, () => frame, info.ShowShadow);
+
+			rv.Add(modelAnimation);
 
 			// Selection size
 			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
@@ -97,6 +103,11 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			inits.Add(new BodyAnimationFrameInit(frame));
+		}
+
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return modelAnimation.ScreenBounds(self.CenterPosition, wr, rv.Info.Scale);
 		}
 	}
 

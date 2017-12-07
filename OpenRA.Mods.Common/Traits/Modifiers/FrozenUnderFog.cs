@@ -128,6 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			IRenderable[] renderables = null;
 			Rectangle[] bounds = null;
+			Rectangle mouseBounds = Rectangle.Empty;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
 				var frozen = frozenStates[playerIndex].FrozenActor;
@@ -139,6 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 					isRendering = true;
 					renderables = self.Render(wr).ToArray();
 					bounds = self.ScreenBounds(wr).ToArray();
+					mouseBounds = self.MouseBounds(wr);
 
 					isRendering = false;
 				}
@@ -146,6 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 				frozen.NeedRenderables = false;
 				frozen.Renderables = renderables;
 				frozen.ScreenBounds = bounds;
+				frozen.MouseBounds = mouseBounds;
 				self.World.ScreenMap.AddOrUpdate(self.World.Players[playerIndex], frozen);
 			}
 		}

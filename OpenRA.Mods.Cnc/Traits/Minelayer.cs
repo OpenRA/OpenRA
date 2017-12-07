@@ -186,7 +186,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					yield break;
 				}
 
-				var underCursor = world.ScreenMap.ActorsAt(mi)
+				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
+					.Select(a => a.Actor)
 					.Where(a => !world.FogObscures(a))
 					.MaxByOrDefault(a => a.Info.HasTraitInfo<SelectableInfo>()
 						? a.Info.TraitInfo<SelectableInfo>().Priority : int.MinValue);

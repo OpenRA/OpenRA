@@ -105,6 +105,10 @@ namespace OpenRA.Traits
 	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
 
+	// TODO: Replace Rectangle with an int2[] polygon
+	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
+	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
+
 	public interface IAutoRenderSizeInfo : ITraitInfoInterface { }
 	public interface IAutoRenderSize { int2 RenderSize(Actor self); }
 
