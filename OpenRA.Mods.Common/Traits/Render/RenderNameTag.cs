@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -18,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the player name above the unit")]
-	class RenderNameTagInfo : ITraitInfo
+	class RenderNameTagInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
 	{
 		public readonly int MaxLength = 10;
 
@@ -32,6 +33,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly SpriteFont font;
 		readonly Color color;
 		readonly string name;
+		readonly IDecorationBounds[] decorationBounds;
 
 		public RenderNameTag(Actor self, RenderNameTagInfo info)
 		{
@@ -42,15 +44,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 				name = self.Owner.PlayerName.Substring(0, info.MaxLength);
 			else
 				name = self.Owner.PlayerName;
+
+			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var bounds = self.SelectionOverlayBounds;
-			bounds.Offset(pos.X, pos.Y);
+			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
-			var effectPos = wr.ProjectedPosition(new int2(pos.X, bounds.Y - spaceBuffer));
+			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
 
 			return new IRenderable[] { new TextRenderable(font, effectPos, 0, color, name) };
 		}

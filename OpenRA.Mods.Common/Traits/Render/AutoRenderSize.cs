@@ -18,12 +18,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Automatically calculates the screen map boundaries from the sprite size.")]
-	public class AutoRenderSizeInfo : ITraitInfo, Requires<RenderSpritesInfo>, IAutoRenderSizeInfo
+	public class AutoRenderSizeInfo : ITraitInfo, Requires<RenderSpritesInfo>, IAutoRenderSizeInfo, IDecorationBoundsInfo
 	{
 		public object Create(ActorInitializer init) { return new AutoRenderSize(init.Self); }
 	}
 
-	public class AutoRenderSize : IAutoRenderSize, IMouseBounds
+	public class AutoRenderSize : IAutoRenderSize, IMouseBounds, IDecorationBounds
 	{
 		readonly RenderSprites rs;
 
@@ -37,11 +37,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return rs.AutoRenderSize(self);
 		}
 
-		Rectangle IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
+		Rectangle Bounds(Actor self, WorldRenderer wr)
 		{
 			return self.TraitsImplementing<IAutoMouseBounds>()
 				.Select(s => s.AutoMouseoverBounds(self, wr))
 				.FirstOrDefault(r => !r.IsEmpty);
+		}
+
+		Rectangle IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return Bounds(self, wr);
+		}
+
+		Rectangle IDecorationBounds.DecorationBounds(Actor self, WorldRenderer wr)
+		{
+			return Bounds(self, wr);
 		}
 	}
 }

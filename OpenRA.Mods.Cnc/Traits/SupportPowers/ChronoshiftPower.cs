@@ -160,8 +160,16 @@ namespace OpenRA.Mods.Cnc.Traits
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
 
 				foreach (var unit in targetUnits)
+				{
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
+					{
+						var bounds = unit.TraitsImplementing<IDecorationBounds>()
+							.Select(b => b.DecorationBounds(unit, wr))
+							.FirstOrDefault(b => !b.IsEmpty);
+
+						yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+					}
+				}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
@@ -270,8 +278,16 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 
 				foreach (var unit in power.UnitsInRange(sourceLocation))
+				{
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
+					{
+						var bounds = unit.TraitsImplementing<IDecorationBounds>()
+							.Select(b => b.DecorationBounds(unit, wr))
+							.FirstOrDefault(b => !b.IsEmpty);
+
+						yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+					}
+				}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

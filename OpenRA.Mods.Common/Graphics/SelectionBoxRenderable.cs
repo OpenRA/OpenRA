@@ -17,16 +17,16 @@ namespace OpenRA.Mods.Common.Graphics
 	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
-		readonly Rectangle visualBounds;
+		readonly Rectangle decorationBounds;
 		readonly Color color;
 
-		public SelectionBoxRenderable(Actor actor, Color color)
-			: this(actor.CenterPosition, actor.SelectionOverlayBounds, color) { }
+		public SelectionBoxRenderable(Actor actor, Rectangle decorationBounds, Color color)
+			: this(actor.CenterPosition, decorationBounds, color) { }
 
-		public SelectionBoxRenderable(WPos pos, Rectangle visualBounds, Color color)
+		public SelectionBoxRenderable(WPos pos, Rectangle decorationBounds, Color color)
 		{
 			this.pos = pos;
-			this.visualBounds = visualBounds;
+			this.decorationBounds = decorationBounds;
 			this.color = color;
 		}
 
@@ -38,18 +38,18 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, visualBounds, color); }
+		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, decorationBounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			var iz = 1 / wr.Viewport.Zoom;
-			var screenPos = wr.Screen3DPxPosition(pos);
-			var tl = screenPos + new float2(visualBounds.Left, visualBounds.Top);
-			var br = screenPos + new float2(visualBounds.Right, visualBounds.Bottom);
-			var tr = new float3(br.X, tl.Y, screenPos.Z);
-			var bl = new float3(tl.X, br.Y, screenPos.Z);
+			var screenDepth = wr.Screen3DPxPosition(pos).Z;
+			var tl = new float2(decorationBounds.Left, decorationBounds.Top);
+			var br = new float2(decorationBounds.Right, decorationBounds.Bottom);
+			var tr = new float3(br.X, tl.Y, screenDepth);
+			var bl = new float3(tl.X, br.Y, screenDepth);
 			var u = new float2(4 * iz, 0);
 			var v = new float2(0, 4 * iz);
 

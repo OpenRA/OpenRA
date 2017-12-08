@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -18,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders Ctrl groups using typeface.")]
-	public class WithTextControlGroupDecorationInfo : ITraitInfo, IRulesetLoaded
+	public class WithTextControlGroupDecorationInfo : ITraitInfo, IRulesetLoaded, Requires<IDecorationBoundsInfo>
 	{
 		public readonly string Font = "TinyBold";
 
@@ -50,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithTextControlGroupDecoration : IRenderAboveShroudWhenSelected, INotifyOwnerChanged
 	{
 		readonly WithTextControlGroupDecorationInfo info;
+		readonly IDecorationBounds[] decorationBounds;
 		readonly SpriteFont font;
 
 		Color color;
@@ -61,6 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!Game.Renderer.Fonts.TryGetValue(info.Font, out font))
 				throw new YamlException("Font '{0}' is not listed in the mod.yaml's Fonts section".F(info.Font));
 
+			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 			color = info.UsePlayerColor ? self.Owner.Color.RGB : info.Color;
 		}
 
@@ -82,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (group == null)
 				yield break;
 
-			var bounds = self.SelectionOverlayBounds;
+			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
 			var number = group.Value.ToString();
 			var halfSize = font.Measure(number) / 2;
 
@@ -110,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sizeOffset -= new int2(halfSize.X, 0);
 			}
 
-			var screenPos = wr.ScreenPxPosition(self.CenterPosition) + boundsOffset + sizeOffset + info.ScreenOffset;
+			var screenPos = boundsOffset + sizeOffset + info.ScreenOffset;
 
 			yield return new TextRenderable(font, wr.ProjectedPosition(screenPos), info.ZOffset, color, number);
 		}
