@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays a text overlay relative to the selection box.")]
-	public class WithTextDecorationInfo : ConditionalTraitInfo
+	public class WithTextDecorationInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
 		[FieldLoader.Require] [Translate] public readonly string Text = null;
 
@@ -59,12 +59,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
+		readonly IDecorationBounds[] decorationBounds;
 		Color color;
 
 		public WithTextDecoration(Actor self, WithTextDecorationInfo info)
 			: base(info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
+			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 			color = Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color;
 		}
 
@@ -101,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!ShouldRender(self) || self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var bounds = self.SelectionOverlayBounds;
+			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
 			var halfSize = font.Measure(Info.Text) / 2;
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
@@ -128,8 +130,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sizeOffset -= new int2(halfSize.X, 0);
 			}
 
-			var screenPos = wr.ScreenPxPosition(self.CenterPosition) + boundsOffset + sizeOffset;
-			return new IRenderable[] { new TextRenderable(font, wr.ProjectedPosition(screenPos), Info.ZOffset, color, Info.Text) };
+			return new IRenderable[] { new TextRenderable(font, wr.ProjectedPosition(boundsOffset + sizeOffset), Info.ZOffset, color, Info.Text) };
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

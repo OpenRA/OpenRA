@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		Right = 8,
 	}
 
-	[Desc("Displays a custom UI overlay relative to the selection box.")]
-	public class WithDecorationInfo : ConditionalTraitInfo
+	[Desc("Displays a custom UI overlay relative to the actor's mouseover bounds.")]
+	public class WithDecorationInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
 		[Desc("Image used for this decoration. Defaults to the actor's type.")]
 		public readonly string Image = null;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithDecoration : ConditionalTrait<WithDecorationInfo>, ITick, IRenderAboveShroud, IRenderAboveShroudWhenSelected
 	{
 		protected readonly Animation Anim;
-
+		readonly IDecorationBounds[] decorationBounds;
 		readonly string image;
 
 		public WithDecoration(Actor self, WithDecorationInfo info)
@@ -67,6 +67,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			image = info.Image ?? self.Info.Name;
 			Anim = new Animation(self.World, image, () => self.World.Paused);
 			Anim.PlayRepeating(info.Sequence);
+			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 		}
 
 		protected virtual bool ShouldRender(Actor self)
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!ShouldRender(self) || self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var bounds = self.SelectionOverlayBounds;
+			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
 			var halfSize = (0.5f * Anim.Image.Size.XY).ToInt2();
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
@@ -126,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sizeOffset -= new int2(halfSize.X, 0);
 			}
 
-			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset) + sizeOffset;
+			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset) + sizeOffset;
 			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), 1f) };
 		}
 

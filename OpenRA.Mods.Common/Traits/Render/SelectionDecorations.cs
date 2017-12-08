@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo
+	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo, Requires<IDecorationBoundsInfo>
 	{
 		[PaletteReference] public readonly string Palette = "chrome";
 
@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly SelectionDecorationsInfo Info;
 
+		readonly IDecorationBounds[] decorationBounds;
 		readonly Animation pipImages;
 		IPips[] pipSources;
 
@@ -55,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			Info = info;
 
+			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 			pipImages = new Animation(self.World, Info.Image);
 		}
 
@@ -92,6 +94,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var selected = self.World.Selection.Contains(self);
 			var regularWorld = self.World.Type == WorldType.Regular;
 			var statusBars = Game.Settings.Game.StatusBars;
+			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
 
 			// Health bars are shown when:
 			//  * actor is selected
@@ -107,10 +110,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
 
 			if (Info.RenderSelectionBox && selected)
-				yield return new SelectionBoxRenderable(self, Info.SelectionBoxColor);
+				yield return new SelectionBoxRenderable(self, bounds, Info.SelectionBoxColor);
 
 			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
-				yield return new SelectionBarsRenderable(self, displayHealth, displayExtra);
+				yield return new SelectionBarsRenderable(self, bounds, displayHealth, displayExtra);
 
 			// Target lines and pips are always only displayed for selected allied actors
 			if (!selected || !self.Owner.IsAlliedWith(wr.World.RenderPlayer))
@@ -119,31 +122,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
 				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green);
 
-			foreach (var r in DrawPips(self, wr))
+			foreach (var r in DrawPips(self, bounds, wr))
 				yield return r;
 		}
 
-		IEnumerable<IRenderable> DrawPips(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> DrawPips(Actor self, Rectangle bounds, WorldRenderer wr)
 		{
 			if (pipSources.Length == 0)
 				return Enumerable.Empty<IRenderable>();
 
-			var b = self.SelectionOverlayBounds;
-			var pos = wr.ScreenPxPosition(self.CenterPosition);
-			var bl = wr.Viewport.WorldToViewPx(pos + new int2(b.Left, b.Bottom));
-			var pal = wr.Palette(Info.Palette);
-
-			return DrawPips(self, bl, pal);
+			return DrawPipsInner(self, bounds, wr);
 		}
 
-		IEnumerable<IRenderable> DrawPips(Actor self, int2 basePosition, PaletteReference palette)
+		IEnumerable<IRenderable> DrawPipsInner(Actor self, Rectangle bounds, WorldRenderer wr)
 		{
 			pipImages.PlayRepeating(PipStrings[0]);
 
+			var palette = wr.Palette(Info.Palette);
+			var basePosition = wr.Viewport.WorldToViewPx(new int2(bounds.Left, bounds.Bottom));
 			var pipSize = pipImages.Image.Size.XY.ToInt2();
 			var pipxyBase = basePosition + new int2(1 - pipSize.X / 2, -(3 + pipSize.Y / 2));
 			var pipxyOffset = new int2(0, 0);
-			var width = self.SelectionOverlayBounds.Width;
+			var width = bounds.Width;
 
 			foreach (var pips in pipSources)
 			{

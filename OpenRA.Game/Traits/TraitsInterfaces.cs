@@ -109,6 +109,10 @@ namespace OpenRA.Traits
 	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
 	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
 
+	// HACK: This provides a shim for legacy code until it can be rewritten
+	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
+	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
+
 	public interface IAutoRenderSizeInfo : ITraitInfoInterface { }
 	public interface IAutoRenderSize { int2 RenderSize(Actor self); }
 

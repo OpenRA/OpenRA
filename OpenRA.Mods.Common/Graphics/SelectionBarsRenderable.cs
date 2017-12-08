@@ -21,19 +21,21 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Actor actor;
 		readonly bool displayHealth;
 		readonly bool displayExtra;
+		readonly Rectangle decorationBounds;
 
-		public SelectionBarsRenderable(Actor actor, bool displayHealth, bool displayExtra)
-			: this(actor.CenterPosition, actor)
+		public SelectionBarsRenderable(Actor actor, Rectangle decorationBounds, bool displayHealth, bool displayExtra)
+			: this(actor.CenterPosition, actor, decorationBounds)
 		{
 			this.displayHealth = displayHealth;
 			this.displayExtra = displayExtra;
 		}
 
-		public SelectionBarsRenderable(WPos pos, Actor actor)
+		public SelectionBarsRenderable(WPos pos, Actor actor, Rectangle decorationBounds)
 			: this()
 		{
 			this.pos = pos;
 			this.actor = actor;
+			this.decorationBounds = decorationBounds;
 		}
 
 		public WPos Pos { get { return pos; } }
@@ -46,7 +48,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBarsRenderable(pos + vec, actor); }
+		public IRenderable OffsetBy(WVec vec) { return new SelectionBarsRenderable(pos + vec, actor, decorationBounds); }
 		public IRenderable AsDecoration() { return this; }
 
 		void DrawExtraBars(WorldRenderer wr, float3 start, float3 end)
@@ -150,11 +152,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var health = actor.TraitOrDefault<IHealth>();
 
 			var screenPos = wr.Screen3DPxPosition(pos);
-			var bounds = actor.SelectionOverlayBounds;
-			bounds.Offset((int)screenPos.X, (int)screenPos.Y);
-
-			var start = new float3(bounds.Left + 1, bounds.Top, screenPos.Z);
-			var end = new float3(bounds.Right - 1, bounds.Top, screenPos.Z);
+			var start = new float3(decorationBounds.Left + 1, decorationBounds.Top, screenPos.Z);
+			var end = new float3(decorationBounds.Right - 1, decorationBounds.Top, screenPos.Z);
 
 			if (DisplayHealth)
 				DrawHealthBar(wr, health, start, end);

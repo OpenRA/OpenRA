@@ -16,15 +16,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Special case trait for actors that need to define targetable area and screen map bounds manually.")]
-	public class CustomRenderSizeInfo : ITraitInfo, IAutoRenderSizeInfo
+	public class CustomRenderSizeInfo : ITraitInfo, IAutoRenderSizeInfo, IDecorationBoundsInfo
 	{
 		[FieldLoader.Require]
 		public readonly int[] CustomBounds = null;
 
+		[Desc("Defines a custom rectangle for Decorations.",
+			"If null, CustomBounds will be used instead")]
+		public readonly int[] DecorationBounds = null;
+
 		public object Create(ActorInitializer init) { return new CustomRenderSize(this); }
 	}
 
-	public class CustomRenderSize : IAutoRenderSize, IMouseBounds
+	public class CustomRenderSize : IAutoRenderSize, IMouseBounds, IDecorationBounds
 	{
 		readonly CustomRenderSizeInfo info;
 		public CustomRenderSize(CustomRenderSizeInfo info) { this.info = info; }
@@ -44,6 +48,22 @@ namespace OpenRA.Mods.Common.Traits
 			var offset = -size / 2;
 			if (info.CustomBounds.Length > 2)
 				offset += new int2(info.CustomBounds[2], info.CustomBounds[3]);
+
+			var xy = wr.ScreenPxPosition(self.CenterPosition);
+			return new Rectangle(xy.X, xy.Y, size.X, size.Y);
+		}
+
+		Rectangle IDecorationBounds.DecorationBounds(Actor self, WorldRenderer wr)
+		{
+			var bounds = info.DecorationBounds ?? info.CustomBounds;
+			if (bounds == null)
+				return Rectangle.Empty;
+
+			var size = new int2(bounds[0], bounds[1]);
+
+			var offset = -size / 2;
+			if (bounds.Length > 2)
+				offset += new int2(bounds[2], bounds[3]);
 
 			var xy = wr.ScreenPxPosition(self.CenterPosition);
 			return new Rectangle(xy.X, xy.Y, size.X, size.Y);

@@ -16,7 +16,7 @@ using OpenRA.Graphics;
 namespace OpenRA.Traits
 {
 	[Desc("This actor is selectable. Defines bounds of selectable area, selection class and selection priority.")]
-	public class SelectableInfo : ITraitInfo
+	public class SelectableInfo : ITraitInfo, IDecorationBoundsInfo
 	{
 		public readonly int Priority = 10;
 
@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}
 
-	public class Selectable : IMouseBounds
+	public class Selectable : IMouseBounds, IDecorationBounds
 	{
 		public readonly string Class = null;
 
@@ -60,6 +60,21 @@ namespace OpenRA.Traits
 
 			var xy = wr.ScreenPxPosition(self.CenterPosition) + offset;
 			return new Rectangle(xy.X, xy.Y, size.X + 2 * Info.Margin, size.Y + 2 * Info.Margin);
+		}
+
+		Rectangle IDecorationBounds.DecorationBounds(Actor self, WorldRenderer wr)
+		{
+			if (Info.Bounds == null)
+				return Rectangle.Empty;
+
+			var size = new int2(Info.Bounds[0], Info.Bounds[1]);
+
+			var offset = -size / 2;
+			if (Info.Bounds.Length > 2)
+				offset += new int2(Info.Bounds[2], Info.Bounds[3]);
+
+			var xy = wr.ScreenPxPosition(self.CenterPosition) + offset;
+			return new Rectangle(xy.X, xy.Y, size.X, size.Y);
 		}
 	}
 }
