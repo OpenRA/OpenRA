@@ -833,6 +833,10 @@ namespace OpenRA.Mods.Common.AI
 						continue;
 				}
 
+				var para = harvester.TraitOrDefault<Parachutable>();
+				if (para != null && para.IsInAir)
+					continue;
+
 				// Tell the idle harvester to quit slacking:
 				var newSafeResourcePatch = FindNextResource(harvester, harv);
 				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
