@@ -342,7 +342,8 @@
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
-		Bounds: 12,17,0,-6
+		Bounds: 18,18,0,-6
+		DecorationBounds: 12,17,0,-6
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
