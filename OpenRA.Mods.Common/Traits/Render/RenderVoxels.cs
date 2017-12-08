@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -87,11 +88,29 @@ namespace OpenRA.Mods.Common.Traits.Render
 			lightSource = new WRot(WAngle.Zero, new WAngle(256) - info.LightPitch, info.LightYaw);
 		}
 
+		public Rectangle AutoRenderBounds(Actor self)
+		{
+			var aggregateSize = int2.Zero;
+			foreach (var c in components)
+			{
+				var s = (int)(info.Scale * c.Model.Size.Aggregate(Math.Max));
+				var size = new int2(s, s);
+				if (size.X * size.X > aggregateSize.X * aggregateSize.X)
+					aggregateSize = new int2(size.X, aggregateSize.Y);
+				if (size.Y * size.Y > aggregateSize.Y * aggregateSize.Y)
+					aggregateSize = new int2(aggregateSize.X, size.Y);
+			}
+
+			var offset = -aggregateSize / 2;
+
+			return new Rectangle(offset.X, offset.Y, aggregateSize.X, aggregateSize.Y);
+		}
+
 		bool initializePalettes = true;
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { initializePalettes = true; }
 
 		protected PaletteReference colorPalette, normalsPalette, shadowPalette;
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			if (initializePalettes)
 			{

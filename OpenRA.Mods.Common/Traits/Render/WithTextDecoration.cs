@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyOwnerChanged
+	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRenderAboveShroud, IRenderAboveShroudWhenSelected, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
 		Color color;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual bool ShouldRender(Actor self) { return true; }
 
-		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			return !Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
 		}

@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>,
-		IAutoSelectionSizeInfo, IAutoRenderSizeInfo
+		IAutoSelectionSizeInfo
 	{
 		public readonly string Sequence = "idle";
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier, IAutoRenderSize
+	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier
 	{
 		readonly WithVoxelWalkerBodyInfo info;
 		readonly IMove movement;
@@ -78,7 +78,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 
 		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
-		int2 IAutoRenderSize.RenderSize(Actor self) { return size; }
 
 		void ITick.Tick(Actor self)
 		{

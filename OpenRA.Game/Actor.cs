@@ -47,7 +47,6 @@ namespace OpenRA
 
 		public int Generation;
 
-		public Rectangle RenderBounds { get; private set; }
 		public Rectangle SelectableBounds { get; private set; }
 		public Rectangle SelectionOverlayBounds { get; private set; }
 		public IEffectiveOwner EffectiveOwner { get; private set; }
@@ -67,6 +66,27 @@ namespace OpenRA
 				// TODO: Support non-zero pitch/roll in IFacing (IOrientation?)
 				var facingValue = facing != null ? facing.Facing : 0;
 				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
+			}
+		}
+
+		public Rectangle RenderBounds
+		{
+			get
+			{
+				var finalBounds = Rectangle.Empty;
+				foreach (var r in renders)
+				{
+					var bounds = r.AutoRenderBounds(this);
+					if (bounds == Rectangle.Empty)
+						continue;
+
+					if (finalBounds == Rectangle.Empty)
+						finalBounds = bounds;
+					else
+						finalBounds = Rectangle.Union(finalBounds, bounds);
+				}
+
+				return finalBounds;
 			}
 		}
 
@@ -111,14 +131,8 @@ namespace OpenRA
 			// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
 			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
-
-			// RenderBounds are used for ScreenMap binning
-			// SelectableBounds define the selectable area of the actor
-			// SelectionOverlayBounds are used to draw the selection box and determine offsets for other selection overlays
-			RenderBounds = DetermineRenderBounds();
 			SelectableBounds = DetermineSelectableBounds();
 			SelectionOverlayBounds = DetermineSelectionOverlayBounds();
-
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
 			health = TraitOrDefault<IHealth>();
@@ -136,19 +150,16 @@ namespace OpenRA
 				.Select(pair => new SyncHash(pair.First, pair.Second(pair.First)));
 		}
 
-		Rectangle DetermineRenderBounds()
-		{
-			var size = TraitsImplementing<IAutoRenderSize>().Select(x => x.RenderSize(this)).FirstOrDefault(Exts.IsTraitEnabled);
-			var offset = -size / 2;
-
-			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-		}
-
 		Rectangle DetermineSelectableBounds()
 		{
 			var si = Info.TraitInfoOrDefault<SelectableInfo>();
 			if (si == null || si.Bounds == null)
-				return RenderBounds;
+			{
+				var autoSize = TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
+				var autoOffset = -autoSize / 2;
+
+				return new Rectangle(autoOffset.X, autoOffset.Y, autoSize.X, autoSize.Y);
+			}
 
 			var size = new int2(si.Bounds[0], si.Bounds[1]);
 

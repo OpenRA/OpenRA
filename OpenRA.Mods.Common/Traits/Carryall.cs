@@ -192,6 +192,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		Rectangle IRender.AutoRenderBounds(Actor self)
+		{
+			// Actor.RenderBounds unions all non-empty sprite bounds, so this wouldn't have an effect on the final bounds anyway as RenderSprites/RenderBounds take care of that
+			return Rectangle.Empty;
+		}
+
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get

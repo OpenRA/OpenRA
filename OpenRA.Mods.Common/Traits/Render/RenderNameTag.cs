@@ -54,5 +54,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			return new IRenderable[] { new TextRenderable(font, effectPos, 0, color, name) };
 		}
+
+		Rectangle IRender.AutoRenderBounds(Actor self)
+		{
+			// Actor.RenderBounds unions all non-empty sprite bounds, so this wouldn't have an effect on the final bounds anyway as RenderSprites/RenderBounds take care of that
+			return Rectangle.Empty;
+		}
 	}
 }

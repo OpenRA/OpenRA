@@ -31,8 +31,6 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
-		public readonly Rectangle RenderBounds;
-		public readonly Rectangle SelectableBounds;
 		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
 		readonly Shroud shroud;
@@ -78,8 +76,6 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
-			RenderBounds = self.RenderBounds;
-			SelectableBounds = self.SelectableBounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
 			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
@@ -219,6 +215,12 @@ namespace OpenRA.Traits
 			partitionedFrozenActorIds.Remove(fa.ID);
 			world.ScreenMap.Remove(owner, fa);
 			frozenActorsById.Remove(fa.ID);
+		}
+
+		Rectangle IRender.AutoRenderBounds(Actor self)
+		{
+			// Actor.RenderBounds unions all non-empty sprite bounds, so this wouldn't have an effect on the final bounds anyway as RenderSprites/RenderBounds take care of that
+			return Rectangle.Empty;
 		}
 
 		Rectangle FootprintBounds(FrozenActor fa)

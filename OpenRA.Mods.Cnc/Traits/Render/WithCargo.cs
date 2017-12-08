@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
@@ -57,6 +58,12 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				if (actorPreviews != null)
 					foreach (var preview in actorPreviews)
 						preview.Tick();
+		}
+
+		Rectangle IRender.AutoRenderBounds(Actor self)
+		{
+			// Actor.RenderBounds unions all non-empty sprite bounds, so this wouldn't have an effect on the final bounds anyway as RenderSprites/RenderBounds take care of that
+			return Rectangle.Empty;
 		}
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)

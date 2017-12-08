@@ -53,7 +53,7 @@ namespace OpenRA.Traits
 		Rectangle FrozenActorBounds(FrozenActor fa)
 		{
 			var pos = worldRenderer.ScreenPxPosition(fa.CenterPosition);
-			var bounds = fa.RenderBounds;
+			var bounds = fa.Actor.RenderBounds;
 			bounds.Offset(pos.X, pos.Y);
 			return bounds;
 		}
@@ -68,7 +68,8 @@ namespace OpenRA.Traits
 
 		public void Add(Player viewer, FrozenActor fa)
 		{
-			partitionedFrozenActors[viewer].Add(fa, FrozenActorBounds(fa));
+			if (!FrozenActorBounds(fa).Size.IsEmpty)
+				partitionedFrozenActors[viewer].Add(fa, FrozenActorBounds(fa));
 		}
 
 		public void Remove(Player viewer, FrozenActor fa)
@@ -78,7 +79,8 @@ namespace OpenRA.Traits
 
 		public void Add(Actor a)
 		{
-			partitionedActors.Add(a, ActorBounds(a));
+			if (!ActorBounds(a).Size.IsEmpty)
+				partitionedActors.Add(a, ActorBounds(a));
 		}
 
 		public void Update(Actor a)

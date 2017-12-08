@@ -201,7 +201,6 @@ FLARE:
 	AutoSelectionSize:
 	EditorTilesetFilter:
 		Categories: Decoration
-	AutoRenderSize:
 
 MINE:
 	Inherits@1: ^SpriteActor
