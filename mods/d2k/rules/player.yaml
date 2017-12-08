@@ -9,14 +9,6 @@ Player:
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
 		SpeedUp: true
-	ClassicProductionQueue@Upgrade:
-		Type: Upgrade
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 0
-		QueuedAudio: Upgrading
-		ReadyAudio: NewOptions
-		BlockedAudio: NoRoom
-		SpeedUp: true
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 250
@@ -49,6 +41,14 @@ Player:
 		BuildDurationModifier: 312
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
+		BlockedAudio: NoRoom
+		SpeedUp: true
+	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
+		Type: Upgrade
+		BuildDurationModifier: 250
+		LowPowerSlowdown: 0
+		QueuedAudio: Upgrading
+		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
 		SpeedUp: true
 	PlaceBuilding:

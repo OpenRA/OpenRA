@@ -506,21 +506,6 @@ Container@PLAYER_WIDGETS:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
-						ProductionTypeButton@UPGRADE:
-							Y: 31
-							Width: 25
-							Height: 25
-							VisualHeight: 0
-							Background: sidebar-button
-							TooltipText: Upgrades
-							TooltipContainer: TOOLTIP_CONTAINER
-							ProductionGroup: Upgrade
-							Key: ProductionTypeUpgrade
-							Children:
-								Image@ICON:
-									X: 5
-									Y: 5
-									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
 							Y: 62
 							Width: 25
@@ -591,6 +576,21 @@ Container@PLAYER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Starport
 							Key: ProductionTypeMerchant
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@UPGRADE: # Upgrade is defined after others so it won't be automatically selected after sell or at game start.
+							Y: 31
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Upgrades
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Upgrade
+							Key: ProductionTypeUpgrade
 							Children:
 								Image@ICON:
 									X: 5
