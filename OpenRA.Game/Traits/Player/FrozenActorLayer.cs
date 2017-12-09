@@ -31,7 +31,6 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
-		public readonly Rectangle RenderBounds;
 		public readonly Rectangle SelectableBounds;
 		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
@@ -51,7 +50,10 @@ namespace OpenRA.Traits
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
+		public Rectangle[] ScreenBounds = NoBounds;
+
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+		static readonly Rectangle[] NoBounds = new Rectangle[0];
 
 		int flashTicks;
 
@@ -78,7 +80,6 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
-			RenderBounds = self.RenderBounds;
 			SelectableBounds = self.SelectableBounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 

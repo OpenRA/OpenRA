@@ -70,9 +70,36 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RenderVoxels : IRender, INotifyOwnerChanged
+	public class RenderVoxels : IRender, ITick, INotifyOwnerChanged
 	{
+		class AnimationWrapper
+		{
+			readonly ModelAnimation model;
+			bool cachedVisible;
+			WVec cachedOffset;
+
+			public AnimationWrapper(ModelAnimation model)
+			{
+				this.model = model;
+			}
+
+			public bool Tick()
+			{
+				// Return to the caller whether the renderable position or size has changed
+				var visible = model.IsVisible;
+				var offset = model.OffsetFunc != null ? model.OffsetFunc() : WVec.Zero;
+
+				var updated = visible != cachedVisible || offset != cachedOffset;
+				cachedVisible = visible;
+				cachedOffset = offset;
+
+				return updated;
+			}
+		}
+
 		readonly List<ModelAnimation> components = new List<ModelAnimation>();
+		readonly Dictionary<ModelAnimation, AnimationWrapper> wrappers = new Dictionary<ModelAnimation, AnimationWrapper>();
+
 		readonly Actor self;
 		readonly RenderVoxelsInfo info;
 		readonly BodyOrientation body;
@@ -90,6 +117,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		bool initializePalettes = true;
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { initializePalettes = true; }
+
+		void ITick.Tick(Actor self)
+		{
+			var updated = false;
+			foreach (var w in wrappers.Values)
+				updated |= w.Tick();
+
+			if (updated)
+				self.World.ScreenMap.AddOrUpdate(self);
+		}
 
 		protected PaletteReference colorPalette, normalsPalette, shadowPalette;
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
@@ -118,7 +155,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public string Image { get { return info.Image ?? self.Info.Name; } }
-		public void Add(ModelAnimation v) { components.Add(v); }
-		public void Remove(ModelAnimation v) { components.Remove(v); }
+		public void Add(ModelAnimation m)
+		{
+			components.Add(m);
+			wrappers.Add(m, new AnimationWrapper(m));
+		}
+
+		public void Remove(ModelAnimation m)
+		{
+			components.Remove(m);
+			wrappers.Remove(m);
+		}
 	}
 }
