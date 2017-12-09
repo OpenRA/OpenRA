@@ -112,6 +112,7 @@ World:
 		SpawnInterval: 3000
 		WaterChance: 20
 		InitialSpawnDelay: 1500
+		DisplayOrder: 1
 	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
@@ -125,7 +126,12 @@ World:
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
+		AllyBuildRadiusDisplayOrder: 4
+		BuildRadiusDisplayOrder: 5
 	MapOptions:
+		ShortGameDisplayOrder: 2
+		TechLevelDisplayOrder: 2
+		GameSpeedDisplayOrder: 3
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
@@ -166,6 +172,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartLocations:
 	SpawnMPUnits:
+		DisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

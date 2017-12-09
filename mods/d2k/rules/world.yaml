@@ -80,6 +80,7 @@ World:
 		WaterChance: 0
 		ValidGround: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		InitialSpawnDelay: 1500
+		DisplayOrder: 1
 	DomainIndex:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
@@ -95,9 +96,15 @@ World:
 		Sequence: sandcraters
 		SmokePercentage: 0
 	MapCreeps:
+		DisplayOrder: 5
 	SpawnMapActors:
 	MapBuildRadius:
+		AllyBuildRadiusDisplayOrder: 4
+		BuildRadiusVisible: False
 	MapOptions:
+		ShortGameDisplayOrder: 2
+		TechLevelDisplayOrder: 2
+		GameSpeedDisplayOrder: 3
 	CreateMPPlayers:
 	MPStartLocations:
 	MPStartUnits@mcv:
@@ -154,6 +161,7 @@ World:
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnMPUnits:
+		DisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

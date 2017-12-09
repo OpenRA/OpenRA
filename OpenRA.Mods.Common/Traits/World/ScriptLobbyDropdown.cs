@@ -23,8 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ID = null;
 
 		[FieldLoader.Require]
-		[Desc("Display name for this option.")]
+		[Desc("Descriptive label for this option.")]
 		public readonly string Label = null;
+
+		[Desc("Tooltip description for this option.")]
+		public readonly string Description = null;
 
 		[FieldLoader.Require]
 		[Desc("Default option key in the `Values` list.")]
@@ -37,11 +40,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the option from being changed from its default value.")]
 		public readonly bool Locked = false;
 
+		[Desc("Whether to display the option in the lobby.")]
+		public readonly bool Visible = true;
+
+		[Desc("Display order for the option in the lobby.")]
+		public readonly int DisplayOrder = 0;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyOption(ID, Label,
+			yield return new LobbyOption(ID, Label, Description,
+				Visible, DisplayOrder,
 				new ReadOnlyDictionary<string, string>(Values),
-					Default, Locked);
+				Default, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new ScriptLobbyDropdown(this); }

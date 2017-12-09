@@ -43,6 +43,7 @@ World:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
+		Description: Change the difficulty of the mission
 		Values:
 			hard: Hard (4P)
 			normal: Normal (3P)
@@ -51,6 +52,7 @@ World:
 			tough: Real tough guy
 			endless: Endless mode
 		Default: hard
+		DisplayOrder: 5
 
 FORTCRATE:
 	Inherits: ^Crate

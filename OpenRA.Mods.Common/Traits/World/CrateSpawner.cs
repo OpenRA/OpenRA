@@ -27,6 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the crates state from being changed in the lobby.")]
 		public readonly bool Locked = false;
 
+		[Desc("Whether to display the crates checkbox in the lobby.")]
+		public readonly bool Visible = true;
+
+		[Desc("Display order for the crates checkbox in the lobby.")]
+		public readonly int DisplayOrder = 0;
+
 		[Desc("Minimum number of crates.")]
 		public readonly int Minimum = 1;
 
@@ -67,7 +73,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("crates", "Crates", Enabled, Locked);
+			yield return new LobbyBooleanOption("crates", "Crates",
+				"Collect crates with units to recieve random bonuses or penalties",
+				Visible, DisplayOrder, Enabled, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }

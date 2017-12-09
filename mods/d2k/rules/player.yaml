@@ -63,8 +63,10 @@ Player:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
+		DisplayOrder: 6
 	BaseAttackNotifier:
 	Shroud:
+		FogDisplayOrder: 3
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
 	PlayerStatistics:

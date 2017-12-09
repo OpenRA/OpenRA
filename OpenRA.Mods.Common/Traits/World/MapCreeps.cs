@@ -23,9 +23,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the creeps state from being changed in the lobby.")]
 		public readonly bool Locked = false;
 
+		[Desc("Whether to display the creeps checkbox in the lobby.")]
+		public readonly bool Visible = true;
+
+		[Desc("Display order for the creeps checkbox in the lobby.")]
+		public readonly int DisplayOrder = 0;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("creeps", "Worms", Enabled, Locked);
+			yield return new LobbyBooleanOption("creeps", "Worms", "Worms roam the map and devour unprepared forces",
+				Visible, DisplayOrder, Enabled, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapCreeps(this); }

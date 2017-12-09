@@ -10,8 +10,10 @@ Player:
 	AllyRepair:
 	PlayerResources:
 	DeveloperMode:
+		DisplayOrder: 6
 	BaseAttackNotifier:
 	Shroud:
+		FogDisplayOrder: 3
 	PlayerStatistics:
 	FrozenActorLayer:
 	PlaceBeacon:

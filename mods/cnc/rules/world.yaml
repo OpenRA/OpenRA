@@ -77,9 +77,15 @@ World:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
 	MapCreeps:
+		Visible: False
 	SpawnMapActors:
 	MapBuildRadius:
+		AllyBuildRadiusDisplayOrder: 4
+		BuildRadiusDisplayOrder: 5
 	MapOptions:
+		ShortGameDisplayOrder: 2
+		TechLevelDisplayOrder: 2
+		GameSpeedDisplayOrder: 3
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
@@ -125,12 +131,14 @@ World:
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnMPUnits:
 		StartingUnitsClass: light
+		DisplayOrder: 0
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
 		SpawnInterval: 3000
 		WaterChance: 0
 		InitialSpawnDelay: 1500
+		DisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
