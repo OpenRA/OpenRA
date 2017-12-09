@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -48,6 +49,11 @@ namespace OpenRA.Mods.Common.Traits
 						.WithZOffset(a.ZOffset + 1)
 						.AsDecoration();
 			}
+		}
+
+		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
+		{
+			return bounds;
 		}
 	}
 }
