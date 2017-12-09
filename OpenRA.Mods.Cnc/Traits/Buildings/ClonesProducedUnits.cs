@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
+		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType)
 		{
 			// No recursive cloning!
 			if (producer.Owner != self.Owner || producer.Info.HasTraitInfo<ClonesProducedUnitsInfo>())
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				new FactionInit(BuildableInfo.GetInitialFaction(produced.Info, faction))
 			};
 
-			production.Produce(self, produced.Info, inits);
+			production.Produce(self, produced.Info, productionType, inits);
 		}
 	}
 }

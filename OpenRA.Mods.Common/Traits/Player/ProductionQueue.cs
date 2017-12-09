@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.Traits
 			};
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !self.IsDisabled() && sp.Produce(self, unit, inits))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, unit, developerMode.AllTech ? null : Info.Type, inits))
 			{
 				FinishProduction();
 				return true;

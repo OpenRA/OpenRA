@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 						new FactionInit(BuildableInfo.GetInitialFaction(ai, faction))
 					};
 
-					activated |= sp.Produce(self, ai, inits);
+					activated |= sp.Produce(self, ai, info.Type, inits);
 				}
 			}
 

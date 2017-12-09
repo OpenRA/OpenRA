@@ -10,7 +10,6 @@
 #endregion
 
 using System.Drawing;
-using OpenRA;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			rp = self.TraitOrDefault<RallyPoint>();
 		}
 
-		public override bool Produce(Actor self, ActorInfo producee, TypeDictionary inits)
+		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType);
 
 				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);

@@ -144,18 +144,42 @@ SPEN:
 		SpawnOffset: 0,-213,0
 		Facing: 96
 		ExitCell: -1,2
+		ProductionTypes: Submarine
 	Exit@2:
 		SpawnOffset: 0,-213,0
 		Facing: 160
 		ExitCell: 3,2
+		ProductionTypes: Submarine
 	Exit@3:
 		SpawnOffset: 0,0,0
 		Facing: 32
 		ExitCell: 0,0
+		ProductionTypes: Submarine
 	Exit@4:
 		SpawnOffset: 0,0,0
 		Facing: 224
 		ExitCell: 2,0
+		ProductionTypes: Submarine
+	Exit@b1:
+		SpawnOffset: -1024,1024,0
+		Facing: 160
+		ExitCell: 0,2
+		ProductionTypes: Ship
+	Exit@b2:
+		SpawnOffset: 1024,1024,0
+		Facing: 224
+		ExitCell: 2,2
+		ProductionTypes: Ship
+	Exit@b3:
+		SpawnOffset: -1024,-1024,0
+		Facing: 96
+		ExitCell: 0,0
+		ProductionTypes: Ship
+	Exit@b4:
+		SpawnOffset: 1024,-1024,0
+		Facing: 32
+		ExitCell: 2,0
+		ProductionTypes: Ship
 	Production:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
@@ -248,18 +272,22 @@ SYRD:
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
+		ProductionTypes: Ship
 	Exit@2:
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
+		ProductionTypes: Ship
 	Exit@3:
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
+		ProductionTypes: Ship
 	Exit@4:
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
+		ProductionTypes: Ship
 	Production:
 		Produces: Ship, Boat
 	PrimaryBuilding:
@@ -1557,9 +1585,11 @@ BARR:
 	Exit@1:
 		SpawnOffset: -170,810,0
 		ExitCell: 1,2
+		ProductionTypes: Soldier, Infantry
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
+		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
@@ -1631,9 +1661,11 @@ KENN:
 	Exit@1:
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
+		ProductionTypes: Dog, Infantry
 	Exit@2:
 		SpawnOffset: -280,400,0
 		ExitCell: -1,0
+		ProductionTypes: Dog, Infantry
 	Production:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
@@ -1684,9 +1716,11 @@ TENT:
 	Exit@1:
 		SpawnOffset: -42,810,0
 		ExitCell: 1,2
+		ProductionTypes: Soldier, Infantry
 	Exit@2:
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
+		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
