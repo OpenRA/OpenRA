@@ -23,17 +23,33 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the ally build radius state from being changed in the lobby.")]
 		public readonly bool AllyBuildRadiusLocked = false;
 
+		[Desc("Whether to display the ally build radius checkbox in the lobby.")]
+		public readonly bool AllyBuildRadiusVisible = true;
+
+		[Desc("Display order for the ally build radius checkbox in the lobby.")]
+		public readonly int AllyBuildRadiusDisplayOrder = 0;
+
 		[Desc("Default value of the build radius checkbox in the lobby.")]
 		public readonly bool BuildRadiusEnabled = true;
 
 		[Desc("Prevent the build radius state from being changed in the lobby.")]
 		public readonly bool BuildRadiusLocked = false;
 
+		[Desc("Display the build radius checkbox in the lobby.")]
+		public readonly bool BuildRadiusVisible = true;
+
+		[Desc("Display order for the build radius checkbox in the lobby.")]
+		public readonly int BuildRadiusDisplayOrder = 0;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("allybuild", "Build off Allies' ConYards", AllyBuildRadiusEnabled, AllyBuildRadiusLocked);
+			yield return new LobbyBooleanOption("allybuild", "Build off Allies", "Allow allies to place structures inside your build area",
+				AllyBuildRadiusVisible, AllyBuildRadiusDisplayOrder,
+				AllyBuildRadiusEnabled, AllyBuildRadiusLocked);
 
-			yield return new LobbyBooleanOption("buildradius", "Limit ConYard Area", BuildRadiusEnabled, BuildRadiusLocked);
+			yield return new LobbyBooleanOption("buildradius", "Limit Build Area", "Limits structure placement to areas around Construction Yards",
+				BuildRadiusVisible, BuildRadiusDisplayOrder,
+				BuildRadiusEnabled, BuildRadiusLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapBuildRadius(this); }

@@ -24,11 +24,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the short game enabled state from being changed in the lobby.")]
 		public readonly bool ShortGameLocked = false;
 
+		[Desc("Whether to display the short game checkbox in the lobby.")]
+		public readonly bool ShortGameVisible = true;
+
+		[Desc("Display order for the short game checkbox in the lobby.")]
+		public readonly int ShortGameDisplayOrder = 0;
+
 		[Desc("Default tech level.")]
 		public readonly string TechLevel = "unrestricted";
 
 		[Desc("Prevent the tech level from being changed in the lobby.")]
 		public readonly bool TechLevelLocked = false;
+
+		[Desc("Display the tech level option in the lobby.")]
+		public readonly bool TechLevelVisible = true;
+
+		[Desc("Display order for the tech level option in the lobby.")]
+		public readonly int TechLevelDisplayOrder = 0;
 
 		[Desc("Default game speed.")]
 		public readonly string GameSpeed = "default";
@@ -36,15 +48,24 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the game speed from being changed in the lobby.")]
 		public readonly bool GameSpeedLocked = false;
 
+		[Desc("Display the game speed option in the lobby.")]
+		public readonly bool GameSpeedVisible = true;
+
+		[Desc("Display order for the game speed option in the lobby.")]
+		public readonly int GameSpeedDisplayOrder = 0;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("shortgame", "Short Game", ShortGameEnabled, ShortGameLocked);
+			yield return new LobbyBooleanOption("shortgame", "Short Game", "Players are defeated when their bases are destroyed",
+				ShortGameVisible, ShortGameDisplayOrder,
+				ShortGameEnabled, ShortGameLocked);
 
 			var techLevels = rules.Actors["player"].TraitInfos<ProvidesTechPrerequisiteInfo>()
 				.ToDictionary(t => t.Id, t => t.Name);
 
 			if (techLevels.Any())
-				yield return new LobbyOption("techlevel", "Tech Level",
+				yield return new LobbyOption("techlevel", "Tech Level", "Change the units and abilities at your disposal",
+					TechLevelVisible, TechLevelDisplayOrder,
 					new ReadOnlyDictionary<string, string>(techLevels),
 					TechLevel, TechLevelLocked);
 
@@ -52,7 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 				.ToDictionary(s => s.Key, s => s.Value.Name);
 
 			// NOTE: The server hardcodes special-case logic for this option id
-			yield return new LobbyOption("gamespeed", "Game Speed",
+			yield return new LobbyOption("gamespeed", "Game Speed", "Change the rate at which time passes",
+				GameSpeedVisible, GameSpeedDisplayOrder,
 				new ReadOnlyDictionary<string, string>(gameSpeeds),
 				GameSpeed, GameSpeedLocked);
 		}

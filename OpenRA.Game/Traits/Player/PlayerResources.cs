@@ -26,6 +26,12 @@ namespace OpenRA.Traits
 		[Desc("Force the DefaultCash option by disabling changes in the lobby.")]
 		public readonly bool DefaultCashLocked = false;
 
+		[Desc("Whether to display the DefaultCash option in the lobby.")]
+		public readonly bool DefaultCashVisible = true;
+
+		[Desc("Display order for the DefaultCash option.")]
+		public readonly int DefaultCashDisplayOrder = 0;
+
 		[Desc("Speech notification to play when the player does not have any funds.")]
 		public readonly string InsufficientFundsNotification = null;
 
@@ -37,7 +43,10 @@ namespace OpenRA.Traits
 			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
 
 			if (startingCash.Any())
-				yield return new LobbyOption("startingcash", "Starting Cash", new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashLocked);
+				yield return new LobbyOption("startingcash", "Starting Cash", "Change the amount of cash that players start with",
+					DefaultCashVisible, DefaultCashDisplayOrder,
+					new ReadOnlyDictionary<string, string>(startingCash),
+					DefaultCash.ToString(), DefaultCashLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }

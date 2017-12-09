@@ -389,14 +389,21 @@ namespace OpenRA.Traits
 	{
 		public readonly string Id;
 		public readonly string Name;
+		public readonly string Description;
 		public readonly IReadOnlyDictionary<string, string> Values;
 		public readonly string DefaultValue;
 		public readonly bool Locked;
+		public readonly bool Visible;
+		public readonly int DisplayOrder;
 
-		public LobbyOption(string id, string name, IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
+		public LobbyOption(string id, string name, string description, bool visible, int displayorder,
+			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
 		{
 			Id = id;
 			Name = name;
+			Description = description;
+			Visible = visible;
+			DisplayOrder = displayorder;
 			Values = values;
 			DefaultValue = defaultValue;
 			Locked = locked;
@@ -416,8 +423,8 @@ namespace OpenRA.Traits
 			{ false.ToString(), "disabled" }
 		};
 
-		public LobbyBooleanOption(string id, string name, bool defaultValue, bool locked)
-			: base(id, name, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
+		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
+			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
 
 		public override string ValueChangedMessage(string playerName, string newValue)
 		{

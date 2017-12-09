@@ -24,6 +24,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the developer mode state from being changed in the lobby.")]
 		public bool Locked = false;
 
+		[Desc("Whether to display the developer mode checkbox in the lobby.")]
+		public bool Visible = true;
+
+		[Desc("Display order for the developer mode checkbox in the lobby.")]
+		public int DisplayOrder = 0;
+
 		[Desc("Default cash bonus granted by the give cash cheat.")]
 		public int Cash = 20000;
 
@@ -50,7 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("cheats", "Debug Menu", Enabled, Locked);
+			yield return new LobbyBooleanOption("cheats", "Debug Menu",
+				"Enables cheats and developer commands",
+				Visible, DisplayOrder, Enabled, Locked);
 		}
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
