@@ -16,12 +16,11 @@ Container@LOBBY_OPTIONS_BIN:
 			Children:
 				Container@LOBBY_OPTIONS:
 					X: 18
-					Y: 30
+					Y: 9
 					Width: PARENT_RIGHT - 18 - 24
-					Height: PARENT_BOTTOM - 75
 					Children:
 						Container@CHECKBOX_ROW_TEMPLATE:
-							Height: 35
+							Height: 34
 							Children:
 								Checkbox@A:
 									Width: 175
@@ -41,7 +40,7 @@ Container@LOBBY_OPTIONS_BIN:
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
 						Container@DROPDOWN_ROW_TEMPLATE:
-							Height: 35
+							Height: 34
 							Width: PARENT_RIGHT
 							Children:
 								Label@A_DESC:
