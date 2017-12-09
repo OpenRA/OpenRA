@@ -8,8 +8,8 @@ World:
 		BriefingVideo: generic.vqa
 		StartVideo: dino.vqa
 	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty

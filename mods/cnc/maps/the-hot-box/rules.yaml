@@ -1,7 +1,7 @@
 World:
 	CrateSpawner:
-		Enabled: true
-		Locked: true
+		CheckboxEnabled: true
+		CheckboxLocked: true
 		Maximum: 4
 		SpawnInterval: 125
 		CrateActors: unitcrate
@@ -9,12 +9,12 @@ World:
 	-SpawnMPUnits:
 	-MPStartLocations:
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-		BuildRadiusLocked: True
-		BuildRadiusEnabled: True
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
 
 UNITCRATE:
@@ -48,10 +48,10 @@ APC:
 
 Player:
 	Shroud:
-		FogLocked: True
-		FogEnabled: False
-		ExploredMapLocked: True
-		ExploredMapEnabled: True
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: True
 		CrateLocked: True
 		CrateEnabled: True
 	PlayerResources:

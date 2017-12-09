@@ -1,15 +1,15 @@
 World:
 	CrateSpawner:
-		Enabled: False
-		Locked: True
+		CheckboxEnabled: False
+		CheckboxLocked: True
 	-SpawnMPUnits:
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-		BuildRadiusLocked: True
-		BuildRadiusEnabled: True
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
 
 APWR:
@@ -58,10 +58,10 @@ SILO:
 
 Player:
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 60

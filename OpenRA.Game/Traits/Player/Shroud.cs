@@ -19,50 +19,50 @@ namespace OpenRA.Traits
 	{
 		[Translate]
 		[Desc("Descriptive label for the fog checkbox in the lobby.")]
-		public readonly string FogLabel = "Fog of War";
+		public readonly string FogCheckboxLabel = "Fog of War";
 
 		[Translate]
 		[Desc("Tooltip description for the fog checkbox in the lobby.")]
-		public readonly string FogDescription = "Line of sight is required to view enemy forces";
+		public readonly string FogCheckboxDescription = "Line of sight is required to view enemy forces";
 
 		[Desc("Default value of the fog checkbox in the lobby.")]
-		public readonly bool FogEnabled = true;
+		public readonly bool FogCheckboxEnabled = true;
 
 		[Desc("Prevent the fog enabled state from being changed in the lobby.")]
-		public readonly bool FogLocked = false;
+		public readonly bool FogCheckboxLocked = false;
 
 		[Desc("Whether to display the fog checkbox in the lobby.")]
-		public readonly bool FogVisible = true;
+		public readonly bool FogCheckboxVisible = true;
 
 		[Desc("Display order for the fog checkbox in the lobby.")]
-		public readonly int FogDisplayOrder = 0;
+		public readonly int FogCheckboxDisplayOrder = 0;
 
 		[Translate]
 		[Desc("Descriptive label for the explored map checkbox in the lobby.")]
-		public readonly string ExploredMapLabel = "Explored Map";
+		public readonly string ExploredMapCheckboxLabel = "Explored Map";
 
 		[Translate]
 		[Desc("Tooltip description for the explored map checkbox in the lobby.")]
-		public readonly string ExploredMapDescription = "Initial map shroud is revealed";
+		public readonly string ExploredMapCheckboxDescription = "Initial map shroud is revealed";
 
 		[Desc("Default value of the explore map checkbox in the lobby.")]
-		public readonly bool ExploredMapEnabled = false;
+		public readonly bool ExploredMapCheckboxEnabled = false;
 
 		[Desc("Prevent the explore map enabled state from being changed in the lobby.")]
-		public readonly bool ExploredMapLocked = false;
+		public readonly bool ExploredMapCheckboxLocked = false;
 
 		[Desc("Whether to display the explore map checkbox in the lobby.")]
-		public readonly bool ExploredMapVisible = true;
+		public readonly bool ExploredMapCheckboxVisible = true;
 
 		[Desc("Display order for the explore map checkbox in the lobby.")]
-		public readonly int ExploredMapDisplayOrder = 0;
+		public readonly int ExploredMapCheckboxDisplayOrder = 0;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("explored", ExploredMapLabel, ExploredMapDescription,
-				ExploredMapVisible, ExploredMapDisplayOrder, ExploredMapEnabled, ExploredMapLocked);
-			yield return new LobbyBooleanOption("fog", FogLabel, FogDescription,
-				FogVisible, FogDisplayOrder, FogEnabled, FogLocked);
+			yield return new LobbyBooleanOption("explored", ExploredMapCheckboxLabel, ExploredMapCheckboxDescription,
+				ExploredMapCheckboxVisible, ExploredMapCheckboxDisplayOrder, ExploredMapCheckboxEnabled, ExploredMapCheckboxLocked);
+			yield return new LobbyBooleanOption("fog", FogCheckboxLabel, FogCheckboxDescription,
+				FogCheckboxVisible, FogCheckboxDisplayOrder, FogCheckboxEnabled, FogCheckboxLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
@@ -148,9 +148,9 @@ namespace OpenRA.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			var gs = self.World.LobbyInfo.GlobalSettings;
-			fogEnabled = gs.OptionOrDefault("fog", info.FogEnabled);
+			fogEnabled = gs.OptionOrDefault("fog", info.FogCheckboxEnabled);
 
-			ExploreMapEnabled = gs.OptionOrDefault("explored", info.ExploredMapEnabled);
+			ExploreMapEnabled = gs.OptionOrDefault("explored", info.ExploredMapCheckboxEnabled);
 			if (ExploreMapEnabled)
 				self.World.AddFrameEndTask(w => ExploreAll());
 		}

@@ -7,12 +7,12 @@ World:
 	-SpawnMPUnits:
 	-MPStartLocations:
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
-		BuildRadiusLocked: True
-		BuildRadiusEnabled: True
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
 
 UNITCRATE:
@@ -79,10 +79,10 @@ DOG:
 
 Player:
 	Shroud:
-		FogLocked: True
-		FogEnabled: False
-		ExploredMapLocked: True
-		ExploredMapEnabled: True
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: True
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 5000

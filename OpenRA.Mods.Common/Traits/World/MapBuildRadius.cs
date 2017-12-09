@@ -19,51 +19,51 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Translate]
 		[Desc("Descriptive label for the ally build radius checkbox in the lobby.")]
-		public readonly string AllyBuildRadiusLabel = "Build off Allies";
+		public readonly string AllyBuildRadiusCheckboxLabel = "Build off Allies";
 
 		[Translate]
 		[Desc("Tooltip description for the ally build radius checkbox in the lobby.")]
-		public readonly string AllyBuildRadiusDescription = "Allow allies to place structures inside your build area";
+		public readonly string AllyBuildRadiusCheckboxDescription = "Allow allies to place structures inside your build area";
 
 		[Desc("Default value of the ally build radius checkbox in the lobby.")]
-		public readonly bool AllyBuildRadiusEnabled = true;
+		public readonly bool AllyBuildRadiusCheckboxEnabled = true;
 
 		[Desc("Prevent the ally build radius state from being changed in the lobby.")]
-		public readonly bool AllyBuildRadiusLocked = false;
+		public readonly bool AllyBuildRadiusCheckboxLocked = false;
 
 		[Desc("Whether to display the ally build radius checkbox in the lobby.")]
-		public readonly bool AllyBuildRadiusVisible = true;
+		public readonly bool AllyBuildRadiusCheckboxVisible = true;
 
 		[Desc("Display order for the ally build radius checkbox in the lobby.")]
-		public readonly int AllyBuildRadiusDisplayOrder = 0;
+		public readonly int AllyBuildRadiusCheckboxDisplayOrder = 0;
 
 		[Translate]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
-		public readonly string BuildRadiusLabel = "Limit Build Area";
+		public readonly string BuildRadiusCheckboxLabel = "Limit Build Area";
 
 		[Translate]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
-		public readonly string BuildRadiusDescription = "Limits structure placement to areas around Construction Yards";
+		public readonly string BuildRadiusCheckboxDescription = "Limits structure placement to areas around Construction Yards";
 
 		[Desc("Default value of the build radius checkbox in the lobby.")]
-		public readonly bool BuildRadiusEnabled = true;
+		public readonly bool BuildRadiusCheckboxEnabled = true;
 
 		[Desc("Prevent the build radius state from being changed in the lobby.")]
-		public readonly bool BuildRadiusLocked = false;
+		public readonly bool BuildRadiusCheckboxLocked = false;
 
 		[Desc("Display the build radius checkbox in the lobby.")]
-		public readonly bool BuildRadiusVisible = true;
+		public readonly bool BuildRadiusCheckboxVisible = true;
 
 		[Desc("Display order for the build radius checkbox in the lobby.")]
-		public readonly int BuildRadiusDisplayOrder = 0;
+		public readonly int BuildRadiusCheckboxDisplayOrder = 0;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("allybuild", AllyBuildRadiusLabel, AllyBuildRadiusDescription,
-				AllyBuildRadiusVisible, AllyBuildRadiusDisplayOrder, AllyBuildRadiusEnabled, AllyBuildRadiusLocked);
+			yield return new LobbyBooleanOption("allybuild", AllyBuildRadiusCheckboxLabel, AllyBuildRadiusCheckboxDescription,
+				AllyBuildRadiusCheckboxVisible, AllyBuildRadiusCheckboxDisplayOrder, AllyBuildRadiusCheckboxEnabled, AllyBuildRadiusCheckboxLocked);
 
-			yield return new LobbyBooleanOption("buildradius", BuildRadiusLabel, BuildRadiusDescription,
-				BuildRadiusVisible, BuildRadiusDisplayOrder, BuildRadiusEnabled, BuildRadiusLocked);
+			yield return new LobbyBooleanOption("buildradius", BuildRadiusCheckboxLabel, BuildRadiusCheckboxDescription,
+				BuildRadiusCheckboxVisible, BuildRadiusCheckboxDisplayOrder, BuildRadiusCheckboxEnabled, BuildRadiusCheckboxLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapBuildRadius(this); }
@@ -83,9 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			AllyBuildRadiusEnabled = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("allybuild", info.AllyBuildRadiusEnabled);
+				.OptionOrDefault("allybuild", info.AllyBuildRadiusCheckboxEnabled);
 			BuildRadiusEnabled = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("buildradius", info.BuildRadiusEnabled);
+				.OptionOrDefault("buildradius", info.BuildRadiusCheckboxEnabled);
 		}
 	}
 }

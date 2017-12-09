@@ -1373,6 +1373,113 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20171212)
+				{
+					if (node.Key.StartsWith("SpawnMPUnits", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "DropdownLocked";
+					}
+
+					if (node.Key.StartsWith("Shroud", StringComparison.Ordinal))
+					{
+						var fogLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "FogLocked");
+						if (fogLocked != null)
+							fogLocked.Key = "FogCheckboxLocked";
+
+						var fogEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "FogEnabled");
+						if (fogEnabled != null)
+							fogEnabled.Key = "FogCheckboxEnabled";
+
+						var exploredMapLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "ExploredMapLocked");
+						if (exploredMapLocked != null)
+							exploredMapLocked.Key = "ExploredMapCheckboxLocked";
+
+						var exploredMapEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "ExploredMapEnabled");
+						if (exploredMapEnabled != null)
+							exploredMapEnabled.Key = "ExploredMapCheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("MapOptions", StringComparison.Ordinal))
+					{
+						var shortGameLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "ShortGameLocked");
+						if (shortGameLocked != null)
+							shortGameLocked.Key = "ShortGameCheckboxLocked";
+
+						var shortGameEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "ShortGameEnabled");
+						if (shortGameEnabled != null)
+							shortGameEnabled.Key = "ShortGameCheckboxEnabled";
+
+						var techLevelLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "TechLevelLocked");
+						if (techLevelLocked != null)
+							techLevelLocked.Key = "TechLevelDropdownLocked";
+
+						var gameSpeedLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "GameSpeedLocked");
+						if (gameSpeedLocked != null)
+							gameSpeedLocked.Key = "GameSpeedDropdownLocked";
+					}
+
+					if (node.Key.StartsWith("MapCreeps", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "CheckboxLocked";
+
+						var enabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "Enabled");
+						if (enabled != null)
+							enabled.Key = "CheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("MapBuildRadius", StringComparison.Ordinal))
+					{
+						var alllyLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllyBuildRadiusLocked");
+						if (alllyLocked != null)
+							alllyLocked.Key = "AllyBuildRadiusCheckboxLocked";
+
+						var allyEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllyBuildRadiusEnabled");
+						if (allyEnabled != null)
+							allyEnabled.Key = "AllyBuildRadiusCheckboxEnabled";
+
+						var buildRadiusLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "BuildRadiusLocked");
+						if (buildRadiusLocked != null)
+							buildRadiusLocked.Key = "BuildRadiusCheckboxLocked";
+
+						var buildRadiusEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "BuildRadiusEnabled");
+						if (buildRadiusEnabled != null)
+							buildRadiusEnabled.Key = "BuildRadiusCheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("DeveloperMode", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "CheckboxLocked";
+
+						var enabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "Enabled");
+						if (enabled != null)
+							enabled.Key = "CheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("CrateSpawner", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "CheckboxLocked";
+
+						var enabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "Enabled");
+						if (enabled != null)
+							enabled.Key = "CheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("PlayerResources", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "DefaultCashDropdownLocked";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

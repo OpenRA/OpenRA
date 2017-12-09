@@ -20,23 +20,23 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Translate]
 		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
-		public readonly string Label = "Debug Menu";
+		public readonly string CheckboxLabel = "Debug Menu";
 
 		[Translate]
 		[Desc("Tooltip description for the developer mode checkbox in the lobby.")]
-		public readonly string Description = "Enables cheats and developer commands";
+		public readonly string CheckboxDescription = "Enables cheats and developer commands";
 
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
-		public readonly bool Enabled = false;
+		public readonly bool CheckboxEnabled = false;
 
 		[Desc("Prevent the developer mode state from being changed in the lobby.")]
-		public readonly bool Locked = false;
+		public readonly bool CheckboxLocked = false;
 
 		[Desc("Whether to display the developer mode checkbox in the lobby.")]
-		public readonly bool Visible = true;
+		public readonly bool CheckboxVisible = true;
 
 		[Desc("Display order for the developer mode checkbox in the lobby.")]
-		public readonly int DisplayOrder = 0;
+		public readonly int CheckboxDisplayOrder = 0;
 
 		[Desc("Default cash bonus granted by the give cash cheat.")]
 		public readonly int Cash = 20000;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("cheats", Label, Description, Visible, DisplayOrder, Enabled, Locked);
+			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			Enabled = self.World.LobbyInfo.NonBotPlayers.Count() == 1 || self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("cheats", info.Enabled);
+				.OptionOrDefault("cheats", info.CheckboxEnabled);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
