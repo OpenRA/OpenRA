@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget optionsContainer;
 		readonly Widget checkboxRowTemplate;
 		readonly Widget dropdownRowTemplate;
+		readonly int yMargin;
 
 		readonly Func<MapPreview> getMap;
 		readonly OrderManager orderManager;
@@ -40,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel = (ScrollPanelWidget)widget;
 			optionsContainer = widget.Get("LOBBY_OPTIONS");
+			yMargin = optionsContainer.Bounds.Y;
 			optionsContainer.IsVisible = () => validOptions;
 			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
@@ -173,7 +175,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			panel.ContentHeight = optionsContainer.Bounds.Y + optionsContainer.Bounds.Height;
+			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
+			optionsContainer.Bounds.Y = yMargin;
+			if (panel.ContentHeight < panel.Bounds.Height)
+				optionsContainer.Bounds.Y += (panel.Bounds.Height - panel.ContentHeight) / 2;
+
+			panel.ScrollToTop();
 		}
 	}
 }
