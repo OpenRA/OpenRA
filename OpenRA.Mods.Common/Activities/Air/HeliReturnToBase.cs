@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			var exit = dest.Info.TraitInfos<ExitInfo>().FirstOrDefault();
+			var exit = dest.Info.FirstExitOrDefault(null);
 			var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 			if (ShouldLandAtBuilding(self, dest))

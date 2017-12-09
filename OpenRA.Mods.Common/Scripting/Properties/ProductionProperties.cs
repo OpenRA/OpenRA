@@ -33,8 +33,9 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked.")]
-		public void Produce(string actorType, string factionVariant = null)
+		[Desc("Build a unit, ignoring the production queue. The activity will wait if the exit is blocked.",
+			"If productionType is nil or unavailable, then an exit will be selected based on Buildable info.")]
+		public void Produce(string actorType, string factionVariant = null, string productionType = null)
 		{
 			ActorInfo actorInfo;
 			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 				new FactionInit(faction)
 			};
 
-			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, inits)));
+			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, productionType, inits)));
 		}
 	}
 
