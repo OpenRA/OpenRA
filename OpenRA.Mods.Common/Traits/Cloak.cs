@@ -137,6 +137,11 @@ namespace OpenRA.Mods.Common.Traits
 				return SpriteRenderable.None;
 		}
 
+		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
+		{
+			return bounds;
+		}
+
 		void ITick.Tick(Actor self)
 		{
 			if (!IsTraitDisabled)

@@ -254,7 +254,15 @@ namespace OpenRA.Traits
 		IEnumerable<Actor> ActorsInBox(WPos a, WPos b);
 	}
 
-	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
+	public interface IRenderModifier
+	{
+		IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r);
+
+		// HACK: This is here to support the WithShadow trait.
+		// That trait should be rewritten using standard techniques, and then this interface method removed
+		IEnumerable<Rectangle> ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> r);
+	}
+
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }

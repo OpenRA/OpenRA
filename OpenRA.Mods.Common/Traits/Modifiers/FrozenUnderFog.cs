@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -147,6 +148,11 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			return IsVisible(self, self.World.RenderPlayer) || isRendering ? r : SpriteRenderable.None;
+		}
+
+		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
+		{
+			return bounds;
 		}
 	}
 
