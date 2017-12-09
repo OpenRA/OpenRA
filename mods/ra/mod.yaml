@@ -100,7 +100,7 @@ ChromeLayout:
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml
 	common|chrome/lobby-players.yaml
-	ra|chrome/lobby-options.yaml
+	common|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
 	common|chrome/lobby-kickdialogs.yaml
 	common|chrome/lobby-globalchat.yaml
