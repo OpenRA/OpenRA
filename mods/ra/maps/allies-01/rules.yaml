@@ -19,20 +19,19 @@ TRAN.Extraction:
 	Cargo:
 		Types: Einstein
 		MaxWeight: 1
-	AutoSelectionSize:
 	RenderSprites:
 		Image: tran
-	AutoRenderSize:
+	Interactable:
+	Interactable:
 
 TRAN.Insertion:
 	Inherits: TRAN.Extraction
 	WithFacingSpriteBody:
 	Cargo:
 		MaxWeight: 0
-	AutoSelectionSize:
 	RenderSprites:
 		Image: tran
-	AutoRenderSize:
+	Interactable:
 
 EINSTEIN:
 	Passenger:

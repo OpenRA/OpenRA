@@ -54,6 +54,7 @@ GACTWR:
 	Building:
 	Selectable:
 		Bounds: 48, 36, 0, -6
+		DecorationBounds: 48, 48, 0, -12
 	Health:
 		HP: 500
 	Armor:
@@ -128,7 +129,6 @@ GACTWR:
 			tower.sam: tower.sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 48, 48, 0, -12
 
 GAVULC:
 	Inherits: ^BuildingPlug

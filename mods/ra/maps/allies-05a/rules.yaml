@@ -36,6 +36,7 @@ LST:
 	-Selectable:
 	Targetable:
 		TargetTypes: Ground, Water
+	Interactable:
 
 LST.IN:
 	Inherits: LST
@@ -50,6 +51,7 @@ TRAN:
 		Range: 4c0
 	Targetable@GROUND:
 		TargetTypes: Ground
+	Interactable:
 
 TRAN.IN:
 	Inherits: TRAN

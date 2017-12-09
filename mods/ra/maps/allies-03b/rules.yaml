@@ -127,6 +127,7 @@ TRAN:
 		Range: 0c0
 	Cargo:
 		Types: ~disabled
+	Interactable:
 
 JEEP.mission:
 	Inherits: JEEP
@@ -143,6 +144,7 @@ JEEP.mission:
 		Range: 0c0
 	RenderSprites:
 		Image: JEEP
+	Interactable:
 
 E3:
 	Buildable:

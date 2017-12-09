@@ -134,14 +134,13 @@ crate:
 		Palette: effect
 	WithCrateBody:
 	Passenger:
-	CustomSelectionSize:
-		CustomBounds: 20,20
 	EditorTilesetFilter:
 		Categories: System
-	CustomRenderSize:
-		CustomBounds: 20,20
+	Interactable:
+		Bounds: 20,20
 
 mpspawn:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (multiplayer player starting point)
 	AlwaysVisible:
@@ -155,6 +154,7 @@ mpspawn:
 		Categories: System
 
 waypoint:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (waypoint for scripted behavior)
 	AlwaysVisible:
@@ -177,6 +177,7 @@ waypoint:
 		Palette: colorpicker
 
 camera:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (reveals area to owner)
 	AlwaysVisible:
@@ -193,6 +194,7 @@ camera:
 		Categories: System
 
 wormspawner:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (worm spawning location)
 	AlwaysVisible:
@@ -208,6 +210,7 @@ wormspawner:
 
 upgrade.conyard:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Construction Yard Upgrade
 	Buildable:
@@ -230,6 +233,7 @@ upgrade.conyard:
 
 upgrade.barracks:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Barracks Upgrade
 	Buildable:
@@ -253,6 +257,7 @@ upgrade.barracks:
 
 upgrade.light:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Light Factory Upgrade
 	Buildable:
@@ -276,6 +281,7 @@ upgrade.light:
 
 upgrade.heavy:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Heavy Factory Upgrade
 	Buildable:
@@ -299,6 +305,7 @@ upgrade.heavy:
 
 upgrade.hightech:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: High Tech Factory Upgrade
 	Buildable:

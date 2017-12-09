@@ -13,8 +13,8 @@ DOG:
 		GenericName: Dog
 	Selectable:
 		Bounds: 12,17,-1,-4
+		DecorationBounds: 12,17,-1,-4
 	SelectionDecorations:
-		VisualBounds: 12,17,-1,-4
 	Health:
 		HP: 18
 	Mobile:
@@ -673,8 +673,8 @@ Ant:
 		Description: Irradiated insect that grew oversize.
 	Selectable:
 		Bounds: 24,24,0,-5
+		DecorationBounds: 30,30,0,-2
 	SelectionDecorations:
-		VisualBounds: 30,30,0,-2
 	Health:
 		HP: 750
 	Mobile:

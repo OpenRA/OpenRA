@@ -131,6 +131,7 @@ TRAN:
 	-Selectable:
 	Buildable:
 		Prerequisites: ~disabled
+	Interactable:
 
 ORCA:
 	Buildable:

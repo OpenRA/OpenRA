@@ -65,6 +65,7 @@ WEAP:
 
 MAINLAND:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Reach the mainland
 	ProvidesPrerequisite:
@@ -80,6 +81,7 @@ FIX:
 
 GIVEFIX:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Weapons Factory or Helipad
 

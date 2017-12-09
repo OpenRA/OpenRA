@@ -39,11 +39,12 @@ V2RL:
 		RequiresCondition: !ammo
 		Sequence: empty-idle
 	SelectionDecorations:
-		VisualBounds: 28,28
 	Explodes:
 		Weapon: V2Explode
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 1TNK:
 	Inherits: ^Tank
@@ -125,9 +126,10 @@ V2RL:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
 	SelectionDecorations:
-		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 3TNK:
 	Inherits: ^Tank
@@ -168,9 +170,10 @@ V2RL:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
 	SelectionDecorations:
-		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 4TNK:
 	Inherits: ^Tank
@@ -225,11 +228,12 @@ V2RL:
 		HealIfBelow: 50
 		DamageCooldown: 150
 	SelectionDecorations:
-		VisualBounds: 44,38,0,-4
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	DetectCloaked:
 		Range: 6c0
+	Selectable:
+		DecorationBounds: 44,38,0,-4
 
 ARTY:
 	Inherits: ^Tank
@@ -283,8 +287,8 @@ HARV:
 		GenericName: Harvester
 	Selectable:
 		Priority: 7
+		DecorationBounds: 42,42
 	SelectionDecorations:
-		VisualBounds: 42,42
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -333,8 +337,8 @@ MCV:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Priority: 4
+		DecorationBounds: 42,42
 	SelectionDecorations:
-		VisualBounds: 42,42
 	Health:
 		HP: 600
 	Armor:
@@ -611,9 +615,10 @@ TTNK:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:
-		VisualBounds: 30,30
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 30,30
 
 FTRK:
 	Inherits: ^Vehicle
@@ -657,9 +662,10 @@ FTRK:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SelectionDecorations:
-		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 DTRK:
 	Inherits: ^Vehicle
@@ -705,7 +711,6 @@ CTNK:
 	Tooltip:
 		Name: Chrono Tank
 	SelectionDecorations:
-		VisualBounds: 30,30
 	Health:
 		HP: 450
 	Armor:
@@ -731,6 +736,8 @@ CTNK:
 		ChargeDelay: 300
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 30,30
 
 QTNK:
 	Inherits: ^Tank
@@ -756,10 +763,11 @@ QTNK:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	SelectionDecorations:
-		VisualBounds: 44,38,0,-4
 	MadTank:
 	Targetable:
 		TargetTypes: Ground, MADTank, Repair, Vehicle
+	Selectable:
+		DecorationBounds: 44,38,0,-4
 
 STNK:
 	Inherits: ^Vehicle

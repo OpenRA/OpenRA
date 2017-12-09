@@ -121,3 +121,4 @@ OLDLST:
 	RejectsOrders:
 	Cargo:
 		Types: disabled
+	Interactable:

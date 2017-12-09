@@ -245,8 +245,8 @@ FAPW:
 		Image: APWR
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,68,0,-10
 	SelectionDecorations:
-		VisualBounds: 72,68,0,-10
 	Valued:
 		Cost: 60
 

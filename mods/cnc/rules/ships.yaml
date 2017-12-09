@@ -29,11 +29,11 @@ BOAT:
 		Sequence: left # Just a work-around to avoid crash
 	Selectable:
 		Bounds: 42,24
+		DecorationBounds: 42,24
 	AutoTarget:
 		AllowMovement: false
 	RejectsOrders:
 	SelectionDecorations:
-		VisualBounds: 42,24
 	GrantConditionOnDamageState@HEAVY:
 		Condition: heavy-damage
 		ValidDamageStates: Heavy

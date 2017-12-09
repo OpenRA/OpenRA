@@ -11,9 +11,7 @@
 ^SpriteActor:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
-	AutoRenderSize:
 
 ^1x1Shape:
 	HitShape:
@@ -730,6 +728,7 @@
 
 ^CivBuildingHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -765,6 +764,7 @@
 	Inherits: ^CivBuilding
 	-Selectable:
 	-SelectionDecorations:
+	Interactable:
 	Tooltip:
 		GenericName: Field
 	-Explodes:
@@ -775,6 +775,7 @@
 
 ^CivFieldHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -794,6 +795,7 @@
 ^Wall:
 	Inherits@1: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Interactable:
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	Building:
@@ -830,6 +832,7 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Tree
 		ShowOwnerRow: false
@@ -871,6 +874,7 @@
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	AppearsOnRadar:
 	Building:
 		Footprint: __ x_
@@ -886,6 +890,7 @@
 
 ^TibTree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Blossom Tree
 		ShowOwnerRow: false
@@ -905,6 +910,7 @@
 
 ^Rock:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Rock
 		ShowOwnerRow: false
@@ -925,6 +931,7 @@
 
 ^CommonHuskDefaults:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Health:
 		HP: 140
 	Armor:
@@ -1001,6 +1008,7 @@
 
 ^Crate:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderFog:
 	Tooltip:
 		Name: Crate

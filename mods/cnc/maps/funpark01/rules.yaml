@@ -46,6 +46,7 @@ OLDLST:
 	RejectsOrders:
 	Cargo:
 		Types: disabled
+	Interactable:
 
 TREX:
 	Health:

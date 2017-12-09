@@ -22,7 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	// TODO: This trait is hacky and should go away as soon as we support granting a condition on docking, in favor of toggling two regular WithVoxelBodies
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo, IAutoRenderSizeInfo
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
@@ -46,11 +46,10 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoSelectionSize, IAutoRenderSize, IAutoMouseBounds
+	public class WithVoxelUnloadBody : IAutoMouseBounds
 	{
 		public bool Docked;
 
-		readonly int2 size;
 		readonly ModelAnimation modelAnimation;
 		readonly RenderVoxels rv;
 
@@ -67,20 +66,12 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 			rv.Add(modelAnimation);
 
-			// Selection size
-			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * idleModel.Size.Aggregate(Math.Max));
-			size = new int2(s, s);
-
 			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
 			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => !Docked,
 				() => 0, info.ShowShadow));
 		}
-
-		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
-		int2 IAutoRenderSize.RenderSize(Actor self) { return size; }
 
 		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
 		{

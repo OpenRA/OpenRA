@@ -49,7 +49,8 @@ TRAN:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	SelectionDecorations:
-		VisualBounds: 41,41
+	Selectable:
+		DecorationBounds: 41,41
 
 HELI:
 	Inherits: ^Helicopter
@@ -107,10 +108,11 @@ HELI:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	SelectionDecorations:
-		VisualBounds: 30,24
 	ReloadAmmoPool:
 		Delay: 40
 		Count: 1
+	Selectable:
+		DecorationBounds: 30,24
 
 ORCA:
 	Inherits: ^Helicopter
@@ -158,13 +160,15 @@ ORCA:
 	WithMoveAnimation:
 		MoveSequence: move
 	SelectionDecorations:
-		VisualBounds: 30,24
 	ReloadAmmoPool:
 		Delay: 100
 		Count: 2
+	Selectable:
+		DecorationBounds: 30,24
 
 C17:
 	Inherits: ^Plane
+	Interactable:
 	Tooltip:
 		Name: Supply Aircraft
 	Valued:
@@ -199,6 +203,7 @@ C17:
 
 A10:
 	Inherits: ^Plane
+	Interactable:
 	Tooltip:
 		Name: A10 Bomber
 	Valued:

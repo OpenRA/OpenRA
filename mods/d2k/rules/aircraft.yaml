@@ -57,6 +57,7 @@ frigate:
 	Inherits: ^Plane
 	ParaDrop:
 		DropRange: 1c0
+	Interactable:
 	Tooltip:
 		Name: Frigate
 	Aircraft:

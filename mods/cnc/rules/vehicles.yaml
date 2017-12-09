@@ -13,6 +13,7 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
+		DecorationBounds: 36,36
 	Mobile:
 		Speed: 71
 		Crushes: crate, infantry
@@ -34,7 +35,6 @@ MCV:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
 	SelectionDecorations:
-		VisualBounds: 36,36
 
 HARV:
 	Inherits: ^Tank
@@ -53,6 +53,7 @@ HARV:
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
+		DecorationBounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
@@ -76,7 +77,6 @@ HARV:
 	Explodes:
 		Weapon: TiberiumExplosion
 	SelectionDecorations:
-		VisualBounds: 36,36
 
 APC:
 	Inherits: ^Tank
@@ -386,7 +386,8 @@ MTNK:
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
 	SelectionDecorations:
-		VisualBounds: 28,28
+	Selectable:
+		DecorationBounds: 28,28
 
 HTNK:
 	Inherits: ^Tank
@@ -437,7 +438,8 @@ HTNK:
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
 	SelectionDecorations:
-		VisualBounds: 34,34,0,-3
+	Selectable:
+		DecorationBounds: 34,34,0,-3
 
 MSAM:
 	Inherits: ^Tank

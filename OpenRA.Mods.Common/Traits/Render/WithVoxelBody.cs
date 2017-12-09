@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo, IAutoRenderSizeInfo
+	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -40,9 +40,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize, IAutoRenderSize, IAutoMouseBounds
+	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoMouseBounds
 	{
-		readonly int2 size;
 		readonly ModelAnimation modelAnimation;
 		readonly RenderVoxels rv;
 
@@ -58,14 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				() => IsTraitDisabled, () => 0, info.ShowShadow);
 
 			rv.Add(modelAnimation);
-			// Selection size
-			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * model.Size.Aggregate(Math.Max));
-			size = new int2(s, s);
 		}
-
-		public int2 SelectionSize(Actor self) { return size; }
-		public int2 RenderSize(Actor self) { return size; }
 
 		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
 		{

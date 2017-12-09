@@ -131,8 +131,8 @@ MOBILETENT:
 		Name: Mobile Tent
 	Selectable:
 		Priority: 4
+		DecorationBounds: 21,21
 	SelectionDecorations:
-		VisualBounds: 21,21
 	Health:
 		HP: 600
 	Armor:

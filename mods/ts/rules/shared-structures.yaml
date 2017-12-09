@@ -46,6 +46,7 @@ GACNST:
 		Amount: 0
 	Selectable:
 		Bounds: 144, 60, 0, -6
+		DecorationBounds: 144, 80, 0, -12
 	ProvidesPrerequisite@gdi:
 		Factions: gdi
 		Prerequisite: structures.gdi
@@ -53,7 +54,6 @@ GACNST:
 		Factions: nod
 		Prerequisite: structures.nod
 	SelectionDecorations:
-		VisualBounds: 144, 80, 0, -12
 
 PROC:
 	Inherits: ^Building
@@ -72,6 +72,7 @@ PROC:
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 134, 96, 0, -12
+		DecorationBounds: 134, 122, 0, -18
 	Health:
 		HP: 900
 	RevealsShroud:
@@ -103,7 +104,6 @@ PROC:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 134, 122, 0, -18
 	RenderSprites:
 		Image: proc.gdi
 		FactionImages:
@@ -129,6 +129,7 @@ GASILO:
 		Dimensions: 2, 2
 	Selectable:
 		Bounds: 80, 48, -5, 0
+		DecorationBounds: 80, 48, -5, 0
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -155,12 +156,12 @@ GASILO:
 	Power:
 		Amount: -10
 	SelectionDecorations:
-		VisualBounds: 80, 48, -5, 0
 	Explodes:
 		Weapon: TiberiumExplosion
 
 ANYPOWER:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Power Plant
 	Buildable:
@@ -168,6 +169,7 @@ ANYPOWER:
 
 BARRACKS:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Infantry Production
 	Buildable:
@@ -175,6 +177,7 @@ BARRACKS:
 
 FACTORY:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Vehicle Production
 	Buildable:
@@ -182,6 +185,7 @@ FACTORY:
 
 RADAR:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Radar
 	Buildable:
@@ -189,6 +193,7 @@ RADAR:
 
 TECH:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Tech Center
 	Buildable:

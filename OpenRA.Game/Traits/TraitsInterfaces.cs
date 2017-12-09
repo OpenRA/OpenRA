@@ -102,19 +102,14 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr);
 	}
 
-	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
-	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
-
 	// TODO: Replace Rectangle with an int2[] polygon
 	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
+	public interface IMouseBoundsInfo : ITraitInfoInterface { }
 	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
 
 	// HACK: This provides a shim for legacy code until it can be rewritten
 	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
 	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
-
-	public interface IAutoRenderSizeInfo : ITraitInfoInterface { }
-	public interface IAutoRenderSize { int2 RenderSize(Actor self); }
 
 	public interface IIssueOrder
 	{
@@ -158,11 +153,6 @@ namespace OpenRA.Traits
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
-
-	public interface ISelectionDecorationsInfo : ITraitInfoInterface
-	{
-		int[] SelectionBoxBounds { get; }
-	}
 
 	public interface IVoiced
 	{

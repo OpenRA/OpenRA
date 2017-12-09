@@ -13,9 +13,7 @@
 		UseClassicPerspectiveFudge: False
 		CameraPitch: 85
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
-	AutoRenderSize:
 
 ^GainsExperience:
 	GainsExperience:
@@ -428,12 +426,10 @@
 		Palette: terraindecoration
 	WithCrateBody:
 		Images: crate
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	EditorTilesetFilter:
 		Categories: System
-	CustomRenderSize:
-		CustomBounds: 24,24
+	Interactable:
+		Bounds: 24,24
 
 ^Wall:
 	Inherits@1: ^SpriteActor
@@ -441,6 +437,7 @@
 	CombatDebugOverlay:
 	HiddenUnderShroud:
 	AppearsOnRadar:
+	Interactable:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -485,6 +482,7 @@
 		Height: 768
 
 ^BuildingPlug:
+	Interactable:
 	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
@@ -873,6 +871,7 @@
 	HiddenUnderFog:
 		Type: GroundPosition
 	ScriptTriggers:
+	Interactable:
 	Tooltip:
 		GenericName: Destroyed Aircraft
 	FallsToEarth:
@@ -930,6 +929,7 @@
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Blossom Tree
 	RenderSprites:
@@ -951,6 +951,7 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
@@ -968,6 +969,7 @@
 
 ^Rock:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
@@ -985,6 +987,7 @@
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
@@ -1097,12 +1100,11 @@
 	Inherits: ^TerrainOverlay
 	EditorOnlyTooltip:
 		Name: Railway
-	AutoSelectionSize:
 	ChangesTerrain:
 		TerrainType: Rail
 	EditorTilesetFilter:
 		Categories: Railway
-	AutoRenderSize:
+	Interactable:
 
 ^Tunnel:
 	RenderSprites:
@@ -1114,16 +1116,14 @@
 	Building:
 		Dimensions: 3, 3
 		Footprint: ___ ___ ___
-	CustomSelectionSize:
-		CustomBounds: 144, 144
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
 		Dimensions: 3, 3
 	EditorTilesetFilter:
 		Categories: Tunnel
-	CustomRenderSize:
-		CustomBounds: 144, 144
+	Interactable:
+		Bounds: 144, 144
 
 ^Gate:
 	Inherits: ^Building

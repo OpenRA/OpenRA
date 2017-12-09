@@ -45,6 +45,7 @@ LST.Unselectable.UnloadOnly:
 		PipCount: 0
 	Targetable:
 		TargetTypes: Ground, Water, Repair, NoAutoTarget
+	Interactable:
 
 SPY.Strong:
 	Inherits: SPY

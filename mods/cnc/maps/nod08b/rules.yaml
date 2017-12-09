@@ -224,3 +224,4 @@ TRAN.IN:
 		Image: TRAN
 	Buildable:
 		Prerequisites: ~disabled
+	Interactable:

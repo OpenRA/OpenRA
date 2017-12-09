@@ -36,6 +36,7 @@ BADR:
 	RejectsOrders:
 	GivesExperience:
 		Experience: 1000
+	Interactable:
 
 BADR.Bomber:
 	Inherits: ^NeutralPlane
@@ -78,6 +79,7 @@ BADR.Bomber:
 		Image: badr
 	GivesExperience:
 		Experience: 1000
+	Interactable:
 
 MIG:
 	Inherits: ^Plane
@@ -128,8 +130,8 @@ MIG:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
+		DecorationBounds: 40,29,0,1
 	SelectionDecorations:
-		VisualBounds: 40,29,0,1
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -197,7 +199,6 @@ YAK:
 		AmmoCondition: ammo
 	ReturnOnIdle:
 	SelectionDecorations:
-		VisualBounds: 30,28,0,2
 	WithMuzzleOverlay:
 	Contrail:
 		Offset: -853,0,0
@@ -208,6 +209,8 @@ YAK:
 		Interval: 2
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 30,28,0,2
 
 TRAN:
 	Inherits: ^Helicopter
@@ -261,7 +264,8 @@ TRAN:
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:
-		VisualBounds: 40,36
+	Selectable:
+		DecorationBounds: 40,36
 
 HELI:
 	Inherits: ^Helicopter
@@ -319,13 +323,14 @@ HELI:
 		Ammo: 8
 		AmmoCondition: ammo
 	SelectionDecorations:
-		VisualBounds: 36,28
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 36,28
 
 HIND:
 	Inherits: ^Helicopter
@@ -385,7 +390,6 @@ HIND:
 		ReloadDelay: 8
 		AmmoCondition: ammo
 	SelectionDecorations:
-		VisualBounds: 38,32
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HIND.Husk
@@ -393,6 +397,8 @@ HIND:
 		Offset: -427,0,0
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 38,32
 
 U2:
 	Inherits: ^NeutralPlane
@@ -424,3 +430,4 @@ U2:
 		Offset: -1c43,0,0
 		Interval: 2
 	RejectsOrders:
+	Interactable:

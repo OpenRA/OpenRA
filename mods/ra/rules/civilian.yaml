@@ -296,14 +296,13 @@ V19.Husk:
 	-HitShape:
 	-Health:
 	-Explodes:
+	Interactable:
 
 BARL:
 	Inherits: ^TechBuilding
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	Health:
 		HP: 10
 	Explodes:
@@ -320,16 +319,15 @@ BARL:
 	-Demolishable:
 	EditorTilesetFilter:
 		Categories: Decoration
-	CustomRenderSize:
-		CustomBounds: 24,24
+	Interactable:
+		Bounds: 24,24
+	Interactable:
 
 BRL3:
 	Inherits: ^TechBuilding
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	Health:
 		HP: 10
 	Explodes:
@@ -346,8 +344,9 @@ BRL3:
 	-Demolishable:
 	EditorTilesetFilter:
 		Categories: Decoration
-	CustomRenderSize:
-		CustomBounds: 24,24
+	Interactable:
+		Bounds: 24,24
+	Interactable:
 
 AMMOBOX1:
 	Inherits: ^AmmoBox
@@ -487,16 +486,14 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
-	CustomSelectionSize:
-		CustomBounds: 120,72
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,-1
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 0,1
-	CustomRenderSize:
-		CustomBounds: 120,72
+	Interactable:
+		Bounds: 120,72
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -507,16 +504,14 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
-	CustomSelectionSize:
-		CustomBounds: 120,48
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,-1
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 2,1
-	CustomRenderSize:
-		CustomBounds: 120,48
+	Interactable:
+		Bounds: 120,48
 
 SBRIDGE1:
 	Inherits: ^Bridge
@@ -527,16 +522,14 @@ SBRIDGE1:
 	Building:
 		Footprint: ___ ___
 		Dimensions: 3,2
-	CustomSelectionSize:
-		CustomBounds: 72,48
 	FreeActor@north:
 		Actor: bridgehut.small
 		SpawnOffset: 1,0
 	FreeActor@south:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
-	CustomRenderSize:
-		CustomBounds: 72,48
+	Interactable:
+		Bounds: 72,48
 
 SBRIDGE2:
 	Inherits: ^Bridge
@@ -547,16 +540,14 @@ SBRIDGE2:
 	Building:
 		Footprint: __ __ __
 		Dimensions: 2,3
-	CustomSelectionSize:
-		CustomBounds: 48,72
 	FreeActor@west:
 		Actor: bridgehut.small
 		SpawnOffset: 0,1
 	FreeActor@east:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
-	CustomRenderSize:
-		CustomBounds: 48,72
+	Interactable:
+		Bounds: 48,72
 
 SBRIDGE3:
 	Inherits: ^Bridge
@@ -790,8 +781,8 @@ WINDMILL:
 		RequireTilesets: TEMPERAT
 	Selectable:
 		Bounds: 24,24,0,-14
+		DecorationBounds: 36,36,0,-14
 	SelectionDecorations:
-		VisualBounds: 36,36,0,-14
 	Tooltip:
 		Name: Windmill
 	Building:

@@ -16,6 +16,7 @@ NAPULS:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 78, 54, 0, -12
+		DecorationBounds: 78, 54, 0, -12
 	Health:
 		HP: 500
 	Armor:
@@ -37,7 +38,6 @@ NAPULS:
 		Amount: -150
 		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 78, 54, 0, -12
 	RenderSprites:
 		Image: napuls.gdi
 		FactionImages:

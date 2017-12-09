@@ -263,6 +263,7 @@
     <Compile Include="UtilityCommands\ClearInvalidModRegistrationsCommand.cs" />
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="HotkeyDefinition.cs" />
+    <Compile Include="Traits\Interactable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />

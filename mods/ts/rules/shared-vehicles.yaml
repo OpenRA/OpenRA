@@ -12,6 +12,7 @@ MCV:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Priority: 3
+		DecorationBounds: 42,42
 	Health:
 		HP: 1000
 	Armor:
@@ -33,7 +34,6 @@ MCV:
 		NoTransformSounds:
 		Voice: Move
 	SelectionDecorations:
-		VisualBounds: 42,42
 	RenderSprites:
 		Image: mcv.gdi
 		FactionImages:
@@ -55,6 +55,7 @@ HARV:
 	Selectable:
 		Priority: 7
 		Bounds: 36,36
+		DecorationBounds: 36,36
 	Harvester:
 		DeliveryBuildings: proc
 		Capacity: 28
@@ -98,7 +99,6 @@ HARV:
 		LocalOffset: 543,0,0
 		Palette: effect
 	SelectionDecorations:
-		VisualBounds: 36,36
 	RenderSprites:
 		Image: harv.gdi
 		FactionImages:

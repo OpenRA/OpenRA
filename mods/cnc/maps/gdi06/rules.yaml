@@ -65,6 +65,7 @@ OLDLST:
 	RejectsOrders:
 	Cargo:
 		Types: disabled
+	Interactable:
 
 SAM:
 	SpawnActorOnDeath:

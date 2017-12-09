@@ -386,4 +386,5 @@ JUGG:
 	RevealOnFire:
 		ArmamentNames: deployed
 	SelectionDecorations:
-		VisualBounds: 48,40,0,-8
+	Selectable:
+		DecorationBounds: 48,40,0,-8

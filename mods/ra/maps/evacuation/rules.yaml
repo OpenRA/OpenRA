@@ -71,6 +71,7 @@ TRAN:
 		Prerequisites: ~disabled
 	RevealsShroud:
 		Range: 0c0
+	Interactable:
 
 2TNK:
 	Buildable:

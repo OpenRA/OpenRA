@@ -378,15 +378,13 @@ HUNTER:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
-	Selectable:
+	Interactable:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
 	HitShape:
 	EditorTilesetFilter:
 		Categories: System
-	AutoRenderSize:

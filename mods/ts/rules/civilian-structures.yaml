@@ -1363,6 +1363,7 @@ GASPOT:
 		Dimensions: 1, 1
 	Selectable:
 		Bounds: 48, 30, 0, -4
+		DecorationBounds: 48, 82, 0, -25
 	Power:
 		Amount: -10
 	Armor:
@@ -1375,7 +1376,6 @@ GASPOT:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	SelectionDecorations:
-		VisualBounds: 48, 82, 0, -25
 	EditorTilesetFilter:
 		Categories: Civilian building
 
@@ -1404,8 +1404,8 @@ GALITE:
 		Palette: alpha
 	Selectable:
 		Bounds: 24, 24, 0, -4
+		DecorationBounds: 25, 35, 0, -12
 	SelectionDecorations:
-		VisualBounds: 25, 35, 0, -12
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
@@ -1492,6 +1492,7 @@ UFO:
 		Palette: terraindecoration
 	Selectable:
 		Bounds: 144, 72, 0, 0
+		DecorationBounds: 144, 72, 0, 0
 	Tooltip:
 		Name: Scrin Ship
 	Health:
@@ -1501,7 +1502,6 @@ UFO:
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	SelectionDecorations:
-		VisualBounds: 144, 72, 0, 0
 	ThrowsShrapnel@SMALL:
 		Pieces: 9, 12
 	ThrowsShrapnel@LARGE:
