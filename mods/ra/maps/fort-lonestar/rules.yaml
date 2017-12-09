@@ -29,17 +29,17 @@ World:
 	LuaScript:
 		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: True
-		BuildRadiusLocked: True
-		BuildRadiusEnabled: True
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: True
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	SpawnMPUnits:
-		Locked: True
+		DropdownLocked: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
-		ShortGameLocked: True
-		ShortGameEnabled: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
@@ -91,10 +91,10 @@ Player:
 		BuildDurationModifier: 250
 	-EnemyWatcher:
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 50

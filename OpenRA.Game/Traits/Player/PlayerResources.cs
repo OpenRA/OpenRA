@@ -19,11 +19,11 @@ namespace OpenRA.Traits
 	{
 		[Translate]
 		[Desc("Descriptive label for the starting cash option in the lobby.")]
-		public readonly string Label = "Starting Cash";
+		public readonly string DefaultCashDropdownLabel = "Starting Cash";
 
 		[Translate]
 		[Desc("Tooltip description for the starting cash option in the lobby.")]
-		public readonly string Description = "Change the amount of cash that players start with";
+		public readonly string DefaultCashDropdownDescription = "Change the amount of cash that players start with";
 
 		[Desc("Starting cash options that are available in the lobby options.")]
 		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
@@ -32,13 +32,13 @@ namespace OpenRA.Traits
 		public readonly int DefaultCash = 5000;
 
 		[Desc("Force the DefaultCash option by disabling changes in the lobby.")]
-		public readonly bool DefaultCashLocked = false;
+		public readonly bool DefaultCashDropdownLocked = false;
 
 		[Desc("Whether to display the DefaultCash option in the lobby.")]
-		public readonly bool DefaultCashVisible = true;
+		public readonly bool DefaultCashDropdownVisible = true;
 
 		[Desc("Display order for the DefaultCash option.")]
-		public readonly int DefaultCashDisplayOrder = 0;
+		public readonly int DefaultCashDropdownDisplayOrder = 0;
 
 		[Desc("Speech notification to play when the player does not have any funds.")]
 		public readonly string InsufficientFundsNotification = null;
@@ -51,8 +51,8 @@ namespace OpenRA.Traits
 			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
 
 			if (startingCash.Any())
-				yield return new LobbyOption("startingcash", Label, Description, DefaultCashVisible, DefaultCashDisplayOrder,
-					new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashLocked);
+				yield return new LobbyOption("startingcash", DefaultCashDropdownLabel, DefaultCashDropdownDescription, DefaultCashDropdownVisible, DefaultCashDropdownDisplayOrder,
+					new ReadOnlyDictionary<string, string>(startingCash), DefaultCash.ToString(), DefaultCashDropdownLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }

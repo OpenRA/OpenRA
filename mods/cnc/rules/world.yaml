@@ -77,7 +77,7 @@ World:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
 	MapCreeps:
-		Visible: False
+		CheckboxVisible: False
 	SpawnMapActors:
 	MapBuildRadius:
 		AllyBuildRadiusDisplayOrder: 4

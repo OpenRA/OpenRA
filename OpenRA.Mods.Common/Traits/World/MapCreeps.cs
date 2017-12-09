@@ -19,27 +19,27 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Translate]
 		[Desc("Descriptive label for the creeps checkbox in the lobby.")]
-		public readonly string Label = "Creep Actors";
+		public readonly string CheckboxLabel = "Creep Actors";
 
 		[Translate]
 		[Desc("Tooltip description for the creeps checkbox in the lobby.")]
-		public readonly string Description = "Hostile forces spawn on the battlefield";
+		public readonly string CheckboxDescription = "Hostile forces spawn on the battlefield";
 
 		[Desc("Default value of the creeps checkbox in the lobby.")]
-		public readonly bool Enabled = true;
+		public readonly bool CheckboxEnabled = true;
 
 		[Desc("Prevent the creeps state from being changed in the lobby.")]
-		public readonly bool Locked = false;
+		public readonly bool CheckboxLocked = false;
 
 		[Desc("Whether to display the creeps checkbox in the lobby.")]
-		public readonly bool Visible = true;
+		public readonly bool CheckboxVisible = true;
 
 		[Desc("Display order for the creeps checkbox in the lobby.")]
-		public readonly int DisplayOrder = 0;
+		public readonly int CheckboxDisplayOrder = 0;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("creeps", Label, Description, Visible, DisplayOrder, Enabled, Locked);
+			yield return new LobbyBooleanOption("creeps", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new MapCreeps(this); }
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			Enabled = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("creeps", info.Enabled);
+				.OptionOrDefault("creeps", info.CheckboxEnabled);
 		}
 	}
 }
