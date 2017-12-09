@@ -409,16 +409,14 @@ BRIDGE1:
 	Building:
 		Footprint: ____ ____ ____ ____
 		Dimensions: 4,4
-	CustomSelectionSize:
-		CustomBounds: 96,96
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,0
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 0,2
-	CustomRenderSize:
-		CustomBounds: 96,96
+	Interactable:
+		Bounds: 96,96
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -428,16 +426,14 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____ _____ _____ _____
 		Dimensions: 5,5
-	CustomSelectionSize:
-		CustomBounds: 120,120
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,0
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 2,2
-	CustomRenderSize:
-		CustomBounds: 120,120
+	Interactable:
+		Bounds: 120,120
 
 BRIDGE3:
 	Inherits: ^Bridge
@@ -447,16 +443,14 @@ BRIDGE3:
 	Building:
 		Footprint: ______ ______ ______ ______ ______
 		Dimensions: 6,5
-	CustomSelectionSize:
-		CustomBounds: 144,120
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 3,0
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 1,2
-	CustomRenderSize:
-		CustomBounds: 144,120
+	Interactable:
+		Bounds: 144,120
 
 BRIDGE4:
 	Inherits: ^Bridge
@@ -466,29 +460,25 @@ BRIDGE4:
 	Building:
 		Footprint: ______ ______ ______ ______
 		Dimensions: 6,4
-	CustomSelectionSize:
-		CustomBounds: 144,96
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 1,0
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 3,2
-	CustomRenderSize:
-		CustomBounds: 144,96
+	Interactable:
+		Bounds: 144,96
 
 BRIDGEHUT:
 	AlwaysVisible:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	CustomSelectionSize:
-		CustomBounds: 48,48
 	LegacyBridgeHut:
 	Targetable:
 		TargetTypes: BridgeHut, C4
-	CustomRenderSize:
-		CustomBounds: 48,48
+	Interactable:
+		Bounds: 48,48
 
 C1:
 	Inherits: ^CivInfantry

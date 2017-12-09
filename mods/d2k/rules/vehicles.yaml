@@ -14,6 +14,7 @@ mcv:
 	Selectable:
 		Class: mcv
 		Priority: 3
+		DecorationBounds: 42,42
 	Health:
 		HP: 4500
 	Armor:
@@ -40,7 +41,6 @@ mcv:
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
-		VisualBounds: 42,42
 	SelfHealing:
 		Step: 5
 		Delay: 3
@@ -63,6 +63,7 @@ harvester:
 	Selectable:
 		Class: harvester
 		Priority: 7
+		DecorationBounds: 42,42
 	Harvester:
 		PipCount: 7
 		Capacity: 28
@@ -91,7 +92,6 @@ harvester:
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
-		VisualBounds: 42,42
 	SelfHealing:
 		Step: 5
 		Delay: 3
@@ -360,11 +360,12 @@ devastator:
 	AttractsWorms:
 		Intensity: 700
 	SelectionDecorations:
-		VisualBounds: 44,38,0,0
 	SelfHealing:
 		Step: 5
 		Delay: 3
 		HealIfBelow: 50
+	Selectable:
+		DecorationBounds: 44,38,0,0
 
 raider:
 	Inherits: ^Vehicle

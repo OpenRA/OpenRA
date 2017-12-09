@@ -103,6 +103,7 @@ TRAN:
 		Types: Demitri
 		MaxWeight: 1
 	-Selectable:
+	Interactable:
 
 LST:
 	Cargo:

@@ -192,6 +192,7 @@ PROC:
 		Capacity: 700
 	Selectable:
 		Bounds: 72,56,0,12
+		DecorationBounds: 73,72
 	CustomSellValue:
 		Value: 500
 	FreeActor:
@@ -203,7 +204,6 @@ PROC:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 73,72
 
 SILO:
 	Inherits: ^BaseBuilding
@@ -229,7 +229,6 @@ SILO:
 		HasMinibib: Yes
 	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	WithSiloAnimation:
 	StoresResources:
 		PipCount: 10
@@ -241,9 +240,9 @@ SILO:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	SelectionDecorations:
-		VisualBounds: 49,30
 	-AcceptsDeliveredCash:
-	AutoRenderSize:
+	Selectable:
+		DecorationBounds: 49,30
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -338,8 +337,8 @@ HAND:
 	ProvidesPrerequisite@buildingname:
 	Selectable:
 		Bounds: 48,48
+		DecorationBounds: 48,68,0,-10
 	SelectionDecorations:
-		VisualBounds: 48,68,0,-10
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -414,8 +413,8 @@ WEAP:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,64,0,-16
 	SelectionDecorations:
-		VisualBounds: 72,64,0,-16
 	Health:
 		HP: 1100
 	RevealsShroud:
@@ -515,8 +514,8 @@ HQ:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
+		DecorationBounds: 48,53,0,-4
 	SelectionDecorations:
-		VisualBounds: 48,53,0,-4
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -581,8 +580,8 @@ FIX:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
+		DecorationBounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,48
 	Health:
 		HP: 800
 	RevealsShroud:
@@ -624,8 +623,8 @@ EYE:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
+		DecorationBounds: 48,53,0,-4
 	SelectionDecorations:
-		VisualBounds: 48,53,0,-4
 	WithSpriteBody:
 		PauseOnCondition: lowpower
 	Health:
@@ -683,8 +682,8 @@ TMPL:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,68,0,-12
 	SelectionDecorations:
-		VisualBounds: 72,68,0,-12
 	Health:
 		HP: 2100
 	RevealsShroud:
@@ -803,7 +802,6 @@ SAM:
 		RealignDelay: -1
 	-WithSpriteBody:
 	WithEmbeddedTurretSpriteBody:
-	AutoSelectionSize:
 	Armament:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
@@ -815,7 +813,6 @@ SAM:
 		Amount: -20
 	BodyOrientation:
 		UseClassicFacingFudge: True
-	AutoRenderSize:
 
 OBLI:
 	Inherits: ^Defense
@@ -834,8 +831,8 @@ OBLI:
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 22,44,0,-10
 	SelectionDecorations:
-		VisualBounds: 22,44,0,-10
 	Health:
 		HP: 600
 	Armor:
@@ -916,8 +913,8 @@ ATWR:
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 22,48,0,-12
 	SelectionDecorations:
-		VisualBounds: 22,48,0,-12
 	Health:
 		HP: 550
 	Armor:
@@ -1028,6 +1025,7 @@ BRIK:
 
 BARRACKS:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Infantry Production
 	Buildable:
@@ -1035,6 +1033,7 @@ BARRACKS:
 
 VEHICLEPRODUCTION:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Vehicle Production
 	Buildable:
@@ -1042,6 +1041,7 @@ VEHICLEPRODUCTION:
 
 ANYPOWER:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Power Plant
 	Buildable:
@@ -1049,6 +1049,7 @@ ANYPOWER:
 
 ANYHQ:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: a communications center
 	Buildable:

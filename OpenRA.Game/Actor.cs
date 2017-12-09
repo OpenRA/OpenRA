@@ -48,9 +48,6 @@ namespace OpenRA
 
 		public int Generation;
 
-		public Rectangle RenderBounds { get; private set; }
-		public Rectangle SelectableBounds { get; private set; }
-		public Rectangle SelectionOverlayBounds { get; private set; }
 		public IEffectiveOwner EffectiveOwner { get; private set; }
 		public IOccupySpace OccupiesSpace { get; private set; }
 		public ITargetable[] Targetables { get; private set; }
@@ -113,14 +110,6 @@ namespace OpenRA
 			// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
 			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
-
-			// RenderBounds are used for ScreenMap binning
-			// SelectableBounds define the selectable area of the actor
-			// SelectionOverlayBounds are used to draw the selection box and determine offsets for other selection overlays
-			RenderBounds = DetermineRenderBounds();
-			SelectableBounds = DetermineSelectableBounds();
-			SelectionOverlayBounds = DetermineSelectionOverlayBounds();
-
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
 			health = TraitOrDefault<IHealth>();
@@ -133,44 +122,6 @@ namespace OpenRA
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 
 			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
-		}
-
-		Rectangle DetermineRenderBounds()
-		{
-			var size = TraitsImplementing<IAutoRenderSize>().Select(x => x.RenderSize(this)).FirstOrDefault(Exts.IsTraitEnabled);
-			var offset = -size / 2;
-
-			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-		}
-
-		Rectangle DetermineSelectableBounds()
-		{
-			var si = Info.TraitInfoOrDefault<SelectableInfo>();
-			if (si == null || si.Bounds == null)
-				return RenderBounds;
-
-			var size = new int2(si.Bounds[0], si.Bounds[1]);
-
-			var offset = -size / 2;
-			if (si.Bounds.Length > 2)
-				offset += new int2(si.Bounds[2], si.Bounds[3]);
-
-			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-		}
-
-		Rectangle DetermineSelectionOverlayBounds()
-		{
-			var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
-			if (sd == null || sd.SelectionBoxBounds == null)
-				return SelectableBounds;
-
-			var size = new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]);
-
-			var offset = -size / 2;
-			if (sd.SelectionBoxBounds.Length > 2)
-				offset += new int2(sd.SelectionBoxBounds[2], sd.SelectionBoxBounds[3]);
-
-			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
 		}
 
 		public void Tick()

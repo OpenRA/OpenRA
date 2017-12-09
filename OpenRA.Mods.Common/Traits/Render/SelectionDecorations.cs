@@ -18,14 +18,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class SelectionDecorationsInfo : ITraitInfo, ISelectionDecorationsInfo, Requires<IDecorationBoundsInfo>
+	public class SelectionDecorationsInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
 	{
 		[PaletteReference] public readonly string Palette = "chrome";
-
-		[Desc("Bounds for visual selection box. If null, it uses AutoSelectionSize.",
-		"The first two values define the bounds' size, the optional third and fourth",
-		"values specify the position relative to the actors' center. Defaults to selectable bounds.")]
-		public readonly int[] VisualBounds = null;
 
 		[Desc("Health bar, production progress bar etc.")]
 		public readonly bool RenderSelectionBars = true;
@@ -37,8 +32,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = "pips";
 
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
-
-		public int[] SelectionBoxBounds { get { return VisualBounds; } }
 	}
 
 	public class SelectionDecorations : IRenderAboveShroud, INotifyCreated, ITick

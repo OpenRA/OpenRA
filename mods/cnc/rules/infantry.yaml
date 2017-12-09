@@ -254,8 +254,8 @@ TREX:
 		Weapon: teeth
 	Selectable:
 		Bounds: 48,36,2,1
+		DecorationBounds: 52,38
 	SelectionDecorations:
-		VisualBounds: 52,38
 	Buildable:
 		Description: Bipedal carnivore with a massive skull
 
@@ -266,9 +266,10 @@ TRIC:
 	Armament:
 		Weapon: horn
 	SelectionDecorations:
-		VisualBounds: 34,24,0,2
 	Buildable:
 		Description: Quadruped with large bony frill and three horns
+	Selectable:
+		DecorationBounds: 34,24,0,2
 
 RAPT:
 	Inherits: ^DINO

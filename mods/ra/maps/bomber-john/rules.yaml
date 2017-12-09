@@ -164,6 +164,7 @@ MINVV:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
 	HitShape:
+	Interactable:
 
 T17:
 	-Health:

@@ -1,4 +1,5 @@
 spicebloom.spawnpoint:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: Spice Bloom spawnpoint
 	AlwaysVisible:
@@ -32,7 +33,6 @@ spicebloom:
 	HiddenUnderShroud:
 	BodyOrientation:
 		QuantizedFacings: 1
-	AutoSelectionSize:
 	RenderSprites:
 	AppearsOnRadar:
 		UseLocation: true
@@ -63,10 +63,11 @@ spicebloom:
 			Radius: 512
 	EditorTilesetFilter:
 		Categories: System
-	AutoRenderSize:
+	Interactable:
 
 sandworm:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Sandworm
 	Health:

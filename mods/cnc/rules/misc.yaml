@@ -46,6 +46,7 @@ SCRATE:
 		Name: Steel Crate
 
 mpspawn:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (multiplayer player starting point)
 	AlwaysVisible:
@@ -59,6 +60,7 @@ mpspawn:
 		Categories: System
 
 waypoint:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (waypoint for scripted behavior)
 	AlwaysVisible:
@@ -78,6 +80,7 @@ waypoint:
 		Palette: colorpicker
 
 CAMERA:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (reveals area to owner)
 	AlwaysVisible:
@@ -94,6 +97,7 @@ CAMERA:
 		Categories: System
 
 CAMERA.small:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (reveals small area to owner)
 	AlwaysVisible:
@@ -131,7 +135,6 @@ FLARE:
 		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1
-	AutoSelectionSize:
 	EditorTilesetFilter:
 		Categories: System
-	AutoRenderSize:
+	Interactable:

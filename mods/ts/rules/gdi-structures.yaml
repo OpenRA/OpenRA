@@ -30,6 +30,7 @@ GAPOWR:
 		Sequence: idle-plug
 	Selectable:
 		Bounds: 90, 48, 0, -6
+		DecorationBounds: 90, 84, 0, -12
 	Power:
 		Amount: 100
 		RequiresCondition: !empdisable
@@ -61,7 +62,6 @@ GAPOWR:
 		Amount: 50
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 90, 84, 0, -12
 
 GAPILE:
 	Inherits: ^Building
@@ -82,6 +82,7 @@ GAPILE:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 88, 48, 0, -8
+		DecorationBounds: 88, 56, 0, -8
 	Health:
 		HP: 800
 	Armor:
@@ -112,7 +113,6 @@ GAPILE:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 88, 56, 0, -8
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -140,6 +140,7 @@ GAWEAP:
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 154, 96, -2, -12
+		DecorationBounds: 154, 100, -2, -12
 	Health:
 		HP: 1000
 	RevealsShroud:
@@ -176,7 +177,6 @@ GAWEAP:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 154, 100, -2, -12
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -231,9 +231,9 @@ GAHPAD:
 		Amount: -10
 	Selectable:
 		Bounds: 88, 66, 0, -5
+		DecorationBounds: 88, 66, 0, -5
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 88, 66, 0, -5
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -259,6 +259,7 @@ GADEPT:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96, 64, -6, -6
+		DecorationBounds: 98, 68, -6, -6
 	Health:
 		HP: 1100
 	RevealsShroud:
@@ -292,7 +293,6 @@ GADEPT:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 98, 68, -6, -6
 	RenderSprites:
 		Image: gadept.gdi
 		FactionImages:
@@ -319,6 +319,7 @@ GARADR:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 96, 48, 0, -6
+		DecorationBounds: 96, 118, 0, -38
 	Health:
 		HP: 1000
 	Armor:
@@ -342,7 +343,6 @@ GARADR:
 		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 96, 118, 0, -38
 
 GATECH:
 	Inherits: ^Building
@@ -364,6 +364,7 @@ GATECH:
 		Dimensions: 3,2
 	Selectable:
 		Bounds: 110, 60, 3, -4
+		DecorationBounds: 110, 60, 3, -4
 	Health:
 		HP: 500
 	Armor:
@@ -378,7 +379,6 @@ GATECH:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 110, 60, 3, -4
 
 GAPLUG:
 	Inherits: ^Building
@@ -390,6 +390,7 @@ GAPLUG:
 		Name: GDI Upgrade Center
 	Selectable:
 		Bounds: 115,72,0,-12
+		DecorationBounds: 115,104,0,-24
 	Buildable:
 		BuildPaletteOrder: 170
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
@@ -487,4 +488,3 @@ GAPLUG:
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 115,104,0,-24

@@ -1,5 +1,6 @@
 ^concrete:
 	AlwaysVisible:
+	Interactable:
 	Building:
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
@@ -454,6 +455,7 @@ heavy_factory:
 		Description: Produces heavy vehicles.
 	Selectable:
 		Bounds: 96,68,0,12
+		DecorationBounds: 96,96
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -515,7 +517,6 @@ heavy_factory:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 96,96
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.heavy
 		Condition: stardecoration
@@ -660,6 +661,7 @@ starport:
 
 wall:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	CombatDebugOverlay:
 	HiddenUnderShroud:
 	Buildable:
@@ -740,6 +742,7 @@ medium_gun_turret:
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
+		DecorationBounds: 32,40,0,-8
 	Health:
 		HP: 2700
 	Armor:
@@ -759,7 +762,6 @@ medium_gun_turret:
 	Power:
 		Amount: -50
 	SelectionDecorations:
-		VisualBounds: 32,40,0,-8
 
 large_gun_turret:
 	Inherits: ^Defense
@@ -787,6 +789,7 @@ large_gun_turret:
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
+		DecorationBounds: 32,40,0,-8
 	Health:
 		HP: 3000
 	Armor:
@@ -804,7 +807,6 @@ large_gun_turret:
 	Power:
 		Amount: -60
 	SelectionDecorations:
-		VisualBounds: 32,40,0,-8
 	RevealOnDeath:
 		Radius: 5c768
 
@@ -840,8 +842,8 @@ repair_pad:
 		Range: 4c768
 	Selectable:
 		Bounds: 96,64
+		DecorationBounds: 96,80
 	SelectionDecorations:
-		VisualBounds: 96,80
 	Reservable:
 	RepairsUnits:
 		Interval: 10
@@ -874,6 +876,7 @@ high_tech_factory:
 		Description: Unlocks advanced technology.
 	Selectable:
 		Bounds: 96,68,0,12
+		DecorationBounds: 96,96
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -933,7 +936,6 @@ high_tech_factory:
 	Power:
 		Amount: -75
 	SelectionDecorations:
-		VisualBounds: 96,96
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.hightech
 		Condition: stardecoration
@@ -956,6 +958,7 @@ research_centre:
 		Description: Unlocks advanced tanks.
 	Selectable:
 		Bounds: 96,64,0,16
+		DecorationBounds: 96,80
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -994,7 +997,6 @@ research_centre:
 		Amount: -175
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 96,80
 
 palace:
 	Inherits: ^Building

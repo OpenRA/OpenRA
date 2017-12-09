@@ -11,9 +11,7 @@
 ^SpriteActor:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
-	AutoRenderSize:
 
 ^GainsExperience:
 	GainsExperience:
@@ -226,6 +224,7 @@
 
 ^Husk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Health:
 		HP: 75
 	Armor:
@@ -340,6 +339,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Interactable:
 	Huntable:
 	AppearsOnRadar:
 		UseLocation: true

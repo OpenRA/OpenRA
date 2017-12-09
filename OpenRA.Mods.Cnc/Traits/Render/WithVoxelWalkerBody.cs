@@ -23,8 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>,
-		IAutoSelectionSizeInfo, IAutoRenderSizeInfo
+	public class WithVoxelWalkerBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -48,12 +47,11 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelWalkerBody : IAutoSelectionSize, ITick, IActorPreviewInitModifier, IAutoRenderSize, IAutoMouseBounds
+	public class WithVoxelWalkerBody : ITick, IActorPreviewInitModifier, IAutoMouseBounds
 	{
 		readonly WithVoxelWalkerBodyInfo info;
 		readonly IMove movement;
 		readonly IFacing facing;
-		readonly int2 size;
 		readonly ModelAnimation modelAnimation;
 		readonly RenderVoxels rv;
 
@@ -76,15 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				() => false, () => frame, info.ShowShadow);
 
 			rv.Add(modelAnimation);
-
-			// Selection size
-			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * model.Size.Aggregate(Math.Max));
-			size = new int2(s, s);
 		}
-
-		int2 IAutoSelectionSize.SelectionSize(Actor self) { return size; }
-		int2 IAutoRenderSize.RenderSize(Actor self) { return size; }
 
 		void ITick.Tick(Actor self)
 		{

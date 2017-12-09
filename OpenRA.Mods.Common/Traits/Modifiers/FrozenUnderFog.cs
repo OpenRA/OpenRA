@@ -19,16 +19,10 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor will remain visible (but not updated visually) under fog, once discovered.")]
-	public class FrozenUnderFogInfo : ITraitInfo, Requires<BuildingInfo>, IDefaultVisibilityInfo, IRulesetLoaded
+	public class FrozenUnderFogInfo : ITraitInfo, Requires<BuildingInfo>, IDefaultVisibilityInfo
 	{
 		[Desc("Players with these stances can always see the actor.")]
 		public readonly Stance AlwaysVisibleStances = Stance.Ally;
-
-		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
-		{
-			if (!info.HasTraitInfo<SelectableInfo>() && !info.HasTraitInfo<IAutoSelectionSizeInfo>())
-				throw new YamlException("Cannot create a frozen actor for actor type '{0}' with empty bounds (no selection size given).".F(info.Name));
-		}
 
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}

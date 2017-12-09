@@ -17,6 +17,7 @@ NAPOWR:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 88, 48, 2, -6
+		DecorationBounds: 88, 80, 2, -12
 	Health:
 		HP: 750
 	Armor:
@@ -35,7 +36,6 @@ NAPOWR:
 	ScalePowerWithHealth:
 	PowerTooltip:
 	SelectionDecorations:
-		VisualBounds: 88, 80, 2, -12
 
 NAAPWR:
 	Inherits: ^Building
@@ -56,6 +56,7 @@ NAAPWR:
 		Dimensions: 2,3
 	Selectable:
 		Bounds: 100, 54, 0, -4
+		DecorationBounds: 100, 74, 0, -12
 	Health:
 		HP: 750
 	Armor:
@@ -74,7 +75,6 @@ NAAPWR:
 	ScalePowerWithHealth:
 	PowerTooltip:
 	SelectionDecorations:
-		VisualBounds: 100, 74, 0, -12
 	ProvidesPrerequisite@buildingname:
 
 NAHAND:
@@ -96,6 +96,7 @@ NAHAND:
 		Dimensions: 3,2
 	Selectable:
 		Bounds: 116, 60, 3, -6
+		DecorationBounds: 116, 78, 3, -8
 	Health:
 		HP: 800
 	Armor:
@@ -124,7 +125,6 @@ NAHAND:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 116, 78, 3, -8
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -152,6 +152,7 @@ NAWEAP:
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 149, 80, -3, -10
+		DecorationBounds: 149, 116, -3, -20
 	Health:
 		HP: 1000
 	Armor:
@@ -184,7 +185,6 @@ NAWEAP:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 149, 116, -3, -20
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -239,9 +239,9 @@ NAHPAD:
 		Amount: -10
 	Selectable:
 		Bounds: 78, 48, 0, -6
+		DecorationBounds: 78, 54, 0, -8
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 78, 54, 0, -8
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -270,6 +270,7 @@ NARADR:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 96, 48, 0, -6
+		DecorationBounds: 96, 72, 0, -12
 	Health:
 		HP: 1000
 	Armor:
@@ -293,7 +294,6 @@ NARADR:
 		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 96, 72, 0, -12
 
 NATECH:
 	Inherits: ^Building
@@ -315,6 +315,7 @@ NATECH:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 86, 48, 0, -4
+		DecorationBounds: 86, 58, 0, -4
 	Health:
 		HP: 500
 	Armor:
@@ -329,7 +330,6 @@ NATECH:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 86, 58, 0, -4
 
 NATMPL:
 	Inherits: ^Building

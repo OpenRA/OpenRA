@@ -1253,6 +1253,48 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20171208)
+				{
+					// Move SelectionDecorations.VisualBounds to Selectable.Bounds
+					if (node.Key.StartsWith("AutoRenderSize", StringComparison.Ordinal))
+						RenameNodeKey(node, "Interactable");
+
+					if (node.Key.StartsWith("CustomRenderSize", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "Interactable");
+						var boundsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "CustomBounds");
+						if (boundsNode != null)
+							RenameNodeKey(boundsNode, "Bounds");
+					}
+
+					if (node.Key.StartsWith("SelectionDecorations", StringComparison.Ordinal))
+					{
+						var boundsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "VisualBounds");
+						if (boundsNode != null)
+						{
+							RenameNodeKey(boundsNode, "DecorationBounds");
+							node.Value.Nodes.Remove(boundsNode);
+							var selectable = parent.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("Selectable", StringComparison.Ordinal));
+							if (selectable == null)
+							{
+								selectable = new MiniYamlNode("Selectable", new MiniYaml(""));
+								addNodes.Add(selectable);
+							}
+
+							selectable.Value.Nodes.Add(boundsNode);
+						}
+					}
+
+					if (node.Key == "-Selectable")
+						addNodes.Add(new MiniYamlNode("Interactable", new MiniYaml("")));
+
+					if (depth == 0)
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key.StartsWith("CustomSelectionSize", StringComparison.Ordinal));
+						node.Value.Nodes.RemoveAll(n => n.Key.StartsWith("AutoSelectionSize", StringComparison.Ordinal));
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

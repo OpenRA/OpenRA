@@ -57,6 +57,7 @@ ATEK.mission:
 	-Huntable:
 	RenderSprites:
 		Image: ATEK
+	Interactable:
 
 GUN:
 	Valued:

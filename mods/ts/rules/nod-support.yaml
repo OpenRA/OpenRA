@@ -99,8 +99,6 @@ NAFNCE:
 		Direction: Y
 		Condition: laserfence-direction-y
 	-WithWallSpriteBody:
-	CustomSelectionSize:
-		CustomBounds: 48, 24
 	ExternalCondition@ACTIVE:
 		Condition: active-posts
 	WithWallSpriteBody@XENABLED:
@@ -129,8 +127,8 @@ NAFNCE:
 		Weapons: SmallDebris
 		Pieces: 0, 1
 		Range: 2c0, 5c0
-	CustomRenderSize:
-		CustomBounds: 48, 24
+	Interactable:
+		Bounds: 48, 24
 
 NALASR:
 	Inherits: ^Defense
@@ -148,6 +146,7 @@ NALASR:
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
+		DecorationBounds: 40, 36, -8, -8
 	Health:
 		HP: 500
 	Armor:
@@ -171,7 +170,6 @@ NALASR:
 		Amount: -40
 		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 40, 36, -8, -8
 	BodyOrientation:
 		QuantizedFacings: 0
 
@@ -194,6 +192,7 @@ NAOBEL:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 88, 42, 0, -6
+		DecorationBounds: 88, 72, 0, -12
 	Health:
 		HP: 725
 	Armor:
@@ -221,7 +220,6 @@ NAOBEL:
 		Amount: -150
 		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 88, 72, 0, -12
 
 NASAM:
 	Inherits: ^Defense
@@ -238,6 +236,7 @@ NASAM:
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
 		Bounds: 40, 30, -3, -8
+		DecorationBounds: 40, 36, -3, -8
 	Health:
 		HP: 600
 	Armor:
@@ -260,7 +259,6 @@ NASAM:
 		Amount: -30
 		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 40, 36, -3, -8
 
 NASTLH:
 	Inherits: ^Building
@@ -305,8 +303,8 @@ NASTLH:
 		AffectsParent: true
 	Selectable:
 		Bounds: 106, 48, 8, -6
+		DecorationBounds: 106, 60, 8, -15
 	SelectionDecorations:
-		VisualBounds: 106, 60, 8, -15
 
 NAMISL:
 	Inherits: ^Building
@@ -329,6 +327,7 @@ NAMISL:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 75,48
+		DecorationBounds: 75,48
 	Health:
 		HP: 1000
 	Armor:
@@ -363,7 +362,6 @@ NAMISL:
 		CameraRange: 10c0
 	WithNukeLaunchOverlay:
 	SelectionDecorations:
-		VisualBounds: 75,48
 
 NAWAST:
 	Inherits: ^Building
@@ -386,6 +384,7 @@ NAWAST:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 100, 60, 5, -5
+		DecorationBounds: 100, 60, 5, -5
 	Health:
 		HP: 400
 	RevealsShroud:
@@ -412,5 +411,4 @@ NAWAST:
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 100, 60, 5, -5
 	RenderSprites:

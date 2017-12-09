@@ -75,8 +75,8 @@ GAP:
 		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 24,48,0,-12
 	SelectionDecorations:
-		VisualBounds: 24,48,0,-12
 	WithSpriteBody:
 		PauseOnCondition: disabled
 	Health:
@@ -341,8 +341,8 @@ IRON:
 		Dimensions: 2,1
 	Selectable:
 		Bounds: 48,28,0,2
+		DecorationBounds: 50,50,0,-12
 	SelectionDecorations:
-		VisualBounds: 50,50,0,-12
 	Health:
 		HP: 1000
 	Armor:
@@ -473,8 +473,8 @@ TSLA:
 		Name: Tesla Coil
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 24,40,0,-8
 	SelectionDecorations:
-		VisualBounds: 24,40,0,-8
 	Health:
 		HP: 400
 	Armor:
@@ -518,8 +518,8 @@ AGUN:
 		Name: AA Gun
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 24,32,0,-4
 	SelectionDecorations:
-		VisualBounds: 24,32,0,-4
 	Health:
 		HP: 400
 	Armor:
@@ -1094,8 +1094,8 @@ PROC:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,50,0,12
+		DecorationBounds: 72,70,0,-2
 	SelectionDecorations:
-		VisualBounds: 72,70,0,-2
 	Targetable:
 		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
 	Health:
@@ -1460,8 +1460,8 @@ APWR:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,68,0,-10
 	SelectionDecorations:
-		VisualBounds: 72,68,0,-10
 	Health:
 		HP: 700
 	Armor:
@@ -1743,8 +1743,8 @@ FIX:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 68,34,0,3
+		DecorationBounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,48
 	Health:
 		HP: 800
 	Armor:
@@ -1943,6 +1943,7 @@ WOOD:
 
 BARRACKS:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Infantry Production
 	Buildable:
@@ -1950,6 +1951,7 @@ BARRACKS:
 
 TECHCENTER:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Tech Center
 	Buildable:
@@ -1957,6 +1959,7 @@ TECHCENTER:
 
 ANYPOWER:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Power Plant
 	Buildable:
