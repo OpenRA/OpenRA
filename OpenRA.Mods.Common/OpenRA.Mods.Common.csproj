@@ -836,6 +836,7 @@
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\PauseHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleStatusBarsHotkeyLogic.cs" />
     <Compile Include="Lint\CheckConflictingMouseBounds.cs" />
+    <Compile Include="Widgets\Logic\Lobby\LobbyOptionsLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
