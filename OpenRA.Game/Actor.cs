@@ -204,6 +204,23 @@ namespace OpenRA
 					yield return renderable;
 		}
 
+		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr)
+		{
+			var bounds = Bounds(wr);
+			foreach (var modifier in renderModifiers)
+				bounds = modifier.ModifyScreenBounds(this, wr, bounds);
+			return bounds;
+		}
+
+		IEnumerable<Rectangle> Bounds(WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ. See comments for Renderables
+			foreach (var render in renders)
+				foreach (var r in render.ScreenBounds(this, wr))
+					if (!r.IsEmpty)
+						yield return r;
+		}
+
 		public void QueueActivity(bool queued, Activity nextActivity)
 		{
 			if (!queued)

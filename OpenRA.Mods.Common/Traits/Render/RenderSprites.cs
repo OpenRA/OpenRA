@@ -101,6 +101,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			public readonly bool IsPlayerPalette;
 			public PaletteReference PaletteReference { get; private set; }
 
+			bool cachedVisible;
+			WVec cachedOffset;
+			ISpriteSequence cachedSequence;
+
 			public AnimationWrapper(AnimationWithOffset animation, string palette, bool isPlayerPalette)
 			{
 				Animation = animation;
@@ -126,6 +130,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 				{
 					return Animation.DisableFunc == null || !Animation.DisableFunc();
 				}
+			}
+
+			public bool Tick()
+			{
+				// Tick the animation
+				Animation.Animation.Tick();
+
+				// Return to the caller whether the renderable position or size has changed
+				var visible = IsVisible;
+				var offset = Animation.OffsetFunc != null ? Animation.OffsetFunc() : WVec.Zero;
+				var sequence = Animation.Animation.CurrentSequence;
+
+				var updated = visible != cachedVisible || offset != cachedOffset || sequence != cachedSequence;
+				cachedVisible = visible;
+				cachedOffset = offset;
+				cachedSequence = sequence;
+
+				return updated;
 			}
 		}
 
@@ -196,8 +218,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual void Tick(Actor self)
 		{
+			var updated = false;
 			foreach (var a in anims)
-				a.Animation.Animation.Tick();
+				updated |= a.Tick();
+
+			if (updated)
+				self.World.ScreenMap.AddOrUpdate(self);
 		}
 
 		public void Add(AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)

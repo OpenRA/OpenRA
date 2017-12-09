@@ -127,6 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			IRenderable[] renderables = null;
+			Rectangle[] bounds = null;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
 				var frozen = frozenStates[playerIndex].FrozenActor;
@@ -137,11 +138,15 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					isRendering = true;
 					renderables = self.Render(wr).ToArray();
+					bounds = self.ScreenBounds(wr).ToArray();
+
 					isRendering = false;
 				}
 
 				frozen.NeedRenderables = false;
 				frozen.Renderables = renderables;
+				frozen.ScreenBounds = bounds;
+				self.World.ScreenMap.AddOrUpdate(self.World.Players[playerIndex], frozen);
 			}
 		}
 

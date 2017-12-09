@@ -61,22 +61,6 @@ namespace OpenRA.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }
 
-		Rectangle FrozenActorBounds(FrozenActor fa)
-		{
-			var pos = worldRenderer.ScreenPxPosition(fa.CenterPosition);
-			var bounds = fa.RenderBounds;
-			bounds.Offset(pos.X, pos.Y);
-			return bounds;
-		}
-
-		Rectangle ActorBounds(Actor a)
-		{
-			var pos = worldRenderer.ScreenPxPosition(a.CenterPosition);
-			var bounds = a.RenderBounds;
-			bounds.Offset(pos.X, pos.Y);
-			return bounds;
-		}
-
 		public void AddOrUpdate(Player viewer, FrozenActor fa)
 		{
 			if (removeFrozenActors[viewer].Contains(fa))
@@ -200,11 +184,23 @@ namespace OpenRA.Traits
 			return partitionedFrozenActors[p].InBox(r).Where(frozenActorIsValid);
 		}
 
+		Rectangle AggregateBounds(IEnumerable<Rectangle> screenBounds)
+		{
+			if (!screenBounds.Any())
+				return Rectangle.Empty;
+
+			var bounds = screenBounds.First();
+			foreach (var b in screenBounds.Skip(1))
+				bounds = Rectangle.Union(bounds, b);
+
+			return bounds;
+		}
+
 		public void Tick()
 		{
 			foreach (var a in addOrUpdateActors)
 			{
-				var bounds = ActorBounds(a);
+				var bounds = AggregateBounds(a.ScreenBounds(worldRenderer));
 				if (!bounds.Size.IsEmpty)
 				{
 					if (partitionedActors.Contains(a))
@@ -226,7 +222,7 @@ namespace OpenRA.Traits
 			{
 				foreach (var fa in kv.Value)
 				{
-					var bounds = FrozenActorBounds(fa);
+					var bounds = AggregateBounds(fa.ScreenBounds);
 					if (!bounds.Size.IsEmpty)
 					{
 						if (partitionedFrozenActors[kv.Key].Contains(fa))
