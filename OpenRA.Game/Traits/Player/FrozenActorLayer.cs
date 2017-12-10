@@ -182,6 +182,7 @@ namespace OpenRA.Traits
 		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
 		readonly bool[] dirtyBins;
 		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
+		readonly int rows, cols;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{
@@ -195,16 +196,17 @@ namespace OpenRA.Traits
 			// expensive visibility update for frozen actors in these regions.
 			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
 				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
-			var maxX = world.Map.MapSize.X / binSize + 1;
-			var maxY = world.Map.MapSize.Y / binSize + 1;
-			dirtyBins = new bool[maxX * maxY];
+
+			cols = world.Map.MapSize.X / binSize + 1;
+			rows = world.Map.MapSize.Y / binSize + 1;
+			dirtyBins = new bool[cols * rows];
 			self.Trait<Shroud>().CellsChanged += cells =>
 			{
 				foreach (var cell in cells)
 				{
 					var x = cell.U / binSize;
 					var y = cell.V / binSize;
-					dirtyBins[y * maxX + x] = true;
+					dirtyBins[y * cols + x] = true;
 				}
 			};
 		}
@@ -281,14 +283,13 @@ namespace OpenRA.Traits
 		{
 			// Check which bins on the map were dirtied due to changes in the shroud and gather the frozen actors whose
 			// footprint overlap with these bins.
-			var maxX = world.Map.MapSize.X / binSize + 1;
-			var maxY = world.Map.MapSize.Y / binSize + 1;
-			for (var y = 0; y < maxY; y++)
+			for (var y = 0; y < rows; y++)
 			{
-				for (var x = 0; x < maxX; x++)
+				for (var x = 0; x < cols; x++)
 				{
-					if (!dirtyBins[y * maxX + x])
+					if (!dirtyBins[y * cols + x])
 						continue;
+
 					var box = new Rectangle(x * binSize, y * binSize, binSize, binSize);
 					dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.InBox(box));
 				}
@@ -317,6 +318,13 @@ namespace OpenRA.Traits
 				return null;
 
 			return fa;
+		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region)
+		{
+			var tl = region.TopLeft;
+			var br = region.BottomRight;
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y)).Select(FromID);
 		}
 	}
 }
