@@ -281,9 +281,13 @@ refinery:
 	RevealsShroud:
 		Range: 4c768
 	Refinery:
+		TickRate: 20
+	DockManager:
+		ExternalDocks: false
+	Dock@0:
 		DockAngle: 160
 		DockOffset: 2,1
-		TickRate: 20
+		Order: 0
 	StoresResources:
 		PipColor: green
 		PipCount: 10

@@ -174,10 +174,10 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
-			var refs = self.World.ActorsWithTrait<IAcceptResources>()
+			var refs = self.World.ActorsWithTrait<Refinery>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new {
-					Location = r.Actor.Location + r.Trait.DeliveryOffset,
+					Location = r.Actor.Location, // ignore dock offsets
 					Actor = r.Actor,
 					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count() })
 				.ToDictionary(r => r.Location);
@@ -226,11 +226,13 @@ namespace OpenRA.Mods.Common.Traits
 			var lastproc = LastLinkedProc ?? LinkedProc;
 			if (lastproc != null && !lastproc.Disposed)
 			{
-				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
-				if (self.Location == deliveryLoc)
+				// Am I blocking one of the dock positions?
+				var deliveryLocs = lastproc.Trait<DockManager>().DockLocations;
+				var deliveryLoc = deliveryLocs.Where(loc => loc == self.Location);
+				if (deliveryLoc.Any())
 				{
 					// Get out of the way:
-					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
+					var unblockCell = LastHarvestedCell ?? (deliveryLoc.First() + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 
 					// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
@@ -301,11 +303,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (contents.Keys.Count > 0)
 			{
 				var type = contents.First().Key;
-				var iao = proc.Trait<IAcceptResources>();
-				if (!iao.CanGiveResource(type.ValuePerUnit))
+				var ire = proc.Trait<IResourceExchange>();
+				if (!ire.CanGiveResource(type.ValuePerUnit))
 					return false;
 
-				iao.GiveResource(type.ValuePerUnit);
+				ire.GiveResource(type.ValuePerUnit);
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
@@ -333,9 +335,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
+				yield return new EnterAlliedActorTargeter<RefineryInfo>("Deliver", 5,
 					proc => IsAcceptableProcType(proc),
-					proc => proc.Trait<IAcceptResources>().AllowDocking);
+					proc => proc.Trait<Refinery>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -396,8 +398,8 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "Deliver")
 			{
 				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
-				var iao = order.TargetActor.TraitOrDefault<IAcceptResources>();
-				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(order.TargetActor))
+				var refi = order.TargetActor.TraitOrDefault<Refinery>();
+				if (refi == null || !refi.AllowDocking || !IsAcceptableProcType(order.TargetActor))
 					return;
 
 				if (order.TargetActor != OwnerLinkedProc)
