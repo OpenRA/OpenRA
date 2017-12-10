@@ -31,11 +31,11 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
-		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
 		readonly Shroud shroud;
 
 		public Player Owner { get; private set; }
+		public HashSet<string> TargetTypes { get; private set; }
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
-			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
+			TargetTypes = new HashSet<string>();
 
 			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
@@ -98,6 +98,7 @@ namespace OpenRA.Traits
 		public void RefreshState()
 		{
 			Owner = actor.Owner;
+			TargetTypes = actor.GetEnabledTargetTypes().ToHashSet();
 
 			if (health != null)
 			{
