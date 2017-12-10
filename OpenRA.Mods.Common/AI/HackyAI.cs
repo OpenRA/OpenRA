@@ -277,6 +277,7 @@ namespace OpenRA.Mods.Common.AI
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
+		FrozenActorLayer frozenLayer;
 		int ticks;
 
 		BitArray resourceTypeIndices;
@@ -343,6 +344,7 @@ namespace OpenRA.Mods.Common.AI
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
+			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
 
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
@@ -1100,13 +1102,17 @@ namespace OpenRA.Mods.Common.AI
 			{
 				for (var j = 0; j < map.MapSize.Y; j += checkRadius)
 				{
-					var consideredAttractiveness = 0;
+					var tl = new MPos(i, j);
+					var br = new MPos(i + checkRadius, j + checkRadius);
+					var region = new CellRegion(map.Grid.Type, tl, br);
 
-					var tl = World.Map.CenterOfCell(new MPos(i, j).ToCPos(map));
-					var br = World.Map.CenterOfCell(new MPos(i + checkRadius, j + checkRadius).ToCPos(map));
-					var targets = World.ActorMap.ActorsInBox(tl, br);
+					// HACK: The AI code should not be messing with raw coordinate transformations
+					var wtl = World.Map.CenterOfCell(tl.ToCPos(map));
+					var wbr = World.Map.CenterOfCell(br.ToCPos(map));
+					var targets = World.ActorMap.ActorsInBox(wtl, wbr);
 
-					consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player);
+					var frozenTargets = frozenLayer.FrozenActorsInRegion(region);
+					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player) + powerDecision.GetAttractiveness(frozenTargets, Player);
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
 
@@ -1141,7 +1147,7 @@ namespace OpenRA.Mods.Common.AI
 					var y = checkPos.Y + j;
 					var pos = World.Map.CenterOfCell(new CPos(x, y));
 					var consideredAttractiveness = 0;
-					consideredAttractiveness += powerDecision.GetAttractiveness(pos, Player);
+					consideredAttractiveness += powerDecision.GetAttractiveness(pos, Player, frozenLayer);
 
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
