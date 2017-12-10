@@ -75,13 +75,19 @@ Player:
 			Consideration@1:
 				Against: Enemy
 				Types: Vehicle, Infantry
-				Attractiveness: 1
+				Attractiveness: 3
 				TargetMetric: Value
 				CheckRadius: 2c0
 			Consideration@2:
 				Against: Ally
 				Types: Ground, Water
-				Attractiveness: -10
+				Attractiveness: -20
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@3:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
 				TargetMetric: Value
 				CheckRadius: 2c0
 		SupportPowerDecision@IonCannonPower:
@@ -197,13 +203,19 @@ Player:
 			Consideration@1:
 				Against: Enemy
 				Types: Vehicle, Infantry
-				Attractiveness: 1
+				Attractiveness: 3
 				TargetMetric: Value
 				CheckRadius: 2c0
 			Consideration@2:
 				Against: Ally
 				Types: Ground, Water
-				Attractiveness: -10
+				Attractiveness: -20
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@3:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
 				TargetMetric: Value
 				CheckRadius: 2c0
 		SupportPowerDecision@IonCannonPower:
@@ -321,13 +333,19 @@ Player:
 			Consideration@1:
 				Against: Enemy
 				Types: Vehicle, Infantry
-				Attractiveness: 1
+				Attractiveness: 3
 				TargetMetric: Value
 				CheckRadius: 2c0
 			Consideration@2:
 				Against: Ally
 				Types: Ground, Water
-				Attractiveness: -10
+				Attractiveness: -20
+				TargetMetric: Value
+				CheckRadius: 2c0
+			Consideration@3:
+				Against: Enemy
+				Types: Structure
+				Attractiveness: 1
 				TargetMetric: Value
 				CheckRadius: 2c0
 		SupportPowerDecision@IonCannonPower:
