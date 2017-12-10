@@ -72,7 +72,10 @@ namespace OpenRA.Mods.Common.Commands
 				case "givecash":
 					var givecashorder = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
 					int cash;
-					int.TryParse(arg, out cash);
+                    float fcash;
+
+                    float.TryParse(arg, out fcash);
+                    cash = (int)fcash;
 
 					givecashorder.ExtraData = (uint)cash;
 					Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), world.LocalPlayer.PlayerName);
@@ -81,9 +84,10 @@ namespace OpenRA.Mods.Common.Commands
 					break;
 
 				case "givecashall":
-					int.TryParse(arg, out cash);
+                    float.TryParse(arg, out fcash);
+                    cash = (int)fcash;
 
-					foreach (var player in world.Players.Where(p => !p.NonCombatant))
+                    foreach (var player in world.Players.Where(p => !p.NonCombatant))
 					{
 						var givecashall = new Order("DevGiveCash", player.PlayerActor, false);
 						givecashall.ExtraData = (uint)cash;
