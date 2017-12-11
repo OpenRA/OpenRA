@@ -1,0 +1,269 @@
+BR1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 235
+		DamagedTemplate: 236
+		DestroyedTemplate: 237
+		SouthOffset: 0,2
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 2,0
+
+BR2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 238
+		DamagedTemplate: 239
+		DestroyedTemplate: 240
+		NorthOffset: 3,0
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,1
+
+BR3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: br1,br2
+		Template: 241
+		DamagedTemplate: 242
+		DestroyedTemplate: 243
+		DestroyedPlusNorthTemplate: 245
+		DestroyedPlusSouthTemplate: 244
+		DestroyedPlusBothTemplate: 246
+		NorthOffset: 2,0
+		SouthOffset: 0,1
+
+BRG1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 409
+		DamagedTemplate: 410
+		DestroyedTemplate: 411
+		SouthOffset: 3,2
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,0
+
+BRG2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 412
+		DamagedTemplate: 413
+		DestroyedTemplate: 414
+		NorthOffset: 1,0
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+
+BRG3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: brg1,brg2
+		Template: 415
+		DamagedTemplate: 416
+		DestroyedTemplate: 417
+		DestroyedPlusNorthTemplate: 419
+		DestroyedPlusSouthTemplate: 418
+		DestroyedPlusBothTemplate: 420
+		NorthOffset: 1,0
+		SouthOffset: 3,1
+
+BRV1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 423
+		DamagedTemplate: 424
+		DestroyedTemplate: 425
+		SouthOffset: 1,3
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,1
+
+BRV2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 426
+		DamagedTemplate: 427
+		DestroyedTemplate: 428
+		NorthOffset: 1,-1
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,0
+
+BRV3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: brv1,brv2
+		Template: 429
+		DamagedTemplate: 430
+		DestroyedTemplate: 431
+		DestroyedPlusNorthTemplate: 433
+		DestroyedPlusSouthTemplate: 432
+		DestroyedPlusBothTemplate: 434
+		NorthOffset: 1,-1
+		SouthOffset: 1,2
+
+BRH1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 435
+		DamagedTemplate: 436
+		DestroyedTemplate: 437
+		SouthOffset: 3,1
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,1
+
+BRH2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 438
+		DamagedTemplate: 439
+		DestroyedTemplate: 440
+		NorthOffset: -1,1
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+
+BRH3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: brh1,brh2
+		Template: 441
+		DamagedTemplate: 442
+		DestroyedTemplate: 443
+		DestroyedPlusNorthTemplate: 445
+		DestroyedPlusSouthTemplate: 444
+		DestroyedPlusBothTemplate: 446
+		NorthOffset: -1,1
+		SouthOffset: 2,1
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 131
+		DamagedTemplate: 378
+		DestroyedTemplate: 132
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 120,72
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 133
+		DamagedTemplate: 379
+		DestroyedTemplate: 134
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 120,48
+
+SBRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 520
+		DamagedTemplate: 521
+		DestroyedTemplate: 522
+	Building:
+		Footprint: ___ ___
+		Dimensions: 3,2
+	FreeActor@north:
+		Actor: bridgehut.small
+		SpawnOffset: 1,0
+	FreeActor@south:
+		Actor: bridgehut.small
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 72,48
+
+SBRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 531
+		DamagedTemplate: 532
+		DestroyedTemplate: 533
+	Building:
+		Footprint: __ __ __
+		Dimensions: 2,3
+	FreeActor@west:
+		Actor: bridgehut.small
+		SpawnOffset: 0,1
+	FreeActor@east:
+		Actor: bridgehut.small
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 48,72
+
+SBRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 523
+		DamagedTemplate: 524
+		DestroyedTemplate: 525
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+
+SBRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 527
+		DamagedTemplate: 528
+		DestroyedTemplate: 529
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+
+BRIDGEHUT:
+	AlwaysVisible:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Building:
+		Footprint: __ __
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 48,48
+		Priority: 2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
+	HitShape:
+		TargetableOffsets: 0,0,0, 32,32,0, -32,32,0, 32,-32,0, -32,-32,0
+
+BRIDGEHUT.small:
+	AlwaysVisible:
+	Building:
+		Footprint: _
+		Dimensions: 1,1
+	Selectable:
+		Bounds: 24,24
+		Priority: 2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
