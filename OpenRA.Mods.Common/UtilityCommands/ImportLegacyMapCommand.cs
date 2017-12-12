@@ -133,7 +133,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var briefing = new StringBuilder();
 			foreach (var s in briefingSection)
-				briefing.AppendLine(s.Value);
+			{
+				var line = s.Value.Replace("@", "\n");
+				briefing.AppendLine(line);
+			}
 
 			if (briefing.Length == 0)
 				return;
