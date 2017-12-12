@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var allOptions = mapPreview.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
 					.Concat(mapPreview.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
-					.Where(o => o.Visible)
+					.Where(o => o.IsVisible)
 					.OrderBy(o => o.DisplayOrder)
 					.ToArray();
 
@@ -110,10 +110,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					checkbox.GetTooltipText = () => option.Description;
 
 				checkbox.IsVisible = () => true;
-				checkbox.IsChecked = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Enabled;
-				checkbox.IsDisabled = () => configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
+				checkbox.IsChecked = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled;
+				checkbox.IsDisabled = () => configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
 				checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
-					"option {0} {1}".F(option.Id, !optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Enabled)));
+					"option {0} {1}".F(option.Id, !optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled)));
 			}
 
 			foreach (var option in allOptions.Where(o => !(o is LobbyBooleanOption)))
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dropdown.GetTooltipText = () => option.Description;
 				dropdown.IsVisible = () => true;
 				dropdown.IsDisabled = () => configurationDisabled() ||
-					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
+					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
 
 				dropdown.OnMouseDown = _ =>
 				{

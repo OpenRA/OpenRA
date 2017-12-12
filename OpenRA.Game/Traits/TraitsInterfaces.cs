@@ -392,8 +392,8 @@ namespace OpenRA.Traits
 		public readonly string Description;
 		public readonly IReadOnlyDictionary<string, string> Values;
 		public readonly string DefaultValue;
-		public readonly bool Locked;
-		public readonly bool Visible;
+		public readonly bool IsLocked;
+		public readonly bool IsVisible;
 		public readonly int DisplayOrder;
 
 		public LobbyOption(string id, string name, string description, bool visible, int displayorder,
@@ -402,11 +402,11 @@ namespace OpenRA.Traits
 			Id = id;
 			Name = name;
 			Description = description;
-			Visible = visible;
+			IsVisible = visible;
 			DisplayOrder = displayorder;
 			Values = values;
 			DefaultValue = defaultValue;
-			Locked = locked;
+			IsLocked = locked;
 		}
 
 		public virtual string ValueChangedMessage(string playerName, string newValue)
