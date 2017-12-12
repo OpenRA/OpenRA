@@ -1,0 +1,33 @@
+Background@HELP_PANEL:
+	Logic: HelpLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 600) / 2
+	Width: 800
+	Height: 600
+	Children:
+		Label@HELP_TITLE:
+			Width: PARENT_RIGHT
+			Y: 15
+			Height: 30
+			Font: Bold
+			Align: Center
+			Text: COMMANDS
+		ScrollPanel@HELP_DISPLAY:
+			X: 15
+			Y: 50
+			Width: PARENT_RIGHT - 30
+			Height: 490
+			TopBottomSpacing: 15
+			Children:
+				Label@HELP_TEMPLATE:
+					X: 50
+					Height: 16
+					VAlign: Top
+		Button@BACK_BUTTON:
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Back
+			Font: Bold
+			Key: escape
