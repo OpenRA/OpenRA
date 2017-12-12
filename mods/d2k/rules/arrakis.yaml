@@ -20,7 +20,7 @@ spicebloom.spawnpoint:
 	SpawnActorOnDeath:
 		Actor: spicebloom
 	Health:
-		HP: 99990
+		HP: 100000
 	Immobile:
 		OccupiesSpace: false
 	HitShape:
@@ -50,7 +50,7 @@ spicebloom:
 		Terrain: Spice
 	Immobile:
 	Health:
-		HP: 10
+		HP: 1
 	Targetable:
 		TargetTypes: Ground
 		RequiresForceFire: true
@@ -71,7 +71,7 @@ sandworm:
 	Tooltip:
 		Name: Sandworm
 	Health:
-		HP: 99900
+		HP: 100000
 	HitShape:
 		Type: Circle
 			Radius: 256

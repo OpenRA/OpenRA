@@ -130,17 +130,17 @@ DeviatorMissile:
 		TrailPalette: deviatorgas
 		TrailUsePlayerPalette: true
 	Warhead@1Dam: SpreadDamage
-		Damage: 5000
+		Damage: 1000
 		Versus:
-			none: 20
-			wall: 20
-			building: 20
-			wood: 20
-			light: 20
-			heavy: 20
+			none: 100
+			wall: 100
+			building: 100
+			wood: 100
+			light: 100
+			heavy: 100
 			invulnerable: 0
-			cy: 10
-			harvester: 20
+			cy: 50
+			harvester: 100
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: deviator
