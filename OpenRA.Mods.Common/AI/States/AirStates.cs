@@ -34,16 +34,18 @@ namespace OpenRA.Mods.Common.AI
 				if (unit == null || unit.Info.HasTraitInfo<AircraftInfo>())
 					continue;
 
-				var arms = unit.TraitsImplementing<AttackBase>()
-					.Where(ab => !ab.IsTraitPaused && !ab.IsTraitDisabled)
-					.SelectMany(ab => ab.Armaments);
-
-				foreach (var a in arms)
+				foreach (var ab in unit.TraitsImplementing<AttackBase>())
 				{
-					if (a.Weapon.IsValidTarget(AirTargetTypes))
+					if (ab.IsTraitDisabled || ab.IsTraitPaused)
+						continue;
+
+					foreach (var a in ab.Armaments)
 					{
-						missileUnitsCount++;
-						break;
+						if (a.Weapon.IsValidTarget(AirTargetTypes))
+						{
+							missileUnitsCount++;
+							break;
+						}
 					}
 				}
 			}
