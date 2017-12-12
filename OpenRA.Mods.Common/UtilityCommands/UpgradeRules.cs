@@ -45,6 +45,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
+		internal static string MultiplyByFactor(int oldValue, int factor)
+		{
+			oldValue = oldValue * factor;
+			return oldValue.ToString();
+		}
+
 		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
 		{
 			var addNodes = new List<MiniYamlNode>();
@@ -1295,6 +1301,78 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Multiply all health and damage in the RA mod by 100 to avoid issues caused by rounding
+				if (engineVersion < 20171212)
+				{
+					var mod = modData.Manifest.Id;
+					if (mod == "ra")
+					{
+						if (node.Key == "HP" && parent.Key == "Health")
+						{
+							var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							node.Value.Value = MultiplyByFactor(oldValue, 100);
+						}
+
+						if (node.Key.StartsWith("SelfHealing"))
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Step");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("Step", "500"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "RepairsUnits")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "HpPerStep");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("HpPerStep", "1000"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "RepairableBuilding")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "RepairStep");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("RepairStep", "700"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "Burns")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Damage");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("Damage", "100"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "DamagedByTerrain")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Damage");
+							if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -1438,6 +1516,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20170818)
 					if (node.Key == "BurstDelay")
 						node.Key = "BurstDelays";
+
+				// Multiply all health and damage in the RA mod by 100 to avoid issues caused by rounding
+				if (engineVersion < 20171212)
+				{
+					var mod = modData.Manifest.Id;
+					if (mod == "ra")
+					{
+						if (node.Key == "Damage" && (parent.Value.Value == "SpreadDamage" || parent.Value.Value == "TargetDamage"))
+						{
+							var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							node.Value.Value = MultiplyByFactor(oldValue, 100);
+						}
+					}
+				}
 
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
