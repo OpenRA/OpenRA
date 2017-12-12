@@ -136,7 +136,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
 
-			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
+            singleplayerMenu.Get<ButtonWidget>("HELP_BUTTON").OnClick = () =>
+            {
+                SwitchMenu(MenuType.None);
+                Ui.OpenWindow("HELP_PANEL", new WidgetArgs
+                {
+                    { "onExit", () => SwitchMenu(MenuType.Singleplayer) },
+                });
+            };
+
+            singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
 			// Extras menu
 			var extrasMenu = widget.Get("EXTRAS_MENU");
