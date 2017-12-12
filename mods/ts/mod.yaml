@@ -145,6 +145,7 @@ ChromeLayout:
 	ts|chrome/mainmenu-prerelease-notification.yaml
 	common|chrome/settings.yaml
 	common|chrome/credits.yaml
+	common|chrome/help.yaml
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml
 	common|chrome/lobby-players.yaml

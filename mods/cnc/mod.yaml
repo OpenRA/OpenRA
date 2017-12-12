@@ -119,6 +119,7 @@ ChromeLayout:
 	cnc|chrome/music.yaml
 	cnc|chrome/settings.yaml
 	cnc|chrome/credits.yaml
+	cnc|chrome/help.yaml
 	cnc|chrome/dialogs.yaml
 	cnc|chrome/tooltips.yaml
 	cnc|chrome/assetbrowser.yaml
