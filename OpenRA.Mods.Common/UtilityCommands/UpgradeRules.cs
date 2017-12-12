@@ -1301,11 +1301,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Multiply all health and damage in the RA mod by 100 to avoid issues caused by rounding
+				// Multiply all health and damage in the TD and RA mod by 100 to avoid issues caused by rounding
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "ra")
+					if (mod == "cnc" || mod == "ra")
 					{
 						if (node.Key == "HP" && parent.Key == "Health")
 						{
@@ -1517,11 +1517,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key == "BurstDelay")
 						node.Key = "BurstDelays";
 
-				// Multiply all health and damage in the RA mod by 100 to avoid issues caused by rounding
+				// Multiply all health and damage in the TD and RA mod by 100 to avoid issues caused by rounding
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "ra")
+					if (mod == "cnc" || mod == "ra")
 					{
 						if (node.Key == "Damage" && (parent.Value.Value == "SpreadDamage" || parent.Value.Value == "TargetDamage"))
 						{
