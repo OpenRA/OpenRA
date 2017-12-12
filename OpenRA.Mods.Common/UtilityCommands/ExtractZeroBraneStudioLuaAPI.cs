@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("}");
 			Console.WriteLine();
 
-			Console.WriteLine("-- This is an automatically generated Lua API definition generated for release-{0} of OpenRA.", Game.ModData.Manifest.Metadata.Version);
+			Console.WriteLine("-- This is an automatically generated Lua API definition generated for {0} of OpenRA.", Game.ModData.Manifest.Metadata.Version);
 			Console.WriteLine("-- https://github.com/OpenRA/OpenRA/wiki/Utility was used with the --zbstudio-lua-api parameter.");
 			Console.WriteLine("-- See https://github.com/OpenRA/OpenRA/wiki/Lua-API for human readable documentation.");
 			Console.WriteLine();
@@ -133,9 +133,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 			Console.WriteLine("return {");
 			Console.WriteLine("  name = \"OpenRA\",");
-			Console.WriteLine("  description = \"API description for auto-complete and tooltip support\",");
+			Console.WriteLine("  description = \"Adds API description for auto-complete and tooltip support for OpenRA.\",");
 			Console.WriteLine("  author = \"Matthias Mailänder\",");
-			Console.WriteLine("  version = {0},".F(Game.ModData.Manifest.Metadata.Version));
+			Console.WriteLine("  version = \"{0}\",".F(Game.ModData.Manifest.Metadata.Version.Split('-').LastOrDefault()));
 			Console.WriteLine();
 			Console.WriteLine("  onRegister = function(self)");
 			Console.WriteLine("    ide:AddAPI(\"lua\", \"openra\", api)");
