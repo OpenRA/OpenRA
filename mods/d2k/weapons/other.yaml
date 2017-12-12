@@ -20,10 +20,10 @@ Sound:
 		ValidStances: Neutral, Enemy
 		Versus:
 			none: 200
-			light: 110
-			wood: 110
 			wall: 50
 			building: 60
+			wood: 110
+			light: 110
 			heavy: 60
 			invulnerable: 0
 			cy: 20
@@ -37,10 +37,10 @@ Sound:
 		ValidStances: Ally
 		Versus:
 			none: 200
-			light: 110
-			wood: 110
 			wall: 50
 			building: 60
+			wood: 110
+			light: 110
 			heavy: 60
 			invulnerable: 0
 			cy: 20

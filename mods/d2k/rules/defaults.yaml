@@ -242,8 +242,8 @@
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
 	Burns:
-		Interval: 4
 		Damage: 10
+		Interval: 4
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true
