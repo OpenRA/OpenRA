@@ -1301,16 +1301,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Multiply all health and damage in the TD and RA mod by 100 to avoid issues caused by rounding
+				// Multiply all health and damage in shipping mods by 100 to avoid issues caused by rounding
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "cnc" || mod == "ra")
+					if (mod == "cnc" || mod == "ra" || mod == "d2k")
 					{
 						if (node.Key == "HP" && parent.Key == "Health")
 						{
 							var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
-							node.Value.Value = MultiplyByFactor(oldValue, 100);
+							if (mod == "d2k")
+								node.Value.Value = MultiplyByFactor(oldValue, 10);
+							else
+								node.Value.Value = MultiplyByFactor(oldValue, 100);
 						}
 
 						if (node.Key.StartsWith("SelfHealing"))
@@ -1321,7 +1324,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							else if (step != null)
 							{
 								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
-								step.Value.Value = MultiplyByFactor(oldValue, 100);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
 							}
 						}
 
@@ -1333,7 +1339,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							else if (step != null)
 							{
 								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
-								step.Value.Value = MultiplyByFactor(oldValue, 100);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
 							}
 						}
 
@@ -1345,7 +1354,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							else if (step != null)
 							{
 								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
-								step.Value.Value = MultiplyByFactor(oldValue, 100);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
 							}
 						}
 
@@ -1357,7 +1369,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							else if (step != null)
 							{
 								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
-								step.Value.Value = MultiplyByFactor(oldValue, 100);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
 							}
 						}
 
@@ -1367,7 +1382,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							if (step != null)
 							{
 								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
-								step.Value.Value = MultiplyByFactor(oldValue, 100);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
 							}
 						}
 					}
@@ -1624,16 +1642,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (node.Key == "BurstDelay")
 						node.Key = "BurstDelays";
 
-				// Multiply all health and damage in the TD and RA mod by 100 to avoid issues caused by rounding
+				// Multiply all health and damage in shipping mods by 100 to avoid issues caused by rounding
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "cnc" || mod == "ra")
+					if (mod == "cnc" || mod == "ra" || mod == "d2k")
 					{
 						if (node.Key == "Damage" && (parent.Value.Value == "SpreadDamage" || parent.Value.Value == "TargetDamage"))
 						{
 							var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
-							node.Value.Value = MultiplyByFactor(oldValue, 100);
+							if (mod == "d2k")
+								node.Value.Value = MultiplyByFactor(oldValue, 10);
+							else
+								node.Value.Value = MultiplyByFactor(oldValue, 100);
 						}
 					}
 				}
