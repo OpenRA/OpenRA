@@ -204,10 +204,18 @@
 	AttackMove:
 		AssaultMoveScanCondition: assault-move
 
+^GlobalBounty:
+	GrantConditionOnPrerequisite@GLOBALBOUNTY:
+		Condition: global-bounty
+		Prerequisites: global-bounty
+	GivesBounty:
+		RequiresCondition: global-bounty
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
+	Inherits@bounty: ^GlobalBounty
 	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
@@ -238,7 +246,6 @@
 	ActorLostNotification:
 	ProximityCaptor:
 		Types: Vehicle
-	GivesBounty:
 	GpsDot:
 		String: Vehicle
 	WithDamageOverlay:
@@ -304,6 +311,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Inherits@bounty: ^GlobalBounty
 	Huntable:
 	DrawLineToTarget:
 	Health:
@@ -349,7 +357,6 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	ActorLostNotification:
-	GivesBounty:
 	GpsDot:
 		String: Infantry
 	Crushable:
@@ -451,6 +458,7 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
+	Inherits@bounty: ^GlobalBounty
 	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
@@ -470,7 +478,6 @@
 		Notification: NavalUnitLost
 	ProximityCaptor:
 		Types: Ship
-	GivesBounty:
 	Chronoshiftable:
 	RepairableNear:
 	GpsDot:
@@ -496,6 +503,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
+	Inherits@bounty: ^GlobalBounty
 	Huntable:
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
@@ -529,7 +537,6 @@
 		EjectOnGround: false
 		EjectInAir: true
 		AllowUnsuitableCell: true
-	GivesBounty:
 	GpsDot:
 		String: Plane
 	Tooltip:
@@ -576,6 +583,7 @@
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Inherits@bounty: ^GlobalBounty
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -601,7 +609,6 @@
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
-	GivesBounty:
 	Guardable:
 		Range: 3c0
 	FrozenUnderFog:
