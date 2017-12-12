@@ -91,6 +91,9 @@ Player:
 		OnFireSound: ironcur9.aud
 	Production:
 		Produces: Building
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: True
+		Locked: True
 
 MNLYR:
 	Inherits: ^Tank
