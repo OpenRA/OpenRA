@@ -35,18 +35,6 @@ UNITCRATE:
 	Crate:
 		TerrainTypes: Clear, Road, Ore, Beach
 
-^Infantry:
-	GivesBounty:
-		Percentage: 0
-
-^Tank:
-	GivesBounty:
-		Percentage: 0
-
-^Vehicle:
-	GivesBounty:
-		Percentage: 0
-
 APC:
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Health:
@@ -86,3 +74,6 @@ Player:
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True

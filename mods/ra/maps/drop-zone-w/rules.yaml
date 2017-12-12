@@ -54,22 +54,6 @@ LST:
 		Armament: secondary
 	MustBeDestroyed:
 		RequiredForShortGame: true
-	-GivesBounty:
-
-PT:
-	-GivesBounty:
-
-DD:
-	-GivesBounty:
-
-CA:
-	-GivesBounty:
-
-SS:
-	-GivesBounty:
-
-MSUB:
-	-GivesBounty:
 
 Player:
 	Shroud:
@@ -80,3 +64,6 @@ Player:
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
