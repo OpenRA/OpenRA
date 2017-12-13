@@ -80,6 +80,18 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			Self.World.Add(new FlashTarget(Self, asPlayer, duration));
 		}
+
+		[Desc("The effective owner of the actor.")]
+		public Player EffectiveOwner
+		{
+			get
+			{
+				if (Self.EffectiveOwner == null || Self.EffectiveOwner.Owner == null)
+					return Self.Owner;
+
+				return Self.EffectiveOwner.Owner;
+			}
+		}
 	}
 
 	[ScriptPropertyGroup("General")]
