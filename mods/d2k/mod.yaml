@@ -88,14 +88,12 @@ ChromeLayout:
 	common|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
 	common|chrome/lobby-kickdialogs.yaml
-	common|chrome/lobby-globalchat.yaml
 	common|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml
 	common|chrome/multiplayer.yaml
 	common|chrome/multiplayer-browser.yaml
 	common|chrome/multiplayer-createserver.yaml
 	common|chrome/multiplayer-directconnect.yaml
-	common|chrome/multiplayer-globalchat.yaml
 	common|chrome/connection.yaml
 	d2k|chrome/dropdowns.yaml
 	common|chrome/musicplayer.yaml

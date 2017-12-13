@@ -3,7 +3,7 @@ Background@MULTIPLAYER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 808
-	Height: 600
+	Height: 395
 	Children:
 		Label@TITLE:
 			Y: 15
@@ -14,35 +14,35 @@ Background@MULTIPLAYER_PANEL:
 			Font: Bold
 		DropDownButton@FILTERS_DROPDOWNBUTTON:
 			X: 20
-			Y: 321
+			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 158
 			Height: 25
 			Text: Filter Games
 			Font: Bold
 		Button@REFRESH_BUTTON:
 			X: 183
-			Y: 321
+			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 100
 			Height: 25
 			Text: Refresh
 			Font: Bold
 		Button@BROWSER_TAB:
 			X: 288
-			Y: 315
+			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 105
 			Height: 31
 			Text: Browse
 			Font: Bold
 		Button@DIRECTCONNECT_TAB:
 			X: 393
-			Y: 315
+			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 105
 			Height: 31
 			Text: Direct IP
 			Font: Bold
 		Button@CREATE_TAB:
 			X: 498
-			Y: 315
+			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 105
 			Height: 31
 			Text: Create
@@ -51,18 +51,13 @@ Background@MULTIPLAYER_PANEL:
 			X: 20
 			Y: 37
 			Width: PARENT_RIGHT - 40
-			Height: PARENT_BOTTOM
-		Container@GLOBALCHAT_ROOT:
-			X: 20
-			Y: 351
-			Width: PARENT_RIGHT - 40
-			Height: PARENT_BOTTOM - 401
+			Height: PARENT_BOTTOM - 87
 		TooltipContainer@TOOLTIP_CONTAINER:
 		Button@BACK_BUTTON:
 			Key: escape
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 120
+			Width: 174
 			Height: 25
 			Text: Back
 			Font: Bold

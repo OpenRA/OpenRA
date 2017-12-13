@@ -21,7 +21,6 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -54,8 +53,6 @@ namespace OpenRA
 		public static bool HasInputFocus = false;
 
 		public static bool BenchmarkMode = false;
-
-		public static GlobalChat GlobalChat;
 
 		public static string EngineVersion { get; private set; }
 
@@ -337,8 +334,6 @@ namespace OpenRA
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
 				Settings.Server.AllowPortForward = true;
 			}
-
-			GlobalChat = new GlobalChat();
 
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
@@ -821,7 +816,6 @@ namespace OpenRA
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
 
-			GlobalChat.Dispose();
 			Sound.Dispose();
 			Renderer.Dispose();
 

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -37,9 +36,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		enum PanelType { Players, Options, Music, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
-
-		enum ChatPanelType { Lobby, Global }
-		ChatPanelType chatPanel = ChatPanelType.Lobby;
 
 		readonly Widget lobby;
 		readonly Widget editablePlayerTemplate;
@@ -65,9 +61,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapPreview map;
 		bool addBotOnMapLoad;
 		bool teamChat;
-		int lobbyChatUnreadMessages;
-		int globalChatLastReadMessages;
-		int globalChatUnreadMessages;
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -353,33 +346,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
 
-			var globalChat = Game.LoadWidget(null, "LOBBY_GLOBALCHAT_PANEL", lobby.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
-			var globalChatInput = globalChat.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-
-			globalChat.IsVisible = () => chatPanel == ChatPanelType.Global;
-
-			var globalChatTab = lobby.Get<ButtonWidget>("GLOBALCHAT_TAB");
-			globalChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Global;
-			globalChatTab.OnClick = () =>
-			{
-				chatPanel = ChatPanelType.Global;
-				globalChatInput.TakeKeyboardFocus();
-			};
-
-			var globalChatLabel = globalChatTab.Text;
-			globalChatTab.GetText = () =>
-			{
-				if (globalChatUnreadMessages == 0 || chatPanel == ChatPanelType.Global)
-					return globalChatLabel;
-
-				return globalChatLabel + " ({0})".F(globalChatUnreadMessages);
-			};
-
-			globalChatLastReadMessages = Game.GlobalChat.History.Count(m => m.Type == ChatMessageType.Message);
-
-			var lobbyChat = lobby.Get("LOBBYCHAT");
-			lobbyChat.IsVisible = () => chatPanel == ChatPanelType.Lobby;
-
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatTextField.MaxLength = UnitOrders.ChatMessageMaxLength;
@@ -411,23 +377,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			chatTextField.OnEscKey = () => { chatTextField.Text = ""; return true; };
-
-			var lobbyChatTab = lobby.Get<ButtonWidget>("LOBBYCHAT_TAB");
-			lobbyChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Lobby;
-			lobbyChatTab.OnClick = () =>
-			{
-				chatPanel = ChatPanelType.Lobby;
-				chatTextField.TakeKeyboardFocus();
-			};
-
-			var lobbyChatLabel = lobbyChatTab.Text;
-			lobbyChatTab.GetText = () =>
-			{
-				if (lobbyChatUnreadMessages == 0 || chatPanel == ChatPanelType.Lobby)
-					return lobbyChatLabel;
-
-				return lobbyChatLabel + " ({0})".F(lobbyChatUnreadMessages);
-			};
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
@@ -473,22 +422,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (panel == PanelType.Options && OptionsTabDisabled())
 				panel = PanelType.Players;
-
-			var newMessages = Game.GlobalChat.History.Count(m => m.Type == ChatMessageType.Message);
-			globalChatUnreadMessages += newMessages - globalChatLastReadMessages;
-			globalChatLastReadMessages = newMessages;
-
-			if (chatPanel == ChatPanelType.Lobby)
-				lobbyChatUnreadMessages = 0;
-
-			if (chatPanel == ChatPanelType.Global)
-				globalChatUnreadMessages = 0;
 		}
 
 		void AddChatLine(Color c, string from, string text)
 		{
-			lobbyChatUnreadMessages += 1;
-
 			var template = (ContainerWidget)chatTemplate.Clone();
 			LobbyUtils.SetupChatLine(template, c, DateTime.Now, from, text);
 

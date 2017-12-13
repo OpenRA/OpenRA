@@ -57,18 +57,6 @@ Container@SERVER_LOBBY:
 					Y: 30
 					Width: 582
 					Height: 219
-				Button@LOBBYCHAT_TAB:
-					X: 15
-					Y: PARENT_BOTTOM - 46
-					Width: 95
-					Height: 31
-					Text: Game
-				Button@GLOBALCHAT_TAB:
-					X: 115
-					Y: PARENT_BOTTOM - 46
-					Width: 95
-					Height: 31
-					Text: Global
 				Container@LOBBYCHAT:
 					X: 15
 					Y: 285
@@ -107,9 +95,8 @@ Container@SERVER_LOBBY:
 											VAlign: Top
 											Shadow: True
 						TextField@CHAT_TEXTFIELD:
-							X: 200
 							Y: PARENT_BOTTOM - HEIGHT
-							Width: PARENT_RIGHT - 200
+							Width: PARENT_RIGHT
 							Height: 25
 							LeftMargin: 50
 							Children:
@@ -119,11 +106,6 @@ Container@SERVER_LOBBY:
 									Height: 25
 									Align: Right
 									Text: Chat:
-				Container@GLOBALCHAT_ROOT:
-					X: 15
-					Y: 285
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 300
 		Button@DISCONNECT_BUTTON:
 			Y: PARENT_BOTTOM - 36
 			Width: 140

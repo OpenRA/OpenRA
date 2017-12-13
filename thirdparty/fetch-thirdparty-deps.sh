@@ -96,13 +96,6 @@ if [ ! -f Eluant.dll ]; then
 	curl -s -L -O https://github.com/OpenRA/Eluant/releases/download/20160124/Eluant.dll
 fi
 
-if [ ! -f SmarIrc4net.dll ]; then
-	echo "Fetching SmartIrc4net from NuGet."
-	../noget.sh SmartIrc4net 0.4.5.1
-	cp ./SmartIrc4net/lib/net40/SmarIrc4net* .
-	rm -rf SmartIrc4net
-fi
-
 if [ ! -f rix0rrr.BeaconLib.dll ]; then
 	echo "Fetching rix0rrr.BeaconLib from NuGet."
 	../noget.sh rix0rrr.BeaconLib 1.0.1
