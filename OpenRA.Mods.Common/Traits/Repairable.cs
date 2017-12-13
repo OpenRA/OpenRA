@@ -26,6 +26,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		public readonly bool RequiresEnteringResupplier = true;
+
+		public readonly WDist CloseEnough = new WDist(512);
+
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
@@ -110,15 +114,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
-			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
+			if (info.RequiresEnteringResupplier)
+				self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
+			else
+				self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough));
+
 			if (CanRearmAt(order.TargetActor) && CanRearm())
 				self.QueueActivity(new Rearm(self));
 
-			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, order.TargetActor, new WDist(512)));
+			// Add a CloseEnough range to ensure we're close enough to the host actor
+			self.QueueActivity(new Repair(self, order.TargetActor, info.CloseEnough));
 
+			// If actor moved to resupplier center, try to leave it
 			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
+			if (rp != null && info.RequiresEnteringResupplier)
 			{
 				self.QueueActivity(new CallFunc(() =>
 				{
