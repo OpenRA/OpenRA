@@ -56,7 +56,11 @@ namespace OpenRA.Mods.Common.Orders
 			// Test for generic Repairable (used on units).
 			var repairable = underCursor.TraitOrDefault<Repairable>();
 			if (repairable != null)
-				repairBuilding = repairable.FindRepairBuilding(underCursor);
+			{
+				var resupplyManager = underCursor.TraitOrDefault<ResupplyManager>();
+				if (resupplyManager != null)
+					repairBuilding = resupplyManager.FindRepairActor(underCursor);
+			}
 
 			if (repairBuilding == null)
 				yield break;

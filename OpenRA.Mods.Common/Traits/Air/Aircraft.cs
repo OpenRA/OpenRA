@@ -151,8 +151,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
-		RepairableInfo repairableInfo;
-		RearmableInfo rearmableInfo;
+		Repairable[] repairables;
+		Rearmable[] rearmables;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -208,8 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Created(Actor self)
 		{
-			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
-			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			repairables = self.TraitsImplementing<Repairable>().ToArray();
+			rearmables = self.TraitsImplementing<Rearmable>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -449,8 +449,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return (rearmableInfo != null && rearmableInfo.RearmActors.Contains(a.Info.Name))
-				|| (repairableInfo != null && repairableInfo.RepairBuildings.Contains(a.Info.Name));
+			return rearmables.Any(r => !r.IsTraitDisabled && r.Info.RearmActors.Contains(a.Info.Name))
+				|| repairables.Any(r => !r.IsTraitDisabled && r.Info.RepairActors.Contains(a.Info.Name));
 		}
 
 		public int MovementSpeed
@@ -486,11 +486,11 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (rearmableInfo != null && rearmableInfo.RearmActors.Contains(name))
+			if (rearmables.Any(r => !r.IsTraitDisabled && r.Info.RearmActors.Contains(name)))
 				yield return new Rearm(self);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
-			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(name))
+			if (repairables.Any(r => !r.IsTraitDisabled && r.Info.RepairActors.Contains(name)))
 				yield return new Repair(self, a, WDist.Zero);
 		}
 

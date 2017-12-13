@@ -228,6 +228,8 @@
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	Repairable:
+		RepairActors: fix
+	ResupplyManager:
 	Passenger:
 		CargoType: Vehicle
 	ActorLostNotification:
@@ -284,7 +286,8 @@
 	Selectable:
 		Bounds: 24,24
 	Repairable:
-		RepairBuildings: hpad
+		RepairActors: hpad
+	ResupplyManager:
 	Aircraft:
 		LandWhenIdle: false
 		AirborneCondition: airborne

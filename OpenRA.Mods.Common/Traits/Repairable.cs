@@ -10,156 +10,21 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using OpenRA.Activities;
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
+	public class RepairableInfo : ConditionalTraitInfo
 	{
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
+		[Desc("Actors that this actor can dock to and get repaired by.")]
+		[FieldLoader.Require]
+		[ActorReference] public readonly HashSet<string> RepairActors = new HashSet<string> { };
 
-		[VoiceReference] public readonly string Voice = "Action";
-
-		public readonly bool RequiresEnteringResupplier = true;
-
-		public readonly WDist CloseEnough = new WDist(512);
-
-		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Repairable(this); }
 	}
 
-	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
+	public class Repairable : ConditionalTrait<RepairableInfo>
 	{
-		readonly RepairableInfo info;
-		readonly Health health;
-		readonly IMove movement;
-		readonly AmmoPool[] ammoPools;
-
-		public Repairable(Actor self, RepairableInfo info)
-		{
-			this.info = info;
-			health = self.Trait<Health>();
-			movement = self.Trait<IMove>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
-		}
-
-		public IEnumerable<IOrderTargeter> Orders
-		{
-			get
-			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
-			}
-		}
-
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
-		{
-			if (order.OrderID == "Repair")
-				return new Order(order.OrderID, self, target, queued);
-
-			return null;
-		}
-
-		bool CanRepairAt(Actor target)
-		{
-			return info.RepairBuildings.Contains(target.Info.Name);
-		}
-
-		bool CanRearmAt(Actor target)
-		{
-			return info.RepairBuildings.Contains(target.Info.Name);
-		}
-
-		bool CanRepair()
-		{
-			return health.DamageState > DamageState.Undamaged;
-		}
-
-		bool CanRearm()
-		{
-			return ammoPools.Any(x => !x.AutoReloads && !x.FullAmmo());
-		}
-
-		public string VoicePhraseForOrder(Actor self, Order order)
-		{
-			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
-		}
-
-		public void ResolveOrder(Actor self, Order order)
-		{
-			if (order.OrderString == "Repair")
-			{
-				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
-					return;
-
-				var target = Target.FromOrder(self.World, order);
-				self.SetTargetLine(target, Color.Green);
-
-				self.CancelActivity();
-				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target),
-					new CallFunc(() => AfterReachActivities(self, order, movement)))));
-
-				TryCallTransport(self, target, new CallFunc(() => AfterReachActivities(self, order, movement)));
-			}
-		}
-
-		void AfterReachActivities(Actor self, Order order, IMove movement)
-		{
-			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
-				return;
-
-			// TODO: This is hacky, but almost every single component affected
-			// will need to be rewritten anyway, so this is OK for now.
-			if (info.RequiresEnteringResupplier)
-				self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-			else
-				self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough));
-
-			if (CanRearmAt(order.TargetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self));
-
-			// Add a CloseEnough range to ensure we're close enough to the host actor
-			self.QueueActivity(new Repair(self, order.TargetActor, info.CloseEnough));
-
-			// If actor moved to resupplier center, try to leave it
-			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null && info.RequiresEnteringResupplier)
-			{
-				self.QueueActivity(new CallFunc(() =>
-				{
-					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-					self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
-				}));
-			}
-		}
-
-		public Actor FindRepairBuilding(Actor self)
-		{
-			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
-				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
-					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					info.RepairBuildings.Contains(a.Actor.Info.Name))
-				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
-
-			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
-			return repairBuilding.FirstOrDefault().Actor;
-		}
-
-		static void TryCallTransport(Actor self, Target target, Activity nextActivity)
-		{
-			var transport = self.TraitOrDefault<ICallForTransport>();
-			if (transport == null)
-				return;
-
-			var targetCell = self.World.Map.CellContaining(target.CenterPosition);
-			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.LengthSquared)
-				return;
-
-			transport.RequestTransport(self, targetCell, nextActivity);
-		}
+		public Repairable(RepairableInfo info) : base(info) { }
 	}
 }

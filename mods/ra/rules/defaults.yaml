@@ -238,6 +238,8 @@
 		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !parachute
 	Repairable:
+		RepairActors: fix
+	ResupplyManager:
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
@@ -480,7 +482,8 @@
 		Types: Ship
 	Chronoshiftable:
 	Repairable:
-		RepairBuildings: spen, syrd
+		RepairActors: spen, syrd
+	ResupplyManager:
 		CloseEnough: 4c0
 		RequiresEnteringResupplier: false
 	GpsDot:
@@ -563,7 +566,8 @@
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
 	Repairable:
-		RepairBuildings: fix
+		RepairActors: fix
+	ResupplyManager:
 
 ^Helicopter:
 	Inherits: ^Plane

@@ -721,7 +721,8 @@
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
-		RepairBuildings: gadept
+		RepairActors: gadept
+	ResupplyManager:
 		Voice: Move
 	Passenger:
 		CargoType: Vehicle
@@ -818,7 +819,8 @@
 	SelectionDecorations:
 		Palette: pips
 	Repairable:
-		RepairBuildings: gadept
+		RepairActors: gadept
+	ResupplyManager:
 		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne

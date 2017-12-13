@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliReturnToBase : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly RepairableInfo repairableInfo;
-		readonly RearmableInfo rearmableInfo;
+		readonly Repairable[] repairables;
+		readonly Rearmable[] rearmables;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		Actor dest;
@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Activities
 		public HeliReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
 			aircraft = self.Trait<Aircraft>();
-			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
-			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			repairables = self.TraitsImplementing<Repairable>().ToArray();
+			rearmables = self.TraitsImplementing<Rearmable>().ToArray();
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			this.dest = dest;
@@ -37,12 +37,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Actor ChooseResupplier(Actor self, bool unreservedOnly)
 		{
-			if (rearmableInfo == null)
+			var rearms = rearmables.Where(r => !r.IsTraitDisabled);
+			if (!rearms.Any())
 				return null;
 
-			var rearmActors = rearmableInfo.RearmActors;
 			return self.World.Actors.Where(a => a.Owner == self.Owner
-				&& rearmActors.Contains(a.Info.Name)
+				&& rearms.Any(r => r.Info.RearmActors.Contains(a.Info.Name))
 				&& (!unreservedOnly || !Reservable.IsReserved(a)))
 				.ClosestTo(self);
 		}
@@ -112,11 +112,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (alwaysLand)
 				return true;
 
-			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
+			if (repairables.Any(r => !r.IsTraitDisabled && r.Info.RepairActors.Contains(dest.Info.Name)) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return rearmableInfo != null && rearmableInfo.RearmActors.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
-					.Any(p => !p.AutoReloads && !p.FullAmmo());
+			return rearmables.Any(r => !r.IsTraitDisabled && r.Info.RearmActors.Contains(dest.Info.Name))
+				&& self.TraitsImplementing<AmmoPool>().Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 	}
 }
