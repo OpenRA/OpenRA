@@ -326,20 +326,11 @@ namespace OpenRA.Mods.Common.Traits
 			// If the other actor in our way cannot be crushed, we are blocked.
 			// PERF: Avoid LINQ.
 			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			var lacksCrushability = true;
 			foreach (var crushable in crushables)
-			{
-				lacksCrushability = false;
-				if (!crushable.CrushableBy(otherActor, self, Crushes))
-					return true;
-			}
+				if (crushable.CrushableBy(otherActor, self, Crushes))
+					return false;
 
-			// If there are no crushable traits at all, this means the other actor cannot be crushed - we are blocked.
-			if (lacksCrushability)
-				return true;
-
-			// We are not blocked by the other actor.
-			return false;
+			return true;
 		}
 
 		public WorldMovementInfo GetWorldMovementInfo(World world)
@@ -737,10 +728,10 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			foreach (var crushes in crushables)
-				if (!crushes.Trait.CrushableBy(crushes.Actor, self, Info.Crushes))
-					return false;
+				if (crushes.Trait.CrushableBy(crushes.Actor, self, Info.Crushes))
+					return true;
 
-			return true;
+			return false;
 		}
 
 		public int MovementSpeedForCell(Actor self, CPos cell)
