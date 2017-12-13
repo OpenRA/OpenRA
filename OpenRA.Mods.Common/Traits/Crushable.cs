@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor is crushable.")]
-	class CrushableInfo : ITraitInfo
+	class CrushableInfo : ConditionalTraitInfo
 	{
 		[Desc("Sound to play when being crushed.")]
 		public readonly string CrushSound = null;
@@ -27,18 +27,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Will friendly units just crush me instead of pathing around.")]
 		public readonly bool CrushedByFriendlies = false;
 
-		public object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
 	}
 
-	class Crushable : ICrushable, INotifyCrushed
+	class Crushable : ConditionalTrait<CrushableInfo>, ICrushable, INotifyCrushed
 	{
 		readonly Actor self;
-		readonly CrushableInfo info;
 
 		public Crushable(Actor self, CrushableInfo info)
+			: base(info)
 		{
 			this.self = self;
-			this.info = info;
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
@@ -47,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var mobile = self.TraitOrDefault<Mobile>();
-			if (mobile != null && self.World.SharedRandom.Next(100) <= info.WarnProbability)
+			if (mobile != null && self.World.SharedRandom.Next(100) <= Info.WarnProbability)
 				mobile.Nudge(self, crusher, true);
 		}
 
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
 
-			Game.Sound.Play(SoundType.World, info.CrushSound, crusher.CenterPosition);
+			Game.Sound.Play(SoundType.World, Info.CrushSound, crusher.CenterPosition);
 
 			self.Kill(crusher);
 		}
@@ -68,14 +67,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CrushableInner(HashSet<string> crushClasses, Player crushOwner)
 		{
+			if (IsTraitDisabled)
+				return false;
+
 			// Only make actor crushable if it is on the ground.
 			if (!self.IsAtGroundLevel())
 				return false;
 
-			if (!info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))
+			if (!Info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))
 				return false;
 
-			return info.CrushClasses.Overlaps(crushClasses);
+			return Info.CrushClasses.Overlaps(crushClasses);
 		}
 	}
 }
