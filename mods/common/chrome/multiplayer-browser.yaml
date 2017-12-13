@@ -35,7 +35,7 @@ Container@MULTIPLAYER_BROWSER_PANEL:
 		ScrollPanel@SERVER_LIST:
 			Y: 30
 			Width: 583
-			Height: 249
+			Height: 279
 			TopBottomSpacing: 2
 			Children:
 				ScrollItem@HEADER_TEMPLATE:

@@ -13,11 +13,11 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 		ScrollPanel:
 			Y: 30
 			Width: 583
-			Height: 249
+			Height: 279
 			Children:
 				Container:
 					X: 185
-					Y: 25
+					Y: 30
 					Children:
 						Label@SERVER_NAME_LABEL:
 							Y: 14

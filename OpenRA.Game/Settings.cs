@@ -194,16 +194,6 @@ namespace OpenRA
 		public MPGameFilters MPGameFilters = MPGameFilters.Waiting | MPGameFilters.Empty | MPGameFilters.Protected | MPGameFilters.Started;
 	}
 
-	public class ChatSettings
-	{
-		public string Hostname = "irc.openra.net";
-		public int Port = 6667;
-		public string Channel = "lobby";
-		public string QuitMessage = "Battle control terminated!";
-		public string TimestampFormat = "HH:mm";
-		public bool ConnectAutomatically = false;
-	}
-
 	public class Settings
 	{
 		readonly string settingsFile;
@@ -215,7 +205,6 @@ namespace OpenRA
 		public readonly ServerSettings Server = new ServerSettings();
 		public readonly DebugSettings Debug = new DebugSettings();
 		internal Dictionary<string, Hotkey> Keys = new Dictionary<string, Hotkey>();
-		public readonly ChatSettings Chat = new ChatSettings();
 
 		public readonly Dictionary<string, object> Sections;
 
@@ -235,7 +224,6 @@ namespace OpenRA
 				{ "Graphics", Graphics },
 				{ "Server", Server },
 				{ "Debug", Debug },
-				{ "Chat", Chat }
 			};
 
 			// Override fieldloader to ignore invalid entries

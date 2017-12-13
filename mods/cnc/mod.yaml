@@ -93,14 +93,12 @@ ChromeLayout:
 	cnc|chrome/multiplayer-browser.yaml
 	cnc|chrome/multiplayer-createserver.yaml
 	cnc|chrome/multiplayer-directconnect.yaml
-	cnc|chrome/multiplayer-globalchat.yaml
 	cnc|chrome/lobby.yaml
 	cnc|chrome/lobby-mappreview.yaml
 	cnc|chrome/lobby-players.yaml
 	cnc|chrome/lobby-options.yaml
 	cnc|chrome/lobby-music.yaml
 	cnc|chrome/lobby-kickdialogs.yaml
-	cnc|chrome/lobby-globalchat.yaml
 	cnc|chrome/connection.yaml
 	cnc|chrome/color-picker.yaml
 	cnc|chrome/mapchooser.yaml

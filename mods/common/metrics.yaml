@@ -10,9 +10,6 @@ Metrics:
 	ButtonTextShadow: false
 	CheckboxPressedState: false
 	GameStartedColor: FFA500
-	GlobalChatNotificationColor: FFA500
-	GlobalChatTextColor: FFFFFF
-	GlobalChatPlayerNameColor: 00FF00
 	HotkeyColor: FFFFFF
 	HotkeyColorDisabled: 808080
 	HotkeyFont: Regular

@@ -109,7 +109,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			createServerTab.OnClick = () => panel = PanelType.CreateServer;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
-			Game.LoadWidget(null, "GLOBALCHAT_PANEL", widget.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
 
 			lanGameLocations = new List<BeaconLocation>();
 			try

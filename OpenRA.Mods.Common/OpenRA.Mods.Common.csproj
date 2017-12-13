@@ -728,7 +728,6 @@
     <Compile Include="Traits\SpawnActorOnDeath.cs" />
     <Compile Include="Scripting\Global\LightingGlobal.cs" />
     <Compile Include="Traits\SupportPowers\ProduceActorPower.cs" />
-    <Compile Include="Widgets\Logic\GlobalChatLogic.cs" />
     <Compile Include="Lint\CheckChromeLogic.cs" />
     <Compile Include="Lint\CheckMapMetadata.cs" />
     <Compile Include="Widgets\Logic\MultiplayerLogic.cs" />
