@@ -788,7 +788,6 @@
 		Categories: Decoration
 	Interactable:
 		Bounds: 24,24
-	Interactable:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -963,7 +962,6 @@
 ^Bridge:
 	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
-	Interactable:
 	Tooltip:
 		Name: Bridge
 		ShowOwnerRow: false
