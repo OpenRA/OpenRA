@@ -107,7 +107,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ClearQueue()
 		{
-			Queue.ForEach(q => playerResources.GiveCash(q.TotalCost - q.RemainingCost));
+			foreach (var q in Queue)
+				playerResources.GiveCash(q.TotalCost - q.RemainingCost);
+
 			Queue.Clear();
 		}
 
@@ -343,10 +345,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void CancelProductionInner(string itemName)
 		{
-			var item = Queue.FindLast(a => a.Item == itemName);
+			var item = Queue.LastOrDefault(a => a.Item == itemName);
 
 			if (item != null)
 			{
+				// Refund what has been paid
 				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
 				FinishProduction(item);
 			}

@@ -63,12 +63,23 @@ namespace OpenRA.Mods.Common.Traits
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
 				var queue = targetActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => q.CanBuild(unit) && q.AllQueued().FirstOrDefault(i => i.Item == order.TargetString && i.RemainingTime == 0) != null);
+					.FirstOrDefault(q => q.CanBuild(unit) && q.AllQueued().FirstOrDefault(i => i.Item == order.TargetString && i.Done) != null);
 
 				if (queue == null)
 					return;
 
-				var item = queue.AllQueued().First(i => i.Item == order.TargetString && i.RemainingTime == 0);
+				// Find the ProductionItem associated with the building that we are trying to place
+				ProductionItem item = null;
+				foreach (var q in targetActor.TraitsImplementing<ProductionQueue>())
+				{
+					item = q.AllQueued().First(i => i.Item == order.TargetString && i.Done);
+					if (item != null)
+						break;
+				}
+
+				if (item == null)
+					return;
+
 				var producer = queue.MostLikelyProducer();
 				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
 				var buildingInfo = unit.TraitInfo<BuildingInfo>();

@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -22,9 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Sync] public new bool CurrentDone { get { return Queue.Find(i => i.Done) != null; } }
 
-		public ParallelProductionQueue(ActorInitializer init, ProductionQueueInfo info) : base(init, init.Self.Owner.PlayerActor, info)
-		{
-		}
+		public ParallelProductionQueue(ActorInitializer init, ProductionQueueInfo info)
+			: base(init, init.Self.Owner.PlayerActor, info) { }
 
 		protected override void ProgressQueue()
 		{
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void PauseProduction(string itemName, uint extraData)
 		{
-			var item = Queue.Find(a => a.Item == itemName);
+			var item = Queue.FirstOrDefault(a => a.Item == itemName);
 
 			if (item != null)
 				item.Pause(extraData != 0);

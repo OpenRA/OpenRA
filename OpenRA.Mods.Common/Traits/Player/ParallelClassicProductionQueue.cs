@@ -22,9 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Sync] public new bool CurrentDone { get { return Queue.Find(i => i.Done) != null; } }
 
-		public ParallelClassicProductionQueue(ActorInitializer init, ClassicProductionQueueInfo info) : base(init, info)
-		{
-		}
+		public ParallelClassicProductionQueue(ActorInitializer init, ClassicProductionQueueInfo info)
+			: base(init, info) { }
 
 		protected override void ProgressQueue()
 		{
