@@ -321,7 +321,6 @@ BARL:
 		Categories: Decoration
 	Interactable:
 		Bounds: 24,24
-	Interactable:
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -346,7 +345,6 @@ BRL3:
 		Categories: Decoration
 	Interactable:
 		Bounds: 24,24
-	Interactable:
 
 AMMOBOX1:
 	Inherits: ^AmmoBox
