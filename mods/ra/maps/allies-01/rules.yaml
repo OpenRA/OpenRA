@@ -22,7 +22,6 @@ TRAN.Extraction:
 	RenderSprites:
 		Image: tran
 	Interactable:
-	Interactable:
 
 TRAN.Insertion:
 	Inherits: TRAN.Extraction
