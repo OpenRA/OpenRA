@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 			var toProcess = new Queue<CPos>();
 			toProcess.Enqueue(MPos.Zero.ToCPos(map));
 
-			// Flood-fill over each domain
+			// Flood-fill over each domain.
 			while (toProcess.Count != 0)
 			{
 				var start = toProcess.Dequeue();
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 				var currentPassable = CanTraverseTile(world, start);
 
 				// Add all contiguous cells to our domain, and make a note of
-				// any non-contiguous cells for future domains
+				// any non-contiguous cells for future domains.
 				while (domainQueue.Count != 0)
 				{
 					var n = domainQueue.Dequeue();
@@ -237,12 +237,14 @@ namespace OpenRA.Mods.Common.Traits
 					visited[n] = true;
 					domains[n] = domain;
 
-					// Don't crawl off the map, or add already-visited cells
-					var neighbors = CVec.Directions.Select(d => n + d)
-						.Where(p => visited.Contains(p) && !visited[p]);
-
-					foreach (var neighbor in neighbors)
-						domainQueue.Enqueue(neighbor);
+					// PERF: Avoid LINQ.
+					foreach (var direction in CVec.Directions)
+					{
+						// Don't crawl off the map, or add already-visited cells.
+						var neighbor = direction + n;
+						if (visited.Contains(neighbor) && !visited[neighbor])
+							domainQueue.Enqueue(neighbor);
+					}
 				}
 
 				domain += 1;
