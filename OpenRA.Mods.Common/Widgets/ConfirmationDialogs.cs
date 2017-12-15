@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					if (onOther != null)
 						onOther();
-                };
+				};
 
 				if (!string.IsNullOrEmpty(otherText) && otherButton != null)
 					otherButton.GetText = () => otherText;
