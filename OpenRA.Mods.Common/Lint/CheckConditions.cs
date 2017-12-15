@@ -40,12 +40,12 @@ namespace OpenRA.Mods.Common.Lint
 						.SelectMany(p => LintExts.GetPropertyValues(trait, p, emitError));
 
 					var fieldGranted = trait.GetType().GetFields()
-                        .Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
-	  					.SelectMany(f => LintExts.GetFieldValues(trait, f, emitError));
+						.Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
+						.SelectMany(f => LintExts.GetFieldValues(trait, f, emitError));
 
 					var propertyGranted = trait.GetType().GetProperties()
-                        .Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
-	  					.SelectMany(f => LintExts.GetPropertyValues(trait, f, emitError));
+						.Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
+						.SelectMany(f => LintExts.GetPropertyValues(trait, f, emitError));
 
 					foreach (var c in fieldConsumed.Concat(propertyConsumed))
 						if (!string.IsNullOrEmpty(c))
