@@ -130,13 +130,30 @@ namespace OpenRA.Mods.Common.Traits
 
 			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.ContainsKey(p.Replace("!", "").Replace("~", ""))));
+				// PERF: Avoid LINQ.
+				foreach (var prereq in prerequisites)
+				{
+					var withoutTilde = prereq.Replace("~", "");
+					if (withoutTilde.StartsWith("!") ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
+						return false;
+				}
+
+				return true;
 			}
 
 			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
 			{
-				return prerequisites.Any(prereq => prereq.StartsWith("~") &&
-					(prereq.Replace("~", "").StartsWith("!") ^ !ownedPrerequisites.ContainsKey(prereq.Replace("~", "").Replace("!", ""))));
+				// PERF: Avoid LINQ.
+				foreach (var prereq in prerequisites)
+				{
+					if (!prereq.StartsWith("~"))
+						continue;
+					var withoutTilde = prereq.Replace("~", "");
+					if (withoutTilde.StartsWith("!") ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
+						return true;
+				}
+
+				return false;
 			}
 
 			public void Update(Cache<string, List<Actor>> ownedPrerequisites)

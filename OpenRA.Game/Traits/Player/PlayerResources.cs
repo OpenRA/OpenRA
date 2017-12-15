@@ -172,9 +172,11 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			ResourceCapacity = self.World.ActorsWithTrait<IStoreResources>()
-				.Where(a => a.Actor.Owner == owner)
-				.Sum(a => a.Trait.Capacity);
+			// PERF: Avoid LINQ.
+			ResourceCapacity = 0;
+			foreach (var tp in self.World.ActorsWithTrait<IStoreResources>())
+				if (tp.Actor.Owner == owner)
+					ResourceCapacity += tp.Trait.Capacity;
 
 			if (Resources > ResourceCapacity)
 				Resources = ResourceCapacity;
