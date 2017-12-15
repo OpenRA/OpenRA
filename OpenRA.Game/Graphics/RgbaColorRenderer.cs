@@ -204,11 +204,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawLine(IEnumerable<float2> points, float width, Color color, bool connectSegments = false)
-		{
-			DrawLine(points.Select(p => new float3(p, 0)), width, color, connectSegments);
-		}
-
 		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false)
 		{
 			if (!connectSegments)

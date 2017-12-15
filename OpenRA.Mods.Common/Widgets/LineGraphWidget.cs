@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 						{
 							lastX = x;
 							lastPoint = point;
-							return origin + new float2(x * xStep, -point * scale);
+							return origin + new float3(x * xStep, -point * scale, 0);
 						}), 1, color);
 
 					if (lastPoint != 0f)
