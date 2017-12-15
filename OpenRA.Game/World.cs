@@ -475,6 +475,6 @@ namespace OpenRA
 		public bool Equals(TraitPair<T> other) { return this == other; }
 		public override bool Equals(object obj) { return obj is TraitPair<T> && Equals((TraitPair<T>)obj); }
 
-		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Trait.GetType().Name); }
+		public override string ToString() { return Actor.Info.Name + "->" + Trait.GetType().Name; }
 	}
 }
