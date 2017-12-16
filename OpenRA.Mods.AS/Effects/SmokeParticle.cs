@@ -35,7 +35,8 @@ namespace OpenRA.Mods.AS.Effects
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
 			anim = new Animation(world, image, () => 0);
-			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
+			world.ScreenMap.Add(this, pos, anim.Image);
 		}
 
 		public void Tick(World world)
@@ -48,6 +49,8 @@ namespace OpenRA.Mods.AS.Effects
 				: gravity[0];
 
 			pos += offset;
+
+			world.ScreenMap.Update(this, pos, anim.Image);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
