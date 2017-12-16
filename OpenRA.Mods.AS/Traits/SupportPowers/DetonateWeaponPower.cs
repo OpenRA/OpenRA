@@ -180,7 +180,7 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			world.CancelInputMode();
 			if (mi.Button == MouseButton.Left && world.Map.Contains(cell))
-				yield return new Order(order, manager.Self, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+				yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 
 		public virtual void Tick(World world)

@@ -49,7 +49,7 @@ namespace OpenRA.Mods.AS.Traits
 		public override object Create(ActorInitializer init) { return new FireArmamentPower(init.Self, this); }
 	}
 
-	public class FireArmamentPower : SupportPower, ITick, INotifyBurstComplete, INotifyCreated
+	public class FireArmamentPower : SupportPower, ITick, INotifyBurstComplete, INotifyCreated, IResolveOrder
 	{
 		public readonly FireArmamentPowerInfo FireArmamentPowerInfo;
 
@@ -81,6 +81,20 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			base.Activate(self, order, manager);
 
+			if (FireArmamentPowerInfo.MaximumFiringInstances > 1)
+				return;
+
+			Activation(self, order);
+		}
+
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString.Contains(Info.OrderName))
+				Activation(self, order);
+		}
+
+		void Activation(Actor self, Order order)
+		{
 			activeArmaments = Armaments.Where(x => !x.IsTraitDisabled).ToHashSet();
 
 			var armamentturrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
@@ -206,7 +220,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		IEnumerable<Tuple<Actor, WDist, WDist>> GetActualInstances(Actor self, FireArmamentPower power)
 		{
-			if (!power.FireArmamentPowerInfo.AllowMultiple)
+			if (power.FireArmamentPowerInfo.MaximumFiringInstances > 1)
 			{
 				var actorswithpower = self.World.ActorsWithTrait<FireArmamentPower>()
 					.Where(x => x.Actor.Owner == self.Owner && x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName));
@@ -234,12 +248,14 @@ namespace OpenRA.Mods.AS.Traits
 			world.CancelInputMode();
 			if (mi.Button == MouseButton.Left && IsValidTargetCell(xy))
 			{
+				yield return new Order(order, manager.Self, Target.FromCell(world, xy), false) { SuppressVisualFeedback = true };
+
 				var actors = instances.Where(x => !x.Item1.IsDisabled() && (x.Item1.CenterPosition - pos).HorizontalLengthSquared < x.Item3.LengthSquared)
 					.OrderBy(x => (x.Item1.CenterPosition - pos).HorizontalLengthSquared).Select(x => x.Item1).Take(power.FireArmamentPowerInfo.MaximumFiringInstances);
 
 				foreach (var a in actors)
 				{
-					yield return new Order(order, manager.Self, false) { TargetLocation = xy, SuppressVisualFeedback = true };
+					yield return new Order(order, a, Target.FromCell(world, xy), false) { SuppressVisualFeedback = true };
 				}
 			}
 		}

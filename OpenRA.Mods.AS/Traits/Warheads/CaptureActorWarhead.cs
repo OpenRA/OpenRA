@@ -62,11 +62,12 @@ namespace OpenRA.Mods.AS.Warheads
 				if (distance > Range)
 					continue;
 
-				var capturable = a.TraitOrDefault<Capturable>();
+				var capturable = a.TraitsImplementing<Capturable>()
+					.FirstOrDefault(c => !c.IsTraitDisabled && c.Info.Types.Overlaps(CaptureTypes));
 				var building = a.TraitOrDefault<Building>();
 				var health = a.Trait<Health>();
 
-				if (a.IsDead || capturable.BeingCaptured)
+				if (a.IsDead || capturable == null || capturable.BeingCaptured)
 					continue;
 
 				if (building != null && !building.Lock())
@@ -113,18 +114,10 @@ namespace OpenRA.Mods.AS.Warheads
 
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var capturable = victim.TraitOrDefault<Capturable>();
-			if (capturable == null || !CaptureTypes.Contains(capturable.Info.Type))
-				return false;
+			var capturable = victim.TraitsImplementing<Capturable>()
+					.FirstOrDefault(c => !c.IsTraitDisabled && c.Info.Types.Overlaps(CaptureTypes));
 
-			var playerRelationship = victim.Owner.Stances[firedBy.Owner];
-			if (playerRelationship == Stance.Ally && !capturable.Info.AllowAllies)
-				return false;
-
-			if (playerRelationship == Stance.Enemy && !capturable.Info.AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !capturable.Info.AllowNeutral)
+			if (capturable == null || !capturable.Info.ValidStances.HasStance(victim.Owner.Stances[firedBy.Owner]))
 				return false;
 
 			return base.IsValidAgainst(victim, firedBy);
