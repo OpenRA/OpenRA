@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
 		readonly List<Pair<Sheet, Action>> doRender = new List<Pair<Sheet, Action>>();
 
-		SheetBuilder sheetBuilder;
+		SheetBuilder sheetBuilderForFrame;
 
 		public ModelRenderer(Renderer renderer, IShader shader)
 		{
@@ -163,8 +163,11 @@ namespace OpenRA.Graphics
 			CalculateSpriteGeometry(tl, br, 1, out spriteSize, out spriteOffset);
 			CalculateSpriteGeometry(stl, sbr, 2, out shadowSpriteSize, out shadowSpriteOffset);
 
-			var sprite = sheetBuilder.Allocate(spriteSize, 0, spriteOffset);
-			var shadowSprite = sheetBuilder.Allocate(shadowSpriteSize, 0, shadowSpriteOffset);
+			if (sheetBuilderForFrame == null)
+				sheetBuilderForFrame = new SheetBuilder(SheetType.BGRA, AllocateSheet);
+
+			var sprite = sheetBuilderForFrame.Allocate(spriteSize, 0, spriteOffset);
+			var shadowSprite = sheetBuilderForFrame.Allocate(shadowSpriteSize, 0, shadowSpriteOffset);
 			var sb = sprite.Bounds;
 			var ssb = shadowSprite.Bounds;
 			var spriteCenter = new float2(sb.Left + sb.Width / 2, sb.Top + sb.Height / 2);
@@ -279,9 +282,6 @@ namespace OpenRA.Graphics
 			foreach (var kv in mappedBuffers)
 				unmappedBuffers.Push(kv);
 			mappedBuffers.Clear();
-
-			sheetBuilder = new SheetBuilder(SheetType.BGRA, AllocateSheet);
-			doRender.Clear();
 		}
 
 		IFrameBuffer EnableFrameBuffer(Sheet s)
@@ -303,6 +303,8 @@ namespace OpenRA.Graphics
 
 		public void EndFrame()
 		{
+			sheetBuilderForFrame = null;
+
 			if (doRender.Count == 0)
 				return;
 
@@ -325,6 +327,8 @@ namespace OpenRA.Graphics
 
 			if (fbo != null)
 				DisableFrameBuffer(fbo);
+
+			doRender.Clear();
 		}
 
 		public Sheet AllocateSheet()

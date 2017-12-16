@@ -87,7 +87,7 @@ tile475:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
-	AutoSelectionSize:
+	Interactable:
 
 # Placed after the sietch is destroyed so that the cliff is still unpassable
 invisibleBlocker:

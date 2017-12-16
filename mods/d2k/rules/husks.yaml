@@ -1,21 +1,23 @@
 mcv.husk:
 	Inherits: ^VehicleHusk
 	Health:
-		HP: 175
+		HP: 1750
 	Tooltip:
-		Name: Destroyed Mobile Construction Vehicle
+		Name: Mobile Construction Vehicle (Destroyed)
 
 harvester.husk:
 	Inherits: ^VehicleHusk
 	Health:
-		HP: 150
+		HP: 1500
 	Tooltip:
-		Name: Destroyed Spice Harvester
+		Name: Spice Harvester (Destroyed)
 	TransformOnCapture:
 		IntoActor: harvester
 
 siege_tank.husk:
 	Inherits: ^VehicleHusk
+	Tooltip:
+		Name: Siege Tank (Destroyed)
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -23,30 +25,40 @@ siege_tank.husk:
 
 missile_tank.husk:
 	Inherits: ^VehicleHusk
+	Tooltip:
+		Name: Missile Tank (Destroyed)
 	TransformOnCapture:
 		IntoActor: missile_tank
 
 sonic_tank.husk:
 	Inherits: ^VehicleHusk
+	Tooltip:
+		Name: Sonic Tank (Destroyed)
 	TransformOnCapture:
 		IntoActor: sonic_tank
 
 devastator.husk:
 	Inherits: ^VehicleHusk
 	Health:
-		HP: 125
+		HP: 1250
+	Tooltip:
+		Name: Devastator (Destroyed)
 	TransformOnCapture:
 		IntoActor: devastator
 
 deviator.husk:
 	Inherits: ^VehicleHusk
+	Tooltip:
+		Name: Deviator (Destroyed)
 	TransformOnCapture:
 		IntoActor: deviator
 
 ^combat_tank.husk:
 	Inherits: ^VehicleHusk
 	Health:
-		HP: 100
+		HP: 1000
+	Tooltip:
+		Name: Combat Tank (Destroyed)
 	ThrowsParticle@turret:
 		Anim: turret
 

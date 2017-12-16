@@ -37,7 +37,7 @@ NAGATE_B:
 
 NAPOST:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 150
@@ -64,6 +64,7 @@ NAPOST:
 		Types: laserfencenode
 	Power:
 		Amount: -25
+		RequiresCondition: !powerdown
 	RevealsShroud:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
@@ -72,11 +73,6 @@ NAPOST:
 	WithIdleOverlay@CHAINOFLIGHTS:
 		RequiresCondition: !disabled
 		Sequence: chainoflights
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-	RequiresPower:
 	LineBuildSegmentExternalCondition:
 		RequiresCondition: !disabled && !make-animation-playing
 		Condition: active-posts
@@ -103,8 +99,6 @@ NAFNCE:
 		Direction: Y
 		Condition: laserfence-direction-y
 	-WithWallSpriteBody:
-	CustomSelectionSize:
-		CustomBounds: 48, 24
 	ExternalCondition@ACTIVE:
 		Condition: active-posts
 	WithWallSpriteBody@XENABLED:
@@ -133,10 +127,12 @@ NAFNCE:
 		Weapons: SmallDebris
 		Pieces: 0, 1
 		Range: 2c0, 5c0
+	Interactable:
+		Bounds: 48, 24
 
 NALASR:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 300
@@ -150,6 +146,7 @@ NALASR:
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
+		DecorationBounds: 40, 36, -8, -8
 	Health:
 		HP: 500
 	Armor:
@@ -163,6 +160,7 @@ NALASR:
 		InitialFacing: 224
 		Offset: 298,-171,288
 	AttackTurreted:
+		PauseOnCondition: empdisable
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
@@ -170,14 +168,14 @@ NALASR:
 	WithVoxelTurret:
 	Power:
 		Amount: -40
+		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 40, 36, -8, -8
 	BodyOrientation:
 		QuantizedFacings: 0
 
 NAOBEL:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Inherits@SHAPE: ^2x2Shape
 	Valued:
@@ -194,7 +192,7 @@ NAOBEL:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 88, 42, 0, -6
-	RequiresPower:
+		DecorationBounds: 88, 72, 0, -12
 	Health:
 		HP: 725
 	Armor:
@@ -205,10 +203,11 @@ NAOBEL:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1980,297,1131
 	AttackCharges:
+		PauseOnCondition: empdisable || disabled
 		ChargeLevel: 65
 		ChargingCondition: charging
 	AmbientSound:
-		RequiresCondition: charging
+		RequiresCondition: charging && !disabled
 		SoundFiles: obelpowr.aud
 		Interval: 30, 40
 	WithChargeOverlay:
@@ -219,12 +218,12 @@ NAOBEL:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
+		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 88, 72, 0, -12
 
 NASAM:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 500
@@ -237,7 +236,7 @@ NASAM:
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
 		Bounds: 40, 30, -3, -8
-	RequiresPower:
+		DecorationBounds: 40, 36, -3, -8
 	Health:
 		HP: 600
 	Armor:
@@ -250,6 +249,7 @@ NASAM:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
+		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret:
 		Recoils: false
 	Armament:
@@ -257,12 +257,12 @@ NASAM:
 		LocalOffset: 543,0,815
 	Power:
 		Amount: -30
+		RequiresCondition: !powerdown
 	SelectionDecorations:
-		VisualBounds: 40, 36, -3, -8
 
 NASTLH:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	Inherits@SHAPE: ^3x2Shape
 	HitShape:
 		TargetableOffsets: 250,0,0, 600,-864,0
@@ -293,11 +293,7 @@ NASTLH:
 		Type: cloakgenerator
 	Power:
 		Amount: -350
-	RequiresPower:
-	CanPowerDown:
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-		IndicatorPalette: mouse
+		RequiresCondition: !powerdown
 	ProximityExternalCondition:
 		RequiresCondition: !disabled
 		Condition: cloakgenerator
@@ -307,12 +303,12 @@ NASTLH:
 		AffectsParent: true
 	Selectable:
 		Bounds: 106, 48, 8, -6
+		DecorationBounds: 106, 60, 8, -15
 	SelectionDecorations:
-		VisualBounds: 106, 60, 8, -15
 
 NAMISL:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Defense
@@ -331,6 +327,7 @@ NAMISL:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 75,48
+		DecorationBounds: 75,48
 	Health:
 		HP: 1000
 	Armor:
@@ -342,15 +339,11 @@ NAMISL:
 		Sequence: idle-lights
 	Power:
 		Amount: -50
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-	RequiresPower:
+		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
-		PauseOnCondition: disabled
+		PauseOnCondition: empdisable || disabled
 		Cursor: nuke
 		Icon: clustermissile
 		ChargeTime: 540
@@ -369,7 +362,6 @@ NAMISL:
 		CameraRange: 10c0
 	WithNukeLaunchOverlay:
 	SelectionDecorations:
-		VisualBounds: 75,48
 
 NAWAST:
 	Inherits: ^Building
@@ -392,6 +384,7 @@ NAWAST:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 100, 60, 5, -5
+		DecorationBounds: 100, 60, 5, -5
 	Health:
 		HP: 400
 	RevealsShroud:
@@ -418,5 +411,4 @@ NAWAST:
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 100, 60, 5, -5
 	RenderSprites:

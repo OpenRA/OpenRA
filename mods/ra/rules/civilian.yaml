@@ -70,7 +70,7 @@ FCOM:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -85,12 +85,15 @@ FCOM:
 		CaptureCompleteTime: 30
 	ExternalCapturableBar:
 	GivesBuildableArea:
+		AreaTypes: building
 	BaseProvider:
 		Range: 8c0
 	EngineerRepairable:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
+	GpsDot:
+		String: Forward
 
 HOSP:
 	Inherits: ^TechBuilding
@@ -101,7 +104,7 @@ HOSP:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:
@@ -293,16 +296,15 @@ V19.Husk:
 	-HitShape:
 	-Health:
 	-Explodes:
+	Interactable:
 
 BARL:
 	Inherits: ^TechBuilding
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
@@ -317,16 +319,17 @@ BARL:
 	-Demolishable:
 	EditorTilesetFilter:
 		Categories: Decoration
+	Interactable:
+		Bounds: 24,24
+	Interactable:
 
 BRL3:
 	Inherits: ^TechBuilding
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
@@ -341,6 +344,9 @@ BRL3:
 	-Demolishable:
 	EditorTilesetFilter:
 		Categories: Decoration
+	Interactable:
+		Bounds: 24,24
+	Interactable:
 
 AMMOBOX1:
 	Inherits: ^AmmoBox
@@ -364,7 +370,7 @@ MISS:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 10c0
 		RevealGeneratedShroud: False
@@ -382,6 +388,8 @@ MISS:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	GpsDot:
+		String: Communications
 
 BIO:
 	Inherits: ^TechBuilding
@@ -415,7 +423,7 @@ OILB:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 80000
 	RevealsShroud:
 		Range: 4c0
 	ExternalCapturable:
@@ -478,14 +486,14 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
-	CustomSelectionSize:
-		CustomBounds: 120,72
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 2,-1
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 120,72
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -496,14 +504,14 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
-	CustomSelectionSize:
-		CustomBounds: 120,48
 	FreeActor@north:
 		Actor: bridgehut
 		SpawnOffset: 0,-1
 	FreeActor@south:
 		Actor: bridgehut
 		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 120,48
 
 SBRIDGE1:
 	Inherits: ^Bridge
@@ -514,14 +522,14 @@ SBRIDGE1:
 	Building:
 		Footprint: ___ ___
 		Dimensions: 3,2
-	CustomSelectionSize:
-		CustomBounds: 72,48
 	FreeActor@north:
 		Actor: bridgehut.small
 		SpawnOffset: 1,0
 	FreeActor@south:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 72,48
 
 SBRIDGE2:
 	Inherits: ^Bridge
@@ -532,14 +540,14 @@ SBRIDGE2:
 	Building:
 		Footprint: __ __ __
 		Dimensions: 2,3
-	CustomSelectionSize:
-		CustomBounds: 48,72
 	FreeActor@west:
 		Actor: bridgehut.small
 		SpawnOffset: 0,1
 	FreeActor@east:
 		Actor: bridgehut.small
 		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 48,72
 
 SBRIDGE3:
 	Inherits: ^Bridge
@@ -773,8 +781,8 @@ WINDMILL:
 		RequireTilesets: TEMPERAT
 	Selectable:
 		Bounds: 24,24,0,-14
+		DecorationBounds: 36,36,0,-14
 	SelectionDecorations:
-		VisualBounds: 36,36,0,-14
 	Tooltip:
 		Name: Windmill
 	Building:

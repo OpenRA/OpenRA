@@ -137,15 +137,17 @@ namespace OpenRA.Mods.Common.Traits
 				return SpriteRenderable.None;
 		}
 
+		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
+		{
+			return bounds;
+		}
+
 		void ITick.Tick(Actor self)
 		{
 			if (!IsTraitDisabled)
 			{
 				if (remainingTime > 0 && !isDocking)
 					remainingTime--;
-
-				if (self.IsDisabled())
-					Uncloak();
 
 				if (Info.UncloakOn.HasFlag(UncloakType.Move) && (lastPos == null || lastPos.Value != self.Location))
 				{

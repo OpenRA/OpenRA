@@ -3,10 +3,12 @@ World:
 	-SpawnMPUnits:
 	-MPStartLocations:
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
 
 Player:
@@ -15,23 +17,23 @@ Player:
 	ClassicProductionQueue@Vehicle:
 		BuildDurationModifier: 250
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 100
 
 OILB:
 	Health:
-		HP: 6000
+		HP: 600000
 
 BARR:
 	Buildable:
 		Prerequisites: ~disabled
 	Health:
-		HP: 5000
+		HP: 500000
 	Production:
 		Produces: Building, Infantry, Soldier, Dog
 	BaseProvider:
@@ -43,7 +45,7 @@ WEAP:
 	Buildable:
 		Prerequisites: ~disabled
 	Health:
-		HP: 10000
+		HP: 1000000
 	Valued:
 		Cost: 2000
 	Power:

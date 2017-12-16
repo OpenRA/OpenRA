@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 
-		public NamedHotkey Key = new NamedHotkey();
+		public HotkeyReference Key = new HotkeyReference();
 		public bool DisableKeyRepeat = false;
 		public bool DisableKeySound = false;
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != Key.GetValue() || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
+			if (!Key.IsActivatedBy(e) || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
 
 			if (!IsDisabled())

@@ -12,11 +12,11 @@ Container@MULTIPLAYER_DIRECTCONNECT_PANEL:
 		ScrollPanel:
 			Y: 30
 			Width: 583
-			Height: 249
+			Height: 279
 			Children:
 				Container:
 					X: 185
-					Y: 60
+					Y: 85
 					Children:
 						Label@ADDRESS_LABEL:
 							Y: 14

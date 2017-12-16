@@ -96,10 +96,20 @@ namespace OpenRA.Traits
 	public interface ITick { void Tick(Actor self); }
 	[RequireExplicitImplementation]
 	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
-	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
+	public interface IRender
+	{
+		IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr);
+		IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr);
+	}
 
-	public interface IAutoSelectionSizeInfo : ITraitInfoInterface { }
-	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
+	// TODO: Replace Rectangle with an int2[] polygon
+	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
+	public interface IMouseBoundsInfo : ITraitInfoInterface { }
+	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
+
+	// HACK: This provides a shim for legacy code until it can be rewritten
+	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
+	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
 
 	public interface IIssueOrder
 	{
@@ -144,11 +154,6 @@ namespace OpenRA.Traits
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 
-	public interface ISelectionDecorationsInfo : ITraitInfoInterface
-	{
-		int[] SelectionBoxBounds { get; }
-	}
-
 	public interface IVoiced
 	{
 		string VoiceSet { get; }
@@ -190,12 +195,6 @@ namespace OpenRA.Traits
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 
-	public interface IFogVisibilityModifier
-	{
-		bool IsVisible(Actor actor);
-		bool HasFogVisibility();
-	}
-
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
@@ -206,7 +205,7 @@ namespace OpenRA.Traits
 	{
 		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
-		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
+		Pair<CPos, SubCell>[] OccupiedCells();
 	}
 
 	public static class IOccupySpaceExts
@@ -253,7 +252,15 @@ namespace OpenRA.Traits
 		IEnumerable<Actor> ActorsInBox(WPos a, WPos b);
 	}
 
-	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
+	public interface IRenderModifier
+	{
+		IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r);
+
+		// HACK: This is here to support the WithShadow trait.
+		// That trait should be rewritten using standard techniques, and then this interface method removed
+		IEnumerable<Rectangle> ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> r);
+	}
+
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor playerColor, bool replaceExisting); }
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
@@ -382,17 +389,24 @@ namespace OpenRA.Traits
 	{
 		public readonly string Id;
 		public readonly string Name;
+		public readonly string Description;
 		public readonly IReadOnlyDictionary<string, string> Values;
 		public readonly string DefaultValue;
-		public readonly bool Locked;
+		public readonly bool IsLocked;
+		public readonly bool IsVisible;
+		public readonly int DisplayOrder;
 
-		public LobbyOption(string id, string name, IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
+		public LobbyOption(string id, string name, string description, bool visible, int displayorder,
+			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
 		{
 			Id = id;
 			Name = name;
+			Description = description;
+			IsVisible = visible;
+			DisplayOrder = displayorder;
 			Values = values;
 			DefaultValue = defaultValue;
-			Locked = locked;
+			IsLocked = locked;
 		}
 
 		public virtual string ValueChangedMessage(string playerName, string newValue)
@@ -409,8 +423,8 @@ namespace OpenRA.Traits
 			{ false.ToString(), "disabled" }
 		};
 
-		public LobbyBooleanOption(string id, string name, bool defaultValue, bool locked)
-			: base(id, name, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
+		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
+			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
 
 		public override string ValueChangedMessage(string playerName, string newValue)
 		{

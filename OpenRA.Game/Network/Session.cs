@@ -180,13 +180,11 @@ namespace OpenRA.Network
 
 		public class LobbyOptionState
 		{
-			public bool Locked;
 			public string Value;
 			public string PreferredValue;
 
-			public LobbyOptionState() { }
-
-			public bool Enabled { get { return Value == "True"; } }
+			public bool IsLocked;
+			public bool IsEnabled { get { return Value == "True"; } }
 		}
 
 		public class Global
@@ -228,7 +226,7 @@ namespace OpenRA.Network
 			{
 				LobbyOptionState option;
 				if (LobbyOptions.TryGetValue(id, out option))
-					return option.Enabled;
+					return option.IsEnabled;
 
 				return def;
 			}

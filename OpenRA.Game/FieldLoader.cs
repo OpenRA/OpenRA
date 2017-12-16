@@ -273,9 +273,9 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-			else if (fieldType == typeof(NamedHotkey))
+			else if (fieldType == typeof(HotkeyReference))
 			{
-				return new NamedHotkey(value, Game.Settings.Keys);
+				return Game.ModData.Hotkeys[value];
 			}
 			else if (fieldType == typeof(WDist))
 			{

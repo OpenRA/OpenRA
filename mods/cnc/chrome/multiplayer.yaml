@@ -1,9 +1,9 @@
 Container@MULTIPLAYER_PANEL:
 	Logic: MultiplayerLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 560) / 2
+	Y: (WINDOW_BOTTOM - 345) / 2
 	Width: 800
-	Height: 575
+	Height: 360
 	Children:
 		Label@TITLE:
 			Text: Multiplayer
@@ -51,11 +51,6 @@ Container@MULTIPLAYER_PANEL:
 					X: 15
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM
-				Container@GLOBALCHAT_ROOT:
-					X: 15
-					Y: 315
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 330
 		TooltipContainer@TOOLTIP_CONTAINER:
 		Button@BACK_BUTTON:
 			Key: escape

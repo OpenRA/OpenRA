@@ -48,6 +48,7 @@ CYBORG:
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 16,31,0,-10
+		DecorationBounds: 16,31,0,-10
 	Voiced:
 		VoiceSet: Cyborg
 	Mobile:
@@ -62,7 +63,6 @@ CYBORG:
 	AttackFrontal:
 		Voice: Attack
 	SelectionDecorations:
-		VisualBounds: 16,31,0,-10
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -84,6 +84,7 @@ CYC2:
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Selectable:
 		Bounds: 16,32,-1,-12
+		DecorationBounds: 16,32,-1,-12
 	Voiced:
 		VoiceSet: CyborgCommando
 	Mobile:
@@ -99,7 +100,6 @@ CYC2:
 	AttackFrontal:
 		Voice: Attack
 	SelectionDecorations:
-		VisualBounds: 16,32,-1,-12
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 

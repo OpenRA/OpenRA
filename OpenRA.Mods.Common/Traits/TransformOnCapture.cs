@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
@@ -19,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference] public readonly string IntoActor = null;
 		public readonly int ForceHealthPercentage = 0;
 		public readonly bool SkipMakeAnims = true;
+
+		[Desc("Transform only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
+		public readonly HashSet<string> CaptureTypes = new HashSet<string>();
 
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(init, this); }
 	}
@@ -36,12 +41,31 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
+			if (!IsValidCaptor(captor))
+				return;
+
 			var facing = self.TraitOrDefault<IFacing>();
 			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
 			if (facing != null) transform.Facing = facing.Facing;
 			transform.SkipMakeAnims = info.SkipMakeAnims;
 			self.CancelActivity();
 			self.QueueActivity(transform);
+		}
+
+		bool IsValidCaptor(Actor captor)
+		{
+			if (!info.CaptureTypes.Any())
+				return true;
+
+			var capturesInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
+			if (capturesInfo != null && info.CaptureTypes.Overlaps(capturesInfo.CaptureTypes))
+				return true;
+
+			var externalCapturesInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
+			if (externalCapturesInfo != null && info.CaptureTypes.Overlaps(externalCapturesInfo.CaptureTypes))
+				return true;
+
+			return false;
 		}
 	}
 }

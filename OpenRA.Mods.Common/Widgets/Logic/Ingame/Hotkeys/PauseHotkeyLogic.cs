@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public PauseHotkeyLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "PauseKey", "WORLD_KEYHANDLER", logicArgs)
+		public PauseHotkeyLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "PauseKey", "WORLD_KEYHANDLER", logicArgs)
 		{
 			this.world = world;
 		}

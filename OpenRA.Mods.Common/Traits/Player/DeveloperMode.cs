@@ -18,39 +18,53 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : ITraitInfo, ILobbyOptions
 	{
+		[Translate]
+		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
+		public readonly string CheckboxLabel = "Debug Menu";
+
+		[Translate]
+		[Desc("Tooltip description for the developer mode checkbox in the lobby.")]
+		public readonly string CheckboxDescription = "Enables cheats and developer commands";
+
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
-		public bool Enabled = false;
+		public readonly bool CheckboxEnabled = false;
 
 		[Desc("Prevent the developer mode state from being changed in the lobby.")]
-		public bool Locked = false;
+		public readonly bool CheckboxLocked = false;
+
+		[Desc("Whether to display the developer mode checkbox in the lobby.")]
+		public readonly bool CheckboxVisible = true;
+
+		[Desc("Display order for the developer mode checkbox in the lobby.")]
+		public readonly int CheckboxDisplayOrder = 0;
 
 		[Desc("Default cash bonus granted by the give cash cheat.")]
-		public int Cash = 20000;
+		public readonly int Cash = 20000;
 
 		[Desc("Growth steps triggered by the grow resources button.")]
-		public int ResourceGrowth = 100;
+		public readonly int ResourceGrowth = 100;
 
 		[Desc("Enable the fast build cheat by default.")]
-		public bool FastBuild;
+		public readonly bool FastBuild;
 
 		[Desc("Enable the fast support powers cheat by default.")]
-		public bool FastCharge;
+		public readonly bool FastCharge;
 
 		[Desc("Enable the disable visibility cheat by default.")]
-		public bool DisableShroud;
+		public readonly bool DisableShroud;
 
 		[Desc("Enable the unlimited power cheat by default.")]
-		public bool UnlimitedPower;
+		public readonly bool UnlimitedPower;
 
 		[Desc("Enable the build anywhere cheat by default.")]
-		public bool BuildAnywhere;
+		public readonly bool BuildAnywhere;
 
 		[Desc("Enable the path debug overlay by default.")]
-		public bool PathDebug;
+		public readonly bool PathDebug;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
-			yield return new LobbyBooleanOption("cheats", "Debug Menu", Enabled, Locked);
+			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
@@ -93,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			Enabled = self.World.LobbyInfo.NonBotPlayers.Count() == 1 || self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("cheats", info.Enabled);
+				.OptionOrDefault("cheats", info.CheckboxEnabled);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

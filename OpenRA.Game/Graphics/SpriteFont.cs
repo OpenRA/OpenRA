@@ -49,8 +49,8 @@ namespace OpenRA.Graphics
 			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
 			lineWidth = line => line.Sum(characterWidth) / deviceScale;
 
-			PrecacheColor(Color.White, name);
-			PrecacheColor(Color.Red, name);
+			if (size <= 24)
+				PrecacheColor(Color.White, name);
 		}
 
 		public void SetScale(float scale)
@@ -70,25 +70,28 @@ namespace OpenRA.Graphics
 
 		public void DrawText(string text, float2 location, Color c)
 		{
-			location.Y += size;	// baseline vs top
+			// Offset from the baseline position to the top-left of the glyph for rendering
+			location += new float2(0, size);
 
 			var p = location;
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
-					location.Y += size;
+					location += new float2(0, size);
 					p = location;
 					continue;
 				}
 
 				var g = glyphs[Pair.New(s, c)];
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
-					new float2(
-						(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
-						p.Y + g.Offset.Y / deviceScale),
-						g.Sprite.Size / deviceScale);
-				p.X += g.Advance / deviceScale;
+				if (g.Sprite != null)
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+						new float2(
+							(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
+							p.Y + g.Offset.Y / deviceScale),
+							g.Sprite.Size / deviceScale);
+
+				p += new float2(g.Advance / deviceScale, 0);
 			}
 		}
 
@@ -134,7 +137,20 @@ namespace OpenRA.Graphics
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
+			try
+			{
+				face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
+			}
+			catch (FreeTypeException)
+			{
+				return new GlyphInfo
+				{
+					Sprite = null,
+					Advance = 0,
+					Offset = int2.Zero
+				};
+			}
+
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
 			var size = new Size((int)face.Glyph.Metrics.Width, (int)face.Glyph.Metrics.Height);

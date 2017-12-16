@@ -16,10 +16,6 @@ World:
 			hard: Hard
 		Default: easy
 
-^TechBuilding:
-	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
-
 ^Infantry:
 	-GivesBounty:
 
@@ -29,23 +25,11 @@ World:
 ^Helicopter:
 	-GivesBounty:
 	Health:
-		HP: 9000
-
-BARL:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplode
-
-BRL3:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplode
+		HP: 900000
 
 FENC:
 	Health:
-		HP: 9000
+		HP: 900000
 
 V01:
 	Cargo:

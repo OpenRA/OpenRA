@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly Cargo cargo;
 		readonly BodyOrientation body;
 		readonly IFacing facing;
+		int cachedFacing;
 
 		Dictionary<Actor, IActorPreview[]> previews = new Dictionary<Actor, IActorPreview[]>();
 
@@ -57,6 +59,15 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				if (actorPreviews != null)
 					foreach (var preview in actorPreviews)
 						preview.Tick();
+
+			// HACK: We don't have an efficient way to know when the preview
+			// bounds change, so assume that we need to update the screen map
+			// (only) when the facing changes
+			if (facing.Facing != cachedFacing && previews.Any())
+			{
+				self.World.ScreenMap.AddOrUpdate(self);
+				cachedFacing = facing.Facing;
+			}
 		}
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
@@ -98,15 +109,27 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			}
 		}
 
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			var pos = self.CenterPosition;
+			foreach (var p in previews.Values.SelectMany(p => p))
+				foreach (var b in p.ScreenBounds(wr, pos))
+					yield return b;
+		}
+
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)
 		{
 			if (info.DisplayTypes.Contains(passenger.Trait<Passenger>().Info.CargoType))
+			{
 				previews.Add(passenger, null);
+				self.World.ScreenMap.AddOrUpdate(self);
+			}
 		}
 
 		void INotifyPassengerExited.OnPassengerExited(Actor self, Actor passenger)
 		{
 			previews.Remove(passenger);
+			self.World.ScreenMap.AddOrUpdate(self);
 		}
 	}
 }

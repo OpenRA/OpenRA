@@ -460,7 +460,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return NoCells; }
 
 		public WVec FlyStep(int facing)
 		{
@@ -655,11 +655,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			if (order.OrderID == "Move")
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+			if (order.OrderID == "Enter" || order.OrderID == "Move")
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -671,6 +668,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Move":
@@ -731,7 +731,7 @@ namespace OpenRA.Mods.Common.Traits
 
 						Action enter = () =>
 						{
-							var exit = order.TargetActor.Info.TraitInfos<ExitInfo>().FirstOrDefault();
+							var exit = order.TargetActor.Info.FirstExitOrDefault(null);
 							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
 							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));

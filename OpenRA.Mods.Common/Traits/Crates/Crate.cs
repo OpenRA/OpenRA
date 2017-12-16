@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public CPos TopLeft { get { return Location; } }
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return new[] { Pair.New(Location, SubCell.FullCell) }; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return new[] { Pair.New(Location, SubCell.FullCell) }; }
 
 		public WPos CenterPosition { get; private set; }
 

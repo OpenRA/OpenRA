@@ -9,15 +9,16 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Graphics;
+
 namespace OpenRA.Traits
 {
 	[Desc("This actor is selectable. Defines bounds of selectable area, selection class and selection priority.")]
-	public class SelectableInfo : ITraitInfo
+	public class SelectableInfo : InteractableInfo
 	{
 		public readonly int Priority = 10;
-
-		[Desc("Bounds for the selectable area.")]
-		public readonly int[] Bounds = null;
 
 		[Desc("All units having the same selection class specified will be selected with select-by-type commands (e.g. double-click). "
 		+ "Defaults to the actor name when not defined or inherited.")]
@@ -25,16 +26,16 @@ namespace OpenRA.Traits
 
 		[VoiceReference] public readonly string Voice = "Select";
 
-		public object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}
 
-	public class Selectable
+	public class Selectable : Interactable
 	{
 		public readonly string Class = null;
-
-		public SelectableInfo Info;
+		public readonly SelectableInfo Info;
 
 		public Selectable(Actor self, SelectableInfo info)
+			: base(info)
 		{
 			Class = string.IsNullOrEmpty(info.Class) ? self.Info.Name : info.Class;
 			Info = info;

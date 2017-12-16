@@ -10,7 +10,6 @@
 ^SpriteActor:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
 
 ^1x1Shape:
@@ -112,7 +111,7 @@
 		RequiresCondition: rank-elite
 		Modifier: 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -248,7 +247,7 @@
 	Tooltip:
 		GenericName: Vehicle
 	Capturable:
-		Type: vehicle
+		Types: vehicle
 		CaptureThreshold: 100
 		CancelActivity: True
 	CaptureNotification:
@@ -308,7 +307,7 @@
 	Huntable:
 	DrawLineToTarget:
 	Health:
-		HP: 25
+		HP: 2500
 	Armor:
 		Type: None
 	RevealsShroud:
@@ -328,7 +327,8 @@
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
-		Bounds: 12,18,0,-8
+		Bounds: 18,20,0,-6
+		DecorationBounds: 12,18,0,-8
 	Targetable:
 		TargetTypes: Ground, Infantry, Disguise
 		RequiresCondition: !parachute
@@ -359,7 +359,7 @@
 	Tooltip:
 		GenericName: Soldier
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -507,7 +507,6 @@
 		Bounds: 24,24
 	Aircraft:
 		RepairBuildings: fix
-		RearmBuildings: afld
 		AirborneCondition: airborne
 	Targetable@GROUND:
 		TargetTypes: Ground, Repair, Vehicle
@@ -560,7 +559,6 @@
 	Tooltip:
 		GenericName: Helicopter
 	Aircraft:
-		RearmBuildings: hpad
 		CanHover: True
 		CruisingCondition: cruising
 		WaitDistanceFromResupplyBase: 4c0
@@ -589,6 +587,8 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+	RequiresBuildableArea:
+		AreaTypes: building
 	SoundOnDamageTransition:
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
@@ -618,7 +618,9 @@
 	Huntable:
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
+		AreaTypes: building
 	RepairableBuilding:
+		RepairStep: 700
 		PlayerExperience: 25
 	EngineerRepairable:
 	AcceptsDeliveredCash:
@@ -660,12 +662,15 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Interactable:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: placbldg.aud
-		Adjacent: 7
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	SoundOnDamageTransition:
 		DamagedSounds: sandbag2.aud
 		DestroyedSounds: sandbag2.aud
@@ -688,7 +693,7 @@
 	FrozenUnderFog:
 	FrozenUnderFogUpdatedByGps:
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		Categories: Wall
 
@@ -697,7 +702,7 @@
 	Valued:
 		Cost: 250
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	LineBuildNode:
@@ -708,12 +713,14 @@
 	Tooltip:
 		Name: Gate
 	Gate:
-		Adjacent: 4
 		BlocksProjectilesHeight: 0
 		BuildSounds: place2.aud
 		OpeningSound: cashturn.aud
 		ClosingSound: cashturn.aud
 		TerrainTypes: Clear, Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	EditorTilesetFilter:
 		Categories: Wall
 
@@ -721,7 +728,7 @@
 	Inherits: ^BasicBuilding
 	Huntable:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	Tooltip:
@@ -735,10 +742,10 @@
 	Inherits: ^Building
 	-GivesBuildableArea:
 	Health:
-		HP: 100
+		HP: 10000
 	Explodes:
 		Weapon: Demolish
-		DamageThreshold: 90
+		DamageThreshold: 70
 	RevealsShroud:
 		Range: 4c0
 	WithDecoration@fake:
@@ -767,10 +774,8 @@
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	Health:
-		HP: 10
+		HP: 1000
 	Explodes:
 		Weapon: UnitExplode
 	Tooltip:
@@ -781,6 +786,9 @@
 		Type: Light
 	EditorTilesetFilter:
 		Categories: Decoration
+	Interactable:
+		Bounds: 24,24
+	Interactable:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
@@ -814,10 +822,12 @@
 	-Demolishable:
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
+	Interactable:
 
 ^Tree:
 	Inherits@1: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Interactable:
 	Tooltip:
 		Name: Tree
 		ShowOwnerRow: false
@@ -831,7 +841,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	Targetable:
@@ -859,6 +869,9 @@
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
+	RenderSprites:
+		Palette: terrain
 	AppearsOnRadar:
 	Building:
 		Footprint: x
@@ -874,8 +887,9 @@
 
 ^BasicHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Health:
-		HP: 280
+		HP: 28000
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
@@ -891,11 +905,11 @@
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
-		Damage: 2
+		Damage: 200
 	Capturable:
-		Type: husk
-		AllowAllies: true
+		Types: husk
 		CaptureThreshold: 100
+		ValidStances: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	WithColoredOverlay@IDISABLE:
@@ -921,6 +935,7 @@
 		Spins: False
 		Moves: True
 		Velocity: 86
+		Explosion: UnitExplodePlane
 	EditorTilesetFilter:
 		Categories: Husk
 	RevealOnDeath:
@@ -938,6 +953,7 @@
 		CanHover: True
 		VTOL: true
 	FallsToEarth:
+		Explosion: UnitExplodeHeli
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	RevealOnDeath:
@@ -947,6 +963,7 @@
 ^Bridge:
 	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Bridge
 		ShowOwnerRow: false
@@ -956,18 +973,19 @@
 	Building:
 		Footprint: ____ ____
 		Dimensions: 4,2
-	CustomSelectionSize:
-		CustomBounds: 96,48
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Concrete
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
+	Interactable:
+		Bounds: 96,48
 
 ^Rock:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Rock
 		ShowOwnerRow: false
@@ -995,6 +1013,7 @@
 
 ^Crate:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
@@ -1028,6 +1047,7 @@
 
 ^Mine:
 	Inherits: ^SpriteActor
+	Interactable:
 	WithSpriteBody:
 	HiddenUnderFog:
 	Mine:
@@ -1036,7 +1056,7 @@
 		AvoidFriendly: false
 		BlockFriendly: false
 	Health:
-		HP: 100
+		HP: 10000
 		NotifyAppliedDamage: false
 	Armor:
 		Type: Light
@@ -1056,18 +1076,42 @@
 	EditorTilesetFilter:
 		Categories: System
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
 
+^DisableOnLowPowerOrPowerDown:
+	Inherits: ^DisableOnLowPower
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled
+	CanPowerDown:
+		PowerupSound: EnablePower
+		PowerdownSound: DisablePower
+		PowerdownCondition: powerdown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: chrome
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+
 ^DisabledByPowerOutage:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantCondition@IDISABLE:
+		RequiresCondition: power-outage
+		Condition: disabled
 	AffectedByPowerOutage:
 		Condition: power-outage
 	InfiltrateForPowerOutage:
-	DisableOnCondition@POWER_OUTAGE:
-		RequiresCondition: power-outage
 	Power:
-		RequiresCondition: !power-outage
+		RequiresCondition: !disabled

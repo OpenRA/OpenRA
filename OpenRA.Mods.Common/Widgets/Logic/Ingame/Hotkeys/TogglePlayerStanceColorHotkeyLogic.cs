@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	public class TogglePlayerStanceColorHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		[ObjectCreator.UseCtor]
-		public TogglePlayerStanceColorHotkeyLogic(Widget widget, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, "TogglePlayerStanceColorKey", "WORLD_KEYHANDLER", logicArgs) { }
+		public TogglePlayerStanceColorHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "TogglePlayerStanceColorKey", "WORLD_KEYHANDLER", logicArgs) { }
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{

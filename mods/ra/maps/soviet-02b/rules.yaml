@@ -84,12 +84,6 @@ MIG:
 	Buildable:
 		Prerequisites: ~disabled
 
-GUN:
-	-RepairableBuilding:
-
-FCOM:
-	RepairableBuilding:
-
 AFLD:
 	Buildable:
 		Prerequisites: ~disabled
@@ -98,28 +92,13 @@ AFLD:
 	ParatroopersPower@paratroopers:
 		Prerequisites: ~disabled
 
-DOG:
-	Health:
-		HP: 25
-	AutoTarget:
-		ScanRadius: 5
+GUN:
+	-RepairableBuilding:
 
 HARV:
 	Harvester:
 		SearchFromProcRadius: 50
 		SearchFromOrderRadius: 50
-
-BARL:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplode
-
-BRL3:
-	Health:
-		HP: 1
-	Explodes:
-		Weapon: MissionBarrelExplode
 
 MONEYCRATE:
 	GiveCashCrateAction:

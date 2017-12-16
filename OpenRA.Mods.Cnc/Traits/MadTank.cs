@@ -56,8 +56,19 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			ThumpDamageWeaponInfo = rules.Weapons[ThumpDamageWeapon.ToLowerInvariant()];
-			DetonationWeaponInfo = rules.Weapons[DetonationWeapon.ToLowerInvariant()];
+			WeaponInfo thumpDamageWeapon;
+			WeaponInfo detonationWeapon;
+			var thumpDamageWeaponToLower = (ThumpDamageWeapon ?? string.Empty).ToLowerInvariant();
+			var detonationWeaponToLower = (DetonationWeapon ?? string.Empty).ToLowerInvariant();
+
+			if (!rules.Weapons.TryGetValue(thumpDamageWeaponToLower, out thumpDamageWeapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(thumpDamageWeaponToLower));
+
+			if (!rules.Weapons.TryGetValue(detonationWeaponToLower, out detonationWeapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(detonationWeaponToLower));
+
+			ThumpDamageWeaponInfo = thumpDamageWeapon;
+			DetonationWeaponInfo = detonationWeapon;
 		}
 	}
 
@@ -110,10 +121,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self)

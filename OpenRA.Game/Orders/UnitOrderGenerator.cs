@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Orders
@@ -20,14 +21,14 @@ namespace OpenRA.Orders
 	{
 		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			var actor = world.ScreenMap.ActorsAt(mi)
-				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a))
+			var actor = world.ScreenMap.ActorsAtMouse(mi)
+				.Where(a => a.Actor.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a.Actor))
 				.WithHighestSelectionPriority(worldPixel);
 
 			if (actor != null)
 				return Target.FromActor(actor);
 
-			var frozen = world.ScreenMap.FrozenActorsAt(world.RenderPlayer, mi)
+			var frozen = world.ScreenMap.FrozenActorsAtMouse(world.RenderPlayer, mi)
 				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
 				.WithHighestSelectionPriority(worldPixel);
 
@@ -78,16 +79,18 @@ namespace OpenRA.Orders
 		}
 
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
-		public virtual bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		public virtual bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
 		{
-			var actor = world.ScreenMap.ActorsAt(xy).WithHighestSelectionPriority(xy);
+			var actor = world.ScreenMap.ActorsAtMouse(xy).WithHighestSelectionPriority(xy);
 			if (actor == null)
 				return true;
 
 			var target = Target.FromActor(actor);
 			var cell = world.Map.CellContaining(target.CenterPosition);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
-			var underCursor = world.Selection.Actors.WithHighestSelectionPriority(xy);
+			var underCursor = world.Selection.Actors
+				.Select(a => new ActorBoundsPair(a, a.MouseBounds(wr)))
+				.WithHighestSelectionPriority(xy);
 
 			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
 			if (o != null)

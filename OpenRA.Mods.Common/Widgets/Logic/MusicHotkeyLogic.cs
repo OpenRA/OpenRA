@@ -22,43 +22,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly MusicPlaylist musicPlaylist;
 
 		[ObjectCreator.UseCtor]
-		public MusicHotkeyLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MusicHotkeyLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			musicPlaylist = world.WorldActor.Trait<MusicPlaylist>();
 
-			var ks = Game.Settings.Keys;
 			MiniYaml yaml;
-
-			var stopKey = new NamedHotkey();
+			var stopKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("StopMusicKey", out yaml))
-				stopKey = new NamedHotkey(yaml.Value, ks);
+				stopKey = modData.Hotkeys[yaml.Value];
 
-			var pauseKey = new NamedHotkey();
+			var pauseKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("PauseMusicKey", out yaml))
-				pauseKey = new NamedHotkey(yaml.Value, ks);
+				pauseKey = modData.Hotkeys[yaml.Value];
 
-			var prevKey = new NamedHotkey();
+			var prevKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("PrevMusicKey", out yaml))
-				prevKey = new NamedHotkey(yaml.Value, ks);
+				prevKey = modData.Hotkeys[yaml.Value];
 
-			var nextKey = new NamedHotkey();
+			var nextKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("NextMusicKey", out yaml))
-				nextKey = new NamedHotkey(yaml.Value, ks);
+				nextKey = modData.Hotkeys[yaml.Value];
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
 			keyhandler.AddHandler(e =>
 			{
 				if (e.Event == KeyInputEvent.Down)
 				{
-					var key = Hotkey.FromKeyInput(e);
-
-					if (key == nextKey.GetValue())
+					if (nextKey.IsActivatedBy(e))
 						musicPlaylist.Play(musicPlaylist.GetNextSong());
-					else if (key == prevKey.GetValue())
+					else if (prevKey.IsActivatedBy(e))
 						musicPlaylist.Play(musicPlaylist.GetPrevSong());
-					else if (key == stopKey.GetValue())
+					else if (stopKey.IsActivatedBy(e))
 						StopMusic();
-					else if (key == pauseKey.GetValue())
+					else if (pauseKey.IsActivatedBy(e))
 						PauseOrResumeMusic();
 				}
 

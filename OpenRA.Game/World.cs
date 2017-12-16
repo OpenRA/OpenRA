@@ -77,7 +77,7 @@ namespace OpenRA
 			set { renderPlayer = value; }
 		}
 
-		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.CanViewActor(a); }
+		public bool FogObscures(Actor a) { return RenderPlayer != null && !a.CanBeViewedByPlayer(RenderPlayer); }
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool FogObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(pos); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
@@ -191,9 +191,7 @@ namespace OpenRA
 		{
 			ActorMap.AddInfluence(self, ios);
 			ActorMap.AddPosition(self, ios);
-
-			if (!self.Bounds.Size.IsEmpty)
-				ScreenMap.Add(self);
+			ScreenMap.AddOrUpdate(self);
 		}
 
 		public void UpdateMaps(Actor self, IOccupySpace ios)
@@ -201,9 +199,7 @@ namespace OpenRA
 			if (!self.IsInWorld)
 				return;
 
-			if (!self.Bounds.Size.IsEmpty)
-				ScreenMap.Update(self);
-
+			ScreenMap.AddOrUpdate(self);
 			ActorMap.UpdatePosition(self, ios);
 		}
 
@@ -211,9 +207,7 @@ namespace OpenRA
 		{
 			ActorMap.RemoveInfluence(self, ios);
 			ActorMap.RemovePosition(self, ios);
-
-			if (!self.Bounds.Size.IsEmpty)
-				ScreenMap.Remove(self);
+			ScreenMap.Remove(self);
 		}
 
 		public void LoadComplete(WorldRenderer wr)
@@ -359,6 +353,7 @@ namespace OpenRA
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
 
 				effects.DoTimed(e => e.Tick(this), "Effect");
+				ScreenMap.Tick();
 			}
 
 			while (frameEndActions.Count != 0)
@@ -404,7 +399,7 @@ namespace OpenRA
 				// Hash fields marked with the ISync interface.
 				foreach (var actor in ActorsHavingTrait<ISync>())
 					foreach (var syncHash in actor.SyncHashes)
-						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash;
+						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash();
 
 				// Hash game state relevant effects such as projectiles.
 				foreach (var sync in SyncedEffects)

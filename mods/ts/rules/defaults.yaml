@@ -13,7 +13,6 @@
 		UseClassicPerspectiveFudge: False
 		CameraPitch: 85
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
 
 ^GainsExperience:
@@ -309,6 +308,8 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road, DirtRoad, Rough
+	RequiresBuildableArea:
+		AreaTypes: building
 		Adjacent: 4
 	FrozenUnderFog:
 	SoundOnDamageTransition:
@@ -340,6 +341,7 @@
 	Inherits@1: ^BasicBuilding
 	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
+		AreaTypes: building
 	Capturable:
 	RepairableBuilding:
 		IndicatorPalette: mouse
@@ -424,10 +426,10 @@
 		Palette: terraindecoration
 	WithCrateBody:
 		Images: crate
-	CustomSelectionSize:
-		CustomBounds: 24,24
 	EditorTilesetFilter:
 		Categories: System
+	Interactable:
+		Bounds: 24,24
 
 ^Wall:
 	Inherits@1: ^SpriteActor
@@ -435,12 +437,15 @@
 	CombatDebugOverlay:
 	HiddenUnderShroud:
 	AppearsOnRadar:
+	Interactable:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: place2.aud
-		Adjacent: 7
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 7
 	SoundOnDamageTransition:
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
@@ -477,6 +482,7 @@
 		Height: 768
 
 ^BuildingPlug:
+	Interactable:
 	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
@@ -523,7 +529,8 @@
 	SelectionDecorations:
 		Palette: pips
 	Selectable:
-		Bounds: 15,23,0,-9
+		DecorationBounds: 15,23,0,-9
+		Bounds: 24,24,0,-9
 	Voiced:
 		VoiceSet: Infantry
 	Targetable:
@@ -725,7 +732,7 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	Capturable:
-		Type: Vehicle
+		Types: Vehicle
 		CaptureThreshold: 100
 		CancelActivity: True
 	Guard:
@@ -814,7 +821,6 @@
 	Aircraft:
 		AirborneCondition: airborne
 		RepairBuildings: gadept
-		RearmBuildings: gahpad, nahpad
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
@@ -824,6 +830,7 @@
 		Type: GroundPosition
 	AttackMove:
 		Voice: Move
+		MoveIntoShroud: false
 	ActorLostNotification:
 	BodyOrientation:
 		QuantizedFacings: 0
@@ -865,6 +872,7 @@
 	HiddenUnderFog:
 		Type: GroundPosition
 	ScriptTriggers:
+	Interactable:
 	Tooltip:
 		GenericName: Destroyed Aircraft
 	FallsToEarth:
@@ -922,6 +930,7 @@
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Blossom Tree
 	RenderSprites:
@@ -943,6 +952,7 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
@@ -960,6 +970,7 @@
 
 ^Rock:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
@@ -977,6 +988,7 @@
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
 		Palette: terraindecoration
@@ -1089,11 +1101,11 @@
 	Inherits: ^TerrainOverlay
 	EditorOnlyTooltip:
 		Name: Railway
-	AutoSelectionSize:
 	ChangesTerrain:
 		TerrainType: Rail
 	EditorTilesetFilter:
 		Categories: Railway
+	Interactable:
 
 ^Tunnel:
 	RenderSprites:
@@ -1105,14 +1117,14 @@
 	Building:
 		Dimensions: 3, 3
 		Footprint: ___ ___ ___
-	CustomSelectionSize:
-		CustomBounds: 144, 144
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
 		Dimensions: 3, 3
 	EditorTilesetFilter:
 		Categories: Tunnel
+	Interactable:
+		Bounds: 144, 144
 
 ^Gate:
 	Inherits: ^Building
@@ -1134,7 +1146,6 @@
 		OpenSequence: open
 	Tooltip:
 	Gate:
-		Adjacent: 4
 		BuildSounds: place2.aud
 		OpeningSound: gateup1.aud
 		ClosingSound: gatedwn1.aud
@@ -1200,18 +1211,38 @@
 		SpawnAtLastPosition: false
 		RequiresCondition: !inside-tunnel
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
 
-^DisabledByPowerOutage:
-	AffectedByPowerOutage:
-		Condition: power-outage
-	InfiltrateForPowerOutage:
-	DisableOnCondition@POWER_OUTAGE:
-		RequiresCondition: power-outage
-	Power:
-		RequiresCondition: !power-outage
+^DisableOnPowerDown:
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: disabled
+		Palette: disabled
+	GrantCondition@IDISABLE:
+		RequiresCondition: powerdown
+		Condition: disabled
+	CanPowerDown:
+		PowerupSpeech: EnablePower
+		PowerdownSpeech: DisablePower
+		PowerdownCondition: powerdown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: mouse
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+
+^DisableOnLowPowerOrPowerDown:
+	Inherits@LOWPOWER: ^DisableOnLowPower
+	Inherits@POWERDOWN: ^DisableOnPowerDown
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled

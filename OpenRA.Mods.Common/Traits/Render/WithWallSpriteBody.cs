@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					var haveNeighbour = false;
 					foreach (var n in kv.Value)
 					{
-						var rb = init.World.Map.Rules.Actors[n].TraitInfos<IWallConnectorInfo>().FirstOrDefault(Exts.IsTraitEnabled);
+						var rb = init.World.Map.Rules.Actors[n].TraitInfos<IWallConnectorInfo>().FirstEnabledTraitOrDefault();
 						if (rb != null && rb.GetWallConnectionType() == Type)
 						{
 							haveNeighbour = true;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			foreach (var a in adjacentActors)
 			{
 				CVec facing;
-				var wc = a.TraitsImplementing<IWallConnector>().FirstOrDefault(Exts.IsTraitEnabled);
+				var wc = a.TraitsImplementing<IWallConnector>().FirstEnabledTraitOrDefault();
 				if (wc == null || !wc.AdjacentWallCanConnect(a, self.Location, wallInfo.Type, out facing))
 					continue;
 

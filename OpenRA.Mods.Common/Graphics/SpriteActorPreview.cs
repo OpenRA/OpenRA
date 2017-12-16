@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
@@ -37,6 +38,11 @@ namespace OpenRA.Mods.Common.Graphics
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
 		{
 			return animation.Render(pos, offset(), zOffset(), pr, scale);
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr, WPos pos)
+		{
+			yield return animation.ScreenBounds(wr, pos, offset(), scale);
 		}
 	}
 }

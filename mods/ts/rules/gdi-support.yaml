@@ -37,7 +37,7 @@ GAGATE_B:
 
 GACTWR:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	-WithSpriteBody:
 	WithWallSpriteBody:
@@ -54,6 +54,7 @@ GACTWR:
 	Building:
 	Selectable:
 		Bounds: 48, 36, 0, -6
+		DecorationBounds: 48, 48, 0, -12
 	Health:
 		HP: 500
 	Armor:
@@ -63,16 +64,13 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: !empdisable && (tower.vulcan || tower.rocket || tower.sam)
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
 		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
+		PauseOnCondition: empdisable
 	WithSpriteTurret@VULC:
 		RequiresCondition: tower.vulcan
 		Recoils: false
@@ -117,11 +115,12 @@ GACTWR:
 		Types: turret
 	Power@base:
 		Amount: -10
+		RequiresCondition: !powerdown
 	Power@turrets:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: (tower.vulcan || tower.rocket || tower.sam) && !powerdown
 		Amount: -20
 	Power@samextra:
-		RequiresCondition: tower.sam
+		RequiresCondition: tower.sam && !powerdown
 		Amount: -10
 	Pluggable:
 		Conditions:
@@ -130,7 +129,6 @@ GACTWR:
 			tower.sam: tower.sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 48, 48, 0, -12
 
 GAVULC:
 	Inherits: ^BuildingPlug

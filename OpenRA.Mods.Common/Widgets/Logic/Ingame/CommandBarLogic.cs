@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(deployButton);
 
-				deployButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedDeploys.Any(Exts.IsTraitEnabled); };
+				deployButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedDeploys.Any(pair => pair.Trait.IsTraitEnabled()); };
 				deployButton.IsHighlighted = () => deployHighlighted > 0;
 				deployButton.OnClick = () =>
 				{
@@ -208,8 +208,8 @@ namespace OpenRA.Mods.Common.Widgets
 				keyOverrides.AddHandler(e =>
 				{
 					// HACK: enable attack move to be triggered if the ctrl key is pressed
-					var modified = new Hotkey(e.Key, e.Modifiers & ~Modifiers.Ctrl);
-					if (!attackMoveDisabled && attackMoveButton.Key.GetValue() == modified)
+					e.Modifiers &= ~Modifiers.Ctrl;
+					if (!attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(e))
 					{
 						attackMoveButton.OnKeyPress(e);
 						return true;
@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Widgets
 			UpdateStateIfNecessary();
 
 			var orders = selectedDeploys
-				.Where(Exts.IsTraitEnabled)
+				.Where(pair => pair.Trait.IsTraitEnabled())
 				.Select(d => d.Trait.IssueDeployOrder(d.Actor))
 				.ToArray();
 

@@ -31,6 +31,7 @@
 		LocalOffset: 0,283,580, 0,-283,580
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50

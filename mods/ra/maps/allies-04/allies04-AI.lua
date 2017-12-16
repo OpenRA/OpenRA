@@ -14,14 +14,16 @@ AttackGroupSizes =
 {
 	easy = 6,
 	normal = 8,
-	hard = 10
+	hard = 10,
+	tough = 12
 }
 
 AttackDelays =
 {
 	easy = { DateTime.Seconds(4), DateTime.Seconds(9) },
 	normal = { DateTime.Seconds(2), DateTime.Seconds(7) },
-	hard = { DateTime.Seconds(1), DateTime.Seconds(5) }
+	hard = { DateTime.Seconds(1), DateTime.Seconds(5) },
+	tough = { DateTime.Seconds(1), DateTime.Seconds(5) }
 }
 
 AttackRallyPoints =

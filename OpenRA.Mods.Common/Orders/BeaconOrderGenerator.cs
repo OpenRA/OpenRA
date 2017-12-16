@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Orders
 			world.CancelInputMode();
 
 			if (mi.Button == MouseButton.Left)
-				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+				yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 
 		public virtual void Tick(World world) { }

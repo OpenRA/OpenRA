@@ -69,8 +69,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
 
-		public readonly NamedHotkey PreviousProductionTabKey = new NamedHotkey();
-		public readonly NamedHotkey NextProductionTabKey = new NamedHotkey();
+		public readonly HotkeyReference PreviousProductionTabKey = new HotkeyReference();
+		public readonly HotkeyReference NextProductionTabKey = new HotkeyReference();
 
 		public readonly Dictionary<string, ProductionTabGroup> Groups;
 
@@ -287,14 +287,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event != KeyInputEvent.Down)
 				return false;
 
-			var hotkey = Hotkey.FromKeyInput(e);
-			if (hotkey == PreviousProductionTabKey.GetValue())
+			if (PreviousProductionTabKey.IsActivatedBy(e))
 			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(true);
 			}
 
-			if (hotkey == NextProductionTabKey.GetValue())
+			if (NextProductionTabKey.IsActivatedBy(e))
 			{
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 				return SelectNextTab(false);

@@ -92,17 +92,11 @@ AFLD:
 	ParatroopersPower@paratroopers:
 		Prerequisites: ~disabled
 
-DOG:
-	Health:
-		HP: 25
-	AutoTarget:
-		ScanRadius: 5
-
-powerproxy.paratroopers:
-	ParatroopersPower:
-		DropItems: E2,E2,E2,E2,E2
-
 HARV:
 	Harvester:
 		SearchFromProcRadius: 50
 		SearchFromOrderRadius: 50
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E2,E2,E2,E2,E2

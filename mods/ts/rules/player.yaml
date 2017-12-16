@@ -44,7 +44,9 @@ Player:
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
 		Enabled: true
+		DisplayOrder: 6
 	Shroud:
+		FogDisplayOrder: 3
 	FrozenActorLayer:
 	BaseAttackNotifier:
 		AllyNotification: OurAllyIsUnderAttack

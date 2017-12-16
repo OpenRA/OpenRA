@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
 
-		readonly NamedHotkey combinedViewKey = new NamedHotkey();
-		readonly NamedHotkey worldViewKey = new NamedHotkey();
+		readonly HotkeyReference combinedViewKey = new HotkeyReference();
+		readonly HotkeyReference worldViewKey = new HotkeyReference();
 
 		CameraOption selected;
 
@@ -62,15 +62,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ObserverShroudSelectorLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public ObserverShroudSelectorLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			MiniYaml yaml;
-			var ks = Game.Settings.Keys;
 			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
-				combinedViewKey = new NamedHotkey(yaml.Value, ks);
+				combinedViewKey = modData.Hotkeys[yaml.Value];
 
 			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
-				worldViewKey = new NamedHotkey(yaml.Value, ks);
+				worldViewKey = modData.Hotkeys[yaml.Value];
 
 			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 
@@ -148,8 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
 			{
-				var h = Hotkey.FromKeyInput(e);
-				if (h == combinedViewKey.GetValue() && !limitViews)
+				if (combinedViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = combined;
 					selected.OnClick();
@@ -157,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				if (h == worldViewKey.GetValue() && !limitViews)
+				if (worldViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = disableShroud;
 					selected.OnClick();

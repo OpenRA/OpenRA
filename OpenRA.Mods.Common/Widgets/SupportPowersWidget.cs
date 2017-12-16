@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
+		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
 
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
-		NamedHotkey[] hotkeys;
+		HotkeyReference[] hotkeys;
 
 		Rectangle eventBounds;
 		public override Rectangle EventBounds { get { return eventBounds; } }
@@ -83,8 +84,9 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		[ObjectCreator.UseCtor]
-		public SupportPowersWidget(World world, WorldRenderer worldRenderer)
+		public SupportPowersWidget(ModData modData, World world, WorldRenderer worldRenderer)
 		{
+			this.modData = modData;
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
@@ -99,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => new NamedHotkey(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 		}
 
 		public class SupportPowerIcon
@@ -109,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets
 			public Sprite Sprite;
 			public PaletteReference Palette;
 			public PaletteReference IconClockPalette;
-			public NamedHotkey Hotkey;
+			public HotkeyReference Hotkey;
 		}
 
 		public void RefreshIcons()
@@ -162,8 +164,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				var hotkey = Hotkey.FromKeyInput(e);
-				var a = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.GetValue() == hotkey);
+				var a = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 
 				if (a != null)
 				{

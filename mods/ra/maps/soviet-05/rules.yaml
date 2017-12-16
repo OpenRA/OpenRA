@@ -22,6 +22,12 @@ World:
 			hard: Hard
 		Default: easy
 
+MCV.CAM:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+		Type: CenterPosition
+
 AFLD:
 	ParatroopersPower@paratroopers:
 		DropItems: E1,E1,E1,E2,E2
@@ -84,12 +90,9 @@ APC:
 
 DOME:
 	ExternalCondition@lua:
-		Condition: captured
-	Targetable:
-		RequiresCondition: captured
-	Targetable@NOAUTOTARGET:
-		RequiresCondition: !captured
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate, NoAutoTarget
+		Condition: french
+	WithColoredOverlay@IDISABLE:
+		RequiresCondition: !french && disabled
 
 powerproxy.paratroopers:
 	ParatroopersPower:

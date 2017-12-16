@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -19,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Also returns a default selection size that is calculated automatically from the voxel dimensions.")]
-	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo
+	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -39,27 +40,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoSelectionSize
+	public class WithVoxelBody : ConditionalTrait<WithVoxelBodyInfo>, IAutoMouseBounds
 	{
-		readonly int2 size;
+		readonly ModelAnimation modelAnimation;
+		readonly RenderVoxels rv;
 
 		public WithVoxelBody(Actor self, WithVoxelBodyInfo info)
 			: base(info)
 		{
 			var body = self.Trait<BodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderVoxels>();
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
-			rv.Add(new ModelAnimation(model, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => IsTraitDisabled, () => 0, info.ShowShadow));
+				() => IsTraitDisabled, () => 0, info.ShowShadow);
 
-			// Selection size
-			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * model.Size.Aggregate(Math.Max));
-			size = new int2(s, s);
+			rv.Add(modelAnimation);
 		}
 
-		public int2 SelectionSize(Actor self) { return size; }
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return modelAnimation.ScreenBounds(self.CenterPosition, wr, rv.Info.Scale);
+		}
 	}
 }

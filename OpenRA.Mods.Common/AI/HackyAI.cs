@@ -264,6 +264,7 @@ namespace OpenRA.Mods.Common.AI
 		public Player Player { get; private set; }
 
 		readonly DomainIndex domainIndex;
+		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathfinder;
 
@@ -311,6 +312,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			domainIndex = World.WorldActor.Trait<DomainIndex>();
+			resLayer = World.WorldActor.TraitOrDefault<ResourceLayer>();
 			claimLayer = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			pathfinder = World.WorldActor.Trait<IPathFinder>();
 
@@ -500,9 +502,9 @@ namespace OpenRA.Mods.Common.AI
 			if (aircraftInfo == null)
 				return true;
 
-			var ammoPoolsInfo = actorInfo.TraitInfos<AmmoPoolInfo>();
-
-			if (ammoPoolsInfo.Any(x => !x.SelfReloads))
+			// If the aircraft has at least 1 AmmoPool and defines 1 or more RearmBuildings, check if we have enough of those
+			var hasAmmoPool = actorInfo.TraitInfos<AmmoPoolInfo>().Any();
+			if (hasAmmoPool && aircraftInfo.RearmBuildings.Count > 0)
 			{
 				var countOwnAir = CountUnits(actorInfo.Name, Player);
 				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));
@@ -667,7 +669,8 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
-				GiveOrdersToIdleHarvesters();
+				if (resLayer != null && !resLayer.IsResourceLayerEmpty)
+					GiveOrdersToIdleHarvesters();
 				FindNewUnits(self);
 				FindAndDeployBackupMcv(self);
 			}
@@ -717,13 +720,33 @@ namespace OpenRA.Mods.Common.AI
 
 			var capturableTargetOptions = targetOptions
 				.Select(a => new CaptureTarget<CapturableInfo>(a, "CaptureActor"))
-				.Where(target => target.Info != null && capturers.Any(capturer => target.Info.CanBeTargetedBy(capturer, target.Actor.Owner)))
+				.Where(target =>
+				{
+					if (target.Info == null)
+						return false;
+
+					var capturable = target.Actor.TraitOrDefault<Capturable>();
+					if (capturable == null)
+						return false;
+
+					return capturers.Any(capturer => capturable.CanBeTargetedBy(capturer, target.Actor.Owner));
+				})
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
 			var externalCapturableTargetOptions = targetOptions
 				.Select(a => new CaptureTarget<ExternalCapturableInfo>(a, "ExternalCaptureActor"))
-				.Where(target => target.Info != null && capturers.Any(capturer => target.Info.CanBeTargetedBy(capturer, target.Actor.Owner)))
+				.Where(target =>
+				{
+					if (target.Info == null)
+						return false;
+
+					var externalCapturable = target.Actor.TraitOrDefault<ExternalCapturable>();
+					if (externalCapturable == null)
+						return false;
+
+					return capturers.Any(capturer => externalCapturable.CanBeTargetedBy(capturer, target.Actor.Owner));
+				})
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
@@ -757,7 +780,7 @@ namespace OpenRA.Mods.Common.AI
 			if (target.Actor == null)
 				return;
 
-			QueueOrder(new Order(target.OrderString, capturer, true) { TargetActor = target.Actor });
+			QueueOrder(new Order(target.OrderString, capturer, Target.FromActor(target.Actor), true));
 			BotDebug("AI ({0}): Ordered {1} to capture {2}", Player.ClientIndex, capturer, target.Actor);
 			activeUnits.Remove(capturer);
 		}
@@ -800,20 +823,24 @@ namespace OpenRA.Mods.Common.AI
 				if (harv == null)
 					continue;
 
+				if (!harv.IsEmpty)
+					continue;
+
 				if (!harvester.IsIdle)
 				{
 					var act = harvester.CurrentActivity;
-					if (act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
+					if (!harv.LastSearchFailed || act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
 						continue;
 				}
 
-				if (!harv.IsEmpty)
+				var para = harvester.TraitOrDefault<Parachutable>();
+				if (para != null && para.IsInAir)
 					continue;
 
 				// Tell the idle harvester to quit slacking:
 				var newSafeResourcePatch = FindNextResource(harvester, harv);
 				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
-				QueueOrder(new Order("Harvest", harvester, false) { TargetLocation = newSafeResourcePatch });
+				QueueOrder(new Order("Harvest", harvester, Target.FromCell(World, newSafeResourcePatch), false));
 			}
 		}
 
@@ -927,13 +954,16 @@ namespace OpenRA.Mods.Common.AI
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
 			foreach (var rp in self.World.ActorsWithTrait<RallyPoint>())
+			{
 				if (rp.Actor.Owner == Player &&
 					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
-					QueueOrder(new Order("SetRallyPoint", rp.Actor, false)
+				{
+					QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(World, ChooseRallyLocationNear(rp.Actor)), false)
 					{
-						TargetLocation = ChooseRallyLocationNear(rp.Actor),
 						SuppressVisualFeedback = true
 					});
+				}
+			}
 		}
 
 		// Won't work for shipyards...
@@ -992,7 +1022,7 @@ namespace OpenRA.Mods.Common.AI
 				if (desiredLocation == null)
 					continue;
 
-				QueueOrder(new Order("Move", mcv, true) { TargetLocation = desiredLocation.Value });
+				QueueOrder(new Order("Move", mcv, Target.FromCell(World, desiredLocation.Value), true));
 				QueueOrder(new Order("DeployTransform", mcv, true));
 			}
 		}
@@ -1055,7 +1085,7 @@ namespace OpenRA.Mods.Common.AI
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
 					waitingPowers[sp] += 10;
-					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, false) { TargetLocation = attackLocation.Value, SuppressVisualFeedback = true });
+					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false) { SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -1207,7 +1237,7 @@ namespace OpenRA.Mods.Common.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
+					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(self), false));
 				}
 			}
 

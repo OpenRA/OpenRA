@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				// The actor is not currently visible
-				if (!self.Owner.CanViewActor(actor.Actor))
+				if (!actor.Actor.CanBeViewedByPlayer(self.Owner))
 					continue;
 
 				visibleActorIds.Add(actor.Actor.ActorID);

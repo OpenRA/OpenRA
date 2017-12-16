@@ -70,15 +70,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Map map;
 		readonly uint movementClass;
-		readonly CellLayer<int> domains;
-		readonly Dictionary<int, HashSet<int>> transientConnections;
+		readonly CellLayer<ushort> domains;
+		readonly Dictionary<ushort, HashSet<ushort>> transientConnections;
 
 		public MovementClassDomainIndex(World world, uint movementClass)
 		{
 			map = world.Map;
 			this.movementClass = movementClass;
-			domains = new CellLayer<int>(world.Map);
-			transientConnections = new Dictionary<int, HashSet<int>>();
+			domains = new CellLayer<ushort>(world.Map);
+			transientConnections = new Dictionary<ushort, HashSet<ushort>>();
 
 			using (new PerfTimer("BuildDomains: {0} for movement class {1}".F(world.Map.Title, movementClass)))
 				BuildDomains(world);
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdateCells(World world, HashSet<CPos> dirtyCells)
 		{
-			var neighborDomains = new List<int>();
+			var neighborDomains = new List<ushort>();
 
 			foreach (var cell in dirtyCells)
 			{
@@ -147,11 +147,11 @@ namespace OpenRA.Mods.Common.Traits
 					CreateConnection(c1, c2);
 		}
 
-		bool HasConnection(int d1, int d2)
+		bool HasConnection(ushort d1, ushort d2)
 		{
 			// Search our connections graph for a possible route
-			var visited = new HashSet<int>();
-			var toProcess = new Stack<int>();
+			var visited = new HashSet<ushort>();
+			var toProcess = new Stack<ushort>();
 			toProcess.Push(d1);
 
 			while (toProcess.Any())
@@ -175,12 +175,12 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		void CreateConnection(int d1, int d2)
+		void CreateConnection(ushort d1, ushort d2)
 		{
 			if (!transientConnections.ContainsKey(d1))
-				transientConnections[d1] = new HashSet<int>();
+				transientConnections[d1] = new HashSet<ushort>();
 			if (!transientConnections.ContainsKey(d2))
-				transientConnections[d2] = new HashSet<int>();
+				transientConnections[d2] = new HashSet<ushort>();
 
 			transientConnections[d1].Add(d2);
 			transientConnections[d2].Add(d1);
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void BuildDomains(World world)
 		{
-			var domain = 1;
+			ushort domain = 1;
 
 			var visited = new CellLayer<bool>(map);
 

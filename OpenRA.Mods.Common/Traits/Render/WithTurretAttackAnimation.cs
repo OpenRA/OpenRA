@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 
 			var sequence = wst.Info.Sequence;
-			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAttacking)
+			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAiming)
 				sequence = info.AimSequence;
 
 			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(info.ReloadPrefix)) ? info.ReloadPrefix : "";

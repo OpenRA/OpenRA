@@ -585,7 +585,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is MoveOrderTargeter)
-				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				return new Order("Move", self, target, queued);
 
 			return null;
 		}
@@ -649,6 +649,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Move":
@@ -662,7 +665,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos TopLeft { get { return ToCell; } }
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
+		public Pair<CPos, SubCell>[] OccupiedCells()
 		{
 			if (FromCell == ToCell)
 				return new[] { Pair.New(FromCell, FromSubCell) };

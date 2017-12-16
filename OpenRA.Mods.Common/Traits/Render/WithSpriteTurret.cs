@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.AimSequence == null)
 				return;
 
-			var sequence = Attack.IsAttacking ? Info.AimSequence : Info.Sequence;
+			var sequence = Attack.IsAiming ? Info.AimSequence : Info.Sequence;
 			DefaultAnimation.ReplaceAnim(sequence);
 		}
 

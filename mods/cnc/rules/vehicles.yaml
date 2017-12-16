@@ -13,11 +13,12 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
+		DecorationBounds: 36,36
 	Mobile:
 		Speed: 71
 		Crushes: crate, infantry
 	Health:
-		HP: 1200
+		HP: 120000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -34,7 +35,6 @@ MCV:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
 	SelectionDecorations:
-		VisualBounds: 36,36
 
 HARV:
 	Inherits: ^Tank
@@ -53,6 +53,7 @@ HARV:
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
+		DecorationBounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
@@ -64,7 +65,7 @@ HARV:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 625
+		HP: 62500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -76,7 +77,6 @@ HARV:
 	Explodes:
 		Weapon: TiberiumExplosion
 	SelectionDecorations:
-		VisualBounds: 36,36
 
 APC:
 	Inherits: ^Tank
@@ -97,7 +97,7 @@ APC:
 		Speed: 132
 		RequiresCondition: !notmobile
 	Health:
-		HP: 215
+		HP: 21500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -146,7 +146,7 @@ ARTY:
 		TurnSpeed: 4
 		Speed: 85
 	Health:
-		HP: 75
+		HP: 7500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -184,7 +184,7 @@ FTNK:
 		TurnSpeed: 7
 		Speed: 99
 	Health:
-		HP: 270
+		HP: 27000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -219,7 +219,7 @@ BGGY:
 		TurnSpeed: 10
 		Speed: 170
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -262,7 +262,7 @@ BIKE:
 			BlueTiberium: 35
 			Beach: 35
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -293,7 +293,7 @@ JEEP:
 		TurnSpeed: 10
 		Speed: 156
 	Health:
-		HP: 160
+		HP: 16000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -331,7 +331,7 @@ LTNK:
 		TurnSpeed: 7
 		Speed: 110
 	Health:
-		HP: 340
+		HP: 34000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -367,7 +367,7 @@ MTNK:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -386,7 +386,8 @@ MTNK:
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
 	SelectionDecorations:
-		VisualBounds: 28,28
+	Selectable:
+		DecorationBounds: 28,28
 
 HTNK:
 	Inherits: ^Tank
@@ -407,7 +408,7 @@ HTNK:
 		Speed: 56
 		TurnSpeed: 3
 	Health:
-		HP: 870
+		HP: 87000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -431,13 +432,15 @@ HTNK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	SelfHealing:
+		Step: 500
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
 	SelectionDecorations:
-		VisualBounds: 34,34,0,-3
+	Selectable:
+		DecorationBounds: 34,34,0,-3
 
 MSAM:
 	Inherits: ^Tank
@@ -457,7 +460,7 @@ MSAM:
 		Speed: 85
 		TurnSpeed: 4
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -495,7 +498,7 @@ MLRS:
 		Speed: 99
 		TurnSpeed: 7
 	Health:
-		HP: 180
+		HP: 18000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -510,9 +513,6 @@ MLRS:
 	AmmoPool:
 		Ammo: 2
 		PipCount: 0
-		SelfReloads: true
-		ReloadCount: 1
-		SelfReloadDelay: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
@@ -521,6 +521,9 @@ MLRS:
 	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
+	ReloadAmmoPool:
+		Delay: 45
+		Count: 1
 
 STNK:
 	Inherits: ^Vehicle
@@ -540,7 +543,7 @@ STNK:
 		Speed: 142
 		Crushes: crate, infantry
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -573,7 +576,7 @@ MHQ:
 	Tooltip:
 		Name: Mobile HQ
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -600,7 +603,7 @@ TRUCK:
 	Selectable:
 		Priority: 6
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	Mobile:

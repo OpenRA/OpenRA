@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -22,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class WorldInteractionControllerWidget : Widget
 	{
-		public readonly NamedHotkey SelectAllKey = new NamedHotkey();
-		public readonly NamedHotkey SelectSameTypeKey = new NamedHotkey();
+		public readonly HotkeyReference SelectAllKey = new HotkeyReference();
+		public readonly HotkeyReference SelectSameTypeKey = new HotkeyReference();
 
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
@@ -49,7 +50,13 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
 			if (unit.Info.HasTraitInfo<SelectableInfo>())
-				new SelectionBarsRenderable(unit, true, true).Render(worldRenderer);
+			{
+				var bounds = unit.TraitsImplementing<IDecorationBounds>()
+					.Select(b => b.DecorationBounds(unit, worldRenderer))
+					.FirstOrDefault(b => !b.IsEmpty);
+
+				new SelectionBarsRenderable(unit, bounds, true, true).Render(worldRenderer);
+			}
 		}
 
 		public override void Draw()
@@ -106,11 +113,11 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 						{
-							var selectableActor = World.ScreenMap.ActorsAt(mousePos).Any(x =>
+							var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
 								x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
 
 							var uog = (UnitOrderGenerator)World.OrderGenerator;
-							if (!selectableActor || uog.InputOverridesSelection(World, mousePos, mi))
+							if (!selectableActor || uog.InputOverridesSelection(worldRenderer, World, mousePos, mi))
 							{
 								// Order units instead of selecting
 								ApplyOrders(World, mi);
@@ -123,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (multiClick)
 					{
-						var unit = World.ScreenMap.ActorsAt(mousePos)
+						var unit = World.ScreenMap.ActorsAtMouse(mousePos)
 							.WithHighestSelectionPriority(mousePos);
 
 						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
@@ -243,9 +250,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (e.Event == KeyInputEvent.Down)
 			{
-				var key = Hotkey.FromKeyInput(e);
-
-				if (key == SelectAllKey.GetValue() && !World.IsGameOver)
+				if (SelectAllKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
 					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
@@ -262,7 +267,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					World.Selection.Combine(World, ownUnitsOnScreen, false, false);
 				}
-				else if (key == SelectSameTypeKey.GetValue() && !World.IsGameOver)
+				else if (SelectSameTypeKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					if (!World.Selection.Actors.Any())
 						return false;
@@ -295,7 +300,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		static IEnumerable<Actor> SelectActorsOnScreen(World world, WorldRenderer wr, IEnumerable<string> selectionClasses, Player player)
 		{
-			return SelectActorsByOwnerAndSelectionClass(world.ScreenMap.ActorsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight), player, selectionClasses);
+			var actors = world.ScreenMap.ActorsInMouseBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight).Select(a => a.Actor);
+			return SelectActorsByOwnerAndSelectionClass(actors, player, selectionClasses);
 		}
 
 		static IEnumerable<Actor> SelectActorsInWorld(World world, IEnumerable<string> selectionClasses, Player player)
@@ -317,13 +323,27 @@ namespace OpenRA.Mods.Common.Widgets
 			});
 		}
 
+		static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, int2 a)
+		{
+			var selected = world.ScreenMap.ActorsAtMouse(a)
+				.Where(x => x.Actor.Info.HasTraitInfo<SelectableInfo>() && (x.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x.Actor)))
+				.WithHighestSelectionPriority(a);
+
+			if (selected != null)
+				yield return selected;
+		}
+
 		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b)
 		{
 			// For dragboxes that are too small, shrink the dragbox to a single point (point b)
 			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)
 				a = b;
 
-			return world.ScreenMap.ActorsInBox(a, b)
+			if (a == b)
+				return SelectHighestPriorityActorAtPoint(world, a);
+
+			return world.ScreenMap.ActorsInMouseBox(a, b)
+				.Select(x => x.Actor)
 				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
 				.SubsetWithHighestSelectionPriority();
 		}

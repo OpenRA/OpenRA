@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool idleSmart = true;
 		int idleDuration;
 
+		[Sync] public bool LastSearchFailed;
 		[Sync] public Actor OwnerLinkedProc = null;
 		[Sync] public Actor LastLinkedProc = null;
 		[Sync] public Actor LinkedProc = null;
@@ -342,11 +343,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Deliver")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
-
-			if (order.OrderID == "Harvest")
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+			if (order.OrderID == "Deliver" || order.OrderID == "Harvest")
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}

@@ -10,6 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
@@ -52,7 +54,7 @@ namespace OpenRA.Orders
 
 				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 				foreach (var subject in Subjects)
-					yield return new Order(OrderName, subject, queued) { TargetLocation = cell };
+					yield return new Order(OrderName, subject, Target.FromCell(world, cell), queued);
 			}
 		}
 
@@ -61,7 +63,7 @@ namespace OpenRA.Orders
 			return world.Map.Contains(cell) ? Cursor : "generic-blocked";
 		}
 
-		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		public override bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
 		{
 			// Custom order generators always override selection
 			return true;

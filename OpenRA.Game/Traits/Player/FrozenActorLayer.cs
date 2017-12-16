@@ -31,7 +31,6 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
-		public readonly Rectangle Bounds;
 		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
 		readonly Shroud shroud;
@@ -50,7 +49,13 @@ namespace OpenRA.Traits
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
+		public Rectangle[] ScreenBounds = NoBounds;
+
+		// TODO: Replace this with an int2[] polygon
+		public Rectangle MouseBounds = Rectangle.Empty;
+
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+		static readonly Rectangle[] NoBounds = new Rectangle[0];
 
 		int flashTicks;
 
@@ -77,7 +82,6 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
-			Bounds = self.Bounds;
 			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
 
 			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
@@ -101,7 +105,7 @@ namespace OpenRA.Traits
 				DamageState = health.DamageState;
 			}
 
-			var tooltip = tooltips.FirstOrDefault(Exts.IsTraitEnabled);
+			var tooltip = tooltips.FirstEnabledTraitOrDefault();
 			if (tooltip != null)
 			{
 				TooltipInfo = tooltip.TooltipInfo;
@@ -208,7 +212,7 @@ namespace OpenRA.Traits
 		public void Add(FrozenActor fa)
 		{
 			frozenActorsById.Add(fa.ID, fa);
-			world.ScreenMap.Add(owner, fa);
+			world.ScreenMap.AddOrUpdate(owner, fa);
 			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
 		}
 
@@ -295,9 +299,15 @@ namespace OpenRA.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return world.ScreenMap.FrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.Where(f => f.Visible)
 				.SelectMany(ff => ff.Render(wr));
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Player-actor render traits don't require screen bounds
+			yield break;
 		}
 
 		public FrozenActor FromID(uint id)

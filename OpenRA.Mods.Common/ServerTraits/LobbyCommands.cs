@@ -184,6 +184,7 @@ namespace OpenRA.Mods.Common.Server
 						{
 							client.Slot = null;
 							client.SpawnPoint = 0;
+							client.Team = 0;
 							client.Color = HSLColor.FromRGB(255, 255, 255);
 							server.SyncLobbyClients();
 							CheckAutoStart(server);
@@ -463,7 +464,7 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (option.Locked)
+						if (option.IsLocked)
 						{
 							server.SendOrderTo(conn, "Message", "{0} cannot be changed.".F(option.Name));
 							return true;
@@ -806,7 +807,7 @@ namespace OpenRA.Mods.Common.Server
 				if (gs.LobbyOptions.TryGetValue(o.Id, out state))
 				{
 					// Propagate old state on map change
-					if (!o.Locked)
+					if (!o.IsLocked)
 					{
 						if (o.Values.Keys.Contains(state.PreferredValue))
 							value = state.PreferredValue;
@@ -819,7 +820,7 @@ namespace OpenRA.Mods.Common.Server
 				else
 					state = new Session.LobbyOptionState();
 
-				state.Locked = o.Locked;
+				state.IsLocked = o.IsLocked;
 				state.Value = value;
 				state.PreferredValue = preferredValue;
 				gs.LobbyOptions[o.Id] = state;

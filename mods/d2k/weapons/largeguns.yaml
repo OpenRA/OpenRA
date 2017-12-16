@@ -9,7 +9,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 0
-		Damage: 270
+		Damage: 2700
 		Versus:
 			none: 20
 			wall: 50
@@ -36,7 +36,7 @@
 		Speed: 875
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
-		Damage: 290
+		Damage: 2900
 
 80mm_A:
 	Inherits: ^Cannon
@@ -59,7 +59,7 @@ DevBullet:
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Spread: 384
-		Damage: 650
+		Damage: 6500
 		Versus:
 			none: 50
 			wall: 100
@@ -89,7 +89,7 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Spread: 416
 		Falloff: 100, 65, 35, 20, 0
-		Damage: 450
+		Damage: 4500
 		Versus:
 			none: 125
 			wall: 100

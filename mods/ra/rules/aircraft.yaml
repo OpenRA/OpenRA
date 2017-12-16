@@ -3,7 +3,7 @@ BADR:
 	ParaDrop:
 		DropRange: 4c0
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Aircraft:
@@ -36,6 +36,7 @@ BADR:
 	RejectsOrders:
 	GivesExperience:
 		Experience: 1000
+	Interactable:
 
 BADR.Bomber:
 	Inherits: ^NeutralPlane
@@ -43,7 +44,7 @@ BADR.Bomber:
 	Armament:
 		Weapon: ParaBomb
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Aircraft:
@@ -78,6 +79,7 @@ BADR.Bomber:
 		Image: badr
 	GivesExperience:
 		Experience: 1000
+	Interactable:
 
 MIG:
 	Inherits: ^Plane
@@ -88,13 +90,13 @@ MIG:
 		BuildPaletteOrder: 50
 		Prerequisites: ~afld, stek, ~techlevel.high
 		BuildDuration: 1750
-		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mig Attack Plane
+		Name: MiG Attack Plane
 	Health:
-		HP: 70
+		HP: 7500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -108,9 +110,11 @@ MIG:
 		Weapon: Maverick
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
+		PauseOnCondition: !ammo
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -122,11 +126,12 @@ MIG:
 		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 8
+		AmmoCondition: ammo
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
+		DecorationBounds: 40,29,0,1
 	SelectionDecorations:
-		VisualBounds: 40,29,0,1
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -147,13 +152,13 @@ YAK:
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 30
 		Prerequisites: ~afld, ~techlevel.medium
-		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
+		Description: Attack Plane armed with\ndual machine guns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Yak Attack Plane
 	Health:
-		HP: 60
+		HP: 6000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -167,14 +172,17 @@ YAK:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -188,9 +196,9 @@ YAK:
 		Ammo: 18
 		PipCount: 6
 		ReloadDelay: 11
+		AmmoCondition: ammo
 	ReturnOnIdle:
 	SelectionDecorations:
-		VisualBounds: 30,28,0,2
 	WithMuzzleOverlay:
 	Contrail:
 		Offset: -853,0,0
@@ -201,6 +209,8 @@ YAK:
 		Interval: 2
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 30,28,0,2
 
 TRAN:
 	Inherits: ^Helicopter
@@ -215,7 +225,7 @@ TRAN:
 	Tooltip:
 		Name: Chinook
 	Health:
-		HP: 140
+		HP: 14000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -254,7 +264,8 @@ TRAN:
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:
-		VisualBounds: 40,36
+	Selectable:
+		DecorationBounds: 40,36
 
 HELI:
 	Inherits: ^Helicopter
@@ -265,13 +276,13 @@ HELI:
 		BuildPaletteOrder: 40
 		Prerequisites: ~hpad, atek, ~techlevel.high
 		BuildDuration: 1750
-		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Buildings, Vehicles, Aircraft\n  Weak vs Infantry
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Longbow
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -284,12 +295,15 @@ HELI:
 	Armament@PRIMARY:
 		Weapon: HellfireAA
 		LocalOffset: 0,-213,-85
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -307,14 +321,16 @@ HELI:
 		RequiresCondition: !airborne
 	AmmoPool:
 		Ammo: 8
+		AmmoCondition: ammo
 	SelectionDecorations:
-		VisualBounds: 36,28
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
 	SmokeTrailWhenDamaged:
 		Offset: -427,0,0
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 36,28
 
 HIND:
 	Inherits: ^Helicopter
@@ -324,13 +340,13 @@ HIND:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
 		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor.\n  Weak vs Tanks, Aircraft
+		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Hind
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -344,14 +360,17 @@ HIND:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
 		LocalOffset: 85,213,-85
 		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
+		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -369,8 +388,8 @@ HIND:
 		Ammo: 24
 		PipCount: 6
 		ReloadDelay: 8
+		AmmoCondition: ammo
 	SelectionDecorations:
-		VisualBounds: 38,32
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HIND.Husk
@@ -378,11 +397,13 @@ HIND:
 		Offset: -427,0,0
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Selectable:
+		DecorationBounds: 38,32
 
 U2:
 	Inherits: ^NeutralPlane
 	Health:
-		HP: 2000
+		HP: 200000
 	Tooltip:
 		Name: Spy Plane
 	Armor:
@@ -409,3 +430,4 @@ U2:
 		Offset: -1c43,0,0
 		Interval: 2
 	RejectsOrders:
+	Interactable:

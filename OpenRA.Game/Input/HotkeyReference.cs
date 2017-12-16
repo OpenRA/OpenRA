@@ -16,34 +16,31 @@ namespace OpenRA
 	/// <summary>
 	/// A reference to either a named hotkey (defined in the game settings) or a statically assigned hotkey
 	/// </summary>
-	public class NamedHotkey
+	public class HotkeyReference
 	{
 		static readonly Func<Hotkey> Invalid = () => Hotkey.Invalid;
 
 		readonly Func<Hotkey> getValue;
 
-		public NamedHotkey()
+		public HotkeyReference()
 		{
 			getValue = Invalid;
 		}
 
-		public NamedHotkey(string name, KeySettings settings)
+		internal HotkeyReference(Func<Hotkey> getValue)
 		{
-			// Try parsing the value as a reference to a named hotkey
-			getValue = settings.GetHotkeyReference(name);
-
-			if (getValue == null)
-			{
-				// Try parsing the value as a normal (static) hotkey
-				var staticKey = Hotkey.Invalid;
-				Hotkey.TryParse(name, out staticKey);
-				getValue = () => staticKey;
-			}
+			this.getValue = getValue;
 		}
 
 		public Hotkey GetValue()
 		{
 			return getValue();
+		}
+
+		public bool IsActivatedBy(KeyInput e)
+		{
+			var currentValue = getValue();
+			return currentValue.Key == e.Key && currentValue.Modifiers == e.Modifiers;
 		}
 	}
 }

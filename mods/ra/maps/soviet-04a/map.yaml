@@ -387,12 +387,10 @@ Actors:
 	Actor144: 2tnk
 		Location: 92,55
 		Owner: Greece
-		Health: 99
 		Facing: 192
 	Actor145: 2tnk
 		Location: 86,58
 		Owner: Greece
-		Health: 99
 		Facing: 160
 	Actor146: jeep
 		Location: 89,60
@@ -530,7 +528,6 @@ Actors:
 	Tank3: 3tnk
 		Location: 87,86
 		Owner: USSR
-		Health: 99
 	Tank4: 3tnk
 		Location: 85,86
 		Owner: USSR
@@ -617,4 +614,4 @@ Actors:
 		Location: 84,83
 		Owner: Neutral
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

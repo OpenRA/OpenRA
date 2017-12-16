@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft helicopter;
 		readonly AttackHeli attackHeli;
-		readonly AmmoPool[] ammoPools;
 		readonly bool attackOnlyVisibleTargets;
+		readonly bool autoReloads;
 
 		Target target;
 		bool canHideUnderFog;
@@ -46,8 +46,8 @@ namespace OpenRA.Mods.Common.Activities
 			Target = target;
 			helicopter = self.Trait<Aircraft>();
 			attackHeli = self.Trait<AttackHeli>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
+			autoReloads = self.TraitsImplementing<AmmoPool>().All(p => p.AutoReloads);
 		}
 
 		public override Activity Tick(Actor self)
@@ -62,21 +62,23 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
+			var pos = self.CenterPosition;
+			var targetPos = attackHeli.GetTargetPosition(pos, target);
 			if (attackOnlyVisibleTargets && target.Type == TargetType.Actor && canHideUnderFog
-				&& !self.Owner.CanTargetActor(target.Actor))
+				&& !target.Actor.CanBeViewedByPlayer(self.Owner))
 			{
-				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(target.CenterPosition));
+				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(targetPos));
 
 				Cancel(self);
 				self.SetTargetLine(newTarget, Color.Green);
 				return new HeliFly(self, newTarget);
 			}
 
-			// If any AmmoPool is depleted and no weapon is valid against target, return to helipad to reload and then resume the activity
-			if (ammoPools.Any(x => !x.Info.SelfReloads && !x.HasAmmo()) && !attackHeli.HasAnyValidWeapons(target))
+			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
+			if (!autoReloads && helicopter.Info.RearmBuildings.Any() && attackHeli.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, helicopter.Info.AbortOnResupply), this);
 
-			var dist = target.CenterPosition - self.CenterPosition;
+			var dist = targetPos - pos;
 
 			// Can rotate facing while ascending
 			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
@@ -86,11 +88,11 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			// Fly towards the target
-			if (!target.IsInRange(self.CenterPosition, attackHeli.GetMaximumRangeVersusTarget(target)))
+			if (!target.IsInRange(pos, attackHeli.GetMaximumRangeVersusTarget(target)))
 				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(desiredFacing));
 
 			// Fly backwards from the target
-			if (target.IsInRange(self.CenterPosition, attackHeli.GetMinimumRangeVersusTarget(target)))
+			if (target.IsInRange(pos, attackHeli.GetMinimumRangeVersusTarget(target)))
 			{
 				// Facing 0 doesn't work with the following position change
 				var facing = 1;

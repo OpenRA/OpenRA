@@ -23,12 +23,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MapEditorLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+		public MapEditorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
 			MiniYaml yaml;
-			var changeZoomKey = new NamedHotkey();
+			var changeZoomKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("ChangeZoomKey", out yaml))
-				changeZoomKey = new NamedHotkey(yaml.Value, Game.Settings.Keys);
+				changeZoomKey = modData.Hotkeys[yaml.Value];
 
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
@@ -72,8 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
 				zoomDropdown.OnKeyPress = e =>
 				{
-					var key = Hotkey.FromKeyInput(e);
-					if (key != changeZoomKey.GetValue())
+					if (!changeZoomKey.IsActivatedBy(e))
 						return;
 
 					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;

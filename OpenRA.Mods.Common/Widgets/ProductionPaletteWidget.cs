@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public ActorInfo Actor;
 		public string Name;
-		public NamedHotkey Hotkey;
+		public HotkeyReference Hotkey;
 		public Sprite Sprite;
 		public PaletteReference Palette;
 		public PaletteReference IconClockPalette;
@@ -64,6 +64,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string NotBuildableSequence = "idle";
 		public readonly string NotBuildablePalette = "chrome";
 
+		public readonly bool DrawTime = true;
+
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
 
@@ -74,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionIcon TooltipIcon { get; private set; }
 		public Func<ProductionIcon> GetTooltipIcon;
 		public readonly World World;
+		readonly ModData modData;
 		readonly OrderManager orderManager;
 
 		public int MinimumRows = 4;
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
-		NamedHotkey[] hotkeys;
+		HotkeyReference[] hotkeys;
 
 		public ProductionQueue CurrentQueue
 		{
@@ -125,8 +128,9 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		[ObjectCreator.UseCtor]
-		public ProductionPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
+		public ProductionPaletteWidget(ModData modData, OrderManager orderManager, World world, WorldRenderer worldRenderer)
 		{
+			this.modData = modData;
 			this.orderManager = orderManager;
 			World = world;
 			this.worldRenderer = worldRenderer;
@@ -144,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => new NamedHotkey(HotkeyPrefix + (i + 1).ToString("D2"), Game.Settings.Keys));
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 		}
 
 		public void ScrollDown()
@@ -340,12 +344,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event == KeyInputEvent.Up || CurrentQueue == null)
 				return false;
 
-			var hotkey = Hotkey.FromKeyInput(e);
 			var batchModifiers = e.Modifiers.HasModifier(Modifiers.Shift) ? Modifiers.Shift : Modifiers.None;
-			if (batchModifiers != Modifiers.None)
-				hotkey = new Hotkey(hotkey.Key, hotkey.Modifiers ^ Modifiers.Shift);
 
-			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.GetValue() == hotkey);
+			// HACK: enable production if the shift key is pressed
+			e.Modifiers &= ~Modifiers.Shift;
+			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
 		}
 
@@ -466,7 +469,7 @@ namespace OpenRA.Mods.Common.Widgets
 						overlayFont.DrawTextWithContrast(HoldText,
 							icon.Pos + holdOffset,
 							Color.White, Color.Black, 1);
-					else if (!waiting)
+					else if (!waiting && DrawTime)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);

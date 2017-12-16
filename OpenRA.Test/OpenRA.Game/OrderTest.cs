@@ -11,6 +11,7 @@
 
 using System.IO;
 using NUnit.Framework;
+using OpenRA.Traits;
 
 namespace OpenRA.Test
 {
@@ -18,6 +19,7 @@ namespace OpenRA.Test
 	public class OrderTest
 	{
 		Order order;
+		Order targetInvalid;
 		Order immediateOrder;
 
 		[SetUp]
@@ -26,10 +28,11 @@ namespace OpenRA.Test
 			order = new Order("TestOrder", null, false)
 			{
 				TargetString = "TestTarget",
-				TargetLocation = new CPos(1234, 5678),
 				ExtraData = 1234,
 				ExtraLocation = new CPos(555, 555)
 			};
+
+			targetInvalid = new Order("TestOrder", null, Target.Invalid, false);
 
 			immediateOrder = new Order("TestOrderImmediate", null, false)
 			{
@@ -38,22 +41,28 @@ namespace OpenRA.Test
 			};
 		}
 
+		Order RoundTripOrder(Order o)
+		{
+			var serializedData = new MemoryStream(o.Serialize());
+			return Order.Deserialize(null, new BinaryReader(serializedData));
+		}
+
 		[TestCase(TestName = "Data persists over serialization")]
 		public void SerializeA()
 		{
-			var serializedData = new MemoryStream(order.Serialize());
-			var result = Order.Deserialize(null, new BinaryReader(serializedData));
-
-			Assert.That(result.ToString(), Is.EqualTo(order.ToString()));
+			Assert.That(RoundTripOrder(order).ToString(), Is.EqualTo(order.ToString()));
 		}
 
-		[TestCase(TestName = "Data persists over serialization immediate")]
+		[TestCase(TestName = "Data persists over serialization (Immediate order)")]
 		public void SerializeB()
 		{
-			var serializedData = new MemoryStream(immediateOrder.Serialize());
-			var result = Order.Deserialize(null, new BinaryReader(serializedData));
+			Assert.That(RoundTripOrder(immediateOrder).ToString(), Is.EqualTo(immediateOrder.ToString()));
+		}
 
-			Assert.That(result.ToString(), Is.EqualTo(immediateOrder.ToString()));
+		[TestCase(TestName = "Data persists over serialization (Invalid target)")]
+		public void SerializeC()
+		{
+			Assert.That(RoundTripOrder(targetInvalid).ToString(), Is.EqualTo(targetInvalid.ToString()));
 		}
 	}
 }

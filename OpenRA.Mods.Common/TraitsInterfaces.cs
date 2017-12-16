@@ -95,12 +95,15 @@ namespace OpenRA.Mods.Common.Traits
 		void AfterRepair(Actor self, Actor target);
 	}
 
+	[RequireExplicitImplementation]
+	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
+
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self); }
 	public interface INotifyNuke { void Launching(Actor self); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
-	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self, Actor ignore); }
@@ -351,7 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IRadarSignature
 	{
-		IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self);
+		void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer);
 	}
 
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self, Color color); }
@@ -380,6 +383,9 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface ITargetableCells
 	{
-		IEnumerable<Pair<CPos, SubCell>> TargetableCells();
+		Pair<CPos, SubCell>[] TargetableCells();
 	}
+
+	[RequireExplicitImplementation]
+	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
 }

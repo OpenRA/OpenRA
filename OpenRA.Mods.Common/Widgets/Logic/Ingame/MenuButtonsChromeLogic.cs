@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonsChromeLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MenuButtonsChromeLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 
@@ -36,11 +36,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			menuRoot = Ui.Root.Get("MENU_ROOT");
 
 			MiniYaml yaml;
-			var ks = Game.Settings.Keys;
 			string[] keyNames = Enum.GetNames(typeof(ObserverStatsPanel));
-			var statsHotkeys = new NamedHotkey[keyNames.Length];
+			var statsHotkeys = new HotkeyReference[keyNames.Length];
 			for (var i = 0; i < keyNames.Length; i++)
-				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? new NamedHotkey(yaml.Value, ks) : new NamedHotkey();
+				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? modData.Hotkeys[yaml.Value] : new HotkeyReference();
 
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
@@ -80,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Can't use DeveloperMode.Enabled because there is a hardcoded hack to *always*
 				// enable developer mode for singleplayer games, but we only want to show the button
 				// if it has been explicitly enabled
-				var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().Enabled;
+				var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().CheckboxEnabled;
 				var enabled = world.LobbyInfo.GlobalSettings.OptionOrDefault("cheats", def);
 				debug.IsVisible = () => enabled;
 				debug.IsDisabled = () => disableSystemButtons;
@@ -104,10 +103,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
 					{
-						var key = Hotkey.FromKeyInput(e);
 						for (var i = 0; i < statsHotkeys.Length; i++)
 						{
-							if (key == statsHotkeys[i].GetValue())
+							if (statsHotkeys[i].IsActivatedBy(e))
 							{
 								OpenMenuPanel(stats, new WidgetArgs() { { "activePanel", i } });
 								return true;

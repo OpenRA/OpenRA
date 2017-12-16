@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class Attack : Activity
 	{
 		[Flags]
-		enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
+		protected enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
 
 		protected readonly Target Target;
 		readonly AttackBase[] attackTraits;
@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			foreach (var attack in attackTraits.Where(x => !x.IsTraitDisabled))
 			{
-				var activity = InnerTick(self, attack);
-				attack.IsAttacking = activity == this;
+				var status = TickAttack(self, attack);
+				attack.IsAiming = status == AttackStatus.Attacking || status == AttackStatus.NeedsToTurn;
 			}
 
 			if (attackStatus.HasFlag(AttackStatus.Attacking))
@@ -74,29 +74,31 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
-		protected virtual Activity InnerTick(Actor self, AttackBase attack)
+		protected virtual AttackStatus TickAttack(Actor self, AttackBase attack)
 		{
 			if (IsCanceled)
-				return NextActivity;
+				return AttackStatus.UnableToAttack;
 
 			var type = Target.Type;
 			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
-				return NextActivity;
+				return AttackStatus.UnableToAttack;
 
 			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(Target.Actor.Location, null, false))
-				return NextActivity;
+				return AttackStatus.UnableToAttack;
 
 			// Drop the target if it moves under the shroud / fog.
 			// HACK: This would otherwise break targeting frozen actors
 			// The problem is that Shroud.IsTargetable returns false (as it should) for
 			// frozen actors, but we do want to explicitly target the underlying actor here.
-			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor && !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !self.Owner.CanTargetActor(Target.Actor))
-				return NextActivity;
+			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor
+					&& !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>()
+					&& !Target.Actor.CanBeViewedByPlayer(self.Owner))
+				return AttackStatus.UnableToAttack;
 
 			// Drop the target once none of the weapons are effective against it
 			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack).ToList();
 			if (armaments.Count == 0)
-				return NextActivity;
+				return AttackStatus.UnableToAttack;
 
 			// Update ranges
 			minRange = armaments.Max(a => a.Weapon.MinRange);
@@ -110,11 +112,11 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Try to move within range, drop the target otherwise
 				if (move == null)
-					return NextActivity;
+					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
 				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
-				return NextActivity;
+				return AttackStatus.NeedsToMove;
 			}
 
 			var targetedPosition = attack.GetTargetPosition(pos, Target);
@@ -123,13 +125,13 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
 				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
-				return NextActivity;
+				return AttackStatus.NeedsToTurn;
 			}
 
 			attackStatus |= AttackStatus.Attacking;
 			attack.DoAttack(self, Target, armaments);
 
-			return this;
+			return AttackStatus.Attacking;
 		}
 	}
 }

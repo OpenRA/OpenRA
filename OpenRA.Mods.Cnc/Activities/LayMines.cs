@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == info.AmmoPoolName);
 				if (pool == null)
 					return;
-				pool.TakeAmmo();
+				pool.TakeAmmo(self, 1);
 			}
 
 			self.World.AddFrameEndTask(

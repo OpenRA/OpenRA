@@ -43,6 +43,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <StartArguments>Game.Mod=ra</StartArguments>
     <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -95,10 +96,6 @@
     </Reference>
     <Reference Include="MaxMind.Db">
       <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SmarIrc4net">
-      <HintPath>..\thirdparty\download\SmarIrc4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -175,6 +172,7 @@
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
     <Compile Include="Support\Arguments.cs" />
+    <Compile Include="Support\ExceptionHandler.cs" />
     <Compile Include="Support\LaunchArguments.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
@@ -223,11 +221,10 @@
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\Keycode.cs" />
     <Compile Include="Input\Hotkey.cs" />
-    <Compile Include="Input\NamedHotkey.cs" />
+    <Compile Include="Input\HotkeyReference.cs" />
     <Compile Include="Graphics\PlatformInterfaces.cs" />
     <Compile Include="Sound\Sound.cs" />
     <Compile Include="Sound\SoundDevice.cs" />
-    <Compile Include="Graphics\SelectionBarsRenderable.cs" />
     <Compile Include="Graphics\TargetLineRenderable.cs" />
     <Compile Include="Graphics\UISpriteRenderable.cs" />
     <Compile Include="Graphics\SoftwareCursor.cs" />
@@ -246,7 +243,6 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="GameSpeed.cs" />
-    <Compile Include="GlobalChat.cs" />
     <Compile Include="Primitives\ObservableList.cs" />
     <Compile Include="Graphics\RgbaColorRenderer.cs" />
     <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
@@ -260,6 +256,9 @@
     <Compile Include="UtilityCommands\RegisterModCommand.cs" />
     <Compile Include="UtilityCommands\UnregisterModCommand.cs" />
     <Compile Include="UtilityCommands\ClearInvalidModRegistrationsCommand.cs" />
+    <Compile Include="HotkeyManager.cs" />
+    <Compile Include="HotkeyDefinition.cs" />
+    <Compile Include="Traits\Interactable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />

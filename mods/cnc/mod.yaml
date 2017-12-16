@@ -93,14 +93,12 @@ ChromeLayout:
 	cnc|chrome/multiplayer-browser.yaml
 	cnc|chrome/multiplayer-createserver.yaml
 	cnc|chrome/multiplayer-directconnect.yaml
-	cnc|chrome/multiplayer-globalchat.yaml
 	cnc|chrome/lobby.yaml
 	cnc|chrome/lobby-mappreview.yaml
 	cnc|chrome/lobby-players.yaml
 	cnc|chrome/lobby-options.yaml
 	cnc|chrome/lobby-music.yaml
 	cnc|chrome/lobby-kickdialogs.yaml
-	cnc|chrome/lobby-globalchat.yaml
 	cnc|chrome/connection.yaml
 	cnc|chrome/color-picker.yaml
 	cnc|chrome/mapchooser.yaml
@@ -136,6 +134,15 @@ Music:
 
 Translations:
 	cnc|languages/english.yaml
+
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production-common.yaml
+	common|hotkeys/production-peractor.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+	cnc|hotkeys.yaml
 
 LoadScreen: CncLoadScreen
 	Image: cnc|uibits/chrome.png

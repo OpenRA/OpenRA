@@ -394,8 +394,8 @@ refinery.atreides:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.atreides:
@@ -427,7 +427,7 @@ silo.atreides:
 
 hightech.atreides:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 2812
 	make: DATA.R8
@@ -904,8 +904,8 @@ refinery.harkonnen:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.harkonnen:
@@ -937,7 +937,7 @@ silo.harkonnen:
 
 hightech.harkonnen:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 2972
 	make: DATA.R8
@@ -1307,8 +1307,8 @@ refinery.ordos:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.ordos:
@@ -1340,7 +1340,7 @@ silo.ordos:
 
 hightech.ordos:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 3132
 	make: DATA.R8

@@ -1,13 +1,15 @@
 World:
 	CrateSpawner:
-		Enabled: False
-		Locked: True
+		CheckboxEnabled: False
+		CheckboxLocked: True
 	-SpawnMPUnits:
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
 
 APWR:
@@ -56,10 +58,10 @@ SILO:
 
 Player:
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 60
@@ -97,7 +99,7 @@ MNLYR:
 	Tooltip:
 		Name: Bomber
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -124,7 +126,7 @@ MNLYR:
 
 FTUR:
 	Health:
-		HP: 1000
+		HP: 100000
 	Transforms:
 		IntoActor: mnlyr
 		Offset: 0,0
@@ -141,7 +143,6 @@ MINVV:
 	HiddenUnderFog:
 	Building:
 		TerrainTypes: Clear,Road
-		Adjacent: -1
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
@@ -149,20 +150,21 @@ MINVV:
 	Valued:
 		Cost: 30
 	Health:
-		HP: 200
+		HP: 20000
 	RenderSprites:
 		Image: miner
 	WithSpriteBody:
 	Tooltip:
 		Name: Bomb
 	SelfHealing:
-		Step: -1
+		Step: -100
 		Delay: 1
 		HealIfBelow: 101
 	Explodes:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
 	HitShape:
+	Interactable:
 
 T17:
 	-Health:

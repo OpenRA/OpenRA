@@ -39,7 +39,7 @@ namespace OpenRA.Primitives
 		public sealed override bool CanRead { get { return true; } }
 		public sealed override bool CanWrite { get { return false; } }
 
-		public sealed override long Length { get { throw new NotSupportedException(); } }
+		public override long Length { get { throw new NotSupportedException(); } }
 		public sealed override long Position
 		{
 			get { throw new NotSupportedException(); }

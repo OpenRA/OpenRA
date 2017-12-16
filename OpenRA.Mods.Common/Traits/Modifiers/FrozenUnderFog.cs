@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -18,16 +19,10 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor will remain visible (but not updated visually) under fog, once discovered.")]
-	public class FrozenUnderFogInfo : ITraitInfo, Requires<BuildingInfo>, IDefaultVisibilityInfo, IRulesetLoaded
+	public class FrozenUnderFogInfo : ITraitInfo, Requires<BuildingInfo>, IDefaultVisibilityInfo
 	{
 		[Desc("Players with these stances can always see the actor.")]
 		public readonly Stance AlwaysVisibleStances = Stance.Ally;
-
-		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
-		{
-			if (!info.HasTraitInfo<SelectableInfo>() && !info.HasTraitInfo<IAutoSelectionSizeInfo>())
-				throw new YamlException("Cannot create a frozen actor for actor type '{0}' with empty bounds (no selection size given).".F(info.Name));
-		}
 
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
@@ -61,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Explore map-placed actors if the "Explore Map" option is enabled
 			var shroudInfo = init.World.Map.Rules.Actors["player"].TraitInfo<ShroudInfo>();
-			var exploredMap = init.World.LobbyInfo.GlobalSettings.OptionOrDefault("explored", shroudInfo.ExploredMapEnabled);
+			var exploredMap = init.World.LobbyInfo.GlobalSettings.OptionOrDefault("explored", shroudInfo.ExploredMapCheckboxEnabled);
 			startsRevealed = exploredMap && init.Contains<SpawnedByMapInit>() && !init.Contains<HiddenUnderFogInit>();
 			var buildingInfo = init.Self.Info.TraitInfoOrDefault<BuildingInfo>();
 			var footprintCells = buildingInfo != null ? buildingInfo.FrozenUnderFogTiles(init.Self.Location).ToList() : new List<CPos>() { init.Self.Location };
@@ -126,6 +121,8 @@ namespace OpenRA.Mods.Common.Traits
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			IRenderable[] renderables = null;
+			Rectangle[] bounds = null;
+			Rectangle mouseBounds = Rectangle.Empty;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
 				var frozen = frozenStates[playerIndex].FrozenActor;
@@ -136,17 +133,28 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					isRendering = true;
 					renderables = self.Render(wr).ToArray();
+					bounds = self.ScreenBounds(wr).ToArray();
+					mouseBounds = self.MouseBounds(wr);
+
 					isRendering = false;
 				}
 
 				frozen.NeedRenderables = false;
 				frozen.Renderables = renderables;
+				frozen.ScreenBounds = bounds;
+				frozen.MouseBounds = mouseBounds;
+				self.World.ScreenMap.AddOrUpdate(self.World.Players[playerIndex], frozen);
 			}
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			return IsVisible(self, self.World.RenderPlayer) || isRendering ? r : SpriteRenderable.None;
+		}
+
+		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
+		{
+			return bounds;
 		}
 	}
 

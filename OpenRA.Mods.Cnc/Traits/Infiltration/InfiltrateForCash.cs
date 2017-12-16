@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string Notification = null;
 
+		[Desc("Whether to show the cash tick indicators rising from the actor.")]
+		public readonly bool ShowTicks = true;
+
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
 
@@ -56,7 +59,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (info.Notification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
 
-			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
+			if (info.ShowTicks)
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color.RGB, FloatingText.FormatCashTick(toGive), 30)));
 		}
 	}
 }

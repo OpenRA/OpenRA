@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.AI
 
 		public bool IsTargetVisible
 		{
-			get { return Bot.Player.PlayerActor.Owner.CanTargetActor(TargetActor); }
+			get { return TargetActor.CanBeViewedByPlayer(Bot.Player); }
 		}
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }

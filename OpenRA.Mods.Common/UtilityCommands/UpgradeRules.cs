@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -42,6 +43,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				else
 					upgradesNode.Key = conditionKey;
 			}
+		}
+
+		internal static string MultiplyByFactor(int oldValue, int factor)
+		{
+			oldValue = oldValue * factor;
+			return oldValue.ToString();
 		}
 
 		internal static void UpgradeActorRules(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth)
@@ -845,38 +852,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				// Replace Mobile.OnRails hack with dedicated TDGunboat traits in Mods.Cnc
-				if (engineVersion < 20170715)
-				{
-					var mobile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Mobile");
-					if (mobile != null)
-					{
-						var onRailsNode = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "OnRails");
-						var onRails = onRailsNode != null ? FieldLoader.GetValue<bool>("OnRails", onRailsNode.Value.Value) : false;
-						if (onRails)
-						{
-							var speed = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "Speed");
-							var initFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "InitialFacing");
-							var previewFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "PreviewFacing");
-							var tdGunboat = new MiniYamlNode("TDGunboat", "");
-							if (speed != null)
-								tdGunboat.Value.Nodes.Add(speed);
-							if (initFacing != null)
-								tdGunboat.Value.Nodes.Add(initFacing);
-							if (previewFacing != null)
-								tdGunboat.Value.Nodes.Add(previewFacing);
-
-							node.Value.Nodes.Add(tdGunboat);
-
-							var attackTurreted = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackTurreted", StringComparison.Ordinal));
-							if (attackTurreted != null)
-								RenameNodeKey(attackTurreted, "AttackTDGunboatTurreted");
-
-							node.Value.Nodes.Remove(mobile);
-						}
-					}
-				}
-
 				// TargetWhenIdle and TargetWhenDamaged were removed from AutoTarget
 				if (engineVersion < 20170722)
 				{
@@ -953,8 +928,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Replace Mobile.OnRails hack with dedicated TDGunboat traits in Mods.Cnc
+				if (engineVersion < 20171015)
+				{
+					var mobile = node.Value.Nodes.FirstOrDefault(n => n.Key == "Mobile");
+					if (mobile != null)
+					{
+						var onRailsNode = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "OnRails");
+						var onRails = onRailsNode != null ? FieldLoader.GetValue<bool>("OnRails", onRailsNode.Value.Value) : false;
+						if (onRails)
+						{
+							var speed = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "Speed");
+							var initFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "InitialFacing");
+							var previewFacing = mobile.Value.Nodes.FirstOrDefault(n => n.Key == "PreviewFacing");
+							var tdGunboat = new MiniYamlNode("TDGunboat", "");
+							if (speed != null)
+								tdGunboat.Value.Nodes.Add(speed);
+							if (initFacing != null)
+								tdGunboat.Value.Nodes.Add(initFacing);
+							if (previewFacing != null)
+								tdGunboat.Value.Nodes.Add(previewFacing);
+
+							node.Value.Nodes.Add(tdGunboat);
+
+							var attackTurreted = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AttackTurreted", StringComparison.Ordinal));
+							if (attackTurreted != null)
+								RenameNodeKey(attackTurreted, "AttackTDGunboatTurreted");
+
+							node.Value.Nodes.Remove(mobile);
+						}
+					}
+				}
+
 				// Introduced TakeOffOnCreation and TakeOffOnResupply booleans to aircraft
-				if (engineVersion < 20170819)
+				if (engineVersion < 20171015)
 				{
 					if (node.Key.StartsWith("Aircraft", StringComparison.Ordinal))
 					{
@@ -975,7 +982,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// nuke launch animation is now it's own trait
-				if (engineVersion < 20170820)
+				if (engineVersion < 20171015)
 				{
 					if (depth == 1 && node.Key.StartsWith("NukePower", StringComparison.Ordinal))
 					{
@@ -984,7 +991,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20170915)
+				if (engineVersion < 20171015)
 				{
 					if (node.Key.StartsWith("WithTurretedAttackAnimation", StringComparison.Ordinal))
 						RenameNodeKey(node, "WithTurretAttackAnimation");
@@ -992,7 +999,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						RenameNodeKey(node, "WithEmbeddedTurretSpriteBody");
 				}
 
-				if (engineVersion < 20170916)
+				if (engineVersion < 20171015)
 				{
 					if (node.Key.StartsWith("PlayerPaletteFromCurrentTileset", StringComparison.Ordinal))
 					{
@@ -1000,6 +1007,494 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						node.Value.Nodes.Add(new MiniYamlNode("Tileset", ""));
 						RenameNodeKey(node, "PaletteFromFile");
 						Console.WriteLine("The trait PlayerPaletteFromCurrentTileset has been removed. Use PaletteFromFile with a Tileset filter.");
+					}
+				}
+
+				if (engineVersion < 20171021)
+				{
+					if (node.Key.StartsWith("Capturable", StringComparison.Ordinal) || node.Key.StartsWith("ExternalCapturable", StringComparison.Ordinal))
+					{
+						// Type renamed to Types
+						var type = node.Value.Nodes.FirstOrDefault(n => n.Key == "Type");
+						if (type != null)
+							RenameNodeKey(type, "Types");
+
+						// Allow(Allies|Neutral|Enemies) replaced with a ValidStances enum
+						var stance = Stance.Neutral | Stance.Enemy;
+						var allowAllies = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllowAllies");
+						if (allowAllies != null)
+						{
+							if (FieldLoader.GetValue<bool>("AllowAllies", allowAllies.Value.Value))
+								stance |= Stance.Ally;
+							else
+								stance &= ~Stance.Ally;
+
+							node.Value.Nodes.Remove(allowAllies);
+						}
+
+						var allowNeutral = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllowNeutral");
+						if (allowNeutral != null)
+						{
+							if (FieldLoader.GetValue<bool>("AllowNeutral", allowNeutral.Value.Value))
+								stance |= Stance.Neutral;
+							else
+								stance &= ~Stance.Neutral;
+
+							node.Value.Nodes.Remove(allowNeutral);
+						}
+
+						var allowEnemies = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllowEnemies");
+						if (allowEnemies != null)
+						{
+							if (FieldLoader.GetValue<bool>("AllowEnemies", allowEnemies.Value.Value))
+								stance |= Stance.Enemy;
+							else
+								stance &= ~Stance.Enemy;
+
+							node.Value.Nodes.Remove(allowEnemies);
+						}
+
+						if (stance != (Stance.Neutral | Stance.Enemy))
+							node.Value.Nodes.Add(new MiniYamlNode("ValidStances", stance.ToString()));
+					}
+				}
+
+				// Self-reload properties were decoupled from AmmoPool to ReloadAmmoPool.
+				if (engineVersion < 20171104)
+				{
+					var poolNumber = 0;
+					var ammoPools = node.Value.Nodes.Where(n => n.Key.StartsWith("AmmoPool", StringComparison.Ordinal));
+					foreach (var pool in ammoPools.ToList())
+					{
+						var selfReloads = pool.Value.Nodes.FirstOrDefault(n => n.Key == "SelfReloads");
+						if (selfReloads != null && FieldLoader.GetValue<bool>("SelfReloads", selfReloads.Value.Value))
+						{
+							poolNumber++;
+							var name = pool.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+							var selfReloadDelay = pool.Value.Nodes.FirstOrDefault(n => n.Key == "SelfReloadDelay");
+							var reloadCount = pool.Value.Nodes.FirstOrDefault(n => n.Key == "ReloadCount");
+							var reset = pool.Value.Nodes.FirstOrDefault(n => n.Key == "ResetOnFire");
+							var rearmSound = pool.Value.Nodes.FirstOrDefault(n => n.Key == "RearmSound");
+							var reloadOnCond = new MiniYamlNode("ReloadAmmoPool@" + poolNumber.ToString(), "");
+
+							if (name != null)
+							{
+								var rap = new MiniYamlNode("ReloadAmmoPool", name.Value.Value);
+								reloadOnCond.Value.Nodes.Add(rap);
+							}
+
+							if (selfReloadDelay != null)
+							{
+								var rd = selfReloadDelay;
+								RenameNodeKey(rd, "Delay");
+								reloadOnCond.Value.Nodes.Add(rd);
+								pool.Value.Nodes.Remove(selfReloads);
+								pool.Value.Nodes.Remove(selfReloadDelay);
+							}
+
+							if (reloadCount != null)
+							{
+								var rc = reloadCount;
+								RenameNodeKey(rc, "Count");
+								reloadOnCond.Value.Nodes.Add(rc);
+								pool.Value.Nodes.Remove(reloadCount);
+							}
+
+							if (reset != null)
+							{
+								reloadOnCond.Value.Nodes.Add(reset);
+								pool.Value.Nodes.Remove(reset);
+							}
+
+							if (rearmSound != null)
+							{
+								var rs = rearmSound;
+								RenameNodeKey(rs, "Sound");
+								reloadOnCond.Value.Nodes.Add(rs);
+								pool.Value.Nodes.Remove(rearmSound);
+							}
+
+							node.Value.Nodes.Add(reloadOnCond);
+						}
+					}
+				}
+
+				// Armament.OutOfAmmo has been replaced by pausing on condition (usually provided by AmmoPool)
+				if (engineVersion < 20171104)
+				{
+					var reloadAmmoPool = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("ReloadAmmoPool", StringComparison.Ordinal));
+					var armaments = node.Value.Nodes.Where(n => n.Key.StartsWith("Armament", StringComparison.Ordinal));
+					var ammoPools = node.Value.Nodes.Where(n => n.Key.StartsWith("AmmoPool", StringComparison.Ordinal));
+
+					if (reloadAmmoPool == null && armaments.Any() && ammoPools.Any())
+					{
+						foreach (var pool in ammoPools)
+						{
+							var nameNode = pool.Value.Nodes.FirstOrDefault(n => n.Key == "Armaments");
+							var name = nameNode != null ? FieldLoader.GetValue<string>("Armaments", nameNode.Value.Value) : "primary, secondary";
+							var anyMatchingArmament = false;
+							var ammoNoAmmo = new MiniYamlNode("AmmoCondition", "ammo");
+							var armNoAmmo = new MiniYamlNode("PauseOnCondition", "!ammo");
+
+							foreach (var arma in armaments)
+							{
+								var armaNameNode = arma.Value.Nodes.FirstOrDefault(n => n.Key == "Name");
+								var armaName = armaNameNode != null ? FieldLoader.GetValue<string>("Name", armaNameNode.Value.Value) : "primary";
+								if (name.Contains(armaName))
+								{
+									anyMatchingArmament = true;
+									arma.Value.Nodes.Add(armNoAmmo);
+								}
+							}
+
+							if (anyMatchingArmament)
+							{
+								pool.Value.Nodes.Add(ammoNoAmmo);
+								Console.WriteLine("Aircraft returning to base is now triggered when all armaments are paused via condition.");
+								Console.WriteLine("Check if any of your actors with AmmoPools may need further changes.");
+							}
+						}
+					}
+				}
+
+				if (engineVersion < 20171112)
+				{
+					// CanPowerDown now provides a condition instead of triggering Actor.Disabled
+					var canPowerDown = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CanPowerDown", StringComparison.Ordinal));
+					if (canPowerDown != null)
+					{
+						canPowerDown.Value.Nodes.Add(new MiniYamlNode("PowerdownCondition", "powerdown"));
+
+						var image = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "IndicatorImage");
+						var seq = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "IndicatorSequence");
+						var pal = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "IndicatorPalette");
+						var imageValue = image != null ? FieldLoader.GetValue<string>("IndicatorImage", image.Value.Value) : "poweroff";
+						var seqValue = seq != null ? FieldLoader.GetValue<string>("IndicatorSequence", seq.Value.Value) : "offline";
+						var palValue = pal != null ? FieldLoader.GetValue<string>("IndicatorPalette", pal.Value.Value) : "chrome";
+
+						var indicator = new MiniYamlNode("WithDecoration@POWERDOWN", "");
+						indicator.Value.Nodes.Add(new MiniYamlNode("Image", imageValue));
+						indicator.Value.Nodes.Add(new MiniYamlNode("Sequence", seqValue));
+						indicator.Value.Nodes.Add(new MiniYamlNode("Palette", palValue));
+						indicator.Value.Nodes.Add(new MiniYamlNode("RequiresCondition", "powerdown"));
+						indicator.Value.Nodes.Add(new MiniYamlNode("ReferencePoint", "Center"));
+
+						node.Value.Nodes.Add(indicator);
+						if (image != null)
+							canPowerDown.Value.Nodes.Remove(image);
+						if (seq != null)
+							canPowerDown.Value.Nodes.Remove(seq);
+						if (pal != null)
+							canPowerDown.Value.Nodes.Remove(pal);
+
+						Console.WriteLine("CanPowerDown now provides a condition instead of disabling the actor directly.");
+						Console.WriteLine("Review your condition setup to make sure all relevant traits are disabled by that condition.");
+						Console.WriteLine("Look at the official mods if you need examples.");
+					}
+
+					// RequiresPower has been replaced with GrantConditionOnPowerState.
+					var requiresPower = node.Value.Nodes.FirstOrDefault(n => n.Key == "RequiresPower");
+					if (requiresPower != null)
+					{
+						requiresPower.Key = "GrantConditionOnPowerState@LOWPOWER";
+						requiresPower.Value.Nodes.Add(new MiniYamlNode("Condition", "lowpower"));
+						requiresPower.Value.Nodes.Add(new MiniYamlNode("ValidPowerStates", "Low, Critical"));
+
+						Console.WriteLine("RequiresPower has been replaced with GrantConditionOnPowerState.");
+						Console.WriteLine("As the name implies, this new trait toggles a condition depending on the power state.");
+						Console.WriteLine("Review your condition setup to make sure all relevant traits are disabled/enabled by that condition.");
+						Console.WriteLine("Possible PowerStates are: Normal (0 or positive), Low (negative but higher than 50% of required power) and Critical (below Low).");
+						Console.WriteLine("Look at the official mods if you need examples.");
+					}
+
+					// Made WithSpriteBody a PausableConditionalTrait, allowing to drop the PauseAnimationWhenDisabled property
+					var wsbPause = node.Value.Nodes.FirstOrDefault(n => n.Key == "PauseAnimationWhenDisabled");
+					if (wsbPause != null)
+					{
+						wsbPause.Key = "PauseOnCondition";
+						wsbPause.Value.Value = "disabled";
+					}
+				}
+
+				if (engineVersion < 20171120)
+				{
+					// AreaTypes support is added to GivesBuildableArea and it is required.
+					var givesBuildableArea = node.Value.Nodes.FirstOrDefault(n => n.Key == "GivesBuildableArea");
+					if (givesBuildableArea != null)
+						givesBuildableArea.Value.Nodes.Add(new MiniYamlNode("AreaTypes", "building"));
+
+					// RequiresBuildableArea trait is added and Building.Adjacent is moved there.
+					var building = node.Value.Nodes.FirstOrDefault(n => n.Key == "Building");
+					if (building != null)
+					{
+						var adjacent = building.Value.Nodes.FirstOrDefault(n => n.Key == "Adjacent");
+						var areaTypes = new MiniYamlNode("AreaTypes", "building");
+						var requiresBuildableArea = new MiniYamlNode("RequiresBuildableArea", "");
+
+						requiresBuildableArea.Value.Nodes.Add(areaTypes);
+						if (adjacent != null)
+							requiresBuildableArea.Value.Nodes.Add(adjacent);
+
+						node.Value.Nodes.Add(requiresBuildableArea);
+						building.Value.Nodes.Remove(adjacent);
+					}
+				}
+
+				// Split Selection- and RenderSize
+				if (engineVersion < 20171115)
+				{
+					var autoSelSize = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AutoSelectionSize", StringComparison.Ordinal));
+					if (autoSelSize != null)
+						node.Value.Nodes.Add(new MiniYamlNode("AutoRenderSize", ""));
+
+					var customSelSize = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CustomSelectionSize", StringComparison.Ordinal));
+					if (customSelSize != null)
+					{
+						var bounds = customSelSize.Value.Nodes.FirstOrDefault(n => n.Key == "CustomBounds");
+						var customRenderSize = new MiniYamlNode("CustomRenderSize", "");
+						if (bounds != null)
+							customRenderSize.Value.Nodes.Add(bounds);
+
+						node.Value.Nodes.Add(customRenderSize);
+					}
+				}
+
+				if (engineVersion < 20171208)
+				{
+					// Move SelectionDecorations.VisualBounds to Selectable.Bounds
+					if (node.Key.StartsWith("AutoRenderSize", StringComparison.Ordinal))
+						RenameNodeKey(node, "Interactable");
+
+					if (node.Key.StartsWith("CustomRenderSize", StringComparison.Ordinal))
+					{
+						RenameNodeKey(node, "Interactable");
+						var boundsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "CustomBounds");
+						if (boundsNode != null)
+							RenameNodeKey(boundsNode, "Bounds");
+					}
+
+					if (node.Key.StartsWith("SelectionDecorations", StringComparison.Ordinal))
+					{
+						var boundsNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "VisualBounds");
+						if (boundsNode != null)
+						{
+							RenameNodeKey(boundsNode, "DecorationBounds");
+							node.Value.Nodes.Remove(boundsNode);
+							var selectable = parent.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("Selectable", StringComparison.Ordinal));
+							if (selectable == null)
+							{
+								selectable = new MiniYamlNode("Selectable", new MiniYaml(""));
+								addNodes.Add(selectable);
+							}
+
+							selectable.Value.Nodes.Add(boundsNode);
+						}
+					}
+
+					if (node.Key == "-Selectable")
+						addNodes.Add(new MiniYamlNode("Interactable", new MiniYaml("")));
+
+					if (depth == 0)
+					{
+						node.Value.Nodes.RemoveAll(n => n.Key.StartsWith("CustomSelectionSize", StringComparison.Ordinal));
+						node.Value.Nodes.RemoveAll(n => n.Key.StartsWith("AutoSelectionSize", StringComparison.Ordinal));
+					}
+				}
+
+				// Multiply all health and damage in shipping mods by 100 to avoid issues caused by rounding
+				if (engineVersion < 20171212)
+				{
+					var mod = modData.Manifest.Id;
+					if (mod == "cnc" || mod == "ra" || mod == "d2k")
+					{
+						if (node.Key == "HP" && parent.Key == "Health")
+						{
+							var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							if (mod == "d2k")
+								node.Value.Value = MultiplyByFactor(oldValue, 10);
+							else
+								node.Value.Value = MultiplyByFactor(oldValue, 100);
+						}
+
+						if (node.Key.StartsWith("SelfHealing"))
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Step");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("Step", "500"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "RepairsUnits")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "HpPerStep");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("HpPerStep", "1000"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "RepairableBuilding")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "RepairStep");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("RepairStep", "700"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "Burns")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Damage");
+							if (step == null)
+								node.Value.Nodes.Add(new MiniYamlNode("Damage", "100"));
+							else if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+
+						if (node.Key == "DamagedByTerrain")
+						{
+							var step = node.Value.Nodes.FirstOrDefault(n => n.Key == "Damage");
+							if (step != null)
+							{
+								var oldValue = FieldLoader.GetValue<int>(step.Key, step.Value.Value);
+								if (mod == "d2k")
+									step.Value.Value = MultiplyByFactor(oldValue, 10);
+								else
+									step.Value.Value = MultiplyByFactor(oldValue, 100);
+							}
+						}
+					}
+				}
+
+				if (engineVersion < 20171212)
+				{
+					if (node.Key.StartsWith("SpawnMPUnits", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "DropdownLocked";
+					}
+
+					if (node.Key.StartsWith("Shroud", StringComparison.Ordinal))
+					{
+						var fogLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "FogLocked");
+						if (fogLocked != null)
+							fogLocked.Key = "FogCheckboxLocked";
+
+						var fogEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "FogEnabled");
+						if (fogEnabled != null)
+							fogEnabled.Key = "FogCheckboxEnabled";
+
+						var exploredMapLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "ExploredMapLocked");
+						if (exploredMapLocked != null)
+							exploredMapLocked.Key = "ExploredMapCheckboxLocked";
+
+						var exploredMapEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "ExploredMapEnabled");
+						if (exploredMapEnabled != null)
+							exploredMapEnabled.Key = "ExploredMapCheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("MapOptions", StringComparison.Ordinal))
+					{
+						var shortGameLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "ShortGameLocked");
+						if (shortGameLocked != null)
+							shortGameLocked.Key = "ShortGameCheckboxLocked";
+
+						var shortGameEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "ShortGameEnabled");
+						if (shortGameEnabled != null)
+							shortGameEnabled.Key = "ShortGameCheckboxEnabled";
+
+						var techLevelLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "TechLevelLocked");
+						if (techLevelLocked != null)
+							techLevelLocked.Key = "TechLevelDropdownLocked";
+
+						var gameSpeedLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "GameSpeedLocked");
+						if (gameSpeedLocked != null)
+							gameSpeedLocked.Key = "GameSpeedDropdownLocked";
+					}
+
+					if (node.Key.StartsWith("MapCreeps", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "CheckboxLocked";
+
+						var enabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "Enabled");
+						if (enabled != null)
+							enabled.Key = "CheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("MapBuildRadius", StringComparison.Ordinal))
+					{
+						var alllyLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllyBuildRadiusLocked");
+						if (alllyLocked != null)
+							alllyLocked.Key = "AllyBuildRadiusCheckboxLocked";
+
+						var allyEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "AllyBuildRadiusEnabled");
+						if (allyEnabled != null)
+							allyEnabled.Key = "AllyBuildRadiusCheckboxEnabled";
+
+						var buildRadiusLocked = node.Value.Nodes.FirstOrDefault(n => n.Key == "BuildRadiusLocked");
+						if (buildRadiusLocked != null)
+							buildRadiusLocked.Key = "BuildRadiusCheckboxLocked";
+
+						var buildRadiusEnabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "BuildRadiusEnabled");
+						if (buildRadiusEnabled != null)
+							buildRadiusEnabled.Key = "BuildRadiusCheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("DeveloperMode", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "CheckboxLocked";
+
+						var enabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "Enabled");
+						if (enabled != null)
+							enabled.Key = "CheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("CrateSpawner", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "CheckboxLocked";
+
+						var enabled = node.Value.Nodes.FirstOrDefault(n => n.Key == "Enabled");
+						if (enabled != null)
+							enabled.Key = "CheckboxEnabled";
+					}
+
+					if (node.Key.StartsWith("PlayerResources", StringComparison.Ordinal))
+					{
+						var locked = node.Value.Nodes.FirstOrDefault(n => n.Key == "Locked");
+						if (locked != null)
+							locked.Key = "DefaultCashDropdownLocked";
 					}
 				}
 
@@ -1146,6 +1641,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20170818)
 					if (node.Key == "BurstDelay")
 						node.Key = "BurstDelays";
+
+				// Multiply all health and damage in shipping mods by 100 to avoid issues caused by rounding
+				if (engineVersion < 20171212)
+				{
+					var mod = modData.Manifest.Id;
+					if (mod == "cnc" || mod == "ra" || mod == "d2k")
+					{
+						if (node.Key == "Damage" && (parent.Value.Value == "SpreadDamage" || parent.Value.Value == "TargetDamage"))
+						{
+							var oldValue = FieldLoader.GetValue<int>(node.Key, node.Value.Value);
+							if (mod == "d2k")
+								node.Value.Value = MultiplyByFactor(oldValue, 10);
+							else
+								node.Value.Value = MultiplyByFactor(oldValue, 100);
+						}
+					}
+				}
 
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
