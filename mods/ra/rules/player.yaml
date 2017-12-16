@@ -43,10 +43,10 @@ Player:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
-		DisplayOrder: 6
+		CheckboxDisplayOrder: 6
 	GpsWatcher:
 	Shroud:
-		FogDisplayOrder: 3
+		FogCheckboxDisplayOrder: 3
 	FrozenActorLayer:
 	BaseAttackNotifier:
 	PlayerStatistics:
