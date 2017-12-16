@@ -111,15 +111,15 @@ World:
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	MapCreeps:
-		Visible: False
+		CheckboxVisible: False
 	SpawnMapActors:
 	MapBuildRadius:
-		AllyBuildRadiusDisplayOrder: 4
-		BuildRadiusDisplayOrder: 5
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxDisplayOrder: 5
 	MapOptions:
-		ShortGameDisplayOrder: 2
-		TechLevelDisplayOrder: 2
-		GameSpeedDisplayOrder: 3
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 3
 	CreateMPPlayers:
 	MPStartUnits@MCV:
 		Class: none
@@ -176,7 +176,7 @@ World:
 		OuterSupportRadius: 5
 	MPStartLocations:
 	SpawnMPUnits:
-		DisplayOrder: 1
+		DropdownDisplayOrder: 1
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
@@ -184,7 +184,7 @@ World:
 		WaterChance: 0
 		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
 		InitialSpawnDelay: 1500
-		DisplayOrder: 1
+		CheckboxDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
