@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			isPoweredDown = false;
 
 			if (Info.PowerupSound != null)
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sound", Info.PowerupSound, self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerupSound, self.Owner.Faction.InternalName);
 
 			if (Info.PowerupSpeech != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);
