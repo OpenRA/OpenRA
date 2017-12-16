@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -135,16 +135,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\harkonnen-06b\harkonnen06b.lua = mods\d2k\maps\harkonnen-06b\harkonnen06b.lua
 		mods\d2k\maps\ordos-01a\ordos01a.lua = mods\d2k\maps\ordos-01a\ordos01a.lua
 		mods\d2k\maps\ordos-01b\ordos01b.lua = mods\d2k\maps\ordos-01b\ordos01b.lua
-		mods\d2k\maps\ordos-02a\ordos02a.lua = mods\d2k\maps\ordos-02a\ordos02a.lua
 		mods\d2k\maps\ordos-02a\ordos02a-AI.lua = mods\d2k\maps\ordos-02a\ordos02a-AI.lua
-		mods\d2k\maps\ordos-02b\ordos02b.lua = mods\d2k\maps\ordos-02b\ordos02b.lua
+		mods\d2k\maps\ordos-02a\ordos02a.lua = mods\d2k\maps\ordos-02a\ordos02a.lua
 		mods\d2k\maps\ordos-02b\ordos02b-AI.lua = mods\d2k\maps\ordos-02b\ordos02b-AI.lua
-		mods\d2k\maps\ordos-03a\ordos03a.lua = mods\d2k\maps\ordos-03a\ordos03a.lua
+		mods\d2k\maps\ordos-02b\ordos02b.lua = mods\d2k\maps\ordos-02b\ordos02b.lua
 		mods\d2k\maps\ordos-03a\ordos03a-AI.lua = mods\d2k\maps\ordos-03a\ordos03a-AI.lua
-		mods\d2k\maps\ordos-03b\ordos03b.lua = mods\d2k\maps\ordos-03b\ordos03b.lua
+		mods\d2k\maps\ordos-03a\ordos03a.lua = mods\d2k\maps\ordos-03a\ordos03a.lua
 		mods\d2k\maps\ordos-03b\ordos03b-AI.lua = mods\d2k\maps\ordos-03b\ordos03b-AI.lua
-		mods\d2k\maps\ordos-04\ordos04.lua = mods\d2k\maps\ordos-04\ordos04.lua
+		mods\d2k\maps\ordos-03b\ordos03b.lua = mods\d2k\maps\ordos-03b\ordos03b.lua
 		mods\d2k\maps\ordos-04\ordos04-AI.lua = mods\d2k\maps\ordos-04\ordos04-AI.lua
+		mods\d2k\maps\ordos-04\ordos04.lua = mods\d2k\maps\ordos-04\ordos04.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "System Lua scripts", "{A4D6AEA4-8009-4256-903B-8D227E50452B}"
