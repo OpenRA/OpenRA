@@ -63,9 +63,21 @@ namespace OpenRA.Mods.Common.Traits
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
 				var queue = targetActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
+					.FirstOrDefault(q => q.CanBuild(unit) && q.AllQueued().FirstOrDefault(i => i.Item == order.TargetString && i.Done) != null);
 
 				if (queue == null)
+					return;
+
+				// Find the ProductionItem associated with the building that we are trying to place
+				ProductionItem item = null;
+				foreach (var q in targetActor.TraitsImplementing<ProductionQueue>())
+				{
+					item = q.AllQueued().First(i => i.Item == order.TargetString && i.Done);
+					if (item != null)
+						break;
+				}
+
+				if (item == null)
 					return;
 
 				var producer = queue.MostLikelyProducer();
@@ -151,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
 						nbp.BuildingPlaced(producer.Actor);
 
-				queue.FinishProduction();
+				queue.FinishProduction(item);
 
 				if (buildingInfo.RequiresBaseProvider)
 				{
