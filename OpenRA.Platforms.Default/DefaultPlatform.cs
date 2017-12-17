@@ -23,7 +23,7 @@ namespace OpenRA.Platforms.Default
 
 		public ISoundEngine CreateSound(string device)
 		{
-			return new OpenAlSoundEngine(device);
+			return new SoLoudSoundEngine();
 		}
 	}
 }

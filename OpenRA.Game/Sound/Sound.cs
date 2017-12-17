@@ -268,7 +268,8 @@ namespace OpenRA
 			set
 			{
 				soundVolumeModifier = value;
-				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
+				soundEngine.SetSoundVolume(InternalSoundVolume, music);
+				soundEngine.SetSoundVolume(InternalSoundVolume, video);
 			}
 		}
 
@@ -283,7 +284,8 @@ namespace OpenRA
 			set
 			{
 				Game.Settings.Sound.SoundVolume = value;
-				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
+				soundEngine.SetSoundVolume(InternalSoundVolume, music);
+				soundEngine.SetSoundVolume(InternalSoundVolume, video);
 			}
 		}
 
