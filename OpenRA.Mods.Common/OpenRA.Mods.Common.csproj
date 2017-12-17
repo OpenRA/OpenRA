@@ -835,6 +835,7 @@
     <Compile Include="Lint\CheckConflictingMouseBounds.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyOptionsLogic.cs" />
     <Compile Include="Traits\World\LobbyPrerequisiteCheckbox.cs" />
+    <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
