@@ -238,71 +238,66 @@ namespace OpenRA
 
 		public byte[] Serialize()
 		{
+			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + TargetString.Length + 1 : 6);
+			var ret = new MemoryStream(minLength);
+			var w = new BinaryWriter(ret);
+
 			if (IsImmediate)
 			{
-				var ret = new MemoryStream(1 + OrderString.Length + 1 + TargetString.Length + 1);
-				var w = new BinaryWriter(ret);
-				w.Write((byte)0xfe);
+				w.Write((byte)0xFE);
 				w.Write(OrderString);
 				w.Write(TargetString);
 				return ret.ToArray();
 			}
 
-			switch (OrderString)
+			/*
+			 * Format:
+			 * u8: orderID.
+			 * 0xFF: Full serialized order.
+			 * varies: rest of order.
+			 */
+
+			w.Write((byte)0xFF);
+			w.Write(OrderString);
+			w.Write(UIntFromActor(Subject));
+
+			OrderFields fields = 0;
+			if (Target.SerializableType != TargetType.Invalid) fields |= OrderFields.Target;
+			if (TargetString != null) fields |= OrderFields.TargetString;
+			if (Queued) fields |= OrderFields.Queued;
+			if (ExtraLocation != CPos.Zero) fields |= OrderFields.ExtraLocation;
+			if (ExtraData != 0) fields |= OrderFields.ExtraData;
+
+			w.Write((byte)fields);
+
+			if (Target.SerializableType != TargetType.Invalid)
+				w.Write((byte)Target.Type);
+
+			switch (Target.SerializableType)
 			{
-				/*
-				 * Format:
-				 * u8: orderID.
-				 * 0xFF: Full serialized order.
-				 * varies: rest of order.
-				 */
-				default:
-					{
-						var ret = new MemoryStream();
-						var w = new BinaryWriter(ret);
-						w.Write((byte)0xFF);
-						w.Write(OrderString);
-						w.Write(UIntFromActor(Subject));
-
-						OrderFields fields = 0;
-						if (Target.SerializableType != TargetType.Invalid) fields |= OrderFields.Target;
-						if (TargetString != null) fields |= OrderFields.TargetString;
-						if (Queued) fields |= OrderFields.Queued;
-						if (ExtraLocation != CPos.Zero) fields |= OrderFields.ExtraLocation;
-						if (ExtraData != 0) fields |= OrderFields.ExtraData;
-
-						w.Write((byte)fields);
-
-						if (Target.SerializableType != TargetType.Invalid)
-							w.Write((byte)Target.Type);
-
-						switch (Target.SerializableType)
-						{
-							case TargetType.Actor:
-								w.Write(UIntFromActor(Target.SerializableActor));
-								break;
-							case TargetType.FrozenActor:
-								w.Write(Target.FrozenActor.Owner.PlayerActor.ActorID);
-								w.Write(Target.FrozenActor.ID);
-								break;
-							case TargetType.Terrain:
-								// SerializableCell is guaranteed to be non-null if Type == TargetType.Terrain
-								w.Write(Target.SerializableCell.Value);
-								break;
-						}
-
-						if (TargetString != null)
-							w.Write(TargetString);
-
-						if (ExtraLocation != CPos.Zero)
-							w.Write(ExtraLocation);
-
-						if (ExtraData != 0)
-							w.Write(ExtraData);
-
-						return ret.ToArray();
-					}
+				case TargetType.Actor:
+					w.Write(UIntFromActor(Target.SerializableActor));
+					break;
+				case TargetType.FrozenActor:
+					w.Write(Target.FrozenActor.Owner.PlayerActor.ActorID);
+					w.Write(Target.FrozenActor.ID);
+					break;
+				case TargetType.Terrain:
+					// SerializableCell is guaranteed to be non-null if Type == TargetType.Terrain
+					w.Write(Target.SerializableCell.Value);
+					break;
 			}
+
+			if (TargetString != null)
+				w.Write(TargetString);
+
+			if (ExtraLocation != CPos.Zero)
+				w.Write(ExtraLocation);
+
+			if (ExtraData != 0)
+				w.Write(ExtraData);
+
+			return ret.ToArray();
 		}
 
 		public override string ToString()
