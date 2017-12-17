@@ -250,51 +250,54 @@ namespace OpenRA
 				return ret.ToArray();
 			}
 
-			/*
-			 * Format:
-			 * u8: orderID.
-			 * 0xFF: Full serialized order.
-			 * varies: rest of order.
-			 */
-
 			w.Write((byte)0xFF);
 			w.Write(OrderString);
 			w.Write(UIntFromActor(Subject));
 
 			OrderFields fields = 0;
-			if (Target.SerializableType != TargetType.Invalid) fields |= OrderFields.Target;
-			if (TargetString != null) fields |= OrderFields.TargetString;
-			if (Queued) fields |= OrderFields.Queued;
-			if (ExtraLocation != CPos.Zero) fields |= OrderFields.ExtraLocation;
-			if (ExtraData != 0) fields |= OrderFields.ExtraData;
+			if (Target.SerializableType != TargetType.Invalid)
+				fields |= OrderFields.Target;
+
+			if (TargetString != null)
+				fields |= OrderFields.TargetString;
+
+			if (Queued)
+				fields |= OrderFields.Queued;
+
+			if (ExtraLocation != CPos.Zero)
+				fields |= OrderFields.ExtraLocation;
+
+			if (ExtraData != 0)
+				fields |= OrderFields.ExtraData;
 
 			w.Write((byte)fields);
 
-			if (Target.SerializableType != TargetType.Invalid)
-				w.Write((byte)Target.SerializableType);
-
-			switch (Target.SerializableType)
+			if (fields.HasField(OrderFields.Target))
 			{
-				case TargetType.Actor:
-					w.Write(UIntFromActor(Target.SerializableActor));
-					break;
-				case TargetType.FrozenActor:
-					w.Write(Target.FrozenActor.Owner.PlayerActor.ActorID);
-					w.Write(Target.FrozenActor.ID);
-					break;
-				case TargetType.Terrain:
-					// SerializableCell is guaranteed to be non-null if Type == TargetType.Terrain
-					w.Write(Target.SerializableCell.Value);
-					break;
+				w.Write((byte)Target.SerializableType);
+				switch (Target.SerializableType)
+				{
+					case TargetType.Actor:
+						w.Write(UIntFromActor(Target.SerializableActor));
+						break;
+					case TargetType.FrozenActor:
+						w.Write(Target.FrozenActor.Owner.PlayerActor.ActorID);
+						w.Write(Target.FrozenActor.ID);
+						break;
+					case TargetType.Terrain:
+						// SerializableCell is guaranteed to be non-null if Type == TargetType.Terrain
+						w.Write(Target.SerializableCell.Value);
+						break;
+				}
 			}
 
-			if (TargetString != null)
+			if (fields.HasField(OrderFields.TargetString))
 				w.Write(TargetString);
 
-			if (ExtraLocation != CPos.Zero)
+			if (fields.HasField(OrderFields.ExtraLocation))
 				w.Write(ExtraLocation);
 
-			if (ExtraData != 0)
+			if (fields.HasField(OrderFields.ExtraData))
 				w.Write(ExtraData);
 
 			return ret.ToArray();
