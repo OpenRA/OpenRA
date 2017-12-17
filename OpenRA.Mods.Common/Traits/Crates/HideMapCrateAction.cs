@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var player in collector.World.Players)
 					if (player.IsAlliedWith(collector.Owner))
 						player.Shroud.ResetExploration();
-            }
+			}
 			else
 				collector.Owner.Shroud.ResetExploration();
 

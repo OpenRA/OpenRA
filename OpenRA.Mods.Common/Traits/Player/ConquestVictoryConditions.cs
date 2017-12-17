@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly ConquestVictoryConditionsInfo info;
 		readonly MissionObjectives mo;
+		Player[] otherPlayers;
 		int objectiveID = -1;
 
 		public ConquestVictoryConditions(Actor self, ConquestVictoryConditionsInfo cvcInfo)
@@ -51,13 +52,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
 				mo.MarkFailed(self.Owner, objectiveID);
 
-			var others = self.World.Players.Where(p => !p.NonCombatant
-				&& !p.IsAlliedWith(self.Owner));
+			// Players, NonCombatants, and IsAlliedWith are all fixed once the game starts, so we can cache the result.
+			if (otherPlayers == null)
+				otherPlayers = self.World.Players.Where(p => !p.NonCombatant && !p.IsAlliedWith(self.Owner)).ToArray();
 
-			if (!others.Any()) return;
+			if (otherPlayers.Length == 0) return;
 
-			if (others.All(p => p.WinState == WinState.Lost))
-				mo.MarkCompleted(self.Owner, objectiveID);
+			// PERF: Avoid LINQ.
+			foreach (var otherPlayer in otherPlayers)
+				if (otherPlayer.WinState != WinState.Lost)
+					return;
+
+			mo.MarkCompleted(self.Owner, objectiveID);
 		}
 
 		public void OnPlayerLost(Player player)
