@@ -49,7 +49,7 @@ namespace OpenRA.Mods.AS.Warheads
 
 			var attackRotation = WRot.FromFacing(attackFacing);
 
-			var altitude = new WVec(0, 0, firedBy.World.Map.Rules.Actors[UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length);
+			var altitude = new WVec(0, 0, firedBy.World.Map.Rules.Actors[UnitType.ToLowerInvariant()].TraitInfo<AircraftInfo>().CruiseAltitude.Length);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
 
 			var startPos = target.CenterPosition + altitude - (firedBy.World.Map.DistanceToEdge(target.CenterPosition, -delta) + Cordon).Length * delta / 1024;
