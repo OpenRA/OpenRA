@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SupportPowerTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Player player, SupportPowersWidget palette, World world)
+		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette, World world)
 		{
 			widget.IsVisible = () => palette.TooltipIcon != null && palette.TooltipIcon.Power.Info != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
@@ -32,7 +32,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var baseHeight = widget.Bounds.Height;
 			var timeOffset = timeLabel.Bounds.X;
-			var pm = player.PlayerActor.Trait<PowerManager>();
 
 			SupportPowerInstance lastPower = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
@@ -87,7 +86,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				lastRemainingSeconds = remainingSeconds;
 			};
 
-			timeLabel.GetColor = () => pm.PowerState != PowerState.Normal ? Color.Red : Color.White;
+			timeLabel.GetColor = () => palette.TooltipIcon != null && !palette.TooltipIcon.Power.Active
+				? Color.Red : Color.White;
 		}
 	}
 }
