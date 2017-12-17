@@ -15,15 +15,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The player can disable the power individually on this actor.")]
-	public class CanPowerDownInfo : ConditionalTraitInfo, Requires<PowerInfo>
+	public class CanPowerDownInfo : PausableConditionalTraitInfo, Requires<PowerInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
 		public readonly string PowerdownCondition = null;
-
-		[Desc("Restore power when this trait is disabled.")]
-		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string PowerupSound = null;
 		public readonly string PowerdownSound = null;
@@ -34,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CanPowerDown(init.Self, this); }
 	}
 
-	public class CanPowerDown : ConditionalTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, INotifyOwnerChanged
+	public class CanPowerDown : PausableConditionalTrait<CanPowerDownInfo>, IPowerModifier, IResolveOrder, INotifyOwnerChanged
 	{
 		[Sync] bool isPoweredDown = false;
 		PowerManager power;
@@ -61,6 +58,12 @@ namespace OpenRA.Mods.Common.Traits
 			power.UpdateActor(self);
 		}
 
+		protected override void TraitResumed(Actor self)
+		{
+			Update(self);
+			power.UpdateActor(self);
+		}
+
 		void Update(Actor self)
 		{
 			if (conditionManager == null)
@@ -74,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (!IsTraitDisabled && order.OrderString == "PowerDown")
+			if (!IsTraitDisabled && !IsTraitPaused && order.OrderString == "PowerDown")
 			{
 				isPoweredDown = !isPoweredDown;
 
@@ -107,13 +110,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			if (!isPoweredDown || !Info.CancelWhenDisabled)
+			if (!isPoweredDown)
 				return;
 
 			isPoweredDown = false;
 
 			if (Info.PowerupSound != null)
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sound", Info.PowerupSound, self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", Info.PowerupSound, self.Owner.Faction.InternalName);
 
 			if (Info.PowerupSpeech != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.PowerupSpeech, self.Owner.Faction.InternalName);

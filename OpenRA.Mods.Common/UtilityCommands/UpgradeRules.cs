@@ -1498,6 +1498,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Remove CancelWhenDisabled from CanPowerDown
+				if (engineVersion < 20171213)
+				{
+					var canPowerDown = node.Value.Nodes.FirstOrDefault(n => n.Key == "CanPowerDown");
+					if (canPowerDown != null)
+					{
+						var cancelNode = canPowerDown.Value.Nodes.FirstOrDefault(n => n.Key == "CancelWhenDisabled");
+						if (cancelNode != null)
+						{
+							canPowerDown.Value.Nodes.Remove(cancelNode);
+							Console.WriteLine("CanPowerDown.CancelWhenDisabled was removed, use PauseOnCondition instead of RequiresCondition");
+							Console.WriteLine("to replicate the behavior of 'false'.");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
