@@ -10,8 +10,8 @@ namespace OpenRA.Mods.AS.Traits
 	[Desc("This actor can recieve attachments through AttachToTargetWarheads.")]
 	public class DelayedWeaponAttachableInfo : ITraitInfo
 	{
-		[Desc("Types of actors that it can attach to, as long as the type also exists in the Attachable Type: trait.")]
-		public readonly HashSet<string> AttachableTypes = new HashSet<string> { "bomb" };
+		[Desc("Type of actors that can attach to it.")]
+		public readonly string Type = "bomb";
 
 		[Desc("Defines how many objects can be attached at any given time.")]
 		public readonly int AttachLimit = 1;
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		public DelayedWeaponAttachable(Actor self, DelayedWeaponAttachableInfo info) { this.self = self; Info = info; }
 
-		private HashSet<DelayedWeaponTrigger> container = new HashSet<DelayedWeaponTrigger>();
+		public HashSet<DelayedWeaponTrigger> Container { get; private set; } = new HashSet<DelayedWeaponTrigger>();
 
 		private Actor self;
 
@@ -38,17 +38,17 @@ namespace OpenRA.Mods.AS.Traits
 
 		public void Tick(Actor self)
 		{
-			foreach (var trigger in container)
+			foreach (var trigger in Container)
 			{
 				trigger.Tick(self);
 			}
 
-			container.RemoveWhere(p => !p.IsValid);
+			Container.RemoveWhere(p => !p.IsValid);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			foreach (var trigger in container)
+			foreach (var trigger in Container)
 			{
 				if (trigger.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(trigger.DeathTypes))
 					continue;
@@ -56,26 +56,26 @@ namespace OpenRA.Mods.AS.Traits
 				trigger.Activate(self);
 			}
 
-			container.RemoveWhere(p => !p.IsValid);
+			Container.RemoveWhere(p => !p.IsValid);
 		}
 
 		public bool CanAttach(string type)
 		{
-			return Info.AttachableTypes.Contains(type) && container.Count < Info.AttachLimit;
+			return Info.Type == type && Container.Count < Info.AttachLimit;
 		}
 
-		public void Attach(DelayedWeaponTrigger bomb)
+		public void Attach(DelayedWeaponTrigger trigger)
 		{
-			container.Add(bomb);
+			Container.Add(trigger);
 		}
 
 		public float GetValue()
 		{
 			var value = 0f;
 
-			if (!Info.ShowProgressBar || container.Count == 0)
+			if (!Info.ShowProgressBar || Container.Count == 0)
 				return value;
-			var smallestTrigger = container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.RenderPlayer)).MinByOrDefault(t => t.RemainingTime);
+			var smallestTrigger = Container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.RenderPlayer)).MinByOrDefault(t => t.RemainingTime);
 			if (smallestTrigger == null)
 				return value;
 			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
