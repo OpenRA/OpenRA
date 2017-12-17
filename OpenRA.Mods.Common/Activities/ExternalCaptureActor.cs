@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -42,9 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			var nearest = target.Actor.OccupiesSpace.NearestCellTo(mobile.ToCell);
-
-			if ((nearest - mobile.ToCell).LengthSquared > 2)
+			if (!Util.AdjacentCells(self.World, target).Contains(mobile.ToCell))
 				return ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target), this);
 
 			if (!capturable.CaptureInProgress)
