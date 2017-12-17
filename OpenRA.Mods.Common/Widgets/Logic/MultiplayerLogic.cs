@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
-		enum PanelType { Browser, DirectConnect, CreateServer }
+		enum PanelType { Browser, CreateServer }
 		PanelType panel = PanelType.Browser;
 
 		readonly Color incompatibleVersionColor;
@@ -85,7 +85,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			incompatibleGameStartedColor = ChromeMetrics.Get<Color>("IncompatibleGameStartedColor");
 
 			LoadBrowserPanel(widget);
-			LoadDirectConnectPanel(widget);
 			LoadCreateServerPanel(widget);
 
 			// Filter and refresh buttons act on the browser panel,
@@ -100,9 +99,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			browserTab.IsHighlighted = () => panel == PanelType.Browser;
 			browserTab.OnClick = () => panel = PanelType.Browser;
 
-			var directConnectTab = widget.Get<ButtonWidget>("DIRECTCONNECT_TAB");
-			directConnectTab.IsHighlighted = () => panel == PanelType.DirectConnect;
-			directConnectTab.OnClick = () => panel = PanelType.DirectConnect;
+			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
+			directConnectButton.OnClick = () =>
+			{
+				Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+				{
+					{ "openLobby", OpenLobby },
+					{ "onExit", DoNothing },
+					{ "directConnectHost", null },
+					{ "directConnectPort", 0 },
+				});
+			};
 
 			var createServerTab = widget.Get<ButtonWidget>("CREATE_TAB");
 			createServerTab.IsHighlighted = () => panel == PanelType.CreateServer;
@@ -131,7 +138,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				widget.Visible = false;
 				Game.RunAfterTick(() =>
 				{
-					ConnectionLogic.Connect(directConnectHost, directConnectPort, "", OpenLobby, DoNothing);
+					Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+					{
+						{ "openLobby", OpenLobby },
+						{ "onExit", DoNothing },
+						{ "directConnectHost", directConnectHost },
+						{ "directConnectPort", directConnectPort },
+					});
+
 					widget.Visible = true;
 				});
 			}
@@ -259,30 +273,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				players.IsVisible = () => currentServer != null;
 				players.GetText = () => PlayersLabel(currentServer);
 			}
-		}
-
-		void LoadDirectConnectPanel(Widget widget)
-		{
-			var directConnectPanel = Game.LoadWidget(null, "MULTIPLAYER_DIRECTCONNECT_PANEL",
-				widget.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-			directConnectPanel.IsVisible = () => panel == PanelType.DirectConnect;
-
-			var ipField = directConnectPanel.Get<TextFieldWidget>("IP");
-			var portField = directConnectPanel.Get<TextFieldWidget>("PORT");
-
-			var last = Game.Settings.Player.LastServer.Split(':');
-			ipField.Text = last.Length > 1 ? last[0] : "localhost";
-			portField.Text = last.Length == 2 ? last[1] : "1234";
-
-			directConnectPanel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
-			{
-				var port = Exts.WithDefault(1234, () => Exts.ParseIntegerInvariant(portField.Text));
-
-				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
-				Game.Settings.Save();
-
-				ConnectionLogic.Connect(ipField.Text, port, "", OpenLobby, DoNothing);
-			};
 		}
 
 		void LoadCreateServerPanel(Widget widget)
