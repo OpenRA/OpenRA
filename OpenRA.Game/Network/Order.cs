@@ -271,7 +271,7 @@ namespace OpenRA
 			w.Write((byte)fields);
 
 			if (Target.SerializableType != TargetType.Invalid)
-				w.Write((byte)Target.Type);
+				w.Write((byte)Target.SerializableType);
 
 			switch (Target.SerializableType)
 			{
