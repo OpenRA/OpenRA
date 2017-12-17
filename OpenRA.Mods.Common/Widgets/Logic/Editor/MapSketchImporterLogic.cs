@@ -407,9 +407,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var file = File.Open(simpleFilepathTextField.Text, FileMode.Open, FileAccess.Read);
 				try
 				{
-					Bitmap tmp = new Bitmap(file);
+					new Bitmap(file);
 				}
-				catch (ArgumentException e)
+				catch (ArgumentException)
 				{
 					panel.Visible = false;
 					ConfirmationDialogs.ButtonPrompt(

@@ -633,6 +633,7 @@
     <Compile Include="Widgets\Logic\Editor\LayerSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\MapEditorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\MapEditorTabsLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\MapSketchImporterLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\NewMapLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\SaveMapLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\TileSelectorLogic.cs" />
