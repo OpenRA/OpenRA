@@ -32,7 +32,7 @@ namespace OpenRA.Mods.AS.Traits
 		public void Tick(Actor attachable)
 		{
 			RemainingTime--;
-			if (!attachable.IsDead && attachable.IsInWorld)
+			if (!attachable.IsDead && attachable.IsInWorld && IsValid)
 			{
 				if (RemainingTime == 0)
 				{
@@ -46,6 +46,11 @@ namespace OpenRA.Mods.AS.Traits
 			IsValid = false;
 			var target = Target.FromPos(attachable.CenterPosition);
 			attachable.World.AddFrameEndTask(w => weaponInfo.Impact(target, AttachedBy, Enumerable.Empty<int>()));
+		}
+
+		public void Deactivate()
+		{
+			IsValid = false;
 		}
 	}
 }

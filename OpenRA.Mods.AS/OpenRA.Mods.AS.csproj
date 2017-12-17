@@ -115,6 +115,7 @@
     <Compile Include="Traits\SupportPowers\FireArmamentPower.cs" />
     <Compile Include="Traits\Warheads\AttachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\CaptureActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\DetachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
