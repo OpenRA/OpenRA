@@ -960,7 +960,6 @@
 		Radius: 4c0
 
 ^Bridge:
-	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
 	Tooltip:
 		Name: Bridge
@@ -973,6 +972,7 @@
 		Dimensions: 4,2
 	Health:
 		HP: 100000
+	HitShape:
 	Armor:
 		Type: Concrete
 	ScriptTriggers:
