@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		Repairable[] repairables;
 		Rearmable[] rearmables;
 
+		public bool NeedsRepair { get { return health != null && health.DamageState > DamageState.Undamaged; } }
+		public bool NeedsRearm { get { return ammoPools.Any(x => !x.FullAmmo()); } }
+
 		public ResupplyManager(Actor self, ResupplyManagerInfo info)
 		{
 			this.info = info;
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			health = self.TraitOrDefault<Health>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(x => !x.AutoReloads).ToArray();
 			repairables = self.TraitsImplementing<Repairable>().ToArray();
 			rearmables = self.TraitsImplementing<Rearmable>().ToArray();
 		}
@@ -58,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanResupplyAt, _ => NeedsRepair || NeedsRearm);
 			}
 		}
 
@@ -80,26 +83,21 @@ namespace OpenRA.Mods.Common.Traits
 			return rearmables.Any(r => !r.IsTraitDisabled && r.Info.RearmActors.Contains(target.Info.Name));
 		}
 
-		bool CanRepair()
+		bool CanResupplyAt(Actor target)
 		{
-			return health != null && health.DamageState > DamageState.Undamaged;
-		}
-
-		bool CanRearm()
-		{
-			return ammoPools.Any(x => !x.AutoReloads && !x.FullAmmo());
+			return CanRepairAt(target) || CanRearmAt(target);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
+			return (order.OrderString == "Repair" && (NeedsRepair || NeedsRearm)) ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Repair")
 			{
-				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
+				if (!CanResupplyAt(order.TargetActor) || (!NeedsRepair && !NeedsRearm))
 					return;
 
 				var target = Target.FromOrder(self.World, order);
@@ -125,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough));
 
-			if (CanRearmAt(order.TargetActor) && CanRearm())
+			if (NeedsRearm && CanRearmAt(order.TargetActor))
 				self.QueueActivity(new Rearm(self));
 
 			// Add a CloseEnough range to ensure we're close enough to the host actor
