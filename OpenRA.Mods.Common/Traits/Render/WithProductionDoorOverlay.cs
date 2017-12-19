@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithProductionDoorOverlay : INotifyBuildComplete, ITick, INotifyProduction, INotifySold, INotifyDamageStateChanged
+	class WithProductionDoorOverlay : INotifyBuildComplete, ITick, INotifyProduction, INotifySold, INotifyTransform, INotifyDamageStateChanged
 	{
 		readonly Animation door;
 
@@ -82,5 +82,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifySold.Selling(Actor self) { buildComplete = false; }
 		void INotifySold.Sold(Actor self) { }
+
+		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
+		void INotifyTransform.OnTransform(Actor self) { }
+		void INotifyTransform.AfterTransform(Actor self) { }
 	}
 }
