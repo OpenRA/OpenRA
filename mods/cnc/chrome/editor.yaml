@@ -73,6 +73,327 @@ Container@NEW_MAP_BG:
 			Font: Bold
 			Key: return
 
+Background@IMPORT_SKETCH_BG:
+	Logic: MapSketchImporterLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 330
+	Height: 600
+	Children:
+		Label@LABEL_TITLE:
+			X: 0
+			Y: 0 - 30
+			Width: 330
+			Height: 25
+			Text: Import Sketch
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 500
+			Background: panel-black
+			Children:
+				Label@TILESET_LABEL:
+					X: 20
+					Y: 40
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: Tileset:
+				DropDownButton@TILESET:
+					X: 120
+					Y: 40
+					Width: 160
+					Height: 25
+				Label@FILE_PATH_LABEL:
+					X: 0
+					Y: 70
+					Width: 330
+					Height: 25
+					Align: Center
+					Text: Bitmap (.bmp) Image File Path:
+				TextField@MAP_SKETCH_FILE_PATH:
+					X: 50
+					Y: 100
+					Width: 240
+					Height: 25
+					Text: File Path
+				Label@COLOR:
+					X: 35
+					Y: 125
+					Width: 70
+					Height: 25
+					Text: Color
+					Align: Right
+					Font: Bold
+				Label@TERRAIN:
+					X: 120
+					Y: 125
+					Width: 90
+					Height: 25
+					Text: Terrain
+					Align: Center
+					Font: Bold
+				Label@RESOURCE:
+					X: 215
+					Y: 125
+					Width: 90
+					Height: 25
+					Text: Resource
+					Align: Center
+					Font: Bold
+				Label@COLOR_PREVIEW_0:
+					X: 35
+					Y: 150
+					Width: 70
+					Height: 25
+					Text: White
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_1:
+					X: 35
+					Y: 175
+					Width: 70
+					Height: 25
+					Text: Black
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_2:
+					X: 35
+					Y: 200
+					Width: 70
+					Height: 25
+					Text: Gray
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_3:
+					X: 35
+					Y: 225
+					Width: 70
+					Height: 25
+					Text: Red
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_4:
+					X: 35
+					Y: 250
+					Width: 70
+					Height: 25
+					Text: Orange
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_5:
+					X: 35
+					Y: 275
+					Width: 70
+					Height: 25
+					Text: Yellow
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_6:
+					X: 35
+					Y: 300
+					Width: 70
+					Height: 25
+					Text: Green
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_7:
+					X: 35
+					Y: 325
+					Width: 70
+					Height: 25
+					Text: Teal
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_8:
+					X: 35
+					Y: 350
+					Width: 70
+					Height: 25
+					Text: Lt. Blue
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_9:
+					X: 35
+					Y: 375
+					Width: 70
+					Height: 25
+					Text: Drk. Blue
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_10:
+					X: 35
+					Y: 400
+					Width: 70
+					Height: 25
+					Text: Purple
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_11:
+					X: 35
+					Y: 425
+					Width: 70
+					Height: 25
+					Text: Pink
+					Align: Right
+					Font: Bold
+				Label@COLOR_PREVIEW_12:
+					X: 35
+					Y: 450
+					Width: 70
+					Height: 25
+					Text: Magenta
+					Align: Right
+					Font: Bold
+				DropDownButton@TERRAIN_SELECT_0:
+					X: 120
+					Y: 150
+					Width: 90
+					Height: 25			
+				DropDownButton@TERRAIN_SELECT_1:
+					X: 120
+					Y: 175
+					Width: 90
+					Height: 25			
+				DropDownButton@TERRAIN_SELECT_2:
+					X: 120
+					Y: 200
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_3:
+					X: 120
+					Y: 225
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_4:
+					X: 120
+					Y: 250
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_5:
+					X: 120
+					Y: 275
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_6:
+					X: 120
+					Y: 300
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_7:
+					X: 120
+					Y: 325
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_8:
+					X: 120
+					Y: 350
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_9:
+					X: 120
+					Y: 375
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_10:
+					X: 120
+					Y: 400
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_11:
+					X: 120
+					Y: 425
+					Width: 90
+					Height: 25
+				DropDownButton@TERRAIN_SELECT_12:
+					X: 120
+					Y: 450
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_0:
+					X: 215
+					Y: 150
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_1:
+					X: 215
+					Y: 175
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_2:
+					X: 215
+					Y: 200
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_3:
+					X: 215
+					Y: 225
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_4:
+					X: 215
+					Y: 250
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_5:
+					X: 215
+					Y: 275
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_6:
+					X: 215
+					Y: 300
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_7:
+					X: 215
+					Y: 325
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_8:
+					X: 215
+					Y: 350
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_9:
+					X: 215
+					Y: 375
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_10:
+					X: 215
+					Y: 400
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_11:
+					X: 215
+					Y: 425
+					Width: 90
+					Height: 25
+				DropDownButton@RESOURCE_SELECT_12:
+					X: 215
+					Y: 450
+					Width: 90
+					Height: 25
+		Button@CREATE_BUTTON:
+			X: 0
+			Y: 500
+			Width: 120
+			Height: 25
+			Text: Create
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 210
+			Y: 500
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape			
+			
 Container@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
