@@ -61,13 +61,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanResupplyAt, _ => NeedsRepair || NeedsRearm);
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Resupply", 5, CanResupplyAt, _ => NeedsRepair || NeedsRearm);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Repair")
+			if (order.OrderID == "Resupply")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -90,12 +90,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && (NeedsRepair || NeedsRearm)) ? info.Voice : null;
+			return (order.OrderString == "Resupply" && (NeedsRepair || NeedsRearm)) ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Repair")
+			if (order.OrderString == "Resupply")
 			{
 				if (!CanResupplyAt(order.TargetActor) || (!NeedsRepair && !NeedsRearm))
 					return;

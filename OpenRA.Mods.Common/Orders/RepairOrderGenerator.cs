@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Orders
 				yield break;
 
 			Actor repairBuilding = null;
-			var orderId = "Repair";
+			var orderId = "Resupply";
 
 			// Test for generic Repairable (used on units).
 			var repairable = underCursor.TraitOrDefault<Repairable>();
