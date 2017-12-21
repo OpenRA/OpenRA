@@ -26,7 +26,7 @@ namespace OpenRA
 		void SetAllSoundsPaused(bool paused);
 		void StopAllSounds();
 		void SetListenerPosition(WPos position);
-		void SetSoundVolume(float volume, ISound music, ISound video);
+		void SetSoundVolume(float volume, ISound sound);
 	}
 
 	public class SoundDevice

@@ -14,7 +14,7 @@ using OpenRA;
 
 namespace OpenRA.Platforms.Default
 {
-	public class DefaultPlatform : IPlatform
+	public class OpenALPlatform : IPlatform
 	{
 		public IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode)
 		{
@@ -23,7 +23,7 @@ namespace OpenRA.Platforms.Default
 
 		public ISoundEngine CreateSound(string device)
 		{
-			return new SoLoudSoundEngine();
+			return new OpenAlSoundEngine(device);
 		}
 	}
 }

@@ -9,21 +9,24 @@
  */
 #endregion
 
-using System.Drawing;
-using OpenRA;
+using System;
+using System.Threading;
 
 namespace OpenRA.Platforms.Default
 {
-	public class DefaultPlatform : IPlatform
+	abstract class ThreadAffine
 	{
-		public IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode)
+		readonly int managedThreadId;
+
+		protected ThreadAffine()
 		{
-			return new Sdl2GraphicsDevice(size, windowMode);
+			managedThreadId = Thread.CurrentThread.ManagedThreadId;
 		}
 
-		public ISoundEngine CreateSound(string device)
+		protected void VerifyThreadAffinity()
 		{
-			return new SoLoudSoundEngine();
+			if (managedThreadId != Thread.CurrentThread.ManagedThreadId)
+				throw new InvalidOperationException("Cross-thread operation not valid: This method must be called from the same thread that created this object.");
 		}
 	}
 }

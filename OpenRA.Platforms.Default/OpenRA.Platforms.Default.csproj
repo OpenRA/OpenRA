@@ -34,6 +34,10 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SoLoud-CS, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SoLoud-CS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="Eluant">
@@ -41,9 +45,6 @@
     </Reference>
     <Reference Include="SDL2-CS">
       <HintPath>..\thirdparty\download\SDL2-CS.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenAL-CS">
-      <HintPath>..\thirdparty\download\OpenAL-CS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -53,10 +54,10 @@
     <Compile Include="Shader.cs" />
     <Compile Include="FrameBuffer.cs" />
     <Compile Include="MultiTapDetection.cs" />
+    <Compile Include="SoLoudSoundEngine.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="ThreadAffine.cs" />
     <Compile Include="VertexBuffer.cs" />
-    <Compile Include="OpenAlSoundEngine.cs" />
     <Compile Include="OpenGL.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
