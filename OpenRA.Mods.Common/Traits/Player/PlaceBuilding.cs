@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 				var prevItems = GetNumBuildables(self.Owner);
 				var targetActor = w.GetActorById(order.ExtraData);
 
-				if (targetActor.IsDead)
+				if (targetActor == null || targetActor.IsDead)
 					return;
 
 				var unit = self.World.Map.Rules.Actors[order.TargetString];
