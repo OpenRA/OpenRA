@@ -1079,8 +1079,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 							if (name != null)
 							{
-								var rap = new MiniYamlNode("ReloadAmmoPool", name.Value.Value);
-								reloadOnCond.Value.Nodes.Add(rap);
+								var ap = new MiniYamlNode("AmmoPool", name.Value.Value);
+								reloadOnCond.Value.Nodes.Add(ap);
 							}
 
 							if (selfReloadDelay != null)
