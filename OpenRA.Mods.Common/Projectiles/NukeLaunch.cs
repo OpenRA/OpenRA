@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		WPos pos;
 		int ticks;
+		bool isAddedToScreenMap;
 
 		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
 			WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
@@ -64,12 +65,16 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (skipAscent)
 				ticks = turn;
-
-			firedBy.World.ScreenMap.Add(this, pos, anim.Image);
 		}
 
 		public void Tick(World world)
 		{
+			if (!isAddedToScreenMap)
+			{
+				world.ScreenMap.Add(this, pos, anim.Image);
+				isAddedToScreenMap = true;
+			}
+
 			anim.Tick();
 
 			if (ticks == turn)
