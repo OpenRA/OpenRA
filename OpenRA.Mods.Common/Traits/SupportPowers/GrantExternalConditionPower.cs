@@ -138,9 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
 				{
-					var bounds = unit.TraitsImplementing<IDecorationBounds>()
-						.Select(b => b.DecorationBounds(unit, wr))
-						.FirstOrDefault(b => !b.IsEmpty);
+					var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, wr);
 					yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
 				}
 			}
