@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				writer.Write(Encoding.ASCII.GetBytes("XCC by Olaf van der Spek"));
 				writer.Write(new byte[] { 0x1A, 0x04, 0x17, 0x27, 0x10, 0x19, 0x80, 0x00 });
 
-				writer.Write(Entries.Aggregate(Entries.Length, (a, b) => a + b.Length) + 52); // Size
+				writer.Write(Entries.Sum(e => e.Length) + Entries.Length + 52); // Size
 				writer.Write(0); // Type
 				writer.Write(0); // Version
 				writer.Write(0); // Game/Format (0 == TD)
