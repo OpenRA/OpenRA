@@ -414,7 +414,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(deliver);
 
 				foreach (var n in notify)
-					n.MovingToRefinery(self, order.TargetLocation, deliver);
+					n.MovingToRefinery(self, order.Target.Actor.Location, deliver);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
