@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			int old;
 			powerDrain.TryGetValue(a, out old); // old is 0 if a is not in powerDrain
-			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Aggregate(0, (v, p) => v + p.GetEnabledPower());
+			var amount = a.TraitsImplementing<Power>().Where(t => !t.IsTraitDisabled).Sum(p => p.GetEnabledPower());
 			powerDrain[a] = amount;
 			if (amount == old || devMode.UnlimitedPower)
 				return;

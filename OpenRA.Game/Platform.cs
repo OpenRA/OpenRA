@@ -160,7 +160,7 @@ namespace OpenRA
 		/// <summary>Replace special character prefixes with full paths.</summary>
 		public static string ResolvePath(params string[] path)
 		{
-			return ResolvePath(path.Aggregate(Path.Combine));
+			return ResolvePath(Path.Combine(path));
 		}
 
 		/// <summary>
