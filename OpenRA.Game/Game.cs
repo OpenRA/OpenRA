@@ -327,13 +327,8 @@ namespace OpenRA
 
 			GeoIP.Initialize();
 
-			if (!Settings.Server.DiscoverNatDevices)
-				Settings.Server.AllowPortForward = false;
-			else
-			{
+			if (Settings.Server.DiscoverNatDevices)
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
-				Settings.Server.AllowPortForward = true;
-			}
 
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
@@ -461,7 +456,6 @@ namespace OpenRA
 			{
 				Console.WriteLine("NAT discovery failed: {0}", e.Message);
 				Log.Write("nat", e.ToString());
-				Settings.Server.AllowPortForward = false;
 			}
 
 			ModData.LoadScreen.StartGame(args);
@@ -871,8 +865,7 @@ namespace OpenRA
 			{
 				Name = "Skirmish Game",
 				Map = map,
-				AdvertiseOnline = false,
-				AllowPortForward = false
+				AdvertiseOnline = false
 			};
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);

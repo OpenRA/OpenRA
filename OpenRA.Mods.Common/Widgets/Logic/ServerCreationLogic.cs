@@ -22,7 +22,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Action onExit;
 		MapPreview preview = MapCache.UnknownMap;
 		bool advertiseOnline;
-		bool allowPortForward;
 
 		[ObjectCreator.UseCtor]
 		public ServerCreationLogic(Widget widget, ModData modData, Action onExit, Action openLobby)
@@ -84,20 +83,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 
-			allowPortForward = Game.Settings.Server.AllowPortForward;
-			var checkboxUPnP = panel.Get<CheckboxWidget>("UPNP_CHECKBOX");
-			checkboxUPnP.IsChecked = () => allowPortForward;
-			checkboxUPnP.OnClick = () => allowPortForward ^= true;
-			checkboxUPnP.IsDisabled = () => !Game.Settings.Server.AllowPortForward;
-
-			var labelUPnP = panel.GetOrNull<LabelWidget>("UPNP_NOTICE");
-			if (labelUPnP != null)
-				labelUPnP.IsVisible = () => !Game.Settings.Server.DiscoverNatDevices;
-
-			var labelUPnPUnsupported = panel.GetOrNull<LabelWidget>("UPNP_UNSUPPORTED_NOTICE");
-			if (labelUPnPUnsupported != null)
-				labelUPnPUnsupported.IsVisible = () => Game.Settings.Server.DiscoverNatDevices && !Game.Settings.Server.AllowPortForward;
-
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)
 				passwordField.Text = Game.Settings.Server.Password;
@@ -121,7 +106,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.Settings.Server.ListenPort = listenPort;
 			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
-			Game.Settings.Server.AllowPortForward = allowPortForward;
 			Game.Settings.Server.Map = preview.Uid;
 			Game.Settings.Server.Password = password;
 			Game.Settings.Save();
