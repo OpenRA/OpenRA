@@ -48,8 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-
-			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
+			readonly HashSet<Actor> oldActors = new HashSet<Actor>();
+			readonly HashSet<Actor> currentActors = new HashSet<Actor>();
 
 			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
@@ -67,19 +67,22 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Dirty)
 					return;
 
-				var oldActors = currentActors;
-				currentActors = Footprint.SelectMany(actorMap.GetActorsAt).ToList();
+				// PERF: Reuse collection to avoid allocations.
+				oldActors.Clear();
+				oldActors.UnionWith(currentActors);
 
-				var entered = currentActors.Except(oldActors);
-				var exited = oldActors.Except(currentActors);
+				currentActors.Clear();
+				currentActors.UnionWith(Footprint.SelectMany(actorMap.GetActorsAt));
 
 				if (onActorEntered != null)
-					foreach (var a in entered)
-						onActorEntered(a);
+					foreach (var a in currentActors)
+						if (!oldActors.Contains(a))
+							onActorEntered(a);
 
 				if (onActorExited != null)
-					foreach (var a in exited)
-						onActorExited(a);
+					foreach (var a in oldActors)
+						if (!currentActors.Contains(a))
+							onActorExited(a);
 
 				Dirty = false;
 			}
@@ -94,12 +97,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
+			readonly HashSet<Actor> oldActors = new HashSet<Actor>();
+			readonly HashSet<Actor> currentActors = new HashSet<Actor>();
 
 			WPos position;
 			WDist range;
 			WDist vRange;
-
-			IEnumerable<Actor> currentActors = Enumerable.Empty<Actor>();
 
 			public ProximityTrigger(WPos pos, WDist range, WDist vRange, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
@@ -128,23 +131,26 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Dirty)
 					return;
 
-				var oldActors = currentActors;
-				var delta = new WVec(range, range, WDist.Zero);
-				currentActors = am.ActorsInBox(position - delta, position + delta)
-					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared
-						&& (vRange.Length == 0 || (a.World.Map.DistanceAboveTerrain(a.CenterPosition).LengthSquared <= vRange.LengthSquared)))
-					.ToList();
+				// PERF: Reuse collection to avoid allocations.
+				oldActors.Clear();
+				oldActors.UnionWith(currentActors);
 
-				var entered = currentActors.Except(oldActors);
-				var exited = oldActors.Except(currentActors);
+				var delta = new WVec(range, range, WDist.Zero);
+				currentActors.Clear();
+				currentActors.UnionWith(
+					am.ActorsInBox(position - delta, position + delta)
+					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared
+						&& (vRange.Length == 0 || (a.World.Map.DistanceAboveTerrain(a.CenterPosition).LengthSquared <= vRange.LengthSquared))));
 
 				if (onActorEntered != null)
-					foreach (var a in entered)
-						onActorEntered(a);
+					foreach (var a in currentActors)
+						if (!oldActors.Contains(a))
+							onActorEntered(a);
 
 				if (onActorExited != null)
-					foreach (var a in exited)
-						onActorExited(a);
+					foreach (var a in oldActors)
+						if (!currentActors.Contains(a))
+							onActorExited(a);
 
 				Dirty = false;
 			}
