@@ -202,7 +202,7 @@ namespace OpenRA.Mods.AS.Traits
 		readonly string order;
 		readonly FireArmamentPower power;
 
-		readonly IEnumerable<Tuple<Actor, WDist, WDist>> instances;
+		readonly IEnumerable<Tuple<FireArmamentPower, WDist, WDist>> instances;
 
 		public SelectArmamentPowerTarget(Actor self, string order, SupportPowerManager manager, FireArmamentPower power)
 		{
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.AS.Traits
 			instances = GetActualInstances(self, power);
 		}
 
-		IEnumerable<Tuple<Actor, WDist, WDist>> GetActualInstances(Actor self, FireArmamentPower power)
+		IEnumerable<Tuple<FireArmamentPower, WDist, WDist>> GetActualInstances(Actor self, FireArmamentPower power)
 		{
 			if (power.FireArmamentPowerInfo.MaximumFiringInstances > 1)
 			{
@@ -226,14 +226,14 @@ namespace OpenRA.Mods.AS.Traits
 					.Where(x => x.Actor.Owner == self.Owner && x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName));
 				foreach (var a in actorswithpower)
 				{
-					yield return Tuple.Create(a.Actor,
+					yield return Tuple.Create(a.Trait,
 						a.Trait.Armaments.Where(x => !x.IsTraitDisabled).Min(x => x.Weapon.MinRange),
 						a.Trait.Armaments.Where(x => !x.IsTraitDisabled).Max(x => x.Weapon.Range));
 				}
 			}
 			else
 			{
-				yield return Tuple.Create(self,
+				yield return Tuple.Create(power,
 					power.Armaments.Where(x => !x.IsTraitDisabled).Min(a => a.Weapon.MinRange),
 					power.Armaments.Where(x => !x.IsTraitDisabled).Max(a => a.Weapon.Range));
 			}
@@ -250,8 +250,9 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				yield return new Order(order, manager.Self, Target.FromCell(world, xy), false) { SuppressVisualFeedback = true };
 
-				var actors = instances.Where(x => !x.Item1.IsDisabled() && (x.Item1.CenterPosition - pos).HorizontalLengthSquared < x.Item3.LengthSquared)
-					.OrderBy(x => (x.Item1.CenterPosition - pos).HorizontalLengthSquared).Select(x => x.Item1).Take(power.FireArmamentPowerInfo.MaximumFiringInstances);
+				var actors = instances.Where(x => !x.Item1.IsTraitPaused && !x.Item1.IsTraitDisabled
+					&& (x.Item1.Self.CenterPosition - pos).HorizontalLengthSquared < x.Item3.LengthSquared)
+					.OrderBy(x => (x.Item1.Self.CenterPosition - pos).HorizontalLengthSquared).Select(x => x.Item1.Self).Take(power.FireArmamentPowerInfo.MaximumFiringInstances);
 
 				foreach (var a in actors)
 				{
@@ -273,17 +274,17 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			foreach (var i in instances)
 			{
-				if (!i.Item1.IsDisabled())
+				if (!i.Item1.IsTraitPaused && !i.Item1.IsTraitDisabled)
 				{
 					yield return new RangeCircleRenderable(
-						i.Item1.CenterPosition,
+						i.Item1.Self.CenterPosition,
 						i.Item2,
 						0,
 						Color.Red,
 						Color.FromArgb(96, Color.Black));
 
 					yield return new RangeCircleRenderable(
-						i.Item1.CenterPosition,
+						i.Item1.Self.CenterPosition,
 						i.Item3,
 						0,
 						Color.Red,
@@ -306,7 +307,8 @@ namespace OpenRA.Mods.AS.Traits
 
 			var tc = Target.FromCell(self.World, xy);
 
-			return instances.Any(x => !x.Item1.IsDisabled() && tc.IsInRange(x.Item1.CenterPosition, x.Item3) && !tc.IsInRange(x.Item1.CenterPosition, x.Item2));
+			return instances.Any(x => !x.Item1.IsTraitPaused && !x.Item1.IsTraitDisabled
+				&& tc.IsInRange(x.Item1.Self.CenterPosition, x.Item3) && !tc.IsInRange(x.Item1.Self.CenterPosition, x.Item2));
 		}
 	}
 }

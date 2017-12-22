@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("Grants a condition based on the amount of actors with an eligible GrantHordeBonus trait around this actor.")]
-	public class HordeBonusInfo : ITraitInfo, Requires<ConditionManagerInfo>
+	public class HordeBonusInfo : ConditionalTraitInfo
 	{
 		[Desc("The range within eligible GrantHordeBonus actors are considered.")]
 		public readonly WDist Range = WDist.FromCells(2);
@@ -41,14 +41,14 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly string EnableSound = null;
 		public readonly string DisableSound = null;
 
-		public object Create(ActorInitializer init) { return new HordeBonus(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new HordeBonus(init.Self, this); }
 	}
 
-	public class HordeBonus : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
+	public class HordeBonus : ConditionalTrait<HordeBonusInfo>, ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction, INotifyCreated
 	{
 		readonly Actor self;
 		readonly HordeBonusInfo info;
-		readonly ConditionManager manager;
+		ConditionManager manager;
 
 		int proximityTrigger;
 		WPos cachedPosition;
@@ -66,13 +66,19 @@ namespace OpenRA.Mods.AS.Traits
 		bool IsEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
 
 		public HordeBonus(Actor self, HordeBonusInfo info)
+			: base(info)
 		{
 			this.info = info;
 			this.self = self;
-			manager = self.Trait<ConditionManager>();
 			cachedRange = info.Range;
 			cachedVRange = info.MaximumVerticalOffset;
 			sources = new HashSet<Actor>();
+		}
+
+		protected override void Created(Actor self)
+		{
+			manager = self.Trait<ConditionManager>();
+			base.Created(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -88,7 +94,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			var disabled = self.IsDisabled();
+			var disabled = IsTraitDisabled;
 
 			if (cachedDisabled != disabled)
 			{
@@ -129,7 +135,7 @@ namespace OpenRA.Mods.AS.Traits
 				return;
 
 			// We don't grant conditions when disabled
-			if (self.IsDisabled())
+			if (IsTraitDisabled)
 				return;
 
 			// Work around for actors produced within the region not triggering until the second tick
