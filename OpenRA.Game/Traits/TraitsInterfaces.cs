@@ -110,6 +110,34 @@ namespace OpenRA.Traits
 	// HACK: This provides a shim for legacy code until it can be rewritten
 	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
 	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
+	public static class DecorationBoundsExtensions
+	{
+		public static Rectangle FirstNonEmptyBounds(this IEnumerable<IDecorationBounds> decorationBounds, Actor self, WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var decoration in decorationBounds)
+			{
+				var bounds = decoration.DecorationBounds(self, wr);
+				if (!bounds.IsEmpty)
+					return bounds;
+			}
+
+			return Rectangle.Empty;
+		}
+
+		public static Rectangle FirstNonEmptyBounds(this IDecorationBounds[] decorationBounds, Actor self, WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var decoration in decorationBounds)
+			{
+				var bounds = decoration.DecorationBounds(self, wr);
+				if (!bounds.IsEmpty)
+					return bounds;
+			}
+
+			return Rectangle.Empty;
+		}
+	}
 
 	public interface IIssueOrder
 	{

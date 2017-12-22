@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!ShouldRender(self) || self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
-			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var halfSize = (0.5f * Anim.Image.Size.XY).ToInt2();
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
