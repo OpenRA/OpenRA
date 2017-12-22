@@ -10,16 +10,20 @@
 #endregion
 
 using System;
+using System.Drawing;
+using System.Linq;
 using System.Net;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ServerCreationLogic : ChromeLogic
 	{
-		Widget panel;
-		Action onCreate;
-		Action onExit;
+		readonly Widget panel;
+		readonly LabelWidget noticesLabelA, noticesLabelB, noticesLabelC;
+		readonly Action onCreate;
+		readonly Action onExit;
 		MapPreview preview = MapCache.UnknownMap;
 		bool advertiseOnline;
 
@@ -33,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var settings = Game.Settings;
 			preview = modData.MapCache[modData.MapCache.ChooseInitialMap(Game.Settings.Server.Map, Game.CosmeticRandom)];
 
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
 			var mapButton = panel.GetOrNull<ButtonWidget>("MAP_BUTTON");
@@ -53,12 +58,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => preview;
 
-				var mapTitle = panel.Get<LabelWidget>("MAP_NAME");
-				if (mapTitle != null)
+				var titleLabel = panel.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
+				if (titleLabel != null)
 				{
-					var font = Game.Renderer.Fonts[mapTitle.Font];
-					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
-					mapTitle.GetText = () => title.Update(preview);
+					var font = Game.Renderer.Fonts[titleLabel.Font];
+					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+					titleLabel.GetText = () => title.Update(preview);
+					titleLabel.GetTooltipText = () => preview.Title;
+				}
+
+				var typeLabel = panel.GetOrNull<LabelWidget>("MAP_TYPE");
+				if (typeLabel != null)
+				{
+					var type = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
+					typeLabel.GetText = () => type.Update(preview);
+				}
+
+				var authorLabel = panel.GetOrNull<LabelWidget>("MAP_AUTHOR");
+				if (authorLabel != null)
+				{
+					var font = Game.Renderer.Fonts[authorLabel.Font];
+					var author = new CachedTransform<MapPreview, string>(
+						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
+					authorLabel.GetText = () => author.Update(preview);
 				}
 			}
 
@@ -81,11 +103,80 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var advertiseCheckbox = panel.Get<CheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
-			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
+			advertiseCheckbox.OnClick = () =>
+			{
+				advertiseOnline ^= true;
+				BuildNotices();
+			};
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)
 				passwordField.Text = Game.Settings.Server.Password;
+
+			noticesLabelA = panel.GetOrNull<LabelWidget>("NOTICES_HEADER_A");
+			noticesLabelB = panel.GetOrNull<LabelWidget>("NOTICES_HEADER_B");
+			noticesLabelC = panel.GetOrNull<LabelWidget>("NOTICES_HEADER_C");
+
+			var noticesNoUPnP = panel.GetOrNull("NOTICES_NO_UPNP");
+			if (noticesNoUPnP != null)
+			{
+				noticesNoUPnP.IsVisible = () => advertiseOnline &&
+					(UPnP.Status == UPnPStatus.NotSupported || UPnP.Status == UPnPStatus.Disabled);
+
+				var settingsA = noticesNoUPnP.GetOrNull("SETTINGS_A");
+				if (settingsA != null)
+					settingsA.IsVisible = () => UPnP.Status == UPnPStatus.Disabled;
+
+				var settingsB = noticesNoUPnP.GetOrNull("SETTINGS_B");
+				if (settingsB != null)
+					settingsB.IsVisible = () => UPnP.Status == UPnPStatus.Disabled;
+			}
+
+			var noticesUPnP = panel.GetOrNull("NOTICES_UPNP");
+			if (noticesUPnP != null)
+				noticesUPnP.IsVisible = () => advertiseOnline && UPnP.Status == UPnPStatus.Enabled;
+
+			var noticesLAN = panel.GetOrNull("NOTICES_LAN");
+			if (noticesLAN != null)
+				noticesLAN.IsVisible = () => !advertiseOnline;
+
+			BuildNotices();
+		}
+
+		void BuildNotices()
+		{
+			if (noticesLabelA == null || noticesLabelB == null || noticesLabelC == null)
+				return;
+
+			if (advertiseOnline)
+			{
+				noticesLabelA.Text = "Internet Server (UPnP ";
+				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
+				noticesLabelA.Bounds.Width = aWidth;
+
+				var status = UPnP.Status;
+				noticesLabelB.Text = status == UPnPStatus.Enabled ? "Enabled" :
+					status == UPnPStatus.NotSupported ? "Not Supported" : "Disabled";
+
+				noticesLabelB.TextColor = status == UPnPStatus.Enabled ? ChromeMetrics.Get<Color>("UPnPEnabledColor") :
+					status == UPnPStatus.NotSupported ? ChromeMetrics.Get<Color>("UPnPNotSupportedColor") :
+					ChromeMetrics.Get<Color>("UPnPDisabledColor");
+
+				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
+				noticesLabelB.Bounds.X = noticesLabelA.Bounds.Right;
+				noticesLabelB.Bounds.Width = bWidth;
+				noticesLabelB.Visible = true;
+
+				noticesLabelC.Text = "):";
+				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
+				noticesLabelC.Visible = true;
+			}
+			else
+			{
+				noticesLabelA.Text = "Local Server:";
+				noticesLabelB.Visible = false;
+				noticesLabelC.Visible = false;
+			}
 		}
 
 		void CreateAndJoin()
@@ -131,6 +222,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 			}
 
+			Ui.CloseWindow();
 			ConnectionLogic.Connect(IPAddress.Loopback.ToString(), Game.Settings.Server.ListenPort, password, onCreate, onExit);
 		}
 	}

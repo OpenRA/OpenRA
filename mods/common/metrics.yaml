@@ -38,3 +38,6 @@ Metrics:
 	TextfieldColorInvalid: FFC0C0
 	TextfieldFont: Regular
 	WaitingGameColor: 00FF00
+	UPnPDisabledColor: FFFFFF
+	UPnPEnabledColor: 00FF00
+	UPnPNotSupportedColor: FF0000

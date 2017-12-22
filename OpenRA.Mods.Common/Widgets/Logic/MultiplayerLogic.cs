@@ -26,9 +26,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly Action DoNothing = () => { };
 
-		enum PanelType { Browser, CreateServer }
-		PanelType panel = PanelType.Browser;
-
 		readonly Color incompatibleVersionColor;
 		readonly Color incompatibleProtectedGameColor;
 		readonly Color protectedGameColor;
@@ -85,19 +82,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			incompatibleGameStartedColor = ChromeMetrics.Get<Color>("IncompatibleGameStartedColor");
 
 			LoadBrowserPanel(widget);
-			LoadCreateServerPanel(widget);
 
 			// Filter and refresh buttons act on the browser panel,
 			// but remain visible (disabled) on the other panels
 			var refreshButton = widget.Get<ButtonWidget>("REFRESH_BUTTON");
-			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching || panel != PanelType.Browser;
+			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 
 			var filtersButton = widget.Get<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
-			filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching || panel != PanelType.Browser;
-
-			var browserTab = widget.Get<ButtonWidget>("BROWSER_TAB");
-			browserTab.IsHighlighted = () => panel == PanelType.Browser;
-			browserTab.OnClick = () => panel = PanelType.Browser;
+			filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 
 			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
 			directConnectButton.OnClick = () =>
@@ -111,9 +103,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			var createServerTab = widget.Get<ButtonWidget>("CREATE_TAB");
-			createServerTab.IsHighlighted = () => panel == PanelType.CreateServer;
-			createServerTab.OnClick = () => panel = PanelType.CreateServer;
+			var createServerButton = widget.Get<ButtonWidget>("CREATE_BUTTON");
+			createServerButton.OnClick = () =>
+			{
+				Ui.OpenWindow("MULTIPLAYER_CREATESERVER_PANEL", new WidgetArgs
+				{
+					{ "openLobby", OpenLobby },
+					{ "onExit", DoNothing }
+				});
+			};
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
@@ -154,7 +152,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void LoadBrowserPanel(Widget widget)
 		{
 			var browserPanel = Game.LoadWidget(null, "MULTIPLAYER_BROWSER_PANEL", widget.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-			browserPanel.IsVisible = () => panel == PanelType.Browser;
 
 			serverList = browserPanel.Get<ScrollPanelWidget>("SERVER_LIST");
 			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
@@ -273,18 +270,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				players.IsVisible = () => currentServer != null;
 				players.GetText = () => PlayersLabel(currentServer);
 			}
-		}
-
-		void LoadCreateServerPanel(Widget widget)
-		{
-			var createServerPanel = Game.LoadWidget(null, "MULTIPLAYER_CREATESERVER_PANEL",
-				widget.Get("TOP_PANELS_ROOT"), new WidgetArgs
-			{
-				{ "openLobby", OpenLobby },
-				{ "onExit", DoNothing }
-			});
-
-			createServerPanel.IsVisible = () => panel == PanelType.CreateServer;
 		}
 
 		string PlayersLabel(GameServer game)
@@ -550,15 +535,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "onStart", onStart },
 				{ "onExit", onLobbyExit },
 				{ "skirmishMode", false }
-			});
-		}
-
-		void OpenCreateServerPanel()
-		{
-			Ui.OpenWindow("CREATESERVER_PANEL", new WidgetArgs
-			{
-				{ "openLobby", OpenLobby },
-				{ "onExit", DoNothing }
 			});
 		}
 
