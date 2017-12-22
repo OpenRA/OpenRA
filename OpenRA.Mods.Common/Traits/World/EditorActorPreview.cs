@@ -80,15 +80,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Bounds are fixed from the initial render.
 			// If this is a problem, then we may need to fetch the area from somewhere else
-			var r = previews
-				.SelectMany(p => p.Render(worldRenderer, CenterPosition))
-				.Select(rr => rr.PrepareRender(worldRenderer));
+			var r = previews.SelectMany(p => p.ScreenBounds(worldRenderer, CenterPosition));
 
 			if (r.Any())
 			{
-				Bounds = r.First().ScreenBounds(worldRenderer);
+				Bounds = r.First();
 				foreach (var rr in r.Skip(1))
-					Bounds = Rectangle.Union(Bounds, rr.ScreenBounds(worldRenderer));
+					Bounds = Rectangle.Union(Bounds, rr);
 			}
 		}
 
