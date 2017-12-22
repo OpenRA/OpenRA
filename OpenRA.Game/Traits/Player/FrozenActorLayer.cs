@@ -101,7 +101,10 @@ namespace OpenRA.Traits
 		public void RefreshState()
 		{
 			Owner = actor.Owner;
-			TargetTypes = actor.GetEnabledTargetTypes().ToHashSet();
+
+			// PERF: Reuse collection to avoid allocations.
+			TargetTypes.Clear();
+			TargetTypes.UnionWith(actor.GetEnabledTargetTypes());
 
 			if (health != null)
 			{
