@@ -13,7 +13,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 		ScrollPanel:
 			Y: 30
 			Width: 583
-			Height: 279
+			Height: PARENT_BOTTOM - 30
 			Children:
 				Container:
 					X: 185
@@ -85,31 +85,6 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Advertise Online
-						Checkbox@UPNP_CHECKBOX:
-							X: 100
-							Y: 165
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Automatic port forwarding
-						Label@UPNP_NOTICE:
-							X: 130
-							Y: 180
-							Width: 200
-							Height: 25
-							Font: Tiny
-							Align: Left
-							WordWrap: True
-							Text: Requires Network Discovery (UPnP). Enable in Settings - Advanced.
-						Label@UPNP_UNSUPPORTED_NOTICE:
-							X: 130
-							Y: 180
-							Width: 220
-							Height: 25
-							Font: Tiny
-							Align: Left
-							WordWrap: True
-							Text: Your router does not seem to support UPnP. Please consult your router's manual.
 		Container@SIDEBAR:
 			X: PARENT_RIGHT - WIDTH
 			Y: 30
@@ -134,7 +109,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Align: Center
 		Button@MAP_BUTTON:
 			X: PARENT_RIGHT - WIDTH
-			Y: 284 - 30
+			Y: 240
 			Width: 174
 			Height: 25
 			Text: Choose Map
@@ -142,7 +117,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 		Button@CREATE_BUTTON:
 			Key: return
 			X: PARENT_RIGHT - WIDTH
-			Y: 284
+			Y: PARENT_BOTTOM - 25
 			Width: 174
 			Height: 25
 			Text: Create

@@ -54,9 +54,6 @@ namespace OpenRA
 		[Desc("Allow users to enable NAT discovery for external IP detection and automatic port forwarding.")]
 		public bool DiscoverNatDevices = false;
 
-		[Desc("Set this to false to disable UPnP even if compatible devices are found.")]
-		public bool AllowPortForward = true;
-
 		[Desc("Time in milliseconds to search for UPnP enabled NAT devices.")]
 		public int NatDiscoveryTimeout = 1000;
 
