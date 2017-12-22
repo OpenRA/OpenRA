@@ -100,6 +100,7 @@ GAPILE:
 	ExitsDebugOverlay:
 	Production:
 		Produces: Infantry
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -159,6 +160,7 @@ GAWEAP:
 	ExitsDebugOverlay:
 	Production:
 		Produces: Vehicle
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -213,6 +215,7 @@ GAHPAD:
 		IsPlayerPalette: false
 	Production:
 		Produces: Air
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	Reservable:
@@ -442,6 +445,7 @@ GAPLUG:
 		ChargeTime: 720
 	Production:
 		Produces: HunterSeeker
+		PauseOnCondition: empdisable
 	Exit@1:
 	ExitsDebugOverlay:
 	SupportPowerChargeBar:

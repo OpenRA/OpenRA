@@ -189,7 +189,6 @@ namespace OpenRA.Traits
 	}
 
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
-	public interface IDisable { bool Disabled { get; } }
 
 	public interface IDefaultVisibilityInfo : ITraitInfoInterface { }
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
@@ -206,26 +205,6 @@ namespace OpenRA.Traits
 		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
 		Pair<CPos, SubCell>[] OccupiedCells();
-	}
-
-	public static class IOccupySpaceExts
-	{
-		public static CPos NearestCellTo(this IOccupySpace ios, CPos other)
-		{
-			var nearest = ios.TopLeft;
-			var nearestDistance = int.MaxValue;
-			foreach (var cell in ios.OccupiedCells())
-			{
-				var dist = (other - cell.First).LengthSquared;
-				if (dist < nearestDistance)
-				{
-					nearest = cell.First;
-					nearestDistance = dist;
-				}
-			}
-
-			return nearest;
-		}
 	}
 
 	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }

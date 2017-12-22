@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			{
 				var decrypted = fish.Decrypt(h);
 
-				var ms = new MemoryStream();
+				var ms = new MemoryStream(decrypted.Length * 4);
 				var writer = new BinaryWriter(ms);
 				foreach (var t in decrypted)
 					writer.Write(t);

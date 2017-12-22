@@ -37,7 +37,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var baseHeight = widget.Bounds.Height;
 			var timeOffset = timeLabel.Bounds.X;
 			var costOffset = costLabel.Bounds.X;
-			var pm = player.PlayerActor.Trait<PowerManager>();
 
 			SupportPowerInstance lastPower = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
@@ -112,7 +111,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				lastRemainingSeconds = remainingSeconds;
 			};
 
-			timeLabel.GetColor = () => pm.PowerState != PowerState.Normal ? Color.Red : Color.White;
+			timeLabel.GetColor = () => palette.TooltipIcon != null && !palette.TooltipIcon.Power.Active
+				? Color.Red : Color.White;
 		}
 	}
 }

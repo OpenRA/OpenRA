@@ -44,7 +44,7 @@ namespace OpenRA.FileSystem
 
 				using (var z = pkg.GetInputStream(entry))
 				{
-					var ms = new MemoryStream();
+					var ms = new MemoryStream((int)entry.Size);
 					z.CopyTo(ms);
 					ms.Seek(0, SeekOrigin.Begin);
 					return ms;
@@ -104,7 +104,13 @@ namespace OpenRA.FileSystem
 				// SharpZipLib breaks when asked to update archives loaded from outside streams or files
 				// We can work around this by creating a clean in-memory-only file, cutting all outside references
 				if (!create)
-					new MemoryStream(File.ReadAllBytes(filename)).CopyTo(pkgStream);
+				{
+					using (var copy = new MemoryStream(File.ReadAllBytes(filename)))
+					{
+						pkgStream.Capacity = (int)copy.Length;
+						copy.CopyTo(pkgStream);
+					}
+				}
 
 				pkgStream.Position = 0;
 				pkg = ZipFileHelper.Create(pkgStream);

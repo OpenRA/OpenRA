@@ -75,7 +75,6 @@ namespace OpenRA
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
 		readonly IMouseBounds[] mouseBounds;
-		readonly IDisable[] disables;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
 
@@ -116,7 +115,6 @@ namespace OpenRA
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
-			disables = TraitsImplementing<IDisable>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
@@ -323,18 +321,6 @@ namespace OpenRA
 				return;
 
 			health.Kill(this, attacker);
-		}
-
-		/// <summary>
-		/// DEPRECATED! See <see cref="http://bugs.openra.net/10237"/>. Use conditional traits and IsTraitDisabled instead.
-		/// </summary>
-		public bool IsDisabled()
-		{
-			// PERF: Avoid LINQ.
-			foreach (var disable in disables)
-				if (disable.Disabled)
-					return true;
-			return false;
 		}
 
 		public bool CanBeViewedByPlayer(Player player)

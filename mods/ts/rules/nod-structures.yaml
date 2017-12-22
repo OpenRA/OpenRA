@@ -114,6 +114,7 @@ NAHAND:
 		IsPlayerPalette: false
 	Production:
 		Produces: Infantry
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -171,6 +172,7 @@ NAWEAP:
 	ExitsDebugOverlay:
 	Production:
 		Produces: Vehicle
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -221,6 +223,7 @@ NAHPAD:
 		IsPlayerPalette: false
 	Production:
 		Produces: Air
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	Reservable:
@@ -378,5 +381,6 @@ NATMPL:
 		ChargeTime: 720
 	Production:
 		Produces: HunterSeeker
+		PauseOnCondition: empdisable
 	Exit@1:
 	ExitsDebugOverlay:

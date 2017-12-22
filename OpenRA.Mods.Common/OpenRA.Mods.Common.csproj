@@ -511,7 +511,6 @@
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDeploy.cs" />
-    <Compile Include="Traits\Conditions\DisableOnCondition.cs" />
     <Compile Include="Traits\Conditions\ConditionalTrait.cs" />
     <Compile Include="Traits\Conditions\PausableConditionalTrait.cs" />
     <Compile Include="Traits\Conditions\ProximityExternalCondition.cs" />
@@ -801,7 +800,6 @@
     <Compile Include="UtilityCommands\OutputResolvedWeaponsCommand.cs" />
     <Compile Include="Traits\RevealOnDeath.cs" />
     <Compile Include="Traits\RevealOnFire.cs" />
-    <Compile Include="Traits\Conditions\GrantConditionOnDisabled.cs" />
     <Compile Include="Traits\World\ActorMap.cs" />
     <Compile Include="Traits\World\TerrainTunnelLayer.cs" />
     <Compile Include="Traits\World\TerrainTunnel.cs" />
@@ -841,6 +839,7 @@
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleStatusBarsHotkeyLogic.cs" />
     <Compile Include="Lint\CheckConflictingMouseBounds.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyOptionsLogic.cs" />
+    <Compile Include="Traits\World\LobbyPrerequisiteCheckbox.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

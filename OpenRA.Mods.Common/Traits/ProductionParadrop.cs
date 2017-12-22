@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return false;
+
 			var owner = self.Owner;
 
 			var exit = SelectExit(self, producee, productionType);

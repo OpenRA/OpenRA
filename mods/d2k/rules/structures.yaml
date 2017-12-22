@@ -205,7 +205,7 @@ barracks:
 		SpawnOffset: 512,480,0
 		ExitCell: 1,2
 	Production:
-		Produces: Infantry
+		Produces: Infantry, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -404,7 +404,7 @@ light_factory:
 		SpawnOffset: 544,-224,0
 		ExitCell: 2,1
 	Production:
-		Produces: Vehicle
+		Produces: Vehicle, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -485,7 +485,7 @@ heavy_factory:
 		SpawnOffset: 256,192,0
 		ExitCell: 0,2
 	Production:
-		Produces: Armor
+		Produces: Armor, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -875,7 +875,7 @@ high_tech_factory:
 	Tooltip:
 		Name: High Tech Factory
 	ProductionFromMapEdge:
-		Produces: Aircraft
+		Produces: Aircraft, Upgrade
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0

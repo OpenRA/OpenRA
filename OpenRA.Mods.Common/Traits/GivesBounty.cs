@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("When killed, this actor causes the attacking player to receive money.")]
-	class GivesBountyInfo : ITraitInfo
+	class GivesBountyInfo : ConditionalTraitInfo
 	{
 		[Desc("Percentage of the killed actor's Cost or CustomSellValue to be given.")]
 		public readonly int Percentage = 10;
@@ -35,22 +35,21 @@ namespace OpenRA.Mods.Common.Traits
 			"Use an empty list (the default) to allow all DeathTypes.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new GivesBounty(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GivesBounty(this); }
 	}
 
-	class GivesBounty : INotifyKilled, INotifyCreated
+	class GivesBounty : ConditionalTrait<GivesBountyInfo>, INotifyKilled
 	{
-		readonly GivesBountyInfo info;
 		GainsExperience gainsExp;
 		Cargo cargo;
 
-		public GivesBounty(Actor self, GivesBountyInfo info)
-		{
-			this.info = info;
-		}
+		public GivesBounty(GivesBountyInfo info)
+			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
+			base.Created(self);
+
 			gainsExp = self.TraitOrDefault<GainsExperience>();
 			cargo = self.TraitOrDefault<Cargo>();
 		}
@@ -62,13 +61,13 @@ namespace OpenRA.Mods.Common.Traits
 				return 100;
 
 			var slevel = gainsExp.Level;
-			return (slevel > 0) ? slevel * info.LevelMod : 100;
+			return (slevel > 0) ? slevel * Info.LevelMod : 100;
 		}
 
 		int GetBountyValue(Actor self)
 		{
 			// Divide by 10000 because of GetMultiplier and info.Percentage.
-			return self.GetSellValue() * GetMultiplier() * info.Percentage / 10000;
+			return self.GetSellValue() * GetMultiplier() * Info.Percentage / 10000;
 		}
 
 		int GetDisplayedBountyValue(Actor self)
@@ -89,17 +88,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (e.Attacker == null || e.Attacker.Disposed)
+			if (e.Attacker == null || e.Attacker.Disposed || IsTraitDisabled)
 				return;
 
-			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
+			if (!Info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 				return;
 
-			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
+			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
 			var displayedBounty = GetDisplayedBountyValue(self);
-			if (info.ShowBounty && self.IsInWorld && displayedBounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
+			if (Info.ShowBounty && self.IsInWorld && displayedBounty > 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
 				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, FloatingText.FormatCashTick(displayedBounty), 30)));
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(GetBountyValue(self));

@@ -36,14 +36,12 @@ namespace OpenRA.Mods.D2k.Traits
 			if (harvesters.Any())
 				return;
 
-			var refineries = self.World.ActorsHavingTrait<Refinery>().Where(x => x.Owner == self.Owner);
-			if (!refineries.Any())
+			var refinery = self.World.ActorsHavingTrait<Refinery>().FirstOrDefault(x => x.Owner == self.Owner && x.Info.HasTraitInfo<FreeActorWithDeliveryInfo>());
+			if (refinery == null)
 				return;
 
-			var refinery = refineries.First();
 			var delivery = refinery.Trait<FreeActorWithDelivery>();
-			delivery.DoDelivery(refinery.Location + delivery.Info.DeliveryOffset, delivery.Info.Actor,
-				delivery.Info.DeliveringActor);
+			delivery.DoDelivery(refinery.Location + delivery.Info.DeliveryOffset, delivery.Info.Actor, delivery.Info.DeliveringActor);
 		}
 	}
 }

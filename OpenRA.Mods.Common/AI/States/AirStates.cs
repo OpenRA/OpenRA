@@ -31,11 +31,15 @@ namespace OpenRA.Mods.Common.AI
 			var missileUnitsCount = 0;
 			foreach (var unit in units)
 			{
-				if (unit != null && unit.Info.HasTraitInfo<AttackBaseInfo>() && !unit.Info.HasTraitInfo<AircraftInfo>()
-					&& !unit.IsDisabled())
+				if (unit == null || unit.Info.HasTraitInfo<AircraftInfo>())
+					continue;
+
+				foreach (var ab in unit.TraitsImplementing<AttackBase>())
 				{
-					var arms = unit.TraitsImplementing<Armament>();
-					foreach (var a in arms)
+					if (ab.IsTraitDisabled || ab.IsTraitPaused)
+						continue;
+
+					foreach (var a in ab.Armaments)
 					{
 						if (a.Weapon.IsValidTarget(AirTargetTypes))
 						{

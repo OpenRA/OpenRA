@@ -19,7 +19,6 @@ using OpenRA.Primitives;
 namespace OpenRA.Network
 {
 	using System.Globalization;
-	using NamesValuesPair = Pair<string[], object[]>;
 
 	class SyncReport
 	{
@@ -31,13 +30,13 @@ namespace OpenRA.Network
 		readonly Report[] syncReports = new Report[NumSyncReports];
 		int curIndex = 0;
 
-		static NamesValuesPair DumpSyncTrait(ISync sync)
+		static Pair<string[], Values> DumpSyncTrait(ISync sync)
 		{
 			var type = sync.GetType();
 			TypeInfo typeInfo;
 			lock (typeInfoCache)
 				typeInfo = typeInfoCache[type];
-			var values = new object[typeInfo.Names.Length];
+			var values = new Values(typeInfo.Names.Length);
 			var index = 0;
 
 			foreach (var func in typeInfo.SerializableCopyOfMemberFunctions)
@@ -165,14 +164,14 @@ namespace OpenRA.Network
 			public string Owner;
 			public string Trait;
 			public int Hash;
-			public NamesValuesPair NamesValues;
+			public Pair<string[], Values> NamesValues;
 		}
 
 		struct EffectReport
 		{
 			public string Name;
 			public int Hash;
-			public NamesValuesPair NamesValues;
+			public Pair<string[], Values> NamesValues;
 		}
 
 		struct TypeInfo
@@ -256,6 +255,69 @@ namespace OpenRA.Network
 				}
 
 				return Expression.Lambda<Func<ISync, string>>(getString, name, new[] { SyncParam }).Compile();
+			}
+		}
+
+		/// <summary>
+		/// Holds up to 4 objects directly, or else allocates an array to hold the items. This allows us to record
+		/// trait values for traits with up to 4 sync members inline without having to allocate extra memory.
+		/// </summary>
+		struct Values
+		{
+			static readonly object Sentinel = new object();
+
+			object item1OrArray;
+			object item2OrSentinel;
+			object item3;
+			object item4;
+
+			public Values(int size)
+			{
+				item1OrArray = null;
+				item2OrSentinel = null;
+				item3 = null;
+				item4 = null;
+				if (size > 4)
+				{
+					item1OrArray = new object[size];
+					item2OrSentinel = Sentinel;
+				}
+			}
+
+			public object this[int index]
+			{
+				get
+				{
+					if (item2OrSentinel == Sentinel)
+						return ((object[])item1OrArray)[index];
+
+					switch (index)
+					{
+						case 0: return item1OrArray;
+						case 1: return item2OrSentinel;
+						case 2: return item3;
+						case 3: return item4;
+						default: throw new ArgumentOutOfRangeException("index");
+					}
+				}
+
+				set
+				{
+					if (item2OrSentinel == Sentinel)
+					{
+						((object[])item1OrArray)[index] = value;
+						return;
+					}
+
+					switch (index)
+					{
+						case 0: item1OrArray = value; break;
+						case 1: item2OrSentinel = value; break;
+						case 2: item3 = value; break;
+						case 3: item4 = value; break;
+						default: throw new ArgumentOutOfRangeException("index");
+					}
+				}
 			}
 		}
 	}

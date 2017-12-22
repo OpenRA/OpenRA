@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return false;
+
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
