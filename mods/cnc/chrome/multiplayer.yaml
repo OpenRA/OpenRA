@@ -30,22 +30,16 @@ Container@MULTIPLAYER_PANEL:
 					Height: 25
 					Text: Refresh
 				Button@DIRECTCONNECT_BUTTON:
-					X: 277
+					X: 387
 					Y: 284
 					Width: 100
 					Height: 25
 					Text: Direct IP
-				Button@BROWSER_TAB:
-					X: 382
-					Y: 278
-					Width: 105
-					Height: 31
-					Text: Browse
-				Button@CREATE_TAB:
+				Button@CREATE_BUTTON:
 					X: 492
-					Y: 278
+					Y: 284
 					Width: 105
-					Height: 31
+					Height: 25
 					Text: Create
 				Container@TOP_PANELS_ROOT:
 					X: 15

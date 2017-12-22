@@ -27,24 +27,17 @@ Background@MULTIPLAYER_PANEL:
 			Text: Refresh
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
-			X: 288
+			X: 398
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 100
 			Height: 25
 			Text: Direct IP
 			Font: Bold
-		Button@BROWSER_TAB:
-			X: 393
+		Button@CREATE_BUTTON:
+			X: 503
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 105
-			Height: 31
-			Text: Browse
-			Font: Bold
-		Button@CREATE_TAB:
-			X: 498
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 105
-			Height: 31
+			Width: 100
+			Height: 25
 			Text: Create
 			Font: Bold
 		Container@TOP_PANELS_ROOT:
