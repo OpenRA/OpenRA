@@ -105,7 +105,6 @@ ChromeLayout:
 	common|chrome/lobby-kickdialogs.yaml
 	common|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml
-	common|chrome/multiplayer.yaml
 	common|chrome/multiplayer-browser.yaml
 	common|chrome/multiplayer-createserver.yaml
 	common|chrome/multiplayer-directconnect.yaml

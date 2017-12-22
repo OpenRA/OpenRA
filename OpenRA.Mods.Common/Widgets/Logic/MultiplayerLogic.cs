@@ -81,15 +81,129 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			gameStartedColor = ChromeMetrics.Get<Color>("GameStartedColor");
 			incompatibleGameStartedColor = ChromeMetrics.Get<Color>("IncompatibleGameStartedColor");
 
-			LoadBrowserPanel(widget);
+			serverList = widget.Get<ScrollPanelWidget>("SERVER_LIST");
+			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
+			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
 
-			// Filter and refresh buttons act on the browser panel,
-			// but remain visible (disabled) on the other panels
-			var refreshButton = widget.Get<ButtonWidget>("REFRESH_BUTTON");
-			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+			var join = widget.Get<ButtonWidget>("JOIN_BUTTON");
+			join.IsVisible = () => currentServer != null;
+			join.IsDisabled = () => !currentServer.IsJoinable;
+			join.OnClick = () => Join(currentServer);
 
-			var filtersButton = widget.Get<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
-			filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+			// Display the progress label over the server list
+			// The text is only visible when the list is empty
+			var progressText = widget.Get<LabelWidget>("PROGRESS_LABEL");
+			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
+			progressText.GetText = ProgressLabelText;
+
+			var gs = Game.Settings.Game;
+			Action<MPGameFilters> toggleFilterFlag = f =>
+			{
+				gs.MPGameFilters ^= f;
+				Game.Settings.Save();
+				RefreshServerList();
+			};
+
+			var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", null, new WidgetArgs());
+			var showWaitingCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
+			if (showWaitingCheckbox != null)
+			{
+				showWaitingCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Waiting);
+				showWaitingCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Waiting);
+			}
+
+			var showEmptyCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("EMPTY");
+			if (showEmptyCheckbox != null)
+			{
+				showEmptyCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Empty);
+				showEmptyCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Empty);
+			}
+
+			var showAlreadyStartedCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("ALREADY_STARTED");
+			if (showAlreadyStartedCheckbox != null)
+			{
+				showAlreadyStartedCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Started);
+				showAlreadyStartedCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Started);
+			}
+
+			var showProtectedCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("PASSWORD_PROTECTED");
+			if (showProtectedCheckbox != null)
+			{
+				showProtectedCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Protected);
+				showProtectedCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Protected);
+			}
+
+			var showIncompatibleCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
+			if (showIncompatibleCheckbox != null)
+			{
+				showIncompatibleCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Incompatible);
+				showIncompatibleCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Incompatible);
+			}
+
+			var filtersButton = widget.GetOrNull<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
+			if (filtersButton != null)
+			{
+				filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+				filtersButton.OnMouseDown = _ =>
+				{
+					filtersButton.RemovePanel();
+					filtersButton.AttachPanel(filtersPanel);
+				};
+			}
+
+			var refreshButton = widget.GetOrNull<ButtonWidget>("REFRESH_BUTTON");
+			if (refreshButton != null)
+			{
+				refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
+				refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+				refreshButton.OnClick = RefreshServerList;
+			}
+
+			var mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
+			if (mapPreview != null)
+				mapPreview.Preview = () => currentMap;
+
+			var mapTitle = widget.GetOrNull<LabelWidget>("SELECTED_MAP");
+			if (mapTitle != null)
+			{
+				var font = Game.Renderer.Fonts[mapTitle.Font];
+				var title = new CachedTransform<MapPreview, string>(m => m == null ? "No Server Selected" :
+					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
+				mapTitle.GetText = () => title.Update(currentMap);
+			}
+
+			var ip = widget.GetOrNull<LabelWidget>("SELECTED_IP");
+			if (ip != null)
+			{
+				ip.IsVisible = () => currentServer != null;
+				ip.GetText = () => currentServer.Address;
+			}
+
+			var status = widget.GetOrNull<LabelWidget>("SELECTED_STATUS");
+			if (status != null)
+			{
+				status.IsVisible = () => currentServer != null;
+				status.GetText = () => GetStateLabel(currentServer);
+				status.GetColor = () => GetStateColor(currentServer, status);
+			}
+
+			var modVersion = widget.GetOrNull<LabelWidget>("SELECTED_MOD_VERSION");
+			if (modVersion != null)
+			{
+				modVersion.IsVisible = () => currentServer != null;
+				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
+
+				var font = Game.Renderer.Fonts[modVersion.Font];
+				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, mapTitle.Bounds.Width, font));
+				modVersion.GetText = () => version.Update(currentServer);
+			}
+
+			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
+			if (players != null)
+			{
+				players.IsVisible = () => currentServer != null;
+				players.GetText = () => PlayersLabel(currentServer);
+			}
 
 			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
 			directConnectButton.OnClick = () =>
@@ -146,129 +260,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					widget.Visible = true;
 				});
-			}
-		}
-
-		void LoadBrowserPanel(Widget widget)
-		{
-			var browserPanel = Game.LoadWidget(null, "MULTIPLAYER_BROWSER_PANEL", widget.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-
-			serverList = browserPanel.Get<ScrollPanelWidget>("SERVER_LIST");
-			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
-			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
-
-			var join = widget.Get<ButtonWidget>("JOIN_BUTTON");
-			join.IsDisabled = () => currentServer == null || !currentServer.IsJoinable;
-			join.OnClick = () => Join(currentServer);
-
-			// Display the progress label over the server list
-			// The text is only visible when the list is empty
-			var progressText = widget.Get<LabelWidget>("PROGRESS_LABEL");
-			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
-			progressText.GetText = ProgressLabelText;
-
-			var gs = Game.Settings.Game;
-			Action<MPGameFilters> toggleFilterFlag = f =>
-			{
-				gs.MPGameFilters ^= f;
-				Game.Settings.Save();
-				RefreshServerList();
-			};
-
-			var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", null, new WidgetArgs());
-			var showWaitingCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
-			if (showWaitingCheckbox != null)
-			{
-				showWaitingCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Waiting);
-				showWaitingCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Waiting);
-			}
-
-			var showEmptyCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("EMPTY");
-			if (showEmptyCheckbox != null)
-			{
-				showEmptyCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Empty);
-				showEmptyCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Empty);
-			}
-
-			var showAlreadyStartedCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("ALREADY_STARTED");
-			if (showAlreadyStartedCheckbox != null)
-			{
-				showAlreadyStartedCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Started);
-				showAlreadyStartedCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Started);
-			}
-
-			var showProtectedCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("PASSWORD_PROTECTED");
-			if (showProtectedCheckbox != null)
-			{
-				showProtectedCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Protected);
-				showProtectedCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Protected);
-			}
-
-			var showIncompatibleCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
-			if (showIncompatibleCheckbox != null)
-			{
-				showIncompatibleCheckbox.IsChecked = () => gs.MPGameFilters.HasFlag(MPGameFilters.Incompatible);
-				showIncompatibleCheckbox.OnClick = () => toggleFilterFlag(MPGameFilters.Incompatible);
-			}
-
-			var filtersButton = widget.GetOrNull<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
-			if (filtersButton != null)
-			{
-				filtersButton.OnMouseDown = _ =>
-				{
-					filtersButton.RemovePanel();
-					filtersButton.AttachPanel(filtersPanel);
-				};
-			}
-
-			var refreshButton = widget.Get<ButtonWidget>("REFRESH_BUTTON");
-			refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
-			refreshButton.OnClick = RefreshServerList;
-
-			var mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
-			if (mapPreview != null)
-				mapPreview.Preview = () => currentMap;
-
-			var mapTitle = widget.GetOrNull<LabelWidget>("SELECTED_MAP");
-			if (mapTitle != null)
-			{
-				var font = Game.Renderer.Fonts[mapTitle.Font];
-				var title = new CachedTransform<MapPreview, string>(m => m == null ? "No Server Selected" :
-					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
-				mapTitle.GetText = () => title.Update(currentMap);
-			}
-
-			var ip = widget.GetOrNull<LabelWidget>("SELECTED_IP");
-			if (ip != null)
-			{
-				ip.IsVisible = () => currentServer != null;
-				ip.GetText = () => currentServer.Address;
-			}
-
-			var status = widget.GetOrNull<LabelWidget>("SELECTED_STATUS");
-			if (status != null)
-			{
-				status.IsVisible = () => currentServer != null;
-				status.GetText = () => GetStateLabel(currentServer);
-				status.GetColor = () => GetStateColor(currentServer, status);
-			}
-
-			var modVersion = widget.GetOrNull<LabelWidget>("SELECTED_MOD_VERSION");
-			if (modVersion != null)
-			{
-				modVersion.IsVisible = () => currentServer != null;
-				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
-
-				var font = Game.Renderer.Fonts[modVersion.Font];
-				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, mapTitle.Bounds.Width, font));
-				modVersion.GetText = () => version.Update(currentServer);
-			}
-
-			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
-			if (players != null)
-			{
-				players.IsVisible = () => currentServer != null;
-				players.GetText = () => PlayersLabel(currentServer);
 			}
 		}
 
