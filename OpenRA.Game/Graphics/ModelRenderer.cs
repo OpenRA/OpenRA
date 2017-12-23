@@ -52,6 +52,7 @@ namespace OpenRA.Graphics
 		readonly List<Pair<Sheet, Action>> doRender = new List<Pair<Sheet, Action>>();
 
 		SheetBuilder sheetBuilderForFrame;
+		bool isInFrame;
 
 		public ModelRenderer(Renderer renderer, IShader shader)
 		{
@@ -83,6 +84,9 @@ namespace OpenRA.Graphics
 			float[] groundNormal, WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
+			if (!isInFrame)
+				throw new InvalidOperationException("BeginFrame has not been called. You cannot render until a frame has been started.");
+
 			// Correct for inverted y-axis
 			var scaleTransform = Util.ScaleMatrix(scale, scale, scale);
 
@@ -279,6 +283,11 @@ namespace OpenRA.Graphics
 
 		public void BeginFrame()
 		{
+			if (isInFrame)
+				throw new InvalidOperationException("BeginFrame has already been called. A new frame cannot be started until EndFrame has been called.");
+
+			isInFrame = true;
+
 			foreach (var kv in mappedBuffers)
 				unmappedBuffers.Push(kv);
 			mappedBuffers.Clear();
@@ -303,6 +312,10 @@ namespace OpenRA.Graphics
 
 		public void EndFrame()
 		{
+			if (!isInFrame)
+				throw new InvalidOperationException("BeginFrame has not been called. There is no frame to end.");
+
+			isInFrame = false;
 			sheetBuilderForFrame = null;
 
 			if (doRender.Count == 0)
