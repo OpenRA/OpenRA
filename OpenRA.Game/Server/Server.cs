@@ -361,6 +361,8 @@ namespace OpenRA.Server
 				PreConns.Remove(newConn);
 				Conns.Add(newConn);
 				LobbyInfo.Clients.Add(client);
+				newConn.Validated = true;
+
 				var clientPing = new Session.ClientPing { Index = client.Index };
 				LobbyInfo.ClientPings.Add(clientPing);
 
@@ -477,6 +479,23 @@ namespace OpenRA.Server
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
+			// Only accept handshake responses from unvalidated clients
+			// Anything else may be an attempt to exploit the server
+			if (!conn.Validated)
+			{
+				if (so.Name == "HandshakeResponse")
+					ValidateClient(conn, so.Data);
+				else
+				{
+					Log.Write("server", "Rejected connection from {0}; Order `{1}` is not a `HandshakeResponse`.",
+						conn.Socket.RemoteEndPoint, so.Name);
+
+					DropClient(conn);
+				}
+
+				return;
+			}
+
 			switch (so.Name)
 			{
 				case "Command":
@@ -493,9 +512,6 @@ namespace OpenRA.Server
 						break;
 					}
 
-				case "HandshakeResponse":
-					ValidateClient(conn, so.Data);
-					break;
 				case "Chat":
 				case "TeamChat":
 				case "PauseGame":
