@@ -112,5 +112,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			return RangeCircleRenderables(wr);
 		}
+
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 	}
 }

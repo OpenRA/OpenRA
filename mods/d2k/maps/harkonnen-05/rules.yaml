@@ -48,7 +48,7 @@ research_centre:
 
 missile_tank:
 	Buildable:
-		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
 
 siege_tank:
 	Buildable:

@@ -99,6 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 			return RangeCircleRenderables(wr);
 		}
 
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+
 		float ISelectionBar.GetValue()
 		{
 			// Visible to player and allies

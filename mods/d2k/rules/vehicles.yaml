@@ -105,7 +105,7 @@ trike:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: ~light.regulartrikes
+		Prerequisites: ~light.trike
 		BuildDuration: 194
 		BuildDurationModifier: 40
 		Description: Fast scout\n  Strong vs Infantry\n  Weak vs Tanks
@@ -231,7 +231,7 @@ missile_tank:
 		Name: Missile Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: ~heavy.missiletank, upgrade.heavy, research_centre, ~techlevel.high
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre, ~techlevel.high
 		BuildPaletteOrder: 60
 		BuildDuration: 441
 		BuildDurationModifier: 40
@@ -374,7 +374,7 @@ raider:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: ~light.ordos
+		Prerequisites: ~light.raider
 		BuildDuration: 194
 		BuildDurationModifier: 40
 		Description: Improved Scout\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
@@ -516,7 +516,7 @@ deviator:
 combat_tank_a:
 	Inherits: ^combat_tank
 	Buildable:
-		Prerequisites: ~heavy.atreides
+		Prerequisites: ~heavy.atreides_combat
 	Armament:
 		Weapon: 80mm_A
 	SpawnActorOnDeath:
@@ -525,7 +525,7 @@ combat_tank_a:
 combat_tank_h:
 	Inherits: ^combat_tank
 	Buildable:
-		Prerequisites: ~heavy.harkonnen
+		Prerequisites: ~heavy.harkonnen_combat
 	Armament:
 		Weapon: 80mm_H
 	Mobile:
@@ -538,7 +538,7 @@ combat_tank_h:
 combat_tank_o:
 	Inherits: ^combat_tank
 	Buildable:
-		Prerequisites: ~heavy.ordos
+		Prerequisites: ~heavy.ordos_combat
 	Turreted:
 		TurnSpeed: 5
 	Armament:

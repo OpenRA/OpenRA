@@ -233,6 +233,7 @@ CA:
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		Turrets: primary, secondary
 	WithMuzzleOverlay:
 	SelectionDecorations:
 	WithSpriteTurret@PRIMARY:

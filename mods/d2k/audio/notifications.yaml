@@ -4,8 +4,12 @@ Speech:
 	DefaultVariant: .AUD
 	Prefixes:
 		atreides: AI_
+		fremen: AI_
 		ordos: OI_
+		smuggler: OI_
+		mercenary: OI_
 		harkonnen: HI_
+		corrino: HI_
 	Notifications:
 		BaseAttack: ATACK
 		Building: BUILD

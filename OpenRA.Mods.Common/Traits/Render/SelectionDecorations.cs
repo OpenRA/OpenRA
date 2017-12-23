@@ -82,6 +82,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return DrawDecorations(self, wr);
 		}
 
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return true; } }
+
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{
 			var selected = self.World.Selection.Contains(self);

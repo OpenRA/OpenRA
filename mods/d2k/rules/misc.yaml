@@ -224,11 +224,12 @@ upgrade.conyard:
 	Valued:
 		Cost: 1000
 	RenderSprites:
-		Image: conyard.harkonnen
+		Image: conyard.ordos
 		FactionImages:
 			atreides: conyard.atreides
-			ordos: conyard.ordos
-			corrino: conyard.corrino
+			fremen: conyard.atreides
+			harkonnen: conyard.harkonnen
+			corrino: conyard.harkonnen
 	ProvidesPrerequisite@upgradename:
 
 upgrade.barracks:
@@ -247,12 +248,12 @@ upgrade.barracks:
 	Valued:
 		Cost: 500
 	RenderSprites:
-		Image: barracks.harkonnen
+		Image: barracks.ordos
 		FactionImages:
 			atreides: barracks.atreides
-			ordos: barracks.ordos
-			mercenary: barracks.ordos
-			smuggler: barracks.ordos
+			fremen: barracks.atreides
+			harkonnen: barracks.harkonnen
+			corrino: barracks.harkonnen
 	ProvidesPrerequisite@upgradename:
 
 upgrade.light:
@@ -271,12 +272,12 @@ upgrade.light:
 	Valued:
 		Cost: 400
 	RenderSprites:
-		Image: light.harkonnen
+		Image: light.ordos
 		FactionImages:
 			atreides: light.atreides
-			ordos: light.ordos
-			mercenary: light.ordos
-			smuggler: light.ordos
+			fremen: light.atreides
+			harkonnen: light.harkonnen
+			corrino: light.harkonnen
 	ProvidesPrerequisite@upgradename:
 
 upgrade.heavy:
@@ -295,12 +296,13 @@ upgrade.heavy:
 	Valued:
 		Cost: 800
 	RenderSprites:
-		Image: heavy.harkonnen
+		Image: heavy.ordos
 		FactionImages:
 			atreides: heavy.atreides
-			ordos: heavy.ordos
+			fremen: heavy.atreides
+			harkonnen: heavy.harkonnen
+			corrino: heavy.harkonnen
 			mercenary: heavy.mercenary
-			smuggler: heavy.ordos
 	ProvidesPrerequisite@upgradename:
 
 upgrade.hightech:

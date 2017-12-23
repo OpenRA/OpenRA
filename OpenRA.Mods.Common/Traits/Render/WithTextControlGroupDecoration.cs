@@ -79,6 +79,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield return r;
 		}
 
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
+
 		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr)
 		{
 			var group = self.World.Selection.GetControlGroupForActor(self);

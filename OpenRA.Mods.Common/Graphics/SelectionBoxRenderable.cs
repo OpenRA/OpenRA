@@ -46,8 +46,8 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var iz = 1 / wr.Viewport.Zoom;
 			var screenDepth = wr.Screen3DPxPosition(pos).Z;
-			var tl = new float3(decorationBounds.Left, decorationBounds.Top, 0);
-			var br = new float3(decorationBounds.Right, decorationBounds.Bottom, 0);
+			var tl = new float3(decorationBounds.Left, decorationBounds.Top, screenDepth);
+			var br = new float3(decorationBounds.Right, decorationBounds.Bottom, screenDepth);
 			var tr = new float3(br.X, tl.Y, screenDepth);
 			var bl = new float3(tl.X, br.Y, screenDepth);
 			var u = new float2(4 * iz, 0);
