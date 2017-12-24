@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
-		public void MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		public void MovingToRefinery(Actor self, Actor targetRefinery, Activity next) { }
 		public void MovementCancelled(Actor self) { }
 		public void Docked() { }
 		public void Undocked() { }
