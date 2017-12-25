@@ -317,7 +317,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (addressNode != null)
 							addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
 
-						lanGames.Add(new GameServer(game));
+						try
+						{
+							lanGames.Add(new GameServer(game));
+						}
+						catch { }
 					}
 				}
 
