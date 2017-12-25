@@ -18,6 +18,7 @@ using System.Text;
 using BeaconLib;
 using OpenRA.Network;
 using OpenRA.Server;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -37,12 +38,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModData modData;
 		readonly WebServices services;
 		readonly Probe lanGameProbe;
+		readonly ScrollItemWidget serverTemplate;
+		readonly ScrollItemWidget headerTemplate;
+		readonly Widget clientContainer;
+		readonly ScrollPanelWidget clientList;
+		readonly ScrollItemWidget clientTemplate, clientHeader;
+		readonly MapPreviewWidget mapPreview;
+		readonly ButtonWidget joinButton;
+		readonly int joinButtonY;
 
 		GameServer currentServer;
 		MapPreview currentMap;
-
-		ScrollItemWidget serverTemplate;
-		ScrollItemWidget headerTemplate;
 
 		Action onStart;
 		Action onExit;
@@ -85,10 +91,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
 			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
 
-			var join = widget.Get<ButtonWidget>("JOIN_BUTTON");
-			join.IsVisible = () => currentServer != null;
-			join.IsDisabled = () => !currentServer.IsJoinable;
-			join.OnClick = () => Join(currentServer);
+			joinButton = widget.Get<ButtonWidget>("JOIN_BUTTON");
+			joinButton.IsVisible = () => currentServer != null;
+			joinButton.IsDisabled = () => !currentServer.IsJoinable;
+			joinButton.OnClick = () => Join(currentServer);
+			joinButtonY = joinButton.Bounds.Y;
 
 			// Display the progress label over the server list
 			// The text is only visible when the list is empty
@@ -159,7 +166,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				refreshButton.OnClick = RefreshServerList;
 			}
 
-			var mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
+			mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
 			if (mapPreview != null)
 				mapPreview.Preview = () => currentMap;
 
@@ -201,9 +208,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
 			if (players != null)
 			{
-				players.IsVisible = () => currentServer != null;
+				players.IsVisible = () => currentServer != null && !currentServer.Clients.Any();
 				players.GetText = () => PlayersLabel(currentServer);
 			}
+
+			clientContainer = widget.Get("CLIENT_LIST_CONTAINER");
+			clientList = Ui.LoadWidget("MULTIPLAYER_CLIENT_LIST", clientContainer, new WidgetArgs()) as ScrollPanelWidget;
+			clientList.IsVisible = () => currentServer != null && currentServer.Clients.Any();
+			clientHeader = clientList.Get<ScrollItemWidget>("HEADER");
+			clientTemplate = clientList.Get<ScrollItemWidget>("TEMPLATE");
+			clientList.RemoveChildren();
 
 			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
 			directConnectButton.OnClick = () =>
@@ -361,6 +375,86 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			currentServer = server;
 			currentMap = server != null ? modData.MapCache[server.Map] : null;
+
+			clientList.RemoveChildren();
+			if (server == null || !server.Clients.Any())
+			{
+				joinButton.Bounds.Y = joinButtonY;
+				return;
+			}
+
+			joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
+
+			var players = server.Clients
+				.Where(c => !c.IsSpectator)
+				.GroupBy(p => p.Team)
+				.OrderBy(g => g.Key);
+
+			var teams = new Dictionary<string, IEnumerable<GameClient>>();
+			var noTeams = players.Count() == 1;
+			foreach (var p in players)
+			{
+				var label = noTeams ? "Players" : p.Key == 0 ? "No Team" : "Team {0}".F(p.Key);
+				teams.Add(label, p);
+			}
+
+			if (server.Clients.Any(c => c.IsSpectator))
+				teams.Add("Spectators", server.Clients.Where(c => c.IsSpectator));
+
+			// Can only show factions if the server is running the same mod
+			var disableFactionDisplay = server.Mod != modData.Manifest.Id;
+
+			if (mapPreview != null)
+			{
+				var spawns = currentMap.SpawnPoints;
+				var occupants = server.Clients
+					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
+					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c, disableFactionDisplay));
+
+				mapPreview.SpawnOccupants = () => occupants;
+			}
+
+			var factionInfo = modData.DefaultRules.Actors["world"].TraitInfos<FactionInfo>();
+			foreach (var kv in teams)
+			{
+				var group = kv.Key;
+				if (group.Length > 0)
+				{
+					var header = ScrollItemWidget.Setup(clientHeader, () => true, () => { });
+					header.Get<LabelWidget>("LABEL").GetText = () => group;
+					clientList.AddChild(header);
+				}
+
+				foreach (var option in kv.Value)
+				{
+					var o = option;
+
+					var item = ScrollItemWidget.Setup(clientTemplate, () => false, () => { });
+					if (!o.IsSpectator && !disableFactionDisplay)
+					{
+						var label = item.Get<LabelWidget>("LABEL");
+						var font = Game.Renderer.Fonts[label.Font];
+						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						label.GetText = () => name;
+						label.GetColor = () => o.Color.RGB;
+
+						var flag = item.Get<ImageWidget>("FLAG");
+						flag.IsVisible = () => true;
+						flag.GetImageCollection = () => "flags";
+						flag.GetImageName = () => (factionInfo != null && factionInfo.Any(f => f.InternalName == o.Faction)) ? o.Faction : "Random";
+					}
+					else
+					{
+						var label = item.Get<LabelWidget>("NOFLAG_LABEL");
+						var font = Game.Renderer.Fonts[label.Font];
+						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						label.GetText = () => name;
+						label.GetColor = () => o.Color.RGB;
+					}
+
+					clientList.AddChild(item);
+				}
+			}
 		}
 
 		void RefreshServerListInner(List<GameServer> games)

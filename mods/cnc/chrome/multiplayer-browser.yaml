@@ -118,6 +118,7 @@ Container@MULTIPLAYER_PANEL:
 									Y: 1
 									Width: PARENT_RIGHT - 2
 									Height: PARENT_BOTTOM - 2
+									TooltipContainer: TOOLTIP_CONTAINER
 						Label@SELECTED_MAP:
 							Y: 172
 							Width: PARENT_RIGHT
@@ -148,6 +149,10 @@ Container@MULTIPLAYER_PANEL:
 							Height: 25
 							Font: TinyBold
 							Align: Center
+						Container@CLIENT_LIST_CONTAINER:
+							Y: 240
+							Width: PARENT_RIGHT
+							Height: 230
 						Button@JOIN_BUTTON:
 							Key: return
 							Y: 255
@@ -186,48 +191,3 @@ Container@MULTIPLAYER_PANEL:
 			Height: 35
 			Text: Back
 		TooltipContainer@TOOLTIP_CONTAINER:
-
-ScrollPanel@MULTIPLAYER_FILTER_PANEL:
-	Width: 147
-	Height: 130
-	Background: panel-black
-	Children:
-		Checkbox@WAITING_FOR_PLAYERS:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Waiting
-			TextColor: 32CD32
-			Font: Regular
-		Checkbox@EMPTY:
-			X: 5
-			Y: 30
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Empty
-			Font: Regular
-		Checkbox@PASSWORD_PROTECTED:
-			X: 5
-			Y: 55
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Protected
-			TextColor: FF0000
-			Font: Regular
-		Checkbox@ALREADY_STARTED:
-			X: 5
-			Y: 80
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Started
-			TextColor: FFA500
-			Font: Regular
-		Checkbox@INCOMPATIBLE_VERSION:
-			X: 5
-			Y: 105
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Incompatible
-			TextColor: BEBEBE
-			Font: Regular
