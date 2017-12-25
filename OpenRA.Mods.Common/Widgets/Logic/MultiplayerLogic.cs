@@ -563,10 +563,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var players = item.GetOrNull<LabelWidget>("PLAYERS");
 						if (players != null)
 						{
-							players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
+							var label = "{0} / {1}".F(game.Players + game.Bots, game.MaxPlayers + game.Bots)
 								+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
 
-							players.GetColor = () => canJoin ? players.TextColor : incompatibleGameColor;
+							var color = canJoin ? players.TextColor : incompatibleGameColor;
+							players.GetText = () => label;
+							players.GetColor = () => color;
 						}
 
 						var state = item.GetOrNull<LabelWidget>("STATUS");
