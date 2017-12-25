@@ -106,6 +106,7 @@ ChromeLayout:
 	common|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml
 	common|chrome/multiplayer-browser.yaml
+	common|chrome/multiplayer-browserpanels.yaml
 	common|chrome/multiplayer-createserver.yaml
 	common|chrome/multiplayer-directconnect.yaml
 	common|chrome/connection.yaml
