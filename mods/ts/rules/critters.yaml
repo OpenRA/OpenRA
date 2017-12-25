@@ -6,7 +6,7 @@ DOGGIE:
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
-		HP: 250
+		HP: 25000
 	Selectable:
 		Bounds: 24,24
 	Valued:
@@ -43,7 +43,7 @@ VISC_SML:
 	Tooltip:
 		Name: Baby Visceroid
 	Health:
-		HP: 200
+		HP: 20000
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelay: 30
@@ -58,7 +58,7 @@ VISC_LRG:
 	Tooltip:
 		Name: Adult Visceroid
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -88,7 +88,7 @@ JFISH:
 	Tooltip:
 		Name: Tiberium Floater
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 5c0
 	Mobile:

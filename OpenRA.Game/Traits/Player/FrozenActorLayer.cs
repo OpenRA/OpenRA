@@ -32,6 +32,7 @@ namespace OpenRA.Traits
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
+		readonly Player viewer;
 		readonly Shroud shroud;
 
 		public Player Owner { get; private set; }
@@ -59,10 +60,11 @@ namespace OpenRA.Traits
 
 		int flashTicks;
 
-		public FrozenActor(Actor self, PPos[] footprint, Shroud shroud, bool startsRevealed)
+		public FrozenActor(Actor actor, PPos[] footprint, Player viewer, bool startsRevealed)
 		{
-			actor = self;
-			this.shroud = shroud;
+			this.actor = actor;
+			this.viewer = viewer;
+			shroud = viewer.Shroud;
 			NeedRenderables = startsRevealed;
 
 			// Consider all cells inside the map area (ignoring the current map bounds)
@@ -81,11 +83,11 @@ namespace OpenRA.Traits
 					footprint.Select(p => p.ToString()).JoinWith("|"),
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
-			CenterPosition = self.CenterPosition;
+			CenterPosition = actor.CenterPosition;
 			TargetTypes = new HashSet<string>();
 
-			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
-			health = self.TraitOrDefault<IHealth>();
+			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
+			health = actor.TraitOrDefault<IHealth>();
 
 			UpdateVisibility();
 		}
@@ -94,6 +96,7 @@ namespace OpenRA.Traits
 		public bool IsValid { get { return Owner != null; } }
 		public ActorInfo Info { get { return actor.Info; } }
 		public Actor Actor { get { return !actor.IsDead ? actor : null; } }
+		public Player Viewer { get { return viewer; } }
 
 		public void RefreshState()
 		{

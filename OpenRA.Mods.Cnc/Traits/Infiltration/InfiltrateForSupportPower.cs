@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -18,6 +19,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	class InfiltrateForSupportPowerInfo : ITraitInfo
 	{
 		[ActorReference, FieldLoader.Require] public readonly string Proxy = null;
+
+		public readonly HashSet<string> Types = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
@@ -31,8 +34,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
 		{
+			if (!info.Types.Overlaps(types))
+				return;
+
 			infiltrator.World.AddFrameEndTask(w => w.CreateActor(info.Proxy, new TypeDictionary
 			{
 				new OwnerInit(infiltrator.Owner)

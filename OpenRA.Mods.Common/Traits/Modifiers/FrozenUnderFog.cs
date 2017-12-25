@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			frozenStates = new PlayerDictionary<FrozenState>(self.World, (player, playerIndex) =>
 			{
-				var frozenActor = new FrozenActor(self, footprint, player.Shroud, startsRevealed);
+				var frozenActor = new FrozenActor(self, footprint, player, startsRevealed);
 				if (startsRevealed)
 					UpdateFrozenActor(self, frozenActor, playerIndex);
 				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);

@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var currentTerrain = self.World.Map.GetTerrainInfo(self.Location).Type;
-			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
+			var wantsGranted = info.TerrainTypes.Contains(currentTerrain) && self.Location.Layer == 0;
 			if (currentTerrain != previousTerrain)
 			{
 				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)

@@ -149,7 +149,7 @@ Background@CLIENT_TOOLTIP:
 
 Background@INGAME_CLIENT_TOOLTIP:
 	Logic: ClientTooltipLogic
-	Background: dialog4
+	Background: dialog3
 	Height: 41
 	Width: 7
 	Children:

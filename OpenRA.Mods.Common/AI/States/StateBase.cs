@@ -20,8 +20,6 @@ namespace OpenRA.Mods.Common.AI
 {
 	abstract class StateBase
 	{
-		protected const int DangerRadius = 10;
-
 		protected static void GoToRandomOwnBuilding(Squad squad)
 		{
 			var loc = RandomBuildingLocation(squad);
@@ -34,7 +32,7 @@ namespace OpenRA.Mods.Common.AI
 			var location = squad.Bot.GetRandomBaseCenter();
 			var buildings = squad.World.ActorsHavingTrait<Building>()
 				.Where(a => a.Owner == squad.Bot.Player).ToList();
-			if (buildings.Any())
+			if (buildings.Count > 0)
 				location = buildings.Random(squad.Random).Location;
 
 			return location;
@@ -72,8 +70,13 @@ namespace OpenRA.Mods.Common.AI
 
 			var arms = a.TraitsImplementing<Armament>();
 			foreach (var arm in arms)
+			{
+				if (arm.IsTraitDisabled)
+					continue;
+
 				if (arm.Weapon.IsValidTarget(targetTypes))
 					return true;
+			}
 
 			return false;
 		}
@@ -83,11 +86,15 @@ namespace OpenRA.Mods.Common.AI
 			if (!squad.IsValid)
 				return false;
 
-			var u = squad.Units.Random(squad.Random);
-			var units = squad.World.FindActorsInCircle(u.CenterPosition, WDist.FromCells(DangerRadius)).ToList();
-			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.Bot.Player && unit.Info.HasTraitInfo<BuildingInfo>());
-			if (ownBaseBuildingAround.Any())
-				return false;
+			var randomSquadUnit = squad.Units.Random(squad.Random);
+			var dangerRadius = squad.Bot.Info.DangerScanRadius;
+			var units = squad.World.FindActorsInCircle(randomSquadUnit.CenterPosition, WDist.FromCells(dangerRadius)).ToList();
+
+			// If there are any own buildings within the DangerRadius, don't flee
+			// PERF: Avoid LINQ
+			foreach (var u in units)
+				if (u.Owner == squad.Bot.Player && u.Info.HasTraitInfo<BuildingInfo>())
+					return false;
 
 			var enemyAroundUnit = units.Where(unit => squad.Bot.Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>());
 			if (!enemyAroundUnit.Any())

@@ -15,8 +15,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class SupportPowerInfo : PausableConditionalTraitInfo
 	{
-		[Desc("Measured in seconds.")]
-		public readonly int ChargeTime = 0;
+		[Desc("Measured in ticks.")]
+		public readonly int ChargeInterval = 0;
 		public readonly string Icon = null;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";

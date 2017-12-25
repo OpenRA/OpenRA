@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.BeforeRender = () =>
 			{
 				var icon = palette.TooltipIcon;
-				if (icon == null)
+				if (icon == null || icon.Power == null || icon.Power.Instances.Count == 0)
 					return;
 
 				var sp = icon.Power;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var descSize = descFont.Measure(descLabel.Text);
 
 				var remaining = WidgetUtils.FormatTime(sp.RemainingTime, world.Timestep);
-				var total = WidgetUtils.FormatTime(sp.Info.ChargeTime * 25, world.Timestep);
+				var total = WidgetUtils.FormatTime(sp.Info.ChargeInterval, world.Timestep);
 				timeLabel.Text = "{0} / {1}".F(remaining, total);
 				var timeSize = timeFont.Measure(timeLabel.Text);
 

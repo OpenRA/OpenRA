@@ -147,6 +147,18 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Radius in cells around the center of the base to expand.")]
 		public readonly int MaxBaseRadius = 20;
 
+		[Desc("Radius in cells that squads should scan for enemies around their position while idle.")]
+		public readonly int IdleScanRadius = 10;
+
+		[Desc("Radius in cells that squads should scan for danger around their position to make flee decisions.")]
+		public readonly int DangerScanRadius = 10;
+
+		[Desc("Radius in cells that attack squads should scan for enemies around their position when trying to attack.")]
+		public readonly int AttackScanRadius = 12;
+
+		[Desc("Radius in cells that protecting squads should scan for enemies around their position.")]
+		public readonly int ProtectionScanRadius = 8;
+
 		[Desc("Should deployment of additional MCVs be restricted to MaxBaseRadius if explicit deploy locations are missing or occupied?")]
 		public readonly bool RestrictMCVDeploymentFallbackToBase = true;
 
@@ -1174,7 +1186,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			// No construction yards - Build a new MCV
-			if (!HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == Player &&
+			if (Info.UnitsCommonNames.Mcv.Any() && !HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == Player &&
 				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name)))
 				BuildUnit("Vehicle", GetInfoByCommonName(Info.UnitsCommonNames.Mcv, Player).Name);
 
@@ -1245,8 +1257,8 @@ namespace OpenRA.Mods.Common.AI
 			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
 				return;
 
-			// Protected harvesters or building
-			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>()) &&
+			// Protected priority assets, MCVs, harvesters and buildings
+			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>() || self.Info.HasTraitInfo<BaseBuildingInfo>()) &&
 				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
 			{
 				defenseCenter = e.Attacker.Location;

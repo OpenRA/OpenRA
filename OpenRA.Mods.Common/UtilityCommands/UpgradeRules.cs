@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static void RenameNodeKey(MiniYamlNode node, string key)
 		{
+			if (node == null)
+				return;
+
 			var parts = node.Key.Split('@');
 			node.Key = key;
 			if (parts.Length > 1)
@@ -1305,7 +1308,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "cnc" || mod == "ra" || mod == "d2k")
+					if (mod == "cnc" || mod == "ra" || mod == "d2k" || mod == "ts")
 					{
 						if (node.Key == "HP" && parent.Key == "Health")
 						{
@@ -1569,6 +1572,69 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// CanPowerDown was replaced with a more general trait for toggling a condition
+				if (engineVersion < 20171225)
+				{
+					var cpd = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CanPowerDown", StringComparison.Ordinal));
+					if (cpd != null)
+					{
+						RenameNodeKey(cpd, "ToggleConditionOnOrder");
+
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerupSound"), "DisabledSound");
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerupSpeech"), "DisabledSpeech");
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerdownSound"), "EnabledSound");
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerdownSpeech"), "EnabledSpeech");
+						cpd.Value.Nodes.Add(new MiniYamlNode("OrderName", "PowerDown"));
+
+						var condition = cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerdownCondition");
+						if (condition != null)
+							RenameNodeKey(condition, "Condition");
+						else
+							cpd.Value.Nodes.Add(new MiniYamlNode("Condition", "powerdown"));
+
+						if (cpd.Value.Nodes.RemoveAll(n => n.Key == "CancelWhenDisabled") > 0)
+						{
+							Console.WriteLine("CancelWhenDisabled was removed when CanPowerDown was replaced by ToggleConditionOnOrder");
+							Console.WriteLine("Use PauseOnCondition instead of RequiresCondition to replicate the behavior of 'false'.");
+						}
+
+						node.Value.Nodes.Add(new MiniYamlNode("PowerMultiplier@POWERDOWN", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("RequiresCondition", condition.Value.Value),
+							new MiniYamlNode("Modifier", "0")
+						})));
+					}
+				}
+
+				if (engineVersion < 20171228)
+				{
+					var chargeTime = node.Value.Nodes.FirstOrDefault(n => n.Key == "ChargeTime");
+					if (chargeTime != null)
+					{
+						var chargeTimeValue = FieldLoader.GetValue<int>("ChargeTime", chargeTime.Value.Value);
+						if (chargeTimeValue > 0)
+							chargeTime.Value.Value = (chargeTimeValue * 25).ToString();
+
+						RenameNodeKey(chargeTime, "ChargeInterval");
+					}
+
+					if (node.Key.StartsWith("GpsPower", StringComparison.Ordinal))
+					{
+						var revealDelay = node.Value.Nodes.FirstOrDefault(n => n.Key == "RevealDelay");
+						var revealDelayValue = revealDelay != null ? FieldLoader.GetValue<int>("RevealDelay", revealDelay.Value.Value) : 0;
+						if (revealDelay != null && revealDelayValue > 0)
+							revealDelay.Value.Value = (revealDelayValue * 25).ToString();
+					}
+
+					if (node.Key.StartsWith("ChronoshiftPower", StringComparison.Ordinal))
+					{
+						var duration = node.Value.Nodes.FirstOrDefault(n => n.Key == "Duration");
+						var durationValue = duration != null ? FieldLoader.GetValue<int>("Duration", duration.Value.Value) : 0;
+						if (duration != null && durationValue > 0)
+							duration.Value.Value = (durationValue * 25).ToString();
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
@@ -1717,7 +1783,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "cnc" || mod == "ra" || mod == "d2k")
+					if (mod == "cnc" || mod == "ra" || mod == "d2k" || mod == "ts")
 					{
 						if (node.Key == "Damage" && (parent.Value.Value == "SpreadDamage" || parent.Value.Value == "TargetDamage"))
 						{

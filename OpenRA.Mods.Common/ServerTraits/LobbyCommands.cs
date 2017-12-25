@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Server
 
 							// Validate if color is allowed and get an alternative if it isn't
 							foreach (var c in server.LobbyInfo.Clients)
-								if (c.Slot == null || (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor))
+								if (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor)
 									c.Color = c.PreferredColor = SanitizePlayerColor(server, c.Color, c.Index, conn);
 
 							server.SyncLobbyInfo();
@@ -867,7 +867,7 @@ namespace OpenRA.Mods.Common.Server
 			var client = server.GetClient(conn);
 
 			// Validate whether color is allowed and get an alternative if it isn't
-			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
+			if (client.Slot != null && !server.LobbyInfo.Slots[client.Slot].LockColor)
 				client.Color = SanitizePlayerColor(server, client.Color, client.Index);
 
 			// Report any custom map details

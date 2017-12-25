@@ -34,7 +34,7 @@ airstrike.proxy:
 	AirstrikePower:
 		Icon: airstrike
 		StartFullyCharged: True
-		ChargeTime: 120
+		ChargeInterval: 3000
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike

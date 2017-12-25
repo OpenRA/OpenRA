@@ -90,6 +90,7 @@ Assemblies:
 ChromeLayout:
 	cnc|chrome/mainmenu.yaml
 	cnc|chrome/multiplayer-browser.yaml
+	cnc|chrome/multiplayer-browserpanels.yaml
 	cnc|chrome/multiplayer-createserver.yaml
 	cnc|chrome/multiplayer-directconnect.yaml
 	cnc|chrome/lobby.yaml
@@ -97,6 +98,7 @@ ChromeLayout:
 	cnc|chrome/lobby-players.yaml
 	cnc|chrome/lobby-options.yaml
 	cnc|chrome/lobby-music.yaml
+	cnc|chrome/lobby-servers.yaml
 	cnc|chrome/lobby-kickdialogs.yaml
 	cnc|chrome/connection.yaml
 	cnc|chrome/color-picker.yaml

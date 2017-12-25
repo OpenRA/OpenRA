@@ -5,7 +5,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 15
+		Damage: 1500
 		Versus:
 			None: 100
 			Wood: 60
@@ -27,7 +27,9 @@ Minigun:
 	ReloadDelay: 21
 	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 8
+		Damage: 800
+		Versus:
+			Wood: 50
 
 M1Carbine:
 	Inherits: ^MG
@@ -37,7 +39,7 @@ Vulcan:
 	Inherits: ^MG
 	Report: chaingn1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 20
+		Damage: 2000
 
 Vulcan2:
 	Inherits: ^MG
@@ -46,7 +48,7 @@ Vulcan2:
 	Range: 6c0
 	Report: tsgun4.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 
 Vulcan3:
 	Inherits: ^MG
@@ -54,7 +56,7 @@ Vulcan3:
 	Burst: 3
 	Report: cygun1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 10
+		Damage: 1000
 
 VulcanTower:
 	Inherits: ^MG
@@ -62,7 +64,7 @@ VulcanTower:
 	Range: 6c0
 	Report: chaingn1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 18
+		Damage: 1800
 
 JumpCannon:
 	Inherits: ^MG
@@ -71,7 +73,7 @@ JumpCannon:
 	Range: 5c0
 	Report: jumpjet1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 15
+		Damage: 1500
 
 AssaultCannon:
 	Inherits: ^MG
@@ -79,17 +81,15 @@ AssaultCannon:
 	Range: 5c0
 	Report: tsgun4.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 
 RaiderCannon:
 	Inherits: ^MG
 	ReloadDelay: 55
 	Range: 4c0
-	Burst: 2 # this + BurstDelay just makes the buggy alternate between barrels (for muzzle flash), no actual difference to original TS
-	BurstDelays: 55
 	Report: chaingn1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 
 HarpyClaw:
 	Inherits: ^MG
@@ -97,14 +97,14 @@ HarpyClaw:
 	Range: 5c0
 	Report: cygun1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 
 Pistola:
 	Inherits: ^MG
 	Range: 3c0
 	Report: gun18.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 2
+		Damage: 200
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
 	Warhead@3EffWater: CreateEffect
@@ -117,7 +117,7 @@ Sniper:
 	Report: silencer.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 36
-		Damage: 150
+		Damage: 15000
 		Versus:
 			Wood: 5
 			Light: 5

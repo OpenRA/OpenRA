@@ -1,0 +1,85 @@
+ScrollPanel@MULTIPLAYER_CLIENT_LIST:
+	Width: PARENT_RIGHT
+	Height: 159
+	IgnoreChildMouseOver: true
+	Children:
+		ScrollItem@HEADER:
+			BaseName: scrollheader
+			Width: PARENT_RIGHT - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_RIGHT
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Image@FLAG:
+					X: 4
+					Y: 6
+					Width: 32
+					Height: 16
+					Visible: False
+				Label@LABEL:
+					X: 40
+					Width: PARENT_RIGHT - 50
+					Height: 23
+					Shadow: True
+				Label@NOFLAG_LABEL:
+					X: 5
+					Width: PARENT_RIGHT
+					Height: 23
+					Shadow: True
+					
+ScrollPanel@MULTIPLAYER_FILTER_PANEL:
+	Width: PARENT_RIGHT
+	Height: 130
+	Children:
+		Checkbox@WAITING_FOR_PLAYERS:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Waiting
+			TextColor: 32CD32
+			Font: Regular
+		Checkbox@EMPTY:
+			X: 5
+			Y: 30
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Empty
+			Font: Regular
+		Checkbox@PASSWORD_PROTECTED:
+			X: 5
+			Y: 55
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Protected
+			TextColor: FF0000
+			Font: Regular
+		Checkbox@ALREADY_STARTED:
+			X: 5
+			Y: 80
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Started
+			TextColor: FFA500
+			Font: Regular
+		Checkbox@INCOMPATIBLE_VERSION:
+			X: 5
+			Y: 105
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Text: Incompatible
+			TextColor: BEBEBE
+			Font: Regular

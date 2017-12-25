@@ -452,6 +452,21 @@ lobby-bits: chrome.png
 	protected: 403,97,10,13
 	protected-disabled: 403,113,10,13
 
+reload-icon: chrome.png
+	enabled: 256,192,16,16
+	disabled-0: 272,192,16,16
+	disabled-1: 288,192,16,16
+	disabled-2: 304,192,16,16
+	disabled-3: 320,192,16,16
+	disabled-4: 336,192,16,16
+	disabled-5: 352,192,16,16
+	disabled-6: 368,192,16,16
+	disabled-7: 384,192,16,16
+	disabled-8: 400,192,16,16
+	disabled-9: 416,192,16,16
+	disabled-10: 432,192,16,16
+	disabled-11: 448,192,16,16
+
 checkbox-bits: chrome.png
 	checked: 272,32,16,16
 	checked-disabled: 272,48,16,16

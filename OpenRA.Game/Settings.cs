@@ -95,6 +95,9 @@ namespace OpenRA
 
 		public bool StrictActivityChecking = false;
 
+		[Desc("Check whether a newer version is available online.")]
+		public bool CheckVersion = true;
+
 		[Desc("Allow the collection of anonymous data such as Operating System, .NET runtime, OpenGL version and language settings.")]
 		public bool SendSystemInformation = true;
 

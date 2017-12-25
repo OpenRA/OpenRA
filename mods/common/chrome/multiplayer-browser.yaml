@@ -3,7 +3,7 @@ Background@MULTIPLAYER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 808
-	Height: 600
+	Height: 550
 	Children:
 		Label@TITLE:
 			Y: 15
@@ -43,6 +43,35 @@ Background@MULTIPLAYER_PANEL:
 					Height: 25
 					Text: Status
 					Font: Bold
+		LogicTicker@NOTICE_WATCHER:
+		Background@NOTICE_CONTAINER:
+			X: 20
+			Y: 67
+			Width: 583
+			Height: 20
+			Background: dialog2
+			Children:
+				Label@OUTDATED_VERSION_LABEL:
+					X: 5
+					Width: PARENT_RIGHT-10
+					Height: 18
+					Align: Center
+					Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
+					Font: TinyBold
+				Label@UNKNOWN_VERSION_LABEL:
+					X: 5
+					Width: PARENT_RIGHT-10
+					Height: 18
+					Align: Center
+					Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
+					Font: TinyBold
+				Label@PLAYTEST_AVAILABLE_LABEL:
+					X: 5
+					Width: PARENT_RIGHT-10
+					Height: 18
+					Align: Center
+					Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
+					Font: TinyBold
 		ScrollPanel@SERVER_LIST:
 			X: 20
 			Y: 67
@@ -67,6 +96,7 @@ Background@MULTIPLAYER_PANEL:
 					X: 2
 					Width: PARENT_RIGHT - 27
 					Height: 25
+					EnableChildMouseOver: True
 					Children:
 						Label@TITLE:
 							X: 5
@@ -75,13 +105,18 @@ Background@MULTIPLAYER_PANEL:
 						Image@PASSWORD_PROTECTED:
 							X: 272
 							Y: 6
-							Width: 8
-							Height: 10
+							Width: 10
+							Height: 12
 							ImageCollection: lobby-bits
-						Label@PLAYERS:
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: Requires Password
+						LabelWithTooltip@PLAYERS:
 							X: 290
 							Width: 85
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LOCATION:
 							X: 380
 							Width: 110
@@ -114,6 +149,7 @@ Background@MULTIPLAYER_PANEL:
 							Y: 1
 							Width: PARENT_RIGHT - 2
 							Height: PARENT_BOTTOM - 2
+							TooltipContainer: TOOLTIP_CONTAINER
 				Label@SELECTED_MAP:
 					Y: 172
 					Width: PARENT_RIGHT
@@ -144,6 +180,10 @@ Background@MULTIPLAYER_PANEL:
 					Height: 25
 					Font: TinyBold
 					Align: Center
+				Container@CLIENT_LIST_CONTAINER:
+					Y: 240
+					Width: PARENT_RIGHT
+					Height: 166
 				Button@JOIN_BUTTON:
 					Key: return
 					Y: 255
@@ -158,12 +198,28 @@ Background@MULTIPLAYER_PANEL:
 			Height: 25
 			Text: Filter Games
 			Font: Bold
-		Button@REFRESH_BUTTON:
+		Button@RELOAD_BUTTON:
 			X: 182
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 100
+			Width: 26
 			Height: 25
-			Text: Refresh
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+					Children:
+						LogicTicker@ANIMATION:
+		Label@PLAYER_COUNT:
+			X: 208
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 190
+			Height: 25
+			Align: Center
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: 398
@@ -188,47 +244,3 @@ Background@MULTIPLAYER_PANEL:
 			Text: Back
 			Font: Bold
 		TooltipContainer@TOOLTIP_CONTAINER:
-
-ScrollPanel@MULTIPLAYER_FILTER_PANEL:
-	Width: 158
-	Height: 130
-	Children:
-		Checkbox@WAITING_FOR_PLAYERS:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Waiting
-			TextColor: 32CD32
-			Font: Regular
-		Checkbox@EMPTY:
-			X: 5
-			Y: 30
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Empty
-			Font: Regular
-		Checkbox@PASSWORD_PROTECTED:
-			X: 5
-			Y: 55
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Protected
-			TextColor: FF0000
-			Font: Regular
-		Checkbox@ALREADY_STARTED:
-			X: 5
-			Y: 80
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Started
-			TextColor: FFA500
-			Font: Regular
-		Checkbox@INCOMPATIBLE_VERSION:
-			X: 5
-			Y: 105
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Text: Incompatible
-			TextColor: BEBEBE
-			Font: Regular

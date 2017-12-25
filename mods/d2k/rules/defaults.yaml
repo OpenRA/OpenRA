@@ -164,6 +164,8 @@
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	Mobile:
 		Crushes: crate, spicebloom
@@ -207,7 +209,8 @@
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
-		Offset: -12, -12
+		ReferencePoint: Top, Left
+		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
@@ -231,6 +234,8 @@
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
+	Tooltip:
+		GenericName: Destroyed Unit
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -255,6 +260,8 @@
 
 ^AircraftHusk:
 	Inherits: ^Husk
+	Tooltip:
+		GenericName: Unit
 	WithShadow:
 	FallsToEarth:
 		Spins: False
@@ -265,6 +272,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	Health:
 	Armor:
@@ -342,6 +351,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Interactable:
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	AppearsOnRadar:
 		UseLocation: true
@@ -360,6 +371,8 @@
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Tooltip:
+		GenericName: Structure
 	Huntable:
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -473,13 +486,17 @@
 	GrantCondition@IDISABLE:
 		RequiresCondition: lowpower || powerdown
 		Condition: disabled
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-		PowerdownCondition: powerdown
+	ToggleConditionOnOrder:
+		DisabledSound: EnablePower
+		EnabledSound: DisablePower
+		Condition: powerdown
+		OrderName: PowerDown
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
 		Palette: chrome
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+	PowerMultiplier@POWERDOWN:
+		RequiresCondition: powerdown
+		Modifier: 0

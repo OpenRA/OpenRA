@@ -213,6 +213,21 @@ lobby-bits: buttons.png
 	protected: 200,0,12,13
 	protected-disabled: 211,0,12,13
 
+reload-icon: chrome.png
+	enabled: 416,312,16,16
+	disabled-0: 416,280,16,16
+	disabled-1: 432,280,16,16
+	disabled-2: 448,280,16,16
+	disabled-3: 464,280,16,16
+	disabled-4: 480,280,16,16
+	disabled-5: 496,280,16,16
+	disabled-6: 416,296,16,16
+	disabled-7: 432,296,16,16
+	disabled-8: 448,296,16,16
+	disabled-9: 464,296,16,16
+	disabled-10: 480,296,16,16
+	disabled-11: 496,296,16,16
+
 strategic: buttons.png
 	unowned: 127,5,23,22
 	critical_unowned: 127,27,23,22

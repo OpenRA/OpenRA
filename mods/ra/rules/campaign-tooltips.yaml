@@ -3,11 +3,6 @@
 		GenericVisibility: Enemy
 		ShowOwnerRow: false
 
-^Tank:
-	Tooltip:
-		GenericVisibility: Enemy
-		ShowOwnerRow: false
-
 ^Infantry:
 	Tooltip:
 		GenericVisibility: Enemy
