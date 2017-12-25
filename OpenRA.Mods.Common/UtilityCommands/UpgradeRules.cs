@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static void RenameNodeKey(MiniYamlNode node, string key)
 		{
+			if (node == null)
+				return;
+
 			var parts = node.Key.Split('@');
 			node.Key = key;
 			if (parts.Length > 1)
@@ -1566,6 +1569,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("GrantConditionOnDisabled was a stop-gap solution that has been removed along with it.");
 						Console.WriteLine("You'll have to use RequiresCondition or PauseOnCondition on individual traits to 'disable' actors.");
 						node.Value.Nodes.Remove(grant);
+					}
+				}
+
+				// CanPowerDown was replaced with a more general trait for toggling a condition
+				if (engineVersion < 20171225)
+				{
+					var cpd = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("CanPowerDown", StringComparison.Ordinal));
+					if (cpd != null)
+					{
+						RenameNodeKey(cpd, "ToggleConditionOnOrder");
+
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerupSound"), "DisabledSound");
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerupSpeech"), "DisabledSpeech");
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerdownSound"), "EnabledSound");
+						RenameNodeKey(cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerdownSpeech"), "EnabledSpeech");
+						cpd.Value.Nodes.Add(new MiniYamlNode("OrderName", "PowerDown"));
+
+						var condition = cpd.Value.Nodes.FirstOrDefault(n => n.Key == "PowerdownCondition");
+						if (condition != null)
+							RenameNodeKey(condition, "Condition");
+						else
+							cpd.Value.Nodes.Add(new MiniYamlNode("Condition", "powerdown"));
+
+						if (cpd.Value.Nodes.RemoveAll(n => n.Key == "CancelWhenDisabled") > 0)
+						{
+							Console.WriteLine("CancelWhenDisabled was removed when CanPowerDown was replaced by ToggleConditionOnOrder");
+							Console.WriteLine("Use PauseOnCondition instead of RequiresCondition to replicate the behavior of 'false'.");
+						}
+
+						node.Value.Nodes.Add(new MiniYamlNode("PowerMultiplier@POWERDOWN", new MiniYaml("", new List<MiniYamlNode>()
+						{
+							new MiniYamlNode("RequiresCondition", condition.Value.Value),
+							new MiniYamlNode("Modifier", "0")
+						})));
 					}
 				}
 

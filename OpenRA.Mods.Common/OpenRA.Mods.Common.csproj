@@ -402,7 +402,6 @@
     <Compile Include="Traits\Player\StrategicVictoryConditions.cs" />
     <Compile Include="Traits\Player\TechTree.cs" />
     <Compile Include="Traits\Power\AffectedByPowerOutage.cs" />
-    <Compile Include="Traits\Power\CanPowerDown.cs" />
     <Compile Include="Traits\Power\Player\PowerManager.cs" />
     <Compile Include="Traits\Power\Power.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPowerState.cs" />
@@ -836,6 +835,7 @@
     <Compile Include="Widgets\Logic\Lobby\LobbyOptionsLogic.cs" />
     <Compile Include="Traits\World\LobbyPrerequisiteCheckbox.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
+    <Compile Include="Traits\Conditions\ToggleConditionOnOrder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

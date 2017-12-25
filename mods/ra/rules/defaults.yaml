@@ -1100,16 +1100,20 @@
 	GrantCondition@IDISABLE:
 		RequiresCondition: lowpower || powerdown
 		Condition: disabled
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-		PowerdownCondition: powerdown
+	ToggleConditionOnOrder:
+		DisabledSound: EnablePower
+		EnabledSound: DisablePower
+		Condition: powerdown
+		OrderName: PowerDown
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
 		Palette: chrome
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+	PowerMultiplier@POWERDOWN:
+		RequiresCondition: powerdown
+		Modifier: 0
 
 ^DisabledByPowerOutage:
 	WithColoredOverlay@IDISABLE:

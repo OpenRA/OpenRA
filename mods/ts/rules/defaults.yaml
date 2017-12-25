@@ -1226,16 +1226,20 @@
 	GrantCondition@IDISABLE:
 		RequiresCondition: powerdown
 		Condition: disabled
-	CanPowerDown:
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-		PowerdownCondition: powerdown
+	ToggleConditionOnOrder:
+		DisabledSpeech: EnablePower
+		EnabledSpeech: DisablePower
+		Condition: powerdown
+		OrderName: PowerDown
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
 		Palette: mouse
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+	PowerMultiplier@POWERDOWN:
+		RequiresCondition: powerdown
+		Modifier: 0
 
 ^DisableOnLowPowerOrPowerDown:
 	Inherits@LOWPOWER: ^DisableOnLowPower
