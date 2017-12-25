@@ -16,6 +16,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using BeaconLib;
+using OpenRA.Network;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
 
@@ -88,27 +89,18 @@ namespace OpenRA.Mods.Common.Server
 
 		void PublishGame(S server)
 		{
-			var mod = server.ModData.Manifest;
+			// Cache the server info on the main thread to ensure data consistency
+			var gs = new GameServer(server);
 
-			// important to grab these on the main server thread, not in the worker we're about to spawn -- they may be modified
-			// by the main thread as clients join and leave.
-			var numPlayers = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot != null).Count();
-			var numBots = server.LobbyInfo.Clients.Where(c1 => c1.Bot != null).Count();
-			var numSpectators = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null && c1.Slot == null).Count();
-			var numSlots = server.LobbyInfo.Slots.Where(s => !s.Value.Closed).Count() - numBots;
-			var passwordProtected = !string.IsNullOrEmpty(server.Settings.Password);
-			var clients = server.LobbyInfo.Clients.Where(c1 => c1.Bot == null).Select(c => Convert.ToBase64String(Encoding.UTF8.GetBytes(c.Name))).ToArray();
+			if (!isBusy && server.Settings.AdvertiseOnline)
+				UpdateMasterServer(server, gs.ToPOSTData(false));
 
-			UpdateMasterServer(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected, clients);
 			if (LanGameBeacon != null)
-				UpdateLANGameBeacon(server, numPlayers, numSlots, numBots, numSpectators, mod, passwordProtected);
+				LanGameBeacon.BeaconData = gs.ToPOSTData(true);
 		}
 
-		void UpdateMasterServer(S server, int numPlayers, int numSlots, int numBots, int numSpectators, Manifest mod, bool passwordProtected, string[] clients)
+		void UpdateMasterServer(S server, string postData)
 		{
-			if (isBusy || !server.Settings.AdvertiseOnline)
-				return;
-
 			lastPing = Game.RunTime;
 			isBusy = true;
 
@@ -116,31 +108,15 @@ namespace OpenRA.Mods.Common.Server
 			{
 				try
 				{
-					var url = "ping?port={0}&name={1}&state={2}&players={3}&bots={4}&mods={5}&map={6}&maxplayers={7}&spectators={8}&protected={9}&clients={10}";
-					if (isInitialPing) url += "&new=1";
-
 					var serverList = server.ModData.Manifest.Get<WebServices>().ServerList;
 					using (var wc = new WebClient())
 					{
 						wc.Proxy = null;
-						var masterResponse = wc.DownloadData(
-							serverList + url.F(
-							server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
-							(int)server.State,
-							numPlayers,
-							numBots,
-							"{0}@{1}".F(mod.Id, mod.Metadata.Version),
-							server.LobbyInfo.GlobalSettings.Map,
-							numSlots,
-							numSpectators,
-							passwordProtected ? 1 : 0,
-							string.Join(",", clients)));
+						var masterResponseText = wc.UploadString(serverList + "ping", postData);
 
 						if (isInitialPing)
 						{
-							var masterResponseText = Encoding.UTF8.GetString(masterResponse);
 							Log.Write("server", "Master server: " + masterResponseText);
-
 							var errorCode = 0;
 							var errorMessage = string.Empty;
 
@@ -181,29 +157,6 @@ namespace OpenRA.Mods.Common.Server
 			};
 
 			a.BeginInvoke(null, null);
-		}
-
-		void UpdateLANGameBeacon(S server, int numPlayers, int numSlots, int numBots, int numSpectators, Manifest mod, bool passwordProtected)
-		{
-			var settings = server.Settings;
-
-			// TODO: Serialize and send client names
-			var lanGameYaml =
-@"Game:
-	Id: {0}
-	Name: {1}
-	Address: {2}:{3}
-	State: {4}
-	Players: {5}
-	MaxPlayers: {6}
-	Bots: {7}
-	Spectators: {8}
-	Map: {9}
-	Mods: {10}@{11}
-	Protected: {12}".F(Platform.SessionGUID, settings.Name, server.Ip, settings.ListenPort, (int)server.State, numPlayers, numSlots, numBots, numSpectators,
-				server.Map.Uid, mod.Id, mod.Metadata.Version, passwordProtected);
-
-			LanGameBeacon.BeaconData = lanGameYaml;
 		}
 	}
 }
