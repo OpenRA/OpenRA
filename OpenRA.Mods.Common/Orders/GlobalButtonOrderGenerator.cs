@@ -33,6 +33,11 @@ namespace OpenRA.Mods.Common.Orders
 			return OrderInner(world, mi);
 		}
 
+		protected virtual bool IsValidTrait(T t)
+		{
+			return Exts.IsTraitEnabled(t);
+		}
+
 		protected IEnumerable<Order> OrderInner(World world, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
@@ -40,7 +45,7 @@ namespace OpenRA.Mods.Common.Orders
 				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
 					.Select(a => a.Actor)
 					.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.TraitsImplementing<T>()
-						.Any(Exts.IsTraitEnabled));
+						.Any(IsValidTrait));
 
 				if (underCursor == null)
 					yield break;
@@ -66,9 +71,14 @@ namespace OpenRA.Mods.Common.Orders
 		public abstract string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
 	}
 
-	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<CanPowerDown>
+	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<ToggleConditionOnOrder>
 	{
 		public PowerDownOrderGenerator() : base("PowerDown") { }
+
+		protected override bool IsValidTrait(ToggleConditionOnOrder t)
+		{
+			return !t.IsTraitDisabled && !t.IsTraitPaused;
+		}
 
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
