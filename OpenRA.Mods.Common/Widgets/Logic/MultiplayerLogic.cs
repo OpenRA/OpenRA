@@ -334,7 +334,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
+			var queryURL = services.ServerList + "games?protocol={0}&engine={1}&mod={2}&version={3}".F(
+				GameServer.ProtocolVersion,
 				Uri.EscapeUriString(Game.EngineVersion),
 				Uri.EscapeUriString(Game.ModData.Manifest.Id),
 				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
@@ -346,11 +347,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// Games that we can't join are sorted last
 			if (!testEntry.IsCompatible)
-				return testEntry.ModId == modData.Manifest.Id ? 1 : 0;
+				return testEntry.Mod == modData.Manifest.Id ? 1 : 0;
 
 			// Games for the current mod+version are sorted first
-			if (testEntry.ModId == modData.Manifest.Id)
-				return testEntry.ModVersion == modData.Manifest.Metadata.Version ? 4 : 3;
+			if (testEntry.Mod == modData.Manifest.Id)
+				return testEntry.Version == modData.Manifest.Metadata.Version ? 4 : 3;
 
 			// Followed by games for different mods that are joinable
 			return 2;
@@ -405,7 +406,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			nextServerRow = null;
 			var rows = new List<Widget>();
-			var mods = games.GroupBy(g => g.Mods)
+			var mods = games.GroupBy(g => g.ModLabel)
 				.OrderByDescending(g => GroupSortOrder(g.First()))
 				.ThenByDescending(g => g.Count());
 
@@ -553,10 +554,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var label = "In progress";
 
-				DateTime startTime;
-				if (DateTime.TryParse(game.Started, out startTime))
+				if (game.PlayTime > 0)
 				{
-					var totalMinutes = Math.Ceiling((DateTime.UtcNow - startTime).TotalMinutes);
+					var totalMinutes = Math.Ceiling(game.PlayTime / 60.0);
 					label += " for {0} minute{1}".F(totalMinutes, totalMinutes > 1 ? "s" : "");
 				}
 
