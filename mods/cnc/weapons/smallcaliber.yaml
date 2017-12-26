@@ -129,7 +129,7 @@ MachineGunH:
 			Light: 80
 
 APCGun:
-	ReloadDelay: 18
+	ReloadDelay: 19
 	Range: 5c0
 	Report: gun20.aud
 	Projectile: Bullet
@@ -146,6 +146,8 @@ APCGun:
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
 		ValidTargets: Ground, Water, Air
+	Burst: 2
+	BurstDelays: 18
 
 APCGun.AA:
 	Inherits: APCGun
