@@ -36,7 +36,6 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
-		RequiresCondition: !powerdown
 	SelectionDecorations:
 	RenderSprites:
 		Image: napuls.gdi

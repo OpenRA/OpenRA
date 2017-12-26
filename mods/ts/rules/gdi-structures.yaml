@@ -343,7 +343,6 @@ GARADR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -50
-		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 
@@ -450,13 +449,12 @@ GAPLUG:
 	ExitsDebugOverlay:
 	SupportPowerChargeBar:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: !powerdown && (plug.ioncannona || plug.ioncannonb)
+		RequiresCondition: (plug.ioncannona || plug.ioncannonb)
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: !powerdown && (plug.hunterseekera || plug.hunterseekerb)
+		RequiresCondition: (plug.hunterseekera || plug.hunterseekerb)
 		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2

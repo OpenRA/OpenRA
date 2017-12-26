@@ -294,7 +294,6 @@ NARADR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -40
-		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 
@@ -366,7 +365,6 @@ NATMPL:
 		MaxHeightDelta: 3
 	Power:
 		Amount: -200
-		RequiresCondition: !powerdown
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !disabled
 		Sequence: idle-lights

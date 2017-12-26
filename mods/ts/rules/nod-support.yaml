@@ -64,7 +64,6 @@ NAPOST:
 		Types: laserfencenode
 	Power:
 		Amount: -25
-		RequiresCondition: !powerdown
 	RevealsShroud:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
@@ -168,7 +167,6 @@ NALASR:
 	WithVoxelTurret:
 	Power:
 		Amount: -40
-		RequiresCondition: !powerdown
 	SelectionDecorations:
 	BodyOrientation:
 		QuantizedFacings: 0
@@ -218,7 +216,6 @@ NAOBEL:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
-		RequiresCondition: !powerdown
 	SelectionDecorations:
 
 NASAM:
@@ -257,7 +254,6 @@ NASAM:
 		LocalOffset: 543,0,815
 	Power:
 		Amount: -30
-		RequiresCondition: !powerdown
 	SelectionDecorations:
 
 NASTLH:
@@ -293,7 +289,6 @@ NASTLH:
 		Type: cloakgenerator
 	Power:
 		Amount: -350
-		RequiresCondition: !powerdown
 	ProximityExternalCondition:
 		RequiresCondition: !disabled
 		Condition: cloakgenerator
@@ -339,7 +334,6 @@ NAMISL:
 		Sequence: idle-lights
 	Power:
 		Amount: -50
-		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
