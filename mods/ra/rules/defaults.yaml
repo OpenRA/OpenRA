@@ -879,6 +879,8 @@
 	RenderSprites:
 		Palette: terrain
 	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
 	Building:
 		Footprint: x
 		Dimensions: 1,1

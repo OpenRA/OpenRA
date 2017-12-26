@@ -877,6 +877,8 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
