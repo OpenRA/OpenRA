@@ -294,11 +294,11 @@ HELI:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: HellfireAA
-		LocalOffset: 0,-213,-85
+		LocalOffset: 0,-213,-85, 0,213,-85
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: HellfireAG
-		LocalOffset: 0,213,-85
+		LocalOffset: 0,213,-85, 0,-213,-85
 		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
@@ -358,13 +358,13 @@ HIND:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun
-		LocalOffset: 85,-213,-85
+		LocalOffset: 85,-213,-85, 85,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
-		LocalOffset: 85,213,-85
+		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackHeli:
