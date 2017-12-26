@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Time (in frames) until the weapon can fire again.")]
 		public readonly int FireDelay = 0;
 
-		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
+		[Desc("Muzzle position relative to turret or body, (forward, right, up) triples.",
+			"If weapon Burst = 1, it cycles through all listed offsets, otherwise the offset corresponding to current burst is used.")]
 		public readonly WVec[] LocalOffset = { };
 
 		[Desc("Muzzle yaw relative to turret or body.")]
@@ -113,6 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<int> inaccuracyModifiers;
 
 		int ticksSinceLastShot;
+		int currentBarrel;
+		int barrelCount;
 
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
@@ -140,6 +143,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (barrels.Count == 0)
 				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
+
+			barrelCount = barrels.Count;
 
 			Barrels = barrels.ToArray();
 		}
@@ -232,7 +237,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			ticksSinceLastShot = 0;
 
-			var barrel = Barrels[Burst % Barrels.Length];
+			// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
+			currentBarrel %= barrelCount;
+			var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
+			currentBarrel++;
 
 			FireBarrel(self, facing, target, barrel);
 
