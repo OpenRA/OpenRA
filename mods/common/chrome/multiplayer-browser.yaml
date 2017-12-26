@@ -43,6 +43,34 @@ Background@MULTIPLAYER_PANEL:
 					Height: 25
 					Text: Status
 					Font: Bold
+		Background@NOTICE_CONTAINER:
+			X: 20
+			Y: 67
+			Width: 583
+			Height: 20
+			Background: dialog2
+			Children:
+				Label@OUTDATED_VERSION_LABEL:
+					X: 5
+					Width: PARENT_RIGHT-10
+					Height: 18
+					Align: Center
+					Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
+					Font: TinyBold
+				Label@UNKNOWN_VERSION_LABEL:
+					X: 5
+					Width: PARENT_RIGHT-10
+					Height: 18
+					Align: Center
+					Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
+					Font: TinyBold
+				Label@PLAYTEST_AVAILABLE_LABEL:
+					X: 5
+					Width: PARENT_RIGHT-10
+					Height: 18
+					Align: Center
+					Text: A pre-release version of OpenRA is available for testing. Download the playtest from www.openra.net
+					Font: TinyBold
 		ScrollPanel@SERVER_LIST:
 			X: 20
 			Y: 67
