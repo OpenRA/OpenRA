@@ -19,5 +19,6 @@ namespace OpenRA
 		public readonly string ServerAdvertise = "http://master.openra.net/ping";
 		public readonly string MapRepository = "http://resource.openra.net/map/";
 		public readonly string GameNews = "http://master.openra.net/gamenews";
+		public readonly string MPNotices = "http://master.openra.net/notices";
 	}
 }
