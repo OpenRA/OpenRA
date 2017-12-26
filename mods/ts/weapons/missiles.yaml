@@ -93,8 +93,6 @@ MammothTusk:
 
 BikeMissile:
 	Inherits: ^DefaultMissile
-	Burst: 2 # to make bike alternate between left and right launcher, no change in dmg/s compared to original TS
-	BurstDelays: 60
 	Range: 5c0
 	Report: misl1.aud
 	ValidTargets: Ground
