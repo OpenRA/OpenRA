@@ -115,12 +115,11 @@ GACTWR:
 		Types: turret
 	Power@base:
 		Amount: -10
-		RequiresCondition: !powerdown
 	Power@turrets:
-		RequiresCondition: (tower.vulcan || tower.rocket || tower.sam) && !powerdown
+		RequiresCondition: (tower.vulcan || tower.rocket || tower.sam)
 		Amount: -20
 	Power@samextra:
-		RequiresCondition: tower.sam && !powerdown
+		RequiresCondition: tower.sam
 		Amount: -10
 	Pluggable:
 		Conditions:

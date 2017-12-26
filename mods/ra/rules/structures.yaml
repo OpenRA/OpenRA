@@ -55,7 +55,6 @@ MSLO:
 		CircleSequence: circles
 	SupportPowerChargeBar:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -95,7 +94,6 @@ GAP:
 		RequiresCondition: !disabled
 	RenderShroudCircle:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -60
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -407,7 +405,6 @@ IRON:
 		OnFireSound: ironcur9.aud
 	SupportPowerChargeBar:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -484,7 +481,6 @@ PDOX:
 		Range: 2
 	SupportPowerChargeBar:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -200
 	MustBeDestroyed:
 		RequiredForShortGame: false
@@ -528,7 +524,6 @@ TSLA:
 		MaxCharges: 3
 		ReloadDelay: 120
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -100
 	DetectCloaked:
 		Range: 6c0
@@ -578,7 +573,6 @@ AGUN:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -50
 	BodyOrientation:
 		UseClassicFacingFudge: True
@@ -629,7 +623,6 @@ DOME:
 		RequiresCondition: !disabled
 	RenderDetectionCircle:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
 	ExternalCondition@JAMMED:
@@ -872,7 +865,6 @@ SAM:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -40
 	BodyOrientation:
 		UseClassicFacingFudge: True
