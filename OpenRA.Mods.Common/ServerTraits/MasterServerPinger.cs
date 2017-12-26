@@ -108,11 +108,11 @@ namespace OpenRA.Mods.Common.Server
 			{
 				try
 				{
-					var serverList = server.ModData.Manifest.Get<WebServices>().ServerList;
+					var endpoint = server.ModData.Manifest.Get<WebServices>().ServerAdvertise;
 					using (var wc = new WebClient())
 					{
 						wc.Proxy = null;
-						var masterResponseText = wc.UploadString(serverList + "ping", postData);
+						var masterResponseText = wc.UploadString(endpoint, postData);
 
 						if (isInitialPing)
 						{

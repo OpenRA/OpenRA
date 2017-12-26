@@ -348,7 +348,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			var queryURL = services.ServerList + "games?protocol={0}&engine={1}&mod={2}&version={3}".F(
+			var queryURL = services.ServerList + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
 				GameServer.ProtocolVersion,
 				Uri.EscapeUriString(Game.EngineVersion),
 				Uri.EscapeUriString(Game.ModData.Manifest.Id),
