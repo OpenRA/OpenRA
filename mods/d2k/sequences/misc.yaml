@@ -133,7 +133,7 @@ pips:
 		Offset: 3, 3
 	pickup-indicator: DATA.R8
 		Start: 112
-		Offset: -15, -15
+		Offset: -9, -9
 	pip-empty: DATA.R8
 		Start: 15
 	pip-green: DATA.R8

@@ -207,7 +207,8 @@
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
-		ReferencePoint: Center
+		ReferencePoint: Top, Left
+		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
