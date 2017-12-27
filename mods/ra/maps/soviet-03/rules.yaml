@@ -16,14 +16,12 @@ World:
 			hard: Hard
 		Default: easy
 
-^Infantry:
-	-GivesBounty:
-
-^Ship:
-	-GivesBounty:
+Player:
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
 
 ^Helicopter:
-	-GivesBounty:
 	Health:
 		HP: 900000
 

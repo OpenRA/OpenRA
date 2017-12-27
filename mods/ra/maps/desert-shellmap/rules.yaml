@@ -1,5 +1,8 @@
 Player:
 	-ConquestVictoryConditions:
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
 
 World:
 	-CrateSpawner:
@@ -21,8 +24,6 @@ World:
 			Allies: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
 
 ^Vehicle:
-	GivesBounty:
-		Percentage: 0
 	GainsExperience:
 		Conditions:
 	DamageMultiplier@UNKILLABLE:
@@ -32,8 +33,6 @@ World:
 		Condition: unkillable
 
 ^Tank:
-	GivesBounty:
-		Percentage: 0
 	GainsExperience:
 		Conditions:
 	DamageMultiplier@UNKILLABLE:
@@ -43,8 +42,6 @@ World:
 		Condition: unkillable
 
 ^Infantry:
-	GivesBounty:
-		Percentage: 0
 	GainsExperience:
 		Conditions:
 	DeathSounds@NORMAL:
@@ -60,8 +57,6 @@ World:
 		Condition: unkillable
 
 ^Ship:
-	GivesBounty:
-		Percentage: 0
 	GainsExperience:
 		Conditions:
 	DamageMultiplier@UNKILLABLE:
@@ -71,8 +66,6 @@ World:
 		Condition: unkillable
 
 ^Plane:
-	GivesBounty:
-		Percentage: 0
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
@@ -80,8 +73,6 @@ World:
 		Condition: unkillable
 
 ^Building:
-	GivesBounty:
-		Percentage: 0
 	DamageMultiplier@UNKILLABLE:
 		RequiresCondition: unkillable
 		Modifier: 0
