@@ -1077,7 +1077,7 @@
 	Tooltip:
 		Name: Mine
 	Targetable:
-		TargetTypes: Ground
+		TargetTypes: Ground, Defense
 	Immobile:
 		OccupiesSpace: true
 	HitShape:
