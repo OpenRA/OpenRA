@@ -1305,7 +1305,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "cnc" || mod == "ra" || mod == "d2k")
+					if (mod == "cnc" || mod == "ra" || mod == "d2k" || mod == "ts")
 					{
 						if (node.Key == "HP" && parent.Key == "Health")
 						{
@@ -1717,7 +1717,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (engineVersion < 20171212)
 				{
 					var mod = modData.Manifest.Id;
-					if (mod == "cnc" || mod == "ra" || mod == "d2k")
+					if (mod == "cnc" || mod == "ra" || mod == "d2k" || mod == "ts")
 					{
 						if (node.Key == "Damage" && (parent.Value.Value == "SpreadDamage" || parent.Value.Value == "TargetDamage"))
 						{
