@@ -173,12 +173,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var refreshButton = widget.GetOrNull<ButtonWidget>("REFRESH_BUTTON");
-			if (refreshButton != null)
+			var reloadButton = widget.GetOrNull<ButtonWidget>("RELOAD_BUTTON");
+			if (reloadButton != null)
 			{
-				refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
-				refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
-				refreshButton.OnClick = RefreshServerList;
+				reloadButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+				reloadButton.OnClick = RefreshServerList;
+
+				var reloadIcon = reloadButton.GetOrNull<ImageWidget>("IMAGE_RELOAD");
+				if (reloadIcon != null)
+				{
+					var disabledFrame = 0;
+					var disabledImage = "disabled-" + disabledFrame.ToString();
+					reloadIcon.GetImageName = () => searchStatus == SearchStatus.Fetching ? disabledImage : reloadIcon.ImageName;
+
+					var reloadTicker = reloadIcon.Get<LogicTickerWidget>("ANIMATION");
+					if (reloadTicker != null)
+					{
+						reloadTicker.OnTick = () =>
+						{
+							disabledFrame = searchStatus == SearchStatus.Fetching ? (disabledFrame + 1) % 12 : 0;
+							disabledImage = "disabled-" + disabledFrame.ToString();
+						};
+					}
+				}
 			}
 
 			mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");

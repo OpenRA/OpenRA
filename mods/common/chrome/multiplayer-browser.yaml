@@ -191,13 +191,22 @@ Background@MULTIPLAYER_PANEL:
 			Height: 25
 			Text: Filter Games
 			Font: Bold
-		Button@REFRESH_BUTTON:
+		Button@RELOAD_BUTTON:
 			X: 182
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 100
+			Width: 26
 			Height: 25
-			Text: Refresh
-			Font: Bold
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+					Children:
+						LogicTicker@ANIMATION:
 		Button@DIRECTCONNECT_BUTTON:
 			X: 398
 			Y: PARENT_BOTTOM - HEIGHT - 20

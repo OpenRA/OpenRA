@@ -197,12 +197,22 @@ Container@MULTIPLAYER_PANEL:
 					Width: 152
 					Height: 25
 					Text: Filter Games
-				Button@REFRESH_BUTTON:
+				Button@RELOAD_BUTTON:
 					X: 172
 					Y: PARENT_BOTTOM - 40
-					Width: 100
+					Width: 26
 					Height: 25
-					Text: Refresh
+					Children:
+						Image@IMAGE_RELOAD:
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: reload-icon
+							ImageName: enabled
+							IgnoreMouseOver: True
+							Children:
+								LogicTicker@ANIMATION:
 				Button@DIRECTCONNECT_BUTTON:
 					X: 387
 					Y: PARENT_BOTTOM - 40
