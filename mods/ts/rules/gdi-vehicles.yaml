@@ -17,7 +17,7 @@ APC:
 			Water: 80
 		RequiresCondition: !empdisable && !loading
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -75,7 +75,7 @@ HVR:
 			BlueTiberium: 100
 			Veins: 100
 	Health:
-		HP: 230
+		HP: 23000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -121,7 +121,7 @@ SMECH:
 		TurnSpeed: 5
 		Speed: 99
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -166,7 +166,7 @@ MMCH:
 		Speed: 56
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -227,8 +227,9 @@ HMEC:
 		Speed: 42
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 800
+		HP: 80000
 	SelfHealing:
+		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -273,7 +274,7 @@ SONIC:
 		Speed: 56
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -315,7 +316,7 @@ JUGG:
 		Prerequisites: ~gaweap, garadr, ~techlevel.high
 		Description: Mobile Artillery Mech.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Light
 	Mobile:

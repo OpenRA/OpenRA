@@ -14,7 +14,7 @@ E3:
 	Voiced:
 		VoiceSet: Rocket
 	Health:
-		HP: 100
+		HP: 10000
 	Mobile:
 		Speed: 56
 	Armament@PRIMARY:
@@ -54,7 +54,7 @@ CYBORG:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 300
+		HP: 30000
 	Passenger:
 	RevealsShroud:
 		Range: 5c0
@@ -90,7 +90,7 @@ CYC2:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 500
+		HP: 50000
 	Passenger:
 	RevealsShroud:
 		Range: 7c0
@@ -119,7 +119,7 @@ MHIJACK:
 	Voiced:
 		VoiceSet: Hijacker
 	Health:
-		HP: 300
+		HP: 30000
 	Mobile:
 		Speed: 99
 	-Crushable:

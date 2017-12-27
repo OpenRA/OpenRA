@@ -14,7 +14,7 @@ MCV:
 		Priority: 3
 		DecorationBounds: 42,42
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -80,11 +80,12 @@ HARV:
 			BlueTiberium: 80
 			Veins: 80
 	Health:
-		HP: 1000
+		HP: 100000
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -125,7 +126,7 @@ LPST:
 		Name: Mobile Sensor Array (deployed)
 		RequiresCondition: deployed
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	Mobile:

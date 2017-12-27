@@ -11,7 +11,7 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 288
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 25
+		Damage: 2500
 		Versus:
 			None: 600
 			Wood: 148
@@ -38,7 +38,7 @@ Bomb:
 	Warhead@1Dam: SpreadDamage
 		Spread: 512
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 160
+		Damage: 16000
 		Versus:
 			None: 200
 			Wood: 90
@@ -76,7 +76,7 @@ FiendShard:
 		LaunchAngle: 60
 		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
-		Damage: 35
+		Damage: 3500
 		Versus:
 			Light: 60
 			Heavy: 40
@@ -96,7 +96,7 @@ SlimeAttack:
 	Projectile: InstantHit
 	InvalidTargets: Wall, Bridge
 	Warhead@1Dam: SpreadDamage
-		Damage: 100
+		Damage: 10000
 		InvalidTargets: Wall, Bridge
 		Versus:
 			Light: 60
@@ -111,7 +111,7 @@ Tentacle:
 	Projectile: InstantHit
 	InvalidTargets: Wall, Bridge
 	Warhead@1Dam: SpreadDamage
-		Damage: 160
+		Damage: 16000
 		InvalidTargets: Wall, Bridge
 		Versus:
 			None: 60
@@ -124,7 +124,7 @@ Tentacle:
 Veins:
 	ReloadDelay: 16
 	Warhead@Damage: TargetDamage
-		Damage: 5
+		Damage: 500
 		DamageTypes: BulletDeath
 	Warhead@Effect: CreateEffect
 		Explosions: veins
@@ -142,7 +142,7 @@ Veins:
 	Warhead@1Dam: SpreadDamage
 		Spread: 200
 		Falloff: 100, 100, 0
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 100
 			Wood: 85
@@ -174,7 +174,7 @@ LargeDebris:
 		Sequences: 2, 3, 4, 6, 7, 9, 10
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
-		Damage: 20
+		Damage: 2000
 	Warhead@2Eff: CreateEffect
 		Explosions: small_twlt
 		ImpactSounds: expnew06.aud

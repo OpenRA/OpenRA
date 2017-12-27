@@ -16,7 +16,7 @@ BGGY:
 		TurnSpeed: 8
 		Speed: 142
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -54,7 +54,7 @@ BIKE:
 		TurnSpeed: 8
 		Speed: 170
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -101,7 +101,7 @@ TTNK:
 		Crushes: wall, crate, infantry
 		RequiresCondition: !empdisable && undeployed
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Light
 		RequiresCondition: undeployed
@@ -210,7 +210,7 @@ ART2:
 		Prerequisites: ~naweap, naradr, ~techlevel.high
 		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Mobile:
@@ -286,7 +286,7 @@ REPAIR:
 	Tooltip:
 		Name: Mobile Repair Vehicle
 	Health:
-		HP: 200
+		HP: 20000
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
@@ -333,11 +333,12 @@ WEED:
 		Speed: 71
 		TurnSpeed: 5
 	Health:
-		HP: 600
+		HP: 60000
 	SelfHealing:
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
+		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -375,7 +376,7 @@ SAPC:
 		TerrainSpeeds:
 			Subterranean: 120
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -422,7 +423,7 @@ SUBTANK:
 		TerrainSpeeds:
 			Subterranean: 120
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -458,7 +459,7 @@ STNK:
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 180
+		HP: 18000
 	Armor:
 		Type: Light
 	RevealsShroud:

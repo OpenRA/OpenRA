@@ -9,7 +9,7 @@ GAWALL:
 	Tooltip:
 		Name: Concrete Wall
 	Health:
-		HP: 225
+		HP: 22500
 	Armor:
 		Type: Concrete
 	Crushable:
@@ -56,7 +56,7 @@ GACTWR:
 		Bounds: 48, 36, 0, -6
 		DecorationBounds: 48, 48, 0, -12
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Light
 	BlocksProjectiles:

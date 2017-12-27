@@ -41,7 +41,7 @@ CABHUT:
 		TargetTypes: Ground, Building, Bridge
 		RequiresForceFire: true
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Concrete
 	HitShape:

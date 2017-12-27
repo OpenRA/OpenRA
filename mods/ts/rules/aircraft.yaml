@@ -12,7 +12,7 @@ DPOD:
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 	Health:
-		HP: 60
+		HP: 6000
 	Armor:
 		Type: Light
 	Cargo:
@@ -47,7 +47,7 @@ DSHP:
 		LandingSound: dropdwn1.aud
 		IdealSeparation: 1275
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -86,7 +86,7 @@ ORCA:
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -137,7 +137,7 @@ ORCAB:
 		LandingSound: orcadwn1.aud
 	ReturnOnIdle:
 	Health:
-		HP: 260
+		HP: 26000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -185,7 +185,7 @@ ORCATRAN:
 		LandingSound: orcadwn1.aud
 		IdealSeparation: 1275
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -225,7 +225,7 @@ TRNSPORT:
 		Voice: Move
 		LocalOffset: 0,0,-317
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -267,7 +267,7 @@ SCRIN:
 		LandingSound: dropdwn1.aud
 	ReturnOnIdle:
 	Health:
-		HP: 280
+		HP: 28000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -314,7 +314,7 @@ APACHE:
 		Speed: 130
 		MoveIntoShroud: false
 	Health:
-		HP: 225
+		HP: 22500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -352,7 +352,7 @@ HUNTER:
 	Tooltip:
 		Name: Hunter-Seeker Droid
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Light
 	AttackSuicides:
