@@ -51,7 +51,7 @@
 		RequiresCondition: rank-elite
 		Modifier: 75
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -344,6 +344,7 @@
 	RepairableBuilding:
 		IndicatorPalette: mouse
 		PlayerExperience: 25
+		RepairStep: 700
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -368,7 +369,7 @@
 	Inherits: ^BasicBuilding
 	-UpdatesPlayerStatistics:
 	Health:
-		HP: 900
+		HP: 90000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -388,7 +389,7 @@
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 	RenderSprites:
 		-Palette:
 	-Cloak@EXTERNALCLOAK:
@@ -403,7 +404,7 @@
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -496,7 +497,7 @@
 	Huntable:
 	DrawLineToTarget:
 	Health:
-		HP: 50
+		HP: 5000
 	Armor:
 		Type: None
 	Valued:
@@ -546,7 +547,7 @@
 	ActorLostNotification:
 	DamagedByTerrain:
 		Terrain: Tiberium, BlueTiberium
-		Damage: 2
+		Damage: 200
 		DamageInterval: 16
 		DamageTypes: ExplosionDeath, TriggerVisceroid
 		RequiresCondition: !inside-tunnel
@@ -554,7 +555,7 @@
 		Voice: Move
 	Guardable:
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -864,7 +865,7 @@
 		CameraPitch: 90
 	Aircraft:
 	Health:
-		HP: 280
+		HP: 28000
 	Armor:
 		Type: Heavy
 	HiddenUnderFog:
@@ -1050,7 +1051,7 @@
 		Types: Infantry
 		UnloadVoice: Unload
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -1131,7 +1132,7 @@
 	Valued:
 		Cost: 250
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	LineBuildNode:
@@ -1185,7 +1186,7 @@
 
 ^HealsOnTiberium:
 	DamagedByTerrain:
-		Damage: -2
+		Damage: -200
 		DamageInterval: 16
 		Terrain: Tiberium, BlueTiberium
 		RequiresCondition: !inside-tunnel

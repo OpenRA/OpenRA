@@ -18,7 +18,7 @@ NAPULS:
 		Bounds: 78, 54, 0, -12
 		DecorationBounds: 78, 54, 0, -12
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	RevealsShroud:

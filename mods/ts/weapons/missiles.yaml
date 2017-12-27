@@ -25,7 +25,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 25
+		Damage: 2500
 		ValidTargets: Ground, Air
 		Versus:
 			None: 25
@@ -62,7 +62,7 @@ HoverMissile:
 	Projectile: Missile
 		RangeLimit: 11c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 3000
 
 MammothTusk:
 	Inherits: ^DefaultMissile
@@ -75,7 +75,7 @@ MammothTusk:
 		RangeLimit: 9c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 144
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			None: 100
@@ -101,7 +101,7 @@ BikeMissile:
 	Projectile: Missile
 		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Ground, Air
 
 Dragon:
@@ -110,7 +110,7 @@ Dragon:
 	Burst: 2
 	Report: misl1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 3000
 
 Hellfire:
 	Inherits: ^DefaultMissile
@@ -120,7 +120,7 @@ Hellfire:
 	ValidTargets: Ground
 	Warhead@1Dam: SpreadDamage
 		Spread: 72
-		Damage: 30
+		Damage: 3000
 		ValidTargets: Ground, Air
 		Versus:
 			None: 30
@@ -143,7 +143,7 @@ RedEye2:
 		Speed: 288
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 33
+		Damage: 3300
 		ValidTargets: Air, Ground
 		DamageTypes: SmallExplosionDeath
 	Warhead@2Eff: CreateEffect

@@ -19,7 +19,7 @@ NAPOWR:
 		Bounds: 88, 48, 2, -6
 		DecorationBounds: 88, 80, 2, -12
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -58,7 +58,7 @@ NAAPWR:
 		Bounds: 100, 54, 0, -4
 		DecorationBounds: 100, 74, 0, -12
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -98,7 +98,7 @@ NAHAND:
 		Bounds: 116, 60, 3, -6
 		DecorationBounds: 116, 78, 3, -8
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -155,7 +155,7 @@ NAWEAP:
 		Bounds: 149, 80, -3, -10
 		DecorationBounds: 149, 116, -3, -20
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -211,7 +211,7 @@ NAHPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
@@ -230,6 +230,7 @@ NAHPAD:
 	RepairsUnits:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		HpPerStep: 1000
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
@@ -275,7 +276,7 @@ NARADR:
 		Bounds: 96, 48, 0, -6
 		DecorationBounds: 96, 72, 0, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	ProvidesRadar:
@@ -319,7 +320,7 @@ NATECH:
 		Bounds: 86, 48, 0, -4
 		DecorationBounds: 86, 58, 0, -4
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -357,7 +358,7 @@ NATMPL:
 	Selectable:
 		Bounds: 134, 120, 12, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:

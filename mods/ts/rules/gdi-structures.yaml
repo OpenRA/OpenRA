@@ -16,7 +16,7 @@ GAPOWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -84,7 +84,7 @@ GAPILE:
 		Bounds: 88, 48, 0, -8
 		DecorationBounds: 88, 56, 0, -8
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -143,7 +143,7 @@ GAWEAP:
 		Bounds: 154, 96, -2, -12
 		DecorationBounds: 154, 100, -2, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
@@ -203,7 +203,7 @@ GAHPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
@@ -222,6 +222,7 @@ GAHPAD:
 	RepairsUnits:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		HpPerStep: 1000
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
@@ -264,7 +265,7 @@ GADEPT:
 		Bounds: 96, 64, -6, -6
 		DecorationBounds: 98, 68, -6, -6
 	Health:
-		HP: 1100
+		HP: 110000
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
@@ -272,6 +273,7 @@ GADEPT:
 	RepairsUnits:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		HpPerStep: 1000
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
@@ -324,7 +326,7 @@ GARADR:
 		Bounds: 96, 48, 0, -6
 		DecorationBounds: 96, 118, 0, -38
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	ProvidesRadar:
@@ -368,7 +370,7 @@ GATECH:
 		Bounds: 110, 60, 3, -4
 		DecorationBounds: 110, 60, 3, -4
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -411,7 +413,7 @@ GAPLUG:
 		RequiresCondition: !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:

@@ -9,7 +9,7 @@ NAWALL:
 	Tooltip:
 		Name: Concrete Wall
 	Health:
-		HP: 225
+		HP: 22500
 	Armor:
 		Type: Concrete
 	Crushable:
@@ -48,7 +48,7 @@ NAPOST:
 	Tooltip:
 		Name: Laser Fence
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Concrete
 	LineBuild:
@@ -147,7 +147,7 @@ NALASR:
 		Bounds: 40, 30, -8, -6
 		DecorationBounds: 40, 36, -8, -8
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -192,7 +192,7 @@ NAOBEL:
 		Bounds: 88, 42, 0, -6
 		DecorationBounds: 88, 72, 0, -12
 	Health:
-		HP: 725
+		HP: 72500
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -235,7 +235,7 @@ NASAM:
 		Bounds: 40, 30, -3, -8
 		DecorationBounds: 40, 36, -3, -8
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	BodyOrientation:
@@ -275,7 +275,7 @@ NASTLH:
 		Footprint: xxx XXX
 		Dimensions: 3,2
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -324,7 +324,7 @@ NAMISL:
 		Bounds: 75,48
 		DecorationBounds: 75,48
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -380,7 +380,7 @@ NAWAST:
 		Bounds: 100, 60, 5, -5
 		DecorationBounds: 100, 60, 5, -5
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
