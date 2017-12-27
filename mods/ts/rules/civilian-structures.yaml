@@ -293,7 +293,7 @@ AMMOCRAT:
 	Armor:
 		Type: none
 	Health:
-		HP: 100
+		HP: 1
 	RenderSprites:
 		Palette: player
 

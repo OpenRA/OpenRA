@@ -335,10 +335,10 @@ WEED:
 	Health:
 		HP: 60000
 	SelfHealing:
+		Step: 500
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
-		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:

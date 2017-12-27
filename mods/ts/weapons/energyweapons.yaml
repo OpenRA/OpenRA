@@ -205,5 +205,5 @@ LaserFence:
 	Projectile: InstantHit
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: FF0000
-		Damage: 9999900
+		Damage: 10000000
 		DamageTypes: FireDeath

@@ -342,9 +342,9 @@
 		AreaTypes: building
 	Capturable:
 	RepairableBuilding:
+		RepairStep: 700
 		IndicatorPalette: mouse
 		PlayerExperience: 25
-		RepairStep: 700
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -1193,7 +1193,7 @@
 
 ^DamagedByVeins:
 	DamagedByTerrain@VEINS:
-		Damage: 5
+		Damage: 500
 		DamageInterval: 16
 		DamageTypes: BulletDeath
 		Terrain: Veins

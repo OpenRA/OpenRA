@@ -65,8 +65,8 @@ MEDIC:
 	WithInfantryBody:
 		DefaultAttackSequence: heal
 	SelfHealing:
-		Delay: 60
 		Step: 500
+		Delay: 60
 	Passenger:
 		PipType: Red
 
