@@ -635,7 +635,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
 						}
 
-						var players = item.GetOrNull<LabelWidget>("PLAYERS");
+						var players = item.GetOrNull<LabelWithTooltipWidget>("PLAYERS");
 						if (players != null)
 						{
 							var label = "{0} / {1}".F(game.Players + game.Bots, game.MaxPlayers + game.Bots)
@@ -644,6 +644,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var color = canJoin ? players.TextColor : incompatibleGameColor;
 							players.GetText = () => label;
 							players.GetColor = () => color;
+
+							if (game.Clients.Any())
+							{
+								var displayClients = game.Clients.Select(c => c.Name);
+								if (game.Clients.Length > 10)
+									displayClients = displayClients
+										.Take(9)
+										.Append("+ {0} other players".F(game.Clients.Length - 9));
+
+								var tooltip = displayClients.JoinWith("\n");
+								players.GetTooltipText = () => tooltip;
+							}
+							else
+								players.GetTooltipText = null;
 						}
 
 						var state = item.GetOrNull<LabelWidget>("STATUS");

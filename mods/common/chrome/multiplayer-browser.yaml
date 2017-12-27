@@ -95,6 +95,7 @@ Background@MULTIPLAYER_PANEL:
 					X: 2
 					Width: PARENT_RIGHT - 27
 					Height: 25
+					EnableChildMouseOver: True
 					Children:
 						Label@TITLE:
 							X: 5
@@ -103,13 +104,18 @@ Background@MULTIPLAYER_PANEL:
 						Image@PASSWORD_PROTECTED:
 							X: 272
 							Y: 6
-							Width: 8
-							Height: 10
+							Width: 10
+							Height: 12
 							ImageCollection: lobby-bits
-						Label@PLAYERS:
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: Requires Password
+						LabelWithTooltip@PLAYERS:
 							X: 290
 							Width: 85
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LOCATION:
 							X: 380
 							Width: 110
