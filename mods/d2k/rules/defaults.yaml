@@ -207,7 +207,7 @@
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
-		Offset: -12, -12
+		ReferencePoint: Center
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
