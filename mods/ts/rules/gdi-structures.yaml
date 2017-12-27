@@ -220,9 +220,9 @@ GAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
-		HpPerStep: 1000
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
@@ -271,9 +271,9 @@ GADEPT:
 		MaxHeightDelta: 3
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
-		HpPerStep: 1000
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false

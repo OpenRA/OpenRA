@@ -228,9 +228,9 @@ NAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
-		HpPerStep: 1000
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform
