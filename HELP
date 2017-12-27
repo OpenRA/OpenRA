@@ -1,0 +1,101 @@
+HOTKEYS
+
+Note: Many of these commands can be configured in the Input Tab of the Settings menu.
+
+
+MENU COMMANDS
+
+
+GENERAL
+
+Take a screenshot											   		  Ctrl + P
+
+
+
+IN GAME
+
+Menu																              Esc
+
+Mute audio																	  M
+
+
+
+SELECTION COMMANDS
+
+Select a unit																	Click
+
+Add a unit to selection												    Shift + Click
+
+Select a group of units												    Click and drag a box around the desired units
+
+Select highest priority units on screen							Q
+
+Select highest priority units on map								Double-click Q
+
+Show all health bars														,
+
+Toggle pixel 																	.
+
+
+
+
+MOVE AND ATTACK COMMANDS
+
+
+Move units or attack targets														Right Click
+
+Attack move																				 A + Right Click
+
+Assault move																			   Ctrl + A + Right Click
+
+Force fire																					 Ctrl + Right Click
+
+Force move																				 Alt + Right Click
+
+Stop units																				     S
+
+Guard unit																				    D + Right Click
+
+Hold position																			    V
+
+Deploy/return to base																  F
+
+Scartter units																			   Ctrl + X
+
+Hold fire stance																		   Alt + F
+
+Return fire stance																	    Alt + D
+
+Defend stance																			 Alt + S
+
+Attack anything stance															    Alt + A
+
+
+
+
+PRODUCTION AND SIDEBAR COMMANDS
+
+
+Pause the game																		  Pause
+
+Sell mode																					 Z
+
+Power mode																				 X
+
+Repair mode																			    C
+
+Place beacon																			   B
+
+Structure tab																				E
+
+Defense tab																				 R
+
+Infantry tab																				   T
+
+Vehicle tab																				   Y
+
+Aircraft tab																				   U
+
+Naval tab (ra only)																		I
+
+Cancel all units of type																 Ctrl + Scroll Button + Click Icon
