@@ -66,8 +66,8 @@ namespace OpenRA.Mods.Common.AI
 		static readonly string[] DefaultRulesNearDeadOwnHealth = new[]
 		{
 			"if ((OwnHealth is NearDead) " +
-			"and (EnemyHealth is Injured) " +
-			"and (RelativeAttackPower is Equal) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured)) " +
+			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal))) " +
 			"then AttackOrFlee is Attack",
 
