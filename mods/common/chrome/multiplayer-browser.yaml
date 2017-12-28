@@ -70,7 +70,7 @@ Background@MULTIPLAYER_PANEL:
 					Width: PARENT_RIGHT-10
 					Height: 18
 					Align: Center
-					Text: A pre-release version of OpenRA is available for testing. Download the playtest from www.openra.net
+					Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
 					Font: TinyBold
 		ScrollPanel@SERVER_LIST:
 			X: 20
