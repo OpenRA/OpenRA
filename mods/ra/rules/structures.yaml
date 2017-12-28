@@ -1083,6 +1083,10 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
+		RequiresCondition: factundeploy
+	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
+		Condition: factundeploy
+		Prerequisites: global-factundeploy
 	ProductionBar@Building:
 		ProductionType: Building
 	ProductionBar@Defense:
