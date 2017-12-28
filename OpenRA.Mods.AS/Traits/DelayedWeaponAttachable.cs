@@ -41,15 +41,18 @@ namespace OpenRA.Mods.AS.Traits
 
 		private ConditionManager manager;
 
-		public bool DisplayWhenEmpty = false;
-
 		public DelayedWeaponAttachable(Actor self, DelayedWeaponAttachableInfo info) : base(info)
 		{
 			this.self = self;
 			Container = new HashSet<DelayedWeaponTrigger>();
 		}
 
-		public void Tick(Actor self)
+		void INotifyCreated.Created(Actor self)
+		{
+			manager = self.Trait<ConditionManager>();
+		}
+
+		void ITick.Tick(Actor self)
 		{
 			if (!IsTraitDisabled)
 			{
@@ -63,7 +66,7 @@ namespace OpenRA.Mods.AS.Traits
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (!IsTraitDisabled)
 			{
@@ -92,25 +95,6 @@ namespace OpenRA.Mods.AS.Traits
 			Container.Add(trigger);
 		}
 
-		public float GetValue()
-		{
-			var value = 0f;
-
-			if (!Info.ShowProgressBar || Container.Count == 0)
-				return value;
-
-			var smallestTrigger = Container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.LocalPlayer) || detectors.Any(d => d.Owner.IsAlliedWith(self.World.LocalPlayer))).MinByOrDefault(t => t.RemainingTime);
-			if (smallestTrigger == null)
-				return value;
-
-			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
-		}
-
-		public Color GetColor()
-		{
-			return Info.ProgressBarColor;
-		}
-
 		public void AddDetector(Actor detector)
 		{
 			detectors.Add(detector);
@@ -122,9 +106,26 @@ namespace OpenRA.Mods.AS.Traits
 				detectors.Remove(detector);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
+
+		float ISelectionBar.GetValue()
 		{
-			manager = self.Trait<ConditionManager>();
+			var value = 0f;
+
+			if (!Info.ShowProgressBar || Container.Count == 0)
+				return value;
+
+			var smallestTrigger = Container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.LocalPlayer) || detectors.Any(d => d.Owner.IsAlliedWith(self.World.LocalPlayer)))
+				.MinByOrDefault(t => t.RemainingTime);
+			if (smallestTrigger == null)
+				return value;
+
+			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
+		}
+
+		Color ISelectionBar.GetColor()
+		{
+			return Info.ProgressBarColor;
 		}
 	}
 }
