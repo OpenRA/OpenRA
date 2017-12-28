@@ -237,7 +237,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
 
-			var newsURL = modData.Manifest.Get<WebServices>().GameNews;
+			// Check for updates in the background
+			var webServices = modData.Manifest.Get<WebServices>();
+			webServices.CheckModVersion();
 
 			// System information opt-out prompt
 			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");
@@ -267,11 +269,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Debug.SystemInformationVersionPrompt = SystemInformationVersion;
 					Game.Settings.Save();
 					SwitchMenu(MenuType.Main);
-					LoadAndDisplayNews(newsURL, newsBG);
+					LoadAndDisplayNews(webServices.GameNews, newsBG);
 				};
 			}
 			else
-				LoadAndDisplayNews(newsURL, newsBG);
+				LoadAndDisplayNews(webServices.GameNews, newsBG);
 		}
 
 		void LoadAndDisplayNews(string newsURL, Widget newsBG)

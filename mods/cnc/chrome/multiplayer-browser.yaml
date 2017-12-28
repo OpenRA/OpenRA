@@ -48,6 +48,7 @@ Container@MULTIPLAYER_PANEL:
 							Height: 25
 							Text: Status
 							Font: Bold
+				LogicTicker@NOTICE_WATCHER:
 				Container@NOTICE_CONTAINER:
 					X: 15
 					Y: 30

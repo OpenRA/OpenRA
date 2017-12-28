@@ -9,16 +9,55 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System;
+using System.Net;
+using System.Text;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common
 {
+	public enum ModVersionStatus { NotChecked, Latest, Outdated, Unknown, PlaytestAvailable }
+
 	public class WebServices : IGlobalModData
 	{
 		public readonly string ServerList = "http://master.openra.net/games";
 		public readonly string ServerAdvertise = "http://master.openra.net/ping";
 		public readonly string MapRepository = "http://resource.openra.net/map/";
 		public readonly string GameNews = "http://master.openra.net/gamenews";
-		public readonly string MPNotices = "http://master.openra.net/notices";
+		public readonly string VersionCheck = "http://master.openra.net/versioncheck";
+
+		public ModVersionStatus ModVersionStatus { get; private set; }
+		const int VersionCheckProtocol = 1;
+
+		public void CheckModVersion()
+		{
+			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			{
+				if (i.Error != null)
+					return;
+				try
+				{
+					var data = Encoding.UTF8.GetString(i.Result);
+
+					var status = ModVersionStatus.Latest;
+					switch (data)
+					{
+						case "outdated": status = ModVersionStatus.Outdated; break;
+						case "unknown": status = ModVersionStatus.Unknown; break;
+						case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
+					}
+
+					Game.RunAfterTick(() => ModVersionStatus = status);
+				}
+				catch { }
+			};
+
+			var queryURL = VersionCheck + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
+				VersionCheckProtocol,
+				Uri.EscapeUriString(Game.EngineVersion),
+				Uri.EscapeUriString(Game.ModData.Manifest.Id),
+				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
+
+			new Download(queryURL, _ => { }, onComplete);
+		}
 	}
 }

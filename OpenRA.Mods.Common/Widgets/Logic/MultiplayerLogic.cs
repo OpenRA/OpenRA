@@ -52,15 +52,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		GameServer currentServer;
 		MapPreview currentMap;
+		bool showNotices;
 
 		Action onStart;
 		Action onExit;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
-		enum NoticeType { None, Outdated, Unknown, PlaytestAvailable }
 
 		SearchStatus searchStatus = SearchStatus.Fetching;
-		NoticeType notice = NoticeType.None;
 
 		Download currentQuery;
 		IEnumerable<BeaconLocation> lanGameLocations;
@@ -100,10 +99,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			noticeContainer = widget.GetOrNull("NOTICE_CONTAINER");
 			if (noticeContainer != null)
 			{
-				noticeContainer.IsVisible = () => notice != NoticeType.None;
-				noticeContainer.Get("OUTDATED_VERSION_LABEL").IsVisible = () => notice == NoticeType.Outdated;
-				noticeContainer.Get("UNKNOWN_VERSION_LABEL").IsVisible = () => notice == NoticeType.Unknown;
-				noticeContainer.Get("PLAYTEST_AVAILABLE_LABEL").IsVisible = () => notice == NoticeType.PlaytestAvailable;
+				noticeContainer.IsVisible = () => showNotices;
+				noticeContainer.Get("OUTDATED_VERSION_LABEL").IsVisible = () => services.ModVersionStatus == ModVersionStatus.Outdated;
+				noticeContainer.Get("UNKNOWN_VERSION_LABEL").IsVisible = () => services.ModVersionStatus == ModVersionStatus.Unknown;
+				noticeContainer.Get("PLAYTEST_AVAILABLE_LABEL").IsVisible = () => services.ModVersionStatus == ModVersionStatus.PlaytestAvailable;
+			}
+
+			var noticeWatcher = widget.Get<LogicTickerWidget>("NOTICE_WATCHER");
+			if (noticeWatcher != null && noticeContainer != null)
+			{
+				var containerHeight = noticeContainer.Bounds.Height;
+				noticeWatcher.OnTick = () =>
+				{
+					var show = services.ModVersionStatus != ModVersionStatus.NotChecked && services.ModVersionStatus != ModVersionStatus.Latest;
+					if (show != showNotices)
+					{
+						var dir = show ? 1 : -1;
+						serverList.Bounds.Y += dir * containerHeight;
+						serverList.Bounds.Height -= dir * containerHeight;
+						showNotices = show;
+					}
+				};
 			}
 
 			joinButton = widget.Get<ButtonWidget>("JOIN_BUTTON");
@@ -288,7 +304,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			RefreshServerList();
-			QueryNotices();
 
 			if (directConnectHost != null)
 			{
@@ -316,48 +331,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"{0} Player{1}".F(game.Players > 0 ? game.Players.ToString() : "No", game.Players != 1 ? "s" : ""),
 				game.Bots > 0 ? ", {0} Bot{1}".F(game.Bots, game.Bots != 1 ? "s" : "") : "",
 				game.Spectators > 0 ? ", {0} Spectator{1}".F(game.Spectators, game.Spectators != 1 ? "s" : "") : "");
-		}
-
-		void QueryNotices()
-		{
-			if (noticeContainer == null)
-				return;
-
-			Action<DownloadDataCompletedEventArgs> onComplete = i =>
-			{
-				if (i.Error != null)
-					return;
-				try
-				{
-					var data = Encoding.UTF8.GetString(i.Result);
-					var n = NoticeType.None;
-					switch (data)
-					{
-						case "outdated": n = NoticeType.Outdated; break;
-						case "unknown": n = NoticeType.Unknown; break;
-						case "playtest": n = NoticeType.PlaytestAvailable; break;
-					}
-
-					if (n == NoticeType.None)
-						return;
-
-					Game.RunAfterTick(() =>
-					{
-						notice = n;
-						serverList.Bounds.Y += noticeContainer.Bounds.Height;
-						serverList.Bounds.Height -= noticeContainer.Bounds.Height;
-					});
-				}
-				catch { }
-			};
-
-			var queryURL = services.MPNotices + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
-				GameServer.ProtocolVersion,
-				Uri.EscapeUriString(Game.EngineVersion),
-				Uri.EscapeUriString(Game.ModData.Manifest.Id),
-				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
-
-			new Download(queryURL, _ => { }, onComplete);
 		}
 
 		void RefreshServerList()
