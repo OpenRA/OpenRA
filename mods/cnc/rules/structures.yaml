@@ -22,6 +22,10 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
+		RequiresCondition: factundeploy
+	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
+		Condition: factundeploy
+		Prerequisites: global-factundeploy
 	ProductionQueue@GDIBuilding:
 		Type: Building.GDI
 		Factions: gdi
