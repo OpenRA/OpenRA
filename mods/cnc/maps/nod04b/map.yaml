@@ -461,13 +461,13 @@ Actors:
 		Location: 33,30
 		Owner: Neutral
 	EntryPointRocket: waypoint
-		Location: 35,19
+		Location: 35,17
 		Owner: Neutral
 	RallyPointRocket: waypoint
 		Location: 35,32
 		Owner: Neutral
 	EntryPointGunner: waypoint
-		Location: 31,19
+		Location: 31,17
 		Owner: Neutral
 	RallyPointGunner: waypoint
 		Location: 31,32
