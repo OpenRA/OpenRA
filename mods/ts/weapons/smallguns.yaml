@@ -28,6 +28,8 @@ Minigun:
 	Report: infgun3.aud, gostgun1.aud, slvkgun1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 800
+		Versus:
+			Wood: 50
 
 M1Carbine:
 	Inherits: ^MG
