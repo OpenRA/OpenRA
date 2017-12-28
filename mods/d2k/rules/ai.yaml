@@ -2,7 +2,10 @@ Player:
 	HackyAI@Omnius:
 		Name: Omnius
 		Type: omnius
-		MinimumExcessPower: 60
+		MinimumExcessPower: 50
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 200
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
@@ -30,7 +33,6 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingFractions:
-			wind_trap: 10%
 			barracks: 0.1%
 			refinery: 20.1%
 			medium_gun_turret: 8%
@@ -121,7 +123,10 @@ Player:
 	HackyAI@Vidius:
 		Name: Vidious
 		Type: vidious
-		MinimumExcessPower: 60
+		MinimumExcessPower: 50
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 200
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
@@ -150,7 +155,6 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingFractions:
-			wind_trap: 12%
 			barracks: 0.1%
 			refinery: 20.1%
 			medium_gun_turret: 5%
@@ -242,7 +246,10 @@ Player:
 	HackyAI@Gladius:
 		Name: Gladius
 		Type: gladius
-		MinimumExcessPower: 60
+		MinimumExcessPower: 50
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 200
 		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
@@ -271,7 +278,6 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingFractions:
-			wind_trap: 10%
 			barracks: 0.1%
 			refinery: 20.1%
 			medium_gun_turret: 4%
