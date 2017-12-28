@@ -6,21 +6,23 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
 {
+	[Desc("This warhead can attach a DelayedWeapon to the target. Requires an appropriate type of DelayedWeaponAttachable trait to function properly.")]
 	public class AttachDelayedWeaponWarhead : WarheadAS, IRulesetLoaded<WeaponInfo>
 	{
-		[WeaponReference]
+		[WeaponReference, FieldLoader.Require]
 		public readonly string Weapon = "";
 
-		[Desc("Type listed under Types in AttachableTypes: trait of warhead that can attach to this).")]
+		[FieldLoader.Require]
+		[Desc("Type of the DelayedWeapon.")]
 		public readonly string Type = "bomb";
 
 		[Desc("Range of targets to be attached.")]
 		public readonly WDist Range = WDist.FromCells(1);
 
-		[Desc("Trigger weapon after x ticks.")]
+		[Desc("Trigger the DelayedWeapon after these amount of ticks.")]
 		public readonly int TriggerTime = 30;
 
-		[Desc("DeathType(s) that trigger the weapon. Leave empty to always trigger the weapon on death.")]
+		[Desc("DeathType(s) that trigger the DelayedWeapon to activate. Leave empty to always trigger the DelayedWeapon on death.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
 
 		public WeaponInfo WeaponInfo;
@@ -37,13 +39,13 @@ namespace OpenRA.Mods.AS.Warheads
 
 			if (!IsValidImpact(pos, firedBy))
 				return;
-			
+
 			var availableActors = firedBy.World.FindActorsInCircle(pos, Range + VictimScanRadius);
 			foreach (var actor in availableActors)
 			{
 				if (!IsValidAgainst(actor, firedBy))
 					continue;
-				
+
 				if (actor.IsDead)
 					continue;
 

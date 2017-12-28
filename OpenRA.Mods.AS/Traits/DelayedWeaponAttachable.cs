@@ -7,20 +7,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	[Desc("This actor can recieve attachments through AttachToTargetWarheads.")]
+	[Desc("This trait interacts with and provides a container for Attach/DetachDelayedWeaponWarheads.")]
 	public class DelayedWeaponAttachableInfo : ConditionalTraitInfo
 	{
-		[Desc("Type of actors that can attach to it.")]
+		[FieldLoader.Require]
+		[Desc("Type of DelayedWeapons that can be attached to this trait.")]
 		public readonly string Type = "bomb";
 
-		[Desc("Defines how many objects can be attached at any given time.")]
+		[Desc("Defines the maximum of DelayedWeapons which can be attached at any given time.")]
 		public readonly int AttachLimit = 1;
 
-		[Desc("Show a bar indicating the progress until triggering the with the smallest remaining time.")]
+		[Desc("Show a bar indicating the progress until triggering the DelayedWeapon with the smallest remaining time.")]
 		public readonly bool ShowProgressBar = true;
 
-		[GrantedConditionReference, FieldLoader.Require]
-		[Desc("The condition to grant.")]
+		[GrantedConditionReference]
+		[Desc("The condition to grant while any DelayedWeapon is attached.")]
 		public readonly string Condition = null;
 
 		public readonly Color ProgressBarColor = Color.DarkRed;
@@ -30,39 +31,35 @@ namespace OpenRA.Mods.AS.Traits
 
 	public class DelayedWeaponAttachable : ConditionalTrait<DelayedWeaponAttachableInfo>, ITick, INotifyKilled, ISelectionBar, INotifyCreated
 	{
-		public HashSet<DelayedWeaponTrigger> Container { get; private set; } = new HashSet<DelayedWeaponTrigger>();
+		public HashSet<DelayedWeaponTrigger> Container { get; private set; }
 
-		private Actor self;
-
-		private HashSet<Actor> detectors = new HashSet<Actor>();
+		private readonly Actor self;
+		private readonly HashSet<Actor> detectors = new HashSet<Actor>();
 
 		private int token = ConditionManager.InvalidConditionToken;
-
 		private bool IsEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
 
 		private ConditionManager manager;
 
-		public bool DisplayWhenEmpty => false;
+		public bool DisplayWhenEmpty = false;
 
 		public DelayedWeaponAttachable(Actor self, DelayedWeaponAttachableInfo info) : base(info)
 		{
 			this.self = self;
+			Container = new HashSet<DelayedWeaponTrigger>();
 		}
 
 		public void Tick(Actor self)
 		{
 			if (!IsTraitDisabled)
-			{ 
+			{
 				foreach (var trigger in Container)
-				{
 					trigger.Tick(self);
-				}
 
 				Container.RemoveWhere(p => !p.IsValid);
+
 				if (token != ConditionManager.InvalidConditionToken && !Container.Any())
-				{
 					token = manager.RevokeCondition(self, token);
-				}
 			}
 		}
 
@@ -101,9 +98,11 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (!Info.ShowProgressBar || Container.Count == 0)
 				return value;
+
 			var smallestTrigger = Container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.LocalPlayer) || detectors.Any(d => d.Owner.IsAlliedWith(self.World.LocalPlayer))).MinByOrDefault(t => t.RemainingTime);
 			if (smallestTrigger == null)
 				return value;
+
 			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
 		}
 
@@ -116,7 +115,7 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			detectors.Add(detector);
 		}
-		
+
 		public void RemoveDetector(Actor detector)
 		{
 			if (detectors.Contains(detector))
@@ -124,7 +123,7 @@ namespace OpenRA.Mods.AS.Traits
 		}
 
 		void INotifyCreated.Created(Actor self)
-		{ 
+		{
 			manager = self.Trait<ConditionManager>();
 		}
 	}

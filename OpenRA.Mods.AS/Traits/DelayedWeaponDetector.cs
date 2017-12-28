@@ -5,10 +5,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	[Desc("This actor detects AttachWeaponTrigger on DelayedWeaponAttachable.")]
+	[Desc("This trait can reveal DelayedWeapon progressbars on DelayedWeaponAttachable traits.")]
 	public class DelayedWeaponDetectorInfo : ConditionalTraitInfo
 	{
-		[Desc("Type of attachables that can be detected.")]
+		[Desc("Type of DelayedWeapons that can be detected.")]
 		public readonly HashSet<string> Types = new HashSet<string> { "bomb" };
 
 		[Desc("Range of detection.")]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.AS.Traits
 		private int proximityTrigger;
 		bool cachedDisabled = true;
 		private Actor self;
-		
+
 		public DelayedWeaponDetector(Actor self, DelayedWeaponDetectorInfo info) : base(info)
 		{
 			this.self = self;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (a == self || a.Disposed || self.Disposed)
 				return;
 			var attachables = a.TraitsImplementing<DelayedWeaponAttachable>().Where(t => Info.Types.Contains(t.Info.Type));
-			
+
 			foreach (var attachable in attachables)
 			{
 				attachable.AddDetector(self);
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.AS.Traits
 				return;
 
 			var attachables = a.TraitsImplementing<DelayedWeaponAttachable>().Where(t => Info.Types.Contains(t.Info.Type));
-			
+
 			foreach (var attachable in attachables)
 			{
 				attachable.RemoveDetector(self);

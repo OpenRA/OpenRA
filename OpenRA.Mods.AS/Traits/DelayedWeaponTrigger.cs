@@ -18,7 +18,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		private WeaponInfo weaponInfo;
 
-		public bool IsValid { get; private set; } = true;
+		public bool IsValid { get; private set; }
 
 		public DelayedWeaponTrigger(AttachDelayedWeaponWarhead warhead, Actor attachedBy)
 		{
@@ -27,6 +27,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.DeathTypes = warhead.DeathTypes;
 			this.weaponInfo = warhead.WeaponInfo;
 			this.AttachedBy = attachedBy;
+			this.IsValid = true;
 		}
 
 		public void Tick(Actor attachable)
