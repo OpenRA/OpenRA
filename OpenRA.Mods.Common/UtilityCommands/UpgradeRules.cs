@@ -1635,6 +1635,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20180225)
+				{
+					if (node.Key == "WormSpawner")
+						RenameNodeKey(node, "ActorSpawner");
+
+					if (node.Key == "WormManager")
+					{
+						RenameNodeKey(node, "ActorSpawnManager");
+
+						var wormSignature = node.Value.Nodes.FirstOrDefault(n => n.Key == "WormSignature");
+						if (wormSignature != null)
+							wormSignature.Key = "Actors";
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

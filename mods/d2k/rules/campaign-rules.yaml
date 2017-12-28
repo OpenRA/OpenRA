@@ -16,7 +16,7 @@ World:
 	-MPStartLocations:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
-	WormManager:
+	ActorSpawnManager:
 		Minimum: 1
 		Maximum: 1
 	MapCreeps:

@@ -80,9 +80,7 @@
     <Compile Include="Traits\World\FogPaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromScaledPalette.cs" />
-    <Compile Include="Traits\World\WormManager.cs" />
     <Compile Include="Traits\AttractsWorms.cs" />
-    <Compile Include="Traits\WormSpawner.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="UtilityCommands\D2kMapImporter.cs" />
     <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />

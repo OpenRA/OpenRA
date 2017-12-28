@@ -204,7 +204,7 @@ wormspawner:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
-	WormSpawner:
+	ActorSpawner:
 	EditorTilesetFilter:
 		Categories: System
 
