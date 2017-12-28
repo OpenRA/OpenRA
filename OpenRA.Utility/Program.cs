@@ -40,10 +40,22 @@ namespace OpenRA
 	{
 		static void Main(string[] args)
 		{
-			Log.AddChannel("perf", null);
-			Log.AddChannel("debug", null);
+			// Avoid crashes when building and testing OpenRA in secured build VMs under Mono 5
+			// where the system isn't allowed to write into / root.
+			try
+			{
+				Log.AddChannel("perf", null);
+				Log.AddChannel("debug", null);
 
-			Game.InitializeSettings(Arguments.Empty);
+				// TODO: Don't rely on the MapCache, which requires the SheetBuilder and so forth
+				// as this will crash when the utility is run as root to install the mod metadata.
+				Game.InitializeSettings(Arguments.Empty);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("Failed to initialize the commandline utility.");
+				Console.WriteLine(e);
+			}
 
 			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
 			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?
