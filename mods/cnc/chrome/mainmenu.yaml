@@ -281,6 +281,24 @@ Container@MENU_BACKGROUND:
 					Height: 25
 					Text: Battlefield News
 					Font: Bold
+		Container@UPDATE_NOTICE:
+			X: (WINDOW_RIGHT - WIDTH) / 2
+			Y: 75
+			Width: 128
+			Children:
+				Label@A:
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Shadow: true
+					Text: You are running an outdated version of OpenRA.
+				Label@B:
+					Y: 20
+					Width: PARENT_RIGHT
+					Height: 25
+					Align: Center
+					Shadow: true
+					Text: Download the latest version from www.openra.net
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:
