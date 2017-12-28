@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.AI
 		int checkForBasesTicks;
 		int cachedBases;
 		int cachedBuildings;
+		int minimumExcessPower;
 
 		enum Water
 		{
@@ -54,6 +55,7 @@ namespace OpenRA.Mods.Common.AI
 			playerResources = pr;
 			this.category = category;
 			failRetryTicks = ai.Info.StructureProductionResumeDelay;
+			minimumExcessPower = ai.Info.MinimumExcessPower;
 		}
 
 		public void Tick()
@@ -100,6 +102,8 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			playerBuildings = world.ActorsHavingTrait<Building>().Where(a => a.Owner == player).ToArray();
+			var excessPowerBonus = ai.Info.ExcessPowerIncrement * (playerBuildings.Count() / ai.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
+			minimumExcessPower = (ai.Info.MinimumExcessPower + excessPowerBonus).Clamp(ai.Info.MinimumExcessPower, ai.Info.MaximumExcessPower);
 
 			var active = false;
 			foreach (var queue in ai.FindQueues(category))
@@ -197,7 +201,7 @@ namespace OpenRA.Mods.Common.AI
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
 		{
 			return (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
-				.Sum(p => p.Amount) + playerPower.ExcessPower) >= ai.Info.MinimumExcessPower;
+				.Sum(p => p.Amount) + playerPower.ExcessPower) >= minimumExcessPower;
 		}
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
@@ -209,7 +213,7 @@ namespace OpenRA.Mods.Common.AI
 				a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
-			if (playerPower.ExcessPower < ai.Info.MinimumExcessPower)
+			if (playerPower.ExcessPower < minimumExcessPower)
 			{
 				if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount) > 0)
 				{
@@ -314,7 +318,7 @@ namespace OpenRA.Mods.Common.AI
 
 				// Will this put us into low power?
 				var actor = world.Map.Rules.Actors[name];
-				if (playerPower.ExcessPower < ai.Info.MinimumExcessPower || !HasSufficientPowerForActor(actor))
+				if (playerPower.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor))
 				{
 					// Try building a power plant instead
 					if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(pi => pi.Amount) > 0)

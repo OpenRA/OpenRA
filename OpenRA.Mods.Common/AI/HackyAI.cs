@@ -96,6 +96,15 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
 
+		[Desc("Increase maintained excess power by this amount for every ExcessPowerIncreaseThreshold of base buildings.")]
+		public readonly int ExcessPowerIncrement = 0;
+
+		[Desc("Increase maintained excess power by ExcessPowerIncrement for every N base buildings.")]
+		public readonly int ExcessPowerIncreaseThreshold = 1;
+
+		[Desc("The targeted excess power the AI tries to maintain cannot rise above this.")]
+		public readonly int MaximumExcessPower = 0;
+
 		[Desc("Additional delay (in ticks) between structure production checks when there is no active production.",
 			"StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionInactiveDelay = 125;
@@ -193,7 +202,7 @@ namespace OpenRA.Mods.Common.AI
 		public readonly UnitCategories UnitsCommonNames;
 
 		[Desc("Tells the AI what building types fall under the same common name.",
-			"Possible keys are ConstructionYard, Power, Refinery, Silo , Barracks, Production, VehiclesFactory, NavalProduction.")]
+			"Possible keys are ConstructionYard, Power, Refinery, Silo, Barracks, Production, VehiclesFactory, NavalProduction.")]
 		[FieldLoader.LoadUsing("LoadBuildingCategories", true)]
 		public readonly BuildingCategories BuildingCommonNames;
 
