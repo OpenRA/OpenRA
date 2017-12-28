@@ -207,7 +207,8 @@
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
-		Offset: -12, -12
+		ReferencePoint: Top, Left
+		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
@@ -473,13 +474,17 @@
 	GrantCondition@IDISABLE:
 		RequiresCondition: lowpower || powerdown
 		Condition: disabled
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
-		PowerdownCondition: powerdown
+	ToggleConditionOnOrder:
+		DisabledSound: EnablePower
+		EnabledSound: DisablePower
+		Condition: powerdown
+		OrderName: PowerDown
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
 		Palette: chrome
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+	PowerMultiplier@POWERDOWN:
+		RequiresCondition: powerdown
+		Modifier: 0

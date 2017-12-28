@@ -16,7 +16,7 @@ GAPOWR:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -84,7 +84,7 @@ GAPILE:
 		Bounds: 88, 48, 0, -8
 		DecorationBounds: 88, 56, 0, -8
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -143,7 +143,7 @@ GAWEAP:
 		Bounds: 154, 96, -2, -12
 		DecorationBounds: 154, 100, -2, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
@@ -203,7 +203,7 @@ GAHPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
@@ -220,6 +220,7 @@ GAHPAD:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	ProductionBar:
@@ -264,12 +265,13 @@ GADEPT:
 		Bounds: 96, 64, -6, -6
 		DecorationBounds: 98, 68, -6, -6
 	Health:
-		HP: 1100
+		HP: 110000
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	RallyPoint:
@@ -324,7 +326,7 @@ GARADR:
 		Bounds: 96, 48, 0, -6
 		DecorationBounds: 96, 118, 0, -38
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	ProvidesRadar:
@@ -343,7 +345,6 @@ GARADR:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -50
-		RequiresCondition: !powerdown
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 
@@ -369,7 +370,7 @@ GATECH:
 		Bounds: 110, 60, 3, -4
 		DecorationBounds: 110, 60, 3, -4
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -412,7 +413,7 @@ GAPLUG:
 		RequiresCondition: !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -427,7 +428,7 @@ GAPLUG:
 		EffectSequence: ionring
 		EffectPalette: effectalpha75
 		WeaponDelay: 0
-		ChargeTime: 510
+		ChargeInterval: 12750
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		EndChargeSpeechNotification: IonCannonReady
@@ -442,7 +443,7 @@ GAPLUG:
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker
-		ChargeTime: 720
+		ChargeInterval: 18000
 	Production:
 		Produces: HunterSeeker
 		PauseOnCondition: empdisable
@@ -450,13 +451,12 @@ GAPLUG:
 	ExitsDebugOverlay:
 	SupportPowerChargeBar:
 	Power:
-		RequiresCondition: !powerdown
 		Amount: -150
 	Power@ioncannon:
-		RequiresCondition: !powerdown && (plug.ioncannona || plug.ioncannonb)
+		RequiresCondition: (plug.ioncannona || plug.ioncannonb)
 		Amount: -100
 	Power@hunterseeker:
-		RequiresCondition: !powerdown && (plug.hunterseekera || plug.hunterseekerb)
+		RequiresCondition: (plug.hunterseekera || plug.hunterseekerb)
 		Amount: -50
 	Pluggable@pluga:
 		Offset: 0,2

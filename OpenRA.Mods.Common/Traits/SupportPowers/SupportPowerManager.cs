@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 					Powers.Add(key, new SupportPowerInstance(key, this)
 					{
 						Instances = new List<SupportPower>(),
-						RemainingTime = t.Info.StartFullyCharged ? 0 : t.Info.ChargeTime * 25,
-						TotalTime = t.Info.ChargeTime * 25,
+						RemainingTime = t.Info.StartFullyCharged ? 0 : t.Info.ChargeInterval,
+						TotalTime = t.Info.ChargeInterval,
 					});
 
 					if (t.Info.Prerequisites.Any())

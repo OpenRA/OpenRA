@@ -18,6 +18,7 @@ using System.Text;
 using BeaconLib;
 using OpenRA.Network;
 using OpenRA.Server;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -25,9 +26,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MultiplayerLogic : ChromeLogic
 	{
 		static readonly Action DoNothing = () => { };
-
-		enum PanelType { Browser, DirectConnect, CreateServer }
-		PanelType panel = PanelType.Browser;
 
 		readonly Color incompatibleVersionColor;
 		readonly Color incompatibleProtectedGameColor;
@@ -41,19 +39,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WebServices services;
 		readonly Probe lanGameProbe;
 
+		readonly Widget serverList;
+		readonly ScrollItemWidget serverTemplate;
+		readonly ScrollItemWidget headerTemplate;
+		readonly Widget noticeContainer;
+		readonly Widget clientContainer;
+		readonly ScrollPanelWidget clientList;
+		readonly ScrollItemWidget clientTemplate, clientHeader;
+		readonly MapPreviewWidget mapPreview;
+		readonly ButtonWidget joinButton;
+		readonly int joinButtonY;
+
 		GameServer currentServer;
 		MapPreview currentMap;
-
-		ScrollItemWidget serverTemplate;
-		ScrollItemWidget headerTemplate;
 
 		Action onStart;
 		Action onExit;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
+		enum NoticeType { None, Outdated, Unknown, PlaytestAvailable }
+
 		SearchStatus searchStatus = SearchStatus.Fetching;
+		NoticeType notice = NoticeType.None;
+
 		Download currentQuery;
-		Widget serverList;
 		IEnumerable<BeaconLocation> lanGameLocations;
 
 		public string ProgressLabelText()
@@ -84,71 +93,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			gameStartedColor = ChromeMetrics.Get<Color>("GameStartedColor");
 			incompatibleGameStartedColor = ChromeMetrics.Get<Color>("IncompatibleGameStartedColor");
 
-			LoadBrowserPanel(widget);
-			LoadDirectConnectPanel(widget);
-			LoadCreateServerPanel(widget);
-
-			// Filter and refresh buttons act on the browser panel,
-			// but remain visible (disabled) on the other panels
-			var refreshButton = widget.Get<ButtonWidget>("REFRESH_BUTTON");
-			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching || panel != PanelType.Browser;
-
-			var filtersButton = widget.Get<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
-			filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching || panel != PanelType.Browser;
-
-			var browserTab = widget.Get<ButtonWidget>("BROWSER_TAB");
-			browserTab.IsHighlighted = () => panel == PanelType.Browser;
-			browserTab.OnClick = () => panel = PanelType.Browser;
-
-			var directConnectTab = widget.Get<ButtonWidget>("DIRECTCONNECT_TAB");
-			directConnectTab.IsHighlighted = () => panel == PanelType.DirectConnect;
-			directConnectTab.OnClick = () => panel = PanelType.DirectConnect;
-
-			var createServerTab = widget.Get<ButtonWidget>("CREATE_TAB");
-			createServerTab.IsHighlighted = () => panel == PanelType.CreateServer;
-			createServerTab.OnClick = () => panel = PanelType.CreateServer;
-
-			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
-
-			lanGameLocations = new List<BeaconLocation>();
-			try
-			{
-				lanGameProbe = new Probe("OpenRALANGame");
-				lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
-				lanGameProbe.Start();
-			}
-			catch (Exception ex)
-			{
-				Log.Write("debug", "BeaconLib.Probe: " + ex.Message);
-			}
-
-			RefreshServerList();
-
-			if (directConnectHost != null)
-			{
-				// The connection window must be opened at the end of the tick for the widget hierarchy to
-				// work out, but we also want to prevent the server browser from flashing visible for one tick.
-				widget.Visible = false;
-				Game.RunAfterTick(() =>
-				{
-					ConnectionLogic.Connect(directConnectHost, directConnectPort, "", OpenLobby, DoNothing);
-					widget.Visible = true;
-				});
-			}
-		}
-
-		void LoadBrowserPanel(Widget widget)
-		{
-			var browserPanel = Game.LoadWidget(null, "MULTIPLAYER_BROWSER_PANEL", widget.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-			browserPanel.IsVisible = () => panel == PanelType.Browser;
-
-			serverList = browserPanel.Get<ScrollPanelWidget>("SERVER_LIST");
+			serverList = widget.Get<ScrollPanelWidget>("SERVER_LIST");
 			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
 			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
 
-			var join = widget.Get<ButtonWidget>("JOIN_BUTTON");
-			join.IsDisabled = () => currentServer == null || !currentServer.IsJoinable;
-			join.OnClick = () => Join(currentServer);
+			noticeContainer = widget.GetOrNull("NOTICE_CONTAINER");
+			if (noticeContainer != null)
+			{
+				noticeContainer.IsVisible = () => notice != NoticeType.None;
+				noticeContainer.Get("OUTDATED_VERSION_LABEL").IsVisible = () => notice == NoticeType.Outdated;
+				noticeContainer.Get("UNKNOWN_VERSION_LABEL").IsVisible = () => notice == NoticeType.Unknown;
+				noticeContainer.Get("PLAYTEST_AVAILABLE_LABEL").IsVisible = () => notice == NoticeType.PlaytestAvailable;
+			}
+
+			joinButton = widget.Get<ButtonWidget>("JOIN_BUTTON");
+			joinButton.IsVisible = () => currentServer != null;
+			joinButton.IsDisabled = () => !currentServer.IsJoinable;
+			joinButton.OnClick = () => Join(currentServer);
+			joinButtonY = joinButton.Bounds.Y;
 
 			// Display the progress label over the server list
 			// The text is only visible when the list is empty
@@ -203,6 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var filtersButton = widget.GetOrNull<DropDownButtonWidget>("FILTERS_DROPDOWNBUTTON");
 			if (filtersButton != null)
 			{
+				filtersButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 				filtersButton.OnMouseDown = _ =>
 				{
 					filtersButton.RemovePanel();
@@ -210,11 +173,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var refreshButton = widget.Get<ButtonWidget>("REFRESH_BUTTON");
-			refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
-			refreshButton.OnClick = RefreshServerList;
+			var refreshButton = widget.GetOrNull<ButtonWidget>("REFRESH_BUTTON");
+			if (refreshButton != null)
+			{
+				refreshButton.GetText = () => searchStatus == SearchStatus.Fetching ? "Refreshing..." : "Refresh";
+				refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
+				refreshButton.OnClick = RefreshServerList;
+			}
 
-			var mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
+			mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
 			if (mapPreview != null)
 				mapPreview.Preview = () => currentMap;
 
@@ -256,45 +223,74 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
 			if (players != null)
 			{
-				players.IsVisible = () => currentServer != null;
+				players.IsVisible = () => currentServer != null && !currentServer.Clients.Any();
 				players.GetText = () => PlayersLabel(currentServer);
 			}
-		}
 
-		void LoadDirectConnectPanel(Widget widget)
-		{
-			var directConnectPanel = Game.LoadWidget(null, "MULTIPLAYER_DIRECTCONNECT_PANEL",
-				widget.Get("TOP_PANELS_ROOT"), new WidgetArgs());
-			directConnectPanel.IsVisible = () => panel == PanelType.DirectConnect;
+			clientContainer = widget.Get("CLIENT_LIST_CONTAINER");
+			clientList = Ui.LoadWidget("MULTIPLAYER_CLIENT_LIST", clientContainer, new WidgetArgs()) as ScrollPanelWidget;
+			clientList.IsVisible = () => currentServer != null && currentServer.Clients.Any();
+			clientHeader = clientList.Get<ScrollItemWidget>("HEADER");
+			clientTemplate = clientList.Get<ScrollItemWidget>("TEMPLATE");
+			clientList.RemoveChildren();
 
-			var ipField = directConnectPanel.Get<TextFieldWidget>("IP");
-			var portField = directConnectPanel.Get<TextFieldWidget>("PORT");
-
-			var last = Game.Settings.Player.LastServer.Split(':');
-			ipField.Text = last.Length > 1 ? last[0] : "localhost";
-			portField.Text = last.Length == 2 ? last[1] : "1234";
-
-			directConnectPanel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
+			directConnectButton.OnClick = () =>
 			{
-				var port = Exts.WithDefault(1234, () => Exts.ParseIntegerInvariant(portField.Text));
-
-				Game.Settings.Player.LastServer = "{0}:{1}".F(ipField.Text, port);
-				Game.Settings.Save();
-
-				ConnectionLogic.Connect(ipField.Text, port, "", OpenLobby, DoNothing);
+				Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+				{
+					{ "openLobby", OpenLobby },
+					{ "onExit", DoNothing },
+					{ "directConnectHost", null },
+					{ "directConnectPort", 0 },
+				});
 			};
-		}
 
-		void LoadCreateServerPanel(Widget widget)
-		{
-			var createServerPanel = Game.LoadWidget(null, "MULTIPLAYER_CREATESERVER_PANEL",
-				widget.Get("TOP_PANELS_ROOT"), new WidgetArgs
+			var createServerButton = widget.Get<ButtonWidget>("CREATE_BUTTON");
+			createServerButton.OnClick = () =>
 			{
-				{ "openLobby", OpenLobby },
-				{ "onExit", DoNothing }
-			});
+				Ui.OpenWindow("MULTIPLAYER_CREATESERVER_PANEL", new WidgetArgs
+				{
+					{ "openLobby", OpenLobby },
+					{ "onExit", DoNothing }
+				});
+			};
 
-			createServerPanel.IsVisible = () => panel == PanelType.CreateServer;
+			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+
+			lanGameLocations = new List<BeaconLocation>();
+			try
+			{
+				lanGameProbe = new Probe("OpenRALANGame");
+				lanGameProbe.BeaconsUpdated += locations => lanGameLocations = locations;
+				lanGameProbe.Start();
+			}
+			catch (Exception ex)
+			{
+				Log.Write("debug", "BeaconLib.Probe: " + ex.Message);
+			}
+
+			RefreshServerList();
+			QueryNotices();
+
+			if (directConnectHost != null)
+			{
+				// The connection window must be opened at the end of the tick for the widget hierarchy to
+				// work out, but we also want to prevent the server browser from flashing visible for one tick.
+				widget.Visible = false;
+				Game.RunAfterTick(() =>
+				{
+					Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+					{
+						{ "openLobby", OpenLobby },
+						{ "onExit", DoNothing },
+						{ "directConnectHost", directConnectHost },
+						{ "directConnectPort", directConnectPort },
+					});
+
+					widget.Visible = true;
+				});
+			}
 		}
 
 		string PlayersLabel(GameServer game)
@@ -303,6 +299,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"{0} Player{1}".F(game.Players > 0 ? game.Players.ToString() : "No", game.Players != 1 ? "s" : ""),
 				game.Bots > 0 ? ", {0} Bot{1}".F(game.Bots, game.Bots != 1 ? "s" : "") : "",
 				game.Spectators > 0 ? ", {0} Spectator{1}".F(game.Spectators, game.Spectators != 1 ? "s" : "") : "");
+		}
+
+		void QueryNotices()
+		{
+			if (noticeContainer == null)
+				return;
+
+			Action<DownloadDataCompletedEventArgs> onComplete = i =>
+			{
+				if (i.Error != null)
+					return;
+				try
+				{
+					var data = Encoding.UTF8.GetString(i.Result);
+					var n = NoticeType.None;
+					switch (data)
+					{
+						case "outdated": n = NoticeType.Outdated; break;
+						case "unknown": n = NoticeType.Unknown; break;
+						case "playtest": n = NoticeType.PlaytestAvailable; break;
+					}
+
+					if (n == NoticeType.None)
+						return;
+
+					Game.RunAfterTick(() =>
+					{
+						notice = n;
+						serverList.Bounds.Y += noticeContainer.Bounds.Height;
+						serverList.Bounds.Height -= noticeContainer.Bounds.Height;
+					});
+				}
+				catch { }
+			};
+
+			var queryURL = services.MPNotices + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
+				GameServer.ProtocolVersion,
+				Uri.EscapeUriString(Game.EngineVersion),
+				Uri.EscapeUriString(Game.ModData.Manifest.Id),
+				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
+
+			new Download(queryURL, _ => { }, onComplete);
 		}
 
 		void RefreshServerList()
@@ -351,7 +389,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (addressNode != null)
 							addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
 
-						lanGames.Add(new GameServer(game));
+						try
+						{
+							lanGames.Add(new GameServer(game));
+						}
+						catch { }
 					}
 				}
 
@@ -364,7 +406,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterTick(() => RefreshServerListInner(games));
 			};
 
-			var queryURL = services.ServerList + "games?version={0}&mod={1}&modversion={2}".F(
+			var queryURL = services.ServerList + "?protocol={0}&engine={1}&mod={2}&version={3}".F(
+				GameServer.ProtocolVersion,
 				Uri.EscapeUriString(Game.EngineVersion),
 				Uri.EscapeUriString(Game.ModData.Manifest.Id),
 				Uri.EscapeUriString(Game.ModData.Manifest.Metadata.Version));
@@ -376,11 +419,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// Games that we can't join are sorted last
 			if (!testEntry.IsCompatible)
-				return testEntry.ModId == modData.Manifest.Id ? 1 : 0;
+				return testEntry.Mod == modData.Manifest.Id ? 1 : 0;
 
 			// Games for the current mod+version are sorted first
-			if (testEntry.ModId == modData.Manifest.Id)
-				return testEntry.ModVersion == modData.Manifest.Metadata.Version ? 4 : 3;
+			if (testEntry.Mod == modData.Manifest.Id)
+				return testEntry.Version == modData.Manifest.Metadata.Version ? 4 : 3;
 
 			// Followed by games for different mods that are joinable
 			return 2;
@@ -390,6 +433,86 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			currentServer = server;
 			currentMap = server != null ? modData.MapCache[server.Map] : null;
+
+			clientList.RemoveChildren();
+			if (server == null || !server.Clients.Any())
+			{
+				joinButton.Bounds.Y = joinButtonY;
+				return;
+			}
+
+			joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
+
+			var players = server.Clients
+				.Where(c => !c.IsSpectator)
+				.GroupBy(p => p.Team)
+				.OrderBy(g => g.Key);
+
+			var teams = new Dictionary<string, IEnumerable<GameClient>>();
+			var noTeams = players.Count() == 1;
+			foreach (var p in players)
+			{
+				var label = noTeams ? "Players" : p.Key == 0 ? "No Team" : "Team {0}".F(p.Key);
+				teams.Add(label, p);
+			}
+
+			if (server.Clients.Any(c => c.IsSpectator))
+				teams.Add("Spectators", server.Clients.Where(c => c.IsSpectator));
+
+			// Can only show factions if the server is running the same mod
+			var disableFactionDisplay = server.Mod != modData.Manifest.Id;
+
+			if (mapPreview != null)
+			{
+				var spawns = currentMap.SpawnPoints;
+				var occupants = server.Clients
+					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
+					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c, disableFactionDisplay));
+
+				mapPreview.SpawnOccupants = () => occupants;
+			}
+
+			var factionInfo = modData.DefaultRules.Actors["world"].TraitInfos<FactionInfo>();
+			foreach (var kv in teams)
+			{
+				var group = kv.Key;
+				if (group.Length > 0)
+				{
+					var header = ScrollItemWidget.Setup(clientHeader, () => true, () => { });
+					header.Get<LabelWidget>("LABEL").GetText = () => group;
+					clientList.AddChild(header);
+				}
+
+				foreach (var option in kv.Value)
+				{
+					var o = option;
+
+					var item = ScrollItemWidget.Setup(clientTemplate, () => false, () => { });
+					if (!o.IsSpectator && !disableFactionDisplay)
+					{
+						var label = item.Get<LabelWidget>("LABEL");
+						var font = Game.Renderer.Fonts[label.Font];
+						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						label.GetText = () => name;
+						label.GetColor = () => o.Color.RGB;
+
+						var flag = item.Get<ImageWidget>("FLAG");
+						flag.IsVisible = () => true;
+						flag.GetImageCollection = () => "flags";
+						flag.GetImageName = () => (factionInfo != null && factionInfo.Any(f => f.InternalName == o.Faction)) ? o.Faction : "Random";
+					}
+					else
+					{
+						var label = item.Get<LabelWidget>("NOFLAG_LABEL");
+						var font = Game.Renderer.Fonts[label.Font];
+						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						label.GetText = () => name;
+						label.GetColor = () => o.Color.RGB;
+					}
+
+					clientList.AddChild(item);
+				}
+			}
 		}
 
 		void RefreshServerListInner(List<GameServer> games)
@@ -435,7 +558,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			nextServerRow = null;
 			var rows = new List<Widget>();
-			var mods = games.GroupBy(g => g.Mods)
+			var mods = games.GroupBy(g => g.ModLabel)
 				.OrderByDescending(g => GroupSortOrder(g.First()))
 				.ThenByDescending(g => g.Count());
 
@@ -498,10 +621,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var players = item.GetOrNull<LabelWidget>("PLAYERS");
 						if (players != null)
 						{
-							players.GetText = () => "{0} / {1}".F(game.Players, game.MaxPlayers)
+							var label = "{0} / {1}".F(game.Players + game.Bots, game.MaxPlayers + game.Bots)
 								+ (game.Spectators > 0 ? " + {0}".F(game.Spectators) : "");
 
-							players.GetColor = () => canJoin ? players.TextColor : incompatibleGameColor;
+							var color = canJoin ? players.TextColor : incompatibleGameColor;
+							players.GetText = () => label;
+							players.GetColor = () => color;
 						}
 
 						var state = item.GetOrNull<LabelWidget>("STATUS");
@@ -563,15 +688,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
-		void OpenCreateServerPanel()
-		{
-			Ui.OpenWindow("CREATESERVER_PANEL", new WidgetArgs
-			{
-				{ "openLobby", OpenLobby },
-				{ "onExit", DoNothing }
-			});
-		}
-
 		void Join(GameServer server)
 		{
 			if (server == null || !server.IsJoinable)
@@ -592,10 +708,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var label = "In progress";
 
-				DateTime startTime;
-				if (DateTime.TryParse(game.Started, out startTime))
+				if (game.PlayTime > 0)
 				{
-					var totalMinutes = Math.Ceiling((DateTime.UtcNow - startTime).TotalMinutes);
+					var totalMinutes = Math.Ceiling(game.PlayTime / 60.0);
 					label += " for {0} minute{1}".F(totalMinutes, totalMinutes > 1 ? "s" : "");
 				}
 
@@ -634,7 +749,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (game.State == (int)ServerState.WaitingPlayers && !filters.HasFlag(MPGameFilters.Waiting) && game.Players != 0)
 				return true;
 
-			if (game.Players == 0 && !filters.HasFlag(MPGameFilters.Empty))
+			if ((game.Players + game.Spectators) == 0 && !filters.HasFlag(MPGameFilters.Empty))
 				return true;
 
 			if (!game.IsCompatible && !filters.HasFlag(MPGameFilters.Incompatible))

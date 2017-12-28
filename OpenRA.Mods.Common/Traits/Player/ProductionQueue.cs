@@ -419,7 +419,10 @@ namespace OpenRA.Mods.Common.Traits
 				new FactionInit(BuildableInfo.GetInitialFaction(unit, Faction))
 			};
 
-			if (!mostLikelyProducerTrait.IsTraitPaused && mostLikelyProducerTrait.Produce(self, unit, developerMode.AllTech ? null : Info.Type, inits))
+			var bi = unit.TraitInfo<BuildableInfo>();
+			var type = developerMode.AllTech ? Info.Type : (bi.BuildAtProductionType ?? Info.Type);
+
+			if (!mostLikelyProducerTrait.IsTraitPaused && mostLikelyProducerTrait.Produce(self, unit, type, inits))
 			{
 				FinishProduction();
 				return true;

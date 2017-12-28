@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Actor to spawn when the attack starts")]
 		public readonly string CameraActor = null;
 
-		[Desc("Amount of time to keep the camera alive")]
+		[Desc("Number of ticks to keep the camera alive")]
 		public readonly int CameraRemoveDelay = 25;
 
 		[Desc("Effect sequence sprite image")]

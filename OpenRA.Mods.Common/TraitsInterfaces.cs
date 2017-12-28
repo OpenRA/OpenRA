@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator); }
+	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator, HashSet<string> types); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyHarvesterAction
 	{
 		void MovingToResources(Actor self, CPos targetCell, Activity next);
-		void MovingToRefinery(Actor self, CPos targetCell, Activity next);
+		void MovingToRefinery(Actor self, Actor refineryActor, Activity next);
 		void MovementCancelled(Actor self);
 		void Harvested(Actor self, ResourceType resource);
 		void Docked();

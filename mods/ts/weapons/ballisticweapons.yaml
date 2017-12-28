@@ -11,7 +11,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 36
+		Damage: 3600
 		Versus:
 			None: 25
 			Wood: 65
@@ -50,7 +50,7 @@
 		Blockable: false
 		LaunchAngle: 0
 	Warhead@1Dam: SpreadDamage
-		Damage: 70
+		Damage: 7000
 
 120mmx:
 	Inherits: ^Cannon
@@ -58,7 +58,7 @@
 	Burst: 2
 	BurstDelays: 5
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 
 RPGTower:
 	Inherits: ^Cannon
@@ -71,7 +71,7 @@ RPGTower:
 		Image: canister
 		Palette: player
 	Warhead@1Dam: SpreadDamage
-		Damage: 110
+		Damage: 11000
 		Versus:
 			None: 30
 			Wood: 75
@@ -106,7 +106,7 @@ RPGTower:
 		LaunchAngle: 165
 	MinRange: 5c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 150
+		Damage: 15000
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: expnew06.aud
@@ -125,7 +125,7 @@ Jugg90mm:
 		LaunchAngle: 165
 		Inaccuracy: 2c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 75
+		Damage: 7500
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: expnew13.aud
@@ -146,7 +146,7 @@ Grenade:
 		BounceCount: 2
 	Warhead@1Dam: SpreadDamage
 		Spread: 154
-		Damage: 40
+		Damage: 4000
 		Versus:
 			Light: 70
 			Concrete: 28

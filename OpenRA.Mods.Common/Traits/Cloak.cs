@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { }
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, CPos targetCell, Activity next) { }
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor, Activity next) { }
 
 		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
 

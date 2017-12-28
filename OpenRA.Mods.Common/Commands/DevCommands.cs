@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
@@ -54,6 +55,8 @@ namespace OpenRA.Mods.Common.Commands
 			register("crash", "crashes the game.");
 			register("levelup", "adds a specified number of levels to the selected actors.");
 			register("poweroutage", "causes owners of selected actors to have a 5 second power outage.");
+			register("kill", "kills selected actors.");
+			register("dispose", "disposes selected actors.");
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -128,6 +131,36 @@ namespace OpenRA.Mods.Common.Commands
 				case "poweroutage":
 					foreach (var player in world.Selection.Actors.Select(a => a.Owner.PlayerActor).Distinct())
 						world.IssueOrder(new Order("PowerOutage", player, false) { ExtraData = 250 });
+					break;
+
+				case "kill":
+					var args = arg.Split(' ');
+					var damageTypes = new HashSet<string>();
+
+					foreach (var damageType in args)
+						damageTypes.Add(damageType);
+
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.IsDead)
+							continue;
+
+						var health = actor.TraitOrDefault<Health>();
+						if (health != null)
+							health.InflictDamage(actor, actor, new Damage(health.HP, damageTypes), true);
+					}
+
+					break;
+
+				case "dispose":
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.Disposed)
+							continue;
+
+						actor.Dispose();
+					}
+
 					break;
 			}
 		}

@@ -18,7 +18,7 @@ NAPULS:
 		Bounds: 78, 54, 0, -12
 		DecorationBounds: 78, 54, 0, -12
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -36,7 +36,6 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
-		RequiresCondition: !powerdown
 	SelectionDecorations:
 	RenderSprites:
 		Image: napuls.gdi
@@ -49,7 +48,7 @@ NAPULS:
 		PauseOnCondition: empdisable || disabled
 		Cursor: emp
 		Icon: emp
-		ChargeTime: 135
+		ChargeInterval: 3375
 		Description: E.M. Pulse
 		LongDesc: Fires a pulse blast which disables\nall mechanical units in the area.
 		EndChargeSpeechNotification: EmPulseCannonReady
