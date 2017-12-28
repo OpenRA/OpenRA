@@ -43,6 +43,7 @@ Background@MULTIPLAYER_PANEL:
 					Height: 25
 					Text: Status
 					Font: Bold
+		LogicTicker@NOTICE_WATCHER:
 		Background@NOTICE_CONTAINER:
 			X: 20
 			Y: 67
