@@ -34,6 +34,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		private Actor self;
 
+		private HashSet<Actor> detectors = new HashSet<Actor>();
+
 		public bool DisplayWhenEmpty => false;
 
 		public void Tick(Actor self)
@@ -75,7 +77,7 @@ namespace OpenRA.Mods.AS.Traits
 
 			if (!Info.ShowProgressBar || Container.Count == 0)
 				return value;
-			var smallestTrigger = Container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.RenderPlayer)).MinByOrDefault(t => t.RemainingTime);
+			var smallestTrigger = Container.Where(b => b.AttachedBy.Owner.IsAlliedWith(self.World.LocalPlayer) || detectors.Any(d => d.Owner.IsAlliedWith(self.World.LocalPlayer))).MinByOrDefault(t => t.RemainingTime);
 			if (smallestTrigger == null)
 				return value;
 			return smallestTrigger.RemainingTime * 1.0f / smallestTrigger.TriggerTime;
@@ -84,6 +86,17 @@ namespace OpenRA.Mods.AS.Traits
 		public Color GetColor()
 		{
 			return Info.ProgressBarColor;
+		}
+
+		public void AddDetector(Actor detector)
+		{
+			detectors.Add(detector);
+		}
+		
+		public void RemoveDetector(Actor detector)
+		{
+			if (detectors.Contains(detector))
+				detectors.Remove(detector);
 		}
 	}
 }

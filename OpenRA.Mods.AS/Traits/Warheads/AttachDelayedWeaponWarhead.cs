@@ -15,7 +15,7 @@ namespace OpenRA.Mods.AS.Warheads
 		public readonly string Type = "bomb";
 
 		[Desc("Range of targets to be attached.")]
-		public readonly WDist Range = new WDist(1024);
+		public readonly WDist Range = WDist.FromCells(1);
 
 		[Desc("Trigger weapon after x ticks.")]
 		public readonly int TriggerTime = 30;
