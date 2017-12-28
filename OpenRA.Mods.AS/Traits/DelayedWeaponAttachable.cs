@@ -8,7 +8,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.AS.Traits
 {
 	[Desc("This actor can recieve attachments through AttachToTargetWarheads.")]
-	public class DelayedWeaponAttachableInfo : ITraitInfo
+	public class DelayedWeaponAttachableInfo : ConditionalTraitInfo
 	{
 		[Desc("Type of actors that can attach to it.")]
 		public readonly string Type = "bomb";
@@ -19,46 +19,67 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Show a bar indicating the progress until triggering the with the smallest remaining time.")]
 		public readonly bool ShowProgressBar = true;
 
+		[GrantedConditionReference, FieldLoader.Require]
+		[Desc("The condition to grant.")]
+		public readonly string Condition = null;
+
 		public readonly Color ProgressBarColor = Color.DarkRed;
 
-		public object Create(ActorInitializer init) { return new DelayedWeaponAttachable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new DelayedWeaponAttachable(init.Self, this); }
 	}
 
-	public class DelayedWeaponAttachable : ITick, INotifyKilled, ISelectionBar
+	public class DelayedWeaponAttachable : ConditionalTrait<DelayedWeaponAttachableInfo>, ITick, INotifyKilled, ISelectionBar, INotifyCreated
 	{
-		public readonly DelayedWeaponAttachableInfo Info;
-
-		public DelayedWeaponAttachable(Actor self, DelayedWeaponAttachableInfo info) { this.self = self; Info = info; }
-
 		public HashSet<DelayedWeaponTrigger> Container { get; private set; } = new HashSet<DelayedWeaponTrigger>();
 
 		private Actor self;
 
 		private HashSet<Actor> detectors = new HashSet<Actor>();
 
+		private int token = ConditionManager.InvalidConditionToken;
+
+		private bool IsEnabled { get { return token != ConditionManager.InvalidConditionToken; } }
+
+		private ConditionManager manager;
+
 		public bool DisplayWhenEmpty => false;
+
+		public DelayedWeaponAttachable(Actor self, DelayedWeaponAttachableInfo info) : base(info)
+		{
+			this.self = self;
+		}
 
 		public void Tick(Actor self)
 		{
-			foreach (var trigger in Container)
-			{
-				trigger.Tick(self);
-			}
+			if (!IsTraitDisabled)
+			{ 
+				foreach (var trigger in Container)
+				{
+					trigger.Tick(self);
+				}
 
-			Container.RemoveWhere(p => !p.IsValid);
+				Container.RemoveWhere(p => !p.IsValid);
+				if (token != ConditionManager.InvalidConditionToken && !Container.Any())
+				{
+					token = manager.RevokeCondition(self, token);
+				}
+			}
 		}
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			foreach (var trigger in Container)
+			if (!IsTraitDisabled)
 			{
-				if (trigger.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(trigger.DeathTypes))
-					continue;
+				foreach (var trigger in Container)
+				{
+					if (trigger.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(trigger.DeathTypes))
+						continue;
 
-				trigger.Activate(self);
+					trigger.Activate(self);
+				}
+
+				Container.RemoveWhere(p => !p.IsValid);
 			}
-
-			Container.RemoveWhere(p => !p.IsValid);
 		}
 
 		public bool CanAttach(string type)
@@ -68,6 +89,9 @@ namespace OpenRA.Mods.AS.Traits
 
 		public void Attach(DelayedWeaponTrigger trigger)
 		{
+			if (token == ConditionManager.InvalidConditionToken)
+				token = manager.GrantCondition(self, Info.Condition);
+
 			Container.Add(trigger);
 		}
 
@@ -97,6 +121,11 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			if (detectors.Contains(detector))
 				detectors.Remove(detector);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{ 
+			manager = self.Trait<ConditionManager>();
 		}
 	}
 }

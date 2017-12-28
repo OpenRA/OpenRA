@@ -8,7 +8,7 @@ namespace OpenRA.Mods.AS.Traits
 	[Desc("This actor detects AttachWeaponTrigger on DelayedWeaponAttachable.")]
 	public class DelayedWeaponDetectorInfo : ConditionalTraitInfo
 	{
-		[Desc("Type of actors that can attach to it.")]
+		[Desc("Type of attachables that can be detected.")]
 		public readonly HashSet<string> Types = new HashSet<string> { "bomb" };
 
 		[Desc("Range of detection.")]
