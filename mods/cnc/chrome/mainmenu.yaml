@@ -35,7 +35,7 @@ Container@MENU_BACKGROUND:
 			Y: 115
 			Width: 128
 			Align: Center
-			Contrast: true
+			Shadow: true
 		Background@BORDER:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
