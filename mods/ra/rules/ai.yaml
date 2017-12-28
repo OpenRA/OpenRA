@@ -2,7 +2,10 @@ Player:
 	HackyAI@RushAI:
 		Name: Rush AI
 		Type: rush
-		MinimumExcessPower: 40
+		MinimumExcessPower: 20
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 160
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -26,8 +29,6 @@ Player:
 			fix: 1
 		BuildingFractions:
 			proc: 30%
-			powr: 15%
-			apwr: 20%
 			barr: 1%
 			kenn: 0.5%
 			tent: 1%
@@ -117,7 +118,10 @@ Player:
 	HackyAI@NormalAI:
 		Name: Normal AI
 		Type: normal
-		MinimumExcessPower: 60
+		MinimumExcessPower: 40
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 200
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -145,8 +149,6 @@ Player:
 			fix: 1
 		BuildingFractions:
 			proc: 10%
-			powr: 1%
-			apwr: 30%
 			tent: 1%
 			barr: 1%
 			kenn: 0.5%
@@ -250,7 +252,10 @@ Player:
 	HackyAI@TurtleAI:
 		Name: Turtle AI
 		Type: turtle
-		MinimumExcessPower: 100
+		MinimumExcessPower: 50
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 250
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -279,8 +284,6 @@ Player:
 			fix: 1
 		BuildingFractions:
 			proc: 30%
-			powr: 1%
-			apwr: 20%
 			tent: 1%
 			barr: 1%
 			kenn: 0.5%
@@ -383,6 +386,10 @@ Player:
 	HackyAI@NavalAI:
 		Name: Naval AI
 		Type: naval
+		MinimumExcessPower: 20
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 200
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -410,8 +417,6 @@ Player:
 			fix: 1
 		BuildingFractions:
 			proc: 29%
-			powr: 1%
-			apwr: 24%
 			dome: 1%
 			weap: 1%
 			hpad: 20%
