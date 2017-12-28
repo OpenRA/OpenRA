@@ -637,6 +637,34 @@ tuntop04:
 	idle:
 		Offset: -24, -49, 24
 
+^waterfall:
+	idle:
+		ZRamp: 1
+		UseTilesetExtension: true
+		Length: 7
+		Start: 1
+		Tick: 200
+
+wa01x:
+	Inherits: ^waterfall
+	idle:
+		Offset: 15, 18
+
+wa02x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -15, 3
+
+wa03x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -13, 5
+
+wa04x:
+	Inherits: ^waterfall
+	idle:
+		Offset: -14, 1
+
 dig:
 	idle:
 		Length: *

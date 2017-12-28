@@ -1589,6 +1589,24 @@ Actors:
 	Actor505: bridge1
 		Owner: Neutral
 		Location: 180,4
+	Actor558: wa01x
+		Owner: Neutral
+		Location: 162,70
+	Actor565: wa03x
+		Owner: Neutral
+		Location: 99,-64
+	Actor566: wa02x
+		Owner: Neutral
+		Location: 164,70
+	Actor567: wa03x
+		Owner: Neutral
+		Location: 102,-64
+	Actor568: wa03x
+		Owner: Neutral
+		Location: 165,70
+	Actor574: wa04x
+		Owner: Neutral
+		Location: 104,-64
 
 Rules:
 	World:

@@ -246,3 +246,18 @@ TUNTOP04:
 	TunnelEntrance:
 		RallyPoint: 1, 3
 		Sensor: 1, 0
+
+WA01X:
+	Inherits: ^Waterfall
+
+WA02X:
+	Inherits: ^Waterfall
+
+WA03X:
+	Inherits: ^Waterfall
+	Building:
+		Dimensions: 2, 3
+		Footprint: xx xx xx
+
+WA04X:
+	Inherits: ^Waterfall
