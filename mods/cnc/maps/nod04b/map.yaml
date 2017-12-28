@@ -455,22 +455,22 @@ Actors:
 		Facing: 64
 		SubCell: 0
 	EntryPointVehicle: waypoint
-		Location: 33,13
+		Location: 33,17
 		Owner: Neutral
 	RallyPointVehicle: waypoint
 		Location: 33,30
 		Owner: Neutral
 	EntryPointRocket: waypoint
-		Location: 35,15
+		Location: 35,19
 		Owner: Neutral
 	RallyPointRocket: waypoint
-		Location: 34,32
+		Location: 35,32
 		Owner: Neutral
 	EntryPointGunner: waypoint
-		Location: 31,15
+		Location: 31,19
 		Owner: Neutral
 	RallyPointGunner: waypoint
-		Location: 32,32
+		Location: 31,32
 		Owner: Neutral
 	CameraPoint: waypoint
 		Location: 32,22
