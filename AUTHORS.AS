@@ -23,6 +23,9 @@ The plugin is maintained by
  * Matthias Mailänder (Mailaender)
    > WithExitOverlay
 
+ * Martin Lang (Gerseras/Seraphinexxx)
+   > DelayedWeapon system
+
  * Pavel Penev (penev92)
    > PaletteFromJasc32File - base JASC palette parser
 
