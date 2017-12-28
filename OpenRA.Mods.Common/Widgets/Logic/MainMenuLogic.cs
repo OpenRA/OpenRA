@@ -239,7 +239,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Check for updates in the background
 			var webServices = modData.Manifest.Get<WebServices>();
-			webServices.CheckModVersion();
+			if (Game.Settings.Debug.CheckVersion)
+				webServices.CheckModVersion();
 
 			// System information opt-out prompt
 			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");

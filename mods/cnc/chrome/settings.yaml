@@ -542,51 +542,58 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Fetch Community News
-						Checkbox@SENDSYSINFO_CHECKBOX:
+						Checkbox@CHECK_VERSION_CHECKBOX:
 							X: 310
 							Y: 70
+							Width: 300
+							Height: 20
+							Font: Regular
+							Text: Check for Updates
+						Checkbox@SENDSYSINFO_CHECKBOX:
+							X: 310
+							Y: 100
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Send System Information
 						Label@SENDSYSINFO_DESC:
 							X: 310
-							Y: 85
+							Y: 115
 							Width: 250
 							Height: 30
 							Font: Tiny
 							WordWrap: True
 							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 						Label@DEBUG_TITLE:
-							Y: 170
+							Y: 200
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Debug
 							Align: Center
 						Checkbox@BOTDEBUG_CHECKBOX:
 							X: 15
-							Y: 190
+							Y: 220
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Show Bot Debug Messages
 						Checkbox@CHECKUNSYNCED_CHECKBOX:
 							X: 15
-							Y: 220
+							Y: 250
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Check Sync around Unsynced Code
 						Checkbox@LUADEBUG_CHECKBOX:
 							X: 310
-							Y: 190
+							Y: 220
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Show Map Debug Messages
 						Checkbox@REPLAY_COMMANDS_CHECKBOX:
 							X: 310
-							Y: 220
+							Y: 250
 							Width: 300
 							Height: 20
 							Font: Regular
