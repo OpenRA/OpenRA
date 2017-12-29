@@ -40,7 +40,7 @@ ScrollPanel@MULTIPLAYER_CLIENT_LIST:
 					Shadow: True
 
 ScrollPanel@MULTIPLAYER_FILTER_PANEL:
-	Width: 147
+	Width: PARENT_RIGHT
 	Height: 130
 	Background: panel-black
 	Children:
