@@ -296,6 +296,7 @@ V19.Husk:
 	-HitShape:
 	-Health:
 	-Explodes:
+	-Explodes@CIVPANIC:
 	Interactable:
 
 BARL:
