@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Widgets
 				else if (mi.Event == MouseInputEvent.Move && (isStandardScrolling ||
 					(standardScrollStart.HasValue && ((standardScrollStart.Value - mi.Location).Length > Game.Settings.Game.MouseScrollDeadzone))))
 				{
-					isStandardScrolling = true;
+					isStandardScrolling = scrollType == MouseScrollType.Standard;
 					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
 					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
 					return true;
