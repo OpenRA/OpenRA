@@ -20,31 +20,65 @@ Background@SERVER_LOBBY:
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X: 20
 			Y: 291
-			Width: 200
+			Width: 178
 			Height: 25
 			Font: Bold
 			Text: Slot Admin
-		Button@PLAYERS_TAB:
-			X: 225
-			Y: 285
-			Width: 126
-			Height: 31
-			Font: Bold
-			Text: Players
-		Button@OPTIONS_TAB:
-			X: 351
-			Y: 285
-			Width: 126
-			Height: 31
-			Font: Bold
-			Text: Options
-		Button@MUSIC_TAB:
-			X: 477
-			Y: 285
-			Width: 126
-			Height: 31
-			Font: Bold
-			Text: Music
+		Container@SKIRMISH_TABS:
+			Visible: False
+			Children:
+				Button@PLAYERS_TAB:
+					X: 203
+					Y: 285
+					Width: 134
+					Height: 31
+					Font: Bold
+					Text: Players
+				Button@OPTIONS_TAB:
+					X: 337
+					Y: 285
+					Width: 133
+					Height: 31
+					Font: Bold
+					Text: Options
+				Button@MUSIC_TAB:
+					X: 470
+					Y: 285
+					Width: 133
+					Height: 31
+					Font: Bold
+					Text: Music
+		Container@MULTIPLAYER_TABS:
+			Visible: False
+			Children:
+				Button@PLAYERS_TAB:
+					X: 203
+					Y: 285
+					Width: 100
+					Height: 31
+					Font: Bold
+					Text: Players
+				Button@OPTIONS_TAB:
+					X: 303
+					Y: 285
+					Width: 100
+					Height: 31
+					Font: Bold
+					Text: Options
+				Button@MUSIC_TAB:
+					X: 403
+					Y: 285
+					Width: 100
+					Height: 31
+					Font: Bold
+					Text: Music
+				Button@SERVERS_TAB:
+					X: 503
+					Y: 285
+					Width: 100
+					Height: 31
+					Font: Bold
+					Text: Servers
 		Container@TOP_PANELS_ROOT:
 			X: 20
 			Y: 67
