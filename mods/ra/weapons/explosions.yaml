@@ -123,10 +123,10 @@ SmallBuildingExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
 
-CivBuildingExplosion:
-	Inherits: SmallBuildingExplode
+CivPanicExplosion:
 	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
-		Spread: 64
+		Falloff: 100, 100
+		Range: 0, 128
 		Damage: 1
 		Delay: 1
 

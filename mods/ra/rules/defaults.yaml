@@ -814,13 +814,16 @@
 		Actor: c3
 		Probability: 15
 	Explodes:
-		Weapon: CivBuildingExplosion
+		Weapon: SmallBuildingExplode
+	Explodes@CIVPANIC:
+		Weapon: CivPanicExplosion
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-HitShape:
 	-Health:
 	-Explodes:
+	-Explodes@CIVPANIC:
 	-Selectable:
 	-SelectionDecorations:
 	Tooltip:
