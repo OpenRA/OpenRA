@@ -836,6 +836,7 @@
     <Compile Include="Traits\World\LobbyPrerequisiteCheckbox.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Traits\Conditions\ToggleConditionOnOrder.cs" />
+    <Compile Include="Widgets\Logic\ServerListLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
