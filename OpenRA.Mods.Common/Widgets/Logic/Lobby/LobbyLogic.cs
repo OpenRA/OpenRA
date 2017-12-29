@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World shellmapWorld;
 		readonly WebServices services;
 
-		enum PanelType { Players, Options, Music, Kick, ForceStart }
+		enum PanelType { Players, Options, Music, Servers, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
 		readonly Widget lobby;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (name != null)
 				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
-			Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			var mapContainer = Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
 				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
@@ -129,6 +129,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
 				{ "showUnoccupiedSpawnpoints", true },
 			});
+
+			mapContainer.IsVisible = () => panel != PanelType.Servers;
 
 			UpdateCurrentMap();
 
@@ -157,6 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
 			{
+				mapButton.IsVisible = () => panel != PanelType.Servers;
 				mapButton.IsDisabled = () => gameStarting || panel == PanelType.Kick || panel == PanelType.ForceStart ||
 					orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 				mapButton.OnClick = () =>
@@ -186,6 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
 			if (slotsButton != null)
 			{
+				slotsButton.IsVisible = () => panel != PanelType.Servers;
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
 					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
@@ -294,21 +298,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 			musicBin.IsVisible = () => panel == PanelType.Music;
 
-			var optionsTab = lobby.Get<ButtonWidget>("OPTIONS_TAB");
+			if (!skirmishMode)
+			{
+				Action<GameServer> doNothingWithServer = _ => { };
+
+				var serversBin = Ui.LoadWidget("LOBBY_SERVERS_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
+				{
+					{ "onJoin", doNothingWithServer },
+				});
+
+				serversBin.IsVisible = () => panel == PanelType.Servers;
+			}
+
+			var tabContainer = skirmishMode ? lobby.Get("SKIRMISH_TABS") : lobby.Get("MULTIPLAYER_TABS");
+			tabContainer.IsVisible = () => true;
+
+			var optionsTab = tabContainer.Get<ButtonWidget>("OPTIONS_TAB");
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
 			optionsTab.IsDisabled = OptionsTabDisabled;
 			optionsTab.OnClick = () => panel = PanelType.Options;
 			optionsTab.GetText = () => !map.RulesLoaded ? "Loading..." : optionsTab.Text;
 
-			var playersTab = lobby.Get<ButtonWidget>("PLAYERS_TAB");
+			var playersTab = tabContainer.Get<ButtonWidget>("PLAYERS_TAB");
 			playersTab.IsHighlighted = () => panel == PanelType.Players;
 			playersTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
 			playersTab.OnClick = () => panel = PanelType.Players;
 
-			var musicTab = lobby.Get<ButtonWidget>("MUSIC_TAB");
+			var musicTab = tabContainer.Get<ButtonWidget>("MUSIC_TAB");
 			musicTab.IsHighlighted = () => panel == PanelType.Music;
 			musicTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
 			musicTab.OnClick = () => panel = PanelType.Music;
+
+			var serversTab = tabContainer.GetOrNull<ButtonWidget>("SERVERS_TAB");
+			if (serversTab != null)
+			{
+				serversTab.IsHighlighted = () => panel == PanelType.Servers;
+				serversTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
+				serversTab.OnClick = () => panel = PanelType.Servers;
+			}
 
 			// Force start panel
 			Action startGame = () =>
