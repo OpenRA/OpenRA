@@ -45,6 +45,8 @@ DOGGIE:
 	GrantConditionOnAttack:
 		ArmamentNames: primary
 		Condition: attacking
+	RenderSprites:
+		Palette: greentiberium
 	WithSpriteBody:
 		RequiresCondition: hidingplace && !moving && !attacking
 		StartSequence: laydown
