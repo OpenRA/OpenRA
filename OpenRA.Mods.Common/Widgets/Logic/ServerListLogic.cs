@@ -53,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		GameServer currentServer;
 		MapPreview currentMap;
 		bool showNotices;
+		int playerCount;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 
@@ -216,6 +217,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						};
 					}
 				}
+			}
+
+			var playersLabel = widget.GetOrNull<LabelWidget>("PLAYER_COUNT");
+			if (playersLabel != null)
+			{
+				var playersText = new CachedTransform<int, string>(c => c == 1 ? "1 Player Online" : c.ToString() + " Players Online");
+				playersLabel.IsVisible = () => playerCount != 0;
+				playersLabel.GetText = () => playersText.Update(playerCount);
 			}
 
 			mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
@@ -512,6 +521,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (nextServerRow != null)
 					nextServerRow.OnClick();
+
+				playerCount = games.Sum(g => g.Players);
 			});
 		}
 
