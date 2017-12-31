@@ -128,6 +128,7 @@ SendAirStrike = function()
 			actor.Type ~= "wall" and
 			actor.Type ~= "medium_gun_turret" and
 			actor.Type ~= "large_gun_turret" and
+			actor.Type ~= "silo" and
 			actor.Type ~= "wind_trap"
 	end)
 
@@ -141,8 +142,11 @@ end
 GetSaboteurTargets = function(player)
 	return Utils.Where(player.GetActors(), function(actor)
 		return
-			actor.HasProperty("Sell")
-			and actor.Type ~= "wall"
+			actor.HasProperty("Sell") and
+			actor.Type ~= "wall" and
+			actor.Type ~= "medium_gun_turret" and
+			actor.Type ~= "large_gun_turret" and
+			actor.Type ~= "silo"
 	end)
 end
 
