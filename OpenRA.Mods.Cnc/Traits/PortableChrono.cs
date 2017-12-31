@@ -95,11 +95,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PortableChronoTeleport" && CanTeleport)
+			if (order.OrderString == "PortableChronoTeleport" && CanTeleport && order.Target.Type != TargetType.Invalid)
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
+
+				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
+				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
 			}
 		}
 
