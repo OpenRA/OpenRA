@@ -84,8 +84,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "PortableChronoDeploy" && CanTeleport)
-				self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
+			if (order.OrderID == "PortableChronoDeploy")
+			{
+				// HACK: Switch the global order generator instead of actually issuing an order
+				if (CanTeleport)
+					self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
+
+				// HACK: We need to issue a fake order to stop the game complaining about the bodge above
+				return new Order(order.OrderID, self, Target.Invalid, queued);
+			}
 
 			if (order.OrderID == "PortableChronoTeleport")
 				return new Order(order.OrderID, self, target, queued);
