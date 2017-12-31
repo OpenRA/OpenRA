@@ -214,6 +214,13 @@ Background@MULTIPLAYER_PANEL:
 					IgnoreMouseOver: True
 					Children:
 						LogicTicker@ANIMATION:
+		Label@PLAYER_COUNT:
+			X: 208
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 190
+			Height: 25
+			Align: Center
+			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: 398
 			Y: PARENT_BOTTOM - HEIGHT - 20

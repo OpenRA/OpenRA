@@ -220,6 +220,13 @@ Container@MULTIPLAYER_PANEL:
 							IgnoreMouseOver: True
 							Children:
 								LogicTicker@ANIMATION:
+				Label@PLAYER_COUNT:
+					X: 198
+					Y: PARENT_BOTTOM - 40
+					Width: 189
+					Height: 25
+					Align: Center
+					Font: Bold
 				Button@DIRECTCONNECT_BUTTON:
 					X: 387
 					Y: PARENT_BOTTOM - 40
