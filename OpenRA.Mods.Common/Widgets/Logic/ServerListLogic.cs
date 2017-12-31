@@ -476,8 +476,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var label = item.Get<LabelWidget>("NOFLAG_LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
 						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+
+						// Force spectator color to prevent spoofing by the server
+						var color = o.IsSpectator ? Color.White : o.Color.RGB;
 						label.GetText = () => name;
-						label.GetColor = () => o.Color.RGB;
+						label.GetColor = () => color;
 					}
 
 					clientList.AddChild(item);
