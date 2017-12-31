@@ -173,6 +173,7 @@ SendAirStrike = function()
 			actor.Type ~= "wall" and
 			actor.Type ~= "medium_gun_turret" and
 			actor.Type ~= "large_gun_turret" and
+			actor.Type ~= "silo" and
 			actor.Type ~= "wind_trap"
 	end)
 
