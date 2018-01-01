@@ -107,15 +107,18 @@ namespace OpenRA
 
 								case TargetType.FrozenActor:
 									{
+										var playerActorID = r.ReadUInt32();
+										var frozenActorID = r.ReadUInt32();
+
 										Actor playerActor;
-										if (world == null || !TryGetActorFromUInt(world, r.ReadUInt32(), out playerActor))
+										if (world == null || !TryGetActorFromUInt(world, playerActorID, out playerActor))
 											break;
 
 										var frozenLayer = playerActor.TraitOrDefault<FrozenActorLayer>();
 										if (frozenLayer == null)
 											break;
 
-										var frozen = frozenLayer.FromID(r.ReadUInt32());
+										var frozen = frozenLayer.FromID(frozenActorID);
 										if (frozen != null)
 											target = Target.FromFrozenActor(frozen);
 
