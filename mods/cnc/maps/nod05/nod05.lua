@@ -122,13 +122,8 @@ Atk6TriggerFunction = function()
 end
 
 Atk1TriggerFunction = function()
-	Reinforcements.ReinforceWithTransport(enemy, 'tran', GDIReinforceUnits, { waypoint9.Location, waypoint26.Location }, nil,
-	function(transport, cargo)
-		transport.UnloadPassengers()
-		Utils.Do(cargo, function(actor)
-			IdleHunt(actor)
-		end)
-	end)
+	local cargo = Reinforcements.ReinforceWithTransport(enemy, 'tran', GDIReinforceUnits, { waypoint9.Location, waypoint26.Location }, { waypoint9.Location })[2]
+	Utils.Do(cargo, IdleHunt)
 end
 
 AutoTriggerFunction = function()
