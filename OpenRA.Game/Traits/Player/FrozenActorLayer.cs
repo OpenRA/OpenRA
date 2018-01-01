@@ -254,33 +254,38 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			UpdateDirtyFrozenActorsFromDirtyBins();
-
-			var frozenActorsToRemove = new List<FrozenActor>();
-			VisibilityHash = 0;
-			FrozenHash = 0;
-
-			foreach (var kvp in frozenActorsById)
+			// Update visibility at the end of the tick to make sure that
+			// the fog/shroud state has been updated for the tick
+			self.World.AddFrameEndTask(w =>
 			{
-				var id = kvp.Key;
-				var hash = (int)id;
-				FrozenHash += hash;
+				UpdateDirtyFrozenActorsFromDirtyBins();
 
-				var frozenActor = kvp.Value;
-				frozenActor.Tick();
-				if (dirtyFrozenActorIds.Contains(id))
-					frozenActor.UpdateVisibility();
+				var frozenActorsToRemove = new List<FrozenActor>();
+				VisibilityHash = 0;
+				FrozenHash = 0;
 
-				if (frozenActor.Visible)
-					VisibilityHash += hash;
-				else if (frozenActor.Actor == null)
-					frozenActorsToRemove.Add(frozenActor);
-			}
+				foreach (var kvp in frozenActorsById)
+				{
+					var id = kvp.Key;
+					var hash = (int)id;
+					FrozenHash += hash;
 
-			dirtyFrozenActorIds.Clear();
+					var frozenActor = kvp.Value;
+					frozenActor.Tick();
+					if (dirtyFrozenActorIds.Contains(id))
+						frozenActor.UpdateVisibility();
 
-			foreach (var fa in frozenActorsToRemove)
-				Remove(fa);
+					if (frozenActor.Visible)
+						VisibilityHash += hash;
+					else if (frozenActor.Actor == null)
+						frozenActorsToRemove.Add(frozenActor);
+				}
+
+				dirtyFrozenActorIds.Clear();
+
+				foreach (var fa in frozenActorsToRemove)
+					Remove(fa);
+			});
 		}
 
 		void UpdateDirtyFrozenActorsFromDirtyBins()
