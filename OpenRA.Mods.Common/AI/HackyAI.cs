@@ -1257,8 +1257,8 @@ namespace OpenRA.Mods.Common.AI
 			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
 				return;
 
-			// Protected harvesters or building
-			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>()) &&
+			// Protected priority assets, MCVs, harvesters and buildings
+			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>() || self.Info.HasTraitInfo<BaseBuildingInfo>()) &&
 				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
 			{
 				defenseCenter = e.Attacker.Location;
