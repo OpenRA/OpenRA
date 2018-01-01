@@ -67,8 +67,6 @@ namespace OpenRA.Mods.Common.Activities
 
 						var oldOwner = target.Actor.Owner;
 
-						target.Actor.ChangeOwner(self.Owner);
-
 						foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
 							t.OnCapture(target.Actor, self, oldOwner, self.Owner);
 
@@ -83,6 +81,8 @@ namespace OpenRA.Mods.Common.Activities
 
 						if (capturesInfo != null && capturesInfo.ConsumeActor)
 							self.Dispose();
+
+						target.Actor.ChangeOwnerSync(self.Owner);
 					});
 				}
 			}
