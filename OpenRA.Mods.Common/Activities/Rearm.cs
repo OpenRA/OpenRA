@@ -26,6 +26,34 @@ namespace OpenRA.Mods.Common.Activities
 			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.AutoReloads).ToArray();
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			// The entire activity will soon be deprecated and removed, so no point in avoiding more host hacks now.
+			// HACK to check if we are on the helipad/airfield/etc.
+			var host = self.World.ActorMap.GetActorsAt(self.Location)
+				.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
+
+			if (host == null || host.IsDead || !host.IsInWorld)
+				return;
+
+			foreach (var notify in host.TraitsImplementing<INotifyRearm>())
+				notify.RearmingStarted(host, self);
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			// The entire activity will soon be deprecated and removed, so no point in avoiding more host hacks now.
+			// HACK to check if we are on the helipad/airfield/etc.
+			var host = self.World.ActorMap.GetActorsAt(self.Location)
+				.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
+
+			if (host == null || host.IsDead || !host.IsInWorld)
+				return;
+
+			foreach (var notify in host.TraitsImplementing<INotifyRearm>())
+				notify.RearmingFinished(host, self);
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)

@@ -114,7 +114,6 @@ MIG:
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -143,6 +142,8 @@ MIG:
 		Interval: 2
 	ProducibleWithLevel:
 		Prerequisites: aircraft.upgraded
+	Rearmable:
+		RearmActors: afld
 
 YAK:
 	Inherits: ^Plane
@@ -182,7 +183,6 @@ YAK:
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: afld
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -211,6 +211,8 @@ YAK:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 30,28,0,2
+	Rearmable:
+		RearmActors: afld
 
 TRAN:
 	Inherits: ^Helicopter
@@ -303,7 +305,6 @@ HELI:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -331,6 +332,8 @@ HELI:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 36,28
+	Rearmable:
+		RearmActors: hpad
 
 HIND:
 	Inherits: ^Helicopter
@@ -370,7 +373,6 @@ HIND:
 	AttackHeli:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: hpad
 		LandWhenIdle: false
 		InitialFacing: 224
 		TurnSpeed: 4
@@ -399,6 +401,8 @@ HIND:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 38,32
+	Rearmable:
+		RearmActors: hpad
 
 U2:
 	Inherits: ^NeutralPlane

@@ -721,7 +721,8 @@
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
-		RepairBuildings: gadept
+		RepairActors: gadept
+	ResupplyManager:
 		Voice: Move
 	Passenger:
 		CargoType: Vehicle
@@ -817,9 +818,12 @@
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
+	Repairable:
+		RepairActors: gadept
+	ResupplyManager:
+		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne
-		RepairBuildings: gadept
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853

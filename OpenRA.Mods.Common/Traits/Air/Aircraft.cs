@@ -36,12 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
-		[ActorReference]
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
-
-		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
-
 		public readonly int InitialFacing = 0;
 
 		public readonly int TurnSpeed = 255;
@@ -157,6 +151,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
+		Repairable[] repairables;
+		Rearmable[] rearmables;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -212,6 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Created(Actor self)
 		{
+			repairables = self.TraitsImplementing<Repairable>().ToArray();
+			rearmables = self.TraitsImplementing<Rearmable>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -451,8 +449,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return Info.RearmBuildings.Contains(a.Info.Name)
-				|| Info.RepairBuildings.Contains(a.Info.Name);
+			return rearmables.Any(r => !r.IsTraitDisabled && r.Info.RearmActors.Contains(a.Info.Name))
+				|| repairables.Any(r => !r.IsTraitDisabled && r.Info.RepairActors.Contains(a.Info.Name));
 		}
 
 		public int MovementSpeed
@@ -488,11 +486,11 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
+			if (rearmables.Any(r => !r.IsTraitDisabled && r.Info.RearmActors.Contains(name)))
 				yield return new Rearm(self);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
-			if (Info.RepairBuildings.Contains(name))
+			if (repairables.Any(r => !r.IsTraitDisabled && r.Info.RepairActors.Contains(name)))
 				yield return new Repair(self, a, WDist.Zero);
 		}
 

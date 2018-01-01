@@ -14,17 +14,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RepairableInfo : ConditionalTraitInfo
+	public class RearmableInfo : ConditionalTraitInfo
 	{
-		[Desc("Actors that this actor can dock to and get repaired by.")]
+		[Desc("Actors that this actor can dock to and get rearmed by.")]
 		[FieldLoader.Require]
-		[ActorReference] public readonly HashSet<string> RepairActors = new HashSet<string> { };
+		[ActorReference] public readonly HashSet<string> RearmActors = new HashSet<string> { };
 
-		public override object Create(ActorInitializer init) { return new Repairable(this); }
+		public override object Create(ActorInitializer init) { return new Rearmable(this); }
 	}
 
-	public class Repairable : ConditionalTrait<RepairableInfo>
+	public class Rearmable : ConditionalTrait<RearmableInfo>
 	{
-		public Repairable(RepairableInfo info) : base(info) { }
+		public Rearmable(RearmableInfo info) : base(info) { }
 	}
 }

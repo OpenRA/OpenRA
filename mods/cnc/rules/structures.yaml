@@ -474,7 +474,7 @@ HPAD:
 	RepairsUnits:
 		HpPerStep: 1000
 		PlayerExperience: 25
-	WithRepairAnimation:
+	WithResupplyAnimation:
 	RallyPoint:
 	ProductionQueue@GDI:
 		Type: Aircraft.GDI
@@ -599,7 +599,7 @@ FIX:
 		Interval: 15
 		PlayerExperience: 25
 	RallyPoint:
-	WithRepairAnimation:
+	WithResupplyAnimation:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:

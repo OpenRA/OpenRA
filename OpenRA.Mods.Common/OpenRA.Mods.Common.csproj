@@ -294,9 +294,10 @@
     <Compile Include="Traits\Buildings\RallyPoint.cs" />
     <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
-    <Compile Include="Traits\Buildings\RepairsUnits.cs" />
     <Compile Include="Traits\Buildings\RequiresBuildableArea.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
+    <Compile Include="Traits\RepairsUnits.cs" />
+    <Compile Include="Traits\Rearmable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
@@ -454,8 +455,7 @@
     <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
-    <Compile Include="Traits\Render\WithRearmAnimation.cs" />
-    <Compile Include="Traits\Render\WithRepairAnimation.cs" />
+    <Compile Include="Traits\Render\WithResupplyAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairOverlay.cs" />
     <Compile Include="Traits\Render\WithResources.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
@@ -471,7 +471,7 @@
     <Compile Include="Traits\Render\DrawLineToTarget.cs" />
     <Compile Include="Traits\RejectsOrders.cs" />
     <Compile Include="Traits\Repairable.cs" />
-    <Compile Include="Traits\RepairableNear.cs" />
+    <Compile Include="Traits\ResupplyManager.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
