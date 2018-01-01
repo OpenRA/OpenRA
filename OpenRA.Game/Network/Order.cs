@@ -284,7 +284,7 @@ namespace OpenRA
 						w.Write(UIntFromActor(Target.SerializableActor));
 						break;
 					case TargetType.FrozenActor:
-						w.Write(Target.FrozenActor.Owner.PlayerActor.ActorID);
+						w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
 						w.Write(Target.FrozenActor.ID);
 						break;
 					case TargetType.Terrain:
