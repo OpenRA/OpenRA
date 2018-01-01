@@ -114,7 +114,7 @@ MIG:
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: afld
+		RearmBuildings: afld, afld.ukraine
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
@@ -182,7 +182,7 @@ YAK:
 	AttackPlane:
 		FacingTolerance: 20
 	Aircraft:
-		RearmBuildings: afld
+		RearmBuildings: afld, afld.ukraine
 		CruiseAltitude: 2560
 		InitialFacing: 192
 		TurnSpeed: 4
