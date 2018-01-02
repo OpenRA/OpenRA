@@ -441,7 +441,7 @@
 ^CivInfantry:
 	Inherits: ^Infantry
 	Valued:
-		Cost: 70
+		Cost: 10
 	Tooltip:
 		Name: Civilian
 		GenericVisibility: None
