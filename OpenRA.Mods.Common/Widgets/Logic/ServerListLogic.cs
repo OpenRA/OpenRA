@@ -306,7 +306,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				game.Spectators > 0 ? ", {0} Spectator{1}".F(game.Spectators, game.Spectators != 1 ? "s" : "") : "");
 		}
 
-		void RefreshServerList()
+		public void RefreshServerList()
 		{
 			// Query in progress
 			if (currentQuery != null)
