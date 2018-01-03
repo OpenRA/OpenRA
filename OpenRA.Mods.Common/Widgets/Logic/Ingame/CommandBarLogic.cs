@@ -309,6 +309,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var orders = selectedDeploys
 				.Where(pair => pair.Trait.IsTraitEnabled())
 				.Select(d => d.Trait.IssueDeployOrder(d.Actor))
+				.Where(d => d != null)
 				.ToArray();
 
 			foreach (var o in orders)
