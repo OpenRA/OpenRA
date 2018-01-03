@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltipContainer.BeforeRender = () =>
 			{
 				var icon = palette.TooltipIcon;
-				if (icon == null)
+				if (icon == null || icon.Power == null || icon.Power.Instances.Count == 0)
 					return;
 
 				var sp = icon.Power;
