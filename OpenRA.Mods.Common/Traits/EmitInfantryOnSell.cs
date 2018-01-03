@@ -60,8 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 			var dudesValue = info.ValuePercent * cost / 100;
 			if (health != null)
 			{
-				if (100 * health.HP >= info.MinHpPercent * health.MaxHP)
-					dudesValue = health.HP * dudesValue / health.MaxHP;
+				// Cast to long to avoid overflow when multiplying by the health
+				if (100L * health.HP >= info.MinHpPercent * (long)health.MaxHP)
+					dudesValue = (int)((long)health.HP * dudesValue / health.MaxHP);
 				else
 					dudesValue = 0;
 			}

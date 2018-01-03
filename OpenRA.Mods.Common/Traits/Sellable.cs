@@ -94,14 +94,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var sellValue = self.GetSellValue() * info.RefundPercent / 100;
-				if (health.Value != null)
-				{
-					sellValue *= health.Value.HP;
-					sellValue /= health.Value.MaxHP;
-				}
+				var sellValue = self.GetSellValue();
 
-				return "Refund: $" + sellValue;
+				// Cast to long to avoid overflow when multiplying by the health
+				var hp = health != null ? (long)health.Value.HP : 1L;
+				var maxHP = health != null ? (long)health.Value.MaxHP : 1L;
+				var refund = (int)((sellValue * info.RefundPercent * hp) / (100 * maxHP));
+
+				return "Refund: $" + refund;
 			}
 		}
 	}
