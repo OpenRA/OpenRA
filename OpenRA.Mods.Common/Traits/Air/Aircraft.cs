@@ -663,6 +663,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
 		{
+			if (!Info.RearmBuildings.Any())
+				return null;
+
 			return new Order("ReturnToBase", self, false);
 		}
 
@@ -675,9 +678,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				case "Move":
 				case "Enter":
-				case "ReturnToBase":
 				case "Stop":
 					return Info.Voice;
+				case "ReturnToBase":
+					return Info.RearmBuildings.Any() ? Info.Voice : null;
 				default: return null;
 			}
 		}
@@ -764,7 +768,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.QueueActivity(new HeliLand(self, true));
 				}
 			}
-			else if (order.OrderString == "ReturnToBase")
+			else if (order.OrderString == "ReturnToBase" && Info.RearmBuildings.Any())
 			{
 				UnReserve();
 				self.CancelActivity();
