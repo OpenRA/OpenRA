@@ -23,9 +23,21 @@ carryall.reinforce:
 	Cargo:
 		MaxWeight: 10
 
-construction_yard:
-	Production:
-		Produces: Building
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.barracks:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.light:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled
 
 concreteb:
 	Buildable:
