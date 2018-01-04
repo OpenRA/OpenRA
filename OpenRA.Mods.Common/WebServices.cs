@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common
 
 	public class WebServices : IGlobalModData
 	{
-		public readonly string ServerList = "http://master.openra.net/games";
-		public readonly string ServerAdvertise = "http://master.openra.net/ping";
-		public readonly string MapRepository = "http://resource.openra.net/map/";
-		public readonly string GameNews = "http://master.openra.net/gamenews";
-		public readonly string VersionCheck = "http://master.openra.net/versioncheck";
+		public readonly string ServerList = "https://master.openra.net/games";
+		public readonly string ServerAdvertise = "https://master.openra.net/ping";
+		public readonly string MapRepository = "https://resource.openra.net/map/";
+		public readonly string GameNews = "https://master.openra.net/gamenews";
+		public readonly string VersionCheck = "https://master.openra.net/versioncheck";
 
 		public ModVersionStatus ModVersionStatus { get; private set; }
 		const int VersionCheckProtocol = 1;
