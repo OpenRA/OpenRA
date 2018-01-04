@@ -118,7 +118,7 @@ PBOX:
 		Types: Infantry, Demitri
 
 5TNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 10000

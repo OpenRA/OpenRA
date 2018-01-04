@@ -95,7 +95,7 @@ Player:
 		Locked: True
 
 MNLYR:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Valued:
 		Cost: 800
 	Tooltip:
