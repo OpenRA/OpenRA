@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var info = Info as ProduceActorPowerInfo;
 			var sp = self.TraitsImplementing<Production>()
-				.FirstOrDefault(p => p.Info.Produces.Contains(info.Type));
+				.FirstOrDefault(p => !p.IsTraitDisabled && !p.IsTraitPaused && p.Info.Produces.Contains(info.Type));
 
 			// TODO: The power should not reset if the production fails.
 			// Fixing this will require a larger rework of the support power code
