@@ -73,6 +73,7 @@ namespace OpenRA.Network
 				.ToDictionary(k => k, v => frameData[v]);
 
 			return clientData
+				.Where(x => x.Value.Length > 4)
 				.SelectMany(x => x.Value
 					.ToOrderList(world)
 					.Select(o => new ClientOrder { Client = x.Key, Order = o }));

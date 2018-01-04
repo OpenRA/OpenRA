@@ -69,6 +69,9 @@ namespace OpenRA.Network
 						continue; // sync
 					else if (frame == 0)
 					{
+						if (packet.Length < 5)
+							continue;
+
 						// Parse replay metadata from orders stream
 						var orders = packet.ToOrderList(null);
 						foreach (var o in orders)
