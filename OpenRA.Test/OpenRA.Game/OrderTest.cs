@@ -43,8 +43,13 @@ namespace OpenRA.Test
 
 		Order RoundTripOrder(Order o)
 		{
-			var serializedData = new MemoryStream(o.Serialize());
-			return Order.Deserialize(null, new BinaryReader(serializedData));
+			Order desOrder;
+
+			using (var serializedData = new MemoryStream(o.Serialize()))
+				using (var reader = new BinaryReader(serializedData))
+					desOrder = Order.Deserialize(null, reader);
+
+			return desOrder;
 		}
 
 		[TestCase(TestName = "Data persists over serialization")]

@@ -23,14 +23,22 @@ namespace OpenRA.Network
 
 		public static List<Order> ToOrderList(this byte[] bytes, World world)
 		{
-			var ms = new MemoryStream(bytes, 4, bytes.Length - 4);
-			var reader = new BinaryReader(ms);
 			var ret = new List<Order>();
-			while (ms.Position < ms.Length)
+
+			if (bytes.Length <= 4)
+				return ret;
+
+			using (var ms = new MemoryStream(bytes, 4, bytes.Length - 4))
 			{
-				var o = Order.Deserialize(world, reader);
-				if (o != null)
-					ret.Add(o);
+				using (var reader = new BinaryReader(ms))
+				{
+					while (ms.Position < ms.Length)
+					{
+						var o = Order.Deserialize(world, reader);
+						if (o != null)
+							ret.Add(o);
+					}
+				}
 			}
 
 			return ret;
@@ -38,14 +46,20 @@ namespace OpenRA.Network
 
 		public static byte[] SerializeSync(int sync)
 		{
-			var ms = new MemoryStream(1 + 4);
-			using (var writer = new BinaryWriter(ms))
+			byte[] buffer;
+
+			using (var ms = new MemoryStream(1 + 4))
 			{
-				writer.Write((byte)0x65);
-				writer.Write(sync);
+				using (var writer = new BinaryWriter(ms))
+				{
+					writer.Write((byte)0x65);
+					writer.Write(sync);
+				}
+
+				buffer = ms.GetBuffer();
 			}
 
-			return ms.GetBuffer();
+			return buffer;
 		}
 
 		public static int2 ReadInt2(this BinaryReader r)
