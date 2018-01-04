@@ -47,7 +47,7 @@ V2RL:
 		DecorationBounds: 28,28
 
 1TNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
@@ -59,6 +59,7 @@ V2RL:
 		Cost: 700
 	Tooltip:
 		Name: Light Tank
+		GenericName: Tank
 	Health:
 		HP: 22000
 	Armor:
@@ -90,7 +91,7 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 
 2TNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
@@ -102,6 +103,7 @@ V2RL:
 		Cost: 850
 	Tooltip:
 		Name: Medium Tank
+		GenericName: Tank
 	Health:
 		HP: 45000
 	Armor:
@@ -136,7 +138,7 @@ V2RL:
 		DecorationBounds: 28,28
 
 3TNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
@@ -148,6 +150,7 @@ V2RL:
 		Cost: 1150
 	Tooltip:
 		Name: Heavy Tank
+		GenericName: Tank
 	Health:
 		HP: 60000
 	Armor:
@@ -182,7 +185,7 @@ V2RL:
 		DecorationBounds: 28,28
 
 4TNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
@@ -196,6 +199,7 @@ V2RL:
 		Cost: 2000
 	Tooltip:
 		Name: Mammoth Tank
+		GenericName: Tank
 	Health:
 		HP: 90000
 	Armor:
@@ -244,7 +248,7 @@ V2RL:
 		DecorationBounds: 44,38,0,-4
 
 ARTY:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
@@ -417,7 +421,7 @@ JEEP:
 		Prerequisites: vehicles.upgraded
 
 APC:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
@@ -457,7 +461,7 @@ APC:
 		Prerequisites: vehicles.upgraded
 
 MNLY:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -596,7 +600,7 @@ MRJ:
 		Range: 6c0
 
 TTNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
@@ -609,6 +613,7 @@ TTNK:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
+		GenericName: Tank
 	Health:
 		HP: 45000
 	Armor:
@@ -724,6 +729,7 @@ CTNK:
 		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
+		GenericName: Tank
 	SelectionDecorations:
 	Health:
 		HP: 45000
@@ -754,7 +760,7 @@ CTNK:
 		DecorationBounds: 30,30
 
 QTNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 190
@@ -764,6 +770,7 @@ QTNK:
 		Cost: 2000
 	Tooltip:
 		Name: MAD Tank
+		GenericName: Tank
 	Health:
 		HP: 90000
 	Armor:
