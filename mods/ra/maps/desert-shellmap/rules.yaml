@@ -32,15 +32,6 @@ World:
 	ExternalCondition@UNKILLABLE:
 		Condition: unkillable
 
-^Tank:
-	GainsExperience:
-		Conditions:
-	DamageMultiplier@UNKILLABLE:
-		RequiresCondition: unkillable
-		Modifier: 0
-	ExternalCondition@UNKILLABLE:
-		Condition: unkillable
-
 ^Infantry:
 	GainsExperience:
 		Conditions:

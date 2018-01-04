@@ -227,7 +227,7 @@ CrateNuke:
 		VictimScanRadius: 0
 	Warhead@6Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Trees
 		Size: 4
 		Delay: 5
 	Warhead@TREEKILL: SpreadDamage
@@ -317,6 +317,6 @@ MiniNuke:
 		Delay: 15
 	Warhead@13Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Trees
 		Size: 4
 		Delay: 15

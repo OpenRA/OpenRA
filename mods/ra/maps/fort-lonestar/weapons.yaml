@@ -168,9 +168,9 @@ SCUD:
 
 SilencedPPK:
 	Range: 25c0
-	ValidTargets: Infantry, Tank, Vehicle, Husk
+	ValidTargets: Infantry, Vehicle, Husk
 	InvalidTargets: Water, Structure, Wall
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: Infantry, Tank, Vehicle, Husk
+		ValidTargets: Infantry, Vehicle, Husk
 		Versus:
 			Heavy: 50
