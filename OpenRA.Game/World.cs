@@ -353,7 +353,6 @@ namespace OpenRA
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
 
 				effects.DoTimed(e => e.Tick(this), "Effect");
-				ScreenMap.Tick();
 			}
 
 			while (frameEndActions.Count != 0)
@@ -364,6 +363,7 @@ namespace OpenRA
 		public void TickRender(WorldRenderer wr)
 		{
 			ActorsWithTrait<ITickRender>().DoTimed(x => x.Trait.TickRender(wr, x.Actor), "Render");
+			ScreenMap.TickRender();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors.Values; } }
