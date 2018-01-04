@@ -373,6 +373,8 @@ namespace OpenRA.Widgets
 		public virtual void MouseEntered() { }
 		public virtual void MouseExited() { }
 
+		public virtual void DoUpdate() { }
+
 		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
 		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
 		/// <param name="mi">Mouse input data</param>
@@ -460,7 +462,7 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public virtual void Tick() { }
+		public virtual void Tick() { DoUpdate(); }
 
 		public virtual void TickOuter()
 		{

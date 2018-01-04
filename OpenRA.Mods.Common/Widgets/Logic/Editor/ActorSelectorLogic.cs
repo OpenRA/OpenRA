@@ -88,6 +88,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
+			ownersDropDown.OnUpdate = () =>
+			{
+				if (!editorLayer.Players.Players.ContainsKey(selectedOwner.Name))
+				{
+					var players = editorLayer.Players.Players.Values
+					.Where(p => p.Name.StartsWith("Multi"))
+					.OrderBy(p => p.Name);
+
+					selectedOwner = (players.Count() != 0) ?
+						players.Last() : editorLayer.Players.Players.FirstOrDefault().Value;
+
+					ownersDropDown.Text = selectedOwner.Name;
+					ownersDropDown.TextColor = selectedOwner.Color.RGB;
+				}
+			};
+
 			ownersDropDown.OnClick = () =>
 			{
 				var owners = editorLayer.Players.Players.Values.OrderBy(p => p.Name);
