@@ -87,8 +87,8 @@ fi
 
 if [ ! -f OpenAL-CS.dll -o ! -f OpenAL-CS.dll.config ]; then
 	echo "Fetching OpenAL-CS from GitHub."
-	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll
-	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll.config
+	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll
+	curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll.config
 fi
 
 if [ ! -f Eluant.dll ]; then
