@@ -28,7 +28,7 @@ Speech:
 		Guarding: GUARD
 		HarvesterAttack: HATTK
 		InsufficientFunds: MONEY
-		Leave: ABORT
+		Leave:
 		Lose: MFAIL
 		LowPower: POWER
 		MissileLaunchDetected: LAUNC
