@@ -112,6 +112,12 @@ namespace OpenRA.Platforms.Default
 				return bits == 16 ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_STEREO8;
 		}
 
+		static OpenAlSoundEngine()
+		{
+			using (var dll = new Support.WindowsPreparedNativeDll("soft_oal.dll"))
+				ALC10.alcGetError(IntPtr.Zero);
+		}
+
 		public OpenAlSoundEngine(string deviceName)
 		{
 			if (deviceName != null)
