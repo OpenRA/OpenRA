@@ -70,8 +70,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
-		public readonly bool OnRails = false;
-
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
 
@@ -328,20 +326,11 @@ namespace OpenRA.Mods.Common.Traits
 			// If the other actor in our way cannot be crushed, we are blocked.
 			// PERF: Avoid LINQ.
 			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			var lacksCrushability = true;
 			foreach (var crushable in crushables)
-			{
-				lacksCrushability = false;
-				if (!crushable.CrushableBy(otherActor, self, Crushes))
-					return true;
-			}
+				if (crushable.CrushableBy(otherActor, self, Crushes))
+					return false;
 
-			// If there are no crushable traits at all, this means the other actor cannot be crushed - we are blocked.
-			if (lacksCrushability)
-				return true;
-
-			// We are not blocked by the other actor.
-			return false;
+			return true;
 		}
 
 		public WorldMovementInfo GetWorldMovementInfo(World world)
@@ -392,6 +381,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
 		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle
 	{
+		const int AverageTicksBeforePathing = 5;
+		const int SpreadTicksBeforePathing = 5;
+		internal int TicksBeforePathing = 0;
+
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 		public bool IsMoving { get; set; }
@@ -567,12 +560,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
 		}
@@ -583,12 +576,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is MoveOrderTargeter)
-			{
-				if (Info.OnRails)
-					return null;
-
-				return new Order("Move", self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
-			}
+				return new Order("Move", self, target, queued);
 
 			return null;
 		}
@@ -629,14 +617,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				var loc = self.World.Map.Clamp(order.TargetLocation);
+
+				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(loc))
 					return;
 
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(Target.FromCell(self.World, order.TargetLocation), Color.Green);
-				self.QueueActivity(order.Queued, new Move(self, order.TargetLocation, WDist.FromCells(8), null, true));
+				TicksBeforePathing = AverageTicksBeforePathing + self.World.SharedRandom.Next(-SpreadTicksBeforePathing, SpreadTicksBeforePathing);
+
+				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Green);
+				self.QueueActivity(order.Queued, new Move(self, loc, WDist.FromCells(8), null, true));
 			}
 
 			if (order.OrderString == "Stop")
@@ -648,6 +640,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Move":
@@ -661,7 +656,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos TopLeft { get { return ToCell; } }
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
+		public Pair<CPos, SubCell>[] OccupiedCells()
 		{
 			if (FromCell == ToCell)
 				return new[] { Pair.New(FromCell, FromSubCell) };
@@ -733,10 +728,10 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			foreach (var crushes in crushables)
-				if (!crushes.Trait.CrushableBy(crushes.Actor, self, Info.Crushes))
-					return false;
+				if (crushes.Trait.CrushableBy(crushes.Actor, self, Info.Crushes))
+					return true;
 
-			return true;
+			return false;
 		}
 
 		public int MovementSpeedForCell(Actor self, CPos cell)

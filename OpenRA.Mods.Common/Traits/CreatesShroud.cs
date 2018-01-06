@@ -37,7 +37,5 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveSource(this); }
-
-		protected override bool IsDisabled(Actor self) { return self.IsDisabled(); }
 	}
 }

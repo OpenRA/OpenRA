@@ -21,10 +21,10 @@ Player:
 	MissionObjectives:
 		EarlyGameOver: true
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 4000
@@ -47,14 +47,14 @@ World:
 		WinVideo: airstrk.vqa
 		LossVideo: deskill.vqa
 	MapCreeps:
-		Locked: True
-		Enabled: False
+		CheckboxLocked: True
+		CheckboxEnabled: False
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
 	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 
 ^Vehicle:
 	Tooltip:

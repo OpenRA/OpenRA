@@ -11,15 +11,16 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using OpenRA.Network;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
 	[Flags]
 	enum OrderFields : byte
 	{
-		TargetActor = 0x01,
-		TargetLocation = 0x02,
+		Target = 0x01,
 		TargetString = 0x04,
 		Queued = 0x08,
 		ExtraLocation = 0x10,
@@ -39,8 +40,7 @@ namespace OpenRA
 		public readonly string OrderString;
 		public readonly Actor Subject;
 		public readonly bool Queued;
-		public Actor TargetActor;
-		public CPos TargetLocation;
+		public readonly Target Target;
 		public string TargetString;
 		public CPos ExtraLocation;
 		public uint ExtraData;
@@ -48,15 +48,29 @@ namespace OpenRA
 		public bool SuppressVisualFeedback;
 		public Actor VisualFeedbackTarget;
 
+		/// <summary>
+		/// DEPRECATED: Use Target instead.
+		/// </summary>
+		public Actor TargetActor { get { return Target.SerializableActor; } }
+
+		/// <summary>
+		/// DEPRECATED: Use Target instead.
+		/// </summary>
+		public CPos TargetLocation
+		{
+			get
+			{
+				return Target.SerializableCell.HasValue ? Target.SerializableCell.Value : CPos.Zero;
+			}
+		}
+
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
-		Order(string orderString, Actor subject,
-			Actor targetActor, CPos targetLocation, string targetString, bool queued, CPos extraLocation, uint extraData)
+		Order(string orderString, Actor subject, Target target, string targetString, bool queued, CPos extraLocation, uint extraData)
 		{
 			OrderString = orderString;
 			Subject = subject;
-			TargetActor = targetActor;
-			TargetLocation = targetLocation;
+			Target = target;
 			TargetString = targetString;
 			Queued = queued;
 			ExtraLocation = extraLocation;
@@ -74,21 +88,65 @@ namespace OpenRA
 						var subjectId = r.ReadUInt32();
 						var flags = (OrderFields)r.ReadByte();
 
-						var targetActorId = flags.HasField(OrderFields.TargetActor) ? r.ReadUInt32() : uint.MaxValue;
-						var targetLocation = (CPos)(flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero);
+						Actor subject = null;
+						if (world != null)
+							TryGetActorFromUInt(world, subjectId, out subject);
+
+						var target = Target.Invalid;
+						if (flags.HasField(OrderFields.Target))
+						{
+							switch ((TargetType)r.ReadByte())
+							{
+								case TargetType.Actor:
+									{
+										Actor targetActor;
+										if (world != null && TryGetActorFromUInt(world, r.ReadUInt32(), out targetActor))
+											target = Target.FromActor(targetActor);
+										break;
+									}
+
+								case TargetType.FrozenActor:
+									{
+										var playerActorID = r.ReadUInt32();
+										var frozenActorID = r.ReadUInt32();
+
+										Actor playerActor;
+										if (world == null || !TryGetActorFromUInt(world, playerActorID, out playerActor))
+											break;
+
+										var frozenLayer = playerActor.TraitOrDefault<FrozenActorLayer>();
+										if (frozenLayer == null)
+											break;
+
+										var frozen = frozenLayer.FromID(frozenActorID);
+										if (frozen != null)
+											target = Target.FromFrozenActor(frozen);
+
+										break;
+									}
+
+								case TargetType.Terrain:
+									{
+										if (world != null)
+											target = Target.FromCell(world, (CPos)r.ReadInt2());
+
+										break;
+									}
+							}
+						}
+
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
 						var extraLocation = (CPos)(flags.HasField(OrderFields.ExtraLocation) ? r.ReadInt2() : int2.Zero);
 						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
 						if (world == null)
-							return new Order(order, null, null, targetLocation, targetString, queued, extraLocation, extraData);
+							return new Order(order, null, target, targetString, queued, extraLocation, extraData);
 
-						Actor subject, targetActor;
-						if (!TryGetActorFromUInt(world, subjectId, out subject) || !TryGetActorFromUInt(world, targetActorId, out targetActor))
+						if (subject == null && subjectId != uint.MaxValue)
 							return null;
 
-						return new Order(order, subject, targetActor, targetLocation, targetString, queued, extraLocation, extraData);
+						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
 					}
 
 				case 0xfe:
@@ -169,68 +227,83 @@ namespace OpenRA
 
 		// For scripting special powers
 		public Order()
-			: this(null, null, null, CPos.Zero, null, false, CPos.Zero, 0) { }
+			: this(null, null, Target.Invalid, null, false, CPos.Zero, 0) { }
 
 		public Order(string orderString, Actor subject, bool queued)
-			: this(orderString, subject, null, CPos.Zero, null, queued, CPos.Zero, 0) { }
+			: this(orderString, subject, Target.Invalid, null, queued, CPos.Zero, 0) { }
+
+		public Order(string orderString, Actor subject, Target target, bool queued)
+			: this(orderString, subject, target, null, queued, CPos.Zero, 0) { }
 
 		public Order(string orderstring, Order order)
-			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
+			: this(orderstring, order.Subject, order.Target,
 				   order.TargetString, order.Queued, order.ExtraLocation, order.ExtraData) { }
 
 		public byte[] Serialize()
 		{
+			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + TargetString.Length + 1 : 6);
+			var ret = new MemoryStream(minLength);
+			var w = new BinaryWriter(ret);
+
 			if (IsImmediate)
 			{
-				var ret = new MemoryStream();
-				var w = new BinaryWriter(ret);
-				w.Write((byte)0xfe);
+				w.Write((byte)0xFE);
 				w.Write(OrderString);
 				w.Write(TargetString);
 				return ret.ToArray();
 			}
 
-			switch (OrderString)
+			w.Write((byte)0xFF);
+			w.Write(OrderString);
+			w.Write(UIntFromActor(Subject));
+
+			OrderFields fields = 0;
+			if (Target.SerializableType != TargetType.Invalid)
+				fields |= OrderFields.Target;
+
+			if (TargetString != null)
+				fields |= OrderFields.TargetString;
+
+			if (Queued)
+				fields |= OrderFields.Queued;
+
+			if (ExtraLocation != CPos.Zero)
+				fields |= OrderFields.ExtraLocation;
+
+			if (ExtraData != 0)
+				fields |= OrderFields.ExtraData;
+
+			w.Write((byte)fields);
+
+			if (fields.HasField(OrderFields.Target))
 			{
-				/*
-				 * Format:
-				 * u8: orderID.
-				 * 0xFF: Full serialized order.
-				 * varies: rest of order.
-				 */
-				default:
-					// TODO: specific serializers for specific orders.
-					{
-						var ret = new MemoryStream();
-						var w = new BinaryWriter(ret);
-						w.Write((byte)0xFF);
-						w.Write(OrderString);
-						w.Write(UIntFromActor(Subject));
-
-						OrderFields fields = 0;
-						if (TargetActor != null) fields |= OrderFields.TargetActor;
-						if (TargetLocation != CPos.Zero) fields |= OrderFields.TargetLocation;
-						if (TargetString != null) fields |= OrderFields.TargetString;
-						if (Queued) fields |= OrderFields.Queued;
-						if (ExtraLocation != CPos.Zero) fields |= OrderFields.ExtraLocation;
-						if (ExtraData != 0) fields |= OrderFields.ExtraData;
-
-						w.Write((byte)fields);
-
-						if (TargetActor != null)
-							w.Write(UIntFromActor(TargetActor));
-						if (TargetLocation != CPos.Zero)
-							w.Write(TargetLocation);
-						if (TargetString != null)
-							w.Write(TargetString);
-						if (ExtraLocation != CPos.Zero)
-							w.Write(ExtraLocation);
-						if (ExtraData != 0)
-							w.Write(ExtraData);
-
-						return ret.ToArray();
-					}
+				w.Write((byte)Target.SerializableType);
+				switch (Target.SerializableType)
+				{
+					case TargetType.Actor:
+						w.Write(UIntFromActor(Target.SerializableActor));
+						break;
+					case TargetType.FrozenActor:
+						w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
+						w.Write(Target.FrozenActor.ID);
+						break;
+					case TargetType.Terrain:
+						// SerializableCell is guaranteed to be non-null if Type == TargetType.Terrain
+						w.Write(Target.SerializableCell.Value);
+						break;
+				}
 			}
+
+			if (fields.HasField(OrderFields.TargetString))
+				w.Write(TargetString);
+
+			if (fields.HasField(OrderFields.ExtraLocation))
+				w.Write(ExtraLocation);
+
+			if (fields.HasField(OrderFields.ExtraData))
+				w.Write(ExtraData);
+
+			return ret.ToArray();
 		}
 
 		public override string ToString()

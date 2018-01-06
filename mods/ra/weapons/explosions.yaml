@@ -1,7 +1,8 @@
 ^Explosion:
+	ValidTargets: Ground, Water, Air
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 50
+		Damage: 5000
 		Versus:
 			None: 90
 			Wood: 75
@@ -15,18 +16,19 @@
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom22.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air, Ship, Trees
 	Warhead@3EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 
 CrateNapalm:
 	Inherits: ^Explosion
 	ValidTargets: Ground, Trees
 	Warhead@1Dam: SpreadDamage
 		Spread: 170
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees
 		Versus:
@@ -37,7 +39,7 @@ CrateNapalm:
 	Warhead@2Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water, Air, Trees
 	-Warhead@3EffWater: CreateEffect
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -48,7 +50,7 @@ CrateExplosion:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		AffectsParent: true
 	Warhead@2Eff: CreateEffect
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water, Air
 	-Warhead@3EffWater: CreateEffect
 
 UnitExplode:
@@ -56,13 +58,30 @@ UnitExplode:
 	Warhead@1Dam: SpreadDamage
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 
+UnitExplodePlane:
+	Inherits: UnitExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: large_napalm
+
+UnitExplodeHeli:
+	Inherits: UnitExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: napalm
+
+VisualExplode:
+	Inherits: ^Explosion
+	-Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
+		Explosions: offseted_napalm
+		ImpactSounds: firebl3.aud
+
 UnitExplodeShip:
 	Inherits: ^Explosion
 	-Warhead@Smu: LeaveSmudge
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: kaboom25.aud
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water
 
 UnitExplodeSubmarine:
 	Inherits: ^Explosion
@@ -70,12 +89,12 @@ UnitExplodeSubmarine:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		InvalidImpactTypes: None
+		ValidTargets: Ground, Water
 
 UnitExplodeSmall:
 	Inherits: ^Explosion
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: kaboom15.aud
@@ -83,7 +102,7 @@ UnitExplodeSmall:
 ArtilleryExplode:
 	Inherits: ^Explosion
 	Warhead@1Dam: SpreadDamage
-		Damage: 150
+		Damage: 15000
 	Warhead@2Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom22.aud
@@ -104,10 +123,10 @@ SmallBuildingExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
 
-CivBuildingExplosion:
-	Inherits: SmallBuildingExplode
+CivPanicExplosion:
 	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
-		Spread: 64
+		Falloff: 100, 100
+		Range: 0, 128
 		Damage: 1
 		Delay: 1
 
@@ -119,7 +138,7 @@ BarrelExplode:
 		ValidTargets: Ground, Trees
 		Versus:
 			None: 120
-			Wood: 200
+			Wood: 100
 			Light: 50
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
@@ -127,7 +146,6 @@ BarrelExplode:
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
 		Delay: 5
-		InvalidImpactTypes: None
 	-Warhead@3EffWater: CreateEffect
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -137,7 +155,7 @@ BarrelExplode:
 ATMine:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 400
+		Damage: 40000
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
@@ -160,12 +178,12 @@ APMine:
 OreExplosion:
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		Versus:
 			None: 90
-			Wood: 75
+			Wood: 70
 			Light: 60
-			Heavy: 25
+			Heavy: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Res: CreateResource
 		AddsResourceType: Ore
@@ -178,7 +196,7 @@ CrateNuke:
 	ValidTargets: Ground, Trees, Water, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 100
+		Damage: 10000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
@@ -192,7 +210,7 @@ CrateNuke:
 		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 1c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 5
 		ValidTargets: Ground, Water, Air
@@ -209,12 +227,12 @@ CrateNuke:
 		VictimScanRadius: 0
 	Warhead@6Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Trees
 		Size: 4
 		Delay: 5
 	Warhead@TREEKILL: SpreadDamage
 		Spread: 1c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 600, 400, 250, 150, 100, 0
 		Delay: 5
 		ValidTargets: Trees
@@ -224,10 +242,11 @@ MiniNuke:
 	ValidTargets: Ground, Trees, Water, Underwater, Air
 	Warhead@1Dam_impact: SpreadDamage
 		Spread: 1c0
-		Damage: 150
+		Damage: 15000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Trees, Water, Air
 		Versus:
+			Wood: 25
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -239,11 +258,12 @@ MiniNuke:
 		VictimScanRadius: 0
 	Warhead@4Dam_areanuke1: SpreadDamage
 		Spread: 2c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 5
 		ValidTargets: Ground, Trees, Water, Underwater, Air
 		Versus:
+			Wood: 50
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -256,17 +276,18 @@ MiniNuke:
 		VictimScanRadius: 0
 	Warhead@7Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Ground, Water, Underwater, Air
 		Versus:
+			Wood: 50
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@8Dam_areanuke2: SpreadDamage
 		Spread: 3c0
-		Damage: 120
+		Damage: 12000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 10
 		ValidTargets: Trees
@@ -276,7 +297,7 @@ MiniNuke:
 		Delay: 10
 	Warhead@10Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 60
+		Damage: 6000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Ground, Water, Underwater
@@ -286,7 +307,7 @@ MiniNuke:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@11Dam_areanuke3: SpreadDamage
 		Spread: 4c0
-		Damage: 180
+		Damage: 18000
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Delay: 15
 		ValidTargets: Trees
@@ -296,6 +317,6 @@ MiniNuke:
 		Delay: 15
 	Warhead@13Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Trees
 		Size: 4
 		Delay: 15

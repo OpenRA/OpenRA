@@ -1,19 +1,20 @@
 E1:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
 		Name: Minigunner
 	Buildable:
 		BuildPaletteOrder: 10
+		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 50
+		HP: 5000
 	AutoTarget:
 		ScanRadius: 4
 	Armament:
@@ -26,7 +27,7 @@ E1:
 E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -39,7 +40,7 @@ E2:
 	Mobile:
 		Speed: 71
 	Health:
-		HP: 50
+		HP: 5000
 	AutoTarget:
 		ScanRadius: 4
 	Armament:
@@ -59,19 +60,20 @@ E2:
 E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
 	Buildable:
 		BuildPaletteOrder: 20
+		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
 		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Mobile:
 		Speed: 42
 	Health:
-		HP: 45
+		HP: 4500
 	AutoTarget:
 		ScanRadius: 6
 	Armament:
@@ -87,7 +89,7 @@ E3:
 E4:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -100,7 +102,7 @@ E4:
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 90
+		HP: 9000
 	AutoTarget:
 		ScanRadius: 4
 	Armament:
@@ -118,7 +120,7 @@ E4:
 E5:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -136,7 +138,7 @@ E5:
 			BlueTiberium: 90
 				PathingCost: 90
 	Health:
-		HP: 90
+		HP: 9000
 	AutoTarget:
 		ScanRadius: 4
 	Armament:
@@ -160,12 +162,13 @@ E6:
 		Name: Engineer
 	Buildable:
 		BuildPaletteOrder: 30
+		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
-		Description: Damages and captures enemy structures.\n  Unarmed
+		Description: Damages and captures enemy structures.\n  Repairs destroyed vehicles\n  Unarmed
 	Mobile:
-		Speed: 56
+		Speed: 48
 	Health:
-		HP: 30
+		HP: 3000
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -177,7 +180,7 @@ E6:
 RMBO:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -195,7 +198,7 @@ RMBO:
 	Guard:
 		Voice: Move
 	Health:
-		HP: 150
+		HP: 15000
 	Passenger:
 		PipType: Red
 		Voice: Move
@@ -251,8 +254,8 @@ TREX:
 		Weapon: teeth
 	Selectable:
 		Bounds: 48,36,2,1
+		DecorationBounds: 52,38
 	SelectionDecorations:
-		VisualBounds: 52,38
 	Buildable:
 		Description: Bipedal carnivore with a massive skull
 
@@ -263,9 +266,10 @@ TRIC:
 	Armament:
 		Weapon: horn
 	SelectionDecorations:
-		VisualBounds: 34,24,0,2
 	Buildable:
 		Description: Quadruped with large bony frill and three horns
+	Selectable:
+		DecorationBounds: 34,24,0,2
 
 RAPT:
 	Inherits: ^DINO

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.D2k.Traits
 			self.ChangeOwner(newOwner);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!self.IsInWorld)
 				return;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 		}
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (changingOwner == null || changingOwner != newOwner)
 				originalOwner = newOwner; // It wasn't a temporary change, so we need to update here

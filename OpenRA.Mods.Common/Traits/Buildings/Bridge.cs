@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
@@ -47,7 +48,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
 
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) { DemolishWeaponInfo = rules.Weapons[DemolishWeapon.ToLowerInvariant()]; }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (string.IsNullOrEmpty(DemolishWeapon))
+				throw new YamlException("A value for DemolishWeapon of a Bridge trait is missing.");
+
+			WeaponInfo weapon;
+			var weaponToLower = DemolishWeapon.ToLowerInvariant();
+			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+
+			DemolishWeaponInfo = weapon;
+		}
 
 		public IEnumerable<Pair<ushort, int>> Templates
 		{
@@ -76,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class Bridge : IRender, INotifyDamageStateChanged
 	{
-		readonly BuildingInfo building;
+		readonly BuildingInfo buildingInfo;
 		readonly Bridge[] neighbours = new Bridge[2];
 		readonly LegacyBridgeHut[] huts = new LegacyBridgeHut[2]; // Huts before this / first & after this / last
 		readonly Health health;
@@ -99,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			type = self.Info.Name;
 			isDangling = new Lazy<bool>(() => huts[0] == huts[1] && (neighbours[0] == null || neighbours[1] == null));
-			building = self.Info.TraitInfo<BuildingInfo>();
+			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 		}
 
 		public Bridge Neighbour(int direction) { return neighbours[direction]; }
@@ -181,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IRenderable[] TemplateRenderables(WorldRenderer wr, PaletteReference palette, ushort template)
 		{
-			var offset = FootprintUtils.CenterOffset(self.World, building).Y + 1024;
+			var offset = buildingInfo.CenterOffset(self.World).Y + 1024;
 
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
 				wr.Theater.TileSprite(new TerrainTile(template, c.Value)),
@@ -203,6 +215,25 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return renderables[template];
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			foreach (var kv in footprint)
+			{
+				var xy = wr.ScreenPxPosition(wr.World.Map.CenterOfCell(kv.Key));
+				var size = wr.Theater.TileSprite(new TerrainTile(template, kv.Value)).Bounds.Size;
+
+				// Add an extra pixel padding to avoid issues with odd-sized sprites
+				var halfWidth = size.Width / 2 + 1;
+				var halfHeight = size.Height / 2 + 1;
+
+				yield return Rectangle.FromLTRB(
+					xy.X - halfWidth,
+					xy.Y - halfHeight,
+					xy.X + halfWidth,
+					xy.Y + halfHeight);
+			}
 		}
 
 		void KillUnitsOnBridge()

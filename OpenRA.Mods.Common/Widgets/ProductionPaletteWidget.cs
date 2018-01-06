@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public ActorInfo Actor;
 		public string Name;
-		public Hotkey Hotkey;
+		public HotkeyReference Hotkey;
 		public Sprite Sprite;
 		public PaletteReference Palette;
 		public PaletteReference IconClockPalette;
@@ -51,6 +52,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 
+		// Note: LinterHotkeyNames assumes that these are disabled by default
+		public readonly string HotkeyPrefix = null;
+		public readonly int HotkeyCount = 0;
+
 		public readonly string ClockAnimation = "clock";
 		public readonly string ClockSequence = "idle";
 		public readonly string ClockPalette = "chrome";
@@ -58,6 +63,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string NotBuildableAnimation = "clock";
 		public readonly string NotBuildableSequence = "idle";
 		public readonly string NotBuildablePalette = "chrome";
+
+		public readonly bool DrawTime = true;
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
@@ -69,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionIcon TooltipIcon { get; private set; }
 		public Func<ProductionIcon> GetTooltipIcon;
 		public readonly World World;
+		readonly ModData modData;
 		readonly OrderManager orderManager;
 
 		public int MinimumRows = 4;
@@ -79,6 +87,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
+		HotkeyReference[] hotkeys;
 
 		public ProductionQueue CurrentQueue
 		{
@@ -90,13 +99,38 @@ namespace OpenRA.Mods.Common.Widgets
 		Dictionary<Rectangle, ProductionIcon> icons = new Dictionary<Rectangle, ProductionIcon>();
 		Animation cantBuild, clock;
 		Rectangle eventBounds = Rectangle.Empty;
+
 		readonly WorldRenderer worldRenderer;
+
 		SpriteFont overlayFont;
 		float2 holdOffset, readyOffset, timeOffset, queuedOffset;
 
-		[ObjectCreator.UseCtor]
-		public ProductionPaletteWidget(OrderManager orderManager, World world, WorldRenderer worldRenderer)
+		[CustomLintableHotkeyNames]
+		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
 		{
+			var prefix = "";
+			var prefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyPrefix");
+			if (prefixNode != null)
+				prefix = prefixNode.Value.Value;
+
+			var count = 0;
+			var countNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyCount");
+			if (countNode != null)
+				count = FieldLoader.GetValue<int>("HotkeyCount", countNode.Value.Value);
+
+			if (count == 0)
+				return new string[0];
+
+			if (string.IsNullOrEmpty(prefix))
+				emitError("{0} must define HotkeyPrefix if HotkeyCount > 0.".F(widgetNode.Location));
+
+			return Exts.MakeArray(count, i => prefix + (i + 1).ToString("D2"));
+		}
+
+		[ObjectCreator.UseCtor]
+		public ProductionPaletteWidget(ModData modData, OrderManager orderManager, World world, WorldRenderer worldRenderer)
+		{
+			this.modData = modData;
 			this.orderManager = orderManager;
 			World = world;
 			this.worldRenderer = worldRenderer;
@@ -107,6 +141,14 @@ namespace OpenRA.Mods.Common.Widgets
 			cantBuild = new Animation(world, NotBuildableAnimation);
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			clock = new Animation(world, ClockAnimation);
+		}
+
+		public override void Initialize(WidgetArgs args)
+		{
+			base.Initialize(args);
+
+			hotkeys = Exts.MakeArray(HotkeyCount,
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 		}
 
 		public void ScrollDown()
@@ -200,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (item != null && item.Done && actor.HasTraitInfo<BuildingInfo>())
 			{
-				World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, icon.Name);
+				World.OrderGenerator = new PlaceBuildingOrderGenerator(CurrentQueue, icon.Name, worldRenderer);
 				return true;
 			}
 
@@ -302,12 +344,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event == KeyInputEvent.Up || CurrentQueue == null)
 				return false;
 
-			var hotkey = Hotkey.FromKeyInput(e);
 			var batchModifiers = e.Modifiers.HasModifier(Modifiers.Shift) ? Modifiers.Shift : Modifiers.None;
-			if (batchModifiers != Modifiers.None)
-				hotkey = new Hotkey(hotkey.Key, hotkey.Modifiers ^ Modifiers.Shift);
 
-			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
+			// HACK: enable production if the shift key is pressed
+			e.Modifiers &= ~Modifiers.Shift;
+			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
 		}
 
@@ -329,7 +370,6 @@ namespace OpenRA.Mods.Common.Widgets
 			var oldIconCount = DisplayedIconCount;
 			DisplayedIconCount = 0;
 
-			var ks = Game.Settings.Keys;
 			var rb = RenderBounds;
 			var faction = producer.Trait.Faction;
 
@@ -348,7 +388,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					Actor = item,
 					Name = item.Name,
-					Hotkey = ks.GetProductionHotkey(DisplayedIconCount),
+					Hotkey = DisplayedIconCount < HotkeyCount ? hotkeys[DisplayedIconCount] : null,
 					Sprite = icon.Image,
 					Palette = worldRenderer.Palette(bi.IconPalette),
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
@@ -429,7 +469,7 @@ namespace OpenRA.Mods.Common.Widgets
 						overlayFont.DrawTextWithContrast(HoldText,
 							icon.Pos + holdOffset,
 							Color.White, Color.Black, 1);
-					else if (!waiting)
+					else if (!waiting && DrawTime)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);

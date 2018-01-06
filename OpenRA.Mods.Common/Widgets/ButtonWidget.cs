@@ -19,15 +19,10 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
-		public Func<ButtonWidget, Hotkey> GetKey = _ => Hotkey.Invalid;
 
-		public Hotkey Key
-		{
-			get { return GetKey(this); }
-			set { GetKey = _ => value; }
-		}
-
+		public HotkeyReference Key = new HotkeyReference();
 		public bool DisableKeyRepeat = false;
+		public bool DisableKeySound = false;
 
 		[Translate] public string Text = "";
 		public string Background = "button";
@@ -135,15 +130,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (Hotkey.FromKeyInput(e) != Key || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
+			if (!Key.IsActivatedBy(e) || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
 
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
+				if (!DisableKeySound)
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickSound", null);
 			}
-			else
+			else if (!DisableKeySound)
 				Game.Sound.PlayNotification(ModRules, null, "Sounds", "ClickDisabledSound", null);
 
 			return true;

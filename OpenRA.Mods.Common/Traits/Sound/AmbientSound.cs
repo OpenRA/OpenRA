@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (IsTraitDisabled)
 				return;
 
-			currentSounds.RemoveWhere(s => s == null || !s.Playing);
+			currentSounds.RemoveWhere(s => s == null || s.Complete);
 
 			var pos = self.CenterPosition;
 			if (pos != cachedPosition)

@@ -84,7 +84,7 @@ namespace OpenRA
 		public readonly int[] Frames;
 		public readonly int2 Size;
 		public readonly bool PickAny;
-		public readonly string Category;
+		public readonly string[] Categories;
 		public readonly string Palette;
 
 		readonly TerrainTileInfo[] tileInfo;
@@ -185,7 +185,6 @@ namespace OpenRA
 		public readonly string Id;
 		public readonly int SheetSize = 512;
 		public readonly string Palette;
-		public readonly string PlayerPalette;
 		public readonly Color[] HeightDebugColors = new[] { Color.Red };
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;

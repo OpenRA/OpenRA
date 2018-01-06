@@ -28,8 +28,9 @@ namespace OpenRA
 		internal struct SyncHash
 		{
 			public readonly ISync Trait;
-			public readonly int Hash;
-			public SyncHash(ISync trait, int hash) { Trait = trait; Hash = hash; }
+			readonly Func<object, int> hashFunction;
+			public SyncHash(ISync trait) { Trait = trait; hashFunction = Sync.GetHashFunction(trait); }
+			public int Hash() { return hashFunction(Trait); }
 		}
 
 		public readonly ActorInfo Info;
@@ -47,13 +48,11 @@ namespace OpenRA
 
 		public int Generation;
 
-		public Rectangle Bounds { get; private set; }
-		public Rectangle VisualBounds { get; private set; }
 		public IEffectiveOwner EffectiveOwner { get; private set; }
 		public IOccupySpace OccupiesSpace { get; private set; }
 		public ITargetable[] Targetables { get; private set; }
 
-		public bool IsIdle { get { return CurrentActivity == null || CurrentActivity.IsIdle; } }
+		public bool IsIdle { get { return CurrentActivity == null; } }
 		public bool IsDead { get { return Disposed || (health != null && health.IsDead); } }
 
 		public CPos Location { get { return OccupiesSpace.TopLeft; } }
@@ -69,13 +68,13 @@ namespace OpenRA
 			}
 		}
 
-		internal IEnumerable<SyncHash> SyncHashes { get; private set; }
+		internal SyncHash[] SyncHashes { get; private set; }
 
 		readonly IFacing facing;
 		readonly IHealth health;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
-		readonly IDisable[] disables;
+		readonly IMouseBounds[] mouseBounds;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
 
@@ -110,51 +109,17 @@ namespace OpenRA
 			// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
 			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
-			Bounds = DetermineBounds();
-			VisualBounds = DetermineVisualBounds();
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
 			health = TraitOrDefault<IHealth>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
-			disables = TraitsImplementing<IDisable>().ToArray();
+			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 
-			SyncHashes =
-				TraitsImplementing<ISync>()
-				.Select(sync => Pair.New(sync, Sync.GetHashFunction(sync)))
-				.ToArray()
-				.Select(pair => new SyncHash(pair.First, pair.Second(pair.First)));
-		}
-
-		Rectangle DetermineBounds()
-		{
-			var si = Info.TraitInfoOrDefault<SelectableInfo>();
-			var size = (si != null && si.Bounds != null) ? new int2(si.Bounds[0], si.Bounds[1]) :
-				TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
-
-			var offset = -size / 2;
-			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
-				offset += new int2(si.Bounds[2], si.Bounds[3]);
-
-			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
-		}
-
-		Rectangle DetermineVisualBounds()
-		{
-			var sd = Info.TraitInfoOrDefault<ISelectionDecorationsInfo>();
-			if (sd == null || sd.SelectionBoxBounds == null)
-				return Bounds;
-
-			var size = new int2(sd.SelectionBoxBounds[0], sd.SelectionBoxBounds[1]);
-
-			var offset = -size / 2;
-			if (sd.SelectionBoxBounds.Length > 2)
-				offset += new int2(sd.SelectionBoxBounds[2], sd.SelectionBoxBounds[3]);
-
-			return new Rectangle(offset.X, offset.Y, size.X, size.Y);
+			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
 		}
 
 		public void Tick()
@@ -188,6 +153,35 @@ namespace OpenRA
 			foreach (var render in renders)
 				foreach (var renderable in render.Render(this, wr))
 					yield return renderable;
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr)
+		{
+			var bounds = Bounds(wr);
+			foreach (var modifier in renderModifiers)
+				bounds = modifier.ModifyScreenBounds(this, wr, bounds);
+			return bounds;
+		}
+
+		IEnumerable<Rectangle> Bounds(WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ. See comments for Renderables
+			foreach (var render in renders)
+				foreach (var r in render.ScreenBounds(this, wr))
+					if (!r.IsEmpty)
+						yield return r;
+		}
+
+		public Rectangle MouseBounds(WorldRenderer wr)
+		{
+			foreach (var mb in mouseBounds)
+			{
+				var bounds = mb.MouseoverBounds(this, wr);
+				if (!bounds.IsEmpty)
+					return bounds;
+			}
+
+			return Rectangle.Empty;
 		}
 
 		public void QueueActivity(bool queued, Activity nextActivity)
@@ -282,27 +276,33 @@ namespace OpenRA
 		// TODO: move elsewhere.
 		public void ChangeOwner(Player newOwner)
 		{
-			World.AddFrameEndTask(w =>
-			{
-				if (Disposed)
-					return;
+			World.AddFrameEndTask(_ => ChangeOwnerSync(newOwner));
+		}
 
-				var oldOwner = Owner;
-				var wasInWorld = IsInWorld;
+		/// <summary>
+		/// Change the actors owner without queuing a FrameEndTask.
+		/// This must only be called from inside an existing FrameEndTask.
+		/// </summary>
+		public void ChangeOwnerSync(Player newOwner)
+		{
+			if (Disposed)
+				return;
 
-				// momentarily remove from world so the ownership queries don't get confused
-				if (wasInWorld)
-					w.Remove(this);
+			var oldOwner = Owner;
+			var wasInWorld = IsInWorld;
 
-				Owner = newOwner;
-				Generation++;
+			// momentarily remove from world so the ownership queries don't get confused
+			if (wasInWorld)
+				World.Remove(this);
 
-				foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
-					t.OnOwnerChanged(this, oldOwner, newOwner);
+			Owner = newOwner;
+			Generation++;
 
-				if (wasInWorld)
-					w.Add(this);
-			});
+			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
+				t.OnOwnerChanged(this, oldOwner, newOwner);
+
+			if (wasInWorld)
+				World.Add(this);
 		}
 
 		public DamageState GetDamageState()
@@ -327,15 +327,6 @@ namespace OpenRA
 				return;
 
 			health.Kill(this, attacker);
-		}
-
-		public bool IsDisabled()
-		{
-			// PERF: Avoid LINQ.
-			foreach (var disable in disables)
-				if (disable.Disabled)
-					return true;
-			return false;
 		}
 
 		public bool CanBeViewedByPlayer(Player player)

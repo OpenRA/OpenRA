@@ -1,0 +1,647 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Harkonnen 08
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 84,94
+
+Bounds: 2,2,80,90
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Enemies: Harkonnen, Ordos Aligned Atreides, Neutral Atreides, Ordos, Harkonnen Aligned Mercenaries, Ordos Aligned Mercenaries
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Playable: True
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Allies: Harkonnen Aligned Mercenaries
+		Enemies: Ordos Aligned Atreides, Ordos, Ordos Aligned Mercenaries, Creeps
+	PlayerReference@Ordos Aligned Atreides:
+		Name: Ordos Aligned Atreides
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Allies: Ordos, Ordos Aligned Mercenaries
+		Enemies: Harkonnen, Harkonnen Aligned Mercenaries
+	PlayerReference@Neutral Atreides:
+		Name: Neutral Atreides
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+	PlayerReference@Ordos:
+		Name: Ordos
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Allies: Ordos Aligned Atreides, Ordos Aligned Mercenaries
+		Enemies: Harkonnen, Harkonnen Aligned Mercenaries
+	PlayerReference@Ordos Aligned Mercenaries:
+		Name: Ordos Aligned Mercenaries
+		LockFaction: True
+		Faction: mercenary
+		LockColor: True
+		Color: DDDD00
+		Allies: Ordos, Ordos Aligned Atreides
+		Enemies: Harkonnen
+	PlayerReference@Harkonnen Aligned Mercenaries:
+		Name: Harkonnen Aligned Mercenaries
+		LockFaction: True
+		Faction: mercenary
+		LockColor: True
+		Color: DDDD00
+		Allies: Harkonnen
+		Enemies: Ordos, Ordos Aligned Atreides
+
+Actors:
+	AOutpost: outpost
+		Location: 3,3
+		Owner: Ordos Aligned Atreides
+	AConYard: construction_yard
+		Location: 7,3
+		Owner: Ordos Aligned Atreides
+	AHiTechFactory: high_tech_factory
+		Location: 11,3
+		Owner: Ordos Aligned Atreides
+	APower1: wind_trap
+		Location: 16,3
+		Owner: Ordos Aligned Atreides
+	APower2: wind_trap
+		Location: 20,3
+		Owner: Ordos Aligned Atreides
+	APower3: wind_trap
+		Location: 26,3
+		Owner: Ordos Aligned Atreides
+	Actor6: light_inf
+		Location: 30,3
+		Owner: Ordos Aligned Atreides
+	ASilo: silo
+		Location: 24,4
+		Owner: Ordos Aligned Atreides
+	Actor8: light_inf
+		Location: 29,4
+		Owner: Ordos Aligned Atreides
+	APower4: wind_trap
+		Location: 22,5
+		Owner: Ordos Aligned Atreides
+	ABarracks1: barracks
+		Location: 13,6
+		Owner: Ordos Aligned Atreides
+	APower5: wind_trap
+		Location: 15,6
+		Owner: Ordos Aligned Atreides
+	ALightFactory: light_factory
+		Location: 17,6
+		Owner: Ordos Aligned Atreides
+	APower6: wind_trap
+		Location: 2,7
+		Owner: Ordos Aligned Atreides
+	AStarport: starport
+		Location: 5,7
+		Owner: Ordos Aligned Atreides
+	ABarracks2: barracks
+		Location: 10,7
+		Owner: Ordos Aligned Atreides
+	AGunt1: medium_gun_turret
+		Location: 13,9
+		Owner: Ordos Aligned Atreides
+	Actor17: wall
+		Location: 14,9
+		Owner: Ordos Aligned Atreides
+	Actor18: wall
+		Location: 15,9
+		Owner: Ordos Aligned Atreides
+	Actor19: wall
+		Location: 16,9
+		Owner: Ordos Aligned Atreides
+	Actor20: wall
+		Location: 17,9
+		Owner: Ordos Aligned Atreides
+	Actor21: wall
+		Location: 18,9
+		Owner: Ordos Aligned Atreides
+	Actor22: wall
+		Location: 19,9
+		Owner: Ordos Aligned Atreides
+	Actor23: wall
+		Location: 20,9
+		Owner: Ordos Aligned Atreides
+	Actor24: wormspawner
+		Location: 51,9
+		Owner: Creeps
+	APower7: wind_trap
+		Location: 3,10
+		Owner: Ordos Aligned Atreides
+	ARefinery1: refinery
+		Location: 9,10
+		Owner: Ordos Aligned Atreides
+	Actor27: wall
+		Location: 13,10
+		Owner: Ordos Aligned Atreides
+	Actor28: wall
+		Location: 20,10
+		Owner: Ordos Aligned Atreides
+	ARock1: large_gun_turret
+		Location: 13,11
+		Owner: Ordos Aligned Atreides
+	Actor30: harvester
+		Location: 12,12
+		Owner: Ordos Aligned Atreides
+	Actor31: spicebloom.spawnpoint
+		Location: 33,12
+		Owner: Neutral
+	Actor32: spicebloom.spawnpoint
+		Location: 34,12
+		Owner: Neutral
+	Actor33: spicebloom.spawnpoint
+		Location: 74,12
+		Owner: Neutral
+	APower8: wind_trap
+		Location: 2,13
+		Owner: Ordos Aligned Atreides
+	Actor35: carryall
+		Location: 11,13
+		Owner: Ordos Aligned Atreides
+	AHeavyFactory: heavy_factory
+		Location: 4,14
+		Owner: Ordos Aligned Atreides
+	APower9: wind_trap
+		Location: 7,14
+		Owner: Ordos Aligned Atreides
+	Actor38: light_inf
+		Location: 15,14
+		Owner: Ordos Aligned Atreides
+	Actor39: light_inf
+		Location: 12,15
+		Owner: Ordos Aligned Atreides
+	Actor40: harvester
+		Location: 12,17
+		Owner: Ordos Aligned Atreides
+	ARepair: repair_pad
+		Location: 4,18
+		Owner: Ordos Aligned Atreides
+	ARefinery2: refinery
+		Location: 9,18
+		Owner: Ordos Aligned Atreides
+	ARock2: large_gun_turret
+		Location: 13,18
+		Owner: Ordos Aligned Atreides
+	Actor44: spicebloom.spawnpoint
+		Location: 48,18
+		Owner: Neutral
+	Actor45: light_inf
+		Location: 2,19
+		Owner: Ordos Aligned Atreides
+	Actor46: wall
+		Location: 13,19
+		Owner: Ordos Aligned Atreides
+	Actor47: spicebloom.spawnpoint
+		Location: 26,19
+		Owner: Neutral
+	Actor48: carryall
+		Location: 12,20
+		Owner: Ordos Aligned Atreides
+	Actor49: wall
+		Location: 13,20
+		Owner: Ordos Aligned Atreides
+	Actor50: spicebloom.spawnpoint
+		Location: 42,20
+		Owner: Neutral
+	Actor51: wall
+		Location: 13,21
+		Owner: Ordos Aligned Atreides
+	Actor52: siege_tank
+		Location: 11,22
+		Owner: Ordos Aligned Atreides
+	Actor53: wall
+		Location: 13,22
+		Owner: Ordos Aligned Atreides
+	Actor54: wall
+		Location: 11,23
+		Owner: Ordos Aligned Atreides
+	Actor55: wall
+		Location: 12,23
+		Owner: Ordos Aligned Atreides
+	AGunt2: medium_gun_turret
+		Location: 13,23
+		Owner: Ordos Aligned Atreides
+	Actor57: wall
+		Location: 50,25
+		Owner: Ordos
+	Actor58: wall
+		Location: 50,26
+		Owner: Ordos
+	Actor59: wall
+		Location: 51,26
+		Owner: Ordos
+	Actor60: wall
+		Location: 52,26
+		Owner: Ordos
+	OGunt1: medium_gun_turret
+		Location: 53,26
+		Owner: Ordos
+	OGunt2: medium_gun_turret
+		Location: 58,26
+		Owner: Ordos
+	Actor63: wall
+		Location: 59,26
+		Owner: Ordos
+	Actor64: wall
+		Location: 60,26
+		Owner: Ordos
+	Actor65: wall
+		Location: 61,26
+		Owner: Ordos
+	Actor66: spicebloom.spawnpoint
+		Location: 75,27
+		Owner: Neutral
+	OPower1: wind_trap
+		Location: 53,29
+		Owner: Ordos
+	OPower2: wind_trap
+		Location: 60,29
+		Owner: Ordos
+	OPower3: wind_trap
+		Location: 51,30
+		Owner: Ordos
+	OPower4: wind_trap
+		Location: 63,30
+		Owner: Ordos
+	Actor71: spicebloom.spawnpoint
+		Location: 9,33
+		Owner: Neutral
+	OPower5: wind_trap
+		Location: 44,33
+		Owner: Ordos
+	Actor73: trooper
+		Location: 46,33
+		Owner: Ordos
+	OPower6: wind_trap
+		Location: 60,33
+		Owner: Ordos
+	Actor75: spicebloom.spawnpoint
+		Location: 6,34
+		Owner: Neutral
+	OBarracks1: barracks
+		Location: 47,34
+		Owner: Ordos
+	OResearch: research_centre
+		Location: 51,34
+		Owner: Ordos
+	OHeavyFactory: heavy_factory
+		Location: 55,34
+		Owner: Ordos
+	OPower7: wind_trap
+		Location: 62,35
+		Owner: Ordos
+	Actor80: wall
+		Location: 42,37
+		Owner: Ordos
+	Actor81: light_inf
+		Location: 50,37
+		Owner: Ordos
+	Actor82: wall
+		Location: 42,38
+		Owner: Ordos
+	ORepair: repair_pad
+		Location: 49,38
+		Owner: Ordos
+	OPalace: palace
+		Location: 53,38
+		Owner: Ordos
+	OHiTechFactory: high_tech_factory
+		Location: 57,38
+		Owner: Ordos
+	ORock1: large_gun_turret
+		Location: 42,39
+		Owner: Ordos
+	OPower8: wind_trap
+		Location: 62,39
+		Owner: Ordos
+	Actor88: spicebloom.spawnpoint
+		Location: 30,40
+		Owner: Neutral
+	OPower9: wind_trap
+		Location: 45,40
+		Owner: Ordos
+	Actor90: deviator
+		Location: 52,40
+		Owner: Ordos
+	ORefinery1: refinery
+		Location: 66,41
+		Owner: Ordos
+	Actor92: wall
+		Location: 71,41
+		Owner: Ordos
+	OGunt3: medium_gun_turret
+		Location: 72,41
+		Owner: Ordos
+	Actor94: harvester
+		Location: 43,42
+		Owner: Ordos
+	OStarport: starport
+		Location: 51,42
+		Owner: Ordos
+	OLightFactory: light_factory
+		Location: 55,42
+		Owner: Ordos
+	Actor97: harvester
+		Location: 69,42
+		Owner: Ordos
+	Actor98: wall
+		Location: 72,42
+		Owner: Ordos
+	ORefinery2: refinery
+		Location: 44,43
+		Owner: Ordos
+	Actor100: carryall
+		Location: 65,43
+		Owner: Ordos
+	Actor101: wall
+		Location: 72,43
+		Owner: Ordos
+	ORock2: large_gun_turret
+		Location: 42,44
+		Owner: Ordos
+	Actor103: wall
+		Location: 72,44
+		Owner: Ordos
+	Actor104: wall
+		Location: 42,45
+		Owner: Ordos
+	Actor105: wall
+		Location: 72,45
+		Owner: Ordos
+	Actor106: wall
+		Location: 42,46
+		Owner: Ordos
+	Actor107: carryall
+		Location: 44,46
+		Owner: Ordos
+	OPower10: wind_trap
+		Location: 46,46
+		Owner: Ordos
+	OBarracks2: barracks
+		Location: 51,46
+		Owner: Ordos
+	OOutpost: outpost
+		Location: 54,46
+		Owner: Ordos
+	OConYard: construction_yard
+		Location: 58,46
+		Owner: Ordos
+	OPower11: wind_trap
+		Location: 62,46
+		Owner: Ordos
+	ORock3: large_gun_turret
+		Location: 66,46
+		Owner: Ordos
+	ORock4: large_gun_turret
+		Location: 70,46
+		Owner: Ordos
+	Actor115: wall
+		Location: 71,46
+		Owner: Ordos
+	Actor116: wall
+		Location: 72,46
+		Owner: Ordos
+	Actor117: wall
+		Location: 42,47
+		Owner: Ordos
+	Actor118: wall
+		Location: 66,47
+		Owner: Ordos
+	Actor119: wall
+		Location: 70,47
+		Owner: Ordos
+	Actor120: wall
+		Location: 65,48
+		Owner: Ordos
+	OGunt4: medium_gun_turret
+		Location: 66,48
+		Owner: Ordos
+	OGunt5: medium_gun_turret
+		Location: 70,48
+		Owner: Ordos
+	OPower12: wind_trap
+		Location: 50,49
+		Owner: Ordos
+	Actor124: wall
+		Location: 65,49
+		Owner: Ordos
+	OSilo1: silo
+		Location: 52,50
+		Owner: Ordos
+	OSilo2: silo
+		Location: 54,50
+		Owner: Ordos
+	OSilo3: silo
+		Location: 56,50
+		Owner: Ordos
+	OPower13: wind_trap
+		Location: 59,50
+		Owner: Ordos
+	Actor129: wall
+		Location: 65,50
+		Owner: Ordos
+	Actor130: wall
+		Location: 64,51
+		Owner: Ordos
+	Actor131: wall
+		Location: 65,51
+		Owner: Ordos
+	Actor132: wall
+		Location: 66,51
+		Owner: Ordos
+	Actor133: spicebloom.spawnpoint
+		Location: 32,52
+		Owner: Neutral
+	Actor134: wall
+		Location: 65,52
+		Owner: Ordos
+	Actor135: spicebloom.spawnpoint
+		Location: 39,53
+		Owner: Neutral
+	Actor136: wall
+		Location: 65,53
+		Owner: Ordos
+	Actor137: wall
+		Location: 64,54
+		Owner: Ordos
+	OGunt6: medium_gun_turret
+		Location: 65,54
+		Owner: Ordos
+	Actor139: wall
+		Location: 66,54
+		Owner: Ordos
+	Actor140: spicebloom.spawnpoint
+		Location: 26,57
+		Owner: Neutral
+	Actor141: spicebloom.spawnpoint
+		Location: 70,60
+		Owner: Neutral
+	MPower1: wind_trap
+		Location: 30,63
+		Owner: Ordos Aligned Mercenaries
+	MPower2: wind_trap
+		Location: 32,63
+		Owner: Ordos Aligned Mercenaries
+	MHeavyFactory: heavy_factory
+		Location: 36,65
+		Owner: Ordos Aligned Mercenaries
+	Actor145: spicebloom.spawnpoint
+		Location: 14,69
+		Owner: Neutral
+	Actor146: wall
+		Location: 31,69
+		Owner: Ordos Aligned Mercenaries
+	MStarport: starport
+		Location: 37,69
+		Owner: Ordos Aligned Mercenaries
+	Actor148: wall
+		Location: 31,70
+		Owner: Ordos Aligned Mercenaries
+	Actor149: wall
+		Location: 31,71
+		Owner: Ordos Aligned Mercenaries
+	MGunt: medium_gun_turret
+		Location: 32,71
+		Owner: Ordos Aligned Mercenaries
+	Actor151: wall
+		Location: 31,72
+		Owner: Ordos Aligned Mercenaries
+	Actor152: wall
+		Location: 32,72
+		Owner: Ordos Aligned Mercenaries
+	Actor153: wall
+		Location: 33,72
+		Owner: Ordos Aligned Mercenaries
+	Actor154: wall
+		Location: 34,72
+		Owner: Ordos Aligned Mercenaries
+	Actor155: spicebloom.spawnpoint
+		Location: 50,77
+		Owner: Neutral
+	Actor156: light_inf
+		Location: 69,79
+		Owner: Harkonnen
+	Actor157: combat_tank_h
+		Location: 71,79
+		Owner: Harkonnen
+	Actor158: spicebloom.spawnpoint
+		Location: 24,80
+		Owner: Neutral
+	Actor159: combat_tank_h
+		Location: 66,80
+		Owner: Harkonnen
+	Actor160: trooper
+		Location: 74,80
+		Owner: Harkonnen
+	HMCV: mcv
+		Location: 68,81
+		Owner: Harkonnen
+	Actor162: combat_tank_h
+		Location: 64,82
+		Owner: Harkonnen
+	Actor163: combat_tank_h
+		Location: 66,82
+		Owner: Harkonnen
+	Actor164: trooper
+		Location: 71,82
+		Owner: Harkonnen
+	Actor165: trike
+		Location: 65,84
+		Owner: Harkonnen
+	Actor166: siege_tank
+		Location: 67,84
+		Owner: Harkonnen
+	Actor167: spicebloom.spawnpoint
+		Location: 8,90
+		Owner: Neutral
+	Actor168: spicebloom.spawnpoint
+		Location: 36,90
+		Owner: Neutral
+	OrdosRally1: waypoint
+		Owner: Neutral
+		Location: 43,88
+	OrdosEntry1: waypoint
+		Owner: Neutral
+		Location: 43,91
+	OrdosRally2: waypoint
+		Owner: Neutral
+		Location: 48,88
+	OrdosEntry2: waypoint
+		Owner: Neutral
+		Location: 48,91
+	OrdosRally3: waypoint
+		Owner: Neutral
+		Location: 76,59
+	OrdosEntry3: waypoint
+		Owner: Neutral
+		Location: 81,59
+	OrdosRally4: waypoint
+		Owner: Neutral
+		Location: 39,41
+	OrdosEntry4: waypoint
+		Owner: Neutral
+		Location: 81,41
+	OrdosRally5: waypoint
+		Owner: Neutral
+		Location: 58,43
+	OrdosRally6: waypoint
+		Owner: Neutral
+		Location: 61,41
+	AtreidesRally: waypoint
+		Owner: Neutral
+		Location: 9,8
+	MercenaryRally: waypoint
+		Owner: Neutral
+		Location: 33,68
+	MercenaryStarportEntry: waypoint
+		Owner: Neutral
+		Location: 81,70
+	MercenaryStarportExit: waypoint
+		Owner: Neutral
+		Location: 2,70
+	SaboteurWaypoint1: waypoint
+		Owner: Neutral
+		Location: 68,48
+	SaboteurWaypoint2: waypoint
+		Owner: Neutral
+		Location: 81,51
+	SaboteurWaypoint3: waypoint
+		Owner: Neutral
+		Location: 81,78
+	SaboteurWaypoint4: waypoint
+		Owner: Neutral
+		Location: 18,59
+	SaboteurWaypoint5: waypoint
+		Owner: Neutral
+		Location: 31,91
+	SaboteurWaypoint6: waypoint
+		Owner: Neutral
+		Location: 64,91
+
+Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml

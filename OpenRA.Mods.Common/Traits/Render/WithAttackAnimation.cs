@@ -75,8 +75,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!IsTraitDisabled && !wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.AttackSequence))
 			{
 				attackAnimPlaying = true;
-				wsb.PlayCustomAnimation(self, Info.AttackSequence,
-					() => { wsb.CancelCustomAnimation(self); attackAnimPlaying = false; });
+				wsb.PlayCustomAnimation(self, Info.AttackSequence, () => attackAnimPlaying = false);
 			}
 		}
 
@@ -111,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 
 			var sequence = wsb.Info.Sequence;
-			if (!string.IsNullOrEmpty(Info.AimSequence) && attack.IsAttacking)
+			if (!string.IsNullOrEmpty(Info.AimSequence) && attack.IsAiming)
 				sequence = Info.AimSequence;
 
 			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(Info.ReloadPrefix)) ? Info.ReloadPrefix : "";

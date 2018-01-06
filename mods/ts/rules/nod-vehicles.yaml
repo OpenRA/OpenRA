@@ -2,7 +2,7 @@ BGGY:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -16,7 +16,7 @@ BGGY:
 		TurnSpeed: 8
 		Speed: 142
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -31,6 +31,7 @@ BGGY:
 		MuzzleSplitFacings: 8
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithMuzzleOverlay:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
@@ -39,7 +40,7 @@ BIKE:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -53,7 +54,7 @@ BIKE:
 		TurnSpeed: 8
 		Speed: 170
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -70,6 +71,7 @@ BIKE:
 		LocalOffset: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	DamagedByTerrain@VEINS:
 		RequiresCondition: !inside-tunnel && !rank-elite
 	LeavesTrails@VEINS:
@@ -79,7 +81,7 @@ TTNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -99,7 +101,7 @@ TTNK:
 		Crushes: wall, crate, infantry
 		RequiresCondition: !empdisable && undeployed
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Light
 		RequiresCondition: undeployed
@@ -139,6 +141,7 @@ TTNK:
 	AttackFrontal:
 		Voice: Attack
 		RequiresCondition: undeployed
+		PauseOnCondition: empdisable
 	Turreted:
 		TurnSpeed: 6
 		Turret: deployed
@@ -155,7 +158,9 @@ TTNK:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -190,7 +195,7 @@ ART2:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -205,7 +210,7 @@ ART2:
 		Prerequisites: ~naweap, naradr, ~techlevel.high
 		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Mobile:
@@ -251,7 +256,9 @@ ART2:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -279,7 +286,7 @@ REPAIR:
 	Tooltip:
 		Name: Mobile Repair Vehicle
 	Health:
-		HP: 200
+		HP: 20000
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
@@ -295,6 +302,7 @@ REPAIR:
 		ForceTargetStances: None
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Vehicles
@@ -325,8 +333,9 @@ WEED:
 		Speed: 71
 		TurnSpeed: 5
 	Health:
-		HP: 600
+		HP: 60000
 	SelfHealing:
+		Step: 500
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
@@ -367,7 +376,7 @@ SAPC:
 		TerrainSpeeds:
 			Subterranean: 120
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -390,7 +399,7 @@ SUBTANK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -414,7 +423,7 @@ SUBTANK:
 		TerrainSpeeds:
 			Subterranean: 120
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -425,6 +434,7 @@ SUBTANK:
 		Weapon: FireballLauncher
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithVoxelBody:
 		RequiresCondition: !submerged
 	Targetable:
@@ -434,7 +444,7 @@ STNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -449,7 +459,7 @@ STNK:
 		Speed: 85
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 180
+		HP: 18000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -463,7 +473,7 @@ STNK:
 		UncloakSound: cloak5.aud
 		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
-		RequiresCondition: !cloak-force-disabled
+		RequiresCondition: !cloak-force-disabled && !empdisable
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -472,6 +482,7 @@ STNK:
 		LocalOffset: 301,61,421, 301,-61,421
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

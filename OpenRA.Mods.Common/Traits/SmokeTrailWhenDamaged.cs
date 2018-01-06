@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 				getFacing = 0;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (--ticks <= 0)
 			{

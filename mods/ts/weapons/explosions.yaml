@@ -2,7 +2,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Falloff: 100, 50, 25, 12, 6, 3, 0
-		Damage: 500
+		Damage: 50000
 		Versus:
 			None: 90
 			Wood: 75
@@ -24,7 +24,7 @@ UnitExplodeSmall:
 	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
 		Spread: 192
-		Damage: 40
+		Damage: 4000
 	Warhead@2Eff: CreateEffect
 		Explosions: medium_brnl
 		ImpactSounds: expnew13.aud
@@ -49,7 +49,7 @@ TiberiumExplosion:
 	Inherits: ^DamagingExplosion
 	Warhead@1Dam: SpreadDamage
 		Spread: 9
-		Damage: 10
+		Damage: 1000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@Res: CreateResource
 		AddsResourceType: Tiberium

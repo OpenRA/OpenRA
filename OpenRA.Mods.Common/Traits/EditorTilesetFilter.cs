@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly HashSet<string> RequireTilesets = null;
 		public readonly HashSet<string> ExcludeTilesets = null;
+		public readonly string[] Categories;
 	}
 
 	public class EditorTilesetFilter { }

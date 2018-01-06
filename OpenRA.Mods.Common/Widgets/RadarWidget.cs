@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -361,6 +362,8 @@ namespace OpenRA.Mods.Common.Widgets
 				var stride = radarSheet.Size.Width;
 				Array.Clear(radarData, 4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride);
 
+				var cells = new List<Pair<CPos, Color>>();
+
 				unsafe
 				{
 					fixed (byte* colorBytes = &radarData[0])
@@ -372,7 +375,9 @@ namespace OpenRA.Mods.Common.Widgets
 							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
 								continue;
 
-							foreach (var cell in t.Trait.RadarSignatureCells(t.Actor))
+							cells.Clear();
+							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
+							foreach (var cell in cells)
 							{
 								if (!world.Map.Contains(cell.First))
 									continue;

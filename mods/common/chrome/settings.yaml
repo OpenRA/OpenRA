@@ -1,5 +1,30 @@
 Background@SETTINGS_PANEL:
 	Logic: SettingsLogic
+		HotkeyGroups:
+			Game Commands:
+				Template: TWO_COLUMN
+				Types: OrderGenerator, World, Menu
+			Viewport Commands:
+				Template: TWO_COLUMN
+				Types: Viewport
+			Observer / Replay Commands:
+				Template: TWO_COLUMN
+				Types: Observer, Replay
+			Unit Commands:
+				Template: THREE_COLUMN
+				Types: Unit
+			Unit Stance Commands:
+				Template: TWO_COLUMN
+				Types: Stance
+			Production Commands:
+				Template: THREE_COLUMN
+				Types: Production, ProductionSlot
+			Support Power Commands:
+				Template: THREE_COLUMN
+				Types: SupportPower
+			Music Commands:
+				Template: TWO_COLUMN
+				Types: Music
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM -  HEIGHT) / 2
 	Width: 600
@@ -454,62 +479,46 @@ Background@SETTINGS_PANEL:
 									Width: PARENT_RIGHT
 									Height: 10
 									Align: Center
-						Container@GLOBAL_TEMPLATE:
-							Width: 262
-							Height: 25
-							Visible: false
-							Children:
-								Label@FUNCTION:
-									Y: 0 - 1
-									Width: PARENT_RIGHT - 85
-									Height: 25
-									Align: Right
-								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT - WIDTH
-									Width: 80
-									Height: 25
-						Container@UNIT_TEMPLATE:
-							Width: 173
-							Height: 25
-							Visible: false
-							Children:
-								Label@FUNCTION:
-									Y: 0 - 1
-									Width: PARENT_RIGHT - 84
-									Height: 25
-									Align: Right
-								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT - WIDTH + 1
-									Width: 80
-									Height: 25
-						Container@PRODUCTION_TEMPLATE:
-							Width: 173
-							Height: 25
-							Visible: false
-							Children:
-								Label@FUNCTION:
-									Y: 0 - 1
-									Width: PARENT_RIGHT - 84
-									Height: 25
-									Align: Right
-								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT - WIDTH + 1
-									Width: 80
-									Height: 25
-						Container@DEVELOPER_TEMPLATE:
-							Width: 262
-							Height: 25
-							Visible: false
-							Children:
-								Label@FUNCTION:
-									Y: 0 - 1
-									Width: PARENT_RIGHT - 115
-									Height: 25
-									Align: Right
-								HotkeyEntry@HOTKEY:
-									X: PARENT_RIGHT - WIDTH
-									Width: 110
-									Height: 25
+								ScrollItem@HEADER:
+									Width: 528
+									Height: 13
+									Visible: false
+									Children:
+										Label@LABEL:
+											Font: TinyBold
+											Width: PARENT_RIGHT
+											Height: 10
+											Align: Center
+								Container@TEMPLATES:
+									Children:
+										Container@TWO_COLUMN:
+											Width: 262
+											Height: 25
+											Visible: false
+											Children:
+												Label@FUNCTION:
+													Y: 0 - 1
+													Width: PARENT_RIGHT - 85
+													Height: 25
+													Align: Right
+												HotkeyEntry@HOTKEY:
+													X: PARENT_RIGHT - WIDTH
+													Width: 80
+													Height: 25
+										Container@THREE_COLUMN:
+											Width: 173
+											Height: 25
+											Visible: false
+											Children:
+												Label@FUNCTION:
+													Y: 0 - 1
+													Width: PARENT_RIGHT - 84
+													Height: 25
+													Align: Right
+												HotkeyEntry@HOTKEY:
+													X: PARENT_RIGHT - WIDTH + 1
+													Width: 80
+													Height: 25
 		Container@ADVANCED_PANEL:
 			X: 5
 			Y: 50
@@ -544,45 +553,59 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Fetch Community News
-				Checkbox@SENDSYSINFO_CHECKBOX:
+				Checkbox@CHECK_VERSION_CHECKBOX:
 					X: 310
 					Y: 70
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Check for Updates
+				Checkbox@SENDSYSINFO_CHECKBOX:
+					X: 310
+					Y: 100
 					Width: 300
 					Height: 20
 					Font: Regular
 					Text: Send System Information
 				Label@SENDSYSINFO_DESC:
 					X: 310
-					Y: 85
+					Y: 115
 					Width: 250
 					Height: 30
 					Font: Tiny
 					WordWrap: True
 					Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 				Label@DEBUG_TITLE:
-					Y: 170
+					Y: 200
 					Width: PARENT_RIGHT
 					Font: Bold
 					Text: Debug
 					Align: Center
 				Checkbox@BOTDEBUG_CHECKBOX:
 					X: 15
-					Y: 190
+					Y: 220
 					Width: 300
 					Height: 20
 					Font: Regular
 					Text: Show Bot Debug Messages
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					X: 15
-					Y: 220
+					Y: 250
 					Width: 300
 					Height: 20
 					Font: Regular
 					Text: Check Sync around Unsynced Code
 				Checkbox@LUADEBUG_CHECKBOX:
 					X: 310
-					Y: 190
+					Y: 220
 					Width: 300
 					Height: 20
 					Font: Regular
 					Text: Show Map Debug Messages
+				Checkbox@REPLAY_COMMANDS_CHECKBOX:
+					X: 310
+					Y: 250
+					Width: 300
+					Height: 20
+					Font: Regular
+					Text: Enable Debug Commands in Replays

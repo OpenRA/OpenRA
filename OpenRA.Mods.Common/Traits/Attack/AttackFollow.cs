@@ -29,7 +29,12 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackFollow(Actor self, AttackFollowInfo info)
 			: base(self, info) { }
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 			{
@@ -38,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			DoAttack(self, Target);
-			IsAttacking = Target.IsValidFor(self);
+			IsAiming = Target.IsValidFor(self);
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
@@ -63,21 +68,12 @@ namespace OpenRA.Mods.Common.Traits
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
-			readonly bool onRailsHack;
 			bool hasTicked;
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
-
-				// HACK: Mobile.OnRails is horrible. Blergh.
-				var mobile = move as Mobile;
-				if (mobile != null && mobile.Info.OnRails)
-				{
-					move = null;
-					onRailsHack = true;
-				}
 
 				this.target = target;
 				this.forceAttack = forceAttack;
@@ -88,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
-				if (self.IsDisabled())
+				if (attack.IsTraitPaused)
 					return this;
 
 				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
@@ -112,14 +108,12 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (move != null)
 						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
-					if (!onRailsHack &&
-						target.IsInRange(self.CenterPosition, weapon.MaxRange()) &&
+					if (target.IsInRange(self.CenterPosition, weapon.MaxRange()) &&
 						!target.IsInRange(self.CenterPosition, weapon.Weapon.MinRange))
 						return this;
 				}
 
-				if (!onRailsHack)
-					attack.Target = Target.Invalid;
+				attack.Target = Target.Invalid;
 
 				return NextActivity;
 			}

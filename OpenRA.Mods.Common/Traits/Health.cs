@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			InflictDamage(self, attacker, new Damage(MaxHP), true);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (hp > DisplayHP)
 				DisplayHP = hp;

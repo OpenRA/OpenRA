@@ -10,13 +10,15 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[ChromeLogicArgsHotkeys("StatisticsBasicKey", "StatisticsEconomyKey", "StatisticsProductionKey", "StatisticsCombatKey", "StatisticsGraphKey")]
 	public class MenuButtonsChromeLogic : ChromeLogic
 	{
 		readonly World world;
@@ -26,12 +28,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonsChromeLogic(Widget widget, World world)
+		public MenuButtonsChromeLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 
 			worldRoot = Ui.Root.Get("WORLD_ROOT");
 			menuRoot = Ui.Root.Get("MENU_ROOT");
+
+			MiniYaml yaml;
+			string[] keyNames = Enum.GetNames(typeof(ObserverStatsPanel));
+			var statsHotkeys = new HotkeyReference[keyNames.Length];
+			for (var i = 0; i < keyNames.Length; i++)
+				statsHotkeys[i] = logicArgs.TryGetValue("Statistics" + keyNames[i] + "Key", out yaml) ? modData.Hotkeys[yaml.Value] : new HotkeyReference();
 
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
@@ -71,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Can't use DeveloperMode.Enabled because there is a hardcoded hack to *always*
 				// enable developer mode for singleplayer games, but we only want to show the button
 				// if it has been explicitly enabled
-				var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().Enabled;
+				var def = world.Map.Rules.Actors["player"].TraitInfo<DeveloperModeInfo>().CheckboxEnabled;
 				var enabled = world.LobbyInfo.GlobalSettings.OptionOrDefault("cheats", def);
 				debug.IsVisible = () => enabled;
 				debug.IsDisabled = () => disableSystemButtons;
@@ -85,7 +93,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (stats != null)
 			{
 				stats.IsDisabled = () => disableSystemButtons || world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
-				stats.OnClick = () => OpenMenuPanel(stats);
+				stats.OnClick = () => OpenMenuPanel(stats, new WidgetArgs() { { "activePanel", ObserverStatsPanel.Basic } });
+			}
+
+			var keyListener = widget.GetOrNull<LogicKeyListenerWidget>("OBSERVER_KEY_LISTENER");
+			if (keyListener != null)
+			{
+				keyListener.AddHandler(e =>
+				{
+					if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
+					{
+						for (var i = 0; i < statsHotkeys.Length; i++)
+						{
+							if (statsHotkeys[i].IsActivatedBy(e))
+							{
+								OpenMenuPanel(stats, new WidgetArgs() { { "activePanel", i } });
+								return true;
+							}
+						}
+					}
+
+					return false;
+				});
 			}
 		}
 

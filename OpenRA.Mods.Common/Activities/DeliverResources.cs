@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-					n.MovingToRefinery(self, proc.Location + iao.DeliveryOffset, this);
+					n.MovingToRefinery(self, proc, this);
 
 				return ActivityUtils.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
 			}

@@ -6,68 +6,62 @@ sidebar-gdi: chrome.png
 	background-top: 0,0,235,260
 	background-iconrow: 0,260,235,52
 	background-bottom: 0,312,235,26
-	background-supportoverlay: 168,392,64,48
+	background-commandbar: 87,461,425,51
 
 sidebar-button-gdi: chrome.png
-	background: 265,289,30,31
+	background: 235,119,30,31
 sidebar-button-gdi-hover: chrome.png
-	background: 265,321,30,31
+	background: 235,150,30,31
 sidebar-button-gdi-pressed: chrome.png
-	background: 265,353,30,31
+	background: 235,181,30,31
 sidebar-button-gdi-highlighted: chrome.png
-	background: 265,385,30,31
+	background: 235,212,30,31
 sidebar-button-gdi-highlighted-hover: chrome.png
-	background: 265,417,30,31
+	background: 235,243,30,31
 sidebar-button-gdi-highlighted-pressed: chrome.png
-	background: 265,449,30,31
+	background: 235,274,30,31
 sidebar-button-gdi-highlighted-disabled: chrome.png
-	background: 265,481,30,31
+	background: 235,305,30,31
 sidebar-button-gdi-disabled: chrome.png
-	background: 265,481,30,31
-
-	
+	background: 235,305,30,31
 
 scrollup-buttons-gdi: chrome.png
-	background: 0,363,34,27
+	background: 0,338,34,27
 scrollup-buttons-gdi-hover: chrome.png
-	background: 35,363,34,27
+	background: 34,338,34,27
 scrollup-buttons-gdi-pressed: chrome.png
-	background: 70,363,34,27
+	background: 66,338,34,27
 scrollup-buttons-gdi-highlighted: chrome.png
-	background: 35,363,34,27
+	background: 34,338,34,27
 scrollup-buttons-gdi-highlighted-hover: chrome.png
-	background: 35,363,34,27
+	background: 34,338,34,27
 scrollup-buttons-gdi-highlighted-pressed: chrome.png
-	background: 70,363,34,27
+	background: 66,338,34,27
 scrollup-button-gdi-highlighted-disabled: chrome.png
-	background: 0,363,34,27
+	background: 0,338,34,27
 scrollup-buttons-gdi-disabled: chrome.png
-	background: 0,363,34,27
-	
+	background: 0,338,34,27
+
 scrolldown-buttons-gdi: chrome.png
-	background: 105,363,34,27
+	background: 102,338,34,27
 scrolldown-buttons-gdi-hover: chrome.png
-	background: 140,363,34,27
+	background: 136,338,34,27
 scrolldown-buttons-gdi-pressed: chrome.png
-	background: 175,363,34,27
+	background: 170,338,34,27
 scrolldown-buttons-gdi-highlighted: chrome.png
-	background: 140,363,34,27
+	background: 136,338,34,27
 scrolldown-buttons-gdi-highlighted-hover: chrome.png
-	background: 140,363,34,27
+	background: 136,338,34,27
 scrolldown-buttons-gdi-highlighted-pressed: chrome.png
-	background: 175,363,34,27
+	background: 170,338,34,27
 scrolldown-button-gdi-highlighted-disabled: chrome.png
-	background: 105,363,34,27
+	background: 102,338,34,27
 scrolldown-buttons-gdi-disabled: chrome.png
-	background: 105,363,34,27
+	background: 102,338,34,27
 
-	
-	
 radar-gdi: chrome.png
-	insignia: 1,392,164,119
+	insignia: 235,0,164,119
 
-	
-	
 production-icons-gdi: chrome.png
 	building: 416,0,16,16
 	building-disabled: 432,0,16,16
@@ -86,35 +80,25 @@ production-icons-gdi: chrome.png
 	air-alert: 448,64,16,16
 
 order-icons-gdi: chrome.png
-	debug: 296,289,30,31
-	debug-disabled: 327,289,30,31
-	debug-active: 296,289,30,31	
-	repair: 296,321,30,31
-	repair-disabled: 327,321,30,31
-	repair-active: 296,321,30,31	
-	sell: 296,353,30,31
-	sell-disabled: 327,353,30,31
-	sell-active: 296,353,30,31	
-	options: 296,385,30,31
-	options-disabled: 327,385,30,31
-	options-active: 296,385,30,31	
-	beacon: 296,417,30,31
-	beacon-disabled: 327,417,30,31
-	beacon-active: 296,417,30,31	
-	power: 296,449,30,31
-	power-disabled: 327,449,30,31
-	power-active: 296,449,30,31	
-	diplomacy: 296,481,30,31
-	diplomacy-disabled: 327,481,30,31
-	diplomacy-active: 296,481,30,31
+	debug: 265,119,30,31
+	debug-disabled: 295,119,30,31
+	debug-active: 265,119,30,31
+	repair: 265,150,30,31
+	repair-disabled: 295,150,30,31
+	repair-active: 265,150,30,31
+	sell: 265,181,30,31
+	sell-disabled: 295,181,30,31
+	sell-active: 265,181,30,31
+	options: 265,212,30,31
+	options-disabled: 295,212,30,31
+	options-active: 265,212,30,31
+	beacon: 265,243,30,31
+	beacon-disabled: 295,243,30,31
+	beacon-active: 265,243,30,31
+	power: 265,274,30,31
+	power-disabled: 295,274,30,31
+	power-active: 265,274,30,31
 
-# make this paragraph AddFactionSuffixLogic compatible
-sidebar-bits-gdi: chrome.png
-	production-tooltip-time: 416,208,16,16
-	production-tooltip-power: 480,160,16,16
-	production-tooltip-cost: 480,144,16,16
-	production-iconoverlay: 168,392,64,48
-	
 power-icons-gdi: chrome.png
 	power-normal: 480,160,16,16
 	power-critical: 496,160,16,16
@@ -122,8 +106,71 @@ power-icons-gdi: chrome.png
 cash-icons-gdi: chrome.png
 	cash-normal: 480,144,16,16
 	cash-critical: 496,144,16,16
-	
-	
+
+command-icons-gdi: chrome.png
+	attack-move: 304,331,26,26
+	attack-move-disabled: 304,357,26,26
+	attack-move-active: 304,383,26,26
+	attack-move-hover: 304,409,26,26
+	attack-move-active-hover: 304,435,26,26
+	force-move: 330,331,24,24
+	force-move-disabled: 330,357,26,26
+	force-move-active: 330,383,26,26
+	force-move-hover: 330,409,26,26
+	force-move-active-hover: 330,435,26,26
+	force-attack: 356,331,26,26
+	force-attack-disabled: 356,357,26,26
+	force-attack-active: 356,383,26,26
+	force-attack-hover: 356,409,26,26
+	force-attack-active-hover: 356,435,26,26
+	guard: 382,331,24,24
+	guard-disabled: 382,357,26,26
+	guard-active: 382,383,26,26
+	guard-hover: 382,409,26,26
+	guard-active-hover: 382,435,26,26
+	deploy: 408,331,24,24
+	deploy-disabled: 408,357,26,26
+	deploy-active: 408,383,26,26
+	deploy-hover: 408,409,26,26
+	deploy-active-hover: 408,435,26,26
+	scatter: 434,331,26,26
+	scatter-disabled: 434,357,26,26
+	scatter-active: 434,383,26,26
+	scatter-hover: 434,409,26,26
+	scatter-active-hover: 434,435,26,26
+	stop: 460,331,26,26
+	stop-disabled: 460,357,26,26
+	stop-active: 460,383,26,26
+	stop-hover: 460,409,26,26
+	stop-active-hover: 460,435,26,26
+	queue-orders: 486,331,26,26
+	queue-orders-disabled: 486,357,26,26
+	queue-orders-active: 486,383,26,26
+	queue-orders-hover: 486,409,26,26
+	queue-orders-active-hover: 486,435,26,26
+
+stance-icons-gdi: chrome.png
+	attack-anything: 424,176,22,22
+	attack-anything-disabled: 424,198,22,22
+	attack-anything-active: 424,220,22,22
+	attack-anything-hover: 424,242,22,22
+	attack-anything-active-hover: 424,264,22,22
+	defend: 446,176,22,22
+	defend-disabled: 446,198,22,22
+	defend-active: 446,220,22,22
+	defend-hover: 446,242,22,22
+	defend-active-hover: 446,264,22,22
+	return-fire: 468,176,22,22
+	return-fire-disabled: 468,198,22,22
+	return-fire-active: 468,220,22,22
+	return-fire-hover: 468,242,22,22
+	return-fire-active-hover: 468,264,22,22
+	hold-fire: 490,176,22,22
+	hold-fire-disabled: 490,198,22,22
+	hold-fire-active: 490,220,22,22
+	hold-fire-hover: 490,242,22,22
+	hold-fire-active-hover: 490,264,22,22
+
 # ----------------------------------------------------------------------
 # NOD
 # ----------------------------------------------------------------------
@@ -132,63 +179,61 @@ sidebar-nod: chrome.png
 	background-top: 512,0,235,260
 	background-iconrow: 512,260,235,52
 	background-bottom: 512,312,235,26
-	background-supportoverlay: 168,392,64,48
+	background-commandbar: 599,461,425,51
 
 sidebar-button-nod: chrome.png
-	background: 777,289,30,31
+	background: 747,119,30,31
 sidebar-button-nod-hover: chrome.png
-	background: 777,321,30,31
+	background: 747,150,30,31
 sidebar-button-nod-pressed: chrome.png
-	background: 777,353,30,31
+	background: 747,181,30,31
 sidebar-button-nod-highlighted: chrome.png
-	background: 777,385,30,31
+	background: 747,212,30,31
 sidebar-button-nod-highlighted-hover: chrome.png
-	background: 777,417,30,31
+	background: 747,243,30,31
 sidebar-button-nod-highlighted-pressed: chrome.png
-	background: 777,449,30,31
+	background: 747,274,30,31
 sidebar-button-nod-highlighted-disabled: chrome.png
-	background: 777,481,30,31
+	background: 747,305,30,31
 sidebar-button-nod-disabled: chrome.png
-	background: 777,481,30,31
-
-
+	background: 747,305,30,31
 
 scrollup-buttons-nod: chrome.png
-	background: 512,364,34,27
+	background: 512,338,34,27
 scrollup-buttons-nod-hover: chrome.png
-	background: 547,364,34,27
+	background: 546,338,34,27
 scrollup-buttons-nod-pressed: chrome.png
-	background: 582,364,34,27
+	background: 580,338,34,27
 scrollup-buttons-nod-highlighted: chrome.png
-	background: 547,364,34,27
+	background: 546,338,34,27
 scrollup-buttons-nod-highlighted-hover: chrome.png
-	background: 547,364,34,27
+	background: 546,338,34,27
 scrollup-buttons-nod-highlighted-pressed: chrome.png
-	background: 582,364,34,27
+	background: 580,338,34,27
 scrollup-button-nod-highlighted-disabled: chrome.png
-	background: 512,364,34,27
+	background: 512,338,34,27
 scrollup-buttons-nod-disabled: chrome.png
-	background: 512,364,34,27
-	
+	background: 512,338,34,27
+
 scrolldown-buttons-nod: chrome.png
-	background: 617,364,34,27
+	background: 614,338,34,27
 scrolldown-buttons-nod-hover: chrome.png
-	background: 652,364,34,27
+	background: 648,338,34,27
 scrolldown-buttons-nod-pressed: chrome.png
-	background: 687,364,34,27
+	background: 682,338,34,27
 scrolldown-buttons-nod-highlighted: chrome.png
-	background: 652,364,34,27
+	background: 648,338,34,27
 scrolldown-buttons-nod-highlighted-hover: chrome.png
-	background: 652,364,34,27
+	background: 648,338,34,27
 scrolldown-buttons-nod-highlighted-pressed: chrome.png
-	background: 687,364,34,27
+	background: 682,338,34,27
 scrolldown-button-nod-highlighted-disabled: chrome.png
-	background: 617,364,34,27
+	background: 614,338,34,27
 scrolldown-buttons-nod-disabled: chrome.png
-	background: 617,364,34,27
+	background: 614,338,34,27
 
 radar-nod: chrome.png
-	insignia: 513,392,164,119
+	insignia: 747,0,164,119
 
 production-icons-nod: chrome.png
 	building: 928,0,16,16
@@ -196,7 +241,7 @@ production-icons-nod: chrome.png
 	building-alert: 960,0,16,16
 	defense: 928,16,16,16
 	defense-disabled: 944,16,16,16
-	defense-alert: 960,16,16,16		
+	defense-alert: 960,16,16,16
 	infantry: 928,32,16,16
 	infantry-disabled: 944,32,16,16
 	infantry-alert: 960,32,16,16
@@ -208,34 +253,27 @@ production-icons-nod: chrome.png
 	air-alert: 960,64,16,16
 
 order-icons-nod: chrome.png
-	debug: 808,289,30,31
-	debug-disabled: 839,289,30,31
-	debug-active: 808,808,30,31
-	repair: 808,321,30,31
-	repair-disabled: 839,321,30,31
-	repair-active: 808,321,30,31
-	sell: 808,353,30,31
-	sell-disabled: 839,353,30,31
-	sell-active: 808,353,30,31
-	options: 808,385,30,31
-	options-disabled: 839,385,30,31
-	options-active: 808,385,30,31  
-	beacon: 808,417,30,31
-	beacon-disabled: 839,417,30,31
-	beacon-active: 808,417,30,31
-	power: 808,449,30,31
-	power-disabled: 839,449,30,31
-	power-active: 808,449,30,31
-	diplomacy: 808,481,30,31
-	diplomacy-disabled: 839,481,30,31
-	diplomacy-active: 808,481,30,31
-
-# make this paragraph AddFactionSuffixLogic compatible
-sidebar-bits-nod: chrome.png
-	production-tooltip-time: 928,208,16,16
-	production-tooltip-power: 992,160,16,16
-	production-tooltip-cost: 992,144,16,16
-	production-iconoverlay: 168,392,64,48
+	debug: 777,119,30,31
+	debug-disabled: 807,119,30,31
+	debug-active: 777,119,30,31
+	repair: 777,150,30,31
+	repair-disabled: 807,150,30,31
+	repair-active: 777,150,30,31
+	sell: 777,181,30,31
+	sell-disabled: 807,181,30,31
+	sell-active: 777,181,30,31
+	options: 777,212,30,31
+	options-disabled: 807,212,30,31
+	options-active: 777,212,30,31
+	beacon: 777,243,30,31
+	beacon-disabled: 807,243,30,31
+	beacon-active: 777,243,30,31
+	power: 777,274,30,31
+	power-disabled: 807,274,30,31
+	power-active: 777,274,30,31
+	diplomacy: 777,305,30,31
+	diplomacy-disabled: 807,305,30,31
+	diplomacy-active: 777,305,30,31
 
 power-icons-nod: chrome.png
 	power-normal: 992,160,16,16
@@ -245,29 +283,92 @@ cash-icons-nod: chrome.png
 	cash-normal: 992,144,16,16
 	cash-critical: 1008,144,16,16
 
+command-icons-nod: chrome.png
+	attack-move: 816,331,26,26
+	attack-move-disabled: 816,357,26,26
+	attack-move-active: 816,383,26,26
+	attack-move-hover: 816,409,26,26
+	attack-move-active-hover: 816,435,26,26
+	force-move: 842,331,24,24
+	force-move-disabled: 842,357,26,26
+	force-move-active: 842,383,26,26
+	force-move-hover: 842,409,26,26
+	force-move-active-hover: 842,435,26,26
+	force-attack: 868,331,26,26
+	force-attack-disabled: 868,357,26,26
+	force-attack-active: 868,383,26,26
+	force-attack-hover: 868,409,26,26
+	force-attack-active-hover: 868,435,26,26
+	guard: 894,331,24,24
+	guard-disabled: 894,357,26,26
+	guard-active: 894,383,26,26
+	guard-hover: 894,409,26,26
+	guard-active-hover: 894,435,26,26
+	deploy: 920,331,24,24
+	deploy-disabled: 920,357,26,26
+	deploy-active: 920,383,26,26
+	deploy-hover: 920,409,26,26
+	deploy-active-hover: 920,435,26,26
+	scatter: 946,331,26,26
+	scatter-disabled: 946,357,26,26
+	scatter-active: 946,383,26,26
+	scatter-hover: 946,409,26,26
+	scatter-active-hover: 946,435,26,26
+	stop: 972,331,26,26
+	stop-disabled: 972,357,26,26
+	stop-active: 972,383,26,26
+	stop-hover: 972,409,26,26
+	stop-active-hover: 972,435,26,26
+	queue-orders: 998,331,26,26
+	queue-orders-disabled: 998,357,26,26
+	queue-orders-active: 998,383,26,26
+	queue-orders-hover: 998,409,26,26
+	queue-orders-active-hover: 998,435,26,26
+
+stance-icons-nod: chrome.png
+	attack-anything: 936,176,22,22
+	attack-anything-disabled: 936,198,22,22
+	attack-anything-active: 936,220,22,22
+	attack-anything-hover: 936,242,22,22
+	attack-anything-active-hover: 936,264,22,22
+	defend: 958,176,22,22
+	defend-disabled: 958,198,22,22
+	defend-active: 958,220,22,22
+	defend-hover: 958,242,22,22
+	defend-active-hover: 958,264,22,22
+	return-fire: 980,176,22,22
+	return-fire-disabled: 980,198,22,22
+	return-fire-active: 980,220,22,22
+	return-fire-hover: 980,242,22,22
+	return-fire-active-hover: 980,264,22,22
+	hold-fire: 1002,176,22,22
+	hold-fire-disabled: 1002,198,22,22
+	hold-fire-active: 1002,220,22,22
+	hold-fire-hover: 1002,242,22,22
+	hold-fire-active-hover: 1002,264,22,22
+
 # ----------------------------------------------------------------------
 # GENERIC
 # ----------------------------------------------------------------------
-	
+
 # make this paragraph AddFactionSuffixLogic compatible
 sidebar-bits: chrome.png
-	production-tooltip-time: 416,208,16,16
+	production-tooltip-time: 464,128,16,16
 	production-tooltip-power: 480,160,16,16
 	production-tooltip-cost: 480,144,16,16
-	production-iconoverlay: 168,392,64,48
-	
+
 scrollbar: buttons.png
 	down_arrow: 16,140,16,16
 	down_pressed: 16,140,16,16
 	up_arrow: 32,140,16,16
-	up_pressed: 32,140,16,16	
-	
+	up_pressed: 32,140,16,16
+
 flags: buttons.png
 	gdi: 30,112,30,15
 	nod: 0,112,30,15
 	Random: 60,112,30,15
-	spectator: 60,112,30,15	
-	
+	spectator: 60,112,30,15
+
 lobby-bits: buttons.png
 	spawn-unclaimed: 159,5,23,22
 	spawn-claimed: 127,5,23,22
@@ -276,6 +377,21 @@ lobby-bits: buttons.png
 	huepicker: 194,0,7,15
 	protected: 202,0,10,13
 	protected-disabled: 213,0,10,13
+
+reload-icon: dialog.png
+	enabled: 160,480,16,16
+	disabled-0: 176,480,16,16
+	disabled-1: 192,480,16,16
+	disabled-2: 208,480,16,16
+	disabled-3: 224,480,16,16
+	disabled-4: 240,480,16,16
+	disabled-5: 256,480,16,16
+	disabled-6: 272,480,16,16
+	disabled-7: 288,480,16,16
+	disabled-8: 304,480,16,16
+	disabled-9: 320,480,16,16
+	disabled-10: 336,480,16,16
+	disabled-11: 352,480,16,16
 
 strategic: buttons.png
 	unowned: 127,5,23,22
@@ -291,12 +407,11 @@ music: buttons.png
 	prev: 110,193,25,25
 	fastforward: 131,193,25,25
 	slowmo: 159,193,25,25
-	
-	
+
 # ----------------------------------------------------------------------
 # Other UI stuff
 # ----------------------------------------------------------------------
-	
+
 # Used for the menu
 dialog: dialog.png
 	background: 0,0,480,480
@@ -309,7 +424,7 @@ dialog: dialog.png
 	corner-bl: 437,481,21,21
 	corner-br: 459,481,21,21
 
-# Same as a normal button 
+# Same as a normal button
 dialog2: dialog.png
 	background: 513,1,126,126
 	border-r: 639,1,1,126
@@ -321,7 +436,7 @@ dialog2: dialog.png
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
 
-# Same as a pressed button 
+# Same as a pressed button
 dialog3: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -392,7 +507,7 @@ button-hover: dialog.png
 	corner-tr: 639,128,1,1
 	corner-bl: 512,255,1,1
 	corner-br: 639,255,1,1
-	
+
 # A copy of dialog3 (pressed button)
 button-pressed: dialog.png
 	background: 641,1,126,126
@@ -415,7 +530,7 @@ button-disabled: dialog.png
 	corner-tl: 512,256,1,1
 	corner-tr: 639,256,1,1
 	corner-bl: 512,383,1,1
-	corner-br: 639,383,1,1  
+	corner-br: 639,383,1,1
 
 # 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted: dialog.png
@@ -487,7 +602,7 @@ newsbutton-hover: dialog.png
 	corner-tr: 639,0,1,1
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
-	
+
 newsbutton-highlighted: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
@@ -498,7 +613,7 @@ newsbutton-highlighted: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-    
+
 newsbutton-highlighted-hover: dialog.png
 	background: 769,1,126,126
 	border-r: 895,1,1,126
@@ -509,7 +624,7 @@ newsbutton-highlighted-hover: dialog.png
 	corner-tr: 895,0,1,1
 	corner-bl: 768,127,1,1
 	corner-br: 895,127,1,1
-	
+
 newsbutton-highlighted-pressed: dialog.png
 	background: 641,1,126,126
 	border-r: 767,1,1,126
@@ -654,7 +769,7 @@ slider-track: dialog.png
 	corner-tr: 767,0,1,1
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
-	
+
 	# A copy of dialog2 (normal button)
 slider-thumb: dialog.png
 	background: 513,1,126,126
@@ -702,7 +817,7 @@ slider-thumb-disabled: dialog.png
 	corner-tr: 639,0,1,1
 	corner-bl: 512,127,1,1
 	corner-br: 639,127,1,1
-	
+
 # A copy of dialog3 (pressed button)
 checkbox: dialog.png
 	background: 641,1,126,126
@@ -807,4 +922,4 @@ mainmenu-border: dialog.png
 	corner-br: 728,467,40,40
 
 dropdown: dialog.png
-    separator: 512,1,1,19
+	separator: 512,1,1,19

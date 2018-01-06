@@ -60,12 +60,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				throw new InvalidOperationException("No queues available for production type '{0}'".F(type));
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			FindQueue();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			var current = queue.CurrentItem();
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;

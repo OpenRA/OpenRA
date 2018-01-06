@@ -43,9 +43,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (building.AllowInvalidPlacement)
 				return true;
 
-			var res = world.WorldActor.Trait<ResourceLayer>();
-			return FootprintUtils.Tiles(world.Map.Rules, name, building, topLeft).All(
-				t => world.Map.Contains(t) && res.GetResource(t) == null &&
+			var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
+			return building.Tiles(topLeft).All(
+				t => world.Map.Contains(t) && (res == null || res.GetResource(t) == null) &&
 					world.IsCellBuildable(t, building, toIgnore));
 		}
 

@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 				nt.BeforeTransform(self);
 
 			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
-			if (makeAnimation != null)
+			if (!SkipMakeAnims && makeAnimation != null)
 			{
 				// Once the make animation starts the activity must not be stopped anymore.
 				IsInterruptible = false;

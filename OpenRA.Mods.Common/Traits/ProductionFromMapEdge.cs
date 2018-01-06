@@ -10,7 +10,6 @@
 #endregion
 
 using System.Drawing;
-using OpenRA;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -41,8 +40,11 @@ namespace OpenRA.Mods.Common.Traits
 			rp = self.TraitOrDefault<RallyPoint>();
 		}
 
-		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
+		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return false;
+
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
@@ -74,16 +76,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var td = new TypeDictionary
-				{
-					new OwnerInit(self.Owner),
-					new LocationInit(location.Value),
-					new CenterPositionInit(pos),
-					new FacingInit(initialFacing)
-				};
+				var td = new TypeDictionary();
+				foreach (var init in inits)
+					td.Add(init);
 
-				if (factionVariant != null)
-					td.Add(new FactionInit(factionVariant));
+				td.Add(new LocationInit(location.Value));
+				td.Add(new CenterPositionInit(pos));
+				td.Add(new FacingInit(initialFacing));
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
@@ -99,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType);
 
 				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);

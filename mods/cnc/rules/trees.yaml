@@ -179,7 +179,7 @@ T09.Husk:
 		Footprint: x_
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+		RequireTilesets: DESERT
 
 T10:
 	Inherits: ^Tree

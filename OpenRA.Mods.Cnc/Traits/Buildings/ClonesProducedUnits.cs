@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void UnitProducedByOther(Actor self, Actor producer, Actor produced)
+		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType)
 		{
 			// No recursive cloning!
 			if (producer.Owner != self.Owner || producer.Info.HasTraitInfo<ClonesProducedUnitsInfo>())
@@ -49,7 +50,13 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (ci == null || !info.CloneableTypes.Overlaps(ci.Types))
 				return;
 
-			production.Produce(self, produced.Info, faction);
+			var inits = new TypeDictionary
+			{
+				new OwnerInit(self.Owner),
+				new FactionInit(BuildableInfo.GetInitialFaction(produced.Info, faction))
+			};
+
+			production.Produce(self, produced.Info, productionType, inits);
 		}
 	}
 }

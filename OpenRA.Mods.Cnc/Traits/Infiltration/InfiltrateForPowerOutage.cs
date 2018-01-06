@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -16,6 +17,8 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class InfiltrateForPowerOutageInfo : ITraitInfo
 	{
+		public readonly HashSet<string> Types = new HashSet<string>();
+
 		public readonly int Duration = 25 * 20;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForPowerOutage(init.Self, this); }
@@ -32,8 +35,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
 		{
+			if (!info.Types.Overlaps(types))
+				return;
+
 			playerPower.TriggerPowerOutage(info.Duration);
 		}
 

@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Target actor selection radius in cells.")]
 		public readonly int Range = 1;
 
-		[Desc("Seconds until returning after teleportation.")]
-		public readonly int Duration = 30;
+		[Desc("Ticks until returning after teleportation.")]
+		public readonly int Duration = 750;
 
 		[PaletteReference] public readonly string TargetOverlayPalette = TileSet.TerrainPaletteInternalName;
 
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var cpi = Info as ChronoshiftPowerInfo;
 
 				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
-					cs.Teleport(target, targetCell, cpi.Duration * 25, cpi.KillCargo, self);
+					cs.Teleport(target, targetCell, cpi.Duration, cpi.KillCargo, self);
 			}
 		}
 
@@ -94,6 +94,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			var range = ((ChronoshiftPowerInfo)Info).Range;
 			var sourceTiles = Self.World.Map.FindTilesInCircle(xy, range);
 			var destTiles = Self.World.Map.FindTilesInCircle(sourceLocation, range);
+
+			if (!sourceTiles.Any() || !destTiles.Any())
+				return false;
 
 			using (var se = sourceTiles.GetEnumerator())
 			using (var de = destTiles.GetEnumerator())
@@ -157,8 +160,16 @@ namespace OpenRA.Mods.Cnc.Traits
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
 
 				foreach (var unit in targetUnits)
-					if (manager.Self.Owner.CanTargetActor(unit))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
+				{
+					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
+					{
+						var bounds = unit.TraitsImplementing<IDecorationBounds>()
+							.Select(b => b.DecorationBounds(unit, wr))
+							.FirstOrDefault(b => !b.IsEmpty);
+
+						yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+					}
+				}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
@@ -221,9 +232,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))
-					yield return new Order(order, manager.Self, false)
+					yield return new Order(order, manager.Self, Target.FromCell(manager.Self.World, xy), false)
 					{
-						TargetLocation = xy,
 						ExtraLocation = sourceLocation,
 						SuppressVisualFeedback = true
 					};
@@ -242,16 +252,17 @@ namespace OpenRA.Mods.Cnc.Traits
 				var palette = wr.Palette(power.Info.IconPalette);
 
 				// Destination tiles
-				foreach (var t in world.Map.FindTilesInCircle(xy, range))
+				var delta = xy - sourceLocation;
+				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
 				{
-					var tile = manager.Self.Owner.Shroud.IsExplored(t) ? validTile : invalidTile;
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
+					var tile = manager.Self.Owner.Shroud.IsExplored(t + delta) ? validTile : invalidTile;
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, true);
 				}
 
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.Self.Owner.CanTargetActor(unit))
+					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
 						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
@@ -261,14 +272,22 @@ namespace OpenRA.Mods.Cnc.Traits
 					}
 
 					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
-					if (manager.Self.Owner.CanTargetActor(unit))
+					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);
 				}
 
 				foreach (var unit in power.UnitsInRange(sourceLocation))
-					if (manager.Self.Owner.CanTargetActor(unit))
-						yield return new SelectionBoxRenderable(unit, Color.Red);
+				{
+					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
+					{
+						var bounds = unit.TraitsImplementing<IDecorationBounds>()
+							.Select(b => b.DecorationBounds(unit, wr))
+							.FirstOrDefault(b => !b.IsEmpty);
+
+						yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+					}
+				}
 			}
 
 			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)

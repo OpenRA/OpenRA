@@ -24,19 +24,11 @@ Camera.Small:
 	RevealsShroud:
 		Range: 4c0
 
-FTUR:
-	DetectCloaked:
-		Range: 0
-
 TSLA:
-	DetectCloaked:
-		Range: 0
 	Buildable:
 		Prerequisites: ~disabled
 
 SAM:
-	DetectCloaked:
-		Range: 0
 	Buildable:
 		Prerequisites: ~disabled
 
@@ -44,6 +36,7 @@ LST:
 	-Selectable:
 	Targetable:
 		TargetTypes: Ground, Water
+	Interactable:
 
 LST.IN:
 	Inherits: LST
@@ -58,6 +51,7 @@ TRAN:
 		Range: 4c0
 	Targetable@GROUND:
 		TargetTypes: Ground
+	Interactable:
 
 TRAN.IN:
 	Inherits: TRAN
@@ -72,7 +66,6 @@ TRUK.mission:
 		Prerequisites: ~disabled
 	WithFacingSpriteBody:
 	-SpawnActorOnDeath:
-	-EjectOnDeath:
 	RevealsShroud:
 		Range: 4c0
 		ValidStances: Ally, Enemy
@@ -98,7 +91,7 @@ MISS:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	AttackOmni:
 	Armament:
-		Weapon: MissionColt
+		Weapon: PrisonColt
 
 E1.Autotarget:
 	Inherits: E1

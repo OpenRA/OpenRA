@@ -9,18 +9,20 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be captured by a unit with ExternalCaptures: trait.")]
-	public class ExternalCapturableInfo : ITraitInfo
+	public class ExternalCapturableInfo : ConditionalTraitInfo
 	{
-		[Desc("Type of actor (the ExternalCaptures: trait defines what Types it can capture).")]
-		public readonly string Type = "building";
-		public readonly bool AllowAllies = false;
-		public readonly bool AllowNeutral = true;
-		public readonly bool AllowEnemies = true;
+		[Desc("CaptureTypes (from the ExternalCaptures trait) that are able to capture this.")]
+		public readonly HashSet<string> Types = new HashSet<string>() { "building" };
+
+		[Desc("What diplomatic stances can be captured by this actor.")]
+		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+
 		[Desc("Seconds it takes to change the owner.", "You might want to add a ExternalCapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
@@ -33,37 +35,30 @@ namespace OpenRA.Mods.Common.Traits
 			if (c == null)
 				return false;
 
-			var playerRelationship = owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !AllowAllies)
+			var stance = owner.Stances[captor.Owner];
+			if (!ValidStances.HasStance(stance))
 				return false;
 
-			if (playerRelationship == Stance.Enemy && !AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !AllowNeutral)
-				return false;
-
-			if (!c.CaptureTypes.Contains(Type))
+			if (!c.CaptureTypes.Overlaps(Types))
 				return false;
 
 			return true;
 		}
 
-		public object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExternalCapturable(init.Self, this); }
 	}
 
-	public class ExternalCapturable : ITick, ISync, IPreventsAutoTarget
+	public class ExternalCapturable : ConditionalTrait<ExternalCapturableInfo>, ITick, ISync, IPreventsAutoTarget
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
 		private Actor self;
-		public ExternalCapturableInfo Info;
 		public bool CaptureInProgress { get { return Captor != null; } }
 
 		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
+			: base(info)
 		{
 			this.self = self;
-			Info = info;
 		}
 
 		public void BeginCapture(Actor captor)
@@ -84,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			Captor = null;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (Captor != null && (!Captor.IsInWorld || Captor.IsDead))
 				EndCapture();
@@ -98,6 +93,14 @@ namespace OpenRA.Mods.Common.Traits
 		public bool PreventsAutoTarget(Actor self, Actor attacker)
 		{
 			return Info.PreventsAutoTarget && Captor != null && attacker.AppearsFriendlyTo(Captor);
+		}
+
+		public bool CanBeTargetedBy(Actor captor, Player owner)
+		{
+			if (IsTraitDisabled)
+				return false;
+
+			return Info.CanBeTargetedBy(captor, owner);
 		}
 	}
 }

@@ -1,5 +1,10 @@
 Background@INGAME_OBSERVERSTATS_BG:
 	Logic: ObserverStatsLogic
+		StatisticsBasicKey: StatisticsBasic
+		StatisticsEconomyKey: StatisticsEconomy
+		StatisticsProductionKey: StatisticsProduction
+		StatisticsCombatKey: StatisticsCombat
+		StatisticsGraphKey: StatisticsGraph
 	X: 25
 	Y: 50
 	Width: 1025
@@ -24,6 +29,8 @@ Background@INGAME_OBSERVERSTATS_BG:
 					Width: 185
 					Height: 25
 					Font: Bold
+					Children:
+						LogicKeyListener@STATS_DROPDOWN_KEYHANDLER:
 				Container@BASIC_STATS_HEADERS:
 					X: 0
 					Y: 0

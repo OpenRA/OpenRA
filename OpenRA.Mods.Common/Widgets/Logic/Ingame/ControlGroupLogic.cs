@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public ControlGroupLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("CONTROLGROUP_KEYHANDLER");
-			keyhandler.OnKeyPress = e =>
+			keyhandler.AddHandler(e =>
 			{
 				if (e.Event == KeyInputEvent.Down && e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
 				{
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				return false;
-			};
+			});
 		}
 	}
 }

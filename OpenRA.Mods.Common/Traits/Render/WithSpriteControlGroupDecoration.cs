@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders Ctrl groups using pixel art.")]
-	public class WithSpriteControlGroupDecorationInfo : ITraitInfo
+	public class WithSpriteControlGroupDecorationInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
 	{
 		[PaletteReference] public readonly string Palette = "chrome";
 
@@ -38,27 +38,31 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteControlGroupDecoration : IRenderAboveShroudWhenSelected
 	{
 		public readonly WithSpriteControlGroupDecorationInfo Info;
+		readonly IDecorationBounds[] decorationBounds;
 		readonly Animation pipImages;
 
 		public WithSpriteControlGroupDecoration(Actor self, WithSpriteControlGroupDecorationInfo info)
 		{
 			Info = info;
 
+			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 			pipImages = new Animation(self.World, Info.Image);
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (self.World.FogObscures(self))
+			if (self.Owner != wr.World.LocalPlayer)
 				yield break;
 
-			if (self.Owner != wr.World.LocalPlayer)
+			if (self.World.FogObscures(self))
 				yield break;
 
 			var pal = wr.Palette(Info.Palette);
 			foreach (var r in DrawControlGroup(self, wr, pal))
 				yield return r;
 		}
+
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
 
 		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr, PaletteReference palette)
 		{
@@ -68,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
-			var bounds = self.VisualBounds;
+			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
 			var boundsOffset = 0.5f * new float2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom);
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
 				boundsOffset -= new float2(0, 0.5f * bounds.Height);
@@ -82,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Right))
 				boundsOffset += new float2(0.5f * bounds.Width, 0);
 
-			var pxPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(self.CenterPosition) + boundsOffset.ToInt2()) - (0.5f * pipImages.Image.Size.XY).ToInt2();
+			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset.ToInt2()) - (0.5f * pipImages.Image.Size.XY).ToInt2();
 			yield return new UISpriteRenderable(pipImages.Image, self.CenterPosition, pxPos, 0, palette, 1f);
 		}
 	}

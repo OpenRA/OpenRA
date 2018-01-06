@@ -1,0 +1,770 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Harkonnen 07
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 104,74
+
+Bounds: 2,2,100,70
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Enemies: Harkonnen, Atreides Main Base, Atreides Small Base, Corrino
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Playable: True
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Atreides Main Base, Atreides Small Base, Corrino, Creeps
+	PlayerReference@Atreides Main Base:
+		Name: Atreides Main Base
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Allies: Atreides Small Base, Corrino
+		Enemies: Harkonnen
+	PlayerReference@Atreides Small Base:
+		Name: Atreides Small Base
+		LockFaction: True
+		Faction: atreides
+		LockColor: True
+		Color: 9191FF
+		Allies: Atreides Main Base, Corrino
+		Enemies: Harkonnen
+	PlayerReference@Corrino:
+		Name: Corrino
+		LockFaction: True
+		Faction: corrino
+		LockColor: True
+		Color: 7D00FE
+		Allies: Atreides Main Base, Atreides Small Base
+		Enemies: Harkonnen
+
+Actors:
+	Actor0: wormspawner
+		Location: 75,3
+		Owner: Creeps
+	Actor1: wormspawner
+		Location: 49,4
+		Owner: Creeps
+	Actor2: wormspawner
+		Location: 64,6
+		Owner: Creeps
+	Actor3: wormspawner
+		Location: 57,8
+		Owner: Creeps
+	Actor4: wall
+		Location: 70,9
+		Owner: Atreides Main Base
+	Actor5: wall
+		Location: 71,9
+		Owner: Atreides Main Base
+	Actor6: wall
+		Location: 70,10
+		Owner: Atreides Main Base
+	ARock1: large_gun_turret
+		Location: 71,10
+		Owner: Atreides Main Base
+	APower1: wind_trap
+		Location: 74,10
+		Owner: Atreides Main Base
+	APower2: wind_trap
+		Location: 76,10
+		Owner: Atreides Main Base
+	Actor10: spicebloom.spawnpoint
+		Location: 29,15
+		Owner: Neutral
+	Actor11: spicebloom.spawnpoint
+		Location: 100,16
+		Owner: Neutral
+	Actor12: wall
+		Location: 74,17
+		Owner: Atreides Main Base
+	Actor13: wall
+		Location: 75,17
+		Owner: Atreides Main Base
+	Actor14: wall
+		Location: 76,17
+		Owner: Atreides Main Base
+	Actor15: wall
+		Location: 77,17
+		Owner: Atreides Main Base
+	Actor16: wall
+		Location: 78,17
+		Owner: Atreides Main Base
+	Actor17: wall
+		Location: 79,17
+		Owner: Atreides Main Base
+	Actor18: wall
+		Location: 80,17
+		Owner: Atreides Main Base
+	Actor19: wall
+		Location: 74,18
+		Owner: Atreides Main Base
+	ASilo1: silo
+		Location: 75,18
+		Owner: Atreides Main Base
+	ASilo2: silo
+		Location: 77,18
+		Owner: Atreides Main Base
+	ASilo3: silo
+		Location: 79,18
+		Owner: Atreides Main Base
+	Actor23: wall
+		Location: 80,18
+		Owner: Atreides Main Base
+	ARefinery3: refinery
+		Location: 5,19
+		Owner: Atreides Small Base
+	Actor25: harvester
+		Location: 10,19
+		Owner: Atreides Small Base
+	HEngineer: engineer
+		Location: 51,19
+		Owner: Harkonnen
+		Facing: 128
+	Actor27: wall
+		Location: 74,19
+		Owner: Atreides Main Base
+	Actor28: wall
+		Location: 75,19
+		Owner: Atreides Main Base
+	Actor29: wall
+		Location: 76,19
+		Owner: Atreides Main Base
+	Actor30: wall
+		Location: 77,19
+		Owner: Atreides Main Base
+	Actor31: wall
+		Location: 78,19
+		Owner: Atreides Main Base
+	Actor32: wall
+		Location: 79,19
+		Owner: Atreides Main Base
+	Actor33: wall
+		Location: 80,19
+		Owner: Atreides Main Base
+	AHeavyFactory2: heavy_factory
+		Location: 9,20
+		Owner: Atreides Small Base
+	Actor35: trike
+		Location: 50,20
+		Owner: Harkonnen
+		Facing: 128
+	Actor36: quad
+		Location: 52,20
+		Owner: Harkonnen
+		Facing: 128
+	Actor37: carryall
+		Location: 8,21
+		Owner: Atreides Small Base
+	ASilo4: silo
+		Location: 4,23
+		Owner: Atreides Small Base
+	ASilo5: silo
+		Location: 5,23
+		Owner: Atreides Small Base
+	ASilo6: silo
+		Location: 6,23
+		Owner: Atreides Small Base
+	ASilo7: silo
+		Location: 7,23
+		Owner: Atreides Small Base
+	Actor42: wall
+		Location: 75,23
+		Owner: Atreides Main Base
+	Actor43: wall
+		Location: 76,23
+		Owner: Atreides Main Base
+	Actor44: wall
+		Location: 77,23
+		Owner: Atreides Main Base
+	Actor45: wall
+		Location: 78,23
+		Owner: Atreides Main Base
+	ARock2: large_gun_turret
+		Location: 79,23
+		Owner: Atreides Main Base
+	ARock3: large_gun_turret
+		Location: 85,23
+		Owner: Atreides Main Base
+	Actor48: wall
+		Location: 86,23
+		Owner: Atreides Main Base
+	Actor49: wall
+		Location: 87,23
+		Owner: Atreides Main Base
+	Actor50: wall
+		Location: 88,23
+		Owner: Atreides Main Base
+	Actor51: wall
+		Location: 89,23
+		Owner: Atreides Main Base
+	Actor52: wall
+		Location: 96,23
+		Owner: Corrino
+	Actor53: wall
+		Location: 97,23
+		Owner: Corrino
+	Actor54: wall
+		Location: 98,23
+		Owner: Corrino
+	Actor55: wall
+		Location: 99,23
+		Owner: Corrino
+	Actor56: wall
+		Location: 100,23
+		Owner: Corrino
+	Actor57: wall
+		Location: 101,23
+		Owner: Corrino
+	APower23: wind_trap
+		Location: 4,24
+		Owner: Atreides Small Base
+	ABarracks: barracks
+		Location: 6,24
+		Owner: Atreides Small Base
+	APower24: wind_trap
+		Location: 11,24
+		Owner: Atreides Small Base
+	APower25: wind_trap
+		Location: 13,24
+		Owner: Atreides Small Base
+	Actor62: spicebloom.spawnpoint
+		Location: 21,24
+		Owner: Neutral
+	Actor63: wall
+		Location: 75,24
+		Owner: Atreides Main Base
+	Actor64: light_inf
+		Location: 78,24
+		Owner: Atreides Main Base
+	Actor65: light_inf
+		Location: 86,24
+		Owner: Atreides Main Base
+	Actor66: wall
+		Location: 93,24
+		Owner: Corrino
+	Actor67: wall
+		Location: 94,24
+		Owner: Corrino
+	Actor68: wall
+		Location: 95,24
+		Owner: Corrino
+	Actor69: wall
+		Location: 96,24
+		Owner: Corrino
+	APower26: wind_trap
+		Location: 2,25
+		Owner: Atreides Small Base
+	Actor71: wall
+		Location: 75,25
+		Owner: Atreides Main Base
+	Actor72: wall
+		Location: 93,25
+		Owner: Corrino
+	COutpost: outpost
+		Location: 98,25
+		Owner: Corrino
+	Actor74: wall
+		Location: 93,26
+		Owner: Corrino
+	Actor75: wall
+		Location: 12,27
+		Owner: Atreides Small Base
+	AGunt1: medium_gun_turret
+		Location: 80,27
+		Owner: Atreides Main Base
+	Actor77: wall
+		Location: 81,27
+		Owner: Atreides Main Base
+	Actor78: wall
+		Location: 82,27
+		Owner: Atreides Main Base
+	Actor79: wall
+		Location: 83,27
+		Owner: Atreides Main Base
+	AGunt2: medium_gun_turret
+		Location: 84,27
+		Owner: Atreides Main Base
+	CRock1: large_gun_turret
+		Location: 93,27
+		Owner: Corrino
+	Actor82: wall
+		Location: 94,27
+		Owner: Corrino
+	CBarracks: barracks
+		Location: 96,27
+		Owner: Corrino
+	AGunt7: medium_gun_turret
+		Location: 12,28
+		Owner: Atreides Small Base
+	Actor85: wall
+		Location: 13,28
+		Owner: Atreides Small Base
+	Actor86: wall
+		Location: 14,28
+		Owner: Atreides Small Base
+	Actor87: wall
+		Location: 15,28
+		Owner: Atreides Small Base
+	ALightFactory1: light_factory
+		Location: 74,28
+		Owner: Atreides Main Base
+	Actor89: wall
+		Location: 80,28
+		Owner: Atreides Main Base
+	Actor90: wall
+		Location: 84,28
+		Owner: Atreides Main Base
+	Actor91: wall
+		Location: 6,29
+		Owner: Atreides Small Base
+	Actor92: light_inf
+		Location: 47,29
+		Owner: Atreides Small Base
+	Actor93: wall
+		Location: 2,30
+		Owner: Atreides Small Base
+	Actor94: wall
+		Location: 3,30
+		Owner: Atreides Small Base
+	Actor95: wall
+		Location: 4,30
+		Owner: Atreides Small Base
+	Actor96: wall
+		Location: 5,30
+		Owner: Atreides Small Base
+	AGunt8: medium_gun_turret
+		Location: 6,30
+		Owner: Atreides Small Base
+	Actor98: light_inf
+		Location: 44,30
+		Owner: Atreides Small Base
+	Actor99: light_inf
+		Location: 49,30
+		Owner: Atreides Small Base
+	AResearch: research_centre
+		Location: 78,30
+		Owner: Atreides Main Base
+	APower3: wind_trap
+		Location: 82,30
+		Owner: Atreides Main Base
+	APower4: wind_trap
+		Location: 84,30
+		Owner: Atreides Main Base
+	Actor103: quad
+		Location: 46,31
+		Owner: Atreides Small Base
+	APower27: wind_trap
+		Location: 47,31
+		Owner: Atreides Small Base
+	Actor105: light_inf
+		Location: 52,31
+		Owner: Atreides Small Base
+	AOutpost1: outpost
+		Location: 89,31
+		Owner: Atreides Main Base
+	Actor107: light_inf
+		Location: 49,32
+		Owner: Atreides Small Base
+	Actor108: trooper
+		Location: 75,32
+		Owner: Atreides Main Base
+	CRock2: large_gun_turret
+		Location: 93,32
+		Owner: Corrino
+	Actor110: wall
+		Location: 94,32
+		Owner: Corrino
+	CPower1: wind_trap
+		Location: 100,32
+		Owner: Corrino
+	AHeavyFactory1: heavy_factory
+		Location: 76,33
+		Owner: Atreides Main Base
+	APower5: wind_trap
+		Location: 82,33
+		Owner: Atreides Main Base
+	APower6: wind_trap
+		Location: 85,33
+		Owner: Atreides Main Base
+	Actor115: wall
+		Location: 93,33
+		Owner: Corrino
+	CPower2: wind_trap
+		Location: 96,33
+		Owner: Corrino
+	CPower3: wind_trap
+		Location: 98,33
+		Owner: Corrino
+	AConYard2: construction_yard
+		Location: 49,34
+		Owner: Atreides Small Base
+	Actor119: wall
+		Location: 93,34
+		Owner: Corrino
+	Actor120: spicebloom.spawnpoint
+		Location: 27,35
+		Owner: Neutral
+	Actor121: light_inf
+		Location: 47,35
+		Owner: Atreides Small Base
+	Actor122: wall
+		Location: 93,35
+		Owner: Corrino
+	APower7: wind_trap
+		Location: 90,36
+		Owner: Atreides Main Base
+	Actor124: wall
+		Location: 93,36
+		Owner: Corrino
+	AStarport: starport
+		Location: 83,37
+		Owner: Atreides Main Base
+	APower8: wind_trap
+		Location: 88,37
+		Owner: Atreides Main Base
+	Actor127: wall
+		Location: 93,37
+		Owner: Corrino
+	Actor128: wall
+		Location: 94,37
+		Owner: Corrino
+	Actor129: wall
+		Location: 95,37
+		Owner: Corrino
+	Actor130: wall
+		Location: 96,37
+		Owner: Corrino
+	Actor131: wall
+		Location: 97,37
+		Owner: Corrino
+	Actor132: wall
+		Location: 98,37
+		Owner: Corrino
+	Actor133: wall
+		Location: 99,37
+		Owner: Corrino
+	Actor134: wall
+		Location: 100,37
+		Owner: Corrino
+	Actor135: wall
+		Location: 101,37
+		Owner: Corrino
+	ARepair: repair_pad
+		Location: 78,38
+		Owner: Atreides Main Base
+	APower9: wind_trap
+		Location: 90,39
+		Owner: Atreides Main Base
+	APower10: wind_trap
+		Location: 92,39
+		Owner: Atreides Main Base
+	APower11: wind_trap
+		Location: 88,40
+		Owner: Atreides Main Base
+	APower12: wind_trap
+		Location: 98,40
+		Owner: Atreides Main Base
+	APower13: wind_trap
+		Location: 100,40
+		Owner: Atreides Main Base
+	Actor142: wall
+		Location: 81,42
+		Owner: Atreides Main Base
+	Actor143: wall
+		Location: 82,42
+		Owner: Atreides Main Base
+	Actor144: wall
+		Location: 83,42
+		Owner: Atreides Main Base
+	ALightFactory2: light_factory
+		Location: 90,42
+		Owner: Atreides Main Base
+	Actor146: wall
+		Location: 81,43
+		Owner: Atreides Main Base
+	AGunt3: medium_gun_turret
+		Location: 82,43
+		Owner: Atreides Main Base
+	Actor148: wall
+		Location: 83,43
+		Owner: Atreides Main Base
+	APower14: wind_trap
+		Location: 96,43
+		Owner: Atreides Main Base
+	APower15: wind_trap
+		Location: 100,43
+		Owner: Atreides Main Base
+	Actor151: wall
+		Location: 81,44
+		Owner: Atreides Main Base
+	Actor152: wall
+		Location: 82,44
+		Owner: Atreides Main Base
+	Actor153: wall
+		Location: 83,44
+		Owner: Atreides Main Base
+	APower16: wind_trap
+		Location: 98,44
+		Owner: Atreides Main Base
+	Actor155: spicebloom.spawnpoint
+		Location: 26,45
+		Owner: Neutral
+	AConYard1: construction_yard
+		Location: 78,45
+		Owner: Atreides Main Base
+	Actor157: wall
+		Location: 86,45
+		Owner: Atreides Main Base
+	Actor158: wall
+		Location: 87,45
+		Owner: Atreides Main Base
+	Actor159: wall
+		Location: 88,45
+		Owner: Atreides Main Base
+	Actor160: wall
+		Location: 71,46
+		Owner: Atreides Main Base
+	Actor161: wall
+		Location: 86,46
+		Owner: Atreides Main Base
+	AGunt4: medium_gun_turret
+		Location: 87,46
+		Owner: Atreides Main Base
+	Actor163: wall
+		Location: 88,46
+		Owner: Atreides Main Base
+	Actor164: spicebloom.spawnpoint
+		Location: 37,47
+		Owner: Neutral
+	Actor165: wall
+		Location: 71,47
+		Owner: Atreides Main Base
+	Actor166: wall
+		Location: 86,47
+		Owner: Atreides Main Base
+	Actor167: wall
+		Location: 87,47
+		Owner: Atreides Main Base
+	Actor168: wall
+		Location: 88,47
+		Owner: Atreides Main Base
+	ARock4: large_gun_turret
+		Location: 71,48
+		Owner: Atreides Main Base
+	Actor170: wall
+		Location: 72,48
+		Owner: Atreides Main Base
+	Actor171: wall
+		Location: 73,48
+		Owner: Atreides Main Base
+	Actor172: wall
+		Location: 74,48
+		Owner: Atreides Main Base
+	ARefinery1: refinery
+		Location: 85,48
+		Owner: Atreides Main Base
+	Actor174: harvester
+		Location: 76,49
+		Owner: Atreides Main Base
+	Actor175: harvester
+		Location: 84,49
+		Owner: Atreides Main Base
+	Actor176: carryall
+		Location: 88,49
+		Owner: Atreides Main Base
+	Actor177: spicebloom.spawnpoint
+		Location: 62,51
+		Owner: Neutral
+	ARefinery2: refinery
+		Location: 74,51
+		Owner: Atreides Main Base
+	Actor179: wall
+		Location: 79,51
+		Owner: Atreides Main Base
+	AGunt5: medium_gun_turret
+		Location: 79,52
+		Owner: Atreides Main Base
+	Actor181: light_inf
+		Location: 53,53
+		Owner: Atreides Main Base
+	Actor182: wall
+		Location: 79,53
+		Owner: Atreides Main Base
+	Actor183: light_inf
+		Location: 49,54
+		Owner: Atreides Main Base
+	Actor184: carryall
+		Location: 77,54
+		Owner: Atreides Main Base
+	Actor185: wall
+		Location: 79,54
+		Owner: Atreides Main Base
+	Actor186: wall
+		Location: 80,54
+		Owner: Atreides Main Base
+	Actor187: wall
+		Location: 81,54
+		Owner: Atreides Main Base
+	Actor188: wall
+		Location: 82,54
+		Owner: Atreides Main Base
+	Actor189: wall
+		Location: 83,54
+		Owner: Atreides Main Base
+	Actor190: wall
+		Location: 50,55
+		Owner: Atreides Main Base
+	ARock5: large_gun_turret
+		Location: 51,55
+		Owner: Atreides Main Base
+	Actor192: wall
+		Location: 52,55
+		Owner: Atreides Main Base
+	Actor193: spicebloom.spawnpoint
+		Location: 32,56
+		Owner: Neutral
+	Actor194: wall
+		Location: 69,56
+		Owner: Atreides Main Base
+	Actor195: wall
+		Location: 73,56
+		Owner: Atreides Main Base
+	Actor196: wall
+		Location: 69,57
+		Owner: Atreides Main Base
+	Actor197: wall
+		Location: 73,57
+		Owner: Atreides Main Base
+	Actor198: wall
+		Location: 67,58
+		Owner: Atreides Main Base
+	ARock6: large_gun_turret
+		Location: 68,58
+		Owner: Atreides Main Base
+	Actor200: wall
+		Location: 69,58
+		Owner: Atreides Main Base
+	AGunt6: medium_gun_turret
+		Location: 73,58
+		Owner: Atreides Main Base
+	Actor202: wall
+		Location: 74,58
+		Owner: Atreides Main Base
+	Actor203: spicebloom.spawnpoint
+		Location: 4,61
+		Owner: Neutral
+	Actor204: spicebloom.spawnpoint
+		Location: 81,61
+		Owner: Neutral
+	AHiTechFactory: high_tech_factory
+		Location: 69,62
+		Owner: Atreides Main Base
+	APower17: wind_trap
+		Location: 74,62
+		Owner: Atreides Main Base
+	APower18: wind_trap
+		Location: 72,63
+		Owner: Atreides Main Base
+	APower19: wind_trap
+		Location: 68,66
+		Owner: Atreides Main Base
+	APower20: wind_trap
+		Location: 72,66
+		Owner: Atreides Main Base
+	APower21: wind_trap
+		Location: 74,66
+		Owner: Atreides Main Base
+	APower22: wind_trap
+		Location: 70,67
+		Owner: Atreides Main Base
+	Actor212: spicebloom.spawnpoint
+		Location: 21,68
+		Owner: Neutral
+	Actor213: spicebloom.spawnpoint
+		Location: 42,69
+		Owner: Neutral
+	Actor214: spicebloom.spawnpoint
+		Location: 54,70
+		Owner: Neutral
+	Actor215: spicebloom.spawnpoint
+		Location: 101,70
+		Owner: Neutral
+	AOutpost2: outpost
+		Owner: Atreides Small Base
+		Location: 13,20
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 46,19
+	HarkonnenEntry1: waypoint
+		Owner: Neutral
+		Location: 46,2
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 49,21
+	HarkonnenEntry2: waypoint
+		Owner: Neutral
+		Location: 49,2
+	AtreidesRally1: waypoint
+		Owner: Neutral
+		Location: 7,22
+	AtreidesEntry1: waypoint
+		Owner: Neutral
+		Location: 2,22
+	CorrinoRally1: waypoint
+		Owner: Neutral
+		Location: 97,31
+	CorrinoEntry1: waypoint
+		Owner: Neutral
+		Location: 101,31
+	CorrinoRally2: waypoint
+		Owner: Neutral
+		Location: 98,31
+	CorrinoRally3: waypoint
+		Owner: Neutral
+		Location: 93,30
+	CorrinoEntry2: waypoint
+		Owner: Neutral
+		Location: 101,30
+	AtreidesRally4: waypoint
+		Owner: Neutral
+		Location: 72,53
+	AtreidesEntry4: waypoint
+		Owner: Neutral
+		Location: 68,71
+	AtreidesRally3: waypoint
+		Owner: Neutral
+		Location: 72,50
+	AtreidesEntry3: waypoint
+		Owner: Neutral
+		Location: 72,71
+	AtreidesRally2: waypoint
+		Owner: Neutral
+		Location: 9,27
+	AtreidesEntry2: waypoint
+		Owner: Neutral
+		Location: 2,27
+
+Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml

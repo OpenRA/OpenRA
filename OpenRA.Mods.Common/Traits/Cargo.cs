@@ -141,7 +141,20 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			aircraft = self.TraitOrDefault<Aircraft>();
-			conditionManager = self.Trait<ConditionManager>();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+
+			if (conditionManager != null && cargo.Any())
+			{
+				foreach (var c in cargo)
+				{
+					string passengerCondition;
+					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out passengerCondition))
+						passengerTokens.GetOrAdd(c.Info.Name).Push(conditionManager.GrantCondition(self, passengerCondition));
+				}
+
+				if (!string.IsNullOrEmpty(Info.LoadedCondition))
+					loadedTokens.Push(conditionManager.GrantCondition(self, Info.LoadedCondition));
+			}
 		}
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }

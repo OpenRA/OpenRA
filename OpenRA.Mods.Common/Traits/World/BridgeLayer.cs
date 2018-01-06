@@ -44,14 +44,14 @@ namespace OpenRA.Mods.Common.Traits
 		public void Add(Actor b)
 		{
 			var buildingInfo = b.Info.TraitInfo<BuildingInfo>();
-			foreach (var c in FootprintUtils.PathableTiles(b.Info.Name, buildingInfo, b.Location))
+			foreach (var c in buildingInfo.PathableTiles(b.Location))
 				bridges[c] = b;
 		}
 
 		public void Remove(Actor b)
 		{
 			var buildingInfo = b.Info.TraitInfo<BuildingInfo>();
-			foreach (var c in FootprintUtils.PathableTiles(b.Info.Name, buildingInfo, b.Location))
+			foreach (var c in buildingInfo.PathableTiles(b.Location))
 				if (bridges[c] == b)
 					bridges[c] = null;
 		}

@@ -133,3 +133,12 @@ STNK.Husk:
 		IntoActor: stnk
 	RenderSprites:
 		Image: stnk.destroyed
+
+TRUCK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Supply Truck (Destroyed)
+	TransformOnCapture:
+		IntoActor: truck
+	RenderSprites:
+		Image: truck.destroyed

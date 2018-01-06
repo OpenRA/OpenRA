@@ -1,32 +1,33 @@
 SS:
 	Inherits: ^Ship
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 30
-		Prerequisites: ~spen, ~techlevel.medium
+		Prerequisites: ~spen, ~techlevel.low
 		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
 	Valued:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Light
 	Mobile:
 		TurnSpeed: 4
 		Speed: 71
 	RevealsShroud:
-		Range: 6c0
+		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
-		TargetTypes: Ground, Water, Repair
+		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Repair
+		TargetTypes: Underwater, Submarine, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -46,12 +47,13 @@ SS:
 		FireDelay: 2
 	AttackFrontal:
 	SelectionDecorations:
-		VisualBounds: 38,38
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
-		Types: Water
+		ValidTargets: Water, Underwater
+	AutoTargetPriority@ATTACKANYTHING:
+		ValidTargets: Water, Underwater
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
@@ -60,22 +62,25 @@ SS:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
+	Selectable:
+		DecorationBounds: 38,38
 
 MSUB:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.high
+		BuildDuration: 1750
 		Description: Submerged anti-ground siege unit\nwith anti-air capabilities.\nCan detect other submarines.\n  Strong vs Buildings, Ground units, Aircraft\n  Weak vs Naval units\n  Special Ability: Submerge
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Missile Submarine
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Light
 	Mobile:
@@ -87,10 +92,10 @@ MSUB:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	Targetable:
-		TargetTypes: Ground, Water, Repair
+		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Repair
+		TargetTypes: Underwater, Submarine, Repair
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -114,7 +119,6 @@ MSUB:
 		FireDelay: 2
 	AttackFrontal:
 	SelectionDecorations:
-		VisualBounds: 44,44
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
@@ -126,22 +130,24 @@ MSUB:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
+	Selectable:
+		DecorationBounds: 44,44
 
 DD:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 40
 		Prerequisites: ~syrd, dome, ~techlevel.medium
-		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Light armor, Aircraft\n  Weak vs Infantry, Tanks
+		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Vehicles, Aircraft\n  Weak vs Infantry
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -169,28 +175,30 @@ DD:
 		LocalYaw: 64, -64
 	AttackTurreted:
 	SelectionDecorations:
-		VisualBounds: 38,38
 	WithSpriteTurret:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
+	Selectable:
+		DecorationBounds: 38,38
 
 CA:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.high
+		BuildDuration: 2000
 		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
 	Valued:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -225,13 +233,15 @@ CA:
 		RecoilRecovery: 34
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		Turrets: primary, secondary
 	WithMuzzleOverlay:
 	SelectionDecorations:
-		VisualBounds: 44,44
 	WithSpriteTurret@PRIMARY:
 		Turret: primary
 	WithSpriteTurret@SECONDARY:
 		Turret: secondary
+	Selectable:
+		DecorationBounds: 44,44
 
 LST:
 	Inherits: ^Ship
@@ -245,7 +255,7 @@ LST:
 	Tooltip:
 		Name: Transport
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -260,7 +270,6 @@ LST:
 	RevealsShroud@GAPGEN:
 		Range: 5c0
 	SelectionDecorations:
-		VisualBounds: 36,36
 	WithLandingCraftAnimation:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
@@ -270,22 +279,24 @@ LST:
 		PassengerFacing: 0
 		LoadingCondition: notmobile
 	-Chronoshiftable:
+	Selectable:
+		DecorationBounds: 36,36
 
 PT:
 	Inherits: ^Ship
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 20
-		Prerequisites: ~syrd, ~techlevel.medium
+		Prerequisites: ~syrd, ~techlevel.low
 		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -310,9 +321,10 @@ PT:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	SelectionDecorations:
-		VisualBounds: 36,36
 	WithSpriteTurret:
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
+	Selectable:
+		DecorationBounds: 36,36

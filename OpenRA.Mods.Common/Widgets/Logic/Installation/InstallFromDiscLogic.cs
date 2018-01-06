@@ -127,6 +127,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var path = FindSourcePath(kv.Value, volumes);
 					if (path != null)
 					{
+						Log.Write("install", "Using installer `{0}: {1}` of type `{2}`:", kv.Key, kv.Value.Title, kv.Value.Type);
+
 						var packages = content.Packages.Values
 							.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
 							.Select(p => p.Title);

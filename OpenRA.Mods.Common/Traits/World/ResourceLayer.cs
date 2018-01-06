@@ -36,6 +36,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly CellLayer<CellContents> Content;
 		protected readonly CellLayer<CellContents> RenderContent;
 
+		public bool IsResourceLayerEmpty { get { return resCells < 1; } }
+
+		bool disposed;
+		int resCells;
+
 		public ResourceLayer(Actor self)
 		{
 			world = self.World;
@@ -60,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Render(WorldRenderer wr)
+		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			foreach (var kv in spriteLayers.Values)
 				kv.Draw(wr.Viewport);
@@ -160,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 			return t.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
 			foreach (var c in dirty)
@@ -215,6 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 		CellContents CreateResourceCell(ResourceType t, CPos cell)
 		{
 			world.Map.CustomTerrain[cell] = world.Map.Rules.TileSet.GetTerrainIndex(t.Info.TerrainType);
+			++resCells;
 
 			return new CellContents
 			{
@@ -253,6 +259,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Content[cell] = EmptyCell;
 				world.Map.CustomTerrain[cell] = byte.MaxValue;
+				--resCells;
 			}
 			else
 				Content[cell] = c;
@@ -267,6 +274,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Don't break other users of CustomTerrain if there are no resources
 			if (Content[cell].Type == null)
 				return;
+
+			--resCells;
 
 			// Clear cell
 			Content[cell] = EmptyCell;
@@ -286,8 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Content[cell].Type.Info.MaxDensity;
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;

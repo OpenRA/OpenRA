@@ -2,18 +2,17 @@
 	ReloadDelay: 60
 	Range: 6c0
 	Report: bigggun1.aud
-	Projectile: AreaBeam
+	Projectile: Railgun
 		Speed: 20c0
-		Duration: 3
-		DamageInterval: 2
+		Duration: 15
 		Width: 80
-		BeyondTargetRange: 0c64
 		Blockable: true
-		Color: 0080FFC8
+		DamageActorsInLine: true
+		BeamColor: 0080FFC8
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 150
+		Damage: 15000
 		AffectsParent: false
 		Versus:
 			None: 100
@@ -30,7 +29,7 @@ LtRail:
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
-		Damage: 150
+		Damage: 15000
 		InfDeath: 6
 		AffectsParent: false
 		ValidStances: Ally
@@ -45,13 +44,11 @@ LtRail:
 MechRailgun:
 	Inherits: ^Railgun
 	Range: 8c0
-	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
-	BurstDelay: 60
 	Report: railuse5.aud
-	Projectile: AreaBeam
-		Color: 00FFFFC8
+	Projectile: Railgun
+		BeamColor: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
-		Damage: 200
+		Damage: 20000
 		Versus:
 			None: 200
 			Wood: 175
@@ -77,7 +74,7 @@ SonicZap:
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 8
+		Damage: 800
 		AffectsParent: false
 		ValidStances: Neutral, Enemy
 		Versus:
@@ -87,7 +84,7 @@ SonicZap:
 	Warhead@2Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 50, 50
-		Damage: 8
+		Damage: 800
 		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
 		AffectsParent: false
 		ValidStances: Ally
@@ -107,12 +104,13 @@ SonicZap:
 		Explosions: large_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactSounds: expnew12.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water
+		InvalidTargets: Vehicle
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
@@ -128,9 +126,10 @@ CyCannon:
 		MinimumLaunchSpeed: 75
 		Speed: 384
 		RangeLimit: 8c0
+		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 43
-		Damage: 120
+		Damage: 12000
 		Versus:
 			None: 350
 			Wood: 260
@@ -143,7 +142,7 @@ Proton:
 	Inherits: ^EnergyBlast
 	Range: 5c0
 	Burst: 5
-	BurstDelay: 3
+	BurstDelays: 3
 	Projectile: Bullet
 		Speed: 341
 		Blockable: false
@@ -152,7 +151,7 @@ Proton:
 		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 20
+		Damage: 2000
 		Versus:
 			None: 25
 			Wood: 65
@@ -175,7 +174,7 @@ Proton:
 		SecondaryBeamColor: FF000040
 	Warhead@1Dam: SpreadDamage
 		Spread: 42
-		Damage: 250
+		Damage: 25000
 		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
 
 ObeliskLaserFire:
@@ -184,7 +183,7 @@ ObeliskLaserFire:
 	Range: 10c512
 	Report: obelray1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 250
+		Damage: 25000
 
 TurretLaserFire:
 	Inherits: ^Laser
@@ -197,12 +196,12 @@ TurretLaserFire:
 		SecondaryBeamWidth: 144
 		SecondaryBeamColor: FF000030
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 3000
 
 LaserFence:
 	TargetActorCenter: true
 	Projectile: InstantHit
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: FF0000
-		Damage: 99999
+		Damage: 10000000
 		DamageTypes: FireDeath

@@ -11,9 +11,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using OpenAL;
 
 namespace OpenRA.Platforms.Default
@@ -37,7 +40,8 @@ namespace OpenRA.Platforms.Default
 			public int FrameStarted;
 			public WPos Pos;
 			public bool IsRelative;
-			public ISoundSource Sound;
+			public OpenAlSoundSource SoundSource;
+			public OpenAlSound Sound;
 		}
 
 		const int MaxInstancesPerFrame = 3;
@@ -45,7 +49,7 @@ namespace OpenRA.Platforms.Default
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
 		const int PoolSize = 32;
 
-		readonly Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>();
+		readonly Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>(PoolSize);
 		float volume = 1f;
 		IntPtr device;
 		IntPtr context;
@@ -77,7 +81,7 @@ namespace OpenRA.Platforms.Default
 				}
 
 				// A null indicates termination of that string, so add that to our list.
-				devices.Add(Encoding.Default.GetString(buffer.ToArray()));
+				devices.Add(Encoding.UTF8.GetString(buffer.ToArray()));
 				buffer.Clear();
 
 				// Two successive nulls indicates the end of the list.
@@ -98,6 +102,14 @@ namespace OpenRA.Platforms.Default
 				return QueryDevices("ALC_ENUMERATION_EXT", ALC10.ALC_DEVICE_SPECIFIER);
 
 			return new string[] { };
+		}
+
+		internal static int MakeALFormat(int channels, int bits)
+		{
+			if (channels == 1)
+				return bits == 16 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_MONO8;
+			else
+				return bits == 16 ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_STEREO8;
 		}
 
 		public OpenAlSoundEngine(string deviceName)
@@ -137,23 +149,27 @@ namespace OpenRA.Platforms.Default
 
 		bool TryGetSourceFromPool(out uint source)
 		{
-			foreach (var kvp in sourcePool)
+			foreach (var kv in sourcePool)
 			{
-				if (!kvp.Value.IsActive)
+				if (!kv.Value.IsActive)
 				{
-					sourcePool[kvp.Key].IsActive = true;
-					source = kvp.Key;
+					sourcePool[kv.Key].IsActive = true;
+					source = kv.Key;
 					return true;
 				}
 			}
 
 			var freeSources = new List<uint>();
-			foreach (var key in sourcePool.Keys)
+			foreach (var kv in sourcePool)
 			{
-				int state;
-				AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
-				if (state != AL10.AL_PLAYING && state != AL10.AL_PAUSED)
-					freeSources.Add(key);
+				var sound = kv.Value.Sound;
+				if (sound != null && sound.Complete)
+				{
+					var freeSource = kv.Key;
+					freeSources.Add(freeSource);
+					AL10.alSourceRewind(freeSource);
+					AL10.alSourcei(freeSource, AL10.AL_BUFFER, 0);
+				}
 			}
 
 			if (freeSources.Count == 0)
@@ -162,27 +178,33 @@ namespace OpenRA.Platforms.Default
 				return false;
 			}
 
-			foreach (var i in freeSources)
-				sourcePool[i].IsActive = false;
-
-			sourcePool[freeSources[0]].IsActive = true;
+			foreach (var freeSource in freeSources)
+			{
+				var slot = sourcePool[freeSource];
+				slot.SoundSource = null;
+				slot.Sound = null;
+				slot.IsActive = false;
+			}
 
 			source = freeSources[0];
+			sourcePool[source].IsActive = true;
 			return true;
 		}
 
 		public ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate)
 		{
-			return new OpenAlSoundSource(data, channels, sampleBits, sampleRate);
+			return new OpenAlSoundSource(data, data.Length, channels, sampleBits, sampleRate);
 		}
 
-		public ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume)
+		public ISound Play2D(ISoundSource soundSource, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume)
 		{
-			if (sound == null)
+			if (soundSource == null)
 			{
 				Log.Write("sound", "Attempt to Play2D a null `ISoundSource`");
 				return null;
 			}
+
+			var alSoundSource = (OpenAlSoundSource)soundSource;
 
 			var currFrame = Game.LocalTick;
 			var atten = 1f;
@@ -199,7 +221,7 @@ namespace OpenRA.Platforms.Default
 						continue;
 
 					++activeCount;
-					if (s.Sound != sound)
+					if (s.SoundSource != alSoundSource)
 						continue;
 					if (currFrame - s.FrameStarted >= 5)
 						continue;
@@ -225,9 +247,27 @@ namespace OpenRA.Platforms.Default
 			var slot = sourcePool[source];
 			slot.Pos = pos;
 			slot.FrameStarted = currFrame;
-			slot.Sound = sound;
 			slot.IsRelative = relative;
-			return new OpenAlSound(source, ((OpenAlSoundSource)sound).Buffer, loop, relative, pos, volume * atten);
+			slot.SoundSource = alSoundSource;
+			slot.Sound = new OpenAlSound(source, loop, relative, pos, volume * atten, alSoundSource.SampleRate, alSoundSource.Buffer);
+			return slot.Sound;
+		}
+
+		public ISound Play2DStream(Stream stream, int channels, int sampleBits, int sampleRate, bool loop, bool relative, WPos pos, float volume)
+		{
+			var currFrame = Game.LocalTick;
+
+			uint source;
+			if (!TryGetSourceFromPool(out source))
+				return null;
+
+			var slot = sourcePool[source];
+			slot.Pos = pos;
+			slot.FrameStarted = currFrame;
+			slot.IsRelative = relative;
+			slot.SoundSource = null;
+			slot.Sound = new OpenAlAsyncLoadSound(source, loop, relative, pos, volume, channels, sampleBits, sampleRate, stream);
+			return slot.Sound;
 		}
 
 		public float Volume
@@ -241,26 +281,34 @@ namespace OpenRA.Platforms.Default
 			if (sound == null)
 				return;
 
-			var key = ((OpenAlSound)sound).Source;
-			int state;
-			AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
-			if (state == AL10.AL_PLAYING && paused)
-				AL10.alSourcePause(key);
-			else if (state == AL10.AL_PAUSED && !paused)
-				AL10.alSourcePlay(key);
+			var source = ((OpenAlSound)sound).Source;
+			PauseSound(source, paused);
 		}
 
 		public void SetAllSoundsPaused(bool paused)
 		{
-			foreach (var key in sourcePool.Keys)
+			foreach (var source in sourcePool.Keys)
+				PauseSound(source, paused);
+		}
+
+		void PauseSound(uint source, bool paused)
+		{
+			int state;
+			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out state);
+			if (paused)
 			{
-				int state;
-				AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
-				if (state == AL10.AL_PLAYING && paused)
-					AL10.alSourcePause(key);
-				else if (state == AL10.AL_PAUSED && !paused)
-					AL10.alSourcePlay(key);
+				if (state == AL10.AL_PLAYING)
+					AL10.alSourcePause(source);
+				else if (state == AL10.AL_INITIAL)
+				{
+					// If a sound hasn't started yet,
+					// we indicate it should not play be transitioning it to the stopped state.
+					AL10.alSourcePlay(source);
+					AL10.alSourceStop(source);
+				}
 			}
+			else if (!paused && state != AL10.AL_PLAYING)
+				AL10.alSourcePlay(source);
 		}
 
 		public void SetSoundVolume(float volume, ISound music, ISound video)
@@ -283,22 +331,14 @@ namespace OpenRA.Platforms.Default
 			if (sound == null)
 				return;
 
-			var key = ((OpenAlSound)sound).Source;
-			int state;
-			AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
-			if (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED)
-				AL10.alSourceStop(key);
+			((OpenAlSound)sound).Stop();
 		}
 
 		public void StopAllSounds()
 		{
-			foreach (var key in sourcePool.Keys)
-			{
-				int state;
-				AL10.alGetSourcei(key, AL10.AL_SOURCE_STATE, out state);
-				if (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED)
-					AL10.alSourceStop(key);
-			}
+			foreach (var slot in sourcePool.Values)
+				if (slot.Sound != null)
+					slot.Sound.Stop();
 		}
 
 		public void SetListenerPosition(WPos position)
@@ -309,26 +349,6 @@ namespace OpenRA.Platforms.Default
 			var orientation = new[] { 0f, 0f, 1f, 0f, -1f, 0f };
 			AL10.alListenerfv(AL10.AL_ORIENTATION, orientation);
 			AL10.alListenerf(EFX.AL_METERS_PER_UNIT, .01f);
-		}
-
-		public void ReleaseSourcePool()
-		{
-			foreach (var slot in sourcePool)
-				if (slot.Value.Sound != null)
-					ReleaseSound(slot.Key);
-		}
-
-		public void ReleaseSound(ISound sound)
-		{
-			var openAlSound = sound as OpenAlSound;
-			if (openAlSound != null)
-				ReleaseSound(openAlSound.Source);
-		}
-
-		void ReleaseSound(uint source)
-		{
-			AL10.alSourceStop(source);
-			AL10.alSourcei(source, AL10.AL_BUFFER, 0);
 		}
 
 		~OpenAlSoundEngine()
@@ -344,6 +364,8 @@ namespace OpenRA.Platforms.Default
 
 		void Dispose(bool disposing)
 		{
+			StopAllSounds();
+
 			if (context != IntPtr.Zero)
 			{
 				ALC10.alcMakeContextCurrent(IntPtr.Zero);
@@ -365,19 +387,13 @@ namespace OpenRA.Platforms.Default
 		bool disposed;
 
 		public uint Buffer { get { return buffer; } }
+		public int SampleRate { get; private set; }
 
-		static int MakeALFormat(int channels, int bits)
+		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
 		{
-			if (channels == 1)
-				return bits == 16 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_MONO8;
-			else
-				return bits == 16 ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_STEREO8;
-		}
-
-		public OpenAlSoundSource(byte[] data, int channels, int sampleBits, int sampleRate)
-		{
+			SampleRate = sampleRate;
 			AL10.alGenBuffers(new IntPtr(1), out buffer);
-			AL10.alBufferData(buffer, MakeALFormat(channels, sampleBits), data, new IntPtr(data.Length), new IntPtr(sampleRate));
+			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, new IntPtr(byteCount), new IntPtr(sampleRate));
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -404,54 +420,202 @@ namespace OpenRA.Platforms.Default
 	class OpenAlSound : ISound
 	{
 		public readonly uint Source;
-		float volume;
+		protected readonly float SampleRate;
 
-		public OpenAlSound(uint source, uint buffer, bool looping, bool relative, WPos pos, float volume)
+		public OpenAlSound(uint source, bool looping, bool relative, WPos pos, float volume, int sampleRate, uint buffer)
+			: this(source, looping, relative, pos, volume, sampleRate)
+		{
+			AL10.alSourcei(source, AL10.AL_BUFFER, (int)buffer);
+			AL10.alSourcePlay(source);
+		}
+
+		protected OpenAlSound(uint source, bool looping, bool relative, WPos pos, float volume, int sampleRate)
 		{
 			Source = source;
+			SampleRate = sampleRate;
 			Volume = volume;
 
 			AL10.alSourcef(source, AL10.AL_PITCH, 1f);
 			AL10.alSource3f(source, AL10.AL_POSITION, pos.X, pos.Y, pos.Z);
 			AL10.alSource3f(source, AL10.AL_VELOCITY, 0f, 0f, 0f);
-			AL10.alSourcei(source, AL10.AL_BUFFER, (int)buffer);
 			AL10.alSourcei(source, AL10.AL_LOOPING, looping ? 1 : 0);
 			AL10.alSourcei(source, AL10.AL_SOURCE_RELATIVE, relative ? 1 : 0);
 
 			AL10.alSourcef(source, AL10.AL_REFERENCE_DISTANCE, 6826);
 			AL10.alSourcef(source, AL10.AL_MAX_DISTANCE, 136533);
-			AL10.alSourcePlay(source);
 		}
 
 		public float Volume
 		{
-			get { return volume; }
-			set { AL10.alSourcef(Source, AL10.AL_GAIN, volume = value); }
+			get { float volume; AL10.alGetSourcef(Source, AL10.AL_GAIN, out volume); return volume; }
+			set { AL10.alSourcef(Source, AL10.AL_GAIN, value); }
 		}
 
-		public float SeekPosition
+		public virtual float SeekPosition
 		{
 			get
 			{
-				int pos;
-				AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out pos);
-				return pos / 22050f;
+				int sampleOffset;
+				AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out sampleOffset);
+				return sampleOffset / SampleRate;
 			}
 		}
 
-		public bool Playing
+		public virtual bool Complete
 		{
 			get
 			{
 				int state;
 				AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
-				return state == AL10.AL_PLAYING;
+				return state == AL10.AL_STOPPED;
 			}
 		}
 
 		public void SetPosition(WPos pos)
 		{
 			AL10.alSource3f(Source, AL10.AL_POSITION, pos.X, pos.Y, pos.Z);
+		}
+
+		protected void StopSource()
+		{
+			int state;
+			AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+			if (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED)
+				AL10.alSourceStop(Source);
+		}
+
+		public virtual void Stop()
+		{
+			StopSource();
+			AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
+		}
+	}
+
+	class OpenAlAsyncLoadSound : OpenAlSound
+	{
+		static readonly byte[] SilentData = new byte[2];
+		readonly CancellationTokenSource cts = new CancellationTokenSource();
+		readonly Task playTask;
+
+		public OpenAlAsyncLoadSound(uint source, bool looping, bool relative, WPos pos, float volume, int channels, int sampleBits, int sampleRate, Stream stream)
+			: base(source, looping, relative, pos, volume, sampleRate)
+		{
+			// Load a silent buffer into the source. Without this,
+			// attempting to change the state (i.e. play/pause) the source fails on some systems.
+			var silentSource = new OpenAlSoundSource(SilentData, SilentData.Length, channels, sampleBits, sampleRate);
+			AL10.alSourcei(source, AL10.AL_BUFFER, (int)silentSource.Buffer);
+
+			playTask = Task.Run(async () =>
+			{
+				MemoryStream memoryStream;
+				using (stream)
+				{
+					try
+					{
+						memoryStream = new MemoryStream((int)stream.Length);
+					}
+					catch (NotSupportedException)
+					{
+						// Fallback for stream types that don't support Length.
+						memoryStream = new MemoryStream();
+					}
+
+					try
+					{
+						await stream.CopyToAsync(memoryStream, 81920, cts.Token);
+					}
+					catch (TaskCanceledException)
+					{
+						// Sound was stopped early, cleanup the unused buffer and exit.
+						AL10.alSourceStop(source);
+						AL10.alSourcei(source, AL10.AL_BUFFER, 0);
+						silentSource.Dispose();
+						return;
+					}
+				}
+
+				var data = memoryStream.GetBuffer();
+				var dataLength = (int)memoryStream.Length;
+				var bytesPerSample = sampleBits / 8f;
+				var lengthInSecs = dataLength / (channels * bytesPerSample * sampleRate);
+				using (var soundSource = new OpenAlSoundSource(data, dataLength, channels, sampleBits, sampleRate))
+				{
+					// Need to stop the source, before attaching the real input and deleting the silent one.
+					AL10.alSourceStop(source);
+					AL10.alSourcei(source, AL10.AL_BUFFER, (int)soundSource.Buffer);
+					silentSource.Dispose();
+
+					lock (cts)
+					{
+						if (!cts.IsCancellationRequested)
+						{
+							// TODO: A race condition can happen between the state check and playing/rewinding if a
+							// user pauses/resumes at the right moment. The window of opportunity is small and the
+							// consequences are minor, so for now we'll ignore it.
+							int state;
+							AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+							if (state != AL10.AL_STOPPED)
+								AL10.alSourcePlay(source);
+							else
+							{
+								// A stopped sound indicates it was paused before we finishing loaded.
+								// We don't want to start playing it right away.
+								// We rewind the source so when it is started, it plays from the beginning.
+								AL10.alSourceRewind(source);
+							}
+						}
+					}
+
+					while (!cts.IsCancellationRequested)
+					{
+						// Need to check seek before state. Otherwise, the music can stop after our state check at
+						// which point the seek will be zero, meaning we'll wait the full track length before seeing it
+						// has stopped.
+						var currentSeek = SeekPosition;
+
+						int state;
+						AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out state);
+						if (state == AL10.AL_STOPPED)
+							break;
+
+						try
+						{
+							// Wait until the track is due to complete, and at most 60 times a second to prevent a
+							// busy-wait.
+							var delaySecs = Math.Max(lengthInSecs - currentSeek, 1 / 60f);
+							await Task.Delay(TimeSpan.FromSeconds(delaySecs), cts.Token);
+						}
+						catch (TaskCanceledException)
+						{
+							// Sound was stopped early, allow normal cleanup to occur.
+						}
+					}
+
+					AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
+				}
+			});
+		}
+
+		public override void Stop()
+		{
+			lock (cts)
+			{
+				StopSource();
+				cts.Cancel();
+			}
+
+			try
+			{
+				playTask.Wait();
+			}
+			catch (AggregateException)
+			{
+			}
+		}
+
+		public override bool Complete
+		{
+			get { return playTask.IsCompleted; }
 		}
 	}
 }

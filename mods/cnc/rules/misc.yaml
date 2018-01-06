@@ -22,8 +22,18 @@ CRATE:
 		Condition: cloak-crate-collected
 	GiveMcvCrateAction:
 		SelectionShares: 0
-		NoBaseSelectionShares: 120
+		NoBaseSelectionShares: 50
 		Units: mcv
+	ExplodeCrateAction:
+		Weapon: Atomic
+		SelectionShares: 1
+	GiveUnitCrateAction:
+		Units: vice
+		Owner: Creeps
+		SelectionShares: 10
+	LevelUpCrateAction:
+		Levels: 4
+		SelectionShares: 12
 
 WCRATE:
 	Inherits: ^Crate
@@ -36,6 +46,7 @@ SCRATE:
 		Name: Steel Crate
 
 mpspawn:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (multiplayer player starting point)
 	AlwaysVisible:
@@ -45,8 +56,11 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 waypoint:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (waypoint for scripted behavior)
 	AlwaysVisible:
@@ -56,6 +70,8 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
+	EditorTilesetFilter:
+		Categories: System
 
 ^fact.colorpicker:
 	Inherits: FACT
@@ -64,6 +80,7 @@ waypoint:
 		Palette: colorpicker
 
 CAMERA:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (reveals area to owner)
 	AlwaysVisible:
@@ -76,8 +93,11 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
+	EditorTilesetFilter:
+		Categories: System
 
 CAMERA.small:
+	Interactable:
 	EditorOnlyTooltip:
 		Name: (reveals small area to owner)
 	AlwaysVisible:
@@ -89,11 +109,13 @@ CAMERA.small:
 	Immobile:
 		OccupiesSpace: false
 	Health:
-		HP: 1000
+		HP: 100000
 	HitShape:
 	RevealsShroud:
 		Range: 6c0
 		Type: CenterPosition
+	EditorTilesetFilter:
+		Categories: System
 
 FLARE:
 	Immobile:
@@ -113,4 +135,6 @@ FLARE:
 		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1
-	AutoSelectionSize:
+	EditorTilesetFilter:
+		Categories: System
+	Interactable:

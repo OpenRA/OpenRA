@@ -11,7 +11,6 @@
 ^SpriteActor:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
 
 ^GainsExperience:
@@ -132,6 +131,15 @@
 		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
+^AutoTargetGroundAssaultMove:
+	Inherits: ^AutoTargetGround
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
 ^AutoTargetAll:
 	AutoTarget:
 		AttackAnythingCondition: stance-attackanything
@@ -144,10 +152,20 @@
 		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 
+^AutoTargetAllAssaultMove:
+	Inherits: ^AutoTargetAll
+	AutoTargetPriority@DEFAULT:
+		RequiresCondition: !stance-attackanything && !assault-move
+	AutoTargetPriority@ATTACKANYTHING:
+		RequiresCondition: stance-attackanything || assault-move
+	AttackMove:
+		AssaultMoveScanCondition: assault-move
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
-	Inherits@3: ^SpriteActor
+	Inherits@2: ^SpriteActor
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	Mobile:
 		Crushes: crate, spicebloom
@@ -191,13 +209,16 @@
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
-		Offset: -12, -12
+		ReferencePoint: Top, Left
+		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
 		Radius: 2c512
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Vehicle
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -206,23 +227,27 @@
 
 ^Husk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Health:
-		HP: 75
+		HP: 750
 	Armor:
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
-		Name: Wreck
+		GenericName: Destroyed Unit
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Husk
 
 ^VehicleHusk:
 	Inherits: ^Husk
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
 	Burns:
+		Damage: 10
 		Interval: 4
 	Targetable:
 		TargetTypes: Ground, Vehicle
@@ -235,31 +260,20 @@
 
 ^AircraftHusk:
 	Inherits: ^Husk
+	Tooltip:
+		GenericName: Unit
 	WithShadow:
 	FallsToEarth:
 		Spins: False
 		Moves: True
 		Explosion: UnitExplodeLarge
 
-^TowerHusk:
-	Health:
-		HP: 125
-	Armor:
-		Type: concrete
-	Husk:
-	AppearsOnRadar:
-	HiddenUnderFog:
-	Burns:
-		Interval: 2
-	Tooltip:
-		Name: Destroyed Tower
-	ScriptTriggers:
-	HitShape:
-
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	Health:
 	Armor:
@@ -282,7 +296,8 @@
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
-		Bounds: 12,20,0,-4
+		Bounds: 24,24,0,-4
+		DecorationBounds: 12,20,0,-4
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
@@ -329,10 +344,15 @@
 	HitShape:
 		Type: Circle
 			Radius: 96
+	EditorTilesetFilter:
+		Categories: Infantry
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Interactable:
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	AppearsOnRadar:
 		UseLocation: true
@@ -345,10 +365,14 @@
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
+	EditorTilesetFilter:
+		Categories: Aircraft
 
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Tooltip:
+		GenericName: Structure
 	Huntable:
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -359,7 +383,7 @@
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	HitShape:
-		UseOccupiedCellsOffsets: true
+		UseTargetableCellsOffsets: true
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
@@ -368,8 +392,11 @@
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
+	RequiresBuildableArea:
+		AreaTypes: building
 		Adjacent: 3
 	GivesBuildableArea:
+		AreaTypes: building
 	Capturable:
 		CaptureThreshold: 100
 	SoundOnDamageTransition:
@@ -381,7 +408,7 @@
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
-		RepairStep: 50
+		RepairStep: 500
 		PlayerExperience: 25
 	EmitInfantryOnSell:
 		ActorTypes: light_inf
@@ -399,7 +426,7 @@
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedByTerrain:
-		Damage: 50
+		Damage: 500
 		DamageInterval: 100
 		Terrain: Rock
 		DamageThreshold: 50
@@ -412,6 +439,9 @@
 	RevealOnDeath:
 		Duration: 100
 		Radius: 4c768
+	EditorTilesetFilter:
+		Categories: Building
+	CommandBarBlacklist:
 
 ^Defense:
 	Inherits: ^Building
@@ -436,10 +466,37 @@
 	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
+	EditorTilesetFilter:
+		Categories: Defense
+	-CommandBarBlacklist:
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
+
+^DisableOnLowPowerOrPowerDown:
+	Inherits: ^DisableOnLowPower
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled
+	ToggleConditionOnOrder:
+		DisabledSound: EnablePower
+		EnabledSound: DisablePower
+		Condition: powerdown
+		OrderName: PowerDown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: chrome
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+	PowerMultiplier@POWERDOWN:
+		RequiresCondition: powerdown
+		Modifier: 0

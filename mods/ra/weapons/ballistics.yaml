@@ -8,41 +8,42 @@
 		Shadow: True
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 40
+		Damage: 4000
 		Versus:
-			None: 20
+			None: 30
 			Wood: 75
 			Light: 75
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Husk, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom12.aud
-		InvalidImpactTypes: Water
+		ValidTargets: Ground, Ship, Trees
 	Warhead@4EffWater: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
-		ValidImpactTypes: Water
+		ValidTargets: Water, Underwater
+		InvalidTargets: Ship, Structure, Bridge
 
 25mm:
 	Inherits: ^Cannon
-	ReloadDelay: 22
+	ReloadDelay: 21
 	Range: 4c0
 	Report: cannon2.aud
 	Projectile: Bullet
 		Speed: 853
 		Image: 50CAL
 	Warhead@1Dam: SpreadDamage
-		Damage: 27
+		Damage: 2500
 		Versus:
-			None: 30
-			Wood: 40
-			Light: 110
-			Heavy: 45
-			Concrete: 30
+			None: 32
+			Wood: 52
+			Light: 116
+			Heavy: 48
+			Concrete: 32
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		-ImpactSounds:
@@ -51,12 +52,18 @@
 
 90mm:
 	Inherits: ^Cannon
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Heavy: 115
 
 105mm:
 	Inherits: ^Cannon
 	ReloadDelay: 70
 	Burst: 2
-	BurstDelay: 4
+	BurstDelays: 4
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			Heavy: 115
 
 120mm:
 	Inherits: ^Cannon
@@ -64,7 +71,9 @@
 	Burst: 2
 	InvalidTargets: Air, Infantry
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
+		Versus:
+			Heavy: 115
 		InvalidTargets: Air
 
 TurretGun:
@@ -73,8 +82,9 @@ TurretGun:
 	Range: 7c0
 	Report: turret1.aud
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 		Versus:
+			None: 20
 			Wood: 50
 
 ^Artillery:
@@ -85,13 +95,13 @@ TurretGun:
 		Speed: 204
 		Blockable: false
 		LaunchAngle: 62
-		Inaccuracy: 1c682
+		Inaccuracy: 1c938
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 220
+		Damage: 23000
 		Versus:
 			None: 90
-			Wood: 75
+			Wood: 40
 			Light: 60
 			Heavy: 25
 			Concrete: 50
@@ -104,7 +114,7 @@ TurretGun:
 
 155mm:
 	Inherits: ^Artillery
-	MinRange: 3c0
+	MinRange: 5c0
 	Report: tank5.aud
 	TargetActorCenter: true
 	Projectile: Bullet
@@ -114,20 +124,20 @@ TurretGun:
 	Inherits: ^Artillery
 	MinRange: 3c0
 	ReloadDelay: 250
-	Range: 16c0
+	Range: 20c0
 	Burst: 2
 	Report: turret1.aud
 	TargetActorCenter: true
 	Projectile: Bullet
-		Inaccuracy: 2c938
+		Inaccuracy: 1c938
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 25
+		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 60
-			Wood: 75
+			Wood: 35
 			Light: 60
 			Heavy: 25
 			Concrete: 100
@@ -139,12 +149,16 @@ TurretGun:
 	ReloadDelay: 60
 	Range: 5c512
 	Report: cannon2.aud
+	InvalidTargets: Underwater
 	Projectile: Bullet
 		Speed: 426
 	Warhead@1Dam: SpreadDamage
-		Damage: 25
+		Damage: 2500
 		Versus:
-			None: 30
+			None: 28
+			Wood: 72
+			Light: 72
+			Concrete: 48
 
 Grenade:
 	Inherits: ^Artillery
@@ -157,9 +171,9 @@ Grenade:
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 60
+		Damage: 6000
 		Versus:
-			None: 50
+			None: 60
 			Wood: 100
 			Light: 25
 			Heavy: 25
@@ -177,13 +191,13 @@ DepthCharge:
 	Range: 5c0
 	ValidTargets: Underwater
 	Projectile: Bullet
-		Speed: 85
+		Speed: 125
 		Image: BOMB
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 80
-		ValidTargets: Underwater
+		Damage: 8000
+		ValidTargets: Submarine
 		Versus:
 			None: 30
 			Wood: 75
@@ -194,8 +208,8 @@ DepthCharge:
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: h2obomb2.aud
-		ValidImpactTypes: Water, WaterHit
+		ValidTargets: Water, Underwater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
-		ValidImpactTypes: WaterHit
+		ValidTargets: Submarine

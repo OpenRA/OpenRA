@@ -60,10 +60,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MaximumScanTimeInterval = 8;
 
-		public readonly bool TargetWhenIdle = true;
-
-		public readonly bool TargetWhenDamaged = true;
-
 		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
@@ -149,25 +145,26 @@ namespace OpenRA.Mods.Common.Traits
 			ApplyStanceCondition(self);
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "SetUnitStance" && Info.EnableStances)
 				SetStance(self, (UnitStance)order.ExtraData);
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || !self.IsIdle || Stance < UnitStance.ReturnFire)
 				return;
 
-			if (!self.IsIdle || !Info.TargetWhenDamaged)
+			// Don't retaliate against healers
+			if (e.Damage.Value < 0)
 				return;
 
 			var attacker = e.Attacker;
-			if (attacker.Disposed || Stance < UnitStance.ReturnFire)
+			if (attacker.Disposed)
 				return;
 
-			if (!attacker.IsInWorld && !attacker.Disposed)
+			if (!attacker.IsInWorld)
 			{
 				// If the aggressor is in a transport, then attack the transport instead
 				var passenger = attacker.TraitOrDefault<Passenger>();
@@ -175,17 +172,13 @@ namespace OpenRA.Mods.Common.Traits
 					attacker = passenger.Transport;
 			}
 
-			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
+			// Not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attackerAsTarget = Target.FromActor(attacker);
 			if (!activeAttackBases.Any(a => a.HasAnyValidWeapons(attackerAsTarget)))
 				return;
 
-			// don't retaliate against own units force-firing on us. It's usually not what the player wanted.
+			// Don't retaliate against own units force-firing on us. It's usually not what the player wanted.
 			if (attacker.AppearsFriendlyTo(self))
-				return;
-
-			// don't retaliate against healers
-			if (e.Damage.Value < 0)
 				return;
 
 			Aggressor = attacker;
@@ -195,12 +188,9 @@ namespace OpenRA.Mods.Common.Traits
 				Attack(self, Aggressor, allowMove);
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
-			if (IsTraitDisabled)
-				return;
-
-			if (Stance < UnitStance.Defend || !Info.TargetWhenIdle)
+			if (IsTraitDisabled || Stance < UnitStance.Defend)
 				return;
 
 			bool allowMove;
@@ -220,7 +210,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -310,7 +300,7 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 				}).ToList();
 
-				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !self.Owner.CanTargetActor(actor))
+				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !actor.CanBeViewedByPlayer(self.Owner))
 					continue;
 
 				// Make sure that we can actually fire on the actor

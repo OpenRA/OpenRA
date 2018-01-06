@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Repair")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			return ammoPools.Any(x => !x.Info.SelfReloads && !x.FullAmmo());
+			return ammoPools.Any(x => !x.AutoReloads && !x.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

@@ -21,7 +21,6 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -55,11 +54,10 @@ namespace OpenRA
 
 		public static bool BenchmarkMode = false;
 
-		public static GlobalChat GlobalChat;
-
 		public static string EngineVersion { get; private set; }
 
 		static Task discoverNat;
+		static bool takeScreenshot = false;
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
@@ -169,8 +167,12 @@ namespace OpenRA
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
+			GC.Collect();
+
 			using (new PerfTimer("LoadComplete"))
 				OrderManager.World.LoadComplete(worldRenderer);
+
+			GC.Collect();
 
 			if (OrderManager.GameStarted)
 				return;
@@ -244,7 +246,14 @@ namespace OpenRA
 			Settings = new Settings(Platform.ResolvePath(Path.Combine("^", "settings.yaml")), args);
 		}
 
-		internal static void Initialize(Arguments args)
+		public static RunStatus InitializeAndRun(string[] args)
+		{
+			Initialize(new Arguments(args));
+			GC.Collect();
+			return Run();
+		}
+
+		static void Initialize(Arguments args)
 		{
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
@@ -318,15 +327,8 @@ namespace OpenRA
 
 			GeoIP.Initialize();
 
-			if (!Settings.Server.DiscoverNatDevices)
-				Settings.Server.AllowPortForward = false;
-			else
-			{
+			if (Settings.Server.DiscoverNatDevices)
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
-				Settings.Server.AllowPortForward = true;
-			}
-
-			GlobalChat = new GlobalChat();
 
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
@@ -338,8 +340,25 @@ namespace OpenRA
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
-			var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
-			ExternalMods = new ExternalMods(launchPath);
+			ExternalMods = new ExternalMods();
+
+			Manifest currentMod;
+			if (modID != null && Mods.TryGetValue(modID, out currentMod))
+			{
+				var launchPath = args.GetValue("Engine.LaunchPath", Assembly.GetEntryAssembly().Location);
+
+				// Sanitize input from platform-specific launchers
+				// Process.Start requires paths to not be quoted, even if they contain spaces
+				if (launchPath.First() == '"' && launchPath.Last() == '"')
+					launchPath = launchPath.Substring(1, launchPath.Length - 2);
+
+				ExternalMods.Register(Mods[modID], launchPath, ModRegistration.User);
+
+				ExternalMod activeMod;
+				if (ExternalMods.TryGetValue(ExternalMod.MakeKey(Mods[modID]), out activeMod))
+					ExternalMods.ClearInvalidRegistrations(activeMod, ModRegistration.User);
+			}
+
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
@@ -385,7 +404,6 @@ namespace OpenRA
 			Sound.StopVideo();
 
 			ModData = new ModData(Mods[mod], Mods, true);
-			ExternalMods.Register(ModData.Manifest);
 
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
@@ -438,7 +456,6 @@ namespace OpenRA
 			{
 				Console.WriteLine("NAT discovery failed: {0}", e.Message);
 				Log.Write("nat", e.ToString());
-				Settings.Server.AllowPortForward = false;
 			}
 
 			ModData.LoadScreen.StartGame(args);
@@ -614,7 +631,10 @@ namespace OpenRA
 				InnerLogicTick(worldRenderer.World.OrderManager);
 		}
 
-		public static bool TakeScreenshot = false;
+		public static void TakeScreenshot()
+		{
+			takeScreenshot = true;
+		}
 
 		static void RenderTick()
 		{
@@ -650,9 +670,9 @@ namespace OpenRA
 				using (new PerfSample("render_flip"))
 					Renderer.EndFrame(new DefaultInputHandler(OrderManager.World));
 
-				if (TakeScreenshot)
+				if (takeScreenshot)
 				{
-					TakeScreenshot = false;
+					takeScreenshot = false;
 					TakeScreenshotInner();
 				}
 			}
@@ -766,7 +786,7 @@ namespace OpenRA
 			}
 		}
 
-		internal static RunStatus Run()
+		static RunStatus Run()
 		{
 			if (Settings.Graphics.MaxFramerate < 1)
 			{
@@ -790,7 +810,6 @@ namespace OpenRA
 			ModData.Dispose();
 			ChromeProvider.Deinitialize();
 
-			GlobalChat.Dispose();
 			Sound.Dispose();
 			Renderer.Dispose();
 
@@ -846,8 +865,7 @@ namespace OpenRA
 			{
 				Name = "Skirmish Game",
 				Map = map,
-				AdvertiseOnline = false,
-				AllowPortForward = false
+				AdvertiseOnline = false
 			};
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);

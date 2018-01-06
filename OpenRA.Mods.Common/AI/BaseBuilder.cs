@@ -157,11 +157,13 @@ namespace OpenRA.Mods.Common.AI
 				else
 				{
 					failCount = 0;
-					ai.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, false)
+					ai.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, Target.FromCell(world, location.Value), false)
 					{
-						TargetLocation = location.Value,
+						// Building to place
 						TargetString = currentBuilding.Item,
-						TargetActor = queue.Actor,
+
+						// Actor ID to associate the placement with
+						ExtraData = queue.Actor.ActorID,
 						SuppressVisualFeedback = true
 					});
 
@@ -183,7 +185,7 @@ namespace OpenRA.Mods.Common.AI
 				if (!ai.Info.BuildingLimits.ContainsKey(actor.Name))
 					return true;
 
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) <= ai.Info.BuildingLimits[actor.Name];
+				return playerBuildings.Count(a => a.Info.Name == actor.Name) < ai.Info.BuildingLimits[actor.Name];
 			});
 
 			if (orderBy != null)

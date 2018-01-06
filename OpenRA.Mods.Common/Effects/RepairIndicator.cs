@@ -56,7 +56,10 @@ namespace OpenRA.Mods.Common.Effects
 			else
 				palette = wr.Palette(rb.Info.IndicatorPalettePrefix + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);
 
-			return anim.Render(building.CenterPosition, palette);
+			// Size shouldn't scale with pixel doubling
+			// TODO: Remove this RepairIndicator entirely in favor of using WithDecoration
+			var zoom = 1f / wr.Viewport.Zoom;
+			return anim.Render(building.CenterPosition, WVec.Zero, 0, palette, zoom);
 		}
 
 		void CycleRepairer()

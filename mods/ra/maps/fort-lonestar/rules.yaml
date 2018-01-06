@@ -29,18 +29,21 @@ World:
 	LuaScript:
 		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: True
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: True
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	SpawnMPUnits:
-		Locked: True
+		DropdownLocked: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
-		ShortGameLocked: True
-		ShortGameEnabled: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
+		Description: Change the difficulty of the mission
 		Values:
 			hard: Hard (4P)
 			normal: Normal (3P)
@@ -49,6 +52,7 @@ World:
 			tough: Real tough guy
 			endless: Endless mode
 		Default: hard
+		DisplayOrder: 5
 
 FORTCRATE:
 	Inherits: ^Crate
@@ -87,10 +91,10 @@ Player:
 		BuildDurationModifier: 250
 	-EnemyWatcher:
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 50
@@ -100,6 +104,7 @@ Player:
 	-HackyAI@TurtleAI:
 	DummyAI@LonestarAI:
 		Name: Lonestar AI
+		Type: lonestar
 
 ^Infantry:
 	Inherits@IC: ^IronCurtainable
@@ -110,10 +115,10 @@ Player:
 
 OILB:
 	Health:
-		HP: 3000
+		HP: 300000
 	Armor:
 		Type: Wood
-	Bib:
+	WithBuildingBib:
 	RevealsShroud:
 		Range: 3c0
 	CashTrickler:
@@ -128,10 +133,10 @@ MOBILETENT:
 		Name: Mobile Tent
 	Selectable:
 		Priority: 4
+		DecorationBounds: 21,21
 	SelectionDecorations:
-		VisualBounds: 21,21
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Light
 	Mobile:
@@ -153,7 +158,7 @@ MOBILETENT:
 
 TENT:
 	Health:
-		HP: 1000
+		HP: 100000
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:
@@ -174,6 +179,7 @@ FTUR:
 	Power:
 		Amount: 0
 	GivesBuildableArea:
+		AreaTypes: building
 
 PBOX:
 	Buildable:
@@ -181,12 +187,13 @@ PBOX:
 	Valued:
 		Cost: 400
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	Power:
 		Amount: 0
 	GivesBuildableArea:
+		AreaTypes: building
 
 DOG:
 	Buildable:
@@ -233,7 +240,6 @@ E7:
 		Cost: 750
 
 3TNK:
-	Inherits: ^Tank
 	Armament:
 		Weapon: TankNapalm
 		Recoil: 200
@@ -257,7 +263,7 @@ SNIPER:
 	Buildable:
 		Prerequisites: barracks
 	Health:
-		HP: 200
+		HP: 20000
 
 SNIPER.soviets:
 	Inherits: SNIPER
@@ -289,21 +295,22 @@ FTRK:
 		MuzzleSequence: muzzle
 
 ARTY:
-	Inherits: ^Tank
 	Valued:
 		Cost: 600
 	Health:
-		HP: 75
+		HP: 7500
 	RevealsShroud:
 		Range: 7c0
 
 V2RL:
 	Health:
-		HP: 100
+		HP: 10000
+	ReloadAmmoPool:
+		Delay: 280
 
 4TNK:
 	Health:
-		HP: 2500
+		HP: 250000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -319,19 +326,24 @@ V2RL:
 		Weapon: napalm
 		EmptyWeapon: napalm
 	SelfHealing:
-		Step: 2
+		Step: 200
 		Delay: 1
 		HealIfBelow: 40
 
+powerproxy.parabombs:
+	AirstrikePower:
+		LongDesc: A MiG bomber drops a load of parachuted bombs on your target.
+		CameraRemoveDelay: 50
+
 BADR.Bomber:
 	Health:
-		HP: 60
+		HP: 6000
 	Aircraft:
 		Speed: 280
 	AmmoPool:
 		Ammo: 30
 	Tooltip:
-		Name: Mig Bomber
+		Name: MiG Bomber
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	RenderSprites:

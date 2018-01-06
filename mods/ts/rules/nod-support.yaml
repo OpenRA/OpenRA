@@ -6,18 +6,12 @@ NAWALL:
 		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
 	-SoundOnDamageTransition:
-	Valued:
-		Cost: 50
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Concrete Wall
 	Health:
-		HP: 225
+		HP: 22500
 	Armor:
 		Type: Concrete
-	BlocksProjectiles:
-		Height: 768
 	Crushable:
 		CrushClasses: heavywall
 	LineBuild:
@@ -43,7 +37,7 @@ NAGATE_B:
 
 NAPOST:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 150
@@ -54,7 +48,7 @@ NAPOST:
 	Tooltip:
 		Name: Laser Fence
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Concrete
 	LineBuild:
@@ -78,21 +72,12 @@ NAPOST:
 	WithIdleOverlay@CHAINOFLIGHTS:
 		RequiresCondition: !disabled
 		Sequence: chainoflights
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-	RequiresPower:
 	LineBuildSegmentExternalCondition:
 		RequiresCondition: !disabled && !make-animation-playing
 		Condition: active-posts
 
 NAFNCE:
 	Inherits: ^Wall
-	Valued:
-		Cost: 50
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Laser Fence
 	LineBuild:
@@ -113,8 +98,6 @@ NAFNCE:
 		Direction: Y
 		Condition: laserfence-direction-y
 	-WithWallSpriteBody:
-	CustomSelectionSize:
-		CustomBounds: 48, 24
 	ExternalCondition@ACTIVE:
 		Condition: active-posts
 	WithWallSpriteBody@XENABLED:
@@ -133,7 +116,6 @@ NAFNCE:
 		Sequence: disabled-y
 	BlocksProjectiles:
 		RequiresCondition: active-posts == 2
-		Height: 768
 	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post
 		Modifier: 0
 	Explodes:
@@ -144,10 +126,12 @@ NAFNCE:
 		Weapons: SmallDebris
 		Pieces: 0, 1
 		Range: 2c0, 5c0
+	Interactable:
+		Bounds: 48, 24
 
 NALASR:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 300
@@ -161,8 +145,9 @@ NALASR:
 	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
+		DecorationBounds: 40, 36, -8, -8
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -174,6 +159,7 @@ NALASR:
 		InitialFacing: 224
 		Offset: 298,-171,288
 	AttackTurreted:
+		PauseOnCondition: empdisable
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
@@ -182,14 +168,14 @@ NALASR:
 	Power:
 		Amount: -40
 	SelectionDecorations:
-		VisualBounds: 40, 36, -8, -8
 	BodyOrientation:
 		QuantizedFacings: 0
 
 NAOBEL:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -204,9 +190,9 @@ NAOBEL:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 88, 42, 0, -6
-	RequiresPower:
+		DecorationBounds: 88, 72, 0, -12
 	Health:
-		HP: 725
+		HP: 72500
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -215,10 +201,11 @@ NAOBEL:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1980,297,1131
 	AttackCharges:
+		PauseOnCondition: empdisable || disabled
 		ChargeLevel: 65
 		ChargingCondition: charging
 	AmbientSound:
-		RequiresCondition: charging
+		RequiresCondition: charging && !disabled
 		SoundFiles: obelpowr.aud
 		Interval: 30, 40
 	WithChargeOverlay:
@@ -230,11 +217,10 @@ NAOBEL:
 	Power:
 		Amount: -150
 	SelectionDecorations:
-		VisualBounds: 88, 72, 0, -12
 
 NASAM:
 	Inherits: ^Defense
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 500
@@ -247,9 +233,9 @@ NASAM:
 		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
 	Selectable:
 		Bounds: 40, 30, -3, -8
-	RequiresPower:
+		DecorationBounds: 40, 36, -3, -8
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	BodyOrientation:
@@ -260,6 +246,7 @@ NASAM:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
+		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret:
 		Recoils: false
 	Armament:
@@ -268,11 +255,13 @@ NASAM:
 	Power:
 		Amount: -30
 	SelectionDecorations:
-		VisualBounds: 40, 36, -3, -8
 
 NASTLH:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^3x2Shape
+	HitShape:
+		TargetableOffsets: 250,0,0, 600,-864,0
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -283,10 +272,10 @@ NASTLH:
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
 		Description: Generates a cloaking field\nto hide your forces from the enemy.
 	Building:
-		Footprint: xxx xxx
+		Footprint: xxx XXX
 		Dimensions: 3,2
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -300,11 +289,6 @@ NASTLH:
 		Type: cloakgenerator
 	Power:
 		Amount: -350
-	RequiresPower:
-	CanPowerDown:
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-		IndicatorPalette: mouse
 	ProximityExternalCondition:
 		RequiresCondition: !disabled
 		Condition: cloakgenerator
@@ -314,12 +298,13 @@ NASTLH:
 		AffectsParent: true
 	Selectable:
 		Bounds: 106, 48, 8, -6
+		DecorationBounds: 106, 60, 8, -15
 	SelectionDecorations:
-		VisualBounds: 106, 60, 8, -15
 
 NAMISL:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 180
@@ -337,8 +322,9 @@ NAMISL:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 75,48
+		DecorationBounds: 75,48
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -348,18 +334,13 @@ NAMISL:
 		Sequence: idle-lights
 	Power:
 		Amount: -50
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
-	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
 	NukePower:
-		PauseOnCondition: disabled
+		PauseOnCondition: empdisable || disabled
 		Cursor: nuke
 		Icon: clustermissile
-		ChargeTime: 540
+		ChargeInterval: 13500
 		Description: Cluster Missile
 		LongDesc: Launches a conventional warhead\nat a target location.
 		EndChargeSpeechNotification: ClusterMissileReady
@@ -373,11 +354,15 @@ NAMISL:
 		DisplayRadarPing: True
 		BeaconPoster:
 		CameraRange: 10c0
+	WithNukeLaunchOverlay:
 	SelectionDecorations:
-		VisualBounds: 75,48
 
 NAWAST:
 	Inherits: ^Building
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 512, 1536
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -389,12 +374,13 @@ NAWAST:
 		BuildLimit: 1
 		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
 	Building:
-		Footprint: =x= xx= =x=
+		Footprint: Xx= xx= Xx=
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 100, 60, 5, -5
+		DecorationBounds: 100, 60, 5, -5
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
@@ -419,5 +405,4 @@ NAWAST:
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 100, 60, 5, -5
 	RenderSprites:

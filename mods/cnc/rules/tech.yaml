@@ -5,7 +5,7 @@ V19:
 		Footprint: x
 		Dimensions: 1,1
 	Health:
-		HP: 1000
+		HP: 100000
 	Tooltip:
 		Name: Oil Derrick
 	SpawnActorOnDeath:
@@ -32,12 +32,12 @@ HOSP:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 2500
+		HP: 250000
 	Tooltip:
 		Name: Hospital
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	ProvidesPrerequisite@buildingname:
 
@@ -48,7 +48,7 @@ HOSP.Husk:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Hospital (Destroyed)
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 
 BIO:
@@ -58,7 +58,7 @@ BIO:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 2500
+		HP: 250000
 	Tooltip:
 		Name: Biological Lab
 	Exit@1:
@@ -100,7 +100,7 @@ MISS:
 		Prerequisites: ~disabled
 	Valued:
 		Cost: 2000
-	Bib:
+	WithBuildingBib:
 		HasMinibib: Yes
 	WithMakeAnimation:
 	ProvidesPrerequisite@buildingname:

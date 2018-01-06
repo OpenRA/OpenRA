@@ -82,7 +82,7 @@ namespace OpenRA.Support
 			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
 			Log.Write("perf", FormatString,
 				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
-				"[{0}] {1}: {2}".F(Game.LocalTick, name, label));
+				"[" + Game.LocalTick + "] " + name + ": " + label);
 		}
 
 		public static long LongTickThresholdInStopwatchTicks

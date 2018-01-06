@@ -50,6 +50,13 @@ Container@GAME_INFO_PANEL:
 					Height: 25
 					Font: Bold
 					Visible: False
+				Button@BUTTON4:
+					X: 360
+					Y: 50
+					Width: 120
+					Height: 25
+					Font: Bold
+					Visible: False
 		Container@STATS_PANEL:
 			Y: 65
 		Container@MAP_PANEL:
@@ -60,6 +67,10 @@ Container@GAME_INFO_PANEL:
 			Y: 65
 			Width: PARENT_RIGHT
 		Container@DEBUG_PANEL:
+			Y: 65
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+		Container@CHAT_PANEL:
 			Y: 65
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM

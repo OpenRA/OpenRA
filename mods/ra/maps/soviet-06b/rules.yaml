@@ -146,12 +146,6 @@ MNLY:
 	Buildable:
 		Prerequisites: ~disabled
 
-DOG:
-	Health:
-		HP: 25
-	AutoTarget:
-		ScanRadius: 5
-
 HARV:
 	Harvester:
 		SearchFromProcRadius: 50

@@ -19,37 +19,138 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
-	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> { }
-	public class GivesBuildableArea { }
+	public enum FootprintCellType
+	{
+		Empty = '_',
+		OccupiedPassable = '=',
+		Occupied = 'x',
+		OccupiedUntargetable = 'X'
+	}
 
 	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo, UsesInit<LocationInit>
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
-		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
-		public readonly int Adjacent = 2;
-		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
-		public readonly string Footprint = "x";
+
+		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
+			"= means part of the footprint but passable, _ means completely empty.")]
+		[FieldLoader.LoadUsing("LoadFootprint")]
+		public readonly Dictionary<CVec, FootprintCellType> Footprint;
+
 		public readonly CVec Dimensions = new CVec(1, 1);
+
+		[Desc("Shift center of the actor by this offset.")]
+		public readonly WVec LocalCenterOffset = WVec.Zero;
+
 		public readonly bool RequiresBaseProvider = false;
+
 		public readonly bool AllowInvalidPlacement = false;
+
 		[Desc("Clear smudges from underneath the building footprint.")]
 		public readonly bool RemoveSmudgesOnBuild = true;
+
 		[Desc("Clear smudges from underneath the building footprint on sell.")]
 		public readonly bool RemoveSmudgesOnSell = true;
+
 		[Desc("Clear smudges from underneath the building footprint on transform.")]
 		public readonly bool RemoveSmudgesOnTransform = true;
 
 		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
+
 		public readonly string[] UndeploySounds = { "cashturn.aud" };
 
 		public virtual object Create(ActorInitializer init) { return new Building(init, this); }
 
+		protected static object LoadFootprint(MiniYaml yaml)
+		{
+			var footprintYaml = yaml.Nodes.FirstOrDefault(n => n.Key == "Footprint");
+			var footprintChars = footprintYaml != null ? footprintYaml.Value.Value.Where(x => !char.IsWhiteSpace(x)).ToArray() : new[] { 'x' };
+
+			var dimensionsYaml = yaml.Nodes.FirstOrDefault(n => n.Key == "Dimensions");
+			var dim = dimensionsYaml != null ? FieldLoader.GetValue<CVec>("Dimensions", dimensionsYaml.Value.Value) : new CVec(1, 1);
+
+			if (footprintChars.Length != dim.X * dim.Y)
+			{
+				var fp = footprintYaml.Value.Value.ToString();
+				var dims = dim.X + "x" + dim.Y;
+				throw new YamlException("Invalid footprint: {0} does not match dimensions {1}".F(fp, dims));
+			}
+
+			var index = 0;
+			var ret = new Dictionary<CVec, FootprintCellType>();
+			for (var y = 0; y < dim.Y; y++)
+			{
+				for (var x = 0; x < dim.X; x++)
+				{
+					var c = footprintChars[index++];
+					if (!Enum.IsDefined(typeof(FootprintCellType), (FootprintCellType)c))
+						throw new YamlException("Invalid footprint cell type '{0}'".F(c));
+
+					ret[new CVec(x, y)] = (FootprintCellType)c;
+				}
+			}
+
+			return ret;
+		}
+
+		public IEnumerable<CPos> FootprintTiles(CPos location, FootprintCellType type)
+		{
+			return Footprint.Where(kv => kv.Value == type).Select(kv => location + kv.Key);
+		}
+
+		public IEnumerable<CPos> Tiles(CPos location)
+		{
+			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedPassable))
+				yield return t;
+
+			foreach (var t in FootprintTiles(location, FootprintCellType.Occupied))
+				yield return t;
+
+			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedUntargetable))
+				yield return t;
+		}
+
+		public IEnumerable<CPos> FrozenUnderFogTiles(CPos location)
+		{
+			foreach (var t in FootprintTiles(location, FootprintCellType.Empty))
+				yield return t;
+
+			foreach (var t in Tiles(location))
+				yield return t;
+		}
+
+		public IEnumerable<CPos> UnpathableTiles(CPos location)
+		{
+			foreach (var t in FootprintTiles(location, FootprintCellType.Occupied))
+				yield return t;
+
+			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedUntargetable))
+				yield return t;
+		}
+
+		public IEnumerable<CPos> PathableTiles(CPos location)
+		{
+			foreach (var t in FootprintTiles(location, FootprintCellType.Empty))
+				yield return t;
+
+			foreach (var t in FootprintTiles(location, FootprintCellType.OccupiedPassable))
+				yield return t;
+		}
+
+		public WVec CenterOffset(World w)
+		{
+			var off = (w.Map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
+			return (off - new WVec(0, 0, off.Z)) + LocalCenterOffset;
+		}
+
 		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
-			var center = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, this);
-			var allyBuildEnabled = world.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
+			var center = world.Map.CenterOfCell(topLeft) + CenterOffset(world);
+			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
+			var allyBuildEnabled = mapBuildRadius.AllyBuildRadiusEnabled;
+
+			if (!mapBuildRadius.BuildRadiusEnabled)
+				return null;
 
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
@@ -66,25 +167,32 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		bool ActorGrantsValidArea(Actor a, RequiresBuildableAreaInfo rba)
+		{
+			return rba.AreaTypes.Overlaps(a.TraitsImplementing<GivesBuildableArea>()
+				.SelectMany(gba => gba.AreaTypes));
+		}
+
 		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
-			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
+			var requiresBuildableArea = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<RequiresBuildableAreaInfo>();
+			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
+
+			if (requiresBuildableArea == null || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
-			if (RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
+			if (mapBuildRadius.BuildRadiusEnabled && RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
 				return false;
 
+			var adjacent = requiresBuildableArea.Adjacent;
 			var buildingMaxBounds = Dimensions;
-			var bibInfo = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<BibInfo>();
-			if (bibInfo != null && !bibInfo.HasMinibib)
-				buildingMaxBounds += new CVec(0, 1);
 
-			var scanStart = world.Map.Clamp(topLeft - new CVec(Adjacent, Adjacent));
-			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
+			var scanStart = world.Map.Clamp(topLeft - new CVec(adjacent, adjacent));
+			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(adjacent, adjacent));
 
 			var nearnessCandidates = new List<CPos>();
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
-			var allyBuildEnabled = world.WorldActor.Trait<MapBuildRadius>().AllyBuildRadiusEnabled;
+			var allyBuildEnabled = mapBuildRadius.AllyBuildRadiusEnabled;
 
 			for (var y = scanStart.Y; y < scanEnd.Y; y++)
 			{
@@ -98,27 +206,27 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var unitsAtPos = world.ActorMap.GetActorsAt(pos).Where(a => a.IsInWorld
 							&& (a.Owner == p || (allyBuildEnabled && a.Owner.Stances[p] == Stance.Ally))
-							&& a.Info.HasTraitInfo<GivesBuildableAreaInfo>());
+							&& ActorGrantsValidArea(a, requiresBuildableArea));
 
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
 					}
-					else if (buildingAtPos.IsInWorld && buildingAtPos.Info.HasTraitInfo<GivesBuildableAreaInfo>()
+					else if (buildingAtPos.IsInWorld && ActorGrantsValidArea(buildingAtPos, requiresBuildableArea)
 						&& (buildingAtPos.Owner == p || (allyBuildEnabled && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
 						nearnessCandidates.Add(pos);
 				}
 			}
 
-			var buildingTiles = FootprintUtils.Tiles(world.Map.Rules, buildingName, this, topLeft).ToList();
+			var buildingTiles = Tiles(topLeft).ToList();
 			return nearnessCandidates
 				.Any(a => buildingTiles
-					.Any(b => Math.Abs(a.X - b.X) <= Adjacent
-						&& Math.Abs(a.Y - b.Y) <= Adjacent));
+					.Any(b => Math.Abs(a.X - b.X) <= adjacent
+						&& Math.Abs(a.Y - b.Y) <= adjacent));
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos topLeft, SubCell subCell = SubCell.Any)
 		{
-			var occupied = FootprintUtils.UnpathableTiles(info.Name, this, topLeft)
+			var occupied = UnpathableTiles(topLeft)
 				.ToDictionary(c => c, c => SubCell.FullCell);
 
 			return new ReadOnlyDictionary<CPos, SubCell>(occupied);
@@ -135,15 +243,19 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, INotifySold, INotifyTransform, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated,
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDemolition
 	{
+		public readonly bool SkipMakeAnimation;
 		public readonly BuildingInfo Info;
 		public bool BuildComplete { get; private set; }
+
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
-		public readonly bool SkipMakeAnimation;
+		readonly BuildingInfluence influence;
 
 		Pair<CPos, SubCell>[] occupiedCells;
+		Pair<CPos, SubCell>[] targetableCells;
 
 		// Shared activity lock: undeploy, sell, capture, etc.
 		[Sync] public bool Locked = true;
@@ -167,15 +279,21 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			topLeft = init.Get<LocationInit, CPos>();
 			Info = info;
+			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 
-			occupiedCells = FootprintUtils.UnpathableTiles(self.Info.Name, Info, TopLeft)
+			occupiedCells = Info.UnpathableTiles(TopLeft)
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
-			CenterPosition = init.World.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(init.World, Info);
+			targetableCells = Info.FootprintTiles(TopLeft, FootprintCellType.Occupied)
+				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
+
+			CenterPosition = init.World.Map.CenterOfCell(topLeft) + Info.CenterOffset(init.World);
 			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return occupiedCells; }
+
+		Pair<CPos, SubCell>[] ITargetableCells.TargetableCells() { return targetableCells; }
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -183,25 +301,24 @@ namespace OpenRA.Mods.Common.Traits
 				NotifyBuildingComplete(self);
 		}
 
-		public virtual void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			AddedToWorld(self);
+		}
+
+		protected virtual void AddedToWorld(Actor self)
 		{
 			if (Info.RemoveSmudgesOnBuild)
 				RemoveSmudges();
 
-			self.World.ActorMap.AddInfluence(self, this);
-			self.World.ActorMap.AddPosition(self, this);
-
-			if (!self.Bounds.Size.IsEmpty)
-				self.World.ScreenMap.Add(self);
+			self.World.AddToMaps(self, this);
+			influence.AddInfluence(self, Info.Tiles(self.Location));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			self.World.ActorMap.RemoveInfluence(self, this);
-			self.World.ActorMap.RemovePosition(self, this);
-
-			if (!self.Bounds.Size.IsEmpty)
-				self.World.ScreenMap.Remove(self);
+			self.World.RemoveFromMaps(self, this);
+			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
 		public void NotifyBuildingComplete(Actor self)
@@ -214,6 +331,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
 				notify.BuildingComplete(self);
+		}
+
+		void INotifyDemolition.Demolishing(Actor self)
+		{
+			Lock();
 		}
 
 		void INotifySold.Selling(Actor self)
@@ -243,7 +365,7 @@ namespace OpenRA.Mods.Common.Traits
 			var smudgeLayers = self.World.WorldActor.TraitsImplementing<SmudgeLayer>();
 
 			foreach (var smudgeLayer in smudgeLayers)
-				foreach (var footprintTile in FootprintUtils.Tiles(self))
+				foreach (var footprintTile in Info.Tiles(self.Location))
 					smudgeLayer.RemoveSmudge(footprintTile);
 		}
 	}

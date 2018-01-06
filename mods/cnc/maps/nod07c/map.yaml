@@ -744,9 +744,6 @@ Actors:
 	GunboatRight: waypoint
 		Owner: Neutral
 		Location: 58,16
-	GunboatLeft: waypoint
-		Owner: Neutral
-		Location: 4,16
 	Gunboat: boat
 		Location: 32,16
 		Owner: GDI

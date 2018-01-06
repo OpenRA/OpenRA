@@ -43,10 +43,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 	}
 
-	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IDeathActorInitModifier
+	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
+		IDeathActorInitModifier, IEffectiveOwner
 	{
-		readonly HuskInfo info;
 		readonly Actor self;
+		readonly HuskInfo info;
+		readonly Player effectiveOwner;
 
 		readonly int dragSpeed;
 		readonly WPos finalPosition;
@@ -68,16 +70,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			dragSpeed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit, int>() : 0;
 			finalPosition = init.World.Map.CenterOfCell(TopLeft);
+
+			effectiveOwner = init.Contains<EffectiveOwnerInit>() ? init.Get<EffectiveOwnerInit, Player>() : self.Owner;
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			var distance = (finalPosition - CenterPosition).Length;
 			if (dragSpeed > 0 && distance > 0)
 				self.QueueActivity(new Drag(self, CenterPosition, finalPosition, distance / dragSpeed));
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return new[] { Pair.New(TopLeft, SubCell.FullCell) }; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return new[] { Pair.New(TopLeft, SubCell.FullCell) }; }
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; }
 		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
 		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
@@ -105,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
-			self.World.ScreenMap.Update(self);
+			self.World.ScreenMap.AddOrUpdate(self);
 		}
 
 		public void SetPosition(Actor self, WPos pos)
@@ -118,20 +122,24 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.UpdateMaps(self, this);
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			self.World.AddToMaps(self, this);
 		}
 
-		public void RemovedFromWorld(Actor self)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
 		}
 
-		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
 			init.Add(new FacingInit(Facing));
 		}
+
+		// We return self.Owner if there's no effective owner
+		bool IEffectiveOwner.Disguised { get { return true; } }
+		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
 	}
 
 	public class HuskSpeedInit : IActorInit<int>

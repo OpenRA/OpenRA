@@ -34,6 +34,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[GrantedConditionReference]
+		[Desc("Condition granted when capturing.")]
+		public readonly string CapturingCondition = null;
+
 		public readonly string CaptureCursor = "ability";
 		public readonly string CaptureBlockedCursor = "move-blocked";
 
@@ -62,35 +66,25 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID != "ExternalCaptureActor")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		static bool IsValidOrder(Actor self, Order order)
 		{
-			// Not targeting an actor
-			if (order.ExtraData == 0 && order.TargetActor == null)
-				return false;
-
-			if (order.ExtraData != 0)
+			if (order.Target.Type == TargetType.FrozenActor)
 			{
-				// Targeted an actor under the fog
-				var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
-				if (frozenLayer == null)
-					return false;
-
-				var frozen = frozenLayer.FromID(order.ExtraData);
-				if (frozen == null)
-					return false;
-
+				var frozen = order.Target.FrozenActor;
 				var ci = frozen.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 				return ci != null && ci.CanBeTargetedBy(self, frozen.Owner);
 			}
 
-			var c = order.TargetActor.TraitOrDefault<ExternalCapturable>();
-			return c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, order.TargetActor.Owner);
+			if (order.Target.Type == TargetType.Actor)
+			{
+				var c = order.TargetActor.TraitOrDefault<ExternalCapturable>();
+				return c != null && !c.CaptureInProgress && c.CanBeTargetedBy(self, order.TargetActor.Owner);
+			}
+
+			return false;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -124,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var c = target.TraitOrDefault<ExternalCapturable>();
 
-			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
+			var canTargetActor = c != null && !c.CaptureInProgress && c.CanBeTargetedBy(self, target.Owner);
 			var capturesInfo = self.Trait<ExternalCaptures>().Info;
 			cursor = canTargetActor ? capturesInfo.CaptureCursor : capturesInfo.CaptureBlockedCursor;
 			return canTargetActor;
@@ -132,6 +126,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
+			// TODO: This doesn't account for disabled traits.
+			// Actors with FrozenUnderFog should not disable the ExternalCapturable trait.
 			var c = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
 
 			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);

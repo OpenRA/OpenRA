@@ -149,7 +149,7 @@ namespace OpenRA.FileFormats
 										{
 											var cp = temp.Palette;
 											for (var i = 0; i < 256; i++)
-												cp.Entries[i] = palette[i];     // finalize the palette.
+												cp.Entries[i] = palette[i]; // finalize the palette.
 											bitmap.Palette = cp;
 											return bitmap;
 										}

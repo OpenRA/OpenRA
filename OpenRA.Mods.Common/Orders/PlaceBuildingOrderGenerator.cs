@@ -33,14 +33,18 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string faction;
 		readonly Sprite buildOk;
 		readonly Sprite buildBlocked;
+		readonly Viewport viewport;
+		readonly WVec centerOffset;
+		readonly int2 topLeftScreenOffset;
 		IActorPreview[] preview;
 
 		bool initialized;
 
-		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name)
+		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name, WorldRenderer worldRenderer)
 		{
 			var world = queue.Actor.World;
 			this.queue = queue;
+			viewport = worldRenderer.Viewport;
 			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			building = name;
 
@@ -53,6 +57,8 @@ namespace OpenRA.Mods.Common.Orders
 
 			var info = map.Rules.Actors[building];
 			buildingInfo = info.TraitInfo<BuildingInfo>();
+			centerOffset = buildingInfo.CenterOffset(world);
+			topLeftScreenOffset = -worldRenderer.ScreenPxOffset(centerOffset);
 
 			var buildableInfo = info.TraitInfo<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
@@ -99,7 +105,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
-				var topLeft = cell - FootprintUtils.AdjustForBuildingSize(buildingInfo);
+				var topLeft = viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
 
 				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
@@ -127,11 +133,13 @@ namespace OpenRA.Mods.Common.Orders
 						orderType = "LineBuild";
 				}
 
-				yield return new Order(orderType, owner.PlayerActor, false)
+				yield return new Order(orderType, owner.PlayerActor, Target.FromCell(world, topLeft), false)
 				{
-					TargetLocation = topLeft,
-					TargetActor = queue.Actor,
+					// Building to place
 					TargetString = building,
+
+					// Actor to associate the placement with
+					ExtraData = queue.Actor.ActorID,
 					SuppressVisualFeedback = true
 				};
 			}
@@ -162,14 +170,13 @@ namespace OpenRA.Mods.Common.Orders
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 		{
-			var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var topLeft = xy - FootprintUtils.AdjustForBuildingSize(buildingInfo);
-			var offset = world.Map.CenterOfCell(topLeft) + FootprintUtils.CenterOffset(world, buildingInfo);
+			var topLeft = viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
+			var centerPosition = world.Map.CenterOfCell(topLeft) + centerOffset;
 			var rules = world.Map.Rules;
 
 			var actorInfo = rules.Actors[building];
 			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
-				foreach (var r in dec.Render(wr, world, actorInfo, offset))
+				foreach (var r in dec.Render(wr, world, actorInfo, centerPosition))
 					yield return r;
 
 			var cells = new Dictionary<CPos, CellType>();
@@ -211,7 +218,7 @@ namespace OpenRA.Mods.Common.Orders
 							td.Add(o);
 
 					var init = new ActorPreviewInitializer(actor, wr, td);
-					preview = rules.Actors[building].TraitInfos<IRenderActorPreviewInfo>()
+					preview = actor.TraitInfos<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();
 
@@ -219,16 +226,16 @@ namespace OpenRA.Mods.Common.Orders
 				}
 
 				var previewRenderables = preview
-					.SelectMany(p => p.Render(wr, offset))
+					.SelectMany(p => p.Render(wr, centerPosition))
 					.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey);
 
 				foreach (var r in previewRenderables)
 					yield return r;
 
-				var res = world.WorldActor.Trait<ResourceLayer>();
+				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
-				foreach (var t in FootprintUtils.Tiles(rules, building, buildingInfo, topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
+				foreach (var t in buildingInfo.Tiles(topLeft))
+					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResource(t) == null)));
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
@@ -248,7 +255,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
-			var allTiles = FootprintUtils.Tiles(world.Map.Rules, building, buildingInfo, topLeft).ToArray();
+			var allTiles = buildingInfo.Tiles(topLeft).ToArray();
 			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 
@@ -262,9 +269,8 @@ namespace OpenRA.Mods.Common.Orders
 				if (availableCells.Count == 0)
 					continue;
 
-				yield return new Order("Move", blocker.Actor, false)
+				yield return new Order("Move", blocker.Actor, Target.FromCell(world, blocker.Actor.ClosestCell(availableCells)), false)
 				{
-					TargetLocation = blocker.Actor.ClosestCell(availableCells),
 					SuppressVisualFeedback = true
 				};
 			}

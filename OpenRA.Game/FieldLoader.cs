@@ -71,6 +71,11 @@ namespace OpenRA
 		static readonly ConcurrentCache<MemberInfo, bool> MemberHasTranslateAttribute =
 			new ConcurrentCache<MemberInfo, bool>(member => member.HasAttribute<TranslateAttribute>());
 
+		static readonly ConcurrentCache<string, BooleanExpression> BooleanExpressionCache =
+			new ConcurrentCache<string, BooleanExpression>(expression => new BooleanExpression(expression));
+		static readonly ConcurrentCache<string, IntegerExpression> IntegerExpressionCache =
+			new ConcurrentCache<string, IntegerExpression>(expression => new IntegerExpression(expression));
+
 		static readonly object TranslationsLock = new object();
 		static Dictionary<string, string> translations;
 
@@ -273,6 +278,10 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
+			else if (fieldType == typeof(HotkeyReference))
+			{
+				return Game.ModData.Hotkeys[value];
+			}
 			else if (fieldType == typeof(WDist))
 			{
 				WDist res;
@@ -404,7 +413,7 @@ namespace OpenRA
 				{
 					try
 					{
-						return new BooleanExpression(value);
+						return BooleanExpressionCache[value];
 					}
 					catch (InvalidDataException e)
 					{
@@ -420,7 +429,7 @@ namespace OpenRA
 				{
 					try
 					{
-						return new IntegerExpression(value);
+						return IntegerExpressionCache[value];
 					}
 					catch (InvalidDataException e)
 					{

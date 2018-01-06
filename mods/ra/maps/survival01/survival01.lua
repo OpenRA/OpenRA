@@ -38,8 +38,8 @@ end
 
 AlliedAirReinforcementsWaypoints =
 {
-	{ AirReinforcementsEntry1.Location, AirReinforcementsEntry2.Location },
-	{ AirReinforcementsRally1.Location, AirReinforcementsRally2.Location }
+	{ AirReinforcementsEntry1.Location, AirReinforcementsRally1.Location },
+	{ AirReinforcementsEntry2.Location, AirReinforcementsRally2.Location }
 }
 FrenchReinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "1tnk", "arty", "arty", "arty", "jeep", "jeep" }
 

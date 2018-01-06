@@ -140,6 +140,7 @@ ChromeLayout:
 	ts|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	ts|chrome/ingame-debug.yaml
+	common|chrome/ingame-infochat.yaml
 	common|chrome/mainmenu.yaml
 	ts|chrome/mainmenu-prerelease-notification.yaml
 	common|chrome/settings.yaml
@@ -149,15 +150,14 @@ ChromeLayout:
 	common|chrome/lobby-players.yaml
 	common|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
+	common|chrome/lobby-servers.yaml
 	common|chrome/lobby-kickdialogs.yaml
-	common|chrome/lobby-globalchat.yaml
 	ts|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml
-	common|chrome/multiplayer.yaml
 	common|chrome/multiplayer-browser.yaml
+	common|chrome/multiplayer-browserpanels.yaml
 	common|chrome/multiplayer-createserver.yaml
 	common|chrome/multiplayer-directconnect.yaml
-	common|chrome/multiplayer-globalchat.yaml
 	common|chrome/connection.yaml
 	common|chrome/replaybrowser.yaml
 	ts|chrome/dropdowns.yaml
@@ -181,6 +181,14 @@ Music:
 
 Translations:
 	ts|languages/english.yaml
+
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production-common.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+	ts|hotkeys.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ts|uibits/loadscreen.png

@@ -184,6 +184,7 @@ namespace OpenRA.Mods.Common.Server
 						{
 							client.Slot = null;
 							client.SpawnPoint = 0;
+							client.Team = 0;
 							client.Color = HSLColor.FromRGB(255, 255, 255);
 							server.SyncLobbyClients();
 							CheckAutoStart(server);
@@ -280,12 +281,20 @@ namespace OpenRA.Mods.Common.Server
 							return false;
 						}
 
-						var botType = parts.Skip(2).JoinWith(" ");
-
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
 						{
 							server.SendOrderTo(conn, "Message", "Can't add bots to a slot with another client.");
+							return true;
+						}
+
+						var botType = parts[2];
+						var botInfo = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>()
+							.FirstOrDefault(b => b.Type == botType);
+
+						if (botInfo == null)
+						{
+							server.SendOrderTo(conn, "Message", "Invalid bot type.");
 							return true;
 						}
 
@@ -296,7 +305,7 @@ namespace OpenRA.Mods.Common.Server
 							bot = new Session.Client()
 							{
 								Index = server.ChooseFreePlayerIndex(),
-								Name = botType,
+								Name = botInfo.Name,
 								Bot = botType,
 								Slot = parts[0],
 								Faction = "Random",
@@ -319,7 +328,7 @@ namespace OpenRA.Mods.Common.Server
 						else
 						{
 							// Change the type of the existing bot
-							bot.Name = botType;
+							bot.Name = botInfo.Name;
 							bot.Bot = botType;
 						}
 
@@ -366,7 +375,7 @@ namespace OpenRA.Mods.Common.Server
 							//  - Players who now lack a slot are made observers
 							//  - Bots who now lack a slot are dropped
 							//  - Bots who are not defined in the map rules are dropped
-							var botNames = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Name);
+							var botTypes = server.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Select(t => t.Type);
 							var slots = server.LobbyInfo.Slots.Keys.ToArray();
 							var i = 0;
 							foreach (var os in oldSlots)
@@ -380,7 +389,7 @@ namespace OpenRA.Mods.Common.Server
 								if (c.Slot != null)
 								{
 									// Remove Bot from slot if slot forbids bots
-									if (c.Bot != null && (!server.Map.Players.Players[c.Slot].AllowBots || !botNames.Contains(c.Bot)))
+									if (c.Bot != null && (!server.Map.Players.Players[c.Slot].AllowBots || !botTypes.Contains(c.Bot)))
 										server.LobbyInfo.Clients.Remove(c);
 									S.SyncClientToPlayerReference(c, server.Map.Players.Players[c.Slot]);
 								}
@@ -390,7 +399,7 @@ namespace OpenRA.Mods.Common.Server
 
 							// Validate if color is allowed and get an alternative if it isn't
 							foreach (var c in server.LobbyInfo.Clients)
-								if (c.Slot == null || (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor))
+								if (c.Slot != null && !server.LobbyInfo.Slots[c.Slot].LockColor)
 									c.Color = c.PreferredColor = SanitizePlayerColor(server, c.Color, c.Index, conn);
 
 							server.SyncLobbyInfo();
@@ -455,7 +464,7 @@ namespace OpenRA.Mods.Common.Server
 							return true;
 						}
 
-						if (option.Locked)
+						if (option.IsLocked)
 						{
 							server.SendOrderTo(conn, "Message", "{0} cannot be changed.".F(option.Name));
 							return true;
@@ -798,7 +807,7 @@ namespace OpenRA.Mods.Common.Server
 				if (gs.LobbyOptions.TryGetValue(o.Id, out state))
 				{
 					// Propagate old state on map change
-					if (!o.Locked)
+					if (!o.IsLocked)
 					{
 						if (o.Values.Keys.Contains(state.PreferredValue))
 							value = state.PreferredValue;
@@ -811,7 +820,7 @@ namespace OpenRA.Mods.Common.Server
 				else
 					state = new Session.LobbyOptionState();
 
-				state.Locked = o.Locked;
+				state.IsLocked = o.IsLocked;
 				state.Value = value;
 				state.PreferredValue = preferredValue;
 				gs.LobbyOptions[o.Id] = state;
@@ -858,7 +867,7 @@ namespace OpenRA.Mods.Common.Server
 			var client = server.GetClient(conn);
 
 			// Validate whether color is allowed and get an alternative if it isn't
-			if (client.Slot == null || !server.LobbyInfo.Slots[client.Slot].LockColor)
+			if (client.Slot != null && !server.LobbyInfo.Slots[client.Slot].LockColor)
 				client.Color = SanitizePlayerColor(server, client.Color, client.Index);
 
 			// Report any custom map details

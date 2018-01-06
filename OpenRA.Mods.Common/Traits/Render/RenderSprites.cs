@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -100,6 +101,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			public readonly bool IsPlayerPalette;
 			public PaletteReference PaletteReference { get; private set; }
 
+			bool cachedVisible;
+			WVec cachedOffset;
+			ISpriteSequence cachedSequence;
+
 			public AnimationWrapper(AnimationWithOffset animation, string palette, bool isPlayerPalette)
 			{
 				Animation = animation;
@@ -126,10 +131,28 @@ namespace OpenRA.Mods.Common.Traits.Render
 					return Animation.DisableFunc == null || !Animation.DisableFunc();
 				}
 			}
+
+			public bool Tick()
+			{
+				// Tick the animation
+				Animation.Animation.Tick();
+
+				// Return to the caller whether the renderable position or size has changed
+				var visible = IsVisible;
+				var offset = Animation.OffsetFunc != null ? Animation.OffsetFunc() : WVec.Zero;
+				var sequence = Animation.Animation.CurrentSequence;
+
+				var updated = visible != cachedVisible || offset != cachedOffset || sequence != cachedSequence;
+				cachedVisible = visible;
+				cachedOffset = offset;
+				cachedSequence = sequence;
+
+				return updated;
+			}
 		}
 
+		public readonly RenderSpritesInfo Info;
 		readonly string faction;
-		readonly RenderSpritesInfo info;
 		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
 		string cachedImage;
 
@@ -142,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public RenderSprites(ActorInitializer init, RenderSpritesInfo info)
 		{
-			this.info = info;
+			Info = info;
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
@@ -151,7 +174,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = info.GetImage(self.Info, self.World.Map.Rules.Sequences, faction);
+			return cachedImage = Info.GetImage(self.Info, self.World.Map.Rules.Sequences, faction);
 		}
 
 		public void UpdatePalette()
@@ -176,15 +199,31 @@ namespace OpenRA.Mods.Common.Traits.Render
 					a.CachePalette(wr, owner);
 				}
 
-				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, info.Scale))
+				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, Info.Scale))
 					yield return r;
 			}
 		}
 
-		public virtual void Tick(Actor self)
+		public virtual IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			foreach (var a in anims)
-				a.Animation.Animation.Tick();
+				if (a.IsVisible)
+					yield return a.Animation.ScreenBounds(self, wr, Info.Scale);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
+		{
+			var updated = false;
+			foreach (var a in anims)
+				updated |= a.Tick();
+
+			if (updated)
+				self.World.ScreenMap.AddOrUpdate(self);
 		}
 
 		public void Add(AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)
@@ -192,8 +231,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Use defaults
 			if (palette == null)
 			{
-				palette = info.Palette ?? info.PlayerPalette;
-				isPlayerPalette = info.Palette == null;
+				palette = Info.Palette ?? Info.PlayerPalette;
+				isPlayerPalette = Info.Palette == null;
 			}
 
 			anims.Add(new AnimationWrapper(anim, palette, isPlayerPalette));
@@ -234,9 +273,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		// Required by WithSpriteBody and WithInfantryBody
 		public int2 AutoSelectionSize(Actor self)
 		{
+			return AutoRenderSize(self);
+		}
+
+		// Required by WithSpriteBody and WithInfantryBody
+		public int2 AutoRenderSize(Actor self)
+		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.Size.XY * info.Scale).ToInt2())
+					.Select(a => (a.Animation.Animation.Image.Size.XY * Info.Scale).ToInt2())
 					.FirstOrDefault();
 		}
 

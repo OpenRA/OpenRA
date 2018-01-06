@@ -38,6 +38,7 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly BuildableTerrainLayer layer;
 		readonly BuildingInfluence bi;
 		readonly TerrainTemplateInfo template;
+		readonly BuildingInfo buildingInfo;
 
 		public LaysTerrain(Actor self, LaysTerrainInfo info)
 		{
@@ -45,16 +46,17 @@ namespace OpenRA.Mods.D2k.Traits
 			layer = self.World.WorldActor.Trait<BuildableTerrainLayer>();
 			bi = self.World.WorldActor.Trait<BuildingInfluence>();
 			template = self.World.Map.Rules.TileSet.Templates[info.Template];
+			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 		}
 
-		public void AddedToWorld(Actor self)
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			var map = self.World.Map;
 
 			if (template.PickAny)
 			{
 				// Fill the footprint with random variants
-				foreach (var c in FootprintUtils.Tiles(self))
+				foreach (var c in buildingInfo.Tiles(self.Location))
 				{
 					// Only place on allowed terrain types
 					if (!map.Contains(c) || !info.TerrainTypes.Contains(map.GetTerrainInfo(c).Type))

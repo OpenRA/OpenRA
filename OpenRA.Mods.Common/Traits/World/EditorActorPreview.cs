@@ -70,8 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 				Footprint = new ReadOnlyDictionary<CPos, SubCell>(footprint);
 			}
 
-			var tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled) as TooltipInfoBase
-				?? Info.TraitInfos<TooltipInfo>().FirstOrDefault(Exts.IsTraitEnabled);
+			var tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase
+				?? Info.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 
 			Tooltip = (tooltip == null ? " < " + Info.Name + " >" : tooltip.Name) + "\n" + owner.Name + " (" + owner.Faction + ")"
 				+ "\nID: " + ID + "\nType: " + Info.Name;
@@ -80,15 +80,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Bounds are fixed from the initial render.
 			// If this is a problem, then we may need to fetch the area from somewhere else
-			var r = previews
-				.SelectMany(p => p.Render(worldRenderer, CenterPosition))
-				.Select(rr => rr.PrepareRender(worldRenderer));
+			var r = previews.SelectMany(p => p.ScreenBounds(worldRenderer, CenterPosition));
 
 			if (r.Any())
 			{
-				Bounds = r.First().ScreenBounds(worldRenderer);
+				Bounds = r.First();
 				foreach (var rr in r.Skip(1))
-					Bounds = Rectangle.Union(Bounds, rr.ScreenBounds(worldRenderer));
+					Bounds = Rectangle.Union(Bounds, rr);
 			}
 		}
 
@@ -149,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var buildingInfo = Info.TraitInfoOrDefault<BuildingInfo>();
 				if (buildingInfo != null)
-					offset = FootprintUtils.CenterOffset(world, buildingInfo);
+					offset = buildingInfo.CenterOffset(world);
 
 				return world.Map.CenterOfSubCell(cell, subCell) + offset;
 			}

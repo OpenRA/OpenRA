@@ -22,7 +22,7 @@ namespace OpenRA.Network
 		class Chunk
 		{
 			public int Frame;
-			public List<Pair<int, byte[]>> Packets = new List<Pair<int, byte[]>>();
+			public Pair<int, byte[]>[] Packets;
 		}
 
 		Queue<Chunk> chunks = new Queue<Chunk>();
@@ -45,6 +45,8 @@ namespace OpenRA.Network
 			// to avoid issues with all immediate orders being resolved on the first tick.
 			using (var rs = File.OpenRead(replayFilename))
 			{
+				var packets = new List<Pair<int, byte[]>>();
+
 				var chunk = new Chunk();
 
 				while (rs.Position < rs.Length)
@@ -55,7 +57,7 @@ namespace OpenRA.Network
 					var packetLen = rs.ReadInt32();
 					var packet = rs.ReadBytes(packetLen);
 					var frame = BitConverter.ToInt32(packet, 0);
-					chunk.Packets.Add(Pair.New(client, packet));
+					packets.Add(Pair.New(client, packet));
 
 					if (frame != int.MaxValue &&
 						(!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
@@ -81,6 +83,8 @@ namespace OpenRA.Network
 					{
 						// Regular order - finalize the chunk
 						chunk.Frame = frame;
+						chunk.Packets = packets.ToArray();
+						packets.Clear();
 						chunks.Enqueue(chunk);
 						chunk = new Chunk();
 
@@ -123,10 +127,10 @@ namespace OpenRA.Network
 
 		public void SendSync(int frame, byte[] syncData)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(4 + syncData.Length);
 			ms.Write(BitConverter.GetBytes(frame));
 			ms.Write(syncData);
-			sync.Add(ms.ToArray());
+			sync.Add(ms.GetBuffer());
 
 			// Store the current frame so Receive() can return the next chunk of orders.
 			ordersFrame = frame + LobbyInfo.GlobalSettings.OrderLatency;

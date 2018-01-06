@@ -3,10 +3,10 @@ Player:
 	MissionObjectives:
 		EarlyGameOver: true
 	Shroud:
-		FogLocked: True
-		FogEnabled: True
-		ExploredMapLocked: True
-		ExploredMapEnabled: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
 	PlayerResources:
 		DefaultCashLocked: True
 
@@ -20,12 +20,12 @@ World:
 		Minimum: 1
 		Maximum: 1
 	MapCreeps:
-		Locked: True
-		Enabled: True
+		CheckboxLocked: True
+		CheckboxEnabled: True
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
 	MapOptions:
-		TechLevelLocked: True
-		ShortGameLocked: True
-		ShortGameEnabled: False
+		TechLevelDropdownLocked: True
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False

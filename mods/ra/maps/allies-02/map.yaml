@@ -23,12 +23,12 @@ Players:
 		Name: USSR
 		Faction: soviet
 		Color: FE1100
-		Enemies: Greece, France
-	PlayerReference@France:
-		Name: France
+		Enemies: Greece, England
+	PlayerReference@England:
+		Name: England
 		NonCombatant: True
 		Faction: allies
-		Color: 5CC1A3
+		Color: A1EF8C
 		Allies: Greece
 		Enemies: USSR
 	PlayerReference@Neutral:
@@ -47,7 +47,7 @@ Players:
 		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
-		Allies: France
+		Allies: England
 		Enemies: USSR
 
 Actors:
@@ -460,7 +460,6 @@ Actors:
 	Actor137: e2
 		Location: 73,51
 		Owner: USSR
-		Health: 56
 		Facing: 224
 		SubCell: 4
 	Actor138: medi
@@ -567,7 +566,6 @@ Actors:
 	SovietKennel: kenn
 		Location: 58,68
 		Owner: USSR
-		Health: 99
 	SovietBarracks: barr
 		Location: 56,66
 		Owner: USSR
@@ -577,7 +575,6 @@ Actors:
 	Harvester: harv
 		Location: 55,65
 		Owner: USSR
-		Health: 50
 		Facing: 160
 	PathGuard1: e1
 		Location: 50,72
@@ -672,6 +669,4 @@ Actors:
 		Location: 89,51
 		Owner: Neutral
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
-
-Weapons: weapons.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

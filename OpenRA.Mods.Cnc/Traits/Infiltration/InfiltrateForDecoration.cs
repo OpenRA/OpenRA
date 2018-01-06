@@ -20,18 +20,27 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Reveals a decoration sprite to the indicated players when infiltrated.")]
 	class InfiltrateForDecorationInfo : WithDecorationInfo
 	{
+		public readonly HashSet<string> Types = new HashSet<string>();
+
 		public override object Create(ActorInitializer init) { return new InfiltrateForDecoration(init.Self, this); }
 	}
 
 	class InfiltrateForDecoration : WithDecoration, INotifyInfiltrated
 	{
 		readonly HashSet<Player> infiltrators = new HashSet<Player>();
+		readonly InfiltrateForDecorationInfo info;
 
 		public InfiltrateForDecoration(Actor self, InfiltrateForDecorationInfo info)
-			: base(self, info) { }
-
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+			: base(self, info)
 		{
+			this.info = info;
+		}
+
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		{
+			if (!info.Types.Overlaps(types))
+				return;
+
 			infiltrators.Add(infiltrator.Owner);
 		}
 

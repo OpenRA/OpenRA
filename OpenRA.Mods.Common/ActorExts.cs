@@ -21,9 +21,6 @@ namespace OpenRA.Mods.Common
 	{
 		public static bool IsAtGroundLevel(this Actor self)
 		{
-			if (self.IsDead)
-				return false;
-
 			if (self.OccupiesSpace == null)
 				return false;
 
@@ -62,20 +59,16 @@ namespace OpenRA.Mods.Common
 			return stance == Stance.Enemy;
 		}
 
+		/// <summary>
+		/// DEPRECATED: Write code that can handle FrozenActors correctly instead.
+		/// </summary>
 		public static Target ResolveFrozenActorOrder(this Actor self, Order order, Color targetLine)
 		{
 			// Not targeting a frozen actor
-			if (order.ExtraData == 0)
-				return Target.FromOrder(self.World, order);
+			if (order.Target.Type != TargetType.FrozenActor)
+				return order.Target;
 
-			// Targeted an actor under the fog
-			var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
-			if (frozenLayer == null)
-				return Target.Invalid;
-
-			var frozen = frozenLayer.FromID(order.ExtraData);
-			if (frozen == null)
-				return Target.Invalid;
+			var frozen = order.Target.FrozenActor;
 
 			// Flashes the frozen proxy
 			self.SetTargetLine(frozen, targetLine, true);
@@ -120,32 +113,6 @@ namespace OpenRA.Mods.Common
 		public static void NotifyBlocker(this Actor self, IEnumerable<CPos> positions)
 		{
 			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetActorsAt(p)));
-		}
-
-		public static bool CanHarvestAt(this Actor self, CPos pos, ResourceLayer resLayer, HarvesterInfo harvInfo,
-			ResourceClaimLayer territory)
-		{
-			// Resources only exist in the ground layer
-			if (pos.Layer != 0)
-				return false;
-
-			var resType = resLayer.GetResource(pos);
-			if (resType == null)
-				return false;
-
-			// Can the harvester collect this kind of resource?
-			if (!harvInfo.Resources.Contains(resType.Info.Type))
-				return false;
-
-			if (territory != null)
-			{
-				// Another harvester has claimed this resource:
-				ResourceClaim claim;
-				if (territory.IsClaimedByAnyoneElse(self as Actor, pos, out claim))
-					return false;
-			}
-
-			return true;
 		}
 
 		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)

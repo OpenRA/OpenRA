@@ -105,11 +105,16 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			return planeInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
-					.Any(p => !p.Info.SelfReloads && !p.FullAmmo());
+					.Any(p => !p.AutoReloads && !p.FullAmmo());
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			// Refuse to take off if it would land immediately again.
+			// Special case: Don't kill other deploy hotkey activities.
+			if (plane.ForceLanding)
+				return NextActivity;
+
 			if (IsCanceled || self.IsDead)
 				return NextActivity;
 
@@ -123,7 +128,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (nearestAfld != null)
 					return ActivityUtils.SequenceActivities(
 						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, plane.Info.WaitDistanceFromResupplyBase),
-						new FlyCircleTimed(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
+						new FlyCircle(self, plane.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
 				else
 				{

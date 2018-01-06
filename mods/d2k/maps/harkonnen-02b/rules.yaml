@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: harkonnen02b.lua, harkonnen02b-AI.lua
+		Scripts: campaign-global.lua, harkonnen02b.lua, harkonnen02b-AI.lua
 	MissionData:
 		Briefing: Strengthen your forces at our mining camp in the Imperial Basin. We must punish the Atreides for their insolence. Teach them the consequences of opposing House Harkonnen.\n\nOur radar will help you find your targets.\n
 		BriefingVideo: H_BR02_E.VQA

@@ -31,14 +31,20 @@ Container@OBSERVER_WIDGETS:
 							TooltipTemplate: SIMPLE_TOOLTIP
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
+						StatisticsBasicKey: StatisticsBasic
+						StatisticsEconomyKey: StatisticsEconomy
+						StatisticsProductionKey: StatisticsProduction
+						StatisticsCombatKey: StatisticsCombat
+						StatisticsGraphKey: StatisticsGraph
 					X: 9
 					Y: 7
 					Children:
+						LogicKeyListener@OBSERVER_KEY_LISTENER:
 						MenuButton@OBSERVER_STATS_BUTTON:
+							Key: StatisticsBasic
 							MenuContainer: INGAME_OBSERVERSTATS_BG
 							HideIngameUI: false
 							Pause: false
-							Key: F1
 							X: 160
 							Width: 28
 							Height: 28
@@ -78,6 +84,8 @@ Container@OBSERVER_WIDGETS:
 							Height: 220
 				DropDownButton@SHROUD_SELECTOR:
 					Logic: ObserverShroudSelectorLogic
+						CombinedViewKey: ObserverCombinedView
+						WorldViewKey: ObserverWorldView
 					X: 6
 					Y: 262
 					Width: 226
@@ -128,6 +136,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 28
 					Height: 28
 					Background: sidebar-button-observer
+					Key: Pause
 					TooltipText: Pause
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -143,6 +152,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 28
 					Height: 28
 					Background: sidebar-button-observer
+					Key: Pause
 					TooltipText: Play
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -159,6 +169,7 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
+					Key: ReplaySpeedSlow
 					TooltipText: Slow speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -171,6 +182,7 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
+					Key: ReplaySpeedRegular
 					TooltipText: Regular speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -183,6 +195,7 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
+					Key: ReplaySpeedFast
 					TooltipText: Fast speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
@@ -195,6 +208,7 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					BaseLine: 1
 					Background: sidebar-button-observer
+					Key: ReplaySpeedMax
 					TooltipText: Maximum speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0

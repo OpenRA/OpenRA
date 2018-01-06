@@ -7,7 +7,7 @@
 	Projectile: InstantHit
 	Warhead@1Dam: TargetDamage
 		DebugOverlayColor: 00FF00
-		Damage: -50
+		Damage: -5000
 		ValidTargets: Infantry
 
 Heal:

@@ -8,10 +8,12 @@ World:
 	-SpawnMPUnits:
 	-MPStartLocations:
 	MapBuildRadius:
-		AllyBuildRadiusLocked: True
-		AllyBuildRadiusEnabled: False
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelLocked: True
+		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
 
 UNITCRATE:
@@ -38,7 +40,7 @@ LST:
 	Tooltip:
 		Name: Naval Mobile HQ
 	Health:
-		HP: 1000
+		HP: 100000
 	Mobile:
 		Speed: 170
 	Armament@PRIMARY:
@@ -52,29 +54,16 @@ LST:
 		Armament: secondary
 	MustBeDestroyed:
 		RequiredForShortGame: true
-	-GivesBounty:
-
-PT:
-	-GivesBounty:
-
-DD:
-	-GivesBounty:
-
-CA:
-	-GivesBounty:
-
-SS:
-	-GivesBounty:
-
-MSUB:
-	-GivesBounty:
 
 Player:
 	Shroud:
-		FogLocked: True
-		FogEnabled: False
-		ExploredMapLocked: True
-		ExploredMapEnabled: True
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: True
 	PlayerResources:
 		DefaultCashLocked: True
 		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True

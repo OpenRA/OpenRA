@@ -13,10 +13,10 @@ DOG:
 		GenericName: Dog
 	Selectable:
 		Bounds: 12,17,-1,-4
+		DecorationBounds: 12,17,-1,-4
 	SelectionDecorations:
-		VisualBounds: 12,17,-1,-4
 	Health:
-		HP: 12
+		HP: 1800
 	Mobile:
 		Speed: 99
 		Voice: Move
@@ -35,7 +35,7 @@ DOG:
 	AutoTarget:
 		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
-		Types: Infantry
+		ValidTargets: Infantry
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
@@ -50,7 +50,7 @@ DOG:
 
 E1:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -64,7 +64,7 @@ E1:
 	Tooltip:
 		Name: Rifle Infantry
 	Health:
-		HP: 50
+		HP: 5000
 	Armament@PRIMARY:
 		Weapon: M1Carbine
 	Armament@GARRISONED:
@@ -88,7 +88,7 @@ E1R1:
 
 E2:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -100,7 +100,7 @@ E2:
 	Tooltip:
 		Name: Grenadier
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 71
 	Armament@PRIMARY:
@@ -118,13 +118,13 @@ E2:
 		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: UnitExplodeSmall
-		Chance: 50
+		EmptyWeapon: UnitExplodeSmall
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 E3:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -138,7 +138,7 @@ E3:
 	Tooltip:
 		Name: Rocket Soldier
 	Health:
-		HP: 45
+		HP: 4500
 	Armament@PRIMARY:
 		Weapon: RedEye
 		LocalOffset: 0,0,555
@@ -170,7 +170,7 @@ E3R1:
 
 E4:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -182,7 +182,7 @@ E4:
 	Tooltip:
 		Name: Flamethrower
 	Health:
-		HP: 40
+		HP: 4000
 	Armament@PRIMARY:
 		Weapon: Flamer
 		LocalOffset: 700,0,500
@@ -193,6 +193,9 @@ E4:
 	TakeCover:
 		ProneOffset: 160,0,-288
 	AttackFrontal:
+	Explodes:
+		Weapon: VisualExplode
+		Chance: 50
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	ProducibleWithLevel:
@@ -224,7 +227,7 @@ E6:
 
 SPY:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -238,13 +241,14 @@ SPY:
 		Name: Spy
 		GenericName: Soldier
 	-Guard:
+	Mobile:
+		Voice: Move
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
 		PipType: Yellow
 		Voice: Move
 	Disguise:
-		Voice: Move
 		DisguisedCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
@@ -291,20 +295,20 @@ SPY.England:
 
 E7:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 120
 		Prerequisites: ~tent, atek, ~techlevel.high
 		BuildLimit: 1
-		Description: Elite commando infantry. Armed with\ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
+		Description: Elite commando infantry. Armed with\ndual pistols and C4.\nCan detect cloaked units.\nMaximum 1 can be trained.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
 	Health:
-		HP: 100
+		HP: 10000
 	Mobile:
 		Speed: 71
 		Voice: Move
@@ -332,6 +336,8 @@ E7:
 		StandSequences: stand
 	AnnounceOnBuild:
 	AnnounceOnKill:
+	DetectCloaked:
+		CloakTypes: Cloak, Hijacker
 	Voiced:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
@@ -350,7 +356,7 @@ MEDI:
 	Tooltip:
 		Name: Medic
 	Health:
-		HP: 80
+		HP: 6000
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -369,7 +375,7 @@ MEDI:
 		VoiceSet: MedicVoice
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		Types: Infantry
+		ValidTargets: Infantry
 
 MECH:
 	Inherits: ^Soldier
@@ -384,7 +390,7 @@ MECH:
 	Tooltip:
 		Name: Mechanic
 	Health:
-		HP: 80
+		HP: 8000
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -410,7 +416,7 @@ MECH:
 		VoiceSet: MechanicVoice
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		Types: Vehicle
+		ValidTargets: Vehicle
 
 EINSTEIN:
 	Inherits: ^CivInfantry
@@ -460,6 +466,10 @@ GNRL:
 	Voiced:
 		VoiceSet: StavrosVoice
 	-ScaredyCat:
+	TakeCover:
+		DamageModifiers:
+			Prone50Percent: 50
+		DamageTriggers: TriggerProne
 	WithInfantryBody:
 		IdleSequences: idle1
 
@@ -497,7 +507,7 @@ HIJACKER:
 	Tooltip:
 		Name: Hijacker
 	Health:
-		HP: 50
+		HP: 5000
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -528,19 +538,19 @@ HIJACKER:
 
 SHOK:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 130
 		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.high
-		Description: Elite infantry with portable tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
+		Description: Elite infantry with portable Tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Valued:
-		Cost: 400
+		Cost: 300
 	Tooltip:
 		Name: Shock Trooper
 	Health:
-		HP: 60
+		HP: 5000
 	Mobile:
 		Voice: Move
 	RevealsShroud:
@@ -581,7 +591,7 @@ SNIPER:
 		Prerequisites: ~disabled
 		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Health:
-		HP: 80
+		HP: 8000
 	Passenger:
 		PipType: Red
 	RevealsShroud:
@@ -590,7 +600,7 @@ SNIPER:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
-		Types: Infantry
+		ValidTargets: Infantry
 	Armament@PRIMARY:
 		Weapon: Sniper
 	Armament@GARRISONED:
@@ -620,7 +630,7 @@ SNIPER:
 
 Zombie:
 	Inherits: ^Soldier
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -632,7 +642,7 @@ Zombie:
 		Prerequisites: ~barracks, ~bio
 		Description: Slow undead. Attacks in close combat.
 	Health:
-		HP: 250
+		HP: 25000
 	Mobile:
 		Speed: 42
 	AutoTarget:
@@ -649,7 +659,7 @@ Zombie:
 
 Ant:
 	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -663,10 +673,10 @@ Ant:
 		Description: Irradiated insect that grew oversize.
 	Selectable:
 		Bounds: 24,24,0,-5
+		DecorationBounds: 30,30,0,-2
 	SelectionDecorations:
-		VisualBounds: 30,30,0,-2
 	Health:
-		HP: 750
+		HP: 75000
 	Mobile:
 		Speed: 99
 		TurnSpeed: 12

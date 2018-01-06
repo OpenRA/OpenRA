@@ -128,29 +128,6 @@ namespace OpenRA.Widgets
 		/// <param name="e">Key input data</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down)
-			{
-				var hk = Hotkey.FromKeyInput(e);
-
-				if (hk == Game.Settings.Keys.DevReloadChromeKey)
-				{
-					ChromeProvider.Initialize(Game.ModData);
-					return true;
-				}
-
-				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
-				{
-					Root.Visible ^= true;
-					return true;
-				}
-
-				if (hk == Game.Settings.Keys.TakeScreenshotKey)
-				{
-					Game.TakeScreenshot = true;
-					return true;
-				}
-			}
-
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
@@ -196,10 +173,10 @@ namespace OpenRA.Widgets
 
 		// Info defined in YAML
 		public string Id = null;
-		public IntegerExpression X;
-		public IntegerExpression Y;
-		public IntegerExpression Width;
-		public IntegerExpression Height;
+		public string X = "0";
+		public string Y = "0";
+		public string Width = "0";
+		public string Height = "0";
 		public string[] Logic = { };
 		public ChromeLogic[] LogicObjects { get; private set; }
 		public bool Visible = true;
@@ -275,17 +252,16 @@ namespace OpenRA.Widgets
 			substitutions.Add("PARENT_LEFT", parentBounds.Left);
 			substitutions.Add("PARENT_TOP", parentBounds.Top);
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
-
-			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
-			var width = Width != null ? Width.Evaluate(readOnlySubstitutions) : 0;
-			var height = Height != null ? Height.Evaluate(readOnlySubstitutions) : 0;
+			var width = Evaluator.Evaluate(Width, substitutions);
+			var height = Evaluator.Evaluate(Height, substitutions);
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 
-			var x = X != null ? X.Evaluate(readOnlySubstitutions) : 0;
-			var y = Y != null ? Y.Evaluate(readOnlySubstitutions) : 0;
-			Bounds = new Rectangle(x, y, width, height);
+			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
+								   Evaluator.Evaluate(Y, substitutions),
+								   width,
+								   height);
 		}
 
 		public void PostInit(WidgetArgs args)
@@ -308,8 +284,15 @@ namespace OpenRA.Widgets
 			// PERF: Avoid LINQ.
 			var bounds = EventBounds;
 			foreach (var child in Children)
+			{
 				if (child.IsVisible())
-					bounds = Rectangle.Union(bounds, child.GetEventBounds());
+				{
+					var childBounds = child.GetEventBounds();
+					if (childBounds != Rectangle.Empty)
+						bounds = Rectangle.Union(bounds, childBounds);
+				}
+			}
+
 			return bounds;
 		}
 

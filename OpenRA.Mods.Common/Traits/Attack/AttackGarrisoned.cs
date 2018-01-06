@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
@@ -151,6 +152,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in Armaments)
 			{
+				if (a.IsTraitDisabled)
+					continue;
+
 				var port = SelectFirePort(self, targetYaw);
 				if (port == null)
 					return;
@@ -186,7 +190,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			var pal = wr.Palette(Info.MuzzlePalette);
 
@@ -196,7 +200,13 @@ namespace OpenRA.Mods.Common.Traits
 					yield return r;
 		}
 
-		public override void Tick(Actor self)
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Muzzle flashes don't contribute to actor bounds
+			yield break;
+		}
+
+		protected override void Tick(Actor self)
 		{
 			base.Tick(self);
 

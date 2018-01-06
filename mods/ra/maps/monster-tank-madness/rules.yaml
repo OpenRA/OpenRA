@@ -8,6 +8,15 @@ World:
 	-StartGameNotification:
 	MissionData:
 		Briefing: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.\n
+		WinVideo: sovbatl.vqa
+		LossVideo: sovtstar.vqa
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			BadGuy: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			FriendlyMadTanks: 200, 200, 201, 202, 203, 203, 204, 205, 206, 206, 207, 221, 222, 222, 223, 223
+			Outpost: 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143
 
 ^Building:
 	AnnounceOnSeen:
@@ -94,6 +103,7 @@ TRAN:
 		Types: Demitri
 		MaxWeight: 1
 	-Selectable:
+	Interactable:
 
 LST:
 	Cargo:
@@ -108,7 +118,7 @@ PBOX:
 		Types: Infantry, Demitri
 
 5TNK:
-	Inherits: ^Tank
+	Inherits: ^TrackedVehicle
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
 		Cost: 10000
@@ -116,7 +126,7 @@ PBOX:
 		Name: Super Tank
 		GenericName: Super Tank
 	Health:
-		HP: 20000
+		HP: 2000000
 	Armor:
 		Type: Concrete
 	Mobile:
@@ -155,13 +165,12 @@ PBOX:
 	SpawnActorOnDeath:
 		Actor: 5TNK.Husk
 	SelfHealing:
-		Step: 1
+		Step: 100
 		Delay: 1
 		HealIfBelow: 100
 		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4
-	-EjectOnDeath:
 	RenderSprites:
 		Image: 4TNK
 
@@ -172,7 +181,7 @@ PBOX:
 	ThrowsParticle@turret:
 		Anim: turret
 	Health:
-		HP: 2000
+		HP: 200000
 	RenderSprites:
 		Image: 4TNK
 
@@ -184,7 +193,7 @@ DOME.NoInfiltrate:
 		Image: DOME
 	-InfiltrateForExploration:
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, MissionObjective
+		TargetTypes: Ground, Structure, C4, DetonateAttack, MissionObjective
 
 SPY:
 	Infiltrates:
@@ -194,7 +203,6 @@ BAD3TNK:
 	Inherits: 3TNK
 	Buildable:
 		Prerequisites: ~disabled
-	-EjectOnDeath:
 	RenderSprites:
 		Image: 3TNK
 
@@ -202,7 +210,6 @@ BADTRUK:
 	Inherits: TRUK
 	Buildable:
 		Prerequisites: ~disabled
-	-EjectOnDeath:
 	RenderSprites:
 		Image: TRUK
 

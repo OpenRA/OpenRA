@@ -25,13 +25,14 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
-	public class PowerManager : ITick, ISync, IResolveOrder
+	public class PowerManager : INotifyCreated, ITick, ISync, IResolveOrder
 	{
 		readonly Actor self;
 		readonly PowerManagerInfo info;
 		readonly DeveloperMode devMode;
 
 		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
+
 		[Sync] int totalProvided;
 		public int PowerProvided { get { return totalProvided; } }
 
@@ -43,6 +44,11 @@ namespace OpenRA.Mods.Common.Traits
 		public int PowerOutageRemainingTicks { get; private set; }
 		public int PowerOutageTotalTicks { get; private set; }
 
+		int nextPowerAdviceTime = 0;
+		bool isLowPower = false;
+		bool wasLowPower = false;
+		bool wasHackEnabled;
+
 		public PowerManager(Actor self, PowerManagerInfo info)
 		{
 			this.self = self;
@@ -50,6 +56,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			devMode = self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			// Map placed actors will query an inconsistent power state when they are created
+			// (it will depend on the order that they are spawned by the world)
+			// Tell them to query the correct state once the world has been fully created
+			self.World.AddFrameEndTask(w => UpdatePowerRequiringActors());
 		}
 
 		public void UpdateActor(Actor a)
@@ -86,11 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 				totalDrained += amount;
 		}
 
-		int nextPowerAdviceTime = 0;
-		bool wasLowPower = false;
-		bool wasHackEnabled;
-
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (wasHackEnabled != devMode.UnlimitedPower)
 			{
@@ -107,15 +117,21 @@ namespace OpenRA.Mods.Common.Traits
 				wasHackEnabled = devMode.UnlimitedPower;
 			}
 
-			var lowPower = totalProvided < totalDrained;
-			if (lowPower && !wasLowPower)
+			isLowPower = ExcessPower < 0;
+
+			if (isLowPower != wasLowPower)
+				UpdatePowerRequiringActors();
+
+			if (isLowPower && !wasLowPower)
 				nextPowerAdviceTime = 0;
-			wasLowPower = lowPower;
+
+			wasLowPower = isLowPower;
 
 			if (--nextPowerAdviceTime <= 0)
 			{
-				if (lowPower)
+				if (isLowPower)
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
+
 				nextPowerAdviceTime = info.AdviceInterval;
 			}
 
@@ -146,6 +162,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in traitPairs)
 				p.Trait.UpdateStatus(p.Actor);
+		}
+
+		void UpdatePowerRequiringActors()
+		{
+			var traitPairs = self.World.ActorsWithTrait<INotifyPowerLevelChanged>()
+				.Where(p => !p.Actor.IsDead && p.Actor.IsInWorld && p.Actor.Owner == self.Owner);
+
+			foreach (var p in traitPairs)
+				p.Trait.PowerLevelChanged(p.Actor);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)

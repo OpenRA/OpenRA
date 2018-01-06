@@ -9,14 +9,6 @@ Player:
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
 		SpeedUp: true
-	ClassicProductionQueue@Upgrade:
-		Type: Upgrade
-		BuildDurationModifier: 250
-		LowPowerSlowdown: 0
-		QueuedAudio: Upgrading
-		ReadyAudio: NewOptions
-		BlockedAudio: NoRoom
-		SpeedUp: true
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 250
@@ -51,6 +43,14 @@ Player:
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 		SpeedUp: true
+	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
+		Type: Upgrade
+		BuildDurationModifier: 250
+		LowPowerSlowdown: 0
+		QueuedAudio: Upgrading
+		ReadyAudio: NewOptions
+		BlockedAudio: NoRoom
+		SpeedUp: true
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:
@@ -63,12 +63,35 @@ Player:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
+		CheckboxDisplayOrder: 6
 	BaseAttackNotifier:
 	Shroud:
+		FogCheckboxDisplayOrder: 3
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 	PlaceBeacon:
+	ProvidesPrerequisite@atreides:
+		Prerequisite: player.atreides
+		Factions: atreides
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: player.harkonnen
+		Factions: harkonnen
+	ProvidesPrerequisite@ordos:
+		Prerequisite: player.ordos
+		Factions: ordos
+	ProvidesPrerequisite@corrino:
+		Prerequisite: player.corrino
+		Factions: corrino
+	ProvidesPrerequisite@fremen:
+		Prerequisite: player.fremen
+		Factions: fremen
+	ProvidesPrerequisite@mercenary:
+		Prerequisite: player.mercenary
+		Factions: mercenary
+	ProvidesPrerequisite@smuggler:
+		Prerequisite: player.smuggler
+		Factions: smuggler
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.low

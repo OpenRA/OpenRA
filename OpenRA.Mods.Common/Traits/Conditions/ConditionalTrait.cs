@@ -18,8 +18,6 @@ namespace OpenRA.Mods.Common.Traits
 	/// <summary>Use as base class for *Info to subclass of ConditionalTrait. (See ConditionalTrait.)</summary>
 	public abstract class ConditionalTraitInfo : IObservesVariablesInfo, IRulesetLoaded
 	{
-		protected static readonly IReadOnlyDictionary<string, int> NoConditions = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
-
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition to enable this trait.")]
 		public readonly BooleanExpression RequiresCondition = null;
@@ -33,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(NoConditions);
+			EnabledByDefault = RequiresCondition == null || RequiresCondition.Evaluate(VariableExpression.NoVariables);
 		}
 	}
 

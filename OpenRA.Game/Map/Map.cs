@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -253,16 +254,27 @@ namespace OpenRA
 				if (!contents.Contains(required))
 					throw new FileNotFoundException("Required file {0} not present in this map".F(required));
 
-			using (var ms = new MemoryStream())
+			var streams = new List<Stream>();
+			try
 			{
 				foreach (var filename in contents)
 					if (filename.EndsWith(".yaml") || filename.EndsWith(".bin") || filename.EndsWith(".lua"))
-						using (var s = package.GetStream(filename))
-							s.CopyTo(ms);
+						streams.Add(package.GetStream(filename));
 
 				// Take the SHA1
-				ms.Seek(0, SeekOrigin.Begin);
-				return CryptoUtil.SHA1Hash(ms);
+				if (streams.Count == 0)
+					return CryptoUtil.SHA1Hash(new byte[0]);
+
+				var merged = streams[0];
+				for (var i = 1; i < streams.Count; i++)
+					merged = new MergedStream(merged, streams[i]);
+
+				return CryptoUtil.SHA1Hash(merged);
+			}
+			finally
+			{
+				foreach (var stream in streams)
+					stream.Dispose();
 			}
 		}
 
@@ -429,7 +441,7 @@ namespace OpenRA
 			{
 				var uv = cell.ToMPos(Grid.Type);
 				cellProjection[uv] = new PPos[0];
-				inverseCellProjection[uv] = new List<MPos>();
+				inverseCellProjection[uv] = new List<MPos>(1);
 			}
 
 			// Initialize projections
@@ -782,6 +794,19 @@ namespace OpenRA
 			var cell = CellContaining(pos);
 			var delta = pos - CenterOfCell(cell);
 			return new WDist(delta.Z);
+		}
+
+		/// <summary>
+		/// The size of the map Height step in world units
+		/// </summary>
+		public WDist CellHeightStep
+		{
+			get
+			{
+				// RectangularIsometric defines 1024 units along the diagonal axis,
+				// giving a half-tile height step of sqrt(2) * 512
+				return new WDist(Grid.Type == MapGridType.RectangularIsometric ? 724 : 512);
+			}
 		}
 
 		public CPos CellContaining(WPos pos)

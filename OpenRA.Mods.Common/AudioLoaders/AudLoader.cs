@@ -56,34 +56,20 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int Channels { get { return 1; } }
 		public int SampleBits { get { return 16; } }
 		public int SampleRate { get { return sampleRate; } }
-		public float LengthInSeconds { get { return AudReader.SoundLength(stream); } }
-		public Stream GetPCMInputStream() { return new MemoryStream(rawData.Value); }
-		public void Dispose() { stream.Dispose(); }
+		public float LengthInSeconds { get { return AudReader.SoundLength(sourceStream); } }
+		public Stream GetPCMInputStream() { return audStreamFactory(); }
+		public void Dispose() { sourceStream.Dispose(); }
 
-		int sampleRate;
-		Lazy<byte[]> rawData;
-
-		Stream stream;
+		readonly Stream sourceStream;
+		readonly Func<Stream> audStreamFactory;
+		readonly int sampleRate;
 
 		public AudFormat(Stream stream)
 		{
-			this.stream = stream;
+			sourceStream = stream;
 
-			var position = stream.Position;
-			rawData = Exts.Lazy(() =>
-			{
-				try
-				{
-					byte[] data;
-					if (!AudReader.LoadSound(stream, out data, out sampleRate))
-						throw new InvalidDataException();
-					return data;
-				}
-				finally
-				{
-					stream.Position = position;
-				}
-			});
+			if (!AudReader.LoadSound(stream, out audStreamFactory, out sampleRate))
+				throw new InvalidDataException();
 		}
 	}
 }

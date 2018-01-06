@@ -1,7 +1,7 @@
 E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
@@ -14,7 +14,7 @@ E3:
 	Voiced:
 		VoiceSet: Rocket
 	Health:
-		HP: 100
+		HP: 10000
 	Mobile:
 		Speed: 56
 	Armament@PRIMARY:
@@ -34,7 +34,7 @@ E3:
 CYBORG:
 	Inherits: ^Cyborg
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Armor:
 		Type: Light
 	Valued:
@@ -48,12 +48,13 @@ CYBORG:
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
 	Selectable:
 		Bounds: 16,31,0,-10
+		DecorationBounds: 16,31,0,-10
 	Voiced:
 		VoiceSet: Cyborg
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 300
+		HP: 30000
 	Passenger:
 	RevealsShroud:
 		Range: 5c0
@@ -62,14 +63,13 @@ CYBORG:
 	AttackFrontal:
 		Voice: Attack
 	SelectionDecorations:
-		VisualBounds: 16,31,0,-10
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
 CYC2:
 	Inherits: ^Cyborg
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Armor:
 		Type: Heavy
 	Valued:
@@ -84,12 +84,13 @@ CYC2:
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
 	Selectable:
 		Bounds: 16,32,-1,-12
+		DecorationBounds: 16,32,-1,-12
 	Voiced:
 		VoiceSet: CyborgCommando
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 500
+		HP: 50000
 	Passenger:
 	RevealsShroud:
 		Range: 7c0
@@ -99,7 +100,6 @@ CYC2:
 	AttackFrontal:
 		Voice: Attack
 	SelectionDecorations:
-		VisualBounds: 16,32,-1,-12
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -119,7 +119,7 @@ MHIJACK:
 	Voiced:
 		VoiceSet: Hijacker
 	Health:
-		HP: 300
+		HP: 30000
 	Mobile:
 		Speed: 99
 	-Crushable:

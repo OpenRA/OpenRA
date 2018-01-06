@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 

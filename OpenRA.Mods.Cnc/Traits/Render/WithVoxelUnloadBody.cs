@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -20,7 +21,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, IAutoSelectionSizeInfo
+	// TODO: This trait is hacky and should go away as soon as we support granting a condition on docking, in favor of toggling two regular WithVoxelBodies
+	public class WithVoxelUnloadBodyInfo : ITraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		[Desc("Voxel sequence name to use when docked to a refinery.")]
 		public readonly string UnloadSequence = "unload";
@@ -44,27 +46,25 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoSelectionSize
+	public class WithVoxelUnloadBody : IAutoMouseBounds
 	{
 		public bool Docked;
 
-		readonly int2 size;
+		readonly ModelAnimation modelAnimation;
+		readonly RenderVoxels rv;
 
 		public WithVoxelUnloadBody(Actor self, WithVoxelUnloadBodyInfo info)
 		{
 			var body = self.Trait<BodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderVoxels>();
 
 			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
-			rv.Add(new ModelAnimation(idleModel, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(idleModel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
 				() => Docked,
-				() => 0, info.ShowShadow));
+				() => 0, info.ShowShadow);
 
-			// Selection size
-			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * idleModel.Size.Aggregate(Math.Max));
-			size = new int2(s, s);
+			rv.Add(modelAnimation);
 
 			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
 			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
@@ -73,6 +73,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				() => 0, info.ShowShadow));
 		}
 
-		public int2 SelectionSize(Actor self) { return size; }
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return modelAnimation.ScreenBounds(self.CenterPosition, wr, rv.Info.Scale);
+		}
 	}
 }

@@ -21,7 +21,7 @@ tibtre03:
 
 bigblue:
 	Defaults:
-		Offset: 0, -12, 12
+		Offset: 0, 0, 12
 	idle: bigblue2
 		ShadowStart: 10
 	active: bigblue2

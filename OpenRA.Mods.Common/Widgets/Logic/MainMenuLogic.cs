@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -36,8 +37,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// Update news once per game launch
 		static bool fetchedNews;
 
+		bool newsOpen;
+
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 2;
+		const int SystemInformationVersion = 3;
 		Dictionary<string, Pair<string, string>> GetSystemInformation()
 		{
 			var lang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
@@ -47,10 +50,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "platform", Pair.New("OS Type", Platform.CurrentPlatform.ToString()) },
 				{ "os", Pair.New("OS Version", Environment.OSVersion.ToString()) },
 				{ "x64", Pair.New("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
+				{ "x64process", Pair.New("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
-				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2")) },
+				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "lang", Pair.New("System Language", lang) }
 			};
 		}
@@ -235,7 +239,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
 
-			var newsURL = modData.Manifest.Get<WebServices>().GameNews;
+			// Check for updates in the background
+			var webServices = modData.Manifest.Get<WebServices>();
+			if (Game.Settings.Debug.CheckVersion)
+				webServices.CheckModVersion();
+
+			var updateLabel = rootMenu.GetOrNull("UPDATE_NOTICE");
+			if (updateLabel != null)
+				updateLabel.IsVisible = () => !newsOpen && menuType != MenuType.None &&
+					menuType != MenuType.SystemInfoPrompt &&
+					webServices.ModVersionStatus == ModVersionStatus.Outdated;
 
 			// System information opt-out prompt
 			var sysInfoPrompt = widget.Get("SYSTEM_INFO_PROMPT");
@@ -265,11 +278,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Debug.SystemInformationVersionPrompt = SystemInformationVersion;
 					Game.Settings.Save();
 					SwitchMenu(MenuType.Main);
-					LoadAndDisplayNews(newsURL, newsBG);
+					LoadAndDisplayNews(webServices.GameNews, newsBG);
 				};
 			}
 			else
-				LoadAndDisplayNews(newsURL, newsBG);
+				LoadAndDisplayNews(webServices.GameNews, newsBG);
 		}
 
 		void LoadAndDisplayNews(string newsURL, Widget newsBG)
@@ -301,12 +314,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						new Download(newsURL, cacheFile, e => { },
 							e => NewsDownloadComplete(e, cacheFile, currentNews,
-								() => newsButton.AttachPanel(newsPanel)));
+								() => OpenNewsPanel(newsButton)));
 					}
 
-					newsButton.OnClick = () => newsButton.AttachPanel(newsPanel);
+					newsButton.OnClick = () => OpenNewsPanel(newsButton);
 				}
 			}
+		}
+
+		void OpenNewsPanel(DropDownButtonWidget button)
+		{
+			newsOpen = true;
+			button.AttachPanel(newsPanel, () => newsOpen = false);
 		}
 
 		void OnRemoteDirectConnect(string host, int port)

@@ -18,48 +18,47 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
-	public class AppearsOnRadarInfo : ITraitInfo
+	public class AppearsOnRadarInfo : ConditionalTraitInfo
 	{
 		public readonly bool UseLocation = false;
 
-		public object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
+		[Desc("Player stances who can view this actor on radar.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+
+		public override object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
 	}
 
-	public class AppearsOnRadar : IRadarSignature, INotifyCreated
+	public class AppearsOnRadar : ConditionalTrait<AppearsOnRadarInfo>, IRadarSignature
 	{
-		readonly AppearsOnRadarInfo info;
 		IRadarColorModifier modifier;
 
-		Color currentColor = Color.Transparent;
-		Func<Pair<CPos, SubCell>, Pair<CPos, Color>> cellToSignature;
-
 		public AppearsOnRadar(AppearsOnRadarInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
-		public void Created(Actor self)
+		protected override void Created(Actor self)
 		{
+			base.Created(self);
 			modifier = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 		}
 
-		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
+		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
+			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
+			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.Stances[viewer])))
+				return;
+
 			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color.RGB;
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 
-			if (info.UseLocation)
-				return new[] { Pair.New(self.Location, color) };
-
-			// PERF: Cache cellToSignature delegate to avoid allocations as color does not change often.
-			if (currentColor != color)
+			if (Info.UseLocation)
 			{
-				currentColor = color;
-				cellToSignature = c => Pair.New(c.First, color);
+				destinationBuffer.Add(Pair.New(self.Location, color));
+				return;
 			}
 
-			return self.OccupiesSpace.OccupiedCells().Select(cellToSignature);
+			foreach (var cell in self.OccupiesSpace.OccupiedCells())
+				destinationBuffer.Add(Pair.New(cell.First, color));
 		}
 	}
 }

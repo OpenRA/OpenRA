@@ -50,8 +50,23 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfo = string.IsNullOrEmpty(Weapon) ? null : rules.Weapons[Weapon.ToLowerInvariant()];
-			EmptyWeaponInfo = string.IsNullOrEmpty(EmptyWeapon) ? null : rules.Weapons[EmptyWeapon.ToLowerInvariant()];
+			if (!string.IsNullOrEmpty(Weapon))
+			{
+				WeaponInfo weapon;
+				var weaponToLower = Weapon.ToLowerInvariant();
+				if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+				WeaponInfo = weapon;
+			}
+
+			if (!string.IsNullOrEmpty(EmptyWeapon))
+			{
+				WeaponInfo emptyWeapon;
+				var emptyWeaponToLower = EmptyWeapon.ToLowerInvariant();
+				if (!rules.Weapons.TryGetValue(emptyWeaponToLower, out emptyWeapon))
+					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(emptyWeaponToLower));
+				EmptyWeaponInfo = emptyWeapon;
+			}
 
 			base.RulesetLoaded(rules, ai);
 		}
@@ -93,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
-				var cells = FootprintUtils.UnpathableTiles(self.Info.Name, buildingInfo, self.Location);
+				var cells = buildingInfo.UnpathableTiles(self.Location);
 				foreach (var c in cells)
 					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), e.Attacker, Enumerable.Empty<int>());
 

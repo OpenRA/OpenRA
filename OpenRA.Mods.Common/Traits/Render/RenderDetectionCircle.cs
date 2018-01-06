@@ -69,6 +69,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				info.ContrastColor);
 		}
 
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+
 		void ITick.Tick(Actor self)
 		{
 			lineAngle += info.UpdateLineTick;

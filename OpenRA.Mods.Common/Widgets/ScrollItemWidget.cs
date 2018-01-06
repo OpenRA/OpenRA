@@ -16,8 +16,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ScrollItemWidget : ButtonWidget
 	{
+		public readonly string BaseName = "scrollitem";
+		public readonly bool EnableChildMouseOver = false;
 		public string ItemKey;
-		public string BaseName = "scrollitem";
 
 		[ObjectCreator.UseCtor]
 		public ScrollItemWidget(ModData modData)
@@ -25,7 +26,6 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
-			IgnoreChildMouseOver = true;
 		}
 
 		protected ScrollItemWidget(ScrollItemWidget other)
@@ -33,17 +33,31 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
-			IgnoreChildMouseOver = true;
 			Key = other.Key;
 			BaseName = other.BaseName;
+			EnableChildMouseOver = other.EnableChildMouseOver;
+		}
+
+		public override void Initialize(WidgetArgs args)
+		{
+			base.Initialize(args);
+
+			// HACK: We want to default IgnoreChildMouseOver to true in this widget
+			// but still allow it to be disabled
+			IgnoreChildMouseOver = !EnableChildMouseOver;
 		}
 
 		public Func<bool> IsSelected = () => false;
 
 		public override void Draw()
 		{
+			// PERF: Only check for ourself or our direct children
+			var isHover = Ui.MouseOverWidget == this;
+			if (!IgnoreChildMouseOver && !isHover)
+				isHover = Children.Contains(Ui.MouseOverWidget);
+
 			var state = IsSelected() ? BaseName + "-selected" :
-				Ui.MouseOverWidget == this ? BaseName + "-hover" :
+				isHover ? BaseName + "-hover" :
 				null;
 
 			if (state != null)

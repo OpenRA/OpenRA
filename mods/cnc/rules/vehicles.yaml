@@ -13,11 +13,12 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 4
+		DecorationBounds: 36,36
 	Mobile:
 		Speed: 71
 		Crushes: crate, infantry
 	Health:
-		HP: 1200
+		HP: 120000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -33,8 +34,9 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
-		VisualBounds: 36,36
 
 HARV:
 	Inherits: ^Tank
@@ -53,6 +55,7 @@ HARV:
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
+		DecorationBounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
@@ -64,25 +67,26 @@ HARV:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 625
+		HP: 62500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4c0
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	WithHarvestAnimation:
 	WithDockingAnimation:
 	Explodes:
 		Weapon: TiberiumExplosion
 	SelectionDecorations:
-		VisualBounds: 36,36
 
 APC:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 550
 	Tooltip:
@@ -97,7 +101,7 @@ APC:
 		Speed: 132
 		RequiresCondition: !notmobile
 	Health:
-		HP: 215
+		HP: 21500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -127,12 +131,14 @@ APC:
 		LoadingCondition: notmobile
 	SpawnActorOnDeath:
 		Actor: APC.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 ARTY:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -146,7 +152,7 @@ ARTY:
 		TurnSpeed: 4
 		Speed: 85
 	Health:
-		HP: 75
+		HP: 7500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -161,6 +167,8 @@ ARTY:
 		InitialStanceAI: Defend
 	SpawnActorOnDeath:
 		Actor: ARTY.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	Explodes:
 		Weapon: ArtilleryShell
 		EmptyWeapon: UnitExplode
@@ -170,7 +178,7 @@ FTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -184,7 +192,7 @@ FTNK:
 		TurnSpeed: 7
 		Speed: 99
 	Health:
-		HP: 270
+		HP: 27000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -200,12 +208,14 @@ FTNK:
 		EmptyWeapon: FlametankExplode
 	SpawnActorOnDeath:
 		Actor: FTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 BGGY:
 	Inherits: ^Vehicle
 	Inherits@@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -219,7 +229,7 @@ BGGY:
 		TurnSpeed: 10
 		Speed: 170
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -236,12 +246,14 @@ BGGY:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: BGGY.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 BIKE:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -262,7 +274,7 @@ BIKE:
 			BlueTiberium: 35
 			Beach: 35
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -274,12 +286,14 @@ BIKE:
 	AttackFrontal:
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 JEEP:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -293,7 +307,7 @@ JEEP:
 		TurnSpeed: 10
 		Speed: 156
 	Health:
-		HP: 160
+		HP: 16000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -302,7 +316,7 @@ JEEP:
 		TurnSpeed: 10
 		Offset: -85,0,128
 	Armament:
-		Weapon: MachineGun
+		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
 	AttackTurreted:
@@ -310,12 +324,14 @@ JEEP:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: JEEP.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 LTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 650
 	Tooltip:
@@ -331,7 +347,7 @@ LTNK:
 		TurnSpeed: 7
 		Speed: 110
 	Health:
-		HP: 340
+		HP: 34000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -349,12 +365,14 @@ LTNK:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: LTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 MTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -367,7 +385,7 @@ MTNK:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -385,14 +403,17 @@ MTNK:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
-		VisualBounds: 28,28
+	Selectable:
+		DecorationBounds: 28,28
 
 HTNK:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -407,7 +428,7 @@ HTNK:
 		Speed: 56
 		TurnSpeed: 3
 	Health:
-		HP: 870
+		HP: 87000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -431,19 +452,23 @@ HTNK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	SelfHealing:
+		Step: 500
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
-		VisualBounds: 34,34,0,-3
+	Selectable:
+		DecorationBounds: 34,34,0,-3
 
 MSAM:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -457,7 +482,7 @@ MSAM:
 		Speed: 85
 		TurnSpeed: 4
 	Health:
-		HP: 120
+		HP: 12000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -476,6 +501,8 @@ MSAM:
 		AimSequence: aim
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 MLRS:
 	Inherits: ^Tank
@@ -495,7 +522,7 @@ MLRS:
 		Speed: 99
 		TurnSpeed: 7
 	Health:
-		HP: 180
+		HP: 18000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -510,9 +537,6 @@ MLRS:
 	AmmoPool:
 		Ammo: 2
 		PipCount: 0
-		SelfReloads: true
-		ReloadCount: 1
-		SelfReloadDelay: 45
 	AttackTurreted:
 	WithReloadingSpriteTurret:
 		AmmoPoolName: primary
@@ -521,11 +545,16 @@ MLRS:
 	RenderRangeCircle:
 	SpawnActorOnDeath:
 		Actor: MLRS.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	ReloadAmmoPool:
+		Delay: 45
+		Count: 1
 
 STNK:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -540,7 +569,7 @@ STNK:
 		Speed: 142
 		Crushes: crate, infantry
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -564,6 +593,8 @@ STNK:
 	Targetable:
 	SpawnActorOnDeath:
 		Actor: STNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	-MustBeDestroyed:
 
 MHQ:
@@ -573,7 +604,7 @@ MHQ:
 	Tooltip:
 		Name: Mobile HQ
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -585,3 +616,32 @@ MHQ:
 		Offset: -256,0,256
 	Buildable:
 		Description: Mobile base of operations
+
+TRUCK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle.GDI, Vehicle.Nod
+		BuildPaletteOrder: 35
+		Prerequisites: vehicleproduction
+		Description: Transports cash to other players.\n  Unarmed
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Supply Truck
+	Selectable:
+		Priority: 6
+	Health:
+		HP: 11000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 128
+	RevealsShroud:
+		Range: 4c0
+	DeliversCash:
+		Payload: 500
+		PlayerExperience: 50
+	SpawnActorOnDeath:
+		Actor: TRUCK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true

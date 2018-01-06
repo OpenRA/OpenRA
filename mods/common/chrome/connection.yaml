@@ -63,7 +63,7 @@ Background@CONNECTING_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 450
-	Height: 150
+	Height: 160
 	Children:
 		Label@CONNECTING_TITLE:
 			X: 0

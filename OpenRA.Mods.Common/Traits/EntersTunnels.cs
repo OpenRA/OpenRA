@@ -52,10 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID != "EnterTunnel")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID, SuppressVisualFeedback = true };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor, SuppressVisualFeedback = true };
+			return new Order(order.OrderID, self, target, queued) { SuppressVisualFeedback = true };
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -108,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 				var buildingInfo = target.Info.TraitInfoOrDefault<BuildingInfo>();
 				if (buildingInfo != null)
 				{
-					var footprint = FootprintUtils.PathableTiles(target.Info.Name, buildingInfo, target.Location);
+					var footprint = buildingInfo.PathableTiles(target.Location);
 					if (footprint.All(c => self.World.ShroudObscures(c)))
 						return false;
 				}

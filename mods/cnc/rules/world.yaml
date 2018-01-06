@@ -6,6 +6,7 @@
 	MusicPlaylist:
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
+	DebugVisualizations:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed
@@ -54,6 +55,7 @@ World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
+	DebugVisualizationCommands:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:
@@ -75,9 +77,15 @@ World:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
 	MapCreeps:
+		CheckboxVisible: False
 	SpawnMapActors:
 	MapBuildRadius:
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxDisplayOrder: 5
 	MapOptions:
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 3
 	MPStartLocations:
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
@@ -123,12 +131,14 @@ World:
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnMPUnits:
 		StartingUnitsClass: light
+		DropdownDisplayOrder: 0
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
 		SpawnInterval: 3000
 		WaterChance: 0
 		InitialSpawnDelay: 1500
+		CheckboxDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

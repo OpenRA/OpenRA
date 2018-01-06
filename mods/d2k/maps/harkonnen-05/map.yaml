@@ -1,0 +1,515 @@
+MapFormat: 11
+
+RequiresMod: d2k
+
+Title: Harkonnen 05
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 74,84
+
+Bounds: 2,2,70,80
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Enemies: Harkonnen, Ordos Main Base, Ordos Small Base, Corrino
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Playable: True
+		LockFaction: True
+		Faction: harkonnen
+		LockColor: True
+		Color: FE0000
+		Enemies: Ordos Main Base, Ordos Small Base, Corrino, Creeps
+	PlayerReference@Ordos Main Base:
+		Name: Ordos Main Base
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Allies: Ordos Small Base, Corrino
+		Enemies: Harkonnen
+	PlayerReference@Ordos Small Base:
+		Name: Ordos Small Base
+		LockFaction: True
+		Faction: ordos
+		LockColor: True
+		Color: B3EAA5
+		Allies: Ordos Main Base, Corrino
+		Enemies: Harkonnen
+	PlayerReference@Corrino:
+		Name: Corrino
+		LockFaction: True
+		Faction: corrino
+		LockColor: True
+		Color: 7D00FE
+		Allies: Ordos Main Base, Ordos Small Base
+		Enemies: Harkonnen
+
+Actors:
+	Actor0: wall
+		Location: 69,10
+		Owner: Ordos Main Base
+	Actor1: wall
+		Location: 70,10
+		Owner: Ordos Main Base
+	Actor2: wall
+		Location: 71,10
+		Owner: Ordos Main Base
+	Actor3: wall
+		Location: 64,11
+		Owner: Ordos Main Base
+	Actor4: wall
+		Location: 65,11
+		Owner: Ordos Main Base
+	Actor5: wall
+		Location: 66,11
+		Owner: Ordos Main Base
+	Actor6: wall
+		Location: 67,11
+		Owner: Ordos Main Base
+	Actor7: wall
+		Location: 68,11
+		Owner: Ordos Main Base
+	Actor8: wall
+		Location: 69,11
+		Owner: Ordos Main Base
+	OGunt1: medium_gun_turret
+		Location: 59,13
+		Owner: Ordos Main Base
+	CSardaukar1: sardaukar
+		Location: 69,13
+		Owner: Corrino
+	CSardaukar2: sardaukar
+		Location: 70,13
+		Owner: Corrino
+	Actor12: spicebloom.spawnpoint
+		Location: 32,14
+		Owner: Neutral
+	Actor13: wall
+		Location: 59,14
+		Owner: Ordos Main Base
+	CStarport: starport
+		Location: 67,14
+		Owner: Corrino
+	Actor15: wall
+		Location: 59,15
+		Owner: Ordos Main Base
+	OHeavyFactory: heavy_factory
+		Location: 61,15
+		Owner: Ordos Main Base
+	CSardaukar3: sardaukar
+		Location: 65,15
+		Owner: Corrino
+	CSardaukar4: sardaukar
+		Location: 71,15
+		Owner: Corrino
+	Actor19: wall
+		Location: 59,16
+		Owner: Ordos Main Base
+	Actor20: wall
+		Location: 59,17
+		Owner: Ordos Main Base
+	CSardaukar5: sardaukar
+		Location: 66,17
+		Owner: Corrino
+	Actor22: wall
+		Location: 57,18
+		Owner: Ordos Main Base
+	Actor23: wall
+		Location: 58,18
+		Owner: Ordos Main Base
+	Actor24: wall
+		Location: 59,18
+		Owner: Ordos Main Base
+	Actor25: light_inf
+		Location: 65,18
+		Owner: Ordos Main Base
+	CPower1: wind_trap
+		Location: 67,18
+		Owner: Corrino
+	CPower2: wind_trap
+		Location: 69,18
+		Owner: Corrino
+	Actor28: wind_trap
+		Location: 4,19
+		Owner: Harkonnen
+	Actor29: spicebloom.spawnpoint
+		Location: 47,19
+		Owner: Neutral
+	OOutpost: outpost
+		Location: 58,19
+		Owner: Ordos Main Base
+	OConYard: construction_yard
+		Location: 63,19
+		Owner: Ordos Main Base
+	Actor32: light_inf
+		Location: 3,20
+		Owner: Harkonnen
+	Actor33: light_inf
+		Location: 6,20
+		Owner: Harkonnen
+	OPower1: wind_trap
+		Location: 55,20
+		Owner: Ordos Main Base
+	Actor35: trooper
+		Location: 61,20
+		Owner: Ordos Main Base
+	Actor36: combat_tank_h
+		Location: 7,21
+		Owner: Harkonnen
+	ORefinery1: refinery
+		Location: 68,21
+		Owner: Ordos Main Base
+	HConYard: construction_yard
+		Location: 4,23
+		Owner: Harkonnen
+	Actor39: wind_trap
+		Location: 8,23
+		Owner: Harkonnen
+	OLightFactory1: light_factory
+		Location: 57,23
+		Owner: Ordos Main Base
+	OPower2: wind_trap
+		Location: 61,23
+		Owner: Ordos Main Base
+	OBarracks1: barracks
+		Location: 63,23
+		Owner: Ordos Main Base
+	OPower3: wind_trap
+		Location: 67,24
+		Owner: Ordos Main Base
+	OPower4: wind_trap
+		Location: 69,24
+		Owner: Ordos Main Base
+	OPower5: wind_trap
+		Location: 54,26
+		Owner: Ordos Main Base
+	Actor46: light_inf
+		Location: 8,27
+		Owner: Harkonnen
+	Actor47: spicebloom.spawnpoint
+		Location: 19,27
+		Owner: Neutral
+	OHiTechFactory: high_tech_factory
+		Location: 57,27
+		Owner: Ordos Main Base
+	Actor49: trooper
+		Location: 61,27
+		Owner: Ordos Main Base
+	ORefinery2: refinery
+		Location: 63,27
+		Owner: Ordos Main Base
+	Actor51: carryall
+		Location: 66,27
+		Owner: Ordos Main Base
+	Actor52: light_inf
+		Location: 6,28
+		Owner: Harkonnen
+	OPower6: wind_trap
+		Location: 67,28
+		Owner: Ordos Main Base
+	OPower7: wind_trap
+		Location: 69,28
+		Owner: Ordos Main Base
+	Actor55: light_inf
+		Location: 3,29
+		Owner: Harkonnen
+	Actor56: harvester
+		Location: 65,30
+		Owner: Ordos Main Base
+	OBarracks2: barracks
+		Location: 57,31
+		Owner: Ordos Main Base
+	Actor58: combat_tank_o
+		Location: 61,31
+		Owner: Ordos Main Base
+	Actor59: light_inf
+		Location: 63,31
+		Owner: Ordos Main Base
+	OPower8: wind_trap
+		Location: 67,31
+		Owner: Ordos Main Base
+	OPower9: wind_trap
+		Location: 69,31
+		Owner: Ordos Main Base
+	Actor62: wormspawner
+		Location: 48,33
+		Owner: Creeps
+	Actor63: combat_tank_o
+		Location: 59,33
+		Owner: Ordos Main Base
+	Actor64: combat_tank_o
+		Location: 66,33
+		Owner: Ordos Main Base
+	Actor65: wall
+		Location: 57,35
+		Owner: Ordos Main Base
+	Actor66: wall
+		Location: 58,35
+		Owner: Ordos Main Base
+	Actor67: wall
+		Location: 59,35
+		Owner: Ordos Main Base
+	Actor68: wall
+		Location: 60,35
+		Owner: Ordos Main Base
+	OGunt2: medium_gun_turret
+		Location: 61,35
+		Owner: Ordos Main Base
+	Actor70: combat_tank_o
+		Location: 64,35
+		Owner: Ordos Main Base
+	OGunt3: medium_gun_turret
+		Location: 66,35
+		Owner: Ordos Main Base
+	Actor72: wall
+		Location: 67,35
+		Owner: Ordos Main Base
+	Actor73: wall
+		Location: 68,35
+		Owner: Ordos Main Base
+	Actor74: wall
+		Location: 69,35
+		Owner: Ordos Main Base
+	Actor75: wall
+		Location: 70,35
+		Owner: Ordos Main Base
+	Actor76: wall
+		Location: 57,36
+		Owner: Ordos Main Base
+	Actor77: wall
+		Location: 70,36
+		Owner: Ordos Main Base
+	Actor78: wall
+		Location: 57,37
+		Owner: Ordos Main Base
+	Actor79: wall
+		Location: 70,37
+		Owner: Ordos Main Base
+	Actor80: wall
+		Location: 71,37
+		Owner: Ordos Main Base
+	Actor81: spicebloom.spawnpoint
+		Location: 25,38
+		Owner: Neutral
+	OGunt4: medium_gun_turret
+		Location: 56,38
+		Owner: Ordos Main Base
+	Actor83: wall
+		Location: 57,38
+		Owner: Ordos Main Base
+	Actor84: wall
+		Location: 10,43
+		Owner: Harkonnen
+	Actor85: wall
+		Location: 12,43
+		Owner: Harkonnen
+	Actor86: wall
+		Location: 10,44
+		Owner: Harkonnen
+	Actor87: medium_gun_turret
+		Location: 11,44
+		Owner: Harkonnen
+	Actor88: wall
+		Location: 12,44
+		Owner: Harkonnen
+	Actor89: spicebloom.spawnpoint
+		Location: 22,45
+		Owner: Neutral
+	Actor90: spicebloom.spawnpoint
+		Location: 63,45
+		Owner: Neutral
+	Actor91: wall
+		Location: 5,47
+		Owner: Harkonnen
+	Actor92: wall
+		Location: 6,47
+		Owner: Harkonnen
+	Actor93: medium_gun_turret
+		Location: 6,48
+		Owner: Harkonnen
+	Actor94: spicebloom.spawnpoint
+		Location: 27,48
+		Owner: Neutral
+	Actor95: wall
+		Location: 5,49
+		Owner: Harkonnen
+	Actor96: wall
+		Location: 6,49
+		Owner: Harkonnen
+	Actor97: spicebloom.spawnpoint
+		Location: 32,56
+		Owner: Neutral
+	Actor98: spicebloom.spawnpoint
+		Location: 66,62
+		Owner: Neutral
+	Actor99: spicebloom.spawnpoint
+		Location: 41,64
+		Owner: Neutral
+	Actor100: spicebloom.spawnpoint
+		Location: 38,66
+		Owner: Neutral
+	Actor101: spicebloom.spawnpoint
+		Location: 5,69
+		Owner: Neutral
+	OSilo: silo
+		Location: 13,72
+		Owner: Ordos Small Base
+	OPower10: wind_trap
+		Location: 15,72
+		Owner: Ordos Small Base
+	OLightFactory2: light_factory
+		Location: 11,74
+		Owner: Ordos Small Base
+	OPower11: wind_trap
+		Location: 15,75
+		Owner: Ordos Small Base
+	OGunt5: medium_gun_turret
+		Location: 9,76
+		Owner: Ordos Small Base
+	Actor107: wall
+		Location: 10,76
+		Owner: Ordos Small Base
+	Actor108: wall
+		Location: 9,77
+		Owner: Ordos Small Base
+	OBarracks3: barracks
+		Location: 7,78
+		Owner: Ordos Small Base
+	ORefinery3: refinery
+		Location: 10,78
+		Owner: Ordos Small Base
+	Actor111: carryall
+		Location: 13,78
+		Owner: Ordos Small Base
+	OPower12: wind_trap
+		Location: 14,78
+		Owner: Ordos Small Base
+	OPower13: wind_trap
+		Location: 16,78
+		Owner: Ordos Small Base
+	Actor114: wall
+		Location: 19,78
+		Owner: Ordos Small Base
+	Actor115: spicebloom.spawnpoint
+		Location: 32,78
+		Owner: Neutral
+	OGunt6: medium_gun_turret
+		Location: 19,79
+		Owner: Ordos Small Base
+	Actor117: harvester
+		Location: 13,80
+		Owner: Ordos Small Base
+	Actor118: wall
+		Location: 19,80
+		Owner: Ordos Small Base
+	OrdosRally10: waypoint
+		Owner: Neutral
+		Location: 4,78
+	OrdosEntry10: waypoint
+		Owner: Neutral
+		Location: 4,81
+	CorrinoStarportEntry: waypoint
+		Owner: Neutral
+		Location: 71,15
+	CorrinoStarportExit: waypoint
+		Owner: Neutral
+		Location: 2,15
+	OrdosRally8: waypoint
+		Owner: Neutral
+		Location: 63,36
+	OrdosEntry8: waypoint
+		Owner: Neutral
+		Location: 71,34
+	OrdosRally9: waypoint
+		Owner: Neutral
+		Location: 63,33
+	OrdosEntry9: waypoint
+		Owner: Neutral
+		Location: 71,30
+	OrdosRally11: waypoint
+		Owner: Neutral
+		Location: 69,76
+	OrdosEntry11: waypoint
+		Owner: Neutral
+		Location: 71,76
+	HOutpost: outpost
+		Owner: Harkonnen
+		Location: 6,40
+	OrdosRally12: waypoint
+		Owner: Neutral
+		Location: 28,80
+	OrdosEntry12: waypoint
+		Owner: Neutral
+		Location: 28,81
+	OrdosRally1: waypoint
+		Owner: Neutral
+		Location: 29,67
+	OrdosEntry1: waypoint
+		Owner: Neutral
+		Location: 29,81
+	OrdosRally2: waypoint
+		Owner: Neutral
+		Location: 7,67
+	OrdosEntry2: waypoint
+		Owner: Neutral
+		Location: 2,67
+	OrdosRally3: waypoint
+		Owner: Neutral
+		Location: 14,65
+	OrdosEntry3: waypoint
+		Owner: Neutral
+		Location: 2,65
+	OrdosRally4: waypoint
+		Owner: Neutral
+		Location: 32,58
+	OrdosEntry4: waypoint
+		Owner: Neutral
+		Location: 2,58
+	OrdosRally5: waypoint
+		Owner: Neutral
+		Location: 22,30
+	OrdosEntry5: waypoint
+		Owner: Neutral
+		Location: 22,2
+	OrdosRally6: waypoint
+		Owner: Neutral
+		Location: 30,8
+	OrdosEntry6: waypoint
+		Owner: Neutral
+		Location: 30,2
+	OrdosRally7: waypoint
+		Owner: Neutral
+		Location: 31,4
+	OrdosEntry7: waypoint
+		Owner: Neutral
+		Location: 31,2
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 11,19
+	HarkonnenEntry1: waypoint
+		Owner: Neutral
+		Location: 2,19
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 4,29
+	HarkonnenEntry2: waypoint
+		Owner: Neutral
+		Location: 2,29
+
+Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml

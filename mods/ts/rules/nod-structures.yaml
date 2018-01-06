@@ -1,7 +1,6 @@
 NAPOWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
-	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
@@ -18,29 +17,29 @@ NAPOWR:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 88, 48, 2, -6
+		DecorationBounds: 88, 80, 2, -12
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !empdisable
 		Sequence: idle-lights
 	Power:
 		Amount: 100
+		RequiresCondition: !empdisable
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
 	SelectionDecorations:
-		VisualBounds: 88, 80, 2, -12
 
 NAAPWR:
 	Inherits: ^Building
-	Inherits@IDISABLE: ^DisabledOverlay
-	Inherits@POWER_OUTAGE: ^DisabledByPowerOutage
+	Inherits@SHAPE: ^2x3Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
@@ -57,28 +56,30 @@ NAAPWR:
 		Dimensions: 2,3
 	Selectable:
 		Bounds: 100, 54, 0, -4
+		DecorationBounds: 100, 74, 0, -12
 	Health:
-		HP: 750
+		HP: 75000
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !empdisable
 		Sequence: idle-lights
 	Power:
 		Amount: 200
+		RequiresCondition: !empdisable
 	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	ScalePowerWithHealth:
 	PowerTooltip:
 	SelectionDecorations:
-		VisualBounds: 100, 74, 0, -12
 	ProvidesPrerequisite@buildingname:
 
 NAHAND:
 	Inherits: ^Building
+	Inherits@SHAPE: ^3x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
@@ -95,8 +96,9 @@ NAHAND:
 		Dimensions: 3,2
 	Selectable:
 		Bounds: 116, 60, 3, -6
+		DecorationBounds: 116, 78, 3, -8
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -112,6 +114,7 @@ NAHAND:
 		IsPlayerPalette: false
 	Production:
 		Produces: Infantry
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -123,7 +126,6 @@ NAHAND:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 116, 78, 3, -8
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -134,6 +136,7 @@ NAHAND:
 
 NAWEAP:
 	Inherits: ^Building
+	Inherits@SHAPE: ^4x3FactoryWithBibShape
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -146,12 +149,13 @@ NAWEAP:
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
-		Footprint: xxx= xxx= xxx=
+		Footprint: xxX= xxX= xxX=
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 149, 80, -3, -10
+		DecorationBounds: 149, 116, -3, -20
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -168,6 +172,7 @@ NAWEAP:
 	ExitsDebugOverlay:
 	Production:
 		Produces: Vehicle
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -182,7 +187,6 @@ NAWEAP:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 149, 116, -3, -20
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -193,6 +197,7 @@ NAWEAP:
 
 NAHPAD:
 	Inherits: ^Building
+	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -206,7 +211,7 @@ NAHPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
@@ -218,10 +223,12 @@ NAHPAD:
 		IsPlayerPalette: false
 	Production:
 		Produces: Air
+		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
 	ProductionBar:
@@ -236,9 +243,9 @@ NAHPAD:
 		Amount: -10
 	Selectable:
 		Bounds: 78, 48, 0, -6
+		DecorationBounds: 78, 54, 0, -8
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 78, 54, 0, -8
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
@@ -249,7 +256,8 @@ NAHPAD:
 
 NARADR:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
@@ -266,17 +274,13 @@ NARADR:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 96, 48, 0, -6
+		DecorationBounds: 96, 72, 0, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
-	RequiresPower:
-	CanPowerDown:
-		IndicatorPalette: mouse
-		PowerupSpeech: EnablePower
-		PowerdownSpeech: DisablePower
 	ProvidesRadar:
-		RequiresCondition: !disabled
+		RequiresCondition: !disabled && !empdisable
 	InfiltrateForExploration:
 	DetectCloaked:
 		Range: 10c0
@@ -286,18 +290,18 @@ NARADR:
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
 		Sequence: idle-dish
-		PauseOnCondition: disabled
+		PauseOnCondition: disabled || empdisable
 	Targetable:
-		TargetTypes: Ground, C4, SpyInfiltrate
+		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 96, 72, 0, -12
 
 NATECH:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPower
+	Inherits@SHAPE: ^2x2Shape
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 160
@@ -314,8 +318,9 @@ NATECH:
 		Dimensions: 2,2
 	Selectable:
 		Bounds: 86, 48, 0, -4
+		DecorationBounds: 86, 58, 0, -4
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -326,14 +331,15 @@ NATECH:
 		Sequence: idle-lights
 	Power:
 		Amount: -150
-	RequiresPower:
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 86, 58, 0, -4
 
 NATMPL:
 	Inherits: ^Building
-	Inherits@IDISABLED: ^DisabledOverlay
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^4x3Shape
+	HitShape:
+		TargetableOffsets: -1280,363,0
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 180
@@ -345,13 +351,14 @@ NATMPL:
 	Tooltip:
 		Name: Temple of Nod
 	Building:
-		Adjacent: 3
-		Footprint: xxxx xxxx xxxx
+		Footprint: xxxx xxxx xxxX
 		Dimensions: 4,3
+	RequiresBuildableArea:
+		Adjacent: 3
 	Selectable:
 		Bounds: 134, 120, 12, -12
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -359,20 +366,20 @@ NATMPL:
 		MaxHeightDelta: 3
 	Power:
 		Amount: -200
-	RequiresPower:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !disabled
 		Sequence: idle-lights
 	ProduceActorPower:
-		PauseOnCondition: empdisable
+		PauseOnCondition: empdisable || disabled
 		Description: Hunter Seeker
 		LongDesc: Releases a drone that will acquire and destroy an enemy target.
 		Prerequisites: ~techlevel.superweapons
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker
-		ChargeTime: 720
+		ChargeInterval: 18000
 	Production:
 		Produces: HunterSeeker
+		PauseOnCondition: empdisable
 	Exit@1:
 	ExitsDebugOverlay:

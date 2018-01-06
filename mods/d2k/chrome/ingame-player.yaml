@@ -14,16 +14,8 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
 					HoldText: ON HOLD
-				Container@PALETTE_FOREGROUND:
-					Children:
-						Image@ICON_TEMPLATE:
-							X: 0 - 2
-							Y: 0 - 2
-							Width: 60
-							Height: 48
-							IgnoreMouseOver: true
-							ImageCollection: sidebar
-							ImageName: background-supportoverlay
+					HotkeyPrefix: SupportPower
+					HotkeyCount: 6
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 0
 			Y: WINDOW_BOTTOM - HEIGHT
@@ -38,15 +30,18 @@ Container@PLAYER_WIDGETS:
 			Width: 275
 			Height: 41
 			Children:
+				LogicKeyListener@MODIFIER_OVERRIDES:
 				Button@ATTACK_MOVE:
 					Width: 34
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
-					DisableKeyRepeat: true
+					Key: AttackMove
+					DisableKeySound: true
 					TooltipText: Attack Move
-					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nLeft-click icon then right-click on target location.
+					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold {(Ctrl)} while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
 						Image@ICON:
 							X: 4
@@ -59,6 +54,7 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
+					DisableKeySound: true
 					TooltipText: Force Move
 					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -75,6 +71,7 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
+					DisableKeySound: true
 					TooltipText: Force Attack
 					TooltipDesc: Selected units will attack the targeted unit or location\nignoring their default activity for the target.\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -91,7 +88,8 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
-					DisableKeyRepeat: true
+					Key: Guard
+					DisableKeySound: true
 					TooltipText: Guard
 					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -107,9 +105,11 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
+					Key: Deploy
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Deploy
-					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Thumpers will start or stop attracting worms\n\nActs immediately on selected units.
+					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Thumpers will start or stop attracting worms\n - Devastators will become immobilized and explode\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -123,7 +123,9 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
+					Key: Scatter
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Scatter
 					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -139,7 +141,9 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
+					Key: Stop
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Stop
 					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -155,6 +159,7 @@ Container@PLAYER_WIDGETS:
 					Height: 41
 					VisualHeight: 0
 					Background: command-button
+					DisableKeySound: true
 					TooltipText: Waypoint Mode
 					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -177,7 +182,9 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					VisualHeight: 0
 					Background:
+					Key: StanceAttackAnything
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Attack Anything Stance
 					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -193,7 +200,9 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					VisualHeight: 0
 					Background:
+					Key: StanceDefend
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Defend Stance
 					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -209,7 +218,9 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					VisualHeight: 0
 					Background:
+					Key: StanceReturnFire
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Return Fire Stance
 					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -225,7 +236,9 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					VisualHeight: 0
 					Background:
+					Key: StanceHoldFire
 					DisableKeyRepeat: true
+					DisableKeySound: true
 					TooltipText: Hold Fire Stance
 					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -250,11 +263,11 @@ Container@PLAYER_WIDGETS:
 					Y: 236
 					Children:
 						MenuButton@DEBUG_BUTTON:
-							Key: escape Shift
 							X: 4
 							Width: 34
 							Height: 35
 							Background:
+							Key: escape Shift
 							TooltipText: Debug Menu
 							TooltipContainer: TOOLTIP_CONTAINER
 							DisableWorldSounds: true
@@ -271,6 +284,7 @@ Container@PLAYER_WIDGETS:
 							Width: 34
 							Height: 35
 							Background:
+							Key: Repair
 							TooltipText: Repair
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -285,6 +299,7 @@ Container@PLAYER_WIDGETS:
 							Width: 34
 							Height: 35
 							Background:
+							Key: Sell
 							TooltipText: Sell
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -299,6 +314,7 @@ Container@PLAYER_WIDGETS:
 							Width: 36
 							Height: 35
 							Background:
+							Key: PlaceBeacon
 							TooltipText: Place Beacon
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -313,6 +329,7 @@ Container@PLAYER_WIDGETS:
 							Width: 36
 							Height: 35
 							Background:
+							Key: PowerDown
 							TooltipText: Power Down
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
@@ -467,6 +484,8 @@ Container@PLAYER_WIDGETS:
 					IconSpriteOffset: 0, 0
 					MinimumRows: 5
 					MaximumRows: 6
+					HotkeyPrefix: Production
+					HotkeyCount: 24
 				Container@PRODUCTION_TYPES:
 					X: 6
 					Y: 2
@@ -481,22 +500,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
-							HotkeyName: ProductionTypeBuildingKey
-							Children:
-								Image@ICON:
-									X: 5
-									Y: 5
-									ImageCollection: production-icons
-						ProductionTypeButton@UPGRADE:
-							Y: 31
-							Width: 25
-							Height: 25
-							VisualHeight: 0
-							Background: sidebar-button
-							TooltipText: Upgrades
-							TooltipContainer: TOOLTIP_CONTAINER
-							ProductionGroup: Upgrade
-							HotkeyName: ProductionTypeUpgradeKey
+							Key: ProductionTypeBuilding
 							Children:
 								Image@ICON:
 									X: 5
@@ -511,7 +515,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
-							HotkeyName: ProductionTypeInfantryKey
+							Key: ProductionTypeInfantry
 							Children:
 								Image@ICON:
 									X: 5
@@ -526,7 +530,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Light Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
-							HotkeyName: ProductionTypeVehicleKey
+							Key: ProductionTypeVehicle
 							Children:
 								Image@ICON:
 									X: 5
@@ -541,7 +545,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Heavy Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Armor
-							HotkeyName: ProductionTypeTankKey
+							Key: ProductionTypeTank
 							Children:
 								Image@ICON:
 									X: 5
@@ -556,7 +560,7 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
-							HotkeyName: ProductionTypeAircraftKey
+							Key: ProductionTypeAircraft
 							Children:
 								Image@ICON:
 									X: 5
@@ -571,7 +575,22 @@ Container@PLAYER_WIDGETS:
 							TooltipText: Starport
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Starport
-							HotkeyName: ProductionTypeMerchantKey
+							Key: ProductionTypeMerchant
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 5
+									ImageCollection: production-icons
+						ProductionTypeButton@UPGRADE: # Upgrade is defined after others so it won't be automatically selected after sell or at game start.
+							Y: 31
+							Width: 25
+							Height: 25
+							VisualHeight: 0
+							Background: sidebar-button
+							TooltipText: Upgrades
+							TooltipContainer: TOOLTIP_CONTAINER
+							ProductionGroup: Upgrade
+							Key: ProductionTypeUpgrade
 							Children:
 								Image@ICON:
 									X: 5

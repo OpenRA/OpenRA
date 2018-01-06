@@ -17,7 +17,7 @@ APC:
 			Water: 80
 		RequiresCondition: !empdisable && !loading
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -51,7 +51,7 @@ HVR:
 	Inherits: ^Vehicle
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 900
 	Tooltip:
@@ -75,7 +75,7 @@ HVR:
 			BlueTiberium: 100
 			Veins: 100
 	Health:
-		HP: 230
+		HP: 23000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -90,6 +90,7 @@ HVR:
 		Offset: -128,0,85
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithVoxelTurret:
 	Hovers:
 	LeavesTrails:
@@ -106,7 +107,7 @@ HVR:
 SMECH:
 	Inherits: ^Vehicle
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -120,7 +121,7 @@ SMECH:
 		TurnSpeed: 5
 		Speed: 99
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -129,6 +130,7 @@ SMECH:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Armament:
 		Weapon: AssaultCannon
 	Voiced:
@@ -149,7 +151,7 @@ SMECH:
 MMCH:
 	Inherits: ^Tank
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -164,7 +166,7 @@ MMCH:
 		Speed: 56
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -182,6 +184,7 @@ MMCH:
 		TurnSpeed: 5
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	WithSpriteTurret:
 		Recoils: false
 	Armament:
@@ -208,7 +211,7 @@ HMEC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 3000
 	Tooltip:
@@ -224,8 +227,9 @@ HMEC:
 		Speed: 42
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 800
+		HP: 80000
 	SelfHealing:
+		Step: 500
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -234,6 +238,7 @@ HMEC:
 		MaxHeightDelta: 3
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Armament@MISSILES:
 		Weapon: MammothTusk
 		LocalOffset: -243,-368,1208, -243,368,1208
@@ -252,7 +257,7 @@ SONIC:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 1300
 	Tooltip:
@@ -269,7 +274,7 @@ SONIC:
 		Speed: 56
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -281,6 +286,7 @@ SONIC:
 		LocalOffset: -71,0,580
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	Turreted:
 		TurnSpeed: 5
 		Offset: -170,0,0
@@ -295,7 +301,7 @@ JUGG:
 	Inherits: ^Tank
 	Inherits@SPRITES: ^SpriteActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -310,7 +316,7 @@ JUGG:
 		Prerequisites: ~gaweap, garadr, ~techlevel.high
 		Description: Mobile Artillery Mech.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
 	Health:
-		HP: 350
+		HP: 35000
 	Armor:
 		Type: Light
 	Mobile:
@@ -364,7 +370,9 @@ JUGG:
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
+		Turrets: deployed
 		RequiresCondition: deployed
+		PauseOnCondition: empdisable
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -379,4 +387,5 @@ JUGG:
 	RevealOnFire:
 		ArmamentNames: deployed
 	SelectionDecorations:
-		VisualBounds: 48,40,0,-8
+	Selectable:
+		DecorationBounds: 48,40,0,-8

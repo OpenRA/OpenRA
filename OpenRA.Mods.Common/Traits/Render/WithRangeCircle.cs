@@ -97,6 +97,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderRangeCircle(self, wr);
 		}
 
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			if (Info.Visible == RangeCircleVisibility.Always && Visible)
