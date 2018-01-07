@@ -902,6 +902,7 @@ high_tech_factory:
 		Name: High Tech Factory
 	ProductionFromMapEdge:
 		Produces: Aircraft, Upgrade
+	ProductionBar:
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
