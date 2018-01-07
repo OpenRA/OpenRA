@@ -903,6 +903,8 @@ high_tech_factory:
 	ProductionFromMapEdge:
 		Produces: Aircraft, Upgrade
 	ProductionBar:
+	PrimaryBuilding:
+		PrimaryCondition: primary
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
@@ -965,6 +967,12 @@ high_tech_factory:
 		ReferencePoint: Top, Right
 		ZOffset: 256
 		RequiresCondition: stardecoration
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		ZOffset: 256
+		RequiresCondition: primary
 
 research_centre:
 	Inherits: ^Building
