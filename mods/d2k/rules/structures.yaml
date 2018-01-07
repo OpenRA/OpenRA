@@ -685,7 +685,7 @@ wall:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	CombatDebugOverlay:
-	HiddenUnderShroud:
+	FrozenUnderFog:
 	ScriptTriggers:
 	Buildable:
 		Queue: Building
