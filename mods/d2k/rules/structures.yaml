@@ -102,6 +102,7 @@ construction_yard:
 		Palette: d2k
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Building
 	ProvidesPrerequisite@buildingname:
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.conyard
@@ -209,6 +210,7 @@ barracks:
 		Produces: Infantry, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Infantry
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
@@ -408,6 +410,7 @@ light_factory:
 		Produces: Vehicle, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Vehicle
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
@@ -492,6 +495,7 @@ heavy_factory:
 		Produces: Armor, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Armor
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
@@ -653,6 +657,7 @@ starport:
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Starport
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -905,6 +910,7 @@ high_tech_factory:
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Aircraft
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
