@@ -35,6 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speech notification to play when selecting a primary building.")]
 		public readonly string SelectionNotification = "PrimaryBuildingSelected";
 
+		[Desc("List of production queues for which the primary flag should be set.",
+			"If empty, the list given in the `Produces` property of the `Production` trait will be used.")]
+		public readonly string[] ProductionQueues = { };
+
 		public object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
 	}
 
@@ -86,7 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Cancel existing primaries
 				// TODO: THIS IS SHIT
-				foreach (var p in self.Info.TraitInfo<ProductionInfo>().Produces)
+				var queues = info.ProductionQueues.Length == 0 ? self.Info.TraitInfo<ProductionInfo>().Produces : info.ProductionQueues;
+				foreach (var q in queues)
 				{
 					foreach (var b in self.World
 							.ActorsWithTrait<PrimaryBuilding>()
@@ -94,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 								a.Actor != self &&
 								a.Actor.Owner == self.Owner &&
 								a.Trait.IsPrimary &&
-								a.Actor.Info.TraitInfo<ProductionInfo>().Produces.Contains(p)))
+								a.Actor.Info.TraitInfo<ProductionInfo>().Produces.Contains(q)))
 						b.Trait.SetPrimaryProducer(b.Actor, false);
 				}
 
