@@ -128,12 +128,12 @@ Container@MUSIC_PANEL:
 									Height: 16
 									ImageCollection: music
 									ImageName: next
-						Slider@MUSIC_SLIDER:
+						ExponentialSlider@MUSIC_SLIDER:
 							X: 145
 							Y: 3
 							Width: 185
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 				Label@TIME_LABEL:
 					X: (PARENT_RIGHT - WIDTH) / 2
 					Y: 315

@@ -128,12 +128,12 @@ Container@LOBBY_MUSIC_BIN:
 					Height: 25
 					Align: Right
 					Text: Volume:
-				Slider@MUSIC_SLIDER:
+				ExponentialSlider@MUSIC_SLIDER:
 					X: 70
 					Y: 186
 					Width: PARENT_RIGHT - 80
 					Height: 20
-					Ticks: 5
+					Ticks: 7
 		ScrollPanel@MUSIC_LIST:
 			X: 268
 			Width: PARENT_RIGHT - 268

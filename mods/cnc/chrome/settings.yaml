@@ -277,12 +277,12 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Align: Right
 							Text: Sound Volume:
-						Slider@SOUND_VOLUME:
+						ExponentialSlider@SOUND_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 43
 							Width: 250
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 						Checkbox@CASH_TICKS:
 							X: 15
 							Y: 40
@@ -304,12 +304,12 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Align: Right
 							Text: Music Volume:
-						Slider@MUSIC_VOLUME:
+						ExponentialSlider@MUSIC_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 73
 							Width: 250
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 						Label@VIDEO_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
 							Y: 97
@@ -317,12 +317,12 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Align: Right
 							Text: Video Volume:
-						Slider@VIDEO_VOLUME:
+						ExponentialSlider@VIDEO_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 103
 							Width: 250
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5
 							Y: 244
