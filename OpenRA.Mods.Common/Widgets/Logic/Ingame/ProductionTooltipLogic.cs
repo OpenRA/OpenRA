@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var timeMultiplier = pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1;
 
 				timeLabel.Text = formatBuildTime.Update(buildTime * timeMultiplier);
-				timeLabel.TextColor = pm.PowerState != PowerState.Normal ? Color.Red : Color.White;
+				timeLabel.TextColor = (pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerSlowdown > 1) ? Color.Red : Color.White;
 				var timeSize = font.Measure(timeLabel.Text);
 
 				costLabel.Text = cost.ToString();
