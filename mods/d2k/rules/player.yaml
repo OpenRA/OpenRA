@@ -50,7 +50,6 @@ Player:
 		QueuedAudio: Upgrading
 		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
-		SpeedUp: true
 	PlaceBuilding:
 	SupportPowerManager:
 	ScriptTriggers:
