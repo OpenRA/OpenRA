@@ -84,12 +84,12 @@ namespace OpenRA.Mods.Common.Widgets
 			return ThumbRect.Contains(mi.Location);
 		}
 
-		float ValueFromPx(int x)
+		protected virtual float ValueFromPx(int x)
 		{
 			return MinimumValue + (MaximumValue - MinimumValue) * (x - 0.5f * RenderBounds.Height) / (RenderBounds.Width - RenderBounds.Height);
 		}
 
-		protected int PxFromValue(float x)
+		protected virtual int PxFromValue(float x)
 		{
 			return (int)(0.5f * RenderBounds.Height + (RenderBounds.Width - RenderBounds.Height) * (x - MinimumValue) / (MaximumValue - MinimumValue));
 		}
