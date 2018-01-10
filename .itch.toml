@@ -4,29 +4,25 @@
 [[actions]]
 os = "windows"
 name = "Red Alert - Windows"
-path = "OpenRA.Game.exe"
-args = ["Game.Mod=ra"]
+path = "RedAlert.exe"
 sandbox = true
 
 [[actions]]
 os = "windows"
 name = "Dune 2000 - Windows"
-path = "OpenRA.Game.exe"
-args = ["Game.Mod=d2k"]
+path = "Dune2000.exe"
 sandbox = true
 
 [[actions]]
 os = "windows"
 name = "Tiberian Dawn - Windows"
-path = "OpenRA.Game.exe"
-args = ["Game.Mod=cnc"]
+path = "TiberianDawn.exe"
 sandbox = true
 
 #[[actions]]
 #os = "windows"
 #name = "Tiberian Sun - Windows"
-#path = "OpenRA.Game.exe"
-#args = ["Game.Mod=ts"]
+#path = "TiberianSun.exe"
 #sandbox = true
 
 
@@ -36,29 +32,25 @@ sandbox = true
 [[actions]]
 os = "macos"
 name = "Red Alert - MacOS"
-path = "mono-macos"
-args = ["OpenRA.Game.exe", "Game.Mod=ra"]
+path = "OpenRA - Red Alert.app"
 sandbox = true
 
 [[actions]]
 os = "macos"
 name = "Dune 2000 - MacOS"
-path = "mono-macos"
-args = ["OpenRA.Game.exe", "Game.Mod=d2k"]
+path = "OpenRA - Dune 2000.app"
 sandbox = true
 
 [[actions]]
 os = "macos"
 name = "Tiberian Dawn - MacOS"
-path = "mono-macos"
-args = ["OpenRA.Game.exe", "Game.Mod=cnc"]
+path = "OpenRA - Tiberian Dawn.app"
 sandbox = true
 
 #[[actions]]
 #os = "macos"
 #name = "Tiberian Sun - MacOS"
-#path = "mono-macos"
-#args = ["OpenRA.Game.exe", "Game.Mod=ts"]
+#path = "OpenRA - Tiberian Sun.app"
 #sandbox = true
 
 
