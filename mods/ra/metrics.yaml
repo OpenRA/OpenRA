@@ -7,6 +7,9 @@ Metrics:
 	FactionSuffix-england: allies
 	FactionSuffix-france: allies
 	FactionSuffix-germany: allies
+	FactionSuffix-spain: allies
+	FactionSuffix-greece: allies
+	FactionSuffix-turkey: allies
 	FactionSuffix-russia: soviet
 	FactionSuffix-soviet: soviet
 	FactionSuffix-ukraine: soviet
