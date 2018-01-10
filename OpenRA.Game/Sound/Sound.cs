@@ -80,6 +80,9 @@ namespace OpenRA
 			throw new InvalidDataException(filename + " is not a valid sound file!");
 		}
 
+		// scale volume setting from linear to exponential (approximation x^4)
+		float ExpScale(float volume) { return (float)Math.Pow(volume, 4.0d); }
+
 		public void Initialize(ISoundLoader[] loaders, IReadOnlyFileSystem fileSystem)
 		{
 			StopMusic();
@@ -119,7 +122,7 @@ namespace OpenRA
 
 			return soundEngine.Play2D(sounds[name],
 				loop, headRelative, pos,
-				InternalSoundVolume * volumeModifier, true);
+				ExpScale(InternalSoundVolume * volumeModifier), true);
 		}
 
 		public void StopAudio()
@@ -151,7 +154,7 @@ namespace OpenRA
 		{
 			StopVideo();
 			videoSource = soundEngine.AddSoundSourceFromMemory(raw, channels, sampleBits, sampleRate);
-			video = soundEngine.Play2D(videoSource, false, true, WPos.Zero, InternalSoundVolume, false);
+			video = soundEngine.Play2D(videoSource, false, true, WPos.Zero, ExpScale(InternalSoundVolume), false);
 		}
 
 		public void PlayVideo()
@@ -214,7 +217,7 @@ namespace OpenRA
 
 			Func<ISoundFormat, ISound> stream = soundFormat => soundEngine.Play2DStream(
 				soundFormat.GetPCMInputStream(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate,
-				false, true, WPos.Zero, MusicVolume);
+				false, true, WPos.Zero, ExpScale(MusicVolume));
 			music = LoadSound(m.Filename, stream);
 
 			if (music == null)
@@ -274,7 +277,7 @@ namespace OpenRA
 			set
 			{
 				soundVolumeModifier = value;
-				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
+				soundEngine.SetSoundVolume(ExpScale(InternalSoundVolume), music, video);
 			}
 		}
 
@@ -289,7 +292,7 @@ namespace OpenRA
 			set
 			{
 				Game.Settings.Sound.SoundVolume = value;
-				soundEngine.SetSoundVolume(InternalSoundVolume, music, video);
+				soundEngine.SetSoundVolume(ExpScale(InternalSoundVolume), music, video);
 			}
 		}
 
@@ -304,7 +307,7 @@ namespace OpenRA
 			{
 				Game.Settings.Sound.MusicVolume = value;
 				if (music != null)
-					music.Volume = value;
+					music.Volume = ExpScale(value);
 			}
 		}
 
@@ -319,7 +322,7 @@ namespace OpenRA
 			{
 				Game.Settings.Sound.VideoVolume = value;
 				if (video != null)
-					video.Volume = value;
+					video.Volume = ExpScale(value);
 			}
 		}
 
@@ -388,7 +391,7 @@ namespace OpenRA
 			{
 				var sound = soundEngine.Play2D(sounds[name],
 					false, relative, pos,
-					InternalSoundVolume * volumeModifier, attenuateVolume);
+					ExpScale(InternalSoundVolume * volumeModifier), attenuateVolume);
 				if (id != 0)
 				{
 					if (currentSounds.ContainsKey(id))
