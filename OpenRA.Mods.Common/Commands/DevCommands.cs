@@ -134,20 +134,12 @@ namespace OpenRA.Mods.Common.Commands
 					break;
 
 				case "kill":
-					var args = arg.Split(' ');
-					var damageTypes = new HashSet<string>();
-
-					foreach (var damageType in args)
-						damageTypes.Add(damageType);
-
 					foreach (var actor in world.Selection.Actors)
 					{
 						if (actor.IsDead)
 							continue;
 
-						var health = actor.TraitOrDefault<Health>();
-						if (health != null)
-							health.InflictDamage(actor, actor, new Damage(health.HP, damageTypes), true);
+						world.IssueOrder(new Order("DevKill", world.LocalPlayer.PlayerActor, Target.FromActor(actor), false) { TargetString = arg });
 					}
 
 					break;
@@ -158,7 +150,7 @@ namespace OpenRA.Mods.Common.Commands
 						if (actor.Disposed)
 							continue;
 
-						actor.Dispose();
+						world.IssueOrder(new Order("DevDispose", world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
 					}
 
 					break;
