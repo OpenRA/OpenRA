@@ -213,6 +213,34 @@ namespace OpenRA.Mods.Common.Traits
 					break;
 				}
 
+				case "DevKill":
+				{
+					if (order.Target.Type != TargetType.Actor)
+						break;
+
+					var actor = order.Target.Actor;
+					var health = actor.TraitOrDefault<Health>();
+					var args = order.TargetString.Split(' ');
+					var damageTypes = new HashSet<string>();
+
+					foreach (var damageType in args)
+						damageTypes.Add(damageType);
+
+					if (health != null)
+						health.InflictDamage(actor, actor, new Damage(health.HP, damageTypes), true);
+
+					break;
+				}
+
+				case "DevDispose":
+				{
+					if (order.Target.Type != TargetType.Actor)
+						break;
+
+					order.Target.Actor.Dispose();
+					break;
+				}
+
 				default:
 					return;
 			}
