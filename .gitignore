@@ -85,3 +85,8 @@ StyleCopViolations.xml
 
 # IntelliJ files
 .idea
+
+# Itch
+/.itch/
+
+
