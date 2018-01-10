@@ -198,7 +198,8 @@ namespace OpenRA.Mods.Common.AI
 			if (sumOfMaxHp == 0)
 				return 0.0f;
 
-			return (sumOfHp * normalizeByValue) / sumOfMaxHp;
+			// Cast to long to avoid overflow when multiplying by the health
+			return (int)((long)sumOfHp * normalizeByValue / sumOfMaxHp);
 		}
 
 		static float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
