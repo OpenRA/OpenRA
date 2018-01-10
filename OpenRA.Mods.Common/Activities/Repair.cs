@@ -98,7 +98,9 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var unitCost = self.Info.TraitInfo<ValuedInfo>().Cost;
 				var hpToRepair = repairsUnits.Info.HpPerStep;
-				var cost = Math.Max(1, (hpToRepair * unitCost * repairsUnits.Info.ValuePercentage) / (health.MaxHP * 100));
+
+				// Cast to long to avoid overflow when multiplying by the health
+				var cost = Math.Max(1, (int)(((long)hpToRepair * unitCost * repairsUnits.Info.ValuePercentage) / (health.MaxHP * 100L)));
 
 				if (!played)
 				{
