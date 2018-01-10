@@ -22,12 +22,12 @@ path = "OpenRA.Game.exe"
 args = ["Game.Mod=cnc"]
 sandbox = true
 
-[[actions]]
-os = "windows"
-name = "Tiberian Sun - Windows"
-path = "OpenRA.Game.exe"
-args = ["Game.Mod=ts"]
-sandbox = true
+#[[actions]]
+#os = "windows"
+#name = "Tiberian Sun - Windows"
+#path = "OpenRA.Game.exe"
+#args = ["Game.Mod=ts"]
+#sandbox = true
 
 
 
@@ -54,12 +54,12 @@ path = "mono-macos"
 args = ["OpenRA.Game.exe", "Game.Mod=cnc"]
 sandbox = true
 
-[[actions]]
-os = "macos"
-name = "Tiberian Sun - MacOS"
-path = "mono-macos"
-args = ["OpenRA.Game.exe", "Game.Mod=ts"]
-sandbox = true
+#[[actions]]
+#os = "macos"
+#name = "Tiberian Sun - MacOS"
+#path = "mono-macos"
+#args = ["OpenRA.Game.exe", "Game.Mod=ts"]
+#sandbox = true
 
 
 
@@ -86,12 +86,12 @@ path = "mono"
 args = ["OpenRA.Game.exe", "Game.Mod=cnc"]
 sandbox = true
 
-[[actions]]
-os = "linux"
-name = "Tiberian Sun - Linux"
-path = "mono"
-args = ["OpenRA.Game.exe", "Game.Mod=ts"]
-sandbox = true
+#[[actions]]
+#os = "linux"
+#name = "Tiberian Sun - Linux"
+#path = "mono"
+#args = ["OpenRA.Game.exe", "Game.Mod=ts"]
+#sandbox = true
 
 
 
