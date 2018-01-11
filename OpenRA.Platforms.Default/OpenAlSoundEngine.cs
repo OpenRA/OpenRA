@@ -273,7 +273,7 @@ namespace OpenRA.Platforms.Default
 		public float Volume
 		{
 			get { return volume; }
-			set { AL10.alListenerf(AL10.AL_GAIN, volume = value); }
+			set { AL10.alListenerf(AL10.AL_GAIN, (volume = value) * value * value * value); } // x^4 for linear->exponential
 		}
 
 		public void PauseSound(ISound sound, bool paused)
@@ -323,7 +323,7 @@ namespace OpenRA.Platforms.Default
 			});
 
 			foreach (var s in sounds)
-				AL10.alSourcef(s, AL10.AL_GAIN, volume);
+				AL10.alSourcef(s, AL10.AL_GAIN, volume * volume * volume * volume); // x^4 for linear->exponential
 		}
 
 		public void StopSound(ISound sound)
@@ -447,8 +447,8 @@ namespace OpenRA.Platforms.Default
 
 		public float Volume
 		{
-			get { float volume; AL10.alGetSourcef(Source, AL10.AL_GAIN, out volume); return volume; }
-			set { AL10.alSourcef(Source, AL10.AL_GAIN, value); }
+			get { float volume; AL10.alGetSourcef(Source, AL10.AL_GAIN, out volume); return (float)Math.Pow(volume, 0.25d); } // x^0.25 for exponential->linear
+			set { AL10.alSourcef(Source, AL10.AL_GAIN, value * value * value * value); } // x^4 for linear->exponential
 		}
 
 		public virtual float SeekPosition
