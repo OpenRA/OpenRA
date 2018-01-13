@@ -159,6 +159,7 @@ MOBILETENT:
 TENT:
 	Health:
 		HP: 100000
+	AutoTargetProducer:
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:

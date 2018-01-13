@@ -86,11 +86,17 @@ namespace OpenRA.Mods.Common.Traits
 				td.Add(new FacingInit(initialFacing));
 			}
 
+			var autoTargetProduction = self.TraitOrDefault<AutoTargetProducer>();
+
+			if (autoTargetProduction != null && autoTargetProduction.Stance != UnitStance.NoStance)
+				td.Add(new StanceInit(autoTargetProduction.Stance));
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				var move = newUnit.TraitOrDefault<IMove>();
+
 				if (move != null)
 				{
 					if (exitinfo.MoveIntoWorld)

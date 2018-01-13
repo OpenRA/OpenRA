@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,6 +17,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public interface IActorStanceSelector
+	{
+		bool Enabled { get; }
+		UnitStance Stance { get; }
+		void SetStance(Actor self, UnitStance stance);
+		bool CanBeDisabled { get; }
+	}
+
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
 	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
@@ -80,15 +89,28 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
+	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything, NoStance }
 
-	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
+	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated, IActorStanceSelector
 	{
 		readonly IEnumerable<AttackBase> activeAttackBases;
 		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
 		public UnitStance Stance { get { return stance; } }
+
+		bool IActorStanceSelector.Enabled
+		{
+			get
+			{
+				return !IsTraitDisabled && Info.EnableStances && Stance != UnitStance.NoStance;
+			}
+		}
+
+		UnitStance IActorStanceSelector.Stance { get { return PredictedStance; } }
+
+		// If we can't even set auto-target stance we technically can be disabled
+		bool IActorStanceSelector.CanBeDisabled	{ get {	return IsTraitDisabled; } }
 
 		[Sync] public Actor Aggressor;
 		[Sync] public Actor TargetedActor;
@@ -337,6 +359,20 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 			return false;
+		}
+
+		void IActorStanceSelector.SetStance(Actor self, UnitStance stance)
+		{
+			if (IsTraitDisabled || !Info.EnableStances)
+				return;
+
+			// Possible to use NoStance as "Reset to default"
+			// We do not want NoStance on normal units, only on production buildings
+			if (stance == UnitStance.NoStance)
+				stance = Info.InitialStance;
+
+			PredictedStance = stance;
+			self.World.IssueOrder(new Order("SetUnitStance", self, false) { ExtraData = (uint)stance });
 		}
 	}
 

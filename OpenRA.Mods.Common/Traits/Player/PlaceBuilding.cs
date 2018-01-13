@@ -76,15 +76,21 @@ namespace OpenRA.Mods.Common.Traits
 				if (buildableInfo != null && buildableInfo.ForceFaction != null)
 					faction = buildableInfo.ForceFaction;
 
+				var td = new TypeDictionary
+				{
+					new LocationInit(order.TargetLocation),
+					new OwnerInit(order.Player),
+					new FactionInit(faction)
+				};
+
+				var autoTargetProduction = producer.Actor.TraitOrDefault<AutoTargetProducer>();
+				if (autoTargetProduction != null && autoTargetProduction.Stance != UnitStance.NoStance)
+					td.Add(new StanceInit(autoTargetProduction.Stance));
+
 				if (os == "LineBuild")
 				{
 					// Build the parent actor first
-					var placed = w.CreateActor(order.TargetString, new TypeDictionary
-					{
-						new LocationInit(order.TargetLocation),
-						new OwnerInit(order.Player),
-						new FactionInit(faction),
-					});
+					var placed = w.CreateActor(order.TargetString, td);
 
 					foreach (var s in buildingInfo.BuildSounds)
 						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, placed.CenterPosition);
@@ -136,12 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 						|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation))
 						return;
 
-					var building = w.CreateActor(order.TargetString, new TypeDictionary
-					{
-						new LocationInit(order.TargetLocation),
-						new OwnerInit(order.Player),
-						new FactionInit(faction),
-					});
+					var building = w.CreateActor(order.TargetString, td);
 
 					foreach (var s in buildingInfo.BuildSounds)
 						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, building.CenterPosition);

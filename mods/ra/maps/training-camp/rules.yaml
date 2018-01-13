@@ -34,6 +34,7 @@ BARR:
 		Prerequisites: ~disabled
 	Health:
 		HP: 500000
+	AutoTargetProducer:
 	Production:
 		Produces: Building, Infantry, Soldier, Dog
 	BaseProvider:

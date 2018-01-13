@@ -181,6 +181,7 @@ SPEN:
 		ProductionTypes: Ship
 	Production:
 		Produces: Ship, Submarine
+	AutoTargetProducer:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	-EmitInfantryOnSell:
@@ -290,6 +291,7 @@ SYRD:
 		ProductionTypes: Ship, Boat
 	Production:
 		Produces: Ship, Boat
+	AutoTargetProducer:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	-EmitInfantryOnSell:
@@ -947,6 +949,7 @@ WEAP:
 		ExitCell: 1,2
 	Production:
 		Produces: Vehicle
+	AutoTargetProducer:
 	ProvidesPrerequisite@allies:
 		Factions: allies, england, france, germany
 		Prerequisite: vehicles.allies
@@ -1068,6 +1071,7 @@ FACT:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
+	AutoTargetProducer:
 	Production:
 		Produces: Building,Defense
 	Valued:
@@ -1246,6 +1250,7 @@ HPAD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
+	AutoTargetProducer:
 	Reservable:
 	ProductionBar:
 	PrimaryBuilding:
@@ -1333,6 +1338,7 @@ AFLD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
+	AutoTargetProducer:
 	Reservable:
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
@@ -1596,6 +1602,7 @@ BARR:
 		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
+	AutoTargetProducer:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -1673,6 +1680,7 @@ KENN:
 		ProductionTypes: Dog, Infantry
 	Production:
 		Produces: Infantry, Dog
+	AutoTargetProducer:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
@@ -1728,6 +1736,7 @@ TENT:
 		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
+	AutoTargetProducer:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
