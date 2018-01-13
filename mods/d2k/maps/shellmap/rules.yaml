@@ -1,5 +1,10 @@
 Player:
 	-ConquestVictoryConditions:
+	-GameMode@conquest:
+	GameMode@shellmap:
+		InternalName: shellmap
+		Name: Shellmap
+		Condition:
 	-HarvesterInsurance:
 
 World:

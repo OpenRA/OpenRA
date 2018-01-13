@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -19,34 +20,52 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[Desc("Part of the new Lua API.")]
-	public class LuaScriptInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
+	public class LuaScriptInfo : ConditionalTraitInfo, ITraitInfo, Requires<SpawnMapActorsInfo>
 	{
 		public readonly HashSet<string> Scripts = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new LuaScript(this); }
+		public override object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
 
-	public class LuaScript : ITick, IWorldLoaded, INotifyActorDisposing
+	public class LuaScript : ConditionalTrait<LuaScriptInfo>, ITick, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly LuaScriptInfo info;
 		ScriptContext context;
 		bool disposed;
+		bool initialized;
 
 		public LuaScript(LuaScriptInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer worldRenderer)
 		{
-			var scripts = info.Scripts ?? Enumerable.Empty<string>();
+			var scripts = IsTraitDisabled ? Enumerable.Empty<string>() : info.Scripts ?? Enumerable.Empty<string>();
 			context = new ScriptContext(world, worldRenderer, scripts);
-			context.WorldLoaded();
+			if (!IsTraitDisabled)
+				context.WorldLoaded();
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			context.Tick(self);
+			if (!IsTraitDisabled)
+				context.Tick(self);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (initialized)
+				throw new InvalidOperationException("Enabling Lua scripts mid-game is not supported.");
+			initialized = true;
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			if (initialized)
+				throw new InvalidOperationException("Disabling Lua scripts mid-game is not supported.");
+			initialized = true;
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

@@ -18,6 +18,7 @@ Player:
 		LoseNotification: Lose
 		LeaveNotification: Leave
 	ConquestVictoryConditions:
+		RequiresCondition: conquest
 	PowerManager:
 		SpeechNotification: LowPower
 	AllyRepair:
@@ -60,3 +61,8 @@ Player:
 	PlayerExperience:
 	ConditionManager:
 	GameSaveViewportManager:
+	GameModeManager:
+	GameMode@conquest:
+		InternalName: conquest
+		Name: Conquest
+		Condition: conquest

@@ -1,5 +1,5 @@
 Player:
-	MissionObjectives:
+	GameMode@scripted:
 		Cooperative: True
 	PlayerResources:
 		DefaultCash: 5000

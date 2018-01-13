@@ -1,6 +1,10 @@
 Player:
+	-GameMode@conquest:
 	-ConquestVictoryConditions:
-	MissionObjectives:
+	GameMode@scripted:
+		InternalName: scripted
+		Name: Scripted Mission
+		Condition:
 		EarlyGameOver: true
 	Shroud:
 		FogCheckboxLocked: True

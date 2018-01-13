@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class StrategicProgressWidget : Widget
 	{
 		readonly World world;
+		readonly StrategicVictoryConditions svc;
 		bool initialised = false;
 
 		[ObjectCreator.UseCtor]
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			IsVisible = () => true;
 			this.world = world;
+			svc = world.WorldActor.Owner.PlayerActor.TraitsImplementing<StrategicVictoryConditions>().FirstEnabledTraitOrDefault();
 		}
 
 		public override void Draw()
@@ -38,8 +40,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var rb = RenderBounds;
 			var offset = int2.Zero;
-
-			var svc = world.Players.Select(p => p.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
 
 			var totalWidth = svc.Total * 32;
 			var curX = -totalWidth / 2;
@@ -83,9 +83,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			foreach (var p in world.Players.Where(p => !p.NonCombatant))
 			{
-				var svc = p.PlayerActor.Trait<StrategicVictoryConditions>();
+				var svc = p.PlayerActor.TraitsImplementing<StrategicVictoryConditions>().FirstEnabledTraitOrDefault();
 
-				if (svc.Holding && svc.TicksLeft > 0 && svc.TicksLeft < shortest)
+				if (svc != null && svc.Holding && svc.TicksLeft > 0 && svc.TicksLeft < shortest)
 				{
 					shortest = svc.TicksLeft;
 					shortestPlayer = p;
@@ -97,8 +97,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void Init()
 		{
-			var visible = world.ActorsHavingTrait<StrategicVictoryConditions>().Any() &&
-				world.ActorsHavingTrait<StrategicPoint>().Any();
+			var visible = svc != null && world.ActorsHavingTrait<StrategicPoint>().Any();
 
 			IsVisible = () => visible;
 			initialised = true;

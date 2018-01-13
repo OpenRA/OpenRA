@@ -26,6 +26,13 @@ Players:
 Actors:
 
 Rules:
+	Player:
+		-ConquestVictoryConditions:
+		-GameMode@conquest:
+		GameMode@shellmap:
+			InternalName: shellmap
+			Name: Shellmap
+			Condition:
 	World:
 		-SpawnMPUnits:
 		-MPStartLocations:

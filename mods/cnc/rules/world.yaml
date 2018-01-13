@@ -261,6 +261,7 @@ World:
 	ScriptTriggers:
 	TimeLimitManager:
 	RejectsOrders:
+	ConditionManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld

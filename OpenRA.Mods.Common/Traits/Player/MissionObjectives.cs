@@ -36,16 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class MissionObjectivesInfo : ITraitInfo
 	{
-		[Desc("Set this to true if multiple cooperative players have a distinct set of " +
-			"objectives that each of them has to complete to win the game. This is mainly " +
-			"useful for multiplayer coop missions. Do not use this for skirmish team games.")]
-		public readonly bool Cooperative = false;
-
-		[Desc("If set to true, this setting causes the game to end immediately once the first " +
-			"player (or team of cooperative players) fails or completes his objectives.  If " +
-			"set to false, players that fail their objectives will stick around and become observers.")]
-		public readonly bool EarlyGameOver = false;
-
 		[Desc("Delay between the game over condition being met, and the game actually ending, in milliseconds.")]
 		public readonly int GameOverDelay = 1500;
 
@@ -61,10 +51,11 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new MissionObjectives(init.World, this); }
 	}
 
-	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder
+	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder, INotifyCreated
 	{
 		public readonly MissionObjectivesInfo Info;
 		readonly List<MissionObjective> objectives = new List<MissionObjective>();
+		GameMode gameMode;
 		public ReadOnlyList<MissionObjective> Objectives;
 
 		[Sync]
@@ -87,6 +78,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			Objectives = new ReadOnlyList<MissionObjective>(objectives);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			gameMode = self.Trait<GameModeManager>().ActiveGameMode;
 		}
 
 		public int Add(Player player, string description, string type, bool required = true, bool inhibitAnnouncement = false)
@@ -160,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
 
-			if (Info.Cooperative)
+			if (gameMode.Info.Cooperative)
 			{
 				WinStateCooperative = WinState.Won;
 				var allies = players.Where(p => p.IsAlliedWith(player));
@@ -173,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 						p.World.OnPlayerWinStateChanged(p);
 					}
 
-					if (Info.EarlyGameOver)
+					if (gameMode.Info.EarlyGameOver)
 						foreach (var p in enemies)
 							p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 				}
@@ -183,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				player.WinState = WinState.Won;
 				player.World.OnPlayerWinStateChanged(player);
 
-				if (Info.EarlyGameOver)
+				if (gameMode.Info.EarlyGameOver)
 					foreach (var p in enemies)
 						p.PlayerActor.Trait<MissionObjectives>().ForceDefeat(p);
 			}
@@ -196,7 +192,7 @@ namespace OpenRA.Mods.Common.Traits
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
 
-			if (Info.Cooperative)
+			if (gameMode.Info.Cooperative)
 			{
 				WinStateCooperative = WinState.Lost;
 				var allies = players.Where(p => p.IsAlliedWith(player));
@@ -209,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 						p.World.OnPlayerWinStateChanged(p);
 					}
 
-					if (Info.EarlyGameOver)
+					if (gameMode.Info.EarlyGameOver)
 					{
 						foreach (var p in enemies)
 						{
@@ -224,7 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 				player.WinState = WinState.Lost;
 				player.World.OnPlayerWinStateChanged(player);
 
-				if (Info.EarlyGameOver)
+				if (gameMode.Info.EarlyGameOver)
 				{
 					foreach (var p in enemies)
 					{

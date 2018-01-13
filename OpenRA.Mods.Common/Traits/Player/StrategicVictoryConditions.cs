@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class StrategicPoint { }
 
 	[Desc("Allows King of the Hill (KotH) style gameplay.")]
-	public class StrategicVictoryConditionsInfo : ITraitInfo, Requires<MissionObjectivesInfo>
+	public class StrategicVictoryConditionsInfo : ConditionalTraitInfo, ITraitInfo, Requires<MissionObjectivesInfo>
 	{
 		[Desc("Amount of time (in game ticks) that the player has to hold all the strategic points.", "Defaults to 7500 ticks (5 minutes at default speed).")]
 		public readonly int HoldDuration = 7500;
@@ -42,20 +43,21 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable the win/loss messages and audio notifications?")]
 		public readonly bool SuppressNotifications = false;
 
-		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.Self, this); }
 	}
 
-	public class StrategicVictoryConditions : ITick, ISync, INotifyWinStateChanged, INotifyTimeLimit
+	public class StrategicVictoryConditions : ConditionalTrait<StrategicVictoryConditionsInfo>, ITick, ISync, INotifyWinStateChanged, INotifyTimeLimit
 	{
-		readonly StrategicVictoryConditionsInfo info;
-
 		[Sync] public int TicksLeft;
+		readonly StrategicVictoryConditionsInfo info;
 		readonly Player player;
 		readonly MissionObjectives mo;
 		readonly bool shortGame;
 		int objectiveID = -1;
+		bool initialized;
 
 		public StrategicVictoryConditions(Actor self, StrategicVictoryConditionsInfo svcInfo)
+			: base(svcInfo)
 		{
 			info = svcInfo;
 			TicksLeft = info.HoldDuration;
@@ -76,6 +78,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (player.WinState != WinState.Undefined || player.NonCombatant)
 				return;
 
@@ -135,6 +140,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			foreach (var a in player.World.ActorsWithTrait<INotifyOwnerLost>().Where(a => a.Actor.Owner == player))
 				a.Trait.OnOwnerLost(a.Actor);
 
@@ -151,6 +159,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyWinStateChanged.OnPlayerWon(Player player)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (info.SuppressNotifications)
 				return;
 
@@ -160,6 +171,20 @@ namespace OpenRA.Mods.Common.Traits
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.WinNotification, player.Faction.InternalName);
 			});
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (initialized)
+				throw new InvalidOperationException("Enabling another victory conditions trait mid-game is not supported.");
+			initialized = true;
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			if (initialized)
+				throw new InvalidOperationException("Disabling a victory conditions trait mid-game is not supported.");
+			initialized = true;
 		}
 	}
 }

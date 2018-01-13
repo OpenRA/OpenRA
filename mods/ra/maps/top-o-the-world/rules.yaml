@@ -1,3 +1,7 @@
+Player:
+	GameMode@scripted:
+		Name: Mission
+
 World:
 	LuaScript:
 		Scripts: scu36ea.lua
