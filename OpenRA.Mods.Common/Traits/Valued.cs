@@ -19,6 +19,15 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[Desc("Used in production, but also for bounties so remember to set it > 0 even for NPCs.")]
 		public readonly int Cost = 0;
+
+		[Desc("Actor's cost changes with time. Requires `VariedCostManager` on `World` actor.")]
+		public readonly bool Varies = false;
+
+		[Desc("Lower value for varied cost.")]
+		public readonly int MinimumVariationMultiplier = 75;
+
+		[Desc("Upper value for varied cost.")]
+		public readonly int MaximumVariationMultiplier = 100;
 	}
 
 	public class Valued { }

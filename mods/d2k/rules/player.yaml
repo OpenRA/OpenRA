@@ -31,7 +31,7 @@ Player:
 		SpeedUp: true
 	ClassicProductionQueue@Starport:
 		Type: Starport
-		BuildDurationModifier: 212
+		BuildDurationModifier: 250
 		LowPowerSlowdown: 0
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced

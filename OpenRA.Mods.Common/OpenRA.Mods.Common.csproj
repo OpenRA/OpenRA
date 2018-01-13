@@ -801,6 +801,7 @@
     <Compile Include="Traits\World\JumpjetActorLayer.cs" />
     <Compile Include="Traits\World\ElevatedBridgeLayer.cs" />
     <Compile Include="Traits\World\ElevatedBridgePlaceholder.cs" />
+    <Compile Include="Traits\World\VariedCostManager.cs" />
     <Compile Include="Traits\Attack\AttackCharges.cs" />
     <Compile Include="Traits\Render\WithChargeAnimation.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />

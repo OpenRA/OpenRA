@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mapRules = world.Map.Rules;
 			var pm = player.PlayerActor.Trait<PowerManager>();
 			var pr = player.PlayerActor.Trait<PlayerResources>();
+			var vcm = world.WorldActor.TraitOrDefault<VariedCostManager>();
 
 			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Actor != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
@@ -70,7 +71,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				var name = tooltip != null ? tooltip.Name : actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
-				var cost = actor.TraitInfo<ValuedInfo>().Cost;
+				var valued = actor.TraitInfo<ValuedInfo>();
+				var cost = 0;
+				if (vcm != null && valued != null && valued.Varies)
+					cost = vcm.VariedCost.First(vc => vc.Key == actor.Name).Value;
+				else if (valued != null && (vcm == null || (vcm != null && !valued.Varies)))
+					cost = valued.Cost;
 
 				nameLabel.Text = name;
 
