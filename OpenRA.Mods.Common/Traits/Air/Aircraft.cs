@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does the actor land and take off vertically?")]
 		public readonly bool VTOL = false;
 
-		[Desc("Will this actor try to land after it has no more commands?")]
+		[Desc("Will this actor try to land after it has no more commands? Currently only works if VTOL is true.")]
 		public readonly bool LandWhenIdle = true;
 
 		[Desc("Does this actor need to turn before landing?")]
@@ -551,7 +551,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
 
-			return new HeliFly(self, Target.FromCell(self.World, cell));
+			return new Fly(self, Target.FromCell(self.World, cell));
 		}
 
 		public Activity MoveTo(CPos cell, Actor ignoreActor)
@@ -559,7 +559,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
 
-			return new HeliFly(self, Target.FromCell(self.World, cell));
+			return new Fly(self, Target.FromCell(self.World, cell));
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range)
@@ -567,7 +567,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, target, WDist.Zero, range);
 
-			return new HeliFly(self, target, WDist.Zero, range);
+			return new Fly(self, target, WDist.Zero, range);
 		}
 
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
@@ -575,7 +575,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new FlyAndContinueWithCirclesWhenIdle(self, target, minRange, maxRange);
 
-			return new HeliFly(self, target, minRange, maxRange);
+			return new Fly(self, target, minRange, maxRange);
 		}
 
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange)
@@ -591,7 +591,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
-			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
+			return new Fly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
 		public Activity MoveToTarget(Actor self, Target target)
@@ -599,7 +599,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
 
-			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
+			return ActivityUtils.SequenceActivities(new Fly(self, target), new Turn(self, Info.InitialFacing));
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)
@@ -613,14 +613,9 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			if (!Info.CanHover)
-				return ActivityUtils.SequenceActivities(
-					new CallFunc(() => SetVisualPosition(self, fromPos)),
-					new Fly(self, Target.FromPos(toPos)));
-
 			return ActivityUtils.SequenceActivities(
 				new CallFunc(() => SetVisualPosition(self, fromPos)),
-				new HeliFly(self, Target.FromPos(toPos)));
+				new Fly(self, Target.FromPos(toPos)));
 		}
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
@@ -701,7 +696,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
 				else
-					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
+					self.QueueActivity(order.Queued, new FlyAndLandWhenIdle(self, target, Info));
 			}
 			else if (order.OrderString == "Enter")
 			{
@@ -734,7 +729,7 @@ namespace OpenRA.Mods.Common.Traits
 							var exit = order.TargetActor.Info.FirstExitOrDefault(null);
 							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
-							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
+							self.QueueActivity(new Fly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));

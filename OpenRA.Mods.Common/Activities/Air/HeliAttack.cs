@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				Cancel(self);
 				self.SetTargetLine(newTarget, Color.Green);
-				return new HeliFly(self, newTarget);
+				return new Fly(self, newTarget);
 			}
 
 			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Activities
 			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
 			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.TurnSpeed);
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			if (Fly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
 				return this;
 
 			// Fly towards the target

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: This should be handled by the aircraft trait
 			if (!busy)
-				self.QueueActivity(new HeliFlyCircle(self));
+				self.QueueActivity(new FlyCircle(self));
 		}
 
 		// A carryable notifying us that he'd like to be carried

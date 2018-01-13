@@ -78,8 +78,6 @@
     <Compile Include="Activities\Air\FlyOffMap.cs" />
     <Compile Include="Activities\Air\FlyTimed.cs" />
     <Compile Include="Activities\Air\HeliAttack.cs" />
-    <Compile Include="Activities\Air\HeliFly.cs" />
-    <Compile Include="Activities\Air\HeliFlyCircle.cs" />
     <Compile Include="Activities\Air\HeliLand.cs" />
     <Compile Include="Activities\Air\HeliReturnToBase.cs" />
     <Compile Include="Activities\Air\Land.cs" />
