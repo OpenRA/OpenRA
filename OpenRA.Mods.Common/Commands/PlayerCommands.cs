@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Commands
 			switch (name)
 			{
 				case "pause":
-					if (Game.IsHost || (world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Lost))
+					// Disable pausing for spectators and players unless they are the game host.
+					if (!Game.IsHost && (world.LocalPlayer == null || world.LocalPlayer.WinState == WinState.Undefined))
 						world.IssueOrder(new Order("PauseGame", null, false)
 						{
 							TargetString = world.Paused ? "UnPause" : "Pause"
