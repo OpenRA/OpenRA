@@ -1,0 +1,189 @@
+Container@LOBBY_SERVERS_BIN:
+	Logic: ServerListLogic
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM
+	Children:
+		Container@LABEL_CONTAINER:
+			Y: 0 - 25
+			Width: PARENT_RIGHT
+			Children:
+				Label@NAME:
+					X: 5
+					Width: 255
+					Height: 25
+					Text: Server
+					Align: Center
+					Font: Bold
+				Label@PLAYERS:
+					X: 290
+					Width: 85
+					Height: 25
+					Text: Players
+					Font: Bold
+				Label@LOCATION:
+					X: 380
+					Width: 110
+					Height: 25
+					Text: Location
+					Font: Bold
+				Label@STATUS:
+					X: 495
+					Width: 50
+					Height: 25
+					Text: Status
+					Font: Bold
+		LogicTicker@NOTICE_WATCHER:
+		Container@NOTICE_CONTAINER:
+			Width: 582
+			Height: 19
+			Children:
+				Background@bg:
+					Width: PARENT_RIGHT
+					Height: 20
+					Background: panel-black
+					Children:
+						Label@OUTDATED_VERSION_LABEL:
+							X: 5
+							Width: PARENT_RIGHT-10
+							Height: 18
+							Align: Center
+							Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
+							Font: TinyBold
+						Label@UNKNOWN_VERSION_LABEL:
+							X: 5
+							Width: PARENT_RIGHT-10
+							Height: 18
+							Align: Center
+							Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
+							Font: TinyBold
+						Label@PLAYTEST_AVAILABLE_LABEL:
+							X: 5
+							Width: PARENT_RIGHT-10
+							Height: 18
+							Align: Center
+							Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
+							Font: TinyBold
+		ScrollPanel@SERVER_LIST:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Children:
+				ScrollItem@HEADER_TEMPLATE:
+					Width: PARENT_RIGHT - 27
+					Height: 20
+					X: 2
+					Visible: false
+					Children:
+						Label@LABEL:
+							Y: 0 - 1
+							Font: TinyBold
+							Width: PARENT_RIGHT
+							Height: 20
+							Align: Center
+				ScrollItem@SERVER_TEMPLATE:
+					Width: PARENT_RIGHT - 27
+					Height: 25
+					X: 2
+					EnableChildMouseOver: True
+					Children:
+						Label@TITLE:
+							X: 5
+							Width: 255
+							Height: 25
+						Image@PASSWORD_PROTECTED:
+							X: 272
+							Y: 6
+							Width: 8
+							Height: 10
+							ImageCollection: lobby-bits
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: Requires Password
+						LabelWithTooltip@PLAYERS:
+							X: 290
+							Width: 85
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@LOCATION:
+							X: 380
+							Width: 110
+							Height: 25
+						Label@STATUS:
+							X: 495
+							Width: 50
+							Height: 25
+		Label@PROGRESS_LABEL:
+			Y: (PARENT_BOTTOM - HEIGHT) / 2
+			Width: PARENT_RIGHT
+			Height: 25
+			Font: Bold
+			Align: Center
+			Visible: false
+		DropDownButton@FILTERS_DROPDOWNBUTTON:
+			Y: PARENT_BOTTOM + 5
+			Width: 151
+			Height: 25
+			Text: Filter Games
+			Font: Bold
+		Button@RELOAD_BUTTON:
+			X: 156
+			Y: PARENT_BOTTOM + 5
+			Width: 26
+			Height: 25
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+					Children:
+						LogicTicker@ANIMATION:
+		Container@SELECTED_SERVER:
+			X: PARENT_RIGHT + 14
+			Width: 174
+			Height: 280
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_RIGHT
+					Height: 174
+					Background: panel-gray
+					Children:
+						MapPreview@SELECTED_MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_RIGHT - 2
+							Height: PARENT_BOTTOM - 2
+							TooltipContainer: TOOLTIP_CONTAINER
+				Label@SELECTED_MAP:
+					Y: 172
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Align: Center
+				Label@SELECTED_IP:
+					Y: 187
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_STATUS:
+					Y: 203
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@SELECTED_MOD_VERSION:
+					Y: 216
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_PLAYERS:
+					Y: 229
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: TinyBold
+					Align: Center

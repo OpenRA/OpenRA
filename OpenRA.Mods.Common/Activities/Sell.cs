@@ -34,9 +34,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			var cost = self.GetSellValue();
+			var sellValue = self.GetSellValue();
 
-			var refund = (cost * sellableInfo.RefundPercent * (health == null ? 1 : health.HP)) / (100 * (health == null ? 1 : health.MaxHP));
+			// Cast to long to avoid overflow when multiplying by the health
+			var hp = health != null ? (long)health.HP : 1L;
+			var maxHP = health != null ? (long)health.MaxHP : 1L;
+			var refund = (int)((sellValue * sellableInfo.RefundPercent * hp) / (100 * maxHP));
 			playerResources.GiveCash(refund);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())

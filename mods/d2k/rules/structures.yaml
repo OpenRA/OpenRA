@@ -13,6 +13,7 @@
 		TerrainTypes: Rock
 	Tooltip:
 		Name: Concrete
+		GenericName: Structure
 	RenderSprites:
 	KillsSelf:
 		RemoveInstead: true
@@ -101,6 +102,7 @@ construction_yard:
 		Palette: d2k
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Building
 	ProvidesPrerequisite@buildingname:
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.conyard
@@ -193,7 +195,7 @@ barracks:
 			TopLeft: -1024, -1024
 			BottomRight: 1024, 1024
 	Armor:
-		Type: wood
+		Type: building
 	RevealsShroud:
 		Range: 3c768
 	RallyPoint:
@@ -208,6 +210,7 @@ barracks:
 		Produces: Infantry, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Infantry
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
@@ -278,7 +281,7 @@ refinery:
 			TopLeft: -1536, 0
 			BottomRight: 512, 1024
 	Armor:
-		Type: building
+		Type: heavy
 	RevealsShroud:
 		Range: 4c768
 	Refinery:
@@ -332,7 +335,7 @@ silo:
 	Health:
 		HP: 15000
 	Armor:
-		Type: wall
+		Type: building
 	RevealsShroud:
 		Range: 2c768
 	RenderSprites:
@@ -388,7 +391,7 @@ light_factory:
 			TopLeft: -1536, -1024
 			BottomRight: 1536, 1024
 	Armor:
-		Type: light
+		Type: building
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
@@ -407,6 +410,7 @@ light_factory:
 		Produces: Vehicle, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Vehicle
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
@@ -479,7 +483,7 @@ heavy_factory:
 			TopLeft: -512, -1536
 			BottomRight: 512, -512
 	Armor:
-		Type: wood
+		Type: building
 	RevealsShroud:
 		Range: 4c768
 	RallyPoint:
@@ -491,6 +495,7 @@ heavy_factory:
 		Produces: Armor, Upgrade
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Armor
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
@@ -573,7 +578,7 @@ outpost:
 			TopLeft: -1536, -1024
 			BottomRight: 1536, 1024
 	Armor:
-		Type: light
+		Type: building
 	RevealsShroud:
 		Range: 4c768
 	ProvidesRadar:
@@ -625,7 +630,7 @@ starport:
 			TopLeft: -512, 512
 			BottomRight: 512, 1536
 	Armor:
-		Type: building
+		Type: heavy
 	RevealsShroud:
 		Range: 4c768
 	RallyPoint:
@@ -652,6 +657,7 @@ starport:
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		ProductionQueues: Starport
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -684,7 +690,8 @@ wall:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	CombatDebugOverlay:
-	HiddenUnderShroud:
+	FrozenUnderFog:
+	ScriptTriggers:
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
@@ -698,6 +705,7 @@ wall:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
+		GenericName: Structure
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
@@ -813,7 +821,7 @@ large_gun_turret:
 	Health:
 		HP: 30000
 	Armor:
-		Type: concrete
+		Type: heavy
 	RevealsShroud:
 		Range: 5c768
 	BodyOrientation:
@@ -899,6 +907,10 @@ high_tech_factory:
 		Name: High Tech Factory
 	ProductionFromMapEdge:
 		Produces: Aircraft, Upgrade
+	ProductionBar:
+	PrimaryBuilding:
+		PrimaryCondition: primary
+		ProductionQueues: Aircraft
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
@@ -920,7 +932,7 @@ high_tech_factory:
 			TopLeft: -512, -1536
 			BottomRight: 512, -512
 	Armor:
-		Type: wood
+		Type: building
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
@@ -961,6 +973,12 @@ high_tech_factory:
 		ReferencePoint: Top, Right
 		ZOffset: 256
 		RequiresCondition: stardecoration
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		ZOffset: 256
+		RequiresCondition: primary
 
 research_centre:
 	Inherits: ^Building
@@ -995,7 +1013,7 @@ research_centre:
 			TopLeft: -512, -1536
 			BottomRight: 512, -512
 	Armor:
-		Type: wood
+		Type: building
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
@@ -1047,7 +1065,7 @@ palace:
 			TopLeft: -512, 512
 			BottomRight: 1536, 1536
 	Armor:
-		Type: wood
+		Type: heavy
 	RevealsShroud:
 		Range: 4c768
 	RenderSprites:
@@ -1068,6 +1086,14 @@ palace:
 	ProvidesPrerequisite@saboteur:
 		Prerequisite: palace.saboteur
 		Factions: ordos
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		ZOffset: 256
+		RequiresCondition: primary
 	NukePower:
 		Cursor: nuke
 		Icon: deathhand

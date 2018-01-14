@@ -173,6 +173,7 @@ SendAirStrike = function()
 			actor.Type ~= "wall" and
 			actor.Type ~= "medium_gun_turret" and
 			actor.Type ~= "large_gun_turret" and
+			actor.Type ~= "silo" and
 			actor.Type ~= "wind_trap"
 	end)
 
@@ -191,7 +192,7 @@ BuildFremen = function()
 	APalace.Produce("fremen")
 	APalace.Produce("fremen")
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function()
+	Trigger.AfterDelay(DateTime.Seconds(5), function()
 		IdleFremen = Utils.Where(atreides_main.GetActorsByType('fremen'), function(actor) return actor.IsIdle end)
 
 		if #IdleFremen >= FremenGroupSize[Difficulty] then

@@ -43,7 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 			MaxHP = info.HP > 0 ? info.HP : 1;
 
-			hp = init.Contains<HealthInit>() ? init.Get<HealthInit, int>() * MaxHP / 100 : MaxHP;
+			// Cast to long to avoid overflow when multiplying by the health
+			hp = init.Contains<HealthInit>() ? (int)(init.Get<HealthInit, int>() * (long)MaxHP / 100) : MaxHP;
 
 			DisplayHP = hp;
 		}

@@ -163,7 +163,18 @@ namespace OpenRA.Network
 				ModLabel = "{0} ({1})".F(mod.Metadata.Title, Version);
 			}
 			else
-				ModLabel = "Unknown mod: {0}".F(Mod);
+			{
+				// Some platforms (e.g. macOS) package each mod separately, so the Mods check above won't work.
+				// Guess based on the most recent ExternalMod instead.
+				var guessMod = Game.ExternalMods.Values
+					.OrderByDescending(m => m.Version)
+					.FirstOrDefault(m => m.Id == Mod);
+
+				if (guessMod != null)
+					ModLabel = "{0} ({1})".F(guessMod.Title, Version);
+				else
+					ModLabel = "Unknown mod: {0} ({1})".F(Mod, Version);
+			}
 
 			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
 			IsJoinable = IsCompatible && State == 1 && mapAvailable;

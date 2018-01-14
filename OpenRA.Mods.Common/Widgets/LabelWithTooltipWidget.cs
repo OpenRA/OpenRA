@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void MouseExited()
 		{
-			if (TooltipContainer == null)
-				return;
-
-			tooltipContainer.Value.RemoveTooltip();
+			// Only try to remove the tooltip if we know it has been created
+			// This avoids a crash if the widget (and the container it refers to) are being removed
+			if (TooltipContainer != null && tooltipContainer.IsValueCreated)
+				tooltipContainer.Value.RemoveTooltip();
 		}
 	}
 }

@@ -77,7 +77,9 @@ InsertNodUnits = function()
 	Camera.Position = CameraPoint.CenterPosition
 
 	Media.PlaySpeechNotification(player, "Reinforce")
-	Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsBuggy, { EntryPointVehicle.Location, RallyPointVehicle.Location }, { EntryPointVehicle.Location }, nil, nil)
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsBuggy, { EntryPointVehicle.Location, RallyPointVehicle.Location }, { EntryPointVehicle.Location }, nil, nil)
+	end)
 	Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsRocket, { EntryPointRocket.Location, RallyPointRocket.Location }, { EntryPointRocket.Location }, nil, nil)
 	Reinforcements.ReinforceWithTransport(player, 'tran', NodUnitsGunner, { EntryPointGunner.Location, RallyPointGunner.Location }, { EntryPointGunner.Location }, nil, nil)
 end

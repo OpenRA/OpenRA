@@ -245,7 +245,7 @@ namespace OpenRA.Traits
 			return rect;
 		}
 
-		public void Tick()
+		public void TickRender()
 		{
 			foreach (var a in addOrUpdateActors)
 			{

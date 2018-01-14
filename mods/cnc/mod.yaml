@@ -98,6 +98,7 @@ ChromeLayout:
 	cnc|chrome/lobby-players.yaml
 	cnc|chrome/lobby-options.yaml
 	cnc|chrome/lobby-music.yaml
+	cnc|chrome/lobby-servers.yaml
 	cnc|chrome/lobby-kickdialogs.yaml
 	cnc|chrome/connection.yaml
 	cnc|chrome/color-picker.yaml

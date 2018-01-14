@@ -164,6 +164,8 @@
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	Mobile:
 		Crushes: crate, spicebloom
@@ -232,6 +234,8 @@
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
+	Tooltip:
+		GenericName: Destroyed Unit
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -256,6 +260,8 @@
 
 ^AircraftHusk:
 	Inherits: ^Husk
+	Tooltip:
+		GenericName: Unit
 	WithShadow:
 	FallsToEarth:
 		Spins: False
@@ -266,6 +272,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	Health:
 	Armor:
@@ -343,6 +351,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Interactable:
+	Tooltip:
+		GenericName: Unit
 	Huntable:
 	AppearsOnRadar:
 		UseLocation: true
@@ -361,6 +371,8 @@
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Tooltip:
+		GenericName: Structure
 	Huntable:
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:

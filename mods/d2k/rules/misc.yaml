@@ -211,6 +211,7 @@ wormspawner:
 upgrade.conyard:
 	AlwaysVisible:
 	Interactable:
+	ScriptTriggers:
 	Tooltip:
 		Name: Construction Yard Upgrade
 	Buildable:
@@ -235,6 +236,7 @@ upgrade.conyard:
 upgrade.barracks:
 	AlwaysVisible:
 	Interactable:
+	ScriptTriggers:
 	Tooltip:
 		Name: Barracks Upgrade
 	Buildable:
@@ -259,6 +261,7 @@ upgrade.barracks:
 upgrade.light:
 	AlwaysVisible:
 	Interactable:
+	ScriptTriggers:
 	Tooltip:
 		Name: Light Factory Upgrade
 	Buildable:
@@ -283,6 +286,7 @@ upgrade.light:
 upgrade.heavy:
 	AlwaysVisible:
 	Interactable:
+	ScriptTriggers:
 	Tooltip:
 		Name: Heavy Factory Upgrade
 	Buildable:
@@ -308,6 +312,7 @@ upgrade.heavy:
 upgrade.hightech:
 	AlwaysVisible:
 	Interactable:
+	ScriptTriggers:
 	Tooltip:
 		Name: High Tech Factory Upgrade
 	Buildable:

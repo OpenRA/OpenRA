@@ -1755,7 +1755,7 @@ Rules:
 			Orientation: Y
 			Length: 13
 		ElevatedBridgePlaceholder@i:
-			Location: 128, -63
+			Location: 128, -65
 			Height: 6
 			Orientation: X
 			Length: 15

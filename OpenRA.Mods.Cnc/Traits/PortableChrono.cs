@@ -84,8 +84,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "PortableChronoDeploy" && CanTeleport)
-				self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
+			if (order.OrderID == "PortableChronoDeploy")
+			{
+				// HACK: Switch the global order generator instead of actually issuing an order
+				if (CanTeleport)
+					self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
+
+				// HACK: We need to issue a fake order to stop the game complaining about the bodge above
+				return new Order(order.OrderID, self, Target.Invalid, queued);
+			}
 
 			if (order.OrderID == "PortableChronoTeleport")
 				return new Order(order.OrderID, self, target, queued);
@@ -95,11 +102,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PortableChronoTeleport" && CanTeleport)
+			if (order.OrderString == "PortableChronoTeleport" && CanTeleport && order.Target.Type != TargetType.Invalid)
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(self, order.TargetLocation, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
+
+				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
+				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
 			}
 		}
 

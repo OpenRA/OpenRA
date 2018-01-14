@@ -19,9 +19,21 @@ World:
 			hard: Hard
 		Default: easy
 
-construction_yard:
-	Production:
-		Produces: Building
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.barracks:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.light:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled
 
 concreteb:
 	Buildable:

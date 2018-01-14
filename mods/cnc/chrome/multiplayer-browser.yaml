@@ -48,6 +48,7 @@ Container@MULTIPLAYER_PANEL:
 							Height: 25
 							Text: Status
 							Font: Bold
+				LogicTicker@NOTICE_WATCHER:
 				Container@NOTICE_CONTAINER:
 					X: 15
 					Y: 30
@@ -78,7 +79,7 @@ Container@MULTIPLAYER_PANEL:
 									Width: PARENT_RIGHT-10
 									Height: 18
 									Align: Center
-									Text: A pre-release version of OpenRA is available for testing. Download the playtest from www.openra.net
+									Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
 									Font: TinyBold
 				ScrollPanel@SERVER_LIST:
 					X: 15
@@ -103,6 +104,7 @@ Container@MULTIPLAYER_PANEL:
 							Width: PARENT_RIGHT - 27
 							Height: 25
 							X: 2
+							EnableChildMouseOver: True
 							Children:
 								Label@TITLE:
 									X: 5
@@ -114,10 +116,15 @@ Container@MULTIPLAYER_PANEL:
 									Width: 8
 									Height: 10
 									ImageCollection: lobby-bits
-								Label@PLAYERS:
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+									TooltipText: Requires Password
+								LabelWithTooltip@PLAYERS:
 									X: 290
 									Width: 85
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@LOCATION:
 									X: 380
 									Width: 110
@@ -197,12 +204,29 @@ Container@MULTIPLAYER_PANEL:
 					Width: 152
 					Height: 25
 					Text: Filter Games
-				Button@REFRESH_BUTTON:
+				Button@RELOAD_BUTTON:
 					X: 172
 					Y: PARENT_BOTTOM - 40
-					Width: 100
+					Width: 26
 					Height: 25
-					Text: Refresh
+					Children:
+						Image@IMAGE_RELOAD:
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: reload-icon
+							ImageName: enabled
+							IgnoreMouseOver: True
+							Children:
+								LogicTicker@ANIMATION:
+				Label@PLAYER_COUNT:
+					X: 198
+					Y: PARENT_BOTTOM - 40
+					Width: 189
+					Height: 25
+					Align: Center
+					Font: Bold
 				Button@DIRECTCONNECT_BUTTON:
 					X: 387
 					Y: PARENT_BOTTOM - 40

@@ -109,7 +109,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var health = target.Trait<Health>();
-				var lowEnoughHealth = health.HP <= c.Info.CaptureThreshold * health.MaxHP / 100;
+
+				// Cast to long to avoid overflow when multiplying by the health
+				var lowEnoughHealth = health.HP <= (int)(c.Info.CaptureThreshold * (long)health.MaxHP / 100);
 
 				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
@@ -129,7 +131,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var health = target.Info.TraitInfoOrDefault<HealthInfo>();
-				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP / 100;
+
+				// Cast to long to avoid overflow when multiplying by the health
+				var lowEnoughHealth = target.HP <= (int)(c.CaptureThreshold * (long)health.HP / 100);
 
 				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
 					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;

@@ -99,22 +99,30 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 					.ToArray();
 			}
 
-			foreach (var p in previews.Values.SelectMany(p => p))
+			foreach (var actorPreviews in previews.Values)
 			{
-				var index = cargo.PassengerCount > 1 ? i++ % info.LocalOffset.Length : info.LocalOffset.Length / 2;
-				var localOffset = info.LocalOffset[index];
+				if (actorPreviews == null)
+					continue;
 
-				foreach (var pp in p.Render(wr, pos + body.LocalToWorld(localOffset.Rotate(bodyOrientation))))
-					yield return pp.WithZOffset(1);
+				foreach (var p in actorPreviews)
+				{
+					var index = cargo.PassengerCount > 1 ? i++ % info.LocalOffset.Length : info.LocalOffset.Length / 2;
+					var localOffset = info.LocalOffset[index];
+
+					foreach (var pp in p.Render(wr, pos + body.LocalToWorld(localOffset.Rotate(bodyOrientation))))
+						yield return pp.WithZOffset(1);
+				}
 			}
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			var pos = self.CenterPosition;
-			foreach (var p in previews.Values.SelectMany(p => p))
-				foreach (var b in p.ScreenBounds(wr, pos))
-					yield return b;
+			foreach (var actorPreviews in previews.Values)
+				if (actorPreviews != null)
+					foreach (var p in actorPreviews)
+						foreach (var b in p.ScreenBounds(wr, pos))
+							yield return b;
 		}
 
 		void INotifyPassengerEntered.OnPassengerEntered(Actor self, Actor passenger)

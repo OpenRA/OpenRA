@@ -43,6 +43,7 @@ Background@MULTIPLAYER_PANEL:
 					Height: 25
 					Text: Status
 					Font: Bold
+		LogicTicker@NOTICE_WATCHER:
 		Background@NOTICE_CONTAINER:
 			X: 20
 			Y: 67
@@ -69,7 +70,7 @@ Background@MULTIPLAYER_PANEL:
 					Width: PARENT_RIGHT-10
 					Height: 18
 					Align: Center
-					Text: A pre-release version of OpenRA is available for testing. Download the playtest from www.openra.net
+					Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
 					Font: TinyBold
 		ScrollPanel@SERVER_LIST:
 			X: 20
@@ -95,6 +96,7 @@ Background@MULTIPLAYER_PANEL:
 					X: 2
 					Width: PARENT_RIGHT - 27
 					Height: 25
+					EnableChildMouseOver: True
 					Children:
 						Label@TITLE:
 							X: 5
@@ -103,13 +105,18 @@ Background@MULTIPLAYER_PANEL:
 						Image@PASSWORD_PROTECTED:
 							X: 272
 							Y: 6
-							Width: 8
-							Height: 10
+							Width: 10
+							Height: 12
 							ImageCollection: lobby-bits
-						Label@PLAYERS:
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: Requires Password
+						LabelWithTooltip@PLAYERS:
 							X: 290
 							Width: 85
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LOCATION:
 							X: 380
 							Width: 110
@@ -191,12 +198,28 @@ Background@MULTIPLAYER_PANEL:
 			Height: 25
 			Text: Filter Games
 			Font: Bold
-		Button@REFRESH_BUTTON:
+		Button@RELOAD_BUTTON:
 			X: 182
 			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 100
+			Width: 26
 			Height: 25
-			Text: Refresh
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+					Children:
+						LogicTicker@ANIMATION:
+		Label@PLAYER_COUNT:
+			X: 208
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: 190
+			Height: 25
+			Align: Center
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: 398
