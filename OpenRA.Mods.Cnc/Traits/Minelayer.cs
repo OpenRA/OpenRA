@@ -86,6 +86,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), false);
 		}
 
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
+
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "BeginMinefield")

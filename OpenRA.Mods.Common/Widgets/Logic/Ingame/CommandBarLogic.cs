@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				BindButtonIcon(deployButton);
 
-				deployButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedDeploys.Any(pair => pair.Trait.IsTraitEnabled()); };
+				deployButton.IsDisabled = () => { UpdateStateIfNecessary(); return !selectedDeploys.Any(pair => pair.Trait.CanIssueDeployOrder(pair.Actor)); };
 				deployButton.IsHighlighted = () => deployHighlighted > 0;
 				deployButton.OnClick = () =>
 				{
@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Widgets
 			UpdateStateIfNecessary();
 
 			var orders = selectedDeploys
-				.Where(pair => pair.Trait.IsTraitEnabled())
+				.Where(pair => pair.Trait.CanIssueDeployOrder(pair.Actor))
 				.Select(d => d.Trait.IssueDeployOrder(d.Actor))
 				.Where(d => d != null)
 				.ToArray();
