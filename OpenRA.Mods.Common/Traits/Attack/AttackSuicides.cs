@@ -58,6 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("Detonate", self, false);
 		}
 
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return info.Voice;

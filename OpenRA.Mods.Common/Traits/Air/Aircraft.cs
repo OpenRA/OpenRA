@@ -669,6 +669,8 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("ReturnToBase", self, false);
 		}
 
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return Info.RearmBuildings.Any(); }
+
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
