@@ -1086,6 +1086,14 @@ palace:
 	ProvidesPrerequisite@saboteur:
 		Prerequisite: palace.saboteur
 		Factions: ordos
+	PrimaryBuilding:
+		PrimaryCondition: primary
+	WithTextDecoration@primary:
+		RequiresSelection: true
+		Text: PRIMARY
+		ReferencePoint: Top
+		ZOffset: 256
+		RequiresCondition: primary
 	NukePower:
 		Cursor: nuke
 		Icon: deathhand
