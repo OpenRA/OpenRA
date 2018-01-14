@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.AI
 		}
 
 		// Added new checks for if a building can be built and moved some older checks into it
-		// tells the AI if a Building is buildable 
+		// tells the AI if a Building is buildable
 		bool BuildingIsBuildable(string name)
 		{
 			if (ai.Info.BuildingFractions != null && !ai.Info.BuildingFractions.ContainsKey(name))
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.AI
 
 			// Checks if a building has addition limiters, checks those limiters, and checks if it is Stop Building At Limit
 			// Return false if Stop Limiters Met and/or Start Limiters not Met
-			// Check for Has only start limiters 
+			// Check for Has only start limiters
 			// Check for Has only stop limiters
 			// Check for has both cases
 			if (ai.Info.AdditionalBuildingLimiters != null &&
