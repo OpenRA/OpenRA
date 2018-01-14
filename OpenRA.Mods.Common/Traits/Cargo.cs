@@ -178,6 +178,8 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("Unload", self, false);
 		}
 
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Unload")
