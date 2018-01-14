@@ -511,6 +511,7 @@
     <Compile Include="Traits\Conditions\ProximityExternalCondition.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnAttack.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnDamageState.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnFaction.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnTerrain.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPrerequisite.cs" />
