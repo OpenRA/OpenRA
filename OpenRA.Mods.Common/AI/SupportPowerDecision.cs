@@ -160,7 +160,12 @@ namespace OpenRA.Mods.Common.AI
 
 						case DecisionMetric.Health:
 							var health = a.TraitOrDefault<Health>();
-							return (health != null) ? (health.HP / health.MaxHP) * Attractiveness : 0;
+
+							if (health == null)
+								return 0;
+
+							// Cast to long to avoid overflow when multiplying by the health
+							return (int)((long)health.HP * Attractiveness / health.MaxHP);
 
 						default:
 							return Attractiveness;

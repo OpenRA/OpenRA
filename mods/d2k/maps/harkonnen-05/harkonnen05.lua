@@ -280,6 +280,6 @@ WorldLoaded = function()
 	SendHarkonnenReinforcements(DateTime.Seconds(35), 2)
 
 	local ordosCondition = function() return player.IsObjectiveCompleted(KillOrdos) end
-	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[1], OrdosHunters[1], OrdosHunterPaths[3], ordosCondition)
-	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[2], OrdosHunters[2], OrdosHunterPaths[2], ordosCondition)
+	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[1], OrdosHunters[1], OrdosHunterPaths[2], ordosCondition)
+	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[2], OrdosHunters[2], OrdosHunterPaths[1], ordosCondition)
 end
