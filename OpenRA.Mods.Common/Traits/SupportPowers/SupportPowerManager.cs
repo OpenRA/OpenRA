@@ -124,7 +124,8 @@ namespace OpenRA.Mods.Common.Traits
 				return NoInstances;
 
 			return a.TraitsImplementing<SupportPower>()
-				.Select(t => Powers[MakeKey(t)]);
+				.Select(t => Powers[MakeKey(t)])
+				.Where(p => p.Instances.Any(i => !i.IsTraitDisabled && i.Self == a));
 		}
 
 		public void PrerequisitesAvailable(string key)
