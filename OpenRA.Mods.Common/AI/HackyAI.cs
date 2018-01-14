@@ -549,15 +549,15 @@ namespace OpenRA.Mods.Common.AI
 
 			// Checks if a unit has addition limiters, checks those limiters, and checks if it is Stop Building At Limit
 			// Return false if Stop Limiters Met and/or Start Limiters not Met
-			// Check for Has only start limiters 
+			// Check for Has only start limiters
 			// Check for Has only stop limiters
 			// Check for has both cases
 			if (Info.AdditionalUnitLimiters != null &&
-				((Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && !Info.AdditionalUnitLimiters.UnitHasStartLimiters(name) && 
+				((Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && !Info.AdditionalUnitLimiters.UnitHasStartLimiters(name) &&
 				Info.AdditionalUnitLimiters.StopActorLimitsMet(name, World, Player)) ||
-				(Info.AdditionalUnitLimiters.UnitHasStartLimiters(name) && !Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && 
+				(Info.AdditionalUnitLimiters.UnitHasStartLimiters(name) && !Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) &&
 				!Info.AdditionalUnitLimiters.StartActorLimitsMet(name, World, Player)) ||
-				((Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && Info.AdditionalUnitLimiters.UnitHasStartLimiters(name)) && 
+				((Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && Info.AdditionalUnitLimiters.UnitHasStartLimiters(name)) &&
 				(!Info.AdditionalUnitLimiters.StartActorLimitsMet(name, World, Player) || Info.AdditionalUnitLimiters.StopActorLimitsMet(name, World, Player)))))
 			{
 				// BotDebug("{0} Unit: {1} Cannot be Produced at this time!",Player,name); spammy as hell but effective at telling you what is getting hit
@@ -888,7 +888,8 @@ namespace OpenRA.Mods.Common.AI
 			else if (!Info.CapturableActorTypes.Any() && Info.AvoidCapturingActorTypes.Any())
 			{
 				capturableTargetOptions = capturableTargetOptions.Where(target => !Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
-				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => !Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target =>
+					!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
 			}
 
 			if (!capturableTargetOptions.Any() && !externalCapturableTargetOptions.Any())
@@ -1265,7 +1266,8 @@ namespace OpenRA.Mods.Common.AI
 						waitingPowers[sp] += 10;
 
 						// CtrlF - this version of Order works for 2 step support powers
-						QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false) { ExtraLocation = attackLocation2.Value, SuppressVisualFeedback = true });
+						QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false)
+							{ ExtraLocation = attackLocation2.Value, SuppressVisualFeedback = true });
 					}
 					else if (sp.Info.NumberofTargetsOrSteps >= 3)
 					{
