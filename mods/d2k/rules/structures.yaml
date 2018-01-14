@@ -1199,6 +1199,17 @@ conyard.harkonnen:
 		Image: conyard.harkonnen
 		-FactionImages:
 
+conyard.corrino:
+	Inherits: construction_yard
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		ForceFaction: corrino
+	RenderSprites:
+		Image: conyard.harkonnen
+		-FactionImages:
+
 conyard.ordos:
 	Inherits: construction_yard
 	Buildable:
