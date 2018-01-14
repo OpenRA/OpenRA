@@ -182,11 +182,6 @@ namespace OpenRA.Mods.Common.AI
 				if (!actors.Contains(actor.Name))
 					return false;
 
-				/*if (!ai.Info.BuildingLimits.ContainsKey(actor.Name))
-					return true;
-				
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < ai.Info.BuildingLimits[actor.Name];*/
-
 				// Added new checks for if a building can be built and moved some older checks into it
 				return BuildingIsBuildable(actor.Name);
 			});
@@ -220,7 +215,8 @@ namespace OpenRA.Mods.Common.AI
 				(ai.Info.AdditionalBuildingLimiters.BuildingHasStartLimiters(name) && !ai.Info.AdditionalBuildingLimiters.BuildingHasStopLimiters(name) &&
 				!ai.Info.AdditionalBuildingLimiters.StartActorLimitsMet(name, ai.World, ai.Player)) ||
 				((ai.Info.AdditionalBuildingLimiters.BuildingHasStopLimiters(name) && ai.Info.AdditionalBuildingLimiters.BuildingHasStartLimiters(name)) &&
-				(!ai.Info.AdditionalBuildingLimiters.StartActorLimitsMet(name, ai.World, ai.Player) || ai.Info.AdditionalBuildingLimiters.StopActorLimitsMet(name, ai.World, ai.Player)))))
+				(!ai.Info.AdditionalBuildingLimiters.StartActorLimitsMet(name, ai.World, ai.Player) ||
+				 ai.Info.AdditionalBuildingLimiters.StopActorLimitsMet(name, ai.World, ai.Player)))))
 			{
 				// BotDebug("{0} Building: {1} Cannot be Produced at this time!",Player,name); spammy as hell but effective at telling you what is getting hit
 				return false;
