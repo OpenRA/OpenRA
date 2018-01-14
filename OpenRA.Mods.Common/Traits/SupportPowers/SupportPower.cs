@@ -73,7 +73,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string OrderName;
 
-		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
+		// Added NumberOfTargetsOrSteps for AI Multiple SupportPower targeting and future N Target Supports
+		// ~~StormWing0 made this for AI usage mainly but hopefully at some point it can be used for more than that.
+		[Desc("AI Only Usage at the moment, Tells the AI how many steps or targets the Support Power has before it'll fire.",
+			"Can be 1 or greater but is restricted to a max of 2 due to not having a power that uses 3 or more.",
+			"Will also be used down the road for support powers with any number of targets.")]
+		public readonly int NumberofTargetsOrSteps = 1;
+
+		public SupportPowerInfo()
+		{
+			OrderName = GetType().Name + "Order";
+			if (NumberofTargetsOrSteps < 1 || NumberofTargetsOrSteps > 2)
+			{
+				throw new YamlException("A Support Power cannot have less than 1 step or more than 2 steps at the moment!");
+			}
+		}
 	}
 
 	public class SupportPower : PausableConditionalTrait<SupportPowerInfo>
