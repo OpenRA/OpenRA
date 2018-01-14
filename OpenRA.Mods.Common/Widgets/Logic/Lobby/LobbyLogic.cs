@@ -298,6 +298,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 			musicBin.IsVisible = () => panel == PanelType.Music;
 
+			ServerListLogic serverListLogic = null;
 			if (!skirmishMode)
 			{
 				Action<GameServer> doNothingWithServer = _ => { };
@@ -307,6 +308,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "onJoin", doNothingWithServer },
 				});
 
+				serverListLogic = serversBin.LogicObjects.Select(l => l as ServerListLogic).FirstOrDefault(l => l != null);
 				serversBin.IsVisible = () => panel == PanelType.Servers;
 			}
 
@@ -334,7 +336,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				serversTab.IsHighlighted = () => panel == PanelType.Servers;
 				serversTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
-				serversTab.OnClick = () => panel = PanelType.Servers;
+				serversTab.OnClick = () =>
+				{
+					// Refresh the list when switching to the servers tab
+					if (serverListLogic != null && panel != PanelType.Servers)
+						serverListLogic.RefreshServerList();
+
+					panel = PanelType.Servers;
+				};
 			}
 
 			// Force start panel

@@ -134,7 +134,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.DamageThreshold == 0)
 				return;
 
-			if (health.HP * 100 < Info.DamageThreshold * health.MaxHP)
+			// Cast to long to avoid overflow when multiplying by the health
+			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
 				self.World.AddFrameEndTask(w => self.Kill(e.Attacker));
 		}
 	}
