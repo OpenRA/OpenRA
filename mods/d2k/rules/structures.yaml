@@ -1088,16 +1088,18 @@ palace:
 		Factions: ordos
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		RequiresCondition: atreides || ordos
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY
 		ReferencePoint: Top
 		ZOffset: 256
-		RequiresCondition: primary
+		RequiresCondition: primary && (atreides || ordos)
 	NukePower:
 		Cursor: nuke
 		Icon: deathhand
 		PauseOnCondition: disabled
+		RequiresCondition: harkonnen
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke
 		ChargeInterval: 7500
 		Description: Death Hand
@@ -1114,7 +1116,7 @@ palace:
 		ArrowSequence: arrow
 		CircleSequence: circles
 	WithNukeLaunchOverlay:
-		RequiresCondition: !launchpad-damaged
+		RequiresCondition: !launchpad-damaged && harkonnen
 	GrantConditionOnDamageState@LAUNCHPADDAMAGED:
 		Condition: launchpad-damaged
 		ValidDamageState: Medium, Heavy, Critical
@@ -1123,9 +1125,10 @@ palace:
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
 		Icon: fremen
 		PauseOnCondition: disabled
+		RequiresCondition: atreides
 		Prerequisites: ~techlevel.superweapons, ~palace.fremen
 		Actors: fremen, fremen
-		Type: Palace
+		Type: Fremen
 		ChargeInterval: 2250
 		ReadyAudio: Reinforce
 		BlockedAudio: NoRoom
@@ -1135,9 +1138,10 @@ palace:
 		LongDesc: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 		Icon: saboteur
 		PauseOnCondition: disabled
+		RequiresCondition: ordos
 		Prerequisites: ~techlevel.superweapons, ~palace.saboteur
 		Actors: saboteur
-		Type: Palace
+		Type: Saboteur
 		ChargeInterval: 2250
 		ReadyAudio: Reinforce
 		BlockedAudio: NoRoom
@@ -1151,9 +1155,26 @@ palace:
 	Exit@3:
 		SpawnOffset: -704,768,0
 		ExitCell: 0,3
-	Production:
-		Produces: Palace
+	Production@Atreides:
+		Produces: Fremen
+		RequiresCondition: atreides
+	Production@Ordos:
+		Produces: Saboteur
+		RequiresCondition: ordos
+	GrantConditionOnFaction@Atreides:
+		Condition: atreides
+		Factions: atreides, fremen
+	GrantConditionOnFaction@Harkonnen:
+		Condition: harkonnen
+		Factions: harkonnen
+	GrantConditionOnFaction@Corrino:
+		Condition: corrino
+		Factions: corrino
+	GrantConditionOnFaction@Ordos:
+		Condition: ordos
+		Factions: ordos, mercenary, smuggler
 	SupportPowerChargeBar:
+		RequiresCondition: atreides || harkonnen || ordos
 	ProvidesPrerequisite@buildingname:
 
 conyard.atreides:
