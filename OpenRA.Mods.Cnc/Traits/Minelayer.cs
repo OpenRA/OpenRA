@@ -73,9 +73,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					else
 						self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
 
-					return new Order("BeginMinefield", self, false) { TargetLocation = start };
+					return new Order("BeginMinefield", self, Target.FromCell(self.World, start), false);
 				case "PlaceMine":
-					return new Order("PlaceMine", self, false) { TargetLocation = self.Location };
+					return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), false);
 				default:
 					return null;
 			}
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
 		{
-			return new Order("PlaceMine", self, false) { TargetLocation = self.Location };
+			return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), false);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
@@ -156,6 +156,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					WVec.Zero, -511, pal, 1f, true);
 		}
 
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+
 		class MinefieldOrderGenerator : IOrderGenerator
 		{
 			readonly List<Actor> minelayers;
@@ -186,7 +188,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					yield break;
 				}
 
-				var underCursor = world.ScreenMap.ActorsAt(mi)
+				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
+					.Select(a => a.Actor)
 					.Where(a => !world.FogObscures(a))
 					.MaxByOrDefault(a => a.Info.HasTraitInfo<SelectableInfo>()
 						? a.Info.TraitInfo<SelectableInfo>().Priority : int.MinValue);
@@ -195,7 +198,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					minelayers.First().World.CancelInputMode();
 					foreach (var minelayer in minelayers)
-						yield return new Order("PlaceMinefield", minelayer, false) { TargetLocation = cell };
+						yield return new Order("PlaceMinefield", minelayer, Target.FromCell(world, cell), false);
 				}
 			}
 

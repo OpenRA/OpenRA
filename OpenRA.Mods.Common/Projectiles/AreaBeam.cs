@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// While the head is travelling, the tail must start to follow Duration ticks later.
 			// Alternatively, also stop emitting the beam if source actor dies or is ordered to stop.
 			if ((headTicks >= info.Duration && !isTailTravelling) || args.SourceActor.IsDead ||
-				!actorAttackBase.IsAttacking || outOfWeaponRange)
+				!actorAttackBase.IsAiming || outOfWeaponRange)
 				StopTargeting();
 
 			if (isTailTravelling)

@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void UpdateNeighbours(Actor self)
 		{
-			var footprint = gate.Info.Tiles(self.Location).ToArray();
+			var footprint = gate.Footprint.ToArray();
 			var adjacent = Util.ExpandFootprint(footprint, true).Except(footprint)
 				.Where(self.World.Map.Contains).ToList();
 

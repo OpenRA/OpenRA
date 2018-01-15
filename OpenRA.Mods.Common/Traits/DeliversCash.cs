@@ -9,21 +9,17 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
-/*
-// Modifications for Mod.yupgi_alert:
-// Add sound effect parameter and INotifyCashTransfer.
-*/
-
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Donate money to actors with the `AcceptsDeliveredCash` trait.")]
-	public class DeliversCashInfo : ITraitInfo
+	class DeliversCashInfo : ITraitInfo
 	{
 		[Desc("The amount of cash the owner receives.")]
 		public readonly int Payload = 500;
@@ -42,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new DeliversCash(this); }
 	}
 
-	public class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCashTransfer
+	class DeliversCash : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCashTransfer
 	{
 		readonly DeliversCashInfo info;
 
@@ -61,10 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID != "DeliverCash")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

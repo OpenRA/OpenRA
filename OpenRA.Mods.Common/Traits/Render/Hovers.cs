@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -49,6 +50,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var worldVisualOffset = new WVec(0, 0, info.OffsetModifier * visualOffset);
 
 			return r.Select(a => a.OffsetBy(worldVisualOffset));
+		}
+
+		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
+		{
+			return bounds;
 		}
 	}
 }

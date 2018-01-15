@@ -25,10 +25,10 @@ namespace OpenRA.Mods.Common.Activities
 		public Hunt(Actor self)
 		{
 			move = self.Trait<IMove>();
-			var attacks = self.TraitsImplementing<AttackBase>();
+			var attack = self.Trait<AttackBase>();
 			targets = self.World.ActorsHavingTrait<Huntable>().Where(
 				a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
-				&& a.IsTargetableBy(self) && attacks.Any(attack => attack.HasAnyValidWeapons(Target.FromActor(a))));
+				&& a.IsTargetableBy(self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
 		}
 
 		public override Activity Tick(Actor self)

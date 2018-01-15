@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using OpenRA.Chat;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -37,9 +36,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		enum PanelType { Players, Options, Music, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
-
-		enum ChatPanelType { Lobby, Global }
-		ChatPanelType chatPanel = ChatPanelType.Lobby;
 
 		readonly Widget lobby;
 		readonly Widget editablePlayerTemplate;
@@ -65,9 +61,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapPreview map;
 		bool addBotOnMapLoad;
 		bool teamChat;
-		int lobbyChatUnreadMessages;
-		int globalChatLastReadMessages;
-		int globalChatUnreadMessages;
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
@@ -285,7 +278,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var optionsBin = Ui.LoadWidget("LOBBY_OPTIONS_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
+			var optionsBin = Ui.LoadWidget("LOBBY_OPTIONS_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs()
+			{
+				{ "orderManager", orderManager },
+				{ "getMap", (Func<MapPreview>)(() => map) },
+				{ "configurationDisabled", configurationDisabled }
+			});
+
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
 			var musicBin = Ui.LoadWidget("LOBBY_MUSIC_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
@@ -297,8 +296,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var optionsTab = lobby.Get<ButtonWidget>("OPTIONS_TAB");
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
-			optionsTab.IsDisabled = () => !map.RulesLoaded || map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
+			optionsTab.IsDisabled = OptionsTabDisabled;
 			optionsTab.OnClick = () => panel = PanelType.Options;
+			optionsTab.GetText = () => !map.RulesLoaded ? "Loading..." : optionsTab.Text;
 
 			var playersTab = lobby.Get<ButtonWidget>("PLAYERS_TAB");
 			playersTab.IsHighlighted = () => panel == PanelType.Players;
@@ -340,135 +340,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = startGame;
 			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
-			// Options panel
-			var optionCheckboxes = new Dictionary<string, string>()
-			{
-				{ "EXPLORED_MAP_CHECKBOX", "explored" },
-				{ "CRATES_CHECKBOX", "crates" },
-				{ "SHORTGAME_CHECKBOX", "shortgame" },
-				{ "FOG_CHECKBOX", "fog" },
-				{ "ALLYBUILDRADIUS_CHECKBOX", "allybuild" },
-				{ "ALLOWCHEATS_CHECKBOX", "cheats" },
-				{ "CREEPS_CHECKBOX", "creeps" },
-			};
-
-			foreach (var kv in optionCheckboxes)
-			{
-				var checkbox = optionsBin.GetOrNull<CheckboxWidget>(kv.Key);
-				if (checkbox != null)
-				{
-					var option = new CachedTransform<Session.Global, Session.LobbyOptionState>(
-						gs => gs.LobbyOptions[kv.Value]);
-
-					var visible = new CachedTransform<Session.Global, bool>(
-						gs => gs.LobbyOptions.ContainsKey(kv.Value));
-
-					checkbox.IsVisible = () => visible.Update(orderManager.LobbyInfo.GlobalSettings);
-					checkbox.IsChecked = () => option.Update(orderManager.LobbyInfo.GlobalSettings).Enabled;
-					checkbox.IsDisabled = () => configurationDisabled() ||
-						option.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
-					checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
-						"option {0} {1}".F(kv.Value, !option.Update(orderManager.LobbyInfo.GlobalSettings).Enabled)));
-				}
-			}
-
-			var optionDropdowns = new Dictionary<string, string>()
-			{
-				{ "TECHLEVEL", "techlevel" },
-				{ "STARTINGUNITS", "startingunits" },
-				{ "STARTINGCASH", "startingcash" },
-				{ "DIFFICULTY", "difficulty" },
-				{ "GAMESPEED", "gamespeed" }
-			};
-
-			var allOptions = new CachedTransform<MapPreview, LobbyOption[]>(
-				mapPreview => mapPreview.Rules.Actors["player"].TraitInfos<ILobbyOptions>()
-					.Concat(mapPreview.Rules.Actors["world"].TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(mapPreview.Rules))
-					.ToArray());
-
-			foreach (var kv in optionDropdowns)
-			{
-				var dropdown = optionsBin.GetOrNull<DropDownButtonWidget>(kv.Key + "_DROPDOWNBUTTON");
-				if (dropdown != null)
-				{
-					var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
-						gs => gs.LobbyOptions[kv.Value]);
-
-					var option = new CachedTransform<MapPreview, LobbyOption>(
-						mapPreview => allOptions.Update(mapPreview).FirstOrDefault(o => o.Id == kv.Value));
-
-					var getOptionLabel = new CachedTransform<string, string>(id =>
-					{
-						string value;
-						if (id == null || !option.Update(map).Values.TryGetValue(id, out value))
-							return "Not Available";
-
-						return value;
-					});
-
-					dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
-					dropdown.IsVisible = () => option.Update(map) != null;
-					dropdown.IsDisabled = () => configurationDisabled() ||
-						optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Locked;
-
-					dropdown.OnMouseDown = _ =>
-					{
-						Func<KeyValuePair<string, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (c, template) =>
-						{
-							Func<bool> isSelected = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
-							Action onClick = () => orderManager.IssueOrder(Order.Command("option {0} {1}".F(kv.Value, c.Key)));
-
-							var item = ScrollItemWidget.Setup(template, isSelected, onClick);
-							item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
-							return item;
-						};
-
-						var options = option.Update(map).Values;
-						dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
-					};
-
-					var label = optionsBin.GetOrNull(kv.Key + "_DESC");
-					if (label != null)
-						label.IsVisible = () => option.Update(map) != null;
-				}
-			}
-
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
 
-			var globalChat = Game.LoadWidget(null, "LOBBY_GLOBALCHAT_PANEL", lobby.Get("GLOBALCHAT_ROOT"), new WidgetArgs());
-			var globalChatInput = globalChat.Get<TextFieldWidget>("CHAT_TEXTFIELD");
-
-			globalChat.IsVisible = () => chatPanel == ChatPanelType.Global;
-
-			var globalChatTab = lobby.Get<ButtonWidget>("GLOBALCHAT_TAB");
-			globalChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Global;
-			globalChatTab.OnClick = () =>
-			{
-				chatPanel = ChatPanelType.Global;
-				globalChatInput.TakeKeyboardFocus();
-			};
-
-			var globalChatLabel = globalChatTab.Text;
-			globalChatTab.GetText = () =>
-			{
-				if (globalChatUnreadMessages == 0 || chatPanel == ChatPanelType.Global)
-					return globalChatLabel;
-
-				return globalChatLabel + " ({0})".F(globalChatUnreadMessages);
-			};
-
-			globalChatLastReadMessages = Game.GlobalChat.History.Count(m => m.Type == ChatMessageType.Message);
-
-			var lobbyChat = lobby.Get("LOBBYCHAT");
-			lobbyChat.IsVisible = () => chatPanel == ChatPanelType.Lobby;
-
 			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
+			chatTextField.MaxLength = UnitOrders.ChatMessageMaxLength;
+
 			chatTextField.TakeKeyboardFocus();
 			chatTextField.OnEnterKey = () =>
 			{
@@ -496,23 +377,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			chatTextField.OnEscKey = () => { chatTextField.Text = ""; return true; };
-
-			var lobbyChatTab = lobby.Get<ButtonWidget>("LOBBYCHAT_TAB");
-			lobbyChatTab.IsHighlighted = () => chatPanel == ChatPanelType.Lobby;
-			lobbyChatTab.OnClick = () =>
-			{
-				chatPanel = ChatPanelType.Lobby;
-				chatTextField.TakeKeyboardFocus();
-			};
-
-			var lobbyChatLabel = lobbyChatTab.Text;
-			lobbyChatTab.GetText = () =>
-			{
-				if (lobbyChatUnreadMessages == 0 || chatPanel == ChatPanelType.Lobby)
-					return lobbyChatLabel;
-
-				return lobbyChatLabel + " ({0})".F(lobbyChatUnreadMessages);
-			};
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			chatTemplate = lobbyChatPanel.Get("CHAT_TEMPLATE");
@@ -549,23 +413,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			base.Dispose(disposing);
 		}
 
+		bool OptionsTabDisabled()
+		{
+			return !map.RulesLoaded || map.InvalidCustomRules || panel == PanelType.Kick || panel == PanelType.ForceStart;
+		}
+
 		public override void Tick()
 		{
-			var newMessages = Game.GlobalChat.History.Count(m => m.Type == ChatMessageType.Message);
-			globalChatUnreadMessages += newMessages - globalChatLastReadMessages;
-			globalChatLastReadMessages = newMessages;
-
-			if (chatPanel == ChatPanelType.Lobby)
-				lobbyChatUnreadMessages = 0;
-
-			if (chatPanel == ChatPanelType.Global)
-				globalChatUnreadMessages = 0;
+			if (panel == PanelType.Options && OptionsTabDisabled())
+				panel = PanelType.Players;
 		}
 
 		void AddChatLine(Color c, string from, string text)
 		{
-			lobbyChatUnreadMessages += 1;
-
 			var template = (ContainerWidget)chatTemplate.Clone();
 			LobbyUtils.SetupChatLine(template, c, DateTime.Now, from, text);
 

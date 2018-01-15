@@ -68,24 +68,29 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("The type of the actor (e.g. \"e1\").")]
 		public string Type { get { return Self.Info.Name; } }
 
-		[Desc("Unique ID of the actor (e.g. \"e1 234\"")]
-		public string UID { get { return Self.ToString(); } }
-
-		[Desc("Unique ID of the actor (e.g. \"234\"")]
-		public int ActorID { get { return (int)Self.ActorID; } }
-
 		[Desc("Test whether an actor has a specific property.")]
 		public bool HasProperty(string name)
 		{
-			return Self.HasScriptProperty(Context, name);
+			return Self.HasScriptProperty(name);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Render a target flash on the actor. If set, 'asPlayer'",
 			"defines which player palette to use. Duration is in ticks.")]
 		public void Flash(int duration = 4, Player asPlayer = null)
 		{
 			Self.World.Add(new FlashTarget(Self, asPlayer, duration));
+		}
+
+		[Desc("The effective owner of the actor.")]
+		public Player EffectiveOwner
+		{
+			get
+			{
+				if (Self.EffectiveOwner == null || Self.EffectiveOwner.Owner == null)
+					return Self.Owner;
+
+				return Self.EffectiveOwner.Owner;
+			}
 		}
 	}
 
@@ -122,7 +127,6 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		// AI and Misison safe but it would be cheating!
 		[ScriptActorPropertyActivity]
 		[Desc("Instantly moves the actor to the specified cell.")]
 		public void Teleport(CPos cell)
@@ -177,6 +181,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (!Enum<UnitStance>.TryParse(value, true, out stance))
 					throw new LuaException("Unknown stance type '{0}'".F(value));
 
+				autotarget.PredictedStance = stance;
 				autotarget.SetStance(Self, stance);
 			}
 		}

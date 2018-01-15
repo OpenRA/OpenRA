@@ -9,35 +9,37 @@
 
 HarkonnenBase = { HConyard, HPower1, HPower2, HBarracks, HOutpost }
 
-HarkonnenReinforcements = { }
-HarkonnenReinforcements["easy"] =
+HarkonnenReinforcements =
 {
-	{ "light_inf", "trike" },
-	{ "light_inf", "trike" },
-	{ "light_inf", "light_inf", "light_inf", "trike", "trike" }
-}
+	easy =
+	{
+		{ "light_inf", "trike" },
+		{ "light_inf", "trike" },
+		{ "light_inf", "light_inf", "light_inf", "trike", "trike" }
+	},
 
-HarkonnenReinforcements["normal"] =
-{
-	{ "light_inf", "trike" },
-	{ "light_inf", "trike" },
-	{ "light_inf", "light_inf", "light_inf", "trike", "trike" },
-	{ "light_inf", "light_inf" },
-	{ "light_inf", "light_inf", "light_inf" },
-	{ "light_inf", "trike" },
-}
+	normal =
+	{
+		{ "light_inf", "trike" },
+		{ "light_inf", "trike" },
+		{ "light_inf", "light_inf", "light_inf", "trike", "trike" },
+		{ "light_inf", "light_inf" },
+		{ "light_inf", "light_inf", "light_inf" },
+		{ "light_inf", "trike" }
+	},
 
-HarkonnenReinforcements["hard"] =
-{
-	{ "trike", "trike" },
-	{ "light_inf", "trike" },
-	{ "light_inf", "trike" },
-	{ "light_inf", "light_inf", "light_inf", "trike", "trike" },
-	{ "light_inf", "light_inf" },
-	{ "trike", "trike" },
-	{ "light_inf", "light_inf", "light_inf" },
-	{ "light_inf", "trike" },
-	{ "trike", "trike" }
+	hard =
+	{
+		{ "trike", "trike" },
+		{ "light_inf", "trike" },
+		{ "light_inf", "trike" },
+		{ "light_inf", "light_inf", "light_inf", "trike", "trike" },
+		{ "light_inf", "light_inf" },
+		{ "trike", "trike" },
+		{ "light_inf", "light_inf", "light_inf" },
+		{ "light_inf", "trike" },
+		{ "trike", "trike" }
+	}
 }
 
 HarkonnenAttackPaths =
@@ -62,26 +64,6 @@ HarkonnenAttackWaves =
 	hard = 9
 }
 
-wave = 0
-SendHarkonnen = function()
-	Trigger.AfterDelay(HarkonnenAttackDelay[Map.LobbyOption("difficulty")], function()
-		wave = wave + 1
-		if wave > HarkonnenAttackWaves[Map.LobbyOption("difficulty")] then
-			return
-		end
-
-		local path = Utils.Random(HarkonnenAttackPaths)
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Map.LobbyOption("difficulty")][wave], path, { path[1] })[2]
-		Utils.Do(units, IdleHunt)
-
-		SendHarkonnen()
-	end)
-end
-
-IdleHunt = function(unit)
-	Trigger.OnIdle(unit, unit.Hunt)
-end
-
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		harkonnen.MarkCompletedObjective(KillOrdos)
@@ -97,7 +79,9 @@ WorldLoaded = function()
 	harkonnen = Player.GetPlayer("Harkonnen")
 	player = Player.GetPlayer("Ordos")
 
-	InitObjectives()
+	InitObjectives(player)
+	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
+	KillHarkonnen = player.AddPrimaryObjective("Destroy all Harkonnen forces.")
 
 	Camera.Position = OConyard.CenterPosition
 
@@ -105,33 +89,7 @@ WorldLoaded = function()
 		Utils.Do(harkonnen.GetGroundAttackers(), IdleHunt)
 	end)
 
-	SendHarkonnen()
+	local path = function() return Utils.Random(HarkonnenAttackPaths) end
+	SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty])
 	Trigger.AfterDelay(0, ActivateAI)
-end
-
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	KillHarkonnen = player.AddPrimaryObjective("Destroy all Harkonnen forces.")
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Lose")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "Win")
-		end)
-	end)
 end

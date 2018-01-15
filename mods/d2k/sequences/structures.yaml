@@ -394,8 +394,8 @@ refinery.atreides:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.atreides:
@@ -427,7 +427,7 @@ silo.atreides:
 
 hightech.atreides:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 2812
 	make: DATA.R8
@@ -564,6 +564,9 @@ research.ordos:
 
 palace.atreides:
 	idle: DATA.R8
+		Start: 2924
+		Offset: -48,48
+	active: DATA.R8
 		Start: 2924
 		Offset: -48,48
 	make: DATA.R8
@@ -901,8 +904,8 @@ refinery.harkonnen:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.harkonnen:
@@ -934,7 +937,7 @@ silo.harkonnen:
 
 hightech.harkonnen:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 2972
 	make: DATA.R8
@@ -980,10 +983,10 @@ palace.harkonnen:
 	damaged-idle: DATA.R8
 		Start: 3085
 		Offset: -48,48
-#	active: DATA.R8 # TODO: overlay
-#		Start:  5084
-#		Length: 20
-#		Offset: -48,64
+	active: DATA.R8
+		Start:  5084
+		Length: 20
+		Offset: -48,48
 	damaged-active: DATA.R8
 		Start: 5084
 		Length: 20
@@ -1304,8 +1307,8 @@ refinery.ordos:
 	smoke: DATA.R8
 		Start: 4138
 		Length: 14
-		Offset: 10,-16
-		Tick: 200
+		Offset: 13,-16
+		Tick: 100
 		BlendMode: Additive
 
 silo.ordos:
@@ -1337,7 +1340,7 @@ silo.ordos:
 
 hightech.ordos:
 	Defaults:
-		Offset: -48,84
+		Offset: -48,80
 	idle: DATA.R8
 		Start: 3132
 	make: DATA.R8
@@ -1369,6 +1372,9 @@ hightech.ordos:
 
 palace.ordos:
 	idle: DATA.R8
+		Start: 3244
+		Offset: -48,48
+	active: DATA.R8
 		Start: 3244
 		Offset: -48,48
 	make: DATA.R8
@@ -1485,6 +1491,9 @@ palace.corrino:
 	idle: DATA.R8
 		Start: 3252
 		Offset: -48,48
+	active: DATA.R8
+		Start: 3252
+		Offset: -48,48
 	damaged-idle: DATA.R8
 		Start: 3253
 		Offset: -48,48
@@ -1547,8 +1556,8 @@ starport.smuggler:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA.R8 # TODO: blank
-		Start: 4281
+	icon: DATA.R8
+		Start: 4358
 		Offset: -30,-24
 
 heavy.mercenary:
@@ -1597,8 +1606,8 @@ heavy.mercenary:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
-	icon: DATA.R8 # TODO: blank
-		Start: 4281
+	icon: DATA.R8
+		Start: 4353
 		Offset: -30,-24
 
 plates: # TODO: unused

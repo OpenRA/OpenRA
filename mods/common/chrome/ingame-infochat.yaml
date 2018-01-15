@@ -1,0 +1,46 @@
+Container@CHAT_CONTAINER:
+	Y: 20
+	Width: PARENT_RIGHT
+	Height: PARENT_BOTTOM - 100
+	Logic: IngameChatLogic
+	Children:
+		Container@CHAT_CHROME:
+			X: 20
+			Width: PARENT_RIGHT - 40
+			Height: PARENT_BOTTOM
+			Children:
+				Button@CHAT_MODE:
+					Y: PARENT_BOTTOM - HEIGHT
+					Width: 50
+					Height: 25
+					Text: Team
+					Font: Bold
+				TextField@CHAT_TEXTFIELD:
+					X: 55
+					Y: PARENT_BOTTOM - HEIGHT
+					Width: PARENT_RIGHT - 55
+					Height: 25
+				ScrollPanel@CHAT_SCROLLPANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 30
+					TopBottomSpacing: 2
+					ItemSpacing: 2
+					Children:
+						Container@CHAT_TEMPLATE:
+							X: 2
+							Width: PARENT_RIGHT - 27
+							Height: 16
+							Children:
+								Label@NAME:
+									X: 3
+									Width: 50
+									Height: 15
+									VAlign: Top
+									Shadow: True
+								Label@TEXT:
+									X: 12
+									Width: PARENT_RIGHT - 17
+									Height: 15
+									WordWrap: true
+									VAlign: Top
+									Shadow: True

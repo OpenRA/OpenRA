@@ -22,7 +22,6 @@ namespace OpenRA.Mods.Common.Widgets
 	public class SpawnOccupant
 	{
 		public readonly HSLColor Color;
-		public readonly int ClientIndex;
 		public readonly string PlayerName;
 		public readonly int Team;
 		public readonly string Faction;
@@ -31,7 +30,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(Session.Client client)
 		{
 			Color = client.Color;
-			ClientIndex = client.Index;
 			PlayerName = client.Name;
 			Team = client.Team;
 			Faction = client.Faction;
@@ -41,10 +39,18 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(GameInformation.Player player)
 		{
 			Color = player.Color;
-			ClientIndex = player.ClientIndex;
 			PlayerName = player.Name;
 			Team = player.Team;
 			Faction = player.FactionId;
+			SpawnPoint = player.SpawnPoint;
+		}
+
+		public SpawnOccupant(GameClient player, bool suppressFaction)
+		{
+			Color = player.Color;
+			PlayerName = player.Name;
+			Team = player.Team;
+			Faction = !suppressFaction ? player.Faction : null;
 			SpawnPoint = player.SpawnPoint;
 		}
 	}

@@ -37,7 +37,10 @@ namespace OpenRA.Mods.AS.Traits
 
 			foreach (var a in actors)
 			{
-				a.Actor.Kill(a.Actor);
+				if (a.Actor.TraitOrDefault<IHealth>() != null)
+					a.Actor.Kill(a.Actor);
+				else
+					a.Actor.Dispose();
 			}
 		}
 	}

@@ -27,9 +27,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			cr.DrawLine(new[]
 			{
-				new float2(rect.Left, rect.Top),
-				new float2(rect.Left, rect.Bottom),
-				new float2(rect.Right, rect.Bottom)
+				new float3(rect.Left, rect.Top, 0),
+				new float3(rect.Left, rect.Bottom, 0),
+				new float3(rect.Right, rect.Bottom, 0)
 			}, 1, Color.White);
 
 			cr.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, 1, Color.White);
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var item in PerfHistory.Items.Values)
 			{
 				cr.DrawLine(item.Samples()
-					.Select((sample, i) => origin + new float2(i, (float)sample) * basis),
+					.Select((sample, i) => origin + new float3(i, (float)sample, 0) * basis),
 					1, item.C);
 
 				var u = new float2(rect.Left, rect.Top);

@@ -1,0 +1,107 @@
+CycleBase: H
+	Description: Jump to base
+	Types: World
+
+ToLastEvent: SPACE
+	Description: Jump to last radar event
+	Types: World
+
+ToSelection: HOME
+	Description: Jump to selection
+	Types: World
+
+SelectAllUnits: Q
+	Description: Select all combat units
+	Types: World
+
+SelectUnitsByType: W
+	Description: Select units by type
+	Types: World
+
+Pause: PAUSE
+	Description: Pause / Unpause
+	Types: World
+
+Sell: Z
+	Description: Sell mode
+	Types: OrderGenerator
+
+Repair: C
+	Description: Repair mode
+	Types: OrderGenerator
+
+PlaceBeacon: B
+	Description: Place beacon
+	Types: OrderGenerator
+
+CycleStatusBars: COMMA
+	Description: Cycle status bars display
+	Types: World
+
+TogglePixelDouble: PERIOD
+	Description: Toggle pixel doubling
+	Types: World
+
+ToggleMute: M
+	Description: Toggle audio mute
+	Types: World, Menu
+
+TogglePlayerStanceColor: COMMA Ctrl
+	Description: Toggle player stance colors
+	Types: World
+
+TakeScreenshot: P Ctrl
+	Description: Take screenshot
+	Types: World, Menu
+
+AttackMove: A
+	Description: Attack Move
+	Types: Unit
+
+Stop: S
+	Description: Stop
+	Types: Unit
+
+Scatter: X Ctrl
+	Description: Scatter
+	Types: Unit
+
+Deploy: F
+	Description: Deploy
+	Types: Unit
+
+Guard: D
+	Description: Guard
+	Types: Unit
+
+StanceHoldFire: F Alt
+	Description: Hold fire
+	Types: Stance
+
+StanceReturnFire: D Alt
+	Description: Return fire
+	Types: Stance
+
+StanceDefend: S Alt
+	Description: Defend
+	Types: Stance
+
+StanceAttackAnything: A Alt
+	Description: Attack anything
+	Types: Stance
+
+StopMusic: AUDIOSTOP
+	Description: Stop
+	Types: Music
+
+PauseMusic: AUDIOPLAY
+	Description: Pause or Resume
+	Types: Music
+
+PrevMusic: AUDIOPREV
+	Description: Previous
+	Types: Music
+
+NextMusic: AUDIONEXT
+	Description: Next
+	Types: Music

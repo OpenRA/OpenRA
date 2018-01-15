@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	public class ProximityBountyInfo : ITraitInfo
+	public class ProximityBountyInfo : ConditionalTraitInfo
 	{
 		[Desc("The range within bounty gets collected.")]
 		public readonly WDist Range = WDist.FromCells(7);
@@ -38,12 +38,11 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly string EnableSound = null;
 		public readonly string DisableSound = null;
 
-		public object Create(ActorInitializer init) { return new ProximityBounty(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ProximityBounty(init.Self, this); }
 	}
 
-	public class ProximityBounty : ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
+	public class ProximityBounty : ConditionalTrait<ProximityBountyInfo>, ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
 	{
-		public readonly ProximityBountyInfo Info;
 		readonly Actor self;
 
 		int proximityTrigger;
@@ -58,8 +57,8 @@ namespace OpenRA.Mods.AS.Traits
 		int ticks;
 
 		public ProximityBounty(Actor self, ProximityBountyInfo info)
+			: base(info)
 		{
-			this.Info = info;
 			this.self = self;
 			cachedRange = info.Range;
 			cachedVRange = info.MaximumVerticalOffset;
@@ -80,7 +79,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			var disabled = self.IsDisabled();
+			var disabled = IsTraitDisabled;
 
 			if (cachedDisabled != disabled)
 			{
@@ -140,14 +139,14 @@ namespace OpenRA.Mods.AS.Traits
 				gpb.Collectors.Add(this);
 		}
 
-		void INotifyOtherProduction.UnitProducedByOther(Actor self, Actor producer, Actor produced)
+		void INotifyOtherProduction.UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType)
 		{
 			// If the produced Actor doesn't occupy space, it can't be in range
 			if (produced.OccupiesSpace == null)
 				return;
 
 			// We don't grant upgrades when disabled
-			if (self.IsDisabled())
+			if (IsTraitDisabled)
 				return;
 
 			// Work around for actors produced within the region not triggering until the second tick

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRender
 	{
 		const string CommandName = "debugcustomterrain";
-		const string CommandDesc = "Toggles the custom terrain debug overlay.";
+		const string CommandDesc = "toggles the custom terrain debug overlay.";
 
 		public bool Enabled;
 
@@ -74,6 +74,12 @@ namespace OpenRA.Mods.Common.Traits
 				var info = wr.World.Map.GetTerrainInfo(cell);
 				yield return new TextRenderable(font, center, 0, info.Color, info.Type);
 			}
+		}
+
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// World-actor render traits don't require screen bounds
+			yield break;
 		}
 	}
 }

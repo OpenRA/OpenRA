@@ -38,14 +38,14 @@ namespace OpenRA.Network
 
 		public static byte[] SerializeSync(int sync)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream(1 + 4);
 			using (var writer = new BinaryWriter(ms))
 			{
 				writer.Write((byte)0x65);
 				writer.Write(sync);
 			}
 
-			return ms.ToArray();
+			return ms.GetBuffer();
 		}
 
 		public static int2 ReadInt2(this BinaryReader r)

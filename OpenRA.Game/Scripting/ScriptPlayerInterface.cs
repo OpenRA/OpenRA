@@ -33,7 +33,7 @@ namespace OpenRA.Scripting
 				return groupCtor.Invoke(args);
 			});
 
-			Bind(objects, Context is AIScriptContext ? BindAIOnly : BindMissionOnly);
+			Bind(objects);
 		}
 	}
 }

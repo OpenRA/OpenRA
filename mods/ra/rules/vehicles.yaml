@@ -1,17 +1,18 @@
 V2RL:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
-		Description: Long-range rocket artillery.\n  Strong vs Infantry, Light armor, Buildings\n  Weak vs Tanks, Aircraft
+		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: V2 Rocket
+		Name: V2 Rocket Launcher
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -23,31 +24,43 @@ V2RL:
 		Range: 4c0
 	Armament:
 		Weapon: SCUD
+		PauseOnCondition: !ammo
+	AmmoPool:
+		Ammo: 1
+		PipCount: 0
+		AmmoCondition: ammo
+	ReloadAmmoPool:
+		Delay: 240
+		Count: 1
 	AttackFrontal:
+	WithFacingSpriteBody:
+		RequiresCondition: ammo
+	WithFacingSpriteBody@EMPTY:
+		RequiresCondition: !ammo
+		Sequence: empty-idle
 	SelectionDecorations:
-		VisualBounds: 28,28
 	Explodes:
 		Weapon: V2Explode
-	WithAttackAnimation:
-		AimSequence: aim
-		ReloadPrefix: empty-
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 1TNK:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: ~vehicles.allies, ~techlevel.low
-		Description: Light Tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
+		Description: Fast tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 700
 	Tooltip:
 		Name: Light Tank
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -71,11 +84,14 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 1TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
 2TNK:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -87,7 +103,7 @@ V2RL:
 	Tooltip:
 		Name: Medium Tank
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -111,13 +127,17 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
-		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 3TNK:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -129,7 +149,7 @@ V2RL:
 	Tooltip:
 		Name: Heavy Tank
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -153,13 +173,17 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
-		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 4TNK:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -167,13 +191,13 @@ V2RL:
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
 		BuildDuration: 2500
 		BuildDurationModifier: 40
-		Description: Big and slow tank, with anti-air capability.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
+		Description: Big and slow tank, with anti-air capability.\nCan crush concrete walls.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mammoth Tank
 	Health:
-		HP: 900
+		HP: 90000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -204,20 +228,24 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	SelfHealing:
-		Step: 1
+		Step: 100
 		Delay: 3
 		HealIfBelow: 50
 		DamageCooldown: 150
 	SelectionDecorations:
-		VisualBounds: 44,38,0,-4
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	DetectCloaked:
 		Range: 6c0
+	Selectable:
+		DecorationBounds: 44,38,0,-4
 
 ARTY:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -229,7 +257,7 @@ ARTY:
 	Tooltip:
 		Name: Artillery
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	Mobile:
@@ -267,8 +295,8 @@ HARV:
 		GenericName: Harvester
 	Selectable:
 		Priority: 7
+		DecorationBounds: 42,42
 	SelectionDecorations:
-		VisualBounds: 42,42
 	Harvester:
 		Capacity: 20
 		Resources: Ore,Gems
@@ -276,7 +304,7 @@ HARV:
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 11
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -291,11 +319,13 @@ HARV:
 		String: Harvester
 	SpawnActorOnDeath:
 		Actor: HARV.EmptyHusk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	HarvesterHuskModifier:
 		FullActor: HARV.FullHusk
 		FullnessThreshold: 50
 	SelfHealing:
-		Step: 1
+		Step: 100
 		Delay: 25
 		HealIfBelow: 50
 		DamageCooldown: 500
@@ -317,10 +347,10 @@ MCV:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Priority: 4
+		DecorationBounds: 42,42
 	SelectionDecorations:
-		VisualBounds: 42,42
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Light
 	Mobile:
@@ -339,21 +369,24 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 JEEP:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: ~vehicles.allies, ~techlevel.low
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		Description: Fast scout & anti-infantry vehicle.\nCan carry one infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Ranger
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	Mobile:
@@ -385,6 +418,7 @@ JEEP:
 
 APC:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
@@ -396,7 +430,7 @@ APC:
 	Tooltip:
 		Name: Armored Personnel Carrier
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -434,7 +468,7 @@ MNLY:
 	Tooltip:
 		Name: Minelayer
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -474,7 +508,7 @@ TRUK:
 	Selectable:
 		Priority: 6
 	Health:
-		HP: 110
+		HP: 11000
 	Armor:
 		Type: Light
 	Mobile:
@@ -501,7 +535,7 @@ MGG:
 	Tooltip:
 		Name: Mobile Gap Generator
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -519,6 +553,8 @@ MGG:
 	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 MRJ:
 	Inherits: ^Vehicle
@@ -534,7 +570,7 @@ MRJ:
 		BuildDurationModifier: 40
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Health:
-		HP: 220
+		HP: 22000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -561,19 +597,20 @@ MRJ:
 
 TTNK:
 	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
 		BuildDuration: 1166
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
+		Description: Tank with mounted Tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Light
 	Mobile:
@@ -592,24 +629,26 @@ TTNK:
 	WithIdleOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:
-		VisualBounds: 30,30
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 30,30
 
 FTRK:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
-		Description: Mobile unit with mounted Flak Cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
+		Description: Mobile unit with mounted Flak cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Mobile Flak
 	Health:
-		HP: 150
+		HP: 15000
 	Armor:
 		Type: Light
 	Mobile:
@@ -637,9 +676,10 @@ FTRK:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SelectionDecorations:
-		VisualBounds: 28,28
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 28,28
 
 DTRK:
 	Inherits: ^Vehicle
@@ -647,13 +687,13 @@ DTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
 		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.high
-		Description: Demolition Truck, actively armed with\nnuclear explosives. Has very weak armor.
+		Description: Truck with actively armed nuclear\nexplosives. Has very weak armor.
 	Valued:
 		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
 	Health:
-		HP: 50
+		HP: 5000
 	Armor:
 		Type: Light
 	Mobile:
@@ -672,21 +712,21 @@ DTRK:
 
 CTNK:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
 		BuildDuration: 1166
-		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
+		Description: Armed with anti-ground missiles.\nTeleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
 	SelectionDecorations:
-		VisualBounds: 30,30
 	Health:
-		HP: 450
+		HP: 45000
 	Armor:
 		Type: Light
 	Mobile:
@@ -710,6 +750,8 @@ CTNK:
 		ChargeDelay: 300
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 30,30
 
 QTNK:
 	Inherits: ^Tank
@@ -723,7 +765,7 @@ QTNK:
 	Tooltip:
 		Name: MAD Tank
 	Health:
-		HP: 900
+		HP: 90000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -735,26 +777,28 @@ QTNK:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	SelectionDecorations:
-		VisualBounds: 44,38,0,-4
 	MadTank:
 	Targetable:
 		TargetTypes: Ground, MADTank, Repair, Vehicle
+	Selectable:
+		DecorationBounds: 44,38,0,-4
 
 STNK:
 	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
 		BuildDuration: 1166
-		Description: Lightly armored infantry transport\nwhich can cloak. Can detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
+		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\nCan detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Phase Transport
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Light
 	Mobile:
@@ -796,3 +840,27 @@ STNK:
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+
+MCV2:
+	Inherits: MCV
+	Tooltip:
+		Name: Not MCV
+	CarrierMaster:
+		Actors: YAK2, YAK2, YAK2, YAK2, YAK2
+	Armament:
+		Weapon: spawner
+	Turreted:
+		TurnSpeed: 255
+	AttackTurreted:
+	RenderSprites:
+		Image: MCV
+
+MCV3:
+	Inherits: MCV2
+	Tooltip:
+		Name: Totally not MCV
+	-CarrierMaster:
+	Mindcontroller:
+		Capacity: 10
+	RenderSprites:
+		Image: MCV

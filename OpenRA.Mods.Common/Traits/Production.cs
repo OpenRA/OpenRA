@@ -19,27 +19,26 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This unit has access to build queues.")]
-	public class ProductionInfo : ITraitInfo
+	public class ProductionInfo : PausableConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 
-		public virtual object Create(ActorInitializer init) { return new Production(init, this); }
+		public override object Create(ActorInitializer init) { return new Production(init, this); }
 	}
 
-	public class Production : INotifyCreated
+	public class Production : PausableConditionalTrait<ProductionInfo>, INotifyCreated
 	{
 		readonly Lazy<RallyPoint> rp;
 
-		public readonly ProductionInfo Info;
 		public string Faction { get; private set; }
 
 		Building building;
 
 		public Production(ActorInitializer init, ProductionInfo info)
+			: base(info)
 		{
-			Info = info;
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
@@ -49,20 +48,16 @@ namespace OpenRA.Mods.Common.Traits
 			building = self.TraitOrDefault<Building>();
 		}
 
-		public virtual void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
+		public virtual void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string productionType, TypeDictionary inits)
 		{
 			var exit = CPos.Zero;
 			var exitLocation = CPos.Zero;
 			var target = Target.Invalid;
 
-			var bi = producee.TraitInfoOrDefault<BuildableInfo>();
-			if (bi != null && bi.ForceFaction != null)
-				factionVariant = bi.ForceFaction;
-
-			var td = new TypeDictionary
-			{
-				new OwnerInit(self.Owner),
-			};
+			// Clone the initializer dictionary for the new actor
+			var td = new TypeDictionary();
+			foreach (var init in inits)
+				td.Add(init);
 
 			if (self.OccupiesSpace != null)
 			{
@@ -93,9 +88,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (factionVariant != null)
-					td.Add(new FactionInit(factionVariant));
-
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				var move = newUnit.TraitOrDefault<IMove>();
@@ -107,11 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
 
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						if (rp.Value != null)
-							rp.Value.QueueRallyOrder(self, newUnit);
-						else
-							newUnit.QueueActivity(new AttackMoveActivity(
-								newUnit, move.MoveTo(exitLocation, 1)));
+						newUnit.QueueActivity(new AttackMoveActivity(
+							newUnit, move.MoveTo(exitLocation, 1)));
 					}
 				}
 
@@ -123,25 +112,35 @@ namespace OpenRA.Mods.Common.Traits
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType);
 
 				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);
 			});
 		}
 
-		public virtual bool Produce(Actor self, ActorInfo producee, string factionVariant)
+		protected virtual ExitInfo SelectExit(Actor self, ActorInfo producee, string productionType, Func<ExitInfo, bool> p)
 		{
-			if (Reservable.IsReserved(self) || (building != null && building.Locked))
+			return self.RandomExitOrDefault(productionType, p);
+		}
+
+		protected ExitInfo SelectExit(Actor self, ActorInfo producee, string productionType)
+		{
+			return SelectExit(self, producee, productionType, e => CanUseExit(self, producee, e));
+		}
+
+		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
+		{
+			if (IsTraitDisabled || IsTraitPaused || Reservable.IsReserved(self) || (building != null && building.Locked))
 				return false;
 
 			// Pick a spawn/exit point pair
-			var exit = self.Info.TraitInfos<ExitInfo>().Shuffle(self.World.SharedRandom)
-				.FirstOrDefault(e => CanUseExit(self, producee, e));
+			var exit = SelectExit(self, producee, productionType);
 
 			if (exit != null || self.OccupiesSpace == null)
 			{
-				DoProduction(self, producee, exit, factionVariant);
+				DoProduction(self, producee, exit, productionType, inits);
+
 				return true;
 			}
 

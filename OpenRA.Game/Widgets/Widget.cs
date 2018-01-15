@@ -128,29 +128,6 @@ namespace OpenRA.Widgets
 		/// <param name="e">Key input data</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
-			if (e.Event == KeyInputEvent.Down)
-			{
-				var hk = Hotkey.FromKeyInput(e);
-
-				if (hk == Game.Settings.Keys.DevReloadChromeKey)
-				{
-					ChromeProvider.Initialize(Game.ModData);
-					return true;
-				}
-
-				if (hk == Game.Settings.Keys.HideUserInterfaceKey)
-				{
-					Root.Visible ^= true;
-					return true;
-				}
-
-				if (hk == Game.Settings.Keys.TakeScreenshotKey)
-				{
-					Game.TakeScreenshot = true;
-					return true;
-				}
-			}
-
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
@@ -307,8 +284,15 @@ namespace OpenRA.Widgets
 			// PERF: Avoid LINQ.
 			var bounds = EventBounds;
 			foreach (var child in Children)
+			{
 				if (child.IsVisible())
-					bounds = Rectangle.Union(bounds, child.GetEventBounds());
+				{
+					var childBounds = child.GetEventBounds();
+					if (childBounds != Rectangle.Empty)
+						bounds = Rectangle.Union(bounds, childBounds);
+				}
+			}
+
 			return bounds;
 		}
 

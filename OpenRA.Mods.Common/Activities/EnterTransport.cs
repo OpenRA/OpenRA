@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class EnterTransport : Enter
+	class EnterTransport : Enter
 	{
 		readonly Passenger passenger;
 		readonly int maxTries;
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		Cargo cargo;
 
 		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool repathWhileMoving = true)
-			: base(self, transport, EnterBehaviour.Exit, WDist.Zero, maxTries, repathWhileMoving)
+			: base(self, transport, EnterBehaviour.Exit, maxTries, repathWhileMoving)
 		{
 			this.transport = transport;
 			this.maxTries = maxTries;

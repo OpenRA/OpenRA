@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Actor becomes a specified actor type when this trait is triggered.")]
-	public class TransformsInfo : ITraitInfo
+	public class TransformsInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Actor to transform into."), ActorReference, FieldLoader.Require]
 		public readonly string IntoActor = null;
@@ -48,42 +48,48 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public virtual object Create(ActorInitializer init) { return new Transforms(init, this); }
+		public override object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
-	public class Transforms : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	public class Transforms : PausableConditionalTrait<TransformsInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly Actor self;
-		readonly TransformsInfo info;
 		readonly BuildingInfo buildingInfo;
 		readonly string faction;
 
 		public Transforms(ActorInitializer init, TransformsInfo info)
+			: base(info)
 		{
 			self = init.Self;
-			this.info = info;
 			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].TraitInfoOrDefault<BuildingInfo>();
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "DeployTransform") ? info.Voice : null;
+			return (order.OrderString == "DeployTransform") ? Info.Voice : null;
 		}
 
 		public bool CanDeploy()
 		{
+			if (IsTraitPaused || IsTraitDisabled)
+				return false;
+
 			var building = self.TraitOrDefault<Building>();
 			if (building != null && building.Locked)
 				return false;
 
-			return buildingInfo == null || self.World.CanPlaceBuilding(info.IntoActor, buildingInfo, self.Location + info.Offset, self);
+			return buildingInfo == null || self.World.CanPlaceBuilding(Info.IntoActor, buildingInfo, self.Location + Info.Offset, self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("DeployTransform", 5,
-				() => CanDeploy() ? info.DeployCursor : info.DeployBlockedCursor); }
+			get
+			{
+				if (!IsTraitDisabled)
+					yield return new DeployOrderTargeter("DeployTransform", 5,
+						() => CanDeploy() ? Info.DeployCursor : Info.DeployBlockedCursor);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -105,10 +111,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Only play the "Cannot deploy here" audio
 				// for non-queued orders
-				foreach (var s in info.NoTransformSounds)
+				foreach (var s in Info.NoTransformSounds)
 					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s);
 
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.NoTransformNotification, self.Owner.Faction.InternalName);
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.NoTransformNotification, self.Owner.Faction.InternalName);
 
 				return;
 			}
@@ -116,19 +122,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			self.QueueActivity(new Transform(self, info.IntoActor)
+			self.QueueActivity(new Transform(self, Info.IntoActor)
 			{
-				Offset = info.Offset,
-				Facing = info.Facing,
-				Sounds = info.TransformSounds,
-				Notification = info.TransformNotification,
+				Offset = Info.Offset,
+				Facing = Info.Facing,
+				Sounds = Info.TransformSounds,
+				Notification = Info.TransformNotification,
 				Faction = faction
 			});
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployTransform")
+			if (order.OrderString == "DeployTransform" && !IsTraitPaused && !IsTraitDisabled)
 				DeployTransform(order.Queued);
 		}
 	}

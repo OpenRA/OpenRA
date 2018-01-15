@@ -15,11 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
-	using OccupiedCells = IEnumerable<Pair<CPos, SubCell>>;
-
 	public static class ShroudExts
 	{
-		public static bool AnyExplored(this Shroud shroud, OccupiedCells cells)
+		public static bool AnyExplored(this Shroud shroud, Pair<CPos, SubCell>[] cells)
 		{
 			// PERF: Avoid LINQ.
 			foreach (var cell in cells)
@@ -29,7 +27,7 @@ namespace OpenRA.Mods.Common
 			return false;
 		}
 
-		public static bool AnyVisible(this Shroud shroud, OccupiedCells cells)
+		public static bool AnyVisible(this Shroud shroud, Pair<CPos, SubCell>[] cells)
 		{
 			// PERF: Avoid LINQ.
 			foreach (var cell in cells)

@@ -41,6 +41,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -64,9 +65,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CncLoadScreen.cs" />
-    <Compile Include="Traits\AttackPopupTurreted.cs" />
+    <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
+    <Compile Include="Traits\Render\WithEmbeddedTurretSpriteBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
     <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
@@ -98,7 +100,7 @@
     <Compile Include="Activities\LayMines.cs" />
     <Compile Include="Activities\Leap.cs" />
     <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Effects\GpsDot.cs" />
+    <Compile Include="Effects\GpsDotEffect.cs" />
     <Compile Include="Effects\GpsSatellite.cs" />
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Projectiles\TeslaZap.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
     <Compile Include="Traits\TDGunboat.cs" />
     <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
+    <Compile Include="Traits\GpsDot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

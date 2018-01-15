@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -16,34 +17,29 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
 	public class CapturableInfo : ConditionalTraitInfo
 	{
-		[Desc("Type listed under Types in Captures: trait of actors that can capture this).")]
-		public readonly string Type = "building";
-		public readonly bool AllowAllies = false;
-		public readonly bool AllowNeutral = true;
-		public readonly bool AllowEnemies = true;
+		[Desc("CaptureTypes (from the Captures trait) that are able to capture this.")]
+		public readonly HashSet<string> Types = new HashSet<string>() { "building" };
+
+		[Desc("What diplomatic stances can be captured by this actor.")]
+		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
+
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
 		public readonly int CaptureThreshold = 50;
 		public readonly bool CancelActivity = false;
 
 		public override object Create(ActorInitializer init) { return new Capturable(this); }
 
-		public bool FrozenCanBeTargetedBy(Actor captor, Player owner)
+		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
 			var c = captor.Info.TraitInfoOrDefault<CapturesInfo>();
 			if (c == null)
 				return false;
 
-			var playerRelationship = owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !AllowAllies)
+			var stance = owner.Stances[captor.Owner];
+			if (!ValidStances.HasStance(stance))
 				return false;
 
-			if (playerRelationship == Stance.Enemy && !AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !AllowNeutral)
-				return false;
-
-			if (!c.CaptureTypes.Contains(Type))
+			if (!c.CaptureTypes.Overlaps(Types))
 				return false;
 
 			return true;
@@ -52,9 +48,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Capturable : ConditionalTrait<CapturableInfo>, INotifyCapture
 	{
-		public readonly new CapturableInfo Info;
 		public bool BeingCaptured { get; private set; }
-		public Capturable(CapturableInfo info) : base(info) { Info = info; }
+		public Capturable(CapturableInfo info)
+			: base(info) { }
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
@@ -74,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return false;
 
-			return Info.FrozenCanBeTargetedBy(captor, owner);
+			return Info.CanBeTargetedBy(captor, owner);
 		}
 	}
 }

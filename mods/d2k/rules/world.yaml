@@ -7,6 +7,7 @@
 		VictoryMusic: score
 		DefeatMusic: score
 	TerrainGeometryOverlay:
+	DebugVisualizations:
 	ShroudRenderer:
 		ShroudVariants: shrouda, shroudb, shroudc, shroudd
 		FogVariants: foga, fogb, fogc, fogd
@@ -64,6 +65,7 @@ World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
+	DebugVisualizationCommands:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:
@@ -78,6 +80,7 @@ World:
 		WaterChance: 0
 		ValidGround: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		InitialSpawnDelay: 1500
+		CheckboxDisplayOrder: 1
 	DomainIndex:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
@@ -93,9 +96,17 @@ World:
 		Sequence: sandcraters
 		SmokePercentage: 0
 	MapCreeps:
+		CheckboxLabel: Worms
+		CheckboxDescription: Worms roam the map and devour unprepared forces
+		CheckboxDisplayOrder: 5
 	SpawnMapActors:
 	MapBuildRadius:
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxVisible: False
 	MapOptions:
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 3
 	CreateMPPlayers:
 	MPStartLocations:
 	MPStartUnits@mcv:
@@ -152,6 +163,7 @@ World:
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnMPUnits:
+		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

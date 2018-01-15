@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -31,6 +33,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
 
+		// Note: LinterHotkeyNames assumes that these are disabled by default
+		public readonly string HotkeyPrefix = null;
+		public readonly int HotkeyCount = 0;
+
 		public readonly string ClockAnimation = "clock";
 		public readonly string ClockSequence = "idle";
 		public readonly string ClockPalette = "chrome";
@@ -38,6 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
+		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
 
@@ -47,15 +54,39 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
+		HotkeyReference[] hotkeys;
 
 		Rectangle eventBounds;
 		public override Rectangle EventBounds { get { return eventBounds; } }
 		SpriteFont overlayFont;
 		float2 holdOffset, readyOffset, timeOffset;
 
-		[ObjectCreator.UseCtor]
-		public SupportPowersWidget(World world, WorldRenderer worldRenderer)
+		[CustomLintableHotkeyNames]
+		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
 		{
+			var prefix = "";
+			var prefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyPrefix");
+			if (prefixNode != null)
+				prefix = prefixNode.Value.Value;
+
+			var count = 0;
+			var countNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyCount");
+			if (countNode != null)
+				count = FieldLoader.GetValue<int>("HotkeyCount", countNode.Value.Value);
+
+			if (count == 0)
+				return new string[0];
+
+			if (string.IsNullOrEmpty(prefix))
+				emitError("{0} must define HotkeyPrefix if HotkeyCount > 0.".F(widgetNode.Location));
+
+			return Exts.MakeArray(count, i => prefix + (i + 1).ToString("D2"));
+		}
+
+		[ObjectCreator.UseCtor]
+		public SupportPowersWidget(ModData modData, World world, WorldRenderer worldRenderer)
+		{
+			this.modData = modData;
 			this.worldRenderer = worldRenderer;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
@@ -65,6 +96,14 @@ namespace OpenRA.Mods.Common.Widgets
 			clock = new Animation(world, ClockAnimation);
 		}
 
+		public override void Initialize(WidgetArgs args)
+		{
+			base.Initialize(args);
+
+			hotkeys = Exts.MakeArray(HotkeyCount,
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
+		}
+
 		public class SupportPowerIcon
 		{
 			public SupportPowerInstance Power;
@@ -72,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets
 			public Sprite Sprite;
 			public PaletteReference Palette;
 			public PaletteReference IconClockPalette;
-			public Hotkey Hotkey;
+			public HotkeyReference Hotkey;
 		}
 
 		public void RefreshIcons()
@@ -84,8 +123,6 @@ namespace OpenRA.Mods.Common.Widgets
 			IconCount = 0;
 
 			var rb = RenderBounds;
-			var ks = Game.Settings.Keys;
-
 			foreach (var p in powers)
 			{
 				var rect = new Rectangle(rb.X, rb.Y + IconCount * (IconSize.Y + IconMargin), IconSize.X, IconSize.Y);
@@ -98,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Sprite = icon.Image,
 					Palette = worldRenderer.Palette(p.Info.IconPalette),
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
-					Hotkey = ks.GetSupportPowerHotkey(IconCount)
+					Hotkey = IconCount < HotkeyCount ? hotkeys[IconCount] : null,
 				};
 
 				icons.Add(rect, power);
@@ -127,8 +164,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				var hotkey = Hotkey.FromKeyInput(e);
-				var a = icons.Values.FirstOrDefault(i => i.Hotkey == hotkey);
+				var a = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 
 				if (a != null)
 				{
@@ -194,7 +230,8 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", worldRenderer.World }, { "palette", this } });
+				new WidgetArgs() { { "world", worldRenderer.World }, { "player", spm.Self.Owner }, { "palette", this },
+				{ "playerResources", worldRenderer.World.LocalPlayer.PlayerActor.Trait<PlayerResources>() } });
 		}
 
 		public override void MouseExited()

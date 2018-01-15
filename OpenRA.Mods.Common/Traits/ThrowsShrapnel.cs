@@ -33,7 +33,14 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			WeaponInfos = Weapons.Select(w => rules.Weapons[w.ToLowerInvariant()]).ToArray();
+			WeaponInfos = Weapons.Select(w =>
+			{
+				WeaponInfo weapon;
+				var weaponToLower = w.ToLowerInvariant();
+				if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
+					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+				return weapon;
+			}).ToArray();
 		}
 	}
 

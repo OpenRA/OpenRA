@@ -31,12 +31,11 @@ namespace OpenRA.Traits
 	{
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
-		public readonly Rectangle Bounds;
-		public readonly HashSet<string> TargetTypes;
 		readonly Actor actor;
 		readonly Shroud shroud;
 
 		public Player Owner { get; private set; }
+		public HashSet<string> TargetTypes { get; private set; }
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -50,7 +49,13 @@ namespace OpenRA.Traits
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
+		public Rectangle[] ScreenBounds = NoBounds;
+
+		// TODO: Replace this with an int2[] polygon
+		public Rectangle MouseBounds = Rectangle.Empty;
+
 		static readonly IRenderable[] NoRenderables = new IRenderable[0];
+		static readonly Rectangle[] NoBounds = new Rectangle[0];
 
 		int flashTicks;
 
@@ -77,8 +82,7 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = self.CenterPosition;
-			Bounds = self.Bounds;
-			TargetTypes = self.GetEnabledTargetTypes().ToHashSet();
+			TargetTypes = new HashSet<string>();
 
 			tooltips = self.TraitsImplementing<ITooltip>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
@@ -94,6 +98,7 @@ namespace OpenRA.Traits
 		public void RefreshState()
 		{
 			Owner = actor.Owner;
+			TargetTypes = actor.GetEnabledTargetTypes().ToHashSet();
 
 			if (health != null)
 			{
@@ -101,7 +106,7 @@ namespace OpenRA.Traits
 				DamageState = health.DamageState;
 			}
 
-			var tooltip = tooltips.FirstOrDefault(Exts.IsTraitEnabled);
+			var tooltip = tooltips.FirstEnabledTraitOrDefault();
 			if (tooltip != null)
 			{
 				TooltipInfo = tooltip.TooltipInfo;
@@ -178,6 +183,7 @@ namespace OpenRA.Traits
 		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
 		readonly bool[] dirtyBins;
 		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
+		readonly int rows, cols;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{
@@ -191,16 +197,17 @@ namespace OpenRA.Traits
 			// expensive visibility update for frozen actors in these regions.
 			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
 				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
-			var maxX = world.Map.MapSize.X / binSize + 1;
-			var maxY = world.Map.MapSize.Y / binSize + 1;
-			dirtyBins = new bool[maxX * maxY];
+
+			cols = world.Map.MapSize.X / binSize + 1;
+			rows = world.Map.MapSize.Y / binSize + 1;
+			dirtyBins = new bool[cols * rows];
 			self.Trait<Shroud>().CellsChanged += cells =>
 			{
 				foreach (var cell in cells)
 				{
 					var x = cell.U / binSize;
 					var y = cell.V / binSize;
-					dirtyBins[y * maxX + x] = true;
+					dirtyBins[y * cols + x] = true;
 				}
 			};
 		}
@@ -208,7 +215,7 @@ namespace OpenRA.Traits
 		public void Add(FrozenActor fa)
 		{
 			frozenActorsById.Add(fa.ID, fa);
-			world.ScreenMap.Add(owner, fa);
+			world.ScreenMap.AddOrUpdate(owner, fa);
 			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
 		}
 
@@ -242,7 +249,7 @@ namespace OpenRA.Traits
 			return Rectangle.FromLTRB(minU, minV, maxU + 1, maxV + 1);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			UpdateDirtyFrozenActorsFromDirtyBins();
 
@@ -277,14 +284,13 @@ namespace OpenRA.Traits
 		{
 			// Check which bins on the map were dirtied due to changes in the shroud and gather the frozen actors whose
 			// footprint overlap with these bins.
-			var maxX = world.Map.MapSize.X / binSize + 1;
-			var maxY = world.Map.MapSize.Y / binSize + 1;
-			for (var y = 0; y < maxY; y++)
+			for (var y = 0; y < rows; y++)
 			{
-				for (var x = 0; x < maxX; x++)
+				for (var x = 0; x < cols; x++)
 				{
-					if (!dirtyBins[y * maxX + x])
+					if (!dirtyBins[y * cols + x])
 						continue;
+
 					var box = new Rectangle(x * binSize, y * binSize, binSize, binSize);
 					dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.InBox(box));
 				}
@@ -295,9 +301,15 @@ namespace OpenRA.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return world.ScreenMap.FrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.Where(f => f.Visible)
 				.SelectMany(ff => ff.Render(wr));
+		}
+
+		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// Player-actor render traits don't require screen bounds
+			yield break;
 		}
 
 		public FrozenActor FromID(uint id)
@@ -307,6 +319,13 @@ namespace OpenRA.Traits
 				return null;
 
 			return fa;
+		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region)
+		{
+			var tl = region.TopLeft;
+			var br = region.BottomRight;
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y)).Select(FromID);
 		}
 	}
 }

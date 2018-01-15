@@ -21,7 +21,7 @@ FPWR:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	WithBuildingBib:
@@ -37,11 +37,11 @@ SYRF:
 		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like a Shipyard.
+		Description: Looks like a Naval Yard.
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Shipyard
-		GenericName: Shipyard
+		Name: Fake Naval Yard
+		GenericName: Naval Yard
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
@@ -49,14 +49,15 @@ SYRF:
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		Adjacent: 8
 	RenderSprites:
 		Image: SYRD
 	Valued:
 		Cost: 100
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Light
 	EditorTilesetFilter:
@@ -91,14 +92,15 @@ SPEF:
 	Building:
 		Footprint: XXX xxx XXX
 		Dimensions: 3,3
-		Adjacent: 8
 		TerrainTypes: Water
+	RequiresBuildableArea:
+		Adjacent: 8
 	RenderSprites:
 		Image: SPEN
 	Valued:
 		Cost: 100
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Light
 	EditorTilesetFilter:
@@ -140,13 +142,13 @@ WEAF:
 	Valued:
 		Cost: 200
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood
 
 DOMF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
 	HitShape:
@@ -173,10 +175,9 @@ DOMF:
 	Valued:
 		Cost: 180
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
-	RequiresPower:
 
 FIXF:
 	Inherits: ^FakeBuilding
@@ -195,7 +196,7 @@ FIXF:
 		Footprint: _X_ xxx _X_
 		Dimensions: 3,3
 	Health:
-		HP: 800
+		HP: 80000
 	Armor:
 		Type: Wood
 	WithBuildingBib:
@@ -236,7 +237,7 @@ FAPW:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 700
+		HP: 70000
 	Armor:
 		Type: Wood
 	WithBuildingBib:
@@ -244,14 +245,14 @@ FAPW:
 		Image: APWR
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,68,0,-10
 	SelectionDecorations:
-		VisualBounds: 72,68,0,-10
 	Valued:
 		Cost: 60
 
 ATEF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fake Allied Tech Center
@@ -274,14 +275,13 @@ ATEF:
 	Valued:
 		Cost: 150
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
-	RequiresPower:
 
 PDOF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fake Chronosphere
@@ -293,7 +293,7 @@ PDOF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Looks like a Chronosphere.
+		Description: Looks like a Chronosphere.\nMaximum 1 can be built.
 		Icon: fake-icon
 	Building:
 		Footprint: xx xx
@@ -305,16 +305,15 @@ PDOF:
 	Valued:
 		Cost: 150
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	Explodes:
 		DamageThreshold: 50
-	RequiresPower:
 
 MSLF:
 	Inherits: ^FakeBuilding
-	Inherits@IDISABLE: ^DisabledOverlay
+	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x1Shape
 	Tooltip:
 		Name: Fake Missile Silo
@@ -326,7 +325,7 @@ MSLF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Looks like a Missile Silo.
+		Description: Looks like a Missile Silo.\nMaximum 1 can be built.
 		Icon: fake-icon
 	Building:
 		Footprint: xx
@@ -336,12 +335,11 @@ MSLF:
 	Valued:
 		Cost: 250
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	Explodes:
 		DamageThreshold: 50
-	RequiresPower:
 
 FACF:
 	Inherits: ^FakeBuilding
@@ -366,7 +364,7 @@ FACF:
 	Valued:
 		Cost: 250
 	Health:
-		HP: 1500
+		HP: 150000
 	Armor:
 		Type: Wood
 	HitShape:

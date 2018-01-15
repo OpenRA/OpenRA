@@ -21,10 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var sell = widget as ButtonWidget;
 			if (sell != null)
-			{
-				sell.GetKey = _ => Game.Settings.Keys.SellKey;
 				OrderButtonsChromeUtils.BindOrderButton<SellOrderGenerator>(world, sell, "sell");
-			}
 		}
 	}
 
@@ -35,10 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var repair = widget as ButtonWidget;
 			if (repair != null)
-			{
-				repair.GetKey = _ => Game.Settings.Keys.RepairKey;
 				OrderButtonsChromeUtils.BindOrderButton<RepairOrderGenerator>(world, repair, "repair");
-			}
 		}
 	}
 
@@ -49,10 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var power = widget as ButtonWidget;
 			if (power != null)
-			{
-				power.GetKey = _ => Game.Settings.Keys.PowerDownKey;
 				OrderButtonsChromeUtils.BindOrderButton<PowerDownOrderGenerator>(world, power, "power");
-			}
 		}
 	}
 
@@ -63,10 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var beacon = widget as ButtonWidget;
 			if (beacon != null)
-			{
-				beacon.GetKey = _ => Game.Settings.Keys.PlaceBeaconKey;
 				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
-			}
 		}
 	}
 

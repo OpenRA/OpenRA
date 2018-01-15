@@ -39,13 +39,13 @@ namespace OpenRA.Mods.Cnc.Traits
 			remainingFrames = info.ChronoEffectLength;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (remainingFrames > 0)
 				remainingFrames--;
 		}
 
-		public void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
+		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
 		{
 			if (remainingFrames == 0)
 				return;

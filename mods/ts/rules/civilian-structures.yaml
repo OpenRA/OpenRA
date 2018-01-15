@@ -1,14 +1,15 @@
 ABAN01:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^2x6Shape
 	Tooltip:
 		Name: WS Logging Company
 	Building:
-		Footprint: xx xx xx xx xx xx
+		Footprint: xx xx xx xx xx XX
 		Dimensions: 2, 6
 	Armor:
 		Type: wood
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -18,15 +19,16 @@ ABAN01:
 
 ABAN02:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^5x3Shape
 	Tooltip:
 		Name: Panullo Hacienda
 	Building:
-		Footprint: xxxxx xxxxx xxxxx
+		Footprint: xxxxx xxxxx XXXxX
 		Dimensions: 5, 3
 	Armor:
 		Type: heavy
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -36,15 +38,16 @@ ABAN02:
 
 ABAN03:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^2x5Shape
 	Tooltip:
 		Name: Abandoned Factory
 	Building:
-		Footprint: xx xx xx xx xx
+		Footprint: xx xx xx xx XX
 		Dimensions: 2, 5
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -54,15 +57,16 @@ ABAN03:
 
 ABAN04:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^4x2Shape
 	Tooltip:
 		Name: City Hall
 	Building:
-		Footprint: xxxx xxxx
+		Footprint: xxxX xxxX
 		Dimensions: 4, 2
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -72,20 +76,26 @@ ABAN04:
 
 ABAN05:
 	Inherits: ^CivBuilding
+	Inherits@SHAPE: ^3x2Shape
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 768, 1024
 	Tooltip:
 		Name: Hunting Lodge
 	Building:
-		Footprint: xxx xxx
+		Footprint: xxX xxX
 		Dimensions: 3, 2
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN06:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Local Inn & Lodging
 	Building:
@@ -94,12 +104,13 @@ ABAN06:
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN07:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Church
 	Building:
@@ -108,12 +119,13 @@ ABAN07:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 350
+		HP: 35000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN08:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Abandoned Warehouse
 	Building:
@@ -122,12 +134,13 @@ ABAN08:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN09:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Tall's Residence
 	Building:
@@ -136,12 +149,13 @@ ABAN09:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 350
+		HP: 35000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN10:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Denzil's Last Chance Motel
 	Building:
@@ -150,12 +164,13 @@ ABAN10:
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN11:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Miele Manor
 	Building:
@@ -164,12 +179,13 @@ ABAN11:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN12:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Kettler's Place
 	Building:
@@ -178,7 +194,7 @@ ABAN12:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
@@ -192,7 +208,7 @@ ABAN13:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
@@ -206,7 +222,7 @@ ABAN14:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
@@ -220,21 +236,22 @@ ABAN15:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
 ABAN16:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Gas Station
 	Building:
-		Footprint: xx xx
+		Footprint: xx xX
 		Dimensions: 2, 2
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
@@ -248,7 +265,7 @@ ABAN17:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
@@ -262,7 +279,7 @@ ABAN18:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: TEMPERATE
 
@@ -307,6 +324,10 @@ BBOARD05:
 
 BBOARD06:
 	Inherits: ^CivBillboard
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -128,-192,0, 128,192,0
 	Tooltip:
 		Name: Kaspm's Tiberium Warhouse
 	Building:
@@ -315,6 +336,10 @@ BBOARD06:
 
 BBOARD07:
 	Inherits: ^CivBillboard
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -128,-192,0, 128,192,0
 	Tooltip:
 		Name: Alkaline's Battery Superstore
 	Building:
@@ -323,6 +348,10 @@ BBOARD07:
 
 BBOARD08:
 	Inherits: ^CivBillboard
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -128,-192,0, 128,192,0
 	Tooltip:
 		Name: Alex-gators petshop just ahead!
 	Building:
@@ -356,6 +385,10 @@ BBOARD13:
 
 BBOARD14:
 	Inherits: ^CivBillboard
+	Inherits@shape: ^2x1Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -128,192,0, 128,-192,0
 	Tooltip:
 		Name: Billy Bob's Harvester school
 	Building:
@@ -364,6 +397,10 @@ BBOARD14:
 
 BBOARD15:
 	Inherits: ^CivBillboard
+	Inherits@shape: ^2x1Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -128,192,0, 128,-192,0
 	Tooltip:
 		Name: Pannullo's hacienda es bueno
 	Building:
@@ -372,6 +409,10 @@ BBOARD15:
 
 BBOARD16:
 	Inherits: ^CivBillboard
+	Inherits@shape: ^2x1Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -128,192,0, 128,-192,0
 	Tooltip:
 		Name: Join GDI: We save lives.
 	Building:
@@ -380,15 +421,16 @@ BBOARD16:
 
 CA0001:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x3Shape
 	Tooltip:
 		Name: Rade's Roadhouse
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: xxX xxX XXX
 		Dimensions: 3, 3
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -396,15 +438,16 @@ CA0001:
 
 CA0002:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x3Shape
 	Tooltip:
 		Name: Sandberg and Son's
 	Building:
-		Footprint: xxx xxx xxx
+		Footprint: xxX xxx Xxx
 		Dimensions: 3, 3
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
@@ -412,6 +455,7 @@ CA0002:
 
 CA0003:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Temp Housing
 	Building:
@@ -420,22 +464,24 @@ CA0003:
 	Armor:
 		Type: light
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0004:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Waystation
 	Building:
-		Footprint: xx xx
+		Footprint: xx xX
 		Dimensions: 2, 2
 	Armor:
 		Type: light
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0005:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
 	Tooltip:
 		Name: Ferbie's 4 Sale
 	Building:
@@ -444,10 +490,11 @@ CA0005:
 	Armor:
 		Type: light
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0006:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
 	Tooltip:
 		Name: Deluxe Accomodations
 	Building:
@@ -456,10 +503,11 @@ CA0006:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0007:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
 	Tooltip:
 		Name: Field Generator
 	Building:
@@ -468,34 +516,37 @@ CA0007:
 	Armor:
 		Type: light
 	Health:
-		HP: 400
+		HP: 40000
 
 CA0008:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x3Shape
 	Tooltip:
 		Name: Subterranean Dwelling
 	Building:
-		Footprint: xx xx xx
+		Footprint: xX xX xx
 		Dimensions: 2, 3
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 
 CA0009:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x3Shape
 	Tooltip:
 		Name: Subterranean Dwelling
 	Building:
-		Footprint: xx xx xx
+		Footprint: xX xx xX
 		Dimensions: 2, 3
 	Armor:
 		Type: heavy
 	Health:
-		HP: 400
+		HP: 40000
 
 CA0010:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Leary Traveller Inn
 	Building:
@@ -504,10 +555,11 @@ CA0010:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0011:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
 	Tooltip:
 		Name: Water Tank
 	Building:
@@ -516,10 +568,11 @@ CA0011:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 200
+		HP: 20000
 
 CA0012:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
 	Tooltip:
 		Name: Greenhouse
 	Building:
@@ -528,10 +581,11 @@ CA0012:
 	Armor:
 		Type: light
 	Health:
-		HP: 100
+		HP: 10000
 
 CA0013:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
 	Tooltip:
 		Name: Water Purifier
 	Building:
@@ -540,7 +594,7 @@ CA0013:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0014:
 	Inherits: ^CivBuilding
@@ -552,7 +606,7 @@ CA0014:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0015:
 	Inherits: ^CivBuilding
@@ -564,7 +618,7 @@ CA0015:
 	Armor:
 		Type: light
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0016:
 	Inherits: ^CivBuilding
@@ -576,7 +630,7 @@ CA0016:
 	Armor:
 		Type: light
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0017:
 	Inherits: ^CivBuilding
@@ -588,10 +642,14 @@ CA0017:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 
 CA0018:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, -512,-512,0
 	Tooltip:
 		Name: Solar Panel
 	Building:
@@ -600,10 +658,14 @@ CA0018:
 	Armor:
 		Type: light
 	Health:
-		HP: 200
+		HP: 20000
 
 CA0019:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, -512,-512,0
 	Tooltip:
 		Name: Solar Panel
 	Building:
@@ -612,10 +674,14 @@ CA0019:
 	Armor:
 		Type: light
 	Health:
-		HP: 200
+		HP: 20000
 
 CA0020:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 512,512,0
 	Tooltip:
 		Name: Solar Panel
 	Building:
@@ -624,10 +690,14 @@ CA0020:
 	Armor:
 		Type: light
 	Health:
-		HP: 200
+		HP: 20000
 
 CA0021:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 512,512,0
 	Tooltip:
 		Name: Solar Panel
 	Building:
@@ -636,10 +706,11 @@ CA0021:
 	Armor:
 		Type: light
 	Health:
-		HP: 200
+		HP: 20000
 
 CAARAY:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Civilian Array
 	Building:
@@ -648,9 +719,17 @@ CAARAY:
 	Armor:
 		Type: concrete
 	Health:
-		HP: 400
+		HP: 40000
 	RenderSprites:
 		Palette: player
+	WithIdleOverlay@SATELLITE:
+		Sequence: idle-satellite
+	WithIdleOverlay@RADAR:
+		Sequence: idle-radar
+	WithIdleOverlay@SCANNER:
+		Sequence: idle-scanner
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 7
 	ThrowsShrapnel@LARGE:
@@ -658,6 +737,7 @@ CAARAY:
 
 CAARMR:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x4Shape
 	Tooltip:
 		Name: Civilian Armory
 	Building:
@@ -666,7 +746,7 @@ CAARMR:
 	Armor:
 		Type: concrete
 	Health:
-		HP: 800
+		HP: 80000
 	RenderSprites:
 		Palette: player
 	ProvidesPrerequisite:
@@ -696,15 +776,16 @@ CACRSH05:
 
 CAHOSP:
 	Inherits: ^BasicBuilding
+	Inherits@shape: ^3x4Shape
 	Tooltip:
 		Name: Civilian Hospital
 	Building:
-		Footprint: xxx xxx xxx xxx
+		Footprint: XxX xxx xxx xxx
 		Dimensions: 3, 4
 	Armor:
 		Type: concrete
 	Health:
-		HP: 800
+		HP: 80000
 	RenderSprites:
 		Palette: player
 	Capturable:
@@ -719,6 +800,7 @@ CAHOSP:
 
 CAPYR01:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Pyramid
 	Building:
@@ -727,12 +809,13 @@ CAPYR01:
 	Armor:
 		Type: concrete
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
 
 CAPYR02:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x4Shape
 	Tooltip:
 		Name: Pyramid
 	Building:
@@ -741,7 +824,7 @@ CAPYR02:
 	Armor:
 		Type: concrete
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
 	ThrowsShrapnel@SMALL:
@@ -751,6 +834,7 @@ CAPYR02:
 
 CAPYR03:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x4Shape
 	Tooltip:
 		Name: Pyramid
 	Building:
@@ -759,7 +843,7 @@ CAPYR03:
 	Armor:
 		Type: concrete
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
 	ThrowsShrapnel@SMALL:
@@ -769,15 +853,16 @@ CAPYR03:
 
 CITY01:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x2Shape
 	Tooltip:
 		Name: Connelly Court Apts.
 	Building:
-		Footprint: xxxx xxxx
+		Footprint: xxxX XxxX
 		Dimensions: 4, 2
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -787,6 +872,7 @@ CITY01:
 
 CITY02:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x3Shape
 	Tooltip:
 		Name: Lightner's Luxury Suites
 	Building:
@@ -795,7 +881,7 @@ CITY02:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 700
+		HP: 70000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -805,6 +891,7 @@ CITY02:
 
 CITY03:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x2Shape
 	Tooltip:
 		Name: Office Building
 	Building:
@@ -813,7 +900,7 @@ CITY03:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -823,6 +910,7 @@ CITY03:
 
 CITY04:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x2Shape
 	Tooltip:
 		Name: Westwood Stock Exchange
 	Building:
@@ -831,7 +919,7 @@ CITY04:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -841,6 +929,7 @@ CITY04:
 
 CITY05:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x2Shape
 	Tooltip:
 		Name: Daily Sun Times
 	Building:
@@ -849,7 +938,7 @@ CITY05:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -859,15 +948,16 @@ CITY05:
 
 CITY06:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x2Shape
 	Tooltip:
 		Name: YEO-CA Cola Corp.
 	Building:
-		Footprint: xxxx xxxx
+		Footprint: xxxx XxxX
 		Dimensions: 4, 2
 	Armor:
 		Type: concrete
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -877,6 +967,7 @@ CITY06:
 
 CITY07:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x2Shape
 	Tooltip:
 		Name: Urban Housing
 	Building:
@@ -885,7 +976,7 @@ CITY07:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -895,6 +986,7 @@ CITY07:
 
 CITY08:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Yee's Discount Liquor
 	Building:
@@ -903,12 +995,13 @@ CITY08:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY09:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Abandoned Warehouse
 	Building:
@@ -917,12 +1010,13 @@ CITY09:
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY10:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Urban Storefront
 	Building:
@@ -931,12 +1025,13 @@ CITY10:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 300
+		HP: 30000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY11:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Ambrose Lounge
 	Building:
@@ -945,35 +1040,37 @@ CITY11:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY12:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Bostic Tower
 	Building:
-		Footprint: xx xx
+		Footprint: xX xx
 		Dimensions: 2, 2
 	Armor:
 		Type: concrete
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY13:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Hewitt Hair Salon
 	Building:
-		Footprint: xx xx
+		Footprint: xX Xx
 		Dimensions: 2, 2
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
@@ -987,21 +1084,22 @@ CITY14:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY15:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x2Shape
 	Tooltip:
 		Name: 2nd National Bank
 	Building:
-		Footprint: xxxx xxxx
+		Footprint: xxxX xxxX
 		Dimensions: 4, 2
 	Armor:
 		Type: heavy
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -1011,6 +1109,7 @@ CITY15:
 
 CITY16:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x2Shape
 	Tooltip:
 		Name: Highrise Hotel
 	Building:
@@ -1019,7 +1118,7 @@ CITY16:
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -1029,15 +1128,16 @@ CITY16:
 
 CITY17:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x3Shape
 	Tooltip:
 		Name: The Projects
 	Building:
-		Footprint: xxxx xxxx xxxx
+		Footprint: XxxX xxxx xxxX
 		Dimensions: 4, 3
 	Armor:
 		Type: wood
 	Health:
-		HP: 300
+		HP: 30000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -1047,15 +1147,16 @@ CITY17:
 
 CITY18:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^3x5Shape
 	Tooltip:
 		Name: Archer Asylum
 	Building:
-		Footprint: xxx xxx xxx xxx xxx
+		Footprint: xxx xxx xxx xxx xxX
 		Dimensions: 3, 5
 	Armor:
 		Type: concrete
 	Health:
-		HP: 600
+		HP: 60000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
@@ -1065,15 +1166,16 @@ CITY18:
 
 CITY19:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Fill'er Up-Pump'N'Go
 	Building:
-		Footprint: xx xx
+		Footprint: xx xX
 		Dimensions: 2, 2
 	Armor:
 		Type: wood
 	Health:
-		HP: 500
+		HP: 50000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
@@ -1087,7 +1189,7 @@ CITY20:
 	Armor:
 		Type: wood
 	Health:
-		HP: 250
+		HP: 25000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
@@ -1101,12 +1203,13 @@ CITY21:
 	Armor:
 		Type: none
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CITY22:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x2Shape
 	Tooltip:
 		Name: Church
 	Building:
@@ -1115,12 +1218,13 @@ CITY22:
 	Armor:
 		Type: none
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 
 CTDAM:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^2x5Shape
 	Tooltip:
 		Name: Hydroelectric Dam
 	Building:
@@ -1132,7 +1236,7 @@ CTDAM:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 1000
+		HP: 100000
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	EditorTilesetFilter:
@@ -1148,6 +1252,7 @@ CTDAM:
 
 CTVEGA:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x4Shape
 	Tooltip:
 		Name: Vega's Pyramid
 	Building:
@@ -1156,7 +1261,7 @@ CTVEGA:
 	Armor:
 		Type: none
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		ExcludeTilesets: SNOW
 	ThrowsShrapnel@SMALL:
@@ -1166,15 +1271,18 @@ CTVEGA:
 
 GAKODK:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x2Shape
+	HitShape:
+		TargetableOffsets: 0,0,0, -512,512,0, -950,1024,0
 	Tooltip:
 		Name: GDI Kodiak
 	Building:
-		Footprint: xxxx xxxx
+		Footprint: xxXX xxXX
 		Dimensions: 4, 2
 	Armor:
 		Type: heavy
 	Health:
-		HP: 1500
+		HP: 150000
 	RenderSprites:
 		Palette: player
 	WithIdleOverlay@LARGELIGHTS:
@@ -1193,6 +1301,8 @@ GAOLDCC2:
 	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Temple
+	Building:
+		Footprint: xx xX
 
 GAOLDCC3:
 	Inherits: ^OldBase
@@ -1213,6 +1323,8 @@ GAOLDCC6:
 	Inherits: ^OldBase
 	Tooltip:
 		Name: Old Silos
+	Building:
+		Footprint: xX Xx
 
 GASAND:
 	Inherits: ^Wall
@@ -1226,12 +1338,10 @@ GASAND:
 		DestroyedSounds: sandbag1.aud
 	Valued:
 		Cost: 25
-	CustomSellValue:
-		Value: 0
 	Tooltip:
 		Name: Sandbags
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1240,6 +1350,7 @@ GASAND:
 		Types: sandbags
 	WithWallSpriteBody:
 		Type: sandbags
+	-BlocksProjectiles:
 
 GASPOT:
 	Inherits: ^Building
@@ -1252,19 +1363,19 @@ GASPOT:
 		Dimensions: 1, 1
 	Selectable:
 		Bounds: 48, 30, 0, -4
+		DecorationBounds: 48, 82, 0, -25
 	Power:
 		Amount: -10
 	Armor:
 		Type: wood
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	SelectionDecorations:
-		VisualBounds: 48, 82, 0, -25
 	EditorTilesetFilter:
 		Categories: Civilian building
 
@@ -1279,7 +1390,7 @@ GALITE:
 	-WithMakeAnimation:
 	-WithDeathAnimation:
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1293,8 +1404,8 @@ GALITE:
 		Palette: alpha
 	Selectable:
 		Bounds: 24, 24, 0, -4
+		DecorationBounds: 25, 35, 0, -12
 	SelectionDecorations:
-		VisualBounds: 25, 35, 0, -12
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
@@ -1315,7 +1426,7 @@ GAICBM:
 		Name: Deployed ICBM
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -1333,6 +1444,7 @@ GAICBM:
 
 NAMNTK:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^1x3Shape
 	Tooltip:
 		Name: NOD Montauk
 	Building:
@@ -1341,7 +1453,7 @@ NAMNTK:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 1500
+		HP: 150000
 	RenderSprites:
 		Palette: player
 	WithIdleOverlay@LIGHTS:
@@ -1349,6 +1461,7 @@ NAMNTK:
 
 NTPYRA:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^4x4Shape
 	Tooltip:
 		Name: Nod Pyramid
 	Building:
@@ -1359,7 +1472,7 @@ NTPYRA:
 	Armor:
 		Type: heavy
 	Health:
-		HP: 1500
+		HP: 150000
 	RenderSprites:
 		Palette: player
 	WithIdleOverlay@LIGHTS:
@@ -1371,6 +1484,7 @@ NTPYRA:
 
 UFO:
 	Inherits: ^CivBuilding
+	Inherits@shape: ^6x4Shape
 	Building:
 		Dimensions: 6, 4
 		Footprint: xxxxxx xxxxxx xxxxxx xxxxxx
@@ -1378,16 +1492,16 @@ UFO:
 		Palette: terraindecoration
 	Selectable:
 		Bounds: 144, 72, 0, 0
+		DecorationBounds: 144, 72, 0, 0
 	Tooltip:
 		Name: Scrin Ship
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Heavy
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERATE
 	SelectionDecorations:
-		VisualBounds: 144, 72, 0, 0
 	ThrowsShrapnel@SMALL:
 		Pieces: 9, 12
 	ThrowsShrapnel@LARGE:

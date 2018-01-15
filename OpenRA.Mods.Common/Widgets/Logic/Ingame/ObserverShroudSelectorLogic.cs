@@ -13,16 +13,21 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[ChromeLogicArgsHotkeys("CombinedViewKey", "WorldViewKey")]
 	public class ObserverShroudSelectorLogic : ChromeLogic
 	{
 		readonly CameraOption combined, disableShroud;
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
+
+		readonly HotkeyReference combinedViewKey = new HotkeyReference();
+		readonly HotkeyReference worldViewKey = new HotkeyReference();
 
 		CameraOption selected;
 
@@ -57,8 +62,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ObserverShroudSelectorLogic(Widget widget, World world)
+		public ObserverShroudSelectorLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
+			MiniYaml yaml;
+			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
+				combinedViewKey = modData.Hotkeys[yaml.Value];
+
+			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
+				worldViewKey = modData.Hotkeys[yaml.Value];
+
 			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
@@ -125,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			shroudLabelAlt.GetColor = () => selected.Color;
 
 			var keyhandler = shroudSelector.Get<LogicKeyListenerWidget>("SHROUD_KEYHANDLER");
-			keyhandler.OnKeyPress = HandleKeyPress;
+			keyhandler.AddHandler(HandleKeyPress);
 
 			selected = limitViews ? groups.First().Value.First() : world.WorldActor.Owner.Shroud.ExploreMapEnabled ? combined : disableShroud;
 			selected.OnClick();
@@ -135,8 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (e.Event == KeyInputEvent.Down && !e.IsRepeat)
 			{
-				var h = Hotkey.FromKeyInput(e);
-				if (h == Game.Settings.Keys.ObserverCombinedView && !limitViews)
+				if (combinedViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = combined;
 					selected.OnClick();
@@ -144,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				if (h == Game.Settings.Keys.ObserverWorldView && !limitViews)
+				if (worldViewKey.IsActivatedBy(e) && !limitViews)
 				{
 					selected = disableShroud;
 					selected.OnClick();

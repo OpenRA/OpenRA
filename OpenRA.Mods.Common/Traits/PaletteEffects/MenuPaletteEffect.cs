@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			to = type;
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			if (remainingFrames > 0)
 				remainingFrames--;

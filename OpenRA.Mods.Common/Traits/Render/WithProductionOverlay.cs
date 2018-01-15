@@ -39,12 +39,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly Animation overlay;
 		readonly ProductionInfo production;
-		ProductionQueue queue;
+		ProductionQueue[] queues;
 		bool buildComplete;
 
 		bool IsProducing
 		{
-			get { return queue != null && queue.CurrentItem() != null && !queue.CurrentPaused; }
+			get { return queues != null && queues.Any(q => q.Enabled && q.CurrentItem() != null && !q.CurrentPaused); }
 		}
 
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
@@ -65,36 +65,37 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		void SelectQueue(Actor self)
+		void CacheQueues(Actor self)
 		{
-			var perBuildingQueues = self.TraitsImplementing<ProductionQueue>();
-			queue = perBuildingQueues.FirstOrDefault(q => q.Enabled && production.Produces.Contains(q.Info.Type));
+			// Per-actor production
+			queues = self.TraitsImplementing<ProductionQueue>()
+				.Where(q => production.Produces.Contains(q.Info.Type))
+				.ToArray();
 
-			if (queue == null)
+			if (!queues.Any())
 			{
-				var perPlayerQueues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>();
-				queue = perPlayerQueues.FirstOrDefault(q => q.Enabled && production.Produces.Contains(q.Info.Type));
+				// Player-wide production
+				queues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
+					.Where(q => production.Produces.Contains(q.Info.Type))
+					.ToArray();
 			}
-
-			if (queue == null)
-				throw new InvalidOperationException("Can't find production queues.");
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			if (buildComplete)
-				SelectQueue(self);
+				CacheQueues(self);
 		}
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
 			buildComplete = true;
-			SelectQueue(self);
+			CacheQueues(self);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			self.World.AddFrameEndTask(w => SelectQueue(self));
+			self.World.AddFrameEndTask(w => CacheQueues(self));
 		}
 
 		void INotifySold.Sold(Actor self) { }

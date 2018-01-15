@@ -39,9 +39,9 @@
 #
 SDK         ?=
 CSC         = mcs $(SDK)
-CSFLAGS     = -nologo -warn:4 -codepage:utf8 -unsafe -warnaserror
+CSFLAGS     = -nologo -warn:4 -codepage:utf8 -langversion:5 -unsafe -warnaserror
 DEFINE      = TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/Eluant.dll thirdparty/download/SmarIrc4net.dll thirdparty/download/rix0rrr.BeaconLib.dll
+COMMON_LIBS = System.dll System.Core.dll System.Data.dll System.Data.DataSetExtensions.dll System.Drawing.dll System.Xml.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/Eluant.dll thirdparty/download/rix0rrr.BeaconLib.dll
 NUNIT_LIBS_PATH :=
 NUNIT_LIBS  := $(NUNIT_LIBS_PATH)nunit.framework.dll
 
@@ -120,7 +120,7 @@ mod_common_SRCS := $(shell find OpenRA.Mods.Common/ -iname '*.cs')
 mod_common_TARGET = mods/common/OpenRA.Mods.Common.dll
 mod_common_KIND = library
 mod_common_DEPS = $(game_TARGET)
-mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS)
+mod_common_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
 PROGRAMS += mod_common
 mod_common: $(mod_common_TARGET)
 
@@ -157,16 +157,14 @@ mod_d2k_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET)
 PROGRAMS += mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
-# Over Powered Mod
-mod_yupgi_alert_SRCS := $(shell find OpenRA.Mods.yupgi_alert/ -iname '*.cs')
-mod_yupgi_alert_TARGET = mods/common/OpenRA.Mods.yupgi_alert.dll
-mod_yupgi_alert_KIND = library
-mod_yupgi_alert_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET)
-mod_yupgi_alert_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_cnc_TARGET) $(mod_common_TARGET)
-PROGRAMS += mod_yupgi_alert
-mods/yupgi_alert:
-	mkdir -p mods/yupgi_alert
-mod_yupgi_alert: mods/yupgi_alert $(mod_yupgi_alert_TARGET)
+# Attacque Supérior
+mod_as_SRCS := $(shell find OpenRA.Mods.AS/ -iname '*.cs')
+mod_as_TARGET = mods/as/OpenRA.Mods.AS.dll
+mod_as_KIND = library
+mod_as_DEPS = $(STD_MOD_DEPS) $(mod_common_TARGET) $(mod_cnc_TARGET)
+mod_as_LIBS = $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_common_TARGET) $(mod_cnc_TARGET)
+PROGRAMS += mod_as
+mod_as: $(mod_as_TARGET)
 
 check-scripts:
 	@echo
@@ -174,34 +172,37 @@ check-scripts:
 	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
 	@luac -p $(shell find lua/* -iname '*.lua')
 
-check: utility stylecheck mods
+check: utility mods
 	@echo
 	@echo "Checking for explicit interface violations..."
 	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
 	@echo
 	@echo "Checking for code style violations in OpenRA.Game..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Game
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Game
 	@echo
 	@echo "Checking for code style violations in OpenRA.Platforms.Default..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Platforms.Default
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Platforms.Default
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Common..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.Common
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Cnc
 	@echo
 	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.D2k
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.D2k
+	@echo
+	@echo "Checking for code style violations in OpenRA.Mods.AS..."
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.AS
 	@echo
 	@echo "Checking for code style violations in OpenRA.Utility..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Utility
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Utility
 	@echo
 	@echo "Checking for code style violations in OpenRA.Test..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Test
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Test
 	@echo
 	@echo "Checking for code style violations in OpenRA.Server..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Server
+	@mono --debug OpenRA.Utility.exe ra --check-code-style OpenRA.Server
 
 NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
 	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
@@ -224,8 +225,17 @@ nunit: test_dll
 
 test: utility mods
 	@echo
-	@echo "Over Powered Mod MiniYAML..."
-	@mono --debug OpenRA.Utility.exe yupgi_alert --check-yaml
+	@echo "Testing Tiberian Sun mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ts --check-yaml
+	@echo
+	@echo "Testing Dune 2000 mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe d2k --check-yaml
+	@echo
+	@echo "Testing Tiberian Dawn mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe cnc --check-yaml
+	@echo
+	@echo "Testing Red Alert mod MiniYAML..."
+	@mono --debug OpenRA.Utility.exe ra --check-yaml
 
 
 ##### Launchers / Utilities #####
@@ -237,13 +247,6 @@ utility_DEPS = $(game_TARGET)
 utility_LIBS = $(COMMON_LIBS) $(utility_DEPS) thirdparty/download/ICSharpCode.SharpZipLib.dll
 PROGRAMS += utility
 utility: $(utility_TARGET)
-
-stylecheck_SRCS := $(shell find OpenRA.StyleCheck/ -iname '*.cs')
-stylecheck_TARGET = OpenRA.StyleCheck.exe
-stylecheck_KIND = exe
-stylecheck_LIBS = thirdparty/download/StyleCop.dll thirdparty/download/StyleCop.CSharp.dll thirdparty/download/StyleCop.CSharp.Rules.dll
-PROGRAMS += stylecheck
-stylecheck: $(stylecheck_TARGET)
 
 # Dedicated server
 server_SRCS := $(shell find OpenRA.Server/ -iname '*.cs')
@@ -286,9 +289,12 @@ default: core
 
 core: dependencies game platforms mods utility server
 
-mods: mod_common mod_cnc mod_d2k mod_yupgi_alert
+mods: mod_common mod_cnc mod_d2k setupasfolder mod_as
 
-all: dependencies core stylecheck
+all: dependencies core
+
+setupasfolder:
+	@mkdir -p ./mods/as
 
 clean:
 	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -359,7 +365,6 @@ install-engine:
 	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) SmarIrc4net.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"
 
 install-common-mod-files:
@@ -368,6 +373,8 @@ install-common-mod-files:
 	@$(CP_R) mods/common "$(DATA_INSTALL_DIR)/mods/"
 	@$(INSTALL_PROGRAM) $(mod_common_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/common"
+	@$(CP_R) mods/as "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_as_TARGET) "$(DATA_INSTALL_DIR)/mods/as"
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
 
 install-default-mods:

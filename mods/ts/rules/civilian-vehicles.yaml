@@ -2,7 +2,7 @@
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetAll
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
 		Cost: 1700
 	Tooltip:
@@ -12,7 +12,7 @@
 		TurnSpeed: 5
 		Crushes: wall, crate, infantry
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -31,7 +31,9 @@
 		LocalOffset: 0,283,580, 0,-283,580
 	AttackTurreted:
 		Voice: Attack
+		PauseOnCondition: empdisable
 	SelfHealing:
+		Step: 500
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200
@@ -46,7 +48,7 @@
 	Tooltip:
 		Name: Truck
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	Mobile:
@@ -69,7 +71,7 @@ ICBM:
 	Tooltip:
 		Name: Ballistic Missile Launcher
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Light
 	Mobile:
@@ -98,7 +100,7 @@ BUS:
 		Speed: 113
 		RequiresCondition: !empdisable && !loading
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -124,7 +126,7 @@ PICK:
 		Speed: 113
 		RequiresCondition: !empdisable && !loading
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -150,7 +152,7 @@ CAR:
 		Speed: 113
 		RequiresCondition: !empdisable && !loading
 	Health:
-		HP: 100
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -176,7 +178,7 @@ WINI:
 		Speed: 113
 		RequiresCondition: !empdisable && !loading
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	RevealsShroud:

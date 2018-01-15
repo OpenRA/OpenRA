@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
@@ -59,10 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 			var deliver = new DeliverResources(self);
 
 			if (harv.IsFull)
-			{
-				Queue(deliver);
-				return NextActivity;
-			}
+				return ActivityUtils.SequenceActivities(deliver, NextActivity);
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
@@ -71,10 +67,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!closestHarvestablePosition.HasValue)
 			{
 				if (!harv.IsEmpty)
-				{
-					Queue(deliver);
-					return NextActivity;
-				}
+					return deliver;
+
+				harv.LastSearchFailed = true;
 
 				var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
 				var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
@@ -99,35 +94,20 @@ namespace OpenRA.Mods.Common.Activities
 				if (!claimLayer.TryClaimCell(self, closestHarvestablePosition.Value))
 					return ActivityUtils.SequenceActivities(new Wait(25), this);
 
+				harv.LastSearchFailed = false;
+
 				// If not given a direct order, assume ordered to the first resource location we find:
 				if (!harv.LastOrderLocation.HasValue)
 					harv.LastOrderLocation = closestHarvestablePosition;
 
 				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 
-				var move = mobile.MoveTo(closestHarvestablePosition.Value, 2);
-
-				Activity extraActivities = null;
+				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
 				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
 				foreach (var n in notify)
-				{
-					var extra = n.MovingToResources(self, closestHarvestablePosition.Value, move);
-					if (extra != null)
-					{
-						if (extraActivities != null)
-							throw new InvalidOperationException("Actor {0} has conflicting activities to perform for INotifyHarvesterAction.".F(self.ToString()));
+					n.MovingToResources(self, closestHarvestablePosition.Value, this);
 
-						extraActivities = extra;
-					}
-				}
-
-				if (extraActivities != null)
-					Queue(extraActivities);
-				else
-					Queue(move);
-
-				Queue(new HarvestResource(self));
-				return NextActivity;
+				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), this);
 			}
 		}
 

@@ -137,32 +137,26 @@ function Check-Command {
 	{
 		echo "Checking for explicit interface violations..."
 		./OpenRA.Utility.exe all --check-explicit-interfaces
+		echo "Checking for code style violations in OpenRA.Platforms.Default..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Platforms.Default
+		echo "Checking for code style violations in OpenRA.Game..."
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Game
+		echo "Checking for code style violations in OpenRA.Mods.Common..."
+		./OpenRA.Utility.exe ra --check-code-style OpenRA.Mods.Common
+		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.Cnc
+		echo "Checking for code style violations in OpenRA.Mods.D2k..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.D2k
+		echo "Checking for code style violations in OpenRA.Mods.AS..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Mods.AS
+		echo "Checking for code style violations in OpenRA.Utility..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Utility
+		echo "Checking for code style violations in OpenRA.Test..."
+		./OpenRA.Utility.exe cnc --check-code-style OpenRA.Test
 	}
 	else
 	{
 		UtilityNotFound
-	}
-
-	if (Test-Path OpenRA.StyleCheck.exe)
-	{
-		echo "Checking for code style violations in OpenRA.Platforms.Default..."
-		./OpenRA.StyleCheck.exe OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.Game..."
-		./OpenRA.StyleCheck.exe OpenRA.Game
-		echo "Checking for code style violations in OpenRA.Mods.Common..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.Common
-		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
-		echo "Checking for code style violations in OpenRA.Mods.D2k..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.D2k
-		echo "Checking for code style violations in OpenRA.Utility..."
-		./OpenRA.StyleCheck.exe OpenRA.Utility
-		echo "Checking for code style violations in OpenRA.Test..."
-		./OpenRA.StyleCheck.exe OpenRA.Test
-	}
-	else
-	{
-		echo "OpenRA.StyleCheck.exe could not be found. Build the project first using the `"all`" command."
 	}
 }
 
@@ -195,6 +189,7 @@ function Docs-Command
 		./OpenRA.Utility.exe all --docs | Out-File -Encoding "UTF8" DOCUMENTATION.md
 		./OpenRA.Utility.exe all --weapon-docs | Out-File -Encoding "UTF8" WEAPONS.md
 		./OpenRA.Utility.exe all --lua-docs | Out-File -Encoding "UTF8" Lua-API.md
+		./OpenRA.Utility.exe all --settings-docs | Out-File -Encoding "UTF8" Settings.md
 	}
 	else
 	{

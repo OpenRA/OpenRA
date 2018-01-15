@@ -70,15 +70,15 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Map map;
 		readonly uint movementClass;
-		readonly CellLayer<int> domains;
-		readonly Dictionary<int, HashSet<int>> transientConnections;
+		readonly CellLayer<ushort> domains;
+		readonly Dictionary<ushort, HashSet<ushort>> transientConnections;
 
 		public MovementClassDomainIndex(World world, uint movementClass)
 		{
 			map = world.Map;
 			this.movementClass = movementClass;
-			domains = new CellLayer<int>(world.Map);
-			transientConnections = new Dictionary<int, HashSet<int>>();
+			domains = new CellLayer<ushort>(world.Map);
+			transientConnections = new Dictionary<ushort, HashSet<ushort>>();
 
 			using (new PerfTimer("BuildDomains: {0} for movement class {1}".F(world.Map.Title, movementClass)))
 				BuildDomains(world);
@@ -99,12 +99,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdateCells(World world, HashSet<CPos> dirtyCells)
 		{
-			var neighborDomains = new List<int>();
+			var neighborDomains = new List<ushort>();
 
 			foreach (var cell in dirtyCells)
 			{
 				// Select all neighbors inside the map boundaries
-				var thisCell = cell;	// benign closure hazard
+				var thisCell = cell; // benign closure hazard
 				var neighbors = CVec.Directions.Select(d => d + thisCell)
 					.Where(c => map.Contains(c));
 
@@ -147,11 +147,11 @@ namespace OpenRA.Mods.Common.Traits
 					CreateConnection(c1, c2);
 		}
 
-		bool HasConnection(int d1, int d2)
+		bool HasConnection(ushort d1, ushort d2)
 		{
 			// Search our connections graph for a possible route
-			var visited = new HashSet<int>();
-			var toProcess = new Stack<int>();
+			var visited = new HashSet<ushort>();
+			var toProcess = new Stack<ushort>();
 			toProcess.Push(d1);
 
 			while (toProcess.Any())
@@ -175,12 +175,12 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		void CreateConnection(int d1, int d2)
+		void CreateConnection(ushort d1, ushort d2)
 		{
 			if (!transientConnections.ContainsKey(d1))
-				transientConnections[d1] = new HashSet<int>();
+				transientConnections[d1] = new HashSet<ushort>();
 			if (!transientConnections.ContainsKey(d2))
-				transientConnections[d2] = new HashSet<int>();
+				transientConnections[d2] = new HashSet<ushort>();
 
 			transientConnections[d1].Add(d2);
 			transientConnections[d2].Add(d1);
@@ -197,14 +197,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void BuildDomains(World world)
 		{
-			var domain = 1;
+			ushort domain = 1;
 
 			var visited = new CellLayer<bool>(map);
 
 			var toProcess = new Queue<CPos>();
 			toProcess.Enqueue(MPos.Zero.ToCPos(map));
 
-			// Flood-fill over each domain
+			// Flood-fill over each domain.
 			while (toProcess.Count != 0)
 			{
 				var start = toProcess.Dequeue();
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Traits
 				var currentPassable = CanTraverseTile(world, start);
 
 				// Add all contiguous cells to our domain, and make a note of
-				// any non-contiguous cells for future domains
+				// any non-contiguous cells for future domains.
 				while (domainQueue.Count != 0)
 				{
 					var n = domainQueue.Dequeue();
@@ -237,12 +237,14 @@ namespace OpenRA.Mods.Common.Traits
 					visited[n] = true;
 					domains[n] = domain;
 
-					// Don't crawl off the map, or add already-visited cells
-					var neighbors = CVec.Directions.Select(d => n + d)
-						.Where(p => visited.Contains(p) && !visited[p]);
-
-					foreach (var neighbor in neighbors)
-						domainQueue.Enqueue(neighbor);
+					// PERF: Avoid LINQ.
+					foreach (var direction in CVec.Directions)
+					{
+						// Don't crawl off the map, or add already-visited cells.
+						var neighbor = direction + n;
+						if (visited.Contains(neighbor) && !visited[neighbor])
+							domainQueue.Enqueue(neighbor);
+					}
 				}
 
 				domain += 1;

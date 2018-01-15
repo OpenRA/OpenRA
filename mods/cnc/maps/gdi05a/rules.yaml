@@ -11,8 +11,8 @@ World:
 		WinVideo: nodlose.vqa
 		LossVideo: gdilose.vqa
 	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 	SmudgeLayer@SCORCH:
 		InitialSmudges:
 			41,55: sc4,0

@@ -116,6 +116,7 @@ Background@ASSETBROWSER_PANEL:
 					Y: 0
 					Width: 25
 					Height: 25
+					Key: LEFT
 					Children:
 						Image@IMAGE_PREV:
 							X: 0
@@ -129,6 +130,7 @@ Background@ASSETBROWSER_PANEL:
 					Y: 0
 					Width: 25
 					Height: 25
+					Key: SPACE
 					Children:
 						Image@IMAGE_PLAY:
 							X: 0
@@ -143,6 +145,7 @@ Background@ASSETBROWSER_PANEL:
 					Y: 0
 					Width: 25
 					Height: 25
+					Key: SPACE
 					Children:
 						Image@IMAGE_PAUSE:
 							X: 0
@@ -156,6 +159,7 @@ Background@ASSETBROWSER_PANEL:
 					Y: 0
 					Width: 25
 					Height: 25
+					Key: RETURN
 					Children:
 						Image@IMAGE_STOP:
 							X: 0
@@ -169,6 +173,7 @@ Background@ASSETBROWSER_PANEL:
 					Y: 0
 					Width: 25
 					Height: 25
+					Key: RIGHT
 					Children:
 						Image@IMAGE_NEXT:
 							X: 0

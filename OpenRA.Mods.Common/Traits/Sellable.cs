@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits.Render;
@@ -23,9 +22,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly int RefundPercent = 50;
 		public readonly string[] SellSounds = { };
+		public readonly bool ShowTicks = true;
 
 		[Desc("Skip playing (reversed) make animation.")]
 		public readonly bool SkipMakeAnimation = false;
+
+		[Desc("Cursor type to use when the sell order generator hovers over this actor.")]
+		public readonly string Cursor = "sell";
 
 		public override object Create(ActorInitializer init) { return new Sellable(init.Self, this); }
 	}
@@ -67,38 +70,22 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Selling(self);
 
-			if (info.SkipMakeAnimation)
-				self.QueueActivity(false, new Sell(self));
-
-			PlaySellAnimations(self);
-		}
-
-		void PlaySellAnimations(Actor self)
-		{
-			var makeAnimations = self.TraitsImplementing<WithMakeAnimation>();
-			if (!makeAnimations.Any())
+			if (!info.SkipMakeAnimation)
 			{
-				// Let the sell happen even without WithMakeAnimation trait.
-			self.QueueActivity(false, new Sell(self));
-				return;
-			}
-
-			bool first = true;
-			foreach (var ma in makeAnimations)
-			{
-				if (first)
+				var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+				if (makeAnimation != null)
 				{
-					ma.Reverse(self, new Sell(self), false);
-					first = false;
+					makeAnimation.Reverse(self, new Sell(self, info.ShowTicks), false);
+					return;
 				}
-				else
-					ma.Reverse(self, null);
 			}
+
+			self.QueueActivity(false, new Sell(self, info.ShowTicks));
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
 		{
-			if (self.World.OrderGenerator is SellOrderGenerator)
+			if (!IsTraitDisabled && self.World.OrderGenerator is SellOrderGenerator)
 				return forPlayer == self.Owner;
 			return false;
 		}

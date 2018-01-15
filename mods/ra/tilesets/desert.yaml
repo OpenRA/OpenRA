@@ -2,7 +2,6 @@ General:
 	Name: Desert
 	Id: DESERT
 	Palette: desert.pal
-	PlayerPalette: temperat.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 	HeightDebugColors: 880000
 
@@ -2635,7 +2634,7 @@ Templates:
 			8: River
 			9: Water
 			10: River
-			11: River	
+			11: River
 	Template@419:
 		Id: 419
 		Images: sh42.des

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
 		[Flags]
-		public enum CellType { Valid = 0, Invalid = 1, LineBuild = 2 } // made public for Yupgi_alert
+		enum CellType { Valid = 0, Invalid = 1, LineBuild = 2 }
 
 		readonly ProductionQueue queue;
 		readonly string building;
@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Common.Orders
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
 
-		// made public static for Yupgi_alert
-		public static CellType MakeCellType(bool valid, bool lineBuild = false)
+		CellType MakeCellType(bool valid, bool lineBuild = false)
 		{
 			var cell = valid ? CellType.Valid : CellType.Invalid;
 			if (lineBuild)
@@ -134,11 +133,13 @@ namespace OpenRA.Mods.Common.Orders
 						orderType = "LineBuild";
 				}
 
-				yield return new Order(orderType, owner.PlayerActor, false)
+				yield return new Order(orderType, owner.PlayerActor, Target.FromCell(world, topLeft), false)
 				{
-					TargetLocation = topLeft,
-					TargetActor = queue.Actor,
+					// Building to place
 					TargetString = building,
+
+					// Actor to associate the placement with
+					ExtraData = queue.Actor.ActorID,
 					SuppressVisualFeedback = true
 				};
 			}
@@ -231,10 +232,10 @@ namespace OpenRA.Mods.Common.Orders
 				foreach (var r in previewRenderables)
 					yield return r;
 
-				var res = world.WorldActor.Trait<ResourceLayer>();
+				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && res.GetResource(t) == null));
+					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResource(t) == null)));
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
@@ -268,9 +269,8 @@ namespace OpenRA.Mods.Common.Orders
 				if (availableCells.Count == 0)
 					continue;
 
-				yield return new Order("Move", blocker.Actor, false)
+				yield return new Order("Move", blocker.Actor, Target.FromCell(world, blocker.Actor.ClosestCell(availableCells)), false)
 				{
-					TargetLocation = blocker.Actor.ClosestCell(availableCells),
 					SuppressVisualFeedback = true
 				};
 			}

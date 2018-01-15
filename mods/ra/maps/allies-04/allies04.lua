@@ -24,28 +24,32 @@ ConvoyDelays =
 {
 	easy = { DateTime.Minutes(4), DateTime.Minutes(5) + DateTime.Seconds(20) },
 	normal = { DateTime.Minutes(2) + DateTime.Seconds(30), DateTime.Minutes(4) },
-	hard = { DateTime.Minutes(1) + DateTime.Seconds(30), DateTime.Minutes(2) + DateTime.Seconds(30) }
+	hard = { DateTime.Minutes(1) + DateTime.Seconds(30), DateTime.Minutes(2) + DateTime.Seconds(30) },
+	tough = { DateTime.Minutes(1), DateTime.Minutes(1) + DateTime.Seconds(15) }
 }
 
 Convoys =
 {
 	easy = 2,
 	normal = 3,
-	hard = 5
+	hard = 5,
+	tough = 10
 }
 
 ParadropDelays =
 {
 	easy = { DateTime.Seconds(40), DateTime.Seconds(90) },
 	normal = { DateTime.Seconds(30), DateTime.Seconds(70) },
-	hard = { DateTime.Seconds(20), DateTime.Seconds(50) }
+	hard = { DateTime.Seconds(20), DateTime.Seconds(50) },
+	tough = { DateTime.Seconds(10), DateTime.Seconds(25) }
 }
 
 ParadropWaves =
 {
 	easy = 4,
 	normal = 6,
-	hard = 10
+	hard = 10,
+	tough = 25
 }
 
 ParadropLZs = { ParadropPoint1.CenterPosition, ParadropPoint2.CenterPosition, ParadropPoint3.CenterPosition }

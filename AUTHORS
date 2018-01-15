@@ -69,12 +69,14 @@ Also thanks to:
     * Ian T. Jacobsen (Smilex)
     * Imago
     * Iran
+    * Ishan Bhargava (ishantheperson)
     * Jacob Dufault (jacobdufault)
     * James Dunne (jsd)
     * James Gilbert (DSUK)
     * Jan-Willem Buurlage (jwbuurlage)
     * Jason (atlimit8)
     * Jeff Harris (jeff_1amstudios)
+    * Jefri Sevkin (Arular)
     * Jes
     * Joakim Lindberg (booom3)
     * John Turner (whinis)
@@ -97,6 +99,7 @@ Also thanks to:
     * Max621
     * Max Ugrumov (katzsmile)
     * Michael Rätzel
+    * Michael Silber (frühstück)
     * Michael Sztolcman (s1w_)
     * Mustafa Alperen Seki (MustaphaTR)
     * Neil Shivkar (havok13888)
@@ -108,8 +111,9 @@ Also thanks to:
     * Paul Dovydaitis (pdovy)
     * Pavlos Touboulidis (pav)
     * Pedro Ferreira Ramos (bateramos)
+    * Peter Amrehn (jongleur1983)
     * Pizzaoverhead
-    * Piët Delport (pjdelport)
+    * Pi Delport (pjdelport)
     * Psydev
     * Raphael Vogt (TheRaffy, Yellow)
     * Raymond Bedrossian (Squiggles211)
@@ -167,9 +171,6 @@ under the MIT license.
 
 Using ICSharpCode.SharpZipLib initially by Mike
 Krueger and distributed under the GNU GPL terms.
-
-Using SmartIrc4Net developed by Mirco Bauer
-distributed under the LGPL version 2.1 or later.
 
 Using rix0rrr.BeaconLib developed by Rico Huijbers
 distributed under MIT License.

@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Graphics
 			public FinalizedModelRenderable(WorldRenderer wr, ModelRenderable model)
 			{
 				this.model = model;
-				var draw = model.models.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				var draw = model.models.Where(v => v.IsVisible);
 
 				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
 					wr, draw, model.camera, model.scale, GroundNormal, model.lightSource,
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Graphics
 				}, iz, c);
 
 				// Draw bounding box
-				var draw = model.models.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				var draw = model.models.Where(v => v.IsVisible);
 				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
 				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
 
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Graphics
 			Pair<Rectangle, float2> Screen3DBounds(WorldRenderer wr)
 			{
 				var pxOrigin = wr.ScreenPosition(model.pos);
-				var draw = model.models.Where(v => v.DisableFunc == null || !v.DisableFunc());
+				var draw = model.models.Where(v => v.IsVisible);
 				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
 				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
 

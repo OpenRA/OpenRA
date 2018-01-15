@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void CreatePlayers(World w)
+		void ICreatePlayers.CreatePlayers(World w)
 		{
 			if (w.Type != WorldType.Editor)
 				return;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 				UpdateNeighbours(p.Footprint);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			if (wr.World.Type != WorldType.Editor)
 				return;
@@ -98,6 +98,12 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(p => p.Render());
 		}
 
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			// World-actor render traits don't require screen bounds
+			yield break;
+		}
+
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
 		EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
@@ -106,7 +112,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			var preview = new EditorActorPreview(worldRenderer, id, reference, owner);
 			previews.Add(preview);
-			screenMap.Add(preview, preview.Bounds);
+
+			if (!preview.Bounds.IsEmpty)
+				screenMap.Add(preview, preview.Bounds);
 
 			foreach (var kv in preview.Footprint)
 			{
@@ -264,9 +272,11 @@ namespace OpenRA.Mods.Common.Traits
 			return nodes;
 		}
 
-		public IEnumerable<Pair<CPos, Color>> RadarSignatureCells(Actor self)
+		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
-			return cellMap.SelectMany(c => c.Value.Select(p => Pair.New(c.Key, p.Owner.Color.RGB)));
+			foreach (var previewsForCell in cellMap)
+				foreach (var preview in previewsForCell.Value)
+					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color.RGB));
 		}
 	}
 }

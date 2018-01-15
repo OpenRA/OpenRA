@@ -15,12 +15,12 @@
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Ground, Water, Air
 		Versus:
 			None: 10
-			Wood: 75
-			Light: 35
+			Wood: 74
+			Light: 34
 			Heavy: 100
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
@@ -50,18 +50,19 @@ Maverick:
 	MinRange: 3c0
 	Report: missile7.aud
 	Burst: 2
-	BurstDelay: 7
+	BurstDelays: 7
 	Projectile: Missile
 		Speed: 256
 		Inaccuracy: 512
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
-		Damage: 70
+		Damage: 7000
 		Versus:
 			None: 30
 			Wood: 90
 			Light: 90
+			Heavy: 115
 			Concrete: 100
 
 Dragon:
@@ -74,13 +75,13 @@ HellfireAG:
 	ReloadDelay: 60
 	MinRange: 1c256
 	Burst: 4
-	BurstDelay: 14
+	BurstDelays: 14
 	Projectile: Missile
 		Speed: 256
 		HorizontalRateOfTurn: 10
 		RangeLimit: 8c512
 	Warhead@1Dam: SpreadDamage
-		Damage: 60
+		Damage: 6000
 		Versus:
 			None: 30
 			Wood: 90
@@ -92,16 +93,17 @@ HellfireAA:
 	ReloadDelay: 60
 	MinRange: 1c256
 	Burst: 2
-	BurstDelay: 10
+	BurstDelays: 10
 	Projectile: Missile
 		Speed: 384
 		Inaccuracy: 128
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
+			Wood: 75
 			Light: 75
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
@@ -118,12 +120,12 @@ MammothTusk:
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air, Infantry
 		Versus:
 			None: 100
 			Light: 60
-			Heavy: 25
+			Heavy: 24
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
@@ -147,7 +149,7 @@ Nike:
 		RangeLimit: 9c0
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
-		Damage: 50
+		Damage: 5000
 		ValidTargets: Air
 		Versus:
 			None: 90
@@ -165,7 +167,7 @@ RedEye:
 		HorizontalRateOfTurn: 20
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
-		Damage: 40
+		Damage: 4000
 		ValidTargets: Air
 		Versus:
 			Wood: 75
@@ -177,7 +179,7 @@ Stinger:
 	ReloadDelay: 60
 	Range: 7c512
 	Burst: 2
-	BurstDelay: 0
+	BurstDelays: 0
 	InvalidTargets: Underwater
 	Projectile: Missile
 		Arm: 3
@@ -187,11 +189,13 @@ Stinger:
 		Speed: 170
 		CloseEnough: 149
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 2500
 		Versus:
-			None: 30
-			Light: 75
-			Concrete: 50
+			None: 36
+			Wood: 88
+			Light: 88
+			Heavy: 120
+			Concrete: 60
 
 StingerAA:
 	Inherits: Stinger
@@ -213,11 +217,13 @@ APTusk:
 		HorizontalRateOfTurn: 10
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
-		Damage: 30
+		Damage: 2500
 		Versus:
-			None: 25
-			Light: 75
-			Concrete: 50
+			None: 28
+			Wood: 88
+			Light: 88
+			Heavy: 120
+			Concrete: 60
 
 TorpTube:
 	ReloadDelay: 100
@@ -225,7 +231,7 @@ TorpTube:
 	Report: torpedo1.aud
 	ValidTargets: Water, Underwater, Bridge
 	Burst: 2
-	BurstDelay: 20
+	BurstDelays: 20
 	Projectile: Missile
 		Image: torpedo
 		Arm: 3
@@ -239,7 +245,7 @@ TorpTube:
 		CruiseAltitude: 0
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 180
+		Damage: 18000
 		ValidTargets: Water, Underwater, Bridge
 		Versus:
 			None: 30
@@ -274,7 +280,7 @@ TorpTube:
 		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
-		Damage: 25
+		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
@@ -292,14 +298,14 @@ TorpTube:
 
 SubMissile:
 	Inherits: ^SubMissileDefault
-	Range: 16c0
+	Range: 20c0
 	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
 		Speed: 162
 		Blockable: false
 		LaunchAngle: 120
-		Inaccuracy: 2c938
+		Inaccuracy: 0c614
 		Image: MISSILE
 		Shadow: True
 		TrailImage: smokey
@@ -309,13 +315,13 @@ SubMissileAA:
 	Inherits: ^SubMissileDefault
 	ValidTargets: Air
 	Warhead@1Dam: SpreadDamage
-		Damage: 15
+		Damage: 1500
 
 SCUD:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 240
+	ReloadDelay: 0
 	Range: 10c0
-	MinRange: 3c0
+	MinRange: 5c0
 	Report: missile1.aud
 	-Projectile:
 	Projectile: Bullet
@@ -329,11 +335,12 @@ SCUD:
 		LaunchAngle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
-		Damage: 45
+		Damage: 4500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: Ground, Water, Trees
 		Versus:
 			None: 90
+			Wood: 75
 			Light: 70
 			Heavy: 40
 			Concrete: 100

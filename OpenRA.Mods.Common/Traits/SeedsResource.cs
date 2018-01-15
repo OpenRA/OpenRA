@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int ticks;
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;

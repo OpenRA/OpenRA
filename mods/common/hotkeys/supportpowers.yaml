@@ -1,0 +1,23 @@
+SupportPower01:
+	Description: Slot 01
+	Types: SupportPower
+
+SupportPower02:
+	Description: Slot 02
+	Types: SupportPower
+
+SupportPower03:
+	Description: Slot 03
+	Types: SupportPower
+
+SupportPower04:
+	Description: Slot 04
+	Types: SupportPower
+
+SupportPower05:
+	Description: Slot 05
+	Types: SupportPower
+
+SupportPower06:
+	Description: Slot 06
+	Types: SupportPower

@@ -15,13 +15,14 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class SupportPowerInfo : PausableConditionalTraitInfo
 	{
-		[Desc("Measured in seconds.")]
-		public readonly int ChargeTime = 0;
+		[Desc("Measured in ticks.")]
+		public readonly int ChargeInterval = 0;
 		public readonly string Icon = null;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
 		public readonly bool AllowMultiple = false;
 		public readonly bool OneShot = false;
+		public readonly int Cost = 0;
 
 		[Desc("Cursor to display for using this support power.")]
 		public readonly string Cursor = "ability";

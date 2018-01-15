@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -18,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	public enum SquadType { Assault, Air, Rush, Protection }
+	public enum SquadType { Assault, Air, Rush, Protection, Naval }
 
 	public class Squad
 	{
@@ -55,6 +54,9 @@ namespace OpenRA.Mods.Common.AI
 				case SquadType.Protection:
 					FuzzyStateMachine.ChangeState(this, new UnitsForProtectionIdleState(), true);
 					break;
+				case SquadType.Naval:
+					FuzzyStateMachine.ChangeState(this, new NavyUnitsIdleState(), true);
+					break;
 			}
 		}
 
@@ -79,45 +81,9 @@ namespace OpenRA.Mods.Common.AI
 
 		public bool IsTargetVisible
 		{
-			get { return Bot.Player.PlayerActor.Owner.CanTargetActor(TargetActor); }
+			get { return TargetActor.CanBeViewedByPlayer(Bot.Player); }
 		}
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
-
-		public CPos CenterLocation { get { return World.Map.CellContaining(CenterPosition); } }
-
-		void ReflexAvoidance(Actor attacker)
-		{
-			// Like when you retract your finger when it touches hot stuff,
-			// let air untis avoid the attacker very quickly. (faster than flee state's response)
-			WVec vec = CenterPosition - attacker.CenterPosition;
-			WPos dest = CenterPosition + vec;
-			CPos cdest = World.Map.CellContaining(dest);
-
-			foreach (var a in Units)
-				Bot.QueueOrder(new Order("Move", a, false) { TargetLocation = cdest });
-		}
-
-		internal void Damage(AttackInfo e)
-		{
-			// Friendly fire damage can happen, as weapons have spread damage.a
-			if (e.Attacker.AppearsFriendlyTo(Bot.Player.PlayerActor))
-				return;
-
-			if (Type == SquadType.Air)
-			{
-				// decide flee or retaliate.
-				if (AirStateBase.NearToPosSafely(this, this.CenterPosition))
-				{
-					TargetActor = e.Attacker;
-					FuzzyStateMachine.ChangeState(this, new AirAttackState(), true);
-					return;
-				}
-
-				// Flee
-				ReflexAvoidance(e.Attacker);
-				FuzzyStateMachine.ChangeState(this, new AirFleeState(), true);
-			}
-		}
 	}
 }

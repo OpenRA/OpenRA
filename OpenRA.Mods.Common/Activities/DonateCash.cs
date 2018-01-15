@@ -15,14 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class DonateCash : Enter
+	class DonateCash : Enter
 	{
 		readonly Actor target;
 		readonly int payload;
 		readonly int experience;
 
 		public DonateCash(Actor self, Actor target, int payload, int playerExperience)
-			: base(self, target, EnterBehaviour.Dispose, WDist.Zero)
+			: base(self, target, EnterBehaviour.Dispose)
 		{
 			this.target = target;
 			this.payload = payload;
@@ -43,11 +43,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
 
-			foreach (var host in target.TraitsImplementing<INotifyCashTransfer>())
-				host.OnAcceptingCash(target, self);
+			foreach (var nct in target.TraitsImplementing<INotifyCashTransfer>())
+				nct.OnAcceptingCash(target, self);
 
-			foreach (var me in self.TraitsImplementing<INotifyCashTransfer>())
-				me.OnDeliveringCash(self, target);
+			foreach (var nct in self.TraitsImplementing<INotifyCashTransfer>())
+				nct.OnDeliveringCash(self, target);
 		}
 	}
 }

@@ -392,7 +392,7 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveInfluenceInner(ref influenceNode.Next, toRemove);
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			// Position updates are done in one pass
 			// to ensure consistency during a tick

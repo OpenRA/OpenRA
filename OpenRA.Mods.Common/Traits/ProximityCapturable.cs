@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			actorsInRange.Clear();
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (!self.IsInWorld || self.CenterPosition == prevPosition)
 				return;

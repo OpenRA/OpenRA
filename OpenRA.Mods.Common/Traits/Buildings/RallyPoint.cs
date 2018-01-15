@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -24,6 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Image = "rallypoint";
 		[SequenceReference("Image")] public readonly string FlagSequence = "flag";
 		[SequenceReference("Image")] public readonly string CirclesSequence = "circles";
+
+		public readonly string Cursor = "ability";
 
 		[Desc("Custom indicator palette name")]
 		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
@@ -44,16 +44,10 @@ namespace OpenRA.Mods.Common.Traits
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 
-		// Keep track of rally pointed acceptor actors
-		bool dirty = true;
-
 		const uint ForceSet = 1;
-
-		Actor cachedResult = null;
 
 		public void ResetLocation(Actor self)
 		{
-			dirty = true;
 			Location = self.Location + Info.Offset;
 		}
 
@@ -64,10 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
-			dirty = true;
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -80,13 +73,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new RallyPointOrderTargeter(); }
+			get { yield return new RallyPointOrderTargeter(Info.Cursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == OrderID)
-				return new Order(order.OrderID, self, false) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition), SuppressVisualFeedback = true,
+				return new Order(order.OrderID, self, target, false) { SuppressVisualFeedback = true,
 					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0 };
 
 			return null;
@@ -95,64 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == OrderID)
-			{
 				Location = order.TargetLocation;
-				dirty = true;
-			}
-		}
-
-		Actor GetRallyAcceptor(Actor self, CPos location)
-		{
-			if (!dirty)
-			{
-				if (cachedResult == null)
-					return null;
-
-				if (!cachedResult.IsDead && !cachedResult.Disposed)
-					return cachedResult;
-			}
-
-			var actors = self.World.ActorMap.GetActorsAt(Location).Where(
-				a => a.TraitsImplementing<IAcceptsRallyPoint>().Count() > 0);
-
-			dirty = false;
-
-			if (!actors.Any())
-			{
-				cachedResult = null;
-				return null;
-			}
-
-			// If we have multiple of them, let's just go for first.
-			cachedResult = actors.First();
-			return cachedResult;
-		}
-
-		// self isn't the rally point but the one that has rally point trait.
-		// unit is the one that is to follow the rally point.
-		public void QueueRallyOrder(Actor self, Actor unit)
-		{
-			if (unit.TraitOrDefault<IMove>() == null)
-				throw new InvalidOperationException("How come rally point mover not have IMove trait? Actor: " + unit.ToString());
-
-			var rallyAcceptor = GetRallyAcceptor(self, Location);
-
-			if (rallyAcceptor == null)
-			{
-				unit.QueueActivity(new AttackMoveActivity(unit, unit.Trait<IMove>().MoveTo(Location, 1)));
-				return;
-			}
-
-			var ars = rallyAcceptor.TraitsImplementing<IAcceptsRallyPoint>();
-			if (ars.Count() > 1)
-				throw new InvalidOperationException(
-					"Actor {0} has multiple traits implementing IAcceptsRallyPoint!".F(rallyAcceptor.ToString()));
-
-			var ar = ars.First();
-			if (ar.IsAcceptableActor(unit, rallyAcceptor))
-				unit.QueueActivity(ar.RallyActivities(unit, rallyAcceptor));
-			else
-				unit.QueueActivity(new AttackMoveActivity(unit, unit.Trait<IMove>().MoveTo(Location, 1)));
 		}
 
 		public static bool IsForceSet(Order order)
@@ -162,6 +98,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		class RallyPointOrderTargeter : IOrderTargeter
 		{
+			readonly string cursor;
+
+			public RallyPointOrderTargeter(string cursor)
+			{
+				this.cursor = cursor;
+			}
+
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
@@ -175,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				if (self.World.Map.Contains(location))
 				{
-					cursor = "ability";
+					cursor = this.cursor;
 
 					// Notify force-set 'RallyPoint' order watchers with Ctrl and only if this is the only building of its type selected
 					if (modifiers.HasModifier(TargetModifiers.ForceAttack))

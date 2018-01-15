@@ -523,4 +523,4 @@ Actors:
 		Owner: Smugglers
 		Location: 49,19
 
-Rules: d2k|rules/campaign-rules.yaml, rules.yaml
+Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml

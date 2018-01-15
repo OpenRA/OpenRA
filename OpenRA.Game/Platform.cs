@@ -93,9 +93,6 @@ namespace OpenRA
 					break;
 			}
 
-			if (!Directory.Exists(dir))
-				Directory.CreateDirectory(dir);
-
 			return dir + Path.DirectorySeparatorChar;
 		}
 

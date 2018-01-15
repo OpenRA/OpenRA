@@ -19,8 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	// OP Mod: made public for Chrono Miner
-	public class PortableChronoInfo : ITraitInfo
+	class PortableChronoInfo : ITraitInfo
 	{
 		[Desc("Cooldown in ticks until the unit can teleport.")]
 		public readonly int ChargeDelay = 500;
@@ -57,8 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new PortableChrono(this); }
 	}
 
-	// OP Mod: made public for Chrono Miner
-	public class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
+	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
 		[Sync] int chargeTick = 0;
 		public readonly PortableChronoInfo Info;
@@ -68,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Info = info;
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (chargeTick > 0)
 				chargeTick--;
@@ -90,9 +88,9 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
 
 			if (order.OrderID == "PortableChronoTeleport")
-				return new Order(order.OrderID, self, queued) { TargetLocation = self.World.Map.CellContaining(target.CenterPosition) };
+				return new Order(order.OrderID, self, target, queued);
 
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -105,7 +103,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? Info.Voice : null;
 		}
@@ -187,7 +185,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
 			{
 				world.CancelInputMode();
-				yield return new Order("PortableChronoTeleport", self, mi.Modifiers.HasModifier(Modifiers.Shift)) { TargetLocation = cell };
+				yield return new Order("PortableChronoTeleport", self, Target.FromCell(world, cell), mi.Modifiers.HasModifier(Modifiers.Shift));
 			}
 		}
 

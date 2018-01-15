@@ -117,6 +117,7 @@ OLDLST:
 	RejectsOrders:
 	Cargo:
 		Types: disabled
+	Interactable:
 
 HQ:
 	Tooltip:

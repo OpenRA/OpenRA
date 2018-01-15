@@ -59,6 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 			positionable = self.Trait<IPositionable>();
 		}
 
+		public bool IsInAir { get; private set; }
+
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
@@ -66,12 +68,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyParachute.OnParachute(Actor self)
 		{
+			IsInAir = true;
+
 			if (conditionManager != null && parachutingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
 				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
 		}
 
 		void INotifyParachute.OnLanded(Actor self, Actor ignore)
 		{
+			IsInAir = false;
+
 			if (parachutingToken != ConditionManager.InvalidConditionToken)
 				parachutingToken = conditionManager.RevokeCondition(self, parachutingToken);
 

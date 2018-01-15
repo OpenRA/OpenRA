@@ -73,13 +73,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\ChronoResourceTeleport.cs" />
     <Compile Include="Activities\FallDown.cs" />
     <Compile Include="Activities\HeliFlyCircleTimed.cs" />
-    <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
     <Compile Include="Duplicates\Projectiles\BulletAS.cs" />
+    <Compile Include="Duplicates\Traits\EjectOnDeathAS.cs" />
     <Compile Include="Duplicates\Traits\Render\WithIdleOverlayAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnBuildAS.cs" />
     <Compile Include="Duplicates\Traits\Sound\AnnounceOnKillAS.cs" />
+    <Compile Include="Effects\AirstrikePowerASEffect.cs" />
     <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
@@ -89,31 +91,39 @@
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Projectiles\SpriteRailgun.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
+    <Compile Include="Traits\DelayedWeaponAttachable.cs" />
+    <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
     <Compile Include="Traits\Conditions\GrantExternalConditionToKiller.cs" />
     <Compile Include="Traits\Conditions\GrantPeriodicConditionOnEvent.cs" />
-    <Compile Include="Traits\Conditions\GrantStackableConditionOnFire.cs" />
     <Compile Include="Traits\Crate\GiveRandomActorCrateAction.cs" />
+    <Compile Include="Traits\DelayedWeaponDetector.cs" />
     <Compile Include="Traits\Doctrine.cs" />
     <Compile Include="Traits\EligibleForRandomActorCrate.cs" />
     <Compile Include="Traits\ExplodeWeapon.cs" />
     <Compile Include="Traits\InfiltrateForProxyActor.cs" />
+    <Compile Include="Traits\DelayedWeaponTrigger.cs" />
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\Player\ProvidesAIPrerequisite.cs" />
     <Compile Include="Traits\Render\WithIdleOverlayOnGround.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />
+    <Compile Include="Traits\ResourcePurifier.cs" />
     <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
+    <Compile Include="Traits\SupportPowers\AirstrikePowerAS.cs" />
     <Compile Include="Traits\Multipliers\HealthPercentageFirepowerMultiplier.cs" />
     <Compile Include="Traits\SupportPowers\DetonateWeaponPower.cs" />
     <Compile Include="Traits\SupportPowers\FireArmamentPower.cs" />
+    <Compile Include="Traits\Warheads\AttachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\CaptureActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\DetachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
     <Compile Include="Traits\Warheads\GlobalExplodeWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\RevealShroudWarhead.cs" />
     <Compile Include="Traits\Warheads\ScreenShakerWarhead.cs" />
+    <Compile Include="Traits\Warheads\SendAirstrikeWarhead.cs" />
     <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\Render\WithExitOverlay.cs" />
@@ -135,6 +145,24 @@
     <Compile Include="Traits\Conditions\GrantExternalConditionToCrusher.cs" />
     <Compile Include="Traits\Conditions\HordeBonus.cs" />
     <Compile Include="Traits\Conditions\GrantHordeBonus.cs" />
+    <Compile Include="Void\CyclicImpactProjectile.cs" />
+    <Compile Include="Void\CyclicImpactProjectileEffect.cs" />
+    <Compile Include="Yupgi\ArcRenderable.cs" />
+    <Compile Include="Yupgi\BaseSpawnerMaster.cs" />
+    <Compile Include="Yupgi\BaseSpawnerSlave.cs" />
+    <Compile Include="Yupgi\CarrierMaster.cs" />
+    <Compile Include="Yupgi\CarrierSlave.cs" />
+    <Compile Include="Yupgi\CreateRadioactivityWarhead.cs" />
+    <Compile Include="Yupgi\DamagedByRadioactivity.cs" />
+    <Compile Include="Yupgi\EnterCarrierMaster.cs" />
+    <Compile Include="Yupgi\EnterNydus.cs" />
+    <Compile Include="Yupgi\Mindcontrollable.cs" />
+    <Compile Include="Yupgi\Mindcontroller.cs" />
+    <Compile Include="Yupgi\Nydus.cs" />
+    <Compile Include="Yupgi\NydusPrimaryExit.cs" />
+    <Compile Include="Yupgi\Radioactivity.cs" />
+    <Compile Include="Yupgi\RadioactivityLayer.cs" />
+    <Compile Include="Yupgi\WithMindcontrolArc.cs" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

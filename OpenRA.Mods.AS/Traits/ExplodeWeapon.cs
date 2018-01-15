@@ -8,10 +8,13 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -25,6 +28,9 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly string Weapon = null;
 
 		public readonly bool ResetReloadWhenEnabled = true;
+
+		[Desc("Which limited ammo pool (if present) should this weapon be assigned to.")]
+		public readonly string AmmoPoolName = "";
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
@@ -45,7 +51,7 @@ namespace OpenRA.Mods.AS.Traits
 		}
 	}
 
-	class ExplodeWeapon : ConditionalTrait<ExplodeWeaponInfo>, ITick
+	class ExplodeWeapon : ConditionalTrait<ExplodeWeaponInfo>, ITick, INotifyCreated
 	{
 		readonly ExplodeWeaponInfo info;
 		readonly WeaponInfo weapon;
@@ -53,6 +59,9 @@ namespace OpenRA.Mods.AS.Traits
 
 		int fireDelay;
 		int burst;
+		AmmoPool ammoPool;
+
+		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public ExplodeWeapon(Actor self, ExplodeWeaponInfo info)
 			: base(info)
@@ -64,13 +73,31 @@ namespace OpenRA.Mods.AS.Traits
 			body = self.TraitOrDefault<BodyOrientation>();
 		}
 
+		protected override void Created(Actor self)
+		{
+			ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault(la => la.Info.Name == Info.AmmoPoolName);
+		}
+
 		void ITick.Tick(Actor self)
 		{
+			for (var i = 0; i < delayedActions.Count; i++)
+			{
+				var x = delayedActions[i];
+				if (--x.First <= 0)
+					x.Second();
+				delayedActions[i] = x;
+			}
+
+			delayedActions.RemoveAll(a => a.First <= 0);
+
 			if (IsTraitDisabled)
 				return;
 
 			if (--fireDelay < 0)
 			{
+				if (ammoPool != null && !ammoPool.TakeAmmo(self, 1))
+					return;
+
 				var localoffset = body != null
 					? body.LocalToWorld(info.LocalOffset.Rotate(body.QuantizeOrientation(self, self.Orientation)))
 					: info.LocalOffset;
@@ -81,14 +108,30 @@ namespace OpenRA.Mods.AS.Traits
 				if (weapon.Report != null && weapon.Report.Any())
 					Game.Sound.Play(SoundType.World, weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 
+				if (burst == weapon.Burst && weapon.StartBurstReport != null && weapon.StartBurstReport.Any())
+					Game.Sound.Play(SoundType.World, weapon.StartBurstReport.Random(self.World.SharedRandom), self.CenterPosition);
+
 				if (--burst > 0)
-					fireDelay = weapon.BurstDelay;
+				{
+					if (weapon.BurstDelays.Length == 1)
+						fireDelay = weapon.BurstDelays[0];
+					else
+						fireDelay = weapon.BurstDelays[weapon.Burst - (burst + 1)];
+				}
 				else
 				{
 					var modifiers = self.TraitsImplementing<IReloadModifier>()
 						.Select(m => m.GetReloadModifier());
 					fireDelay = Util.ApplyPercentageModifiers(weapon.ReloadDelay, modifiers);
 					burst = weapon.Burst;
+
+					if (weapon.AfterFireSound != null && weapon.AfterFireSound.Any())
+					{
+						ScheduleDelayedAction(weapon.AfterFireSoundDelay, () =>
+						{
+							Game.Sound.Play(SoundType.World, weapon.AfterFireSound.Random(self.World.SharedRandom), self.CenterPosition);
+						});
+					}
 				}
 			}
 		}
@@ -100,6 +143,14 @@ namespace OpenRA.Mods.AS.Traits
 				burst = weapon.Burst;
 				fireDelay = 0;
 			}
+		}
+
+		protected void ScheduleDelayedAction(int t, Action a)
+		{
+			if (t > 0)
+				delayedActions.Add(Pair.New(t, a));
+			else
+				a();
 		}
 	}
 }

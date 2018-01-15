@@ -1,6 +1,6 @@
 DPOD:
 	Inherits: ^Helicopter
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -12,7 +12,7 @@ DPOD:
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 	Health:
-		HP: 60
+		HP: 6000
 	Armor:
 		Type: Light
 	Cargo:
@@ -47,7 +47,7 @@ DSHP:
 		LandingSound: dropdwn1.aud
 		IdealSeparation: 1275
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -65,7 +65,8 @@ DSHP:
 ORCA:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -78,13 +79,14 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 186
 		MoveIntoShroud: false
 		TakeoffSound: orcaup1.aud
 		LandingSound: orcadwn1.aud
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -92,14 +94,17 @@ ORCA:
 		Type: CenterPosition
 	Armament:
 		Weapon: Hellfire
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
@@ -107,7 +112,8 @@ ORCA:
 ORCAB:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -120,6 +126,7 @@ ORCAB:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 3072
 		MaximumPitch: 120
 		TurnSpeed: 3
@@ -130,7 +137,7 @@ ORCAB:
 		LandingSound: orcadwn1.aud
 	ReturnOnIdle:
 	Health:
-		HP: 260
+		HP: 26000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -138,9 +145,11 @@ ORCAB:
 		Type: CenterPosition
 	Armament:
 		Weapon: Bomb
+		PauseOnCondition: !ammo
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 10
 		PipCount: 2
@@ -148,6 +157,7 @@ ORCAB:
 		ReloadDelay: 200
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	RenderSprites:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
@@ -175,7 +185,7 @@ ORCATRAN:
 		LandingSound: orcadwn1.aud
 		IdealSeparation: 1275
 	Health:
-		HP: 200
+		HP: 20000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -215,7 +225,7 @@ TRNSPORT:
 		Voice: Move
 		LocalOffset: 0,0,-317
 	Health:
-		HP: 175
+		HP: 17500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -230,7 +240,8 @@ TRNSPORT:
 SCRIN:
 	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -245,6 +256,7 @@ SCRIN:
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 2560
 		MaximumPitch: 90
 		TurnSpeed: 3
@@ -255,7 +267,7 @@ SCRIN:
 		LandingSound: dropdwn1.aud
 	ReturnOnIdle:
 	Health:
-		HP: 280
+		HP: 28000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -263,15 +275,18 @@ SCRIN:
 		Type: CenterPosition
 	Armament:
 		Weapon: Proton
+		PauseOnCondition: !ammo
 	AttackPlane:
 		Voice: Attack
 		FacingTolerance: 20
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 15
 		PipCount: 3
 		ReloadCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	RenderSprites:
 	DeathSounds:
 	SpawnActorOnDeath:
@@ -280,7 +295,8 @@ SCRIN:
 APACHE:
 	Inherits: ^Helicopter
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -293,11 +309,12 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
+		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 130
 		MoveIntoShroud: false
 	Health:
-		HP: 225
+		HP: 22500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -305,14 +322,17 @@ APACHE:
 		Type: CenterPosition
 	Armament:
 		Weapon: HarpyClaw
+		PauseOnCondition: !ammo
 	AttackHeli:
 		FacingTolerance: 20
 		Voice: Attack
+		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
 		Offset: 85,0,384
 		Sequence: rotor
@@ -332,7 +352,7 @@ HUNTER:
 	Tooltip:
 		Name: Hunter-Seeker Droid
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Light
 	AttackSuicides:
@@ -345,6 +365,7 @@ HUNTER:
 		CruiseAltitude: 256
 		CanHover: True
 		CruisingCondition: cruising
+		VTOL: true
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	HiddenUnderFog:
@@ -357,11 +378,10 @@ HUNTER:
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
-	Selectable:
+	Interactable:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:

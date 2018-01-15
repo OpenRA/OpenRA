@@ -45,16 +45,16 @@ namespace OpenRA.Mods.Common.AI
 				owner.TargetActor = closestEnemy;
 			}
 
-			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(10))
+			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.Bot.Info.IdleScanRadius))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
-			if (!enemyUnits.Any())
+			if (enemyUnits.Count == 0)
 				return;
 
 			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 			{
 				foreach (var u in owner.Units)
-					owner.Bot.QueueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.TargetActor.Location });
+					owner.Bot.QueueOrder(new Order("AttackMove", u, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 
 				// We have gathered sufficient units. Attack the nearest enemy unit.
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
@@ -100,12 +100,12 @@ namespace OpenRA.Mods.Common.AI
 				// Let them regroup into tighter formation.
 				owner.Bot.QueueOrder(new Order("Stop", leader, false));
 				foreach (var unit in owner.Units.Where(a => !ownUnits.Contains(a)))
-					owner.Bot.QueueOrder(new Order("AttackMove", unit, false) { TargetLocation = leader.Location });
+					owner.Bot.QueueOrder(new Order("AttackMove", unit, Target.FromCell(owner.World, leader.Location), false));
 			}
 			else
 			{
-				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(12))
-					.Where(a => !a.IsDead && leader.Owner.Stances[a.Owner] == Stance.Enemy && a.Info.HasTraitInfo<ITargetableInfo>());
+				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Bot.Info.AttackScanRadius))
+					.Where(a => !a.IsDead && leader.Owner.Stances[a.Owner] == Stance.Enemy && a.GetEnabledTargetTypes().Any());
 				var target = enemies.ClosestTo(leader.CenterPosition);
 				if (target != null)
 				{
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 				else
 					foreach (var a in owner.Units)
-						owner.Bot.QueueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
+						owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 			}
 
 			if (ShouldFlee(owner))
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var a in owner.Units)
 				if (!BusyAttack(a))
-					owner.Bot.QueueOrder(new Order("Attack", a, false) { TargetActor = owner.TargetActor });
+					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
 
 			if (ShouldFlee(owner))
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);

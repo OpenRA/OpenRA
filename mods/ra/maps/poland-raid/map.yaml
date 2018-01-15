@@ -24,10 +24,10 @@ Players:
 		Faction: allies
 	PlayerReference@Multi0:
 		Name: Multi0
+		AllowBots: False
 		Playable: True
 		Faction: Random
 		Enemies: Creeps
-		AllowBots: false
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -35,28 +35,28 @@ Players:
 		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4
 	PlayerReference@Multi1:
 		Name: Multi1
+		AllowBots: False
 		Playable: True
 		Faction: Random
 		Enemies: Creeps
-		AllowBots: false
 	PlayerReference@Multi2:
 		Name: Multi2
+		AllowBots: False
 		Playable: True
 		Faction: Random
 		Enemies: Creeps
-		AllowBots: false
 	PlayerReference@Multi3:
 		Name: Multi3
+		AllowBots: False
 		Playable: True
 		Faction: Random
 		Enemies: Creeps
-		AllowBots: false
 	PlayerReference@Multi4:
 		Name: Multi4
+		AllowBots: False
 		Playable: True
 		Faction: Random
 		Enemies: Creeps
-		AllowBots: false
 
 Actors:
 	Actor1: v16
@@ -230,9 +230,6 @@ Actors:
 	Actor79: tc03
 		Location: 85,76
 		Owner: Neutral
-	Actor80: tc04
-		Location: 73,88
-		Owner: Neutral
 	Actor81: tc01
 		Location: 71,88
 		Owner: Neutral
@@ -286,9 +283,6 @@ Actors:
 		Owner: Neutral
 	Actor105: t02
 		Location: 32,89
-		Owner: Neutral
-	Actor106: tc01
-		Location: 29,89
 		Owner: Neutral
 	Actor107: t07
 		Location: 28,89
@@ -383,9 +377,6 @@ Actors:
 	Actor141: t01
 		Location: 46,35
 		Owner: Neutral
-	Actor143: tc02
-		Location: 65,34
-		Owner: Neutral
 	Actor144: tc01
 		Location: 65,35
 		Owner: Neutral
@@ -428,9 +419,6 @@ Actors:
 	Actor157: t16
 		Location: 41,34
 		Owner: Neutral
-	Actor158: tc01
-		Location: 80,30
-		Owner: Neutral
 	Actor159: t11
 		Location: 79,29
 		Owner: Neutral
@@ -439,9 +427,6 @@ Actors:
 		Owner: Neutral
 	Actor128: t06
 		Location: 95,25
-		Owner: Neutral
-	Actor163: t03
-		Location: 71,33
 		Owner: Neutral
 	Actor164: t08
 		Location: 57,53
@@ -557,9 +542,6 @@ Actors:
 	Actor211: tc04
 		Location: 62,66
 		Owner: Neutral
-	Actor212: t16
-		Location: 16,50
-		Owner: Neutral
 	Actor213: t16
 		Location: 21,46
 		Owner: Neutral
@@ -626,9 +608,6 @@ Actors:
 	Actor217: t16
 		Location: 21,34
 		Owner: Neutral
-	Actor223: t13
-		Location: 46,73
-		Owner: Neutral
 	Actor238: t08
 		Location: 16,79
 		Owner: Neutral
@@ -655,9 +634,6 @@ Actors:
 		Owner: Neutral
 	Actor162: t07
 		Location: 98,28
-		Owner: Neutral
-	Actor12: t07
-		Location: 41,75
 		Owner: Neutral
 	Actor221: t08
 		Location: 91,86
@@ -782,3 +758,39 @@ Actors:
 	Actor276: mpspawn
 		Owner: Neutral
 		Location: 99,85
+	Actor240: t11
+		Owner: Neutral
+		Location: 40,75
+	Actor277: t10
+		Owner: Neutral
+		Location: 40,75
+	Actor278: t13
+		Owner: Neutral
+		Location: 46,72
+	Actor281: t07
+		Owner: Neutral
+		Location: 43,74
+	Actor282: t14
+		Owner: Neutral
+		Location: 43,74
+	Actor283: tc02
+		Owner: Neutral
+		Location: 80,30
+	Actor284: tc01
+		Owner: Neutral
+		Location: 29,89
+	Actor285: t03
+		Owner: Neutral
+		Location: 71,34
+	Actor286: tc02
+		Owner: Neutral
+		Location: 65,34
+	Actor287: t11
+		Owner: Neutral
+		Location: 80,89
+	Actor288: tc04
+		Owner: Neutral
+		Location: 73,88
+	Actor289: t06
+		Owner: Neutral
+		Location: 16,49

@@ -15,6 +15,7 @@ Packages:
 
 	~SOUND.RS
 	d2k|bits
+	d2k|bits/scripts
 	d2k|bits/tex
 	d2k|uibits
 
@@ -77,23 +78,22 @@ ChromeLayout:
 	d2k|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	common|chrome/ingame-debug.yaml
+	common|chrome/ingame-infochat.yaml
 	d2k|chrome/mainmenu.yaml
 	common|chrome/settings.yaml
 	common|chrome/credits.yaml
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml
 	d2k|chrome/lobby-players.yaml
-	d2k|chrome/lobby-options.yaml
+	common|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
 	common|chrome/lobby-kickdialogs.yaml
-	common|chrome/lobby-globalchat.yaml
 	common|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml
-	common|chrome/multiplayer.yaml
 	common|chrome/multiplayer-browser.yaml
+	d2k|chrome/multiplayer-browserpanels.yaml
 	common|chrome/multiplayer-createserver.yaml
 	common|chrome/multiplayer-directconnect.yaml
-	common|chrome/multiplayer-globalchat.yaml
 	common|chrome/connection.yaml
 	d2k|chrome/dropdowns.yaml
 	common|chrome/musicplayer.yaml
@@ -122,6 +122,14 @@ Music:
 
 Translations:
 	d2k|languages/english.yaml
+
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production-common.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+	d2k|hotkeys.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: d2k|uibits/loadscreen.png
@@ -207,7 +215,7 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^Content/d2k/v2/BLOXBASE.R8, ^Content/d2k/v2/BLOXBAT.R8, ^Content/d2k/v2/BLOXBGBS.R8, ^Content/d2k/v2/BLOXICE.R8, ^Content/d2k/v2/BLOXTREE.R8, ^Content/d2k/v2/BLOXWAST.R8, ^Content/d2k/v2/SOUND.RS, ^Content/d2k/v2/PALETTE.BIN, ^Content/d2k/v2/FONT.BIN,  ^Content/d2k/v2/FONTCOL.FNT,  ^Content/d2k/v2/FONTCOL.FPL
-			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux, gruntmods
 			Required: true
 			Download: basefiles
 		patch: 1.06 Patch Content
@@ -217,14 +225,17 @@ ModContent:
 			Download: patch106
 		music: Game Music
 			TestFiles: ^Content/d2k/v2/Music/AMBUSH.AUD
-			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, gruntmods
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux, gruntmods
 		movies: Campaign Briefings
 			TestFiles: ^Content/d2k/v2/Movies/A_BR01_E.VQA
-			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux
+			Sources: d2k-a, d2k-a-linux, d2k-b, d2k-b-linux, d2k-c, d2k-c-linux, d2k-d, d2k-d-linux, d2k-e, d2k-e-linux
 	Downloads:
 		d2k|installer/downloads.yaml
 	Sources:
-		d2k|installer/d2ka.yaml
-		d2k|installer/d2kb.yaml
+		d2k|installer/d2k-a.yaml
+		d2k|installer/d2k-b.yaml
+		d2k|installer/d2k-c.yaml
+		d2k|installer/d2k-d.yaml
+		d2k|installer/d2k-e.yaml
 		d2k|installer/downloads.yaml
 		d2k|installer/gruntmods.yaml

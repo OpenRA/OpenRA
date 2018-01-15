@@ -9,115 +9,76 @@
  */
 #endregion
 
-using System;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class DeliverResources : Activity, IDockActivity
+	public class DeliverResources : Activity
 	{
 		const int NextChooseTime = 100;
 
+		readonly IMove movement;
 		readonly Harvester harv;
 
+		bool isDocking;
 		int chosenTicks;
 
 		public DeliverResources(Actor self)
 		{
+			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			// If a refinery is explicitly specified, link it.
-			if (harv.OwnerLinkedProc != null && harv.OwnerLinkedProc.IsInWorld)
-			{
-				harv.LinkProc(self, harv.OwnerLinkedProc);
-				harv.OwnerLinkedProc = null;
-			}
-			//// at this point, harv.OwnerLinkedProc == null.
+			if (NextInQueue != null)
+				return NextInQueue;
 
-			// Is the refinery still alive? If not, link one.
-			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
+			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
+			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.IsInWorld)
 			{
 				// Maybe we lost the owner-linked refinery:
-				harv.LinkedProc = null;
+				harv.OwnerLinkedProc = null;
 				if (self.World.WorldTick - chosenTicks > NextChooseTime)
 				{
 					harv.ChooseNewProc(self, null);
 					chosenTicks = self.World.WorldTick;
 				}
 			}
+			else
+				harv.LinkProc(self, harv.OwnerLinkedProc);
 
-			// No refineries exist. Check again after delay defined in Harvester.
+			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
+				harv.ChooseNewProc(self, null);
+
+			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
-			{
-				Queue(ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), new DeliverResources(self)));
-				return NextActivity;
-			}
+				return ActivityUtils.SequenceActivities(new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
 
 			var proc = harv.LinkedProc;
+			var iao = proc.Trait<IAcceptResources>();
+
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
-
-			if (!self.Info.TraitInfo<HarvesterInfo>().OreTeleporter)
-				proc.Trait<DockManager>().ReserveDock(proc, self, this);
-			else
+			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
-				var dock = proc.TraitsImplementing<Dock>().First();
-				Queue(DockActivities(proc, self, dock));
-				Queue(new CallFunc(() => harv.ContinueHarvesting(self)));
+				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
+				foreach (var n in notify)
+					n.MovingToRefinery(self, proc, this);
+
+				return ActivityUtils.SequenceActivities(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
 			}
 
-			return NextActivity;
-		}
-
-		Activity IDockActivity.ApproachDockActivities(Actor host, Actor client, Dock dock)
-		{
-			var moveToDock = DockUtils.GenericApproachDockActivities(host, client, dock, this);
-			Activity extraActivities = null;
-
-			var notify = client.TraitsImplementing<INotifyHarvesterAction>();
-			foreach (var n in notify)
+			if (!isDocking)
 			{
-				var extra = n.MovingToRefinery(client, dock.Location, moveToDock);
-
-				// We have multiple MovingToRefinery actions to do!
-				// Don't know which one to perform.
-				if (extra != null)
-				{
-					if (extraActivities != null)
-						throw new InvalidOperationException("Actor {0} has conflicting activities to perform for INotifyHarvesterAction.".F(client.ToString()));
-
-					extraActivities = extra;
-				}
+				isDocking = true;
+				iao.OnDock(self, this);
 			}
 
-			if (extraActivities != null)
-				return extraActivities;
-
-			return moveToDock;
-		}
-
-		public Activity DockActivities(Actor host, Actor client, Dock dock)
-		{
-			return host.Trait<Refinery>().DockSequence(client, host, dock);
-		}
-
-		Activity IDockActivity.ActivitiesAfterDockDone(Actor host, Actor client, Dock dock)
-		{
-			// Move to south of the ref to avoid cluttering up with other dock locations
-			return new CallFunc(() => harv.ContinueHarvesting(client));
-		}
-
-		Activity IDockActivity.ActivitiesOnDockFail(Actor client)
-		{
-			// go to somewhere else
-			return new CallFunc(() => harv.ContinueHarvesting(client));
+			return ActivityUtils.SequenceActivities(new Wait(10), this);
 		}
 	}
 }

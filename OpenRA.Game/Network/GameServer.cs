@@ -9,62 +9,209 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using OpenRA.Graphics;
+
 namespace OpenRA.Network
 {
+	public class GameClient
+	{
+		public readonly string Name;
+		public readonly HSLColor Color;
+		public readonly string Faction;
+		public readonly int Team;
+		public readonly int SpawnPoint;
+		public readonly bool IsAdmin;
+		public readonly bool IsSpectator;
+		public readonly bool IsBot;
+
+		public GameClient() { }
+
+		public GameClient(Session.Client c)
+		{
+			Name = c.Name;
+			Color = c.Color;
+			Faction = c.Faction;
+			Team = c.Team;
+			SpawnPoint = c.SpawnPoint;
+			IsAdmin = c.IsAdmin;
+			IsSpectator = c.Slot == null && c.Bot == null;
+			IsBot = c.Bot != null;
+		}
+	}
+
 	public class GameServer
 	{
-		public readonly int Id = 0;
+		static readonly string[] SerializeFields = { "Name", "Address", "Mod", "Version", "Map", "State", "MaxPlayers", "Protected" };
+		public const int ProtocolVersion = 2;
+
+		/// <summary>Online game number or -1 for LAN games</summary>
+		public readonly int Id = -1;
+
+		/// <summary>Name of the server</summary>
 		public readonly string Name = null;
+
+		/// <summary>ip:port string to connect to.</summary>
 		public readonly string Address = null;
+
+		/// <summary>Port of the server</summary>
+		public readonly int Port = 0;
+
+		/// <summary>The current state of the server (waiting/playing/completed)</summary>
 		public readonly int State = 0;
-		public readonly int Players = 0;
+
+		/// <summary>The number of slots available for non-bot players</summary>
 		public readonly int MaxPlayers = 0;
-		public readonly int Bots = 0;
-		public readonly int Spectators = 0;
+
+		/// <summary>UID of the map</summary>
 		public readonly string Map = null;
-		public readonly string Mods = "";
-		public readonly int TTL = 0;
+
+		/// <summary>Mod ID</summary>
+		public readonly string Mod = "";
+
+		/// <summary>Mod Version</summary>
+		public readonly string Version = "";
+
+		/// <summary>Password protected</summary>
 		public readonly bool Protected = false;
+
+		/// <summary>UTC datetime string when the game changed to the Playing state</summary>
 		public readonly string Started = null;
 
+		/// <summary>Number of non-spectator, non-bot players. Only defined if GameServer is parsed from yaml.</summary>
+		public readonly int Players = 0;
+
+		/// <summary>Number of bot players. Only defined if GameServer is parsed from yaml.</summary>
+		public readonly int Bots = 0;
+
+		/// <summary>Number of spectators. Only defined if GameServer is parsed from yaml.</summary>
+		public readonly int Spectators = 0;
+
+		/// <summary>Number of seconds that the game has been in the Playing state. Only defined if GameServer is parsed from yaml.</summary>
+		public readonly int PlayTime = -1;
+
+		/// <summary>Can we join this server (after switching mods if required)? Only defined if GameServer is parsed from yaml.</summary>
+		[FieldLoader.Ignore]
 		public readonly bool IsCompatible = false;
+
+		/// <summary>Can we join this server (after switching mods if required)? Only defined if GameServer is parsed from yaml.</summary>
+		[FieldLoader.Ignore]
 		public readonly bool IsJoinable = false;
 
+		/// <summary>Label to display in the multiplayer browser. Only defined if GameServer is parsed from yaml.</summary>
+		[FieldLoader.Ignore]
 		public readonly string ModLabel = "";
-		public readonly string ModId = "";
-		public readonly string ModVersion = "";
+
+		[FieldLoader.LoadUsing("LoadClients")]
+		public readonly GameClient[] Clients;
+
+		static object LoadClients(MiniYaml yaml)
+		{
+			var clients = new List<GameClient>();
+			var clientsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Clients");
+			if (clientsNode != null)
+			{
+				var regex = new Regex(@"Client@\d+");
+				foreach (var client in clientsNode.Value.Nodes)
+					if (regex.IsMatch(client.Key))
+						clients.Add(FieldLoader.Load<GameClient>(client.Value));
+			}
+
+			return clients.ToArray();
+		}
 
 		public GameServer(MiniYaml yaml)
 		{
 			FieldLoader.Load(this, yaml);
 
-			Manifest mod;
-			ExternalMod external;
-			var modVersion = Mods.Split('@');
-
-			ModLabel = "Unknown mod: {0}".F(Mods);
-			if (modVersion.Length == 2)
+			// Games advertised using the old API used a single Mods field
+			if (Mod == null || Version == null)
 			{
-				ModId = modVersion[0];
-				ModVersion = modVersion[1];
-
-				var externalKey = ExternalMod.MakeKey(modVersion[0], modVersion[1]);
-				if (Game.ExternalMods.TryGetValue(externalKey, out external)
-					&& external.Version == modVersion[1])
+				var modsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Mods");
+				if (modsNode != null)
 				{
-					ModLabel = "{0} ({1})".F(external.Title, external.Version);
-					IsCompatible = true;
-				}
-				else if (Game.Mods.TryGetValue(modVersion[0], out mod))
-				{
-					// Use internal mod data to populate the section header, but
-					// on-connect switching must use the external mod plumbing.
-					ModLabel = "{0} ({1})".F(mod.Metadata.Title, modVersion[1]);
+					var modVersion = modsNode.Value.Value.Split('@');
+					Mod = modVersion[0];
+					Version = modVersion[1];
 				}
 			}
 
+			// Games advertised using the old API calculated the play time locally
+			if (State == 2 && PlayTime < 0)
+			{
+				DateTime startTime;
+				if (DateTime.TryParse(Started, out startTime))
+					PlayTime = (int)(DateTime.UtcNow - startTime).TotalSeconds;
+			}
+
+			Manifest mod;
+			ExternalMod external;
+
+			var externalKey = ExternalMod.MakeKey(Mod, Version);
+			if (Game.ExternalMods.TryGetValue(externalKey, out external) && external.Version == Version)
+			{
+				ModLabel = "{0} ({1})".F(external.Title, external.Version);
+				IsCompatible = true;
+			}
+			else if (Game.Mods.TryGetValue(Mod, out mod))
+			{
+				// Use internal mod data to populate the section header, but
+				// on-connect switching must use the external mod plumbing.
+				ModLabel = "{0} ({1})".F(mod.Metadata.Title, Version);
+			}
+			else
+				ModLabel = "Unknown mod: {0}".F(Mod);
+
 			var mapAvailable = Game.Settings.Game.AllowDownloading || Game.ModData.MapCache[Map].Status == MapStatus.Available;
 			IsJoinable = IsCompatible && State == 1 && mapAvailable;
+		}
+
+		public GameServer(Server.Server server)
+		{
+			Name = server.Settings.Name;
+
+			// IP address will be replaced with a real value by the master server / receiving LAN client
+			Address = "0.0.0.0:" + server.Settings.ListenPort.ToString();
+			State = (int)server.State;
+			MaxPlayers = server.LobbyInfo.Slots.Count(s => !s.Value.Closed) - server.LobbyInfo.Clients.Count(c1 => c1.Bot != null);
+			Map = server.Map.Uid;
+			Mod = server.ModData.Manifest.Id;
+			Version = server.ModData.Manifest.Metadata.Version;
+			Protected = !string.IsNullOrEmpty(server.Settings.Password);
+			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToArray();
+		}
+
+		public string ToPOSTData(bool lanGame)
+		{
+			var root = new List<MiniYamlNode>() { new MiniYamlNode("Protocol", ProtocolVersion.ToString()) };
+			foreach (var field in SerializeFields)
+				root.Add(FieldSaver.SaveField(this, field));
+
+			if (lanGame)
+			{
+				// Add fields that are normally generated by the master server
+				// LAN games overload the Id with a GUID string (rather than an ID) to allow deduplication
+				root.Add(new MiniYamlNode("Id", Platform.SessionGUID.ToString()));
+				root.Add(new MiniYamlNode("Players", Clients.Count(c => !c.IsBot && !c.IsSpectator).ToString()));
+				root.Add(new MiniYamlNode("Spectators", Clients.Count(c => c.IsSpectator).ToString()));
+				root.Add(new MiniYamlNode("Bots", Clients.Count(c => c.IsBot).ToString()));
+
+				// Included for backwards compatibility with older clients that don't support separated Mod/Version.
+				root.Add(new MiniYamlNode("Mods", Mod + "@" + Version));
+			}
+
+			var clientsNode = new MiniYaml("");
+			var i = 0;
+			foreach (var c in Clients)
+				clientsNode.Nodes.Add(new MiniYamlNode("Client@" + (i++).ToString(), FieldSaver.Save(c)));
+
+			root.Add(new MiniYamlNode("Clients", clientsNode));
+			return new MiniYaml("", root)
+				.ToLines("Game")
+				.JoinWith("\n");
 		}
 	}
 }

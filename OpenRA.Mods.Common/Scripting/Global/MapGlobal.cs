@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
+		[Desc("Returns a random cell inside the visible region of the map.")]
 		public CPos RandomCell()
 		{
 			return Context.World.Map.ChooseRandomCell(Context.World.SharedRandom);
@@ -92,18 +93,6 @@ namespace OpenRA.Mods.Common.Scripting
 		public CPos ClosestMatchingEdgeCell(CPos givenCell, LuaFunction filter)
 		{
 			return FilteredObjects(Context.World.Map.AllEdgeCells.OrderBy(c => (givenCell - c).Length), filter).FirstOrDefault();
-		}
-
-		[Desc("Returns cells in circle. Don't make maxRange too large!")]
-		public CPos[] FindTilesInCircle(CPos center, int maxRange)
-		{
-			return Context.World.Map.FindTilesInCircle(center, maxRange).ToArray();
-		}
-
-		[Desc("Returns cells in circle. Don't make maxRange too large!")]
-		public CPos[] FindTilesInAnnulus(CPos center, int minRange, int maxRange)
-		{
-			return Context.World.Map.FindTilesInAnnulus(center, minRange, maxRange).ToArray();
 		}
 
 		[Desc("Returns the center of a cell in world coordinates.")]

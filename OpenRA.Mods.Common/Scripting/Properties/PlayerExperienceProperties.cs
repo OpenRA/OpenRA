@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Scripting
 				return exp.Experience;
 			}
 
-			[ScriptContext(ScriptContextType.Mission)]
 			set
 			{
 				exp.GiveExperience(value - exp.Experience);

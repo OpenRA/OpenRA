@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class FlyAwayOnIdle : INotifyIdle
 	{
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			self.QueueActivity(new FlyOffMap(self));
 			self.QueueActivity(new RemoveSelf());

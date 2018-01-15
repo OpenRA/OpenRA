@@ -11,7 +11,6 @@
 ^SpriteActor:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
 
 ^GainsExperience:
@@ -164,8 +163,7 @@
 
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
-	Inherits@2: ^GainsExperience
-	Inherits@3: ^SpriteActor
+	Inherits@2: ^SpriteActor
 	Huntable:
 	Mobile:
 		Crushes: crate, spicebloom
@@ -209,7 +207,8 @@
 	WithDecoration@CARRYALL:
 		Image: pips
 		Sequence: pickup-indicator
-		Offset: -12, -12
+		ReferencePoint: Top, Left
+		ZOffset: 256
 		RequiresCondition: carryall-reserved
 	RevealOnFire:
 	RevealOnDeath:
@@ -226,14 +225,13 @@
 
 ^Husk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Health:
-		HP: 75
+		HP: 750
 	Armor:
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
-	Tooltip:
-		Name: Wreck
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -245,6 +243,7 @@
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
 	Burns:
+		Damage: 10
 		Interval: 4
 	Targetable:
 		TargetTypes: Ground, Vehicle
@@ -262,23 +261,6 @@
 		Spins: False
 		Moves: True
 		Explosion: UnitExplodeLarge
-
-^TowerHusk:
-	Health:
-		HP: 125
-	Armor:
-		Type: concrete
-	Husk:
-	AppearsOnRadar:
-	HiddenUnderFog:
-	Burns:
-		Interval: 2
-	Tooltip:
-		Name: Destroyed Tower
-	ScriptTriggers:
-	HitShape:
-	EditorTilesetFilter:
-		Categories: Husk
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -306,7 +288,8 @@
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
-		Bounds: 12,20,0,-4
+		Bounds: 24,24,0,-4
+		DecorationBounds: 12,20,0,-4
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
@@ -359,6 +342,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Interactable:
 	Huntable:
 	AppearsOnRadar:
 		UseLocation: true
@@ -396,8 +380,11 @@
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
+	RequiresBuildableArea:
+		AreaTypes: building
 		Adjacent: 3
 	GivesBuildableArea:
+		AreaTypes: building
 	Capturable:
 		CaptureThreshold: 100
 	SoundOnDamageTransition:
@@ -409,7 +396,7 @@
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
-		RepairStep: 50
+		RepairStep: 500
 		PlayerExperience: 25
 	EmitInfantryOnSell:
 		ActorTypes: light_inf
@@ -427,7 +414,7 @@
 	WithCrumbleOverlay:
 	Demolishable:
 	DamagedByTerrain:
-		Damage: 50
+		Damage: 500
 		DamageInterval: 100
 		Terrain: Rock
 		DamageThreshold: 50
@@ -471,9 +458,33 @@
 		Categories: Defense
 	-CommandBarBlacklist:
 
-^DisabledOverlay:
+^DisableOnLowPower:
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: disabled
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower
 		Condition: disabled
+
+^DisableOnLowPowerOrPowerDown:
+	Inherits: ^DisableOnLowPower
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown
+		Condition: disabled
+	ToggleConditionOnOrder:
+		DisabledSound: EnablePower
+		EnabledSound: DisablePower
+		Condition: powerdown
+		OrderName: PowerDown
+	WithDecoration@POWERDOWN:
+		Image: poweroff
+		Sequence: offline
+		Palette: chrome
+		RequiresCondition: powerdown
+		ReferencePoint: Center
+	PowerMultiplier@POWERDOWN:
+		RequiresCondition: powerdown
+		Modifier: 0

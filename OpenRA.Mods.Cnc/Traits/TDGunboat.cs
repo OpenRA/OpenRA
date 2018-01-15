@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return new[] { Pair.New(TopLeft, SubCell.FullCell) }; }
+		public Pair<CPos, SubCell>[] OccupiedCells() { return new[] { Pair.New(TopLeft, SubCell.FullCell) }; }
 
 		WVec MoveStep(int facing)
 		{
@@ -198,11 +198,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		public bool IsMovingVertically { get { return false; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
-		{
-			return false;
-		}
-
-		bool IMove.TurnWhileDisabled(Actor self)
 		{
 			return false;
 		}

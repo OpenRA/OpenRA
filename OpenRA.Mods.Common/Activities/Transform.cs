@@ -66,41 +66,19 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 				nt.BeforeTransform(self);
 
-			if (SkipMakeAnims)
-				return NextActivity;
-
-			// Once the make animation starts the activity must not be stopped anymore.
-			IsInterruptible = false;
-
-			PlayTransformAnimations(self);
-
-			// Wait forever
-			QueueChild(new WaitFor(() => false));
-			return this;
-		}
-
-		void PlayTransformAnimations(Actor self)
-		{
-			var makeAnimations = self.TraitsImplementing<WithMakeAnimation>();
-			if (!makeAnimations.Any())
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+			if (!SkipMakeAnims && makeAnimation != null)
 			{
-				// Let transform happen even without WithMakeAnimation trait.
-				DoTransform(self);
-				return;
+				// Once the make animation starts the activity must not be stopped anymore.
+				IsInterruptible = false;
+
+				// Wait forever
+				QueueChild(new WaitFor(() => false));
+				makeAnimation.Reverse(self, () => DoTransform(self));
+				return this;
 			}
 
-			bool first = true;
-			foreach (var ma in makeAnimations)
-			{
-				if (first)
-				{
-					// Attach the DoTransform callback to the first animation
-					ma.Reverse(self, () => DoTransform(self));
-					first = false;
-				}
-				else
-					ma.Reverse(self, null);
-			}
+			return NextActivity;
 		}
 
 		protected override void OnLastRun(Actor self)

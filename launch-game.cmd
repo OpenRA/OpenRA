@@ -5,11 +5,12 @@ for %%x in (%*) do (
 )
 
 :choosemod
-set /P mod=Select mod (ra, cnc, d2k, ts) or --exit: 
+set /P mod=Select mod (ra, cnc, d2k, ts, sp) or --exit: 
 if /I "%mod%" EQU "--exit" (exit /b)
 if /I "%mod%" EQU "ra" (goto launchmod)
 if /I "%mod%" EQU "cnc" (goto launchmod)
 if /I "%mod%" EQU "ts" (goto launchmod)
+if /I "%mod%" EQU "sp" (goto launchmod)
 if /I "%mod%" EQU "d2k" (goto launchmod)
 echo.
 echo Unknown mod: %mod%

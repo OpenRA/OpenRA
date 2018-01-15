@@ -129,7 +129,7 @@ end)
 
 WorldLoaded = function()
 	player = Player.GetPlayer("USSR")
-	enemy = Player.GetPlayer("Germany")
+	enemy = Player.GetPlayer("Greece")
 	Utils.Do(IntroAttackers, function(actor)
 		if not actor.IsDead then
 			Trigger.OnIdle(actor, actor.Hunt)

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly string notification;
 
 		public RepairBridge(Actor self, Actor target, EnterBehaviour enterBehaviour, string notification)
-			: base(self, target, enterBehaviour, WDist.Zero)
+			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
 			legacyHut = target.TraitOrDefault<LegacyBridgeHut>();

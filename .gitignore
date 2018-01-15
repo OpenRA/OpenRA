@@ -2,7 +2,6 @@
 Release
 bin
 obj
-*.obj
 *.ncb
 *.vcproj*
 *.suo
@@ -65,6 +64,7 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 DOCUMENTATION.md
 WEAPONS.md
 Lua-API.md
+Settings.md
 *.html
 openra.6
 
@@ -82,5 +82,9 @@ StyleCopViolations.xml
 
 # Support directory
 /Support
-/da/Microsoft.Build.Utilities.v3.5.resources.dll
-/da
+
+# IntelliJ files
+.idea
+
+#Attacque Supérior
+/mods/as/

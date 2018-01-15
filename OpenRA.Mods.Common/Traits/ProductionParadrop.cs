@@ -11,7 +11,6 @@
 
 using System;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -44,16 +43,18 @@ namespace OpenRA.Mods.Common.Traits
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 		}
 
-		public override bool Produce(Actor self, ActorInfo producee, string factionVariant)
+		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return false;
+
 			var owner = self.Owner;
 
-			// Assume a single exit point for simplicity
-			var exit = self.Info.TraitInfos<ExitInfo>().First();
+			var exit = SelectExit(self, producee, productionType);
 
 			// Start a fixed distance away: the width of the map.
 			// This makes the production timing independent of spawnpoint
-			var dropPos = self.Location + exit.ExitCell;
+			var dropPos = exit != null ? self.Location + exit.ExitCell : self.Location;
 			var startPos = dropPos + new CVec(owner.World.Map.Bounds.Width, 0);
 			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, dropPos.Y);
 
@@ -85,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, factionVariant));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, productionType, inits));
 					Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
@@ -97,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public override void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string factionVariant)
+		public override void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string productionType, TypeDictionary inits)
 		{
 			var exit = CPos.Zero;
 			var exitLocation = CPos.Zero;
@@ -106,15 +107,12 @@ namespace OpenRA.Mods.Common.Traits
 			var info = (ProductionParadropInfo)Info;
 			var actorType = info.ActorType;
 
-			var bi = producee.TraitInfoOrDefault<BuildableInfo>();
-			if (bi != null && bi.ForceFaction != null)
-				factionVariant = bi.ForceFaction;
-
 			var altitude = self.World.Map.Rules.Actors[actorType].TraitInfo<AircraftInfo>().CruiseAltitude;
-			var td = new TypeDictionary
-			{
-				new OwnerInit(self.Owner),
-			};
+
+			// Clone the initializer dictionary for the new actor
+			var td = new TypeDictionary();
+			foreach (var init in inits)
+				td.Add(init);
 
 			if (self.OccupiesSpace != null)
 			{
@@ -134,9 +132,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (factionVariant != null)
-					td.Add(new FactionInit(factionVariant));
-
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				newUnit.QueueActivity(new Parachute(newUnit, newUnit.CenterPosition, self));
@@ -149,10 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
 
 						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						if (rp.Value != null)
-							rp.Value.QueueRallyOrder(self, newUnit);
-						else
-							newUnit.QueueActivity(new AttackMoveActivity(newUnit, move.MoveTo(exitLocation, 1)));
+						newUnit.QueueActivity(new AttackMoveActivity(newUnit, move.MoveTo(exitLocation, 1)));
 					}
 				}
 
@@ -164,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit);
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType);
 
 				foreach (var t in newUnit.TraitsImplementing<INotifyBuildComplete>())
 					t.BuildingComplete(newUnit);

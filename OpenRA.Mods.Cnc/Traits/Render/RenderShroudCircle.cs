@@ -56,5 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			return RangeCircleRenderables(self, wr);
 		}
+
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 	}
 }

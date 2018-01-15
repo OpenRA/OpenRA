@@ -494,14 +494,30 @@ namespace OpenRA
 			return long.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
 
-		public static bool IsTraitEnabled(this object trait)
+		public static bool IsTraitEnabled<T>(this T trait)
 		{
-			return trait as IDisabledTrait == null || !(trait as IDisabledTrait).IsTraitDisabled;
+			var disabledTrait = trait as IDisabledTrait;
+			return disabledTrait == null || !disabledTrait.IsTraitDisabled;
 		}
 
-		public static bool IsTraitEnabled<T>(T t)
+		public static T FirstEnabledTraitOrDefault<T>(this IEnumerable<T> ts)
 		{
-			return IsTraitEnabled(t as object);
+			// PERF: Avoid LINQ.
+			foreach (var t in ts)
+				if (t.IsTraitEnabled())
+					return t;
+
+			return default(T);
+		}
+
+		public static T FirstEnabledTraitOrDefault<T>(this T[] ts)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var t in ts)
+				if (t.IsTraitEnabled())
+					return t;
+
+			return default(T);
 		}
 	}
 

@@ -99,7 +99,7 @@ ProduceInfantry = function()
 end
 
 ProduceShips = function()
-	if Shipyard.IsDead then
+	if Navalyard.IsDead then
 		return
 	end
 

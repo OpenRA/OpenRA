@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -18,6 +19,8 @@ namespace OpenRA.Mods.AS.Traits
 	{
 		[ActorReference, FieldLoader.Require]
 		public readonly string ProxyActor = null;
+
+		public readonly HashSet<string> Types = new HashSet<string>();
 
 		public override object Create(ActorInitializer init) { return new InfiltrateForProxyActor(this); }
 	}
@@ -32,9 +35,9 @@ namespace OpenRA.Mods.AS.Traits
 			this.info = info;
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || !info.Types.Overlaps(types))
 				return;
 
 			infiltrator.World.AddFrameEndTask(w => w.CreateActor(info.ProxyActor, new TypeDictionary

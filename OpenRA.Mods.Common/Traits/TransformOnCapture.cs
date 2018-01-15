@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
@@ -20,8 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ForceHealthPercentage = 0;
 		public readonly bool SkipMakeAnims = true;
 
-		[Desc("Transform only if the capturer's CaptureTypes contains this type.")]
-		public readonly string Type = null;
+		[Desc("Transform only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
+		public readonly HashSet<string> CaptureTypes = new HashSet<string>();
 
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(init, this); }
 	}
@@ -52,15 +54,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsValidCaptor(Actor captor)
 		{
-			if (string.IsNullOrEmpty(info.Type))
+			if (!info.CaptureTypes.Any())
 				return true;
 
 			var capturesInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
-			if (capturesInfo != null && capturesInfo.CaptureTypes.Contains(info.Type))
+			if (capturesInfo != null && info.CaptureTypes.Overlaps(capturesInfo.CaptureTypes))
 				return true;
 
 			var externalCapturesInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
-			if (externalCapturesInfo != null && externalCapturesInfo.CaptureTypes.Contains(info.Type))
+			if (externalCapturesInfo != null && info.CaptureTypes.Overlaps(externalCapturesInfo.CaptureTypes))
 				return true;
 
 			return false;

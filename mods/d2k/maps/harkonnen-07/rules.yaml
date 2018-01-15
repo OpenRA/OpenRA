@@ -1,0 +1,78 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, harkonnen07.lua, harkonnen07-AI.lua
+	MissionData:
+		Briefing: Your target is the Atreides High Tech Factory, the weak link of the Duke's plan to combine with the Imperial Troops. Without it, the Imperial Carryalls will soon fall into disrepair and not be able to ferry further reinforcements to the battle.\n\nThe Atreides force is large and well-fortified - a frontal assault will fail. However, one Construction Yard to the West of their position is isolated and lightly defended. A small strike force has been airlifted deep into enemy territory. Capture the Construction Yard and use it against the Atreides.
+		BriefingVideo: H_BR07_E.VQA
+	MapOptions:
+		TechLevel: nopowers
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Atreides Main Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Atreides Small Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+combat_tank_a:
+	Buildable:
+		Prerequisites: ~heavy_factory, ~player.atreides
+
+combat_tank_h:
+	Buildable:
+		Prerequisites: ~heavy_factory, ~player.harkonnen
+
+combat_tank_a.starport:
+	Buildable:
+		Prerequisites: ~starport, ~player.atreides
+
+combat_tank_h.starport:
+	Buildable:
+		Prerequisites: ~starport, ~player.harkonnen
+
+sonic_tank:
+	Buildable:
+		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.atreides
+
+devastator:
+	Buildable:
+		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.harkonnen
+
+high_tech_factory:
+	AirstrikePower:
+		Prerequisites: upgrade.hightech
+
+upgrade.hightech:
+	Buildable:
+		Prerequisites: ~hightech.atreides
+
+palace:
+	Buildable:
+		Prerequisites: ~disabled
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~barracks, ~player.corrino
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+thumper:
+	Buildable:
+		Prerequisites: ~disabled

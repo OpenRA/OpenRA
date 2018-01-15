@@ -9,10 +9,13 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -52,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor undeploy?")]
 		public readonly bool CanUndeploy = true;
 
-		[Desc("Play MakeAnimation only when its DeployType matches one of these types")]
-		public readonly HashSet<string> MakeAnimationDeployTypes = new HashSet<string> { "make" };
+		[Desc("Skip make/deploy animation?")]
+		public readonly bool SkipMakeAnimation = false;
 
 		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
@@ -85,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
 
-		public void Created(Actor self)
+		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			notify = self.TraitsImplementing<INotifyDeployTriggered>().ToArray();
@@ -189,22 +192,14 @@ namespace OpenRA.Mods.Common.Traits
 			return ramp == 0;
 		}
 
-		int deployNotificationCount = 0;
 		void INotifyDeployComplete.FinishedDeploy(Actor self)
 		{
-			deployNotificationCount--;
-
-			if (deployNotificationCount <= 0)
-				OnDeployCompleted();
+			OnDeployCompleted();
 		}
 
-		int undeployNotificationCount = 0;
 		void INotifyDeployComplete.FinishedUndeploy(Actor self)
 		{
-			undeployNotificationCount--;
-
-			if (undeployNotificationCount <= 0)
-				OnUndeployCompleted();
+			OnUndeployCompleted();
 		}
 
 		/// <summary>Play deploy sound and animation.</summary>
@@ -230,11 +225,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!notify.Any())
 				OnDeployCompleted();
 			else
-			{
-				deployNotificationCount = notify.Count();
 				foreach (var n in notify)
-					n.Deploy(self, Info.MakeAnimationDeployTypes);
-			}
+					n.Deploy(self, Info.SkipMakeAnimation);
 		}
 
 		/// <summary>Play undeploy sound and animation and after that revoke the condition.</summary>
@@ -256,11 +248,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!notify.Any())
 				OnUndeployCompleted();
 			else
-			{
-				undeployNotificationCount = notify.Count();
 				foreach (var n in notify)
-					n.Undeploy(self, Info.MakeAnimationDeployTypes);
-			}
+					n.Undeploy(self, Info.SkipMakeAnimation);
 		}
 
 		void OnDeployStarted()

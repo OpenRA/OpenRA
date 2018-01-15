@@ -11,7 +11,6 @@
 ^SpriteActor:
 	BodyOrientation:
 	QuantizeFacingsFromSequence:
-	AutoSelectionSize:
 	RenderSprites:
 
 ^1x1Shape:
@@ -113,7 +112,7 @@
 		RequiresCondition: rank-elite
 		Modifier: 50
 	SelfHealing@ELITE:
-		Step: 2
+		Step: 200
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -290,6 +289,8 @@
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CanHover: True
+		TakeOffOnResupply: true
+		VTOL: true
 	HiddenUnderFog:
 		Type: GroundPosition
 	ActorLostNotification:
@@ -341,7 +342,8 @@
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
-		Bounds: 12,17,0,-6
+		Bounds: 18,18,0,-6
+		DecorationBounds: 12,17,0,-6
 	Targetable:
 		TargetTypes: Ground, Infantry
 	QuantizeFacingsFromSequence:
@@ -364,7 +366,7 @@
 	HiddenUnderFog:
 	DamagedByTerrain:
 		Terrain: Tiberium, BlueTiberium
-		Damage: 2
+		Damage: 200
 		DamageInterval: 16
 		DamageTypes: TiberiumDeath
 		RequiresCondition: !hazmatsuits
@@ -389,7 +391,7 @@
 		CrushSound: squish2.aud
 	Guardable:
 	SelfHealing@HOSPITAL:
-		Step: 5
+		Step: 500
 		Delay: 100
 		HealIfBelow: 100
 		DamageCooldown: 125
@@ -446,7 +448,7 @@
 	Mobile:
 		Speed: 56
 	Health:
-		HP: 25
+		HP: 2500
 	RevealsShroud:
 		Range: 2c0
 	ActorLostNotification:
@@ -476,7 +478,7 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
 	Health:
-		HP: 1000
+		HP: 100000
 	Armor:
 		Type: Wood
 	Buildable:
@@ -537,7 +539,7 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
 	Health:
-		HP: 300
+		HP: 30000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -582,7 +584,7 @@
 		Voice: Move
 	Guardable:
 	DamagedByTerrain:
-		Damage: -1
+		Damage: -100
 		DamageInterval: 4
 		DamageTypes: TiberiumDeath
 		Terrain: Tiberium, BlueTiberium
@@ -657,7 +659,7 @@
 	Armor:
 		Type: Wood
 	Health:
-		HP: 400
+		HP: 40000
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -689,20 +691,23 @@
 ^BaseBuilding:
 	Inherits: ^Building
 	Building:
-		Adjacent: 4
 		RequiresBaseProvider: true
 		BuildSounds: constru2.aud, hvydoor1.aud
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	RepairableBuilding:
 		RepairPercent: 40
-		RepairStep: 14
+		RepairStep: 1400
 		PlayerExperience: 15
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	GivesBuildableArea:
+		AreaTypes: building
 	EmitInfantryOnSell:
 		ActorTypes: e6,e1,e1,e1
 	EngineerRepairable:
@@ -724,6 +729,7 @@
 
 ^CivBuildingHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -745,7 +751,7 @@
 		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
 		RepairPercent: 40
-		RepairStep: 14
+		RepairStep: 1400
 		PlayerExperience: 15
 	EngineerRepairable:
 	RevealsShroud:
@@ -759,6 +765,7 @@
 	Inherits: ^CivBuilding
 	-Selectable:
 	-SelectionDecorations:
+	Interactable:
 	Tooltip:
 		GenericName: Field
 	-Explodes:
@@ -769,6 +776,7 @@
 
 ^CivFieldHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -788,14 +796,17 @@
 ^Wall:
 	Inherits@1: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Interactable:
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: hvydoor1.aud
-		Adjacent: 7
 		TerrainTypes: Clear,Road
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
 	Targetable:
 		TargetTypes: Ground, Wall
 	Crushable:
@@ -816,12 +827,13 @@
 	FrozenUnderFog:
 	ScriptTriggers:
 	Health:
-		HP: 100
+		HP: 10000
 	EditorTilesetFilter:
 		Categories: Wall
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Tree
 		ShowOwnerRow: false
@@ -835,7 +847,7 @@
 	RadarColorFromTerrain:
 		Terrain: Tree
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Wood
 	Targetable:
@@ -863,7 +875,10 @@
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -878,6 +893,7 @@
 
 ^TibTree:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Blossom Tree
 		ShowOwnerRow: false
@@ -897,6 +913,7 @@
 
 ^Rock:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Tooltip:
 		Name: Rock
 		ShowOwnerRow: false
@@ -917,8 +934,9 @@
 
 ^CommonHuskDefaults:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	Health:
-		HP: 140
+		HP: 14000
 	Armor:
 		Type: Light
 	HiddenUnderFog:
@@ -933,14 +951,15 @@
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	Burns:
+		Damage: 100
 		Interval: 6
 	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk
 	Capturable:
-		Type: husk
-		AllowAllies: yes
+		Types: husk
 		CaptureThreshold: 100
+		ValidStances: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	Tooltip:
@@ -961,6 +980,7 @@
 		ZOffset: -129
 	Aircraft:
 		CanHover: True
+		VTOL: true
 	FallsToEarth:
 		Spins: True
 		Moves: False
@@ -980,7 +1000,7 @@
 		RequiresForceFire: yes
 		TargetTypes: Ground, Water
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	SoundOnDamageTransition:
@@ -992,6 +1012,7 @@
 
 ^Crate:
 	Inherits@1: ^SpriteActor
+	Interactable:
 	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
@@ -1022,8 +1043,9 @@
 	-AcceptsDeliveredCash:
 
 ^DisabledOverlay:
+	GrantConditionOnPowerState@LOWPOWER:
+		Condition: lowpower
+		ValidPowerStates: Low, Critical
 	WithColoredOverlay@IDISABLE:
-		RequiresCondition: disabled
+		RequiresCondition: lowpower
 		Palette: disabled
-	GrantConditionOnDisabled@IDISABLE:
-		Condition: disabled

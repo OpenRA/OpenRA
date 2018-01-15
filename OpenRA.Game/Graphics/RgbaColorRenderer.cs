@@ -204,11 +204,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawLine(IEnumerable<float2> points, float width, Color color, bool connectSegments = false)
-		{
-			DrawLine(points.Select(p => new float3(p, 0)), width, color, connectSegments);
-		}
-
 		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false)
 		{
 			if (!connectSegments)
@@ -260,6 +255,24 @@ namespace OpenRA.Graphics
 			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[nv++] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+		}
+
+		public void FillTriangle(float3 a, float3 b, float3 c, Color color)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (nv + 6 > renderer.TempBufferSize)
+				Flush();
+
+			color = Util.PremultiplyAlpha(color);
+			var cr = color.R / 255.0f;
+			var cg = color.G / 255.0f;
+			var cb = color.B / 255.0f;
+			var ca = color.A / 255.0f;
+
+			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
 		}
 
 		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)

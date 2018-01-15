@@ -30,8 +30,8 @@ World:
 		WinVideo: sabotage.vqa
 		LossVideo: gdilose.vqa
 	MapOptions:
-		ShortGameLocked: True
-		ShortGameEnabled: True
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: True
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
@@ -65,6 +65,7 @@ OLDLST:
 	RejectsOrders:
 	Cargo:
 		Types: disabled
+	Interactable:
 
 SAM:
 	SpawnActorOnDeath:
@@ -77,13 +78,14 @@ RMBO:
 		EnableStances: false
 		InitialStance: ReturnFire
 	Health:
-		HP: 150
+		HP: 15000
 
 RMBO.easy:
 	Inherits: RMBO
 	Health:
-		HP: 300
+		HP: 30000
 	SelfHealing:
+		Step: 500
 		Delay: 10
 		HealIfBelow: 50
 		DamageCooldown: 200

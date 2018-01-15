@@ -2,6 +2,7 @@
 *.yaml eol=lf
 *.lua eol=lf
 * text=lf
+*.csproj eol=lf
 
 # Custom for Visual Studio
 *.cs     diff=csharp

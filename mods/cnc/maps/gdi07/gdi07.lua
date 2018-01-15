@@ -184,7 +184,7 @@ WorldLoaded = function()
 	end)
 
 	gdiMainObjective = GDI.AddPrimaryObjective("Destroy remaining Nod structures and units.")
-	gdiBaseObjective = GDI.AddSecondaryObjective("Build up a base.")
+	gdiBaseObjective = GDI.AddSecondaryObjective("Construct all available buildings.")
 	nodObjective = Nod.AddPrimaryObjective("Kill all enemies!")
 
 	SendReinforcements()

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -69,11 +70,39 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RenderVoxels : IRender, INotifyOwnerChanged
+	public class RenderVoxels : IRender, ITick, INotifyOwnerChanged
 	{
+		class AnimationWrapper
+		{
+			readonly ModelAnimation model;
+			bool cachedVisible;
+			WVec cachedOffset;
+
+			public AnimationWrapper(ModelAnimation model)
+			{
+				this.model = model;
+			}
+
+			public bool Tick()
+			{
+				// Return to the caller whether the renderable position or size has changed
+				var visible = model.IsVisible;
+				var offset = model.OffsetFunc != null ? model.OffsetFunc() : WVec.Zero;
+
+				var updated = visible != cachedVisible || offset != cachedOffset;
+				cachedVisible = visible;
+				cachedOffset = offset;
+
+				return updated;
+			}
+		}
+
+		public readonly RenderVoxelsInfo Info;
+
 		readonly List<ModelAnimation> components = new List<ModelAnimation>();
+		readonly Dictionary<ModelAnimation, AnimationWrapper> wrappers = new Dictionary<ModelAnimation, AnimationWrapper>();
+
 		readonly Actor self;
-		readonly RenderVoxelsInfo info;
 		readonly BodyOrientation body;
 		readonly WRot camera;
 		readonly WRot lightSource;
@@ -81,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public RenderVoxels(Actor self, RenderVoxelsInfo info)
 		{
 			this.self = self;
-			this.info = info;
+			Info = info;
 			body = self.Trait<BodyOrientation>();
 			camera = new WRot(WAngle.Zero, body.CameraPitch - new WAngle(256), new WAngle(256));
 			lightSource = new WRot(WAngle.Zero, new WAngle(256) - info.LightPitch, info.LightYaw);
@@ -90,26 +119,53 @@ namespace OpenRA.Mods.Common.Traits.Render
 		bool initializePalettes = true;
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { initializePalettes = true; }
 
+		void ITick.Tick(Actor self)
+		{
+			var updated = false;
+			foreach (var w in wrappers.Values)
+				updated |= w.Tick();
+
+			if (updated)
+				self.World.ScreenMap.AddOrUpdate(self);
+		}
+
 		protected PaletteReference colorPalette, normalsPalette, shadowPalette;
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			if (initializePalettes)
 			{
-				var paletteName = info.Palette ?? info.PlayerPalette + self.Owner.InternalName;
+				var paletteName = Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
 				colorPalette = wr.Palette(paletteName);
-				normalsPalette = wr.Palette(info.NormalsPalette);
-				shadowPalette = wr.Palette(info.ShadowPalette);
+				normalsPalette = wr.Palette(Info.NormalsPalette);
+				shadowPalette = wr.Palette(Info.ShadowPalette);
 				initializePalettes = false;
 			}
 
 			return new IRenderable[] { new ModelRenderable(
-				components, self.CenterPosition, 0, camera, info.Scale,
-				lightSource, info.LightAmbientColor, info.LightDiffuseColor,
+				components, self.CenterPosition, 0, camera, Info.Scale,
+				lightSource, Info.LightAmbientColor, Info.LightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette) };
 		}
 
-		public string Image { get { return info.Image ?? self.Info.Name; } }
-		public void Add(ModelAnimation v) { components.Add(v); }
-		public void Remove(ModelAnimation v) { components.Remove(v); }
+		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
+		{
+			var pos = self.CenterPosition;
+			foreach (var c in components)
+				if (c.IsVisible)
+					yield return c.ScreenBounds(pos, wr, Info.Scale);
+		}
+
+		public string Image { get { return Info.Image ?? self.Info.Name; } }
+		public void Add(ModelAnimation m)
+		{
+			components.Add(m);
+			wrappers.Add(m, new AnimationWrapper(m));
+		}
+
+		public void Remove(ModelAnimation m)
+		{
+			components.Remove(m);
+			wrappers.Remove(m);
+		}
 	}
 }

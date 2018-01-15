@@ -30,17 +30,17 @@ namespace OpenRA.Mods.Common.Traits
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public void TickIdle(Actor self)
+		void INotifyIdle.TickIdle(Actor self)
 		{
 			// We're on the ground, let's stay there.
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude)
 				return;
 
-			var airfield = ReturnToBase.GetAirfields(self);
-			if (airfield.Any())
+			var airfield = ReturnToBase.ChooseAirfield(self, true);
+			if (airfield != null)
 			{
-				self.CancelActivity(); // quit circling
-				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, null));
+				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, airfield));
+				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
 			{

@@ -37,21 +37,18 @@ namespace OpenRA.Mods.Common.Scripting
 			playlist = world.WorldActor.Trait<MusicPlaylist>();
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play an announcer voice listed in notifications.yaml")]
 		public void PlaySpeechNotification(Player player, string notification)
 		{
 			Game.Sound.PlayNotification(world.Map.Rules, player, "Speech", notification, player != null ? player.Faction.InternalName : null);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play a sound listed in notifications.yaml")]
 		public void PlaySoundNotification(Player player, string notification)
 		{
 			Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Faction.InternalName : null);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play a sound file")]
 		public void PlaySound(string file)
 		{
@@ -59,7 +56,6 @@ namespace OpenRA.Mods.Common.Scripting
 			Game.Sound.Play(SoundType.World, file);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]
 		public void PlayMusic(string track = null, LuaFunction func = null)
 		{
@@ -91,7 +87,6 @@ namespace OpenRA.Mods.Common.Scripting
 				playlist.Play(musicInfo);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play track defined in music.yaml or map.yaml as background music." +
 			" If music is already playing use Media.StopMusic() to stop it" +
 			" and the background music will start automatically." +
@@ -104,7 +99,6 @@ namespace OpenRA.Mods.Common.Scripting
 			playlist.SetBackgroundMusic(string.IsNullOrEmpty(track) ? null : GetMusicTrack(track));
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		MusicInfo GetMusicTrack(string track)
 		{
 			var music = world.Map.Rules.Music;
@@ -115,14 +109,12 @@ namespace OpenRA.Mods.Common.Scripting
 			return null;
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Stop the current song.")]
 		public void StopMusic()
 		{
 			playlist.Stop();
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play a VQA video fullscreen. File name has to include the file extension.")]
 		public void PlayMovieFullscreen(string movie, LuaFunction func = null)
 		{
@@ -149,7 +141,6 @@ namespace OpenRA.Mods.Common.Scripting
 			Media.PlayFMVFullscreen(world, movie, onCompleteFullscreen);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Play a VQA video in the radar window. File name has to include the file extension. " +
 			"Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
 		public bool PlayMovieInRadar(string movie, LuaFunction playComplete = null)
@@ -217,7 +208,6 @@ namespace OpenRA.Mods.Common.Scripting
 			Game.Debug(text);
 		}
 
-		[ScriptContext(ScriptContextType.Mission)]
 		[Desc("Display a text message at the specified location.")]
 		public void FloatingText(string text, WPos position, int duration = 30, HSLColor? color = null)
 		{

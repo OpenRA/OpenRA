@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Requires `GpsWatcher` on the player actor.")]
 	class GpsPowerInfo : SupportPowerInfo
 	{
+		[Desc("Delay in ticks between launching and revealing the map.")]
 		public readonly int RevealDelay = 0;
 
 		public readonly string DoorImage = "atek";

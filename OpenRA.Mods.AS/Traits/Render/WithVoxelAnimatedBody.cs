@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Traits.Render;
@@ -48,10 +49,11 @@ namespace OpenRA.Mods.AS.Traits
 		}
 	}
 
-	public class WithVoxelAnimatedBody : ConditionalTrait<WithVoxelAnimatedBodyInfo>, IAutoSelectionSize, ITick, IActorPreviewInitModifier
+	public class WithVoxelAnimatedBody : ConditionalTrait<WithVoxelAnimatedBodyInfo>, ITick, IAutoMouseBounds, IActorPreviewInitModifier
 	{
-		WithVoxelAnimatedBodyInfo info;
-		int2 size;
+		readonly WithVoxelAnimatedBodyInfo info;
+		readonly RenderVoxels rv;
+		readonly ModelAnimation modelAnimation;
 		uint tick, frame, frames;
 
 		public WithVoxelAnimatedBody(Actor self, WithVoxelAnimatedBodyInfo info)
@@ -60,21 +62,16 @@ namespace OpenRA.Mods.AS.Traits
 			this.info = info;
 
 			var body = self.Trait<BodyOrientation>();
-			var rv = self.Trait<RenderVoxels>();
+			rv = self.Trait<RenderVoxels>();
 
             var voxel = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = voxel.Frames;
-			rv.Add(new ModelAnimation(voxel, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(voxel, () => WVec.Zero,
 				() => new[] { body.QuantizeOrientation(self, self.Orientation) },
-				() => IsTraitDisabled, () => frame, info.ShowShadow));
+				() => IsTraitDisabled, () => frame, info.ShowShadow);
 
-			// Selection size
-			var rvi = self.Info.TraitInfo<RenderVoxelsInfo>();
-			var s = (int)(rvi.Scale * voxel.Size.Aggregate(Math.Max));
-			size = new int2(s, s);
+			rv.Add(modelAnimation);
 		}
-
-		public int2 SelectionSize(Actor self) { return size; }
 
 		public void Tick(Actor self)
 		{
@@ -94,6 +91,11 @@ namespace OpenRA.Mods.AS.Traits
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			inits.Add(new BodyAnimationFrameInit(frame));
+		}
+
+		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
+		{
+			return modelAnimation.ScreenBounds(self.CenterPosition, wr, rv.Info.Scale);
 		}
 	}
 }

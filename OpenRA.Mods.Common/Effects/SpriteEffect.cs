@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class SpriteEffect : IEffect
+	public class SpriteEffect : IEffect, ISpatiallyPartitionable
 	{
 		readonly World world;
 		readonly string palette;
@@ -32,17 +32,19 @@ namespace OpenRA.Mods.Common.Effects
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
 			anim = new Animation(world, image, () => facing);
-			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
+			world.ScreenMap.Add(this, pos, anim.Image);
 		}
 
 		public void Tick(World world)
 		{
 			anim.Tick();
+			world.ScreenMap.Update(this, pos, anim.Image);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (world.FogObscures(pos) && !visibleThroughFog)
+			if (!visibleThroughFog && world.FogObscures(pos))
 				return SpriteRenderable.None;
 
 			var zoom = scaleSizeWithZoom ? 1f / wr.Viewport.Zoom : 1f;

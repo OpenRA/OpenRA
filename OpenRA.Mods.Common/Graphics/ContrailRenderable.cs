@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 		readonly World world;
 		readonly Color color;
-		readonly Color fadeColor;
 		readonly int zOffset;
 
 		// Store trail positions in a circular buffer
@@ -31,11 +30,10 @@ namespace OpenRA.Mods.Common.Graphics
 		int length;
 		int skip;
 
-		public ContrailRenderable(World world, Color color, Color fadeColor, WDist width, int length, int skip, int zOffset)
-			: this(world, new WPos[length], width, 0, 0, skip, color, fadeColor, zOffset) { }
+		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset)
+			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset) { }
 
-		ContrailRenderable(World world, WPos[] trail, WDist width, int next,
-			int length, int skip, Color color, Color fadeColor, int zOffset)
+		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color color, int zOffset)
 		{
 			this.world = world;
 			this.trail = trail;
@@ -44,7 +42,6 @@ namespace OpenRA.Mods.Common.Graphics
 			this.length = length;
 			this.skip = skip;
 			this.color = color;
-			this.fadeColor = fadeColor;
 			this.zOffset = zOffset;
 		}
 
@@ -53,9 +50,9 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, fadeColor, zOffset); }
-		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, fadeColor, newOffset); }
-		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, fadeColor, zOffset); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, zOffset); }
+		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
+		public IRenderable OffsetBy(WVec vec) { return new ContrailRenderable(world, trail.Select(pos => pos + vec).ToArray(), width, next, length, skip, color, zOffset); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -75,7 +72,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var j = next - skip - i - 2;
 				var nextPos = Average(trail[Index(j)], trail[Index(j - 1)], trail[Index(j - 2)], trail[Index(j - 3)]);
-				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, fadeColor);
+				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
 				if (!world.FogObscures(curPos) && !world.FogObscures(nextPos))
 					wcr.DrawLine(wr.Screen3DPosition(curPos), wr.Screen3DPosition(nextPos), screenWidth, curColor, nextColor);

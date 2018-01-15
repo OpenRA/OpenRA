@@ -1,0 +1,63 @@
+MapScrollUp: UP
+	Description: Scroll up
+	Types: Viewport
+
+MapScrollDown: DOWN
+	Description: Scroll down
+	Types: Viewport
+
+MapScrollLeft: LEFT
+	Description: Scroll left
+	Types: Viewport
+
+MapScrollRight: RIGHT
+	Description: Scroll right
+	Types: Viewport
+
+MapJumpToTopEdge: UP Alt
+	Description: Jump to top edge
+	Types: Viewport
+
+MapJumpToBottomEdge: DOWN Alt
+	Description: Jump to bottom edge
+	Types: Viewport
+
+MapJumpToLeftEdge: LEFT Alt
+	Description: Jump to left edge
+	Types: Viewport
+
+MapJumpToRightEdge: RIGHT Alt
+	Description: Jump to right edge
+	Types: Viewport
+
+MapBookmarkSave01: Q Ctrl
+	Description: Record bookmark 1
+	Types: Viewport
+
+MapBookmarkRestore01: Q Alt
+	Description: Jump to bookmark 1
+	Types: Viewport
+
+MapBookmarkSave02: W Ctrl
+	Description: Record bookmark 2
+	Types: Viewport
+
+MapBookmarkRestore02: W Alt
+	Description: Jump to bookmark 2
+	Types: Viewport
+
+MapBookmarkSave03: E Ctrl
+	Description: Record bookmark 3
+	Types: Viewport
+
+MapBookmarkRestore03: E Alt
+	Description: Jump to bookmark 3
+	Types: Viewport
+
+MapBookmarkSave04: R Ctrl
+	Description: Record bookmark 4
+	Types: Viewport
+
+MapBookmarkRestore04: R Alt
+	Description: Jump to bookmark 4
+	Types: Viewport

@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			return playlist;
 		}
 
-		public void GameOver(World world)
+		void IGameOver.GameOver(World world)
 		{
 			if (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Won)
 			{
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (currentSong != null)
 				Game.Sound.StopMusic();

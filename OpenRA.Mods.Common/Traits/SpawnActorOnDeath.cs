@@ -10,7 +10,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -29,11 +28,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Probability = 100;
 
 		[Desc("Owner of the spawned actor. Allowed keywords:" +
-			"'Victim', 'Killer' and 'InternalName'.")]
+			"'Victim', 'Killer' and 'InternalName'. " +
+			"Falls back to 'InternalName' if 'Victim' is used " +
+			"and the victim is defeated (see 'SpawnAfterDefeat').")]
 		public readonly OwnerType OwnerType = OwnerType.Victim;
 
 		[Desc("Map player to use when 'InternalName' is defined on 'OwnerType'.")]
-		public readonly string InternalOwner = null;
+		public readonly string InternalOwner = "Neutral";
+
+		[Desc("Changes the effective (displayed) owner of the spawned actor to the old owner (victim).")]
+		public readonly bool EffectiveOwnerFromOwner = false;
 
 		[Desc("DeathType that triggers the actor spawn. " +
 			"Leave empty to spawn an actor ignoring the DeathTypes.")]
@@ -49,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Warning: Spawning an actor outside the parent actor's footprint/influence might",
 			"lead to unexpected behaviour.")]
 		public readonly CVec Offset = CVec.Zero;
+
+		[Desc("Should an actor spawn after the player has been defeated (e.g. after surrendering)?")]
+		public readonly bool SpawnAfterDefeat = true;
 
 		public override object Create(ActorInitializer init) { return new SpawnActorOnDeath(init, this); }
 	}
@@ -90,6 +97,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (attackingPlayer == null)
 				return;
 
+			var defeated = self.Owner.WinState == WinState.Lost;
+			if (defeated && !Info.SpawnAfterDefeat)
+				return;
+
 			var td = new TypeDictionary
 			{
 				new ParentActorInit(self),
@@ -98,8 +109,24 @@ namespace OpenRA.Mods.Common.Traits
 				new FactionInit(faction)
 			};
 
+			if (self.EffectiveOwner != null && self.EffectiveOwner.Disguised)
+				td.Add(new EffectiveOwnerInit(self.EffectiveOwner.Owner));
+			else if (Info.EffectiveOwnerFromOwner)
+				td.Add(new EffectiveOwnerInit(self.Owner));
+
 			if (Info.OwnerType == OwnerType.Victim)
-				td.Add(new OwnerInit(self.Owner));
+			{
+				// Fall back to InternalOwner if the Victim was defeated,
+				// but only if InternalOwner is defined
+				if (!defeated || string.IsNullOrEmpty(Info.InternalOwner))
+					td.Add(new OwnerInit(self.Owner));
+				else
+				{
+					td.Add(new OwnerInit(self.World.Players.First(p => p.InternalName == Info.InternalOwner)));
+					if (!td.Contains<EffectiveOwnerInit>())
+						td.Add(new EffectiveOwnerInit(self.Owner));
+				}
+			}
 			else if (Info.OwnerType == OwnerType.Killer)
 				td.Add(new OwnerInit(attackingPlayer));
 			else

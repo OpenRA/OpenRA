@@ -28,9 +28,16 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			// Refuse to take off if it would land immediately again.
+			if (aircraft.ForceLanding)
+			{
+				Cancel(self);
+				return NextActivity;
+			}
+
 			aircraft.UnReserve();
 
-			var host = aircraft.GetSupplierActorBelow();
+			var host = aircraft.GetActorBelow();
 			var hasHost = host != null;
 			var rp = hasHost ? host.TraitOrDefault<RallyPoint>() : null;
 

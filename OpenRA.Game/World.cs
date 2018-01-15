@@ -30,6 +30,7 @@ namespace OpenRA
 		internal readonly TraitDictionary TraitDict = new TraitDictionary();
 		readonly SortedDictionary<uint, Actor> actors = new SortedDictionary<uint, Actor>();
 		readonly List<IEffect> effects = new List<IEffect>();
+		readonly List<IEffect> unpartitionedEffects = new List<IEffect>();
 		readonly List<ISync> syncedEffects = new List<ISync>();
 
 		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
@@ -76,7 +77,7 @@ namespace OpenRA
 			set { renderPlayer = value; }
 		}
 
-		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.CanViewActor(a); }
+		public bool FogObscures(Actor a) { return RenderPlayer != null && !a.CanBeViewedByPlayer(RenderPlayer); }
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool FogObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(pos); }
 		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
@@ -130,7 +131,7 @@ namespace OpenRA
 			}
 		}
 
-		public Selection Selection = new Selection();
+		public readonly Selection Selection = new Selection();
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
 
@@ -190,9 +191,7 @@ namespace OpenRA
 		{
 			ActorMap.AddInfluence(self, ios);
 			ActorMap.AddPosition(self, ios);
-
-			if (!self.Bounds.Size.IsEmpty)
-				ScreenMap.Add(self);
+			ScreenMap.AddOrUpdate(self);
 		}
 
 		public void UpdateMaps(Actor self, IOccupySpace ios)
@@ -200,9 +199,7 @@ namespace OpenRA
 			if (!self.IsInWorld)
 				return;
 
-			if (!self.Bounds.Size.IsEmpty)
-				ScreenMap.Update(self);
-
+			ScreenMap.AddOrUpdate(self);
 			ActorMap.UpdatePosition(self, ios);
 		}
 
@@ -210,9 +207,7 @@ namespace OpenRA
 		{
 			ActorMap.RemoveInfluence(self, ios);
 			ActorMap.RemovePosition(self, ios);
-
-			if (!self.Bounds.Size.IsEmpty)
-				ScreenMap.Remove(self);
+			ScreenMap.Remove(self);
 		}
 
 		public void LoadComplete(WorldRenderer wr)
@@ -285,6 +280,11 @@ namespace OpenRA
 		public void Add(IEffect e)
 		{
 			effects.Add(e);
+
+			var sp = e as ISpatiallyPartitionable;
+			if (sp == null)
+				unpartitionedEffects.Add(e);
+
 			var se = e as ISync;
 			if (se != null)
 				syncedEffects.Add(se);
@@ -293,6 +293,11 @@ namespace OpenRA
 		public void Remove(IEffect e)
 		{
 			effects.Remove(e);
+
+			var sp = e as ISpatiallyPartitionable;
+			if (sp == null)
+				unpartitionedEffects.Remove(e);
+
 			var se = e as ISync;
 			if (se != null)
 				syncedEffects.Remove(se);
@@ -301,6 +306,7 @@ namespace OpenRA
 		public void RemoveAll(Predicate<IEffect> predicate)
 		{
 			effects.RemoveAll(predicate);
+			unpartitionedEffects.RemoveAll(e => predicate((IEffect)e));
 			syncedEffects.RemoveAll(e => predicate((IEffect)e));
 		}
 
@@ -347,6 +353,7 @@ namespace OpenRA
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
 
 				effects.DoTimed(e => e.Tick(this), "Effect");
+				ScreenMap.Tick();
 			}
 
 			while (frameEndActions.Count != 0)
@@ -361,6 +368,7 @@ namespace OpenRA
 
 		public IEnumerable<Actor> Actors { get { return actors.Values; } }
 		public IEnumerable<IEffect> Effects { get { return effects; } }
+		public IEnumerable<IEffect> UnpartitionedEffects { get { return unpartitionedEffects; } }
 		public IEnumerable<ISync> SyncedEffects { get { return syncedEffects; } }
 
 		public Actor GetActorById(uint actorId)
@@ -391,7 +399,7 @@ namespace OpenRA
 				// Hash fields marked with the ISync interface.
 				foreach (var actor in ActorsHavingTrait<ISync>())
 					foreach (var syncHash in actor.SyncHashes)
-						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash;
+						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash();
 
 				// Hash game state relevant effects such as projectiles.
 				foreach (var sync in SyncedEffects)
@@ -467,6 +475,6 @@ namespace OpenRA
 		public bool Equals(TraitPair<T> other) { return this == other; }
 		public override bool Equals(object obj) { return obj is TraitPair<T> && Equals((TraitPair<T>)obj); }
 
-		public override string ToString() { return "{0}->{1}".F(Actor.Info.Name, Trait.GetType().Name); }
+		public override string ToString() { return Actor.Info.Name + "->" + Trait.GetType().Name; }
 	}
 }

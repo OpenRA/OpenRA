@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class DemolitionInfo : ConditionalTraitInfo
+	class DemolitionInfo : ITraitInfo
 	{
 		[Desc("Delay to demolish the target once the explosive device is planted. " +
 			"Measured in game ticks. Default is 1.8 seconds.")]
@@ -45,25 +45,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Cursor = "c4";
 
-		public override object Create(ActorInitializer init) { return new Demolition(this); }
+		public object Create(ActorInitializer init) { return new Demolition(this); }
 	}
 
-	class Demolition : ConditionalTrait<DemolitionInfo>, IIssueOrder, IResolveOrder, IOrderVoice
+	class Demolition : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly DemolitionInfo info;
 
-		public Demolition(DemolitionInfo info) : base(info)
+		public Demolition(DemolitionInfo info)
 		{
 			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get
-			{
-				if (!IsTraitDisabled)
-					yield return new DemolitionOrderTargeter(info.Cursor);
-			}
+			get { yield return new DemolitionOrderTargeter(info.Cursor); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -71,17 +67,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderID != "C4")
 				return null;
 
-			if (target.Type == TargetType.FrozenActor)
-				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
-
-			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			return new Order(order.OrderID, self, target, queued);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (IsTraitDisabled)
-				return;
-
 			if (order.OrderString != "C4")
 				return;
 

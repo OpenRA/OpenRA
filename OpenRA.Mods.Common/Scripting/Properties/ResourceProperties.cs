@@ -40,8 +40,6 @@ namespace OpenRA.Mods.Common.Scripting
 		public int Cash
 		{
 			get { return pr.Cash; }
-
-			[ScriptContext(ScriptContextType.Mission)]
 			set { pr.Cash = Math.Max(0, value); }
 		}
 	}

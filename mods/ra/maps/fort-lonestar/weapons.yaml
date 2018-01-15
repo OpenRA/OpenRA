@@ -11,9 +11,12 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Versus:
-			None: 75
-			Concrete: 100
-		Damage: 150
+			None: 56
+			Wood: 56
+			Light: 56
+			Heavy: 86
+			Concrete: 75
+		Damage: 20000
 	Warhead@3Eff: CreateEffect
 		Explosions: self_destruct
 
@@ -27,7 +30,7 @@ MammothTusk:
 		TrailImage: smokey
 		ContrailLength: 150
 		Inaccuracy: 0c853
-		ROT: 10
+		HorizontalRateOfTurn: 10
 		RangeLimit: 12c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 640
@@ -38,7 +41,7 @@ MammothTusk:
 			Light: 110
 			Heavy: 100
 			Concrete: 200
-		Damage: 250
+		Damage: 25000
 	Warhead@3Eff: CreateEffect
 		Explosions: nuke
 
@@ -48,7 +51,7 @@ TankNapalm:
 	Report: aacanon3.aud
 	ValidTargets: Ground
 	Burst: 6
-	BurstDelay: 1
+	BurstDelays: 1
 	Projectile: Bullet
 		Speed: 426
 		Image: 120MM
@@ -60,12 +63,12 @@ TankNapalm:
 		Spread: 341
 		ValidTargets: Ground
 		Versus:
-			None: 90
-			Wood: 170
-			Light: 100
-			Heavy: 100
-			Concrete: 100
-		Damage: 15
+			None: 65
+			Wood: 125
+			Light: 75
+			Heavy: 75
+			Concrete: 75
+		Damage: 2000
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -86,7 +89,7 @@ ParaBomb:
 			Wood: 100
 			Light: 60
 			Concrete: 25
-		Damage: 200
+		Damage: 20000
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
@@ -94,7 +97,7 @@ ParaBomb:
 
 155mm:
 	ReloadDelay: 10
-	Range: 7c5
+	Range: 7c0
 	Burst: 20
 	-Report:
 	Projectile: Bullet
@@ -102,7 +105,7 @@ ParaBomb:
 		TrailImage: fb4
 		Image: fb3
 		Blockable: false
-		Angle: 30
+		LaunchAngle: 30
 		Inaccuracy: 1c682
 		ContrailLength: 2
 	Warhead@1Dam: SpreadDamage
@@ -111,7 +114,7 @@ ParaBomb:
 			Wood: 100
 			Heavy: 75
 			Concrete: 35
-		Damage: 20
+		Damage: 2000
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
@@ -129,12 +132,12 @@ FLAK-23:
 		Spread: 213
 		ValidTargets: Air, Ground
 		Versus:
-			None: 35
-			Wood: 30
-			Light: 30
+			None: 32
+			Wood: 28
+			Light: 28
 			Heavy: 40
-			Concrete: 30
-		Damage: 25
+			Concrete: 28
+		Damage: 2500
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -142,14 +145,13 @@ FLAK-23:
 		Explosions: med_explosion
 
 SCUD:
-	ReloadDelay: 280
 	Range: 7c0
 	Projectile: Bullet
 		Arm: 10
 		TrailImage: smokey
 		Blockable: false
 		Inaccuracy: 0c426
-		Angle: 216
+		LaunchAngle: 216
 	Warhead@1Dam: SpreadDamage
 		Spread: 853
 		Falloff: 100, 37, 14, 5, 0
@@ -158,7 +160,7 @@ SCUD:
 			Wood: 90
 			Light: 80
 			Heavy: 70
-		Damage: 500
+		Damage: 50000
 		AffectsParent: true
 	Warhead@3Eff: CreateEffect
 		Explosions: nuke

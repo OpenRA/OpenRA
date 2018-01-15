@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class NukeLaunch : IProjectile
+	public class NukeLaunch : IProjectile, ISpatiallyPartitionable
 	{
 		readonly Player firedBy;
 		readonly Animation anim;
@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		WPos pos;
 		int ticks;
+		bool isAddedToScreenMap;
 
 		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
 			WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
@@ -68,6 +69,12 @@ namespace OpenRA.Mods.Common.Effects
 
 		public void Tick(World world)
 		{
+			if (!isAddedToScreenMap)
+			{
+				world.ScreenMap.Add(this, pos, anim.Image);
+				isAddedToScreenMap = true;
+			}
+
 			anim.Tick();
 
 			if (ticks == turn)
@@ -81,12 +88,14 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks == delay)
 				Explode(world);
 
+			world.ScreenMap.Update(this, pos, anim.Image);
+
 			ticks++;
 		}
 
 		void Explode(World world)
 		{
-			world.AddFrameEndTask(w => w.Remove(this));
+			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 

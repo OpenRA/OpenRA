@@ -66,19 +66,13 @@ namespace OpenRA.Mods.Common.AI
 		static readonly string[] DefaultRulesNearDeadOwnHealth = new[]
 		{
 			"if ((OwnHealth is NearDead) " +
-			"and (EnemyHealth is Injured) " +
-			"and (RelativeAttackPower is Equal) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured)) " +
+			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal))) " +
 			"then AttackOrFlee is Attack",
 
 			"if ((OwnHealth is NearDead) " +
-			"and (EnemyHealth is NearDead) " +
-			"and (RelativeAttackPower is Weak) " +
-			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-			"then AttackOrFlee is Flee",
-
-			"if ((OwnHealth is NearDead) " +
-			"and (EnemyHealth is Injured) " +
+			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured)) " +
 			"and (RelativeAttackPower is Weak) " +
 			"and ((RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
 			"then AttackOrFlee is Flee",
@@ -91,13 +85,7 @@ namespace OpenRA.Mods.Common.AI
 
 			"if (OwnHealth is NearDead) " +
 			"and (EnemyHealth is Normal) " +
-			"and (RelativeAttackPower is Equal) " +
-			"and (RelativeSpeed is Fast) " +
-			"then AttackOrFlee is Flee",
-
-			"if (OwnHealth is NearDead) " +
-			"and (EnemyHealth is Normal) " +
-			"and (RelativeAttackPower is Strong) " +
+			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and (RelativeSpeed is Fast) " +
 			"then AttackOrFlee is Flee",
 
@@ -221,9 +209,16 @@ namespace OpenRA.Mods.Common.AI
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
 				{
-					var warhead = arm.Weapon.Warheads.OfType<DamageWarhead>().FirstOrDefault();
-					if (warhead != null)
-						sumOfDamage += warhead.Damage;
+					var burst = arm.Weapon.Burst;
+
+					// For simplicity's sake, we're only factoring in the first burst delay, as more than one burst delay is extremely rare.
+					// Additionally, clamping total delay to minimum of 1 (ReloadDelay: 0 is technically possible) and maximum of 200.
+					// High dmg/low ROF weapons shouldn't be rated too low as high dmg/shot can outweigh mere dps due to likelier 1-hit-kills.
+					// TODO: Revisit this at some point to replace the arbitrary cap with something smarter.
+					var totalReloadDelay = arm.Weapon.ReloadDelay + (arm.Weapon.BurstDelays[0] * (burst - 1)).Clamp(1, 200);
+					var damageWarheads = arm.Weapon.Warheads.OfType<DamageWarhead>();
+					foreach (var warhead in damageWarheads)
+						sumOfDamage += (warhead.Damage * burst / totalReloadDelay) * 100;
 				}
 
 				return sumOfDamage;

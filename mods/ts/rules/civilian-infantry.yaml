@@ -9,7 +9,7 @@ WEEDGUY:
 	Mobile:
 		Speed: 42
 	Health:
-		HP: 130
+		HP: 13000
 	Crushable:
 		CrushSound: squishy2.aud
 	Armament:
@@ -29,7 +29,7 @@ UMAGON:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -39,7 +39,7 @@ UMAGON:
 	Mobile:
 		Speed: 71
 	Health:
-		HP: 150
+		HP: 15000
 	Passenger:
 	RevealsShroud:
 		Range: 7c0
@@ -61,7 +61,7 @@ CHAMSPY:
 	Voiced:
 		VoiceSet: Spy
 	Health:
-		HP: 120
+		HP: 12000
 	Mobile:
 		Speed: 85
 	RevealsShroud:
@@ -86,7 +86,7 @@ MUTANT:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -94,7 +94,7 @@ MUTANT:
 	Voiced:
 		VoiceSet: Mutant
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -112,7 +112,7 @@ MWMN:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -120,7 +120,7 @@ MWMN:
 	Voiced:
 		VoiceSet: CivilianFemale
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -138,7 +138,7 @@ MUTANT3:
 	Inherits: ^Soldier
 	Inherits@2: ^HealsOnTiberium
 	Inherits@EXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -146,7 +146,7 @@ MUTANT3:
 	Voiced:
 		VoiceSet: Mutant
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -170,7 +170,7 @@ TRATOS:
 	Voiced:
 		VoiceSet: Tratos
 	Health:
-		HP: 200
+		HP: 20000
 	Mobile:
 		Speed: 71
 	RevealsShroud:
@@ -187,7 +187,7 @@ OXANNA:
 	Voiced:
 		VoiceSet: Oxanna
 	Health:
-		HP: 50
+		HP: 5000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -204,7 +204,7 @@ SLAV:
 	Voiced:
 		VoiceSet: Slavick
 	Health:
-		HP: 300
+		HP: 30000
 	Mobile:
 		Speed: 56
 	RevealsShroud:
@@ -214,7 +214,7 @@ SLAV:
 
 CIV1:
 	Inherits: ^CivilianInfantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:
@@ -227,7 +227,7 @@ CIV2:
 
 CIV3:
 	Inherits: ^CivilianInfantry
-	Inherits@AUTOTARGET: ^AutoTargetGround
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	Armament:

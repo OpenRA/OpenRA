@@ -9,9 +9,7 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Eluant;
 using Eluant.ObjectBinding;
 
@@ -25,19 +23,12 @@ namespace OpenRA.Scripting
 		protected readonly ScriptContext Context;
 		Dictionary<string, ScriptMemberWrapper> members;
 
-		// Binding filters
-		protected static readonly Predicate<MemberInfo> BindAny = x => true;
-		protected static readonly Predicate<MemberInfo> BindAIOnly = x =>
-			!x.HasAttribute<ScriptContextAttribute>() || x.GetCustomAttribute<ScriptContextAttribute>().Type == ScriptContextType.AI;
-		protected static readonly Predicate<MemberInfo> BindMissionOnly = x =>
-			!x.HasAttribute<ScriptContextAttribute>() || x.GetCustomAttribute<ScriptContextAttribute>().Type == ScriptContextType.Mission;
-
 		public ScriptObjectWrapper(ScriptContext context)
 		{
 			Context = context;
 		}
 
-		protected void Bind(IEnumerable<object> clrObjects, Predicate<MemberInfo> canBind)
+		protected void Bind(IEnumerable<object> clrObjects)
 		{
 			members = new Dictionary<string, ScriptMemberWrapper>();
 			foreach (var obj in clrObjects)
@@ -48,8 +39,7 @@ namespace OpenRA.Scripting
 					if (members.ContainsKey(m.Name))
 						throw new LuaException(DuplicateKeyError(m.Name));
 
-					if (canBind(m))
-						members.Add(m.Name, new ScriptMemberWrapper(Context, obj, m));
+					members.Add(m.Name, new ScriptMemberWrapper(Context, obj, m));
 				}
 			}
 		}

@@ -23,6 +23,7 @@ namespace OpenRA.Primitives
 	{
 		readonly Queue<byte> data = new Queue<byte>(1024);
 		readonly Stream baseStream;
+		bool baseStreamEmpty;
 
 		protected ReadOnlyAdapterStream(Stream stream)
 		{
@@ -38,7 +39,7 @@ namespace OpenRA.Primitives
 		public sealed override bool CanRead { get { return true; } }
 		public sealed override bool CanWrite { get { return false; } }
 
-		public sealed override long Length { get { throw new NotSupportedException(); } }
+		public override long Length { get { throw new NotSupportedException(); } }
 		public sealed override long Position
 		{
 			get { throw new NotSupportedException(); }
@@ -55,10 +56,9 @@ namespace OpenRA.Primitives
 			var copied = 0;
 			ConsumeData(buffer, offset, count, ref copied);
 
-			var finished = false;
-			while (copied < count && !finished)
+			while (copied < count && !baseStreamEmpty)
 			{
-				finished = BufferData(baseStream, data);
+				baseStreamEmpty = BufferData(baseStream, data);
 				ConsumeData(buffer, offset, count, ref copied);
 			}
 

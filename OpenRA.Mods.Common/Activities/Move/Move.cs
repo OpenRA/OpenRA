@@ -146,23 +146,28 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			// Let child activities do what they want so that units don't end up in strange state.
-			// Just clear the path so that child activity doesn't run for too long.
-			// Although we always return false here, Move with nowhere to move will eventually
-			// proceed to the NextActivity when the actor is in good position.
 			if (ChildActivity == null)
 				return base.Cancel(self, keepQueue);
 
+			// Although MoveFirstHalf and MoveSecondHalf can't be interrupted,
+			// we prevent them from moving forever by removing the path.
 			if (path != null)
 				path.Clear();
 
+			// Remove queued activities
 			if (!keepQueue && NextInQueue != null)
 				NextInQueue = null;
 
-			// Could be turn activity, which should be canceled.
-			// To prevent Move first/second half activities from being interrupted,
-			// we set IsInterruptible to false in their constructor.
-			return ChildActivity.Cancel(self, false);
+			// In current implementation, ChildActivity can be Turn, MoveFirstHalf and MoveSecondHalf.
+			// Turn may be interrupted freely while they are turning.
+			// Unlike Turn, MoveFirstHalf and MoveSecondHalf are not Interruptable, but clearing the
+			// path guarantees that they will return as soon as possible, once the actor is back in a
+			// valid position.
+			// This means that it is safe to unconditionally return true, which avoids breaking parent
+			// activities that rely on cancellation succeeding (but not necessarily immediately
+			ChildActivity.Cancel(self, false);
+
+			return true;
 		}
 
 		public override Activity Tick(Actor self)
@@ -173,7 +178,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 			{
 				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
+
+				// Child activities such as Turn might have finished.
+				// If we "return this" in this situation, the unit loses one tick and pauses movement briefly.
+				if (ChildActivity != null)
+					return this;
 			}
 
 			// If the actor is inside a tunnel then we must let them move
@@ -238,8 +247,8 @@ namespace OpenRA.Mods.Common.Activities
 				0));
 
 			// While carrying out one Move order, MoveSecondHalf finishes its work from time to time and returns null.
-			// That causes the ChildActivity to be null and makes us return to this part of this function.
-			// If we only queue the activity and not run it, units will pause for one tick!
+			// That causes the ChildActivity to be null and makes us return to this part of code.
+			// If we only queue the activity and not run it, units will lose one tick and pause briefly!
 			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 			return this;
 		}

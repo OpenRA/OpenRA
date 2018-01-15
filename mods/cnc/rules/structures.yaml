@@ -10,7 +10,7 @@ FACT:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 2100
+		HP: 210000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -22,6 +22,10 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
+		RequiresCondition: factundeploy
+	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
+		Condition: factundeploy
+		Prerequisites: global-factundeploy
 	ProductionQueue@GDIBuilding:
 		Type: Building.GDI
 		Factions: gdi
@@ -114,7 +118,7 @@ NUKE:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -143,7 +147,7 @@ NUK2:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 700
+		HP: 70000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -175,7 +179,7 @@ PROC:
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 1000
+		HP: 100000
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
@@ -192,6 +196,7 @@ PROC:
 		Capacity: 700
 	Selectable:
 		Bounds: 72,56,0,12
+		DecorationBounds: 73,72
 	CustomSellValue:
 		Value: 500
 	FreeActor:
@@ -203,7 +208,6 @@ PROC:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-		VisualBounds: 73,72
 
 SILO:
 	Inherits: ^BaseBuilding
@@ -222,14 +226,13 @@ SILO:
 		Dimensions: 2,1
 	-GivesBuildableArea:
 	Health:
-		HP: 500
+		HP: 50000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
 	RenderSprites:
 	WithSpriteBody:
-	AutoSelectionSize:
 	WithSiloAnimation:
 	StoresResources:
 		PipCount: 10
@@ -241,8 +244,9 @@ SILO:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	SelectionDecorations:
-		VisualBounds: 49,30
 	-AcceptsDeliveredCash:
+	Selectable:
+		DecorationBounds: 49,30
 
 PYLE:
 	Inherits: ^BaseBuilding
@@ -268,7 +272,7 @@ PYLE:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
@@ -315,7 +319,7 @@ HAND:
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
@@ -337,8 +341,8 @@ HAND:
 	ProvidesPrerequisite@buildingname:
 	Selectable:
 		Bounds: 48,48
+		DecorationBounds: 48,68,0,-10
 	SelectionDecorations:
-		VisualBounds: 48,68,0,-10
 
 AFLD:
 	Inherits: ^BaseBuilding
@@ -363,7 +367,7 @@ AFLD:
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 1100
+		HP: 110000
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
@@ -413,10 +417,10 @@ WEAP:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,64,0,-16
 	SelectionDecorations:
-		VisualBounds: 72,64,0,-16
 	Health:
-		HP: 1100
+		HP: 110000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -459,7 +463,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 60000
 	RevealsShroud:
 		Range: 5c0
 	Exit@1:
@@ -468,6 +472,7 @@ HPAD:
 		Produces: Aircraft.GDI, Aircraft.Nod
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		PlayerExperience: 25
 	WithRepairAnimation:
 	RallyPoint:
@@ -514,29 +519,26 @@ HQ:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
+		DecorationBounds: 48,53,0,-4
 	SelectionDecorations:
-		VisualBounds: 48,53,0,-4
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	WithSpriteBody:
-		PauseAnimationWhenDisabled: true
+		PauseOnCondition: lowpower
 	Health:
-		HP: 800
+		HP: 80000
 	RevealsShroud:
 		Range: 10c0
 	WithBuildingBib:
 	ProvidesRadar:
-		RequiresCondition: !disabled
+		RequiresCondition: !lowpower
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	AirstrikePower:
-		PauseOnCondition: disabled
+		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: airstrike
-		ChargeTime: 240
+		ChargeInterval: 6000
 		SquadSize: 3
 		QuantizedFacings: 8
 		Description: Air Strike
@@ -583,16 +585,17 @@ FIX:
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
+		DecorationBounds: 72,48
 	SelectionDecorations:
-		VisualBounds: 72,48
 	Health:
-		HP: 800
+		HP: 80000
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
 		HasMinibib: Yes
 	Reservable:
 	RepairsUnits:
+		HpPerStep: 1000
 		Interval: 15
 		PlayerExperience: 25
 	RallyPoint:
@@ -626,30 +629,27 @@ EYE:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 48,40,0,9
+		DecorationBounds: 48,53,0,-4
 	SelectionDecorations:
-		VisualBounds: 48,53,0,-4
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	WithSpriteBody:
-		PauseAnimationWhenDisabled: true
+		PauseOnCondition: lowpower
 	Health:
-		HP: 1300
+		HP: 130000
 	RevealsShroud:
 		Range: 10c0
 	WithBuildingBib:
 	ProvidesRadar:
-		RequiresCondition: !disabled
+		RequiresCondition: !lowpower
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	IonCannonPower:
-		PauseOnCondition: disabled
+		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: ioncannon
 		Cursor: ioncannon
-		ChargeTime: 270
+		ChargeInterval: 6750
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSpeechNotification: IonCannonCharging
@@ -688,26 +688,23 @@ TMPL:
 		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 72,48
+		DecorationBounds: 72,68,0,-12
 	SelectionDecorations:
-		VisualBounds: 72,68,0,-12
-	RequiresPower:
-	CanPowerDown:
-		PowerupSound: EnablePower
-		PowerdownSound: DisablePower
 	Health:
-		HP: 2100
+		HP: 210000
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	NukePower:
-		PauseOnCondition: disabled
+		PauseOnCondition: lowpower
 		Prerequisites: ~techlevel.superweapons
 		Icon: abomb
 		Cursor: nuke
-		ChargeTime: 360
+		ChargeInterval: 9000
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuclear warhead.\nApplies heavy damage over a large area.
 		EndChargeSpeechNotification: NuclearWeaponAvailable
@@ -716,6 +713,8 @@ TMPL:
 		LaunchSpeechNotification: NuclearWeaponLaunched
 		IncomingSpeechNotification: NuclearWarheadApproaching
 		MissileWeapon: atomic
+		MissileDelay: 11
+		SpawnOffset: 3c0,0,-1c512
 		DisplayBeacon: True
 		BeaconPoster: atomic
 		BeaconPosterPalette: beaconposter
@@ -724,6 +723,9 @@ TMPL:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+	WithNukeLaunchAnimation:
+	WithNukeLaunchOverlay:
+		Sequence: smoke
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
@@ -745,7 +747,7 @@ GUN:
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Building:
 	Health:
-		HP: 410
+		HP: 41000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -756,7 +758,7 @@ GUN:
 		TurnSpeed: 12
 		InitialFacing: 56
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
@@ -794,9 +796,8 @@ SAM:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	RequiresPower:
 	Health:
-		HP: 400
+		HP: 40000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -806,12 +807,12 @@ SAM:
 		InitialFacing: 0
 		RealignDelay: -1
 	-WithSpriteBody:
-	WithTurretedSpriteBody:
-	AutoSelectionSize:
+	WithEmbeddedTurretSpriteBody:
 	Armament:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
+		PauseOnCondition: lowpower
 	WithMuzzleOverlay:
 	-RenderDetectionCircle:
 	Power:
@@ -836,11 +837,10 @@ OBLI:
 		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 22,44,0,-10
 	SelectionDecorations:
-		VisualBounds: 22,44,0,-10
-	RequiresPower:
 	Health:
-		HP: 600
+		HP: 60000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -852,6 +852,7 @@ OBLI:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 	AttackCharges:
+		PauseOnCondition: lowpower
 		ChargeLevel: 50
 		ChargingCondition: charging
 	AmbientSound:
@@ -861,6 +862,7 @@ OBLI:
 	-EmitInfantryOnSell:
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	Power:
 		Amount: -90
 
@@ -880,7 +882,7 @@ GTWR:
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Building:
 	Health:
-		HP: 400
+		HP: 40000
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
@@ -917,11 +919,10 @@ ATWR:
 		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Tanks\n  Weak vs Infantry
 	Selectable:
 		Bounds: 24,24
+		DecorationBounds: 22,48,0,-12
 	SelectionDecorations:
-		VisualBounds: 22,48,0,-12
-	RequiresPower:
 	Health:
-		HP: 550
+		HP: 55000
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -940,10 +941,12 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
+		PauseOnCondition: lowpower
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
 		Range: 5c0
+		RequiresCondition: !lowpower
 	Power:
 		Amount: -50
 
@@ -1009,7 +1012,7 @@ BRIK:
 		BuildDurationModifier: 40
 		Description: Stops infantry and most tanks.\nBlocks some projectiles.
 	Health:
-		HP: 250
+		HP: 25000
 	Armor:
 		Type: Heavy
 	BlocksProjectiles:
@@ -1028,6 +1031,7 @@ BRIK:
 
 BARRACKS:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Infantry Production
 	Buildable:
@@ -1035,6 +1039,7 @@ BARRACKS:
 
 VEHICLEPRODUCTION:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Vehicle Production
 	Buildable:
@@ -1042,6 +1047,7 @@ VEHICLEPRODUCTION:
 
 ANYPOWER:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: Power Plant
 	Buildable:
@@ -1049,6 +1055,7 @@ ANYPOWER:
 
 ANYHQ:
 	AlwaysVisible:
+	Interactable:
 	Tooltip:
 		Name: a communications center
 	Buildable:

@@ -23,7 +23,6 @@ CABHUT:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
-	AutoSelectionSize:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Bridge
@@ -34,6 +33,7 @@ CABHUT:
 		Name: Bridge
 	EditorTilesetFilter:
 		Categories: Bridge
+	Interactable:
 
 ^LowBridge:
 	Inherits: ^LowBridgeRamp
@@ -41,7 +41,7 @@ CABHUT:
 		TargetTypes: Ground, Building, Bridge
 		RequiresForceFire: true
 	Health:
-		HP: 500
+		HP: 50000
 	Armor:
 		Type: Concrete
 	HitShape:
@@ -79,8 +79,8 @@ LOBRDG_A_D:
 		RampActors: lobrdg_r_ne, lobrdg_r_sw
 		AOffset: 1,-1
 		BOffset: 1,1
-	CustomSelectionSize:
-		CustomBounds: 96, 48
+	Interactable:
+		Bounds: 96, 48
 
 LOBRDG_B:
 	Inherits: ^LowBridge
@@ -115,8 +115,8 @@ LOBRDG_B_D:
 		RampActors: lobrdg_r_nw, lobrdg_r_se
 		AOffset: 1,1
 		BOffset: -1,1
-	CustomSelectionSize:
-		CustomBounds: 96, 48
+	Interactable:
+		Bounds: 96, 48
 
 LOBRDG_R_SE:
 	Inherits: ^LowBridgeRamp
@@ -163,7 +163,6 @@ LOBRDG_R_SW:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
-	AutoSelectionSize:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Bridge
@@ -174,10 +173,10 @@ LOBRDG_R_SW:
 		Name: Bridge
 	Immobile:
 		OccupiesSpace: false
-	CustomSelectionSize:
-		CustomBounds: 96, 144
 	EditorTilesetFilter:
 		Categories: Bridge
+	Interactable:
+		Bounds: 96, 144
 
 BRIDGE1:
 	Inherits: ^ElevatedBridgePlaceholder

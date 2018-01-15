@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target moved under the fog. Move to its last known position.
 			if (Target.Type == TargetType.Actor && canHideUnderFog
-				&& !self.Owner.CanTargetActor(Target.Actor))
+				&& !Target.Actor.CanBeViewedByPlayer(self.Owner))
 			{
 				if (inner != null)
 					inner.Cancel(self);

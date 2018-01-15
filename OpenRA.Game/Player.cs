@@ -24,7 +24,14 @@ using OpenRA.Widgets;
 
 namespace OpenRA
 {
-	public enum PowerState { Normal, Low, Critical }
+	[Flags]
+	public enum PowerState
+	{
+		Normal = 1,
+		Low = 2,
+		Critical = 4
+	}
+
 	public enum WinState { Undefined, Won, Lost }
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
@@ -61,7 +68,6 @@ namespace OpenRA
 		public Shroud Shroud;
 		public World World { get; private set; }
 
-		readonly IFogVisibilityModifier[] fogVisibilities;
 		readonly StanceColors stanceColors;
 
 		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
@@ -134,8 +140,6 @@ namespace OpenRA
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
-			fogVisibilities = PlayerActor.TraitsImplementing<IFogVisibilityModifier>().ToArray();
-
 			// Enable the bot logic on the host
 			IsBot = BotType != null;
 			if (IsBot && Game.IsHost)
@@ -165,35 +169,6 @@ namespace OpenRA
 			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
 		}
 
-		public bool CanViewActor(Actor a)
-		{
-			return a.CanBeViewedByPlayer(this);
-		}
-
-		public bool CanTargetActor(Actor a)
-		{
-			// PERF: Avoid LINQ.
-			if (HasFogVisibility)
-				foreach (var fogVisibility in fogVisibilities)
-					if (fogVisibility.IsVisible(a))
-						return true;
-
-			return CanViewActor(a);
-		}
-
-		public bool HasFogVisibility
-		{
-			get
-			{
-				// PERF: Avoid LINQ.
-				foreach (var fogVisibility in fogVisibilities)
-					if (fogVisibility.HasFogVisibility())
-						return true;
-
-				return false;
-			}
-		}
-
 		public Color PlayerStanceColor(Actor a)
 		{
 			var player = a.World.RenderPlayer ?? a.World.LocalPlayer;
@@ -221,17 +196,17 @@ namespace OpenRA
 
 		#region Scripting interface
 
-		readonly Dictionary<LuaRuntime, Lazy<ScriptPlayerInterface>> luaInterfaces = new Dictionary<LuaRuntime, Lazy<ScriptPlayerInterface>>();
+		Lazy<ScriptPlayerInterface> luaInterface;
 		public void OnScriptBind(ScriptContext context)
 		{
-			if (!luaInterfaces.ContainsKey(context.Runtime))
-				luaInterfaces.Add(context.Runtime, Exts.Lazy(() => new ScriptPlayerInterface(context, this)));
+			if (luaInterface == null)
+				luaInterface = Exts.Lazy(() => new ScriptPlayerInterface(context, this));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]
 		{
-			get { return luaInterfaces[runtime].Value[runtime, keyValue]; }
-			set { luaInterfaces[runtime].Value[runtime, keyValue] = value; }
+			get { return luaInterface.Value[runtime, keyValue]; }
+			set { luaInterface.Value[runtime, keyValue] = value; }
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)

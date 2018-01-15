@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -19,17 +18,14 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor target;
 		readonly Health health;
-		readonly EngineerRepairInfo repairInfo;
-		readonly ExternalCondition[] externalConditions;
+		readonly Stance validStances;
 
-		public RepairBuilding(Actor self, Actor target, EngineerRepairInfo repairInfo)
-			: base(self, target, repairInfo.EnterBehaviour, WDist.Zero)
+		public RepairBuilding(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances)
+			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
-			this.repairInfo = repairInfo;
+			this.validStances = validStances;
 			health = target.Trait<Health>();
-			externalConditions = target.TraitsImplementing<ExternalCondition>()
-				.Where(ec => repairInfo.RevokeExternalConditions.Contains(ec.Info.Condition)).ToArray();
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -40,14 +36,11 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnInside(Actor self)
 		{
 			var stance = self.Owner.Stances[target.Owner];
-			if (!stance.HasStance(repairInfo.ValidStances))
+			if (!stance.HasStance(validStances))
 				return;
 
 			if (health.DamageState == DamageState.Undamaged)
 				return;
-
-			foreach (var ec in externalConditions)
-				ec.TryRevokeCondition(target);
 
 			target.InflictDamage(self, new Damage(-health.MaxHP));
 		}

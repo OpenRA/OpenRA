@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 					Powers.Add(key, new SupportPowerInstance(key, this)
 					{
 						Instances = new List<SupportPower>(),
-						RemainingTime = t.Info.StartFullyCharged ? 0 : t.Info.ChargeTime * 25,
-						TotalTime = t.Info.ChargeTime * 25,
+						RemainingTime = t.Info.StartFullyCharged ? 0 : t.Info.ChargeInterval,
+						TotalTime = t.Info.ChargeInterval,
 					});
 
 					if (t.Info.Prerequisites.Any())
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			foreach (var power in Powers.Values)
 				power.Tick();
@@ -224,6 +224,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (power == null)
 				return;
 
+			if (!HasSufficientFunds(power))
+				return;
+
 			power.SelectTarget(power.Self, Key, manager);
 		}
 
@@ -244,6 +247,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (power == null)
 				return;
 
+			if (!HasSufficientFunds(power, true))
+				return;
+
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, manager);
 			RemainingTime = TotalTime;
@@ -254,6 +260,26 @@ namespace OpenRA.Mods.Common.Traits
 				PrerequisitesAvailable(false);
 				oneShotFired = true;
 			}
+		}
+
+		bool HasSufficientFunds(SupportPower power, bool activate = false)
+		{
+			if (power.Info.Cost != 0)
+			{
+				var player = manager.Self;
+				var pr = player.Trait<PlayerResources>();
+				if (pr.Cash + pr.Resources < power.Info.Cost)
+				{
+					Game.Sound.PlayNotification(player.World.Map.Rules, player.Owner, "Speech",
+						pr.Info.InsufficientFundsNotification, player.Owner.Faction.InternalName);
+					return false;
+				}
+
+				if (activate)
+					pr.TakeCash(power.Info.Cost);
+			}
+
+			return true;
 		}
 	}
 
@@ -280,7 +306,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && world.Map.Contains(cell))
-				yield return new Order(order, manager.Self, false) { TargetLocation = cell, SuppressVisualFeedback = true };
+				yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 
 		public virtual void Tick(World world)

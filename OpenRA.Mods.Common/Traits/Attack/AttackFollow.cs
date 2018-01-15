@@ -29,7 +29,12 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackFollow(Actor self, AttackFollowInfo info)
 			: base(self, info) { }
 
-		public virtual void Tick(Actor self)
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 			{
@@ -38,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			DoAttack(self, Target);
-			IsAttacking = Target.IsValidFor(self);
+			IsAiming = Target.IsValidFor(self);
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
@@ -46,7 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 			return new AttackActivity(self, newTarget, allowMove, forceAttack);
 		}
 
-		// OP Mod: made public for Rage generator
 		public override void OnStopOrder(Actor self)
 		{
 			Target = Target.Invalid;
@@ -60,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		class AttackActivity : Activity
 		{
-			readonly AttackFollow[] attackFollows;
+			readonly AttackFollow attack;
 			readonly IMove move;
 			readonly Target target;
 			readonly bool forceAttack;
@@ -68,25 +72,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
-				attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
+				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 
 				this.target = target;
 				this.forceAttack = forceAttack;
-			}
-
-			Armament GetFirstFeasibleWeapon(Target target, bool forceAttack)
-			{
-				// We scan attackbases in order.
-				// That means, the order of attack base in YAML matters!
-				foreach (var atb in attackFollows)
-				{
-					var weapon = atb.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
-					if (weapon != null)
-						return weapon;
-				}
-
-				return null;
 			}
 
 			public override Activity Tick(Actor self)
@@ -94,10 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
-				if (self.IsDisabled())
+				if (attack.IsTraitPaused)
 					return this;
 
-				var weapon = GetFirstFeasibleWeapon(target, forceAttack);
+				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
 				if (weapon != null)
 				{
 					var targetIsMobile = (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<IMoveInfo>())
@@ -110,12 +100,10 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 					// Having both this and AttackFollow modify that field is a horrible hack.
-					if (hasTicked && attackFollows.All(a => a.Target.Type == TargetType.Invalid))
+					if (hasTicked && attack.Target.Type == TargetType.Invalid)
 						return NextActivity;
 
-					// Assign targets to all so if it can fire, it will fire.
-					foreach (var attack in attackFollows)
-						attack.Target = target;
+					attack.Target = target;
 					hasTicked = true;
 
 					if (move != null)
@@ -125,8 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 						return this;
 				}
 
-				foreach (var attack in attackFollows)
-					attack.Target = Target.Invalid;
+				attack.Target = Target.Invalid;
 
 				return NextActivity;
 			}

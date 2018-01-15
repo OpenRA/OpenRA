@@ -32,6 +32,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		TerrainSpriteLayer render;
 		Theater theater;
+		bool disposed;
 
 		public BuildableTerrainLayer(Actor self, BuildableTerrainLayerInfo info)
 		{
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.D2k.Traits
 			dirty[cell] = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
 			var remove = new List<CPos>();
 			foreach (var kv in dirty)
@@ -70,13 +71,12 @@ namespace OpenRA.Mods.D2k.Traits
 				dirty.Remove(r);
 		}
 
-		public void Render(WorldRenderer wr)
+		void IRenderOverlay.Render(WorldRenderer wr)
 		{
 			render.Draw(wr.Viewport);
 		}
 
-		bool disposed;
-		public void Disposing(Actor self)
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			if (disposed)
 				return;

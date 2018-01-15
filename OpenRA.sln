@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Server", "OpenRA.Server\OpenRA.Server.csproj", "{76F621A1-3D8E-4A99-9F7E-B071EB657817}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.D2k", "OpenRA.Mods.D2k\OpenRA.Mods.D2k.csproj", "{C0B0465C-6BE2-409C-8770-3A9BF64C4344}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.AS", "OpenRA.Mods.AS\OpenRA.Mods.AS.csproj", "{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Platforms.Default", "OpenRA.Platforms.Default\OpenRA.Platforms.Default.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
 EndProject
@@ -100,6 +102,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Dune 2000 Lua scripts", "{06B1AE07-DDB0-4287-8700-A8CD9A0E652E}"
 	ProjectSection(SolutionItems) = preProject
+		mods\d2k\bits\scripts\campaign-global.lua = mods\d2k\bits\scripts\campaign-global.lua
 		mods\d2k\maps\atreides-01a\atreides01a.lua = mods\d2k\maps\atreides-01a\atreides01a.lua
 		mods\d2k\maps\atreides-01b\atreides01b.lua = mods\d2k\maps\atreides-01b\atreides01b.lua
 		mods\d2k\maps\atreides-02a\atreides02a-AI.lua = mods\d2k\maps\atreides-02a\atreides02a-AI.lua
@@ -126,6 +129,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\harkonnen-03b\harkonnen03b.lua = mods\d2k\maps\harkonnen-03b\harkonnen03b.lua
 		mods\d2k\maps\harkonnen-04\harkonnen04-AI.lua = mods\d2k\maps\harkonnen-04\harkonnen04-AI.lua
 		mods\d2k\maps\harkonnen-04\harkonnen04.lua = mods\d2k\maps\harkonnen-04\harkonnen04.lua
+		mods\d2k\maps\harkonnen-05\harkonnen05-AI.lua = mods\d2k\maps\harkonnen-05\harkonnen05-AI.lua
+		mods\d2k\maps\harkonnen-05\harkonnen05.lua = mods\d2k\maps\harkonnen-05\harkonnen05.lua
+		mods\d2k\maps\harkonnen-06a\harkonnen06a-AI.lua = mods\d2k\maps\harkonnen-06a\harkonnen06a-AI.lua
+		mods\d2k\maps\harkonnen-06a\harkonnen06a.lua = mods\d2k\maps\harkonnen-06a\harkonnen06a.lua
+		mods\d2k\maps\harkonnen-06b\harkonnen06b-AI.lua = mods\d2k\maps\harkonnen-06b\harkonnen06b-AI.lua
+		mods\d2k\maps\harkonnen-06b\harkonnen06b.lua = mods\d2k\maps\harkonnen-06b\harkonnen06b.lua
+		mods\d2k\maps\harkonnen-07\harkonnen07-AI.lua = mods\d2k\maps\harkonnen-07\harkonnen07-AI.lua
+		mods\d2k\maps\harkonnen-07\harkonnen07.lua = mods\d2k\maps\harkonnen-07\harkonnen07.lua
+		mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua
+		mods\d2k\maps\harkonnen-09a\harkonnen09a.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a.lua
 		mods\d2k\maps\ordos-01a\ordos01a.lua = mods\d2k\maps\ordos-01a\ordos01a.lua
 		mods\d2k\maps\ordos-01b\ordos01b.lua = mods\d2k\maps\ordos-01b\ordos01b.lua
 		mods\d2k\maps\ordos-02a\ordos02a-AI.lua = mods\d2k\maps\ordos-02a\ordos02a-AI.lua
@@ -154,12 +167,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", 
 		mods\ts\maps\fields-of-green\fields-of-green.lua = mods\ts\maps\fields-of-green\fields-of-green.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.yupgi_alert", "OpenRA.Mods.yupgi_alert\OpenRA.Mods.yupgi_alert.csproj", "{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.StyleCheck", "OpenRA.StyleCheck\OpenRA.StyleCheck.csproj", "{5FEAB6DC-4E81-4B63-958B-22FC3534C606}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.AS", "OpenRA.Mods.AS\OpenRA.Mods.AS.csproj", "{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -186,6 +193,10 @@ Global
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.Build.0 = Debug|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.ActiveCfg = Release|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.Build.0 = Release|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Debug|x86.ActiveCfg = Debug|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Debug|x86.Build.0 = Debug|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Release|x86.ActiveCfg = Release|x86
+		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Release|x86.Build.0 = Release|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.ActiveCfg = Release|x86
@@ -198,18 +209,6 @@ Global
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.Build.0 = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.ActiveCfg = Release|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.Build.0 = Release|x86
-		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Debug|x86.ActiveCfg = Debug|x86
-		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Debug|x86.Build.0 = Debug|x86
-		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Release|x86.ActiveCfg = Release|x86
-		{5B9AB03E-2B8D-4F03-A127-0E9B62E02689}.Release|x86.Build.0 = Release|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.ActiveCfg = Debug|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.Build.0 = Debug|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.ActiveCfg = Release|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.Build.0 = Release|x86
-		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Debug|x86.ActiveCfg = Debug|x86
-		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Debug|x86.Build.0 = Debug|x86
-		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Release|x86.ActiveCfg = Release|x86
-		{6DEEE499-98E5-4977-AAAE-CEAE165F17CF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

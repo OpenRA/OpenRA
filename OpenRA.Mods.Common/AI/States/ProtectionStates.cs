@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.AI
 {
 	class UnitsForProtectionIdleState : GroundStateBase, IState
@@ -25,18 +27,6 @@ namespace OpenRA.Mods.Common.AI
 
 		public void Activate(Squad owner) { }
 
-		bool ShouldAttack(Squad owner, Actor target)
-		{
-			if (owner.IsTargetVisible)
-				return true;
-
-			// Is it seige unit?
-			if (owner.Bot.Info.UnitsCommonNames.Seige.Contains(target.Info.Name))
-				return true;
-
-			return false;
-		}
-
 		public void Tick(Squad owner)
 		{
 			if (!owner.IsValid)
@@ -44,7 +34,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (!owner.IsTargetValid)
 			{
-				owner.TargetActor = owner.Bot.FindClosestEnemy(owner.CenterPosition, WDist.FromCells(8));
+				owner.TargetActor = owner.Bot.FindClosestEnemy(owner.CenterPosition, WDist.FromCells(owner.Bot.Info.ProtectionScanRadius));
 
 				if (owner.TargetActor == null)
 				{
@@ -53,7 +43,7 @@ namespace OpenRA.Mods.Common.AI
 				}
 			}
 
-			if (!ShouldAttack(owner, owner.TargetActor))
+			if (!owner.IsTargetVisible)
 			{
 				if (Backoff < 0)
 				{
@@ -67,7 +57,7 @@ namespace OpenRA.Mods.Common.AI
 			else
 			{
 				foreach (var a in owner.Units)
-					owner.Bot.QueueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.TargetActor.Location });
+					owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 			}
 		}
 

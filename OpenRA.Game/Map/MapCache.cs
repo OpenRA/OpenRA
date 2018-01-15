@@ -122,6 +122,47 @@ namespace OpenRA
 			}
 		}
 
+		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
+		{
+			// Utility mod that does not support maps
+			if (!modData.Manifest.Contains<MapGrid>())
+				yield break;
+
+			// Enumerate map directories
+			foreach (var kv in modData.Manifest.MapFolders)
+			{
+				MapClassification packageClassification;
+				if (!Enum.TryParse(kv.Value, out packageClassification))
+					continue;
+
+				if (!classification.HasFlag(packageClassification))
+					continue;
+
+				var name = kv.Key;
+				var optional = name.StartsWith("~", StringComparison.Ordinal);
+				if (optional)
+					name = name.Substring(1);
+
+				// Don't try to open the map directory in the support directory if it doesn't exist
+				if (name.StartsWith("^", StringComparison.Ordinal))
+				{
+					var resolved = Platform.ResolvePath(name);
+					if (!Directory.Exists(resolved) || !File.Exists(resolved))
+						continue;
+				}
+
+				using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(name))
+				{
+					foreach (var map in package.Contents)
+					{
+						var mapPackage = package.OpenPackage(map, modData.ModFiles);
+						if (mapPackage != null)
+							yield return new Map(modData, mapPackage);
+					}
+				}
+			}
+		}
+
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)
 		{
 			var maps = uids.Distinct()
