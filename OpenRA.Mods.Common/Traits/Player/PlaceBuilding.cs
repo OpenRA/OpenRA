@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 					// BuildingInfo.IsCloseEnoughToBase has already verified that this is a valid build location
 					var provider = buildingInfo.FindBaseProvider(w, self.Owner, order.TargetLocation);
 					if (provider != null)
-						provider.Trait<BaseProvider>().BeginCooldown();
+						provider.BeginCooldown();
 				}
 
 				if (GetNumBuildables(self.Owner) > prevItems)

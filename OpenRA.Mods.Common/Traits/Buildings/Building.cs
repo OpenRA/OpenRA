@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (off - new WVec(0, 0, off.Z)) + LocalCenterOffset;
 		}
 
-		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
+		public BaseProvider FindBaseProvider(World world, Player p, CPos topLeft)
 		{
 			var center = world.Map.CenterOfCell(topLeft) + CenterOffset(world);
 			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Range is counted from the center of the actor, not from each cell.
 				var target = Target.FromPos(bp.Actor.CenterPosition);
 				if (target.IsInRange(center, bp.Trait.Info.Range))
-					return bp.Actor;
+					return bp.Trait;
 			}
 
 			return null;
