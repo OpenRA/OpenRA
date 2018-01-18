@@ -22,7 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Projectiles
 {
 	[Desc("Not a sprite, but an engine effect.")]
-	public class LaserZapInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
+	public class LaserZapInfo : IProjectileInfo
 	{
 		[Desc("The width of the zap.")]
 		public readonly WDist Width = new WDist(86);
@@ -74,20 +74,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
-			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = new WDist(-1);
-
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new LaserZap(this, args, c);
-		}
-
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
-		{
-			if (BlockerScanRadius < WDist.Zero)
-				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
 		}
 	}
 
@@ -133,7 +123,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check for blocking actors
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target,
-				info.Width, info.BlockerScanRadius, out blockedPos))
+				info.Width, out blockedPos))
 			{
 				target = blockedPos;
 			}
