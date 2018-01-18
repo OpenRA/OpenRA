@@ -229,6 +229,8 @@ namespace OpenRA.Traits
 		void RemovePosition(Actor a, IOccupySpace ios);
 		void UpdatePosition(Actor a, IOccupySpace ios);
 		IEnumerable<Actor> ActorsInBox(WPos a, WPos b);
+
+		WDist LargestActorRadius { get; }
 	}
 
 	public interface IRenderModifier

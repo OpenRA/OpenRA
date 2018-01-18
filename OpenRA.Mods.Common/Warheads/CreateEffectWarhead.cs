@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class CreateEffectWarhead : Warhead, IRulesetLoaded<WeaponInfo>
+	public class CreateEffectWarhead : Warhead
 	{
 		[Desc("List of explosion sequences that can be used.")]
 		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
@@ -45,22 +45,15 @@ namespace OpenRA.Mods.Common.Warheads
 			"If that's the case, this warhead will consider the explosion position to have the 'Air' TargetType (in addition to any nearby actor's TargetTypes).")]
 		public readonly WDist AirThreshold = new WDist(128);
 
-		[Desc("Scan radius for victims around impact. If set to a negative value (default), it will automatically scale to the largest health shape.",
-			"Custom overrides should not be necessary under normal circumstances.")]
-		public WDist VictimScanRadius = new WDist(-1);
-
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
-		{
-			if (VictimScanRadius < WDist.Zero)
-				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
-		}
+		[Desc("Whether to consider actors in determining whether the explosion should happen. If false, only terrain will be considered.")]
+		public readonly bool ImpactActors = true;
 
 		static readonly string[] TargetTypeAir = new string[] { "Air" };
 
 		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
 			// Matching target actor
-			if (VictimScanRadius > WDist.Zero)
+			if (ImpactActors)
 			{
 				var targetType = GetDirectHitTargetType(world, cell, pos, firedBy, true);
 				if (targetType == ImpactTargetType.ValidActor)
@@ -78,7 +71,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public ImpactTargetType GetDirectHitTargetType(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetValidity = false)
 		{
-			var victims = world.FindActorsInCircle(pos, VictimScanRadius);
+			var victims = world.FindActorsOnCircle(pos, WDist.Zero);
 			var invalidHit = false;
 
 			foreach (var victim in victims)

@@ -177,6 +177,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
+		public WDist LargestActorRadius { get; private set; }
+
 		public ActorMap(World world, ActorMapInfo info)
 		{
 			this.info = info;
@@ -192,6 +194,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// PERF: Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
+
+			LargestActorRadius = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
 		}
 
 		void INotifyCreated.Created(Actor self)

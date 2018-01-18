@@ -1796,6 +1796,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				if (engineVersion < 20180219)
+				{
+					if (node.Key.StartsWith("Warhead", StringComparison.Ordinal) && node.Value.Value == "CreateEffect")
+					{
+						var victimScanRadius = node.Value.Nodes.FirstOrDefault(n => n.Key == "VictimScanRadius");
+						if (victimScanRadius != null)
+						{
+							if (FieldLoader.GetValue<int>(victimScanRadius.Key, victimScanRadius.Value.Value) == 0)
+								node.Value.Nodes.Add(new MiniYamlNode("ImpactActors", "false"));
+
+							node.Value.Nodes.Remove(victimScanRadius);
+						}
+					}
+
+					if (node.Key.StartsWith("Projectile"))
+						node.Value.Nodes.RemoveAll(n => n.Key == "BounceBlockerScanRadius" || n.Key == "BlockerScanRadius" || n.Key == "AreaVictimScanRadius");
+				}
+
 				UpgradeWeaponRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}
