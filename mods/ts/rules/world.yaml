@@ -184,6 +184,7 @@ World:
 		WaterChance: 0
 		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
 		InitialSpawnDelay: 1500
+		CheckboxEnabled: false
 		CheckboxDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
