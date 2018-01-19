@@ -337,6 +337,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
+			if (path == null || path.Count() == 0) // Move order canceled.
+				yield break;
+
 			yield return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), Color.Green);
 		}
 
