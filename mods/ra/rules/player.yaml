@@ -46,6 +46,7 @@ Player:
 		CheckboxDisplayOrder: 8
 	GpsWatcher:
 	Shroud:
+		ExploredMapCheckboxEnabled: true
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		ID: bounty

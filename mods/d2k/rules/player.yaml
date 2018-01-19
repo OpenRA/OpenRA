@@ -65,6 +65,7 @@ Player:
 		CheckboxDisplayOrder: 6
 	BaseAttackNotifier:
 	Shroud:
+		ExploredMapCheckboxEnabled: true
 		FogCheckboxDisplayOrder: 3
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
