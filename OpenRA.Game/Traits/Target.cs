@@ -26,12 +26,19 @@ namespace OpenRA.Traits
 		FrozenActor frozen;
 		WPos pos;
 		CPos? cell;
+		SubCell? subCell;
 		int generation;
 
 		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
 		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell)
 		{
-			return new Target { pos = w.Map.CenterOfSubCell(c, subCell), cell = c, type = TargetType.Terrain };
+			return new Target
+			{
+				pos = w.Map.CenterOfSubCell(c, subCell),
+				cell = c,
+				subCell = subCell,
+				type = TargetType.Terrain
+			};
 		}
 
 		/// <summary>
@@ -201,5 +208,7 @@ namespace OpenRA.Traits
 		internal TargetType SerializableType { get { return type; } }
 		internal Actor SerializableActor { get { return actor; } }
 		internal CPos? SerializableCell { get { return cell; } }
+		internal SubCell? SerializableSubCell { get { return subCell; } }
+		internal WPos SerializablePos { get { return pos; } }
 	}
 }

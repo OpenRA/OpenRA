@@ -18,51 +18,57 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class OrderTest
 	{
-		Order order;
-		Order targetInvalid;
-		Order immediateOrder;
-
-		[SetUp]
-		public void SetUp()
+		byte[] RoundTripOrder(byte[] bytes)
 		{
-			order = new Order("TestOrder", null, false)
-			{
-				TargetString = "TestTarget",
-				ExtraData = 1234,
-				ExtraLocation = new CPos(555, 555)
-			};
+			return Order.Deserialize(null, new BinaryReader(new MemoryStream(bytes))).Serialize();
+		}
 
-			targetInvalid = new Order("TestOrder", null, Target.Invalid, false);
+		[TestCase(TestName = "Order data persists over serialization (empty)")]
+		public void SerializeEmpty()
+		{
+			var o = new Order().Serialize();
+			Assert.That(RoundTripOrder(o), Is.EqualTo(o));
+		}
 
-			immediateOrder = new Order("TestOrderImmediate", null, false)
+		[TestCase(TestName = "Order data persists over serialization (unqueued)")]
+		public void SerializeUnqueued()
+		{
+			var o = new Order("Test", null, false).Serialize();
+			Assert.That(RoundTripOrder(o), Is.EqualTo(o));
+		}
+
+		[TestCase(TestName = "Order data persists over serialization (queued)")]
+		public void SerializeQueued()
+		{
+			var o = new Order("Test", null, true).Serialize();
+			Assert.That(RoundTripOrder(o), Is.EqualTo(o));
+		}
+
+		[TestCase(TestName = "Order data persists over serialization (pos target)")]
+		public void SerializePos()
+		{
+			var o = new Order("Test", null, Target.FromPos(new WPos(int.MinValue, 0, int.MaxValue)), false).Serialize();
+			Assert.That(RoundTripOrder(o), Is.EqualTo(o));
+		}
+
+		[TestCase(TestName = "Order data persists over serialization (invalid target)")]
+		public void SerializeInvalid()
+		{
+			var o = new Order("Test", null, Target.Invalid, false).Serialize();
+			Assert.That(RoundTripOrder(o), Is.EqualTo(o));
+		}
+
+		[TestCase(TestName = "Order data persists over serialization (extra fields)")]
+		public void SerializeExtra()
+		{
+			var o = new Order("Test", null, Target.Invalid, true)
 			{
+				TargetString = "TargetString",
+				ExtraLocation = new CPos(int.MinValue, int.MaxValue, 128),
+				ExtraData = uint.MaxValue,
 				IsImmediate = true,
-				TargetString = "TestTarget"
-			};
-		}
-
-		Order RoundTripOrder(Order o)
-		{
-			var serializedData = new MemoryStream(o.Serialize());
-			return Order.Deserialize(null, new BinaryReader(serializedData));
-		}
-
-		[TestCase(TestName = "Data persists over serialization")]
-		public void SerializeA()
-		{
-			Assert.That(RoundTripOrder(order).ToString(), Is.EqualTo(order.ToString()));
-		}
-
-		[TestCase(TestName = "Data persists over serialization (Immediate order)")]
-		public void SerializeB()
-		{
-			Assert.That(RoundTripOrder(immediateOrder).ToString(), Is.EqualTo(immediateOrder.ToString()));
-		}
-
-		[TestCase(TestName = "Data persists over serialization (Invalid target)")]
-		public void SerializeC()
-		{
-			Assert.That(RoundTripOrder(targetInvalid).ToString(), Is.EqualTo(targetInvalid.ToString()));
+			}.Serialize();
+			Assert.That(RoundTripOrder(o), Is.EqualTo(o));
 		}
 	}
 }

@@ -65,6 +65,14 @@ namespace OpenRA.Network
 		{
 			w.Write(cell.X);
 			w.Write(cell.Y);
+			w.Write(cell.Layer);
+		}
+
+		public static void Write(this BinaryWriter w, WPos pos)
+		{
+			w.Write(pos.X);
+			w.Write(pos.Y);
+			w.Write(pos.Z);
 		}
 	}
 }
