@@ -13,6 +13,7 @@ Player:
 		CheckboxDisplayOrder: 7
 	BaseAttackNotifier:
 	Shroud:
+		ExploredMapCheckboxEnabled: true
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy

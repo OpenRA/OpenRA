@@ -46,6 +46,7 @@ Player:
 		CheckboxEnabled: true
 		CheckboxDisplayOrder: 7
 	Shroud:
+		ExploredMapCheckboxEnabled: true
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
