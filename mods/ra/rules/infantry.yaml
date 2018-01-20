@@ -195,6 +195,7 @@ E4:
 	AttackFrontal:
 	Explodes:
 		Weapon: VisualExplode
+		EmptyWeapon: VisualExplode
 		Chance: 50
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
