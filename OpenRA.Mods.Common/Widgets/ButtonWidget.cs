@@ -254,6 +254,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
+			if (string.IsNullOrEmpty(baseName))
+				return;
+
 			var variant = highlighted ? "-highlighted" : "";
 			var state = disabled ? "-disabled" :
 						pressed ? "-pressed" :
