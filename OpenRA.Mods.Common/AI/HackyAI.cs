@@ -213,6 +213,12 @@ namespace OpenRA.Mods.Common.AI
 			"Leave this empty to include all actors.")]
 		public HashSet<string> CapturableActorTypes = new HashSet<string>();
 
+		// Makes it so the AI can tell what not to capture
+		[Desc("Actor types to avoid capturing.",
+			"Leave this empty to include no actors to avoid.",
+			"If empty CapturableActorTypes takes over and this is ignored!")]
+		public HashSet<string> AvoidCapturingActorTypes = new HashSet<string>();
+
 		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
 		public readonly int MinimumCaptureDelay = 375;
 
@@ -764,10 +770,28 @@ namespace OpenRA.Mods.Common.AI
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
-			if (Info.CapturableActorTypes.Any())
+			if (Info.CapturableActorTypes.Any() && !Info.AvoidCapturingActorTypes.Any())
 			{
-				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
-				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				capturableTargetOptions = capturableTargetOptions.Where(target =>
+					Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target =>
+					Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+			}
+			else if (Info.CapturableActorTypes.Any() && Info.AvoidCapturingActorTypes.Any())
+			{
+				capturableTargetOptions = capturableTargetOptions.Where(target =>
+					(Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()) &&
+					!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant())));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target =>
+					(Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()) &&
+					!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant())));
+			}
+			else if (!Info.CapturableActorTypes.Any() && Info.AvoidCapturingActorTypes.Any())
+			{
+				capturableTargetOptions = capturableTargetOptions.Where(target =>
+					!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target =>
+					!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
 			}
 
 			if (!capturableTargetOptions.Any() && !externalCapturableTargetOptions.Any())
