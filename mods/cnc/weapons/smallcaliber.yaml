@@ -138,10 +138,10 @@ APCGun:
 		Spread: 128
 		Damage: 2000
 		Versus:
-			None: 35
-			Wood: 35
+			None: 30
+			Wood: 25
 			Light: 75
-			Heavy: 35
+			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof

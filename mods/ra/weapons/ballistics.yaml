@@ -114,7 +114,7 @@ TurretGun:
 
 155mm:
 	Inherits: ^Artillery
-	MinRange: 5c0
+	MinRange: 4c0
 	Report: tank5.aud
 	TargetActorCenter: true
 	Projectile: Bullet
