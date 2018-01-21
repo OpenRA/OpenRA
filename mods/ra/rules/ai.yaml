@@ -50,6 +50,9 @@ Player:
 			e4: 15%
 			dog: 15%
 			shok: 15%
+			e6: 1%
+			mech: 1%
+			hijacker: 1%
 			harv: 10%
 			apc: 30%
 			jeep: 40%
@@ -65,7 +68,17 @@ Player:
 		UnitLimits:
 			dog: 4
 			harv: 8
+			e6: 4
+			mech: 4
+			hijacker: 4
 		SquadSize: 20
+		CapturingActorTypes: e6, mech, hijacker
+		CapturableActorTypes:
+		AvoidCapturingActorTypes: tsla,agun,pbox,hbox,gun,ftur,sam
+		MinimumCaptureDelay: 300
+		MaximumCaptureTargetOptions: 25
+		CheckCaptureTargetsForVisibility: false
+		CapturableStances: Enemy, Neutral
 		SupportPowerDecision@spyplane:
 			OrderName: SovietSpyPlane
 			MinimumAttractiveness: 1
