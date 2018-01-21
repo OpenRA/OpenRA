@@ -182,16 +182,47 @@ namespace OpenRA.Mods.Common.AI
 				if (!actors.Contains(actor.Name))
 					return false;
 
-				if (!ai.Info.BuildingLimits.ContainsKey(actor.Name))
-					return true;
-
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < ai.Info.BuildingLimits[actor.Name];
+				// Added new checks for if a building can be built and moved some older checks into it
+				return BuildingIsBuildable(actor.Name);
 			});
 
 			if (orderBy != null)
 				return available.MaxByOrDefault(orderBy);
 
 			return available.RandomOrDefault(ai.Random);
+		}
+
+		// Added new checks for if a building can be built and moved some older checks into it
+		// tells the AI if a Building is buildable
+		bool BuildingIsBuildable(string name)
+		{
+			if (ai.Info.BuildingFractions != null && !ai.Info.BuildingFractions.ContainsKey(name))
+				return false;
+
+			if (ai.Info.BuildingLimits != null &&
+				ai.Info.BuildingLimits.ContainsKey(name) &&
+				playerBuildings.Count(a => a.Info.Name == name) >= ai.Info.BuildingLimits[name])
+				return false;
+
+			// Checks if a building has addition limiters, checks those limiters, and checks if it is Stop Building At Limit
+			// Return false if Stop Limiters Met and/or Start Limiters not Met
+			// Check for Has only start limiters
+			// Check for Has only stop limiters
+			// Check for has both cases
+			if (ai.Info.AdditionalBuildingLimiters != null &&
+				((ai.Info.AdditionalBuildingLimiters.BuildingHasStopLimiters(name) && !ai.Info.AdditionalBuildingLimiters.BuildingHasStartLimiters(name) &&
+				ai.Info.AdditionalBuildingLimiters.StopActorLimitsMet(name, ai.World, ai.Player)) ||
+				(ai.Info.AdditionalBuildingLimiters.BuildingHasStartLimiters(name) && !ai.Info.AdditionalBuildingLimiters.BuildingHasStopLimiters(name) &&
+				!ai.Info.AdditionalBuildingLimiters.StartActorLimitsMet(name, ai.World, ai.Player)) ||
+				((ai.Info.AdditionalBuildingLimiters.BuildingHasStopLimiters(name) && ai.Info.AdditionalBuildingLimiters.BuildingHasStartLimiters(name)) &&
+				(!ai.Info.AdditionalBuildingLimiters.StartActorLimitsMet(name, ai.World, ai.Player) ||
+				 ai.Info.AdditionalBuildingLimiters.StopActorLimitsMet(name, ai.World, ai.Player)))))
+			{
+				// BotDebug("{0} Building: {1} Cannot be Produced at this time!",Player,name); spammy as hell but effective at telling you what is getting hit
+				return false;
+			}
+
+			return true;
 		}
 
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
@@ -297,13 +328,18 @@ namespace OpenRA.Mods.Common.AI
 				if (!buildableThings.Any(b => b.Name == name))
 					continue;
 
+				// Added new checks for if a building can be built and moved some older checks into it
+				// CTRLF - Check if the building has reached its limits
+				if (!BuildingIsBuildable(name))
+					continue;
+
 				// Do we want to build this structure?
 				var count = playerBuildings.Count(a => a.Info.Name == name);
 				if (count > frac.Value * playerBuildings.Length)
 					continue;
 
-				if (ai.Info.BuildingLimits.ContainsKey(name) && ai.Info.BuildingLimits[name] <= count)
-					continue;
+				// if (ai.Info.BuildingLimits.ContainsKey(name) && ai.Info.BuildingLimits[name] < count)
+				//	continue;
 
 				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
 				// and any structure providing buildable area close enough to that water.

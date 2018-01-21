@@ -450,6 +450,7 @@ PDOX:
 		Prerequisite: pdox.germany
 	ChronoshiftPower@chronoshift:
 		OrderName: Chronoshift
+		NumberofTargetsOrSteps: 2
 		PauseOnCondition: disabled
 		Prerequisites: !pdox.germany
 		Icon: chrono
@@ -465,6 +466,7 @@ PDOX:
 		DisplayRadarPing: True
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
+		NumberofTargetsOrSteps: 2
 		PauseOnCondition: disabled
 		Prerequisites: pdox.germany
 		Icon: chrono

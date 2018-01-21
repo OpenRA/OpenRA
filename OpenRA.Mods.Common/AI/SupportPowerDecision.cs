@@ -55,6 +55,36 @@ namespace OpenRA.Mods.Common.AI
 			return ret;
 		}
 
+		// CtrlF
+		public List<Consideration> GetConsiderationsOfName(string name)
+		{
+			var namedlist = new List<Consideration>();
+			foreach (var consideration in Considerations)
+			{
+				if (consideration.ConsiderationName.ToLower().Equals(name.ToLower()))
+				{
+					namedlist.Add(consideration);
+				}
+			}
+
+			return namedlist;
+		}
+
+		/// CtrlF - grabs all the names of the different considerations - meant to help the AI so it doesn't need to look them all up itself each time
+		public List<string> GetAllConsiderationNames()
+		{
+			var namelist = new List<string>();
+			foreach (var consideration in Considerations)
+			{
+				if (namelist.Count == 0 || !namelist.Contains(consideration.ConsiderationName))
+				{
+					namelist.Add(consideration.ConsiderationName);
+				}
+			}
+
+			return namelist;
+		}
+
 		/// <summary>Evaluates the attractiveness of a position according to all considerations</summary>
 		public int GetAttractiveness(WPos pos, Player firedBy, FrozenActorLayer frozenLayer)
 		{
@@ -111,12 +141,56 @@ namespace OpenRA.Mods.Common.AI
 			return answer;
 		}
 
+		/// <summary>Evaluates the attractiveness of a position according to all considerations of name</summary>
+		/// CtrlF
+		public int GetAttractiveness(WPos pos, Player firedBy, string considerationName)
+		{
+			var answer = 0;
+			var world = firedBy.World;
+			var targetTile = world.Map.CellContaining(pos);
+
+			if (!world.Map.Contains(targetTile))
+				return 0;
+
+			var namedConsiderations = GetConsiderationsOfName(considerationName);
+
+			foreach (var consideration in namedConsiderations)
+			{
+				var radiusToUse = new WDist(consideration.CheckRadius.Length);
+
+				var checkActors = world.FindActorsInCircle(pos, radiusToUse);
+				foreach (var scrutinized in checkActors)
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+			}
+
+			return answer;
+		}
+
+		/// <summary>Evaluates the attractiveness of a group of actors according to all considerations of the selected name</summary>
+		/// CtrlF
+		public int GetAttractiveness(IEnumerable<Actor> actors, Player firedBy, string considerationName)
+		{
+			var answer = 0;
+
+			var namedConsiderations = GetConsiderationsOfName(considerationName);
+
+			foreach (var consideration in namedConsiderations)
+				foreach (var scrutinized in actors)
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+
+			return answer;
+		}
+
 		public int GetNextScanTime(HackyAI ai) { return ai.Random.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
 
 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
 		public class Consideration
 		{
 			public enum DecisionMetric { Health, Value, None }
+
+			/// CtrlF - this was done to help with multistep support powers since each step would need its own target considerations
+			[Desc("Used to name the Consideration in the case of multistep support powers, Leave null or blank for code to ignore.")]
+			public readonly string ConsiderationName = null;
 
 			[Desc("Against whom should this power be used?", "Allowed keywords: Ally, Neutral, Enemy")]
 			public readonly Stance Against = Stance.Enemy;

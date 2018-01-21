@@ -205,6 +205,16 @@ namespace OpenRA.Mods.Common.AI
 		[FieldLoader.LoadUsing("LoadDecisions")]
 		public readonly List<SupportPowerDecision> PowerDecisions = new List<SupportPowerDecision>();
 
+		// ~~StormWing0 Added new checks for if a unit can be built or trained and moved some older checks into it
+		[Desc("Tells the AI what additional limits are present for a given unit")]
+		[FieldLoader.LoadUsing("LoadUnitAdditionalUnitLimits", false)]
+		public readonly LimitUnitByActors AdditionalUnitLimiters;
+
+		// ~~StormWing0 Added new checks for if a building can be built and moved some older checks into it
+		[Desc("Tells the AI what additional limits are present for a given building")]
+		[FieldLoader.LoadUsing("LoadUnitAdditionalBuildingLimits", false)]
+		public readonly LimitBuildingByActors AdditionalBuildingLimiters;
+
 		[Desc("Actor types that can capture other actors (via `Captures` or `ExternalCaptures`).",
 			"Leave this empty to disable capturing.")]
 		public HashSet<string> CapturingActorTypes = new HashSet<string>();
@@ -212,6 +222,12 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Actor types that can be targeted for capturing.",
 			"Leave this empty to include all actors.")]
 		public HashSet<string> CapturableActorTypes = new HashSet<string>();
+
+		// Makes it so the AI can tell what not to capture ~~StormWing0
+		[Desc("Actor types to avoid capturing.",
+			"Leave this empty to include no actors to avoid.",
+			"If empty CapturableActorTypes takes over and this is ignored!")]
+		public HashSet<string> AvoidCapturingActorTypes = new HashSet<string>();
 
 		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
 		public readonly int MinimumCaptureDelay = 375;
@@ -246,6 +262,40 @@ namespace OpenRA.Mods.Common.AI
 					ret.Add(new SupportPowerDecision(d.Value));
 
 			return ret;
+		}
+
+		// fair warning I wasn't sure how to set this up so if someone can get it setup right show me so it doesn't happen again. :) ~~StormWing0
+		static object LoadUnitAdditionalUnitLimits(MiniYaml yaml)
+		{
+			var categories = yaml.Nodes.Where(n => n.Key == "LimitUnitByActors");
+
+			if (categories != null && categories.Count() > 0)
+			{
+				var category = categories.First();
+				if (category != null)
+				{
+					return new LimitUnitByActors(category.Value);
+				}
+				else { return null; }
+			}
+			else { return null; }
+		}
+
+		// fair warning I wasn't sure how to set this up so if someone can get it setup right show me so it doesn't happen again. :) ~~StormWing0
+		static object LoadUnitAdditionalBuildingLimits(MiniYaml yaml)
+		{
+			var categories = yaml.Nodes.Where(n => n.Key == "LimitBuildingByActors");
+
+			if (categories != null && categories.Count() > 0)
+			{
+				var category = categories.First();
+				if (category != null)
+				{
+					return new LimitBuildingByActors(category.Value);
+				}
+				else { return null; }
+			}
+			else { return null; }
 		}
 
 		string IBotInfo.Type { get { return Type; } }
@@ -434,20 +484,41 @@ namespace OpenRA.Mods.Common.AI
 			orders.Enqueue(order);
 		}
 
+		// Moved the Check for if a unit is buildable to where it was selected instead of built. ~~StormWing0
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
 		{
 			var buildableThings = queue.BuildableItems();
-			if (!buildableThings.Any())
+
+			if (buildableThings == null || !buildableThings.Any())
 				return null;
 
-			var unit = buildableThings.Random(Random);
+			// ~~StormWing0 Added new checks for if a unit can be built or trained and moved some older checks into it
+			var availibleUnits = buildableThings.Where(actorUnit =>
+			{
+				return UnitIsBuildable(actorUnit.Name);
+			});
+
+			if (availibleUnits == null || !availibleUnits.Any())
+				return null;
+
+			var unit = availibleUnits.Random(Random);
 			return HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
 		}
 
+		// Moved the Check for if a unit is buildable to where it was selected instead of built. ~~StormWing0
 		ActorInfo ChooseUnitToBuild(ProductionQueue queue)
 		{
 			var buildableThings = queue.BuildableItems();
-			if (!buildableThings.Any())
+			if (buildableThings == null || !buildableThings.Any())
+				return null;
+
+			// ~~StormWing0 Added new checks for if a unit can be built or trained and moved some older checks into it
+			var availibleUnits = buildableThings.Where(actorUnit =>
+			{
+				return UnitIsBuildable(actorUnit.Name);
+			});
+
+			if (availibleUnits == null || !availibleUnits.Any())
 				return null;
 
 			var myUnits = Player.World
@@ -456,12 +527,44 @@ namespace OpenRA.Mods.Common.AI
 				.Select(a => a.Info.Name).ToList();
 
 			foreach (var unit in Info.UnitsToBuild.Shuffle(Random))
-				if (buildableThings.Any(b => b.Name == unit.Key))
+				if (availibleUnits.Any(b => b.Name == unit.Key))
 					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Count)
 						if (HasAdequateAirUnitReloadBuildings(Map.Rules.Actors[unit.Key]))
 							return Map.Rules.Actors[unit.Key];
 
 			return null;
+		}
+
+		// ~~StormWing0 Added new checks for if a unit can be built or trained and moved some older checks into it
+		// tells the AI if a unit is buildable ~~StormWing0
+		bool UnitIsBuildable(string name)
+		{
+			if (Info.UnitsToBuild != null && !Info.UnitsToBuild.ContainsKey(name))
+				return false;
+
+			if (Info.UnitLimits != null &&
+				Info.UnitLimits.ContainsKey(name) &&
+				World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name])
+				return false;
+
+			// Checks if a unit has addition limiters, checks those limiters, and checks if it is Stop Building At Limit
+			// Return false if Stop Limiters Met and/or Start Limiters not Met
+			// Check for Has only start limiters
+			// Check for Has only stop limiters
+			// Check for has both cases
+			if (Info.AdditionalUnitLimiters != null &&
+				((Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && !Info.AdditionalUnitLimiters.UnitHasStartLimiters(name) &&
+				Info.AdditionalUnitLimiters.StopActorLimitsMet(name, World, Player)) ||
+				(Info.AdditionalUnitLimiters.UnitHasStartLimiters(name) && !Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) &&
+				!Info.AdditionalUnitLimiters.StartActorLimitsMet(name, World, Player)) ||
+				((Info.AdditionalUnitLimiters.UnitHasStopLimiters(name) && Info.AdditionalUnitLimiters.UnitHasStartLimiters(name)) &&
+				(!Info.AdditionalUnitLimiters.StartActorLimitsMet(name, World, Player) || Info.AdditionalUnitLimiters.StopActorLimitsMet(name, World, Player)))))
+			{
+				// BotDebug("{0} Unit: {1} Cannot be Produced at this time!",Player,name); spammy as hell but effective at telling you what is getting hit
+				return false;
+			}
+
+			return true;
 		}
 
 		int CountBuilding(string frac, Player owner)
@@ -764,10 +867,29 @@ namespace OpenRA.Mods.Common.AI
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
-			if (Info.CapturableActorTypes.Any())
+			/*if (Info.CapturableActorTypes.Any())
 			{
 				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
 				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+			}*/
+
+			if (Info.CapturableActorTypes.Any() && !Info.AvoidCapturingActorTypes.Any())
+			{
+				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+			}
+			else if (Info.CapturableActorTypes.Any() && Info.AvoidCapturingActorTypes.Any())
+			{
+				capturableTargetOptions = capturableTargetOptions.Where(target => (Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()) &&
+				!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant())));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => (Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()) &&
+				!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant())));
+			}
+			else if (!Info.CapturableActorTypes.Any() && Info.AvoidCapturingActorTypes.Any())
+			{
+				capturableTargetOptions = capturableTargetOptions.Where(target => !Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target =>
+					!Info.AvoidCapturingActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
 			}
 
 			if (!capturableTargetOptions.Any() && !externalCapturableTargetOptions.Any())
@@ -1041,6 +1163,31 @@ namespace OpenRA.Mods.Common.AI
 			}
 		}
 
+		CPos? FindAttackLocationToSupportPower(SupportPowerInstance readyPower, string conName)
+		{
+			var attackLocation = FindCoarseAttackLocationToSupportPower(readyPower, conName);
+			if (attackLocation == null)
+			{
+				BotDebug("AI: {1} can't find suitable coarse attack location for target 1 for support power {0}. Delaying rescan.", readyPower.Info.OrderName, Player.PlayerName);
+
+				// waitingPowers[readyPower] += powerDecision.GetNextScanTime(this);
+				return null;
+			}
+
+			// Found a target location, check for precise target
+			attackLocation = FindFineAttackLocationToSupportPower(readyPower, (CPos)attackLocation, conName);
+			if (attackLocation == null)
+			{
+				BotDebug("AI: {1} can't find suitable fine attack location for target 1 for support power {0}. Delaying rescan.", readyPower.Info.OrderName, Player.PlayerName);
+
+				// waitingPowers[readyPower] += powerDecision.GetNextScanTime(this);
+				return null;
+			}
+
+			return attackLocation;
+		}
+
+		// Added Mullti-targeting support power support and named consideration support
 		void TryToUseSupportPower(Actor self)
 		{
 			if (supportPowerMngr == null)
@@ -1069,29 +1216,74 @@ namespace OpenRA.Mods.Common.AI
 						continue;
 					}
 
-					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
-					if (attackLocation == null)
+					if (sp.Info.NumberofTargetsOrSteps <= 1)
 					{
-						BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
-						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+						var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
+						if (attackLocation == null)
+						{
+							BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
+							waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+							continue;
+						}
 
+						// Found a target location, check for precise target
+						attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
+						if (attackLocation == null)
+						{
+							BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
+							waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+							continue;
+						}
+
+						// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
+						BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
+						waitingPowers[sp] += 10;
+						QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false) { SuppressVisualFeedback = true });
+					}
+					else if (sp.Info.NumberofTargetsOrSteps == 2)
+					{
+						// CtrlF - this part is where the named considerations are made use of. I'm thinking of changing to int instead of string to simplify my code a bit more
+						var firstTargetsName = powerDecision.GetAllConsiderationNames().ElementAt<string>(0);
+						var attackLocation = FindAttackLocationToSupportPower(sp, firstTargetsName);
+						if (attackLocation == null)
+						{
+							BotDebug("AI: {1} can't find suitable first attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
+							waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+							continue;
+						}
+
+						var secondTargetsName = powerDecision.GetAllConsiderationNames().ElementAt<string>(1);
+						var attackLocation2 = FindAttackLocationToSupportPower(sp, secondTargetsName);
+						if (attackLocation2 == null)
+						{
+							BotDebug("AI: {1} can't find suitable second attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
+							waitingPowers[sp] += powerDecision.GetNextScanTime(this);
+							continue;
+						}
+
+						// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
+						BotDebug("AI: {3} found new target locations {0} and {1} for support power {2}.", attackLocation, attackLocation2, sp.Info.OrderName, Player.PlayerName);
+						waitingPowers[sp] += 10;
+
+						// CtrlF - this version of Order works for 2 step support powers
+						QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false)
+							{ ExtraLocation = attackLocation2.Value, SuppressVisualFeedback = true });
+					}
+					else if (sp.Info.NumberofTargetsOrSteps >= 3)
+					{
+						// TODO - one day have use of a support power or powers that will help me finish this section
+						// CtrlF - if anyone has ideas on how to setup this area please let me know because it'd take a List of Targets under Order to make work
+						// and I got death glares for mentioning it
+						BotDebug("{1} Support for {0} target locations not active yet", sp.Info.NumberofTargetsOrSteps, Player);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
 						continue;
 					}
-
-					// Found a target location, check for precise target
-					attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
-					if (attackLocation == null)
+					else
 					{
-						BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
+						BotDebug("{1} can't find attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player);
 						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
-
 						continue;
 					}
-
-					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
-					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
-					waitingPowers[sp] += 10;
-					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false) { SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -1172,6 +1364,80 @@ namespace OpenRA.Mods.Common.AI
 			return bestLocation;
 		}
 
+		/// <summary>Scans the map in chunks, evaluating all actors in each.  Using a named Consideration</summary>
+		/// CtrlF - Added Named Consideration support
+		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower, string conName)
+		{
+			CPos? bestLocation = null;
+			var bestAttractiveness = 0;
+			var powerDecision = powerDecisions[readyPower.Info.OrderName];
+			if (powerDecision == null)
+			{
+				BotDebug("Bot Bug: FindCoarseAttackLocationToSupportPowerConName, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
+				return null;
+			}
+
+			var map = World.Map;
+			var checkRadius = powerDecision.CoarseScanRadius;
+			for (var i = 0; i < map.MapSize.X; i += checkRadius)
+			{
+				for (var j = 0; j < map.MapSize.Y; j += checkRadius)
+				{
+					var consideredAttractiveness = 0;
+
+					var tl = World.Map.CenterOfCell(new MPos(i, j).ToCPos(map));
+					var br = World.Map.CenterOfCell(new MPos(i + checkRadius, j + checkRadius).ToCPos(map));
+					var targets = World.ActorMap.ActorsInBox(tl, br);
+
+					consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player, conName);
+					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
+						continue;
+
+					bestAttractiveness = consideredAttractiveness;
+					bestLocation = new MPos(i, j).ToCPos(map);
+				}
+			}
+
+			return bestLocation;
+		}
+
+		/// <summary>Detail scans an area, evaluating positions. Using a named Consideration</summary>
+		/// CtrlF - Added Named Consideration support
+		CPos? FindFineAttackLocationToSupportPower(SupportPowerInstance readyPower, CPos checkPos, string conName, int extendedRange = 1)
+		{
+			CPos? bestLocation = null;
+			var bestAttractiveness = 0;
+			var powerDecision = powerDecisions[readyPower.Info.OrderName];
+			if (powerDecision == null)
+			{
+				BotDebug("Bot Bug: FindFineAttackLocationToSupportPowerConName, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
+				return null;
+			}
+
+			var checkRadius = powerDecision.CoarseScanRadius;
+			var fineCheck = powerDecision.FineScanRadius;
+			for (var i = 0 - extendedRange; i <= (checkRadius + extendedRange); i += fineCheck)
+			{
+				var x = checkPos.X + i;
+
+				for (var j = 0 - extendedRange; j <= (checkRadius + extendedRange); j += fineCheck)
+				{
+					var y = checkPos.Y + j;
+					var pos = World.Map.CenterOfCell(new CPos(x, y));
+					var consideredAttractiveness = 0;
+					consideredAttractiveness += powerDecision.GetAttractiveness(pos, Player, conName);
+
+					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
+						continue;
+
+					bestAttractiveness = consideredAttractiveness;
+					bestLocation = new CPos(x, y);
+				}
+			}
+
+			return bestLocation;
+		}
+
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
 		{
 			return World.ActorsWithTrait<ProductionQueue>()
@@ -1194,6 +1460,7 @@ namespace OpenRA.Mods.Common.AI
 				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
 		}
 
+		// ~~StormWing0
 		void BuildUnit(string category, bool buildRandom)
 		{
 			// Pick a free queue
@@ -1210,14 +1477,8 @@ namespace OpenRA.Mods.Common.AI
 
 			var name = unit.Name;
 
-			if (Info.UnitsToBuild != null && !Info.UnitsToBuild.ContainsKey(name))
-				return;
-
-			if (Info.UnitLimits != null &&
-				Info.UnitLimits.ContainsKey(name) &&
-				World.Actors.Count(a => a.Owner == Player && a.Info.Name == name) >= Info.UnitLimits[name])
-				return;
-
+			// ~~StormWing0 Added new checks for if a unit can be built or trained and moved some older checks into it
+			// BotDebug("{1}; Building Unit {0}", name, Player);
 			QueueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
