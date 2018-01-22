@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -55,7 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsDead || IsTraitDisabled)
 				return;
 
-			if (health.HP >= Info.HealIfBelow * health.MaxHP / 100)
+			// Cast to long to avoid overflow when multiplying by the health
+			if (health.HP >= Info.HealIfBelow * (long)health.MaxHP / 100)
 				return;
 
 			if (damageTicks > 0)
@@ -67,7 +68,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (--ticks <= 0)
 			{
 				ticks = Info.Delay;
-				self.InflictDamage(self, new Damage(-(Info.Step + Info.PercentageStep * health.MaxHP / 100), Info.DamageTypes));
+
+				// Cast to long to avoid overflow when multiplying by the health
+				self.InflictDamage(self, new Damage((int)(-(Info.Step + Info.PercentageStep * (long)health.MaxHP / 100)), Info.DamageTypes));
 			}
 		}
 

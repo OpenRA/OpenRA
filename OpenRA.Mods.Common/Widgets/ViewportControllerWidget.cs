@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -252,11 +252,17 @@ namespace OpenRA.Mods.Common.Widgets
 			if (frozen != null)
 			{
 				var actor = frozen.Actor;
-				if (actor != null && actor.TraitsImplementing<IVisibilityModifier>().All(t => t.IsVisible(actor, world.RenderPlayer)))
+
+				// HACK: This leaks the cloak state through the fog (cloaked buildings will not show tooltips)
+				if (actor == null || actor.TraitsImplementing<IVisibilityModifier>().All(t => t.IsVisible(actor, world.RenderPlayer)))
 				{
 					FrozenActorTooltip = frozen;
+
+					// HACK: This leaks the tooltip state through the fog
+					// This will cause issues for any downstream mods that use IProvideTooltipInfo on enemy actors
 					if (frozen.Actor != null)
 						ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
+
 					TooltipType = WorldTooltipType.FrozenActor;
 					return;
 				}

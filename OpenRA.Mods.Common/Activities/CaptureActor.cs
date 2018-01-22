@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -58,7 +58,9 @@ namespace OpenRA.Mods.Common.Activities
 					return;
 
 				var capturesInfo = activeCaptures.Info;
-				var lowEnoughHealth = health.HP <= capturable.Info.CaptureThreshold * health.MaxHP / 100;
+
+				// Cast to long to avoid overflow when multiplying by the health
+				var lowEnoughHealth = health.HP <= (int)(capturable.Info.CaptureThreshold * (long)health.MaxHP / 100);
 				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
 				{
 					var oldOwner = actor.Owner;
@@ -80,7 +82,8 @@ namespace OpenRA.Mods.Common.Activities
 				}
 				else
 				{
-					var damage = health.MaxHP * capturesInfo.SabotageHPRemoval / 100;
+					// Cast to long to avoid overflow when multiplying by the health
+					var damage = (int)((long)health.MaxHP * capturesInfo.SabotageHPRemoval / 100);
 					actor.InflictDamage(self, new Damage(damage));
 				}
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,8 +31,17 @@ namespace OpenRA.Mods.Common.Traits
 			"to be shown to chosen players.")]
 		[Translate] public readonly string GenericName = null;
 
-		[Desc("Prefix generic tooltip name with 'Enemy' or 'Allied'.")]
+		[Desc("Prefix generic tooltip name with 'Ally/Neutral/EnemyPrefix'.")]
 		public readonly bool GenericStancePrefix = true;
+
+		[Desc("Prefix to display in the tooltip for allied units.")]
+		[Translate] public readonly string AllyPrefix = "Allied";
+
+		[Desc("Prefix to display in the tooltip for neutral units.")]
+		[Translate] public readonly string NeutralPrefix = null;
+
+		[Desc("Prefix to display in the tooltip for enemy units.")]
+		[Translate] public readonly string EnemyPrefix = "Enemy";
 
 		[Desc("Player stances that the generic name should be shown to.")]
 		public readonly Stance GenericVisibility = Stance.None;
@@ -47,11 +56,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (stance == Stance.None || !GenericVisibility.HasStance(stance))
 				return Name;
 
-			if (GenericStancePrefix && stance == Stance.Ally)
-				return "Allied " + GenericName;
+			if (GenericStancePrefix && !string.IsNullOrEmpty(AllyPrefix) && stance == Stance.Ally)
+				return AllyPrefix + " " + GenericName;
 
-			if (GenericStancePrefix && stance == Stance.Enemy)
-				return "Enemy " + GenericName;
+			if (GenericStancePrefix && !string.IsNullOrEmpty(NeutralPrefix) && stance == Stance.Neutral)
+				return NeutralPrefix + " " + GenericName;
+
+			if (GenericStancePrefix && !string.IsNullOrEmpty(EnemyPrefix) && stance == Stance.Enemy)
+				return EnemyPrefix + " " + GenericName;
 
 			return GenericName;
 		}

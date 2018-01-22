@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var timeMultiplier = pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1;
 
 				timeLabel.Text = formatBuildTime.Update(buildTime * timeMultiplier);
-				timeLabel.TextColor = pm.PowerState != PowerState.Normal ? Color.Red : Color.White;
+				timeLabel.TextColor = (pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerSlowdown > 1) ? Color.Red : Color.White;
 				var timeSize = font.Measure(timeLabel.Text);
 				costLabel.IsVisible = () => cost != 0;
 				costIcon.IsVisible = () => cost != 0;
