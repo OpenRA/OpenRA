@@ -7,8 +7,9 @@
    information, see COPYING.
 ]]
 AlliedReinforcementsA = { "e1", "e1", "e1", "e1", "e1" }
-AlliedReinforcementsB = { "e3", "e3", "e3", "e3", "e3" }
-BadGuys = { BadGuy1, BadGuy2, BadGuy3 }
+AlliedReinforcementsB = { "e1", "e1", "e3", "e3", "e3" }
+AlliedBoatReinforcements = { "pt", "pt" }
+BadGuys = { BadGuy1, BadGuy2, BadGuy3, BadGuy4 }
 
 SovietDogPatrols =
 {
@@ -30,22 +31,29 @@ Mammoths = { Mammoth1, Mammoth2, Mammoth3 }
 
 SovietMammothPaths =
 {
-	{ TnkPatrol1.Location, TnkPatrol2.Location,TnkPatrol3.Location, TnkPatrol4.Location, TnkPatrol5.Location, TnkPatrol6.Location, TnkPatrol7.Location, TnkPatrol8.Location },
-	{ TnkPatrol5.Location, TnkPatrol6.Location, TnkPatrol7.Location, TnkPatrol8.Location,  TnkPatrol1.Location, TnkPatrol2.Location, TnkPatrol3.Location, TnkPatrol4.Location },
-	{ TnkPatrol8.Location, TnkPatrol1.Location, TnkPatrol2.Location, TnkPatrol3.Location, TnkPatrol4.Location, TnkPatrol5.Location,  TnkPatrol6.Location, TnkPatrol7.Location }
+	{ TnkPatrol1.Location, TnkPatrol2.Location,TnkPatrol3.Location, TnkPatrol4.Location, TnkPatrol5.Location, TnkPatrol6.Location },
+	{ TnkPatrol5.Location, TnkPatrol6.Location, TnkPatrol1.Location, TnkPatrol2.Location, TnkPatrol3.Location, TnkPatrol4.Location },
+	{ TnkPatrol6.Location, TnkPatrol1.Location, TnkPatrol2.Location, TnkPatrol3.Location, TnkPatrol4.Location, TnkPatrol5.Location }
 }
 
-SovietSubPath = { SubPatrol3_1.Location, SubPatrol3_2.Location, SubPatrol3_3.Location }
+SubPaths = {
+	{ SubPatrol1_1.Location, SubPatrol1_2.Location },
+	{ SubPatrol2_1.Location, SubPatrol2_2.Location },
+	{ SubPatrol3_1.Location, SubPatrol3_2.Location },
+	{ SubPatrol4_1.Location, SubPatrol4_2.Location },
+	{ SubPatrol5_1.Location, SubPatrol5_2.Location }
+}
 
 ParadropWaypoints =
 {
 	easy = { UnitBStopLocation },
 	normal = { UnitBStopLocation, UnitAStopLocation },
-	hard = { UnitBStopLocation, MCVStopLocation, UnitAStopLocation }
+	hard = { UnitBStopLocation, UnitCStopLocation, UnitAStopLocation }
 }
 
-SovietTechLabs = { TechLab1, TechLab2, TechLab3 }
-TechLabCams = { TechCam1, TechCam2, TechCam3 }
+SovietTechLabs = { TechLab1, TechLab2 }
+
+TechLabCams = { TechCam1, TechCam2 }
 
 GroupPatrol = function(units, waypoints, delay)
 	local i = 1
@@ -75,6 +83,7 @@ end
 
 InitialSovietPatrols = function()
 	-- Dog Patrols
+	BeachDog.Patrol({ BeachPatrol1.Location, BeachPatrol2.Location, BeachPatrol3.Location })
 	for i = 1, 4 do
 		GroupPatrol(SovietDogPatrols[i], SovietDogPatrolPaths[i], DateTime.Seconds(5))
 	end
@@ -89,22 +98,24 @@ InitialSovietPatrols = function()
 	end
 
 	-- Sub Patrols
-	Patrol1Sub.Patrol({ SubPatrol1_1.Location, SubPatrol1_2.Location })
-	Patrol2Sub.Patrol({ SubPatrol2_1.Location, SubPatrol2_2.Location })
-	Patrol3Sub1.Patrol(SovietSubPath)
-	Patrol3Sub2.Patrol(SovietSubPath)
+	Patrol1Sub.Patrol(SubPaths[1])
+	Patrol2Sub.Patrol(SubPaths[2])
+	Patrol3Sub.Patrol(SubPaths[3])
+	Patrol4Sub.Patrol(SubPaths[4])
+	Patrol5Sub.Patrol(SubPaths[5])
 end
 
 InitialAlliedReinforcements = function()
 	local camera = Actor.Create("Camera", true, { Owner = player, Location = DefaultCameraPosition.Location })
 	Trigger.AfterDelay(DateTime.Seconds(30), camera.Destroy)
 
-	Reinforcements.Reinforce(player, AlliedReinforcementsA, { AlliedEntry1.Location, UnitBStopLocation.Location }, 2)
-	Trigger.AfterDelay(DateTime.Seconds(2), function()
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+	Reinforcements.Reinforce(player, AlliedReinforcementsA, { AlliedEntry3.Location, UnitCStopLocation.Location }, 2)
 		Reinforcements.Reinforce(player, AlliedReinforcementsB, { AlliedEntry2.Location, UnitAStopLocation.Location }, 2)
 	end)
-	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Reinforcements.Reinforce(player, { "mcv" }, { AlliedEntry3.Location, MCVStopLocation.Location })
+	Trigger.AfterDelay(DateTime.Seconds(3), function()
+		Reinforcements.Reinforce(player, { "mcv" }, { AlliedEntry1.Location, UnitBStopLocation.Location })
+		Reinforcements.Reinforce(player, AlliedBoatReinforcements, { AlliedBoatEntry.Location, AlliedBoatStop.Location })
 	end)
 end
 
@@ -117,7 +128,6 @@ CaptureRadarDome = function()
 		player.MarkCompletedObjective(CaptureRadarDomeObj)
 		Beacon.New(player, TechLab1.CenterPosition)
 		Beacon.New(player, TechLab2.CenterPosition)
-		Beacon.New(player, TechLab3.CenterPosition)
 		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
 		if Map.LobbyOption("difficulty") ~= "hard" then
 			Utils.Do(TechLabCams, function(a)
@@ -140,12 +150,6 @@ InfiltrateTechCenter = function()
 			infiltrated = true
 			DestroySovietsObj = player.AddPrimaryObjective("Destroy all Soviet buildings and units in the area.")
 			player.MarkCompletedObjective(InfiltrateTechCenterObj)
-
-			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
-			Utils.Do(ParadropWaypoints[Map.LobbyOption("difficulty")], function(waypoint)
-				Proxy.SendParatroopers(waypoint.CenterPosition, false, Facing.South)
-			end)
-			Proxy.Destroy()
 		end)
 
 		Trigger.OnCapture(a, function()
@@ -177,7 +181,7 @@ InfiltrateRef = function()
 end
 
 Tick = function()
-	if DateTime.GameTime > DateTime.Seconds(10) and player.HasNoRequiredUnits() then
+	if player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(InfiltrateTechCenterObj)
 	end
 
@@ -215,23 +219,49 @@ WorldLoaded = function()
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
+	if Map.LobbyOption("difficulty") ~= "hard" then
+		Trigger.OnEnteredProximityTrigger(SovietDefenseCam.CenterPosition, WDist.New(1024 * 7), function(a, id)
+			if a.Owner == player then
+				Trigger.RemoveProximityTrigger(id)
+				local cam1 = Actor.Create("TECH.CAM", true, { Owner = player, Location = SovietDefenseCam.Location })
+				Trigger.AfterDelay(DateTime.Seconds(15), cam1.Destroy)
+				if not DefenseFlame1.IsDead then
+					local cam2 = Actor.Create("TECH.CAM", true, { Owner = player, Location = DefenseFlame1.Location })
+					Trigger.AfterDelay(DateTime.Seconds(15), cam2.Destroy)
+				end
+				if not DefenseFlame2.IsDead then
+					local cam3 = Actor.Create("TECH.CAM", true, { Owner = player, Location = DefenseFlame2.Location })
+					Trigger.AfterDelay(DateTime.Seconds(15), cam3.Destroy)
+				end
+			end
+		end)
+
+		if Map.LobbyOption("difficulty") == "easy" then
+			Trigger.OnKilled(DefBrl1, function(a, b)
+				DefenseFlame1.Kill()
+			end)
+			Trigger.OnKilled(DefBrl2, function(a, b)
+				DefenseFlame2.Kill()
+			end)
+		end
+	end
+
 	Utils.Do(BadGuys, function(a)
-		a.AttackMove(MCVStopLocation.Location)
+		a.AttackMove(UnitCStopLocation.Location)
 	end)
 
+	InitialAlliedReinforcements()
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		InitialAlliedReinforcements()
 		InitialSovietPatrols()
 	end)
 
-	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.New(1024 * 6), function(a, id)
+	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.New(1024 * 14), function(a, id)
 		if a.Owner == player then
 			Trigger.RemoveProximityTrigger(id)
 			local cam = Actor.Create("Camera", true, { Owner = player, Location = SovietMiniBaseCam.Location })
 			Trigger.AfterDelay(DateTime.Seconds(15), cam.Destroy)
 		end
 	end)
-
 	CaptureRadarDome()
 	InfiltrateTechCenter()
 	InfiltrateRef()

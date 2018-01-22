@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -180,11 +180,11 @@ CheckSmugglerEnemies = function()
 			end
 
 			if unit.Owner == smuggler_harkonnen and (attacker.Owner == ordos_main or attacker.Owner == ordos_small) then
-				ChangeOwner(smuggler_harkonnen, smuggler_ordos)
+				ChangeOwner(smuggler_harkonnen, smuggler_both)
 
 				--	Ensure that harvesters that was on a carryall switched sides.
 				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(smuggler_harkonnen, smuggler_ordos)
+					ChangeOwner(smuggler_harkonnen, smuggler_both)
 				end)
 			end
 
