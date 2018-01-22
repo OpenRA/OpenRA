@@ -360,7 +360,7 @@ Actors:
 	Barracks: pyle
 		Location: 25,18
 		Owner: GDI
-	Plant1: nuke
+	Plant1: nuk2
 		Location: 21,17
 		Owner: GDI
 	Plant2: nuke

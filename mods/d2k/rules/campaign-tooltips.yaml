@@ -1,0 +1,45 @@
+^Vehicle:
+	Tooltip:
+		GenericVisibility: Enemy, Neutral
+		NeutralPrefix: Neutral
+		ShowOwnerRow: false
+
+^Tank:
+	Tooltip:
+		GenericVisibility: Enemy, Neutral
+		NeutralPrefix: Neutral
+		ShowOwnerRow: false
+
+^Infantry:
+	Tooltip:
+		GenericVisibility: Enemy, Neutral
+		NeutralPrefix: Neutral
+		ShowOwnerRow: false
+
+^Plane:
+	Tooltip:
+		GenericVisibility: Enemy, Neutral
+		NeutralPrefix: Neutral
+		ShowOwnerRow: false
+
+^Building:
+	Tooltip:
+		GenericVisibility: Enemy, Neutral
+		NeutralPrefix: Neutral
+		ShowOwnerRow: false
+
+^Husk:
+	Tooltip:
+		GenericVisibility: Enemy, Ally, Neutral
+		GenericStancePrefix: false
+		ShowOwnerRow: false
+
+^Crate:
+	Tooltip:
+		ShowOwnerRow: false
+
+wall:
+	Tooltip:
+		GenericVisibility: Enemy, Neutral
+		NeutralPrefix: Neutral
+		ShowOwnerRow: false

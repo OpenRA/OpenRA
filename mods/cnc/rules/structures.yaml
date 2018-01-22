@@ -840,7 +840,7 @@ OBLI:
 		DecorationBounds: 22,44,0,-10
 	SelectionDecorations:
 	Health:
-		HP: 60000
+		HP: 75000
 	Armor:
 		Type: Heavy
 	RevealsShroud:

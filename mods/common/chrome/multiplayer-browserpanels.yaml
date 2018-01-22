@@ -39,9 +39,9 @@ ScrollPanel@MULTIPLAYER_CLIENT_LIST:
 					Width: PARENT_RIGHT
 					Height: 23
 					Shadow: True
-
+					
 ScrollPanel@MULTIPLAYER_FILTER_PANEL:
-	Width: 158
+	Width: PARENT_RIGHT
 	Height: 130
 	Children:
 		Checkbox@WAITING_FOR_PLAYERS:

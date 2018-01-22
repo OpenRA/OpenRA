@@ -150,6 +150,7 @@ ChromeLayout:
 	common|chrome/lobby-players.yaml
 	common|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
+	common|chrome/lobby-servers.yaml
 	common|chrome/lobby-kickdialogs.yaml
 	ts|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml

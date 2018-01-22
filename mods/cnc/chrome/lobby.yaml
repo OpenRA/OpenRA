@@ -25,27 +25,57 @@ Container@SERVER_LOBBY:
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
 					Y: 254
-					Width: 162
+					Width: 182
 					Height: 25
 					Text: Slot Admin
-				Button@PLAYERS_TAB:
-					X: 182
-					Y: 248
-					Width: 135
-					Height: 31
-					Text: Players
-				Button@OPTIONS_TAB:
-					X: 322
-					Y: 248
-					Width: 135
-					Height: 31
-					Text: Options
-				Button@MUSIC_TAB:
-					X: 462
-					Y: 248
-					Width: 135
-					Height: 31
-					Text: Music
+				Container@SKIRMISH_TABS:
+					Visible: False
+					Children:
+						Button@PLAYERS_TAB:
+							X: 202
+							Y: 248
+							Width: 129
+							Height: 31
+							Text: Players
+						Button@OPTIONS_TAB:
+							X: 336
+							Y: 248
+							Width: 128
+							Height: 31
+							Text: Options
+						Button@MUSIC_TAB:
+							X: 469
+							Y: 248
+							Width: 128
+							Height: 31
+							Text: Music
+				Container@MULTIPLAYER_TABS:
+					Visible: False
+					Children:
+						Button@PLAYERS_TAB:
+							X: 202 
+							Y: 248
+							Width: 95
+							Height: 31
+							Text: Players
+						Button@OPTIONS_TAB:
+							X: 302
+							Y: 248
+							Width: 95
+							Height: 31
+							Text: Options
+						Button@MUSIC_TAB:
+							X: 402
+							Y: 248
+							Width: 95
+							Height: 31
+							Text: Music
+						Button@SERVERS_TAB:
+							X: 502
+							Y: 248
+							Width: 95
+							Height: 31
+							Text: Servers
 				Button@CHANGEMAP_BUTTON:
 					X: PARENT_RIGHT - WIDTH - 15
 					Y: 254

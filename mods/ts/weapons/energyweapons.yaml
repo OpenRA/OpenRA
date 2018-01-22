@@ -44,8 +44,6 @@ LtRail:
 MechRailgun:
 	Inherits: ^Railgun
 	Range: 8c0
-	Burst: 2 # for alternating muzzle offsets, dmg/s identical to original
-	BurstDelays: 60
 	Report: railuse5.aud
 	Projectile: Railgun
 		BeamColor: 00FFFFC8

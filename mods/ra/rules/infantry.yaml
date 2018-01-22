@@ -13,7 +13,7 @@ DOG:
 		GenericName: Dog
 	Selectable:
 		Bounds: 12,17,-1,-4
-		DecorationBounds: 12,50,-1,-4
+		DecorationBounds: 12,17,-1,-4
 	SelectionDecorations:
 	Health:
 		HP: 1800
@@ -195,6 +195,7 @@ E4:
 	AttackFrontal:
 	Explodes:
 		Weapon: VisualExplode
+		EmptyWeapon: VisualExplode
 		Chance: 50
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
