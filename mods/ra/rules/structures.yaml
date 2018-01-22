@@ -691,6 +691,15 @@ PBOX:
 	DetectCloaked:
 		Range: 6c0
 
+PBOX2:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox2
+	RenderSprites:
+		Image: PBOX
+	Cargo:
+		InitialUnits: e3
+
 HBOX:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetAll

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new AttackActivity(self, newTarget, allowMove, forceAttack);
 		}
 
-		protected override void OnStopOrder(Actor self)
+		public override void OnStopOrder(Actor self)
 		{
 			Target = Target.Invalid;
 			base.OnStopOrder(self);

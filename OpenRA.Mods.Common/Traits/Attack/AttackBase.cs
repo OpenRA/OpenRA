@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnStopOrder(self);
 		}
 
-		protected virtual void OnStopOrder(Actor self)
+		public virtual void OnStopOrder(Actor self)
 		{
 			self.CancelActivity();
 		}
