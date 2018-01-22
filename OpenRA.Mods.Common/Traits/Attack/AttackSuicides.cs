@@ -18,21 +18,20 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Does a suicide attack where it moves next to the target when used in combination with `Explodes`.")]
-	class AttackSuicidesInfo : ITraitInfo, Requires<IMoveInfo>
+	class AttackSuicidesInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new AttackSuicides(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AttackSuicides(init.Self, this); }
 	}
 
-	class AttackSuicides : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	class AttackSuicides : ConditionalTrait<AttackSuicidesInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
-		readonly AttackSuicidesInfo info;
 		readonly IMove move;
 
 		public AttackSuicides(Actor self, AttackSuicidesInfo info)
+			: base(info)
 		{
-			this.info = info;
 			move = self.Trait<IMove>();
 		}
 
@@ -40,6 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					yield break;
+
 				yield return new TargetTypeOrderTargeter(new HashSet<string> { "DetonateAttack" }, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
@@ -62,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return info.Voice;
+			return Info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
