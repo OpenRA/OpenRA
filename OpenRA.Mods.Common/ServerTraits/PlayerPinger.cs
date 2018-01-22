@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Server
 	{
 		static readonly int PingInterval = 5000; // Ping every 5 seconds
 		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
-		static readonly int ConnTimeout = 180000; // Drop unresponsive clients after 180 seconds
+		static readonly int ConnTimeout = 120000; // Drop unresponsive clients after 120 seconds
 
 		// TickTimeout is in microseconds
 		public int TickTimeout { get { return PingInterval * 100; } }

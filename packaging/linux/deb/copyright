@@ -3,11 +3,11 @@ Upstream-Name: openra
 Source: https://github.com/OpenRA/OpenRA
 
 Files: *
-Copyright: 2007-2014 The OpenRA Developers
+Copyright: 2007-2018 The OpenRA Developers
 License: GPL-3.0
 
 Files: DEBIAN/*
-Copyright: 2007-2014 The OpenRA Developers
+Copyright: 2007-2018 The OpenRA Developers
 License: GPL-3.0
 
 License: GPL-3.0

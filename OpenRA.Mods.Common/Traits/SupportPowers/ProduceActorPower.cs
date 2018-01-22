@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -57,14 +57,18 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 
 			var info = Info as ProduceActorPowerInfo;
-			var sp = self.TraitsImplementing<Production>()
-				.FirstOrDefault(p => p.Info.Produces.Contains(info.Type));
+			var producers = self.World.ActorsWithTrait<Production>()
+				.Where(x => x.Actor.Owner == self.Owner
+					&& !x.Trait.IsTraitDisabled
+					&& x.Trait.Info.Produces.Contains(info.Type))
+					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
+					.ThenByDescending(x => x.Actor.ActorID);
 
 			// TODO: The power should not reset if the production fails.
 			// Fixing this will require a larger rework of the support power code
 			var activated = false;
 
-			if (sp != null)
+			foreach (var p in producers)
 			{
 				foreach (var name in info.Actors)
 				{
@@ -75,8 +79,11 @@ namespace OpenRA.Mods.Common.Traits
 						new FactionInit(BuildableInfo.GetInitialFaction(ai, faction))
 					};
 
-					activated |= sp.Produce(self, ai, info.Type, inits);
+					activated |= p.Trait.Produce(p.Actor, ai, info.Type, inits);
 				}
+
+				if (activated)
+					break;
 			}
 
 			if (activated)

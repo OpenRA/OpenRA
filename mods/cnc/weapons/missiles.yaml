@@ -75,8 +75,6 @@ BikeRockets:
 OrcaAGMissiles:
 	Inherits: ^MissileWeapon
 	ReloadDelay: 12
-	Burst: 2
-	BurstDelays: 12
 	Range: 5c0
 	MinRange: 1c256
 	ValidTargets: Ground

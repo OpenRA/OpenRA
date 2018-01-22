@@ -37,21 +37,6 @@ frigate:
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		VTOL: true # The frigate would teleport to land otherwise
 
-starport:
-	ProvidesPrerequisite@harkonnen:
-		Prerequisite: starport.harkonnen
-		Factions: harkonnen, corrino
-
-light_factory:
-	ProvidesPrerequisite@trikes:
-		Prerequisite: light.regulartrikes
-		Factions: atreides, harkonnen, corrino
-
-heavy_factory:
-	ProvidesPrerequisite@harkonnen:
-		Prerequisite: heavy.harkonnen
-		Factions: harkonnen, corrino
-
 palace:
 	ProvidesPrerequisite@sardaukar:
 		Prerequisite: palace.sardaukar

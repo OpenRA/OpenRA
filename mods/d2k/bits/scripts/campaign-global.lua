@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,7 @@
 Difficulty = Map.LobbyOption("difficulty")
 
 IdleHunt = function(actor)
-	if not actor.IsDead then
+	if actor.HasProperty("Hunt") and not actor.IsDead then
 		Trigger.OnIdle(actor, actor.Hunt)
 	end
 end
@@ -179,6 +179,10 @@ end
 
 DefendAndRepairBase = function(owner, baseBuildings, modifier, defenderCount)
 	Utils.Do(baseBuildings, function(actor)
+		if actor.IsDead then
+			return
+		end
+
 		DefendActor(actor, owner, defenderCount)
 		RepairBuilding(owner, actor, modifier)
 	end)

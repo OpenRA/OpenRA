@@ -286,22 +286,22 @@ SYRD:
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
-		ProductionTypes: Ship
+		ProductionTypes: Ship, Boat
 	Exit@2:
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
-		ProductionTypes: Ship
+		ProductionTypes: Ship, Boat
 	Exit@3:
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
-		ProductionTypes: Ship
+		ProductionTypes: Ship, Boat
 	Exit@4:
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
-		ProductionTypes: Ship
+		ProductionTypes: Ship, Boat
 	Production:
 		Produces: Ship, Boat
 	PrimaryBuilding:
@@ -690,6 +690,15 @@ PBOX:
 		Amount: -20
 	DetectCloaked:
 		Range: 6c0
+
+PBOX2:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox2
+	RenderSprites:
+		Image: PBOX
+	Cargo:
+		InitialUnits: e3
 
 HBOX:
 	Inherits: ^Defense
@@ -1434,6 +1443,7 @@ AFLD:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
+		Prerequisite: afld
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, SpyInfiltrate
 	InfiltrateForSupportPower:

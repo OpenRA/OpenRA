@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -160,7 +160,12 @@ namespace OpenRA.Mods.Common.AI
 
 						case DecisionMetric.Health:
 							var health = a.TraitOrDefault<Health>();
-							return (health != null) ? (health.HP / health.MaxHP) * Attractiveness : 0;
+
+							if (health == null)
+								return 0;
+
+							// Cast to long to avoid overflow when multiplying by the health
+							return (int)((long)health.HP * Attractiveness / health.MaxHP);
 
 						default:
 							return Attractiveness;

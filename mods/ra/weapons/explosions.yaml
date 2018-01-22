@@ -123,10 +123,10 @@ SmallBuildingExplode:
 	Warhead@2Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
 
-CivBuildingExplosion:
-	Inherits: SmallBuildingExplode
+CivPanicExplosion:
 	Warhead@1Dam: SpreadDamage # Used to panic civilians which are emitted from a killed CivBuilding
-		Spread: 64
+		Falloff: 100, 100
+		Range: 0, 128
 		Damage: 1
 		Delay: 1
 
@@ -227,7 +227,7 @@ CrateNuke:
 		VictimScanRadius: 0
 	Warhead@6Smu_areanuke1: LeaveSmudge
 		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Trees
 		Size: 4
 		Delay: 5
 	Warhead@TREEKILL: SpreadDamage
@@ -317,6 +317,6 @@ MiniNuke:
 		Delay: 15
 	Warhead@13Smu_areanuke3: LeaveSmudge
 		SmudgeType: Scorch
-		InvalidTargets: Vehicle, Tank, Structure, Wall, Trees
+		InvalidTargets: Vehicle, Structure, Wall, Trees
 		Size: 4
 		Delay: 15

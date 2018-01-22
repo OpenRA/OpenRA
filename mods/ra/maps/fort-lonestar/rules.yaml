@@ -240,7 +240,6 @@ E7:
 		Cost: 750
 
 3TNK:
-	Inherits: ^Tank
 	Armament:
 		Weapon: TankNapalm
 		Recoil: 200
@@ -296,7 +295,6 @@ FTRK:
 		MuzzleSequence: muzzle
 
 ARTY:
-	Inherits: ^Tank
 	Valued:
 		Cost: 600
 	Health:

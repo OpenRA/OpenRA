@@ -378,6 +378,21 @@ lobby-bits: buttons.png
 	protected: 202,0,10,13
 	protected-disabled: 213,0,10,13
 
+reload-icon: dialog.png
+	enabled: 160,480,16,16
+	disabled-0: 176,480,16,16
+	disabled-1: 192,480,16,16
+	disabled-2: 208,480,16,16
+	disabled-3: 224,480,16,16
+	disabled-4: 240,480,16,16
+	disabled-5: 256,480,16,16
+	disabled-6: 272,480,16,16
+	disabled-7: 288,480,16,16
+	disabled-8: 304,480,16,16
+	disabled-9: 320,480,16,16
+	disabled-10: 336,480,16,16
+	disabled-11: 352,480,16,16
+
 strategic: buttons.png
 	unowned: 127,5,23,22
 	critical_unowned: 127,27,23,22

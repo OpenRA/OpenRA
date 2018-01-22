@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Projectiles
 	public class CyclicImpactProjectileInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Warhead explosion offsets")]
-		public readonly WVec[] Offsets = { new WVec(1, 0, 0) };
+		public readonly WVec[] Offsets = { new WVec(0, 1, 0) };
 
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
 		public readonly WDist[] Speed = { new WDist(17) };
@@ -113,9 +113,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args) { return new CyclicImpactProjectile(this, args); }
 
-		void RulesetLoaded(Ruleset rules, WeaponInfo wi)
+		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
-			//TODO this is not being called at all so it'll always crash when using projectile
 			WeaponInfo weapon;
 			if (!rules.Weapons.TryGetValue(Weapon.ToLowerInvariant(), out weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(Weapon.ToLowerInvariant()));
@@ -126,11 +125,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (BounceBlockerScanRadius < WDist.Zero)
 				BounceBlockerScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
-		}
-
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
-		{
-			throw new NotImplementedException();
 		}
 	}
 

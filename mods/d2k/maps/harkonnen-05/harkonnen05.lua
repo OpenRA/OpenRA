@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -280,6 +280,6 @@ WorldLoaded = function()
 	SendHarkonnenReinforcements(DateTime.Seconds(35), 2)
 
 	local ordosCondition = function() return player.IsObjectiveCompleted(KillOrdos) end
-	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[1], OrdosHunters[1], OrdosHunterPaths[3], ordosCondition)
-	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[2], OrdosHunters[2], OrdosHunterPaths[2], ordosCondition)
+	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[1], OrdosHunters[1], OrdosHunterPaths[2], ordosCondition)
+	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[2], OrdosHunters[2], OrdosHunterPaths[1], ordosCondition)
 end

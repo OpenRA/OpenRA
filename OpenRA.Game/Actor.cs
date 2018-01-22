@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -276,27 +276,33 @@ namespace OpenRA
 		// TODO: move elsewhere.
 		public void ChangeOwner(Player newOwner)
 		{
-			World.AddFrameEndTask(w =>
-			{
-				if (Disposed)
-					return;
+			World.AddFrameEndTask(_ => ChangeOwnerSync(newOwner));
+		}
 
-				var oldOwner = Owner;
-				var wasInWorld = IsInWorld;
+		/// <summary>
+		/// Change the actors owner without queuing a FrameEndTask.
+		/// This must only be called from inside an existing FrameEndTask.
+		/// </summary>
+		public void ChangeOwnerSync(Player newOwner)
+		{
+			if (Disposed)
+				return;
 
-				// momentarily remove from world so the ownership queries don't get confused
-				if (wasInWorld)
-					w.Remove(this);
+			var oldOwner = Owner;
+			var wasInWorld = IsInWorld;
 
-				Owner = newOwner;
-				Generation++;
+			// momentarily remove from world so the ownership queries don't get confused
+			if (wasInWorld)
+				World.Remove(this);
 
-				foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
-					t.OnOwnerChanged(this, oldOwner, newOwner);
+			Owner = newOwner;
+			Generation++;
 
-				if (wasInWorld)
-					w.Add(this);
-			});
+			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
+				t.OnOwnerChanged(this, oldOwner, newOwner);
+
+			if (wasInWorld)
+				World.Add(this);
 		}
 
 		public DamageState GetDamageState()
