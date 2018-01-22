@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -107,15 +107,18 @@ namespace OpenRA
 
 								case TargetType.FrozenActor:
 									{
+										var playerActorID = r.ReadUInt32();
+										var frozenActorID = r.ReadUInt32();
+
 										Actor playerActor;
-										if (world == null || !TryGetActorFromUInt(world, r.ReadUInt32(), out playerActor))
+										if (world == null || !TryGetActorFromUInt(world, playerActorID, out playerActor))
 											break;
 
 										var frozenLayer = playerActor.TraitOrDefault<FrozenActorLayer>();
 										if (frozenLayer == null)
 											break;
 
-										var frozen = frozenLayer.FromID(r.ReadUInt32());
+										var frozen = frozenLayer.FromID(frozenActorID);
 										if (frozen != null)
 											target = Target.FromFrozenActor(frozen);
 
@@ -281,7 +284,7 @@ namespace OpenRA
 						w.Write(UIntFromActor(Target.SerializableActor));
 						break;
 					case TargetType.FrozenActor:
-						w.Write(Target.FrozenActor.Owner.PlayerActor.ActorID);
+						w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
 						w.Write(Target.FrozenActor.ID);
 						break;
 					case TargetType.Terrain:

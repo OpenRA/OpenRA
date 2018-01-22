@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -353,7 +353,6 @@ namespace OpenRA
 				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor), "Trait");
 
 				effects.DoTimed(e => e.Tick(this), "Effect");
-				ScreenMap.Tick();
 			}
 
 			while (frameEndActions.Count != 0)
@@ -364,6 +363,7 @@ namespace OpenRA
 		public void TickRender(WorldRenderer wr)
 		{
 			ActorsWithTrait<ITickRender>().DoTimed(x => x.Trait.TickRender(wr, x.Actor), "Render");
+			ScreenMap.TickRender();
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors.Values; } }
