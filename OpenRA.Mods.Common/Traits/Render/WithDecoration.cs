@@ -37,7 +37,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Sequence = null;
 
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		[PaletteReference] public readonly string Palette = "chrome";
+		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "chrome";
+
+		[Desc("Custom palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
 
 		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
 			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]
@@ -131,7 +134,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset) + sizeOffset;
-			return new IRenderable[] { new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette), 1f) };
+			return new IRenderable[]
+			{
+				new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette + (Info.IsPlayerPalette ? self.Owner.InternalName : "")), 1f)
+			};
 		}
 
 		void ITick.Tick(Actor self) { Anim.Tick(); }
