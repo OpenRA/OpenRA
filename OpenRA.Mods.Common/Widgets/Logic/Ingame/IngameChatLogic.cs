@@ -145,7 +145,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				AddChatLine(chatLine.Color, chatLine.Name, chatLine.Text, true);
 
 			orderManager.AddChatLine += AddChatLineWrapper;
-			Game.BeforeGameStart += UnregisterEvents;
 
 			chatText.IsDisabled = () => world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays;
 
@@ -175,12 +174,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!disableTeamChat)
 				teamChat ^= true;
 			return true;
-		}
-
-		void UnregisterEvents()
-		{
-			orderManager.AddChatLine -= AddChatLineWrapper;
-			Game.BeforeGameStart -= UnregisterEvents;
 		}
 
 		public void OpenChat()
@@ -245,6 +238,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (!replayCache)
 				Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+		}
+
+		bool disposed = false;
+		protected override void Dispose(bool disposing)
+		{
+			if (!disposed)
+			{
+				orderManager.AddChatLine -= AddChatLineWrapper;
+				disposed = true;
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 }
