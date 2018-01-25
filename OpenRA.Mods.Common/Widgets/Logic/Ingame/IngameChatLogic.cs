@@ -196,14 +196,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void AddChatLineWrapper(Color c, string from, string text)
 		{
-			AddChatLine(c, from, text, false);
-		}
-
-		void AddChatLine(Color c, string from, string text, bool replayCache)
-		{
-			if (!replayCache && chatOverlayDisplay != null)
+			if (chatOverlayDisplay != null)
 				chatOverlayDisplay.AddLine(c, from, text);
 
+			// HACK: Force disable the chat notification sound for the in-menu chat dialog
+			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
+			AddChatLine(c, from, text, chatOverlay == null);
+		}
+
+		void AddChatLine(Color c, string from, string text, bool suppressSound)
+		{
 			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var textLabel = template.Get<LabelWidget>("TEXT");
@@ -236,7 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
-			if (!replayCache)
+			if (!suppressSound)
 				Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
 		}
 
