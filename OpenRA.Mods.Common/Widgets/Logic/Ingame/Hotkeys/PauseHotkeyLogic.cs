@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
-			// Disable pausing for spectators and defeated players unless they are the game host
-			if (!Game.IsHost && (world.LocalPlayer == null || world.LocalPlayer.WinState == WinState.Lost))
+			// Disable pausing for spectators and players unless they are the game host.
+			if (!Game.IsHost && (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined))
 				return false;
 
 			world.SetPauseState(!world.Paused);

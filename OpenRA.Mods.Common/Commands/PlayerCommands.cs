@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Commands
 			switch (name)
 			{
 				case "pause":
-					if (Game.IsHost || (world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Lost))
+					// Disable pausing for spectators and players unless they are the game host.
+					if (!Game.IsHost && (world.LocalPlayer == null || world.LocalPlayer.WinState == WinState.Undefined))
 						world.IssueOrder(new Order("PauseGame", null, false)
 						{
 							TargetString = world.Paused ? "UnPause" : "Pause"
