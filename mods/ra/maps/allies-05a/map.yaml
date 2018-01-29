@@ -1399,7 +1399,7 @@ Actors:
 	Prison: miss
 		Location: 25,106
 		Owner: USSR
-	Warfactory: weap
+	Warfactory: weap.infiltratable
 		Location: 43,50
 		Owner: USSR
 	Warfactory2: weap
