@@ -22,7 +22,7 @@ namespace OpenRA.Orders
 		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(mi)
-				.Where(a => a.Actor.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a.Actor))
+				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a.Actor))
 				.WithHighestSelectionPriority(worldPixel);
 
 			if (actor != null)
@@ -88,7 +88,10 @@ namespace OpenRA.Orders
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
 		public virtual bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
 		{
-			var actor = world.ScreenMap.ActorsAtMouse(xy).WithHighestSelectionPriority(xy);
+			var actor = world.ScreenMap.ActorsAtMouse(xy)
+				.Where(a => !a.Actor.IsDead)
+				.WithHighestSelectionPriority(xy);
+
 			if (actor == null)
 				return true;
 
