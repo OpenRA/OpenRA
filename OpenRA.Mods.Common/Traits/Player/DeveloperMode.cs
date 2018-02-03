@@ -219,15 +219,13 @@ namespace OpenRA.Mods.Common.Traits
 						break;
 
 					var actor = order.Target.Actor;
-					var health = actor.TraitOrDefault<Health>();
 					var args = order.TargetString.Split(' ');
 					var damageTypes = new HashSet<string>();
 
 					foreach (var damageType in args)
 						damageTypes.Add(damageType);
 
-					if (health != null)
-						health.InflictDamage(actor, actor, new Damage(health.HP, damageTypes), true);
+					actor.Kill(actor, damageTypes);
 
 					break;
 				}

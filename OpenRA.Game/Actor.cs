@@ -321,12 +321,12 @@ namespace OpenRA
 			health.InflictDamage(this, attacker, damage, false);
 		}
 
-		public void Kill(Actor attacker)
+		public void Kill(Actor attacker, HashSet<string> damageTypes = null)
 		{
 			if (Disposed || health == null)
 				return;
 
-			health.Kill(this, attacker);
+			health.Kill(this, attacker, damageTypes);
 		}
 
 		public bool CanBeViewedByPlayer(Player player)
