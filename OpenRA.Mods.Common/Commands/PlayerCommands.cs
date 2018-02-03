@@ -39,10 +39,7 @@ namespace OpenRA.Mods.Common.Commands
 			{
 				case "pause":
 					if (Game.IsHost || (world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Lost))
-						world.IssueOrder(new Order("PauseGame", null, false)
-						{
-							TargetString = world.Paused ? "UnPause" : "Pause"
-						});
+						world.SetPauseState(!world.Paused);
 
 					break;
 				case "surrender":
