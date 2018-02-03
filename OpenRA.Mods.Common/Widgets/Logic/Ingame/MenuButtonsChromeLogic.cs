@@ -107,6 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							if (statsHotkeys[i].IsActivatedBy(e))
 							{
+								Game.Sound.PlayNotification(modData.DefaultRules, null, "Sounds", "ClickSound", null);
 								OpenMenuPanel(stats, new WidgetArgs() { { "activePanel", i } });
 								return true;
 							}
