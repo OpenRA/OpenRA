@@ -125,6 +125,11 @@ namespace OpenRA.Network
 						if (client != null)
 						{
 							var pause = order.TargetString == "Pause";
+
+							// Prevent injected unpause orders from restarting a finished game
+							if (orderManager.World.PauseStateLocked && !pause)
+								break;
+
 							if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
