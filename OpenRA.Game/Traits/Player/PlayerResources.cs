@@ -119,7 +119,7 @@ namespace OpenRA.Traits
 				{
 					checked
 					{
-						Cash += num;
+						Cash += Math.Abs(num);
 					}
 				}
 				catch (OverflowException)
