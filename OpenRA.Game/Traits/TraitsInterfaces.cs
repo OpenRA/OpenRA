@@ -42,7 +42,7 @@ namespace OpenRA.Traits
 		bool IsDead { get; }
 
 		void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers);
-		void Kill(Actor self, Actor attacker);
+		void Kill(Actor self, Actor attacker, HashSet<string> damageTypes);
 	}
 
 	// depends on the order of pips in WorldRenderer.cs!

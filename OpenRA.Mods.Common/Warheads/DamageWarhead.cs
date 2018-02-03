@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("How much (raw) damage to deal.")]
 		public readonly int Damage = 0;
 
-		[Desc("Types of damage that this warhead causes. Leave empty for no damage.")]
+		[Desc("Types of damage that this warhead causes. Leave empty for no damage types.")]
 		public readonly HashSet<string> DamageTypes = new HashSet<string>();
 
 		[Desc("Damage percentage versus each armortype.")]

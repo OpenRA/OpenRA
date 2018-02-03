@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The amount of time (in ticks) before the actor dies. Two values indicate a range between which a random value is chosen.")]
 		public readonly int[] Delay = { 0 };
+
+		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant moments before suiciding.")]
@@ -81,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
 				self.Dispose();
 			else
-				self.Kill(self);
+				self.Kill(self, Info.DamageTypes);
 		}
 	}
 }

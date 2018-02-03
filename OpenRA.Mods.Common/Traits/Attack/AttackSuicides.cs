@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Does a suicide attack where it moves next to the target when used in combination with `Explodes`.")]
 	class AttackSuicidesInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
+		[Desc("Types of damage that this trait causes to self while suiciding. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public override object Create(ActorInitializer init) { return new AttackSuicides(init.Self, this); }
@@ -82,10 +85,10 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(move.MoveToTarget(self, target));
 
-				self.QueueActivity(new CallFunc(() => self.Kill(self)));
+				self.QueueActivity(new CallFunc(() => self.Kill(self, Info.DamageTypes)));
 			}
 			else if (order.OrderString == "Detonate")
-				self.Kill(self);
+				self.Kill(self, Info.DamageTypes);
 		}
 	}
 }

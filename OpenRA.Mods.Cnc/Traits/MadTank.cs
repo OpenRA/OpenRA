@@ -53,6 +53,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		public WeaponInfo ThumpDamageWeaponInfo { get; private set; }
 		public WeaponInfo DetonationWeaponInfo { get; private set; }
 
+		[Desc("Types of damage that this trait causes to self while self-destructing. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -146,7 +149,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					info.DetonationWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
 				}
 
-				self.Kill(self);
+				self.Kill(self, info.DamageTypes);
 			});
 		}
 

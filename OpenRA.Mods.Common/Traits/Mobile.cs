@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("e.g. crate, wall, infantry")]
 		public readonly HashSet<string> Crushes = new HashSet<string>();
 
+		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]
+		public readonly HashSet<string> CrushDamageTypes = new HashSet<string>();
+
 		public readonly int WaitAverage = 5;
 
 		public readonly int WaitSpread = 2;
