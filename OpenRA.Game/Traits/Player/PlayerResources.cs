@@ -113,13 +113,13 @@ namespace OpenRA.Traits
 
 		public void GiveCash(int num)
 		{
-			if (Cash < int.MaxValue)
+			if (Cash < int.MaxValue && num > 0)
 			{
 				try
 				{
 					checked
 					{
-						Cash += Math.Abs(num);
+						Cash += num;
 					}
 				}
 				catch (OverflowException)
