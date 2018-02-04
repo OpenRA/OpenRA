@@ -32,10 +32,10 @@ namespace OpenRA
 		[STAThread]
 		static int Main(string[] args)
 		{
-			if (args.Any(x => x.Contains("Engine.LaunchPath")))
+			if (args.Any(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
 				return RunGame(args);
 
-			return RunInnerLauncher();
+			return RunInnerLauncher(args);
 		}
 
 		static int RunGame(string[] args)
@@ -57,16 +57,18 @@ namespace OpenRA
 			}
 		}
 
-		static int RunInnerLauncher()
+		static int RunInnerLauncher(string[] args)
 		{
 			var launcherPath = Assembly.GetExecutingAssembly().Location;
-			var args = new[] { "Engine.LaunchPath=" + launcherPath };
-			if (!string.IsNullOrEmpty(ModID))
-				args = args.Append("Game.Mod=" + ModID).ToArray();
+			var launcherArgs = args.ToList();
 
-			args = args.Select(arg => "\"" + arg + "\"").ToArray();
+			if (!launcherArgs.Any(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
+				launcherArgs.Add("Engine.LaunchPath=\"" + launcherPath + "\"");
 
-			var psi = new ProcessStartInfo(launcherPath, string.Join(" ", args));
+			if (!launcherArgs.Any(x => x.StartsWith("Game.Mod=", StringComparison.Ordinal)))
+				launcherArgs.Add("Game.Mod=" + ModID);
+
+			var psi = new ProcessStartInfo(launcherPath, string.Join(" ", launcherArgs));
 
 			try
 			{
