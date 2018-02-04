@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.Self.Owner.PlayerActor, this); }
 
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) {
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
 			if (LowPowerSlowdown <= 0)
 				throw new YamlException("Production queue must have LowPowerSlowdown of at least 1.");
 		}
