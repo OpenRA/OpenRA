@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			var power = Instances.Where(i => !i.IsTraitPaused)
+			var power = Instances.Where(i => !i.IsTraitPaused && !i.IsTraitDisabled)
 				.MinByOrDefault(a =>
 				{
 					if (a.Self.OccupiesSpace == null)
