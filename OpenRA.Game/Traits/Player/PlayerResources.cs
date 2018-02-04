@@ -113,7 +113,7 @@ namespace OpenRA.Traits
 
 		public void GiveCash(int num)
 		{
-			if (Cash < int.MaxValue && num > 0)
+			if (Cash < int.MaxValue && Cash + num > 0)
 			{
 				try
 				{
