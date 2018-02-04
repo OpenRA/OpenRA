@@ -84,7 +84,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			{ 360, Pair.New("light_inf", "Harkonnen") },
 			{ 361, Pair.New("trooper", "Harkonnen") },
 			{ 362, Pair.New("fremen", "Harkonnen") },
-			{ 363, Pair.New("sardaukar", "Harkonnen") },
+			{ 363, Pair.New("mpsardaukar", "Harkonnen") },
 			{ 364, Pair.New("engineer", "Harkonnen") },
 			{ 365, Pair.New("harvester", "Harkonnen") },
 			{ 366, Pair.New("mcv", "Harkonnen") },

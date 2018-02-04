@@ -61,6 +61,12 @@ grenadier:
 		Cost: 0
 
 sardaukar:
+	Buildable:
+		Prerequisites: ~player.corrino
+	Valued:
+		Cost: 0
+
+mpsardaukar:
 	Valued:
 		Cost: 0
 

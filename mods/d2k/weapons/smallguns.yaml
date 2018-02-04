@@ -35,6 +35,10 @@ M_LMG:
 	Inherits: ^MG
 	ReloadDelay: 40
 
+M_LMG_H:
+	Inherits: M_LMG
+	ReloadDelay: 50
+
 M_HMG:
 	Inherits: ^MG
 	ReloadDelay: 40
@@ -53,6 +57,10 @@ M_HMG:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
+
+M_HMG_H:
+	Inherits: M_HMG
+	ReloadDelay: 50
 
 Fremen_L:
 	Inherits: M_HMG

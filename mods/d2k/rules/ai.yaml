@@ -51,9 +51,9 @@ Player:
 			carryall: 1%
 			light_inf: 65%
 			trooper: 40%
-			sardaukar: 20%
-			harvester: 1%
+			mpsardaukar: 20%
 			grenadier: 20%
+			harvester: 1%
 			trike.starport: 5%
 			quad.starport: 7.5%
 			siege_tank.starport: 5%
@@ -172,7 +172,7 @@ Player:
 			carryall: 1%
 			light_inf: 65%
 			trooper: 40%
-			sardaukar: 20%
+			mpsardaukar: 20%
 			grenadier: 20%
 			harvester: 1%
 			trike.starport: 7.5%
@@ -292,7 +292,7 @@ Player:
 			carryall: 1%
 			light_inf: 65%
 			trooper: 40%
-			sardaukar: 20%
+			mpsardaukar: 20%
 			grenadier: 20%
 			harvester: 1%
 			trike.starport: 5%
