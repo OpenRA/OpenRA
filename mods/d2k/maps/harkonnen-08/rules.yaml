@@ -36,7 +36,7 @@ frigate:
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		VTOL: true # The frigate would teleport to land otherwise
 
-sardaukar:
+mpsardaukar:
 	Buildable:
 		Prerequisites: ~disabled
 

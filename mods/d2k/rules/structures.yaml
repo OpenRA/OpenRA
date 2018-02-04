@@ -1086,6 +1086,9 @@ palace:
 	ProvidesPrerequisite@saboteur:
 		Prerequisite: palace.saboteur
 		Factions: ordos
+	ProvidesPrerequisite@sardaukar:
+		Prerequisite: palace.sardaukar
+		Factions: corrino
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		RequiresCondition: atreides || ordos
