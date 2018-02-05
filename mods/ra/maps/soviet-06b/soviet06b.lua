@@ -58,9 +58,11 @@ Trigger.OnKilled(Apwr2, function(building)
 	BaseApwr2.exists = false
 end)
 
-Trigger.OnKilled(Dome, function()
-	player.MarkCompletedObjective(sovietObjective2)
-	Media.PlaySpeechNotification(player, "ObjectiveMet")
+Trigger.OnKilledOrCaptured(Dome, function()
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		player.MarkCompletedObjective(sovietObjective2)
+		Media.PlaySpeechNotification(player, "ObjectiveMet")
+	end)
 end)
 
 Trigger.OnRemovedFromWorld(Mcv, function()
@@ -110,7 +112,7 @@ WorldLoaded = function()
 	end)
 	alliedObjective = enemy.AddPrimaryObjective("Destroy all Soviet troops.")
 	sovietObjective = player.AddPrimaryObjective("Escort the Convoy.")
-	sovietObjective2 = player.AddSecondaryObjective("Destroy the Allied radar dome to stop enemy\nreinforcements.")
+	sovietObjective2 = player.AddSecondaryObjective("Destroy or capture the Allied radar dome to stop\nenemy reinforcements.")
 	SaveAllTrucks = player.AddSecondaryObjective("Keep all trucks alive.")
 end
 
