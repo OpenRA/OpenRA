@@ -239,6 +239,7 @@
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
     <Compile Include="Scripting\Properties\MobileProperties.cs" />
+    <Compile Include="Scripting\Properties\DeliveryProperties.cs" />
     <Compile Include="Scripting\Properties\DemolitionProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerExperienceProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
