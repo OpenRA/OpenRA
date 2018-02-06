@@ -266,6 +266,7 @@
     <Compile Include="Scripting\Properties\ConditionProperties.cs" />
     <Compile Include="Scripting\Properties\ParadropProperties.cs" />
     <Compile Include="Scripting\Properties\ParatroopersProperties.cs" />
+    <Compile Include="Scripting\Properties\NukeProperties.cs" />
     <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AcceptsDeliveredCash.cs" />
     <Compile Include="Traits\AcceptsDeliveredExperience.cs" />
