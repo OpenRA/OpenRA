@@ -1170,9 +1170,6 @@ palace:
 	GrantConditionOnFaction@Harkonnen:
 		Condition: harkonnen
 		Factions: harkonnen
-	GrantConditionOnFaction@Corrino:
-		Condition: corrino
-		Factions: corrino
 	GrantConditionOnFaction@Ordos:
 		Condition: ordos
 		Factions: ordos, mercenary, smuggler
