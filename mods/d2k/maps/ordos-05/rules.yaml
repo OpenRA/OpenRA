@@ -1,0 +1,61 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+
+World:
+	LuaScript:
+		Scripts: campaign-global.lua, ordos05.lua, ordos05-AI.lua
+	MissionData:
+		Briefing: Spice is paramount. The Atreides possess the Spice. We must capture their Starport and bring in an MCV to harvest the Spice.\n\nCombat is costly. Fight only if the Atreides obstruct the flow of Spice. Use the minimum amount of funds for defense.\n\nMine and store what is needed to pay our debt to the Ixians. Once that amount has been collected, Ordos forces will withdraw.
+		BriefingVideo: O_BR05_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			AtreidesMainBase: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmallBase1: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmallBase2: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmallBase3: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		VTOL: true # The frigate would teleport to land otherwise
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+siege_tank:
+	Buildable:
+		Prerequisites: ~disabled
