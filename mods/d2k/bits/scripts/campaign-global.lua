@@ -194,7 +194,7 @@ ProduceUnits = function(player, factory, delay, toBuild, attackSize, attackThres
 	end
 
 	if HoldProduction[player] then
-		Trigger.AfterDelay(DateTime.Minutes(1), function() ProduceUnits(player, factory, delay, toBuild, attackSize, attackThresholdSize) end)
+		Trigger.AfterDelay(DateTime.Seconds(10), function() ProduceUnits(player, factory, delay, toBuild, attackSize, attackThresholdSize) end)
 		return
 	end
 
