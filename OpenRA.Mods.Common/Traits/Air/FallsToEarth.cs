@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo ExplosionWeapon { get; private set; }
 
-		public object Create(ActorInitializer init) { return new FallsToEarth(init.Self, this); }
+		public object Create(ActorInitializer init) { return new FallsToEarth(init, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (string.IsNullOrEmpty(Explosion))
@@ -42,11 +42,18 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class FallsToEarth
+	public class FallsToEarth : IEffectiveOwner
 	{
-		public FallsToEarth(Actor self, FallsToEarthInfo info)
+		readonly Player effectiveOwner;
+
+		public FallsToEarth(ActorInitializer init, FallsToEarthInfo info)
 		{
-			self.QueueActivity(false, new FallToEarth(self, info));
+			init.Self.QueueActivity(false, new FallToEarth(init.Self, info));
+			effectiveOwner = init.Contains<EffectiveOwnerInit>() ? init.Get<EffectiveOwnerInit, Player>() : init.Self.Owner;
 		}
+
+		// We return init.Self.Owner if there's no effective owner
+		bool IEffectiveOwner.Disguised { get { return true; } }
+		Player IEffectiveOwner.Owner { get { return effectiveOwner; } }
 	}
 }
