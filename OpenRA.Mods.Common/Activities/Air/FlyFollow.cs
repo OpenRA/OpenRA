@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 				Fly.FlyToward(self, plane, (directVector.Yaw + WAngle.FromDegrees(180)).Facing, plane.Info.CruiseAltitude);
 				return this;
 			}
-	
+
 			if (target.IsInRange(self.CenterPosition, maxRange))
 			{
 				Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);

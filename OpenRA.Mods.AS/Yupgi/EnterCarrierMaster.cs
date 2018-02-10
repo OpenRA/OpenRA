@@ -1,19 +1,16 @@
 ﻿#region Copyright & License Information
 /*
  * Modded by Boolbada of OP mod, from Engineer repair enter activity.
- * 
- * Note: You can still use this without modifying the OpenRA engine itself by deleting 
+ * Note: You can still use this without modifying the OpenRA engine itself by deleting
  * FindAndTransitionToNextState. I just deleted a few lines of "movement" recovery code so that
  * interceptors can enter moving carrier.
  * However, for better results, consider modding the engine, as in the following commit:
  * https://github.com/forcecore/OpenRA/commit/fd36f63e508b7ad28e7d320355b7d257654b33ee
- * 
  * Also, interceptors sometimes try to land on ground level.
  * To mitigate that, I added LnadingDistance in Spawned trait.
  * However, that isn't perfect. For perfect results, Land.cs of the engine must be modified:
  * https://github.com/forcecore/OpenRA/commit/45970f57283150bc57ce86b8ce8a555018c6ca14
  * I couldn't make it independent as it relies on other stuff in Enter.cs too much.
- * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
@@ -44,7 +41,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 		readonly CarrierMaster spawnerMaster;
 
 		public EnterCarrierMaster(Actor self, Actor master, CarrierMaster spawnerMaster, EnterBehaviour enterBehaviour, WDist closeEnoughDist)
-			: base(self, master, enterBehaviour) //closeenoughdist
+			: base(self, master, enterBehaviour) ////closeenoughdist
 		{
 			this.master = master;
 			this.spawnerMaster = spawnerMaster;
@@ -94,7 +91,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 				var ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.AutoReloads).ToArray();
 				if (ammoPools != null)
 					foreach (var pool in ammoPools)
-						while (pool.GiveAmmo(self, 1)) ; // fill 'er up.
+						while (pool.GiveAmmo(self, 1)); // fill 'er up.
 			});
 		}
 	}

@@ -2,7 +2,6 @@
 /*
  * Modded by Boolbada of OP Mod.
  * Modded from CreateResourceWarhead by OpenRA devs.
- * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License

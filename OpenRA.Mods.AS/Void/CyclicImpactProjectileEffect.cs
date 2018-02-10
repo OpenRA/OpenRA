@@ -34,8 +34,6 @@ namespace OpenRA.Mods.Common.Effects
 			this.lifespan = lifespan;
 			projectilepos = args.Source;
 			source = args.Source;
-			var map = args.SourceActor.World.Map;
-			var firedBy = args.SourceActor;
 
 			world = args.SourceActor.World;
 			targetpos = args.PassiveTarget;
@@ -147,7 +145,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (info.ContrailLength > 0)
 				world.AddFrameEndTask(w => w.Add(new ContrailFader(projectilepos, contrail)));
 
-			world.AddFrameEndTask(w => w.Remove(this));			
+			world.AddFrameEndTask(w => w.Remove(this));
 		}
 	}
 }

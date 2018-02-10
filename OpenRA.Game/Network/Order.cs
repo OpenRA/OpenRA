@@ -247,9 +247,6 @@ namespace OpenRA
 		public Order(string orderString, Actor subject, Target target, bool queued)
 			: this(orderString, subject, target, null, queued, CPos.Zero, 0) { }
 
-		public Order(string orderString, Actor subject, Target target, bool queued)
-			: this(orderString, subject, target, null, queued, CPos.Zero, 0) { }
-
 		public byte[] Serialize()
 		{
 			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + TargetString.Length + 1 : 6);

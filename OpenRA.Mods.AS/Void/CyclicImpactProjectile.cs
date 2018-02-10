@@ -142,7 +142,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		int mindelay;
 		WRot offsetRotation;
 		CyclicImpactProjectileEffect[] projectiles; // offset projectiles
-		Map map;
 
 		public Actor SourceActor { get { return args.SourceActor; } }
 
@@ -154,7 +153,6 @@ namespace OpenRA.Mods.Common.Projectiles
 			projectilepos = args.Source;
 			sourcepos = args.Source;
 
-			map = args.SourceActor.World.Map;
 			var firedBy = args.SourceActor;
 
 			var world = args.SourceActor.World;
@@ -185,17 +183,23 @@ namespace OpenRA.Mods.Common.Projectiles
 				{
 					case FireMode.Focus:
 						offsetRotation = WRot.FromFacing(mainfacing);
-						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + new WVec(range, 0, 0).Rotate(offsetRotation);
+						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation
+							? args.PassiveTarget
+							: sourcepos + new WVec(range, 0, 0).Rotate(offsetRotation);
 						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						break;
 					case FireMode.Line:
 						offsetRotation = WRot.FromFacing(mainfacing);
-						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
+						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation
+							? args.PassiveTarget
+							: sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
 						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						break;
 					case FireMode.Spread:
 						offsetRotation = WRot.FromFacing(info.Offsets[i].Yaw.Facing - 64) + WRot.FromFacing(mainfacing);
-						offsetSourcePos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + info.Offsets[i].Rotate(offsetRotation);
+						offsetSourcePos = info.KillProjectilesWhenReachedTargetLocation
+							? args.PassiveTarget
+							: sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						offsetTargetPos = sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
 						break;
 				}
@@ -211,7 +215,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = Target.FromPos(offsetTargetPos);
 
 				// if it's true then lifespan is counted from source pos to target, instead of max range
-				lifespan = info.KillProjectilesWhenReachedTargetLocation ? Math.Max((offsetTargetPos - offsetSourcePos).Length / speed.Length, 1) : Math.Max(args.Weapon.Range.Length / speed.Length, 1);
+				lifespan = info.KillProjectilesWhenReachedTargetLocation
+					? Math.Max((offsetTargetPos - offsetSourcePos).Length / speed.Length, 1)
+					: Math.Max(args.Weapon.Range.Length / speed.Length, 1);
 
 				facing = (offsetTargetPos - offsetSourcePos).Yaw.Facing;
 				var pargs = new ProjectileArgs

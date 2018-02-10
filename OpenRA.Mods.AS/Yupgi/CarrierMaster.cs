@@ -2,7 +2,6 @@
 /*
  * Modded by Boolbada of OP Mod.
  * Modded from cargo.cs but a lot changed.
- * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
@@ -46,7 +45,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 		[Desc("Spawn rearm delay, in ticks")]
 		public readonly int RearmTicks = 150;
 
-		//TODO adapt those timed conditions to current build
+		////TODO adapt those timed conditions to current build
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self right after launching a spawned unit. (Used by V3 to make immobile.)")]
 		public readonly string LaunchingCondition = null;
@@ -152,7 +151,7 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 			// Launching condition is timed, so not saving the token.
 			if (Info.LaunchingCondition != null)
 				conditionManager.GrantCondition(self, Info.LaunchingCondition);
-			//conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
+			////conditionManager.GrantCondition(self, Info.LaunchingCondition, Info.LaunchingTicks);
 
 			SpawnIntoWorld(self, se.Actor, self.CenterPosition);
 

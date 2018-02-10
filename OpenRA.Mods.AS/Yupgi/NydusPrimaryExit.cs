@@ -1,7 +1,6 @@
 ﻿#region Copyright & License Information
 /*
  * Modded by Boolbada of OP mod, from Primary production faciility designation logic.
- * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
@@ -17,7 +16,6 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 /* Works without base engine modification */
-//TODO FIX NYDUS SETTING ITSELF PRIMARY TO NOT IN WORLD ACTOR
 namespace OpenRA.Mods.Yupgi_alert.Traits
 {
 	static class NydusPrimaryExitExts
