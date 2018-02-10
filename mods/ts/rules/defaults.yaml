@@ -434,7 +434,7 @@
 	Inherits@1: ^SpriteActor
 	Inherits@2: ^Cloakable
 	CombatDebugOverlay:
-	HiddenUnderShroud:
+	FrozenUnderFog:
 	AppearsOnRadar:
 	Interactable:
 	Building:
