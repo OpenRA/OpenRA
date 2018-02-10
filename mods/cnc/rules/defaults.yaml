@@ -376,7 +376,7 @@
 	WithDecoration@HAZMAT:
 		Image: pips
 		Sequence: pip-hazmat
-		ReferencePoint: Bottom, Right
+		ReferencePoint: Bottom, Left
 		RequiresCondition: hazmatsuits
 	ActorLostNotification:
 	SpawnActorOnDeath:
@@ -402,7 +402,7 @@
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: pip-heal
-		ReferencePoint: Bottom, Right
+		ReferencePoint: Bottom, Left
 		RequiresCondition: hospitalheal
 	DetectCloaked:
 		Range: 2c0
