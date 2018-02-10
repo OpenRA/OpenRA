@@ -67,7 +67,7 @@ namespace OpenRA.Mods.AS.Traits
 
 	public enum TimedDeployState { Charging, Ready, Active, Deploying, Undeploying }
 
-	public class GrantTimedConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice, ISync, ITick
+	public class GrantTimedConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, ISelectionBar, IOrderVoice, ISync, ITick, IIssueDeployOrder
 	{
 		readonly Actor self;
 		readonly GrantTimedConditionOnDeployInfo info;
@@ -104,15 +104,22 @@ namespace OpenRA.Mods.AS.Traits
 			}
 		}
 
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		{
+			return new Order("GrantTimedConditionOnDeploy", self, false);
+		}
+
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
+
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
-			get { yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
+			get { yield return new DeployOrderTargeter("GrantTimedConditionOnDeploy", 5,
 				() => IsCursorBlocked() ? info.DeployBlockedCursor : info.DeployCursor); }
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "GrantConditionOnDeploy")
+			if (order.OrderID == "GrantTimedConditionOnDeploy")
 				return new Order(order.OrderID, self, queued);
 
 			return null;
@@ -120,7 +127,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "GrantConditionOnDeploy" || deployState != TimedDeployState.Ready)
+			if (order.OrderString != "GrantTimedConditionOnDeploy" || deployState != TimedDeployState.Ready)
 				return;
 
 			if (!order.Queued)
@@ -140,7 +147,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "GrantConditionOnDeploy" && deployState == TimedDeployState.Ready ? info.Voice : null;
+			return order.OrderString == "GrantTimedConditionOnDeploy" && deployState == TimedDeployState.Ready ? info.Voice : null;
 		}
 
 		void Deploy()

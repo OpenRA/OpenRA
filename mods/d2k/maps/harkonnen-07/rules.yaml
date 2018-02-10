@@ -69,6 +69,10 @@ sardaukar:
 	Buildable:
 		Prerequisites: ~barracks, ~player.corrino
 
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
 grenadier:
 	Buildable:
 		Prerequisites: ~disabled

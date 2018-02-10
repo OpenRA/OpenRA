@@ -124,7 +124,8 @@ namespace OpenRA.Mods.Common.Traits
 				return NoInstances;
 
 			return a.TraitsImplementing<SupportPower>()
-				.Select(t => Powers[MakeKey(t)]);
+				.Select(t => Powers[MakeKey(t)])
+				.Where(p => p.Instances.Any(i => !i.IsTraitDisabled && i.Self == a));
 		}
 
 		public void PrerequisitesAvailable(string key)
@@ -235,7 +236,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			var power = Instances.Where(i => !i.IsTraitPaused)
+			var power = Instances.Where(i => !i.IsTraitPaused && !i.IsTraitDisabled)
 				.MinByOrDefault(a =>
 				{
 					if (a.Self.OccupiesSpace == null)

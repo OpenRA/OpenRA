@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -20,7 +21,8 @@ namespace OpenRA.Mods.AS.Traits
 		None = 0,
 		Attack = 1,
 		Damage = 2,
-		Heal = 4
+		Heal = 4,
+		Periodically = 8
 	}
 
 	[Desc("If this unit is owned by an AI, issue a deploy order automatically.")]
@@ -41,12 +43,14 @@ namespace OpenRA.Mods.AS.Traits
 		public object Create(ActorInitializer init) { return new AIDeployHelper(this); }
 	}
 
+	// TO-DO: Pester OpenRA to allow INotifyDeployTrigger to be used for other traits besides WithMakeAnimation. Like this one.
 	public class AIDeployHelper : INotifyAttack, ITick, INotifyDamage, INotifyCreated, ISync
 	{
 		readonly AIDeployHelperInfo info;
 
 		[Sync] int undeployTicks = -1, deployTicks;
-		bool undeployable;
+		bool undeployable, deployed;
+		IIssueDeployOrder[] deployTraits;
 
 		public AIDeployHelper(AIDeployHelperInfo info)
 		{
@@ -56,6 +60,7 @@ namespace OpenRA.Mods.AS.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			undeployable = self.Info.HasTraitInfo<GrantConditionOnDeployInfo>();
+			deployTraits = self.TraitsImplementing<IIssueDeployOrder>().ToArray();
 		}
 
 		void TryDeploy(Actor self)
@@ -66,13 +71,16 @@ namespace OpenRA.Mods.AS.Traits
 			if (self.World.SharedRandom.Next(100) > info.DeployChance)
 				return;
 
-			self.World.IssueOrder(new Order("DeployTransform", self, false));
-			self.World.IssueOrder(new Order("Unload", self, false));
-			self.World.IssueOrder(new Order("Detonate", self, false));
-			self.World.IssueOrder(new Order("GrantConditionOnDeploy", self, false));
+			var orders = deployTraits.Where(d => d.CanIssueDeployOrder(self)).Select(d => d.IssueDeployOrder(self));
+
+			foreach (var o in orders)
+				self.World.IssueOrder(o);
 
 			if (undeployable)
+			{
 				undeployTicks = info.UndeployTicks;
+				deployed = true;
+			}
 
 			deployTicks = info.DeployTicks;
 		}
@@ -98,11 +106,19 @@ namespace OpenRA.Mods.AS.Traits
 			if (!self.Owner.IsBot)
 				return;
 
-			if (undeployable && undeployTicks-- == 0)
-				Undeploy(self);
+			if (deployed)
+			{
+				if (--undeployTicks < 0)
+				{
+					Undeploy(self);
+					deployed = false;
+				}
 
-			if (deployTicks > 0)
-				deployTicks--;
+				return;
+			}
+
+			if (--deployTicks < 0 && info.DeployTrigger.HasFlag(DeployTriggers.Periodically))
+				TryDeploy(self);
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)

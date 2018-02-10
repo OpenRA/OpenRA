@@ -58,7 +58,7 @@ missile_tank:
 	Buildable:
 		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
 
-sardaukar:
+mpsardaukar:
 	Buildable:
 		Prerequisites: ~disabled
 
