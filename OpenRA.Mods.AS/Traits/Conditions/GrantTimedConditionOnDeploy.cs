@@ -104,7 +104,6 @@ namespace OpenRA.Mods.AS.Traits
 			}
 		}
 
-
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
 		{
 			return new Order("GrantTimedConditionOnDeploy", self, false);
