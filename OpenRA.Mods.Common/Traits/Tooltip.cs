@@ -77,7 +77,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly TooltipInfo info;
 
 		public ITooltipInfo TooltipInfo { get { return info; } }
-		public Player Owner { get { return self.Owner; } }
+
+		public Player Owner
+		{
+			get
+			{
+				return self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
+			}
+		}
 
 		public Tooltip(Actor self, TooltipInfo info)
 			: base(info)

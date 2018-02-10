@@ -40,14 +40,9 @@ frigate:
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		VTOL: true # The frigate would teleport to land otherwise
 
-palace:
-	ProvidesPrerequisite@sardaukar:
-		Prerequisite: palace.sardaukar
-		Factions: corrino
-
-sardaukar:
+mpsardaukar:
 	Buildable:
-		Prerequisites: barracks, ~palace.sardaukar
+		Prerequisites: ~disabled
 
 grenadier:
 	Buildable:

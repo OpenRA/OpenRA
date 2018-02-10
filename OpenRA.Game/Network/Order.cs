@@ -24,7 +24,8 @@ namespace OpenRA
 		TargetString = 0x04,
 		Queued = 0x08,
 		ExtraLocation = 0x10,
-		ExtraData = 0x20
+		ExtraData = 0x20,
+		TargetIsCell = 0x40
 	}
 
 	static class OrderFieldsExts
@@ -45,6 +46,7 @@ namespace OpenRA
 		public CPos ExtraLocation;
 		public uint ExtraData;
 		public bool IsImmediate;
+
 		public bool SuppressVisualFeedback;
 		public Actor VisualFeedbackTarget;
 
@@ -60,7 +62,7 @@ namespace OpenRA
 		{
 			get
 			{
-				return Target.SerializableCell.HasValue ? Target.SerializableCell.Value : CPos.Zero;
+				return Target.SerializableCell ?? CPos.Zero;
 			}
 		}
 
@@ -68,7 +70,7 @@ namespace OpenRA
 
 		Order(string orderString, Actor subject, Target target, string targetString, bool queued, CPos extraLocation, uint extraData)
 		{
-			OrderString = orderString;
+			OrderString = orderString ?? "";
 			Subject = subject;
 			Target = target;
 			TargetString = targetString;
@@ -127,8 +129,18 @@ namespace OpenRA
 
 								case TargetType.Terrain:
 									{
-										if (world != null)
-											target = Target.FromCell(world, (CPos)r.ReadInt2());
+										if (flags.HasField(OrderFields.TargetIsCell))
+										{
+											var cell = new CPos(r.ReadInt32(), r.ReadInt32(), r.ReadByte());
+											var subCell = (SubCell)r.ReadInt32();
+											if (world != null)
+												target = Target.FromCell(world, cell, subCell);
+										}
+										else
+										{
+											var pos = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
+											target = Target.FromPos(pos);
+										}
 
 										break;
 									}
@@ -137,7 +149,7 @@ namespace OpenRA
 
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
-						var extraLocation = (CPos)(flags.HasField(OrderFields.ExtraLocation) ? r.ReadInt2() : int2.Zero);
+						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? new CPos(r.ReadInt32(), r.ReadInt32(), r.ReadByte()) : CPos.Zero;
 						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
 						if (world == null)
@@ -235,10 +247,6 @@ namespace OpenRA
 		public Order(string orderString, Actor subject, Target target, bool queued)
 			: this(orderString, subject, target, null, queued, CPos.Zero, 0) { }
 
-		public Order(string orderstring, Order order)
-			: this(orderstring, order.Subject, order.Target,
-				   order.TargetString, order.Queued, order.ExtraLocation, order.ExtraData) { }
-
 		public byte[] Serialize()
 		{
 			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + TargetString.Length + 1 : 6);
@@ -273,6 +281,9 @@ namespace OpenRA
 			if (ExtraData != 0)
 				fields |= OrderFields.ExtraData;
 
+			if (Target.SerializableCell != null)
+				fields |= OrderFields.TargetIsCell;
+
 			w.Write((byte)fields);
 
 			if (fields.HasField(OrderFields.Target))
@@ -288,8 +299,13 @@ namespace OpenRA
 						w.Write(Target.FrozenActor.ID);
 						break;
 					case TargetType.Terrain:
-						// SerializableCell is guaranteed to be non-null if Type == TargetType.Terrain
-						w.Write(Target.SerializableCell.Value);
+						if (fields.HasField(OrderFields.TargetIsCell))
+						{
+							w.Write(Target.SerializableCell.Value);
+							w.Write((int)Target.SerializableSubCell);
+						}
+						else
+							w.Write(Target.SerializablePos);
 						break;
 				}
 			}
@@ -310,7 +326,8 @@ namespace OpenRA
 		{
 			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
 				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
-				OrderString, Subject, TargetActor != null ? TargetActor.Info.Name : null, TargetLocation, TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
+				OrderString, Subject, TargetActor != null ? TargetActor.Info.Name : null, TargetLocation,
+				TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
 		}
 	}
 }

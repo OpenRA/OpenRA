@@ -240,6 +240,10 @@ InitTriggers = function()
 	end)
 
 	Trigger.OnInfiltrated(Prison, function()
+		if not greece.IsObjectiveCompleted(infWarfactory) then
+			Media.DisplayMessage("Good work! But next time skip the heroics!", "Battlefield Control")
+			greece.MarkCompletedObjective(infWarfactory)
+		end
 		Trigger.ClearAll(Spy)
 		Trigger.AfterDelay(DateTime.Seconds(2), MissInfiltrated)
 	end)
