@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -48,7 +48,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Where shall the bullets fly after instantiating? Possible values are Spread, Line and Focus")]
 		public readonly FireMode FireMode = FireMode.Spread;
 
-		// end of my crap
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
 
@@ -137,12 +136,13 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Sync]
 		WPos projectilepos, targetpos, sourcepos;
-		WPos spos = WPos.Zero, tpos = WPos.Zero;
+		WPos offsetSourcePos = WPos.Zero, offsetTargetPos = WPos.Zero;
 		int lifespan;
 		int ticks;
 		int mindelay;
-		WRot rotation;
+		WRot offsetRotation;
 		CyclicImpactProjectileEffect[] projectiles; // offset projectiles
+		Map map;
 
 		public Actor SourceActor { get { return args.SourceActor; } }
 
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			projectilepos = args.Source;
 			sourcepos = args.Source;
 
-			var map = args.SourceActor.World.Map;
+			map = args.SourceActor.World.Map;
 			var firedBy = args.SourceActor;
 
 			var world = args.SourceActor.World;
@@ -173,7 +173,10 @@ namespace OpenRA.Mods.Common.Projectiles
 			var range = Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers);
 			var mainfacing = (targetpos - sourcepos).Yaw.Facing;
 
+			// target that will be assigned
 			Target target = Target.Invalid;
+
+			// main bullet facing
 			int facing = 0;
 
 			for (int i = 0; i < info.Offsets.Count(); i++)
@@ -181,24 +184,19 @@ namespace OpenRA.Mods.Common.Projectiles
 				switch (info.FireMode)
 				{
 					case FireMode.Focus:
-						rotation = WRot.FromFacing(mainfacing);
-						rotation = new WRot(rotation.Roll, rotation.Pitch, rotation.Yaw + new WAngle(256));
-						tpos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + new WVec(range, 0, 0).Rotate(rotation);
-						spos = sourcepos + info.Offsets[i].Rotate(rotation);
-						target = Target.FromPos(new WPos(tpos.X, tpos.Y, map.CenterOfCell(map.CellContaining(tpos)).Z));
+						offsetRotation = WRot.FromFacing(mainfacing);
+						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + new WVec(range, 0, 0).Rotate(offsetRotation);
+						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						break;
 					case FireMode.Line:
-						rotation = WRot.FromFacing(mainfacing);
-						rotation = new WRot(rotation.Roll, rotation.Pitch, rotation.Yaw + new WAngle(256));
-						tpos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(rotation);
-						spos = sourcepos + info.Offsets[i].Rotate(rotation);
-						target = Target.FromPos(new WPos(tpos.X, tpos.Y, map.CenterOfCell(map.CellContaining(tpos)).Z));
+						offsetRotation = WRot.FromFacing(mainfacing);
+						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
+						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						break;
 					case FireMode.Spread:
-						rotation = WRot.FromFacing(info.Offsets[i].Yaw.Facing - 64) + WRot.FromFacing(mainfacing);
-						spos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + info.Offsets[i].Rotate(rotation);
-						tpos = sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(rotation);
-						target = Target.FromPos(new WPos(tpos.X, tpos.Y, map.CenterOfCell(map.CellContaining(tpos)).Z));
+						offsetRotation = WRot.FromFacing(info.Offsets[i].Yaw.Facing - 64) + WRot.FromFacing(mainfacing);
+						offsetSourcePos = info.KillProjectilesWhenReachedTargetLocation ? args.PassiveTarget : sourcepos + info.Offsets[i].Rotate(offsetRotation);
+						offsetTargetPos = sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
 						break;
 				}
 
@@ -207,18 +205,21 @@ namespace OpenRA.Mods.Common.Projectiles
 					var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 					var maxOffset = inaccuracy * (args.PassiveTarget - projectilepos).Length / range;
 					var inaccoffset = WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
-					tpos += inaccoffset;
+					offsetTargetPos += inaccoffset;
 				}
 
-				lifespan = info.KillProjectilesWhenReachedTargetLocation ? Math.Max((tpos - spos).Length / speed.Length, 1) : Math.Max(args.Weapon.Range.Length / speed.Length, 1);
+				target = Target.FromPos(offsetTargetPos);
 
-				facing = (tpos - spos).Yaw.Facing;
+				// if it's true then lifespan is counted from source pos to target, instead of max range
+				lifespan = info.KillProjectilesWhenReachedTargetLocation ? Math.Max((offsetTargetPos - offsetSourcePos).Length / speed.Length, 1) : Math.Max(args.Weapon.Range.Length / speed.Length, 1);
+
+				facing = (offsetTargetPos - offsetSourcePos).Yaw.Facing;
 				var pargs = new ProjectileArgs
 				{
 					Weapon = args.Weapon,
 					DamageModifiers = args.DamageModifiers,
 					Facing = facing,
-					Source = spos,
+					Source = offsetSourcePos,
 					SourceActor = firedBy,
 					PassiveTarget = target.CenterPosition
 				};
@@ -245,7 +246,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public void Tick(World world)
 		{
-			if (ticks != 0 && ticks % info.ExplosionInterval == 0 && mindelay <= ticks)
+			if (ticks % info.ExplosionInterval == 0 && mindelay <= ticks)
 				DoImpact();
 			ticks++;
 
@@ -256,7 +257,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		void DoImpact()
 		{
 			foreach (CyclicImpactProjectileEffect p in projectiles)
-				////args.Weapon.Impact(Target.FromPos(p.Position), SourceActor, args.DamageModifiers);
 				info.WeaponInfo.Impact(Target.FromPos(p.Position), SourceActor, args.DamageModifiers);
 		}
 
