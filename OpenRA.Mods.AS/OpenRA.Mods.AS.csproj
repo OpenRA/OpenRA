@@ -90,6 +90,7 @@
     <Compile Include="Projectiles\InstantExplode.cs" />
     <Compile Include="Projectiles\RadBeam.cs" />
     <Compile Include="Projectiles\SpriteRailgun.cs" />
+    <Compile Include="TraitsInterfaces.cs" />
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\DelayedWeaponAttachable.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Traits\Warheads\ScreenShakerWarhead.cs" />
     <Compile Include="Traits\Warheads\SendAirstrikeWarhead.cs" />
     <Compile Include="Traits\Warheads\SpawnActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\SpawnSmokeParticleWarhead.cs" />
     <Compile Include="Traits\Warheads\WarheadAS.cs" />
     <Compile Include="Traits\Render\WithExitOverlay.cs" />
     <Compile Include="Traits\World\PaletteFromJasc32File.cs" />
