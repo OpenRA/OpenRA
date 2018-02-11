@@ -27,6 +27,9 @@ carryall.reinforce:
 		RequiresCondition: airborne
 	SpawnActorOnDeath:
 		Actor: carryall.husk
+		RequiresCondition: airborne
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	Carryall:
 		LoadingDelay: 10
 		UnloadingDelay: 15
@@ -95,6 +98,8 @@ ornithopter:
 		Name: Ornithopter
 	SpawnActorOnDeath:
 		Actor: ornithopter.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	RejectsOrders:
 	RevealOnFire:
 
