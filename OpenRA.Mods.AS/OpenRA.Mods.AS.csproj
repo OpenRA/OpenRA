@@ -119,6 +119,7 @@
     <Compile Include="Traits\Warheads\DetachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
+    <Compile Include="Traits\Warheads\FireRadiusWarhead.cs" />
     <Compile Include="Traits\Warheads\FireShrapnelWarhead.cs" />
     <Compile Include="Traits\Warheads\GlobalExplodeWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\RevealShroudWarhead.cs" />
