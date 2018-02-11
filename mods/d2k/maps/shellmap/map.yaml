@@ -656,7 +656,7 @@ Actors:
 		SubCell: 3
 		Facing: 0
 		TurretFacing: 0
-	har_sardaukar: sardaukar
+	har_sardaukar: mpsardaukar
 		Owner: Harkonnen
 		Location: 82,28
 		SubCell: 3

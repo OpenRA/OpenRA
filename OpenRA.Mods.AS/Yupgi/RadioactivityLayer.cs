@@ -2,7 +2,6 @@
 /*
  * Radioactivity layer by Boolbada of OP Mod.
  * Started off from Resource layer by OpenRA devs but required intensive rewrite...
- * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License

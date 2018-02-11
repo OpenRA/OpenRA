@@ -54,7 +54,7 @@ siege_tank:
 	Buildable:
 		Prerequisites: ~disabled
 
-sardaukar:
+mpsardaukar:
 	Buildable:
 		Prerequisites: ~disabled
 

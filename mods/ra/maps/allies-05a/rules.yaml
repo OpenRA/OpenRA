@@ -82,7 +82,16 @@ SPY:
 WEAP:
 	-InfiltrateForSupportPower:
 	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure
+
+WEAP.infiltratable:
+	Inherits: WEAP
+	Buildable:
+		Prerequisites: ~disabled
+	Targetable@Spy:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
+	RenderSprites: 
+		Image: WEAP
 
 MISS:
 	Tooltip:

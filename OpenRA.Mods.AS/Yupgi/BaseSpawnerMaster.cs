@@ -2,7 +2,6 @@
 /*
  * Written by Boolbada of OP Mod.
  * Follows GPLv3 License as the OpenRA engine:
- * 
  * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
@@ -244,7 +243,6 @@ namespace OpenRA.Mods.Yupgi_alert.Traits
 				// Move to rally point if any.
 				if (rallyPoint != null)
 					slave.QueueActivity(mv.MoveTo(rallyPoint.Location, 2));
-
 				else
 				{
 					// Move to a valid position, if no rally point.

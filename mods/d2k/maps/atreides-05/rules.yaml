@@ -57,7 +57,7 @@ grenadier:
 	Buildable:
 		Prerequisites: ~disabled
 
-sardaukar:
+mpsardaukar:
 	Buildable:
 		Prerequisites: ~disabled
 

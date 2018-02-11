@@ -38,7 +38,7 @@ AtreidesVehicleTypes = { "trike", "trike", "quad" }
 AtreidesTankTypes = { "combat_tank_a", "combat_tank_a", "combat_tank_a", "siege_tank" }
 AtreidesStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_a.starport" }
 
-HarkonnenInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper", "sardaukar" }
+HarkonnenInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper", "mpsardaukar" }
 HarkonnenVehicleTypes = { "trike", "quad", "quad" }
 HarkonnenTankTypes = { "combat_tank_h", "combat_tank_h", "combat_tank_h", "siege_tank" }
 HarkonnenStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_h.starport" }
