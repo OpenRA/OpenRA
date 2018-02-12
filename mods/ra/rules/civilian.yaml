@@ -265,8 +265,8 @@ V18:
 
 V19:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Oil Pump
 	-SpawnActorOnDeath@1:
@@ -279,8 +279,8 @@ V19:
 
 V19.Husk:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Husk (Oil Pump)
 	RenderSprites:

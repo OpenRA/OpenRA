@@ -796,7 +796,7 @@
 ^CivBuilding:
 	Inherits: ^TechBuilding
 	RenderSprites:
-		Palette: terrain
+		Palette: player
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
@@ -997,7 +997,7 @@
 		Name: Rock
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: terrain
+		Palette: desert
 	WithSpriteBody:
 	Building:
 		Footprint: __ x_
@@ -1014,7 +1014,7 @@
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderSprites:
-		Palette: terrain
+		Palette: desert
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
 
