@@ -215,123 +215,141 @@ TC05:
 
 BOXES01:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES02:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES03:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES04:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES05:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES06:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES07:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES08:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 BOXES09:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Boxes
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 ICE01:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT, INTERIOR
+		RequireTilesets: SNOW
 		Categories: Decoration
 
 ICE02:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT, INTERIOR
+		RequireTilesets: SNOW
 		Categories: Decoration
 
 ICE03:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT, INTERIOR
+		RequireTilesets: SNOW
 		Categories: Decoration
 
 ICE04:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT, INTERIOR
+		RequireTilesets: SNOW
 		Categories: Decoration
 
 ICE05:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Ice Floe
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT, INTERIOR
+		RequireTilesets: SNOW
 		Categories: Decoration
 
 ROCK1:
@@ -378,38 +396,42 @@ ROCK7:
 
 UTILPOL1:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Utility Pole
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 UTILPOL2:
 	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
 	Tooltip:
 		Name: Utility Pole
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
 		Categories: Decoration
 
 TANKTRAP1:
 	Inherits: ^Rock
+	RenderSprites:
+		Palette: player
 	Building:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
-		RequireTilesets: TEMPERAT, SNOW, INTERIOR
+		RequireTilesets: TEMPERAT, SNOW, DESERT, INTERIOR
 
 TANKTRAP2:
 	Inherits: ^Rock
+	RenderSprites:
+		Palette: player
 	Building:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
 	EditorTilesetFilter:
-		ExcludeTilesets: DESERT
-		RequireTilesets: TEMPERAT, SNOW, INTERIOR
+		RequireTilesets: TEMPERAT, SNOW, DESERT, INTERIOR
