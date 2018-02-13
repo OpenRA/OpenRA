@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Palette used to render the projectile sequence.")]
 		[PaletteReference] public readonly string Palette = "effect";
 
+		[Desc("Palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
+
 		[Desc("Should the projectile's shadow be rendered?")]
 		public readonly bool Shadow = false;
 
@@ -911,7 +914,7 @@ namespace OpenRA.Mods.Common.Projectiles
 						yield return r;
 				}
 
-				var palette = wr.Palette(info.Palette);
+				var palette = wr.Palette(info.Palette + (info.IsPlayerPalette ? args.SourceActor.Owner.InternalName : ""));
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}
