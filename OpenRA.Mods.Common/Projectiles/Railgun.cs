@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -98,13 +99,17 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class Railgun : IProjectile
+	public class Railgun : IProjectile, ISpatiallyPartitionable
 	{
 		readonly ProjectileArgs args;
 		readonly RailgunInfo info;
 		readonly Animation hitanim;
 		public readonly Color BeamColor;
 		public readonly Color HelixColor;
+
+		readonly WDist width;
+		Size screenMapBounds;
+		WPos beamCenter;
 
 		int ticks = 0;
 		bool animationComplete;
@@ -128,10 +133,16 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.BeamColor = beamColor;
 			this.HelixColor = helixColor;
 
+			var world = args.SourceActor.World;
 			if (!string.IsNullOrEmpty(info.HitAnim))
-				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
+				hitanim = new Animation(world, info.HitAnim);
 
 			CalculateVectors();
+
+			beamCenter = WPos.Lerp(target, args.Source, 1, 2);
+			width = info.BeamWidth + info.HelixRadius + info.HelixThickness + (info.HelixPitch / 2);
+			screenMapBounds = Util.ProjectileScreenBounds(world, hitanim, width, SourceToTarget);
+			world.ScreenMap.Add(this, beamCenter, screenMapBounds);
 		}
 
 		void CalculateVectors()
@@ -177,6 +188,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public void Tick(World world)
 		{
+			world.ScreenMap.Update(this, beamCenter, screenMapBounds);
+
 			if (ticks == 0)
 			{
 				if (hitanim != null)
@@ -198,7 +211,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				hitanim.Tick();
 
 			if (ticks++ > info.Duration && animationComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

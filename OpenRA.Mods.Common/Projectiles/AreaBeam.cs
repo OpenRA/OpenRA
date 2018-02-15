@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class AreaBeam : IProjectile, ISync
+	public class AreaBeam : IProjectile, ISync, ISpatiallyPartitionable
 	{
 		readonly AreaBeamInfo info;
 		readonly ProjectileArgs args;
@@ -131,6 +131,15 @@ namespace OpenRA.Mods.Common.Projectiles
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
+
+			var beamCenter = WPos.Lerp(headPos, tailPos, 1, 2);
+			world.ScreenMap.Add(this, beamCenter, CalculateScreenBounds(world));
+		}
+
+		Size CalculateScreenBounds(World world)
+		{
+			var beamDelta = headPos - tailPos;
+			return Util.ProjectileScreenBounds(world, null, info.Width, beamDelta);
 		}
 
 		void TrackTarget()
@@ -170,6 +179,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			if (info.TrackTarget)
 				TrackTarget();
+
+			var beamCenter = WPos.Lerp(headPos, tailPos, 1, 2);
+			world.ScreenMap.Update(this, beamCenter, CalculateScreenBounds(world));
 
 			if (++headTicks >= length)
 			{
@@ -227,7 +239,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			if (IsBeamComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
