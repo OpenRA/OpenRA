@@ -90,7 +90,7 @@ WEAP.infiltratable:
 		Prerequisites: ~disabled
 	Targetable@Spy:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
-	RenderSprites: 
+	RenderSprites:
 		Image: WEAP
 
 MISS:
