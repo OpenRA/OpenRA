@@ -53,7 +53,7 @@ Container@SERVER_LOBBY:
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							X: 202 
+							X: 202
 							Y: 248
 							Width: 95
 							Height: 31
