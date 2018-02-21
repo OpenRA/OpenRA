@@ -142,15 +142,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		static void TryCallTransport(Actor self, Target target, Activity nextActivity)
 		{
-			var transport = self.TraitOrDefault<ICallForTransport>();
-			if (transport == null)
-				return;
-
 			var targetCell = self.World.Map.CellContaining(target.CenterPosition);
-			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.LengthSquared)
-				return;
+			var delta = (self.CenterPosition - target.CenterPosition).LengthSquared;
+			var transports = self.TraitsImplementing<ICallForTransport>()
+				.Where(t => t.MinimumDistance.LengthSquared < delta);
 
-			transport.RequestTransport(self, targetCell, nextActivity);
+			foreach (var t in transports)
+				t.RequestTransport(self, targetCell, nextActivity);
 		}
 	}
 }
