@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
 		}
 
-		public void Harvested(Actor self, ResourceType resource)
+		void INotifyHarvesterAction.Harvested(Actor self, ResourceType resource)
 		{
 			if (visible)
 				return;
@@ -59,11 +59,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.PlayThen(info.Sequence, () => visible = false);
 		}
 
-		public void MovingToResources(Actor self, CPos targetCell, Activity next) { }
-		public void MovingToRefinery(Actor self, Actor targetRefinery, Activity next) { }
-		public void MovementCancelled(Actor self) { }
-		public void Docked() { }
-		public void Undocked() { }
+		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { }
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor targetRefinery, Activity next) { }
+		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
+		void INotifyHarvesterAction.Docked() { }
+		void INotifyHarvesterAction.Undocked() { }
 
 		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{

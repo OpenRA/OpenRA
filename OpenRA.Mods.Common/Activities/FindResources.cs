@@ -55,10 +55,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (NextInQueue != null)
 				return NextInQueue;
 
-			var deliver = new DeliverResources(self);
-
 			if (harv.IsFull)
-				return ActivityUtils.SequenceActivities(deliver, NextActivity);
+				return ActivityUtils.SequenceActivities(new DeliverResources(self), NextActivity);
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
@@ -67,20 +65,18 @@ namespace OpenRA.Mods.Common.Activities
 			if (!closestHarvestablePosition.HasValue)
 			{
 				if (!harv.IsEmpty)
-					return deliver;
+					return new DeliverResources(self);
 
 				harv.LastSearchFailed = true;
 
 				var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
 				var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
 				self.QueueActivity(mobile.MoveTo(moveTo, 1));
-				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 
-				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				foreach (var n in notify)
+				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
 					n.MovingToResources(self, moveTo, this);
 
+				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 				var randFrames = self.World.SharedRandom.Next(100, 175);
 
 				// Avoid creating an activity cycle
@@ -100,13 +96,10 @@ namespace OpenRA.Mods.Common.Activities
 				if (!harv.LastOrderLocation.HasValue)
 					harv.LastOrderLocation = closestHarvestablePosition;
 
-				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
-
-				// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
-				var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-				foreach (var n in notify)
+				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
 					n.MovingToResources(self, closestHarvestablePosition.Value, this);
 
+				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
 				return ActivityUtils.SequenceActivities(mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), this);
 			}
 		}
