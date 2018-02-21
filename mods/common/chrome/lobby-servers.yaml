@@ -140,7 +140,7 @@ Container@LOBBY_SERVERS_BIN:
 						LogicTicker@ANIMATION:
 		Container@SELECTED_SERVER:
 			X: PARENT_RIGHT + 11
-			Width: 174  
+			Width: 174
 			Height: 280
 			Children:
 				Background@MAP_BG:
