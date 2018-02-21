@@ -984,7 +984,7 @@ palace.harkonnen:
 		Start: 3085
 		Offset: -48,48
 	active: DATA.R8
-		Start:  5084
+		Start: 5084
 		Length: 20
 		Offset: -48,48
 	damaged-active: DATA.R8
