@@ -2387,5 +2387,5 @@ Actors:
 	Actor1137: t03
 		Owner: Neutral
 		Location: 73,0
-		
+
 Rules: rules.yaml
