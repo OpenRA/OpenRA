@@ -73,6 +73,7 @@ harvester:
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 15
+	CarryableHarvester:
 	Health:
 		HP: 45000
 	Armor:

@@ -83,9 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
-		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		INotifyHarvesterAction[] notify;
+		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		bool idleSmart = true;
+		INotifyHarvesterAction[] notifyHarvesterAction;
 		int idleDuration;
 
 		[Sync] public bool LastSearchFailed;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			notify = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
@@ -233,11 +233,8 @@ namespace OpenRA.Mods.Common.Traits
 					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 
-					// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
-					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var findResources = new FindResources(self);
-					foreach (var n in notify)
-						n.MovingToResources(self, moveTo, findResources);
+					// FindResources takes care of calling INotifyHarvesterAction
+					self.QueueActivity(new FindResources(self));
 
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
@@ -381,12 +378,10 @@ namespace OpenRA.Mods.Common.Traits
 					loc = self.Location;
 				}
 
-				var findResources = new FindResources(self);
-				self.QueueActivity(findResources);
 				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
-				foreach (var n in notify)
-					n.MovingToResources(self, loc.Value, findResources);
+				// FindResources takes care of calling INotifyHarvesterAction
+				self.QueueActivity(new FindResources(self));
 
 				LastOrderLocation = loc;
 
@@ -414,16 +409,14 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(order.Target, Color.Green);
 
 				self.CancelActivity();
+				self.QueueActivity(new DeliverResources(self));
 
-				var deliver = new DeliverResources(self);
-				self.QueueActivity(deliver);
-
-				foreach (var n in notify)
-					n.MovingToRefinery(self, targetActor, deliver);
+				foreach (var n in notifyHarvesterAction)
+					n.MovingToRefinery(self, targetActor, new DeliverResources(self));
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
-				foreach (var n in notify)
+				foreach (var n in notifyHarvesterAction)
 					n.MovementCancelled(self);
 
 				// Turn off idle smarts to obey the stop/move:

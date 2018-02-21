@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AutoCarryable(init.Self, this); }
 	}
 
-	public class AutoCarryable : Carryable, INotifyHarvesterAction, ICallForTransport
+	public class AutoCarryable : Carryable, ICallForTransport
 	{
 		readonly AutoCarryableInfo info;
 		Activity afterLandActivity;
@@ -37,21 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public WDist MinimumDistance { get { return info.MinDistance; } }
-
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next) { RequestTransport(self, targetCell, next); }
-
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor, Activity next)
-		{
-			var iao = refineryActor.Trait<IAcceptResources>();
-			RequestTransport(self, refineryActor.Location + iao.DeliveryOffset, next);
-		}
-
-		void INotifyHarvesterAction.MovementCancelled(Actor self) { MovementCancelled(self); }
-
-		// We do not handle Harvested notification
-		void INotifyHarvesterAction.Harvested(Actor self, ResourceType resource) { }
-		void INotifyHarvesterAction.Docked() { }
-		void INotifyHarvesterAction.Undocked() { }
 
 		// No longer want to be carried
 		void ICallForTransport.MovementCancelled(Actor self) { MovementCancelled(self); }
