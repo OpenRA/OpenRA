@@ -13,8 +13,10 @@ World:
 		ID: difficulty
 		Label: Difficulty
 		Values:
+			easy: Easy
 			normal: Normal
 			hard: Hard
+			tough: Real tough guy
 		Default: normal
 
 Player:
