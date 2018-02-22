@@ -548,6 +548,9 @@ namespace OpenRA
 				if (value != null)
 				{
 					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+					if (parts.Length != 2)
+						return InvalidValueAction(value, fieldType, fieldName);
+
 					return new int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
 				}
 
