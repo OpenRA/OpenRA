@@ -3,6 +3,8 @@ DOGGIE:
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	EditorTilesetFilter:
+		Categories: Critter
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
