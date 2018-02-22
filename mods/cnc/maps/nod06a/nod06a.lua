@@ -6,8 +6,20 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-NodStartUnitsRight = { 'ltnk', 'bike', 'e1', 'e1', 'e3', 'e3' }
-NodStartUnitsLeft = { 'ltnk', 'ltnk', 'bggy', 'e1', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3', 'e3' }
+NodStartUnitsRight =
+{
+	tough = { 'ltnk', 'bike', 'e1', 'e1', 'e3', 'e3' },
+	hard = { 'ltnk', 'bike', 'e1', 'e1', 'e3', 'e3', 'e3' },
+	normal = { 'ltnk', 'bike', 'bike', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3', 'e3' },
+	easy =  { 'ltnk', 'ltnk', 'bike', 'bike', 'e1', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3', 'e3' }
+}
+NodStartUnitsLeft =
+{
+	tough = { 'ltnk', 'ltnk', 'bggy', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3' },
+	hard = { 'ltnk', 'ltnk', 'bggy', 'e1', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3' },
+	normal = { 'ltnk', 'ltnk', 'bggy', 'bggy', 'e1', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3', 'e3', 'e3' },
+	easy = { 'ltnk', 'ltnk', 'ltnk', 'bggy', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e3', 'e3', 'e3', 'e3', 'e3' }
+}
 Chn1Units = { 'e1', 'e1', 'e1', 'e1', 'e1' }
 Chn2Units = { 'e2', 'e2', 'e2', 'e2', 'e2' }
 Obj2Units = { 'ltnk', 'bike', 'e1', 'e1', 'e1' }
@@ -120,6 +132,10 @@ MovementAndHunt = function(unit, waypoints)
 end
 
 InsertNodUnits = function()
+	local difficulty = Map.LobbyOption("difficulty")
+	NodStartUnitsRight = NodStartUnitsRight[difficulty]
+	NodStartUnitsLeft = NodStartUnitsLeft[difficulty]
+	
 	Camera.Position = UnitsRallyRight.CenterPosition
 
 	Media.PlaySpeechNotification(player, "Reinforce")
@@ -168,7 +184,7 @@ WorldLoaded = function()
 
 	OnAnyDamaged(Atk2ActorTriggerActivator, Atk2TriggerFunction)
 	
-	if Map.LobbyOption("difficulty") == "hard" then
+	if Map.LobbyOption("difficulty") == "tough" then
 		Trigger.OnDamaged(Atk3Activator, Atk3TriggerFunction)
 	end
 
