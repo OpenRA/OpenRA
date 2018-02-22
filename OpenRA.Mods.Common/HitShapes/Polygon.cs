@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.HitShapes
 		[FieldLoader.Require]
 		public readonly int2[] Points;
 
-		[Desc("Defines the top offset relative to the actor's target point.")]
+		[Desc("Defines the top offset relative to the actor's center.")]
 		public readonly int VerticalTopOffset = 0;
 
-		[Desc("Defines the bottom offset relative to the actor's target point.")]
+		[Desc("Defines the bottom offset relative to the actor's center.")]
 		public readonly int VerticalBottomOffset = 0;
 
 		[Desc("Rotates shape by an angle relative to actor facing. Mostly required for buildings on isometric terrain.",
