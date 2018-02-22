@@ -62,7 +62,6 @@ namespace OpenRA
 		public readonly string Type;
 		public readonly HashSet<string> TargetTypes = new HashSet<string>();
 		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
-		public readonly bool IsWater = false; // TODO: Remove this
 		public readonly Color Color;
 		public readonly bool RestrictPlayerColor = false;
 		public readonly string CustomCursor;

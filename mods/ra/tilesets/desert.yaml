@@ -67,7 +67,6 @@ Terrain:
 	TerrainType@Water:
 		Type: Water
 		TargetTypes: Water
-		IsWater: True
 		Color: 5DA5CE
 		RestrictPlayerColor: true
 

@@ -1842,6 +1842,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed IsWater.
+				if (engineVersion < 20180222)
+				{
+					if (node.Key == "TerrainType" || node.Key.StartsWith("TerrainType@", StringComparison.Ordinal))
+					{
+						var isWater = node.Value.Nodes.FirstOrDefault(n => n.Key == "IsWater");
+						if (isWater != null)
+							node.Value.Nodes.Remove(isWater);
+					}
+				}
+
 				UpgradeTileset(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 		}

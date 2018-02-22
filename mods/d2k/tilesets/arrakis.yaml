@@ -28,7 +28,6 @@ Terrain:
 	TerrainType@Ice:
 		Type: Ice
 		TargetTypes: Ground
-		IsWater: True
 		Color: FFFFFF
 	TerrainType@Rock:
 		Type: Rock
