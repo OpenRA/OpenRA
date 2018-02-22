@@ -16,6 +16,11 @@ Terrain:
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 54FCFC
 		RestrictPlayerColor: true
+	TerrainType@Bridge:
+		Type: Bridge
+		TargetTypes: Ground, Bridge
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 606060
 	TerrainType@Clear:
 		Type: Clear
 		TargetTypes: Ground
@@ -1624,10 +1629,10 @@ Templates:
 			3: Road
 			4: River
 			5: Wall
-			6: Road
+			6: Bridge
 			7: Wall
 			8: River
-			9: Road
+			9: Bridge
 			10: Wall
 			11: River
 			12: Road
@@ -1665,13 +1670,13 @@ Templates:
 			2: Clear
 			4: Clear
 			5: Wall
-			6: Road
+			6: Bridge
 			7: Wall
 			8: River
 			9: River
 			10: River
 			11: Wall
-			12: Road
+			12: Bridge
 			13: Wall
 			14: Clear
 			15: River
