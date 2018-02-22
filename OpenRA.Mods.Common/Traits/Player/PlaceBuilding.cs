@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 			var os = order.OrderString;
 			if (os != "PlaceBuilding" &&
 				os != "LineBuild" &&
-				os != "PlacePlug")
+				os != "PlacePlug" &&
+				os != "ReplaceBuilding")
 				return;
 
 			self.World.AddFrameEndTask(w =>
@@ -129,6 +130,32 @@ namespace OpenRA.Mods.Common.Traits
 					pluggable.EnablePlug(host, plugInfo.Type);
 					foreach (var s in buildingInfo.BuildSounds)
 						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, host.CenterPosition);
+				}
+				else if (os == "ReplaceBuilding")
+				{
+					if (!buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation))
+						return;
+
+					// Current ReplaceBuilding-Order must contain ReplacementInfo
+					var replacementInfo = unit.TraitInfoOrDefault<ReplacementInfo>();
+					if (replacementInfo == null)
+						return;
+
+					// remove target Actor(s)
+					foreach (var t in buildingInfo.Tiles(order.TargetLocation))
+						if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(t) != null)
+							self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(t).Dispose();
+
+					// place Building
+					var building = w.CreateActor(order.TargetString, new TypeDictionary
+					{
+						new LocationInit(order.TargetLocation),
+						new OwnerInit(order.Player),
+						new FactionInit(faction),
+					});
+
+					foreach (var s in buildingInfo.BuildSounds)
+						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, building.CenterPosition);
 				}
 				else
 				{
