@@ -21,23 +21,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	class CaptureTarget<TInfoType> where TInfoType : class, ITraitInfoInterface
-	{
-		internal readonly Actor Actor;
-		internal readonly TInfoType Info;
-
-		/// <summary>The order string given to the capturer so they can capture this actor.</summary>
-		/// <example>ExternalCaptureActor</example>
-		internal readonly string OrderString;
-
-		internal CaptureTarget(Actor actor, string orderString)
-		{
-			Actor = actor;
-			Info = actor.Info.TraitInfoOrDefault<TInfoType>();
-			OrderString = orderString;
-		}
-	}
-
 	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		public class UnitCategories
@@ -264,8 +247,6 @@ namespace OpenRA.Mods.Common.AI
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
-	public enum BuildingType { Building, Defense, Refinery }
-
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
 		public MersenneTwister Random { get; private set; }
@@ -388,18 +369,6 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
-		}
-
-		public bool IsAreaAvailable<T>(int radius, HashSet<string> terrainTypes)
-		{
-			var cells = World.ActorsHavingTrait<T>().Where(a => a.Owner == Player);
-
-			// TODO: Properly check building foundation rather than 3x3 area.
-			return cells.Select(a => Map.FindTilesInCircle(a.Location, radius)
-				.Count(c => Map.Contains(c) && terrainTypes.Contains(Map.GetTerrainInfo(c).Type) &&
-					Util.AdjacentCells(World, Target.FromCell(World, c))
-						.All(ac => terrainTypes.Contains(Map.GetTerrainInfo(ac).Type))))
-							.Any(availableCells => availableCells > 0);
 		}
 
 		public void QueueOrder(Order order)
