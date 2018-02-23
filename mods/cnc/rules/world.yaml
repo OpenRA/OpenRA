@@ -138,6 +138,7 @@ World:
 		SpawnInterval: 3000
 		WaterChance: 0
 		InitialSpawnDelay: 1500
+		CheckboxEnabled: false
 		CheckboxDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
