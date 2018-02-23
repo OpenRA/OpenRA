@@ -55,3 +55,15 @@ airstrike.proxy:
 TRUCK:
 	Buildable:
 		Prerequisites: ~disabled
+
+T03:
+	TransformsNearResources:
+		Type: Tiberium
+		IntoActor: split2
+		Offset: 0,1
+
+T13:
+	TransformsNearResources:
+		Type: Tiberium
+		IntoActor: split3
+		Offset: 0,1
