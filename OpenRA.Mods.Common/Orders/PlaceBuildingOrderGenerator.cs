@@ -90,7 +90,8 @@ namespace OpenRA.Mods.Common.Orders
 			// If there was a successful placement order
 			if (ret.Any(o => o.OrderString == "PlaceBuilding"
 				|| o.OrderString == "LineBuild"
-				|| o.OrderString == "PlacePlug"))
+				|| o.OrderString == "PlacePlug"
+				|| o.OrderString == "ReplaceBuilding"))
 				world.CancelInputMode();
 
 			return ret;
@@ -107,6 +108,8 @@ namespace OpenRA.Mods.Common.Orders
 				var orderType = "PlaceBuilding";
 				var topLeft = viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
 
+				var replacmentInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<ReplacementInfo>();
+
 				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
 				{
@@ -116,6 +119,28 @@ namespace OpenRA.Mods.Common.Orders
 						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
 						yield break;
 					}
+				}
+				else if (replacmentInfo != null)
+				{
+					var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
+					var occupied = false;
+					foreach (var t in buildingInfo.Tiles(topLeft))
+						if (!occupied) occupied = !(world.IsCellBuildable(t, buildingInfo)
+							|| AcceptsReplacement(t, replacmentInfo))
+							|| !(res == null || res.GetResource(t) == null);
+
+					if (!buildingInfo.IsCloseEnoughToBase(world, owner, building, topLeft)
+						|| occupied)
+					{
+						foreach (var order in ClearBlockersOrders(world, topLeft))
+							yield return order;
+
+						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", "BuildingCannotPlaceAudio", owner.Faction.InternalName);
+						yield break;
+					}
+
+					if (world.Map.Rules.Actors[building].HasTraitInfo<ReplacementInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
+						orderType = "ReplaceBuilding";
 				}
 				else
 				{
@@ -165,6 +190,16 @@ namespace OpenRA.Mods.Common.Orders
 
 			var location = host.Location;
 			return host.TraitsImplementing<Pluggable>().Any(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type));
+		}
+
+		bool AcceptsReplacement(CPos cell, ReplacementInfo replacement)
+		{
+			var host = buildingInfluence.GetBuildingAt(cell);
+			if (host == null)
+				return false;
+
+			var location = host.Location;
+			return host.TraitsImplementing<Replaceable>().Any(p => location == cell && p.AcceptsReplacement(host, replacement.Replaces));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
@@ -234,8 +269,12 @@ namespace OpenRA.Mods.Common.Orders
 
 				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
+				var replacmentInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<ReplacementInfo>();
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResource(t) == null)));
+				{
+					var buildable = world.IsCellBuildable(t, buildingInfo)	|| ((replacmentInfo == null) ? false : AcceptsReplacement(t, replacmentInfo));
+					cells.Add(t, MakeCellType(isCloseEnough	&& buildable && (res == null || res.GetResource(t) == null)));
+				}
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);

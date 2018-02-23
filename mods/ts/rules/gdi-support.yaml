@@ -16,6 +16,8 @@ GAWALL:
 		CrushClasses: heavywall
 	LineBuild:
 		NodeTypes: wall, turret
+	Replaceable:
+		Type: wall
 
 GAGATE_A:
 	Inherits: ^Gate_A
@@ -25,6 +27,8 @@ GAGATE_A:
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
+	Replacement:
+		Replaces: wall
 
 GAGATE_B:
 	Inherits: ^Gate_B
@@ -34,6 +38,8 @@ GAGATE_B:
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
 		Name: GDI Gate
+	Replacement:
+		Replaces: wall
 
 GACTWR:
 	Inherits: ^Defense
@@ -128,6 +134,8 @@ GACTWR:
 			tower.sam: tower.sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
+	Replacement:
+		Replaces: wall
 
 GAVULC:
 	Inherits: ^BuildingPlug
