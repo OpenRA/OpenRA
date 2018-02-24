@@ -23,6 +23,10 @@
 		Filename: temperat.pal
 		ShadowIndex: 4
 		AllowModifiers: false
+	PaletteFromGimpFile:
+		Name: units
+		Filename: Tiberian_Dawn.act
+		ShadowIndex: 4
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
