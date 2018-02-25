@@ -9,6 +9,15 @@ World:
 		BriefingVideo: nod6.vqa
 		StartVideo: sundial.vqa
 		LossVideo: banner.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			tough: Real tough guy
+		Default: normal
 
 Player:
 	PlayerResources:
