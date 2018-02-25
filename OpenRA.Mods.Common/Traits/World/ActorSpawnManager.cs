@@ -45,7 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick, INotifyCreated
 	{
 		readonly ActorSpawnManagerInfo info;
-		TraitPair<ActorSpawner>[] spawnPointActors;
 
 		bool enabled;
 		int spawnCountdown;
@@ -58,14 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			self.World.AddFrameEndTask(w =>
-			{
-				spawnPointActors = w.ActorsWithTrait<ActorSpawner>()
-					.Where(x => info.Types.Overlaps(x.Trait.Types) || !x.Trait.Types.Any())
-					.ToArray();
-
-				enabled = self.Trait<MapCreeps>().Enabled && spawnPointActors.Any();
-			});
+			enabled = self.Trait<MapCreeps>().Enabled;
 		}
 
 		void ITick.Tick(Actor self)
@@ -79,19 +71,23 @@ namespace OpenRA.Mods.Common.Traits
 			if (--spawnCountdown > 0 && actorsPresent >= info.Minimum)
 				return;
 
+			var spawnPoint = GetRandomSpawnPoint(self.World, self.World.SharedRandom);
+
+			if (spawnPoint == null)
+				return;
+
 			spawnCountdown = info.SpawnInterval;
 
 			do
 			{
 				// Always spawn at least one actor, plus
 				// however many needed to reach the minimum.
-				SpawnActor(self);
+				SpawnActor(self, spawnPoint);
 			} while (actorsPresent < info.Minimum);
 		}
 
-		WPos SpawnActor(Actor self)
+		WPos SpawnActor(Actor self, Actor spawnPoint)
 		{
-			var spawnPoint = GetRandomSpawnPoint(self.World.SharedRandom);
 			self.World.AddFrameEndTask(w => w.CreateActor(info.Actors.Random(self.World.SharedRandom), new TypeDictionary
 			{
 				new OwnerInit(w.Players.First(x => x.PlayerName == info.Owner)),
@@ -103,9 +99,13 @@ namespace OpenRA.Mods.Common.Traits
 			return spawnPoint.CenterPosition;
 		}
 
-		Actor GetRandomSpawnPoint(Support.MersenneTwister random)
+		Actor GetRandomSpawnPoint(World world, Support.MersenneTwister random)
 		{
-			return spawnPointActors.Random(random).Actor;
+			var spawnPointActors = world.ActorsWithTrait<ActorSpawner>()
+				.Where(x => !x.Trait.IsTraitDisabled && (info.Types.Overlaps(x.Trait.Types) || !x.Trait.Types.Any()))
+				.ToArray();
+
+			return spawnPointActors.Any() ? spawnPointActors.Random(random).Actor : null;
 		}
 
 		public void DecreaseActorCount()
