@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common
 		public readonly int Threshold = 0x50;
 		public readonly float[] HsvSaturationRange = new[] { 0.25f, 1f };
 		public readonly float[] HsvValueRange = new[] { 0.2f, 1.0f };
+		public readonly HSLColor[] TeamColorPresets = { };
 
 		double GetColorDelta(Color colorA, Color colorB)
 		{
@@ -86,6 +87,20 @@ namespace OpenRA.Mods.Common
 			return true;
 		}
 
+		public HSLColor RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
+		{
+			if (TeamColorPresets.Any())
+			{
+				Color forbidden;
+				Action<string> ignoreError = _ => { };
+				foreach (var c in TeamColorPresets.Shuffle(random))
+					if (IsValid(c.RGB, out forbidden, terrainColors, playerColors, ignoreError))
+						return c;
+			}
+
+			return RandomValidColor(random, terrainColors, playerColors);
+		}
+
 		public HSLColor RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
 		{
 			HSLColor color;
@@ -142,7 +157,7 @@ namespace OpenRA.Mods.Common
 				// If we reached the limit (The ii >= 255 prevents too much calculations)
 				if (attempt >= 255)
 				{
-					color = RandomValidColor(random, terrainColors, playerColors);
+					color = RandomPresetColor(random, terrainColors, playerColors);
 					break;
 				}
 
