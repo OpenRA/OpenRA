@@ -6,11 +6,36 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-NodUnitsVehicle1 = { 'bggy', 'bggy', 'bike', 'bike', 'bike' }
-NodUnitsVehicle2 = { 'ltnk', 'ltnk', 'ltnk' }
-NodUnitsGunner = { 'e1', 'e1', 'e1', 'e1', 'e1', 'e1' }
-NodUnitsRocket = { 'e3', 'e3', 'e3', 'e3', 'e3', 'e3' }
+NodUnitsVehicle1 =
+{
+	tough = { 'bggy', 'bike', 'bike' },
+	hard = { 'bggy', 'bggy', 'bike', 'bike' },
+	normal = { 'bggy', 'bggy', 'bike', 'bike', 'bike' },
+	easy = { 'bggy', 'bggy', 'bggy', 'bike', 'bike', 'bike', 'bike' }
+}
+NodUnitsVehicle2 =
+{
+	tough = { 'ltnk', 'ltnk' },
+	hard = { 'ltnk', 'ltnk', 'ltnk' },
+	normal = { 'ltnk', 'ltnk', 'ltnk', 'ltnk' },
+	easy = { 'ltnk', 'ltnk', 'ltnk', 'ltnk', 'ltnk' }
+}
+NodUnitsGunner =
+{
+	tough = { 'e1', 'e1', 'e1', 'e1' },
+	hard = { 'e1', 'e1', 'e1', 'e1', 'e1' },
+	normal = { 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1' },
+	easy = { 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1', 'e1' }
+}
+NodUnitsRocket =
+{
+	tough = { 'e3', 'e3', 'e3', 'e3' },
+	hard = { 'e3', 'e3', 'e3', 'e3', 'e3' },
+	normal = { 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3' },
+	easy = { 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3', 'e3' }
+}
 Gdi1Units = { 'e1', 'e1', 'e2', 'e2', 'e2' }
+Obj2Units = { 'ftnk', 'e4', 'e4' }
 
 HuntCellTriggerActivator = { CPos.New(61,34), CPos.New(60,34), CPos.New(59,34), CPos.New(58,34), CPos.New(57,34), CPos.New(56,34), CPos.New(55,34), CPos.New(61,33), CPos.New(60,33), CPos.New(59,33), CPos.New(58,33), CPos.New(57,33), CPos.New(56,33) }
 DzneCellTriggerActivator = { CPos.New(50,30), CPos.New(49,30), CPos.New(48,30), CPos.New(47,30), CPos.New(46,30), CPos.New(45,30), CPos.New(50,29), CPos.New(49,29), CPos.New(48,29), CPos.New(47,29), CPos.New(46,29), CPos.New(45,29), CPos.New(50,28), CPos.New(49,28), CPos.New(48,28), CPos.New(47,28), CPos.New(46,28), CPos.New(45,28), CPos.New(50,27), CPos.New(49,27), CPos.New(46,27), CPos.New(45,27), CPos.New(50,26), CPos.New(49,26), CPos.New(48,26), CPos.New(47,26), CPos.New(46,26), CPos.New(45,26), CPos.New(50,25), CPos.New(49,25), CPos.New(48,25), CPos.New(47,25), CPos.New(46,25), CPos.New(45,25) }
@@ -22,6 +47,7 @@ Chn1ActorTriggerActivator = { Chn1Actor1, Chn1Actor2 }
 Chn2ActorTriggerActivator = { Chn2Actor1 }
 Atk1ActorTriggerActivator = { Atk1Actor1, Atk1Actor2 }
 Atk2ActorTriggerActivator = { Atk2Actor1, Atk2Actor2 }
+Obj2ActorTriggerActivator = { Obj2Actor0, Obj2Actor1, Obj2Actor2, Obj2Actor3, Obj2Actor4, Obj2Actor5, Obj2Actor6, Obj2Actor7, Obj2Actor8, Obj2Actor9, Obj2Actor10, Obj2Actor11, Obj2Actor12, Obj2Actor13, Obj2Actor14 }
 
 Chn1Waypoints = { ChnEntry.Location, waypoint0.Location }
 Chn2Waypoints = { ChnEntry.Location, waypoint0.Location }
@@ -32,11 +58,6 @@ HuntTriggerFunction = function()
 	Utils.Do(list, function(unit)
 		IdleHunt(unit)
 	end)
-end
-
-Win1TriggerFunction = function()
-	NodObjective2 = player.AddPrimaryObjective("Move to the evacuation point.")
-	player.MarkCompletedObjective(NodObjective1)
 end
 
 Chn1TriggerFunction = function()
@@ -83,6 +104,12 @@ Chn2TriggerFunction = function()
 	end
 end
 
+Obj2TriggerFunction = function()
+	player.MarkCompletedObjective(NodObjective2)
+	Media.PlaySpeechNotification(player, "Reinforce")
+	Reinforcements.Reinforce(player, Obj2Units, { Obj2UnitsEntry.Location, waypoint13.Location }, 15)
+end
+
 MoveAndHunt = function(unit, waypoints)
 	if unit ~= nil then
 		Utils.Do(waypoints, function(waypoint)
@@ -93,6 +120,12 @@ MoveAndHunt = function(unit, waypoints)
 end
 
 InsertNodUnits = function()
+	local difficulty = Map.LobbyOption("difficulty")
+	NodUnitsVehicle1 = NodUnitsVehicle1[difficulty]
+	NodUnitsVehicle2 = NodUnitsVehicle2[difficulty]
+	NodUnitsGunner = NodUnitsGunner[difficulty]
+	NodUnitsRocket = NodUnitsRocket[difficulty]
+	
 	Media.PlaySpeechNotification(player, "Reinforce")
 	Camera.Position = UnitsRallyVehicle2.CenterPosition
 
@@ -127,6 +160,8 @@ WorldLoaded = function()
 	end)
 
 	NodObjective1 = player.AddPrimaryObjective("Steal the GDI nuclear detonator.")
+	NodObjective2 = player.AddSecondaryObjective("Destroy the houses of the GDI supporters\nin the village.")
+	
 	GDIObjective = enemy.AddPrimaryObjective("Stop the Nod taskforce from escaping with the detonator.")
 
 	InsertNodUnits()
@@ -144,17 +179,20 @@ WorldLoaded = function()
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
+	
+	Trigger.OnAllRemovedFromWorld(Obj2ActorTriggerActivator, Obj2TriggerFunction)
 
 	Trigger.OnEnteredFootprint(Win1CellTriggerActivator, function(a, id)
 		if a.Owner == player then
-			Win1TriggerFunction()
+			NodObjective3 = player.AddPrimaryObjective("Move to the evacuation point.")
+			player.MarkCompletedObjective(NodObjective1)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(Win2CellTriggerActivator, function(a, id)
-		if a.Owner == player and NodObjective2 then
-			player.MarkCompletedObjective(NodObjective2)
+		if a.Owner == player and NodObjective3 then
+			player.MarkCompletedObjective(NodObjective3)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
