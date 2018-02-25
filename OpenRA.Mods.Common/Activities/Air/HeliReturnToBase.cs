@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -110,6 +112,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			return heli.Info.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
 					.Any(p => !p.AutoReloads && !p.FullAmmo());
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target.FromActor(dest), Color.Green);
 		}
 	}
 }

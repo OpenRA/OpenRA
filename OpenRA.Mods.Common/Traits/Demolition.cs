@@ -86,9 +86,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Red);
 			self.QueueActivity(new Demolish(self, target.Actor, info.EnterBehaviour, info.DetonationDelay,
 				info.Flashes, info.FlashesDelay, info.FlashInterval, info.FlashDuration));
+
+			self.ShowTargetLines();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

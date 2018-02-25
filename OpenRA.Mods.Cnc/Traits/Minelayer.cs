@@ -108,11 +108,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				Minefield = GetMinefieldCells(minefieldStart, order.TargetLocation, info.MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p, null, false)).ToArray();
 
-				if (Minefield.Length == 1 && Minefield[0] != self.Location)
-					self.SetTargetLine(Target.FromCell(self.World, Minefield[0]), Color.Red);
-
 				self.CancelActivity();
 				self.QueueActivity(new LayMines(self));
+
+				if (Minefield.Length == 1 && Minefield[0] != self.Location)
+					self.ShowTargetLines();
 			}
 		}
 

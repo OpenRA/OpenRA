@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Effects;
@@ -103,6 +105,11 @@ namespace OpenRA.Mods.Common.Activities
 				capturable.EndCapture();
 			if (capturingToken != ConditionManager.InvalidConditionToken)
 				capturingToken = conditionManager.RevokeCondition(self, capturingToken);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(target, Color.Red);
 		}
 	}
 }

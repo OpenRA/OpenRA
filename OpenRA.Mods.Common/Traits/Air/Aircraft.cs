@@ -702,12 +702,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				var target = Target.FromCell(self.World, cell);
 
-				self.SetTargetLine(target, Color.Green);
-
 				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
+
+				self.ShowTargetLines();
 			}
 			else if (order.OrderString == "Enter")
 			{
@@ -723,8 +723,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
-
 					if (!Info.CanHover && !Info.VTOL)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
@@ -748,6 +746,8 @@ namespace OpenRA.Mods.Common.Traits
 
 						self.QueueActivity(order.Queued, new CallFunc(enter));
 					}
+
+					self.ShowTargetLines();
 				}
 			}
 			else if (order.OrderString == "Stop")

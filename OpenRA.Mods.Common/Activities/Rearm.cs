@@ -10,10 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -66,6 +67,11 @@ namespace OpenRA.Mods.Common.Activities
 
 				ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
 			}
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target.Invalid, Color.Green);
 		}
 	}
 }

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -332,6 +333,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (destination != null)
 				return new Target[] { Target.FromCell(self.World, destination.Value) };
 			return Target.None;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (path == null || path.Count() == 0) // Move order canceled.
+				yield break;
+
+			yield return new TargetLineNode(Target.FromCell(self.World, this.destination.Value), Color.Green);
 		}
 
 		abstract class MovePart : Activity

@@ -84,8 +84,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var level = gainsExperience.Level;
 
-			self.SetTargetLine(target, Color.Yellow);
 			self.QueueActivity(new DonateExperience(self, target.Actor, level, info.PlayerExperience, targetGainsExperience));
+			self.ShowTargetLines();
 		}
 
 		public class DeliversExperienceOrderTargeter : UnitOrderTargeter

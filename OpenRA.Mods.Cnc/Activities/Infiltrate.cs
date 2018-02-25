@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
@@ -62,6 +64,11 @@ namespace OpenRA.Mods.Cnc.Activities
 				Cancel(self);
 
 			return base.Tick(self);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target, Color.Red);
 		}
 	}
 }

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -90,6 +91,11 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromActor(Refinery);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target.FromActor(Refinery), Color.Green);
 		}
 
 		public abstract Activity OnStateDock(Actor self);

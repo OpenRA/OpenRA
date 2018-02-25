@@ -76,9 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(Target.FromCell(self.World, tunnel.Exit.Value), Color.Green);
 			self.QueueActivity(move.MoveTo(tunnel.Entrance, tunnel.NearEnough));
 			self.QueueActivity(move.MoveTo(tunnel.Exit.Value, tunnel.NearEnough));
+			self.ShowTargetLines();
 		}
 
 		class EnterTunnelOrderTargeter : UnitOrderTargeter
