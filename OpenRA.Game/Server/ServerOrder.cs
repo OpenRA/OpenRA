@@ -30,6 +30,7 @@ namespace OpenRA.Server
 			byte b;
 			switch (b = r.ReadByte())
 			{
+				case 0xbf:
 				case 0xff:
 					Console.WriteLine("This isn't a server order.");
 					return null;
