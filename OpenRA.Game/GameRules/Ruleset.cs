@@ -227,10 +227,13 @@ namespace OpenRA
 					{
 						var traitName = traitNode.Key.Split('@')[0];
 						var traitType = modData.ObjectCreator.FindType(traitName + "Info");
-						if (traitType.GetInterface("ILobbyCustomRulesIgnore") == null)
+						if (traitType != null && traitType.GetInterface("ILobbyCustomRulesIgnore") == null)
 							return true;
 					}
-					catch { }
+					catch (Exception ex)
+					{
+						Log.Write("debug", "Error in AnyFlaggedTraits\r\n" + ex.ToString());
+					}
 				}
 			}
 
