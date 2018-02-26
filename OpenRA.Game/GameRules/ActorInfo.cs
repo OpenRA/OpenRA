@@ -22,6 +22,8 @@ namespace OpenRA
 	/// </summary>
 	public class ActorInfo
 	{
+		public const string AbstractActorPrefix = "^";
+
 		/// <summary>
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
 		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
@@ -38,7 +40,6 @@ namespace OpenRA
 			{
 				Name = name;
 
-				var abstractActorType = name.StartsWith("^");
 				foreach (var t in node.Nodes)
 				{
 					try
@@ -47,8 +48,7 @@ namespace OpenRA
 					}
 					catch (FieldLoader.MissingFieldsException e)
 					{
-						if (!abstractActorType)
-							throw new YamlException(e.Message);
+						throw new YamlException(e.Message);
 					}
 				}
 

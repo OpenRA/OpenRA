@@ -87,16 +87,24 @@ namespace OpenRA
 
 		public IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }
 
-		static IReadOnlyDictionary<string, T> MergeOrDefault<T>(string name, IReadOnlyFileSystem fileSystem, IEnumerable<string> files, MiniYaml additional,
-			IReadOnlyDictionary<string, T> defaults, Func<MiniYamlNode, T> makeObject)
+		static IReadOnlyDictionary<string, T> MergeOrDefault<T>(string name,
+			IReadOnlyFileSystem fileSystem,
+			IEnumerable<string> files,
+			MiniYaml additional,
+			IReadOnlyDictionary<string, T> defaults,
+			Func<MiniYamlNode, T> makeObject,
+			Func<MiniYamlNode, bool> filterNode = null)
 		{
 			if (additional == null && defaults != null)
 				return defaults;
 
-			var result = MiniYaml.Load(fileSystem, files, additional)
-				.ToDictionaryWithConflictLog(k => k.Key.ToLowerInvariant(), makeObject, "LoadFromManifest<" + name + ">");
+			IEnumerable<MiniYamlNode> yamlNodes = MiniYaml.Load(fileSystem, files, additional);
 
-			return new ReadOnlyDictionary<string, T>(result);
+			// Optionally, the caller can filter out elements from the loaded set of nodes. Default behavior is unfiltered.
+			if (filterNode != null)
+				yamlNodes = yamlNodes.Where(k => !filterNode(k));
+
+			return new ReadOnlyDictionary<string, T>(yamlNodes.ToDictionaryWithConflictLog(k => k.Key.ToLowerInvariant(), makeObject, "LoadFromManifest<" + name + ">"));
 		}
 
 		public static Ruleset LoadDefaults(ModData modData)
@@ -108,7 +116,8 @@ namespace OpenRA
 			Action f = () =>
 			{
 				var actors = MergeOrDefault("Manifest,Rules", fs, m.Rules, null, null,
-					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
+					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value),
+					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal));
 
 				var weapons = MergeOrDefault("Manifest,Weapons", fs, m.Weapons, null, null,
 					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
@@ -166,7 +175,8 @@ namespace OpenRA
 			Action f = () =>
 			{
 				var actors = MergeOrDefault("Rules", fileSystem, m.Rules, mapRules, dr.Actors,
-					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value));
+					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value),
+					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal));
 
 				var weapons = MergeOrDefault("Weapons", fileSystem, m.Weapons, mapWeapons, dr.Weapons,
 					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
@@ -244,7 +254,7 @@ namespace OpenRA
 			MiniYaml mapRules, MiniYaml mapWeapons, MiniYaml mapVoices, MiniYaml mapNotifications, MiniYaml mapSequences)
 		{
 			// Maps that define any weapon, voice, notification, or sequence overrides are always flagged
-			if (AnyCustomYaml(mapWeapons) || AnyCustomYaml(mapVoices) || AnyCustomYaml(mapNotifications) ||	AnyCustomYaml(mapSequences))
+			if (AnyCustomYaml(mapWeapons) || AnyCustomYaml(mapVoices) || AnyCustomYaml(mapNotifications) || AnyCustomYaml(mapSequences))
 				return true;
 
 			// Any trait overrides that aren't explicitly whitelisted are flagged

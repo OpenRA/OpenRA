@@ -22,9 +22,6 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				if (actorInfo.Key.StartsWith("^"))
-					continue;
-
 				var count = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>().Count();
 
 				if (count == 0)
