@@ -185,7 +185,7 @@ namespace OpenRA.Network
 			Name = server.Settings.Name;
 
 			// IP address will be replaced with a real value by the master server / receiving LAN client
-			Address = "0.0.0.0:" + server.Settings.ListenPort.ToString();
+			Address = "0.0.0.0:" + server.Settings.ExternalPort.ToString();
 			State = (int)server.State;
 			MaxPlayers = server.LobbyInfo.Slots.Count(s => !s.Value.Closed) - server.LobbyInfo.Clients.Count(c1 => c1.Bot != null);
 			Map = server.Map.Uid;
