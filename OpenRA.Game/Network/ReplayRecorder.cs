@@ -63,7 +63,7 @@ namespace OpenRA.Network
 				catch (IOException) { }
 			}
 
-			file.Write(initialContent);
+			file.WriteArray(initialContent);
 			writer = new BinaryWriter(file);
 		}
 

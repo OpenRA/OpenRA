@@ -60,26 +60,26 @@ namespace OpenRA.Network
 		public virtual void Send(int frame, List<byte[]> orders)
 		{
 			var ms = new MemoryStream();
-			ms.Write(BitConverter.GetBytes(frame));
+			ms.WriteArray(BitConverter.GetBytes(frame));
 			foreach (var o in orders)
-				ms.Write(o);
+				ms.WriteArray(o);
 			Send(ms.ToArray());
 		}
 
 		public virtual void SendImmediate(List<byte[]> orders)
 		{
 			var ms = new MemoryStream();
-			ms.Write(BitConverter.GetBytes(0));
+			ms.WriteArray(BitConverter.GetBytes(0));
 			foreach (var o in orders)
-				ms.Write(o);
+				ms.WriteArray(o);
 			Send(ms.ToArray());
 		}
 
 		public virtual void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream(4 + syncData.Length);
-			ms.Write(BitConverter.GetBytes(frame));
-			ms.Write(syncData);
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteArray(syncData);
 			Send(ms.GetBuffer());
 		}
 
@@ -198,8 +198,8 @@ namespace OpenRA.Network
 		public override void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream(4 + syncData.Length);
-			ms.Write(BitConverter.GetBytes(frame));
-			ms.Write(syncData);
+			ms.WriteArray(BitConverter.GetBytes(frame));
+			ms.WriteArray(syncData);
 			queuedSyncPackets.Add(ms.GetBuffer());
 		}
 
@@ -210,13 +210,13 @@ namespace OpenRA.Network
 			try
 			{
 				var ms = new MemoryStream();
-				ms.Write(BitConverter.GetBytes(packet.Length));
-				ms.Write(packet);
+				ms.WriteArray(BitConverter.GetBytes(packet.Length));
+				ms.WriteArray(packet);
 
 				foreach (var q in queuedSyncPackets)
 				{
-					ms.Write(BitConverter.GetBytes(q.Length));
-					ms.Write(q);
+					ms.WriteArray(BitConverter.GetBytes(q.Length));
+					ms.WriteArray(q);
 					base.Send(q);
 				}
 
