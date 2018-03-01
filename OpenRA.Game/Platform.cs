@@ -144,7 +144,7 @@ namespace OpenRA
 			path = path.TrimEnd(' ', '\t');
 
 			// Paths starting with ^ are relative to the support dir
-			if (Platform.IsPathRelativeToSupportDirectory(path))
+			if (IsPathRelativeToSupportDirectory(path))
 				path = SupportDir + path.Substring(1);
 
 			// Paths starting with . are relative to the game dir
@@ -163,21 +163,30 @@ namespace OpenRA
 			return ResolvePath(path.Aggregate(Path.Combine));
 		}
 
-		/// <summary>Replace the full path prefix with the special notation characters ^ or .</summary>
+		/// <summary>
+		/// Replace the full path prefix with the special notation characters ^ or .
+		/// and transforms \ path separators to / on Windows
+		/// </summary>
 		public static string UnresolvePath(string path)
 		{
-			if (path.StartsWith(SupportDir, StringComparison.Ordinal))
-				path = Platform.SupportDirPrefix + path.Substring(SupportDir.Length);
+			// Use a case insensitive comparison on windows to avoid problems
+			// with inconsistent drive letter case
+			var compare = CurrentPlatform == PlatformType.Windows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+			if (path.StartsWith(SupportDir, compare))
+				path = SupportDirPrefix + path.Substring(SupportDir.Length);
 
-			if (path.StartsWith(GameDir, StringComparison.Ordinal))
+			if (path.StartsWith(GameDir, compare))
 				path = "./" + path.Substring(GameDir.Length);
+
+			if (CurrentPlatform == PlatformType.Windows)
+				path = path.Replace('\\', '/');
 
 			return path;
 		}
 
 		public static bool IsPathRelativeToSupportDirectory(string path)
 		{
-			return path.StartsWith(Platform.SupportDirPrefix, StringComparison.Ordinal);
+			return path.StartsWith(SupportDirPrefix, StringComparison.Ordinal);
 		}
 	}
 }
