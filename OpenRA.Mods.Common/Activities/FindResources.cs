@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Activities
 				return self.Location;
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
+			var searchFromLoc = GetSearchFromLocation(self);
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
@@ -151,6 +151,17 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromCell(self.World, self.Location);
+		}
+
+		CPos GetSearchFromLocation(Actor self)
+		{
+			if (harv.LastOrderLocation.HasValue)
+				return harv.LastOrderLocation.Value;
+			else if (harv.LastLinkedProc != null)
+				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;
+			else if (harv.LinkedProc != null)
+				return harv.LinkedProc.Location + harv.LinkedProc.Trait<IAcceptResources>().DeliveryOffset;
+			return self.Location;
 		}
 	}
 }
