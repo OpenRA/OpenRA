@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 				return self.Location;
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
+			var searchFromLoc = self.Location;
 			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
