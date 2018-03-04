@@ -232,16 +232,16 @@ if ($args.Length -eq 0)
 {
 	echo "Command list:"
 	echo ""
-	echo "  all             Builds the game and its development tools."
-	echo "  dependencies    Copies the game's dependencies into the main game folder."
-	echo "  version         Sets the version strings for the default mods to the latest"
-	echo "                  version for the current Git branch."
-	echo "  clean           Removes all built and copied files. Use the 'all' and"
-	echo "                  'dependencies' commands to restore removed files."
-	echo "  test            Tests the default mods for errors."
-	echo "  check           Checks .cs files for StyleCop violations."
-	echo "  check-scripts   Checks .lua files for syntax errors."
-	echo "  docs            Generates the trait and Lua API documentation."
+	echo "  all, a              Builds the game and its development tools."
+	echo "  dependencies, d     Copies the game's dependencies into the main game folder."
+	echo "  version, v          Sets the version strings for the default mods to the"
+	echo "                      latest version for the current Git branch."
+	echo "  clean, c            Removes all built and copied files. Use the 'all' and"
+	echo "                      'dependencies' commands to restore removed files."
+	echo "  test, t             Tests the default mods for errors."
+	echo "  check, ck           Checks .cs files for StyleCop violations."
+	echo "  check-scripts, cs   Checks .lua files for syntax errors."
+	echo "  docs                Generates the trait and Lua API documentation."
 	echo ""
 	$command = (Read-Host "Enter command").Split(' ', 2)
 }
@@ -258,14 +258,14 @@ if ($command.Length -gt 1)
 
 switch ($execute)
 {
-	"all" { All-Command }
-	"dependencies" { Dependencies-Command }
-	"version" { Version-Command }
-	"clean" { Clean-Command }
-	"test" { Test-Command }
-	"check" { Check-Command }
-	"check-scripts" { Check-Scripts-Command }
-	"docs" { Docs-Command }
+	{"all",           "a"  -contains $_} { All-Command }
+	{"dependencies",  "d"  -contains $_} { Dependencies-Command }
+	{"version",       "v"  -contains $_} { Version-Command }
+	{"clean",         "c"  -contains $_} { Clean-Command }
+	{"test",          "t"  -contains $_} { Test-Command }
+	{"check",         "ck" -contains $_} { Check-Command }
+	{"check-scripts", "cs" -contains $_} { Check-Scripts-Command }
+	 "docs"                              { Docs-Command }
 	Default { echo ("Invalid command '{0}'" -f $command) }
 }
 
