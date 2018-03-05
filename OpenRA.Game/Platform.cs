@@ -21,6 +21,7 @@ namespace OpenRA
 
 	public static class Platform
 	{
+		public const string SupportDirPrefix = "^";
 		public static PlatformType CurrentPlatform { get { return currentPlatform.Value; } }
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
@@ -143,7 +144,7 @@ namespace OpenRA
 			path = path.TrimEnd(' ', '\t');
 
 			// Paths starting with ^ are relative to the support dir
-			if (path.StartsWith("^", StringComparison.Ordinal))
+			if (Platform.IsPathRelativeToSupportDirectory(path))
 				path = SupportDir + path.Substring(1);
 
 			// Paths starting with . are relative to the game dir
@@ -166,12 +167,17 @@ namespace OpenRA
 		public static string UnresolvePath(string path)
 		{
 			if (path.StartsWith(SupportDir, StringComparison.Ordinal))
-				path = "^" + path.Substring(SupportDir.Length);
+				path = Platform.SupportDirPrefix + path.Substring(SupportDir.Length);
 
 			if (path.StartsWith(GameDir, StringComparison.Ordinal))
 				path = "./" + path.Substring(GameDir.Length);
 
 			return path;
+		}
+
+		public static bool IsPathRelativeToSupportDirectory(string path)
+		{
+			return path.StartsWith(Platform.SupportDirPrefix, StringComparison.Ordinal);
 		}
 	}
 }

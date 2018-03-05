@@ -243,7 +243,7 @@ namespace OpenRA
 
 		public static void InitializeSettings(Arguments args)
 		{
-			Settings = new Settings(Platform.ResolvePath(Path.Combine("^", "settings.yaml")), args);
+			Settings = new Settings(Platform.ResolvePath(Path.Combine(Platform.SupportDirPrefix, "settings.yaml")), args);
 		}
 
 		public static RunStatus InitializeAndRun(string[] args)
@@ -528,7 +528,7 @@ namespace OpenRA
 			ThreadPool.QueueUserWorkItem(_ =>
 			{
 				var mod = ModData.Manifest.Metadata;
-				var directory = Platform.ResolvePath("^", "Screenshots", ModData.Manifest.Id, mod.Version);
+				var directory = Platform.ResolvePath(Platform.SupportDirPrefix, "Screenshots", ModData.Manifest.Id, mod.Version);
 				Directory.CreateDirectory(directory);
 
 				var filename = TimestampedFilename(true);

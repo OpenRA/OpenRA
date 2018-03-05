@@ -384,7 +384,7 @@ namespace OpenRA.Server
 
 				if (Dedicated)
 				{
-					var motdFile = Platform.ResolvePath("^", "motd.txt");
+					var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
 					if (!File.Exists(motdFile))
 						File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
 
