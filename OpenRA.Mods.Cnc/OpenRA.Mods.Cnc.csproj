@@ -71,7 +71,6 @@
     <Compile Include="Traits\Render\WithEmbeddedTurretSpriteBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
-    <Compile Include="Traits\Render\WithReloadingSpriteTurret.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
     <Compile Include="UtilityCommands\ImportTiberianDawnLegacyMapCommand.cs" />

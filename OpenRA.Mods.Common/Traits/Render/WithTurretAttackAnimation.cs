@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithTurretAttackAnimationInfo : ITraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithTurretAttackAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -25,34 +25,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Displayed while attacking.")]
 		[SequenceReference] public readonly string AttackSequence = null;
 
-		[Desc("Displayed while targeting.")]
-		[SequenceReference] public readonly string AimSequence = null;
-
-		[Desc("Shown while reloading.")]
-		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
-
 		[Desc("Delay in ticks before animation starts, either relative to attack preparation or attack.")]
 		public readonly int Delay = 0;
 
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
 
-		public object Create(ActorInitializer init) { return new WithTurretAttackAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithTurretAttackAnimation(init, this); }
 	}
 
-	public class WithTurretAttackAnimation : ITick, INotifyAttack
+	public class WithTurretAttackAnimation : ConditionalTrait<WithTurretAttackAnimationInfo>, ITick, INotifyAttack
 	{
-		readonly WithTurretAttackAnimationInfo info;
-		readonly AttackBase attack;
-		readonly Armament armament;
 		readonly WithSpriteTurret wst;
-
+		readonly Armament armament;
 		int tick;
 
 		public WithTurretAttackAnimation(ActorInitializer init, WithTurretAttackAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
-			attack = init.Self.Trait<AttackBase>();
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == info.Armament);
 			wst = init.Self.TraitsImplementing<WithSpriteTurret>()
@@ -61,50 +51,34 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void PlayAttackAnimation(Actor self)
 		{
-			if (!string.IsNullOrEmpty(info.AttackSequence))
-				wst.PlayCustomAnimation(self, info.AttackSequence);
+			if (!string.IsNullOrEmpty(Info.AttackSequence))
+				wst.PlayCustomAnimation(self, Info.AttackSequence);
+		}
+
+		void NotifyAttack(Actor self)
+		{
+			if (Info.Delay > 0)
+				tick = Info.Delay;
+			else
+				PlayAttackAnimation(self);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Attack)
-			{
-				if (info.Delay > 0)
-					tick = info.Delay;
-				else
-					PlayAttackAnimation(self);
-			}
+			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Attack)
+				NotifyAttack(self);
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Preparation)
-			{
-				if (info.Delay > 0)
-					tick = info.Delay;
-				else
-					PlayAttackAnimation(self);
-			}
+			if (!IsTraitDisabled && a == armament && Info.DelayRelativeTo == AttackDelayType.Preparation)
+				NotifyAttack(self);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (info.Delay > 0 && --tick == 0)
+			if (!IsTraitDisabled && Info.Delay > 0 && --tick == 0)
 				PlayAttackAnimation(self);
-
-			if (string.IsNullOrEmpty(info.AimSequence) && string.IsNullOrEmpty(info.ReloadPrefix))
-				return;
-
-			var sequence = wst.Info.Sequence;
-			if (!string.IsNullOrEmpty(info.AimSequence) && attack.IsAiming)
-				sequence = info.AimSequence;
-
-			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(info.ReloadPrefix)) ? info.ReloadPrefix : "";
-
-			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
-				sequence = prefix + sequence;
-
-			wst.DefaultAnimation.ReplaceAnim(sequence);
 		}
 	}
 }

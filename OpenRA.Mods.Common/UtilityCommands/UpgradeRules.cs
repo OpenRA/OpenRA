@@ -1635,6 +1635,95 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Removed WithReloadingSpriteTurret
+				if (engineVersion < 20180223)
+				{
+					var reloadingTurret = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithReloadingSpriteTurret", StringComparison.Ordinal));
+					if (reloadingTurret != null)
+					{
+						var ammoPool = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AmmoPool", StringComparison.Ordinal));
+						if (ammoPool != null)
+							ammoPool.Value.Nodes.Add(new MiniYamlNode("AmmoCondition", "ammo"));
+
+						RenameNodeKey(reloadingTurret, "WithSpriteTurret");
+						var noAmmoTurret = new MiniYamlNode("WithSpriteTurret@NoAmmo", "");
+						var reqAmmoCondition = new MiniYamlNode("RequiresCondition", "ammo");
+						var reqNoAmmoCondition = new MiniYamlNode("RequiresCondition", "!ammo");
+
+						reloadingTurret.Value.Nodes.Add(reqAmmoCondition);
+						noAmmoTurret.Value.Nodes.Add(reqNoAmmoCondition);
+						node.Value.Nodes.Add(noAmmoTurret);
+
+						Console.WriteLine("WithReloadingSpriteTurret has been removed in favor of using stacked AmmoPool.AmmoConditions.");
+						Console.WriteLine("Check if your affected actors need further changes.");
+					}
+				}
+
+				// Split aim animation logic from WithTurretAttackAnimation to separate WithTurretAimAnimation
+				if (engineVersion < 20171109)
+				{
+					var turAttackAnim = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithTurretAttackAnimation", StringComparison.Ordinal));
+					if (turAttackAnim != null)
+					{
+						var atkSequence = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "AttackSequence");
+						var aimSequence = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "AimSequence");
+
+						// If only AimSequence is null, just rename AttackSequence to Sequence (ReloadPrefix is very unlikely to be defined in that case).
+						// If only AttackSequence is null, just rename the trait and property (the delay properties will likely be undefined).
+						// If both aren't null, split/copy everything relevant to the new WithTurretAimAnimation.
+						// If both are null (extremely unlikely), do nothing.
+						if (atkSequence == null && aimSequence != null)
+						{
+							RenameNodeKey(turAttackAnim, "WithTurretAimAnimation");
+							RenameNodeKey(aimSequence, "Sequence");
+						}
+						else if (atkSequence != null && aimSequence == null)
+							RenameNodeKey(atkSequence, "Sequence");
+						else if (atkSequence != null && aimSequence != null)
+						{
+							var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
+							RenameNodeKey(aimSequence, "Sequence");
+							aimAnim.Value.Nodes.Add(aimSequence);
+							turAttackAnim.Value.Nodes.Remove(aimSequence);
+
+							var relPrefix = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "ReloadPrefix");
+							var turr = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "Turret");
+							var arm = turAttackAnim.Value.Nodes.FirstOrDefault(n => n.Key == "Armament");
+							if (relPrefix != null)
+							{
+								aimAnim.Value.Nodes.Add(relPrefix);
+								turAttackAnim.Value.Nodes.Remove(relPrefix);
+							}
+
+							if (turr != null)
+								aimAnim.Value.Nodes.Add(turr);
+							if (arm != null)
+								aimAnim.Value.Nodes.Add(arm);
+
+							RenameNodeKey(atkSequence, "Sequence");
+							node.Value.Nodes.Add(aimAnim);
+						}
+					}
+				}
+
+				// Removed AimSequence from WithSpriteTurret, use WithTurretAimAnimation instead
+				if (engineVersion < 20171109)
+				{
+					var spriteTurret = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithSpriteTurret", StringComparison.Ordinal));
+					if (spriteTurret != null)
+					{
+						var aimSequence = spriteTurret.Value.Nodes.FirstOrDefault(n => n.Key == "AimSequence");
+						if (aimSequence != null)
+						{
+							var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
+							RenameNodeKey(aimSequence, "Sequence");
+							aimAnim.Value.Nodes.Add(aimSequence);
+							spriteTurret.Value.Nodes.Remove(aimSequence);
+							node.Value.Nodes.Add(aimAnim);
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 

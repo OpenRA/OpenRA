@@ -256,10 +256,6 @@ mlrs:
 		Start: 32
 		Facings: 32
 		UseClassicFacingFudge: True
-	turret2:
-		Start: 32
-		Facings: 32
-		UseClassicFacingFudge: True
 	turret1:
 		Start: 64
 		Facings: 32
