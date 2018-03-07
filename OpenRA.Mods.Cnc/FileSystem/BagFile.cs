@@ -55,19 +55,19 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if ((entry.Flags & 2) > 0)
 				{
 					// PCM
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("RIFF"));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.Length + 36));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("WAVE"));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("fmt "));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(16));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)1));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)channels));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.SampleRate));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(2 * channels * entry.SampleRate));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)(2 * channels)));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)16));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("data"));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.Length));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("RIFF"));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(entry.Length + 36));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("WAVE"));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("fmt "));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(16));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)1));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)channels));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(entry.SampleRate));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(2 * channels * entry.SampleRate));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)(2 * channels)));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)16));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("data"));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(entry.Length));
 				}
 
 				if ((entry.Flags & 8) > 0)
@@ -77,24 +77,24 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					var bytesPerSec = (int)Math.Floor(((double)(2 * entry.ChunkSize) / samplesPerChunk) * ((double)entry.SampleRate / 2));
 					var chunkSize = entry.ChunkSize > entry.Length ? entry.Length : entry.ChunkSize;
 
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("RIFF"));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.Length + 52));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("WAVE"));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("fmt "));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(20));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)17));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)channels));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.SampleRate));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(bytesPerSec));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)chunkSize));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)4));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)2));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes((short)samplesPerChunk));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("fact"));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(4));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(4 * entry.Length));
-					waveHeaderMemoryStream.Write(Encoding.ASCII.GetBytes("data"));
-					waveHeaderMemoryStream.Write(BitConverter.GetBytes(entry.Length));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("RIFF"));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(entry.Length + 52));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("WAVE"));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("fmt "));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(20));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)17));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)channels));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(entry.SampleRate));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(bytesPerSec));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)chunkSize));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)4));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)2));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes((short)samplesPerChunk));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("fact"));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(4));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(4 * entry.Length));
+					waveHeaderMemoryStream.WriteArray(Encoding.ASCII.GetBytes("data"));
+					waveHeaderMemoryStream.WriteArray(BitConverter.GetBytes(entry.Length));
 				}
 
 				waveHeaderMemoryStream.Seek(0, SeekOrigin.Begin);

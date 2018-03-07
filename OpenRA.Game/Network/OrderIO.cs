@@ -16,13 +16,6 @@ namespace OpenRA.Network
 {
 	public static class OrderIO
 	{
-		// Note: renamed from Write() to avoid being aliased by
-		// System.IO.Stream.Write(System.ReadOnlySpan) (which is not implemented in Mono)
-		public static void WriteArray(this Stream s, byte[] buf)
-		{
-			s.Write(buf, 0, buf.Length);
-		}
-
 		public static List<Order> ToOrderList(this byte[] bytes, World world)
 		{
 			var ms = new MemoryStream(bytes, 4, bytes.Length - 4);

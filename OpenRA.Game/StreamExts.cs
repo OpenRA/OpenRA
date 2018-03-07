@@ -81,7 +81,7 @@ namespace OpenRA
 
 		public static void Write(this Stream s, int value)
 		{
-			s.Write(BitConverter.GetBytes(value));
+			s.WriteArray(BitConverter.GetBytes(value));
 		}
 
 		public static float ReadFloat(this Stream s)
@@ -131,7 +131,9 @@ namespace OpenRA
 			}
 		}
 
-		public static void Write(this Stream s, byte[] data)
+		// Note: renamed from Write() to avoid being aliased by
+		// System.IO.Stream.Write(System.ReadOnlySpan) (which is not implemented in Mono)
+		public static void WriteArray(this Stream s, byte[] data)
 		{
 			s.Write(data, 0, data.Length);
 		}
@@ -166,7 +168,7 @@ namespace OpenRA
 				bytes = new byte[0];
 
 			s.Write(bytes.Length);
-			s.Write(bytes);
+			s.WriteArray(bytes);
 
 			return 4 + bytes.Length;
 		}
