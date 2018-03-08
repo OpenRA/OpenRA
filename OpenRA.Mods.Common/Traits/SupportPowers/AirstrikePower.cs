@@ -29,13 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int QuantizedFacings = 32;
 		public readonly WDist Cordon = new WDist(5120);
 
-		[ActorReference]
-		[Desc("Actor to spawn when the aircraft start attacking")]
-		public readonly string CameraActor = null;
-
-		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
-		public readonly int CameraRemoveDelay = 25;
-
 		[Desc("Weapon range offset to apply during the beacon clock calculation")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
@@ -61,31 +54,29 @@ namespace OpenRA.Mods.Common.Traits
 			if (randomize)
 				attackFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
 
-			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
+			// Cache target before aircraft altitude is added to spawn camera on ground
+			var cameraTarget = target;
+
+			var aircraftInfo = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>();
+			var altitude = aircraftInfo.CruiseAltitude.Length;
 			var attackRotation = WRot.FromFacing(attackFacing);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
 			target = target + new WVec(0, 0, altitude);
 			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
+			var speed = aircraftInfo.Speed;
+			var cordonDiameter = info.Cordon.Length * 2 + (info.SquadOffset.X * ((info.SquadSize - 1) / 2));
+			var squadTimeSpentInCordon = cordonDiameter / speed;
 
-			Actor camera = null;
 			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
 
 			Action<Actor> onEnterRange = a =>
 			{
 				// Spawn a camera and remove the beacon when the first plane enters the target area
-				if (info.CameraActor != null && !aircraftInRange.Any(kv => kv.Value))
-				{
-					self.World.AddFrameEndTask(w =>
-					{
-						camera = w.CreateActor(info.CameraActor, new TypeDictionary
-						{
-							new LocationInit(self.World.Map.CellContaining(target)),
-							new OwnerInit(self.Owner),
-						});
-					});
-				}
+				if (info.CameraRange > WDist.Zero && !aircraftInRange.Any(kv => kv.Value))
+					self.World.AddFrameEndTask(w => w.Add(new RevealShroudEffect(cameraTarget, info.CameraRange, CameraRevealType(), self.Owner,
+						info.CameraStances, 0, squadTimeSpentInCordon + info.CameraRemoveDelay)));
 
 				if (beacon != null)
 				{
@@ -103,17 +94,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				aircraftInRange[a] = false;
 
-				// Remove the camera when the final plane leaves the target area
+				// Remove the beacon when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 				{
-					if (camera != null)
-					{
-						camera.QueueActivity(new Wait(info.CameraRemoveDelay));
-						camera.QueueActivity(new RemoveSelf());
-					}
-
-					camera = null;
-
 					if (beacon != null)
 					{
 						self.World.AddFrameEndTask(w =>

@@ -1674,6 +1674,49 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
+				// Replaced CameraActor with CameraRange (effect-based reveal) on all remaining support powers
+				if (engineVersion < 20180308)
+				{
+					var airstrikePower = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("AirstrikePower", StringComparison.Ordinal));
+					if (airstrikePower != null)
+					{
+						var cameraActor = airstrikePower.Value.Nodes.FirstOrDefault(n => n.Key == "CameraActor");
+						if (cameraActor != null)
+						{
+							airstrikePower.Value.Nodes.Remove(cameraActor);
+							airstrikePower.Value.Nodes.Add(new MiniYamlNode("CameraRange", "10c0"));
+							Console.WriteLine("If your AirstrikePower camera actor had a different reveal range than 10 cells, you'll need to correct that manually");
+						}
+					}
+
+					var paratroopersPower = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("ParatroopersPower", StringComparison.Ordinal));
+					if (paratroopersPower != null)
+					{
+						var cameraActor = paratroopersPower.Value.Nodes.FirstOrDefault(n => n.Key == "CameraActor");
+						if (cameraActor != null)
+						{
+							paratroopersPower.Value.Nodes.Remove(cameraActor);
+							paratroopersPower.Value.Nodes.Add(new MiniYamlNode("CameraRange", "6c0"));
+							Console.WriteLine("If your ParatroopersPower camera actor had a different reveal range than 6 cells, you'll need to correct that manually");
+							var removeDelay = paratroopersPower.Value.Nodes.FirstOrDefault(n => n.Key == "CameraRemoveDelay");
+							if (removeDelay == null)
+								paratroopersPower.Value.Nodes.Add(new MiniYamlNode("CameraRemoveDelay", "85"));
+						}
+					}
+
+					var ionCannonPower = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("IonCannonPower", StringComparison.Ordinal));
+					if (ionCannonPower != null)
+					{
+						var cameraActor = ionCannonPower.Value.Nodes.FirstOrDefault(n => n.Key == "CameraActor");
+						if (cameraActor != null)
+						{
+							ionCannonPower.Value.Nodes.Remove(cameraActor);
+							ionCannonPower.Value.Nodes.Add(new MiniYamlNode("CameraRange", "6c0"));
+							Console.WriteLine("If your IonCannonPower camera actor had a different reveal range than 6 cells, you'll need to correct that manually");
+						}
+					}
+				}
+
 				UpgradeActorRules(modData, engineVersion, ref node.Value.Nodes, node, depth + 1);
 			}
 
