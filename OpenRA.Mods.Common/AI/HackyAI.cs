@@ -267,19 +267,16 @@ namespace OpenRA.Mods.Common.AI
 
 		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
-		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
-		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
 		CPos initialBaseCenter;
 		PowerManager playerPower;
-		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
-		FrozenActorLayer frozenLayer;
 		int ticks;
 
 		BitArray resourceTypeIndices;
 
 		AIHarvesterManager harvManager;
+		AISupportPowerManager supportPowerManager;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
@@ -318,9 +315,6 @@ namespace OpenRA.Mods.Common.AI
 
 			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld;
 
-			foreach (var decision in info.PowerDecisions)
-				powerDecisions.Add(decision.OrderName, decision);
-
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
 		}
 
@@ -336,11 +330,10 @@ namespace OpenRA.Mods.Common.AI
 			Player = p;
 			IsEnabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
-			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
-			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
 
 			harvManager = new AIHarvesterManager(this, p);
+			supportPowerManager = new AISupportPowerManager(this, p);
 
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
@@ -551,7 +544,7 @@ namespace OpenRA.Mods.Common.AI
 
 			AssignRolesToIdleUnits(self);
 			SetRallyPointsForNewProductionBuildings(self);
-			TryToUseSupportPower(self);
+			supportPowerManager.TryToUseSupportPower(self);
 
 			foreach (var b in builders)
 				b.Tick();
@@ -916,137 +909,6 @@ namespace OpenRA.Mods.Common.AI
 			QueueOrder(new Order("DeployTransform", mcv, true));
 
 			return mcv;
-		}
-
-		void TryToUseSupportPower(Actor self)
-		{
-			if (supportPowerMngr == null)
-				return;
-
-			foreach (var sp in supportPowerMngr.Powers.Values)
-			{
-				if (sp.Disabled)
-					continue;
-
-				// Add power to dictionary if not in delay dictionary yet
-				if (!waitingPowers.ContainsKey(sp))
-					waitingPowers.Add(sp, 0);
-
-				if (waitingPowers[sp] > 0)
-					waitingPowers[sp]--;
-
-				// If we have recently tried and failed to find a use location for a power, then do not try again until later
-				var isDelayed = waitingPowers[sp] > 0;
-				if (sp.Ready && !isDelayed && powerDecisions.ContainsKey(sp.Info.OrderName))
-				{
-					var powerDecision = powerDecisions[sp.Info.OrderName];
-					if (powerDecision == null)
-					{
-						BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", sp.Info.OrderName);
-						continue;
-					}
-
-					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
-					if (attackLocation == null)
-					{
-						BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
-						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
-
-						continue;
-					}
-
-					// Found a target location, check for precise target
-					attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
-					if (attackLocation == null)
-					{
-						BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
-						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
-
-						continue;
-					}
-
-					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
-					BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, Player.PlayerName);
-					waitingPowers[sp] += 10;
-					QueueOrder(new Order(sp.Key, supportPowerMngr.Self, Target.FromCell(World, attackLocation.Value), false) { SuppressVisualFeedback = true });
-				}
-			}
-		}
-
-		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
-		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower)
-		{
-			CPos? bestLocation = null;
-			var bestAttractiveness = 0;
-			var powerDecision = powerDecisions[readyPower.Info.OrderName];
-			if (powerDecision == null)
-			{
-				BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
-				return null;
-			}
-
-			var map = World.Map;
-			var checkRadius = powerDecision.CoarseScanRadius;
-			for (var i = 0; i < map.MapSize.X; i += checkRadius)
-			{
-				for (var j = 0; j < map.MapSize.Y; j += checkRadius)
-				{
-					var tl = new MPos(i, j);
-					var br = new MPos(i + checkRadius, j + checkRadius);
-					var region = new CellRegion(map.Grid.Type, tl, br);
-
-					// HACK: The AI code should not be messing with raw coordinate transformations
-					var wtl = World.Map.CenterOfCell(tl.ToCPos(map));
-					var wbr = World.Map.CenterOfCell(br.ToCPos(map));
-					var targets = World.ActorMap.ActorsInBox(wtl, wbr);
-
-					var frozenTargets = frozenLayer.FrozenActorsInRegion(region);
-					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, Player) + powerDecision.GetAttractiveness(frozenTargets, Player);
-					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
-						continue;
-
-					bestAttractiveness = consideredAttractiveness;
-					bestLocation = new MPos(i, j).ToCPos(map);
-				}
-			}
-
-			return bestLocation;
-		}
-
-		/// <summary>Detail scans an area, evaluating positions.</summary>
-		CPos? FindFineAttackLocationToSupportPower(SupportPowerInstance readyPower, CPos checkPos, int extendedRange = 1)
-		{
-			CPos? bestLocation = null;
-			var bestAttractiveness = 0;
-			var powerDecision = powerDecisions[readyPower.Info.OrderName];
-			if (powerDecision == null)
-			{
-				BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
-				return null;
-			}
-
-			var checkRadius = powerDecision.CoarseScanRadius;
-			var fineCheck = powerDecision.FineScanRadius;
-			for (var i = 0 - extendedRange; i <= (checkRadius + extendedRange); i += fineCheck)
-			{
-				var x = checkPos.X + i;
-
-				for (var j = 0 - extendedRange; j <= (checkRadius + extendedRange); j += fineCheck)
-				{
-					var y = checkPos.Y + j;
-					var pos = World.Map.CenterOfCell(new CPos(x, y));
-					var consideredAttractiveness = 0;
-					consideredAttractiveness += powerDecision.GetAttractiveness(pos, Player, frozenLayer);
-
-					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
-						continue;
-
-					bestAttractiveness = consideredAttractiveness;
-					bestLocation = new CPos(x, y);
-				}
-			}
-
-			return bestLocation;
 		}
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
