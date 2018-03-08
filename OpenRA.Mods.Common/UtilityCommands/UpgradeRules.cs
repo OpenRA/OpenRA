@@ -1635,7 +1635,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				if (engineVersion < 20180225)
+				if (engineVersion < 20180308)
 				{
 					if (node.Key == "WormSpawner")
 						RenameNodeKey(node, "ActorSpawner");
@@ -1651,7 +1651,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Removed WithReloadingSpriteTurret
-				if (engineVersion < 20180223)
+				if (engineVersion < 20180308)
 				{
 					var reloadingTurret = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithReloadingSpriteTurret", StringComparison.Ordinal));
 					if (reloadingTurret != null)
