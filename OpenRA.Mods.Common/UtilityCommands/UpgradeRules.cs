@@ -1710,7 +1710,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Split aim animation logic from WithTurretAttackAnimation to separate WithTurretAimAnimation
-				if (engineVersion < 20180223)
+				if (engineVersion < 20180309)
 				{
 					var turAttackAnim = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithTurretAttackAnimation", StringComparison.Ordinal));
 					if (turAttackAnim != null)
@@ -1757,7 +1757,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				// Removed AimSequence from WithSpriteTurret, use WithTurretAimAnimation instead
-				if (engineVersion < 20180224)
+				if (engineVersion < 20180309)
 				{
 					var spriteTurret = node.Value.Nodes.FirstOrDefault(n => n.Key.StartsWith("WithSpriteTurret", StringComparison.Ordinal));
 					if (spriteTurret != null)
