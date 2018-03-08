@@ -1,7 +1,11 @@
 ^Palettes:
 	PaletteFromFile@player:
-		Name: player
+		Name: units
 		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromGimpOrJascFile:
+		Name: player
+		Filename: Red_Alert.act
 		ShadowIndex: 4
 	PaletteFromCurrentTileset:
 		Name: terrain
@@ -11,9 +15,9 @@
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
-	PaletteFromFile@effect:
+	PaletteFromGimpOrJascFile@effect:
 		Name: effect
-		Filename: temperat.pal
+		Filename: Red_Alert.act
 		ShadowIndex: 4
 	PaletteFromFile@colorpicker:
 		Name: colorpicker

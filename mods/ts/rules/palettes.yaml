@@ -7,10 +7,14 @@
 		Tileset: SNOW
 		Filename: unitsno.pal
 		ShadowIndex: 1
-	PaletteFromFile@playertem:
+	PaletteFromGimpOrJascFile@playertem:
 		Name: player
 		Tileset: TEMPERATE
-		Filename: unittem.pal
+		Filename: tsprjasc.pal
+		ShadowIndex: 1
+	PaletteFromGimpOrJascFile:
+		Name: units
+		Filename: tsprjasc.pal
 		ShadowIndex: 1
 	PaletteFromFile@depth:
 		Name: depth
