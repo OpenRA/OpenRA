@@ -145,6 +145,8 @@ MINVV:
 	HiddenUnderFog:
 	Building:
 		TerrainTypes: Clear,Road
+		BuildSounds: placbldg.aud, build5.aud
+		UndeploySounds: cashturn.aud
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
