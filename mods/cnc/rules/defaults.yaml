@@ -212,15 +212,7 @@
 	Inherits@3: ^SpriteActor
 	Huntable:
 	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 50
-			Road: 100
-			Bridge: 100
-			Tiberium: 50
-			BlueTiberium: 50
-			Beach: 50
+		Locomotor: wheeled
 		TurnSpeed: 5
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -256,15 +248,7 @@
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
-		Crushes: wall, crate, infantry
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
-			Bridge: 100
-			Tiberium: 70
-			BlueTiberium: 70
-			Beach: 70
+		Locomotor: tracked
 		TurnSpeed: 5
 	Tooltip:
 		GenericName: Tank
@@ -334,18 +318,7 @@
 	RevealsShroud:
 		Range: 5c0
 	Mobile:
-		Crushes: crate
-		SharesCell: true
-		TerrainSpeeds:
-			Clear: 90
-			Rough: 80
-			Road: 100
-			Bridge: 100
-			Tiberium: 70
-				PathingCost: 300
-			BlueTiberium: 70
-				PathingCost: 300
-			Beach: 80
+		Locomotor: foot
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -499,15 +472,8 @@
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
-		Crushes: crate
+		Locomotor: critter
 		Speed: 113
-		TerrainSpeeds:
-			Clear: 90
-			Rough: 80
-			Road: 100
-			Tiberium: 70
-			BlueTiberium: 70
-			Beach: 80
 		Voice: Move
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -554,13 +520,7 @@
 	Mobile:
 		Voice: Move
 		Speed: 71
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 60
-			Road: 70
-			Tiberium: 100
-			BlueTiberium: 100
-			Beach: 60
+		Locomotor: critter
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:

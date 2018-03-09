@@ -132,11 +132,7 @@ E5:
 		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Mobile:
 		Speed: 56
-		TerrainSpeeds:
-			Tiberium: 90
-				PathingCost: 90
-			BlueTiberium: 90
-				PathingCost: 90
+		Locomotor: chem
 	Health:
 		HP: 9000
 	AutoTarget:
@@ -225,8 +221,6 @@ RMBO:
 
 PVICE:
 	Inherits: ^Viceroid
-	Mobile:
-		Crushes: crate
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 40
