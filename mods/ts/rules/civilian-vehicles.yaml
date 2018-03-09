@@ -10,7 +10,6 @@
 	Mobile:
 		Speed: 56
 		TurnSpeed: 5
-		Crushes: wall, crate, infantry
 	Health:
 		HP: 60000
 	Armor:

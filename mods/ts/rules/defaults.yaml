@@ -512,21 +512,7 @@
 	Mobile:
 		Voice: Move
 		Speed: 71
-		Crushes: crate
-		SharesCell: true
-		TerrainSpeeds:
-			Clear: 90
-			Road: 100
-			Bridge: 100
-			Rail: 90
-			DirtRoad: 100
-			Rough: 80
-			Tiberium: 90
-				PathingCost: 90
-			BlueTiberium: 90
-				PathingCost: 90
-			Veins: 50
-		TunnelCondition: inside-tunnel
+		Locomotor: foot
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
@@ -580,6 +566,8 @@
 			Radius: 128
 	EditorTilesetFilter:
 		Categories: Infantry
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -697,22 +685,10 @@
 	Huntable:
 	DrawLineToTarget:
 	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 70
-			Road: 100
-			Bridge: 100
-			Rail: 50
-			DirtRoad: 90
-			Rough: 40
-			Tiberium: 50
-			BlueTiberium: 50
-			Veins: 50
-				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
 		RequiresCondition: !empdisable
-		TunnelCondition: inside-tunnel
+		Locomotor: wheeled
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -771,21 +747,13 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Vehicle
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
-		Crushes: wall, crate, infantry
-		TerrainSpeeds:
-			Clear: 70
-			Road: 100
-			Bridge: 100
-			Rail: 100
-			DirtRoad: 90
-			Rough: 60
-			Tiberium: 70
-			BlueTiberium: 70
-			Veins: 70
+		Locomotor: tracked
 
 ^VoxelActor:
 	BodyOrientation:
@@ -801,7 +769,7 @@
 ^CivilianVoxelCrusher:
 	Inherits: ^CivilianVoxelVehicle
 	Mobile:
-		Crushes: wall, crate, infantry
+		Locomotor: heavywheeled
 
 ^Aircraft:
 	Inherits@2: ^ExistsInWorld
@@ -901,18 +869,7 @@
 	Mobile:
 		Speed: 113
 		TurnSpeed: 16
-		SharesCell: no
-		TerrainSpeeds:
-			Clear: 90
-			Road: 100
-			Bridge: 100
-			Rail: 80
-			DirtRoad: 90
-			Rough: 70
-			Tiberium: 100
-			BlueTiberium: 100
-			Veins: 100
-		TunnelCondition: inside-tunnel
+		Locomotor: visceroid
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
@@ -933,6 +890,8 @@
 			VerticalTopOffset: 512
 	EditorTilesetFilter:
 		Categories: Critter
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -1046,14 +1005,11 @@
 	WithVoxelBody:
 	DrawLineToTarget:
 	Mobile:
-		TerrainSpeeds:
-			Rail: 100
-		Crushes: wall, crate, infantry
 		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
 		RequiresCondition: !empdisable
-		TunnelCondition: inside-tunnel
+		Locomotor: train
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
@@ -1091,6 +1047,8 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Railway
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^TerrainOverlay:
 	AlwaysVisible:

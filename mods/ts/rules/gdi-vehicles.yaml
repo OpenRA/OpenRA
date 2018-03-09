@@ -13,9 +13,8 @@ APC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		TerrainSpeeds:
-			Water: 80
 		RequiresCondition: !empdisable && !loading
+		Locomotor: amphibious
 	Health:
 		HP: 20000
 	Armor:
@@ -63,17 +62,8 @@ HVR:
 		Description: Hovering vehicle armed with\nlong range missiles.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Mobile:
 		Speed: 99
-		TerrainSpeeds:
-			Clear: 100
-			Road: 100
-			Bridge: 100
-			Rail: 100
-			DirtRoad: 100
-			Rough: 100
-			Water: 100
-			Tiberium: 100
-			BlueTiberium: 100
-			Veins: 100
+		Locomotor: hover
+		RequiresCondition: !empdisable
 	Health:
 		HP: 23000
 	Armor:
@@ -164,7 +154,6 @@ MMCH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 56
-		Crushes: wall, crate, infantry
 	Health:
 		HP: 40000
 	Armor:
@@ -225,7 +214,6 @@ HMEC:
 	Mobile:
 		TurnSpeed: 3
 		Speed: 42
-		Crushes: wall, crate, infantry
 	Health:
 		HP: 80000
 	SelfHealing:
@@ -272,7 +260,6 @@ SONIC:
 	Mobile:
 		TurnSpeed: 4
 		Speed: 56
-		Crushes: wall, crate, infantry
 	Health:
 		HP: 50000
 	Armor:

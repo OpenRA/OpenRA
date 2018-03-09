@@ -87,11 +87,7 @@ JUMPJET:
 		VoiceSet: JumpJet
 	Mobile:
 		Speed: 71
-		Jumpjet: True
-		JumpjetTransitionCost: 100
-		JumpjetCondition: airborne
-		TerrainSpeeds:
-			Jumpjet: 110
+		Locomotor: jumpjet
 	Health:
 		HP: 12000
 	Armor:
@@ -152,6 +148,8 @@ JUMPJET:
 		RequiresCondition: !airborne
 	WithShadow@airborne:
 		RequiresCondition: airborne
+	GrantConditionOnJumpjetLayer:
+		Condition: airborne
 
 JUMPJET.Husk:
 	RenderSprites:
