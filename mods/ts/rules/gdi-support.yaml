@@ -51,7 +51,6 @@ GACTWR:
 		BuildPaletteOrder: 70
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 		Description: Modular tower for base defenses.
-	Building:
 	Selectable:
 		Bounds: 48, 36, 0, -6
 		DecorationBounds: 48, 48, 0, -12
