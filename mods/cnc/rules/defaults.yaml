@@ -700,6 +700,7 @@
 	Building:
 		RequiresBaseProvider: true
 		BuildSounds: constru2.aud, hvydoor1.aud
+		UndeploySounds: cashturn.aud
 		TerrainTypes: Clear,Road
 	RequiresBuildableArea:
 		AreaTypes: building
