@@ -306,6 +306,7 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
@@ -442,6 +443,7 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7
@@ -485,6 +487,7 @@
 	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
+		UndeploySounds: cashturn.aud
 	KillsSelf:
 		RemoveInstead: true
 	RenderSprites:
