@@ -1,5 +1,5 @@
 mcv:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
@@ -21,7 +21,6 @@ mcv:
 		Type: light
 	Mobile:
 		Speed: 31
-		Crushes: crate, infantry, spicebloom
 	RevealsShroud:
 		Range: 2c768
 	MustBeDestroyed:
@@ -50,7 +49,7 @@ mcv:
 	-RevealOnFire:
 
 harvester:
-	Inherits: ^Vehicle
+	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
 		Prerequisites: refinery
@@ -80,7 +79,6 @@ harvester:
 		Type: harvester
 	Mobile:
 		Speed: 43
-		Crushes: crate, infantry, spicebloom
 	RevealsShroud:
 		Range: 3c768
 	Explodes:
@@ -331,7 +329,7 @@ devastator:
 	Mobile:
 		TurnSpeed: 3
 		Speed: 31
-		Crushes: crate, infantry, spicebloom, wall
+		Locomotor: devastator
 		RequiresCondition: !overload && !notmobile
 	AutoCarryable:
 		RequiresCondition: !overload

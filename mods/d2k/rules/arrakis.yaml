@@ -79,11 +79,7 @@ sandworm:
 		Type: heavy
 	Mobile:
 		Speed: 42
-		TerrainSpeeds:
-			Sand: 100
-			Dune: 100
-			SpiceSand: 100
-			Spice: 100
+		Locomotor: worm
 	Targetable:
 		TargetTypes: Ground, Creep
 	WithSpriteBody:

@@ -168,17 +168,8 @@
 		GenericName: Unit
 	Huntable:
 	Mobile:
-		Crushes: crate, spicebloom
-		TerrainSpeeds:
-			Sand: 100
-			Rock: 100
-			Transition: 100
-			Concrete: 100
-			SpiceSand: 100
-			Spice: 100
-			SpiceBlobs: 100
-			Dune: 50
 		TurnSpeed: 5
+		Locomotor: vehicle
 		RequiresCondition: !notmobile
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -223,7 +214,7 @@
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
-		Crushes: crate, infantry, spicebloom
+		Locomotor: tank
 
 ^Husk:
 	Inherits@1: ^SpriteActor
@@ -281,18 +272,7 @@
 	RevealsShroud:
 		Range: 3c768
 	Mobile:
-		Crushes: crate, spicebloom
-		SharesCell: true
-		TerrainSpeeds:
-			Sand: 100
-			Rock: 100
-			Transition: 100
-			Concrete: 100
-			SpiceSand: 100
-			Spice: 100
-			SpiceBlobs: 100
-			Dune: 80
-			Rough: 80
+		Locomotor: foot
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
