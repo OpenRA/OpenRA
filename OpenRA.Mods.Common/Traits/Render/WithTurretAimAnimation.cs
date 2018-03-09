@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var turretAttackAnim = ai.TraitInfos<WithTurretAttackAnimationInfo>().Any(t => t.Turret == Turret);
 			if (turretAttackAnim)
-				throw new YamlException("WithTurretAimAnimation is currently not compatible with WithTurretAttackAnimation.");
+				throw new YamlException("WithTurretAimAnimation is currently not compatible with WithTurretAttackAnimation. Don't use them on the same turret.");
 
 			base.RulesetLoaded(rules, ai);
 		}
@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly AttackBase attack;
 		readonly Armament armament;
 		readonly WithSpriteTurret wst;
+		string sequence;
 
 		public WithTurretAimAnimation(ActorInitializer init, WithTurretAimAnimationInfo info)
 			: base(info)
@@ -54,20 +55,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.Single(a => a.Info.Name == info.Armament);
 			wst = init.Self.TraitsImplementing<WithSpriteTurret>()
 				.Single(st => st.Info.Turret == info.Turret);
+
+			sequence = wst.Info.Sequence;
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled && sequence == wst.Info.Sequence)
 				return;
 
-			var sequence = wst.Info.Sequence;
-			if (!string.IsNullOrEmpty(Info.Sequence) && attack.IsAiming)
+			sequence = wst.Info.Sequence;
+			if (!IsTraitDisabled && !string.IsNullOrEmpty(Info.Sequence) && attack.IsAiming)
 				sequence = Info.Sequence;
 
 			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(Info.ReloadPrefix)) ? Info.ReloadPrefix : "";
 
-			if (!string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
+			if (!IsTraitDisabled && !string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
 				sequence = prefix + sequence;
 
 			wst.DefaultAnimation.ReplaceAnim(sequence);
