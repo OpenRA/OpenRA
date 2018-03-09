@@ -25,6 +25,9 @@ namespace OpenRA.Network
 
 		static bool IsGameStart(byte[] data)
 		{
+			if (data.Length < 5)
+				return false;
+
 			if (data.Length == 5 && data[4] == 0xbf)
 				return false;
 			if (data.Length >= 5 && data[4] == 0x65)

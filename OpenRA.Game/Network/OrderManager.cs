@@ -121,6 +121,9 @@ namespace OpenRA.Network
 
 			foreach (var p in immediatePackets)
 			{
+				if (p.Second.Length < 5)
+					continue;
+
 				foreach (var o in p.Second.ToOrderList(World))
 				{
 					UnitOrders.ProcessOrder(this, World, p.First, o);
