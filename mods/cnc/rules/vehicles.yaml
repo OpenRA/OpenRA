@@ -16,7 +16,7 @@ MCV:
 		DecorationBounds: 36,36
 	Mobile:
 		Speed: 71
-		Crushes: crate, infantry
+		Locomotor: heavywheeled
 	Health:
 		HP: 120000
 	Armor:
@@ -268,13 +268,7 @@ BIKE:
 	Mobile:
 		TurnSpeed: 10
 		Speed: 213
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 35
-			Road: 100
-			Tiberium: 35
-			BlueTiberium: 35
-			Beach: 35
+		Locomotor: bike
 	Health:
 		HP: 11000
 	Armor:
@@ -426,7 +420,7 @@ HTNK:
 		Queue: Vehicle.GDI
 		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
 	Mobile:
-		Crushes: wall, heavywall, crate, infantry
+		Locomotor: heavytracked
 		Speed: 56
 		TurnSpeed: 3
 	Health:
@@ -576,9 +570,9 @@ STNK:
 		Queue: Vehicle.Nod
 		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
 	Mobile:
+		Locomotor: heavywheeled
 		TurnSpeed: 10
 		Speed: 142
-		Crushes: crate, infantry
 	Health:
 		HP: 15000
 	Armor:
