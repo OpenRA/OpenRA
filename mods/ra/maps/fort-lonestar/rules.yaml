@@ -141,7 +141,7 @@ MOBILETENT:
 		Type: Light
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
