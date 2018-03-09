@@ -69,16 +69,6 @@ HARV:
 		DeliverVoice: Move
 	Mobile:
 		Speed: 71
-		Crushes: wall, crate
-		TerrainSpeeds:
-			Clear: 90
-			Rough: 70
-			Road: 100
-			Bridge: 100
-			Beach: 70
-			Tiberium: 80
-			BlueTiberium: 80
-			Veins: 80
 	Health:
 		HP: 100000
 	SelfHealing:
