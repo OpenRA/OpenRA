@@ -68,7 +68,6 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -112,7 +111,6 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -159,7 +157,6 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 71
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -208,7 +205,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 50
-		Crushes: wall, mine, crate, infantry, heavywall
+		Locomotor: heavytracked
 	RevealsShroud:
 		Range: 7c0
 		RevealGeneratedShroud: False
@@ -269,6 +266,7 @@ ARTY:
 	Mobile:
 		TurnSpeed: 2
 		Speed: 85
+		Locomotor: lighttracked
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -315,7 +313,7 @@ HARV:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
 	WithHarvestAnimation:
@@ -361,7 +359,7 @@ MCV:
 		Type: Light
 	Mobile:
 		Speed: 71
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
 	Transforms:
@@ -441,7 +439,6 @@ APC:
 		Type: Heavy
 	Mobile:
 		Speed: 142
-		Crushes: wall, mine, crate, infantry
 		RequiresCondition: !notmobile
 	RevealsShroud:
 		Range: 5c0
@@ -479,7 +476,6 @@ MNLY:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -622,7 +618,6 @@ TTNK:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 7c0
 		RevealGeneratedShroud: False
@@ -739,7 +734,7 @@ CTNK:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -779,7 +774,6 @@ QTNK:
 		Type: Heavy
 	Mobile:
 		Speed: 56
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -812,7 +806,7 @@ STNK:
 		Type: Light
 	Mobile:
 		Speed: 142
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 		RequiresCondition: !notmobile
 	RevealsShroud:
 		Range: 7c0
