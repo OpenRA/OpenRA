@@ -531,6 +531,7 @@
 		EjectOnGround: false
 		EjectInAir: true
 		AllowUnsuitableCell: true
+		ChuteSound: chute1.aud
 	GpsDot:
 		String: Plane
 	Tooltip:
@@ -591,6 +592,8 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+		BuildSounds: placbldg.aud, build5.aud
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 	SoundOnDamageTransition:
@@ -671,6 +674,7 @@
 		Footprint: x
 		BuildSounds: placbldg.aud
 		TerrainTypes: Clear,Road
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7
@@ -717,6 +721,7 @@
 	Building:
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
