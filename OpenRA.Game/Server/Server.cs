@@ -140,6 +140,8 @@ namespace OpenRA.Server
 			foreach (var trait in modData.Manifest.ServerTraits)
 				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
 
+			serverTraits.TrimExcess();
+
 			LobbyInfo = new Session
 			{
 				GlobalSettings =

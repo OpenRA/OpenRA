@@ -51,6 +51,8 @@ namespace OpenRA
 							throw new YamlException(e.Message);
 					}
 				}
+
+				traits.TrimExcess();
 			}
 			catch (YamlException e)
 			{
@@ -63,6 +65,7 @@ namespace OpenRA
 			Name = name;
 			foreach (var t in traitInfos)
 				traits.Add(t);
+			traits.TrimExcess();
 		}
 
 		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
