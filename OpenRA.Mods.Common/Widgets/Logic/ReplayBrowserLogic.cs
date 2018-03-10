@@ -72,9 +72,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			watch.IsDisabled = () => selectedReplay == null || map.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); };
 
+			var mapPreviewRoot = panel.Get("MAP_PREVIEW_ROOT");
+			mapPreviewRoot.IsVisible = () => selectedReplay != null;
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
-			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },
