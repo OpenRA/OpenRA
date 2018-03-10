@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 		public int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
 		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
 
-		public IEnumerable<IRenderable> Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
+		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
 			var imageRenderable = new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale, IsDecoration);
 
@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 				xy.Y + (int)(cb.Bottom * scale));
 		}
 
-		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)
+		public IRenderable[] Render(WPos pos, PaletteReference palette)
 		{
 			return Render(pos, WVec.Zero, 0, palette, 1f);
 		}
