@@ -563,14 +563,9 @@ HQ:
 FIX:
 	Inherits: ^BaseBuilding
 	HitShape:
-		Type: Rectangle
-			TopLeft: -1536, -683
-			BottomRight: 1536, 768
-	HitShape@TOPANDBOTTOM:
-		TargetableOffsets: 840,0,0, -1060,0,0
-		Type: Rectangle
-			TopLeft: -640, -980
-			BottomRight: 640, 1110
+		TargetableOffsets: 840,0,0, 598,-640,0, 598,640,0, -1060,0,0, -768,-640,0, -768,640,0
+		Type: Polygon
+			Points: -1536,-256, -341,-940, 341,-940, 1536,-256, 1536,341, 341,1110, -341,1110, -1536,341
 	Valued:
 		Cost: 500
 	Tooltip:
