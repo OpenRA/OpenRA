@@ -105,11 +105,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in yaml)
 				{
-					var missionMapPaths = kv.Value.Nodes.Select(n => Path.GetFullPath(n.Key)).ToList();
+					var missionMapPaths = kv.Value.Nodes.Select(n => n.Key).ToList();
 
 					var previews = modData.MapCache
-						.Where(p => p.Status == MapStatus.Available && missionMapPaths.Contains(p.Package.Name))
-						.OrderBy(p => missionMapPaths.IndexOf(p.Package.Name));
+						.Where(p => p.Status == MapStatus.Available)
+						.Select(p => new
+						{
+							Preview = p,
+							Index = missionMapPaths.IndexOf(Platform.UnresolvePath(p.Package.Name))
+						})
+						.Where(x => x.Index != -1)
+						.OrderBy(x => x.Index)
+						.Select(x => x.Preview);
 
 					CreateMissionGroup(kv.Key, previews);
 					allPreviews.AddRange(previews);
