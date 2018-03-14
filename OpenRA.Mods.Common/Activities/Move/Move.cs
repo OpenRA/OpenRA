@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				List<CPos> path;
 				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.ToCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias())
 					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 				return path;
@@ -293,7 +293,9 @@ namespace OpenRA.Mods.Common.Activities
 				// Wait a bit to see if they leave
 				if (!hasWaited)
 				{
-					waitTicksRemaining = mobile.Info.WaitAverage + self.World.SharedRandom.Next(-mobile.Info.WaitSpread, mobile.Info.WaitSpread);
+					waitTicksRemaining = mobile.Info.LocomotorInfo.WaitAverage
+						+ self.World.SharedRandom.Next(-mobile.Info.LocomotorInfo.WaitSpread, mobile.Info.LocomotorInfo.WaitSpread);
+
 					hasWaited = true;
 				}
 

@@ -29,15 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			domainIndexes = new Dictionary<uint, MovementClassDomainIndex>();
 			var tileSet = world.Map.Rules.TileSet;
-			var movementClasses =
-				world.Map.Rules.Actors.Where(ai => ai.Value.HasTraitInfo<MobileInfo>())
-					.Select(ai => (uint)ai.Value.TraitInfo<MobileInfo>().GetMovementClass(tileSet)).Distinct();
+			var locomotors = world.WorldActor.TraitsImplementing<Locomotor>().Where(l => !string.IsNullOrEmpty(l.Info.Name));
+			var movementClasses = locomotors.Select(t => (uint)t.Info.GetMovementClass(tileSet)).Distinct();
 
 			foreach (var mc in movementClasses)
 				domainIndexes[mc] = new MovementClassDomainIndex(world, mc);
 		}
 
-		public bool IsPassable(CPos p1, CPos p2, MobileInfo mi, uint movementClass)
+		public bool IsPassable(CPos p1, CPos p2, LocomotorInfo loco, uint movementClass)
 		{
 			// HACK: Work around units in other movement layers from being blocked
 			// when the point in the main layer is not pathable
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			// HACK: Workaround until we can generalize movement classes
-			if (mi.Subterranean || mi.Jumpjet)
+			if (loco is SubterraneanLocomotorInfo || loco is JumpjetLocomotorInfo)
 				return true;
 
 			return domainIndexes[movementClass].IsPassable(p1, p2);

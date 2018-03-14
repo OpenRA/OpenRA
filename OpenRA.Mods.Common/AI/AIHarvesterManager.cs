@@ -41,16 +41,16 @@ namespace OpenRA.Mods.Common.AI
 
 		CPos FindNextResource(Actor actor, Harvester harv)
 		{
-			var mobileInfo = actor.Info.TraitInfo<MobileInfo>();
-			var passable = (uint)mobileInfo.GetMovementClass(world.Map.Rules.TileSet);
+			var locomotorInfo = actor.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			var passable = (uint)locomotorInfo.GetMovementClass(World.Map.Rules.TileSet);
 
 			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, mobileInfo, passable) &&
+				domainIndex.IsPassable(actor.Location, cell, locomotorInfo, passable) &&
 				harv.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
 			var path = pathfinder.FindPath(
-				PathSearch.Search(world, mobileInfo, actor, true, isValidResource)
+				PathSearch.Search(world, locomotorInfo, actor, true, isValidResource)
 					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), ai.Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && actor.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, ai.Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))

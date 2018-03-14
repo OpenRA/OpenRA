@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.AI
 			// (Way better than finding a nearest target which is likely to be on Ground)
 			// You might be tempted to move these lookups into Activate() but that causes null reference exception.
 			var domainIndex = first.World.WorldActor.Trait<DomainIndex>();
-			var mobileInfo = first.Info.TraitInfo<MobileInfo>();
-			var passable = (uint)mobileInfo.GetMovementClass(first.World.Map.Rules.TileSet);
+			var locomotorInfo = first.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			var passable = (uint)locomotorInfo.GetMovementClass(first.World.Map.Rules.TileSet);
 
 			var navalProductions = owner.World.ActorsHavingTrait<Building>().Where(a
 				=> owner.Bot.Info.BuildingCommonNames.NavalProduction.Contains(a.Info.Name)
-				&& domainIndex.IsPassable(first.Location, a.Location, mobileInfo, passable)
+				&& domainIndex.IsPassable(first.Location, a.Location, locomotorInfo, passable)
 				&& a.AppearsHostileTo(first));
 
 			if (navalProductions.Any())

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Harvester harv;
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
-		readonly MobileInfo mobileInfo;
+		readonly LocomotorInfo locomotorInfo;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			mobile = self.Trait<Mobile>();
-			mobileInfo = self.Info.TraitInfo<MobileInfo>();
+			locomotorInfo = mobile.Info.LocomotorInfo;
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
@@ -126,10 +126,10 @@ namespace OpenRA.Mods.Common.Activities
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:
-			var passable = (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet);
+			var passable = (uint)locomotorInfo.GetMovementClass(self.World.Map.Rules.TileSet);
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, mobileInfo, self, true, loc =>
-					domainIndex.IsPassable(self.Location, loc, mobileInfo, passable) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
+			using (var search = PathSearch.Search(self.World, locomotorInfo, self, true, loc =>
+					domainIndex.IsPassable(self.Location, loc, locomotorInfo, passable) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||

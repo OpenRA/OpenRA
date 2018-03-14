@@ -524,6 +524,10 @@
     <Compile Include="Traits\Conditions\GrantConditionOnDamageState.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnFaction.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnTerrain.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnLayer.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnTunnelLayer.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnJumpjetLayer.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnSubterraneanLayer.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPrerequisite.cs" />
     <Compile Include="Traits\Conditions\ConditionManager.cs" />
@@ -534,6 +538,9 @@
     <Compile Include="Traits\World\CrateSpawner.cs" />
     <Compile Include="Traits\World\CreateMPPlayers.cs" />
     <Compile Include="Traits\World\DomainIndex.cs" />
+    <Compile Include="Traits\World\Locomotor.cs" />
+    <Compile Include="Traits\World\JumpjetLocomotor.cs" />
+    <Compile Include="Traits\World\SubterraneanLocomotor.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
     <Compile Include="Traits\World\MPStartUnits.cs" />

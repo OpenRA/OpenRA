@@ -50,6 +50,24 @@ namespace OpenRA.Mods.Common.Traits
 		void Sold(Actor self);
 	}
 
+	[RequireExplicitImplementation]
+	public interface INotifyCustomLayerChanged
+	{
+		void CustomLayerChanged(Actor self, byte oldLayer, byte newLayer);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyVisualPositionChanged
+	{
+		void VisualPositionChanged(Actor self, byte oldLayer, byte newLayer);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyFinishedMoving
+	{
+		void FinishedMoving(Actor self, byte oldLayer, byte newLayer);
+	}
+
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
@@ -313,9 +331,9 @@ namespace OpenRA.Mods.Common.Traits
 		byte Index { get; }
 		bool InteractsWithDefaultLayer { get; }
 
-		bool EnabledForActor(ActorInfo a, MobileInfo mi);
-		int EntryMovementCost(ActorInfo a, MobileInfo mi, CPos cell);
-		int ExitMovementCost(ActorInfo a, MobileInfo mi, CPos cell);
+		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
+		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
+		int ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);

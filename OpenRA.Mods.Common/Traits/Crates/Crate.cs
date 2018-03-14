@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Make sure that the actor can collect this crate type
 				// Crate can only be crushed if it is not in the air.
-				return self.IsAtGroundLevel() && mi.Crushes.Contains(info.CrushClass);
+				return self.IsAtGroundLevel() && mi.LocomotorInfo.Crushes.Contains(info.CrushClass);
 			});
 
 			// Destroy the crate if none of the units in the cell are valid collectors

@@ -161,12 +161,13 @@ namespace OpenRA.Mods.Common.Scripting
 					{
 						var mobiles = cargo != null ? cargo.Passengers.Select(a =>
 						{
-							var mobileInfo = a.Info.TraitInfoOrDefault<MobileInfo>();
-							if (mobileInfo == null)
-								return new Pair<MobileInfo, uint>(null, 0);
+							var mobile = a.TraitOrDefault<Mobile>();
+							if (mobile == null)
+								return new Pair<LocomotorInfo, uint>(null, 0);
 
-							return new Pair<MobileInfo, uint>(mobileInfo, (uint)mobileInfo.GetMovementClass(a.World.Map.Rules.TileSet));
-						}) : new Pair<MobileInfo, uint>[0];
+							var locomotorInfo = mobile.Info.LocomotorInfo;
+							return new Pair<LocomotorInfo, uint>(locomotorInfo, (uint)locomotorInfo.GetMovementClass(a.World.Map.Rules.TileSet));
+						}) : new Pair<LocomotorInfo, uint>[0];
 
 						foreach (var c in transport.World.Map.FindTilesInCircle(destination, dropRange))
 						{
