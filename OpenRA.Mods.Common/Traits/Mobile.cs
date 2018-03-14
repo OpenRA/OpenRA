@@ -22,49 +22,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Flags]
-	public enum CellConditions
-	{
-		None = 0,
-		TransientActors,
-		BlockedByMovers,
-		All = TransientActors | BlockedByMovers
-	}
-
-	public static class CellConditionsExts
-	{
-		public static bool HasCellCondition(this CellConditions c, CellConditions cellCondition)
-		{
-			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (c & cellCondition) == cellCondition;
-		}
-	}
-
-	public static class CustomMovementLayerType
-	{
-		public const byte Tunnel = 1;
-		public const byte Subterranean = 2;
-		public const byte Jumpjet = 3;
-		public const byte ElevatedBridge = 4;
-	}
-
 	[Desc("Unit is able to move.")]
 	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
 		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IActorPreviewInitInfo
 	{
-		[FieldLoader.LoadUsing("LoadSpeeds", true)]
-		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
-		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
-
-		[Desc("e.g. crate, wall, infantry")]
-		public readonly HashSet<string> Crushes = new HashSet<string>();
-
-		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]
-		public readonly HashSet<string> CrushDamageTypes = new HashSet<string>();
-
-		public readonly int WaitAverage = 5;
-
-		public readonly int WaitSpread = 2;
+		[Desc("Which Locomotor does this trait use. Must be defined on the World actor.")]
+		[FieldLoader.Require]
+		public readonly string Locomotor = null;
 
 		public readonly int InitialFacing = 0;
 
@@ -73,67 +37,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
-		[Desc("Allow multiple (infantry) units in one cell.")]
-		public readonly bool SharesCell = false;
-
-		[Desc("Can the actor be ordered to move in to shroud?")]
-		public readonly bool MoveIntoShroud = true;
-
 		public readonly string Cursor = "move";
 		public readonly string BlockedCursor = "move-blocked";
 
 		[VoiceReference] public readonly string Voice = "Action";
-
-		[GrantedConditionReference]
-		[Desc("The condition to grant to self while inside a tunnel.")]
-		public readonly string TunnelCondition = null;
-
-		[Desc("Can this unit move underground?")]
-		public readonly bool Subterranean = false;
-
-		[GrantedConditionReference]
-		[Desc("The condition to grant to self while underground.")]
-		public readonly string SubterraneanCondition = null;
-
-		[Desc("Pathfinding cost for submerging or reemerging.")]
-		public readonly int SubterraneanTransitionCost = 0;
-
-		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
-		public readonly HashSet<string> SubterraneanTransitionTerrainTypes = new HashSet<string>();
-
-		[Desc("Can this actor transition on slopes?")]
-		public readonly bool SubterraneanTransitionOnRamps = false;
-
-		[Desc("Depth at which the subterranian condition is applied.")]
-		public readonly WDist SubterraneanTransitionDepth = new WDist(-1024);
-
-		[Desc("Dig animation image to play when transitioning.")]
-		public readonly string SubterraneanTransitionImage = null;
-
-		[SequenceReference("SubterraneanTransitionImage")]
-		[Desc("Dig animation image to play when transitioning.")]
-		public readonly string SubterraneanTransitionSequence = null;
-
-		[PaletteReference]
-		public readonly string SubterraneanTransitionPalette = "effect";
-
-		public readonly string SubterraneanTransitionSound = null;
-
-		[Desc("Can this unit fly over obstacles?")]
-		public readonly bool Jumpjet = false;
-
-		[GrantedConditionReference]
-		[Desc("The condition to grant to self while flying.")]
-		public readonly string JumpjetCondition = null;
-
-		[Desc("Pathfinding cost for taking off or landing.")]
-		public readonly int JumpjetTransitionCost = 0;
-
-		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
-		public readonly HashSet<string> JumpjetTransitionTerrainTypes = new HashSet<string>();
-
-		[Desc("Can this actor transition on slopes?")]
-		public readonly bool JumpjetTransitionOnRamps = true;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
@@ -145,240 +52,37 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new Mobile(init, this); }
 
-		static object LoadSpeeds(MiniYaml y)
+		public LocomotorInfo LocomotorInfo { get; private set; }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var ret = new Dictionary<string, TerrainInfo>();
-			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
-			{
-				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
-				var nodesDict = t.Value.ToDictionary();
-				var cost = nodesDict.ContainsKey("PathingCost")
-					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
-					: 10000 / speed;
-				ret.Add(t.Key, new TerrainInfo(speed, cost));
-			}
+			var locomotorInfos = rules.Actors["world"].TraitInfos<LocomotorInfo>();
+			LocomotorInfo = locomotorInfos.FirstOrDefault(li => li.Name == Locomotor);
+			if (LocomotorInfo == null)
+				throw new YamlException("A locomotor named '{0}' doesn't exist.".F(Locomotor));
+			else if (locomotorInfos.Count(li => li.Name == Locomotor) > 1)
+				throw new YamlException("There is more than one locomotor named '{0}'.".F(Locomotor));
 
-			return ret;
-		}
-
-		TerrainInfo[] LoadTilesetSpeeds(TileSet tileSet)
-		{
-			var info = new TerrainInfo[tileSet.TerrainInfo.Length];
-			for (var i = 0; i < info.Length; i++)
-				info[i] = TerrainInfo.Impassable;
-
-			foreach (var kvp in TerrainSpeeds)
-			{
-				byte index;
-				if (tileSet.TryGetTerrainIndex(kvp.Key, out index))
-					info[index] = kvp.Value;
-			}
-
-			return info;
-		}
-
-		public class TerrainInfo
-		{
-			public static readonly TerrainInfo Impassable = new TerrainInfo();
-
-			public readonly int Cost;
-			public readonly int Speed;
-
-			public TerrainInfo()
-			{
-				Cost = int.MaxValue;
-				Speed = 0;
-			}
-
-			public TerrainInfo(int speed, int cost)
-			{
-				Speed = speed;
-				Cost = cost;
-			}
-		}
-
-		public struct WorldMovementInfo
-		{
-			internal readonly World World;
-			internal readonly TerrainInfo[] TerrainInfos;
-			internal WorldMovementInfo(World world, MobileInfo info)
-			{
-				// PERF: This struct allows us to cache the terrain info for the tileset used by the world.
-				// This allows us to speed up some performance-sensitive pathfinding calculations.
-				World = world;
-				TerrainInfos = info.TilesetTerrainInfo[world.Map.Rules.TileSet];
-			}
-		}
-
-		public readonly Cache<TileSet, TerrainInfo[]> TilesetTerrainInfo;
-		public readonly Cache<TileSet, int> TilesetMovementClass;
-
-		public MobileInfo()
-		{
-			TilesetTerrainInfo = new Cache<TileSet, TerrainInfo[]>(LoadTilesetSpeeds);
-			TilesetMovementClass = new Cache<TileSet, int>(CalculateTilesetMovementClass);
-		}
-
-		public int MovementCostForCell(World world, CPos cell)
-		{
-			return MovementCostForCell(world, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
-		}
-
-		int MovementCostForCell(World world, TerrainInfo[] terrainInfos, CPos cell)
-		{
-			if (!world.Map.Contains(cell))
-				return int.MaxValue;
-
-			var index = cell.Layer == 0 ? world.Map.GetTerrainIndex(cell) :
-				world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
-
-			if (index == byte.MaxValue)
-				return int.MaxValue;
-
-			return terrainInfos[index].Cost;
-		}
-
-		public int CalculateTilesetMovementClass(TileSet tileset)
-		{
-			// collect our ability to cross *all* terraintypes, in a bitvector
-			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
-		}
-
-		public int GetMovementClass(TileSet tileset)
-		{
-			return TilesetMovementClass[tileset];
-		}
-
-		static bool IsMovingInMyDirection(Actor self, Actor other)
-		{
-			var otherMobile = other.TraitOrDefault<Mobile>();
-			if (otherMobile == null || !otherMobile.IsMoving)
-				return false;
-
-			var selfMobile = self.TraitOrDefault<Mobile>();
-			if (selfMobile == null)
-				return false;
-
-			// Moving in the same direction if the facing delta is between +/- 90 degrees
-			var delta = Util.NormalizeFacing(otherMobile.Facing - selfMobile.Facing);
-			return delta < 64 || delta > 192;
-		}
-
-		public int TileSetMovementHash(TileSet tileSet)
-		{
-			var terrainInfos = TilesetTerrainInfo[tileSet];
-
-			// Compute and return the hash using aggregate
-			return terrainInfos.Aggregate(terrainInfos.Length,
-				(current, terrainInfo) => unchecked(current * 31 + terrainInfo.Cost));
-		}
-
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
-		{
-			if (MovementCostForCell(world, cell) == int.MaxValue)
-				return false;
-
-			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
-			return CanMoveFreelyInto(world, self, cell, ignoreActor, check);
-		}
-
-		// Determines whether the actor is blocked by other Actors
-		public bool CanMoveFreelyInto(World world, Actor self, CPos cell, Actor ignoreActor, CellConditions check)
-		{
-			if (!check.HasCellCondition(CellConditions.TransientActors))
-				return true;
-
-			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
-				return true;
-
-			// PERF: Avoid LINQ.
-			foreach (var otherActor in world.ActorMap.GetActorsAt(cell))
-				if (IsBlockedBy(self, otherActor, ignoreActor, check))
-					return false;
-
-			return true;
-		}
-
-		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, CellConditions check)
-		{
-			// We are not blocked by the actor we are ignoring.
-			if (otherActor == ignoreActor)
-				return false;
-
-			// If self is null, we don't have a real actor - we're just checking what would happen theoretically.
-			// In such a scenario - we'll just assume any other actor in the cell will block us by default.
-			// If we have a real actor, we can then perform the extra checks that allow us to avoid being blocked.
-			if (self == null)
-				return true;
-
-			// If the check allows: we are not blocked by allied units moving in our direction.
-			if (!check.HasCellCondition(CellConditions.BlockedByMovers) &&
-				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
-				IsMovingInMyDirection(self, otherActor))
-				return false;
-
-			// If there is a temporary blocker in our path, but we can remove it, we are not blocked.
-			var temporaryBlocker = otherActor.TraitOrDefault<ITemporaryBlocker>();
-			if (temporaryBlocker != null && temporaryBlocker.CanRemoveBlockage(otherActor, self))
-				return false;
-
-			// If we cannot crush the other actor in our way, we are blocked.
-			if (Crushes == null || Crushes.Count == 0)
-				return true;
-
-			// If the other actor in our way cannot be crushed, we are blocked.
-			// PERF: Avoid LINQ.
-			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			foreach (var crushable in crushables)
-				if (crushable.CrushableBy(otherActor, self, Crushes))
-					return false;
-
-			return true;
-		}
-
-		public WorldMovementInfo GetWorldMovementInfo(World world)
-		{
-			return new WorldMovementInfo(world, this);
-		}
-
-		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
-		{
-			var cost = MovementCostForCell(worldMovementInfo.World, worldMovementInfo.TerrainInfos, cell);
-			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
-				return int.MaxValue;
-			return cost;
-		}
-
-		public SubCell GetAvailableSubCell(
-			World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
-		{
-			if (MovementCostForCell(world, cell) == int.MaxValue)
-				return SubCell.Invalid;
-
-			if (check.HasCellCondition(CellConditions.TransientActors))
-			{
-				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check);
-
-				if (!SharesCell)
-					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
-
-				return world.ActorMap.FreeSubCell(cell, preferredSubCell, checkTransient);
-			}
-
-			if (!SharesCell)
-				return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell) ? SubCell.Invalid : SubCell.FullCell;
-
-			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
+			base.RulesetLoaded(rules, ai);
 		}
 
 		public int GetInitialFacing() { return InitialFacing; }
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			if (LocomotorInfo.MovementCostForCell(world, cell) == int.MaxValue)
+				return false;
+
+			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
+			return LocomotorInfo.CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
 			return new ReadOnlyDictionary<CPos, SubCell>(new Dictionary<CPos, SubCell>() { { location, subCell } });
 		}
 
-		bool IOccupySpaceInfo.SharesCell { get { return SharesCell; } }
+		bool IOccupySpaceInfo.SharesCell { get { return LocomotorInfo.SharesCell; } }
 	}
 
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
@@ -396,10 +100,9 @@ namespace OpenRA.Mods.Common.Traits
 		int facing;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
-		int tunnelToken = ConditionManager.InvalidConditionToken;
-		int subterraneanToken = ConditionManager.InvalidConditionToken;
-		int jumpjetToken = ConditionManager.InvalidConditionToken;
-		ConditionManager conditionManager;
+		INotifyCustomLayerChanged[] notifyCustomLayerChanged;
+		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyFinishedMoving[] notifyFinishedMoving;
 
 		[Sync] public int Facing
 		{
@@ -428,29 +131,10 @@ namespace OpenRA.Mods.Common.Traits
 			ToSubCell = toSub;
 			AddInfluence();
 
-			// Tunnel condition is added/removed when starting the transition between layers
-			if (toCell.Layer == CustomMovementLayerType.Tunnel && conditionManager != null &&
-					!string.IsNullOrEmpty(Info.TunnelCondition) && tunnelToken == ConditionManager.InvalidConditionToken)
-				tunnelToken = conditionManager.GrantCondition(self, Info.TunnelCondition);
-			else if (toCell.Layer != CustomMovementLayerType.Tunnel && tunnelToken != ConditionManager.InvalidConditionToken)
-				tunnelToken = conditionManager.RevokeCondition(self, tunnelToken);
-
-			// Play submerging animation as soon as it starts to submerge (before applying the condition)
-			if (toCell.Layer == CustomMovementLayerType.Subterranean && fromCell.Layer != CustomMovementLayerType.Subterranean)
-			{
-				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
-					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World, Info.SubterraneanTransitionImage,
-						Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
-
-				if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
-					Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
-			}
-
-			// Grant the jumpjet condition as soon as the actor starts leaving the ground layer
-			// The condition is revoked from FinishedMoving
-			if (toCell.Layer == CustomMovementLayerType.Jumpjet && conditionManager != null &&
-					!string.IsNullOrEmpty(Info.JumpjetCondition) && jumpjetToken == ConditionManager.InvalidConditionToken)
-				jumpjetToken = conditionManager.GrantCondition(self, Info.JumpjetCondition);
+			// Most custom layer conditions are added/removed when starting the transition between layers.
+			if (toCell.Layer != fromCell.Layer)
+				foreach (var n in notifyCustomLayerChanged)
+					n.CustomLayerChanged(self, fromCell.Layer, toCell.Layer);
 		}
 
 		public Mobile(ActorInitializer init, MobileInfo info)
@@ -460,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
-			ToSubCell = FromSubCell = info.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
+			ToSubCell = FromSubCell = info.LocomotorInfo.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
 				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
 
@@ -480,7 +164,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+			notifyCustomLayerChanged = self.TraitsImplementing<INotifyCustomLayerChanged>().ToArray();
+			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 
 			base.Created(self);
 		}
@@ -493,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				preferred = FromSubCell;
 
 			// Fix sub-cell assignment
-			if (Info.SharesCell)
+			if (Info.LocomotorInfo.SharesCell)
 			{
 				if (preferred <= SubCell.FullCell)
 					return self.World.Map.Grid.DefaultSubCell;
@@ -536,31 +222,12 @@ namespace OpenRA.Mods.Common.Traits
 			CenterPosition = pos;
 			self.World.UpdateMaps(self, this);
 
-			// HACK: The submerging conditions must be applied part way through a move, and this is the only method that gets called
-			// at the right times to detect this
-			if (toCell.Layer == CustomMovementLayerType.Subterranean)
-			{
-				var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
-				if (subterraneanToken == ConditionManager.InvalidConditionToken && depth < Info.SubterraneanTransitionDepth && conditionManager != null
-						&& !string.IsNullOrEmpty(Info.SubterraneanCondition))
-					subterraneanToken = conditionManager.GrantCondition(self, Info.SubterraneanCondition);
-			}
-			else if (subterraneanToken != ConditionManager.InvalidConditionToken)
-			{
-				var depth = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
-				if (depth > Info.SubterraneanTransitionDepth)
-				{
-					subterraneanToken = conditionManager.RevokeCondition(self, subterraneanToken);
+			// The first time SetVisualPosition is called is in the constructor before creation, so we need a null check here as well
+			if (notifyVisualPositionChanged == null)
+				return;
 
-					// HACK: the submerging animation and sound won't play if a condition isn't defined
-					if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
-						Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);
-
-					if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
-						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World, Info.SubterraneanTransitionImage,
-							Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
-				}
-			}
+			foreach (var n in notifyVisualPositionChanged)
+				n.VisualPositionChanged(self, fromCell.Layer, toCell.Layer);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -630,7 +297,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var loc = self.World.Map.Clamp(order.TargetLocation);
 
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(loc))
+				if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(loc))
 					return;
 
 				if (!order.Queued)
@@ -651,7 +318,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+			if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
 				return null;
 
 			switch (order.OrderString)
@@ -673,6 +340,7 @@ namespace OpenRA.Mods.Common.Traits
 				return new[] { Pair.New(FromCell, FromSubCell) };
 			if (CanEnterCell(ToCell))
 				return new[] { Pair.New(ToCell, ToSubCell) };
+
 			return new[] { Pair.New(FromCell, FromSubCell), Pair.New(ToCell, ToSubCell) };
 		}
 
@@ -684,12 +352,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.None);
+			var cellConditions = checkTransientActors ? CellConditions.All : CellConditions.None;
+			return Info.LocomotorInfo.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, cellConditions);
 		}
 
 		public bool CanExistInCell(CPos cell)
 		{
-			return Info.MovementCostForCell(self.World, cell) != int.MaxValue;
+			return Info.LocomotorInfo.MovementCostForCell(self.World, cell) != int.MaxValue;
 		}
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
@@ -699,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanMoveFreelyInto(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.CanMoveFreelyInto(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
+			return Info.LocomotorInfo.CanMoveFreelyInto(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
 		}
 
 		public void EnteringCell(Actor self)
@@ -714,15 +383,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			var notifiers = actors.SelectMany(a => a.TraitsImplementing<INotifyCrushed>().Select(t => new TraitPair<INotifyCrushed>(a, t)));
 			foreach (var notifyCrushed in notifiers)
-				notifyCrushed.Trait.WarnCrush(notifyCrushed.Actor, self, Info.Crushes);
+				notifyCrushed.Trait.WarnCrush(notifyCrushed.Actor, self, Info.LocomotorInfo.Crushes);
 		}
 
 		public void FinishedMoving(Actor self)
 		{
 			// Need to check both fromCell and toCell because FinishedMoving is called multiple times during the move
-			// and that condition guarantees that this only runs when the unit has finished landing.
-			if (fromCell.Layer != CustomMovementLayerType.Jumpjet && toCell.Layer != CustomMovementLayerType.Jumpjet && jumpjetToken != ConditionManager.InvalidConditionToken)
-				jumpjetToken = conditionManager.RevokeCondition(self, jumpjetToken);
+			if (fromCell.Layer == toCell.Layer)
+				foreach (var n in notifyFinishedMoving)
+					n.FinishedMoving(self, fromCell.Layer, toCell.Layer);
 
 			// Only make actor crush if it is on the ground
 			if (!self.IsAtGroundLevel())
@@ -734,7 +403,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var notifiers = actors.SelectMany(a => a.TraitsImplementing<INotifyCrushed>().Select(t => new TraitPair<INotifyCrushed>(a, t)));
 			foreach (var notifyCrushed in notifiers)
-				notifyCrushed.Trait.OnCrush(notifyCrushed.Actor, self, Info.Crushes);
+				notifyCrushed.Trait.OnCrush(notifyCrushed.Actor, self, Info.LocomotorInfo.Crushes);
 		}
 
 		bool AnyCrushables(List<Actor> actors)
@@ -744,7 +413,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			foreach (var crushes in crushables)
-				if (crushes.Trait.CrushableBy(crushes.Actor, self, Info.Crushes))
+				if (crushes.Trait.CrushableBy(crushes.Actor, self, Info.LocomotorInfo.Crushes))
 					return true;
 
 			return false;
@@ -758,7 +427,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (index == byte.MaxValue)
 				return 0;
 
-			var terrainSpeed = Info.TilesetTerrainInfo[self.World.Map.Rules.TileSet][index].Speed;
+			var terrainSpeed = Info.LocomotorInfo.TilesetTerrainInfo[self.World.Map.Rules.TileSet][index].Speed;
 			if (terrainSpeed == 0)
 				return 0;
 
@@ -868,6 +537,7 @@ namespace OpenRA.Mods.Common.Traits
 		class MoveOrderTargeter : IOrderTargeter
 		{
 			readonly Mobile mobile;
+			readonly LocomotorInfo locomotorInfo;
 			readonly bool rejectMove;
 			public bool TargetOverridesSelection(TargetModifiers modifiers)
 			{
@@ -877,6 +547,7 @@ namespace OpenRA.Mods.Common.Traits
 			public MoveOrderTargeter(Actor self, Mobile unit)
 			{
 				mobile = unit;
+				locomotorInfo = mobile.Info.LocomotorInfo;
 				rejectMove = !self.AcceptsOrder("Move");
 			}
 
@@ -897,8 +568,8 @@ namespace OpenRA.Mods.Common.Traits
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
 
 				if (mobile.IsTraitDisabled
-					|| (!explored && !mobile.Info.MoveIntoShroud)
-					|| (explored && mobile.Info.MovementCostForCell(self.World, location) == int.MaxValue))
+					|| (!explored && !locomotorInfo.MoveIntoShroud)
+					|| (explored && locomotorInfo.MovementCostForCell(self.World, location) == int.MaxValue))
 					cursor = mobile.Info.BlockedCursor;
 
 				return true;
@@ -924,7 +595,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = self.CenterPosition;
 
 			if (subCell == SubCell.Any)
-				subCell = Info.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
+				subCell = Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
 
 			// TODO: solve/reduce cell is full problem
 			if (subCell == SubCell.Invalid)
@@ -990,7 +661,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, Info, self, true,
+			using (var search = PathSearch.Search(self.World, Info.LocomotorInfo, self, true,
 					loc => loc.Layer == 0 && CanEnterCell(loc))
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);

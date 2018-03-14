@@ -13,13 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Calculates routes for mobile units based on the A* search algorithm.", " Attach this to the world actor.")]
-	public class PathFinderInfo : ITraitInfo
+	public class PathFinderInfo : ITraitInfo, Requires<LocomotorInfo>
 	{
 		public object Create(ActorInitializer init)
 		{
@@ -62,20 +63,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
 		{
-			var mi = self.Info.TraitInfo<MobileInfo>();
+			var li = self.Info.TraitInfo<MobileInfo>().LocomotorInfo;
 
 			// If a water-land transition is required, bail early
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = mi.GetMovementClass(world.Map.Rules.TileSet);
-				if (!domainIndex.IsPassable(source, target, mi, (uint)passable))
+				var passable = li.GetMovementClass(world.Map.Rules.TileSet);
+				if (!domainIndex.IsPassable(source, target, li, (uint)passable))
 					return EmptyPath;
 			}
 
 			List<CPos> pb;
-			using (var fromSrc = PathSearch.FromPoint(world, mi, self, target, source, true).WithIgnoredActor(ignoreActor))
-			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
+			using (var fromSrc = PathSearch.FromPoint(world, li, self, target, source, true).WithIgnoredActor(ignoreActor))
+			using (var fromDest = PathSearch.FromPoint(world, li, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
 				pb = FindBidiPath(fromSrc, fromDest);
 
 			CheckSanePath2(pb, source, target);
@@ -86,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
 		{
 			var mi = self.Info.TraitInfo<MobileInfo>();
+			var li = mi.LocomotorInfo;
 			var targetCell = world.Map.CellContaining(target);
 
 			// Correct for SubCell offset
@@ -102,14 +104,14 @@ namespace OpenRA.Mods.Common.Traits
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = mi.GetMovementClass(world.Map.Rules.TileSet);
-				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, mi, (uint)passable)));
+				var passable = li.GetMovementClass(world.Map.Rules.TileSet);
+				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, li, (uint)passable)));
 				if (!tilesInRange.Any())
 					return EmptyPath;
 			}
 
-			using (var fromSrc = PathSearch.FromPoints(world, mi, self, tilesInRange, source, true))
-			using (var fromDest = PathSearch.FromPoint(world, mi, self, source, targetCell, true).Reverse())
+			using (var fromSrc = PathSearch.FromPoints(world, li, self, tilesInRange, source, true))
+			using (var fromDest = PathSearch.FromPoint(world, li, self, source, targetCell, true).Reverse())
 				return FindBidiPath(fromSrc, fromDest);
 		}
 

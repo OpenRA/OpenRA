@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, MobileInfo mi) { return mi.Jumpjet; }
+		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return li is JumpjetLocomotorInfo; }
 		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.Jumpjet; } }
 		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return true; } }
 
@@ -72,13 +72,14 @@ namespace OpenRA.Mods.Common.Traits
 			return pos + new WVec(0, 0, height[cell] - pos.Z);
 		}
 
-		bool ValidTransitionCell(CPos cell, MobileInfo mi)
+		bool ValidTransitionCell(CPos cell, LocomotorInfo li)
 		{
 			var terrainType = map.GetTerrainInfo(cell).Type;
-			if (!mi.JumpjetTransitionTerrainTypes.Contains(terrainType) && mi.JumpjetTransitionTerrainTypes.Any())
+			var jli = (JumpjetLocomotorInfo)li;
+			if (!jli.JumpjetTransitionTerrainTypes.Contains(terrainType) && jli.JumpjetTransitionTerrainTypes.Any())
 				return false;
 
-			if (mi.JumpjetTransitionOnRamps)
+			if (jli.JumpjetTransitionOnRamps)
 				return true;
 
 			var tile = map.Tiles[cell];
@@ -86,14 +87,16 @@ namespace OpenRA.Mods.Common.Traits
 			return ti == null || ti.RampType == 0;
 		}
 
-		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, MobileInfo mi, CPos cell)
+		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
-			return ValidTransitionCell(cell, mi) ? mi.JumpjetTransitionCost : int.MaxValue;
+			var jli = (JumpjetLocomotorInfo)li;
+			return ValidTransitionCell(cell, jli) ? jli.JumpjetTransitionCost : int.MaxValue;
 		}
 
-		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, MobileInfo mi, CPos cell)
+		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
-			return ValidTransitionCell(cell, mi) ? mi.JumpjetTransitionCost : int.MaxValue;
+			var jli = (JumpjetLocomotorInfo)li;
+			return ValidTransitionCell(cell, jli) ? jli.JumpjetTransitionCost : int.MaxValue;
 		}
 
 		byte ICustomMovementLayer.GetTerrainIndex(CPos cell)
