@@ -157,14 +157,7 @@ namespace OpenRA.Traits
 						if (!actor.Targetables.Any(Exts.IsTraitEnabled))
 							return new[] { actor.CenterPosition };
 
-						var targetablePositions = actor.TraitsImplementing<ITargetablePositions>().Where(Exts.IsTraitEnabled);
-						if (targetablePositions.Any())
-						{
-							var target = this;
-							return targetablePositions.SelectMany(tp => tp.TargetablePositions(target.actor));
-						}
-
-						return new[] { actor.CenterPosition };
+						return actor.GetTargetablePositions();
 					case TargetType.FrozenActor:
 						return new[] { frozen.CenterPosition };
 					case TargetType.Terrain:

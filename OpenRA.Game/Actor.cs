@@ -77,6 +77,8 @@ namespace OpenRA
 		readonly IMouseBounds[] mouseBounds;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
+		readonly ITargetablePositions[] targetablePositions;
+		WPos[] staticTargetablePositions;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -118,6 +120,15 @@ namespace OpenRA
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
+			targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
+			world.AddFrameEndTask(w =>
+			{
+				// Caching this in a AddFrameEndTask, because trait construction order might cause problems if done directly at creation time.
+				// All actors that can move should have IMove, if not it's pretty safe to assume the actor is immobile and
+				// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
+				if (!Info.HasTraitInfo<IMoveInfo>() && targetablePositions.All(tp => tp.AlwaysEnabled))
+					staticTargetablePositions = targetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
+			});
 
 			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
 		}
@@ -366,6 +377,18 @@ namespace OpenRA
 					return true;
 
 			return false;
+		}
+
+		public IEnumerable<WPos> GetTargetablePositions()
+		{
+			if (staticTargetablePositions != null)
+				return staticTargetablePositions;
+
+			var enabledTargetablePositionTraits = targetablePositions.Where(Exts.IsTraitEnabled);
+			if (enabledTargetablePositionTraits.Any())
+				return enabledTargetablePositionTraits.SelectMany(tp => tp.TargetablePositions(this));
+
+			return new[] { this.CenterPosition };
 		}
 
 		#region Scripting interface

@@ -73,6 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
+		bool ITargetablePositions.AlwaysEnabled { get { return Info.RequiresCondition == null; } }
+
 		IEnumerable<WPos> ITargetablePositions.TargetablePositions(Actor self)
 		{
 			if (IsTraitDisabled)

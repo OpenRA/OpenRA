@@ -387,7 +387,10 @@ namespace OpenRA.Traits
 	public interface ITargetablePositions
 	{
 		IEnumerable<WPos> TargetablePositions(Actor self);
+		bool AlwaysEnabled { get; }
 	}
+
+	public interface IMoveInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }
