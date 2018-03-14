@@ -35,6 +35,9 @@ namespace OpenRA.Traits
 	public sealed class VoiceReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class LocomotorReferenceAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class SequenceReferenceAttribute : Attribute
 	{
 		public readonly string ImageReference; // The field name in the same trait info that contains the image name.
