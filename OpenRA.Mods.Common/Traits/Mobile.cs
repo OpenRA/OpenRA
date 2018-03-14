@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IActorPreviewInitInfo
 	{
 		[Desc("Which Locomotor does this trait use. Must be defined on the World actor.")]
-		[FieldLoader.Require]
+		[LocomotorReference, FieldLoader.Require]
 		public readonly string Locomotor = null;
 
 		public readonly int InitialFacing = 0;
