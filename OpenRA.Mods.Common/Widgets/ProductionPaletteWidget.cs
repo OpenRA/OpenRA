@@ -294,9 +294,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Game.Sound.Play(SoundType.UI, TabClick);
 
-			if (item.Paused || item.Done || item.TotalCost == item.RemainingCost)
+			if (CurrentQueue.Info.DisallowPaused || item.Paused || item.Done || item.TotalCost == item.RemainingCost)
 			{
-				// Instant cancel of things we have not started yet and things that are finished
+				// Instantly cancel items that haven't started, have finished, or if the queue doesn't support pausing
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
 				World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name, handleCount));
 			}
