@@ -20,11 +20,13 @@ namespace OpenRA.Mods.Common.Scripting
 	public class MissionObjectiveProperties : ScriptPlayerProperties, Requires<MissionObjectivesInfo>
 	{
 		readonly MissionObjectives mo;
+		readonly bool shortGame;
 
 		public MissionObjectiveProperties(ScriptContext context, Player player)
 			: base(context, player)
 		{
 			mo = player.PlayerActor.Trait<MissionObjectives>();
+			shortGame = player.World.WorldActor.Trait<MapOptions>().ShortGame;
 		}
 
 		[ScriptActorPropertyActivity]
@@ -112,7 +114,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"the MustBeDestroyed trait (according to the short game option).")]
 		public bool HasNoRequiredUnits()
 		{
-			return Player.HasNoRequiredUnits();
+			return Player.HasNoRequiredUnits(shortGame);
 		}
 	}
 }
