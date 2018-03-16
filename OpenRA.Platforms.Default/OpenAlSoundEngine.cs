@@ -112,6 +112,12 @@ namespace OpenRA.Platforms.Default
 				return bits == 16 ? AL10.AL_FORMAT_STEREO16 : AL10.AL_FORMAT_STEREO8;
 		}
 
+		static OpenAlSoundEngine()
+		{
+			using (var dll = new Support.WindowsPreparedNativeDll("soft_oal.dll"))
+				ALC10.alcGetError(IntPtr.Zero);
+		}
+
 		public OpenAlSoundEngine(string deviceName)
 		{
 			if (deviceName != null)
@@ -136,7 +142,7 @@ namespace OpenRA.Platforms.Default
 			for (var i = 0; i < PoolSize; i++)
 			{
 				var source = 0U;
-				AL10.alGenSources(new IntPtr(1), out source);
+				AL10.alGenSources(1, out source);
 				if (AL10.alGetError() != AL10.AL_NO_ERROR)
 				{
 					Log.Write("sound", "Failed generating OpenAL source {0}", i);
@@ -392,15 +398,15 @@ namespace OpenRA.Platforms.Default
 		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
 		{
 			SampleRate = sampleRate;
-			AL10.alGenBuffers(new IntPtr(1), out buffer);
-			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, new IntPtr(byteCount), new IntPtr(sampleRate));
+			AL10.alGenBuffers(1, out buffer);
+			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, byteCount, sampleRate);
 		}
 
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposed)
 			{
-				AL10.alDeleteBuffers(new IntPtr(1), ref buffer);
+				AL10.alDeleteBuffers(1, ref buffer);
 				disposed = true;
 			}
 		}

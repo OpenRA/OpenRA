@@ -123,6 +123,12 @@ namespace OpenRA.Scripting
 
 	public sealed class ScriptContext : IDisposable
 	{
+		static ScriptContext()
+		{
+			using (var dll = new WindowsPreparedNativeDll("lua51.dll"))
+				new MemoryConstrainedLuaRuntime().Dispose();
+		}
+
 		public World World { get; private set; }
 		public WorldRenderer WorldRenderer { get; private set; }
 

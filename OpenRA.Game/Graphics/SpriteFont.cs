@@ -21,7 +21,13 @@ namespace OpenRA.Graphics
 {
 	public sealed class SpriteFont : IDisposable
 	{
-		static readonly Library Library = new Library();
+		static readonly Library Library = InitLibrary();
+
+		static Library InitLibrary()
+		{
+			using (var dll = new WindowsPreparedNativeDll("freetype6.dll"))
+				return new Library();
+		}
 
 		readonly int size;
 		readonly SheetBuilder builder;

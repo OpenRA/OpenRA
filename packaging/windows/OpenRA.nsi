@@ -123,10 +123,14 @@ Section "Game" GAME
 	File "${SRCDIR}\GeoLite2-Country.mmdb.gz"
 	File "${SRCDIR}\eluant.dll"
 	File "${SRCDIR}\rix0rrr.BeaconLib.dll"
-	File "${DEPSDIR}\soft_oal.dll"
-	File "${DEPSDIR}\SDL2.dll"
-	File "${DEPSDIR}\freetype6.dll"
-	File "${DEPSDIR}\lua51.dll"
+	File "${DEPSDIR}\soft_oal-x86.dll"
+	File "${DEPSDIR}\SDL2-x86.dll"
+	File "${DEPSDIR}\freetype6-x86.dll"
+	File "${DEPSDIR}\lua51-x86.dll"
+	File "${DEPSDIR}\soft_oal-x64.dll"
+	File "${DEPSDIR}\SDL2-x64.dll"
+	File "${DEPSDIR}\freetype6-x64.dll"
+	File "${DEPSDIR}\lua51-x64.dll"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -244,11 +248,15 @@ Function ${UN}Clean
 	Delete $INSTDIR\MaxMind.Db.dll
 	Delete $INSTDIR\GeoLite2-Country.mmdb.gz
 	Delete $INSTDIR\KopiLua.dll
-	Delete $INSTDIR\soft_oal.dll
-	Delete $INSTDIR\SDL2.dll
-	Delete $INSTDIR\lua51.dll
+	Delete $INSTDIR\soft_oal-x86.dll
+	Delete $INSTDIR\soft_oal-x64.dll
+	Delete $INSTDIR\SDL2-x86.dll
+	Delete $INSTDIR\SDL2-x64.dll
+	Delete $INSTDIR\lua51-x86.dll
+	Delete $INSTDIR\lua51-x64.dll
 	Delete $INSTDIR\eluant.dll
-	Delete $INSTDIR\freetype6.dll
+	Delete $INSTDIR\freetype6-x86.dll
+	Delete $INSTDIR\freetype6-x64.dll
 	Delete $INSTDIR\SDL2-CS.dll
 	Delete $INSTDIR\OpenAL-CS.dll
 	Delete $INSTDIR\rix0rrr.BeaconLib.dll
