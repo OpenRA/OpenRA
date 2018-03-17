@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		UnitStance stance;
 		ConditionManager conditionManager;
-		AutoTargetPriority[] targetPriorities;
+		IEnumerable<AutoTargetPriorityInfo> activeTargetPriorities;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public void SetStance(Actor self, UnitStance value)
@@ -140,8 +140,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
+			// AutoTargetPriority and their Priorities are fixed - so we can safely cache them with ToArray.
+			// IsTraitEnabled can change over time, and so must appear after the ToArray so it gets re-evaluated each time.
+			activeTargetPriorities =
+				self.TraitsImplementing<AutoTargetPriority>()
+				.OrderByDescending(ati => ati.Info.Priority).ToArray()
+				.Where(Exts.IsTraitEnabled).Select(atp => atp.Info);
+
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			targetPriorities = self.TraitsImplementing<AutoTargetPriority>().ToArray();
 			ApplyStanceCondition(self);
 		}
 
@@ -263,12 +269,8 @@ namespace OpenRA.Mods.Common.Traits
 			var chosenTargetPriority = int.MinValue;
 			int chosenTargetRange = 0;
 
-			var activePriorities = targetPriorities.Where(Exts.IsTraitEnabled)
-				.Select(at => at.Info)
-				.OrderByDescending(ati => ati.Priority)
-				.ToList();
-
-			if (!activePriorities.Any())
+			var activePriorities = activeTargetPriorities.ToList();
+			if (activePriorities.Count == 0)
 				return null;
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange);
@@ -282,11 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				// Check whether we can auto-target this actor
-				var targetTypes = actor.TraitsImplementing<ITargetable>()
-					.Where(Exts.IsTraitEnabled).SelectMany(t => t.TargetTypes)
-					.ToHashSet();
-
-				var target = Target.FromActor(actor);
+				var targetTypes = actor.GetEnabledTargetTypes().ToArray();
 				var validPriorities = activePriorities.Where(ati =>
 				{
 					// Already have a higher priority target
@@ -294,16 +292,17 @@ namespace OpenRA.Mods.Common.Traits
 						return false;
 
 					// Incompatible target types
-					if (!targetTypes.Overlaps(ati.ValidTargets) || targetTypes.Overlaps(ati.InvalidTargets))
+					if (!ati.ValidTargets.Overlaps(targetTypes) || ati.InvalidTargets.Overlaps(targetTypes))
 						return false;
 
 					return true;
 				}).ToList();
 
-				if (!validPriorities.Any() || PreventsAutoTarget(self, actor) || !actor.CanBeViewedByPlayer(self.Owner))
+				if (validPriorities.Count == 0 || PreventsAutoTarget(self, actor) || !actor.CanBeViewedByPlayer(self.Owner))
 					continue;
 
 				// Make sure that we can actually fire on the actor
+				var target = Target.FromActor(actor);
 				var armaments = ab.ChooseArmamentsForTarget(target, false);
 				if (!allowMove)
 					armaments = armaments.Where(arm =>
