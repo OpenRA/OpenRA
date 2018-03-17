@@ -323,12 +323,31 @@ namespace OpenRA.Graphics
 			return mtx;
 		}
 
-		public static float[] MakeFloatMatrix(int[] imtx)
+		public static float[] MakeFloatMatrix(Int32Matrix4x4 imtx)
 		{
-			var fmtx = new float[16];
-			for (var i = 0; i < 16; i++)
-				fmtx[i] = imtx[i] * 1f / imtx[15];
-			return fmtx;
+			var multipler = 1f / imtx.M44;
+			return new float[]
+			{
+				imtx.M11 * multipler,
+				imtx.M12 * multipler,
+				imtx.M13 * multipler,
+				imtx.M14 * multipler,
+
+				imtx.M21 * multipler,
+				imtx.M22 * multipler,
+				imtx.M23 * multipler,
+				imtx.M24 * multipler,
+
+				imtx.M31 * multipler,
+				imtx.M32 * multipler,
+				imtx.M33 * multipler,
+				imtx.M34 * multipler,
+
+				imtx.M41 * multipler,
+				imtx.M42 * multipler,
+				imtx.M43 * multipler,
+				imtx.M44 * multipler,
+			};
 		}
 
 		public static float[] MatrixAABBMultiply(float[] mtx, float[] bounds)
