@@ -41,58 +41,61 @@ namespace OpenRA
 			return new WRot(Roll, Pitch, yaw);
 		}
 
-		public int[] AsQuarternion()
+		void AsQuarternion(out int x, out int y, out int z, out int w)
 		{
 			// Angles increase clockwise
-			var r = new WAngle(-Roll.Angle / 2);
-			var p = new WAngle(-Pitch.Angle / 2);
-			var y = new WAngle(-Yaw.Angle / 2);
-			var cr = (long)r.Cos();
-			var sr = (long)r.Sin();
-			var cp = (long)p.Cos();
-			var sp = (long)p.Sin();
-			var cy = (long)y.Cos();
-			var sy = (long)y.Sin();
+			var roll = new WAngle(-Roll.Angle / 2);
+			var pitch = new WAngle(-Pitch.Angle / 2);
+			var yaw = new WAngle(-Yaw.Angle / 2);
+			var cr = (long)roll.Cos();
+			var sr = (long)roll.Sin();
+			var cp = (long)pitch.Cos();
+			var sp = (long)pitch.Sin();
+			var cy = (long)yaw.Cos();
+			var sy = (long)yaw.Sin();
 
 			// Normalized to 1024 == 1.0
-			return new int[4]
-			{
-				(int)((sr * cp * cy - cr * sp * sy) / 1048576), // x
-				(int)((cr * sp * cy + sr * cp * sy) / 1048576), // y
-				(int)((cr * cp * sy - sr * sp * cy) / 1048576), // z
-				(int)((cr * cp * cy + sr * sp * sy) / 1048576)  // w
-			};
+			x = (int)((sr * cp * cy - cr * sp * sy) / 1048576);
+			y = (int)((cr * sp * cy + sr * cp * sy) / 1048576);
+			z = (int)((cr * cp * sy - sr * sp * cy) / 1048576);
+			w = (int)((cr * cp * cy + sr * sp * sy) / 1048576);
 		}
 
-		public int[] AsMatrix()
+		public void AsMatrix(out Int32Matrix4x4 mtx)
 		{
-			var q = AsQuarternion();
+			int x, y, z, w;
+			AsQuarternion(out x, out y, out z, out w);
 
 			// Theoretically 1024 *  * 2, but may differ slightly due to rounding
-			var lsq = q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3];
+			var lsq = x * x + y * y + z * z + w * w;
 
 			// Quaternion components use 10 bits, so there's no risk of overflow
-			var mtx = new int[16];
-			mtx[0] = lsq - 2 * (q[1] * q[1] + q[2] * q[2]);
-			mtx[1] = 2 * (q[0] * q[1] + q[2] * q[3]);
-			mtx[2] = 2 * (q[0] * q[2] - q[1] * q[3]);
-			mtx[3] = 0;
+			mtx = new Int32Matrix4x4(
+				lsq - 2 * (y * y + z * z),
+				2 * (x * y + z * w),
+				2 * (x * z - y * w),
+				0,
 
-			mtx[4] = 2 * (q[0] * q[1] - q[2] * q[3]);
-			mtx[5] = lsq - 2 * (q[0] * q[0] + q[2] * q[2]);
-			mtx[6] = 2 * (q[1] * q[2] + q[0] * q[3]);
-			mtx[7] = 0;
+				2 * (x * y - z * w),
+				lsq - 2 * (x * x + z * z),
+				2 * (y * z + x * w),
+				0,
 
-			mtx[8] = 2 * (q[0] * q[2] + q[1] * q[3]);
-			mtx[9] = 2 * (q[1] * q[2] - q[0] * q[3]);
-			mtx[10] = lsq - 2 * (q[0] * q[0] + q[1] * q[1]);
-			mtx[11] = 0;
+				2 * (x * z + y * w),
+				2 * (y * z - x * w),
+				lsq - 2 * (x * x + y * y),
+				0,
 
-			mtx[12] = 0;
-			mtx[13] = 0;
-			mtx[14] = 0;
-			mtx[15] = lsq;
+				0,
+				0,
+				0,
+				lsq);
+		}
 
+		public Int32Matrix4x4 AsMatrix()
+		{
+			Int32Matrix4x4 mtx;
+			AsMatrix(out mtx);
 			return mtx;
 		}
 
