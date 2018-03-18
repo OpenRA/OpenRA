@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTargetPriorityInfo : ConditionalTraitInfo, Requires<AutoTargetInfo>
 	{
 		[Desc("Target types that can be AutoTargeted.")]
-		public readonly HashSet<string> ValidTargets = new HashSet<string> { "Ground", "Water", "Air" };
+		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water", "Air");
 
 		[Desc("Target types that can't be AutoTargeted.", "Overrules ValidTargets.")]
-		public readonly HashSet<string> InvalidTargets = new HashSet<string>();
+		public readonly BitSet<TargetableType> InvalidTargets;
 
 		[Desc("ValidTargets with larger priorities will be AutoTargeted before lower priorities.")]
 		public readonly int Priority = 1;

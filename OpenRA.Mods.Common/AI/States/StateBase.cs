@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.AI
 				return false;
 
 			var targetTypes = target.GetEnabledTargetTypes();
-			if (!targetTypes.Any())
+			if (targetTypes.IsEmpty)
 				return false;
 
 			var arms = a.TraitsImplementing<Armament>();

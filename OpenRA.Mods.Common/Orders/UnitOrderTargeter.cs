@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
@@ -67,9 +68,9 @@ namespace OpenRA.Mods.Common.Orders
 
 	public class TargetTypeOrderTargeter : UnitOrderTargeter
 	{
-		readonly HashSet<string> targetTypes;
+		readonly BitSet<TargetableType> targetTypes;
 
-		public TargetTypeOrderTargeter(HashSet<string> targetTypes, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+		public TargetTypeOrderTargeter(BitSet<TargetableType> targetTypes, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 			: base(order, priority, cursor, targetEnemyUnits, targetAllyUnits)
 		{
 			this.targetTypes = targetTypes;

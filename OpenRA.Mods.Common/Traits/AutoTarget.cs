@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				// Check whether we can auto-target this actor
-				var targetTypes = actor.GetEnabledTargetTypes().ToArray();
+				var targetTypes = actor.GetEnabledTargetTypes();
 				var validPriorities = activePriorities.Where(ati =>
 				{
 					// Already have a higher priority target

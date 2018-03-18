@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -302,7 +303,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnCapturedInternal(self);
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)
 		{
 			if (world.Disposing)
 				return;

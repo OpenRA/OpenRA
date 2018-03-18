@@ -17,13 +17,14 @@ using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
 	public class InfiltratesInfo : ConditionalTraitInfo
 	{
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<TargetableType> Types;
 
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -72,14 +73,14 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (IsTraitDisabled)
 				return false;
 
-			IEnumerable<string> targetTypes = null;
+			var targetTypes = new BitSet<TargetableType>();
 			if (order.Target.Type == TargetType.FrozenActor)
 				targetTypes = order.Target.FrozenActor.TargetTypes;
 
 			if (order.Target.Type == TargetType.Actor)
 				targetTypes = order.TargetActor.GetEnabledTargetTypes();
 
-			return targetTypes != null && Info.Types.Overlaps(targetTypes);
+			return Info.Types.Overlaps(targetTypes);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return info.Types.Overlaps(target.Info.TraitInfos<ITargetableInfo>().SelectMany(ti => ti.GetTargetTypes()));
+			return info.Types.Overlaps(target.Info.GetAllTargetTypes());
 		}
 	}
 }

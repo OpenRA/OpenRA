@@ -162,5 +162,14 @@ namespace OpenRA
 		public T TraitInfo<T>() where T : ITraitInfoInterface { return traits.Get<T>(); }
 		public T TraitInfoOrDefault<T>() where T : ITraitInfoInterface { return traits.GetOrDefault<T>(); }
 		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfoInterface { return traits.WithInterface<T>(); }
+
+		public BitSet<TargetableType> GetAllTargetTypes()
+		{
+			// PERF: Avoid LINQ.
+			var targetTypes = new BitSet<TargetableType>();
+			foreach (var targetable in TraitInfos<ITargetableInfo>())
+				targetTypes = targetTypes.Union(targetable.GetTargetTypes());
+			return targetTypes;
+		}
 	}
 }

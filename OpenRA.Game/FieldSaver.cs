@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -96,6 +97,11 @@ namespace OpenRA
 			{
 				var r = (Rectangle)v;
 				return "{0},{1},{2},{3}".F(r.X, r.Y, r.Width, r.Height);
+			}
+
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(BitSet<>))
+			{
+				return ((IEnumerable<string>)v).Select(FormatValue).JoinWith(", ");
 			}
 
 			if (t.IsArray && t.GetArrayRank() == 1)

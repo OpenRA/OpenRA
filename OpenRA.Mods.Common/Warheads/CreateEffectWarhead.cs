@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Whether to consider actors in determining whether the explosion should happen. If false, only terrain will be considered.")]
 		public readonly bool ImpactActors = true;
 
-		static readonly string[] TargetTypeAir = new string[] { "Air" };
+		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
 
 		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
 		{
