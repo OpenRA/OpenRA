@@ -1190,6 +1190,7 @@ SILO:
 	Tooltip:
 		Name: Silo
 	-GivesBuildableArea:
+	-MustBeDestroyed:
 	Health:
 		HP: 30000
 	Armor:
