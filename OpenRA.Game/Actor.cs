@@ -339,21 +339,23 @@ namespace OpenRA
 			return defaultVisibility.IsVisible(this, player);
 		}
 
-		public IEnumerable<string> GetAllTargetTypes()
+		public BitSet<TargetableType> GetAllTargetTypes()
 		{
 			// PERF: Avoid LINQ.
+			var targetTypes = new BitSet<TargetableType>();
 			foreach (var targetable in Targetables)
-				foreach (var targetType in targetable.TargetTypes)
-					yield return targetType;
+				targetTypes = targetTypes.Union(targetable.TargetTypes);
+			return targetTypes;
 		}
 
-		public IEnumerable<string> GetEnabledTargetTypes()
+		public BitSet<TargetableType> GetEnabledTargetTypes()
 		{
 			// PERF: Avoid LINQ.
+			var targetTypes = new BitSet<TargetableType>();
 			foreach (var targetable in Targetables)
 				if (targetable.IsTraitEnabled())
-					foreach (var targetType in targetable.TargetTypes)
-						yield return targetType;
+					targetTypes = targetTypes.Union(targetable.TargetTypes);
+			return targetTypes;
 		}
 
 		public bool IsTargetableBy(Actor byActor)

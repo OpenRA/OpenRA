@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
@@ -122,7 +123,7 @@ namespace OpenRA.Mods.Common.AI
 			public readonly Stance Against = Stance.Enemy;
 
 			[Desc("What types should the desired targets of this power be?")]
-			public readonly HashSet<string> Types = new HashSet<string> { "Air", "Ground", "Water" };
+			public readonly BitSet<TargetableType> Types = new BitSet<TargetableType>("Air", "Ground", "Water");
 
 			[Desc("How attractive are these types of targets?")]
 			public readonly int Attractiveness = 100;

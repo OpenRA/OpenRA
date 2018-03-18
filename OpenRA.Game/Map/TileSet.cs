@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -60,7 +61,7 @@ namespace OpenRA
 		static readonly TerrainTypeInfo Default = new TerrainTypeInfo();
 
 		public readonly string Type;
-		public readonly HashSet<string> TargetTypes = new HashSet<string>();
+		public readonly BitSet<TargetableType> TargetTypes;
 		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
 		public readonly Color Color;
 		public readonly bool RestrictPlayerColor = false;

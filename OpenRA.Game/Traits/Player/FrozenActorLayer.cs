@@ -36,7 +36,7 @@ namespace OpenRA.Traits
 		readonly Shroud shroud;
 
 		public Player Owner { get; private set; }
-		public HashSet<string> TargetTypes { get; private set; }
+		public BitSet<TargetableType> TargetTypes { get; private set; }
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -84,7 +84,6 @@ namespace OpenRA.Traits
 					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
 
 			CenterPosition = actor.CenterPosition;
-			TargetTypes = new HashSet<string>();
 
 			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
 			health = actor.TraitOrDefault<IHealth>();
@@ -101,10 +100,7 @@ namespace OpenRA.Traits
 		public void RefreshState()
 		{
 			Owner = actor.Owner;
-
-			// PERF: Reuse collection to avoid allocations.
-			TargetTypes.Clear();
-			TargetTypes.UnionWith(actor.GetEnabledTargetTypes());
+			TargetTypes = actor.GetEnabledTargetTypes();
 
 			if (health != null)
 			{

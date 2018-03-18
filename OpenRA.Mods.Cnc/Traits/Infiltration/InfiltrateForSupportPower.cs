@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[ActorReference, FieldLoader.Require] public readonly string Proxy = null;
 
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<TargetableType> Types;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)
 		{
 			if (!info.Types.Overlaps(types))
 				return;

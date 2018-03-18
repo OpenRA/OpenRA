@@ -607,14 +607,13 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))
+			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(BitSet<>))
 			{
 				if (value != null)
 				{
 					var parts = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-					var argTypes = new Type[] { typeof(string[]) };
-					var argValues = new object[] { parts };
-					return fieldType.GetConstructor(argTypes).Invoke(argValues);
+					var ctor = fieldType.GetConstructor(new[] { typeof(string[]) });
+					return ctor.Invoke(new object[] { parts.Select(p => p.Trim()).ToArray() });
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);

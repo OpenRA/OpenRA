@@ -365,15 +365,20 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
+	/// <summary>
+	/// Indicates target types as defined on <see cref="Traits.ITargetable"/> are present in a <see cref="Primitives.BitSet{T}"/>.
+	/// </summary>
+	public sealed class TargetableType { TargetableType() { } }
+
 	public interface ITargetableInfo : ITraitInfoInterface
 	{
-		HashSet<string> GetTargetTypes();
+		BitSet<TargetableType> GetTargetTypes();
 	}
 
 	public interface ITargetable
 	{
 		// Check IsTraitEnabled or !IsTraitDisabled first
-		HashSet<string> TargetTypes { get; }
+		BitSet<TargetableType> TargetTypes { get; }
 		bool TargetableBy(Actor self, Actor byActor);
 		bool RequiresForceFire { get; }
 	}
