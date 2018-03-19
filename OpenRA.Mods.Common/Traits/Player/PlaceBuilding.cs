@@ -61,18 +61,18 @@ namespace OpenRA.Mods.Common.Traits
 				if (targetActor == null || targetActor.IsDead)
 					return;
 
-				var unit = self.World.Map.Rules.Actors[order.TargetString];
+				var actorInfo = self.World.Map.Rules.Actors[order.TargetString];
 				var queue = targetActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => q.CanBuild(unit) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
+					.FirstOrDefault(q => q.CanBuild(actorInfo) && q.CurrentItem() != null && q.CurrentItem().Item == order.TargetString && q.CurrentItem().RemainingTime == 0);
 
 				if (queue == null)
 					return;
 
 				var producer = queue.MostLikelyProducer();
 				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
-				var buildingInfo = unit.TraitInfo<BuildingInfo>();
+				var buildingInfo = actorInfo.TraitInfo<BuildingInfo>();
 
-				var buildableInfo = unit.TraitInfoOrDefault<BuildableInfo>();
+				var buildableInfo = actorInfo.TraitInfoOrDefault<BuildableInfo>();
 				if (buildableInfo != null && buildableInfo.ForceFaction != null)
 					faction = buildableInfo.ForceFaction;
 
@@ -90,11 +90,11 @@ namespace OpenRA.Mods.Common.Traits
 						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, placed.CenterPosition);
 
 					// Build the connection segments
-					var segmentType = unit.TraitInfo<LineBuildInfo>().SegmentType;
+					var segmentType = actorInfo.TraitInfo<LineBuildInfo>().SegmentType;
 					if (string.IsNullOrEmpty(segmentType))
 						segmentType = order.TargetString;
 
-					foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, order.TargetString, buildingInfo))
+					foreach (var t in BuildingUtils.GetLineBuildCells(w, order.TargetLocation, actorInfo, buildingInfo))
 					{
 						if (t.First == order.TargetLocation)
 							continue;
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (host == null)
 						return;
 
-					var plugInfo = unit.TraitInfoOrDefault<PlugInfo>();
+					var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
 					if (plugInfo == null)
 						return;
 
@@ -132,8 +132,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					if (!self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null)
-						|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation))
+					if (!self.World.CanPlaceBuilding(order.TargetLocation, actorInfo, buildingInfo, null)
+						|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, actorInfo, order.TargetLocation))
 						return;
 
 					var building = w.CreateActor(order.TargetString, new TypeDictionary
