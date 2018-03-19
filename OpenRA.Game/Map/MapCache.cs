@@ -122,7 +122,7 @@ namespace OpenRA
 			}
 		}
 
-		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
+		public IEnumerable<IReadWritePackage> EnumerateMapPackagesWithoutCaching(MapClassification classification = MapClassification.System)
 		{
 			// Utility mod that does not support maps
 			if (!modData.Manifest.Contains<MapGrid>())
@@ -155,12 +155,18 @@ namespace OpenRA
 				{
 					foreach (var map in package.Contents)
 					{
-						var mapPackage = package.OpenPackage(map, modData.ModFiles);
+						var mapPackage = package.OpenPackage(map, modData.ModFiles) as IReadWritePackage;
 						if (mapPackage != null)
-							yield return new Map(modData, mapPackage);
+							yield return mapPackage;
 					}
 				}
 			}
+		}
+
+		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
+		{
+			foreach (var mapPackage in EnumerateMapPackagesWithoutCaching(classification))
+				yield return new Map(modData, mapPackage);
 		}
 
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)
