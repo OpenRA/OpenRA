@@ -96,7 +96,7 @@ Player:
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
+		DefaultCashDropdownLocked: True
 		DefaultCash: 50
 	-HackyAI@RushAI:
 	-HackyAI@NormalAI:
