@@ -505,7 +505,8 @@ namespace OpenRA.Mods.Common.AI
 		CPos defenseCenter;
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
-			var bi = Map.Rules.Actors[actorType].TraitInfoOrDefault<BuildingInfo>();
+			var ai = Map.Rules.Actors[actorType];
+			var bi = ai.TraitInfoOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
@@ -522,10 +523,10 @@ namespace OpenRA.Mods.Common.AI
 
 				foreach (var cell in cells)
 				{
-					if (!World.CanPlaceBuilding(actorType, bi, cell, null))
+					if (!World.CanPlaceBuilding(cell, ai, bi, null))
 						continue;
 
-					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, actorType, cell))
+					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, ai, cell))
 						continue;
 
 					return cell;
@@ -935,7 +936,7 @@ namespace OpenRA.Mods.Common.AI
 
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
 		{
-			return info != null && World.IsCellBuildable(x, info);
+			return info != null && World.IsCellBuildable(x, null, info);
 		}
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)

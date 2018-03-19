@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Transforms : PausableConditionalTrait<TransformsInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly Actor self;
+		readonly ActorInfo actorInfo;
 		readonly BuildingInfo buildingInfo;
 		readonly string faction;
 
@@ -61,7 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			self = init.Self;
-			buildingInfo = self.World.Map.Rules.Actors[info.IntoActor].TraitInfoOrDefault<BuildingInfo>();
+			actorInfo = self.World.Map.Rules.Actors[info.IntoActor];
+			buildingInfo = actorInfo.TraitInfoOrDefault<BuildingInfo>();
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
 		}
 
@@ -79,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (building != null && building.Locked)
 				return false;
 
-			return buildingInfo == null || self.World.CanPlaceBuilding(Info.IntoActor, buildingInfo, self.Location + Info.Offset, self);
+			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

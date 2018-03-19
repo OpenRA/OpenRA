@@ -173,9 +173,9 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(gba => gba.AreaTypes));
 		}
 
-		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
+		public virtual bool IsCloseEnoughToBase(World world, Player p, ActorInfo ai, CPos topLeft)
 		{
-			var requiresBuildableArea = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<RequiresBuildableAreaInfo>();
+			var requiresBuildableArea = ai.TraitInfoOrDefault<RequiresBuildableAreaInfo>();
 			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
 
 			if (requiresBuildableArea == null || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
