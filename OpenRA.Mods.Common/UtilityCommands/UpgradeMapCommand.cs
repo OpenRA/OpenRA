@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
 
@@ -28,7 +29,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		delegate void UpgradeAction(ModData modData, int engineVersion, ref List<MiniYamlNode> nodes, MiniYamlNode parent, int depth);
 
-		static void ProcessYaml(ModData modData, Map map, MiniYaml yaml, int engineDate, UpgradeAction processYaml)
+		static Stream Open(string filename, IReadOnlyPackage package, IReadOnlyFileSystem fallback)
+		{
+			// Explicit package paths never refer to a map
+			if (!filename.Contains("|") && package.Contains(filename))
+				return package.GetStream(filename);
+
+			return fallback.Open(filename);
+		}
+
+		static void ProcessYaml(ModData modData, IReadOnlyPackage package, MiniYaml yaml, int engineDate, UpgradeAction processYaml)
 		{
 			if (yaml == null)
 				return;
@@ -38,16 +48,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
 				foreach (var filename in files)
 				{
-					var fileNodes = MiniYaml.FromStream(map.Open(filename), filename);
+					var fileNodes = MiniYaml.FromStream(Open(filename, package, modData.DefaultFileSystem), filename);
 					processYaml(modData, engineDate, ref fileNodes, null, 0);
 
 					// HACK: Obtain the writable save path using knowledge of the underlying filesystem workings
 					var packagePath = filename;
-					var package = map.Package;
+					var p = package;
 					if (filename.Contains("|"))
-						modData.DefaultFileSystem.TryGetPackageContaining(filename, out package, out packagePath);
+						modData.DefaultFileSystem.TryGetPackageContaining(filename, out p, out packagePath);
 
-					((IReadWritePackage)package).Update(packagePath, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
+					((IReadWritePackage)p).Update(packagePath, Encoding.ASCII.GetBytes(fileNodes.WriteToString()));
 				}
 			}
 
@@ -65,13 +75,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				return;
 			}
 
-			var map = new Map(modData, package);
-			ProcessYaml(modData, map, map.WeaponDefinitions, engineDate, UpgradeRules.UpgradeWeaponRules);
-			ProcessYaml(modData, map, map.RuleDefinitions, engineDate, UpgradeRules.UpgradeActorRules);
-			ProcessYaml(modData, map, map.SequenceDefinitions, engineDate, UpgradeRules.UpgradeSequences);
-			UpgradeRules.UpgradePlayers(modData, engineDate, ref map.PlayerDefinitions, null, 0);
-			UpgradeRules.UpgradeActors(modData, engineDate, ref map.ActorDefinitions, null, 0);
-			map.Save(package);
+			var mapStream = package.GetStream("map.yaml");
+			if (mapStream == null)
+				return;
+
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name));
+
+			var rules = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+			if (rules != null)
+				ProcessYaml(modData, package, rules.Value, engineDate, UpgradeRules.UpgradeActorRules);
+
+			var weapons = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
+			if (weapons != null)
+				ProcessYaml(modData, package, weapons.Value, engineDate, UpgradeRules.UpgradeWeaponRules);
+
+			var sequences = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+			if (sequences != null)
+				ProcessYaml(modData, package, sequences.Value, engineDate, UpgradeRules.UpgradeSequences);
+
+			var players = yaml.Nodes.FirstOrDefault(n => n.Key == "Players");
+			if (players != null)
+				UpgradeRules.UpgradePlayers(modData, engineDate, ref players.Value.Nodes, null, 0);
+
+			var actors = yaml.Nodes.FirstOrDefault(n => n.Key == "Actors");
+			if (actors != null)
+				UpgradeRules.UpgradeActors(modData, engineDate, ref actors.Value.Nodes, null, 0);
+
+			package.Update("map.yaml", Encoding.UTF8.GetBytes(yaml.Nodes.WriteToString()));
 		}
 
 		[Desc("MAP", "OLDENGINE", "Upgrade map rules to the latest engine version.")]

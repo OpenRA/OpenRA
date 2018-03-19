@@ -77,16 +77,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// The map cache won't be valid if there was a map format upgrade, so walk the map packages manually
 			// Only upgrade system maps - user maps must be updated manually using --upgrade-map
 			Console.WriteLine("Processing System Maps:");
-			foreach (var map in modData.MapCache.EnumerateMapsWithoutCaching())
+			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
 			{
 				try
 				{
-					Console.WriteLine(map.Package.Name);
-					UpgradeMapCommand.UpgradeMap(modData, (IReadWritePackage)map.Package, engineDate);
+					Console.WriteLine(package.Name);
+					UpgradeMapCommand.UpgradeMap(modData, package, engineDate);
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine("Failed to upgrade map {0}", map);
+					Console.WriteLine("Failed to upgrade map {0}", package.Name);
 					Console.WriteLine("Error was: {0}", e.ToString());
 				}
 			}
