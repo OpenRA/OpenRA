@@ -63,7 +63,7 @@ Player:
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
+		DefaultCashDropdownLocked: True
 		DefaultCash: 60
 	ChronoshiftPower:
 		Icon: chrono
