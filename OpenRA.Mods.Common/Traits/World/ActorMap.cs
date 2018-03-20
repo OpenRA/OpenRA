@@ -395,11 +395,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (influenceNode == null)
 				return;
 
+			RemoveInfluenceInner(ref influenceNode.Next, toRemove);
+
 			if (influenceNode.Actor == toRemove)
 				influenceNode = influenceNode.Next;
-
-			if (influenceNode != null)
-				RemoveInfluenceInner(ref influenceNode.Next, toRemove);
 		}
 
 		void ITick.Tick(Actor self)
