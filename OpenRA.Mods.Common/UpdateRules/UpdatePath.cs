@@ -34,6 +34,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
+			new UpdatePath("incomplete-release-20171014", "release-20180218", new UpdateRule[]
+			{
+				new RemoveMobileOnRails(),
+				new AircraftCanHoverGeneralization()
+			}),
+
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
 
 			new UpdatePath("release-20180307", new UpdateRule[]
