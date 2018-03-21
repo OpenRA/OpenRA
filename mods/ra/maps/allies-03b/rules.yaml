@@ -14,31 +14,15 @@ World:
 			normal: Normal
 		Default: easy
 
-^Building:
-	Capturable:
-		CaptureThreshold: 25
-
-^TechBuilding:
-	Capturable:
-		Types: ~disabled
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
 
-HACKE6:
-	Inherits: E6
-	-RepairsBridges:
-	-ExternalCaptures:
-	Captures:
-		CaptureTypes: building
-	WithInfantryBody:
+E6:
 	Targetable:
 		RequiresCondition: !jail
 	Targetable@PRISONER:
 		TargetTypes: Prisoner
-	RenderSprites:
-		Image: E6
 	ExternalCondition@JAIL:
 		Condition: jail
 
