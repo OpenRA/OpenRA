@@ -1,0 +1,13 @@
+SCUD:
+	Range: 12c896
+	MinRange: 4c0
+	Projectile: Bullet
+		Speed: 240
+		Inaccuracy: 2c0
+	Warhead@1Dam: SpreadDamage
+		Spread: 420
+		Versus:
+			None: 122
+			Light: 60
+			Heavy: 50
+			Concrete: 95
