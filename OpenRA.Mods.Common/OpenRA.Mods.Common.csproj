@@ -578,9 +578,6 @@
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
     <Compile Include="UtilityCommands\RemapShpCommand.cs" />
     <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
-    <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
-    <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
-    <Compile Include="UtilityCommands\UpgradeRules.cs" />
     <Compile Include="UtilityCommands\Rgba2Hex.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
@@ -847,6 +844,17 @@
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Traits\Conditions\ToggleConditionOnOrder.cs" />
     <Compile Include="Widgets\Logic\ServerListLogic.cs" />
+    <Compile Include="UpdateRules\UpdateRule.cs" />
+    <Compile Include="UtilityCommands\UpdateModCommand.cs" />
+    <Compile Include="UpdateRules\UpdatePath.cs" />
+    <Compile Include="UpdateRules\UpdateUtils.cs" />
+    <Compile Include="UtilityCommands\UpdateMapCommand.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveTerrainTypeIsWaterFlag.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveWeaponScanRadius.cs" />
+    <Compile Include="UpdateRules\Rules\DefineSoundDefaults.cs" />
+    <Compile Include="UpdateRules\Rules\SplitTurretAimAnimation.cs" />
+    <Compile Include="UpdateRules\Rules\RenameWormSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
