@@ -1,0 +1,53 @@
+MIG:
+	Inherits: ^Plane
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 50
+		Prerequisites: ~afld, stek, ~techlevel.high
+		BuildDuration: 1750
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry, Light armor, Aircraft
+	Valued:
+		Cost: 2400
+	Tooltip:
+		Name: Mig Attack Plane
+	Health:
+		HP: 9000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 12c0
+		Type: GroundPosition
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 11c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: Maverick
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
+		PauseOnCondition: !ammo
+	Armament@SECONDARY:
+		Weapon: HellfireAAMiG
+		LocalOffset: 0,213,-85
+		PauseOnCondition: !ammo
+	AttackPlane:
+		FacingTolerance: 20
+	Aircraft:
+		CruiseAltitude: 2560
+		InitialFacing: 192
+		TurnSpeed: 6
+		Speed: 240
+		RepulsionSpeed: 40
+		MaximumPitch: 56
+	AutoTarget:
+		InitialStance: Defend
+		InitialStanceAI: Defend
+		ScanRadius: 8
+	AmmoPool:
+		Ammo: 16
+		PipCount: 8
+		ReloadDelay: 7
+		AmmoCondition: ammo
+        
