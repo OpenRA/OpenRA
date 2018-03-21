@@ -1,0 +1,8 @@
+^AACannon:
+	Range: 8c0
+
+ZSU-23:
+	Range: 10c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 650
+        Spread: 600
