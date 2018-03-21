@@ -1,0 +1,54 @@
+Maverick:
+	Range: 8c0
+	MinRange: 2c0
+	Burst: 1
+	BurstDelays: 8
+	Projectile: Missile
+		Speed: 420
+		Inaccuracy: 512
+		CruiseAltitude: 4c0
+		RangeLimit: 20c420
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 90
+			Wood: 90
+			Light: 90
+            Heavy: 120
+			Concrete: 90
+     
+HellfireAAMiG:
+	Inherits: ^AntiAirMissile
+	ReloadDelay: 75
+  Range: 8c512
+	MinRange: 1c256
+	Burst: 4
+	BurstDelays: 4
+	Projectile: Missile
+		Speed: 420
+		Inaccuracy: 128
+		HorizontalRateOfTurn: 14
+		RangeLimit: 12c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 3000
+		ValidTargets: Air
+		Versus:
+			Light: 75
+ HellfireAG:
+  Range: 7c0
+	MinRange: 1c256
+	Warhead@1Dam: SpreadDamage
+		Versus:
+			None: 200
+			Light: 122
+            Heavy: 122
+			Concrete: 90
+
+HellfireAA:
+  Range: 6c0
+	MinRange: 1c256
+  
+Nike:
+	Range: 10c0
+    Burst: 1
+    Projectile: Missile
+		RangeLimit: 12c0
