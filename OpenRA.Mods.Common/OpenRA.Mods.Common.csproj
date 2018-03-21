@@ -869,6 +869,8 @@
     <Compile Include="UtilityCommands\UpdateModCommand.cs" />
     <Compile Include="UpdateRules\UpdatePath.cs" />
     <Compile Include="UpdateRules\UpdateUtils.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveMobileOnRails.cs" />
+    <Compile Include="UpdateRules\Rules\AircraftCanHoverGeneralization.cs" />
     <Compile Include="UtilityCommands\UpdateMapCommand.cs" />
     <Compile Include="UpdateRules\Rules\RemoveTerrainTypeIsWaterFlag.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWeaponScanRadius.cs" />
