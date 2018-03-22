@@ -592,6 +592,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos NearestMoveableCell(CPos target, int minRange, int maxRange)
 		{
+			// HACK: This entire method is a hack, and needs to be replaced with
+			// a proper path search that can account for movement layer transitions.
+			// HACK: Work around code that blindly tries to move to cells in invalid movement layers.
+			// This will need to change (by removing this method completely as above) before we can
+			// properly support user-issued orders on to elevated bridges or other interactable custom layers
+			if (target.Layer != 0)
+				target = new CPos(target.X, target.Y);
+
 			if (CanEnterCell(target))
 				return target;
 
