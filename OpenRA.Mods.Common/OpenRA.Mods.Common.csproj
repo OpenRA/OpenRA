@@ -872,6 +872,7 @@
     <Compile Include="UpdateRules\Rules\RemovePaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
+    <Compile Include="UpdateRules\Rules\DefineLocomotors.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
