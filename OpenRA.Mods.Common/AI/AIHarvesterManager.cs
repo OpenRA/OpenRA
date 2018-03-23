@@ -42,10 +42,9 @@ namespace OpenRA.Mods.Common.AI
 		CPos FindNextResource(Actor actor, Harvester harv)
 		{
 			var locomotorInfo = actor.Info.TraitInfo<MobileInfo>().LocomotorInfo;
-			var passable = (uint)locomotorInfo.GetMovementClass(World.Map.Rules.TileSet);
 
 			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, locomotorInfo, passable) &&
+				domainIndex.IsPassable(actor.Location, cell, locomotorInfo) &&
 				harv.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 

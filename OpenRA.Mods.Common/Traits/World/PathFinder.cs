@@ -67,12 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If a water-land transition is required, bail early
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
-			if (domainIndex != null)
-			{
-				var passable = li.GetMovementClass(world.Map.Rules.TileSet);
-				if (!domainIndex.IsPassable(source, target, li, (uint)passable))
-					return EmptyPath;
-			}
+			if (domainIndex != null && !domainIndex.IsPassable(source, target, li))
+				return EmptyPath;
 
 			List<CPos> pb;
 			using (var fromSrc = PathSearch.FromPoint(world, li, self, target, source, true).WithIgnoredActor(ignoreActor))
@@ -104,8 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
-				var passable = li.GetMovementClass(world.Map.Rules.TileSet);
-				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, li, (uint)passable)));
+				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, li)));
 				if (!tilesInRange.Any())
 					return EmptyPath;
 			}
