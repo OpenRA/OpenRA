@@ -343,6 +343,7 @@
     <Compile Include="Traits\Crates\RevealMapCrateAction.cs" />
     <Compile Include="Traits\Crates\SupportPowerCrateAction.cs" />
     <Compile Include="Traits\Crushable.cs" />
+    <Compile Include="Traits\OwnerLostAction.cs" />
     <Compile Include="Traits\CustomSellValue.cs" />
     <Compile Include="Traits\DamagedByTerrain.cs" />
     <Compile Include="Traits\DeliversCash.cs" />
@@ -879,6 +880,7 @@
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="UpdateRules\Rules\DefineLocomotors.cs" />
+    <Compile Include="UpdateRules\Rules\DefineOwnerLostAction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

@@ -51,7 +51,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddShakeToBridge(),
 				new AddEditorPlayer(),
 				new RemovePaletteFromCurrentTileset(),
-				new DefineLocomotors()
+				new DefineLocomotors(),
+				new DefineOwnerLostAction()
 			})
 		};
 
