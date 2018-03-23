@@ -159,22 +159,19 @@ namespace OpenRA.Mods.Common.Scripting
 					// Try to find an alternative landing spot if we can't land at the current destination
 					if (!aircraft.CanLand(destination) && dropRange > 0)
 					{
-						var mobiles = cargo != null ? cargo.Passengers.Select(a =>
-						{
-							var mobile = a.TraitOrDefault<Mobile>();
-							if (mobile == null)
-								return new Pair<LocomotorInfo, uint>(null, 0);
-
-							var locomotorInfo = mobile.Info.LocomotorInfo;
-							return new Pair<LocomotorInfo, uint>(locomotorInfo, (uint)locomotorInfo.GetMovementClass(a.World.Map.Rules.TileSet));
-						}) : new Pair<LocomotorInfo, uint>[0];
+						var locomotors = cargo.Passengers
+							.Select(a => a.Info.TraitInfoOrDefault<MobileInfo>())
+							.Where(m => m != null)
+							.Distinct()
+							.Select(m => m.LocomotorInfo)
+							.ToList();
 
 						foreach (var c in transport.World.Map.FindTilesInCircle(destination, dropRange))
 						{
 							if (!aircraft.CanLand(c))
 								continue;
 
-							if (!mobiles.All(m => m.First == null || domainIndex.IsPassable(destination, c, m.First, m.Second)))
+							if (!locomotors.All(m => domainIndex.IsPassable(destination, c, m)))
 								continue;
 
 							destination = c;

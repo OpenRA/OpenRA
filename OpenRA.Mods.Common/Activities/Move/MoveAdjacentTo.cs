@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Activities
 		protected readonly Mobile Mobile;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
-		readonly uint movementClass;
 
 		Target target;
 		bool canHideUnderFog;
@@ -56,7 +55,6 @@ namespace OpenRA.Mods.Common.Activities
 			Mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
-			movementClass = (uint)Mobile.Info.LocomotorInfo.GetMovementClass(self.World.Map.Rules.TileSet);
 
 			if (target.IsValidFor(self))
 				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
@@ -142,7 +140,7 @@ namespace OpenRA.Mods.Common.Activities
 			var loc = self.Location;
 
 			foreach (var cell in targetCells)
-				if (domainIndex.IsPassable(loc, cell, Mobile.Info.LocomotorInfo, movementClass) && Mobile.CanEnterCell(cell))
+				if (domainIndex.IsPassable(loc, cell, Mobile.Info.LocomotorInfo) && Mobile.CanEnterCell(cell))
 					searchCells.Add(cell);
 
 			if (!searchCells.Any())

@@ -169,9 +169,9 @@ namespace OpenRA.Mods.Common.Traits
 			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
 		}
 
-		public int GetMovementClass(TileSet tileset)
+		public uint GetMovementClass(TileSet tileset)
 		{
-			return TilesetMovementClass[tileset];
+			return (uint)TilesetMovementClass[tileset];
 		}
 
 		public int TileSetMovementHash(TileSet tileSet)

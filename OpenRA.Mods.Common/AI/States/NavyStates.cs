@@ -31,11 +31,10 @@ namespace OpenRA.Mods.Common.AI
 			// You might be tempted to move these lookups into Activate() but that causes null reference exception.
 			var domainIndex = first.World.WorldActor.Trait<DomainIndex>();
 			var locomotorInfo = first.Info.TraitInfo<MobileInfo>().LocomotorInfo;
-			var passable = (uint)locomotorInfo.GetMovementClass(first.World.Map.Rules.TileSet);
 
 			var navalProductions = owner.World.ActorsHavingTrait<Building>().Where(a
 				=> owner.Bot.Info.BuildingCommonNames.NavalProduction.Contains(a.Info.Name)
-				&& domainIndex.IsPassable(first.Location, a.Location, locomotorInfo, passable)
+				&& domainIndex.IsPassable(first.Location, a.Location, locomotorInfo)
 				&& a.AppearsHostileTo(first));
 
 			if (navalProductions.Any())
