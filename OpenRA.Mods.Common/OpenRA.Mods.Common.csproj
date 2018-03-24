@@ -855,6 +855,7 @@
     <Compile Include="UpdateRules\Rules\RemoveTerrainTypeIsWaterFlag.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWeaponScanRadius.cs" />
     <Compile Include="UpdateRules\Rules\DefineSoundDefaults.cs" />
+    <Compile Include="UpdateRules\Rules\DefineSquadExcludeHarvester.cs" />
     <Compile Include="UpdateRules\Rules\SplitTurretAimAnimation.cs" />
     <Compile Include="UpdateRules\Rules\RenameWormSpawner.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
