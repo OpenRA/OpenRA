@@ -46,6 +46,9 @@ namespace OpenRA.Mods.Common.FileFormats
 				if ((s.Position & 1) == 1)
 					s.ReadByte(); // Alignment
 
+				if (s.Position == s.Length)
+					break;	// Break if we aligned with end of stream
+
 				var blockType = s.ReadASCII(4);
 				switch (blockType)
 				{
@@ -76,8 +79,7 @@ namespace OpenRA.Mods.Common.FileFormats
 						s.Position += dataSize;
 						break;
 					default:
-						var unknownChunkSize = s.ReadInt32();
-						s.ReadBytes(unknownChunkSize);
+						s.Position = s.Length; // Skip to end
 						break;
 				}
 			}
