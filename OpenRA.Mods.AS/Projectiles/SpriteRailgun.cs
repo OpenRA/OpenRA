@@ -228,7 +228,7 @@ namespace OpenRA.Mods.AS.Projectiles
 				wr.World.FogObscures(args.Source))
 				yield break;
 
-			if (ticks < info.Duration)
+			if (info.BeamWidth != WDist.Zero && ticks < info.Duration)
 			{
 				yield return new BeamRenderable(args.Source, info.ZOffset, args.PassiveTarget - args.Source, info.BeamShape, info.BeamWidth,
 					Color.FromArgb(BeamColor.A + info.BeamAlphaDeltaPerTick * ticks, BeamColor));
