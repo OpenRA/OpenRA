@@ -1,4 +1,8 @@
 ^Palettes:
+	PaletteFromFile@arrakis:
+		Name: arrakis
+		Filename: PALETTE.BIN
+		ShadowIndex: 1
 	PaletteFromCurrentTileset:
 		Name: terrain
 	PaletteFromFile@d2k:

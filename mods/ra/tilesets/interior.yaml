@@ -1,7 +1,7 @@
 General:
 	Name: Interior
 	Id: INTERIOR
-	Palette: interior.pal
+	Palette: interior
 	EditorTemplateOrder: Floor, Wall
 	HeightDebugColors: 880000
 

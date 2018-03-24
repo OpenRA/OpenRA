@@ -1,7 +1,7 @@
 General:
 	Name: Jungle
 	Id: JUNGLE
-	Palette: jungle.pal
+	Palette: jungle
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 	HeightDebugColors: AA0000
 

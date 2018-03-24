@@ -43,7 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			wr.AddPalette(info.Name, new ImmutablePalette(wr.World.Map.Open(world.Map.Rules.TileSet.Palette), info.ShadowIndex), info.AllowModifiers);
+			var palette = new ImmutablePalette(wr.Palette(world.Map.Rules.TileSet.Palette).Palette);
+			wr.AddPalette(info.Name, palette, info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
