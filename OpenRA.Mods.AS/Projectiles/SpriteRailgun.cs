@@ -83,27 +83,10 @@ namespace OpenRA.Mods.AS.Projectiles
 		[PaletteReference]
 		public readonly string HitAnimPalette = "effect";
 
-		[Desc("Scan radius for actors damaged by beam. If set to zero (default), it will automatically scale to the largest health shape.",
-			"Only set custom values if you know what you're doing.")]
-		public WDist AreaVictimScanRadius = WDist.Zero;
-
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
-			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
-
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color.RGB) : BeamColor;
 			return new SpriteRailgun(args, this, bc);
-		}
-
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
-		{
-			if (BlockerScanRadius == WDist.Zero)
-				BlockerScanRadius = OpenRA.Mods.Common.Util.MinimumRequiredBlockerScanRadius(rules);
-
-			if (AreaVictimScanRadius == WDist.Zero)
-				AreaVictimScanRadius = OpenRA.Mods.Common.Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 
@@ -163,7 +146,7 @@ namespace OpenRA.Mods.AS.Projectiles
 			// Check for blocking actors
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, target, args.Source,
-					info.BeamWidth, info.BlockerScanRadius, out blockedPos))
+					info.BeamWidth, out blockedPos))
 				target = blockedPos;
 
 			// Note: WAngle.Sin(x) = 1024 * Math.Sin(2pi/1024 * x)
@@ -209,7 +192,7 @@ namespace OpenRA.Mods.AS.Projectiles
 					args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				else
 				{
-					var actors = world.FindActorsOnLine(args.Source, target, info.BeamWidth, info.AreaVictimScanRadius);
+					var actors = world.FindActorsOnLine(args.Source, target, info.BeamWidth);
 					foreach (var a in actors)
 						args.Weapon.Impact(Target.FromActor(a), args.SourceActor, args.DamageModifiers);
 				}
@@ -228,7 +211,7 @@ namespace OpenRA.Mods.AS.Projectiles
 				wr.World.FogObscures(args.Source))
 				yield break;
 
-			if (info.BeamWidth != WDist.Zero && ticks < info.Duration)
+			if (ticks < info.Duration)
 			{
 				yield return new BeamRenderable(args.Source, info.ZOffset, args.PassiveTarget - args.Source, info.BeamShape, info.BeamWidth,
 					Color.FromArgb(BeamColor.A + info.BeamAlphaDeltaPerTick * ticks, BeamColor));
