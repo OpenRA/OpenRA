@@ -85,7 +85,7 @@ MammothTusk:
 			Concrete: 28
 		DamageTypes: Explosion
 	Warhead@2Eff: CreateEffect
-		VictimScanRadius: 0
+		ImpactActors: false
 		Explosions: medium_twlt
 		ImpactSounds: expnew07.aud
 		InvalidImpactTypes: Water
@@ -147,4 +147,4 @@ RedEye2:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
-		VictimScanRadius: 0
+		ImpactActors: false

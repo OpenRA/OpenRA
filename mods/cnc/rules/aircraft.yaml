@@ -87,6 +87,8 @@ HELI:
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
+	AutoTarget:
+		ScanRadius: 4
 	AttackHeli:
 		FacingTolerance: 20
 	AmmoPool:
@@ -146,6 +148,8 @@ ORCA:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
+	AutoTarget:
+		ScanRadius: 5
 	AttackHeli:
 		FacingTolerance: 20
 	AmmoPool:

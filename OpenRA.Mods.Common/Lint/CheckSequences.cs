@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Lint
 						foreach (var sequenceProvider in sequenceProviders)
 						{
 							var image = renderInfo.GetImage(actorInfo.Value, sequenceProvider, faction);
-							if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()) && !actorInfo.Value.Name.Contains("^"))
+							if (sequenceDefinitions.All(s => s.Key != image.ToLowerInvariant()))
 								emitError("Sprite image {0} from actor {1} using faction {2} has no sequence definition."
 									.F(image, actorInfo.Value.Name, faction));
 						}

@@ -90,28 +90,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[PaletteReference]
 		public readonly string HitAnimPalette = "effect";
 
-		[Desc("Scan radius for actors damaged by beam. If set to zero (default), it will automatically scale to the largest health shape.",
-			"Only set custom values if you know what you're doing.")]
-		public WDist AreaVictimScanRadius = WDist.Zero;
-
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to zero (default), it will automatically scale",
-			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = WDist.Zero;
-
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color.RGB) : BeamColor;
 			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.Owner.Color.RGB) : HelixColor;
 			return new Railgun(args, this, bc, hc);
-		}
-
-		public void RulesetLoaded(Ruleset rules, WeaponInfo wi)
-		{
-			if (BlockerScanRadius == WDist.Zero)
-				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
-
-			if (AreaVictimScanRadius == WDist.Zero)
-				AreaVictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 
@@ -156,7 +139,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check for blocking actors
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(args.SourceActor.World, target, args.Source,
-					info.BeamWidth, info.BlockerScanRadius, out blockedPos))
+					info.BeamWidth, out blockedPos))
 				target = blockedPos;
 
 			// Note: WAngle.Sin(x) = 1024 * Math.Sin(2pi/1024 * x)
@@ -205,7 +188,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
 				else
 				{
-					var actors = world.FindActorsOnLine(args.Source, target, info.BeamWidth, info.AreaVictimScanRadius);
+					var actors = world.FindActorsOnLine(args.Source, target, info.BeamWidth);
 					foreach (var a in actors)
 						args.Weapon.Impact(Target.FromActor(a), args.SourceActor, args.DamageModifiers);
 				}

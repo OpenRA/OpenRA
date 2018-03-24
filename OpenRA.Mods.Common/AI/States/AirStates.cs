@@ -13,13 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
 	abstract class AirStateBase : StateBase
 	{
-		static readonly string[] AirTargetTypes = new[] { "Air" };
+		static readonly BitSet<TargetableType> AirTargetTypes = new BitSet<TargetableType>("Air");
 
 		protected const int MissileUnitMultiplier = 3;
 

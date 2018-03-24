@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			foreach (var actorInfo in rules.Actors.Where(a => !a.Key.StartsWith("^")))
+			foreach (var actorInfo in rules.Actors)
 			{
 				try
 				{

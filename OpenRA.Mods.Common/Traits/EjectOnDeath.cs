@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SuccessRate = 50;
 
 		[Desc("Sound to play when ejecting the pilot from the aircraft.")]
-		public readonly string ChuteSound = "chute1.aud";
+		public readonly string ChuteSound = null;
 
 		[Desc("Can a destroyed aircraft eject its pilot while it has not yet fallen to ground level?")]
 		public readonly bool EjectInAir = false;

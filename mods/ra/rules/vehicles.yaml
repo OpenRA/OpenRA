@@ -25,6 +25,8 @@ V2RL:
 	Armament:
 		Weapon: SCUD
 		PauseOnCondition: !ammo
+	AutoTarget:
+		ScanRadius: 10
 	AmmoPool:
 		Ammo: 1
 		PipCount: 0

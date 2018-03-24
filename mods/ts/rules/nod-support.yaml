@@ -142,7 +142,6 @@ NALASR:
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 		BuildPaletteOrder: 90
 		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
-	Building:
 	Selectable:
 		Bounds: 40, 30, -8, -6
 		DecorationBounds: 40, 36, -8, -8

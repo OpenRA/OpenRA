@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
 		public readonly string Sequence = "active";
 
+		[Desc("Cursor to display when there are no units to apply the condition in range.")]
+		public readonly string BlockedCursor = "move-blocked";
+
 		public override object Create(ActorInitializer init) { return new GrantExternalConditionPower(init.Self, this); }
 	}
 
@@ -135,9 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
 				{
-					var bounds = unit.TraitsImplementing<IDecorationBounds>()
-						.Select(b => b.DecorationBounds(unit, wr))
-						.FirstOrDefault(b => !b.IsEmpty);
+					var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, wr);
 					yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
 				}
 			}
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
-				return power.UnitsInRange(cell).Any() ? "ability" : "move-blocked";
+				return power.UnitsInRange(cell).Any() ? power.info.Cursor : power.info.BlockedCursor;
 			}
 		}
 	}

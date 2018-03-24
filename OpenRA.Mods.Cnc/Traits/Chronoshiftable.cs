@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -22,6 +23,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[Desc("Should the actor die instead of being teleported?")]
 		public readonly bool ExplodeInstead = false;
+
+		[Desc("Types of damage that this trait causes to self when 'ExplodeInstead' is true. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+
 		public readonly string ChronoshiftSound = "chrono2.aud";
 
 		[Desc("Should the actor return to its previous location after the chronoshift wore out?")]
@@ -95,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					// Damage is inflicted by the chronosphere
 					if (!self.Disposed)
-						self.InflictDamage(chronosphere, new Damage(int.MaxValue));
+						self.Kill(chronosphere, info.DamageTypes);
 				});
 				return true;
 			}

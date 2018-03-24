@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -30,6 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		static readonly PPos[] NoCells = { };
 
+		readonly HashSet<PPos> footprint;
+
 		[Sync] CPos cachedLocation;
 		[Sync] bool cachedTraitDisabled;
 
@@ -37,7 +40,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected abstract void RemoveCellsFromPlayerShroud(Actor self, Player player);
 
 		public AffectsShroud(Actor self, AffectsShroudInfo info)
-			: base(info) { }
+			: base(info)
+		{
+			if (Info.Type == VisibilityType.Footprint)
+				footprint = new HashSet<PPos>();
+		}
 
 		PPos[] ProjectedCells(Actor self)
 		{
@@ -47,9 +54,14 @@ namespace OpenRA.Mods.Common.Traits
 				return NoCells;
 
 			if (Info.Type == VisibilityType.Footprint)
-				return self.OccupiesSpace.OccupiedCells()
-					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range, Info.MaxHeightDelta))
-					.Distinct().ToArray();
+			{
+				// PERF: Reuse collection to avoid allocations.
+				footprint.UnionWith(self.OccupiesSpace.OccupiedCells()
+					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range, Info.MaxHeightDelta)));
+				var cells = footprint.ToArray();
+				footprint.Clear();
+				return cells;
+			}
 
 			var pos = self.CenterPosition;
 			if (Info.Type == VisibilityType.GroundPosition)

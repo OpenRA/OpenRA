@@ -59,8 +59,17 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var nearestHpad = ChooseHelipad(self, false);
 
-				if (nearestHpad == null)
-					return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true), NextActivity);
+				// If a heli was told to return and there's no (available) RearmBuilding, going to the probable next queued activity (HeliAttack)
+				// would be pointless (due to lack of ammo), and possibly even lead to an infinite loop due to HeliAttack.cs:L79.
+				if (nearestHpad == null && heli.Info.LandWhenIdle)
+				{
+					if (heli.Info.TurnToLand)
+						return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true));
+
+					return new HeliLand(self, true);
+				}
+				else if (nearestHpad == null && !heli.Info.LandWhenIdle)
+					return null;
 				else
 				{
 					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;

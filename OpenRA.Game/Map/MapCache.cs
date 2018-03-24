@@ -70,7 +70,7 @@ namespace OpenRA
 				try
 				{
 					// HACK: If the path is inside the the support directory then we may need to create it
-					if (name.StartsWith("^", StringComparison.Ordinal))
+					if (Platform.IsPathRelativeToSupportDirectory(name))
 					{
 						// Assume that the path is a directory if there is not an existing file with the same name
 						var resolved = Platform.ResolvePath(name);
@@ -122,7 +122,7 @@ namespace OpenRA
 			}
 		}
 
-		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
+		public IEnumerable<IReadWritePackage> EnumerateMapPackagesWithoutCaching(MapClassification classification = MapClassification.System)
 		{
 			// Utility mod that does not support maps
 			if (!modData.Manifest.Contains<MapGrid>())
@@ -144,7 +144,7 @@ namespace OpenRA
 					name = name.Substring(1);
 
 				// Don't try to open the map directory in the support directory if it doesn't exist
-				if (name.StartsWith("^", StringComparison.Ordinal))
+				if (Platform.IsPathRelativeToSupportDirectory(name))
 				{
 					var resolved = Platform.ResolvePath(name);
 					if (!Directory.Exists(resolved) || !File.Exists(resolved))
@@ -155,12 +155,18 @@ namespace OpenRA
 				{
 					foreach (var map in package.Contents)
 					{
-						var mapPackage = package.OpenPackage(map, modData.ModFiles);
+						var mapPackage = package.OpenPackage(map, modData.ModFiles) as IReadWritePackage;
 						if (mapPackage != null)
-							yield return new Map(modData, mapPackage);
+							yield return mapPackage;
 					}
 				}
 			}
+		}
+
+		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
+		{
+			foreach (var mapPackage in EnumerateMapPackagesWithoutCaching(classification))
+				yield return new Map(modData, mapPackage);
 		}
 
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action queryFailed = null)

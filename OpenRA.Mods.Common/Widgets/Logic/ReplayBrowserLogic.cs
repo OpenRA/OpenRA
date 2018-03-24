@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			var mod = modData.Manifest;
-			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Metadata.Version);
+			var dir = Platform.ResolvePath(Platform.SupportDirPrefix, "Replays", mod.Id, mod.Metadata.Version);
 
 			if (Directory.Exists(dir))
 				ThreadPool.QueueUserWorkItem(_ => LoadReplays(dir, template));
@@ -72,9 +72,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			watch.IsDisabled = () => selectedReplay == null || map.Status != MapStatus.Available;
 			watch.OnClick = () => { WatchReplay(); };
 
+			var mapPreviewRoot = panel.Get("MAP_PREVIEW_ROOT");
+			mapPreviewRoot.IsVisible = () => selectedReplay != null;
 			panel.Get("REPLAY_INFO").IsVisible = () => selectedReplay != null;
 
-			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },

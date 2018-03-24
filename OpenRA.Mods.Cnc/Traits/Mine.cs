@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (mobile != null && !info.DetonateClasses.Overlaps(mobile.Info.Crushes))
 				return;
 
-			self.Kill(crusher);
+			self.Kill(crusher, mobile != null ? mobile.Info.CrushDamageTypes : new HashSet<string>());
 		}
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)

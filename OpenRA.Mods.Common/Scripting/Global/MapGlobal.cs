@@ -110,20 +110,6 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns true if there is only one human player.")]
 		public bool IsSinglePlayer { get { return Context.World.LobbyInfo.NonBotPlayers.Count() == 1; } }
 
-		[Desc("Returns the difficulty selected by the player before starting the mission.")]
-		public string Difficulty
-		{
-			get
-			{
-				Game.Debug("Map script is using deprecated Map.Difficulty API. This should be changed to Map.LobbyOption(\"difficulty\").");
-				Log.Write("lua", "Map script is using deprecated Map.Difficulty API. This should be changed to Map.LobbyOption(\"difficulty\").");
-				var option = Context.World.WorldActor.TraitsImplementing<ScriptLobbyDropdown>()
-					.FirstOrDefault(sld => sld.Info.ID == "difficulty");
-
-				return option != null ? option.Info.Values[option.Value] : null;
-			}
-		}
-
 		[Desc("Returns the value of a `ScriptLobbyDropdown` selected in the game lobby.")]
 		public LuaValue LobbyOption(string id)
 		{

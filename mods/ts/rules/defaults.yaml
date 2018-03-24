@@ -306,6 +306,7 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
@@ -434,7 +435,7 @@
 	Inherits@1: ^SpriteActor
 	Inherits@2: ^Cloakable
 	CombatDebugOverlay:
-	HiddenUnderShroud:
+	FrozenUnderFog:
 	AppearsOnRadar:
 	Interactable:
 	Building:
@@ -442,6 +443,7 @@
 		Footprint: x
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7
@@ -485,6 +487,7 @@
 	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
+		UndeploySounds: cashturn.aud
 	KillsSelf:
 		RemoveInstead: true
 	RenderSprites:
@@ -844,6 +847,10 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Aircraft
+	SpawnActorOnDeath:
+		RequiresCondition: airborne
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 
 ^Helicopter:
 	Inherits: ^Aircraft

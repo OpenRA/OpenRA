@@ -22,9 +22,6 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				if (actorInfo.Key.StartsWith("^", StringComparison.Ordinal))
-					continue;
-
 				var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
 				foreach (var rsi in actorInfo.Value.TraitInfos<RevealsShroudInfo>())
 				{

@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -84,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
 
 		[Desc("Target types of actors that this actor disguise as.")]
-		public readonly HashSet<string> TargetTypes = new HashSet<string> { "Disguise" };
+		public readonly BitSet<TargetableType> TargetTypes = new BitSet<TargetableType>("Disguise");
 
 		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged,",
 			"Unload, Infiltrate, Demolish, Move.")]
@@ -317,7 +318,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.ValidStances.HasStance(stance))
 				return false;
 
-			return info.TargetTypes.Overlaps(target.Info.TraitInfos<ITargetableInfo>().SelectMany(ti => ti.GetTargetTypes()));
+			return info.TargetTypes.Overlaps(target.Info.GetAllTargetTypes());
 		}
 	}
 }

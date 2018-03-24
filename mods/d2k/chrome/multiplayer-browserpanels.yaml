@@ -38,7 +38,7 @@ ScrollPanel@MULTIPLAYER_CLIENT_LIST:
 					X: 5
 					Width: PARENT_RIGHT
 					Height: 23
-					
+
 ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 	Width: 158
 	Height: 130

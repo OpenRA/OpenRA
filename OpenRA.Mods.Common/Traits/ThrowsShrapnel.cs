@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
-	public class ThrowsShrapnelInfo : ITraitInfo, IRulesetLoaded
+	public class ThrowsShrapnelInfo : ConditionalTraitInfo, IRulesetLoaded
 	{
 		[WeaponReference, FieldLoader.Require]
 		[Desc("The weapons used for shrapnel.")]
@@ -30,9 +30,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo[] WeaponInfos { get; private set; }
 
-		public object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		public override object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			base.RulesetLoaded(rules, ai);
+
 			WeaponInfos = Weapons.Select(w =>
 			{
 				WeaponInfo weapon;
@@ -44,21 +46,20 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class ThrowsShrapnel : INotifyKilled
+	class ThrowsShrapnel : ConditionalTrait<ThrowsShrapnelInfo>, INotifyKilled
 	{
-		readonly ThrowsShrapnelInfo info;
-
 		public ThrowsShrapnel(ThrowsShrapnelInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		public void Killed(Actor self, AttackInfo attack)
 		{
-			foreach (var wep in info.WeaponInfos)
+			if (IsTraitDisabled)
+				return;
+
+			foreach (var wep in Info.WeaponInfos)
 			{
-				var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]);
-				var range = self.World.SharedRandom.Next(info.Range[0].Length, info.Range[1].Length);
+				var pieces = self.World.SharedRandom.Next(Info.Pieces[0], Info.Pieces[1]);
+				var range = self.World.SharedRandom.Next(Info.Range[0].Length, Info.Range[1].Length);
 
 				for (var i = 0; pieces > i; i++)
 				{

@@ -65,7 +65,10 @@ namespace OpenRA.Widgets
 
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
-			Game.Renderer.RgbaColorRenderer.FillRect(new float2(r.Left, r.Top), new float2(r.Right, r.Bottom), c);
+			// Offset to the edges of the pixels
+			var tl = new float2(r.Left - 0.5f, r.Top - 0.5f);
+			var br = new float2(r.Right - 0.5f, r.Bottom - 0.5f);
+			Game.Renderer.RgbaColorRenderer.FillRect(tl, br, c);
 		}
 
 		public static void FillEllipseWithColor(Rectangle r, Color c)

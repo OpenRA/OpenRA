@@ -45,7 +45,7 @@ namespace OpenRA.Network
 		{
 			var filename = chooseFilename();
 			var mod = Game.ModData.Manifest;
-			var dir = Platform.ResolvePath("^", "Replays", mod.Id, mod.Metadata.Version);
+			var dir = Platform.ResolvePath(Platform.SupportDirPrefix, "Replays", mod.Id, mod.Metadata.Version);
 
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
@@ -63,7 +63,7 @@ namespace OpenRA.Network
 				catch (IOException) { }
 			}
 
-			file.Write(initialContent);
+			file.WriteArray(initialContent);
 			writer = new BinaryWriter(file);
 		}
 

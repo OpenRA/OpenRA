@@ -22,6 +22,8 @@ namespace OpenRA
 	/// </summary>
 	public class ActorInfo
 	{
+		public const string AbstractActorPrefix = "^";
+
 		/// <summary>
 		/// The actor name can be anything, but the sprites used in the Render*: traits default to this one.
 		/// If you add an ^ in front of the name, the engine will recognize this as a collection of traits
@@ -38,7 +40,6 @@ namespace OpenRA
 			{
 				Name = name;
 
-				var abstractActorType = name.StartsWith("^");
 				foreach (var t in node.Nodes)
 				{
 					try
@@ -47,10 +48,11 @@ namespace OpenRA
 					}
 					catch (FieldLoader.MissingFieldsException e)
 					{
-						if (!abstractActorType)
-							throw new YamlException(e.Message);
+						throw new YamlException(e.Message);
 					}
 				}
+
+				traits.TrimExcess();
 			}
 			catch (YamlException e)
 			{
@@ -63,6 +65,7 @@ namespace OpenRA
 			Name = name;
 			foreach (var t in traitInfos)
 				traits.Add(t);
+			traits.TrimExcess();
 		}
 
 		static ITraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
@@ -162,5 +165,14 @@ namespace OpenRA
 		public T TraitInfo<T>() where T : ITraitInfoInterface { return traits.Get<T>(); }
 		public T TraitInfoOrDefault<T>() where T : ITraitInfoInterface { return traits.GetOrDefault<T>(); }
 		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfoInterface { return traits.WithInterface<T>(); }
+
+		public BitSet<TargetableType> GetAllTargetTypes()
+		{
+			// PERF: Avoid LINQ.
+			var targetTypes = new BitSet<TargetableType>();
+			foreach (var targetable in TraitInfos<ITargetableInfo>())
+				targetTypes = targetTypes.Union(targetable.GetTargetTypes());
+			return targetTypes;
+		}
 	}
 }
