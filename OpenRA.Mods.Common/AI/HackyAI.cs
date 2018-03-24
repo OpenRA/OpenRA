@@ -749,8 +749,7 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var a in newUnits)
 			{
-				if (!a.Info.HasTraitInfo<HarvesterInfo>())
-					unitsHangingAroundTheBase.Add(a);
+				unitsHangingAroundTheBase.Add(a);
 
 				if (a.Info.HasTraitInfo<AircraftInfo>() && a.Info.HasTraitInfo<AttackBaseInfo>())
 				{

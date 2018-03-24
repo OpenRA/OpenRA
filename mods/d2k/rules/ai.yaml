@@ -17,6 +17,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingLimits:
 			barracks: 1
 			refinery: 4
@@ -138,6 +139,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingLimits:
 			barracks: 1
 			refinery: 4
@@ -261,6 +263,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingLimits:
 			barracks: 1
 			refinery: 4

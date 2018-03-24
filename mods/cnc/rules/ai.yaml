@@ -16,6 +16,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Defence.Nod, Defence.GDI
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -145,6 +146,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Defence.Nod, Defence.GDI
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -274,6 +276,7 @@ Player:
 			Silo: silo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Defence.Nod, Defence.GDI
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
