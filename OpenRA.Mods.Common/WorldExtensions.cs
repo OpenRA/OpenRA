@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common
 		}
 
 		/// <summary>
-		/// Finds all the actors of which their health radius is intersected by a specified circle.
+		/// Finds all the actors of which their health radius might be intersected by a specified circle.
 		/// </summary>
 		public static IEnumerable<Actor> FindActorsOnCircle(this World world, WPos origin, WDist r)
 		{
