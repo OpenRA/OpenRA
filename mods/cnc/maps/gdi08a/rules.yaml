@@ -1,0 +1,111 @@
+World:
+	LuaScript:
+		Scripts: gdi08a.lua, gdi08a-AI.lua
+	MissionData:
+		Briefing: U.N. Sanction has cut funding to the Global Defense Initiative. Field Units are helpless.\n\nUse the repair facility to keep your units in the field long enough to destroy the Nod base in this region.\n\nAll Nod units and structures must be destroyed.
+		BackgroundVideo: tbrinfo1.vqa
+		WinVideo: paratrop.vqa
+		LossVideo: gameover.vqa
+		BriefingVideo: gdi8a.vqa
+		SmudgeLayer@SCORCH:
+			InitialSmudges:
+				42,56: sc1,0
+				41,52: sc6,0
+				38,51: sc2,0
+				43,50: sc3,0
+				40,48: sc4,0
+				47,46: sc5,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+Player:	
+	PlayerResources:
+		SelectableCash: 5000 
+		DefaultCash: 5000
+		DefaultCashDropdownLocked: true
+HQ:
+	Tooltip:
+	-AirstrikePower:
+	Buildable:
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+CYCL:
+	Buildable:
+		Prerequisites: ~disabled
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+MSAM:
+	Buildable:
+		Prerequisites: ~disabled
+MLRS:
+	Buildable:
+		Prerequisites: ~disabled
+FTNK:
+	Buildable:
+		Prerequisites: ~disabled
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
