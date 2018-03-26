@@ -167,11 +167,12 @@ waypoint:
 	EditorTilesetFilter:
 		Categories: System
 
-^carryall.colorpicker:
+carryall.colorpicker:
 	Inherits: carryall
-	-Health:
 	Aircraft:
 		InitialFacing: 104
+	-Buildable:
+	-EditorTilesetFilter:
 	RenderSprites:
 		Image: carryall
 		Palette: colorpicker

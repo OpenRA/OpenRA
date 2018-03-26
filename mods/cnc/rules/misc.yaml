@@ -73,8 +73,10 @@ waypoint:
 	EditorTilesetFilter:
 		Categories: System
 
-^fact.colorpicker:
+fact.colorpicker:
 	Inherits: FACT
+	-Buildable:
+	-EditorTilesetFilter:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
