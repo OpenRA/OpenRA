@@ -3,7 +3,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH)/2
 	Y: (WINDOW_BOTTOM - HEIGHT)/2
 	Width: 530
-	Height: 345
+	Height: 315
 	Children:
 		Label@TITLE:
 			Y: 15
@@ -58,47 +58,33 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			MaxLength: 5
 			Text: 1234
 		Checkbox@ADVERTISE_CHECKBOX:
-			X: 20
-			Y: 151
+			X: 180
+			Y: 117
 			Width: 150
 			Height: 20
 			Font: Regular
 			Text: Advertise Online
-		Label@EXTERNAL_PORT_LABEL:
-			X: 180
-			Y: 149
-			Width: 90
-			Height: 25
-			Align: Right
-			Text: External Port:
-		TextField@EXTERNAL_PORT:
-			X: 275
-			Y: 150
-			Width: 50
-			MaxLength: 5
-			Height: 25
-			Text: 1234
 		Label@NOTICES_HEADER_A:
 			X: 20
-			Y: 185
+			Y: 155
 			Height: 25
 			Align: Left
 			Font: Bold
 		Label@NOTICES_HEADER_B:
 			X: 20
-			Y: 185
+			Y: 155
 			Height: 25
 			Align: Left
 			Font: Bold
 		Label@NOTICES_HEADER_C:
 			X: 20
-			Y: 185
+			Y: 155
 			Height: 25
 			Align: Left
 			Font: Bold
 		Container@NOTICES_LAN:
 			X: 25
-			Y: 205
+			Y: 175
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -132,7 +118,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Text: manually configure port forwarding on your router.
 		Container@NOTICES_NO_UPNP:
 			X: 25
-			Y: 205
+			Y: 175
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -163,7 +149,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Height: 25
 					Font: Tiny
 					Align: Left
-					Text: connections from the External Port to your local IP and Port.
+					Text: connections to your local IP and Port.
 				Label@SETTINGS_A:
 					Y: 48
 					Width: 305
@@ -181,7 +167,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Text: Advanced tab of the OpenRA settings menu.
 		Container@NOTICES_UPNP:
 			X: 25
-			Y: 205
+			Y: 175
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:
@@ -249,25 +235,25 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Font: Tiny
 			Align: Center
 		Button@MAP_BUTTON:
-			X: PARENT_RIGHT - 194
-			Y: 268
-			Width: 174
+			X: 20
+			Y: PARENT_BOTTOM - 45
+			Width: 120
 			Height: 25
 			Text: Change Map
 			Font: Bold
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 194
+			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - 45
-			Width: 174
+			Width: 120
 			Height: 25
 			Text: Back
 			Font: Bold
 			Key: escape
 		Button@CREATE_BUTTON:
 			Key: return
-			X: 20
+			X: PARENT_RIGHT - 2*WIDTH - 30
 			Y: PARENT_BOTTOM - 45
-			Width: 174
+			Width: 120
 			Height: 25
 			Text: Create
 			Font: Bold
