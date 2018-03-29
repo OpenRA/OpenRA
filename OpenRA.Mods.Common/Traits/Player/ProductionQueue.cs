@@ -427,10 +427,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected void CancelProduction(string itemName, uint numberToCancel)
 		{
 			for (var i = 0; i < numberToCancel; i++)
-				CancelProductionInner(itemName);
+				if (!CancelProductionInner(itemName))
+					break;
 		}
 
-		void CancelProductionInner(string itemName)
+		bool CancelProductionInner(string itemName)
 		{
 			var lastIndex = queue.FindLastIndex(a => a.Item == itemName);
 
@@ -444,6 +445,10 @@ namespace OpenRA.Mods.Common.Traits
 				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
 				FinishProduction();
 			}
+			else
+				return false;
+
+			return true;
 		}
 
 		public void FinishProduction()
