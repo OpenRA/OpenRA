@@ -44,7 +44,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new SplitTurretAimAnimation(),
 				new DefineSoundDefaults(),
 				new RenameWormSpawner(),
-				new RemoveWithReloadingSpriteTurret()
+				new RemoveWithReloadingSpriteTurret(),
+				new IgnoreAbstractActors()
 			})
 		};
 
