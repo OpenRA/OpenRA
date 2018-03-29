@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static string FormatMessageList(IEnumerable<string> messages, int indent = 0)
 		{
 			var prefix = string.Concat(Enumerable.Repeat("   ", indent));
-			return string.Concat(messages.Select(m => prefix + " * {0}\n".F(m.Replace("\n", "\n   " + prefix))));
+			return string.Join("\n", messages.Select(m => prefix + " * {0}".F(m.Replace("\n", "\n   " + prefix))));
 		}
 	}
 
