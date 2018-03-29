@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			get
 			{
 				return "WithReloadingSpriteTurret has been superseded by conditions.\n" +
-					"The trait is switched for with WithSpriteTurret.\n";
+					"The trait is switched for with WithSpriteTurret.";
 			}
 		}
 
