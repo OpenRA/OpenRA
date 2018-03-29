@@ -41,6 +41,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
 		public readonly int BuildDurationModifier = 100;
 
+		[Desc("Maximum number of a single actor type that can be queued (0 = infinite).")]
+		public readonly int ItemLimit = 999;
+
+		[Desc("Maximum number of items that can be queued across all actor types (0 = infinite).")]
+		public readonly int QueueLimit = 0;
+
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
 
@@ -307,11 +313,20 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Check if the player is trying to build more units that they are allowed
 					var fromLimit = int.MaxValue;
-					if (!developerMode.AllTech && bi.BuildLimit > 0)
+					if (!developerMode.AllTech)
 					{
-						var inQueue = queue.Count(pi => pi.Item == order.TargetString);
-						var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
-						fromLimit = bi.BuildLimit - (inQueue + owned);
+						if (Info.QueueLimit > 0)
+							fromLimit = Info.QueueLimit - queue.Count;
+
+						if (Info.ItemLimit > 0)
+							fromLimit = Math.Min(fromLimit, Info.ItemLimit - queue.Count(i => i.Item == order.TargetString));
+
+						if (bi.BuildLimit > 0)
+						{
+							var inQueue = queue.Count(pi => pi.Item == order.TargetString);
+							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
+							fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
+						}
 
 						if (fromLimit <= 0)
 							return;
