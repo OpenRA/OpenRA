@@ -54,10 +54,15 @@ namespace OpenRA.Mods.Common.Traits
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = "UnitReady";
 
-		[Desc("Notification played when you can't train another unit",
+		[Desc("Notification played when you can't train another actor",
 			"when the build limit exceeded or the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = "NoBuild";
+
+		[Desc("Notification played when you can't queue another actor",
+			"when the queue length limit is exceeded.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
+		public readonly string LimitedAudio = null;
 
 		[Desc("Notification played when user clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
@@ -289,6 +294,42 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (queue.Count > 0 && !allProductionPaused)
 				queue[0].Tick(playerResources);
+		}
+
+		public bool CanQueue(ActorInfo actor, out string notificationAudio)
+		{
+			notificationAudio = Info.BlockedAudio;
+
+			var bi = actor.TraitInfoOrDefault<BuildableInfo>();
+			if (bi == null)
+				return false;
+
+			if (!developerMode.AllTech)
+			{
+				if (Info.QueueLimit > 0 && queue.Count >= Info.QueueLimit)
+				{
+					notificationAudio = Info.LimitedAudio;
+					return false;
+				}
+
+				var queueCount = queue.Count(i => i.Item == actor.Name);
+				if (Info.ItemLimit > 0 && queueCount >= Info.ItemLimit)
+				{
+					notificationAudio = Info.LimitedAudio;
+					return false;
+				}
+
+				if (bi.BuildLimit > 0)
+				{
+					var owned = self.Owner.World.ActorsHavingTrait<Buildable>()
+						.Count(a => a.Info.Name == actor.Name && a.Owner == self.Owner);
+					if (queueCount + owned >= bi.BuildLimit)
+						return false;
+				}
+			}
+
+			notificationAudio = Info.QueuedAudio;
+			return true;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
