@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			foreach (var filename in files)
 			{
 				if (!filename.Contains("|") && mapPackage.Contains(filename))
-					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename))));
+					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename)));
 				else
 					fileSet.AddRange(LoadYaml(modData, new[] { filename }));
 			}
