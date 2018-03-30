@@ -42,7 +42,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new CapturableChanges(),
 				new DecoupleSelfReloading(),
 				new RemovePlayerPaletteTileset(),
-				new RenameWithTurreted()
+				new RenameWithTurreted(),
+				new ScaleDefaultModHealth()
 			}),
 
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
