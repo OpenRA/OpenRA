@@ -109,6 +109,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modRules, rule.UpdateActorNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modWeapons, rule.UpdateWeaponNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
+			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
 			manualSteps.AddRange(rule.AfterUpdate(modData));
 
 			files = modRules.ToList();
@@ -117,6 +118,29 @@ namespace OpenRA.Mods.Common.UpdateRules
 			files.AddRange(modChromeLayout);
 
 			return manualSteps;
+		}
+
+		static IEnumerable<string> ApplyChromeTransformInner(ModData modData, MiniYamlNode current, UpdateRule.ChromeNodeTransform transform)
+		{
+			foreach (var manualStep in transform(modData, current))
+				yield return manualStep;
+
+			var childrenNode = current.Value.Nodes.FirstOrDefault(n => n.Key == "Children");
+			if (childrenNode != null)
+				foreach (var node in childrenNode.Value.Nodes)
+					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+						yield return manualStep;
+		}
+
+		static IEnumerable<string> ApplyChromeTransform(ModData modData, YamlFileSet files, UpdateRule.ChromeNodeTransform transform)
+		{
+			if (transform == null)
+				yield break;
+
+			foreach (var file in files)
+				foreach (var node in file.Item3)
+					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+						yield return manualStep;
 		}
 
 		static IEnumerable<string> ApplyTopLevelTransform(ModData modData, YamlFileSet files, UpdateRule.TopLevelNodeTransform transform)

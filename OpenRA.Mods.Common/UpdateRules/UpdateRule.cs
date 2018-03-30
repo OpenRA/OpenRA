@@ -24,8 +24,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// <returns>An enumerable of manual steps to be run by the user</returns>
 		public delegate IEnumerable<string> TopLevelNodeTransform(ModData modData, MiniYamlNode node);
 
+		/// <summary>Defines a transformation that is run on each widget node in a chrome yaml file set.</summary>
+		/// <returns>An enumerable of manual steps to be run by the user</returns>
+		public delegate IEnumerable<string> ChromeNodeTransform(ModData modData, MiniYamlNode widgetNode);
+
 		public virtual IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode) { yield break; }
 		public virtual IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode) { yield break; }
+		public virtual IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNode chromeNode) { yield break; }
 		public virtual IEnumerable<string> UpdateTilesetNode(ModData modData, MiniYamlNode tilesetNode) { yield break; }
 
 		public virtual IEnumerable<string> BeforeUpdate(ModData modData) { yield break; }
