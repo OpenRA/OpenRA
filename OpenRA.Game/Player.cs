@@ -137,7 +137,8 @@ namespace OpenRA
 				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
 			}
 
-			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
+			var playerActorType = world.Type == WorldType.Editor ? "EditorPlayer" : "Player";
+			PlayerActor = world.CreateActor(playerActorType, new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
 
 			// Enable the bot logic on the host

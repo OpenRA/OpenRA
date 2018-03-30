@@ -859,6 +859,7 @@
     <Compile Include="UpdateRules\Rules\SplitTurretAimAnimation.cs" />
     <Compile Include="UpdateRules\Rules\RenameWormSpawner.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
+    <Compile Include="UpdateRules\Rules\AddEditorPlayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
