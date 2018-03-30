@@ -1,0 +1,9 @@
+V2RL:
+	Mobile:
+		Speed: 55
+		TurnSpeed: 2
+    
+ARTY:
+	Mobile:
+		TurnSpeed: 2
+		Speed: 60
