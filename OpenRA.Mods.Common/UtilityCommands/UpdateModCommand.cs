@@ -146,15 +146,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				Console.Write("   Updating system maps... ");
+
 				if (!skipMaps)
 				{
 					var mapsFailed = false;
+					var externalFilenames = new HashSet<string>();
 					foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
 					{
 						try
 						{
 							YamlFileSet mapFiles;
-							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out mapFiles);
+							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out mapFiles, externalFilenames);
 							allFiles.AddRange(mapFiles);
 
 							if (mapSteps.Any())
