@@ -37,7 +37,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new UpdatePath("incomplete-release-20171014", "release-20180218", new UpdateRule[]
 			{
 				new RemoveMobileOnRails(),
-				new AircraftCanHoverGeneralization()
+				new AircraftCanHoverGeneralization(),
+				new AddNukeLaunchAnimation(),
+				new CapturableChanges(),
+				new DecoupleSelfReloading(),
+				new RemovePlayerPaletteTileset(),
+				new RenameWithTurreted()
 			}),
 
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
