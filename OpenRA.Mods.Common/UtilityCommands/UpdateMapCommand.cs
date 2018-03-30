@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				throw new FileNotFoundException(args[1]);
 
 			IEnumerable<UpdateRule> rules = null;
-			if (args.Length > 1)
+			if (args.Length > 2)
 				rules = UpdatePath.FromSource(modData.ObjectCreator, args[2]);
 
 			if (rules == null)
