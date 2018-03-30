@@ -121,9 +121,15 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new FacingInit(PreviewFacing);
 		}
 
+		[ConsumedConditionReference]
 		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
 			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
 		public readonly BooleanExpression LandOnCondition;
+
+		[ConsumedConditionReference]
+		[Desc("Under this condition, this actor may turn even while this trait is disabled.",
+			"Useful for turretless units that deploy to become immobile, but still fires its weapon.")]
+		public readonly BooleanExpression TurnWhileDisabledCondition = null;
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 
@@ -160,6 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
+		bool turnWhileDisabled = false;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -198,11 +205,20 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Info.LandOnCondition != null)
 				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
+
+			if (Info.TurnWhileDisabledCondition != null)
+				yield return new VariableObserver(TurnWhileDisabledConditionChanged, Info.TurnWhileDisabledCondition.Variables);
 		}
 
 		void ForceLandConditionChanged(Actor self, IReadOnlyDictionary<string, int> variables)
 		{
 			landNow = Info.LandOnCondition.Evaluate(variables);
+		}
+
+		void TurnWhileDisabledConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			if (Info.TurnWhileDisabledCondition != null)
+				turnWhileDisabled = Info.TurnWhileDisabledCondition.Evaluate(conditions);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -636,6 +652,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			MakeReservation(target.Actor);
 			return true;
+		}
+
+		bool IMove.TurnWhileDisabled(Actor self)
+		{
+			return turnWhileDisabled;
 		}
 
 		#endregion
