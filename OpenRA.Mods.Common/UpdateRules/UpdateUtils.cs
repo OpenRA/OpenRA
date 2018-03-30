@@ -249,6 +249,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return FieldLoader.GetValue<T>(node.Key, node.Value.Value);
 		}
 
+		public static void ReplaceValue(this MiniYamlNode node, string value)
+		{
+			node.Value.Value = value;
+		}
+
 		public static void AddNode(this MiniYamlNode node, string key, object value)
 		{
 			node.Value.Nodes.Add(new MiniYamlNode(key, FieldSaver.FormatValue(value)));
