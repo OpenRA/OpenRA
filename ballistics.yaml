@@ -1,0 +1,17 @@
+^Artillery:
+	Range: 12c0
+	Projectile: Bullet
+		Speed: 200
+		Blockable: false
+		LaunchAngle: 110
+		Inaccuracy: 1c256
+	Warhead@1Dam: SpreadDamage
+        Spread: 420
+		Versus:
+			None: 42
+			Light: 60
+			Heavy: 35
+			Concrete: 50
+
+155mm:
+	MinRange: 4c0
