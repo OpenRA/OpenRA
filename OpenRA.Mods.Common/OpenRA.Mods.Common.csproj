@@ -591,6 +591,9 @@
     <Compile Include="UpdateRules\Rules\DecoupleSelfReloading.cs" />
     <Compile Include="UpdateRules\Rules\RemovePlayerPaletteTileset.cs" />
     <Compile Include="UpdateRules\Rules\RenameWithTurreted.cs" />
+    <Compile Include="UpdateRules\Rules\ScaleModHealth.cs" />
+    <Compile Include="UpdateRules\Rules\ScaleModHealthBy10.cs" />
+    <Compile Include="UpdateRules\Rules\ScaleModHealthBy100.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
@@ -876,6 +879,7 @@
     <Compile Include="UpdateRules\UpdateUtils.cs" />
     <Compile Include="UpdateRules\Rules\RemoveMobileOnRails.cs" />
     <Compile Include="UpdateRules\Rules\AircraftCanHoverGeneralization.cs" />
+    <Compile Include="UpdateRules\Rules\ScaleDefaultModHealth.cs" />
     <Compile Include="UtilityCommands\UpdateMapCommand.cs" />
     <Compile Include="UpdateRules\Rules\RemoveTerrainTypeIsWaterFlag.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWeaponScanRadius.cs" />
