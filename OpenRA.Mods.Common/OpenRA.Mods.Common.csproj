@@ -586,6 +586,11 @@
     <Compile Include="UpdateRules\Rules\ChangeIntensityToDuration.cs" />
     <Compile Include="UpdateRules\Rules\AddShakeToBridge.cs" />
     <Compile Include="UpdateRules\Rules\IgnoreAbstractActors.cs" />
+    <Compile Include="UpdateRules\Rules\AddNukeLaunchAnimation.cs" />
+    <Compile Include="UpdateRules\Rules\CapturableChanges.cs" />
+    <Compile Include="UpdateRules\Rules\DecoupleSelfReloading.cs" />
+    <Compile Include="UpdateRules\Rules\RemovePlayerPaletteTileset.cs" />
+    <Compile Include="UpdateRules\Rules\RenameWithTurreted.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
