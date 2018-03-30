@@ -82,9 +82,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				Console.Write("   Updating map... ");
 
+				var externalFilenames = new HashSet<string>();
 				try
 				{
-					manualSteps = UpdateUtils.UpdateMap(modData, mapPackage, rule, out mapFiles);
+					manualSteps = UpdateUtils.UpdateMap(modData, mapPackage, rule, out mapFiles, externalFilenames);
 				}
 				catch (Exception ex)
 				{
@@ -103,6 +104,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Files are saved after each successful automated rule update
 				mapFiles.Save();
 				Console.WriteLine("COMPLETE");
+
+				if (externalFilenames.Any())
+				{
+					Console.WriteLine("   The following shared yaml files referenced by the map have been ignored:");
+					Console.WriteLine(UpdateUtils.FormatMessageList(externalFilenames, 1));
+					Console.WriteLine("   These files are assumed to have already been updated by the --update-mod command");
+				}
 
 				if (manualSteps.Any())
 				{
