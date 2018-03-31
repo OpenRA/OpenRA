@@ -47,10 +47,10 @@ namespace OpenRA.Mods.Common.Effects
 			this.weaponPalette = weaponPalette;
 			this.downSequence = downSequence;
 			this.delay = delay;
-			turn = delay / 2;
+			turn = skipAscent ? 0 : delay / 2;
 			this.flashType = flashType;
 
-			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * turn);
+			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * (delay - turn));
 			ascendSource = launchPos;
 			ascendTarget = launchPos + offset;
 			descendSource = targetPos + offset;
@@ -59,12 +59,9 @@ namespace OpenRA.Mods.Common.Effects
 			anim = new Animation(firedBy.World, name);
 			anim.PlayRepeating(upSequence);
 
-			pos = launchPos;
+			pos = skipAscent ? descendSource : ascendSource;
 			if (weapon.Report != null && weapon.Report.Any())
 				Game.Sound.Play(SoundType.World, weapon.Report.Random(firedBy.World.SharedRandom), pos);
-
-			if (skipAscent)
-				ticks = turn;
 		}
 
 		public void Tick(World world)
@@ -80,7 +77,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks == turn)
 				anim.PlayRepeating(downSequence);
 
-			if (ticks <= turn)
+			if (ticks < turn)
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
 			else
 				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, delay - turn);
