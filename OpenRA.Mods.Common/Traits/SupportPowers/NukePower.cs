@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Visual ascent velocity in WDist / tick.")]
 		public readonly WDist FlightVelocity = new WDist(512);
 
-		[Desc("Descend immediately on the target, with half the FlightDelay.")]
+		[Desc("Descend immediately on the target.")]
 		public readonly bool SkipAscent = false;
 
 		[Desc("Amount of time before detonation to remove the beacon.")]
