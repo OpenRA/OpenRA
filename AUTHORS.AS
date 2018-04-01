@@ -15,6 +15,7 @@ The plugin is maintained by
    > ArcRenderable
    > Nydus tunnel logic
    > mind control traits
+   > Berserkable
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
