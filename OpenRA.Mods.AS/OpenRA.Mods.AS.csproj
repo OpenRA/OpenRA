@@ -108,10 +108,13 @@
     <Compile Include="Traits\Player\TeleportNetworkManager.cs" />
     <Compile Include="Traits\TeleportNetwork.cs" />
     <Compile Include="Traits\TeleportNetworkPrimaryExit.cs" />
+    <Compile Include="Traits\MindControllable.cs" />
+    <Compile Include="Traits\MindController.cs" />
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
     <Compile Include="Traits\Player\ProvidesAIPrerequisite.cs" />
     <Compile Include="Traits\Render\WithIdleOverlayOnGround.cs" />
+    <Compile Include="Traits\Render\WithMindControlArc.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />
     <Compile Include="Traits\ResourcePurifier.cs" />
     <Compile Include="Traits\SpawnActorOnOwnerChange.cs" />
