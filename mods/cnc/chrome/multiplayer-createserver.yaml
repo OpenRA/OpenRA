@@ -3,7 +3,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT - 15) / 2
 	Width: 530
-	Height: 314
+	Height: 275
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
@@ -63,47 +63,33 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					MaxLength: 5
 					Text: 1234
 				Checkbox@ADVERTISE_CHECKBOX:
-					X: 15
-					Y: 121
+					X: 180
+					Y: 87
 					Width: 150
 					Height: 20
 					Font: Regular
 					Text: Advertise Online
-				Label@EXTERNAL_PORT_LABEL:
-					X: 180
-					Y: 119
-					Width: 90
-					Height: 25
-					Align: Right
-					Text: External Port:
-				TextField@EXTERNAL_PORT:
-					X: 275
-					Y: 120
-					Width: 50
-					MaxLength: 5
-					Height: 25
-					Text: 1234
 				Label@NOTICES_HEADER_A:
 					X: 15
-					Y: 165
+					Y: 125
 					Height: 25
 					Align: Left
 					Font: Bold
 				Label@NOTICES_HEADER_B:
 					X: 15
-					Y: 165
+					Y: 125
 					Height: 25
 					Align: Left
 					Font: Bold
 				Label@NOTICES_HEADER_C:
 					X: 15
-					Y: 165
+					Y: 125
 					Height: 25
 					Align: Left
 					Font: Bold
 				Container@NOTICES_LAN:
 					X: 20
-					Y: 185
+					Y: 145
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -137,7 +123,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Text: manually configure port forwarding on your router.
 				Container@NOTICES_NO_UPNP:
 					X: 20
-					Y: 185
+					Y: 145
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -168,7 +154,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: connections from the External Port to your local IP and Port.
+							Text: connections to your local IP and Port.
 						Label@SETTINGS_A:
 							Y: 48
 							Width: 305
@@ -186,7 +172,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Text: Advanced tab of the OpenRA settings menu.
 				Container@NOTICES_UPNP:
 					X: 20
-					Y: 185
+					Y: 145
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -253,18 +239,18 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Height: 25
 					Font: Tiny
 					Align: Center
-				Button@MAP_BUTTON:
-					X: PARENT_RIGHT - 189
-					Y: PARENT_BOTTOM - 40
-					Width: 174
-					Height: 25
-					Text: Change Map
 		Button@BACK_BUTTON:
 			Key: return
 			Y: PARENT_BOTTOM - 36
 			Width: 140
 			Height: 35
 			Text: Back
+		Button@MAP_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 150
+			Y: PARENT_BOTTOM - 36
+			Width: 140
+			Height: 35
+			Text: Change Map
 		Button@CREATE_BUTTON:
 			Key: return
 			X: PARENT_RIGHT - WIDTH

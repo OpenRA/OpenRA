@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -41,9 +40,6 @@ namespace OpenRA
 
 		[Desc("Sets the internal port.")]
 		public int ListenPort = 1234;
-
-		[Desc("Sets the port advertised to the master server.")]
-		public int ExternalPort = 1234;
 
 		[Desc("Reports the game to the master server list.")]
 		public bool AdvertiseOnline = true;

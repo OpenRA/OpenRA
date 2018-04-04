@@ -21,7 +21,10 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 	public static class UpdateUtils
 	{
-		static YamlFileSet LoadYaml(ModData modData, IEnumerable<string> files)
+		/// <summary>
+		/// Loads a YamlFileSet from a list of mod files.
+		/// </summary>
+		static YamlFileSet LoadModYaml(ModData modData, IEnumerable<string> files)
 		{
 			var yaml = new YamlFileSet();
 			foreach (var filename in files)
@@ -40,7 +43,22 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return yaml;
 		}
 
-		static YamlFileSet LoadMapYaml(ModData modData, IReadWritePackage mapPackage, MiniYaml yaml)
+		/// <summary>
+		/// Loads a YamlFileSet containing any external yaml definitions referenced by a map yaml block.
+		/// </summary>
+		static YamlFileSet LoadExternalMapYaml(ModData modData, MiniYaml yaml)
+		{
+			return FieldLoader.GetValue<string[]>("value", yaml.Value)
+				.Where(f => f.Contains("|"))
+				.SelectMany(f => LoadModYaml(modData, new[] { f }))
+				.ToList();
+		}
+
+		/// <summary>
+		/// Loads a YamlFileSet containing any internal definitions yaml referenced by a map yaml block.
+		/// External references or internal references to missing files are ignored.
+		/// </summary>
+		static YamlFileSet LoadInternalMapYaml(ModData modData, IReadWritePackage mapPackage, MiniYaml yaml, HashSet<string> externalFilenames)
 		{
 			var fileSet = new YamlFileSet()
 			{
@@ -50,49 +68,57 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var files = FieldLoader.GetValue<string[]>("value", yaml.Value);
 			foreach (var filename in files)
 			{
+				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains("|") && mapPackage.Contains(filename))
-					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename))));
-				else
-					fileSet.AddRange(LoadYaml(modData, new[] { filename }));
+					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename)));
+				else if (modData.ModFiles.Exists(filename))
+					externalFilenames.Add(filename);
 			}
 
 			return fileSet;
 		}
 
-		public static List<string> UpdateMap(ModData modData, IReadWritePackage mapPackage, UpdateRule rule, out YamlFileSet files)
+		/// <summary>
+		/// Run a given update rule on a map.
+		/// The rule is only applied to internal files - external includes are assumed to be handled separately
+		/// but are noted in the externalFilenames list for informational purposes.
+		/// </summary>
+		public static List<string> UpdateMap(ModData modData, IReadWritePackage mapPackage, UpdateRule rule, out YamlFileSet files, HashSet<string> externalFilenames)
 		{
 			var manualSteps = new List<string>();
 
-			var mapStream = mapPackage.GetStream("map.yaml");
-			if (mapStream == null)
+			using (var mapStream = mapPackage.GetStream("map.yaml"))
 			{
-				// Not a valid map
-				files = new YamlFileSet();
-				return manualSteps;
+				if (mapStream == null)
+				{
+					// Not a valid map
+					files = new YamlFileSet();
+					return manualSteps;
+				}
+
+				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name));
+				files = new YamlFileSet() { Tuple.Create(mapPackage, "map.yaml", yaml.Nodes) };
+
+				manualSteps.AddRange(rule.BeforeUpdate(modData));
+
+				var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+				if (mapRulesNode != null)
+				{
+					var mapRules = LoadInternalMapYaml(modData, mapPackage, mapRulesNode.Value, externalFilenames);
+					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapRules, rule.UpdateActorNode));
+					files.AddRange(mapRules);
+				}
+
+				var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
+				if (mapWeaponsNode != null)
+				{
+					var mapWeapons = LoadInternalMapYaml(modData, mapPackage, mapWeaponsNode.Value, externalFilenames);
+					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapWeapons, rule.UpdateWeaponNode));
+					files.AddRange(mapWeapons);
+				}
+
+				manualSteps.AddRange(rule.AfterUpdate(modData));
 			}
-
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name));
-			files = new YamlFileSet() { Tuple.Create(mapPackage, "map.yaml", yaml.Nodes) };
-
-			manualSteps.AddRange(rule.BeforeUpdate(modData));
-
-			var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
-			if (mapRulesNode != null)
-			{
-				var mapRules = LoadMapYaml(modData, mapPackage, mapRulesNode.Value);
-				manualSteps.AddRange(ApplyTopLevelTransform(modData, mapRules, rule.UpdateActorNode));
-				files.AddRange(mapRules);
-			}
-
-			var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
-			if (mapWeaponsNode != null)
-			{
-				var mapWeapons = LoadMapYaml(modData, mapPackage, mapWeaponsNode.Value);
-				manualSteps.AddRange(ApplyTopLevelTransform(modData, mapWeapons, rule.UpdateWeaponNode));
-				files.AddRange(mapWeapons);
-			}
-
-			manualSteps.AddRange(rule.AfterUpdate(modData));
 
 			return manualSteps;
 		}
@@ -100,15 +126,39 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static List<string> UpdateMod(ModData modData, UpdateRule rule, out YamlFileSet files)
 		{
 			var manualSteps = new List<string>();
-			var modRules = LoadYaml(modData, modData.Manifest.Rules);
-			var modWeapons = LoadYaml(modData, modData.Manifest.Weapons);
-			var modTilesets = LoadYaml(modData, modData.Manifest.TileSets);
-			var modChromeLayout = LoadYaml(modData, modData.Manifest.ChromeLayout);
+			var modRules = LoadModYaml(modData, modData.Manifest.Rules);
+			var modWeapons = LoadModYaml(modData, modData.Manifest.Weapons);
+			var modTilesets = LoadModYaml(modData, modData.Manifest.TileSets);
+			var modChromeLayout = LoadModYaml(modData, modData.Manifest.ChromeLayout);
+
+			// Find and add shared map includes
+			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
+			{
+				using (var mapStream = package.GetStream("map.yaml"))
+				{
+					if (mapStream == null)
+						continue;
+
+					var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name));
+					var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+					if (mapRulesNode != null)
+						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value))
+							if (!modRules.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+								modRules.Add(f);
+
+					var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
+					if (mapWeaponsNode != null)
+						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value))
+							if (!modWeapons.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+								modWeapons.Add(f);
+				}
+			}
 
 			manualSteps.AddRange(rule.BeforeUpdate(modData));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modRules, rule.UpdateActorNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modWeapons, rule.UpdateWeaponNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
+			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
 			manualSteps.AddRange(rule.AfterUpdate(modData));
 
 			files = modRules.ToList();
@@ -117,6 +167,29 @@ namespace OpenRA.Mods.Common.UpdateRules
 			files.AddRange(modChromeLayout);
 
 			return manualSteps;
+		}
+
+		static IEnumerable<string> ApplyChromeTransformInner(ModData modData, MiniYamlNode current, UpdateRule.ChromeNodeTransform transform)
+		{
+			foreach (var manualStep in transform(modData, current))
+				yield return manualStep;
+
+			var childrenNode = current.Value.Nodes.FirstOrDefault(n => n.Key == "Children");
+			if (childrenNode != null)
+				foreach (var node in childrenNode.Value.Nodes)
+					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+						yield return manualStep;
+		}
+
+		static IEnumerable<string> ApplyChromeTransform(ModData modData, YamlFileSet files, UpdateRule.ChromeNodeTransform transform)
+		{
+			if (transform == null)
+				yield break;
+
+			foreach (var file in files)
+				foreach (var node in file.Item3)
+					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+						yield return manualStep;
 		}
 
 		static IEnumerable<string> ApplyTopLevelTransform(ModData modData, YamlFileSet files, UpdateRule.TopLevelNodeTransform transform)
@@ -133,7 +206,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static string FormatMessageList(IEnumerable<string> messages, int indent = 0)
 		{
 			var prefix = string.Concat(Enumerable.Repeat("   ", indent));
-			return string.Concat(messages.Select(m => prefix + " * {0}\n".F(m.Replace("\n", "\n   " + prefix))));
+			return string.Join("\n", messages.Select(m => prefix + " * {0}".F(m.Replace("\n", "\n   " + prefix))));
 		}
 	}
 

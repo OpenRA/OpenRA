@@ -97,10 +97,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
 
-			var externalPort = panel.Get<TextFieldWidget>("EXTERNAL_PORT");
-			externalPort.Text = settings.Server.ExternalPort.ToString();
-			externalPort.IsDisabled = () => !advertiseOnline;
-
 			var advertiseCheckbox = panel.Get<CheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () =>
@@ -182,12 +178,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CreateAndJoin()
 		{
 			var name = Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
-			int listenPort, externalPort;
+			int listenPort;
 			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
 				listenPort = 1234;
-
-			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
-				externalPort = 1234;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			var password = passwordField != null ? passwordField.Text : "";
@@ -195,7 +188,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Save new settings
 			Game.Settings.Server.Name = name;
 			Game.Settings.Server.ListenPort = listenPort;
-			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
 			Game.Settings.Server.Map = preview.Uid;
 			Game.Settings.Server.Password = password;
