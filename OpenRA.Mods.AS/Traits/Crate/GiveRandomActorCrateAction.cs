@@ -46,7 +46,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.self = self;
 			this.info = info;
 
-			eligibleActors = self.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<EligibleForRandomActorCrateInfo>() && !a.Name.StartsWith("^")
+			eligibleActors = self.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<EligibleForRandomActorCrateInfo>()
 				&& a.TraitInfos<EligibleForRandomActorCrateInfo>().Any(c => info.Type.Contains(c.Type)));
 		}
 

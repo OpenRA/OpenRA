@@ -122,6 +122,7 @@ namespace OpenRA.Mods.AS.Traits
 				if (modifiers.HasFlag(TargetModifiers.ForceAttack))
 					return false;
 
+				// Valid enemy TeleportNetwork entrances should still be offered to be destroyed first.
 				if (self.Owner.Stances[target.Owner] == Stance.Enemy && !modifiers.HasFlag(TargetModifiers.ForceMove))
 					return false;
 

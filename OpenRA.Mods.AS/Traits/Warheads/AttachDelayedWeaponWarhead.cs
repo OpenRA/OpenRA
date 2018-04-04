@@ -24,7 +24,7 @@ namespace OpenRA.Mods.AS.Warheads
 
 		[FieldLoader.Require]
 		[Desc("Type of the DelayedWeapon.")]
-		public readonly string Type = "bomb";
+		public readonly string Type = "";
 
 		[Desc("Range of targets to be attached.")]
 		public readonly WDist Range = WDist.FromCells(1);

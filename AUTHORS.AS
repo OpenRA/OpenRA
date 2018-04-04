@@ -14,6 +14,8 @@ The plugin is maintained by
    > GrantStackableConditionOnFire aka Gattling
    > ArcRenderable
    > Nydus tunnel logic
+   > mind control traits
+   > Berserkable
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
@@ -26,6 +28,10 @@ The plugin is maintained by
 
  * Martin Lang (Gerseras/Seraphinexxx)
    > DelayedWeapon system
+
+ * Mustafa Alperen Seki (MustaphaTR)
+   > GrantConditionOnProduction
+   > mindcontrol traits cleanup
 
  * Pavel Penev (penev92)
    > PaletteFromJasc32File - base JASC palette parser
