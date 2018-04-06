@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Defines the FMVs that can be played by missions.")]
+	[Desc("Defines the prerequisites, briefing and FMVs that can be played by missions.")]
 	public class MissionDataInfo : TraitInfo<MissionData>
 	{
 		[Desc("Briefing text displayed in the mission browser.")]
@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Automatically played when the player loses the mission.")]
 		public readonly string LossVideo;
+
+		[Desc("Flags that need to be found in saved mission data before this mission becomes available.")]
+		public readonly Dictionary<string, string> RequiredMissionData;
 	}
 
 	public class MissionData { }

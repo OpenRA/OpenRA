@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ButtonWidget stopInfoVideoButton;
 		readonly VqaPlayerWidget videoPlayer;
 		readonly BackgroundWidget fullscreenVideoPlayer;
+		readonly ButtonWidget startButton;
 
 		readonly ScrollPanelWidget missionList;
 		readonly ScrollItemWidget headerTemplate;
@@ -94,6 +95,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			stopInfoVideoButton.IsVisible = () => playingVideo == PlayingVideo.Info;
 			stopInfoVideoButton.OnClick = () => StopVideo(videoPlayer);
 
+			startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
+
 			var allPreviews = new List<MapPreview>();
 			missionList.RemoveChildren();
 
@@ -136,9 +139,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				allPreviews.AddRange(loosePreviews);
 			}
 
-			if (allPreviews.Any())
-				SelectMap(allPreviews.First());
-
 			// Preload map preview and rules to reduce jank
 			new Thread(() =>
 			{
@@ -149,9 +149,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}).Start();
 
-			var startButton = widget.Get<ButtonWidget>("STARTGAME_BUTTON");
-			startButton.OnClick = StartMissionClicked;
-			startButton.IsDisabled = () => selectedMap == null || selectedMap.InvalidCustomRules;
+			// Needs to be done after preload so we can disable Play button if MissionData prerequisites aren't met
+			if (allPreviews.Any())
+				SelectMap(allPreviews.First());
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
@@ -214,6 +214,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var infoVideo = "";
 			var infoVideoVisible = false;
 
+			startButton.OnClick = StartMissionClicked;
+			var enabled = selectedMap != null;
+
 			new Thread(() =>
 			{
 				var mapDifficulty = preview.Rules.Actors["world"].TraitInfos<ScriptLobbyDropdownInfo>()
@@ -235,6 +238,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					infoVideo = missionData.BackgroundVideo;
 					infoVideoVisible = infoVideo != null;
 
+					if (enabled && missionData.RequiredMissionData != null && missionData.RequiredMissionData.Count > 0)
+					{
+						var data = Game.GlobalMissionData.SavedMissionData;
+						foreach (var md in missionData.RequiredMissionData)
+						{
+							if (!enabled)
+								continue;
+
+							enabled = data.ContainsKey(md.Key) && data[md.Key] == md.Value;
+						}
+					}
+
 					var briefing = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
 					var height = descriptionFont.Measure(briefing).Y;
 					Game.RunAfterTick(() =>
@@ -248,6 +263,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				}
 			}).Start();
+
+			startButton.IsDisabled = () => !enabled || selectedMap.InvalidCustomRules;
 
 			startBriefingVideoButton.IsVisible = () => briefingVideoVisible && playingVideo != PlayingVideo.Briefing;
 			startBriefingVideoButton.OnClick = () => PlayVideo(videoPlayer, briefingVideo, PlayingVideo.Briefing);
