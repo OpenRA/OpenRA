@@ -47,7 +47,7 @@ Speech:
 		NavalUnitLost: 00-i074
 		NewOptions: 00-i032
 		NewTerrainDiscovered: 00-i198
-		NoBuild: 00-i064
+		BuildingInProgress: 00-i064
 		OnHold: 00-i218
 		OurAllyIsUnderAttack: 00-i308
 		PlayerHasResigned: 00-i252
