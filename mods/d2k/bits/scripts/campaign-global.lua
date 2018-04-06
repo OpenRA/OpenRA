@@ -122,6 +122,9 @@ end
 
 DefendActor = function(unit, defendingPlayer, defenderCount)
 	Trigger.OnDamaged(unit, function(self, attacker)
+		if unit.Owner ~= defendingPlayer then
+			return
+		end
 
 		-- Don't try to attack spiceblooms
 		if attacker and attacker.Type == "spicebloom" then
