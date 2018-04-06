@@ -79,6 +79,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnPlayerWon(player, function()
+		player.SaveMissionData("gdi01", "finished")
 		Media.PlaySpeechNotification(player, "Win")
 	end)
 
@@ -94,8 +95,9 @@ WorldLoaded = function()
 
 	SendNodPatrol()
 
-	Trigger.AfterDelay(DateTime.Seconds(10), function() Reinforce(InfantryReinforcements) end)
-	Trigger.AfterDelay(DateTime.Seconds(60), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(20), function() Reinforce(InfantryReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(5), function() Reinforce(VehicleReinforcements) end)
+	Trigger.AfterDelay(DateTime.Seconds(10), function() Reinforce(VehicleReinforcements) end)
 end
 
 Tick = function()
@@ -109,6 +111,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not player.IsObjectiveCompleted(beachheadObjective) and CheckForBase(player) then
+		player.SaveMissionData("gdi01-beachhead", "built")
 		player.MarkCompletedObjective(beachheadObjective)
 	end
 end

@@ -8,6 +8,9 @@ World:
 		BriefingVideo: gdi2.vqa
 		WinVideo: flag.vqa
 		LossVideo: gameover.vqa
+		RequiredMissionData:
+			gdi01: finished
+			gdi01-beachhead: built
 
 SBAG:
 	-Crushable:
