@@ -22,10 +22,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
-				return false;
+			var building = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell);
+			if (building != null)
+			{
+				if (ai == null)
+					return false;
 
-			if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
+				var replacementInfo = ai.TraitInfoOrDefault<ReplacementInfo>();
+				if (replacementInfo == null)
+					return false;
+
+				if (!building.TraitsImplementing<Replaceable>().Any(p => !p.IsTraitDisabled &&
+					p.Info.Types.Overlaps(replacementInfo.ReplaceableTypes)))
+					return false;
+			}
+			else if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
 				return false;
 
 			var tile = world.Map.Tiles[cell];

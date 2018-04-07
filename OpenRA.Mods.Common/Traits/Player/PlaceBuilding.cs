@@ -136,6 +136,18 @@ namespace OpenRA.Mods.Common.Traits
 						|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, actorInfo, order.TargetLocation))
 						return;
 
+					var replacementInfo = actorInfo.TraitInfoOrDefault<ReplacementInfo>();
+					if (replacementInfo != null)
+					{
+						var buildingInfluence = self.World.WorldActor.Trait<BuildingInfluence>();
+						foreach (var t in buildingInfo.Tiles(order.TargetLocation))
+						{
+							var host = buildingInfluence.GetBuildingAt(t);
+							if (host != null)
+								host.World.Remove(host);
+						}
+					}
+
 					var building = w.CreateActor(order.TargetString, new TypeDictionary
 					{
 						new LocationInit(order.TargetLocation),
