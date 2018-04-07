@@ -23,9 +23,6 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				if (actorInfo.Key.StartsWith("^", StringComparison.Ordinal))
-					continue;
-
 				var granted = new HashSet<string>();
 				var consumed = new HashSet<string>();
 

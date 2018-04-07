@@ -34,7 +34,6 @@ Terrain:
 		Type: Water
 		Color: 745537
 		TargetTypes: Water
-		IsWater: True
 		RestrictPlayerColor: true
 	TerrainType@DirtRoad:
 		Type: DirtRoad

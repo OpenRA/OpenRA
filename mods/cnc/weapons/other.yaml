@@ -23,7 +23,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: flamer2.aud
-		VictimScanRadius: 0
+		ImpactActors: false
 
 Flamethrower:
 	Inherits: ^FlameWeapon
@@ -144,4 +144,4 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: xplobig6.aud
-		VictimScanRadius: 0
+		ImpactActors: false

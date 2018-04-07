@@ -46,19 +46,20 @@ namespace OpenRA
 
 		public WVec Rotate(WRot rot)
 		{
-			return Rotate(rot.AsMatrix());
+			Int32Matrix4x4 mtx;
+			rot.AsMatrix(out mtx);
+			return Rotate(ref mtx);
 		}
 
-		public WVec Rotate(int[] rotationMatrix)
+		public WVec Rotate(ref Int32Matrix4x4 mtx)
 		{
-			var mtx = rotationMatrix;
 			var lx = (long)X;
 			var ly = (long)Y;
 			var lz = (long)Z;
 			return new WVec(
-				(int)((lx * mtx[0] + ly * mtx[4] + lz * mtx[8]) / mtx[15]),
-				(int)((lx * mtx[1] + ly * mtx[5] + lz * mtx[9]) / mtx[15]),
-				(int)((lx * mtx[2] + ly * mtx[6] + lz * mtx[10]) / mtx[15]));
+				(int)((lx * mtx.M11 + ly * mtx.M21 + lz * mtx.M31) / mtx.M44),
+				(int)((lx * mtx.M12 + ly * mtx.M22 + lz * mtx.M32) / mtx.M44),
+				(int)((lx * mtx.M13 + ly * mtx.M23 + lz * mtx.M33) / mtx.M44));
 		}
 
 		public WAngle Yaw

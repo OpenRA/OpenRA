@@ -17,7 +17,7 @@ namespace OpenRA.Graphics
 {
 	public struct SpriteRenderable : IRenderable, IFinalizedRenderable
 	{
-		public static readonly IEnumerable<IRenderable> None = new IRenderable[0].AsEnumerable();
+		public static readonly IEnumerable<IRenderable> None = new IRenderable[0];
 
 		readonly Sprite sprite;
 		readonly WPos pos;

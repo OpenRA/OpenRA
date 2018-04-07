@@ -51,10 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
 			if (unit.Info.HasTraitInfo<SelectableInfo>())
 			{
-				var bounds = unit.TraitsImplementing<IDecorationBounds>()
-					.Select(b => b.DecorationBounds(unit, worldRenderer))
-					.FirstOrDefault(b => !b.IsEmpty);
-
+				var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, worldRenderer);
 				new SelectionBarsRenderable(unit, bounds, true, true).Render(worldRenderer);
 			}
 		}

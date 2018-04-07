@@ -55,5 +55,5 @@ Player:
 		CrateLocked: True
 		CrateEnabled: True
 	PlayerResources:
-		DefaultCashLocked: True
+		DefaultCashDropdownLocked: True
 		DefaultCash: 5000

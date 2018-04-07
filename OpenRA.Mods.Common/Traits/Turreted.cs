@@ -35,7 +35,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
-			yield return new TurretFacingInit(PreviewFacing);
+			// HACK: The ActorInit system does not support multiple instances of the same type
+			// Make sure that we only return one TurretFacingInit, even for actors with multiple turrets
+			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() == this)
+				yield return new TurretFacingInit(PreviewFacing);
 		}
 
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }

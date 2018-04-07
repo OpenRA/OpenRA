@@ -42,7 +42,7 @@ namespace OpenRA.Traits
 		bool IsDead { get; }
 
 		void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers);
-		void Kill(Actor self, Actor attacker);
+		void Kill(Actor self, Actor attacker, HashSet<string> damageTypes);
 	}
 
 	// depends on the order of pips in WorldRenderer.cs!
@@ -110,6 +110,34 @@ namespace OpenRA.Traits
 	// HACK: This provides a shim for legacy code until it can be rewritten
 	public interface IDecorationBounds { Rectangle DecorationBounds(Actor self, WorldRenderer wr); }
 	public interface IDecorationBoundsInfo : ITraitInfoInterface { }
+	public static class DecorationBoundsExtensions
+	{
+		public static Rectangle FirstNonEmptyBounds(this IEnumerable<IDecorationBounds> decorationBounds, Actor self, WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var decoration in decorationBounds)
+			{
+				var bounds = decoration.DecorationBounds(self, wr);
+				if (!bounds.IsEmpty)
+					return bounds;
+			}
+
+			return Rectangle.Empty;
+		}
+
+		public static Rectangle FirstNonEmptyBounds(this IDecorationBounds[] decorationBounds, Actor self, WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var decoration in decorationBounds)
+			{
+				var bounds = decoration.DecorationBounds(self, wr);
+				if (!bounds.IsEmpty)
+					return bounds;
+			}
+
+			return Rectangle.Empty;
+		}
+	}
 
 	public interface IIssueOrder
 	{
@@ -229,6 +257,8 @@ namespace OpenRA.Traits
 		void RemovePosition(Actor a, IOccupySpace ios);
 		void UpdatePosition(Actor a, IOccupySpace ios);
 		IEnumerable<Actor> ActorsInBox(WPos a, WPos b);
+
+		WDist LargestActorRadius { get; }
 	}
 
 	public interface IRenderModifier
@@ -335,15 +365,20 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
+	/// <summary>
+	/// Indicates target types as defined on <see cref="Traits.ITargetable"/> are present in a <see cref="Primitives.BitSet{T}"/>.
+	/// </summary>
+	public sealed class TargetableType { TargetableType() { } }
+
 	public interface ITargetableInfo : ITraitInfoInterface
 	{
-		HashSet<string> GetTargetTypes();
+		BitSet<TargetableType> GetTargetTypes();
 	}
 
 	public interface ITargetable
 	{
 		// Check IsTraitEnabled or !IsTraitDisabled first
-		HashSet<string> TargetTypes { get; }
+		BitSet<TargetableType> TargetTypes { get; }
 		bool TargetableBy(Actor self, Actor byActor);
 		bool RequiresForceFire { get; }
 	}

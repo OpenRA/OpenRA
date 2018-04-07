@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly ConquestVictoryConditionsInfo info;
 		readonly MissionObjectives mo;
+		readonly bool shortGame;
 		Player[] otherPlayers;
 		int objectiveID = -1;
 
@@ -40,6 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			info = cvcInfo;
 			mo = self.Trait<MissionObjectives>();
+			shortGame = self.Owner.World.WorldActor.Trait<MapOptions>().ShortGame;
 		}
 
 		void ITick.Tick(Actor self)
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (objectiveID < 0)
 				objectiveID = mo.Add(self.Owner, info.Objective, ObjectiveType.Primary, true);
 
-			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
+			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits(shortGame))
 				mo.MarkFailed(self.Owner, objectiveID);
 
 			// Players, NonCombatants, and IsAlliedWith are all fixed once the game starts, so we can cache the result.

@@ -11,13 +11,14 @@
 
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
 	class InfiltrateForPowerOutageInfo : ITraitInfo
 	{
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<TargetableType> Types;
 
 		public readonly int Duration = 25 * 20;
 
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)
 		{
 			if (!info.Types.Overlaps(types))
 				return;

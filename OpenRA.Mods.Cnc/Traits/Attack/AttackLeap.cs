@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly WAngle Angle = WAngle.FromDegrees(20);
 
+		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}
 
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return;
 
 			self.CancelActivity();
-			self.QueueActivity(new Leap(self, target.Actor, a, info.Speed, info.Angle));
+			self.QueueActivity(new Leap(self, target.Actor, a, info.Speed, info.Angle, info.DamageTypes));
 		}
 	}
 }

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -163,9 +164,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Kill(Actor self, Actor attacker)
+		public void Kill(Actor self, Actor attacker, HashSet<string> damageTypes = null)
 		{
-			InflictDamage(self, attacker, new Damage(MaxHP), true);
+			if (damageTypes == null)
+				damageTypes = new HashSet<string>();
+
+			InflictDamage(self, attacker, new Damage(MaxHP, damageTypes), true);
 		}
 
 		void ITick.Tick(Actor self)

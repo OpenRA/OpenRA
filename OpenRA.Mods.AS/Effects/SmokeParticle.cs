@@ -12,35 +12,53 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.AS.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Effects
 {
 	class SmokeParticle : IEffect
 	{
+		readonly Actor invoker;
 		readonly World world;
-		readonly string palette;
+		readonly ISmokeParticleInfo smoke;
 		readonly Animation anim;
 		readonly WVec[] gravity;
 		readonly bool visibleThroughFog;
 		readonly bool scaleSizeWithZoom;
+		readonly bool canDamage;
 
 		WPos pos;
+		int lifetime;
+		int explosionInterval;
 
-		public SmokeParticle(WPos pos, WVec[] gravity, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
+		public SmokeParticle(Actor invoker, ISmokeParticleInfo smoke, WPos pos, bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
 		{
-			this.world = world;
+			this.invoker = invoker;
+			world = invoker.World;
 			this.pos = pos;
-			this.gravity = gravity;
-			this.palette = palette;
+			this.smoke = smoke;
+			gravity = smoke.Gravity;
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
-			anim = new Animation(world, image, () => 0);
-			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); }));
+			anim = new Animation(world, smoke.Image, () => 0);
+			anim.PlayRepeating(smoke.Sequence);
 			world.ScreenMap.Add(this, pos, anim.Image);
+			lifetime = smoke.Duration.Length == 2
+				? world.SharedRandom.Next(smoke.Duration[0], smoke.Duration[1])
+				: smoke.Duration[0];
+
+			canDamage = smoke.Weapon != null;
 		}
 
 		public void Tick(World world)
 		{
+			if (--lifetime < 0)
+			{
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+				return;
+			}
+
 			anim.Tick();
 
 			var offset = gravity.Length == 2
@@ -51,6 +69,12 @@ namespace OpenRA.Mods.AS.Effects
 			pos += offset;
 
 			world.ScreenMap.Update(this, pos, anim.Image);
+
+			if (canDamage && --explosionInterval < 0)
+			{
+				smoke.Weapon.Impact(Target.FromPos(pos), invoker, new int[0]);
+				explosionInterval = smoke.Weapon.ReloadDelay;
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -59,7 +83,7 @@ namespace OpenRA.Mods.AS.Effects
 				return SpriteRenderable.None;
 
 			var zoom = scaleSizeWithZoom ? 1f / wr.Viewport.Zoom : 1f;
-			return anim.Render(pos, WVec.Zero, 0, wr.Palette(palette), zoom);
+			return anim.Render(pos, WVec.Zero, 0, wr.Palette(smoke.Palette), zoom);
 		}
 	}
 }

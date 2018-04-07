@@ -3,6 +3,8 @@ DOGGIE:
 	Inherits@2: ^RegularInfantryDeath
 	Inherits@3: ^HealsOnTiberium
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	EditorTilesetFilter:
+		Categories: Critter
 	Tooltip:
 		Name: Tiberian Fiend
 	Health:
@@ -37,6 +39,22 @@ DOGGIE:
 	HitShape:
 		Type: Circle
 			Radius: 213
+	GrantConditionOnTerrain:
+		Condition: hidingplace
+		TerrainTypes: Tiberium, BlueTiberium
+	GrantConditionOnMovement:
+		Condition: moving
+	GrantConditionOnAttack:
+		ArmamentNames: primary
+		Condition: attacking
+	RenderSprites:
+		Palette: greentiberium
+	WithSpriteBody:
+		RequiresCondition: hidingplace && !moving && !attacking
+		StartSequence: laydown
+		Sequence: hide
+	WithInfantryBody:
+		RequiresCondition: !hidingplace || moving || attacking
 
 VISC_SML:
 	Inherits: ^Visceroid
@@ -50,6 +68,15 @@ VISC_SML:
 		MaxMoveDelay: 60
 	RenderSprites:
 		Image: vissml
+	Mobile:
+		Crushes: visceroid-fusing
+	Crushable:
+		CrushClasses: visceroid-fusing
+		WarnProbability: 0
+		CrushedByFriendlies: True
+	TransformCrusherOnCrush:
+		IntoActor: visc_lrg
+		CrushClasses: visceroid-fusing
 
 VISC_LRG:
 	Inherits: ^Visceroid

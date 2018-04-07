@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If we land on invalid terrain for my actor type should we be killed?")]
 		public readonly bool KilledOnImpassableTerrain = true;
 
+		[Desc("Types of damage that this trait causes to self when 'KilledOnImpassableTerrain' is true. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";
 
@@ -101,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (sequence != null && palette != null)
 				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, palette)));
 
-			self.Kill(self);
+			self.Kill(self, info.DamageTypes);
 		}
 	}
 }

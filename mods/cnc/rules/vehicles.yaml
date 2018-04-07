@@ -95,6 +95,8 @@ APC:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Queue: Vehicle.GDI
+		BuildDuration: 900
+		BuildDurationModifier: 40
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
 		TurnSpeed: 8
@@ -494,15 +496,17 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
 	WithSpriteTurret:
-		AimSequence: aim
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	WithTurretAimAnimation:
+		Sequence: aim
 
 MLRS:
 	Inherits: ^Tank
@@ -537,9 +541,16 @@ MLRS:
 	AmmoPool:
 		Ammo: 2
 		PipCount: 0
+		AmmoCondition: ammo
 	AttackTurreted:
-	WithReloadingSpriteTurret:
-		AmmoPoolName: primary
+	WithSpriteTurret:
+		RequiresCondition: ammo > 1
+	WithSpriteTurret@OneMissile:
+		RequiresCondition: ammo == 1
+		Sequence: turret1
+	WithSpriteTurret@NoMissiles:
+		RequiresCondition: !ammo
+		Sequence: turret0
 	AutoTarget:
 		InitialStanceAI: Defend
 	RenderRangeCircle:

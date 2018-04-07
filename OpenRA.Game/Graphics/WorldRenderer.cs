@@ -31,6 +31,7 @@ namespace OpenRA.Graphics
 
 		public event Action PaletteInvalidated = null;
 
+		readonly HashSet<Actor> onScreenActors = new HashSet<Actor>();
 		readonly HardwarePalette palette = new HardwarePalette();
 		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
 		readonly TerrainRenderer terrainRenderer;
@@ -100,9 +101,9 @@ namespace OpenRA.Graphics
 				palettes[name].Palette = pal;
 		}
 
-		List<IFinalizedRenderable> GenerateRenderables(HashSet<Actor> actorsInBox)
+		List<IFinalizedRenderable> GenerateRenderables()
 		{
-			var actors = actorsInBox.Append(World.WorldActor);
+			var actors = onScreenActors.Append(World.WorldActor);
 			if (World.RenderPlayer != null)
 				actors = actors.Append(World.RenderPlayer.PlayerActor);
 
@@ -126,15 +127,15 @@ namespace OpenRA.Graphics
 			return renderables;
 		}
 
-		List<IFinalizedRenderable> GenerateOverlayRenderables(HashSet<Actor> actorsInBox)
+		List<IFinalizedRenderable> GenerateOverlayRenderables()
 		{
 			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>()
-				.Where(a => a.Actor.IsInWorld && !a.Actor.Disposed && (!a.Trait.SpatiallyPartitionable || actorsInBox.Contains(a.Actor)))
+				.Where(a => a.Actor.IsInWorld && !a.Actor.Disposed && (!a.Trait.SpatiallyPartitionable || onScreenActors.Contains(a.Actor)))
 					.SelectMany(a => a.Trait.RenderAboveShroud(a.Actor, this));
 
 			var aboveShroudSelected = World.Selection.Actors.Where(a => a.IsInWorld && !a.Disposed)
 				.SelectMany(a => a.TraitsImplementing<IRenderAboveShroudWhenSelected>()
-					.Where(t => !t.SpatiallyPartitionable || actorsInBox.Contains(a))
+					.Where(t => !t.SpatiallyPartitionable || onScreenActors.Contains(a))
 					.SelectMany(t => t.RenderAboveShroud(a, this)));
 
 			var aboveShroudEffects = World.Effects.Select(e => e as IEffectAboveShroud)
@@ -171,8 +172,8 @@ namespace OpenRA.Graphics
 
 			RefreshPalette();
 
-			var onScreenActors = World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight).ToHashSet();
-			var renderables = GenerateRenderables(onScreenActors);
+			onScreenActors.UnionWith(World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight));
+			var renderables = GenerateRenderables();
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
 
@@ -205,7 +206,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var finalOverlayRenderables = GenerateOverlayRenderables(onScreenActors);
+			var finalOverlayRenderables = GenerateOverlayRenderables();
 
 			// HACK: Keep old grouping behaviour
 			var groupedOverlayRenderables = finalOverlayRenderables.GroupBy(prs => prs.GetType());
@@ -239,6 +240,9 @@ namespace OpenRA.Graphics
 			}
 
 			Game.Renderer.Flush();
+
+			// PERF: Reuse collection to avoid allocations.
+			onScreenActors.Clear();
 		}
 
 		public void RefreshPalette()

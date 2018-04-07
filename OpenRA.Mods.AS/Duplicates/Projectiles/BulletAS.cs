@@ -62,9 +62,6 @@ namespace OpenRA.Mods.AS.Projectiles
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
 
-		[Desc("Extra search radius beyond path for blocking actors.")]
-		public readonly WDist TargetExtraSearchRadius = new WDist(1536);
-
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
 
@@ -217,7 +214,7 @@ namespace OpenRA.Mods.AS.Projectiles
 			var shouldExplode = false;
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
-				info.TargetExtraSearchRadius, out blockedPos))
+				out blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;
@@ -240,7 +237,7 @@ namespace OpenRA.Mods.AS.Projectiles
 
 			if (flightLengthReached && shouldBounce)
 			{
-				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.TargetExtraSearchRadius, args.SourceActor, true);
+				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true);
 				target += (pos - source) * info.BounceRangeModifier / 100;
 				var dat = world.Map.DistanceAboveTerrain(target);
 				target += new WVec(0, 0, -dat.Length);
@@ -258,7 +255,7 @@ namespace OpenRA.Mods.AS.Projectiles
 
 			// After first bounce, check for targets each tick
 			if (remainingBounces < info.BounceCount)
-				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width + info.TargetExtraSearchRadius, args.SourceActor, true);
+				shouldExplode |= AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true);
 
 			if (shouldExplode)
 				Explode(world);

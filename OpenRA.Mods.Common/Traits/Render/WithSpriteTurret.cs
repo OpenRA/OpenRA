@@ -25,9 +25,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "turret";
 
-		[Desc("Sequence name to use when prepared to fire")]
-		[SequenceReference] public readonly string AimSequence = null;
-
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
@@ -62,10 +59,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, ITick, INotifyDamageStateChanged
+	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
-		protected readonly AttackBase Attack;
 		readonly RenderSprites rs;
 		readonly BodyOrientation body;
 		readonly Turreted t;
@@ -79,7 +75,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			rs = self.Trait<RenderSprites>();
 			body = self.Trait<BodyOrientation>();
-			Attack = self.TraitOrDefault<AttackBase>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
@@ -119,24 +114,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				DefaultAnimation.ReplaceAnim(NormalizeSequence(self, DefaultAnimation.CurrentSequence.Name));
 		}
 
-		protected virtual void Tick(Actor self)
-		{
-			if (Info.AimSequence == null)
-				return;
-
-			var sequence = Attack.IsAiming ? Info.AimSequence : Info.Sequence;
-			DefaultAnimation.ReplaceAnim(sequence);
-		}
-
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			DamageStateChanged(self);
-		}
-
-		void ITick.Tick(Actor self)
-		{
-			// Split into a protected method to allow subclassing
-			Tick(self);
 		}
 
 		public void PlayCustomAnimation(Actor self, string name, Action after = null)

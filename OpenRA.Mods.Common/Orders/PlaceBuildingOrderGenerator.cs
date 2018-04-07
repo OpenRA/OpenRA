@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Orders
 		enum CellType { Valid = 0, Invalid = 1, LineBuild = 2 }
 
 		readonly ProductionQueue queue;
-		readonly string building;
+		readonly ActorInfo actorInfo;
 		readonly BuildingInfo buildingInfo;
 		readonly PlaceBuildingInfo placeBuildingInfo;
 		readonly BuildingInfluence buildingInfluence;
@@ -46,7 +46,6 @@ namespace OpenRA.Mods.Common.Orders
 			this.queue = queue;
 			viewport = worldRenderer.Viewport;
 			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
-			building = name;
 
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
@@ -55,12 +54,12 @@ namespace OpenRA.Mods.Common.Orders
 			var map = world.Map;
 			var tileset = world.Map.Tileset.ToLowerInvariant();
 
-			var info = map.Rules.Actors[building];
-			buildingInfo = info.TraitInfo<BuildingInfo>();
+			actorInfo = map.Rules.Actors[name];
+			buildingInfo = actorInfo.TraitInfo<BuildingInfo>();
 			centerOffset = buildingInfo.CenterOffset(world);
 			topLeftScreenOffset = -worldRenderer.ScreenPxOffset(centerOffset);
 
-			var buildableInfo = info.TraitInfo<BuildableInfo>();
+			var buildableInfo = actorInfo.TraitInfo<BuildableInfo>();
 			var mostLikelyProducer = queue.MostLikelyProducer();
 			faction = buildableInfo.ForceFaction
 				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
@@ -107,7 +106,7 @@ namespace OpenRA.Mods.Common.Orders
 				var orderType = "PlaceBuilding";
 				var topLeft = viewport.ViewToWorld(Viewport.LastMousePos + topLeftScreenOffset);
 
-				var plugInfo = world.Map.Rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
+				var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
 				{
 					orderType = "PlacePlug";
@@ -119,8 +118,8 @@ namespace OpenRA.Mods.Common.Orders
 				}
 				else
 				{
-					if (!world.CanPlaceBuilding(building, buildingInfo, topLeft, null)
-						|| !buildingInfo.IsCloseEnoughToBase(world, owner, building, topLeft))
+					if (!world.CanPlaceBuilding(topLeft, actorInfo, buildingInfo, null)
+						|| !buildingInfo.IsCloseEnoughToBase(world, owner, actorInfo, topLeft))
 					{
 						foreach (var order in ClearBlockersOrders(world, topLeft))
 							yield return order;
@@ -129,14 +128,14 @@ namespace OpenRA.Mods.Common.Orders
 						yield break;
 					}
 
-					if (world.Map.Rules.Actors[building].HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
+					if (actorInfo.HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
 						orderType = "LineBuild";
 				}
 
 				yield return new Order(orderType, owner.PlayerActor, Target.FromCell(world, topLeft), false)
 				{
 					// Building to place
-					TargetString = building,
+					TargetString = actorInfo.Name,
 
 					// Actor to associate the placement with
 					ExtraData = queue.Actor.ActorID,
@@ -147,7 +146,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public void Tick(World world)
 		{
-			if (queue.CurrentItem() == null || queue.CurrentItem().Item != building)
+			if (queue.CurrentItem() == null || queue.CurrentItem().Item != actorInfo.Name)
 				world.CancelInputMode();
 
 			if (preview == null)
@@ -174,14 +173,13 @@ namespace OpenRA.Mods.Common.Orders
 			var centerPosition = world.Map.CenterOfCell(topLeft) + centerOffset;
 			var rules = world.Map.Rules;
 
-			var actorInfo = rules.Actors[building];
 			foreach (var dec in actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>())
 				foreach (var r in dec.Render(wr, world, actorInfo, centerPosition))
 					yield return r;
 
 			var cells = new Dictionary<CPos, CellType>();
 
-			var plugInfo = rules.Actors[building].TraitInfoOrDefault<PlugInfo>();
+			var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
 			if (plugInfo != null)
 			{
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
@@ -189,36 +187,34 @@ namespace OpenRA.Mods.Common.Orders
 
 				cells.Add(topLeft, MakeCellType(AcceptsPlug(topLeft, plugInfo)));
 			}
-			else if (rules.Actors[building].HasTraitInfo<LineBuildInfo>())
+			else if (actorInfo.HasTraitInfo<LineBuildInfo>())
 			{
 				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
 					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
-					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, building, buildingInfo))
-						cells.Add(t.First, MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, t.First), true));
+					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo))
+						cells.Add(t.First, MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, t.First), true));
 
-				cells[topLeft] = MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft));
+				cells[topLeft] = MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft));
 			}
 			else
 			{
 				if (!initialized)
 				{
-					var actor = rules.Actors[building];
-
 					var td = new TypeDictionary()
 					{
 						new FactionInit(faction),
 						new OwnerInit(queue.Actor.Owner),
 					};
 
-					foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
-						foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.PlaceBuilding))
+					foreach (var api in actorInfo.TraitInfos<IActorPreviewInitInfo>())
+						foreach (var o in api.ActorPreviewInits(actorInfo, ActorPreviewType.PlaceBuilding))
 							td.Add(o);
 
-					var init = new ActorPreviewInitializer(actor, wr, td);
-					preview = actor.TraitInfos<IRenderActorPreviewInfo>()
+					var init = new ActorPreviewInitializer(actorInfo, wr, td);
+					preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
 						.SelectMany(rpi => rpi.RenderPreview(init))
 						.ToArray();
 
@@ -233,9 +229,9 @@ namespace OpenRA.Mods.Common.Orders
 					yield return r;
 
 				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
-				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, building, topLeft);
+				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft);
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, buildingInfo) && (res == null || res.GetResource(t) == null)));
+					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (res == null || res.GetResource(t) == null)));
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);

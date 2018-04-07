@@ -37,7 +37,7 @@ namespace OpenRA.Mods.D2k.Traits
 	{
 		public readonly SandwormInfo WormInfo;
 
-		readonly WormManager manager;
+		readonly ActorSpawnManager manager;
 		readonly Mobile mobile;
 		readonly AttackBase attackTrait;
 
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.D2k.Traits
 			WormInfo = info;
 			mobile = self.Trait<Mobile>();
 			attackTrait = self.Trait<AttackBase>();
-			manager = self.World.WorldActor.Trait<WormManager>();
+			manager = self.World.WorldActor.Trait<ActorSpawnManager>();
 		}
 
 		public override void DoAction(Actor self, CPos targetCell)
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (disposed)
 				return;
 
-			manager.DecreaseWormCount();
+			manager.DecreaseActorCount();
 			disposed = true;
 		}
 	}

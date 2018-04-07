@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.AS.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -33,11 +34,33 @@ namespace OpenRA.Mods.AS.Warheads
 
 		public readonly int FallRate = 130;
 
+		[Desc("Always spawn the actors on the ground.")]
+		public readonly bool ForceGround = false;
+
 		[Desc("Map player to give the actors to. Defaults to the firer.")]
 		public readonly string Owner = null;
 
+		[Desc("Defines the image of an optional animation played at the spawning location.")]
+		public readonly string Image = null;
+
+		[SequenceReference("Image")]
+		[Desc("Defines the sequence of an optional animation played at the spawning location.")]
+		public readonly string Sequence = "idle";
+
+		[PaletteReference]
+		[Desc("Defines the palette of an optional animation played at the spawning location.")]
+		public readonly string Palette = "effect";
+
+		[Desc("List of sounds that can be played at the sapwning location.")]
+		public readonly string[] Sounds = new string[0];
+
+		public readonly bool UsePlayerPalette = false;
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (!target.IsValidFor(firedBy))
+				return;
+
 			var map = firedBy.World.Map;
 			var targetCell = map.CellContaining(target.CenterPosition);
 
@@ -63,9 +86,10 @@ namespace OpenRA.Mods.AS.Warheads
 					if (unit.Trait<IPositionable>().CanEnterCell(cell.Current))
 					{
 						var cellpos = firedBy.World.Map.CenterOfCell(cell.Current);
-						var pos = cellpos.Z < target.CenterPosition.Z
+						var pos = !ForceGround && cellpos.Z < target.CenterPosition.Z
 							? new WPos(cellpos.X, cellpos.Y, target.CenterPosition.Z)
 							: cellpos;
+
 						firedBy.World.AddFrameEndTask(w =>
 						{
 							w.Add(unit);
@@ -73,6 +97,17 @@ namespace OpenRA.Mods.AS.Warheads
 								unit.QueueActivity(new Parachute(unit, pos));
 							else
 								unit.QueueActivity(new FallDown(unit, pos, FallRate));
+
+							var palette = Palette;
+							if (UsePlayerPalette)
+								palette += unit.Owner.InternalName;
+
+							if (Image != null)
+								new SpriteEffect(pos, w, Image, Sequence, palette);
+
+							var sound = Sounds.RandomOrDefault(Game.CosmeticRandom);
+							if (sound != null)
+								Game.Sound.Play(SoundType.World, sound, pos);
 						});
 						placed = true;
 						break;

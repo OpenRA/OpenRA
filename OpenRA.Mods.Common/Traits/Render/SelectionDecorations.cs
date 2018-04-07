@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var selected = self.World.Selection.Contains(self);
 			var regularWorld = self.World.Type == WorldType.Regular;
 			var statusBars = Game.Settings.Game.StatusBars;
-			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 
 			// Health bars are shown when:
 			//  * actor is selected

@@ -189,7 +189,7 @@ namespace OpenRA.Platforms.Default
 			}
 			catch (Exception ex)
 			{
-				throw new InvalidDataException("Failed to create hardware cursor `{0}` - {1}".F(name, ex.Message), ex);
+				throw new SDL2HardwareCursorException("Failed to create hardware cursor `{0}` - {1}".F(name, ex.Message), ex);
 			}
 		}
 
@@ -226,6 +226,12 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		class SDL2HardwareCursorException : Exception
+		{
+			public SDL2HardwareCursorException(string message) : base(message) { }
+			public SDL2HardwareCursorException(string message, Exception innerException) : base(message, innerException) { }
+		}
+
 		sealed class SDL2HardwareCursor : IHardwareCursor
 		{
 			public IntPtr Cursor { get; private set; }
@@ -245,8 +251,9 @@ namespace OpenRA.Platforms.Default
 					// This call very occasionally fails on Windows, but often works when retried.
 					for (var retries = 0; retries < 3 && Cursor == IntPtr.Zero; retries++)
 						Cursor = SDL.SDL_CreateColorCursor(surface, hotspot.X, hotspot.Y);
+
 					if (Cursor == IntPtr.Zero)
-						throw new InvalidDataException("Failed to create cursor: {0}".F(SDL.SDL_GetError()));
+						throw new SDL2HardwareCursorException("Failed to create cursor: {0}".F(SDL.SDL_GetError()));
 				}
 				catch
 				{

@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var tileset = Game.ModData.DefaultTileSets[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
 
-			var data = Convert.FromBase64String(mapSection.Aggregate(string.Empty, (a, b) => a + b.Value));
+			var data = Convert.FromBase64String(string.Concat(mapSection.Select(kvp => kvp.Value)));
 			int cells = (fullSize.X * 2 - 1) * fullSize.Y;
 			int lzoPackSize = cells * 11 + 4; // last 4 bytes contains a lzo pack header saying no more data is left
 			var isoMapPack = new byte[lzoPackSize];
@@ -349,13 +349,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		static void ReadOverlay(Map map, IniFile file, int2 fullSize)
 		{
 			var overlaySection = file.GetSection("OverlayPack");
-			var overlayCompressed = Convert.FromBase64String(overlaySection.Aggregate(string.Empty, (a, b) => a + b.Value));
+			var overlayCompressed = Convert.FromBase64String(string.Concat(overlaySection.Select(kvp => kvp.Value)));
 			var overlayPack = new byte[1 << 18];
 			var temp = new byte[1 << 18];
 			UnpackLCW(overlayCompressed, overlayPack, temp);
 
 			var overlayDataSection = file.GetSection("OverlayDataPack");
-			var overlayDataCompressed = Convert.FromBase64String(overlayDataSection.Aggregate(string.Empty, (a, b) => a + b.Value));
+			var overlayDataCompressed = Convert.FromBase64String(string.Concat(overlayDataSection.Select(kvp => kvp.Value)));
 			var overlayDataPack = new byte[1 << 18];
 			UnpackLCW(overlayDataCompressed, overlayDataPack, temp);
 

@@ -135,10 +135,12 @@ namespace OpenRA.Server
 			randomSeed = (int)DateTime.Now.ToBinary();
 
 			if (UPnP.Status == UPnPStatus.Enabled)
-				UPnP.ForwardPort(Settings.ListenPort, Settings.ExternalPort).Wait();
+				UPnP.ForwardPort(Settings.ListenPort, Settings.ListenPort).Wait();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				serverTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
+
+			serverTraits.TrimExcess();
 
 			LobbyInfo = new Session
 			{
@@ -384,7 +386,7 @@ namespace OpenRA.Server
 
 				if (Dedicated)
 				{
-					var motdFile = Platform.ResolvePath("^", "motd.txt");
+					var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
 					if (!File.Exists(motdFile))
 						File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
 

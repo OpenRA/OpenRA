@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 
+		[Desc("Types of damage that this bridge causes to units over/in path of it while being destroyed/repaired. Leave empty for no damage types.")]
+		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			WeaponInfo weapon;
@@ -95,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var c in cells)
 				foreach (var a in self.World.ActorMap.GetActorsAt(c))
 					if (a.Info.HasTraitInfo<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
-						a.Kill(self);
+						a.Kill(self, Info.DamageTypes);
 		}
 
 		void IBridgeSegment.Repair(Actor repairer)

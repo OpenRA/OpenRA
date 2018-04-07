@@ -22,9 +22,6 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				if (actorInfo.Key.StartsWith("^", StringComparison.Ordinal))
-					continue;
-
 				var health = actorInfo.Value.TraitInfoOrDefault<HealthInfo>();
 				if (health == null)
 					continue;

@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.GameRules;
 using OpenRA.Mods.AS.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
@@ -15,8 +16,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
 {
-	public class SmokeParticleEmitterInfo : ConditionalTraitInfo
+	public class SmokeParticleEmitterInfo : ConditionalTraitInfo, ISmokeParticleInfo, IRulesetLoaded
 	{
+		[FieldLoader.Require]
+		[Desc("The duration of an individual particle. Two values mean actual lifetime will vary between them.")]
+		public readonly int[] Duration;
+
 		[Desc("Offset for the particle emitter.")]
 		public readonly WVec[] Offset = { WVec.Zero };
 
@@ -29,13 +34,64 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Which image to use.")]
 		public readonly string Image = "particles";
 
+		[FieldLoader.Require]
 		[Desc("Which sequence to use.")]
 		[SequenceReference("Image")] public readonly string Sequence = null;
 
 		[Desc("Which palette to use.")]
 		[PaletteReference] public readonly string Palette = null;
 
+		[WeaponReference]
+		[Desc("Has to be defined in weapons.yaml, if defined, as well.")]
+		public readonly string Weapon = null;
+
+		public WeaponInfo WeaponInfo { get; private set; }
+
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (string.IsNullOrEmpty(Weapon))
+				return;
+
+			WeaponInfo weaponInfo;
+
+			var weaponToLower = Weapon.ToLowerInvariant();
+			if (!rules.Weapons.TryGetValue(weaponToLower, out weaponInfo))
+				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
+
+			WeaponInfo = weaponInfo;
+		}
+
 		public override object Create(ActorInitializer init) { return new SmokeParticleEmitter(init.Self, this); }
+
+		string ISmokeParticleInfo.Image
+		{
+			get { return Image; }
+		}
+
+		string ISmokeParticleInfo.Sequence
+		{
+			get { return Sequence; }
+		}
+
+		string ISmokeParticleInfo.Palette
+		{
+			get { return Palette; }
+		}
+
+		WVec[] ISmokeParticleInfo.Gravity
+		{
+			get { return Gravity; }
+		}
+
+		int[] ISmokeParticleInfo.Duration
+		{
+			get { return Duration; }
+		}
+
+		WeaponInfo ISmokeParticleInfo.Weapon
+		{
+			get { return WeaponInfo; }
+		}
 	}
 
 	public class SmokeParticleEmitter : ConditionalTrait<SmokeParticleEmitterInfo>, ITick
@@ -55,7 +111,7 @@ namespace OpenRA.Mods.AS.Traits
 				: Info.Offset[0];
 		}
 
-		public void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -64,7 +120,7 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				ticks = Info.SpawnFrequency.Length == 2 ? random.Next(Info.SpawnFrequency[0], Info.SpawnFrequency[1]) : Info.SpawnFrequency[0];
 
-				self.World.AddFrameEndTask(w => w.Add(new SmokeParticle(self.CenterPosition + offset, Info.Gravity, w, Info.Image, Info.Sequence, Info.Palette, false, false)));
+				self.World.AddFrameEndTask(w => w.Add(new SmokeParticle(self, Info, self.CenterPosition + offset)));
 			}
 		}
 	}

@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (group == null)
 				yield break;
 
-			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var number = group.Value.ToString();
 			var halfSize = font.Measure(number) / 2;
 

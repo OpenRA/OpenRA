@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("This structure can be infiltrated causing funds to be stolen.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<TargetableType> Types;
 
 		[Desc("Percentage of the victim's resources that will be stolen.")]
 		public readonly int Percentage = 100;
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)
 		{
 			if (!info.Types.Overlaps(types))
 				return;

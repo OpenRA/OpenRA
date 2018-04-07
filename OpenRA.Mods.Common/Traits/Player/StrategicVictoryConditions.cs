@@ -51,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public int TicksLeft;
 		readonly Player player;
 		readonly MissionObjectives mo;
+		readonly bool shortGame;
 		int objectiveID = -1;
 
 		public StrategicVictoryConditions(Actor self, StrategicVictoryConditionsInfo svcInfo)
@@ -59,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			TicksLeft = info.HoldDuration;
 			player = self.Owner;
 			mo = self.Trait<MissionObjectives>();
+			shortGame = player.World.WorldActor.Trait<MapOptions>().ShortGame;
 		}
 
 		public IEnumerable<Actor> AllPoints
@@ -78,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (objectiveID < 0)
 				objectiveID = mo.Add(player, info.Objective, ObjectiveType.Primary, true);
 
-			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits())
+			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits(shortGame))
 				mo.MarkFailed(self.Owner, objectiveID);
 
 			var others = self.World.Players.Where(p => !p.NonCombatant

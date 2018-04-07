@@ -176,6 +176,7 @@
     <Compile Include="HitShapes\Rectangle.cs" />
     <Compile Include="HitShapes\Capsule.cs" />
     <Compile Include="HitShapes\Circle.cs" />
+    <Compile Include="HitShapes\Polygon.cs" />
     <Compile Include="Lint\CheckAngle.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="Lint\CheckPalettes.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Scripting\Properties\GuardProperties.cs" />
     <Compile Include="Scripting\Properties\MissionObjectiveProperties.cs" />
     <Compile Include="Scripting\Properties\MobileProperties.cs" />
+    <Compile Include="Scripting\Properties\DeliveryProperties.cs" />
     <Compile Include="Scripting\Properties\DemolitionProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerExperienceProperties.cs" />
     <Compile Include="Scripting\Properties\PlayerProperties.cs" />
@@ -304,7 +306,9 @@
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
+    <Compile Include="Traits\Conditions\GrantRandomCondition.cs" />
     <Compile Include="Traits\Contrail.cs" />
+    <Compile Include="Traits\TooltipDescription.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
@@ -425,6 +429,7 @@
     <Compile Include="Traits\Render\RenderSpritesEditorOnly.cs" />
     <Compile Include="Traits\Render\WithTurretAttackAnimation.cs" />
     <Compile Include="Traits\Render\WithAcceptDeliveredCashAnimation.cs" />
+    <Compile Include="Traits\Render\WithTurretAimAnimation.cs" />
     <Compile Include="Traits\Render\RenderUtils.cs" />
     <Compile Include="Traits\Render\RenderDebugState.cs" />
     <Compile Include="Traits\Render\RenderNameTag.cs" />
@@ -506,6 +511,7 @@
     <Compile Include="Traits\ThrowsParticle.cs" />
     <Compile Include="Traits\Tooltip.cs" />
     <Compile Include="Traits\TransformOnCapture.cs" />
+    <Compile Include="Traits\TransformCrusherOnCrush.cs" />
     <Compile Include="Traits\Transforms.cs" />
     <Compile Include="Traits\Turreted.cs" />
     <Compile Include="Traits\ProducibleWithLevel.cs" />
@@ -532,6 +538,7 @@
     <Compile Include="Traits\World\MPStartUnits.cs" />
     <Compile Include="Traits\World\PaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
+    <Compile Include="Traits\World\PaletteFromGimpOrJascFile.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\World\ValidateOrder.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
@@ -554,6 +561,9 @@
     <Compile Include="Traits\World\TerrainGeometryOverlay.cs" />
     <Compile Include="Traits\World\WarheadDebugOverlay.cs" />
     <Compile Include="Traits\World\WeatherOverlay.cs" />
+    <Compile Include="Traits\World\ActorSpawnManager.cs" />
+    <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\IgnoreAbstractActors.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
@@ -574,9 +584,6 @@
     <Compile Include="UtilityCommands\ImportLegacyMapCommand.cs" />
     <Compile Include="UtilityCommands\RemapShpCommand.cs" />
     <Compile Include="UtilityCommands\ReplayMetadataCommand.cs" />
-    <Compile Include="UtilityCommands\UpgradeMapCommand.cs" />
-    <Compile Include="UtilityCommands\UpgradeModCommand.cs" />
-    <Compile Include="UtilityCommands\UpgradeRules.cs" />
     <Compile Include="UtilityCommands\Rgba2Hex.cs" />
     <Compile Include="Warheads\CreateEffectWarhead.cs" />
     <Compile Include="Warheads\CreateResourceWarhead.cs" />
@@ -843,6 +850,17 @@
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Traits\Conditions\ToggleConditionOnOrder.cs" />
     <Compile Include="Widgets\Logic\ServerListLogic.cs" />
+    <Compile Include="UpdateRules\UpdateRule.cs" />
+    <Compile Include="UtilityCommands\UpdateModCommand.cs" />
+    <Compile Include="UpdateRules\UpdatePath.cs" />
+    <Compile Include="UpdateRules\UpdateUtils.cs" />
+    <Compile Include="UtilityCommands\UpdateMapCommand.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveTerrainTypeIsWaterFlag.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveWeaponScanRadius.cs" />
+    <Compile Include="UpdateRules\Rules\DefineSoundDefaults.cs" />
+    <Compile Include="UpdateRules\Rules\SplitTurretAimAnimation.cs" />
+    <Compile Include="UpdateRules\Rules\RenameWormSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

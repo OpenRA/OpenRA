@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
 					.FirstOrDefault(p => p.IsOverlayActive(actor));
 				if (pio != null)
-					WidgetUtils.DrawSHPCentered(pio.Sprite, location + 0.5f * iconSize + pio.Offset(0.5f * iconSize),
+					WidgetUtils.DrawSHPCentered(pio.Sprite, location + 0.5f * iconSize + pio.Offset(iconSize),
 						worldRenderer.Palette(pio.Palette), 0.5f);
 
 				var clock = clocks[queue.Trait];

@@ -96,6 +96,15 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
 
+		[Desc("Increase maintained excess power by this amount for every ExcessPowerIncreaseThreshold of base buildings.")]
+		public readonly int ExcessPowerIncrement = 0;
+
+		[Desc("Increase maintained excess power by ExcessPowerIncrement for every N base buildings.")]
+		public readonly int ExcessPowerIncreaseThreshold = 1;
+
+		[Desc("The targeted excess power the AI tries to maintain cannot rise above this.")]
+		public readonly int MaximumExcessPower = 0;
+
 		[Desc("Additional delay (in ticks) between structure production checks when there is no active production.",
 			"StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionInactiveDelay = 125;
@@ -193,7 +202,7 @@ namespace OpenRA.Mods.Common.AI
 		public readonly UnitCategories UnitsCommonNames;
 
 		[Desc("Tells the AI what building types fall under the same common name.",
-			"Possible keys are ConstructionYard, Power, Refinery, Silo , Barracks, Production, VehiclesFactory, NavalProduction.")]
+			"Possible keys are ConstructionYard, Power, Refinery, Silo, Barracks, Production, VehiclesFactory, NavalProduction.")]
 		[FieldLoader.LoadUsing("LoadBuildingCategories", true)]
 		public readonly BuildingCategories BuildingCommonNames;
 
@@ -381,52 +390,16 @@ namespace OpenRA.Mods.Common.AI
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 		}
 
-		// TODO: Possibly give this a more generic name when terrain type is unhardcoded
-		public bool EnoughWaterToBuildNaval()
+		public bool IsAreaAvailable<T>(int radius, HashSet<string> terrainTypes)
 		{
-			var baseProviders = World.ActorsHavingTrait<BaseProvider>()
-				.Where(a => a.Owner == Player);
+			var cells = World.ActorsHavingTrait<T>().Where(a => a.Owner == Player);
 
-			foreach (var b in baseProviders)
-			{
-				// TODO: Properly check building foundation rather than 3x3 area
-				var playerWorld = Player.World;
-				var countWaterCells = Map.FindTilesInCircle(b.Location, Info.MaxBaseRadius)
-					.Where(c => playerWorld.Map.Contains(c)
-						&& Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(c).Type)
-						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
-							.All(a => Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(a).Type)))
-					.Count();
-
-				if (countWaterCells > 0)
-					return true;
-			}
-
-			return false;
-		}
-
-		// Check whether we have at least one building providing buildable area close enough to water to build naval structures
-		public bool CloseEnoughToWater()
-		{
-			var areaProviders = World.ActorsHavingTrait<GivesBuildableArea>()
-				.Where(a => a.Owner == Player);
-
-			foreach (var a in areaProviders)
-			{
-				// TODO: Properly check building foundation rather than 3x3 area
-				var playerWorld = Player.World;
-				var adjacentWater = Map.FindTilesInCircle(a.Location, Info.CheckForWaterRadius)
-					.Where(c => playerWorld.Map.Contains(c)
-						&& Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(c).Type)
-						&& Util.AdjacentCells(playerWorld, Target.FromCell(playerWorld, c))
-							.All(ac => Info.WaterTerrainTypes.Contains(playerWorld.Map.GetTerrainInfo(ac).Type)))
-					.Count();
-
-				if (adjacentWater > 0)
-					return true;
-			}
-
-			return false;
+			// TODO: Properly check building foundation rather than 3x3 area.
+			return cells.Select(a => Map.FindTilesInCircle(a.Location, radius)
+				.Count(c => Map.Contains(c) && terrainTypes.Contains(Map.GetTerrainInfo(c).Type) &&
+					Util.AdjacentCells(World, Target.FromCell(World, c))
+						.All(ac => terrainTypes.Contains(Map.GetTerrainInfo(ac).Type))))
+							.Any(availableCells => availableCells > 0);
 		}
 
 		public void QueueOrder(Order order)
@@ -464,19 +437,19 @@ namespace OpenRA.Mods.Common.AI
 			return null;
 		}
 
-		int CountBuilding(string frac, Player owner)
+		IEnumerable<Actor> GetActorsWithTrait<T>()
 		{
-			return World.ActorsHavingTrait<Building>().Count(a => a.Owner == owner && a.Info.Name == frac);
+			return World.ActorsHavingTrait<T>();
 		}
 
-		int CountUnits(string unit, Player owner)
+		int CountActorsWithTrait<T>(string actorName, Player owner)
 		{
-			return World.ActorsHavingTrait<IPositionable>().Count(a => a.Owner == owner && a.Info.Name == unit);
+			return GetActorsWithTrait<T>().Count(a => a.Owner == owner && a.Info.Name == actorName);
 		}
 
 		int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
 		{
-			return World.ActorsHavingTrait<Building>()
+			return GetActorsWithTrait<Building>()
 				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
 		}
 
@@ -520,8 +493,8 @@ namespace OpenRA.Mods.Common.AI
 			var hasAmmoPool = actorInfo.TraitInfos<AmmoPoolInfo>().Any();
 			if (hasAmmoPool && aircraftInfo.RearmBuildings.Count > 0)
 			{
-				var countOwnAir = CountUnits(actorInfo.Name, Player);
-				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountBuilding(b, Player));
+				var countOwnAir = CountActorsWithTrait<IPositionable>(actorInfo.Name, Player);
+				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountActorsWithTrait<Building>(b, Player));
 				if (countOwnAir >= countBuildings)
 					return false;
 			}
@@ -532,7 +505,8 @@ namespace OpenRA.Mods.Common.AI
 		CPos defenseCenter;
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
-			var bi = Map.Rules.Actors[actorType].TraitInfoOrDefault<BuildingInfo>();
+			var ai = Map.Rules.Actors[actorType];
+			var bi = ai.TraitInfoOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
@@ -549,10 +523,10 @@ namespace OpenRA.Mods.Common.AI
 
 				foreach (var cell in cells)
 				{
-					if (!World.CanPlaceBuilding(actorType, bi, cell, null))
+					if (!World.CanPlaceBuilding(cell, ai, bi, null))
 						continue;
 
-					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, actorType, cell))
+					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, ai, cell))
 						continue;
 
 					return cell;
@@ -607,7 +581,7 @@ namespace OpenRA.Mods.Common.AI
 			ticks++;
 
 			if (ticks == 1)
-				InitializeBase(self);
+				InitializeBase(self, false);
 
 			if (ticks % FeedbackTime == 0)
 				ProductionUnits(self);
@@ -686,7 +660,7 @@ namespace OpenRA.Mods.Common.AI
 				if (resLayer != null && !resLayer.IsResourceLayerEmpty)
 					GiveOrdersToIdleHarvesters();
 				FindNewUnits(self);
-				FindAndDeployBackupMcv(self);
+				InitializeBase(self, true);
 			}
 
 			if (--minAttackForceDelayTicks <= 0)
@@ -962,7 +936,7 @@ namespace OpenRA.Mods.Common.AI
 
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
 		{
-			return info != null && World.IsCellBuildable(x, info);
+			return info != null && World.IsCellBuildable(x, null, info);
 		}
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
@@ -995,50 +969,47 @@ namespace OpenRA.Mods.Common.AI
 			return possibleRallyPoints.Random(Random);
 		}
 
-		void InitializeBase(Actor self)
+		void InitializeBase(Actor self, bool chooseLocation)
 		{
-			// Find and deploy our mcv
-			var mcv = self.World.Actors.FirstOrDefault(a => a.Owner == Player &&
-				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name));
+			var mcv = FindAndDeployMcv(self, chooseLocation);
 
-			if (mcv != null)
-			{
-				initialBaseCenter = mcv.Location;
-				defenseCenter = mcv.Location;
-				QueueOrder(new Order("DeployTransform", mcv, false));
-			}
-			else
-				BotDebug("AI: Can't find BaseBuildUnit.");
+			if (mcv == null)
+				return;
+
+			initialBaseCenter = mcv.Location;
+			defenseCenter = mcv.Location;
 		}
 
-		// Find any newly constructed MCVs and deploy them at a sensible
-		// backup location.
-		void FindAndDeployBackupMcv(Actor self)
+		// Find any MCV and deploy them at a sensible location.
+		Actor FindAndDeployMcv(Actor self, bool move)
 		{
-			var mcvs = self.World.Actors.Where(a => a.Owner == Player &&
-				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name));
+			var mcv = self.World.Actors.FirstOrDefault(a => a.Owner == Player &&
+				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name) && a.IsIdle);
 
-			foreach (var mcv in mcvs)
+			if (mcv == null)
+				return null;
+
+			// Don't try to move and deploy an undeployable actor
+			var transformsInfo = mcv.Info.TraitInfoOrDefault<TransformsInfo>();
+			if (transformsInfo == null)
+				return null;
+
+			// If we lack a base, we need to make sure we don't restrict deployment of the MCV to the base!
+			var restrictToBase = Info.RestrictMCVDeploymentFallbackToBase &&
+				CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
+
+			if (move)
 			{
-				if (!mcv.IsIdle)
-					continue;
-
-				// Don't try to move and deploy an undeployable actor
-				var transformsInfo = mcv.Info.TraitInfoOrDefault<TransformsInfo>();
-				if (transformsInfo == null)
-					continue;
-
-				// If we lack a base, we need to make sure we don't restrict deployment of the MCV to the base!
-				var restrictToBase = Info.RestrictMCVDeploymentFallbackToBase &&
-					CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
-
 				var desiredLocation = ChooseBuildLocation(transformsInfo.IntoActor, restrictToBase, BuildingType.Building);
 				if (desiredLocation == null)
-					continue;
+					return null;
 
 				QueueOrder(new Order("Move", mcv, Target.FromCell(World, desiredLocation.Value), true));
-				QueueOrder(new Order("DeployTransform", mcv, true));
 			}
+
+			QueueOrder(new Order("DeployTransform", mcv, true));
+
+			return mcv;
 		}
 
 		void TryToUseSupportPower(Actor self)

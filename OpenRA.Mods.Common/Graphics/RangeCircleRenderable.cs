@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.Graphics
 	public struct RangeCircleRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int RangeCircleSegments = 32;
-		static readonly int[][] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
-		static readonly int[][] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
+		static readonly Int32Matrix4x4[] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
+		static readonly Int32Matrix4x4[] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
 
 		readonly WPos centerPosition;
 		readonly WDist radius;
@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = new WVec(radius.Length, 0, 0);
 			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var a = wr.Screen3DPosition(centerPosition + offset.Rotate(RangeCircleStartRotations[i]));
-				var b = wr.Screen3DPosition(centerPosition + offset.Rotate(RangeCircleEndRotations[i]));
+				var a = wr.Screen3DPosition(centerPosition + offset.Rotate(ref RangeCircleStartRotations[i]));
+				var b = wr.Screen3DPosition(centerPosition + offset.Rotate(ref RangeCircleEndRotations[i]));
 
 				if (contrastWidth > 0)
 					wcr.DrawLine(a, b, contrastWidth / wr.Viewport.Zoom, contrastColor);

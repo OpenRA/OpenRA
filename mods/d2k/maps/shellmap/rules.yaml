@@ -8,7 +8,7 @@ World:
 	-MPStartLocations:
 	ResourceType@Spice:
 		ValuePerUnit: 0
-	WormManager:
+	ActorSpawnManager:
 		Minimum: 1
 		Maximum: 3
 	MusicPlaylist:

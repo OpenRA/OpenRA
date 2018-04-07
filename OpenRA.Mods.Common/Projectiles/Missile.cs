@@ -23,7 +23,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class MissileInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
+	public class MissileInfo : IProjectileInfo
 	{
 		[Desc("Name of the image containing the projectile sequence.")]
 		public readonly string Image = null;
@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Palette used to render the projectile sequence.")]
 		[PaletteReference] public readonly string Palette = "effect";
+
+		[Desc("Palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
 
 		[Desc("Should the projectile's shadow be rendered?")]
 		public readonly bool Shadow = false;
@@ -145,17 +148,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			"not trigger fast enough, causing the missile to fly past the target.")]
 		public readonly WDist CloseEnough = new WDist(298);
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
-			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = new WDist(-1);
-
 		public IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
-
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
-		{
-			if (BlockerScanRadius < WDist.Zero)
-				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
-		}
 	}
 
 	// TODO: double check square roots!!!
@@ -450,7 +443,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 
 		// NOTE: It might be desirable to make lookahead more intelligent by outputting more information
-		//       than just the highest point in the lookahead distance
+		//		 than just the highest point in the lookahead distance
 		void InclineLookahead(World world, int distCheck, out int predClfHgt, out int predClfDist, out int lastHtChg, out int lastHt)
 		{
 			predClfHgt = 0; // Highest probed terrain height
@@ -846,7 +839,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var shouldExplode = false;
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, pos, info.Width,
-				info.BlockerScanRadius, out blockedPos))
+				out blockedPos))
 			{
 				pos = blockedPos;
 				shouldExplode = true;
@@ -911,7 +904,7 @@ namespace OpenRA.Mods.Common.Projectiles
 						yield return r;
 				}
 
-				var palette = wr.Palette(info.Palette);
+				var palette = wr.Palette(info.Palette + (info.IsPlayerPalette ? args.SourceActor.Owner.InternalName : ""));
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}

@@ -21,7 +21,6 @@ LockPreview: True
 Players:
 	PlayerReference@GDI:
 		Name: GDI
-		Playable: False
 		Faction: gdi
 		Color: F5D378
 		Enemies: Nod
@@ -37,8 +36,8 @@ Players:
 		Enemies: Nod
 	PlayerReference@Nod:
 		Name: Nod
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: nod
@@ -304,52 +303,52 @@ Actors:
 	Actor85: nuke
 		Location: 44,18
 		Owner: GDI
-	Actor86: v35
+	Obj2Actor1: v35
 		Location: 36,57
 		Owner: Civilians
-	Actor87: v34
+	Obj2Actor2: v34
 		Location: 34,56
 		Owner: Civilians
-	Actor88: v33
+	Obj2Actor3: v33
 		Location: 32,56
 		Owner: Civilians
-	Actor89: v30
+	Obj2Actor4: v30
 		Location: 36,51
 		Owner: Civilians
-	Actor90: v30
+	Obj2Actor5: v30
 		Location: 30,52
 		Owner: Civilians
-	Actor91: v29
+	Obj2Actor6: v29
 		Location: 36,52
 		Owner: Civilians
-	Actor92: v27
+	Obj2Actor7: v27
 		Location: 24,53
 		Owner: Civilians
-	Actor93: v27
+	Obj2Actor8: v27
 		Location: 25,53
 		Owner: Civilians
-	Actor94: v27
+	Obj2Actor9: v27
 		Location: 26,53
 		Owner: Civilians
-	Actor95: v26
+	Obj2Actor10: v26
 		Location: 31,53
 		Owner: Civilians
-	Actor96: v25
+	Obj2Actor0: v25
 		Location: 30,50
 		Owner: Civilians
-	Actor97: v24
+	Obj2Actor11: v24
 		Location: 29,52
 		Owner: Civilians
 	Actor98: v23
 		Location: 32,57
 		Owner: Civilians
-	Actor99: v22
+	Obj2Actor12: v22
 		Location: 35,53
 		Owner: Civilians
-	Actor100: v21
+	Obj2Actor13: v21
 		Location: 25,57
 		Owner: Civilians
-	Actor101: v20
+	Obj2Actor14: v20
 		Location: 26,54
 		Owner: Civilians
 	Actor104: silo
@@ -560,7 +559,7 @@ Actors:
 		Location: 26,61
 		Owner: Neutral
 	Detonator: CRATE.plain
-		Location: 47, 27
+		Location: 47,27
 		Owner: GDI
 	Chn1Actor1: fact
 		Location: 48,18
@@ -585,5 +584,16 @@ Actors:
 		Location: 17,36
 		Owner: GDI
 		SubCell: 1
+	waypoint13: waypoint
+		Owner: Neutral
+		Location: 43,58
+	Obj2UnitsEntry: waypoint
+		Owner: Neutral
+		Location: 45,61
+	Actor169: mtnk
+		Owner: GDI
+		Location: 33,54
+		Facing: 92
+		TurretFacing: 92
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml

@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (newsBG != null)
 			{
-				var cacheFile = Platform.ResolvePath("^", "news.yaml");
+				var cacheFile = Platform.ResolvePath(Platform.SupportDirPrefix, "news.yaml");
 				var currentNews = ParseNews(cacheFile);
 				if (currentNews != null)
 					DisplayNews(currentNews);

@@ -97,6 +97,12 @@ namespace OpenRA.Primitives
 				data.Remove(t);
 		}
 
+		public void TrimExcess()
+		{
+			foreach (var objs in data.Values)
+				objs.TrimExcess();
+		}
+
 		public IEnumerator GetEnumerator()
 		{
 			return WithInterface<object>().GetEnumerator();

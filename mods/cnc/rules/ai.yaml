@@ -2,7 +2,10 @@ Player:
 	HackyAI@Cabal:
 		Name: Cabal
 		Type: cabal
-		MinimumExcessPower: 60
+		MinimumExcessPower: 30
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 5
+		MaximumExcessPower: 150
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -30,11 +33,9 @@ Player:
 			silo: 1
 		BuildingFractions:
 			proc: 20%
-			nuke: 9%
 			pyle: 5%
 			hand: 5%
 			hq: 4%
-			nuk2: 9%
 			weap: 9%
 			afld: 9%
 			gtwr: 5%
@@ -130,7 +131,10 @@ Player:
 	HackyAI@Watson:
 		Name: Watson
 		Type: watson
-		MinimumExcessPower: 60
+		MinimumExcessPower: 30
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 150
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -158,11 +162,9 @@ Player:
 			silo: 1
 		BuildingFractions:
 			proc: 17%
-			nuke: 1%
 			pyle: 2%
 			hand: 2%
 			hq: 1%
-			nuk2: 18%
 			weap: 5%
 			afld: 5%
 			hpad: 4%
@@ -258,7 +260,10 @@ Player:
 	HackyAI@HAL9001:
 		Name: HAL 9001
 		Type: hal9001
-		MinimumExcessPower: 60
+		MinimumExcessPower: 30
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 4
+		MaximumExcessPower: 210
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -286,11 +291,9 @@ Player:
 			silo: 1
 		BuildingFractions:
 			proc: 17%
-			nuke: 10%
 			pyle: 7%
 			hand: 9%
 			hq: 1%
-			nuk2: 18%
 			weap: 8%
 			afld: 6%
 			hpad: 4%

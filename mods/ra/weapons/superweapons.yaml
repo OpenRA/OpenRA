@@ -50,7 +50,7 @@ Atomic:
 	Warhead@4Eff_impact: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
-		VictimScanRadius: 0
+		ImpactActors: false
 		ValidTargets: Ground, Water, Air
 	Warhead@5Dam_areanuke1: SpreadDamage
 		Spread: 2c0
@@ -73,7 +73,7 @@ Atomic:
 	Warhead@8Eff_areanuke1: CreateEffect
 		ImpactSounds: kaboom22.aud
 		Delay: 5
-		VictimScanRadius: 0
+		ImpactActors: false
 	Warhead@9Dam_areanuke2: SpreadDamage
 		Spread: 3c0
 		Damage: 6000
