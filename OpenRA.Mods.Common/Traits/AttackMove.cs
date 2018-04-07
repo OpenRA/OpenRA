@@ -165,6 +165,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public override void Tick(World world)
+		{
+			if (subjects.All(s => s.Actor.IsDead))
+				world.CancelInputMode();
+		}
+
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var prefix = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";

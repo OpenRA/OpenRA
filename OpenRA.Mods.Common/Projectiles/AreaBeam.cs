@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	public class AreaBeamInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
+	public class AreaBeamInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate a randomly picked velocity per beam.")]
 		public readonly WDist[] Speed = { new WDist(128) };
@@ -69,27 +69,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam color is the player's color.")]
 		public readonly bool UsePlayerColor = false;
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
-			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = new WDist(-1);
-
-		[Desc("Scan radius for actors damaged by beam. If set to a negative value (default), it will automatically scale to the largest health shape.",
-			"Only set custom values if you know what you're doing.")]
-		public WDist AreaVictimScanRadius = new WDist(-1);
-
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new AreaBeam(this, args, c);
-		}
-
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo wi)
-		{
-			if (BlockerScanRadius < WDist.Zero)
-				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
-
-			if (AreaVictimScanRadius < WDist.Zero)
-				AreaVictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 
@@ -225,7 +208,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Check for blocking actors
 			WPos blockedPos;
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, tailPos, headPos,
-				info.Width, info.BlockerScanRadius, out blockedPos))
+				info.Width, out blockedPos))
 			{
 				headPos = blockedPos;
 				target = headPos;
@@ -235,7 +218,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Damage is applied to intersected actors every DamageInterval ticks
 			if (headTicks % info.DamageInterval == 0)
 			{
-				var actors = world.FindActorsOnLine(tailPos, headPos, info.Width, info.AreaVictimScanRadius);
+				var actors = world.FindActorsOnLine(tailPos, headPos, info.Width);
 				foreach (var a in actors)
 				{
 					var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - a.CenterPosition).Length));

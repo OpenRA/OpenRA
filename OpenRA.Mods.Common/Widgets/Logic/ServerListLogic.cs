@@ -339,24 +339,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var lanGames = new List<GameServer>();
 				foreach (var bl in lanGameLocations)
 				{
-					var game = MiniYaml.FromString(bl.Data)[0].Value;
-					var idNode = game.Nodes.FirstOrDefault(n => n.Key == "Id");
-
-					// Skip beacons created by this instance and replace Id by expected int value
-					if (idNode != null && idNode.Value.Value != Platform.SessionGUID.ToString())
+					try
 					{
-						idNode.Value.Value = "-1";
+						if (string.IsNullOrEmpty(bl.Data))
+							continue;
 
-						// Rewrite the server address with the correct IP
-						var addressNode = game.Nodes.FirstOrDefault(n => n.Key == "Address");
-						if (addressNode != null)
-							addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
+						var game = MiniYaml.FromString(bl.Data)[0].Value;
+						var idNode = game.Nodes.FirstOrDefault(n => n.Key == "Id");
 
-						try
+						// Skip beacons created by this instance and replace Id by expected int value
+						if (idNode != null && idNode.Value.Value != Platform.SessionGUID.ToString())
 						{
+							idNode.Value.Value = "-1";
+
+							// Rewrite the server address with the correct IP
+							var addressNode = game.Nodes.FirstOrDefault(n => n.Key == "Address");
+							if (addressNode != null)
+								addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
+
 							lanGames.Add(new GameServer(game));
 						}
-						catch { }
+					}
+					catch
+					{
+						// Ignore any invalid LAN games advertised.
 					}
 				}
 

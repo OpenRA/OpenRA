@@ -41,7 +41,7 @@
 	Inherits: ^AntiGroundMissile
 	ValidTargets: Air
 	Warhead@3Eff: CreateEffect
-		VictimScanRadius: 0
+		ImpactActors: false
 
 Maverick:
 	Inherits: ^AntiGroundMissile

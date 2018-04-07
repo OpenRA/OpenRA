@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Steal and reset the owner's exploration.")]
 	class InfiltrateForExplorationInfo : ITraitInfo
 	{
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<TargetableType> Types;
 
 		public object Create(ActorInitializer init) { return new InfiltrateForExploration(init.Self, this); }
 	}
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, HashSet<string> types)
+		void INotifyInfiltrated.Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types)
 		{
 			if (!info.Types.Overlaps(types))
 				return;

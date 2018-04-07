@@ -22,8 +22,13 @@ namespace OpenRA.Mods.AS.Warheads
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
 
-		[Desc("The range of the cells where the weapon should be fired.")]
-		public readonly int Range = 1;
+		[FieldLoader.Require]
+		[Desc("Size of the cluster footprint")]
+		public readonly CVec Dimensions = CVec.Zero;
+
+		[FieldLoader.Require]
+		[Desc("Cluster footprint. Cells marked as x will be attacked.")]
+		public readonly string Footprint = string.Empty;
 
 		WeaponInfo weapon;
 
@@ -35,6 +40,9 @@ namespace OpenRA.Mods.AS.Warheads
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (!target.IsValidFor(firedBy))
+				return;
+
 			var map = firedBy.World.Map;
 
 			var targetCell = map.CellContaining(target.CenterPosition);
@@ -42,7 +50,7 @@ namespace OpenRA.Mods.AS.Warheads
 			if (!IsValidImpact(target.CenterPosition, firedBy))
 				return;
 
-			var targetCells = map.FindTilesInCircle(targetCell, Range);
+			var targetCells = CellsMatching(targetCell);
 
 			foreach (var cell in targetCells)
 			{
@@ -81,6 +89,18 @@ namespace OpenRA.Mods.AS.Warheads
 						Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(firedBy.World.SharedRandom), target.CenterPosition);
 				}
 			}
+		}
+
+		IEnumerable<CPos> CellsMatching(CPos location)
+		{
+			var index = 0;
+			var footprint = Footprint.Where(c => !char.IsWhiteSpace(c)).ToArray();
+			var x = location.X - (Dimensions.X - 1) / 2;
+			var y = location.Y - (Dimensions.Y - 1) / 2;
+			for (var j = 0; j < Dimensions.Y; j++)
+				for (var i = 0; i < Dimensions.X; i++)
+					if (footprint[index++] == 'x')
+						yield return new CPos(x + i, y + j);
 		}
 	}
 }

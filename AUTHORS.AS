@@ -13,6 +13,9 @@ The plugin is maintained by
    > initial AIDeployHelper
    > GrantStackableConditionOnFire aka Gattling
    > ArcRenderable
+   > Nydus tunnel logic
+   > mind control traits
+   > Berserkable
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
@@ -26,6 +29,10 @@ The plugin is maintained by
  * Martin Lang (Gerseras/Seraphinexxx)
    > DelayedWeapon system
 
+ * Mustafa Alperen Seki (MustaphaTR)
+   > GrantConditionOnProduction
+   > mindcontrol traits cleanup
+
  * Pavel Penev (penev92)
    > PaletteFromJasc32File - base JASC palette parser
 
@@ -34,6 +41,9 @@ The plugin is maintained by
 
  * jrb0001
    > AmmoPool support for ExplodeWeapon
+
+  * Wojciech Walaszek (CDVoidwalker)
+   > TeleportNetwork maintaince
 
  Authors of documents used in this plugin:
   * Apollo

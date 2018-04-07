@@ -10,7 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -19,8 +23,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ColorPickerLogic : ChromeLogic
 	{
+		static bool paletteTabOpenedLast;
+
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
+		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, Action<HSLColor> onChange, Dictionary<string, MiniYaml> logicArgs)
 		{
 			string actorType;
 			if (!ChromeMetrics.TryGet("ColorPickerActorType", out actorType))
@@ -47,6 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mixer.OnChange += () => onChange(mixer.Color);
 
 			if (randomButton != null)
+			{
 				randomButton.OnClick = () =>
 				{
 					// Avoid colors with low sat or lum
@@ -57,6 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					mixer.Set(new HSLColor(hue, sat, lum));
 					hueSlider.Value = hue / 255f;
 				};
+			}
 
 			// Set the initial state
 			var validator = modData.Manifest.Get<ColorValidator>();
@@ -65,6 +73,107 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			hueSlider.Value = initialColor.H / 255f;
 			onChange(mixer.Color);
+
+			// Setup tab controls
+			var mixerTab = widget.Get("MIXER_TAB");
+			var paletteTab = widget.Get("PALETTE_TAB");
+			var paletteTabPanel = widget.Get("PALETTE_TAB_PANEL");
+			var mixerTabButton = widget.Get<ButtonWidget>("MIXER_TAB_BUTTON");
+			var paletteTabButton = widget.Get<ButtonWidget>("PALETTE_TAB_BUTTON");
+			var presetArea = paletteTabPanel.Get<ContainerWidget>("PRESET_AREA");
+			var customArea = paletteTabPanel.Get<ContainerWidget>("CUSTOM_AREA");
+			var presetColorTemplate = paletteTabPanel.Get<ColorBlockWidget>("COLORPRESET");
+			var customColorTemplate = paletteTabPanel.Get<ColorBlockWidget>("COLORCUSTOM");
+
+			mixerTab.IsVisible = () => !paletteTabOpenedLast;
+			mixerTabButton.OnClick = () => paletteTabOpenedLast = false;
+			mixerTabButton.IsHighlighted = mixerTab.IsVisible;
+
+			paletteTab.IsVisible = () => paletteTabOpenedLast;
+			paletteTabButton.OnClick = () => paletteTabOpenedLast = true;
+			paletteTabButton.IsHighlighted = paletteTab.IsVisible;
+
+			var paletteCols = 8;
+			var palettePresetRows = 2;
+			var paletteCustomRows = 1;
+
+			MiniYaml yaml;
+			if (logicArgs.TryGetValue("PaletteColumns", out yaml))
+				if (!int.TryParse(yaml.Value, out paletteCols))
+					throw new YamlException("Invalid value for PaletteColumns: {0}".F(yaml.Value));
+			if (logicArgs.TryGetValue("PalettePresetRows", out yaml))
+				if (!int.TryParse(yaml.Value, out palettePresetRows))
+					throw new YamlException("Invalid value for PalettePresetRows: {0}".F(yaml.Value));
+			if (logicArgs.TryGetValue("PaletteCustomRows", out yaml))
+				if (!int.TryParse(yaml.Value, out paletteCustomRows))
+					throw new YamlException("Invalid value for PaletteCustomRows: {0}".F(yaml.Value));
+
+			for (var j = 0; j < palettePresetRows; j++)
+			{
+				for (var i = 0; i < paletteCols; i++)
+				{
+					var colorIndex = j * paletteCols + i;
+					if (colorIndex >= validator.TeamColorPresets.Length)
+						break;
+
+					var color = validator.TeamColorPresets[colorIndex];
+					var rgbColor = color.RGB;
+
+					var newSwatch = (ColorBlockWidget)presetColorTemplate.Clone();
+					newSwatch.GetColor = () => rgbColor;
+					newSwatch.IsVisible = () => true;
+					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
+					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
+					newSwatch.OnMouseUp = m =>
+					{
+						mixer.Set(color);
+						onChange(color);
+					};
+
+					presetArea.AddChild(newSwatch);
+				}
+			}
+
+			for (var j = 0; j < paletteCustomRows; j++)
+			{
+				for (var i = 0; i < paletteCols; i++)
+				{
+					var colorIndex = j * paletteCols + i;
+
+					var newSwatch = (ColorBlockWidget)customColorTemplate.Clone();
+					newSwatch.GetColor = () => Game.Settings.Player.CustomColors[colorIndex].RGB;
+					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;
+					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
+					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
+					newSwatch.OnMouseUp = m =>
+					{
+						var color = Game.Settings.Player.CustomColors[colorIndex];
+						mixer.Set(color);
+						onChange(color);
+					};
+
+					customArea.AddChild(newSwatch);
+				}
+			}
+
+			// Store color button
+			var storeButton = widget.Get<ButtonWidget>("STORE_BUTTON");
+			if (storeButton != null)
+			{
+				storeButton.OnClick = () =>
+				{
+					// Update the custom color list:
+					//  - Remove any duplicates of the new color
+					//  - Add the new color to the end
+					//  - Save the last N colors
+					Game.Settings.Player.CustomColors = Game.Settings.Player.CustomColors
+						.Where(c => c != mixer.Color)
+						.Append(mixer.Color)
+						.Reverse().Take(paletteCustomRows * paletteCols).Reverse()
+						.ToArray();
+					Game.Settings.Save();
+				};
+			}
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, ColorPreviewManagerWidget preview, World world)

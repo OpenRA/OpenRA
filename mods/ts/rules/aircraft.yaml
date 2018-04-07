@@ -30,6 +30,7 @@ DPOD:
 		PipCount: 5
 		PipType: Ammo
 		PipTypeEmpty: AmmoEmpty
+	-SpawnActorOnDeath:
 
 DSHP:
 	Inherits: ^Helicopter

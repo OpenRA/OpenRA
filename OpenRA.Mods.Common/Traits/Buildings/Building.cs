@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Clear smudges from underneath the building footprint on transform.")]
 		public readonly bool RemoveSmudgesOnTransform = true;
 
-		public readonly string[] BuildSounds = { "placbldg.aud", "build5.aud" };
+		public readonly string[] BuildSounds = { };
 
-		public readonly string[] UndeploySounds = { "cashturn.aud" };
+		public readonly string[] UndeploySounds = { };
 
 		public virtual object Create(ActorInitializer init) { return new Building(init, this); }
 
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (off - new WVec(0, 0, off.Z)) + LocalCenterOffset;
 		}
 
-		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
+		public BaseProvider FindBaseProvider(World world, Player p, CPos topLeft)
 		{
 			var center = world.Map.CenterOfCell(topLeft) + CenterOffset(world);
 			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Range is counted from the center of the actor, not from each cell.
 				var target = Target.FromPos(bp.Actor.CenterPosition);
 				if (target.IsInRange(center, bp.Trait.Info.Range))
-					return bp.Actor;
+					return bp.Trait;
 			}
 
 			return null;
@@ -173,9 +173,9 @@ namespace OpenRA.Mods.Common.Traits
 				.SelectMany(gba => gba.AreaTypes));
 		}
 
-		public virtual bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
+		public virtual bool IsCloseEnoughToBase(World world, Player p, ActorInfo ai, CPos topLeft)
 		{
-			var requiresBuildableArea = world.Map.Rules.Actors[buildingName].TraitInfoOrDefault<RequiresBuildableAreaInfo>();
+			var requiresBuildableArea = ai.TraitInfoOrDefault<RequiresBuildableAreaInfo>();
 			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
 
 			if (requiresBuildableArea == null || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)

@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
 

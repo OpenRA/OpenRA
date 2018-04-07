@@ -160,7 +160,7 @@ DD:
 		Range: 5c0
 	Turreted:
 		TurnSpeed: 7
-		Offset: 341,0,128
+		Offset: 469,0,128
 	Armament@PRIMARY:
 		Weapon: Stinger
 		LocalOffset: 0,-100,0, 0,100,0
@@ -211,7 +211,7 @@ CA:
 		Range: 5c0
 	Turreted@PRIMARY:
 		Turret: primary
-		Offset: -864,0,128
+		Offset: -896,0,128
 		TurnSpeed: 3
 	Turreted@SECONDARY:
 		Turret: secondary

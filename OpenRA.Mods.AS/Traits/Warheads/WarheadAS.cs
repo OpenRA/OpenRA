@@ -14,13 +14,14 @@ using OpenRA.GameRules;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
 {
 	[Desc("AS warhead extension class." +
 		"These warheads check for the Air TargetType when detonated inair!")]
-	public abstract class WarheadAS : Warhead, IRulesetLoaded<WeaponInfo>
+	public abstract class WarheadAS : Warhead
 	{
 		[Desc("Extra search radius beyond maximum spread. If set to zero (default), it will automatically scale to the largest health shape.",
 			"Custom overrides should not be necessary under normal circumstances.")]
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.AS.Warheads
 					validImpact = true;
 					break;
 				case ImpactType.Air:
-					validImpact = IsValidTarget(new string[] { "Air" });
+					validImpact = IsValidTarget(new BitSet<TargetableType>("Air"));
 					break;
 				case ImpactType.Ground:
 					var tileInfo = world.Map.GetTerrainInfo(targetTile);
@@ -89,12 +90,6 @@ namespace OpenRA.Mods.AS.Warheads
 			}
 
 			return validImpact;
-		}
-
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
-		{
-			if (VictimScanRadius == WDist.Zero)
-				VictimScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 }

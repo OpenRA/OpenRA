@@ -174,10 +174,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				metadata.AppendLine("\t\tType: {0}".F(terrainType));
 
 				if (terrainType == "Water")
-				{
 					metadata.AppendLine("\t\tTargetTypes: Water");
-					metadata.AppendLine("\t\tIsWater: True");
-				}
 				else
 					metadata.AppendLine("\t\tTargetTypes: Ground");
 

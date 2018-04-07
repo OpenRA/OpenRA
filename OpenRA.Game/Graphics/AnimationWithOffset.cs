@@ -36,7 +36,7 @@ namespace OpenRA.Graphics
 			ZOffset = zOffset;
 		}
 
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
+		public IRenderable[] Render(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
 		{
 			var center = self.CenterPosition;
 			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;

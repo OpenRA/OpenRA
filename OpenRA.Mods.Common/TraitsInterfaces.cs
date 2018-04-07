@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ISeedableResource { void Seed(Actor self); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator, HashSet<string> types); }
+	public interface INotifyInfiltrated { void Infiltrated(Actor self, Actor infiltrator, BitSet<TargetableType> types); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

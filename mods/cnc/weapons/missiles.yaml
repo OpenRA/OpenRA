@@ -31,7 +31,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
-		VictimScanRadius: 0
+		ImpactActors: false
 		ValidTargets: Ground, Water, Air
 
 Dragon:
@@ -130,7 +130,7 @@ MammothMissiles:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
-		VictimScanRadius: 0
+		ImpactActors: false
 		ValidTargets: Air
 
 227mm:
@@ -208,7 +208,7 @@ BoatMissile:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
-		VictimScanRadius: 0
+		ImpactActors: false
 		ValidTargets: Air
 
 TowerMissile:

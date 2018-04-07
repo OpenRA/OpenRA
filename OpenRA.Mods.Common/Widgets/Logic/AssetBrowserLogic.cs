@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		ScrollItemWidget template;
 
 		IReadOnlyPackage assetSource = null;
-		List<string> availableShps = new List<string>();
 		bool animateFrames = false;
 
 		string currentPalette;
 		string currentFilename;
+		IReadOnlyPackage currentPackage;
 		Sprite[] currentSprites;
 		VqaPlayerWidget player = null;
 		bool isVideoLoaded = false;
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.OnTextEdited = () => ApplyFilter(filenameInput.Text);
+			filenameInput.OnTextEdited = () => ApplyFilter();
 			filenameInput.OnEscKey = filenameInput.YieldKeyboardFocus;
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return false;
 		}
 
-		void ApplyFilter(string filename)
+		void ApplyFilter()
 		{
 			assetVisByName.Clear();
 			assetList.Layout.AdjustChildren();
@@ -274,16 +274,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Select the first visible
 			var firstVisible = assetVisByName.FirstOrDefault(kvp => kvp.Value);
-			if (firstVisible.Key != null)
-				LoadAsset(firstVisible.Key);
+			IReadOnlyPackage package;
+			string filename;
+
+			if (firstVisible.Key != null && modData.DefaultFileSystem.TryGetPackageContaining(firstVisible.Key, out package, out filename))
+				LoadAsset(package, filename);
 		}
 
-		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
+		void AddAsset(ScrollPanelWidget list, string filepath, IReadOnlyPackage package, ScrollItemWidget template)
 		{
-			var filename = Path.GetFileName(filepath);
 			var item = ScrollItemWidget.Setup(template,
-				() => currentFilename == filename,
-				() => { LoadAsset(filename); });
+				() => currentFilename == filepath && currentPackage == package,
+				() => { LoadAsset(package, filepath); });
 
 			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
 			item.IsVisible = () =>
@@ -300,7 +302,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			list.AddChild(item);
 		}
 
-		bool LoadAsset(string filename)
+		bool LoadAsset(IReadOnlyPackage package, string filename)
 		{
 			if (isVideoLoaded)
 			{
@@ -312,18 +314,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (string.IsNullOrEmpty(filename))
 				return false;
 
-			if (!modData.DefaultFileSystem.Exists(filename))
+			if (!package.Contains(filename))
 				return false;
 
 			isLoadError = false;
 
 			try
 			{
+				currentPackage = package;
+				currentFilename = filename;
+				var prefix = "";
+				var fs = modData.DefaultFileSystem as OpenRA.FileSystem.FileSystem;
+
+				if (fs != null)
+				{
+					prefix = fs.GetPrefix(package);
+					if (prefix != null)
+						prefix += "|";
+				}
+
 				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
 				{
 					player = panel.Get<VqaPlayerWidget>("PLAYER");
-					currentFilename = filename;
-					player.Load(filename);
+					player.Load(prefix + filename);
 					player.DrawOverlay = false;
 					isVideoLoaded = true;
 					frameSlider.MaximumValue = (float)player.Video.Frames - 1;
@@ -331,8 +344,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				currentFilename = filename;
-				currentSprites = world.Map.Rules.Sequences.SpriteCache[filename];
+				currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
 				currentFrame = 0;
 				frameSlider.MaximumValue = (float)currentSprites.Length - 1;
 				frameSlider.Ticks = currentSprites.Length;
@@ -368,16 +380,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void PopulateAssetList()
 		{
 			assetList.RemoveChildren();
-			availableShps.Clear();
 
-			var files = assetSource != null ? assetSource.Contents : modData.ModFiles.MountedPackages.SelectMany(f => f.Contents).Distinct();
-			foreach (var file in files.OrderBy(s => s))
+			var files = new SortedList<string, List<IReadOnlyPackage>>();
+
+			if (assetSource != null)
+				foreach (var content in assetSource.Contents)
+					files.Add(content, new List<IReadOnlyPackage> { assetSource });
+			else
 			{
-				if (allowedExtensions.Any(ext => file.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+				foreach (var mountedPackage in modData.ModFiles.MountedPackages)
 				{
-					AddAsset(assetList, file, template);
-					availableShps.Add(file);
+					foreach (var content in mountedPackage.Contents)
+					{
+						if (!files.ContainsKey(content))
+							files.Add(content, new List<IReadOnlyPackage> { mountedPackage });
+						else
+							files[content].Add(mountedPackage);
+					}
 				}
+			}
+
+			foreach (var file in files.OrderBy(s => s.Key))
+			{
+				if (!allowedExtensions.Any(ext => file.Key.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					continue;
+
+				foreach (var package in file.Value)
+					AddAsset(assetList, file.Key, package, template);
 			}
 		}
 

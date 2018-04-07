@@ -534,6 +534,7 @@
 		EjectOnGround: false
 		EjectInAir: true
 		AllowUnsuitableCell: true
+		ChuteSound: chute1.aud
 	GpsDot:
 		String: Plane
 	Tooltip:
@@ -550,6 +551,8 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
 	Explodes:
 		Weapon: UnitExplode
 		RequiresCondition: !airborne
@@ -592,6 +595,8 @@
 		Footprint: x
 		TerrainTypes: Clear,Road
 		RequiresBaseProvider: True
+		BuildSounds: placbldg.aud, build5.aud
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 	SoundOnDamageTransition:
@@ -672,6 +677,7 @@
 		Footprint: x
 		BuildSounds: placbldg.aud
 		TerrainTypes: Clear,Road
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7
@@ -718,6 +724,7 @@
 	Building:
 		BuildSounds: place2.aud
 		TerrainTypes: Clear, Road
+		UndeploySounds: cashturn.aud
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
@@ -797,7 +804,7 @@
 ^CivBuilding:
 	Inherits: ^TechBuilding
 	RenderSprites:
-		Palette: terrain
+		Palette: player
 	EditorTilesetFilter:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
@@ -998,7 +1005,7 @@
 		Name: Rock
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: terrain
+		Palette: desert
 	WithSpriteBody:
 	Building:
 		Footprint: __ x_
@@ -1015,7 +1022,7 @@
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderSprites:
-		Palette: terrain
+		Palette: desert
 	EditorTilesetFilter:
 		RequireTilesets: DESERT
 

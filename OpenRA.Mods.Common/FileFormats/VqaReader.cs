@@ -194,14 +194,14 @@ namespace OpenRA.Mods.Common.FileFormats
 							else if (audioChannels == 1)
 							{
 								var rawAudio = stream.ReadBytes((int)length);
-								audio1.Write(rawAudio);
+								audio1.WriteArray(rawAudio);
 							}
 							else
 							{
 								var rawAudio = stream.ReadBytes((int)length / 2);
-								audio1.Write(rawAudio);
+								audio1.WriteArray(rawAudio);
 								rawAudio = stream.ReadBytes((int)length / 2);
-								audio2.Write(rawAudio);
+								audio2.WriteArray(rawAudio);
 								if (length % 2 != 0)
 									stream.ReadBytes(2);
 							}

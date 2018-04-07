@@ -110,6 +110,8 @@ TRAN.Husk1:
 		Name: Husk (Chinook)
 	RenderSprites:
 		Image: tran1husk
+	-Capturable:
+	-TransformOnCapture:
 
 TRAN.Husk2:
 	Inherits: ^Husk
@@ -117,6 +119,8 @@ TRAN.Husk2:
 		Name: Husk (Chinook)
 	RenderSprites:
 		Image: tran2husk
+	-Capturable:
+	-TransformOnCapture:
 
 BADR.Husk:
 	Inherits: ^PlaneHusk

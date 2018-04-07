@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
 
+		[Desc("Should right clicking on the icon instantly cancel the production instead of putting it on hold?")]
+		public readonly bool DisallowPaused = false;
+
 		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
 		public readonly int BuildDurationModifier = 100;
 
@@ -64,7 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.Self.Owner.PlayerActor, this); }
 
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai) {
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
 			if (LowPowerSlowdown <= 0)
 				throw new YamlException("Production queue must have LowPowerSlowdown of at least 1.");
 		}

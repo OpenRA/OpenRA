@@ -16,10 +16,9 @@ namespace OpenRA.Mods.Common
 {
 	public static class PlayerExtensions
 	{
-		public static bool HasNoRequiredUnits(this Player player)
+		public static bool HasNoRequiredUnits(this Player player, bool shortGame)
 		{
-			var mapOptions = player.World.WorldActor.Trait<MapOptions>();
-			if (mapOptions.ShortGame)
+			if (shortGame)
 				return !player.World.ActorsHavingTrait<MustBeDestroyed>(t => t.Info.RequiredForShortGame).Any(a => a.Owner == player);
 			return !player.World.ActorsHavingTrait<MustBeDestroyed>().Any(a => a.Owner == player && a.IsInWorld);
 		}

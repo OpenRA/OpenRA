@@ -72,7 +72,7 @@ Player:
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: True
 	PlayerResources:
-		DefaultCashLocked: True
+		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		Enabled: False

@@ -25,10 +25,10 @@ namespace OpenRA.Mods.Common.HitShapes
 		[FieldLoader.Require]
 		public readonly WDist Radius = new WDist(426);
 
-		[Desc("Defines the top offset relative to the actor's target point.")]
+		[Desc("Defines the top offset relative to the actor's center.")]
 		public readonly int VerticalTopOffset = 0;
 
-		[Desc("Defines the bottom offset relative to the actor's target point.")]
+		[Desc("Defines the bottom offset relative to the actor's center.")]
 		public readonly int VerticalBottomOffset = 0;
 
 		public CircleShape() { }

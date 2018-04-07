@@ -89,8 +89,12 @@ namespace OpenRA
 			var defaultSubCellIndex = (byte)DefaultSubCell;
 			if (defaultSubCellIndex == byte.MaxValue)
 				DefaultSubCell = (SubCell)(SubCellOffsets.Length / 2);
-			else if (defaultSubCellIndex < (SubCellOffsets.Length > 1 ? 1 : 0) || defaultSubCellIndex >= SubCellOffsets.Length)
-				throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
+			else
+			{
+				var minSubCellOffset = SubCellOffsets.Length > 1 ? 1 : 0;
+				if (defaultSubCellIndex < minSubCellOffset || defaultSubCellIndex >= SubCellOffsets.Length)
+					throw new InvalidDataException("Subcell default index must be a valid index into the offset triples and must be greater than 0 for mods with subcells");
+			}
 
 			var makeCorners = Type == MapGridType.RectangularIsometric ?
 				(Func<int[], WVec[]>)IsometricCellCorners : RectangularCellCorners;

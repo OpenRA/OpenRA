@@ -8,7 +8,7 @@ Player:
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
-		DefaultCashLocked: True
+		DefaultCashDropdownLocked: True
 		DefaultCash: 0
 
 World:

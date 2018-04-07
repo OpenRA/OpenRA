@@ -16,11 +16,6 @@ namespace OpenRA.Network
 {
 	public static class OrderIO
 	{
-		public static void Write(this Stream s, byte[] buf)
-		{
-			s.Write(buf, 0, buf.Length);
-		}
-
 		public static List<Order> ToOrderList(this byte[] bytes, World world)
 		{
 			var ms = new MemoryStream(bytes, 4, bytes.Length - 4);

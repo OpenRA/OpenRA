@@ -1,56 +1,50 @@
 ﻿#region Copyright & License Information
 /*
- * Modded by Boolbada of OP mod, from Engineer repair enter activity.
- * Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made
- * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version. For more
- * information, see COPYING.
+ * Copyright 2015- OpenRA.Mods.AS Developers (see AUTHORS)
+ * This file is a part of a third-party plugin for OpenRA, which is
+ * free software. It is made available to you under the terms of the
+ * GNU General Public License as published by the Free Software
+ * Foundation. For more information, see COPYING.
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using OpenRA.Mods.AS.Traits;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Yupgi_alert.Traits;
 using OpenRA.Traits;
 
-/* Works with no base engine modification */
-
-namespace OpenRA.Mods.Yupgi_alert.Activities
+namespace OpenRA.Mods.AS.Activities
 {
-	class EnterNydus : Enter
+	class EnterTeleportNetwork : Enter
 	{
-		public EnterNydus(Actor self, Actor target, EnterBehaviour enterBehaviour)
+		string type;
+
+		public EnterTeleportNetwork(Actor self, Actor target, EnterBehaviour enterBehaviour, string type)
 			: base(self, target, enterBehaviour)
 		{
+			this.type = type;
 		}
 
 		protected override bool CanReserve(Actor self)
 		{
-			// Primary building is where you come out!
-			return !Target.Actor.IsPrimaryNydusExit();
+			return Target.Actor.IsValidTeleportNetworkUser(self);
 		}
 
 		protected override void OnInside(Actor self)
 		{
-			// entered the nydus canal but the entrance is dead immediately. haha;;
-			if (Target.Actor.IsDead)
+			// entered the teleport network canal but the entrance is dead immediately.
+			if (Target.Actor.IsDead || self.IsDead)
 				return;
 
-			// Find the primary nydus exit.
-			var pri = self.Owner.PlayerActor.Trait<NydusCounter>().PrimaryActor;
-
-			// Unfortunately, primary exit is killed for some reason and not exists at this time.
-			if (pri == null)
-				return;
+			// Find the primary teleport network exit.
+			var pri = Target.Actor.Owner.PlayerActor.TraitsImplementing<TeleportNetworkManager>().First(x => x.Type == type).PrimaryActor;
 
 			var exitinfo = pri.Info.TraitInfo<ExitInfo>();
 			var rp = pri.TraitOrDefault<RallyPoint>();
 
-			// I took these code from Production.cs:DoPrudiction,
-			// as exiting nydus canal is just like production. (of used product Kappa)
 			var exit = CPos.Zero; // spawn point
 			var exitLocation = CPos.Zero; // dest to move (cell pos)
 			var dest = Target.Invalid; // destination to move (in Target)
@@ -83,7 +77,7 @@ namespace OpenRA.Mods.Yupgi_alert.Activities
 			self.Trait<IPositionable>().SetPosition(self, exit);
 
 			// self still have enter-exit on its mind. ('cos enternydus implements enter behav.)
-			// Cancle that.
+			// Cancel that.
 			this.Done(self);
 
 			// Cancel all activities (like PortableChrono does)

@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Lint
 				if (!deathTypes.Any() || spawnActorOnAnyDeathType)
 					continue;
 
-				var targetable = actorInfo.Value.TraitInfos<ITargetableInfo>().SelectMany(x => x.GetTargetTypes()).ToList();
-				if (!targetable.Any())
+				var targetable = actorInfo.Value.GetAllTargetTypes();
+				if (targetable.IsEmpty)
 					continue;
 
 				foreach (var weaponInfo in rules.Weapons)

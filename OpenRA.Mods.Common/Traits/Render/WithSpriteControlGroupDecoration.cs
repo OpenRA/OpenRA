@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			pipImages.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
-			var bounds = decorationBounds.Select(b => b.DecorationBounds(self, wr)).FirstOrDefault(b => !b.IsEmpty);
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var boundsOffset = 0.5f * new float2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom);
 			if (Info.ReferencePoint.HasFlag(ReferencePoints.Top))
 				boundsOffset -= new float2(0, 0.5f * bounds.Height);

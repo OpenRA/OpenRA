@@ -72,7 +72,8 @@ World:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
-	WormManager:
+	ActorSpawnManager:
+		Actors: sandworm
 	CrateSpawner:
 		Minimum: 0
 		Maximum: 2

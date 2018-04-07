@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public Func<Color> GetColor;
 
+		public Action<MouseInput> OnMouseDown = _ => { };
+		public Action<MouseInput> OnMouseUp = _ => { };
+
 		public ColorBlockWidget()
 		{
 			GetColor = () => Color.White;
@@ -38,6 +41,31 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			WidgetUtils.FillRectWithColor(RenderBounds, GetColor());
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Button != MouseButton.Left)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down && !TakeMouseFocus(mi))
+				return false;
+
+			if (HasMouseFocus && mi.Event == MouseInputEvent.Up)
+			{
+				// Only fire the onMouseUp event if we successfully lost focus, and were pressed
+				OnMouseUp(mi);
+
+				return YieldMouseFocus(mi);
+			}
+
+			if (mi.Event == MouseInputEvent.Down)
+			{
+				// OnMouseDown returns false if the button shouldn't be pressed
+				OnMouseDown(mi);
+			}
+
+			return false;
 		}
 	}
 }
