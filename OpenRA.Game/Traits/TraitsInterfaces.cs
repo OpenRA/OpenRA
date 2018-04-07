@@ -285,6 +285,7 @@ namespace OpenRA.Traits
 
 	public interface IPositionable : IOccupySpace
 	{
+		bool CanExistInCell(CPos location);
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
 		bool CanEnterCell(CPos location, Actor ignoreActor = null, bool checkTransientActors = true);
 		SubCell GetValidSubCell(SubCell preferred = SubCell.Any);
