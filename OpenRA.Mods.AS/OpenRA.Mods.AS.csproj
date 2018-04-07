@@ -160,7 +160,6 @@
     <Compile Include="Traits\Conditions\GrantHordeBonus.cs" />
     <Compile Include="Void\CyclicImpactProjectile.cs" />
     <Compile Include="Void\CyclicImpactProjectileEffect.cs" />
-    <Compile Include="Yupgi\ArcRenderable.cs" />
     <Compile Include="Yupgi\BaseSpawnerMaster.cs" />
     <Compile Include="Yupgi\BaseSpawnerSlave.cs" />
     <Compile Include="Yupgi\CarrierMaster.cs" />
