@@ -7,6 +7,7 @@ using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Projectiles;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Effects
 {
 	public class CyclicImpactProjectileEffect : IEffect
@@ -20,18 +21,20 @@ namespace OpenRA.Mods.Common.Effects
 
 		[Sync]
 		WPos projectilepos, targetpos, source;
-		int lifespan;
+		int lifespan, estimatedlifespan;
 		[Sync]
 		int facing;
 		int ticks, smokeTicks;
 		World world;
+		public bool ShouldExplode { get; set; }
 		public WPos Position { get { return projectilepos; } }
 
-		public CyclicImpactProjectileEffect(CyclicImpactProjectileInfo info, ProjectileArgs args, int lifespan)
+		public CyclicImpactProjectileEffect(CyclicImpactProjectileInfo info, ProjectileArgs args, int lifespan, int estimatedlifespan)
 		{
 			this.info = info;
 			this.args = args;
 			this.lifespan = lifespan;
+			this.estimatedlifespan = estimatedlifespan;
 			projectilepos = args.Source;
 			source = args.Source;
 
@@ -102,21 +105,19 @@ namespace OpenRA.Mods.Common.Effects
 				anim.Tick();
 
 			var lastPos = projectilepos;
-			projectilepos = WPos.LerpQuadratic(source, targetpos, WAngle.Zero, ticks, lifespan);
+			projectilepos = WPos.Lerp(source, targetpos, ticks, estimatedlifespan);
 
 			// Check for walls or other blocking obstacles
-			var shouldExplode = false;
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, projectilepos, info.Width,
-				info.BlockerScanRadius, out blockedPos))
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, lastPos, projectilepos, info.Width, out blockedPos))
 			{
 				projectilepos = blockedPos;
-				shouldExplode = true;
+				ShouldExplode = true;
 			}
 
 			if (!string.IsNullOrEmpty(info.TrailImage) && --smokeTicks < 0)
 			{
-				var delayedPos = WPos.LerpQuadratic(source, targetpos, WAngle.Zero, ticks - info.TrailDelay, lifespan);
+				var delayedPos = WPos.Lerp(source, targetpos, ticks - info.TrailDelay, estimatedlifespan);
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, w, info.TrailImage, info.TrailSequences.Random(world.SharedRandom),
 					trailPalette, false, false, GetEffectiveFacing())));
 
@@ -129,17 +130,20 @@ namespace OpenRA.Mods.Common.Effects
 			var flightLengthReached = ticks >= lifespan;
 
 			if (flightLengthReached)
-				shouldExplode = true;
+				ShouldExplode = true;
 
 			// Driving into cell with higher height level
-			shouldExplode |= world.Map.DistanceAboveTerrain(projectilepos).Length < 0;
+			ShouldExplode |= world.Map.DistanceAboveTerrain(projectilepos).Length < 0;
 
-			if (shouldExplode)
+			if (ShouldExplode)
 				Explode(world);
 		}
 
 		void Explode(World world)
 		{
+			// ensures that externally called explode won be called twice
+			ShouldExplode = false;
+
 			args.Weapon.Impact(Target.FromPos(projectilepos), args.SourceActor, args.DamageModifiers);
 
 			if (info.ContrailLength > 0)

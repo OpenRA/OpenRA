@@ -2,17 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	[Flags]
 	public enum FireMode
 	{
 		Spread = 0,
@@ -20,7 +16,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		Focus = 2
 	}
 
-	[Desc("Detonates all warheads attached to it over it's lifespan x amount of times.")]
+	[Desc("Detonates all warheads attached to each ExplosionInterval ticks.")]
 	public class CyclicImpactProjectileInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Warhead explosion offsets")]
@@ -102,14 +98,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
 		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral | Stance.Ally;
 
-		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
-			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BlockerScanRadius = new WDist(-1);
-
-		[Desc("Extra search radius beyond path for actors with ValidBounceBlockerStances. If set to a negative value (default), ",
-			"it will automatically scale to the largest health shape. Only set custom values if you know what you're doing.")]
-		public WDist BounceBlockerScanRadius = new WDist(-1);
-
 		public IProjectile Create(ProjectileArgs args) { return new CyclicImpactProjectile(this, args); }
 
 		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
@@ -118,12 +106,6 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!rules.Weapons.TryGetValue(Weapon.ToLowerInvariant(), out weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(Weapon.ToLowerInvariant()));
 			WeaponInfo = weapon;
-
-			if (BlockerScanRadius < WDist.Zero)
-				BlockerScanRadius = Util.MinimumRequiredBlockerScanRadius(rules);
-
-			if (BounceBlockerScanRadius < WDist.Zero)
-				BounceBlockerScanRadius = Util.MinimumRequiredVictimScanRadius(rules);
 		}
 	}
 
@@ -135,11 +117,12 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WDist speed;
 
 		[Sync]
-		WPos projectilepos, targetpos, sourcepos;
-		WPos offsetSourcePos = WPos.Zero, offsetTargetPos = WPos.Zero;
+		WPos projectilepos, targetpos, sourcepos, offsetTargetPos = WPos.Zero;
+		WPos offsetSourcePos = WPos.Zero;
 		int lifespan;
 		int ticks;
 		int mindelay;
+		World world;
 		WRot offsetRotation;
 		CyclicImpactProjectileEffect[] projectiles; // offset projectiles
 
@@ -155,15 +138,14 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			var firedBy = args.SourceActor;
 
-			var world = args.SourceActor.World;
+			world = args.SourceActor.World;
 
 			if (info.Speed.Length > 1)
 				speed = new WDist(world.SharedRandom.Next(info.Speed[0].Length, info.Speed[1].Length));
 			else
 				speed = info.Speed[0];
 
-			if (!info.KillProjectilesWhenReachedTargetLocation)
-				targetpos = GetTargetPos();
+			targetpos = GetTargetPos();
 
 			mindelay = args.Weapon.MinRange.Length / speed.Length;
 
@@ -172,7 +154,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var mainfacing = (targetpos - sourcepos).Yaw.Facing;
 
 			// target that will be assigned
-			Target target = Target.Invalid;
+			Target target;
 
 			// main bullet facing
 			int facing = 0;
@@ -183,23 +165,17 @@ namespace OpenRA.Mods.Common.Projectiles
 				{
 					case FireMode.Focus:
 						offsetRotation = WRot.FromFacing(mainfacing);
-						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation
-							? args.PassiveTarget
-							: sourcepos + new WVec(range, 0, 0).Rotate(offsetRotation);
+						offsetTargetPos = sourcepos + new WVec(range, 0, 0).Rotate(offsetRotation);
 						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						break;
 					case FireMode.Line:
 						offsetRotation = WRot.FromFacing(mainfacing);
-						offsetTargetPos = info.KillProjectilesWhenReachedTargetLocation
-							? args.PassiveTarget
-							: sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
+						offsetTargetPos = sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
 						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						break;
 					case FireMode.Spread:
 						offsetRotation = WRot.FromFacing(info.Offsets[i].Yaw.Facing - 64) + WRot.FromFacing(mainfacing);
-						offsetSourcePos = info.KillProjectilesWhenReachedTargetLocation
-							? args.PassiveTarget
-							: sourcepos + info.Offsets[i].Rotate(offsetRotation);
+						offsetSourcePos = sourcepos + info.Offsets[i].Rotate(offsetRotation);
 						offsetTargetPos = sourcepos + new WVec(range + info.Offsets[i].X, info.Offsets[i].Y, info.Offsets[i].Z).Rotate(offsetRotation);
 						break;
 				}
@@ -214,10 +190,12 @@ namespace OpenRA.Mods.Common.Projectiles
 
 				target = Target.FromPos(offsetTargetPos);
 
+				var estmatedlifespan = Math.Max(args.Weapon.Range.Length / speed.Length, 1);
+
 				// if it's true then lifespan is counted from source pos to target, instead of max range
 				lifespan = info.KillProjectilesWhenReachedTargetLocation
-					? Math.Max((offsetTargetPos - offsetSourcePos).Length / speed.Length, 1)
-					: Math.Max(args.Weapon.Range.Length / speed.Length, 1);
+					? Math.Max((args.PassiveTarget - args.Source).Length / speed.Length, 1)
+					: estmatedlifespan;
 
 				facing = (offsetTargetPos - offsetSourcePos).Yaw.Facing;
 				var pargs = new ProjectileArgs
@@ -230,7 +208,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					PassiveTarget = target.CenterPosition
 				};
 
-				projectiles[i] = new CyclicImpactProjectileEffect(info, pargs, lifespan);
+				projectiles[i] = new CyclicImpactProjectileEffect(info, pargs, lifespan, estmatedlifespan);
 				world.Add(projectiles[i]);
 			}
 		}
@@ -239,15 +217,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			var targetpos = args.PassiveTarget;
 			var actorpos = args.SourceActor.CenterPosition;
-			var vector = targetpos - actorpos;
 
-			var scaler = (args.Weapon.Range.Length * 1000) / vector.Length;
-
-			var x = ((vector.X * scaler) / 1000) + actorpos.X;
-			var y = ((vector.Y * scaler) / 1000) + actorpos.Y;
-			var z = ((vector.Z * scaler) / 1000) + actorpos.Z;
-
-			return new WPos(x, y, z);
+			return WPos.Lerp(actorpos, targetpos, args.Weapon.Range.Length, (targetpos - actorpos).Length);
 		}
 
 		public void Tick(World world)
@@ -257,13 +228,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			ticks++;
 
 			if (ticks >= lifespan)
+			{
+				foreach (CyclicImpactProjectileEffect p in projectiles)
+					p.ShouldExplode = true;
+
 				world.AddFrameEndTask(w => w.Remove(this));
+			}
 		}
 
 		void DoImpact()
 		{
 			foreach (CyclicImpactProjectileEffect p in projectiles)
-				info.WeaponInfo.Impact(Target.FromPos(p.Position), SourceActor, args.DamageModifiers);
+				if (!p.ShouldExplode)
+					info.WeaponInfo.Impact(Target.FromPos(p.Position), SourceActor, args.DamageModifiers);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

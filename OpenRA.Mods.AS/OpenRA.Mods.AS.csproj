@@ -168,14 +168,8 @@
     <Compile Include="Yupgi\CreateRadioactivityWarhead.cs" />
     <Compile Include="Yupgi\DamagedByRadioactivity.cs" />
     <Compile Include="Yupgi\EnterCarrierMaster.cs" />
-    <Compile Include="Yupgi\EnterNydus.cs" />
-    <Compile Include="Yupgi\Mindcontrollable.cs" />
-    <Compile Include="Yupgi\Mindcontroller.cs" />
-    <Compile Include="Yupgi\Nydus.cs" />
-    <Compile Include="Yupgi\NydusPrimaryExit.cs" />
     <Compile Include="Yupgi\Radioactivity.cs" />
     <Compile Include="Yupgi\RadioactivityLayer.cs" />
-    <Compile Include="Yupgi\WithMindcontrolArc.cs" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
