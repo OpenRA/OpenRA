@@ -747,6 +747,8 @@ wall:
 			BottomRight: 512, 512
 	EditorTilesetFilter:
 		Categories: Defense
+	Replaceable:
+		Types: Tower
 
 medium_gun_turret:
 	Inherits: ^Defense
@@ -790,6 +792,8 @@ medium_gun_turret:
 		MuzzleSequence: muzzle
 	Power:
 		Amount: -50
+	Replacement:
+		ReplaceableTypes: Tower
 
 large_gun_turret:
 	Inherits: ^Defense
@@ -836,6 +840,8 @@ large_gun_turret:
 		Amount: -60
 	RevealOnDeath:
 		Radius: 5c768
+	Replacement:
+		ReplaceableTypes: Tower
 
 repair_pad:
 	Inherits: ^Building
