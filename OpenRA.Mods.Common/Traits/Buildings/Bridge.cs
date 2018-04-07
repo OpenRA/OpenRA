@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in footprint.Keys)
 				foreach (var a in self.World.ActorMap.GetActorsAt(c))
-					if (a.Info.HasTraitInfo<IPositionableInfo>() && !a.Trait<IPositionable>().CanEnterCell(c))
+					if (a.Info.HasTraitInfo<IPositionableInfo>() && !a.Trait<IPositionable>().CanExistInCell(c))
 						a.Kill(self, info.DamageTypes);
 		}
 
