@@ -172,7 +172,10 @@ namespace OpenRA.Mods.Common.Traits
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
+				{
 					Players.Players.Remove(name);
+					OnSpawnRemoved();
+				}
 			}
 
 			for (var index = 0; index < newCount; index++)
@@ -196,6 +199,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(creeps))
 				Players.Players[creeps].Enemies = Players.Players.Keys.Where(p => !Players.Players[p].NonCombatant).ToArray();
 		}
+
+		public Action OnSpawnRemoved = () => { };
 
 		void UpdateNeighbours(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
