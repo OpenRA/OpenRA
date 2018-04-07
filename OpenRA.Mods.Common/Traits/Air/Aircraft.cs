@@ -503,6 +503,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement IPositionable
 
+		public bool CanExistInCell(CPos cell) { return true; }
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; } // TODO: Handle landing
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true) { return true; }
 		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.Invalid; }
