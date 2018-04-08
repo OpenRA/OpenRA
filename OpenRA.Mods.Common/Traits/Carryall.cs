@@ -111,8 +111,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (State == CarryallState.Carrying)
 			{
-				if (Carryable.IsInWorld && !Carryable.IsDead)
-					Carryable.Kill(e.Attacker);
+				if (!Carryable.IsDead)
+                {
+                    var positionable = Carryable.Trait<IPositionable>();
+                    positionable.SetPosition(Carryable, self.Location);
+                    Carryable.Kill(e.Attacker);
+                }
+
 				Carryable = null;
 			}
 
