@@ -395,18 +395,12 @@ install-linux-desktop:
 
 install-linux-mime:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/mime/packages/"
-
-	@sed 's/{MOD}/ra/g' packaging/linux/openra-mimeinfo.xml.in | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-mimeinfo.xml
-	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
-
-	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@sed 's/{MOD}/ra/g' packaging/linux/openra-join-servers.desktop.in | sed 's/{MODNAME}/Red Alert/g' | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-ra-join-servers.desktop
-	@$(INSTALL_DATA) packaging/linux/openra-ra-join-servers.desktop "$(DESTDIR)$(datadir)/applications"
-	@sed 's/{MOD}/cnc/g' packaging/linux/openra-join-servers.desktop.in | sed 's/{MODNAME}/Tiberian Dawn/g' | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-cnc-join-servers.desktop
-	@$(INSTALL_DATA) packaging/linux/openra-cnc-join-servers.desktop "$(DESTDIR)$(datadir)/applications"
-	@sed 's/{MOD}/d2k/g' packaging/linux/openra-join-servers.desktop.in | sed 's/{MODNAME}/Dune 2000/g' | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-d2k-join-servers.desktop
-	@$(INSTALL_DATA) packaging/linux/openra-d2k-join-servers.desktop "$(DESTDIR)$(datadir)/applications"
-	@-$(RM) packaging/linux/openra-mimeinfo.xml packaging/linux/openra-ra-join-servers.desktop packaging/linux/openra-cnc-join-servers.desktop packaging/linux/openra-d2k-join-servers.desktop
+	@sed 's/{MODID}/ra/g' packaging/linux/openra-mimeinfo.xml.in | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-mimeinfo.xml
+	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra-ra.xml"
+	@sed 's/{MODID}/cnc/g' packaging/linux/openra-mimeinfo.xml.in | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-mimeinfo.xml
+	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra-cnc.xml"
+	@sed 's/{MODID}/d2k/g' packaging/linux/openra-mimeinfo.xml.in | sed 's/{TAG}/$(VERSION)/g' > packaging/linux/openra-mimeinfo.xml
+	@$(INSTALL_DATA) packaging/linux/openra-mimeinfo.xml "$(DESTDIR)$(datadir)/mime/packages/openra-d2k.xml"
 
 install-linux-appdata:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
@@ -431,9 +425,9 @@ else
 	@sed 's/{DEBUG}/--debug/' packaging/linux/openra-server.in | sed 's|{GAME_INSTALL_DIR}|$(gameinstalldir)|' | sed 's|{BIN_DIR}|$(bindir)|' > packaging/linux/openra-server.debug.in
 endif
 
-	@sed 's/{MOD}/ra/g' packaging/linux/openra.debug.in | sed 's/{MODNAME}/Red Alert/g' > packaging/linux/openra-ra
-	@sed 's/{MOD}/cnc/g' packaging/linux/openra.debug.in | sed 's/{MODNAME}/Tiberian Dawn/g' > packaging/linux/openra-cnc
-	@sed 's/{MOD}/d2k/g' packaging/linux/openra.debug.in | sed 's/{MODNAME}/Dune 2000/g' > packaging/linux/openra-d2k
+	@sed 's/{MODID}/ra/g' packaging/linux/openra.debug.in  | sed 's/{TAG}/$(VERSION)/g' | sed 's/{MODNAME}/Red Alert/g' > packaging/linux/openra-ra
+	@sed 's/{MODID}/cnc/g' packaging/linux/openra.debug.in | sed 's/{TAG}/$(VERSION)/g' | sed 's/{MODNAME}/Tiberian Dawn/g' > packaging/linux/openra-cnc
+	@sed 's/{MODID}/d2k/g' packaging/linux/openra.debug.in | sed 's/{TAG}/$(VERSION)/g' | sed 's/{MODNAME}/Dune 2000/g' > packaging/linux/openra-d2k
 
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx packaging/linux/openra-ra "$(BIN_INSTALL_DIR)"
@@ -462,9 +456,6 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-ra.desktop"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-cnc.desktop"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-d2k.desktop"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-ra-join-servers.desktop"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-cnc-join-servers.desktop"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-d2k-join-servers.desktop"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/openra-ra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra-ra.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra-ra.png"
@@ -480,7 +471,9 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra-d2k.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/64x64/apps/openra-d2k.png"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra-d2k.png"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra-ra.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra-cnc.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra-d2k.xml"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra.appdata.xml"
 	@-$(RM_F) "$(DESTDIR)$(mandir)/man6/openra.6"
 
