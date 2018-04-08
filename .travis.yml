@@ -79,7 +79,6 @@ deploy:
     - build/OpenRA-${TRAVIS_TAG}.exe
     - build/OpenRA-${TRAVIS_TAG}.dmg
     - build/OpenRA-${TRAVIS_TAG}-source.tar.bz2
-    - build/openra_${DOTVERSION}_all.deb
   skip_cleanup: true
   on:
     all_branches: true
