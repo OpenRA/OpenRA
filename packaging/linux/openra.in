@@ -1,7 +1,15 @@
 #!/bin/sh
 cd "{GAME_INSTALL_DIR}"
 
-mono {DEBUG} OpenRA.Game.exe Game.Mod={MOD} Engine.LaunchPath="{BIN_DIR}/openra-{MOD}" "$@"
+# Search for server connection
+PROTOCOL_PREFIX="openra-{MODID}-{TAG}://"
+JOIN_SERVER=""
+if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
+  JOIN_SERVER="Launch.Connect=${1#${PROTOCOL_PREFIX}}"
+fi
+
+# Run the game
+mono {DEBUG} OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@"
 
 # Show a crash dialog if required
 if [ $? != 0 ] && [ $? != 1 ]
