@@ -1,4 +1,20 @@
 ^Palettes:
+	PaletteFromFile@desert:
+		Name: desert
+		Filename: desert.pal
+		ShadowIndex: 4
+	PaletteFromFile@interior:
+		Name: interior
+		Filename: interior.pal
+		ShadowIndex: 4
+	PaletteFromFile@snow:
+		Name: snow
+		Filename: snow.pal
+		ShadowIndex: 4
+	PaletteFromFile@temperat:
+		Name: temperat
+		Filename: temperat.pal
+		ShadowIndex: 4
 	PaletteFromFile@player:
 		Name: player
 		Filename: temperat.pal
@@ -20,10 +36,6 @@
 		Filename: temperat.pal
 		ShadowIndex: 4
 		AllowModifiers: false
-	PaletteFromFile@desert:
-		Name: desert
-		Filename: desert.pal
-		ShadowIndex: 4
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

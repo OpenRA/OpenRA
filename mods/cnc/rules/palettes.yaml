@@ -1,4 +1,24 @@
 ^Palettes:
+	PaletteFromFile@desert:
+		Name: desert
+		Filename: desert.pal
+		ShadowIndex: 4
+	PaletteFromFile@jungle:
+		Name: jungle
+		Filename: jungle.pal
+		ShadowIndex: 4
+	PaletteFromFile@snow:
+		Name: snow
+		Filename: snow.pal
+		ShadowIndex: 4
+	PaletteFromFile@temperat:
+		Name: temperat
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@winter:
+		Name: winter
+		Filename: winter.pal
+		ShadowIndex: 4
 	PaletteFromCurrentTileset@terrain:
 		Name: terrain
 		ShadowIndex: 4

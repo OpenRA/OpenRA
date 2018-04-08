@@ -1,7 +1,7 @@
 General:
 	Name: Winter
 	Id: WINTER
-	Palette: winter.pal
+	Palette: winter
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 	HeightDebugColors: 880000
 
