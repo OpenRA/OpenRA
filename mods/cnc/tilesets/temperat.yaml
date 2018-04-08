@@ -1,7 +1,6 @@
 General:
 	Name: Temperate
 	Id: TEMPERAT
-	Palette: temperat.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 	HeightDebugColors: AA0000
 

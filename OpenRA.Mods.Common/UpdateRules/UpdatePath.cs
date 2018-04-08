@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameWormSpawner(),
 				new RemoveWithReloadingSpriteTurret(),
 				new IgnoreAbstractActors(),
-				new AddEditorPlayer()
+				new AddEditorPlayer(),
+				new RemovePaletteFromCurrentTileset()
 			})
 		};
 
