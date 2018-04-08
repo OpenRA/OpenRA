@@ -474,7 +474,9 @@ uninstall:
 	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra-ra.xml"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra-cnc.xml"
 	@-$(RM_F) "$(DESTDIR)$(datadir)/mime/packages/openra-d2k.xml"
-	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra.appdata.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra-ra.appdata.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra-cnc.appdata.xml"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/appdata/openra-d2k.appdata.xml"
 	@-$(RM_F) "$(DESTDIR)$(mandir)/man6/openra.6"
 
 help:
