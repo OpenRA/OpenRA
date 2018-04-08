@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public readonly string DefaultCashDropdownDescription = "Change the amount of cash that players start with";
 
 		[Desc("Starting cash options that are available in the lobby options.")]
-		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
+		public readonly int[] SelectableCash = {0, 2500, 5000, 10000, 20000 };
 
 		[Desc("Default starting cash option: should be one of the SelectableCash options.")]
 		public readonly int DefaultCash = 5000;
