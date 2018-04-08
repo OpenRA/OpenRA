@@ -11,14 +11,12 @@ fi
 # Run the game
 mono {DEBUG} OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@"
 
-# Show a crash dialog if required
-if [ $? != 0 ] && [ $? != 1 ]
-then
-	if which zenity > /dev/null
-	then
-		zenity --question --title "{MODNAME}" --text "{MODNAME} has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ
-	else
-		printf "{MODNAME} has encountered a fatal error.\n  -> Log Files are available in ~/.openra\n  -> FAQ is available at https://github.com/OpenRA/OpenRA/wiki/FAQ\n"
-	fi
-	exit 1
+# Show a crash dialog if something went wrong
+if [ $? != 0 ] && [ $? != 1 ]; then
+  if command -v zenity > /dev/null; then
+    zenity --no-wrap --question --title "{MODNAME}" --text "{MODNAME} has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ
+  else
+    printf "{MODNAME} has encountered a fatal error.\n  -> Log Files are available in ~/.openra\n  -> FAQ is available at https://github.com/OpenRA/OpenRA/wiki/FAQ\n"
+  fi
+  exit 1
 fi
