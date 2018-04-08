@@ -385,11 +385,11 @@ install-linux-icons:
 
 install-linux-desktop:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
-	@sed 's/{MOD}/ra/g' packaging/linux/openra.desktop.in | sed 's/{MODNAME}/Red Alert/g' > packaging/linux/openra-ra.desktop
+	@sed 's/{MODID}/ra/g' packaging/linux/openra.desktop.in | sed 's/{MODNAME}/Red Alert/g' > packaging/linux/openra-ra.desktop
 	@$(INSTALL_DATA) packaging/linux/openra-ra.desktop "$(DESTDIR)$(datadir)/applications"
-	@sed 's/{MOD}/cnc/g' packaging/linux/openra.desktop.in | sed 's/{MODNAME}/Tiberian Dawn/g' > packaging/linux/openra-cnc.desktop
+	@sed 's/{MODID}/cnc/g' packaging/linux/openra.desktop.in | sed 's/{MODNAME}/Tiberian Dawn/g' > packaging/linux/openra-cnc.desktop
 	@$(INSTALL_DATA) packaging/linux/openra-cnc.desktop "$(DESTDIR)$(datadir)/applications"
-	@sed 's/{MOD}/d2k/g' packaging/linux/openra.desktop.in | sed 's/{MODNAME}/Dune 2000/g' > packaging/linux/openra-d2k.desktop
+	@sed 's/{MODID}/d2k/g' packaging/linux/openra.desktop.in | sed 's/{MODNAME}/Dune 2000/g' > packaging/linux/openra-d2k.desktop
 	@$(INSTALL_DATA) packaging/linux/openra-d2k.desktop "$(DESTDIR)$(datadir)/applications"
 	@-$(RM) packaging/linux/openra-ra.desktop packaging/linux/openra-cnc.desktop packaging/linux/openra-d2k.desktop
 
@@ -404,11 +404,11 @@ install-linux-mime:
 
 install-linux-appdata:
 	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/appdata/"
-	@sed 's/{MOD}/ra/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Red Alert/g' | sed 's/{SCREENSHOT_RA}/ type="default"/g' | sed 's/{SCREENSHOT_CNC}//g' | sed 's/{SCREENSHOT_D2K}//g'> packaging/linux/openra-ra.appdata.xml
+	@sed 's/{MODID}/ra/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Red Alert/g' | sed 's/{SCREENSHOT_RA}/ type="default"/g' | sed 's/{SCREENSHOT_CNC}//g' | sed 's/{SCREENSHOT_D2K}//g'> packaging/linux/openra-ra.appdata.xml
 	@$(INSTALL_DATA) packaging/linux/openra-ra.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
-	@sed 's/{MOD}/cnc/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Tiberian Dawn/g' | sed 's/{SCREENSHOT_RA}//g' | sed 's/{SCREENSHOT_CNC}/ type="default"/g' | sed 's/{SCREENSHOT_D2K}//g'> packaging/linux/openra-cnc.appdata.xml
+	@sed 's/{MODID}/cnc/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Tiberian Dawn/g' | sed 's/{SCREENSHOT_RA}//g' | sed 's/{SCREENSHOT_CNC}/ type="default"/g' | sed 's/{SCREENSHOT_D2K}//g'> packaging/linux/openra-cnc.appdata.xml
 	@$(INSTALL_DATA) packaging/linux/openra-cnc.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
-	@sed 's/{MOD}/d2k/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Dune 2000/g' | sed 's/{SCREENSHOT_RA}//g' | sed 's/{SCREENSHOT_CNC}//g' | sed 's/{SCREENSHOT_D2K}/ type="default"/g'> packaging/linux/openra-d2k.appdata.xml
+	@sed 's/{MODID}/d2k/g' packaging/linux/openra.appdata.xml.in | sed 's/{MOD_NAME}/Dune 2000/g' | sed 's/{SCREENSHOT_RA}//g' | sed 's/{SCREENSHOT_CNC}//g' | sed 's/{SCREENSHOT_D2K}/ type="default"/g'> packaging/linux/openra-d2k.appdata.xml
 	@$(INSTALL_DATA) packaging/linux/openra-d2k.appdata.xml "$(DESTDIR)$(datadir)/appdata/"
 	@-$(RM) packaging/linux/openra-ra.appdata.xml packaging/linux/openra-cnc.appdata.xml packaging/linux/openra-d2k.appdata.xml
 
@@ -435,9 +435,9 @@ endif
 	@$(INSTALL_PROGRAM) -m +rx packaging/linux/openra-d2k "$(BIN_INSTALL_DIR)"
 	@-$(RM) packaging/linux/openra-ra packaging/linux/openra-cnc packaging/linux/openra-d2k packaging/linux/openra.debug.in
 
-	@sed 's/{MOD}/ra/g' packaging/linux/openra-server.debug.in | sed 's/{MODNAME}/Red Alert/g' > packaging/linux/openra-ra-server
-	@sed 's/{MOD}/cnc/g' packaging/linux/openra-server.debug.in | sed 's/{MODNAME}/Tiberian Dawn/g' > packaging/linux/openra-cnc-server
-	@sed 's/{MOD}/d2k/g' packaging/linux/openra-server.debug.in | sed 's/{MODNAME}/Dune 2000/g' > packaging/linux/openra-d2k-server
+	@sed 's/{MODID}/ra/g' packaging/linux/openra-server.debug.in | sed 's/{MODNAME}/Red Alert/g' > packaging/linux/openra-ra-server
+	@sed 's/{MODID}/cnc/g' packaging/linux/openra-server.debug.in | sed 's/{MODNAME}/Tiberian Dawn/g' > packaging/linux/openra-cnc-server
+	@sed 's/{MODID}/d2k/g' packaging/linux/openra-server.debug.in | sed 's/{MODNAME}/Dune 2000/g' > packaging/linux/openra-d2k-server
 
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx packaging/linux/openra-ra-server "$(BIN_INSTALL_DIR)"
