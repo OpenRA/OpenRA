@@ -2,6 +2,24 @@
 	PaletteFromFile@mouse:
 		Name: mouse
 		Filename: mousepal.pal
+	PaletteFromFile@terraintem:
+		Name: terrain
+		Tileset: TEMPERATE
+		Filename: isotem.pal
+	PaletteFromFile@terrainsno:
+		Name: terrain
+		Tileset: SNOW
+		Filename: isosno.pal
+	PaletteFromFile@terraindectem:
+		Name: terraindecoration
+		Tileset: TEMPERATE
+		Filename: isotem.pal
+		ShadowIndex: 1
+	PaletteFromFile@terraindecsno:
+		Name: terraindecoration
+		Tileset: SNOW
+		Filename: isosno.pal
+		ShadowIndex: 1
 	PaletteFromFile@playersno:
 		Name: player
 		Tileset: SNOW
@@ -15,11 +33,6 @@
 	PaletteFromFile@depth:
 		Name: depth
 		Filename: depth.pal
-	PaletteFromCurrentTileset:
-		Name: terrain
-	PaletteFromCurrentTileset@decoration:
-		Name: terraindecoration
-		ShadowIndex: 1
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: cameo.pal
