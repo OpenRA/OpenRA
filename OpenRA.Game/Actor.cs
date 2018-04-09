@@ -126,7 +126,7 @@ namespace OpenRA
 				// Caching this in a AddFrameEndTask, because trait construction order might cause problems if done directly at creation time.
 				// All actors that can move should have IMove, if not it's pretty safe to assume the actor is immobile and
 				// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
-				if (!Info.HasTraitInfo<IMoveInfo>() && targetablePositions.All(tp => tp.AlwaysEnabled))
+				if (!Info.HasTraitInfo<IMoveInfo>() && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled))
 					staticTargetablePositions = targetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
 			});
 
