@@ -191,14 +191,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					Console.WriteLine("\tRenderSprites:");
 
 				if (useTerrainPalette)
-				{
-					if (Game.ModData.DefaultRules.Actors.ContainsKey("world"))
-					{
-						var terrainPaletteDefintion = Game.ModData.DefaultRules.Actors["world"].TraitInfos<PaletteFromCurrentTilesetInfo>();
-						if (terrainPaletteDefintion.Any())
-							Console.WriteLine("\t\tPalette: " + terrainPaletteDefintion.Last().Name);
-					}
-				}
+					Console.WriteLine("\t\tPalette: terrain");
 
 				var image = rulesSection.GetValue("Image", string.Empty);
 				if (!string.IsNullOrEmpty(image) && image != "none")

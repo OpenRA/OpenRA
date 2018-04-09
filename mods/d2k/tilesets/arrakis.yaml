@@ -2,7 +2,6 @@ General:
 	Name: Arrakis
 	Id: ARRAKIS
 	SheetSize: 1024
-	Palette: PALETTE.BIN
 	EditorTemplateOrder: Basic, Dune, Sand-Detail, Rock-Detail, Ice-Detail, Rock-Sand-Smooth, Sand-Sand-Cliff, Sand-Rock-Cliff, Sand-Ice-Cliff, Rock-Rock-Cliff, Rock-Sand-Cliff, Cliff-Type-Changer, Cliff-Ends, Sand-Platform, Bridge, Rotten-Base, Dead-Worm, Unidentified
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000

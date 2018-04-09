@@ -16,6 +16,8 @@ NAWALL:
 		CrushClasses: heavywall
 	LineBuild:
 		NodeTypes: wall, turret
+	Replaceable:
+		Types: NodGate
 
 NAGATE_A:
 	Inherits: ^Gate_A
@@ -25,6 +27,8 @@ NAGATE_A:
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
 		Name: Nod Gate
+	Replacement:
+		ReplaceableTypes: NodGate
 
 NAGATE_B:
 	Inherits: ^Gate_B
@@ -34,6 +38,8 @@ NAGATE_B:
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
 		Name: Nod Gate
+	Replacement:
+		ReplaceableTypes: NodGate
 
 NAPOST:
 	Inherits: ^Building

@@ -16,6 +16,7 @@ Player:
 			Silo: gasilo
 		UnitsCommonNames:
 			Mcv: mcv
+			ExcludeFromSquads: harv
 		BuildingLimits:
 			proc: 4
 			gasilo: 2

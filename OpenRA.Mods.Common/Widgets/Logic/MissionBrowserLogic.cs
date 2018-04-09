@@ -118,8 +118,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						.OrderBy(x => x.Index)
 						.Select(x => x.Preview);
 
-					CreateMissionGroup(kv.Key, previews);
-					allPreviews.AddRange(previews);
+					if (previews.Any())
+					{
+						CreateMissionGroup(kv.Key, previews);
+						allPreviews.AddRange(previews);
+					}
 				}
 			}
 
