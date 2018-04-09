@@ -27,10 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RadarPingDuration = 10 * 25;
 
 		[Desc("The audio notification type to play.")]
+		[NotificationReference]
 		public string Notification = "BaseAttack";
 
 		[Desc("The audio notification to play to allies when under attack.",
 			"Won't play a notification to allies if this is null.")]
+		[NotificationReference]
 		public string AllyNotification = null;
 
 		public object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }

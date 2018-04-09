@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		public CVec Offset = CVec.Zero;
 		public int Facing = 96;
 		public string[] Sounds = { };
-		public string Notification = null;
+		[NotificationReference] public string Notification = null;
 		public int ForceHealthPercentage = 0;
 		public bool SkipMakeAnims = false;
 		public string Faction = null;

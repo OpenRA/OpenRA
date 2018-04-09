@@ -42,6 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DefaultCashDropdownDisplayOrder = 0;
 
 		[Desc("Speech notification to play when the player does not have any funds.")]
+		[NotificationReference]
 		public readonly string InsufficientFundsNotification = null;
 
 		[Desc("Delay (in ticks) during which warnings will be muted.")]

@@ -9,7 +9,9 @@
  */
 #endregion
 
-namespace OpenRA.Mods.Common.Traits
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common.Traits.Buildings
 {
 	public class RepairsUnitsInfo : PausableConditionalTraitInfo
 	{
@@ -21,9 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Interval = 24;
 
 		[Desc("The sound played when starting to repair a unit.")]
+		[NotificationReference]
 		public readonly string StartRepairingNotification = "Repairing";
 
 		[Desc("The sound played when repairing a unit is done.")]
+		[NotificationReference]
 		public readonly string FinishRepairingNotification = null;
 
 		[Desc("Experience gained by the player owning this actor for repairing an allied unit.")]

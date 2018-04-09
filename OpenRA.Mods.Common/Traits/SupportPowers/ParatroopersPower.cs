@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
 		[Desc("Notification to play when entering the drop zone.")]
+		[NotificationReference]
 		public readonly string ReinforcementsArrivedSpeechNotification = null;
 
 		[Desc("Number of facings that the delivery aircraft may approach from.")]

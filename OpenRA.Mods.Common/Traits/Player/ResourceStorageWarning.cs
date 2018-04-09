@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Threshold = 80;
 
 		[Desc("The speech to play for the warning.")]
+		[NotificationReference]
 		public readonly string Notification = "SilosNeeded";
 
 		public object Create(ActorInitializer init) { return new ResourceStorageWarning(init.Self, this); }

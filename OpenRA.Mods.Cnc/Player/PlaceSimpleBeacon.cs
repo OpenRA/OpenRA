@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly int Duration = 30 * 25;
 		public readonly string NotificationType = "Sounds";
-		public readonly string Notification = "Beacon";
+		[NotificationReference] public readonly string Notification = "Beacon";
 
 		public readonly bool IsPlayerPalette = false;
 		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "effect";

@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RadarPingDuration = 10 * 25;
 
 		[Desc("The audio notification type to play.")]
+		[NotificationReference]
 		public string Notification = "HarvesterAttack";
 
 		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }

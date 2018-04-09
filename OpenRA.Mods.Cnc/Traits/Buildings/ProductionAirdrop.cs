@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
 	{
-		public readonly string ReadyAudio = "Reinforce";
+		[NotificationReference] public readonly string ReadyAudio = "Reinforce";
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
 		[ActorReference(typeof(AircraftInfo))] public readonly string ActorType = "c17";
 
