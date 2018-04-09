@@ -72,10 +72,6 @@ SPY:
 	Buildable:
 		Prerequisites: ~disabled
 
-SNIPER:
-	Buildable:
-		Prerequisites: ~disabled
-
 HIJACKER:
 	Buildable:
 		Prerequisites: ~disabled
