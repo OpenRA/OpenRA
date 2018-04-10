@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Cnc.FileSystem
@@ -62,36 +63,28 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 			class Entry
 			{
-				readonly Stream s;
-				readonly uint offset;
-				readonly uint size;
+				public readonly uint Offset;
+				public readonly uint Size;
 				public readonly string Path;
 
 				public Entry(Stream s)
 				{
-					this.s = s;
-
-					offset = s.ReadUInt32();
-					size = s.ReadUInt32();
+					Offset = s.ReadUInt32();
+					Size = s.ReadUInt32();
 					if (BitConverter.IsLittleEndian)
 					{
-						offset = int2.Swap(offset);
-						size = int2.Swap(size);
+						Offset = int2.Swap(Offset);
+						Size = int2.Swap(Size);
 					}
 
 					Path = s.ReadASCIIZ();
-				}
-
-				public Stream GetData()
-				{
-					s.Position = offset;
-					return new MemoryStream(s.ReadBytes((int)size));
 				}
 			}
 
 			public Stream GetStream(string filename)
 			{
-				return index[filename].GetData();
+				var entry = index[filename];
+				return SegmentStream.CreateWithoutOwningStream(s, entry.Offset, (int)entry.Size);
 			}
 
 			public bool Contains(string filename)
