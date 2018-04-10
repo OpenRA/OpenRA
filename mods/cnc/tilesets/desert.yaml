@@ -1,7 +1,6 @@
 General:
 	Name: Desert
 	Id: DESERT
-	Palette: desert.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
 	HeightDebugColors: 880000
 

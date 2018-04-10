@@ -334,8 +334,6 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
 	}
 
-	public interface IMoveInfo : ITraitInfoInterface { }
-
 	public interface IMove
 	{
 		Activity MoveTo(CPos cell, int nearEnough);

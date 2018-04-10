@@ -1,11 +1,28 @@
 ^Palettes:
+	PaletteFromFile@terrain-snow:
+		Name: terrain
+		Tileset: SNOW
+		Filename: snow.pal
+		ShadowIndex: 3, 4
+	PaletteFromFile@terrain-interior:
+		Name: terrain
+		Tileset: INTERIOR
+		Filename: interior.pal
+		ShadowIndex: 3, 4
+	PaletteFromFile@terrain-temperat:
+		Name: terrain
+		Tileset: TEMPERAT
+		Filename: temperat.pal
+		ShadowIndex: 3, 4
+	PaletteFromFile@terrain-desert:
+		Name: terrain
+		Tileset: DESERT
+		Filename: desert.pal
+		ShadowIndex: 3, 4
 	PaletteFromFile@player:
 		Name: player
 		Filename: temperat.pal
 		ShadowIndex: 4
-	PaletteFromCurrentTileset:
-		Name: terrain
-		ShadowIndex: 3,4
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
