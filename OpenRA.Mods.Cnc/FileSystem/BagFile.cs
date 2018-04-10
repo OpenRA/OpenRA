@@ -46,8 +46,6 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if (!index.TryGetValue(filename, out entry))
 					return null;
 
-				s.Seek(entry.Offset, SeekOrigin.Begin);
-
 				var waveHeaderMemoryStream = new MemoryStream();
 
 				var channels = (entry.Flags & 1) > 0 ? 2 : 1;
@@ -100,7 +98,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				waveHeaderMemoryStream.Seek(0, SeekOrigin.Begin);
 
 				// Construct a merged stream
-				var mergedStream = new MergedStream(waveHeaderMemoryStream, s);
+				var waveStream = SegmentStream.CreateWithoutOwningStream(s, entry.Offset, (int)entry.Length);
+				var mergedStream = new MergedStream(waveHeaderMemoryStream, waveStream);
 				mergedStream.SetLength(waveHeaderMemoryStream.Length + entry.Length);
 
 				return mergedStream;
