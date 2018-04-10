@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.PackageLoaders
 {
@@ -67,8 +68,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 				if (!index.TryGetValue(filename, out e))
 					return null;
 
-				s.Seek(e.Offset, SeekOrigin.Begin);
-				return new MemoryStream(s.ReadBytes((int)e.Length));
+				return SegmentStream.CreateWithoutOwningStream(s, e.Offset, (int)e.Length);
 			}
 
 			public IReadOnlyPackage OpenPackage(string filename, FileSystem.FileSystem context)

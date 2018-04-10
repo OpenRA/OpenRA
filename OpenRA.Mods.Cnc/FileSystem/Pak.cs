@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Cnc.FileSystem
@@ -69,9 +70,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if (!index.TryGetValue(filename, out entry))
 					return null;
 
-				stream.Seek(entry.Offset, SeekOrigin.Begin);
-				var data = stream.ReadBytes((int)entry.Length);
-				return new MemoryStream(data);
+				return SegmentStream.CreateWithoutOwningStream(stream, entry.Offset, (int)entry.Length);
 			}
 
 			public bool Contains(string filename)
