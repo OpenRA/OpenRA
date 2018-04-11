@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Traits
 			return queue.ElementAtOrDefault(0);
 		}
 
-		public IEnumerable<ProductionItem> AllQueued()
+		public virtual IEnumerable<ProductionItem> AllQueued()
 		{
 			return queue;
 		}
