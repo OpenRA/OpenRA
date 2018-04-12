@@ -585,10 +585,14 @@
     <Compile Include="Traits\ActorSpawner.cs" />
     <Compile Include="UpdateRules\Rules\ChangeIntensityToDuration.cs" />
     <Compile Include="UpdateRules\Rules\AddShakeToBridge.cs" />
+    <Compile Include="UpdateRules\Rules\ChangeBuildableArea.cs" />
+    <Compile Include="UpdateRules\Rules\ChangeCanPowerDown.cs" />
+    <Compile Include="UpdateRules\Rules\DropPauseAnimationWhenDisabled.cs" />
     <Compile Include="UpdateRules\Rules\IgnoreAbstractActors.cs" />
     <Compile Include="UpdateRules\Rules\AddNukeLaunchAnimation.cs" />
     <Compile Include="UpdateRules\Rules\CapturableChanges.cs" />
     <Compile Include="UpdateRules\Rules\DecoupleSelfReloading.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveOutOfAmmo.cs" />
     <Compile Include="UpdateRules\Rules\RemovePlayerPaletteTileset.cs" />
     <Compile Include="UpdateRules\Rules\RenameWithTurreted.cs" />
     <Compile Include="UpdateRules\Rules\ScaleModHealth.cs" />

@@ -44,7 +44,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemovePlayerPaletteTileset(),
 				new RenameWithTurreted(),
 				new ScaleDefaultModHealth(),
-				new ScaleSupportPowerSecondsToTicks()
+				new ScaleSupportPowerSecondsToTicks(),
+				new ChangeBuildableArea(),
+				new ChangeCanPowerDown(),
+				new DropPauseAnimationWhenDisabled(),
+				new RemoveOutOfAmmo()
 			}),
 
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
