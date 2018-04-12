@@ -21,23 +21,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	class CaptureTarget<TInfoType> where TInfoType : class, ITraitInfoInterface
-	{
-		internal readonly Actor Actor;
-		internal readonly TInfoType Info;
-
-		/// <summary>The order string given to the capturer so they can capture this actor.</summary>
-		/// <example>ExternalCaptureActor</example>
-		internal readonly string OrderString;
-
-		internal CaptureTarget(Actor actor, string orderString)
-		{
-			Actor = actor;
-			Info = actor.Info.TraitInfoOrDefault<TInfoType>();
-			OrderString = orderString;
-		}
-	}
-
 	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		public class UnitCategories
@@ -264,8 +247,6 @@ namespace OpenRA.Mods.Common.AI
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
-	public enum BuildingType { Building, Defense, Refinery }
-
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
 		public MersenneTwister Random { get; private set; }
@@ -284,11 +265,6 @@ namespace OpenRA.Mods.Common.AI
 		public List<Squad> Squads = new List<Squad>();
 		public Player Player { get; private set; }
 
-		readonly DomainIndex domainIndex;
-		readonly ResourceLayer resLayer;
-		readonly ResourceClaimLayer claimLayer;
-		readonly IPathFinder pathfinder;
-
 		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
@@ -302,6 +278,8 @@ namespace OpenRA.Mods.Common.AI
 		int ticks;
 
 		BitArray resourceTypeIndices;
+
+		AIHarvesterManager harvManager;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
@@ -333,11 +311,6 @@ namespace OpenRA.Mods.Common.AI
 			if (World.Type == WorldType.Editor)
 				return;
 
-			domainIndex = World.WorldActor.Trait<DomainIndex>();
-			resLayer = World.WorldActor.TraitOrDefault<ResourceLayer>();
-			claimLayer = World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-			pathfinder = World.WorldActor.Trait<IPathFinder>();
-
 			isEnemyUnit = unit =>
 				Player.Stances[unit.Owner] == Stance.Enemy
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
@@ -367,6 +340,8 @@ namespace OpenRA.Mods.Common.AI
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
 
+			harvManager = new AIHarvesterManager(this, p);
+
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
 			foreach (var defense in Info.DefenseQueues)
@@ -388,18 +363,6 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
-		}
-
-		public bool IsAreaAvailable<T>(int radius, HashSet<string> terrainTypes)
-		{
-			var cells = World.ActorsHavingTrait<T>().Where(a => a.Owner == Player);
-
-			// TODO: Properly check building foundation rather than 3x3 area.
-			return cells.Select(a => Map.FindTilesInCircle(a.Location, radius)
-				.Count(c => Map.Contains(c) && terrainTypes.Contains(Map.GetTerrainInfo(c).Type) &&
-					Util.AdjacentCells(World, Target.FromCell(World, c))
-						.All(ac => terrainTypes.Contains(Map.GetTerrainInfo(ac).Type))))
-							.Any(availableCells => availableCells > 0);
 		}
 
 		public void QueueOrder(Order order)
@@ -657,8 +620,7 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
-				if (resLayer != null && !resLayer.IsResourceLayerEmpty)
-					GiveOrdersToIdleHarvesters();
+				harvManager.Tick(activeUnits);
 				FindNewUnits(self);
 				InitializeBase(self, true);
 			}
@@ -779,59 +741,6 @@ namespace OpenRA.Mods.Common.AI
 			return targets.MinByOrDefault(target => (target.Actor.CenterPosition - capturer.CenterPosition).LengthSquared);
 		}
 
-		CPos FindNextResource(Actor actor, Harvester harv)
-		{
-			var mobileInfo = actor.Info.TraitInfo<MobileInfo>();
-			var passable = (uint)mobileInfo.GetMovementClass(World.Map.Rules.TileSet);
-
-			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, mobileInfo, passable) &&
-				harv.CanHarvestCell(actor, cell) &&
-				claimLayer.CanClaimCell(actor, cell);
-
-			var path = pathfinder.FindPath(
-				PathSearch.Search(World, mobileInfo, actor, true, isValidResource)
-					.WithCustomCost(loc => World.FindActorsInCircle(World.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
-						.Where(u => !u.IsDead && actor.Owner.Stances[u.Owner] == Stance.Enemy)
-						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (World.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
-					.FromPoint(actor.Location));
-
-			if (path.Count == 0)
-				return CPos.Zero;
-
-			return path[0];
-		}
-
-		void GiveOrdersToIdleHarvesters()
-		{
-			// Find idle harvesters and give them orders:
-			foreach (var harvester in activeUnits)
-			{
-				var harv = harvester.TraitOrDefault<Harvester>();
-				if (harv == null)
-					continue;
-
-				if (!harv.IsEmpty)
-					continue;
-
-				if (!harvester.IsIdle)
-				{
-					var act = harvester.CurrentActivity;
-					if (!harv.LastSearchFailed || act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
-						continue;
-				}
-
-				var para = harvester.TraitOrDefault<Parachutable>();
-				if (para != null && para.IsInAir)
-					continue;
-
-				// Tell the idle harvester to quit slacking:
-				var newSafeResourcePatch = FindNextResource(harvester, harv);
-				BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
-				QueueOrder(new Order("Harvest", harvester, Target.FromCell(World, newSafeResourcePatch), false));
-			}
-		}
-
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsHavingTrait<IPositionable>()
@@ -840,10 +749,7 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var a in newUnits)
 			{
-				if (a.Info.HasTraitInfo<HarvesterInfo>())
-					QueueOrder(new Order("Harvest", a, false));
-				else
-					unitsHangingAroundTheBase.Add(a);
+				unitsHangingAroundTheBase.Add(a);
 
 				if (a.Info.HasTraitInfo<AircraftInfo>() && a.Info.HasTraitInfo<AttackBaseInfo>())
 				{

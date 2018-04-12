@@ -1,6 +1,7 @@
 ^Palettes:
-	PaletteFromCurrentTileset:
+	PaletteFromFile:
 		Name: terrain
+		Filename: PALETTE.BIN
 	PaletteFromFile@d2k:
 		Name: d2k
 		Filename: PALETTE.BIN

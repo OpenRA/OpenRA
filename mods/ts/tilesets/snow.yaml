@@ -1,7 +1,6 @@
 General:
 	Name: Snow
 	Id: SNOW
-	Palette: isosno.pal
 	HeightDebugColors: 00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80, 88008880, CC004480, FF110080, FF550080, FF990080, FFDD0080, DDFF0080, 99FF0080, 55FF0080, 11FF0080
 	EditorTemplateOrder: Bendy Dirt Roads, Blank, Bridges, Civilian Buildings, Clear, Clear/Rough LAT, Cliff Pieces, Cliff Set, Cliff/Water pieces, Dead Oil Tanker, Destroyable Cliffs, Dirt Road Junctions, Dirt Road Slopes, DirtTrackTunnel Floor, DirtTunnel Floor, Grey/Clear LAT, House, Ice 01, Ice 02, Ice 03, Ice Flow, Ice Ramps, Ice shore, Misc Buildings, Monorail Slopes, Paved Road Ends, Paved Road Slopes, Paved Roads, Pavement, Pavement (Use for LAT), Pavement/Clear LAT, Ramp edge fixup, Rough ground, Rough lat, Ruins, Shore Pieces, Slope Set Pieces, Straight Dirt Roads, TrackTunnel Floor, TrainBridges, Tunnel Side, Tunnels, Water, Water slopes, Waterfalls, Waterfalls-B, Waterfalls-C, Waterfalls-D
 	SheetSize: 2048
