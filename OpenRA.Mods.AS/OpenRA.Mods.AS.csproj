@@ -166,6 +166,8 @@
     <Compile Include="Yupgi\CreateRadioactivityWarhead.cs" />
     <Compile Include="Yupgi\DamagedByRadioactivity.cs" />
     <Compile Include="Yupgi\EnterCarrierMaster.cs" />
+    <Compile Include="Yupgi\MobSpawnerMaster.cs" />
+    <Compile Include="Yupgi\MobSpawnerSlave.cs" />
     <Compile Include="Yupgi\Radioactivity.cs" />
     <Compile Include="Yupgi\RadioactivityLayer.cs" />
   </ItemGroup>
