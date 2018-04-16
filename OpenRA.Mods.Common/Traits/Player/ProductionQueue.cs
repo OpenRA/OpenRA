@@ -223,6 +223,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
+			if (productionTraits.Any() && productionTraits.All(p => p.IsTraitDisabled))
+				return Enumerable.Empty<ActorInfo>();
 			if (developerMode.AllTech)
 				return producible.Keys;
 
@@ -231,6 +233,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
+			if (productionTraits.Any() && productionTraits.All(p => p.IsTraitDisabled))
+				return Enumerable.Empty<ActorInfo>();
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();
 			if (developerMode.AllTech)

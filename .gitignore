@@ -86,6 +86,11 @@ StyleCopViolations.xml
 # IntelliJ files
 .idea
 
-#Attacque Supérior
+# Attacque Supérior
 /mods/as/
+
+# Shattered Paradise
 /mods/sp/*
+
+# Nomad's Galaxy
+/mods/ng/*
