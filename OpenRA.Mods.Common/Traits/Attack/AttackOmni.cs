@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -49,6 +50,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				attack.DoAttack(self, target);
 				return this;
+			}
+
+			public override IEnumerable<Target> GetTargets(Actor self)
+			{
+				yield return target;
 			}
 		}
 	}
