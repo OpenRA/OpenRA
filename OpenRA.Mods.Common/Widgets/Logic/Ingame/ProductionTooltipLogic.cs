@@ -87,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
 				}
 
-				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a)).Where(s => !s.StartsWith("~", StringComparison.Ordinal));
+				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
+					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
 				requiresLabel.Text = prereqs.Any() ? requiresFormat.F(prereqs.JoinWith(", ")) : "";
 				var requiresSize = requiresFont.Measure(requiresLabel.Text);
 
