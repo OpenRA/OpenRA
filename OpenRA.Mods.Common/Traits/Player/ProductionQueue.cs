@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			productionTraits = self.TraitsImplementing<Production>().ToArray();
+			productionTraits = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).ToArray();
 		}
 
 		protected void ClearQueue()
