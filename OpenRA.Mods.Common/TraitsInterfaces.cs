@@ -151,6 +151,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
 
 	[RequireExplicitImplementation]
+	public interface INotifyEnteredCargo { void OnEnteredCargo(Actor self, Actor cargo); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
+
+	[RequireExplicitImplementation]
 	public interface IObservesVariablesInfo : ITraitInfo { }
 
 	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
