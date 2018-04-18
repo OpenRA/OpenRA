@@ -38,14 +38,31 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
 		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
+		[GrantedConditionReference]
+		[Desc("The condition to grant to when this actor is loaded inside any transport.")]
+		public readonly string CargoCondition = null;
+
+		[Desc("Conditions to grant when this actor is loaded inside specified transport.",
+			"A dictionary of [actor id]: [condition].")]
+		public readonly Dictionary<string, string> CargoConditions = new Dictionary<string, string>();
+
+		[GrantedConditionReference]
+		public IEnumerable<string> LinterCargoConditions { get { return CargoConditions.Values; } }
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
-	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld
+	public class Passenger : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo
 	{
 		public readonly PassengerInfo Info;
+		public Actor Transport;
+
+		ConditionManager conditionManager;
+		int anyCargoToken = ConditionManager.InvalidConditionToken;
+		int specificCargoToken = ConditionManager.InvalidConditionToken;
+
 		public Passenger(PassengerInfo info)
 		{
 			Info = info;
@@ -58,10 +75,14 @@ namespace OpenRA.Mods.Common.Traits
 			};
 		}
 
-		public Actor Transport;
 		public Cargo ReservedCargo { get; private set; }
 
 		public IEnumerable<IOrderTargeter> Orders { get; private set; }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
@@ -92,6 +113,28 @@ namespace OpenRA.Mods.Common.Traits
 			if ((order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports") ||
 				!CanEnter(order.TargetActor)) return null;
 			return Info.Voice;
+		}
+
+		void INotifyEnteredCargo.OnEnteredCargo(Actor self, Actor cargo)
+		{
+			string specificCargoCondition;
+			if (conditionManager != null)
+			{
+				if (anyCargoToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.CargoCondition))
+					anyCargoToken = conditionManager.GrantCondition(self, Info.CargoCondition);
+
+				if (specificCargoToken == ConditionManager.InvalidConditionToken && Info.CargoConditions.TryGetValue(cargo.Info.Name, out specificCargoCondition))
+					specificCargoToken = conditionManager.GrantCondition(self, specificCargoCondition);
+			}
+		}
+
+		void INotifyExitedCargo.OnExitedCargo(Actor self, Actor cargo)
+		{
+			if (anyCargoToken != ConditionManager.InvalidConditionToken)
+				anyCargoToken = conditionManager.RevokeCondition(self, anyCargoToken);
+
+			if (specificCargoToken != ConditionManager.InvalidConditionToken)
+				specificCargoToken = conditionManager.RevokeCondition(self, specificCargoToken);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
