@@ -94,6 +94,19 @@ namespace OpenRA
 							throw new YamlException("Weapon type {0}: {1}".F(weapon.Key, e.Message));
 						}
 					}
+
+					var projectileLoaded = weapon.Value.Projectile as IRulesetLoaded<IProjectileInfo>;
+					if (projectileLoaded != null)
+					{
+						try
+						{
+							projectileLoaded.RulesetLoaded(this, weapon.Value.Projectile);
+						}
+						catch (YamlException e)
+						{
+							throw new YamlException("Projectile type {0}: {1}".F(weapon.Key, e.Message));
+						}
+					}
 				}
 			}
 		}
