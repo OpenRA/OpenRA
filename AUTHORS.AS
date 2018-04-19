@@ -42,8 +42,9 @@ The plugin is maintained by
  * jrb0001
    > AmmoPool support for ExplodeWeapon
 
-  * Wojciech Walaszek (CDVoidwalker)
+ * Wojciech Walaszek (CDVoidwalker)
    > TeleportNetwork maintaince
+   > WarheadTrailProjectile
 
  Authors of documents used in this plugin:
   * Apollo
