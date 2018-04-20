@@ -27,7 +27,7 @@ namespace OpenRA.Mods.AS.Projectiles
 	}
 
 	[Desc("Detonates all warheads attached to Weapon each ExplosionInterval ticks.")]
-	public class WarheadTrailProjectileInfo : IProjectileInfo, IRulesetLoaded<WeaponInfo>
+	public class WarheadTrailProjectileInfo : IProjectileInfo, IRulesetLoaded<IProjectileInfo>
 	{
 		[Desc("Warhead explosion offsets")]
 		public readonly WVec[] Offsets = { new WVec(0, 1, 0) };
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.AS.Projectiles
 
 		public IProjectile Create(ProjectileArgs args) { return new WarheadTrailProjectile(this, args); }
 
-		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
+		void IRulesetLoaded<IProjectileInfo>.RulesetLoaded(Ruleset rules, IProjectileInfo info)
 		{
 			WeaponInfo weapon;
 			if (!rules.Weapons.TryGetValue(Weapon.ToLowerInvariant(), out weapon))
