@@ -99,6 +99,10 @@ namespace OpenRA.Mods.AS.Projectiles
 		public readonly int ContrailDelay = 1;
 		public readonly WDist ContrailWidth = new WDist(64);
 
+		[Desc("Altitude where this bullet should explode when reached.",
+			"Negative values allow this bullet to pass cliffs and terrain bumps.")]
+		public readonly WDist ExplodeUnderThisAltitude = new WDist(-1536);
+
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
 

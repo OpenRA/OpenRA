@@ -144,7 +144,7 @@ namespace OpenRA.Mods.AS.Effects
 				DetonateSelf = true;
 
 			// Driving into cell with higher height level
-			DetonateSelf |= world.Map.DistanceAboveTerrain(projectilepos).Length < 0;
+			DetonateSelf |= world.Map.DistanceAboveTerrain(projectilepos) < info.ExplodeUnderThisAltitude;
 
 			if (DetonateSelf)
 				Explode(world);
