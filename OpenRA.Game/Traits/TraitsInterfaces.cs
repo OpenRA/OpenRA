@@ -259,6 +259,7 @@ namespace OpenRA.Traits
 		IEnumerable<Actor> ActorsInBox(WPos a, WPos b);
 
 		WDist LargestActorRadius { get; }
+		WDist LargestBlockingActorRadius { get; }
 	}
 
 	public interface IRenderModifier

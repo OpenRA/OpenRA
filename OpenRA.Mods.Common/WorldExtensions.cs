@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common
 		/// <param name="lineEnd">The position the line should end at</param>
 		/// <param name="lineWidth">How close an actor's health radius needs to be to the line to be considered 'intersected' by the line</param>
 		/// <returns>A list of all the actors intersected by the line</returns>
-		public static IEnumerable<Actor> FindActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth)
+		public static IEnumerable<Actor> FindActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth, bool onlyBlockers = false)
 		{
 			// This line intersection check is done by first just finding all actors within a square that starts at the source, and ends at the target.
 			// Then we iterate over this list, and find all actors for which their health radius is at least within lineWidth of the line.
@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common
 			var yDir = yDiff < 0 ? -1 : 1;
 
 			var dir = new WVec(xDir, yDir, 0);
-			var overselect = dir * (1024 + lineWidth.Length + world.ActorMap.LargestActorRadius.Length);
+			var largestValidActorRadius = onlyBlockers ? world.ActorMap.LargestBlockingActorRadius.Length : world.ActorMap.LargestActorRadius.Length;
+			var overselect = dir * (1024 + lineWidth.Length + largestValidActorRadius);
 			var finalTarget = lineEnd + overselect;
 			var finalSource = lineStart - overselect;
 
@@ -62,6 +63,11 @@ namespace OpenRA.Mods.Common
 			}
 
 			return intersectedActors;
+		}
+
+		public static IEnumerable<Actor> FindBlockingActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth)
+		{
+			return world.FindActorsOnLine(lineStart, lineEnd, lineWidth, true);
 		}
 
 		/// <summary>
