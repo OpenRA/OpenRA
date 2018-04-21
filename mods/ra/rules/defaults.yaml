@@ -704,34 +704,6 @@
 	EditorTilesetFilter:
 		Categories: Wall
 
-^Gate:
-	Inherits: ^BasicBuilding
-	Valued:
-		Cost: 250
-	Health:
-		HP: 35000
-	Armor:
-		Type: Heavy
-	LineBuildNode:
-		Types: concrete, gate
-	-WithSpriteBody:
-	WithGateSpriteBody:
-	Tooltip:
-		Name: Gate
-	Building:
-		BuildSounds: place2.aud
-		TerrainTypes: Clear, Road
-		UndeploySounds: cashturn.aud
-	RequiresBuildableArea:
-		AreaTypes: building
-		Adjacent: 4
-	EditorTilesetFilter:
-		Categories: Wall
-	Gate:
-		OpeningSound: cashturn.aud
-		ClosingSound: cashturn.aud
-		BlocksProjectilesHeight: 0
-
 ^TechBuilding:
 	Inherits: ^BasicBuilding
 	Huntable:
