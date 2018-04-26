@@ -47,7 +47,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveWithReloadingSpriteTurret(),
 				new IgnoreAbstractActors(),
 				new AddEditorPlayer(),
-				new RemovePaletteFromCurrentTileset()
+				new RemovePaletteFromCurrentTileset(),
+				new SwitchShapePointsX()
 			})
 		};
 
