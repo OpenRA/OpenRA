@@ -18,7 +18,6 @@ namespace OpenRA.Graphics
 	{
 		readonly Renderer renderer;
 		readonly IShader shader;
-		readonly Action renderAction;
 
 		readonly Vertex[] vertices;
 		Sheet currentSheet;
@@ -30,7 +29,6 @@ namespace OpenRA.Graphics
 			this.renderer = renderer;
 			this.shader = shader;
 			vertices = new Vertex[renderer.TempBufferSize];
-			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
 		}
 
 		public void Flush()
@@ -41,7 +39,8 @@ namespace OpenRA.Graphics
 					shader.SetTexture("DiffuseTexture", currentSheet.GetTexture());
 
 				renderer.Device.SetBlendMode(currentBlend);
-				shader.Render(renderAction);
+				shader.PrepareRender();
+				renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
 				renderer.Device.SetBlendMode(BlendMode.None);
 
 				nv = 0;
@@ -106,7 +105,8 @@ namespace OpenRA.Graphics
 		{
 			shader.SetTexture("DiffuseTexture", sheet.GetTexture());
 			renderer.Device.SetBlendMode(blendMode);
-			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
+			shader.PrepareRender();
+			renderer.DrawBatch(buffer, start, length, type);
 			renderer.Device.SetBlendMode(BlendMode.None);
 		}
 

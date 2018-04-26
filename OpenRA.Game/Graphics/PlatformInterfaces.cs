@@ -89,7 +89,7 @@ namespace OpenRA
 		void SetVec(string name, float[] vec, int length);
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, float[] mtx);
-		void Render(Action a);
+		void PrepareRender();
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }
