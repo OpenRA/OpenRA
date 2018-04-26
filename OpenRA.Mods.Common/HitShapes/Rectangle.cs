@@ -39,6 +39,8 @@ namespace OpenRA.Mods.Common.HitShapes
 		public readonly WAngle LocalYaw = WAngle.Zero;
 
 		int2 quadrantSize;
+		int2 topLeftInner;
+		int2 bottomRightInner;
 		int2 center;
 
 		WVec[] combatOverlayVertsTop;
@@ -54,34 +56,41 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public void Initialize()
 		{
-			if (TopLeft.X >= BottomRight.X || TopLeft.Y >= BottomRight.Y)
-				throw new YamlException("TopLeft and BottomRight points are invalid.");
+			// Internally, negative X values mean forward, so we need to convert the values set by the modder accordingly
+			topLeftInner = new int2(-TopLeft.X, TopLeft.Y);
+			bottomRightInner = new int2(-BottomRight.X, BottomRight.Y);
+
+			if (topLeftInner.X >= bottomRightInner.X)
+				throw new YamlException("TopLeft.X {0} must be higher than BottomRight.X {1}.".F(topLeftInner.X.ToString(), bottomRightInner.X.ToString()));
+
+			if (topLeftInner.Y >= bottomRightInner.Y)
+				throw new YamlException("TopLeft.Y {0} must be lower than BottomRight.Y {1}.".F(topLeftInner.Y.ToString(), bottomRightInner.Y.ToString()));
 
 			if (VerticalTopOffset < VerticalBottomOffset)
 				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
 
-			quadrantSize = (BottomRight - TopLeft) / 2;
-			center = TopLeft + quadrantSize;
+			quadrantSize = (bottomRightInner - topLeftInner) / 2;
+			center = topLeftInner + quadrantSize;
 
-			var topRight = new int2(BottomRight.X, TopLeft.Y);
-			var bottomLeft = new int2(TopLeft.X, BottomRight.Y);
-			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
+			var topRight = new int2(bottomRightInner.X, topLeftInner.Y);
+			var bottomLeft = new int2(topLeftInner.X, bottomRightInner.Y);
+			var corners = new[] { topLeftInner, bottomRightInner, topRight, bottomLeft };
 			OuterRadius = new WDist(corners.Select(x => x.Length).Max());
 
 			combatOverlayVertsTop = new WVec[]
 			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset)
+				new WVec(topLeftInner.X, topLeftInner.Y, VerticalTopOffset),
+				new WVec(bottomRightInner.X, topLeftInner.Y, VerticalTopOffset),
+				new WVec(bottomRightInner.X, bottomRightInner.Y, VerticalTopOffset),
+				new WVec(topLeftInner.X, bottomRightInner.Y, VerticalTopOffset)
 			};
 
 			combatOverlayVertsBottom = new WVec[]
 			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset)
+				new WVec(topLeftInner.X, topLeftInner.Y, VerticalBottomOffset),
+				new WVec(bottomRightInner.X, topLeftInner.Y, VerticalBottomOffset),
+				new WVec(bottomRightInner.X, bottomRightInner.Y, VerticalBottomOffset),
+				new WVec(topLeftInner.X, bottomRightInner.Y, VerticalBottomOffset)
 			};
 		}
 
