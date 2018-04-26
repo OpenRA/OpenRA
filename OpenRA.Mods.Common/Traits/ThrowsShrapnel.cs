@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						Weapon = wep,
 						Facing = self.World.SharedRandom.Next(-1, 255),
+						CurrentMuzzleFacing = () => 0,
 
 						DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 							.Select(a => a.GetFirepowerModifier()).ToArray(),
