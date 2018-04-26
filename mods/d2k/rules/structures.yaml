@@ -70,8 +70,8 @@ construction_yard:
 		HP: 30000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -1024
-			BottomRight: 1536, 1024
+			TopLeft: 1536,-1024
+			BottomRight: -1536,1024
 	Armor:
 		Type: cy
 	RevealsShroud:
@@ -146,8 +146,8 @@ wind_trap:
 		HP: 30000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1024, -1024
-			BottomRight: 1024, 1024
+			TopLeft: 1024,-1024
+			BottomRight: -1024,1024
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -192,8 +192,8 @@ barracks:
 		HP: 32000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1024, -1024
-			BottomRight: 1024, 1024
+			TopLeft: 1024,-1024
+			BottomRight: -1024,1024
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -274,12 +274,12 @@ refinery:
 		HP: 30000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -512, -1024
-			BottomRight: 1536, 0
+			TopLeft: 512,-1024
+			BottomRight: -1536,0
 	HitShape@BOTTOM:
 		Type: Rectangle
-			TopLeft: -1536, 0
-			BottomRight: 512, 1024
+			TopLeft: 1536,0
+			BottomRight: -512,1024
 	Armor:
 		Type: heavy
 	RevealsShroud:
@@ -388,8 +388,8 @@ light_factory:
 	HitShape:
 		TargetableOffsets: -210,608,0
 		Type: Rectangle
-			TopLeft: -1536, -1024
-			BottomRight: 1536, 1024
+			TopLeft: 1536,-1024
+			BottomRight: -1536,1024
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -476,12 +476,12 @@ heavy_factory:
 	HitShape:
 		TargetableOffsets: -1155,-704,0, -1365,832,0
 		Type: Rectangle
-			TopLeft: -1536, -512
-			BottomRight: 1536, 1536
+			TopLeft: 1536,-512
+			BottomRight: -1536,1536
 	HitShape@TOP:
 		Type: Rectangle
-			TopLeft: -512, -1536
-			BottomRight: 512, -512
+			TopLeft: 512,-1536
+			BottomRight: -512,-512
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -575,8 +575,8 @@ outpost:
 		HP: 35000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -1024
-			BottomRight: 1536, 1024
+			TopLeft: 1536,-1024
+			BottomRight: -1536,1024
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -623,12 +623,12 @@ starport:
 		HP: 35000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -1536
-			BottomRight: 1536, 512
+			TopLeft: 1536,-1536
+			BottomRight: -1536,512
 	HitShape@BOTTOM:
 		Type: Rectangle
-			TopLeft: -512, 512
-			BottomRight: 512, 1536
+			TopLeft: 512,512
+			BottomRight: -512,1536
 	Armor:
 		Type: heavy
 	RevealsShroud:
@@ -743,8 +743,8 @@ wall:
 		Range: 1c512, 2c768
 	HitShape:
 		Type: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
+			TopLeft: 512,-512
+			BottomRight: -512,512
 	EditorTilesetFilter:
 		Categories: Defense
 	Replaceable:
@@ -863,12 +863,12 @@ repair_pad:
 		HP: 30000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -512
-			BottomRight: 1536, 512
+			TopLeft: 1536,-512
+			BottomRight: -1536,512
 	HitShape@TOPANDBOTTOM:
 		Type: Rectangle
-			TopLeft: -512, -1536
-			BottomRight: 512, 1536
+			TopLeft: 512,-1536
+			BottomRight: -512,1536
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -930,13 +930,13 @@ high_tech_factory:
 	HitShape:
 		TargetableOffsets: -1312,0,0, -1312,-1024,0, -1312,1024,0
 		Type: Rectangle
-			TopLeft: -1536, -512
-			BottomRight: 1536, 1536
+			TopLeft: 1536,-512
+			BottomRight: -1536,1536
 	HitShape@TOP:
 		TargetableOffsets: 1280,0,0
 		Type: Rectangle
-			TopLeft: -512, -1536
-			BottomRight: 512, -512
+			TopLeft: 512,-1536
+			BottomRight: -512,-512
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -1011,13 +1011,13 @@ research_centre:
 	HitShape:
 		TargetableOffsets: -1574,-158,0, -1050,-1024,0, -1155,960,0
 		Type: Rectangle
-			TopLeft: -1536, -512
-			BottomRight: 1536, 1536
+			TopLeft: 1536,-512
+			BottomRight: -1536,1536
 	HitShape@TOP:
 		TargetableOffsets: 1312,0,0
 		Type: Rectangle
-			TopLeft: -512, -1536
-			BottomRight: 512, -512
+			TopLeft: 512,-1536
+			BottomRight: -512,-512
 	Armor:
 		Type: building
 	RevealsShroud:
@@ -1060,16 +1060,16 @@ palace:
 		HP: 40000
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -512
-			BottomRight: 1536, 512
+			TopLeft: 1536,-512
+			BottomRight: -1536,512
 	HitShape@TOP:
 		Type: Rectangle
-			TopLeft: -1536, -1536
-			BottomRight: 512, -512
+			TopLeft: 1536,-1536
+			BottomRight: -512,-512
 	HitShape@BOTTOM:
 		Type: Rectangle
-			TopLeft: -512, 512
-			BottomRight: 1536, 1536
+			TopLeft: 512,512
+			BottomRight: -1536,1536
 	Armor:
 		Type: heavy
 	RevealsShroud:
