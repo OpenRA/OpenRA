@@ -79,8 +79,8 @@ ABAN05:
 	Inherits@SHAPE: ^3x2Shape
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -1024
-			BottomRight: 768, 1024
+			TopLeft: 1536,-1024
+			BottomRight: -768,1024
 	Tooltip:
 		Name: Hunting Lodge
 	Building:

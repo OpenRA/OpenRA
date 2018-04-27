@@ -366,8 +366,8 @@ NAWAST:
 	Inherits: ^Building
 	HitShape:
 		Type: Rectangle
-			TopLeft: -1536, -1536
-			BottomRight: 512, 1536
+			TopLeft: 1536,-1536
+			BottomRight: -512,1536
 	Valued:
 		Cost: 1600
 	Tooltip:
