@@ -4,8 +4,8 @@ V01:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
 		Type: Rectangle
-			TopLeft: -768, -597
-			BottomRight: 896, 683
+			TopLeft: 768,-597
+			BottomRight: -896,683
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -32,8 +32,8 @@ V02:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
 		Type: Rectangle
-			TopLeft: -1024, -512
-			BottomRight: 1024, 597
+			TopLeft: 1024,-512
+			BottomRight: -1024,597
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -60,8 +60,8 @@ V03:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
 		Type: Rectangle
-			TopLeft: -1024, -597
-			BottomRight: 1024, 597
+			TopLeft: 1024,-597
+			BottomRight: -1024,597
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -88,8 +88,8 @@ V04:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
 		Type: Rectangle
-			TopLeft: -683, -432
-			BottomRight: 683, 683
+			TopLeft: 683,-432
+			BottomRight: -683,683
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
