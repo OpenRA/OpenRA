@@ -46,7 +46,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "CapsuleShape report accurate distance")]
 		public void Capsule()
 		{
-			shape = new CapsuleShape(new int2(-50, 0), new int2(500, 235), new WDist(50));
+			shape = new CapsuleShape(new int2(50, 0), new int2(-500, 235), new WDist(50));
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(300, 100, 0)).Length,
@@ -71,7 +71,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "RectangleShape report accurate distance")]
 		public void Rectangle()
 		{
-			shape = new RectangleShape(new int2(-123, -456), new int2(100, 100));
+			shape = new RectangleShape(new int2(123, -456), new int2(-100, 100));
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -98,7 +98,7 @@ namespace OpenRA.Test
 		{
 			// Rectangle like above,
 			// Note: The calculations don't match for all, but do have a tolerance of 1.
-			shape = new PolygonShape(new int2[] { new int2(-123, -456), new int2(100, -456), new int2(100, 100), new int2(-123, 100) });
+			shape = new PolygonShape(new int2[] { new int2(123, -456), new int2(-100, -456), new int2(-100, 100), new int2(123, 100) });
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -121,7 +121,7 @@ namespace OpenRA.Test
 
 			// Rectangle like above but reverse order
 			// Note: The calculations don't match for all, but do have a tolerance of 1.
-			shape = new PolygonShape(new int2[] { new int2(-123, 100), new int2(100, 100), new int2(100, -456), new int2(-123, -456) });
+			shape = new PolygonShape(new int2[] { new int2(123, 100), new int2(-100, 100), new int2(-100, -456), new int2(123, -456) });
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -143,7 +143,7 @@ namespace OpenRA.Test
 				Is.EqualTo(877));
 
 			// Right triangle taken from above by removing a point
-			shape = new PolygonShape(new int2[] { new int2(-123, -456), new int2(100, -456), new int2(100, 100) });
+			shape = new PolygonShape(new int2[] { new int2(123, -456), new int2(-100, -456), new int2(-100, 100) });
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -171,7 +171,7 @@ namespace OpenRA.Test
 				Is.EqualTo(878));
 
 			// Right triangle taken from above but reverse order
-			shape = new PolygonShape(new int2[] { new int2(100, 100), new int2(100, -456), new int2(-123, -456) });
+			shape = new PolygonShape(new int2[] { new int2(-100, 100), new int2(-100, -456), new int2(123, -456) });
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -200,9 +200,9 @@ namespace OpenRA.Test
 
 			// Plus shaped dodecagon
 			shape = new PolygonShape(new int2[] {
-				new int2(-511, -1535), new int2(511, -1535), new int2(511, -511), new int2(1535, -511),
-				new int2(1535, 511), new int2(511, 511), new int2(511, 1535), new int2(-511, 1535),
-				new int2(-511, 511), new int2(-1535, 511), new int2(-1535, -511), new int2(-511, -511)
+				new int2(511, -1535), new int2(-511, -1535), new int2(-511, -511), new int2(-1535, -511),
+				new int2(-1535, 511), new int2(-511, 511), new int2(-511, 1535), new int2(511, 1535),
+				new int2(511, 511), new int2(1535, 511), new int2(1535, -511), new int2(511, -511)
 			});
 			shape.Initialize();
 
