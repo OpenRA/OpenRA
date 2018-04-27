@@ -15,6 +15,7 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
@@ -22,21 +23,25 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
+		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
+		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
+		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	PlaceBuilding:
 		Palette: placebuilding

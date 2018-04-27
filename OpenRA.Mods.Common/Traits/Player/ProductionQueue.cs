@@ -41,6 +41,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("This percentage value is multiplied with actor cost to translate into build time (lower means faster).")]
 		public readonly int BuildDurationModifier = 100;
 
+		[Desc("Maximum number of a single actor type that can be queued (0 = infinite).")]
+		public readonly int ItemLimit = 999;
+
+		[Desc("Maximum number of items that can be queued across all actor types (0 = infinite).")]
+		public readonly int QueueLimit = 0;
+
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
 
@@ -48,10 +54,15 @@ namespace OpenRA.Mods.Common.Traits
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = "UnitReady";
 
-		[Desc("Notification played when you can't train another unit",
+		[Desc("Notification played when you can't train another actor",
 			"when the build limit exceeded or the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = "NoBuild";
+
+		[Desc("Notification played when you can't queue another actor",
+			"when the queue length limit is exceeded.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
+		public readonly string LimitedAudio = null;
 
 		[Desc("Notification played when user clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
@@ -216,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 			return queue.ElementAtOrDefault(0);
 		}
 
-		public IEnumerable<ProductionItem> AllQueued()
+		public virtual IEnumerable<ProductionItem> AllQueued()
 		{
 			return queue;
 		}
@@ -285,6 +296,42 @@ namespace OpenRA.Mods.Common.Traits
 				queue[0].Tick(playerResources);
 		}
 
+		public bool CanQueue(ActorInfo actor, out string notificationAudio)
+		{
+			notificationAudio = Info.BlockedAudio;
+
+			var bi = actor.TraitInfoOrDefault<BuildableInfo>();
+			if (bi == null)
+				return false;
+
+			if (!developerMode.AllTech)
+			{
+				if (Info.QueueLimit > 0 && queue.Count >= Info.QueueLimit)
+				{
+					notificationAudio = Info.LimitedAudio;
+					return false;
+				}
+
+				var queueCount = queue.Count(i => i.Item == actor.Name);
+				if (Info.ItemLimit > 0 && queueCount >= Info.ItemLimit)
+				{
+					notificationAudio = Info.LimitedAudio;
+					return false;
+				}
+
+				if (bi.BuildLimit > 0)
+				{
+					var owned = self.Owner.World.ActorsHavingTrait<Buildable>()
+						.Count(a => a.Info.Name == actor.Name && a.Owner == self.Owner);
+					if (queueCount + owned >= bi.BuildLimit)
+						return false;
+				}
+			}
+
+			notificationAudio = Info.QueuedAudio;
+			return true;
+		}
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (!Enabled)
@@ -307,11 +354,20 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Check if the player is trying to build more units that they are allowed
 					var fromLimit = int.MaxValue;
-					if (!developerMode.AllTech && bi.BuildLimit > 0)
+					if (!developerMode.AllTech)
 					{
-						var inQueue = queue.Count(pi => pi.Item == order.TargetString);
-						var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
-						fromLimit = bi.BuildLimit - (inQueue + owned);
+						if (Info.QueueLimit > 0)
+							fromLimit = Info.QueueLimit - queue.Count;
+
+						if (Info.ItemLimit > 0)
+							fromLimit = Math.Min(fromLimit, Info.ItemLimit - queue.Count(i => i.Item == order.TargetString));
+
+						if (bi.BuildLimit > 0)
+						{
+							var inQueue = queue.Count(pi => pi.Item == order.TargetString);
+							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
+							fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
+						}
 
 						if (fromLimit <= 0)
 							return;
@@ -371,10 +427,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected void CancelProduction(string itemName, uint numberToCancel)
 		{
 			for (var i = 0; i < numberToCancel; i++)
-				CancelProductionInner(itemName);
+				if (!CancelProductionInner(itemName))
+					break;
 		}
 
-		void CancelProductionInner(string itemName)
+		bool CancelProductionInner(string itemName)
 		{
 			var lastIndex = queue.FindLastIndex(a => a.Item == itemName);
 
@@ -388,6 +445,10 @@ namespace OpenRA.Mods.Common.Traits
 				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
 				FinishProduction();
 			}
+			else
+				return false;
+
+			return true;
 		}
 
 		public void FinishProduction()

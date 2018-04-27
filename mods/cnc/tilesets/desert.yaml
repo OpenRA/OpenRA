@@ -1543,15 +1543,15 @@ Templates:
 		Size: 3,3
 		Categories: River
 		Tiles:
-			0: Clear
+			0: Rock
 			1: River
 			2: Clear
 			3: Road
-			4: Road
+			4: Rough
 			5: Road
-			6: Clear
+			6: Rock
 			7: River
-			8: River
+			8: Clear
 	Template@162:
 		Id: 162
 		Images: ford2.des
@@ -1560,11 +1560,11 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Road
-			2: River
+			2: Clear
 			3: River
-			4: Road
+			4: Rough
 			5: River
-			6: Clear
+			6: Rock
 			7: Road
 			8: Clear
 	Template@163:

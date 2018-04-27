@@ -154,6 +154,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			init.Add(new FacingInit(Facing));
 		}
 
+		public bool CanExistInCell(CPos cell) { return true; }
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; }
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = false) { return true; }
 		public SubCell GetValidSubCell(SubCell preferred) { return SubCell.Invalid; }

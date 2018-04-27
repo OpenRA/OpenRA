@@ -687,6 +687,11 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.None);
 		}
 
+		public bool CanExistInCell(CPos cell)
+		{
+			return Info.MovementCostForCell(self.World, cell) != int.MaxValue;
+		}
+
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors);

@@ -157,6 +157,12 @@ Container@OBSERVER_WIDGETS:
 					Y: 1
 					Width: PARENT_RIGHT - 2
 					Height: PARENT_BOTTOM - 2
+				VqaPlayer@PLAYER:
+					X: 1
+					Y: 1
+					Width: PARENT_RIGHT - 2
+					Height: PARENT_BOTTOM - 2
+					Skippable: false
 		Background@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
 			X: WINDOW_RIGHT - WIDTH - 5
