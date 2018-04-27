@@ -275,13 +275,21 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 			}
 
-			if (CurrentQueue.BuildableItems().Any(a => a.Name == icon.Name))
+			var buildable = CurrentQueue.BuildableItems().FirstOrDefault(a => a.Name == icon.Name);
+
+			if (buildable != null)
 			{
 				// Queue a new item
 				Game.Sound.Play(SoundType.UI, TabClick);
-				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Faction.InternalName);
-				World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount));
-				return true;
+				string notification;
+				var canQueue = CurrentQueue.CanQueue(buildable, out notification);
+				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);
+
+				if (canQueue)
+				{
+					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount));
+					return true;
+				}
 			}
 
 			return false;

@@ -417,7 +417,7 @@ MECH:
 		VoiceSet: MechanicVoice
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Vehicle
+		ValidTargets: Vehicle, Ship
 
 EINSTEIN:
 	Inherits: ^CivInfantry

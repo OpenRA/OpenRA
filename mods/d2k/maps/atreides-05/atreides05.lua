@@ -345,7 +345,6 @@ WorldLoaded = function()
 	Trigger.OnCapture(Starport, function()
 		DefendStarport = player.AddSecondaryObjective("Defend the captured Starport.")
 
-		Starport.GrantCondition("captured")
 		Trigger.ClearAll(Starport)
 		Trigger.AfterDelay(0, function()
 			Trigger.OnRemovedFromWorld(Starport, function()

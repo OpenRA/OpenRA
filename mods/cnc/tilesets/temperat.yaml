@@ -1571,7 +1571,7 @@ Templates:
 			1: River
 			2: Clear
 			3: Road
-			4: Road
+			4: Rough
 			5: Road
 			6: Clear
 			7: River
@@ -1582,11 +1582,11 @@ Templates:
 		Size: 3,3
 		Categories: River
 		Tiles:
-			0: Clear
-			1: Road
+			0: Rough
+			1: Rough
 			2: River
 			3: River
-			4: Road
+			4: Rough
 			5: River
 			6: Clear
 			7: Road

@@ -27,7 +27,7 @@ SS:
 		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Submarine, Repair
+		TargetTypes: Underwater, Submarine
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater
@@ -95,7 +95,7 @@ MSUB:
 		TargetTypes: Ground, Water, Ship, Submarine, Repair
 		RequiresCondition: !underwater
 	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Submarine, Repair
+		TargetTypes: Underwater, Submarine
 		RequiresCondition: underwater
 	Cloak:
 		CloakTypes: Underwater

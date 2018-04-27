@@ -147,10 +147,6 @@ SHOK:
 	Buildable:
 		Prerequisites: ~disabled
 
-SNIPER:
-	Buildable:
-		Prerequisites: ~disabled
-
 2TNK:
 	Buildable:
 		Prerequisites: ~disabled
