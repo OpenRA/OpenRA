@@ -41,9 +41,9 @@ namespace OpenRA
 		float depthScale;
 		float depthOffset;
 
-		Size? lastResolution;
-		int2? lastScroll;
-		float? lastZoom;
+		Size lastResolution = new Size(-1, -1);
+		int2 lastScroll = new int2(-1, -1);
+		float lastZoom = -1f;
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
 
@@ -124,8 +124,8 @@ namespace OpenRA
 			if (resolutionChanged)
 			{
 				lastResolution = Resolution;
-				RgbaSpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
-				SpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
+				RgbaSpriteRenderer.SetViewportParams(lastResolution, 0f, 0f, 1f, int2.Zero);
+				SpriteRenderer.SetViewportParams(lastResolution, 0f, 0f, 1f, int2.Zero);
 			}
 
 			// If zoom evaluates as different due to floating point weirdness that's OK, setting the parameters again is harmless.
@@ -133,9 +133,9 @@ namespace OpenRA
 			{
 				lastScroll = scroll;
 				lastZoom = zoom;
-				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
-				WorldSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
-				WorldModelRenderer.SetViewportParams(Resolution, zoom, scroll);
+				WorldRgbaSpriteRenderer.SetViewportParams(lastResolution, depthScale, depthOffset, zoom, scroll);
+				WorldSpriteRenderer.SetViewportParams(lastResolution, depthScale, depthOffset, zoom, scroll);
+				WorldModelRenderer.SetViewportParams(lastResolution, zoom, scroll);
 			}
 		}
 
