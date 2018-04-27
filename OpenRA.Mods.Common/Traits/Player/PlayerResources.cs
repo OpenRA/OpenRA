@@ -12,8 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	public class PlayerResourcesInfo : ITraitInfo, ILobbyOptions
 	{
