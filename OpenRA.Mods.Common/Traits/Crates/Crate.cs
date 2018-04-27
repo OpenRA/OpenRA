@@ -44,13 +44,21 @@ namespace OpenRA.Mods.Common.Traits
 			return GetAvailableSubCell(world, cell, ignoreActor, checkTransientActors) != SubCell.Invalid;
 		}
 
-		public SubCell GetAvailableSubCell(World world, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool CanExistInCell(World world, CPos cell)
 		{
 			if (!world.Map.Contains(cell))
-				return SubCell.Invalid;
+				return false;
 
 			var type = world.Map.GetTerrainInfo(cell).Type;
 			if (!TerrainTypes.Contains(type))
+				return false;
+
+			return true;
+		}
+
+		public SubCell GetAvailableSubCell(World world, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			if (!CanExistInCell(world, cell))
 				return SubCell.Invalid;
 
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
@@ -200,6 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return info.GetAvailableSubCell(self.World, cell, ignoreActor, checkTransientActors);
 		}
+
+		public bool CanExistInCell(CPos cell) { return info.CanExistInCell(self.World, cell); }
 
 		public bool CanEnterCell(CPos a, Actor ignoreActor = null, bool checkTransientActors = true)
 		{

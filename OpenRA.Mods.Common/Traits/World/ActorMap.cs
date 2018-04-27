@@ -184,6 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
 		public WDist LargestActorRadius { get; private set; }
+		public WDist LargestBlockingActorRadius { get; private set; }
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -202,6 +203,8 @@ namespace OpenRA.Mods.Common.Traits
 			actorShouldBeRemoved = removeActorPosition.Contains;
 
 			LargestActorRadius = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
+			var blockers = map.Rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>());
+			LargestBlockingActorRadius = blockers.Any() ? blockers.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius) : WDist.Zero;
 		}
 
 		void INotifyCreated.Created(Actor self)

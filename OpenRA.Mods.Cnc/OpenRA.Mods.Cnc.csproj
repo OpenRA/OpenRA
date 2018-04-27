@@ -136,7 +136,6 @@
     <Compile Include="UtilityCommands\ImportRedAlertLegacyMapCommand.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />
     <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="FileSystem\BagFile.cs" />
     <Compile Include="FileSystem\BigFile.cs" />
     <Compile Include="FileSystem\MixFile.cs" />
     <Compile Include="FileSystem\PackageEntry.cs" />
