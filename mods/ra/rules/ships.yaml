@@ -87,7 +87,7 @@ MSUB:
 		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
-		Range: 6c0
+		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0

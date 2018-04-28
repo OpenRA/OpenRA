@@ -568,7 +568,7 @@ SHOK:
 		Prerequisites: ~barr, stek, tsla, ~infantry.russia, ~techlevel.high
 		Description: Elite infantry with portable Tesla coils.\n  Strong vs Infantry, Vehicles\n  Weak vs Aircraft
 	Valued:
-		Cost: 300
+		Cost: 350
 	Tooltip:
 		Name: Shock Trooper
 	Health:
