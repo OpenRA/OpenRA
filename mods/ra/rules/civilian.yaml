@@ -397,7 +397,7 @@ BIO:
 		Footprint: xx xx
 		Dimensions: 2,2
 	RevealsShroud:
-		Range: 3c0
+		Range: 4c0
 	ExternalCapturable:
 	ExternalCapturableBar:
 	EngineerRepairable:

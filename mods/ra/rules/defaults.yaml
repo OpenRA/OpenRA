@@ -597,7 +597,7 @@
 	Huntable:
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
-		AreaTypes: building
+		AreaTypes: building, fake
 	RepairableBuilding:
 		RepairStep: 700
 		PlayerExperience: 25
@@ -693,14 +693,17 @@
 
 ^FakeBuilding:
 	Inherits: ^Building
-	-GivesBuildableArea:
+	GivesBuildableArea:
+		AreaTypes: fake
+	RequiresBuildableArea:
+		AreaTypes: fake
 	Health:
 		HP: 10000
 	Explodes:
 		Weapon: Demolish
 		DamageThreshold: 70
 	RevealsShroud:
-		Range: 4c0
+		Range: 1c0
 	WithDecoration@fake:
 		RequiresSelection: true
 		Image: pips
