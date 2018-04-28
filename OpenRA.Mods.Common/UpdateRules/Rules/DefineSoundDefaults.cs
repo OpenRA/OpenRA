@@ -27,37 +27,32 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
-		Tuple<string, string, string, List<MiniYamlNode>>[] fields =
+		Tuple<string, string, string, List<string>>[] fields =
 		{
-			Tuple.Create("ParaDrop", "ChuteSound", "chute1.aud", new List<MiniYamlNode>()),
-			Tuple.Create("EjectOnDeath", "ChuteSound", "chute1.aud", new List<MiniYamlNode>()),
-			Tuple.Create("ProductionParadrop", "ChuteSound", "chute1.aud", new List<MiniYamlNode>()),
-			Tuple.Create("Building", "BuildSounds", "placbldg.aud, build5.aud", new List<MiniYamlNode>()),
-			Tuple.Create("Building", "UndeploySounds", "cashturn.aud", new List<MiniYamlNode>())
+			Tuple.Create("ParaDrop", "ChuteSound", "chute1.aud", new List<string>()),
+			Tuple.Create("EjectOnDeath", "ChuteSound", "chute1.aud", new List<string>()),
+			Tuple.Create("ProductionParadrop", "ChuteSound", "chute1.aud", new List<string>()),
+			Tuple.Create("Building", "BuildSounds", "placbldg.aud, build5.aud", new List<string>()),
+			Tuple.Create("Building", "UndeploySounds", "cashturn.aud", new List<string>())
 		};
 
-		public override IEnumerable<string> BeforeUpdate(ModData modData)
-		{
-			// Reset state for each mod/map
-			foreach (var field in fields)
-				field.Item4.Clear();
-
-			yield break;
-		}
-
-		string BuildMessage(Tuple<string, string, string, List<MiniYamlNode>> field)
+		string BuildMessage(Tuple<string, string, string, List<string>> field)
 		{
 			return "The default value for {0}.{1} has been removed.\n".F(field.Item1, field.Item2)
-				+ "You may wish to explicitly define `{0}: {1}` at the following\n".F(field.Item2, field.Item3)
-				+ "locations if the sound has not already been inherited from a parent definition.\n"
-				+ UpdateUtils.FormatMessageList(field.Item4.Select(n => n.Location.ToString()));
+				+ "You may wish to explicitly define `{0}: {1}` on the `{2}` trait \n".F(field.Item2, field.Item3, field.Item1)
+				+ "definitions on the following actors (if they have not already been inherited from a parent).\n"
+				+ UpdateUtils.FormatMessageList(field.Item4);
 		}
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			foreach (var field in fields)
+			{
 				if (field.Item4.Any())
 					yield return BuildMessage(field);
+
+				field.Item4.Clear();
+			}
 		}
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
@@ -68,7 +63,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				{
 					var node = traitNode.LastChildMatching(field.Item2);
 					if (node == null)
-						field.Item4.Add(traitNode);
+						field.Item4.Add("{0} ({1})".F(actorNode.Key, traitNode.Location.Filename));
 				}
 			}
 

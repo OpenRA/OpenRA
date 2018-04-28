@@ -53,8 +53,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				yield return "Actor ids starting with '^' are now reserved for abstract\n" +
 					"inheritance templates, and will not be parsed by the game.\n" +
 					"Check the following definitions and rename them if they are not used for inheritance:\n" +
-					UpdateUtils.FormatMessageList(actors.Select(n => n.Key + ":\n" +
-						UpdateUtils.FormatMessageList(n.Value.Select(v => v.Location.ToString()))));
+					UpdateUtils.FormatMessageList(actors.Select(n => n.Key + " (" + n.Value.Select(v => v.Location.Filename).JoinWith(", ") + ")"));
 		}
 	}
 }
