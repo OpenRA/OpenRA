@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -25,13 +26,25 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
+		readonly List<string> locations = new List<string>();
+
+		public override IEnumerable<string> AfterUpdate(ModData modData)
+		{
+			if (locations.Any())
+				yield return "WithReloadingSpriteTurret has been replaced by WithSpriteTurret\n"
+					+ "You should use AmmoPool.AmmoConditions to switch turret type when reloading\n"
+					+ "to restore the previous behaviour on the following actors:"
+					+ UpdateUtils.FormatMessageList(locations);
+
+			locations.Clear();
+		}
+
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			foreach (var turret in actorNode.ChildrenMatching("WithReloadingSpriteTurret"))
 			{
 				turret.RenameKeyPreservingSuffix("WithSpriteTurret");
-				yield return turret.Location.ToString() + ": WithReloadingSpriteTurret has been replaced by WithSpriteTurret.\n" +
-					"You should use AmmoPool.AmmoConditions to switch turret type when reloading to restore the previous behaviour.";
+				locations.Add("{0} ({1})".F(actorNode.Key, turret.Location.Filename));
 			}
 
 			yield break;
