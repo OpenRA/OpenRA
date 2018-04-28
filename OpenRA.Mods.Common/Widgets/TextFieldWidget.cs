@@ -11,17 +11,28 @@
 
 using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
+	public enum TextFieldType { General, Filename, Integer }
 	public class TextFieldWidget : Widget
 	{
 		string text = "";
 		public string Text
 		{
-			get { return text; }
-			set { text = value ?? ""; CursorPosition = CursorPosition.Clamp(0, text.Length); }
+			get
+			{
+				return text;
+			}
+
+			set
+			{
+				text = RemoveInvalidCharacters(value ?? "");
+				CursorPosition = CursorPosition.Clamp(0, text.Length);
+			}
 		}
 
 		public int MaxLength = 0;
@@ -30,6 +41,24 @@ namespace OpenRA.Mods.Common.Widgets
 		public int RightMargin = 5;
 
 		public bool Disabled = false;
+
+		TextFieldType type = TextFieldType.General;
+		public TextFieldType Type
+		{
+			get
+			{
+				return type;
+			}
+
+			set
+			{
+				type = value;
+
+				// Revalidate text
+				text = RemoveInvalidCharacters(text);
+				CursorPosition = CursorPosition.Clamp(0, text.Length);
+			}
+		}
 
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
@@ -61,6 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Text = widget.Text;
 			MaxLength = widget.MaxLength;
+			Type = widget.Type;
 			Font = widget.Font;
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
@@ -160,6 +190,28 @@ namespace OpenRA.Mods.Common.Widgets
 				return Text.Length;
 
 			return CursorPosition + trimmedSpaces + nextWhitespace;
+		}
+
+		string RemoveInvalidCharacters(string input)
+		{
+			switch (Type)
+			{
+				case TextFieldType.Filename:
+				{
+					var invalidIndex = -1;
+					var invalidChars = Path.GetInvalidFileNameChars();
+					while ((invalidIndex = input.IndexOfAny(invalidChars)) != -1)
+						input = input.Remove(invalidIndex, 1);
+
+					return input;
+				}
+
+				case TextFieldType.Integer:
+					return new string(input.Where(c => char.IsDigit(c)).ToArray());
+
+				default:
+					return input;
+			}
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
@@ -263,7 +315,10 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.D:
 					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
-						Text = Text.Remove(CursorPosition, 1);
+						// Write directly to the Text backing field to avoid unnecessary validation
+						text = text.Remove(CursorPosition, 1);
+						CursorPosition = CursorPosition.Clamp(0, text.Length);
+
 						OnTextEdited();
 					}
 
@@ -274,7 +329,10 @@ namespace OpenRA.Mods.Common.Widgets
 					ResetBlinkCycle();
 					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
-						Text = Text.Remove(CursorPosition);
+						// Write directly to the Text backing field to avoid unnecessary validation
+						text = text.Remove(CursorPosition);
+						CursorPosition = CursorPosition.Clamp(0, text.Length);
+
 						OnTextEdited();
 					}
 
@@ -285,7 +343,8 @@ namespace OpenRA.Mods.Common.Widgets
 					ResetBlinkCycle();
 					if (!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition > 0)
 					{
-						Text = Text.Substring(CursorPosition);
+						// Write directly to the Text backing field to avoid unnecessary validation
+						text = text.Substring(CursorPosition);
 						CursorPosition = 0;
 						ClearSelection();
 						OnTextEdited();
@@ -326,13 +385,15 @@ namespace OpenRA.Mods.Common.Widgets
 						RemoveSelectedText();
 					else if (CursorPosition < Text.Length)
 					{
+						// Write directly to the Text backing field to avoid unnecessary validation
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
-							Text = Text.Substring(0, CursorPosition) + Text.Substring(GetNextWhitespaceIndex());
+							text = text.Substring(0, CursorPosition) + text.Substring(GetNextWhitespaceIndex());
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
-							Text = Text.Remove(CursorPosition);
+							text = text.Remove(CursorPosition);
 						else
-							Text = Text.Remove(CursorPosition, 1);
+							text = text.Remove(CursorPosition, 1);
 
+						CursorPosition = CursorPosition.Clamp(0, text.Length);
 						OnTextEdited();
 					}
 
@@ -345,21 +406,22 @@ namespace OpenRA.Mods.Common.Widgets
 						RemoveSelectedText();
 					else if (CursorPosition > 0)
 					{
+						// Write directly to the Text backing field to avoid unnecessary validation
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 						{
 							var prevWhitespace = GetPrevWhitespaceIndex();
-							Text = Text.Substring(0, prevWhitespace) + Text.Substring(CursorPosition);
+							text = text.Substring(0, prevWhitespace) + text.Substring(CursorPosition);
 							CursorPosition = prevWhitespace;
 						}
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
 						{
-							Text = Text.Substring(CursorPosition);
+							text = text.Substring(CursorPosition);
 							CursorPosition = 0;
 						}
 						else
 						{
 							CursorPosition--;
-							Text = Text.Remove(CursorPosition, 1);
+							text = text.Remove(CursorPosition, 1);
 						}
 
 						OnTextEdited();
@@ -404,10 +466,15 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		public override bool HandleTextInput(string text)
+		public override bool HandleTextInput(string input)
 		{
 			if (!HasKeyboardFocus || IsDisabled())
 				return false;
+
+			// Validate input
+			input = RemoveInvalidCharacters(input);
+			if (input.Length == 0)
+				return true;
 
 			if (selectionStartIndex != -1)
 				RemoveSelectedText();
@@ -415,13 +482,14 @@ namespace OpenRA.Mods.Common.Widgets
 			if (MaxLength > 0 && Text.Length >= MaxLength)
 				return true;
 
-			var pasteLength = text.Length;
+			var pasteLength = input.Length;
 
 			// Truncate the pasted string if the total length (current + paste) is greater than the maximum.
 			if (MaxLength > 0 && MaxLength > Text.Length)
-				pasteLength = Math.Min(text.Length, MaxLength - Text.Length);
+				pasteLength = Math.Min(input.Length, MaxLength - Text.Length);
 
-			Text = Text.Insert(CursorPosition, text.Substring(0, pasteLength));
+			// Write directly to the Text backing field to avoid repeating the invalid character validation
+			text = text.Insert(CursorPosition, input.Substring(0, pasteLength));
 			CursorPosition += pasteLength;
 			ClearSelection();
 			OnTextEdited();
@@ -453,7 +521,9 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var lowestIndex = selectionStartIndex < selectionEndIndex ? selectionStartIndex : selectionEndIndex;
 				var highestIndex = selectionStartIndex < selectionEndIndex ? selectionEndIndex : selectionStartIndex;
-				Text = Text.Remove(lowestIndex, highestIndex - lowestIndex);
+
+				// Write directly to the Text backing field to avoid unnecessary validation
+				text = text.Remove(lowestIndex, highestIndex - lowestIndex);
 
 				ClearSelection();
 
