@@ -16,29 +16,29 @@
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
+			TopLeft: 512,-512
+			BottomRight: -512,512
 
 ^2x1Shape:
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
-			TopLeft: -1024, -512
-			BottomRight: 1024, 512
+			TopLeft: 1024,-512
+			BottomRight: -1024,512
 
 ^2x2Shape:
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
-			TopLeft: -1024, -1024
-			BottomRight: 1024, 1024
+			TopLeft: 1024,-1024
+			BottomRight: -1024,1024
 
 ^3x2Shape:
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
-			TopLeft: -1536, -1024
-			BottomRight: 1536, 1024
+			TopLeft: 1536,-1024
+			BottomRight: -1536,1024
 
 ^GainsExperience:
 	GainsExperience:

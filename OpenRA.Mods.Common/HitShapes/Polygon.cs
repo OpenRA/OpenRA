@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.HitShapes
 		WVec[] combatOverlayVertsTop;
 		WVec[] combatOverlayVertsBottom;
 		int[] squares;
+		int2[] pointsInner;
 
 		public PolygonShape() { }
 
@@ -47,13 +48,16 @@ namespace OpenRA.Mods.Common.HitShapes
 			if (VerticalTopOffset < VerticalBottomOffset)
 				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
 
-			OuterRadius = new WDist(Points.Max(x => x.Length));
-			combatOverlayVertsTop = Points.Select(p => new WVec(p.X, p.Y, VerticalTopOffset)).ToArray();
-			combatOverlayVertsBottom = Points.Select(p => new WVec(p.X, p.Y, VerticalBottomOffset)).ToArray();
-			squares = new int[Points.Length];
-			squares[0] = (Points[0] - Points[Points.Length - 1]).LengthSquared;
-			for (var i = 1; i < Points.Length; i++)
-				squares[i] = (Points[i] - Points[i - 1]).LengthSquared;
+			// Internally, negative X values mean forward, so we need to convert the values set by the modder accordingly
+			pointsInner = Points.Select(p => new int2(-p.X, p.Y)).ToArray();
+
+			OuterRadius = new WDist(pointsInner.Max(x => x.Length));
+			combatOverlayVertsTop = pointsInner.Select(p => new WVec(p.X, p.Y, VerticalTopOffset)).ToArray();
+			combatOverlayVertsBottom = pointsInner.Select(p => new WVec(p.X, p.Y, VerticalBottomOffset)).ToArray();
+			squares = new int[pointsInner.Length];
+			squares[0] = (pointsInner[0] - pointsInner[pointsInner.Length - 1]).LengthSquared;
+			for (var i = 1; i < pointsInner.Length; i++)
+				squares[i] = (pointsInner[i] - pointsInner[i - 1]).LengthSquared;
 		}
 
 		static int DistanceSquaredFromLineSegment(int2 c, int2 a, int2 b, int ab2)
@@ -84,13 +88,13 @@ namespace OpenRA.Mods.Common.HitShapes
 		{
 			var p = new int2(v.X, v.Y);
 			var z = Math.Abs(v.Z);
-			if (Points.PolygonContains(p))
+			if (pointsInner.PolygonContains(p))
 				return new WDist(z);
 
-			var min2 = DistanceSquaredFromLineSegment(p, Points[Points.Length - 1], Points[0], squares[0]);
-			for (var i = 1; i < Points.Length; i++)
+			var min2 = DistanceSquaredFromLineSegment(p, pointsInner[pointsInner.Length - 1], pointsInner[0], squares[0]);
+			for (var i = 1; i < pointsInner.Length; i++)
 			{
-				var d2 = DistanceSquaredFromLineSegment(p, Points[i - 1], Points[i], squares[i]);
+				var d2 = DistanceSquaredFromLineSegment(p, pointsInner[i - 1], pointsInner[i], squares[i]);
 				if (d2 < min2)
 					min2 = d2;
 			}

@@ -37,6 +37,8 @@ namespace OpenRA.Mods.Common.HitShapes
 		public readonly int VerticalBottomOffset = 0;
 
 		int2 ab;
+		int2 pointAInner;
+		int2 pointBInner;
 		int abLenSq;
 
 		public CapsuleShape() { }
@@ -50,7 +52,11 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public void Initialize()
 		{
-			ab = PointB - PointA;
+			// Internally, negative X values mean forward, so we need to convert the values set by the modder accordingly
+			pointAInner = new int2(-PointA.X, PointA.Y);
+			pointBInner = new int2(-PointB.X, PointB.Y);
+
+			ab = pointBInner - pointAInner;
 			abLenSq = ab.LengthSquared / 1024;
 
 			if (abLenSq == 0)
@@ -59,21 +65,21 @@ namespace OpenRA.Mods.Common.HitShapes
 			if (VerticalTopOffset < VerticalBottomOffset)
 				throw new YamlException("VerticalTopOffset must be equal to or higher than VerticalBottomOffset.");
 
-			OuterRadius = Radius + new WDist(Math.Max(PointA.Length, PointB.Length));
+			OuterRadius = Radius + new WDist(Math.Max(pointAInner.Length, pointBInner.Length));
 		}
 
 		public WDist DistanceFromEdge(WVec v)
 		{
 			var p = new int2(v.X, v.Y);
 
-			var t = int2.Dot(p - PointA, ab) / abLenSq;
+			var t = int2.Dot(p - pointAInner, ab) / abLenSq;
 
 			if (t < 0)
-				return new WDist(Math.Max(0, (PointA - p).Length - Radius.Length));
+				return new WDist(Math.Max(0, (pointAInner - p).Length - Radius.Length));
 			if (t > 1024)
-				return new WDist(Math.Max(0, (PointB - p).Length - Radius.Length));
+				return new WDist(Math.Max(0, (pointBInner - p).Length - Radius.Length));
 
-			var projection = PointA + new int2(
+			var projection = pointAInner + new int2(
 				(ab.X * t) / 1024,
 				(ab.Y * t) / 1024);
 
@@ -99,10 +105,10 @@ namespace OpenRA.Mods.Common.HitShapes
 		{
 			var actorPos = actor.CenterPosition;
 
-			var a = actorPos + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(actor.Orientation);
-			var b = actorPos + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(actor.Orientation);
-			var aa = actorPos + new WVec(PointA.X, PointA.Y, VerticalBottomOffset).Rotate(actor.Orientation);
-			var bb = actorPos + new WVec(PointB.X, PointB.Y, VerticalBottomOffset).Rotate(actor.Orientation);
+			var a = actorPos + new WVec(pointAInner.X, pointAInner.Y, VerticalTopOffset).Rotate(actor.Orientation);
+			var b = actorPos + new WVec(pointBInner.X, pointBInner.Y, VerticalTopOffset).Rotate(actor.Orientation);
+			var aa = actorPos + new WVec(pointAInner.X, pointAInner.Y, VerticalBottomOffset).Rotate(actor.Orientation);
+			var bb = actorPos + new WVec(pointBInner.X, pointBInner.Y, VerticalBottomOffset).Rotate(actor.Orientation);
 
 			var offset1 = new WVec(a.Y - b.Y, b.X - a.X, 0);
 			offset1 = offset1 * Radius.Length / offset1.Length;

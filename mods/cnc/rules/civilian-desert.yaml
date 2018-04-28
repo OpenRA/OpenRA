@@ -4,8 +4,8 @@ V20:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -840,-512,0, 0,0,0, -840,512,0
 		Type: Rectangle
-			TopLeft: -1024, -512
-			BottomRight: 1024, 896
+			TopLeft: 1024,-512
+			BottomRight: -1024,896
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -32,13 +32,13 @@ V21:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 840,-512,0, 420,0,0, 840,512,0
 		Type: Rectangle
-			TopLeft: -1024, -1024
-			BottomRight: 1024, 0
+			TopLeft: 1024,-1024
+			BottomRight: -1024,0
 	HitShape@WELL:
 		TargetableOffsets: -770,512,0
 		Type: Rectangle
-			TopLeft: 0, 0
-			BottomRight: 1024, 598
+			TopLeft: 0,0
+			BottomRight: -1024,598
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -104,8 +104,8 @@ V24:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
 		Type: Rectangle
-			TopLeft: -1024, -683
-			BottomRight: 640, 853
+			TopLeft: 1024,-683
+			BottomRight: -640,853
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -132,8 +132,8 @@ V25:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,-128,0, 420,512,0
 		Type: Rectangle
-			TopLeft: -683, -683
-			BottomRight: 1024, 512
+			TopLeft: 683,-683
+			BottomRight: -1024,512
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -371,8 +371,8 @@ V37:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 0,1024,0
 		Type: Rectangle
-			TopLeft: -512, -597
-			BottomRight: 1536, 597
+			TopLeft: 512,-597
+			BottomRight: -1536,597
 	SpawnActorOnDeath:
 		Actor: V37.Husk
 	Building:

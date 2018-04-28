@@ -385,8 +385,8 @@
 	HitShape:
 		UseTargetableCellsOffsets: true
 		Type: Rectangle
-			TopLeft: -512, -512
-			BottomRight: 512, 512
+			TopLeft: 512,-512
+			BottomRight: -512,512
 	Building:
 		Dimensions: 1,1
 		Footprint: x
