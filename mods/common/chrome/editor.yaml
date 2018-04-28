@@ -39,6 +39,7 @@ Background@NEW_MAP_BG:
 			MaxLength: 3
 			Height: 25
 			Text: 128
+				Type: Integer
 		Label@HEIGHT_LABEL:
 			X: 130
 			Y: 94
@@ -53,6 +54,7 @@ Background@NEW_MAP_BG:
 			MaxLength: 3
 			Height: 25
 			Text: 128
+			Type: Integer
 		Button@CREATE_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 45
@@ -148,6 +150,7 @@ Background@SAVE_MAP_PANEL:
 			Y: 200
 			Width: 105
 			Height: 25
+			Type: Filename
 		DropDownButton@TYPE_DROPDOWN:
 			X: 220
 			Y: 200

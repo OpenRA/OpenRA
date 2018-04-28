@@ -57,6 +57,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Height: 25
 			MaxLength: 5
 			Text: 1234
+			Type: Integer
 		Checkbox@ADVERTISE_CHECKBOX:
 			X: 180
 			Y: 117
