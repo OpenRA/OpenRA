@@ -225,9 +225,30 @@ function UtilityNotFound
 {
 	echo "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command."
 }
+
+function WaitForInput
+{
+	echo "Press enter to continue."
+	while ($true)
+	{
+		if ([System.Console]::KeyAvailable)
+		{
+			exit
+		}
+		Start-Sleep -Milliseconds 50
+	}
+}
+
 ###############################################################
 ############################ Main #############################
 ###############################################################
+if ($PSVersionTable.PSVersion.Major -clt 3)
+{
+	echo "The makefile requires PowerShell version 3 or higher."
+	echo "Please download and install the latest Windows Management Framework version from Microsoft."
+	WaitForInput
+}
+
 if ($args.Length -eq 0)
 {
 	echo "Command list:"
@@ -272,13 +293,5 @@ switch ($execute)
 #In case the script was called without any parameters we keep the window open 
 if ($args.Length -eq 0)
 {
-	echo "Press enter to continue."
-	while ($true)
-	{
-		if ([System.Console]::KeyAvailable)
-		{
-			break
-		}
-		Start-Sleep -Milliseconds 50
-	}
+	WaitForInput
 }
