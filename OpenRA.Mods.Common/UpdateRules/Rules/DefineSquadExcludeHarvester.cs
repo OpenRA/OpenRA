@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			get
 			{
 				return "HackyAI no longer automatically excludes actors with Harvester trait from attack squads.\n" +
-					"They need to be explicitly added to ExcludeFromSquads.";
+					"They need to be explicitly added to ExcludeFromSquads. HackyAI instances are listed for inspection.";
 			}
 		}
 
@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			if (locations.Any())
-				yield return "The automatic exclusion of harvesters from AI squads has been removed.\n"
-					+ "You may wish to add your harvester-type actors to `ExcludeFromSquads` under `UnitCommonNames`\n"
-					+ "on the following definitions:\n"
-					+ UpdateUtils.FormatMessageList(locations);
+				yield return "The automatic exclusion of harvesters from AI squads has been removed.\n" +
+					"You may wish to add your harvester-type actors to `ExcludeFromSquads` under `UnitCommonNames`\n" +
+					"on the following definitions:\n" +
+					UpdateUtils.FormatMessageList(locations);
 
 			locations.Clear();
 		}

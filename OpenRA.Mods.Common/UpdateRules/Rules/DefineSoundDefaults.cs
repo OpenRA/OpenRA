@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			get
 			{
-				return "Mod-specific default sound values have been removed from several traits.\n" +
-					"The original values are added back via yaml.";
+				return "Mod-specific default sound values have been removed from several traits\n" +
+					"(" + fields.Select(f => f.Item1 + "." + f.Item2).JoinWith(", ") + ")\n" +
+					"Uses of these traits are listed for inspection so the values can be overriden in yaml.";
 			}
 		}
 
@@ -38,10 +39,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		string BuildMessage(Tuple<string, string, string, List<string>> field)
 		{
-			return "The default value for {0}.{1} has been removed.\n".F(field.Item1, field.Item2)
-				+ "You may wish to explicitly define `{0}: {1}` on the `{2}` trait \n".F(field.Item2, field.Item3, field.Item1)
-				+ "definitions on the following actors (if they have not already been inherited from a parent).\n"
-				+ UpdateUtils.FormatMessageList(field.Item4);
+			return "The default value for {0}.{1} has been removed.\n".F(field.Item1, field.Item2) +
+				"You may wish to explicitly define `{0}: {1}` on the `{2}` trait \n".F(field.Item2, field.Item3, field.Item1) +
+				"definitions on the following actors (if they have not already been inherited from a parent).\n" +
+				UpdateUtils.FormatMessageList(field.Item4);
 		}
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)

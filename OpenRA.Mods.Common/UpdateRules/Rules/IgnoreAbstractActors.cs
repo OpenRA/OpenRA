@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			get
 			{
-				return "Actor ids starting with '^' are now reserved for abstract\n" +
-					"inheritance templates, and will not be parsed by the game.";
+				return "Actor ids starting with '^' are now reserved for abstract inheritance templates.\n" +
+					"Definitions that may be affected are listed for inspection so that they can be renamed if necessary.";
 			}
 		}
 

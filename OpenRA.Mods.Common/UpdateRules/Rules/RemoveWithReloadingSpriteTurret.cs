@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			get
 			{
 				return "WithReloadingSpriteTurret has been superseded by conditions.\n" +
-					"The trait is switched for with WithSpriteTurret.";
+					"Instances of this trait are replaced by WithSpriteTurret.";
 			}
 		}
 
@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			if (locations.Any())
-				yield return "WithReloadingSpriteTurret has been replaced by WithSpriteTurret\n"
-					+ "You should use AmmoPool.AmmoConditions to switch turret type when reloading\n"
-					+ "to restore the previous behaviour on the following actors:"
-					+ UpdateUtils.FormatMessageList(locations);
+				yield return "WithReloadingSpriteTurret has been replaced by WithSpriteTurret\n" +
+					"You should use AmmoPool.AmmoConditions to switch turret type when reloading\n" +
+					"to restore the previous behaviour on the following actors:\n" +
+					UpdateUtils.FormatMessageList(locations);
 
 			locations.Clear();
 		}
