@@ -287,6 +287,8 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
+		public virtual bool DisableDomainPassabilityCheck { get { return false; } }
+
 		public virtual object Create(ActorInitializer init) { return new Locomotor(init.Self, this); }
 	}
 
