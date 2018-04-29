@@ -568,5 +568,14 @@ namespace OpenRA
 
 			return modData.DefaultFileSystem.Exists(filename);
 		}
+
+		bool IReadOnlyFileSystem.IsExternalModFile(string filename)
+		{
+			// Explicit package paths never refer to a map
+			if (filename.Contains("|"))
+				return modData.DefaultFileSystem.IsExternalModFile(filename);
+
+			return false;
+		}
 	}
 }
