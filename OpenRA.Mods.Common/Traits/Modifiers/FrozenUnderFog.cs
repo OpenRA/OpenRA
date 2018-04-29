@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			return IsVisible(self, self.World.RenderPlayer) || isRendering ? r : SpriteRenderable.None;
 		}

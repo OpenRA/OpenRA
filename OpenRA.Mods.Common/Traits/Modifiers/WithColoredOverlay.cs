@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WithColoredOverlay(WithColoredOverlayInfo info)
 			: base(info) { }
 
-		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			if (IsTraitDisabled)
 				return r;
