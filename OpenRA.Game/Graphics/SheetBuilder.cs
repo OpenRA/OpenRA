@@ -137,6 +137,8 @@ namespace OpenRA.Graphics
 		}
 
 		public Sheet Current { get { return current; } }
+		public TextureChannel CurrentChannel { get { return channel; } }
+		public IEnumerable<Sheet> AllSheets { get { return sheets; } }
 
 		public void Dispose()
 		{
