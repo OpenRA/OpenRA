@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (world.Disposing)
 				return;
