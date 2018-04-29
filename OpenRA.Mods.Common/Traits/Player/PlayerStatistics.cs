@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class UpdatesPlayerStatistics : INotifyKilled
 	{
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (self.Owner.WinState != WinState.Undefined)
 				return;

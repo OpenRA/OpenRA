@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public DeathSounds(DeathSoundsInfo info)
 			: base(info) { }
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (IsTraitDisabled)
 				return;

@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs = self.Trait<RenderSprites>();
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			// Actors with Crushable trait will spawn CrushedSequence.
 			if (crushed || IsTraitDisabled)
