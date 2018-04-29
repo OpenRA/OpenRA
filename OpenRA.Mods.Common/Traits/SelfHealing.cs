@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (e.Damage.Value > 0)
 				damageTicks = Info.DamageCooldown;

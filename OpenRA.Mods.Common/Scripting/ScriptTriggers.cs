@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (world.Disposing)
 				return;
