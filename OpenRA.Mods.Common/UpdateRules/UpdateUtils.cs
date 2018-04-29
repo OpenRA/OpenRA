@@ -46,11 +46,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// <summary>
 		/// Loads a YamlFileSet containing any external yaml definitions referenced by a map yaml block.
 		/// </summary>
-		static YamlFileSet LoadExternalMapYaml(ModData modData, MiniYaml yaml)
+		static YamlFileSet LoadExternalMapYaml(ModData modData, MiniYaml yaml, HashSet<string> externalFilenames)
 		{
 			return FieldLoader.GetValue<string[]>("value", yaml.Value)
 				.Where(f => f.Contains("|"))
-				.SelectMany(f => LoadModYaml(modData, new[] { f }))
+				.SelectMany(f => LoadModYaml(modData, FilterExternalModFiles(modData, new[] { f }, externalFilenames)))
 				.ToList();
 		}
 
@@ -123,13 +123,28 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return manualSteps;
 		}
 
-		public static List<string> UpdateMod(ModData modData, UpdateRule rule, out YamlFileSet files)
+		static IEnumerable<string> FilterExternalModFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
+		{
+			foreach (var f in files)
+			{
+				if (f.Contains("|") && modData.DefaultFileSystem.IsExternalModFile(f))
+				{
+					externalFilenames.Add(f);
+					continue;
+				}
+
+				yield return f;
+			}
+		}
+
+		public static List<string> UpdateMod(ModData modData, UpdateRule rule, out YamlFileSet files, HashSet<string> externalFilenames)
 		{
 			var manualSteps = new List<string>();
-			var modRules = LoadModYaml(modData, modData.Manifest.Rules);
-			var modWeapons = LoadModYaml(modData, modData.Manifest.Weapons);
-			var modTilesets = LoadModYaml(modData, modData.Manifest.TileSets);
-			var modChromeLayout = LoadModYaml(modData, modData.Manifest.ChromeLayout);
+
+			var modRules = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Rules, externalFilenames));
+			var modWeapons = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Weapons, externalFilenames));
+			var modTilesets = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.TileSets, externalFilenames));
+			var modChromeLayout = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
 
 			// Find and add shared map includes
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
@@ -142,13 +157,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 					var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name));
 					var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
 					if (mapRulesNode != null)
-						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value))
+						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value, externalFilenames))
 							if (!modRules.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
 								modRules.Add(f);
 
 					var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
 					if (mapWeaponsNode != null)
-						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value))
+						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value, externalFilenames))
 							if (!modWeapons.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
 								modWeapons.Add(f);
 				}
