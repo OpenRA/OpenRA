@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDamage { void Damaged(Actor self, AttackInfo e); }
 	[RequireExplicitImplementation]
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
+	[RequireExplicitImplementation]
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 
 	[RequireExplicitImplementation]
