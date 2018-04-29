@@ -44,8 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (p1.Layer != 0 || p2.Layer != 0)
 				return true;
 
-			// HACK: Workaround until we can generalize movement classes
-			if (li is SubterraneanLocomotorInfo || li is JumpjetLocomotorInfo)
+			if (li.DisableDomainPassabilityCheck)
 				return true;
 
 			var movementClass = li.GetMovementClass(tileSet);

@@ -25,6 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool JumpjetTransitionOnRamps = true;
 
+		public override bool DisableDomainPassabilityCheck { get { return true; } }
+
 		public override object Create(ActorInitializer init) { return new JumpjetLocomotor(init.Self, this); }
 	}
 
