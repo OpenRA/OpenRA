@@ -191,6 +191,7 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
+	[RequireExplicitImplementation]
 	public interface IStoreResources { int Capacity { get; } }
 
 	public interface IEffectiveOwner
