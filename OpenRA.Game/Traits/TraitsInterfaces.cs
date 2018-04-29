@@ -264,6 +264,7 @@ namespace OpenRA.Traits
 		WDist LargestBlockingActorRadius { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface IRenderModifier
 	{
 		IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r);
