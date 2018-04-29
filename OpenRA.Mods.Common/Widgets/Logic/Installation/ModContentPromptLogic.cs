@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var modObjectCreator = new ObjectCreator(mod, Game.Mods);
 				var modPackageLoaders = modObjectCreator.GetLoaders<IPackageLoader>(mod.PackageFormats, "package");
-				var modFileSystem = new FS(Game.Mods, modPackageLoaders);
+				var modFileSystem = new FS(mod.Id, Game.Mods, modPackageLoaders);
 				modFileSystem.LoadFromManifest(mod);
 
 				var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
