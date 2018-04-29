@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			foreach (var file in files)
 				if (file.Item1 != null)
-					file.Item1.Update(file.Item2, Encoding.ASCII.GetBytes(file.Item3.WriteToString()));
+					file.Item1.Update(file.Item2, Encoding.UTF8.GetBytes(file.Item3.WriteToString()));
 		}
 
 		/// <summary>Renames a yaml key preserving any @suffix</summary>
