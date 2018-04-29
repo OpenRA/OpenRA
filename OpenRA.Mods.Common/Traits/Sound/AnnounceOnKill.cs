@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			lastAnnounce = -info.Interval * 25;
 		}
 
-		public void AppliedDamage(Actor self, Actor damaged, AttackInfo e)
+		void INotifyAppliedDamage.AppliedDamage(Actor self, Actor damaged, AttackInfo e)
 		{
 			// Don't notify suicides
 			if (e.DamageState == DamageState.Dead && damaged != e.Attacker)
