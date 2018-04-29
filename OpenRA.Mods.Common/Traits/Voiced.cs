@@ -35,9 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		public string VoiceSet { get { return Info.VoiceSet; } }
+		string IVoiced.VoiceSet { get { return Info.VoiceSet; } }
 
-		public bool PlayVoice(Actor self, string phrase, string variant)
+		bool IVoiced.PlayVoice(Actor self, string phrase, string variant)
 		{
 			if (phrase == null)
 				return false;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Game.Sound.PlayPredefined(SoundType.World, self.World.Map.Rules, null, self, type, phrase, variant, true, WPos.Zero, volume, true);
 		}
 
-		public bool PlayVoiceLocal(Actor self, string phrase, string variant, float volume)
+		bool IVoiced.PlayVoiceLocal(Actor self, string phrase, string variant, float volume)
 		{
 			if (phrase == null)
 				return false;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Game.Sound.PlayPredefined(SoundType.World, self.World.Map.Rules, null, self, type, phrase, variant, false, self.CenterPosition, volume, true);
 		}
 
-		public bool HasVoice(Actor self, string voice)
+		bool IVoiced.HasVoice(Actor self, string voice)
 		{
 			if (string.IsNullOrEmpty(Info.VoiceSet))
 				return false;

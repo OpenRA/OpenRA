@@ -182,6 +182,7 @@ namespace OpenRA.Traits
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 
+	[RequireExplicitImplementation]
 	public interface IVoiced
 	{
 		string VoiceSet { get; }
