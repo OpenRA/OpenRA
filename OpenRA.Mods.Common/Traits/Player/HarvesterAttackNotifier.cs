@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			lastAttackTime = -info.NotifyInterval * 25;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			// Don't track self-damage
 			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
