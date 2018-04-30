@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(info.Intensity, self.CenterPosition, 1);
 		}

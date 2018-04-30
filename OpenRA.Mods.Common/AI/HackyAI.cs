@@ -1116,7 +1116,7 @@ namespace OpenRA.Mods.Common.AI
 				QueueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (!IsEnabled || e.Attacker == null)
 				return;

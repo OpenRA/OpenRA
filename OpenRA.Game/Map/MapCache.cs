@@ -276,13 +276,8 @@ namespace OpenRA
 				}
 			}
 
-			// The buffer is not fully reclaimed until changes are written out to the texture.
-			// We will access the texture in order to force changes to be written out, allowing the buffer to be freed.
-			Game.RunAfterTick(() =>
-			{
-				sheetBuilder.Current.ReleaseBuffer();
-				sheetBuilder.Current.GetTexture();
-			});
+			// Release the buffer by forcing changes to be written out to the texture, allowing the buffer to be reclaimed by GC.
+			Game.RunAfterTick(sheetBuilder.Current.ReleaseBuffer);
 			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
 		}
 

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (info.DamageTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
 				return;
