@@ -1872,8 +1872,8 @@ gadept.nod:
 		UseTilesetCode: false
 		ZOffset: 512
 		BlendMode: Additive
-	icon: sidebar-nod|fixicon
-		Offset: 76, 66
+	icon: fixicon-nod
+		Offset: 0, 0
 		UseTilesetCode: false
 
 namisl:
