@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -48,6 +49,7 @@ namespace OpenRA.Graphics
 		readonly IReadOnlyFileSystem fileSystem;
 
 		readonly Dictionary<string, List<Sprite[]>> sprites = new Dictionary<string, List<Sprite[]>>();
+		readonly Dictionary<string, ISpriteFrame[]> unloadedFrames = new Dictionary<string, ISpriteFrame[]>();
 
 		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
@@ -56,21 +58,56 @@ namespace OpenRA.Graphics
 			this.loaders = loaders;
 		}
 
-		Sprite[] LoadSprite(string filename, List<Sprite[]> cache)
-		{
-			var sprite = SpriteLoader.GetSprites(fileSystem, filename, loaders, SheetBuilder);
-			cache.Add(sprite);
-			return sprite;
-		}
-
-		/// <summary>Returns the first set of sprites with the given filename.</summary>
-		public Sprite[] this[string filename]
+		/// <summary>
+		/// Returns the first set of sprites with the given filename.
+		/// If getUsedFrames is defined then the indices returned by the function call
+		/// are guaranteed to be loaded.  The value of other indices in the returned
+		/// array are undefined and should never be accessed.
+		/// </summary>
+		public Sprite[] this[string filename, Func<int, IEnumerable<int>> getUsedFrames = null]
 		{
 			get
 			{
 				var allSprites = sprites.GetOrAdd(filename);
 				var sprite = allSprites.FirstOrDefault();
-				return sprite ?? LoadSprite(filename, allSprites);
+
+				ISpriteFrame[] unloaded;
+				if (!unloadedFrames.TryGetValue(filename, out unloaded))
+					unloaded = null;
+
+				// This is the first time that the file has been requested
+				// Load all of the frames into the unused buffer and initialize
+				// the loaded cache (initially empty)
+				if (sprite == null)
+				{
+					unloaded = FrameLoader.GetFrames(fileSystem, filename, loaders);
+					unloadedFrames[filename] = unloaded;
+
+					sprite = new Sprite[unloaded.Length];
+					allSprites.Add(sprite);
+				}
+
+				// Load any unused frames into the SheetBuilder
+				if (unloaded != null)
+				{
+					var indices = getUsedFrames != null ? getUsedFrames(sprite.Length) :
+						Enumerable.Range(0, sprite.Length);
+
+					foreach (var i in indices)
+					{
+						if (unloaded[i] != null)
+						{
+							sprite[i] = SheetBuilder.Add(unloaded[i]);
+							unloaded[i] = null;
+						}
+					}
+
+					// All frames have been loaded
+					if (unloaded.All(f => f == null))
+						unloadedFrames.Remove(filename);
+				}
+
+				return sprite;
 			}
 		}
 
@@ -83,7 +120,12 @@ namespace OpenRA.Graphics
 		/// <summary>Loads and caches a new instance of sprites with the given filename</summary>
 		public Sprite[] Reload(string filename)
 		{
-			return LoadSprite(filename, sprites.GetOrAdd(filename));
+			var sprite = FrameLoader.GetFrames(fileSystem, filename, loaders)
+				.Select(a => SheetBuilder.Add(a))
+				.ToArray();
+
+			sprites.GetOrAdd(filename).Add(sprite);
+			return sprite;
 		}
 	}
 
@@ -93,19 +135,14 @@ namespace OpenRA.Graphics
 
 		public FrameCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			frames = new Cache<string, ISpriteFrame[]>(filename => SpriteLoader.GetFrames(fileSystem, filename, loaders));
+			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders));
 		}
 
 		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
 	}
 
-	public static class SpriteLoader
+	public static class FrameLoader
 	{
-		public static Sprite[] GetSprites(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
-		{
-			return GetFrames(fileSystem, filename, loaders).Select(a => sheetBuilder.Add(a)).ToArray();
-		}
-
 		public static ISpriteFrame[] GetFrames(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders)
 		{
 			using (var stream = fileSystem.Open(filename))
