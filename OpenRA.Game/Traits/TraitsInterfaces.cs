@@ -299,6 +299,8 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
+	public interface ITemporaryBlockerInfo : ITraitInfoInterface { }
+
 	[RequireExplicitImplementation]
 	public interface ITemporaryBlocker
 	{

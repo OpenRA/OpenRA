@@ -149,6 +149,8 @@ namespace OpenRA
 			}
 		}
 
+		public bool RulesContainTemporaryBlocker { get; private set; }
+
 		internal World(ModData modData, Map map, OrderManager orderManager, WorldType type)
 		{
 			Type = type;
@@ -185,6 +187,8 @@ namespace OpenRA
 				MapUid = Map.Uid,
 				MapTitle = Map.Title
 			};
+
+			RulesContainTemporaryBlocker = map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());
 		}
 
 		public void AddToMaps(Actor self, IOccupySpace ios)

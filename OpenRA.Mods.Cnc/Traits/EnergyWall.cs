@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Will open and be passable for actors that appear friendly when there are no enemies in range.")]
-	public class EnergyWallInfo : BuildingInfo, IObservesVariablesInfo, IRulesetLoaded
+	public class EnergyWallInfo : BuildingInfo, ITemporaryBlockerInfo, IObservesVariablesInfo, IRulesetLoaded
 	{
 		[FieldLoader.Require]
 		[WeaponReference]
