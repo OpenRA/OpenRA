@@ -272,9 +272,9 @@ namespace OpenRA.Mods.Common.Graphics
 						.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, sprites.Length - 1,
 							info.Nodes[0].Location));
 
-				var boundSprites = SpriteBounds(sprites, Frames, Start, Facings, Length);
+				var boundSprites = SpriteBounds(sprites, Frames, Start, Facings, Length, Stride, transpose);
 				if (ShadowStart > 0)
-					boundSprites = boundSprites.Concat(SpriteBounds(sprites, Frames, ShadowStart, Facings, Length));
+					boundSprites = boundSprites.Concat(SpriteBounds(sprites, Frames, ShadowStart, Facings, Length, Stride, transpose));
 
 				if (boundSprites.Any())
 				{
@@ -290,13 +290,14 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		/// <summary>Returns the bounds of all of the sprites that can appear in this animation</summary>
-		static IEnumerable<Rectangle> SpriteBounds(Sprite[] sprites, int[] frames, int start, int facings, int length)
+		static IEnumerable<Rectangle> SpriteBounds(Sprite[] sprites, int[] frames, int start, int facings, int length, int stride, bool transpose)
 		{
 			for (var facing = 0; facing < facings; facing++)
 			{
 				for (var frame = 0; frame < length; frame++)
 				{
-					var i = frame * facings + facing;
+					var i = transpose ? (frame % length) * facings + facing :
+								(facing * stride) + (frame % length);
 					var s = frames != null ? sprites[frames[i]] : sprites[start + i];
 					if (!s.Bounds.IsEmpty)
 						yield return new Rectangle(
