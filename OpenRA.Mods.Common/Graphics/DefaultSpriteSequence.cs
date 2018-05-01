@@ -79,6 +79,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected readonly ISpriteSequenceLoader Loader;
 
+		readonly string sequence;
 		public string Name { get; private set; }
 		public int Start { get; private set; }
 		public int Length { get; private set; }
@@ -118,6 +119,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public DefaultSpriteSequence(ModData modData, TileSet tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 		{
+			this.sequence = sequence;
 			Name = animation;
 			Loader = loader;
 			var d = info.ToDictionary();
@@ -152,6 +154,64 @@ namespace OpenRA.Mods.Common.Graphics
 				var offset = LoadField(d, "Offset", float3.Zero);
 				var blendMode = LoadField(d, "BlendMode", BlendMode.Alpha);
 
+				Func<int, IEnumerable<int>> getUsedFrames = frameCount =>
+				{
+					MiniYaml length;
+					if (d.TryGetValue("Length", out length) && length.Value == "*")
+						Length = frameCount - Start;
+					else
+						Length = LoadField(d, "Length", 1);
+
+					// Plays the animation forwards, and then in reverse
+					if (LoadField(d, "Reverses", false))
+					{
+						var frames = Frames ?? Exts.MakeArray(Length, i => Start + i);
+						Frames = frames.Concat(frames.Skip(1).Take(frames.Length - 2).Reverse()).ToArray();
+						Length = 2 * Length - 2;
+					}
+
+					Stride = LoadField(d, "Stride", Length);
+
+					if (Length > Stride)
+						throw new InvalidOperationException(
+							"{0}: Sequence {1}.{2}: Length must be <= stride"
+							.F(info.Nodes[0].Location, sequence, animation));
+
+					if (Frames != null && Length > Frames.Length)
+						throw new InvalidOperationException(
+							"{0}: Sequence {1}.{2}: Length must be <= Frames.Length"
+							.F(info.Nodes[0].Location, sequence, animation));
+
+					if (Start < 0 || Start + Facings * Stride > frameCount)
+						throw new InvalidOperationException(
+							"{5}: Sequence {0}.{1} uses frames [{2}..{3}], but only 0..{4} actually exist"
+							.F(sequence, animation, Start, Start + Facings * Stride - 1, frameCount - 1,
+								info.Nodes[0].Location));
+
+					if (ShadowStart + Facings * Stride > frameCount)
+						throw new InvalidOperationException(
+							"{5}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}], but only [0..{4}] actually exist"
+							.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, frameCount - 1,
+								info.Nodes[0].Location));
+
+					var usedFrames = new List<int>();
+					for (var facing = 0; facing < Facings; facing++)
+					{
+						for (var frame = 0; frame < Length; frame++)
+						{
+							var i = transpose ? (frame % Length) * Facings + facing :
+								(facing * Stride) + (frame % Length);
+
+							usedFrames.Add(Frames != null ? Frames[i] : Start + i);
+						}
+					}
+
+					if (ShadowStart >= 0)
+						return usedFrames.Concat(usedFrames.Select(i => i + ShadowStart - Start));
+
+					return usedFrames;
+				};
+
 				MiniYaml combine;
 				if (d.TryGetValue("Combine", out combine))
 				{
@@ -165,36 +225,42 @@ namespace OpenRA.Mods.Common.Graphics
 						var subOffset = LoadField(sd, "Offset", float3.Zero);
 						var subFlipX = LoadField(sd, "FlipX", false);
 						var subFlipY = LoadField(sd, "FlipY", false);
+						var subLength = 0;
+
+						Func<int, IEnumerable<int>> subGetUsedFrames = subFrameCount =>
+						{
+							MiniYaml subLengthYaml;
+							if (sd.TryGetValue("Length", out subLengthYaml) && subLengthYaml.Value == "*")
+								subLength = subFrameCount - subStart;
+							else
+								subLength = LoadField(sd, "Length", 1);
+
+							return Enumerable.Range(subStart, subLength);
+						};
 
 						var subSrc = GetSpriteSrc(modData, tileSet, sequence, animation, sub.Key, sd);
-						var subSprites = cache[subSrc].Select(
-							s => new Sprite(s.Sheet,
+						var subSprites = cache[subSrc, subGetUsedFrames].Select(
+							s => s != null ? new Sprite(s.Sheet,
 								FlipRectangle(s.Bounds, subFlipX, subFlipY), ZRamp,
 								new float3(subFlipX ? -s.Offset.X : s.Offset.X, subFlipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + subOffset + offset,
-								s.Channel, blendMode));
-
-						var subLength = 0;
-						MiniYaml subLengthYaml;
-						if (sd.TryGetValue("Length", out subLengthYaml) && subLengthYaml.Value == "*")
-							subLength = subSprites.Count() - subStart;
-						else
-							subLength = LoadField(sd, "Length", 1);
+								s.Channel, blendMode) : null);
 
 						combined = combined.Concat(subSprites.Skip(subStart).Take(subLength));
 					}
 
 					sprites = combined.ToArray();
+					getUsedFrames(sprites.Length);
 				}
 				else
 				{
 					// Apply offset to each sprite in the sequence
 					// Different sequences may apply different offsets to the same frame
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
-					sprites = cache[src].Select(
-						s => new Sprite(s.Sheet,
+					sprites = cache[src, getUsedFrames].Select(
+						s => s != null ? new Sprite(s.Sheet,
 							FlipRectangle(s.Bounds, flipX, flipY), ZRamp,
 							new float3(flipX ? -s.Offset.X : s.Offset.X, flipY ? -s.Offset.Y : s.Offset.Y, s.Offset.Z) + offset,
-							s.Channel, blendMode)).ToArray();
+							s.Channel, blendMode) : null).ToArray();
 				}
 
 				var depthSprite = LoadField<string>(d, "DepthSprite", null);
@@ -207,6 +273,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 					sprites = sprites.Select(s =>
 					{
+						if (s == null)
+							return null;
+
 						// The depth sprite must live on the same sheet as the main sprite
 						var ds = depthSprites.FirstOrDefault(dss => dss.Sheet == s.Sheet);
 						if (ds == null)
@@ -233,44 +302,6 @@ namespace OpenRA.Mods.Common.Graphics
 						return new SpriteWithSecondaryData(s, r, ds.Channel);
 					}).ToArray();
 				}
-
-				MiniYaml length;
-				if (d.TryGetValue("Length", out length) && length.Value == "*")
-					Length = sprites.Length - Start;
-				else
-					Length = LoadField(d, "Length", 1);
-
-				// Plays the animation forwards, and then in reverse
-				if (LoadField(d, "Reverses", false))
-				{
-					var frames = Frames ?? Exts.MakeArray(Length, i => Start + i);
-					Frames = frames.Concat(frames.Skip(1).Take(frames.Length - 2).Reverse()).ToArray();
-					Length = 2 * Length - 2;
-				}
-
-				Stride = LoadField(d, "Stride", Length);
-
-				if (Length > Stride)
-					throw new InvalidOperationException(
-						"{0}: Sequence {1}.{2}: Length must be <= stride"
-						.F(info.Nodes[0].Location, sequence, animation));
-
-				if (Frames != null && Length > Frames.Length)
-					throw new InvalidOperationException(
-						"{0}: Sequence {1}.{2}: Length must be <= Frames.Length"
-						.F(info.Nodes[0].Location, sequence, animation));
-
-				if (Start < 0 || Start + Facings * Stride > sprites.Length)
-					throw new InvalidOperationException(
-						"{5}: Sequence {0}.{1} uses frames [{2}..{3}], but only 0..{4} actually exist"
-						.F(sequence, animation, Start, Start + Facings * Stride - 1, sprites.Length - 1,
-							info.Nodes[0].Location));
-
-				if (ShadowStart + Facings * Stride > sprites.Length)
-					throw new InvalidOperationException(
-						"{5}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}], but only [0..{4}] actually exist"
-						.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, sprites.Length - 1,
-							info.Nodes[0].Location));
 
 				var boundSprites = SpriteBounds(sprites, Frames, Start, Facings, Length, Stride, transpose);
 				if (ShadowStart > 0)
@@ -332,10 +363,12 @@ namespace OpenRA.Mods.Common.Graphics
 			var i = transpose ? (frame % Length) * Facings + f :
 				(f * Stride) + (frame % Length);
 
-			if (Frames != null)
-				return sprites[Frames[i]];
+			var j = Frames != null ? Frames[i] : start + i;
+			if (sprites[j] == null)
+				throw new InvalidOperationException("Attempted to query unloaded sprite from {0}.{1}".F(Name, sequence) +
+					" start={2} frame={3} facing={4}".F(start, frame, facing));
 
-			return sprites[start + i];
+			return sprites[j];
 		}
 	}
 }
