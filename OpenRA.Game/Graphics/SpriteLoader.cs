@@ -87,12 +87,13 @@ namespace OpenRA.Graphics
 					allSprites.Add(sprite);
 				}
 
+				// HACK: The sequency code relies on side-effects from getUsedFrames
+				var indices = getUsedFrames != null ? getUsedFrames(sprite.Length) :
+					Enumerable.Range(0, sprite.Length);
+
 				// Load any unused frames into the SheetBuilder
 				if (unloaded != null)
 				{
-					var indices = getUsedFrames != null ? getUsedFrames(sprite.Length) :
-						Enumerable.Range(0, sprite.Length);
-
 					foreach (var i in indices)
 					{
 						if (unloaded[i] != null)
