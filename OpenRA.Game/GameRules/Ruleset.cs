@@ -76,7 +76,7 @@ namespace OpenRA
 					}
 					catch (YamlException e)
 					{
-						throw new YamlException("Weapon type {0}: {1}".F(weapon.Key, e.Message));
+						throw new YamlException("Projectile type {0}: {1}".F(weapon.Key, e.Message));
 					}
 				}
 

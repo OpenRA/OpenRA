@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			get
 			{
 				return "The PaletteFromCurrentTileset trait and Palette field on TileSets have been removed.\n" +
-					"Terrain palettes are now explicitly defined on the world actor.";
+					"Terrain palettes are now explicitly defined on the world actor.\n" +
+					"Palette definitions are generated based on the Tileset metadata.";
 			}
 		}
 

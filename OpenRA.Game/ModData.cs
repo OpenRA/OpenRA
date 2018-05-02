@@ -55,7 +55,7 @@ namespace OpenRA
 			ObjectCreator = new ObjectCreator(Manifest, mods);
 			PackageLoaders = ObjectCreator.GetLoaders<IPackageLoader>(Manifest.PackageFormats, "package");
 
-			ModFiles = new FS(mods, PackageLoaders);
+			ModFiles = new FS(mod.Id, mods, PackageLoaders);
 			ModFiles.LoadFromManifest(Manifest);
 			Manifest.LoadCustomData(ObjectCreator);
 
