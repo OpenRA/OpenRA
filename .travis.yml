@@ -24,6 +24,7 @@ addons:
     - cmake
     - genisoimage
     - fakeroot
+    - zsync
 
 # Environment variables
 env:
@@ -75,10 +76,8 @@ deploy:
   provider: releases
   api_key:
     secure: "g/LU11f+mjqv+lj0sR1UliHwogXL4ofJUwoG5Dbqlvdf5UTLWytw/OWSCv8RGyuh10miyWeaoqHh1cn2C1IFhUEqN1sSeKKKOWOTvJ2FR5mzi9uH3d/MOBzG5icQ7Qh0fZ1YPz5RaJJhYu6bmfvA/1gD49GoaX2kxQL4J5cEBgg="
-  file:
-    - build/OpenRA-${TRAVIS_TAG}.exe
-    - build/OpenRA-${TRAVIS_TAG}.dmg
-    - build/OpenRA-${TRAVIS_TAG}-source.tar.bz2
+  file_glob: true
+  file: build/*
   skip_cleanup: true
   on:
     all_branches: true

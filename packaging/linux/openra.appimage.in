@@ -1,0 +1,48 @@
+#!/bin/sh
+LAUNCHER=$(readlink -f "${0}")
+HERE="$(dirname "${LAUNCHER}")"
+cd "${HERE}/../lib/openra" || exit 1
+
+# APPIMAGE is an environment variable set by the runtime
+# defining the absolute path to the .AppImage file
+if [ ! -z "${APPIMAGE}" ]; then
+  LAUNCHER=${APPIMAGE}
+
+  # appimaged doesn't update the mime or icon caches when registering AppImages.
+  # Run update-desktop-database and gtk-update-icon-cache ourselves if we detect
+  # that the desktop file has been installed but the handler is not cached
+  if command -v update-desktop-database > /dev/null; then
+    APPIMAGEID=$(printf "file://%s" "${APPIMAGE}" | md5sum | cut -d' ' -f1)
+    LAUNCHER_NAME="appimagekit_${APPIMAGEID}-openra-{MODID}.desktop"
+    LAUNCHER_PATH="${HOME}/.local/share/applications/${LAUNCHER_NAME}"
+    MIMECACHE_PATH="${HOME}/.local/share/applications/mimeinfo.cache"
+    SCHEME="x-scheme-handler/openra-{MODID}-{TAG}"
+    if [ -f "${LAUNCHER_PATH}" ] && ! grep -qs "${SCHEME}=" "${MIMECACHE_PATH}"; then
+        update-desktop-database "${HOME}/.local/share/applications"
+        if command -v gtk-update-icon-cache > /dev/null; then
+          gtk-update-icon-cache ~/.local/share/icons/hicolor/ -t
+        fi
+    fi
+  fi
+fi
+
+# Search for server connection
+PROTOCOL_PREFIX="openra-{MODID}-{TAG}://"
+JOIN_SERVER=""
+if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
+  JOIN_SERVER="Launch.Connect=${1#${PROTOCOL_PREFIX}}"
+fi
+
+# Run the game
+export SDL_VIDEO_X11_WMCLASS="openra-{MODID}-{TAG}"
+mono --debug OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="${LAUNCHER}" "${JOIN_SERVER}" "$@"
+
+# Show a crash dialog if something went wrong
+if [ $? != 0 ] && [ $? != 1 ]; then
+  if command -v zenity > /dev/null; then
+    zenity --no-wrap --question --title "{MODNAME}" --text "{MODNAME} has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ
+  else
+    printf "{MODNAME} has encountered a fatal error.\n  -> Log Files are available in ~/.openra\n  -> FAQ is available at https://github.com/OpenRA/OpenRA/wiki/FAQ\n"
+  fi
+  exit 1
+fi
