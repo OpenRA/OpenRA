@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 		}
 
-		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			if (self.World.Paused || IsTraitDisabled)
 				return r;

@@ -23,6 +23,7 @@ namespace OpenRA.FileSystem
 		bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename);
 		bool TryOpen(string filename, out Stream s);
 		bool Exists(string filename);
+		bool IsExternalModFile(string filename);
 	}
 
 	public class FileSystem : IReadOnlyFileSystem
@@ -30,6 +31,7 @@ namespace OpenRA.FileSystem
 		public IEnumerable<IReadOnlyPackage> MountedPackages { get { return mountedPackages.Keys; } }
 		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
 		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new Dictionary<string, IReadOnlyPackage>();
+		readonly string modID;
 
 		// Mod packages that should not be disposed
 		readonly List<IReadOnlyPackage> modPackages = new List<IReadOnlyPackage>();
@@ -38,8 +40,9 @@ namespace OpenRA.FileSystem
 
 		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 
-		public FileSystem(IReadOnlyDictionary<string, Manifest> installedMods, IPackageLoader[] packageLoaders)
+		public FileSystem(string modID, IReadOnlyDictionary<string, Manifest> installedMods, IPackageLoader[] packageLoaders)
 		{
+			this.modID = modID;
 			this.installedMods = installedMods;
 			this.packageLoaders = packageLoaders
 				.Append(new ZipFileLoader())
@@ -279,6 +282,25 @@ namespace OpenRA.FileSystem
 			}
 
 			return fileIndex.ContainsKey(filename);
+		}
+
+		/// <summary>
+		/// Returns true if the given filename references an external mod via an explicit mount
+		/// </summary>
+		public bool IsExternalModFile(string filename)
+		{
+			var explicitSplit = filename.IndexOf('|');
+			if (explicitSplit < 0)
+				return false;
+
+			IReadOnlyPackage explicitPackage;
+			if (!explicitMounts.TryGetValue(filename.Substring(0, explicitSplit), out explicitPackage))
+				return false;
+
+			if (installedMods[modID].Package == explicitPackage)
+				return false;
+
+			return modPackages.Contains(explicitPackage);
 		}
 
 		/// <summary>
