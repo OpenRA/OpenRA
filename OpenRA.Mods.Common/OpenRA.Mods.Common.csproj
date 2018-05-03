@@ -578,6 +578,7 @@
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="Traits\World\ActorSpawnManager.cs" />
     <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\ChangeIntensityToDuration.cs" />
     <Compile Include="UpdateRules\Rules\IgnoreAbstractActors.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
