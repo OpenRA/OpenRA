@@ -38,6 +38,8 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
+	parachute:
+		Start: 377
 	idle1:
 		Start: 256
 		Length: 16
@@ -178,6 +180,8 @@ e3:
 		Start: 64
 		Length: 8
 		Facings: 8
+	parachute:
+		Start: 393
 	idle1:
 		Start: 272
 		Length: 14
@@ -245,6 +249,8 @@ e6:
 		Length: 6
 		Facings: 8
 		Tick: 100
+	parachute:
+		Start: 210
 	idle1:
 		Start: 121
 		Length: 8
@@ -440,6 +446,8 @@ e2:
 		Start: 64
 		Length: 20
 		Facings: 8
+	parachute:
+		Start: 505
 	idle1:
 		Start: 384
 		Length: 14
@@ -792,6 +800,8 @@ e4:
 		Start: 64
 		Length: 16
 		Facings: 8
+	parachute:
+		Start: 528
 	idle1:
 		Start: 384
 		Length: 14
@@ -951,6 +961,8 @@ shok:
 		Start: 256
 		Length: 16
 		Facings: 8
+	parachute:
+		Start: 528
 	idle1:
 		Start: 384
 		Length: 14
