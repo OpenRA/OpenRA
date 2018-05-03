@@ -74,6 +74,10 @@ E1:
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE
+		StandSequences: parachute
+		RequiresCondition: parachute
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -116,6 +120,10 @@ E2:
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE
+		StandSequences: parachute
+		RequiresCondition: parachute
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -154,6 +162,10 @@ E3:
 	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE
+		StandSequences: parachute
+		RequiresCondition: parachute
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 	AutoTarget:
@@ -199,6 +211,10 @@ E4:
 		Chance: 50
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE
+		StandSequences: parachute
+		RequiresCondition: parachute
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -214,6 +230,11 @@ E6:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
+	WithInfantryBody:
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE
+		StandSequences: parachute
+		RequiresCondition: parachute
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -574,6 +595,10 @@ SHOK:
 		Voice: Move
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE
+		StandSequences: parachute
+		RequiresCondition: parachute
 	Voiced:
 		VoiceSet: ShokVoice
 	ProducibleWithLevel:
