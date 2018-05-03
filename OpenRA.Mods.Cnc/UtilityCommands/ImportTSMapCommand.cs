@@ -527,10 +527,14 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var ar = new ActorReference(name)
 				{
 					new LocationInit(cell),
-					new OwnerInit("Neutral"),
-					new HealthInit(100 * health / 256),
-					new FacingInit(facing),
+					new OwnerInit("Neutral")
 				};
+
+				if (health != 256)
+					ar.Add(new HealthInit(100 * health / 256));
+
+				if (facing != 96)
+					ar.Add(new FacingInit(facing));
 
 				if (isDeployed)
 					ar.Add(new DeployStateInit(DeployState.Deployed));
