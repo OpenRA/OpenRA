@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveWithReloadingSpriteTurret(),
 				new ChangeIntensityToDuration(),
 				new IgnoreAbstractActors(),
+				new AddShakeToBridge(),
 				new AddEditorPlayer(),
 				new RemovePaletteFromCurrentTileset(),
 				new DefineLocomotors()
