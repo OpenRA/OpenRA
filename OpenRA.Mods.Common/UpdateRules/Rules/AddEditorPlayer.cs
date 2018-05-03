@@ -21,20 +21,29 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			get
 			{
-				return "Map editor now requires an EditorPlayer to avoid loading all kinds of unnecessary player traits.";
+				return "Map editor now requires an EditorPlayer to avoid loading unnecessary player traits.\n" +
+					"A warning is displayed if this actor has not been defined.";
 			}
 		}
 
-		bool messageDisplayed;
+		bool warningRequired = true;
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (!messageDisplayed)
+			if (warningRequired)
 			{
-				messageDisplayed = true;
+				warningRequired = false;
 				yield return "The map editor now requires an EditorPlayer actor.\n" +
 					"Please add an EditorPlayer with the traits AlwaysVisible and Shroud to player.yaml\n(or a different rules yaml file of your choice).";
 			}
+		}
+
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		{
+			if (actorNode.KeyMatches("EditorPlayer"))
+				warningRequired = false;
+
+			yield break;
 		}
 	}
 }

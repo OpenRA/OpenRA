@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			get
 			{
-				return "The D2k-specific WormSpawner trait was renamed to ActorSpawner,\n" +
-					"generalized, and moved into the common mod code.";
+				return "The D2k-specific WormSpawner trait was renamed to ActorSpawner, generalized,\n" +
+					"and moved into the common mod code. Uses of the old traits are updated to account for this.";
 			}
 		}
 

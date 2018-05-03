@@ -182,6 +182,7 @@ namespace OpenRA.Traits
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 
+	[RequireExplicitImplementation]
 	public interface IVoiced
 	{
 		string VoiceSet { get; }
@@ -190,6 +191,7 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
+	[RequireExplicitImplementation]
 	public interface IStoreResources { int Capacity { get; } }
 
 	public interface IEffectiveOwner
@@ -262,6 +264,7 @@ namespace OpenRA.Traits
 		WDist LargestBlockingActorRadius { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface IRenderModifier
 	{
 		IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r);

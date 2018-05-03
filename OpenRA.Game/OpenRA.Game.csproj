@@ -181,7 +181,6 @@
     <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
-    <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Player\Shroud.cs" />
     <Compile Include="Traits\Selectable.cs" />
     <Compile Include="Traits\Target.cs" />

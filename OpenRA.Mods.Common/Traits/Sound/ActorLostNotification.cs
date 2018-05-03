@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			this.info = info;
 		}
 
-		public void Killed(Actor self, AttackInfo e)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			var player = info.NotifyAll ? self.World.LocalPlayer : self.Owner;
 			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", info.Notification, self.Owner.Faction.InternalName);

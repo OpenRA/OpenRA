@@ -117,6 +117,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		static void ApplyRules(ModData modData, IEnumerable<UpdateRule> rules, bool skipMaps)
 		{
 			Console.WriteLine();
+
+			var externalFilenames = new HashSet<string>();
 			foreach (var rule in rules)
 			{
 				var manualSteps = new List<string>();
@@ -127,7 +129,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					Console.Write("   Updating mod... ");
-					manualSteps.AddRange(UpdateUtils.UpdateMod(modData, rule, out allFiles));
+					manualSteps.AddRange(UpdateUtils.UpdateMod(modData, rule, out allFiles, externalFilenames));
 					Console.WriteLine("COMPLETE");
 				}
 				catch (Exception ex)
@@ -150,13 +152,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (!skipMaps)
 				{
 					var mapsFailed = false;
-					var externalFilenames = new HashSet<string>();
+					var mapExternalFilenames = new HashSet<string>();
 					foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
 					{
 						try
 						{
 							YamlFileSet mapFiles;
-							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out mapFiles, externalFilenames);
+							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out mapFiles, mapExternalFilenames);
 							allFiles.AddRange(mapFiles);
 
 							if (mapSteps.Any())
@@ -198,6 +200,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.WriteLine(UpdateUtils.FormatMessageList(manualSteps, 1));
 				}
 
+				Console.WriteLine();
+			}
+
+			if (externalFilenames.Any())
+			{
+				Console.WriteLine("The following external mod files have been ignored:");
+				Console.WriteLine(UpdateUtils.FormatMessageList(externalFilenames));
+				Console.WriteLine("These files should be updated by running --update-mod on the referenced mod(s)");
 				Console.WriteLine();
 			}
 
