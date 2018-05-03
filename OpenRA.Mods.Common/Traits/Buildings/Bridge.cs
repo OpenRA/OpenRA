@@ -378,7 +378,6 @@ namespace OpenRA.Mods.Common.Traits
 				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 				info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
 
-				self.World.WorldActor.Trait<ScreenShaker>().AddEffect(15, self.CenterPosition, 6);
 				self.Kill(saboteur);
 			});
 

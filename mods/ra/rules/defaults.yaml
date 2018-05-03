@@ -942,6 +942,9 @@
 		QuantizedFacings: 1
 	Interactable:
 		Bounds: 96,48
+	ShakeOnDeath:
+		Duration: 15
+		Intensity: 6
 
 ^Rock:
 	Inherits@1: ^SpriteActor
