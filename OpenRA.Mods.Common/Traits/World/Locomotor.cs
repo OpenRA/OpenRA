@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
 
-		[Desc("e.g. crate, wall, infantry")]
+		[Desc("e.g. wall, infantry")]
 		public readonly BitSet<CrushClass> Crushes = default(BitSet<CrushClass>);
 
 		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]

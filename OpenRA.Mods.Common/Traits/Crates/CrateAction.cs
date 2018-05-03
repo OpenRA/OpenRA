@@ -11,6 +11,7 @@
 
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -38,6 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Only allow this crate action when the collector has these prerequisites")]
 		public readonly string[] Prerequisites = { };
 
+		[Desc("Collector types that this crate action will not occur for.")]
+		public readonly BitSet<CollectorType> ExcludeCollectorTypes = default(BitSet<CollectorType>);
+
 		[Desc("Actor types that this crate action will not occur for.")]
 		[ActorReference] public string[] ExcludedActorTypes = { };
 
@@ -63,6 +67,10 @@ namespace OpenRA.Mods.Common.Traits
 				return 0;
 
 			if (Info.ExcludedActorTypes.Contains(collector.Info.Name))
+				return 0;
+
+			var crateCollectorTraitInfo = collector.Info.TraitInfo<CrateCollectorInfo>();
+			if (!crateCollectorTraitInfo.All && crateCollectorTraitInfo.CollectorTypes.Overlaps(Info.ExcludeCollectorTypes))
 				return 0;
 
 			if (Info.Prerequisites.Any() && !collector.Owner.PlayerActor.Trait<TechTree>().HasPrerequisites(Info.Prerequisites))

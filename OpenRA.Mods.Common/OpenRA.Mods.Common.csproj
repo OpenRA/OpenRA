@@ -317,6 +317,7 @@
     <Compile Include="Traits\Rearmable.cs" />
     <Compile Include="Traits\Burns.cs" />
     <Compile Include="Traits\CarryableHarvester.cs" />
+    <Compile Include="Traits\CrateCollector.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
     <Compile Include="Traits\Conditions\GrantExternalConditionToCrusher.cs" />
