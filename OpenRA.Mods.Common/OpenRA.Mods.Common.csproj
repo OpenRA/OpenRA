@@ -935,6 +935,7 @@
     <Compile Include="UpdateRules\Rules\20180923\RemoveRepairBuildingsFromAircraft.cs" />
     <Compile Include="UpdateRules\Rules\20180923\AddRearmable.cs" />
     <Compile Include="UpdateRules\Rules\20180923\MergeAttackPlaneAndHeli.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\AddCrateCollector.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
