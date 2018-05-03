@@ -82,3 +82,4 @@ LST:
 		PipCount: 5
 		PassengerFacing: 0
 		LoadingCondition: notmobile
+	CrateCollector:

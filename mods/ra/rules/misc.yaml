@@ -108,6 +108,7 @@ CRATE:
 		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 600
+		ExcludeCollectorTypes: building
 
 MONEYCRATE:
 	Inherits: ^Crate

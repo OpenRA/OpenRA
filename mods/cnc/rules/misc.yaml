@@ -20,6 +20,7 @@ CRATE:
 		SelectionShares: 5
 		Effect: cloak
 		Condition: cloak-crate-collected
+		ExcludeCollectorTypes: building
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 50

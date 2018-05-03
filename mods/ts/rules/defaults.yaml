@@ -437,6 +437,7 @@
 
 ^Crate:
 	HiddenUnderFog:
+		Type: GroundPosition
 	Tooltip:
 		Name: Crate
 	Crate:
@@ -535,6 +536,7 @@
 		RequiresCondition: !inside-tunnel
 		Range: 2c0
 		MaxHeightDelta: 3
+	CrateCollector:
 	Mobile:
 		Voice: Move
 		Speed: 71
@@ -720,6 +722,7 @@
 	OwnerLostAction:
 		Action: Kill
 	DrawLineToTarget:
+	CrateCollector:
 	Mobile:
 		RequiresCondition: !empdisable && !being-captured
 		Locomotor: wheeled
@@ -931,6 +934,7 @@
 		Categories: Critter
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
+	CrateCollector:
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -1089,6 +1093,7 @@
 		Categories: Railway
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
+	CrateCollector:
 
 ^TerrainOverlay:
 	AlwaysVisible:

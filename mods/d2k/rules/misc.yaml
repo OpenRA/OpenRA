@@ -1,5 +1,6 @@
 crate:
 	HiddenUnderFog:
+		Type: GroundPosition
 	Tooltip:
 		Name: Crate
 	Crate:

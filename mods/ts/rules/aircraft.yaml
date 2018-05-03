@@ -62,6 +62,7 @@ DSHP:
 		EjectOnDeath: true
 	SpawnActorOnDeath:
 		Actor: DSHP.Husk
+	CrateCollector:
 
 ORCA:
 	Inherits: ^Helicopter
@@ -202,6 +203,7 @@ ORCATRAN:
 		EjectOnDeath: true
 	SpawnActorOnDeath:
 		Actor: ORCATRAN.Husk
+	CrateCollector:
 
 TRNSPORT:
 	Inherits: ^Helicopter
@@ -239,6 +241,7 @@ TRNSPORT:
 		Bounds: 44,32,0,-8
 	SpawnActorOnDeath:
 		Actor: TRNSPORT.Husk
+	CrateCollector:
 
 SCRIN:
 	Inherits: ^Aircraft

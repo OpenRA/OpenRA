@@ -246,6 +246,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+	CrateCollector:
 	Mobile:
 		Locomotor: wheeled
 		TurnSpeed: 5
@@ -356,6 +357,7 @@
 		Type: None
 	RevealsShroud:
 		Range: 5c0
+	CrateCollector:
 	Mobile:
 		Locomotor: foot
 	SelectionDecorations:
@@ -529,6 +531,7 @@
 		Name: Dinosaur
 	RevealsShroud:
 		Range: 6c0
+	CrateCollector:
 	Mobile:
 		Locomotor: critter
 		Speed: 113
@@ -575,6 +578,7 @@
 		Type: Wood
 	RevealsShroud:
 		Range: 6c0
+	CrateCollector:
 	Mobile:
 		Voice: Move
 		Speed: 71
@@ -721,6 +725,8 @@
 
 ^BaseBuilding:
 	Inherits: ^Building
+	CrateCollector:
+		CollectorTypes: crate-collector, building
 	Building:
 		RequiresBaseProvider: true
 		BuildSounds: constru2.aud, hvydoor1.aud
@@ -1082,6 +1088,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	HiddenUnderFog:
+		Type: GroundPosition
 	Tooltip:
 		Name: Crate
 		GenericName: Crate

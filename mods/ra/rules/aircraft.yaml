@@ -259,6 +259,7 @@ TRAN:
 	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 40,36
+	CrateCollector:
 
 HELI:
 	Inherits: ^Helicopter

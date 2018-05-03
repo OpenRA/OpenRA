@@ -240,6 +240,7 @@
 		Action: Kill
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
+	CrateCollector:
 	Mobile:
 		RequiresCondition: !being-captured
 		Locomotor: wheeled
@@ -315,6 +316,7 @@
 		Action: Kill
 		DeathTypes: DefaultDeath
 	DrawLineToTarget:
+	CrateCollector:
 	Health:
 		HP: 2500
 	Armor:
@@ -472,6 +474,7 @@
 		Action: Kill
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
+	CrateCollector:
 	Mobile:
 		Locomotor: naval
 	SelectionDecorations:
@@ -638,6 +641,8 @@
 
 ^Building:
 	Inherits: ^BasicBuilding
+	CrateCollector:
+		CollectorTypes: crate-collector, building
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -1045,6 +1050,7 @@
 	Interactable:
 		Bounds: 24,24
 	HiddenUnderFog:
+		Type: GroundPosition
 	Tooltip:
 		Name: Crate
 		GenericName: Crate

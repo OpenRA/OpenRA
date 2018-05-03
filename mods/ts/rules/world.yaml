@@ -14,7 +14,6 @@
 		FogPalette: shroud
 	Locomotor@FOOT:
 		Name: foot
-		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
 			Clear: 90
@@ -41,7 +40,6 @@
 			Veins: 50
 	JumpjetLocomotor@JUMPJET:
 		Name: jumpjet
-		Crushes: crate
 		SharesCell: true
 		JumpjetTransitionCost: 100
 		TerrainSpeeds:
@@ -57,7 +55,6 @@
 			Jumpjet: 110
 	Locomotor@WHEELED:
 		Name: wheeled
-		Crushes: crate
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
@@ -71,7 +68,7 @@
 				PathingCost: 90
 	Locomotor@HEAVYWHEELED:
 		Name: heavywheeled
-		Crushes: wall, crate, infantry
+		Crushes: wall, infantry
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
@@ -85,7 +82,7 @@
 				PathingCost: 90
 	Locomotor@TRACKED:
 		Name: tracked
-		Crushes: wall, crate, infantry
+		Crushes: wall, infantry
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
@@ -98,7 +95,7 @@
 			Veins: 70
 	Locomotor@AMPHIBIOUS:
 		Name: amphibious
-		Crushes: wall, crate, infantry
+		Crushes: wall, infantry
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
@@ -112,7 +109,7 @@
 			Water: 80
 	SubterraneanLocomotor@SUBTERRANEAN:
 		Name: subterranean
-		Crushes: wall, crate, infantry
+		Crushes: wall, infantry
 		TerrainSpeeds:
 			Clear: 70
 			Road: 100
@@ -128,7 +125,7 @@
 		SubterraneanTransitionCost: 120
 	Locomotor@HOVER:
 		Name: hover
-		Crushes: wall, crate, infantry
+		Crushes: wall, infantry
 		TerrainSpeeds:
 			Clear: 100
 			Road: 100
@@ -155,7 +152,7 @@
 			Veins: 100
 	Locomotor@VISCEROID:
 		Name: visceroid
-		Crushes: crate, infantry
+		Crushes: infantry
 		TerrainSpeeds:
 			Clear: 90
 			Road: 100
@@ -182,7 +179,7 @@
 		Name: train
 		TerrainSpeeds:
 			Rail: 100
-		Crushes: wall, crate, infantry
+		Crushes: wall, infantry
 	Faction@Random:
 		Name: Any
 		InternalName: Random

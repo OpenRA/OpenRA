@@ -170,6 +170,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+	CrateCollector:
 	Mobile:
 		TurnSpeed: 5
 		Locomotor: vehicle
@@ -277,6 +278,7 @@
 		Type: none
 	RevealsShroud:
 		Range: 3c768
+	CrateCollector:
 	Mobile:
 		Locomotor: foot
 	SelectionDecorations:

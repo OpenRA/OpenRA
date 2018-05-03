@@ -90,20 +90,24 @@ CRATE:
 		Effect: stealth
 		Condition: crate-cloak
 		Sound: cloak5.aud
+		ExcludeCollectorTypes: building
 	GrantExternalConditionCrateAction@firepower:
 		SelectionShares: 5
 		Effect: firepower
 		Condition: crate-firepower
 		Notification: UnitFirepowerUpgraded
+		ExcludeCollectorTypes: building
 	GrantExternalConditionCrateAction@armor:
 		SelectionShares: 5
 		Effect: armor
 		Condition: crate-damage
 		Notification: UnitArmourUpgraded
+		ExcludeCollectorTypes: building
 	GrantExternalConditionCrateAction@speed:
 		SelectionShares: 5
 		Condition: crate-speed
 		Notification: UnitSpeedUpgraded
+		ExcludeCollectorTypes: building
 	MapEditorData:
 		Categories: System
 
