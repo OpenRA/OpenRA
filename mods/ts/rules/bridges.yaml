@@ -63,6 +63,9 @@ LOBRDG_A:
 		ADestroyedSequences: adead
 		BDestroyedSequences: bdead
 		ABDestroyedSequences: abdead
+	ShakeOnDeath:
+		Duration: 15
+		Intensity: 6
 
 LOBRDG_A_D:
 	Inherits: LOBRDG_A
@@ -99,6 +102,9 @@ LOBRDG_B:
 		ADestroyedSequences: adead
 		BDestroyedSequences: bdead
 		ABDestroyedSequences: abdead
+	ShakeOnDeath:
+		Duration: 15
+		Intensity: 6
 
 LOBRDG_B_D:
 	Inherits: LOBRDG_B

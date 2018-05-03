@@ -977,6 +977,9 @@
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
+	ShakeOnDeath:
+		Duration: 15
+		Intensity: 6
 
 ^Crate:
 	Inherits@1: ^SpriteActor
