@@ -264,6 +264,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 			node.Value.Nodes.Add(toAdd);
 		}
 
+		public static void RemoveNode(this MiniYamlNode node, MiniYamlNode toRemove)
+		{
+			node.Value.Nodes.Remove(toRemove);
+		}
+
 		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
 		public static int RemoveNodes(this MiniYamlNode node, string match)
 		{
