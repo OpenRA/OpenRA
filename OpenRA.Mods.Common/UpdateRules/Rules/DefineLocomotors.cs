@@ -128,8 +128,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						{
 							if (node != null)
 							{
-								grantNode.Value.Nodes.Add(node);
-								mobileNode.Value.Nodes.Remove(node);
+								grantNode.AddNode(node);
+								mobileNode.RemoveNode(node);
 							}
 						}
 
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			foreach (var node in addNodes)
-				actorNode.Value.Nodes.Add(node);
+				actorNode.AddNode(node);
 
 			yield break;
 		}

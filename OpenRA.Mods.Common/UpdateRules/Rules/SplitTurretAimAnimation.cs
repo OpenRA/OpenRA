@@ -49,39 +49,39 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				{
 					var turretAim = new MiniYamlNode("WithTurretAimAnimation", "");
 					aimSequence.RenameKeyPreservingSuffix("Sequence");
-					turretAim.Value.Nodes.Add(aimSequence);
-					turretAttack.Value.Nodes.Remove(aimSequence);
+					turretAim.AddNode(aimSequence);
+					turretAttack.RemoveNode(aimSequence);
 
 					var reloadPrefix = turretAttack.LastChildMatching("ReloadPrefix");
 					var turret = turretAttack.LastChildMatching("Turret");
 					var armament = turretAttack.LastChildMatching("Armament");
 					if (reloadPrefix != null)
 					{
-						turretAim.Value.Nodes.Add(reloadPrefix);
-						turretAttack.Value.Nodes.Remove(reloadPrefix);
+						turretAim.AddNode(reloadPrefix);
+						turretAttack.RemoveNode(reloadPrefix);
 					}
 
 					if (turret != null)
-						turretAim.Value.Nodes.Add(turret);
+						turretAim.AddNode(turret);
 					if (armament != null)
-						turretAim.Value.Nodes.Add(armament);
+						turretAim.AddNode(armament);
 
 					attackSequence.RenameKeyPreservingSuffix("Sequence");
-					actorNode.Value.Nodes.Add(turretAim);
+					actorNode.AddNode(turretAim);
 				}
 			}
 
 			var spriteTurret = actorNode.LastChildMatching("WithSpriteTurret");
 			if (spriteTurret != null)
 			{
-				var aimSequence = spriteTurret.Value.Nodes.FirstOrDefault(n => n.Key == "AimSequence");
+				var aimSequence = spriteTurret.LastChildMatching("AimSequence");
 				if (aimSequence != null)
 				{
 					var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
 					aimSequence.RenameKeyPreservingSuffix("Sequence");
-					aimAnim.Value.Nodes.Add(aimSequence);
-					spriteTurret.Value.Nodes.Remove(aimSequence);
-					actorNode.Value.Nodes.Add(aimAnim);
+					aimAnim.AddNode(aimSequence);
+					spriteTurret.RemoveNode(aimSequence);
+					actorNode.AddNode(aimAnim);
 				}
 			}
 
