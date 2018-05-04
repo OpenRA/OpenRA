@@ -18,6 +18,8 @@ if mono_missing_or_old; then
   ERROR_MESSAGE="{MODNAME} requires Mono ${MINIMUM_MONO_VERSION} or greater.\nPlease install Mono using your system package manager."
   if command -v zenity > /dev/null; then
     zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
+  elif command -v kdialog > /dev/null; then
+    kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
   else
     printf "${ERROR_MESSAGE}"
   fi
