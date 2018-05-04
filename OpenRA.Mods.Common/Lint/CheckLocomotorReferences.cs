@@ -22,6 +22,11 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var worldActor = rules.Actors["world"];
 			var locomotorInfos = worldActor.TraitInfos<LocomotorInfo>().ToArray();
+			foreach (var li in locomotorInfos)
+				foreach (var otherLocomotor in locomotorInfos)
+					if (li != otherLocomotor && li.Name == otherLocomotor.Name)
+						emitError("There is more than one Locomotor with name {0}!".F(li.Name));
+
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<ITraitInfo>())
