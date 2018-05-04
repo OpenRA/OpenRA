@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Bleed only changes here
 				new RemoveTerrainTypeIsWaterFlag(),
+				new DefineSquadExcludeHarvester(),
 				new RemoveWeaponScanRadius(),
 				new SplitTurretAimAnimation(),
 				new DefineSoundDefaults(),
@@ -47,7 +48,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveWithReloadingSpriteTurret(),
 				new IgnoreAbstractActors(),
 				new AddEditorPlayer(),
-				new RemovePaletteFromCurrentTileset()
+				new RemovePaletteFromCurrentTileset(),
+				new DefineLocomotors()
 			})
 		};
 
