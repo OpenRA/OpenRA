@@ -23,14 +23,13 @@ fi
 # Launch the engine with the appropriate arguments
 mono OpenRA.Game.exe Engine.LaunchPath="$MODLAUNCHER" $MODARG "$@"
 
-# Show a crash dialog if required
-if [ $? != 0 ] && [ $? != 1 ]
-then
-	if which zenity > /dev/null
-	then
-		zenity --no-wrap --error --title "OpenRA" --text "OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ" 2> /dev/null
+# Show a crash dialog if something went wrong
+if [ $? != 0 ] && [ $? != 1 ]; then
+	ERROR_MESSAGE="OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ"
+	if command -v zenity > /dev/null; then
+		zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
 	else
-		printf "OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ\n"
+		printf "${ERROR_MESSAGE}\n"
 	fi
 	exit 1
 fi
