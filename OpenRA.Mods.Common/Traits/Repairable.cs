@@ -26,19 +26,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairUnit trait will be used.")]
+		public readonly int HpPerStep = -1;
+
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
 	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly RepairableInfo info;
+		public readonly RepairableInfo Info;
 		readonly Health health;
 		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
-			this.info = info;
+			Info = info;
 			health = self.Trait<Health>();
 			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
@@ -62,12 +65,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepairAt(Actor target)
 		{
-			return info.RepairBuildings.Contains(target.Info.Name);
+			return Info.RepairBuildings.Contains(target.Info.Name);
 		}
 
 		bool CanRearmAt(Actor target)
 		{
-			return info.RepairBuildings.Contains(target.Info.Name);
+			return Info.RepairBuildings.Contains(target.Info.Name);
 		}
 
 		bool CanRepair()
@@ -82,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
+			return (order.OrderString == "Repair" && CanRepair()) ? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -133,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					info.RepairBuildings.Contains(a.Actor.Info.Name))
+					Info.RepairBuildings.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
