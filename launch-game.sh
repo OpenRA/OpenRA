@@ -28,7 +28,7 @@ if [ $? != 0 ] && [ $? != 1 ]
 then
 	if which zenity > /dev/null
 	then
-		zenity --no-wrap --error --title "OpenRA" --text "OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ"
+		zenity --no-wrap --error --title "OpenRA" --text "OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ" 2> /dev/null
 	else
 		printf "OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ\n"
 	fi

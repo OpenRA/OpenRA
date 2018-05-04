@@ -16,7 +16,7 @@ mono_missing_or_old() {
 
 if mono_missing_or_old; then
   if command -v zenity > /dev/null; then
-    zenity --no-wrap --error --title "{MODNAME}" --text "{MODNAME} requires Mono ${MINIMUM_MONO_VERSION} or greater.\nPlease install Mono using your system package manager."
+    zenity --no-wrap --error --title "{MODNAME}" --text "{MODNAME} requires Mono ${MINIMUM_MONO_VERSION} or greater.\nPlease install Mono using your system package manager." 2> /dev/null
   else
     printf "{MODNAME} requires Mono %s or greater.\nPlease install Mono using your system package manager.\n" "${MINIMUM_MONO_VERSION}"
   fi
