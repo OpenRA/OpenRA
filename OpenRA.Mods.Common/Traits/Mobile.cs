@@ -453,15 +453,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			/* initial fairly braindead implementation. */
+			// Initial fairly braindead implementation.
+			// don't allow ourselves to be pushed around by the enemy!
 			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)
-				return;		/* don't allow ourselves to be pushed around
-							 * by the enemy! */
+				return;
 
+			// Don't nudge if we're busy doing something!
 			if (!force && !self.IsIdle)
-				return;		/* don't nudge if we're busy doing something! */
+				return;
 
-			// pick an adjacent available cell.
+			// Pick an adjacent available cell.
 			var availCells = new List<CPos>();
 			var notStupidCells = new List<CPos>();
 
