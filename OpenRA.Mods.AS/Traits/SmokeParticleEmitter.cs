@@ -36,7 +36,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		[FieldLoader.Require]
 		[Desc("Which sequence to use.")]
-		[SequenceReference("Image")] public readonly string Sequence = null;
+		[SequenceReference("Image")] public readonly string[] Sequences = null;
 
 		[Desc("Which palette to use.")]
 		[PaletteReference] public readonly string Palette = null;
@@ -68,9 +68,9 @@ namespace OpenRA.Mods.AS.Traits
 			get { return Image; }
 		}
 
-		string ISmokeParticleInfo.Sequence
+		string[] ISmokeParticleInfo.Sequences
 		{
-			get { return Sequence; }
+			get { return Sequences; }
 		}
 
 		string ISmokeParticleInfo.Palette

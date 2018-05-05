@@ -42,7 +42,7 @@ namespace OpenRA.Mods.AS.Effects
 			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
 			anim = new Animation(world, smoke.Image, () => 0);
-			anim.PlayRepeating(smoke.Sequence);
+			anim.PlayRepeating(smoke.Sequences.Random(world.SharedRandom));
 			world.ScreenMap.Add(this, pos, anim.Image);
 			lifetime = smoke.Duration.Length == 2
 				? world.SharedRandom.Next(smoke.Duration[0], smoke.Duration[1])

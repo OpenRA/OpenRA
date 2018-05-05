@@ -30,7 +30,7 @@ namespace OpenRA.Mods.AS.Warheads
 
 		[FieldLoader.Require, SequenceReference("Image")]
 		[Desc("Which sequence to use.")]
-		public readonly string Sequence = null;
+		public readonly string[] Sequences = null;
 
 		[PaletteReference]
 		[Desc("Which palette to use.")]
@@ -50,9 +50,9 @@ namespace OpenRA.Mods.AS.Warheads
 			get { return Image; }
 		}
 
-		string ISmokeParticleInfo.Sequence
+		string[] ISmokeParticleInfo.Sequences
 		{
-			get { return Sequence; }
+			get { return Sequences; }
 		}
 
 		string ISmokeParticleInfo.Palette
@@ -77,6 +77,9 @@ namespace OpenRA.Mods.AS.Warheads
 
 		public void RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
+			if (string.IsNullOrEmpty(Weapon))
+				return;
+
 			if (!rules.Weapons.TryGetValue(Weapon.ToLowerInvariant(), out weapon))
 				throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(Weapon.ToLowerInvariant()));
 		}
