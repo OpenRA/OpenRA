@@ -17,7 +17,7 @@ namespace OpenRA.Mods.AS.Traits
 	public interface ISmokeParticleInfo
 	{
 		string Image { get; }
-		string Sequence { get; }
+		string[] Sequences { get; }
 		string Palette { get; }
 
 		int[] Duration { get; }
