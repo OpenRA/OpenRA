@@ -76,9 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips,
-		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
-		INotifyIdle, INotifyBlockingMove
+	public class Harvester : IIssueOrder, IResolveOrder, IPips, IExplodeModifier, IOrderVoice,
+		ISpeedModifier, ISync, INotifyCreated, INotifyIdle, INotifyBlockingMove
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
@@ -330,7 +329,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.Resources.Contains(resType.Info.Type);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -341,7 +340,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Deliver" || order.OrderID == "Harvest")
 				return new Order(order.OrderID, self, target, queued);
@@ -349,7 +348,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
 				return Info.HarvestVoice;
@@ -360,7 +359,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
 			{
@@ -440,7 +439,7 @@ namespace OpenRA.Mods.Common.Traits
 			return PipType.Transparent;
 		}
 
-		public IEnumerable<PipType> GetPips(Actor self)
+		IEnumerable<PipType> IPips.GetPips(Actor self)
 		{
 			var numPips = Info.PipCount;
 
