@@ -555,7 +555,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
 		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
-		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
+		Activity VisualMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
 		{
 			var speed = MovementSpeedForCell(self, cell);
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
