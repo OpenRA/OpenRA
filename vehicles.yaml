@@ -1,0 +1,10 @@
+ARTY:
+	Mobile:
+		TurnSpeed: 2
+		Speed: 60
+	RevealShroud:
+		Range: 8c0
+	RevealsShroud@GAPGEN:
+		Range: 4
+	Passenger:
+		Weight: 4
