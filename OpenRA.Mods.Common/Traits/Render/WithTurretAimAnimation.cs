@@ -26,6 +26,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[FieldLoader.Require]
 		[SequenceReference] public readonly string Sequence = null;
 
+		[Desc("Priority of this animation. Will override any animation with lower priority. Needs to be higher than 0.")]
+		public readonly int Priority = 1;
+
 		public override object Create(ActorInitializer init) { return new WithTurretAimAnimation(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -38,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, INotifyAiming
+	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, INotifyCustomTurretAnimationFinished, INotifyAiming
 	{
 		readonly AttackBase attack;
 		readonly WithSpriteTurret wst;
@@ -51,15 +54,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.Single(st => st.Info.Turret == info.Turret);
 		}
 
-		protected void UpdateSequence()
+		protected void PlayAimAnimation(Actor self)
 		{
-			var seq = !IsTraitDisabled && attack.IsAiming ? Info.Sequence : wst.Info.Sequence;
-			wst.DefaultAnimation.ReplaceAnim(seq);
+			if (!IsTraitDisabled && attack.IsAiming)
+				wst.PlayCustomAnimationRepeating(self, Info.Sequence, Info.Priority);
 		}
 
-		void INotifyAiming.StartedAiming(Actor self, AttackBase ab) { UpdateSequence(); }
-		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab) { UpdateSequence(); }
-		protected override void TraitEnabled(Actor self) { UpdateSequence(); }
-		protected override void TraitDisabled(Actor self) { UpdateSequence(); }
+		void INotifyAiming.StartedAiming(Actor self, AttackBase ab) { PlayAimAnimation(self); }
+		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab) { wst.CancelCustomAnimation(self, Info.Priority); }
+		protected override void TraitEnabled(Actor self) { PlayAimAnimation(self); }
+		protected override void TraitDisabled(Actor self) { wst.CancelCustomAnimation(self, Info.Priority); }
+
+		string INotifyCustomTurretAnimationFinished.Turret { get { return Info.Turret; } }
+
+		void INotifyCustomTurretAnimationFinished.CustomTurretAnimationFinished(Actor self)
+		{
+			// If a different custom animation was finished and we're still aiming, resume aim animation
+			if (attack.IsAiming)
+				wst.PlayCustomAnimationRepeating(self, Info.Sequence, Info.Priority);
+		}
 	}
 }

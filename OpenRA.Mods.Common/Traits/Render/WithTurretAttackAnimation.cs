@@ -23,10 +23,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Turret = "primary";
 
 		[Desc("Displayed while attacking.")]
+		[FieldLoader.Require]
 		[SequenceReference] public readonly string Sequence = null;
 
 		[Desc("Delay in ticks before animation starts, either relative to attack preparation or attack.")]
 		public readonly int Delay = 0;
+
+		[Desc("Priority of this animation. Will override any animation with lower priority. Needs to be higher than 0.")]
+		public readonly int Priority = 2;
 
 		[Desc("Should the animation be delayed relative to preparation or actual attack?")]
 		public readonly AttackDelayType DelayRelativeTo = AttackDelayType.Preparation;
@@ -51,8 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void PlayAttackAnimation(Actor self)
 		{
-			if (!string.IsNullOrEmpty(Info.Sequence))
-				wst.PlayCustomAnimation(self, Info.Sequence);
+			wst.PlayCustomAnimation(self, Info.Sequence, null, Info.Priority);
 		}
 
 		void NotifyAttack(Actor self)
