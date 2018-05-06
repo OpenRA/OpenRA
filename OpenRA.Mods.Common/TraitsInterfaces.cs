@@ -166,6 +166,13 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
 
 	[RequireExplicitImplementation]
+	public interface INotifyCustomTurretAnimationFinished
+	{
+		string Turret { get; }
+		void CustomTurretAnimationFinished(Actor self);
+	}
+
+	[RequireExplicitImplementation]
 	public interface IObservesVariablesInfo : ITraitInfo { }
 
 	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);

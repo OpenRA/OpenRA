@@ -77,6 +77,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
+		INotifyCustomTurretAnimationFinished[] notify;
+
+		public int CurrentAnimationPriority { get; private set; }
 
 		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
@@ -88,6 +91,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			arms = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == info.Turret).ToArray();
 
+			CurrentAnimationPriority = 0;
+
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 			rs.Add(new AnimationWithOffset(DefaultAnimation,
@@ -97,6 +102,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			// Restrict turret facings to match the sprite
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
+		}
+
+		protected override void Created(Actor self)
+		{
+			notify = self.TraitsImplementing<INotifyCustomTurretAnimationFinished>().Where(n => n.Turret == Info.Turret).ToArray();
+			base.Created(self);
 		}
 
 		protected virtual WVec TurretOffset(Actor self)
@@ -126,8 +137,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DamageStateChanged(self);
 		}
 
-		public void PlayCustomAnimation(Actor self, string name, Action after = null)
+		public void PlayCustomAnimation(Actor self, string name, Action after = null, int priority = 0)
 		{
+			if (CurrentAnimationPriority > priority)
+			{
+				// HACK: This is necessary to prevent code that expects 'after' to run from breaking.
+				// NOTE: This is only meant as 'last resort' safety measure; preferably,
+				// code should not trigger a custom animation while a higher priority animation is running.
+				if (after != null)
+					after();
+
+				return;
+			}
+
+			CurrentAnimationPriority = priority;
+
 			DefaultAnimation.PlayThen(NormalizeSequence(self, name), () =>
 			{
 				CancelCustomAnimation(self);
@@ -136,9 +160,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 		}
 
-		public void CancelCustomAnimation(Actor self)
+		public void PlayCustomAnimationRepeating(Actor self, string name, int priority = 0)
 		{
+			if (CurrentAnimationPriority > priority)
+				return;
+
+			CurrentAnimationPriority = priority;
+			DefaultAnimation.PlayRepeating(NormalizeSequence(self, name));
+		}
+
+		public void CancelCustomAnimation(Actor self, int priority = 0)
+		{
+			// Priority != 0 means only cancel custom animation with matching priority!
+			if (priority > 0 && CurrentAnimationPriority != priority)
+				return;
+
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+			CurrentAnimationPriority = 0;
+
+			foreach (var n in notify)
+				n.CustomTurretAnimationFinished(self);
 		}
 	}
 }
