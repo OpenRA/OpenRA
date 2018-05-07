@@ -165,6 +165,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Which harvester handling module to use. Leave empty to disable.")]
 		public readonly string HarvesterModule = "default-harvester-module";
 
+		[Desc("Which capture handling module to use. Leave empty to disable.")]
+		public readonly string CaptureModule = "default-capture-module";
+
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
@@ -196,27 +199,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing("LoadDecisions")]
 		public readonly List<SupportPowerDecision> SupportPowerDecisions = new List<SupportPowerDecision>();
-
-		[Desc("Actor types that can capture other actors (via `Captures` or `ExternalCaptures`).",
-			"Leave this empty to disable capturing.")]
-		public HashSet<string> CapturingActorTypes = new HashSet<string>();
-
-		[Desc("Actor types that can be targeted for capturing.",
-			"Leave this empty to include all actors.")]
-		public HashSet<string> CapturableActorTypes = new HashSet<string>();
-
-		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
-		public readonly int MinimumCaptureDelay = 375;
-
-		[Desc("Maximum number of options to consider for capturing.",
-			"If a value less than 1 is given 1 will be used instead.")]
-		public readonly int MaximumCaptureTargetOptions = 10;
-
-		[Desc("Should visibility (Shroud, Fog, Cloak, etc) be considered when searching for capturable targets?")]
-		public readonly bool CheckCaptureTargetsForVisibility = true;
-
-		[Desc("Player stances that capturers should attempt to target.")]
-		public readonly Stance CapturableStances = Stance.Enemy | Stance.Neutral;
 
 		static object LoadUnitCategories(MiniYaml yaml)
 		{
@@ -277,11 +259,13 @@ namespace OpenRA.Mods.Common.AI
 		BitArray resourceTypeIndices;
 
 		IAIModule harvModule;
+		IAIModule captureModule;
 		AISupportPowerManager supportPowerManager;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
+		public List<Actor> UnitsHangingAroundTheBase { get { return unitsHangingAroundTheBase; } }
 
 		// Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
@@ -301,8 +285,6 @@ namespace OpenRA.Mods.Common.AI
 		int assignRolesTicks;
 		int attackForceTicks;
 		int minAttackForceDelayTicks;
-		int minCaptureDelayTicks;
-		readonly int maximumCaptureTargetOptions;
 
 		readonly Queue<Order> orders = new Queue<Order>();
 
@@ -320,8 +302,6 @@ namespace OpenRA.Mods.Common.AI
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
 			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld;
-
-			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -339,6 +319,7 @@ namespace OpenRA.Mods.Common.AI
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
 			harvModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.HarvesterModule);
+			captureModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.CaptureModule);
 			supportPowerManager = new AISupportPowerManager(this, p);
 
 			foreach (var building in Info.BuildingQueues)
@@ -356,7 +337,6 @@ namespace OpenRA.Mods.Common.AI
 			assignRolesTicks = Random.Next(0, Info.AssignRolesInterval);
 			attackForceTicks = Random.Next(0, Info.AttackForceInterval);
 			minAttackForceDelayTicks = Random.Next(0, Info.MinimumAttackForceDelay);
-			minCaptureDelayTicks = Random.Next(0, Info.MinimumCaptureDelay);
 
 			var tileset = World.Map.Rules.TileSet;
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
@@ -365,11 +345,18 @@ namespace OpenRA.Mods.Common.AI
 
 			if (harvModule != null)
 				harvModule.Activate(this);
+			if (captureModule != null)
+				captureModule.Activate(this);
 		}
 
 		public void QueueOrder(Order order)
 		{
 			orders.Enqueue(order);
+		}
+
+		public void RemoveActorFromActiveUnits(Actor actor)
+		{
+			activeUnits.Remove(actor);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -636,95 +623,8 @@ namespace OpenRA.Mods.Common.AI
 				CreateAttackForce();
 			}
 
-			if (--minCaptureDelayTicks <= 0)
-			{
-				minCaptureDelayTicks = Info.MinimumCaptureDelay;
-				QueueCaptureOrders();
-			}
-		}
-
-		IEnumerable<Actor> GetVisibleActorsBelongingToPlayer(Player owner)
-		{
-			foreach (var actor in GetActorsThatCanBeOrderedByPlayer(owner))
-				if (actor.CanBeViewedByPlayer(Player))
-					yield return actor;
-		}
-
-		IEnumerable<Actor> GetActorsThatCanBeOrderedByPlayer(Player owner)
-		{
-			foreach (var actor in World.Actors)
-				if (actor.Owner == owner && !actor.IsDead && actor.IsInWorld)
-					yield return actor;
-		}
-
-		void QueueCaptureOrders()
-		{
-			if (!Info.CapturingActorTypes.Any() || Player.WinState != WinState.Undefined)
-				return;
-
-			var capturers = unitsHangingAroundTheBase
-				.Where(a => a.IsIdle && Info.CapturingActorTypes.Contains(a.Info.Name))
-				.Select(a => new TraitPair<CaptureManager>(a, a.TraitOrDefault<CaptureManager>()))
-				.Where(tp => tp.Trait != null)
-				.ToArray();
-
-			if (capturers.Length == 0)
-				return;
-
-			var randPlayer = World.Players.Where(p => !p.Spectating
-				&& Info.CapturableStances.HasStance(Player.Stances[p])).Random(Random);
-
-			var targetOptions = Info.CheckCaptureTargetsForVisibility
-				? GetVisibleActorsBelongingToPlayer(randPlayer)
-				: GetActorsThatCanBeOrderedByPlayer(randPlayer);
-
-			var capturableTargetOptions = targetOptions
-				.Select(a => new CaptureTarget<CapturableInfo>(a, "CaptureActor"))
-				.Where(target =>
-				{
-					if (target.Info == null)
-						return false;
-
-					var captureManager = target.Actor.TraitOrDefault<CaptureManager>();
-					if (captureManager == null)
-						return false;
-
-					return capturers.Any(tp => captureManager.CanBeTargetedBy(target.Actor, tp.Actor, tp.Trait));
-				})
-				.OrderByDescending(target => target.Actor.GetSellValue())
-				.Take(maximumCaptureTargetOptions);
-
-			if (Info.CapturableActorTypes.Any())
-				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
-
-			if (!capturableTargetOptions.Any())
-				return;
-
-			var capturesCapturers = capturers.Where(tp => tp.Actor.Info.HasTraitInfo<CapturesInfo>());
-			foreach (var tp in capturesCapturers)
-				QueueCaptureOrderFor(tp.Actor, GetCapturerTargetClosestToOrDefault(tp.Actor, capturableTargetOptions));
-		}
-
-		void QueueCaptureOrderFor<TTargetType>(Actor capturer, CaptureTarget<TTargetType> target) where TTargetType : class, ITraitInfoInterface
-		{
-			if (capturer == null)
-				return;
-
-			if (target == null)
-				return;
-
-			if (target.Actor == null)
-				return;
-
-			QueueOrder(new Order(target.OrderString, capturer, Target.FromActor(target.Actor), true));
-			BotDebug("AI ({0}): Ordered {1} to capture {2}", Player.ClientIndex, capturer, target.Actor);
-			activeUnits.Remove(capturer);
-		}
-
-		CaptureTarget<TTargetType> GetCapturerTargetClosestToOrDefault<TTargetType>(Actor capturer, IEnumerable<CaptureTarget<TTargetType>> targets)
-			where TTargetType : class, ITraitInfoInterface
-		{
-			return targets.MinByOrDefault(target => (target.Actor.CenterPosition - capturer.CenterPosition).LengthSquared);
+			if (captureModule != null)
+				captureModule.Tick();
 		}
 
 		void FindNewUnits(Actor self)

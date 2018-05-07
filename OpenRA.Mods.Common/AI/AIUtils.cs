@@ -47,5 +47,19 @@ namespace OpenRA.Mods.Common.AI
 						.All(ac => terrainTypes.Contains(map.GetTerrainInfo(ac).Type))))
 							.Any(availableCells => availableCells > 0);
 		}
+
+		public static IEnumerable<Actor> GetVisibleActorsBelongingToPlayer(Player viewer, Player owner)
+		{
+			foreach (var actor in GetActorsThatCanBeOrderedByPlayer(owner))
+				if (actor.CanBeViewedByPlayer(viewer))
+					yield return actor;
+		}
+
+		public static IEnumerable<Actor> GetActorsThatCanBeOrderedByPlayer(Player owner)
+		{
+			foreach (var actor in owner.World.Actors)
+				if (actor.Owner == owner && !actor.IsDead && actor.IsInWorld)
+					yield return actor;
+		}
 	}
 }
