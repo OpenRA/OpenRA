@@ -106,7 +106,7 @@ Atomic:
 	Warhead@1Dam: SpreadDamage
 		Spread: 1c0
 		Falloff: 200, 100, 50, 25, 12, 0
-		Damage: 27000	##225 in vanilla but of course is a cluster bomb instead, so damage spread out
+		Damage: 27000 ##225 in vanilla but of course is a cluster bomb instead, so damage spread out
 		Versus:
 			none: 90
 			wall: 50
