@@ -84,21 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ModifyCash(Actor self, Player newOwner, int amount)
 		{
-			if (amount < 0)
-			{
-				// Check whether the amount of cash to be removed would exceed available player cash, in that case only remove all the player cash
-				var drain = Math.Min(resources.Cash + resources.Resources, -amount);
-				resources.TakeCash(drain);
+			amount = resources.ChangeCash(amount);
 
-				if (info.ShowTicks)
-					AddCashTick(self, -drain);
-			}
-			else
-			{
-				resources.GiveCash(amount);
-				if (info.ShowTicks)
-					AddCashTick(self, amount);
-			}
+			if (info.ShowTicks)
+				AddCashTick(self, amount);
 		}
 	}
 }

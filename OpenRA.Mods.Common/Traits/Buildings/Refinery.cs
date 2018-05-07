@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 				playerResources.GiveResources(amount);
 			}
 			else
-				playerResources.GiveCash(amount);
+				amount = playerResources.ChangeCash(amount);
 
 			if (info.ShowTicks)
 				currentDisplayValue += amount;

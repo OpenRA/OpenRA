@@ -86,6 +86,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		int lastNotificationTick;
 
+		public int ChangeCash(int amount)
+		{
+			if (amount >= 0)
+				GiveCash(amount);
+			else
+			{
+				// Don't put the player into negative funds
+				amount = Math.Max(-(Cash + Resources), amount);
+
+				TakeCash(-amount);
+			}
+
+			return amount;
+		}
+
 		public bool CanGiveResources(int amount)
 		{
 			return Resources + amount <= ResourceCapacity;
