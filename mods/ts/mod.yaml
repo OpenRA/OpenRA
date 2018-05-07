@@ -11,7 +11,7 @@ Packages:
 	$ts: ts
 	./mods/common: common
 
-# Tiberian Sun
+	# Tiberian Sun
 	~scores.mix
 	~sidenc01.mix
 	~sidenc02.mix
@@ -35,7 +35,7 @@ Packages:
 	~speech02.mix: speech-nod
 	~tem.mix
 	~temperat.mix
-# Firestorm
+	# Firestorm
 	~scores01.mix
 	~expand01.mix
 	~sounds01.mix

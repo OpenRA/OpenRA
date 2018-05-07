@@ -1398,7 +1398,7 @@ GALITE:
 		MaxHeightDelta: 3
 	Power:
 		Amount: 0
-# TODO: should use terrain lighting instead, depends on https://github.com/OpenRA/OpenRA/issues/3605
+	# TODO: should use terrain lighting instead, depends on https://github.com/OpenRA/OpenRA/issues/3605
 	WithIdleOverlay@LIGHTING:
 		Sequence: lighting
 		Palette: alpha
