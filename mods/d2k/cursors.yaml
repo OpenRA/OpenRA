@@ -233,7 +233,7 @@ Cursors:
 			Start: 236
 			X: 24
 			Y: 24
-# Cursors that need minimap variants
+		# Cursors that need minimap variants
 		deploy:
 			Start: 96
 			Length: 8
