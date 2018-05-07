@@ -125,6 +125,7 @@
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="Traits\BotModules\HarvesterBotModule.cs" />
+    <Compile Include="Traits\BotModules\CaptureBotModule.cs" />
     <Compile Include="AI\AISupportPowerManager.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
@@ -928,6 +929,7 @@
     <Compile Include="UpdateRules\Rules\20180923\LowPowerSlowdownToModifier.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemoveHealthPercentageRing.cs" />
     <Compile Include="UpdateRules\Rules\20180923\AddHarvesterBotModule.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\AddCaptureBotModule.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />

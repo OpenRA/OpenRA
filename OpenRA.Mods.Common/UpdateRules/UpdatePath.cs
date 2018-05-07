@@ -99,6 +99,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveHealthPercentageRing(),
 				new RenameCrateActionNotification(),
 				new AddHarvesterBotModule(),
+				new AddCaptureBotModule(),
 			})
 		};
 
