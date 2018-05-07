@@ -47,5 +47,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			base.Activate(collector);
 		}
+
+		public override int GetSelectionShares(Actor collector)
+		{
+			var pr = collector.Owner.PlayerActor.Trait<PlayerResources>();
+			if (info.Amount < 0 && (pr.Cash + pr.Resources) == 0)
+				return 0;
+
+			return base.GetSelectionShares(collector);
+		}
 	}
 }
