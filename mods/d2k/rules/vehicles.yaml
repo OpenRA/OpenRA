@@ -421,7 +421,7 @@ stealth_raider:
 	Buildable:
 		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
 		BuildPaletteOrder: 30
-		BuildDuration: 194	## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
+		BuildDuration: 194 ## Copied from Raider, not included in conversion. Both have same "BuildSpeed" in TibEd
 		BuildDurationModifier: 40
 		Description: Invisible Raider Trike\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Valued:

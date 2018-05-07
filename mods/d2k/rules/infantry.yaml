@@ -135,7 +135,7 @@ fremen:
 	Mobile:
 		Speed: 43
 	Valued:
-		Cost: 200	## actually 0, but spawns from support power at Palace
+		Cost: 200 ## actually 0, but spawns from support power at Palace
 	Health:
 		HP: 7000
 	RevealsShroud:
@@ -171,7 +171,7 @@ grenadier:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
-		BuildDuration: 81	## Wasn't converted, copied from Sardauker who has same value in TibEd.
+		BuildDuration: 81 ## Wasn't converted, copied from Sardauker who has same value in TibEd.
 		BuildDurationModifier: 40
 		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
 	Valued:
@@ -254,7 +254,7 @@ saboteur:
 		Prerequisites: ~disabled
 		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Valued:
-		Cost: 300	## actually 0, but spawns from support power at Palace
+		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
 		Name: Saboteur
 	Health:

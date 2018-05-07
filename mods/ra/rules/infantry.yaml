@@ -75,7 +75,7 @@ E1:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE
+	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	ProducibleWithLevel:
@@ -121,7 +121,7 @@ E2:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
 		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE
+	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	Explodes:
@@ -163,7 +163,7 @@ E3:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE
+	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	ProducibleWithLevel:
@@ -212,7 +212,7 @@ E4:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE
+	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	ProducibleWithLevel:
@@ -232,7 +232,7 @@ E6:
 		Name: Engineer
 	WithInfantryBody:
 		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE
+	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	Passenger:
@@ -596,7 +596,7 @@ SHOK:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE
+	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
 	Voiced:
