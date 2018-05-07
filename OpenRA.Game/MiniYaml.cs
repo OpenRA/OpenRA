@@ -23,24 +23,19 @@ namespace OpenRA
 	{
 		public static void WriteToFile(this MiniYamlNodes y, string filename)
 		{
-			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+			File.WriteAllLines(filename, y.ToLines().Select(x => x.TrimEnd()).ToArray());
 		}
 
 		public static string WriteToString(this MiniYamlNodes y)
 		{
-			return y.ToLines(true).Select(x => x.TrimEnd()).JoinWith("\n");
+			return y.ToLines().JoinWith("\n");
 		}
 
-		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
+		public static IEnumerable<string> ToLines(this MiniYamlNodes y)
 		{
 			foreach (var kv in y)
-			{
-				foreach (var line in kv.Value.ToLines(kv.Key))
+				foreach (var line in kv.Value.ToLines(kv.Key, kv.Comment))
 					yield return line;
-
-				if (lowest)
-					yield return "";
-			}
 		}
 	}
 
@@ -55,27 +50,32 @@ namespace OpenRA
 		public SourceLocation Location;
 		public string Key;
 		public MiniYaml Value;
+		public string Comment;
 
-		public MiniYamlNode(string k, MiniYaml v)
+		public MiniYamlNode(string k, MiniYaml v, string c = null)
 		{
 			Key = k;
 			Value = v;
+			Comment = c;
 		}
 
-		public MiniYamlNode(string k, MiniYaml v, SourceLocation loc)
-			: this(k, v)
+		public MiniYamlNode(string k, MiniYaml v, string c, SourceLocation loc)
+			: this(k, v, c)
 		{
 			Location = loc;
 		}
 
-		public MiniYamlNode(string k, string v)
-			: this(k, v, null) { }
+		public MiniYamlNode(string k, string v, string c = null)
+			: this(k, v, c, null) { }
 
 		public MiniYamlNode(string k, string v, List<MiniYamlNode> n)
-			: this(k, new MiniYaml(v, n)) { }
+			: this(k, new MiniYaml(v, n), null) { }
 
-		public MiniYamlNode(string k, string v, List<MiniYamlNode> n, SourceLocation loc)
-			: this(k, new MiniYaml(v, n), loc) { }
+		public MiniYamlNode(string k, string v, string c, List<MiniYamlNode> n)
+			: this(k, new MiniYaml(v, n), c) { }
+
+		public MiniYamlNode(string k, string v, string c, List<MiniYamlNode> n, SourceLocation loc)
+			: this(k, new MiniYaml(v, n), c, loc) { }
 
 		public override string ToString()
 		{
@@ -146,7 +146,7 @@ namespace OpenRA
 			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
 		}
 
-		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename)
+		static List<MiniYamlNode> FromLines(IEnumerable<string> lines, string filename, bool discardCommentsAndWhitespace)
 		{
 			var levels = new List<List<MiniYamlNode>>();
 			levels.Add(new List<MiniYamlNode>());
@@ -157,99 +157,134 @@ namespace OpenRA
 				var line = ll;
 				++lineNo;
 
-				var commentIndex = line.IndexOf('#');
-				if (commentIndex != -1)
-					line = line.Substring(0, commentIndex).TrimEnd(' ', '\t');
-
-				if (line.Length == 0)
-					continue;
-
-				var charPosition = 0;
+				var keyStart = 0;
 				var level = 0;
 				var spaces = 0;
 				var textStart = false;
-				var currChar = line[charPosition];
 
-				while (!(currChar == '\n' || currChar == '\r') && charPosition < line.Length && !textStart)
-				{
-					currChar = line[charPosition];
-					switch (currChar)
-					{
-						case ' ':
-							spaces++;
-							if (spaces >= SpacesPerLevel)
-							{
-								spaces = 0;
-								level++;
-							}
-
-							charPosition++;
-							break;
-						case '\t':
-							level++;
-							charPosition++;
-							break;
-						default:
-							textStart = true;
-							break;
-					}
-				}
-
-				var realText = line.Substring(charPosition);
-				if (realText.Length == 0)
-					continue;
-
+				string key = null;
+				string value = null;
+				string comment = null;
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
-				if (levels.Count <= level)
-					throw new YamlException("Bad indent in miniyaml at {0}".F(location));
+				if (line.Length > 0)
+				{
+					var currChar = line[keyStart];
 
-				while (levels.Count > level + 1)
-					levels.RemoveAt(levels.Count - 1);
+					while (!(currChar == '\n' || currChar == '\r') && keyStart < line.Length && !textStart)
+					{
+						currChar = line[keyStart];
+						switch (currChar)
+						{
+							case ' ':
+								spaces++;
+								if (spaces >= SpacesPerLevel)
+								{
+									spaces = 0;
+									level++;
+								}
 
-				var d = new List<MiniYamlNode>();
-				var rhs = SplitAtColon(ref realText);
-				levels[level].Add(new MiniYamlNode(realText, rhs, d, location));
+								keyStart++;
+								break;
+							case '\t':
+								level++;
+								keyStart++;
+								break;
+							default:
+								textStart = true;
+								break;
+						}
+					}
 
-				levels.Add(d);
+					if (levels.Count <= level)
+						throw new YamlException("Bad indent in miniyaml at {0}".F(location));
+
+					while (levels.Count > level + 1)
+						levels.RemoveAt(levels.Count - 1);
+
+					// Extract key, value, comment from line as `<key>: <value>#<comment>`
+					// The # character is allowed in the value if escaped (\#).
+					// Leading and trailing whitespace is always trimmed from keys.
+					// Leading and trailing whitespace is trimmed from values unless they
+					// are marked with leading or trailing backslashes
+					var keyLength = line.Length - keyStart;
+					var valueStart = -1;
+					var valueLength = 0;
+					var commentStart = -1;
+					for (var i = 0; i < line.Length; i++)
+					{
+						if (valueStart < 0 && line[i] == ':')
+						{
+							valueStart = i + 1;
+							keyLength = i - keyStart;
+							valueLength = line.Length - i - 1;
+						}
+
+						if (commentStart < 0 && line[i] == '#' && (i == 0 || line[i - 1] != '\\'))
+						{
+							commentStart = i + 1;
+							if (commentStart < keyLength)
+								keyLength = i - keyStart;
+							else
+								valueLength = i - valueStart;
+
+							break;
+						}
+					}
+
+					if (keyLength > 0)
+						key = line.Substring(keyStart, keyLength).Trim();
+
+					if (valueStart >= 0)
+					{
+						var trimmed = line.Substring(valueStart, valueLength).Trim();
+						if (trimmed.Length > 0)
+							value = trimmed;
+					}
+
+					if (commentStart >= 0 && !discardCommentsAndWhitespace)
+						comment = line.Substring(commentStart);
+
+					// Remove leading/trailing whitespace guards
+					if (value != null && value.Length > 1)
+					{
+						var trimLeading = value[0] == '\\' && (value[1] == ' ' || value[1] == '\t') ? 1 : 0;
+						var trimTrailing = value[value.Length - 1] == '\\' && (value[value.Length - 2] == ' ' || value[value.Length - 2] == '\t') ? 1 : 0;
+						if (trimLeading + trimTrailing > 0)
+							value = value.Substring(trimLeading, value.Length - trimLeading - trimTrailing);
+					}
+
+					// Remove escape characters from #
+					if (value != null && value.IndexOf('#') != -1)
+						value = value.Replace("\\#", "#");
+				}
+
+				if (key != null || !discardCommentsAndWhitespace)
+				{
+					var nodes = new List<MiniYamlNode>();
+					levels[level].Add(new MiniYamlNode(key, value, comment, nodes, location));
+
+					levels.Add(nodes);
+				}
 			}
 
 			return levels[0];
 		}
 
-		static string SplitAtColon(ref string realText)
+		public static List<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true)
 		{
-			var colon = realText.IndexOf(':');
-			if (colon == -1)
-				return null;
-
-			var ret = realText.Substring(colon + 1).Trim();
-			if (ret.Length == 0)
-				ret = null;
-
-			realText = realText.Substring(0, colon).Trim();
-			return ret;
+			return FromLines(File.ReadAllLines(path), path, discardCommentsAndWhitespace);
 		}
 
-		public static Dictionary<string, MiniYaml> DictFromStream(Stream stream, string fileName = "<no filename available>")
-		{
-			return FromStream(stream, fileName).ToDictionary(x => x.Key, x => x.Value);
-		}
-
-		public static List<MiniYamlNode> FromFile(string path)
-		{
-			return FromLines(File.ReadAllLines(path), path);
-		}
-
-		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>")
+		public static List<MiniYamlNode> FromStream(Stream s, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true)
 		{
 			using (var reader = new StreamReader(s))
-				return FromString(reader.ReadToEnd(), fileName);
+				return FromString(reader.ReadToEnd(), fileName, discardCommentsAndWhitespace);
 		}
 
-		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>")
+		public static List<MiniYamlNode> FromString(string text, string fileName = "<no filename available>", bool discardCommentsAndWhitespace = true)
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName);
+			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None), fileName, discardCommentsAndWhitespace);
 		}
 
 		public static List<MiniYamlNode> Merge(IEnumerable<List<MiniYamlNode>> sources)
@@ -260,6 +295,7 @@ namespace OpenRA
 			var tree = sources.Where(s => s != null)
 				.Select(MergeSelfPartial)
 				.Aggregate(MergePartial)
+				.Where(n => n.Key != null)
 				.ToDictionary(n => n.Key, n => n.Value);
 
 			var resolved = new Dictionary<string, MiniYaml>();
@@ -283,7 +319,7 @@ namespace OpenRA
 			var existingNode = existingNodes.FirstOrDefault(n => n.Key == overrideNode.Key);
 			if (existingNode != null)
 			{
-				existingNode.Value = MiniYaml.MergePartial(existingNode.Value, overrideNode.Value);
+				existingNode.Value = MergePartial(existingNode.Value, overrideNode.Value);
 				existingNode.Value.Nodes = ResolveInherits(existingNode.Key, existingNode.Value, tree, inherited);
 			}
 			else
@@ -395,20 +431,26 @@ namespace OpenRA
 				overrideDict.TryGetValue(key, out overrideNode);
 
 				var loc = overrideNode == null ? default(MiniYamlNode.SourceLocation) : overrideNode.Location;
+				var comment = (overrideNode ?? existingNode).Comment;
 				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
-					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), loc);
+					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), comment, loc);
 				ret.Add(merged);
 			}
 
 			return ret;
 		}
 
-		public IEnumerable<string> ToLines(string name)
+		public IEnumerable<string> ToLines(string key, string comment = null)
 		{
-			yield return name + ": " + Value;
+			var hasKey = !string.IsNullOrEmpty(key);
+			var hasValue = !string.IsNullOrEmpty(Value);
+			var hasComment = !string.IsNullOrEmpty(comment);
+			yield return (hasKey ? key + ":" : "")
+				+ (hasValue ? " " + Value.Replace("#", "\\#") : "")
+				+ (hasComment ? (hasKey || hasValue ? " " : "") + "#" + comment : "");
 
 			if (Nodes != null)
-				foreach (var line in Nodes.ToLines(false))
+				foreach (var line in Nodes.ToLines())
 					yield return "\t" + line;
 		}
 
@@ -420,11 +462,11 @@ namespace OpenRA
 				files = files.Append(mapFiles);
 			}
 
-			var yaml = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s));
+			var yaml = files.Select(s => FromStream(fileSystem.Open(s), s));
 			if (mapRules != null && mapRules.Nodes.Any())
 				yaml = yaml.Append(mapRules.Nodes);
 
-			return MiniYaml.Merge(yaml);
+			return Merge(yaml);
 		}
 	}
 

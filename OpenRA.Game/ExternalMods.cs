@@ -128,7 +128,7 @@ namespace OpenRA
 				try
 				{
 					Directory.CreateDirectory(metadataPath);
-					File.WriteAllLines(Path.Combine(metadataPath, key + ".yaml"), yaml.ToLines(false).ToArray());
+					File.WriteAllLines(Path.Combine(metadataPath, key + ".yaml"), yaml.ToLines().ToArray());
 				}
 				catch (Exception e)
 				{

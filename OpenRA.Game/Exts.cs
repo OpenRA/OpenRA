@@ -375,6 +375,10 @@ namespace OpenRA
 				var key = keySelector(item);
 				var element = elementSelector(item);
 
+				// Discard elements with null keys
+				if (!typeof(TKey).IsValueType && key == null)
+					continue;
+
 				// Check for a key conflict:
 				if (d.ContainsKey(key))
 				{
