@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var amount = resources.ChangeCash(info.Amount);
 
-			if (!info.ShowTicks)
+			if (!info.ShowTicks && amount != 0)
 				return;
 
 			self.World.AddFrameEndTask(w => w.Add(

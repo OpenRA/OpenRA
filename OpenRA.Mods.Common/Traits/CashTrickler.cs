@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			amount = resources.ChangeCash(amount);
 
-			if (info.ShowTicks)
+			if (info.ShowTicks && amount != 0)
 				AddCashTick(self, amount);
 		}
 	}
