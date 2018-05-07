@@ -232,18 +232,19 @@ namespace OpenRA
 
 				if (File.Exists(settingsFile))
 				{
-					yamlCache = MiniYaml.FromFile(settingsFile);
+					yamlCache = MiniYaml.FromFile(settingsFile, false);
 					foreach (var yamlSection in yamlCache)
 					{
 						object settingsSection;
-						if (Sections.TryGetValue(yamlSection.Key, out settingsSection))
+						if (yamlSection.Key != null && Sections.TryGetValue(yamlSection.Key, out settingsSection))
 							LoadSectionYaml(yamlSection.Value, settingsSection);
 					}
 
 					var keysNode = yamlCache.FirstOrDefault(n => n.Key == "Keys");
 					if (keysNode != null)
 						foreach (var node in keysNode.Value.Nodes)
-							Keys[node.Key] = FieldLoader.GetValue<Hotkey>(node.Key, node.Value.Value);
+							if (node.Key != null)
+								Keys[node.Key] = FieldLoader.GetValue<Hotkey>(node.Key, node.Value.Value);
 				}
 
 				// Override with commandline args
