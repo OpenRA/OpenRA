@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 			var hp = health != null ? (long)health.HP : 1L;
 			var maxHP = health != null ? (long)health.MaxHP : 1L;
 			var refund = (int)((sellValue * sellableInfo.RefundPercent * hp) / (100 * maxHP));
-			playerResources.GiveCash(refund);
+			refund = playerResources.ChangeCash(refund);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);

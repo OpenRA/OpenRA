@@ -51,19 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var resources = newOwner.PlayerActor.Trait<PlayerResources>();
-			var amount = info.Amount;
 
-			if (amount < 0)
-			{
-				// Check whether the amount of cash to be removed would exceed available player cash, in that case only remove all the player cash
-				amount = Math.Min(resources.Cash + resources.Resources, -amount);
-				resources.TakeCash(amount);
-
-				// For correct cash tick display
-				amount = -amount;
-			}
-			else
-				resources.GiveCash(amount);
+			var amount = resources.ChangeCash(info.Amount);
 
 			if (!info.ShowTicks)
 				return;
