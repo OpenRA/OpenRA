@@ -62,8 +62,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (!args.Contains("--yes"))
 				{
 					Console.WriteLine("WARNING: This command will automatically rewrite your mod rules.");
-					Console.WriteLine("Side effects of this command may include changing the whitespace to ");
-					Console.WriteLine("match the default conventions, and any yaml comments will be removed.");
 					Console.WriteLine();
 					Console.WriteLine("We strongly recommend that you have a backup of your mod rules, and ");
 					Console.WriteLine("for best results, to use a Git client to review the line-by-line ");
