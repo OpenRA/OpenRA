@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.UpdateRules;
@@ -112,9 +113,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("Run this command with the --apply flag to apply the update rules.");
 		}
 
+		static void Log(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.Write(format, args);
+			Console.Write(format, args);
+		}
+
+		static void LogLine(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+			Console.WriteLine(format, args);
+		}
+
+		static void LogLine(StreamWriter logWriter)
+		{
+			logWriter.WriteLine();
+			Console.WriteLine();
+		}
+
 		static void ApplyRules(ModData modData, IEnumerable<UpdateRule> rules, bool skipMaps)
 		{
 			Console.WriteLine();
+
+			var logWriter = File.CreateText("update.log");
+			logWriter.AutoFlush = true;
 
 			var externalFilenames = new HashSet<string>();
 			foreach (var rule in rules)
@@ -122,30 +144,30 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var manualSteps = new List<string>();
 				var allFiles = new YamlFileSet();
 
-				Console.WriteLine("{0}: {1}", rule.GetType().Name, rule.Name);
+				LogLine(logWriter, "{0}: {1}", rule.GetType().Name, rule.Name);
 
 				try
 				{
-					Console.Write("   Updating mod... ");
+					Log(logWriter, "   Updating mod... ");
 					manualSteps.AddRange(UpdateUtils.UpdateMod(modData, rule, out allFiles, externalFilenames));
-					Console.WriteLine("COMPLETE");
+					LogLine(logWriter, "COMPLETE");
 				}
 				catch (Exception ex)
 				{
 					Console.WriteLine("FAILED");
 
-					Console.WriteLine();
-					Console.WriteLine("   The automated changes for this rule were not applied because of an error.");
-					Console.WriteLine("   After the issue reported below is resolved you should run the updater");
-					Console.WriteLine("   with SOURCE set to {0} to retry these changes", rule.GetType().Name);
-					Console.WriteLine();
-					Console.WriteLine("   The exception reported was:");
-					Console.WriteLine("     " + ex.ToString().Replace("\n", "\n     "));
+					LogLine(logWriter);
+					LogLine(logWriter, "   The automated changes for this rule were not applied because of an error.");
+					LogLine(logWriter, "   After the issue reported below is resolved you should run the updater");
+					LogLine(logWriter, "   with SOURCE set to {0} to retry these changes", rule.GetType().Name);
+					LogLine(logWriter);
+					LogLine(logWriter, "   The exception reported was:");
+					LogLine(logWriter, "     " + ex.ToString().Replace("\n", "\n     "));
 
 					continue;
 				}
 
-				Console.Write("   Updating system maps... ");
+				Log(logWriter, "   Updating system maps... ");
 
 				if (!skipMaps)
 				{
@@ -164,18 +186,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 						catch (Exception ex)
 						{
-							Console.WriteLine("FAILED");
-
-							Console.WriteLine();
-							Console.WriteLine("   The automated changes for this rule were not applied because of an error.");
-							Console.WriteLine("   After the issue reported below is resolved you should run the updater");
-							Console.WriteLine("   with SOURCE set to {0} to retry these changes", rule.GetType().Name);
-							Console.WriteLine();
-							Console.WriteLine("   The map that caused the error was:");
-							Console.WriteLine("     " + package.Name);
-							Console.WriteLine();
-							Console.WriteLine("   The exception reported was:");
-							Console.WriteLine("     " + ex.ToString().Replace("\n", "\n     "));
+							LogLine(logWriter, "FAILED");
+							LogLine(logWriter);
+							LogLine(logWriter, "   The automated changes for this rule were not applied because of an error.");
+							LogLine(logWriter, "   After the issue reported below is resolved you should run the updater");
+							LogLine(logWriter, "   with SOURCE set to {0} to retry these changes", rule.GetType().Name);
+							LogLine(logWriter);
+							LogLine(logWriter, "   The map that caused the error was:");
+							LogLine(logWriter, "     " + package.Name);
+							LogLine(logWriter);
+							LogLine(logWriter, "   The exception reported was:");
+							LogLine(logWriter, "     " + ex.ToString().Replace("\n", "\n     "));
 							mapsFailed = true;
 							break;
 						}
@@ -184,33 +205,34 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapsFailed)
 						continue;
 
-					Console.WriteLine("COMPLETE");
+					LogLine(logWriter, "COMPLETE");
 				}
 				else
-					Console.WriteLine("SKIPPED");
+					LogLine(logWriter, "SKIPPED");
 
 				// Files are saved after each successful automated rule update
 				allFiles.Save();
 
 				if (manualSteps.Any())
 				{
-					Console.WriteLine("   Manual changes are required to complete this update:");
-					Console.WriteLine(UpdateUtils.FormatMessageList(manualSteps, 1));
+					LogLine(logWriter, "   Manual changes are required to complete this update:");
+					LogLine(logWriter, UpdateUtils.FormatMessageList(manualSteps, 1));
 				}
 
-				Console.WriteLine();
+				LogLine(logWriter);
 			}
 
 			if (externalFilenames.Any())
 			{
-				Console.WriteLine("The following external mod files have been ignored:");
-				Console.WriteLine(UpdateUtils.FormatMessageList(externalFilenames));
-				Console.WriteLine("These files should be updated by running --update-mod on the referenced mod(s)");
-				Console.WriteLine();
+				LogLine(logWriter, "The following external mod files have been ignored:");
+				LogLine(logWriter, UpdateUtils.FormatMessageList(externalFilenames));
+				LogLine(logWriter, "These files should be updated by running --update-mod on the referenced mod(s)");
+				LogLine(logWriter);
 			}
 
 			Console.WriteLine("Semi-automated update complete.");
 			Console.WriteLine("Please review the messages above for any manual actions that must be applied.");
+			Console.WriteLine("These messages have also been written to an update.log file in the current directory.");
 		}
 	}
 }
