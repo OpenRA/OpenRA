@@ -31,14 +31,18 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnTerrain : INotifyCreated, ITick
 	{
 		readonly GrantConditionOnTerrainInfo info;
+		readonly TileSet tileSet;
 
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
-		string previousTerrain;
+
+		string cachedTerrain;
+		CPos cachedLocation;
 
 		public GrantConditionOnTerrain(ActorInitializer init, GrantConditionOnTerrainInfo info)
 		{
 			this.info = info;
+			tileSet = init.World.Map.Rules.TileSet;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -48,12 +52,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (conditionManager == null)
+			var loc = self.Location;
+			if (conditionManager == null || loc == cachedLocation)
 				return;
 
-			var currentTerrain = self.World.Map.GetTerrainInfo(self.Location).Type;
+			var currentTerrain = loc.Layer == 0 ? self.World.Map.GetTerrainInfo(loc).Type :
+					tileSet[self.World.GetCustomMovementLayers()[loc.Layer].GetTerrainIndex(loc)].Type;
+
 			var wantsGranted = info.TerrainTypes.Contains(currentTerrain);
-			if (currentTerrain != previousTerrain)
+			if (currentTerrain != cachedTerrain)
 			{
 				if (wantsGranted && conditionToken == ConditionManager.InvalidConditionToken)
 					conditionToken = conditionManager.GrantCondition(self, info.Condition);
@@ -61,7 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 					conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 			}
 
-			previousTerrain = currentTerrain;
+			cachedTerrain = currentTerrain;
+			cachedLocation = loc;
 		}
 	}
 }
