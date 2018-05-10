@@ -50,9 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Locomotor ID.")]
 		public readonly string Name = "default";
 
-		public readonly int WaitAverage = 5;
+		public readonly int WaitAverage = 40;
 
-		public readonly int WaitSpread = 2;
+		public readonly int WaitSpread = 10;
 
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
