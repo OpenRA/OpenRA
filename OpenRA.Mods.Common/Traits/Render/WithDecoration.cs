@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -55,6 +56,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should this be visible only when selected?")]
 		public readonly bool RequiresSelection = false;
 
+		[Desc("Screen-space offsets to apply when defined conditions are enabled.",
+			"A dictionary of [condition string]: [x, y offset].")]
+		public readonly Dictionary<BooleanExpression, int2> Offsets = new Dictionary<BooleanExpression, int2>();
+
+		[ConsumedConditionReference]
+		public IEnumerable<string> ConsumedConditions
+		{
+			get { return Offsets.Keys.SelectMany(r => r.Variables).Distinct(); }
+		}
+
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
@@ -63,6 +74,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected Animation anim;
 		readonly IDecorationBounds[] decorationBounds;
 		readonly string image;
+		int2 conditionalOffset;
 
 		public WithDecoration(Actor self, WithDecorationInfo info)
 			: base(info)
@@ -138,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sizeOffset -= new int2(halfSize.X, 0);
 			}
 
-			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset) + sizeOffset;
+			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset) + sizeOffset + conditionalOffset;
 			return new IRenderable[]
 			{
 				new UISpriteRenderable(anim.Image, self.CenterPosition, pxPos, Info.ZOffset, GetPalette(self, wr), 1f)
@@ -146,5 +158,27 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		void ITick.Tick(Actor self) { anim.Tick(); }
+
+		public override IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
+
+			foreach (var condition in Info.Offsets.Keys)
+				yield return new VariableObserver(OffsetConditionChanged, condition.Variables);
+		}
+
+		void OffsetConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			conditionalOffset = int2.Zero;
+			foreach (var kv in Info.Offsets)
+			{
+				if (kv.Key.Evaluate(conditions))
+				{
+					conditionalOffset = kv.Value;
+					break;
+				}
+			}
+		}
 	}
 }
