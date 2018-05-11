@@ -20,10 +20,20 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Building can be repaired by the repair button.")]
 	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<HealthInfo>
 	{
+		[Desc("Cost to fully repair the actor as a percent of its value.")]
 		public readonly int RepairPercent = 20;
+
+		[Desc("Number of ticks between each repair step.")]
 		public readonly int RepairInterval = 24;
+
+		[Desc("The maximum amount of HP to repair each step.")]
 		public readonly int RepairStep = 7;
+
+		[Desc("The percentage repair bonus applied with increasing numbers of repairers.")]
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
+
+		// TODO: This should be replaced with a pause condition
+		[Desc("Cancel the repair state when the trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
 
 		public readonly string IndicatorImage = "allyrepair";
