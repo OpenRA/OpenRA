@@ -556,7 +556,7 @@
 		Image: pips
 		Sequence: medic
 		Palette: pips
-		ReferencePoint: Bottom, Right
+		ReferencePoint: Bottom, Left
 		RequiresCondition: hospitalheal
 	RevealOnFire:
 	EntersTunnels:

@@ -343,6 +343,11 @@
 	GrantConditionOnPrerequisite:
 		Condition: hospitalheal
 		Prerequisites: hosp
+	WithDecoration@REDCROSS:
+		Image: pips
+		Sequence: medic
+		ReferencePoint: Bottom, Left
+		RequiresCondition: hospitalheal
 	DeathSounds@NORMAL:
 		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@BURNED:
