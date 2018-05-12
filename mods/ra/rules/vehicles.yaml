@@ -869,7 +869,7 @@ MCV3:
 	Tooltip:
 		Name: Totally not MCV
 	-CarrierMaster:
-	Mindcontroller:
+	MindController:
 		Capacity: 10
 	RenderSprites:
 		Image: MCV
