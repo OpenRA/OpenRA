@@ -1213,9 +1213,16 @@
 		Palette: mouse
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+		Offsets:
+			repairing: 12, 0
 	PowerMultiplier@POWERDOWN:
 		RequiresCondition: powerdown
 		Modifier: 0
+	RepairableBuilding:
+		RepairCondition: repairing
+	WithBuildingRepairDecoration:
+		Offsets:
+			powerdown: -12, 0
 
 ^DisableOnLowPowerOrPowerDown:
 	Inherits@LOWPOWER: ^DisableOnLowPower
