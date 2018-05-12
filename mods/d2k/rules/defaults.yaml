@@ -491,6 +491,13 @@
 		Palette: chrome
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+		Offsets:
+			repairing: 10, 0
 	PowerMultiplier@POWERDOWN:
 		RequiresCondition: powerdown
 		Modifier: 0
+	RepairableBuilding:
+		RepairCondition: repairing
+	WithBuildingRepairDecoration:
+		Offsets:
+			powerdown: -10, 0
