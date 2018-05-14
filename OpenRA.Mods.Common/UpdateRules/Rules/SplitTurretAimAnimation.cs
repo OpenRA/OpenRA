@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,6 +27,22 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
+		readonly List<Tuple<string, string>> locations = new List<Tuple<string, string>>();
+
+		public override IEnumerable<string> AfterUpdate(ModData modData)
+		{
+			var message = "AimSequence has been removed from WithSpriteTurret and\n"
+				+ "WithTurretAttackAnimation (and ReloadPrefix from the latter),\n"
+				+ "in favor of the new WithTurretAimAnimation trait.\n"
+				+ "The following locations were updated and might need further manual adjustments:\n"
+				+ UpdateUtils.FormatMessageList(locations.Select(n => n.Item1 + " (" + n.Item2 + ")"));
+
+			if (locations.Any())
+				yield return message;
+
+			locations.Clear();
+		}
+
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			var turretAttack = actorNode.LastChildMatching("WithTurretAttackAnimation");
@@ -33,18 +50,25 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{
 				var attackSequence = turretAttack.LastChildMatching("AttackSequence");
 				var aimSequence = turretAttack.LastChildMatching("AimSequence");
+				var reloadPrefix = turretAttack.LastChildMatching("ReloadPrefix");
 
-				// If only AimSequence is null, just rename AttackSequence to Sequence (ReloadPrefix is very unlikely to be defined in that case).
-				// If only AttackSequence is null, just rename the trait and property (the delay properties will likely be undefined).
+				if (attackSequence != null || aimSequence != null || reloadPrefix != null)
+					locations.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
+
+				// If only AttackSequence is not null, just rename AttackSequence to Sequence.
+				// If only the prefix isn't null (extremely unlikely, but you never know), just rename the trait.
+				// If AttackSequence is null but AimSequence isn't, rename the trait and property.
 				// If both aren't null, split/copy everything relevant to the new WithTurretAimAnimation.
 				// If both are null (extremely unlikely), do nothing.
-				if (attackSequence == null && aimSequence != null)
+				if (attackSequence != null && aimSequence == null)
+					attackSequence.RenameKeyPreservingSuffix("Sequence");
+				else if (attackSequence == null && aimSequence == null && reloadPrefix != null)
+					turretAttack.RenameKeyPreservingSuffix("WithTurretAimAnimation");
+				else if (attackSequence == null && aimSequence != null)
 				{
 					turretAttack.RenameKeyPreservingSuffix("WithTurretAimAnimation");
 					aimSequence.RenameKeyPreservingSuffix("Sequence");
 				}
-				else if (attackSequence != null && aimSequence == null)
-					attackSequence.RenameKeyPreservingSuffix("Sequence");
 				else if (attackSequence != null && aimSequence != null)
 				{
 					var turretAim = new MiniYamlNode("WithTurretAimAnimation", "");
@@ -52,7 +76,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					turretAim.AddNode(aimSequence);
 					turretAttack.RemoveNode(aimSequence);
 
-					var reloadPrefix = turretAttack.LastChildMatching("ReloadPrefix");
 					var turret = turretAttack.LastChildMatching("Turret");
 					var armament = turretAttack.LastChildMatching("Armament");
 					if (reloadPrefix != null)
@@ -77,6 +100,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var aimSequence = spriteTurret.LastChildMatching("AimSequence");
 				if (aimSequence != null)
 				{
+					locations.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
+
 					var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
 					aimSequence.RenameKeyPreservingSuffix("Sequence");
 					aimAnim.AddNode(aimSequence);
