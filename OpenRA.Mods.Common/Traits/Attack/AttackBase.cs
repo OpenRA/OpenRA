@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, INotifyCreated, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
@@ -50,9 +50,12 @@ namespace OpenRA.Mods.Common.Traits
 		protected IFacing facing;
 		protected Building building;
 		protected IPositionable positionable;
+		protected INotifyAiming[] notifyAiming;
 		protected Func<IEnumerable<Armament>> getArmaments;
 
 		readonly Actor self;
+
+		bool wasAiming;
 
 		public AttackBase(Actor self, AttackBaseInfo info)
 			: base(info)
@@ -65,10 +68,28 @@ namespace OpenRA.Mods.Common.Traits
 			facing = self.TraitOrDefault<IFacing>();
 			building = self.TraitOrDefault<Building>();
 			positionable = self.TraitOrDefault<IPositionable>();
+			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
 			getArmaments = InitializeGetArmaments(self);
 
 			base.Created(self);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			Tick(self);
+		}
+
+		protected virtual void Tick(Actor self)
+		{
+			if (!wasAiming && IsAiming)
+				foreach (var n in notifyAiming)
+					n.StartedAiming(self, this);
+			else if (wasAiming && !IsAiming)
+				foreach (var n in notifyAiming)
+					n.StoppedAiming(self, this);
+
+			wasAiming = IsAiming;
 		}
 
 		protected virtual Func<IEnumerable<Armament>> InitializeGetArmaments(Actor self)

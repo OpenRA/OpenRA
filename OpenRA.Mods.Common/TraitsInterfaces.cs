@@ -89,6 +89,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface INotifyAiming
+	{
+		void StartedAiming(Actor self, AttackBase attack);
+		void StoppedAiming(Actor self, AttackBase attack);
+	}
+
+	[RequireExplicitImplementation]
 	public interface INotifyAttack
 	{
 		void Attacking(Actor self, Target target, Armament a, Barrel barrel);
