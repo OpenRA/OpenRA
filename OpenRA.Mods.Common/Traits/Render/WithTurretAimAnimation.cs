@@ -29,15 +29,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
 
 		public override object Create(ActorInitializer init) { return new WithTurretAimAnimation(init, this); }
-
-		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
-		{
-			var turretAttackAnim = ai.TraitInfos<WithTurretAttackAnimationInfo>().Any(t => t.Turret == Turret);
-			if (turretAttackAnim)
-				throw new YamlException("WithTurretAimAnimation is currently not compatible with WithTurretAttackAnimation. Don't use them on the same turret.");
-
-			base.RulesetLoaded(rules, ai);
-		}
 	}
 
 	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, ITick
