@@ -319,7 +319,7 @@ SubMissileAA:
 
 SCUD:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 0
+	ReloadDelay: 240
 	Range: 10c0
 	MinRange: 4c0
 	Report: missile1.aud

@@ -305,8 +305,6 @@ ARTY:
 V2RL:
 	Health:
 		HP: 10000
-	ReloadAmmoPool:
-		Delay: 280
 
 4TNK:
 	Health:
