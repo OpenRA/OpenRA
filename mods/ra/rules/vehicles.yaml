@@ -24,21 +24,14 @@ V2RL:
 		Range: 4c0
 	Armament:
 		Weapon: SCUD
-		PauseOnCondition: !ammo
+		ReloadingCondition: reloading
 	AutoTarget:
 		ScanRadius: 10
-	AmmoPool:
-		Ammo: 1
-		PipCount: 0
-		AmmoCondition: ammo
-	ReloadAmmoPool:
-		Delay: 240
-		Count: 1
 	AttackFrontal:
 	WithFacingSpriteBody:
-		RequiresCondition: ammo
+		RequiresCondition: !reloading
 	WithFacingSpriteBody@EMPTY:
-		RequiresCondition: !ammo
+		RequiresCondition: reloading
 		Sequence: empty-idle
 	SelectionDecorations:
 	Explodes:
