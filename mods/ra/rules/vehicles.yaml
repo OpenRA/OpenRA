@@ -30,9 +30,11 @@ V2RL:
 	AttackFrontal:
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
+		Name: loaded
 	WithFacingSpriteBody@EMPTY:
 		RequiresCondition: reloading
 		Sequence: empty-idle
+		Name: reloading
 	SelectionDecorations:
 	Explodes:
 		Weapon: V2Explode
