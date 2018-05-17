@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
@@ -22,6 +23,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		[SequenceReference] public readonly string IdleSequence = "idle";
 
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
+
 		public object Create(ActorInitializer init) { return new WithDeliveryAnimation(init.Self, this); }
 	}
 
@@ -32,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public WithDeliveryAnimation(Actor self, WithDeliveryAnimationInfo info)
 		{
-			wsb = self.Trait<WithSpriteBody>();
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 
 			this.info = info;
 		}
