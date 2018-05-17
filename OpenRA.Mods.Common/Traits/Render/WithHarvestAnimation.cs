@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
 
@@ -21,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Displayed while harvesting.")]
 		[SequenceReference] public readonly string HarvestSequence = "harvest";
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public object Create(ActorInitializer init) { return new WithHarvestAnimation(init, this); }
 	}
@@ -38,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			Info = info;
 			harv = init.Self.Trait<Harvester>();
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
 		protected virtual string NormalizeHarvesterSequence(Actor self, string baseSequence)
