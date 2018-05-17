@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
@@ -19,6 +20,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	{
 		[Desc("Sequence to use for charge animation.")]
 		[SequenceReference] public readonly string ChargeSequence = "active";
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public object Create(ActorInitializer init) { return new WithTeslaChargeAnimation(init, this); }
 	}
@@ -31,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public WithTeslaChargeAnimation(ActorInitializer init, WithTeslaChargeAnimationInfo info)
 		{
 			this.info = info;
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 		}
 
 		void INotifyTeslaCharging.Charging(Actor self, Target target)
