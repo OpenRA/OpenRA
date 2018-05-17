@@ -111,16 +111,20 @@ NAFNCE:
 		RequiresCondition: laserfence-direction-x && active-posts == 2
 		Type: laserfence
 		Sequence: enabled-x
+		Name: x-enabled
 	WithWallSpriteBody@YENABLED:
 		RequiresCondition: laserfence-direction-y && active-posts == 2
 		Type: laserfence
 		Sequence: enabled-y
+		Name: y-enabled
 	WithSpriteBody@XDISABLED:
 		RequiresCondition: laserfence-direction-x && active-posts < 2
 		Sequence: disabled-x
+		Name: x-disabled
 	WithSpriteBody@YDISABLED:
 		RequiresCondition: laserfence-direction-y && active-posts < 2
 		Sequence: disabled-y
+		Name: y-disabled
 	BlocksProjectiles:
 		RequiresCondition: active-posts == 2
 	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post

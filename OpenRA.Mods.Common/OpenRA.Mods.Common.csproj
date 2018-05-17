@@ -198,6 +198,7 @@
     <Compile Include="Lint\CheckChromeHotkeys.cs" />
     <Compile Include="Lint\CheckConflictingMouseBounds.cs" />
     <Compile Include="Lint\CheckLocomotorReferences.cs" />
+    <Compile Include="Lint\CheckSpriteBodies.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
     <Compile Include="Lint\LintExts.cs" />
     <Compile Include="LoadScreens\ModContentLoadScreen.cs" />
