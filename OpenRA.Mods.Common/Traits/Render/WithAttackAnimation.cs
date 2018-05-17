@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			armament = init.Self.TraitsImplementing<Armament>()
 				.Single(a => a.Info.Name == Info.Armament);
-			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.Body);
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
 		void PlayAttackAnimation(Actor self)

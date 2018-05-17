@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(info)
 		{
 			movement = init.Self.Trait<IMove>();
-			wsb = init.Self.TraitsImplementing<WithSpriteBody>().First(w => w.Info.Name == Info.Body);
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
 		void ITick.Tick(Actor self)
