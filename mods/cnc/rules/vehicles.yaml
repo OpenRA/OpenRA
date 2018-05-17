@@ -19,6 +19,8 @@ MCV:
 		Locomotor: heavywheeled
 	Health:
 		HP: 120000
+	Repairable:
+		HpPerStep: 2182
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -68,6 +70,8 @@ HARV:
 		Speed: 85
 	Health:
 		HP: 62500
+	Repairable:
+		HpPerStep: 2537
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -104,6 +108,8 @@ APC:
 		RequiresCondition: !notmobile
 	Health:
 		HP: 21500
+	Repairable:
+		HpPerStep: 1440
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -155,6 +161,8 @@ ARTY:
 		Speed: 85
 	Health:
 		HP: 7500
+	Repairable:
+		HpPerStep: 569
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -195,6 +203,8 @@ FTNK:
 		Speed: 99
 	Health:
 		HP: 27000
+	Repairable:
+		HpPerStep: 2046
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -232,6 +242,8 @@ BGGY:
 		Speed: 170
 	Health:
 		HP: 12000
+	Repairable:
+		HpPerStep: 1819
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -271,6 +283,8 @@ BIKE:
 		Locomotor: bike
 	Health:
 		HP: 11000
+	Repairable:
+		HpPerStep: 1000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -304,6 +318,8 @@ JEEP:
 		Speed: 156
 	Health:
 		HP: 16000
+	Repairable:
+		HpPerStep: 1819
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -344,6 +360,8 @@ LTNK:
 		Speed: 110
 	Health:
 		HP: 34000
+	Repairable:
+		HpPerStep: 2273
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -382,6 +400,8 @@ MTNK:
 		Speed: 85
 	Health:
 		HP: 45000
+	Repairable:
+		HpPerStep: 2557
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -425,6 +445,8 @@ HTNK:
 		TurnSpeed: 3
 	Health:
 		HP: 87000
+	Repairable:
+		HpPerStep: 2637
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -479,6 +501,8 @@ MSAM:
 		TurnSpeed: 4
 	Health:
 		HP: 12000
+	Repairable:
+		HpPerStep: 546
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -521,6 +545,8 @@ MLRS:
 		TurnSpeed: 7
 	Health:
 		HP: 18000
+	Repairable:
+		HpPerStep: 1364
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -575,6 +601,8 @@ STNK:
 		Speed: 142
 	Health:
 		HP: 15000
+	Repairable:
+		HpPerStep: 758
 	Armor:
 		Type: Light
 	RevealsShroud:
