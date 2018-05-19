@@ -37,7 +37,8 @@ namespace OpenRA.Graphics
 		{
 			if (nv > 0)
 			{
-				shader.SetTexture("DiffuseTexture", currentSheet.GetTexture());
+				if (currentSheet != null)
+					shader.SetTexture("DiffuseTexture", currentSheet.GetTexture());
 
 				renderer.Device.SetBlendMode(currentBlend);
 				shader.Render(renderAction);
@@ -107,6 +108,19 @@ namespace OpenRA.Graphics
 			renderer.Device.SetBlendMode(blendMode);
 			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
 			renderer.Device.SetBlendMode(BlendMode.None);
+		}
+
+		// For RGBAColorRenderer
+		internal void DrawRGBAVertices(Vertex[] v)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (currentBlend != BlendMode.Alpha || nv + v.Length > renderer.TempBufferSize)
+				Flush();
+
+			currentBlend = BlendMode.Alpha;
+			Array.Copy(v, 0, vertices, nv, v.Length);
+			nv += v.Length;
 		}
 
 		public void SetPalette(ITexture palette)

@@ -16,44 +16,20 @@ using System.Linq;
 
 namespace OpenRA.Graphics
 {
-	public class RgbaColorRenderer : Renderer.IBatchRenderer
+	public class RgbaColorRenderer
 	{
 		static readonly float2 Offset = new float2(0.5f, 0.5f);
 
-		readonly Renderer renderer;
-		readonly IShader shader;
-		readonly Action renderAction;
+		readonly SpriteRenderer parent;
+		readonly Vertex[] vertices = new Vertex[6];
 
-		readonly Vertex[] vertices;
-		int nv = 0;
-
-		public RgbaColorRenderer(Renderer renderer, IShader shader)
+		public RgbaColorRenderer(SpriteRenderer parent)
 		{
-			this.renderer = renderer;
-			this.shader = shader;
-			vertices = new Vertex[renderer.TempBufferSize];
-			renderAction = () => renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
-		}
-
-		public void Flush()
-		{
-			if (nv > 0)
-			{
-				renderer.Device.SetBlendMode(BlendMode.Alpha);
-				shader.Render(renderAction);
-				renderer.Device.SetBlendMode(BlendMode.None);
-
-				nv = 0;
-			}
+			this.parent = parent;
 		}
 
 		public void DrawLine(float3 start, float3 end, float width, Color startColor, Color endColor)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (nv + 6 > renderer.TempBufferSize)
-				Flush();
-
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float3(-delta.Y, delta.X, delta.Z);
 
@@ -69,21 +45,18 @@ namespace OpenRA.Graphics
 			var eb = endColor.B / 255.0f;
 			var ea = endColor.A / 255.0f;
 
-			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
-			vertices[nv++] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0, 0);
-			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[nv++] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[nv++] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[nv++] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[0] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[3] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[4] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
+			vertices[5] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+
+			parent.DrawRGBAVertices(vertices);
 		}
 
 		public void DrawLine(float3 start, float3 end, float width, Color color)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (nv + 6 > renderer.TempBufferSize)
-				Flush();
-
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float2(-delta.Y, delta.X);
 
@@ -93,12 +66,13 @@ namespace OpenRA.Graphics
 			var b = color.B / 255.0f;
 			var a = color.A / 255.0f;
 
-			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
-			vertices[nv++] = new Vertex(start + corner + Offset, r, g, b, a, 0, 0);
-			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[nv++] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[nv++] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
-			vertices[nv++] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			vertices[0] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			vertices[1] = new Vertex(start + corner + Offset, r, g, b, a, 0, 0);
+			vertices[2] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
+			vertices[3] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
+			vertices[4] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
+			vertices[5] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
+			parent.DrawRGBAVertices(vertices);
 		}
 
 		/// <summary>
@@ -146,7 +120,6 @@ namespace OpenRA.Graphics
 				return;
 			}
 
-			renderer.CurrentBatchRenderer = this;
 			color = Util.PremultiplyAlpha(color);
 			var r = color.R / 255.0f;
 			var g = color.G / 255.0f;
@@ -184,15 +157,13 @@ namespace OpenRA.Graphics
 				var cd = closed || i < limit ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
 
 				// Fill segment
-				if (nv + 6 > renderer.TempBufferSize)
-					Flush();
-
-				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
-				vertices[nv++] = new Vertex(cb + Offset, r, g, b, a, 0, 0);
-				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
-				vertices[nv++] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
-				vertices[nv++] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
-				vertices[nv++] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
+				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
+				vertices[1] = new Vertex(cb + Offset, r, g, b, a, 0, 0);
+				vertices[2] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
+				vertices[3] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
+				vertices[4] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
+				vertices[5] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
+				parent.DrawRGBAVertices(vertices);
 
 				// Advance line segment
 				end = next;
@@ -238,23 +209,19 @@ namespace OpenRA.Graphics
 
 		public void FillRect(float3 a, float3 b, float3 c, float3 d, Color color)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (nv + 6 > renderer.TempBufferSize)
-				Flush();
-
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
 			var cg = color.G / 255.0f;
 			var cb = color.B / 255.0f;
 			var ca = color.A / 255.0f;
 
-			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[3] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[4] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[5] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+			parent.DrawRGBAVertices(vertices);
 		}
 
 		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)
@@ -270,21 +237,6 @@ namespace OpenRA.Graphics
 				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
 				DrawLine(new float3(xc - dx, y, z), new float3(xc + dx, y, z), 1, color);
 			}
-		}
-
-		public void SetViewportParams(Size screen, float depthScale, float depthOffset, float zoom, int2 scroll)
-		{
-			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
-			shader.SetVec("r1",
-				zoom * 2f / screen.Width,
-				-zoom * 2f / screen.Height,
-				-depthScale * zoom / screen.Height);
-			shader.SetVec("r2", -1, 1, 1 - depthOffset);
-		}
-
-		public void SetDepthPreviewEnabled(bool enabled)
-		{
-			shader.SetBool("EnableDepthPreview", enabled);
 		}
 	}
 }
