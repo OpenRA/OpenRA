@@ -147,3 +147,4 @@ sietch:
 	ProvidesPrerequisite@buildingname:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:
+	-WithBuildingRepairDecoration:

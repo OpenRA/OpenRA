@@ -622,6 +622,12 @@
 		String: Structure
 	Sellable:
 		SellSounds: cashturn.aud
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^ScienceBuilding:
 	Inherits: ^Building

@@ -697,6 +697,12 @@
 	Capturable:
 		CaptureThreshold: 55
 	WithMakeAnimation:
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -744,6 +750,12 @@
 		ShowOwnerRow: True
 	EditorTilesetFilter:
 		Categories: Tech building
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^CivField:
 	Inherits: ^CivBuilding

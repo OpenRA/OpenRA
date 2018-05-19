@@ -53,7 +53,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemovePaletteFromCurrentTileset(),
 				new DefineLocomotors(),
 				new DefineOwnerLostAction(),
-				new RenameEmitInfantryOnSell()
+				new RenameEmitInfantryOnSell(),
+				new SplitRepairDecoration(),
 			})
 		};
 

@@ -430,6 +430,12 @@
 	EditorTilesetFilter:
 		Categories: Building
 	CommandBarBlacklist:
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^Defense:
 	Inherits: ^Building
