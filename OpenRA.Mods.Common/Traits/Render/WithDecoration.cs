@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithDecoration : ConditionalTrait<WithDecorationInfo>, ITick, IRenderAboveShroud, IRenderAboveShroudWhenSelected
 	{
-		protected readonly Animation Anim;
+		protected Animation anim;
 		readonly IDecorationBounds[] decorationBounds;
 		readonly string image;
 
@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(info)
 		{
 			image = info.Image ?? self.Info.Name;
-			Anim = new Animation(self.World, image, () => self.World.Paused);
-			Anim.PlayRepeating(info.Sequence);
+			anim = new Animation(self.World, image, () => self.World.Paused);
+			anim.PlayRepeating(info.Sequence);
 			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 		}
 
@@ -83,6 +83,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			return true;
+		}
+
+		protected virtual PaletteReference GetPalette(Actor self, WorldRenderer wr)
+		{
+			return wr.Palette(Info.Palette + (Info.IsPlayerPalette ? self.Owner.InternalName : ""));
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
@@ -100,14 +105,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
 		{
-			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || Anim == null)
+			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || anim == null)
 				return Enumerable.Empty<IRenderable>();
 
 			if (!ShouldRender(self) || self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
 
 			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
-			var halfSize = (0.5f * Anim.Image.Size.XY).ToInt2();
+			var halfSize = (0.5f * anim.Image.Size.XY).ToInt2();
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
 			var sizeOffset = -halfSize;
@@ -136,10 +141,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var pxPos = wr.Viewport.WorldToViewPx(boundsOffset) + sizeOffset;
 			return new IRenderable[]
 			{
-				new UISpriteRenderable(Anim.Image, self.CenterPosition, pxPos, Info.ZOffset, wr.Palette(Info.Palette + (Info.IsPlayerPalette ? self.Owner.InternalName : "")), 1f)
+				new UISpriteRenderable(anim.Image, self.CenterPosition, pxPos, Info.ZOffset, GetPalette(self, wr), 1f)
 			};
 		}
 
-		void ITick.Tick(Actor self) { Anim.Tick(); }
+		void ITick.Tick(Actor self) { anim.Tick(); }
 	}
 }

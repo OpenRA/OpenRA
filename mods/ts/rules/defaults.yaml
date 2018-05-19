@@ -344,7 +344,6 @@
 	Capturable:
 	RepairableBuilding:
 		RepairStep: 700
-		IndicatorPalette: mouse
 		PlayerExperience: 25
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -365,6 +364,11 @@
 		Pieces: 3, 5
 	ThrowsShrapnel@LARGE:
 		Pieces: 2, 3
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: mouse
 
 ^CivBuilding:
 	Inherits: ^BasicBuilding

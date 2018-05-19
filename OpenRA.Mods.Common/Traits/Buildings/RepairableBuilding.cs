@@ -36,23 +36,40 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cancel the repair state when the trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
 
-		public readonly string IndicatorImage = "allyrepair";
-		[SequenceReference("IndicatorImage")] public readonly string IndicatorSequence = "repair";
-
-		[Desc("Overrides the IndicatorPalettePrefix.")]
-		[PaletteReference] public readonly string IndicatorPalette = "";
-
-		[Desc("Suffixed by the internal repairing player name.")]
-		public readonly string IndicatorPalettePrefix = "player";
-
 		[Desc("Experience gained by a player for repairing structures of allied players.")]
 		public readonly int PlayerExperience = 0;
+
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while being repaired.")]
+		public readonly string RepairCondition = null;
 
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
 	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
+		readonly Health health;
+		readonly Predicate<Player> isNotActiveAlly;
+		readonly Stack<int> repairTokens = new Stack<int>();
+		ConditionManager conditionManager;
+		int remainingTicks;
+
+		public readonly List<Player> Repairers = new List<Player>();
+		public bool RepairActive { get; private set; }
+
+		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
+			: base(info)
+		{
+			health = self.Trait<Health>();
+			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
+		}
+
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+		}
+
 		[Sync]
 		public int RepairersHash
 		{
@@ -65,40 +82,39 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public readonly List<Player> Repairers = new List<Player>();
-
-		readonly Health health;
-		public bool RepairActive = false;
-
-		readonly Predicate<Player> isNotActiveAlly;
-
-		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
-			: base(info)
+		void UpdateCondition(Actor self)
 		{
-			health = self.Trait<Health>();
-			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
+			if (conditionManager == null || string.IsNullOrEmpty(Info.RepairCondition))
+				return;
+
+			var currentRepairers = Repairers.Count;
+			while (Repairers.Count > repairTokens.Count)
+				repairTokens.Push(conditionManager.GrantCondition(self, Info.RepairCondition));
+
+			while (Repairers.Count < repairTokens.Count && repairTokens.Count > 0)
+				conditionManager.RevokeCondition(self, repairTokens.Pop());
 		}
 
 		public void RepairBuilding(Actor self, Player player)
 		{
-			if (!IsTraitDisabled && self.AppearsFriendlyTo(player.PlayerActor))
+			if (IsTraitDisabled || !self.AppearsFriendlyTo(player.PlayerActor))
+				return;
+
+			// Remove the player if they are already repairing
+			if (Repairers.Remove(player))
 			{
-				// If the player won't affect the repair, we won't add him
-				if (!Repairers.Remove(player) && Repairers.Count < Info.RepairBonuses.Length)
-				{
-					Repairers.Add(player);
-					Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Faction.InternalName);
-
-					self.World.AddFrameEndTask(w =>
-					{
-						if (!self.IsDead)
-							w.Add(new RepairIndicator(self));
-					});
-				}
+				UpdateCondition(self);
+				return;
 			}
-		}
 
-		int remainingTicks;
+			// Don't add new players if the limit has already been reached
+			if (Repairers.Count >= Info.RepairBonuses.Length - 1)
+				return;
+
+			Repairers.Add(player);
+			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Faction.InternalName);
+			UpdateCondition(self);
+		}
 
 		void ITick.Tick(Actor self)
 		{
@@ -107,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (RepairActive && Info.CancelWhenDisabled)
 				{
 					Repairers.Clear();
-					RepairActive = false;
+					UpdateCondition(self);
 				}
 
 				return;
@@ -116,10 +132,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (remainingTicks == 0)
 			{
 				Repairers.RemoveAll(isNotActiveAlly);
+				UpdateCondition(self);
 
 				// If after the previous operation there's no repairers left, stop
 				if (Repairers.Count == 0)
+				{
+					RepairActive = false;
 					return;
+				}
 
 				var buildingValue = self.GetSellValue();
 
@@ -160,6 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					Repairers.Clear();
 					RepairActive = false;
+					UpdateCondition(self);
 					return;
 				}
 

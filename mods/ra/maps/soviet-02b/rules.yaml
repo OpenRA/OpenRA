@@ -90,6 +90,7 @@ AFLD:
 
 GUN:
 	-RepairableBuilding:
+	-WithBuildingRepairDecoration:
 
 HARV:
 	Harvester:
