@@ -28,6 +28,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		Right = 8,
 	}
 
+	public enum BlinkState { Off, On }
+
 	[Desc("Displays a custom UI overlay relative to the actor's mouseover bounds.")]
 	public class WithDecorationInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
@@ -60,10 +62,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 			"A dictionary of [condition string]: [x, y offset].")]
 		public readonly Dictionary<BooleanExpression, int2> Offsets = new Dictionary<BooleanExpression, int2>();
 
+		[Desc("The number of ticks that each step in the blink pattern in active.")]
+		public readonly int BlinkInterval = 5;
+
+		[Desc("A pattern of ticks (BlinkInterval long) where the decoration is visible or hidden.")]
+		public readonly BlinkState[] BlinkPattern = { };
+
+		[Desc("Override blink conditions to use when defined conditions are enabled.",
+			"A dictionary of [condition string]: [pattern].")]
+		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = new Dictionary<BooleanExpression, BlinkState[]>();
+
 		[ConsumedConditionReference]
 		public IEnumerable<string> ConsumedConditions
 		{
-			get { return Offsets.Keys.SelectMany(r => r.Variables).Distinct(); }
+			get { return Offsets.Keys.Concat(BlinkPatterns.Keys).SelectMany(r => r.Variables).Distinct(); }
 		}
 
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
@@ -75,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly IDecorationBounds[] decorationBounds;
 		readonly string image;
 		int2 conditionalOffset;
+		BlinkState[] blinkPattern;
 
 		public WithDecoration(Actor self, WithDecorationInfo info)
 			: base(info)
@@ -83,10 +96,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim = new Animation(self.World, image, () => self.World.Paused);
 			anim.PlayRepeating(info.Sequence);
 			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
+			blinkPattern = info.BlinkPattern;
 		}
 
 		protected virtual bool ShouldRender(Actor self)
 		{
+			if (blinkPattern != null && blinkPattern.Any())
+			{
+				var i = (self.World.WorldTick / Info.BlinkInterval) % blinkPattern.Length;
+				if (blinkPattern[i] != BlinkState.On)
+					return false;
+			}
+
 			if (self.World.RenderPlayer != null)
 			{
 				var stance = self.Owner.Stances[self.World.RenderPlayer];
@@ -166,6 +187,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			foreach (var condition in Info.Offsets.Keys)
 				yield return new VariableObserver(OffsetConditionChanged, condition.Variables);
+
+			foreach (var condition in Info.BlinkPatterns.Keys)
+				yield return new VariableObserver(BlinkConditionsChanged, condition.Variables);
 		}
 
 		void OffsetConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
@@ -177,6 +201,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 				{
 					conditionalOffset = kv.Value;
 					break;
+				}
+			}
+		}
+
+		void BlinkConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			blinkPattern = Info.BlinkPattern;
+			foreach (var kv in Info.BlinkPatterns)
+			{
+				if (kv.Key.Evaluate(conditions))
+				{
+					blinkPattern = kv.Value;
+					return;
 				}
 			}
 		}
