@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnDeployInfo : ITraitInfo
+	public class GrantConditionOnDeployInfo : PausableConditionalTraitInfo
 	{
 		[GrantedConditionReference]
 		[Desc("The condition to grant while the actor is undeployed.")]
@@ -52,21 +52,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when undeploying.")]
 		public readonly string UndeploySound = null;
 
-		[Desc("Can this actor undeploy?")]
-		public readonly bool CanUndeploy = true;
-
 		[Desc("Skip make/deploy animation?")]
 		public readonly bool SkipMakeAnimation = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
-	public class GrantConditionOnDeploy : IResolveOrder, IIssueOrder, INotifyCreated, INotifyDeployComplete, IIssueDeployOrder
+	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder, INotifyCreated,
+		INotifyDeployComplete, IIssueDeployOrder
 	{
 		readonly Actor self;
-		public readonly GrantConditionOnDeployInfo Info;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
 
@@ -79,9 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 		public DeployState DeployState { get { return deployState; } }
 
 		public GrantConditionOnDeploy(ActorInitializer init, GrantConditionOnDeployInfo info)
+			: base(info)
 		{
 			self = init.Self;
-			Info = info;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			if (init.Contains<DeployStateInit>())
@@ -121,8 +118,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
-				() => IsCursorBlocked() ? Info.DeployBlockedCursor : Info.DeployCursor); }
+			get
+			{
+				if (!IsTraitDisabled)
+					yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
+						() => IsCursorBlocked() ? Info.DeployBlockedCursor : Info.DeployCursor);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -138,17 +139,20 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("GrantConditionOnDeploy", self, false);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitPaused && !IsTraitDisabled; }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return;
+
 			if (order.OrderString != "GrantConditionOnDeploy" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
 				return;
 
 			if (!order.Queued)
 				self.CancelActivity();
 
-			if (deployState == DeployState.Deployed && Info.CanUndeploy)
+			if (deployState == DeployState.Deployed)
 				self.QueueActivity(new UndeployForGrantedCondition(self, this));
 			else if (deployState == DeployState.Undeployed)
 				self.QueueActivity(new DeployForGrantedCondition(self, this));
@@ -156,7 +160,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsCursorBlocked()
 		{
-			return ((deployState == DeployState.Deployed) && !Info.CanUndeploy) || (!IsValidTerrain(self.Location) && (deployState != DeployState.Deployed));
+			if (IsTraitPaused)
+				return true;
+
+			return !IsValidTerrain(self.Location) && (deployState != DeployState.Deployed);
 		}
 
 		public bool IsValidTerrain(CPos location)
