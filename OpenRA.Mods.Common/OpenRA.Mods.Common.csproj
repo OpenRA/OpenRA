@@ -910,6 +910,7 @@
     <Compile Include="UpdateRules\Rules\ChangeIntensityToDuration.cs" />
     <Compile Include="UpdateRules\Rules\AddShakeToBridge.cs" />
     <Compile Include="UpdateRules\Rules\IgnoreAbstractActors.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveCanUndeployFromGrantConditionOnDeploy.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
