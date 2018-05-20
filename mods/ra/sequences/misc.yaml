@@ -101,6 +101,7 @@ pips:
 		Offset: 9, 5
 	medic:
 		Start: 20
+		Offset: 15, 1
 	#ready:
 	#	Start: 3
 	#hold:
@@ -429,6 +430,8 @@ fire:
 		ZOffset: 1023
 
 rank:
+	Defaults:
+		Offset: 0, 3
 	rank-veteran-1:
 	rank-veteran-2:
 		Start: 1
@@ -436,6 +439,7 @@ rank:
 		Start: 2
 	rank-elite:
 		Start: 3
+		Offset: 1, 3
 
 iconchevrons:
 	veteran:
