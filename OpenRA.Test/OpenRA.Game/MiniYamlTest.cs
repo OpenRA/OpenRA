@@ -250,7 +250,7 @@ Parent: # comment without value
 	# Indented comment node
 	First: value containing a \# character
 	Second: value # node with inline comment
-";
+".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).WriteToString();
 			Assert.AreEqual(yaml, result);
@@ -269,7 +269,7 @@ Parent: # comment without value
 
 			var strippedYaml = @"Parent:
 	First: value containing a \# character
-	Second: value";
+	Second: value".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(yaml).WriteToString();
 			Assert.AreEqual(strippedYaml, result);
