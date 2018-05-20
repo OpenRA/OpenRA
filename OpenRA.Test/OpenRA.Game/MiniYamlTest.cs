@@ -230,12 +230,15 @@ TestA:
 TestB:
 	Nothing:
 ";
+			var resultDiscard = MiniYaml.FromString(yaml);
+			var resultDiscardLine = resultDiscard.First(n => n.Key == "TestB").Location.Line;
+			Assert.That(resultDiscardLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (discarding comments)");
+			Assert.That(resultDiscard[1].Key, Is.EqualTo("TestB"), "Node TestB should be the second child of the root node, but is not (discarding comments)");
 
-			var resultDiscard = MiniYaml.FromString(yaml).First(n => n.Key == "TestB");
-			Assert.That(resultDiscard.Location.Line, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (discarding comments)");
-
-			var resultKeep = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).First(n => n.Key == "TestB");
-			Assert.That(resultDiscard.Location.Line, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (parsing comments)");
+			var resultKeep = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false);
+			var resultKeepLine = resultKeep.First(n => n.Key == "TestB").Location.Line;
+			Assert.That(resultKeepLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (parsing comments)");
+			Assert.That(resultKeep[4].Key, Is.EqualTo("TestB"), "Node TestB should be the fifth child of the root node, but is not (parsing comments)");
 		}
 
 		[TestCase(TestName = "Comments should survive a round trip intact")]
