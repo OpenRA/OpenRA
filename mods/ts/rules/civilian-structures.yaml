@@ -779,6 +779,12 @@ CAHOSP:
 	Inherits@shape: ^3x4Shape
 	Tooltip:
 		Name: Civilian Hospital
+	TooltipDescription@ally:
+		Description: Provides infantry with self-healing.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to enable self-healing for infantry.
+		ValidStances: Neutral, Enemy
 	Building:
 		Footprint: XxX xxx xxx xxx
 		Dimensions: 3, 4

@@ -75,6 +75,12 @@ FCOM:
 		Type: Wood
 	Tooltip:
 		Name: Forward Command
+	TooltipDescription@ally:
+		Description: Provides buildable area.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to give buildable area.
+		ValidStances: Neutral, Enemy
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -110,6 +116,12 @@ HOSP:
 	EngineerRepairable:
 	Tooltip:
 		Name: Hospital
+	TooltipDescription@ally:
+		Description: Provides infantry with self-healing.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to enable self-healing for infantry.
+		ValidStances: Neutral, Enemy
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -379,6 +391,12 @@ MISS:
 		Type: Wood
 	Tooltip:
 		Name: Communications Center
+	TooltipDescription@ally:
+		Description: Provides range of vision.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to give visual range.
+		ValidStances: Neutral, Enemy
 	WithBuildingBib:
 	ExternalCapturable:
 	ExternalCapturableBar:
@@ -403,6 +421,12 @@ BIO:
 	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
+	TooltipDescription@ally:
+		Description: Provides prerequisite for Bio-Lab units.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to produce Bio-Lab units.
+		ValidStances: Neutral, Enemy
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -433,6 +457,12 @@ OILB:
 		Amount: 100
 	Tooltip:
 		Name: Oil Derrick
+	TooltipDescription@ally:
+		Description: Provides additional funds.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to receive additional funds.
+		ValidStances: Neutral, Enemy
 	Explodes:
 		Weapon: BarrelExplode
 	GpsDot:
