@@ -66,6 +66,7 @@ rank:
 		Start: 7
 	elite: pips
 		Start: 8
+		Offset: 3, 3
 
 mpspawn:
 	idle:

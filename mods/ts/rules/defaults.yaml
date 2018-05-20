@@ -71,6 +71,16 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^InfantryExperienceHospitalOverrides:
+	WithDecoration@VETERAN:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal: On, Off
+	WithDecoration@ELITE:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal: On, Off
+
 ^CrateStatModifiers:
 	FirepowerMultiplier@CRATES:
 		RequiresCondition: crate-firepower
@@ -558,14 +568,22 @@
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
 	GrantConditionOnPrerequisite@HOSPITAL:
-		Condition: hospitalheal
+		Condition: hospital
 		Prerequisites: cahosp
+	GrantConditionOnDamageState@HOSPITAL:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
+	GrantCondition@HOSPITAL:
+		RequiresCondition: hospital && damaged
+		Condition: hospitalheal
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: medic
 		Palette: pips
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
+		BlinkInterval: 32
+		BlinkPattern: Off, On
 	RevealOnFire:
 	EntersTunnels:
 		Voice: Move
