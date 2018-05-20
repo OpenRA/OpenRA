@@ -38,9 +38,10 @@ namespace OpenRA.Traits
 
 			switch (lp.Stances[a.Owner])
 			{
-				case Stance.Ally: return basePriority - PriorityRange;
-				case Stance.Neutral: return basePriority - 2 * PriorityRange;
-				case Stance.Enemy: return basePriority - 3 * PriorityRange;
+				case Stance.Owner: return basePriority - PriorityRange;
+				case Stance.StrictAlly: return basePriority - 2 * PriorityRange;
+				case Stance.Neutral: return basePriority - 3 * PriorityRange;
+				case Stance.Enemy: return basePriority - 4 * PriorityRange;
 
 				default:
 					throw new InvalidOperationException();

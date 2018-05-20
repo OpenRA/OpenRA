@@ -81,14 +81,14 @@ namespace OpenRA.Mods.Common.Traits
 		static Stance ChooseInitialStance(Player p, Player q)
 		{
 			if (p == q)
-				return Stance.Ally;
+				return Stance.Owner;
 
 			if (q.Spectating && !p.NonCombatant && p.Playable)
-				return Stance.Ally;
+				return Stance.Spectator;
 
 			// Stances set via PlayerReference
 			if (p.PlayerReference.Allies.Contains(q.InternalName))
-				return Stance.Ally;
+				return Stance.StrictAlly;
 			if (p.PlayerReference.Enemies.Contains(q.InternalName))
 				return Stance.Enemy;
 
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 				var qc = GetClientForPlayer(q);
 				if (pc != null && qc != null)
 					return pc.Team != 0 && pc.Team == qc.Team
-						? Stance.Ally : Stance.Enemy;
+						? Stance.StrictAlly : Stance.Enemy;
 			}
 
 			// Otherwise, default to neutral

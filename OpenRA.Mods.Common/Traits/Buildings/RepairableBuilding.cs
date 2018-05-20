@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			health = self.Trait<Health>();
-			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
+			isNotActiveAlly = player => player.WinState != WinState.Undefined || (player.Stances[self.Owner] & Stance.Ally) == 0;
 		}
 
 		public void RepairBuilding(Actor self, Player player)
