@@ -512,6 +512,42 @@ BRIDGE2:
 	Interactable:
 		Bounds: 120,48
 
+BRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 620
+		DamagedTemplate: 621
+		DestroyedTemplate: 622
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 1, -1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 96,48
+
+BRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 624
+		DamagedTemplate: 625
+		DestroyedTemplate: 626
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 1, -1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 96,48
+
 SBRIDGE1:
 	Inherits: ^Bridge
 	Bridge:
