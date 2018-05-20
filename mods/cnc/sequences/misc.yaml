@@ -124,6 +124,8 @@ explosion:
 		FlipX: true
 
 rank:
+	Defaults:
+		Offset: 0, 3
 	rank-veteran-1:
 	rank-veteran-2:
 		Start: 1
@@ -131,6 +133,7 @@ rank:
 		Start: 2
 	rank-elite:
 		Start: 3
+		Offset: 1, 3
 
 rallypoint:
 	flag: flagfly
@@ -257,12 +260,12 @@ pips:
 	pip-blue:
 		Start: 5
 	pip-heal: pip-heal
-		Length: *
+		Offset: -1, 1
 	groups: pdigits
 		Length: *
 		Offset: 9, 5
 	pip-hazmat: pip-hazmat
-		Length: *
+		Offset: -3, 0
 
 overlay:
 	build-valid-desert:
