@@ -74,14 +74,12 @@
     <Compile Include="Traits\Render\WithDeliveryOverlay.cs" />
     <Compile Include="Traits\Sandworm.cs" />
     <Compile Include="Traits\SpiceBloom.cs" />
-    <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\World\BuildableTerrainLayer.cs" />
     <Compile Include="Traits\World\D2kResourceLayer.cs" />
     <Compile Include="Traits\World\FogPaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromR8.cs" />
     <Compile Include="Traits\World\PaletteFromScaledPalette.cs" />
     <Compile Include="Traits\AttractsWorms.cs" />
-    <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="UtilityCommands\D2kMapImporter.cs" />
     <Compile Include="UtilityCommands\ImportD2kMapCommand.cs" />
     <Compile Include="Traits\World\D2kEditorResourceLayer.cs" />

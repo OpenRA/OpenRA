@@ -315,6 +315,7 @@
     <Compile Include="Traits\Conditions\GrantExternalConditionToCrusher.cs" />
     <Compile Include="Traits\Conditions\GrantRandomCondition.cs" />
     <Compile Include="Traits\Contrail.cs" />
+    <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\TooltipDescription.cs" />
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\HitShape.cs" />
@@ -593,6 +594,7 @@
     <Compile Include="UtilityCommands\ExtractZeroBraneStudioLuaAPI.cs" />
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractWeaponDocsCommand.cs" />
+    <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
     <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />

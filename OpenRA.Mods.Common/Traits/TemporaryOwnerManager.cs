@@ -12,7 +12,7 @@
 using System.Drawing;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Interacts with the ChangeOwner warhead.",
 		"Displays a bar how long this actor is affected and reverts back to the old owner on temporary changes.")]
