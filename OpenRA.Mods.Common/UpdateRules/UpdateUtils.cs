@@ -281,6 +281,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// <summary>Returns true if the node is of the form <match> or <match>@arbitrary</summary>
 		public static bool KeyMatches(this MiniYamlNode node, string match)
 		{
+			if (node.Key == null)
+				return false;
+
 			if (node.Key == match)
 				return true;
 
