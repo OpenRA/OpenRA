@@ -183,7 +183,7 @@ World:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
 	LegacyBridgeLayer:
-		Bridges: bridge1, bridge2, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
+		Bridges: bridge1, bridge2, bridge3, bridge4, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
 	CustomTerrainDebugOverlay:
 	CrateSpawner:
 		DeliveryAircraft: badr
