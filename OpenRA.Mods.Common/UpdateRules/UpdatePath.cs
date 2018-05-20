@@ -82,6 +82,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new SplitRepairDecoration(),
 				new MoveHackyAISupportPowerDecisions(),
 				new DefineGroundCorpseDefault(),
+				new RemoveCanUndeployFromGrantConditionOnDeploy(),
 			})
 		};
 
