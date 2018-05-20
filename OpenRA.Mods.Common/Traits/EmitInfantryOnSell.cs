@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MinHpPercent = 30;
 
 		[ActorReference]
-		[Desc("Be sure to use lowercase. Default value is \"e1\".")]
-		public readonly string[] ActorTypes = { "e1" };
+		[Desc("Be sure to use lowercase.")]
+		public readonly string[] ActorTypes;
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
