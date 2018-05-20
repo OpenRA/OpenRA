@@ -8,6 +8,12 @@ V19:
 		HP: 100000
 	Tooltip:
 		Name: Oil Derrick
+	TooltipDescription@ally:
+		Description: Provides additional funds.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to receive additional funds.
+		ValidStances: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: V19.Husk
 
@@ -35,6 +41,12 @@ HOSP:
 		HP: 250000
 	Tooltip:
 		Name: Hospital
+	TooltipDescription@ally:
+		Description: Provides infantry with self-healing.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to enable self-healing for infantry.
+		ValidStances: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
 	WithBuildingBib:
@@ -61,6 +73,12 @@ BIO:
 		HP: 250000
 	Tooltip:
 		Name: Biological Lab
+	TooltipDescription@ally:
+		Description: Produces Bio-Lab units.
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to produce Bio-Lab units.
+		ValidStances: Neutral, Enemy
 	Exit@1:
 		SpawnOffset: 0,-426,0
 		ExitCell: 0,-1

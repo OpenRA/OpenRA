@@ -20,15 +20,33 @@ namespace OpenRA.Mods.Common.Traits
 		[Translate]
 		public readonly string Description = "";
 
-		public override object Create(ActorInitializer init) { return new TooltipDescription(this); }
+		[Desc("Player stances who can view the description.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+
+		public override object Create(ActorInitializer init) { return new TooltipDescription(init.Self, this); }
 	}
 
 	public class TooltipDescription : ConditionalTrait<TooltipDescriptionInfo>, IProvideTooltipInfo
 	{
-		public TooltipDescription(TooltipDescriptionInfo info)
-			: base(info) { }
+		readonly Actor self;
 
-		public bool IsTooltipVisible(Player forPlayer) { return !IsTraitDisabled; }
+		public TooltipDescription(Actor self, TooltipDescriptionInfo info)
+			: base(info)
+		{
+			this.self = self;
+		}
+
+		public bool IsTooltipVisible(Player forPlayer)
+		{
+			if (IsTraitDisabled)
+				return false;
+
+			var stance = forPlayer.Stances[self.Owner];
+			if (!Info.ValidStances.HasStance(stance))
+				return false;
+
+			return true;
+		}
 
 		public string TooltipText
 		{
