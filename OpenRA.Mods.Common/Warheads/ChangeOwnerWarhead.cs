@@ -10,13 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Warheads;
-using OpenRA.Mods.D2k.Traits;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.D2k.Warheads
+namespace OpenRA.Mods.Common.Warheads
 {
-	[Desc("Interacts with the DynamicOwnerChange trait.")]
+	[Desc("Interacts with the TemporaryOwnerManager trait.")]
 	public class ChangeOwnerWarhead : Warhead
 	{
 		[Desc("Duration of the owner change (in ticks). Set to 0 to make it permanent.")]
