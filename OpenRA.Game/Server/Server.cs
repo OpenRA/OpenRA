@@ -402,10 +402,6 @@ namespace OpenRA.Server
 					SendOrderTo(newConn, "Message", TwoHumansRequiredText);
 				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
-
-				if (handshake.Mod == "{DEV_VERSION}")
-					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
-						"and may desynchronize the game state if they have incompatible rules.");
 			}
 			catch (Exception ex)
 			{
