@@ -378,8 +378,8 @@ namespace OpenRA.Server
 				Log.Write("server", "{0} ({1}) has joined the game.",
 					client.Name, newConn.Socket.RemoteEndPoint);
 
-				if (LobbyInfo.NonBotClients.Count() > 1)
-					SendMessage("{0} has joined the game.".F(client.Name));
+				// Report to all other players
+				SendMessage("{0} has joined the game.".F(client.Name), newConn);
 
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
@@ -470,9 +470,9 @@ namespace OpenRA.Server
 			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
 		}
 
-		public void SendMessage(string text)
+		public void SendMessage(string text, Connection conn = null)
 		{
-			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+			DispatchOrdersToClients(conn, 0, new ServerOrder("Message", text).Serialize());
 
 			if (Dedicated)
 				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
