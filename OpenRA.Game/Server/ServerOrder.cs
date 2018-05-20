@@ -31,6 +31,8 @@ namespace OpenRA.Server
 			switch (b = r.ReadByte())
 			{
 				case 0xbf:
+					// Silently ignore disconnect notifications
+					return null;
 				case 0xff:
 					Console.WriteLine("This isn't a server order.");
 					return null;
