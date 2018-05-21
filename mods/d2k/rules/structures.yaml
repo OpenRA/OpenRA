@@ -692,6 +692,8 @@ wall:
 	CombatDebugOverlay:
 	FrozenUnderFog:
 	ScriptTriggers:
+	OwnerLostAction:
+		Action: Kill
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks

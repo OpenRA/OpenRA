@@ -167,6 +167,8 @@
 	Tooltip:
 		GenericName: Unit
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Mobile:
 		TurnSpeed: 5
 		Locomotor: vehicle
@@ -266,6 +268,8 @@
 	Tooltip:
 		GenericName: Unit
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
 	Armor:
 		Type: none
@@ -334,6 +338,8 @@
 	Tooltip:
 		GenericName: Unit
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	AppearsOnRadar:
 		UseLocation: true
 	HiddenUnderFog:
@@ -354,6 +360,8 @@
 	Tooltip:
 		GenericName: Structure
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:

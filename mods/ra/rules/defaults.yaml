@@ -217,6 +217,8 @@
 	Inherits@3: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
@@ -291,6 +293,8 @@
 	Inherits@3: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Health:
 		HP: 2500
@@ -429,6 +433,8 @@
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
@@ -472,6 +478,8 @@
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
@@ -595,6 +603,8 @@
 ^Building:
 	Inherits: ^BasicBuilding
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	UpdatesPlayerStatistics:
 	GivesBuildableArea:
 		AreaTypes: building, fake
@@ -642,6 +652,8 @@
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Interactable:
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Dimensions: 1,1
 		Footprint: x
