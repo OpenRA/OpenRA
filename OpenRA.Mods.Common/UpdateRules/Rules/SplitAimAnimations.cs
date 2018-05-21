@@ -90,9 +90,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				else if (attackSequence != null && aimSequence != null)
 				{
 					var turretAim = new MiniYamlNode("WithTurretAimAnimation", "");
-					aimSequence.RenameKey("Sequence");
-					turretAim.AddNode(aimSequence);
-					turretAttack.RemoveNode(aimSequence);
+					aimSequence.MoveAndRenameNode(turretAttack, turretAim, "Sequence");
 
 					var turret = turretAttack.LastChildMatching("Turret");
 					var armament = turretAttack.LastChildMatching("Armament");
@@ -118,9 +116,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					aimAnimLocations.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
 
 					var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
-					aimSequence.RenameKey("Sequence");
-					aimAnim.AddNode(aimSequence);
-					spriteTurret.RemoveNode(aimSequence);
+					aimSequence.MoveAndRenameNode(spriteTurret, aimAnim, "Sequence");
 					actorNode.AddNode(aimAnim);
 				}
 			}
@@ -160,9 +156,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				else if (attackSequence != null && aimSequence != null)
 				{
 					var aimAnim = new MiniYamlNode("WithAimAnimation", "");
-					aimSequence.RenameKey("Sequence");
-					aimAnim.AddNode(aimSequence);
-					attackAnim.RemoveNode(aimSequence);
+					aimSequence.MoveAndRenameNode(attackAnim, aimAnim, "Sequence");
 
 					var body = attackAnim.LastChildMatching("Body");
 					var armament = attackAnim.LastChildMatching("Armament");

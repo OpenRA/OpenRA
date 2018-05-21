@@ -30,13 +30,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			foreach (var sod in actorNode.ChildrenMatching("ShakeOnDeath"))
-			{
-				var intensity = sod.LastChildMatching("Intensity");
-				if (intensity == null)
-					continue;
-
-				intensity.RenameKey("Duration");
-			}
+				sod.RenameChildrenMatching("Intensity", "Duration");
 
 			yield break;
 		}

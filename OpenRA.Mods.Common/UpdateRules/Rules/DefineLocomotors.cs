@@ -92,9 +92,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (tunnelConditionNode != null)
 				{
 					var grantNode = new MiniYamlNode("GrantConditionOnTunnelLayer", "");
-					grantNode.AddNode("Condition", tunnelConditionNode.Value.Value);
+					tunnelConditionNode.MoveAndRenameNode(mobileNode, grantNode, "Condition");
 					addNodes.Add(grantNode);
-					mobileNode.RemoveNodes("TunnelCondition");
 				}
 
 				var subterraneanNode = mobileNode.LastChildMatching("Subterranean");
@@ -125,13 +124,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					{
 						var grantNode = new MiniYamlNode("GrantConditionOnSubterraneanLayer", "");
 						foreach (var node in nodes)
-						{
 							if (node != null)
-							{
-								grantNode.AddNode(node);
-								mobileNode.RemoveNode(node);
-							}
-						}
+								node.MoveNode(mobileNode, grantNode);
 
 						addNodes.Add(grantNode);
 					}
@@ -147,8 +141,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (conditionNode != null)
 					{
 						var grantNode = new MiniYamlNode("GrantConditionOnJumpjetLayer", "");
-						grantNode.AddNode("Condition", conditionNode.Value.Value);
-						mobileNode.RemoveNodes("JumpjetCondition");
+						conditionNode.MoveAndRenameNode(mobileNode, grantNode, "Condition");
 						addNodes.Add(grantNode);
 					}
 				}
