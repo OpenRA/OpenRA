@@ -1,0 +1,99 @@
+
+# Windows launch configs
+
+[[actions]]
+os = "windows"
+name = "Red Alert - Windows"
+path = "RedAlert.exe"
+sandbox = true
+
+[[actions]]
+os = "windows"
+name = "Dune 2000 - Windows"
+path = "Dune2000.exe"
+sandbox = true
+
+[[actions]]
+os = "windows"
+name = "Tiberian Dawn - Windows"
+path = "TiberianDawn.exe"
+sandbox = true
+
+#[[actions]]
+#os = "windows"
+#name = "Tiberian Sun - Windows"
+#path = "TiberianSun.exe"
+#sandbox = true
+
+
+
+# MacOS launch configs
+
+[[actions]]
+os = "macos"
+name = "Red Alert - MacOS"
+path = "OpenRA - Red Alert.app"
+sandbox = true
+
+[[actions]]
+os = "macos"
+name = "Dune 2000 - MacOS"
+path = "OpenRA - Dune 2000.app"
+sandbox = true
+
+[[actions]]
+os = "macos"
+name = "Tiberian Dawn - MacOS"
+path = "OpenRA - Tiberian Dawn.app"
+sandbox = true
+
+#[[actions]]
+#os = "macos"
+#name = "Tiberian Sun - MacOS"
+#path = "OpenRA - Tiberian Sun.app"
+#sandbox = true
+
+
+
+# Linux launch configs
+
+[[actions]]
+os = "linux"
+name = "Red Alert - Linux"
+path = "mono"
+args = ["OpenRA.Game.exe", "Game.Mod=ra"]
+sandbox = true
+
+[[actions]]
+os = "linux"
+name = "Dune 2000 - Linux"
+path = "mono"
+args = ["OpenRA.Game.exe", "Game.Mod=d2k"]
+sandbox = true
+
+[[actions]]
+os = "linux"
+name = "Tiberian Dawn - Linux"
+path = "mono"
+args = ["OpenRA.Game.exe", "Game.Mod=cnc"]
+sandbox = true
+
+#[[actions]]
+#os = "linux"
+#name = "Tiberian Sun - Linux"
+#path = "mono"
+#args = ["OpenRA.Game.exe", "Game.Mod=ts"]
+#sandbox = true
+
+
+
+# Wiki page, applies to all OSes
+
+[[actions]]
+name = "manual"
+path = "https://github.com/OpenRA/OpenRA/wiki"
+sandbox = true
+
+
+
+
