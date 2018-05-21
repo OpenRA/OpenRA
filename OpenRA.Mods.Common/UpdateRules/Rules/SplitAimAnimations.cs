@@ -74,23 +74,23 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				// If both aren't null, split/copy everything relevant to the new WithTurretAimAnimation.
 				// If both are null (extremely unlikely), do nothing.
 				if (attackSequence != null && aimSequence == null)
-					attackSequence.RenameKeyPreservingSuffix("Sequence");
+					attackSequence.RenameKey("Sequence");
 				else if (attackSequence == null && aimSequence == null && reloadPrefix != null)
 				{
 					turretAttack.RemoveNode(reloadPrefix);
-					turretAttack.RenameKeyPreservingSuffix("WithTurretAimAnimation");
+					turretAttack.RenameKey("WithTurretAimAnimation");
 				}
 				else if (attackSequence == null && aimSequence != null)
 				{
-					turretAttack.RenameKeyPreservingSuffix("WithTurretAimAnimation");
-					aimSequence.RenameKeyPreservingSuffix("Sequence");
+					turretAttack.RenameKey("WithTurretAimAnimation");
+					aimSequence.RenameKey("Sequence");
 					if (reloadPrefix != null)
 						turretAttack.RemoveNode(reloadPrefix);
 				}
 				else if (attackSequence != null && aimSequence != null)
 				{
 					var turretAim = new MiniYamlNode("WithTurretAimAnimation", "");
-					aimSequence.RenameKeyPreservingSuffix("Sequence");
+					aimSequence.RenameKey("Sequence");
 					turretAim.AddNode(aimSequence);
 					turretAttack.RemoveNode(aimSequence);
 
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (armament != null)
 						turretAim.AddNode(armament);
 
-					attackSequence.RenameKeyPreservingSuffix("Sequence");
+					attackSequence.RenameKey("Sequence");
 					actorNode.AddNode(turretAim);
 				}
 			}
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					aimAnimLocations.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
 
 					var aimAnim = new MiniYamlNode("WithTurretAimAnimation", "");
-					aimSequence.RenameKeyPreservingSuffix("Sequence");
+					aimSequence.RenameKey("Sequence");
 					aimAnim.AddNode(aimSequence);
 					spriteTurret.RemoveNode(aimSequence);
 					actorNode.AddNode(aimAnim);
@@ -144,23 +144,23 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				// If both sequences aren't null, split/copy everything relevant to the new WithAimAnimation.
 				// If both sequences and the prefix are null (extremely unlikely), do nothing.
 				if (attackSequence != null && aimSequence == null && reloadPrefix == null)
-					attackSequence.RenameKeyPreservingSuffix("Sequence");
+					attackSequence.RenameKey("Sequence");
 				else if (attackSequence == null && aimSequence == null && reloadPrefix != null)
 				{
 					attackAnim.RemoveNode(reloadPrefix);
-					attackAnim.RenameKeyPreservingSuffix("WithAimAnimation");
+					attackAnim.RenameKey("WithAimAnimation");
 				}
 				else if (attackSequence == null && aimSequence != null)
 				{
-					attackAnim.RenameKeyPreservingSuffix("WithAimAnimation");
-					aimSequence.RenameKeyPreservingSuffix("Sequence");
+					attackAnim.RenameKey("WithAimAnimation");
+					aimSequence.RenameKey("Sequence");
 					if (reloadPrefix != null)
 						attackAnim.RemoveNode(reloadPrefix);
 				}
 				else if (attackSequence != null && aimSequence != null)
 				{
 					var aimAnim = new MiniYamlNode("WithAimAnimation", "");
-					aimSequence.RenameKeyPreservingSuffix("Sequence");
+					aimSequence.RenameKey("Sequence");
 					aimAnim.AddNode(aimSequence);
 					attackAnim.RemoveNode(aimSequence);
 
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (armament != null)
 						aimAnim.AddNode(armament);
 
-					attackSequence.RenameKeyPreservingSuffix("Sequence");
+					attackSequence.RenameKey("Sequence");
 					actorNode.AddNode(aimAnim);
 				}
 			}

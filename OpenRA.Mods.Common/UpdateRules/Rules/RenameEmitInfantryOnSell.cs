@@ -28,12 +28,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			foreach (var uneios in actorNode.ChildrenMatching("-EmitInfantryOnSell"))
-				uneios.RenameKeyPreservingSuffix("-SpawnActorsOnSell");
-
 			foreach (var eios in actorNode.ChildrenMatching("EmitInfantryOnSell"))
 			{
-				eios.RenameKeyPreservingSuffix("SpawnActorsOnSell");
+				eios.RenameKey("SpawnActorsOnSell");
 				var actortypes = eios.LastChildMatching("ActorTypes");
 				if (actortypes == null)
 					eios.AddNode("ActorTypes", "e1");
