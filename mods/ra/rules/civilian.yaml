@@ -66,7 +66,7 @@ FCOM:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -107,7 +107,7 @@ HOSP:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Selectable:
 		Priority: 0
 	Building:
@@ -381,7 +381,7 @@ MISS:
 	Selectable:
 		Priority: 0
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Building:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
@@ -418,7 +418,7 @@ BIO:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -451,7 +451,7 @@ OILB:
 	Selectable:
 		Priority: 0
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

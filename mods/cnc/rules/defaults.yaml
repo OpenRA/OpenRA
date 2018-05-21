@@ -727,7 +727,7 @@
 ^TechBuilding:
 	Inherits: ^CivBuilding
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Capturable:
 	CaptureNotification:
 		Notification: CivilianBuildingCaptured
