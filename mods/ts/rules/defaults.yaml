@@ -825,8 +825,6 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 
 ^Helicopter:
 	Inherits: ^Aircraft
