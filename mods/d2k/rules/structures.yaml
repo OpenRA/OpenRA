@@ -693,7 +693,7 @@ wall:
 	FrozenUnderFog:
 	ScriptTriggers:
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks

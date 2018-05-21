@@ -782,7 +782,7 @@
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	OwnerLostAction:
-		Action: Kill
+		Action: ChangeOwner
 	Building:
 		Dimensions: 1,1
 		Footprint: x
