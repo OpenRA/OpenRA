@@ -65,6 +65,8 @@ TECN:
 FCOM:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -104,6 +106,8 @@ FCOM:
 HOSP:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
+	OwnerLostAction:
+		Action: Kill
 	Selectable:
 		Priority: 0
 	Building:
@@ -376,6 +380,8 @@ MISS:
 		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
 	Selectable:
 		Priority: 0
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
@@ -411,6 +417,8 @@ MISS:
 BIO:
 	Inherits: ^TechBuilding
 	Inherits@shape: ^2x2Shape
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -442,6 +450,8 @@ OILB:
 		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
 	Selectable:
 		Priority: 0
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

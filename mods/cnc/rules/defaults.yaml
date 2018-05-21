@@ -211,6 +211,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Mobile:
 		Locomotor: wheeled
 		TurnSpeed: 5
@@ -257,6 +259,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	AppearsOnRadar:
 		UseLocation: yes
 	Targetable@GROUND:
@@ -312,6 +316,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
 	Armor:
 		Type: None
@@ -457,6 +463,8 @@
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
 		HP: 100000
 	Armor:
@@ -567,6 +575,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
@@ -589,6 +599,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -617,6 +629,8 @@
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -714,6 +728,8 @@
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
+	OwnerLostAction:
+		Action: Kill
 	Capturable:
 	CaptureNotification:
 		Notification: CivilianBuildingCaptured
@@ -767,6 +783,8 @@
 	Interactable:
 	CombatDebugOverlay:
 	AppearsOnRadar:
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Dimensions: 1,1
 		Footprint: x

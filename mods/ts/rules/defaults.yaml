@@ -438,6 +438,8 @@
 	FrozenUnderFog:
 	AppearsOnRadar:
 	Interactable:
+	OwnerLostAction:
+		Action: Kill
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -498,6 +500,8 @@
 	Inherits@4: ^Cloakable
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Health:
 		HP: 5000
@@ -683,6 +687,8 @@
 	Inherits@5: ^DamagedByVeins
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Mobile:
 		TurnSpeed: 5
@@ -775,6 +781,8 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
