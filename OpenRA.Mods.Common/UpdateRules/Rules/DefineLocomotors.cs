@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					mobileNode.RemoveNodes("Subterranean");
 					var conditionNode = mobileNode.LastChildMatching("SubterraneanCondition");
 					if (conditionNode != null)
-						conditionNode.RenameKeyPreservingSuffix("Condition");
+						conditionNode.RenameKey("Condition");
 
 					var transitionImageNode = mobileNode.LastChildMatching("SubterraneanTransitionImage");
 					var transitionSequenceNode = mobileNode.LastChildMatching("SubterraneanTransitionSequence");

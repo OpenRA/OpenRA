@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (intensity == null)
 					continue;
 
-				intensity.RenameKeyPreservingSuffix("Duration");
+				intensity.RenameKey("Duration");
 			}
 
 			yield break;

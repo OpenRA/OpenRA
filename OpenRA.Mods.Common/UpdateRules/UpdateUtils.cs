@@ -238,13 +238,14 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Renames a yaml key preserving any @suffix</summary>
-		public static void RenameKeyPreservingSuffix(this MiniYamlNode node, string newKey)
+		public static void RenameKey(this MiniYamlNode node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
+			var prefix = includeRemovals && node.Key[0].ToString() == "-" ? "-" : "";
 			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
-			if (split == -1)
-				node.Key = newKey;
+			if (preserveSuffix && split > -1)
+				node.Key = prefix + newKey + node.Key.Substring(split);
 			else
-				node.Key = newKey + node.Key.Substring(split);
+				node.Key = prefix + newKey;
 		}
 
 		public static T NodeValue<T>(this MiniYamlNode node)
@@ -273,33 +274,38 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
-		public static int RemoveNodes(this MiniYamlNode node, string match)
+		public static int RemoveNodes(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
-			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match));
+			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
 		/// <summary>Returns true if the node is of the form <match> or <match>@arbitrary</summary>
-		public static bool KeyMatches(this MiniYamlNode node, string match)
+		public static bool KeyMatches(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
 				return false;
 
-			if (node.Key == match)
+			var prefix = includeRemovals && node.Key[0].ToString() == "-" ? "-" : "";
+			if (node.Key == prefix + match)
 				return true;
 
+			// If the previous check didn't return true and we wanted the suffix to match, return false unconditionally here
+			if (!ignoreSuffix)
+				return false;
+
 			var atPosition = node.Key.IndexOf('@');
-			return atPosition > 0 && node.Key.Substring(0, atPosition) == match;
+			return atPosition > 0 && node.Key.Substring(0, atPosition) == prefix + match;
 		}
 
 		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
-		public static IEnumerable<MiniYamlNode> ChildrenMatching(this MiniYamlNode node, string match)
+		public static IEnumerable<MiniYamlNode> ChildrenMatching(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
-			return node.Value.Nodes.Where(n => n.KeyMatches(match));
+			return node.Value.Nodes.Where(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
-		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match)
+		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match, bool includeRemovals = true)
 		{
-			return node.ChildrenMatching(match).LastOrDefault();
+			return node.ChildrenMatching(match, includeRemovals).LastOrDefault();
 		}
 	}
 }
