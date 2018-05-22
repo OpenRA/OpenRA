@@ -22,8 +22,13 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class ChronoshiftPowerInfo : SupportPowerInfo
 	{
-		[Desc("Target actor selection radius in cells.")]
-		public readonly int Range = 1;
+		[FieldLoader.Require]
+		[Desc("Size of the footprint of the affected area.")]
+		public readonly CVec Dimensions = CVec.Zero;
+
+		[FieldLoader.Require]
+		[Desc("Actual footprint. Cells marked as x will be affected.")]
+		public readonly string Footprint = string.Empty;
 
 		[Desc("Ticks until returning after teleportation.")]
 		public readonly int Duration = 750;
@@ -91,8 +96,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
+			var footprint = ((ChronoshiftPowerInfo)Info).Footprint;
+			var dimensions = ((ChronoshiftPowerInfo)Info).Dimensions;
+			var tiles = CellsMatching(xy, footprint, dimensions);
 			var units = new HashSet<Actor>();
 			foreach (var t in tiles)
 				units.UnionWith(Self.World.ActorMap.GetActorsAt(t));
@@ -105,9 +111,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!Self.Owner.Shroud.IsExplored(xy))
 				return false;
 
-			var range = ((ChronoshiftPowerInfo)Info).Range;
-			var sourceTiles = Self.World.Map.FindTilesInCircle(xy, range);
-			var destTiles = Self.World.Map.FindTilesInCircle(sourceLocation, range);
+			var footprint = ((ChronoshiftPowerInfo)Info).Footprint;
+			var dimensions = ((ChronoshiftPowerInfo)Info).Dimensions;
+			var sourceTiles = CellsMatching(xy, footprint, dimensions);
+			var destTiles = CellsMatching(sourceLocation, footprint, dimensions);
 
 			if (!sourceTiles.Any() || !destTiles.Any())
 				return false;
@@ -132,7 +139,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		class SelectChronoshiftTarget : OrderGenerator
 		{
 			readonly ChronoshiftPower power;
-			readonly int range;
+			readonly string footprint;
+			readonly CVec dimensions;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
@@ -148,7 +156,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.power = power;
 
 				var info = (ChronoshiftPowerInfo)power.Info;
-				range = info.Range;
+				footprint = info.Footprint;
+				dimensions = info.Dimensions;
 				tile = world.Map.Rules.Sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence).GetSprite(0);
 			}
 
@@ -189,7 +198,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var tiles = world.Map.FindTilesInCircle(xy, range);
+				var tiles = power.CellsMatching(xy, footprint, dimensions);
 				var palette = wr.Palette(((ChronoshiftPowerInfo)power.Info).TargetOverlayPalette);
 				foreach (var t in tiles)
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
@@ -205,7 +214,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			readonly ChronoshiftPower power;
 			readonly CPos sourceLocation;
-			readonly int range;
+			readonly string footprint;
+			readonly CVec dimensions;
 			readonly Sprite validTile, invalidTile, sourceTile;
 			readonly SupportPowerManager manager;
 			readonly string order;
@@ -218,7 +228,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.sourceLocation = sourceLocation;
 
 				var info = (ChronoshiftPowerInfo)power.Info;
-				range = info.Range;
+				footprint = info.Footprint;
+				dimensions = info.Dimensions;
 
 				var sequences = world.Map.Rules.Sequences;
 				var tilesetValid = info.ValidFootprintSequence + "-" + world.Map.Tileset.ToLowerInvariant();
@@ -272,7 +283,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				// Destination tiles
 				var delta = xy - sourceLocation;
-				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
+				foreach (var t in power.CellsMatching(sourceLocation, footprint, dimensions))
 				{
 					var tile = manager.Self.Owner.Shroud.IsExplored(t + delta) ? validTile : invalidTile;
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, true);
@@ -315,7 +326,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var palette = wr.Palette(power.Info.IconPalette);
 
 				// Source tiles
-				foreach (var t in world.Map.FindTilesInCircle(sourceLocation, range))
+				foreach (var t in power.CellsMatching(sourceLocation, footprint, dimensions))
 					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
 			}
 
