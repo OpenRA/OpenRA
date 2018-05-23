@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 				return order.Target.FrozenActor.DamageState > DamageState.Undamaged;
 
 			if (order.Target.Type == TargetType.Actor)
-				return order.TargetActor.GetDamageState() > DamageState.Undamaged;
+				return order.Target.Actor.GetDamageState() > DamageState.Undamaged;
 
 			return false;
 		}
