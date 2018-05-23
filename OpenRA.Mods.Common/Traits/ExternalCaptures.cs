@@ -80,8 +80,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.Target.Type == TargetType.Actor)
 			{
-				var c = order.TargetActor.TraitOrDefault<ExternalCapturable>();
-				return c != null && !c.CaptureInProgress && c.CanBeTargetedBy(self, order.TargetActor.Owner);
+				var c = order.Target.Actor.TraitOrDefault<ExternalCapturable>();
+				return c != null && !c.CaptureInProgress && c.CanBeTargetedBy(self, order.Target.Actor.Owner);
 			}
 
 			return false;
