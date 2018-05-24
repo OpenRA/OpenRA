@@ -82,7 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanRepairAt(order.Target.Actor) || !ShouldRepair())
 				return;
 
-			self.CancelActivity();
+			if (!order.Queued)
+				self.CancelActivity();
+
 			self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough));
 			self.QueueActivity(new Repair(self, order.Target.Actor, info.CloseEnough));
 
