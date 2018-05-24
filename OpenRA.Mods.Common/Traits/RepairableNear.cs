@@ -69,21 +69,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "RepairNear" && ShouldRepair()) ? info.Voice : null;
+			return order.OrderString == "RepairNear" && ShouldRepair() ? info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "RepairNear" && CanRepairAt(order.TargetActor) && ShouldRepair())
-			{
-				var target = Target.FromOrder(self.World, order);
+			// RepairNear orders are only valid for own/allied actors,
+			// which are guaranteed to never be frozen.
+			if (order.OrderString != "RepairNear" || order.Target.Type != TargetType.Actor)
+				return;
 
-				self.CancelActivity();
-				self.QueueActivity(movement.MoveWithinRange(target, info.CloseEnough));
-				self.QueueActivity(new Repair(self, order.TargetActor, info.CloseEnough));
+			if (!CanRepairAt(order.Target.Actor) || !ShouldRepair())
+				return;
 
-				self.SetTargetLine(target, Color.Green, false);
-			}
+			self.CancelActivity();
+			self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough));
+			self.QueueActivity(new Repair(self, order.Target.Actor, info.CloseEnough));
+
+			self.SetTargetLine(order.Target, Color.Green, false);
 		}
 
 		public Actor FindRepairBuilding(Actor self)
