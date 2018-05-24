@@ -158,11 +158,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsCorrectCargoType(targetActor))
 				return;
 
-			self.SetTargetLine(order.Target, Color.Green);
-
-			self.CancelActivity();
+			if (!order.Queued)
+				self.CancelActivity();
 
 			var transports = order.OrderString == "EnterTransports";
+			self.SetTargetLine(order.Target, Color.Green);
 			self.QueueActivity(new EnterTransport(self, targetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
 		}
 
