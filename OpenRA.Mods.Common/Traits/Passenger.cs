@@ -110,8 +110,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if ((order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports") ||
-				!CanEnter(order.TargetActor)) return null;
+			if (order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports")
+				return null;
+
+			if (order.Target.Type != TargetType.Actor || !CanEnter(order.Target.Actor))
+				return null;
+
 			return Info.Voice;
 		}
 
@@ -139,19 +143,27 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "EnterTransport" || order.OrderString == "EnterTransports")
-			{
-				if (order.TargetActor == null) return;
-				if (!CanEnter(order.TargetActor)) return;
-				if (!IsCorrectCargoType(order.TargetActor)) return;
+			if (order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports")
+				return;
 
-				var target = Target.FromOrder(self.World, order);
-				self.SetTargetLine(target, Color.Green);
+			// Enter orders are only valid for own/allied actors,
+			// which are guaranteed to never be frozen.
+			if (order.Target.Type != TargetType.Actor)
+				return;
 
-				self.CancelActivity();
-				var transports = order.OrderString == "EnterTransports";
-				self.QueueActivity(new EnterTransport(self, order.TargetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
-			}
+			var targetActor = order.Target.Actor;
+			if (!CanEnter(targetActor))
+				return;
+
+			if (!IsCorrectCargoType(targetActor))
+				return;
+
+			self.SetTargetLine(order.Target, Color.Green);
+
+			self.CancelActivity();
+
+			var transports = order.OrderString == "EnterTransports";
+			self.QueueActivity(new EnterTransport(self, targetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
 		}
 
 		public bool Reserve(Actor self, Cargo cargo)
