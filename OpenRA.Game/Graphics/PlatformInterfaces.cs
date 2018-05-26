@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public interface IPlatform
 	{
-		IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode);
+		IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode, int batchSize);
 		ISoundEngine CreateSound(string device);
 	}
 
