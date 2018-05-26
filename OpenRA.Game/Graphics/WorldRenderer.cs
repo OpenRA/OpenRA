@@ -39,6 +39,8 @@ namespace OpenRA.Graphics
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
 
+		bool lastDepthPreviewEnabled;
+
 		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
@@ -163,10 +165,11 @@ namespace OpenRA.Graphics
 			if (World.WorldActor.Disposed)
 				return;
 
-			if (debugVis.Value != null)
+			if (debugVis.Value != null && lastDepthPreviewEnabled != debugVis.Value.DepthBuffer)
 			{
-				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
-				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
+				lastDepthPreviewEnabled = debugVis.Value.DepthBuffer;
+				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
+				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
 			}
 
 			RefreshPalette();
