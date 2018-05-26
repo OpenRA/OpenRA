@@ -18,7 +18,7 @@ using SDL2;
 
 namespace OpenRA.Platforms.Default
 {
-	sealed class Sdl2GraphicsDevice : ThreadAffine, IGraphicsDevice
+	sealed class Sdl2GraphicsDevice : ThreadAffine, IGraphicsDeviceInternal
 	{
 		readonly Sdl2Input input;
 
@@ -140,6 +140,14 @@ namespace OpenRA.Platforms.Default
 				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 			}
 
+			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
+			input = new Sdl2Input();
+		}
+
+		public void InitializeOpenGL()
+		{
+			SetThreadAffinity();
+
 			context = SDL.SDL_GL_CreateContext(window);
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
@@ -152,9 +160,6 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glEnableVertexAttribArray(Shader.TexMetadataAttributeIndex);
 			OpenGL.CheckGLError();
-
-			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
-			input = new Sdl2Input();
 		}
 
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
@@ -221,7 +226,9 @@ namespace OpenRA.Platforms.Default
 					SurfaceSize = new Size(width, height);
 					WindowScale = width * 1f / WindowSize.Width;
 
-					OnWindowScaleChanged(oldScale, WindowScale);
+					var onWindowScaleChanged = OnWindowScaleChanged;
+					if (onWindowScaleChanged != null)
+						onWindowScaleChanged(oldScale, WindowScale);
 				}
 			}
 		}
@@ -262,14 +269,9 @@ namespace OpenRA.Platforms.Default
 				}
 			}
 
-			~SDL2HardwareCursor()
-			{
-				Game.RunAfterTick(() => Dispose(false));
-			}
-
 			public void Dispose()
 			{
-				Game.RunAfterTick(() => Dispose(true));
+				Dispose(true);
 				GC.SuppressFinalize(this);
 			}
 
@@ -490,7 +492,7 @@ namespace OpenRA.Platforms.Default
 		public void PumpInput(IInputHandler inputHandler)
 		{
 			VerifyThreadAffinity();
-			input.PumpInput(this, inputHandler);
+			Game.RunAfterTick(() => input.PumpInput(this, inputHandler));
 		}
 
 		public string GetClipboardText()
@@ -525,8 +527,13 @@ namespace OpenRA.Platforms.Default
 
 		public IFrameBuffer CreateFrameBuffer(Size s)
 		{
+			return CreateFrameBuffer(s, new Texture());
+		}
+
+		public IFrameBuffer CreateFrameBuffer(Size s, ITextureInternal texture)
+		{
 			VerifyThreadAffinity();
-			return new FrameBuffer(s);
+			return new FrameBuffer(s, texture);
 		}
 
 		public IShader CreateShader(string name)

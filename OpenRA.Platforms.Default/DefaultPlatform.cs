@@ -10,15 +10,17 @@
 #endregion
 
 using System.Drawing;
-using OpenRA;
 
 namespace OpenRA.Platforms.Default
 {
 	public class DefaultPlatform : IPlatform
 	{
-		public IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode)
+		public IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode, int batchSize)
 		{
-			return new Sdl2GraphicsDevice(size, windowMode);
+			// Run graphics rendering on a dedicated thread.
+			// The calling thread will then have more time to process other tasks, since rendering happens in parallel.
+			// If the calling thread is the main game thread, this means it can run more logic and render ticks.
+			return new ThreadedGraphicsDevice(new Sdl2GraphicsDevice(size, windowMode), batchSize);
 		}
 
 		public ISoundEngine CreateSound(string device)
