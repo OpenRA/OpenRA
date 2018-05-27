@@ -100,9 +100,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
 					return;
 
-				self.SetTargetLine(order.Target, Color.Green);
+				if (!order.Queued)
+					self.CancelActivity();
 
-				self.CancelActivity();
+				self.SetTargetLine(order.Target, Color.Green);
 				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, order.Target),
 					new CallFunc(() => AfterReachActivities(self, order, movement)))));
 
