@@ -201,16 +201,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (!flashed && !o.SuppressVisualFeedback)
 				{
-					var visualTargetActor = o.VisualFeedbackTarget ?? o.TargetActor;
-					if (visualTargetActor != null)
+					var visualTarget = o.VisualFeedbackTarget.Type != TargetType.Invalid ? o.VisualFeedbackTarget : o.Target;
+					if (visualTarget.Type == TargetType.Actor)
 					{
-						world.AddFrameEndTask(w => w.Add(new FlashTarget(visualTargetActor)));
+						world.AddFrameEndTask(w => w.Add(new FlashTarget(visualTarget.Actor)));
 						flashed = true;
 					}
-					else if (o.TargetLocation != CPos.Zero)
+					else if (visualTarget.Type == TargetType.FrozenActor)
 					{
-						var pos = world.Map.CenterOfCell(cell);
-						world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, world, "moveflsh", "idle", "moveflash", true, true)));
+						visualTarget.FrozenActor.Flash();
+						flashed = true;
+					}
+					else if (visualTarget.Type == TargetType.Terrain)
+					{
+						world.AddFrameEndTask(w => w.Add(new SpriteEffect(visualTarget.CenterPosition, world, "moveflsh", "idle", "moveflash", true, true)));
 						flashed = true;
 					}
 				}

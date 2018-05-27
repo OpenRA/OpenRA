@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Orders
 			if (repairBuilding == null)
 				yield break;
 
-			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), false) { VisualFeedbackTarget = underCursor };
+			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), false) { VisualFeedbackTarget = Target.FromActor(underCursor) };
 		}
 
 		public void Tick(World world)
