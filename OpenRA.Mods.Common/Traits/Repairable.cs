@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? Info.Voice : null;
+			return order.OrderString == "Repair" && (CanRepair() || CanRearm()) ? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
