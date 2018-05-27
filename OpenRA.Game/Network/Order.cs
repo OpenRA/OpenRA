@@ -48,7 +48,7 @@ namespace OpenRA
 		public bool IsImmediate;
 
 		public bool SuppressVisualFeedback;
-		public Actor VisualFeedbackTarget;
+		public Target VisualFeedbackTarget;
 
 		/// <summary>
 		/// DEPRECATED: Use Target instead.
