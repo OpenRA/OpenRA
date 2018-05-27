@@ -911,14 +911,6 @@ namespace OpenRA.Mods.Common.AI
 			return mcv;
 		}
 
-					if (sp.Info.Cost != 0 && playerResource.Cash + playerResource.Resources < sp.Info.Cost)
-					{
-						BotDebug("AI: {1} can't afford the activation of support power {0}. Delaying rescan.", sp.Info.OrderName, Player.PlayerName);
-						waitingPowers[sp] += powerDecision.GetNextScanTime(this);
-
-						continue;
-					}
-
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
 		{
 			return World.ActorsWithTrait<ProductionQueue>()
