@@ -53,11 +53,6 @@ namespace OpenRA
 		/// <summary>
 		/// DEPRECATED: Use Target instead.
 		/// </summary>
-		public Actor TargetActor { get { return Target.SerializableActor; } }
-
-		/// <summary>
-		/// DEPRECATED: Use Target instead.
-		/// </summary>
 		public CPos TargetLocation
 		{
 			get
@@ -326,7 +321,7 @@ namespace OpenRA
 		{
 			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
 				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
-				OrderString, Subject, TargetActor != null ? TargetActor.Info.Name : null, TargetLocation,
+				OrderString, Subject, Target.Type == TargetType.Actor ? Target.Actor.Info.Name : null, TargetLocation,
 				TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
 		}
 	}
