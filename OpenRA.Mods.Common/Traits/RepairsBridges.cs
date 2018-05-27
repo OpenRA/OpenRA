@@ -62,14 +62,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "RepairBridge")
+			// TODO: Add support for FrozenActors
+			if (order.OrderString != "RepairBridge" || order.Target.Type != TargetType.Actor)
 				return null;
 
-			var legacyHut = order.TargetActor.TraitOrDefault<LegacyBridgeHut>();
+			var targetActor = order.Target.Actor;
+			var legacyHut = targetActor.TraitOrDefault<LegacyBridgeHut>();
 			if (legacyHut != null)
 				return legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling ? null : info.Voice;
 
-			var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
+			var hut = targetActor.TraitOrDefault<BridgeHut>();
 			if (hut != null)
 				return hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing ? null : info.Voice;
 
@@ -78,10 +80,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "RepairBridge")
+			// TODO: Add support for FrozenActors
+			if (order.OrderString == "RepairBridge" && order.Target.Type == TargetType.Actor)
 			{
-				var legacyHut = order.TargetActor.TraitOrDefault<LegacyBridgeHut>();
-				var hut = order.TargetActor.TraitOrDefault<BridgeHut>();
+				var targetActor = order.Target.Actor;
+				var legacyHut = targetActor.TraitOrDefault<LegacyBridgeHut>();
+				var hut = targetActor.TraitOrDefault<BridgeHut>();
 				if (legacyHut != null)
 				{
 					if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
@@ -98,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Yellow);
-				self.QueueActivity(new RepairBridge(self, order.TargetActor, info.EnterBehaviour, info.RepairNotification));
+				self.SetTargetLine(order.Target, Color.Yellow);
+				self.QueueActivity(new RepairBridge(self, targetActor, info.EnterBehaviour, info.RepairNotification));
 			}
 		}
 
