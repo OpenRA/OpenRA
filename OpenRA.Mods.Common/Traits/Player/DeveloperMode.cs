@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 						self.Owner.Shroud.ExploreAll();
 
 						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
-						self.Trait<PlayerResources>().GiveCash(amount);
+						self.Trait<PlayerResources>().ChangeCash(amount);
 					}
 					else
 						self.Owner.Shroud.ResetExploration();
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "DevGiveCash":
 				{
 					var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
-					self.Trait<PlayerResources>().GiveCash(amount);
+					self.Trait<PlayerResources>().ChangeCash(amount);
 					break;
 				}
 

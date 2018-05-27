@@ -84,8 +84,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Actor IgnoreActor { get; set; }
 
 		readonly CellConditions checkConditions;
-		readonly MobileInfo mobileInfo;
-		readonly MobileInfo.WorldMovementInfo worldMovementInfo;
+		readonly LocomotorInfo locomotorInfo;
+		readonly LocomotorInfo.WorldMovementInfo worldMovementInfo;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly bool checkTerrainHeight;
 		CellLayer<CellInfo> groundInfo;
@@ -93,19 +93,19 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
 			new Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>>();
 
-		public PathGraph(CellInfoLayerPool layerPool, MobileInfo mobileInfo, Actor actor, World world, bool checkForBlocked)
+		public PathGraph(CellInfoLayerPool layerPool, LocomotorInfo li, Actor actor, World world, bool checkForBlocked)
 		{
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
+			locomotorInfo = li;
 			var layers = world.GetCustomMovementLayers().Values
-				.Where(cml => cml.EnabledForActor(actor.Info, mobileInfo));
+				.Where(cml => cml.EnabledForActor(actor.Info, locomotorInfo));
 
 			foreach (var cml in layers)
 				customLayerInfo[cml.Index] = Pair.New(cml, pooledLayer.GetLayer());
 
 			World = world;
-			this.mobileInfo = mobileInfo;
-			worldMovementInfo = mobileInfo.GetWorldMovementInfo(world);
+			worldMovementInfo = locomotorInfo.GetWorldMovementInfo(world);
 			Actor = actor;
 			LaneBias = 1;
 			checkConditions = checkForBlocked ? CellConditions.TransientActors : CellConditions.None;
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				foreach (var cli in customLayerInfo.Values)
 				{
 					var layerPosition = new CPos(position.X, position.Y, cli.First.Index);
-					var entryCost = cli.First.EntryMovementCost(Actor.Info, mobileInfo, layerPosition);
+					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotorInfo, layerPosition);
 					if (entryCost != Constants.InvalidNode)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, mobileInfo, layerPosition);
+				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotorInfo, layerPosition);
 				if (exitCost != Constants.InvalidNode)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = mobileInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoreActor, checkConditions);
+			var movementCost = locomotorInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoreActor, checkConditions);
 			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 

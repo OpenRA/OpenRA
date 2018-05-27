@@ -10,6 +10,7 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -48,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
-			var passable = mobileInfo != null ? (uint)mobileInfo.GetMovementClass(self.World.Map.Rules.TileSet) : 0;
 			var destination = rp != null ? rp.Location : self.Location;
 
 			var location = spawnLocation;
@@ -58,8 +58,11 @@ namespace OpenRA.Mods.Common.Traits
 					location = self.World.Map.ChooseClosestEdgeCell(self.Location);
 
 				if (mobileInfo != null)
+				{
+					var locomotorInfo = mobileInfo.LocomotorInfo;
 					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
-						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destination, mobileInfo, passable));
+						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destination, locomotorInfo));
+				}
 			}
 
 			// No suitable spawn location could be found, so production has failed.

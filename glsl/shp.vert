@@ -8,6 +8,7 @@ varying vec4 vTexCoord;
 varying vec2 vTexMetadata;
 varying vec4 vChannelMask;
 varying vec4 vDepthMask;
+varying vec4 vColorFraction;
 
 vec4 DecodeChannelMask(float x)
 {
@@ -17,8 +18,18 @@ vec4 DecodeChannelMask(float x)
 		return vec4(0,0,1,0);
 	if (x > 0.3)
 		return vec4(0,1,0,0);
-	else
+	if (x > 0.0)
 		return vec4(1,0,0,0);
+
+	return vec4(0, 0, 0, 0);
+}
+
+vec4 DecodeColorFraction(float x)
+{
+	if (x > 0.0)
+		return vec4(0, 0, 0, 0);
+	else
+		return vec4(1, 1, 1, 1);
 }
 
 void main()
@@ -27,6 +38,7 @@ void main()
 	vTexCoord = aVertexTexCoord;
 	vTexMetadata = aVertexTexMetadata;
 	vChannelMask = DecodeChannelMask(abs(aVertexTexMetadata.t));
+	vColorFraction = DecodeColorFraction(abs(aVertexTexMetadata.t));
 	if (aVertexTexMetadata.t < 0.0)
 	{
 		float x = -aVertexTexMetadata.t * 10.0;

@@ -71,7 +71,7 @@ CAMERA.VeryLarge:
 CAMERA.Jeep:
 	AlwaysVisible:
 	Mobile:
-		TerrainSpeeds:
+		Locomotor: immobile
 	RevealsShroud:
 		Range: 4c0
 	ScriptTriggers:

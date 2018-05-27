@@ -69,7 +69,7 @@ VISC_SML:
 	RenderSprites:
 		Image: vissml
 	Mobile:
-		Crushes: visceroid-fusing
+		Locomotor: smallvisc
 	Crushable:
 		CrushClasses: visceroid-fusing
 		WarnProbability: 0
@@ -103,8 +103,6 @@ VISC_LRG:
 		MaxMoveDelay: 50
 	WithAttackAnimation:
 		AttackSequence: attack
-	Mobile:
-		Crushes: crate, infantry
 	RenderSprites:
 		Image: vislrg
 
@@ -120,13 +118,7 @@ JFISH:
 		Range: 5c0
 	Mobile:
 		Speed: 72
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 100
-			Rail: 100
-			DirtRoad: 100
-			Rough: 100
-			Water: 100
+		Locomotor: hover
 	Armament:
 		Weapon: Tentacle
 		FireDelay: 10

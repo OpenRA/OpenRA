@@ -24,6 +24,7 @@ addons:
     - cmake
     - genisoimage
     - fakeroot
+    - zsync
 
 # Environment variables
 env:
@@ -65,11 +66,8 @@ notifications:
 #  provider: releases
 #  api_key:
 #    secure:
-#  file:
-#    - build/OpenRA-${TRAVIS_TAG}.exe
-#    - build/OpenRA-${TRAVIS_TAG}.dmg
-#    - build/OpenRA-${TRAVIS_TAG}-source.tar.bz2
-#    - build/openra_${DOTVERSION}_all.deb
+#  file_glob: true
+#  file: build/*
 #  skip_cleanup: true
 #  on:
 #    all_branches: true

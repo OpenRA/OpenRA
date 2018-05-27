@@ -104,6 +104,7 @@ Container@SETTINGS_PANEL:
 									Width: 45
 									Height: 25
 									MaxLength: 5
+									Type: Integer
 								Label@X:
 									Text: x
 									Font: Bold
@@ -117,6 +118,7 @@ Container@SETTINGS_PANEL:
 									Width: 45
 									Height: 25
 									MaxLength: 5
+									Type: Integer
 						Checkbox@HARDWARECURSORS_CHECKBOX:
 							X: 310
 							Y: 75
@@ -165,6 +167,7 @@ Container@SETTINGS_PANEL:
 							Width: 45
 							Height: 25
 							MaxLength: 3
+							Type: Integer
 						Label@FRAME_LIMIT_DESC_B:
 							X: 150
 							Y: 152

@@ -39,6 +39,7 @@ Background@DIRECTCONNECT_PANEL:
 			Width: 60
 			MaxLength: 5
 			Height: 25
+			Type: Integer
 		Button@JOIN_BUTTON:
 			X: PARENT_RIGHT - 430
 			Y: PARENT_BOTTOM - 45

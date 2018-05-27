@@ -1,0 +1,5 @@
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+cd "${HERE}/../lib/openra" || exit 1
+
+mono --debug OpenRA.Server.exe Game.Mod={MODID} "$@"

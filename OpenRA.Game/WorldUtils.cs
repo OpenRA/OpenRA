@@ -45,6 +45,9 @@ namespace OpenRA
 
 		public static bool ContainsTemporaryBlocker(this World world, CPos cell, Actor ignoreActor = null)
 		{
+			if (!world.RulesContainTemporaryBlocker)
+				return false;
+
 			var temporaryBlockers = world.ActorMap.GetActorsAt(cell);
 			foreach (var temporaryBlocker in temporaryBlockers)
 			{

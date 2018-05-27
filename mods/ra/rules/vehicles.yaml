@@ -68,7 +68,6 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -112,7 +111,6 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -159,7 +157,6 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 71
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -208,7 +205,7 @@ V2RL:
 		Type: Heavy
 	Mobile:
 		Speed: 50
-		Crushes: wall, mine, crate, infantry, heavywall
+		Locomotor: heavytracked
 	RevealsShroud:
 		Range: 7c0
 		RevealGeneratedShroud: False
@@ -259,7 +256,7 @@ ARTY:
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
 	Valued:
-		Cost: 800
+		Cost: 850
 	Tooltip:
 		Name: Artillery
 	Health:
@@ -269,6 +266,7 @@ ARTY:
 	Mobile:
 		TurnSpeed: 2
 		Speed: 85
+		Locomotor: lighttracked
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -315,7 +313,7 @@ HARV:
 		Type: Heavy
 	Mobile:
 		Speed: 85
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
 	WithHarvestAnimation:
@@ -361,7 +359,7 @@ MCV:
 		Type: Light
 	Mobile:
 		Speed: 71
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
 	Transforms:
@@ -416,8 +414,8 @@ JEEP:
 	WithSpriteTurret:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
+		MaxWeight: 2
+		PipCount: 2
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -441,7 +439,6 @@ APC:
 		Type: Heavy
 	Mobile:
 		Speed: 142
-		Crushes: wall, mine, crate, infantry
 		RequiresCondition: !notmobile
 	RevealsShroud:
 		Range: 5c0
@@ -473,13 +470,14 @@ MNLY:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
+	Selectable:
+		Priority: 5
 	Health:
 		HP: 15000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -532,7 +530,7 @@ MGG:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
-		Prerequisites: atek, ~vehicles.france, ~techlevel.high
+		Prerequisites: atek, ~vehicles.england, ~techlevel.high
 		BuildDuration: 1500
 		BuildDurationModifier: 40
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
@@ -621,8 +619,7 @@ TTNK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Speed: 99
 	RevealsShroud:
 		Range: 7c0
 		RevealGeneratedShroud: False
@@ -739,7 +736,7 @@ CTNK:
 		Type: Light
 	Mobile:
 		Speed: 113
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -755,7 +752,7 @@ CTNK:
 		LocalYaw: -60
 	AttackFrontal:
 	PortableChrono:
-		ChargeDelay: 300
+		ChargeDelay: 250
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
@@ -779,7 +776,6 @@ QTNK:
 		Type: Heavy
 	Mobile:
 		Speed: 56
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -799,7 +795,7 @@ STNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
-		Prerequisites: atek, ~vehicles.england, ~techlevel.high
+		Prerequisites: atek, ~vehicles.france, ~techlevel.high
 		BuildDuration: 1166
 		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\nCan detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
@@ -812,7 +808,7 @@ STNK:
 		Type: Light
 	Mobile:
 		Speed: 142
-		Crushes: wall, mine, crate, infantry
+		Locomotor: heavywheeled
 		RequiresCondition: !notmobile
 	RevealsShroud:
 		Range: 7c0
@@ -836,7 +832,7 @@ STNK:
 		LoadingCondition: notmobile
 	Cloak:
 		InitialDelay: 125
-		CloakDelay: 250
+		CloakDelay: 175
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true

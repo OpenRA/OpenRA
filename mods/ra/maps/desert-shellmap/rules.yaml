@@ -70,6 +70,10 @@ World:
 	ExternalCondition@UNKILLABLE:
 		Condition: unkillable
 
+^Bridge:
+	DamageMultiplier:
+		Modifier: 0
+
 OILB:
 	CashTrickler:
 		ShowTicks: false

@@ -58,16 +58,7 @@ LST:
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 100
-			Rough: 100
-			Road: 100
-			Water: 100
-			Tiberium: 100
-			BlueTiberium: 100
-			Beach: 100
-			River: 100
+		Locomotor: lcraft
 		InitialFacing: 0
 		TurnSpeed: 4
 		Speed: 142

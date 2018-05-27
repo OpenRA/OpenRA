@@ -11,6 +11,177 @@
 		UseExtendedIndex: true
 		ShroudPalette: shroud
 		FogPalette: shroud
+	Locomotor@FOOT:
+		Name: foot
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+	Locomotor@FLAMEGUY:
+		Name: flameguy
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+	JumpjetLocomotor@JUMPJET:
+		Name: jumpjet
+		Crushes: crate
+		SharesCell: true
+		JumpjetTransitionCost: 100
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+			Jumpjet: 110
+	Locomotor@WHEELED:
+		Name: wheeled
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 50
+			DirtRoad: 90
+			Rough: 40
+			Tiberium: 50
+			BlueTiberium: 50
+			Veins: 50
+				PathingCost: 90
+	Locomotor@HEAVYWHEELED:
+		Name: heavywheeled
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 50
+			DirtRoad: 90
+			Rough: 40
+			Tiberium: 50
+			BlueTiberium: 50
+			Veins: 50
+				PathingCost: 90
+	Locomotor@TRACKED:
+		Name: tracked
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 90
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
+	Locomotor@AMPHIBIOUS:
+		Name: amphibious
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 90
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
+			Water: 80
+	SubterraneanLocomotor@SUBTERRANEAN:
+		Name: subterranean
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 90
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
+			Subterranean: 120
+		SubterraneanTransitionTerrainTypes: Clear, Rough
+		SubterraneanTransitionCost: 120
+	Locomotor@HOVER:
+		Name: hover
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@SMALLVISC:
+		Name: smallvisc
+		Crushes: visceroid-fusing
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@VISCEROID:
+		Name: visceroid
+		Crushes: crate, infantry
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@CRITTER:
+		Name: critter
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@TRAIN:
+		Name: train
+		TerrainSpeeds:
+			Rail: 100
+		Crushes: wall, crate, infantry
 	Faction@Random:
 		Name: Any
 		InternalName: Random

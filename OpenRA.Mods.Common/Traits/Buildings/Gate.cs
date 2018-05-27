@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Will open and be passable for actors that appear friendly when there are no enemies in range.")]
-	public class GateInfo : PausableConditionalTraitInfo, IBlocksProjectilesInfo, Requires<BuildingInfo>
+	public class GateInfo : PausableConditionalTraitInfo, ITemporaryBlockerInfo, IBlocksProjectilesInfo, Requires<BuildingInfo>
 	{
 		public readonly string OpeningSound = null;
 		public readonly string ClosingSound = null;

@@ -1,16 +1,25 @@
 #!/bin/sh
 cd "{GAME_INSTALL_DIR}"
 
-mono {DEBUG} OpenRA.Game.exe Game.Mod={MOD} Engine.LaunchPath="{BIN_DIR}/openra-{MOD}" "$@"
+# Search for server connection
+PROTOCOL_PREFIX="openra-{MODID}-{TAG}://"
+JOIN_SERVER=""
+if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
+  JOIN_SERVER="Launch.Connect=${1#${PROTOCOL_PREFIX}}"
+fi
 
-# Show a crash dialog if required
-if [ $? != 0 ] && [ $? != 1 ]
-then
-	if which zenity > /dev/null
-	then
-		zenity --question --title "{MODNAME}" --text "{MODNAME} has encountered a fatal error.\nLog Files are available in ~/.openra." --ok-label "Quit" --cancel-label "View FAQ" || xdg-open https://github.com/OpenRA/OpenRA/wiki/FAQ
-	else
-		printf "{MODNAME} has encountered a fatal error.\n  -> Log Files are available in ~/.openra\n  -> FAQ is available at https://github.com/OpenRA/OpenRA/wiki/FAQ\n"
-	fi
-	exit 1
+# Run the game
+mono {DEBUG} OpenRA.Game.exe Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@"
+
+# Show a crash dialog if something went wrong
+if [ $? != 0 ] && [ $? != 1 ]; then
+  ERROR_MESSAGE="{MODNAME} has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ~/.openra/Logs\nThe FAQ is available at http://wiki.openra.net/FAQ"
+  if command -v zenity > /dev/null; then
+    zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
+  elif command -v kdialog > /dev/null; then
+    kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
+  else
+    printf "${ERROR_MESSAGE}\n"
+  fi
+  exit 1
 fi

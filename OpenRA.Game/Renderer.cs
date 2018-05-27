@@ -58,11 +58,11 @@ namespace OpenRA
 
 			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
-			WorldRgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
+			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
 			WorldModelRenderer = new ModelRenderer(this, Device.CreateShader("model"));
-			RgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
-			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
+			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
+			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
 			tempBuffer = Device.CreateVertexBuffer(TempBufferSize);
 		}
@@ -126,7 +126,6 @@ namespace OpenRA
 				lastResolution = Resolution;
 				RgbaSpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
 				SpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
-				RgbaColorRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
 			}
 
 			// If zoom evaluates as different due to floating point weirdness that's OK, setting the parameters again is harmless.
@@ -137,7 +136,6 @@ namespace OpenRA
 				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 				WorldSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 				WorldModelRenderer.SetViewportParams(Resolution, zoom, scroll);
-				WorldRgbaColorRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
 			}
 		}
 

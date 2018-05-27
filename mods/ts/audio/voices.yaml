@@ -3,7 +3,7 @@ Infantry:
 		Select: 15-i000, 15-i004, 15-i012, 15-i048
 		Move: 15-i018, 15-i024, 15-i044
 		Attack: 15-i044, 15-i050, 15-i044, 15-i046
-#		Feedback: 15-i058, 15-i064 # TODO
+		#Feedback: 15-i058, 15-i064 # TODO
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
@@ -14,7 +14,7 @@ Rocket:
 		Select: 15-i000, 15-i032, 15-i048
 		Move: 15-i008, 15-i014, 15-i026
 		Attack: 15-i008, 15-i014, 15-i026, 15-i050, 15-i060
-#		Feedback: 15-i058, 15-i064 #TODO
+		#Feedback: 15-i058, 15-i064 #TODO
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
@@ -65,7 +65,7 @@ JumpJet:
 		Select: 15-i000, 15-i004, 15-i012, 15-i048
 		Move: 15-i018, 15-i024, 15-i044
 		Attack: 15-i044, 15-i050, 15-i044, 15-i046
-#		Feedback: 15-i058, 15-i064
+		#Feedback: 15-i058, 15-i064
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
@@ -76,7 +76,7 @@ Weed:
 		Select: 15-i000, 15-i006, 15-i040, 15-i042
 		Move: 15-i024, 15-i044
 		Attack: 15-i006, 15-i046
-#		Feedback: 15-i058, 15-i064 # TODO
+		#Feedback: 15-i058, 15-i064 # TODO
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1
@@ -87,7 +87,7 @@ Spy:
 		Select: 21-i000, 21-i002, 21-i004
 		Move: 21-i010, 21-i012, 21-i016
 		Action: 21-i010, 21-i012, 21-i022
-#		Feedback: 21-i000, 21-i002 # TODO
+		#Feedback: 21-i000, 21-i002 # TODO
 		Die: dedman1, dedman3, dedman4, dedman5, dedman6
 		Burned: dedman2
 		Zapped: electro1

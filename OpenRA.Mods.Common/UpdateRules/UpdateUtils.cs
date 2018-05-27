@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					continue;
 				}
 
-				yaml.Add(Tuple.Create((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name)));
+				yaml.Add(Tuple.Create((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false)));
 			}
 
 			return yaml;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains("|") && mapPackage.Contains(filename))
-					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename)));
+					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					return manualSteps;
 				}
 
-				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name));
+				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name, false));
 				files = new YamlFileSet() { Tuple.Create(mapPackage, "map.yaml", yaml.Nodes) };
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					if (mapStream == null)
 						continue;
 
-					var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name));
+					var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name, false));
 					var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
 					if (mapRulesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value, externalFilenames))
@@ -192,8 +192,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var childrenNode = current.Value.Nodes.FirstOrDefault(n => n.Key == "Children");
 			if (childrenNode != null)
 				foreach (var node in childrenNode.Value.Nodes)
-					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
-						yield return manualStep;
+					if (node.Key != null)
+						foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+							yield return manualStep;
 		}
 
 		static IEnumerable<string> ApplyChromeTransform(ModData modData, YamlFileSet files, UpdateRule.ChromeNodeTransform transform)
@@ -203,8 +204,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			foreach (var file in files)
 				foreach (var node in file.Item3)
-					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
-						yield return manualStep;
+					if (node.Key != null)
+						foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+							yield return manualStep;
 		}
 
 		static IEnumerable<string> ApplyTopLevelTransform(ModData modData, YamlFileSet files, UpdateRule.TopLevelNodeTransform transform)
@@ -214,8 +216,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			foreach (var file in files)
 				foreach (var node in file.Item3)
-					foreach (var manualStep in transform(modData, node))
-						yield return manualStep;
+					if (node.Key != null)
+						foreach (var manualStep in transform(modData, node))
+							yield return manualStep;
 		}
 
 		public static string FormatMessageList(IEnumerable<string> messages, int indent = 0)
@@ -249,9 +252,24 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return FieldLoader.GetValue<T>(node.Key, node.Value.Value);
 		}
 
+		public static void ReplaceValue(this MiniYamlNode node, string value)
+		{
+			node.Value.Value = value;
+		}
+
 		public static void AddNode(this MiniYamlNode node, string key, object value)
 		{
 			node.Value.Nodes.Add(new MiniYamlNode(key, FieldSaver.FormatValue(value)));
+		}
+
+		public static void AddNode(this MiniYamlNode node, MiniYamlNode toAdd)
+		{
+			node.Value.Nodes.Add(toAdd);
+		}
+
+		public static void RemoveNode(this MiniYamlNode node, MiniYamlNode toRemove)
+		{
+			node.Value.Nodes.Remove(toRemove);
 		}
 
 		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
@@ -263,6 +281,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// <summary>Returns true if the node is of the form <match> or <match>@arbitrary</summary>
 		public static bool KeyMatches(this MiniYamlNode node, string match)
 		{
+			if (node.Key == null)
+				return false;
+
 			if (node.Key == match)
 				return true;
 

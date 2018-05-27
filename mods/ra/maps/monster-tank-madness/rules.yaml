@@ -131,7 +131,6 @@ PBOX:
 		Type: Concrete
 	Mobile:
 		Speed: 42
-		Crushes: wall, mine, crate, infantry
 	RevealsShroud:
 		Range: 6c0
 		RequiresCondition: !friendly
