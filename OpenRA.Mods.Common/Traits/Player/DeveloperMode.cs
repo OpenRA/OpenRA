@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
 
-	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated
+	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
 	{
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }
@@ -245,5 +245,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
 		}
+
+		bool IUnlocksRenderPlayer.RenderPlayerUnlocked { get { return Enabled; } }
 	}
 }
