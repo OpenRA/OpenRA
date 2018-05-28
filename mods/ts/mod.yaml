@@ -1,6 +1,8 @@
 Metadata:
 	Title: Tiberian Sun
 	Version: {DEV_VERSION}
+	Website: https://www.openra.net
+	WebIcon32: https://www.openra.net/images/icons/ts_32x32.png
 
 PackageFormats: Mix
 
