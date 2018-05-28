@@ -2,7 +2,7 @@ FACT:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^3x2Shape
 	Valued:
-		Cost: 4000
+		Cost: 3500
 	Tooltip:
 		Name: Construction Yard
 	Building:
@@ -116,13 +116,14 @@ NUKE:
 		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Queue: Building.GDI, Building.Nod
+		BuildDuration: 330
 		Description: Generates power
 	Building:
 		Footprint: xX xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Health:
-		HP: 50000
+		HP: 55000
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
@@ -396,7 +397,7 @@ AFLD:
 		LimitedAudio: BuildingInProgress
 	ProductionBar:
 	Power:
-		Amount: -50
+		Amount: -40
 	ProvidesPrerequisite@buildingname:
 
 WEAP:
@@ -449,7 +450,7 @@ WEAP:
 		LimitedAudio: BuildingInProgress
 	ProductionBar:
 	Power:
-		Amount: -50
+		Amount: -40
 	ProvidesPrerequisite@buildingname:
 
 HPAD:
@@ -606,7 +607,7 @@ FIX:
 	RallyPoint:
 	WithRepairAnimation:
 	Power:
-		Amount: -30
+		Amount: -20
 	ProvidesPrerequisite@buildingname:
 
 EYE:

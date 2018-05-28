@@ -416,6 +416,7 @@
 		SpeedModifier: 60
 		DamageModifiers:
 			Prone50Percent: 50
+			Prone80Percent: 80
 		DamageTriggers: TriggerProne
 		ProneOffset: 400,0,0
 	WithInfantryBody:
@@ -694,6 +695,7 @@
 	Sellable:
 		SellSounds: cashturn.aud
 	Capturable:
+		CaptureThreshold: 55
 	WithMakeAnimation:
 
 ^CivBuilding:
@@ -956,6 +958,11 @@
 		EmptyWeapon: UnitExplodeSmall
 	BodyOrientation:
 		UseClassicFacingFudge: True
+
+^LightHusk:
+	Inherits: ^Husk
+	Health:
+		HP: 2000
 
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
