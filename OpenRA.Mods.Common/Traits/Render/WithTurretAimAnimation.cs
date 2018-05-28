@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithTurretAimAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteTurretInfo>, Requires<ArmamentInfo>, Requires<AttackBaseInfo>
+	public class WithTurretAimAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteTurretInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
@@ -23,57 +23,43 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Turret = "primary";
 
 		[Desc("Displayed while targeting.")]
+		[FieldLoader.Require]
 		[SequenceReference] public readonly string Sequence = null;
-
-		[Desc("Shown while reloading.")]
-		[SequenceReference(null, true)] public readonly string ReloadPrefix = null;
 
 		public override object Create(ActorInitializer init) { return new WithTurretAimAnimation(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var turretAttackAnim = ai.TraitInfos<WithTurretAttackAnimationInfo>().Any(t => t.Turret == Turret);
-			if (turretAttackAnim)
-				throw new YamlException("WithTurretAimAnimation is currently not compatible with WithTurretAttackAnimation. Don't use them on the same turret.");
+			var match = ai.TraitInfos<WithSpriteTurretInfo>().SingleOrDefault(w => w.Turret == Turret);
+			if (match == null)
+				throw new YamlException("WithTurretAimAnimation needs exactly one sprite turret with matching Turret name.");
 
 			base.RulesetLoaded(rules, ai);
 		}
 	}
 
-	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, ITick
+	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, INotifyAiming
 	{
 		readonly AttackBase attack;
-		readonly Armament armament;
 		readonly WithSpriteTurret wst;
-		string sequence;
 
 		public WithTurretAimAnimation(ActorInitializer init, WithTurretAimAnimationInfo info)
 			: base(info)
 		{
 			attack = init.Self.Trait<AttackBase>();
-			armament = init.Self.TraitsImplementing<Armament>()
-				.Single(a => a.Info.Name == info.Armament);
 			wst = init.Self.TraitsImplementing<WithSpriteTurret>()
 				.Single(st => st.Info.Turret == info.Turret);
-
-			sequence = wst.Info.Sequence;
 		}
 
-		void ITick.Tick(Actor self)
+		protected void UpdateSequence()
 		{
-			if (IsTraitDisabled && sequence == wst.Info.Sequence)
-				return;
-
-			sequence = wst.Info.Sequence;
-			if (!IsTraitDisabled && !string.IsNullOrEmpty(Info.Sequence) && attack.IsAiming)
-				sequence = Info.Sequence;
-
-			var prefix = (armament.IsReloading && !string.IsNullOrEmpty(Info.ReloadPrefix)) ? Info.ReloadPrefix : "";
-
-			if (!IsTraitDisabled && !string.IsNullOrEmpty(prefix) && sequence != (prefix + sequence))
-				sequence = prefix + sequence;
-
-			wst.DefaultAnimation.ReplaceAnim(sequence);
+			var seq = !IsTraitDisabled && attack.IsAiming ? Info.Sequence : wst.Info.Sequence;
+			wst.DefaultAnimation.ReplaceAnim(seq);
 		}
+
+		void INotifyAiming.StartedAiming(Actor self, AttackBase ab) { UpdateSequence(); }
+		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab) { UpdateSequence(); }
+		protected override void TraitEnabled(Actor self) { UpdateSequence(); }
+		protected override void TraitDisabled(Actor self) { UpdateSequence(); }
 	}
 }
