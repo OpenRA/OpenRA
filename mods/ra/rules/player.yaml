@@ -64,7 +64,7 @@ Player:
 		ID: bounty
 		Label: Kill Bounties
 		Description: Players receive cash bonuses when killing enemy units
-		Enabled: True
+		Enabled: False
 		DisplayOrder: 6
 		Prerequisites: global-bounty
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
