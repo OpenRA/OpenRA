@@ -1,7 +1,7 @@
 MCV:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 4000
+		Cost: 3500
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Buildable:
@@ -92,28 +92,28 @@ APC:
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
-		Cost: 550
+		Cost: 600
 	Tooltip:
 		Name: APC
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Queue: Vehicle.GDI
-		BuildDuration: 900
+		BuildDuration: 938
 		BuildDurationModifier: 40
 		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Mobile:
-		TurnSpeed: 8
+		TurnSpeed: 5
 		Speed: 132
 		RequiresCondition: !notmobile
 	Health:
-		HP: 21500
+		HP: 19000
 	Repairable:
 		HpPerStep: 1440
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7c0
+		Range: 6c0
 	Turreted:
 		TurnSpeed: 10
 	Armament@PRIMARY:
@@ -488,7 +488,7 @@ MSAM:
 	Inherits@CLOAK: ^AcceptsCloakCrate
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
-		Cost: 1000
+		Cost: 900
 	Tooltip:
 		Name: Rocket Launcher
 	Buildable:
