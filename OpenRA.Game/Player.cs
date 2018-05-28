@@ -68,6 +68,20 @@ namespace OpenRA
 		public Shroud Shroud;
 		public World World { get; private set; }
 
+		readonly bool inMissionMap;
+		readonly IUnlocksRenderPlayer[] unlockRenderPlayer;
+
+		public bool UnlockedRenderPlayer
+		{
+			get
+			{
+				if (unlockRenderPlayer.Any(x => x.RenderPlayerUnlocked))
+					return true;
+
+				return WinState != WinState.Undefined && !inMissionMap;
+			}
+		}
+
 		readonly StanceColors stanceColors;
 
 		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
@@ -104,6 +118,8 @@ namespace OpenRA
 			World = world;
 			InternalName = pr.Name;
 			PlayerReference = pr;
+
+			inMissionMap = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 
 			// Real player or host-created bot
 			if (client != null)
@@ -156,6 +172,8 @@ namespace OpenRA
 			stanceColors.Allies = ChromeMetrics.Get<Color>("PlayerStanceColorAllies");
 			stanceColors.Enemies = ChromeMetrics.Get<Color>("PlayerStanceColorEnemies");
 			stanceColors.Neutrals = ChromeMetrics.Get<Color>("PlayerStanceColorNeutrals");
+
+			unlockRenderPlayer = PlayerActor.TraitsImplementing<IUnlocksRenderPlayer>().ToArray();
 		}
 
 		public override string ToString()

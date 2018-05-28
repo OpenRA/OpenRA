@@ -467,4 +467,7 @@ namespace OpenRA.Traits
 			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
 		}
 	}
+
+	[RequireExplicitImplementation]
+	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
 }
