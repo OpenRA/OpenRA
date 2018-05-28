@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveTerrainTypeIsWaterFlag(),
 				new DefineSquadExcludeHarvester(),
 				new RemoveWeaponScanRadius(),
-				new SplitTurretAimAnimation(),
+				new SplitAimAnimations(),
 				new DefineSoundDefaults(),
 				new RenameWormSpawner(),
 				new RemoveWithReloadingSpriteTurret(),
