@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.Delay > 0 && --tick == 0)
 				PlayAttackAnimation(self);
 
-			if (IsTraitDisabled || noAimOrReloadAnim || attackAnimPlaying || wsb.IsTraitDisabled)
+			if (IsTraitDisabled || noAimOrReloadAnim || attackAnimPlaying || wsb.IsTraitDisabled || !attack.IsAiming)
 				return;
 
 			var sequence = wsb.Info.Sequence;
