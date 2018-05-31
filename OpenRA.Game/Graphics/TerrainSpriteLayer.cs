@@ -92,7 +92,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, palette.TextureIndex, offset, sprite.Size);
+			Util.FastCreateQuad(vertices, pos, sprite, int2.Zero, palette.TextureIndex, offset, sprite.Size);
 
 			dirtyRows.Add(uv.V);
 		}
