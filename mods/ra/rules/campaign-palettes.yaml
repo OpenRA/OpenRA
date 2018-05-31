@@ -22,3 +22,8 @@
 		BaseName: cloak
 		BasePalette: player
 		Alpha: 0.55
+
+^Building:
+	AppearsOnRadar:
+		ColorModifier: 383838
+		SubtractColorModifier: true
