@@ -59,6 +59,13 @@ namespace OpenRA.Graphics
 			currentSheet = s.Sheet;
 		}
 
+		internal void DrawSprite(Sprite s, float3 location, float paletteTextureIndex, float3 size)
+		{
+			SetRenderStateForSprite(s);
+			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteTextureIndex, nv, size);
+			nv += 6;
+		}
+
 		public void DrawSprite(Sprite s, float3 location, PaletteReference pal)
 		{
 			DrawSprite(s, location, pal.TextureIndex, s.Size);
@@ -69,35 +76,10 @@ namespace OpenRA.Graphics
 			DrawSprite(s, location, pal.TextureIndex, size);
 		}
 
-		void DrawSprite(Sprite s, float3 location, float paletteTextureIndex, float3 size)
-		{
-			SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + s.FractionalOffset * size, s, paletteTextureIndex, nv, size);
-			nv += 6;
-		}
-
-		// For RGBASpriteRenderer, which doesn't use palettes
-		public void DrawSprite(Sprite s, float3 location)
-		{
-			DrawSprite(s, location, 0, s.Size);
-		}
-
-		public void DrawSprite(Sprite s, float3 location, float3 size)
-		{
-			DrawSprite(s, location, 0, size);
-		}
-
 		public void DrawSprite(Sprite s, float3 a, float3 b, float3 c, float3 d)
 		{
 			SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, a, b, c, d, s, 0, nv);
-			nv += 6;
-		}
-
-		public void DrawSprite(Sprite s, Vertex[] sourceVertices, int offset)
-		{
-			SetRenderStateForSprite(s);
-			Array.Copy(sourceVertices, offset, vertices, nv, 6);
 			nv += 6;
 		}
 

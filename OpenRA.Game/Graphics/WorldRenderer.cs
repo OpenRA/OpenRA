@@ -169,7 +169,6 @@ namespace OpenRA.Graphics
 			{
 				lastDepthPreviewEnabled = debugVis.Value.DepthBuffer;
 				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
-				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
 			}
 
 			RefreshPalette();

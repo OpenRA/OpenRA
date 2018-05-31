@@ -4,11 +4,15 @@ uniform vec3 r1, r2;
 attribute vec4 aVertexPosition;
 attribute vec4 aVertexTexCoord;
 attribute vec2 aVertexTexMetadata;
+
 varying vec4 vTexCoord;
 varying vec2 vTexMetadata;
 varying vec4 vChannelMask;
 varying vec4 vDepthMask;
+
 varying vec4 vColorFraction;
+varying vec4 vRGBAFraction;
+varying vec4 vPalettedFraction;
 
 vec2 UnpackChannelAttributes(float x)
 {
@@ -19,6 +23,7 @@ vec2 UnpackChannelAttributes(float x)
 	//    001, 011, 101, 111: Sample depth sprite from channel R,G,B,A
 	// Bits 0-2 define the behaviour of the primary texture channel:
 	//    000: Channel is not used (aVertexTexCoord instead defines a color value)
+	//    010: Sample RGBA sprite from all four channels
 	//    001, 011, 101, 111: Sample paletted sprite from channel R,G,B,A
 
 	float secondaryChannel = 0.0;
@@ -42,6 +47,8 @@ vec4 SelectChannelMask(float x)
 		return vec4(0,0,1,0);
 	if (x >= 3.0)
 		return vec4(0,1,0,0);
+	if (x >= 2.0)
+		return vec4(1,1,1,1);
 	if (x >= 1.0)
 		return vec4(1,0,0,0);
 
@@ -52,8 +59,24 @@ vec4 SelectColorFraction(float x)
 {
 	if (x > 0.0)
 		return vec4(0, 0, 0, 0);
-	else
+
+	return vec4(1, 1, 1, 1);
+}
+
+vec4 SelectRGBAFraction(float x)
+{
+	if (x == 2.0)
 		return vec4(1, 1, 1, 1);
+
+	return vec4(0, 0, 0, 0);
+}
+
+vec4 SelectPalettedFraction(float x)
+{
+	if (x == 0.0 || x == 2.0)
+		return vec4(0, 0, 0, 0);
+
+	return vec4(1, 1, 1, 1);
 }
 
 void main()
@@ -65,5 +88,7 @@ void main()
 	vec2 attrib = UnpackChannelAttributes(aVertexTexMetadata.t);
 	vChannelMask = SelectChannelMask(attrib.s);
 	vColorFraction = SelectColorFraction(attrib.s);
+	vRGBAFraction = SelectRGBAFraction(attrib.s);
+	vPalettedFraction = SelectPalettedFraction(attrib.s);
 	vDepthMask = SelectChannelMask(attrib.t);
 } 
