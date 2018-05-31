@@ -56,11 +56,11 @@ namespace OpenRA
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
-			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
+			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("combined"));
 			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
 			WorldModelRenderer = new ModelRenderer(this, Device.CreateShader("model"));
-			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
+			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("combined"));
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
