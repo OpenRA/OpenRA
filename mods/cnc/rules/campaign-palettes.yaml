@@ -34,6 +34,11 @@
 	WithDeathAnimation:
 		DeathSequencePalette: player-units
 
+^Building:
+	AppearsOnRadar:
+		ColorModifier: 383838
+		SubtractColorModifier: true
+
 ^CommonHuskDefaults:
 	RenderSprites:
 		PlayerPalette: player-units
