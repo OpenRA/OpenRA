@@ -28,6 +28,12 @@ namespace OpenRA.Mods.Common.Traits.Radar
 		[Desc("Player stances who can view this actor on radar.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
 
+		[Desc("Specifies RGB values (in hex) that should be added or subtracted from base radar color.")]
+		public readonly Color ColorModifier = Color.Black;
+
+		[Desc("Specifies whether ColorModifier should be subtracted instead of added to base radar color.")]
+		public readonly bool SubtractColorModifier = false;
+
 		public override object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
 	}
 
@@ -44,7 +50,24 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			modifier = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 		}
 
-		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
+		Color ModifyRadarColor(Color color)
+		{
+			if (Info.ColorModifier == Color.Black)
+				return color;
+
+			if (Info.SubtractColorModifier)
+				return Color.FromArgb(
+					(color.R - Info.ColorModifier.R).Clamp(0, 255),
+					(color.G - Info.ColorModifier.G).Clamp(0, 255),
+					(color.B - Info.ColorModifier.B).Clamp(0, 255));
+
+			return Color.FromArgb(
+				(color.R + Info.ColorModifier.R).Clamp(0, 255),
+				(color.G + Info.ColorModifier.G).Clamp(0, 255),
+				(color.B + Info.ColorModifier.B).Clamp(0, 255));
+		}
+
+		void IRadarSignature.PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
 			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.Stances[viewer])))
@@ -53,6 +76,8 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color.RGB;
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
+
+			color = ModifyRadarColor(color);
 
 			if (Info.AppearanceType == AppearanceType.Location)
 				destinationBuffer.Add(Pair.New(self.Location, color));
