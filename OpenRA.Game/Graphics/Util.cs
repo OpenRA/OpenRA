@@ -19,7 +19,6 @@ namespace OpenRA.Graphics
 	{
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
-		static readonly float[] ChannelSelect = { 0.2f, 0.4f, 0.6f, 0.8f };
 
 		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, float paletteTextureIndex, int nv, float3 size)
 		{
@@ -35,7 +34,9 @@ namespace OpenRA.Graphics
 			float st = 0;
 			float sr = 0;
 			float sb = 0;
-			var attribC = ChannelSelect[(int)r.Channel];
+
+			// See shp.vert for documentation on the channel attribute format
+			var attribC = ((byte)r.Channel) << 1 | 0x01;
 
 			var ss = r as SpriteWithSecondaryData;
 			if (ss != null)
@@ -44,15 +45,17 @@ namespace OpenRA.Graphics
 				st = ss.SecondaryTop;
 				sr = ss.SecondaryRight;
 				sb = ss.SecondaryBottom;
-				attribC = -(attribC + ChannelSelect[(int)ss.SecondaryChannel] / 10);
+
+				attribC |= ((byte)ss.SecondaryChannel) << 4 | 0x08;
 			}
 
-			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, attribC);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, attribC);
-			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, attribC);
-			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, attribC);
-			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, attribC);
+			var fAttribC = (float)attribC;
+			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, fAttribC);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC);
+			vertices[nv + 3] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC);
+			vertices[nv + 4] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, fAttribC);
+			vertices[nv + 5] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
