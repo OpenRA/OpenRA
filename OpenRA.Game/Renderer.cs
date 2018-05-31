@@ -21,12 +21,12 @@ namespace OpenRA
 	public sealed class Renderer : IDisposable
 	{
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
-		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
+		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
 		public ModelRenderer WorldModelRenderer { get; private set; }
 		public RgbaColorRenderer RgbaColorRenderer { get; private set; }
-		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
+		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
 		internal IGraphicsDevice Device { get; private set; }
@@ -57,11 +57,11 @@ namespace OpenRA
 			SheetSize = graphicSettings.SheetSize;
 
 			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
-			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
+			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
 			WorldModelRenderer = new ModelRenderer(this, Device.CreateShader("model"));
 			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
-			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
+			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
 			tempBuffer = Device.CreateVertexBuffer(TempBufferSize);
@@ -124,7 +124,6 @@ namespace OpenRA
 			if (resolutionChanged)
 			{
 				lastResolution = Resolution;
-				RgbaSpriteRenderer.SetViewportParams(lastResolution, 0f, 0f, 1f, int2.Zero);
 				SpriteRenderer.SetViewportParams(lastResolution, 0f, 0f, 1f, int2.Zero);
 			}
 
@@ -133,7 +132,6 @@ namespace OpenRA
 			{
 				lastScroll = scroll;
 				lastZoom = zoom;
-				WorldRgbaSpriteRenderer.SetViewportParams(lastResolution, depthScale, depthOffset, zoom, scroll);
 				WorldSpriteRenderer.SetViewportParams(lastResolution, depthScale, depthOffset, zoom, scroll);
 				WorldModelRenderer.SetViewportParams(lastResolution, zoom, scroll);
 			}
@@ -147,10 +145,8 @@ namespace OpenRA
 			Flush();
 			currentPaletteTexture = palette.Texture;
 
-			RgbaSpriteRenderer.SetPalette(currentPaletteTexture);
 			SpriteRenderer.SetPalette(currentPaletteTexture);
 			WorldSpriteRenderer.SetPalette(currentPaletteTexture);
-			WorldRgbaSpriteRenderer.SetPalette(currentPaletteTexture);
 			WorldModelRenderer.SetPalette(currentPaletteTexture);
 		}
 

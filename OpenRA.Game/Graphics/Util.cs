@@ -36,7 +36,7 @@ namespace OpenRA.Graphics
 			float sb = 0;
 
 			// See shp.vert for documentation on the channel attribute format
-			var attribC = ((byte)r.Channel) << 1 | 0x01;
+			var attribC = r.Channel == TextureChannel.RGBA ? 0x02 : ((byte)r.Channel) << 1 | 0x01;
 
 			var ss = r as SpriteWithSecondaryData;
 			if (ss != null)

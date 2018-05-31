@@ -7,7 +7,10 @@ varying vec4 vTexCoord;
 varying vec2 vTexMetadata;
 varying vec4 vChannelMask;
 varying vec4 vDepthMask;
+
 varying vec4 vColorFraction;
+varying vec4 vRGBAFraction;
+varying vec4 vPalettedFraction;
 
 float jet_r(float x)
 {
@@ -28,7 +31,7 @@ void main()
 {
 	vec4 x = texture2D(DiffuseTexture, vTexCoord.st);
 	vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
-	vec4 c = (vec4(1, 1, 1, 1) - vColorFraction) * texture2D(Palette, p) + vColorFraction * vTexCoord;
+	vec4 c = vPalettedFraction * texture2D(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
 
 	// Discard any transparent fragments (both color and depth)
 	if (c.a == 0.0)
