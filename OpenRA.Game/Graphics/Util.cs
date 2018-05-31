@@ -20,15 +20,15 @@ namespace OpenRA.Graphics
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, float paletteTextureIndex, int nv, float3 size)
+		public static void FastCreateQuad(Vertex[] vertices, float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv, float3 size)
 		{
 			var b = new float3(o.X + size.X, o.Y, o.Z);
 			var c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
 			var d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
-			FastCreateQuad(vertices, o, b, c, d, r, paletteTextureIndex, nv);
+			FastCreateQuad(vertices, o, b, c, d, r, samplers, paletteTextureIndex, nv);
 		}
 
-		public static void FastCreateQuad(Vertex[] vertices, float3 a, float3 b, float3 c, float3 d, Sprite r, float paletteTextureIndex, int nv)
+		public static void FastCreateQuad(Vertex[] vertices, float3 a, float3 b, float3 c, float3 d, Sprite r, int2 samplers, float paletteTextureIndex, int nv)
 		{
 			float sl = 0;
 			float st = 0;
@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 
 			// See shp.vert for documentation on the channel attribute format
 			var attribC = r.Channel == TextureChannel.RGBA ? 0x02 : ((byte)r.Channel) << 1 | 0x01;
-
+			attribC |= samplers.X << 6;
 			var ss = r as SpriteWithSecondaryData;
 			if (ss != null)
 			{
@@ -47,6 +47,7 @@ namespace OpenRA.Graphics
 				sb = ss.SecondaryBottom;
 
 				attribC |= ((byte)ss.SecondaryChannel) << 4 | 0x08;
+				attribC |= samplers.Y << 9;
 			}
 
 			var fAttribC = (float)attribC;
