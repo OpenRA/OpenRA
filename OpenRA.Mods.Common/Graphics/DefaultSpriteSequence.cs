@@ -268,30 +268,13 @@ namespace OpenRA.Mods.Common.Graphics
 				{
 					var depthSpriteFrame = LoadField(d, "DepthSpriteFrame", 0);
 					var depthOffset = LoadField(d, "DepthSpriteOffset", float2.Zero);
-					var depthSprites = cache.AllCached(depthSprite)
-						.Select(s => s[depthSpriteFrame]);
+					Func<int, IEnumerable<int>> getDepthFrame = _ => new int[] { depthSpriteFrame };
+					var ds = cache[depthSprite, getDepthFrame][depthSpriteFrame];
 
 					sprites = sprites.Select(s =>
 					{
 						if (s == null)
 							return null;
-
-						// The depth sprite must live on the same sheet as the main sprite
-						var ds = depthSprites.FirstOrDefault(dss => dss.Sheet == s.Sheet);
-						if (ds == null)
-						{
-							// The sequence has probably overflowed onto a new sheet.
-							// Allocating a new depth sprite on this sheet will almost certainly work
-							ds = cache.Reload(depthSprite)[depthSpriteFrame];
-							depthSprites = cache.AllCached(depthSprite)
-								.Select(ss => ss[depthSpriteFrame]);
-
-							// If that doesn't work then we may be referencing a cached sprite from an earlier sheet
-							// TODO: We could try and reallocate the main sprite, but that requires more complicated code and a perf hit
-							// We'll only cross that bridge if this becomes a problem in reality
-							if (ds.Sheet != s.Sheet)
-								throw new SheetOverflowException("Cross-sheet depth sprite reference: {0}.{1}: {2}");
-						}
 
 						var cw = (ds.Bounds.Left + ds.Bounds.Right) / 2 + (int)(s.Offset.X + depthOffset.X);
 						var ch = (ds.Bounds.Top + ds.Bounds.Bottom) / 2 + (int)(s.Offset.Y + depthOffset.Y);
@@ -299,7 +282,7 @@ namespace OpenRA.Mods.Common.Graphics
 						var h = s.Bounds.Height / 2;
 
 						var r = Rectangle.FromLTRB(cw - w, ch - h, cw + w, ch + h);
-						return new SpriteWithSecondaryData(s, r, ds.Channel);
+						return new SpriteWithSecondaryData(s, ds.Sheet, r, ds.Channel);
 					}).ToArray();
 				}
 
