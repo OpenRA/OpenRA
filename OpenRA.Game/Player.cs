@@ -185,7 +185,7 @@ namespace OpenRA
 		public bool IsAlliedWith(Player p)
 		{
 			// Observers are considered allies to active combatants
-			return p == null || Stances[p] == Stance.Ally || (p.Spectating && !NonCombatant);
+			return p == null || (Stances[p] & Stance.Ally) != 0;
 		}
 
 		public Color PlayerStanceColor(Actor a)

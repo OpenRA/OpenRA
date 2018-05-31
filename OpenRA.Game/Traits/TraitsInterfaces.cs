@@ -54,7 +54,10 @@ namespace OpenRA.Traits
 		None = 0,
 		Enemy = 1,
 		Neutral = 2,
-		Ally = 4,
+		Owner = 4,
+		StrictAlly = 8,
+		Spectator = 16,
+		Ally = Owner | StrictAlly | Spectator
 	}
 
 	public static class StanceExts
