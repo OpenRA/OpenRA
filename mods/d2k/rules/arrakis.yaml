@@ -35,7 +35,7 @@ spicebloom:
 		QuantizedFacings: 1
 	RenderSprites:
 	AppearsOnRadar:
-		UseLocation: true
+		AppearanceType: Location
 	Tooltip:
 		Name: Spice Bloom
 	SpiceBloom:
@@ -97,7 +97,7 @@ sandworm:
 		Sequence: sand
 	HiddenUnderFog:
 	AppearsOnRadar:
-		UseLocation: true
+		AppearanceType: Location
 	AttackSwallow:
 		AttackRequiresEnteringCell: true
 		IgnoresVisibility: true
