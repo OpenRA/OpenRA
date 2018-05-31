@@ -50,13 +50,15 @@ namespace OpenRA.Graphics
 
 	public class SpriteWithSecondaryData : Sprite
 	{
+		public readonly Sheet SecondarySheet;
 		public readonly Rectangle SecondaryBounds;
 		public readonly TextureChannel SecondaryChannel;
 		public readonly float SecondaryTop, SecondaryLeft, SecondaryBottom, SecondaryRight;
 
-		public SpriteWithSecondaryData(Sprite s, Rectangle secondaryBounds, TextureChannel secondaryChannel)
+		public SpriteWithSecondaryData(Sprite s, Sheet secondarySheet, Rectangle secondaryBounds, TextureChannel secondaryChannel)
 			: base(s.Sheet, s.Bounds, s.ZRamp, s.Offset, s.Channel, s.BlendMode)
 		{
+			SecondarySheet = secondarySheet;
 			SecondaryBounds = secondaryBounds;
 			SecondaryChannel = secondaryChannel;
 			SecondaryLeft = (float)Math.Min(secondaryBounds.Left, secondaryBounds.Right) / s.Sheet.Size.Width;

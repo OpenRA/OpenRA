@@ -111,23 +111,6 @@ namespace OpenRA.Graphics
 				return sprite;
 			}
 		}
-
-		/// <summary>Returns all instances of sets of sprites with the given filename</summary>
-		public IEnumerable<Sprite[]> AllCached(string filename)
-		{
-			return sprites.GetOrAdd(filename);
-		}
-
-		/// <summary>Loads and caches a new instance of sprites with the given filename</summary>
-		public Sprite[] Reload(string filename)
-		{
-			var sprite = FrameLoader.GetFrames(fileSystem, filename, loaders)
-				.Select(a => SheetBuilder.Add(a))
-				.ToArray();
-
-			sprites.GetOrAdd(filename).Add(sprite);
-			return sprite;
-		}
 	}
 
 	public class FrameCache

@@ -62,26 +62,46 @@ namespace OpenRA.Graphics
 
 			currentBlend = s.BlendMode;
 
+			// Check if the sheet (or secondary data sheet) have already been mapped
 			var sheet = s.Sheet;
 			var sheetIndex = 0;
 			for (; sheetIndex < ns; sheetIndex++)
 				if (sheets[sheetIndex] == sheet)
 					break;
 
-			if (sheetIndex == ns)
+			var secondarySheetIndex = 0;
+			var ss = s as SpriteWithSecondaryData;
+			if (ss != null)
 			{
-				if (sheetIndex == sheets.Length)
-				{
-					Flush();
-					sheetIndex = 0;
-				}
+				var secondarySheet = ss.SecondarySheet;
+				for (; secondarySheetIndex < ns; secondarySheetIndex++)
+					if (sheets[secondarySheetIndex] == secondarySheet)
+						break;
+			}
 
+			// Make sure that we have enough free samplers to map both if needed, otherwise flush
+			var needSamplers = (sheetIndex == ns ? 1 : 0) + (secondarySheetIndex == ns ? 1 : 0);
+			if (ns + needSamplers >= sheets.Length)
+			{
+				Flush();
+				sheetIndex = 0;
+				if (ss != null)
+					secondarySheetIndex = 1;
+			}
+
+			if (sheetIndex >= ns)
+			{
 				sheets[sheetIndex] = sheet;
 				ns += 1;
 			}
 
-			// TODO: Add support for secondary channels on different sheets
-			return new int2(sheetIndex, sheetIndex);
+			if (secondarySheetIndex >= ns && ss != null)
+			{
+				sheets[secondarySheetIndex] = ss.SecondarySheet;
+				ns += 1;
+			}
+
+			return new int2(sheetIndex, secondarySheetIndex);
 		}
 
 		internal void DrawSprite(Sprite s, float3 location, float paletteTextureIndex, float3 size)
