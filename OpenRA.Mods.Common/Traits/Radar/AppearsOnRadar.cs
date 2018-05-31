@@ -18,9 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
+	public enum AppearanceType { CenterPosition, Location, OccupiedCells, EntireFootprint }
+
 	public class AppearsOnRadarInfo : ConditionalTraitInfo
 	{
-		public readonly bool UseLocation = false;
+		[Desc("Specifies position type to use for radar footprint.")]
+		public readonly AppearanceType AppearanceType = AppearanceType.OccupiedCells;
 
 		[Desc("Player stances who can view this actor on radar.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
@@ -51,14 +54,24 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 
-			if (Info.UseLocation)
-			{
+			if (Info.AppearanceType == AppearanceType.Location)
 				destinationBuffer.Add(Pair.New(self.Location, color));
-				return;
+			else if (Info.AppearanceType == AppearanceType.CenterPosition)
+				destinationBuffer.Add(Pair.New(self.World.Map.CellContaining(self.CenterPosition), color));
+			else if (Info.AppearanceType == AppearanceType.OccupiedCells)
+				foreach (var cell in self.OccupiesSpace.OccupiedCells())
+					destinationBuffer.Add(Pair.New(cell.First, color));
+			else
+			{
+				// If actor has the Building trait, use FrozenUnderFogTiles (which encompasses entire footprint),
+				// else fall back to self.Location.
+				var building = self.TraitOrDefault<Building>();
+				if (building != null)
+					foreach (var tile in building.Info.FrozenUnderFogTiles(self.Location))
+						destinationBuffer.Add(Pair.New(tile, color));
+				else
+					destinationBuffer.Add(Pair.New(self.Location, color));
 			}
-
-			foreach (var cell in self.OccupiesSpace.OccupiedCells())
-				destinationBuffer.Add(Pair.New(cell.First, color));
 		}
 	}
 }

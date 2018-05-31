@@ -874,6 +874,7 @@
     <Compile Include="UpdateRules\Rules\DefineSquadExcludeHarvester.cs" />
     <Compile Include="UpdateRules\Rules\SplitTurretAimAnimation.cs" />
     <Compile Include="UpdateRules\Rules\RenameWormSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\RenameUseLocation.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
     <Compile Include="UpdateRules\Rules\AddEditorPlayer.cs" />
     <Compile Include="UpdateRules\Rules\RemovePaletteFromCurrentTileset.cs" />
