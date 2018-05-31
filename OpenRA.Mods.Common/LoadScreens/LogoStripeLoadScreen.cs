@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 				using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
 					sheet = new Sheet(SheetType.BGRA, stream);
 
-				logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
-				stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
+				logo = new Sprite(sheet, new Rectangle(0, 0, 256, 256), TextureChannel.RGBA);
+				stripe = new Sprite(sheet, new Rectangle(256, 0, 256, 256), TextureChannel.RGBA);
 				stripeRect = new Rectangle(0, r.Resolution.Height / 2 - 128, r.Resolution.Width, 256);
 				logoPos = new float2(r.Resolution.Width / 2 - 128, r.Resolution.Height / 2 - 128);
 			}

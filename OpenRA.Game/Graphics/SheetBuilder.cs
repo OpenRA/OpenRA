@@ -54,7 +54,7 @@ namespace OpenRA.Graphics
 
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
-			channel = TextureChannel.Red;
+			channel = t == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 			Type = t;
 			current = allocateSheet();
 			sheets.Add(current);
@@ -121,7 +121,7 @@ namespace OpenRA.Graphics
 					current.ReleaseBuffer();
 					current = allocateSheet();
 					sheets.Add(current);
-					channel = TextureChannel.Red;
+					channel = Type == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 				}
 				else
 					channel = next.Value;
