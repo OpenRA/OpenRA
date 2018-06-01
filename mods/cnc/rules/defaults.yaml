@@ -840,6 +840,7 @@
 	Inherits@1: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Interactable:
+		Bounds: 24,24
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	OwnerLostAction:
