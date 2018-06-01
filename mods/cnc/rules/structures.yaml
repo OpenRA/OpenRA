@@ -206,7 +206,7 @@ PROC:
 		PipCount: 10
 		Capacity: 700
 	Selectable:
-		Bounds: 72,56,0,12
+		Bounds: 72,56
 		DecorationBounds: 73,72
 	CustomSellValue:
 		Value: 500
