@@ -181,6 +181,9 @@ DOMF:
 
 FIXF:
 	Inherits: ^FakeBuilding
+	Selectable:
+		Bounds: 68,34,0,3
+		DecorationBounds: 72,48
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
@@ -193,7 +196,7 @@ FIXF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: _X_ xxx _X_
+		Footprint: _=_ xxx _=_
 		Dimensions: 3,3
 	Health:
 		HP: 80000
