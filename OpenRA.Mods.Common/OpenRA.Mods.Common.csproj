@@ -595,6 +595,7 @@
     <Compile Include="UpdateRules\Rules\RemoveOutOfAmmo.cs" />
     <Compile Include="UpdateRules\Rules\RemovePlayerPaletteTileset.cs" />
     <Compile Include="UpdateRules\Rules\RenameWithTurreted.cs" />
+    <Compile Include="UpdateRules\Rules\ReplaceRequiresPower.cs" />
     <Compile Include="UpdateRules\Rules\ScaleModHealth.cs" />
     <Compile Include="UpdateRules\Rules\ScaleModHealthBy10.cs" />
     <Compile Include="UpdateRules\Rules\ScaleModHealthBy100.cs" />

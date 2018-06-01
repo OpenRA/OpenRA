@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ChangeBuildableArea(),
 				new ChangeCanPowerDown(),
 				new DropPauseAnimationWhenDisabled(),
-				new RemoveOutOfAmmo()
+				new RemoveOutOfAmmo(),
+				new ReplaceRequiresPower()
 			}),
 
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
