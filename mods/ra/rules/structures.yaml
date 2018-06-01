@@ -1147,7 +1147,7 @@ PROC:
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Selectable:
-		Bounds: 72,50,0,12
+		Bounds: 72,50,0,4
 		DecorationBounds: 72,70,0,-2
 	SelectionDecorations:
 	Targetable:
