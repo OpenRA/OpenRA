@@ -398,7 +398,7 @@
 	RepairableBuilding:
 		RepairStep: 500
 		PlayerExperience: 25
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true

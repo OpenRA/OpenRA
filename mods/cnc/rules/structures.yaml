@@ -243,7 +243,7 @@ SILO:
 		PipCount: 10
 		PipColor: Green
 		Capacity: 3000
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
 	MustBeDestroyed:
@@ -865,7 +865,7 @@ OBLI:
 		RequiresCondition: charging
 		SoundFiles: obelpowr.aud
 		Interval: 30, 40
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	DetectCloaked:
 		Range: 5c0
 		RequiresCondition: !lowpower

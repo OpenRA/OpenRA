@@ -614,7 +614,7 @@
 	WithMakeAnimation:
 	ExternalCapturable:
 	ExternalCapturableBar:
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn
 	MustBeDestroyed:
 		RequiredForShortGame: true
@@ -625,7 +625,7 @@
 
 ^ScienceBuilding:
 	Inherits: ^Building
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,e1,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,tecn,e6,e6,e6,e6,e6,chan,chan,chan,chan
 
 ^Defense:
@@ -720,7 +720,7 @@
 		Sequence: tag-fake
 		ReferencePoint: Top
 		ZOffset: 256
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	-MustBeDestroyed:
 	EditorTilesetFilter:
 		Categories: Fake

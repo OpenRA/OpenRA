@@ -353,7 +353,7 @@
     <Compile Include="Traits\DetectCloaked.cs" />
     <Compile Include="Traits\EditorTilesetFilter.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
-    <Compile Include="Traits\EmitInfantryOnSell.cs" />
+    <Compile Include="Traits\SpawnActorsOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ExplosionOnDamageTransition.cs" />
@@ -881,6 +881,7 @@
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="UpdateRules\Rules\DefineLocomotors.cs" />
     <Compile Include="UpdateRules\Rules\DefineOwnerLostAction.cs" />
+    <Compile Include="UpdateRules\Rules\RenameEmitInfantryOnSell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

@@ -17,28 +17,28 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn new actors when sold.")]
-	public class EmitInfantryOnSellInfo : ITraitInfo
+	public class SpawnActorsOnSellInfo : ITraitInfo
 	{
 		public readonly int ValuePercent = 40;
 		public readonly int MinHpPercent = 30;
 
-		[ActorReference]
-		[Desc("Be sure to use lowercase.")]
-		public readonly string[] ActorTypes;
+		[ActorReference, FieldLoader.Require]
+		[Desc("Actor types to spawn on sell. Be sure to use lowercase.")]
+		public readonly string[] ActorTypes = null;
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
 		public readonly HashSet<string> Factions = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new EmitInfantryOnSell(init.Self, this); }
+		public object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
 	}
 
-	public class EmitInfantryOnSell : INotifySold
+	public class SpawnActorsOnSell : INotifySold
 	{
-		readonly EmitInfantryOnSellInfo info;
+		readonly SpawnActorsOnSellInfo info;
 		readonly bool correctFaction;
 
-		public EmitInfantryOnSell(Actor self, EmitInfantryOnSellInfo info)
+		public SpawnActorsOnSell(Actor self, SpawnActorsOnSellInfo info)
 		{
 			this.info = info;
 			var factionsList = info.Factions;
