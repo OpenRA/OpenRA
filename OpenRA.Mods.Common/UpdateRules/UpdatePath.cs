@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddEditorPlayer(),
 				new RemovePaletteFromCurrentTileset(),
 				new DefineLocomotors(),
-				new DefineOwnerLostAction()
+				new DefineOwnerLostAction(),
+				new RenameEmitInfantryOnSell()
 			})
 		};
 

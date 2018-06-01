@@ -349,10 +349,10 @@
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	EmitInfantryOnSell@gdi:
+	SpawnActorsOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
 		Factions: gdi
-	EmitInfantryOnSell@nod:
+	SpawnActorsOnSell@nod:
 		ActorTypes: e1, e1, e1, e3, e3
 		Factions: nod
 	MustBeDestroyed:

@@ -689,7 +689,7 @@
 		UseDeathTypeSuffix: false
 	GivesBuildableArea:
 		AreaTypes: building
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: e6,e1,e1,e1
 	EngineerRepairable:
 	Sellable:
