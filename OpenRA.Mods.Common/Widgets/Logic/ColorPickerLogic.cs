@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ColorPickerLogic : ChromeLogic
 	{
 		static bool paletteTabOpenedLast;
+		int paletteTabHighlighted = 0;
 
 		[ObjectCreator.UseCtor]
 		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, Action<HSLColor> onChange, Dictionary<string, MiniYaml> logicArgs)
@@ -91,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			paletteTab.IsVisible = () => paletteTabOpenedLast;
 			paletteTabButton.OnClick = () => paletteTabOpenedLast = true;
-			paletteTabButton.IsHighlighted = paletteTab.IsVisible;
+			paletteTabButton.IsHighlighted = () => paletteTab.IsVisible() || paletteTabHighlighted > 0;
 
 			var paletteCols = 8;
 			var palettePresetRows = 2;
@@ -172,6 +173,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						.Reverse().Take(paletteCustomRows * paletteCols).Reverse()
 						.ToArray();
 					Game.Settings.Save();
+
+					// Flash the palette tab to show players that something has happened
+					if (!paletteTabOpenedLast)
+						paletteTabHighlighted = 4;
 				};
 			}
 		}
@@ -195,6 +200,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			color.AttachPanel(colorChooser, onExit);
+		}
+
+		public override void Tick()
+		{
+			if (paletteTabHighlighted > 0)
+				paletteTabHighlighted--;
 		}
 	}
 }
