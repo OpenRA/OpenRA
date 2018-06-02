@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			var message = "You must define a set of Locomotor traits to the World actor for the different\n"
+			var message = "You must define a set of Locomotor traits on the World actor for the different\n"
 				+ "movement classes used in your mod (e.g. Infantry, Vehicles, Tanks, Ships, etc)\n"
 				+ "and replace any definitions/overrides of the following properties on each\n"
 				+ "actor with a Locomotor field referencing the appropriate locomotor type.\n\n"
