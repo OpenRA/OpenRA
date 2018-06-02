@@ -12,15 +12,33 @@ Background@CREDITS_PANEL:
 			Font: Bold
 			Align: Center
 			Text: Credits
+		Container@TAB_CONTAINER:
+			Visible: False
+			X: 15
+			Y: 50
+			Width: PARENT_RIGHT - 30
+			Height: 30
+			Children:
+				Button@MOD_TAB:
+					Width: 140
+					Height: 31
+					Font: Bold
+				Button@ENGINE_TAB:
+					X: 140
+					Width: 140
+					Height: 31
+					Text: OpenRA
+					Font: Bold
 		ScrollPanel@CREDITS_DISPLAY:
 			X: 15
 			Y: 50
 			Width: PARENT_RIGHT - 30
 			Height: 345
-			TopBottomSpacing: 18
+			TopBottomSpacing: 6
 			Children:
 				Label@CREDITS_TEMPLATE:
 					X: 8
+					Width: PARENT_RIGHT - 25
 					Height: 16
 					VAlign: Top
 		Button@BACK_BUTTON:

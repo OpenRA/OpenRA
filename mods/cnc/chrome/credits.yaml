@@ -17,15 +17,31 @@ Container@CREDITS_PANEL:
 			Height: 400
 			Background: panel-black
 			Children:
+				Container@TAB_CONTAINER:
+					Visible: False
+					X: 15
+					Y: 15
+					Width: PARENT_RIGHT - 30
+					Height: 34
+					Children:
+						Button@MOD_TAB:
+							Width: 140
+							Height: 35
+						Button@ENGINE_TAB:
+							X: 150
+							Width: 140
+							Height: 35
+							Text: OpenRA
 				ScrollPanel@CREDITS_DISPLAY:
 					X: 15
 					Y: 15
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 30
-					TopBottomSpacing: 18
+					TopBottomSpacing: 6
 					Children:
 						Label@CREDITS_TEMPLATE:
 							X: 8
+							Width: PARENT_RIGHT - 25
 							Height: 16
 							VAlign: Top
 		Button@BACK_BUTTON:
