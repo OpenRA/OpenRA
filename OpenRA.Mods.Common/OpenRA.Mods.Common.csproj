@@ -874,7 +874,6 @@
     <Compile Include="UpdateRules\Rules\SplitAimAnimations.cs" />
     <Compile Include="UpdateRules\Rules\RenameWormSpawner.cs" />
     <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
-    <Compile Include="UpdateRules\Rules\AddEditorPlayer.cs" />
     <Compile Include="UpdateRules\Rules\RemovePaletteFromCurrentTileset.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />

@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ChangeIntensityToDuration(),
 				new IgnoreAbstractActors(),
 				new AddShakeToBridge(),
-				new AddEditorPlayer(),
 				new RemovePaletteFromCurrentTileset(),
 				new DefineLocomotors(),
 				new DefineOwnerLostAction(),
