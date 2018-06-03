@@ -18,22 +18,63 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class MPStartLocationsInfo : ITraitInfo
+	[Desc("Allows the map to have working spawnpoints. Also controls the 'Separate Team Spawns' checkbox in the lobby options.")]
+	public class MPStartLocationsInfo : ITraitInfo, ILobbyOptions
 	{
 		public readonly WDist InitialExploreRange = WDist.FromCells(5);
 
+		[Translate]
+		[Desc("Descriptive label for the spawn positions checkbox in the lobby.")]
+		public readonly string SeparateTeamSpawnsCheckboxLabel = "Separate Team Spawns";
+
+		[Translate]
+		[Desc("Tooltip description for the spawn positions checkbox in the lobby.")]
+		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players.";
+
+		[Desc("Default value of the spawn positions checkbox in the lobby.")]
+		public readonly bool SeparateTeamSpawnsCheckboxEnabled = true;
+
+		[Desc("Prevent the spawn positions state from being changed in the lobby.")]
+		public readonly bool SeparateTeamSpawnsCheckboxLocked = false;
+
+		[Desc("Whether to display the spawn positions checkbox in the lobby.")]
+		public readonly bool SeparateTeamSpawnsCheckboxVisible = true;
+
+		[Desc("Display order for the spawn positions checkbox in the lobby.")]
+		public readonly int SeparateTeamSpawnsCheckboxDisplayOrder = 0;
+
 		public virtual object Create(ActorInitializer init) { return new MPStartLocations(this); }
+
+		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
+		{
+			yield return new LobbyBooleanOption(
+				"randomspawnpositions",
+				SeparateTeamSpawnsCheckboxLabel,
+				SeparateTeamSpawnsCheckboxDescription,
+				SeparateTeamSpawnsCheckboxVisible,
+				SeparateTeamSpawnsCheckboxDisplayOrder,
+				SeparateTeamSpawnsCheckboxEnabled,
+				SeparateTeamSpawnsCheckboxLocked);
+		}
 	}
 
-	public class MPStartLocations : IWorldLoaded
+	public class MPStartLocations : IWorldLoaded, INotifyCreated
 	{
 		readonly MPStartLocationsInfo info;
 
 		public readonly Dictionary<Player, CPos> Start = new Dictionary<Player, CPos>();
 
+		bool separateTeamSpawns;
+
 		public MPStartLocations(MPStartLocationsInfo info)
 		{
 			this.info = info;
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			separateTeamSpawns = self.World.LobbyInfo.GlobalSettings
+				.OptionOrDefault("separateteamspawns", info.SeparateTeamSpawnsCheckboxEnabled);
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
@@ -84,12 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 			return world.Players.FirstOrDefault(p => p.PlayerReference.Name == pr);
 		}
 
-		static CPos ChooseSpawnPoint(World world, List<CPos> available, List<CPos> taken)
+		CPos ChooseSpawnPoint(World world, List<CPos> available, List<CPos> taken)
 		{
 			if (available.Count == 0)
 				throw new InvalidOperationException("No free spawnpoint.");
 
-			var n = taken.Count == 0
+			var n = taken.Count == 0 || !separateTeamSpawns
 				? world.SharedRandom.Next(available.Count)
 				: available			// pick the most distant spawnpoint from everyone else
 					.Select((k, i) => Pair.New(k, i))

@@ -61,7 +61,7 @@ Player:
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
 		CheckboxEnabled: true
-		CheckboxDisplayOrder: 7
+		CheckboxDisplayOrder: 8
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
@@ -69,7 +69,7 @@ Player:
 		Label: Redeployable MCVs
 		Description: Allow undeploying Construction Yard.
 		Enabled: True
-		DisplayOrder: 6
+		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	FrozenActorLayer:
 	BaseAttackNotifier:

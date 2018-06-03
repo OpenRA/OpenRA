@@ -196,6 +196,7 @@ World:
 		TechLevelDropdownDisplayOrder: 2
 		GameSpeedDropdownDisplayOrder: 3
 	MPStartLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	CreateMPPlayers:
 	MPStartUnits@mcvonly:
 		Class: none
