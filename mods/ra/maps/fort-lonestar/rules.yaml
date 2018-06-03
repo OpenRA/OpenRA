@@ -29,17 +29,17 @@ World:
 	LuaScript:
 		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
 	MapBuildRadius:
-		AllyBuildRadiusCheckboxLocked: True
-		AllyBuildRadiusCheckboxEnabled: True
-		BuildRadiusCheckboxLocked: True
-		BuildRadiusCheckboxEnabled: True
+		AllyBuildRadiusCheckboxVisible: False
+		BuildRadiusCheckboxVisible: False
 	SpawnMPUnits:
-		DropdownLocked: True
+		DropdownVisible: False
 	MapOptions:
 		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
+		TechLevelDropdownVisible: False
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+		ShortGameCheckboxVisible: False
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: Difficulty
@@ -53,6 +53,10 @@ World:
 			endless: Endless mode
 		Default: hard
 		DisplayOrder: 5
+	MPStartLocations:
+		SeparateTeamSpawnsCheckboxEnabled: False
+		SeparateTeamSpawnsCheckboxLocked: True
+		SeparateTeamSpawnsCheckboxVisible: False
 
 FORTCRATE:
 	Inherits: ^Crate
@@ -93,10 +97,13 @@ Player:
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
+		FogCheckboxVisible: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
+		ExploredMapCheckboxVisible: False
 	PlayerResources:
 		DefaultCashDropdownLocked: True
+		DefaultCashDropdownVisible: False
 		DefaultCash: 50
 	-HackyAI@RushAI:
 	-HackyAI@NormalAI:
@@ -105,7 +112,8 @@ Player:
 	DummyAI@LonestarAI:
 		Name: Lonestar AI
 		Type: lonestar
-
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
 ^Infantry:
 	Inherits@IC: ^IronCurtainable
 

@@ -8,12 +8,11 @@ World:
 	-SpawnMPUnits:
 	-MPStartLocations:
 	MapBuildRadius:
-		AllyBuildRadiusCheckboxLocked: True
-		AllyBuildRadiusCheckboxEnabled: False
-		BuildRadiusCheckboxLocked: True
-		BuildRadiusCheckboxEnabled: True
+		AllyBuildRadiusCheckboxVisible: False
+		BuildRadiusCheckboxVisible: False
 	MapOptions:
 		TechLevelDropdownLocked: True
+		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
 
 UNITCRATE:
@@ -59,11 +58,17 @@ Player:
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: False
+		FogCheckboxVisible: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: True
+		ExploredMapCheckboxVisible: False
 	PlayerResources:
 		DefaultCashDropdownLocked: True
+		DefaultCashDropdownVisible: False
 		DefaultCash: 5000
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		Enabled: False
 		Locked: True
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
