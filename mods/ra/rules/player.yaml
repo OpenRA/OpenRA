@@ -56,7 +56,7 @@ Player:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
-		CheckboxDisplayOrder: 8
+		CheckboxDisplayOrder: 9
 	GpsWatcher:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
@@ -65,7 +65,7 @@ Player:
 		Label: Kill Bounties
 		Description: Players receive cash bonuses when killing enemy units
 		Enabled: False
-		DisplayOrder: 6
+		DisplayOrder: 8
 		Prerequisites: global-bounty
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy

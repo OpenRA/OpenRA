@@ -252,6 +252,7 @@ World:
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	MPStartLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	SpawnMPUnits:
 		DropdownDisplayOrder: 1
 	PathFinder:
