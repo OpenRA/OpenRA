@@ -48,8 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultPlatform.cs" />
-    <Compile Include="IGraphicsDeviceInternal.cs" />
-    <Compile Include="ITextureInternal.cs" />
     <Compile Include="Sdl2GraphicsDevice.cs" />
     <Compile Include="Sdl2Input.cs" />
     <Compile Include="Shader.cs" />
@@ -57,7 +55,6 @@
     <Compile Include="MultiTapDetection.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="ThreadAffine.cs" />
-    <Compile Include="ThreadedGraphicsDevice.cs" />
     <Compile Include="VertexBuffer.cs" />
     <Compile Include="OpenAlSoundEngine.cs" />
     <Compile Include="OpenGL.cs" />

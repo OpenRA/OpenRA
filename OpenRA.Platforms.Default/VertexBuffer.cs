@@ -103,9 +103,14 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		~VertexBuffer()
+		{
+			Game.RunAfterTick(() => Dispose(false));
+		}
+
 		public void Dispose()
 		{
-			Dispose(true);
+			Game.RunAfterTick(() => Dispose(true));
 			GC.SuppressFinalize(this);
 		}
 
