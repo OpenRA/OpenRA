@@ -16,14 +16,9 @@ namespace OpenRA.Platforms.Default
 {
 	abstract class ThreadAffine
 	{
-		volatile int managedThreadId;
+		readonly int managedThreadId;
 
 		protected ThreadAffine()
-		{
-			SetThreadAffinity();
-		}
-
-		protected void SetThreadAffinity()
 		{
 			managedThreadId = Thread.CurrentThread.ManagedThreadId;
 		}
@@ -31,7 +26,7 @@ namespace OpenRA.Platforms.Default
 		protected void VerifyThreadAffinity()
 		{
 			if (managedThreadId != Thread.CurrentThread.ManagedThreadId)
-				throw new InvalidOperationException("Cross-thread operation not valid: This method must only be called from the thread that owns this object.");
+				throw new InvalidOperationException("Cross-thread operation not valid: This method must be called from the same thread that created this object.");
 		}
 	}
 }

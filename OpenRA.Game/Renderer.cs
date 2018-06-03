@@ -51,7 +51,7 @@ namespace OpenRA
 		{
 			var resolution = GetResolution(graphicSettings);
 
-			Device = platform.CreateGraphics(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.BatchSize);
+			Device = platform.CreateGraphics(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
 
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
@@ -92,11 +92,8 @@ namespace OpenRA
 
 			Device.OnWindowScaleChanged += (before, after) =>
 			{
-				Game.RunAfterTick(() =>
-				{
-					foreach (var f in Fonts)
-						f.Value.SetScale(after);
-				});
+				foreach (var f in Fonts)
+					f.Value.SetScale(after);
 			};
 		}
 
@@ -267,6 +264,7 @@ namespace OpenRA
 
 		public void Dispose()
 		{
+			Device.Dispose();
 			WorldModelRenderer.Dispose();
 			tempBuffer.Dispose();
 			if (fontSheetBuilder != null)
@@ -274,7 +272,6 @@ namespace OpenRA
 			if (Fonts != null)
 				foreach (var font in Fonts.Values)
 					font.Dispose();
-			Device.Dispose();
 		}
 
 		public string GetClipboardText()

@@ -191,6 +191,8 @@ namespace OpenRA.Platforms.Default
 				inputHandler.OnMouseInput(pendingMotion.Value);
 				pendingMotion = null;
 			}
+
+			OpenGL.CheckGLError();
 		}
 	}
 }
