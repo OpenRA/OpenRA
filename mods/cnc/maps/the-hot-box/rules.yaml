@@ -2,6 +2,7 @@ World:
 	CrateSpawner:
 		CheckboxEnabled: true
 		CheckboxLocked: true
+		CheckboxVisible: False
 		Maximum: 4
 		SpawnInterval: 125
 		CrateActors: unitcrate
@@ -11,10 +12,13 @@ World:
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
+		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxLocked: True
 		BuildRadiusCheckboxEnabled: True
+		BuildRadiusCheckboxVisible: False
 	MapOptions:
 		TechLevelDropdownLocked: True
+		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
 
 UNITCRATE:
@@ -50,10 +54,13 @@ Player:
 	Shroud:
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: False
+		FogCheckboxVisible: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: True
-		CrateLocked: True
-		CrateEnabled: True
+		ExploredMapCheckboxVisible: False
 	PlayerResources:
 		DefaultCashDropdownLocked: True
+		DefaultCashDropdownVisible: False
 		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
