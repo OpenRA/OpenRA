@@ -17,7 +17,7 @@ using SDL2;
 
 namespace OpenRA.Platforms.Default
 {
-	sealed class Sdl2GraphicsDevice : ThreadAffine, IGraphicsDevice
+	sealed class Sdl2PlatformWindow : ThreadAffine, IPlatformWindow
 	{
 		readonly Sdl2Input input;
 
@@ -33,7 +33,7 @@ namespace OpenRA.Platforms.Default
 		[DllImport("user32.dll")]
 		static extern bool SetProcessDPIAware();
 
-		public Sdl2GraphicsDevice(Size windowSize, WindowMode windowMode)
+		public Sdl2PlatformWindow(Size windowSize, WindowMode windowMode)
 		{
 			Console.WriteLine("Using SDL 2 with OpenGL renderer");
 			WindowSize = windowSize;

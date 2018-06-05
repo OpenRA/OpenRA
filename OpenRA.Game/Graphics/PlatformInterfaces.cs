@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public interface IPlatform
 	{
-		IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode);
+		IPlatformWindow CreateWindow(Size size, WindowMode windowMode);
 		ISoundEngine CreateSound(string device);
 	}
 
@@ -34,7 +34,7 @@ namespace OpenRA
 		DoubleMultiplicative
 	}
 
-	public interface IGraphicsDevice : IDisposable
+	public interface IPlatformWindow : IDisposable
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer(int length);
 		ITexture CreateTexture(Bitmap bitmap);

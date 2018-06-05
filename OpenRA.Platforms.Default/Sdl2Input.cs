@@ -40,7 +40,7 @@ namespace OpenRA.Platforms.Default
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
-		int2 EventPosition(Sdl2GraphicsDevice device, int x, int y)
+		int2 EventPosition(Sdl2PlatformWindow device, int x, int y)
 		{
 			// On Windows and Linux (X11) events are given in surface coordinates
 			// These must be scaled to our effective window coordinates
@@ -50,7 +50,7 @@ namespace OpenRA.Platforms.Default
 			return new int2(x, y);
 		}
 
-		public void PumpInput(Sdl2GraphicsDevice device, IInputHandler inputHandler)
+		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler)
 		{
 			var mods = MakeModifiers((int)SDL.SDL_GetModState());
 			var scrollDelta = 0;
