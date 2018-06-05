@@ -43,10 +43,10 @@ namespace OpenRA.Graphics
 					sheets[i] = null;
 				}
 
-				renderer.Device.SetBlendMode(currentBlend);
+				renderer.Window.SetBlendMode(currentBlend);
 				shader.PrepareRender();
 				renderer.DrawBatch(vertices, nv, PrimitiveType.TriangleList);
-				renderer.Device.SetBlendMode(BlendMode.None);
+				renderer.Window.SetBlendMode(BlendMode.None);
 
 				nv = 0;
 				ns = 0;
@@ -131,10 +131,10 @@ namespace OpenRA.Graphics
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet, BlendMode blendMode)
 		{
 			shader.SetTexture("Texture0", sheet.GetTexture());
-			renderer.Device.SetBlendMode(blendMode);
+			renderer.Window.SetBlendMode(blendMode);
 			shader.PrepareRender();
 			renderer.DrawBatch(buffer, start, length, type);
-			renderer.Device.SetBlendMode(BlendMode.None);
+			renderer.Window.SetBlendMode(BlendMode.None);
 		}
 
 		// For RGBAColorRenderer
