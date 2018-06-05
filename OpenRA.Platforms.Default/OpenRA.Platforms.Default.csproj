@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultPlatform.cs" />
-    <Compile Include="Sdl2GraphicsDevice.cs" />
+    <Compile Include="Sdl2PlatformWindow.cs" />
     <Compile Include="Sdl2Input.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="FrameBuffer.cs" />

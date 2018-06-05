@@ -29,7 +29,7 @@ namespace OpenRA
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
-		internal IGraphicsDevice Device { get; private set; }
+		internal IPlatformWindow Device { get; private set; }
 		internal int SheetSize { get; private set; }
 		internal int TempBufferSize { get; private set; }
 
@@ -51,7 +51,7 @@ namespace OpenRA
 		{
 			var resolution = GetResolution(graphicSettings);
 
-			Device = platform.CreateGraphics(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
+			Device = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
 
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;

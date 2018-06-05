@@ -16,9 +16,9 @@ namespace OpenRA.Platforms.Default
 {
 	public class DefaultPlatform : IPlatform
 	{
-		public IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode)
+		public IPlatformWindow CreateWindow(Size size, WindowMode windowMode)
 		{
-			return new Sdl2GraphicsDevice(size, windowMode);
+			return new Sdl2PlatformWindow(size, windowMode);
 		}
 
 		public ISoundEngine CreateSound(string device)
