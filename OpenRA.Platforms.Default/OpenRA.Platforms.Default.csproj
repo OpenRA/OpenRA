@@ -58,6 +58,7 @@
     <Compile Include="VertexBuffer.cs" />
     <Compile Include="OpenAlSoundEngine.cs" />
     <Compile Include="OpenGL.cs" />
+    <Compile Include="Sdl2HardwareCursor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
