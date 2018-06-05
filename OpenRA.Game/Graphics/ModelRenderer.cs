@@ -300,14 +300,14 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 			fbo.Bind();
 
-			Game.Renderer.Device.EnableDepthBuffer();
+			Game.Renderer.Window.EnableDepthBuffer();
 			return fbo;
 		}
 
 		void DisableFrameBuffer(IFrameBuffer fbo)
 		{
 			Game.Renderer.Flush();
-			Game.Renderer.Device.DisableDepthBuffer();
+			Game.Renderer.Window.DisableDepthBuffer();
 			fbo.Unbind();
 		}
 
@@ -356,7 +356,7 @@ namespace OpenRA.Graphics
 			}
 
 			var size = new Size(renderer.SheetSize, renderer.SheetSize);
-			var framebuffer = renderer.Device.CreateFrameBuffer(size);
+			var framebuffer = renderer.Window.CreateFrameBuffer(size);
 			var sheet = new Sheet(SheetType.BGRA, framebuffer.Texture);
 			mappedBuffers.Add(sheet, framebuffer);
 

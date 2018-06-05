@@ -29,7 +29,7 @@ namespace OpenRA
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
-		internal IPlatformWindow Device { get; private set; }
+		internal IPlatformWindow Window { get; private set; }
 		internal int SheetSize { get; private set; }
 		internal int TempBufferSize { get; private set; }
 
@@ -51,20 +51,20 @@ namespace OpenRA
 		{
 			var resolution = GetResolution(graphicSettings);
 
-			Device = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
+			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
 
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
-			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("combined"));
+			WorldSpriteRenderer = new SpriteRenderer(this, Window.CreateShader("combined"));
 			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
-			WorldModelRenderer = new ModelRenderer(this, Device.CreateShader("model"));
-			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("combined"));
+			WorldModelRenderer = new ModelRenderer(this, Window.CreateShader("model"));
+			SpriteRenderer = new SpriteRenderer(this, Window.CreateShader("combined"));
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempBuffer = Device.CreateVertexBuffer(TempBufferSize);
+			tempBuffer = Window.CreateVertexBuffer(TempBufferSize);
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -87,10 +87,10 @@ namespace OpenRA
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
 				Fonts = modData.Manifest.Fonts.ToDictionary(x => x.Key,
 					x => new SpriteFont(x.Value.First, modData.DefaultFileSystem.Open(x.Value.First).ReadAllBytes(),
-										x.Value.Second, Device.WindowScale, fontSheetBuilder)).AsReadOnly();
+										x.Value.Second, Window.WindowScale, fontSheetBuilder)).AsReadOnly();
 			}
 
-			Device.OnWindowScaleChanged += (before, after) =>
+			Window.OnWindowScaleChanged += (before, after) =>
 			{
 				foreach (var f in Fonts)
 					f.Value.SetScale(after);
@@ -113,7 +113,7 @@ namespace OpenRA
 
 		public void BeginFrame(int2 scroll, float zoom)
 		{
-			Device.Clear();
+			Window.Clear();
 			SetViewportParams(scroll, zoom);
 		}
 
@@ -153,8 +153,8 @@ namespace OpenRA
 		public void EndFrame(IInputHandler inputHandler)
 		{
 			Flush();
-			Device.PumpInput(inputHandler);
-			Device.Present();
+			Window.PumpInput(inputHandler);
+			Window.Present();
 		}
 
 		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
@@ -168,7 +168,7 @@ namespace OpenRA
 			where T : struct
 		{
 			vertices.Bind();
-			Device.DrawPrimitives(type, firstVertex, numVertices);
+			Window.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
 
@@ -177,8 +177,8 @@ namespace OpenRA
 			CurrentBatchRenderer = null;
 		}
 
-		public Size Resolution { get { return Device.WindowSize; } }
-		public float WindowScale { get { return Device.WindowScale; } }
+		public Size Resolution { get { return Window.WindowSize; } }
+		public float WindowScale { get { return Window.WindowScale; } }
 
 		public interface IBatchRenderer { void Flush(); }
 
@@ -201,7 +201,7 @@ namespace OpenRA
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
 		{
-			return Device.CreateVertexBuffer(length);
+			return Window.CreateVertexBuffer(length);
 		}
 
 		public void EnableScissor(Rectangle rect)
@@ -211,7 +211,7 @@ namespace OpenRA
 				rect.Intersect(scissorState.Peek());
 
 			Flush();
-			Device.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+			Window.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
 			scissorState.Push(rect);
 		}
 
@@ -224,43 +224,43 @@ namespace OpenRA
 			if (scissorState.Any())
 			{
 				var rect = scissorState.Peek();
-				Device.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+				Window.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
 			}
 			else
-				Device.DisableScissor();
+				Window.DisableScissor();
 		}
 
 		public void EnableDepthBuffer()
 		{
 			Flush();
-			Device.EnableDepthBuffer();
+			Window.EnableDepthBuffer();
 		}
 
 		public void DisableDepthBuffer()
 		{
 			Flush();
-			Device.DisableDepthBuffer();
+			Window.DisableDepthBuffer();
 		}
 
 		public void ClearDepthBuffer()
 		{
 			Flush();
-			Device.ClearDepthBuffer();
+			Window.ClearDepthBuffer();
 		}
 
 		public void GrabWindowMouseFocus()
 		{
-			Device.GrabWindowMouseFocus();
+			Window.GrabWindowMouseFocus();
 		}
 
 		public void ReleaseWindowMouseFocus()
 		{
-			Device.ReleaseWindowMouseFocus();
+			Window.ReleaseWindowMouseFocus();
 		}
 
 		public void Dispose()
 		{
-			Device.Dispose();
+			Window.Dispose();
 			WorldModelRenderer.Dispose();
 			tempBuffer.Dispose();
 			if (fontSheetBuilder != null)
@@ -272,17 +272,17 @@ namespace OpenRA
 
 		public string GetClipboardText()
 		{
-			return Device.GetClipboardText();
+			return Window.GetClipboardText();
 		}
 
 		public bool SetClipboardText(string text)
 		{
-			return Device.SetClipboardText(text);
+			return Window.SetClipboardText(text);
 		}
 
 		public string GLVersion
 		{
-			get { return Device.GLVersion; }
+			get { return Window.GLVersion; }
 		}
 	}
 }
