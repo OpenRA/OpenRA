@@ -179,7 +179,7 @@ namespace OpenRA.Graphics
 			Game.Renderer.EnableScissor(bounds);
 
 			if (enableDepthBuffer)
-				Game.Renderer.Window.EnableDepthBuffer();
+				Game.Renderer.Context.EnableDepthBuffer();
 
 			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
@@ -203,7 +203,7 @@ namespace OpenRA.Graphics
 				a.Trait.RenderShroud(renderShroud, this);
 
 			if (enableDepthBuffer)
-				Game.Renderer.Window.DisableDepthBuffer();
+				Game.Renderer.Context.DisableDepthBuffer();
 
 			Game.Renderer.DisableScissor();
 

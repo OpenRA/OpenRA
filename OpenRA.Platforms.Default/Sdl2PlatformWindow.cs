@@ -12,16 +12,18 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using OpenRA.Graphics;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
 {
 	sealed class Sdl2PlatformWindow : ThreadAffine, IPlatformWindow
 	{
+		readonly IGraphicsContext context;
 		readonly Sdl2Input input;
 
-		IntPtr context, window;
+		public IGraphicsContext Context { get { return context; } }
+
+		internal readonly IntPtr Window;
 		bool disposed;
 
 		public Size WindowSize { get; private set; }
@@ -67,7 +69,7 @@ namespace OpenRA.Platforms.Default
 			if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
-			window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
+			Window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
 				WindowSize.Width, WindowSize.Height, windowFlags);
 
 			SurfaceSize = WindowSize;
@@ -79,7 +81,7 @@ namespace OpenRA.Platforms.Default
 				// OSX defines the window size in "points", with a device-dependent number of pixels per point.
 				// The window scale is simply the ratio of GL pixels / window points.
 				int width, height;
-				SDL.SDL_GL_GetDrawableSize(window, out width, out height);
+				SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
 				SurfaceSize = new Size(width, height);
 				WindowScale = width * 1f / WindowSize.Width;
 			}
@@ -112,7 +114,7 @@ namespace OpenRA.Platforms.Default
 
 			if (windowMode == WindowMode.Fullscreen)
 			{
-				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
+				SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
 
 				// Fullscreen mode on OSX will ignore the configured display resolution
 				// and instead always picks an arbitrary scaled resolution choice that may
@@ -123,7 +125,7 @@ namespace OpenRA.Platforms.Default
 				if (Platform.CurrentPlatform == PlatformType.OSX)
 				{
 					int width, height;
-					SDL.SDL_GetWindowSize(window, out width, out height);
+					SDL.SDL_GetWindowSize(Window, out width, out height);
 					WindowSize = SurfaceSize = new Size(width, height);
 					WindowScale = 1;
 				}
@@ -133,24 +135,13 @@ namespace OpenRA.Platforms.Default
 				// Work around a visual glitch in OSX: the window is offset
 				// partially offscreen if the dock is at the left of the screen
 				if (Platform.CurrentPlatform == PlatformType.OSX)
-					SDL.SDL_SetWindowPosition(window, 0, 0);
+					SDL.SDL_SetWindowPosition(Window, 0, 0);
 
-				SDL.SDL_SetWindowFullscreen(window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
+				SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
 				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 			}
 
-			context = SDL.SDL_GL_CreateContext(window);
-			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
-				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
-
-			OpenGL.Initialize();
-
-			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
-			OpenGL.CheckGLError();
-			OpenGL.glEnableVertexAttribArray(Shader.TexCoordAttributeIndex);
-			OpenGL.CheckGLError();
-			OpenGL.glEnableVertexAttribArray(Shader.TexMetadataAttributeIndex);
-			OpenGL.CheckGLError();
+			context = new Sdl2GraphicsContext(this);
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
@@ -212,7 +203,7 @@ namespace OpenRA.Platforms.Default
 			if (Platform.CurrentPlatform == PlatformType.OSX)
 			{
 				int width, height;
-				SDL.SDL_GL_GetDrawableSize(window, out width, out height);
+				SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
 
 				if (width != SurfaceSize.Width || height != SurfaceSize.Height)
 				{
@@ -231,196 +222,26 @@ namespace OpenRA.Platforms.Default
 				return;
 
 			disposed = true;
-			if (context != IntPtr.Zero)
-			{
-				SDL.SDL_GL_DeleteContext(context);
-				context = IntPtr.Zero;
-			}
 
-			if (window != IntPtr.Zero)
-			{
-				SDL.SDL_DestroyWindow(window);
-				window = IntPtr.Zero;
-			}
+			if (context != null)
+				context.Dispose();
+
+			if (Window != IntPtr.Zero)
+				SDL.SDL_DestroyWindow(Window);
 
 			SDL.SDL_Quit();
-		}
-
-		static int ModeFromPrimitiveType(PrimitiveType pt)
-		{
-			switch (pt)
-			{
-				case PrimitiveType.PointList: return OpenGL.GL_POINTS;
-				case PrimitiveType.LineList: return OpenGL.GL_LINES;
-				case PrimitiveType.TriangleList: return OpenGL.GL_TRIANGLES;
-			}
-
-			throw new NotImplementedException();
-		}
-
-		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
-		{
-			VerifyThreadAffinity();
-			OpenGL.glDrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
-			OpenGL.CheckGLError();
-		}
-
-		public void Clear()
-		{
-			VerifyThreadAffinity();
-			OpenGL.glClearColor(0, 0, 0, 1);
-			OpenGL.CheckGLError();
-			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
-			OpenGL.CheckGLError();
-		}
-
-		public void EnableDepthBuffer()
-		{
-			VerifyThreadAffinity();
-			OpenGL.glClear(OpenGL.GL_DEPTH_BUFFER_BIT);
-			OpenGL.CheckGLError();
-			OpenGL.glEnable(OpenGL.GL_DEPTH_TEST);
-			OpenGL.CheckGLError();
-			OpenGL.glDepthFunc(OpenGL.GL_LEQUAL);
-			OpenGL.CheckGLError();
-		}
-
-		public void DisableDepthBuffer()
-		{
-			VerifyThreadAffinity();
-			OpenGL.glDisable(OpenGL.GL_DEPTH_TEST);
-			OpenGL.CheckGLError();
-		}
-
-		public void ClearDepthBuffer()
-		{
-			VerifyThreadAffinity();
-			OpenGL.glClear(OpenGL.GL_DEPTH_BUFFER_BIT);
-			OpenGL.CheckGLError();
-		}
-
-		public void SetBlendMode(BlendMode mode)
-		{
-			VerifyThreadAffinity();
-			OpenGL.glBlendEquation(OpenGL.GL_FUNC_ADD);
-			OpenGL.CheckGLError();
-
-			switch (mode)
-			{
-				case BlendMode.None:
-					OpenGL.glDisable(OpenGL.GL_BLEND);
-					break;
-				case BlendMode.Alpha:
-					OpenGL.glEnable(OpenGL.GL_BLEND);
-					OpenGL.CheckGLError();
-					OpenGL.glBlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
-					break;
-				case BlendMode.Additive:
-				case BlendMode.Subtractive:
-					OpenGL.glEnable(OpenGL.GL_BLEND);
-					OpenGL.CheckGLError();
-					OpenGL.glBlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE);
-					if (mode == BlendMode.Subtractive)
-					{
-						OpenGL.CheckGLError();
-						OpenGL.glBlendEquation(OpenGL.GL_FUNC_REVERSE_SUBTRACT);
-					}
-
-					break;
-				case BlendMode.Multiply:
-					OpenGL.glEnable(OpenGL.GL_BLEND);
-					OpenGL.CheckGLError();
-					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_ONE_MINUS_SRC_ALPHA);
-					OpenGL.CheckGLError();
-					break;
-				case BlendMode.Multiplicative:
-					OpenGL.glEnable(OpenGL.GL_BLEND);
-					OpenGL.CheckGLError();
-					OpenGL.glBlendFunc(OpenGL.GL_ZERO, OpenGL.GL_SRC_COLOR);
-					break;
-				case BlendMode.DoubleMultiplicative:
-					OpenGL.glEnable(OpenGL.GL_BLEND);
-					OpenGL.CheckGLError();
-					OpenGL.glBlendFunc(OpenGL.GL_DST_COLOR, OpenGL.GL_SRC_COLOR);
-					break;
-			}
-
-			OpenGL.CheckGLError();
 		}
 
 		public void GrabWindowMouseFocus()
 		{
 			VerifyThreadAffinity();
-			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_TRUE);
+			SDL.SDL_SetWindowGrab(Window, SDL.SDL_bool.SDL_TRUE);
 		}
 
 		public void ReleaseWindowMouseFocus()
 		{
 			VerifyThreadAffinity();
-			SDL.SDL_SetWindowGrab(window, SDL.SDL_bool.SDL_FALSE);
-		}
-
-		public void EnableScissor(int left, int top, int width, int height)
-		{
-			VerifyThreadAffinity();
-
-			if (width < 0)
-				width = 0;
-
-			if (height < 0)
-				height = 0;
-
-			var bottom = WindowSize.Height - (top + height);
-			if (WindowSize != SurfaceSize)
-			{
-				left = (int)Math.Round(WindowScale * left);
-				bottom = (int)Math.Round(WindowScale * bottom);
-				width = (int)Math.Round(WindowScale * width);
-				height = (int)Math.Round(WindowScale * height);
-			}
-
-			OpenGL.glScissor(left, bottom, width, height);
-			OpenGL.CheckGLError();
-			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
-			OpenGL.CheckGLError();
-		}
-
-		public void DisableScissor()
-		{
-			VerifyThreadAffinity();
-			OpenGL.glDisable(OpenGL.GL_SCISSOR_TEST);
-			OpenGL.CheckGLError();
-		}
-
-		public Bitmap TakeScreenshot()
-		{
-			var rect = new Rectangle(Point.Empty, SurfaceSize);
-			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			var data = bitmap.LockBits(rect,
-				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-			OpenGL.glPushClientAttrib(OpenGL.GL_CLIENT_PIXEL_STORE_BIT);
-
-			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, data.Stride / 4f);
-			OpenGL.glPixelStoref(OpenGL.GL_PACK_ALIGNMENT, 1);
-
-			OpenGL.glReadPixels(rect.X, rect.Y, rect.Width, rect.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data.Scan0);
-			OpenGL.glFinish();
-
-			OpenGL.glPopClientAttrib();
-
-			bitmap.UnlockBits(data);
-
-			// OpenGL standard defines the origin in the bottom left corner which is why this is upside-down by default.
-			bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-			return bitmap;
-		}
-
-		public void Present()
-		{
-			VerifyThreadAffinity();
-			SDL.SDL_GL_SwapWindow(window);
+			SDL.SDL_SetWindowGrab(Window, SDL.SDL_bool.SDL_FALSE);
 		}
 
 		public void PumpInput(IInputHandler inputHandler)
@@ -440,37 +261,5 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			return input.SetClipboardText(text);
 		}
-
-		public IVertexBuffer<Vertex> CreateVertexBuffer(int size)
-		{
-			VerifyThreadAffinity();
-			return new VertexBuffer<Vertex>(size);
-		}
-
-		public ITexture CreateTexture()
-		{
-			VerifyThreadAffinity();
-			return new Texture();
-		}
-
-		public ITexture CreateTexture(Bitmap bitmap)
-		{
-			VerifyThreadAffinity();
-			return new Texture(bitmap);
-		}
-
-		public IFrameBuffer CreateFrameBuffer(Size s)
-		{
-			VerifyThreadAffinity();
-			return new FrameBuffer(s);
-		}
-
-		public IShader CreateShader(string name)
-		{
-			VerifyThreadAffinity();
-			return new Shader(name);
-		}
-
-		public string GLVersion { get { return OpenGL.Version; } }
 	}
 }
