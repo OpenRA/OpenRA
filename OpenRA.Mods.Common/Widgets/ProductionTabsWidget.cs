@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var queues = allQueues.Where(q => q.Info.Group == Group).ToList();
 			var tabs = new List<ProductionTab>();
+			var largestUsedName = 0;
 
 			// Remove stale queues
 			foreach (var t in Tabs)
@@ -45,7 +46,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 				tabs.Add(t);
 				queues.Remove(t.Queue);
+				largestUsedName = Math.Max(int.Parse(t.Name), largestUsedName);
 			}
+
+			NextQueueName = largestUsedName + 1;
 
 			// Add new queues
 			foreach (var queue in queues)
