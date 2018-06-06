@@ -59,6 +59,7 @@
     <Compile Include="OpenAlSoundEngine.cs" />
     <Compile Include="OpenGL.cs" />
     <Compile Include="Sdl2HardwareCursor.cs" />
+    <Compile Include="Sdl2GraphicsContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

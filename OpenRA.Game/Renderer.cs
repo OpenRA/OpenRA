@@ -30,6 +30,8 @@ namespace OpenRA
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
 		internal IPlatformWindow Window { get; private set; }
+		internal IGraphicsContext Context { get; private set; }
+
 		internal int SheetSize { get; private set; }
 		internal int TempBufferSize { get; private set; }
 
@@ -52,19 +54,20 @@ namespace OpenRA
 			var resolution = GetResolution(graphicSettings);
 
 			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
+			Context = Window.Context;
 
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
-			WorldSpriteRenderer = new SpriteRenderer(this, Window.CreateShader("combined"));
+			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
 			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
-			WorldModelRenderer = new ModelRenderer(this, Window.CreateShader("model"));
-			SpriteRenderer = new SpriteRenderer(this, Window.CreateShader("combined"));
+			WorldModelRenderer = new ModelRenderer(this, Context.CreateShader("model"));
+			SpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempBuffer = Window.CreateVertexBuffer(TempBufferSize);
+			tempBuffer = Context.CreateVertexBuffer(TempBufferSize);
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -113,7 +116,7 @@ namespace OpenRA
 
 		public void BeginFrame(int2 scroll, float zoom)
 		{
-			Window.Clear();
+			Context.Clear();
 			SetViewportParams(scroll, zoom);
 		}
 
@@ -154,7 +157,7 @@ namespace OpenRA
 		{
 			Flush();
 			Window.PumpInput(inputHandler);
-			Window.Present();
+			Context.Present();
 		}
 
 		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
@@ -168,7 +171,7 @@ namespace OpenRA
 			where T : struct
 		{
 			vertices.Bind();
-			Window.DrawPrimitives(type, firstVertex, numVertices);
+			Context.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
 
@@ -201,7 +204,7 @@ namespace OpenRA
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
 		{
-			return Window.CreateVertexBuffer(length);
+			return Context.CreateVertexBuffer(length);
 		}
 
 		public void EnableScissor(Rectangle rect)
@@ -211,7 +214,7 @@ namespace OpenRA
 				rect.Intersect(scissorState.Peek());
 
 			Flush();
-			Window.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+			Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
 			scissorState.Push(rect);
 		}
 
@@ -224,28 +227,28 @@ namespace OpenRA
 			if (scissorState.Any())
 			{
 				var rect = scissorState.Peek();
-				Window.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+				Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
 			}
 			else
-				Window.DisableScissor();
+				Context.DisableScissor();
 		}
 
 		public void EnableDepthBuffer()
 		{
 			Flush();
-			Window.EnableDepthBuffer();
+			Context.EnableDepthBuffer();
 		}
 
 		public void DisableDepthBuffer()
 		{
 			Flush();
-			Window.DisableDepthBuffer();
+			Context.DisableDepthBuffer();
 		}
 
 		public void ClearDepthBuffer()
 		{
 			Flush();
-			Window.ClearDepthBuffer();
+			Context.ClearDepthBuffer();
 		}
 
 		public void GrabWindowMouseFocus()
@@ -282,7 +285,7 @@ namespace OpenRA
 
 		public string GLVersion
 		{
-			get { return Window.GLVersion; }
+			get { return Context.GLVersion; }
 		}
 	}
 }

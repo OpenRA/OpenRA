@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 
 		public HardwarePalette()
 		{
-			Texture = Game.Renderer.Window.CreateTexture();
+			Texture = Game.Renderer.Context.CreateTexture();
 			readOnlyModifiablePalettes = modifiablePalettes.AsReadOnly();
 		}
 
