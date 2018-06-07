@@ -13,33 +13,33 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-    public class RenameEmitInfantryOnSell : UpdateRule
-    {
-        public override string Name { get { return "EmitInfantryOnSell renamed to SpawnActorsOnSell"; } }
-        public override string Description
-        {
-            get
-            {
-                return "The EmitInfantryOnSell trait was renamed to SpawnActorsOnSell and the default\n" +
-                    "actor type to spawn was removed. Uses of the old traits and defaults are updated\n" +
-                    "to account for this.";
-            }
-        }
+	public class RenameEmitInfantryOnSell : UpdateRule
+	{
+		public override string Name { get { return "EmitInfantryOnSell renamed to SpawnActorsOnSell"; } }
+		public override string Description
+		{
+			get
+			{
+				return "The EmitInfantryOnSell trait was renamed to SpawnActorsOnSell and the default\n" +
+					"actor type to spawn was removed. Uses of the old traits and defaults are updated\n" +
+					"to account for this.";
+			}
+		}
 
-        public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
-        {
-            foreach (var uneios in actorNode.ChildrenMatching("-EmitInfantryOnSell"))
-                uneios.RenameKeyPreservingSuffix("-SpawnActorsOnSell");
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		{
+			foreach (var uneios in actorNode.ChildrenMatching("-EmitInfantryOnSell"))
+				uneios.RenameKeyPreservingSuffix("-SpawnActorsOnSell");
 
-            foreach (var eios in actorNode.ChildrenMatching("EmitInfantryOnSell"))
-            {
-                eios.RenameKeyPreservingSuffix("SpawnActorsOnSell");
-                var actortypes = eios.LastChildMatching("ActorTypes");
-                if (actortypes == null)
-                    eios.AddNode("ActorTypes", "e1");
-            }
+			foreach (var eios in actorNode.ChildrenMatching("EmitInfantryOnSell"))
+			{
+				eios.RenameKeyPreservingSuffix("SpawnActorsOnSell");
+				var actortypes = eios.LastChildMatching("ActorTypes");
+				if (actortypes == null)
+					eios.AddNode("ActorTypes", "e1");
+			}
 
-            yield break;
-        }
-    }
+			yield break;
+		}
+	}
 }
