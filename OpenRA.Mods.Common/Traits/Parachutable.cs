@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var sequence = onWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = onWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
-			if (sequence != null && palette != null)
+			if (!string.IsNullOrEmpty(info.Image) && !string.IsNullOrEmpty(sequence) && palette != null)
 				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, palette)));
 
 			self.Kill(self, info.DamageTypes);
