@@ -225,6 +225,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				path.Add(nextCell.Value.First);
 				QueueChild(new Turn(self, firstFacing));
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 				return this;
 			}
 
