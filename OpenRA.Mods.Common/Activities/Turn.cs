@@ -21,22 +21,25 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing facing;
 		readonly int desiredFacing;
 
-		public Turn(Actor self, int desiredFacing)
+		public Turn(Actor self, int desiredFacing, bool isInterruptible = true)
 		{
 			disablable = self.TraitOrDefault<IMove>() as IDisabledTrait;
 			facing = self.Trait<IFacing>();
 			this.desiredFacing = desiredFacing;
+			IsInterruptible = isInterruptible;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsInterruptible && IsCanceled)
 				return NextActivity;
+
 			if (disablable != null && disablable.IsTraitDisabled)
 				return this;
 
 			if (desiredFacing == facing.Facing)
 				return NextActivity;
+
 			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.TurnSpeed);
 
 			return this;
