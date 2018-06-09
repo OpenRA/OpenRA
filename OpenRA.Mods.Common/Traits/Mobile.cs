@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speed at which the actor turns.")]
 		public readonly int TurnSpeed = 255;
 
+		[Desc("Should turning always be considering as moving (instead of only turning while moving forward).")]
+		public readonly bool AlwaysConsiderTurnAsMove = false;
+
 		public readonly int Speed = 1;
 
 		public readonly string Cursor = "move";
