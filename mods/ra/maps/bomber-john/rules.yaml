@@ -86,7 +86,8 @@ Player:
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
 		KillCargo: true
-		Range: 3
+		Dimensions: 7, 7
+		Footprint: ___x___ __xxx__ _xxxxx_ xxxxxxx _xxxxx_ __xxx__ ___x___
 	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
 		ChargeInterval: 750
@@ -96,10 +97,11 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
-		Range: 1
 		Condition: invulnerability
 		Sequence: idle
 		OnFireSound: ironcur9.aud
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_
 	Production:
 		Produces: Building
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
