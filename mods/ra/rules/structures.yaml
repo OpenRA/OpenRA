@@ -427,6 +427,8 @@ IRON:
 		Condition: invulnerability
 		OnFireSound: ironcur9.aud
 		SupportPowerPaletteOrder: 10
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_
 	SupportPowerChargeBar:
 	InfiltrateForSupportPowerReset:
 		Types: SpyInfiltrate
@@ -495,6 +497,8 @@ PDOX:
 		KillCargo: true
 		DisplayRadarPing: True
 		SupportPowerPaletteOrder: 20
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
 		PauseOnCondition: disabled
@@ -510,8 +514,9 @@ PDOX:
 		Duration: 400
 		KillCargo: true
 		DisplayRadarPing: True
-		Range: 2
 		SupportPowerPaletteOrder: 30
+		Dimensions: 5, 5
+		Footprint: __x__ _xxx_ xxxxx _xxx_ __x__
 	SupportPowerChargeBar:
 	InfiltrateForSupportPowerReset:
 		Types: SpyInfiltrate
