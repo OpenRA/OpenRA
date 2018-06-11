@@ -113,12 +113,12 @@ MHIJACK:
 		Queue: Infantry
 		BuildPaletteOrder: 80
 		Prerequisites: ~nahand, natmpl, ~techlevel.high
+		BuildLimit: 1
 		Description: Hijacks enemy vehicles.\n  Unarmed
 	Valued:
 		Cost: 1850
 	Tooltip:
 		Name: Mutant Hijacker
-		BuildLimit: 1
 	Voiced:
 		VoiceSet: Hijacker
 	Health:
