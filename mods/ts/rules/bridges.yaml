@@ -3,7 +3,6 @@ CABHUT:
 	Tooltip:
 		Name: Bridge repair hut
 	Building:
-		Adjacent: 0
 		Footprint: x
 		Dimensions: 1, 1
 	BridgeHut:

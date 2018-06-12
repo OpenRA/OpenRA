@@ -367,7 +367,6 @@
 	Selectable:
 		Priority: 2
 	RevealsShroud:
-		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	HitShape:

@@ -293,7 +293,6 @@ PYLE:
 	ProductionQueue:
 		Type: Infantry.GDI
 		Group: Infantry
-		RequireOwner: false
 		LowPowerSlowdown: 3
 		LimitedAudio: BuildingInProgress
 	ProductionBar:
@@ -339,7 +338,6 @@ HAND:
 	ProductionQueue:
 		Type: Infantry.Nod
 		Group: Infantry
-		RequireOwner: false
 		LowPowerSlowdown: 3
 		LimitedAudio: BuildingInProgress
 	ProductionBar:
@@ -391,7 +389,6 @@ AFLD:
 	ProductionQueue:
 		Type: Vehicle.Nod
 		Group: Vehicle
-		RequireOwner: false
 		LowPowerSlowdown: 3
 		ReadyAudio:
 		LimitedAudio: BuildingInProgress
@@ -444,7 +441,6 @@ WEAP:
 		Produces: Vehicle.GDI
 	ProductionQueue:
 		Type: Vehicle.GDI
-		RequireOwner: false
 		Group: Vehicle
 		LowPowerSlowdown: 3
 		LimitedAudio: BuildingInProgress

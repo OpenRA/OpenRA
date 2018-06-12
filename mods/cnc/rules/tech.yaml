@@ -87,7 +87,6 @@ BIO:
 	ProductionQueue:
 		Type: Biolab
 		Group: Infantry
-		RequireOwner: false
 		LowPowerSlowdown: 3
 		LimitedAudio: BuildingInProgress
 	ProductionBar:

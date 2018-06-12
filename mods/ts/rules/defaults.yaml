@@ -109,8 +109,6 @@
 		Sequence: emp-overlay
 		Palette: effect
 		RequiresCondition: empdisable
-		ShowToEnemies: true
-		ZOffset: 512
 	PowerMultiplier@EMPDISABLE:
 		RequiresCondition: empdisable
 		Modifier: 0
@@ -439,7 +437,6 @@
 	RenderSprites:
 		Palette: terraindecoration
 	WithCrateBody:
-		Images: crate
 	EditorTilesetFilter:
 		Categories: System
 	Interactable:
@@ -1113,7 +1110,6 @@
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
-		Dimensions: 3, 3
 	EditorTilesetFilter:
 		Categories: Tunnel
 	Interactable:

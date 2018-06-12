@@ -17,6 +17,9 @@ World:
 		TechLevel: unrestricted
 	MPStartLocations:
 		SeparateTeamSpawnsCheckboxVisible: false
+	Locomotor@LIGHTTRACKED:
+		WaitAverage: 1
+		WaitSpread: 1
 
 APWR:
 	Buildable:
@@ -118,8 +121,6 @@ MNLYR:
 		Type: Heavy
 	Mobile:
 		Speed: 128
-		WaitAverage: 1
-		WaitSpread: 1
 		TurnSpeed: 900
 	RevealsShroud:
 		Range: 40c0
