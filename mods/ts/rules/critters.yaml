@@ -102,7 +102,7 @@ VISC_LRG:
 		MinMoveDelay: 25
 		MaxMoveDelay: 50
 	WithAttackAnimation:
-		AttackSequence: attack
+		Sequence: attack
 	RenderSprites:
 		Image: vislrg
 
@@ -130,7 +130,7 @@ JFISH:
 		MinMoveDelay: 250
 		MaxMoveDelay: 600
 	WithAttackAnimation:
-		AttackSequence: attack
+		Sequence: attack
 	RenderSprites:
 		Image: floater
 	Selectable:
