@@ -219,6 +219,7 @@ BOXES01:
 		Palette: player
 	Tooltip:
 		Name: Boxes
+	EditorTilesetFilter:
 		Categories: Decoration
 
 BOXES02:
