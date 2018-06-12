@@ -897,17 +897,17 @@
 	Targetable:
 		TargetTypes: Trees
 	WithDamageOverlay@SmallBurn:
-		DamageType: Incendiary
+		DamageTypes: Incendiary
 		Image: burn-s
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
 	WithDamageOverlay@MediumBurn:
-		DamageType: Incendiary
+		DamageTypes: Incendiary
 		Image: burn-m
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
 	WithDamageOverlay@LargeBurn:
-		DamageType: Incendiary
+		DamageTypes: Incendiary
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
