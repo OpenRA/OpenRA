@@ -549,6 +549,3 @@ MOEBIUS:
 VICE:
 	Inherits: ^Viceroid
 	AttackWander:
-		WanderMoveRadius: 2
-		MinMoveDelayInTicks: 25
-		MaxMoveDelayInTicks: 45

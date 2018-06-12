@@ -30,9 +30,8 @@ powerproxy.paratroopers:
 
 HBOX:
 	Buildable:
+		# Invalid targets for YakAttack
 		Prerequisites: ~disabled
-	EditorOnlyTooltip:
-		Description: invalid targets for YakAttack
 
 E7:
 	Buildable:
@@ -182,7 +181,6 @@ GAP:
 
 CAMERA.Large:
 	Inherits: CAMERA
+	# Required for YakAttack to work
 	RevealsShroud:
 		Range: 49c0
-	EditorOnlyTooltip:
-		Description: required for YakAttack to work

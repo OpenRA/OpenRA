@@ -596,7 +596,6 @@ outpost:
 		RequiresCondition: !severe-damaged
 	GrantConditionOnDamageState@STOPDISH:
 		Condition: severe-damaged
-		ValidDamageState: Medium, Heavy, Critical
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
@@ -1130,7 +1129,6 @@ palace:
 		RequiresCondition: !launchpad-damaged && harkonnen
 	GrantConditionOnDamageState@LAUNCHPADDAMAGED:
 		Condition: launchpad-damaged
-		ValidDamageState: Medium, Heavy, Critical
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility

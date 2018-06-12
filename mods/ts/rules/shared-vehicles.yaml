@@ -147,7 +147,6 @@ LPST:
 		DeploySound: place2.aud
 		UndeploySound: clicky1.aud
 	WithVoxelBody:
-		Image: lpst
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor

@@ -148,7 +148,6 @@ SCUD:
 	Range: 7c0
 	ReloadDelay: 280
 	Projectile: Bullet
-		Arm: 10
 		TrailImage: smokey
 		Blockable: false
 		Inaccuracy: 0c426

@@ -506,7 +506,6 @@ THF:
 	Passenger:
 		PipType: Yellow
 	Infiltrates:
-		InfiltrateTypes: Cash
 		PlayerExperience: 50
 	Voiced:
 		VoiceSet: ThiefVoice
@@ -706,7 +705,6 @@ Ant:
 	Mobile:
 		Speed: 99
 		TurnSpeed: 12
-		SharesCell: no
 	-Crushable:
 	AutoTarget:
 		ScanRadius: 5

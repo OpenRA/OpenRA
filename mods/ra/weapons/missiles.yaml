@@ -274,7 +274,6 @@ TorpTube:
 		Inaccuracy: 0c614
 		HorizontalRateOfTurn: 15
 		RangeLimit: 9c0
-		LaunchAngle: 120
 		Image: MISSILE
 		TrailImage: smokey
 		ContrailLength: 30
