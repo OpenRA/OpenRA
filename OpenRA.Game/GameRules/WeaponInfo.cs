@@ -86,12 +86,22 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing("LoadWarheads")]
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
+		public static Func<string, bool> ThrowOnUnknownExceptWarheadsOrProjectiles = k => k != "Projectile" && !k.StartsWith("Warhead", StringComparison.Ordinal);
+
 		public WeaponInfo(string name, MiniYaml content)
 		{
 			// Resolve any weapon-level yaml inheritance or removals
 			// HACK: The "Defaults" sequence syntax prevents us from doing this generally during yaml parsing
 			content.Nodes = MiniYaml.Merge(new[] { content.Nodes });
-			FieldLoader.Load(this, content);
+
+			try
+			{
+				FieldLoader.Load(this, content, ThrowOnUnknownExceptWarheadsOrProjectiles);
+			}
+			catch (FieldLoader.UnknownFieldsException e)
+			{
+				throw new YamlException("Weapon name " + name + "; " + e.Message);
+			}
 		}
 
 		static object LoadProjectile(MiniYaml yaml)
@@ -100,17 +110,36 @@ namespace OpenRA.GameRules
 			if (!yaml.ToDictionary().TryGetValue("Projectile", out proj))
 				return null;
 			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
-			FieldLoader.Load(ret, proj);
+
+			try
+			{
+				FieldLoader.Load(ret, proj, FieldLoader.ThrowOnAllUnknownFields);
+			}
+			catch (FieldLoader.UnknownFieldsException e)
+			{
+				var header = "Warhead name " + proj.Value + ": " + (e.Unknown.Length > 1 ? "Unknown properties defined" : "Unknown property defined");
+				throw new FieldLoader.UnknownFieldsException(e.Unknown, header);
+			}
+
 			return ret;
 		}
 
 		static object LoadWarheads(MiniYaml yaml)
 		{
 			var retList = new List<IWarhead>();
-			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead")))
+			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead", StringComparison.Ordinal)))
 			{
 				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
-				FieldLoader.Load(ret, node.Value);
+				try
+				{
+					FieldLoader.Load(ret, node.Value, FieldLoader.ThrowOnAllUnknownFields);
+				}
+				catch (FieldLoader.UnknownFieldsException e)
+				{
+					var header = "Warhead name " + node.Value.Value + ": " + (e.Unknown.Length > 1 ? "Unknown properties defined" : "Unknown property defined");
+					throw new FieldLoader.UnknownFieldsException(e.Unknown, header);
+				}
+
 				retList.Add(ret);
 			}
 
