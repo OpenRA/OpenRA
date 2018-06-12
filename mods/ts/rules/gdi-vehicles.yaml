@@ -130,7 +130,7 @@ SMECH:
 	WithFacingSpriteBody:
 		Sequence: stand
 	WithAttackAnimation:
-		AttackSequence: shoot
+		Sequence: shoot
 	WithMoveAnimation:
 		MoveSequence: walk
 	Selectable:
