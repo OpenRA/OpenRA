@@ -438,7 +438,7 @@
 	DetectCloaked:
 		Range: 2c0
 	DeathSounds@NORMAL:
-		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
+		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath, RippedApartDeath
 	DeathSounds@BURNED:
 		Voice: Burned
 		DeathTypes: FireDeath
