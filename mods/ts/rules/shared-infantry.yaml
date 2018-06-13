@@ -59,6 +59,7 @@ ENGINEER:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
 	Captures:
+		Sabotage: false
 		CaptureTypes: building
 		PlayerExperience: 50
 	RenderSprites:
