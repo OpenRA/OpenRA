@@ -53,14 +53,9 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		~Sdl2HardwareCursor()
-		{
-			Game.RunAfterTick(() => Dispose(false));
-		}
-
 		public void Dispose()
 		{
-			Game.RunAfterTick(() => Dispose(true));
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
