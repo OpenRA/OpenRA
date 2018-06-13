@@ -1009,6 +1009,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	-GivesBuildableArea:
 	RenderRangeCircle:
 	RenderDetectionCircle:
