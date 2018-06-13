@@ -72,7 +72,7 @@ namespace OpenRA.Platforms.Default
 		[DllImport("user32.dll")]
 		static extern bool SetProcessDPIAware();
 
-		public Sdl2PlatformWindow(Size requestWindowSize, WindowMode windowMode)
+		public Sdl2PlatformWindow(Size requestWindowSize, WindowMode windowMode, int batchSize)
 		{
 			Console.WriteLine("Using SDL 2 with OpenGL renderer");
 
@@ -184,7 +184,10 @@ namespace OpenRA.Platforms.Default
 				}
 			}
 
-			context = new Sdl2GraphicsContext(this);
+			// Run graphics rendering on a dedicated thread.
+			// The calling thread will then have more time to process other tasks, since rendering happens in parallel.
+			// If the calling thread is the main game thread, this means it can run more logic and render ticks.
+			context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();

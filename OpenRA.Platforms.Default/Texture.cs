@@ -16,7 +16,7 @@ using System.IO;
 
 namespace OpenRA.Platforms.Default
 {
-	sealed class Texture : ThreadAffine, ITexture
+	sealed class Texture : ThreadAffine, ITextureInternal
 	{
 		uint texture;
 		TextureScaleFilter scaleFilter;
@@ -187,14 +187,9 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		~Texture()
-		{
-			Game.RunAfterTick(() => Dispose(false));
-		}
-
 		public void Dispose()
 		{
-			Game.RunAfterTick(() => Dispose(true));
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 

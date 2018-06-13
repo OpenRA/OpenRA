@@ -25,6 +25,12 @@ namespace OpenRA.Platforms.Default
 		public Sdl2GraphicsContext(Sdl2PlatformWindow window)
 		{
 			this.window = window;
+		}
+
+		internal void InitializeOpenGL()
+		{
+			SetThreadAffinity();
+
 			context = SDL.SDL_GL_CreateContext(window.Window);
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window.Window, context) < 0)
 				throw new InvalidOperationException("Can not create OpenGL context. (Error: {0})".F(SDL.SDL_GetError()));
@@ -60,7 +66,13 @@ namespace OpenRA.Platforms.Default
 		public IFrameBuffer CreateFrameBuffer(Size s)
 		{
 			VerifyThreadAffinity();
-			return new FrameBuffer(s);
+			return new FrameBuffer(s, new Texture());
+		}
+
+		public IFrameBuffer CreateFrameBuffer(Size s, ITextureInternal texture)
+		{
+			VerifyThreadAffinity();
+			return new FrameBuffer(s, texture);
 		}
 
 		public IShader CreateShader(string name)
