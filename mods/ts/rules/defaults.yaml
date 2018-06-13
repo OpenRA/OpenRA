@@ -1018,6 +1018,7 @@
 		Range: 5c0
 	Targetable:
 		TargetTypes: Ground, Building, C4, Defense
+	-Capturable:
 	RevealOnFire:
 	EditorTilesetFilter:
 		Categories: Defense
