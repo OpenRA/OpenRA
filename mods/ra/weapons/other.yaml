@@ -138,13 +138,6 @@ Repair:
 		Damage: -2000
 		ValidTargets: Repair
 
-Crush:
-	Warhead@1Dam: SpreadDamage
-		Damage: 10000
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
-	Warhead@2Eff: CreateEffect
-		ImpactSounds: squishy2.aud
-
 Demolish:
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: DefaultDeath
