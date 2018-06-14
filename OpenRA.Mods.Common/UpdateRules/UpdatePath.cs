@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new DefineOwnerLostAction(),
 				new RenameEmitInfantryOnSell(),
 				new SplitRepairDecoration(),
+				new MoveHackyAISupportPowerDecisions(),
 			})
 		};
 

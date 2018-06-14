@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.AI
 		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing("LoadDecisions")]
-		public readonly List<SupportPowerDecision> PowerDecisions = new List<SupportPowerDecision>();
+		public readonly List<SupportPowerDecision> SupportPowerDecisions = new List<SupportPowerDecision>();
 
 		[Desc("Actor types that can capture other actors (via `Captures` or `ExternalCaptures`).",
 			"Leave this empty to disable capturing.")]
@@ -233,8 +233,9 @@ namespace OpenRA.Mods.Common.AI
 		static object LoadDecisions(MiniYaml yaml)
 		{
 			var ret = new List<SupportPowerDecision>();
-			foreach (var d in yaml.Nodes)
-				if (d.Key.Split('@')[0] == "SupportPowerDecision")
+			var decisions = yaml.Nodes.FirstOrDefault(n => n.Key == "SupportPowerDecisions");
+			if (decisions != null)
+				foreach (var d in decisions.Value.Nodes)
 					ret.Add(new SupportPowerDecision(d.Value));
 
 			return ret;
