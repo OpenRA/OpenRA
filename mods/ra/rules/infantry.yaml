@@ -705,6 +705,7 @@ Ant:
 	Mobile:
 		Speed: 99
 		TurnSpeed: 12
+		Locomotor: lighttracked
 	-Crushable:
 	AutoTarget:
 		ScanRadius: 5
