@@ -883,6 +883,7 @@
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
     <Compile Include="UpdateRules\Rules\SplitRepairDecoration.cs" />
     <Compile Include="ModCredits.cs" />
+    <Compile Include="UpdateRules\Rules\MoveHackyAISupportPowerDecisions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
