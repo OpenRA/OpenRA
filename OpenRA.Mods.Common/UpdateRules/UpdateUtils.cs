@@ -273,6 +273,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 			node.Value.Nodes.Remove(toRemove);
 		}
 
+		public static void MoveNode(this MiniYamlNode node, MiniYamlNode fromNode, MiniYamlNode toNode)
+		{
+			toNode.Value.Nodes.Add(node);
+			fromNode.Value.Nodes.Remove(node);
+		}
+
+		public static void MoveAndRenameNode(this MiniYamlNode node,
+			MiniYamlNode fromNode, MiniYamlNode toNode, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
+		{
+			node.RenameKey(newKey, preserveSuffix, includeRemovals);
+			node.MoveNode(fromNode, toNode);
+		}
+
 		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
 		public static int RemoveNodes(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
@@ -306,6 +319,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match, bool includeRemovals = true)
 		{
 			return node.ChildrenMatching(match, includeRemovals).LastOrDefault();
+		}
+
+		public static void RenameChildrenMatching(this MiniYamlNode node, string match, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
+		{
+			var matching = node.ChildrenMatching(match);
+			foreach (var m in matching)
+				m.RenameKey(newKey, preserveSuffix, includeRemovals);
 		}
 	}
 }
