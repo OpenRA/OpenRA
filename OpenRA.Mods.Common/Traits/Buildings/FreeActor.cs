@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Player receives a unit for free once the building is placed. This also works for structures.",
 		"If you want more than one unit to appear copy this section and assign IDs like FreeActor@2, ...")]
-	public class FreeActorInfo : ITraitInfo
+	public class FreeActorInfo : ConditionalTraitInfo
 	{
 		[ActorReference, FieldLoader.Require]
 		[Desc("Name of the actor.")]
@@ -28,24 +28,36 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Which direction the unit should face.")]
 		public readonly int Facing = 0;
 
-		public virtual object Create(ActorInitializer init) { return new FreeActor(init, this); }
+		[Desc("Whether another actor should spawn upon re-enabling the trait.")]
+		public readonly bool AllowRespawn = false;
+
+		public override object Create(ActorInitializer init) { return new FreeActor(init, this); }
 	}
 
-	public class FreeActor
+	public class FreeActor : ConditionalTrait<FreeActorInfo>
 	{
-		public FreeActor(ActorInitializer init, FreeActorInfo info)
+		bool allowSpawn;
+
+		public FreeActor(ActorInitializer init, FreeActorInfo info) : base(info)
 		{
-			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().ActorValue)
+			allowSpawn = !init.Contains<FreeActorInit>() || init.Get<FreeActorInit>().ActorValue;
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (!allowSpawn)
 				return;
 
-			init.Self.World.AddFrameEndTask(w =>
+			allowSpawn = Info.AllowRespawn;
+
+			self.World.AddFrameEndTask(w =>
 			{
-				w.CreateActor(info.Actor, new TypeDictionary
+				w.CreateActor(Info.Actor, new TypeDictionary
 				{
-					new ParentActorInit(init.Self),
-					new LocationInit(init.Self.Location + info.SpawnOffset),
-					new OwnerInit(init.Self.Owner),
-					new FacingInit(info.Facing),
+					new ParentActorInit(self),
+					new LocationInit(self.Location + Info.SpawnOffset),
+					new OwnerInit(self.Owner),
+					new FacingInit(Info.Facing),
 				});
 			});
 		}
