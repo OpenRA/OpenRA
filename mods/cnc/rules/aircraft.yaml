@@ -45,9 +45,6 @@ TRAN:
 		PipCount: 10
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
-	Explodes:
-		Weapon: HeliExplode
-		EmptyWeapon: HeliExplode
 	SelectionDecorations:
 	Selectable:
 		DecorationBounds: 41,41
@@ -106,9 +103,6 @@ HELI:
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
-	Explodes:
-		Weapon: HeliExplode
-		EmptyWeapon: HeliExplode
 	SelectionDecorations:
 	ReloadAmmoPool:
 		Delay: 40
@@ -158,9 +152,6 @@ ORCA:
 		AmmoCondition: ammo
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
-	Explodes:
-		Weapon: HeliExplode
-		EmptyWeapon: HeliExplode
 	WithMoveAnimation:
 		MoveSequence: move
 	SelectionDecorations:

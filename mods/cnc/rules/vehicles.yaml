@@ -623,7 +623,6 @@ STNK:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
-	Targetable:
 	SpawnActorOnDeath:
 		Actor: STNK.Husk
 		OwnerType: InternalName
