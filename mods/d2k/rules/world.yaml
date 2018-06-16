@@ -167,6 +167,7 @@ World:
 		GameSpeedDropdownDisplayOrder: 3
 	CreateMPPlayers:
 	MPStartLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	MPStartUnits@mcv:
 		Class: none
 		ClassName: MCV Only

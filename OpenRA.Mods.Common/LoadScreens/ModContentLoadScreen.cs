@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			using (var stream = modData.DefaultFileSystem.Open(info["Image"]))
 			{
 				var sheet = new Sheet(SheetType.BGRA, stream);
-				sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.Alpha);
+				sprite = new Sprite(sheet, new Rectangle(0, 0, 1024, 480), TextureChannel.RGBA);
 			}
 		}
 

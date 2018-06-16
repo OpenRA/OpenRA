@@ -260,6 +260,7 @@
     <Compile Include="HotkeyManager.cs" />
     <Compile Include="HotkeyDefinition.cs" />
     <Compile Include="Traits\Interactable.cs" />
+    <Compile Include="Graphics\RgbaSpriteRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />

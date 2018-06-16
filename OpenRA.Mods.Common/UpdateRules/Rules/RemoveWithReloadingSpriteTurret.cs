@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var turret in actorNode.ChildrenMatching("WithReloadingSpriteTurret"))
 			{
-				turret.RenameKeyPreservingSuffix("WithSpriteTurret");
+				turret.RenameKey("WithSpriteTurret");
 				locations.Add("{0} ({1})".F(actorNode.Key, turret.Location.Filename));
 			}
 

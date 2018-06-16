@@ -68,54 +68,55 @@ Player:
 			dog: 4
 			harv: 8
 		SquadSize: 20
-		SupportPowerDecision@spyplane:
-			OrderName: SovietSpyPlane
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@paratroopers:
-			OrderName: SovietParatroopers
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 8c0
-			Consideration@2:
-				Against: Enemy
-				Types: Water
-				Attractiveness: -5
-				TargetMetric: None
-				CheckRadius: 8c0
-		SupportPowerDecision@parabombs:
-			OrderName: UkraineParabombs
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@nukepower:
-			OrderName: NukePowerInfoOrder
-			MinimumAttractiveness: 3000
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: Value
-				CheckRadius: 5c0
-			Consideration@2:
-				Against: Ally
-				Types: Air, Ground, Water
-				Attractiveness: -10
-				TargetMetric: Value
-				CheckRadius: 7c0
+		SupportPowerDecisions:
+			spyplane:
+				OrderName: SovietSpyPlane
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			paratroopers:
+				OrderName: SovietParatroopers
+				MinimumAttractiveness: 5
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			parabombs:
+				OrderName: UkraineParabombs
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
 	HackyAI@NormalAI:
 		Name: Normal AI
 		Type: normal
@@ -203,54 +204,55 @@ Player:
 			dog: 4
 			harv: 8
 		SquadSize: 40
-		SupportPowerDecision@spyplane:
-			OrderName: SovietSpyPlane
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@paratroopers:
-			OrderName: SovietParatroopers
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 8c0
-			Consideration@2:
-				Against: Enemy
-				Types: Water
-				Attractiveness: -5
-				TargetMetric: None
-				CheckRadius: 8c0
-		SupportPowerDecision@parabombs:
-			OrderName: UkraineParabombs
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@nukepower:
-			OrderName: NukePowerInfoOrder
-			MinimumAttractiveness: 3000
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: Value
-				CheckRadius: 5c0
-			Consideration@2:
-				Against: Ally
-				Types: Air, Ground, Water
-				Attractiveness: -10
-				TargetMetric: Value
-				CheckRadius: 7c0
+		SupportPowerDecisions:
+			spyplane:
+				OrderName: SovietSpyPlane
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			paratroopers:
+				OrderName: SovietParatroopers
+				MinimumAttractiveness: 5
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			parabombs:
+				OrderName: UkraineParabombs
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
 	HackyAI@TurtleAI:
 		Name: Turtle AI
 		Type: turtle
@@ -338,54 +340,55 @@ Player:
 			dog: 4
 			harv: 8
 		SquadSize: 10
-		SupportPowerDecision@spyplane:
-			OrderName: SovietSpyPlane
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@paratroopers:
-			OrderName: SovietParatroopers
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 8c0
-			Consideration@2:
-				Against: Enemy
-				Types: Water
-				Attractiveness: -5
-				TargetMetric: None
-				CheckRadius: 8c0
-		SupportPowerDecision@parabombs:
-			OrderName: UkraineParabombs
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@nukepower:
-			OrderName: NukePowerInfoOrder
-			MinimumAttractiveness: 3000
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: Value
-				CheckRadius: 5c0
-			Consideration@2:
-				Against: Ally
-				Types: Air, Ground, Water
-				Attractiveness: -10
-				TargetMetric: Value
-				CheckRadius: 7c0
+		SupportPowerDecisions:
+			spyplane:
+				OrderName: SovietSpyPlane
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			paratroopers:
+				OrderName: SovietParatroopers
+				MinimumAttractiveness: 5
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			parabombs:
+				OrderName: UkraineParabombs
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
 	HackyAI@NavalAI:
 		Name: Naval AI
 		Type: naval
@@ -451,51 +454,52 @@ Player:
 		UnitLimits:
 			harv: 8
 		SquadSize: 1
-		SupportPowerDecision@spyplane:
-			OrderName: SovietSpyPlane
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@paratroopers:
-			OrderName: SovietParatroopers
-			MinimumAttractiveness: 5
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 8c0
-			Consideration@2:
-				Against: Enemy
-				Types: Water
-				Attractiveness: -5
-				TargetMetric: None
-				CheckRadius: 8c0
-		SupportPowerDecision@parabombs:
-			OrderName: UkraineParabombs
-			MinimumAttractiveness: 1
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: None
-				CheckRadius: 5c0
-		SupportPowerDecision@nukepower:
-			OrderName: NukePowerInfoOrder
-			MinimumAttractiveness: 3000
-			Consideration@1:
-				Against: Enemy
-				Types: Structure
-				Attractiveness: 1
-				TargetMetric: Value
-				CheckRadius: 5c0
-			Consideration@2:
-				Against: Ally
-				Types: Air, Ground, Water
-				Attractiveness: -10
-				TargetMetric: Value
-				CheckRadius: 7c0
+		SupportPowerDecisions:
+			spyplane:
+				OrderName: SovietSpyPlane
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			paratroopers:
+				OrderName: SovietParatroopers
+				MinimumAttractiveness: 5
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			parabombs:
+				OrderName: UkraineParabombs
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0

@@ -46,6 +46,8 @@ namespace OpenRA
 	{
 		public string Title;
 		public string Version;
+		public string Website;
+		public string WebIcon32;
 		public bool Hidden;
 	}
 

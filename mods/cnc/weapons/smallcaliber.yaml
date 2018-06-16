@@ -70,6 +70,7 @@ HeliAGGun:
 			Wood: 50
 			Light: 75
 			Heavy: 25
+		DamageTypes: Prone80Percent, TriggerProne, BulletDeath
 
 HeliAAGun:
 	Inherits: HeliAGGun
@@ -133,7 +134,7 @@ APCGun:
 	Range: 5c0
 	Report: gun20.aud
 	Projectile: Bullet
-		Speed: 1c682
+		Speed: 900
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 2000
@@ -149,7 +150,7 @@ APCGun:
 
 APCGun.AA:
 	Inherits: APCGun
-	Range: 7c0
+	Range: 6c0
 	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 2c0

@@ -26,37 +26,44 @@ namespace OpenRA.Mods.Common.Activities
 			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.AutoReloads).ToArray();
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			// Reset the ReloadDelay to avoid any issues with early cancellation
+			// from previous reload attempts (explicit order, host building died, etc).
+			// HACK: this really shouldn't be managed from here
+			foreach (var pool in ammoPools)
+				pool.RemainingTicks = pool.Info.ReloadDelay;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled)
 				return NextActivity;
 
-			var needsReloading = false;
+			// HACK: check if we are on the helipad/airfield/etc.
+			var hostBuilding = self.World.ActorMap.GetActorsAt(self.Location)
+				.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
 
+			if (hostBuilding == null || !hostBuilding.IsInWorld)
+				return NextActivity;
+
+			var complete = true;
 			foreach (var pool in ammoPools)
 			{
-				if (pool.FullAmmo())
-					continue;
-
-				needsReloading = true;
-
-				Reload(self, pool);
+				if (!pool.FullAmmo())
+				{
+					Reload(self, hostBuilding, pool);
+					complete = false;
+				}
 			}
 
-			return needsReloading ? this : NextActivity;
+			return complete ? NextActivity : this;
 		}
 
-		void Reload(Actor self, AmmoPool ammoPool)
+		void Reload(Actor self, Actor hostBuilding, AmmoPool ammoPool)
 		{
-			if (--ammoPool.RemainingTicks == 0)
+			if (--ammoPool.RemainingTicks <= 0)
 			{
-				// HACK to check if we are on the helipad/airfield/etc.
-				var hostBuilding = self.World.ActorMap.GetActorsAt(self.Location)
-					.FirstOrDefault(a => a.Info.HasTraitInfo<BuildingInfo>());
-
-				if (hostBuilding == null || !hostBuilding.IsInWorld)
-					return;
-
 				foreach (var host in hostBuilding.TraitsImplementing<INotifyRearm>())
 					host.Rearming(hostBuilding, self);
 

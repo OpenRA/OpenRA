@@ -42,16 +42,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveTerrainTypeIsWaterFlag(),
 				new DefineSquadExcludeHarvester(),
 				new RemoveWeaponScanRadius(),
-				new SplitTurretAimAnimation(),
+				new SplitAimAnimations(),
 				new DefineSoundDefaults(),
 				new RenameWormSpawner(),
 				new RemoveWithReloadingSpriteTurret(),
 				new ChangeIntensityToDuration(),
 				new IgnoreAbstractActors(),
 				new AddShakeToBridge(),
-				new AddEditorPlayer(),
 				new RemovePaletteFromCurrentTileset(),
-				new DefineLocomotors()
+				new DefineLocomotors(),
+				new DefineOwnerLostAction(),
+				new RenameEmitInfantryOnSell(),
+				new SplitRepairDecoration(),
+				new MoveHackyAISupportPowerDecisions(),
 			})
 		};
 

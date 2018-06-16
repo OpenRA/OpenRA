@@ -87,6 +87,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					Console.WriteLine("Testing map: {0}".F(testMap.Title));
 
+					// Lint tests can't be trusted if the map rules are bogus
+					// so report that problem then skip the tests
+					if (testMap.InvalidCustomRules)
+					{
+						EmitError(testMap.InvalidCustomRulesException.ToString());
+						continue;
+					}
+
 					// Run all rule checks on the map if it defines custom rules.
 					if (testMap.RuleDefinitions != null || testMap.VoiceDefinitions != null || testMap.WeaponDefinitions != null)
 						CheckRules(modData, testMap.Rules, testMap);

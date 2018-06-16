@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			return Game.Renderer.Device.CreateHardwareCursor(name, new Size(dataWidth, dataHeight), data, hotspot);
+			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(dataWidth, dataHeight), data, hotspot);
 		}
 
 		public void SetCursor(string cursorName)
@@ -113,13 +113,13 @@ namespace OpenRA.Graphics
 		void Update()
 		{
 			if (cursor == null)
-				Game.Renderer.Device.SetHardwareCursor(null);
+				Game.Renderer.Window.SetHardwareCursor(null);
 			else
 			{
 				if (frame >= cursor.Length)
 					frame = frame % cursor.Length;
 
-				Game.Renderer.Device.SetHardwareCursor(hardwareCursors[cursor.Name][frame]);
+				Game.Renderer.Window.SetHardwareCursor(hardwareCursors[cursor.Name][frame]);
 			}
 		}
 

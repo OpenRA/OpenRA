@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets
 					0,
 					video.Width,
 					video.Height),
-				TextureChannel.Alpha);
+				TextureChannel.RGBA);
 
 			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / video.Height * AspectRatio);
 			videoOrigin = new float2(
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var overlaySheet = new Sheet(SheetType.BGRA, new Size(1, Exts.NextPowerOf2(scaledHeight)));
 			overlaySheet.GetTexture().SetData(overlay);
-			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, scaledHeight), TextureChannel.Alpha);
+			overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, scaledHeight), TextureChannel.RGBA);
 		}
 
 		public override void Draw()

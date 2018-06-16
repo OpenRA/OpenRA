@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public interface IPlatform
 	{
-		IGraphicsDevice CreateGraphics(Size size, WindowMode windowMode);
+		IPlatformWindow CreateWindow(Size size, WindowMode windowMode);
 		ISoundEngine CreateSound(string device);
 	}
 
@@ -34,41 +34,42 @@ namespace OpenRA
 		DoubleMultiplicative
 	}
 
-	public interface IGraphicsDevice : IDisposable
+	public interface IPlatformWindow : IDisposable
 	{
-		IVertexBuffer<Vertex> CreateVertexBuffer(int length);
-		ITexture CreateTexture(Bitmap bitmap);
-		ITexture CreateTexture();
-		IFrameBuffer CreateFrameBuffer(Size s);
-		IShader CreateShader(string name);
+		IGraphicsContext Context { get; }
 
 		Size WindowSize { get; }
 		float WindowScale { get; }
 		event Action<float, float> OnWindowScaleChanged;
 
-		void Clear();
-		void Present();
-		Bitmap TakeScreenshot();
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
 		bool SetClipboardText(string text);
-		void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices);
-
-		void EnableScissor(int left, int top, int width, int height);
-		void DisableScissor();
-
-		void EnableDepthBuffer();
-		void DisableDepthBuffer();
-		void ClearDepthBuffer();
-
-		void SetBlendMode(BlendMode mode);
 
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();
 
 		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
 		void SetHardwareCursor(IHardwareCursor cursor);
+	}
 
+	public interface IGraphicsContext : IDisposable
+	{
+		IVertexBuffer<Vertex> CreateVertexBuffer(int size);
+		ITexture CreateTexture();
+		ITexture CreateTexture(Bitmap bitmap);
+		IFrameBuffer CreateFrameBuffer(Size s);
+		IShader CreateShader(string name);
+		void EnableScissor(int left, int top, int width, int height);
+		void DisableScissor();
+		Bitmap TakeScreenshot();
+		void Present();
+		void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices);
+		void Clear();
+		void EnableDepthBuffer();
+		void DisableDepthBuffer();
+		void ClearDepthBuffer();
+		void SetBlendMode(BlendMode mode);
 		string GLVersion { get; }
 	}
 
@@ -89,7 +90,7 @@ namespace OpenRA
 		void SetVec(string name, float[] vec, int length);
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, float[] mtx);
-		void Render(Action a);
+		void PrepareRender();
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }

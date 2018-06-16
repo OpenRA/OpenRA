@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackCharges(init.Self, this); }
 	}
 
-	public class AttackCharges : AttackOmni, INotifyCreated, ITick, INotifyAttack, INotifySold
+	public class AttackCharges : AttackOmni, INotifyAttack, INotifySold
 	{
 		readonly AttackChargesInfo info;
 		ConditionManager conditionManager;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		void ITick.Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			// Stop charging when we lose our target
 			charging &= self.CurrentActivity is SetTarget;
@@ -70,6 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (ChargeLevel == 0 && conditionManager != null && chargingToken != ConditionManager.InvalidConditionToken)
 				chargingToken = conditionManager.RevokeCondition(self, chargingToken);
+
+			base.Tick(self);
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

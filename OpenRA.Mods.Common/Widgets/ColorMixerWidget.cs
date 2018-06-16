@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 			vRange[1] = vMax - VTrim;
 
 			var rect = new Rectangle((int)(255 * sRange[0]), (int)(255 * (1 - vRange[1])), (int)(255 * (sRange[1] - sRange[0])) + 1, (int)(255 * (vRange[1] - vRange[0])) + 1);
-			mixerSprite = new Sprite(mixerSprite.Sheet, rect, TextureChannel.Alpha);
+			mixerSprite = new Sprite(mixerSprite.Sheet, rect, TextureChannel.RGBA);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var rect = new Rectangle((int)(255 * sRange[0]), (int)(255 * (1 - vRange[1])), (int)(255 * (sRange[1] - sRange[0])) + 1, (int)(255 * (vRange[1] - vRange[0])) + 1);
 			var mixerSheet = new Sheet(SheetType.BGRA, new Size(256, 256));
 			mixerSheet.GetTexture().SetData(front, 256, 256);
-			mixerSprite = new Sprite(mixerSheet, rect, TextureChannel.Alpha);
+			mixerSprite = new Sprite(mixerSheet, rect, TextureChannel.RGBA);
 			GenerateBitmap();
 		}
 

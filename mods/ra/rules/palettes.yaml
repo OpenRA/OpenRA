@@ -85,7 +85,6 @@
 		A: 180
 	ShroudPalette@shroud:
 		Name: shroud
-		Type: Shroud
 	ShroudPalette@fog:
 		Name: fog
 		Fog: true

@@ -88,7 +88,6 @@ MammothTusk:
 		ImpactActors: false
 		Explosions: medium_twlt
 		ImpactSounds: expnew07.aud
-		InvalidImpactTypes: Water
 	-Warhead@3EffWater: CreateEffect
 
 BikeMissile:

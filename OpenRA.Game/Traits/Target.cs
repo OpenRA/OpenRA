@@ -41,17 +41,6 @@ namespace OpenRA.Traits
 			};
 		}
 
-		/// <summary>
-		/// DEPRECATED: Use Order.Target instead.
-		/// This method is kept to maintain compatibility with legacy code that may not understand TargetType.FrozenActor.
-		/// </summary>
-		public static Target FromOrder(World w, Order o)
-		{
-			return o.TargetActor != null
-				? FromActor(o.TargetActor)
-				: FromCell(w, o.TargetLocation);
-		}
-
 		public static Target FromActor(Actor a)
 		{
 			if (a == null)

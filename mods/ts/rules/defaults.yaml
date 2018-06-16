@@ -71,6 +71,16 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^InfantryExperienceHospitalOverrides:
+	WithDecoration@VETERAN:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal: On, Off
+	WithDecoration@ELITE:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal: On, Off
+
 ^CrateStatModifiers:
 	FirepowerMultiplier@CRATES:
 		RequiresCondition: crate-firepower
@@ -99,8 +109,6 @@
 		Sequence: emp-overlay
 		Palette: effect
 		RequiresCondition: empdisable
-		ShowToEnemies: true
-		ZOffset: 512
 	PowerMultiplier@EMPDISABLE:
 		RequiresCondition: empdisable
 		Modifier: 0
@@ -344,15 +352,14 @@
 	Capturable:
 	RepairableBuilding:
 		RepairStep: 700
-		IndicatorPalette: mouse
 		PlayerExperience: 25
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	EmitInfantryOnSell@gdi:
+	SpawnActorsOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
 		Factions: gdi
-	EmitInfantryOnSell@nod:
+	SpawnActorsOnSell@nod:
 		ActorTypes: e1, e1, e1, e3, e3
 		Factions: nod
 	MustBeDestroyed:
@@ -365,6 +372,11 @@
 		Pieces: 3, 5
 	ThrowsShrapnel@LARGE:
 		Pieces: 2, 3
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: mouse
 
 ^CivBuilding:
 	Inherits: ^BasicBuilding
@@ -425,7 +437,6 @@
 	RenderSprites:
 		Palette: terraindecoration
 	WithCrateBody:
-		Images: crate
 	EditorTilesetFilter:
 		Categories: System
 	Interactable:
@@ -438,6 +449,8 @@
 	FrozenUnderFog:
 	AppearsOnRadar:
 	Interactable:
+	OwnerLostAction:
+		Action: ChangeOwner
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -498,6 +511,8 @@
 	Inherits@4: ^Cloakable
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Health:
 		HP: 5000
@@ -550,14 +565,22 @@
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
 	GrantConditionOnPrerequisite@HOSPITAL:
-		Condition: hospitalheal
+		Condition: hospital
 		Prerequisites: cahosp
+	GrantConditionOnDamageState@HOSPITAL:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
+	GrantCondition@HOSPITAL:
+		RequiresCondition: hospital && damaged
+		Condition: hospitalheal
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: medic
 		Palette: pips
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
+		BlinkInterval: 32
+		BlinkPattern: Off, On
 	RevealOnFire:
 	EntersTunnels:
 		Voice: Move
@@ -683,6 +706,8 @@
 	Inherits@5: ^DamagedByVeins
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Mobile:
 		TurnSpeed: 5
@@ -775,6 +800,8 @@
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
@@ -817,8 +844,6 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -990,6 +1015,7 @@
 		Range: 5c0
 	Targetable:
 		TargetTypes: Ground, Building, C4, Defense
+	-Capturable:
 	RevealOnFire:
 	EditorTilesetFilter:
 		Categories: Defense
@@ -1084,7 +1110,6 @@
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
-		Dimensions: 3, 3
 	EditorTilesetFilter:
 		Categories: Tunnel
 	Interactable:
@@ -1203,9 +1228,16 @@
 		Palette: mouse
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+		Offsets:
+			repairing: 12, 0
 	PowerMultiplier@POWERDOWN:
 		RequiresCondition: powerdown
 		Modifier: 0
+	RepairableBuilding:
+		RepairCondition: repairing
+	WithBuildingRepairDecoration:
+		Offsets:
+			powerdown: -12, 0
 
 ^DisableOnLowPowerOrPowerDown:
 	Inherits@LOWPOWER: ^DisableOnLowPower

@@ -39,6 +39,8 @@ namespace OpenRA.Graphics
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
 
+		bool lastDepthPreviewEnabled;
+
 		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
@@ -163,10 +165,10 @@ namespace OpenRA.Graphics
 			if (World.WorldActor.Disposed)
 				return;
 
-			if (debugVis.Value != null)
+			if (debugVis.Value != null && lastDepthPreviewEnabled != debugVis.Value.DepthBuffer)
 			{
-				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
-				Game.Renderer.WorldRgbaSpriteRenderer.SetDepthPreviewEnabled(debugVis.Value.DepthBuffer);
+				lastDepthPreviewEnabled = debugVis.Value.DepthBuffer;
+				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
 			}
 
 			RefreshPalette();
@@ -177,7 +179,7 @@ namespace OpenRA.Graphics
 			Game.Renderer.EnableScissor(bounds);
 
 			if (enableDepthBuffer)
-				Game.Renderer.Device.EnableDepthBuffer();
+				Game.Renderer.Context.EnableDepthBuffer();
 
 			terrainRenderer.Draw(this, Viewport);
 			Game.Renderer.Flush();
@@ -201,7 +203,7 @@ namespace OpenRA.Graphics
 				a.Trait.RenderShroud(renderShroud, this);
 
 			if (enableDepthBuffer)
-				Game.Renderer.Device.DisableDepthBuffer();
+				Game.Renderer.Context.DisableDepthBuffer();
 
 			Game.Renderer.DisableScissor();
 

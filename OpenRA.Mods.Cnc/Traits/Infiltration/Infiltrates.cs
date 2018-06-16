@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				targetTypes = order.Target.FrozenActor.TargetTypes;
 
 			if (order.Target.Type == TargetType.Actor)
-				targetTypes = order.TargetActor.GetEnabledTargetTypes();
+				targetTypes = order.Target.Actor.GetEnabledTargetTypes();
 
 			return Info.Types.Overlaps(targetTypes);
 		}

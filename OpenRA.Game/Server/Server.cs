@@ -668,10 +668,8 @@ namespace OpenRA.Server
 			// TODO: Split this further into per client ping orders
 			var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
 
+			// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
 			DispatchOrders(null, 0, new ServerOrder("SyncClientPings", clientPings.WriteToString()).Serialize());
-
-			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced(this);
 		}
 
 		public void StartGame()

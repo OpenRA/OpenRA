@@ -395,26 +395,31 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Deliver")
 			{
-				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
-				var iao = order.TargetActor.TraitOrDefault<IAcceptResources>();
-				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(order.TargetActor))
+				// Deliver orders are only valid for own/allied actors,
+				// which are guaranteed to never be frozen.
+				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				if (order.TargetActor != OwnerLinkedProc)
-					LinkProc(self, OwnerLinkedProc = order.TargetActor);
+				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
+				var targetActor = order.Target.Actor;
+				var iao = targetActor.TraitOrDefault<IAcceptResources>();
+				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(targetActor))
+					return;
+
+				if (targetActor != OwnerLinkedProc)
+					LinkProc(self, OwnerLinkedProc = targetActor);
 
 				idleSmart = true;
 
-				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
+				self.SetTargetLine(order.Target, Color.Green);
 
 				self.CancelActivity();
 
 				var deliver = new DeliverResources(self);
 				self.QueueActivity(deliver);
 
-				if (order.Target.Type == TargetType.Actor)
-					foreach (var n in notify)
-						n.MovingToRefinery(self, order.Target.Actor, deliver);
+				foreach (var n in notify)
+					n.MovingToRefinery(self, targetActor, deliver);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{

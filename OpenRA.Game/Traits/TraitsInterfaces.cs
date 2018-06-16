@@ -181,6 +181,7 @@ namespace OpenRA.Traits
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
+	public interface INotifyOwnerLost { void OnOwnerLost(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface IVoiced
@@ -466,4 +467,7 @@ namespace OpenRA.Traits
 			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
 		}
 	}
+
+	[RequireExplicitImplementation]
+	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
 }

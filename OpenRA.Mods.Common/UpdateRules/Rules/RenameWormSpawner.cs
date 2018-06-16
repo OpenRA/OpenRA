@@ -28,14 +28,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			foreach (var spawner in actorNode.ChildrenMatching("WormSpawner"))
-				spawner.RenameKeyPreservingSuffix("ActorSpawner");
+				spawner.RenameKey("ActorSpawner");
 
 			foreach (var manager in actorNode.ChildrenMatching("WormManager"))
 			{
-				manager.RenameKeyPreservingSuffix("ActorSpawnManager");
+				manager.RenameKey("ActorSpawnManager");
 				var signature = manager.LastChildMatching("WormSignature");
 				if (signature != null)
-					signature.RenameKeyPreservingSuffix("Actors");
+					signature.RenameKey("Actors");
 			}
 
 			yield break;

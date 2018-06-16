@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			var message = "You must define a set of Locomotor traits to the World actor for the different\n"
+			var message = "You must define a set of Locomotor traits on the World actor for the different\n"
 				+ "movement classes used in your mod (e.g. Infantry, Vehicles, Tanks, Ships, etc)\n"
 				+ "and replace any definitions/overrides of the following properties on each\n"
 				+ "actor with a Locomotor field referencing the appropriate locomotor type.\n\n"
@@ -92,9 +92,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (tunnelConditionNode != null)
 				{
 					var grantNode = new MiniYamlNode("GrantConditionOnTunnelLayer", "");
-					grantNode.AddNode("Condition", tunnelConditionNode.Value.Value);
+					tunnelConditionNode.MoveAndRenameNode(mobileNode, grantNode, "Condition");
 					addNodes.Add(grantNode);
-					mobileNode.RemoveNodes("TunnelCondition");
 				}
 
 				var subterraneanNode = mobileNode.LastChildMatching("Subterranean");
@@ -105,7 +104,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					mobileNode.RemoveNodes("Subterranean");
 					var conditionNode = mobileNode.LastChildMatching("SubterraneanCondition");
 					if (conditionNode != null)
-						conditionNode.RenameKeyPreservingSuffix("Condition");
+						conditionNode.RenameKey("Condition");
 
 					var transitionImageNode = mobileNode.LastChildMatching("SubterraneanTransitionImage");
 					var transitionSequenceNode = mobileNode.LastChildMatching("SubterraneanTransitionSequence");
@@ -125,13 +124,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					{
 						var grantNode = new MiniYamlNode("GrantConditionOnSubterraneanLayer", "");
 						foreach (var node in nodes)
-						{
 							if (node != null)
-							{
-								grantNode.AddNode(node);
-								mobileNode.RemoveNode(node);
-							}
-						}
+								node.MoveNode(mobileNode, grantNode);
 
 						addNodes.Add(grantNode);
 					}
@@ -147,8 +141,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (conditionNode != null)
 					{
 						var grantNode = new MiniYamlNode("GrantConditionOnJumpjetLayer", "");
-						grantNode.AddNode("Condition", conditionNode.Value.Value);
-						mobileNode.RemoveNodes("JumpjetCondition");
+						conditionNode.MoveAndRenameNode(mobileNode, grantNode, "Condition");
 						addNodes.Add(grantNode);
 					}
 				}

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.AI
 			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 			supportPowerManager = p.PlayerActor.TraitOrDefault<SupportPowerManager>();
-			foreach (var decision in ai.Info.PowerDecisions)
+			foreach (var decision in ai.Info.SupportPowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
 		}
 

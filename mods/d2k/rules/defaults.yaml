@@ -167,6 +167,8 @@
 	Tooltip:
 		GenericName: Unit
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Mobile:
 		TurnSpeed: 5
 		Locomotor: vehicle
@@ -266,6 +268,8 @@
 	Tooltip:
 		GenericName: Unit
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
 	Armor:
 		Type: none
@@ -334,6 +338,8 @@
 	Tooltip:
 		GenericName: Unit
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	AppearsOnRadar:
 		UseLocation: true
 	HiddenUnderFog:
@@ -354,12 +360,13 @@
 	Tooltip:
 		GenericName: Structure
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 2
 	RevealsShroud:
-		VisibilityType: CenterPosition
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	HitShape:
@@ -390,7 +397,7 @@
 	RepairableBuilding:
 		RepairStep: 500
 		PlayerExperience: 25
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true
@@ -422,6 +429,12 @@
 	EditorTilesetFilter:
 		Categories: Building
 	CommandBarBlacklist:
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^Defense:
 	Inherits: ^Building
@@ -477,6 +490,13 @@
 		Palette: chrome
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+		Offsets:
+			repairing: 10, 0
 	PowerMultiplier@POWERDOWN:
 		RequiresCondition: powerdown
 		Modifier: 0
+	RepairableBuilding:
+		RepairCondition: repairing
+	WithBuildingRepairDecoration:
+		Offsets:
+			powerdown: -10, 0

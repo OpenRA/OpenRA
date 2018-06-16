@@ -21,7 +21,6 @@ poweroff:
 		Length: *
 		Tick: 160
 		ZOffset: 2047
-		Offset: 0, -12
 
 allyrepair:
 	repair: wrench
@@ -67,6 +66,7 @@ rank:
 		Start: 7
 	elite: pips
 		Start: 8
+		Offset: 3, 3
 
 mpspawn:
 	idle:

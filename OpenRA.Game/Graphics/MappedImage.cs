@@ -29,7 +29,7 @@ namespace OpenRA.Graphics
 
 		public Sprite GetImage(Sheet s)
 		{
-			return new Sprite(s, rect, TextureChannel.Alpha);
+			return new Sprite(s, rect, TextureChannel.RGBA);
 		}
 
 		public MiniYaml Save(string defaultSrc)

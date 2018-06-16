@@ -109,8 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnPlayerLost(Player player)
 		{
-			foreach (var a in player.World.Actors.Where(a => a.Owner == player))
-				a.Kill(a);
+			foreach (var a in player.World.ActorsWithTrait<INotifyOwnerLost>().Where(a => a.Actor.Owner == player))
+				a.Trait.OnOwnerLost(a.Actor);
 
 			if (info.SuppressNotifications)
 				return;
