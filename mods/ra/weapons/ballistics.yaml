@@ -104,7 +104,6 @@ TurretGun:
 			Wood: 40
 			Light: 60
 			Heavy: 25
-			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion
@@ -199,11 +198,7 @@ DepthCharge:
 		Damage: 8000
 		ValidTargets: Submarine
 		Versus:
-			None: 30
-			Wood: 75
 			Light: 75
-			Heavy: 100
-			Concrete: 50
 		DamageTypes: ExplosionDeath
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
