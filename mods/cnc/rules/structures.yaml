@@ -968,7 +968,6 @@ SBAG:
 	Armor:
 		Type: Light
 	LineBuild:
-		Range: 8
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
@@ -991,7 +990,6 @@ CYCL:
 	Armor:
 		Type: Light
 	LineBuild:
-		Range: 8
 		NodeTypes: chain
 	LineBuildNode:
 		Types: chain
@@ -1024,7 +1022,6 @@ BRIK:
 	SoundOnDamageTransition:
 		DestroyedSounds: crumble.aud
 	LineBuild:
-		Range: 8
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete
