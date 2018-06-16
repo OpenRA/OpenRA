@@ -513,6 +513,8 @@
 	OwnerLostAction:
 		Action: Kill
 	DrawLineToTarget:
+	Armor:
+		Type: Light
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
 		UseLocation: true
