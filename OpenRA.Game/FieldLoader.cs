@@ -56,6 +56,34 @@ namespace OpenRA
 			}
 		}
 
+		[Serializable]
+		public class UnknownFieldsException : YamlException
+		{
+			public readonly string[] Unknown;
+			public readonly string Header;
+			public override string Message
+			{
+				get
+				{
+					return (string.IsNullOrEmpty(Header) ? "" : Header + ": ") + Unknown[0]
+						+ string.Concat(Unknown.Skip(1).Select(m => ", " + m));
+				}
+			}
+
+			public UnknownFieldsException(string[] missing, string header = null, string headerSingle = null) : base(null)
+			{
+				Header = missing.Length > 1 ? header : headerSingle ?? header;
+				Unknown = missing;
+			}
+
+			public override void GetObjectData(SerializationInfo info, StreamingContext context)
+			{
+				base.GetObjectData(info, context);
+				info.AddValue("Unknown", Unknown);
+				info.AddValue("Header", Header);
+			}
+		}
+
 		public static Func<string, Type, string, object> InvalidValueAction = (s, t, f) =>
 		{
 			throw new YamlException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s, f, t));
@@ -65,6 +93,8 @@ namespace OpenRA
 		{
 			throw new NotImplementedException("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 		};
+
+		public static Func<string, bool> ThrowOnAllUnknownFields = _ => true;
 
 		static readonly ConcurrentCache<Type, FieldLoadInfo[]> TypeLoadInfo =
 			new ConcurrentCache<Type, FieldLoadInfo[]>(BuildTypeLoadInfo);
@@ -79,7 +109,7 @@ namespace OpenRA
 		static readonly object TranslationsLock = new object();
 		static Dictionary<string, string> translations;
 
-		public static void Load(object self, MiniYaml my)
+		public static void Load(object self, MiniYaml my, Func<string, bool> shouldThrowOnUnknownField = null)
 		{
 			var loadInfo = TypeLoadInfo[self.GetType()];
 			var missing = new List<string>();
@@ -113,7 +143,11 @@ namespace OpenRA
 				}
 
 				fli.Field.SetValue(self, val);
+				md.Remove(fli.YamlName);
 			}
+
+			if (shouldThrowOnUnknownField != null && md != null && md.Keys.Any(shouldThrowOnUnknownField))
+				throw new UnknownFieldsException(md.Keys.Where(shouldThrowOnUnknownField).ToArray());
 
 			if (missing.Any())
 				throw new MissingFieldsException(missing.ToArray());

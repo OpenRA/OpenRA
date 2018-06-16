@@ -50,6 +50,10 @@ namespace OpenRA
 					{
 						throw new YamlException(e.Message);
 					}
+					catch (FieldLoader.UnknownFieldsException e)
+					{
+						throw new YamlException(e.Message);
+					}
 				}
 
 				traits.TrimExcess();
@@ -76,12 +80,17 @@ namespace OpenRA
 			var info = creator.CreateObject<ITraitInfo>(traitName + "Info");
 			try
 			{
-				FieldLoader.Load(info, my);
+				FieldLoader.Load(info, my, FieldLoader.ThrowOnAllUnknownFields);
 			}
 			catch (FieldLoader.MissingFieldsException e)
 			{
 				var header = "Trait name " + traitName + ": " + (e.Missing.Length > 1 ? "Required properties missing" : "Required property missing");
 				throw new FieldLoader.MissingFieldsException(e.Missing, header);
+			}
+			catch (FieldLoader.UnknownFieldsException e)
+			{
+				var header = "Trait name " + traitName + ": " + (e.Unknown.Length > 1 ? "Unknown properties defined" : "Unknown property defined");
+				throw new FieldLoader.UnknownFieldsException(e.Unknown, header);
 			}
 
 			return info;
