@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, MobileInfo mi) { return enabled; }
+		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return enabled; }
 		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.Tunnel; } }
 		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return false; } }
 
@@ -77,12 +77,12 @@ namespace OpenRA.Mods.Common.Traits
 			return cellCenters[cell];
 		}
 
-		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, MobileInfo mi, CPos cell)
+		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
 			return portals.Contains(cell) ? 0 : int.MaxValue;
 		}
 
-		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, MobileInfo mi, CPos cell)
+		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
 			return portals.Contains(cell) ? 0 : int.MaxValue;
 		}

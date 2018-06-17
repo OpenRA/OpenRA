@@ -114,16 +114,16 @@ Actors:
 		Owner: Neutral
 		Health: 38
 		Facing: 160
-#	Actor13: cabhut
-#		Location: 138,-12
-#		Owner: Neutral
-#		Health: 100
-#		Facing: 160
-#	Actor14: cabhut
-#		Location: 63,-16
-#		Owner: Neutral
-#		Health: 100
-#		Facing: 160
+	#Actor13: cabhut
+	#	Location: 138,-12
+	#	Owner: Neutral
+	#	Health: 100
+	#	Facing: 160
+	#Actor14: cabhut
+	#	Location: 63,-16
+	#	Owner: Neutral
+	#	Health: 100
+	#	Facing: 160
 	Actor15: ca0011
 		Location: 110,26
 		Owner: Neutral

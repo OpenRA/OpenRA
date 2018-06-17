@@ -21,15 +21,17 @@ namespace OpenRA
 	public sealed class Renderer : IDisposable
 	{
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
-		public SpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
+		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
 		public ModelRenderer WorldModelRenderer { get; private set; }
 		public RgbaColorRenderer RgbaColorRenderer { get; private set; }
-		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
+		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
-		internal IGraphicsDevice Device { get; private set; }
+		internal IPlatformWindow Window { get; private set; }
+		internal IGraphicsContext Context { get; private set; }
+
 		internal int SheetSize { get; private set; }
 		internal int TempBufferSize { get; private set; }
 
@@ -41,9 +43,9 @@ namespace OpenRA
 		float depthScale;
 		float depthOffset;
 
-		Size? lastResolution;
-		int2? lastScroll;
-		float? lastZoom;
+		Size lastResolution = new Size(-1, -1);
+		int2 lastScroll = new int2(-1, -1);
+		float lastZoom = -1f;
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
 
@@ -51,20 +53,21 @@ namespace OpenRA
 		{
 			var resolution = GetResolution(graphicSettings);
 
-			Device = platform.CreateGraphics(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
+			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode);
+			Context = Window.Context;
 
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
-			WorldSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
-			WorldRgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
-			WorldRgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
-			WorldModelRenderer = new ModelRenderer(this, Device.CreateShader("model"));
-			RgbaColorRenderer = new RgbaColorRenderer(this, Device.CreateShader("color"));
-			RgbaSpriteRenderer = new SpriteRenderer(this, Device.CreateShader("rgba"));
-			SpriteRenderer = new SpriteRenderer(this, Device.CreateShader("shp"));
+			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
+			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
+			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
+			WorldModelRenderer = new ModelRenderer(this, Context.CreateShader("model"));
+			SpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
+			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
+			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempBuffer = Device.CreateVertexBuffer(TempBufferSize);
+			tempBuffer = Context.CreateVertexBuffer(TempBufferSize);
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -87,10 +90,10 @@ namespace OpenRA
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
 				Fonts = modData.Manifest.Fonts.ToDictionary(x => x.Key,
 					x => new SpriteFont(x.Value.First, modData.DefaultFileSystem.Open(x.Value.First).ReadAllBytes(),
-										x.Value.Second, Device.WindowScale, fontSheetBuilder)).AsReadOnly();
+										x.Value.Second, Window.WindowScale, fontSheetBuilder)).AsReadOnly();
 			}
 
-			Device.OnWindowScaleChanged += (before, after) =>
+			Window.OnWindowScaleChanged += (before, after) =>
 			{
 				foreach (var f in Fonts)
 					f.Value.SetScale(after);
@@ -113,7 +116,7 @@ namespace OpenRA
 
 		public void BeginFrame(int2 scroll, float zoom)
 		{
-			Device.Clear();
+			Context.Clear();
 			SetViewportParams(scroll, zoom);
 		}
 
@@ -124,9 +127,7 @@ namespace OpenRA
 			if (resolutionChanged)
 			{
 				lastResolution = Resolution;
-				RgbaSpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
-				SpriteRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
-				RgbaColorRenderer.SetViewportParams(Resolution, 0f, 0f, 1f, int2.Zero);
+				SpriteRenderer.SetViewportParams(lastResolution, 0f, 0f, 1f, int2.Zero);
 			}
 
 			// If zoom evaluates as different due to floating point weirdness that's OK, setting the parameters again is harmless.
@@ -134,10 +135,8 @@ namespace OpenRA
 			{
 				lastScroll = scroll;
 				lastZoom = zoom;
-				WorldRgbaSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
-				WorldSpriteRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
-				WorldModelRenderer.SetViewportParams(Resolution, zoom, scroll);
-				WorldRgbaColorRenderer.SetViewportParams(Resolution, depthScale, depthOffset, zoom, scroll);
+				WorldSpriteRenderer.SetViewportParams(lastResolution, depthScale, depthOffset, zoom, scroll);
+				WorldModelRenderer.SetViewportParams(lastResolution, zoom, scroll);
 			}
 		}
 
@@ -149,18 +148,16 @@ namespace OpenRA
 			Flush();
 			currentPaletteTexture = palette.Texture;
 
-			RgbaSpriteRenderer.SetPalette(currentPaletteTexture);
 			SpriteRenderer.SetPalette(currentPaletteTexture);
 			WorldSpriteRenderer.SetPalette(currentPaletteTexture);
-			WorldRgbaSpriteRenderer.SetPalette(currentPaletteTexture);
 			WorldModelRenderer.SetPalette(currentPaletteTexture);
 		}
 
 		public void EndFrame(IInputHandler inputHandler)
 		{
 			Flush();
-			Device.PumpInput(inputHandler);
-			Device.Present();
+			Window.PumpInput(inputHandler);
+			Context.Present();
 		}
 
 		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
@@ -174,7 +171,7 @@ namespace OpenRA
 			where T : struct
 		{
 			vertices.Bind();
-			Device.DrawPrimitives(type, firstVertex, numVertices);
+			Context.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
 
@@ -183,8 +180,8 @@ namespace OpenRA
 			CurrentBatchRenderer = null;
 		}
 
-		public Size Resolution { get { return Device.WindowSize; } }
-		public float WindowScale { get { return Device.WindowScale; } }
+		public Size Resolution { get { return Window.WindowSize; } }
+		public float WindowScale { get { return Window.WindowScale; } }
 
 		public interface IBatchRenderer { void Flush(); }
 
@@ -207,7 +204,7 @@ namespace OpenRA
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
 		{
-			return Device.CreateVertexBuffer(length);
+			return Context.CreateVertexBuffer(length);
 		}
 
 		public void EnableScissor(Rectangle rect)
@@ -217,7 +214,7 @@ namespace OpenRA
 				rect.Intersect(scissorState.Peek());
 
 			Flush();
-			Device.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+			Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
 			scissorState.Push(rect);
 		}
 
@@ -230,43 +227,43 @@ namespace OpenRA
 			if (scissorState.Any())
 			{
 				var rect = scissorState.Peek();
-				Device.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+				Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
 			}
 			else
-				Device.DisableScissor();
+				Context.DisableScissor();
 		}
 
 		public void EnableDepthBuffer()
 		{
 			Flush();
-			Device.EnableDepthBuffer();
+			Context.EnableDepthBuffer();
 		}
 
 		public void DisableDepthBuffer()
 		{
 			Flush();
-			Device.DisableDepthBuffer();
+			Context.DisableDepthBuffer();
 		}
 
 		public void ClearDepthBuffer()
 		{
 			Flush();
-			Device.ClearDepthBuffer();
+			Context.ClearDepthBuffer();
 		}
 
 		public void GrabWindowMouseFocus()
 		{
-			Device.GrabWindowMouseFocus();
+			Window.GrabWindowMouseFocus();
 		}
 
 		public void ReleaseWindowMouseFocus()
 		{
-			Device.ReleaseWindowMouseFocus();
+			Window.ReleaseWindowMouseFocus();
 		}
 
 		public void Dispose()
 		{
-			Device.Dispose();
+			Window.Dispose();
 			WorldModelRenderer.Dispose();
 			tempBuffer.Dispose();
 			if (fontSheetBuilder != null)
@@ -278,17 +275,17 @@ namespace OpenRA
 
 		public string GetClipboardText()
 		{
-			return Device.GetClipboardText();
+			return Window.GetClipboardText();
 		}
 
 		public bool SetClipboardText(string text)
 		{
-			return Device.SetClipboardText(text);
+			return Window.SetClipboardText(text);
 		}
 
 		public string GLVersion
 		{
-			get { return Device.GLVersion; }
+			get { return Context.GLVersion; }
 		}
 	}
 }

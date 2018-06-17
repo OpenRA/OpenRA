@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
 				Console.WriteLine("# {0}:", filename);
-				var yaml = MiniYaml.FromFile(filename);
+				var yaml = MiniYaml.FromFile(filename, false);
 				FromChromeLayout(ref yaml, null,
 					translatableFields.Select(t => t.Name).Distinct(), null);
 				using (var file = new StreamWriter(filename))

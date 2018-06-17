@@ -215,6 +215,7 @@ namespace OpenRA
 
 		public Ruleset Rules { get; private set; }
 		public bool InvalidCustomRules { get; private set; }
+		public Exception InvalidCustomRulesException { get; private set; }
 
 		/// <summary>
 		/// The top-left of the playable area in projected world coordinates
@@ -405,6 +406,7 @@ namespace OpenRA
 			{
 				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e);
 				InvalidCustomRules = true;
+				InvalidCustomRulesException = e;
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
 			}
 

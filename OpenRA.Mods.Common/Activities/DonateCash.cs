@@ -34,14 +34,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (target.IsDead)
 				return;
 
-			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
+			var donated = target.Owner.PlayerActor.Trait<PlayerResources>().ChangeCash(payload);
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
 			if (exp != null && target.Owner != self.Owner)
 				exp.GiveExperience(experience);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(payload), 30)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(target.CenterPosition, target.Owner.Color.RGB, FloatingText.FormatCashTick(donated), 30)));
 
 			foreach (var nct in target.TraitsImplementing<INotifyCashTransfer>())
 				nct.OnAcceptingCash(target, self);

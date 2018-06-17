@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
 
 				var font = Game.Renderer.Fonts[modVersion.Font];
-				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, mapTitle.Bounds.Width, font));
+				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, modVersion.Bounds.Width, font));
 				modVersion.GetText = () => version.Update(currentServer);
 			}
 

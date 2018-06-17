@@ -26,19 +26,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairUnit trait will be used.")]
+		public readonly int HpPerStep = -1;
+
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
 	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly RepairableInfo info;
+		public readonly RepairableInfo Info;
 		readonly Health health;
 		readonly IMove movement;
 		readonly AmmoPool[] ammoPools;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
-			this.info = info;
+			Info = info;
 			health = self.Trait<Health>();
 			movement = self.Trait<IMove>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
@@ -62,12 +65,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepairAt(Actor target)
 		{
-			return info.RepairBuildings.Contains(target.Info.Name);
+			return Info.RepairBuildings.Contains(target.Info.Name);
 		}
 
 		bool CanRearmAt(Actor target)
 		{
-			return info.RepairBuildings.Contains(target.Info.Name);
+			return Info.RepairBuildings.Contains(target.Info.Name);
 		}
 
 		bool CanRepair()
@@ -82,48 +85,57 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Repair" && CanRepair()) ? info.Voice : null;
+			return order.OrderString == "Repair" && (CanRepair() || CanRearm()) ? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Repair")
 			{
-				if (!CanRepairAt(order.TargetActor) || (!CanRepair() && !CanRearm()))
+				// Repair orders are only valid for own/allied actors,
+				// which are guaranteed to never be frozen.
+				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				var target = Target.FromOrder(self.World, order);
-				self.SetTargetLine(target, Color.Green);
+				if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
+					return;
 
-				self.CancelActivity();
-				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, target),
+				if (!order.Queued)
+					self.CancelActivity();
+
+				self.SetTargetLine(order.Target, Color.Green);
+				self.QueueActivity(new WaitForTransport(self, ActivityUtils.SequenceActivities(new MoveAdjacentTo(self, order.Target),
 					new CallFunc(() => AfterReachActivities(self, order, movement)))));
 
-				TryCallTransport(self, target, new CallFunc(() => AfterReachActivities(self, order, movement)));
+				TryCallTransport(self, order.Target, new CallFunc(() => AfterReachActivities(self, order, movement)));
 			}
 		}
 
 		void AfterReachActivities(Actor self, Order order, IMove movement)
 		{
-			if (!order.TargetActor.IsInWorld || order.TargetActor.IsDead || order.TargetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
+			if (order.Target.Type != TargetType.Actor)
+				return;
+
+			var targetActor = order.Target.Actor;
+			if (!targetActor.IsInWorld || targetActor.IsDead || targetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
 				return;
 
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
-			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(order.TargetActor.CenterPosition), order.TargetActor));
-			if (CanRearmAt(order.TargetActor) && CanRearm())
+			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
+			if (CanRearmAt(targetActor) && CanRearm())
 				self.QueueActivity(new Rearm(self));
 
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, order.TargetActor, new WDist(512)));
+			self.QueueActivity(new Repair(self, targetActor, new WDist(512)));
 
-			var rp = order.TargetActor.TraitOrDefault<RallyPoint>();
+			var rp = targetActor.TraitOrDefault<RallyPoint>();
 			if (rp != null)
 			{
 				self.QueueActivity(new CallFunc(() =>
 				{
 					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-					self.QueueActivity(movement.MoveTo(rp.Location, order.TargetActor));
+					self.QueueActivity(movement.MoveTo(rp.Location, targetActor));
 				}));
 			}
 		}
@@ -133,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					info.RepairBuildings.Contains(a.Actor.Info.Name))
+					Info.RepairBuildings.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
@@ -142,15 +154,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		static void TryCallTransport(Actor self, Target target, Activity nextActivity)
 		{
-			var transport = self.TraitOrDefault<ICallForTransport>();
-			if (transport == null)
-				return;
-
 			var targetCell = self.World.Map.CellContaining(target.CenterPosition);
-			if ((self.CenterPosition - target.CenterPosition).LengthSquared < transport.MinimumDistance.LengthSquared)
-				return;
+			var delta = (self.CenterPosition - target.CenterPosition).LengthSquared;
+			var transports = self.TraitsImplementing<ICallForTransport>()
+				.Where(t => t.MinimumDistance.LengthSquared < delta);
 
-			transport.RequestTransport(self, targetCell, nextActivity);
+			foreach (var t in transports)
+				t.RequestTransport(self, targetCell, nextActivity);
 		}
 	}
 }

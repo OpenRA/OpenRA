@@ -43,6 +43,7 @@ Container@NEW_MAP_BG:
 					MaxLength: 3
 					Height: 25
 					Text: 128
+					Type: Integer
 				Label@HEIGHT_LABEL:
 					X: 135
 					Y: 49
@@ -57,6 +58,7 @@ Container@NEW_MAP_BG:
 					MaxLength: 3
 					Height: 25
 					Text: 128
+					Type: Integer
 		Button@CANCEL_BUTTON:
 			Y: 89
 			Width: 140
@@ -157,6 +159,7 @@ Container@SAVE_MAP_PANEL:
 					Y: 155
 					Width: 105
 					Height: 25
+					Type: Filename
 				DropDownButton@TYPE_DROPDOWN:
 					X: 220
 					Y: 155

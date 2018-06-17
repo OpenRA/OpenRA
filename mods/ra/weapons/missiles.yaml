@@ -274,7 +274,6 @@ TorpTube:
 		Inaccuracy: 0c614
 		HorizontalRateOfTurn: 15
 		RangeLimit: 9c0
-		LaunchAngle: 120
 		Image: MISSILE
 		TrailImage: smokey
 		ContrailLength: 30
@@ -284,7 +283,7 @@ TorpTube:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
-			Wood: 40
+			Wood: 80
 			Light: 30
 			Heavy: 30
 			Concrete: 100
@@ -319,7 +318,7 @@ SubMissileAA:
 
 SCUD:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 0
+	ReloadDelay: 240
 	Range: 10c0
 	MinRange: 4c0
 	Report: missile1.aud

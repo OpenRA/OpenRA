@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					continue;
 				}
 
-				yaml.Add(Tuple.Create((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name)));
+				yaml.Add(Tuple.Create((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false)));
 			}
 
 			return yaml;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains("|") && mapPackage.Contains(filename))
-					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename)));
+					fileSet.Add(Tuple.Create(mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					return manualSteps;
 				}
 
-				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name));
+				var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, mapPackage.Name, false));
 				files = new YamlFileSet() { Tuple.Create(mapPackage, "map.yaml", yaml.Nodes) };
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					if (mapStream == null)
 						continue;
 
-					var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name));
+					var yaml = new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name, false));
 					var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
 					if (mapRulesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value, externalFilenames))
@@ -192,8 +192,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var childrenNode = current.Value.Nodes.FirstOrDefault(n => n.Key == "Children");
 			if (childrenNode != null)
 				foreach (var node in childrenNode.Value.Nodes)
-					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
-						yield return manualStep;
+					if (node.Key != null)
+						foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+							yield return manualStep;
 		}
 
 		static IEnumerable<string> ApplyChromeTransform(ModData modData, YamlFileSet files, UpdateRule.ChromeNodeTransform transform)
@@ -203,8 +204,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			foreach (var file in files)
 				foreach (var node in file.Item3)
-					foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
-						yield return manualStep;
+					if (node.Key != null)
+						foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
+							yield return manualStep;
 		}
 
 		static IEnumerable<string> ApplyTopLevelTransform(ModData modData, YamlFileSet files, UpdateRule.TopLevelNodeTransform transform)
@@ -214,8 +216,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			foreach (var file in files)
 				foreach (var node in file.Item3)
-					foreach (var manualStep in transform(modData, node))
-						yield return manualStep;
+					if (node.Key != null)
+						foreach (var manualStep in transform(modData, node))
+							yield return manualStep;
 		}
 
 		public static string FormatMessageList(IEnumerable<string> messages, int indent = 0)
@@ -235,13 +238,14 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Renames a yaml key preserving any @suffix</summary>
-		public static void RenameKeyPreservingSuffix(this MiniYamlNode node, string newKey)
+		public static void RenameKey(this MiniYamlNode node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
+			var prefix = includeRemovals && node.Key[0].ToString() == "-" ? "-" : "";
 			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
-			if (split == -1)
-				node.Key = newKey;
+			if (preserveSuffix && split > -1)
+				node.Key = prefix + newKey + node.Key.Substring(split);
 			else
-				node.Key = newKey + node.Key.Substring(split);
+				node.Key = prefix + newKey;
 		}
 
 		public static T NodeValue<T>(this MiniYamlNode node)
@@ -249,36 +253,79 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return FieldLoader.GetValue<T>(node.Key, node.Value.Value);
 		}
 
+		public static void ReplaceValue(this MiniYamlNode node, string value)
+		{
+			node.Value.Value = value;
+		}
+
 		public static void AddNode(this MiniYamlNode node, string key, object value)
 		{
 			node.Value.Nodes.Add(new MiniYamlNode(key, FieldSaver.FormatValue(value)));
 		}
 
-		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
-		public static int RemoveNodes(this MiniYamlNode node, string match)
+		public static void AddNode(this MiniYamlNode node, MiniYamlNode toAdd)
 		{
-			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match));
+			node.Value.Nodes.Add(toAdd);
+		}
+
+		public static void RemoveNode(this MiniYamlNode node, MiniYamlNode toRemove)
+		{
+			node.Value.Nodes.Remove(toRemove);
+		}
+
+		public static void MoveNode(this MiniYamlNode node, MiniYamlNode fromNode, MiniYamlNode toNode)
+		{
+			toNode.Value.Nodes.Add(node);
+			fromNode.Value.Nodes.Remove(node);
+		}
+
+		public static void MoveAndRenameNode(this MiniYamlNode node,
+			MiniYamlNode fromNode, MiniYamlNode toNode, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
+		{
+			node.RenameKey(newKey, preserveSuffix, includeRemovals);
+			node.MoveNode(fromNode, toNode);
+		}
+
+		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
+		public static int RemoveNodes(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		{
+			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
 		/// <summary>Returns true if the node is of the form <match> or <match>@arbitrary</summary>
-		public static bool KeyMatches(this MiniYamlNode node, string match)
+		public static bool KeyMatches(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
-			if (node.Key == match)
+			if (node.Key == null)
+				return false;
+
+			var prefix = includeRemovals && node.Key[0].ToString() == "-" ? "-" : "";
+			if (node.Key == prefix + match)
 				return true;
 
+			// If the previous check didn't return true and we wanted the suffix to match, return false unconditionally here
+			if (!ignoreSuffix)
+				return false;
+
 			var atPosition = node.Key.IndexOf('@');
-			return atPosition > 0 && node.Key.Substring(0, atPosition) == match;
+			return atPosition > 0 && node.Key.Substring(0, atPosition) == prefix + match;
 		}
 
 		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
-		public static IEnumerable<MiniYamlNode> ChildrenMatching(this MiniYamlNode node, string match)
+		public static IEnumerable<MiniYamlNode> ChildrenMatching(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
-			return node.Value.Nodes.Where(n => n.KeyMatches(match));
+			return node.Value.Nodes.Where(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
-		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match)
+		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match, bool includeRemovals = true)
 		{
-			return node.ChildrenMatching(match).LastOrDefault();
+			return node.ChildrenMatching(match, includeRemovals).LastOrDefault();
+		}
+
+		public static void RenameChildrenMatching(this MiniYamlNode node, string match, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
+		{
+			var matching = node.ChildrenMatching(match);
+			foreach (var m in matching)
+				m.RenameKey(newKey, preserveSuffix, includeRemovals);
 		}
 	}
 }

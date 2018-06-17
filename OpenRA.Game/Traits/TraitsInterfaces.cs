@@ -181,6 +181,7 @@ namespace OpenRA.Traits
 	public interface INotifyActorDisposing { void Disposing(Actor self); }
 	public interface INotifyOwnerChanged { void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner); }
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
+	public interface INotifyOwnerLost { void OnOwnerLost(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface IVoiced
@@ -224,20 +225,6 @@ namespace OpenRA.Traits
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 
-	public interface IOccupySpaceInfo : ITraitInfoInterface
-	{
-		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
-		bool SharesCell { get; }
-	}
-
-	public interface IOccupySpace
-	{
-		WPos CenterPosition { get; }
-		CPos TopLeft { get; }
-		Pair<CPos, SubCell>[] OccupiedCells();
-	}
-
-	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
 	public interface IActorMap
 	{
 		IEnumerable<Actor> GetActorsAt(CPos a);
@@ -282,6 +269,21 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
+	public interface IOccupySpaceInfo : ITraitInfoInterface
+	{
+		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
+		bool SharesCell { get; }
+	}
+
+	public interface IOccupySpace
+	{
+		WPos CenterPosition { get; }
+		CPos TopLeft { get; }
+		Pair<CPos, SubCell>[] OccupiedCells();
+	}
+
+	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
+
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{
 		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true);
@@ -298,6 +300,8 @@ namespace OpenRA.Traits
 		void SetPosition(Actor self, WPos pos);
 		void SetVisualPosition(Actor self, WPos pos);
 	}
+
+	public interface ITemporaryBlockerInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
 	public interface ITemporaryBlocker
@@ -463,4 +467,7 @@ namespace OpenRA.Traits
 			return playerName + " " + BoolValues[newValue] + " " + Name + ".";
 		}
 	}
+
+	[RequireExplicitImplementation]
+	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
 }

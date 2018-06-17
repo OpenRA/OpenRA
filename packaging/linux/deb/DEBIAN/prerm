@@ -1,6 +1,0 @@
-#!/bin/sh
-set -e
-
-mono {LIBDIR}/OpenRA.Utility.exe ra --unregister-mod system
-mono {LIBDIR}/OpenRA.Utility.exe cnc --unregister-mod system
-mono {LIBDIR}/OpenRA.Utility.exe d2k --unregister-mod system

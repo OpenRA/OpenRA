@@ -146,6 +146,38 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^InfantryExperienceHospitalHazmatOverrides:
+	WithDecoration@RANK-1:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal && hazmatsuits: On, Off, Off
+			hospitalheal || hazmatsuits: On, Off
+	WithDecoration@RANK-2:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal && hazmatsuits: On, Off, Off
+			hospitalheal || hazmatsuits: On, Off
+	WithDecoration@RANK-3:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal && hazmatsuits: On, Off, Off
+			hospitalheal || hazmatsuits: On, Off
+	WithDecoration@RANK-ELITE:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal && hazmatsuits: On, Off, Off
+			hospitalheal || hazmatsuits: On, Off
+	WithDecoration@HAZMAT:
+		BlinkInterval: 32
+		BlinkPatterns:
+			rank-veteran && hospitalheal: Off, Off, On
+			rank-veteran || hospitalheal: Off, On
+	WithDecoration@REDCROSS:
+		BlinkPatterns:
+			rank-veteran && hazmatsuits: Off, On, Off
+			rank-veteran && !hazmatsuits: Off, On
+			hazmatsuits: On, Off
+
 ^AutoTargetGround:
 	AutoTarget:
 		AttackAnythingCondition: stance-attackanything
@@ -211,16 +243,10 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 50
-			Road: 100
-			Bridge: 100
-			Tiberium: 50
-			BlueTiberium: 50
-			Beach: 50
+		Locomotor: wheeled
 		TurnSpeed: 5
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -256,15 +282,7 @@
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
-		Crushes: wall, crate, infantry
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
-			Bridge: 100
-			Tiberium: 70
-			BlueTiberium: 70
-			Beach: 70
+		Locomotor: tracked
 		TurnSpeed: 5
 	Tooltip:
 		GenericName: Tank
@@ -273,6 +291,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	AppearsOnRadar:
 		UseLocation: yes
 	Targetable@GROUND:
@@ -321,31 +341,20 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
 	Armor:
 		Type: None
 	RevealsShroud:
 		Range: 5c0
 	Mobile:
-		Crushes: crate
-		SharesCell: true
-		TerrainSpeeds:
-			Clear: 90
-			Rough: 80
-			Road: 100
-			Bridge: 100
-			Tiberium: 70
-				PathingCost: 300
-			BlueTiberium: 70
-				PathingCost: 300
-			Beach: 80
+		Locomotor: foot
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -377,9 +386,15 @@
 		DamageInterval: 16
 		DamageTypes: TiberiumDeath
 		RequiresCondition: !hazmatsuits
-	GrantConditionOnPrerequisite@BIO:
-		Condition: hazmatsuits
+	GrantConditionOnTerrain@HAZMAT:
+		Condition: ontiberium
+		TerrainTypes: Tiberium, BlueTiberium
+	GrantConditionOnPrerequisite@HAZMAT:
+		Condition: biolab
 		Prerequisites: bio
+	GrantCondition@HAZMAT:
+		RequiresCondition: biolab && ontiberium
+		Condition: hazmatsuits
 	WithDecoration@HAZMAT:
 		Image: pips
 		Sequence: pip-hazmat
@@ -404,13 +419,21 @@
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
 	GrantConditionOnPrerequisite@HOSPITAL:
-		Condition: hospitalheal
+		Condition: hospital
 		Prerequisites: hosp
+	GrantConditionOnDamageState@HOSPITAL:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
+	GrantCondition@HOSPITAL:
+		RequiresCondition: hospital && damaged
+		Condition: hospitalheal
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: pip-heal
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
+		BlinkInterval: 32
+		BlinkPattern: On, Off
 	DetectCloaked:
 		Range: 2c0
 	DeathSounds@NORMAL:
@@ -439,6 +462,7 @@
 		SpeedModifier: 60
 		DamageModifiers:
 			Prone50Percent: 50
+			Prone80Percent: 80
 		DamageTriggers: TriggerProne
 		ProneOffset: 400,0,0
 	WithInfantryBody:
@@ -484,6 +508,8 @@
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	Health:
 		HP: 100000
 	Armor:
@@ -499,15 +525,8 @@
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
-		Crushes: crate
+		Locomotor: critter
 		Speed: 113
-		TerrainSpeeds:
-			Clear: 90
-			Rough: 80
-			Road: 100
-			Tiberium: 70
-			BlueTiberium: 70
-			Beach: 80
 		Voice: Move
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
@@ -554,13 +573,7 @@
 	Mobile:
 		Voice: Move
 		Speed: 71
-		TerrainSpeeds:
-			Clear: 70
-			Rough: 60
-			Road: 70
-			Tiberium: 100
-			BlueTiberium: 100
-			Beach: 60
+		Locomotor: critter
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -607,6 +620,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	AppearsOnRadar:
 		UseLocation: yes
 	HiddenUnderFog:
@@ -629,6 +644,8 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -657,6 +674,8 @@
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:
@@ -716,13 +735,20 @@
 		UseDeathTypeSuffix: false
 	GivesBuildableArea:
 		AreaTypes: building
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: e6,e1,e1,e1
 	EngineerRepairable:
 	Sellable:
 		SellSounds: cashturn.aud
 	Capturable:
+		CaptureThreshold: 55
 	WithMakeAnimation:
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -754,6 +780,8 @@
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
+	OwnerLostAction:
+		Action: ChangeOwner
 	Capturable:
 	CaptureNotification:
 		Notification: CivilianBuildingCaptured
@@ -768,6 +796,12 @@
 		ShowOwnerRow: True
 	EditorTilesetFilter:
 		Categories: Tech building
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: player
+		IsPlayerPalette: True
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -807,6 +841,8 @@
 	Interactable:
 	CombatDebugOverlay:
 	AppearsOnRadar:
+	OwnerLostAction:
+		Action: ChangeOwner
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -861,17 +897,17 @@
 	Targetable:
 		TargetTypes: Trees
 	WithDamageOverlay@SmallBurn:
-		DamageType: Incendiary
+		DamageTypes: Incendiary
 		Image: burn-s
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
 	WithDamageOverlay@MediumBurn:
-		DamageType: Incendiary
+		DamageTypes: Incendiary
 		Image: burn-m
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
 	WithDamageOverlay@LargeBurn:
-		DamageType: Incendiary
+		DamageTypes: Incendiary
 		Image: burn-l
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
@@ -981,6 +1017,11 @@
 	BodyOrientation:
 		UseClassicFacingFudge: True
 
+^LightHusk:
+	Inherits: ^Husk
+	Health:
+		HP: 2000
+
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults
 	WithShadow:
@@ -1017,6 +1058,9 @@
 	ScriptTriggers:
 	BodyOrientation:
 		QuantizedFacings: 1
+	ShakeOnDeath:
+		Duration: 15
+		Intensity: 6
 
 ^Crate:
 	Inherits@1: ^SpriteActor

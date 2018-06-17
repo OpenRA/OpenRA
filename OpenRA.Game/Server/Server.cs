@@ -378,8 +378,8 @@ namespace OpenRA.Server
 				Log.Write("server", "{0} ({1}) has joined the game.",
 					client.Name, newConn.Socket.RemoteEndPoint);
 
-				if (LobbyInfo.NonBotClients.Count() > 1)
-					SendMessage("{0} has joined the game.".F(client.Name));
+				// Report to all other players
+				SendMessage("{0} has joined the game.".F(client.Name), newConn);
 
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
@@ -402,10 +402,6 @@ namespace OpenRA.Server
 					SendOrderTo(newConn, "Message", TwoHumansRequiredText);
 				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
-
-				if (handshake.Mod == "{DEV_VERSION}")
-					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
-						"and may desynchronize the game state if they have incompatible rules.");
 			}
 			catch (Exception ex)
 			{
@@ -470,9 +466,9 @@ namespace OpenRA.Server
 			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
 		}
 
-		public void SendMessage(string text)
+		public void SendMessage(string text, Connection conn = null)
 		{
-			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
+			DispatchOrdersToClients(conn, 0, new ServerOrder("Message", text).Serialize());
 
 			if (Dedicated)
 				Console.WriteLine("[{0}] {1}".F(DateTime.Now.ToString(Settings.TimestampFormat), text));
@@ -672,10 +668,8 @@ namespace OpenRA.Server
 			// TODO: Split this further into per client ping orders
 			var clientPings = LobbyInfo.ClientPings.Select(ping => ping.Serialize()).ToList();
 
+			// Note that syncing pings doesn't trigger INotifySyncLobbyInfo
 			DispatchOrders(null, 0, new ServerOrder("SyncClientPings", clientPings.WriteToString()).Serialize());
-
-			foreach (var t in serverTraits.WithInterface<INotifySyncLobbyInfo>())
-				t.LobbyInfoSynced(this);
 		}
 
 		public void StartGame()

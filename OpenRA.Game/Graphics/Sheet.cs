@@ -66,7 +66,7 @@ namespace OpenRA.Graphics
 		{
 			if (texture == null)
 			{
-				texture = Game.Renderer.Device.CreateTexture();
+				texture = Game.Renderer.Context.CreateTexture();
 				dirty = true;
 			}
 

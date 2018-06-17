@@ -3,9 +3,7 @@
 	Range: 6c0
 	Report: bigggun1.aud
 	Projectile: Railgun
-		Speed: 20c0
 		Duration: 15
-		Width: 80
 		Blockable: true
 		DamageActorsInLine: true
 		BeamColor: 0080FFC8
@@ -30,7 +28,6 @@ LtRail:
 		Range: 0, 32
 		Falloff: 50, 50 # Only does half damage to friendly units
 		Damage: 15000
-		InfDeath: 6
 		AffectsParent: false
 		ValidStances: Ally
 		Versus:

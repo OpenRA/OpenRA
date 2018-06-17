@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly RepairsUnits[] allRepairsUnits;
 		readonly Target host;
 		readonly WDist closeEnough;
+		readonly Repairable repairable;
 
 		int remainingTicks;
 		bool played = false;
@@ -33,6 +34,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.closeEnough = closeEnough;
 			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
 			health = self.TraitOrDefault<Health>();
+			repairable = self.TraitOrDefault<Repairable>();
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -97,7 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (remainingTicks == 0)
 			{
 				var unitCost = self.Info.TraitInfo<ValuedInfo>().Cost;
-				var hpToRepair = repairsUnits.Info.HpPerStep;
+				var hpToRepair = repairable != null && repairable.Info.HpPerStep > 0 ? repairable.Info.HpPerStep : repairsUnits.Info.HpPerStep;
 
 				// Cast to long to avoid overflow when multiplying by the health
 				var cost = Math.Max(1, (int)(((long)hpToRepair * unitCost * repairsUnits.Info.ValuePercentage) / (health.MaxHP * 100L)));

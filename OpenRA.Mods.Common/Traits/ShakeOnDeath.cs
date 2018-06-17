@@ -15,7 +15,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class ShakeOnDeathInfo : ITraitInfo
 	{
-		public readonly int Intensity = 10;
+		public readonly int Duration = 10;
+		public readonly int Intensity = 1;
 		public object Create(ActorInitializer init) { return new ShakeOnDeath(this); }
 	}
 
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(info.Intensity, self.CenterPosition, 1);
+			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(info.Duration, self.CenterPosition, info.Intensity);
 		}
 	}
 }

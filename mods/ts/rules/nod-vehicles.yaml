@@ -98,7 +98,6 @@ TTNK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 85
-		Crushes: wall, crate, infantry
 		RequiresCondition: !empdisable && undeployed
 	Health:
 		HP: 35000
@@ -366,15 +365,7 @@ SAPC:
 		TurnSpeed: 5
 		Speed: 71
 		RequiresCondition: !empdisable && !loading
-		Subterranean: true
-		SubterraneanCondition: submerged
-		SubterraneanTransitionTerrainTypes: Clear, Rough
-		SubterraneanTransitionCost: 120
-		SubterraneanTransitionSound: subdril1.aud
-		SubterraneanTransitionImage: dig
-		SubterraneanTransitionSequence: idle
-		TerrainSpeeds:
-			Subterranean: 120
+		Locomotor: subterranean
 	Health:
 		HP: 17500
 	Armor:
@@ -394,6 +385,11 @@ SAPC:
 		RequiresCondition: !submerged
 	Targetable:
 		RequiresCondition: !inside-tunnel && !submerged
+	GrantConditionOnSubterraneanLayer:
+		Condition: submerged
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		SubterraneanTransitionSound: subdril1.aud
 
 SUBTANK:
 	Inherits: ^Tank
@@ -412,16 +408,7 @@ SUBTANK:
 	Mobile:
 		TurnSpeed: 6
 		Speed: 71
-		Crushes: wall, crate, infantry
-		Subterranean: true
-		SubterraneanCondition: submerged
-		SubterraneanTransitionTerrainTypes: Clear, Rough
-		SubterraneanTransitionCost: 120
-		SubterraneanTransitionSound: subdril1.aud
-		SubterraneanTransitionImage: dig
-		SubterraneanTransitionSequence: idle
-		TerrainSpeeds:
-			Subterranean: 120
+		Locomotor: subterranean
 	Health:
 		HP: 30000
 	Armor:
@@ -439,6 +426,11 @@ SUBTANK:
 		RequiresCondition: !submerged
 	Targetable:
 		RequiresCondition: !inside-tunnel && !submerged
+	GrantConditionOnSubterraneanLayer:
+		Condition: submerged
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		SubterraneanTransitionSound: subdril1.aud
 
 STNK:
 	Inherits: ^Tank
@@ -457,7 +449,6 @@ STNK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 85
-		Crushes: wall, crate, infantry
 	Health:
 		HP: 18000
 	Armor:

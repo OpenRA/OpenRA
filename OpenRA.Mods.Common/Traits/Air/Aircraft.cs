@@ -712,10 +712,16 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Enter")
 			{
+				// Enter orders are only valid for own/allied actors,
+				// which are guaranteed to never be frozen.
+				if (order.Target.Type != TargetType.Actor)
+					return;
+
 				if (!order.Queued)
 					UnReserve();
 
-				if (Reservable.IsReserved(order.TargetActor))
+				var targetActor = order.Target.Actor;
+				if (Reservable.IsReserved(targetActor))
 				{
 					if (!Info.CanHover)
 						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
@@ -724,24 +730,24 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else
 				{
-					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
+					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 
 					if (!Info.CanHover && !Info.VTOL)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, Info.AbortOnResupply, order.TargetActor),
+							new ReturnToBase(self, Info.AbortOnResupply, targetActor),
 							new ResupplyAircraft(self)));
 					}
 					else
 					{
-						MakeReservation(order.TargetActor);
+						MakeReservation(targetActor);
 
 						Action enter = () =>
 						{
-							var exit = order.TargetActor.Info.FirstExitOrDefault(null);
+							var exit = targetActor.Info.FirstExitOrDefault(null);
 							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
 
-							self.QueueActivity(new HeliFly(self, Target.FromPos(order.TargetActor.CenterPosition + offset)));
+							self.QueueActivity(new HeliFly(self, Target.FromPos(targetActor.CenterPosition + offset)));
 							self.QueueActivity(new Turn(self, Info.InitialFacing));
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));

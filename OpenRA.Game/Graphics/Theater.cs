@@ -85,7 +85,7 @@ namespace OpenRA.Graphics
 
 							// s and ss are guaranteed to use the same sheet
 							// because of the custom terrain sheet allocation
-							s = new SpriteWithSecondaryData(s, ss.Bounds, ss.Channel);
+							s = new SpriteWithSecondaryData(s, s.Sheet, ss.Bounds, ss.Channel);
 						}
 
 						return s;

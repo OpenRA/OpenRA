@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Diagnostics;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -24,11 +25,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var perfText = widget.Get<LabelWidget>("PERF_TEXT");
 			perfText.IsVisible = () => Game.Settings.Debug.PerfText;
+
+			var fpsTimer = Stopwatch.StartNew();
+			var fpsReferenceFrame = 0;
+			var fps = 0;
 			perfText.GetText = () =>
-				"Tick {0} @ {1:F1} ms\nRender {2} @ {3:F1} ms\nBatches: {4}".F(
-					Game.LocalTick, PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples),
+			{
+				var elapsed = fpsTimer.ElapsedMilliseconds;
+				if (elapsed > 1000)
+				{
+					// Round to closest integer
+					fps = (int)(1000.0f * (Game.RenderFrame - fpsReferenceFrame) / fpsTimer.ElapsedMilliseconds + 0.5f);
+					fpsTimer.Restart();
+					fpsReferenceFrame = Game.RenderFrame;
+				}
+
+				return "FPS: {0}\nTick {1} @ {2:F1} ms\nRender {3} @ {4:F1} ms\nBatches: {5}".F(
+					fps, Game.LocalTick, PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples),
 					Game.RenderFrame, PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples),
 					PerfHistory.Items["batches"].LastValue);
+			};
 		}
 	}
 }

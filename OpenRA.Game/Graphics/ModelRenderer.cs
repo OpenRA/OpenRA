@@ -278,7 +278,8 @@ namespace OpenRA.Graphics
 			shader.SetVec("AmbientLight", ambientLight, 3);
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 
-			shader.Render(() => renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList));
+			shader.PrepareRender();
+			renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
 		}
 
 		public void BeginFrame()
@@ -299,14 +300,14 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 			fbo.Bind();
 
-			Game.Renderer.Device.EnableDepthBuffer();
+			Game.Renderer.Context.EnableDepthBuffer();
 			return fbo;
 		}
 
 		void DisableFrameBuffer(IFrameBuffer fbo)
 		{
 			Game.Renderer.Flush();
-			Game.Renderer.Device.DisableDepthBuffer();
+			Game.Renderer.Context.DisableDepthBuffer();
 			fbo.Unbind();
 		}
 
@@ -355,7 +356,7 @@ namespace OpenRA.Graphics
 			}
 
 			var size = new Size(renderer.SheetSize, renderer.SheetSize);
-			var framebuffer = renderer.Device.CreateFrameBuffer(size);
+			var framebuffer = renderer.Context.CreateFrameBuffer(size);
 			var sheet = new Sheet(SheetType.BGRA, framebuffer.Texture);
 			mappedBuffers.Add(sheet, framebuffer);
 

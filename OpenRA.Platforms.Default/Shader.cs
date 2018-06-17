@@ -130,7 +130,7 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public void Render(Action a)
+		public void PrepareRender()
 		{
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
@@ -142,8 +142,6 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, ((Texture)kv.Value).ID);
 			}
 
-			OpenGL.CheckGLError();
-			a();
 			OpenGL.CheckGLError();
 		}
 

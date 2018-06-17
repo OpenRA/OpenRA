@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Server
 
 							if (masterResponseText.Length > 0)
 							{
-								var regex = new Regex(@"^\[(?<code>\d+)\](?<message>.*)");
+								var regex = new Regex(@"^\[(?<code>-?\d+)\](?<message>.*)");
 								var match = regex.Match(masterResponseText);
 								errorMessage = match.Success && int.TryParse(match.Groups["code"].Value, out errorCode) ?
 									match.Groups["message"].Value.Trim() : "Failed to parse error message";
@@ -140,7 +140,11 @@ namespace OpenRA.Mods.Common.Server
 										message = errorMessage;
 
 									masterServerMessages.Enqueue("Warning: " + message);
-									masterServerMessages.Enqueue("Game has not been advertised online.");
+
+									// Positive error codes indicate errors that prevent advertisement
+									// Negative error codes are non-fatal warnings
+									if (errorCode > 0)
+										masterServerMessages.Enqueue("Game has not been advertised online.");
 								}
 							}
 						}

@@ -22,19 +22,14 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, ITick, INotifyOwnerChanged
+	public class AttackFollow : AttackBase, INotifyOwnerChanged
 	{
 		public Target Target { get; protected set; }
 
 		public AttackFollow(Actor self, AttackFollowInfo info)
 			: base(self, info) { }
 
-		void ITick.Tick(Actor self)
-		{
-			Tick(self);
-		}
-
-		protected virtual void Tick(Actor self)
+		protected override void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
 			{
@@ -44,6 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			DoAttack(self, Target);
 			IsAiming = Target.IsValidFor(self);
+
+			base.Tick(self);
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)

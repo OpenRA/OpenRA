@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 			using (var hueBitmap = new Bitmap(256, 256))
 			{
 				var hueSheet = new Sheet(SheetType.BGRA, new Size(256, 256));
-				hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.Alpha);
+				hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.RGBA);
 
 				var bitmapData = hueBitmap.LockBits(hueBitmap.Bounds(),
 					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);

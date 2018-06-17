@@ -69,7 +69,7 @@ Player:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
-		CheckboxDisplayOrder: 6
+		CheckboxDisplayOrder: 7
 	BaseAttackNotifier:
 	Shroud:
 		FogCheckboxDisplayOrder: 3

@@ -2,6 +2,7 @@ E1:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -28,6 +29,7 @@ E2:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -61,6 +63,7 @@ E3:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -90,6 +93,7 @@ E4:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -121,6 +125,7 @@ E5:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -132,11 +137,7 @@ E5:
 		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
 	Mobile:
 		Speed: 56
-		TerrainSpeeds:
-			Tiberium: 90
-				PathingCost: 90
-			BlueTiberium: 90
-				PathingCost: 90
+		Locomotor: chem
 	Health:
 		HP: 9000
 	AutoTarget:
@@ -176,11 +177,14 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
+	Selectable:
+		Priority: 5
 
 RMBO:
 	Inherits: ^Soldier
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -225,8 +229,6 @@ RMBO:
 
 PVICE:
 	Inherits: ^Viceroid
-	Mobile:
-		Crushes: crate
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 40

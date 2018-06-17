@@ -15,6 +15,7 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		BlockedAudio:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
@@ -23,24 +24,28 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		BlockedAudio:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
+		BlockedAudio:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
+		BlockedAudio:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
+		BlockedAudio:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	PlaceBuilding:
@@ -56,7 +61,7 @@ Player:
 		InsufficientFundsNotification: InsufficientFunds
 	DeveloperMode:
 		CheckboxEnabled: true
-		CheckboxDisplayOrder: 7
+		CheckboxDisplayOrder: 8
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
@@ -64,7 +69,7 @@ Player:
 		Label: Redeployable MCVs
 		Description: Allow undeploying Construction Yard.
 		Enabled: True
-		DisplayOrder: 6
+		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	FrozenActorLayer:
 	BaseAttackNotifier:

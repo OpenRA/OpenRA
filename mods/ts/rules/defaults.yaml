@@ -71,6 +71,16 @@
 		RequiresCondition: rank-elite
 		ZOffset: 256
 
+^InfantryExperienceHospitalOverrides:
+	WithDecoration@VETERAN:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal: On, Off
+	WithDecoration@ELITE:
+		BlinkInterval: 32
+		BlinkPatterns:
+			hospitalheal: On, Off
+
 ^CrateStatModifiers:
 	FirepowerMultiplier@CRATES:
 		RequiresCondition: crate-firepower
@@ -99,8 +109,6 @@
 		Sequence: emp-overlay
 		Palette: effect
 		RequiresCondition: empdisable
-		ShowToEnemies: true
-		ZOffset: 512
 	PowerMultiplier@EMPDISABLE:
 		RequiresCondition: empdisable
 		Modifier: 0
@@ -344,15 +352,14 @@
 	Capturable:
 	RepairableBuilding:
 		RepairStep: 700
-		IndicatorPalette: mouse
 		PlayerExperience: 25
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
-	EmitInfantryOnSell@gdi:
+	SpawnActorsOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
 		Factions: gdi
-	EmitInfantryOnSell@nod:
+	SpawnActorsOnSell@nod:
 		ActorTypes: e1, e1, e1, e3, e3
 		Factions: nod
 	MustBeDestroyed:
@@ -365,6 +372,11 @@
 		Pieces: 3, 5
 	ThrowsShrapnel@LARGE:
 		Pieces: 2, 3
+	WithBuildingRepairDecoration:
+		Image: allyrepair
+		Sequence: repair
+		ReferencePoint: Center
+		Palette: mouse
 
 ^CivBuilding:
 	Inherits: ^BasicBuilding
@@ -425,7 +437,6 @@
 	RenderSprites:
 		Palette: terraindecoration
 	WithCrateBody:
-		Images: crate
 	EditorTilesetFilter:
 		Categories: System
 	Interactable:
@@ -438,6 +449,8 @@
 	FrozenUnderFog:
 	AppearsOnRadar:
 	Interactable:
+	OwnerLostAction:
+		Action: ChangeOwner
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -498,6 +511,8 @@
 	Inherits@4: ^Cloakable
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Health:
 		HP: 5000
@@ -512,21 +527,7 @@
 	Mobile:
 		Voice: Move
 		Speed: 71
-		Crushes: crate
-		SharesCell: true
-		TerrainSpeeds:
-			Clear: 90
-			Road: 100
-			Bridge: 100
-			Rail: 90
-			DirtRoad: 100
-			Rough: 80
-			Tiberium: 90
-				PathingCost: 90
-			BlueTiberium: 90
-				PathingCost: 90
-			Veins: 50
-		TunnelCondition: inside-tunnel
+		Locomotor: foot
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
@@ -564,14 +565,22 @@
 		DamageCooldown: 125
 		RequiresCondition: hospitalheal
 	GrantConditionOnPrerequisite@HOSPITAL:
-		Condition: hospitalheal
+		Condition: hospital
 		Prerequisites: cahosp
+	GrantConditionOnDamageState@HOSPITAL:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
+	GrantCondition@HOSPITAL:
+		RequiresCondition: hospital && damaged
+		Condition: hospitalheal
 	WithDecoration@REDCROSS:
 		Image: pips
 		Sequence: medic
 		Palette: pips
 		ReferencePoint: Bottom, Right
 		RequiresCondition: hospitalheal
+		BlinkInterval: 32
+		BlinkPattern: Off, On
 	RevealOnFire:
 	EntersTunnels:
 		Voice: Move
@@ -580,6 +589,8 @@
 			Radius: 128
 	EditorTilesetFilter:
 		Categories: Infantry
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -695,24 +706,14 @@
 	Inherits@5: ^DamagedByVeins
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	Mobile:
-		Crushes: crate
-		TerrainSpeeds:
-			Clear: 70
-			Road: 100
-			Bridge: 100
-			Rail: 50
-			DirtRoad: 90
-			Rough: 40
-			Tiberium: 50
-			BlueTiberium: 50
-			Veins: 50
-				PathingCost: 90
 		TurnSpeed: 5
 		Voice: Move
 		RequiresCondition: !empdisable
-		TunnelCondition: inside-tunnel
+		Locomotor: wheeled
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -771,21 +772,13 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Vehicle
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
-		Crushes: wall, crate, infantry
-		TerrainSpeeds:
-			Clear: 70
-			Road: 100
-			Bridge: 100
-			Rail: 100
-			DirtRoad: 90
-			Rough: 60
-			Tiberium: 70
-			BlueTiberium: 70
-			Veins: 70
+		Locomotor: tracked
 
 ^VoxelActor:
 	BodyOrientation:
@@ -801,12 +794,14 @@
 ^CivilianVoxelCrusher:
 	Inherits: ^CivilianVoxelVehicle
 	Mobile:
-		Crushes: wall, crate, infantry
+		Locomotor: heavywheeled
 
 ^Aircraft:
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
 	Huntable:
+	OwnerLostAction:
+		Action: Kill
 	DrawLineToTarget:
 	AppearsOnRadar:
 		UseLocation: true
@@ -849,8 +844,6 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 
 ^Helicopter:
 	Inherits: ^Aircraft
@@ -901,18 +894,7 @@
 	Mobile:
 		Speed: 113
 		TurnSpeed: 16
-		SharesCell: no
-		TerrainSpeeds:
-			Clear: 90
-			Road: 100
-			Bridge: 100
-			Rail: 80
-			DirtRoad: 90
-			Rough: 70
-			Tiberium: 100
-			BlueTiberium: 100
-			Veins: 100
-		TunnelCondition: inside-tunnel
+		Locomotor: visceroid
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
@@ -933,6 +915,8 @@
 			VerticalTopOffset: 512
 	EditorTilesetFilter:
 		Categories: Critter
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^BlossomTree:
 	Inherits@1: ^SpriteActor
@@ -1031,6 +1015,7 @@
 		Range: 5c0
 	Targetable:
 		TargetTypes: Ground, Building, C4, Defense
+	-Capturable:
 	RevealOnFire:
 	EditorTilesetFilter:
 		Categories: Defense
@@ -1046,14 +1031,11 @@
 	WithVoxelBody:
 	DrawLineToTarget:
 	Mobile:
-		TerrainSpeeds:
-			Rail: 100
-		Crushes: wall, crate, infantry
 		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
 		RequiresCondition: !empdisable
-		TunnelCondition: inside-tunnel
+		Locomotor: train
 	Cargo:
 		Types: Infantry
 		UnloadVoice: Unload
@@ -1091,6 +1073,8 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Railway
+	GrantConditionOnTunnelLayer:
+		Condition: inside-tunnel
 
 ^TerrainOverlay:
 	AlwaysVisible:
@@ -1126,7 +1110,6 @@
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
-		Dimensions: 3, 3
 	EditorTilesetFilter:
 		Categories: Tunnel
 	Interactable:
@@ -1245,9 +1228,16 @@
 		Palette: mouse
 		RequiresCondition: powerdown
 		ReferencePoint: Center
+		Offsets:
+			repairing: 12, 0
 	PowerMultiplier@POWERDOWN:
 		RequiresCondition: powerdown
 		Modifier: 0
+	RepairableBuilding:
+		RepairCondition: repairing
+	WithBuildingRepairDecoration:
+		Offsets:
+			powerdown: -12, 0
 
 ^DisableOnLowPowerOrPowerDown:
 	Inherits@LOWPOWER: ^DisableOnLowPower

@@ -61,6 +61,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant while reloading.")]
+		public readonly string ReloadingCondition = null;
+
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WDist ModifiedRange { get; private set; }
 
@@ -107,6 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
 		INotifyAttack[] notifyAttacks;
+
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		IEnumerable<int> rangeModifiers;
 		IEnumerable<int> reloadModifiers;
@@ -160,6 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 			reloadModifiers = self.TraitsImplementing<IReloadModifier>().ToArray().Select(m => m.GetReloadModifier());
@@ -169,8 +177,24 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
+		void UpdateCondition(Actor self)
+		{
+			if (string.IsNullOrEmpty(Info.ReloadingCondition) || conditionManager == null)
+				return;
+
+			var enabled = !IsTraitDisabled && IsReloading;
+
+			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.ReloadingCondition);
+			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+		}
+
 		protected virtual void Tick(Actor self)
 		{
+			// We need to disable conditions if IsTraitDisabled is true, so we have to update conditions before the return below.
+			UpdateCondition(self);
+
 			if (IsTraitDisabled)
 				return;
 

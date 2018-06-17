@@ -57,6 +57,7 @@ NAPOST:
 		HP: 30000
 	Armor:
 		Type: Concrete
+	-Capturable:
 	LineBuild:
 		Range: 10
 		NodeTypes: laserfencenode
@@ -164,7 +165,7 @@ NALASR:
 		InitialFacing: 224
 		Offset: 298,-171,288
 	AttackTurreted:
-		PauseOnCondition: empdisable
+		PauseOnCondition: empdisable || disabled
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317

@@ -73,8 +73,16 @@ namespace OpenRA
 		Player renderPlayer;
 		public Player RenderPlayer
 		{
-			get { return renderPlayer == null || (renderPlayer.WinState != WinState.Undefined && !Map.Visibility.HasFlag(MapVisibility.MissionSelector)) ? null : renderPlayer; }
-			set { renderPlayer = value; }
+			get
+			{
+				return renderPlayer;
+			}
+
+			set
+			{
+				if (LocalPlayer == null || LocalPlayer.UnlockedRenderPlayer)
+					renderPlayer = value;
+			}
 		}
 
 		public bool FogObscures(Actor a) { return RenderPlayer != null && !a.CanBeViewedByPlayer(RenderPlayer); }
@@ -101,7 +109,9 @@ namespace OpenRA
 				return;
 
 			LocalPlayer = localPlayer;
-			RenderPlayer = LocalPlayer;
+
+			// Set the property backing field directly
+			renderPlayer = LocalPlayer;
 		}
 
 		public readonly Actor WorldActor;
@@ -149,6 +159,8 @@ namespace OpenRA
 			}
 		}
 
+		public bool RulesContainTemporaryBlocker { get; private set; }
+
 		internal World(ModData modData, Map map, OrderManager orderManager, WorldType type)
 		{
 			Type = type;
@@ -185,6 +197,8 @@ namespace OpenRA
 				MapUid = Map.Uid,
 				MapTitle = Map.Title
 			};
+
+			RulesContainTemporaryBlocker = map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());
 		}
 
 		public void AddToMaps(Actor self, IOccupySpace ios)
@@ -407,6 +421,11 @@ namespace OpenRA
 
 				// Hash the shared random number generator.
 				ret += SharedRandom.Last;
+
+				// Hash player RenderPlayer status
+				foreach (var p in Players)
+					if (p.UnlockedRenderPlayer)
+						ret += Sync.HashPlayer(p);
 
 				return ret;
 			}

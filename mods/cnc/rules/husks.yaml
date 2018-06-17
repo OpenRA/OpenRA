@@ -17,7 +17,7 @@ HARV.Husk:
 		Image: harv.destroyed
 
 APC.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: APC (Destroyed)
 	TransformOnCapture:
@@ -44,7 +44,7 @@ ARTY.Husk:
 		Image: arty.destroyed
 
 BGGY.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Nod Buggy (Destroyed)
 	TransformOnCapture:
@@ -53,7 +53,7 @@ BGGY.Husk:
 		Image: bggy.destroyed
 
 BIKE.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Recon Bike (Destroyed)
 	TransformOnCapture:
@@ -62,7 +62,7 @@ BIKE.Husk:
 		Image: bike.destroyed
 
 JEEP.Husk:
-	Inherits: ^Husk
+	Inherits: ^LightHusk
 	Tooltip:
 		Name: Hum-Vee (Destroyed)
 	TransformOnCapture:

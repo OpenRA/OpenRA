@@ -50,6 +50,24 @@ namespace OpenRA.Mods.Common.Traits
 		void Sold(Actor self);
 	}
 
+	[RequireExplicitImplementation]
+	public interface INotifyCustomLayerChanged
+	{
+		void CustomLayerChanged(Actor self, byte oldLayer, byte newLayer);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyVisualPositionChanged
+	{
+		void VisualPositionChanged(Actor self, byte oldLayer, byte newLayer);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyFinishedMoving
+	{
+		void FinishedMoving(Actor self, byte oldLayer, byte newLayer);
+	}
+
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
@@ -68,6 +86,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
 		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyAiming
+	{
+		void StartedAiming(Actor self, AttackBase attack);
+		void StoppedAiming(Actor self, AttackBase attack);
 	}
 
 	[RequireExplicitImplementation]
@@ -131,6 +156,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyPassengerExited { void OnPassengerExited(Actor self, Actor passenger); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyEnteredCargo { void OnEnteredCargo(Actor self, Actor cargo); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
 
 	[RequireExplicitImplementation]
 	public interface IObservesVariablesInfo : ITraitInfo { }
@@ -313,9 +344,9 @@ namespace OpenRA.Mods.Common.Traits
 		byte Index { get; }
 		bool InteractsWithDefaultLayer { get; }
 
-		bool EnabledForActor(ActorInfo a, MobileInfo mi);
-		int EntryMovementCost(ActorInfo a, MobileInfo mi, CPos cell);
-		int ExitMovementCost(ActorInfo a, MobileInfo mi, CPos cell);
+		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
+		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
+		int ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);

@@ -202,7 +202,8 @@ namespace OpenRA
 
 		public TileSet(IReadOnlyFileSystem fileSystem, string filepath)
 		{
-			var yaml = MiniYaml.DictFromStream(fileSystem.Open(filepath), filepath);
+			var yaml = MiniYaml.FromStream(fileSystem.Open(filepath), filepath)
+				.ToDictionary(x => x.Key, x => x.Value);
 
 			// General info
 			FieldLoader.Load(this, yaml["General"]);

@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				var crewed = rulesSection.GetValue("Crewed", string.Empty);
 				if (!string.IsNullOrEmpty(crewed) && crewed == "yes")
-					Console.WriteLine("\tEmitInfantryOnSell:");
+					Console.WriteLine("\tSpawnActorsOnSell:");
 
 				var deploysInto = rulesSection.GetValue("DeploysInto", string.Empty);
 				if (!string.IsNullOrEmpty(deploysInto))

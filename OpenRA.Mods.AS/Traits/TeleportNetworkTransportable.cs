@@ -66,18 +66,18 @@ namespace OpenRA.Mods.AS.Traits
 		static bool IsValidOrder(Actor self, Order order)
 		{
 			// Not targeting a frozen actor
-			if (order.ExtraData == 0 && order.TargetActor == null)
+			if (order.Target.Actor == null)
 				return false;
 
-			var teleporttrait = order.TargetActor.TraitOrDefault<TeleportNetwork>();
+			var teleporttrait = order.Target.Actor.TraitOrDefault<TeleportNetwork>();
 
 			if (teleporttrait == null)
 				return false;
 
-			if (!HasEnoughCanals(order.TargetActor, teleporttrait.Info.Type))
+			if (!HasEnoughCanals(order.Target.Actor, teleporttrait.Info.Type))
 				return false;
 
-			return !order.TargetActor.IsPrimaryTeleportNetworkExit();
+			return !order.Target.Actor.IsPrimaryTeleportNetworkExit();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (target.Type != TargetType.Actor)
 				return;
 
-			var targettrait = order.TargetActor.TraitOrDefault<TeleportNetwork>();
+			var targettrait = order.Target.Actor.TraitOrDefault<TeleportNetwork>();
 
 			if (targettrait == null)
 				return;

@@ -76,9 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips,
-		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyCreated,
-		INotifyIdle, INotifyBlockingMove
+	public class Harvester : IIssueOrder, IResolveOrder, IPips, IExplodeModifier, IOrderVoice,
+		ISpeedModifier, ISync, INotifyCreated, INotifyIdle, INotifyBlockingMove
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
@@ -185,8 +184,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Start a search from each refinery's delivery location:
 			List<CPos> path;
-			var mi = self.Info.TraitInfo<MobileInfo>();
-			using (var search = PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
+			var li = self.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			using (var search = PathSearch.FromPoints(self.World, li, self, refs.Values.Select(r => r.Location), self.Location, false)
 				.WithCustomCost(loc =>
 				{
 					if (!refs.ContainsKey(loc))
@@ -330,7 +329,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.Resources.Contains(resType.Info.Type);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -341,7 +340,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Deliver" || order.OrderID == "Harvest")
 				return new Order(order.OrderID, self, target, queued);
@@ -349,7 +348,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
 				return Info.HarvestVoice;
@@ -360,7 +359,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Harvest")
 			{
@@ -396,26 +395,31 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "Deliver")
 			{
-				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
-				var iao = order.TargetActor.TraitOrDefault<IAcceptResources>();
-				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(order.TargetActor))
+				// Deliver orders are only valid for own/allied actors,
+				// which are guaranteed to never be frozen.
+				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				if (order.TargetActor != OwnerLinkedProc)
-					LinkProc(self, OwnerLinkedProc = order.TargetActor);
+				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
+				var targetActor = order.Target.Actor;
+				var iao = targetActor.TraitOrDefault<IAcceptResources>();
+				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(targetActor))
+					return;
+
+				if (targetActor != OwnerLinkedProc)
+					LinkProc(self, OwnerLinkedProc = targetActor);
 
 				idleSmart = true;
 
-				self.SetTargetLine(Target.FromOrder(self.World, order), Color.Green);
+				self.SetTargetLine(order.Target, Color.Green);
 
 				self.CancelActivity();
 
 				var deliver = new DeliverResources(self);
 				self.QueueActivity(deliver);
 
-				if (order.Target.Type == TargetType.Actor)
-					foreach (var n in notify)
-						n.MovingToRefinery(self, order.Target.Actor, deliver);
+				foreach (var n in notify)
+					n.MovingToRefinery(self, targetActor, deliver);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
@@ -440,7 +444,7 @@ namespace OpenRA.Mods.Common.Traits
 			return PipType.Transparent;
 		}
 
-		public IEnumerable<PipType> GetPips(Actor self)
+		IEnumerable<PipType> IPips.GetPips(Actor self)
 		{
 			var numPips = Info.PipCount;
 

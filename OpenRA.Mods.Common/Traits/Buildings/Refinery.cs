@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 				playerResources.GiveResources(amount);
 			}
 			else
-				playerResources.GiveCash(amount);
+				amount = playerResources.ChangeCash(amount);
 
 			var purifiers = self.World.ActorsWithTrait<IResourcePurifier>().Where(x => x.Actor.Owner == self.Owner).Select(x => x.Trait);
 			foreach (var p in purifiers)

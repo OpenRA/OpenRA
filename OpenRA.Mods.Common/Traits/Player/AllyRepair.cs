@@ -23,9 +23,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "RepairBuilding" && order.Target.Type == TargetType.Actor)
 			{
 				var building = order.Target.Actor;
-				if (building.Info.HasTraitInfo<RepairableBuildingInfo>())
-					if (building.AppearsFriendlyTo(self))
-						building.Trait<RepairableBuilding>().RepairBuilding(building, self.Owner);
+				if (!building.AppearsFriendlyTo(self))
+					return;
+
+				var rb = building.TraitOrDefault<RepairableBuilding>();
+				if (rb != null)
+					rb.RepairBuilding(building, self.Owner);
 			}
 		}
 	}

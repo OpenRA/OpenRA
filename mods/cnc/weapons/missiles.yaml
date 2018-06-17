@@ -143,7 +143,13 @@ MammothMissiles:
 	Report: rocket1.aud
 	ValidTargets: Ground
 	TargetActorCenter: true
+	# Remove default Missile properties
+	-Projectile:
 	Projectile: Bullet
+		Blockable: false
+		Image: DRAGON
+		Shadow: true
+		TrailImage: smokey
 		Inaccuracy: 853
 		LaunchAngle: 62
 		ContrailLength: 10

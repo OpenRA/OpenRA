@@ -197,7 +197,7 @@ SPEN:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
 		PrimaryCondition: primary
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
 		FinishRepairingNotification: UnitRepaired
@@ -206,6 +206,10 @@ SPEN:
 	ProductionBar:
 	Power:
 		Amount: -30
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 10c0
+	RenderDetectionCircle:
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: ships.soviet
@@ -306,7 +310,7 @@ SYRD:
 		Produces: Ship, Boat
 	PrimaryBuilding:
 		PrimaryCondition: primary
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
 		FinishRepairingNotification: UnitRepaired
@@ -315,6 +319,10 @@ SYRD:
 	ProductionBar:
 	Power:
 		Amount: -30
+	DetectCloaked:
+		CloakTypes: Underwater
+		Range: 10c0
+	RenderDetectionCircle:
 	ProvidesPrerequisite@allies:
 		Factions: allies, england, france, germany
 		Prerequisite: ships.allies
@@ -678,7 +686,7 @@ PBOX:
 		MaxWeight: 1
 		PipCount: 1
 		InitialUnits: e1
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	AttackGarrisoned:
 		Armaments: garrisoned
 		PortOffsets: 384,0,128, 224,-341,128, -224,-341,128, -384,0,128, -224,341,128, 224,341,128
@@ -742,7 +750,7 @@ HBOX:
 		MaxWeight: 1
 		PipCount: 1
 		InitialUnits: e1
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	DetectCloaked:
 		Range: 6c0
 	RenderRangeCircle:
@@ -867,7 +875,7 @@ SAM:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 6c0
+		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
@@ -916,7 +924,7 @@ ATEK:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10c0
+		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 6c0
@@ -1099,7 +1107,7 @@ FACT:
 		Name: Construction Yard
 	CustomSellValue:
 		Value: 2500
-	EmitInfantryOnSell:
+	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
@@ -1226,7 +1234,7 @@ SILO:
 	StoresResources:
 		PipCount: 5
 		Capacity: 3000
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
 	Explodes:
@@ -1346,7 +1354,7 @@ AFLD:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 7c0
+		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
@@ -1535,7 +1543,7 @@ APWR:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4c0
+		Range: 5c0
 	WithBuildingBib:
 	Power:
 		Amount: 200
@@ -1700,7 +1708,7 @@ KENN:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 	ProductionBar:
-	-EmitInfantryOnSell:
+	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@buildingname:
