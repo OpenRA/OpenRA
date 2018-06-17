@@ -64,7 +64,7 @@ spawner:
 	
 cyclicimpactprojectile:
 	Inherits: 105mm
-	Projectile: CyclicImpactProjectile
+	Projectile: WarheadTrailProjectile
 		Firemode: Focus
 		Weapon: cyclicimpactweapon
 		Speed: 300

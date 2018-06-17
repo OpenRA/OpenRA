@@ -59,8 +59,9 @@ MSLO:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	WithNukeLaunchAnimation:
-	Nydus:
-	NydusPrimaryExit:
+	TeleportNetwork:
+		Type: default
+	TeleportNetworkPrimaryExit:
 	Exit:
 		SpawnOffset: 0,0,0
 		ExitCell: 3,0

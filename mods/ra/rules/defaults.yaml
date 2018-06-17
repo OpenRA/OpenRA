@@ -299,7 +299,7 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Vehicle
-	Mindcontrollable:
+	MindControllable:
 
 ^TrackedVehicle:
 	Inherits: ^Vehicle
@@ -412,8 +412,8 @@
 			Radius: 128
 	EditorTilesetFilter:
 		Categories: Infantry
-	NydusTransportable:
-	Mindcontrollable:
+	TeleportNetworkTransportable:
+	MindControllable:
 
 ^Soldier:
 	Inherits: ^Infantry

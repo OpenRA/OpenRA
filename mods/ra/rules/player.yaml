@@ -105,4 +105,5 @@ Player:
 		Sequence: veteran
 	ResourceStorageWarning:
 	PlayerExperience:
-	NydusCounter:
+	TeleportNetworkManager:
+		Type: default
