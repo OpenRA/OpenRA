@@ -68,7 +68,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (!IsTraitDisabled && --ticks < 0)
 			{
 				var sp = self.TraitsImplementing<Production>()
-				.FirstOrDefault(p => p.Info.Produces.Contains(info.Type));
+				.FirstOrDefault(p => !p.IsTraitDisabled && !p.IsTraitPaused && p.Info.Produces.Contains(info.Type));
 
 				var activated = false;
 
