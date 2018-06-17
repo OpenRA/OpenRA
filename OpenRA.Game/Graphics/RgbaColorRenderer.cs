@@ -226,20 +226,16 @@ namespace OpenRA.Graphics
 
 		public void FillTriangle(float3 a, float3 b, float3 c, Color color)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (nv + 6 > renderer.TempBufferSize)
-				Flush();
-
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
 			var cg = color.G / 255.0f;
 			var cb = color.B / 255.0f;
 			var ca = color.A / 255.0f;
 
-			vertices[nv++] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[nv++] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			parent.DrawRGBAVertices(vertices);
 		}
 
 		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)
