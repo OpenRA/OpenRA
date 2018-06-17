@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Effects
 {
-	public class WarheadTrailProjectileEffect : IEffect
+	public class WarheadTrailProjectileEffect : IEffect, ISync
 	{
 		readonly WarheadTrailProjectileInfo info;
 		readonly ProjectileArgs args;
