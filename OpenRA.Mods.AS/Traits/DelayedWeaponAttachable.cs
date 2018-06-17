@@ -39,7 +39,8 @@ namespace OpenRA.Mods.AS.Traits
 		public override object Create(ActorInitializer init) { return new DelayedWeaponAttachable(init.Self, this); }
 	}
 
-	public class DelayedWeaponAttachable : ConditionalTrait<DelayedWeaponAttachableInfo>, ITick, INotifyKilled, ISelectionBar, INotifyCreated
+	public class DelayedWeaponAttachable : ConditionalTrait<DelayedWeaponAttachableInfo>, ITick, INotifyKilled, ISelectionBar,
+		INotifyCreated, INotifyTransform
 	{
 		public HashSet<DelayedWeaponTrigger> Container { get; private set; }
 
@@ -139,5 +140,23 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			return Info.ProgressBarColor;
 		}
+
+		void INotifyTransform.BeforeTransform(Actor self)
+		{
+			if (!IsTraitDisabled)
+			{
+				foreach (var trigger in Container)
+					trigger.Activate(self);
+
+				Container.RemoveWhere(p => !p.IsValid);
+
+				if (isValidCondition && token != ConditionManager.InvalidConditionToken && !Container.Any())
+					token = manager.RevokeCondition(self, token);
+			}
+		}
+
+		void INotifyTransform.OnTransform(Actor self) { }
+
+		void INotifyTransform.AfterTransform(Actor toActor) { }
 	}
 }
