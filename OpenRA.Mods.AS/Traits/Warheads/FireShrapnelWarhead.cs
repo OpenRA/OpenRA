@@ -57,9 +57,9 @@ namespace OpenRA.Mods.AS.Warheads
 			if (!IsValidImpact(target.CenterPosition, firedBy))
 				return;
 
-			var directActors = world.FindActorsInCircle(target.CenterPosition, VictimScanRadius);
+			var directActors = world.FindActorsOnCircle(target.CenterPosition, WDist.Zero);
 
-			var availableTargetActors = world.FindActorsInCircle(target.CenterPosition, weapon.Range)
+			var availableTargetActors = world.FindActorsOnCircle(target.CenterPosition, weapon.Range)
 				.Where(x => (AllowDirectHit || !directActors.Contains(x))
 					&& weapon.IsValidAgainst(Target.FromActor(x), firedBy.World, firedBy)
 					&& AimTargetStances.HasStance(firedBy.Owner.Stances[x.Owner]))

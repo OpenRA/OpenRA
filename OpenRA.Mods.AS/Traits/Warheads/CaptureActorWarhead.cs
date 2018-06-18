@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.AS.Warheads
 			if (!IsValidImpact(pos, firedBy))
 				return;
 
-			var availableActors = firedBy.World.FindActorsInCircle(pos, Range + VictimScanRadius);
+			var availableActors = firedBy.World.FindActorsOnCircle(pos, Range);
 
 			foreach (var a in availableActors)
 			{
