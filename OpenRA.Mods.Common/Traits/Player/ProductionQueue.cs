@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 			// so we must query other player traits from self, knowing that
 			// it refers to the same actor as self.Owner.PlayerActor
 			playerPower = (self.Info.Name == "player" ? self : self.Owner.PlayerActor).TraitOrDefault<PowerManager>();
-			productionTraits = self.TraitsImplementing<Production>().ToArray();
+			productionTraits = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).ToArray();
 		}
 
 		protected void ClearQueue()
@@ -239,6 +239,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
+			if (productionTraits.Any() && productionTraits.All(p => p.IsTraitDisabled))
+				return Enumerable.Empty<ActorInfo>();
 			if (developerMode.AllTech)
 				return Producible.Keys;
 
@@ -247,6 +249,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
+			if (productionTraits.Any() && productionTraits.All(p => p.IsTraitDisabled))
+				return Enumerable.Empty<ActorInfo>();
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();
 			if (developerMode.AllTech)

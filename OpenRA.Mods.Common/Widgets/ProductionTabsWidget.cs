@@ -161,6 +161,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			var tabs = Groups[queueGroup].Tabs.Where(t => t.Queue.BuildableItems().Any());
+
+			if (!tabs.Any())
+				return;
+
 			var rb = RenderBounds;
 			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
@@ -185,7 +190,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var font = Game.Renderer.Fonts["TinyBold"];
 			contentWidth = 0;
 
-			foreach (var tab in Groups[queueGroup].Tabs)
+			foreach (var tab in tabs)
 			{
 				var rect = new Rectangle(origin.X + contentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
