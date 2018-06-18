@@ -55,6 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		static readonly List<CPos> EmptyPath = new List<CPos>(0);
 		readonly World world;
+		DomainIndex domainIndex;
+		bool cached;
 
 		public PathFinder(World world)
 		{
@@ -64,9 +66,13 @@ namespace OpenRA.Mods.Common.Traits
 		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
 		{
 			var li = self.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			if (!cached)
+			{
+				domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
+				cached = true;
+			}
 
 			// If a water-land transition is required, bail early
-			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null && !domainIndex.IsPassable(source, target, li))
 				return EmptyPath;
 
@@ -86,6 +92,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
 		{
+			if (!cached)
+			{
+				domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
+				cached = true;
+			}
+
 			var mi = self.Info.TraitInfo<MobileInfo>();
 			var li = mi.LocomotorInfo;
 			var targetCell = world.Map.CellContaining(target);
@@ -101,7 +113,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			// See if there is any cell within range that does not involve a cross-domain request
 			// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
-			var domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
 			if (domainIndex != null)
 			{
 				tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(source, t, li)));
