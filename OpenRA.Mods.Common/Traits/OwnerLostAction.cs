@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -27,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Map player to use when 'Action' is 'ChangeOwner'.")]
 		public readonly string Owner = "Neutral";
 
+		[Desc("The deathtypes used when 'Action' is 'Kill'.")]
+		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+
 		public override object Create(ActorInitializer init) { return new OwnerLostAction(init, this); }
 	}
 
@@ -41,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (Info.Action == OwnerLostActionType.Kill)
-				self.Kill(self);
+				self.Kill(self, Info.DeathTypes);
 			else if (Info.Action == OwnerLostActionType.Dispose)
 				self.Dispose();
 			else if (Info.Action == OwnerLostActionType.ChangeOwner)
