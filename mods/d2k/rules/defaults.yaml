@@ -270,6 +270,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+		DeathTypes: ExplosionDeath
 	Health:
 	Armor:
 		Type: none

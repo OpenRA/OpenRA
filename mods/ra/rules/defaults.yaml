@@ -314,6 +314,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+		DeathTypes: DefaultDeath
 	DrawLineToTarget:
 	Health:
 		HP: 2500
