@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Warheads
 					return;
 
 				var closestActiveShape = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled)
-					.MinByOrDefault(t => t.Info.Type.DistanceFromEdge(victim.CenterPosition, victim));
+					.MinByOrDefault(t => t.DistanceFromEdge(victim, victim.CenterPosition));
 
 				// Cannot be damaged without an active HitShape
 				if (closestActiveShape == null)

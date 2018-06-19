@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 				// If the impact position is within any HitShape, we have a direct hit
 				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
-				var directHit = activeShapes.Any(i => i.Info.Type.DistanceFromEdge(pos, victim).Length <= 0);
+				var directHit = activeShapes.Any(i => i.DistanceFromEdge(victim, pos).Length <= 0);
 
 				// If the warhead landed outside the actor's hit-shape(s), we need to skip the rest so it won't be considered an invalidHit
 				if (!directHit)

@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var activeShapes = shapes.Where(Exts.IsTraitEnabled);
 			foreach (var s in activeShapes)
-				foreach (var r in s.Info.Type.RenderDebugOverlay(wr, self))
+				foreach (var r in s.RenderDebugOverlay(self, wr))
 					yield return r;
 
 			var positions = Target.FromActor(self).Positions;
