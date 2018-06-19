@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ChuteSound = null;
 
 		[Desc("Notification to play when dropping the unit.")]
+		[NotificationReference]
 		public readonly string ReadyAudio = null;
 
 		public override object Create(ActorInitializer init) { return new ProductionParadrop(init, this); }

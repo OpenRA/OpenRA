@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Maximum = int.MaxValue;
 
 		[Desc("Sound the victim will hear when they get robbed.")]
+		[NotificationReference]
 		public readonly string Notification = null;
 
 		[Desc("Whether to show the cash tick indicators rising from the actor.")]

@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 {
 	class ActorLostNotificationInfo : ITraitInfo
 	{
-		public readonly string Notification = "UnitLost";
+		[NotificationReference] public readonly string Notification = "UnitLost";
 		public readonly bool NotifyAll = false;
 
 		public object Create(ActorInitializer init) { return new ActorLostNotification(this); }

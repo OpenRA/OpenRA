@@ -28,10 +28,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Notification played when production is activated.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
+		[NotificationReference]
 		public readonly string ReadyAudio = null;
 
 		[Desc("Notification played when the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
+		[NotificationReference]
 		public readonly string BlockedAudio = null;
 
 		public override object Create(ActorInitializer init) { return new ProduceActorPower(init, this); }

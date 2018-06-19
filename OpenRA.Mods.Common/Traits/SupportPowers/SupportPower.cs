@@ -32,17 +32,17 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Prerequisites = { };
 
 		public readonly string BeginChargeSound = null;
-		public readonly string BeginChargeSpeechNotification = null;
+		[NotificationReference] public readonly string BeginChargeSpeechNotification = null;
 		public readonly string EndChargeSound = null;
-		public readonly string EndChargeSpeechNotification = null;
+		[NotificationReference] public readonly string EndChargeSpeechNotification = null;
 		public readonly string SelectTargetSound = null;
-		public readonly string SelectTargetSpeechNotification = null;
+		[NotificationReference] public readonly string SelectTargetSpeechNotification = null;
 		public readonly string InsufficientPowerSound = null;
-		public readonly string InsufficientPowerSpeechNotification = null;
+		[NotificationReference] public readonly string InsufficientPowerSpeechNotification = null;
 		public readonly string LaunchSound = null;
-		public readonly string LaunchSpeechNotification = null;
+		[NotificationReference] public readonly string LaunchSpeechNotification = null;
 		public readonly string IncomingSound = null;
-		public readonly string IncomingSpeechNotification = null;
+		[NotificationReference] public readonly string IncomingSpeechNotification = null;
 
 		[Desc("Defines to which players the timer is shown.")]
 		public readonly Stance DisplayTimerStances = Stance.None;

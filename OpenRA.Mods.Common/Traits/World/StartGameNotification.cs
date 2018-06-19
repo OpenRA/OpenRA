@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class StartGameNotificationInfo : ITraitInfo
 	{
-		public readonly string Notification = "StartGame";
+		[NotificationReference] public readonly string Notification = "StartGame";
 
 		public object Create(ActorInitializer init) { return new StartGameNotification(this); }
 	}

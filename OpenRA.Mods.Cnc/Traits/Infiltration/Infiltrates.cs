@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
 		[Desc("Notification to play when a building is infiltrated.")]
+		[NotificationReference]
 		public readonly string Notification = "BuildingInfiltrated";
 
 		[Desc("Experience to grant to the infiltrating player.")]

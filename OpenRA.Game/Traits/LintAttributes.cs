@@ -36,6 +36,7 @@ namespace OpenRA.Traits
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class LocomotorReferenceAttribute : Attribute { }
+	public sealed class NotificationReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class SequenceReferenceAttribute : Attribute

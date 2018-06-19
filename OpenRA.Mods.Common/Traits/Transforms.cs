@@ -35,9 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] NoTransformSounds = { };
 
 		[Desc("Notification to play when transforming.")]
+		[NotificationReference]
 		public readonly string TransformNotification = null;
 
 		[Desc("Notification to play when the transformation is blocked.")]
+		[NotificationReference]
 		public readonly string NoTransformNotification = null;
 
 		[Desc("Cursor to display when able to (un)deploy the actor.")]

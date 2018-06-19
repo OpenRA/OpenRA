@@ -26,11 +26,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Order name that toggles the condition.")]
 		public readonly string OrderName = null;
 
-		public readonly string EnabledSound = null;
-		public readonly string EnabledSpeech = null;
+		[NotificationReference] public readonly string EnabledSound = null;
+		[NotificationReference] public readonly string EnabledSpeech = null;
 
-		public readonly string DisabledSound = null;
-		public readonly string DisabledSpeech = null;
+		[NotificationReference] public readonly string DisabledSound = null;
+		[NotificationReference] public readonly string DisabledSpeech = null;
 
 		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(init.Self, this); }
 	}

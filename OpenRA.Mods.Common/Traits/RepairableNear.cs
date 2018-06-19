@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
