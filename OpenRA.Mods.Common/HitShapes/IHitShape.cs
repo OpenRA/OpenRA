@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.HitShapes
 		WDist OuterRadius { get; }
 
 		WDist DistanceFromEdge(WVec v);
-		WDist DistanceFromEdge(WPos pos, Actor actor);
+		WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation);
 
 		void Initialize();
-		IEnumerable<IRenderable> RenderDebugOverlay(WorldRenderer wr, Actor actor);
+		IEnumerable<IRenderable> RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation);
 	}
 }

@@ -45,24 +45,21 @@ namespace OpenRA.Mods.Common.HitShapes
 			return new WDist(Math.Max(0, v.Length - Radius.Length));
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge(pos - (origin + new WVec(0, 0, VerticalTopOffset)));
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalTopOffset)));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge(pos - (origin + new WVec(0, 0, VerticalBottomOffset)));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge(pos - (actorPos + new WVec(0, 0, VerticalBottomOffset)));
-
-			return DistanceFromEdge(pos - new WPos(actorPos.X, actorPos.Y, pos.Z));
+			return DistanceFromEdge(pos - new WPos(origin.X, origin.Y, pos.Z));
 		}
 
-		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			yield return new CircleAnnotationRenderable(actorPos + new WVec(0, 0, VerticalTopOffset), Radius, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(actorPos + new WVec(0, 0, VerticalBottomOffset), Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin + new WVec(0, 0, VerticalTopOffset), Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin + new WVec(0, 0, VerticalBottomOffset), Radius, 1, Color.Yellow);
 		}
 	}
 }

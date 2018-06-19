@@ -94,31 +94,29 @@ namespace OpenRA.Mods.Common.HitShapes
 			return new WDist(r.HorizontalLength);
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
+			orientation += WRot.FromYaw(LocalYaw);
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
 
-			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-orientation));
+			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
+			orientation += WRot.FromYaw(LocalYaw);
 
-			var vertsTop = combatOverlayVertsTop.Select(v => actorPos + v.Rotate(orientation)).ToArray();
-			var vertsBottom = combatOverlayVertsBottom.Select(v => actorPos + v.Rotate(orientation)).ToArray();
+			var vertsTop = combatOverlayVertsTop.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var vertsBottom = combatOverlayVertsBottom.Select(v => origin + v.Rotate(orientation)).ToArray();
 
-			yield return new PolygonAnnotationRenderable(vertsTop, actorPos, 1, Color.Yellow);
-			yield return new PolygonAnnotationRenderable(vertsBottom, actorPos, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(actorPos, OuterRadius, 1, Color.LimeGreen);
+			yield return new PolygonAnnotationRenderable(vertsTop, origin, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(vertsBottom, origin, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, Color.LimeGreen);
 		}
 	}
 }

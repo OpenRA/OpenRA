@@ -81,27 +81,23 @@ namespace OpenRA.Mods.Common.HitShapes
 			return new WDist(Math.Max(0, distance - Radius.Length));
 		}
 
-		public WDist DistanceFromEdge(WPos pos, Actor actor)
+		public WDist DistanceFromEdge(WPos pos, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
+			if (pos.Z > origin.Z + VerticalTopOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalTopOffset))).Rotate(-orientation));
 
-			if (pos.Z > actorPos.Z + VerticalTopOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalTopOffset))).Rotate(-actor.Orientation));
+			if (pos.Z < origin.Z + VerticalBottomOffset)
+				return DistanceFromEdge((pos - (origin + new WVec(0, 0, VerticalBottomOffset))).Rotate(-orientation));
 
-			if (pos.Z < actorPos.Z + VerticalBottomOffset)
-				return DistanceFromEdge((pos - (actorPos + new WVec(0, 0, VerticalBottomOffset))).Rotate(-actor.Orientation));
-
-			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-actor.Orientation));
+			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, WPos origin, WRot orientation)
 		{
-			var actorPos = actor.CenterPosition;
-
-			var a = actorPos + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(actor.Orientation);
-			var b = actorPos + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(actor.Orientation);
-			var aa = actorPos + new WVec(PointA.X, PointA.Y, VerticalBottomOffset).Rotate(actor.Orientation);
-			var bb = actorPos + new WVec(PointB.X, PointB.Y, VerticalBottomOffset).Rotate(actor.Orientation);
+			var a = origin + new WVec(PointA.X, PointA.Y, VerticalTopOffset).Rotate(orientation);
+			var b = origin + new WVec(PointB.X, PointB.Y, VerticalTopOffset).Rotate(orientation);
+			var aa = origin + new WVec(PointA.X, PointA.Y, VerticalBottomOffset).Rotate(orientation);
+			var bb = origin + new WVec(PointB.X, PointB.Y, VerticalBottomOffset).Rotate(orientation);
 
 			var offset1 = new WVec(a.Y - b.Y, b.X - a.X, 0);
 			offset1 = offset1 * Radius.Length / offset1.Length;
@@ -112,7 +108,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			yield return new CircleAnnotationRenderable(b, Radius, 1, Color.Yellow);
 			yield return new CircleAnnotationRenderable(aa, Radius, 1, Color.Yellow);
 			yield return new CircleAnnotationRenderable(bb, Radius, 1, Color.Yellow);
-			yield return new CircleAnnotationRenderable(actorPos, OuterRadius, 1,  Color.LimeGreen);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1,  Color.LimeGreen);
 			yield return new LineAnnotationRenderable(a - offset1, b - offset1, 1, Color.Yellow);
 			yield return new LineAnnotationRenderable(a + offset1, b + offset1, 1, Color.Yellow);
 			yield return new LineAnnotationRenderable(aa - offset2, bb - offset2, 1, Color.Yellow);

@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.HitShapes;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Shape of actor for targeting and damage calculations.")]
 	public class HitShapeInfo : ConditionalTraitInfo, Requires<BodyOrientationInfo>
 	{
+		[Desc("Name of turret this shape is linked to. Leave empty to link shape to body.")]
+		public readonly string Turret = null;
+
 		[Desc("Create a targetable position for each offset listed here (relative to CenterPosition).")]
 		public readonly WVec[] TargetableOffsets = { WVec.Zero };
 
@@ -66,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		BodyOrientation orientation;
 		ITargetableCells targetableCells;
+		Turreted turret;
 
 		public HitShape(Actor self, HitShapeInfo info)
 			: base(info) { }
@@ -74,6 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			orientation = self.Trait<BodyOrientation>();
 			targetableCells = self.TraitOrDefault<ITargetableCells>();
+			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
 
 			base.Created(self);
 		}
@@ -91,9 +97,53 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var o in Info.TargetableOffsets)
 			{
-				var offset = orientation.LocalToWorld(o.Rotate(orientation.QuantizeOrientation(self, self.Orientation)));
+				var offset = CalculateTargetableOffset(self, o);
 				yield return self.CenterPosition + offset;
 			}
+		}
+
+		WVec CalculateTargetableOffset(Actor self, WVec offset)
+		{
+			var localOffset = offset;
+			var quantizedBodyOrientation = orientation.QuantizeOrientation(self, self.Orientation);
+
+			if (turret != null)
+			{
+				// WorldOrientation is quantized to satisfy the *Fudges.
+				// Need to then convert back to a pseudo-local coordinate space, apply offsets,
+				// then rotate back at the end
+				var turretOrientation = turret.WorldOrientation(self) - quantizedBodyOrientation;
+				localOffset = localOffset.Rotate(turretOrientation);
+				localOffset += turret.Offset;
+			}
+
+			return orientation.LocalToWorld(localOffset.Rotate(quantizedBodyOrientation));
+		}
+
+		public WDist DistanceFromEdge(Actor self, WPos pos)
+		{
+			var origin = self.CenterPosition;
+			var orientation = self.Orientation;
+			if (turret != null)
+			{
+				origin += turret.Position(self);
+				orientation = turret.WorldOrientation(self);
+			}
+
+			return Info.Type.DistanceFromEdge(pos, origin, orientation);
+		}
+
+		public IEnumerable<IRenderable> RenderDebugOverlay(Actor self, WorldRenderer wr)
+		{
+			var origin = self.CenterPosition;
+			var orientation = self.Orientation;
+			if (turret != null)
+			{
+				origin += turret.Position(self);
+				orientation = turret.WorldOrientation(self);
+			}
+
+			return Info.Type.RenderDebugOverlay(wr, origin, orientation);
 		}
 	}
 }
