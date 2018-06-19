@@ -220,7 +220,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		IEnumerable<Tuple<FireArmamentPower, WDist, WDist>> GetActualInstances(Actor self, FireArmamentPower power)
 		{
-			if (power.FireArmamentPowerInfo.MaximumFiringInstances > 1)
+			if (!power.Info.AllowMultiple)
 			{
 				var actorswithpower = self.World.ActorsWithTrait<FireArmamentPower>()
 					.Where(x => x.Actor.Owner == self.Owner && x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName));
