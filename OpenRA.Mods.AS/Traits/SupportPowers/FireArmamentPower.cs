@@ -196,6 +196,18 @@ namespace OpenRA.Mods.AS.Traits
 			self.World.AddFrameEndTask(w => activeArmaments.Remove(a));
 		}
 
+		public bool IsActive(Actor self)
+		{
+			var activeArmaments = Armaments.Where(x => !x.IsTraitDisabled).ToHashSet();
+
+			var armamentTurrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
+
+			// TODO: Fix this when upgradable Turreteds arrive.
+			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentTurrets.Contains(x.Name)).ToHashSet();
+
+			return activeArmaments.Count > 0 && turrets.Count > 0;
+		}
+
 		float FractionComplete { get { return ticks * 1f / estimatedTicks; } }
 	}
 
@@ -227,7 +239,9 @@ namespace OpenRA.Mods.AS.Traits
 			if (!power.Info.AllowMultiple)
 			{
 				var actorswithpower = self.World.ActorsWithTrait<FireArmamentPower>()
-					.Where(x => x.Actor.Owner == self.Owner && x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName));
+					.Where(x => x.Actor.Owner == self.Owner
+						&& x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName)
+						&& x.Trait.IsActive(x.Actor));
 				foreach (var a in actorswithpower)
 				{
 					yield return Tuple.Create(a.Trait,
