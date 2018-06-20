@@ -318,6 +318,7 @@
     <Compile Include="Traits\Conditions\GrantExternalConditionToCrusher.cs" />
     <Compile Include="Traits\Conditions\GrantRandomCondition.cs" />
     <Compile Include="Traits\Contrail.cs" />
+    <Compile Include="Traits\ExternalResourceMultiplier.cs" />
     <Compile Include="Traits\Multipliers\HarvesterResourceMultiplier.cs" />
     <Compile Include="Traits\Multipliers\RefineryResourceMultiplier.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />

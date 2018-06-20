@@ -113,6 +113,10 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				amount = playerResources.ChangeCash(amount);
 
+			var externalmultipliers = self.World.ActorsWithTrait<ExternalResourceMultiplier>().Where(x => x.Actor.Owner == self.Owner).Select(x => x.Trait);
+			foreach (var erm in externalmultipliers)
+				erm.ProvideCash(amount);
+
 			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}
