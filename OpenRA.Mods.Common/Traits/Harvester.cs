@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyHarvesterAction[] notify;
 		bool idleSmart = true;
 		int idleDuration;
+		HarvesterResourceMultiplier[] multipliers;
 
 		[Sync] public bool LastSearchFailed;
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -120,6 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			notify = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			multipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
@@ -302,10 +304,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var type = contents.First().Key;
 				var iao = proc.Trait<IAcceptResources>();
-				if (!iao.CanGiveResource(type.ValuePerUnit))
+				var value = Util.ApplyPercentageModifiers(type.ValuePerUnit, multipliers.Select(m => m.GetModifier()));
+				if (!iao.CanGiveResource(value))
 					return false;
 
-				iao.GiveResource(type.ValuePerUnit);
+				iao.GiveResource(value);
 				if (--contents[type] == 0)
 					contents.Remove(type);
 
