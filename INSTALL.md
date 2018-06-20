@@ -25,8 +25,11 @@ Linux
 
 Use `make dependencies` to map the native libraries to your system and fetch the remaining CLI dependencies to place them at the appropriate places.
 
-To compile OpenRA, run `make all` from the command line.
-
+To compile OpenRA for online play run: 
+  ```
+  git checkout $(git tag -l | tail -n 1)
+  make && make version
+  ```
 Run with either `launch-game.sh` or `mono --debug OpenRA.Game.exe`.
 
 Type `sudo make install` for system wide installation. Run `make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run from the `openra` shortcut.
@@ -64,6 +67,13 @@ Gentoo
 * x11-misc/xdg-utils
 * gnome-extra/zenity
 * net-misc/curl
+
+Fedora
+=====
+
+```
+sudo cert-sync /etc/pki/tls/certs/ca-bundle.crt
+```
 
 OSX
 =====
