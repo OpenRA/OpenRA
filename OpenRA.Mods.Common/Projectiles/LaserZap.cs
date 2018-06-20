@@ -81,13 +81,14 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class LaserZap : IProjectile, ISync
+	public class LaserZap : IProjectile, ISync, ISpatiallyPartitionable
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;
 		readonly Animation hitanim;
 		readonly Color color;
 		readonly Color secondaryColor;
+		readonly WDist width;
 		int ticks = 0;
 		bool doneDamage;
 		bool animationComplete;
@@ -103,15 +104,27 @@ namespace OpenRA.Mods.Common.Projectiles
 			target = args.PassiveTarget;
 			source = args.Source;
 
+			var world = args.SourceActor.World;
+
 			if (info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = OpenRA.Mods.Common.Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				var maxOffset = inaccuracy * (target - source).Length / args.Weapon.Range.Length;
-				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+				target += WVec.FromPDF(world.SharedRandom, 2) * maxOffset / 1024;
 			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
-				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
+				hitanim = new Animation(world, info.HitAnim);
+
+			width = info.SecondaryBeam && info.SecondaryBeamWidth > info.Width ? info.SecondaryBeamWidth : info.Width;
+			var beamCenter = WPos.Lerp(target, source, 1, 2);
+			world.ScreenMap.Add(this, beamCenter, CalculateScreenBounds(world));
+		}
+
+		Size CalculateScreenBounds(World world)
+		{
+			var beamDelta = target - source;
+			return Util.ProjectileScreenBounds(world, hitanim, width, beamDelta);
 		}
 
 		public void Tick(World world)
@@ -128,6 +141,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = blockedPos;
 			}
 
+			var beamCenter = WPos.Lerp(target, source, 1, 2);
+			world.ScreenMap.Update(this, beamCenter, CalculateScreenBounds(world));
+
 			if (!doneDamage)
 			{
 				if (hitanim != null)
@@ -143,7 +159,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				hitanim.Tick();
 
 			if (++ticks >= info.Duration && animationComplete)
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

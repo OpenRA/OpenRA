@@ -107,6 +107,28 @@ namespace OpenRA.Mods.Common
 			return WPos.Lerp(fromPos, toPos, 1, 2);
 		}
 
+		// Maximum number of pixels along vertical or horizontal axis covered by specified WDist.
+		// Used to calculate ScreenBounds of non-sprite or mixed effects.
+		public static int MaxPixelsAlongDistance(World world, int distance)
+		{
+			var tileSize = world.Map.Grid.TileSize;
+			var longestEdge = tileSize.Height > tileSize.Width ? tileSize.Height : tileSize.Width;
+			var distancePerPixel = (decimal)(1024 / longestEdge).Clamp(1, int.MaxValue);
+			var pixels = Math.Ceiling((decimal)distance / distancePerPixel);
+
+			return (int)pixels.Clamp(1, int.MaxValue);
+		}
+
+		public static Size ProjectileScreenBounds(World world, Animation anim, WDist margin, WVec delta)
+		{
+			var width = anim != null ? (int)anim.Image.Size.X : 0;
+			var height = anim != null ? (int)anim.Image.Size.Y : 0;
+			width += MaxPixelsAlongDistance(world, (int)Exts.ISqrt(delta.X * delta.X) + margin.Length);
+			height += MaxPixelsAlongDistance(world, (int)(Exts.ISqrt(delta.Y * delta.Y) + (int)Exts.ISqrt(delta.Z * delta.Z)) / 2 + margin.Length);
+
+			return new Size(width, height);
+		}
+
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, MersenneTwister random)
 		{
 			// Fisher-Yates

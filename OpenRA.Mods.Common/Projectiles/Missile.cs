@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Projectiles
 	}
 
 	// TODO: double check square roots!!!
-	public class Missile : IProjectile, ISync
+	public class Missile : IProjectile, ISync, ISpatiallyPartitionable
 	{
 		enum States
 		{
@@ -247,6 +247,9 @@ namespace OpenRA.Mods.Common.Projectiles
 				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
 				contrail = new ContrailRenderable(world, color, info.ContrailWidth, info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
 			}
+
+			if (anim != null)
+				world.ScreenMap.Add(this, pos, anim.Image);
 
 			trailPalette = info.TrailPalette;
 			if (info.TrailUsePlayerPalette)
@@ -781,7 +784,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			ticks++;
 			if (anim != null)
+			{
 				anim.Tick();
+				world.ScreenMap.Update(this, pos, anim.Image);
+			}
 
 			// Switch from freefall mode to homing mode
 			if (ticks == info.HomingActivationDelay + 1)
@@ -876,7 +882,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
-			world.AddFrameEndTask(w => w.Remove(this));
+			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			// Don't blow up in our launcher's face!
 			if (ticks <= info.Arm)

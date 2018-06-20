@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
 	}
 
-	public class Bullet : IProjectile, ISync
+	public class Bullet : IProjectile, ISync, ISpatiallyPartitionable
 	{
 		readonly BulletInfo info;
 		readonly ProjectileArgs args;
@@ -170,6 +170,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			smokeTicks = info.TrailDelay;
 			remainingBounces = info.BounceCount;
+
+			if (anim != null)
+				world.ScreenMap.Add(this, pos, anim.Image);
 		}
 
 		int GetEffectiveFacing()
@@ -188,7 +191,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			if (anim != null)
+			{
 				anim.Tick();
+				world.ScreenMap.Update(this, pos, anim.Image);
+			}
 
 			var lastPos = pos;
 			pos = WPos.LerpQuadratic(source, target, angle, ticks, length);
@@ -274,7 +280,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
-			world.AddFrameEndTask(w => w.Remove(this));
+			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 
 			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 		}

@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public IProjectile Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
 
-	public class GravityBomb : IProjectile, ISync
+	public class GravityBomb : IProjectile, ISync, ISpatiallyPartitionable
 	{
 		readonly GravityBombInfo info;
 		readonly Animation anim;
@@ -67,12 +67,15 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(args.SourceActor.World, info.Image);
+				var world = args.SourceActor.World;
+				anim = new Animation(world, info.Image);
 
 				if (!string.IsNullOrEmpty(info.OpenSequence))
 					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom)));
 				else
-					anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom));
+					anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
+
+				world.ScreenMap.Add(this, pos, anim.Image);
 			}
 		}
 
@@ -84,12 +87,15 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (pos.Z <= args.PassiveTarget.Z)
 			{
 				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
-				world.AddFrameEndTask(w => w.Remove(this));
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
 				args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
 			}
 
 			if (anim != null)
+			{
 				anim.Tick();
+				world.ScreenMap.Update(this, pos, anim.Image);
+			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
