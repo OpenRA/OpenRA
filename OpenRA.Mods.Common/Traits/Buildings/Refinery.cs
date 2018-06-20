@@ -52,11 +52,13 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, IAcceptResources, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyActorDisposing
+	public class Refinery : INotifyCreated, ITick, IAcceptResources, INotifySold, INotifyCapture,
+		INotifyOwnerChanged, ISync, INotifyActorDisposing
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
 		PlayerResources playerResources;
+		RefineryResourceMultiplier[] resourceMultipliers;
 
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
@@ -79,6 +81,11 @@ namespace OpenRA.Mods.Common.Traits
 			currentDisplayTick = info.TickRate;
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			resourceMultipliers = self.TraitsImplementing<RefineryResourceMultiplier>().ToArray();
+		}
+
 		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
 			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
@@ -94,6 +101,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void GiveResource(int amount)
 		{
+			amount = Util.ApplyPercentageModifiers(amount, resourceMultipliers.Select(m => m.GetModifier()));
+
 			if (info.UseStorage)
 			{
 				if (info.DiscardExcessResources)
