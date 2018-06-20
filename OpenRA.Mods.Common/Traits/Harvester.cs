@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyHarvesterAction[] notifyHarvesterAction;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
+		HarvesterResourceMultiplier[] resourceMultipliers;
 
 		[Sync] public bool LastSearchFailed;
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -127,6 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
 
@@ -249,7 +251,7 @@ namespace OpenRA.Mods.Common.Traits
 				var type = contents.First().Key;
 				var iao = proc.Trait<IAcceptResources>();
 				var count = Math.Min(contents[type], Info.BaleUnloadAmount);
-				var value = type.ValuePerUnit * count;
+				var value = Util.ApplyPercentageModifiers(type.ValuePerUnit * count, resourceMultipliers.Select(m => m.GetModifier()));
 
 				if (!iao.CanGiveResource(value))
 					return false;
