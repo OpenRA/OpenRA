@@ -25,12 +25,11 @@ namespace OpenRA.Mods.Common.Lint
 
 		List<MiniYamlNode> sequenceDefinitions;
 
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			if (map.SequenceDefinitions == null)
 				return;
 
-			var modData = Game.ModData;
 			this.emitError = emitError;
 
 			sequenceDefinitions = MiniYaml.Load(map, modData.Manifest.Sequences, map.SequenceDefinitions);

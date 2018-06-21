@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckMapCordon : ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			if (map.Bounds.Left == 0 || map.Bounds.Top == 0
 				|| map.Bounds.Right == map.MapSize.X || map.Bounds.Bottom == map.MapSize.Y)
