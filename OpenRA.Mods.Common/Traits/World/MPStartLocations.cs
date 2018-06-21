@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			yield return new LobbyBooleanOption(
-				"randomspawnpositions",
+				"separateteamspawns",
 				SeparateTeamSpawnsCheckboxLabel,
 				SeparateTeamSpawnsCheckboxDescription,
 				SeparateTeamSpawnsCheckboxVisible,
