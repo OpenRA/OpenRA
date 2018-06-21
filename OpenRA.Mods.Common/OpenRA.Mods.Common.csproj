@@ -885,6 +885,7 @@
     <Compile Include="ModCredits.cs" />
     <Compile Include="UpdateRules\Rules\MoveHackyAISupportPowerDecisions.cs" />
     <Compile Include="Lint\CheckUnknownTraitFields.cs" />
+    <Compile Include="Lint\CheckUnknownWeaponFields.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
