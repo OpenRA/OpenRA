@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						try
 						{
 							var customMapPass = (ILintMapPass)modData.ObjectCreator.CreateBasic(customMapPassType);
-							customMapPass.Run(EmitError, EmitWarning, testMap);
+							customMapPass.Run(EmitError, EmitWarning, modData, testMap);
 						}
 						catch (Exception e)
 						{

@@ -14,6 +14,6 @@ using System;
 namespace OpenRA.Mods.Common.Lint
 {
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData); }
-	public interface ILintMapPass { void Run(Action<string> emitError, Action<string> emitWarning, Map map); }
+	public interface ILintMapPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map); }
 	public interface ILintRulesPass { void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules); }
 }
