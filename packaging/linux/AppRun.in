@@ -26,6 +26,17 @@ if mono_missing_or_old; then
   exit 1
 fi
 
+# Some distros and self-compiled mono installations don't set up
+# the SSL required for http web queries. If we detect that these
+# are missing we can try and create a local sync as a fallback.
+if [ ! -d "/usr/share/.mono/certs" ] && [ ! -d "~/.config/.mono/certs" ]; then
+  if [ -f "/etc/pki/tls/certs/ca-bundle.crt" ]; then
+    cert-sync --quiet --user /etc/pki/tls/certs/ca-bundle.crt
+  elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
+    cert-sync --quiet --user /etc/ssl/certs/ca-certificates.crt
+  fi
+fi
+
 # Run the game or server
 HERE="$(dirname "$(readlink -f "${0}")")"
 export PATH="${HERE}"/usr/bin/:"${PATH}"
