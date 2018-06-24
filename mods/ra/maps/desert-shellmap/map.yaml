@@ -1207,10 +1207,10 @@ Actors:
 		Location: 60,93
 		Owner: Neutral
 	Chinook1Entry: waypoint
-		Location: 44,126
+		Location: 45,126
 		Owner: Neutral
 	Chinook2Entry: waypoint
-		Location: 47,126
+		Location: 48,126
 		Owner: Neutral
 	Paradrop1: waypoint
 		Location: 70,50

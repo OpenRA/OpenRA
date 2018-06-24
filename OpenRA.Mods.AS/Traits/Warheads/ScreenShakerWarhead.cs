@@ -18,7 +18,11 @@ namespace OpenRA.Mods.AS.Warheads
 	{
 		[FieldLoader.Require]
 		[Desc("The intensity of the shake.")]
-		public readonly int Intensity = 10;
+		public readonly int Intensity;
+
+		[FieldLoader.Require]
+		[Desc("The duration of the shake.")]
+		public readonly int Duration;
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
@@ -31,7 +35,7 @@ namespace OpenRA.Mods.AS.Warheads
 			var screenShaker = firedBy.World.WorldActor.TraitOrDefault<ScreenShaker>();
 
 			if (screenShaker != null)
-				screenShaker.AddEffect(Intensity, target.CenterPosition, 1);
+				screenShaker.AddEffect(Duration, target.CenterPosition, Intensity);
 		}
 	}
 }

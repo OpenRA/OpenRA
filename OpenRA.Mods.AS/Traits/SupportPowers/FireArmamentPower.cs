@@ -46,6 +46,10 @@ namespace OpenRA.Mods.AS.Traits
 		[Desc("Amount of time after firing to remove the camera.")]
 		public readonly int CameraRemoveDelay = 25;
 
+		public readonly WDist TargetCircleRange = WDist.Zero;
+		public readonly Color TargetCircleColor = Color.White;
+		public readonly bool TargetCircleUsePlayerColor = false;
+
 		public override object Create(ActorInitializer init) { return new FireArmamentPower(init.Self, this); }
 	}
 
@@ -192,6 +196,18 @@ namespace OpenRA.Mods.AS.Traits
 			self.World.AddFrameEndTask(w => activeArmaments.Remove(a));
 		}
 
+		public bool IsActive(Actor self)
+		{
+			var activeArmaments = Armaments.Where(x => !x.IsTraitDisabled).ToHashSet();
+
+			var armamentTurrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
+
+			// TODO: Fix this when upgradable Turreteds arrive.
+			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentTurrets.Contains(x.Name)).ToHashSet();
+
+			return activeArmaments.Count > 0 && turrets.Count > 0;
+		}
+
 		float FractionComplete { get { return ticks * 1f / estimatedTicks; } }
 	}
 
@@ -220,10 +236,12 @@ namespace OpenRA.Mods.AS.Traits
 
 		IEnumerable<Tuple<FireArmamentPower, WDist, WDist>> GetActualInstances(Actor self, FireArmamentPower power)
 		{
-			if (power.FireArmamentPowerInfo.MaximumFiringInstances > 1)
+			if (!power.Info.AllowMultiple)
 			{
 				var actorswithpower = self.World.ActorsWithTrait<FireArmamentPower>()
-					.Where(x => x.Actor.Owner == self.Owner && x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName));
+					.Where(x => x.Actor.Owner == self.Owner
+						&& x.Trait.FireArmamentPowerInfo.OrderName.Contains(power.FireArmamentPowerInfo.OrderName)
+						&& x.Trait.IsActive(x.Actor));
 				foreach (var a in actorswithpower)
 				{
 					yield return Tuple.Create(a.Trait,
@@ -292,7 +310,20 @@ namespace OpenRA.Mods.AS.Traits
 				}
 			}
 
-			yield break;
+			if (power.FireArmamentPowerInfo.TargetCircleRange > WDist.Zero)
+			{
+				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
+
+				var targetRangeColor = power.FireArmamentPowerInfo.TargetCircleUsePlayerColor
+					? power.Self.Owner.Color.RGB : power.FireArmamentPowerInfo.TargetCircleColor;
+
+				yield return new RangeCircleRenderable(
+					world.Map.CenterOfCell(xy),
+					power.FireArmamentPowerInfo.TargetCircleRange,
+					0,
+					targetRangeColor,
+					Color.FromArgb(96, Color.Black));
+			}
 		}
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)

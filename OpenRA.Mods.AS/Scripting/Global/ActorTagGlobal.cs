@@ -22,7 +22,7 @@ namespace OpenRA.Mods.AS.Scripting
 		[Desc("Returns all actor types which has the specified actorTag string in their actorTag trait.")]
 		public string[] ReturnActorTypes(string actorTag)
 		{
-			return Context.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<ActorTagInfo>() && !a.Name.StartsWith("^")
+			return Context.World.Map.Rules.Actors.Values.Where(a => a.HasTraitInfo<ActorTagInfo>()
 				&& a.TraitInfos<ActorTagInfo>().Any(c => c.Type.Contains(actorTag))).Select(a => a.Name).ToArray();
 		}
 	}
