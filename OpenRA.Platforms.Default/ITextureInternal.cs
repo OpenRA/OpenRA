@@ -9,21 +9,11 @@
  */
 #endregion
 
-using System.Drawing;
-using OpenRA;
-
 namespace OpenRA.Platforms.Default
 {
-	public class DefaultPlatform : IPlatform
+	interface ITextureInternal : ITexture
 	{
-		public IPlatformWindow CreateWindow(Size size, WindowMode windowMode, int batchSize)
-		{
-			return new Sdl2PlatformWindow(size, windowMode, batchSize);
-		}
-
-		public ISoundEngine CreateSound(string device)
-		{
-			return new OpenAlSoundEngine(device);
-		}
+		uint ID { get; }
+		void SetEmpty(int width, int height);
 	}
 }

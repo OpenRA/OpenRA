@@ -69,13 +69,13 @@ GACTWR:
 	BodyOrientation:
 		QuantizedFacings: 32
 	DetectCloaked:
-		RequiresCondition: !empdisable && (tower.vulcan || tower.rocket || tower.sam)
+		RequiresCondition: !empdisable && !disabled && (tower.vulcan || tower.rocket || tower.sam)
 	Turreted:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
 		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
-		PauseOnCondition: empdisable
+		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret@VULC:
 		RequiresCondition: tower.vulcan
 		Recoils: false
@@ -119,12 +119,13 @@ GACTWR:
 	LineBuildNode:
 		Types: turret
 	Power@base:
+		RequiresCondition: !disabled
 		Amount: -10
 	Power@turrets:
-		RequiresCondition: (tower.vulcan || tower.rocket || tower.sam)
+		RequiresCondition: !disabled && (tower.vulcan || tower.rocket || tower.sam)
 		Amount: -20
 	Power@samextra:
-		RequiresCondition: tower.sam
+		RequiresCondition: !disabled && tower.sam
 		Amount: -10
 	Pluggable:
 		Conditions:
