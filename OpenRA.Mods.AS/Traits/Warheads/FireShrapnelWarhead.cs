@@ -57,12 +57,38 @@ namespace OpenRA.Mods.AS.Warheads
 			if (!IsValidImpact(target.CenterPosition, firedBy))
 				return;
 
-			var directActors = world.FindActorsInCircle(target.CenterPosition, VictimScanRadius);
+			var directActors = world.FindActorsOnCircle(target.CenterPosition, WDist.Zero)
+				.Where(a =>
+				{
+					var activeShapes = a.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+					if (!activeShapes.Any())
+						return false;
 
-			var availableTargetActors = world.FindActorsInCircle(target.CenterPosition, weapon.Range)
+					var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(target.CenterPosition, a));
+
+					if (distance != WDist.Zero)
+						return false;
+
+					return true;
+				});
+
+			var availableTargetActors = world.FindActorsOnCircle(target.CenterPosition, weapon.Range)
 				.Where(x => (AllowDirectHit || !directActors.Contains(x))
 					&& weapon.IsValidAgainst(Target.FromActor(x), firedBy.World, firedBy)
 					&& AimTargetStances.HasStance(firedBy.Owner.Stances[x.Owner]))
+				.Where(x =>
+				{
+					var activeShapes = x.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+					if (!activeShapes.Any())
+						return false;
+
+					var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(target.CenterPosition, x));
+
+					if (distance < weapon.Range)
+						return true;
+
+					return false;
+				})
 				.Shuffle(world.SharedRandom);
 
 			var targetActor = availableTargetActors.GetEnumerator();
