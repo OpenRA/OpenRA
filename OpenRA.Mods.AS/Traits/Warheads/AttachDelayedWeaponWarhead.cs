@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.AS.Traits;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
@@ -61,6 +62,15 @@ namespace OpenRA.Mods.AS.Warheads
 					continue;
 
 				if (actor.IsDead)
+					continue;
+
+				var activeShapes = actor.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (!activeShapes.Any())
+					continue;
+
+				var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(pos, actor));
+
+				if (distance > Range)
 					continue;
 
 				var attachable = actor.TraitsImplementing<DelayedWeaponAttachable>().FirstOrDefault(a => a.CanAttach(Type));

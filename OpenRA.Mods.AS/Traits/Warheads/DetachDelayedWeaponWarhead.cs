@@ -8,11 +8,11 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.AS.Warheads;
 using OpenRA.Mods.Common;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits.Warheads
@@ -46,6 +46,15 @@ namespace OpenRA.Mods.AS.Traits.Warheads
 					continue;
 
 				if (actor.IsDead)
+					continue;
+
+				var activeShapes = actor.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				if (!activeShapes.Any())
+					continue;
+
+				var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(pos, actor));
+
+				if (distance > Range)
 					continue;
 
 				var attachables = actor.TraitsImplementing<DelayedWeaponAttachable>();
