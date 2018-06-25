@@ -44,9 +44,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				foreach (var child in children.ToList())
 				{
 					var split = child.Key.Split('@');
-					child.Key = split.Length > 1 ? split[1] : "Default";
-					parent.AddNode(child);
-					hackyAINode.RemoveNode(child);
+					child.MoveAndRenameNode(hackyAINode, parent, split.Length > 1 ? split[1] : "Default", false);
 				}
 			}
 
