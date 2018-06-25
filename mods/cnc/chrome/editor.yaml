@@ -75,6 +75,154 @@ Container@NEW_MAP_BG:
 			Font: Bold
 			Key: return
 
+Background@MAP_TOOLS_BG:
+	Logic: MapToolsLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 330
+	Height: 600
+	Children:
+		Label@LABEL_TITLE:
+			X: 0
+			Y: 0 - 30
+			Width: 330
+			Height: 25
+			Text: Map Tools
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 500
+			Background: panel-black
+			Children:
+            
+				Label@FILE_PATH_A_LABEL:
+                    X: 35
+                    Y: 40 + 30 * 0
+                    Width: 95
+                    Height: 25
+                    Align: Left
+                    Text: File path - Map A :
+                    
+                TextField@FILE_PATH_A:
+                    X: 35
+                    Y: 40 + 30 * 1
+                    Width: 260
+                    Height: 25
+                    Text: path_to_A.oramap
+                    
+                Label@FILE_PATH_B_LABEL:
+                    X: 35
+                    Y: 40 + 30 * 2
+                    Width: 95
+                    Height: 25
+                    Align: Left
+                    Text: File path - Map B ("Append", "Copy") :
+                TextField@FILE_PATH_B:
+                    X: 35
+                    Y: 40 + 30 * 3
+                    Width: 260
+                    Height: 25
+                    Text: path_to_B.oramap
+                
+                Label@FOR_RESIZE:
+                    X: 35
+                    Y: 40 + 30 * 4
+                    Width: 95
+                    Height: 25
+                    Align: Left
+                    Text: "Resize" factors :
+                    
+                                
+                Label@RESIZE_LABEL_W:
+                    X: 35
+                    Y: 40 + 30 * 5
+                    Width: 80
+                    Height: 25
+                    Align: Left
+                    Text: Hor. / Ver.
+                DropDownButton@RESIZE_W:
+                    X: 125
+                    Y: 40 + 30 * 5
+                    Width: 80
+                    Height: 25
+ 
+                DropDownButton@RESIZE_H:
+                    X: 215
+                    Y: 40 + 30 * 5
+                    Width: 80
+                    Height: 25
+
+				Label@USING_ELEMENTS_LABEL:
+					X: 35
+					Y: 40 + 30 * 6
+					Width: 200
+					Height: 25
+					Align: Left
+					Text: Using elem. (Tiles, Resources, Actors):  
+            
+				DropDownButton@USING_ELEMENTS:
+					X: (PARENT_RIGHT -WIDTH)/2
+					Y: 40 + 30 * 7
+					Width: 160
+					Height: 25
+
+
+                Button@APPEND_BUTTON:
+					X: (330-10)/2-WIDTH
+					Y: PARENT_BOTTOM-HEIGHT-10 -30*2
+					Width: 125
+					Height: 25
+					Text: Append B to A
+					Font: Bold
+					Key: return
+				Button@COPY_BUTTON:
+					X: (330+10)/2
+					Y: PARENT_BOTTOM-HEIGHT-10 -30*2
+					Width: 125
+					Height: 25
+					Text: Copy B on A
+					Font: Bold
+					Key: escape			
+				Button@MIRROR_LEFT:
+					X: (330-10)/2-WIDTH
+					Y: PARENT_BOTTOM-HEIGHT-10 -30*1
+					Width: 125
+					Height: 25
+					Text: Mirror Left
+					Font: Bold
+					Key: return
+				Button@MIRROR_TOP:
+					X: (330+10)/2
+					Y: PARENT_BOTTOM-HEIGHT-10 -30*1
+					Width: 125
+					Height: 25
+					Text: Mirror Top
+					Font: Bold
+					Key: escape			
+				Button@RESIZE_BUTTON:
+					X: (330-10)/2-WIDTH
+					Y: PARENT_BOTTOM-HEIGHT-10 -30*0
+					Width: 125
+					Height: 25
+					Text: Resize
+					Font: Bold
+					Key: return
+				Button@CANCEL_BUTTON:
+					X: (330+10)/2
+					Y: PARENT_BOTTOM-HEIGHT-10 -30*0
+					Width: 125
+					Height: 25
+					Text: Cancel
+					Font: Bold
+					Key: escape		    
+                    
+                    
+                    
+                    
+			
+		
 Container@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
