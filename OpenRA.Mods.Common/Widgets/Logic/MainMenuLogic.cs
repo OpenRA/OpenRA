@@ -208,8 +208,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			var importSketchButton = widget.Get<ButtonWidget>("MAP_TOOLS_BUTTON");
-			importSketchButton.OnClick = () =>
+			var mapToolsButton = widget.Get<ButtonWidget>("MAP_TOOLS_BUTTON");
+			mapToolsButton.OnClick = () =>
 			{
 				SwitchMenu(MenuType.None);
 				Game.OpenWindow("MAP_TOOLS_BG", new WidgetArgs()
