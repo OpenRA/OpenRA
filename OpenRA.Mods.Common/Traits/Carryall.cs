@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
                 {
                     var positionable = Carryable.Trait<IPositionable>();
                     positionable.SetPosition(Carryable, self.Location);
-                    Carryable.Kill(e.Attacker);
+                    Carryable.Kill(e.Attacker, e.Damage.DamageTypes);
                 }
 
 				Carryable = null;
