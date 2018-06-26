@@ -94,7 +94,6 @@ Background@MAP_TOOLS_BG:
 			Height: 25
 			Align: Left
 			Text: File path - Map A :
-					
 		TextField@FILE_PATH_A:
 			X: 35
 			Y: 40 + 30 * 1
@@ -145,7 +144,6 @@ Background@MAP_TOOLS_BG:
 			Height: 25
 			Align: Left
 			Text: Using elem. (Tiles, Resources, Actors):
-			
 		DropDownButton@USING_ELEMENTS:
 			X: (PARENT_RIGHT -WIDTH)/2
 			Y: 40 + 30 * 7
