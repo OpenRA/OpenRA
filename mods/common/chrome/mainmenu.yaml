@@ -198,7 +198,7 @@ Container@MAINMENU:
 							Font: Bold
 						Button@MAP_TOOLS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
-							Y: 100	
+							Y: 100
 							Width: 140
 							Height: 30
 							Text: Map Tools
