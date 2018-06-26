@@ -297,9 +297,7 @@ namespace OpenRA.Mods.Common.Traits
 		class CarryallPickupOrderTargeter : UnitOrderTargeter
 		{
 			public CarryallPickupOrderTargeter()
-				: base("PickupUnit", 5, "ability", false, true)
-			{
-			}
+				: base("PickupUnit", 5, "ability", false, true)	{ }
 
 			static bool CanTarget(Actor self, Actor target)
 			{
