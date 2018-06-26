@@ -51,7 +51,7 @@ fi
 # Some distros and self-compiled mono installations don't set up
 # the SSL required for http web queries. If we detect that these
 # are missing we can try and create a local sync as a fallback.
-if [ ! -d "/usr/share/.mono/certs" ] && [ ! -d "~/.config/.mono/certs" ]; then
+if [ ! -d "/usr/share/.mono/certs" ] && [ ! -d "${HOME}/.config/.mono/certs" ]; then
   if [ -f "/etc/pki/tls/certs/ca-bundle.crt" ]; then
     cert-sync --quiet --user /etc/pki/tls/certs/ca-bundle.crt
   elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
