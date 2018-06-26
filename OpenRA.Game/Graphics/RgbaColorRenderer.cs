@@ -235,6 +235,9 @@ namespace OpenRA.Graphics
 			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
+			vertices[3] = new Vertex();
+			vertices[4] = new Vertex();
+			vertices[5] = new Vertex();
 			parent.DrawRGBAVertices(vertices);
 		}
 
