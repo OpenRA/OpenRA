@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int A_right   =	0; int B_right   =	0;
 		int A_top     =	0; int B_top     =	0;
 		int A_bottom  =	0; int B_bottom  =	0;
-				  		   	  
+
 		int A_X       =	0; int B_X       =	0;
 		int A_Y       =	0; int B_Y       =	0;
-				  		   		
+
 		int A_W       =	0; int B_W       =	0;
 		int A_H       =	0; int B_H       =	0;
 
@@ -138,13 +138,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// variables
 			A_left   = Map_A.Bounds.Left; 
 			A_right  = Map_A.Bounds.Right;
-			A_X		 = Map_A.MapSize.X;
-			A_W		 = Map_A.Bounds.Width;
-			A_top	 = Map_A.Bounds.Top; 
+			A_X      = Map_A.MapSize.X;
+			A_W      = Map_A.Bounds.Width;
+			A_top    = Map_A.Bounds.Top; 
 			A_bottom = Map_A.Bounds.Bottom;
 			A_Y      = Map_A.MapSize.Y; 
 			A_H      = Map_A.Bounds.Height;
-			
+
 			return true;
 		}
 
@@ -282,7 +282,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			resizeDropdownW.Text = "0.25"; 
 			resizeDropdownH.Text = "0.25";
-			mapElementsDropdown.Text = "T, R, A"; 	 
+			mapElementsDropdown.Text = "T, R, A";
 
 			activeResizeW = resizeFactors[resizeDropdownW.Text];
 			activeResizeH = resizeFactors[resizeDropdownH.Text];
