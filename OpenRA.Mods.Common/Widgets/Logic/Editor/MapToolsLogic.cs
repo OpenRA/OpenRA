@@ -11,7 +11,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MapToolsLogic : ChromeLogic
 	{
 		Widget panel;
-		DropDownButtonWidget[] resizeDropdowns = new DropDownButtonWidget[10];
 
 		class DropDownOption
 		{
