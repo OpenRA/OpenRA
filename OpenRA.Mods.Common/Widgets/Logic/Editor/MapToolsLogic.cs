@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// Common functions.
 		bool GetInputBaseMap(ModData modData, Action showPanel)
 		{
-			// Function : gets variables, and map A.
+			// Function : gets variables, and Base map.
 			usingTiles = activeMapElements.Item1; usingResources = activeMapElements.Item2; usingActors = activeMapElements.Item3;
 
 			inputBaseMapFilepathTextField = panel.Get<TextFieldWidget>("FILE_PATH_A");
@@ -80,8 +80,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				panel.Visible = false;
 				ConfirmationDialogs.ButtonPrompt(
-					title: "Map A not found",
-					text: "Map A does not exist or could not be accessed.",
+					title: "Base map not found",
+					text: "Base map does not exist or could not be accessed.",
 					onConfirm: showPanel);
 				return false;
 			}
@@ -89,15 +89,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// checks: file of .oramap type?
 			try
 			{
-				var package_A = new Folder(".").OpenPackage(inputBaseMapFilepathTextField.Text, modData.ModFiles) as IReadWritePackage;
-				inputBaseMap = new Map(modData, package_A);
+				var inputBaseMapPackage = new Folder(".").OpenPackage(inputBaseMapFilepathTextField.Text, modData.ModFiles) as IReadWritePackage;
+				inputBaseMap = new Map(modData, inputBaseMapPackage);
 			}
 			catch (ArgumentException)
 			{
 				panel.Visible = false;
 				ConfirmationDialogs.ButtonPrompt(
 					title: "Incompatible file format",
-					text: "File A must be of .oramap type!",
+					text: "Base file must be of .oramap type!",
 					onConfirm: showPanel);
 				return false;
 			}
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Visible = false;
 				ConfirmationDialogs.ButtonPrompt(
 					title: "Incompatible mod",
-					text: "Map A incompatible with mod.",
+					text: "Base map incompatible with mod.",
 					onConfirm: showPanel);
 				return false;
 			}
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool GetInputSecondaryMap(ModData modData, Action showPanel)
 		{
-			// Function : gets variables, and map B.
+			// Function : gets variables, and Secondary map.
 			inputSecondaryMapFilepathTextField = panel.Get<TextFieldWidget>("FILE_PATH_B");
 
 			// checks: file exists?
@@ -126,8 +126,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				panel.Visible = false;
 				ConfirmationDialogs.ButtonPrompt(
-					title: "Map B not found",
-					text: "Map B does not exist or could not be accessed.",
+					title: "Secondary map not found",
+					text: "Sec. map does not exist or could not be accessed.",
 					onConfirm: showPanel);
 				return false;
 			}
@@ -135,15 +135,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// checks: file of .oramap type?
 			try
 			{
-				var package_B = new Folder(".").OpenPackage(inputSecondaryMapFilepathTextField.Text, modData.ModFiles) as IReadWritePackage;
-				inputSecondaryMap = new Map(modData, package_B);
+				var inputSecondaryMapPackage = new Folder(".").OpenPackage(inputSecondaryMapFilepathTextField.Text, modData.ModFiles) as IReadWritePackage;
+				inputSecondaryMap = new Map(modData, inputSecondaryMapPackage);
 			}
 			catch (ArgumentException)
 			{
 				panel.Visible = false;
 				ConfirmationDialogs.ButtonPrompt(
 					title: "Incompatible file format",
-					text: "File B must be of .oramap type!",
+					text: "Secondary file must be of .oramap type!",
 					onConfirm: showPanel);
 				return false;
 			}
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Visible = false;
 				ConfirmationDialogs.ButtonPrompt(
 					title: "Incompatible mod",
-					text: "Map B incompatible with mod.",
+					text: "Secondary map incompatible with mod.",
 					onConfirm: showPanel);
 				return false;
 			}
@@ -309,16 +309,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			//// APPEND TOOL.
 			panel.Get<ButtonWidget>("APPEND_BUTTON").OnClick = () =>
 			{
-				// Initialization. if fails, break.
+				// Initialization. If fails, break.
 				if (!GetInputMaps(modData, showPanel)) { return; };
 
-				// Copy map A to create map C
+				// Copy Base map to create Output map
 				outputMapFilepathText = inputBaseMapFilepathTextField.Text.Replace(".oramap", "") + "-Append";
 				outputMapFilepathText += "-" + mapElementsDropdown.Text.Replace(", ", "") + ".oramap";
 
 				System.IO.File.Copy(inputBaseMapFilepathTextField.Text, outputMapFilepathText, true);
-				var package_C = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
-				outputMap = new Map(modData, package_C);
+				var outputPackage = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
+				outputMap = new Map(modData, outputPackage);
 
 				outputMap.Title += "-Append";
 				outputMap.Title += "-" + mapElementsDropdown.Text.Replace(", ", "");
@@ -331,16 +331,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				outputMap.SetBounds(outputLeftTopCell, outputRightBottomCell);
 
-				// Appending B map to A.
+				// Appending Secondary map to Base map.
 				for (int j = 0; j < inputSecondaryMap.MapSize.Y; j++)
 				{
 					for (int i = 0; i < inputSecondaryMap.MapSize.X; i++)
 					{
 						var posB = new MPos(i, j);
-						var posC = new MPos(i + inputBaseMap.MapSize.X, j);
+						var outPos = new MPos(i + inputBaseMap.MapSize.X, j);
 
-						if (usingTiles == 1) { outputMap.Tiles[posC] = inputSecondaryMap.Tiles[posB]; outputMap.Height[posC] = inputSecondaryMap.Height[posB]; };
-						if (usingResources == 1) { outputMap.Resources[posC] = inputSecondaryMap.Resources[posB]; };
+						if (usingTiles == 1) { outputMap.Tiles[outPos] = inputSecondaryMap.Tiles[posB]; outputMap.Height[outPos] = inputSecondaryMap.Height[posB]; };
+						if (usingResources == 1) { outputMap.Resources[outPos] = inputSecondaryMap.Resources[posB]; };
 					}
 				}
 
@@ -367,21 +367,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			//// COPY TOOL.
 			panel.Get<ButtonWidget>("COPY_BUTTON").OnClick = () =>
 			{
-				// Initialization. if fails, break.
+				// Initialization. If fails, break.
 				if (!GetInputMaps(modData, showPanel)) { return; };
 
-				// Copy map A to create map C.
+				// Copy Base map to create Output map.
 				outputMapFilepathText = inputBaseMapFilepathTextField.Text.Replace(".oramap", "") + "-Copy";
 				outputMapFilepathText += "-" + mapElementsDropdown.Text.Replace(", ", "") + ".oramap";
 
 				System.IO.File.Copy(inputBaseMapFilepathTextField.Text, outputMapFilepathText, true);
-				var package_C = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
-				outputMap = new Map(modData, package_C);
+				var outputPackage = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
+				outputMap = new Map(modData, outputPackage);
 
 				outputMap.Title += "-Copy";
 				outputMap.Title += "-" + mapElementsDropdown.Text.Replace(", ", "");
 
-				// Copying map B over A.
+				// Copying Secondary map over Base map.
 				for (int j = 0; j < minMapSizeY; j++)
 				{
 					for (int i = 0; i < minMapSizeX; i++)
@@ -409,9 +409,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var location = actor.InitDict.Get<LocationInit>().Value(null);
 						var loc_MPos = new CPos(location.X, location.Y).ToMPos(outputMap);
 
-						bool inoutputMap_Bounds = (loc_MPos.U < outputMap.MapSize.X) && (loc_MPos.V < outputMap.MapSize.Y);
+						bool outputMap_Bounds = (loc_MPos.U < outputMap.MapSize.X) && (loc_MPos.V < outputMap.MapSize.Y);
 
-						if (inoutputMap_Bounds)
+						if (outputMap_Bounds)
 							outputMap.ActorDefinitions.Add(new MiniYamlNode("Actor" + outputMap.ActorDefinitions.Count, actor.Save()));
 					}
 				};
@@ -422,11 +422,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var location = actor.InitDict.Get<LocationInit>().Value(null);
 					var loc_MPos = new CPos(location.X, location.Y).ToMPos(outputMap);
 
-					bool inoutputMap_Bounds = (loc_MPos.U < outputMap.MapSize.X) && (loc_MPos.V < outputMap.MapSize.Y);
-					bool ininputSecondaryMap_Bounds = (loc_MPos.U < inputSecondaryMap.MapSize.X) && (loc_MPos.V < inputSecondaryMap.MapSize.Y);
-					bool ininputSecondaryMap_reserved = (usingActors == 1) && ininputSecondaryMap_Bounds;
+					bool outputMap_Bounds = (loc_MPos.U < outputMap.MapSize.X) && (loc_MPos.V < outputMap.MapSize.Y);
+					bool inputSecondaryMap_Bounds = (loc_MPos.U < inputSecondaryMap.MapSize.X) && (loc_MPos.V < inputSecondaryMap.MapSize.Y);
+					bool inputSecondaryMap_reserved = (usingActors == 1) && inputSecondaryMap_Bounds;
 
-					if (inoutputMap_Bounds && !ininputSecondaryMap_reserved)
+					if (outputMap_Bounds && !inputSecondaryMap_reserved)
 						outputMap.ActorDefinitions.Add(new MiniYamlNode("Actor" + outputMap.ActorDefinitions.Count, actor.Save()));
 				}
 
@@ -436,16 +436,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			//// MIRROR_LEFT TOOL.
 			panel.Get<ButtonWidget>("MIRROR_LEFT").OnClick = () =>
 			{
-				// Initialization. if fails, break.
+				// Initialization. If fails, break.
 				if (!GetInputBaseMap(modData, showPanel)) { return; };
 
-				// Copy map A to create map C.
+				// Copy Base map to create Output map.
 				outputMapFilepathText = inputBaseMapFilepathTextField.Text.Replace(".oramap", "") + "-MirrorLeft";
 				outputMapFilepathText += "-" + mapElementsDropdown.Text.Replace(", ", "") + ".oramap";
 
 				System.IO.File.Copy(inputBaseMapFilepathTextField.Text, outputMapFilepathText, true);
-				var package_C = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
-				outputMap = new Map(modData, package_C);
+				var outputPackage = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
+				outputMap = new Map(modData, outputPackage);
 
 				outputMap.Title += "-MirrorLeft";
 				outputMap.Title += "-" + mapElementsDropdown.Text.Replace(", ", "");
@@ -462,17 +462,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var i_old = i + inputBaseMap.Bounds.Left;
 						var j_old = j;
-						var posA = new MPos(i_old, j_old);
+						var inPos = new MPos(i_old, j_old);
 
 						// Adding offset if Isometric map. See MPos diagram.
 						var i_iso = (inputBaseMap.Grid.Type == MapGridType.RectangularIsometric) ? j % 2 : 0;
 						var i_new = inputBaseMap.Bounds.Right - (i + i_iso) - 1;
 						var j_new = j_old;
 
-						var posC = new MPos(i_new, j_new);
+						var outPos = new MPos(i_new, j_new);
 
-						if (usingTiles == 1) { outputMap.Tiles[posC] = inputBaseMap.Tiles[posA]; outputMap.Height[posC] = inputBaseMap.Height[posA]; };
-						if (usingResources == 1) { outputMap.Resources[posC] = inputBaseMap.Resources[posA]; };
+						if (usingTiles == 1) { outputMap.Tiles[outPos] = inputBaseMap.Tiles[inPos]; outputMap.Height[outPos] = inputBaseMap.Height[inPos]; };
+						if (usingResources == 1) { outputMap.Resources[outPos] = inputBaseMap.Resources[inPos]; };
 					}
 				}
 
@@ -525,16 +525,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			//// MIRROR_TOP TOOL.
 			panel.Get<ButtonWidget>("MIRROR_TOP").OnClick = () =>
 			{
-				// Initialization. if fails, break.
+				// Initialization. If fails, break.
 				if (!GetInputBaseMap(modData, showPanel)) { return; };
 
-				// Copy map A to create map C.
+				// Copy Base map to create Output map.
 				outputMapFilepathText = inputBaseMapFilepathTextField.Text.Replace(".oramap", "") + "-MirrorTop";
 				outputMapFilepathText += "-" + mapElementsDropdown.Text.Replace(", ", "") + ".oramap";
 
 				System.IO.File.Copy(inputBaseMapFilepathTextField.Text, outputMapFilepathText, true);
-				var package_C = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
-				outputMap = new Map(modData, package_C);
+				var outputPackage = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
+				outputMap = new Map(modData, outputPackage);
 
 				outputMap.Title += "-MirrorTop";
 				outputMap.Title += "-" + mapElementsDropdown.Text.Replace(", ", "");
@@ -550,7 +550,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var i_old = i;
 						var j_old = j + inputBaseMap.Bounds.Top;
-						var posA = new MPos(i_old, j_old);
+						var inPos = new MPos(i_old, j_old);
 
 						var i_new = i_old;
 						var j_new = inputBaseMap.Bounds.Bottom - j - 1;
@@ -559,16 +559,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if ((inputBaseMap.Grid.Type == MapGridType.RectangularIsometric) && ((inputBaseMap.Bounds.Height % 2) == 0))
 							j_new -= 1;
 
-						var posC = new MPos(i_new, j_new);
+						var outPos = new MPos(i_new, j_new);
 
 						if (usingTiles == 1)
 						{
-							outputMap.Tiles[posC] = inputBaseMap.Tiles[posA];
-							outputMap.Height[posC] = inputBaseMap.Height[posA];
+							outputMap.Tiles[outPos] = inputBaseMap.Tiles[inPos];
+							outputMap.Height[outPos] = inputBaseMap.Height[inPos];
 						}
 
 						if (usingResources == 1)
-							outputMap.Resources[posC] = inputBaseMap.Resources[posA];
+							outputMap.Resources[outPos] = inputBaseMap.Resources[inPos];
 					}
 				}
 
@@ -624,15 +624,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Initialization. If fails, break.
 				if (!GetInputBaseMap(modData, showPanel)) { return; };
 
-				// Copy map A to create map C.
+				// Copy Base map to create Output map.
 				outputMapFilepathText = inputBaseMapFilepathTextField.Text.Replace(".oramap", "") + "-Resize";
 				outputMapFilepathText += "_" + resizeDropdownW.Text.Replace(".", "");
 				outputMapFilepathText += "_" + resizeDropdownH.Text.Replace(".", "");
 				outputMapFilepathText += "-" + mapElementsDropdown.Text.Replace(", ", "") + ".oramap";
 
 				System.IO.File.Copy(inputBaseMapFilepathTextField.Text, outputMapFilepathText, true);
-				var package_C = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
-				outputMap = new Map(modData, package_C);
+				var outputPackage = new Folder(".").OpenPackage(outputMapFilepathText, modData.ModFiles) as IReadWritePackage;
+				outputMap = new Map(modData, outputPackage);
 				outputMap.Title += "-Resize";
 				outputMap.Title += "_" + resizeDropdownW.Text.Replace(".", "");
 				outputMap.Title += "_" + resizeDropdownH.Text.Replace(".", "");
@@ -655,8 +655,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				int[] A_Tiles_lastRow_height = new int[inputBaseMap.MapSize.X];
 				for (int i = 0; i < inputBaseMap.MapSize.X; i++)
 				{
-					var posA = new MPos(i, inputBaseMap.MapSize.Y - 1);
-					A_Tiles_lastRow_height[i] = inputBaseMap.Height[posA];
+					var inPos = new MPos(i, inputBaseMap.MapSize.Y - 1);
+					A_Tiles_lastRow_height[i] = inputBaseMap.Height[inPos];
 				}
 
 				var A_Tiles_lastRow_MaxHeight = A_Tiles_lastRow_height.Max();
@@ -681,11 +681,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var i_new = (local_i_new - 1) + inputBaseMap.Bounds.Left; var j_new = (local_j_new - 1) + inputBaseMap.Bounds.Top;
 						var i_old = (local_i_old - 1) + inputBaseMap.Bounds.Left; var j_old = (local_j_old - 1) + inputBaseMap.Bounds.Top;
 
-						var posC = new MPos(i_new, j_new);
-						var posA = new MPos(i_old, j_old);
+						var outPos = new MPos(i_new, j_new);
+						var inPos = new MPos(i_old, j_old);
 
-						if (usingTiles == 1) { outputMap.Tiles[posC] = inputBaseMap.Tiles[posA]; outputMap.Height[posC] = inputBaseMap.Height[posA]; };
-						if (usingResources == 1) { outputMap.Resources[posC] = inputBaseMap.Resources[posA]; };
+						if (usingTiles == 1) { outputMap.Tiles[outPos] = inputBaseMap.Tiles[inPos]; outputMap.Height[outPos] = inputBaseMap.Height[inPos]; };
+						if (usingResources == 1) { outputMap.Resources[outPos] = inputBaseMap.Resources[inPos]; };
 					}
 				}
 
@@ -699,11 +699,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var i_new = i_old;
 							var j_new = j_old + outputMapHeight - inputBaseMap.Bounds.Height;
 
-							var posC = new MPos(i_new, j_new);
-							var posA = new MPos(i_old, j_old);
+							var outPos = new MPos(i_new, j_new);
+							var inPos = new MPos(i_old, j_old);
 
-							outputMap.Tiles[posC] = inputBaseMap.Tiles[posA]; outputMap.Height[posC] = inputBaseMap.Height[posA];
-							outputMap.Resources[posC] = inputBaseMap.Resources[posA];
+							outputMap.Tiles[outPos] = inputBaseMap.Tiles[inPos]; outputMap.Height[outPos] = inputBaseMap.Height[inPos];
+							outputMap.Resources[outPos] = inputBaseMap.Resources[inPos];
 						}
 					}
 				}
@@ -718,11 +718,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var i_new = i_old + outputMapWidth - inputBaseMap.Bounds.Width;
 							var j_new = j_old;
 
-							var posC = new MPos(i_new, j_new);
-							var posA = new MPos(i_old, j_old);
+							var outPos = new MPos(i_new, j_new);
+							var inPos = new MPos(i_old, j_old);
 
-							outputMap.Tiles[posC] = inputBaseMap.Tiles[posA]; outputMap.Height[posC] = inputBaseMap.Height[posA];
-							outputMap.Resources[posC] = inputBaseMap.Resources[posA];
+							outputMap.Tiles[outPos] = inputBaseMap.Tiles[inPos]; outputMap.Height[outPos] = inputBaseMap.Height[inPos];
+							outputMap.Resources[outPos] = inputBaseMap.Resources[inPos];
 						}
 					}
 				}
