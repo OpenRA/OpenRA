@@ -127,9 +127,8 @@ namespace OpenRA.Mods.Common.Activities
 					init.Add(new HealthInit(newHP));
 				}
 
-				var cargo = self.TraitOrDefault<Cargo>();
-				if (cargo != null)
-					init.Add(new RuntimeCargoInit(cargo.Passengers.ToArray()));
+				foreach (var modifier in self.TraitsImplementing<ITransformActorInitModifier>())
+					modifier.ModifyTransformActorInit(self, init);
 
 				var a = w.CreateActor(ToActor, init);
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
