@@ -184,8 +184,7 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 180
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
-		BuildDuration: 2500
-		BuildDurationModifier: 40
+		BuildDurationModifier: 50
 		Description: Big and slow tank, with anti-air capability.\nCan crush concrete walls.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
 	Valued:
 		Cost: 2000
@@ -335,8 +334,7 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 90
 		Prerequisites: fix, ~techlevel.medium
-		BuildDuration: 2500
-		BuildDurationModifier: 40
+		BuildDurationModifier: 50
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Valued:
 		Cost: 2000
@@ -524,8 +522,7 @@ MGG:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
-		BuildDuration: 1500
-		BuildDurationModifier: 40
+		BuildDurationModifier: 50
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Valued:
 		Cost: 1200
@@ -563,8 +560,7 @@ MRJ:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
-		BuildDuration: 1370
-		BuildDurationModifier: 40
+		BuildDurationModifier: 50
 		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\nCan detect cloaked units.\n  Unarmed
 	Health:
 		HP: 22000
@@ -600,7 +596,7 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
-		BuildDuration: 1166
+		BuildDurationModifier: 50
 		Description: Tank with mounted Tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Valued:
 		Cost: 1350
@@ -715,7 +711,7 @@ CTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
-		BuildDuration: 1166
+		BuildDurationModifier: 50
 		Description: Armed with anti-ground missiles.\nTeleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
@@ -789,7 +785,7 @@ STNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
-		BuildDuration: 1166
+		BuildDurationModifier: 50
 		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\nCan detect cloaked units.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 1350
