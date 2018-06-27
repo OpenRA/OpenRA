@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (init.Contains<ChronoshiftReturnInit>())
 				ReturnTicks = init.Get<ChronoshiftReturnInit, int>();
 
+			if (init.Contains<ChronoshiftDurationInit>())
+				duration = init.Get<ChronoshiftDurationInit, int>();
+
 			if (init.Contains<ChronoshiftOriginInit>())
 				Origin = init.Get<ChronoshiftOriginInit, CPos>();
 
@@ -148,6 +151,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			init.Add(new ChronoshiftOriginInit(Origin));
 			init.Add(new ChronoshiftReturnInit(ReturnTicks));
+			init.Add(new ChronoshiftDurationInit(duration));
 			if (chronosphere != self)
 				init.Add(new ChronoshiftChronosphereInit(chronosphere));
 		}
@@ -158,6 +162,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		[FieldFromYamlKey] readonly int value = 0;
 		public ChronoshiftReturnInit() { }
 		public ChronoshiftReturnInit(int init) { value = init; }
+		public int Value(World world) { return value; }
+	}
+
+	public class ChronoshiftDurationInit : IActorInit<int>
+	{
+		[FieldFromYamlKey] readonly int value = 0;
+		public ChronoshiftDurationInit() { }
+		public ChronoshiftDurationInit(int init) { value = init; }
 		public int Value(World world) { return value; }
 	}
 
