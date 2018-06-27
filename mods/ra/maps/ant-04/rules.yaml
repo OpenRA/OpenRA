@@ -1,0 +1,19 @@
+World:
+	MissionData:
+		WinVideo: antend.vqa
+		Briefing: We've discovered a series of tunnels underneath the ruined base. Now that we've cut off their escape routes, the ants have nowhere left to run to.  Perform a sweep and clear of all the tunnels, and find the cause of these abominations. Destroy anything that isn't human!  The power to the tunnel lights has been knocked out, which will limit visibility. Find the generator controls, and you can re-activate the lights.
+		SmudgeLayer@SCORCH:
+			InitialSmudges:
+				81,57: sc6,0
+				84,57: sc2,0
+				80,58: sc5,0
+				82,58: sc2,0
+				85,58: sc3,0
+				81,59: sc6,0
+				83,59: sc4,0
+				84,59: sc3,0
+		SmudgeLayer@CRATER:
+			InitialSmudges:
+				81,58: cr1,2
+				83,58: cr1,2
+				84,58: cr1,1
