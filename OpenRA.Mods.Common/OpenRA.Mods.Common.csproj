@@ -542,6 +542,7 @@
     <Compile Include="Traits\Conditions\GrantConditionOnSubterraneanLayer.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPrerequisite.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnProduction.cs" />
     <Compile Include="Traits\Conditions\ConditionManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
