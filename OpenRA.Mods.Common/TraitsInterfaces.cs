@@ -309,6 +309,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface ICashTricklerModifier { int GetCashTricklerModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
 
 	[RequireExplicitImplementation]
