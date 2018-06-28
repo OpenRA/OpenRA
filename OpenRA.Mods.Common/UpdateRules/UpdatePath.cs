@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameEmitInfantryOnSell(),
 				new SplitRepairDecoration(),
 				new MoveHackyAISupportPowerDecisions(),
+				new RemoveCanUndeployFromGrantConditionOnDeploy(),
 			})
 		};
 
