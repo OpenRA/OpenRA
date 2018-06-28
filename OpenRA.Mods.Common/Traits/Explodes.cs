@@ -19,6 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public enum ExplosionType { Footprint, CenterPosition }
 
+	public enum DamageSource { Self, Killer }
+
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ConditionalTraitInfo, Requires<HealthInfo>
 	{
@@ -39,6 +41,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
 		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+
+		[Desc("Who is counted as source of damage for explosion.",
+			"Possible values are Self and Killer.")]
+		public readonly DamageSource DamageSource = DamageSource.Self;
 
 		[Desc("Possible values are CenterPosition (explosion at the actors' center) and ",
 			"Footprint (explosion on each occupied cell).")]
@@ -103,20 +109,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (weapon == null)
 				return;
 
+			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(SoundType.World, weapon.Report.Random(e.Attacker.World.SharedRandom), self.CenterPosition);
+				Game.Sound.Play(SoundType.World, weapon.Report.Random(source.World.SharedRandom), self.CenterPosition);
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
 				var cells = buildingInfo.UnpathableTiles(self.Location);
 				foreach (var c in cells)
-					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), e.Attacker, Enumerable.Empty<int>());
+					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source, Enumerable.Empty<int>());
 
 				return;
 			}
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
+			weapon.Impact(Target.FromPos(self.CenterPosition), source, Enumerable.Empty<int>());
 		}
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
@@ -135,8 +142,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Cast to long to avoid overflow when multiplying by the health
+			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
-				self.World.AddFrameEndTask(w => self.Kill(e.Attacker));
+				self.World.AddFrameEndTask(w => self.Kill(source));
 		}
 	}
 }
