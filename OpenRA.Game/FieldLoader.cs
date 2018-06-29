@@ -23,6 +23,7 @@ using System.Text.RegularExpressions;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -149,7 +150,7 @@ namespace OpenRA
 			{
 				var sa = field.GetCustomAttributes<SerializeAttribute>(false).DefaultIfEmpty(SerializeAttribute.Default).First();
 				if (!sa.FromYamlKey)
-					field.SetValue(target, GetValue(field.Name, field.FieldType, value, field));
+					field.SetValue(target, GetValue(field.Name, field.FieldType, value, field, target));
 				return;
 			}
 
@@ -175,12 +176,12 @@ namespace OpenRA
 			return GetValue(fieldName, fieldType, value, null);
 		}
 
-		public static object GetValue(string fieldName, Type fieldType, string value, MemberInfo field)
+		public static object GetValue(string fieldName, Type fieldType, string value, MemberInfo field, object target = null)
 		{
-			return GetValue(fieldName, fieldType, new MiniYaml(value), field);
+			return GetValue(fieldName, fieldType, new MiniYaml(value), field, target);
 		}
 
-		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field)
+		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field, object target = null)
 		{
 			var value = yaml.Value;
 			if (value != null) value = value.Trim();
@@ -224,7 +225,20 @@ namespace OpenRA
 			else if (fieldType == typeof(string))
 			{
 				if (field != null && MemberHasTranslateAttribute[field] && value != null)
-					return Regex.Replace(value, "@[^@]+@", m => Translate(m.Value.Substring(1, m.Value.Length - 2)), RegexOptions.Compiled);
+				{
+					if (target != null && target is Widget)
+					{
+						string translationKey = ((Widget)target).AbsoluteIDPath;
+						if (!String.IsNullOrEmpty(translationKey))
+						{
+							string translatedText;
+							if (TryTranslate(translationKey, out translatedText))
+							{
+								return translatedText;
+							}
+						}
+					}
+				}
 				return value;
 			}
 			else if (fieldType == typeof(Color))
@@ -783,19 +797,37 @@ namespace OpenRA
 
 		public static string Translate(string key)
 		{
+			string result;
+			if (TryTranslate(key, out result))
+			{
+				return result;
+			}
+			return key;
+		}
+
+		public static bool TryTranslate(string key, out string translatedText)
+		{
+			translatedText = key;
 			if (string.IsNullOrEmpty(key))
-				return key;
+			{
+				return false;
+			}
 
 			lock (TranslationsLock)
 			{
 				if (translations == null)
-					return key;
+				{
+					return false;
+				}
 
 				string value;
 				if (!translations.TryGetValue(key, out value))
-					return key;
+				{
+					return false;
+				}
 
-				return value;
+				translatedText = value;
+				return true;
 			}
 		}
 
