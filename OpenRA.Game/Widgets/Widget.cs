@@ -178,15 +178,16 @@ namespace OpenRA.Widgets
 		{
 			get
 			{
-				if (String.IsNullOrEmpty(Id))
+				if (string.IsNullOrEmpty(Id))
 				{
-					return String.Empty;
+					return string.Empty;
 				}
 
-				if (Parent != null && !String.IsNullOrEmpty(Parent.Id))
+				if (Parent != null && !string.IsNullOrEmpty(Parent.Id))
 				{
 					return Parent.AbsoluteIDPath + "." + Id;
 				}
+
 				return Id;
 			}
 		}

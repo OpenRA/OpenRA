@@ -229,7 +229,7 @@ namespace OpenRA
 					if (target != null && target is Widget)
 					{
 						string translationKey = ((Widget)target).AbsoluteIDPath;
-						if (!String.IsNullOrEmpty(translationKey))
+						if (!string.IsNullOrEmpty(translationKey))
 						{
 							string translatedText;
 							if (TryTranslate(translationKey, out translatedText))
@@ -239,6 +239,7 @@ namespace OpenRA
 						}
 					}
 				}
+
 				return value;
 			}
 			else if (fieldType == typeof(Color))
@@ -802,6 +803,7 @@ namespace OpenRA
 			{
 				return result;
 			}
+
 			return key;
 		}
 
