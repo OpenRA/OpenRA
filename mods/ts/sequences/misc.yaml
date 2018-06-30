@@ -562,6 +562,7 @@ palet04:
 	idle:
 		UseTilesetExtension: true
 		ZOffset: -1c0
+		Offset: 0, 0, 1
 		ZRamp: 1
 
 tracks01:
