@@ -90,6 +90,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Text = widget.Text;
 			MaxLength = widget.MaxLength;
+			LeftMargin = widget.LeftMargin;
+			RightMargin = widget.RightMargin;
 			Type = widget.Type;
 			Font = widget.Font;
 			TextColor = widget.TextColor;
