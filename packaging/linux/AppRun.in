@@ -24,6 +24,10 @@ mono_missing_or_old() {
   return 1
 }
 
+HERE="$(dirname "$(readlink -f "${0}")")"
+export PATH="${HERE}"/usr/bin/:"${PATH}"
+export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
+
 # If mono is not installed, and the user has apt-cache, apt-url,
 # xdg-open, and either zenity or kdialog, then we can prompt to
 # automatically install the mono-complete package
@@ -33,6 +37,8 @@ if prompt_apt_install_mono_complete; then
     zenity --no-wrap --question --title "{MODNAME}" --text "${PROMPT_MESSAGE}" 2> /dev/null && xdg-open apt://mono-complete && exit 0
   elif command -v kdialog > /dev/null; then
     kdialog --title "{MODNAME}" --yesno "${PROMPT_MESSAGE}" && xdg-open apt://mono-complete && exit 0
+  elif "${HERE}/usr/bin/gtk-dialog.py" test > /dev/null; then
+    "${HERE}/usr/bin/gtk-dialog.py" question --title "{MODNAME}" --text "${PROMPT_MESSAGE}" 2> /dev/null && xdg-open apt://mono-complete && exit 0
   fi
 fi
 
@@ -42,6 +48,8 @@ if mono_missing_or_old; then
     zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
   elif command -v kdialog > /dev/null; then
     kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
+  elif "${HERE}/usr/bin/gtk-dialog.py" test > /dev/null; then
+    "${HERE}/usr/bin/gtk-dialog.py" error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
   else
     printf "${ERROR_MESSAGE}"
   fi
@@ -60,10 +68,6 @@ if [ ! -d "/usr/share/.mono/certs" ] && [ ! -d "${HOME}/.config/.mono/certs" ]; 
 fi
 
 # Run the game or server
-HERE="$(dirname "$(readlink -f "${0}")")"
-export PATH="${HERE}"/usr/bin/:"${PATH}"
-export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
-
 if [ -n "$1" ] && [ "$1" = "--server" ]; then
   exec "openra-{MODID}-server" "$@"
 else

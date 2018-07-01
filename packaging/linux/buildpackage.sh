@@ -114,6 +114,8 @@ build_appimage() {
 	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > openra-mod-server.temp
 	install -m 0755 openra-mod-server.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
 
+	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
+
 	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
 	./appimagetool-x86_64.AppImage --appimage-extract
 	
