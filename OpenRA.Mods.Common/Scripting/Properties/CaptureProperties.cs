@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 			{
 				if (captures.Any(x => !x.IsTraitDisabled && x.Info.CaptureTypes.Overlaps(capturable.Types)))
 				{
-					Self.QueueActivity(new CaptureActor(Self, target));
+					Self.QueueActivity(new CaptureActor(Self, target, WDist.Zero));
 					return;
 				}
 			}

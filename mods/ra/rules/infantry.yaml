@@ -536,6 +536,7 @@ HIJACKER:
 	Captures:
 		CaptureTypes: vehicle
 		PlayerExperience: 50
+		CloseEnoughDistance: 0c128
 	Voiced:
 		VoiceSet: ThiefVoice
 	-TakeCover:

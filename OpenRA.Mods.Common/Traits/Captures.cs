@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Stance that the structure's previous owner needs to have for the capturing player to receive Experience.")]
 		public readonly Stance PlayerExperienceStances = Stance.Enemy;
 
+		[Desc("Set this higher to allow the unit to enter while the target is moving.")]
+		public readonly WDist CloseEnoughDistance = WDist.Zero;
+
 		public readonly string SabotageCursor = "capture";
 		public readonly string EnterCursor = "enter";
 		public readonly string EnterBlockedCursor = "enter-blocked";
@@ -86,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(target, Color.Red);
-			self.QueueActivity(new CaptureActor(self, target.Actor));
+			self.QueueActivity(new CaptureActor(self, target.Actor, Info.CloseEnoughDistance));
 		}
 
 		class CaptureOrderTargeter : UnitOrderTargeter
