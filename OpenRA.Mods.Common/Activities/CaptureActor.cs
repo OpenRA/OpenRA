@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Captures[] captures;
 		readonly Health health;
 
-		public CaptureActor(Actor self, Actor target)
-			: base(self, target, EnterBehaviour.Dispose)
+		public CaptureActor(Actor self, Actor target, WDist closeEnoughDistance)
+			: base(self, target, EnterBehaviour.Dispose, closeEnoughDistance)
 		{
 			actor = target;
 			building = actor.TraitOrDefault<Building>();
