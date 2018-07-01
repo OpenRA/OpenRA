@@ -173,6 +173,25 @@ namespace OpenRA.Widgets
 
 		// Info defined in YAML
 		public string Id = null;
+
+		public string AbsoluteIDPath
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(Id))
+				{
+					return string.Empty;
+				}
+
+				if (Parent != null && !string.IsNullOrEmpty(Parent.Id))
+				{
+					return Parent.AbsoluteIDPath + "." + Id;
+				}
+
+				return Id;
+			}
+		}
+
 		public string X = "0";
 		public string Y = "0";
 		public string Width = "0";

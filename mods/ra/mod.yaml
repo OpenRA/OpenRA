@@ -141,6 +141,7 @@ Music:
 
 Translations:
 	ra|languages/english.yaml
+    ra|languages/german.yaml
 
 Hotkeys:
 	common|hotkeys/game.yaml
