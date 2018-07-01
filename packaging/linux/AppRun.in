@@ -3,6 +3,16 @@
 # Make sure the user has a sufficiently recent version of mono on the PATH
 MINIMUM_MONO_VERSION="4.2"
 
+prompt_apt_install_mono_complete() {
+  command -v mono >/dev/null 2>&1 && return 1
+  command -v apt-cache > /dev/null || return 1
+  command -v xdg-mime > /dev/null || return 1
+  command -v xdg-open > /dev/null || return 1
+  [ ! "$(xdg-mime query default x-scheme-handler/apt)" ] && return 1
+  apt-cache search --names-only mono-complete | cut -d' ' -f1 | grep "^mono-complete$" > /dev/null || return 1
+  return 0
+}
+
 make_version() {
   echo "$1" | tr '.' '\n' | head -n 4 | xargs printf "%03d%03d%03d%03d";
 }
@@ -13,6 +23,18 @@ mono_missing_or_old() {
   [ "$(make_version "${MONO_VERSION}")" -lt "$(make_version "${MINIMUM_MONO_VERSION}")" ] && return 0
   return 1
 }
+
+# If mono is not installed, and the user has apt-cache, apt-url,
+# xdg-open, and either zenity or kdialog, then we can prompt to
+# automatically install the mono-complete package
+if prompt_apt_install_mono_complete; then
+  PROMPT_MESSAGE="{MODNAME} requires the Mono runtime.\nWould you like to install it now?"
+  if command -v zenity > /dev/null; then
+    zenity --no-wrap --question --title "{MODNAME}" --text "${PROMPT_MESSAGE}" 2> /dev/null && xdg-open apt://mono-complete && exit 0
+  elif command -v kdialog > /dev/null; then
+    kdialog --title "{MODNAME}" --yesno "${PROMPT_MESSAGE}" && xdg-open apt://mono-complete && exit 0
+  fi
+fi
 
 if mono_missing_or_old; then
   ERROR_MESSAGE="{MODNAME} requires Mono ${MINIMUM_MONO_VERSION} or greater.\nPlease install Mono using your system package manager."
