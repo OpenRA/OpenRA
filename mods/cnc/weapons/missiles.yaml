@@ -125,11 +125,9 @@ MammothMissiles:
 			Heavy: 44
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ImpactSounds: xplos.aud
 		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
-		ImpactSounds: xplos.aud
 		ImpactActors: false
 		ValidTargets: Air
 
@@ -164,7 +162,6 @@ MammothMissiles:
 			Heavy: 48
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
-		ImpactSounds: xplos.aud
 
 227mm.stnk:
 	Inherits: ^MissileWeapon
@@ -209,11 +206,9 @@ BoatMissile:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ImpactSounds: xplos.aud
 		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
-		ImpactSounds: xplos.aud
 		ImpactActors: false
 		ValidTargets: Air
 
@@ -238,7 +233,6 @@ TowerMissile:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
-		ImpactSounds: xplos.aud
 
 TowerAAMissile:
 	Inherits: ^MissileWeapon
@@ -263,7 +257,6 @@ TowerAAMissile:
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: small_building
-		ImpactSounds: xplos.aud
 
 Patriot:
 	Inherits: ^MissileWeapon
@@ -290,4 +283,3 @@ Patriot:
 	-Warhead@2Smu: LeaveSmudge
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
-		ImpactSounds: xplos.aud

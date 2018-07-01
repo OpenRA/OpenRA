@@ -20,19 +20,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
 
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
+
 		public object Create(ActorInitializer init) { return new WithAcceptDeliveredCashAnimation(init.Self, this); }
 	}
 
 	public class WithAcceptDeliveredCashAnimation : INotifyCashTransfer, INotifyBuildComplete, INotifySold
 	{
 		readonly WithAcceptDeliveredCashAnimationInfo info;
-		readonly WithSpriteBody[] wsbs;
+		readonly WithSpriteBody wsb;
 		bool buildComplete;
 
 		public WithAcceptDeliveredCashAnimation(Actor self, WithAcceptDeliveredCashAnimationInfo info)
 		{
 			this.info = info;
-			wsbs = self.TraitsImplementing<WithSpriteBody>().ToArray();
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 		}
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)
@@ -53,11 +56,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!buildComplete || playing)
 				return;
 
-			foreach (var wsb in wsbs)
-			{
-				playing = true;
-				wsb.PlayCustomAnimation(self, info.Sequence, () => playing = false);
-			}
+			playing = true;
+			wsb.PlayCustomAnimation(self, info.Sequence, () => playing = false);
 		}
 
 		void INotifyCashTransfer.OnDeliveringCash(Actor self, Actor acceptor) { }

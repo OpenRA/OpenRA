@@ -6,5 +6,5 @@ Colt45:
 			Truk: 50
 
 BarrelExplode:
-	Warhead@1Dam:
+	Warhead@1Dam: SpreadDamage
 		ValidTargets: Ground, Prisoner

@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[SequenceReference] public readonly string CloseSequence = "close";
 		[SequenceReference] public readonly string UnloadSequence = "unload";
 
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
+
 		public object Create(ActorInitializer init) { return new WithLandingCraftAnimation(init, this); }
 	}
 
@@ -42,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			self = init.Self;
 			cargo = self.Trait<Cargo>();
 			move = self.Trait<IMove>();
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 		}
 
 		public bool ShouldBeOpen()

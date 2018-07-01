@@ -1082,8 +1082,6 @@ FACT:
 		Cost: 2500
 	Tooltip:
 		Name: Construction Yard
-	CustomSellValue:
-		Value: 2500
 	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
@@ -1852,7 +1850,6 @@ SBAG:
 	Armor:
 		Type: Wood
 	LineBuild:
-		Range: 8
 		NodeTypes: sandbag
 	LineBuildNode:
 		Types: sandbag
@@ -1877,7 +1874,6 @@ FENC:
 	Armor:
 		Type: Wood
 	LineBuild:
-		Range: 8
 		NodeTypes: fence
 	LineBuildNode:
 		Types: fence
@@ -1908,7 +1904,6 @@ BRIK:
 		CrushClasses: heavywall
 	BlocksProjectiles:
 	LineBuild:
-		Range: 8
 		NodeTypes: concrete
 	LineBuildNode:
 		Types: concrete

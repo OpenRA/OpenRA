@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -22,6 +23,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Internal resource stages. Does not have to match number of sequence frames.")]
 		public readonly int Stages = 10;
 
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
+
 		public object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
 	}
 
@@ -34,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithSiloAnimation(ActorInitializer init, WithSiloAnimationInfo info)
 		{
 			this.info = info;
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 

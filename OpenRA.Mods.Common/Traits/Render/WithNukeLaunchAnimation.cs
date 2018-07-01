@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -18,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public override object Create(ActorInitializer init) { return new WithNukeLaunchAnimation(init.Self, this); }
 	}
@@ -30,12 +34,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithNukeLaunchAnimation(Actor self, WithNukeLaunchAnimationInfo info)
 			: base(info)
 		{
-			spriteBody = self.TraitOrDefault<WithSpriteBody>();
+			spriteBody = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
 		void INotifyNuke.Launching(Actor self)
 		{
-			if (buildComplete && spriteBody != null && !IsTraitDisabled)
+			if (buildComplete && !IsTraitDisabled)
 				spriteBody.PlayCustomAnimation(self, Info.Sequence, () => spriteBody.CancelCustomAnimation(self));
 		}
 

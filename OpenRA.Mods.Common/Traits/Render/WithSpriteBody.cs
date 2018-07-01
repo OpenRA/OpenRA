@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;
+		readonly Animation boundsAnimation;
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
 			: this(init, info, () => 0) { }
@@ -62,6 +63,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
+
+			// Cache the bounds from the default sequence to avoid flickering when the animation changes
+			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
+			boundsAnimation.PlayRepeating(info.Sequence);
 
 			if (info.StartSequence != null)
 				PlayCustomAnimation(init.Self, info.StartSequence,
@@ -130,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)
 		{
-			return DefaultAnimation != null ? DefaultAnimation.ScreenBounds(wr, self.CenterPosition, WVec.Zero, rs.Info.Scale) : Rectangle.Empty;
+			return boundsAnimation.ScreenBounds(wr, self.CenterPosition, WVec.Zero, rs.Info.Scale);
 		}
 	}
 }

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -18,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		[Desc("Sequence name to use"), SequenceReference]
 		public readonly string Sequence = "build";
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
@@ -31,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithBuildingPlacedAnimation(Actor self, WithBuildingPlacedAnimationInfo info)
 		{
 			this.info = info;
-			wsb = self.Trait<WithSpriteBody>();
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 		}
 

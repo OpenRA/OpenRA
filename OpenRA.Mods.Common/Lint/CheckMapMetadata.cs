@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckMapMetadata : ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			if (map.MapFormat != Map.SupportedMapFormat)
 				emitError("Map format {0} does not match the supported version {1}."

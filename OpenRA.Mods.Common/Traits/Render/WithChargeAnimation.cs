@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -19,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		[Desc("Sequence to use for the charge levels.")]
 		public readonly string Sequence = "active";
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public object Create(ActorInitializer init) { return new WithChargeAnimation(init.Self, this); }
 	}
@@ -32,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithChargeAnimation(Actor self, WithChargeAnimationInfo info)
 		{
 			this.info = info;
-			wsb = self.Trait<WithSpriteBody>();
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			attackCharges = self.Trait<AttackCharges>();
 		}
 

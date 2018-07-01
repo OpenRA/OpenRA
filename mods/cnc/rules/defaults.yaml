@@ -348,6 +348,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+		DeathTypes: DefaultDeath
 	Health:
 	Armor:
 		Type: None

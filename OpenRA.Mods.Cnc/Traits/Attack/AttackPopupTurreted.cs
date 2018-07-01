@@ -21,21 +21,24 @@ namespace OpenRA.Mods.Cnc.Traits
 	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithEmbeddedTurretSpriteBodyInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
-		public int CloseDelay = 125;
+		public readonly int CloseDelay = 125;
 
-		public int DefaultFacing = 0;
+		public readonly int DefaultFacing = 0;
 
 		[Desc("The percentage of damage that is received while this actor is closed.")]
-		public int ClosedDamageMultiplier = 50;
+		public readonly int ClosedDamageMultiplier = 50;
 
 		[Desc("Sequence to play when opening.")]
-		[SequenceReference] public string OpeningSequence = "opening";
+		[SequenceReference] public readonly string OpeningSequence = "opening";
 
 		[Desc("Sequence to play when closing.")]
-		[SequenceReference] public string ClosingSequence = "closing";
+		[SequenceReference] public readonly string ClosingSequence = "closing";
 
 		[Desc("Idle sequence to play when closed.")]
-		[SequenceReference] public string ClosedIdleSequence = "closed-idle";
+		[SequenceReference] public readonly string ClosedIdleSequence = "closed-idle";
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
@@ -57,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			this.info = info;
 			turret = turrets.FirstOrDefault();
-			wsb = init.Self.Trait<WithSpriteBody>();
+			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
