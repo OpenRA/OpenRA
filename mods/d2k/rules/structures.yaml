@@ -283,7 +283,7 @@ refinery:
 	Armor:
 		Type: heavy
 	RevealsShroud:
-		Range: 4c768
+		Range: 3c768
 	Refinery:
 		DockAngle: 160
 		DockOffset: 2,1
@@ -393,7 +393,7 @@ light_factory:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c768
 	RenderSprites:
 		Image: light.ordos
 		FactionImages:
@@ -580,7 +580,7 @@ outpost:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c768
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderSprites:
@@ -631,7 +631,7 @@ starport:
 	Armor:
 		Type: heavy
 	RevealsShroud:
-		Range: 4c768
+		Range: 3c768
 	RallyPoint:
 		Offset: 1,3
 	Exit@1:
@@ -719,7 +719,7 @@ wall:
 	Armor:
 		Type: wall
 	RevealsShroud:
-		Range: 2c768
+		Range: 1c768
 	Crushable:
 		CrushClasses: wall
 	BlocksProjectiles:
@@ -873,7 +873,7 @@ repair_pad:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 4c768
+		Range: 3c768
 	Selectable:
 		Bounds: 96,96
 	Reservable:
