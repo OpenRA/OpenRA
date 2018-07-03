@@ -159,6 +159,7 @@
     <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
     <Compile Include="Traits\GpsDot.cs" />
     <Compile Include="Traits\ConyardChronoReturn.cs" />
+    <Compile Include="Traits\TransferTimedExternalConditionOnTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
