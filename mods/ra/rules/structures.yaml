@@ -1136,6 +1136,8 @@ FACT:
 	ConyardChronoReturn:
 		Condition: chrono-vortex
 		Damage: 950
+	TransferTimedExternalConditionOnTransform:
+		Condition: invulnerability
 
 PROC:
 	Inherits: ^Building

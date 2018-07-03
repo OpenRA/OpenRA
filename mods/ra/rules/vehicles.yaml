@@ -368,6 +368,8 @@ MCV:
 		Actor: MCV.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	TransferTimedExternalConditionOnTransform:
+		Condition: invulnerability
 
 JEEP:
 	Inherits: ^Vehicle
