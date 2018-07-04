@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void LoadAndDisplayNews(string newsURL, Widget newsBG)
 		{
-			if (newsBG != null)
+			if (newsBG != null && Game.Settings.Game.FetchNews)
 			{
 				var cacheFile = Platform.ResolvePath(Platform.SupportDirPrefix, "news.yaml");
 				var currentNews = ParseNews(cacheFile);
