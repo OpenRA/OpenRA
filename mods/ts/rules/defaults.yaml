@@ -805,7 +805,7 @@
 		Action: Kill
 	DrawLineToTarget:
 	AppearsOnRadar:
-		UseLocation: true
+		AppearanceType: Location
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne

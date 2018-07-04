@@ -18,12 +18,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
+	public enum AppearanceType { CenterPosition, Location, OccupiedCells, EntireFootprint }
+
 	public class AppearsOnRadarInfo : ConditionalTraitInfo
 	{
-		public readonly bool UseLocation = false;
+		[Desc("Specifies position type to use for radar footprint.")]
+		public readonly AppearanceType AppearanceType = AppearanceType.OccupiedCells;
 
 		[Desc("Player stances who can view this actor on radar.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+
+		[Desc("Specifies RGB values (in hex) that should be added or subtracted from base radar color.")]
+		public readonly Color ColorModifier = Color.Black;
+
+		[Desc("Specifies whether ColorModifier should be subtracted instead of added to base radar color.")]
+		public readonly bool SubtractColorModifier = false;
 
 		public override object Create(ActorInitializer init) { return new AppearsOnRadar(this); }
 	}
@@ -41,7 +50,24 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			modifier = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 		}
 
-		public void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
+		Color ModifyRadarColor(Color color)
+		{
+			if (Info.ColorModifier == Color.Black)
+				return color;
+
+			if (Info.SubtractColorModifier)
+				return Color.FromArgb(
+					(color.R - Info.ColorModifier.R).Clamp(0, 255),
+					(color.G - Info.ColorModifier.G).Clamp(0, 255),
+					(color.B - Info.ColorModifier.B).Clamp(0, 255));
+
+			return Color.FromArgb(
+				(color.R + Info.ColorModifier.R).Clamp(0, 255),
+				(color.G + Info.ColorModifier.G).Clamp(0, 255),
+				(color.B + Info.ColorModifier.B).Clamp(0, 255));
+		}
+
+		void IRadarSignature.PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer)
 		{
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
 			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.Stances[viewer])))
@@ -51,14 +77,26 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 
-			if (Info.UseLocation)
-			{
-				destinationBuffer.Add(Pair.New(self.Location, color));
-				return;
-			}
+			color = ModifyRadarColor(color);
 
-			foreach (var cell in self.OccupiesSpace.OccupiedCells())
-				destinationBuffer.Add(Pair.New(cell.First, color));
+			if (Info.AppearanceType == AppearanceType.Location)
+				destinationBuffer.Add(Pair.New(self.Location, color));
+			else if (Info.AppearanceType == AppearanceType.CenterPosition)
+				destinationBuffer.Add(Pair.New(self.World.Map.CellContaining(self.CenterPosition), color));
+			else if (Info.AppearanceType == AppearanceType.OccupiedCells)
+				foreach (var cell in self.OccupiesSpace.OccupiedCells())
+					destinationBuffer.Add(Pair.New(cell.First, color));
+			else
+			{
+				// If actor has the Building trait, use FrozenUnderFogTiles (which encompasses entire footprint),
+				// else fall back to self.Location.
+				var building = self.TraitOrDefault<Building>();
+				if (building != null)
+					foreach (var tile in building.Info.FrozenUnderFogTiles(self.Location))
+						destinationBuffer.Add(Pair.New(tile, color));
+				else
+					destinationBuffer.Add(Pair.New(self.Location, color));
+			}
 		}
 	}
 }

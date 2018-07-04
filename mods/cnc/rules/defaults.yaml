@@ -294,7 +294,7 @@
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:
-		UseLocation: yes
+		AppearanceType: Location
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne
@@ -624,7 +624,7 @@
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:
-		UseLocation: yes
+		AppearanceType: Location
 	HiddenUnderFog:
 		Type: GroundPosition
 		AlwaysVisibleStances: None

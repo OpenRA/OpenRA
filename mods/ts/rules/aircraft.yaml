@@ -381,7 +381,7 @@ HUNTER:
 	QuantizeFacingsFromSequence:
 	DrawLineToTarget:
 	AppearsOnRadar:
-		UseLocation: true
+		AppearanceType: Location
 	Interactable:
 	SelectionDecorations:
 		Palette: pips

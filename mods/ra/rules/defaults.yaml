@@ -518,7 +518,7 @@
 		Type: Light
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
-		UseLocation: true
+		AppearanceType: Location
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:

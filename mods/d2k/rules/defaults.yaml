@@ -342,7 +342,7 @@
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:
-		UseLocation: true
+		AppearanceType: Location
 	HiddenUnderFog:
 		Type: GroundPosition
 		AlwaysVisibleStances: None
