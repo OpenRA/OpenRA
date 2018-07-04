@@ -246,7 +246,6 @@ TorpTube:
 			Wood: 75
 			Light: 75
 			Heavy: 100
-			Concrete: 500
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: artillery_explosion

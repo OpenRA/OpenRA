@@ -54,6 +54,7 @@ Rules:
 	ra|rules/aircraft.yaml
 	ra|rules/ships.yaml
 	ra|rules/fakes.yaml
+	ra|rules/bridges.yaml
 
 Sequences:
 	ra|sequences/ships.yaml

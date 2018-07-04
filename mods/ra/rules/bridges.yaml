@@ -1,0 +1,387 @@
+BR1:
+	Inherits: ^Bridge
+	Building:
+		Footprint: ____ ____ ____
+		Dimensions: 4,3
+	Bridge:
+		Template: 235
+		DamagedTemplate: 236
+		DestroyedTemplate: 237
+		SouthOffset: 0,2
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 2,0
+	Interactable:
+		Bounds: 96,72
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -512
+			BottomRight: 2560, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -1024, -1536
+			BottomRight: 1024, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1024, 512
+			BottomRight: 1536, 1536
+
+BR2:
+	Inherits: ^Bridge
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+	Bridge:
+		Template: 238
+		DamagedTemplate: 239
+		DestroyedTemplate: 240
+		NorthOffset: 3,0
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 120,72
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2560, -512
+			BottomRight: 2048, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -1536, -1536
+			BottomRight: 512, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1536, 512
+			BottomRight: 1024, 1536
+
+BR3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: br1,br2
+		Template: 241
+		DamagedTemplate: 242
+		DestroyedTemplate: 243
+		DestroyedPlusNorthTemplate: 245
+		DestroyedPlusSouthTemplate: 244
+		DestroyedPlusBothTemplate: 246
+		NorthOffset: 2,0
+		SouthOffset: 0,1
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -1024
+			BottomRight: 0, 0
+	HitShape@2:
+		Type: Rectangle
+			TopLeft: -1024, 0
+			BottomRight: 1536, 1024
+
+BRG1:
+	Inherits: ^Bridge
+	Building:
+		Footprint: ____ ____ ____
+		Dimensions: 4,3
+	Bridge:
+		Template: 700
+		DamagedTemplate: 701
+		DestroyedTemplate: 702
+		SouthOffset: 3,2
+	Interactable:
+		Bounds: 96,72
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 0,0
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2560, -512
+			BottomRight: 2048, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -1024, -1536
+			BottomRight: 1024, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1536, 512
+			BottomRight: 1024, 1536
+
+BRG2:
+	Inherits: ^Bridge
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+	Bridge:
+		Template: 703
+		DamagedTemplate: 704
+		DestroyedTemplate: 705
+		NorthOffset: 1,0
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 120,72
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -512
+			BottomRight: 2560, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -512, -1536
+			BottomRight: 1536, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1024, 512
+			BottomRight: 1536, 1536
+
+BRG3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: brg1,brg2
+		Template: 706
+		DamagedTemplate: 707
+		DestroyedTemplate: 708
+		DestroyedPlusNorthTemplate: 710
+		DestroyedPlusSouthTemplate: 709
+		DestroyedPlusBothTemplate: 711
+		NorthOffset: 1,0
+		SouthOffset: 3,1
+	HitShape:
+		Type: Rectangle
+			TopLeft: 0, -1024
+			BottomRight: 2048, 0
+	HitShape@2:
+		Type: Rectangle
+			TopLeft: -1536, 0
+			BottomRight: 1024, 1024
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 131
+		DamagedTemplate: 378
+		DestroyedTemplate: 132
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 120,72
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -512
+			BottomRight: 2048, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -1024, -1536
+			BottomRight: 2560, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1024, 512
+			BottomRight: 1024, 1672
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 133
+		DamagedTemplate: 379
+		DestroyedTemplate: 134
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 120,48
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -512
+			BottomRight: 2048, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -2560, -1536
+			BottomRight: 1024, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1024, 512
+			BottomRight: 1024, 1536
+
+BRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 620
+		DamagedTemplate: 621
+		DestroyedTemplate: 622
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2, -1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 120,72
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -512
+			BottomRight: 2048, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -1024, -1536
+			BottomRight: 2560, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1024, 512
+			BottomRight: 1024, 1672
+
+BRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 624
+		DamagedTemplate: 625
+		DestroyedTemplate: 626
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0, -1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 120,48
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -512
+			BottomRight: 2048, 512
+	HitShape@TOP:
+		Type: Rectangle
+			TopLeft: -2560, -1536
+			BottomRight: 1024, -512
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1024, 512
+			BottomRight: 1024, 1536
+
+SBRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 520
+		DamagedTemplate: 521
+		DestroyedTemplate: 522
+	Building:
+		Footprint: ___ ___
+		Dimensions: 3,2
+	FreeActor@north:
+		Actor: bridgehut.small
+		SpawnOffset: 1,0
+	FreeActor@south:
+		Actor: bridgehut.small
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 72,48
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -1408
+			BottomRight: 1024, 1408
+
+SBRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 531
+		DamagedTemplate: 532
+		DestroyedTemplate: 533
+	Building:
+		Footprint: __ __ __
+		Dimensions: 2,3
+	FreeActor@west:
+		Actor: bridgehut.small
+		SpawnOffset: 0,1
+	FreeActor@east:
+		Actor: bridgehut.small
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 48,72
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1408, -1024
+			BottomRight: 1408, 1536
+
+SBRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 523
+		DamagedTemplate: 524
+		DestroyedTemplate: 525
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 2048, 0
+	HitShape@2:
+		Type: Rectangle
+			TopLeft: -2048, 0
+			BottomRight: 1536, 1024
+
+SBRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 527
+		DamagedTemplate: 528
+		DestroyedTemplate: 529
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	HitShape:
+		Type: Rectangle
+			TopLeft: -2048, -1024
+			BottomRight: 1024, 0
+	HitShape@2:
+		Type: Rectangle
+			TopLeft: -1536, 0
+			BottomRight: 2048, 1024
+
+BRIDGEHUT:
+	AlwaysVisible:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Building:
+		Footprint: __ __
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 48,48
+		Priority: 2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
+
+BRIDGEHUT.small:
+	AlwaysVisible:
+	Building:
+		Footprint: _
+		Dimensions: 1,1
+	Selectable:
+		Bounds: 24,24
+		Priority: 2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4

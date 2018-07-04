@@ -977,8 +977,8 @@
 		Radius: 4c0
 
 ^Bridge:
-	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
+	CombatDebugOverlay:
 	Tooltip:
 		Name: Bridge
 		ShowOwnerRow: false

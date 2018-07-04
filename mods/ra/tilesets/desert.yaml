@@ -3183,3 +3183,197 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+	Template@700:
+		Id: 700
+		Images: bridgec1.des
+		Frames: 0, 0, 1, 0, 2, 3, 4, 5, 6, 7, 8
+		Size: 4,3
+		Categories: Bridge
+		Tiles:
+			1: Bridge
+			2: Rock
+			4: Rock
+			5: Bridge
+			6: Bridge
+			7: Rock
+			8: Rock
+			9: Rock
+			10: Bridge
+	Template@701:
+		Id: 701
+		Images: bridgecd1.des
+		Frames: 0, 0, 1, 0, 2, 3, 4, 5, 6, 7, 8
+		Size: 4,3
+		Categories: Bridge
+		Tiles:
+			1: Rough
+			2: Rock
+			4: Rock
+			5: Rough
+			6: Rough
+			7: Rock
+			8: Rock
+			9: Rock
+			10: Rough
+	Template@702:
+		Id: 702
+		Images: bridgecb1.des
+		Frames: 0, 0, 1, 0, 2, 3, 4, 5, 6, 7, 8
+		Size: 4,3
+		Categories: Bridge
+		Tiles:
+			1: Rock
+			2: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+			10: Rock
+	Template@703:
+		Id: 703
+		Images: bridgec2.des
+		Frames: 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 0, 8, 9, 10
+		Size: 5,3
+		Categories: Bridge
+		Tiles:
+			2: Bridge
+			3: Rock
+			4: Beach
+			5: Rock
+			6: Rock
+			7: Bridge
+			8: Bridge
+			9: Rock
+			11: Rock
+			12: Rock
+			13: Bridge
+	Template@704:
+		Id: 704
+		Images: bridgecd2.des
+		Frames: 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 0, 8, 9, 10
+		Size: 5,3
+		Categories: Bridge
+		Tiles:
+			2: Rough
+			3: Rock
+			4: Beach
+			5: Rock
+			6: Rock
+			7: Rough
+			8: Rough
+			9: Rock
+			11: Rock
+			12: Rock
+			13: Rough
+	Template@705:
+		Id: 705
+		Images: bridgecb2.des
+		Frames: 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 0, 8, 9, 10
+		Size: 5,3
+		Categories: Bridge
+		Tiles:
+			2: Water
+			3: Water
+			4: Beach
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+			11: Rock
+			12: Rock
+			13: Rock
+	Template@706:
+		Id: 706
+		Images: bridgec3.des
+		Frames: 0, 0, 0, 1, 2, 3, 4
+		Size: 4,2
+		Categories: Bridge
+		Tiles:
+			2: Bridge
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Bridge
+	Template@707:
+		Id: 707
+		Images: bridgecd3.des
+		Frames: 0, 0, 0, 1, 2, 3, 4
+		Size: 4,2
+		Categories: Bridge
+		Tiles:
+			2: Bridge
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Bridge
+	Template@708:
+		Id: 708
+		Images: bridgecb3.des
+		Frames: 0, 0, 0, 1, 2, 3, 4
+		Size: 4,2
+		Categories: Bridge
+		Tiles:
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+	Template@709:
+		Id: 709
+		Images: bridgecb4.des
+		Frames: 0, 0, 0, 1, 2, 3, 4
+		Size: 4,2
+		Categories: Bridge
+		Tiles:
+			2: River
+			3: Rock
+			4: River
+			5: River
+			6: River
+	Template@710:
+		Id: 710
+		Images: bridgecb5.des
+		Frames: 0, 0, 0, 1, 2, 3, 4
+		Size: 4,2
+		Categories: Bridge
+		Tiles:
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+			6: Rock
+	Template@711:
+		Id: 711
+		Images: br3f.des
+		Frames: 0, 0, 0, 1, 5, 6, 7
+		Size: 4,2
+		Categories: Bridge
+		Tiles:
+			2: Water
+			3: Water
+			4: Water
+			5: Water
+			6: Water
+	Template@712:
+		Id: 712
+		Images: bridgect1.des
+		Frames: 0, 1, 0, 0, 2, 3, 0, 0, 0, 0
+		Size: 5,2
+		Categories: Bridge
+		Tiles:
+			0: Clear
+			1: Road
+			4: Rock
+			5: Rock
+	Template@713:
+		Id: 713
+		Images: bridgect2.des
+		Frames: 0, 0, 0, 0, 1
+		Size: 5,1
+		Categories: Bridge
+		Tiles:
+			0: Beach
+			4: Road
