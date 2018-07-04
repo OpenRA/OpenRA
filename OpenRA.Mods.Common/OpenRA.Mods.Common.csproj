@@ -606,6 +606,7 @@
     <Compile Include="UpdateRules\Rules\SplitGateFromBuilding.cs" />
     <Compile Include="UpdateRules\Rules\RenameBurstDelay.cs" />
     <Compile Include="UpdateRules\Rules\WarnAboutInfiltrateForTypes.cs" />
+    <Compile Include="UpdateRules\Rules\LegacyBetaWarning.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />

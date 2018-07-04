@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			new UpdatePath("release-20171014", "release-20180218", new UpdateRule[]
 			{
+				new LegacyBetaWarning(),
 				new RemoveMobileOnRails(),
 				new AircraftCanHoverGeneralization(),
 				new AddNukeLaunchAnimation(),
