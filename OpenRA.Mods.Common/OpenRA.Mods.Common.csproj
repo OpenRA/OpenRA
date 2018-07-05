@@ -881,6 +881,7 @@
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="UpdateRules\Rules\DefineLocomotors.cs" />
+    <Compile Include="UpdateRules\Rules\DefineGroundCorpseDefault.cs" />
     <Compile Include="UpdateRules\Rules\DefineOwnerLostAction.cs" />
     <Compile Include="UpdateRules\Rules\RenameEmitInfantryOnSell.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
