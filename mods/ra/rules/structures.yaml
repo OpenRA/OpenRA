@@ -1104,10 +1104,13 @@ FACT:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
+		PauseOnCondition: chrono-vortex
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
 		RequiresCondition: factundeploy
+	Sellable:
+		RequiresCondition: !chrono-vortex
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -1130,6 +1133,9 @@ FACT:
 		Type: Rectangle
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 1536
+	ConyardChronoReturn:
+		Condition: chrono-vortex
+		Damage: 950
 
 PROC:
 	Inherits: ^Building
