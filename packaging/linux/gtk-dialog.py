@@ -6,7 +6,7 @@
        test: accepts no arguments, returns 0 if the python dependencies are available, or 1 if not
        error: show a gtk-3 error dialog
               accepts arguments --title and --text
-       error: show a gtk-3 question dialog
+       question: show a gtk-3 question dialog
               accepts arguments --title and --text
               returns 0 on Yes, or 1 on No
 """
