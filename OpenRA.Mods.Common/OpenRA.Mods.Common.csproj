@@ -902,6 +902,7 @@
     <Compile Include="UpdateRules\Rules\RemoveWithReloadingSpriteTurret.cs" />
     <Compile Include="UpdateRules\Rules\RemovePaletteFromCurrentTileset.cs" />
     <Compile Include="UpdateRules\Rules\DefineLocomotors.cs" />
+    <Compile Include="UpdateRules\Rules\DefineGroundCorpseDefault.cs" />
     <Compile Include="UpdateRules\Rules\DefineOwnerLostAction.cs" />
     <Compile Include="UpdateRules\Rules\RenameEmitInfantryOnSell.cs" />
     <Compile Include="UpdateRules\Rules\SplitRepairDecoration.cs" />
