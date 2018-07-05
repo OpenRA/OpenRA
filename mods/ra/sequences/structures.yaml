@@ -59,11 +59,16 @@ fact:
 	build:
 		Start: 1
 		Length: 25
+	pdox: factpdox
+		Length: 80
 	damaged-idle:
 		Start: 26
 	damaged-build:
 		Start: 27
 		Length: 25
+	damaged-pdox: factpdox
+		Start: 80
+		Length: 80
 	dead: factdead
 		Tick: 800
 	bib: bib2
