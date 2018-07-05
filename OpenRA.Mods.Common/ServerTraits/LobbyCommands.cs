@@ -37,6 +37,8 @@ namespace OpenRA.Mods.Common.Server
 			{ "option", Option },
 			{ "assignteams", AssignTeams },
 			{ "kick", Kick },
+			{ "make_admin", MakeAdmin },
+			{ "make_spectator", MakeSpectator },
 			{ "name", Name },
 			{ "faction", Faction },
 			{ "team", Team },
@@ -597,6 +599,65 @@ namespace OpenRA.Mods.Common.Server
 
 			server.SyncLobbyClients();
 			server.SyncLobbySlots();
+
+			return true;
+		}
+
+		static bool MakeAdmin(S server, Connection conn, Session.Client client, string s)
+		{
+			if (!client.IsAdmin)
+			{
+				server.SendOrderTo(conn, "Message", "Only admins can transfer admin to another player.");
+				return true;
+			}
+
+			int newAdminId;
+			Exts.TryParseIntegerInvariant(s, out newAdminId);
+			var newAdminConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == newAdminId);
+
+			if (newAdminConn == null)
+			{
+				server.SendOrderTo(conn, "Message", "No-one in that slot.");
+				return true;
+			}
+
+			var newAdminClient = server.GetClient(newAdminConn);
+			client.IsAdmin = false;
+			newAdminClient.IsAdmin = true;
+			server.SendMessage("{0} is now the admin.".F(newAdminClient.Name));
+			Log.Write("server", "{0} is now the admin.".F(newAdminClient.Name));
+			server.SyncLobbyClients();
+
+			return true;
+		}
+
+		static bool MakeSpectator(S server, Connection conn, Session.Client client, string s)
+		{
+			if (!client.IsAdmin)
+			{
+				server.SendOrderTo(conn, "Message", "Only the host can move players to spectators.");
+				return true;
+			}
+
+			int targetId;
+			Exts.TryParseIntegerInvariant(s, out targetId);
+			var targetConn = server.Conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == targetId);
+
+			if (targetConn == null)
+			{
+				server.SendOrderTo(conn, "Message", "No-one in that slot.");
+				return true;
+			}
+
+			var targetClient = server.GetClient(targetConn);
+			targetClient.Slot = null;
+			targetClient.SpawnPoint = 0;
+			targetClient.Team = 0;
+			targetClient.Color = HSLColor.FromRGB(255, 255, 255);
+			server.SendMessage("{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
+			Log.Write("server", "{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
+			server.SyncLobbyClients();
+			CheckAutoStart(server);
 
 			return true;
 		}

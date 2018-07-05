@@ -181,13 +181,13 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 165
 							Height: 25
 							Text: Name
-						Button@KICK:
-							X: 155
-							Y: 2
-							Width: 25
-							Height: 23
-							Text: X
-							Font: Bold
+						DropDownButton@PLAYER_ACTION:
+							X: 15
+							Width: 165
+							Height: 25
+							Font: Regular
+							Visible: false
+							Align: Left
 						ColorBlock@COLORBLOCK:
 							X: 195
 							Y: 6
@@ -347,13 +347,13 @@ Container@LOBBY_PLAYER_BIN:
 							X: 20
 							Y: 0 - 1
 							Text: Name
-						Button@KICK:
-							X: 155
-							Y: 2
-							Width: 25
-							Height: 23
-							Text: X
-							Font: Bold
+						DropDownButton@PLAYER_ACTION:
+							X: 15
+							Width: 165
+							Height: 25
+							Font: Regular
+							Visible: false
+							Align: Left
 						Label@SPECTATOR:
 							X: 190
 							Width: 326
