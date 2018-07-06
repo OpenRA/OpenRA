@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LatencyTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public LatencyTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, OrderManager orderManager, int clientIndex)
+		public LatencyTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, OrderManager orderManager, Session.Client client)
 		{
 			var latencyPrefix = widget.Get<LabelWidget>("LATENCY_PREFIX");
 			var latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];
@@ -29,14 +29,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			latency.Bounds.X = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.Text + " ").X;
 
-			widget.IsVisible = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null;
+			widget.IsVisible = () => client != null;
 			tooltipContainer.BeforeRender = () =>
 			{
 				if (widget.IsVisible())
 					widget.Bounds.Width = latency.Bounds.X + latencyFont.Measure(latency.GetText()).X + rightMargin;
 			};
 
-			var client = orderManager.LobbyInfo.ClientWithIndex(clientIndex);
 			var ping = orderManager.LobbyInfo.PingFromClient(client);
 			latency.GetText = () => LobbyUtils.LatencyDescription(ping);
 			latency.GetColor = () => LobbyUtils.LatencyColor(ping);
