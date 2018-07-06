@@ -188,60 +188,17 @@ Background@SPAWN_TOOLTIP:
 			Font: TinyBold
 			Align: center
 
-Background@CLIENT_TOOLTIP:
-	Logic: ClientTooltipLogic
+Background@LATENCY_TOOLTIP:
+	Logic: LatencyTooltipLogic
 	Background: panel-black
-	Height: 47
+	Height: 26
 	Width: 5
 	Children:
-		Label@ADMIN:
-			Y: 2
-			Height: 18
-			Font: Bold
-			Text: Game Admin
-			Align: Center
-		Label@IP:
-			Y: 5
-			Width: 5
-			Height: 10
-			Font: TinyBold
-			Align: Center
-		Label@LOCATION:
-			Y: 17
-			Height: 10
-			Font: TinyBold
-			Align: Center
 		Label@LATENCY_PREFIX:
-			X: 10
-			Y: 29
-			Height: 10
-			Font: TinyBold
+			X: 5
+			Height: 23
+			Font: Bold
 			Text: Latency:
 		Label@LATENCY:
-			Y: 29
-			Height: 10
-			Font: TinyBold
-
-Background@INGAME_CLIENT_TOOLTIP:
-	Logic: ClientTooltipLogic
-	Background: panel-black
-	Height: 35
-	Width: 5
-	Children:
-		Label@ADMIN:
-			Y: 2
-			Height: 18
+			Height: 23
 			Font: Bold
-			Text: Game Admin
-			Align: Center
-		Label@IP:
-			Y: 5
-			Width: 5
-			Height: 10
-			Font: TinyBold
-			Align: Center
-		Label@LOCATION:
-			Y: 17
-			Height: 10
-			Font: TinyBold
-			Align: Center

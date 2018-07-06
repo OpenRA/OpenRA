@@ -87,7 +87,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var pp = p.First;
 					var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 					var item = playerTemplate.Clone();
-					LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
@@ -137,7 +136,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var client in spectators)
 				{
 					var item = playerTemplate.Clone();
-					LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 

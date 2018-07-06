@@ -574,7 +574,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != editablePlayerTemplate.Id)
 						template = editablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupLatencyWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
 						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map);
@@ -593,7 +593,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != nonEditablePlayerTemplate.Id)
 						template = nonEditablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupLatencyWidget(template, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, factions);
 
@@ -661,7 +661,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						LobbyUtils.SetupReadyWidget(template, null, client);
 				}
 
-				LobbyUtils.SetupClientWidget(template, c, orderManager, true);
+				LobbyUtils.SetupLatencyWidget(template, c, orderManager, true);
 				template.IsVisible = () => true;
 
 				if (idx >= players.Children.Count)
