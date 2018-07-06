@@ -305,12 +305,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return ip;
 		}
 
-		public static void SetupClientWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
+		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
 		{
-			var adminIndicator = parent.GetOrNull("ADMIN_INDICATOR");
-			if (adminIndicator != null)
-				adminIndicator.IsVisible = () => c != null && c.IsAdmin;
-
 			var block = parent.GetOrNull("LATENCY");
 			if (block != null)
 			{
@@ -321,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						orderManager.LobbyInfo.PingFromClient(c));
 			}
 
-			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
+			var tooltip = parent.Get<ClientTooltipRegionWidget>("LATENCY_REGION");
 			tooltip.IsVisible = () => c != null && visible;
 			if (c != null)
 				tooltip.Bind(orderManager, c.Index);

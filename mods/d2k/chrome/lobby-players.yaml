@@ -61,11 +61,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Container@LATENCY:
 							Y: 6
 							Width: 11
@@ -77,11 +72,11 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
 						TextField@NAME:
 							X: 15
 							Width: 165
@@ -154,11 +149,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Container@LATENCY:
 							Y: 6
 							Width: 11
@@ -170,11 +160,11 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
 						Label@NAME:
 							X: 20
 							Y: 0 - 1
@@ -266,11 +256,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Container@LATENCY:
 							Y: 6
 							Width: 11
@@ -282,11 +267,11 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
 						TextField@NAME:
 							X: 15
 							Width: 165
@@ -320,11 +305,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Container@LATENCY:
 							Y: 6
 							Width: 11
@@ -336,11 +316,11 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
 						Label@NAME:
 							X: 20
 							Y: 0 - 1
