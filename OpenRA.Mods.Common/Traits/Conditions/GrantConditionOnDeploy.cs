@@ -20,6 +20,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Grants a condition when a deploy order is issued." +
+		"Can be paused with the granted condition to disable undeploying.")]
 	public class GrantConditionOnDeployInfo : PausableConditionalTraitInfo
 	{
 		[GrantedConditionReference]
