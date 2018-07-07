@@ -567,7 +567,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var disabled = IsDisabled();
 			var state = disabled ? "textfield-disabled" :
 				HasKeyboardFocus ? "textfield-focused" :
-				Ui.MouseOverWidget == this ? "textfield-hover" :
+				Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget) ? "textfield-hover" :
 				"textfield";
 
 			WidgetUtils.DrawPanel(state,
