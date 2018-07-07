@@ -121,6 +121,7 @@ ChromeLayout:
 	common|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
+	common|chrome/playerprofile.yaml
 
 Weapons:
 	ra|weapons/explosions.yaml

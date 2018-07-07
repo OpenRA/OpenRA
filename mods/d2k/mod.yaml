@@ -86,6 +86,7 @@ ChromeLayout:
 	common|chrome/credits.yaml
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml
+	common|chrome/playerprofile.yaml
 	d2k|chrome/lobby-players.yaml
 	common|chrome/lobby-options.yaml
 	common|chrome/lobby-music.yaml
