@@ -9,6 +9,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Graphics;
+
 namespace OpenRA
 {
 	public class PlayerProfile
@@ -20,5 +24,46 @@ namespace OpenRA
 		public readonly int ProfileID;
 		public readonly string ProfileName;
 		public readonly string ProfileRank = "Registered Player";
+
+		[FieldLoader.LoadUsing("LoadBadges")]
+		public readonly List<PlayerBadge> Badges;
+
+		static object LoadBadges(MiniYaml yaml)
+		{
+			var badges = new List<PlayerBadge>();
+
+			var badgesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Badges");
+			if (badgesNode != null)
+			{
+				try
+				{
+					var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
+					foreach (var badgeNode in badgesNode.Value.Nodes)
+					{
+						var badge = playerDatabase.LoadBadge(badgeNode.Value);
+						if (badge != null)
+							badges.Add(badge);
+					}
+				}
+				catch
+				{
+					// Discard badges on error
+				}
+			}
+
+			return badges;
+		}
+	}
+
+	public class PlayerBadge
+	{
+		public readonly string Label;
+		public readonly Sprite Icon24;
+
+		public PlayerBadge(string label, Sprite icon24)
+		{
+			Label = label;
+			Icon24 = icon24;
+		}
 	}
 }

@@ -464,6 +464,9 @@ dialog4: dialog.png
 	corner-bl: 512,446,6,6
 	corner-br: 571,446,6,6
 
+tooltip-separator: dialog.png
+	border-t: 517,387,54,1
+
 # A copy of dialog3 (pressed button)
 progressbar-bg: dialog.png
 	background: 641,1,126,126

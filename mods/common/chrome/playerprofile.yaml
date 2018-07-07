@@ -28,6 +28,11 @@ Container@LOCAL_PROFILE_PANEL:
 					Font: TinyBold
 					BaseLine: 1
 					Text: Logout
+		Background@BADGES_CONTAINER:
+			Width: PARENT_RIGHT
+			Y: 48
+			Visible: false
+			Background: dialog3
 		Background@GENERATE_KEYS:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -208,3 +213,23 @@ Container@LOCAL_PROFILE_PANEL:
 					BaseLine: 1
 					Font: TinyBold
 					Text: Retry
+
+Container@PLAYER_PROFILE_BADGES_INSERT:
+	Logic: PlayerProfileBadgesLogic
+	Width: PARENT_RIGHT
+	Height: 110
+	Children:
+		Container@BADGE_TEMPLATE:
+			Width: PARENT_RIGHT
+			Height: 25
+			Children:
+				Sprite@ICON:
+					X: 6
+					Y: 1
+					Width: 24
+					Height: 24
+				Label@LABEL:
+					X: 36
+					Width: PARENT_RIGHT - 60
+					Height: 24
+					Font: Bold

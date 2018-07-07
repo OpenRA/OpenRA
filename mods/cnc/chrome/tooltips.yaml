@@ -293,3 +293,8 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 							Width: PARENT_RIGHT - 20
 							Height: 23
 							Font: Bold
+		Background@BADGES_CONTAINER:
+			Width: PARENT_RIGHT
+			Y: 0-1
+			Visible: false
+			Background: panel-black

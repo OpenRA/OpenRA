@@ -192,6 +192,9 @@ dialog3: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
+tooltip-separator: dialog.png
+	border-t: 641,0,126,1
+
 # Same as the half transparent frame used in the Asset Browser
 dialog4: dialog.png
 	background: 517,392,54,54

@@ -21,12 +21,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LocalProfileLogic : ChromeLogic
 	{
+		readonly WorldRenderer worldRenderer;
 		readonly LocalPlayerProfile localProfile;
+		readonly Widget badgeContainer;
+		readonly Widget widget;
 		bool notFound;
+		bool badgesVisible;
 
 		[ObjectCreator.UseCtor]
 		public LocalProfileLogic(Widget widget, WorldRenderer worldRenderer, Func<bool> minimalProfile)
 		{
+			this.worldRenderer = worldRenderer;
+			this.widget = widget;
 			localProfile = Game.LocalPlayerProfile;
 
 			// Key registration
@@ -78,6 +84,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			destroyKey.OnClick = localProfile.DeleteKeypair;
 			destroyKey.IsDisabled = minimalProfile;
 
+			badgeContainer = widget.Get("BADGES_CONTAINER");
+			badgeContainer.IsVisible = () => badgesVisible && !minimalProfile()
+				&& localProfile.State == LocalPlayerProfile.LinkState.Linked;
+
 			localProfile.RefreshPlayerData(() => RefreshComplete(false));
 		}
 
@@ -86,7 +96,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (updateNotFound)
 				notFound = localProfile.State == LocalPlayerProfile.LinkState.Unlinked;
 
-			Game.RunAfterTick(Ui.ResetTooltips);
+			Game.RunAfterTick(() =>
+			{
+				badgesVisible = false;
+
+				if (localProfile.State == LocalPlayerProfile.LinkState.Linked)
+				{
+					if (localProfile.ProfileData.Badges.Any())
+					{
+						Func<int, int> negotiateWidth = _ => widget.Get("PROFILE_HEADER").Bounds.Width;
+
+						// Remove any stale badges that may be left over from a previous session
+						badgeContainer.RemoveChildren();
+
+						var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
+						{
+							{ "worldRenderer", worldRenderer },
+							{ "profile", localProfile.ProfileData },
+							{ "negotiateWidth", negotiateWidth }
+						});
+
+						if (badges.Bounds.Height > 0)
+						{
+							badgeContainer.Bounds.Height = badges.Bounds.Height;
+							badgesVisible = true;
+						}
+					}
+				}
+
+				Ui.ResetTooltips();
+			});
 		}
 	}
 
@@ -102,6 +141,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerDatabase = modData.Manifest.Get<PlayerDatabase>();
 
 			var header = widget.Get("HEADER");
+			var badgeContainer = widget.Get("BADGES_CONTAINER");
+			var badgeSeparator = badgeContainer.GetOrNull("SEPARATOR");
 
 			var profileHeader = header.Get("PROFILE_HEADER");
 			var messageHeader = header.Get("MESSAGE_HEADER");
@@ -145,6 +186,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								profileWidth = Math.Max(profileWidth, rankFont.Measure(profile.ProfileRank).X + 2 * rankLabel.Bounds.Left);
 
 								header.Bounds.Height += headerSizeOffset;
+								badgeContainer.Bounds.Y += header.Bounds.Height;
 								if (client.IsAdmin)
 								{
 									profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * adminLabel.Bounds.Left);
@@ -152,11 +194,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									adminContainer.IsVisible = () => true;
 									profileHeader.Bounds.Height += adminLabel.Bounds.Height;
 									header.Bounds.Height += adminLabel.Bounds.Height;
+									badgeContainer.Bounds.Y += adminLabel.Bounds.Height;
+								}
+
+								Func<int, int> negotiateWidth = badgeWidth =>
+								{
+									profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), widget.Bounds.Width);
+									return profileWidth;
+								};
+
+								if (profile.Badges.Any())
+								{
+									var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
+									{
+										{ "worldRenderer", worldRenderer },
+										{ "profile", profile },
+										{ "negotiateWidth", negotiateWidth }
+									});
+
+									if (badges.Bounds.Height > 0)
+									{
+										badgeContainer.Bounds.Height = badges.Bounds.Height;
+										badgeContainer.IsVisible = () => true;
+									}
 								}
 
 								profileWidth = Math.Min(profileWidth, widget.Bounds.Width);
-								header.Bounds.Width = widget.Bounds.Width = profileWidth;
-								widget.Bounds.Height = header.Bounds.Height;
+								header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
+								widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
+
+								if (badgeSeparator != null)
+									badgeSeparator.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
 
 								profileLoaded = true;
 							});
@@ -182,8 +250,50 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			header.Bounds.Height += messageHeader.Bounds.Height;
 			header.Bounds.Width = widget.Bounds.Width = messageWidth;
 			widget.Bounds.Height = header.Bounds.Height;
+			badgeContainer.Visible = false;
 
 			new Download(playerDatabase.Profile + client.Fingerprint, _ => { }, onQueryComplete);
+		}
+	}
+
+	public class PlayerProfileBadgesLogic : ChromeLogic
+	{
+		[ObjectCreator.UseCtor]
+		public PlayerProfileBadgesLogic(Widget widget, PlayerProfile profile, Func<int, int> negotiateWidth)
+		{
+			var showBadges = profile.Badges.Any();
+			widget.IsVisible = () => showBadges;
+
+			var badgeTemplate = widget.Get("BADGE_TEMPLATE");
+			widget.RemoveChild(badgeTemplate);
+
+			var width = 0;
+			var badgeOffset = badgeTemplate.Bounds.Y;
+			foreach (var badge in profile.Badges)
+			{
+				var b = badgeTemplate.Clone();
+				var icon = b.Get<SpriteWidget>("ICON");
+				icon.GetSprite = () => badge.Icon24;
+
+				var label = b.Get<LabelWidget>("LABEL");
+				var labelFont = Game.Renderer.Fonts[label.Font];
+
+				var labelText = WidgetUtils.TruncateText(badge.Label, label.Bounds.Width, labelFont);
+				label.GetText = () => labelText;
+
+				width = Math.Max(width, label.Bounds.Left + labelFont.Measure(labelText).X + icon.Bounds.X);
+
+				b.Bounds.Y = badgeOffset;
+				widget.AddChild(b);
+
+				badgeOffset += badgeTemplate.Bounds.Height;
+			}
+
+			if (badgeOffset > badgeTemplate.Bounds.Y)
+				badgeOffset += 5;
+
+			widget.Bounds.Width = negotiateWidth(width);
+			widget.Bounds.Height = badgeOffset;
 		}
 	}
 
