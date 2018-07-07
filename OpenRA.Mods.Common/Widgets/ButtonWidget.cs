@@ -11,6 +11,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -240,7 +241,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var position = GetTextPosition(textSize, rb);
 
-			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
+			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
+			DrawBackground(rb, disabled, Depressed, hover, highlighted);
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
 					disabled ? colordisabled : color, bgDark, bgLight, 2);
