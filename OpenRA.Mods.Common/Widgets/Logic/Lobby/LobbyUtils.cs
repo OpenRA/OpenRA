@@ -296,15 +296,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return "Poor";
 		}
 
-		public static string DescriptiveIpAddress(string ip)
-		{
-			if (ip == null)
-				return "Unknown Host";
-			if (ip == IPAddress.Loopback.ToString())
-				return "Local Host";
-			return ip;
-		}
-
 		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
 		{
 			var block = parent.GetOrNull("LATENCY");
@@ -321,6 +312,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tooltip.IsVisible = () => c != null && visible;
 			if (c != null)
 				tooltip.Bind(orderManager, null, c);
+		}
+
+		public static void SetupProfileWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
+		{
+			var profile = parent.GetOrNull<ImageWidget>("PROFILE");
+			if (profile != null && c.Bot == null)
+			{
+				var imageName = (c != null && c.IsAdmin ? "admin-" : "player-")
+					+ (c.Fingerprint != null ? "registered" : "anonymous");
+
+				profile.GetImageName = () => imageName;
+				profile.IsVisible = () => true;
+			}
+
+			var profileTooltip = parent.GetOrNull<ClientTooltipRegionWidget>("PROFILE_TOOLTIP");
+			if (profileTooltip != null && c.Bot == null)
+			{
+				if (c != null && c.Fingerprint != null)
+					profileTooltip.Template = "REGISTERED_PLAYER_TOOLTIP";
+
+				profileTooltip.Bind(orderManager, worldRenderer, c);
+				profileTooltip.IsVisible = () => true;
+			}
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
@@ -360,6 +374,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
+			SetupProfileWidget(name, c, orderManager, worldRenderer);
+
 			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
@@ -370,6 +386,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[name.Font];
 			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
 			name.GetText = () => label;
+
+			SetupProfileWidget(parent, c, orderManager, worldRenderer);
 		}
 
 		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c,
@@ -403,6 +421,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 			slot.GetText = () => c != null ? c.Name : string.Empty;
 			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, s, c, orderManager, lobby, before, after);
+
+			SetupProfileWidget(slot, c, orderManager, worldRenderer);
 
 			// Ensure Name selector (if present) is hidden
 			HideChildWidget(parent, "NAME");
@@ -573,12 +593,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerName.GetColor = () => player.Color.RGB;
 		}
 
-		public static string GetExternalIP(int clientIndex, OrderManager orderManager)
+		public static string GetExternalIP(Session.Client client, OrderManager orderManager)
 		{
-			var client = orderManager.LobbyInfo.ClientWithIndex(clientIndex);
 			var address = client != null ? client.IpAddress : "";
 			var lc = orderManager.LocalClient;
-			if (lc != null && lc.Index == clientIndex && address == IPAddress.Loopback.ToString())
+			if (lc != null && lc.Index == client.Index && address == IPAddress.Loopback.ToString())
 			{
 				var externalIP = UPnP.ExternalIP;
 				if (externalIP != null)

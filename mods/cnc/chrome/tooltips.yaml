@@ -202,3 +202,94 @@ Background@LATENCY_TOOLTIP:
 		Label@LATENCY:
 			Height: 23
 			Font: Bold
+
+Background@ANONYMOUS_PLAYER_TOOLTIP:
+	Logic: AnonymousProfileTooltipLogic
+	Background: panel-black
+	Height: 55
+	Width: 200
+	Children:
+		Label@NAME:
+			X: 5
+			Text: Anonymous Player
+			Height: 23
+			Font: MediumBold
+		Label@LOCATION:
+			X: 5
+			Y: 23
+			Height: 12
+			Font: TinyBold
+		Label@IP:
+			X: 5
+			Y: 36
+			Height: 12
+			Font: TinyBold
+		Container@GAME_ADMIN:
+			X: 5
+			Y: 49
+			Height: 12
+			Visible: False
+			Children:
+				Image@ICON:
+					Y: 5
+					Width: 7
+					Height: 5
+					ImageCollection: lobby-bits
+					ImageName: admin
+				Label@LABEL:
+					X: 10
+					Height: 12
+					Text: Game Admin
+					Font: TinyBold
+
+Container@REGISTERED_PLAYER_TOOLTIP:
+	Logic: RegisteredProfileTooltipLogic
+	Width: 270
+	Height: 137
+	Children:
+		Background@HEADER:
+			Width: PARENT_RIGHT
+			Background: panel-black
+			Children:
+				Container@PROFILE_HEADER:
+					Width: PARENT_RIGHT
+					Height: 42
+					Children:
+						Label@PROFILE_NAME:
+							X: 5
+							Width: PARENT_RIGHT - 20
+							Height: 23
+							Font: MediumBold
+						Label@PROFILE_RANK:
+							X: 5
+							Y: 23
+							Width: PARENT_RIGHT - 20
+							Height: 12
+							Font: TinyBold
+						Container@GAME_ADMIN:
+							X: 5
+							Y: 36
+							Width: PARENT_RIGHT - 20
+							Height: 12
+							Visible: False
+							Children:
+								Image@ICON:
+									Y: 5
+									Width: 7
+									Height: 5
+									ImageCollection: lobby-bits
+									ImageName: admin
+								Label@LABEL:
+									X: 10
+									Height: 12
+									Text: Game Admin
+									Font: TinyBold
+				Container@MESSAGE_HEADER:
+					Height: 26
+					Width: PARENT_RIGHT
+					Children:
+						Label@MESSAGE:
+							X: 5
+							Width: PARENT_RIGHT - 20
+							Height: 23
+							Font: Bold
