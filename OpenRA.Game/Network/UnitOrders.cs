@@ -9,9 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using OpenRA.Traits;
 
 namespace OpenRA.Network
@@ -175,13 +178,18 @@ namespace OpenRA.Network
 							State = Session.ClientState.Invalid
 						};
 
+						var localProfile = Game.LocalPlayerProfile;
 						var response = new HandshakeResponse()
 						{
 							Client = info,
 							Mod = mod.Id,
 							Version = mod.Metadata.Version,
-							Password = orderManager.Password
+							Password = orderManager.Password,
+							Fingerprint = localProfile.Fingerprint
 						};
+
+						if (request.AuthToken != null && response.Fingerprint != null)
+							response.AuthSignature = localProfile.Sign(request.AuthToken);
 
 						orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
 						break;

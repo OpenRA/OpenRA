@@ -22,6 +22,12 @@ namespace OpenRA
 		// Fixed byte pattern for the OID header
 		static readonly byte[] OIDHeader = { 0x30, 0xD, 0x6, 0x9, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0xD, 0x1, 0x1, 0x1, 0x5, 0x0 };
 
+		public static string PublicKeyFingerprint(RSAParameters parameters)
+		{
+			// Public key fingerprint is defined as the SHA1 of the modulus + exponent bytes
+			return SHA1Hash(parameters.Modulus.Append(parameters.Exponent).ToArray());
+		}
+
 		public static string EncodePEMPublicKey(RSAParameters parameters)
 		{
 			var data = Convert.ToBase64String(EncodePublicKey(parameters));
