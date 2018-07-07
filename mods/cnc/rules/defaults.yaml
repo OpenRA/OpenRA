@@ -812,7 +812,8 @@
 	Tooltip:
 		GenericName: Field
 	-Explodes:
-	-Targetable:
+	-ShakeOnDeath:
+	-SoundOnDamageTransition:
 	-Demolishable:
 	RenderSprites:
 		Palette: terrain
