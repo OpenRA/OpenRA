@@ -162,30 +162,30 @@ ChromeMetrics:
 	cnc|metrics.yaml
 
 Fonts:
-	Small:
-		Font: common|FreeSans.ttf
-		Size:12
-	Regular:
-		Font: common|FreeSans.ttf
-		Size:14
-	Bold:
-		Font: common|FreeSansBold.ttf
-		Size:14
-	Title:
-		Font: common|FreeSansBold.ttf
-		Size:32
-	MediumBold:
-		Font: common|FreeSansBold.ttf
-		Size:18
-	BigBold:
-		Font: common|FreeSansBold.ttf
-		Size:24
 	Tiny:
 		Font: common|FreeSans.ttf
-		Size:10
+		Size: 10
 	TinyBold:
 		Font: common|FreeSansBold.ttf
-		Size:10
+		Size: 10
+	Small:
+		Font: common|FreeSans.ttf
+		Size: 12
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+	Title:
+		Font: common|FreeSansBold.ttf
+		Size: 32
 
 Missions:
 	./mods/cnc/missions.yaml
