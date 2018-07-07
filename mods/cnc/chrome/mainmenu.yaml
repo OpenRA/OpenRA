@@ -303,10 +303,9 @@ Container@MENU_BACKGROUND:
 			Logic: PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X: 40
-					Y: 40
+					X: WINDOW_RIGHT - WIDTH - 25
+					Y: WINDOW_BOTTOM - HEIGHT - 100
 					Width: 170
-					Height: 40
 					Contrast: true
 					VAlign: Top
 				Background@GRAPH_BG:
