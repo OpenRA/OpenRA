@@ -320,3 +320,6 @@ Container@MENU_BACKGROUND:
 							Y: 10
 							Width: 200
 							Height: 200
+		Container@PLAYER_PROFILE_CONTAINER:
+			X: 31
+			Y: 31
