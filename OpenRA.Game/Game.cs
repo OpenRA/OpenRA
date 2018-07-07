@@ -55,6 +55,7 @@ namespace OpenRA
 		public static bool BenchmarkMode = false;
 
 		public static string EngineVersion { get; private set; }
+		public static LocalPlayerProfile LocalPlayerProfile;
 
 		static Task discoverNat;
 		static bool takeScreenshot = false;
@@ -406,6 +407,8 @@ namespace OpenRA
 			Sound.StopVideo();
 
 			ModData = new ModData(Mods[mod], Mods, true);
+
+			LocalPlayerProfile = new LocalPlayerProfile(Platform.ResolvePath(Path.Combine("^", Settings.Game.AuthProfile)), ModData.Manifest.Get<PlayerDatabase>());
 
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;

@@ -33,6 +33,7 @@ namespace OpenRA.Server
 
 		/* client data */
 		public int PlayerIndex;
+		public string AuthToken;
 
 		public byte[] PopBytes(int n)
 		{
