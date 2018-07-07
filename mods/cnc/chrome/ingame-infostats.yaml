@@ -83,9 +83,22 @@ Container@SKIRMISH_STATS:
 					Height: 25
 					X: 2
 					Children:
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 8
+							Y: 4
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 8
+							Y: 4
+							Width: 16
+							Height: 16
+							Visible: false
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
-							X: 10
-							Width: 210
+							X: 29
+							Width: 191
 							Height: 25
 							Shadow: True
 						Image@FACTIONFLAG:
