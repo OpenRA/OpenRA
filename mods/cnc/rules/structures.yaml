@@ -1,6 +1,8 @@
 FACT:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^3x2Shape
+	Selectable:
+		Bounds: 72,48
 	Valued:
 		Cost: 3500
 	Tooltip:
@@ -104,6 +106,8 @@ FACT.NOD:
 NUKE:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	HitShape:
 		TargetableOffsets: 630,299,0
 	Valued:
@@ -134,6 +138,8 @@ NUKE:
 NUK2:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	HitShape:
 		TargetableOffsets: 630,299,0
 	Valued:
@@ -200,7 +206,7 @@ PROC:
 		PipCount: 10
 		Capacity: 700
 	Selectable:
-		Bounds: 72,56,0,12
+		Bounds: 72,56
 		DecorationBounds: 73,72
 	CustomSellValue:
 		Value: 500
@@ -251,6 +257,7 @@ SILO:
 	SelectionDecorations:
 	-AcceptsDeliveredCash:
 	Selectable:
+		Bounds: 48,24
 		DecorationBounds: 49,30
 
 PYLE:
@@ -351,6 +358,8 @@ HAND:
 
 AFLD:
 	Inherits: ^BaseBuilding
+	Selectable:
+		Bounds: 96,48
 	HitShape:
 		TargetableOffsets: 0,0,0, 0,-512,256, 0,-1451,384, 0,512,128, 0,1536,85
 		Type: Rectangle
@@ -452,6 +461,8 @@ WEAP:
 HPAD:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 768,-512,0, 768,512,0, -281,-512,0, -630,512,0
@@ -736,6 +747,8 @@ TMPL:
 GUN:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetGround
+	Selectable:
+		Bounds: 24,24
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -780,6 +793,8 @@ SAM:
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Inherits@shape: ^2x1Shape
+	Selectable:
+		Bounds: 48,24
 	HitShape:
 		Type: Rectangle
 			TopLeft: -768,-512
@@ -871,6 +886,8 @@ OBLI:
 GTWR:
 	Inherits: ^Defense
 	Inherits@AUTOTARGET: ^AutoTargetGround
+	Selectable:
+		Bounds: 24,24
 	Valued:
 		Cost: 600
 	Tooltip:

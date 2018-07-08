@@ -185,16 +185,13 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 0 - 1
 							Width: 180
 							Height: 25
-						Button@KICK:
-							X: 180
-							Width: 25
+						DropDownButton@PLAYER_ACTION:
+							X: 15
+							Width: 190
 							Height: 25
-							Children:
-								Image:
-									ImageCollection: lobby-bits
-									ImageName: kick
-									X: 7
-									Y: 7
+							Font: Regular
+							Visible: false
+							Align: Left
 						ColorBlock@COLORBLOCK:
 							X: 215
 							Y: 6
@@ -358,16 +355,13 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 0 - 1
 							Width: 180
 							Height: 25
-						Button@KICK:
-							X: 180
-							Width: 25
+						DropDownButton@PLAYER_ACTION:
+							X: 15
+							Width: 190
 							Height: 25
-							Children:
-								Image:
-									ImageCollection: lobby-bits
-									ImageName: kick
-									X: 7
-									Y: 7
+							Font: Regular
+							Visible: false
+							Align: Left
 						Label@SPECTATOR:
 							X: 210
 							Width: 341

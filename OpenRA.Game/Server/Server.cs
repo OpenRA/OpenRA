@@ -150,7 +150,8 @@ namespace OpenRA.Server
 					Map = settings.Map,
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || !dedicated,
-					GameUid = Guid.NewGuid().ToString()
+					GameUid = Guid.NewGuid().ToString(),
+					Dedicated = dedicated
 				}
 			};
 

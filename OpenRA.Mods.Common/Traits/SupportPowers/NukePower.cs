@@ -108,10 +108,14 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 			PlayLaunchSounds();
 
+			Activate(self, self.World.Map.CenterOfCell(order.TargetLocation));
+		}
+
+		public void Activate(Actor self, WPos targetPosition)
+		{
 			foreach (var launchpad in self.TraitsImplementing<INotifyNuke>())
 				launchpad.Launching(self);
 
-			var targetPosition = self.World.Map.CenterOfCell(order.TargetLocation);
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
@@ -133,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.DisplayBeacon)
 			{
 				var beacon = new Beacon(
-					order.Player,
+					self.Owner,
 					targetPosition,
 					Info.BeaconPaletteIsPlayerPalette,
 					Info.BeaconPalette,

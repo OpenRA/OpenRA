@@ -70,6 +70,8 @@ LST:
 	RevealsShroud:
 		Range: 7c0
 	WithFacingSpriteBody:
+	Selectable:
+		Bounds: 48,48
 	WithRoof:
 	WithCargo:
 		DisplayTypes: Infantry, Vehicle

@@ -594,18 +594,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = nonEditablePlayerTemplate.Clone();
 
 					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
-					LobbyUtils.SetupNameWidget(template, slot, client);
-					LobbyUtils.SetupKickWidget(template, slot, client, orderManager, lobby,
-						() => panel = PanelType.Kick, () => panel = PanelType.Players);
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, factions);
+
 					if (isHost)
 					{
 						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
 						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
+						LobbyUtils.SetupPlayerActionWidget(template, slot, client, orderManager, lobby,
+							() => panel = PanelType.Kick, () => panel = PanelType.Players);
 					}
 					else
 					{
+						LobbyUtils.SetupNameWidget(template, slot, client);
 						LobbyUtils.SetupTeamWidget(template, slot, client);
 						LobbyUtils.SetupSpawnWidget(template, slot, client);
 					}
@@ -650,9 +651,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != nonEditableSpectatorTemplate.Id)
 						template = nonEditableSpectatorTemplate.Clone();
 
-					LobbyUtils.SetupNameWidget(template, null, client);
-					LobbyUtils.SetupKickWidget(template, null, client, orderManager, lobby,
-						() => panel = PanelType.Kick, () => panel = PanelType.Players);
+					if (isHost)
+						LobbyUtils.SetupPlayerActionWidget(template, null, client, orderManager, lobby,
+								() => panel = PanelType.Kick, () => panel = PanelType.Players);
+					else
+						LobbyUtils.SetupNameWidget(template, null, client);
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupReadyWidget(template, null, client);
@@ -708,13 +711,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.CloseWindow();
 			onStart();
 		}
-
-		class DropDownOption
-		{
-			public string Title;
-			public Func<bool> IsSelected;
-			public Action OnClick;
-		}
 	}
 
 	public class LobbyFaction
@@ -723,5 +719,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public string Name;
 		public string Description;
 		public string Side;
+	}
+
+	class DropDownOption
+	{
+		public string Title;
+		public Func<bool> IsSelected = () => false;
+		public Action OnClick;
 	}
 }

@@ -44,6 +44,8 @@ if [ $? != 0 ] && [ $? != 1 ]; then
     zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
   elif command -v kdialog > /dev/null; then
     kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
+  elif "${HERE}/gtk-dialog.py" test > /dev/null; then
+    "${HERE}/gtk-dialog.py" error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
   else
     printf "${ERROR_MESSAGE}\n"
   fi

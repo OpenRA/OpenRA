@@ -157,7 +157,7 @@ ATMine:
 		Spread: 256
 		Damage: 40000
 		AffectsParent: true
-		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: mineblo1.aud
