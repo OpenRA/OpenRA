@@ -53,15 +53,40 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				Console.WriteLine("Valid sources are:");
 
+				var ruleGroups = new Dictionary<string, List<string>>();
+
 				// Print known tags
 				Console.WriteLine("   Update Paths:");
 				foreach (var p in UpdatePath.KnownPaths)
+				{
 					Console.WriteLine("      " + p);
+					ruleGroups[p] = UpdatePath.FromSource(modData.ObjectCreator, p, false)
+						.Select(r => r.GetType().Name)
+						.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)))
+						.ToList();
+				}
 
 				// Print known rules
 				Console.WriteLine("   Individual Rules:");
-				foreach (var r in UpdatePath.KnownRules(modData.ObjectCreator))
-					Console.WriteLine("      " + r);
+				foreach (var kv in ruleGroups)
+				{
+					if (!kv.Value.Any())
+						continue;
+
+					Console.WriteLine("      " + kv.Key + ":");
+					foreach (var r in kv.Value)
+						Console.WriteLine("         " + r);
+				}
+
+				var other = UpdatePath.KnownRules(modData.ObjectCreator)
+					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)));
+
+				if (other.Any())
+				{
+					Console.WriteLine("      Other:");
+					foreach (var r in other)
+						Console.WriteLine("         " + r);
+				}
 
 				return;
 			}

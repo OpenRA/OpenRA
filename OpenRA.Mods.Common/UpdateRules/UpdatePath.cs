@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			})
 		};
 
-		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source)
+		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
 		{
 			// Use reflection to identify types
 			var namedType = objectCreator.FindType(source);
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				return new[] { (UpdateRule)objectCreator.CreateBasic(namedType) };
 
 			var namedPath = Paths.FirstOrDefault(p => p.source == source);
-			return namedPath != null ? namedPath.Rules : null;
+			return namedPath != null ? namedPath.Rules(chain) : null;
 		}
 
 		public static IEnumerable<string> KnownPaths { get { return Paths.Select(p => p.source); } }
@@ -115,18 +115,15 @@ namespace OpenRA.Mods.Common.UpdateRules
 			this.chainToSource = chainToSource;
 		}
 
-		IEnumerable<UpdateRule> Rules
+		IEnumerable<UpdateRule> Rules(bool chain = true)
 		{
-			get
+			if (chainToSource != null && chain)
 			{
-				if (chainToSource != null)
-				{
-					var chain = Paths.First(p => p.source == chainToSource);
-					return rules.Concat(chain.Rules);
-				}
-
-				return rules;
+				var child = Paths.First(p => p.source == chainToSource);
+				return rules.Concat(child.Rules(chain));
 			}
+
+			return rules;
 		}
 	}
 }
