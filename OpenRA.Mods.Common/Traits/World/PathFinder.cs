@@ -70,6 +70,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (domainIndex != null && !domainIndex.IsPassable(source, target, li))
 				return EmptyPath;
 
+			var distance = source - target;
+			if (distance.LengthSquared < 3 && li.CanMoveFreelyInto(world, self, target, null, CellConditions.All))
+				return new List<CPos> { target };
+
 			List<CPos> pb;
 			using (var fromSrc = PathSearch.FromPoint(world, li, self, target, source, true).WithIgnoredActor(ignoreActor))
 			using (var fromDest = PathSearch.FromPoint(world, li, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
@@ -143,7 +147,6 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// make some progress on the first search
 				var p = fromSrc.Expand();
-
 				if (fromDest.Graph[p].Status == CellStatus.Closed &&
 					fromDest.Graph[p].CostSoFar < int.MaxValue)
 				{
@@ -153,7 +156,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				// make some progress on the second search
 				var q = fromDest.Expand();
-
 				if (fromSrc.Graph[q].Status == CellStatus.Closed &&
 					fromSrc.Graph[q].CostSoFar < int.MaxValue)
 				{
