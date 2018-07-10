@@ -1170,7 +1170,7 @@ PROC:
 		Capacity: 2000
 	DrawLineToTarget:
 	CustomSellValue:
-		Value: 600
+		Value: 300
 	FreeActor:
 		Actor: HARV
 		SpawnOffset: 1,2
