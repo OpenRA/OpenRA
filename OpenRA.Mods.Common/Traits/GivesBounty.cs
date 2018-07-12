@@ -23,9 +23,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage of the killed actor's Cost or CustomSellValue to be given.")]
 		public readonly int Percentage = 10;
 
-		[Desc("Scale bounty based on the veterancy of the killed unit. The value is given in percent.")]
-		public readonly int LevelMod = 125;
-
 		[Desc("Stance the attacking player needs to receive the bounty.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
@@ -41,7 +38,6 @@ namespace OpenRA.Mods.Common.Traits
 
 	class GivesBounty : ConditionalTrait<GivesBountyInfo>, INotifyKilled
 	{
-		GainsExperience gainsExp;
 		Cargo cargo;
 
 		public GivesBounty(GivesBountyInfo info)
@@ -51,24 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.Created(self);
 
-			gainsExp = self.TraitOrDefault<GainsExperience>();
 			cargo = self.TraitOrDefault<Cargo>();
-		}
-
-		// Returns 100's as 1, so as to keep accuracy for longer.
-		int GetMultiplier()
-		{
-			if (gainsExp == null)
-				return 100;
-
-			var slevel = gainsExp.Level;
-			return (slevel > 0) ? slevel * Info.LevelMod : 100;
 		}
 
 		int GetBountyValue(Actor self)
 		{
-			// Divide by 10000 because of GetMultiplier and info.Percentage.
-			return self.GetSellValue() * GetMultiplier() * Info.Percentage / 10000;
+			return self.GetSellValue() * Info.Percentage / 100;
 		}
 
 		int GetDisplayedBountyValue(Actor self)
