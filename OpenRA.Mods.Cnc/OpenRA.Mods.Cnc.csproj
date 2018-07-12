@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -132,6 +132,7 @@
     <Compile Include="Traits\SupportPowers\GpsPower.cs" />
     <Compile Include="Traits\GpsWatcher.cs" />
     <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
+    <Compile Include="Scripting\Properties\IonCannonProperties.cs" />
     <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
     <Compile Include="UtilityCommands\ImportRedAlertLegacyMapCommand.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />

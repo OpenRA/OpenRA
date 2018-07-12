@@ -73,6 +73,60 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
 		}
 
+		public static void ShowPlayerActionDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
+			Session.Client c, OrderManager orderManager, Widget lobby,  Action before, Action after)
+		{
+			Action<bool> okPressed = tempBan => { orderManager.IssueOrder(Order.Command("kick {0} {1}".F(c.Index, tempBan))); after(); };
+			var onClick = new Action(() =>
+			{
+				before();
+
+				Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
+				{
+					{ "clientName", c.Name },
+					{ "okPressed", okPressed },
+					{ "cancelPressed", after }
+				});
+			});
+
+			var options = new List<DropDownOption>
+			{
+				new DropDownOption
+				{
+					Title = "Kick",
+					OnClick = onClick
+				},
+			};
+
+			if (orderManager.LobbyInfo.GlobalSettings.Dedicated)
+			{
+				options.Add(new DropDownOption
+				{
+					Title = "Transfer Admin",
+					OnClick = () => orderManager.IssueOrder(Order.Command("make_admin {0}".F(c.Index)))
+				});
+			}
+
+			if (!c.IsObserver && orderManager.LobbyInfo.GlobalSettings.AllowSpectators)
+			{
+				options.Add(new DropDownOption
+				{
+					Title = "Move to Spectator",
+					OnClick = () => orderManager.IssueOrder(Order.Command("make_spectator {0}".F(c.Index)))
+				});
+			}
+
+			Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate, o.IsSelected, o.OnClick);
+				var labelWidget = item.Get<LabelWidget>("LABEL");
+				labelWidget.GetText = () => o.Title;
+				return item;
+			};
+
+			dropdown.ShowDropDown("PLAYERACTION_DROPDOWN_TEMPLATE", 167, options, setupItem);
+		}
+
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
 			OrderManager orderManager, int teamCount)
 		{
@@ -316,6 +370,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			var name = parent.Get<LabelWidget>("NAME");
+			name.IsVisible = () => true;
 			var font = Game.Renderer.Fonts[name.Font];
 			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
 			name.GetText = () => label;
@@ -343,23 +398,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
-		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
+		public static void SetupPlayerActionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
 		{
-			var button = parent.Get<ButtonWidget>("KICK");
-			button.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
-			button.IsDisabled = () => orderManager.LocalClient.IsReady;
-			Action<bool> okPressed = tempBan => { orderManager.IssueOrder(Order.Command("kick {0} {1}".F(c.Index, tempBan))); after(); };
-			button.OnClick = () =>
-			{
-				before();
+			var slot = parent.Get<DropDownButtonWidget>("PLAYER_ACTION");
+			slot.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
+			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
+			slot.GetText = () => c != null ? c.Name : string.Empty;
+			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, s, c, orderManager, lobby, before, after);
 
-				Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
-				{
-					{ "clientName", c.Name },
-					{ "okPressed", okPressed },
-					{ "cancelPressed", after }
-				});
-			};
+			// Ensure Name selector (if present) is hidden
+			HideChildWidget(parent, "NAME");
 		}
 
 		public static void SetupKickSpectatorsWidget(Widget parent, OrderManager orderManager, Widget lobby, Action before, Action after, bool skirmishMode)
@@ -576,6 +624,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var widget = parent.GetOrNull(widgetId);
 			if (widget != null)
 				widget.IsVisible = () => false;
+		}
+	}
+
+	class ShowPlayerActionDropDownOption
+	{
+		public Action Click { get; set; }
+		public string Title;
+		public Func<bool> Selected = () => false;
+
+		public ShowPlayerActionDropDownOption(string title, Action click)
+		{
+			Click = click;
+			Title = title;
 		}
 	}
 }

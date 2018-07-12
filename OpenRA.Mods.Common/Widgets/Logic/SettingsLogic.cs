@@ -492,6 +492,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CHECK_VERSION_CHECKBOX", ds, "CheckVersion");
 			BindCheckboxPref(panel, "REPLAY_COMMANDS_CHECKBOX", ds, "EnableDebugCommandsInReplays");
 
+			var ssi = panel.Get<CheckboxWidget>("SENDSYSINFO_CHECKBOX");
+			ssi.IsDisabled = () => !gs.FetchNews;
+
 			return () => { };
 		}
 

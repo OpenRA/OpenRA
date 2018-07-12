@@ -43,9 +43,7 @@ HeliCrash:
 		Damage: 10000
 
 HeliExplode:
-	Warhead@1Dam: SpreadDamage
-		DamageTypes: ExplosionDeath
-	Warhead@2Eff: CreateEffect
+	Warhead@1Eff: CreateEffect
 		Explosions: small_building
 		ImpactSounds: xplos.aud
 

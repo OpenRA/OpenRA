@@ -33,7 +33,14 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ZOffset = 0;
 
+		[Desc("The maximum duration (in ticks) of the beam's existence.")]
 		public readonly int Duration = 10;
+
+		[Desc("Total time-frame in ticks that the beam deals damage every DamageInterval.")]
+		public readonly int DamageDuration = 1;
+
+		[Desc("The number of ticks between the beam causing warhead impacts in its area of effect.")]
+		public readonly int DamageInterval = 1;
 
 		public readonly bool UsePlayerColor = false;
 
@@ -74,6 +81,15 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[PaletteReference] public readonly string HitAnimPalette = "effect";
 
+		[Desc("Image containing launch effect sequence.")]
+		public readonly string LaunchEffectImage = null;
+
+		[Desc("Launch effect sequence to play.")]
+		[SequenceReference("LaunchEffectImage")] public readonly string LaunchEffectSequence = null;
+
+		[Desc("Palette to use for launch effect.")]
+		[PaletteReference] public readonly string LaunchEffectPalette = "effect";
+
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
@@ -89,8 +105,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Color color;
 		readonly Color secondaryColor;
 		int ticks = 0;
-		bool doneDamage;
-		bool animationComplete;
+		int interval;
+		bool showHitAnim;
+		bool hasLaunchEffect;
 		[Sync] WPos target;
 		[Sync] WPos source;
 
@@ -111,11 +128,22 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
+			{
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);
+				showHitAnim = true;
+			}
+
+			hasLaunchEffect = !string.IsNullOrEmpty(info.LaunchEffectImage) && !string.IsNullOrEmpty(info.LaunchEffectSequence);
 		}
 
 		public void Tick(World world)
 		{
+			source = args.CurrentSource();
+
+			if (hasLaunchEffect && ticks == 0)
+				world.AddFrameEndTask(w => w.Add(new LaunchEffect(world, args.CurrentSource, () => 0,
+					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
+
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
 				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
@@ -128,44 +156,44 @@ namespace OpenRA.Mods.Common.Projectiles
 				target = blockedPos;
 			}
 
-			if (!doneDamage)
+			if (ticks < info.DamageDuration && --interval <= 0)
 			{
-				if (hitanim != null)
-					hitanim.PlayThen(info.HitAnimSequence, () => animationComplete = true);
-				else
-					animationComplete = true;
-
 				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
-				doneDamage = true;
+				interval = info.DamageInterval;
 			}
 
-			if (hitanim != null)
-				hitanim.Tick();
+			if (showHitAnim)
+			{
+				if (ticks == 0)
+					hitanim.PlayThen(info.HitAnimSequence, () => showHitAnim = false);
 
-			if (++ticks >= info.Duration && animationComplete)
+				hitanim.Tick();
+			}
+
+			if (++ticks >= info.Duration && !showHitAnim)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (wr.World.FogObscures(target) &&
-				wr.World.FogObscures(args.Source))
+				wr.World.FogObscures(source))
 				yield break;
 
 			if (ticks < info.Duration)
 			{
 				var rc = Color.FromArgb((info.Duration - ticks) * color.A / info.Duration, color);
-				yield return new BeamRenderable(args.Source, info.ZOffset, target - args.Source, info.Shape, info.Width, rc);
+				yield return new BeamRenderable(source, info.ZOffset, target - source, info.Shape, info.Width, rc);
 
 				if (info.SecondaryBeam)
 				{
 					var src = Color.FromArgb((info.Duration - ticks) * secondaryColor.A / info.Duration, secondaryColor);
-					yield return new BeamRenderable(args.Source, info.SecondaryBeamZOffset, target - args.Source,
+					yield return new BeamRenderable(source, info.SecondaryBeamZOffset, target - source,
 						info.SecondaryBeamShape, info.SecondaryBeamWidth, src);
 				}
 			}
 
-			if (hitanim != null)
+			if (showHitAnim)
 				foreach (var r in hitanim.Render(target, wr.Palette(info.HitAnimPalette)))
 					yield return r;
 		}

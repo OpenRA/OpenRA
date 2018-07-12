@@ -121,7 +121,6 @@ MammothTusk:
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Damage: 5000
-		ValidTargets: Air, Infantry
 		Versus:
 			None: 100
 			Light: 60
@@ -152,9 +151,7 @@ Nike:
 		Damage: 5000
 		ValidTargets: Air
 		Versus:
-			None: 90
 			Light: 90
-			Heavy: 50
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
@@ -170,9 +167,7 @@ RedEye:
 		Damage: 4000
 		ValidTargets: Air
 		Versus:
-			Wood: 75
 			Light: 60
-			Heavy: 25
 
 Stinger:
 	Inherits: ^AntiGroundMissile
@@ -248,7 +243,6 @@ TorpTube:
 		Damage: 18000
 		ValidTargets: Water, Underwater, Bridge
 		Versus:
-			None: 30
 			Wood: 75
 			Light: 75
 			Heavy: 100

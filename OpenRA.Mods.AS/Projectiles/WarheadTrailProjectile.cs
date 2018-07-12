@@ -219,6 +219,7 @@ namespace OpenRA.Mods.AS.Projectiles
 					DamageModifiers = args.DamageModifiers,
 					Facing = facing,
 					Source = offsetSourcePos,
+					CurrentSource = () => offsetSourcePos,
 					SourceActor = firedBy,
 					PassiveTarget = target.CenterPosition
 				};

@@ -2,6 +2,8 @@ FPWR:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 640,-384,0, 640,512,0, -710,-512,0, -710,512,0
@@ -33,6 +35,8 @@ FPWR:
 SYRF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
+	Selectable:
+		Bounds: 72,48
 	Buildable:
 		BuildPaletteOrder: 890
 		Queue: Defense
@@ -76,6 +80,8 @@ SYRF:
 SPEF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
+	Selectable:
+		Bounds: 72,48
 	Targetable:
 		TargetTypes: Ground, Water, Structure, SpyInfiltrate
 	Buildable:
@@ -119,6 +125,8 @@ WEAF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^3x2Shape
+	Selectable:
+		Bounds: 72,48
 	Buildable:
 		BuildPaletteOrder: 920
 		Prerequisites: ~structures.france, ~techlevel.medium
@@ -151,6 +159,8 @@ DOMF:
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
@@ -181,6 +191,9 @@ DOMF:
 
 FIXF:
 	Inherits: ^FakeBuilding
+	Selectable:
+		Bounds: 68,34,0,3
+		DecorationBounds: 72,48
 	Buildable:
 		BuildPaletteOrder: 940
 		Queue: Defense
@@ -193,7 +206,7 @@ FIXF:
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
-		Footprint: _X_ xxx _X_
+		Footprint: _=_ xxx _=_
 		Dimensions: 3,3
 	Health:
 		HP: 80000
@@ -249,6 +262,8 @@ ATEF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	Tooltip:
 		Name: Fake Allied Tech Center
 		GenericName: Allied Tech Center
@@ -278,6 +293,8 @@ PDOF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
 	Tooltip:
 		Name: Fake Chronosphere
 		GenericName: Chronosphere
@@ -310,6 +327,8 @@ MSLF:
 	Inherits: ^FakeBuilding
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x1Shape
+	Selectable:
+		Bounds: 48,24
 	Tooltip:
 		Name: Fake Missile Silo
 		GenericName: Missile Silo
@@ -338,6 +357,8 @@ MSLF:
 
 FACF:
 	Inherits: ^FakeBuilding
+	Selectable:
+		Bounds: 72,72
 	Buildable:
 		BuildPaletteOrder: 1000
 		Queue: Defense

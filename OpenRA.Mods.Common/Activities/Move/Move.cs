@@ -224,7 +224,15 @@ namespace OpenRA.Mods.Common.Activities
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-				QueueChild(new Turn(self, firstFacing));
+
+				// HACK: To fix visual hiccups on actors with move animations during "L-turn to next part of movement" transitions
+				// or invisible mini-turns (due to less sprite facings than internal facings), we set IsMoving to  'true' during Turn activity
+				// when the facing delta is low enough to be covered with a single Turn tick.
+				// To avoid issues, we also make these mini-turns uninterruptible (like MovePart activities) to ensure the actor
+				// finishes that mini-turn before starting something else.
+				var facingWithinTolerance = Util.FacingWithinTolerance(mobile.Facing, firstFacing, mobile.TurnSpeed);
+				QueueChild(new Turn(self, firstFacing, facingWithinTolerance, !facingWithinTolerance));
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 				return this;
 			}
 

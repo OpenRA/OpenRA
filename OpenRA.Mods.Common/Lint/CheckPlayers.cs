@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckPlayers : ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			var players = new MapPlayers(map.PlayerDefinitions).Players;
 			var worldOwnerFound = false;

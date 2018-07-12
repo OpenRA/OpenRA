@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string[] Sequences = { "active" };
 
 		public readonly int Interval = 750;
+
+		[Desc("Which sprite body to play the animation on.")]
+		public readonly string Body = "body";
 
 		public override object Create(ActorInitializer init) { return new WithIdleAnimation(init.Self, this); }
 	}
@@ -33,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithIdleAnimation(Actor self, WithIdleAnimationInfo info)
 			: base(info)
 		{
-			wsb = self.Trait<WithSpriteBody>();
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			ticks = info.Interval;
 		}

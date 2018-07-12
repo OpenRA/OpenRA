@@ -72,6 +72,7 @@ namespace OpenRA.Mods.AS.Warheads
 					.Select(a => a.GetRangeModifier()).ToArray() : new int[0],
 
 				Source = target.CenterPosition,
+				CurrentSource = () => target.CenterPosition,
 				SourceActor = firedBy,
 				GuidedTarget = fragmentTarget,
 				PassiveTarget = fragmentTarget.CenterPosition

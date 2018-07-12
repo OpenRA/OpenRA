@@ -91,6 +91,7 @@ FLAK-23-AG:
 			Light: 40
 			Heavy: 10
 			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 Vulcan:
 	Inherits: ^HeavyMG
@@ -272,7 +273,7 @@ M60mg:
 		Spread: 42
 		Damage: 15000
 		ValidTargets: Barrel, Infantry
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 
 SilencedPPK:
 	Inherits: ^SnipeWeapon

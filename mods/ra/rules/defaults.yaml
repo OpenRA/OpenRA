@@ -315,6 +315,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+		DeathTypes: DefaultDeath
 	DrawLineToTarget:
 	Health:
 		HP: 2500
@@ -516,6 +517,8 @@
 	OwnerLostAction:
 		Action: Kill
 	DrawLineToTarget:
+	Armor:
+		Type: Light
 	UpdatesPlayerStatistics:
 	AppearsOnRadar:
 		UseLocation: true
@@ -671,6 +674,8 @@
 
 ^Defense:
 	Inherits: ^Building
+	Selectable:
+		Bounds: 24,24
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Defense
 	MustBeDestroyed:
@@ -691,6 +696,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Interactable:
+		Bounds: 24,24
 	OwnerLostAction:
 		Action: ChangeOwner
 	Building:
@@ -1028,6 +1034,7 @@
 ^Crate:
 	Inherits@1: ^SpriteActor
 	Interactable:
+		Bounds: 24,24
 	HiddenUnderFog:
 	Tooltip:
 		Name: Crate
@@ -1062,6 +1069,7 @@
 ^Mine:
 	Inherits: ^SpriteActor
 	Interactable:
+		Bounds: 24,24
 	WithSpriteBody:
 	HiddenUnderFog:
 	Mine:

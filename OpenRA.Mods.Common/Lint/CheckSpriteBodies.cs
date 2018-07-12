@@ -11,18 +11,22 @@
 
 using System;
 using System.Linq;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class CheckActors : ILintMapPass
+	class CheckSpriteBodies : ILintRulesPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules)
 		{
-			var actorTypes = map.ActorDefinitions.Select(a => a.Value.Value);
-			foreach (var actor in actorTypes)
-				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
-					emitError("Actor {0} is not defined by any rule.".F(actor));
+			foreach (var actorInfo in rules.Actors)
+			{
+				var wsbs = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>();
+				foreach (var wsb in wsbs)
+					if (wsbs.Any(w => w != wsb && w.Name == wsb.Name))
+						emitError("Actor type `{0}` has more than one *SpriteBody with Name: {1}!".F(actorInfo.Key, wsb.Name));
+			}
 		}
 	}
 }

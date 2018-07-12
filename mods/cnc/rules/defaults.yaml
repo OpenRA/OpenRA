@@ -348,6 +348,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+		DeathTypes: DefaultDeath
 	Health:
 	Armor:
 		Type: None
@@ -437,7 +438,7 @@
 	DetectCloaked:
 		Range: 2c0
 	DeathSounds@NORMAL:
-		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath
+		DeathTypes: DefaultDeath, BulletDeath, SmallExplosionDeath, ExplosionDeath, RippedApartDeath
 	DeathSounds@BURNED:
 		Voice: Burned
 		DeathTypes: FireDeath
@@ -839,6 +840,7 @@
 	Inherits@1: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Interactable:
+		Bounds: 24,24
 	CombatDebugOverlay:
 	AppearsOnRadar:
 	OwnerLostAction:

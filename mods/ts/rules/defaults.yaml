@@ -513,6 +513,7 @@
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
+		DeathTypes: BulletDeath
 	DrawLineToTarget:
 	Health:
 		HP: 5000

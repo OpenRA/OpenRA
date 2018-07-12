@@ -198,6 +198,7 @@ namespace OpenRA.Network
 			public bool AllowVersionMismatch;
 			public string GameUid;
 			public bool EnableSingleplayer;
+			public bool Dedicated;
 
 			[FieldLoader.Ignore]
 			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();
