@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawn new actors when sold.")]
-	public class SpawnActorsOnSellInfo : ITraitInfo
+	public class SpawnActorsOnSellInfo : ConditionalTraitInfo
 	{
 		public readonly int ValuePercent = 40;
 		public readonly int MinHpPercent = 30;
@@ -30,17 +30,16 @@ namespace OpenRA.Mods.Common.Traits
 			"Leave empty to allow all factions by default.")]
 		public readonly HashSet<string> Factions = new HashSet<string>();
 
-		public object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
 	}
 
-	public class SpawnActorsOnSell : INotifySold
+	public class SpawnActorsOnSell : ConditionalTrait<SpawnActorsOnSellInfo>, INotifySold
 	{
-		readonly SpawnActorsOnSellInfo info;
 		readonly bool correctFaction;
 
 		public SpawnActorsOnSell(Actor self, SpawnActorsOnSellInfo info)
+			: base(info)
 		{
-			this.info = info;
 			var factionsList = info.Factions;
 			correctFaction = factionsList.Count == 0 || factionsList.Contains(self.Owner.Faction.InternalName);
 		}
@@ -49,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Emit(Actor self)
 		{
-			if (!correctFaction)
+			if (IsTraitDisabled || !correctFaction)
 				return;
 
 			var csv = self.Info.TraitInfoOrDefault<CustomSellValueInfo>();
@@ -57,11 +56,11 @@ namespace OpenRA.Mods.Common.Traits
 			var cost = csv != null ? csv.Value : (valued != null ? valued.Cost : 0);
 
 			var health = self.TraitOrDefault<Health>();
-			var dudesValue = info.ValuePercent * cost / 100;
+			var dudesValue = Info.ValuePercent * cost / 100;
 			if (health != null)
 			{
 				// Cast to long to avoid overflow when multiplying by the health
-				if (100L * health.HP >= info.MinHpPercent * (long)health.MaxHP)
+				if (100L * health.HP >= Info.MinHpPercent * (long)health.MaxHP)
 					dudesValue = (int)((long)health.HP * dudesValue / health.MaxHP);
 				else
 					dudesValue = 0;
@@ -70,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
 
 			var eligibleLocations = buildingInfo != null ? buildingInfo.Tiles(self.Location).ToList() : new List<CPos>();
-			var actorTypes = info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].TraitInfo<ValuedInfo>().Cost }).ToList();
+			var actorTypes = Info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].TraitInfo<ValuedInfo>().Cost }).ToList();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))
 			{
