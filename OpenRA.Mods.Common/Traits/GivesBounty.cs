@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -78,8 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var a in cargo.Passengers)
 			{
-				var givesBounty = a.TraitOrDefault<GivesBounty>();
-				if (givesBounty != null)
+				var givesBounties = a.TraitsImplementing<GivesBounty>().Where(gb => !gb.IsTraitDisabled);
+				foreach (var givesBounty in givesBounties)
 					bounty += givesBounty.GetDisplayedBountyValue(a);
 			}
 
