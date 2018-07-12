@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Eject a ground soldier or a paratrooper while in the air.")]
-	public class EjectOnDeathInfo : ITraitInfo
+	public class EjectOnDeathInfo : ConditionalTraitInfo
 	{
 		[ActorReference]
 		[Desc("Name of the unit to eject. This actor type needs to have the Parachutable trait defined.")]
@@ -37,23 +37,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
 		public readonly bool AllowUnsuitableCell = false;
 
-		public object Create(ActorInitializer init) { return new EjectOnDeath(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EjectOnDeath(init.Self, this); }
 	}
 
 	public interface IPreventsEjectOnDeath { bool PreventsEjectOnDeath(Actor self); }
 
-	public class EjectOnDeath : INotifyKilled
+	public class EjectOnDeath : ConditionalTrait<EjectOnDeathInfo>, INotifyKilled
 	{
-		readonly EjectOnDeathInfo info;
-
 		public EjectOnDeath(Actor self, EjectOnDeathInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
+			if (IsTraitDisabled || self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
 				return;
 
 			foreach (var condition in self.TraitsImplementing<IPreventsEjectOnDeath>())
@@ -62,18 +58,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			var r = self.World.SharedRandom.Next(1, 100);
 
-			if (r <= 100 - info.SuccessRate)
+			if (r <= 100 - Info.SuccessRate)
 				return;
 
 			var cp = self.CenterPosition;
 			var inAir = !self.IsAtGroundLevel();
-			if ((inAir && !info.EjectInAir) || (!inAir && !info.EjectOnGround))
+			if ((inAir && !Info.EjectInAir) || (!inAir && !Info.EjectOnGround))
 				return;
 
-			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
+			var pilot = self.World.CreateActor(false, Info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
 
-			if (info.AllowUnsuitableCell || IsSuitableCell(self, pilot))
+			if (Info.AllowUnsuitableCell || IsSuitableCell(self, pilot))
 			{
 				if (inAir)
 				{
@@ -82,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 						w.Add(pilot);
 						pilot.QueueActivity(new Parachute(pilot, cp));
 					});
-					Game.Sound.Play(SoundType.World, info.ChuteSound, cp);
+					Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
 				}
 				else
 				{
