@@ -25,6 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prerequisites to grant when this tech level is active.")]
 		public readonly string[] Prerequisites = { };
 
+		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
+
 		public object Create(ActorInitializer init) { return new ProvidesTechPrerequisite(this, init); }
 	}
 
