@@ -211,7 +211,11 @@ namespace OpenRA.Mods.Common.Traits
 		void Infiltrating(Actor self);
 	}
 
-	public interface ITechTreePrerequisiteInfo : ITraitInfo { }
+	public interface ITechTreePrerequisiteInfo : ITraitInfo
+	{
+		IEnumerable<string> Prerequisites(ActorInfo info);
+	}
+
 	public interface ITechTreePrerequisite
 	{
 		IEnumerable<string> ProvidesPrerequisites { get; }
