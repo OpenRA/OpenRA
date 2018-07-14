@@ -146,7 +146,7 @@ APCGun:
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
-		Explosions: small_poof
+		Explosions: small_frag
 		ValidTargets: Ground, Water, Air
 
 APCGun.AA:
@@ -164,4 +164,4 @@ APCGun.AA:
 			Light: 125
 			Heavy: 60
 	Warhead@2Eff: CreateEffect
-		Explosions: small_frag
+		Explosions: small_poof

@@ -32,7 +32,12 @@
 		Explosions: small_frag
 		ImpactSounds: xplos.aud
 		ImpactActors: false
-		ValidTargets: Ground, Water, Air
+		ValidTargets: Ground, Water
+	Warhead@4EffAir: CreateEffect
+		Explosions: small_poof
+		ImpactSounds: xplos.aud
+		ImpactActors: false
+		ValidTargets: Air
 
 Dragon:
 	Inherits: ^MissileWeapon
@@ -52,7 +57,7 @@ Dragon:
 			None: 140
 			Wood: 140
 			Heavy: 104
-	Warhead@3Eff: CreateEffect
+	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 
 Rockets:
@@ -125,11 +130,8 @@ MammothMissiles:
 			Heavy: 44
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
-		ImpactActors: false
-		ValidTargets: Air
 
 227mm:
 	Inherits: ^MissileWeapon
@@ -206,11 +208,8 @@ BoatMissile:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
-		ValidTargets: Ground, Water
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
-		ImpactActors: false
-		ValidTargets: Air
 
 TowerMissile:
 	Inherits: ^MissileWeapon
@@ -255,7 +254,7 @@ TowerAAMissile:
 			Light: 140
 			Heavy: 104
 	-Warhead@2Smu: LeaveSmudge
-	Warhead@3Eff: CreateEffect
+	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 
 Patriot:
@@ -281,5 +280,5 @@ Patriot:
 			Light: 100
 			Heavy: 74
 	-Warhead@2Smu: LeaveSmudge
-	Warhead@3Eff: CreateEffect
+	Warhead@4EffAir: CreateEffect
 		Explosions: poof
