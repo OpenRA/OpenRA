@@ -5,7 +5,7 @@ set -e
 command -v make >/dev/null 2>&1 || { echo >&2 "Linux packaging requires make."; exit 1; }
 command -v python >/dev/null 2>&1 || { echo >&2 "Linux packaging requires python."; exit 1; }
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
-command -v curl >/dev/null 2>&1 || { echo >&2 "Linux packaging requires curl."; exit 1; }
+command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
 
 DEPENDENCIES_TAG="20180723"
 
@@ -55,8 +55,14 @@ popd > /dev/null
 
 # Add native libraries
 echo "Downloading dependencies"
-curl -s -L -O https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
-curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
+if command -v curl >/dev/null 2>&1; then
+	curl -s -L -O https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
+	curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
+else
+	wget -cq https://github.com/OpenRA/AppImageSupport/releases/download/${DEPENDENCIES_TAG}/libs.tar.bz2 || exit 3
+	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
+fi
+
 chmod a+x appimagetool-x86_64.AppImage
 
 echo "Building AppImage"
