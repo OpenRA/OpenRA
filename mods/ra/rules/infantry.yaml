@@ -268,7 +268,7 @@ SPY:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 		Voice: Move
 	Disguise:
 		DisguisedCondition: disguise
@@ -382,7 +382,7 @@ MEDI:
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 	Armament:
 		Weapon: Heal
 		Cursor: heal
@@ -418,7 +418,7 @@ MECH:
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 		Voice: Move
 	Armament:
 		Weapon: Repair
@@ -504,7 +504,7 @@ THF:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 	Infiltrates:
 		PlayerExperience: 50
 	Voiced:
@@ -532,7 +532,7 @@ HIJACKER:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 	Captures:
 		CaptureTypes: vehicle
 		PlayerExperience: 50
