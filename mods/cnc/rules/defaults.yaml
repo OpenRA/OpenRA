@@ -483,6 +483,8 @@
 		HP: 2500
 	RevealsShroud:
 		Range: 2c0
+	Passenger:
+		PipType: Gray
 	ActorLostNotification:
 		Notification: CivilianKilled
 		NotifyAll: true
