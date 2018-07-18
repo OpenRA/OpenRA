@@ -17,12 +17,14 @@ Speech:
 		AtomBombPrepping: atprep1
 		BaseAttack: baseatk1
 		Building: abldgin1
+			RateLimit: 600
 		BuildingCannotPlaceAudio: nodeply1
 		BuildingCaptured: strucap1
 		BuildingInfiltrated: bldginf1
 		BuildingInProgress: progres1
 		BuildingProgress: bldgprg1
 		Cancelled: cancld1
+			RateLimit: 500
 		ChronosphereCharging: chrochr1
 		ChronosphereReady: chrordy1
 		ChronosphereTestSuccessful: chroyes1
@@ -97,12 +99,14 @@ Speech:
 		TimerStarted: timergo1
 		TimerStopped: timerno1
 		Training: train1
+			RateLimit: 800
 		TwentyMinutesRemaining: 20minr
 		UnitArmorUpgraded: armorup1
 		UnitFirepowerUpgraded: firepo1
 		UnitFull: unitful1
 		UnitLost: unitlst1
 		UnitReady: unitrdy1
+			RateLimit: 900
 		UnitRepaired: unitrep1
 		UnitSold: unitsld1
 		UnitSpeedUpgraded: unitspd1
