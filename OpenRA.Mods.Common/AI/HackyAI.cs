@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.AI
 		{
 			Player = p;
 			IsEnabled = true;
-			playerPower = p.PlayerActor.Trait<PowerManager>();
+			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
 			harvManager = new AIHarvesterManager(this, p);
