@@ -13,11 +13,13 @@ Speech:
 	Notifications:
 		BaseAttack: ATACK
 		Building: BUILD
+			RateLimit: 600
 		BuildingCannotPlaceAudio: PLACE
 		BuildingCaptured: CAPT
 		BuildingLost: BLOST
 		BuildingReady: BDRDY
 		Cancelled: CANCL
+			RateLimit: 500
 		CannotDeploy: DPLOY
 		DeathHandMissilePrepping: PREP
 		DeathHandMissileReady: DHRDY
@@ -50,8 +52,10 @@ Speech:
 		TMinusThree: 3MIN
 		TMinusTwo: 2MIN
 		Training: TRAIN
+			RateLimit: 800
 		UnitLost: ULOST
 		UnitReady: UNRDY
+			RateLimit: 900
 		UnitRepaired: GANEW
 		UpgradeOptions: UPGOP
 		Upgrading: UPGRD
