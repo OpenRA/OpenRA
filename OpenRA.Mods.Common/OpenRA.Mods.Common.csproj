@@ -238,6 +238,7 @@
     <Compile Include="Scripting\Global\MapGlobal.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
     <Compile Include="Scripting\Global\PlayerGlobal.cs" />
+    <Compile Include="Scripting\Global\RadarGlobal.cs" />
     <Compile Include="Scripting\Global\ReinforcementsGlobal.cs" />
     <Compile Include="Scripting\Global\TriggerGlobal.cs" />
     <Compile Include="Scripting\Global\UserInterfaceGlobal.cs" />
