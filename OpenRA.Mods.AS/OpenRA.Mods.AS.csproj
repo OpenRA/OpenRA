@@ -87,6 +87,12 @@
     <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
+    <Compile Include="Mustapha\EnterSharedTransport.cs" />
+    <Compile Include="Mustapha\EnterSharedTransportTargeter.cs" />
+    <Compile Include="Mustapha\SharedCargo.cs" />
+    <Compile Include="Mustapha\SharedCargoManager.cs" />
+    <Compile Include="Mustapha\SharedPassenger.cs" />
+    <Compile Include="Mustapha\UnloadSharedCargo.cs" />
     <Compile Include="Projectiles\ArcLaserZap.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
     <Compile Include="Projectiles\WarheadTrailProjectile.cs" />
