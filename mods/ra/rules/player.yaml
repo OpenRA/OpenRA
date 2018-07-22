@@ -48,6 +48,7 @@ Player:
 		SpeedUp: True
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:

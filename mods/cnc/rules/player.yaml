@@ -9,6 +9,7 @@ Player:
 	Inherits: ^BasePlayer
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 	TechTree:
 	SupportPowerManager:
 	ScriptTriggers:

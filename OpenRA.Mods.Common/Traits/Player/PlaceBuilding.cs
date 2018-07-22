@@ -34,6 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Notification to play after building placement if new construction options are available.")]
 		public readonly string NewOptionsNotification = null;
 
+		public readonly string CannotPlaceNotification = null;
+
 		public object Create(ActorInitializer init) { return new PlaceBuilding(this); }
 	}
 
