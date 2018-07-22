@@ -16,6 +16,8 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
 	DeveloperMode:
 		CheckboxDisplayOrder: 8
 	BaseAttackNotifier:
