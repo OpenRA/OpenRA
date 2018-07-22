@@ -64,6 +64,7 @@ Player:
 	ConquestVictoryConditions:
 	PowerManager:
 		AdviceInterval: 650
+		SpeechNotification: LowPower
 	AllyRepair:
 	PlayerResources:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000

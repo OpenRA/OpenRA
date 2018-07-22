@@ -52,6 +52,7 @@ Player:
 	MissionObjectives:
 	ConquestVictoryConditions:
 	PowerManager:
+		SpeechNotification: LowPower
 	AllyRepair:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
