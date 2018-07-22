@@ -644,6 +644,7 @@
 	RepairableBuilding:
 		RepairStep: 700
 		PlayerExperience: 25
+		RepairingNotification: Repairing
 	EngineerRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
