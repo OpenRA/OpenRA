@@ -52,12 +52,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Notification played when production is complete.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
-		public readonly string ReadyAudio = "UnitReady";
+		public readonly string ReadyAudio = null;
 
 		[Desc("Notification played when you can't train another actor",
 			"when the build limit exceeded or the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
-		public readonly string BlockedAudio = "NoBuild";
+		public readonly string BlockedAudio = null;
 
 		[Desc("Notification played when you can't queue another actor",
 			"when the queue length limit is exceeded.",
@@ -66,15 +66,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Notification played when user clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
-		public readonly string QueuedAudio = "Training";
+		public readonly string QueuedAudio = null;
 
 		[Desc("Notification played when player right-clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
-		public readonly string OnHoldAudio = "OnHold";
+		public readonly string OnHoldAudio = null;
 
 		[Desc("Notification played when player right-clicks on a build palette icon that is already on hold.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
-		public readonly string CancelledAudio = "Cancelled";
+		public readonly string CancelledAudio = null;
 
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init, init.Self.Owner.PlayerActor, this); }
 

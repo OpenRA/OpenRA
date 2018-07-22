@@ -13,40 +13,51 @@ Player:
 		Type: Building
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
-		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
-		BlockedAudio:
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
-		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
-		BlockedAudio:
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
-		BlockedAudio:
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
-		BlockedAudio:
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
 		BuildDurationModifier: 120
 		LowPowerSlowdown: 3
-		BlockedAudio:
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
