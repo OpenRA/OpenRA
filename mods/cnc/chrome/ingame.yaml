@@ -618,6 +618,8 @@ Container@PLAYER_WIDGETS:
 							Width: PARENT_RIGHT - 2
 							Height: PARENT_BOTTOM - 2
 							WorldInteractionController: INTERACTION_CONTROLLER
+							SoundUp: RadarUp
+							SoundDown: RadarDown
 							Children:
 								LogicTicker@RADAR_TICKER:
 						VqaPlayer@PLAYER:
