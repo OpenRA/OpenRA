@@ -44,7 +44,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Action onQuit = () =>
 			{
 				if (world.Type == WorldType.Regular)
-					Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Faction.InternalName);
+				{
+					var moi = world.Map.Rules.Actors["player"].TraitInfoOrDefault<MissionObjectivesInfo>();
+					if (moi != null)
+					{
+						var faction = world.LocalPlayer == null ? null : world.LocalPlayer.Faction.InternalName;
+						Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", moi.LeaveNotification, faction);
+					}
+				}
 
 				leaving = true;
 
