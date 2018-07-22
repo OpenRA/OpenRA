@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.AI
 
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
 		{
-			return (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
+			return playerPower == null || (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
 				.Sum(p => p.Amount) + playerPower.ExcessPower) >= minimumExcessPower;
 		}
 
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.AI
 				a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
-			if (playerPower.ExcessPower < minimumExcessPower)
+			if (playerPower != null && playerPower.ExcessPower < minimumExcessPower)
 			{
 				if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount) > 0)
 				{
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.AI
 
 				// Will this put us into low power?
 				var actor = world.Map.Rules.Actors[name];
-				if (playerPower.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor))
+				if (playerPower != null && (playerPower.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor)))
 				{
 					// Try building a power plant instead
 					if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(pi => pi.Amount) > 0)

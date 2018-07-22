@@ -121,7 +121,6 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			Info = info;
 			playerResources = playerActor.Trait<PlayerResources>();
-			playerPower = playerActor.Trait<PowerManager>();
 			developerMode = playerActor.Trait<DeveloperMode>();
 
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
@@ -135,6 +134,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
+			// Special case handling is required for the Player actor.
+			// Created is called before Player.PlayerActor is assigned,
+			// so we must query other player traits from self, knowing that
+			// it refers to the same actor as self.Owner.PlayerActor
+			playerPower = (self.Info.Name == "player" ? self : self.Owner.PlayerActor).TraitOrDefault<PowerManager>();
 			productionTraits = self.TraitsImplementing<Production>().ToArray();
 		}
 
@@ -152,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			ClearQueue();
 
-			playerPower = newOwner.PlayerActor.Trait<PowerManager>();
+			playerPower = newOwner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
 
@@ -522,7 +526,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return (pm.PowerState == PowerState.Normal) ? RemainingTime :
+				return (pm == null || pm.PowerState == PowerState.Normal) ? RemainingTime :
 					RemainingTime * Queue.Info.LowPowerSlowdown;
 			}
 		}
@@ -570,7 +574,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Paused)
 				return;
 
-			if (pm.PowerState != PowerState.Normal)
+			if (pm != null && pm.PowerState != PowerState.Normal)
 			{
 				if (--Slowdown <= 0)
 					Slowdown = Queue.Info.LowPowerSlowdown;

@@ -255,10 +255,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
 			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
 
-			var powerRes = player.PlayerActor.Trait<PowerManager>();
-			var power = template.Get<LabelWidget>("POWER");
-			power.GetText = () => powerRes.PowerDrained + "/" + powerRes.PowerProvided;
-			power.GetColor = () => GetPowerColor(powerRes.PowerState);
+			var powerRes = player.PlayerActor.TraitOrDefault<PowerManager>();
+			if (powerRes != null)
+			{
+				var power = template.Get<LabelWidget>("POWER");
+				power.GetText = () => powerRes.PowerDrained + "/" + powerRes.PowerProvided;
+				power.GetColor = () => GetPowerColor(powerRes.PowerState);
+			}
 
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
 			if (stats == null) return template;

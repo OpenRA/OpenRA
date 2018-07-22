@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var world = player.World;
 			var mapRules = world.Map.Rules;
-			var pm = player.PlayerActor.Trait<PowerManager>();
+			var pm = player.PlayerActor.TraitOrDefault<PowerManager>();
 			var pr = player.PlayerActor.Trait<PlayerResources>();
 
 			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Actor != null;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			ActorInfo lastActor = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
-			var lastPowerState = pm.PowerState;
+			var lastPowerState = pm == null ? PowerState.Normal : pm.PowerState;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var hotkey = tooltipIcon.Hotkey != null ? tooltipIcon.Hotkey.GetValue() : Hotkey.Invalid;
-				if (actor == lastActor && hotkey == lastHotkey && pm.PowerState == lastPowerState)
+				if (actor == lastActor && hotkey == lastHotkey && (pm == null || pm.PowerState == lastPowerState))
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
@@ -92,19 +92,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				requiresLabel.Text = prereqs.Any() ? requiresFormat.F(prereqs.JoinWith(", ")) : "";
 				var requiresSize = requiresFont.Measure(requiresLabel.Text);
 
-				var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);
-				powerLabel.Text = power.ToString();
-				powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
-					? Color.White : Color.Red;
-				powerLabel.Visible = power != 0;
-				powerIcon.Visible = power != 0;
-				var powerSize = font.Measure(powerLabel.Text);
+				var powerSize = new int2(0, 0);
+				if (pm != null)
+				{
+					var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);
+					powerLabel.Text = power.ToString();
+					powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
+						? Color.White : Color.Red;
+					powerLabel.Visible = power != 0;
+					powerIcon.Visible = power != 0;
+					powerSize = font.Measure(powerLabel.Text);
+				}
 
 				var buildTime = tooltipIcon.ProductionQueue == null ? 0 : tooltipIcon.ProductionQueue.GetBuildTime(actor, buildable);
-				var timeMultiplier = pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1;
+				var timeMultiplier = pm != null && pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerSlowdown : 1;
 
 				timeLabel.Text = formatBuildTime.Update(buildTime * timeMultiplier);
-				timeLabel.TextColor = (pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerSlowdown > 1) ? Color.Red : Color.White;
+				timeLabel.TextColor = (pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerSlowdown > 1) ? Color.Red : Color.White;
 				var timeSize = font.Measure(timeLabel.Text);
 
 				costLabel.Text = cost.ToString();
@@ -127,7 +131,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				lastActor = actor;
 				lastHotkey = hotkey;
-				lastPowerState = pm.PowerState;
+				if (pm != null)
+					lastPowerState = pm.PowerState;
 			};
 		}
 
