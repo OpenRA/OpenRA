@@ -187,6 +187,7 @@ SPEN:
 		Produces: Ship, Submarine
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -302,6 +303,7 @@ SYRD:
 		Produces: Ship, Boat
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -1027,6 +1029,7 @@ WEAP:
 		Prerequisite: vehicles.ukraine
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	Power:
 		Amount: -30
@@ -1287,6 +1290,7 @@ HPAD:
 	ProductionBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Power:
 		Amount: -10
 	ProvidesPrerequisite@allies:
@@ -1455,6 +1459,7 @@ AFLD:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -1642,6 +1647,7 @@ BARR:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
@@ -1721,6 +1727,7 @@ KENN:
 		Produces: Infantry, Dog
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	-SpawnActorsOnSell:
 	Power:
@@ -1778,6 +1785,7 @@ TENT:
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks
