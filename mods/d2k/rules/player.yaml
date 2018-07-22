@@ -81,6 +81,9 @@ Player:
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
 	ConquestVictoryConditions:
 	PowerManager:
 		AdviceInterval: 650
