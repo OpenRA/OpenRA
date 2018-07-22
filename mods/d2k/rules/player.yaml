@@ -58,6 +58,7 @@ Player:
 		ReadyAudio: NewOptions
 		BlockedAudio: NoRoom
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:

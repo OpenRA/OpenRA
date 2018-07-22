@@ -8,6 +8,7 @@ EditorPlayer:
 Player:
 	Inherits: ^BasePlayer
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
 	TechTree:
 	SupportPowerManager:
 	ScriptTriggers:

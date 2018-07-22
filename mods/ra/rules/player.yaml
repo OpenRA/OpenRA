@@ -47,6 +47,7 @@ Player:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:

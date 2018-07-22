@@ -49,6 +49,7 @@ Player:
 		LimitedAudio: BuildingInProgress
 		SpeedUp: True
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
 		Palette: placebuilding
 		LineBuildSegmentPalette: placelinesegment
 	SupportPowerManager:
