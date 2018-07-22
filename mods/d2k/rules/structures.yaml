@@ -103,6 +103,7 @@ construction_yard:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Building
+		SelectionNotification: PrimaryBuildingSelected
 	ProvidesPrerequisite@buildingname:
 	GrantConditionOnPrerequisite:
 		Prerequisites: upgrade.conyard
@@ -211,6 +212,7 @@ barracks:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Infantry
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
@@ -411,6 +413,7 @@ light_factory:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Vehicle
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
@@ -497,6 +500,7 @@ heavy_factory:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Armor
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
@@ -659,6 +663,7 @@ starport:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Starport
+		SelectionNotification: PrimaryBuildingSelected
 	ProvidesPrerequisite@atreides:
 		Prerequisite: starport.atreides
 		Factions: atreides
@@ -920,6 +925,7 @@ high_tech_factory:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Aircraft
+		SelectionNotification: PrimaryBuildingSelected
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
@@ -1102,6 +1108,7 @@ palace:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		RequiresCondition: atreides || ordos
+		SelectionNotification: PrimaryBuildingSelected
 	WithTextDecoration@primary:
 		RequiresSelection: true
 		Text: PRIMARY

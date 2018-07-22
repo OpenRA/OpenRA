@@ -117,6 +117,7 @@ NAHAND:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
@@ -175,6 +176,7 @@ NAWEAP:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
@@ -226,6 +228,7 @@ NAHPAD:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000

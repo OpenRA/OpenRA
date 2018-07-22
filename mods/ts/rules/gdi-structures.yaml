@@ -103,6 +103,7 @@ GAPILE:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
@@ -163,6 +164,7 @@ GAWEAP:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
 	WithIdleOverlay@ROOF:
 		Sequence: idle-roof
@@ -218,6 +220,7 @@ GAHPAD:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
