@@ -50,6 +50,7 @@ Player:
 		SpeedUp: True
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 		Palette: placebuilding
 		LineBuildSegmentPalette: placelinesegment
 	SupportPowerManager:
