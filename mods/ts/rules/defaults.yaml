@@ -17,6 +17,7 @@
 
 ^GainsExperience:
 	GainsExperience:
+		LevelUpNotification: LevelUp
 		Conditions:
 			500: rank
 			1000: rank

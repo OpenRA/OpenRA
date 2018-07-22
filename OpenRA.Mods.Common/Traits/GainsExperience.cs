@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the level-up animation be suppressed when actor is created?")]
 		public readonly bool SuppressLevelupAnimation = true;
 
+		public readonly string LevelUpNotification = null;
+
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
@@ -99,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!silent)
 				{
-					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", "LevelUp", self.Owner.Faction.InternalName);
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", info.LevelUpNotification, self.Owner.Faction.InternalName);
 					self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
 				}
 			}
