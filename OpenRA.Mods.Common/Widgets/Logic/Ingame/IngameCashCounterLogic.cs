@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				displayResources += move;
 
 				if (Game.Settings.Sound.CashTicks)
-					Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", "CashTickUp", player.Faction.InternalName);
+					Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", playerResources.Info.CashTickUpNotification, player.Faction.InternalName);
 			}
 			else if (displayResources > actual)
 			{
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (Game.Settings.Sound.CashTicks && nextCashTickTime == 0)
 				{
-					Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", "CashTickDown", player.Faction.InternalName);
+					Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", playerResources.Info.CashTickDownNotification, player.Faction.InternalName);
 					nextCashTickTime = 2;
 				}
 			}
