@@ -400,6 +400,8 @@ Container@PLAYER_WIDGETS:
 							Y: 64
 							Width: 206
 							Height: 161
+							SoundUp: RadarUp
+							SoundDown: RadarDown
 						VqaPlayer@PLAYER:
 							X: 16
 							Y: 64

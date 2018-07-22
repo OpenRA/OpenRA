@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite shroudSprite;
 		Shroud renderShroud;
 
+		public string SoundUp { get; private set; }
+		public string SoundDown { get; private set; }
+
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
 		{
