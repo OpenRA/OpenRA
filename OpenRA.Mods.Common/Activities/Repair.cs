@@ -98,7 +98,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (remainingTicks == 0)
 			{
-				var unitCost = self.Info.TraitInfo<ValuedInfo>().Cost;
+				var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+				var unitCost = valued != null ? valued.Cost : 0;
 				var hpToRepair = repairable != null && repairable.Info.HpPerStep > 0 ? repairable.Info.HpPerStep : repairsUnits.Info.HpPerStep;
 
 				// Cast to long to avoid overflow when multiplying by the health

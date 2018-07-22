@@ -70,7 +70,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				var name = tooltip != null ? tooltip.Name : actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
-				var cost = actor.TraitInfo<ValuedInfo>().Cost;
+				var valued = actor.TraitInfoOrDefault<ValuedInfo>();
+				var cost = valued != null ? valued.Cost : 0;
 
 				nameLabel.Text = name;
 

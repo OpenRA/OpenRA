@@ -69,7 +69,15 @@ namespace OpenRA.Mods.Common.Traits
 			var buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
 
 			var eligibleLocations = buildingInfo != null ? buildingInfo.Tiles(self.Location).ToList() : new List<CPos>();
-			var actorTypes = Info.ActorTypes.Select(a => new { Name = a, Cost = self.World.Map.Rules.Actors[a].TraitInfo<ValuedInfo>().Cost }).ToList();
+			var actorTypes = Info.ActorTypes.Select(a =>
+			{
+				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
+				return new
+				{
+					Name = a,
+					Cost = av != null ? av.Cost : 0
+				};
+			}).ToList();
 
 			while (eligibleLocations.Count > 0 && actorTypes.Any(a => a.Cost <= dudesValue))
 			{
