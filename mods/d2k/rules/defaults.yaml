@@ -399,6 +399,7 @@
 	RepairableBuilding:
 		RepairStep: 500
 		PlayerExperience: 25
+		RepairingNotification: Repairing
 	SpawnActorsOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:

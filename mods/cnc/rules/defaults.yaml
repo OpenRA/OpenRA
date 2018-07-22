@@ -734,6 +734,7 @@
 		RepairPercent: 40
 		RepairStep: 1400
 		PlayerExperience: 15
+		RepairingNotification: Repairing
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -793,6 +794,7 @@
 		RepairPercent: 40
 		RepairStep: 1400
 		PlayerExperience: 15
+		RepairingNotification: Repairing
 	EngineerRepairable:
 	RevealsShroud:
 		Range: 3c0

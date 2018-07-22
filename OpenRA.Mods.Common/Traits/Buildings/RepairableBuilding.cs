@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while being repaired.")]
 		public readonly string RepairCondition = null;
 
+		public readonly string RepairingNotification = null;
+
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
@@ -112,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Repairers.Add(player);
-			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
 			UpdateCondition(self);
 		}
 
