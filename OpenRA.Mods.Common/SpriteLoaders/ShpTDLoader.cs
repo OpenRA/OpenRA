@@ -108,6 +108,19 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 					}
 				}
 
+				// Keep a 1px empty border to work avoid rounding issues in the gpu shader
+				if (left > 0)
+					left -= 1;
+
+				if (top > 0)
+					top -= 1;
+
+				if (right < origSize.Width - 1)
+					right += 1;
+
+				if (bottom < origSize.Height - 1)
+					bottom += 1;
+
 				var trimmedWidth = right - left + 1;
 				var trimmedHeight = bottom - top + 1;
 
