@@ -7,7 +7,7 @@ command -v python >/dev/null 2>&1 || { echo >&2 "Linux packaging requires python
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || { echo >&2 "Linux packaging requires curl."; exit 1; }
 
-DEPENDENCIES_TAG="20180410"
+DEPENDENCIES_TAG="20180723"
 
 if [ $# -eq "0" ]; then
 	echo "Usage: `basename $0` version [outputdir]"
