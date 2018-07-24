@@ -273,7 +273,6 @@
     <Compile Include="FieldSaver.cs" />
     <Compile Include="Manifest.cs" />
     <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="FileFormats\PngLoader.cs" />
     <Compile Include="Primitives\ActionQueue.cs" />
     <Compile Include="Primitives\BitSet.cs" />
     <Compile Include="Primitives\Cache.cs" />
