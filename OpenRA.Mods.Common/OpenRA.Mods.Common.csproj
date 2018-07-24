@@ -146,6 +146,7 @@
     <Compile Include="Effects\MapNotificationEffect.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
+    <Compile Include="FileFormats\Png.cs" />
     <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Effects\LaunchEffect.cs" />
     <Compile Include="Lint\CheckNotifications.cs" />
@@ -559,6 +560,7 @@
     <Compile Include="Traits\World\MPStartUnits.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromGimpOrJascFile.cs" />
+    <Compile Include="Traits\World\PaletteFromPng.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
     <Compile Include="Traits\World\ValidateOrder.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
@@ -596,6 +598,8 @@
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractWeaponDocsCommand.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
+    <Compile Include="UtilityCommands\PngSheetExportMetadataCommand.cs" />
+    <Compile Include="UtilityCommands\PngSheetImportMetadataCommand.cs" />
     <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
@@ -697,6 +701,7 @@
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
+    <Compile Include="SpriteLoaders\PngSheetLoader.cs" />
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
     <Compile Include="Widgets\Logic\ReplayUtils.cs" />

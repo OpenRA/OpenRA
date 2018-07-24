@@ -35,14 +35,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var inputFiles = GlobArgs(args).OrderBy(a => a).ToList();
 			var dest = inputFiles[0].Split('-').First() + ".shp";
-			var frames = inputFiles.Select(a => PngLoader.Load(a));
 
-			var size = frames.First().Size;
-			if (frames.Any(f => f.Size != size))
+			var frames = inputFiles.Select(a => new Png(File.OpenRead(a))).ToList();
+			var size = new Size(frames[0].Width, frames[0].Height);
+			if (frames.Any(f => f.Width != size.Width || f.Height != size.Height))
 				throw new InvalidOperationException("All frames must be the same size");
 
 			using (var destStream = File.Create(dest))
-				ShpTDSprite.Write(destStream, size, frames.Select(f => ToBytes(f)));
+				ShpTDSprite.Write(destStream, size, frames.Select(f => f.Data));
 
 			Console.WriteLine(dest + " saved.");
 		}
@@ -52,21 +52,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			for (var i = startIndex; i < args.Length; i++)
 				foreach (var path in Glob.Expand(args[i]))
 					yield return path;
-		}
-
-		static byte[] ToBytes(Bitmap bitmap)
-		{
-			var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly,
-				PixelFormat.Format8bppIndexed);
-
-			var bytes = new byte[bitmap.Width * bitmap.Height];
-			for (var i = 0; i < bitmap.Height; i++)
-				Marshal.Copy(new IntPtr(data.Scan0.ToInt64() + i * data.Stride),
-					bytes, i * bitmap.Width, bitmap.Width);
-
-			bitmap.UnlockBits(data);
-
-			return bytes;
 		}
 	}
 }
