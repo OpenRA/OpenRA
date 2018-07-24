@@ -141,6 +141,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.DamageThreshold == 0)
 				return;
 
+			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+				return;
+
 			// Cast to long to avoid overflow when multiplying by the health
 			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
