@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -71,8 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (--Ticks < 0)
 			{
+				var cashTrickerModifier = self.TraitsImplementing<ICashTricklerModifier>().Select(x => x.GetCashTricklerModifier());
+
 				Ticks = info.Interval;
-				ModifyCash(self, self.Owner, info.Amount);
+				ModifyCash(self, self.Owner, Util.ApplyPercentageModifiers(info.Amount, cashTrickerModifier));
 			}
 		}
 

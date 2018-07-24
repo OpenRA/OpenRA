@@ -440,6 +440,8 @@
 		GenericVisibility: None
 	RevealsShroud:
 		Range: 3c0
+	Passenger:
+		PipType: Gray
 	ProximityCaptor:
 		Types: CivilianInfantry
 	ScaredyCat:

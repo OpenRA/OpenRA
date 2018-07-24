@@ -75,7 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
-		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing, IIssueDeployOrder
+		INotifyOwnerChanged, INotifyAddedToWorld, ITick, INotifySold, INotifyActorDisposing, IIssueDeployOrder,
+		ITransformActorInitModifier
 	{
 		public readonly CargoInfo Info;
 		readonly Actor self;
@@ -468,6 +469,11 @@ namespace OpenRA.Mods.Common.Traits
 				currentCell = cell;
 				CurrentAdjacentCells = GetAdjacentCells();
 			}
+		}
+
+		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)
+		{
+			init.Add(new RuntimeCargoInit(Passengers.ToArray()));
 		}
 	}
 

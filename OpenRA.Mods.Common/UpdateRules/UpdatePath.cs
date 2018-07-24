@@ -34,6 +34,32 @@ namespace OpenRA.Mods.Common.UpdateRules
 			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
+			new UpdatePath("release-20171014", "release-20180218", new UpdateRule[]
+			{
+				new LegacyBetaWarning(),
+				new RemoveMobileOnRails(),
+				new AircraftCanHoverGeneralization(),
+				new AddNukeLaunchAnimation(),
+				new RenameWithTurreted(),
+				new RemovePlayerPaletteTileset(),
+				new CapturableChanges(),
+				new DecoupleSelfReloading(),
+				new RemoveOutOfAmmo(),
+				new ChangeCanPowerDown(),
+				new ReplaceRequiresPower(),
+				new DropPauseAnimationWhenDisabled(),
+				new ChangeBuildableArea(),
+				new MoveVisualBounds(),
+				new ScaleDefaultModHealth(),
+				new ReworkCheckboxes(),
+				new SplitGateFromBuilding(),
+				new RemoveIDisable(),
+				new ReplaceCanPowerDown(),
+				new ScaleSupportPowerSecondsToTicks(),
+				new WarnAboutInfiltrateForTypes(),
+				new RenameBurstDelay(),
+			}),
+
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
 
 			new UpdatePath("release-20180307", new UpdateRule[]

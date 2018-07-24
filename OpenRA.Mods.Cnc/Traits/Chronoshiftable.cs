@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
-	public class Chronoshiftable : ITick, ISync, ISelectionBar, IDeathActorInitModifier, INotifyCreated
+	public class Chronoshiftable : ITick, ISync, ISelectionBar, IDeathActorInitModifier, ITransformActorInitModifier, INotifyCreated
 	{
 		readonly ChronoshiftableInfo info;
 		readonly Actor self;
@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (init.Contains<ChronoshiftReturnInit>())
 				ReturnTicks = init.Get<ChronoshiftReturnInit, int>();
+
+			if (init.Contains<ChronoshiftDurationInit>())
+				duration = init.Get<ChronoshiftDurationInit, int>();
 
 			if (init.Contains<ChronoshiftOriginInit>())
 				Origin = init.Get<ChronoshiftOriginInit, CPos>();
@@ -141,16 +144,20 @@ namespace OpenRA.Mods.Cnc.Traits
 		Color ISelectionBar.GetColor() { return info.TimeBarColor; }
 		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
-		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
+		void ModifyActorInit(TypeDictionary init)
 		{
 			if (!info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
 			init.Add(new ChronoshiftOriginInit(Origin));
 			init.Add(new ChronoshiftReturnInit(ReturnTicks));
+			init.Add(new ChronoshiftDurationInit(duration));
 			if (chronosphere != self)
 				init.Add(new ChronoshiftChronosphereInit(chronosphere));
 		}
+
+		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
+		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 	}
 
 	public class ChronoshiftReturnInit : IActorInit<int>
@@ -158,6 +165,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		[FieldFromYamlKey] readonly int value = 0;
 		public ChronoshiftReturnInit() { }
 		public ChronoshiftReturnInit(int init) { value = init; }
+		public int Value(World world) { return value; }
+	}
+
+	public class ChronoshiftDurationInit : IActorInit<int>
+	{
+		[FieldFromYamlKey] readonly int value = 0;
+		public ChronoshiftDurationInit() { }
+		public ChronoshiftDurationInit(int init) { value = init; }
 		public int Value(World world) { return value; }
 	}
 

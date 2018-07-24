@@ -110,6 +110,7 @@ SMECH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 99
+		AlwaysConsiderTurnAsMove: true
 	Health:
 		HP: 17500
 	Armor:
@@ -154,6 +155,7 @@ MMCH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 56
+		AlwaysConsiderTurnAsMove: true
 	Health:
 		HP: 40000
 	Armor:
@@ -214,6 +216,7 @@ HMEC:
 	Mobile:
 		TurnSpeed: 3
 		Speed: 42
+		AlwaysConsiderTurnAsMove: true
 	Health:
 		HP: 80000
 	SelfHealing:
@@ -310,6 +313,7 @@ JUGG:
 		Speed: 71
 		TurnSpeed: 5
 		RequiresCondition: !empdisable && undeployed
+		AlwaysConsiderTurnAsMove: true
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
