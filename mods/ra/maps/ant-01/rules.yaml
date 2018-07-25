@@ -1,9 +1,32 @@
-Ant:
-	Mobile:
-		Speed: 60
 FireAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Fire Ant
+		GenericName: Fire Ant
 	Mobile:
 		Speed: 80
+	Armament:
+		Weapon: Flamer
+	Health:
+		HP: 70000
+ScoutAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Scout Ant
+		GenericName: Scout Ant
+	Mobile:
+		Speed: 99
+	Health:
+		HP: 50000
+	AutoTarget:
+		ScanRadius: 7
+Ant:
+	Tooltip:
+		GenericName: Warrior Ant
+	Mobile:
+		Speed: 50
+	Health:
+		HP: 80000
 MEDI:
 	Valued:
 		Cost: 500
