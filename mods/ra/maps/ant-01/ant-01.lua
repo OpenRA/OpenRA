@@ -19,8 +19,8 @@ InsertionPath = { waypoint12.Location, waypoint0.Location }
 baseDiscovered = false
 AlliedBase = {Actor99, Actor100, Actor101, Actor102, Actor103, Actor104, Actor105, Actor106, Actor107, Actor129}
 ValidForces = {"proc", "powr", "tent", "silo", "weap", "dome"}
-ants = {"ant"}
-fireAnts = {"fireant"}
+Ants = {"ant"}
+FireAnts = {"fireant"}
 AlliedForces = {"1tnk","2tnk","2tnk","mcv"}
 ChooperTeam = {"e1r1","e1r1","e2","e2","e1r1"}
 AtEndGame = false
@@ -78,10 +78,10 @@ end
 AntSendFunc = function(direction, amount, antType)
 	local index = 0
 	local path = AntPathN
-	local AntActors = ants
+	local AntActors = Ants
 
 	if antType == "fireant" then
-		AntActors = fireAnts
+		AntActors = FireAnts
 	end
 	
 	if direction == "east" then
@@ -95,7 +95,7 @@ AntSendFunc = function(direction, amount, antType)
 	end
 	
 	while index < amount do
-		Reinforcements.Reinforce(ussr,AntActors,path,DateTime.Seconds(2))
+		Reinforcements.Reinforce(ussr,AntActors,path,DateTime.Seconds(3))
 		index = index + 1
 	end
 
@@ -131,7 +131,7 @@ FinishTimer = function()
 end
 
 TimerExpired = function()
-	if not (CheckBase()) then
+	if not (IsBaseDestroyed()) then
 		allies.MarkCompletedObjective(SurviveObjective)
 	else 
 		allies.MarkFailedObjective(SurviveObjective)
@@ -157,7 +157,7 @@ DiscoveredAlliedBase = function(actor, discoverer)
 	end
 end
 
-CheckBase = function()
+IsBaseDestroyed = function()
 	local validBuildings = 0
 	Utils.Do(ValidForces, function(actorName)
 		local count = #allies.GetActorsByType(actorName)
@@ -252,7 +252,7 @@ end
 Tick = function() 
 	if SurviveObjective ~= nil then
 		if ticks % DateTime.Seconds(1) == 0 then 
-			if CheckBase() then 
+			if IsBaseDestroyed() then 
 				allies.MarkFailedObjective(SurviveObjective)
 			end
 		end
