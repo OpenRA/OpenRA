@@ -9,7 +9,7 @@
 
 TimerColor = Player.GetPlayer("Spain").Color
 TankPath = { waypoint12.Location, waypoint13.Location, waypoint1.Location, waypoint0.Location } 
-AntPathN = { waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location} 
+AntPathN = { waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location } 
 AntPathE = { waypoint20.Location, waypoint10.Location, waypoint2.Location }
 AntPathW = { waypoint17.Location, waypoint1.Location }
 AntPathS = { waypoint8.Location, waypoint9.Location, waypoint19.Location }
@@ -46,6 +46,7 @@ InitObjectives = function()
 			DiscoveredAlliedBase(actor, discoverer)
 		end)
 	end)
+
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		creeps.GetActorsByType("harv")[1].Stop()
 	end)
@@ -60,6 +61,7 @@ InitObjectives = function()
 	Trigger.OnPlayerLost(allies, function()
 		Media.PlaySpeechNotification(allies, "MissionFailed")
 	end)
+
 	Trigger.OnPlayerWon(allies, function()
 		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionAccomplished")  end)
 	end)
@@ -90,8 +92,6 @@ AntSendFunc = function(direction, amount, antType)
 		path = AntPathW
 	elseif direction == "south" then
 		path = AntPathS
-	else
-		path = AntPathN
 	end
 	
 	while index < amount do
@@ -124,7 +124,6 @@ FinishTimer = function()
 		if i % 2 == 0 then
 			c = HSLColor.White
 		end
-
 		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Allied forces have arrived!", c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
@@ -142,18 +141,19 @@ end
 DiscoveredAlliedBase = function(actor, discoverer)
 	if (not baseDiscovered and discoverer.Owner == allies) then
 		baseDiscovered = true  
-    
 		Media.PlaySpeechNotification(allies,"ObjectiveReached")
 		Utils.Do(AlliedBase, function(building)
 			building.Owner = allies
 		end)
-		SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive")
-		Media.PlaySpeechNotification(allies, "TimerStarted")
-		Trigger.AfterDelay(DateTime.Seconds(1), function() allies.MarkCompletedObjective(DiscoverObjective) end)
-		creeps.GetActorsByType("harv")[1].FindResources()
-		creeps.GetActorsByType("harv")[1].Owner = allies
-	else
-		return
+
+		--Need to delay this so we don't fail mission before obj added
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
+			SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive")
+			Media.PlaySpeechNotification(allies, "TimerStarted")
+			Trigger.AfterDelay(DateTime.Seconds(2), function() allies.MarkCompletedObjective(DiscoverObjective) end)
+			creeps.GetActorsByType("harv")[1].FindResources()
+			creeps.GetActorsByType("harv")[1].Owner = allies
+		end)
 	end
 end
 
@@ -163,6 +163,8 @@ IsBaseDestroyed = function()
 		local count = #allies.GetActorsByType(actorName)
 		validBuildings = validBuildings + count
 	end)
+
+	print(validBuildings)
 	return validBuildings == 0 
 end
 
@@ -240,6 +242,7 @@ TenMinuteTriggerInit = function()
 
 	Trigger.AfterDelay(DateTime.Minutes(2), function()
 		SendAnts("west",3)
+		SendFireAnts("south",1)
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(3), function()
@@ -261,10 +264,11 @@ Tick = function()
 			if DateTime.Minutes(30) == ticks then
 				ThirtyMinuteTriggerInit()
 			elseif DateTime.Minutes(20) == ticks then
+				Media.PlaySpeechNotification(allies, "TwentyMinutesRemaining")
+				TwentyMinuteTriggerInit()
 				SendAnts("west",3)
 				SendAnts("east",3)
 				SendAnts("north",2)
-				Media.PlaySpeechNotification(allies, "TwentyMinutesRemaining")
 			elseif DateTime.Minutes(10) == ticks then
 				Media.PlaySpeechNotification(allies, "TenMinutesRemaining")
 				TenMinuteTriggerInit()
@@ -300,8 +304,8 @@ Tick = function()
 		else
 			if not AtEndGame then
 				Media.PlaySpeechNotification(allies, "SecondObjectiveMet")
-				FinishTimer()
 				AtEndGame = true
+				FinishTimer()
 				Camera.Position = waypoint13.CenterPosition
 				SendTanks()
 				Trigger.AfterDelay(DateTime.Seconds(2), function() TimerExpired() end)
