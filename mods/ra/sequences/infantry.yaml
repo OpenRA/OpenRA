@@ -38,8 +38,6 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
-	parachute:
-		Start: 377
 	idle1:
 		Start: 256
 		Length: 16
@@ -180,8 +178,6 @@ e3:
 		Start: 64
 		Length: 8
 		Facings: 8
-	parachute:
-		Start: 393
 	idle1:
 		Start: 272
 		Length: 14
@@ -249,8 +245,6 @@ e6:
 		Length: 6
 		Facings: 8
 		Tick: 100
-	parachute:
-		Start: 210
 	idle1:
 		Start: 121
 		Length: 8
@@ -446,8 +440,6 @@ e2:
 		Start: 64
 		Length: 20
 		Facings: 8
-	parachute:
-		Start: 505
 	idle1:
 		Start: 384
 		Length: 14
@@ -800,8 +792,6 @@ e4:
 		Start: 64
 		Length: 16
 		Facings: 8
-	parachute:
-		Start: 528
 	idle1:
 		Start: 384
 		Length: 14
@@ -961,8 +951,6 @@ shok:
 		Start: 256
 		Length: 16
 		Facings: 8
-	parachute:
-		Start: 528
 	idle1:
 		Start: 384
 		Length: 14
@@ -1027,11 +1015,11 @@ c1:
 		Start: 168
 		Length: 12
 	die4:
-		Start: 168
-		Length: 12
-	die5:
 		Start: 180
 		Length: 18
+	die5:
+		Start: 160
+		Length: 8
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
@@ -1077,11 +1065,11 @@ c2:
 		Start: 168
 		Length: 12
 	die4:
-		Start: 168
-		Length: 12
-	die5:
 		Start: 180
 		Length: 18
+	die5:
+		Start: 160
+		Length: 8
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
@@ -1127,11 +1115,11 @@ c3:
 		Start: 168
 		Length: 12
 	die4:
-		Start: 168
-		Length: 12
-	die5:
 		Start: 180
 		Length: 18
+	die5:
+		Start: 160
+		Length: 8
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
@@ -1178,11 +1166,11 @@ einstein:
 		Start: 135
 		Length: 12
 	die4:
-		Start: 135
-		Length: 12
-	die5:
 		Start: 147
 		Length: 17
+	die5:
+		Start: 123
+		Length: 8
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
@@ -1224,11 +1212,11 @@ delphi:
 		Start: 135
 		Length: 12
 	die4:
-		Start: 135
-		Length: 12
-	die5:
 		Start: 147
 		Length: 17
+	die5:
+		Start: 123
+		Length: 8
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
@@ -1270,11 +1258,11 @@ chan:
 		Start: 135
 		Length: 12
 	die4:
-		Start: 135
-		Length: 12
-	die5:
 		Start: 147
 		Length: 17
+	die5:
+		Start: 123
+		Length: 8
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
@@ -1340,6 +1328,32 @@ zombie:
 	icon: zombicon
 
 ant:
+	stand: ant1
+		Facings: 8
+	stand2: ant1
+		Start: 8
+		Length: 8
+	run: ant1
+		Start: 8
+		Length: 8
+		Facings: 8
+	bite: ant1
+		Start: 72
+		Length: 4
+		Facings: 8
+	die: ant1
+		Start: 104
+		Length: 8
+		Tick: 300
+	die-crushed: ant1
+		Start: 104
+		Length: 8
+		Tick: 400
+		ZOffset: -511
+	icon: anticon
+    
+
+fireant:
 	stand: ant1
 		Facings: 8
 	stand2: ant1
