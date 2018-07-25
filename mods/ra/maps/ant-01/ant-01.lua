@@ -164,7 +164,6 @@ IsBaseDestroyed = function()
 		validBuildings = validBuildings + count
 	end)
 
-	print(validBuildings)
 	return validBuildings == 0 
 end
 
