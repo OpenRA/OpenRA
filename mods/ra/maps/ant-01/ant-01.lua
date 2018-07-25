@@ -6,9 +6,10 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-
+DifficultyModifier = 1
+Difficulty = Map.LobbyOption("difficulty")
 TimerColor = Player.GetPlayer("Spain").Color
-TankPath = { waypoint12.Location, waypoint13.Location, waypoint1.Location, waypoint0.Location } 
+TankPath = { waypoint12.Location, waypoint13.Location }
 AntPathN = { waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location } 
 AntPathE = { waypoint20.Location, waypoint10.Location, waypoint2.Location }
 AntPathW = { waypoint17.Location, waypoint1.Location }
@@ -21,11 +22,19 @@ AlliedBase = {Actor99, Actor100, Actor101, Actor102, Actor103, Actor104, Actor10
 ValidForces = {"proc", "powr", "tent", "silo", "weap", "dome"}
 Ants = {"ant"}
 FireAnts = {"fireant"}
-AlliedForces = {"1tnk","2tnk","2tnk","mcv"}
+AlliedForces = {"2tnk","2tnk","mcv"}
 ChooperTeam = {"e1r1","e1r1","e2","e2","e1r1"}
 AtEndGame = false
 TimerTicks = DateTime.Minutes(30)
 ticks = TimerTicks
+
+if Difficulty == "hard" then
+	DifficultyModifier = 3
+elseif Difficulty == "normal" then
+	DifficultyModifier = 2
+elseif Difficulty == "tough" then
+	DifficultyModifier = 5
+end
 
 WorldLoaded = function()
 	allies = Player.GetPlayer("Spain")
@@ -39,7 +48,7 @@ InitObjectives = function()
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
 
-	DiscoverObjective = allies.AddPrimaryObjective("Find Allied Outpost")
+	DiscoverObjective = allies.AddPrimaryObjective("Find the outpost.")
 
 	Utils.Do(AlliedBase, function(actor)
 		Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)
@@ -94,7 +103,7 @@ AntSendFunc = function(direction, amount, antType)
 		path = AntPathS
 	end
 	
-	while index < amount do
+	while index < (amount * DifficultyModifier) do
 		Reinforcements.Reinforce(ussr,AntActors,path,DateTime.Seconds(3))
 		index = index + 1
 	end
@@ -148,7 +157,7 @@ DiscoveredAlliedBase = function(actor, discoverer)
 
 		--Need to delay this so we don't fail mission before obj added
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive")
+			SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive.")
 			Media.PlaySpeechNotification(allies, "TimerStarted")
 			Trigger.AfterDelay(DateTime.Seconds(2), function() allies.MarkCompletedObjective(DiscoverObjective) end)
 			creeps.GetActorsByType("harv")[1].FindResources()

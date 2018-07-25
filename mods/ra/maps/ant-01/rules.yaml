@@ -10,11 +10,6 @@ SPY.England:
 MECH:
 	Buildable:
 		Prerequisites: ~disabled
-Ant:
-	Mobile:
-		Speed: 60
-	Health:
-		HP: 60000
 MRJ:
 	Buildable:
 		Prerequisites: ~disabled
@@ -33,9 +28,8 @@ SPY:
 SNIPER:
 	Buildable:
 		Prerequisites: ~tent
-JEEP:
 	Valued:
-		Cost: 350
+		Cost: 450
 MGG:
 	Buildable:
 		Prerequisites: ~disabled
@@ -63,50 +57,18 @@ ARTY:
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
-FireAnt:
-	Inherits: ^Infantry
-	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Valued:
-		Cost: 600
-	Tooltip:
-		Name: Giant Fire Ant
-		GenericName: Fire Ant
-	Buildable:
-		Queue: Infantry
-		BuildAtProductionType: Soldier
-		BuildPaletteOrder: 1954
-		Prerequisites: ~barracks, ~bio
-		Description: Irradiated insect that grew oversize, with fire!
-	Selectable:
-		Bounds: 24,24,0,-5
-		DecorationBounds: 30,30,0,-2
-	SelectionDecorations:
-	Health:
-		HP: 60000
-	Mobile:
-		Speed: 70
-		TurnSpeed: 12
-		Locomotor: lighttracked
-	-Crushable:
-	AutoTarget:
-		ScanRadius: 5
-	AttackFrontal:
-	WithInfantryBody:
-		DefaultAttackSequence: bite
-	Armament:
-		Weapon: Flamer
-	Targetable:
-		TargetTypes: Ground, Infantry, Ant
-	WithDeathAnimation:
-		UseDeathTypeSuffix: false
-	Voiced:
-		VoiceSet: AntVoice
-	HitShape:
-		Type: Circle
-			Radius: 469
 World:
 	LuaScript:
 		Scripts: ant-01.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+			tough: Nightmare
+		Default: easy
 	MissionData:
 		BackgroundVideo: antintro.vqa
 		Briefing: We've lost contact with one of our outposts. Before it went off-line, we recieved a brief communique about giant ants. We're unsure what to make of this report, so we want you to investigate.  Scout the area, bring the outpost back on-line, and report your findings. If there is a threat, reinforcements will be sent in to help you.  Keep the base functional and radio contact open -- we don't want to lose the outpost again.
