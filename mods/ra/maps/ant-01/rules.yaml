@@ -1,3 +1,9 @@
+Ant:
+	Mobile:
+		Speed: 60
+FireAnt:
+	Mobile:
+		Speed: 80
 MEDI:
 	Valued:
 		Cost: 500

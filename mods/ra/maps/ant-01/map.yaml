@@ -28,6 +28,8 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: england
+		Enemies: USSR, Soviet
+		Allies: Spain
 	PlayerReference@Spain:
 		Name: Spain
 		Playable: True
@@ -39,13 +41,23 @@ Players:
 		Color: F6D679
 		LockSpawn: True
 		LockTeam: True
-		Enemies: USSR
+		Enemies: USSR, Soviet
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
 		Color: FF1400
+		LockColor: True
+		LockFaction: True
 		Enemies: Spain, Creeps
-
+		Allies: Soviet
+	PlayerReference@Soviet:
+		Name: Soviet
+		Faction: soviet
+		LockFaction: True
+		LockColor: True
+		Color: 564838
+		Allies: USSR
+		Enemies: Spain, Creeps
 Actors:
 	Actor0: brik
 		Location: 57,58

@@ -20,8 +20,9 @@ InsertionPath = { waypoint12.Location, waypoint0.Location }
 baseDiscovered = false
 AlliedBase = {Actor99, Actor100, Actor101, Actor102, Actor103, Actor104, Actor105, Actor106, Actor107, Actor129}
 ValidForces = {"proc", "powr", "tent", "silo", "weap", "dome"}
-Ants = {"ant"}
+Ants = {"scoutant"}
 FireAnts = {"fireant"}
+WarriorAnts = {"ant"}
 AlliedForces = {"2tnk","2tnk","mcv"}
 ChooperTeam = {"e1r1","e1r1","e2","e2","e1r1"}
 AtEndGame = false
@@ -39,6 +40,7 @@ end
 WorldLoaded = function()
 	allies = Player.GetPlayer("Spain")
 	ussr = Player.GetPlayer("USSR")
+	soviet = Player.GetPlayer("Soviet")
 	creeps = Player.GetPlayer("Creeps")
 	InitObjectives()
 end
@@ -79,20 +81,30 @@ InitObjectives = function()
 end
 
 SendAnts = function(direction, amount)
-	AntSendFunc(direction, amount, "ant")
+	AntSendFunc(direction, amount, "scoutant")
 end
 
 SendFireAnts = function(direction, amount)
 	AntSendFunc(direction, amount, "fireant")
 end
 
+
+SendWarriorAnts = function(direction, amount)
+        AntSendFunc(direction, amount, "ant")
+end
+
+
 AntSendFunc = function(direction, amount, antType)
 	local index = 0
 	local path = AntPathN
 	local AntActors = Ants
-
+	local owner = soviet
 	if antType == "fireant" then
 		AntActors = FireAnts
+		owner = ussr
+	elseif antType == "ant" then
+		AntActors = WarriorAnts
+		owner = ussr
 	end
 	
 	if direction == "east" then
@@ -104,13 +116,13 @@ AntSendFunc = function(direction, amount, antType)
 	end
 	
 	while index < (amount * DifficultyModifier) do
-		Reinforcements.Reinforce(ussr,AntActors,path,DateTime.Seconds(3))
+		Reinforcements.Reinforce(owner,AntActors,path,DateTime.Seconds(3))
 		index = index + 1
 	end
 
 	
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
-		for i,actor in pairs(ussr.GetActorsByType(antType)) do
+		for i,actor in pairs(owner.GetActorsByType(antType)) do
 	  		actor.AttackMove(CPos.New(65,65))
 	  		actor.Hunt()
 		end
@@ -299,7 +311,7 @@ Tick = function()
 			elseif DateTime.Minutes(1) == ticks then
 			  	Media.PlaySpeechNotification(allies, "WarningOneMinuteRemaining")
 				SendAnts("east",2)
-			  	SendAnts("west",3)
+			  	SendWarriorAnts("west",2)
 				SendAnts("north",3)
 				SendAnts("south",3)
 				SendFireAnts("east", 2)
