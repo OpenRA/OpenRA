@@ -1,3 +1,12 @@
+--[[
+   Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
+
 TimerColor = Player.GetPlayer("Spain").Color
 TankPath = { waypoint12.Location, waypoint13.Location, waypoint1.Location, waypoint0.Location } 
 AntPathN = { waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location} 
@@ -10,6 +19,19 @@ InsertionPath = { waypoint12.Location, waypoint0.Location }
 baseDiscovered = false
 AlliedBase = {Actor99, Actor100, Actor101, Actor102, Actor103, Actor104, Actor105, Actor106, Actor107, Actor129}
 ValidForces = {"proc", "powr", "tent", "silo", "weap", "dome"}
+ants = {"ant"}
+fireAnts = {"fireant"}
+AlliedForces = {"1tnk","2tnk","2tnk","mcv"}
+ChooperTeam = {"e1r1","e1r1","e2","e2","e1r1"}
+AtEndGame = false
+TimerTicks = DateTime.Minutes(30)
+ticks = TimerTicks
+
+--[[ 
+	We set up some basics, then we can define our specialized functions.
+    Finally, we'll call our WorldLoaded function and our Higher level functions 
+]]
+
 WorldLoaded = function()
         allies = Player.GetPlayer("Spain")
         ussr = Player.GetPlayer("USSR")
@@ -17,16 +39,142 @@ WorldLoaded = function()
         InitObjectives()
 end
 
-ants = {"ant"}
-fireAnts = {"fireant"}
-AlliedForces = {"1tnk","2tnk","2tnk","mcv"}
-ChooperTeam = {"e1r1","e1r1","e2","e2","e1r1"}
-LightArmor = {"jeep","e1r1", "e1r1"}
-AtEndGame = false
-TimerTicks = DateTime.Minutes(30)
 
-ticks = TimerTicks
+InitObjectives = function() 
+	Trigger.OnObjectiveAdded(allies, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
+	end)
+  DiscoverObjective = allies.AddPrimaryObjective("Find and repair Allied Outpost")
 
+  Utils.Do(AlliedBase, function(actor)
+    Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)
+      DiscoveredAlliedBase(actor, discoverer)
+    end)
+  end)
+  Trigger.AfterDelay(DateTime.Seconds(1), function()
+    creeps.GetActorsByType("harv")[1].Stop()
+  end)
+	Trigger.OnObjectiveCompleted(allies, function(p, id)
+    Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
+	end)
+	Trigger.OnObjectiveFailed(allies, function(p, id)
+		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
+	end)
+
+	Trigger.OnPlayerLost(allies, function()
+		Media.PlaySpeechNotification(allies, "MissionFailed")
+	end)
+	Trigger.OnPlayerWon(allies, function()
+		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionAccomplished")  end)
+	end)
+  
+  Camera.Position = Actor143.CenterPosition
+end
+
+SendAnts = function(direction, amount)
+	AntSendFunc(direction, amount, "ant")
+end
+
+SendFireAnts = function(direction, amount)
+	AntSendFunc(direction, amount, "fireant")
+end
+
+AntSendFunc = function(direction, amount, antType)
+  local index = 0
+  local path = AntPathN
+  local AntActors = ants
+  if antType == "fireant" then
+	AntActors = fireAnts
+  end
+  
+  if direction == "east" then
+	path = AntPathE
+  elseif direction == "west" then
+	path = AntPathW
+  elseif direction == "south" then
+	path = AntPathS
+  else
+	path = AntPathN
+  end
+  
+  while index < amount do
+	Reinforcements.Reinforce(ussr,AntActors,path,DateTime.Seconds(2))
+	index = index + 1
+  end
+
+  
+  Trigger.AfterDelay(DateTime.Seconds(4), function()
+      for i,actor in pairs(ussr.GetActorsByType(antType)) do
+        actor.AttackMove(CPos.New(65,65))
+        actor.Hunt()
+      end
+  end)
+end
+
+SendTanks = function() 
+  Media.PlaySpeechNotification(allies, "ReinforcementsArrived")
+  Reinforcements.Reinforce(allies, AlliedForces, TankPath, DateTime.Seconds(1))
+end
+
+SendInsertionHelicopter = function()
+        Media.PlaySpeechNotification(allies, "AlliedReinforcementsSouth")
+        Reinforcements.ReinforceWithTransport(allies, InsertionHelicopterType, ChooperTeam, InsertionPath, { waypoint4.Location })
+end
+
+FinishTimer = function()
+	for i = 0, 9, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.White
+		end
+
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Allied forces have arrived!", c) end)
+	end
+	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
+end
+
+TimerExpired = function()
+    if not (CheckBase()) then
+        allies.MarkCompletedObjective(SurviveObjective)
+    else 
+        allies.MarkFailedObjective(SurviveObjective)
+    end
+    expireSeconds = 0
+end
+
+DiscoveredAlliedBase = function(actor, discoverer)
+  if (not baseDiscovered and discoverer.Owner == allies) then
+    baseDiscovered = true  
+    Media.PlaySpeechNotification(allies,"ObjectiveReached")
+    Utils.Do(AlliedBase, function(building)
+      building.Owner = allies
+    end)
+    UserInterface.SetMissionText("") 
+    Media.PlaySoundNotification(allies,"ChatLine")
+      
+    Trigger.AfterDelay(DateTime.Seconds(4), function()  
+      SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive")
+      Media.PlaySpeechNotification(allies, "TimerStarted")
+      Trigger.AfterDelay(DateTime.Seconds(1), function() allies.MarkCompletedObjective(DiscoverObjective) end)
+    end)
+    
+    creeps.GetActorsByType("harv")[1].FindResources()
+    creeps.GetActorsByType("harv")[1].Owner = allies
+  else
+    return
+  end
+end
+
+CheckBase = function()
+	local validBuildings = 0
+	Utils.Do(ValidForces, function(actorName)
+		local count = #allies.GetActorsByType(actorName)
+		validBuildings = validBuildings + count
+	end)
+	return validBuildings == 0 
+end
+
+--[[ I am not proud of this function ]]
 Tick = function() 
   if SurviveObjective ~= nil then
 	if ticks % DateTime.Seconds(1) == 0 then 
@@ -135,159 +283,3 @@ Tick = function()
     end
   end
 end
-
-SendAnts = function(type, amt)
-
-  local index = 0
-  local path = AntPathN
-
-  if type == "east" then
-	path = AntPathE
-  elseif type == "west" then
-	path = AntPathW
-  elseif type == "south" then
-	path = AntPathS
-  else
-	path = AntPathN
-  end
-  
-  while index < amt do
-	Reinforcements.Reinforce(ussr,ants,path,DateTime.Seconds(2))
-	index = index + 1
-  end
-
-  
-  Trigger.AfterDelay(DateTime.Seconds(4), function()
-      for i,actor in pairs(ussr.GetActorsByType("ant")) do
-        actor.AttackMove(CPos.New(65,65))
-        actor.Hunt()
-      end
-  end)
-end
-
-SendFireAnts = function(type, amt)
-	
-  local index = 0
-  local path = AntPathN
-
-  if type == "east" then
-	path = AntPathE
-  elseif type == "west" then
-	path = AntPathW
-  elseif type == "south" then
-	path = AntPathS
-  else
-	path = AntPathN
-  end
-  
-  while index < amt do
-	Reinforcements.Reinforce(ussr,fireAnts,path,DateTime.Seconds(2))
-	index = index + 1
-  end
-
-  
-  Trigger.AfterDelay(DateTime.Seconds(4), function()
-      for i,actor in pairs(ussr.GetActorsByType("fireant")) do
-        actor.AttackMove(CPos.New(65,65))
-        actor.Hunt()
-      end
-  end)
-end
-
-SendTanks = function() 
-  Media.PlaySpeechNotification(allies, "ReinforcementsArrived")
-  Reinforcements.Reinforce(allies, AlliedForces, TankPath, DateTime.Seconds(1))
-end
-
-SendInsertionHelicopter = function()
-        Media.PlaySpeechNotification(allies, "AlliedReinforcementsSouth")
-        Reinforcements.ReinforceWithTransport(allies, InsertionHelicopterType, ChooperTeam, InsertionPath, { waypoint4.Location })
-end
-
-FinishTimer = function()
-	for i = 0, 9, 1 do
-		local c = TimerColor
-		if i % 2 == 0 then
-			c = HSLColor.White
-		end
-
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Allied forces have arrived!", c) end)
-	end
-	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
-end
-
-TimerExpired = function()
-    if not (CheckBase()) then
-        allies.MarkCompletedObjective(SurviveObjective)
-    else 
-        allies.MarkFailedObjective(SurviveObjective)
-    end
-    expireSeconds = 0
-end
-
-DiscoveredAlliedBase = function(actor, discoverer)
-  if (not baseDiscovered and discoverer.Owner == allies) then
-    baseDiscovered = true  
-    Media.PlaySpeechNotification(allies,"ObjectiveReached")
-    Utils.Do(AlliedBase, function(building)
-      building.Owner = allies
-    end)
-    UserInterface.SetMissionText("") 
-    Media.DisplayMessage("Good job Commander, evaluating the situation now...","HQ", allies.Color) 
-    Media.PlaySoundNotification(allies,"ChatLine")
-      
-    Trigger.AfterDelay(DateTime.Seconds(4), function()  
-      Media.DisplayMessage("The damage seems considerable, support is en route to your position.","HQ", allies.Color) 
-      SurviveObjective = allies.AddPrimaryObjective("Hold out until armored reinforcements arrive")
-      Media.PlaySpeechNotification(allies, "MissionTimerInitialised")
-      Trigger.AfterDelay(DateTime.Seconds(1), function() allies.MarkCompletedObjective(DiscoverObjective) end)
-    end)
-    
-    creeps.GetActorsByType("harv")[1].FindResources()
-    creeps.GetActorsByType("harv")[1].Owner = allies
-  else
-    return
-  end
-end
-
-CheckBase = function()
-	local validBuildings = 0
-	Utils.Do(ValidForces, function(actorName)
-		local count = #allies.GetActorsByType(actorName)
-		validBuildings = validBuildings + count
-	end)
-	return validBuildings == 0 
-end
-
-
-InitObjectives = function() 
-	Trigger.OnObjectiveAdded(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-  DiscoverObjective = allies.AddPrimaryObjective("Scout area and link up with Allied Outpost")
-
-  Utils.Do(AlliedBase, function(actor)
-    Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)
-      DiscoveredAlliedBase(actor, discoverer)
-    end)
-  end)
-  Trigger.AfterDelay(DateTime.Seconds(1), function()
-    creeps.GetActorsByType("harv")[1].Stop()
-  end)
-	Trigger.OnObjectiveCompleted(allies, function(p, id)
-    Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(allies, function()
-		Media.PlaySpeechNotification(allies, "MissionFailed")
-	end)
-	Trigger.OnPlayerWon(allies, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionAccomplished")  end)
-	end)
-  
-  Camera.Position = Actor143.CenterPosition
-end
-
