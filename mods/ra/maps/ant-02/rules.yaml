@@ -1,0 +1,104 @@
+Player:
+	PlayerResources:
+		DefaultCash: 2500
+FireAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Fire Ant
+		GenericName: Fire Ant
+	Mobile:
+		Speed: 80
+	Armament:
+		Weapon: Flamer
+	Health:
+		HP: 70000
+ScoutAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Scout Ant
+		GenericName: Scout Ant
+	Mobile:
+		Speed: 99
+	Health:
+		HP: 50000
+	AutoTarget:
+		ScanRadius: 7
+Ant:
+	Tooltip:
+		GenericName: Warrior Ant
+	Mobile:
+		Speed: 50
+	Health:
+		HP: 80000
+MEDI:
+	Valued:
+		Cost: 300
+SPY.England:
+	Buildable:
+		Prerequisites: ~disabled
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+APC:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~tent
+	Valued:
+		Cost: 950
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+SNIPER:
+	Buildable:
+		Prerequisites: ~tent
+	Valued:
+		Cost: 400
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+MNLY:
+	Buildable:
+		Prerequisites: ~techlevel.low
+E2:
+	Buildable:
+		Prerequisites: ~tent
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+World:
+	LuaScript:
+		Scripts: ant-02.lua
+	MissionData:
+		Briefing: Who would've believed it -- Giant Ants.  Now that your MCV has arrived, we must evacuate the civilians in the area -- they don't stand a chance against these ants.  There are two villages in your immediate area. Locate them and evacuate the civilians to the island in the northwest. You'll also have to take out all the bridges in this area to stop the ants from completely overrunning you.  You must destroy the bridges, and evac at least one civilian from each town for the mission to be a success.
