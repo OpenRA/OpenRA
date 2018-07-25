@@ -39,12 +39,12 @@ Players:
 		Color: F6D679
 		LockSpawn: True
 		LockTeam: True
-		Enemies: Greece, USSR
+		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
 		Color: FF1400
-		Enemies: Ukraine, Germany, Spain, USSR
+		Enemies: Spain, Creeps
 
 Actors:
 	Actor0: brik
