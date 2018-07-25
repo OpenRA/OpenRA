@@ -1364,24 +1364,49 @@ ant:
 		ZOffset: -511
 	icon: anticon
 fireant:
-	stand: ant1
+	stand: ant2
 		Facings: 8
-	stand2: ant1
+	stand2: ant2
 		Start: 8
 		Length: 8
-	run: ant1
+	run: ant2
 		Start: 8
 		Length: 8
 		Facings: 8
-	bite: ant1
+	bite: ant2
 		Start: 72
 		Length: 4
 		Facings: 8
-	die: ant1
+	die: ant2
 		Start: 104
 		Length: 8
 		Tick: 300
-	die-crushed: ant1
+	die-crushed: ant2
+		Start: 104
+		Length: 8
+		Tick: 400
+		ZOffset: -511
+	icon: anticon
+
+scoutant:
+	stand: ant3
+		Facings: 8
+	stand2: ant3
+		Start: 8
+		Length: 8
+	run: ant3
+		Start: 8
+		Length: 8
+		Facings: 8
+	bite: ant3
+		Start: 72
+		Length: 4
+		Facings: 8
+	die: ant3
+		Start: 104
+		Length: 8
+		Tick: 300
+	die-crushed: ant3
 		Start: 104
 		Length: 8
 		Tick: 400
