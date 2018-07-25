@@ -582,7 +582,8 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			var costThisFrame = RemainingCost / RemainingTime;
+			var expectedRemainingCost = RemainingTime == 1 ? 0 : TotalCost * RemainingTime / Math.Max(1, TotalTime);
+			var costThisFrame = RemainingCost - expectedRemainingCost;
 			if (costThisFrame != 0 && !pr.TakeCash(costThisFrame, true))
 				return;
 
