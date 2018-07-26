@@ -146,10 +146,10 @@ namespace OpenRA.Mods.Common.Traits
 		public BaseProvider FindBaseProvider(World world, Player p, CPos topLeft)
 		{
 			var center = world.Map.CenterOfCell(topLeft) + CenterOffset(world);
-			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
-			var allyBuildEnabled = mapBuildRadius.AllyBuildRadiusEnabled;
+			var mapBuildRadius = world.WorldActor.TraitOrDefault<MapBuildRadius>();
+			var allyBuildEnabled = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
 
-			if (!mapBuildRadius.BuildRadiusEnabled)
+			if (mapBuildRadius == null || !mapBuildRadius.BuildRadiusEnabled)
 				return null;
 
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
@@ -176,12 +176,12 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual bool IsCloseEnoughToBase(World world, Player p, ActorInfo ai, CPos topLeft)
 		{
 			var requiresBuildableArea = ai.TraitInfoOrDefault<RequiresBuildableAreaInfo>();
-			var mapBuildRadius = world.WorldActor.Trait<MapBuildRadius>();
+			var mapBuildRadius = world.WorldActor.TraitOrDefault<MapBuildRadius>();
 
 			if (requiresBuildableArea == null || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
-			if (mapBuildRadius.BuildRadiusEnabled && RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
+			if (mapBuildRadius != null && mapBuildRadius.BuildRadiusEnabled && RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
 				return false;
 
 			var adjacent = requiresBuildableArea.Adjacent;
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var nearnessCandidates = new List<CPos>();
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
-			var allyBuildEnabled = mapBuildRadius.AllyBuildRadiusEnabled;
+			var allyBuildEnabled = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
 
 			for (var y = scanStart.Y; y < scanEnd.Y; y++)
 			{

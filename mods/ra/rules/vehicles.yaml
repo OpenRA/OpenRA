@@ -700,6 +700,7 @@ DTRK:
 	Explodes:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
+		DamageSource: Killer
 	AttackSuicides:
 	-DamageMultiplier@IRONCURTAIN:
 	KillsSelf:

@@ -277,10 +277,6 @@
 	Parachutable:
 		FallRate: 26
 		KilledOnImpassableTerrain: true
-		GroundCorpseSequence:
-		GroundCorpsePalette:
-		WaterCorpseSequence:
-		WaterCorpsePalette:
 		ParachutingCondition: parachute
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -391,6 +387,7 @@
 	Parachutable:
 		FallRate: 26
 		KilledOnImpassableTerrain: true
+		GroundCorpseSequence: corpse
 		GroundImpactSound: squishy2.aud
 		WaterImpactSound: splash9.aud
 		WaterCorpseSequence: small_splash

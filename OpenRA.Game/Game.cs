@@ -59,6 +59,8 @@ namespace OpenRA
 		static Task discoverNat;
 		static bool takeScreenshot = false;
 
+		public static event Action OnShellmapLoaded;
+
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
 			var connection = new NetworkConnection(host, port);
@@ -471,7 +473,10 @@ namespace OpenRA
 			var shellmap = ChooseShellmap();
 
 			using (new PerfTimer("StartGame"))
+			{
 				StartGame(shellmap, WorldType.Shellmap);
+				OnShellmapLoaded();
+			}
 		}
 
 		static string ChooseShellmap()
