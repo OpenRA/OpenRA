@@ -39,3 +39,8 @@ ChemThrower:
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
 		ImpactSounds: kaboom25.aud
+
+AutoChem:
+	Inherits: ChemThrower
+	ReloadDelay: 25
+	Range: 5c0
