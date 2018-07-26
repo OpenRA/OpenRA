@@ -73,6 +73,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
 
+		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
+		public readonly string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
+
 		public readonly HotkeyReference PreviousProductionTabKey = new HotkeyReference();
 		public readonly HotkeyReference NextProductionTabKey = new HotkeyReference();
 
@@ -270,9 +273,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (leftPressed || rightPressed)
 			{
 				if ((leftPressed && !leftDisabled) || (rightPressed && !rightDisabled))
-					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", ClickSound, null);
 				else
-					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickDisabledSound", null);
+					Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", ClickDisabledSound, null);
 			}
 
 			// Check production tabs
@@ -280,7 +283,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (offsetloc.X > 0 && offsetloc.X < contentWidth)
 			{
 				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)].Queue;
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", ClickSound, null);
 			}
 
 			return true;
@@ -293,13 +296,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (PreviousProductionTabKey.IsActivatedBy(e))
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", ClickSound, null);
 				return SelectNextTab(true);
 			}
 
 			if (NextProductionTabKey.IsActivatedBy(e))
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", ClickSound, null);
 				return SelectNextTab(false);
 			}
 
