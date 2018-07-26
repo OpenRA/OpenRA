@@ -730,7 +730,7 @@ Actors:
 		Facing: 159
 	Actor214: lst
 		Location: 54,22
-		Owner: Special
+		Owner: Spain
 	waypoint0: waypoint
 		Location: 94,19
 		Owner: Neutral
@@ -770,13 +770,13 @@ Actors:
 	waypoint12: waypoint
 		Location: 95,22
 		Owner: Neutral
-	waypoint13: waypoint
+	SEBridge: waypoint
 		Location: 87,30
 		Owner: Neutral
-	waypoint14: waypoint
+	NWBridge: waypoint
 		Location: 75,22
 		Owner: Neutral
-	waypoint15: waypoint
+	NEBridge: waypoint
 		Location: 101,17
 		Owner: Neutral
 	waypoint16: waypoint
@@ -866,7 +866,7 @@ Actors:
 	DefaultCameraPosition: waypoint
 		Location: 43,87
 		Owner: Neutral
-	waypoint99: waypoint
+	Outpost: waypoint
 		Location: 65,65
 		Owner: Neutral
 	RepairPad: fix
@@ -898,19 +898,9 @@ Actors:
 		Location: 58,64
 		Facing: 92
 		TurretFacing: 92
-	Actor277: jeep
-		Owner: Spain
-		Location: 58,66
-		Facing: 92
-		TurretFacing: 92
 	Actor278: jeep
 		Owner: Spain
 		Location: 64,59
-		Facing: 92
-		TurretFacing: 92
-	Actor279: jeep
-		Owner: Spain
-		Location: 66,59
 		Facing: 92
 		TurretFacing: 92
 	Actor280: jeep
@@ -918,169 +908,9 @@ Actors:
 		Location: 73,64
 		Facing: 92
 		TurretFacing: 92
-	Actor281: jeep
-		Owner: Spain
-		Location: 73,66
-		Facing: 92
-		TurretFacing: 92
 	Actor282: jeep
 		Owner: Spain
 		Location: 64,72
-		Facing: 92
-		TurretFacing: 92
-	Actor283: jeep
-		Owner: Spain
-		Location: 66,72
-		Facing: 92
-		TurretFacing: 92
-	Actor284: e1r1
-		Owner: Spain
-		Location: 59,63
-		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
-	Actor285: e1r1
-		Owner: Spain
-		Location: 59,63
-		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
-	Actor286: e1r1
-		Owner: Spain
-		Location: 59,63
-		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
-	Actor287: e1r1
-		Owner: Spain
-		Location: 59,63
-		SubCell: 4
-		Facing: 92
-		TurretFacing: 92
-	Actor288: e1r1
-		Owner: Spain
-		Location: 71,69
-		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
-	Actor289: e1r1
-		Owner: Spain
-		Location: 71,69
-		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
-	Actor290: e1r1
-		Owner: Spain
-		Location: 71,69
-		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
-	Actor291: e1r1
-		Owner: Spain
-		Location: 71,69
-		SubCell: 4
-		Facing: 92
-		TurretFacing: 92
-	Actor292: e1r1
-		Owner: Spain
-		Location: 65,62
-		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
-	Actor293: e1r1
-		Owner: Spain
-		Location: 65,62
-		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
-	Actor294: e1r1
-		Owner: Spain
-		Location: 65,62
-		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
-	Actor295: e1r1
-		Owner: Spain
-		Location: 65,62
-		SubCell: 4
-		Facing: 92
-		TurretFacing: 92
-	Actor296: e1r1
-		Owner: Spain
-		Location: 64,70
-		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
-	Actor297: e1r1
-		Owner: Spain
-		Location: 64,70
-		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
-	Actor298: e1r1
-		Owner: Spain
-		Location: 64,70
-		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
-	Actor299: e1r1
-		Owner: Spain
-		Location: 64,70
-		SubCell: 4
-		Facing: 92
-		TurretFacing: 92
-	Actor301: medi
-		Owner: Spain
-		Location: 59,63
-		SubCell: 5
-		Facing: 92
-		TurretFacing: 92
-	Actor302: medi
-		Owner: Spain
-		Location: 71,69
-		SubCell: 5
-		Facing: 92
-		TurretFacing: 92
-	Actor303: e2
-		Owner: Spain
-		Location: 65,62
-		SubCell: 5
-		Facing: 92
-		TurretFacing: 92
-	Actor304: e2
-		Owner: Spain
-		Location: 64,70
-		SubCell: 5
-		Facing: 92
-		TurretFacing: 92
-	Actor305: e6
-		Owner: Spain
-		Location: 70,60
-		SubCell: 3
-		Facing: 92
-		TurretFacing: 92
-	Actor306: e6
-		Owner: Spain
-		Location: 70,60
-		SubCell: 1
-		Facing: 92
-		TurretFacing: 92
-	Actor307: mech
-		Owner: Spain
-		Location: 70,60
-		SubCell: 2
-		Facing: 92
-		TurretFacing: 92
-	Actor308: e3r1
-		Owner: Spain
-		Location: 70,60
-		SubCell: 4
-		Facing: 92
-		TurretFacing: 92
-	Actor309: e3r1
-		Owner: Spain
-		Location: 70,60
-		SubCell: 5
 		Facing: 92
 		TurretFacing: 92
 	Actor310: brik
