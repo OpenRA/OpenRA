@@ -16,6 +16,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	// Allows third party mods to detect whether an actor was created by PlaceBuilding.
+	public class PlaceBuildingInit : IActorInit { }
+
 	[Desc("Allows the player to execute build orders.", " Attach this to the player actor.")]
 	public class PlaceBuildingInfo : ITraitInfo
 	{
@@ -84,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 						new LocationInit(order.TargetLocation),
 						new OwnerInit(order.Player),
 						new FactionInit(faction),
+						new PlaceBuildingInit()
 					});
 
 					foreach (var s in buildingInfo.BuildSounds)
@@ -105,7 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 							new OwnerInit(order.Player),
 							new FactionInit(faction),
 							new LineBuildDirectionInit(t.First.X == order.TargetLocation.X ? LineBuildDirection.Y : LineBuildDirection.X),
-							new LineBuildParentInit(new[] { t.Second, placed })
+							new LineBuildParentInit(new[] { t.Second, placed }),
+							new PlaceBuildingInit()
 						});
 					}
 				}
@@ -153,6 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 						new LocationInit(order.TargetLocation),
 						new OwnerInit(order.Player),
 						new FactionInit(faction),
+						new PlaceBuildingInit()
 					});
 
 					foreach (var s in buildingInfo.BuildSounds)
