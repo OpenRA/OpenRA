@@ -22,7 +22,7 @@ Players:
 		Faction: allies
 		Color: E2E6F6
 		Allies: Spain, Special, GoodGuy
-		Enemies: England, Germany, Ukraine, BadGuy, Turkey
+		Enemies: Creeps, Germany, Ukraine, BadGuy, Turkey
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies
@@ -41,13 +41,13 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: GoodGuy, Special, Neutral
-		Enemies: England, Germany, Ukraine, BadGuy, Turkey
+		Enemies: Creeps, Germany, Ukraine, BadGuy, Turkey
 	PlayerReference@Ukraine:
 		Name: Ukraine
 		Faction: soviet
-		Color: FFE695
-		Allies: Germany, Turkey, GoodGuy, BadGuy, Neutral, England
-		Enemies: Spain, Ukraine, Special, GoodGuy, Neutral, England
+		Color: 52723B
+		Allies: Germany, Turkey, GoodGuy, BadGuy, Neutral, Creeps
+		Enemies: Spain, Ukraine, Special, GoodGuy, Neutral, Creeps
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
@@ -64,7 +64,7 @@ Players:
 		Name: Special
 		Faction: allies
 		Allies: Spain, GoodGuy, Neutral
-		Enemies: England, Germany, Ukraine, BadGuy, Turkey
+		Enemies: Creeps, Germany, Ukraine, BadGuy, Turkey
 Actors:
 	Actor0: wood
 		Location: 98,10
@@ -967,5 +967,6 @@ Actors:
 	OreSilo: silo
 		Owner: Spain
 		Location: 61,60
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml, ra|rules/defaults.yaml
 Sequences: sequences.yaml
+Weapons: weapons.yaml

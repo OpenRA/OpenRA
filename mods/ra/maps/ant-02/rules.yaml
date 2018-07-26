@@ -1,6 +1,5 @@
 MISS:
 	GpsPower:
-		PauseOnCondition: disabled
 		Icon: gps
 		OneShot: yes
 		ChargeInterval: 25
@@ -48,6 +47,8 @@ Ant:
 		Speed: 50
 	Health:
 		HP: 80000
+	Armament:
+		Weapon: MandibleHeavy
 MEDI:
 	Valued:
 		Cost: 300
@@ -115,6 +116,48 @@ SYRD:
 AGUN:
 	Buildable:
 		Prerequisites: ~disabled
+EXTRM:
+	Inherits: ^Soldier
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 500
+		Prerequisites: ~disabled
+		Description: A soldier armed with an experimental gas canister launcher
+	Selectable:
+		Class: EXTRM
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Chem Trooper
+	Health:
+		HP: 5000
+	Mobile:
+		Speed: 45
+
+	RevealsShroud:
+		Range: 5c0
+	Armament@PRIMARY:
+		Weapon: ChemThrower
+		LocalOffset: 700,0,500
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: ChemThrower
+	TakeCover:
+		ProneOffset: 160,0,-288
+	AttackFrontal:
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE:
+		StandSequences: parachute
+		RequiresCondition: parachute
+	ProducibleWithLevel:
+		Prerequisites: barracks
+	AutoTarget:
+		ScanRadius: 7
+
 World:
 	LuaScript:
 		Scripts: ant-02.lua

@@ -2,12 +2,12 @@ SouthNotDiscovered = true
 NorthNotDiscovered = true
 MCVMovedPast = false
 BridgesLeft = 3
-GasColonyObj = nil
+ShouldLaunchAttack = true
 NVillageWPs = {waypoint29, NEBridge, waypoint30}
 SVillageWPs = {waypoint37, waypoint8, waypoint33, waypoint21} 
 NVillageBlds = {Actor192, Actor193, Actor188, Actor185, Actor187, Actor191, Actor189, Actor190}
 SVillageBlds = {Actor204, Actor197, Actor195, Actor201, Actor198, Actor199, Actor200, Actor202, Actor196, Actor203}
-tick = DateTime.Minutes(0)
+ticks = DateTime.Minutes(0)
 
 VillagerList = {"c1","c2","c3","c4","c5","c6","c7","c8","c9","c10","c1","c2","e1r1","e1r1","gnrl"}
 
@@ -86,6 +86,8 @@ InitTriggers = function()
 			local count = #Turkey.GetActorsByType("truk")
 			if (count == 0) then
 				Allies.MarkCompletedObjective(GasColonyObj)
+				ShouldLaunchAttack = false
+				SendChemTroops()
 			end
 		end)
 	end)
@@ -93,7 +95,6 @@ InitTriggers = function()
 	Utils.Do(NVillageWPs, function(nactor)
 		Trigger.OnEnteredProximityTrigger(nactor.CenterPosition, WDist.FromCells(8), function(discoverer, nid)
 			if (NorthNotDiscovered and discoverer.Owner == Allies) then		
-				print(discoverer.Type)
 				RescueNorth =  Allies.AddPrimaryObjective("Protect and extract villagers from Northern village!")
 				SpawnNorthVillagers()
 				StartNorthAttack()
@@ -110,10 +111,12 @@ InitTriggers = function()
 	Utils.Do(SVillageWPs, function(sactor)
 		Trigger.OnEnteredProximityTrigger(sactor.CenterPosition, WDist.FromCells(8), function(discoverer2, sid)
 			if (SouthNotDiscovered and discoverer2.Owner == Allies) then
-				Trigger.AfterDelay(DateTime.Seconds(1), function() Allies.MarkCompletedObjective(ReachSouthObj) end)
 				RescueSouth =  Allies.AddPrimaryObjective("Protect and extract villagers from Southern village!")
-				SpawnSouthVillagers()
-				StartSouthAttack()
+				Trigger.AfterDelay(DateTime.Seconds(1), function()
+					Allies.MarkCompletedObjective(ReachSouthObj) 
+					SpawnSouthVillagers()
+					StartSouthAttack()
+				end)
 				SouthNotDiscovered = false
 			end
 			if not SouthNotDiscovered then 
@@ -127,6 +130,7 @@ InitTriggers = function()
 			Trigger.RemoveProximityTrigger(MCV1Trigger)
 			Trigger.RemoveProximityTrigger(MCV2Trigger)
 			MCVMovedPast = true
+			SendChemTroops()
 		end
 	end)
 
@@ -185,43 +189,56 @@ end
 StartNorthAttack = function()
 	if not Allies.IsObjectiveCompleted(DestroyBridgesObj) then
 		local AntList = {"ant","ant","ant","ant","ant","fireant","fireant"}
-		NorthernStrikeForce = StartAttack(AntList, {waypoint0.Location, waypoint12.Location, NEBridge.Location}, CPos.New(101,58))
+		NorthernStrikeForce = StartAttack(AntList, {waypoint0.Location, waypoint12.Location, NEBridge.Location}, Actor192.Location, BadGuy)
 	end
 end
 
 StartSouthAttack = function()
 	if (GasColonyObj == nil) then
 		AntList = {"ant","ant","ant","ant","ant","fireant","fireant"}
-		SouthernStrikeForce = StartAttack(AntList, {waypoint2.Location, waypoint8.Location}, CPos.New(105,13))
+		SouthernStrikeForce = StartAttack(AntList, {waypoint2.Location, waypoint8.Location}, Actor204.Location, BadGuy)
 	end
 end
 
-StartAttack = function(ActorList, MoveRoute, AttackPoint)
+StartAttack = function(ActorList, MoveRoute, AttackPoint, Faction)
 
-	return Reinforcements.Reinforce(Ukraine,ActorList, MoveRoute, DateTime.Seconds(3), function(actor)
+	return Reinforcements.Reinforce(Faction,ActorList, MoveRoute, DateTime.Seconds(3), function(actor)
 		actor.AttackMove(AttackPoint)
-		Trigger.AfterDelay(DateTime.Seconds(3), function() actor.Hunt() end)
+		actor.Hunt()
 	end)
 	
 end
 
 SendAntAttack = function(colony)
-	if (colony == 1 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
-		StartAttack({"scoutant","scoutant","ant"},{waypoint0.Location,waypoint12.Location}, waypoint18.CenterPosition)
-	elseif (colony == 2 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
-		StartAttack({"scoutant","scoutant","fireant"},{waypoint1.Location,WBridge.Location}, waypoint35.CenterPosition)
-	elseif (colony == 3 and (GasColonyObj == nil or not Allies.IsObjectiveCompleted(GasColonyObj))) then
-		StartAttack({"fireant","scoutant","ant"},{waypoint2.Location,waypoint95.Location}, waypoint20.CenterPosition)
+	if (colony == 0 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
+
+		StartAttack({"ant"},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, BadGuy)
+		StartAttack({"scoutant","scoutant","scoutant"},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, Ukraine)
+
+	elseif (colony == 1 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
+		StartAttack({"scoutant","scoutant","scoutant"},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, Ukraine)
+		StartAttack({"fireant"},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, BadGuy)
+	elseif (colony == 2) then
+		if ShouldLaunchAttack then
+			StartAttack({"scoutant"},{waypoint2.Location, waypoint20.Location}, waypoint20.Location, Ukraine)
+			StartAttack({"fireant","ant","ant"},{waypoint2.Location,waypoint95.Location}, waypoint20.Location, BadGuy)
+		end
 	end
 end
 
+SendChemTroops = function()
+	local MovePath = {waypoint36.Location, CPos.New(65,65)}
+	local Forces = {"extrm","extrm","extrm","extrm","extrm"}
+	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsSouth")
+	Reinforcements.ReinforceWithTransport(Allies, "tran", Forces, MovePath, {CPos.New(65,65), waypoint36.Location})
+end
 
 Tick = function() 
 	if (DateTime.GameTime > DateTime.Minutes(3) or MCVMovedPast) then
 		ticks = ticks + 1
-		if (ticks == DateTime.Minutes(1)) then
-			ticks = DateTime.Minutes(0)
-			SendAntAttack(math.random(1, 3))
+		if (ticks == DateTime.Minutes(2)) then
+			SendAntAttack(DateTime.GameTime % 3)
+			ticks = DateTime.Minutes(1)
 		end
 	end
 end

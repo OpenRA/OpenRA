@@ -1,0 +1,41 @@
+MandibleHeavy:
+	Inherits: Claw
+	ReloadDelay: 15
+	Warhead@1Dam: SpreadDamage
+		Damage: 9000
+		Versus:
+			None: 100
+			Light: 90
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+
+ChemThrower:
+	ReloadDelay: 70
+	Range: 4c0
+	Report: turret1.aud
+	Projectile: Bullet
+		Image: BOMBLET
+		Speed: 150
+		Inaccuracy: 200
+		Shadow: True
+	Warhead@1Dam: SpreadDamage
+		Spread: 243
+		Damage: 100000
+		Versus:
+			None: 100
+			Wood: 20
+			Light: 0
+			Heavy: 0
+			Concrete: 0
+		ValidTargets: Ant, ScoutAnt, FireAnt, Infantry
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Structure, Wall
+	Warhead@4EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: h2obomb2.aud
+		ValidTargets: Water
+		InvalidTargets: Ship, Structure, Bridge
+	Warhead@3Eff: CreateEffect
+		Explosions: chemball
+		ImpactSounds: kaboom25.aud
