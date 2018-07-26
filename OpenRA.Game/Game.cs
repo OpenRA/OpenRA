@@ -59,7 +59,7 @@ namespace OpenRA
 		static Task discoverNat;
 		static bool takeScreenshot = false;
 
-		public static event Action OnShellmapLoaded;
+		public static event Action OnShellmapLoaded = () => { };
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
