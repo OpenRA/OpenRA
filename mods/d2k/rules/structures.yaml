@@ -429,6 +429,7 @@ light_factory:
 		Factions: ordos, smuggler, mercenary
 	ProvidesPrerequisite@buildingname:
 	WithProductionOverlay@WELDING:
+		Queues: Vehicle
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
@@ -527,6 +528,7 @@ heavy_factory:
 			corrino: heavy.harkonnen
 			mercenary: heavy.mercenary
 	WithProductionOverlay@WELDING:
+		Queues: Armor
 		Sequence: production-welding
 	WithIdleOverlay@TOP:
 		Sequence: idle-top
@@ -967,6 +969,7 @@ high_tech_factory:
 		ArrowSequence: arrow
 		CircleSequence: circles
 	WithProductionOverlay@WELDING:
+		Queues: Aircraft
 		Sequence: production-welding
 	Power:
 		Amount: -75
