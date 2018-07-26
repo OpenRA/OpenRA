@@ -46,14 +46,14 @@ Players:
 		Name: Ukraine
 		Faction: soviet
 		Color: 52723B
-		Allies: Germany, Turkey, GoodGuy, BadGuy, Neutral, Creeps
-		Enemies: Spain, Ukraine, Special, GoodGuy, Neutral, Creeps
+		Allies: Germany, Turkey, BadGuy, Neutral, Creeps
+		Enemies: Spain, Ukraine, Special, GoodGuy
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FF1400
-		Allies: Ukraine, Germany, Turkey
-		Enemies: GoodGuy, Spain, Special, Neutral
+		Allies: GoodGuy, Ukraine, Germany, Turkey, Neutral
+		Enemies:  Spain, Special
 	PlayerReference@Turkey:
 		Name: Turkey
 		Faction: allies

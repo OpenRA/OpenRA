@@ -61,12 +61,7 @@ MRJ:
 APC:
 	Buildable:
 		Prerequisites: ~vehicles.allies, ~tent
-	Valued:
-		Cost: 950
 STNK:
-	Buildable:
-		Prerequisites: ~disabled
-TRUK:
 	Buildable:
 		Prerequisites: ~disabled
 SPY:
@@ -74,7 +69,7 @@ SPY:
 		Prerequisites: ~disabled
 SNIPER:
 	Buildable:
-		Prerequisites: ~tent
+		Prerequisites: ~disabled
 	Valued:
 		Cost: 400
 MGG:
