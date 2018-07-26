@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Commands;
@@ -36,11 +37,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
+		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
+
 		bool disableTeamChat;
 		bool teamChat;
 
 		[ObjectCreator.UseCtor]
-		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat)
+		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.orderManager = orderManager;
 			this.modRules = modData.DefaultRules;
@@ -167,6 +170,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return false;
 				});
 			}
+
+			MiniYaml yaml;
+			if (logicArgs.TryGetValue("ChatLineSound", out yaml))
+				chatLineSound = yaml.Value;
 		}
 
 		bool SwitchTeamChat()
@@ -239,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
 			if (!suppressSound)
-				Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+				Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
 		}
 
 		bool disposed = false;

@@ -63,6 +63,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool addBotOnMapLoad;
 		bool teamChat;
 
+		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
+
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -95,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		internal LobbyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, OrderManager orderManager,
-			Action onExit, Action onStart, bool skirmishMode)
+			Action onExit, Action onStart, bool skirmishMode, Dictionary<string, MiniYaml> logicArgs)
 		{
 			map = MapCache.UnknownMap;
 			lobby = widget;
@@ -433,6 +435,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Add a bot on the first lobbyinfo update
 			if (skirmishMode)
 				addBotOnMapLoad = true;
+
+			MiniYaml yaml;
+			if (logicArgs.TryGetValue("ChatLineSound", out yaml))
+				chatLineSound = yaml.Value;
 		}
 
 		bool disposed;
@@ -472,7 +478,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrolledToBottom)
 				lobbyChatPanel.ScrollToBottom(smooth: true);
 
-			Game.Sound.PlayNotification(modRules, null, "Sounds", "ChatLine", null);
+			Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
 		}
 
 		bool SwitchTeamChat()
