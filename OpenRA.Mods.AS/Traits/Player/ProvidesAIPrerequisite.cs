@@ -29,6 +29,11 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly HashSet<string> Factions = new HashSet<string>();
 
 		public object Create(ActorInitializer init) { return new ProvidesAIPrerequisite(init, this); }
+
+		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info)
+		{
+			yield return Prerequisite;
+		}
 	}
 
 	public class ProvidesAIPrerequisite : ITechTreePrerequisite, INotifyOwnerChanged
