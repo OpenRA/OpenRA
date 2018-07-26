@@ -12,7 +12,6 @@ Players:
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
-		NonCombatant: True
 		Faction: england
 	PlayerReference@Creeps:
 		Name: Creeps
@@ -22,14 +21,14 @@ Players:
 		Name: GoodGuy
 		Faction: allies
 		Color: E2E6F6
-		Allies: Spain, Special
-		Enemies: Greece, England, GoodGuy, Germany, Ukraine, BadGuy, Turkey
+		Allies: Spain, Special, GoodGuy
+		Enemies: England, Germany, Ukraine, BadGuy, Turkey
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies
 		Color: 505050
 		Allies: Ukraine, Turkey, GoodGuy, BadGuy
-		Enemies: Germany, Spain, Special
+		Enemies: Spain, Special
 	PlayerReference@Spain:
 		Name: Spain
 		AllowBots: False
@@ -41,29 +40,31 @@ Players:
 		Color: F6D679
 		LockSpawn: True
 		LockTeam: True
-		Allies: GoodGuy, Special
-		Enemies: Greece, England, Germany, Spain, Ukraine, BadGuy, Turkey
+		Allies: GoodGuy, Special, Neutral
+		Enemies: England, Germany, Ukraine, BadGuy, Turkey
 	PlayerReference@Ukraine:
 		Name: Ukraine
 		Faction: soviet
 		Color: FFE695
-		Allies: Germany, Turkey, GoodGuy, BadGuy
-		Enemies: Spain, Ukraine, Special
+		Allies: Germany, Turkey, GoodGuy, BadGuy, Neutral, England
+		Enemies: Spain, Ukraine, Special, GoodGuy, Neutral, England
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FF1400
 		Allies: Ukraine, Germany, Turkey
-		Enemies: GoodGuy, Spain, BadGuy, Special
+		Enemies: GoodGuy, Spain, Special, Neutral
 	PlayerReference@Turkey:
 		Name: Turkey
 		Faction: allies
 		Color: D2997D
+		Allies: Ukraine, Germany, Turkey
+		Enemies: GoodGuy, Spain, Special, Neutral
 	PlayerReference@Special:
 		Name: Special
 		Faction: allies
-		Allies: Spain, GoodGuy
-		Enemies: Greece, England, Germany, Ukraine, BadGuy, Turkey, Special
+		Allies: Spain, GoodGuy, Neutral
+		Enemies: England, Germany, Ukraine, BadGuy, Turkey
 Actors:
 	Actor0: wood
 		Location: 98,10
@@ -773,7 +774,7 @@ Actors:
 	SEBridge: waypoint
 		Location: 87,30
 		Owner: Neutral
-	NWBridge: waypoint
+	WBridge: waypoint
 		Location: 75,22
 		Owner: Neutral
 	NEBridge: waypoint

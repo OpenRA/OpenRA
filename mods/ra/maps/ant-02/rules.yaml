@@ -1,3 +1,21 @@
+MISS:
+	GpsPower:
+		PauseOnCondition: disabled
+		Icon: gps
+		OneShot: yes
+		ChargeInterval: 25
+		Description: GPS Satellite
+		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
+		RevealDelay: 375
+		LaunchSpeechNotification: SatelliteLaunched
+		DisplayTimerStances: Ally, Neutral, Enemy
+	TooltipDescription@ally:
+		Description: Provides GPS Uplink
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to gain access to GPS Uplink
+		ValidStances: Neutral, Enemy
+
 Player:
 	PlayerResources:
 		DefaultCash: 2500
