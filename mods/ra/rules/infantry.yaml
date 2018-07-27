@@ -752,3 +752,52 @@ Ant:
 	HitShape:
 		Type: Circle
 			Radius: 469
+
+FireAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Fire Ant
+		GenericVisibility: none
+	Mobile:
+		Speed: 80
+	Armament:
+		Weapon: AntFireball
+	Health:
+		HP: 7500
+	Armor:
+		Type: Heavy
+	Buildable:
+		Prerequisites: ~disabled
+
+ScoutAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Scout Ant
+		GenericVisibility: none
+	Health:
+		HP: 8500
+	Armor:
+		Type: Light
+	AutoTarget:
+		ScanRadius: 7
+	Buildable:
+		Prerequisites: ~disabled
+
+WarriorAnt:
+	Inherits: Ant
+	Tooltip:
+		Name: Warrior Ant
+		GenericVisibility: none
+	Mobile:
+		Speed: 65
+	Health:
+		HP: 12500
+	Armor:
+		Type: Heavy
+	Armament:
+		Weapon: MandibleHeavy
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: Ant
+

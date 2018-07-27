@@ -165,11 +165,48 @@ Claw:
 Mandible:
 	Inherits: Claw
 	ReloadDelay: 10
+	Burst: 2
+	BurstDelays: 14
+	StartBurstReport: antbite.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
 		Versus:
 			None: 90
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+
+MandibleHeavy:
+	Inherits: Claw
+	ReloadDelay: 15
+	Burst: 2
+	BurstDelays: 20
+	StartBurstReport: antbite.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 10000
+		Versus:
+			None: 100
+			Light: 90
+			Heavy: 35
+			Concrete: 20
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+
+AntFireball:
+	Inherits: FireballLauncher
+	Report: antbite.aud
+	ReloadDelay: 50
+	Burst: 2
+	BurstDelays: 20
+	Range: 4c0
+	Projectile: Bullet
+		Speed: 200
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 4000
+		Versus:
+			None: 80
+			Wood: 85
+			Light: 45
+			Heavy: 20
+			Concrete: 15
 
 MADTankThump:
 	InvalidTargets: MADTank, Infantry
