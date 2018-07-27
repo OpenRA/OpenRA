@@ -6,8 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-DifficultyModifier = 1
-Difficulty = Map.LobbyOption("difficulty")
+
 TimerColor = Player.GetPlayer("Spain").Color
 TankPath = { waypoint12.Location, waypoint13.Location }
 AntPathN = { waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location } 
@@ -28,14 +27,6 @@ ChooperTeam = {"e1r1","e1r1","e2","e2","e1r1"}
 AtEndGame = false
 TimerTicks = DateTime.Minutes(30)
 ticks = TimerTicks
-
-if Difficulty == "hard" then
-	DifficultyModifier = 3
-elseif Difficulty == "normal" then
-	DifficultyModifier = 2
-elseif Difficulty == "tough" then
-	DifficultyModifier = 5
-end
 
 WorldLoaded = function()
 	allies = Player.GetPlayer("Spain")
@@ -115,7 +106,7 @@ AntSendFunc = function(direction, amount, antType)
 		path = AntPathS
 	end
 	
-	while index < (amount * DifficultyModifier) do
+	while index < amount do
 		Reinforcements.Reinforce(owner,AntActors,path,DateTime.Seconds(3))
 		index = index + 1
 	end
@@ -124,7 +115,7 @@ AntSendFunc = function(direction, amount, antType)
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
 		for i,actor in pairs(owner.GetActorsByType(antType)) do
 	  		actor.AttackMove(CPos.New(65,65))
-	  		actor.Hunt()
+			Trigger.OnIdle(actor, function(actor) actor.Hunt() end)
 		end
 	end)
 end
@@ -151,11 +142,7 @@ FinishTimer = function()
 end
 
 TimerExpired = function()
-	if not (IsBaseDestroyed()) then
-		allies.MarkCompletedObjective(SurviveObjective)
-	else 
-		allies.MarkFailedObjective(SurviveObjective)
-	end
+	allies.MarkCompletedObjective(SurviveObjective)
 	expireSeconds = 0
 end
 
@@ -170,22 +157,15 @@ DiscoveredAlliedBase = function(actor, discoverer)
 		--Need to delay this so we don't fail mission before obj added
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			SurviveObjective = allies.AddPrimaryObjective("Defend outpost until reinforcements arrive.")
+			Trigger.OnAllRemovedFromWorld(AlliedBase, function()
+				allies.MarkFailedObjective(SurviveObjective)
+			end)
 			Media.PlaySpeechNotification(allies, "TimerStarted")
 			Trigger.AfterDelay(DateTime.Seconds(2), function() allies.MarkCompletedObjective(DiscoverObjective) end)
 			creeps.GetActorsByType("harv")[1].FindResources()
 			creeps.GetActorsByType("harv")[1].Owner = allies
 		end)
 	end
-end
-
-IsBaseDestroyed = function()
-	local validBuildings = 0
-	Utils.Do(ValidForces, function(actorName)
-		local count = #allies.GetActorsByType(actorName)
-		validBuildings = validBuildings + count
-	end)
-
-	return validBuildings == 0 
 end
 
 ThirtyMinuteTriggerInit = function()
@@ -274,12 +254,6 @@ end
 
 Tick = function() 
 	if SurviveObjective ~= nil then
-		if ticks % DateTime.Seconds(1) == 0 then 
-			if IsBaseDestroyed() then 
-				allies.MarkFailedObjective(SurviveObjective)
-			end
-		end
-
 		if ticks > 0 then
 			if DateTime.Minutes(30) == ticks then
 				ThirtyMinuteTriggerInit()

@@ -53,7 +53,6 @@ end
 
 BridgeDestroyed = function()
 	BridgesLeft =- 1
-	Media.PlaySpeechNotification(Allies,"ObjectiveReached")
 end
 
 InitTriggers = function()
@@ -150,14 +149,22 @@ end
 
 SpawnNorthVillagers = function()
 	NorthernVillagers = Reinforcements.Reinforce(Allies, VillagerList, {Actor192.Location, waypoint29.Location}, DateTime.Seconds(1))
-	Trigger.OnAllKilled(NorthernVillagers, function() Allies.MarkFailedObjective(RescueNorth) end)
+	Trigger.OnAllKilled(NorthernVillagers, function() 
+		if  not Allies.IsObjectiveCompleted(RescueNorth) then
+			Allies.MarkFailedObjective(RescueNorth)
+		end
+	end)
 
 	Trigger.OnEnteredProximityTrigger(Actor194.CenterPosition, WDist.FromCells(8), function(actor, id)
 		if (actor.Owner == Allies) then
 			Utils.Do(NorthernVillagers, function(villager)
 				if actor == villager then
-					Trigger.RemoveProximityTrigger(id)
-					Allies.MarkCompletedObjective(RescueNorth)
+					if (not Allies.IsObjectiveCompleted(RescueNorth)) then
+						Allies.MarkCompletedObjective(RescueNorth)
+					end
+					actor.Owner = GoodGuy
+					actor.Move(CPos.New(46,10))
+					Trigger.OnIdle(actor, actor.Destroy)
 				end
 			end)
 		end
@@ -166,14 +173,22 @@ end
 
 SpawnSouthVillagers = function()
 	SouthernVillagers = Reinforcements.Reinforce(Allies,VillagerList, {Actor204.Location, waypoint38.Location}, DateTime.Seconds(1))
-	Trigger.OnAllKilled(SouthernVillagers, function() Allies.MarkFailedObjective(RescueSouth) end)
+	Trigger.OnAllKilled(SouthernVillagers, function()		
+		if not Allies.IsObjectiveCompleted(RescueSouth) then
+			Allies.MarkFailedObjective(RescueSouth)
+		end
+	end)
 
 	Trigger.OnEnteredProximityTrigger(Actor194.CenterPosition, WDist.FromCells(8), function(actor, id)
 		if (actor.Owner == Allies) then
 			Utils.Do(SouthernVillagers, function(villager)
 				if actor == villager then
-					Trigger.RemoveProximityTrigger(id)
-					Allies.MarkCompletedObjective(RescueSouth)
+					if (not Allies.IsObjectiveCompleted(RescueSouth)) then
+						Allies.MarkCompletedObjective(RescueSouth)
+					end
+					actor.Owner = GoodGuy
+					actor.Move(CPos.New(46,10))
+					Trigger.OnIdle(actor, actor.Destroy)
 				end
 			end)
 		end
@@ -182,14 +197,14 @@ end
 
 StartNorthAttack = function()
 	if (not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
-		local AntList = {"ant","ant","ant","ant","ant","fireant","fireant"}
+		local AntList = {"ant","ant","ant","ant","ant","fireant","fireant","fireant","fireant","scoutant","scoutant"}
 		NorthernStrikeForce = StartAttack(AntList, {waypoint0.Location, waypoint12.Location}, Actor192.Location, Ukraine)
 	end
 end
 
 StartSouthAttack = function()
 	if (GasColonyObj == nil) then
-		local AntList = {"ant","ant","ant","ant","ant","fireant","fireant"}
+		local AntList = {"ant","ant","ant","ant","ant","fireant","fireant","fireant","fireant","scoutant","scoutant"}
 		SouthernStrikeForce = StartAttack(AntList, {waypoint2.Location, waypoint8.Location}, Actor204.Location, Ukraine)
 	end
 end
@@ -199,6 +214,7 @@ StartAttack = function(ActorList, MoveRoute, AttackPoint, Faction)
 	return Reinforcements.Reinforce(Faction,ActorList, MoveRoute, DateTime.Seconds(3), function(actor)
 		actor.AttackMove(AttackPoint)
 		actor.Hunt()
+		Trigger.OnIdle(actor, function(actor) actor.Hunt() end)
 	end)
 	
 end
@@ -206,46 +222,27 @@ end
 SendAntAttack = function(colony)
 	if (colony == 0 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
 
-		StartAttack({"ant","scoutant","scoutant","scoutant"},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, BadGuy)
+		StartAttack({"ant","scoutant","ant","ant", "fireant},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, BadGuy)
 
 	elseif (colony == 1 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
-		StartAttack({"fireant","scoutant","scoutant","scoutant"},{waypoint1.Location,waypoint11.Location}, waypoint35.Location, BadGuy)
+		StartAttack({"fireant","ant","ant","fireant","scoutant"},{waypoint1.Location,waypoint11.Location}, waypoint35.Location, BadGuy)
 	elseif (ShouldLaunchAttack) then
-		StartAttack({"scoutant","fireant","ant","ant"},{waypoint2.Location,waypoint95.Location}, waypoint20.Location, BadGuy)
+		StartAttack({"scoutant","fireant","ant","fireant","scoutant"},{waypoint2.Location,waypoint95.Location}, waypoint20.Location, BadGuy)
 	end
 end
 
 SendChemTroops = function()
-	local MovePath = {waypoint36.Location, CPos.New(65,65)}
-	local Forces = {"extrm","extrm","extrm","extrm","extrm"}
-	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsSouth")
-	Reinforcements.ReinforceWithTransport(Allies, "tran", Forces, MovePath, {CPos.New(65,65), waypoint36.Location})
+	local MovePath = {CPos.New(114,83), CPos.New(107,86)}
+	local Forces = {"extrm","e1r1"}
+	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsEast")
+	Reinforcements.ReinforceWithTransport(Allies, "jeep", Forces, MovePath, {CPos.New(107,86), CPos.New(114,83)})
 end
 
-SendChemTroops = function()
+SendSniperTeam = function()
 	local MovePath = {waypoint36.Location, CPos.New(65,65)}
-	local Forces = {"sniper","sniper"}
+	local Forces = {"sniper","e1r1"}
 	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsSouth")
 	Reinforcements.ReinforceWithTransport(Allies, "tran", Forces, MovePath, {CPos.New(65,65), waypoint36.Location})
-end
-
-
-SetIdleToHunt = function()
-	Utils.Do(BadGuy.GetActors(), function(actor) 
-		if (actor.Type == "ant" or actor.Type == "fireant" or actor.Type == "scoutant") then
-			if actor.IsIdle then
-				actor.Hunt()
-			end
-		end
-	end)
-	
-	Utils.Do(Ukraine.GetActors(), function(actor) 
-		if (actor.Type == "ant" or actor.Type == "fireant" or actor.Type == "scoutant") then
-			if actor.IsIdle then
-				actor.Hunt()
-			end
-		end
-	end)
 end
 
 Tick = function() 
@@ -254,11 +251,10 @@ Tick = function()
 	end
 	if (DateTime.GameTime > DateTime.Minutes(3) or MCVMovedPast) then
 		ticks = ticks + 1
-		if (ticks == DateTime.Minutes(2)) then
-			SetIdleToHunt()
-			
+		local eventTime = DateTime.Minutes(1) + (DateTime.Seconds(15) * (AttackCounter % 4))
+		if (ticks == eventTime) then
 			AttackCounter = AttackCounter + 1
-			Trigger.AfterDelay(DateTime.Seconds(2), function()
+			Trigger.AfterDelay(DateTime.Seconds(1), function()
 				SendAntAttack(AttackCounter % 3)
 			end)
 			ticks = DateTime.Minutes(1)

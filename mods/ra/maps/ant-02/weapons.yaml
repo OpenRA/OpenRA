@@ -42,5 +42,5 @@ ChemThrower:
 
 AutoChem:
 	Inherits: ChemThrower
-	ReloadDelay: 25
+	ReloadDelay: 50
 	Range: 5c0
