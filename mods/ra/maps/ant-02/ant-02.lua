@@ -18,6 +18,7 @@ WorldLoaded = function()
 	Turkey = Player.GetPlayer("Turkey")
 	Ukraine = Player.GetPlayer("Ukraine")
 	BadGuy = Player.GetPlayer("BadGuy")
+	Special = Player.GetPlayer("Special")
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	InitObjectives()
 	InitTriggers()
@@ -155,15 +156,16 @@ SpawnNorthVillagers = function()
 		end
 	end)
 
-	Trigger.OnEnteredProximityTrigger(Actor194.CenterPosition, WDist.FromCells(8), function(actor, id)
+	Trigger.OnEnteredProximityTrigger(Actor194.CenterPosition, WDist.FromCells(10), function(actor, id)
 		if (actor.Owner == Allies) then
 			Utils.Do(NorthernVillagers, function(villager)
 				if actor == villager then
 					if (not Allies.IsObjectiveCompleted(RescueNorth)) then
 						Allies.MarkCompletedObjective(RescueNorth)
 					end
-					actor.Owner = GoodGuy
+					actor.Owner = Special
 					actor.Move(CPos.New(46,10))
+					if actor.Type == "gnrl" then Media.DisplayMessage("Christ, did you see the size of those things? Good luck Commander!","Field Marshal",HSLColor.DarkGreen) end
 					Trigger.OnIdle(actor, actor.Destroy)
 				end
 			end)
@@ -179,13 +181,14 @@ SpawnSouthVillagers = function()
 		end
 	end)
 
-	Trigger.OnEnteredProximityTrigger(Actor194.CenterPosition, WDist.FromCells(8), function(actor, id)
+	Trigger.OnEnteredProximityTrigger(Actor194.CenterPosition, WDist.FromCells(10), function(actor, id)
 		if (actor.Owner == Allies) then
 			Utils.Do(SouthernVillagers, function(villager)
 				if actor == villager then
 					if (not Allies.IsObjectiveCompleted(RescueSouth)) then
 						Allies.MarkCompletedObjective(RescueSouth)
 					end
+					if actor.Type == "gnrl" then Media.DisplayMessage("Thank you for rescuing us Commander.","Commandant",HSLColor.LightBlue) end
 					actor.Owner = GoodGuy
 					actor.Move(CPos.New(46,10))
 					Trigger.OnIdle(actor, actor.Destroy)
@@ -222,10 +225,15 @@ end
 SendAntAttack = function(colony)
 	if (colony == 0 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
 
-		StartAttack({"ant","scoutant","ant","ant", "fireant},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, BadGuy)
+		StartAttack({"ant","scoutant","ant","ant", "fireant"},{waypoint0.Location,waypoint12.Location}, waypoint18.Location, BadGuy)
 
 	elseif (colony == 1 and not Allies.IsObjectiveCompleted(DestroyBridgesObj)) then
-		StartAttack({"fireant","ant","ant","fireant","scoutant"},{waypoint1.Location,waypoint11.Location}, waypoint35.Location, BadGuy)
+		if #Allies.GetActorsByType("fact") > 0 then
+			local conyard = Allies.GetActorsByType("fact")[0]
+			StartAttack({"fireant","ant","ant","fireant","scoutant"},{waypoint1.Location,waypoint11.Location}, conyard.Location, BadGuy)
+		else
+			StartAttack({"fireant","ant","ant","fireant","scoutant"},{waypoint1.Location,waypoint11.Location}, waypoint35.Location, BadGuy)
+		end
 	elseif (ShouldLaunchAttack) then
 		StartAttack({"scoutant","fireant","ant","fireant","scoutant"},{waypoint2.Location,waypoint95.Location}, waypoint20.Location, BadGuy)
 	end
@@ -235,6 +243,7 @@ SendChemTroops = function()
 	local MovePath = {CPos.New(114,83), CPos.New(107,86)}
 	local Forces = {"extrm","e1r1"}
 	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsEast")
+	Media.DisplayMessage("We've brought a experimental gas canister launcher recovered from Soviet plans!","Trooper",Allies.Color)
 	Reinforcements.ReinforceWithTransport(Allies, "jeep", Forces, MovePath, {CPos.New(107,86), CPos.New(114,83)})
 end
 

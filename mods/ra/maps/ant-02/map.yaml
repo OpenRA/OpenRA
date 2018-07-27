@@ -63,6 +63,7 @@ Players:
 	PlayerReference@Special:
 		Name: Special
 		Faction: allies
+		Color: 1D8705
 		Allies: Spain, GoodGuy, Neutral
 		Enemies: Creeps, Germany, Ukraine, BadGuy, Turkey
 Actors:
