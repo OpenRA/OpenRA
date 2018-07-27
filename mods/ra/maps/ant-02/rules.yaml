@@ -1,0 +1,140 @@
+Player:
+	PlayerResources:
+		DefaultCash: 2500
+
+World:
+	LuaScript:
+		Scripts: ant-02.lua, ant-attack.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+	MissionData:
+		Briefing: Who would've believed it -- Giant Ants.\n\nNow that your MCV has arrived, we must evacuate the civilians in the area -- they don't stand a chance against these ants.\n\nThere are two villages in your immediate area. Locate them and evacuate the civilians to the island in the northwest. You'll also have to take out all the bridges in this area to stop the ants from completely overrunning you.  \n\nYou must destroy the bridges, and evac at least one civilian from each town for the mission to be a success.
+
+^Palettes:
+	IndexedPlayerPalette@scoutant:
+		BaseName: scoutant
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			AttackAnts: 133, 134, 135, 136, 137, 138, 139, 140, 141, 141, 142, 142, 143, 143, 143, 143
+			PatrolAnts: 133, 134, 135, 136, 137, 138, 139, 140, 141, 141, 142, 142, 143, 143, 143, 143
+		AllowModifiers: True
+	IndexedPlayerPalette@warriorant:
+		BaseName: warriorant
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			AttackAnts: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			PatrolAnts: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+		AllowModifiers: True
+	IndexedPlayerPalette@fireant:
+		BaseName: fireant
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			AttackAnts: 158, 158, 159, 159, 229, 229, 216, 216, 217, 217, 218, 218, 221, 222, 223, 223
+			PatrolAnts: 158, 158, 159, 159, 229, 229, 216, 216, 217, 217, 218, 218, 221, 222, 223, 223
+		AllowModifiers: True
+
+FireAnt:
+	RenderSprites:
+		PlayerPalette: fireant
+
+ScoutAnt:
+	RenderSprites:
+		PlayerPalette: scoutant
+
+WarriorAnt:
+	RenderSprites:
+		PlayerPalette: warriorant
+
+MISS:
+	GpsPower:
+		Icon: gps
+		OneShot: yes
+		ChargeInterval: 25
+		Description: GPS Satellite
+		LongDesc: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
+		RevealDelay: 375
+		LaunchSpeechNotification: SatelliteLaunched
+		DisplayTimerStances: Ally, Neutral, Enemy
+	TooltipDescription@ally:
+		Description: Provides GPS Uplink
+		ValidStances: Ally
+	TooltipDescription@other:
+		Description: Capture to gain access to GPS Uplink
+		ValidStances: Neutral, Enemy
+
+SPY.England:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~tent
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~tent
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
