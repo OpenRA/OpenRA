@@ -30,6 +30,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 
+		public Player Owner
+		{
+			get
+			{
+				return self.EffectiveOwner != null ? self.EffectiveOwner.Owner : self.Owner;
+			}
+		}
+
 		public TooltipDescription(Actor self, TooltipDescriptionInfo info)
 			: base(info)
 		{
@@ -41,8 +49,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return false;
 
-			var stance = forPlayer.Stances[self.Owner];
-			if (!Info.ValidStances.HasStance(stance))
+			// Visibility can't be determined for null owners or viewers
+			if (Owner == null || forPlayer == null)
+				return false;
+
+			if (!Info.ValidStances.HasStance(Owner.Stances[forPlayer]))
 				return false;
 
 			return true;

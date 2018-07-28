@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					foreach (var info in viewport.ActorTooltipExtra)
 					{
-						if (info.IsTooltipVisible(world.LocalPlayer))
+						if (info.IsTooltipVisible(world.RenderPlayer))
 						{
 							if (index != 0)
 								extraText += "\n";
