@@ -512,7 +512,7 @@ THF:
 	Voiced:
 		VoiceSet: ThiefVoice
 	WithInfantryBody:
-		-IdleSequences:
+		IdleSequences: idle
 		StandSequences: stand
 	Buildable:
 		Description: Steals enemy credits.\n  Unarmed
@@ -542,7 +542,7 @@ HIJACKER:
 		VoiceSet: ThiefVoice
 	-TakeCover:
 	WithInfantryBody:
-		-IdleSequences:
+		IdleSequences: idle
 		StandSequences: stand
 	Crushable:
 		WarnProbability: 95
