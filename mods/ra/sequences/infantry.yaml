@@ -319,11 +319,7 @@ medi:
 		Start: 114
 		Length: 2
 		Facings: 8
-	idle1:
-		Start: 163
-		Length: 14
-		Tick: 120
-	idle2:
+	idle:
 		Start: 178
 		Length: 14
 		Tick: 120
@@ -383,11 +379,7 @@ mech:
 		Start: 114
 		Length: 2
 		Facings: 8
-	idle1:
-		Start: 163
-		Length: 14
-		Tick: 120
-	idle2:
+	idle:
 		Start: 178
 		Length: 14
 		Tick: 120

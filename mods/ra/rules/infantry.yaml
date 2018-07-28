@@ -391,6 +391,7 @@ MEDI:
 		ForceTargetStances: None
 	AttackFrontal:
 	WithInfantryBody:
+		IdleSequences: idle
 		StandSequences: stand
 		DefaultAttackSequence: heal
 	Voiced:
@@ -432,6 +433,7 @@ MECH:
 		CaptureTypes: husk
 		PlayerExperience: 25
 	WithInfantryBody:
+		IdleSequences: idle
 		DefaultAttackSequence: repair
 		StandSequences: stand
 	Voiced:
