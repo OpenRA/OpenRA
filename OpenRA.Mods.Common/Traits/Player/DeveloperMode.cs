@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -220,13 +221,9 @@ namespace OpenRA.Mods.Common.Traits
 
 					var actor = order.Target.Actor;
 					var args = order.TargetString.Split(' ');
-					var damageTypes = new HashSet<string>();
-
-					foreach (var damageType in args)
-						damageTypes.Add(damageType);
+					var damageTypes = BitSet<DamageType>.FromStringsNoAlloc(args);
 
 					actor.Kill(actor, damageTypes);
-
 					break;
 				}
 

@@ -9,9 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageInterval = 0;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[Desc("Terrain types where the actor will take damage.")]
 		[FieldLoader.Require] public readonly string[] Terrain = { };

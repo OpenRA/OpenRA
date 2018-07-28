@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Damage = 1000;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[Desc("Actor to transform into when the timer expires during (un)deploy."), ActorReference]
 		public readonly string OriginalActor = "mcv";

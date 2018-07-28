@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.Play(SoundType.World, Info.CrushSound, crusher.CenterPosition);
 
 			var crusherMobile = crusher.TraitOrDefault<Mobile>();
-			self.Kill(crusher, crusherMobile != null ? crusherMobile.Info.LocomotorInfo.CrushDamageTypes : new HashSet<string>());
+			self.Kill(crusher, crusherMobile != null ? crusherMobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
 		}
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)

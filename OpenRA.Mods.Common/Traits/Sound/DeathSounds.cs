@@ -9,8 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"If empty, this will be used as the default sound for all death types.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		public override object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (IsTraitDisabled)
 				return;
 
-			if (Info.DeathTypes.Count == 0 || e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+			if (!Info.DeathTypes.IsEmpty || e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				self.PlayVoiceLocal(Info.Voice, Info.VolumeMultiplier);
 		}
 	}

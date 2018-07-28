@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	class AttackSuicidesInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Types of damage that this trait causes to self while suiciding. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[VoiceReference] public readonly string Voice = "Action";
 

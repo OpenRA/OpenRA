@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Damage types that trigger prone state. Defined on the warheads.")]
-		public readonly HashSet<string> DamageTriggers = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTriggers = default(BitSet<DamageType>);
 
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
@@ -83,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsProne)
 				return 100;
 
-			if (damage.DamageTypes.Count == 0)
+			if (damage.DamageTypes.IsEmpty)
 				return 100;
 
 			var modifierPercentages = info.DamageModifiers.Where(x => damage.DamageTypes.Contains(x.Key)).Select(x => x.Value);

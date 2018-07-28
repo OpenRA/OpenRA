@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Owner = "Neutral";
 
 		[Desc("The deathtypes used when 'Action' is 'Kill'.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		public override object Create(ActorInitializer init) { return new OwnerLostAction(init, this); }
 	}
