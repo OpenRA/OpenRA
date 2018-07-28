@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				palette += self.Owner.InternalName;
 
 			// Killed by some non-standard means
-			if (e.Damage.DamageTypes.Count == 0)
+			if (e.Damage.DamageTypes.IsEmpty)
 			{
 				if (Info.FallbackSequence != null)
 					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette);

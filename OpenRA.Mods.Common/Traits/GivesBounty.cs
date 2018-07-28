@@ -9,10 +9,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -31,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("DeathTypes for which a bounty should be granted.",
 			"Use an empty list (the default) to allow all DeathTypes.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		public override object Create(ActorInitializer init) { return new GivesBounty(this); }
 	}
@@ -79,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 				return;
 
-			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
 			var displayedBounty = GetDisplayedBountyValue(self);

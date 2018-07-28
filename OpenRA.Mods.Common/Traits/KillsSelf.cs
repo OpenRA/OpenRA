@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] Delay = { 0 };
 
 		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant moments before suiciding.")]

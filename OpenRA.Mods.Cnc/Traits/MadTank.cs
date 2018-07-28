@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public WeaponInfo DetonationWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this trait causes to self while self-destructing. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)

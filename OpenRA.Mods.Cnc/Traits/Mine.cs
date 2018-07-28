@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (mobile != null && !info.DetonateClasses.Overlaps(mobile.Info.LocomotorInfo.Crushes))
 				return;
 
-			self.Kill(crusher, mobile != null ? mobile.Info.LocomotorInfo.CrushDamageTypes : new HashSet<string>());
+			self.Kill(crusher, mobile != null ? mobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
 		}
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)

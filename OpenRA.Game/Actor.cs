@@ -332,7 +332,7 @@ namespace OpenRA
 			health.InflictDamage(this, attacker, damage, false);
 		}
 
-		public void Kill(Actor attacker, HashSet<string> damageTypes = null)
+		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
 		{
 			if (Disposed || health == null)
 				return;
