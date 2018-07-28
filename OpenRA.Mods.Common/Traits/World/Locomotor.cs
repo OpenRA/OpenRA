@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool MoveIntoShroud = true;
 
 		[Desc("e.g. crate, wall, infantry")]
-		public readonly HashSet<string> Crushes = new HashSet<string>();
+		public readonly BitSet<CrushClass> Crushes = default(BitSet<CrushClass>);
 
 		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> CrushDamageTypes = default(BitSet<DamageType>);
@@ -277,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// If we cannot crush the other actor in our way, we are blocked.
-			if (Crushes == null || Crushes.Count == 0)
+			if (Crushes.IsEmpty)
 				return true;
 
 			// If the other actor in our way cannot be crushed, we are blocked.

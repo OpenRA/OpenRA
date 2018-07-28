@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.Info = info;
 		}
 
-		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			var external = crusher.TraitsImplementing<ExternalCondition>()
 				.FirstOrDefault(t => t.Info.Condition == Info.OnCrushCondition && t.CanGrantCondition(crusher, self));
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 				external.GrantCondition(crusher, self, Info.OnCrushDuration);
 		}
 
-		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			var external = crusher.TraitsImplementing<ExternalCondition>()
 				.FirstOrDefault(t => t.Info.Condition == Info.WarnCrushCondition && t.CanGrantCondition(crusher, self));

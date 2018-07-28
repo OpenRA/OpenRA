@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when being crushed.")]
 		public readonly string CrushSound = null;
 		[Desc("Which crush classes does this actor belong to.")]
-		public readonly HashSet<string> CrushClasses = new HashSet<string> { "infantry" };
+		public readonly BitSet<CrushClass> CrushClasses = new BitSet<CrushClass>("infantry");
 		[Desc("Probability of mobile actors noticing and evading a crush attempt.")]
 		public readonly int WarnProbability = 75;
 		[Desc("Will friendly units just crush me instead of pathing around.")]
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 		}
 
-		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				mobile.Nudge(self, crusher, true);
 		}
 
-		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
@@ -61,12 +61,12 @@ namespace OpenRA.Mods.Common.Traits
 			self.Kill(crusher, crusherMobile != null ? crusherMobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
 		}
 
-		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			return CrushableInner(crushClasses, crusher.Owner);
 		}
 
-		bool CrushableInner(HashSet<string> crushClasses, Player crushOwner)
+		bool CrushableInner(BitSet<CrushClass> crushClasses, Player crushOwner)
 		{
 			if (IsTraitDisabled)
 				return false;
