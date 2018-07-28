@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool SkipMakeAnims = true;
 
-		public readonly HashSet<string> CrushClasses = new HashSet<string>();
+		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
 
 		public virtual object Create(ActorInitializer init) { return new TransformCrusherOnCrush(init, this); }
 	}
@@ -38,9 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }
 
-		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			if (!info.CrushClasses.Overlaps(crushClasses))
 				return;

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -18,10 +17,10 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class MineInfo : ITraitInfo
 	{
-		public readonly HashSet<string> CrushClasses = new HashSet<string>();
+		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
 		public readonly bool AvoidFriendly = true;
 		public readonly bool BlockFriendly = true;
-		public readonly HashSet<string> DetonateClasses = new HashSet<string>();
+		public readonly BitSet<CrushClass> DetonateClasses = default(BitSet<CrushClass>);
 
 		public object Create(ActorInitializer init) { return new Mine(this); }
 	}
@@ -35,9 +34,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 		}
 
-		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses) { }
+		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }
 
-		void INotifyCrushed.OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses)
+		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			if (!info.CrushClasses.Overlaps(crushClasses))
 				return;
@@ -52,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.Kill(crusher, mobile != null ? mobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
 		}
 
-		bool ICrushable.CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses)
+		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.Stances[crusher.Owner] == Stance.Ally)
 				return false;
