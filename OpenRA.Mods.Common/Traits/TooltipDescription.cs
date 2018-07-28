@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsTooltipVisible(Player forPlayer)
 		{
+			if (forPlayer == null)
+				return true;
+
 			if (IsTraitDisabled)
 				return false;
 
