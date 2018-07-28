@@ -26,6 +26,22 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 					Width: PARENT_RIGHT - 20
 					Height: 25
 
+ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_RIGHT - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_RIGHT - 20
+					Height: 25
+					Align: Left
+
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
