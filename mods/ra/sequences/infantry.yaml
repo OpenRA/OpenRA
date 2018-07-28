@@ -621,6 +621,10 @@ thf:
 		Length: 6
 		Facings: 8
 		Tick: 100
+	idle:
+		Start: 120
+		Length: 19
+		Tick: 120
 	die1:
 		Start: 139
 		Length: 8
@@ -669,6 +673,10 @@ hijacker:
 		Length: 6
 		Facings: 8
 		Tick: 100
+	idle: thf
+		Start: 120
+		Length: 19
+		Tick: 120
 	die1: thf
 		Start: 139
 		Length: 8
