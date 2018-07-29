@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -33,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 		SelfHeal = 128,
 		Dock = 256
 	}
+
+	// Type tag for cloaktypes
+	public class CloakType { }
 
 	[Desc("This unit can cloak and uncloak in specific situations.")]
 	public class CloakInfo : ConditionalTraitInfo
@@ -53,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "cloak";
 		public readonly bool IsPlayerPalette = false;
 
-		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
+		public readonly BitSet<CloakType> CloakTypes = new BitSet<CloakType>("Cloak");
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while cloaked.")]

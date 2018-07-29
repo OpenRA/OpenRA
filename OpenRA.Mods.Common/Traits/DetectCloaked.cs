@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DetectCloakedInfo : ConditionalTraitInfo
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
-		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
+		public readonly BitSet<CloakType> CloakTypes = new BitSet<CloakType>("Cloak");
 
 		public readonly WDist Range = WDist.FromCells(5);
 
