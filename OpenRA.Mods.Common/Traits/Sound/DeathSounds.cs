@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			if (IsTraitDisabled)
 				return;
 
-			if (!Info.DeathTypes.IsEmpty || e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+			if (Info.DeathTypes.IsEmpty || e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				self.PlayVoiceLocal(Info.Voice, Info.VolumeMultiplier);
 		}
 	}
