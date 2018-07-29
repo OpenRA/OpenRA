@@ -62,9 +62,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
 
-			new UpdatePath("release-20180307", new UpdateRule[]
+			new UpdatePath("release-20180307", "playtest-20180729", new UpdateRule[]
 			{
-				// Bleed only changes here
 				new RemoveTerrainTypeIsWaterFlag(),
 				new DefineSquadExcludeHarvester(),
 				new RemoveWeaponScanRadius(),
@@ -83,6 +82,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MoveHackyAISupportPowerDecisions(),
 				new DefineGroundCorpseDefault(),
 				new RemoveCanUndeployFromGrantConditionOnDeploy(),
+			}),
+
+			new UpdatePath("playtest-20180729", new UpdateRule[]
+			{
+				// Bleed only changes here
 			})
 		};
 
