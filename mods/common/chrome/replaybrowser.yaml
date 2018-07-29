@@ -251,7 +251,7 @@ Background@REPLAYBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: Back
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:
