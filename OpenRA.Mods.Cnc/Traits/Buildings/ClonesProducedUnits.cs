@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
-		public readonly HashSet<string> CloneableTypes = new HashSet<string>();
+		public readonly BitSet<CloneableType> CloneableTypes = default(BitSet<CloneableType>);
 
 		public object Create(ActorInitializer init) { return new ClonesProducedUnits(init, this); }
 	}
