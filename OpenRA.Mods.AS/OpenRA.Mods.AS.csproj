@@ -116,7 +116,6 @@
     <Compile Include="Traits\MindController.cs" />
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
-    <Compile Include="Traits\Player\ProvidesAIPrerequisite.cs" />
     <Compile Include="Traits\Render\WithIdleOverlayOnGround.cs" />
     <Compile Include="Traits\Render\WithMindControlArc.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />

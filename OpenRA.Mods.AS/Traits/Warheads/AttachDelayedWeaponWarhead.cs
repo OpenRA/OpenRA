@@ -14,6 +14,7 @@ using OpenRA.GameRules;
 using OpenRA.Mods.AS.Traits;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Warheads
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.AS.Warheads
 		public readonly int TriggerTime = 30;
 
 		[Desc("DeathType(s) that trigger the DelayedWeapon to activate. Leave empty to always trigger the DelayedWeapon on death.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		public WeaponInfo WeaponInfo;
 

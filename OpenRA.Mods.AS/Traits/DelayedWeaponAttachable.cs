@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -85,7 +86,7 @@ namespace OpenRA.Mods.AS.Traits
 			{
 				foreach (var trigger in Container)
 				{
-					if (trigger.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(trigger.DeathTypes))
+					if (!trigger.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(trigger.DeathTypes))
 						continue;
 
 					trigger.Activate(self);
