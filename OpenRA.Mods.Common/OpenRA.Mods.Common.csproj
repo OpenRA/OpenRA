@@ -661,7 +661,7 @@
     <Compile Include="Widgets\Logic\Ingame\SupportPowerBinLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\SupportPowerTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\WorldTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\Lobby\ClientTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\Lobby\LatencyTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\KickSpectatorsLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyLogic.cs" />
@@ -915,12 +915,14 @@
     <Compile Include="UpdateRules\Rules\ChangeIntensityToDuration.cs" />
     <Compile Include="UpdateRules\Rules\AddShakeToBridge.cs" />
     <Compile Include="UpdateRules\Rules\IgnoreAbstractActors.cs" />
+    <Compile Include="UpdateRules\Rules\RemoveCanUndeployFromGrantConditionOnDeploy.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
     <Compile Include="ModCredits.cs" />
     <Compile Include="Lint\CheckUnknownTraitFields.cs" />
     <Compile Include="Lint\CheckUnknownWeaponFields.cs" />
+    <Compile Include="Widgets\Logic\PlayerProfileLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

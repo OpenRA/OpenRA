@@ -16,6 +16,7 @@ using OpenRA.Activities;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
@@ -30,9 +31,9 @@ namespace OpenRA.Mods.Cnc.Activities
 		WPos to;
 		int ticks;
 		WAngle angle;
-		HashSet<string> damageTypes;
+		BitSet<DamageType> damageTypes;
 
-		public Leap(Actor self, Actor target, Armament a, WDist speed, WAngle angle, HashSet<string> damageTypes)
+		public Leap(Actor self, Actor target, Armament a, WDist speed, WAngle angle, BitSet<DamageType> damageTypes)
 		{
 			var targetMobile = target.TraitOrDefault<Mobile>();
 			if (targetMobile == null)

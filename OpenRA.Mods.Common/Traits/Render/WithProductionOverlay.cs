@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]
 	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
 	{
+		[Desc("Queues that should be producing for this overlay to render.")]
+		public readonly HashSet<string> Queues = new HashSet<string>();
+
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "production-overlay";
 
@@ -37,6 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithProductionOverlay : INotifyDamageStateChanged, INotifyCreated, INotifyBuildComplete, INotifySold, INotifyOwnerChanged
 	{
+		readonly WithProductionOverlayInfo info;
 		readonly Animation overlay;
 		readonly ProductionInfo production;
 		ProductionQueue[] queues;
@@ -49,6 +54,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
 		{
+			this.info = info;
+
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
@@ -70,6 +77,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Per-actor production
 			queues = self.TraitsImplementing<ProductionQueue>()
 				.Where(q => production.Produces.Contains(q.Info.Type))
+				.Where(q => !info.Queues.Any() || info.Queues.Contains(q.Info.Type))
 				.ToArray();
 
 			if (!queues.Any())
@@ -77,6 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				// Player-wide production
 				queues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
 					.Where(q => production.Produces.Contains(q.Info.Type))
+					.Where(q => !info.Queues.Any() || info.Queues.Contains(q.Info.Type))
 					.ToArray();
 			}
 		}

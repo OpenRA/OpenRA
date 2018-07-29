@@ -451,6 +451,10 @@ lobby-bits: chrome.png
 	kick: 386,115,11,11
 	protected: 403,97,10,13
 	protected-disabled: 403,113,10,13
+	admin-registered: 448,112,16,16
+	admin-anonymous: 464,112,16,16
+	player-registered: 480,112,16,16
+	player-anonymous: 496,112,16,16
 
 reload-icon: chrome.png
 	enabled: 256,192,16,16

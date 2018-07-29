@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this bridge causes to units over/in path of it while being destroyed/repaired. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

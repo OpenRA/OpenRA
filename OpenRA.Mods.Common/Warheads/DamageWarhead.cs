@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int Damage = 0;
 
 		[Desc("Types of damage that this warhead causes. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[Desc("Damage percentage versus each armortype.")]
 		public readonly Dictionary<string, int> Versus = new Dictionary<string, int>();

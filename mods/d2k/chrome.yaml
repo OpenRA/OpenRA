@@ -192,6 +192,9 @@ dialog3: dialog.png
 	corner-bl: 640,127,1,1
 	corner-br: 767,127,1,1
 
+tooltip-separator: dialog.png
+	border-t: 641,0,126,1
+
 # Same as the half transparent frame used in the Asset Browser
 dialog4: dialog.png
 	background: 517,392,54,54
@@ -212,6 +215,10 @@ lobby-bits: buttons.png
 	huepicker: 193,0,7,15
 	protected: 200,0,12,13
 	protected-disabled: 211,0,12,13
+	admin-registered: 224,0,16,16
+	admin-anonymous: 240,0,16,16
+	player-registered: 224,16,16,16
+	player-anonymous: 240,16,16,16
 
 reload-icon: chrome.png
 	enabled: 416,312,16,16

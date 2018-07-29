@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -57,8 +58,12 @@ namespace OpenRA.Server
 		readonly int randomSeed;
 		readonly TcpListener listener;
 		readonly TypeDictionary serverTraits = new TypeDictionary();
+		readonly PlayerDatabase playerDatabase;
 
 		protected volatile ServerState internalState = ServerState.WaitingPlayers;
+
+		volatile ActionQueue delayedActions = new ActionQueue();
+		int waitingForAuthenticationCallback = 0;
 
 		public ServerState State
 		{
@@ -132,6 +137,8 @@ namespace OpenRA.Server
 
 			ModData = modData;
 
+			playerDatabase = modData.Manifest.Get<PlayerDatabase>();
+
 			randomSeed = (int)DateTime.Now.ToBinary();
 
 			if (UPnP.Status == UPnPStatus.Enabled)
@@ -173,8 +180,9 @@ namespace OpenRA.Server
 					checkRead.AddRange(Conns.Select(c => c.Socket));
 					checkRead.AddRange(PreConns.Select(c => c.Socket));
 
+					var localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : timeout;
 					if (checkRead.Count > 0)
-						Socket.Select(checkRead, null, null, timeout);
+						Socket.Select(checkRead, null, null, localTimeout);
 
 					if (State == ServerState.ShuttingDown)
 					{
@@ -201,6 +209,8 @@ namespace OpenRA.Server
 						if (conn != null)
 							conn.ReadData(this);
 					}
+
+					delayedActions.PerformActions(0);
 
 					foreach (var t in serverTraits.WithInterface<ITick>())
 						t.Tick(this);
@@ -255,8 +265,13 @@ namespace OpenRA.Server
 				newConn.Socket.Blocking = false;
 				newConn.Socket.NoDelay = true;
 
-				// assign the player number.
+				// Validate player identity by asking them to sign a random blob of data
+				// which we can then verify against the player public key database
+				var token = Convert.ToBase64String(OpenRA.Exts.MakeArray(256, _ => (byte)Random.Next()));
+
+				// Assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
+				newConn.AuthToken = token;
 				SendData(newConn.Socket, BitConverter.GetBytes(ProtocolVersion.Version));
 				SendData(newConn.Socket, BitConverter.GetBytes(newConn.PlayerIndex));
 				PreConns.Add(newConn);
@@ -266,7 +281,8 @@ namespace OpenRA.Server
 				{
 					Mod = ModData.Manifest.Id,
 					Version = ModData.Manifest.Metadata.Version,
-					Map = LobbyInfo.GlobalSettings.Map
+					Map = LobbyInfo.GlobalSettings.Map,
+					AuthToken = token
 				};
 
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
@@ -359,50 +375,133 @@ namespace OpenRA.Server
 					return;
 				}
 
-				// Promote connection to a valid client
-				PreConns.Remove(newConn);
-				Conns.Add(newConn);
-				LobbyInfo.Clients.Add(client);
-				newConn.Validated = true;
-
-				var clientPing = new Session.ClientPing { Index = client.Index };
-				LobbyInfo.ClientPings.Add(clientPing);
-
-				Log.Write("server", "Client {0}: Accepted connection from {1}.",
-					newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
-
-				foreach (var t in serverTraits.WithInterface<IClientJoined>())
-					t.ClientJoined(this, newConn);
-
-				SyncLobbyInfo();
-
-				Log.Write("server", "{0} ({1}) has joined the game.",
-					client.Name, newConn.Socket.RemoteEndPoint);
-
-				// Report to all other players
-				SendMessage("{0} has joined the game.".F(client.Name), newConn);
-
-				// Send initial ping
-				SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
-
-				if (Dedicated)
+				Action completeConnection = () =>
 				{
-					var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
-					if (!File.Exists(motdFile))
-						File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
+					// Promote connection to a valid client
+					PreConns.Remove(newConn);
+					Conns.Add(newConn);
+					LobbyInfo.Clients.Add(client);
+					newConn.Validated = true;
 
-					var motd = File.ReadAllText(motdFile);
-					if (!string.IsNullOrEmpty(motd))
-						SendOrderTo(newConn, "Message", motd);
+					var clientPing = new Session.ClientPing { Index = client.Index };
+					LobbyInfo.ClientPings.Add(clientPing);
+
+					Log.Write("server", "Client {0}: Accepted connection from {1}.",
+						newConn.PlayerIndex, newConn.Socket.RemoteEndPoint);
+
+					if (client.Fingerprint != null)
+						Log.Write("server", "Client {0}: Player fingerprint is {1}.",
+							newConn.PlayerIndex, client.Fingerprint);
+
+					foreach (var t in serverTraits.WithInterface<IClientJoined>())
+						t.ClientJoined(this, newConn);
+
+					SyncLobbyInfo();
+
+					Log.Write("server", "{0} ({1}) has joined the game.",
+						client.Name, newConn.Socket.RemoteEndPoint);
+
+					// Report to all other players
+					SendMessage("{0} has joined the game.".F(client.Name), newConn);
+
+					// Send initial ping
+					SendOrderTo(newConn, "Ping", Game.RunTime.ToString(CultureInfo.InvariantCulture));
+
+					if (Dedicated)
+					{
+						var motdFile = Platform.ResolvePath(Platform.SupportDirPrefix, "motd.txt");
+						if (!File.Exists(motdFile))
+							File.WriteAllText(motdFile, "Welcome, have fun and good luck!");
+
+						var motd = File.ReadAllText(motdFile);
+						if (!string.IsNullOrEmpty(motd))
+							SendOrderTo(newConn, "Message", motd);
+					}
+
+					if (Map.DefinesUnsafeCustomRules)
+						SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
+
+					if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
+						SendOrderTo(newConn, "Message", TwoHumansRequiredText);
+					else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+						SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
+				};
+
+				if (!string.IsNullOrEmpty(handshake.Fingerprint) && !string.IsNullOrEmpty(handshake.AuthSignature))
+				{
+					waitingForAuthenticationCallback++;
+
+					Action<DownloadDataCompletedEventArgs> onQueryComplete = i =>
+					{
+						PlayerProfile profile = null;
+
+						if (i.Error == null)
+						{
+							try
+							{
+								var yaml = MiniYaml.FromString(Encoding.UTF8.GetString(i.Result)).First();
+								if (yaml.Key == "Player")
+								{
+									profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
+
+									var publicKey = Encoding.ASCII.GetString(Convert.FromBase64String(profile.PublicKey));
+									var parameters = CryptoUtil.DecodePEMPublicKey(publicKey);
+									if (!profile.KeyRevoked && CryptoUtil.VerifySignature(parameters, newConn.AuthToken, handshake.AuthSignature))
+									{
+										client.Fingerprint = handshake.Fingerprint;
+										Log.Write("server", "{0} authenticated as {1} (UID {2})", newConn.Socket.RemoteEndPoint,
+											profile.ProfileName, profile.ProfileID);
+									}
+									else if (profile.KeyRevoked)
+										Log.Write("server", "{0} failed to authenticate as {1} (key revoked)", newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+									else
+										Log.Write("server", "{0} failed to authenticate as {1} (signature verification failed)",
+											newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+								}
+								else
+									Log.Write("server", "{0} failed to authenticate as {1} (invalid server response: `{2}` is not `Player`)",
+										newConn.Socket.RemoteEndPoint, handshake.Fingerprint, yaml.Key);
+							}
+							catch (Exception ex)
+							{
+								Log.Write("server", "{0} failed to authenticate as {1} (exception occurred)",
+									newConn.Socket.RemoteEndPoint, handshake.Fingerprint);
+								Log.Write("server", ex.ToString());
+							}
+						}
+						else
+							Log.Write("server", "{0} failed to authenticate as {1} (server error: `{2}`)",
+								newConn.Socket.RemoteEndPoint, handshake.Fingerprint, i.Error);
+
+						delayedActions.Add(() =>
+						{
+							if (Dedicated && Settings.RequireAuthIDs.Any() &&
+								(profile == null || !Settings.RequireAuthIDs.Contains(profile.ProfileID)))
+							{
+								Log.Write("server", "Rejected connection from {0}; Not in server whitelist.", newConn.Socket.RemoteEndPoint);
+								SendOrderTo(newConn, "ServerError", "You are not authenticated for this server");
+								DropClient(newConn);
+							}
+							else
+								completeConnection();
+
+							waitingForAuthenticationCallback--;
+						}, 0);
+					};
+
+					new Download(playerDatabase.Profile + handshake.Fingerprint, _ => { }, onQueryComplete);
 				}
-
-				if (Map.DefinesUnsafeCustomRules)
-					SendOrderTo(newConn, "Message", "This map contains custom rules. Game experience may change.");
-
-				if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
-					SendOrderTo(newConn, "Message", TwoHumansRequiredText);
-				else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
-					SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
+				else
+				{
+					if (Dedicated && Settings.RequireAuthIDs.Any())
+					{
+						Log.Write("server", "Rejected connection from {0}; Not authenticated and whitelist is set.", newConn.Socket.RemoteEndPoint);
+						SendOrderTo(newConn, "ServerError", "You are not authenticated for this server");
+						DropClient(newConn);
+					}
+					else
+						completeConnection();
+				}
 			}
 			catch (Exception ex)
 			{

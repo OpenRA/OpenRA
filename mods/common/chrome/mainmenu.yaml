@@ -320,3 +320,6 @@ Container@MAINMENU:
 					Align: Center
 					Shadow: true
 					Text: Download the latest version from www.openra.net
+		Container@PLAYER_PROFILE_CONTAINER:
+			X: 25
+			Y: 25

@@ -41,6 +41,24 @@ namespace OpenRA.Primitives
 			return bits;
 		}
 
+		public static BitSetIndex GetBitsNoAlloc(string[] values)
+		{
+			// Map strings to existing bits; do not allocate missing values new bits
+			BitSetIndex bits = 0;
+
+			lock (Bits)
+			{
+				foreach (var value in values)
+				{
+					BitSetIndex valueBit;
+					if (Bits.TryGetValue(value, out valueBit))
+						bits |= valueBit;
+				}
+			}
+
+			return bits;
+		}
+
 		public static IEnumerable<string> GetStrings(BitSetIndex bits)
 		{
 			var values = new List<string>();
@@ -68,6 +86,11 @@ namespace OpenRA.Primitives
 
 		public BitSet(params string[] values) : this(BitSetAllocator<T>.GetBits(values)) { }
 		BitSet(BitSetIndex bits) { this.bits = bits; }
+
+		public static BitSet<T> FromStringsNoAlloc(string[] values)
+		{
+			return new BitSet<T>(BitSetAllocator<T>.GetBitsNoAlloc(values)) { };
+		}
 
 		public override string ToString()
 		{

@@ -1,0 +1,235 @@
+Container@LOCAL_PROFILE_PANEL:
+	Logic: LocalProfileLogic
+	Width: 270
+	Height: 100
+	Children:
+		Background@PROFILE_HEADER:
+			Width: PARENT_RIGHT
+			Height: 50
+			Background: dialog2
+			Children:
+				Label@PROFILE_NAME:
+					X: 10
+					Y: 3
+					Width: PARENT_RIGHT - 20
+					Height: 25
+					Font: MediumBold
+				Label@PROFILE_RANK:
+					X: 10
+					Y: 23
+					Width: PARENT_RIGHT - 20
+					Height: 25
+					Font: TinyBold
+				Button@DESTROY_KEY:
+					X: PARENT_RIGHT - 70
+					Y: 15
+					Width: 60
+					Height: 20
+					Font: TinyBold
+					BaseLine: 1
+					Text: Logout
+		Background@BADGES_CONTAINER:
+			Width: PARENT_RIGHT
+			Y: 48
+			Visible: false
+			Background: dialog3
+		Background@GENERATE_KEYS:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog2
+			Children:
+				Label@DESC_A:
+					Y: 5
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: Connect to a forum account to identify
+				Label@DESC_B:
+					Y: 21
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: yourself to other players, join private
+				Label@DESC_C:
+					Y: 37
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: servers, and display badges.
+				Button@GENERATE_KEY:
+					X: (PARENT_RIGHT - WIDTH) / 2
+					Y: 70
+					Width: 240
+					Height: 20
+					Font: TinyBold
+					BaseLine: 1
+					Text: Connect to an OpenRA forum account
+		Background@GENERATING_KEYS:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog2
+			Children:
+				Label@DESC_A:
+					Y: 13
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: Generating authentication key pair.
+				Label@DESC_B:
+					Y: 29
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: This will take several seconds...
+				ProgressBar:
+					X: (PARENT_RIGHT - WIDTH) / 2
+					Y: 70
+					Width: 240
+					Height: 20
+					Indeterminate: true
+		Background@REGISTER_FINGERPRINT:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog2
+			Children:
+				Label@DESC_A:
+					Y: 2
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: An authentication key has been copied to your
+				Label@DESC_B:
+					Y: 18
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: clipboard. Add this to your User Control Panel
+				Label@DESC_C:
+					Y: 34
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: on the OpenRA forum then press Continue.
+				Button@DELETE_KEY:
+					X: 15
+					Y: 70
+					Width: 70
+					Height: 20
+					BaseLine: 1
+					Font: TinyBold
+					Text: Cancel
+				Button@CHECK_KEY:
+					X: 185
+					Y: 70
+					Width: 70
+					Height: 20
+					BaseLine: 1
+					Font: TinyBold
+					Text: Continue
+		Background@CHECKING_FINGERPRINT:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog2
+			Children:
+				Label@DESC_A:
+					Y: 13
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: Querying account details from
+				Label@DESC_B:
+					Y: 29
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: the OpenRA forum...
+				ProgressBar:
+					X: (PARENT_RIGHT - WIDTH) / 2
+					Y: 70
+					Width: 240
+					Height: 20
+					Indeterminate: true
+		Background@FINGERPRINT_NOT_FOUND:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog2
+			Children:
+				Label@DESC_A:
+					Y: 13
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: Your authentication key is not connected
+				Label@DESC_B:
+					Y: 29
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: to an OpenRA forum account.
+				Button@FINGERPRINT_NOT_FOUND_CONTINUE:
+					X: 185
+					Y: 70
+					Width: 70
+					Height: 20
+					BaseLine: 1
+					Font: TinyBold
+					Text: Back
+		Background@CONNECTION_ERROR:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Background: dialog2
+			Children:
+				Label@DESC_A:
+					Y: 13
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: Failed to connect to the OpenRA forum.
+				Label@DESC_B:
+					Y: 29
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Small
+					Align: Center
+					Text: Please check your internet connection.
+				Button@CONNECTION_ERROR_RETRY:
+					X: 185
+					Y: 70
+					Width: 70
+					Height: 20
+					BaseLine: 1
+					Font: TinyBold
+					Text: Retry
+
+Container@PLAYER_PROFILE_BADGES_INSERT:
+	Logic: PlayerProfileBadgesLogic
+	Width: PARENT_RIGHT
+	Height: 110
+	Children:
+		Container@BADGE_TEMPLATE:
+			Width: PARENT_RIGHT
+			Height: 25
+			Children:
+				Sprite@ICON:
+					X: 6
+					Y: 1
+					Width: 24
+					Height: 24
+				Label@LABEL:
+					X: 36
+					Width: PARENT_RIGHT - 60
+					Height: 24
+					Font: Bold

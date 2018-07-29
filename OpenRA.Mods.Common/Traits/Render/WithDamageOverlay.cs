@@ -9,9 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"Leave empty to disable all filtering.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[Desc("Trigger when Undamaged, Light, Medium, Heavy, Critical or Dead.")]
 		public readonly DamageState MinimumDamageState = DamageState.Heavy;
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (info.DamageTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
+			if (!info.DamageTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
 				return;
 
 			if (isSmoking) return;

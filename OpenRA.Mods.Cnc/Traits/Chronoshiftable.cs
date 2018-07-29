@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly bool ExplodeInstead = false;
 
 		[Desc("Types of damage that this trait causes to self when 'ExplodeInstead' is true. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
 

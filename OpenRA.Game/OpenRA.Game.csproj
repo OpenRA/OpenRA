@@ -261,6 +261,9 @@
     <Compile Include="HotkeyDefinition.cs" />
     <Compile Include="Traits\Interactable.cs" />
     <Compile Include="Graphics\RgbaSpriteRenderer.cs" />
+    <Compile Include="LocalPlayerProfile.cs" />
+    <Compile Include="PlayerProfile.cs" />
+    <Compile Include="PlayerDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileSystem\Folder.cs" />

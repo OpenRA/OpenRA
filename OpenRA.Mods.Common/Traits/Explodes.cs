@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Warheads;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageThreshold = 0;
 
 		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		[Desc("Who is counted as source of damage for explosion.",
 			"Possible values are Self and Killer.")]
@@ -102,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.SharedRandom.Next(100) > Info.Chance)
 				return;
 
-			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
 			var weapon = ChooseWeaponForExplosion(self);
@@ -141,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.DamageThreshold == 0)
 				return;
 
-			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
 			// Cast to long to avoid overflow when multiplying by the health

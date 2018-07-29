@@ -90,6 +90,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Text = widget.Text;
 			MaxLength = widget.MaxLength;
+			LeftMargin = widget.LeftMargin;
+			RightMargin = widget.RightMargin;
 			Type = widget.Type;
 			Font = widget.Font;
 			TextColor = widget.TextColor;
@@ -565,7 +567,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var disabled = IsDisabled();
 			var state = disabled ? "textfield-disabled" :
 				HasKeyboardFocus ? "textfield-focused" :
-				Ui.MouseOverWidget == this ? "textfield-hover" :
+				Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget) ? "textfield-hover" :
 				"textfield";
 
 			WidgetUtils.DrawPanel(state,

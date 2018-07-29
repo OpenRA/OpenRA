@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly OrderManager orderManager;
+		readonly WorldRenderer worldRenderer;
 		readonly bool skirmishMode;
 		readonly Ruleset modRules;
 		readonly World shellmapWorld;
@@ -100,6 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			lobby = widget;
 			this.modData = modData;
 			this.orderManager = orderManager;
+			this.worldRenderer = worldRenderer;
 			this.onStart = onStart;
 			this.onExit = onExit;
 			this.skirmishMode = skirmishMode;
@@ -558,7 +560,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (isHost)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, worldRenderer, map);
 					else
 						LobbyUtils.SetupSlotWidget(template, slot, client);
 
@@ -574,12 +576,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != editablePlayerTemplate.Id)
 						template = editablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupLatencyWidget(template, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map);
+						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, worldRenderer, map);
 					else
-						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager);
+						LobbyUtils.SetupEditableNameWidget(template, slot, client, orderManager, worldRenderer);
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, shellmapWorld, colorPreview);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
@@ -593,7 +595,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != nonEditablePlayerTemplate.Id)
 						template = nonEditablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupClientWidget(template, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupLatencyWidget(template, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, factions);
 
@@ -601,12 +603,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
 						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
-						LobbyUtils.SetupPlayerActionWidget(template, slot, client, orderManager, lobby,
-							() => panel = PanelType.Kick, () => panel = PanelType.Players);
+						LobbyUtils.SetupPlayerActionWidget(template, slot, client, orderManager, worldRenderer,
+							lobby, () => panel = PanelType.Kick, () => panel = PanelType.Players);
 					}
 					else
 					{
-						LobbyUtils.SetupNameWidget(template, slot, client);
+						LobbyUtils.SetupNameWidget(template, slot, client, orderManager, worldRenderer);
 						LobbyUtils.SetupTeamWidget(template, slot, client);
 						LobbyUtils.SetupSpawnWidget(template, slot, client);
 					}
@@ -640,7 +642,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != editableSpectatorTemplate.Id)
 						template = editableSpectatorTemplate.Clone();
 
-					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager);
+					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager, worldRenderer);
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, map);
@@ -652,16 +654,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = nonEditableSpectatorTemplate.Clone();
 
 					if (isHost)
-						LobbyUtils.SetupPlayerActionWidget(template, null, client, orderManager, lobby,
-								() => panel = PanelType.Kick, () => panel = PanelType.Players);
+						LobbyUtils.SetupPlayerActionWidget(template, null, client, orderManager, worldRenderer,
+							lobby, () => panel = PanelType.Kick, () => panel = PanelType.Players);
 					else
-						LobbyUtils.SetupNameWidget(template, null, client);
+						LobbyUtils.SetupNameWidget(template, null, client, orderManager, worldRenderer);
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupReadyWidget(template, null, client);
 				}
 
-				LobbyUtils.SetupClientWidget(template, c, orderManager, true);
+				LobbyUtils.SetupLatencyWidget(template, c, orderManager, true);
 				template.IsVisible = () => true;
 
 				if (idx >= players.Children.Count)

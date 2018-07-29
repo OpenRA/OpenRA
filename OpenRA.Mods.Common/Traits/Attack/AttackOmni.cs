@@ -29,7 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 			return new SetTarget(this, newTarget, allowMove);
 		}
 
-		protected class SetTarget : Activity
+		// Some 3rd-party mods rely on this being public
+		public class SetTarget : Activity
 		{
 			readonly Target target;
 			readonly AttackOmni attack;

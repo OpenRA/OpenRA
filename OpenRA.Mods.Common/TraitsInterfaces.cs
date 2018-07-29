@@ -75,17 +75,20 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsValidTarget(Actor self, Actor saboteur);
 	}
 
+	// Type tag for crush class bits
+	public class CrushClass { }
+
 	[RequireExplicitImplementation]
 	public interface ICrushable
 	{
-		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
+		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
 	public interface INotifyCrushed
 	{
-		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
-		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+		void OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
+		void WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
