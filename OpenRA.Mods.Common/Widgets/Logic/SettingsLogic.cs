@@ -309,6 +309,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			BindCheckboxPref(panel, "CASH_TICKS", ss, "CashTicks");
 			BindCheckboxPref(panel, "MUTE_SOUND", ss, "Mute");
+			BindCheckboxPref(panel, "MUTE_UNIT_SPEECH", ss, "MuteUnitSpeech");
 
 			BindSliderPref(panel, "SOUND_VOLUME", ss, "SoundVolume");
 			BindSliderPref(panel, "MUSIC_VOLUME", ss, "MusicVolume");

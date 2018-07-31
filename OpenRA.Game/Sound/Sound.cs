@@ -350,6 +350,9 @@ namespace OpenRA
 			if (rules == null)
 				return false;
 
+			if (Game.Settings.Sound.MuteUnitSpeech && (definition == "Select" || definition == "Move" || definition == "Attack" || definition == "Action"))
+				return false;
+
 			var id = voicedActor != null ? voicedActor.ActorID : 0;
 
 			string clip;
