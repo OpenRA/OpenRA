@@ -614,8 +614,8 @@ namespace OpenRA.Mods.Common.AI
 			if (--assignRolesTicks <= 0)
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
-				harvManager.Tick(activeUnits);
 				FindNewUnits(self);
+				harvManager.Tick(activeUnits);
 				InitializeBase(self, true);
 			}
 
@@ -738,11 +738,13 @@ namespace OpenRA.Mods.Common.AI
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsHavingTrait<IPositionable>()
-				.Where(a => a.Owner == Player && !Info.UnitsCommonNames.Mcv.Contains(a.Info.Name) &&
-					!Info.UnitsCommonNames.ExcludeFromSquads.Contains(a.Info.Name) && !activeUnits.Contains(a));
+				.Where(a => a.Owner == Player && !activeUnits.Contains(a));
 
 			foreach (var a in newUnits)
 			{
+				if (Info.UnitsCommonNames.Mcv.Contains(a.Info.Name) || Info.UnitsCommonNames.ExcludeFromSquads.Contains(a.Info.Name))
+					continue;
+
 				unitsHangingAroundTheBase.Add(a);
 
 				if (a.Info.HasTraitInfo<AircraftInfo>() && a.Info.HasTraitInfo<AttackBaseInfo>())
