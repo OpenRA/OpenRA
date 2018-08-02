@@ -87,6 +87,21 @@ namespace OpenRA.Mods.Common.Scripting
 			return result.ToArray();
 		}
 
+		[Desc("Returns all living actors of the specified types of this player.")]
+		public Actor[] GetActorsByTypes(string[] types)
+		{
+			var result = new List<Actor>();
+
+			foreach (var type in types)
+				if (!Context.World.Map.Rules.Actors.ContainsKey(type))
+					throw new LuaException("Unknown actor type '{0}'".F(type));
+
+			result.AddRange(Player.World.Actors
+				.Where(actor => actor.Owner == Player && !actor.IsDead && actor.IsInWorld && types.Contains(actor.Info.Name)));
+
+			return result.ToArray();
+		}
+
 		[Desc("Check if the player has these prerequisites available.")]
 		public bool HasPrerequisites(string[] type)
 		{
