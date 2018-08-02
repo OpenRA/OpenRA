@@ -64,7 +64,10 @@ namespace OpenRA.Mods.Common.Orders
 			faction = buildableInfo.ForceFaction
 				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
 
-			buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			if (map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
+				buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			else
+				buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
 			buildBlocked = map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
