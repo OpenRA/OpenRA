@@ -162,8 +162,8 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Terrain types which are considered water for base building purposes.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
 
-		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
-		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
+		[Desc("Which harvester handling module to use. Leave empty to disable.")]
+		public readonly string HarvesterModule = "default-harvester-module";
 
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.AI
 
 		BitArray resourceTypeIndices;
 
-		AIHarvesterManager harvManager;
+		IAIModule harvModule;
 		AISupportPowerManager supportPowerManager;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
@@ -286,9 +286,10 @@ namespace OpenRA.Mods.Common.AI
 		// Units that the ai already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
-		// Harvesters are usually listed under ExcludeFromSquads, so they're not included in the activeUnits list, but still needed in AIHarvesterManager.
+		// Harvesters are usually listed under ExcludeFromSquads, so they're not included in the activeUnits list, but still needed in AIHarvesterModule.
 		// TODO: Consider adding an explicit UnitsCommonNames.Harvester category.
 		List<Actor> harvesters = new List<Actor>();
+		public List<Actor> Harvesters { get { return harvesters; } }
 
 		public const int FeedbackTime = 30; // ticks; = a bit over 1s. must be >= netlag.
 
@@ -337,7 +338,7 @@ namespace OpenRA.Mods.Common.AI
 			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
-			harvManager = new AIHarvesterManager(this, p);
+			harvModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.HarvesterModule);
 			supportPowerManager = new AISupportPowerManager(this, p);
 
 			foreach (var building in Info.BuildingQueues)
@@ -361,6 +362,9 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
+
+			if (harvModule != null)
+				harvModule.Activate(this);
 		}
 
 		public void QueueOrder(Order order)
@@ -620,7 +624,9 @@ namespace OpenRA.Mods.Common.AI
 			{
 				assignRolesTicks = Info.AssignRolesInterval;
 				FindNewUnits(self);
-				harvManager.Tick(harvesters);
+				if (harvModule != null)
+					harvModule.Tick();
+
 				InitializeBase(self, true);
 			}
 
