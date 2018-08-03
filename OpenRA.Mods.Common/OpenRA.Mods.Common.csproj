@@ -124,7 +124,7 @@
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="AI\AISupportPowerManager.cs" />
+    <Compile Include="AI\AISupportPowerModule.cs" />
     <Compile Include="AI\AICaptureModule.cs" />
     <Compile Include="AI\AIHarvesterModule.cs" />
     <Compile Include="AI\Squad.cs" />

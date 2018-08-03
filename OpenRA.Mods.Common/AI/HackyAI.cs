@@ -168,6 +168,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Which capture handling module to use. Leave empty to disable.")]
 		public readonly string CaptureModule = "default-capture-module";
 
+		[Desc("Which support power handling module to use. Leave empty to disable.")]
+		public readonly string SupportPowerModule = "default-supportpower-module";
+
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
@@ -195,11 +198,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
-		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
-		[Desc("Tells the AI how to use its support powers.")]
-		[FieldLoader.LoadUsing("LoadDecisions")]
-		public readonly List<SupportPowerDecision> SupportPowerDecisions = new List<SupportPowerDecision>();
-
 		static object LoadUnitCategories(MiniYaml yaml)
 		{
 			var categories = yaml.Nodes.First(n => n.Key == "UnitsCommonNames");
@@ -210,17 +208,6 @@ namespace OpenRA.Mods.Common.AI
 		{
 			var categories = yaml.Nodes.First(n => n.Key == "BuildingCommonNames");
 			return FieldLoader.Load<BuildingCategories>(categories.Value);
-		}
-
-		static object LoadDecisions(MiniYaml yaml)
-		{
-			var ret = new List<SupportPowerDecision>();
-			var decisions = yaml.Nodes.FirstOrDefault(n => n.Key == "SupportPowerDecisions");
-			if (decisions != null)
-				foreach (var d in decisions.Value.Nodes)
-					ret.Add(new SupportPowerDecision(d.Value));
-
-			return ret;
 		}
 
 		string IBotInfo.Type { get { return Type; } }
@@ -260,7 +247,7 @@ namespace OpenRA.Mods.Common.AI
 
 		IAIModule harvModule;
 		IAIModule captureModule;
-		AISupportPowerManager supportPowerManager;
+		IAIModule supportPowerModule;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
@@ -320,7 +307,7 @@ namespace OpenRA.Mods.Common.AI
 
 			harvModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.HarvesterModule);
 			captureModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.CaptureModule);
-			supportPowerManager = new AISupportPowerManager(this, p);
+			supportPowerModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.SupportPowerModule);
 
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
@@ -347,6 +334,8 @@ namespace OpenRA.Mods.Common.AI
 				harvModule.Activate(this);
 			if (captureModule != null)
 				captureModule.Activate(this);
+			if (supportPowerModule != null)
+				supportPowerModule.Activate(this);
 		}
 
 		public void QueueOrder(Order order)
@@ -540,7 +529,8 @@ namespace OpenRA.Mods.Common.AI
 
 			AssignRolesToIdleUnits(self);
 			SetRallyPointsForNewProductionBuildings(self);
-			supportPowerManager.TryToUseSupportPower(self);
+			if (supportPowerModule != null)
+				supportPowerModule.Tick();
 
 			foreach (var b in builders)
 				b.Tick();

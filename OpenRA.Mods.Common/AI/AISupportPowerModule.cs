@@ -20,31 +20,68 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	class AISupportPowerManager
+	[Desc("Manages AI support power handling.")]
+	public class AISupportPowerModuleInfo : IAIModuleInfo
 	{
-		readonly HackyAI ai;
-		readonly World world;
-		readonly Player player;
-		readonly FrozenActorLayer frozenLayer;
-		readonly SupportPowerManager supportPowerManager;
+		[Desc("Name for identification purposes.")]
+		public readonly string Name = "default-supportpower-module";
+
+		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
+		[Desc("Tells the AI how to use its support powers.")]
+		[FieldLoader.LoadUsing("LoadDecisions")]
+		public readonly List<SupportPowerDecision> SupportPowerDecisions = new List<SupportPowerDecision>();
+
+		static object LoadDecisions(MiniYaml yaml)
+		{
+			var ret = new List<SupportPowerDecision>();
+			var decisions = yaml.Nodes.FirstOrDefault(n => n.Key == "SupportPowerDecisions");
+			if (decisions != null)
+				foreach (var d in decisions.Value.Nodes)
+					ret.Add(new SupportPowerDecision(d.Value));
+
+			return ret;
+		}
+
+		public object Create(ActorInitializer init) { return new AISupportPowerModule(init.Self, this); }
+	}
+
+	public class AISupportPowerModule : IAIModule
+	{
+		public readonly AISupportPowerModuleInfo Info;
+		HackyAI ai;
+		World world;
+		Player player;
+		FrozenActorLayer frozenLayer;
+		SupportPowerManager supportPowerManager;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
-		public AISupportPowerManager(HackyAI ai, Player p)
+		public AISupportPowerModule(Actor self, AISupportPowerModuleInfo info)
+		{
+			Info = info;
+		}
+
+		string IAIModule.Name { get { return Info.Name; } }
+
+		// Player can be null in cases like shellmaps, which would lead to an NRE if we cached this in ctor or INotifyCreated
+		void IAIModule.Activate(HackyAI ai)
 		{
 			this.ai = ai;
-			world = p.World;
-			player = p;
-			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
-			supportPowerManager = p.PlayerActor.TraitOrDefault<SupportPowerManager>();
-			foreach (var decision in ai.Info.SupportPowerDecisions)
+			player = ai.Player;
+			world = player.World;
+			frozenLayer = player.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			supportPowerManager = player.PlayerActor.TraitOrDefault<SupportPowerManager>();
+			foreach (var decision in Info.SupportPowerDecisions)
 				powerDecisions.Add(decision.OrderName, decision);
 		}
 
-		public void TryToUseSupportPower(Actor self)
+		void IAIModule.Tick()
 		{
 			if (supportPowerManager == null)
+			{
+				HackyAI.BotDebug("AI: {0} can't use support powers due to lack of SupportPowerManager.", player.PlayerName);
 				return;
+			}
 
 			foreach (var sp in supportPowerManager.Powers.Values)
 			{
@@ -123,7 +160,7 @@ namespace OpenRA.Mods.Common.AI
 					var wbr = world.Map.CenterOfCell(br.ToCPos(map));
 					var targets = world.ActorMap.ActorsInBox(wtl, wbr);
 
-					var frozenTargets = frozenLayer.FrozenActorsInRegion(region);
+					var frozenTargets = frozenLayer != null ? frozenLayer.FrozenActorsInRegion(region) : Enumerable.Empty<FrozenActor>();
 					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player) + powerDecision.GetAttractiveness(frozenTargets, player);
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
