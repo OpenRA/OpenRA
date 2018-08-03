@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -73,6 +75,11 @@ namespace OpenRA.Mods.Common.Lint
 					emitError("Duplicate spawn point locations detected.");
 			}
 
+			// Check for actors that require specific owners
+			var actorsWithRequiredOwner = map.Rules.Actors
+				.Where(a => a.Value.HasTraitInfo<RequiresSpecificOwnersInfo>())
+				.ToDictionary(a => a.Key, a => a.Value.TraitInfo<RequiresSpecificOwnersInfo>());
+
 			foreach (var kv in map.ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
@@ -89,6 +96,11 @@ namespace OpenRA.Mods.Common.Lint
 						emitError("Actor {0} needs to be owned by the player that owns the world. ".F(kv.Key) +
 							"Use the `Spawn` and `LockSpawn` player properties to force players onto a particular spawn instead.");
 					}
+
+					RequiresSpecificOwnersInfo info;
+					if (actorsWithRequiredOwner.TryGetValue(kv.Value.Value, out info))
+						if (!info.ValidOwnerNames.Contains(ownerName))
+							emitError("Actor {0} owner {1} is not one of ValidOwnerNames: {2}".F(kv.Key, ownerName, info.ValidOwnerNames.JoinWith(", ")));
 				}
 			}
 		}
