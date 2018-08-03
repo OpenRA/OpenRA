@@ -501,6 +501,7 @@
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\Replaceable.cs" />
     <Compile Include="Traits\Replacement.cs" />
+    <Compile Include="Traits\RequiresSpecificOwners.cs" />
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
     <Compile Include="Traits\Render\SelectionDecorations.cs" />
