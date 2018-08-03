@@ -127,6 +127,7 @@
     <Compile Include="AI\AISupportPowerModule.cs" />
     <Compile Include="AI\AICaptureModule.cs" />
     <Compile Include="AI\AIHarvesterModule.cs" />
+    <Compile Include="AI\AIDamageReactionModule.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />

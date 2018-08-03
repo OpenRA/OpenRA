@@ -127,9 +127,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Radius in cells around enemy BaseBuilder (Construction Yard) where AI scans for targets to rush.")]
 		public readonly int RushAttackScanRadius = 15;
 
-		[Desc("Radius in cells around the base that should be scanned for units to be protected.")]
-		public readonly int ProtectUnitScanRadius = 15;
-
 		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
 		public readonly int RallyPointScanRadius = 8;
 
@@ -171,11 +168,11 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Which support power handling module to use. Leave empty to disable.")]
 		public readonly string SupportPowerModule = "default-supportpower-module";
 
+		[Desc("Which damage reaction handling module to use. Leave empty to disable.")]
+		public readonly string DamageReactionModule = "default-damagereaction-module";
+
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
-
-		[Desc("Should the AI repair its buildings if damaged?")]
-		public readonly bool ShouldRepairBuildings = true;
 
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
@@ -217,7 +214,7 @@ namespace OpenRA.Mods.Common.AI
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
-	public sealed class HackyAI : ITick, IBot, INotifyDamage
+	public sealed class HackyAI : ITick, IBot
 	{
 		public MersenneTwister Random { get; private set; }
 		public readonly HackyAIInfo Info;
@@ -239,6 +236,7 @@ namespace OpenRA.Mods.Common.AI
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
 		CPos initialBaseCenter;
+		CPos defenseCenter;
 		PowerManager playerPower;
 		PlayerResources playerResource;
 		int ticks;
@@ -248,6 +246,7 @@ namespace OpenRA.Mods.Common.AI
 		IAIModule harvModule;
 		IAIModule captureModule;
 		IAIModule supportPowerModule;
+		IAIModule damageReactionModule;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
@@ -308,6 +307,7 @@ namespace OpenRA.Mods.Common.AI
 			harvModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.HarvesterModule);
 			captureModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.CaptureModule);
 			supportPowerModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.SupportPowerModule);
+			damageReactionModule = p.PlayerActor.TraitsImplementing<IAIModule>().SingleOrDefault(t => t.Name == Info.DamageReactionModule);
 
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
@@ -336,6 +336,10 @@ namespace OpenRA.Mods.Common.AI
 				captureModule.Activate(this);
 			if (supportPowerModule != null)
 				supportPowerModule.Activate(this);
+
+			// damageReactionModule isn't ticked anywhere, instead it implements INotifyDamage directly, but only does anything if it has been activated here
+			if (damageReactionModule != null)
+				damageReactionModule.Activate(this);
 		}
 
 		public void QueueOrder(Order order)
@@ -443,7 +447,6 @@ namespace OpenRA.Mods.Common.AI
 			return true;
 		}
 
-		CPos defenseCenter;
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
 			var ai = Map.Rules.Actors[actorType];
@@ -564,12 +567,12 @@ namespace OpenRA.Mods.Common.AI
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
-		Squad GetSquadOfType(SquadType type)
+		public Squad GetSquadOfType(SquadType type)
 		{
 			return Squads.FirstOrDefault(s => s.Type == type);
 		}
 
-		Squad RegisterNewSquad(SquadType type, Actor target = null)
+		public Squad RegisterNewSquad(SquadType type, Actor target = null)
 		{
 			var ret = new Squad(this, type, target);
 			Squads.Add(ret);
@@ -701,26 +704,6 @@ namespace OpenRA.Mods.Common.AI
 			}
 		}
 
-		void ProtectOwn(Actor attacker)
-		{
-			var protectSq = GetSquadOfType(SquadType.Protection);
-			if (protectSq == null)
-				protectSq = RegisterNewSquad(SquadType.Protection, attacker);
-
-			if (!protectSq.IsTargetValid)
-				protectSq.TargetActor = attacker;
-
-			if (!protectSq.IsValid)
-			{
-				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WDist.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit => unit.Owner == Player && !unit.Info.HasTraitInfo<BuildingInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()
-						&& unit.Info.HasTraitInfo<AttackBaseInfo>());
-
-				foreach (var a in ownUnits)
-					protectSq.Units.Add(a);
-			}
-		}
-
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
 		{
 			return info != null && World.IsCellBuildable(x, null, info);
@@ -756,6 +739,11 @@ namespace OpenRA.Mods.Common.AI
 			return possibleRallyPoints.Random(Random);
 		}
 
+		public void UpdateDefenseCenter(CPos location)
+		{
+			defenseCenter = location;
+		}
+
 		void InitializeBase(Actor self, bool chooseLocation)
 		{
 			var mcv = FindAndDeployMcv(self, chooseLocation);
@@ -764,7 +752,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			initialBaseCenter = mcv.Location;
-			defenseCenter = mcv.Location;
+			UpdateDefenseCenter(mcv.Location);
 		}
 
 		// Find any MCV and deploy them at a sensible location.
@@ -856,41 +844,6 @@ namespace OpenRA.Mods.Common.AI
 
 			if (Map.Rules.Actors[name] != null)
 				QueueOrder(Order.StartProduction(queue.Actor, name, 1));
-		}
-
-		void INotifyDamage.Damaged(Actor self, AttackInfo e)
-		{
-			if (!IsEnabled || e.Attacker == null)
-				return;
-
-			if (e.Attacker.Owner.Stances[self.Owner] == Stance.Neutral)
-				return;
-
-			var rb = self.TraitOrDefault<RepairableBuilding>();
-
-			if (Info.ShouldRepairBuildings && rb != null)
-			{
-				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light && !rb.RepairActive)
-				{
-					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
-						self, e.PreviousDamageState, e.DamageState);
-					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(self), false));
-				}
-			}
-
-			if (e.Attacker.Disposed)
-				return;
-
-			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
-				return;
-
-			// Protected priority assets, MCVs, harvesters and buildings
-			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>() || self.Info.HasTraitInfo<BaseBuildingInfo>()) &&
-				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
-			{
-				defenseCenter = e.Attacker.Location;
-				ProtectOwn(e.Attacker);
-			}
 		}
 	}
 }
