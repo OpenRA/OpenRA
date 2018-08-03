@@ -93,7 +93,7 @@ Actors:
 		Owner: Neutral
 		Location: 16,55
 	Actor57: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 65,150
 	Actor48: v19
 		Owner: Neutral
@@ -296,97 +296,97 @@ Actors:
 		Owner: Neutral
 		Location: 133,114
 	Actor236: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 120,115
 	Actor237: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 130,115
 	Actor238: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 128,110
 	Actor239: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 118,112
 	Actor240: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 122,111
 	Actor241: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 131,110
 	Actor242: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 135,108
 	Actor243: tc03
-		Owner: Creeps
+		Owner: Neutral
 		Location: 126,115
 	Actor244: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 130,108
 	Actor245: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 138,91
 	Actor246: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 134,96
 	Actor247: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 141,99
 	Actor248: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 136,103
 	Actor249: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 139,97
 	Actor250: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 136,93
 	Actor251: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 134,100
 	Actor252: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 139,105
 	Actor253: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 141,97
 	Actor254: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 138,95
 	Actor255: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 138,99
 	Actor256: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 133,105
 	Actor257: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 131,102
 	Actor258: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 131,97
 	Actor259: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 131,100
 	Actor260: t16
-		Owner: Creeps
+		Owner: Neutral
 		Location: 133,103
 	Actor261: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 131,104
 	Actor263: t05
-		Owner: Creeps
+		Owner: Neutral
 		Location: 138,101
 	Actor264: t05
-		Owner: Creeps
+		Owner: Neutral
 		Location: 140,103
 	Actor265: t05
-		Owner: Creeps
+		Owner: Neutral
 		Location: 136,106
 	Actor266: t05
-		Owner: Creeps
+		Owner: Neutral
 		Location: 133,106
 	Actor268: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 130,98
 	Actor610: v15
 		Owner: Neutral
@@ -935,10 +935,10 @@ Actors:
 		Owner: Neutral
 		Location: 223,192
 	Actor634: tc04
-		Owner: Creeps
+		Owner: Neutral
 		Location: 194,82
 	Actor567: t01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 72,93
 	Actor652: tc01
 		Owner: Neutral
@@ -1049,10 +1049,10 @@ Actors:
 		Owner: Neutral
 		Location: 130,148
 	Actor654: t06
-		Owner: Creeps
+		Owner: Neutral
 		Location: 166,51
 	Actor657: gmine
-		Owner: Creeps
+		Owner: Neutral
 		Location: 37,193
 	Actor658: c3
 		Owner: Neutral
