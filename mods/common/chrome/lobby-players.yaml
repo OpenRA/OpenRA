@@ -401,6 +401,20 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 							Visible: false
 							Align: Left
+							LeftMargin: 24
+							Children:
+								Image@PROFILE:
+									ImageCollection: lobby-bits
+									X: 3
+									Y: 3
+									Visible: false
+								ClientTooltipRegion@PROFILE_TOOLTIP:
+									X: 3
+									Y: 3
+									Width: 16
+									Height: 16
+									TooltipContainer: TOOLTIP_CONTAINER
+									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 190
 							Width: 326
