@@ -16,21 +16,21 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyCircle : Activity
 	{
-		readonly Aircraft plane;
+		readonly Aircraft aircraft;
 		readonly WDist cruiseAltitude;
 		int remainingTicks;
 
 		public FlyCircle(Actor self, int ticks = -1)
 		{
-			plane = self.Trait<Aircraft>();
-			cruiseAltitude = plane.Info.CruiseAltitude;
+			aircraft = self.Trait<Aircraft>();
+			cruiseAltitude = aircraft.Info.CruiseAltitude;
 			remainingTicks = ticks;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (plane.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			// We can't possibly turn this fast
-			var desiredFacing = plane.Facing + 64;
-			Fly.FlyToward(self, plane, desiredFacing, cruiseAltitude);
+			var desiredFacing = aircraft.Facing + 64;
+			Fly.FlyToward(self, aircraft, desiredFacing, cruiseAltitude);
 
 			return this;
 		}
