@@ -17,17 +17,17 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliFlyCircle : Activity
 	{
-		readonly Aircraft helicopter;
+		readonly Aircraft aircraft;
 
 		public HeliFlyCircle(Actor self)
 		{
-			helicopter = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (helicopter.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -36,14 +36,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
 				return this;
 
-			var move = helicopter.FlyStep(helicopter.Facing);
-			helicopter.SetPosition(self, helicopter.CenterPosition + move);
+			var move = aircraft.FlyStep(aircraft.Facing);
+			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
-			var desiredFacing = helicopter.Facing + 64;
-			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.TurnSpeed / 3);
+			var desiredFacing = aircraft.Facing + 64;
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed / 3);
 
 			return this;
 		}
