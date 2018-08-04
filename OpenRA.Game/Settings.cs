@@ -130,6 +130,9 @@ namespace OpenRA
 		[Desc("Disable high resolution DPI scaling on Windows operating systems.")]
 		public bool DisableWindowsDPIScaling = true;
 
+		[Desc("Disable separate OpenGL render thread on Windows operating systems.")]
+		public bool DisableWindowsRenderThread = true;
+
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
 
