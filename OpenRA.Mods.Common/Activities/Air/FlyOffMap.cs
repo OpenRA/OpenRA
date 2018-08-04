@@ -16,17 +16,17 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyOffMap : Activity
 	{
-		readonly Aircraft plane;
+		readonly Aircraft aircraft;
 
 		public FlyOffMap(Actor self)
 		{
-			plane = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (plane.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !self.World.Map.Contains(self.Location))
 				return NextActivity;
 
-			Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
+			Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 			return this;
 		}
 	}

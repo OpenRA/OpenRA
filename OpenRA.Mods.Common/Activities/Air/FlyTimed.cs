@@ -16,21 +16,21 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyTimed : Activity
 	{
-		readonly Aircraft plane;
+		readonly Aircraft aircraft;
 		readonly WDist cruiseAltitude;
 		int remainingTicks;
 
 		public FlyTimed(int ticks, Actor self)
 		{
 			remainingTicks = ticks;
-			plane = self.Trait<Aircraft>();
-			cruiseAltitude = plane.Info.CruiseAltitude;
+			aircraft = self.Trait<Aircraft>();
+			cruiseAltitude = aircraft.Info.CruiseAltitude;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (plane.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || remainingTicks-- == 0)
 				return NextActivity;
 
-			Fly.FlyToward(self, plane, plane.Facing, cruiseAltitude);
+			Fly.FlyToward(self, aircraft, aircraft.Facing, cruiseAltitude);
 
 			return this;
 		}
