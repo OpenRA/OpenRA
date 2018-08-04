@@ -564,6 +564,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null;
 		}
 
+		public static void HideReadyWidgets(Widget parent)
+		{
+			HideChildWidget(parent, "STATUS_CHECKBOX");
+			HideChildWidget(parent, "STATUS_IMAGE");
+		}
+
 		public static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
 		{
 			var flag = template.Get<ImageWidget>("FLAG");

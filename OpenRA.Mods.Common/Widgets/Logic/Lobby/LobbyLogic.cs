@@ -646,6 +646,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager, map);
+					else
+						LobbyUtils.HideReadyWidgets(template);
 				}
 				else
 				{
@@ -661,6 +663,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupReadyWidget(template, null, client);
+					else
+						LobbyUtils.HideReadyWidgets(template);
 				}
 
 				LobbyUtils.SetupLatencyWidget(template, c, orderManager, true);
