@@ -17,12 +17,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class DefineGroundCorpseDefault : UpdateRule
 	{
-		public override string Name { get { return "Move Parachutable GroundCorspeSequence default to yaml"; } }
+		public override string Name { get { return "Move Parachutable GroundCorpseSequence default to yaml"; } }
 		public override string Description
 		{
 			get
 			{
-				return "Parachutable's GroundCorspeSequence 'corpse' default has been moved to yaml.";
+				return "Parachutable's GroundCorpseSequence 'corpse' default has been moved to yaml.";
 			}
 		}
 

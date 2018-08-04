@@ -302,7 +302,6 @@ V19.Husk:
 		Palette: player
 	Tooltip:
 		Name: Husk (Oil Pump)
-	RenderSprites:
 	WithSpriteBody:
 	WithIdleOverlay:
 		StartSequence: fire-start

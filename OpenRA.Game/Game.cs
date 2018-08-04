@@ -290,7 +290,6 @@ namespace OpenRA
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
-			Log.AddChannel("irc", "irc.log");
 			Log.AddChannel("nat", "nat.log");
 
 			var platforms = new[] { Settings.Game.Platform, "Default", null };

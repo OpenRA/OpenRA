@@ -229,7 +229,7 @@ Actors:
 		Location: 56,97
 		Owner: Neutral
 	Actor273: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 24,118
 	Actor384: mine
 		Owner: Neutral
@@ -427,10 +427,10 @@ Actors:
 		Location: 49,18
 		Owner: Neutral
 	Actor274: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 42,114
 	Actor275: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 22,116
 	Actor132: t17
 		Location: 29,16
@@ -859,28 +859,28 @@ Actors:
 		Location: 121,96
 		Owner: Creeps
 	Actor276: tc01
-		Owner: Creeps
+		Owner: Neutral
 		Location: 33,121
 	Actor277: tc02
-		Owner: Creeps
+		Owner: Neutral
 		Location: 32,117
 	Actor278: t05
-		Owner: Creeps
+		Owner: Neutral
 		Location: 33,122
 	Actor279: t05
-		Owner: Creeps
+		Owner: Neutral
 		Location: 21,114
 	Actor280: t02
-		Owner: Creeps
+		Owner: Neutral
 		Location: 30,120
 	Actor281: t02
-		Owner: Creeps
+		Owner: Neutral
 		Location: 27,113
 	Actor282: t02
-		Owner: Creeps
+		Owner: Neutral
 		Location: 39,122
 	Actor283: t02
-		Owner: Creeps
+		Owner: Neutral
 		Location: 31,119
 	Actor284: tc01
 		Owner: Neutral
