@@ -44,7 +44,8 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			Fly.FlyToward(self, plane, d.Yaw.Facing, new WDist(target.CenterPosition.Z));
+			var landingAlt = self.World.Map.DistanceAboveTerrain(target.CenterPosition);
+			Fly.FlyToward(self, plane, d.Yaw.Facing, landingAlt);
 
 			return this;
 		}
