@@ -156,6 +156,12 @@ namespace OpenRA.Mods.Common.Traits
 			return HasAchievedDesiredFacing;
 		}
 
+		public void StopAiming(Actor self)
+		{
+			if (attack.IsAiming)
+				attack.OnStopOrder(self);
+		}
+
 		public virtual bool HasAchievedDesiredFacing
 		{
 			get { return DesiredFacing == null || TurretFacing == DesiredFacing.Value; }
