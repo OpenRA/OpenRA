@@ -40,6 +40,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string ClockSequence = "idle";
 		public readonly string ClockPalette = "chrome";
 
+		public readonly bool Horizontal = false;
+
 		public int IconCount { get; private set; }
 		public event Action<int, int> OnIconCountChanged = (a, b) => { };
 
@@ -124,7 +126,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var rb = RenderBounds;
 			foreach (var p in powers)
 			{
-				var rect = new Rectangle(rb.X, rb.Y + IconCount * (IconSize.Y + IconMargin), IconSize.X, IconSize.Y);
+				Rectangle rect;
+				if (Horizontal)
+					rect = new Rectangle(rb.X + IconCount * (IconSize.X + IconMargin), rb.Y, IconSize.X, IconSize.Y);
+				else
+					rect = new Rectangle(rb.X, rb.Y + IconCount * (IconSize.Y + IconMargin), IconSize.X, IconSize.Y);
+
 				icon.Play(p.Info.Icon);
 
 				var power = new SupportPowerIcon()

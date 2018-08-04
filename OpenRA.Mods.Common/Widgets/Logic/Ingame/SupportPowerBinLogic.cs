@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Action<int, int> updateBackground = (_, icons) =>
 				{
 					var rowHeight = palette.IconSize.Y + palette.IconMargin;
+					var rowWidth = palette.IconSize.X + palette.IconMargin;
 
 					if (background != null)
 					{
@@ -45,7 +46,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						for (var i = 0; i < icons; i++)
 						{
 							var row = backgroundTemplate.Clone();
-							row.Bounds.Y += i * rowHeight;
+							if (palette.Horizontal)
+								row.Bounds.X += i * rowWidth;
+							else
+								row.Bounds.Y += i * rowHeight;
 							background.AddChild(row);
 						}
 					}
@@ -57,7 +61,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						for (var i = 0; i < icons; i++)
 						{
 							var row = foregroundTemplate.Clone();
-							row.Bounds.Y += i * rowHeight;
+							if (palette.Horizontal)
+								row.Bounds.X += i * rowWidth;
+							else
+								row.Bounds.Y += i * rowHeight;
 							foreground.AddChild(row);
 						}
 					}
