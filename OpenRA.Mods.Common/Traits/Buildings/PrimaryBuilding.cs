@@ -94,7 +94,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Cancel existing primaries
 				// TODO: THIS IS SHIT
-				var queues = Info.ProductionQueues.Length == 0 ? self.Info.TraitInfos<ProductionInfo>().SelectMany(pi => pi.Produces) : Info.ProductionQueues;
+				var queues = Info.ProductionQueues.Length == 0 ? self.TraitsImplementing<Production>()
+					.Where(t => !t.IsTraitDisabled).SelectMany(pi => pi.Info.Produces) : Info.ProductionQueues;
 				foreach (var q in queues)
 				{
 					foreach (var b in self.World
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 								a.Actor != self &&
 								a.Actor.Owner == self.Owner &&
 								a.Trait.IsPrimary &&
-								a.Actor.Info.TraitInfos<ProductionInfo>().Any(pi => pi.Produces.Contains(q))))
+								a.Actor.TraitsImplementing<Production>().Where(p => !p.IsTraitDisabled).Any(pi => pi.Info.Produces.Contains(q))))
 						b.Trait.SetPrimaryProducer(b.Actor, false);
 				}
 
