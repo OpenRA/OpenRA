@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliFly : Activity
 	{
-		readonly Aircraft helicopter;
+		readonly Aircraft aircraft;
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public HeliFly(Actor self, Target t)
 		{
-			helicopter = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 			target = t;
 		}
 
@@ -37,17 +37,17 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static bool AdjustAltitude(Actor self, Aircraft helicopter, WDist targetAltitude)
+		public static bool AdjustAltitude(Actor self, Aircraft aircraft, WDist targetAltitude)
 		{
-			targetAltitude = new WDist(helicopter.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(helicopter.CenterPosition);
+			targetAltitude = new WDist(aircraft.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 
-			var altitude = helicopter.CenterPosition.Z;
+			var altitude = aircraft.CenterPosition.Z;
 			if (altitude == targetAltitude.Length)
 				return false;
 
-			var delta = helicopter.Info.AltitudeVelocity.Length;
+			var delta = aircraft.Info.AltitudeVelocity.Length;
 			var dz = (targetAltitude.Length - altitude).Clamp(-delta, delta);
-			helicopter.SetPosition(self, helicopter.CenterPosition + new WVec(0, 0, dz));
+			aircraft.SetPosition(self, aircraft.CenterPosition + new WVec(0, 0, dz));
 
 			return true;
 		}
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (helicopter.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -64,43 +64,43 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			if (!playedSound && helicopter.Info.TakeoffSound != null && self.IsAtGroundLevel())
+			if (!playedSound && aircraft.Info.TakeoffSound != null && self.IsAtGroundLevel())
 			{
-				Game.Sound.Play(SoundType.World, helicopter.Info.TakeoffSound);
+				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSound);
 				playedSound = true;
 			}
 
-			if (AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			if (AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
 				return this;
 
 			var pos = target.CenterPosition;
 
 			// Rotate towards the target
 			var dist = pos - self.CenterPosition;
-			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
-			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.TurnSpeed);
-			var move = helicopter.FlyStep(desiredFacing);
+			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : aircraft.Facing;
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+			var move = aircraft.FlyStep(desiredFacing);
 
 			// Inside the minimum range, so reverse
-			if (minRange.Length > 0 && target.IsInRange(helicopter.CenterPosition, minRange))
+			if (minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange))
 			{
-				helicopter.SetPosition(self, helicopter.CenterPosition - move);
+				aircraft.SetPosition(self, aircraft.CenterPosition - move);
 				return this;
 			}
 
 			// Inside the maximum range, so we're done
-			if (maxRange.Length > 0 && target.IsInRange(helicopter.CenterPosition, maxRange))
+			if (maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange))
 				return NextActivity;
 
 			// The next move would overshoot, so just set the final position
 			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				var targetAltitude = helicopter.CenterPosition.Z + helicopter.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(helicopter.CenterPosition).Length;
-				helicopter.SetPosition(self, pos + new WVec(0, 0, targetAltitude - pos.Z));
+				var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
+				aircraft.SetPosition(self, pos + new WVec(0, 0, targetAltitude - pos.Z));
 				return NextActivity;
 			}
 
-			helicopter.SetPosition(self, helicopter.CenterPosition + move);
+			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
 			return this;
 		}
