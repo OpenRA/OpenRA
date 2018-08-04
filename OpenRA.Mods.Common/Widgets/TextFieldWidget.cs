@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				text = RemoveInvalidCharacters(value ?? "");
 				CursorPosition = CursorPosition.Clamp(0, text.Length);
+				ClearSelection();
 			}
 		}
 
