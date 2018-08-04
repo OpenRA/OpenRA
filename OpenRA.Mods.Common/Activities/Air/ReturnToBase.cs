@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
+		public static Actor ChooseResupplier(Actor self, bool unreservedOnly)
 		{
 			var rearmBuildings = self.Info.TraitInfo<AircraftInfo>().RearmBuildings;
 			return self.World.ActorsHavingTrait<Reservable>()
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 		void Calculate(Actor self)
 		{
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseAirfield(self, true);
+				dest = ChooseResupplier(self, true);
 
 			if (dest == null)
 				return;
@@ -123,11 +123,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (dest == null || dest.IsDead)
 			{
-				var nearestAfld = ChooseAirfield(self, false);
+				var nearestResupplier = ChooseResupplier(self, false);
 
-				if (nearestAfld != null)
+				if (nearestResupplier != null)
 					return ActivityUtils.SequenceActivities(
-						new Fly(self, Target.FromActor(nearestAfld), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
+						new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
 						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
 				else

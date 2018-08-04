@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.dest = dest;
 		}
 
-		public Actor ChooseHelipad(Actor self, bool unreservedOnly)
+		public Actor ChooseResupplier(Actor self, bool unreservedOnly)
 		{
 			var rearmBuildings = aircraft.Info.RearmBuildings;
 			return self.World.Actors.Where(a => a.Owner == self.Owner
@@ -51,36 +51,36 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
-				dest = ChooseHelipad(self, true);
+				dest = ChooseResupplier(self, true);
 
 			var initialFacing = aircraft.Info.InitialFacing;
 
 			if (dest == null || dest.IsDead)
 			{
-				var nearestHpad = ChooseHelipad(self, false);
+				var nearestResupplier = ChooseResupplier(self, false);
 
 				// If a heli was told to return and there's no (available) RearmBuilding, going to the probable next queued activity (HeliAttack)
 				// would be pointless (due to lack of ammo), and possibly even lead to an infinite loop due to HeliAttack.cs:L79.
-				if (nearestHpad == null && aircraft.Info.LandWhenIdle)
+				if (nearestResupplier == null && aircraft.Info.LandWhenIdle)
 				{
 					if (aircraft.Info.TurnToLand)
 						return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true));
 
 					return new HeliLand(self, true);
 				}
-				else if (nearestHpad == null && !aircraft.Info.LandWhenIdle)
+				else if (nearestResupplier == null && !aircraft.Info.LandWhenIdle)
 					return null;
 				else
 				{
-					var distanceFromHelipad = (nearestHpad.CenterPosition - self.CenterPosition).HorizontalLength;
+					var distanceFromResupplier = (nearestResupplier.CenterPosition - self.CenterPosition).HorizontalLength;
 					var distanceLength = aircraft.Info.WaitDistanceFromResupplyBase.Length;
 
 					// If no pad is available, move near one and wait
-					if (distanceFromHelipad > distanceLength)
+					if (distanceFromResupplier > distanceLength)
 					{
 						var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
 
-						var target = Target.FromPos(nearestHpad.CenterPosition + randomPosition);
+						var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
 						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
 					}
