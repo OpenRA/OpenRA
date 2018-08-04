@@ -9,14 +9,13 @@
 Name="${Name:-"Dedicated Server"}"
 Mod="${Mod:-"ra"}"
 ListenPort="${ListenPort:-"1234"}"
-ExternalPort="${ExternalPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
 EnableSingleplayer="${EnableSingleplayer:-"False"}"
 Password="${Password:-""}"
 
 while true; do
      mono --debug OpenRA.Server.exe Game.Mod=$Mod \
-     Server.Name="$Name" Server.ListenPort=$ListenPort Server.ExternalPort=$ExternalPort \
+     Server.Name="$Name" Server.ListenPort=$ListenPort \
      Server.AdvertiseOnline=$AdvertiseOnline \
      Server.EnableSingleplayer=$EnableSingleplayer Server.Password=$Password
 done
