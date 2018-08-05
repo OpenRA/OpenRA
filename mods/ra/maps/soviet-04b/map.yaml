@@ -482,7 +482,7 @@ Actors:
 	Actor169: mine
 		Location: 91,87
 		Owner: Neutral
-	Radar: dome
+	RadarDome: dome
 		Location: 111,50
 		Owner: Greece
 	Pbox1: pbox

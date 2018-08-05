@@ -139,7 +139,7 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(player, "Win")
 	end)
 
-	Trigger.OnKilled(Radar, function()
+	Trigger.OnKilled(RadarDome, function()
 		player.MarkCompletedObjective(KillRadar)
 		Media.PlaySpeechNotification(player, "ObjectiveMet")
 	end)

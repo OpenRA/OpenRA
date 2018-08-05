@@ -342,7 +342,7 @@ Actors:
 	Tower2: gtwr
 		Location: 23,21
 		Owner: GDI
-	Radar: hq
+	CommCenter: hq
 		Location: 21,14
 		Owner: GDI
 	Silo1: silo

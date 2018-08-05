@@ -214,7 +214,7 @@ WorldLoaded = function()
 	Trigger.OnDamaged(mcvGG, Expand)
 	Trigger.OnDamaged(mcvtransport, Expand)
 
-	Trigger.OnKilled(Radar, function()
+	Trigger.OnKilled(RadarDome, function()
 		if not player.IsObjectiveCompleted(CaptureObjective) then
 			player.MarkFailedObjective(CaptureObjective)
 		end
@@ -224,8 +224,8 @@ WorldLoaded = function()
 		end
 	end)
 
-	Radar.GrantCondition("french")
-	Trigger.OnCapture(Radar, function()
+	RadarDome.GrantCondition("french")
+	Trigger.OnCapture(RadarDome, function()
 		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
 		player.MarkCompletedObjective(CaptureObjective)
 		Beacon.New(player, MCVDeploy.CenterPosition)
@@ -244,17 +244,17 @@ WorldLoaded = function()
 
 		Reinforcements.Reinforce(Greece, ArmorReinfGreece, AlliedCrossroadsToRadarPath , 0, IdleHunt)
 
-		Radar.RevokeCondition(1)
-		Trigger.ClearAll(Radar)
+		RadarDome.RevokeCondition(1)
+		Trigger.ClearAll(RadarDome)
 		Trigger.AfterDelay(0, function()
-			Trigger.OnRemovedFromWorld(Radar, function()
+			Trigger.OnRemovedFromWorld(RadarDome, function()
 				player.MarkFailedObjective(HoldObjective)
 			end)
 		end)
 	end)
 
 	Trigger.OnEnteredProximityTrigger(USSRExpansionPoint.CenterPosition, WDist.New(4 * 1024), function(unit, id)
-		if unit.Owner == player and Radar.Owner == player then
+		if unit.Owner == player and RadarDome.Owner == player then
 			Trigger.RemoveProximityTrigger(id)
 
 			Para2()

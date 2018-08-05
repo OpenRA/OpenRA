@@ -618,7 +618,7 @@ Actors:
 	Refinery: proc
 		Location: 68,35
 		Owner: USSR
-	Radar: dome
+	RadarDome: dome
 		Location: 75,86
 		Owner: USSR
 	Radar2: dome

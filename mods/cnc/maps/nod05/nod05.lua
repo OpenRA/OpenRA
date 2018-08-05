@@ -45,16 +45,16 @@ Gdi12Waypoints = { waypoint0, waypoint1, waypoint3, waypoint11, waypoint12 }
 
 AllWaypoints = { Gdi1Waypoints, Gdi2Waypoints, Gdi3Waypoints, Gdi5Waypoints, Gdi11Waypoints, Gdi12Waypoints }
 
-PrimaryTargets = { Tower1, Tower2, Radar, Silo1, Silo2, Silo3, Refinery, Barracks, Plant1, Plant2, Yard, Factory }
+PrimaryTargets = { Tower1, Tower2, CommCenter, Silo1, Silo2, Silo3, Refinery, Barracks, Plant1, Plant2, Yard, Factory }
 
 GDIStartUnits = { }
 
 SendGDIAirstrike = function()
-	if not Radar.IsDead and Radar.Owner == enemy then
+	if not CommCenter.IsDead and CommCenter.Owner == enemy then
 		local target = getAirstrikeTarget()
 
 		if target then
-			Radar.SendAirstrike(target, false, Facing.NorthEast + 4)
+			CommCenter.SendAirstrike(target, false, Facing.NorthEast + 4)
 			Trigger.AfterDelay(AirstrikeDelay, SendGDIAirstrike)
 		else
 			Trigger.AfterDelay(AirstrikeDelay/4, SendGDIAirstrike)
