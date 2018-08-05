@@ -127,7 +127,7 @@ namespace OpenRA
 										if (flags.HasField(OrderFields.TargetIsCell))
 										{
 											var cell = new CPos(r.ReadInt32(), r.ReadInt32(), r.ReadByte());
-											var subCell = (SubCell)r.ReadInt32();
+											var subCell = (SubCell)r.ReadByte();
 											if (world != null)
 												target = Target.FromCell(world, cell, subCell);
 										}
@@ -297,7 +297,7 @@ namespace OpenRA
 						if (fields.HasField(OrderFields.TargetIsCell))
 						{
 							w.Write(Target.SerializableCell.Value);
-							w.Write((int)Target.SerializableSubCell);
+							w.Write((byte)Target.SerializableSubCell);
 						}
 						else
 							w.Write(Target.SerializablePos);

@@ -488,6 +488,11 @@ namespace OpenRA
 			return int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
+		public static byte ParseByte(string s)
+		{
+			return byte.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+		}
+
 		public static bool TryParseIntegerInvariant(string s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
