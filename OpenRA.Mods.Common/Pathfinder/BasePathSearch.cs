@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		IPathSearch WithIgnoredActor(Actor b);
 
-		IPathSearch WithHeuristic(Func<CPos, int> h);
+		IPathSearch WithHeuristic(Func<CPos, ushort> h);
 
-		IPathSearch WithCustomCost(Func<CPos, int> w);
+		IPathSearch WithCustomCost(Func<CPos, ushort> w);
 
 		IPathSearch WithoutLaneBias();
 
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Player Owner { get { return Graph.Actor.Owner; } }
 		public int MaxCost { get; protected set; }
 		public bool Debug { get; set; }
-		protected Func<CPos, int> heuristic;
+		protected Func<CPos, ushort> heuristic;
 		protected Func<CPos, bool> isGoal;
 
 		// This member is used to compute the ID of PathSearch.
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 		/// </summary>
 		/// <returns>A delegate that calculates the estimation for a node</returns>
-		protected static Func<CPos, int> DefaultEstimator(CPos destination)
+		protected static Func<CPos, ushort> DefaultEstimator(CPos destination)
 		{
 			return here =>
 			{
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// According to the information link, this is the shape of the function.
 				// We just extract factors to simplify.
 				// Possible simplification: var h = Constants.CellCost * (straight + (Constants.Sqrt2 - 2) * diag);
-				return Constants.CellCost * straight + (Constants.DiagonalCellCost - 2 * Constants.CellCost) * diag;
+				return (ushort)(Constants.CellCost * straight + (Constants.DiagonalCellCost - 2 * Constants.CellCost) * diag);
 			};
 		}
 
@@ -124,13 +124,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return this;
 		}
 
-		public IPathSearch WithHeuristic(Func<CPos, int> h)
+		public IPathSearch WithHeuristic(Func<CPos, ushort> h)
 		{
 			heuristic = h;
 			return this;
 		}
 
-		public IPathSearch WithCustomCost(Func<CPos, int> w)
+		public IPathSearch WithCustomCost(Func<CPos, ushort> w)
 		{
 			Graph.CustomCost = w;
 			return this;

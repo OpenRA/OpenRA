@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 						return Constants.InvalidNode;
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-					return occupancy * Info.UnloadQueueCostModifier;
+					return (ushort)(occupancy * Info.UnloadQueueCostModifier);
 				}))
 				path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 

@@ -77,14 +77,14 @@ namespace OpenRA.Mods.Common.Traits
 			return cellCenters[cell];
 		}
 
-		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
+		ushort ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
-			return portals.Contains(cell) ? 0 : int.MaxValue;
+			return portals.Contains(cell) ? (ushort)0 : ushort.MaxValue;
 		}
 
-		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
+		ushort ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
-			return portals.Contains(cell) ? 0 : int.MaxValue;
+			return portals.Contains(cell) ? (ushort)0 : ushort.MaxValue;
 		}
 
 		byte ICustomMovementLayer.GetTerrainIndex(CPos cell)

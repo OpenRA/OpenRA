@@ -360,8 +360,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool InteractsWithDefaultLayer { get; }
 
 		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
-		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
-		int ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
+		ushort EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
+		ushort ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);

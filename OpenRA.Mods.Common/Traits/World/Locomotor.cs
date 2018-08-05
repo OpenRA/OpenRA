@@ -74,11 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 			var ret = new Dictionary<string, TerrainInfo>();
 			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
 			{
-				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
+				var speed = FieldLoader.GetValue<ushort>("speed", t.Value.Value);
 				var nodesDict = t.Value.ToDictionary();
-				var cost = nodesDict.ContainsKey("PathingCost")
-					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
-					: 10000 / speed;
+				ushort cost = nodesDict.ContainsKey("PathingCost")
+					? FieldLoader.GetValue<ushort>("cost", nodesDict["PathingCost"].Value)
+					: (ushort)(10000 / speed);
 				ret.Add(t.Key, new TerrainInfo(speed, cost));
 			}
 
@@ -105,16 +105,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public static readonly TerrainInfo Impassable = new TerrainInfo();
 
-			public readonly int Cost;
+			public readonly ushort Cost;
 			public readonly int Speed;
 
 			public TerrainInfo()
 			{
-				Cost = int.MaxValue;
+				Cost = ushort.MaxValue;
 				Speed = 0;
 			}
 
-			public TerrainInfo(int speed, int cost)
+			public TerrainInfo(int speed, ushort cost)
 			{
 				Speed = speed;
 				Cost = cost;
@@ -135,37 +135,37 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public readonly Cache<TileSet, TerrainInfo[]> TilesetTerrainInfo;
-		public readonly Cache<TileSet, int> TilesetMovementClass;
+		public readonly Cache<TileSet, short> TilesetMovementClass;
 
 		public LocomotorInfo()
 		{
 			TilesetTerrainInfo = new Cache<TileSet, TerrainInfo[]>(LoadTilesetSpeeds);
-			TilesetMovementClass = new Cache<TileSet, int>(CalculateTilesetMovementClass);
+			TilesetMovementClass = new Cache<TileSet, short>(CalculateTilesetMovementClass);
 		}
 
-		public int MovementCostForCell(World world, CPos cell)
+		public ushort MovementCostForCell(World world, CPos cell)
 		{
 			return MovementCostForCell(world, TilesetTerrainInfo[world.Map.Rules.TileSet], cell);
 		}
 
-		int MovementCostForCell(World world, TerrainInfo[] terrainInfos, CPos cell)
+		ushort MovementCostForCell(World world, TerrainInfo[] terrainInfos, CPos cell)
 		{
 			if (!world.Map.Contains(cell))
-				return int.MaxValue;
+				return ushort.MaxValue;
 
 			var index = cell.Layer == 0 ? world.Map.GetTerrainIndex(cell) :
 				world.GetCustomMovementLayers()[cell.Layer].GetTerrainIndex(cell);
 
 			if (index == byte.MaxValue)
-				return int.MaxValue;
+				return ushort.MaxValue;
 
 			return terrainInfos[index].Cost;
 		}
 
-		public int CalculateTilesetMovementClass(TileSet tileset)
+		public short CalculateTilesetMovementClass(TileSet tileset)
 		{
 			// collect our ability to cross *all* terraintypes, in a bitvector
-			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
+			return (short)TilesetTerrainInfo[tileset].Select(ti => ti.Cost < ushort.MaxValue).ToBits();
 		}
 
 		public uint GetMovementClass(TileSet tileset)
@@ -187,18 +187,18 @@ namespace OpenRA.Mods.Common.Traits
 			return new WorldMovementInfo(world, this);
 		}
 
-		public int MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public ushort MovementCostToEnterCell(WorldMovementInfo worldMovementInfo, Actor self, CPos cell, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
 			var cost = MovementCostForCell(worldMovementInfo.World, worldMovementInfo.TerrainInfos, cell);
-			if (cost == int.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
-				return int.MaxValue;
+			if (cost == ushort.MaxValue || !CanMoveFreelyInto(worldMovementInfo.World, self, cell, ignoreActor, check))
+				return ushort.MaxValue;
 			return cost;
 		}
 
 		public SubCell GetAvailableSubCell(
 			World world, Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
-			if (MovementCostForCell(world, cell) == int.MaxValue)
+			if (MovementCostForCell(world, cell) == ushort.MaxValue)
 				return SubCell.Invalid;
 
 			if (check.HasCellCondition(CellConditions.TransientActors))

@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			foreach (var connection in Graph.GetConnections(currentMinNode))
 			{
 				// Calculate the cost up to that point
-				var gCost = currentCell.CostSoFar + connection.Cost;
+				var gCost = (ushort)(currentCell.CostSoFar + connection.Cost);
 
 				var neighborCPos = connection.Destination;
 				var neighborCell = Graph[neighborCPos];
@@ -136,13 +136,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// Now we may seriously consider this direction using heuristics. If the cell has
 				// already been processed, we can reuse the result (just the difference between the
 				// estimated total and the cost so far
-				int hCost;
+				ushort hCost;
 				if (neighborCell.Status == CellStatus.Open)
-					hCost = neighborCell.EstimatedTotal - neighborCell.CostSoFar;
+					hCost = (ushort)(neighborCell.EstimatedTotal - neighborCell.CostSoFar);
 				else
 					hCost = heuristic(neighborCPos);
 
-				var estimatedCost = gCost + hCost;
+				var estimatedCost = (ushort)(gCost + hCost);
 				Graph[neighborCPos] = new CellInfo(gCost, estimatedCost, currentMinNode, CellStatus.Open);
 
 				if (neighborCell.Status != CellStatus.Open)
