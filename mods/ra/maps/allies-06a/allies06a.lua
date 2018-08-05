@@ -109,11 +109,11 @@ InitialAlliedReinforcements = function()
 end
 
 CaptureRadarDome = function()
-	Trigger.OnKilled(Radar, function()
+	Trigger.OnKilled(RadarDome, function()
 		player.MarkFailedObjective(CaptureRadarDomeObj)
 	end)
 
-	Trigger.OnCapture(Radar, function()
+	Trigger.OnCapture(RadarDome, function()
 		player.MarkCompletedObjective(CaptureRadarDomeObj)
 		Beacon.New(player, TechLab1.CenterPosition)
 		Beacon.New(player, TechLab2.CenterPosition)
