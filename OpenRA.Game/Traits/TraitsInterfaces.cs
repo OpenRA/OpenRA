@@ -292,7 +292,7 @@ namespace OpenRA.Traits
 		Pair<CPos, SubCell>[] OccupiedCells();
 	}
 
-	public enum SubCell { Invalid = int.MinValue, Any = int.MinValue / 2, FullCell = 0, First = 1 }
+	public enum SubCell : byte { Invalid = byte.MaxValue, Any = byte.MaxValue - 1, FullCell = 0, First = 1 }
 
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{

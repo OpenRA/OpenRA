@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!previews.Any())
 				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
+			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (!previews.Any(p => p.Footprint[cell] == (SubCell)i))
 					return (SubCell)i;
 

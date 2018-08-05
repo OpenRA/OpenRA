@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Common
 
 	public class SubCellInit : IActorInit<SubCell>
 	{
-		[FieldFromYamlKey] readonly int value = (int)SubCell.FullCell;
+		[FieldFromYamlKey] readonly byte value = (byte)SubCell.FullCell;
 		public SubCellInit() { }
-		public SubCellInit(int init) { value = init; }
-		public SubCellInit(SubCell init) { value = (int)init; }
+		public SubCellInit(byte init) { value = init; }
+		public SubCellInit(SubCell init) { value = (byte)init; }
 		public SubCell Value(World world) { return (SubCell)value; }
 	}
 

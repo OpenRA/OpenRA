@@ -297,8 +297,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!AnyActorsAt(cell))
 				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkIfBlocker))
+			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
+				if (i != (byte)preferredSubCell && !AnyActorsAt(cell, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
 			return SubCell.Invalid;
 		}
