@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected virtual bool ShouldFlee(Squad squad, Func<IEnumerable<Actor>, bool> flee)
 		{
-			if (!squad.IsValid)
+			if (!squad.IsValid || !squad.Bot.Info.EnableAttackOrFleeLogic)
 				return false;
 
 			var randomSquadUnit = squad.Units.Random(squad.Random);

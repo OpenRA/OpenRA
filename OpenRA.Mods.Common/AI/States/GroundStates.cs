@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.AI
 			if (enemyUnits.Count == 0)
 				return;
 
-			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
+			if (!owner.Bot.Info.EnableAttackOrFleeLogic || AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 			{
 				foreach (var u in owner.Units)
 					owner.Bot.QueueOrder(new Order("AttackMove", u, Target.FromCell(owner.World, owner.TargetActor.Location), false));
@@ -82,7 +82,11 @@ namespace OpenRA.Mods.Common.AI
 					owner.TargetActor = closestEnemy;
 				else
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
+					if (owner.Bot.Info.EnableAttackOrFleeLogic)
+						owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
+					else
+						owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsIdleState(), true);
+
 					return;
 				}
 			}
@@ -140,7 +144,11 @@ namespace OpenRA.Mods.Common.AI
 					owner.TargetActor = closestEnemy;
 				else
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
+					if (owner.Bot.Info.EnableAttackOrFleeLogic)
+						owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), true);
+					else
+						owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsIdleState(), true);
+
 					return;
 				}
 			}

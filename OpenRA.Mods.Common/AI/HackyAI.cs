@@ -165,6 +165,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
 		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
 
+		[Desc("Should attackers evaluate whether they should retreat against stronger enemies, or attack no matter what?")]
+		public readonly bool EnableAttackOrFleeLogic = true;
+
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
@@ -809,7 +812,8 @@ namespace OpenRA.Mods.Common.AI
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
 					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
 
-				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
+				var attack = Info.EnableAttackOrFleeLogic ? AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies) : true;
+				if (attack)
 				{
 					var target = enemies.Any() ? enemies.Random(Random) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
