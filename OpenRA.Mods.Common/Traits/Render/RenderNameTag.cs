@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
 
-			return new IRenderable[] { new TextRenderable(font, effectPos, 0, color, name) };
+			return new IRenderable[] { new TextRenderable(font, effectPos, 4096, color, name) };
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
