@@ -18,17 +18,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Displays the player name above the unit")]
-	class RenderNameTagInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
+	[Desc("Displays the player's name above the actor.")]
+	class RenderNameTagInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
+		[Desc("Maximum length of name tag shown.")]
 		public readonly int MaxLength = 10;
 
+		[Desc("Font used for name tag.")]
 		public readonly string Font = "TinyBold";
 
-		public object Create(ActorInitializer init) { return new RenderNameTag(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderNameTag(init.Self, this); }
 	}
 
-	class RenderNameTag : IRender
+	class RenderNameTag : ConditionalTrait<RenderNameTagInfo>, IRender
 	{
 		readonly SpriteFont font;
 		readonly Color color;
@@ -36,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly IDecorationBounds[] decorationBounds;
 
 		public RenderNameTag(Actor self, RenderNameTagInfo info)
+			: base(info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
 			color = self.Owner.Color.RGB;
@@ -50,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				return SpriteRenderable.None;
+
 			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
