@@ -295,6 +295,8 @@
 	HitShape:
 	EditorTilesetFilter:
 		Categories: Vehicle
+	RenderNameTag:
+		RequiresCondition: !invulnerability
 
 ^TrackedVehicle:
 	Inherits: ^Vehicle
@@ -631,6 +633,8 @@
 	EditorTilesetFilter:
 		Categories: Building
 	CommandBarBlacklist:
+	RenderNameTag:
+		RequiresCondition: !invulnerability
 
 ^Building:
 	Inherits: ^BasicBuilding
