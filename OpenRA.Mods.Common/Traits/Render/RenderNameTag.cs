@@ -18,43 +18,58 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Desc("Displays the player name above the unit")]
-	class RenderNameTagInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
+	[Desc("Displays the player's name above the actor.")]
+	class RenderNameTagInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
+		[Desc("Maximum length of name tag shown.")]
 		public readonly int MaxLength = 10;
 
+		[Desc("Font used for name tag.")]
 		public readonly string Font = "TinyBold";
 
-		public object Create(ActorInitializer init) { return new RenderNameTag(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderNameTag(init.Self, this); }
 	}
 
-	class RenderNameTag : IRender
+	class RenderNameTag : ConditionalTrait<RenderNameTagInfo>, INotifyCapture, IRender
 	{
+		readonly RenderNameTagInfo info;
 		readonly SpriteFont font;
-		readonly Color color;
-		readonly string name;
 		readonly IDecorationBounds[] decorationBounds;
 
+		string nameTag;
+		Color color;
+
 		public RenderNameTag(Actor self, RenderNameTagInfo info)
+			: base(info)
 		{
+			this.info = info;
 			font = Game.Renderer.Fonts[info.Font];
-			color = self.Owner.Color.RGB;
-
-			if (self.Owner.PlayerName.Length > info.MaxLength)
-				name = self.Owner.PlayerName.Substring(0, info.MaxLength);
-			else
-				name = self.Owner.PlayerName;
-
 			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
+
+			UpdateNameTag(self.Owner);
+		}
+
+		void UpdateNameTag(Player owner)
+		{
+			nameTag = owner.PlayerName.Length > info.MaxLength ? owner.PlayerName.Substring(0, info.MaxLength) : owner.PlayerName;
+			color = owner.Color.RGB;
+		}
+
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			UpdateNameTag(newOwner);
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				return SpriteRenderable.None;
+
 			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
 
-			return new IRenderable[] { new TextRenderable(font, effectPos, 0, color, name) };
+			return new IRenderable[] { new TextRenderable(font, effectPos, 4096, color, nameTag) };
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
