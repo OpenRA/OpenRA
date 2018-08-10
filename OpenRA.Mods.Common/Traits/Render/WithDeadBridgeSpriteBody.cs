@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
+			if (!EnabledByDefault)
+				yield break;
+
 			var anim = new Animation(init.World, image);
 			var sequence = init.World.Type == WorldType.Editor ? EditorSequence : Sequence;
 			var palette = init.World.Type == WorldType.Editor ? init.WorldRenderer.Palette(EditorPalette) : p;
