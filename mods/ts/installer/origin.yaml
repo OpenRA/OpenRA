@@ -4,7 +4,6 @@ origin: C&C The Ultimate Collection (Origin version, English)
 	RegistryKey: EA Games\Command and Conquer Tiberian Sun
 	RegistryValue: Install Dir
 	IDFiles:
-		TSLauncher.exe: 0b3e8dfd7cb701868eccef3ba3717a1ced802707
 		GDFBinary_en_US.dll: 4bb56a449bd0003e7ae67625d90a11ae169319d6
 	Install:
 		copy: .
