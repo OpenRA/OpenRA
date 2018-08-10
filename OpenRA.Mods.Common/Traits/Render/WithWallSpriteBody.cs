@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
+			if (!EnabledByDefault)
+				yield break;
+
 			var adjacent = 0;
 
 			if (init.Contains<RuntimeNeighbourInit>())
