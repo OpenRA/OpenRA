@@ -476,11 +476,25 @@ namespace OpenRA.Server
 
 						delayedActions.Add(() =>
 						{
-							if (Dedicated && Settings.RequireAuthIDs.Any() &&
-								(profile == null || !Settings.RequireAuthIDs.Contains(profile.ProfileID)))
+							var notAuthenticated = Dedicated && profile == null && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Any());
+							var blacklisted = Dedicated && profile != null && Settings.ProfileIDBlacklist.Contains(profile.ProfileID);
+							var notWhitelisted = Dedicated && Settings.ProfileIDWhitelist.Any() &&
+								(profile == null || !Settings.ProfileIDWhitelist.Contains(profile.ProfileID));
+
+							if (notAuthenticated)
 							{
-								Log.Write("server", "Rejected connection from {0}; Not in server whitelist.", newConn.Socket.RemoteEndPoint);
-								SendOrderTo(newConn, "ServerError", "You are not authenticated for this server");
+								Log.Write("server", "Rejected connection from {0}; Not authenticated.", newConn.Socket.RemoteEndPoint);
+								SendOrderTo(newConn, "ServerError", "Server requires players to have an OpenRA forum account");
+								DropClient(newConn);
+							}
+							else if (blacklisted || notWhitelisted)
+							{
+								if (blacklisted)
+									Log.Write("server", "Rejected connection from {0}; In server blacklist.", newConn.Socket.RemoteEndPoint);
+								else
+									Log.Write("server", "Rejected connection from {0}; Not in server whitelist.", newConn.Socket.RemoteEndPoint);
+
+								SendOrderTo(newConn, "ServerError", "You do not have permission to join this server");
 								DropClient(newConn);
 							}
 							else
@@ -494,10 +508,10 @@ namespace OpenRA.Server
 				}
 				else
 				{
-					if (Dedicated && Settings.RequireAuthIDs.Any())
+					if (Dedicated && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Any()))
 					{
-						Log.Write("server", "Rejected connection from {0}; Not authenticated and whitelist is set.", newConn.Socket.RemoteEndPoint);
-						SendOrderTo(newConn, "ServerError", "You are not authenticated for this server");
+						Log.Write("server", "Rejected connection from {0}; Not authenticated.", newConn.Socket.RemoteEndPoint);
+						SendOrderTo(newConn, "ServerError", "Server requires players to have an OpenRA forum account");
 						DropClient(newConn);
 					}
 					else
