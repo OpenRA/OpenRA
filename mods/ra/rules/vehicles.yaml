@@ -409,8 +409,8 @@ JEEP:
 	WithSpriteTurret:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 2
-		PipCount: 2
+		MaxWeight: 1
+		PipCount: 1
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded

@@ -277,7 +277,7 @@ TorpTube:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			None: 40
-			Wood: 80
+			Wood: 50
 			Light: 30
 			Heavy: 30
 			Concrete: 100
