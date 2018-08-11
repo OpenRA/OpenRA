@@ -20,6 +20,7 @@ namespace OpenRA.Network
 	public class GameClient
 	{
 		public readonly string Name;
+		public readonly string Fingerprint;
 		public readonly HSLColor Color;
 		public readonly string Faction;
 		public readonly int Team;
@@ -33,6 +34,7 @@ namespace OpenRA.Network
 		public GameClient(Session.Client c)
 		{
 			Name = c.Name;
+			Fingerprint = c.Fingerprint;
 			Color = c.Color;
 			Faction = c.Faction;
 			Team = c.Team;
@@ -54,7 +56,7 @@ namespace OpenRA.Network
 			"Mod", "Version", "ModTitle", "ModWebsite", "ModIcon32",
 
 			// Current server state
-			"Map", "State", "MaxPlayers", "Protected"
+			"Map", "State", "MaxPlayers", "Protected", "Authentication"
 		};
 
 		public const int ProtocolVersion = 2;
@@ -97,6 +99,9 @@ namespace OpenRA.Network
 
 		/// <summary>Password protected</summary>
 		public readonly bool Protected = false;
+
+		/// <summary>Players must be authenticated with the OpenRA forum</summary>
+		public readonly bool Authentication = false;
 
 		/// <summary>UTC datetime string when the game changed to the Playing state</summary>
 		public readonly string Started = null;
@@ -222,6 +227,7 @@ namespace OpenRA.Network
 			ModWebsite = manifest.Metadata.Website;
 			ModIcon32 = manifest.Metadata.WebIcon32;
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);
+			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Any();
 			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToArray();
 		}
 
