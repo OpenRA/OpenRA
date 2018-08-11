@@ -11,9 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using BeaconLib;
 using OpenRA.Network;
@@ -24,8 +22,12 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifyServerStart, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
-		// 3 minutes. Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
-		const int MasterPingInterval = 60 * 3;
+		// 3 minutes (in milliseconds). Server has a 5 minute TTL for games, so give ourselves a bit of leeway.
+		const int MasterPingInterval = 60 * 3 * 1000;
+
+		// 1 second (in milliseconds) minimum delay between pings
+		const int RateLimitInterval = 1000;
+
 		static readonly Beacon LanGameBeacon;
 		static readonly Dictionary<int, string> MasterServerErrors = new Dictionary<int, string>()
 		{
@@ -34,6 +36,7 @@ namespace OpenRA.Mods.Common.Server
 		};
 
 		long lastPing = 0;
+		long lastChanged = 0;
 		bool isInitialPing = true;
 
 		volatile bool isBusy;
@@ -53,12 +56,28 @@ namespace OpenRA.Mods.Common.Server
 
 		public void Tick(S server)
 		{
-			if ((Game.RunTime - lastPing > MasterPingInterval * 1000) || isInitialPing)
-				PublishGame(server);
-			else
-				lock (masterServerMessages)
-					while (masterServerMessages.Count > 0)
-						server.SendMessage(masterServerMessages.Dequeue());
+			// Force an update if the last one was too long ago so the advertisement doesn't time out
+			if (Game.RunTime - lastChanged > MasterPingInterval)
+				lastChanged = Game.RunTime;
+
+			// Update the master server and LAN clients if something has changed
+			// Note that isBusy is set while the master server ping is running on a
+			// background thread, and limits LAN pings as well as master server pings for simplicity.
+			if (!isBusy && ((lastChanged > lastPing && Game.RunTime - lastPing > RateLimitInterval) || isInitialPing))
+			{
+				var gs = new GameServer(server);
+				if (server.Settings.AdvertiseOnline)
+					UpdateMasterServer(server, gs.ToPOSTData(false));
+
+				if (LanGameBeacon != null)
+					LanGameBeacon.BeaconData = gs.ToPOSTData(true);
+
+				lastPing = Game.RunTime;
+			}
+
+			lock (masterServerMessages)
+				while (masterServerMessages.Count > 0)
+					server.SendMessage(masterServerMessages.Dequeue());
 		}
 
 		public void ServerStarted(S server)
@@ -69,12 +88,12 @@ namespace OpenRA.Mods.Common.Server
 
 		public void LobbyInfoSynced(S server)
 		{
-			PublishGame(server);
+			lastChanged = Game.RunTime;
 		}
 
 		public void GameStarted(S server)
 		{
-			PublishGame(server);
+			lastChanged = Game.RunTime;
 		}
 
 		public void GameEnded(S server)
@@ -82,24 +101,11 @@ namespace OpenRA.Mods.Common.Server
 			if (LanGameBeacon != null)
 				LanGameBeacon.Stop();
 
-			PublishGame(server);
-		}
-
-		void PublishGame(S server)
-		{
-			// Cache the server info on the main thread to ensure data consistency
-			var gs = new GameServer(server);
-
-			if (!isBusy && server.Settings.AdvertiseOnline)
-				UpdateMasterServer(server, gs.ToPOSTData(false));
-
-			if (LanGameBeacon != null)
-				LanGameBeacon.BeaconData = gs.ToPOSTData(true);
+			lastChanged = Game.RunTime;
 		}
 
 		void UpdateMasterServer(S server, string postData)
 		{
-			lastPing = Game.RunTime;
 			isBusy = true;
 
 			Action a = () =>
