@@ -33,8 +33,6 @@ namespace OpenRA.Mods.Common.Server
 			{ 2, "Server name contains a blacklisted word." }
 		};
 
-		public int TickTimeout { get { return MasterPingInterval * 10000; } }
-
 		long lastPing = 0;
 		bool isInitialPing = true;
 

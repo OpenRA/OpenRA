@@ -170,7 +170,6 @@ namespace OpenRA.Server
 				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Id);
 				Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
-				var timeout = serverTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for (;;)
 				{
 					var checkRead = new List<Socket>();
@@ -180,7 +179,9 @@ namespace OpenRA.Server
 					checkRead.AddRange(Conns.Select(c => c.Socket));
 					checkRead.AddRange(PreConns.Select(c => c.Socket));
 
-					var localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : timeout;
+					// Block for at most 1 second in order to guarantee a minimum tick rate for ServerTraits
+					// Decrease this to 100ms to improve responsiveness if we are waiting for an authentication query
+					var localTimeout = waitingForAuthenticationCallback > 0 ? 100000 : 1000000;
 					if (checkRead.Count > 0)
 						Socket.Select(checkRead, null, null, localTimeout);
 
