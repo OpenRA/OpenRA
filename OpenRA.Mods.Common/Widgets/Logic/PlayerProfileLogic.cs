@@ -153,6 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			messageHeader.IsVisible = () => !profileLoaded;
 
 			var profileWidth = 0;
+			var maxProfileWidth = widget.Bounds.Width;
 			var messageText = "Loading player profile...";
 			var messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 
@@ -199,7 +200,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 								Func<int, int> negotiateWidth = badgeWidth =>
 								{
-									profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), widget.Bounds.Width);
+									profileWidth = Math.Min(Math.Max(badgeWidth, profileWidth), maxProfileWidth);
 									return profileWidth;
 								};
 
@@ -219,7 +220,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									}
 								}
 
-								profileWidth = Math.Min(profileWidth, widget.Bounds.Width);
+								profileWidth = Math.Min(profileWidth, maxProfileWidth);
 								header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
 								widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
 
@@ -267,8 +268,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var badgeTemplate = widget.Get("BADGE_TEMPLATE");
 			widget.RemoveChild(badgeTemplate);
 
-			var width = 0;
+			// Negotiate the label length that the tooltip will allow
+			var maxLabelWidth = 0;
+			var templateIcon = badgeTemplate.Get<SpriteWidget>("ICON");
+			var templateLabel = badgeTemplate.Get<LabelWidget>("LABEL");
+			var templateLabelFont = Game.Renderer.Fonts[templateLabel.Font];
+			foreach (var badge in profile.Badges)
+				maxLabelWidth = Math.Max(maxLabelWidth, templateLabelFont.Measure(badge.Label).X);
+
+			widget.Bounds.Width = negotiateWidth(2 * templateLabel.Bounds.Left - templateIcon.Bounds.Right + maxLabelWidth);
+
 			var badgeOffset = badgeTemplate.Bounds.Y;
+			if (profile.Badges.Any())
+				badgeOffset += 3;
+
 			foreach (var badge in profile.Badges)
 			{
 				var b = badgeTemplate.Clone();
@@ -278,10 +291,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var label = b.Get<LabelWidget>("LABEL");
 				var labelFont = Game.Renderer.Fonts[label.Font];
 
-				var labelText = WidgetUtils.TruncateText(badge.Label, label.Bounds.Width, labelFont);
+				var labelText = WidgetUtils.TruncateText(badge.Label, widget.Bounds.Width - label.Bounds.X - icon.Bounds.X, labelFont);
 				label.GetText = () => labelText;
-
-				width = Math.Max(width, label.Bounds.Left + labelFont.Measure(labelText).X + icon.Bounds.X);
 
 				b.Bounds.Y = badgeOffset;
 				widget.AddChild(b);
@@ -292,7 +303,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (badgeOffset > badgeTemplate.Bounds.Y)
 				badgeOffset += 5;
 
-			widget.Bounds.Width = negotiateWidth(width);
 			widget.Bounds.Height = badgeOffset;
 		}
 	}
