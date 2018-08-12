@@ -15,6 +15,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
@@ -23,12 +24,16 @@ namespace OpenRA.Mods.Cnc.Activities
 	{
 		readonly Actor teleporter;
 		readonly int? maximumDistance;
+		readonly bool killOnFailure;
+		readonly BitSet<DamageType> killDamageTypes;
 		CPos destination;
 		bool killCargo;
 		bool screenFlash;
 		string sound;
 
-		public Teleport(Actor teleporter, CPos destination, int? maximumDistance, bool killCargo, bool screenFlash, string sound)
+		public Teleport(Actor teleporter, CPos destination, int? maximumDistance,
+			bool killCargo, bool screenFlash, string sound, bool interruptable = true,
+			bool killOnFailure = false, BitSet<DamageType> killDamageTypes = default(BitSet<DamageType>))
 		{
 			var max = teleporter.World.Map.Grid.MaximumTileSearchRange;
 			if (maximumDistance > max)
@@ -40,17 +45,32 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.killCargo = killCargo;
 			this.screenFlash = screenFlash;
 			this.sound = sound;
+			this.killOnFailure = killOnFailure;
+			this.killDamageTypes = killDamageTypes;
+
+			if (!interruptable)
+				IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			var pc = self.TraitOrDefault<PortableChrono>();
 			if (teleporter == self && pc != null && !pc.CanTeleport)
+			{
+				if (killOnFailure)
+					self.Kill(teleporter, killDamageTypes);
+
 				return NextActivity;
+			}
 
 			var bestCell = ChooseBestDestinationCell(self, destination);
 			if (bestCell == null)
+			{
+				if (killOnFailure)
+					self.Kill(teleporter, killDamageTypes);
+
 				return NextActivity;
+			}
 
 			destination = bestCell.Value;
 
