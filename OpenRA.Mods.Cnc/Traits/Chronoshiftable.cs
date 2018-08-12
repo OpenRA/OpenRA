@@ -11,6 +11,7 @@
 
 using System.Drawing;
 using OpenRA.Mods.Cnc.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -18,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Can be teleported via Chronoshift power.")]
-	public class ChronoshiftableInfo : ITraitInfo
+	public class ChronoshiftableInfo : ConditionalTraitInfo
 	{
 		[Desc("Should the actor die instead of being teleported?")]
 		public readonly bool ExplodeInstead = false;
@@ -37,9 +38,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
-	public class Chronoshiftable : ITick, ISync, ISelectionBar, IDeathActorInitModifier, ITransformActorInitModifier, INotifyCreated
+	public class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
+		IDeathActorInitModifier, ITransformActorInitModifier, INotifyCreated
 	{
-		readonly ChronoshiftableInfo info;
 		readonly Actor self;
 		Actor chronosphere;
 		bool killCargo;
@@ -51,8 +52,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Sync] public int ReturnTicks = 0;
 
 		public Chronoshiftable(ActorInitializer init, ChronoshiftableInfo info)
+			: base(info)
 		{
-			this.info = info;
 			self = init.Self;
 
 			if (init.Contains<ChronoshiftReturnInit>())
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!info.ReturnToOrigin || ReturnTicks <= 0)
+			if (IsTraitDisabled || !Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
 			// Return to original location
