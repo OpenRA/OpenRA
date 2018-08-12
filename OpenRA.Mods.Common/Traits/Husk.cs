@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
-	public class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, IActorPreviewInitInfo
+	public class HuskInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo
 	{
 		public readonly HashSet<string> AllowedTerrain = new HashSet<string>();
 
@@ -41,6 +41,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			// IPositionable*Info*.CanEnterCell is only ever used for things like exiting production facilities,
+			// all places relevant for husks check IPositionable.CanEnterCell instead, so we can safely set this to true.
+			return true;
+		}
 	}
 
 	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
