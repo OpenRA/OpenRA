@@ -449,8 +449,10 @@ lobby-bits: chrome.png
 	colorpicker: 257,33,14,14
 	huepicker: 388,96,7,15
 	kick: 386,115,11,11
-	protected: 403,97,10,13
-	protected-disabled: 403,113,10,13
+	protected: 402,97,12,13
+	protected-disabled: 402,113,12,13
+	authentication: 418,97,12,13
+	authentication-disabled: 418,113,12,13
 	admin-registered: 448,112,16,16
 	admin-anonymous: 464,112,16,16
 	player-registered: 480,112,16,16

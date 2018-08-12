@@ -599,6 +599,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							password.GetImageName = () => canJoin ? "protected" : "protected-disabled";
 						}
 
+						var auth = item.GetOrNull<ImageWidget>("REQUIRES_AUTHENTICATION");
+						if (auth != null)
+						{
+							auth.IsVisible = () => game.Authentication;
+							auth.GetImageName = () => canJoin ? "authentication" : "authentication-disabled";
+
+							if (game.Protected && password != null)
+								auth.Bounds.X -= password.Bounds.Width + 5;
+						}
+
 						var players = item.GetOrNull<LabelWithTooltipWidget>("PLAYERS");
 						if (players != null)
 						{
