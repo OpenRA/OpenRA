@@ -50,6 +50,10 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while deployed.")]
+		public readonly string DeployedCondition = null;
+
 		public WeaponInfo ThumpDamageWeaponInfo { get; private set; }
 		public WeaponInfo DetonationWeaponInfo { get; private set; }
 
@@ -75,12 +79,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, ITick, IPreventsTeleport, IIssueDeployOrder
+	class MadTank : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, ITick, IIssueDeployOrder
 	{
 		readonly Actor self;
 		readonly MadTankInfo info;
 		readonly WithFacingSpriteBody wfsb;
 		readonly ScreenShaker screenShaker;
+		ConditionManager conditionManager;
 		bool deployed;
 		int tick;
 
@@ -90,6 +95,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 			wfsb = self.Trait<WithFacingSpriteBody>();
 			screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
 		void ITick.Tick(Actor self)
@@ -171,6 +181,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (deployed)
 				return;
+
+			if (conditionManager != null && !string.IsNullOrEmpty(info.DeployedCondition))
+				conditionManager.GrantCondition(self, info.DeployedCondition);
 
 			self.World.AddFrameEndTask(w => EjectDriver());
 			if (info.ThumpSequence != null)
