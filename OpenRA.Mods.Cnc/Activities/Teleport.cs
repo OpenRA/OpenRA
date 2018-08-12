@@ -19,8 +19,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	public interface IPreventsTeleport { bool PreventsTeleport(Actor self); }
-
 	public class Teleport : Activity
 	{
 		readonly Actor teleporter;
@@ -49,10 +47,6 @@ namespace OpenRA.Mods.Cnc.Activities
 			var pc = self.TraitOrDefault<PortableChrono>();
 			if (teleporter == self && pc != null && !pc.CanTeleport)
 				return NextActivity;
-
-			foreach (var condition in self.TraitsImplementing<IPreventsTeleport>())
-				if (condition.PreventsTeleport(self))
-					return NextActivity;
 
 			var bestCell = ChooseBestDestinationCell(self, destination);
 			if (bestCell == null)

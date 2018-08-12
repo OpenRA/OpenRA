@@ -769,7 +769,10 @@ QTNK:
 	Armor:
 		Type: Heavy
 	Mobile:
+		RequiresCondition: !deployed
 		Speed: 56
+	Chronoshiftable:
+		RequiresCondition: !deployed
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -777,6 +780,7 @@ QTNK:
 		Range: 4c0
 	SelectionDecorations:
 	MadTank:
+		DeployedCondition: deployed
 	Targetable:
 		TargetTypes: Ground, MADTank, Repair, Vehicle
 	Selectable:
