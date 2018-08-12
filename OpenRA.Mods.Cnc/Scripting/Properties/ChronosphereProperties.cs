@@ -37,7 +37,9 @@ namespace OpenRA.Mods.Cnc.Scripting
 							kv.Key.WrappedClrType().Name, kv.Value.WrappedClrType().Name));
 				}
 
-				var cs = actor.TraitOrDefault<Chronoshiftable>();
+				var cs = actor.TraitsImplementing<Chronoshiftable>()
+					.FirstEnabledTraitOrDefault();
+
 				if (cs != null && cs.CanChronoshiftTo(actor, cell))
 					cs.Teleport(actor, cell, duration, killCargo, Self);
 			}
