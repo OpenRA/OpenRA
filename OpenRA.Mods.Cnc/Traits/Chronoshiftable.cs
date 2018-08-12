@@ -10,6 +10,7 @@
 #endregion
 
 using System.Drawing;
+using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -24,7 +25,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Should the actor die instead of being teleported?")]
 		public readonly bool ExplodeInstead = false;
 
-		[Desc("Types of damage that this trait causes to self when 'ExplodeInstead' is true. Leave empty for no damage types.")]
+		[Desc("Types of damage that this trait causes to self when 'ExplodeInstead' is true",
+			"or the return-to-origin is blocked. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
@@ -78,7 +80,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (--ReturnTicks == 0)
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, Info.ChronoshiftSound));
+
+				// The actor is killed using Info.DamageTypes if the teleport fails
+				self.QueueActivity(new Teleport(chronosphere, Origin, null, true, killCargo, Info.ChronoshiftSound,
+					false, true, Info.DamageTypes));
 			}
 		}
 
