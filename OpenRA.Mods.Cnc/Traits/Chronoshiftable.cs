@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The color the bar of the 'return-to-origin' logic has.")]
 		public readonly Color TimeBarColor = Color.White;
 
-		public object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
+		public override object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
 	public class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (--ReturnTicks == 0)
 			{
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, info.ChronoshiftSound));
+				self.QueueActivity(new Teleport(chronosphere, Origin, null, killCargo, true, Info.ChronoshiftSound));
 			}
 		}
 
@@ -91,19 +91,22 @@ namespace OpenRA.Mods.Cnc.Traits
 		public virtual bool CanChronoshiftTo(Actor self, CPos targetLocation)
 		{
 			// TODO: Allow enemy units to be chronoshifted into bad terrain to kill them
-			return iPositionable != null && iPositionable.CanEnterCell(targetLocation);
+			return !IsTraitDisabled && iPositionable != null && iPositionable.CanEnterCell(targetLocation);
 		}
 
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
+			if (IsTraitDisabled)
+				return false;
+
 			// Some things appear chronoshiftable, but instead they just die.
-			if (info.ExplodeInstead)
+			if (Info.ExplodeInstead)
 			{
 				self.World.AddFrameEndTask(w =>
 				{
 					// Damage is inflicted by the chronosphere
 					if (!self.Disposed)
-						self.Kill(chronosphere, info.DamageTypes);
+						self.Kill(chronosphere, Info.DamageTypes);
 				});
 				return true;
 			}
@@ -123,7 +126,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			// Set up the teleport
 			self.CancelActivity();
-			self.QueueActivity(new Teleport(chronosphere, targetLocation, null, killCargo, true, info.ChronoshiftSound));
+			self.QueueActivity(new Teleport(chronosphere, targetLocation, null, killCargo, true, Info.ChronoshiftSound));
 
 			return true;
 		}
@@ -131,7 +134,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		// Show the remaining time as a bar
 		float ISelectionBar.GetValue()
 		{
-			if (!info.ReturnToOrigin)
+			if (IsTraitDisabled || !Info.ReturnToOrigin)
 				return 0f;
 
 			// Otherwise an empty bar is rendered all the time
@@ -141,12 +144,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			return (float)ReturnTicks / duration;
 		}
 
-		Color ISelectionBar.GetColor() { return info.TimeBarColor; }
+		Color ISelectionBar.GetColor() { return Info.TimeBarColor; }
 		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
 		void ModifyActorInit(TypeDictionary init)
 		{
-			if (!info.ReturnToOrigin || ReturnTicks <= 0)
+			if (IsTraitDisabled || !Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
 			init.Add(new ChronoshiftOriginInit(Origin));
