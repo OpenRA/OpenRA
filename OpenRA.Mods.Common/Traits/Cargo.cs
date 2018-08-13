@@ -384,8 +384,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (!inAir && positionable.CanEnterCell(self.Location, self, false))
 					{
 						self.World.AddFrameEndTask(w => w.Add(passenger));
-						var nbm = passenger.TraitOrDefault<INotifyBlockingMove>();
-						if (nbm != null)
+						var nbms = passenger.TraitsImplementing<INotifyBlockingMove>();
+						foreach (var nbm in nbms)
 							nbm.OnNotifyBlockingMove(passenger, passenger);
 					}
 					else
