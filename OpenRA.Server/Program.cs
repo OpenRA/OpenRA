@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using OpenRA.Support;
@@ -23,6 +22,10 @@ namespace OpenRA.Server
 		static void Main(string[] args)
 		{
 			var arguments = new Arguments(args);
+			var supportDirArg = arguments.GetValue("Engine.SupportDir", null);
+			if (supportDirArg != null)
+				Platform.OverrideSupportDir(supportDirArg);
+
 			Log.AddChannel("debug", "dedicated-debug.log");
 			Log.AddChannel("perf", "dedicated-perf.log");
 			Log.AddChannel("server", "dedicated-server.log");

@@ -258,6 +258,10 @@ namespace OpenRA
 
 		static void Initialize(Arguments args)
 		{
+			var supportDirArg = args.GetValue("Engine.SupportDir", null);
+			if (supportDirArg != null)
+				Platform.OverrideSupportDir(supportDirArg);
+
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			// Load the engine version as early as possible so it can be written to exception logs
