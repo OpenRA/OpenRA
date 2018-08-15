@@ -887,6 +887,7 @@ repair_pad:
 	RepairsUnits:
 		Interval: 10
 		HpPerStep: 800
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
