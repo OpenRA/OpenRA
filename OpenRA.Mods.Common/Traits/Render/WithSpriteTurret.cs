@@ -25,6 +25,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "turret";
 
+		[Desc("Custom palette name")]
+		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+
+		[Desc("Palette is a player palette BaseName")]
+		public readonly bool IsPlayerPalette = false;
+
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
@@ -54,6 +60,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var tmpOffset = offset();
 				return -(tmpOffset.Y + tmpOffset.Z) + 1;
 			};
+
+			if (IsPlayerPalette)
+				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().PlayerName);
+			else if (Palette != null)
+				p = init.WorldRenderer.Palette(Palette);
 
 			yield return new SpriteActorPreview(anim, offset, zOffset, p, rs.Scale);
 		}
@@ -86,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(new AnimationWithOffset(DefaultAnimation,
 				() => TurretOffset(self),
 				() => IsTraitDisabled || !buildComplete,
-				p => RenderUtils.ZOffsetFromCenter(self, p, 1)));
+				p => RenderUtils.ZOffsetFromCenter(self, p, 1)), info.Palette, info.IsPlayerPalette);
 
 			// Restrict turret facings to match the sprite
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
