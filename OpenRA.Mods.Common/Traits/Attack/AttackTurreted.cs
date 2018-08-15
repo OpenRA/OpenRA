@@ -46,5 +46,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			return turretReady && base.CanAttack(self, target);
 		}
+
+		public override void OnStopOrder(Actor self)
+		{
+			foreach (var turret in turrets)
+				turret.DesiredFacing = turret.TurretFacing;
+
+			base.OnStopOrder(self);
+		}
 	}
 }
