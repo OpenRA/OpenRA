@@ -191,6 +191,7 @@ SPEN:
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
@@ -307,6 +308,7 @@ SYRD:
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	RallyPoint:
@@ -1869,6 +1871,7 @@ FIX:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 7
+		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
 	WithRepairAnimation:

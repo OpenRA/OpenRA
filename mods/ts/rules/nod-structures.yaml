@@ -234,6 +234,7 @@ NAHPAD:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		StartRepairingNotification: Repairing
 	ProductionBar:
 	WithIdleOverlay@PLATFORM:
 		Sequence: idle-platform

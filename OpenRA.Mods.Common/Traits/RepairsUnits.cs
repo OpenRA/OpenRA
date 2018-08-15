@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Interval = 24;
 
 		[Desc("The sound played when starting to repair a unit.")]
-		public readonly string StartRepairingNotification = "Repairing";
+		public readonly string StartRepairingNotification = null;
 
 		[Desc("The sound played when repairing a unit is done.")]
 		public readonly string FinishRepairingNotification = null;
