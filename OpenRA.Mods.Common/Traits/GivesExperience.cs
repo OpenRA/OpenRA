@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				: valued != null ? valued.Cost : 0;
 
 			var experienceModifier = self.TraitsImplementing<IGivesExperienceModifier>().Select(x => x.GetGivesExperienceModifier());
-			Util.ApplyPercentageModifiers(exp, experienceModifier);
+			exp = Util.ApplyPercentageModifiers(exp, experienceModifier);
 
 			var killer = e.Attacker.TraitOrDefault<GainsExperience>();
 			if (killer != null)
