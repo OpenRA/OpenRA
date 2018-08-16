@@ -22,10 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
 		[FieldLoader.Require]
-		[Desc("Condition to grant at each level.",
-			"Key is the XP requirements for each level as a percentage of our own value.",
-			"Value is the condition to grant.")]
+		[Desc("Condition to grant at each level.")]
 		public readonly Dictionary<int, string> Conditions = null;
+
+		[Desc("If true Key of `Conditions` is a percentage of units value,",
+			"if false it is exact experience amount.")]
+		public readonly bool RelateToValue = true;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
@@ -62,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			MaxLevel = info.Conditions.Count;
 			var cost = self.Info.TraitInfo<ValuedInfo>().Cost;
 			foreach (var kv in info.Conditions)
-				nextLevel.Add(Pair.New(kv.Key * cost, kv.Value));
+				nextLevel.Add(Pair.New(kv.Key * (info.RelateToValue ? cost : 1), kv.Value));
 
 			if (init.Contains<ExperienceInit>())
 				initialExperience = init.Get<ExperienceInit, int>();
