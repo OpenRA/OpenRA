@@ -139,7 +139,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!LandableTerrainTypes.Contains(type))
 				return false;
 
-			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null)
+			var buildings = world.WorldActor.Trait<BuildingInfluence>().GetBuildingsAt(cell);
+			if (buildings != null && buildings.Any())
 				return false;
 
 			if (!checkTransientActors)

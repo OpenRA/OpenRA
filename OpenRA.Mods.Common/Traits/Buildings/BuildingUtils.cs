@@ -22,9 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			var building = world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell);
-			if (building != null)
+			var buildings = world.WorldActor.Trait<BuildingInfluence>().GetBuildingsAt(cell);
+
+			if (buildings != null)
 			{
+				foreach (var building in buildings)
+				{
 				if (ai == null)
 					return false;
 
@@ -33,8 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				if (!building.TraitsImplementing<Replaceable>().Any(p => !p.IsTraitDisabled &&
-					p.Info.Types.Overlaps(replacementInfo.ReplaceableTypes)))
+																		 p.Info.Types.Overlaps(replacementInfo.ReplaceableTypes)))
 					return false;
+				}
 			}
 			else if (!bi.AllowInvalidPlacement && world.ActorMap.GetActorsAt(cell).Any(a => a != toIgnore))
 				return false;

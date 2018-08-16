@@ -126,24 +126,27 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else if (os == "PlacePlug")
 				{
-					var host = self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(order.TargetLocation);
-					if (host == null)
+					var hosts = self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingsAt(order.TargetLocation);
+					if (hosts == null || !hosts.Any())
 						return;
 
-					var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
-					if (plugInfo == null)
-						return;
+					foreach (var host in hosts)
+					{
+						var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
+						if (plugInfo == null)
+							return;
 
-					var location = host.Location;
-					var pluggable = host.TraitsImplementing<Pluggable>()
-						.FirstOrDefault(p => location + p.Info.Offset == order.TargetLocation && p.AcceptsPlug(host, plugInfo.Type));
+						var location = host.Location;
+						var pluggable = host.TraitsImplementing<Pluggable>()
+							.FirstOrDefault(p => location + p.Info.Offset == order.TargetLocation && p.AcceptsPlug(host, plugInfo.Type));
 
-					if (pluggable == null)
-						return;
+						if (pluggable == null)
+							return;
 
-					pluggable.EnablePlug(host, plugInfo.Type);
-					foreach (var s in buildingInfo.BuildSounds)
-						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, host.CenterPosition);
+						pluggable.EnablePlug(host, plugInfo.Type);
+						foreach (var s in buildingInfo.BuildSounds)
+							Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, host.CenterPosition);
+					}
 				}
 				else
 				{
@@ -157,9 +160,10 @@ namespace OpenRA.Mods.Common.Traits
 						var buildingInfluence = self.World.WorldActor.Trait<BuildingInfluence>();
 						foreach (var t in buildingInfo.Tiles(order.TargetLocation))
 						{
-							var host = buildingInfluence.GetBuildingAt(t);
-							if (host != null)
-								host.World.Remove(host);
+							var hosts = buildingInfluence.GetBuildingsAt(t);
+							if (hosts != null)
+								foreach (var host in hosts)
+									host.World.Remove(host);
 						}
 					}
 
