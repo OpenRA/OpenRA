@@ -259,6 +259,7 @@
 		Condition: damaged
 		ValidDamageStates: Light, Medium, Heavy, Critical
 	Repairable:
+		RepairActors: fix
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
@@ -512,6 +513,8 @@
 		Types: Ship
 	Chronoshiftable:
 	RepairableNear:
+		RepairActors: spen, syrd
+		CloseEnough: 4c0
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
@@ -603,7 +606,7 @@
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
 	Repairable:
-		RepairBuildings: fix
+		RepairActors: fix
 
 ^Helicopter:
 	Inherits: ^Plane

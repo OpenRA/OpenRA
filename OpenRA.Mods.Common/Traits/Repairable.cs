@@ -20,30 +20,34 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	class RepairableInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
+	public class RepairableInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
 	{
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
+		[FieldLoader.Require]
+		public readonly HashSet<string> RepairActors = new HashSet<string> { };
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairUnit trait will be used.")]
+		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairsUnits trait will be used.")]
 		public readonly int HpPerStep = -1;
+
+		[Desc("Actor needs to be at least this close to the repairer to be repaired.")]
+		public readonly WDist CloseEnough = new WDist(512);
 
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
-	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated
+	public class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated
 	{
 		public readonly RepairableInfo Info;
+		protected readonly IMove Movement;
 		readonly IHealth health;
-		readonly IMove movement;
 		Rearmable rearmable;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			Info = info;
 			health = self.Trait<IHealth>();
-			movement = self.Trait<IMove>();
+			Movement = self.Trait<IMove>();
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -51,50 +55,57 @@ namespace OpenRA.Mods.Common.Traits
 			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		protected virtual string OrderString { get { return "Repair"; } }
+
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Repair", 5, CanRepairAt, _ => CanRepair() || CanRearm());
+				yield return new EnterAlliedActorTargeter<BuildingInfo>(OrderString, 5, CanRepairAt, _ => CanRepair() || CanRearm());
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Repair")
+			if (order.OrderID == OrderString)
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
 
-		bool CanRepairAt(Actor target)
+		protected virtual bool CanRepairAt(Actor target)
 		{
-			return Info.RepairBuildings.Contains(target.Info.Name);
+			return Info.RepairActors.Contains(target.Info.Name);
 		}
 
-		bool CanRearmAt(Actor target)
+		protected virtual bool CanRearmAt(Actor target)
 		{
 			return rearmable != null && rearmable.Info.RearmActors.Contains(target.Info.Name);
 		}
 
-		bool CanRepair()
+		protected virtual bool CanRepair()
 		{
 			return health.DamageState > DamageState.Undamaged;
 		}
 
-		bool CanRearm()
+		protected virtual bool CanRearm()
 		{
 			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Repair" && (CanRepair() || CanRearm()) ? Info.Voice : null;
+			return order.OrderString == OrderString && (CanRepair() || CanRearm()) ? Info.Voice : null;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Repair")
+			ResolveOrder(self, order);
+		}
+
+		protected virtual void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == OrderString)
 			{
 				// Repair orders are only valid for own/allied actors,
 				// which are guaranteed to never be frozen.
@@ -114,33 +125,43 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(order.Target, Color.Green);
 
 				var activities = ActivityUtils.SequenceActivities(
-					movement.MoveToTarget(self, order.Target, targetLineColor: Color.Green),
-					new CallFunc(() => AfterReachActivities(self, order, movement)));
+					Movement.MoveToTarget(self, order.Target, targetLineColor: Color.Green),
+					new CallFunc(() => AfterReachActivities(self, order, Movement)));
 
 				self.QueueActivity(new WaitForTransport(self, activities));
 
-				TryCallTransport(self, order.Target, new CallFunc(() => AfterReachActivities(self, order, movement)));
+				TryCallTransport(self, order.Target, new CallFunc(() => AfterReachActivities(self, order, Movement)));
 			}
 		}
 
-		void AfterReachActivities(Actor self, Order order, IMove movement)
+		protected virtual void AfterReachActivities(Actor self, Order order, IMove movement)
 		{
 			if (order.Target.Type != TargetType.Actor)
 				return;
 
 			var targetActor = order.Target.Actor;
-			if (!targetActor.IsInWorld || targetActor.IsDead || targetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
+			if (!targetActor.IsInWorld || targetActor.IsDead)
+				return;
+
+			var canRepairAtTarget = targetActor.TraitsImplementing<RepairsUnits>().Any(r => !r.IsTraitDisabled);
+			var canRearmAtTarget = CanRearmAt(targetActor) && CanRearm();
+
+			if (!canRepairAtTarget && !canRearmAtTarget)
 				return;
 
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
 			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
-			if (CanRearmAt(targetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self, targetActor, new WDist(512)));
 
-			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, targetActor, new WDist(512)));
+			// Add a CloseEnough range to ensure we're close enough to the host actor
+			if (canRearmAtTarget)
+				self.QueueActivity(new Rearm(self, targetActor, Info.CloseEnough));
 
+			// Add a CloseEnough range to ensure we're close enough to the host actor
+			if (canRepairAtTarget)
+				self.QueueActivity(new Repair(self, targetActor, Info.CloseEnough));
+
+			// If actor moved to resupplier center, try to leave it
 			var rp = targetActor.TraitOrDefault<RallyPoint>();
 			if (rp != null)
 			{
@@ -152,12 +173,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Actor FindRepairBuilding(Actor self)
+		public virtual Actor FindRepairBuilding(Actor self)
 		{
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					Info.RepairBuildings.Contains(a.Actor.Info.Name))
+					Info.RepairActors.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.

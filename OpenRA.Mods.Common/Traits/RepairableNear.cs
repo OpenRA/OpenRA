@@ -18,89 +18,47 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RepairableNearInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
+	// DEPRECATED: This trait will soon be merged into Repairable
+	public class RepairableNearInfo : RepairableInfo
 	{
-		[ActorReference] public readonly HashSet<string> Buildings = new HashSet<string> { "spen", "syrd" };
-		public readonly WDist CloseEnough = WDist.FromCells(4);
-		[VoiceReference] public readonly string Voice = "Action";
-
-		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
 	}
 
-	class RepairableNear : IIssueOrder, IResolveOrder, IOrderVoice
+	public class RepairableNear : Repairable
 	{
-		readonly Actor self;
-		readonly RepairableNearInfo info;
-		readonly IMove movement;
-
 		public RepairableNear(Actor self, RepairableNearInfo info)
-		{
-			this.self = self;
-			this.info = info;
-			movement = self.Trait<IMove>();
-		}
+			: base(self, info) { }
 
-		public IEnumerable<IOrderTargeter> Orders
-		{
-			get
-			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("RepairNear", 5,
-					target => CanRepairAt(target), _ => ShouldRepair());
-			}
-		}
+		protected override string OrderString { get { return "RepairNear"; } }
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
-		{
-			if (order.OrderID == "RepairNear")
-				return new Order(order.OrderID, self, target, queued);
-
-			return null;
-		}
-
-		bool CanRepairAt(Actor target)
-		{
-			return info.Buildings.Contains(target.Info.Name);
-		}
-
-		bool ShouldRepair()
-		{
-			return self.GetDamageState() > DamageState.Undamaged;
-		}
-
-		public string VoicePhraseForOrder(Actor self, Order order)
-		{
-			return order.OrderString == "RepairNear" && ShouldRepair() ? info.Voice : null;
-		}
-
-		public void ResolveOrder(Actor self, Order order)
+		protected override void ResolveOrder(Actor self, Order order)
 		{
 			// RepairNear orders are only valid for own/allied actors,
 			// which are guaranteed to never be frozen.
-			if (order.OrderString != "RepairNear" || order.Target.Type != TargetType.Actor)
+			if (order.OrderString != OrderString || order.Target.Type != TargetType.Actor)
 				return;
 
-			if (!CanRepairAt(order.Target.Actor) || !ShouldRepair())
+			// Aircraft handle Repair orders directly in the Aircraft trait
+			if (self.Info.HasTraitInfo<AircraftInfo>())
+				return;
+
+			var canRepairAtTarget = CanRepairAt(order.Target.Actor) && CanRepair();
+			var canRearmAtTarget = CanRearmAt(order.Target.Actor) && CanRearm();
+			if (!canRepairAtTarget && !canRearmAtTarget)
 				return;
 
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough, targetLineColor: Color.Green));
-			self.QueueActivity(new Repair(self, order.Target.Actor, info.CloseEnough));
+			self.QueueActivity(Movement.MoveWithinRange(order.Target, Info.CloseEnough, targetLineColor: Color.Green));
+
+			if (canRearmAtTarget)
+				self.QueueActivity(new Rearm(self, order.Target.Actor, Info.CloseEnough));
+
+			if (canRepairAtTarget)
+				self.QueueActivity(new Repair(self, order.Target.Actor, Info.CloseEnough));
 
 			self.SetTargetLine(order.Target, Color.Green, false);
-		}
-
-		public Actor FindRepairBuilding(Actor self)
-		{
-			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
-				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
-					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					info.Buildings.Contains(a.Actor.Info.Name))
-				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
-
-			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
-			return repairBuilding.FirstOrDefault().Actor;
 		}
 	}
 }
