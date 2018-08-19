@@ -110,7 +110,7 @@ namespace OpenRA.Mods.AS.Traits
 			this.IsPrimary = true;
 
 			var pri = manager.PrimaryActor;
-			if (pri != null)
+			if (pri != null && !pri.IsDead)
 				pri.Trait<TeleportNetworkPrimaryExit>().RevokePrimary(pri);
 
 			manager.PrimaryActor = self;
