@@ -20,7 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RepairableNearInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
 	{
-		[ActorReference] public readonly HashSet<string> Buildings = new HashSet<string> { "spen", "syrd" };
+		[FieldLoader.Require]
+		[ActorReference] public readonly HashSet<string> RepairActors = new HashSet<string> { };
+
 		public readonly WDist CloseEnough = WDist.FromCells(4);
 		[VoiceReference] public readonly string Voice = "Action";
 
@@ -59,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepairAt(Actor target)
 		{
-			return info.Buildings.Contains(target.Info.Name);
+			return info.RepairActors.Contains(target.Info.Name);
 		}
 
 		bool ShouldRepair()
@@ -96,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					info.Buildings.Contains(a.Actor.Info.Name))
+					info.RepairActors.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.

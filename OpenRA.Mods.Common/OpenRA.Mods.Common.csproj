@@ -953,6 +953,7 @@
     <Compile Include="UpdateRules\Rules\20181215\RemovedAutoCarryallCircleTurnSpeed.cs" />
     <Compile Include="UpdateRules\Rules\20181215\ReplacedWithChargeAnimation.cs" />
     <Compile Include="UpdateRules\Rules\20181215\RefactorResourceLevelAnimating.cs" />
+    <Compile Include="UpdateRules\Rules\20190106\StreamlineRepairableTraits.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />

@@ -472,7 +472,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			return (rearmableInfo != null && rearmableInfo.RearmActors.Contains(a.Info.Name))
-				|| (repairableInfo != null && repairableInfo.RepairBuildings.Contains(a.Info.Name));
+				|| (repairableInfo != null && repairableInfo.RepairActors.Contains(a.Info.Name));
 		}
 
 		public int MovementSpeed
@@ -512,7 +512,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new Rearm(self, a, WDist.Zero);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
-			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(name))
+			if (repairableInfo != null && repairableInfo.RepairActors.Contains(name))
 				yield return new Repair(self, a, WDist.Zero);
 		}
 

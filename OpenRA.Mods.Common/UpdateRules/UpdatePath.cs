@@ -88,7 +88,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("release-20181215", "playtest-20190106", new UpdateRule[]
 			{
-				// Bleed only changes here
 				new AddCarryableHarvester(),
 				new RenameEditorTilesetFilter(),
 				new DefineNotificationDefaults(),
@@ -117,8 +116,10 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("playtest-20190106", new UpdateRule[]
 			{
+				// Bleed only changes here
 				new RemoveAttackSuicides(),
 				new MakeMobilePausableConditional(),
+				new StreamlineRepairableTraits(),
 			})
 		};
 
