@@ -86,6 +86,7 @@
     <Compile Include="Effects\WarheadTrailProjectileEffect.cs" />
     <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
+    <Compile Include="Graphics\TintedCell.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
     <Compile Include="Projectiles\ArcLaserZap.cs" />
     <Compile Include="Projectiles\AthenaProjectile.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\Berserkable.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnProduction.cs" />
+    <Compile Include="Traits\DamagedByTintedCells.cs" />
     <Compile Include="Traits\DelayedWeaponAttachable.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Traits\TeleportNetworkTransportable.cs" />
     <Compile Include="Traits\Warheads\AttachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\CaptureActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\CreateTintedCellsWarhead.cs" />
     <Compile Include="Traits\Warheads\DetachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="Traits\ProximityBounty.cs" />
     <Compile Include="Traits\ActorTag.cs" />
     <Compile Include="Scripting\Global\ActorTagGlobal.cs" />
+    <Compile Include="Traits\World\TintedCellsLayer.cs" />
     <Compile Include="Traits\World\WeaponStorm.cs" />
     <Compile Include="UtilityCommands\ImportASMapCommand.cs" />
     <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
