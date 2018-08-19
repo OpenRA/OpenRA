@@ -96,6 +96,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemovedNotifyBuildComplete(),
 				new LowPowerSlowdownToModifier(),
 				new RenameCrateActionNotification(),
+				new DefineAIModulesPart1(),
 			})
 		};
 

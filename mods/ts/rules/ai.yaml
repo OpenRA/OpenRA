@@ -77,3 +77,5 @@ Player:
 			medic: 3
 			repair: 3
 		SquadSize: 20
+	AIHarvesterModule:
+	AIDamageReactionModule:
