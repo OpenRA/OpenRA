@@ -187,7 +187,7 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	Repairable:
-		RepairBuildings: repair_pad
+		RepairActors: repair_pad
 	Guard:
 		Voice: Guard
 	Guardable:

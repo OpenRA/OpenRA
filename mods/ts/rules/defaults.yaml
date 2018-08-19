@@ -730,7 +730,7 @@
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Vehicle, Repair
 	Repairable:
-		RepairBuildings: gadept
+		RepairActors: gadept
 		Voice: Move
 	Passenger:
 		CargoType: Vehicle
@@ -822,7 +822,7 @@
 	SelectionDecorations:
 		Palette: pips
 	Repairable:
-		RepairBuildings: gadept
+		RepairActors: gadept
 		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne

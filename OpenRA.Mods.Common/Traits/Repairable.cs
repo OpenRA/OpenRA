@@ -22,12 +22,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be sent to a structure for repairs.")]
 	class RepairableInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
 	{
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { "fix" };
+		[FieldLoader.Require]
+		public readonly HashSet<string> RepairActors = new HashSet<string> { };
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairUnit trait will be used.")]
+		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairsUnits trait will be used.")]
 		public readonly int HpPerStep = -1;
+
+		[Desc("Actor has to move onto the repairer to be repaired.")]
+		public readonly bool RequiresEnteringResupplier = true;
+
+		[Desc("Actor needs to be at least this close to the repairer to be repaired.")]
+		public readonly WDist CloseEnough = new WDist(512);
 
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
@@ -69,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepairAt(Actor target)
 		{
-			return Info.RepairBuildings.Contains(target.Info.Name);
+			return Info.RepairActors.Contains(target.Info.Name);
 		}
 
 		bool CanRearmAt(Actor target)
@@ -126,15 +133,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
-			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
+			if (Info.RequiresEnteringResupplier)
+				self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
+			else
+				self.QueueActivity(movement.MoveWithinRange(order.Target, Info.CloseEnough));
+
 			if (CanRearmAt(targetActor) && CanRearm())
 				self.QueueActivity(new Rearm(self, targetActor, new WDist(512)));
 
-			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, targetActor, new WDist(512)));
+			// Add a CloseEnough range to ensure we're close enough to the host actor
+			self.QueueActivity(new Repair(self, targetActor, Info.CloseEnough));
 
+			// If actor moved to resupplier center, try to leave it
 			var rp = targetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
+			if (rp != null && Info.RequiresEnteringResupplier)
 			{
 				self.QueueActivity(new CallFunc(() =>
 				{
@@ -149,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					Info.RepairBuildings.Contains(a.Actor.Info.Name))
+					Info.RepairActors.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
