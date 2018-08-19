@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyFollow : Activity
 	{
 		Target target;
-		Aircraft plane;
+		Aircraft aircraft;
 		WDist minRange;
 		WDist maxRange;
 
 		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange)
 		{
 			this.target = target;
-			plane = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 			this.minRange = minRange;
 			this.maxRange = maxRange;
 		}
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (plane.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
 			{
-				Fly.FlyToward(self, plane, plane.Facing, plane.Info.CruiseAltitude);
+				Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 				return this;
 			}
 

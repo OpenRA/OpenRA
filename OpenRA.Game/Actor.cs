@@ -124,9 +124,9 @@ namespace OpenRA
 			world.AddFrameEndTask(w =>
 			{
 				// Caching this in a AddFrameEndTask, because trait construction order might cause problems if done directly at creation time.
-				// All actors that can move should have IMove, if not it's pretty safe to assume the actor is immobile and
+				// All actors that can move or teleport should have IPositionable, if not it's pretty safe to assume the actor is completely immobile and
 				// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
-				if (!Info.HasTraitInfo<IMoveInfo>() && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled))
+				if (!Info.HasTraitInfo<IPositionableInfo>() && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled))
 					staticTargetablePositions = targetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
 			});
 

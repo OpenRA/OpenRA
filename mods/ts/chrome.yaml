@@ -377,6 +377,8 @@ lobby-bits: buttons.png
 	huepicker: 194,0,7,15
 	protected: 202,0,10,13
 	protected-disabled: 213,0,10,13
+	authentication: 199,16,12,13
+	authentication-disabled: 212,16,12,13
 	admin-registered: 224,0,16,16
 	admin-anonymous: 240,0,16,16
 	player-registered: 224,16,16,16

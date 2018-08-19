@@ -638,7 +638,7 @@ Actors:
 	Detonator: CRATE.plain
 		Location: 59,43
 		Owner: GDI
-	Radar: hq
+	CommCenter: hq
 		Location: 57,32
 		Owner: GDI
 	Actor187: jeep

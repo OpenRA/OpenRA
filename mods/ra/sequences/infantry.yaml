@@ -1169,19 +1169,19 @@ einstein:
 		Facings: 8
 		Tick: 80
 	die1:
-		Start: 115
+		Start: 120
 		Length: 8
 	die2:
-		Start: 123
+		Start: 128
 		Length: 8
 	die3:
-		Start: 135
+		Start: 136
 		Length: 12
 	die4:
-		Start: 135
+		Start: 136
 		Length: 12
 	die5:
-		Start: 147
+		Start: 148
 		Length: 17
 	die6: electro
 		Length: *
@@ -1215,19 +1215,19 @@ delphi:
 		Facings: 8
 		Tick: 80
 	die1:
-		Start: 115
+		Start: 329
 		Length: 8
 	die2:
-		Start: 123
+		Start: 337
 		Length: 8
 	die3:
-		Start: 135
+		Start: 345
 		Length: 12
 	die4:
-		Start: 135
+		Start: 345
 		Length: 12
 	die5:
-		Start: 147
+		Start: 357
 		Length: 17
 	die6: electro
 		Length: *
@@ -1261,19 +1261,19 @@ chan:
 		Facings: 8
 		Tick: 80
 	die1:
-		Start: 115
+		Start: 120
 		Length: 8
 	die2:
-		Start: 123
+		Start: 128
 		Length: 8
 	die3:
-		Start: 135
+		Start: 136
 		Length: 12
 	die4:
-		Start: 135
+		Start: 136
 		Length: 12
 	die5:
-		Start: 147
+		Start: 148
 		Length: 17
 	die6: electro
 		Length: *

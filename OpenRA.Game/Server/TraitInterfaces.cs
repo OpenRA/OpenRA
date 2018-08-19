@@ -23,11 +23,7 @@ namespace OpenRA.Server
 	public interface IStartGame { void GameStarted(Server server); }
 	public interface IClientJoined { void ClientJoined(Server server, Connection conn); }
 	public interface IEndGame { void GameEnded(Server server); }
-	public interface ITick
-	{
-		void Tick(Server server);
-		int TickTimeout { get; }
-	}
+	public interface ITick { void Tick(Server server); }
 
 	public abstract class ServerTrait { }
 

@@ -91,12 +91,12 @@ end
 Atk3TriggerFunction = function()
 	if not Atk3Switch then
 		Atk3Switch = true
-		if not Radar.IsDead then
+		if not CommCenter.IsDead then
 			local targets = player.GetGroundAttackers()
 			local target = targets[DateTime.GameTime % #targets + 1].CenterPosition
 
 			if target then
-				Radar.SendAirstrike(target, false, Facing.NorthEast + 4)
+				CommCenter.SendAirstrike(target, false, Facing.NorthEast + 4)
 			end
 		end
 	end
@@ -135,7 +135,7 @@ InsertNodUnits = function()
 	local difficulty = Map.LobbyOption("difficulty")
 	NodStartUnitsRight = NodStartUnitsRight[difficulty]
 	NodStartUnitsLeft = NodStartUnitsLeft[difficulty]
-	
+
 	Camera.Position = UnitsRallyRight.CenterPosition
 
 	Media.PlaySpeechNotification(player, "Reinforce")
@@ -183,7 +183,7 @@ WorldLoaded = function()
 	OnAnyDamaged(Atk1ActorTriggerActivator, Atk1TriggerFunction)
 
 	OnAnyDamaged(Atk2ActorTriggerActivator, Atk2TriggerFunction)
-	
+
 	if Map.LobbyOption("difficulty") == "tough" then
 		Trigger.OnDamaged(Atk3Activator, Atk3TriggerFunction)
 	end

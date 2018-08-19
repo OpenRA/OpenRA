@@ -18,12 +18,12 @@ namespace OpenRA.Mods.Common.Activities
 	public class Land : Activity
 	{
 		readonly Target target;
-		readonly Aircraft plane;
+		readonly Aircraft aircraft;
 
 		public Land(Actor self, Target t)
 		{
 			target = t;
-			plane = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -37,15 +37,15 @@ namespace OpenRA.Mods.Common.Activities
 			var d = target.CenterPosition - self.CenterPosition;
 
 			// The next move would overshoot, so just set the final position
-			var move = plane.FlyStep(plane.Facing);
+			var move = aircraft.FlyStep(aircraft.Facing);
 			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				plane.SetPosition(self, target.CenterPosition);
+				aircraft.SetPosition(self, target.CenterPosition);
 				return NextActivity;
 			}
 
 			var landingAlt = self.World.Map.DistanceAboveTerrain(target.CenterPosition);
-			Fly.FlyToward(self, plane, d.Yaw.Facing, landingAlt);
+			Fly.FlyToward(self, aircraft, d.Yaw.Facing, landingAlt);
 
 			return this;
 		}

@@ -17,9 +17,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Scripting
 {
 	[ScriptPropertyGroup("Support Powers")]
-	public class ChronsphereProperties : ScriptActorProperties, Requires<ChronoshiftPowerInfo>
+	public class ChronosphereProperties : ScriptActorProperties, Requires<ChronoshiftPowerInfo>
 	{
-		public ChronsphereProperties(ScriptContext context, Actor self)
+		public ChronosphereProperties(ScriptContext context, Actor self)
 			: base(context, self) { }
 
 		[Desc("Chronoshift a group of actors. A duration of 0 will teleport the actors permanently.")]
@@ -37,7 +37,9 @@ namespace OpenRA.Mods.Cnc.Scripting
 							kv.Key.WrappedClrType().Name, kv.Value.WrappedClrType().Name));
 				}
 
-				var cs = actor.TraitOrDefault<Chronoshiftable>();
+				var cs = actor.TraitsImplementing<Chronoshiftable>()
+					.FirstEnabledTraitOrDefault();
+
 				if (cs != null && cs.CanChronoshiftTo(actor, cell))
 					cs.Teleport(actor, cell, duration, killCargo, Self);
 			}
