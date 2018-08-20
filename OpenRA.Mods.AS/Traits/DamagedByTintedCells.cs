@@ -32,7 +32,7 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly int DamageInterval = 16;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly BitSet<DamageType> DamageTypes = new BitSet<DamageType>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		public override object Create(ActorInitializer init) { return new DamagedByTintedCells(init.Self, this); }
 
