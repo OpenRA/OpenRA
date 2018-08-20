@@ -21,9 +21,9 @@ namespace OpenRA.Mods.AS.Projectiles
 {
 	public enum FireMode
 	{
-		Spread = 0,
-		Line = 1,
-		Focus = 2
+		Spread,
+		Line,
+		Focus
 	}
 
 	[Desc("Detonates all warheads attached to Weapon each ExplosionInterval ticks.")]
