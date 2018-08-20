@@ -16,7 +16,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class EnterSharedTransport : Enter
 	{
 		readonly SharedPassenger passenger;
-		readonly int maxTries;
 		Actor transport;
 		SharedCargo cargo;
 
@@ -24,7 +23,6 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, transport, EnterBehaviour.Exit, maxTries, repathWhileMoving)
 		{
 			this.transport = transport;
-			this.maxTries = maxTries;
 			cargo = transport.Trait<SharedCargo>();
 			passenger = self.Trait<SharedPassenger>();
 		}
