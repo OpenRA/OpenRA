@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,21 +24,25 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool KilledOnImpassableTerrain = true;
 
 		[Desc("Types of damage that this trait causes to self when 'KilledOnImpassableTerrain' is true. Leave empty for no damage types.")]
-		public readonly HashSet<string> DamageTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";
 
-		public readonly string GroundImpactSound = null;
-		[SequenceReference("Image")] public readonly string GroundCorpseSequence = "corpse";
+		[SequenceReference("Image")] public readonly string GroundCorpseSequence = null;
+
 		[PaletteReference] public readonly string GroundCorpsePalette = "effect";
 
-		public readonly string WaterImpactSound = null;
+		public readonly string GroundImpactSound = null;
+
 		[SequenceReference("Image")] public readonly string WaterCorpseSequence = null;
+
 		[PaletteReference] public readonly string WaterCorpsePalette = "effect";
 
 		[Desc("Terrain types on which to display WaterCorpseSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
+
+		public readonly string WaterImpactSound = null;
 
 		public readonly int FallRate = 13;
 
@@ -101,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var sequence = onWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
 			var palette = onWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
-			if (sequence != null && palette != null)
+			if (!string.IsNullOrEmpty(info.Image) && !string.IsNullOrEmpty(sequence) && palette != null)
 				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, palette)));
 
 			self.Kill(self, info.DamageTypes);

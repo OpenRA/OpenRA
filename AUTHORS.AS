@@ -16,6 +16,7 @@ The plugin is maintained by
    > Nydus tunnel logic
    > mind control traits
    > Berserkable
+   > TintedCells (former radioactivity)
 
  * Holloweye
    > SmokeParticle(Emitter) basic implementation
@@ -45,6 +46,7 @@ The plugin is maintained by
  * Wojciech Walaszek (CDVoidwalker)
    > TeleportNetwork maintaince
    > WarheadTrailProjectile
+   > TintedCells maintaince
 
  Authors of documents used in this plugin:
   * Apollo

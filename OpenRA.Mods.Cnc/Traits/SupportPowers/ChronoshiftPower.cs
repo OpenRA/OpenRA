@@ -65,7 +65,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
-				var cs = target.Trait<Chronoshiftable>();
+				var cs = target.TraitsImplementing<Chronoshiftable>()
+					.FirstEnabledTraitOrDefault();
+
+				if (cs == null)
+					continue;
+
 				var targetCell = target.Location + (order.TargetLocation - order.ExtraLocation);
 				var cpi = Info as ChronoshiftPowerInfo;
 
@@ -82,8 +87,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var t in tiles)
 				units.UnionWith(Self.World.ActorMap.GetActorsAt(t));
 
-			return units.Where(a => a.Info.HasTraitInfo<ChronoshiftableInfo>() &&
-				!a.TraitsImplementing<IPreventsTeleport>().Any(condition => condition.PreventsTeleport(a)));
+			return units.Where(a => a.TraitsImplementing<Chronoshiftable>().Any(cs => !cs.IsTraitDisabled));
 		}
 
 		public bool SimilarTerrain(CPos xy, CPos sourceLocation)

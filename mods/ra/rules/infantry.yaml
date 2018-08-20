@@ -268,7 +268,7 @@ SPY:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 		Voice: Move
 	Disguise:
 		DisguisedCondition: disguise
@@ -382,7 +382,7 @@ MEDI:
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 	Armament:
 		Weapon: Heal
 		Cursor: heal
@@ -391,6 +391,7 @@ MEDI:
 		ForceTargetStances: None
 	AttackFrontal:
 	WithInfantryBody:
+		IdleSequences: idle
 		StandSequences: stand
 		DefaultAttackSequence: heal
 	Voiced:
@@ -418,7 +419,7 @@ MECH:
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 		Voice: Move
 	Armament:
 		Weapon: Repair
@@ -432,6 +433,7 @@ MECH:
 		CaptureTypes: husk
 		PlayerExperience: 25
 	WithInfantryBody:
+		IdleSequences: idle
 		DefaultAttackSequence: repair
 		StandSequences: stand
 	Voiced:
@@ -504,13 +506,13 @@ THF:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 	Infiltrates:
 		PlayerExperience: 50
 	Voiced:
 		VoiceSet: ThiefVoice
 	WithInfantryBody:
-		-IdleSequences:
+		IdleSequences: idle
 		StandSequences: stand
 	Buildable:
 		Description: Steals enemy credits.\n  Unarmed
@@ -532,7 +534,7 @@ HIJACKER:
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
-		PipType: Yellow
+		PipType: Blue
 	Captures:
 		CaptureTypes: vehicle
 		PlayerExperience: 50
@@ -540,7 +542,7 @@ HIJACKER:
 		VoiceSet: ThiefVoice
 	-TakeCover:
 	WithInfantryBody:
-		-IdleSequences:
+		IdleSequences: idle
 		StandSequences: stand
 	Crushable:
 		WarnProbability: 95

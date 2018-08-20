@@ -15,7 +15,6 @@
 # openra_ServerName="<ServerName>" (default: "Dedicated Server")
 # openra_Mod="<Mod>" (default: ra)
 # openra_ListenPort="<number>" (default: 1234)
-# openra_ExternalPort="<number>" (default: 1234)
 # openra_AdvertiseOnline="<True|False>" (default: True)
 # openra_extraflags="<set as needed>"
 #
@@ -43,7 +42,6 @@ status_cmd="${name}_status"
 : ${openra_ServerName="Dedicated Server"}
 : ${openra_Mod="ra"}
 : ${openra_ListenPort="1234"}
-: ${openra_ExternalPort="1234"}
 : ${openra_AdvertiseOnline="True"}
 
 openra_Dedicated="True"
@@ -54,7 +52,6 @@ openra_DedicatedLoop="True"
                    Server.DedicatedLoop=${openra_DedicatedLoop} \
                    Server.Name=\"${openra_ServerName}\" \
                    Server.ListenPort=${openra_ListenPort} \
-                   Server.ExternalPort=${openra_ExternalPort} \
                    Server.AdvertiseOnline=${openra_AdvertiseOnline}\
                    ${openra_extraflags}"}
 

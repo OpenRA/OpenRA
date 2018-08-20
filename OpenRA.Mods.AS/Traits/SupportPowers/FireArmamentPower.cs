@@ -59,6 +59,8 @@ namespace OpenRA.Mods.AS.Traits
 
 		IFacing facing;
 		HashSet<Armament> activeArmaments;
+
+		bool turreted;
 		HashSet<Turreted> turrets;
 
 		bool enabled;
@@ -79,6 +81,9 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			facing = self.TraitOrDefault<IFacing>();
 			Armaments = self.TraitsImplementing<Armament>().Where(t => t.Info.Name.Contains(FireArmamentPowerInfo.ArmamentName)).ToArray();
+
+			var armamentturrets = Armaments.Select(x => x.Info.Turret).ToHashSet();
+			turreted = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).Count() > 0;
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -101,10 +106,13 @@ namespace OpenRA.Mods.AS.Traits
 		{
 			activeArmaments = Armaments.Where(x => !x.IsTraitDisabled).ToHashSet();
 
-			var armamentturrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
+			if (turreted)
+			{
+				var armamentturrets = activeArmaments.Select(x => x.Info.Turret).ToHashSet();
 
-			// TODO: Fix this when upgradable Turreteds arrive.
-			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).ToHashSet();
+				// TODO: Fix this when upgradable Turreteds arrive.
+				turrets = self.TraitsImplementing<Turreted>().Where(x => armamentturrets.Contains(x.Name)).ToHashSet();
+			}
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Game.Sound.Play(SoundType.World, FireArmamentPowerInfo.LaunchSound);
@@ -175,10 +183,13 @@ namespace OpenRA.Mods.AS.Traits
 			if (!enabled)
 				return;
 
-			foreach (var t in turrets)
+			if (turreted)
 			{
-				if (!t.FaceTarget(self, target))
-					return;
+				foreach (var t in turrets)
+				{
+					if (!t.FaceTarget(self, target))
+						return;
+				}
 			}
 
 			foreach (var a in activeArmaments) {
@@ -205,7 +216,7 @@ namespace OpenRA.Mods.AS.Traits
 			// TODO: Fix this when upgradable Turreteds arrive.
 			turrets = self.TraitsImplementing<Turreted>().Where(x => armamentTurrets.Contains(x.Name)).ToHashSet();
 
-			return activeArmaments.Count > 0 && turrets.Count > 0;
+			return activeArmaments.Count > 0 && (!turreted || turrets.Count > 0);
 		}
 
 		float FractionComplete { get { return ticks * 1f / estimatedTicks; } }

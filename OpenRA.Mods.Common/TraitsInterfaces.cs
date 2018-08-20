@@ -75,17 +75,20 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsValidTarget(Actor self, Actor saboteur);
 	}
 
+	// Type tag for crush class bits
+	public class CrushClass { }
+
 	[RequireExplicitImplementation]
 	public interface ICrushable
 	{
-		bool CrushableBy(Actor self, Actor crusher, HashSet<string> crushClasses);
+		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
 	public interface INotifyCrushed
 	{
-		void OnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
-		void WarnCrush(Actor self, Actor crusher, HashSet<string> crushClasses);
+		void OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
+		void WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
@@ -217,7 +220,11 @@ namespace OpenRA.Mods.Common.Traits
 		void Infiltrating(Actor self);
 	}
 
-	public interface ITechTreePrerequisiteInfo : ITraitInfo { }
+	public interface ITechTreePrerequisiteInfo : ITraitInfo
+	{
+		IEnumerable<string> Prerequisites(ActorInfo info);
+	}
+
 	public interface ITechTreePrerequisite
 	{
 		IEnumerable<string> ProvidesPrerequisites { get; }
@@ -286,6 +293,11 @@ namespace OpenRA.Mods.Common.Traits
 		void ModifyDeathActorInit(Actor self, TypeDictionary init);
 	}
 
+	public interface ITransformActorInitModifier
+	{
+		void ModifyTransformActorInit(Actor self, TypeDictionary init);
+	}
+
 	public interface IPreventsAutoTarget
 	{
 		bool PreventsAutoTarget(Actor self, Actor attacker);
@@ -313,6 +325,9 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsModifyingSequence { get; }
 		string SequencePrefix { get; }
 	}
+
+	[RequireExplicitImplementation]
+	public interface ICashTricklerModifier { int GetCashTricklerModifier(); }
 
 	[RequireExplicitImplementation]
 	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }

@@ -319,11 +319,7 @@ medi:
 		Start: 114
 		Length: 2
 		Facings: 8
-	idle1:
-		Start: 163
-		Length: 14
-		Tick: 120
-	idle2:
+	idle:
 		Start: 178
 		Length: 14
 		Tick: 120
@@ -383,11 +379,7 @@ mech:
 		Start: 114
 		Length: 2
 		Facings: 8
-	idle1:
-		Start: 163
-		Length: 14
-		Tick: 120
-	idle2:
+	idle:
 		Start: 178
 		Length: 14
 		Tick: 120
@@ -629,6 +621,10 @@ thf:
 		Length: 6
 		Facings: 8
 		Tick: 100
+	idle:
+		Start: 120
+		Length: 19
+		Tick: 120
 	die1:
 		Start: 139
 		Length: 8
@@ -677,6 +673,10 @@ hijacker:
 		Length: 6
 		Facings: 8
 		Tick: 100
+	idle: thf
+		Start: 120
+		Length: 19
+		Tick: 120
 	die1: thf
 		Start: 139
 		Length: 8
@@ -1169,19 +1169,19 @@ einstein:
 		Facings: 8
 		Tick: 80
 	die1:
-		Start: 115
+		Start: 120
 		Length: 8
 	die2:
-		Start: 123
+		Start: 128
 		Length: 8
 	die3:
-		Start: 135
+		Start: 136
 		Length: 12
 	die4:
-		Start: 135
+		Start: 136
 		Length: 12
 	die5:
-		Start: 147
+		Start: 148
 		Length: 17
 	die6: electro
 		Length: *
@@ -1215,19 +1215,19 @@ delphi:
 		Facings: 8
 		Tick: 80
 	die1:
-		Start: 115
+		Start: 329
 		Length: 8
 	die2:
-		Start: 123
+		Start: 337
 		Length: 8
 	die3:
-		Start: 135
+		Start: 345
 		Length: 12
 	die4:
-		Start: 135
+		Start: 345
 		Length: 12
 	die5:
-		Start: 147
+		Start: 357
 		Length: 17
 	die6: electro
 		Length: *
@@ -1261,19 +1261,19 @@ chan:
 		Facings: 8
 		Tick: 80
 	die1:
-		Start: 115
+		Start: 120
 		Length: 8
 	die2:
-		Start: 123
+		Start: 128
 		Length: 8
 	die3:
-		Start: 135
+		Start: 136
 		Length: 12
 	die4:
-		Start: 135
+		Start: 136
 		Length: 12
 	die5:
-		Start: 147
+		Start: 148
 		Length: 17
 	die6: electro
 		Length: *

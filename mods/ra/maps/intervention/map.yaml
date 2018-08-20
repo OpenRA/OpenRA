@@ -1582,34 +1582,34 @@ Actors:
 		Facing: 160
 	Actor507: t11
 		Location: 86,42
-		Owner: Soviets
+		Owner: Neutral
 	Actor508: t03
 		Location: 85,43
-		Owner: Soviets
+		Owner: Neutral
 	Actor509: tc01
 		Location: 84,39
-		Owner: Soviets
+		Owner: Neutral
 	Actor510: t14
 		Location: 79,43
-		Owner: Soviets
+		Owner: Neutral
 	Actor511: tc04
 		Location: 81,42
-		Owner: Soviets
+		Owner: Neutral
 	Actor512: t12
 		Location: 84,43
-		Owner: Soviets
+		Owner: Neutral
 	Actor513: t01
 		Location: 67,38
-		Owner: Soviets
+		Owner: Neutral
 	Actor514: tc02
 		Location: 68,40
-		Owner: Soviets
+		Owner: Neutral
 	Actor515: t15
 		Location: 69,36
-		Owner: Soviets
+		Owner: Neutral
 	Actor516: t11
 		Location: 66,39
-		Owner: Soviets
+		Owner: Neutral
 	Actor517: tc04
 		Location: 35,40
 		Owner: Neutral

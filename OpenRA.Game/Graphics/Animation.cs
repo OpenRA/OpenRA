@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 			this.paused = paused;
 		}
 
-		public int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
+		public int CurrentFrame { get { return backwards ? CurrentSequence.Length - frame - 1 : frame; } }
 		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
 
 		public IRenderable[] Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)

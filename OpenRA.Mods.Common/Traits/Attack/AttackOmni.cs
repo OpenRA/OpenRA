@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new SetTarget(this, newTarget, allowMove);
 		}
 
+		// Some 3rd-party mods rely on this being public
 		public class SetTarget : Activity
 		{
 			readonly Target target;

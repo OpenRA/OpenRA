@@ -310,7 +310,7 @@ fremen:
 		Facings: -8
 		Transpose: true
 	die1: DATA.R8
-		Frames: 870, 877, 884, 891, 898, 905, 912, 919, 926, 933, 940, 947
+		Frames: 870, 877, 884, 891, 898, 905, 912, 919, 926, 927, 928, 929
 		Length: 12
 		Tick: 80
 	die2: DATA.R8

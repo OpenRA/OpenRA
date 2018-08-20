@@ -86,6 +86,7 @@
     <Compile Include="Effects\WarheadTrailProjectileEffect.cs" />
     <Compile Include="Graphics\ArcRenderable.cs" />
     <Compile Include="Graphics\RadBeamRenderable.cs" />
+    <Compile Include="Graphics\TintedCell.cs" />
     <Compile Include="Lint\CheckSpawnActorWarheads.cs" />
     <Compile Include="Mustapha\EnterSharedTransport.cs" />
     <Compile Include="Mustapha\EnterSharedTransportTargeter.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Traits\AIDeployHelper.cs" />
     <Compile Include="Traits\Berserkable.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnProduction.cs" />
+    <Compile Include="Traits\DamagedByTintedCells.cs" />
     <Compile Include="Traits\DelayedWeaponAttachable.cs" />
     <Compile Include="Traits\ChronoResourceDelivery.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAboveAltitude.cs" />
@@ -122,7 +124,6 @@
     <Compile Include="Traits\MindController.cs" />
     <Compile Include="Traits\PeriodicProducer.cs" />
     <Compile Include="Traits\Player\PlayerSilo.cs" />
-    <Compile Include="Traits\Player\ProvidesAIPrerequisite.cs" />
     <Compile Include="Traits\Render\WithIdleOverlayOnGround.cs" />
     <Compile Include="Traits\Render\WithMindControlArc.cs" />
     <Compile Include="Traits\Render\WithVoxelAnimatedBody.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Traits\TeleportNetworkTransportable.cs" />
     <Compile Include="Traits\Warheads\AttachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\CaptureActorWarhead.cs" />
+    <Compile Include="Traits\Warheads\CreateTintedCellsWarhead.cs" />
     <Compile Include="Traits\Warheads\DetachDelayedWeaponWarhead.cs" />
     <Compile Include="Traits\Warheads\FireClusterWarhead.cs" />
     <Compile Include="Traits\Warheads\FireFragmentWarhead.cs" />
@@ -154,6 +156,7 @@
     <Compile Include="Traits\ProximityBounty.cs" />
     <Compile Include="Traits\ActorTag.cs" />
     <Compile Include="Scripting\Global\ActorTagGlobal.cs" />
+    <Compile Include="Traits\World\TintedCellsLayer.cs" />
     <Compile Include="Traits\World\WeaponStorm.cs" />
     <Compile Include="UtilityCommands\ImportASMapCommand.cs" />
     <Compile Include="Traits\Warheads\PromotionWarhead.cs" />
@@ -169,13 +172,9 @@
     <Compile Include="Yupgi\BaseSpawnerSlave.cs" />
     <Compile Include="Yupgi\CarrierMaster.cs" />
     <Compile Include="Yupgi\CarrierSlave.cs" />
-    <Compile Include="Yupgi\CreateRadioactivityWarhead.cs" />
-    <Compile Include="Yupgi\DamagedByRadioactivity.cs" />
     <Compile Include="Yupgi\EnterCarrierMaster.cs" />
     <Compile Include="Yupgi\MobSpawnerMaster.cs" />
     <Compile Include="Yupgi\MobSpawnerSlave.cs" />
-    <Compile Include="Yupgi\Radioactivity.cs" />
-    <Compile Include="Yupgi\RadioactivityLayer.cs" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

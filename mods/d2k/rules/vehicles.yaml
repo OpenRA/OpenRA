@@ -356,7 +356,7 @@ devastator:
 		RequiresCondition: meltdown
 	GrantConditionOnDeploy@REACTOR:
 		DeployedCondition: overload
-		CanUndeploy: false
+		PauseOnCondition: overload
 	WithIdleOverlay@OVERLOAD:
 		Sequence: active
 		RequiresCondition: overload

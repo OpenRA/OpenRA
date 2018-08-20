@@ -9,9 +9,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoStatsLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager)
+		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
 			var player = world.RenderPlayer ?? world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -87,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var pp = p.First;
 					var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 					var item = playerTemplate.Clone();
-					LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
+					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
+
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
@@ -137,7 +138,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var client in spectators)
 				{
 					var item = playerTemplate.Clone();
-					LobbyUtils.SetupClientWidget(item, client, orderManager, client != null && client.Bot == null);
+					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
+
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 

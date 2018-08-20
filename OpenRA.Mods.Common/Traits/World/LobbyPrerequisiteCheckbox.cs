@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Enables defined prerequisites at game start for all players if the checkbox is enabled.")]
-	public class LobbyPrerequisiteCheckboxInfo : ITraitInfo, ILobbyOptions
+	public class LobbyPrerequisiteCheckboxInfo : ITraitInfo, ILobbyOptions, ITechTreePrerequisiteInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Internal id for this checkbox.")]
@@ -44,6 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[Desc("Prerequisites to grant when this checkbox is enabled.")]
 		public readonly HashSet<string> Prerequisites = new HashSet<string>();
+
+		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{

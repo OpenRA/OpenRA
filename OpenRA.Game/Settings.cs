@@ -59,6 +59,15 @@ namespace OpenRA
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
 		public string[] Ban = { };
 
+		[Desc("For dedicated servers only, allow anonymous clients to join.")]
+		public bool RequireAuthentication = false;
+
+		[Desc("For dedicated servers only, if non-empty, only allow authenticated players with these profile IDs to join.")]
+		public int[] ProfileIDWhitelist = { };
+
+		[Desc("For dedicated servers only, if non-empty, always reject players with these user IDs from joining.")]
+		public int[] ProfileIDBlacklist = { };
+
 		[Desc("For dedicated servers only, controls whether a game can be started with just one human player in the lobby.")]
 		public bool EnableSingleplayer = false;
 
@@ -127,6 +136,9 @@ namespace OpenRA
 		[Desc("Disable high resolution DPI scaling on Windows operating systems.")]
 		public bool DisableWindowsDPIScaling = true;
 
+		[Desc("Disable separate OpenGL render thread on Windows operating systems.")]
+		public bool DisableWindowsRenderThread = true;
+
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
 
@@ -182,6 +194,9 @@ namespace OpenRA
 		public bool DrawTargetLine = true;
 
 		public bool AllowDownloading = true;
+
+		[Desc("Filename of the authentication profile to use.")]
+		public string AuthProfile = "player.oraid";
 
 		public bool AllowZoom = true;
 		public Modifiers ZoomModifier = Modifiers.Ctrl;

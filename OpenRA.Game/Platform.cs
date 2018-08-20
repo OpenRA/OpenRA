@@ -71,9 +71,30 @@ namespace OpenRA
 		/// </summary>
 		public static string SupportDir { get { return supportDir.Value; } }
 		static Lazy<string> supportDir = Exts.Lazy(GetSupportDir);
+		static string supportDirOverride;
+
+		/// <summary>
+		/// Specify a custom support directory that already exists on the filesystem.
+		/// MUST be called before Platform.SupportDir is first accessed.
+		/// </summary>
+		public static void OverrideSupportDir(string path)
+		{
+			if (!Directory.Exists(path))
+				throw new DirectoryNotFoundException(path);
+
+			if (!path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal) &&
+					!path.EndsWith(Path.AltDirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+				path += Path.DirectorySeparatorChar;
+
+			supportDirOverride = path;
+		}
 
 		static string GetSupportDir()
 		{
+			// Use the custom override if it has been defined
+			if (supportDirOverride != null)
+				return supportDirOverride;
+
 			// Use a local directory in the game root if it exists (shared with the system support dir)
 			var localSupportDir = Path.Combine(GameDir, "Support");
 			if (Directory.Exists(localSupportDir))

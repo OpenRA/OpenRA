@@ -113,63 +113,119 @@ Background@SPAWN_TOOLTIP:
 			Font: TinyBold
 			Align: center
 
-Background@CLIENT_TOOLTIP:
-	Logic: ClientTooltipLogic
+Background@LATENCY_TOOLTIP:
+	Logic: LatencyTooltipLogic
 	Background: dialog4
-	Height: 51
+	Height: 29
 	Width: 7
 	Children:
-		Label@ADMIN:
-			Y: 4
-			Height: 18
-			Font: Bold
-			Text: Game Admin
-			Align: Center
-		Label@IP:
-			Y: 7
-			Width: 5
-			Height: 10
-			Font: TinyBold
-			Align: Center
-		Label@LOCATION:
-			Y: 19
-			Height: 10
-			Font: TinyBold
-			Align: Center
 		Label@LATENCY_PREFIX:
-			X: 10
-			Y: 31
-			Height: 10
-			Font: TinyBold
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
 			Text: Latency:
 		Label@LATENCY:
-			Y: 31
-			Height: 10
-			Font: TinyBold
-
-Background@INGAME_CLIENT_TOOLTIP:
-	Logic: ClientTooltipLogic
-	Background: dialog4
-	Height: 41
-	Width: 7
-	Children:
-		Label@ADMIN:
-			Y: 4
-			Height: 18
+			Y: 2
+			Height: 23
 			Font: Bold
-			Text: Game Admin
-			Align: Center
-		Label@IP:
-			Y: 7
-			Width: 5
-			Height: 10
-			Font: TinyBold
-			Align: Center
+
+Background@ANONYMOUS_PLAYER_TOOLTIP:
+	Logic: AnonymousProfileTooltipLogic
+	Background: dialog4
+	Height: 56
+	Width: 200
+	Children:
+		Label@NAME:
+			X: 7
+			Text: Anonymous Player
+			Height: 24
+			Font: MediumBold
 		Label@LOCATION:
-			Y: 19
-			Height: 10
+			X: 7
+			Y: 23
+			Height: 12
 			Font: TinyBold
-			Align: Center
+		Label@IP:
+			X: 7
+			Y: 36
+			Height: 12
+			Font: TinyBold
+		Container@GAME_ADMIN:
+			X: 7
+			Y: 49
+			Height: 12
+			Visible: False
+			Children:
+				Image@ICON:
+					Y: 5
+					Width: 7
+					Height: 5
+					ImageCollection: lobby-bits
+					ImageName: admin
+				Label@LABEL:
+					X: 9
+					Height: 12
+					Text: Game Admin
+					Font: TinyBold
+
+Background@REGISTERED_PLAYER_TOOLTIP:
+	Logic: RegisteredProfileTooltipLogic
+	Width: 270
+	Background: dialog4
+	Children:
+		Container@HEADER:
+			Width: PARENT_RIGHT
+			Children:
+				Container@PROFILE_HEADER:
+					Height: 43
+					Children:
+						Label@PROFILE_NAME:
+							X: 7
+							Width: PARENT_RIGHT - 20
+							Height: 24
+							Font: MediumBold
+						Label@PROFILE_RANK:
+							X: 7
+							Y: 23
+							Width: PARENT_RIGHT - 20
+							Height: 12
+							Font: TinyBold
+						Container@GAME_ADMIN:
+							X: 7
+							Y: 36
+							Width: PARENT_RIGHT - 20
+							Height: 12
+							Visible: False
+							Children:
+								Image@ICON:
+									Y: 5
+									Width: 7
+									Height: 5
+									ImageCollection: lobby-bits
+									ImageName: admin
+								Label@LABEL:
+									X: 10
+									Height: 12
+									Text: Game Admin
+									Font: TinyBold
+				Container@MESSAGE_HEADER:
+					Height: 26
+					Width: PARENT_RIGHT
+					Children:
+						Label@MESSAGE:
+							X: 7
+							Width: PARENT_RIGHT - 14
+							Height: 23
+							Font: Bold
+		Container@BADGES_CONTAINER:
+			Width: PARENT_RIGHT
+			Visible: false
+			Children:
+				Background@SEPARATOR:
+					X: 10
+					Height: 1
+					Background: tooltip-separator
 
 Background@PRODUCTION_TOOLTIP:
 	Logic: ProductionTooltipLogic

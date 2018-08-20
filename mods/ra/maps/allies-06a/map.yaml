@@ -630,7 +630,7 @@ Actors:
 	Refinery: proc
 		Location: 81,90
 		Owner: USSR
-	Radar: dome
+	RadarDome: dome
 		Location: 20,83
 		Owner: USSR
 	WeaponMeetPoint: waypoint

@@ -55,9 +55,12 @@ namespace OpenRA
 		public static bool BenchmarkMode = false;
 
 		public static string EngineVersion { get; private set; }
+		public static LocalPlayerProfile LocalPlayerProfile;
 
 		static Task discoverNat;
 		static bool takeScreenshot = false;
+
+		public static event Action OnShellmapLoaded = () => { };
 
 		public static OrderManager JoinServer(string host, int port, string password, bool recordReplay = true)
 		{
@@ -255,6 +258,10 @@ namespace OpenRA
 
 		static void Initialize(Arguments args)
 		{
+			var supportDirArg = args.GetValue("Engine.SupportDir", null);
+			if (supportDirArg != null)
+				Platform.OverrideSupportDir(supportDirArg);
+
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			// Load the engine version as early as possible so it can be written to exception logs
@@ -287,7 +294,6 @@ namespace OpenRA
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
-			Log.AddChannel("irc", "irc.log");
 			Log.AddChannel("nat", "nat.log");
 
 			var platforms = new[] { Settings.Game.Platform, "Default", null };
@@ -405,6 +411,8 @@ namespace OpenRA
 
 			ModData = new ModData(Mods[mod], Mods, true);
 
+			LocalPlayerProfile = new LocalPlayerProfile(Platform.ResolvePath(Path.Combine("^", Settings.Game.AuthProfile)), ModData.Manifest.Get<PlayerDatabase>());
+
 			if (!ModData.LoadScreen.BeforeLoad())
 				return;
 
@@ -471,7 +479,10 @@ namespace OpenRA
 			var shellmap = ChooseShellmap();
 
 			using (new PerfTimer("StartGame"))
+			{
 				StartGame(shellmap, WorldType.Shellmap);
+				OnShellmapLoaded();
+			}
 		}
 
 		static string ChooseShellmap()
@@ -876,6 +887,11 @@ namespace OpenRA
 		public static bool IsCurrentWorld(World world)
 		{
 			return OrderManager != null && OrderManager.World == world && !world.Disposing;
+		}
+
+		public static bool SetClipboardText(string text)
+		{
+			return Renderer.Window.SetClipboardText(text);
 		}
 	}
 }

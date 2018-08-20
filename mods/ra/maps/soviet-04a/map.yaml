@@ -415,7 +415,7 @@ Actors:
 	Actor159: mine
 		Location: 77,46
 		Owner: Neutral
-	Radar: dome
+	RadarDome: dome
 		Location: 49,46
 		Owner: Greece
 	CYard: fact

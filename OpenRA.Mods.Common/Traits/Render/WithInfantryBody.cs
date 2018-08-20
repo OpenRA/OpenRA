@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
+			if (!EnabledByDefault)
+				yield break;
+
 			var anim = new Animation(init.World, image, init.GetFacing());
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), StandSequences.First()));
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p, rs.Scale);

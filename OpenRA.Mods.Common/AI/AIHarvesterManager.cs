@@ -61,18 +61,15 @@ namespace OpenRA.Mods.Common.AI
 			return path[0];
 		}
 
-		public void Tick(List<Actor> activeUnits)
+		public void Tick(List<Actor> harvesters)
 		{
 			if (resLayer == null || resLayer.IsResourceLayerEmpty)
 				return;
 
 			// Find idle harvesters and give them orders:
-			foreach (var harvester in activeUnits)
+			foreach (var harvester in harvesters)
 			{
-				var harv = harvester.TraitOrDefault<Harvester>();
-				if (harv == null)
-					continue;
-
+				var harv = harvester.Trait<Harvester>();
 				if (!harv.IsEmpty)
 					continue;
 

@@ -33,6 +33,11 @@ namespace OpenRA.Traits
 		Dead = 32
 	}
 
+	/// <summary>
+	/// Type tag for DamageTypes <see cref="Primitives.BitSet{T}"/>.
+	/// </summary>
+	public sealed class DamageType { DamageType() { } }
+
 	public interface IHealth
 	{
 		DamageState DamageState { get; }
@@ -42,7 +47,7 @@ namespace OpenRA.Traits
 		bool IsDead { get; }
 
 		void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers);
-		void Kill(Actor self, Actor attacker, HashSet<string> damageTypes);
+		void Kill(Actor self, Actor attacker, BitSet<DamageType> damageTypes);
 	}
 
 	// depends on the order of pips in WorldRenderer.cs!
@@ -77,9 +82,9 @@ namespace OpenRA.Traits
 	public class Damage
 	{
 		public readonly int Value;
-		public readonly HashSet<string> DamageTypes;
+		public readonly BitSet<DamageType> DamageTypes;
 
-		public Damage(int damage, HashSet<string> damageTypes)
+		public Damage(int damage, BitSet<DamageType> damageTypes)
 		{
 			Value = damage;
 			DamageTypes = damageTypes;
@@ -88,7 +93,7 @@ namespace OpenRA.Traits
 		public Damage(int damage)
 		{
 			Value = damage;
-			DamageTypes = new HashSet<string>();
+			DamageTypes = default(BitSet<DamageType>);
 		}
 	}
 

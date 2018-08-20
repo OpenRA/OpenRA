@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.AS.Traits
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
 		[Desc("DeathType(s) that grant the condition. Leave empty to always grant the condition.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		public virtual object Create(ActorInitializer init) { return new GrantExternalConditionToKiller(init.Self, this); }
 	}
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (e.Attacker == null || e.Attacker.Disposed)
 				return;
 
-			if (Info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
+			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
 			if (!Info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))

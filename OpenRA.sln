@@ -68,8 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\allies-05a\allies05a.lua = mods\ra\maps\allies-05a\allies05a.lua
 		mods\ra\maps\allies-06a\allies06a-AI.lua = mods\ra\maps\allies-06a\allies06a-AI.lua
 		mods\ra\maps\allies-06a\allies06a.lua = mods\ra\maps\allies-06a\allies06a.lua
-		mods\ra\maps\allies-06b\allies06b.lua = mods\ra\maps\allies-06b\allies06b.lua
 		mods\ra\maps\allies-06b\allies06b-AI.lua = mods\ra\maps\allies-06b\allies06b-AI.lua
+		mods\ra\maps\allies-06b\allies06b.lua = mods\ra\maps\allies-06b\allies06b.lua
 		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
 		mods\ra\maps\evacuation\evacuation.lua = mods\ra\maps\evacuation\evacuation.lua
 		mods\ra\maps\exodus\exodus.lua = mods\ra\maps\exodus\exodus.lua
@@ -104,7 +104,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Dune 2000 Lua scripts", "{06B1AE07-DDB0-4287-8700-A8CD9A0E652E}"
 	ProjectSection(SolutionItems) = preProject
-		mods\d2k\bits\scripts\campaign-global.lua = mods\d2k\bits\scripts\campaign-global.lua
 		mods\d2k\maps\atreides-01a\atreides01a.lua = mods\d2k\maps\atreides-01a\atreides01a.lua
 		mods\d2k\maps\atreides-01b\atreides01b.lua = mods\d2k\maps\atreides-01b\atreides01b.lua
 		mods\d2k\maps\atreides-02a\atreides02a-AI.lua = mods\d2k\maps\atreides-02a\atreides02a-AI.lua
@@ -119,6 +118,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\atreides-04\atreides04.lua = mods\d2k\maps\atreides-04\atreides04.lua
 		mods\d2k\maps\atreides-05\atreides05-AI.lua = mods\d2k\maps\atreides-05\atreides05-AI.lua
 		mods\d2k\maps\atreides-05\atreides05.lua = mods\d2k\maps\atreides-05\atreides05.lua
+		mods\d2k\bits\scripts\campaign-global.lua = mods\d2k\bits\scripts\campaign-global.lua
 		mods\d2k\maps\harkonnen-01a\harkonnen01a.lua = mods\d2k\maps\harkonnen-01a\harkonnen01a.lua
 		mods\d2k\maps\harkonnen-01b\harkonnen01b.lua = mods\d2k\maps\harkonnen-01b\harkonnen01b.lua
 		mods\d2k\maps\harkonnen-02a\harkonnen02a-AI.lua = mods\d2k\maps\harkonnen-02a\harkonnen02a-AI.lua
@@ -139,10 +139,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\harkonnen-06b\harkonnen06b.lua = mods\d2k\maps\harkonnen-06b\harkonnen06b.lua
 		mods\d2k\maps\harkonnen-07\harkonnen07-AI.lua = mods\d2k\maps\harkonnen-07\harkonnen07-AI.lua
 		mods\d2k\maps\harkonnen-07\harkonnen07.lua = mods\d2k\maps\harkonnen-07\harkonnen07.lua
-		mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua
-		mods\d2k\maps\harkonnen-09a\harkonnen09a.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a.lua
 		mods\d2k\maps\harkonnen-08\harkonnen08-AI.lua = mods\d2k\maps\harkonnen-08\harkonnen08-AI.lua
 		mods\d2k\maps\harkonnen-08\harkonnen08.lua = mods\d2k\maps\harkonnen-08\harkonnen08.lua
+		mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua
+		mods\d2k\maps\harkonnen-09a\harkonnen09a.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a.lua
 		mods\d2k\maps\harkonnen-09b\harkonnen09b-AI.lua = mods\d2k\maps\harkonnen-09b\harkonnen09b-AI.lua
 		mods\d2k\maps\harkonnen-09b\harkonnen09b.lua = mods\d2k\maps\harkonnen-09b\harkonnen09b.lua
 		mods\d2k\maps\ordos-01a\ordos01a.lua = mods\d2k\maps\ordos-01a\ordos01a.lua
@@ -220,6 +220,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1129FF4F-617B-4D50-A20E-F1E3B36F84F8}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = OpenRA.Game\OpenRA.Game.csproj

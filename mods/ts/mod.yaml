@@ -154,6 +154,7 @@ ChromeLayout:
 	common|chrome/lobby-music.yaml
 	common|chrome/lobby-servers.yaml
 	common|chrome/lobby-kickdialogs.yaml
+	common|chrome/playerprofile.yaml
 	ts|chrome/color-picker.yaml
 	common|chrome/map-chooser.yaml
 	common|chrome/multiplayer-browser.yaml
@@ -207,30 +208,30 @@ ChromeMetrics:
 	ts|metrics.yaml
 
 Fonts:
-	Regular:
-		Font: common|FreeSans.ttf
-		Size:14
-	Bold:
-		Font: common|FreeSansBold.ttf
-		Size:14
-	Title:
-		Font: common|FreeSansBold.ttf
-		Size:32
-	MediumBold:
-		Font: common|FreeSansBold.ttf
-		Size:18
-	BigBold:
-		Font: common|FreeSansBold.ttf
-		Size:24
-	Small:
-		Font: common|FreeSans.ttf
-		Size:12
 	Tiny:
 		Font: common|FreeSans.ttf
-		Size:10
+		Size: 10
 	TinyBold:
 		Font: common|FreeSansBold.ttf
-		Size:10
+		Size: 10
+	Small:
+		Font: common|FreeSans.ttf
+		Size: 12
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+	Title:
+		Font: common|FreeSansBold.ttf
+		Size: 32
 
 SupportsMapsFrom: ts
 

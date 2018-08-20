@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.AS.Traits
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.AS.Traits
 
 		[Desc("DeathTypes for which a bounty should be granted.",
 		      "Use an empty list (the default) to allow all DeathTypes.")]
-		public readonly HashSet<string> DeathTypes = new HashSet<string>();
+		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
 		[Desc("Bounty types for the ProximityBounty traits which a bounty should be granted.",
 		      "Use an empty list (the default) to allow all of them.")]
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.AS.Traits
 			return self.GetSellValue() * GetMultiplier() * info.Percentage / 10000;
 		}
 
-		int GetDisplayedBountyValue(Actor self, HashSet<string> deathTypes, string bountyType)
+		int GetDisplayedBountyValue(Actor self, BitSet<DamageType> deathTypes, string bountyType)
 		{
 			var bounty = GetBountyValue(self);
 			if (cargo == null)
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.AS.Traits
 			if (!info.ValidStances.HasStance(e.Attacker.Owner.Stances[self.Owner]))
 				return;
 
-			if (info.DeathTypes.Count > 0 && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
+			if (!info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
 			foreach (var c in Collectors)

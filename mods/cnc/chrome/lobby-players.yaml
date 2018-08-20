@@ -61,11 +61,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							ImageCollection: lobby-bits
-							ImageName: admin
-							X: 2
-							Visible: false
 						Background@LATENCY:
 							Y: 6
 							Width: 11
@@ -78,18 +73,32 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
 						TextField@NAME:
 							X: 15
 							Width: 190
 							Height: 25
 							Text: Name
+							LeftMargin: 24
 							MaxLength: 16
 							Visible: false
+							Children:
+								Image@PROFILE:
+									ImageCollection: lobby-bits
+									X: 3
+									Y: 3
+									Visible: false
+								ClientTooltipRegion@PROFILE_TOOLTIP:
+									X: 3
+									Y: 3
+									Width: 16
+									Height: 16
+									TooltipContainer: TOOLTIP_CONTAINER
+									Template: ANONYMOUS_PLAYER_TOOLTIP
 						DropDownButton@SLOT_OPTIONS:
 							X: 15
 							Width: 190
@@ -158,11 +167,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Background@LATENCY:
 							Y: 6
 							Width: 11
@@ -175,15 +179,27 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 18
+							Y: 3
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 18
+							Y: 3
+							Width: 16
+							Height: 16
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
-							X: 20
+							X: 39
 							Y: 0 - 1
-							Width: 180
+							Width: 161
 							Height: 25
 						DropDownButton@PLAYER_ACTION:
 							X: 15
@@ -192,6 +208,20 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 							Visible: false
 							Align: Left
+							LeftMargin: 24
+							Children:
+								Image@PROFILE:
+									ImageCollection: lobby-bits
+									X: 3
+									Y: 3
+									Visible: false
+								ClientTooltipRegion@PROFILE_TOOLTIP:
+									X: 3
+									Y: 3
+									Width: 16
+									Height: 16
+									TooltipContainer: TOOLTIP_CONTAINER
+									Template: ANONYMOUS_PLAYER_TOOLTIP
 						ColorBlock@COLORBLOCK:
 							X: 215
 							Y: 6
@@ -273,11 +303,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Background@LATENCY:
 							Y: 6
 							Width: 11
@@ -290,17 +315,31 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
 						TextField@NAME:
 							X: 15
 							Width: 190
 							Height: 25
 							Text: Name
+							LeftMargin: 24
 							MaxLength: 16
+							Children:
+								Image@PROFILE:
+									ImageCollection: lobby-bits
+									X: 3
+									Y: 3
+									Visible: false
+								ClientTooltipRegion@PROFILE_TOOLTIP:
+									X: 3
+									Y: 3
+									Width: 16
+									Height: 16
+									TooltipContainer: TOOLTIP_CONTAINER
+									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 210
 							Width: 341
@@ -328,11 +367,6 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 25
 					Visible: false
 					Children:
-						Image@ADMIN_INDICATOR:
-							X: 2
-							ImageCollection: lobby-bits
-							ImageName: admin
-							Visible: false
 						Background@LATENCY:
 							Y: 6
 							Width: 11
@@ -345,15 +379,27 @@ Container@LOBBY_PLAYER_BIN:
 									Y: 2
 									Width: PARENT_RIGHT - 4
 									Height: PARENT_BOTTOM - 4
-						ClientTooltipRegion@CLIENT_REGION:
+						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							Template: CLIENT_TOOLTIP
+							Template: LATENCY_TOOLTIP
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 18
+							Y: 3
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 18
+							Y: 3
+							Width: 16
+							Height: 16
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
-							X: 20
+							X: 39
 							Y: 0 - 1
-							Width: 180
+							Width: 161
 							Height: 25
 						DropDownButton@PLAYER_ACTION:
 							X: 15
@@ -362,6 +408,20 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 							Visible: false
 							Align: Left
+							LeftMargin: 24
+							Children:
+								Image@PROFILE:
+									ImageCollection: lobby-bits
+									X: 3
+									Y: 3
+									Visible: false
+								ClientTooltipRegion@PROFILE_TOOLTIP:
+									X: 3
+									Y: 3
+									Width: 16
+									Height: 16
+									TooltipContainer: TOOLTIP_CONTAINER
+									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 210
 							Width: 341

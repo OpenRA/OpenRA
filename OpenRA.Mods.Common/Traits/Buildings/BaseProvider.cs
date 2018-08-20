@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			devMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
 			progress = total = info.InitialDelay;
-			var mapBuildRadius = self.World.WorldActor.Trait<MapBuildRadius>();
-			allyBuildEnabled = mapBuildRadius.AllyBuildRadiusEnabled;
-			buildRadiusEnabled = mapBuildRadius.BuildRadiusEnabled;
+			var mapBuildRadius = self.World.WorldActor.TraitOrDefault<MapBuildRadius>();
+			allyBuildEnabled = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
+			buildRadiusEnabled = mapBuildRadius != null && mapBuildRadius.BuildRadiusEnabled;
 		}
 
 		void INotifyCreated.Created(Actor self)
