@@ -96,6 +96,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\soviet-06b\soviet06b-reinforcements_teams.lua = mods\ra\maps\soviet-06b\soviet06b-reinforcements_teams.lua
 		mods\ra\maps\soviet-06b\soviet06b.lua = mods\ra\maps\soviet-06b\soviet06b.lua
 		mods\ra\maps\soviet-07\soviet07.lua = mods\ra\maps\soviet-07\soviet07.lua
+		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea.lua
+		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua
 		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
 		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
 	EndProjectSection
