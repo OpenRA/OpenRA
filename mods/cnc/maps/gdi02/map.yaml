@@ -2,6 +2,10 @@ MapFormat: 11
 
 RequiresMod: cnc
 
+RequiresMissionFinished: gdi01
+
+RequiresFlag: gdi1bhestablished
+
 Title: 02:   Knock out the Refinery
 
 Author: Westwood Studios

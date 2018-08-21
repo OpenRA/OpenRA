@@ -40,6 +40,7 @@ namespace OpenRA
 
 		public static ModData ModData;
 		public static Settings Settings;
+		public static GlobalMissionData GlobalMissionData;
 		public static ICursor Cursor;
 		static WorldRenderer worldRenderer;
 
@@ -249,6 +250,15 @@ namespace OpenRA
 			Settings = new Settings(Platform.ResolvePath(Path.Combine(Platform.SupportDirPrefix, "settings.yaml")), args);
 		}
 
+		public static void InitializeGlobalMissionData(string modID, Arguments args)
+		{
+			var directory = Platform.ResolvePath(Platform.SupportDirPrefix, "MissionData");
+			Directory.CreateDirectory(directory);
+
+			var destination = Path.Combine(directory, modID + ".yaml");
+			GlobalMissionData = new GlobalMissionData(Platform.ResolvePath(destination), args);
+		}
+
 		public static RunStatus InitializeAndRun(string[] args)
 		{
 			Initialize(new Arguments(args));
@@ -287,6 +297,7 @@ namespace OpenRA
 			}
 
 			InitializeSettings(args);
+			InitializeGlobalMissionData(modID, args);
 
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
