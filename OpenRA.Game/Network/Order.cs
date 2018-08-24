@@ -76,10 +76,12 @@ namespace OpenRA
 
 		public static Order Deserialize(World world, BinaryReader r)
 		{
-			var magic = r.ReadByte();
-			switch (magic)
+			try
 			{
-				case 0xFF:
+				var magic = r.ReadByte();
+				switch (magic)
+				{
+					case 0xFF:
 					{
 						var order = r.ReadString();
 						var subjectId = r.ReadUInt32();
@@ -156,7 +158,7 @@ namespace OpenRA
 						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
 					}
 
-				case 0xfe:
+					case 0xfe:
 					{
 						var name = r.ReadString();
 						var data = r.ReadString();
@@ -164,11 +166,23 @@ namespace OpenRA
 						return new Order(name, null, false) { IsImmediate = true, TargetString = data };
 					}
 
-				default:
+					default:
 					{
 						Log.Write("debug", "Received unknown order with magic {0}", magic);
 						return null;
 					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Caught exception while processing order");
+				Log.Write("debug", e.ToString());
+
+				// HACK: this can hopefully go away in the future
+				Game.Debug("Ignoring malformed order that would have crashed the game");
+				Game.Debug("Please file a bug report and include the replay from this match");
+
+				return null;
 			}
 		}
 
