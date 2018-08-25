@@ -316,24 +316,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupProfileWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
+			var visible = c != null && c.Bot == null;
 			var profile = parent.GetOrNull<ImageWidget>("PROFILE");
-			if (profile != null && c.Bot == null)
+			if (profile != null)
 			{
 				var imageName = (c != null && c.IsAdmin ? "admin-" : "player-")
 					+ (c.Fingerprint != null ? "registered" : "anonymous");
 
 				profile.GetImageName = () => imageName;
-				profile.IsVisible = () => true;
+				profile.IsVisible = () => visible;
 			}
 
 			var profileTooltip = parent.GetOrNull<ClientTooltipRegionWidget>("PROFILE_TOOLTIP");
-			if (profileTooltip != null && c.Bot == null)
+			if (profileTooltip != null)
 			{
 				if (c != null && c.Fingerprint != null)
 					profileTooltip.Template = "REGISTERED_PLAYER_TOOLTIP";
 
-				profileTooltip.Bind(orderManager, worldRenderer, c);
-				profileTooltip.IsVisible = () => true;
+				if (visible)
+					profileTooltip.Bind(orderManager, worldRenderer, c);
+
+				profileTooltip.IsVisible = () => visible;
 			}
 		}
 
