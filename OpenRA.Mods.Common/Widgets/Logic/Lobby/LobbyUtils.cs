@@ -296,8 +296,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return "Poor";
 		}
 
-		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
+		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager)
 		{
+			var visible = c != null && c.Bot == null;
 			var block = parent.GetOrNull("LATENCY");
 			if (block != null)
 			{
@@ -309,8 +310,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("LATENCY_REGION");
-			tooltip.IsVisible = () => c != null && visible;
-			if (c != null)
+			tooltip.IsVisible = () => visible;
+			if (visible)
 				tooltip.Bind(orderManager, null, c);
 		}
 
