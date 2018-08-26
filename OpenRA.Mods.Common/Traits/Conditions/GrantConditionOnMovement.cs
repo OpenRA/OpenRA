@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantConditionOnMovement(init.Self, this); }
 	}
 
-	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, ITick
+	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, INotifyMoving
 	{
 		readonly IMove movement;
 
@@ -46,17 +46,59 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		void ITick.Tick(Actor self)
+		void INotifyMoving.StartedMoving(Actor self)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (!IsTraitDisabled && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+		}
+
+		void INotifyMoving.StoppedMoving(Actor self)
+		{
+			if (conditionManager == null || conditionToken == ConditionManager.InvalidConditionToken)
+				return;
+
+			if (!Info.ConsiderVerticalMovement || !movement.IsMovingVertically)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+		}
+
+		void INotifyMoving.StartedMovingVertically(Actor self)
+		{
+			if (conditionManager == null)
+				return;
+
+			if (!IsTraitDisabled && Info.ConsiderVerticalMovement && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+		}
+
+		void INotifyMoving.StoppedMovingVertically(Actor self)
+		{
+			if (conditionManager == null || conditionToken == ConditionManager.InvalidConditionToken)
+				return;
+
+			if (!movement.IsMoving)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+		}
+
+		protected override void TraitEnabled(Actor self)
 		{
 			if (conditionManager == null)
 				return;
 
 			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.IsMovingVertically : false;
-			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.IsMoving || isMovingVertically);
+			var isMoving = movement.IsMoving || isMovingVertically;
 			if (isMoving && conditionToken == ConditionManager.InvalidConditionToken)
 				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
-			else if (!isMoving && conditionToken != ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			if (conditionManager == null || conditionToken == ConditionManager.InvalidConditionToken)
+				return;
+
+			conditionToken = conditionManager.RevokeCondition(self, conditionToken);
 		}
 	}
 }
