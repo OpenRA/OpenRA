@@ -332,8 +332,8 @@ namespace OpenRA
 			if (string.IsNullOrEmpty(initialUid) || previews[initialUid].Status != MapStatus.Available)
 			{
 				var selected = previews.Values.Where(IsSuitableInitialMap).RandomOrDefault(random) ??
-					previews.Values.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
-				return selected.Uid;
+					previews.Values.FirstOrDefault(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
+				return selected == null ? string.Empty : selected.Uid;
 			}
 
 			return initialUid;

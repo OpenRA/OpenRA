@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -54,6 +55,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "onExit", DoNothing }
 				});
 			};
+
+			var hasMaps = modData.MapCache.Any(p => !p.Visibility.HasFlag(MapVisibility.Shellmap));
+			createServerButton.Disabled = !hasMaps;
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
