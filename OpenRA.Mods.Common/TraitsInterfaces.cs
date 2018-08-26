@@ -410,8 +410,7 @@ namespace OpenRA.Mods.Common.Traits
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
-		bool IsMoving { get; set; }
-		bool IsMovingVertically { get; set; }
+		MovementType CurrentMovementTypes { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
 	}
 
@@ -547,5 +546,20 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IPreventMapSpawn
 	{
 		bool PreventMapSpawn(World world, ActorReference actorReference);
+	}
+
+	[Flags]
+	public enum MovementType
+	{
+		None = 0,
+		Horizontal = 1,
+		Vertical = 2,
+		Turn = 4
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyMoving
+	{
+		void MovementTypeChanged(Actor self, MovementType type);
 	}
 }

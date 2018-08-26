@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class Drag : Activity
 	{
 		readonly IPositionable positionable;
-		readonly IMove movement;
 		readonly IDisabledTrait disableable;
 		WPos start, end;
 		int length;
@@ -28,8 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Drag(Actor self, WPos start, WPos end, int length)
 		{
 			positionable = self.Trait<IPositionable>();
-			movement = self.TraitOrDefault<IMove>();
-			disableable = movement as IDisabledTrait;
+			disableable = self.TraitOrDefault<IMove>() as IDisabledTrait;
 			this.start = start;
 			this.end = end;
 			this.length = length;
@@ -47,15 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			positionable.SetVisualPosition(self, pos);
 			if (++ticks >= length)
-			{
-				if (movement != null)
-					movement.IsMoving = false;
-
 				return NextActivity;
-			}
-
-			if (movement != null)
-				movement.IsMoving = true;
 
 			return this;
 		}

@@ -176,6 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
+		INotifyMoving[] notifyMoving;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -191,9 +192,9 @@ namespace OpenRA.Mods.Common.Traits
 		int airborneToken = ConditionManager.InvalidConditionToken;
 		int cruisingToken = ConditionManager.InvalidConditionToken;
 
-		bool isMoving;
-		bool isMovingVertically;
+		MovementType movementTypes;
 		WPos cachedPosition;
+		int cachedFacing;
 		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
@@ -233,6 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -317,10 +319,23 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
+			var oldCachedFacing = cachedFacing;
+			cachedFacing = Facing;
+
 			var oldCachedPosition = cachedPosition;
 			cachedPosition = self.CenterPosition;
-			isMoving = (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
-			isMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
+
+			var newMovementTypes = MovementType.None;
+			if (oldCachedFacing != Facing)
+				newMovementTypes |= MovementType.Turn;
+
+			if ((oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0)
+				newMovementTypes |= MovementType.Horizontal;
+
+			if ((oldCachedPosition - cachedPosition).VerticalLengthSquared != 0)
+				newMovementTypes |= MovementType.Vertical;
+
+			CurrentMovementTypes = newMovementTypes;
 
 			Repulse();
 		}
@@ -712,9 +727,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
-		public bool IsMoving { get { return isMoving; } set { } }
+		public MovementType CurrentMovementTypes
+		{
+			get
+			{
+				return movementTypes;
+			}
 
-		public bool IsMovingVertically { get { return isMovingVertically; } set { } }
+			set
+			{
+				var oldValue = movementTypes;
+				movementTypes = value;
+				if (value != oldValue)
+					foreach (var n in notifyMoving)
+						n.MovementTypeChanged(self, value);
+			}
+		}
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{

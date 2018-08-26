@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 		static bool IsMovingInMyDirection(Actor self, Actor other)
 		{
 			var otherMobile = other.TraitOrDefault<Mobile>();
-			if (otherMobile == null || !otherMobile.IsMoving)
+			if (otherMobile == null || !otherMobile.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 				return false;
 
 			var selfMobile = self.TraitOrDefault<Mobile>();

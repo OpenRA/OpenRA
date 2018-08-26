@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			targetStartPos = target.Positions.PositionClosestTo(self.CenterPosition);
-			mobile.IsMoving = true;
 		}
 
 		public override Activity Tick(Actor self)
@@ -82,11 +81,6 @@ namespace OpenRA.Mods.Common.Activities
 			mobile.SetVisualPosition(self, currentPos + delta * speed / delta.Length);
 
 			return this;
-		}
-
-		protected override void OnLastRun(Actor self)
-		{
-			mobile.IsMoving = false;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

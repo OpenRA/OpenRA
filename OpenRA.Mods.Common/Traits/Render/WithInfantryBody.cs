@@ -140,12 +140,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				wasModifying = rsm.IsModifyingSequence;
 			}
 
-			if ((state != AnimationState.Moving || dirty) && move.IsMoving)
+			if ((state != AnimationState.Moving || dirty) && move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 			{
 				state = AnimationState.Moving;
 				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.MoveSequence));
 			}
-			else if (((state == AnimationState.Moving || dirty) && !move.IsMoving)
+			else if (((state == AnimationState.Moving || dirty) && !move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 				|| ((state == AnimationState.Idle || state == AnimationState.IdleAnimating) && !self.IsIdle))
 				PlayStandAnimation(self);
 

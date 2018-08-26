@@ -33,9 +33,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speed at which the actor turns.")]
 		public readonly int TurnSpeed = 255;
 
-		[Desc("Should turning always be considering as moving (instead of only turning while moving forward).")]
-		public readonly bool AlwaysConsiderTurnAsMove = false;
-
 		public readonly int Speed = 1;
 
 		public readonly string Cursor = "move";
@@ -124,22 +121,39 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Mobile : PausableConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,
+	public class Mobile : PausableConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, ITick,
 		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle
 	{
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 
-		#region IMove IsMoving checks
-		public bool IsMoving { get; set; }
-		public bool IsMovingVertically { get { return false; } set { } }
+		#region IMove CurrentMovementTypes
+		MovementType movementTypes;
+		public MovementType CurrentMovementTypes
+		{
+			get
+			{
+				return movementTypes;
+			}
+
+			set
+			{
+				var oldValue = movementTypes;
+				movementTypes = value;
+				if (value != oldValue)
+					foreach (var n in notifyMoving)
+						n.MovementTypeChanged(self, value);
+			}
+		}
 		#endregion
 
-		int facing;
+		int oldFacing, facing;
+		WPos oldPos;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
 		INotifyCustomLayerChanged[] notifyCustomLayerChanged;
 		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
+		INotifyMoving[] notifyMoving;
 		INotifyFinishedMoving[] notifyFinishedMoving;
 
 		#region IFacing
@@ -201,9 +215,25 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			notifyCustomLayerChanged = self.TraitsImplementing<INotifyCustomLayerChanged>().ToArray();
 			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 
 			base.Created(self);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			var newMovementTypes = MovementType.None;
+			if (oldPos != CenterPosition)
+				newMovementTypes |= MovementType.Horizontal;
+
+			if (oldFacing != Facing)
+				newMovementTypes |= MovementType.Turn;
+
+			CurrentMovementTypes = newMovementTypes;
+
+			oldPos = CenterPosition;
+			oldFacing = Facing;
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
