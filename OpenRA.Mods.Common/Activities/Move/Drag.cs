@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -21,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IPositionable positionable;
 		readonly IMove movement;
 		readonly IDisabledTrait disableable;
+		readonly INotifyMoving[] notifyMoving;
 		WPos start, end;
 		int length;
 		int ticks = 0;
@@ -30,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			positionable = self.Trait<IPositionable>();
 			movement = self.TraitOrDefault<IMove>();
 			disableable = movement as IDisabledTrait;
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			this.start = start;
 			this.end = end;
 			this.length = length;
@@ -49,13 +53,21 @@ namespace OpenRA.Mods.Common.Activities
 			if (++ticks >= length)
 			{
 				if (movement != null)
+				{
 					movement.IsMoving = false;
+					foreach (var n in notifyMoving)
+						n.StoppedMoving(self);
+				}
 
 				return NextActivity;
 			}
 
 			if (movement != null)
+			{
 				movement.IsMoving = true;
+				foreach (var n in notifyMoving)
+					n.StartedMoving(self);
+			}
 
 			return this;
 		}

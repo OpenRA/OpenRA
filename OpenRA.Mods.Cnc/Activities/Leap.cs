@@ -24,8 +24,10 @@ namespace OpenRA.Mods.Cnc.Activities
 	class Leap : Activity
 	{
 		readonly Mobile mobile;
+		readonly INotifyMoving[] notifyMoving;
 		readonly WeaponInfo weapon;
 		readonly int length;
+		readonly bool wasMoving;
 
 		WPos from;
 		WPos to;
@@ -43,7 +45,9 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.angle = angle;
 			this.damageTypes = damageTypes;
 			mobile = self.Trait<Mobile>();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, targetMobile.FromCell, targetMobile.FromSubCell);
+			wasMoving = mobile.IsMoving;
 			mobile.IsMoving = true;
 
 			from = self.CenterPosition;
@@ -59,8 +63,21 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ticks == 0 && IsCanceled)
-				return NextActivity;
+			if (ticks == 0)
+			{
+				// We only bother notifying INotifyMoving if the activity isn't immediately canceled again.
+				// If it's canceled, and the actor wasn't moving before, we properly reset IsMoving as well.
+				if (IsCanceled)
+				{
+					if (!wasMoving)
+						mobile.IsMoving = false;
+
+					return NextActivity;
+				}
+				else
+					foreach (var n in notifyMoving)
+						n.StartedMoving(self);
+			}
 
 			mobile.SetVisualPosition(self, WPos.LerpQuadratic(from, to, angle, ++ticks, length));
 			if (ticks >= length)
@@ -68,6 +85,8 @@ namespace OpenRA.Mods.Cnc.Activities
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
 				mobile.FinishedMoving(self);
 				mobile.IsMoving = false;
+				foreach (var n in notifyMoving)
+					n.StoppedMoving(self);
 
 				self.World.ActorMap.GetActorsAt(mobile.ToCell, mobile.ToSubCell)
 					.Except(new[] { self }).Where(t => weapon.IsValidAgainst(t, self))

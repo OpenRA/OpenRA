@@ -442,4 +442,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyMoving
+	{
+		void StartedMoving(Actor self);
+		void StoppedMoving(Actor self);
+		void StartedMovingVertically(Actor self);
+		void StoppedMovingVertically(Actor self);
+	}
 }

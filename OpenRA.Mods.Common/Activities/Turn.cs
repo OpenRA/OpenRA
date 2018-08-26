@@ -9,6 +9,9 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -20,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IDisabledTrait disablable;
 		readonly IFacing facing;
 		readonly Mobile mobile;
+		readonly INotifyMoving[] notifyMoving;
 		readonly int desiredFacing;
 		readonly bool setIsMoving;
 
@@ -34,12 +38,17 @@ namespace OpenRA.Mods.Common.Activities
 			// This might look confusing, but the current implementation of Mobile is both IMove and IDisabledTrait,
 			// and this way we can save a separate Mobile trait look-up.
 			mobile = disablable as Mobile;
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			if (setIsMoving && mobile != null && !mobile.IsMoving)
+			{
 				mobile.IsMoving = true;
+				foreach (var n in notifyMoving)
+					n.StartedMoving(self);
+			}
 		}
 
 		public override Activity Tick(Actor self)
@@ -62,7 +71,11 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// If Mobile.IsMoving was set to 'true' earlier, we want to reset it to 'false' before the next tick.
 			if (mobile != null && mobile.IsMoving)
+			{
 				mobile.IsMoving = false;
+				foreach (var n in notifyMoving)
+					n.StoppedMoving(self);
+			}
 		}
 	}
 }

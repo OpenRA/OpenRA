@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		static readonly List<CPos> NoPath = new List<CPos>();
 
 		readonly Mobile mobile;
+		readonly INotifyMoving[] notifyMoving;
 		readonly WDist nearEnough;
 		readonly Func<List<CPos>> getPath;
 		readonly Actor ignoreActor;
@@ -46,6 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination)
 		{
 			mobile = self.Trait<Mobile>();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 
 			getPath = () =>
 			{
@@ -63,6 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
 		{
 			mobile = self.Trait<Mobile>();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 
 			getPath = () =>
 			{
@@ -84,6 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
 		{
 			mobile = self.Trait<Mobile>();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 
 			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
@@ -94,6 +98,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, Target target, WDist range)
 		{
 			mobile = self.Trait<Mobile>();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 
 			getPath = () =>
 			{
@@ -111,6 +116,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Move(Actor self, Func<List<CPos>> getPath)
 		{
 			mobile = self.Trait<Mobile>();
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 
 			this.getPath = getPath;
 
@@ -222,7 +228,15 @@ namespace OpenRA.Mods.Common.Activities
 				// If Mobile.Info.AlwaysConsiderTurnAsMove is true, we consider Turn as movement regardless of facing delta size.
 				// IsMoving is then set back to false in Turn.OnLastRun.
 				// This is needed for actors that want to display their movement animation during turns (walker units, for example).
+				var wasMoving = mobile.IsMoving;
 				mobile.IsMoving = mobile.Info.AlwaysConsiderTurnAsMove;
+
+				if (!wasMoving && mobile.IsMoving)
+					foreach (var n in notifyMoving)
+						n.StartedMoving(self);
+				else if (wasMoving && !mobile.IsMoving)
+					foreach (var n in notifyMoving)
+						n.StoppedMoving(self);
 
 				// HACK: To fix visual hiccups on actors with move animations during "L-turn to next part of movement" transitions
 				// or invisible mini-turns (due to less sprite facings than internal facings), we set IsMoving to  'true' during Turn activity
@@ -387,7 +401,15 @@ namespace OpenRA.Mods.Common.Activities
 			public override Activity Tick(Actor self)
 			{
 				var ret = InnerTick(self, Move.mobile);
+				var wasMoving = Move.mobile.IsMoving;
 				Move.mobile.IsMoving = ret is MovePart;
+
+				if (!wasMoving && Move.mobile.IsMoving)
+					foreach (var n in Move.notifyMoving)
+						n.StartedMoving(self);
+				else if (wasMoving && !Move.mobile.IsMoving)
+					foreach (var n in Move.notifyMoving)
+						n.StoppedMoving(self);
 
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;

@@ -160,6 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
+		INotifyMoving[] notifyMoving;
 
 		[Sync] public int Facing { get; set; }
 		[Sync] public WPos CenterPosition { get; private set; }
@@ -215,6 +216,7 @@ namespace OpenRA.Mods.Common.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
+			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -301,8 +303,24 @@ namespace OpenRA.Mods.Common.Traits
 
 			var oldCachedPosition = cachedPosition;
 			cachedPosition = self.CenterPosition;
+			var wasMoving = isMoving;
 			isMoving = (oldCachedPosition - cachedPosition).HorizontalLengthSquared != 0;
+			var wasMovingVertically = isMovingVertically;
 			isMovingVertically = (oldCachedPosition - cachedPosition).VerticalLengthSquared != 0;
+
+			if (!wasMoving && isMoving)
+				foreach (var n in notifyMoving)
+					n.StartedMoving(self);
+			else if (wasMoving && !isMoving)
+				foreach (var n in notifyMoving)
+					n.StoppedMoving(self);
+
+			if (!wasMovingVertically && isMovingVertically)
+				foreach (var n in notifyMoving)
+					n.StartedMovingVertically(self);
+			else if (wasMovingVertically && !isMovingVertically)
+				foreach (var n in notifyMoving)
+					n.StoppedMovingVertically(self);
 
 			Repulse();
 		}
