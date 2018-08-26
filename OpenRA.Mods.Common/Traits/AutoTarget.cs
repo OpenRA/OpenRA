@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
 	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
 	{
-		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
+		[Desc("It will try to hunt down the enemy if it is set to AttackAnything.")]
 		public readonly bool AllowMovement = true;
 
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldAttack(out bool allowMove)
 		{
-			allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
+			allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
 
 			// PERF: Avoid LINQ.
 			foreach (var attackFollow in attackFollows)
