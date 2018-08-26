@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Which sprite body to modify.")]
 		public readonly string Body = "body";
 
+		[Desc("Play sequence on straight vertical movement as well.")]
+		public readonly bool ConsiderVerticalMovement = false;
+
 		public override object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -34,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithMoveAnimation : ConditionalTrait<WithMoveAnimationInfo>, ITick
+	public class WithMoveAnimation : ConditionalTrait<WithMoveAnimationInfo>, INotifyMoving
 	{
 		readonly IMove movement;
 		readonly WithSpriteBody wsb;
@@ -46,17 +49,40 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
-		void ITick.Tick(Actor self)
+		void INotifyMoving.StartedMoving(Actor self)
 		{
-			if (IsTraitDisabled || wsb.IsTraitDisabled)
-				return;
+			if (!IsTraitDisabled && !wsb.IsTraitDisabled)
+				wsb.PlayCustomAnimationRepeating(self, Info.MoveSequence);
+		}
 
-			var isMoving = movement.IsMoving && !self.IsDead;
+		void INotifyMoving.StoppedMoving(Actor self)
+		{
+			if (wsb.DefaultAnimation.CurrentSequence.Name == Info.MoveSequence)
+				wsb.CancelCustomAnimation(self);
+		}
 
-			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != Info.MoveSequence))
-				return;
+		void INotifyMoving.StartedMovingVertically(Actor self)
+		{
+			if (Info.ConsiderVerticalMovement && !IsTraitDisabled && !wsb.IsTraitDisabled)
+				wsb.PlayCustomAnimationRepeating(self, Info.MoveSequence);
+		}
 
-			wsb.DefaultAnimation.ReplaceAnim(isMoving ? Info.MoveSequence : wsb.Info.Sequence);
+		void INotifyMoving.StoppedMovingVertically(Actor self)
+		{
+			if (Info.ConsiderVerticalMovement && wsb.DefaultAnimation.CurrentSequence.Name == Info.MoveSequence)
+				wsb.CancelCustomAnimation(self);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (!wsb.IsTraitDisabled && movement.IsMoving)
+				wsb.PlayCustomAnimationRepeating(self, Info.MoveSequence);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			if (wsb.DefaultAnimation.CurrentSequence.Name == Info.MoveSequence)
+				wsb.CancelCustomAnimation(self);
 		}
 	}
 }
