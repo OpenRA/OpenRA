@@ -94,8 +94,6 @@ namespace OpenRA.Mods.Cnc.Activities
 			// We are at the destination
 			if (++ticks >= length)
 			{
-				mobile.IsMoving = false;
-
 				// Revoke the run condition
 				attack.IsAiming = false;
 
@@ -112,8 +110,6 @@ namespace OpenRA.Mods.Cnc.Activities
 
 				return this;
 			}
-
-			mobile.IsMoving = true;
 
 			return this;
 		}

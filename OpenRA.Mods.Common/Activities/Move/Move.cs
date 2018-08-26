@@ -188,18 +188,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				path.Add(nextCell.Value.First);
 
-				// If Mobile.Info.AlwaysConsiderTurnAsMove is true, we consider Turn as movement regardless of facing delta size.
-				// IsMoving is then set back to false in Turn.OnLastRun.
-				// This is needed for actors that want to display their movement animation during turns (walker units, for example).
-				mobile.IsMoving = mobile.Info.AlwaysConsiderTurnAsMove;
-
-				// HACK: To fix visual hiccups on actors with move animations during "L-turn to next part of movement" transitions
-				// or invisible mini-turns (due to less sprite facings than internal facings), we set IsMoving to  'true' during Turn activity
-				// when the facing delta is low enough to be covered with a single Turn tick.
-				// To avoid issues, we also make these mini-turns uninterruptible (like MovePart activities) to ensure the actor
-				// finishes that mini-turn before starting something else.
-				var facingWithinTolerance = Util.FacingWithinTolerance(mobile.Facing, firstFacing, mobile.TurnSpeed);
-				QueueChild(self, new Turn(self, firstFacing, facingWithinTolerance, !facingWithinTolerance), true);
+				QueueChild(self, new Turn(self, firstFacing), true);
 				return this;
 			}
 
@@ -337,7 +326,6 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 
 				var ret = InnerTick(self, Move.mobile);
-				Move.mobile.IsMoving = ret is MovePart;
 
 				if (moveFraction > MoveFractionTotal)
 					moveFraction = MoveFractionTotal;

@@ -72,7 +72,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			if (movement.IsMoving)
+			if (movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal)
+				|| movement.CurrentMovementTypes.HasFlag(MovementType.Turn))
 				tick++;
 
 			if (tick < info.TickRate)

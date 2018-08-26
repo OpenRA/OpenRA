@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (IsTraitDisabled || wsb.IsTraitDisabled)
 				return;
 
-			var isMoving = movement.IsMoving && !self.IsDead;
+			var isMoving = movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal) && !self.IsDead;
 
 			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != Info.MoveSequence))
 				return;

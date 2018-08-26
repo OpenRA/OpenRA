@@ -201,9 +201,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		// Actors with TDGunboat always move
-		public bool IsMoving { get { return true; } set { } }
-
-		public bool IsMovingVertically { get { return false; } set { } }
+		public MovementType CurrentMovementTypes { get { return MovementType.Horizontal; } set { } }
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{

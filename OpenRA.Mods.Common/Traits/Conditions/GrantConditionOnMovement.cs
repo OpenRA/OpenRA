@@ -50,8 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionManager == null)
 				return;
 
-			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.IsMovingVertically : false;
-			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.IsMoving || isMovingVertically);
+			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.CurrentMovementTypes.HasFlag(MovementType.Vertical);
+			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal) || isMovingVertically);
 			if (isMoving && conditionToken == ConditionManager.InvalidConditionToken)
 				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
 			else if (!isMoving && conditionToken != ConditionManager.InvalidConditionToken)
