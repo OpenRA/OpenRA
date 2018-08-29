@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new SupportPowerManager(init); }
 	}
 
-	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
+	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement, INotifyCreated
 	{
 		public readonly Actor Self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
@@ -31,6 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly DeveloperMode DevMode;
 		public readonly TechTree TechTree;
 		public readonly Lazy<RadarPings> RadarPings;
+
+		public PlayerResources PlayerResources;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
@@ -149,6 +151,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PrerequisitesItemHidden(string key) { }
 		public void PrerequisitesItemVisible(string key) { }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			PlayerResources = self.TraitOrDefault<PlayerResources>();
+		}
 	}
 
 	public class SupportPowerInstance
@@ -244,6 +251,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (power == null)
 				return;
+
+			if (manager.PlayerResources != null)
+			{
+				if (power.Info.Cost > 0)
+				{
+					if (!manager.PlayerResources.TakeCash(power.Info.Cost, true))
+						return;
+				}
+				else
+					manager.PlayerResources.GiveCash(-power.Info.Cost);
+			}
 
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, manager);
