@@ -909,6 +909,7 @@
     <Compile Include="UpdateRules\Rules\20180307\AddShakeToBridge.cs" />
     <Compile Include="UpdateRules\Rules\20180307\IgnoreAbstractActors.cs" />
     <Compile Include="UpdateRules\Rules\20180307\RemoveCanUndeployFromGrantConditionOnDeploy.cs" />
+    <Compile Include="UpdateRules\Rules\ConvertSupportPowerRangesToFootprint.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />

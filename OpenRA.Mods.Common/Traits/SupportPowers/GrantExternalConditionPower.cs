@@ -28,8 +28,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
-		[Desc("Cells - affects whole cells only")]
-		public readonly int Range = 1;
+		[FieldLoader.Require]
+		[Desc("Size of the footprint of the affected area.")]
+		public readonly CVec Dimensions = CVec.Zero;
+
+		[FieldLoader.Require]
+		[Desc("Actual footprint. Cells marked as x will be affected.")]
+		public readonly string Footprint = string.Empty;
 
 		[Desc("Sound to instantly play at the targeted area.")]
 		public readonly string OnFireSound = null;
@@ -82,8 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
-			var range = info.Range;
-			var tiles = Self.World.Map.FindTilesInCircle(xy, range);
+			var tiles = CellsMatching(xy, info.Footprint, info.Dimensions);
 			var units = new List<Actor>();
 			foreach (var t in tiles)
 				units.AddRange(Self.World.ActorMap.GetActorsAt(t));
@@ -101,7 +105,8 @@ namespace OpenRA.Mods.Common.Traits
 		class SelectConditionTarget : IOrderGenerator
 		{
 			readonly GrantExternalConditionPower power;
-			readonly int range;
+			readonly string footprint;
+			readonly CVec dimensions;
 			readonly Sprite tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
@@ -115,7 +120,8 @@ namespace OpenRA.Mods.Common.Traits
 				this.manager = manager;
 				this.order = order;
 				this.power = power;
-				range = power.info.Range;
+				footprint = power.info.Footprint;
+				dimensions = power.info.Dimensions;
 				tile = world.Map.Rules.Sequences.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
@@ -148,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 
-				foreach (var t in world.Map.FindTilesInCircle(xy, range))
+				foreach (var t in power.CellsMatching(xy, footprint, dimensions))
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 

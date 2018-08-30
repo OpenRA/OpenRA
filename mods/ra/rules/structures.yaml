@@ -417,6 +417,8 @@ IRON:
 		DisplayRadarPing: True
 		Condition: invulnerability
 		OnFireSound: ironcur9.aud
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_ 
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -479,6 +481,8 @@ PDOX:
 		Duration: 500
 		KillCargo: yes
 		DisplayRadarPing: True
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_ 
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
 		PauseOnCondition: disabled
@@ -494,7 +498,8 @@ PDOX:
 		Duration: 500
 		KillCargo: yes
 		DisplayRadarPing: True
-		Range: 2
+		Dimensions: 5, 5
+		Footprint: __x__ _xxx_ xxxxx _xxx_ __x__ 
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
