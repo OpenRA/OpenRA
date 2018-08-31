@@ -412,7 +412,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new DeliverResources(self));
 
 				foreach (var n in notifyHarvesterAction)
-					n.MovingToRefinery(self, targetActor, new DeliverResources(self));
+					n.MovingToRefinery(self, targetActor, null);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
