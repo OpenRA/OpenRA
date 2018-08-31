@@ -11,7 +11,6 @@
 
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -88,15 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			Destination = null;
 
 			if (afterLandActivity != null)
-			{
-				// HACK: Harvesters need special treatment to avoid getting stuck on resource fields,
-				// so if a Harvester's afterLandActivity is not DeliverResources, queue a new FindResources activity
-				var findResources = self.Info.HasTraitInfo<HarvesterInfo>() && !(afterLandActivity is DeliverResources);
-				if (findResources)
-					self.QueueActivity(new FindResources(self));
-				else
-					self.QueueActivity(false, afterLandActivity);
-			}
+				self.QueueActivity(false, afterLandActivity);
 
 			base.Detached(self);
 		}
