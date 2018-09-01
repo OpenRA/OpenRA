@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Scripting
 	[Desc("Part of the new Lua API.")]
 	public class LuaScriptInfo : ITraitInfo, Requires<SpawnMapActorsInfo>
 	{
-		public readonly HashSet<string> Scripts = new HashSet<string>();
+		public readonly List<string> Scripts = new List<string>();
 
 		public object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
