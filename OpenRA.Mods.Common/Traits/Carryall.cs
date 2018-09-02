@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
                 {
                     var positionable = Carryable.Trait<IPositionable>();
                     positionable.SetPosition(Carryable, self.Location);
-                    Carryable.Kill(e.Attacker);
+                    Carryable.Kill(e.Attacker, e.Damage.DamageTypes);
                 }
 
 				Carryable = null;
@@ -297,9 +297,7 @@ namespace OpenRA.Mods.Common.Traits
 		class CarryallPickupOrderTargeter : UnitOrderTargeter
 		{
 			public CarryallPickupOrderTargeter()
-				: base("PickupUnit", 5, "ability", false, true)
-			{
-			}
+				: base("PickupUnit", 5, "ability", false, true)	{ }
 
 			static bool CanTarget(Actor self, Actor target)
 			{
