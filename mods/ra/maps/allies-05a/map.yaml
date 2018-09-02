@@ -853,9 +853,6 @@ Actors:
 	Actor271: t07
 		Location: 29,48
 		Owner: Neutral
-	Actor272: t12
-		Location: 97,49
-		Owner: Neutral
 	Actor273: tc04
 		Location: 40,80
 		Owner: Neutral
