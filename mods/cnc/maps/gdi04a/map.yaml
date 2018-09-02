@@ -69,17 +69,11 @@ Actors:
 	Actor7: t08
 		Location: 46,26
 		Owner: Neutral
-	Actor8: t08
-		Location: 48,23
-		Owner: Neutral
 	Actor9: t17
 		Location: 42,24
 		Owner: Neutral
 	Actor10: tc02
 		Location: 50,28
-		Owner: Neutral
-	Actor11: tc03
-		Location: 46,22
 		Owner: Neutral
 	Actor12: tc01
 		Location: 17,48
@@ -155,9 +149,6 @@ Actors:
 		Owner: Neutral
 	Actor36: t06
 		Location: 23,24
-		Owner: Neutral
-	Actor37: t06
-		Location: 3,23
 		Owner: Neutral
 	Actor38: t07
 		Location: 12,35
@@ -428,7 +419,7 @@ Actors:
 		Location: 25,58
 		Owner: Neutral
 	NodHeliEntry: waypoint
-		Location: 41,23
+		Location: 41,24
 		Owner: Neutral
 	NodHeliLZ1: waypoint
 		Location: 31,39
@@ -449,7 +440,7 @@ Actors:
 		Location: 11,51
 		Owner: Neutral
 	GDIHeliEntry: waypoint
-		Location: 34,60
+		Location: 34,59
 		Owner: Neutral
 	GDIHeliLZ: waypoint
 		Location: 27,58
