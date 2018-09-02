@@ -894,7 +894,7 @@
 	Tooltip:
 		Name: Tree (Burnt)
 		ShowOwnerRow: false
-	FrozenUnderFog:
+	HiddenUnderShroud:
 	ScriptTriggers:
 	EditorTilesetFilter:
 		Categories: Tree
