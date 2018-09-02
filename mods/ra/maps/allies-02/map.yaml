@@ -153,15 +153,6 @@ Actors:
 	Actor33: tc02
 		Location: 44,68
 		Owner: Neutral
-	Actor34: t12
-		Location: 93,81
-		Owner: Neutral
-	Actor35: t03
-		Location: 93,55
-		Owner: Neutral
-	Actor36: t02
-		Location: 93,57
-		Owner: Neutral
 	Actor37: t02
 		Location: 79,47
 		Owner: Neutral
@@ -170,12 +161,6 @@ Actors:
 		Owner: Neutral
 	Actor39: t01
 		Location: 92,45
-		Owner: Neutral
-	Actor40: t05
-		Location: 93,54
-		Owner: Neutral
-	Actor41: t06
-		Location: 93,82
 		Owner: Neutral
 	Actor42: t07
 		Location: 87,44
