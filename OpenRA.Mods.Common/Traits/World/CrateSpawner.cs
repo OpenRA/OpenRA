@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
 						new CenterPositionInit(startEdge),
-						new OwnerInit(self.Owner),
+						new OwnerInit(w.WorldActor.Owner),
 						new FacingInit(dropFacing),
 					});
 
