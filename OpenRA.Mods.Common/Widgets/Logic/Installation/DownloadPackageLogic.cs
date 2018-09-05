@@ -85,6 +85,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataTotal = float.NaN;
 					dataReceived = i.BytesReceived;
 					dataSuffix = SizeSuffixes[0];
+
+					getStatusText = () => "Downloading from {2} {0:0.00} {1} (unknown size)".F(dataReceived,
+						dataSuffix,
+						downloadHost ?? "unknown host");
 				}
 				else
 				{
@@ -92,14 +96,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataTotal = i.TotalBytesToReceive / (float)(1L << (mag * 10));
 					dataReceived = i.BytesReceived / (float)(1L << (mag * 10));
 					dataSuffix = SizeSuffixes[mag];
+
+					getStatusText = () => "Downloading from {4} {1:0.00}/{2:0.00} {3} ({0}%)".F(i.ProgressPercentage,
+						dataReceived, dataTotal, dataSuffix,
+						downloadHost ?? "unknown host");
 				}
 
 				progressBar.Indeterminate = false;
 				progressBar.Percentage = i.ProgressPercentage;
-
-				getStatusText = () => "Downloading from {4} {1:0.00}/{2:0.00} {3} ({0}%)".F(i.ProgressPercentage,
-					dataReceived, dataTotal, dataSuffix,
-					downloadHost ?? "unknown host");
 			};
 
 			Action<string> onExtractProgress = s => Game.RunAfterTick(() => getStatusText = () => s);
