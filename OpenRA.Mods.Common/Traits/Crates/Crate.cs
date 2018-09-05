@@ -77,6 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly CrateInfo info;
+		readonly CrateSpawner spawner;
 		bool collected;
 
 		[Sync] int ticks;
@@ -86,6 +87,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self = init.Self;
 			this.info = info;
+
+			if (init.Contains<CrateSpawnerTraitInit>())
+				spawner = init.Get<CrateSpawnerTraitInit, CrateSpawner>();
 
 			if (init.Contains<LocationInit>())
 				SetPosition(self, init.Get<LocationInit, CPos>());
@@ -226,18 +230,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddToMaps(self, this);
 
-			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
-			if (cs != null)
-				cs.IncrementCrates();
+			if (spawner != null)
+				spawner.IncrementCrates();
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
 			self.World.RemoveFromMaps(self, this);
 
-			var cs = self.World.WorldActor.TraitOrDefault<CrateSpawner>();
-			if (cs != null)
-				cs.DecrementCrates();
+			if (spawner != null)
+				spawner.DecrementCrates();
 		}
 	}
 }

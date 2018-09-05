@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (info.DeliveryAircraft != null)
 				{
-					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
+					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new CrateSpawnerTraitInit(this) });
 					var dropFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
 					var delta = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(dropFacing));
 
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 					plane.QueueActivity(new RemoveSelf());
 				}
 				else
-					w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) });
+					w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p), new CrateSpawnerTraitInit(this) });
 			});
 		}
 
@@ -217,5 +217,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			crates--;
 		}
+
+	public class CrateSpawnerTraitInit : IActorInit<CrateSpawner>
+	{
+		readonly CrateSpawner value;
+		public CrateSpawnerTraitInit(CrateSpawner init) { value = init; }
+		public CrateSpawner Value(World world) { return value; }
 	}
 }
