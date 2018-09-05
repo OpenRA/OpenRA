@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class CrateSpawnerInfo : ITraitInfo, ILobbyOptions
+	public class CrateSpawnerInfo : PausableConditionalTraitInfo, ILobbyOptions
 	{
 		[Translate]
 		[Desc("Descriptive label for the crates checkbox in the lobby.")]
@@ -84,21 +84,20 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyBooleanOption("crates", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
-		public object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }
 	}
 
-	public class CrateSpawner : ITick, INotifyCreated
+	public class CrateSpawner : PausableConditionalTrait<CrateSpawnerInfo>, ITick, INotifyCreated
 	{
 		readonly Actor self;
-		readonly CrateSpawnerInfo info;
 		bool enabled;
 		int crates;
 		int ticks;
 
 		public CrateSpawner(Actor self, CrateSpawnerInfo info)
+			: base(info)
 		{
 			this.self = self;
-			this.info = info;
 
 			ticks = info.InitialSpawnDelay;
 		}
@@ -106,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			enabled = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("crates", info.CheckboxEnabled);
+				.OptionOrDefault("crates", Info.CheckboxEnabled);
 		}
 
 		void ITick.Tick(Actor self)
@@ -114,12 +113,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (!enabled)
 				return;
 
+			if (IsTraitDisabled || IsTraitPaused)
+				return;
+
 			if (--ticks <= 0)
 			{
-				ticks = info.SpawnInterval;
+				ticks = Info.SpawnInterval;
 
-				var toSpawn = Math.Max(0, info.Minimum - crates)
-					+ (crates < info.Maximum && info.Maximum > info.Minimum ? 1 : 0);
+				var toSpawn = Math.Max(0, Info.Minimum - crates)
+					+ (crates < Info.Maximum && Info.Maximum > Info.Minimum ? 1 : 0);
 
 				for (var n = 0; n < toSpawn; n++)
 					SpawnCrate(self);
@@ -128,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SpawnCrate(Actor self)
 		{
-			var inWater = self.World.SharedRandom.Next(100) < info.WaterChance;
+			var inWater = self.World.SharedRandom.Next(100) < Info.WaterChance;
 			var pp = ChooseDropCell(self, inWater, 100);
 
 			if (pp == null)
@@ -139,18 +141,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (info.DeliveryAircraft != null)
+				if (Info.DeliveryAircraft != null)
 				{
 					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new CrateSpawnerTraitInit(this) });
-					var dropFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
+					var dropFacing = 256 * self.World.SharedRandom.Next(Info.QuantizedFacings) / Info.QuantizedFacings;
 					var delta = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(dropFacing));
 
-					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
+					var altitude = self.World.Map.Rules.Actors[Info.DeliveryAircraft].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 					var target = self.World.Map.CenterOfCell(p) + new WVec(0, 0, altitude);
-					var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
-					var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
+					var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + Info.Cordon).Length * delta / 1024;
+					var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + Info.Cordon).Length * delta / 1024;
 
-					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
+					var plane = w.CreateActor(Info.DeliveryAircraft, new TypeDictionary
 					{
 						new CenterPositionInit(startEdge),
 						new OwnerInit(w.WorldActor.Owner),
@@ -178,7 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Is this valid terrain?
 				var terrainType = self.World.Map.GetTerrainInfo(p).Type;
-				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType))
+				if (!(inWater ? Info.ValidWater : Info.ValidGround).Contains(terrainType))
 					continue;
 
 				// Don't drop on any actors
@@ -194,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		string ChooseCrateActor()
 		{
-			var crateShares = info.CrateActorShares;
+			var crateShares = Info.CrateActorShares;
 			var n = self.World.SharedRandom.Next(crateShares.Sum());
 
 			var cumulativeShares = 0;
@@ -202,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				cumulativeShares += crateShares[i];
 				if (n <= cumulativeShares)
-					return info.CrateActors[i];
+					return Info.CrateActors[i];
 			}
 
 			return null;
@@ -217,6 +219,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			crates--;
 		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			ticks = Info.SpawnInterval;
+		}
+	}
 
 	public class CrateSpawnerTraitInit : IActorInit<CrateSpawner>
 	{
