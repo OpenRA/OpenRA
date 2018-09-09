@@ -137,9 +137,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			return new Order(order.OrderID, self, target, queued);
 		}
 
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			return new Order("Detonate", self, false);
+			return new Order("Detonate", self, queued);
 		}
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }

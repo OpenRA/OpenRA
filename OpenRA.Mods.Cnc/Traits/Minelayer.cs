@@ -81,9 +81,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), false);
+			return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), queued);
 		}
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }
