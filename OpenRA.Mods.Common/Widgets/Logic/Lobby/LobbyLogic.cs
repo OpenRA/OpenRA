@@ -493,11 +493,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void LoadMapPreviewRules(MapPreview map)
 		{
-			new Task(() =>
-			{
-				// Force map rules to be loaded on this background thread
-				map.PreloadRules();
-			}).Start();
+			// Force map rules to be loaded on this background thread
+			new Task(map.PreloadRules).Start();
 		}
 
 		void UpdateCurrentMap()
