@@ -124,18 +124,17 @@ Container@SERVER_LOBBY:
 											WordWrap: true
 											VAlign: Top
 											Shadow: True
-						TextField@CHAT_TEXTFIELD:
+						Button@CHAT_MODE:
 							Y: PARENT_BOTTOM - HEIGHT
-							Width: PARENT_RIGHT
+							Width: 50
 							Height: 25
-							LeftMargin: 50
-							Children:
-								Label@LABEL_CHATTYPE:
-									Y: 0 - 1
-									Width: 45
-									Height: 25
-									Align: Right
-									Text: Chat:
+							Text: Team
+							Font: Bold
+						TextField@CHAT_TEXTFIELD:
+							X: 55
+							Y: PARENT_BOTTOM - HEIGHT
+							Width: PARENT_RIGHT - 55
+							Height: 25
 		Button@DISCONNECT_BUTTON:
 			Y: PARENT_BOTTOM - 36
 			Width: 140

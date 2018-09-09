@@ -57,10 +57,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
 
-		readonly LabelWidget chatLabel;
-
 		MapPreview map;
 		bool addBotOnMapLoad;
+		bool disableTeamChat;
 		bool teamChat;
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
@@ -386,7 +385,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (skirmishMode)
 				disconnectButton.Text = "Back";
 
-			chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
+			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
+			chatMode.GetText = () => teamChat ? "Team" : "All";
+			chatMode.OnClick = () => teamChat ^= true;
+			chatMode.IsDisabled = () => disableTeamChat;
+
 			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatTextField.MaxLength = UnitOrders.ChatMessageMaxLength;
 
@@ -483,8 +486,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool SwitchTeamChat()
 		{
-			teamChat ^= true;
-			chatLabel.Text = teamChat ? "Team:" : "Chat:";
+			if (!disableTeamChat)
+				teamChat ^= true;
 			return true;
 		}
 
@@ -545,6 +548,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (orderManager.LocalClient == null)
 				return;
+
+			disableTeamChat = orderManager.LocalClient.Team == 0 ||
+				!orderManager.LobbyInfo.Clients.Any(c =>
+					c != orderManager.LocalClient &&
+					c.Bot == null &&
+					c.Team == orderManager.LocalClient.Team);
+
+			if (disableTeamChat)
+				teamChat = false;
 
 			var isHost = Game.IsHost;
 			var idx = 0;
