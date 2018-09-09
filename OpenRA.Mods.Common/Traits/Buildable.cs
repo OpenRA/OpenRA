@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage modifier to apply to the build duration.")]
 		public readonly int BuildDurationModifier = 60;
 
-		// TODO: UI fluff; doesn't belong here
+		[Desc("Sort order for the production palette. Smaller numbers are presented earlier.")]
 		public readonly int BuildPaletteOrder = 9999;
 
 		[Desc("Text shown in the production tooltip.")]
