@@ -147,6 +147,7 @@ Player:
 			syrd: 1
 			hpad: 4
 			afld: 4
+			afld.ukraine: 4
 			atek: 1
 			stek: 1
 			fix: 1
@@ -161,6 +162,7 @@ Player:
 			spen: 1%
 			syrd: 1%
 			afld: 4%
+			afld.ukraine: 4%
 			pbox: 7%
 			gun: 7%
 			ftur: 10%
@@ -284,6 +286,7 @@ Player:
 			syrd: 1
 			hpad: 4
 			afld: 4
+			afld.ukraine: 4
 			atek: 1
 			stek: 1
 			fix: 1
@@ -294,6 +297,8 @@ Player:
 			kenn: 0.5%
 			weap: 3%
 			hpad: 2%
+			afld: 2%
+			afld.ukraine: 2%
 			spen: 1%
 			syrd: 1%
 			pbox: 10%
@@ -418,6 +423,7 @@ Player:
 			syrd: 1
 			hpad: 8
 			afld: 8
+			afld.ukraine: 8
 			weap: 1
 			atek: 1
 			stek: 1
@@ -428,6 +434,7 @@ Player:
 			weap: 1%
 			hpad: 20%
 			afld: 20%
+			afld.ukraine: 20%
 			atek: 1%
 			stek: 1%
 			spen: 1%
