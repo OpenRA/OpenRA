@@ -127,18 +127,17 @@ Background@SERVER_LOBBY:
 									WordWrap: true
 									VAlign: Top
 									Shadow: True
-				TextField@CHAT_TEXTFIELD:
+				Button@CHAT_MODE:
 					Y: PARENT_BOTTOM - HEIGHT
-					Width: PARENT_RIGHT - 260
+					Width: 50
 					Height: 25
-					LeftMargin: 50
-					Children:
-						Label@LABEL_CHATTYPE:
-							Y: 0 - 1
-							Width: 45
-							Height: 25
-							Align: Right
-							Text: Chat:
+					Text: Team
+					Font: Bold
+				TextField@CHAT_TEXTFIELD:
+					X: 55
+					Y: PARENT_BOTTOM - HEIGHT
+					Width: PARENT_RIGHT - 260 - 55
+					Height: 25
 		Button@START_GAME_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 150
 			Y: PARENT_BOTTOM - HEIGHT - 20
