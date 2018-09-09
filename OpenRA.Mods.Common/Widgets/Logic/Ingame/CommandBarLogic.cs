@@ -162,7 +162,8 @@ namespace OpenRA.Mods.Common.Widgets
 					if (highlightOnButtonPress)
 						deployHighlighted = 2;
 
-					PerformDeployOrderOnSelection();
+					var queued = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+					PerformDeployOrderOnSelection(queued);
 				};
 
 				deployButton.OnKeyPress = ki => { deployHighlighted = 2; deployButton.OnClick(); };
@@ -207,12 +208,28 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				keyOverrides.AddHandler(e =>
 				{
-					// HACK: enable attack move to be triggered if the ctrl key is pressed
-					e.Modifiers &= ~Modifiers.Ctrl;
-					if (!attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(e))
+					// HACK: allow attack move to be triggered if the ctrl key is pressed (assault move)
+					var eNoCtrl = e;
+					eNoCtrl.Modifiers &= ~Modifiers.Ctrl;
+
+					if (attackMoveButton != null && !attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(eNoCtrl))
 					{
 						attackMoveButton.OnKeyPress(e);
 						return true;
+					}
+
+					// HACK: allow deploy to be triggered if the shift key is pressed (queued order)
+					if (e.Modifiers.HasModifier(Modifiers.Shift) && e.Event == KeyInputEvent.Down)
+					{
+						var eNoShift = e;
+						eNoShift.Modifiers &= ~Modifiers.Shift;
+
+						if (deployButton != null && !deployButton.IsDisabled() &&
+							deployButton.Key.IsActivatedBy(eNoShift))
+						{
+							deployButton.OnKeyPress(e);
+							return true;
+						}
 					}
 
 					return false;
@@ -302,13 +319,13 @@ namespace OpenRA.Mods.Common.Widgets
 			world.PlayVoiceForOrders(orders);
 		}
 
-		void PerformDeployOrderOnSelection()
+		void PerformDeployOrderOnSelection(bool queued)
 		{
 			UpdateStateIfNecessary();
 
 			var orders = selectedDeploys
 				.Where(pair => pair.Trait.CanIssueDeployOrder(pair.Actor))
-				.Select(d => d.Trait.IssueDeployOrder(d.Actor))
+				.Select(d => d.Trait.IssueDeployOrder(d.Actor, queued))
 				.Where(d => d != null)
 				.ToArray();
 

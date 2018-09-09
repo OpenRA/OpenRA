@@ -136,9 +136,9 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			return new Order("GrantConditionOnDeploy", self, false);
+			return new Order("GrantConditionOnDeploy", self, queued);
 		}
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitPaused && !IsTraitDisabled; }
