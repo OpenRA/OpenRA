@@ -127,6 +127,7 @@ E2:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+		DamageSource: Killer
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
