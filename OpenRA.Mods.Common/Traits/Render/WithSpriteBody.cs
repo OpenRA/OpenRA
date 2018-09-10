@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Identifier used to assign modifying traits to this sprite body.")]
 		public readonly string Name = "body";
 
+		[Desc("Forces sprite body to be rendered on ground regardless of actor altitude (for example for custom shadow sprites).")]
+		public readonly bool ForceToGround = false;
+
 		public override object Create(ActorInitializer init) { return new WithSpriteBody(init, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
@@ -61,8 +64,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			Func<bool> paused = () => IsTraitPaused &&
 				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
 
+			Func<WVec> subtractDAT = null;
+			if (info.ForceToGround)
+				subtractDAT = () => new WVec(0, 0, -init.Self.World.Map.DistanceAboveTerrain(init.Self.CenterPosition).Length);
+
 			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
-			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
+			rs.Add(new AnimationWithOffset(DefaultAnimation, subtractDAT, () => IsTraitDisabled));
 
 			// Cache the bounds from the default sequence to avoid flickering when the animation changes
 			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
