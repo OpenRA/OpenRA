@@ -28,6 +28,7 @@ Player:
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
+			palace: 1
 			upgrade.conyard: 1
 			upgrade.barracks: 1
 			upgrade.light: 1
@@ -45,6 +46,7 @@ Player:
 			starport: 0.1%
 			repair_pad: 0.1%
 			research_centre: 0.1%
+			palace: 0.1%
 			upgrade.conyard: 0.1%
 			upgrade.barracks: 0.1%
 			upgrade.light: 0.1%
