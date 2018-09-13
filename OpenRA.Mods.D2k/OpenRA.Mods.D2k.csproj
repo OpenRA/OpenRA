@@ -83,6 +83,7 @@
     <Compile Include="Traits\World\D2kEditorResourceLayer.cs" />
     <Compile Include="Lint\CheckImportActors.cs" />
     <Compile Include="PackageLoaders\D2kSoundResources.cs" />
+    <Compile Include="Warheads\DamagesConcreteWarhead.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

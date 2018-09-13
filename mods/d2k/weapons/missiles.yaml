@@ -32,6 +32,8 @@
 		Explosions: tiny_explosion
 		ImpactActors: false
 		ValidTargets: Ground, Air
+	Warhead@3Concrete: DamagesConcrete
+		Damage: 240
 
 ^Missile:
 	Inherits: ^Rocket
@@ -62,6 +64,8 @@
 			invulnerable: 0
 			cy: 30
 			harvester: 50
+	Warhead@2Concrete: DamagesConcrete
+		Damage: 720
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: EXPLSML1.WAV
@@ -88,6 +92,8 @@ Rocket:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
+	Warhead@2Concrete: DamagesConcrete
+		Damage: 625
 	Warhead@3Eff: CreateEffect
 		Explosions: rocket_explosion
 		ExplosionPalette: effect75alpha
@@ -117,6 +123,8 @@ mtank_pri:
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
 		ValidTargets: Ground, Air
+	Warhead@2Concrete: DamagesConcrete
+		Damage: 900
 
 DeviatorMissile:
 	Inherits: ^Missile
@@ -151,3 +159,5 @@ DeviatorMissile:
 		Range: 512
 		Duration: 375
 		InvalidTargets: Infantry, Structure
+	Warhead@5Concrete: DamagesConcrete
+		Damage: 1000
