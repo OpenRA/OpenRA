@@ -32,6 +32,8 @@ Debris:
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 300
 
 Debris2:
 	Inherits: Debris
@@ -56,6 +58,8 @@ Debris2:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 2250
 
 Debris3:
 	Inherits: Debris2
@@ -64,6 +68,8 @@ Debris3:
 		TrailImage: small_trail2
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 1350
 
 Debris4:
 	Inherits: Debris2

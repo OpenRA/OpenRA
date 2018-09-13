@@ -20,6 +20,8 @@
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
 		ImpactActors: false
+	Warhead@3Concrete: DamagesConcrete
+		Damage: 1250
 
 LMG:
 	Inherits: ^MG
@@ -57,6 +59,8 @@ M_HMG:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
+	Warhead@2Concrete: DamagesConcrete
+		Damage: 625
 
 M_HMG_H:
 	Inherits: M_HMG
@@ -78,6 +82,8 @@ HMG:
 	Warhead@1Dam: SpreadDamage
 		Spread: 160
 		Falloff: 100, 60, 30, 0
+		Damage: 1800
+	Warhead@2Concrete: DamagesConcrete
 		Damage: 1800
 
 HMGo:
