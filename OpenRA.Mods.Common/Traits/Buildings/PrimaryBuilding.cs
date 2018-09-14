@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	static class PrimaryExts
+	public static class PrimaryExts
 	{
 		public static bool IsPrimaryBuilding(this Actor a)
 		{

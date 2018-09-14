@@ -125,6 +125,15 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
+		public virtual bool Produce(Actor self, IEnumerable<ActorInfo> producees, string productionType, TypeDictionary inits)
+		{
+			foreach (var producee in producees)
+				if (!Produce(self, producee, productionType, inits))
+					return false;
+
+			return true;
+		}
+
 		static bool CanUseExit(Actor self, ActorInfo producee, ExitInfo s)
 		{
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();

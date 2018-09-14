@@ -52,7 +52,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: true
-	ClassicProductionQueue@Starport:
+	BulkProductionQueue@Starport:
 		Type: Starport
 		DisplayOrder: 4
 		BuildDurationModifier: 212

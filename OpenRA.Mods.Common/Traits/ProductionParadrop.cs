@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 						cargo.Delivered(self);
 
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit == null ? null : exit.Info, productionType, inits));
+
 					Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
