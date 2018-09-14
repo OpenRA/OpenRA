@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatChrome.Visible = true;
 
 			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
-			chatMode.GetText = () => teamChat ? "Team" : "All";
+			chatMode.GetText = () => teamChat && !disableTeamChat ? "Team" : "All";
 			chatMode.OnClick = () => teamChat ^= true;
 
 			// Team chat is disabled if we are the only spectator
@@ -113,6 +113,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 				chatMode.IsDisabled = () => disableTeamChat;
 
+			// Disable team chat after the game ended
+			world.GameOver += () => disableTeamChat = true;
+
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatText.MaxLength = UnitOrders.ChatMessageMaxLength;
 			chatText.OnEnterKey = () =>
@@ -144,10 +147,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				chatText.Text = tabCompletion.Complete(chatText.Text);
 				chatText.CursorPosition = chatText.Text.Length;
 
-				if (chatText.Text == previousText)
-					return SwitchTeamChat();
-				else
-					return true;
+				if (chatText.Text == previousText && !disableTeamChat)
+					teamChat ^= true;
+
+				return true;
 			};
 
 			chatText.OnEscKey = () =>
@@ -215,13 +218,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			MiniYaml yaml;
 			if (logicArgs.TryGetValue("ChatLineSound", out yaml))
 				chatLineSound = yaml.Value;
-		}
-
-		bool SwitchTeamChat()
-		{
-			if (!disableTeamChat)
-				teamChat ^= true;
-			return true;
 		}
 
 		public void OpenChat()
