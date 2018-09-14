@@ -82,11 +82,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (i.TotalBytesToReceive < 0)
 				{
-					dataTotal = float.NaN;
-					dataReceived = i.BytesReceived;
-					dataSuffix = SizeSuffixes[0];
+					mag = (int)Math.Log(i.BytesReceived, 1024);
+					dataReceived = i.BytesReceived / (float)(1L << (mag * 10));
+					dataSuffix = SizeSuffixes[mag];
 
-					getStatusText = () => "Downloading from {2} {0:0.00} {1} (unknown size)".F(dataReceived,
+					getStatusText = () => "Downloading from {2} {0:0.00} {1}".F(dataReceived,
 						dataSuffix,
 						downloadHost ?? "unknown host");
 					progressBar.Indeterminate = true;
