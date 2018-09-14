@@ -39,9 +39,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
-		bool disableTeamChat;
-		bool teamChat;
-
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -51,8 +48,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
-			disableTeamChat = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1 || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
-			teamChat = !disableTeamChat;
+			var isObserver = orderManager.LocalClient != null && orderManager.LocalClient.IsObserver;
+			var isOnlyObserver = isObserver && orderManager.LobbyInfo.Clients.All(c => c == orderManager.LocalClient || !c.IsObserver);
+			var observersExist = orderManager.LobbyInfo.Clients.Any(c => c.IsObserver);
+			var alwaysDisabled = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1;
+			var disableTeamChat = alwaysDisabled || isOnlyObserver || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
+			var teamChat = !disableTeamChat;
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
@@ -71,7 +72,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
 			chatMode.GetText = () => teamChat ? "Team" : "All";
 			chatMode.OnClick = () => teamChat ^= true;
-			chatMode.IsDisabled = () => disableTeamChat;
+
+			// Team chat is disabled if we are the only spectator
+			// This changes as soon as a defeated player can talk in the spectator chat
+			if (!alwaysDisabled && isOnlyObserver)
+			{
+				chatMode.IsDisabled = () =>
+				{
+					if (world.IsGameOver)
+						return true;
+
+					disableTeamChat = players.All(p => p.WinState == WinState.Undefined);
+					return disableTeamChat;
+				};
+			}
+			else if (!alwaysDisabled && world.LocalPlayer != null)
+			{
+				chatMode.IsDisabled = () =>
+				{
+					if (world.IsGameOver)
+						return true;
+
+					// Nothing changed since the start
+					if (world.LocalPlayer.WinState == WinState.Undefined)
+						return disableTeamChat;
+
+					// At this point our player is dead
+					// Allow to chat with existing spectators
+					if (observersExist)
+					{
+						disableTeamChat = false;
+						return disableTeamChat;
+					}
+
+					// Or wait until another player died
+					disableTeamChat = players.All(p => p.WinState == WinState.Undefined);
+					return disableTeamChat;
+				};
+			}
+			else
+				chatMode.IsDisabled = () => disableTeamChat;
 
 			chatText = chatChrome.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 			chatText.MaxLength = UnitOrders.ChatMessageMaxLength;
