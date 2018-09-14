@@ -52,6 +52,7 @@ namespace OpenRA.Network
 		public readonly ReadOnlyList<ChatLine> ChatCache;
 
 		bool disposed;
+		bool generateSyncReport = false;
 
 		void OutOfSync(int frame)
 		{
@@ -61,7 +62,12 @@ namespace OpenRA.Network
 
 		public void StartGame()
 		{
-			if (GameStarted) return;
+			if (GameStarted)
+				return;
+
+			// Generating sync reports is expensive, so only do it if we have
+			// other players to compare against if a desync did occur
+			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.NonBotClients.Count() > 1;
 
 			NetFrameNumber = 1;
 			for (var i = NetFrameNumber; i <= FramesAhead; i++)
@@ -180,7 +186,8 @@ namespace OpenRA.Network
 
 			Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash()));
 
-			syncReport.UpdateSyncReport();
+			if (generateSyncReport)
+				syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
 		}

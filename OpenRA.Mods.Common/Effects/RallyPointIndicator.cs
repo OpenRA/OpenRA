@@ -97,18 +97,21 @@ namespace OpenRA.Mods.Common.Effects
 
 		IEnumerable<IRenderable> RenderInner(WorldRenderer wr)
 		{
-			var palette = wr.Palette(rp.PaletteName);
-
 			if (Game.Settings.Game.DrawTargetLine)
 				yield return new TargetLineRenderable(targetLine, building.Owner.Color.RGB);
 
-			if (circles != null)
-				foreach (var r in circles.Render(targetLine[1], palette))
-					yield return r;
+			if (circles != null || flag != null)
+			{
+				var palette = wr.Palette(rp.PaletteName);
 
-			if (flag != null)
-				foreach (var r in flag.Render(targetLine[1], palette))
-					yield return r;
+				if (circles != null)
+					foreach (var r in circles.Render(targetLine[1], palette))
+						yield return r;
+
+				if (flag != null)
+					foreach (var r in flag.Render(targetLine[1], palette))
+						yield return r;
+			}
 		}
 	}
 }

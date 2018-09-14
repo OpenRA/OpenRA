@@ -39,7 +39,7 @@ AttackPaths =
 }
 
 ReinfInf = function()
-	if Radar.IsDead or Radar.Owner ~= Greece then
+	if RadarDome.IsDead or RadarDome.Owner ~= Greece then
 		return
 	end
 
@@ -49,7 +49,7 @@ ReinfInf = function()
 end
 
 ReinfArmor = function()
-	if not Radar.IsDead and Radar.Owner == Greece then
+	if not RadarDome.IsDead and RadarDome.Owner == Greece then
 		RCheck = true
 		Reinforcements.Reinforce(Greece, ArmorReinfGreece, InfReinfPath, 0, function(soldier)
 			soldier.Hunt()
@@ -58,7 +58,7 @@ ReinfArmor = function()
 end
 
 BringPatrol1 = function()
-	if Radar.IsDead or Radar.Owner ~= Greece then
+	if RadarDome.IsDead or RadarDome.Owner ~= Greece then
 		return
 	end
 
@@ -77,7 +77,7 @@ BringPatrol1 = function()
 end
 
 BringPatrol2 = function()
-	if Radar.IsDead or Radar.Owner ~= Greece then
+	if RadarDome.IsDead or RadarDome.Owner ~= Greece then
 		return
 	end
 

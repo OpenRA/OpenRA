@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[PaletteReference] public readonly string Palette = "effect";
 
-		[Desc("Only do so when the terrain types match with the previous cell.")]
+		[Desc("Only leave trail on listed terrain types. Leave empty to leave trail on all terrain types.")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
 
 		[Desc("Accepts values: Cell to draw the trail sprite in the center of the current cell,",
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				var spawnFacing = Info.SpawnAtLastPosition ? cachedFacing : (facing != null ? facing.Facing : 0);
 
-				if (Info.TerrainTypes.Contains(type) && !string.IsNullOrEmpty(Info.Image))
+				if ((Info.TerrainTypes.Count == 0 || Info.TerrainTypes.Contains(type)) && !string.IsNullOrEmpty(Info.Image))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, self.World, Info.Image,
 						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog, false, spawnFacing)));
 

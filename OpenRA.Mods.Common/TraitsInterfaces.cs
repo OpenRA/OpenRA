@@ -371,7 +371,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IIssueDeployOrder
 	{
-		Order IssueDeployOrder(Actor self);
+		Order IssueDeployOrder(Actor self, bool queued);
 		bool CanIssueDeployOrder(Actor self);
 	}
 

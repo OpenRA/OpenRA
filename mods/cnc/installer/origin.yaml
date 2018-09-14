@@ -4,7 +4,6 @@ origin: C&C The Ultimate Collection (Origin version, English)
 	RegistryKey: EA Games\CNC and The Covert Operations
 	RegistryValue: Install Dir
 	IDFiles:
-		CNC95Launcher.exe: 1d711adf09ac08738b2599b3092a1b448169b32a
 		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
 		copy: .

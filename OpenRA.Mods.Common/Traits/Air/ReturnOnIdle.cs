@@ -36,10 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude)
 				return;
 
-			var airfield = ReturnToBase.ChooseAirfield(self, true);
-			if (airfield != null)
+			var resupplier = ReturnToBase.ChooseResupplier(self, true);
+			if (resupplier != null)
 			{
-				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, airfield));
+				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, resupplier));
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else

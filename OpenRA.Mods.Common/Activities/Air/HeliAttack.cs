@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class HeliAttack : Activity
 	{
-		readonly Aircraft helicopter;
+		readonly Aircraft aircraft;
 		readonly AttackHeli attackHeli;
 		readonly bool attackOnlyVisibleTargets;
 		readonly bool autoReloads;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HeliAttack(Actor self, Target target, bool attackOnlyVisibleTargets = true)
 		{
 			Target = target;
-			helicopter = self.Trait<Aircraft>();
+			aircraft = self.Trait<Aircraft>();
 			attackHeli = self.Trait<AttackHeli>();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 			autoReloads = self.TraitsImplementing<AmmoPool>().All(p => p.AutoReloads);
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (helicopter.ForceLanding)
+			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
 				return NextActivity;
@@ -75,21 +75,21 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
-			if (!autoReloads && helicopter.Info.RearmBuildings.Any() && attackHeli.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
-				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, helicopter.Info.AbortOnResupply), this);
+			if (!autoReloads && aircraft.Info.RearmBuildings.Any() && attackHeli.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
 			var dist = targetPos - pos;
 
 			// Can rotate facing while ascending
-			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : helicopter.Facing;
-			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.TurnSpeed);
+			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : aircraft.Facing;
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
 
-			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.CruiseAltitude))
+			if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
 				return this;
 
 			// Fly towards the target
 			if (!target.IsInRange(pos, attackHeli.GetMaximumRangeVersusTarget(target)))
-				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(desiredFacing));
+				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
 
 			// Fly backwards from the target
 			if (target.IsInRange(pos, attackHeli.GetMinimumRangeVersusTarget(target)))
@@ -98,9 +98,9 @@ namespace OpenRA.Mods.Common.Activities
 				var facing = 1;
 				if (desiredFacing != 0)
 					facing = desiredFacing;
-				else if (helicopter.Facing != 0)
-					facing = helicopter.Facing;
-				helicopter.SetPosition(self, helicopter.CenterPosition + helicopter.FlyStep(-facing));
+				else if (aircraft.Facing != 0)
+					facing = aircraft.Facing;
+				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(-facing));
 			}
 
 			attackHeli.DoAttack(self, target);

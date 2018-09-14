@@ -265,6 +265,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string cursor;
 		readonly MouseButton expectedButton;
 
+		public string OrderKey { get { return order; } }
+
 		public SelectGenericPowerTarget(string order, SupportPowerManager manager, string cursor, MouseButton button)
 		{
 			// Clear selection if using Left-Click Orders

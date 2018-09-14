@@ -43,8 +43,19 @@ namespace OpenRA
 			}
 		}
 
+		void EnableTLS12OnWindows()
+		{
+			// Enable TLS 1.2 on Windows: .NET 4.7 on Windows 10 only supports obsolete protocols by default
+			// SecurityProtocolType.Tls12 is not defined in the .NET 4.5 reference dlls used by mono,
+			// so we must use the enum's constant value directly
+			if (Platform.CurrentPlatform == PlatformType.Windows)
+				ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072;
+		}
+
 		public Download(string url, string path, Action<DownloadProgressChangedEventArgs> onProgress, Action<AsyncCompletedEventArgs> onComplete)
 		{
+			EnableTLS12OnWindows();
+
 			lock (syncObject)
 			{
 				wc = new WebClient { Proxy = null };
@@ -56,6 +67,8 @@ namespace OpenRA
 
 		public Download(string url, Action<DownloadProgressChangedEventArgs> onProgress, Action<DownloadDataCompletedEventArgs> onComplete)
 		{
+			EnableTLS12OnWindows();
+
 			lock (syncObject)
 			{
 				wc = new WebClient { Proxy = null };

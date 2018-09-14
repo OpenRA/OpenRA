@@ -100,17 +100,26 @@ Background@MULTIPLAYER_PANEL:
 					Children:
 						Label@TITLE:
 							X: 5
-							Width: 255
+							Width: 245
 							Height: 25
 						Image@PASSWORD_PROTECTED:
 							X: 272
 							Y: 6
-							Width: 10
-							Height: 12
+							Width: 12
+							Height: 13
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires Password
+						Image@REQUIRES_AUTHENTICATION:
+							X: 272
+							Y: 6
+							Width: 12
+							Height: 13
+							ImageCollection: lobby-bits
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: Requires OpenRA forum account
 						LabelWithTooltip@PLAYERS:
 							X: 290
 							Width: 85

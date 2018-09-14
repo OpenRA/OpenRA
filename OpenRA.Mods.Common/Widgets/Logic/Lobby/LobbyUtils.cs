@@ -296,8 +296,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return "Poor";
 		}
 
-		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
+		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager)
 		{
+			var visible = c != null && c.Bot == null;
 			var block = parent.GetOrNull("LATENCY");
 			if (block != null)
 			{
@@ -309,31 +310,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("LATENCY_REGION");
-			tooltip.IsVisible = () => c != null && visible;
-			if (c != null)
+			tooltip.IsVisible = () => visible;
+			if (visible)
 				tooltip.Bind(orderManager, null, c);
 		}
 
 		public static void SetupProfileWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
+			var visible = c != null && c.Bot == null;
 			var profile = parent.GetOrNull<ImageWidget>("PROFILE");
-			if (profile != null && c.Bot == null)
+			if (profile != null)
 			{
 				var imageName = (c != null && c.IsAdmin ? "admin-" : "player-")
 					+ (c.Fingerprint != null ? "registered" : "anonymous");
 
 				profile.GetImageName = () => imageName;
-				profile.IsVisible = () => true;
+				profile.IsVisible = () => visible;
 			}
 
 			var profileTooltip = parent.GetOrNull<ClientTooltipRegionWidget>("PROFILE_TOOLTIP");
-			if (profileTooltip != null && c.Bot == null)
+			if (profileTooltip != null)
 			{
 				if (c != null && c.Fingerprint != null)
 					profileTooltip.Template = "REGISTERED_PLAYER_TOOLTIP";
 
-				profileTooltip.Bind(orderManager, worldRenderer, c);
-				profileTooltip.IsVisible = () => true;
+				if (visible)
+					profileTooltip.Bind(orderManager, worldRenderer, c);
+
+				profileTooltip.IsVisible = () => visible;
 			}
 		}
 
