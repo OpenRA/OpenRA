@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					getStatusText = () => "Downloading from {2} {0:0.00} {1} (unknown size)".F(dataReceived,
 						dataSuffix,
 						downloadHost ?? "unknown host");
+					progressBar.Indeterminate = true;
 				}
 				else
 				{
@@ -100,9 +101,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					getStatusText = () => "Downloading from {4} {1:0.00}/{2:0.00} {3} ({0}%)".F(i.ProgressPercentage,
 						dataReceived, dataTotal, dataSuffix,
 						downloadHost ?? "unknown host");
+					progressBar.Indeterminate = false;
 				}
 
-				progressBar.Indeterminate = false;
 				progressBar.Percentage = i.ProgressPercentage;
 			};
 
