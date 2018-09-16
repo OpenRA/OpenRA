@@ -265,6 +265,11 @@ namespace OpenRA
 
 		public void Dispose()
 		{
+			// If CurrentActivity isn't null, run OnActorDisposeOuter in case some cleanups are needed.
+			// This should be done before the FrameEndTask to avoid dependency issues.
+			if (CurrentActivity != null)
+				CurrentActivity.RootActivity.OnActorDisposeOuter(this);
+
 			World.AddFrameEndTask(w =>
 			{
 				if (Disposed)
