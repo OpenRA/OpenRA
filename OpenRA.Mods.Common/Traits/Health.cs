@@ -32,9 +32,16 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Health : IHealth, ISync, ITick
+	public class Health : IHealth, ISync, ITick, INotifyCreated, INotifyOwnerChanged
 	{
 		public readonly HealthInfo Info;
+		INotifyDamageStateChanged[] notifyDamageStateChanged;
+		INotifyDamage[] notifyDamage;
+		INotifyDamage[] notifyDamagePlayer;
+		IDamageModifier[] damageModifiers;
+		IDamageModifier[] damageModifiersPlayer;
+		INotifyKilled[] notifyKilled;
+		INotifyKilled[] notifyKilledPlayer;
 
 		[Sync] int hp;
 
@@ -80,6 +87,24 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			notifyDamageStateChanged = self.TraitsImplementing<INotifyDamageStateChanged>().ToArray();
+			notifyDamage = self.TraitsImplementing<INotifyDamage>().ToArray();
+			notifyDamagePlayer = self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>().ToArray();
+			damageModifiers = self.TraitsImplementing<IDamageModifier>().ToArray();
+			damageModifiersPlayer = self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>().ToArray();
+			notifyKilled = self.TraitsImplementing<INotifyKilled>().ToArray();
+			notifyKilledPlayer = self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>().ToArray();
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			notifyDamagePlayer = newOwner.PlayerActor.TraitsImplementing<INotifyDamage>().ToArray();
+			damageModifiersPlayer = newOwner.PlayerActor.TraitsImplementing<IDamageModifier>().ToArray();
+			notifyKilledPlayer = newOwner.PlayerActor.TraitsImplementing<INotifyKilled>().ToArray();
+		}
+
 		public void Resurrect(Actor self, Actor repairer)
 		{
 			if (!IsDead)
@@ -95,17 +120,21 @@ namespace OpenRA.Mods.Common.Traits
 				PreviousDamageState = DamageState.Dead,
 			};
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+			foreach (var nd in notifyDamage)
+				nd.Damaged(self, ai);
+			foreach (var nd in notifyDamagePlayer)
 				nd.Damaged(self, ai);
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
+			foreach (var nd in notifyDamageStateChanged)
 				nd.DamageStateChanged(self, ai);
 
 			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead)
-				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
-						.Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+			{
+				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>())
 					nd.AppliedDamage(repairer, self, ai);
+				foreach (var nd in repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>())
+					nd.AppliedDamage(repairer, self, ai);
+			}
 		}
 
 		public void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers)
@@ -119,8 +148,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Apply any damage modifiers
 			if (!ignoreModifiers && damage.Value > 0)
 			{
-				var modifiers = self.TraitsImplementing<IDamageModifier>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+				var modifiers = damageModifiers
+					.Concat(damageModifiersPlayer)
 					.Select(t => t.GetDamageModifier(attacker, damage));
 
 				damage = new Damage(Util.ApplyPercentageModifiers(damage.Value, modifiers), damage.DamageTypes);
@@ -136,23 +165,28 @@ namespace OpenRA.Mods.Common.Traits
 				PreviousDamageState = oldState,
 			};
 
-			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
-					.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+			foreach (var nd in notifyDamage)
+				nd.Damaged(self, ai);
+			foreach (var nd in notifyDamagePlayer)
 				nd.Damaged(self, ai);
 
 			if (DamageState != oldState)
-				foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
+				foreach (var nd in notifyDamageStateChanged)
 					nd.DamageStateChanged(self, ai);
 
 			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead)
-				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>()
-						.Concat(attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+			{
+				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>())
 					nd.AppliedDamage(attacker, self, ai);
+				foreach (var nd in attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>())
+					nd.AppliedDamage(attacker, self, ai);
+			}
 
 			if (hp == 0)
 			{
-				foreach (var nd in self.TraitsImplementing<INotifyKilled>()
-						.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>()))
+				foreach (var nd in notifyKilled)
+					nd.Killed(self, ai);
+				foreach (var nd in notifyKilledPlayer)
 					nd.Killed(self, ai);
 
 				if (RemoveOnDeath)
