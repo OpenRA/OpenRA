@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
+
 		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
 
