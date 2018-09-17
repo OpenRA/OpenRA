@@ -63,13 +63,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (hp <= 0)
 					return DamageState.Dead;
 
-				if (hp < MaxHP * 0.25f)
+				if (hp * 100L < MaxHP * 25L)
 					return DamageState.Critical;
 
-				if (hp < MaxHP * 0.5f)
+				if (hp * 100L < MaxHP * 50L)
 					return DamageState.Heavy;
 
-				if (hp < MaxHP * 0.75f)
+				if (hp * 100L < MaxHP * 75L)
 					return DamageState.Medium;
 
 				if (hp == MaxHP)
