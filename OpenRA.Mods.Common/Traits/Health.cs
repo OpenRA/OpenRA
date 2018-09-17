@@ -171,10 +171,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (hp > DisplayHP)
+			if (hp >= DisplayHP)
 				DisplayHP = hp;
-
-			if (DisplayHP > hp)
+			else
 				DisplayHP = (2 * DisplayHP + hp) / 3;
 		}
 	}
