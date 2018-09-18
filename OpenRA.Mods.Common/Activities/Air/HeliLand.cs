@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist landAltitude;
 		readonly bool requireSpace;
 
-		bool playedSound;
+		bool soundPlayed;
 
 		public HeliLand(Actor self, bool requireSpace)
 			: this(self, requireSpace, self.Info.TraitInfo<AircraftInfo>().LandAltitude) { }
@@ -40,10 +40,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (requireSpace && !aircraft.CanLand(self.Location))
 				return this;
 
-			if (!playedSound && aircraft.Info.LandingSound != null && !self.IsAtGroundLevel())
+			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
 			{
-				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSound);
-				playedSound = true;
+				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
+				soundPlayed = true;
 			}
 
 			if (HeliFly.AdjustAltitude(self, aircraft, landAltitude))

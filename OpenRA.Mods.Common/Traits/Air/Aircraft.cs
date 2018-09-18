@@ -96,11 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast this actor ascends or descends when using vertical take off/landing.")]
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
-		[Desc("Sound to play when the actor is taking off.")]
-		public readonly string TakeoffSound = null;
+		[Desc("Sounds to play when the actor is taking off.")]
+		public readonly string[] TakeoffSounds = { };
 
-		[Desc("Sound to play when the actor is landing.")]
-		public readonly string LandingSound = null;
+		[Desc("Sounds to play when the actor is landing.")]
+		public readonly string[] LandingSounds = { };
 
 		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
 		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
