@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
+		bool soundPlayed;
 
 		public Fly(Actor self, Target t)
 		{
@@ -66,6 +67,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
+
+			if (!soundPlayed && aircraft.Info.TakeoffSounds.Length > 0 && self.IsAtGroundLevel())
+			{
+				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
+				soundPlayed = true;
+			}
 
 			// Inside the target annulus, so we're done
 			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange);
