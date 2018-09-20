@@ -14,12 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class EditorTilesetFilterInfo : TraitInfo<EditorTilesetFilter>
+	public class MapEditorDataInfo : TraitInfo<MapEditorData>
 	{
 		public readonly HashSet<string> RequireTilesets = null;
 		public readonly HashSet<string> ExcludeTilesets = null;
 		public readonly string[] Categories;
 	}
 
-	public class EditorTilesetFilter { }
+	public class MapEditorData { }
 }

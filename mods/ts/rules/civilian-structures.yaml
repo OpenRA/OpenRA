@@ -10,7 +10,7 @@ ABAN01:
 		Type: wood
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -29,7 +29,7 @@ ABAN02:
 		Type: heavy
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -48,7 +48,7 @@ ABAN03:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -67,7 +67,7 @@ ABAN04:
 		Type: heavy
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 4, 7
@@ -90,7 +90,7 @@ ABAN05:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN06:
@@ -105,7 +105,7 @@ ABAN06:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN07:
@@ -120,7 +120,7 @@ ABAN07:
 		Type: heavy
 	Health:
 		HP: 35000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN08:
@@ -135,7 +135,7 @@ ABAN08:
 		Type: heavy
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN09:
@@ -150,7 +150,7 @@ ABAN09:
 		Type: heavy
 	Health:
 		HP: 35000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN10:
@@ -165,7 +165,7 @@ ABAN10:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN11:
@@ -180,7 +180,7 @@ ABAN11:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN12:
@@ -195,7 +195,7 @@ ABAN12:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN13:
@@ -209,7 +209,7 @@ ABAN13:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN14:
@@ -223,7 +223,7 @@ ABAN14:
 		Type: heavy
 	Health:
 		HP: 30000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN15:
@@ -237,7 +237,7 @@ ABAN15:
 		Type: heavy
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN16:
@@ -252,7 +252,7 @@ ABAN16:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN17:
@@ -266,7 +266,7 @@ ABAN17:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 ABAN18:
@@ -280,7 +280,7 @@ ABAN18:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERATE
 
 AMMOCRAT:
@@ -801,7 +801,7 @@ CAHOSP:
 		Pieces: 5, 9
 	ThrowsShrapnel@LARGE:
 		Pieces: 2, 4
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian building
 
 CAPYR01:
@@ -816,7 +816,7 @@ CAPYR01:
 		Type: concrete
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: SNOW
 
 CAPYR02:
@@ -831,7 +831,7 @@ CAPYR02:
 		Type: concrete
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: SNOW
 	ThrowsShrapnel@SMALL:
 		Pieces: 6, 9
@@ -850,7 +850,7 @@ CAPYR03:
 		Type: concrete
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: SNOW
 	ThrowsShrapnel@SMALL:
 		Pieces: 6, 9
@@ -869,7 +869,7 @@ CITY01:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -888,7 +888,7 @@ CITY02:
 		Type: heavy
 	Health:
 		HP: 70000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -907,7 +907,7 @@ CITY03:
 		Type: heavy
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -926,7 +926,7 @@ CITY04:
 		Type: heavy
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -945,7 +945,7 @@ CITY05:
 		Type: heavy
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9
@@ -964,7 +964,7 @@ CITY06:
 		Type: concrete
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 7, 9
@@ -983,7 +983,7 @@ CITY07:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 7, 9
@@ -1002,7 +1002,7 @@ CITY08:
 		Type: heavy
 	Health:
 		HP: 30000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY09:
@@ -1017,7 +1017,7 @@ CITY09:
 		Type: wood
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY10:
@@ -1032,7 +1032,7 @@ CITY10:
 		Type: heavy
 	Health:
 		HP: 30000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY11:
@@ -1047,7 +1047,7 @@ CITY11:
 		Type: heavy
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY12:
@@ -1062,7 +1062,7 @@ CITY12:
 		Type: concrete
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY13:
@@ -1077,7 +1077,7 @@ CITY13:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY14:
@@ -1091,7 +1091,7 @@ CITY14:
 		Type: heavy
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY15:
@@ -1106,7 +1106,7 @@ CITY15:
 		Type: heavy
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 7, 9
@@ -1125,7 +1125,7 @@ CITY16:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 7, 9
@@ -1144,7 +1144,7 @@ CITY17:
 		Type: wood
 	Health:
 		HP: 30000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 7, 9
@@ -1163,7 +1163,7 @@ CITY18:
 		Type: concrete
 	Health:
 		HP: 60000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 8, 12
@@ -1182,7 +1182,7 @@ CITY19:
 		Type: wood
 	Health:
 		HP: 50000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY20:
@@ -1196,7 +1196,7 @@ CITY20:
 		Type: wood
 	Health:
 		HP: 25000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY21:
@@ -1210,7 +1210,7 @@ CITY21:
 		Type: none
 	Health:
 		HP: 10000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CITY22:
@@ -1225,7 +1225,7 @@ CITY22:
 		Type: none
 	Health:
 		HP: 10000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 
 CTDAM:
@@ -1245,7 +1245,7 @@ CTDAM:
 		HP: 100000
 	ProvidesPrerequisite:
 		Prerequisite: anypower
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: SNOW
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
@@ -1268,7 +1268,7 @@ CTVEGA:
 		Type: none
 	Health:
 		HP: 10000
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: SNOW
 	ThrowsShrapnel@SMALL:
 		Pieces: 7, 9
@@ -1382,7 +1382,7 @@ GASPOT:
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
 	SelectionDecorations:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian building
 
 GALITE:
@@ -1415,7 +1415,7 @@ GALITE:
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian building
 
 TSTLAMP:
@@ -1445,7 +1445,7 @@ GAICBM:
 		TransformSounds: place2.aud
 		NoTransformSounds:
 	-WithDeathAnimation:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 
 NAMNTK:
@@ -1505,7 +1505,7 @@ UFO:
 		HP: 100000
 	Armor:
 		Type: Heavy
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	SelectionDecorations:
 	ThrowsShrapnel@SMALL:

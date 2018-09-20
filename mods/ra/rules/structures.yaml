@@ -225,7 +225,7 @@ SPEN:
 		RequiresPrerequisites: structures.ukraine
 		Prerequisite: ships.ukraine
 	ProvidesPrerequisite@buildingname:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	WithDecoration@primary:
 		RequiresSelection: true
@@ -346,7 +346,7 @@ SYRD:
 		RequiresPrerequisites: structures.germany
 		Prerequisite: ships.germany
 	ProvidesPrerequisite@buildingname:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	WithDecoration@primary:
 		RequiresSelection: true

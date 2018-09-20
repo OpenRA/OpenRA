@@ -9,7 +9,7 @@ mpspawn:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 waypoint:
@@ -23,7 +23,7 @@ waypoint:
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 mmch.colorpicker:
@@ -35,7 +35,7 @@ mmch.colorpicker:
 	WithFacingSpriteBody:
 		Sequence: walk
 	-Buildable:
-	-EditorTilesetFilter:
+	-MapEditorData:
 	RenderVoxels:
 		Image: mmch
 		Palette: colorpicker
@@ -59,7 +59,7 @@ CAMERA:
 		Type: CenterPosition
 	DetectCloaked:
 		Range: 10c0
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 CRATE:
@@ -104,7 +104,7 @@ CRATE:
 		SelectionShares: 5
 		Condition: crate-speed
 		Notification: 00-i080.aud
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 SROCK01:

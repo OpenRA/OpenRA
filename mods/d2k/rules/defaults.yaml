@@ -210,7 +210,7 @@
 		Duration: 100
 		Radius: 2c512
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 
 ^Tank:
@@ -232,7 +232,7 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^VehicleHusk:
@@ -329,7 +329,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 96
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
 
 ^Plane:
@@ -352,7 +352,7 @@
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 
 ^Building:
@@ -427,7 +427,7 @@
 	RevealOnDeath:
 		Duration: 100
 		Radius: 4c768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 	WithBuildingRepairDecoration:
@@ -460,7 +460,7 @@
 	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 

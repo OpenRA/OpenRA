@@ -14,7 +14,7 @@ CABHUT:
 	-SelectionDecorations:
 	-Demolishable:
 	-Explodes:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Bridge
 
 ^LowBridgeRamp:
@@ -30,7 +30,7 @@ CABHUT:
 		QuantizedFacings: 1
 	Tooltip:
 		Name: Bridge
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Bridge
 	Interactable:
 
@@ -178,7 +178,7 @@ LOBRDG_R_SW:
 		Name: Bridge
 	Immobile:
 		OccupiesSpace: false
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Bridge
 	Interactable:
 		Bounds: 96, 144

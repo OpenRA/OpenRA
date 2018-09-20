@@ -351,7 +351,7 @@
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
-    <Compile Include="Traits\EditorTilesetFilter.cs" />
+    <Compile Include="Traits\MapEditorData.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\SpawnActorsOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
@@ -866,6 +866,7 @@
     <Compile Include="UpdateRules\UpdateRule.cs" />
     <Compile Include="UpdateRules\UpdatePath.cs" />
     <Compile Include="UpdateRules\UpdateUtils.cs" />
+    <Compile Include="UpdateRules\Rules\RenameEditorTilesetFilter.cs" />
     <Compile Include="UpdateRules\Rules\20171014\LegacyBetaWarning.cs" />
     <Compile Include="UpdateRules\Rules\20171014\RemoveMobileOnRails.cs" />
     <Compile Include="UpdateRules\Rules\20171014\AircraftCanHoverGeneralization.cs" />
