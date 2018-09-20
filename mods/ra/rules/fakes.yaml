@@ -64,7 +64,7 @@ SYRF:
 		HP: 100000
 	Armor:
 		Type: Light
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	HitShape:
 		TargetableOffsets: 768,0,0, 768,-1024,0, 768,1024,0
@@ -109,7 +109,7 @@ SPEF:
 		HP: 100000
 	Armor:
 		Type: Light
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	HitShape:
 		Type: Rectangle

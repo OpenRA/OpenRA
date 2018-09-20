@@ -3,7 +3,7 @@ T01:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T01.Husk
@@ -13,7 +13,7 @@ T02:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T02.Husk
@@ -23,7 +23,7 @@ T03:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T03.Husk
@@ -33,7 +33,7 @@ T04:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T04.Husk
@@ -43,7 +43,7 @@ T05:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T05.Husk
@@ -53,7 +53,7 @@ T06:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T06.Husk
@@ -63,7 +63,7 @@ T07:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T07.Husk
@@ -78,7 +78,7 @@ T08:
 
 T09:
 	Inherits: ^Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T09.Husk
@@ -88,7 +88,7 @@ T10:
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T10.Husk
@@ -98,7 +98,7 @@ T11:
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T11.Husk
@@ -108,7 +108,7 @@ T12:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T12.Husk
@@ -118,7 +118,7 @@ T13:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T13.Husk
@@ -128,7 +128,7 @@ T14:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T14.Husk
@@ -138,7 +138,7 @@ T15:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T15.Husk
@@ -148,7 +148,7 @@ T16:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T16.Husk
@@ -158,7 +158,7 @@ T17:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: T17.Husk
@@ -168,7 +168,7 @@ TC01:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	SpawnActorOnDeath:
 		Actor: TC01.Husk
@@ -178,7 +178,7 @@ TC02:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: TC02.Husk
@@ -188,7 +188,7 @@ TC03:
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: TC03.Husk
@@ -198,7 +198,7 @@ TC04:
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: TC04.Husk
@@ -208,7 +208,7 @@ TC05:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	SpawnActorOnDeath:
 		Actor: TC05.Husk
@@ -219,7 +219,7 @@ BOXES01:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES02:
@@ -228,7 +228,7 @@ BOXES02:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES03:
@@ -237,7 +237,7 @@ BOXES03:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES04:
@@ -246,7 +246,7 @@ BOXES04:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES05:
@@ -255,7 +255,7 @@ BOXES05:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES06:
@@ -264,7 +264,7 @@ BOXES06:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES07:
@@ -273,7 +273,7 @@ BOXES07:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES08:
@@ -282,7 +282,7 @@ BOXES08:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 BOXES09:
@@ -291,7 +291,7 @@ BOXES09:
 		Palette: player
 	Tooltip:
 		Name: Boxes
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 ICE01:
@@ -303,7 +303,7 @@ ICE01:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Ice Floe
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
 
@@ -316,7 +316,7 @@ ICE02:
 		Dimensions: 1,2
 	Tooltip:
 		Name: Ice Floe
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
 
@@ -329,7 +329,7 @@ ICE03:
 		Dimensions: 2,1
 	Tooltip:
 		Name: Ice Floe
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
 
@@ -339,7 +339,7 @@ ICE04:
 		Palette: player
 	Tooltip:
 		Name: Ice Floe
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
 
@@ -349,7 +349,7 @@ ICE05:
 		Palette: player
 	Tooltip:
 		Name: Ice Floe
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
 
@@ -401,7 +401,7 @@ UTILPOL1:
 		Palette: player
 	Tooltip:
 		Name: Utility Pole
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 UTILPOL2:
@@ -410,7 +410,7 @@ UTILPOL2:
 		Palette: player
 	Tooltip:
 		Name: Utility Pole
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 TANKTRAP1:
@@ -422,7 +422,7 @@ TANKTRAP1:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT, SNOW, DESERT, INTERIOR
 
 TANKTRAP2:
@@ -434,5 +434,5 @@ TANKTRAP2:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT, SNOW, DESERT, INTERIOR

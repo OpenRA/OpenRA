@@ -257,7 +257,7 @@ T01.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T02.Husk:
@@ -265,7 +265,7 @@ T02.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T03.Husk:
@@ -273,7 +273,7 @@ T03.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T04.Husk:
@@ -281,7 +281,7 @@ T04.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
 
 T05.Husk:
@@ -289,7 +289,7 @@ T05.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T06.Husk:
@@ -297,7 +297,7 @@ T06.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T07.Husk:
@@ -305,7 +305,7 @@ T07.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T08.Husk:
@@ -316,7 +316,7 @@ T08.Husk:
 
 T09.Husk:
 	Inherits: ^TreeHusk
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: TEMPERAT, SNOW, INTERIOR
 
 T10.Husk:
@@ -324,7 +324,7 @@ T10.Husk:
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T11.Husk:
@@ -332,7 +332,7 @@ T11.Husk:
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T12.Husk:
@@ -340,7 +340,7 @@ T12.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T13.Husk:
@@ -348,7 +348,7 @@ T13.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T14.Husk:
@@ -356,7 +356,7 @@ T14.Husk:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T15.Husk:
@@ -364,7 +364,7 @@ T15.Husk:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T16.Husk:
@@ -372,7 +372,7 @@ T16.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 T17.Husk:
@@ -380,7 +380,7 @@ T17.Husk:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 TC01.Husk:
@@ -388,7 +388,7 @@ TC01.Husk:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 
 TC02.Husk:
@@ -396,7 +396,7 @@ TC02.Husk:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 TC03.Husk:
@@ -404,7 +404,7 @@ TC03.Husk:
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 TC04.Husk:
@@ -412,7 +412,7 @@ TC04.Husk:
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 TC05.Husk:
@@ -420,5 +420,5 @@ TC05.Husk:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR

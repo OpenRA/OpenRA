@@ -276,7 +276,7 @@
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 
 ^Tank:
@@ -337,7 +337,7 @@
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
@@ -450,7 +450,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
 
 ^Soldier:
@@ -496,7 +496,7 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian infantry
 
 ^ArmedCivilian:
@@ -559,7 +559,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Critter
 
 ^Viceroid:
@@ -616,7 +616,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 427
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Critter
 
 ^Plane:
@@ -640,7 +640,7 @@
 	RejectsOrders:
 	Aircraft:
 		CruiseAltitude: 2560
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 
 ^Ship:
@@ -669,7 +669,7 @@
 	Voiced:
 		VoiceSet: VehicleVoice
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Naval
 
 ^Building:
@@ -712,7 +712,7 @@
 		GenericName: Structure
 	FrozenUnderFog:
 	Demolishable:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 	AcceptsDeliveredCash:
@@ -761,7 +761,7 @@
 		GenericStancePrefix: false
 		ShowOwnerRow: false
 	FrozenUnderFog:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian building
 
 ^CivBuildingHusk:
@@ -778,7 +778,7 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^TechBuilding:
@@ -797,7 +797,7 @@
 		Range: 3c0
 	Tooltip:
 		ShowOwnerRow: True
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tech building
 	WithBuildingRepairDecoration:
 		Image: allyrepair
@@ -836,7 +836,7 @@
 	WithSpriteBody:
 	FrozenUnderFog:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^Wall:
@@ -877,7 +877,7 @@
 	ScriptTriggers:
 	Health:
 		HP: 10000
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Wall
 
 ^Tree:
@@ -919,7 +919,7 @@
 	HiddenUnderShroud:
 	ScriptTriggers:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tree
 
 ^TreeHusk:
@@ -937,7 +937,7 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tree
 
 ^TibTree:
@@ -957,7 +957,7 @@
 		Terrain: Tiberium
 	HiddenUnderShroud:
 	WithMakeAnimation:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 
 ^Rock:
@@ -977,7 +977,7 @@
 		Terrain: Tree
 	HiddenUnderShroud:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 		Categories: Decoration
 
@@ -992,7 +992,7 @@
 		Type: CenterPosition
 	WithFacingSpriteBody:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^Husk:
@@ -1082,7 +1082,7 @@
 		Image: crate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 ^Defense:
@@ -1094,7 +1094,7 @@
 		RequiredForShortGame: false
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 	-AcceptsDeliveredCash:

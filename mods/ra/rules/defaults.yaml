@@ -293,7 +293,7 @@
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 
 ^TrackedVehicle:
@@ -407,7 +407,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
 
 ^Soldier:
@@ -447,7 +447,7 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian infantry
 
 ^ArmedCivilian:
@@ -496,7 +496,7 @@
 	Tooltip:
 		GenericName: Ship
 	MustBeDestroyed:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Naval
 	Voiced:
@@ -559,7 +559,7 @@
 	Voiced:
 		VoiceSet: GenericVoice
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
@@ -628,7 +628,7 @@
 	Tooltip:
 		GenericName: Structure
 	Demolishable:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 
@@ -683,7 +683,7 @@
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 
@@ -727,7 +727,7 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 10000
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Wall
 
 ^TechBuilding:
@@ -741,7 +741,7 @@
 		Name: Civilian Building
 		GenericVisibility: None
 	FrozenUnderFog:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tech building
 
 ^FakeBuilding:
@@ -765,7 +765,7 @@
 		ZOffset: 256
 	-SpawnActorsOnSell:
 	-MustBeDestroyed:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Fake
 
 ^InfiltratableFake:
@@ -794,7 +794,7 @@
 		TargetTypes: Ground, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
 		Type: Light
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 	Interactable:
 		Bounds: 24,24
@@ -803,7 +803,7 @@
 	Inherits: ^TechBuilding
 	RenderSprites:
 		Palette: player
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
 	SpawnActorOnDeath@1:
@@ -832,7 +832,7 @@
 		Name: Field
 	-Targetable:
 	-Demolishable:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 	Interactable:
 
@@ -875,7 +875,7 @@
 		MaximumDamageState: Dead
 	HiddenUnderShroud:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Tree
 
@@ -896,7 +896,7 @@
 		ShowOwnerRow: false
 	FrozenUnderFog:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tree
 
 ^BasicHusk:
@@ -911,7 +911,7 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^Husk:
@@ -950,7 +950,7 @@
 		Moves: True
 		Velocity: 86
 		Explosion: UnitExplodePlane
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 	RevealOnDeath:
 		Duration: 60
@@ -1016,7 +1016,7 @@
 		Terrain: Tree
 	HiddenUnderShroud:
 	ScriptTriggers:
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 		Categories: Decoration
 
@@ -1024,7 +1024,7 @@
 	Inherits: ^CivBuilding
 	RenderSprites:
 		Palette: desert
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: DESERT
 
 ^Crate:
@@ -1059,7 +1059,7 @@
 		ShadowSequence: idle
 		RequiresCondition: parachute
 	ConditionManager:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 ^Mine:
@@ -1091,7 +1091,7 @@
 	Immobile:
 		OccupiesSpace: true
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 ^DisableOnLowPower:

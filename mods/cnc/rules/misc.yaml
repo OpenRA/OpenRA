@@ -56,7 +56,7 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 waypoint:
@@ -70,13 +70,13 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 fact.colorpicker:
 	Inherits: FACT
 	-Buildable:
-	-EditorTilesetFilter:
+	-MapEditorData:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
@@ -95,7 +95,7 @@ CAMERA:
 	RevealsShroud:
 		Range: 10c0
 		Type: CenterPosition
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 CAMERA.small:
@@ -116,7 +116,7 @@ CAMERA.small:
 	RevealsShroud:
 		Range: 6c0
 		Type: CenterPosition
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 FLARE:
@@ -137,6 +137,6 @@ FLARE:
 		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:

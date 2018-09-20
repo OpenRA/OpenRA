@@ -26,7 +26,7 @@ spicebloom.spawnpoint:
 	HitShape:
 		Type: Circle
 			Radius: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 spicebloom:
@@ -61,7 +61,7 @@ spicebloom:
 	HitShape:
 		Type: Circle
 			Radius: 512
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:
 

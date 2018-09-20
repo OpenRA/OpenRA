@@ -115,7 +115,7 @@ VEINHOLE:
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 	Interactable:
 

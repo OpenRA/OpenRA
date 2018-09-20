@@ -340,7 +340,7 @@
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 
@@ -390,7 +390,7 @@
 		MaxHeightDelta: 3
 	RenderSprites:
 		Palette: terraindecoration
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian building
 
 ^OldBase:
@@ -418,13 +418,13 @@
 		Type: heavy
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 1, 3
 	ThrowsShrapnel@LARGE:
 		Pieces: 1, 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Billboard
 
 ^Crate:
@@ -437,7 +437,7 @@
 	RenderSprites:
 		Palette: terraindecoration
 	WithCrateBody:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:
 		Bounds: 24,24
@@ -486,7 +486,7 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Wall
 	Valued:
 		Cost: 50
@@ -588,7 +588,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -697,7 +697,7 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian infantry
 
 ^Vehicle:
@@ -771,7 +771,7 @@
 	EntersTunnels:
 		Voice: Move
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -841,7 +841,7 @@
 	WithVoxelBody:
 	RevealOnFire:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
@@ -880,7 +880,7 @@
 		Moves: true
 		Velocity: 86
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^Visceroid:
@@ -914,7 +914,7 @@
 		Type: Circle
 			Radius: 256
 			VerticalTopOffset: 512
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Critter
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -938,7 +938,7 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithIdleAnimation:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 
 ^Tree:
@@ -956,7 +956,7 @@
 		Terrain: Tree
 	Tooltip:
 		Name: Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tree
 
 ^Rock:
@@ -974,7 +974,7 @@
 		Terrain: Rock
 	Tooltip:
 		Name: Rock
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 ^Decoration:
@@ -987,7 +987,7 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 ^Box:
@@ -1018,7 +1018,7 @@
 		TargetTypes: Ground, Building, C4, Defense
 	-Capturable:
 	RevealOnFire:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 
@@ -1072,7 +1072,7 @@
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Railway
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -1094,7 +1094,7 @@
 		Name: Railway
 	ChangesTerrain:
 		TerrainType: Rail
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Railway
 	Interactable:
 
@@ -1111,7 +1111,7 @@
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tunnel
 	Interactable:
 		Bounds: 144, 144
@@ -1143,7 +1143,7 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Wall
 	Gate:
 		OpeningSound: gateup1.aud

@@ -156,7 +156,7 @@ CAMERA:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 		Image: camera
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 camera.paradrop:
@@ -200,7 +200,7 @@ FLARE:
 	Tooltip:
 		Name: Flare
 		ShowOwnerRow: false
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 
 MINE:
@@ -219,7 +219,7 @@ MINE:
 	RadarColorFromTerrain:
 		Terrain: Ore
 	SeedsResource:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 
 GMINE:
@@ -239,7 +239,7 @@ GMINE:
 		Terrain: Gems
 	SeedsResource:
 		ResourceType: Gems
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 
 RAILMINE:
@@ -254,7 +254,7 @@ RAILMINE:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
 
@@ -270,7 +270,7 @@ QUEE:
 		Dimensions: 2,1
 	WithSpriteBody:
 	AppearsOnRadar:
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: INTERIOR
 		Categories: Critter
 
@@ -288,7 +288,7 @@ LAR1:
 		Palette: terrain
 	WithSpriteBody:
 	AppearsOnRadar:
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: INTERIOR
 		Categories: Critter
 
@@ -371,7 +371,7 @@ mpspawn:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 waypoint:
@@ -385,13 +385,13 @@ waypoint:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
 		QuantizedFacings: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 
 fact.colorpicker:
 	Inherits: FACT
 	-Buildable:
-	-EditorTilesetFilter:
+	-MapEditorData:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
@@ -411,6 +411,6 @@ CTFLAG:
 	-Selectable:
 	-SelectionDecorations:
 	-Targetable:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 	Interactable:

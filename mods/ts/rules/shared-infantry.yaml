@@ -89,5 +89,5 @@ FLAMEGUY:
 		FallbackSequence: die
 		UseDeathTypeSuffix: false
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System

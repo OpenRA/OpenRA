@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!a.HasTraitInfo<IRenderActorPreviewInfo>())
 					continue;
 
-				var editorData = a.TraitInfoOrDefault<EditorTilesetFilterInfo>();
+				var editorData = a.TraitInfoOrDefault<MapEditorDataInfo>();
 
 				// Actor must be included in at least one category
 				if (editorData == null || editorData.Categories == null)

@@ -387,5 +387,5 @@ HUNTER:
 		Palette: pips
 	ActorLostNotification:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
