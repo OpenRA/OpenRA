@@ -38,6 +38,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public int DamageVersus(Actor victim)
 		{
+			// If no Versus values are defined, DamageVersus would return 100 anyway, so we might as well do that early.
+			if (Versus.Count == 0)
+				return 100;
+
 			var armor = victim.TraitsImplementing<Armor>()
 				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type))
 				.Select(a => Versus[a.Info.Type]);
