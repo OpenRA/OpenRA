@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LAUNCHER_TAG="osx-launcher-20180723"
+LAUNCHER_TAG="osx-launcher-20171118"
 
 download_dir="${0%/*}/download/osx"
 mkdir -p "$download_dir"
