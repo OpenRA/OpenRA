@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (amount < 0)
 				throw new ArgumentException("Revoking experience is not implemented.", "amount");
 
-			experience += amount;
+			experience = (experience + amount).Clamp(0, nextLevel[MaxLevel - 1].First);
 
 			while (Level < MaxLevel && experience >= nextLevel[Level].First)
 			{
