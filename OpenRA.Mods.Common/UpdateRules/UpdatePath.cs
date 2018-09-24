@@ -87,7 +87,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new UpdatePath("playtest-20180729", new UpdateRule[]
 			{
 				// Bleed only changes here
-				new RenameEditorTilesetFilter()
+				new RenameEditorTilesetFilter(),
+				new DefineNotificationDefaults(),
 			})
 		};
 
