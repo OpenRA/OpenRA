@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while being repaired.")]
 		public readonly string RepairCondition = null;
 
+		[NotificationReference("Speech")]
 		public readonly string RepairingNotification = null;
 
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }

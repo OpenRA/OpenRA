@@ -19,7 +19,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class PlaceSimpleBeaconInfo : ITraitInfo
 	{
 		public readonly int Duration = 30 * 25;
+
 		public readonly string NotificationType = "Sounds";
+
+		[NotificationReference(typeFromField: "NotificationType")]
 		public readonly string Notification = "Beacon";
 
 		public readonly bool IsPlayerPalette = false;

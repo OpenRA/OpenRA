@@ -41,13 +41,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the DefaultCash option.")]
 		public readonly int DefaultCashDropdownDisplayOrder = 0;
 
+		[NotificationReference("Speech")]
 		[Desc("Speech notification to play when the player does not have any funds.")]
 		public readonly string InsufficientFundsNotification = null;
 
 		[Desc("Delay (in ticks) during which warnings will be muted.")]
 		public readonly int InsufficientFundsNotificationDelay = 750;
 
+		[NotificationReference("Sounds")]
 		public readonly string CashTickUpNotification = null;
+
+		[NotificationReference("Sounds")]
 		public readonly string CashTickDownNotification = null;
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)

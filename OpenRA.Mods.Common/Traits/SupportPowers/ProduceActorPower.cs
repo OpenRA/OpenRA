@@ -26,10 +26,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Production queue type to use")]
 		public readonly string Type = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when production is activated.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = null;

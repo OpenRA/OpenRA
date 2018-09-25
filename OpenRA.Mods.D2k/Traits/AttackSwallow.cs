@@ -32,6 +32,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public readonly string WormAttackSound = "WORM.WAV";
 
+		[NotificationReference("Speech")]
 		public readonly string WormAttackNotification = "WormAttack";
 
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.Self, this); }

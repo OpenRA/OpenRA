@@ -48,8 +48,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay between the game over condition being met, and the game actually ending, in milliseconds.")]
 		public readonly int GameOverDelay = 1500;
 
+		[NotificationReference("Speech")]
 		public readonly string WinNotification = null;
+
+		[NotificationReference("Speech")]
 		public readonly string LoseNotification = null;
+
+		[NotificationReference("Speech")]
 		public readonly string LeaveNotification = null;
 
 		public object Create(ActorInitializer init) { return new MissionObjectives(init.World, this); }

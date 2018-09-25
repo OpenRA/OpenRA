@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should the level-up animation be suppressed when actor is created?")]
 		public readonly bool SuppressLevelupAnimation = true;
 
+		[NotificationReference("Sounds")]
 		public readonly string LevelUpNotification = null;
 
 		public object Create(ActorInitializer init) { return new GainsExperience(init, this); }

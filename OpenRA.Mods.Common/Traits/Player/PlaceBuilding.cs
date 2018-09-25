@@ -31,9 +31,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play after building placement if new construction options are available.")]
 		public readonly string NewOptionsNotification = null;
 
+		[NotificationReference("Speech")]
 		public readonly string CannotPlaceNotification = null;
 
 		public object Create(ActorInitializer init) { return new PlaceBuilding(this); }

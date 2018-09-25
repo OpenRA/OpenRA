@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	public class RepairsUnitsInfo : PausableConditionalTraitInfo
@@ -21,9 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Time (in ticks) between two repair steps.")]
 		public readonly int Interval = 24;
 
+		[NotificationReference("Speech")]
 		[Desc("The sound played when starting to repair a unit.")]
 		public readonly string StartRepairingNotification = null;
 
+		[NotificationReference("Speech")]
 		[Desc("The sound played when repairing a unit is done.")]
 		public readonly string FinishRepairingNotification = null;
 

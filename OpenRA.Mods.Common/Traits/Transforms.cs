@@ -34,9 +34,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sounds to play when the transformation is blocked.")]
 		public readonly string[] NoTransformSounds = { };
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when transforming.")]
 		public readonly string TransformNotification = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when the transformation is blocked.")]
 		public readonly string NoTransformNotification = null;
 
