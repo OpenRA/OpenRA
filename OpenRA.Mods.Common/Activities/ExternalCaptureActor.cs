@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Common.Activities
 				BeginCapture(self);
 			else
 			{
-				if (capturable.Captor != self) return NextActivity;
+				if (capturable.Captor != self)
+					return NextActivity;
 
 				if (capturable.CaptureProgressTime % 25 == 0)
 				{
@@ -99,8 +100,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		void EndCapture(Actor self)
 		{
-			if (target.Type == TargetType.Actor && capturable.CaptureInProgress)
+			if (capturable.CaptureInProgress)
 				capturable.EndCapture();
+
 			if (capturingToken != ConditionManager.InvalidConditionToken)
 				capturingToken = conditionManager.RevokeCondition(self, capturingToken);
 		}
