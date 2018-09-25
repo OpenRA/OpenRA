@@ -52,18 +52,18 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Sync] public int CaptureProgressTime = 0;
 		[Sync] public Actor Captor;
-		private Actor self;
 		public bool CaptureInProgress { get { return Captor != null; } }
+
+		readonly Building building;
 
 		public ExternalCapturable(Actor self, ExternalCapturableInfo info)
 			: base(info)
 		{
-			this.self = self;
+			building = self.TraitOrDefault<Building>();
 		}
 
 		public void BeginCapture(Actor captor)
 		{
-			var building = self.TraitOrDefault<Building>();
 			if (building != null)
 				building.Lock();
 
@@ -72,7 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EndCapture()
 		{
-			var building = self.TraitOrDefault<Building>();
 			if (building != null)
 				building.Unlock();
 
