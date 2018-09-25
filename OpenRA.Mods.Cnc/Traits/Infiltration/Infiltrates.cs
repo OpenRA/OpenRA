@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when a building is infiltrated.")]
 		public readonly string Notification = "BuildingInfiltrated";
 

@@ -15,12 +15,14 @@ namespace OpenRA.Mods.Common.Traits.Sound
 {
 	public class CaptureNotificationInfo : ITraitInfo
 	{
+		[NotificationReference("Speech")]
 		[Desc("The speech notification to play to the new owner.")]
 		public readonly string Notification = "BuildingCaptured";
 
 		[Desc("Specifies if Notification is played with the voice of the new owners faction.")]
 		public readonly bool NewOwnerVoice = true;
 
+		[NotificationReference("Speech")]
 		[Desc("The speech notification to play to the old owner.")]
 		public readonly string LoseNotification = null;
 

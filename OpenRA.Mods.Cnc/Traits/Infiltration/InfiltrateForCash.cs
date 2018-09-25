@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Maximum amount of funds which will be stolen.")]
 		public readonly int Maximum = int.MaxValue;
 
+		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string Notification = null;
 

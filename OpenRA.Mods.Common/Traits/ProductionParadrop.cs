@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when dropping the unit.")]
 		public readonly string ChuteSound = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when dropping the unit.")]
 		public readonly string ReadyAudio = null;
 

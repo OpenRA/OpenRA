@@ -50,28 +50,34 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when production is complete.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when you can't train another actor",
 			"when the build limit exceeded or the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when you can't queue another actor",
 			"when the queue length limit is exceeded.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string LimitedAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when user clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string QueuedAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when player right-clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string OnHoldAudio = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification played when player right-clicks on a build palette icon that is already on hold.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string CancelledAudio = null;

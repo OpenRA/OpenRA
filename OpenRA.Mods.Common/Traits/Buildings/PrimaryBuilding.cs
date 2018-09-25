@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while this is the primary building.")]
 		public readonly string PrimaryCondition = null;
 
+		[NotificationReference("Speech")]
 		[Desc("The speech notification to play when selecting a primary building.")]
 		public readonly string SelectionNotification = null;
 

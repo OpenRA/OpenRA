@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SquadSize = 1;
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when entering the drop zone.")]
 		public readonly string ReinforcementsArrivedSpeechNotification = null;
 
