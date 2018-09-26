@@ -84,7 +84,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveCanUndeployFromGrantConditionOnDeploy(),
 			}),
 
-			new UpdatePath("playtest-20180729", new UpdateRule[]
+			new UpdatePath("playtest-20180729", "release-20180923", new UpdateRule[0]),
+
+			new UpdatePath("release-20180923", new UpdateRule[]
 			{
 				// Bleed only changes here
 				new RenameEditorTilesetFilter(),
