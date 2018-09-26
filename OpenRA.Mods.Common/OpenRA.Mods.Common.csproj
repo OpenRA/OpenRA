@@ -867,7 +867,6 @@
     <Compile Include="UpdateRules\UpdateRule.cs" />
     <Compile Include="UpdateRules\UpdatePath.cs" />
     <Compile Include="UpdateRules\UpdateUtils.cs" />
-    <Compile Include="UpdateRules\Rules\RenameEditorTilesetFilter.cs" />
     <Compile Include="UpdateRules\Rules\20171014\LegacyBetaWarning.cs" />
     <Compile Include="UpdateRules\Rules\20171014\RemoveMobileOnRails.cs" />
     <Compile Include="UpdateRules\Rules\20171014\AircraftCanHoverGeneralization.cs" />
@@ -911,7 +910,8 @@
     <Compile Include="UpdateRules\Rules\20180307\AddShakeToBridge.cs" />
     <Compile Include="UpdateRules\Rules\20180307\IgnoreAbstractActors.cs" />
     <Compile Include="UpdateRules\Rules\20180307\RemoveCanUndeployFromGrantConditionOnDeploy.cs" />
-    <Compile Include="UpdateRules\Rules\DefineNotificationDefaults.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\DefineNotificationDefaults.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\RenameEditorTilesetFilter.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
