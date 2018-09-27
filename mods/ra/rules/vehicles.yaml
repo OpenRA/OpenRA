@@ -492,6 +492,8 @@ MNLY:
 		Weapon: ATMine
 	RenderSprites:
 		Image: MNLY
+	Rearmable:
+		RearmActors: fix
 
 TRUK:
 	Inherits: ^Vehicle

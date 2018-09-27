@@ -32,19 +32,23 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
-	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice
+	class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated
 	{
 		public readonly RepairableInfo Info;
 		readonly IHealth health;
 		readonly IMove movement;
-		readonly AmmoPool[] ammoPools;
+		Rearmable rearmable;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			Info = info;
 			health = self.Trait<IHealth>();
 			movement = self.Trait<IMove>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -70,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearmAt(Actor target)
 		{
-			return Info.RepairBuildings.Contains(target.Info.Name);
+			return rearmable != null && rearmable.Info.RearmActors.Contains(target.Info.Name);
 		}
 
 		bool CanRepair()
@@ -80,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			return ammoPools.Any(x => !x.AutoReloads && !x.FullAmmo());
+			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

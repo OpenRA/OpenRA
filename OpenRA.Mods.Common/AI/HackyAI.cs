@@ -443,22 +443,22 @@ namespace OpenRA.Mods.Common.AI
 				CountBuildingByCommonName(Info.BuildingCommonNames.Barracks, Player) == 0;
 		}
 
-		// For mods like RA (number of building must match the number of aircraft)
+		// For mods like RA (number of RearmActors must match the number of aircraft)
 		bool HasAdequateAirUnitReloadBuildings(ActorInfo actorInfo)
 		{
 			var aircraftInfo = actorInfo.TraitInfoOrDefault<AircraftInfo>();
 			if (aircraftInfo == null)
 				return true;
 
-			// If the aircraft has at least 1 AmmoPool and defines 1 or more RearmBuildings, check if we have enough of those
-			var hasAmmoPool = actorInfo.TraitInfos<AmmoPoolInfo>().Any();
-			if (hasAmmoPool && aircraftInfo.RearmBuildings.Count > 0)
-			{
-				var countOwnAir = CountActorsWithTrait<IPositionable>(actorInfo.Name, Player);
-				var countBuildings = aircraftInfo.RearmBuildings.Sum(b => CountActorsWithTrait<Building>(b, Player));
-				if (countOwnAir >= countBuildings)
-					return false;
-			}
+			// If actor isn't Rearmable, it doesn't need a RearmActor to reload
+			var rearmableInfo = actorInfo.TraitInfoOrDefault<RearmableInfo>();
+			if (rearmableInfo == null)
+				return true;
+
+			var countOwnAir = CountActorsWithTrait<IPositionable>(actorInfo.Name, Player);
+			var countBuildings = rearmableInfo.RearmActors.Sum(b => CountActorsWithTrait<Building>(b, Player));
+			if (countOwnAir >= countBuildings)
+				return false;
 
 			return true;
 		}

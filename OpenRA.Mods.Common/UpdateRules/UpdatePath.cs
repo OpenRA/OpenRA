@@ -97,6 +97,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new LowPowerSlowdownToModifier(),
 				new RenameCrateActionNotification(),
 				new RemoveRepairBuildingsFromAircraft(),
+				new AddRearmable(),
 			})
 		};
 

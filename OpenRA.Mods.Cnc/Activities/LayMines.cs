@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly MinelayerInfo info;
 		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
-		readonly HashSet<string> rearmBuildings;
+		readonly RearmableInfo rearmableInfo;
 
 		public LayMines(Actor self)
 		{
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			info = self.Info.TraitInfo<MinelayerInfo>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
-			rearmBuildings = info.RearmBuildings;
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -43,11 +43,11 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (ammoPools != null && ammoPools.Any(p => p.Info.Name == info.AmmoPoolName && !p.HasAmmo()))
+			if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == info.AmmoPoolName && !p.HasAmmo()))
 			{
 				// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
 				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
-					&& rearmBuildings.Contains(a.Info.Name))
+					&& rearmableInfo.RearmActors.Contains(a.Info.Name))
 					.ClosestTo(self);
 
 				if (rearmTarget == null)
