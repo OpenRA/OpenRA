@@ -43,12 +43,12 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!IsValidAgainst(victim, firedBy))
 				return;
 
-			var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
+			var healthInfo = victim.Info.TraitInfoOrDefault<IHealthInfo>();
 			if (healthInfo == null)
 				return;
 
 			// Damage is measured as a percentage of the target health
-			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim)));
+			var damage = Util.ApplyPercentageModifiers(healthInfo.MaxHP, damageModifiers.Append(Damage, DamageVersus(victim)));
 			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum DamageSource { Self, Killer }
 
 	[Desc("This actor explodes when killed.")]
-	public class ExplodesInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	public class ExplodesInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = null;
@@ -81,13 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage, INotifyCreated
 	{
-		readonly Health health;
+		readonly IHealth health;
 		BuildingInfo buildingInfo;
 
 		public Explodes(ExplodesInfo info, Actor self)
 			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void INotifyCreated.Created(Actor self)

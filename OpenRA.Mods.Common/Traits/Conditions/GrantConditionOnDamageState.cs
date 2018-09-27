@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Applies a condition to the actor at specified damage states.")]
-	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<HealthInfo>
+	public class GrantConditionOnDamageStateInfo : ITraitInfo, Requires<IHealthInfo>
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnDamageState : INotifyDamageStateChanged, INotifyCreated
 	{
 		readonly GrantConditionOnDamageStateInfo info;
-		readonly Health health;
+		readonly IHealth health;
 
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public GrantConditionOnDamageState(Actor self, GrantConditionOnDamageStateInfo info)
 		{
 			this.info = info;
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void INotifyCreated.Created(Actor self)

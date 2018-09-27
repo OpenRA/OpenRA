@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!AffectsParent && victim == firedBy)
 					continue;
 
-				if (!victim.Info.HasTraitInfo<HealthInfo>())
+				if (!victim.Info.HasTraitInfo<IHealthInfo>())
 					continue;
 
 				// If the impact position is within any HitShape, we have a direct hit

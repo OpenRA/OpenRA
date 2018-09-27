@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Warheads
 			foreach (var victim in hitActors)
 			{
 				// Cannot be damaged without a Health trait
-				var healthInfo = victim.Info.TraitInfoOrDefault<HealthInfo>();
+				var healthInfo = victim.Info.TraitInfoOrDefault<IHealthInfo>();
 				if (healthInfo == null)
 					continue;
 

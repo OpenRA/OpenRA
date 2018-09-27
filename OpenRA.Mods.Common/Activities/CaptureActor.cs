@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Building building;
 		readonly Capturable capturable;
 		readonly Captures[] captures;
-		readonly Health health;
+		readonly IHealth health;
 
 		public CaptureActor(Actor self, Actor target)
 			: base(self, target, EnterBehaviour.Dispose)
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 			building = actor.TraitOrDefault<Building>();
 			captures = self.TraitsImplementing<Captures>().ToArray();
 			capturable = target.Trait<Capturable>();
-			health = actor.Trait<Health>();
+			health = actor.Trait<IHealth>();
 		}
 
 		protected override bool CanReserve(Actor self)

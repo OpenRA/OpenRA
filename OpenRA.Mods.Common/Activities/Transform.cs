@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (Faction != null)
 					init.Add(new FactionInit(Faction));
 
-				var health = self.TraitOrDefault<Health>();
+				var health = self.TraitOrDefault<IHealth>();
 				if (health != null)
 				{
 					// Cast to long to avoid overflow when multiplying by the health

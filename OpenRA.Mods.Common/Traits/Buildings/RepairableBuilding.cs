@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Cost to fully repair the actor as a percent of its value.")]
 		public readonly int RepairPercent = 20;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
-		readonly Health health;
+		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
 		readonly Stack<int> repairTokens = new Stack<int>();
 		ConditionManager conditionManager;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
 		}
 
