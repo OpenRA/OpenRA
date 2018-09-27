@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.AI
 							return (valueInfo != null) ? valueInfo.Cost * Attractiveness : 0;
 
 						case DecisionMetric.Health:
-							var health = a.TraitOrDefault<Health>();
+							var health = a.TraitOrDefault<IHealth>();
 
 							if (health == null)
 								return 0;
@@ -193,8 +193,8 @@ namespace OpenRA.Mods.Common.AI
 							return (valueInfo != null) ? valueInfo.Cost * Attractiveness : 0;
 
 						case DecisionMetric.Health:
-							var healthInfo = fa.Info.TraitInfoOrDefault<HealthInfo>();
-							return (healthInfo != null) ? fa.HP * Attractiveness / healthInfo.HP : 0;
+							var healthInfo = fa.Info.TraitInfoOrDefault<IHealthInfo>();
+							return (healthInfo != null) ? fa.HP * Attractiveness / healthInfo.MaxHP : 0;
 
 						default:
 							return Attractiveness;

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var health = actorInfo.Value.TraitInfoOrDefault<HealthInfo>();
+				var health = actorInfo.Value.TraitInfoOrDefault<IHealthInfo>();
 				if (health == null)
 					continue;
 

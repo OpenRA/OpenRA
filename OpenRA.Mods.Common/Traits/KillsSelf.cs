@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionManager != null && !string.IsNullOrEmpty(Info.GrantsCondition))
 				conditionManager.GrantCondition(self, Info.GrantsCondition);
 
-			if (Info.RemoveInstead || !self.Info.HasTraitInfo<HealthInfo>())
+			if (Info.RemoveInstead || !self.Info.HasTraitInfo<IHealthInfo>())
 				self.Dispose();
 			else
 				self.Kill(self, Info.DamageTypes);

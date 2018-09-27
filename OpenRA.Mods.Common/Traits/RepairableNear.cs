@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>, Requires<IMoveInfo>
+	class RepairableNearInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
 	{
 		[ActorReference] public readonly HashSet<string> Buildings = new HashSet<string> { "spen", "syrd" };
 		public readonly WDist CloseEnough = WDist.FromCells(4);

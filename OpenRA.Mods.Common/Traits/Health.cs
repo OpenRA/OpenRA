@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HealthInfo : ITraitInfo, UsesInit<HealthInit>, IRulesetLoaded
+	public class HealthInfo : IHealthInfo, UsesInit<HealthInit>, IRulesetLoaded
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
@@ -30,6 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!ai.HasTraitInfo<HitShapeInfo>())
 				throw new YamlException("Actors with Health need at least one HitShape trait!");
 		}
+
+		int IHealthInfo.MaxHP { get { return HP; } }
 	}
 
 	public class Health : IHealth, ISync, ITick, INotifyCreated, INotifyOwnerChanged

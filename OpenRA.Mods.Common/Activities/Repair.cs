@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Repair : Activity
 	{
-		readonly Health health;
+		readonly IHealth health;
 		readonly RepairsUnits[] allRepairsUnits;
 		readonly Target host;
 		readonly WDist closeEnough;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.host = Target.FromActor(host);
 			this.closeEnough = closeEnough;
 			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
-			health = self.TraitOrDefault<Health>();
+			health = self.TraitOrDefault<IHealth>();
 			repairable = self.TraitOrDefault<Repairable>();
 		}
 

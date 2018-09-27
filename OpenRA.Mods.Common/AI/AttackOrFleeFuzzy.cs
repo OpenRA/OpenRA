@@ -188,10 +188,10 @@ namespace OpenRA.Mods.Common.AI
 			var sumOfHp = 0;
 			foreach (var a in actors)
 			{
-				if (a.Info.HasTraitInfo<HealthInfo>())
+				if (a.Info.HasTraitInfo<IHealthInfo>())
 				{
-					sumOfMaxHp += a.Trait<Health>().MaxHP;
-					sumOfHp += a.Trait<Health>().HP;
+					sumOfMaxHp += a.Trait<IHealth>().MaxHP;
+					sumOfHp += a.Trait<IHealth>().HP;
 				}
 			}
 
