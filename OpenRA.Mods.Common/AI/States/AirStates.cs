@@ -127,7 +127,11 @@ namespace OpenRA.Mods.Common.AI
 		protected static bool ReloadsAutomatically(Actor a)
 		{
 			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.AutoReloads);
+			var rearmable = a.TraitOrDefault<Rearmable>();
+			if (rearmable == null)
+				return true;
+
+			return ammoPools.All(ap => !rearmable.Info.AmmoPools.Contains(ap.Info.Name));
 		}
 
 		protected static bool IsRearm(Actor a)

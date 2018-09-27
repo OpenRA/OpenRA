@@ -21,13 +21,13 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target host;
 		readonly WDist closeEnough;
-		readonly AmmoPool[] ammoPools;
+		readonly Rearmable rearmable;
 
 		public Rearm(Actor self, Actor host, WDist closeEnough)
 		{
 			this.host = Target.FromActor(host);
 			this.closeEnough = closeEnough;
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => !p.AutoReloads).ToArray();
+			rearmable = self.Trait<Rearmable>();
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Reset the ReloadDelay to avoid any issues with early cancellation
 			// from previous reload attempts (explicit order, host building died, etc).
 			// HACK: this really shouldn't be managed from here
-			foreach (var pool in ammoPools)
+			foreach (var pool in rearmable.RearmableAmmoPools)
 				pool.RemainingTicks = pool.Info.ReloadDelay;
 
 			if (host.Type == TargetType.Invalid)
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			var complete = true;
-			foreach (var pool in ammoPools)
+			foreach (var pool in rearmable.RearmableAmmoPools)
 			{
 				if (!pool.FullAmmo())
 				{

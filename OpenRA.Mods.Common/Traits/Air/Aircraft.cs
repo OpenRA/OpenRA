@@ -36,9 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
-		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
-
 		public readonly int InitialFacing = 0;
 
 		public readonly int TurnSpeed = 255;
@@ -155,6 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		RepairableInfo repairableInfo;
+		RearmableInfo rearmableInfo;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -211,6 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected virtual void Created(Actor self)
 		{
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -450,7 +449,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return Info.RearmBuildings.Contains(a.Info.Name)
+			return (rearmableInfo != null && rearmableInfo.RearmActors.Contains(a.Info.Name))
 				|| (repairableInfo != null && repairableInfo.RepairBuildings.Contains(a.Info.Name));
 		}
 
@@ -487,7 +486,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
+			if (rearmableInfo != null && rearmableInfo.RearmActors.Contains(name))
 				yield return new Rearm(self, a, WDist.Zero);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
@@ -669,13 +668,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			if (!Info.RearmBuildings.Any())
+			if (rearmableInfo == null || !rearmableInfo.RearmActors.Any())
 				return null;
 
 			return new Order("ReturnToBase", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return Info.RearmBuildings.Any(); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return rearmableInfo != null && rearmableInfo.RearmActors.Any(); }
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
@@ -689,7 +688,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "Stop":
 					return Info.Voice;
 				case "ReturnToBase":
-					return Info.RearmBuildings.Any() ? Info.Voice : null;
+					return rearmableInfo != null && rearmableInfo.RearmActors.Any() ? Info.Voice : null;
 				default: return null;
 			}
 		}
@@ -782,7 +781,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.QueueActivity(new HeliLand(self, true));
 				}
 			}
-			else if (order.OrderString == "ReturnToBase" && Info.RearmBuildings.Any())
+			else if (order.OrderString == "ReturnToBase" && rearmableInfo != null && rearmableInfo.RearmActors.Any())
 			{
 				UnReserve();
 				self.CancelActivity();

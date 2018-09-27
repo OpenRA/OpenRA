@@ -80,7 +80,6 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 186
 		MoveIntoShroud: false
@@ -109,6 +108,8 @@ ORCA:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 ORCAB:
 	Inherits: ^Aircraft
@@ -127,7 +128,6 @@ ORCAB:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 3072
 		MaximumPitch: 120
 		TurnSpeed: 3
@@ -164,6 +164,8 @@ ORCAB:
 		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -257,7 +259,6 @@ SCRIN:
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 2560
 		MaximumPitch: 90
 		TurnSpeed: 3
@@ -292,6 +293,8 @@ SCRIN:
 	DeathSounds:
 	SpawnActorOnDeath:
 		Actor: SCRIN.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 APACHE:
 	Inherits: ^Helicopter
@@ -310,7 +313,6 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 130
 		MoveIntoShroud: false
@@ -345,6 +347,8 @@ APACHE:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: APACHE.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 HUNTER:
 	Inherits@2: ^ExistsInWorld

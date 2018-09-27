@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly AttackHeli attackHeli;
 		readonly bool attackOnlyVisibleTargets;
-		readonly bool autoReloads;
+		readonly Rearmable rearmable;
 
 		Target target;
 		bool canHideUnderFog;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			attackHeli = self.Trait<AttackHeli>();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
-			autoReloads = self.TraitsImplementing<AmmoPool>().All(p => p.AutoReloads);
+			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Common.Activities
 				return new HeliFly(self, newTarget);
 			}
 
-			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
-			if (!autoReloads && aircraft.Info.RearmBuildings.Any() && attackHeli.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
+			if (rearmable != null && attackHeli.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
 			var dist = targetPos - pos;

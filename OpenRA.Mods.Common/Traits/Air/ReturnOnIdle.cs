@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Return to a player owned RearmBuildings. If none available, head back to base and circle over it.")]
+	[Desc("Return to a player owned RearmActor. If none available, head back to base and circle over it.")]
 	public class ReturnOnIdleInfo : ITraitInfo, Requires<AircraftInfo>
 	{
 		public object Create(ActorInitializer init) { return new ReturnOnIdle(init.Self, this); }

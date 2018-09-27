@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly AircraftInfo aircraftInfo;
 		readonly RepairableInfo repairableInfo;
+		readonly Rearmable rearmable;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
 		bool isCalculated;
@@ -37,14 +38,18 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
+			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
 		public static Actor ChooseResupplier(Actor self, bool unreservedOnly)
 		{
-			var rearmBuildings = self.Info.TraitInfo<AircraftInfo>().RearmBuildings;
+			var rearmInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			if (rearmInfo == null)
+				return null;
+
 			return self.World.ActorsHavingTrait<Reservable>()
 				.Where(a => a.Owner == self.Owner
-					&& rearmBuildings.Contains(a.Info.Name)
+					&& rearmInfo.RearmActors.Contains(a.Info.Name)
 					&& (!unreservedOnly || !Reservable.IsReserved(a)))
 				.ClosestTo(self);
 		}
@@ -109,8 +114,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return aircraftInfo.RearmBuildings.Contains(dest.Info.Name) && self.TraitsImplementing<AmmoPool>()
-					.Any(p => !p.AutoReloads && !p.FullAmmo());
+			return rearmable != null && rearmable.Info.RearmActors.Contains(dest.Info.Name)
+					&& rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
 		}
 
 		public override Activity Tick(Actor self)
