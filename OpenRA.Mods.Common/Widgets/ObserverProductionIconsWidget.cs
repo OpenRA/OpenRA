@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!clocks.ContainsKey(queue.Trait))
 					clocks.Add(queue.Trait, new Animation(world, ClockAnimation));
 
-				var current = queue.Trait.CurrentItem();
+				var current = queue.Trait.AllQueued().FirstOrDefault();
 				if (current == null || queue.i >= icons.Length)
 					continue;
 
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (item.Done)
 				return "READY";
 
-			return WidgetUtils.FormatTime(item.RemainingTimeActual, timestep);
+			return WidgetUtils.FormatTime(item.Queue.RemainingTimeActual(item), timestep);
 		}
 
 		public override Widget Clone()

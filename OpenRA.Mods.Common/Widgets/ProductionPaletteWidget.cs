@@ -334,7 +334,9 @@ namespace OpenRA.Mods.Common.Widgets
 		bool HandleEvent(ProductionIcon icon, MouseButton btn, Modifiers modifiers)
 		{
 			var startCount = modifiers.HasModifier(Modifiers.Shift) ? 5 : 1;
-			var cancelCount = modifiers.HasModifier(Modifiers.Ctrl) ? CurrentQueue.QueueLength : startCount;
+
+			// PERF: avoid an unnecessary enumeration by casting back to its known type
+			var cancelCount = modifiers.HasModifier(Modifiers.Ctrl) ? ((List<ProductionItem>)CurrentQueue.AllQueued()).Count : startCount;
 			var item = icon.Queued.FirstOrDefault();
 			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount)
 				: btn == MouseButton.Right ? HandleRightClick(item, icon, cancelCount)
@@ -465,7 +467,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (total > 0)
 				{
 					var first = icon.Queued[0];
-					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
+					var waiting = !CurrentQueue.IsProducing(first) && !first.Done;
 					if (first.Done)
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
@@ -478,7 +480,7 @@ namespace OpenRA.Mods.Common.Widgets
 							icon.Pos + holdOffset,
 							Color.White, Color.Black, 1);
 					else if (!waiting && DrawTime)
-						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
+						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.Queue.RemainingTimeActual(first), World.Timestep),
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);
 

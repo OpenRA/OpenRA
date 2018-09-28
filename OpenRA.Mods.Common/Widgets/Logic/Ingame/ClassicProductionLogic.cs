@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var chromeName = button.ProductionGroup.ToLowerInvariant();
 			var icon = button.Get<ImageWidget>("ICON");
 			icon.GetImageName = () => button.IsDisabled() ? chromeName + "-disabled" :
-				queues.Any(q => q.CurrentDone) ? chromeName + "-alert" : chromeName;
+				queues.Any(q => q.AllQueued().Any(i => i.Done)) ? chromeName + "-alert" : chromeName;
 		}
 
 		[ObjectCreator.UseCtor]

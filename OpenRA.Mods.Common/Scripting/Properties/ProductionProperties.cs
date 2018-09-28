@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 
 			var queue = queues.Where(q => actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
-				.FirstOrDefault(q => q.CurrentItem() == null);
+				.FirstOrDefault(q => !q.AllQueued().Any());
 
 			if (queue == null)
 				return false;
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return true;
 
 			return queues.Where(q => GetBuildableInfo(actorType).Queue.Contains(q.Info.Type))
-				.Any(q => q.CurrentItem() != null);
+				.Any(q => q.AllQueued().Any());
 		}
 
 		BuildableInfo GetBuildableInfo(string actorType)
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (queueTypes.Any(t => !queues.ContainsKey(t) || productionHandlers.ContainsKey(t)))
 				return false;
 
-			if (queueTypes.Any(t => queues[t].CurrentItem() != null))
+			if (queueTypes.Any(t => queues[t].AllQueued().Any()))
 				return false;
 
 			if (actionFunc != null)
@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!queues.ContainsKey(queue))
 				return true;
 
-			return productionHandlers.ContainsKey(queue) || queues[queue].CurrentItem() != null;
+			return productionHandlers.ContainsKey(queue) || queues[queue].AllQueued().Any();
 		}
 
 		BuildableInfo GetBuildableInfo(string actorType)
