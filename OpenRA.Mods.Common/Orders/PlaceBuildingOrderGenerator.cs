@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public void Tick(World world)
 		{
-			if (queue.CurrentItem() == null || queue.CurrentItem().Item != actorInfo.Name)
+			if (queue.AllQueued().All(i => !i.Done || i.Item != actorInfo.Name))
 				world.CancelInputMode();
 
 			if (preview == null)

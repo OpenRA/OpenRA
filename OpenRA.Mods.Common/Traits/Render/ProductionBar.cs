@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void ITick.Tick(Actor self)
 		{
-			var current = queue.CurrentItem();
+			var current = queue.AllQueued().Where(i => i.Started).OrderBy(i => i.RemainingTime).FirstOrDefault();
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;
 		}
 

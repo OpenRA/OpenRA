@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public List<ProductionTab> Tabs = new List<ProductionTab>();
 		public string Group;
 		public int NextQueueName = 1;
-		public bool Alert { get { return Tabs.Any(t => t.Queue.CurrentDone); } }
+		public bool Alert { get { return Tabs.Any(t => t.Queue.AllQueued().Any(i => i.Done)); } }
 
 		public void Update(IEnumerable<ProductionQueue> allQueues)
 		{
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Prioritize alerted queues
 			var queues = Groups[queueGroup].Tabs.Select(t => t.Queue)
-					.OrderByDescending(q => q.CurrentDone ? 1 : 0)
+					.OrderByDescending(q => q.AllQueued().Any(i => i.Done) ? 1 : 0)
 					.ToList();
 
 			if (reverse) queues.Reverse();
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var textSize = font.Measure(tab.Name);
 				var position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
-				font.DrawTextWithContrast(tab.Name, position, tab.Queue.CurrentDone ? Color.Gold : Color.White, Color.Black, 1);
+				font.DrawTextWithContrast(tab.Name, position, tab.Queue.AllQueued().Any(i => i.Done) ? Color.Gold : Color.White, Color.Black, 1);
 			}
 
 			Game.Renderer.DisableScissor();

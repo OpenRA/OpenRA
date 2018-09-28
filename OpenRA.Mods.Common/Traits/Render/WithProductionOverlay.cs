@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		bool IsProducing
 		{
-			get { return queues != null && queues.Any(q => q.Enabled && q.CurrentItem() != null && !q.CurrentPaused); }
+			get { return queues != null && queues.Any(q => q.Enabled && q.AllQueued().Any(i => !i.Paused && i.Started)); }
 		}
 
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
