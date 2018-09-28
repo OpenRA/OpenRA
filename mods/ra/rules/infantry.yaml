@@ -126,7 +126,6 @@ E2:
 		RequiresCondition: parachute
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 		DamageSource: Killer
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
@@ -208,7 +207,6 @@ E4:
 	AttackFrontal:
 	Explodes:
 		Weapon: VisualExplode
-		EmptyWeapon: VisualExplode
 		Chance: 50
 	WithInfantryBody:
 		DefaultAttackSequence: shoot

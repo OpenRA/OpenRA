@@ -274,8 +274,12 @@ ARTY:
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode
-		EmptyWeapon: UnitExplodeSmall
-		LoadedChance: 75
+		RequiresCondition: loaded
+	Explodes@unloaded:
+		Weapon: UnitExplodeSmall
+		RequiresCondition: unloaded
+	GrantRandomCondition:
+		Conditions: loaded, loaded, loaded, unloaded
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -699,7 +703,6 @@ DTRK:
 		Range: 4c0
 	Explodes:
 		Weapon: MiniNuke
-		EmptyWeapon: MiniNuke
 		DamageSource: Killer
 	AttackSuicides:
 	-DamageMultiplier@IRONCURTAIN:

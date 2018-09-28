@@ -359,7 +359,6 @@ HUNTER:
 	AttackSuicides:
 	Explodes:
 		Weapon: SuicideBomb
-		EmptyWeapon: SuicideBomb
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 355

@@ -60,7 +60,6 @@ SS:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
-		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
 	Selectable:
 		DecorationBounds: 38,38
@@ -128,7 +127,6 @@ MSUB:
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
-		EmptyWeapon: UnitExplodeSubmarine
 	-MustBeDestroyed:
 	Selectable:
 		DecorationBounds: 44,44

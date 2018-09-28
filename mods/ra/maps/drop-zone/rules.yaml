@@ -49,7 +49,6 @@ HARV:
 		HP: 10000
 	Explodes:
 		Weapon: CrateNuke
-		EmptyWeapon: CrateNuke
 	AttackSuicides:
 	Buildable:
 		Description: Explodes like a damn nuke!

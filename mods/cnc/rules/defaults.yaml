@@ -266,7 +266,6 @@
 	WithFacingSpriteBody:
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	Guard:
 	Guardable:
 	Tooltip:
@@ -319,7 +318,6 @@
 	ActorLostNotification:
 	Explodes:
 		Weapon: HeliExplode
-		EmptyWeapon: HeliExplode
 	AttackMove:
 	DrawLineToTarget:
 	Guard:
@@ -662,7 +660,6 @@
 	WithDamageOverlay:
 	Explodes:
 		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
 	Guard:
 	Guardable:
 	Tooltip:
@@ -700,7 +697,6 @@
 	Explodes:
 		Type: Footprint
 		Weapon: BuildingExplode
-		EmptyWeapon: BuildingExplode
 	CaptureNotification:
 		Notification: BuildingCaptured
 		NewOwnerVoice: no
@@ -1024,7 +1020,6 @@
 	ScriptTriggers:
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	BodyOrientation:
 		UseClassicFacingFudge: True
 

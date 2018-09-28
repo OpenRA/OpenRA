@@ -18,6 +18,7 @@ V01:
 
 JEEP:
 	Explodes:
+		Weapon: UnitExplode
 	ProximityExternalCondition@JAMMER:
 		Range: 10c0
 		ValidStances: Enemy, Neutral

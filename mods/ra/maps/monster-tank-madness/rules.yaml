@@ -25,7 +25,6 @@ World:
 	Inherits: ^CivBuilding
 	Explodes:
 		Weapon: BarrelExplode
-		EmptyWeapon: BarrelExplode
 	-SpawnActorOnDeath@1:
 	-SpawnActorOnDeath@2:
 	-SpawnActorOnDeath@3:
@@ -83,7 +82,6 @@ V11.exploding:
 V19:
 	Explodes:
 		Weapon: BarrelExplode
-		EmptyWeapon: BarrelExplode
 
 DEMITRI:
 	Inherits: DELPHI
@@ -160,7 +158,6 @@ PBOX:
 	WithSpriteTurret:
 	Explodes:
 		Weapon: MiniNuke
-		EmptyWeapon: MiniNuke
 	SpawnActorOnDeath:
 		Actor: 5TNK.Husk
 	SelfHealing:

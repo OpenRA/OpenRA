@@ -56,7 +56,6 @@ E2:
 		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: GrenadierExplode
-		EmptyWeapon: GrenadierExplode
 		Chance: 50
 
 E3:

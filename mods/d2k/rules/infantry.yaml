@@ -194,7 +194,6 @@ grenadier:
 		DefaultAttackSequence: throw
 	Explodes:
 		Weapon: GrenDeath
-		EmptyWeapon: GrenDeath
 
 sardaukar:
 	Inherits: ^Infantry
@@ -227,7 +226,6 @@ sardaukar:
 		VoiceSet: GenericVoice
 	Explodes:
 		Weapon: SardDeath
-		EmptyWeapon: SardDeath
 		Chance: 100
 
 mpsardaukar:

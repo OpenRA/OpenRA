@@ -250,7 +250,6 @@
 		Palette: disabled
 	Explodes:
 		Weapon: UnitExplodeMed
-		EmptyWeapon: UnitExplodeMed
 
 ^AircraftHusk:
 	Inherits: ^Husk
@@ -395,7 +394,6 @@
 	Explodes:
 		Type: Footprint
 		Weapon: BuildingExplode
-		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
 		RepairStep: 500
 		PlayerExperience: 25

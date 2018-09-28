@@ -42,7 +42,6 @@ spicebloom:
 		Weapon: SpiceExplosion
 	Explodes:
 		Weapon: BloomExplosion
-		EmptyWeapon: BloomExplosion
 	Crushable:
 		CrushClasses: spicebloom
 		CrushedByFriendlies: true

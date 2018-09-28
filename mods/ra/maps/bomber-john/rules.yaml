@@ -179,7 +179,6 @@ MINVV:
 		HealIfBelow: 101
 	Explodes:
 		Weapon: CrateNuke
-		EmptyWeapon: CrateNuke
 	HitShape:
 	Interactable:
 

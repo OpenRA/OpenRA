@@ -28,13 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = null;
 
-		[WeaponReference, Desc("Fallback weapon to use for explosion if empty (no ammo/payload).")]
-		public readonly string EmptyWeapon = "UnitExplode";
-
-		[Desc("Chance that the explosion will use Weapon instead of EmptyWeapon when exploding, provided the actor has ammo/payload.")]
-		public readonly int LoadedChance = 100;
-
-		[Desc("Chance that this actor will explode at all.")]
+		[Desc("Chance that this actor will explode.")]
 		public readonly int Chance = 100;
 
 		[Desc("Health level at which actor will explode.")]
@@ -52,7 +46,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ExplosionType Type = ExplosionType.CenterPosition;
 
 		public WeaponInfo WeaponInfo { get; private set; }
-		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
 		public override object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -64,15 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
 					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(weaponToLower));
 				WeaponInfo = weapon;
-			}
-
-			if (!string.IsNullOrEmpty(EmptyWeapon))
-			{
-				WeaponInfo emptyWeapon;
-				var emptyWeaponToLower = EmptyWeapon.ToLowerInvariant();
-				if (!rules.Weapons.TryGetValue(emptyWeaponToLower, out emptyWeapon))
-					throw new YamlException("Weapons Ruleset does not contain an entry '{0}'".F(emptyWeaponToLower));
-				EmptyWeaponInfo = emptyWeapon;
 			}
 
 			base.RulesetLoaded(rules, ai);
@@ -106,32 +90,25 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
-			var weapon = ChooseWeaponForExplosion(self);
-			if (weapon == null)
-				return;
+			// TODO this whole IExplodeModifier does not work anymore! Remove it and add conditions!
+			// if (!self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self)))
+			// 	return;
 
 			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
-			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(SoundType.World, weapon.Report.Random(source.World.SharedRandom), self.CenterPosition);
+			if (Info.WeaponInfo.Report != null && Info.WeaponInfo.Report.Any())
+				Game.Sound.Play(SoundType.World, Info.WeaponInfo.Report.Random(source.World.SharedRandom), self.CenterPosition);
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
 				var cells = buildingInfo.UnpathableTiles(self.Location);
 				foreach (var c in cells)
-					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source, Enumerable.Empty<int>());
+					Info.WeaponInfo.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source, Enumerable.Empty<int>());
 
 				return;
 			}
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition), source, Enumerable.Empty<int>());
-		}
-
-		WeaponInfo ChooseWeaponForExplosion(Actor self)
-		{
-			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
-			var useFullExplosion = self.World.SharedRandom.Next(100) <= Info.LoadedChance;
-			return (shouldExplode && useFullExplosion) ? Info.WeaponInfo : Info.EmptyWeaponInfo;
+			Info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), source, Enumerable.Empty<int>());
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)

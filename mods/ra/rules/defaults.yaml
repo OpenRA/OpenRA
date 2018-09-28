@@ -283,7 +283,6 @@
 		ParachutingCondition: parachute
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	WithFacingSpriteBody:
 	WithParachute:
 		ShadowImage: parach-shadow
@@ -493,7 +492,6 @@
 	WithDamageOverlay:
 	Explodes:
 		Weapon: UnitExplodeShip
-		EmptyWeapon: UnitExplodeShip
 	Guard:
 	Guardable:
 	Tooltip:
@@ -619,7 +617,6 @@
 	Explodes:
 		Type: Footprint
 		Weapon: BuildingExplode
-		EmptyWeapon: BuildingExplode
 	CaptureNotification:
 	ShakeOnDeath:
 	ProximityCaptor:
@@ -691,7 +688,6 @@
 	RenderRangeCircle:
 	Explodes:
 		Weapon: SmallBuildingExplode
-		EmptyWeapon: SmallBuildingExplode
 	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:

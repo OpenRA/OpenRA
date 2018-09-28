@@ -753,7 +753,6 @@ wall:
 	Guardable:
 	Explodes:
 		Weapon: WallExplode
-		EmptyWeapon: WallExplode
 	ThrowsShrapnel:
 		Weapons: Debris2, Debris3
 		Pieces: 1, 1

@@ -326,7 +326,6 @@
 	WithSpriteBody:
 	Explodes:
 		Weapon: BuildingExplosions
-		EmptyWeapon: BuildingExplosions
 		Type: Footprint
 	EngineerRepairable:
 	ShakeOnDeath:
@@ -671,7 +670,6 @@
 		TriggerOnlyOnce: true
 	Explodes:
 		Weapon: CyborgExplode
-		EmptyWeapon: CyborgExplode
 	DeathSounds:
 	RevealsShroud:
 		Range: 4c0
@@ -751,7 +749,6 @@
 		CameraPitch: 90
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	MustBeDestroyed:
 	RenderSprites:
 	ThrowsShrapnel:
@@ -1071,7 +1068,6 @@
 		QuantizedFacings: 0
 	Explodes:
 		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
 	ThrowsShrapnel:
 		Weapons: SmallDebris
 		Pieces: 3, 7

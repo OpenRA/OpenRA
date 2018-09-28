@@ -330,7 +330,6 @@ V2RL:
 		Recoil: 2
 	Explodes:
 		Weapon: napalm
-		EmptyWeapon: napalm
 	SelfHealing:
 		Step: 200
 		Delay: 1

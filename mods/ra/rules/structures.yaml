@@ -105,7 +105,6 @@ GAP:
 	-AcceptsDeliveredCash:
 	Explodes:
 		Weapon: SmallBuildingExplode
-		EmptyWeapon: SmallBuildingExplode
 	HitShape:
 		Type: Rectangle
 			TopLeft: -512, -512
@@ -853,7 +852,6 @@ FTUR:
 	ProvidesPrerequisite@buildingname:
 	Explodes:
 		Weapon: BuildingExplode
-		EmptyWeapon: BuildingExplode
 
 SAM:
 	Inherits: ^Defense
@@ -1276,7 +1274,6 @@ SILO:
 		Amount: -10
 	Explodes:
 		Weapon: SmallBuildingExplode
-		EmptyWeapon: SmallBuildingExplode
 
 HPAD:
 	Inherits: ^Building

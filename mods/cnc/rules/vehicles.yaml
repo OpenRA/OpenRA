@@ -181,8 +181,12 @@ ARTY:
 		EffectiveOwnerFromOwner: true
 	Explodes:
 		Weapon: ArtilleryShell
-		EmptyWeapon: UnitExplode
-		LoadedChance: 75
+		RequiresCondition: loaded
+	Explodes@unloaded:
+		Weapon: UnitExplode
+		RequiresCondition: unloaded
+	GrantRandomCondition:
+		Conditions: loaded, loaded, loaded, unloaded
 
 FTNK:
 	Inherits: ^Tank
@@ -217,7 +221,6 @@ FTNK:
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: FlametankExplode
-		EmptyWeapon: FlametankExplode
 	SpawnActorOnDeath:
 		Actor: FTNK.Husk
 		OwnerType: InternalName

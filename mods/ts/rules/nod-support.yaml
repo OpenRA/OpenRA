@@ -131,7 +131,6 @@ NAFNCE:
 		Modifier: 0
 	Explodes:
 		Weapon: BuildingExplosions
-		EmptyWeapon: BuildingExplosions
 		Type: Footprint
 	ThrowsShrapnel@SMALL:
 		Weapons: SmallDebris
