@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class CaptureActor : Enter
 	{
 		readonly Actor actor;
-		readonly Building building;
 		readonly CaptureManager targetManager;
 		readonly CaptureManager manager;
 
@@ -28,7 +27,6 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, target, EnterBehaviour.Dispose)
 		{
 			actor = target;
-			building = actor.TraitOrDefault<Building>();
 			manager = self.Trait<CaptureManager>();
 			targetManager = target.Trait<CaptureManager>();
 		}
@@ -72,14 +70,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		void DoCapture(Actor self, Captures captures)
 		{
-			if (building != null && !building.Lock())
-				return;
-
 			self.World.AddFrameEndTask(w =>
 			{
-				if (building != null && building.Locked)
-					building.Unlock();
-
 				// Sabotage instead of capture
 				if (captures.Info.SabotageThreshold > 0 && !actor.Owner.NonCombatant)
 				{
@@ -105,9 +97,6 @@ namespace OpenRA.Mods.Common.Activities
 
 				foreach (var t in actor.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(actor, self, oldOwner, self.Owner);
-
-				if (building != null && building.Locked)
-					building.Unlock();
 
 				if (self.Owner.Stances[oldOwner].HasStance(captures.Info.PlayerExperienceStances))
 				{
