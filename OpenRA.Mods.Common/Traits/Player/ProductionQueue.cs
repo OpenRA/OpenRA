@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum number of items that can be queued across all actor types (0 = infinite).")]
 		public readonly int QueueLimit = 0;
 
-		[Desc("The build time is multiplied with this value on low power.")]
-		public readonly int LowPowerSlowdown = 3;
+		[Desc("The build time is multiplied with this percentage on low power.")]
+		public readonly int LowPowerModifier = 300;
 
 		[NotificationReference("Speech")]
 		[Desc("Notification played when production is complete.",
@@ -86,8 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (LowPowerSlowdown <= 0)
-				throw new YamlException("Production queue must have LowPowerSlowdown of at least 1.");
+			if (LowPowerModifier <= 0)
+				throw new YamlException("Production queue must have LowPowerModifier of at least 1.");
 		}
 	}
 
@@ -541,7 +541,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				return (pm == null || pm.PowerState == PowerState.Normal) ? RemainingTime :
-					RemainingTime * Queue.Info.LowPowerSlowdown;
+					RemainingTime * Queue.Info.LowPowerModifier / 100;
 			}
 		}
 
@@ -590,8 +590,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (pm != null && pm.PowerState != PowerState.Normal)
 			{
-				if (--Slowdown <= 0)
-					Slowdown = Queue.Info.LowPowerSlowdown;
+				Slowdown -= 100;
+				if (Slowdown < 0)
+					Slowdown = Queue.Info.LowPowerModifier + Slowdown;
 				else
 					return;
 			}
