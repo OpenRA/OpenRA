@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can capture other actors which have the Capturable: trait.")]
 	public class CapturesInfo : ConditionalTraitInfo, Requires<CaptureManagerInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
-		public readonly BitSet<CaptureType> CaptureTypes = new BitSet<CaptureType>("building");
+		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
 
 		[Desc("Targets with health above this percentage will be sabotaged instead of captured.",
 			"Set to 0 to disable sabotaging.")]

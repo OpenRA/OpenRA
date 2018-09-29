@@ -17,8 +17,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
 	public class CapturableInfo : ConditionalTraitInfo, Requires<CaptureManagerInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("CaptureTypes (from the Captures trait) that are able to capture this.")]
-		public readonly BitSet<CaptureType> Types = new BitSet<CaptureType>("building");
+		public readonly BitSet<CaptureType> Types = default(BitSet<CaptureType>);
 
 		[Desc("What diplomatic stances can be captured by this actor.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
