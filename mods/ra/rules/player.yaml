@@ -10,7 +10,7 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -20,7 +20,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -30,7 +30,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -41,7 +41,7 @@ Player:
 		BuildTimeSpeedReduction: 100, 75, 60, 50
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -51,7 +51,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Ship:
 		Type: Ship
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -61,7 +61,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
