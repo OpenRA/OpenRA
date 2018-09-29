@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Targets with health above this percentage will be sabotaged instead of captured.",
 			"Set to 0 to disable sabotaging.")]
-		public readonly int SabotageThreshold = 50;
+		public readonly int SabotageThreshold = 0;
 
 		[Desc("Sabotage damage expressed as a percentage of maximum target health.")]
 		public readonly int SabotageHPRemoval = 50;
