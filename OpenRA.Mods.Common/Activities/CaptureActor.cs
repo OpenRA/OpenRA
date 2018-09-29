@@ -40,16 +40,38 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override bool TryStartEnter(Actor self)
 		{
-			// CanEnter is only called when the actor is ready to start entering the target.
-			// We can (ab)use this as a notification that the capture is starting.
-			return manager.StartCapture(self, actor, targetManager);
-        }
+			// StartCapture returns false when a capture delay is enabled
+			// We wait until it returns true before allowing entering the target
+			Captures captures;
+			if (!manager.StartCapture(self, actor, targetManager, out captures))
+				return false;
+
+			if (!captures.Info.ConsumedByCapture)
+			{
+				// Immediately capture without entering or disposing the actor
+				DoCapture(self, captures);
+				AbortOrExit(self);
+				return false;
+			}
+
+			return true;
+		}
 
 		protected override void OnInside(Actor self)
 		{
 			if (!CanReserve(self))
 				return;
 
+			// Prioritize capturing over sabotaging
+			var captures = manager.ValidCapturesWithLowestSabotageThreshold(self, actor, targetManager);
+			if (captures == null)
+				return;
+
+			DoCapture(self, captures);
+		}
+
+		void DoCapture(Actor self, Captures captures)
+		{
 			if (building != null && !building.Lock())
 				return;
 
@@ -57,11 +79,6 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if (building != null && building.Locked)
 					building.Unlock();
-
-				// Prioritize capturing over sabotaging
-				var captures = manager.ValidCapturesWithLowestSabotageThreshold(self, actor, targetManager);
-				if (captures == null)
-					return;
 
 				// Sabotage instead of capture
 				if (captures.Info.SabotageThreshold > 0 && !actor.Owner.NonCombatant)
@@ -74,7 +91,9 @@ namespace OpenRA.Mods.Common.Activities
 						var damage = (int)((long)health.MaxHP * captures.Info.SabotageHPRemoval / 100);
 						actor.InflictDamage(self, new Damage(damage));
 
-						self.Dispose();
+						if (captures.Info.ConsumedByCapture)
+							self.Dispose();
+
 						return;
 					}
 				}
@@ -97,7 +116,8 @@ namespace OpenRA.Mods.Common.Activities
 						exp.GiveExperience(captures.Info.PlayerExperience);
 				}
 
-				self.Dispose();
+				if (captures.Info.ConsumedByCapture)
+					self.Dispose();
 			});
 		}
 
