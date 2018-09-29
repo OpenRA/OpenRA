@@ -9,25 +9,23 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
-	public class CapturableInfo : ConditionalTraitInfo
+	public class CapturableInfo : ConditionalTraitInfo, Requires<CaptureManagerInfo>
 	{
 		[Desc("CaptureTypes (from the Captures trait) that are able to capture this.")]
-		public readonly HashSet<string> Types = new HashSet<string>() { "building" };
+		public readonly BitSet<CaptureType> Types = new BitSet<CaptureType>("building");
 
 		[Desc("What diplomatic stances can be captured by this actor.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
-		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
-		public readonly int CaptureThreshold = 50;
 		public readonly bool CancelActivity = false;
 
-		public override object Create(ActorInitializer init) { return new Capturable(this); }
+		public override object Create(ActorInitializer init) { return new Capturable(init.Self, this); }
 
 		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
@@ -48,15 +46,16 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Capturable : ConditionalTrait<CapturableInfo>, INotifyCapture
 	{
-		public bool BeingCaptured { get; private set; }
-		public Capturable(CapturableInfo info)
-			: base(info) { }
+		readonly CaptureManager captureManager;
+
+		public Capturable(Actor self, CapturableInfo info)
+			: base(info)
+		{
+			captureManager = self.Trait<CaptureManager>();
+		}
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			BeingCaptured = true;
-			self.World.AddFrameEndTask(w => BeingCaptured = false);
-
 			if (Info.CancelActivity)
 			{
 				var stop = new Order("Stop", self, false);
@@ -72,5 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			return Info.CanBeTargetedBy(captor, owner);
 		}
+
+		protected override void TraitEnabled(Actor self) { captureManager.RefreshCapturable(self); }
+		protected override void TraitDisabled(Actor self) { captureManager.RefreshCapturable(self); }
 	}
 }

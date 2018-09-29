@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -20,28 +21,26 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor actor;
 		readonly Building building;
-		readonly Capturable capturable;
-		readonly Captures[] captures;
-		readonly IHealth health;
+		readonly CaptureManager targetManager;
+		readonly CaptureManager manager;
 
 		public CaptureActor(Actor self, Actor target)
 			: base(self, target, EnterBehaviour.Dispose)
 		{
 			actor = target;
 			building = actor.TraitOrDefault<Building>();
-			captures = self.TraitsImplementing<Captures>().ToArray();
-			capturable = target.Trait<Capturable>();
-			health = actor.Trait<IHealth>();
+			manager = self.Trait<CaptureManager>();
+			targetManager = target.Trait<CaptureManager>();
 		}
 
 		protected override bool CanReserve(Actor self)
 		{
-			return !capturable.BeingCaptured && capturable.CanBeTargetedBy(self, actor.Owner);
+			return !actor.IsDead && !targetManager.BeingCaptured && targetManager.CanBeTargetedBy(actor, self, manager);
 		}
 
 		protected override void OnInside(Actor self)
 		{
-			if (actor.IsDead || capturable.BeingCaptured || capturable.IsTraitDisabled)
+			if (!CanReserve(self))
 				return;
 
 			if (building != null && !building.Lock())
@@ -52,39 +51,43 @@ namespace OpenRA.Mods.Common.Activities
 				if (building != null && building.Locked)
 					building.Unlock();
 
-				var activeCaptures = captures.FirstOrDefault(c => !c.IsTraitDisabled);
-
-				if (actor.IsDead || capturable.BeingCaptured || activeCaptures == null)
+				// Prioritize capturing over sabotaging
+				var captures = manager.ValidCapturesWithLowestSabotageThreshold(self, actor, targetManager);
+				if (captures == null)
 					return;
 
-				var capturesInfo = activeCaptures.Info;
-
-				// Cast to long to avoid overflow when multiplying by the health
-				var lowEnoughHealth = health.HP <= (int)(capturable.Info.CaptureThreshold * (long)health.MaxHP / 100);
-				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
+				// Sabotage instead of capture
+				if (captures.Info.SabotageThreshold > 0 && !actor.Owner.NonCombatant)
 				{
-					var oldOwner = actor.Owner;
+					var health = actor.Trait<IHealth>();
 
-					actor.ChangeOwner(self.Owner);
-
-					foreach (var t in actor.TraitsImplementing<INotifyCapture>())
-						t.OnCapture(actor, self, oldOwner, self.Owner);
-
-					if (building != null && building.Locked)
-						building.Unlock();
-
-					if (self.Owner.Stances[oldOwner].HasStance(capturesInfo.PlayerExperienceStances))
+					// Cast to long to avoid overflow when multiplying by the health
+					if (100 * (long)health.HP > captures.Info.SabotageThreshold * (long)health.MaxHP)
 					{
-						var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-						if (exp != null)
-							exp.GiveExperience(capturesInfo.PlayerExperience);
+						var damage = (int)((long)health.MaxHP * captures.Info.SabotageHPRemoval / 100);
+						actor.InflictDamage(self, new Damage(damage));
+
+						self.Dispose();
+						return;
 					}
 				}
-				else
+
+				// Do the capture
+				var oldOwner = actor.Owner;
+
+				actor.ChangeOwner(self.Owner);
+
+				foreach (var t in actor.TraitsImplementing<INotifyCapture>())
+					t.OnCapture(actor, self, oldOwner, self.Owner);
+
+				if (building != null && building.Locked)
+					building.Unlock();
+
+				if (self.Owner.Stances[oldOwner].HasStance(captures.Info.PlayerExperienceStances))
 				{
-					// Cast to long to avoid overflow when multiplying by the health
-					var damage = (int)((long)health.MaxHP * capturesInfo.SabotageHPRemoval / 100);
-					actor.InflictDamage(self, new Damage(damage));
+					var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+					if (exp != null)
+						exp.GiveExperience(captures.Info.PlayerExperience);
 				}
 
 				self.Dispose();
@@ -93,7 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (captures.All(c => c.IsTraitDisabled))
+			if (!targetManager.CanBeTargetedBy(actor, self, manager))
 				Cancel(self);
 
 			return base.Tick(self);
