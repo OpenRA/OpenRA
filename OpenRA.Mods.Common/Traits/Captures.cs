@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) that to wait next to the target before initiating the capture.")]
 		public readonly int CaptureDelay = 0;
 
+		[Desc("Enter the target actor and be consumed by the capture.")]
+		public readonly bool ConsumedByCapture = true;
+
 		[Desc("Experience granted to the capturing player.")]
 		public readonly int PlayerExperience = 0;
 

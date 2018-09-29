@@ -167,8 +167,10 @@ namespace OpenRA.Mods.Common.Traits
 		/// This method grants the capturing conditions on the captor and target and returns
 		/// true if the captor is able to start entering or false if it needs to wait.
 		/// </summary>
-		public bool StartCapture(Actor self, Actor target, CaptureManager targetManager)
+		public bool StartCapture(Actor self, Actor target, CaptureManager targetManager, out Captures captures)
 		{
+			captures = null;
+
 			if (target != currentTarget)
 			{
 				if (currentTarget != null)
@@ -189,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 					targetManager.beingCapturedToken == ConditionManager.InvalidConditionToken)
 				targetManager.beingCapturedToken = targetManager.conditionManager.GrantCondition(target, targetManager.info.BeingCapturedCondition);
 
-			var captures = enabledCaptures
+			captures = enabledCaptures
 				.OrderBy(c => c.Info.CaptureDelay)
 				.FirstOrDefault(c => targetManager.CanBeTargetedBy(target, self, c));
 
@@ -199,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (progressWatchers.Any() || targetManager.progressWatchers.Any())
 			{
 				currentTargetTotal = captures.Info.CaptureDelay;
-				if (move != null)
+				if (move != null && captures.Info.ConsumedByCapture)
 				{
 					var pos = target.GetTargetablePositions().PositionClosestTo(self.CenterPosition);
 					currentTargetTotal += move.EstimatedMoveDuration(self, self.CenterPosition, pos);
