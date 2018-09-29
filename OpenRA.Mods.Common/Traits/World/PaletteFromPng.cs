@@ -11,13 +11,14 @@
 
 using System.Collections.Generic;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Load a PNG and use its embedded palette.")]
-	class PaletteFromPngInfo : ITraitInfo
+	class PaletteFromPngInfo : ITraitInfo, IProvidesCursorPaletteInfo
 	{
 		[FieldLoader.Require, PaletteDefinition]
 		[Desc("Internal palette name")]
@@ -35,7 +36,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool AllowModifiers = true;
 
+		[Desc("Whether this palette is available for cursors.")]
+		public readonly bool CursorPalette = false;
+
 		public object Create(ActorInitializer init) { return new PaletteFromPng(init.World, this); }
+
+		string IProvidesCursorPaletteInfo.Palette { get { return CursorPalette ? Name : null; } }
+
+		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
+		{
+			var png = new Png(fileSystem.Open(Filename));
+			var colors = new uint[Palette.Size];
+
+			for (var i = 0; i < png.Palette.Length; i++)
+				colors[i] = (uint)png.Palette[i].ToArgb();
+
+			return new ImmutablePalette(colors);
+		}
 	}
 
 	class PaletteFromPng : ILoadsPalettes, IProvidesAssetBrowserPalettes
@@ -53,13 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.Tileset != null && info.Tileset.ToLowerInvariant() != world.Map.Tileset.ToLowerInvariant())
 				return;
 
-			var png = new Png(world.Map.Open(info.Filename));
-			var colors = new uint[Palette.Size];
-
-			for (var i = 0; i < png.Palette.Length; i++)
-				colors[i] = (uint)png.Palette[i].ToArgb();
-
-			wr.AddPalette(info.Name, new ImmutablePalette(colors), info.AllowModifiers);
+			wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames

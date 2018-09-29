@@ -2,6 +2,7 @@
 	PaletteFromFile@mouse:
 		Name: mouse
 		Filename: mousepal.pal
+		CursorPalette: true
 	PaletteFromFile@terraintem:
 		Name: terrain
 		Tileset: TEMPERATE

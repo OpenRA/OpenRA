@@ -1,8 +1,5 @@
-Palettes:
-	cursor: temperat.pal
-
 Cursors:
-	mouse.shp: cursor
+	mouse.shp: chrome
 		scroll-t:
 			Start: 1
 			Y: -7
@@ -203,14 +200,14 @@ Cursors:
 		sell2:
 			Start: 148
 			Length: 12
-	nopower.shp: cursor
+	nopower.shp: chrome
 		powerdown-blocked:
 			Start: 0
 			Length: 1
 		powerdown:
 			Start: 1
 			Length: 3
-	attackmove.shp: cursor
+	attackmove.shp: chrome
 		attackmove:
 			Start: 0
 			Length: 4

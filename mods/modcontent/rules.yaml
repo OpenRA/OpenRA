@@ -1,0 +1,5 @@
+World:
+	PaletteFromFile:
+		Name: cursor
+		Filename: cursor.pal
+		CursorPalette: true

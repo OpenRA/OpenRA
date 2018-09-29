@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using OpenRA.Activities;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -269,6 +270,13 @@ namespace OpenRA.Traits
 		// HACK: This is here to support the WithShadow trait.
 		// That trait should be rewritten using standard techniques, and then this interface method removed
 		IEnumerable<Rectangle> ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> r);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IProvidesCursorPaletteInfo : ITraitInfoInterface
+	{
+		string Palette { get; }
+		ImmutablePalette ReadPalette(IReadOnlyFileSystem fileSystem);
 	}
 
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }

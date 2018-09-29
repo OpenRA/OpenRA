@@ -54,6 +54,7 @@
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+		CursorPalette: true
 	PaletteFromFile@beaconposter:
 		Name: beaconposter
 		Filename: temperat.pal
