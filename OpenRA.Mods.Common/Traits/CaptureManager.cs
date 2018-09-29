@@ -36,10 +36,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition granted when being captured by another actor.")]
 		public readonly string BeingCapturedCondition = null;
 
+		[Desc("Should units friendly to the capturing actor auto-target this actor while it is being captured?")]
+		public readonly bool PreventsAutoTarget = true;
+
 		public virtual object Create(ActorInitializer init) { return new CaptureManager(this); }
 	}
 
-	public class CaptureManager : INotifyCreated, INotifyCapture, ITick
+	public class CaptureManager : INotifyCreated, INotifyCapture, ITick, IPreventsAutoTarget
 	{
 		readonly CaptureManagerInfo info;
 		ConditionManager conditionManager;
@@ -62,6 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 		int capturingToken = ConditionManager.InvalidConditionToken;
 		int beingCapturedToken = ConditionManager.InvalidConditionToken;
 		bool enteringCurrentTarget;
+
+		HashSet<Actor> currentCaptors = new HashSet<Actor>();
 
 		public bool BeingCaptured { get; private set; }
 
@@ -176,6 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (currentTarget != null)
 					CancelCapture(self, currentTarget, currentTargetManager);
 
+				targetManager.currentCaptors.Add(self);
 				currentTarget = target;
 				currentTargetManager = targetManager;
 				currentTargetDelay = 0;
@@ -244,6 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 			currentTargetManager = null;
 			currentTargetDelay = 0;
 			enteringCurrentTarget = false;
+			targetManager.currentCaptors.Remove(self);
 		}
 
 		void ITick.Tick(Actor self)
@@ -261,6 +268,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var w in currentTargetManager.progressWatchers)
 				w.Update(currentTarget, self, currentTarget, currentTargetDelay, currentTargetTotal);
+		}
+
+		bool IPreventsAutoTarget.PreventsAutoTarget(Actor self, Actor attacker)
+		{
+			return info.PreventsAutoTarget && currentCaptors.Any(c => attacker.AppearsFriendlyTo(c));
 		}
 	}
 }
