@@ -94,6 +94,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MergeRearmAndRepairAnimation(),
 				new MergeCaptureTraits(),
 				new RemovedNotifyBuildComplete(),
+				new LowPowerSlowdownToModifier(),
 			})
 		};
 

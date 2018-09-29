@@ -921,6 +921,7 @@
     <Compile Include="UpdateRules\Rules\20180923\DefineNotificationDefaults.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RenameEditorTilesetFilter.cs" />
     <Compile Include="UpdateRules\Rules\20180923\MergeRearmAndRepairAnimation.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\LowPowerSlowdownToModifier.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
