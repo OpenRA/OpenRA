@@ -624,6 +624,12 @@ namespace OpenRA.Mods.Common.Traits
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
+		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
+		{
+			var speed = MovementSpeed;
+			return speed > 0 ? (toPos - fromPos).Length / speed : 0;
+		}
+
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public bool IsMoving { get { return isMoving; } set { } }

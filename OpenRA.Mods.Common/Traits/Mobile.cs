@@ -465,6 +465,12 @@ namespace OpenRA.Mods.Common.Traits
 			return VisualMove(self, fromPos, toPos, self.Location);
 		}
 
+		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
+		{
+			var speed = MovementSpeedForCell(self, self.Location);
+			return speed > 0 ? (toPos - fromPos).Length / speed : 0;
+		}
+
 		public CPos NearestMoveableCell(CPos target)
 		{
 			// Limit search to a radius of 10 tiles
