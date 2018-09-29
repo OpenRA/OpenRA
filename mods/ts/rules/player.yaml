@@ -12,7 +12,7 @@ Player:
 	ClassicProductionQueue@Building:
 		Type: Building
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Building
@@ -22,7 +22,7 @@ Player:
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Building
@@ -32,7 +32,7 @@ Player:
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Training
@@ -42,7 +42,7 @@ Player:
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Training
@@ -52,7 +52,7 @@ Player:
 	ClassicProductionQueue@Air:
 		Type: Air
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Training

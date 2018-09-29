@@ -31,7 +31,7 @@ FACT:
 		Type: Building.GDI
 		Factions: gdi
 		Group: Building
-		LowPowerSlowdown: 2
+		LowPowerModifier: 200
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -42,7 +42,7 @@ FACT:
 		Type: Building.Nod
 		Factions: nod
 		Group: Building
-		LowPowerSlowdown: 2
+		LowPowerModifier: 200
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -53,7 +53,7 @@ FACT:
 		Type: Defence.GDI
 		Factions: gdi
 		Group: Defence
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -64,7 +64,7 @@ FACT:
 		Type: Defence.Nod
 		Factions: nod
 		Group: Defence
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -319,7 +319,7 @@ PYLE:
 	ProductionQueue:
 		Type: Infantry.GDI
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -369,7 +369,7 @@ HAND:
 	ProductionQueue:
 		Type: Infantry.Nod
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -431,7 +431,7 @@ AFLD:
 	ProductionQueue:
 		Type: Vehicle.Nod
 		Group: Vehicle
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
 		QueuedAudio: Training
@@ -490,7 +490,7 @@ WEAP:
 	ProductionQueue:
 		Type: Vehicle.GDI
 		Group: Vehicle
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -544,7 +544,7 @@ HPAD:
 		Type: Aircraft.GDI
 		Factions: gdi
 		Group: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
@@ -555,7 +555,7 @@ HPAD:
 		Type: Aircraft.Nod
 		Factions: nod
 		Group: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
 		ReadyAudio: UnitReady
 		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
