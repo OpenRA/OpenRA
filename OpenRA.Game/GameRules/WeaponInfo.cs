@@ -50,6 +50,9 @@ namespace OpenRA.GameRules
 		[Desc("The sound played each time the weapon is fired.")]
 		public readonly string[] Report = null;
 
+		[Desc("Whether the weapon fires continuously instead of single shots.")]
+		public readonly bool ReportLooped = false;
+
 		[Desc("Sound played only on first burst in a salvo.")]
 		public readonly string[] StartBurstReport = null;
 

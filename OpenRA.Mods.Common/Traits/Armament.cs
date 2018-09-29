@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Armament : PausableConditionalTrait<ArmamentInfo>, ITick
+	public class Armament : PausableConditionalTrait<ArmamentInfo>, ITick, INotifyRemovedFromWorld
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
@@ -123,6 +123,9 @@ namespace OpenRA.Mods.Common.Traits
 		int ticksSinceLastShot;
 		int currentBarrel;
 		int barrelCount;
+
+		int reportTick;
+		ISound reportLoop;
 
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
@@ -192,6 +195,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Tick(Actor self)
 		{
+			if (reportLoop != null && reportTick < self.World.WorldTick)
+			{
+				Game.Sound.StopSound(reportLoop);
+				reportLoop = null;
+			}
+
 			// We need to disable conditions if IsTraitDisabled is true, so we have to update conditions before the return below.
 			UpdateCondition(self);
 
@@ -327,7 +336,17 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.Add(projectile);
 
 					if (args.Weapon.Report != null && args.Weapon.Report.Any())
-						Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+					{
+						if (args.Weapon.ReportLooped)
+						{
+							reportTick = self.World.WorldTick + args.Weapon.ReloadDelay;
+
+							if (reportLoop == null)
+								reportLoop = Game.Sound.PlayLooped(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+						}
+						else
+							Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+					}
 
 					if (Burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport.Random(self.World.SharedRandom), self.CenterPosition);
@@ -406,5 +425,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Actor Actor { get { return self; } }
+
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			if (reportLoop != null)
+				Game.Sound.StopSound(reportLoop);
+		}
 	}
 }
