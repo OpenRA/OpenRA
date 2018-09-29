@@ -399,6 +399,7 @@ namespace OpenRA.Mods.Common.Traits
 		Activity MoveToTarget(Actor self, Target target);
 		Activity MoveIntoTarget(Actor self, Target target);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
+		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }
 		bool IsMovingVertically { get; set; }

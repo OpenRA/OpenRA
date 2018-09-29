@@ -191,6 +191,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Activity MoveIntoTarget(Actor self, Target target) { return null; }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return null; }
 
+		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
+		{
+			return (toPos - fromPos).Length / Info.Speed;
+		}
+
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		// Actors with TDGunboat always move
