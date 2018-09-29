@@ -1,8 +1,5 @@
-Palettes:
-	cursor: temperat.pal
-
 Cursors:
-	mouse2.shp: cursor
+	mouse2.shp: chrome
 		scroll-t:
 			Start: 1
 			Y: -12
@@ -139,7 +136,7 @@ Cursors:
 		sell-vehicle:
 			Start: 154
 			Length: 24
-	mouse3.shp: cursor
+	mouse3.shp: chrome
 		default:
 			Start: 0
 			X: -16
@@ -151,7 +148,7 @@ Cursors:
 		deploy-blocked:
 			Start: 1
 			Length: 1
-	mouse4.shp: cursor
+	mouse4.shp: chrome
 		move:
 			Start: 0
 			Length: 8
@@ -191,14 +188,14 @@ Cursors:
 		assaultmove-blocked-minimap:
 			Start: 40
 			Length: 1
-	mouse5.shp: cursor
+	mouse5.shp: chrome
 		guard:
 			Start: 0
 			Length: 8
 		guard-minimap:
 			Start: 8
 			Length: 8
-	mouse6.shp: cursor
+	mouse6.shp: chrome
 		goldwrench:
 			Start: 0
 			Length: 3
@@ -229,7 +226,7 @@ Cursors:
 		enter-blocked-minimap:
 			Start: 17
 			Length: 1
-	mouse7.shp: cursor
+	mouse7.shp: chrome
 		attackoutsiderange:
 			Start: 0
 			Length: 8

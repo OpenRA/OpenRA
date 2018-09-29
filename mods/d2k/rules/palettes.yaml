@@ -6,6 +6,7 @@
 		Name: d2k
 		Filename: PALETTE.BIN
 		ShadowIndex: 1
+		CursorPalette: true
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: PALETTE.BIN

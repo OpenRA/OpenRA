@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -26,21 +27,18 @@ namespace OpenRA.Graphics
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
 				s => MiniYaml.FromStream(fileSystem.Open(s), s)));
 
-			var shadowIndex = new int[] { };
-
 			var nodesDict = new MiniYaml(null, sequenceYaml).ToDictionary();
-			if (nodesDict.ContainsKey("ShadowIndex"))
-			{
-				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
-				Exts.TryParseIntegerInvariant(nodesDict["ShadowIndex"].Value,
-					out shadowIndex[shadowIndex.Length - 1]);
-			}
 
-			var palettes = new Dictionary<string, ImmutablePalette>();
-			foreach (var p in nodesDict["Palettes"].Nodes)
-				palettes.Add(p.Key, new ImmutablePalette(fileSystem.Open(p.Value.Value), shadowIndex));
+			// Overwrite previous definitions if there are duplicates
+			var pals = new Dictionary<string, IProvidesCursorPaletteInfo>();
+			foreach (var p in modData.DefaultRules.Actors["world"].TraitInfos<IProvidesCursorPaletteInfo>())
+				if (p.Palette != null)
+					pals[p.Palette] = p;
 
-			Palettes = palettes.AsReadOnly();
+			Palettes = nodesDict["Cursors"].Nodes.Select(n => n.Value.Value)
+				.Distinct()
+				.ToDictionary(p => p, p => pals[p].ReadPalette(modData.DefaultFileSystem))
+				.AsReadOnly();
 
 			var frameCache = new FrameCache(fileSystem, modData.SpriteLoaders);
 			var cursors = new Dictionary<string, CursorSequence>();
