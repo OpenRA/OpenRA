@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int QueueLimit = 0;
 
 		[Desc("The build time is multiplied with this percentage on low power.")]
-		public readonly int LowPowerModifier = 300;
+		public readonly int LowPowerModifier = 100;
 
 		[NotificationReference("Speech")]
 		[Desc("Notification played when production is complete.",
