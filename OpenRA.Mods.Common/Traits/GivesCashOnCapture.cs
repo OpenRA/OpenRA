@@ -67,14 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var capturesInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
-			if (capturesInfo != null && info.CaptureTypes.Overlaps(capturesInfo.CaptureTypes))
-				return true;
-
-			var externalCapturesInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
-			if (externalCapturesInfo != null && info.CaptureTypes.Overlaps(externalCapturesInfo.CaptureTypes))
-				return true;
-
-			return false;
+			return capturesInfo != null && info.CaptureTypes.Overlaps(capturesInfo.CaptureTypes);
 		}
 	}
 }

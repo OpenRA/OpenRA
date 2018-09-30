@@ -688,39 +688,15 @@ namespace OpenRA.Mods.Common.AI
 				.OrderByDescending(target => target.Actor.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
-			var externalCapturableTargetOptions = targetOptions
-				.Select(a => new CaptureTarget<ExternalCapturableInfo>(a, "ExternalCaptureActor"))
-				.Where(target =>
-				{
-					if (target.Info == null)
-						return false;
-
-					var externalCapturable = target.Actor.TraitOrDefault<ExternalCapturable>();
-					if (externalCapturable == null)
-						return false;
-
-					return capturers.Any(tp => externalCapturable.CanBeTargetedBy(tp.Actor, target.Actor.Owner));
-				})
-				.OrderByDescending(target => target.Actor.GetSellValue())
-				.Take(maximumCaptureTargetOptions);
-
 			if (Info.CapturableActorTypes.Any())
-			{
 				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
-				externalCapturableTargetOptions = externalCapturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
-			}
 
-			if (!capturableTargetOptions.Any() && !externalCapturableTargetOptions.Any())
+			if (!capturableTargetOptions.Any())
 				return;
 
 			var capturesCapturers = capturers.Where(tp => tp.Actor.Info.HasTraitInfo<CapturesInfo>());
-			var externalCapturers = capturers.Except(capturesCapturers).Where(tp => tp.Actor.Info.HasTraitInfo<ExternalCapturesInfo>());
-
 			foreach (var tp in capturesCapturers)
 				QueueCaptureOrderFor(tp.Actor, GetCapturerTargetClosestToOrDefault(tp.Actor, capturableTargetOptions));
-
-			foreach (var tp in externalCapturers)
-				QueueCaptureOrderFor(tp.Actor, GetCapturerTargetClosestToOrDefault(tp.Actor, externalCapturableTargetOptions));
 		}
 
 		void QueueCaptureOrderFor<TTargetType>(Actor capturer, CaptureTarget<TTargetType> target) where TTargetType : class, ITraitInfoInterface
