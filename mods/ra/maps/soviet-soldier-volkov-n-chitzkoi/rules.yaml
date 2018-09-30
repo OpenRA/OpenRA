@@ -22,7 +22,7 @@ Player:
 MSLO:
 	Buildable:
 		Prerequisites: ~disabled
-        
+
 E7:
 	Buildable:
 		Prerequisites: ~disabled
@@ -30,43 +30,43 @@ E7:
 		HP: 25000
 	Armor:
 		Type: Heavy
-        
+
 2TNK:
 	Buildable:
 		Prerequisites: ~vehicles.allies, ~techlevel.medium
-        
+
 CA:
 	Buildable:
 		Prerequisites: ~syrd, ~techlevel.high
-        
+
 C2:
 	Inherits@2: ^ArmedCivilian
-        
+
 C3:
 	Inherits@2: ^ArmedCivilian
-        
+
 C4:
 	Inherits@2: ^ArmedCivilian
-        
+
 C5:
 	Inherits@2: ^ArmedCivilian
-        
+
 C6:
 	Inherits@2: ^ArmedCivilian
-        
+
 C8:
 	Inherits@2: ^ArmedCivilian
-        
+
 C9:
 	Inherits@2: ^ArmedCivilian
-        
+
 C10:
 	Inherits@2: ^ArmedCivilian
-        
+
 V01:
 	SpawnActorOnDeath:
 		Actor: healcrate
-        
+
 HOSP:
 	Tooltip:
 		GenericName: Hospital
@@ -95,8 +95,6 @@ AFAC:
 		GenericName: Alloy Facility
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
-	-TooltipDescription@ally:
-	-TooltipDescription@other:
 	Capturable:
 		Types: ~disabled
 	-EngineerRepairable:
@@ -195,7 +193,7 @@ VOLK:
 		CloakTypes: Cloak, Thief
 	RenderSprites:
 		Image: GNRL
-        
+
 powerproxy.pararifles:
 	Inherits: powerproxy.paratroopers
 	ParatroopersPower:

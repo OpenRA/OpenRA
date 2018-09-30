@@ -73,3 +73,15 @@ FLARE:
 SPY:
 	DisguiseTooltip:
 		ShowOwnerRow: false
+
+BIO:
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
+
+FCOM:
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
+
+MISS:
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
