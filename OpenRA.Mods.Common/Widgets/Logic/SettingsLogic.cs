@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static readonly string OriginalSoundDevice;
 		static readonly WindowMode OriginalGraphicsMode;
-		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
 		static readonly bool OriginalServerDiscoverNatDevices;
 
@@ -43,7 +42,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var original = Game.Settings;
 			OriginalSoundDevice = original.Sound.Device;
 			OriginalGraphicsMode = original.Graphics.Mode;
-			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
 		}
@@ -72,7 +70,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
 				if (OriginalSoundDevice != current.Sound.Device ||
 					OriginalGraphicsMode != current.Graphics.Mode ||
-					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
 					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize ||
 					OriginalServerDiscoverNatDevices != current.Server.DiscoverNatDevices)
 				{
@@ -99,6 +96,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				resetPanelActions[settingsPanel]();
 				Game.Settings.Save();
 			};
+		}
+
+		public override void Resize()
+		{
+			var panel = panelContainer.Get("DISPLAY_PANEL");
+			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
+			windowWidth.Text = Game.Renderer.Resolution.Width.ToString();
+
+			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
+			windowHeight.Text = Game.Renderer.Resolution.Height.ToString();
 		}
 
 		static void BindCheckboxPref(Widget parent, string id, object group, string pref)

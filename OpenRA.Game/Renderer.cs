@@ -141,6 +141,9 @@ namespace OpenRA
 				WorldSpriteRenderer.SetViewportParams(lastResolution, depthScale, depthOffset, zoom, scroll);
 				WorldModelRenderer.SetViewportParams(lastResolution, zoom, scroll);
 			}
+
+			if (resolutionChanged)
+				Game.Resize();
 		}
 
 		public void SetPalette(HardwarePalette palette)

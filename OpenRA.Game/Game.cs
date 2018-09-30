@@ -893,5 +893,20 @@ namespace OpenRA
 		{
 			return Renderer.Window.SetClipboardText(text);
 		}
+
+		public static void Resize()
+		{
+			if (worldRenderer != null)
+				worldRenderer.Viewport.Resize();
+
+			if (Ui.Root != null)
+				Ui.Root.ResizeOuter();
+
+			if (Settings != null)
+			{
+				Settings.Graphics.WindowedSize = new int2(Renderer.Resolution);
+				Settings.Save();
+			}
+		}
 	}
 }

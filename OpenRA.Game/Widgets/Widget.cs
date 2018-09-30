@@ -162,6 +162,7 @@ namespace OpenRA.Widgets
 	{
 		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
 		public virtual void Tick() { }
+		public virtual void Resize() { }
 		public virtual void BecameHidden() { }
 		public virtual void BecameVisible() { }
 		protected virtual void Dispose(bool disposing) { }
@@ -169,6 +170,8 @@ namespace OpenRA.Widgets
 
 	public abstract class Widget
 	{
+		protected Dictionary<string, int> substitutions;
+
 		public readonly List<Widget> Children = new List<Widget>();
 
 		// Info defined in YAML
@@ -242,26 +245,16 @@ namespace OpenRA.Widgets
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 				: Parent.Bounds;
 
-			var substitutions = args.ContainsKey("substitutions") ?
+			substitutions = args.ContainsKey("substitutions") ?
 				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
 				new Dictionary<string, int>();
 
-			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
-			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
 			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
 			substitutions.Add("PARENT_LEFT", parentBounds.Left);
 			substitutions.Add("PARENT_TOP", parentBounds.Top);
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
-			var width = Evaluator.Evaluate(Width, substitutions);
-			var height = Evaluator.Evaluate(Height, substitutions);
 
-			substitutions.Add("WIDTH", width);
-			substitutions.Add("HEIGHT", height);
-
-			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
-								   Evaluator.Evaluate(Y, substitutions),
-								   width,
-								   height);
+			ResizeOuter();
 		}
 
 		public void PostInit(WidgetArgs args)
@@ -474,6 +467,42 @@ namespace OpenRA.Widgets
 					foreach (var l in LogicObjects)
 						l.Tick();
 			}
+		}
+
+		public virtual void Resize()
+		{
+			if (substitutions == null)
+				return;
+
+			substitutions.Remove("WINDOW_RIGHT");
+			substitutions.Remove("WINDOW_BOTTOM");
+			substitutions.Remove("WIDTH");
+			substitutions.Remove("HEIGHT");
+
+			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
+			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
+
+			var width = Evaluator.Evaluate(Width, substitutions);
+			var height = Evaluator.Evaluate(Height, substitutions);
+
+			substitutions.Add("WIDTH", width);
+			substitutions.Add("HEIGHT", height);
+
+			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
+				Evaluator.Evaluate(Y, substitutions),
+				width,
+				height);
+		}
+
+		public virtual void ResizeOuter()
+		{
+			Resize();
+			foreach (var child in Children)
+				child.ResizeOuter();
+
+			if (LogicObjects != null)
+				foreach (var l in LogicObjects)
+					l.Resize();
 		}
 
 		public virtual void AddChild(Widget child)

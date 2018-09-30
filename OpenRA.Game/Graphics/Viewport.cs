@@ -239,7 +239,7 @@ namespace OpenRA.Graphics
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn
-		static readonly Rectangle ScreenClip = Rectangle.FromLTRB(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
+		static readonly Func<Rectangle> ScreenClip = () => Rectangle.FromLTRB(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
 		public Rectangle GetScissorBounds(bool insideBounds)
 		{
 			// Visible rectangle in world coordinates (expanded to the corners of the cells)
@@ -249,8 +249,8 @@ namespace OpenRA.Graphics
 			var cbr = map.CenterOfCell(((MPos)bounds.BottomRight).ToCPos(map)) + new WVec(512, 512, 0);
 
 			// Convert to screen coordinates
-			var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip);
-			var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr - new WVec(0, 0, cbr.Z))).Clamp(ScreenClip);
+			var tl = WorldToViewPx(worldRenderer.ScreenPxPosition(ctl - new WVec(0, 0, ctl.Z))).Clamp(ScreenClip());
+			var br = WorldToViewPx(worldRenderer.ScreenPxPosition(cbr - new WVec(0, 0, cbr.Z))).Clamp(ScreenClip());
 
 			// Add an extra one cell fudge in each direction for safety
 			return Rectangle.FromLTRB(tl.X - tileSize.Width, tl.Y - tileSize.Height,
@@ -309,6 +309,13 @@ namespace OpenRA.Graphics
 
 				return allCells;
 			}
+		}
+
+		public void Resize()
+		{
+			viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
+			cellsDirty = true;
+			allCellsDirty = true;
 		}
 	}
 }

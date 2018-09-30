@@ -104,7 +104,7 @@ namespace OpenRA.Platforms.Default
 
 				Console.WriteLine("Using resolution: {0}x{1}", windowSize.Width, windowSize.Height);
 
-				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
+				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI | SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE;
 
 				// HiDPI doesn't work properly on OSX with (legacy) fullscreen mode
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
@@ -253,13 +253,13 @@ namespace OpenRA.Platforms.Default
 
 		internal void WindowSizeChanged()
 		{
+			int width, height;
+			SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
+
 			// The ratio between pixels and points can change when moving between displays in OSX
 			// We need to recalculate our scale to account for the potential change in the actual rendered area
 			if (Platform.CurrentPlatform == PlatformType.OSX)
 			{
-				int width, height;
-				SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
-
 				if (width != SurfaceSize.Width || height != SurfaceSize.Height)
 				{
 					float oldScale;
@@ -271,6 +271,14 @@ namespace OpenRA.Platforms.Default
 					}
 
 					OnWindowScaleChanged(oldScale, windowScale);
+				}
+			}
+			else
+			{
+				lock (syncObject)
+				{
+					surfaceSize = new Size(width, height);
+					windowSize = new Size(width, height);
 				}
 			}
 		}

@@ -170,6 +170,7 @@ namespace OpenRA.Platforms.Default
 		public void Clear()
 		{
 			VerifyThreadAffinity();
+			OpenGL.glViewport(0, 0, window.WindowSize.Width, window.WindowSize.Height);
 			OpenGL.glClearColor(0, 0, 0, 1);
 			OpenGL.CheckGLError();
 			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
