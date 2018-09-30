@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Changes the animation when the actor constructed a building.")]
-	public class WithBuildingPlacedAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithBuildingPlacedAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[Desc("Sequence name to use"), SequenceReference]
 		public readonly string Sequence = "build";
@@ -23,18 +23,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedAnimation : INotifyBuildingPlaced, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithBuildingPlacedAnimation : ConditionalTrait<WithBuildingPlacedAnimationInfo>, INotifyBuildingPlaced, INotifyBuildComplete, INotifySold, INotifyTransform
 	{
-		readonly WithBuildingPlacedAnimationInfo info;
 		readonly WithSpriteBody wsb;
 		bool buildComplete;
 
 		public WithBuildingPlacedAnimation(Actor self, WithBuildingPlacedAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 		}
@@ -60,8 +59,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyBuildingPlaced.BuildingPlaced(Actor self)
 		{
-			if (buildComplete)
-				wsb.PlayCustomAnimation(self, info.Sequence);
+			if (!IsTraitDisabled && buildComplete)
+				wsb.PlayCustomAnimation(self, Info.Sequence);
 		}
 	}
 }
