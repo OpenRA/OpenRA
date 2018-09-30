@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Does a suicide attack where it moves next to the target when used in combination with `Explodes`.")]
 	class AttackSuicidesInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
+		[Desc("Types defined by `Targetable:` trait that this actor can target.")]
+		public readonly BitSet<TargetableType> TargetTypes = new BitSet<TargetableType>("DetonateAttack");
+
 		[Desc("Types of damage that this trait causes to self while suiciding. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
@@ -46,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					yield break;
 
-				yield return new TargetTypeOrderTargeter(new BitSet<TargetableType>("DetonateAttack"), "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new TargetTypeOrderTargeter(Info.TargetTypes, "DetonateAttack", 5, "attack", true, false) { ForceAttack = false };
 				yield return new DeployOrderTargeter("Detonate", 5);
 			}
 		}
