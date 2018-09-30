@@ -1127,6 +1127,7 @@ FACT:
 	BaseProvider:
 		Range: 16c0
 	WithBuildingPlacedAnimation:
+		RequiresCondition: !chrono-vortex
 	Power:
 		Amount: 0
 	WithDeathAnimation:
