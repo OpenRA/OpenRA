@@ -87,7 +87,7 @@ Player:
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
 	DeveloperMode:
-		CheckboxDisplayOrder: 9
+		CheckboxDisplayOrder: 10
 	GpsWatcher:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
@@ -105,6 +105,14 @@ Player:
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
+		ID: reusable-engineers
+		Label: Reusable Engineers
+		Description: Engineers remain on the battlefield after capturing a structure
+		Enabled: False
+		DisplayOrder: 9
+		Prerequisites: global-reusable-engineers
+
 	FrozenActorLayer:
 	BaseAttackNotifier:
 	PlayerStatistics:

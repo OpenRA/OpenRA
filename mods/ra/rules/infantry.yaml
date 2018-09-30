@@ -241,7 +241,16 @@ E6:
 	EngineerRepair:
 	RepairsBridges:
 	CaptureManager:
+	GrantConditionOnPrerequisite@GLOBALREUSABLEENGINEER:
+		Condition: global-reusable-engineers
+		Prerequisites: global-reusable-engineers
 	Captures:
+		RequiresCondition: !global-reusable-engineers
+		CaptureTypes: building
+		PlayerExperience: 25
+		CaptureDelay: 200
+	Captures@REUSABLE:
+		RequiresCondition: global-reusable-engineers
 		CaptureTypes: building
 		PlayerExperience: 25
 		CaptureDelay: 375

@@ -45,10 +45,6 @@ powerproxy.paratroopers:
 HACKE6:
 	Inherits: E6
 	-RepairsBridges:
-	Captures:
-		-ConsumedByCapture:
-		-EnterCursor:
-		-EnterBlockedCursor:
 	WithInfantryBody:
 	Targetable:
 		RequiresCondition: !jail
