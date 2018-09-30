@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly CaptureManager manager;
 
 		public CaptureActor(Actor self, Actor target)
-			: base(self, target, EnterBehaviour.Dispose)
+			: base(self, target, EnterBehaviour.Exit)
 		{
 			actor = target;
 			manager = self.Trait<CaptureManager>();
@@ -70,8 +70,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		void DoCapture(Actor self, Captures captures)
 		{
+			var oldOwner = actor.Owner;
 			self.World.AddFrameEndTask(w =>
 			{
+				// The target died or was already captured during this tick
+				if (actor.IsDead || oldOwner != actor.Owner)
+					return;
+
 				// Sabotage instead of capture
 				if (captures.Info.SabotageThreshold > 0 && !actor.Owner.NonCombatant)
 				{
@@ -91,9 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				// Do the capture
-				var oldOwner = actor.Owner;
-
-				actor.ChangeOwner(self.Owner);
+				actor.ChangeOwnerSync(self.Owner);
 
 				foreach (var t in actor.TraitsImplementing<INotifyCapture>())
 					t.OnCapture(actor, self, oldOwner, self.Owner);
