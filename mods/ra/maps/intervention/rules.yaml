@@ -35,20 +35,6 @@ MISS:
 		ValidStances: Enemy
 	CaptureManager:
 
-E6.MOD:
-	Inherits: E6
-	Buildable:
-		Prerequisites: ~barracks
-	Captures:
-		CaptureTypes: building
-	RenderSprites:
-		Image: e6
-	CaptureManager:
-
-E6:
-	Buildable:
-		Prerequisites: ~disabled
-
 TENT:
 	Buildable:
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly, mainland

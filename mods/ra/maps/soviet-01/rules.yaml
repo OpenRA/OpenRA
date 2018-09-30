@@ -41,7 +41,11 @@ AFLD:
 	-Sellable:
 
 DOME:
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
 
 POWR:
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
