@@ -14,6 +14,7 @@ using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -152,8 +153,9 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			return frames;
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
+			metadata = null;
 			if (!IsShpD2(s))
 			{
 				frames = null;

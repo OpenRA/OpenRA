@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 {
 	public interface ISpriteLoader
 	{
-		bool TryParseSprite(Stream s, out ISpriteFrame[] frames);
+		bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata);
 	}
 
 	public interface ISpriteFrame
@@ -50,6 +50,7 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<string, List<Sprite[]>> sprites = new Dictionary<string, List<Sprite[]>>();
 		readonly Dictionary<string, ISpriteFrame[]> unloadedFrames = new Dictionary<string, ISpriteFrame[]>();
+		readonly Dictionary<string, TypeDictionary> metadata = new Dictionary<string, TypeDictionary>();
 
 		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
 		{
@@ -80,8 +81,10 @@ namespace OpenRA.Graphics
 				// the loaded cache (initially empty)
 				if (sprite == null)
 				{
-					unloaded = FrameLoader.GetFrames(fileSystem, filename, loaders);
+					TypeDictionary fileMetadata = null;
+					unloaded = FrameLoader.GetFrames(fileSystem, filename, loaders, out fileMetadata);
 					unloadedFrames[filename] = unloaded;
+					metadata[filename] = fileMetadata;
 
 					sprite = new Sprite[unloaded.Length];
 					allSprites.Add(sprite);
@@ -111,6 +114,22 @@ namespace OpenRA.Graphics
 				return sprite;
 			}
 		}
+
+		/// <summary>
+		/// Returns a TypeDictionary containing any metadata defined by the frame
+		/// or null if the frame does not define metadata.
+		/// </summary>
+		public TypeDictionary FrameMetadata(string filename)
+		{
+			TypeDictionary fileMetadata;
+			if (!metadata.TryGetValue(filename, out fileMetadata))
+			{
+				FrameLoader.GetFrames(fileSystem, filename, loaders, out fileMetadata);
+				metadata[filename] = fileMetadata;
+			}
+
+			return fileMetadata;
+		}
 	}
 
 	public class FrameCache
@@ -119,7 +138,8 @@ namespace OpenRA.Graphics
 
 		public FrameCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders));
+			TypeDictionary metadata;
+			frames = new Cache<string, ISpriteFrame[]>(filename => FrameLoader.GetFrames(fileSystem, filename, loaders, out metadata));
 		}
 
 		public ISpriteFrame[] this[string filename] { get { return frames[filename]; } }
@@ -127,11 +147,11 @@ namespace OpenRA.Graphics
 
 	public static class FrameLoader
 	{
-		public static ISpriteFrame[] GetFrames(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders)
+		public static ISpriteFrame[] GetFrames(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders, out TypeDictionary metadata)
 		{
 			using (var stream = fileSystem.Open(filename))
 			{
-				var spriteFrames = GetFrames(stream, loaders);
+				var spriteFrames = GetFrames(stream, loaders, out metadata);
 				if (spriteFrames == null)
 					throw new InvalidDataException(filename + " is not a valid sprite file!");
 
@@ -139,11 +159,13 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public static ISpriteFrame[] GetFrames(Stream stream, ISpriteLoader[] loaders)
+		public static ISpriteFrame[] GetFrames(Stream stream, ISpriteLoader[] loaders, out TypeDictionary metadata)
 		{
 			ISpriteFrame[] frames;
+			metadata = null;
+
 			foreach (var loader in loaders)
-				if (loader.TryParseSprite(stream, out frames))
+				if (loader.TryParseSprite(stream, out frames, out metadata))
 					return frames;
 
 			return null;
