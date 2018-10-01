@@ -12,6 +12,7 @@
 using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -81,8 +82,9 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			return tiles;
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
+			metadata = null;
 			if (!IsTmpTD(s))
 			{
 				frames = null;

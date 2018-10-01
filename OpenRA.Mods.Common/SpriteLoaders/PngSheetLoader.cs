@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
@@ -30,8 +31,9 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public bool DisableExportPadding { get { return false; } }
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
+			metadata = null;
 			if (!Png.Verify(s))
 			{
 				frames = null;

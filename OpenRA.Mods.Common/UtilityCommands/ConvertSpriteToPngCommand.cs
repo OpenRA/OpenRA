@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -47,7 +48,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var palette = new ImmutablePalette(args[2], shadowIndex);
 
-			var frames = FrameLoader.GetFrames(File.OpenRead(src), modData.SpriteLoaders);
+			TypeDictionary metadata;
+			var frames = FrameLoader.GetFrames(File.OpenRead(src), modData.SpriteLoaders, out metadata);
 
 			var usePadding = !args.Contains("--nopadding");
 			var count = 0;

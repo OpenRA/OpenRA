@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.SpriteLoaders
 {
@@ -82,8 +83,9 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			return d == 8;
 		}
 
-		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames)
+		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
+			metadata = null;
 			if (!IsR8(s))
 			{
 				frames = null;
