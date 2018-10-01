@@ -374,11 +374,15 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyBecomingIdle { void OnBecomingIdle(Actor self); }
+
 	[RequireExplicitImplementation]
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
 	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+
+	[RequireExplicitImplementation]
+	public interface IRenderTerrain { void RenderTerrain(WorldRenderer wr, Viewport viewport); }
 
 	public interface IRenderAboveShroud
 	{

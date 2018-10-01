@@ -134,7 +134,6 @@
     <Compile Include="Graphics\SpriteFont.cs" />
     <Compile Include="Graphics\SpriteLoader.cs" />
     <Compile Include="Graphics\SpriteRenderer.cs" />
-    <Compile Include="Graphics\TerrainRenderer.cs" />
     <Compile Include="Graphics\Util.cs" />
     <Compile Include="Graphics\Viewport.cs" />
     <Compile Include="Graphics\WorldRenderer.cs" />
