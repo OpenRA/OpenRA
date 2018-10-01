@@ -87,8 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
 		{
-			if (a.IsIdle)
-				targets = null;
+			targets = null;
 		}
 	}
 
