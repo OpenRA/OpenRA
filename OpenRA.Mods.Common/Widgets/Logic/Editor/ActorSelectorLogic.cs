@@ -72,15 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectedOwner = editorLayer.Players.Players.Values.First();
 			Func<PlayerReference, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
-				var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () =>
-				{
-					selectedOwner = option;
-
-					ownersDropDown.Text = selectedOwner.Name;
-					ownersDropDown.TextColor = selectedOwner.Color.RGB;
-
-					InitializeActorPreviews();
-				});
+				var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () => SelectOwner(option));
 
 				item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
 				item.GetColor = () => option.Color.RGB;
@@ -92,6 +84,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var owners = editorLayer.Players.Players.Values.OrderBy(p => p.Name);
 				ownersDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, setupItem);
+			};
+
+			editorLayer.OnSpawnRemoved = () =>
+			{
+				if (editorLayer.Players.Players.Values.Any(p => p.Name.Equals(selectedOwner.Name)))
+					return;
+
+				var orderedOwners = editorLayer.Players.Players.Values.ToList();
+				orderedOwners.Add(selectedOwner);
+				orderedOwners.Sort((x, y) => string.Compare(x.Name, y.Name, StringComparison.Ordinal));
+
+				var indexofPreviousSelectedOwned = orderedOwners.IndexOf(selectedOwner);
+
+				SelectOwner(indexofPreviousSelectedOwned > 0
+					? orderedOwners.ElementAt(indexofPreviousSelectedOwned - 1)
+					: orderedOwners.First());
 			};
 
 			ownersDropDown.Text = selectedOwner.Name;
@@ -131,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tooltipText = (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + a.Name;
 				allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), tooltipText));
- 			}
+			}
 
 			allActors = allActorsTemp.ToArray();
 
@@ -198,6 +206,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				actorCategorySelector.RemovePanel();
 				actorCategorySelector.AttachPanel(CreateCategoriesPanel());
 			};
+
+			InitializeActorPreviews();
+		}
+
+		void SelectOwner(PlayerReference option)
+		{
+			selectedOwner = option;
+
+			ownersDropDown.Text = selectedOwner.Name;
+			ownersDropDown.TextColor = selectedOwner.Color.RGB;
 
 			InitializeActorPreviews();
 		}
