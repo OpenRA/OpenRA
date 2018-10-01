@@ -67,6 +67,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		protected readonly Ruleset ModRules;
 
+		public Action OnUpdate = () => { };
+
 		[ObjectCreator.UseCtor]
 		public ButtonWidget(ModData modData)
 		{
@@ -135,6 +137,12 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Depressed = false;
 			return base.YieldMouseFocus(mi);
+		}
+
+		public override void DoUpdate()
+		{
+			if (!IsDisabled() && IsVisible())
+				OnUpdate();
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
