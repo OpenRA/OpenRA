@@ -56,7 +56,7 @@ namespace OpenRA
 		public readonly string[] categories;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly int[] spawnpoints = { };
+		public readonly short[] spawnpoints = { };
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
