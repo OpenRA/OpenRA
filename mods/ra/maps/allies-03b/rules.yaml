@@ -79,7 +79,8 @@ CAMERA.Jeep:
 MONEYCRATE:
 	Tooltip:
 		Name: Crate
-	WithCrateBody:
+	GiveCashCrateAction:
+		Amount: 2000
 	RenderSprites:
 		Image: scrate
 
