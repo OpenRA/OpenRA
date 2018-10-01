@@ -11,19 +11,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Common.Traits
 {
-	sealed class TerrainRenderer : IDisposable
+	public class TerrainRendererInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new TerrainRenderer(init.World); }
+	}
+
+	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly Map map;
 		readonly Dictionary<string, TerrainSpriteLayer> spriteLayers = new Dictionary<string, TerrainSpriteLayer>();
-		readonly Theater theater;
+		Theater theater;
+		bool disposed;
 
-		public TerrainRenderer(World world, WorldRenderer wr)
+		public TerrainRenderer(World world)
 		{
 			map = world.Map;
+		}
+
+		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		{
 			theater = wr.Theater;
 
 			foreach (var template in map.Rules.TileSet.Templates)
@@ -52,7 +65,7 @@ namespace OpenRA.Graphics
 				kv.Value.Update(cell, palette == kv.Key ? sprite : null);
 		}
 
-		public void Draw(WorldRenderer wr, Viewport viewport)
+		void IRenderTerrain.RenderTerrain(WorldRenderer wr, Viewport viewport)
 		{
 			foreach (var kv in spriteLayers.Values)
 				kv.Draw(wr.Viewport);
@@ -61,13 +74,18 @@ namespace OpenRA.Graphics
 				r.Render(wr);
 		}
 
-		public void Dispose()
+		void INotifyActorDisposing.Disposing(Actor self)
 		{
+			if (disposed)
+				return;
+
 			map.Tiles.CellEntryChanged -= UpdateCell;
 			map.Height.CellEntryChanged -= UpdateCell;
 
 			foreach (var kv in spriteLayers.Values)
 				kv.Dispose();
+
+			disposed = true;
 		}
 	}
 }

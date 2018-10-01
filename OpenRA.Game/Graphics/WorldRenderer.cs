@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 		readonly HashSet<Actor> onScreenActors = new HashSet<Actor>();
 		readonly HardwarePalette palette = new HardwarePalette();
 		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
-		readonly TerrainRenderer terrainRenderer;
+		readonly IRenderTerrain terrainRenderer;
 		readonly Lazy<DebugVisualizations> debugVis;
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
@@ -62,7 +62,7 @@ namespace OpenRA.Graphics
 			palette.Initialize();
 
 			Theater = new Theater(world.Map.Rules.TileSet);
-			terrainRenderer = new TerrainRenderer(world, this);
+			terrainRenderer = world.WorldActor.TraitOrDefault<IRenderTerrain>();
 
 			debugVis = Exts.Lazy(() => world.WorldActor.TraitOrDefault<DebugVisualizations>());
 		}
@@ -181,7 +181,9 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.Context.EnableDepthBuffer();
 
-			terrainRenderer.Draw(this, Viewport);
+			if (terrainRenderer != null)
+				terrainRenderer.RenderTerrain(this, Viewport);
+
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)
@@ -330,7 +332,6 @@ namespace OpenRA.Graphics
 
 			palette.Dispose();
 			Theater.Dispose();
-			terrainRenderer.Dispose();
 		}
 	}
 }

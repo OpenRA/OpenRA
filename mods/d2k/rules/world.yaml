@@ -8,6 +8,7 @@
 		DefeatMusic: score
 	TerrainGeometryOverlay:
 	DebugVisualizations:
+	TerrainRenderer:
 	ShroudRenderer:
 		ShroudVariants: shrouda, shroudb, shroudc, shroudd
 		FogVariants: foga, fogb, fogc, fogd
