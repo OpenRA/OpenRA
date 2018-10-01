@@ -355,12 +355,7 @@ namespace OpenRA
 			{
 				WorldTick++;
 
-				using (new PerfSample("tick_idle"))
-					foreach (var ni in ActorsWithTrait<INotifyIdle>())
-						if (ni.Actor.IsIdle)
-							ni.Trait.TickIdle(ni.Actor);
-
-				using (new PerfSample("tick_activities"))
+				using (new PerfSample("tick_actors"))
 					foreach (var a in actors.Values)
 						a.Tick();
 
