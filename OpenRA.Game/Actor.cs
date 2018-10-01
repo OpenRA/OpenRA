@@ -77,6 +77,7 @@ namespace OpenRA
 		readonly IMouseBounds[] mouseBounds;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
+		readonly INotifyIdle[] tickIdles;
 		readonly ITargetablePositions[] targetablePositions;
 		WPos[] staticTargetablePositions;
 
@@ -119,6 +120,7 @@ namespace OpenRA
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
+			tickIdles = TraitsImplementing<INotifyIdle>().ToArray();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 			targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
 			world.AddFrameEndTask(w =>
@@ -141,6 +143,9 @@ namespace OpenRA
 			if (!wasIdle && IsIdle)
 				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
 					n.OnBecomingIdle(this);
+			else if (wasIdle)
+				foreach (var tickIdle in tickIdles)
+					tickIdle.TickIdle(this);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
