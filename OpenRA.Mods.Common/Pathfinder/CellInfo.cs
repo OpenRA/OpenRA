@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// The cost to move from the start up to this node
 		/// </summary>
-		public readonly int CostSoFar;
+		public readonly ushort CostSoFar;
 
 		/// <summary>
 		/// The estimation of how far is the node from our goal
 		/// </summary>
-		public readonly int EstimatedTotal;
+		public readonly ushort EstimatedTotal;
 
 		/// <summary>
 		/// The previous node of this one that follows the shortest path
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public readonly CellStatus Status;
 
-		public CellInfo(int costSoFar, int estimatedTotal, CPos previousPos, CellStatus status)
+		public CellInfo(ushort costSoFar, ushort estimatedTotal, CPos previousPos, CellStatus status)
 		{
 			CostSoFar = costSoFar;
 			PreviousPos = previousPos;

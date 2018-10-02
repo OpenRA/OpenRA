@@ -87,16 +87,16 @@ namespace OpenRA.Mods.Common.Traits
 			return ti == null || ti.RampType == 0;
 		}
 
-		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
+		ushort ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
 			var jli = (JumpjetLocomotorInfo)li;
-			return ValidTransitionCell(cell, jli) ? jli.JumpjetTransitionCost : int.MaxValue;
+			return ValidTransitionCell(cell, jli) ? (ushort)jli.JumpjetTransitionCost : ushort.MaxValue;
 		}
 
-		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
+		ushort ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
 		{
 			var jli = (JumpjetLocomotorInfo)li;
-			return ValidTransitionCell(cell, jli) ? jli.JumpjetTransitionCost : int.MaxValue;
+			return ValidTransitionCell(cell, jli) ? (ushort)jli.JumpjetTransitionCost : ushort.MaxValue;
 		}
 
 		byte ICustomMovementLayer.GetTerrainIndex(CPos cell)

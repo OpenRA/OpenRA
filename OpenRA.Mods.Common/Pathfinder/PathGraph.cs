@@ -36,9 +36,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		Func<CPos, bool> CustomBlock { get; set; }
 
-		Func<CPos, int> CustomCost { get; set; }
+		Func<CPos, ushort> CustomCost { get; set; }
 
-		int LaneBias { get; set; }
+		ushort LaneBias { get; set; }
 
 		bool InReverse { get; set; }
 
@@ -64,9 +64,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public readonly CPos Destination;
-		public readonly int Cost;
+		public readonly ushort Cost;
 
-		public GraphConnection(CPos destination, int cost)
+		public GraphConnection(CPos destination, ushort cost)
 		{
 			Destination = destination;
 			Cost = cost;
@@ -78,8 +78,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Actor Actor { get; private set; }
 		public World World { get; private set; }
 		public Func<CPos, bool> CustomBlock { get; set; }
-		public Func<CPos, int> CustomCost { get; set; }
-		public int LaneBias { get; set; }
+		public Func<CPos, ushort> CustomCost { get; set; }
+		public ushort LaneBias { get; set; }
 		public bool InReverse { get; set; }
 		public Actor IgnoreActor { get; set; }
 
@@ -169,21 +169,21 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return validNeighbors;
 		}
 
-		int GetCostToNode(CPos destNode, CVec direction)
+		ushort GetCostToNode(CPos destNode, CVec direction)
 		{
 			var movementCost = locomotorInfo.MovementCostToEnterCell(worldMovementInfo, Actor, destNode, IgnoreActor, checkConditions);
-			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
+			if (movementCost != ushort.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
 			return Constants.InvalidNode;
 		}
 
-		int CalculateCellCost(CPos neighborCPos, CVec direction, int movementCost)
+		ushort CalculateCellCost(CPos neighborCPos, CVec direction, ushort movementCost)
 		{
 			var cellCost = movementCost;
 
 			if (direction.X * direction.Y != 0)
-				cellCost = (cellCost * 34) / 24;
+				cellCost = (ushort)((cellCost * 34) / 24);
 
 			if (CustomCost != null)
 			{

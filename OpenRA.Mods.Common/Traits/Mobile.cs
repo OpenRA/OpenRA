@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			if (LocomotorInfo.MovementCostForCell(world, cell) == int.MaxValue)
+			if (LocomotorInfo.MovementCostForCell(world, cell) == ushort.MaxValue)
 				return false;
 
 			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
@@ -340,7 +340,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(CPos cell)
 		{
-			return Info.LocomotorInfo.MovementCostForCell(self.World, cell) != int.MaxValue;
+			return Info.LocomotorInfo.MovementCostForCell(self.World, cell) != ushort.MaxValue;
 		}
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
@@ -701,7 +701,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (mobile.IsTraitDisabled
 					|| (!explored && !locomotorInfo.MoveIntoShroud)
-					|| (explored && locomotorInfo.MovementCostForCell(self.World, location) == int.MaxValue))
+					|| (explored && locomotorInfo.MovementCostForCell(self.World, location) == ushort.MaxValue))
 					cursor = mobile.Info.BlockedCursor;
 
 				return true;

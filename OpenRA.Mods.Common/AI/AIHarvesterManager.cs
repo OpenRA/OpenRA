@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.AI
 
 			var path = pathfinder.FindPath(
 				PathSearch.Search(world, locomotorInfo, actor, true, isValidResource)
-					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), ai.Info.HarvesterEnemyAvoidanceRadius)
+					.WithCustomCost(loc => (ushort)world.FindActorsInCircle(world.Map.CenterOfCell(loc), ai.Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && actor.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, ai.Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
 					.FromPoint(actor.Location));

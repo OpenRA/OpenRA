@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 				// make some progress on the first search
 				var p = fromSrc.Expand();
 				if (fromDest.Graph[p].Status == CellStatus.Closed &&
-					fromDest.Graph[p].CostSoFar < int.MaxValue)
+					fromDest.Graph[p].CostSoFar < ushort.MaxValue)
 				{
 					path = MakeBidiPath(fromSrc, fromDest, p);
 					break;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 				// make some progress on the second search
 				var q = fromDest.Expand();
 				if (fromSrc.Graph[q].Status == CellStatus.Closed &&
-					fromSrc.Graph[q].CostSoFar < int.MaxValue)
+					fromSrc.Graph[q].CostSoFar < ushort.MaxValue)
 				{
 					path = MakeBidiPath(fromSrc, fromDest, q);
 					break;

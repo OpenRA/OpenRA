@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||
 						(loc - self.Location).LengthSquared > searchRadiusSquared)
-						return int.MaxValue;
+						return ushort.MaxValue;
 
 					return 0;
 				})
