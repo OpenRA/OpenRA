@@ -38,19 +38,19 @@ float jet_b(float x)
 
 vec4 Sample(float samplerIndex, vec2 pos)
 {
-	if (samplerIndex < 1.0)
+	if (samplerIndex < 0.5)
 		return texture2D(Texture0, pos);
-	else if (samplerIndex < 2.0)
+	else if (samplerIndex < 1.5)
 		return texture2D(Texture1, pos);
-	else if (samplerIndex < 3.0)
+	else if (samplerIndex < 2.5)
 		return texture2D(Texture2, pos);
-	else if (samplerIndex < 4.0)
+	else if (samplerIndex < 3.5)
 		return texture2D(Texture3, pos);
-	else if (samplerIndex < 5.0)
+	else if (samplerIndex < 4.5)
 		return texture2D(Texture4, pos);
-	else if (samplerIndex < 6.0)
+	else if (samplerIndex < 5.5)
 		return texture2D(Texture5, pos);
-	else if (samplerIndex < 7.0)
+	else if (samplerIndex < 6.5)
 		return texture2D(Texture6, pos);
 
 	return texture2D(Texture7, pos);
