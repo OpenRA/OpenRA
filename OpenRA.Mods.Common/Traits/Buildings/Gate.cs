@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Gate : PausableConditionalTrait<GateInfo>, ITick, ITemporaryBlocker, IBlocksProjectiles,
-		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, ISync
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		readonly Actor self;
 		readonly Building building;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled || IsTraitPaused || building.Locked || !building.BuildComplete)
+			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
 			if (desiredPosition < Position)
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRemoveBlockage(Actor self, Actor blocking)
 		{
-			return !IsTraitDisabled && !IsTraitPaused && building.BuildComplete && !building.Locked && blocking.AppearsFriendlyTo(self);
+			return !IsTraitDisabled && !IsTraitPaused && blocking.AppearsFriendlyTo(self);
 		}
 
 		bool IsBlocked()
