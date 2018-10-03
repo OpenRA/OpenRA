@@ -172,7 +172,10 @@ namespace OpenRA.Mods.Common.Traits
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
+				{
 					Players.Players.Remove(name);
+					OnPlayerRemoved();
+				}
 			}
 
 			for (var index = 0; index < newCount; index++)
@@ -248,6 +251,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return screenMap.At(worldPx);
 		}
+
+		public Action OnPlayerRemoved = () => { };
 
 		string NextActorName()
 		{
