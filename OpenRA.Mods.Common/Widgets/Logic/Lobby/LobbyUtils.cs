@@ -70,11 +70,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 180, options, setupItem);
 		}
 
 		public static void ShowPlayerActionDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
-			Session.Client c, OrderManager orderManager, Widget lobby,  Action before, Action after)
+			Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
 		{
 			Action<bool> okPressed = tempBan => { orderManager.IssueOrder(Order.Command("kick {0} {1}".F(c.Index, tempBan))); after(); };
 			var onClick = new Action(() =>
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var options = factions.Where(f => f.Value.Selectable).GroupBy(f => f.Value.Side)
 				.ToDictionary(g => g.Key ?? "", g => g.Select(f => f.Key));
 
-			dropdown.ShowDropDown("FACTION_DROPDOWN_TEMPLATE", 150, options, setupItem);
+			dropdown.ShowDropDown("FACTION_DROPDOWN_TEMPLATE", 154, options, setupItem);
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
@@ -419,7 +419,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public static void SetupPlayerActionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager,
-			WorldRenderer worldRenderer,  Widget lobby, Action before, Action after)
+			WorldRenderer worldRenderer, Widget lobby, Action before, Action after)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("PLAYER_ACTION");
 			slot.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
