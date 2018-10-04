@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public event Action<Actor> OnKilledInternal = _ => { };
 		public event Action<Actor> OnCapturedInternal = _ => { };
 		public event Action<Actor> OnRemovedInternal = _ => { };
+		public event Action<Actor> OnAddedInternal = _ => { };
 		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
 		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
 
@@ -340,6 +341,9 @@ namespace OpenRA.Mods.Common.Scripting
 					return;
 				}
 			}
+
+			// Run any internally bound callbacks
+			OnAddedInternal(self);
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
