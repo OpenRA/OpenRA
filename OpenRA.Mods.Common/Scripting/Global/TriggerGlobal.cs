@@ -211,8 +211,27 @@ namespace OpenRA.Mods.Common.Scripting
 						return;
 
 					if (!group.Any())
-						using (f)
-							f.Call().Dispose();
+					{
+						// Functions can only be .Call()ed once, so operate on a copy so we can reuse it later
+						var temp = (LuaFunction)f.CopyReference();
+						using (temp)
+							temp.Call().Dispose();
+					}
+				}
+				catch (Exception e)
+				{
+					Context.FatalError(e.Message);
+				}
+			};
+
+			Action<Actor> onMemberAdded = m =>
+			{
+				try
+				{
+					if (!actors.Contains(m) || group.Contains(m))
+						return;
+
+					group.Add(m);
 				}
 				catch (Exception e)
 				{
@@ -221,7 +240,10 @@ namespace OpenRA.Mods.Common.Scripting
 			};
 
 			foreach (var a in group)
+			{
 				GetScriptTriggers(a).OnRemovedInternal += onMemberRemoved;
+				GetScriptTriggers(a).OnAddedInternal += onMemberAdded;
+			}
 		}
 
 		[Desc("Call a function when this actor is captured. The callback function " +
