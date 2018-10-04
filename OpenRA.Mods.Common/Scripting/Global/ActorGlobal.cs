@@ -56,6 +56,10 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 			}
 
+			var owner = initDict.GetOrDefault<OwnerInit>();
+			if (owner == null)
+				throw new LuaException("Tried to create actor '{0}' with an invalid or no owner init!".F(type));
+
 			// The actor must be added to the world at the end of the tick
 			var a = Context.World.CreateActor(false, type, initDict);
 			if (addToWorld)
