@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Render trait that varies the animation frame based on the AttackCharges trait's charge level.")]
-	class WithChargeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<AttackChargesInfo>
+	class WithChargeAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<AttackChargesInfo>
 	{
 		[SequenceReference]
 		[Desc("Sequence to use for the charge levels.")]
@@ -24,26 +24,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithChargeAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithChargeAnimation(init.Self, this); }
 	}
 
-	class WithChargeAnimation : INotifyBuildComplete
+	class WithChargeAnimation : ConditionalTrait<WithChargeAnimationInfo>
 	{
-		readonly WithChargeAnimationInfo info;
 		readonly WithSpriteBody wsb;
 		readonly AttackCharges attackCharges;
 
 		public WithChargeAnimation(Actor self, WithChargeAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			attackCharges = self.Trait<AttackCharges>();
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
 			var attackChargesInfo = (AttackChargesInfo)attackCharges.Info;
-			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
+			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, Info.Sequence),
 				() => int2.Lerp(0, wsb.DefaultAnimation.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
 		}
 	}

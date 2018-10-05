@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Render trait for buildings that change the sprite according to the remaining resource storage capacity across all depots.")]
-	class WithSiloAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	class WithSiloAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence to use for resources-dependent 'stages'."), SequenceReference]
 		public readonly string Sequence = "stages";
@@ -26,38 +26,35 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
+		public override object Create(ActorInitializer init) { return new WithSiloAnimation(init, this); }
 	}
 
-	class WithSiloAnimation : INotifyBuildComplete, INotifyOwnerChanged
+	class WithSiloAnimation : ConditionalTrait<WithSiloAnimationInfo>, INotifyOwnerChanged
 	{
-		readonly WithSiloAnimationInfo info;
 		readonly WithSpriteBody wsb;
 		PlayerResources playerResources;
 
 		public WithSiloAnimation(ActorInitializer init, WithSiloAnimationInfo info)
+			: base(info)
 		{
-			this.info = info;
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		void PlayAnimation(Actor self)
 		{
-			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
+			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, Info.Sequence),
 				() => playerResources.ResourceCapacity != 0
-				? ((info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)
+					? ((Info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (Info.Stages * playerResources.ResourceCapacity)
 					: 0);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
-
-			wsb.DefaultAnimation.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
-				() => playerResources.ResourceCapacity != 0
-				? ((info.Stages * wsb.DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)
-					: 0);
+			PlayAnimation(self);
 		}
+
+		protected override void TraitEnabled(Actor self) { PlayAnimation(self); }
 	}
 }

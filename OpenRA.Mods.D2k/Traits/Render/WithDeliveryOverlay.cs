@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits.Render
 {
 	[Desc("Rendered when ProductionAirdrop is in progress.")]
-	public class WithDeliveryOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithDeliveryOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "active";
@@ -32,28 +32,21 @@ namespace OpenRA.Mods.D2k.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithDeliveryOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithDeliveryOverlay(init.Self, this); }
 	}
 
-	public class WithDeliveryOverlay : INotifyBuildComplete, INotifySold, INotifyDelivery
+	public class WithDeliveryOverlay : PausableConditionalTrait<WithDeliveryOverlayInfo>, INotifyDelivery
 	{
-		readonly WithDeliveryOverlayInfo info;
 		readonly AnimationWithOffset anim;
-
-		bool buildComplete;
 		bool delivering;
 
 		public WithDeliveryOverlay(Actor self, WithDeliveryOverlayInfo info)
+			: base(info)
 		{
-			this.info = info;
-
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			// always render instantly for units
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
-
-			var overlay = new Animation(self.World, rs.GetImage(self));
+			var overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.Play(info.Sequence);
 
 			// These translucent overlays should not be included in highlight flashes
@@ -61,7 +54,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 
 			anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !buildComplete || !delivering);
+				() => IsTraitDisabled || !delivering);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
@@ -69,18 +62,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 		void PlayDeliveryOverlay()
 		{
 			if (delivering)
-				anim.Animation.PlayThen(info.Sequence, PlayDeliveryOverlay);
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
-		}
-
-		void INotifySold.Sold(Actor self) { }
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
+				anim.Animation.PlayThen(Info.Sequence, PlayDeliveryOverlay);
 		}
 
 		void INotifyDelivery.IncomingDelivery(Actor self) { delivering = true; PlayDeliveryOverlay(); }

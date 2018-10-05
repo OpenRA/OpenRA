@@ -18,11 +18,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Play an animation when a unit exits or blocks the exit after production finished.")]
-	class WithProductionDoorOverlayInfo : ITraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<BuildingInfo>
+	class WithProductionDoorOverlayInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<BuildingInfo>
 	{
 		public readonly string Sequence = "build-door";
-
-		public object Create(ActorInitializer init) { return new WithProductionDoorOverlay(init.Self, this); }
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, RenderSpritesInfo rs, string image, int facings, PaletteReference p)
 		{
@@ -33,18 +31,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var offset = bi.CenterOffset(init.World).Y + 512; // Additional 512 units move from center -> top of cell
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => offset, p, rs.Scale);
 		}
+
+		public override object Create(ActorInitializer init) { return new WithProductionDoorOverlay(init.Self, this); }
 	}
 
-	class WithProductionDoorOverlay : INotifyBuildComplete, ITick, INotifyProduction, INotifySold, INotifyTransform, INotifyDamageStateChanged
+	class WithProductionDoorOverlay : ConditionalTrait<WithProductionDoorOverlayInfo>, ITick, INotifyProduction, INotifyDamageStateChanged
 	{
 		readonly Animation door;
-
 		int desiredFrame;
-
 		CPos openExit;
-		bool buildComplete;
 
 		public WithProductionDoorOverlay(Actor self, WithProductionDoorOverlayInfo info)
+			: base(info)
 		{
 			var renderSprites = self.Trait<RenderSprites>();
 			door = new Animation(self.World, renderSprites.GetImage(self));
@@ -54,12 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 
 			var offset = buildingInfo.CenterOffset(self.World).Y + 512;
-			renderSprites.Add(new AnimationWithOffset(door, null, () => !buildComplete, offset));
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
+			renderSprites.Add(new AnimationWithOffset(door, null, () => IsTraitDisabled, offset));
 		}
 
 		void ITick.Tick(Actor self)
@@ -79,12 +72,5 @@ namespace OpenRA.Mods.Common.Traits.Render
 			openExit = exit;
 			desiredFrame = door.CurrentSequence.Length - 1;
 		}
-
-		void INotifySold.Selling(Actor self) { buildComplete = false; }
-		void INotifySold.Sold(Actor self) { }
-
-		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
-		void INotifyTransform.OnTransform(Actor self) { }
-		void INotifyTransform.AfterTransform(Actor self) { }
 	}
 }

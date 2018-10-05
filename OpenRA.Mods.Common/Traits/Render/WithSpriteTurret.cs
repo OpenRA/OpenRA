@@ -70,16 +70,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyBuildComplete, INotifySold, INotifyTransform, INotifyDamageStateChanged
+	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
 		readonly RenderSprites rs;
 		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
-
-		// TODO: This should go away once https://github.com/OpenRA/OpenRA/issues/7035 is implemented
-		bool buildComplete;
 
 		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
@@ -90,13 +87,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.First(tt => tt.Name == info.Turret);
 			arms = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == info.Turret).ToArray();
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => t.TurretFacing);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, info.Sequence));
 			rs.Add(new AnimationWithOffset(DefaultAnimation,
 				() => TurretOffset(self),
-				() => IsTraitDisabled || !buildComplete,
+				() => IsTraitDisabled,
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1)), info.Palette, info.IsPlayerPalette);
 
 			// Restrict turret facings to match the sprite
@@ -144,12 +140,5 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }
-		void INotifySold.Selling(Actor self) { buildComplete = false; }
-		void INotifySold.Sold(Actor self) { }
-		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
-		void INotifyTransform.OnTransform(Actor self) { }
-		void INotifyTransform.AfterTransform(Actor toActor) { }
 	}
 }

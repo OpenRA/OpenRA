@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders an animation when the Production trait of the actor is activated.",
 		"Works both with per player ClassicProductionQueue and per building ProductionQueue, but needs any of these.")]
-	public class WithProductionOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
+	public class WithProductionOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
 	{
 		[Desc("Queues that should be producing for this overlay to render.")]
 		public readonly HashSet<string> Queues = new HashSet<string>();
@@ -36,16 +36,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithProductionOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithProductionOverlay(init.Self, this); }
 	}
 
-	public class WithProductionOverlay : INotifyDamageStateChanged, INotifyCreated, INotifyBuildComplete, INotifySold, INotifyOwnerChanged
+	public class WithProductionOverlay : PausableConditionalTrait<WithProductionOverlayInfo>, INotifyDamageStateChanged, INotifyCreated, INotifyOwnerChanged
 	{
-		readonly WithProductionOverlayInfo info;
 		readonly Animation overlay;
 		readonly ProductionInfo production;
 		ProductionQueue[] queues;
-		bool buildComplete;
 
 		bool IsProducing
 		{
@@ -53,21 +51,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public WithProductionOverlay(Actor self, WithProductionOverlayInfo info)
+			: base(info)
 		{
-			this.info = info;
-
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			production = self.Info.TraitInfo<ProductionInfo>();
 
-			overlay = new Animation(self.World, rs.GetImage(self));
+			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.PlayRepeating(info.Sequence);
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !IsProducing || !buildComplete);
+				() => !IsProducing || IsTraitDisabled);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
@@ -77,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Per-actor production
 			queues = self.TraitsImplementing<ProductionQueue>()
 				.Where(q => production.Produces.Contains(q.Info.Type))
-				.Where(q => !info.Queues.Any() || info.Queues.Contains(q.Info.Type))
+				.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
 				.ToArray();
 
 			if (!queues.Any())
@@ -85,32 +81,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 				// Player-wide production
 				queues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
 					.Where(q => production.Produces.Contains(q.Info.Type))
-					.Where(q => !info.Queues.Any() || info.Queues.Contains(q.Info.Type))
+					.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
 					.ToArray();
 			}
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
-			if (buildComplete)
-				CacheQueues(self);
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
 			CacheQueues(self);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			self.World.AddFrameEndTask(w => CacheQueues(self));
-		}
-
-		void INotifySold.Sold(Actor self) { }
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)

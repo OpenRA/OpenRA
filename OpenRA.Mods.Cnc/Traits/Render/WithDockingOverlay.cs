@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Rendered on the refinery when a voxel harvester is docking and undocking.")]
-	public class WithDockingOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithDockingOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "unload-overlay";
@@ -31,29 +31,27 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithDockingOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithDockingOverlay(init.Self, this); }
 	}
 
-	public class WithDockingOverlay
+	public class WithDockingOverlay : PausableConditionalTrait<WithDockingOverlayInfo>
 	{
-		public readonly WithDockingOverlayInfo Info;
 		public readonly AnimationWithOffset WithOffset;
 
 		public bool Visible;
 
 		public WithDockingOverlay(Actor self, WithDockingOverlayInfo info)
+			: base(info)
 		{
-			Info = info;
-
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			var overlay = new Animation(self.World, rs.GetImage(self));
+			var overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.Play(info.Sequence);
 
 			WithOffset = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => !Visible);
+				() => !Visible || IsTraitDisabled);
 
 			rs.Add(WithOffset, info.Palette, info.IsPlayerPalette);
 		}

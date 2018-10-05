@@ -33,10 +33,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithNukeLaunchOverlay(init.Self, this); }
 	}
 
-	public class WithNukeLaunchOverlay : ConditionalTrait<WithNukeLaunchOverlayInfo>, INotifyBuildComplete, INotifySold, INotifyNuke
+	public class WithNukeLaunchOverlay : ConditionalTrait<WithNukeLaunchOverlayInfo>, INotifyNuke
 	{
 		readonly Animation overlay;
-		bool buildComplete;
 		bool visible;
 
 		public WithNukeLaunchOverlay(Actor self, WithNukeLaunchOverlayInfo info)
@@ -45,27 +44,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			overlay = new Animation(self.World, rs.GetImage(self));
 			overlay.PlayThen(info.Sequence, () => visible = false);
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-				() => IsTraitDisabled || !visible || !buildComplete,
+				() => IsTraitDisabled || !visible,
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
-		}
-
-		void INotifySold.Sold(Actor self) { }
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
 		}
 
 		void INotifyNuke.Launching(Actor self)

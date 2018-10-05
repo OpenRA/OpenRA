@@ -37,10 +37,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithResupplyAnimation(init.Self, this); }
 	}
 
-	public class WithResupplyAnimation : ConditionalTrait<WithResupplyAnimationInfo>, INotifyRepair, INotifyRearm, INotifyBuildComplete, INotifySold, ITick
+	public class WithResupplyAnimation : ConditionalTrait<WithResupplyAnimationInfo>, INotifyRepair, INotifyRearm, ITick
 	{
-		readonly WithSpriteBody spriteBody;
-		bool buildComplete;
+		readonly WithSpriteBody wsb;
 		bool animPlaying;
 		bool repairing;
 		bool rearming;
@@ -48,26 +47,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithResupplyAnimation(Actor self, WithResupplyAnimationInfo info)
 			: base(info)
 		{
-			spriteBody = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (!buildComplete || IsTraitDisabled)
+			if (IsTraitDisabled)
 				return;
 
 			if (!animPlaying
 				&& ((repairing && Info.PlayAnimationOn.HasFlag(ResupplyType.Repair))
 					|| (rearming && Info.PlayAnimationOn.HasFlag(ResupplyType.Rearm))))
 			{
-				spriteBody.PlayCustomAnimationRepeating(self, Info.Sequence);
+				wsb.PlayCustomAnimationRepeating(self, Info.Sequence);
 				animPlaying = true;
 			}
 			else if (animPlaying
 				&& (!repairing || !Info.PlayAnimationOn.HasFlag(ResupplyType.Repair))
 				&& (!rearming || !Info.PlayAnimationOn.HasFlag(ResupplyType.Rearm)))
 			{
-				spriteBody.CancelCustomAnimation(self);
+				wsb.CancelCustomAnimation(self);
 				animPlaying = false;
 			}
 		}
@@ -96,16 +95,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rearming = false;
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
-			buildComplete = true;
+			// Cancel immediately instead of waiting for the next tick
+			repairing = rearming = animPlaying = false;
+			wsb.CancelCustomAnimation(self);
 		}
-
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
-		}
-
-		void INotifySold.Sold(Actor self) { }
 	}
 }
