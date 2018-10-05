@@ -83,7 +83,10 @@ namespace OpenRA.Mods.Common.Activities
 			var posCenter = new WPos(cp.X, cp.Y, altitude);
 			var approachCenter = approachStart + new WVec(0, turnRadius * Math.Sign(self.CenterPosition.Y - approachStart.Y), 0);
 			var tangentDirection = approachCenter - posCenter;
-			var tangentOffset = new WVec(-tangentDirection.Y, tangentDirection.X, 0) * turnRadius / tangentDirection.Length;
+			var tangentLength = tangentDirection.Length;
+			var tangentOffset = WVec.Zero;
+			if (tangentLength != 0)
+				tangentOffset = new WVec(-tangentDirection.Y, tangentDirection.X, 0) * turnRadius / tangentLength;
 
 			// TODO: correctly handle CCW <-> CW turns
 			if (tangentOffset.X > 0)
