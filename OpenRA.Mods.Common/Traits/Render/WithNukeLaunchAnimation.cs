@@ -26,33 +26,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithNukeLaunchAnimation(init.Self, this); }
 	}
 
-	public class WithNukeLaunchAnimation : ConditionalTrait<WithNukeLaunchAnimationInfo>, INotifyNuke, INotifyBuildComplete, INotifySold
+	public class WithNukeLaunchAnimation : ConditionalTrait<WithNukeLaunchAnimationInfo>, INotifyNuke
 	{
-		readonly WithSpriteBody spriteBody;
-		bool buildComplete;
+		readonly WithSpriteBody wsb;
 
 		public WithNukeLaunchAnimation(Actor self, WithNukeLaunchAnimationInfo info)
 			: base(info)
 		{
-			spriteBody = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
+			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
 		void INotifyNuke.Launching(Actor self)
 		{
-			if (buildComplete && !IsTraitDisabled)
-				spriteBody.PlayCustomAnimation(self, Info.Sequence, () => spriteBody.CancelCustomAnimation(self));
+			if (!IsTraitDisabled)
+				wsb.PlayCustomAnimation(self, Info.Sequence, () => wsb.CancelCustomAnimation(self));
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
-			buildComplete = true;
+			wsb.CancelCustomAnimation(self);
 		}
-
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
-		}
-
-		void INotifySold.Sold(Actor self) { }
 	}
 }

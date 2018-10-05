@@ -26,41 +26,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithBuildingPlacedAnimation(init.Self, this); }
 	}
 
-	public class WithBuildingPlacedAnimation : ConditionalTrait<WithBuildingPlacedAnimationInfo>, INotifyBuildingPlaced, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithBuildingPlacedAnimation : ConditionalTrait<WithBuildingPlacedAnimationInfo>, INotifyBuildingPlaced
 	{
 		readonly WithSpriteBody wsb;
-		bool buildComplete;
 
 		public WithBuildingPlacedAnimation(Actor self, WithBuildingPlacedAnimationInfo info)
 			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>();
 		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
-		}
-
-		void INotifySold.Sold(Actor self) { }
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
-		}
-
-		void INotifyTransform.BeforeTransform(Actor self)
-		{
-			buildComplete = false;
-		}
-
-		void INotifyTransform.OnTransform(Actor self) { }
-		void INotifyTransform.AfterTransform(Actor self) { }
 
 		void INotifyBuildingPlaced.BuildingPlaced(Actor self)
 		{
-			if (!IsTraitDisabled && buildComplete)
+			if (!IsTraitDisabled)
 				wsb.PlayCustomAnimation(self, Info.Sequence);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			wsb.CancelCustomAnimation(self);
 		}
 	}
 }

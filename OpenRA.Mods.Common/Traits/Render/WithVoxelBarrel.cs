@@ -63,15 +63,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBarrel : ConditionalTrait<WithVoxelBarrelInfo>, INotifyBuildComplete, INotifySold, INotifyTransform
+	public class WithVoxelBarrel : ConditionalTrait<WithVoxelBarrelInfo>
 	{
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
-
-		// TODO: This should go away once https://github.com/OpenRA/OpenRA/issues/7035 is implemented
-		bool buildComplete;
 
 		public WithVoxelBarrel(Actor self, WithVoxelBarrelInfo info)
 			: base(info)
@@ -83,12 +80,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
-
 			var rv = self.Trait<RenderVoxels>();
 			rv.Add(new ModelAnimation(self.World.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
 				BarrelOffset, BarrelRotation,
-				() => IsTraitDisabled || !buildComplete, () => 0, info.ShowShadow));
+				() => IsTraitDisabled, () => 0, info.ShowShadow));
 		}
 
 		WVec BarrelOffset()
@@ -110,12 +105,5 @@ namespace OpenRA.Mods.Common.Traits.Render
 			yield return turreted.WorldOrientation(self) - b + WRot.FromYaw(b.Yaw - qb.Yaw);
 			yield return qb;
 		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self) { buildComplete = true; }
-		void INotifySold.Selling(Actor self) { buildComplete = false; }
-		void INotifySold.Sold(Actor self) { }
-		void INotifyTransform.BeforeTransform(Actor self) { buildComplete = false; }
-		void INotifyTransform.OnTransform(Actor self) { }
-		void INotifyTransform.AfterTransform(Actor toActor) { }
 	}
 }

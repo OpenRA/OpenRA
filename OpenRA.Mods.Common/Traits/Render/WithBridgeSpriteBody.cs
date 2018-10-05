@@ -68,8 +68,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			bridgeLayer = init.World.WorldActor.Trait<BridgeLayer>();
 		}
 
-		protected override void OnBuildComplete(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
+			base.TraitEnabled(self);
+
 			if (bridgeInfo.AOffset != CVec.Zero)
 				UpdateNeighbour(bridgeInfo.AOffset);
 

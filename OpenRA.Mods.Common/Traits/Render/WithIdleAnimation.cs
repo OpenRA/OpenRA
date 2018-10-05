@@ -28,23 +28,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithIdleAnimation(init.Self, this); }
 	}
 
-	public class WithIdleAnimation : ConditionalTrait<WithIdleAnimationInfo>, ITick, INotifyBuildComplete, INotifySold
+	public class WithIdleAnimation : ConditionalTrait<WithIdleAnimationInfo>, ITick
 	{
 		readonly WithSpriteBody wsb;
-		bool buildComplete;
 		int ticks;
 
 		public WithIdleAnimation(Actor self, WithIdleAnimationInfo info)
 			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
-			buildComplete = !self.Info.HasTraitInfo<BuildingInfo>(); // always render instantly for units
 			ticks = info.Interval;
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (!buildComplete || IsTraitDisabled)
+			if (IsTraitDisabled)
 				return;
 
 			if (--ticks <= 0)
@@ -54,16 +52,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyBuildComplete.BuildingComplete(Actor self)
+		protected override void TraitDisabled(Actor self)
 		{
-			buildComplete = true;
+			wsb.CancelCustomAnimation(self);
 		}
-
-		void INotifySold.Selling(Actor self)
-		{
-			buildComplete = false;
-		}
-
-		void INotifySold.Sold(Actor self) { }
 	}
 }

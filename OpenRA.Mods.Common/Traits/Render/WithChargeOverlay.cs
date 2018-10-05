@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Render overlay that varies the animation frame based on the AttackCharges trait's charge level.")]
-	class WithChargeOverlayInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	class WithChargeOverlayInfo : PausableConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
 		[Desc("Sequence to use for the charge levels.")]
@@ -27,46 +27,33 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
-		public object Create(ActorInitializer init) { return new WithChargeOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithChargeOverlay(init.Self, this); }
 	}
 
-	class WithChargeOverlay : INotifyBuildComplete, INotifySold, INotifyDamageStateChanged
+	class WithChargeOverlay : PausableConditionalTrait<WithChargeOverlayInfo>, INotifyDamageStateChanged
 	{
-		readonly WithChargeOverlayInfo info;
 		readonly Animation overlay;
-		readonly RenderSprites rs;
-		readonly WithSpriteBody wsb;
-
-		bool buildComplete;
 
 		public WithChargeOverlay(Actor self, WithChargeOverlayInfo info)
+			: base(info)
 		{
-			this.info = info;
-			rs = self.Trait<RenderSprites>();
-			wsb = self.Trait<WithSpriteBody>();
+			var rs = self.Trait<RenderSprites>();
+			var wsb = self.Trait<WithSpriteBody>();
 
 			var attackCharges = self.Trait<AttackCharges>();
 			var attackChargesInfo = (AttackChargesInfo)attackCharges.Info;
 
-			overlay = new Animation(self.World, rs.GetImage(self));
+			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
 				() => int2.Lerp(0, overlay.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
 
-			rs.Add(new AnimationWithOffset(overlay, null, () => !buildComplete, 1024),
+			rs.Add(new AnimationWithOffset(overlay, null, () => IsTraitDisabled, 1024),
 				info.Palette, info.IsPlayerPalette);
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
-			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, info.Sequence));
+			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, Info.Sequence));
 		}
-
-		void INotifySold.Selling(Actor self) { buildComplete = false; }
-		void INotifySold.Sold(Actor self) { }
 	}
 }

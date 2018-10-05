@@ -17,38 +17,40 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	[Desc("Building animation to play when ProductionAirdrop is used to deliver units.")]
-	public class WithDeliveryAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithDeliveryAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[SequenceReference] public readonly string ActiveSequence = "active";
-
-		[SequenceReference] public readonly string IdleSequence = "idle";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
 
-		public object Create(ActorInitializer init) { return new WithDeliveryAnimation(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithDeliveryAnimation(init.Self, this); }
 	}
 
-	public class WithDeliveryAnimation : INotifyDelivery
+	public class WithDeliveryAnimation : ConditionalTrait<WithDeliveryAnimationInfo>, INotifyDelivery
 	{
-		readonly WithDeliveryAnimationInfo info;
 		readonly WithSpriteBody wsb;
 
 		public WithDeliveryAnimation(Actor self, WithDeliveryAnimationInfo info)
+			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
-
-			this.info = info;
 		}
 
 		public void IncomingDelivery(Actor self)
 		{
-			wsb.PlayCustomAnimationRepeating(self, info.ActiveSequence);
+			if (!IsTraitDisabled)
+				wsb.PlayCustomAnimationRepeating(self, Info.ActiveSequence);
 		}
 
 		public void Delivered(Actor self)
 		{
-			wsb.PlayCustomAnimationRepeating(self, info.IdleSequence);
+			wsb.CancelCustomAnimation(self);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			wsb.CancelCustomAnimation(self);
 		}
 	}
 }

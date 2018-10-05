@@ -15,27 +15,26 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the fill status of PlayerResources with an extra sprite overlay on the actor.")]
-	class WithResourcesInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	class WithResourcesInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "resources";
 
-		public object Create(ActorInitializer init) { return new WithResources(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithResources(init.Self, this); }
 	}
 
-	class WithResources : INotifyBuildComplete, INotifySold, INotifyOwnerChanged, INotifyDamageStateChanged
+	// TODO: Rename to WithResourcesOverlay to conform with our naming conventions
+	class WithResources : ConditionalTrait<WithResourcesInfo>, INotifyOwnerChanged, INotifyDamageStateChanged
 	{
-		readonly WithResourcesInfo info;
 		readonly AnimationWithOffset anim;
 		readonly RenderSprites rs;
 		readonly WithSpriteBody wsb;
 
 		PlayerResources playerResources;
-		bool buildComplete;
 
 		public WithResources(Actor self, WithResourcesInfo info)
+			: base(info)
 		{
-			this.info = info;
 			rs = self.Trait<RenderSprites>();
 			wsb = self.Trait<WithSpriteBody>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
@@ -46,27 +45,19 @@ namespace OpenRA.Mods.Common.Traits.Render
 				((10 * a.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity) :
 				0);
 
-			anim = new AnimationWithOffset(a, null, () => !buildComplete, 1024);
+			anim = new AnimationWithOffset(a, null, () => IsTraitDisabled, 1024);
 			rs.Add(anim);
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			buildComplete = true;
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (anim.Animation.CurrentSequence != null)
-				anim.Animation.ReplaceAnim(wsb.NormalizeSequence(self, info.Sequence));
+				anim.Animation.ReplaceAnim(wsb.NormalizeSequence(self, Info.Sequence));
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
-
-		void INotifySold.Selling(Actor self) { rs.Remove(anim); }
-		void INotifySold.Sold(Actor self) { }
 	}
 }

@@ -81,8 +81,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return bridgeInfo.RampActors.Contains(neighbour.Info.Name);
 		}
 
-		protected override void OnBuildComplete(Actor self)
+		protected override void TraitEnabled(Actor self)
 		{
+			base.TraitEnabled(self);
+
 			self.World.AddFrameEndTask(w =>
 			{
 				var aRamp = bridgeInfo.AOffset != CVec.Zero && RampExists(self, bridgeInfo.AOffset);
