@@ -19,6 +19,12 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public sealed class CaptureType { CaptureType() { } }
 
+	[RequireExplicitImplementation]
+	public interface ICaptureProgressWatcher
+	{
+		void Update(Actor self, Actor captor, Actor target, int progress, int total);
+	}
+
 	[Desc("Manages Captures and Capturable traits on an actor.")]
 	public class CaptureManagerInfo : ITraitInfo
 	{
@@ -33,10 +39,12 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new CaptureManager(this); }
 	}
 
-	public class CaptureManager : INotifyCreated, INotifyCapture
+	public class CaptureManager : INotifyCreated, INotifyCapture, ITick
 	{
 		readonly CaptureManagerInfo info;
 		ConditionManager conditionManager;
+		IMove move;
+		ICaptureProgressWatcher[] progressWatchers;
 
 		BitSet<CaptureType> allyCapturableTypes;
 		BitSet<CaptureType> neutralCapturableTypes;
@@ -50,8 +58,10 @@ namespace OpenRA.Mods.Common.Traits
 		Actor currentTarget;
 		CaptureManager currentTargetManager;
 		int currentTargetDelay;
+		int currentTargetTotal;
 		int capturingToken = ConditionManager.InvalidConditionToken;
 		int beingCapturedToken = ConditionManager.InvalidConditionToken;
+		bool enteringCurrentTarget;
 
 		public bool BeingCaptured { get; private set; }
 
@@ -63,6 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			move = self.TraitOrDefault<IMove>();
+			progressWatchers = self.TraitsImplementing<ICaptureProgressWatcher>().ToArray();
 
 			enabledCapturable = self.TraitsImplementing<Capturable>()
 				.ToArray()
@@ -177,11 +189,31 @@ namespace OpenRA.Mods.Common.Traits
 					targetManager.beingCapturedToken == ConditionManager.InvalidConditionToken)
 				targetManager.beingCapturedToken = targetManager.conditionManager.GrantCondition(target, targetManager.info.BeingCapturedCondition);
 
-			foreach (var c in enabledCaptures.OrderBy(c => c.Info.CaptureDelay))
-				if (targetManager.CanBeTargetedBy(target, self, c) && c.Info.CaptureDelay <= currentTargetDelay)
-					return true;
+			var captures = enabledCaptures
+				.OrderBy(c => c.Info.CaptureDelay)
+				.FirstOrDefault(c => targetManager.CanBeTargetedBy(target, self, c));
 
-			return false;
+			if (captures == null)
+				return false;
+
+			if (progressWatchers.Any() || targetManager.progressWatchers.Any())
+			{
+				currentTargetTotal = captures.Info.CaptureDelay;
+				if (move != null)
+				{
+					var pos = target.GetTargetablePositions().PositionClosestTo(self.CenterPosition);
+					currentTargetTotal += move.EstimatedMoveDuration(self, self.CenterPosition, pos);
+				}
+
+				foreach (var w in progressWatchers)
+					w.Update(self, self, target, currentTargetDelay, currentTargetTotal);
+
+				foreach (var w in targetManager.progressWatchers)
+					w.Update(target, self, target, currentTargetDelay, currentTargetTotal);
+			}
+
+			enteringCurrentTarget = currentTargetDelay >= captures.Info.CaptureDelay;
+			return enteringCurrentTarget;
 		}
 
 		/// <summary>
@@ -191,6 +223,15 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		public void CancelCapture(Actor self, Actor target, CaptureManager targetManager)
 		{
+			if (currentTarget == null)
+				return;
+
+			foreach (var w in progressWatchers)
+				w.Update(self, self, target, 0, 0);
+
+			foreach (var w in targetManager.progressWatchers)
+				w.Update(target, self, target, 0, 0);
+
 			if (capturingToken != ConditionManager.InvalidConditionToken)
 				capturingToken = conditionManager.RevokeCondition(self, capturingToken);
 
@@ -200,6 +241,24 @@ namespace OpenRA.Mods.Common.Traits
 			currentTarget = null;
 			currentTargetManager = null;
 			currentTargetDelay = 0;
+			enteringCurrentTarget = false;
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			// TryCapture is not called once the captor starts entering the target
+			// so we continue ticking the progress watchers ourself
+			if (!enteringCurrentTarget)
+				return;
+
+			if (currentTargetDelay < currentTargetTotal)
+				currentTargetDelay++;
+
+			foreach (var w in progressWatchers)
+				w.Update(self, self, currentTarget, currentTargetDelay, currentTargetTotal);
+
+			foreach (var w in currentTargetManager.progressWatchers)
+				w.Update(currentTarget, self, currentTarget, currentTargetDelay, currentTargetTotal);
 		}
 	}
 }
