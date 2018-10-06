@@ -67,15 +67,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								var allMatch = true;
 								for (var i = 0; i < lenImpl; i++)
 								{
-								    var implementingParam = implementingMethodParams[i];
-								    var interfaceParam = interfaceMethodParams[i];
-								    if (implementingParam.ParameterType != interfaceParam.ParameterType
+									var implementingParam = implementingMethodParams[i];
+									var interfaceParam = interfaceMethodParams[i];
+									if (implementingParam.ParameterType != interfaceParam.ParameterType
 										|| implementingParam.Name != interfaceParam.Name
 										|| implementingParam.IsOut != interfaceParam.IsOut)
-								    {
+									{
 										allMatch = false;
 										break;
-								    }
+									}
 								}
 
 								// Explicitly implemented methods are never public in C#.

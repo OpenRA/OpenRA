@@ -52,8 +52,8 @@ namespace OpenRA.Test
 		void AssertParseFailure(string expression, string errorMessage)
 		{
 			var actualErrorMessage = Assert.Throws(typeof(InvalidDataException),
-			                                       () => new IntegerExpression(expression).Evaluate(testValues),
-			                                       expression).Message;
+				() => new IntegerExpression(expression).Evaluate(testValues),
+				expression).Message;
 			Assert.AreEqual(errorMessage, actualErrorMessage, expression + "   ===>   " + actualErrorMessage);
 		}
 
