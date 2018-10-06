@@ -91,9 +91,11 @@ FCOM:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
-	ExternalCapturable:
-		CaptureCompleteTime: 30
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	GivesBuildableArea:
 		AreaTypes: building
 	BaseProvider:
@@ -118,8 +120,11 @@ HOSP:
 		Dimensions: 2,2
 	Health:
 		HP: 80000
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	EngineerRepairable:
 	Tooltip:
 		Name: Hospital
@@ -407,8 +412,11 @@ MISS:
 		Description: Capture to give visual range.
 		ValidStances: Neutral, Enemy
 	WithBuildingBib:
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	EngineerRepairable:
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -429,8 +437,11 @@ BIO:
 		Dimensions: 2,2
 	RevealsShroud:
 		Range: 4c0
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	CapturableProgressBlink:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
 	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
@@ -465,8 +476,11 @@ OILB:
 		HP: 80000
 	RevealsShroud:
 		Range: 4c0
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	EngineerRepairable:
 	CashTrickler:
 		Interval: 375

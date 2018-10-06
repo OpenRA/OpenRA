@@ -32,8 +32,8 @@ MISS:
 		Name: Soviet Air Force HQ
 	Capturable:
 		Types: building
-		CaptureThreshold: 100
 		ValidStances: Enemy
+	CaptureManager:
 
 E6.MOD:
 	Inherits: E6
@@ -41,9 +41,9 @@ E6.MOD:
 		Prerequisites: ~barracks
 	Captures:
 		CaptureTypes: building
-		Sabotage: False
 	RenderSprites:
 		Image: e6
+	CaptureManager:
 
 E6:
 	Buildable:

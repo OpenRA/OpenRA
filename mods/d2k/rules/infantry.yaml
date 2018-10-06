@@ -41,8 +41,9 @@ engineer:
 	Mobile:
 		Speed: 31
 	EngineerRepair:
+	CaptureManager:
 	Captures:
-		CaptureTypes: building, husk
+		CaptureTypes: building
 		PlayerExperience: 50
 	-RevealOnFire:
 	Voiced:

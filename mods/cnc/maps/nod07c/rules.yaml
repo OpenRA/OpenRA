@@ -138,7 +138,7 @@ HPAD.IN:
 	ProvidesPrerequisite:
 		Prerequisite: hpad
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 	Building:
 		Footprint: x_ xx
 		BuildSounds: placbldg.aud, build5.aud

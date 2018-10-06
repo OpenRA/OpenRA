@@ -101,8 +101,8 @@ AFAC:
 		GenericStancePrefix: false
 	-TooltipDescription@ally:
 	-TooltipDescription@other:
-	-ExternalCapturable:
-	-ExternalCapturableBar:
+	Capturable:
+		Types: ~disabled
 	-EngineerRepairable:
 	-GpsDot:
 	RenderSprites:
@@ -117,8 +117,8 @@ CCEN:
 		GenericName: Control Center
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
-	-ExternalCapturable:
-	-ExternalCapturableBar:
+	Capturable:
+		Types: ~disabled
 	-EngineerRepairable:
 	GpsPower:
 		Prerequisites: ~disabled

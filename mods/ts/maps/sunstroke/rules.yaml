@@ -19,11 +19,15 @@ World:
 		Scripts: sunstroke.lua
 
 GAOLDCC2:
+	CaptureManager:
 	Capturable:
+		Types: building
 	ProvidesPrerequisite@BuildingName:
 
 GAOLDCC3:
+	CaptureManager:
 	Capturable:
+		Types: building
 	ProvidesPrerequisite@BuildingName:
 
 4TNK:

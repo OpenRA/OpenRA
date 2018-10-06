@@ -59,8 +59,12 @@ SPY.Strong:
 		Range: 6c0
 	Infiltrates:
 		Types: MissionObjective
-	ExternalCaptures:
+	CaptureManager:
+	Captures:
 		CaptureTypes: MissionObjective
+		ConsumedByCapture: False
+		EnterCursor: ability
+		EnterBlockedCursor: move-blocked
 	Passenger:
 
 DOG.Patrol:
@@ -87,9 +91,8 @@ TRUK.Hijackable:
 	Targetable:
 		TargetTypes: Ground, Repair, Vehicle, NoAutoTarget
 	-Huntable:
-	ExternalCapturable:
+	Capturable:
 		Types: MissionObjective
-		CaptureCompleteTime: 1
 	-DeliversCash:
 	RenderSprites:
 		Image: TRUK

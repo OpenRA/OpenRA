@@ -14,11 +14,27 @@ World:
 			normal: Normal
 		Default: easy
 
-^Building:
+FCOM:
 	Capturable:
-		CaptureThreshold: 25
+		Types: ~disabled
 
-^TechBuilding:
+HOSP:
+	Capturable:
+		Types: ~disabled
+
+MISS:
+	Capturable:
+		Types: ~disabled
+
+FCOM:
+	Capturable:
+		Types: ~disabled
+
+BIO:
+	Capturable:
+		Types: ~disabled
+
+OILB:
 	Capturable:
 		Types: ~disabled
 
@@ -29,9 +45,10 @@ powerproxy.paratroopers:
 HACKE6:
 	Inherits: E6
 	-RepairsBridges:
-	-ExternalCaptures:
 	Captures:
-		CaptureTypes: building
+		-ConsumedByCapture:
+		-EnterCursor:
+		-EnterBlockedCursor:
 	Targetable:
 		RequiresCondition: !jail
 	Targetable@PRISONER:

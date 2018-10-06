@@ -58,6 +58,7 @@ ENGINEER:
 	EngineerRepair:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
+	CaptureManager:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 50

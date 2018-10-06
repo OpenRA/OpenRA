@@ -266,9 +266,9 @@
 	Guardable:
 	Tooltip:
 		GenericName: Vehicle
+	CaptureManager:
 	Capturable:
 		Types: vehicle
-		CaptureThreshold: 100
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
@@ -648,8 +648,12 @@
 	EngineerRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+		BeingCapturedCondition: being-captured
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn
 	MustBeDestroyed:
@@ -657,6 +661,7 @@
 	GpsDot:
 		String: Structure
 	Sellable:
+		RequiresCondition: !being-captured
 		SellSounds: cashturn.aud
 	WithBuildingRepairDecoration:
 		Image: allyrepair
@@ -922,9 +927,9 @@
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
 		Damage: 200
+	CaptureManager:
 	Capturable:
 		Types: husk
-		CaptureThreshold: 100
 		ValidStances: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25

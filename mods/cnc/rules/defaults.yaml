@@ -745,8 +745,9 @@
 	EngineerRepairable:
 	Sellable:
 		SellSounds: cashturn.aud
+	CaptureManager:
 	Capturable:
-		CaptureThreshold: 55
+		Types: building-sabotage
 	WithMakeAnimation:
 	WithBuildingRepairDecoration:
 		Image: allyrepair
@@ -787,7 +788,9 @@
 	Inherits: ^CivBuilding
 	OwnerLostAction:
 		Action: ChangeOwner
+	CaptureManager:
 	Capturable:
+		Types: building
 	CaptureNotification:
 		Notification: CivilianBuildingCaptured
 	RepairableBuilding:
@@ -1008,9 +1011,9 @@
 	Targetable:
 		RequiresForceFire: yes
 		TargetTypes: Ground, Husk
+	CaptureManager:
 	Capturable:
 		Types: husk
-		CaptureThreshold: 100
 		ValidStances: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25

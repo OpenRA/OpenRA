@@ -751,7 +751,9 @@ CAARMR:
 		Palette: player
 	ProvidesPrerequisite:
 		Prerequisite: barracks.upgraded
+	CaptureManager:
 	Capturable:
+		Types: building
 	ThrowsShrapnel@SMALL:
 		Pieces: 6, 9
 	ThrowsShrapnel@LARGE:
@@ -794,7 +796,9 @@ CAHOSP:
 		HP: 80000
 	RenderSprites:
 		Palette: player
+	CaptureManager:
 	Capturable:
+		Types: building
 	CaptureNotification:
 	ProvidesPrerequisite@BuildingName:
 	ThrowsShrapnel@SMALL:
