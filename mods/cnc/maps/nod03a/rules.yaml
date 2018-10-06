@@ -97,5 +97,6 @@ RMBO:
 MISS:
 	Tooltip:
 		Name: Prison
+	CaptureManager:
 	Capturable:
-		CaptureThreshold: 100
+		Types: building

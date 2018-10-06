@@ -174,7 +174,12 @@ E6:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
-	Captures:
+	CaptureManager:
+	Captures@SABOTAGE:
+		CaptureTypes: building-sabotage
+		SabotageThreshold: 55
+		PlayerExperience: 50
+	Captures@CAPTURES:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
 	Selectable:

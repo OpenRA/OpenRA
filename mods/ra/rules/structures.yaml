@@ -184,6 +184,7 @@ SPEN:
 		ExitCell: 2,0
 		ProductionTypes: Ship
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Ship, Submarine
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -301,6 +302,7 @@ SYRD:
 		ExitCell: 2,0
 		ProductionTypes: Ship, Boat
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Ship, Boat
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -974,6 +976,7 @@ WEAP:
 		SpawnOffset: 213,-128,0
 		ExitCell: 1,2
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Vehicle
 	ProvidesPrerequisite@allies:
 		Factions: allies, england, france, germany
@@ -1100,7 +1103,8 @@ FACT:
 		Range: 4c0
 	WithBuildingBib:
 	Production:
-		Produces: Building,Defense
+		PauseOnCondition: being-captured
+		Produces: Building, Defense
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -1109,13 +1113,13 @@ FACT:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
-		PauseOnCondition: chrono-vortex
+		PauseOnCondition: chrono-vortex || being-captured
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
 		RequiresCondition: factundeploy
 	Sellable:
-		RequiresCondition: !chrono-vortex
+		RequiresCondition: !chrono-vortex && !being-captured
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -1125,6 +1129,7 @@ FACT:
 		ProductionType: Defense
 		Color: 8A8A8A
 	BaseProvider:
+		PauseOnCondition: being-captured
 		Range: 16c0
 	WithBuildingPlacedAnimation:
 		RequiresCondition: !chrono-vortex
@@ -1288,6 +1293,7 @@ HPAD:
 		Facing: 224
 	RallyPoint:
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Aircraft, Helicopter
 	Reservable:
 	ProductionBar:
@@ -1377,6 +1383,7 @@ AFLD:
 		MoveIntoWorld: false
 	RallyPoint:
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Aircraft, Plane
 	Reservable:
 	ProvidesPrerequisite@soviet:
@@ -1647,6 +1654,7 @@ BARR:
 		ExitCell: 0,2
 		ProductionTypes: Soldier, Infantry
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1727,6 +1735,7 @@ KENN:
 		ExitCell: -1,0
 		ProductionTypes: Dog, Infantry
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Infantry, Dog
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1785,6 +1794,7 @@ TENT:
 		ExitCell: 0,2
 		ProductionTypes: Soldier, Infantry
 	Production:
+		PauseOnCondition: being-captured
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 		PrimaryCondition: primary

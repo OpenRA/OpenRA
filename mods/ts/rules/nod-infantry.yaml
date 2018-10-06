@@ -126,6 +126,7 @@ MHIJACK:
 	Mobile:
 		Speed: 99
 	-Crushable:
+	CaptureManager:
 	Captures:
 		CaptureTypes: Vehicle
 		PlayerExperience: 50

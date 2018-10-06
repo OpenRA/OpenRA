@@ -350,7 +350,9 @@
 	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
 		AreaTypes: building
+	CaptureManager:
 	Capturable:
+		Types: building
 	RepairableBuilding:
 		RepairStep: 700
 		PlayerExperience: 25
@@ -737,9 +739,9 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
+	CaptureManager:
 	Capturable:
 		Types: Vehicle
-		CaptureThreshold: 100
 		CancelActivity: True
 	Guard:
 		Voice: Move

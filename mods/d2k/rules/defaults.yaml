@@ -386,8 +386,9 @@
 		Adjacent: 3
 	GivesBuildableArea:
 		AreaTypes: building
+	CaptureManager:
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV

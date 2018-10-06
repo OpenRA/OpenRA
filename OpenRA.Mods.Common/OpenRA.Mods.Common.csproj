@@ -590,6 +590,7 @@
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="Traits\World\ActorSpawnManager.cs" />
     <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\MergeCaptureTraits.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
