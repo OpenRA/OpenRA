@@ -38,6 +38,13 @@ namespace OpenRA.Mods.Common.Activities
 			return !actor.IsDead && !targetManager.BeingCaptured && targetManager.CanBeTargetedBy(actor, self, manager);
 		}
 
+		protected override bool TryStartEnter(Actor self)
+		{
+			// CanEnter is only called when the actor is ready to start entering the target.
+			// We can (ab)use this as a notification that the capture is starting.
+			return manager.StartCapture(self, actor, targetManager);
+        }
+
 		protected override void OnInside(Actor self)
 		{
 			if (!CanReserve(self))
@@ -92,6 +99,23 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.Dispose();
 			});
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			CancelCapture(self);
+			base.OnLastRun(self);
+		}
+
+		protected override void OnActorDispose(Actor self)
+		{
+			CancelCapture(self);
+			base.OnActorDispose(self);
+		}
+
+		void CancelCapture(Actor self)
+		{
+			manager.CancelCapture(self, actor, targetManager);
 		}
 
 		public override Activity Tick(Actor self)

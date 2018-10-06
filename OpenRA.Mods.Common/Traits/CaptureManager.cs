@@ -20,10 +20,24 @@ namespace OpenRA.Mods.Common.Traits
 	public sealed class CaptureType { CaptureType() { } }
 
 	[Desc("Manages Captures and Capturable traits on an actor.")]
-	public class CaptureManagerInfo : TraitInfo<CaptureManager> { }
+	public class CaptureManagerInfo : ITraitInfo
+	{
+		[GrantedConditionReference]
+		[Desc("Condition granted when capturing an actor.")]
+		public readonly string CapturingCondition = null;
+
+		[GrantedConditionReference]
+		[Desc("Condition granted when being captured by another actor.")]
+		public readonly string BeingCapturedCondition = null;
+
+		public virtual object Create(ActorInitializer init) { return new CaptureManager(this); }
+	}
 
 	public class CaptureManager : INotifyCreated, INotifyCapture
 	{
+		readonly CaptureManagerInfo info;
+		ConditionManager conditionManager;
+
 		BitSet<CaptureType> allyCapturableTypes;
 		BitSet<CaptureType> neutralCapturableTypes;
 		BitSet<CaptureType> enemyCapturableTypes;
@@ -32,10 +46,24 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<Capturable> enabledCapturable;
 		IEnumerable<Captures> enabledCaptures;
 
+		// Related to a specific capture in process
+		Actor currentTarget;
+		CaptureManager currentTargetManager;
+		int currentTargetDelay;
+		int capturingToken = ConditionManager.InvalidConditionToken;
+		int beingCapturedToken = ConditionManager.InvalidConditionToken;
+
 		public bool BeingCaptured { get; private set; }
+
+		public CaptureManager(CaptureManagerInfo info)
+		{
+			this.info = info;
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+
 			enabledCapturable = self.TraitsImplementing<Capturable>()
 				.ToArray()
 				.Where(Exts.IsTraitEnabled);
@@ -120,6 +148,58 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			BeingCaptured = true;
 			self.World.AddFrameEndTask(w => BeingCaptured = false);
+		}
+
+		/// <summary>
+		/// Called by CaptureActor when the activity is ready to enter and capture the target.
+		/// This method grants the capturing conditions on the captor and target and returns
+		/// true if the captor is able to start entering or false if it needs to wait.
+		/// </summary>
+		public bool StartCapture(Actor self, Actor target, CaptureManager targetManager)
+		{
+			if (target != currentTarget)
+			{
+				if (currentTarget != null)
+					CancelCapture(self, currentTarget, currentTargetManager);
+
+				currentTarget = target;
+				currentTargetManager = targetManager;
+				currentTargetDelay = 0;
+			}
+			else
+				currentTargetDelay += 1;
+
+			if (conditionManager != null && !string.IsNullOrEmpty(info.CapturingCondition) &&
+					capturingToken == ConditionManager.InvalidConditionToken)
+				capturingToken = conditionManager.GrantCondition(self, info.CapturingCondition);
+
+			if (targetManager.conditionManager != null && !string.IsNullOrEmpty(targetManager.info.BeingCapturedCondition) &&
+					targetManager.beingCapturedToken == ConditionManager.InvalidConditionToken)
+				targetManager.beingCapturedToken = targetManager.conditionManager.GrantCondition(target, targetManager.info.BeingCapturedCondition);
+
+			foreach (var c in enabledCaptures.OrderBy(c => c.Info.CaptureDelay))
+				if (targetManager.CanBeTargetedBy(target, self, c) && c.Info.CaptureDelay <= currentTargetDelay)
+					return true;
+
+			return false;
+		}
+
+		/// <summary>
+		/// Called by CaptureActor when the activity finishes or is cancelled
+		/// This method revokes the capturing conditions on the captor and target
+		/// and resets any capturing progress.
+		/// </summary>
+		public void CancelCapture(Actor self, Actor target, CaptureManager targetManager)
+		{
+			if (capturingToken != ConditionManager.InvalidConditionToken)
+				capturingToken = conditionManager.RevokeCondition(self, capturingToken);
+
+			if (targetManager.beingCapturedToken != ConditionManager.InvalidConditionToken)
+				targetManager.beingCapturedToken = targetManager.conditionManager.RevokeCondition(self, targetManager.beingCapturedToken);
+
+			currentTarget = null;
+			currentTargetManager = null;
+			currentTargetDelay = 0;
 		}
 	}
 }
