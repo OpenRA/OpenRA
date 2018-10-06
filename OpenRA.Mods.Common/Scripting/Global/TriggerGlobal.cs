@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Call a function for each passenger when it enters a transport. " +
-		      "The callback function will be called as func(Actor transport, Actor passenger).")]
+			"The callback function will be called as func(Actor transport, Actor passenger).")]
 		public void OnPassengerEntered(Actor a, LuaFunction func)
 		{
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnPassengerEntered, func, Context);
