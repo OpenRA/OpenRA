@@ -22,12 +22,12 @@ crate:
 		SelectionShares: 5
 	HideMapCrateAction:
 		SelectionShares: 5
-		Effect: hide-map
+		Sequence: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 40
 	RevealMapCrateAction:
 		SelectionShares: 2
-		Effect: reveal-map
+		Sequence: reveal-map
 	GiveUnitCrateAction@LightInfantry:
 		SelectionShares: 15
 		Units: light_inf, light_inf, light_inf, light_inf, light_inf

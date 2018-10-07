@@ -20,8 +20,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Chance of getting this crate, assuming the collector is compatible.")]
 		public readonly int SelectionShares = 10;
 
-		[Desc("An animation defined in sequence yaml(s) to draw.")]
-		public readonly string Effect = null;
+		[Desc("Image containing the crate effect animation sequence.")]
+		public readonly string Image = "crate-effects";
+
+		[Desc("Animation sequence played when collected. Leave empty for no effect.")]
+		[SequenceReference("Image")] public readonly string Sequence = null;
 
 		[Desc("Palette to draw the animation in.")]
 		[PaletteReference] public readonly string Palette = "effect";
@@ -84,8 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 				Game.Sound.PlayNotification(self.World.Map.Rules, collector.Owner, "Speech",
 					Info.Notification, collector.Owner.Faction.InternalName);
 
-			if (Info.Effect != null)
-				collector.World.AddFrameEndTask(w => w.Add(new CrateEffect(collector, Info.Effect, Info.Palette)));
+			if (Info.Image != null && Info.Sequence != null)
+				collector.World.AddFrameEndTask(w => w.Add(new SpriteEffect(collector, w, Info.Image, Info.Sequence, Info.Palette)));
 		}
 	}
 }

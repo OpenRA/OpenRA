@@ -12,13 +12,13 @@ CRATE:
 		UseCashTick: yes
 	RevealMapCrateAction:
 		SelectionShares: 1
-		Effect: reveal-map
+		Sequence: reveal-map
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
 	GrantExternalConditionCrateAction@cloak:
 		SelectionShares: 5
-		Effect: cloak
+		Sequence: cloak
 		Condition: cloak-crate-collected
 	GiveMcvCrateAction:
 		SelectionShares: 0

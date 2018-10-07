@@ -63,11 +63,11 @@ FORTCRATE:
 	SupportPowerCrateAction@parabombs:
 		SelectionShares: 30
 		Proxy: powerproxy.parabombs
-		Effect: parabombs
+		Sequence: parabombs
 	HealUnitsCrateAction:
 		SelectionShares: 30
 		Sound: heal2.aud
-		Effect: heal
+		Sequence: heal
 	GiveCashCrateAction:
 		Amount: 400
 		UseCashTick: true
@@ -77,7 +77,7 @@ FORTCRATE:
 		SelectionShares: 10
 	GrantExternalConditionCrateAction@ironcurtain:
 		SelectionShares: 10
-		Effect: invuln
+		Sequence: invuln
 		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 1200

@@ -69,37 +69,37 @@ CRATE:
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50
-		Effect: dollar
+		Sequence: dollar
 		UseCashTick: true
 	LevelUpCrateAction:
 		SelectionShares: 40
-		Effect: levelup
+		Sequence: levelup
 	HideMapCrateAction:
 		SelectionShares: 5
-		Effect: hide-map
+		Sequence: hide-map
 	HealUnitsCrateAction:
 		SelectionShares: 2
-		Effect: heal
+		Sequence: heal
 	RevealMapCrateAction:
 		SelectionShares: 1
-		Effect: reveal-map
+		Sequence: reveal-map
 	GiveMcvCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv
 	GrantExternalConditionCrateAction@cloak:
 		SelectionShares: 5
-		Effect: stealth
+		Sequence: stealth
 		Condition: crate-cloak
 		Sound: cloak5.aud
 	GrantExternalConditionCrateAction@firepower:
 		SelectionShares: 5
-		Effect: firepower
+		Sequence: firepower
 		Condition: crate-firepower
 		Notification: UnitFirepowerUpgraded
 	GrantExternalConditionCrateAction@armor:
 		SelectionShares: 5
-		Effect: armor
+		Sequence: armor
 		Condition: crate-damage
 		Notification: UnitArmourUpgraded
 	GrantExternalConditionCrateAction@speed:
