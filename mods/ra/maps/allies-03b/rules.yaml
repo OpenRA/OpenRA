@@ -14,30 +14,6 @@ World:
 			normal: Normal
 		Default: easy
 
-FCOM:
-	Capturable:
-		Types: ~disabled
-
-HOSP:
-	Capturable:
-		Types: ~disabled
-
-MISS:
-	Capturable:
-		Types: ~disabled
-
-FCOM:
-	Capturable:
-		Types: ~disabled
-
-BIO:
-	Capturable:
-		Types: ~disabled
-
-OILB:
-	Capturable:
-		Types: ~disabled
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
