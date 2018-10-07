@@ -60,12 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!Powers.ContainsKey(key))
 				{
-					Powers.Add(key, new SupportPowerInstance(key, this)
-					{
-						Instances = new List<SupportPower>(),
-						RemainingTime = t.Info.StartFullyCharged ? 0 : t.Info.ChargeInterval,
-						TotalTime = t.Info.ChargeInterval,
-					});
+					Powers.Add(key, t.CreateInstance(key, this));
 
 					if (t.Info.Prerequisites.Any())
 					{
@@ -145,7 +140,6 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			sp.PrerequisitesAvailable(false);
-			sp.RemainingTime = sp.TotalTime;
 		}
 
 		public void PrerequisitesItemHidden(string key) { }
@@ -154,15 +148,15 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class SupportPowerInstance
 	{
-		readonly SupportPowerManager manager;
+		protected readonly SupportPowerManager Manager;
 
 		public readonly string Key;
 
-		public List<SupportPower> Instances;
-		public int RemainingTime;
-		public int TotalTime;
+		public readonly List<SupportPower> Instances = new List<SupportPower>();
+		public readonly int TotalTime;
+		public int RemainingTime { get; private set; }
 		public bool Active { get; private set; }
-		public bool Disabled { get { return (!prereqsAvailable && !manager.DevMode.AllTech) || !instancesEnabled || oneShotFired; } }
+		public bool Disabled { get { return (!prereqsAvailable && !Manager.DevMode.AllTech) || !instancesEnabled || oneShotFired; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 		public bool Ready { get { return Active && RemainingTime == 0; } }
@@ -170,21 +164,27 @@ namespace OpenRA.Mods.Common.Traits
 		bool instancesEnabled;
 		bool prereqsAvailable = true;
 		bool oneShotFired;
-
-		public SupportPowerInstance(string key, SupportPowerManager manager)
-		{
-			this.manager = manager;
-			Key = key;
-		}
-
-		public void PrerequisitesAvailable(bool available)
-		{
-			prereqsAvailable = available;
-		}
-
 		bool notifiedCharging;
 		bool notifiedReady;
-		public void Tick()
+
+		public SupportPowerInstance(string key, SupportPowerInfo info, SupportPowerManager manager)
+		{
+			Key = key;
+			TotalTime = info.ChargeInterval;
+			RemainingTime = info.StartFullyCharged ? 0 : info.ChargeInterval;
+
+			Manager = manager;
+		}
+
+		public virtual void PrerequisitesAvailable(bool available)
+		{
+			prereqsAvailable = available;
+
+			if (!available)
+				RemainingTime = TotalTime;
+		}
+
+		public virtual void Tick()
 		{
 			instancesEnabled = Instances.Any(i => !i.IsTraitDisabled);
 			if (!instancesEnabled)
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Active)
 			{
 				var power = Instances.First();
-				if (manager.DevMode.FastCharge && RemainingTime > 25)
+				if (Manager.DevMode.FastCharge && RemainingTime > 25)
 					RemainingTime = 25;
 
 				if (RemainingTime > 0)
@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void Target()
+		public virtual void Target()
 		{
 			if (!Ready)
 				return;
@@ -226,10 +226,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (power == null)
 				return;
 
-			power.SelectTarget(power.Self, Key, manager);
+			power.SelectTarget(power.Self, Key, Manager);
 		}
 
-		public void Activate(Order order)
+		public virtual void Activate(Order order)
 		{
 			if (!Ready)
 				return;
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Note: order.Subject is the *player* actor
-			power.Activate(power.Self, order, manager);
+			power.Activate(power.Self, order, Manager);
 			RemainingTime = TotalTime;
 			notifiedCharging = notifiedReady = false;
 
