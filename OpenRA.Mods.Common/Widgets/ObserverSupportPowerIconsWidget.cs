@@ -132,8 +132,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var clock = clocks[power.a.Key];
 				clock.PlayFetchIndex(ClockSequence,
-					() => item.TotalTime == 0 ? 0 : ((item.TotalTime - item.RemainingTime)
-						* (clock.CurrentSequence.Length - 1) / item.TotalTime));
+					() => item.TotalTicks == 0 ? 0 : ((item.TotalTicks - item.RemainingTicks)
+						* (clock.CurrentSequence.Length - 1) / item.TotalTicks));
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
 
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (item.Disabled) return "ON HOLD";
 			if (item.Ready) return "READY";
-			return WidgetUtils.FormatTime(item.RemainingTime, timestep);
+			return WidgetUtils.FormatTime(item.RemainingTicks, timestep);
 		}
 
 		public override Widget Clone()
