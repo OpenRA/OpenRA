@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			source = args.CurrentSource();
 
 			if (hasLaunchEffect && ticks == 0)
-				world.AddFrameEndTask(w => w.Add(new LaunchEffect(world, args.CurrentSource, args.CurrentMuzzleFacing,
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(args.CurrentSource, args.CurrentMuzzleFacing, world,
 					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
 
 			// Beam tracks target
