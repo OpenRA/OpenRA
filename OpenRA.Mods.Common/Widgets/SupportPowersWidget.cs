@@ -205,8 +205,8 @@ namespace OpenRA.Mods.Common.Widgets
 				// Charge progress
 				var sp = p.Power;
 				clock.PlayFetchIndex(ClockSequence,
-					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)
-					* (clock.CurrentSequence.Length - 1) / sp.TotalTime);
+					() => sp.TotalTicks == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTicks - sp.RemainingTicks)
+					* (clock.CurrentSequence.Length - 1) / sp.TotalTicks);
 
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, p.IconClockPalette);
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets
 						p.Pos + holdOffset,
 						Color.White, Color.Black, 1);
 				else
-					overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(p.Power.RemainingTime, worldRenderer.World.Timestep),
+					overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(p.Power.RemainingTicks, worldRenderer.World.Timestep),
 						p.Pos + timeOffset,
 						Color.White, Color.Black, 1);
 			}

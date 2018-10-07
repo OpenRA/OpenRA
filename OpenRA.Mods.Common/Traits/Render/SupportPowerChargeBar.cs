@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (viewer != null && !Info.DisplayStances.HasStance(self.Owner.Stances[viewer]))
 				return 0;
 
-			return 1 - (float)power.RemainingTime / power.TotalTime;
+			return 1 - (float)power.RemainingTicks / power.TotalTicks;
 		}
 
 		Color ISelectionBar.GetColor() { return Info.Color; }
