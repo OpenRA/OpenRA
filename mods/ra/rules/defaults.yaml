@@ -241,6 +241,7 @@
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
+		RequiresCondition: !being-captured
 		Locomotor: wheeled
 		TurnSpeed: 5
 	SelectionDecorations:
@@ -267,6 +268,7 @@
 	Tooltip:
 		GenericName: Vehicle
 	CaptureManager:
+		BeingCapturedCondition: being-captured
 	Capturable:
 		Types: vehicle
 		CancelActivity: True

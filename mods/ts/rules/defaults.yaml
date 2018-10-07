@@ -715,10 +715,10 @@
 		Action: Kill
 	DrawLineToTarget:
 	Mobile:
+		RequiresCondition: !empdisable && !being-captured
+		Locomotor: wheeled
 		TurnSpeed: 5
 		Voice: Move
-		RequiresCondition: !empdisable
-		Locomotor: wheeled
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -740,6 +740,7 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 	CaptureManager:
+		BeingCapturedCondition: being-captured
 	Capturable:
 		Types: Vehicle
 		CancelActivity: True
