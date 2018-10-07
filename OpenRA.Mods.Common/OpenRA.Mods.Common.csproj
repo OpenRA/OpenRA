@@ -148,7 +148,6 @@
     <Compile Include="Effects\SpriteEffect.cs" />
     <Compile Include="FileFormats\Png.cs" />
     <Compile Include="Graphics\RailgunRenderable.cs" />
-    <Compile Include="Effects\LaunchEffect.cs" />
     <Compile Include="Lint\CheckNotifications.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
