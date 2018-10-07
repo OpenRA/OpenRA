@@ -17,7 +17,6 @@ FACT:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
-	WithBuildingBib:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
@@ -84,7 +83,11 @@ FACT:
 	BaseProvider:
 		Cooldown: 75
 		Range: 14c0
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithBuildingPlacedAnimation:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
@@ -205,7 +208,6 @@ PROC:
 		HP: 100000
 	RevealsShroud:
 		Range: 6c0
-	WithBuildingBib:
 	Refinery:
 		DockAngle: 112
 		DockOffset: 0,2
@@ -226,7 +228,11 @@ PROC:
 		Actor: HARV
 		SpawnOffset: 1,2
 		Facing: 64
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithResources:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -254,9 +260,10 @@ SILO:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithSiloAnimation:
+		RequiresCondition: !build-incomplete
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
@@ -406,9 +413,6 @@ AFLD:
 		HP: 110000
 	RevealsShroud:
 		Range: 7c0
-	WithBuildingBib:
-	WithIdleOverlay@DISH:
-		Sequence: idle-dish
 	RallyPoint:
 		Offset: 4,2
 	Exit@1:
@@ -416,7 +420,14 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
+	WithIdleOverlay@DISH:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-dish
 	WithDeliveryAnimation:
+		RequiresCondition: !build-incomplete
 	ProductionQueue:
 		Type: Vehicle.Nod
 		Group: Vehicle
@@ -463,7 +474,10 @@ WEAP:
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
 		Offset: 0,2
@@ -521,7 +535,10 @@ HPAD:
 		HpPerStep: 1000
 		PlayerExperience: 25
 		StartRepairingNotification: Repairing
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	RallyPoint:
 	ProductionQueue@GDI:
 		Type: Aircraft.GDI
@@ -647,6 +664,10 @@ FIX:
 		Range: 5c0
 	WithBuildingBib:
 		HasMinibib: Yes
+	WithMakeAnimation:
+		Condition: build-incomplete
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
@@ -654,7 +675,6 @@ FIX:
 		PlayerExperience: 25
 		StartRepairingNotification: Repairing
 	RallyPoint:
-	WithResupplyAnimation:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -749,7 +769,6 @@ TMPL:
 		HP: 210000
 	RevealsShroud:
 		Range: 6c0
-	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -778,8 +797,13 @@ TMPL:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithNukeLaunchAnimation:
+		RequiresCondition: !build-incomplete
 	WithNukeLaunchOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: smoke
 	SupportPowerChargeBar:
 	Power:
@@ -906,7 +930,10 @@ OBLI:
 		Range: 8c0
 	WithBuildingBib:
 		HasMinibib: Yes
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithChargeAnimation:
+		RequiresCondition: !build-incomplete
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280

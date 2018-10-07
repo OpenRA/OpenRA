@@ -25,8 +25,10 @@ NAPOWR:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
 	Power:
 		Amount: 100
@@ -64,8 +66,10 @@ NAAPWR:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
 	Power:
 		Amount: 200
@@ -119,9 +123,13 @@ NAHAND:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@LIGHT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-light
 	Power:
 		Amount: -20
@@ -178,12 +186,18 @@ NAWEAP:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@ROOF:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
+		RequiresCondition: !build-incomplete
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	Power:
 		Amount: -30
@@ -236,9 +250,13 @@ NAHPAD:
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
 	ProductionBar:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@PLATFORM:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-platform
@@ -292,9 +310,12 @@ NARADR:
 	RevealsShroud:
 		Range: 10c0
 		MaxHeightDelta: 3
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@DISH:
-		Sequence: idle-dish
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
+		Sequence: idle-dish
 	Targetable:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
@@ -330,8 +351,10 @@ NATECH:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
@@ -370,8 +393,10 @@ NATMPL:
 		MaxHeightDelta: 3
 	Power:
 		Amount: -200
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	ProduceActorPower:
 		PauseOnCondition: empdisable || disabled

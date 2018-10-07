@@ -1140,6 +1140,7 @@
 		Condition: build-incomplete
 	-WithSpriteBody:
 	WithGateSpriteBody:
+		PauseOnCondition: !build-incomplete
 		OpenSequence: open
 	Tooltip:
 	Buildable:

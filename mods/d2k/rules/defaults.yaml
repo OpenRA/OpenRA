@@ -392,7 +392,6 @@
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	WithSpriteBody:
 	Explodes:
 		Type: Footprint
 		Weapon: BuildingExplode
@@ -414,7 +413,6 @@
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
-	WithCrumbleOverlay:
 	Demolishable:
 	DamagedByTerrain:
 		Damage: 500
@@ -426,7 +424,11 @@
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
 		Range: 1c512, 4c0
+	WithSpriteBody:
 	WithMakeAnimation:
+		Condition: build-incomplete
+	WithCrumbleOverlay:
+		RequiresCondition: !build-incomplete
 	RevealOnDeath:
 		Duration: 100
 		Radius: 4c768
@@ -449,6 +451,7 @@
 		Range: 1c768
 	-GivesBuildableArea:
 	-WithMakeAnimation:
+	-WithCrumbleOverlay:
 	-Capturable:
 	-WithSpriteBody:
 	WithWallSpriteBody:

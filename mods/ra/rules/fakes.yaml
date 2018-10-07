@@ -142,10 +142,13 @@ WEAF:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
-	WithBuildingBib:
 	RenderSprites:
 		Image: WEAP
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	Valued:
 		Cost: 200

@@ -60,7 +60,10 @@ MSLO:
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithNukeLaunchAnimation:
+		RequiresCondition: !build-incomplete
 
 GAP:
 	Inherits: ^ScienceBuilding
@@ -969,7 +972,10 @@ WEAP:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
 	Exit@1:
@@ -1101,7 +1107,6 @@ FACT:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	WithBuildingBib:
 	Production:
 		PauseOnCondition: being-captured
 		Produces: Building, Defense
@@ -1131,8 +1136,11 @@ FACT:
 	BaseProvider:
 		PauseOnCondition: being-captured
 		Range: 16c0
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithBuildingPlacedAnimation:
-		RequiresCondition: !chrono-vortex
+		RequiresCondition: !build-incomplete && !chrono-vortex
 	Power:
 		Amount: 0
 	WithDeathAnimation:
@@ -1180,7 +1188,6 @@ PROC:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	WithBuildingBib:
 	Refinery:
 		DockAngle: 64
 		DockOffset: 1,2
@@ -1198,7 +1205,11 @@ PROC:
 		Percentage: 50
 		Types: SpyInfiltrate
 		Notification: CreditsStolen
+	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@TOP:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-top
 	Power:
 		Amount: -30
@@ -1244,7 +1255,10 @@ SILO:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithSiloAnimation:
+		RequiresCondition: !build-incomplete
 	StoresResources:
 		PipCount: 5
 		Capacity: 3000
@@ -1286,6 +1300,10 @@ HPAD:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
+	WithMakeAnimation:
+		Condition: build-incomplete
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Exit@1:
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
@@ -1345,7 +1363,6 @@ HPAD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
-	WithResupplyAnimation:
 
 AFLD:
 	Inherits: ^Building
@@ -1486,7 +1503,10 @@ AFLD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 
 AFLD.Ukraine:
 	Inherits: AFLD
@@ -1875,8 +1895,6 @@ FIX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	WithBuildingBib:
-		HasMinibib: Yes
 	Reservable:
 	RallyPoint:
 	RepairsUnits:
@@ -1885,7 +1903,12 @@ FIX:
 		StartRepairingNotification: Repairing
 		FinishRepairingNotification: UnitRepaired
 		PlayerExperience: 15
+	WithBuildingBib:
+		HasMinibib: Yes
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
