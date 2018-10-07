@@ -21,6 +21,7 @@
 		Conditions:
 			500: rank
 			1000: rank
+		LevelUpImage: crate-effects
 	GrantCondition@RANK-VETERAN:
 		RequiresCondition: rank == 1
 		Condition: rank-veteran

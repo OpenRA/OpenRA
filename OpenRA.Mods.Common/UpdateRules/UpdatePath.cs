@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ExtractHackyAIModules(),
 				new RemoveNegativeDamageFullHealthCheck(),
 				new RemoveResourceExplodeModifier(),
+				new DefineLevelUpImageDefault(),
 			})
 		};
 

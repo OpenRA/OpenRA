@@ -29,6 +29,12 @@ namespace OpenRA.Mods.Common.Traits
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions { get { return Conditions.Values; } }
 
+		[Desc("Image for the level up sprite.")]
+		public readonly string LevelUpImage = null;
+
+		[Desc("Sequence for the level up sprite. Needs to be present on Image.")]
+		[SequenceReference("Image")] public readonly string LevelUpSequence = "levelup";
+
 		[Desc("Palette for the level up sprite.")]
 		[PaletteReference] public readonly string LevelUpPalette = "effect";
 
@@ -107,7 +113,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!silent)
 				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Sounds", info.LevelUpNotification, self.Owner.Faction.InternalName);
-					self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", info.LevelUpPalette)));
+					if (info.LevelUpImage != null && info.LevelUpSequence != null)
+						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self, w, info.LevelUpImage, info.LevelUpSequence, info.LevelUpPalette)));
 				}
 			}
 		}
