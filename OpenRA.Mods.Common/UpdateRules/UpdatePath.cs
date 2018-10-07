@@ -93,6 +93,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new DefineNotificationDefaults(),
 				new MergeRearmAndRepairAnimation(),
 				new MergeCaptureTraits(),
+				new RemovedNotifyBuildComplete(),
 			})
 		};
 

@@ -63,8 +63,6 @@ NAPOST:
 		NodeTypes: laserfencenode
 		SegmentType: nafnce
 		SegmentsRequireNode: true
-	WithMakeAnimation:
-		Condition: make-animation-playing
 	Selectable:
 		Bounds: 42, 44, 0, -12
 	LineBuildNode:
@@ -73,14 +71,16 @@ NAPOST:
 		Amount: -25
 	RevealsShroud:
 		Range: 4c0
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: lights
 	WithIdleOverlay@CHAINOFLIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: chainoflights
 	LineBuildSegmentExternalCondition:
-		RequiresCondition: !disabled && !make-animation-playing
+		RequiresCondition: !build-incomplete && !disabled
 		Condition: active-posts
 
 NAFNCE:
@@ -173,8 +173,11 @@ NALASR:
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
+	WithMakeAnimation:
+		Condition: build-incomplete
 	RenderVoxels:
 	WithVoxelTurret:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
 	SelectionDecorations:
@@ -218,11 +221,14 @@ NAOBEL:
 		RequiresCondition: charging && !disabled
 		SoundFiles: obelpowr.aud
 		Interval: 30, 40
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithChargeOverlay:
+		RequiresCondition: !build-incomplete
 		Palette: player
 		IsPlayerPalette: true
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
@@ -257,7 +263,10 @@ NASAM:
 		InitialFacing: 224
 	AttackTurreted:
 		PauseOnCondition: empdisable || disabled
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
 		Recoils: false
 	Armament:
 		Weapon: RedEye2
@@ -291,9 +300,11 @@ NASTLH:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@pulse:
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: pulse
-		RequiresCondition: !disabled
 	WithRangeCircle:
 		Range: 12c0
 		Type: cloakgenerator
@@ -339,8 +350,10 @@ NAMISL:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -50
@@ -407,12 +420,16 @@ NAWAST:
 		Actor: WEED
 		SpawnOffset: 3,1
 		Facing: 160
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@GLOW:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-glow
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-	RenderSprites:

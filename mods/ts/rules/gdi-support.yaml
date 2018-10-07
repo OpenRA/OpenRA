@@ -76,16 +76,18 @@ GACTWR:
 	AttackTurreted:
 		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
 		PauseOnCondition: empdisable || disabled
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithSpriteTurret@VULC:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: !build-incomplete && tower.vulcan
 		Recoils: false
 		Sequence: turret-vulcan
 	WithSpriteTurret@ROCKET:
-		RequiresCondition: tower.rocket
+		RequiresCondition: !build-incomplete && tower.rocket
 		Recoils: false
 		Sequence: turret-rocket
 	WithSpriteTurret@SAM:
-		RequiresCondition: tower.sam
+		RequiresCondition: !build-incomplete && tower.sam
 		Recoils: false
 		Sequence: turret-sam
 	Armament@VULCPRIMARY:
@@ -112,9 +114,9 @@ GACTWR:
 		Weapon: RedEye2
 		LocalOffset: 543,0,1697
 	WithMuzzleOverlay:
-		RequiresCondition: tower.vulcan
+		RequiresCondition: !build-incomplete && tower.vulcan
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	LineBuildNode:
 		Types: turret
@@ -132,6 +134,10 @@ GACTWR:
 			tower.vulcan: tower.vulcan
 			tower.rocket: tower.rocket
 			tower.sam: tower.sam
+		Requirements:
+			tower.vulcan: !build-incomplete
+			tower.rocket: !build-incomplete
+			tower.sam: !build-incomplete
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 	Replacement:

@@ -40,13 +40,19 @@ GACNST:
 		ProductionType: Building
 	ProductionBar@Defense:
 		ProductionType: Defense
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@TOP:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-top
 	WithIdleOverlay@SIDE:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-side
 	WithIdleOverlay@FRONT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-front
 	WithBuildingPlacedOverlay:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
 	Selectable:
@@ -97,14 +103,20 @@ PROC:
 		Actor: HARV
 		SpawnOffset: 2,1
 		Facing: 160
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithIdleOverlay@REDLIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	WithDockedOverlay@FLAME:
+		RequiresCondition: !build-incomplete
 		Sequence: flame
 		Palette: effect
 	WithDockingOverlay@UNLOAD:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
@@ -148,11 +160,15 @@ GASILO:
 		FactionImages:
 			gdi: gasilo.gdi
 			nod: gasilo.nod
-	WithSpriteBody:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	WithSiloAnimation:
+		RequiresCondition: !build-incomplete
 	WithIdleOverlay@UNDERLAY:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	StoresResources:
 		PipColor: Green
