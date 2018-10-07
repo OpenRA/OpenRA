@@ -147,47 +147,54 @@ SPEN:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,-213,0
 		Facing: 96
 		ExitCell: -1,2
 		ProductionTypes: Submarine
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,-213,0
 		Facing: 160
 		ExitCell: 3,2
 		ProductionTypes: Submarine
 	Exit@3:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,0,0
 		Facing: 32
 		ExitCell: 0,0
 		ProductionTypes: Submarine
 	Exit@4:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,0,0
 		Facing: 224
 		ExitCell: 2,0
 		ProductionTypes: Submarine
 	Exit@b1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
 		ProductionTypes: Ship
 	Exit@b2:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
 		ProductionTypes: Ship
 	Exit@b3:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
 		ProductionTypes: Ship
 	Exit@b4:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
 		ProductionTypes: Ship
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Ship, Submarine
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -285,27 +292,30 @@ SYRD:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,1024,0
 		Facing: 160
 		ExitCell: 0,2
 		ProductionTypes: Ship, Boat
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,1024,0
 		Facing: 224
 		ExitCell: 2,2
 		ProductionTypes: Ship, Boat
 	Exit@3:
+		RequiresCondition: !being-captured
 		SpawnOffset: -1024,-1024,0
 		Facing: 96
 		ExitCell: 0,0
 		ProductionTypes: Ship, Boat
 	Exit@4:
+		RequiresCondition: !being-captured
 		SpawnOffset: 1024,-1024,0
 		Facing: 32
 		ExitCell: 2,0
 		ProductionTypes: Ship, Boat
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Ship, Boat
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -979,10 +989,10 @@ WEAP:
 		Sequence: build-top
 	RallyPoint:
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: 213,-128,0
 		ExitCell: 1,2
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Vehicle
 	ProvidesPrerequisite@allies:
 		Factions: allies, england, france, germany
@@ -1108,7 +1118,6 @@ FACT:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Building, Defense
 	Valued:
 		Cost: 2500
@@ -1305,13 +1314,13 @@ HPAD:
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
 		MoveIntoWorld: false
 		Facing: 224
 	RallyPoint:
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Aircraft, Helicopter
 	Reservable:
 	ProductionBar:
@@ -1395,12 +1404,12 @@ AFLD:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Exit@1:
+		RequiresCondition: !being-captured
 		ExitCell: 1,1
 		Facing: 192
 		MoveIntoWorld: false
 	RallyPoint:
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Aircraft, Plane
 	Reservable:
 	ProvidesPrerequisite@soviet:
@@ -1666,15 +1675,16 @@ BARR:
 	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -170,810,0
 		ExitCell: 1,2
 		ProductionTypes: Soldier, Infantry
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 		ProductionTypes: Soldier, Infantry
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1747,15 +1757,16 @@ KENN:
 	RallyPoint:
 		Offset: 0,2
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
 		ExitCell: 0,1
 		ProductionTypes: Dog, Infantry
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
 		ExitCell: -1,0
 		ProductionTypes: Dog, Infantry
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Infantry, Dog
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1806,15 +1817,16 @@ TENT:
 	WithBuildingBib:
 	RallyPoint:
 	Exit@1:
+		RequiresCondition: !being-captured
 		SpawnOffset: -42,810,0
 		ExitCell: 1,2
 		ProductionTypes: Soldier, Infantry
 	Exit@2:
+		RequiresCondition: !being-captured
 		SpawnOffset: -725,640,0
 		ExitCell: 0,2
 		ProductionTypes: Soldier, Infantry
 	Production:
-		PauseOnCondition: being-captured
 		Produces: Infantry, Soldier
 	PrimaryBuilding:
 		PrimaryCondition: primary
