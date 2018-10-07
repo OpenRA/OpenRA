@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
@@ -67,6 +68,11 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				for (var y = 0; y < frames[i].Size.Height; y++)
 					Array.Copy(png.Data, frameStart + y * png.Width, frames[i].Data, y * frames[i].Size.Width, frames[i].Size.Width);
 			}
+
+			metadata = new TypeDictionary
+			{
+				new EmbeddedSpritePalette(png.Palette.Select(x => (uint)x.ToArgb()).ToArray())
+			};
 
 			return true;
 		}

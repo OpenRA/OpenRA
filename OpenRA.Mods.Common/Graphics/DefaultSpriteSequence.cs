@@ -18,6 +18,26 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
+	public class EmbeddedSpritePalette
+	{
+		readonly uint[] filePalette = null;
+		readonly Dictionary<int, uint[]> framePalettes = null;
+
+		public EmbeddedSpritePalette(uint[] filePalette = null, Dictionary<int, uint[]> framePalettes = null)
+		{
+			this.filePalette = filePalette;
+			this.framePalettes = framePalettes;
+		}
+
+		public bool TryGetPaletteForFrame(int frame, out uint[] palette)
+		{
+			if (framePalettes == null || !framePalettes.TryGetValue(frame, out palette))
+				palette = filePalette;
+
+			return palette != null;
+		}
+	}
+
 	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
 		public Action<string> OnMissingSpriteError { get; set; }
@@ -92,6 +112,8 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ShadowZOffset { get; private set; }
 		public int[] Frames { get; private set; }
 		public Rectangle Bounds { get; private set; }
+
+		public readonly uint[] EmbeddedPalette;
 
 		protected virtual string GetSpriteSrc(ModData modData, TileSet tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
 		{
@@ -284,6 +306,18 @@ namespace OpenRA.Mods.Common.Graphics
 						var r = Rectangle.FromLTRB(cw - w, ch - h, cw + w, ch + h);
 						return new SpriteWithSecondaryData(s, ds.Sheet, r, ds.Channel);
 					}).ToArray();
+				}
+
+				var exportPalette = LoadField<string>(d, "EmbeddedPalette", null);
+				if (exportPalette != null)
+				{
+					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
+
+					var metadata = cache.FrameMetadata(src);
+					var i = Frames != null ? Frames[0] : Start;
+					var palettes = metadata != null ? metadata.GetOrDefault<EmbeddedSpritePalette>() : null;
+					if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPalette))
+						throw new YamlException("Cannot export palettes from {0}: frame {1} does not define an embedded palette".F(src, i));
 				}
 
 				var boundSprites = SpriteBounds(sprites, Frames, Start, Facings, Length, Stride, transpose);

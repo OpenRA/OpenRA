@@ -555,6 +555,7 @@
     <Compile Include="Traits\World\DomainIndex.cs" />
     <Compile Include="Traits\World\Locomotor.cs" />
     <Compile Include="Traits\World\JumpjetLocomotor.cs" />
+    <Compile Include="Traits\World\PaletteFromEmbeddedSpritePalette.cs" />
     <Compile Include="Traits\World\SubterraneanLocomotor.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
