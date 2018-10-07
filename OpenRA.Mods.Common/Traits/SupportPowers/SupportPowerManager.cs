@@ -153,13 +153,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Key;
 
 		public readonly List<SupportPower> Instances = new List<SupportPower>();
-		public readonly int TotalTime;
-		public int RemainingTime { get; private set; }
+		public readonly int TotalTicks;
+
+		protected int remainingSubTicks;
+		public int RemainingTicks { get { return remainingSubTicks / 100; } }
 		public bool Active { get; private set; }
 		public bool Disabled { get { return (!prereqsAvailable && !Manager.DevMode.AllTech) || !instancesEnabled || oneShotFired; } }
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
-		public bool Ready { get { return Active && RemainingTime == 0; } }
+		public bool Ready { get { return Active && RemainingTicks == 0; } }
 
 		bool instancesEnabled;
 		bool prereqsAvailable = true;
@@ -170,8 +172,8 @@ namespace OpenRA.Mods.Common.Traits
 		public SupportPowerInstance(string key, SupportPowerInfo info, SupportPowerManager manager)
 		{
 			Key = key;
-			TotalTime = info.ChargeInterval;
-			RemainingTime = info.StartFullyCharged ? 0 : info.ChargeInterval;
+			TotalTicks = info.ChargeInterval;
+			remainingSubTicks = info.StartFullyCharged ? 0 : TotalTicks * 100;
 
 			Manager = manager;
 		}
@@ -181,14 +183,14 @@ namespace OpenRA.Mods.Common.Traits
 			prereqsAvailable = available;
 
 			if (!available)
-				RemainingTime = TotalTime;
+				remainingSubTicks = TotalTicks * 100;
 		}
 
 		public virtual void Tick()
 		{
 			instancesEnabled = Instances.Any(i => !i.IsTraitDisabled);
 			if (!instancesEnabled)
-				RemainingTime = TotalTime;
+				remainingSubTicks = TotalTicks * 100;
 
 			Active = !Disabled && Instances.Any(i => !i.IsTraitPaused);
 			if (!Active)
@@ -197,18 +199,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (Active)
 			{
 				var power = Instances.First();
-				if (Manager.DevMode.FastCharge && RemainingTime > 25)
-					RemainingTime = 25;
+				if (Manager.DevMode.FastCharge && remainingSubTicks > 2500)
+					remainingSubTicks = 2500;
 
-				if (RemainingTime > 0)
-					--RemainingTime;
+				if (remainingSubTicks > 0)
+					remainingSubTicks = (remainingSubTicks - 100).Clamp(0, TotalTicks * 100);
+
 				if (!notifiedCharging)
 				{
 					power.Charging(power.Self, Key);
 					notifiedCharging = true;
 				}
 
-				if (RemainingTime == 0
+				if (RemainingTicks == 0
 					&& !notifiedReady)
 				{
 					power.Charged(power.Self, Key);
@@ -248,7 +251,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Note: order.Subject is the *player* actor
 			power.Activate(power.Self, order, Manager);
-			RemainingTime = TotalTime;
+			remainingSubTicks = TotalTicks * 100;
 			notifiedCharging = notifiedReady = false;
 
 			if (Info.OneShot)

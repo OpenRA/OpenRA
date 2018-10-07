@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			texts = displayedPowers.Select(p =>
 			{
-				var time = WidgetUtils.FormatTime(p.RemainingTime, false, timestep);
+				var time = WidgetUtils.FormatTime(p.RemainingTicks, false, timestep);
 				var text = Format.F(p.Info.Description, time);
 				var self = p.Instances[0].Self;
 				var playerColor = self.Owner.Color;
