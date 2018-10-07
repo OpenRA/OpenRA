@@ -125,6 +125,11 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
+		public virtual SupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
+		{
+			return new SupportPowerInstance(key, info, manager);
+		}
+
 		public virtual void Charging(Actor self, string key)
 		{
 			Game.Sound.PlayToPlayer(SoundType.UI, self.Owner, Info.BeginChargeSound);
