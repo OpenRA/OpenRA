@@ -34,11 +34,15 @@
 		G: 255
 		B: 255
 		A: 128
-	PaletteFromR8@moveflash:
+	PaletteFromEmbeddedSpritePalette@moveflash-base:
+		Name: moveflash-base
+		Image: moveflsh
+		Sequence: idle
+	PaletteFromScaledPalette@moveflash:
 		Name: moveflash
-		Filename: DATA.R8
-		Offset: 2652107
-		InvertColor: true
+		BasePalette: moveflash-base
+		Scale: -1
+		Offset: 255
 		AllowModifiers: false
 	PaletteFromRGBA@disabled:
 		Name: disabled
@@ -59,15 +63,13 @@
 		BasePalette: d2k
 		AllowModifiers: false
 		Offset: -64
-	PaletteFromR8@shroud:
+	PaletteFromEmbeddedSpritePalette@shroud:
 		Name: shroud
-		Filename: DATA.R8
-		Offset: 12007
-	FogPaletteFromR8@fog:
+		Image: shroud
+		Sequence: palette
+	D2kFogPalette@fog:
 		Name: fog
-		Filename: DATA.R8
-		Offset: 12007
-		InvertColor: true
+		BasePalette: shroud
 	PlayerColorPalette:
 		BasePalette: d2k
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
