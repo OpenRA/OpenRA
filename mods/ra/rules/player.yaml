@@ -112,7 +112,6 @@ Player:
 		Enabled: False
 		DisplayOrder: 9
 		Prerequisites: global-reusable-engineers
-
 	FrozenActorLayer:
 	BaseAttackNotifier:
 	PlayerStatistics:
