@@ -253,7 +253,7 @@ saboteur:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
-		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Description: Sneaky infantry, armed with explosives.\nCan be deployed to become invisible for a limited time.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Valued:
 		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
@@ -267,13 +267,29 @@ saboteur:
 		Flashes: 0
 		EnterBehaviour: Suicide
 	-RevealOnFire:
+	GrantConditionOnDeploy:
+		PauseOnCondition: !charged
+		UndeployOnCondition: !discharging
+		DeployedCondition: deployed
+		DeploySound: STEALTH1.WAV
+	GrantConditionAfterDelay@CHARGE:
+		RequiresCondition: !deployed
+		Condition: charged
+		Delay: 1250
+	GrantTimedCondition@DISCHARGE:
+		RequiresCondition: deployed
+		Condition: discharging
+		Duration: 375
+	TimedConditionBar@DISCHARGE:
+		Condition: discharging
+		Color: FF00FFFF
 	Cloak:
-		InitialDelay: 85
-		CloakDelay: 85
-		CloakSound: STEALTH1.WAV
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
-		IsPlayerPalette: true
+		RequiresCondition: deployed
 		PauseOnCondition: cloak-force-disabled
+		InitialDelay: 0
+		CloakDelay: 85
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		IsPlayerPalette: true
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

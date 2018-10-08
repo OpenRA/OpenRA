@@ -180,7 +180,7 @@
 	Selectable:
 		Bounds: 32,32
 	Targetable:
-		TargetTypes: Ground, Vehicle, C4
+		TargetTypes: Ground, Vehicle
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
@@ -193,7 +193,6 @@
 		Voice: Guard
 	Guardable:
 	WithFacingSpriteBody:
-	Demolishable:
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	Voiced:
