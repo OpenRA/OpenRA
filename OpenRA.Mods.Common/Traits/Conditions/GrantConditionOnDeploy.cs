@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -53,6 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Skip make/deploy animation?")]
 		public readonly bool SkipMakeAnimation = false;
+
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition to force unit to undeploy, if deployed.")]
+		public readonly BooleanExpression UndeployOnCondition = null;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
@@ -113,6 +118,21 @@ namespace OpenRA.Mods.Common.Traits
 					Undeploy(true);
 					break;
 			}
+		}
+
+		public override IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
+
+			if (Info.UndeployOnCondition != null)
+				yield return new VariableObserver(UndeployConditionsChanged, Info.UndeployOnCondition.Variables);
+		}
+
+		void UndeployConditionsChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			if (Info.UndeployOnCondition.Evaluate(conditions))
+				Undeploy();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
