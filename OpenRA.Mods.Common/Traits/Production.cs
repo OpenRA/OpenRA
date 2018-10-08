@@ -119,14 +119,14 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		protected virtual ExitInfo SelectExit(Actor self, ActorInfo producee, string productionType, Func<ExitInfo, bool> p)
+		protected virtual Exit SelectExit(Actor self, ActorInfo producee, string productionType, Func<Exit, bool> p)
 		{
-			return self.RandomExitOrDefault(productionType, p);
+			return self.RandomExitOrDefault(self.World, productionType, p);
 		}
 
-		protected ExitInfo SelectExit(Actor self, ActorInfo producee, string productionType)
+		protected Exit SelectExit(Actor self, ActorInfo producee, string productionType)
 		{
-			return SelectExit(self, producee, productionType, e => CanUseExit(self, producee, e));
+			return SelectExit(self, producee, productionType, e => CanUseExit(self, producee, e.Info));
 		}
 
 		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (exit != null || self.OccupiesSpace == null)
 			{
-				DoProduction(self, producee, exit, productionType, inits);
+				DoProduction(self, producee, exit.Info, productionType, inits);
 
 				return true;
 			}
