@@ -67,17 +67,11 @@ HPAD:
 AFLD.Ukraine:
 	-AirstrikePower@spyplane:
 
-CHAN:
-	Infiltrates:
-		Types: Mission Objectives
-
 ATEK:
 	Buildable:
 		Prerequisites: ~disabled
 	GpsPower:
 		ChargeInterval: 15000
-	Targetable:
-		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
 	-Sellable:
 
 PDOX:

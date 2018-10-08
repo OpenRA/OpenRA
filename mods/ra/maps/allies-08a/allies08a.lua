@@ -72,8 +72,7 @@ CreateScientists = function()
 			end
 		end)
 	end)
- end
-
+end
 
 FinishTimer = function()
 	for i = 0, 5 do
