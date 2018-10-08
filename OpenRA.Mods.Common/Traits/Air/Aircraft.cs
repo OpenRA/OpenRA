@@ -750,8 +750,8 @@ namespace OpenRA.Mods.Common.Traits
 
 						Action enter = () =>
 						{
-							var exit = targetActor.Info.FirstExitOrDefault(null);
-							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
+							var exit = targetActor.FirstExitOrDefault(null);
+							var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
 							self.QueueActivity(new HeliFly(self, Target.FromPos(targetActor.CenterPosition + offset)));
 							self.QueueActivity(new Turn(self, Info.InitialFacing));

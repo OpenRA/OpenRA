@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
-	public class ExitInfo : TraitInfo<Exit>, Requires<IOccupySpaceInfo>
+	public class ExitInfo : ConditionalTraitInfo, Requires<IOccupySpaceInfo>
 	{
 		[Desc("Offset at which that the exiting actor is spawned relative to the center of the producing actor.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
@@ -34,41 +34,48 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;
+
+		public override object Create(ActorInitializer init) { return new Exit(init, this); }
 	}
 
-	public class Exit { }
+	public class Exit : ConditionalTrait<ExitInfo>
+	{
+		public Exit(ActorInitializer init, ExitInfo info)
+			: base(info) { }
+	}
 
 	public static class ExitExts
 	{
-		public static ExitInfo FirstExitOrDefault(this ActorInfo info, string productionType = null)
+		public static Exit FirstExitOrDefault(this Actor actor, string productionType = null)
 		{
-			var all = info.TraitInfos<ExitInfo>();
+			var all = actor.TraitsImplementing<Exit>()
+				.Where(Exts.IsTraitEnabled);
+
 			if (string.IsNullOrEmpty(productionType))
-				return all.FirstOrDefault(e => e.ProductionTypes.Count == 0);
-			return all.FirstOrDefault(e => e.ProductionTypes.Count == 0 || e.ProductionTypes.Contains(productionType));
+				return all.FirstOrDefault(e => e.Info.ProductionTypes.Count == 0);
+
+			return all.FirstOrDefault(e => e.Info.ProductionTypes.Count == 0 || e.Info.ProductionTypes.Contains(productionType));
 		}
 
-		public static IEnumerable<ExitInfo> Exits(this ActorInfo info, string productionType = null)
+		public static IEnumerable<Exit> Exits(this Actor actor, string productionType = null)
 		{
-			var all = info.TraitInfos<ExitInfo>();
+			var all = actor.TraitsImplementing<Exit>()
+				.Where(Exts.IsTraitEnabled);
+
 			if (string.IsNullOrEmpty(productionType))
-				return all.Where(e => e.ProductionTypes.Count == 0);
-			return all.Where(e => e.ProductionTypes.Count == 0 || e.ProductionTypes.Contains(productionType));
+				return all.Where(e => e.Info.ProductionTypes.Count == 0);
+
+			return all.Where(e => e.Info.ProductionTypes.Count == 0 || e.Info.ProductionTypes.Contains(productionType));
 		}
 
-		public static ExitInfo RandomExitOrDefault(this ActorInfo info, World world, string productionType, Func<ExitInfo, bool> p = null)
+		public static Exit RandomExitOrDefault(this Actor actor, World world, string productionType, Func<Exit, bool> p = null)
 		{
-			var allOfType = Exits(info, productionType);
+			var allOfType = Exits(actor, productionType);
 			if (!allOfType.Any())
 				return null;
 
 			var shuffled = allOfType.Shuffle(world.SharedRandom);
 			return p != null ? shuffled.FirstOrDefault(p) : shuffled.First();
-		}
-
-		public static ExitInfo RandomExitOrDefault(this Actor self, string productionType, Func<ExitInfo, bool> p = null)
-		{
-			return RandomExitOrDefault(self.Info, self.World, productionType, p);
 		}
 	}
 }
