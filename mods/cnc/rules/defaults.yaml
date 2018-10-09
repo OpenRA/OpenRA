@@ -233,7 +233,8 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-		RequiresCondition: cloak-crate-collected && !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
+		RequiresCondition: cloak-crate-collected
 	ExternalCondition@CLOAK:
 		Condition: cloak-crate-collected
 	GrantConditionOnDamageState@UNCLOAK:

@@ -612,7 +612,7 @@ STNK:
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
