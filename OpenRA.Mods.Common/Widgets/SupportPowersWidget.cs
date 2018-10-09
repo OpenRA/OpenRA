@@ -215,7 +215,15 @@ namespace OpenRA.Mods.Common.Widgets
 			// Overlay
 			foreach (var p in icons.Values)
 			{
-				if (p.Power.Ready)
+				var customText = p.Power.IconOverlayTextOverride();
+				if (customText != null)
+				{
+					var customOffset = iconOffset - overlayFont.Measure(customText) / 2;
+					overlayFont.DrawTextWithContrast(customText,
+						p.Pos + customOffset,
+						Color.White, Color.Black, 1);
+				}
+				else if (p.Power.Ready)
 					overlayFont.DrawTextWithContrast(ReadyText,
 						p.Pos + readyOffset,
 						Color.White, Color.Black, 1);
