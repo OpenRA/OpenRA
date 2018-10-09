@@ -81,7 +81,7 @@ TRUK.Hijackable:
 	Buildable:
 		Prerequisites: ~disabled
 	Mobile:
-		RequiresCondition: mobile
+		RequiresCondition: mobile && !being-captured
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
