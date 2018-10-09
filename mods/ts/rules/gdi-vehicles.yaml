@@ -13,7 +13,7 @@ APC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		RequiresCondition: !empdisable && !loading
+		RequiresCondition: !empdisable && !loading && !being-captured
 		Locomotor: amphibious
 	Health:
 		HP: 20000
@@ -63,7 +63,6 @@ HVR:
 	Mobile:
 		Speed: 99
 		Locomotor: hover
-		RequiresCondition: !empdisable
 	Health:
 		HP: 23000
 	Armor:
@@ -312,7 +311,7 @@ JUGG:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 5
-		RequiresCondition: !empdisable && undeployed
+		RequiresCondition: !empdisable && undeployed && !being-captured
 		AlwaysConsiderTurnAsMove: true
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
