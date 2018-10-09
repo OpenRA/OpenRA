@@ -105,13 +105,6 @@ namespace OpenRA.Mods.Common.Traits
 				Powers[order.OrderString].Activate(order);
 		}
 
-		// Deprecated. Remove after SupportPowerBinWidget is removed.
-		public void Target(string key)
-		{
-			if (Powers.ContainsKey(key))
-				Powers[key].Target();
-		}
-
 		static readonly SupportPowerInstance[] NoInstances = { };
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
@@ -259,6 +252,16 @@ namespace OpenRA.Mods.Common.Traits
 				PrerequisitesAvailable(false);
 				oneShotFired = true;
 			}
+		}
+
+		public virtual string IconOverlayTextOverride()
+		{
+			return null;
+		}
+
+		public virtual string TooltipTimeTextOverride()
+		{
+			return null;
 		}
 	}
 

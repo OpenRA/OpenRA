@@ -59,11 +59,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				descLabel.Text = sp.Info.LongDesc.Replace("\\n", "\n");
 				var descSize = descFont.Measure(descLabel.Text);
 
-				var remaining = WidgetUtils.FormatTime(sp.RemainingTicks, world.Timestep);
-				var total = WidgetUtils.FormatTime(sp.Info.ChargeInterval, world.Timestep);
-				timeLabel.Text = "{0} / {1}".F(remaining, total);
-				var timeSize = timeFont.Measure(timeLabel.Text);
+				var customLabel = sp.TooltipTimeTextOverride();
+				if (customLabel == null)
+				{
+					var remaining = WidgetUtils.FormatTime(sp.RemainingTicks, world.Timestep);
+					var total = WidgetUtils.FormatTime(sp.Info.ChargeInterval, world.Timestep);
+					timeLabel.Text = "{0} / {1}".F(remaining, total);
+				}
+				else
+					timeLabel.Text = customLabel;
 
+				var timeSize = timeFont.Measure(timeLabel.Text);
 				var hotkeyWidth = 0;
 				hotkeyLabel.Visible = hotkey.IsValid();
 				if (hotkeyLabel.Visible)
