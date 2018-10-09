@@ -104,6 +104,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MergeAttackPlaneAndHeli(),
 				new RemovedDemolishLocking(),
 				new RequireProductionType(),
+				new CloakRequiresConditionToPause(),
 			})
 		};
 

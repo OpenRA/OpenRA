@@ -591,6 +591,7 @@
     <Compile Include="Traits\ActorSpawner.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemovedDemolishLocking.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RenameCrateActionNotification.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\CloakRequiresConditionToPause.cs" />
     <Compile Include="UpdateRules\Rules\20180923\MergeCaptureTraits.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemovedNotifyBuildComplete.cs" />
     <Compile Include="UpdateRules\Rules\20180923\ChangeTakeOffSoundAndLandingSound.cs" />
