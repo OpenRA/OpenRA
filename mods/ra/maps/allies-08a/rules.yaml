@@ -72,6 +72,8 @@ ATEK:
 		Prerequisites: ~disabled
 	GpsPower:
 		ChargeInterval: 15000
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
 
 PDOX:
@@ -80,6 +82,8 @@ PDOX:
 		Prerequisites: ~disabled
 	ChronoshiftPower@chronoshift:
 		Prerequisites: ~disabled
+	CaptureManager:
+		-BeingCapturedCondition:
 	-Sellable:
 
 IRON:
