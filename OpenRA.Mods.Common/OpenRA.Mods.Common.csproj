@@ -587,6 +587,7 @@
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="Traits\World\ActorSpawnManager.cs" />
     <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\RenameCrateActionNotification.cs" />
     <Compile Include="UpdateRules\Rules\20180923\MergeCaptureTraits.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemovedNotifyBuildComplete.cs" />
     <Compile Include="UpdateRules\Rules\20180923\ChangeTakeOffSoundAndLandingSound.cs" />
