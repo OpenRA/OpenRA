@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Activate(Actor collector)
 		{
-			Game.Sound.PlayToPlayer(SoundType.World, collector.Owner, Info.Sound);
+			Game.Sound.Play(SoundType.World, Info.Sound, self.CenterPosition);
 
 			if (!string.IsNullOrEmpty(Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, collector.Owner, "Speech",
