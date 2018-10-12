@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference] public readonly string Palette = "effect";
 
 		[Desc("Audio clip to play when the crate is collected.")]
-		public readonly string Notification = null;
+		public readonly string Sound = null;
 
 		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
 		public readonly int TimeDelay = 0;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Activate(Actor collector)
 		{
-			Game.Sound.PlayToPlayer(SoundType.World, collector.Owner, Info.Notification);
+			Game.Sound.PlayToPlayer(SoundType.World, collector.Owner, Info.Sound);
 
 			if (Info.Effect != null)
 				collector.World.AddFrameEndTask(w => w.Add(new CrateEffect(collector, Info.Effect, Info.Palette)));
