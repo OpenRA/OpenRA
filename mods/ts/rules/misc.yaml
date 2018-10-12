@@ -89,21 +89,21 @@ CRATE:
 		SelectionShares: 5
 		Effect: stealth
 		Condition: crate-cloak
-		Notification: cloak5.aud
+		Sound: cloak5.aud
 	GrantExternalConditionCrateAction@firepower:
 		SelectionShares: 5
 		Effect: firepower
 		Condition: crate-firepower
-		Notification: 00-i070.aud
+		Notification: UnitFirepowerUpgraded
 	GrantExternalConditionCrateAction@armor:
 		SelectionShares: 5
 		Effect: armor
 		Condition: crate-damage
-		Notification: 00-i068.aud
+		Notification: UnitArmourUpgraded
 	GrantExternalConditionCrateAction@speed:
 		SelectionShares: 5
 		Condition: crate-speed
-		Notification: 00-i080.aud
+		Notification: UnitSpeedUpgraded
 	MapEditorData:
 		Categories: System
 
