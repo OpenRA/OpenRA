@@ -33,7 +33,7 @@ CRATE:
 		SelectionShares: 5
 		Effect: hide-map
 	HealUnitsCrateAction:
-		Notification: heal2.aud
+		Sound: heal2.aud
 		SelectionShares: 2
 		Effect: heal
 	RevealMapCrateAction:
@@ -105,7 +105,7 @@ CRATE:
 	GrantExternalConditionCrateAction@invuln:
 		SelectionShares: 5
 		Effect: invuln
-		Notification: ironcur9.aud
+		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 600
 
@@ -125,7 +125,7 @@ HEALCRATE:
 	Tooltip:
 		Name: Heal Crate
 	HealUnitsCrateAction:
-		Notification: heal2.aud
+		Sound: heal2.aud
 		SelectionShares: 1
 		Effect: heal
 
