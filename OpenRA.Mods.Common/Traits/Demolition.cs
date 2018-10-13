@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice string when planting explosive charges.")]
 		[VoiceReference] public readonly string Voice = "Action";
 
+		public readonly Stance TargetStances = Stance.Enemy | Stance.Neutral;
+		public readonly Stance ForceTargetStances = Stance.Enemy | Stance.Neutral | Stance.Ally;
+
 		public readonly string Cursor = "c4";
 
 		public object Create(ActorInitializer init) { return new Demolition(this); }
@@ -56,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DemolitionOrderTargeter(info.Cursor); }
+			get { yield return new DemolitionOrderTargeter(info); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -95,8 +98,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		class DemolitionOrderTargeter : UnitOrderTargeter
 		{
-			public DemolitionOrderTargeter(string cursor)
-				: base("C4", 6, cursor, true, false) { }
+			readonly DemolitionInfo info;
+
+			public DemolitionOrderTargeter(DemolitionInfo info)
+				: base("C4", 6, info.Cursor, true, true)
+			{
+				this.info = info;
+			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
@@ -104,11 +112,25 @@ namespace OpenRA.Mods.Common.Traits
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
+				var stance = self.Owner.Stances[target.Owner];
+				if (!info.TargetStances.HasStance(stance) && !modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				if (!info.ForceTargetStances.HasStance(stance) && modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
 				return target.TraitsImplementing<IDemolishable>().Any(i => i.IsValidTarget(target, self));
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
+				var stance = self.Owner.Stances[target.Owner];
+				if (!info.TargetStances.HasStance(stance) && !modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				if (!info.ForceTargetStances.HasStance(stance) && modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
 				return target.Info.TraitInfos<IDemolishableInfo>().Any(i => i.IsValidTarget(target.Info, self));
 			}
 		}
