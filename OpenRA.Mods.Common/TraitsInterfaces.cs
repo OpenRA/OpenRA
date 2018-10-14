@@ -358,6 +358,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IGainsExperienceModifier { int GetGainsExperienceModifier(); }
 
 	[RequireExplicitImplementation]
+	public interface ICreatesShroudModifier { int GetCreatesShroudModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IRevealsShroudModifier { int GetRevealsShroudModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface ICustomMovementLayer
 	{
 		byte Index { get; }
