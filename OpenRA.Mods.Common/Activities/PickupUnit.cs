@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					if (targetPosition.Z != self.CenterPosition.Z)
 					{
-						innerActivity = new HeliLand(self, false, self.World.Map.DistanceAboveTerrain(targetPosition));
+						innerActivity = new Land(self, false, self.World.Map.DistanceAboveTerrain(targetPosition));
 						return this;
 					}
 

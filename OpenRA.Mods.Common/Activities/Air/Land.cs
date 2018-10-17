@@ -19,28 +19,54 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly Aircraft aircraft;
+		readonly WDist landAltitude;
+		readonly bool requireSpace;
 
 		bool soundPlayed;
 
+		public Land(Actor self, bool requireSpace = false)
+			: this(self, requireSpace, WDist.Zero) { }
+
 		public Land(Actor self, Target t)
+			: this(self, false, WDist.Zero)
 		{
 			target = t;
+		}
+
+		public Land(Actor self, bool requireSpace, WDist landAltitude)
+		{
 			aircraft = self.Trait<Aircraft>();
+			this.requireSpace = requireSpace;
+			this.landAltitude = landAltitude != WDist.Zero ? landAltitude : aircraft.Info.LandAltitude;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (!target.IsValidFor(self))
-				Cancel(self);
-
 			if (IsCanceled)
 				return NextActivity;
 
-			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
+			if (aircraft.Info.VTOL)
 			{
-				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
-				soundPlayed = true;
+				if (requireSpace && !aircraft.CanLand(self.Location))
+					return this;
+
+				if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
+					PlayLandingSound(self);
+
+				if (HeliFly.AdjustAltitude(self, aircraft, landAltitude))
+					return this;
+
+				return NextActivity;
 			}
+
+			if (!target.IsValidFor(self))
+			{
+				Cancel(self);
+				return NextActivity;
+			}
+
+			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
+				PlayLandingSound(self);
 
 			var d = target.CenterPosition - self.CenterPosition;
 
@@ -56,6 +82,12 @@ namespace OpenRA.Mods.Common.Activities
 			Fly.FlyToward(self, aircraft, d.Yaw.Facing, landingAlt);
 
 			return this;
+		}
+
+		void PlayLandingSound(Actor self)
+		{
+			Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
+			soundPlayed = true;
 		}
 	}
 }

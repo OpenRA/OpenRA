@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (aircraft.Info.TurnToDock)
 					landingProcedures.Add(new Turn(self, initialFacing));
 
-				landingProcedures.Add(new HeliLand(self, false));
+				landingProcedures.Add(new Land(self, false));
 				landingProcedures.Add(new ResupplyAircraft(self));
 				if (!abortOnResupply)
 					landingProcedures.Add(NextActivity);

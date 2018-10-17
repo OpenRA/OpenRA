@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Turn(self, Facing));
 
 			if (self.Info.HasTraitInfo<AircraftInfo>())
-				QueueChild(new HeliLand(self, true));
+				QueueChild(new Land(self, true));
 		}
 
 		public override Activity Tick(Actor self)

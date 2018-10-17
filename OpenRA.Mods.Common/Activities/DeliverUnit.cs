@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Activities
 					var carryablePosition = self.CenterPosition + body.LocalToWorld(localOffset);
 					if (self.World.Map.DistanceAboveTerrain(carryablePosition) != WDist.Zero)
 					{
-						innerActivity = new HeliLand(self, false, -new WDist(carryall.CarryableOffset.Z));
+						innerActivity = new Land(self, false, -new WDist(carryall.CarryableOffset.Z));
 						return this;
 					}
 
