@@ -54,6 +54,11 @@ namespace OpenRA.Mods.Common.Activities
 				.ClosestTo(self);
 		}
 
+		int CalculateTurnRadius(int speed)
+		{
+			return 45 * speed / aircraftInfo.TurnSpeed;
+		}
+
 		void Calculate(Actor self)
 		{
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
@@ -170,11 +175,6 @@ namespace OpenRA.Mods.Common.Activities
 				landingProcedures.Add(NextActivity);
 
 			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
-		}
-
-		int CalculateTurnRadius(int speed)
-		{
-			return 45 * speed / aircraftInfo.TurnSpeed;
 		}
 	}
 }
