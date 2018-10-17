@@ -57,6 +57,21 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 		}
 
+		public static bool AdjustAltitude(Actor self, Aircraft aircraft, WDist targetAltitude)
+		{
+			targetAltitude = new WDist(aircraft.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+
+			var altitude = aircraft.CenterPosition.Z;
+			if (altitude == targetAltitude.Length)
+				return false;
+
+			var delta = aircraft.Info.AltitudeVelocity.Length;
+			var dz = (targetAltitude.Length - altitude).Clamp(-delta, delta);
+			aircraft.SetPosition(self, aircraft.CenterPosition + new WVec(0, 0, dz));
+
+			return true;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.

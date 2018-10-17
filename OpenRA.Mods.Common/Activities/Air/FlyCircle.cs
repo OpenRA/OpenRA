@@ -44,9 +44,23 @@ namespace OpenRA.Mods.Common.Activities
 			else if (remainingTicks == 0)
 				return NextActivity;
 
-			// We can't possibly turn this fast
-			var desiredFacing = aircraft.Facing + 64;
-			Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, turnSpeedOverride);
+			if (aircraft.Info.CanHover)
+			{
+				if (Fly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+					return this;
+
+				var move = aircraft.FlyStep(aircraft.Facing);
+				aircraft.SetPosition(self, aircraft.CenterPosition + move);
+
+				var desiredFacing = aircraft.Facing + 64;
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeedOverride);
+			}
+			else
+			{
+				// We can't possibly turn this fast
+				var desiredFacing = aircraft.Facing + 64;
+				Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, turnSpeedOverride);
+			}
 
 			return this;
 		}
