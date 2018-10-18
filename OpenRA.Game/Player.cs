@@ -113,6 +113,18 @@ namespace OpenRA
 			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}
 
+		static string ChooseBot(World world, string botType)
+		{
+			if (botType == null || botType != "random")
+				return botType;
+
+			var realBots = world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>()
+				.Where(b => !b.Type.Equals("random"))
+				.ToList();
+
+			return realBots.Random(world.SharedRandom).Type;
+		}
+
 		public Player(World world, Session.Client client, PlayerReference pr)
 		{
 			World = world;
@@ -135,7 +147,7 @@ namespace OpenRA
 				else
 					PlayerName = client.Name;
 
-				BotType = client.Bot;
+				BotType = ChooseBot(world, client.Bot);
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
 				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
 			}
