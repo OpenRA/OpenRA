@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class ReturnToBase : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly AircraftInfo aircraftInfo;
 		readonly RepairableInfo repairableInfo;
 		readonly Rearmable rearmable;
 		readonly bool alwaysLand;
@@ -36,7 +35,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.alwaysLand = alwaysLand;
 			this.abortOnResupply = abortOnResupply;
 			aircraft = self.Trait<Aircraft>();
-			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 		}
@@ -56,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		int CalculateTurnRadius(int speed)
 		{
-			return 45 * speed / aircraftInfo.TurnSpeed;
+			return 45 * speed / aircraft.Info.TurnSpeed;
 		}
 
 		void Calculate(Actor self)
@@ -68,10 +66,10 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			var landPos = dest.CenterPosition;
-			var altitude = aircraftInfo.CruiseAltitude.Length;
+			var altitude = aircraft.Info.CruiseAltitude.Length;
 
 			// Distance required for descent.
-			var landDistance = altitude * 1024 / aircraftInfo.MaximumPitch.Tan();
+			var landDistance = altitude * 1024 / aircraft.Info.MaximumPitch.Tan();
 
 			// Land towards the east
 			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
@@ -155,7 +153,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			List<Activity> landingProcedures = new List<Activity>();
 
-			var turnRadius = CalculateTurnRadius(aircraftInfo.Speed);
+			var turnRadius = CalculateTurnRadius(aircraft.Info.Speed);
 
 			landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
 			landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
