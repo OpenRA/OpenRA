@@ -1,4 +1,9 @@
 Player:
+	HackyAI@Random:
+		Name: Random
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:
 	HackyAI@Cabal:
 		Name: Cabal
 		Type: cabal

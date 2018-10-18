@@ -1,4 +1,9 @@
 Player:
+	HackyAI@Random:
+		Name: Random
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:
 	HackyAI@Omnius:
 		Name: Omnius
 		Type: omnius

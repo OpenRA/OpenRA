@@ -1,4 +1,9 @@
 Player:
+	HackyAI@RandomAI:
+		Name: Random AI
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:
 	HackyAI@RushAI:
 		Name: Rush AI
 		Type: rush

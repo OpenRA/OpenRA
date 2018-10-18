@@ -1,4 +1,9 @@
 Player:
+	HackyAI@RandomAI:
+		Name: Random AI
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:
 	HackyAI@TestAI:
 		Name: Test AI
 		Type: test
