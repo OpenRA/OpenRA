@@ -563,10 +563,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else if (action == IdleAircraftAction.Circle)
 				{
-					if (Info.CanHover)
-						yield return new HeliFlyCircle(self, IdleTurnSpeed);
-					else
-						yield return new FlyCircle(self, -1, IdleTurnSpeed);
+					yield return new FlyCircle(self, -1, IdleTurnSpeed);
 
 					yield break;
 				}
@@ -649,34 +646,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough)
 		{
-			if (!Info.CanHover)
-				return new Fly(self, Target.FromCell(self.World, cell));
-
-			return new HeliFly(self, Target.FromCell(self.World, cell));
+			return new Fly(self, Target.FromCell(self.World, cell));
 		}
 
 		public Activity MoveTo(CPos cell, Actor ignoreActor)
 		{
-			if (!Info.CanHover)
-				return new Fly(self, Target.FromCell(self.World, cell));
-
-			return new HeliFly(self, Target.FromCell(self.World, cell));
+			return new Fly(self, Target.FromCell(self.World, cell));
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range)
 		{
-			if (!Info.CanHover)
-				return new Fly(self, target, WDist.Zero, range);
-
-			return new HeliFly(self, target, WDist.Zero, range);
+			return new Fly(self, target, WDist.Zero, range);
 		}
 
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
 		{
-			if (!Info.CanHover)
-				return new Fly(self, target, minRange, maxRange);
-
-			return new HeliFly(self, target, minRange, maxRange);
+			return new Fly(self, target, minRange, maxRange);
 		}
 
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange)
@@ -692,7 +677,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
-			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
+			return new Fly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
 		public Activity MoveToTarget(Actor self, Target target)
@@ -700,7 +685,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
 
-			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
+			return new Fly(self, target);
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)
@@ -711,14 +696,9 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			if (!Info.CanHover)
-				return ActivityUtils.SequenceActivities(
-					new CallFunc(() => SetVisualPosition(self, fromPos)),
-					new Fly(self, Target.FromPos(toPos)));
-
 			return ActivityUtils.SequenceActivities(
 				new CallFunc(() => SetVisualPosition(self, fromPos)),
-				new HeliFly(self, Target.FromPos(toPos)));
+				new Fly(self, Target.FromPos(toPos)));
 		}
 
 		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
@@ -805,13 +785,9 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				var target = Target.FromCell(self.World, cell);
-
 				self.SetTargetLine(target, Color.Green);
 
-				if (!Info.CanHover)
-					self.QueueActivity(order.Queued, new Fly(self, target));
-				else
-					self.QueueActivity(order.Queued, new HeliFly(self, target));
+				self.QueueActivity(order.Queued, new Fly(self, target));
 			}
 			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
 			{

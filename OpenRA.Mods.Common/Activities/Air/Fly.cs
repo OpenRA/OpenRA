@@ -90,26 +90,63 @@ namespace OpenRA.Mods.Common.Activities
 				soundPlayed = true;
 			}
 
-			// Inside the target annulus, so we're done
-			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange);
-			var insideMinRange = minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange);
-			if (insideMaxRange && !insideMinRange)
-				return NextActivity;
+			if (aircraft.Info.CanHover)
+			{
+				if (AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+					return this;
 
-			var d = target.CenterPosition - self.CenterPosition;
+				var pos = target.CenterPosition;
 
-			// The next move would overshoot, so consider it close enough
-			var move = aircraft.FlyStep(aircraft.Facing);
-			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
-				return NextActivity;
+				// Rotate towards the target
+				var dist = pos - self.CenterPosition;
+				var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : aircraft.Facing;
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+				var move = aircraft.FlyStep(desiredFacing);
 
-			// Don't turn until we've reached the cruise altitude
-			var desiredFacing = d.Yaw.Facing;
-			var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
-			if (aircraft.CenterPosition.Z < targetAltitude)
-				desiredFacing = aircraft.Facing;
+				// Inside the minimum range, so reverse
+				if (minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange))
+				{
+					aircraft.SetPosition(self, aircraft.CenterPosition - move);
+					return this;
+				}
 
-			FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+				// Inside the maximum range, so we're done
+				if (maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange))
+					return NextActivity;
+
+				// The next move would overshoot, so just set the final position
+				if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
+				{
+					var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
+					aircraft.SetPosition(self, pos + new WVec(0, 0, targetAltitude - pos.Z));
+					return NextActivity;
+				}
+
+				aircraft.SetPosition(self, aircraft.CenterPosition + move);
+			}
+			else
+			{
+				// Inside the target annulus, so we're done
+				var insideMaxRange = maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange);
+				var insideMinRange = minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange);
+				if (insideMaxRange && !insideMinRange)
+					return NextActivity;
+
+				var d = target.CenterPosition - self.CenterPosition;
+
+				// The next move would overshoot, so consider it close enough
+				var move = aircraft.FlyStep(aircraft.Facing);
+				if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
+					return NextActivity;
+
+				// Don't turn until we've reached the cruise altitude
+				var desiredFacing = d.Yaw.Facing;
+				var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
+				if (aircraft.CenterPosition.Z < targetAltitude)
+					desiredFacing = aircraft.Facing;
+
+				FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+			}
 
 			return this;
 		}

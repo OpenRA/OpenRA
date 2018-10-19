@@ -19,22 +19,14 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class AircraftProperties : ScriptActorProperties, Requires<AircraftInfo>
 	{
-		readonly AircraftInfo aircraftInfo;
-
 		public AircraftProperties(ScriptContext context, Actor self)
-			: base(context, self)
-		{
-			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
-		}
+			: base(context, self) { }
 
 		[ScriptActorPropertyActivity]
 		[Desc("Fly within the cell grid.")]
 		public void Move(CPos cell)
 		{
-			if (!aircraftInfo.CanHover)
-				Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
-			else
-				Self.QueueActivity(new HeliFly(Self, Target.FromCell(Self.World, cell)));
+			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 		}
 
 		[ScriptActorPropertyActivity]

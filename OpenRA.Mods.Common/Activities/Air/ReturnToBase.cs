@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Activities
 
 							var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
-							return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
+							return ActivityUtils.SequenceActivities(new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
 						}
 
 						return this;
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Activities
 				var exit = dest.FirstExitOrDefault(null);
 				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
-				landingProcedures.Add(new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)));
+				landingProcedures.Add(new Fly(self, Target.FromPos(dest.CenterPosition + offset)));
 			}
 			else
 			{

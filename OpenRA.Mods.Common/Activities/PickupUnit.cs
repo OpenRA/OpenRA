@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0)
 					{
 						// Run the first tick of the move activity immediately to avoid a one-frame pause
-						innerActivity = ActivityUtils.RunActivity(self, new HeliFly(self, Target.FromPos(targetPosition)));
+						innerActivity = ActivityUtils.RunActivity(self, new Fly(self, Target.FromPos(targetPosition)));
 						return this;
 					}
 

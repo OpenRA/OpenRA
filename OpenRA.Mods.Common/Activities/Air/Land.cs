@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
 					PlayLandingSound(self);
 
-				if (HeliFly.AdjustAltitude(self, aircraft, landAltitude))
+				if (Fly.AdjustAltitude(self, aircraft, landAltitude))
 					return this;
 
 				return NextActivity;
