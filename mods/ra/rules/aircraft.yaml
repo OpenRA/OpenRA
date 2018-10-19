@@ -106,7 +106,7 @@ MIG:
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		FacingTolerance: 20
 	Aircraft:
 		CruiseAltitude: 2560
@@ -173,7 +173,7 @@ YAK:
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		FacingTolerance: 20
 	Aircraft:
 		CruiseAltitude: 2560
@@ -291,7 +291,7 @@ HELI:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85, 0,-213,-85
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 	Aircraft:
 		LandWhenIdle: false
@@ -357,7 +357,7 @@ HIND:
 		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 	Aircraft:
 		LandWhenIdle: false

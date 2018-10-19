@@ -23,7 +23,7 @@ DPOD:
 		EjectOnDeath: true
 	Armament:
 		Weapon: Vulcan2
-	AttackHeli:
+	AttackAircraft:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
@@ -95,7 +95,7 @@ ORCA:
 	Armament:
 		Weapon: Hellfire
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -147,7 +147,7 @@ ORCAB:
 	Armament:
 		Weapon: Bomb
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
 		PauseOnCondition: empdisable
@@ -278,7 +278,7 @@ SCRIN:
 	Armament:
 		Weapon: Proton
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
 		PauseOnCondition: empdisable
@@ -326,7 +326,7 @@ APACHE:
 	Armament:
 		Weapon: HarpyClaw
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 		Voice: Attack
 		PauseOnCondition: empdisable
