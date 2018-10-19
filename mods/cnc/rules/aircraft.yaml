@@ -86,7 +86,7 @@ HELI:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 4
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
@@ -144,7 +144,7 @@ ORCA:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 5
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 6

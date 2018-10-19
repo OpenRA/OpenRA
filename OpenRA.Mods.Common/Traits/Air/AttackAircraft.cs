@@ -15,28 +15,31 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AttackPlaneInfo : AttackFrontalInfo, Requires<AircraftInfo>
+	public class AttackAircraftInfo : AttackFrontalInfo, Requires<AircraftInfo>
 	{
-		[Desc("Delay, in game ticks, before turning to attack.")]
+		[Desc("Delay, in game ticks, before non-hovering aircraft turns to attack.")]
 		public readonly int AttackTurnDelay = 50;
 
-		public override object Create(ActorInitializer init) { return new AttackPlane(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 
-	public class AttackPlane : AttackFrontal
+	public class AttackAircraft : AttackFrontal
 	{
-		public readonly AttackPlaneInfo AttackPlaneInfo;
+		public readonly AttackAircraftInfo AttackAircraftInfo;
 		readonly AircraftInfo aircraftInfo;
 
-		public AttackPlane(Actor self, AttackPlaneInfo info)
+		public AttackAircraft(Actor self, AttackAircraftInfo info)
 			: base(self, info)
 		{
-			AttackPlaneInfo = info;
+			AttackAircraftInfo = info;
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
+			if (aircraftInfo.CanHover)
+				return new HeliAttack(self, newTarget);
+
 			return new FlyAttack(self, newTarget);
 		}
 

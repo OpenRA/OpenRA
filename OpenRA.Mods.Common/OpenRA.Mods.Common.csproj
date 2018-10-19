@@ -273,8 +273,7 @@
     <Compile Include="Traits\AcceptsDeliveredExperience.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
-    <Compile Include="Traits\Air\AttackHeli.cs" />
-    <Compile Include="Traits\Air\AttackPlane.cs" />
+    <Compile Include="Traits\Air\AttackAircraft.cs" />
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
@@ -932,6 +931,7 @@
     <Compile Include="UpdateRules\Rules\20180923\RemoveHealthPercentageRing.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemoveRepairBuildingsFromAircraft.cs" />
     <Compile Include="UpdateRules\Rules\20180923\AddRearmable.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\MergeAttackPlaneAndHeli.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />

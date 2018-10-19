@@ -101,6 +101,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameCrateActionNotification(),
 				new RemoveRepairBuildingsFromAircraft(),
 				new AddRearmable(),
+				new MergeAttackPlaneAndHeli(),
 			})
 		};
 

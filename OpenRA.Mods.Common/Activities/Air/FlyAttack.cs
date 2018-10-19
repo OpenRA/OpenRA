@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly Aircraft aircraft;
-		readonly AttackPlane attackPlane;
+		readonly AttackAircraft attackAircraft;
 		readonly Rearmable rearmable;
 
 		int ticksUntilTurn;
@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			aircraft = self.Trait<Aircraft>();
-			attackPlane = self.Trait<AttackPlane>();
+			attackAircraft = self.Trait<AttackAircraft>();
 			rearmable = self.TraitOrDefault<Rearmable>();
-			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
+			ticksUntilTurn = attackAircraft.AttackAircraftInfo.AttackTurnDelay;
 		}
 
 		public override Activity Tick(Actor self)
@@ -47,10 +47,10 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
-			if (rearmable != null && attackPlane.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			if (rearmable != null && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
-			attackPlane.DoAttack(self, target);
+			attackAircraft.DoAttack(self, target);
 
 			if (ChildActivity == null)
 			{
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NextActivity;
 
 				// TODO: This should fire each weapon at its maximum range
-				if (attackPlane != null && target.IsInRange(self.CenterPosition, attackPlane.Armaments.Where(Exts.IsTraitEnabled).Select(a => a.Weapon.MinRange).Min()))
+				if (attackAircraft != null && target.IsInRange(self.CenterPosition, attackAircraft.Armaments.Where(Exts.IsTraitEnabled).Select(a => a.Weapon.MinRange).Min()))
 					ChildActivity = ActivityUtils.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 				else
 					ChildActivity = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
