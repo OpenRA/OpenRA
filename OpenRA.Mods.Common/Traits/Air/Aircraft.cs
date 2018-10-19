@@ -572,22 +572,16 @@ namespace OpenRA.Mods.Common.Traits
 				}
 				else if (action == IdleAircraftAction.ReturnToBase)
 				{
-					if (Info.CanHover)
-						yield return new HeliReturnToBase(self, Info.AbortOnResupply);
+					// Unfortunately we can't simply queue ReturnToBase unconditionally here:
+					// If the aircraft is not a CanHover aircraft and both 'ChooseResupplier(self, true)' and 'ChooseResupplier(self, false)' return 'null',
+					// RTB would simply cancel itself and queue NextActivity (which would be null, too),
+					// resulting in an infinite RTB-Idle-RTB-Idle loop, never reaching any potential fallbacks.
+					// Therefore, we have to check if there's at least one (regardless of reserved or not) resupplier,
+					// only then queue RTB and otherwise queue a time-limited FlyCircle (after which we turn idle and check again).
+					if (Info.CanHover || ReturnToBase.ChooseResupplier(self, false) != null)
+						yield return new ReturnToBase(self, Info.AbortOnResupply);
 					else
-					{
-						// Unfortunately we can't simply queue ReturnToBase unconditionally here:
-						// If both ChooseResupplier(self, true) and ChooseResupplier(self, false) return null,
-						// RTB would simply cancel itself and queue NextActivity (which would be null, too),
-						// resulting in an infinite RTB-Idle-RTB-Idle loop, never reaching any potential fallbacks.
-						// Therefore, we have to check if there's at least one (regardless of reserved or not) resupplier,
-						// only then queue RTB and otherwise queue a time-limited FlyCircle (after which we turn idle and check again).
-						var resupplier = ReturnToBase.ChooseResupplier(self, false);
-						if (resupplier != null)
-							yield return new ReturnToBase(self, Info.AbortOnResupply);
-						else
-							yield return new FlyCircle(self, Info.NumberOfTicksToVerifyAvailableAirport, IdleTurnSpeed);
-					}
+						yield return new FlyCircle(self, Info.NumberOfTicksToVerifyAvailableAirport, IdleTurnSpeed);
 
 					yield break;
 				}
@@ -827,45 +821,18 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				if (!order.Queued)
+				{
 					UnReserve();
+					self.CancelActivity();
+				}
 
 				var targetActor = order.Target.Actor;
 				if (Reservable.IsReserved(targetActor))
-				{
-					if (!Info.CanHover)
-						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
-					else
-						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
-				}
+					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
 				else
 				{
 					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
-
-					if (!Info.CanHover && !Info.VTOL)
-					{
-						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, Info.AbortOnResupply, targetActor),
-							new ResupplyAircraft(self)));
-					}
-					else
-					{
-						MakeReservation(targetActor);
-
-						Action enter = () =>
-						{
-							var exit = targetActor.FirstExitOrDefault(null);
-							var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-
-							self.QueueActivity(new HeliFly(self, Target.FromPos(targetActor.CenterPosition + offset)));
-							if (Info.TurnToDock)
-								self.QueueActivity(new Turn(self, Info.InitialFacing));
-
-							self.QueueActivity(new Land(self, false));
-							self.QueueActivity(new ResupplyAircraft(self));
-						};
-
-						self.QueueActivity(order.Queued, new CallFunc(enter));
-					}
+					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, targetActor));
 				}
 			}
 			else if (order.OrderString == "Stop")
@@ -883,10 +850,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				UnReserve();
 				self.CancelActivity();
-				if (!Info.CanHover)
-					self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
-				else
-					self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply, null, false));
+				self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply, null, false));
 			}
 		}
 

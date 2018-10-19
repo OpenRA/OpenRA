@@ -57,10 +57,15 @@ namespace OpenRA.Mods.Common.Activities
 			return 45 * speed / aircraft.Info.TurnSpeed;
 		}
 
-		void Calculate(Actor self)
+		void TryToReserveResupplier(Actor self)
 		{
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
 				dest = ChooseResupplier(self, true);
+		}
+
+		void Calculate(Actor self)
+		{
+			TryToReserveResupplier(self);
 
 			if (dest == null)
 				return;
@@ -131,41 +136,93 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || self.IsDead)
 				return NextActivity;
 
-			if (!isCalculated)
+			if (aircraft.Info.VTOL)
+				TryToReserveResupplier(self);
+			else if (!isCalculated)
 				Calculate(self);
 
 			if (dest == null || dest.IsDead)
 			{
 				var nearestResupplier = ChooseResupplier(self, false);
 
-				if (nearestResupplier != null)
-					return ActivityUtils.SequenceActivities(
-						new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
-						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport, aircraft.IdleTurnSpeed),
-						this);
+				if (aircraft.Info.VTOL)
+				{
+					// If a VTOL was told to return and there's no (available) RearmActor, going to the probable next queued activity (FlyAttack)
+					// would be pointless (due to lack of ammo), and possibly even lead to an infinite loop due to FlyAttack.cs:L80. Go idle instead.
+					if (nearestResupplier == null)
+					{
+						Cancel(self);
+						return NextActivity;
+					}
+					else
+					{
+						var distanceFromResupplier = (nearestResupplier.CenterPosition - self.CenterPosition).HorizontalLength;
+						var distanceLength = aircraft.Info.WaitDistanceFromResupplyBase.Length;
+
+						// If no pad is available, move near one and wait
+						if (distanceFromResupplier > distanceLength)
+						{
+							var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
+
+							var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
+
+							return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
+						}
+
+						return this;
+					}
+				}
 				else
 				{
-					// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
-					Cancel(self);
-					return NextActivity;
+					if (nearestResupplier != null)
+						return ActivityUtils.SequenceActivities(
+							new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
+							new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
+							this);
+					else
+					{
+						// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
+						Cancel(self);
+						return NextActivity;
+					}
 				}
 			}
 
 			List<Activity> landingProcedures = new List<Activity>();
 
-			var turnRadius = CalculateTurnRadius(aircraft.Info.Speed);
+			if (aircraft.Info.VTOL)
+			{
+				var exit = dest.FirstExitOrDefault(null);
+				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
-			landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
-			landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
+				landingProcedures.Add(new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)));
+			}
+			else
+			{
+				var turnRadius = CalculateTurnRadius(aircraft.Info.Speed);
 
-			// Fix a problem when the airplane is send to resupply near the airport
-			landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
+				landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
+				landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
+
+				// Fix a problem when the airplane is sent to resupply near the airport
+				landingProcedures.Add(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
+			}
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
 				aircraft.MakeReservation(dest);
 
-				landingProcedures.Add(new Land(self, Target.FromActor(dest)));
+				if (aircraft.Info.TurnToLand)
+				{
+					var initialFacing = aircraft.Info.InitialFacing;
+					landingProcedures.Add(new Turn(self, initialFacing));
+				}
+
+				if (aircraft.Info.VTOL)
+					landingProcedures.Add(new Land(self, false));
+				else
+					landingProcedures.Add(new Land(self, Target.FromActor(dest)));
+
 				landingProcedures.Add(new ResupplyAircraft(self));
 			}
 

@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
 			if (rearmable != null && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
-				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, aircraft.Info.AbortOnResupply), this);
+				return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
 			var dist = targetPos - pos;
 
