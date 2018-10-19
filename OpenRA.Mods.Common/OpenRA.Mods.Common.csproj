@@ -75,7 +75,6 @@
     <Compile Include="Activities\Air\FlyFollow.cs" />
     <Compile Include="Activities\Air\FlyOffMap.cs" />
     <Compile Include="Activities\Air\FlyTimed.cs" />
-    <Compile Include="Activities\Air\HeliAttack.cs" />
     <Compile Include="Activities\Air\Land.cs" />
     <Compile Include="Activities\Air\ResupplyAircraft.cs" />
     <Compile Include="Activities\Air\ReturnToBase.cs" />
