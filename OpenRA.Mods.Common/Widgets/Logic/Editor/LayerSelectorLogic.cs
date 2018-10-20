@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var layerPreview = newResourcePreviewTemplate.Get<SpriteWidget>("LAYER_PREVIEW");
 				layerPreview.IsVisible = () => true;
-				layerPreview.GetPalette = () => resource.Palette;
+				layerPreview.GetPalette = () => resource.Palette ?? worldRenderer.World.Map.Rules.TileSet.Palette;
 
 				var variant = resource.Sequences.FirstOrDefault();
 				var sequence = rules.Sequences.GetSequence("resources", variant);

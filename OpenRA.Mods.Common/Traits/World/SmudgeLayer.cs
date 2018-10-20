@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[PaletteReference] public readonly string SmokePalette = "effect";
 
-		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		[PaletteReference] public readonly string Palette = null;
 
 		[FieldLoader.LoadUsing("LoadInitialSmudges")]
 		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
@@ -117,7 +117,8 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidDataException("Smudges specify different blend modes. "
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
-			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(Info.Palette), wr.World.Type != WorldType.Editor);
+			var palette = Info.Palette ?? w.Map.Rules.TileSet.Palette;
+			render = new TerrainSpriteLayer(w, wr, sheet, blendMode, wr.Palette(palette), wr.World.Type != WorldType.Editor);
 
 			// Add map smudges
 			foreach (var kv in Info.InitialSmudges)

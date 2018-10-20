@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (Minefield.Length == 1)
 				yield break;
 
-			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+			var pal = wr.Palette(self.World.Map.Rules.TileSet.Palette);
 			foreach (var c in Minefield)
 				yield return new SpriteRenderable(tile, self.World.Map.CenterOfCell(c),
 					WVec.Zero, -511, pal, 1f, true);
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
 
 				var movement = minelayer.Trait<IPositionable>();
-				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+				var pal = wr.Palette(world.Map.Rules.TileSet.Palette);
 				foreach (var c in minefield)
 				{
 					var tile = movement.CanEnterCell(c, null, false) && !world.ShroudObscures(c) ? tileOk : tileBlocked;

@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;
 					var v = gridType == MapGridType.Rectangular ? y : (x + y) / 2f;
 					var pos = origin + scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size);
-					var palette = Template.Palette ?? TileSet.TerrainPaletteInternalName;
+					var palette = Template.Palette ?? tileset.Palette;
 					Game.Renderer.SpriteRenderer.DrawSprite(sprite, pos, worldRenderer.Palette(palette), size);
 				}
 			}

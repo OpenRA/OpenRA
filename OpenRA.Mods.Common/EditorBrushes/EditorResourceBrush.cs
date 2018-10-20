@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 
 			preview = editorWidget.Get<SpriteWidget>("DRAG_LAYER_PREVIEW");
-			preview.Palette = resource.Palette;
+			preview.Palette = resource.Palette ?? wr.World.Map.Rules.TileSet.Palette;
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
 			preview.IsVisible = () => editorWidget.CurrentBrush == this;
 

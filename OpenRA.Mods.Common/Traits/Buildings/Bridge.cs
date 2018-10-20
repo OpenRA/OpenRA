@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!initialized)
 			{
-				var palette = wr.Palette(TileSet.TerrainPaletteInternalName);
+				var palette = wr.Palette(self.World.Map.Rules.TileSet.Palette);
 				renderables = new Dictionary<ushort, IRenderable[]>();
 				foreach (var t in info.Templates)
 					renderables.Add(t.First, TemplateRenderables(wr, palette, t.First));

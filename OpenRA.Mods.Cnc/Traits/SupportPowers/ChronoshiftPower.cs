@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Ticks until returning after teleportation.")]
 		public readonly int Duration = 750;
 
-		[PaletteReference] public readonly string TargetOverlayPalette = TileSet.TerrainPaletteInternalName;
+		[PaletteReference] public readonly string TargetOverlayPalette = null;
 
 		public readonly string OverlaySpriteGroup = "overlay";
 		[SequenceReference("OverlaySpriteGroup", true)] public readonly string ValidTileSequencePrefix = "target-valid-";
@@ -176,7 +176,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var tiles = world.Map.FindTilesInCircle(xy, range);
-				var palette = wr.Palette(((ChronoshiftPowerInfo)power.Info).TargetOverlayPalette);
+				var cpi = (ChronoshiftPowerInfo)power.Info;
+				var palette = wr.Palette(cpi.TargetOverlayPalette ?? world.Map.Rules.TileSet.Palette);
 				foreach (var t in tiles)
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, true);
 			}

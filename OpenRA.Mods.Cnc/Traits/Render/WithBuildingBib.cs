@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[SequenceReference] public readonly string Sequence = "bib";
 
-		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		[PaletteReference] public readonly string Palette = null;
 
 		public readonly bool HasMinibib = false;
 
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				yield break;
 
 			if (Palette != null)
-				p = init.WorldRenderer.Palette(Palette);
+				p = init.WorldRenderer.Palette(Palette ?? init.World.Map.Rules.TileSet.Palette);
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();
 
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var offset = self.World.Map.CenterOfCell(cell) - self.World.Map.CenterOfCell(location) - centerOffset;
 				var awo = new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512));
 				anims.Add(awo);
-				rs.Add(awo, info.Palette);
+				rs.Add(awo, info.Palette ?? self.World.Map.Rules.TileSet.Palette);
 			}
 		}
 

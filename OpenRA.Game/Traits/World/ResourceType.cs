@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 
 		[PaletteReference]
 		[Desc("Palette used for rendering the resource sprites.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		public readonly string Palette = null;
 
 		[Desc("Resource index used in the binary map data.")]
 		public readonly int ResourceType = 1;
@@ -87,7 +87,7 @@ namespace OpenRA.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			Palette = wr.Palette(Info.Palette);
+			Palette = wr.Palette(Info.Palette ?? wr.World.Map.Rules.TileSet.Palette);
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class BuildableTerrainLayerInfo : ITraitInfo
 	{
 		[Desc("Palette to render the layer sprites in.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		public readonly string Palette = null;
 
 		[Desc("The hitpoints, which can be reduced by the DamagesConcreteWarhead.")]
 		public readonly int MaxStrength = 9000;
@@ -51,7 +51,8 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			theater = wr.Theater;
 			bi = w.WorldActor.Trait<BuildingInfluence>();
-			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
+			var palette = info.Palette ?? w.Map.Rules.TileSet.Palette;
+			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(palette), wr.World.Type != WorldType.Editor);
 		}
 
 		public void AddTile(CPos cell, TerrainTile tile)

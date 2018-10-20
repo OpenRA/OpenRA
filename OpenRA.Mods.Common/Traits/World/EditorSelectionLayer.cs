@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteReference]
 		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		public readonly string Palette = null;
 
 		[Desc("Sequence image where the selection overlay types are defined.")]
 		public readonly string Image = "editor-overlay";
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (w.Type != WorldType.Editor)
 				return;
 
-			palette = wr.Palette(info.Palette);
+			palette = wr.Palette(info.Palette ?? w.Map.Rules.TileSet.Palette);
 		}
 
 		public void SetCopyRegion(CPos start, CPos end)

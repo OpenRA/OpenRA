@@ -237,8 +237,10 @@ namespace OpenRA.Mods.Common.Orders
 					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (res == null || res.GetResource(t) == null)));
 			}
 
-			var cellPalette = wr.Palette(placeBuildingInfo.Palette);
-			var linePalette = wr.Palette(placeBuildingInfo.LineBuildSegmentPalette);
+			var cp = placeBuildingInfo.Palette ?? world.Map.Rules.TileSet.Palette;
+			var cellPalette = wr.Palette(cp);
+			var lp = placeBuildingInfo.LineBuildSegmentPalette ?? world.Map.Rules.TileSet.Palette;
+			var linePalette = wr.Palette(lp);
 			var topLeftPos = world.Map.CenterOfCell(topLeft);
 			foreach (var c in cells)
 			{

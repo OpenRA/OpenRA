@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	public class FixedColorPaletteInfo : ITraitInfo
 	{
 		[Desc("The name of the palette to base off.")]
-		[PaletteReference] public readonly string Base = TileSet.TerrainPaletteInternalName;
+		[PaletteReference] public readonly string Base = null;
 
 		[Desc("The name of the resulting palette")]
 		[PaletteDefinition] public readonly string Name = "resources";
@@ -49,7 +49,8 @@ namespace OpenRA.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var remap = new PlayerColorRemap(info.RemapIndex, info.Color, info.Ramp);
-			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
+			var palette = info.Base ?? wr.World.Map.Rules.TileSet.Palette;
+			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(palette).Palette, remap), info.AllowModifiers);
 		}
 	}
 }
