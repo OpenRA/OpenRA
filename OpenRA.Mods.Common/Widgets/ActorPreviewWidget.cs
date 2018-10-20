@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ActorPreviewWidget : Widget
 	{
 		public bool Animate = false;
+		public bool RecalculateOffset = true;
 		public Func<float> GetScale = () => 1f;
 
 		readonly WorldRenderer worldRenderer;
@@ -66,7 +67,9 @@ namespace OpenRA.Mods.Common.Widgets
 					b = Rectangle.Union(b, rr);
 
 				IdealPreviewSize = new int2(b.Width, b.Height);
-				PreviewOffset = -new int2(b.Left, b.Top) - IdealPreviewSize / 2;
+
+				if (RecalculateOffset)
+					PreviewOffset = -new int2(b.Left, b.Top) - IdealPreviewSize / 2;
 			}
 		}
 
