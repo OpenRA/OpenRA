@@ -517,3 +517,8 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
+	HackyAI@Random:
+		Name: Random AI
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:

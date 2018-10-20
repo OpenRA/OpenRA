@@ -373,3 +373,8 @@ Player:
 				OrderName: ProduceActorPower.Fremen
 				Consideration@1:
 					Against: Ally
+	HackyAI@Random:
+		Name: Random
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:

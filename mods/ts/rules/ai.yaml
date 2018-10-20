@@ -77,3 +77,8 @@ Player:
 			medic: 3
 			repair: 3
 		SquadSize: 20
+	HackyAI@Random:
+		Name: Random AI
+		Type: random
+		BuildingCommonNames:
+		UnitsCommonNames:

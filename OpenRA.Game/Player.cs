@@ -135,7 +135,7 @@ namespace OpenRA
 				else
 					PlayerName = client.Name;
 
-				BotType = client.Bot;
+				BotType = AssignBot(world, client.Bot);
 				Faction = ChooseFaction(world, client.Faction, !pr.LockFaction);
 				DisplayFaction = ChooseDisplayFaction(world, client.Faction);
 			}
@@ -211,6 +211,15 @@ namespace OpenRA
 			}
 
 			return stanceColors.Neutrals;
+		}
+
+		static string AssignBot(World world, string botType)
+		{
+			if (botType != "random")
+				return botType;
+
+			var botList = world.Map.Rules.Actors["player"].TraitInfos<IBotInfo>().Where(b => !b.Type.Equals("random")).ToList();
+			return botList.Random(world.SharedRandom).Type;
 		}
 
 		#region Scripting interface
