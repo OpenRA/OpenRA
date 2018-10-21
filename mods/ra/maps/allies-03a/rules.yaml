@@ -56,14 +56,6 @@ CAMERA.VeryLarge:
 	RevealsShroud:
 		Range: 40c0
 
-MONEYCRATE:
-	Tooltip:
-		Name: Crate
-	GiveCashCrateAction:
-		Amount: 2000
-	RenderSprites:
-		Image: scrate
-
 E1.Autotarget:
 	Inherits: E1
 	Buildable:

@@ -76,10 +76,6 @@ HOSP:
 	-TooltipDescription@other:
 	SpawnActorOnDeath:
 		Actor: healcrate
-        
-MONEYCRATE:
-	GiveCashCrateAction:
-		Amount: 2000
 
 ^Vehicle:
 	-Demolishable:
