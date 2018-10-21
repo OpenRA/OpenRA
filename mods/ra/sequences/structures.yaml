@@ -278,10 +278,12 @@ hpad:
 	active:
 		Start: 1
 		Length: 6
+		Tick: 100
 		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
+		Tick: 100
 		ZOffset: -1023
 	make: hpadmake
 		Length: *
