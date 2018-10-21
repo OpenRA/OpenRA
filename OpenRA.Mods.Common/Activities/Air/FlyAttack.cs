@@ -89,17 +89,21 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Can rotate facing while ascending
 				var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : aircraft.Facing;
-				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
 
-				if (Fly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+				if (Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, moveVerticalOnly: true))
 					return this;
 
-				// Fly towards the target
-				if (!target.IsInRange(pos, attackAircraft.GetMaximumRangeVersusTarget(target)))
-					aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
-
-				// Fly backwards from the target
-				if (target.IsInRange(pos, attackAircraft.GetMinimumRangeVersusTarget(target)))
+				// Fly towards the target when outside max range,
+				// fly backwards from the target when inside min range,
+				// and just turn towards target when at the right distance.
+				var withinMaxRange = target.IsInRange(pos, attackAircraft.GetMaximumRangeVersusTarget(target));
+				var withinMinRange = target.IsInRange(pos, attackAircraft.GetMinimumRangeVersusTarget(target));
+				if (!withinMaxRange)
+				{
+					Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+					return this;
+				}
+				else if (withinMinRange)
 				{
 					// Facing 0 doesn't work with the following position change
 					var facing = 1;
@@ -132,6 +136,7 @@ namespace OpenRA.Mods.Common.Activities
 						ChildActivity = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 
 					// HACK: This needs to be done in this round-about way because TakeOff doesn't behave as expected when it doesn't have a NextActivity.
+					// TODO: Fix this, if possible.
 					if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
 						ChildActivity = ActivityUtils.SequenceActivities(new TakeOff(self), ChildActivity);
 				}

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
 					PlayLandingSound(self);
 
-				if (Fly.AdjustAltitude(self, aircraft, landAltitude))
+				if (Fly.FlyToward(self, aircraft, aircraft.Facing, landAltitude, moveVerticalOnly: true))
 					return this;
 
 				return NextActivity;

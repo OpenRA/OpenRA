@@ -37,37 +37,38 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static void FlyToward(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1)
+		public static bool FlyToward(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1,
+			bool moveVerticalOnly = false, bool flyBackward = false, bool isFlyCircle = false)
 		{
 			desiredAltitude = new WDist(aircraft.CenterPosition.Z) + desiredAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 
-			var move = aircraft.FlyStep(aircraft.Facing);
 			var altitude = aircraft.CenterPosition.Z;
+			if (moveVerticalOnly && altitude == desiredAltitude.Length)
+				return false;
+
+			var move = WVec.Zero;
+			if (!moveVerticalOnly)
+			{
+				// If FlyToward is called from FlyCircle, the aircraft needs to use aircraft.Facing even if it CanHover,
+				// otherwise it will circle sideways.
+				var direction = flyBackward ? -1 : 1;
+				if (aircraft.Info.CanHover && !isFlyCircle)
+					move = aircraft.FlyStep(direction * desiredFacing);
+				else
+					move = aircraft.FlyStep(direction * aircraft.Facing);
+			}
 
 			var turnSpeed = turnSpeedOverride > -1 ? turnSpeedOverride : aircraft.TurnSpeed;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
 
 			if (altitude != desiredAltitude.Length)
 			{
-				var delta = move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024;
+				var delta = moveVerticalOnly ? aircraft.Info.AltitudeVelocity.Length : move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024;
 				var dz = (desiredAltitude.Length - altitude).Clamp(-delta, delta);
 				move += new WVec(0, 0, dz);
 			}
 
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
-		}
-
-		public static bool AdjustAltitude(Actor self, Aircraft aircraft, WDist targetAltitude)
-		{
-			targetAltitude = new WDist(aircraft.CenterPosition.Z) + targetAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-
-			var altitude = aircraft.CenterPosition.Z;
-			if (altitude == targetAltitude.Length)
-				return false;
-
-			var delta = aircraft.Info.AltitudeVelocity.Length;
-			var dz = (targetAltitude.Length - altitude).Clamp(-delta, delta);
-			aircraft.SetPosition(self, aircraft.CenterPosition + new WVec(0, 0, dz));
 
 			return true;
 		}
@@ -90,11 +91,12 @@ namespace OpenRA.Mods.Common.Activities
 				soundPlayed = true;
 			}
 
-			if (aircraft.Info.CanHover)
-			{
-				if (AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+			if (aircraft.Info.VTOL)
+				if (FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, moveVerticalOnly: true))
 					return this;
 
+			if (aircraft.Info.CanHover)
+			{
 				var pos = target.CenterPosition;
 
 				// Rotate towards the target
