@@ -65,14 +65,6 @@ CAMERA.Jeep:
 		Range: 4c0
 	ScriptTriggers:
 
-MONEYCRATE:
-	Tooltip:
-		Name: Crate
-	GiveCashCrateAction:
-		Amount: 2000
-	RenderSprites:
-		Image: scrate
-
 E1.Autotarget:
 	Inherits: E1
 	Buildable:

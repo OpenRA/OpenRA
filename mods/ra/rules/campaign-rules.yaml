@@ -44,3 +44,11 @@ E7.noautotarget:
 
 ^Vehicle:
 	Demolishable:
+
+MONEYCRATE:
+	Tooltip:
+		Name: Crate
+	GiveCashCrateAction:
+		Amount: 2000
+	RenderSprites:
+		Image: scrate

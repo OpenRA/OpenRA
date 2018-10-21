@@ -151,10 +151,6 @@ AFLD:
 	ParatroopersPower@paratroopers:
 		DropItems: E1,E1,E1,E1,E1
 
-MONEYCRATE:
-	GiveCashCrateAction:
-		Amount: 2000
-
 V01:
 	SpawnActorOnDeath:
 		Actor: moneycrate

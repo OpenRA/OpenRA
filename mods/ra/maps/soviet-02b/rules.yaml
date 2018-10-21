@@ -97,10 +97,6 @@ HARV:
 		SearchFromProcRadius: 50
 		SearchFromOrderRadius: 50
 
-MONEYCRATE:
-	GiveCashCrateAction:
-		Amount: 2000
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E2,E2,E2
