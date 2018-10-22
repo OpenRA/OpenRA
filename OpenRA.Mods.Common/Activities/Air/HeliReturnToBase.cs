@@ -66,16 +66,10 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var nearestResupplier = ChooseResupplier(self, false);
 
-				// If a heli was told to return and there's no (available) RearmBuilding, going to the probable next queued activity (HeliAttack)
+				// HACK: If a heli was told to return and there's no (available) RearmBuilding, going to the probable next queued activity (HeliAttack)
 				// would be pointless (due to lack of ammo), and possibly even lead to an infinite loop due to HeliAttack.cs:L79.
-				if (nearestResupplier == null && aircraft.Info.LandWhenIdle)
-				{
-					if (aircraft.Info.TurnToLand)
-						return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true));
-
-					return new HeliLand(self, true);
-				}
-				else if (nearestResupplier == null && !aircraft.Info.LandWhenIdle)
+				// This will be fixed properly soon, when this activity is merged with ReturnToBase.
+				if (nearestResupplier == null)
 					return null;
 				else
 				{

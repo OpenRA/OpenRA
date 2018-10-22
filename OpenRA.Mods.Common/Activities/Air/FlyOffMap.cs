@@ -32,10 +32,17 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			if (IsCanceled || !self.World.Map.Contains(self.Location))
+			if (IsCanceled)
 				return NextActivity;
 
-			Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+			// Fly towards the edge of the map then dispose the actor once it is outside
+			// TODO: We will want a minimum margin here so that the visible bounds of the aircraft are fully outside the map
+			// TODO: Make sure that this works for CanHover/VTOL aircraft after activities have been merged
+			if (self.World.Map.Contains(self.Location))
+				Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+			else
+				self.Dispose();
+
 			return this;
 		}
 	}

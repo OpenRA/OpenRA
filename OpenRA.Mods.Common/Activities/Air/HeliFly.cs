@@ -110,30 +110,4 @@ namespace OpenRA.Mods.Common.Activities
 			yield return target;
 		}
 	}
-
-	public class HeliFlyAndLandWhenIdle : HeliFly
-	{
-		private readonly AircraftInfo info;
-
-		public HeliFlyAndLandWhenIdle(Actor self, Target t, AircraftInfo info)
-			: base(self, t)
-		{
-			this.info = info;
-		}
-
-		public override Activity Tick(Actor self)
-		{
-			var activity = base.Tick(self);
-
-			if (activity == null && !IsCanceled && info.LandWhenIdle)
-			{
-				if (info.TurnToLand)
-					self.QueueActivity(new Turn(self, info.InitialFacing));
-				self.QueueActivity(new HeliLand(self, true));
-				activity = NextActivity;
-			}
-
-			return activity;
-		}
-	}
 }

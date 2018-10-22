@@ -22,6 +22,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum IdleAircraftAction
+	{
+		Hover,
+		Circle,
+		Land,
+		ReturnToBase,
+		LeaveMap
+	}
+
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
 		IActorPreviewInitInfo, IEditorActorOptions
 	{
@@ -66,11 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
 		public readonly bool CanHover = false;
 
+		[Desc("List of possible action to take when becoming idle in descending order of priority. Invalid entries (e.g. Hover when CanHover is false) will be skipped.")]
+		public readonly IdleAircraftAction[] ActionsOnIdle = { IdleAircraftAction.Land, IdleAircraftAction.Hover, IdleAircraftAction.Circle };
+
 		[Desc("Does the actor land and take off vertically?")]
 		public readonly bool VTOL = false;
-
-		[Desc("Will this actor try to land after it has no more commands?")]
-		public readonly bool LandWhenIdle = true;
 
 		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
@@ -182,6 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
+		public int IdleTurnSpeed { get { return Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
@@ -310,7 +320,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				ForceLanding = false;
 
-				if (!Info.LandWhenIdle)
+				if (!Info.ActionsOnIdle.Any(a => a == IdleAircraftAction.Land))
 				{
 					self.CancelActivity();
 
@@ -527,20 +537,74 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void OnBecomingIdle(Actor self)
 		{
-			if (Info.VTOL && Info.LandWhenIdle)
+			var idleActivities = GetIdleActivities(self).ToArray();
+			if (idleActivities.Any())
+				self.QueueActivity(ActivityUtils.SequenceActivities(idleActivities));
+		}
+
+		protected virtual IEnumerable<Activity> GetIdleActivities(Actor self)
+		{
+			foreach (var action in Info.ActionsOnIdle)
 			{
-				if (Info.TurnToLand)
-					self.QueueActivity(new Turn(self, Info.InitialFacing));
+				if (action == IdleAircraftAction.Land)
+				{
+					// Only VTOLs can land on idle
+					if (Info.VTOL)
+					{
+						if (Info.TurnToLand)
+							yield return new Turn(self, Info.InitialFacing);
 
-				self.QueueActivity(new HeliLand(self, true));
+						yield return new HeliLand(self, true);
+
+						yield break;
+					}
+
+					continue;
+				}
+				else if (action == IdleAircraftAction.Circle)
+				{
+					if (Info.CanHover)
+						yield return new HeliFlyCircle(self, IdleTurnSpeed);
+					else
+						yield return new FlyCircle(self, -1, IdleTurnSpeed);
+
+					yield break;
+				}
+				else if (action == IdleAircraftAction.ReturnToBase)
+				{
+					if (Info.CanHover)
+						yield return new HeliReturnToBase(self, Info.AbortOnResupply);
+					else
+					{
+						// Unfortunately we can't simply queue ReturnToBase unconditionally here:
+						// If both ChooseResupplier(self, true) and ChooseResupplier(self, false) return null,
+						// RTB would simply cancel itself and queue NextActivity (which would be null, too),
+						// resulting in an infinite RTB-Idle-RTB-Idle loop, never reaching any potential fallbacks.
+						// Therefore, we have to check if there's at least one (regardless of reserved or not) resupplier,
+						// only then queue RTB and otherwise queue a time-limited FlyCircle (after which we turn idle and check again).
+						var resupplier = ReturnToBase.ChooseResupplier(self, false);
+						if (resupplier != null)
+							yield return new ReturnToBase(self, Info.AbortOnResupply);
+						else
+							yield return new FlyCircle(self, Info.NumberOfTicksToVerifyAvailableAirport, IdleTurnSpeed);
+					}
+
+					yield break;
+				}
+				else if (action == IdleAircraftAction.LeaveMap)
+				{
+					yield return new FlyOffMap(self);
+					yield break;
+				}
+				else
+				{
+					// If we got here, action has to be Hover, so if CanHover=true, then do nothing (hover in place), otherwise continue loop
+					if (Info.CanHover)
+						yield break;
+
+					continue;
+				}
 			}
-			else if (!Info.CanHover)
-				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
-
-			// Temporary HACK for the AutoCarryall special case (needs CanHover, but also HeliFlyCircle on idle).
-			// Will go away soon (in a separate PR) with the arrival of ActionsWhenIdle.
-			else if (Info.CanHover && self.Info.HasTraitInfo<AutoCarryallInfo>() && Info.IdleTurnSpeed > -1)
-				self.QueueActivity(new HeliFlyCircle(self, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 		}
 
 		#region Implement IPositionable
@@ -756,7 +820,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new Fly(self, target));
 				else
-					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
+					self.QueueActivity(order.Queued, new HeliFly(self, target));
 			}
 			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
 			{

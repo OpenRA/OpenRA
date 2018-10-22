@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (nearestResupplier != null)
 					return ActivityUtils.SequenceActivities(
 						new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
-						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
+						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport, aircraft.IdleTurnSpeed),
 						this);
 				else
 				{

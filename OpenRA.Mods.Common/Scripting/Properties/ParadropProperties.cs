@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Scripting
 			paradrop.SetLZ(cell, true);
 			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 			Self.QueueActivity(new FlyOffMap(Self));
-			Self.QueueActivity(new RemoveSelf());
 		}
 	}
 }
