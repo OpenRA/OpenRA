@@ -19,6 +19,12 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to use when built/trained.")]
 		[VoiceReference] public readonly string Voice = "Build";
 
+		[Desc("Player stances who can hear this voice.")]
+		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;
+
+		[Desc("Play the voice to the owning player even if Stance.Ally is not included in ValidStances")]
+		public readonly bool PlayToOwner = true;
+
 		public object Create(ActorInitializer init) { return new AnnounceOnBuild(init.Self, this); }
 	}
 
@@ -33,7 +39,14 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		void INotifyBuildComplete.BuildingComplete(Actor self)
 		{
-			self.PlayVoice(info.Voice);
+			var player = self.World.LocalPlayer ?? self.World.RenderPlayer;
+			if (player == null)
+				return;
+
+			if (info.ValidStances.HasStance(self.Owner.Stances[player]))
+				self.PlayVoice(info.Voice);
+			else if (info.PlayToOwner && self.Owner == player)
+				self.PlayVoice(info.Voice);
 		}
 	}
 }
