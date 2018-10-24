@@ -21,6 +21,16 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.SpriteLoaders
 {
+	public class PngSheetMetadata
+	{
+		public readonly ReadOnlyDictionary<string, string> Metadata;
+
+		public PngSheetMetadata(Dictionary<string, string> metadata)
+		{
+			Metadata = new ReadOnlyDictionary<string, string>(metadata);
+		}
+	}
+
 	public class PngSheetLoader : ISpriteLoader
 	{
 		class PngSheetFrame : ISpriteFrame
@@ -71,6 +81,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 			metadata = new TypeDictionary
 			{
+				new PngSheetMetadata(png.EmbeddedData),
 				new EmbeddedSpritePalette(png.Palette.Select(x => (uint)x.ToArgb()).ToArray())
 			};
 
