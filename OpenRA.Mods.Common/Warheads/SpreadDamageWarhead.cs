@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
@@ -45,30 +46,27 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			var world = firedBy.World;
-
-			var debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
+			var debugVis = firedBy.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 			if (debugVis != null && debugVis.CombatGeometry)
-				world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range, DebugOverlayColor);
+				firedBy.World.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range, DebugOverlayColor);
 
-			var hitActors = world.FindActorsOnCircle(pos, Range[Range.Length - 1]);
-
-			foreach (var victim in hitActors)
+			foreach (var victim in firedBy.World.FindActorsOnCircle(pos, Range[Range.Length - 1]))
 			{
-				// Cannot be damaged without a Health trait
-				var healthInfo = victim.Info.TraitInfoOrDefault<IHealthInfo>();
-				if (healthInfo == null)
+				if (!IsValidAgainst(victim, firedBy))
 					continue;
+
+				var closestActiveShape = victim.TraitsImplementing<HitShape>()
+					.Where(Exts.IsTraitEnabled)
+					.Select(s => Pair.New(s, s.Info.Type.DistanceFromEdge(pos, victim)))
+					.MinByOrDefault(s => s.Second);
 
 				// Cannot be damaged without an active HitShape
-				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
-				if (!activeShapes.Any())
+				if (closestActiveShape.First == null)
 					continue;
 
-				var distance = activeShapes.Min(t => t.Info.Type.DistanceFromEdge(pos, victim));
-				var localModifiers = damageModifiers.Append(GetDamageFalloff(distance.Length));
-
-				DoImpact(victim, firedBy, localModifiers);
+				var localModifiers = damageModifiers.Append(GetDamageFalloff(closestActiveShape.Second.Length));
+				var damage = Util.ApplyPercentageModifiers(Damage, localModifiers.Append(DamageVersus(victim, closestActiveShape.First.Info)));
+				victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 			}
 		}
 

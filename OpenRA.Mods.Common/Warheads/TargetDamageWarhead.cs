@@ -10,50 +10,49 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
 	public class TargetDamageWarhead : DamageWarhead
 	{
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			// Damages a single actor, rather than a position. Only support by InstantHit for now.
-			// TODO: Add support for 'area of damage'
-			if (target.Type == TargetType.Actor)
-				DoImpact(target.Actor, firedBy, damageModifiers);
-		}
+		[Desc("Damage will be applied to actors in this area. A value of zero means only targeted actor will be damaged.")]
+		public readonly WDist Spread = WDist.Zero;
 
 		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			// For now this only displays debug overlay
-			// TODO: Add support for 'area of effect' / multiple targets
-			var world = firedBy.World;
-			var debugOverlayRange = new[] { WDist.Zero, new WDist(128) };
-
-			var debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
-			if (debugVis != null && debugVis.CombatGeometry)
-				world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, debugOverlayRange, DebugOverlayColor);
-		}
-
-		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			if (!IsValidAgainst(victim, firedBy))
+			if (Spread == WDist.Zero)
 				return;
 
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
-			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+			var debugVis = firedBy.World.WorldActor.TraitOrDefault<DebugVisualizations>();
+			if (debugVis != null && debugVis.CombatGeometry)
+				firedBy.World.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, new[] { WDist.Zero, Spread }, DebugOverlayColor);
 
-			var world = firedBy.World;
-			if (world.LocalPlayer != null)
+			foreach (var victim in firedBy.World.FindActorsOnCircle(pos, Spread))
 			{
-				var debugOverlayRange = new[] { WDist.Zero, new WDist(128) };
+				if (!IsValidAgainst(victim, firedBy))
+					continue;
 
-				var debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
-				if (debugVis != null && debugVis.CombatGeometry)
-					world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(victim.CenterPosition, debugOverlayRange, DebugOverlayColor);
+				var closestActiveShape = victim.TraitsImplementing<HitShape>()
+					.Where(Exts.IsTraitEnabled)
+					.Select(s => Pair.New(s, s.Info.Type.DistanceFromEdge(pos, victim)))
+					.MinByOrDefault(s => s.Second);
+
+				// Cannot be damaged without an active HitShape or if HitShape is outside Spread
+				if (closestActiveShape.First == null || closestActiveShape.Second > Spread)
+					continue;
+
+				InflictDamage(victim, firedBy, closestActiveShape.First.Info, damageModifiers);
 			}
+		}
+
+		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShapeInfo hitshapeInfo, IEnumerable<int> damageModifiers)
+		{
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, hitshapeInfo)));
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}
 }

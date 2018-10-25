@@ -30,20 +30,25 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
+			// Cannot be damaged without a Health trait
+			if (!victim.Info.HasTraitInfo<HealthInfo>())
+				return false;
+
 			if (Damage < 0 && victim.GetDamageState() == DamageState.Undamaged)
 				return false;
 
 			return base.IsValidAgainst(victim, firedBy);
 		}
 
-		public int DamageVersus(Actor victim)
+		public int DamageVersus(Actor victim, HitShapeInfo shapeInfo)
 		{
 			// If no Versus values are defined, DamageVersus would return 100 anyway, so we might as well do that early.
 			if (Versus.Count == 0)
 				return 100;
 
 			var armor = victim.TraitsImplementing<Armor>()
-				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type))
+				.Where(a => !a.IsTraitDisabled && a.Info.Type != null && Versus.ContainsKey(a.Info.Type) &&
+					(shapeInfo.ArmorTypes == default(BitSet<ArmorType>) || shapeInfo.ArmorTypes.Contains(a.Info.Type)))
 				.Select(a => Versus[a.Info.Type]);
 
 			return Util.ApplyPercentageModifiers(100, armor);
@@ -51,22 +56,28 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
-			// Used by traits that damage a single actor, rather than a position
+			// Used by traits or warheads that damage a single actor, rather than a position
 			if (target.Type == TargetType.Actor)
-				DoImpact(target.Actor, firedBy, damageModifiers);
+			{
+				var victim = target.Actor;
+
+				if (!IsValidAgainst(victim, firedBy))
+					return;
+
+				var closestActiveShape = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled)
+					.MinByOrDefault(t => t.Info.Type.DistanceFromEdge(victim.CenterPosition, victim));
+
+				// Cannot be damaged without an active HitShape
+				if (closestActiveShape == null)
+					return;
+
+				var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, closestActiveShape.Info)));
+				victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+			}
 			else if (target.Type != TargetType.Invalid)
 				DoImpact(target.CenterPosition, firedBy, damageModifiers);
 		}
 
 		public abstract void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers);
-
-		public virtual void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			if (!IsValidAgainst(victim, firedBy))
-				return;
-
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim)));
-			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
-		}
 	}
 }
