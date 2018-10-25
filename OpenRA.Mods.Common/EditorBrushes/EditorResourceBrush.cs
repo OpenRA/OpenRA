@@ -11,7 +11,7 @@
 
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Traits;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
 {

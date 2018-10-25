@@ -11,10 +11,12 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
+using OpenRA.Traits;
 
-namespace OpenRA.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	public class ResourceTypeInfo : ITraitInfo
+	public class ResourceTypeInfo : ITraitInfo, IMapPreviewSignatureInfo
 	{
 		[Desc("Sequence image that holds the different variants.")]
 		public readonly string Image = "resources";
@@ -63,6 +65,22 @@ namespace OpenRA.Traits
 
 		[Desc("Harvester content pip color.")]
 		public PipType PipColor = PipType.Yellow;
+
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer)
+		{
+			var tileSet = map.Rules.TileSet;
+			var color = tileSet[tileSet.GetTerrainIndex(TerrainType)].Color;
+
+			for (var i = 0; i < map.MapSize.X; i++)
+			{
+				for (var j = 0; j < map.MapSize.Y; j++)
+				{
+					var cell = new MPos(i, j);
+					if (map.Resources[cell].Type == ResourceType)
+						destinationBuffer.Add(new Pair<MPos, Color>(cell, color));
+				}
+			}
+		}
 
 		public object Create(ActorInitializer init) { return new ResourceType(this, init.World); }
 	}
