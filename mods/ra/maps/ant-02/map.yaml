@@ -43,7 +43,7 @@ Players:
 		Color: F6D679
 		LockSpawn: True
 		LockTeam: True
-		Allies: GoodGuy, Special, Neutral
+		Allies: Special,
 		Enemies: Creeps, Germany, AttackAnts, PatrolAnts, Turkey
 	PlayerReference@Turkey:
 		Name: Turkey
