@@ -26,6 +26,8 @@ SPLITBLUE:
 		Name: Blossom Tree (blue)
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
+	AppearsOnMapPreview:
+		Terrain: BlueTiberium
 
 ROCK1:
 	Inherits: ^Rock

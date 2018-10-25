@@ -497,6 +497,7 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
+	AppearsOnMapPreview:
 	MapEditorData:
 		Categories: Wall
 	Valued:
@@ -958,6 +959,8 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
+	AppearsOnMapPreview:
+		Terrain: Tiberium
 	FrozenUnderFog:
 	SeedsResource:
 		ResourceType: Tiberium
@@ -979,6 +982,8 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
+	AppearsOnMapPreview:
+		Terrain: Tree
 	Tooltip:
 		Name: Tree
 	MapEditorData:
@@ -998,6 +1003,8 @@
 		Dimensions: 1, 1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Rock
+	AppearsOnMapPreview:
 		Terrain: Rock
 	Tooltip:
 		Name: Rock

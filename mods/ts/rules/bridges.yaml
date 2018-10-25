@@ -27,6 +27,8 @@ CABHUT:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Bridge
+	AppearsOnMapPreview:
+		Terrain: Bridge
 	BodyOrientation:
 		UseClassicPerspectiveFudge: false
 		QuantizedFacings: 1
@@ -172,6 +174,8 @@ LOBRDG_R_SW:
 	WithSpriteBody:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Bridge
+	AppearsOnMapPreview:
 		Terrain: Bridge
 	BodyOrientation:
 		UseClassicPerspectiveFudge: false
