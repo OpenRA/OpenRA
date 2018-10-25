@@ -10,45 +10,17 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	public class HealthPercentageDamageWarhead : DamageWarhead
+	public class HealthPercentageDamageWarhead : TargetDamageWarhead
 	{
-		[Desc("Size of the area. Damage will be applied to this area.", "If two spreads are defined, the area of effect is a ring, where the second value is the inner radius.")]
-		public readonly WDist[] Spread = { new WDist(43) };
-
-		public override void DoImpact(WPos pos, Actor firedBy, IEnumerable<int> damageModifiers)
+		protected override void InflictDamage(Actor victim, Actor firedBy, HitShapeInfo hitshapeInfo, IEnumerable<int> damageModifiers)
 		{
-			var world = firedBy.World;
-
-			var debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
-			if (debugVis != null && debugVis.CombatGeometry)
-				world.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Spread, DebugOverlayColor);
-
-			var range = Spread[0];
-			var hitActors = world.FindActorsInCircle(pos, range);
-			if (Spread.Length > 1 && Spread[1].Length > 0)
-				hitActors = hitActors.Except(world.FindActorsInCircle(pos, Spread[1]));
-
-			foreach (var victim in hitActors)
-				DoImpact(victim, firedBy, damageModifiers);
-		}
-
-		public override void DoImpact(Actor victim, Actor firedBy, IEnumerable<int> damageModifiers)
-		{
-			if (!IsValidAgainst(victim, firedBy))
-				return;
-
-			var healthInfo = victim.Info.TraitInfoOrDefault<IHealthInfo>();
-			if (healthInfo == null)
-				return;
-
-			// Damage is measured as a percentage of the target health
-			var damage = Util.ApplyPercentageModifiers(healthInfo.MaxHP, damageModifiers.Append(Damage, DamageVersus(victim)));
+			var healthInfo = victim.Info.TraitInfo<HealthInfo>();
+			var damage = Util.ApplyPercentageModifiers(healthInfo.HP, damageModifiers.Append(Damage, DamageVersus(victim, hitshapeInfo)));
 			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
 		}
 	}
