@@ -768,6 +768,7 @@ wall:
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
+	AppearsOnMapPreview:
 	MapEditorData:
 		Categories: Defense
 	Replaceable:

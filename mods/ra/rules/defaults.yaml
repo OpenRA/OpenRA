@@ -774,6 +774,7 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 10000
+	AppearsOnMapPreview:
 	MapEditorData:
 		Categories: Wall
 
@@ -899,6 +900,8 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
+	AppearsOnMapPreview:
+		Terrain: Tree
 	Health:
 		HP: 50000
 	Armor:
@@ -935,6 +938,8 @@
 		Palette: terrain
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Tree
+	AppearsOnMapPreview:
 		Terrain: Tree
 	Building:
 		Footprint: x
@@ -1070,6 +1075,8 @@
 		Dimensions: 2,2
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Tree
+	AppearsOnMapPreview:
 		Terrain: Tree
 	HiddenUnderShroud:
 	ScriptTriggers:

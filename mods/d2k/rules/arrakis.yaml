@@ -50,6 +50,8 @@ spicebloom:
 		CrushedByFriendlies: true
 	RadarColorFromTerrain:
 		Terrain: Spice
+	AppearsOnMapPreview:
+		Terrain: Spice
 	Immobile:
 	Health:
 		HP: 1

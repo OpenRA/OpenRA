@@ -218,6 +218,8 @@ MINE:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
+	AppearsOnMapPreview:
+		Terrain: Ore
 	SeedsResource:
 	MapEditorData:
 		Categories: Resource spawn
@@ -238,6 +240,8 @@ GMINE:
 		Dimensions: 1,1
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Gems
+	AppearsOnMapPreview:
 		Terrain: Gems
 	SeedsResource:
 		ResourceType: Gems

@@ -104,6 +104,7 @@ FCOM:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
 	GpsDot:
 		String: Forward
 
@@ -142,6 +143,7 @@ HOSP:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
 	GpsDot:
 		String: Hospital
 
@@ -422,6 +424,7 @@ MISS:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
 	GpsDot:
 		String: Communications
 
@@ -455,6 +458,7 @@ BIO:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
 	GpsDot:
 		String: Biohazard
 
@@ -497,6 +501,7 @@ OILB:
 		Weapon: BarrelExplode
 	GpsDot:
 		String: Oil
+	AppearsOnMapPreview:
 	GivesCashOnCapture:
 		Amount: 100
 

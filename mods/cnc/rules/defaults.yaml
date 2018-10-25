@@ -814,6 +814,7 @@
 		ShowOwnerRow: True
 	MapEditorData:
 		Categories: Tech building
+	AppearsOnMapPreview:
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair
@@ -892,6 +893,7 @@
 	ScriptTriggers:
 	Health:
 		HP: 10000
+	AppearsOnMapPreview:
 	MapEditorData:
 		Categories: Wall
 
@@ -909,6 +911,8 @@
 		Dimensions: 2,2
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Tree
+	AppearsOnMapPreview:
 		Terrain: Tree
 	Health:
 		HP: 50000
@@ -945,6 +949,8 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
+	AppearsOnMapPreview:
+		Terrain: Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
@@ -974,6 +980,8 @@
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
+	AppearsOnMapPreview:
+		Terrain: Tiberium
 	HiddenUnderShroud:
 	WithMakeAnimation:
 	MapEditorData:
@@ -995,6 +1003,8 @@
 		Dimensions: 2,2
 	AppearsOnRadar:
 	RadarColorFromTerrain:
+		Terrain: Tree
+	AppearsOnMapPreview:
 		Terrain: Tree
 	HiddenUnderShroud:
 	ScriptTriggers:
