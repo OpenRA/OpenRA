@@ -646,8 +646,24 @@ namespace OpenRA
 		public byte[] SavePreview()
 		{
 			var tileset = Rules.TileSet;
-			var resources = Rules.Actors["world"].TraitInfos<ResourceTypeInfo>()
-				.ToDictionary(r => r.ResourceType, r => r.TerrainType);
+			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
+			var actors = ActorDefinitions.Where(a => actorTypes.Where(ai => ai.Name == a.Value.Value).Any());
+			var positions = new List<Pair<MPos, Color>>();
+			foreach (var actor in actors)
+			{
+				var s = new ActorReference(actor.Value.Value, actor.Value.ToDictionary());
+
+				var ai = Rules.Actors[actor.Value.Value];
+				var impsis = ai.TraitInfos<IMapPreviewSignatureInfo>();
+				foreach (var impsi in impsis)
+					impsi.PopulateMapPreviewSignatureCells(this, ai, s, positions);
+			}
+
+			// ResourceLayer is on world actor, which isn't caught above, so an extra check for it.
+			var worldActorInfo = Rules.Actors["world"];
+			var worldimpsis = worldActorInfo.TraitInfos<IMapPreviewSignatureInfo>();
+			foreach (var worldimpsi in worldimpsis)
+				worldimpsi.PopulateMapPreviewSignatureCells(this, worldActorInfo, null, positions);
 
 			using (var stream = new MemoryStream())
 			{
@@ -672,15 +688,10 @@ namespace OpenRA
 					for (var x = 0; x < width; x++)
 					{
 						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-						var resourceType = Resources[uv].Type;
-						if (resourceType != 0)
+						var actorsThere = positions.Where(ap => ap.First == uv);
+						if (actorsThere.Any())
 						{
-							// Cell contains resources
-							string res;
-							if (!resources.TryGetValue(resourceType, out res))
-								continue;
-
-							leftColor = rightColor = tileset[tileset.GetTerrainIndex(res)].Color;
+							leftColor = rightColor = actorsThere.First().Second;
 						}
 						else
 						{

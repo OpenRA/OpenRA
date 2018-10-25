@@ -280,6 +280,7 @@
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
+    <Compile Include="Traits\AppearsOnMapPreview.cs" />
     <Compile Include="Traits\Armament.cs" />
     <Compile Include="Traits\Armor.cs" />
     <Compile Include="Traits\AttackMove.cs" />
@@ -565,6 +566,7 @@
     <Compile Include="Traits\World\Locomotor.cs" />
     <Compile Include="Traits\World\JumpjetLocomotor.cs" />
     <Compile Include="Traits\World\PaletteFromEmbeddedSpritePalette.cs" />
+    <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\SubterraneanLocomotor.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />

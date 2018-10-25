@@ -181,7 +181,6 @@
     <Compile Include="Traits\Target.cs" />
     <Compile Include="Traits\TraitsInterfaces.cs" />
     <Compile Include="Traits\World\Faction.cs" />
-    <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
     <Compile Include="Traits\World\DebugVisualizations.cs" />
     <Compile Include="World.cs" />

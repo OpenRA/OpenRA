@@ -287,6 +287,11 @@ namespace OpenRA.Traits
 
 	public interface ISelectionDecorations { void DrawRollover(Actor self, WorldRenderer worldRenderer); }
 
+	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
+	{
+		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<Pair<MPos, Color>> destinationBuffer);
+	}
+
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
