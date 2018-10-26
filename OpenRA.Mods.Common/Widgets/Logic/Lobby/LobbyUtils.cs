@@ -217,7 +217,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
-				{ "initialColor", client.Color }
+				{ "initialColor", client.Color },
+				{ "initialFaction", client.Faction }
 			});
 
 			color.AttachPanel(colorChooser, onExit);
