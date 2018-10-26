@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			player = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			var resources = Stored;
 			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
