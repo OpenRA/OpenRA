@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool SkipMakeAnims = true;
 
 		[Desc("Transform only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
-		public readonly HashSet<string> CaptureTypes = new HashSet<string>();
+		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
 
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(init, this); }
 	}
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
-			if (!IsValidCaptor(captor))
+			if (!info.CaptureTypes.IsEmpty && !info.CaptureTypes.Overlaps(captureTypes))
 				return;
 
 			var facing = self.TraitOrDefault<IFacing>();
@@ -52,15 +52,6 @@ namespace OpenRA.Mods.Common.Traits
 			transform.SkipMakeAnims = info.SkipMakeAnims;
 			self.CancelActivity();
 			self.QueueActivity(transform);
-		}
-
-		bool IsValidCaptor(Actor captor)
-		{
-			if (!info.CaptureTypes.Any())
-				return true;
-
-			var capturesInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
-			return capturesInfo != null && info.CaptureTypes.Overlaps(capturesInfo.CaptureTypes);
 		}
 	}
 }
