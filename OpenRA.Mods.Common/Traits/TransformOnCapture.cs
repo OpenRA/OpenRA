@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			if (!IsValidCaptor(captor))
 				return;

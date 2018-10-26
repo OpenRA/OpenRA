@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			if (world.Disposing)
 				return;

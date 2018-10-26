@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist Range = WDist.FromCells(5);
 
 		[Desc("Allowed ProximityCaptor actors to capture this actor.")]
-		public readonly HashSet<string> CaptorTypes = new HashSet<string> { "Vehicle", "Tank", "Infantry" };
+		public readonly BitSet<CaptureType> CaptorTypes = new BitSet<CaptureType>("Vehicle", "Tank", "Infantry");
 
 		[Desc("If set, the capturing process stops immediately after another player comes into Range.")]
 		public readonly bool MustBeClear = false;
@@ -182,8 +183,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Owner == self.World.LocalPlayer)
 					w.Add(new FlashTarget(self));
 
+				var pc = captor.Info.TraitInfoOrDefault<ProximityCaptorInfo>();
 				foreach (var t in self.TraitsImplementing<INotifyCapture>())
-					t.OnCapture(self, captor, previousOwner, captor.Owner);
+					t.OnCapture(self, captor, previousOwner, captor.Owner, pc.Types);
 			});
 		}
 

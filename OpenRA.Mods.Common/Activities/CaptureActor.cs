@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 				actor.ChangeOwnerSync(self.Owner);
 
 				foreach (var t in actor.TraitsImplementing<INotifyCapture>())
-					t.OnCapture(actor, self, oldOwner, self.Owner);
+					t.OnCapture(actor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
 
 				if (self.Owner.Stances[oldOwner].HasStance(captures.Info.PlayerExperienceStances))
 				{

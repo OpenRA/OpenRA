@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			BeingCaptured = true;
 			self.World.AddFrameEndTask(w => BeingCaptured = false);

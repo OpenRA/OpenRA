@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProximityCaptorInfo : TraitInfo<ProximityCaptor>
 	{
 		[FieldLoader.Require]
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly BitSet<CaptureType> Types = default(BitSet<CaptureType>);
 	}
 
 	public class ProximityCaptor { }

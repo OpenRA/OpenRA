@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			captureManager = self.Trait<CaptureManager>();
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			if (Info.CancelActivity)
 			{
