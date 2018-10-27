@@ -117,6 +117,12 @@ namespace OpenRA.Graphics
 					var r = (byte)(reader.ReadByte() << 2);
 					var g = (byte)(reader.ReadByte() << 2);
 					var b = (byte)(reader.ReadByte() << 2);
+
+					// Replicate high bits into the (currently zero) low bits.
+					r |= (byte)(r >> 6);
+					g |= (byte)(g >> 6);
+					b |= (byte)(b >> 6);
+
 					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 				}
 
