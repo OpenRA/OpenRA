@@ -663,8 +663,10 @@
 		RequiredForShortGame: true
 	GpsDot:
 		String: Structure
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
-		RequiresCondition: !being-captured
+		RequiresCondition: !being-captured && !being-demolished
 		SellSounds: cashturn.aud
 	WithBuildingRepairDecoration:
 		Image: allyrepair

@@ -13,16 +13,22 @@ World:
 
 NUKE:
 	-Sellable:
+	Demolishable:
+		-Condition:
 	Buildable:
 		BuildLimit: 1
 
 PYLE:
 	-Sellable:
+	Demolishable:
+		-Condition:
 	Buildable:
 		BuildLimit: 1
 
 FACT:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 PROC:
 	Buildable:

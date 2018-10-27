@@ -170,6 +170,8 @@ TENT:
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:
+	Demolishable:
+		-Condition:
 	BaseProvider:
 		Range: 12c0
 	Power:

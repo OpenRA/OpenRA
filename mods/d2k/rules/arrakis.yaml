@@ -144,6 +144,8 @@ sietch:
 	-Sellable:
 	-Capturable:
 	-RepairableBuilding:
+	Demolishable:
+		-Condition:
 	ProvidesPrerequisite@buildingname:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:

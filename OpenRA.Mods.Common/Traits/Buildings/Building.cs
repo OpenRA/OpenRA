@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated,
-		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDemolition
+		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly bool SkipMakeAnimation;
 		public readonly BuildingInfo Info;
@@ -331,11 +331,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
 				notify.BuildingComplete(self);
-		}
-
-		void INotifyDemolition.Demolishing(Actor self)
-		{
-			Lock();
 		}
 
 		void INotifySold.Selling(Actor self)

@@ -71,8 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
-		void Demolish(Actor self, Actor saboteur);
 		bool IsValidTarget(Actor self, Actor saboteur);
+		void Demolish(Actor self, Actor saboteur, int delay);
 	}
 
 	// Type tag for crush class bits

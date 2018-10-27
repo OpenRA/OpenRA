@@ -75,6 +75,8 @@ ATEK:
 	CaptureManager:
 		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 PDOX:
 	Inherits@IDISABLE: ^DisableOnLowPower
@@ -85,6 +87,8 @@ PDOX:
 	CaptureManager:
 		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 IRON:
 	Buildable:

@@ -144,6 +144,8 @@ HPAD.IN:
 		BuildSounds: placbldg.aud, build5.aud
 		UndeploySounds: cashturn.aud
 	-Sellable:
+	Demolishable:
+		-Condition:
 	-Power:
 
 ORCA.IN:

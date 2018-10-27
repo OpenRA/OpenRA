@@ -33,6 +33,8 @@ FTUR:
 	CaptureManager:
 		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 PBOX:
 	-AutoTarget:

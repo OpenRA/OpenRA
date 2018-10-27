@@ -93,6 +93,8 @@ NAFNCE:
 		Types: laserfence
 	-Crushable:
 	-Sellable:
+	Demolishable:
+		-Condition:
 	-Targetable:
 	-Building:
 	EnergyWall:

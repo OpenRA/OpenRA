@@ -369,7 +369,10 @@
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CaptureNotification:
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
+		RequiresCondition: !being-demolished
 		SellSounds: cashturn.aud
 	WithMakeAnimation:
 	ThrowsShrapnel@SMALL:
@@ -478,9 +481,11 @@
 		TargetTypes: Ground, Wall, C4
 	WithWallSpriteBody:
 		Type: wall
-	Sellable:
-		SellSounds: cashturn.aud
 	Demolishable:
+		Condition: being-demolished
+	Sellable:
+		RequiresCondition: !being-demolished
+		SellSounds: cashturn.aud
 	ScriptTriggers:
 	ConditionManager:
 	Health:
