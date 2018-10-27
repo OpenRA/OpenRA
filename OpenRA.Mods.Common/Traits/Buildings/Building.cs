@@ -243,12 +243,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync, INotifyCreated,
+	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync,
 		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		public readonly bool SkipMakeAnimation;
 		public readonly BuildingInfo Info;
-		public bool BuildComplete { get; private set; }
 
 		[Sync] readonly CPos topLeft;
 		readonly Actor self;
@@ -256,20 +254,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		Pair<CPos, SubCell>[] occupiedCells;
 		Pair<CPos, SubCell>[] targetableCells;
-
-		// Shared activity lock: undeploy, sell, capture, etc.
-		[Sync] public bool Locked = true;
-
-		public bool Lock()
-		{
-			if (Locked)
-				return false;
-
-			Locked = true;
-			return true;
-		}
-
-		public void Unlock() { Locked = false; }
 
 		public CPos TopLeft { get { return topLeft; } }
 		public WPos CenterPosition { get; private set; }
@@ -288,18 +272,11 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			CenterPosition = init.World.Map.CenterOfCell(topLeft) + Info.CenterOffset(init.World);
-			SkipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		public Pair<CPos, SubCell>[] OccupiedCells() { return occupiedCells; }
 
 		Pair<CPos, SubCell>[] ITargetableCells.TargetableCells() { return targetableCells; }
-
-		void INotifyCreated.Created(Actor self)
-		{
-			if (SkipMakeAnimation || !self.Info.HasTraitInfo<WithMakeAnimationInfo>())
-				NotifyBuildingComplete(self);
-		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
@@ -321,24 +298,10 @@ namespace OpenRA.Mods.Common.Traits
 			influence.RemoveInfluence(self, Info.Tiles(self.Location));
 		}
 
-		public void NotifyBuildingComplete(Actor self)
-		{
-			if (BuildComplete)
-				return;
-
-			BuildComplete = true;
-			Unlock();
-
-			foreach (var notify in self.TraitsImplementing<INotifyBuildComplete>())
-				notify.BuildingComplete(self);
-		}
-
 		void INotifySold.Selling(Actor self)
 		{
 			if (Info.RemoveSmudgesOnSell)
 				RemoveSmudges();
-
-			BuildComplete = false;
 		}
 
 		void INotifySold.Sold(Actor self) { }

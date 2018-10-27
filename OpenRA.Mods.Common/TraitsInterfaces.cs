@@ -106,9 +106,6 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
-
-	[RequireExplicitImplementation]
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
 
 	[RequireExplicitImplementation]

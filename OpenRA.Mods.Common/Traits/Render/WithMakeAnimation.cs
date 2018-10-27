@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly WithMakeAnimationInfo info;
 		readonly WithSpriteBody[] wsbs;
+		readonly bool skipMakeAnimation;
 
 		ConditionManager conditionManager;
 		int token = ConditionManager.InvalidConditionToken;
@@ -45,14 +46,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 			var self = init.Self;
 			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
+			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			var building = self.TraitOrDefault<Building>();
-			if (building != null && !building.SkipMakeAnimation)
-				Forward(self, () => building.NotifyBuildingComplete(self));
+			if (!skipMakeAnimation)
+				Forward(self, () => { });
 		}
 
 		public void Forward(Actor self, Action onComplete)
