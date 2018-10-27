@@ -1127,7 +1127,7 @@ FACT:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
-		RequiresCondition: factundeploy
+		RequiresCondition: factundeploy && !build-incomplete
 		PauseOnCondition: chrono-vortex || being-captured || being-demolished
 		IntoActor: mcv
 		Offset: 1,1
