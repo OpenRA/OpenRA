@@ -74,7 +74,7 @@ GACTWR:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
-		RequiresCondition: tower.vulcan || tower.rocket || tower.sam
+		RequiresCondition: !build-incomplete && (tower.vulcan || tower.rocket || tower.sam)
 		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret@VULC:
 		RequiresCondition: !build-incomplete && tower.vulcan
