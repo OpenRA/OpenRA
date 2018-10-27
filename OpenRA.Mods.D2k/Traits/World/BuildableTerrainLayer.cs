@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void HitTile(CPos cell, int damage)
 		{
-			if (!strength.Contains(cell) || strength[cell] == 0 || bi.GetBuildingAt(cell) != null)
+			if (!strength.Contains(cell) || strength[cell] == 0 || bi.GetBuildingsAt(cell).Any())
 				return;
 
 			strength[cell] = strength[cell] - damage;

@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!rt.Info.AllowUnderActors && world.ActorMap.AnyActorsAt(cell))
 				return false;
 
-			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingAt(cell) != null)
+			if (!rt.Info.AllowUnderBuildings && buildingInfluence.GetBuildingsAt(cell).Any())
 				return false;
 
 			if (!rt.Info.AllowOnRamps)

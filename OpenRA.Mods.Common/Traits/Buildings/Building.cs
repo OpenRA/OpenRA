@@ -199,9 +199,9 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var pos = new CPos(x, y);
 
-					var buildingAtPos = bi.GetBuildingAt(pos);
+					var buildingsAtPos = bi.GetBuildingsAt(pos);
 
-					if (buildingAtPos == null)
+					if (!buildingsAtPos.Any())
 					{
 						var unitsAtPos = world.ActorMap.GetActorsAt(pos).Where(a => a.IsInWorld
 							&& (a.Owner == p || (allyBuildEnabled && a.Owner.Stances[p] == Stance.Ally))
@@ -210,9 +210,11 @@ namespace OpenRA.Mods.Common.Traits
 						if (unitsAtPos.Any())
 							nearnessCandidates.Add(pos);
 					}
-					else if (buildingAtPos.IsInWorld && ActorGrantsValidArea(buildingAtPos, requiresBuildableArea)
-						&& (buildingAtPos.Owner == p || (allyBuildEnabled && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
-						nearnessCandidates.Add(pos);
+					else
+						foreach (var buildingAtPos in buildingsAtPos)
+							if (buildingAtPos.IsInWorld && ActorGrantsValidArea(buildingAtPos, requiresBuildableArea)
+								&& (buildingAtPos.Owner == p || (allyBuildEnabled && buildingAtPos.Owner.Stances[p] == Stance.Ally)))
+								nearnessCandidates.Add(pos);
 				}
 			}
 

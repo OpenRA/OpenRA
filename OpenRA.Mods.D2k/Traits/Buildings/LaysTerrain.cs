@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.D2k.Traits
 						continue;
 
 					// Don't place under other buildings or custom terrain
-					if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != byte.MaxValue)
+					if (bi.GetBuildingsAt(c).Any(building => building != self) || map.CustomTerrain[c] != byte.MaxValue)
 						continue;
 
 					var index = Game.CosmeticRandom.Next(template.TilesCount);
@@ -83,7 +84,7 @@ namespace OpenRA.Mods.D2k.Traits
 					continue;
 
 				// Don't place under other buildings or custom terrain
-				if (bi.GetBuildingAt(c) != self || map.CustomTerrain[c] != byte.MaxValue)
+				if (bi.GetBuildingsAt(c).Any(building => building != self) || map.CustomTerrain[c] != byte.MaxValue)
 					continue;
 
 				layer.AddTile(c, new TerrainTile(template.Id, (byte)i));

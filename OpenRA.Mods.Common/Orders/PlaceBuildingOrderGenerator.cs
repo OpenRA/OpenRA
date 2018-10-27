@@ -161,12 +161,8 @@ namespace OpenRA.Mods.Common.Orders
 
 		bool AcceptsPlug(CPos cell, PlugInfo plug)
 		{
-			var host = buildingInfluence.GetBuildingAt(cell);
-			if (host == null)
-				return false;
-
-			var location = host.Location;
-			return host.TraitsImplementing<Pluggable>().Any(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type));
+			var hosts = buildingInfluence.GetBuildingsAt(cell);
+			return hosts.Any(host => host.TraitsImplementing<Pluggable>().Any(p => host.Location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type)));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
