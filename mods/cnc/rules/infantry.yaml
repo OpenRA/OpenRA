@@ -227,7 +227,8 @@ RMBO:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		IdleSequences: idle1,idle2,idle3
-	AnnounceOnBuild:
+	VoiceAnnouncement:
+		Voice: Build
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: CommandoVoice
