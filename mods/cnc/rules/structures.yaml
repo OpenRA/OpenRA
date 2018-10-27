@@ -830,6 +830,7 @@ GUN:
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	WithMuzzleOverlay:
 	-WithDeathAnimation:
 	DetectCloaked:
@@ -880,6 +881,7 @@ SAM:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 	WithMuzzleOverlay:
 	-RenderDetectionCircle:
@@ -921,6 +923,7 @@ OBLI:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 	AttackCharges:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 		ChargeLevel: 50
 		ChargingCondition: charging
@@ -963,6 +966,7 @@ GTWR:
 		LocalOffset: 256,0,256
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
@@ -1012,6 +1016,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 	BodyOrientation:
 		QuantizedFacings: 8

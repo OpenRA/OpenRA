@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, INotifyCreated, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
@@ -48,7 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
 
 		protected IFacing facing;
-		protected Building building;
 		protected IPositionable positionable;
 		protected INotifyAiming[] notifyAiming;
 		protected Func<IEnumerable<Armament>> getArmaments;
@@ -66,7 +65,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			building = self.TraitOrDefault<Building>();
 			positionable = self.TraitOrDefault<IPositionable>();
 			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
@@ -113,10 +111,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			var mobile = self.TraitOrDefault<Mobile>();
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
-				return false;
-
-			// Building is under construction or is being sold
-			if (building != null && !building.BuildComplete)
 				return false;
 
 			if (Armaments.All(a => a.IsReloading))
