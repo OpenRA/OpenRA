@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
 
-	class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete
+	class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete, IResolveOrder
 	{
 		readonly AttackOrderPowerInfo info;
 		AttackBase attack;
@@ -57,6 +57,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		void INotifyBurstComplete.FiredBurst(Actor self, Target target, Armament a)
 		{
 			self.World.IssueOrder(new Order("Stop", self, false));
+		}
+
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Stop")
+				self.CancelActivity();
 		}
 	}
 
