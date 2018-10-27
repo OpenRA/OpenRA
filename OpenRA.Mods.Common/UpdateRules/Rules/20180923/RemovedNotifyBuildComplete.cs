@@ -16,13 +16,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemovedNotifyBuildComplete : UpdateRule
 	{
-		public override string Name { get { return "Render traits are no longer automatically disabled during Building make-animations"; } }
+		public override string Name { get { return "Traits are no longer automatically disabled during Building make-animations"; } }
 		public override string Description
 		{
 			get
 			{
 				return "Traits are no longer force-disabled while the WithMakeAnimation trait is active.\n" +
 					"This affects the With*Animation, With*Overlay, Gate, and ConyardChronoReturn traits.\n" +
+				    "The AnnounceOnBuild trait has been replaced with a new VoiceAnnouncement trait.\n" +
 					"Affected actors are listed so that conditions may be manually defined.";
 			}
 		}
@@ -52,7 +53,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"WithCrumbleOverlay",
 			"WithDeliveryOverlay",
 			"Gate",
-			"ConyardChronoReturn"
+			"ConyardChronoReturn",
+			"VoiceAnnouncement"
 		};
 
 		readonly Dictionary<string, List<string>> locations = new Dictionary<string, List<string>>();
@@ -70,6 +72,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
+			foreach (var announce in actorNode.ChildrenMatching("AnnounceOnBuild"))
+			{
+				announce.RenameKey("VoiceAnnouncement");
+				if (announce.LastChildMatching("Voice") == null)
+					announce.AddNode("Voice", "Build");
+			}
+
 			var used = new List<string>();
 			foreach (var t in Traits)
 				if (actorNode.LastChildMatching(t) != null)
