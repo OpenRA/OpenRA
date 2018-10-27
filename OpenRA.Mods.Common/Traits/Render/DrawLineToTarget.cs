@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected, INotifyBecomingIdle
+	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected, INotifyBecomingIdle, INotifyOwnerChanged
 	{
 		readonly DrawLineToTargetInfo info;
 		List<Target> targets;
@@ -86,6 +86,11 @@ namespace OpenRA.Mods.Common.Traits
 		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 
 		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
+		{
+			targets = null;
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			targets = null;
 		}
