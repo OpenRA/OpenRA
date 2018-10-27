@@ -1162,6 +1162,7 @@ FACT:
 			TopLeft: -1536, -1536
 			BottomRight: 1536, 1536
 	ConyardChronoReturn:
+		ReturnOriginalActorOnCondition: build-incomplete
 		Condition: chrono-vortex
 		Damage: 950
 	TransferTimedExternalConditionOnTransform:

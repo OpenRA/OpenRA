@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			get
 			{
 				return "Traits are no longer force-disabled while the WithMakeAnimation trait is active.\n" +
-					"This affects the With*Animation, With*Overlay, and Gate traits.\n" +
+					"This affects the With*Animation, With*Overlay, Gate, and ConyardChronoReturn traits.\n" +
 					"Affected actors are listed so that conditions may be manually defined.";
 			}
 		}
@@ -51,7 +51,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"WithDeliveryAnimation",
 			"WithCrumbleOverlay",
 			"WithDeliveryOverlay",
-			"Gate"
+			"Gate",
+			"ConyardChronoReturn"
 		};
 
 		readonly Dictionary<string, List<string>> locations = new Dictionary<string, List<string>>();
