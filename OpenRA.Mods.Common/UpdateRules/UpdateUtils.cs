@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 		public static MiniYamlNode LastChildMatching(this MiniYamlNode node, string match, bool includeRemovals = true)
 		{
-			return node.ChildrenMatching(match, includeRemovals).LastOrDefault();
+			return node.ChildrenMatching(match, includeRemovals: includeRemovals).LastOrDefault();
 		}
 
 		public static void RenameChildrenMatching(this MiniYamlNode node, string match, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
