@@ -60,8 +60,6 @@ MSLO:
 		Amount: -150
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithNukeLaunchAnimation:
 		RequiresCondition: !build-incomplete
 
@@ -982,8 +980,6 @@ WEAP:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithProductionDoorOverlay:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
@@ -1133,7 +1129,7 @@ FACT:
 		Offset: 1,1
 		Facing: 96
 	Sellable:
-		RequiresCondition: !chrono-vortex && !being-captured && !being-demolished
+		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -1146,8 +1142,6 @@ FACT:
 		PauseOnCondition: being-captured
 		Range: 16c0
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithBuildingPlacedAnimation:
 		RequiresCondition: !build-incomplete && !chrono-vortex
 	Power:
@@ -1216,8 +1210,6 @@ PROC:
 		Types: SpyInfiltrate
 		Notification: CreditsStolen
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top
@@ -1265,8 +1257,6 @@ SILO:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithSiloAnimation:
 		RequiresCondition: !build-incomplete
 	StoresResources:
@@ -1310,8 +1300,6 @@ HPAD:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	Exit@1:
@@ -1513,8 +1501,6 @@ AFLD:
 		ReferencePoint: Top
 		ZOffset: 256
 		RequiresCondition: primary
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 
@@ -1918,8 +1904,6 @@ FIX:
 		PlayerExperience: 15
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	Power:

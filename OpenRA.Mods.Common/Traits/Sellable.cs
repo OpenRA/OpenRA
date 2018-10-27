@@ -58,10 +58,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			var building = self.TraitOrDefault<Building>();
-			if (building != null && !building.Lock())
-				return;
-
 			self.CancelActivity();
 
 			foreach (var s in info.SellSounds)

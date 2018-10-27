@@ -747,12 +747,13 @@
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
-		RequiresCondition: !being-demolished
+		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: cashturn.aud
 	CaptureManager:
 	Capturable:
 		Types: building-sabotage
 	WithMakeAnimation:
+		Condition: build-incomplete
 	WithBuildingRepairDecoration:
 		Image: allyrepair
 		Sequence: repair

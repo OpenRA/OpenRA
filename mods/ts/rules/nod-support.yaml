@@ -71,8 +71,6 @@ NAPOST:
 		Amount: -25
 	RevealsShroud:
 		Range: 4c0
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: lights
@@ -175,8 +173,6 @@ NALASR:
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
-	WithMakeAnimation:
-		Condition: build-incomplete
 	RenderVoxels:
 	WithVoxelTurret:
 		RequiresCondition: !build-incomplete
@@ -223,8 +219,6 @@ NAOBEL:
 		RequiresCondition: charging && !disabled
 		SoundFiles: obelpowr.aud
 		Interval: 30, 40
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithChargeOverlay:
 		RequiresCondition: !build-incomplete
 		Palette: player
@@ -265,8 +259,6 @@ NASAM:
 		InitialFacing: 224
 	AttackTurreted:
 		PauseOnCondition: empdisable || disabled
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
 		Recoils: false
@@ -302,8 +294,6 @@ NASTLH:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@pulse:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: pulse
@@ -352,8 +342,6 @@ NAMISL:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
@@ -422,8 +410,6 @@ NAWAST:
 		Actor: WEED
 		SpawnOffset: 3,1
 		Facing: 160
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@GLOW:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-glow

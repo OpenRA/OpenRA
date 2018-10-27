@@ -22,8 +22,6 @@ GAPOWR:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
@@ -112,8 +110,6 @@ GAPILE:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
@@ -178,8 +174,6 @@ GAWEAP:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@ROOF:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
@@ -248,8 +242,6 @@ GAHPAD:
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
 	ProductionBar:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@PLATFORM:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
@@ -306,8 +298,6 @@ GADEPT:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-light
@@ -373,8 +363,6 @@ GARADR:
 	RevealsShroud:
 		Range: 10c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
@@ -414,8 +402,6 @@ GATECH:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
@@ -443,8 +429,6 @@ GAPLUG:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable

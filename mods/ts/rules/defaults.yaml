@@ -372,9 +372,10 @@
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
-		RequiresCondition: !being-demolished
+		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: cashturn.aud
 	WithMakeAnimation:
+		Condition: build-incomplete
 	ThrowsShrapnel@SMALL:
 		Pieces: 3, 5
 	ThrowsShrapnel@LARGE:
