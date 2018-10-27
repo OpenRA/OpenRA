@@ -651,6 +651,7 @@
 	EngineerRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
+		Condition: build-incomplete
 	CaptureManager:
 		BeingCapturedCondition: being-captured
 	Capturable:
@@ -666,7 +667,7 @@
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
-		RequiresCondition: !being-captured && !being-demolished
+		RequiresCondition: !build-incomplete && !being-captured && !being-demolished
 		SellSounds: cashturn.aud
 	WithBuildingRepairDecoration:
 		Image: allyrepair

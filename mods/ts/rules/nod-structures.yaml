@@ -25,8 +25,6 @@ NAPOWR:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
@@ -66,8 +64,6 @@ NAAPWR:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
@@ -123,8 +119,6 @@ NAHAND:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
@@ -186,8 +180,6 @@ NAWEAP:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@ROOF:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
@@ -250,8 +242,6 @@ NAHPAD:
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
 	ProductionBar:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@PLATFORM:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
@@ -310,8 +300,6 @@ NARADR:
 	RevealsShroud:
 		Range: 10c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
@@ -351,8 +339,6 @@ NATECH:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
@@ -393,8 +379,6 @@ NATMPL:
 		MaxHeightDelta: 3
 	Power:
 		Amount: -200
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights

@@ -145,8 +145,6 @@ WEAF:
 	RenderSprites:
 		Image: WEAP
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithProductionDoorOverlay:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top

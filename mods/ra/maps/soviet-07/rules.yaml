@@ -35,6 +35,8 @@ FTUR:
 	-Sellable:
 	Demolishable:
 		-Condition:
+	WithMakeAnimation:
+		-Condition:
 
 PBOX:
 	-AutoTarget:

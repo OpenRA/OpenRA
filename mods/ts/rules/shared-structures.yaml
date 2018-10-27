@@ -41,8 +41,6 @@ GACNST:
 		ProductionType: Building
 	ProductionBar@Defense:
 		ProductionType: Defense
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top
@@ -104,8 +102,6 @@ PROC:
 		Actor: HARV
 		SpawnOffset: 2,1
 		Facing: 160
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@REDLIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-redlights
@@ -161,8 +157,6 @@ GASILO:
 		FactionImages:
 			gdi: gasilo.gdi
 			nod: gasilo.nod
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithSiloAnimation:
 		RequiresCondition: !build-incomplete
 	WithIdleOverlay@UNDERLAY:

@@ -412,7 +412,7 @@
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
-		RequiresCondition: !being-demolished
+		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
@@ -456,6 +456,8 @@
 	-WithCrumbleOverlay:
 	-Capturable:
 	-WithSpriteBody:
+	Sellable:
+		RequiresCondition: !being-demolished
 	WithWallSpriteBody:
 	LineBuildNode:
 		Types: turret

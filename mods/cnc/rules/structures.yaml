@@ -85,8 +85,6 @@ FACT:
 		Cooldown: 75
 		Range: 14c0
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithBuildingPlacedAnimation:
 		RequiresCondition: !build-incomplete
 	Power:
@@ -230,8 +228,6 @@ PROC:
 		SpawnOffset: 1,2
 		Facing: 64
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithResources:
 		RequiresCondition: !build-incomplete
 	Power:
@@ -261,8 +257,6 @@ SILO:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithSiloAnimation:
 		RequiresCondition: !build-incomplete
 	StoresResources:
@@ -422,8 +416,6 @@ AFLD:
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-dish
@@ -475,8 +467,6 @@ WEAP:
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithProductionDoorOverlay:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
@@ -536,8 +526,6 @@ HPAD:
 		HpPerStep: 1000
 		PlayerExperience: 25
 		StartRepairingNotification: Repairing
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	RallyPoint:
@@ -665,8 +653,6 @@ FIX:
 		Range: 5c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	Reservable:
@@ -799,8 +785,6 @@ TMPL:
 		ClockSequence: clock
 		CircleSequence: circles
 	WithBuildingBib:
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithNukeLaunchAnimation:
 		RequiresCondition: !build-incomplete
 	WithNukeLaunchOverlay:
@@ -931,8 +915,6 @@ OBLI:
 		Range: 8c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithMakeAnimation:
-		Condition: build-incomplete
 	WithChargeAnimation:
 		RequiresCondition: !build-incomplete
 	Armament:
