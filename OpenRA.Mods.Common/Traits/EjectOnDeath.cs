@@ -40,8 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EjectOnDeath(init.Self, this); }
 	}
 
-	public interface IPreventsEjectOnDeath { bool PreventsEjectOnDeath(Actor self); }
-
 	public class EjectOnDeath : ConditionalTrait<EjectOnDeathInfo>, INotifyKilled
 	{
 		public EjectOnDeath(Actor self, EjectOnDeathInfo info)
@@ -51,10 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (IsTraitDisabled || self.Owner.WinState == WinState.Lost || !self.World.Map.Contains(self.Location))
 				return;
-
-			foreach (var condition in self.TraitsImplementing<IPreventsEjectOnDeath>())
-				if (condition.PreventsEjectOnDeath(self))
-					return;
 
 			var r = self.World.SharedRandom.Next(1, 100);
 

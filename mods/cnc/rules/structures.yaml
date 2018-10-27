@@ -20,10 +20,11 @@ FACT:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
+		RequiresCondition: factundeploy
+		PauseOnCondition: being-demolished
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
-		RequiresCondition: factundeploy
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy

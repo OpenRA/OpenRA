@@ -744,7 +744,10 @@
 	SpawnActorsOnSell:
 		ActorTypes: e6,e1,e1,e1
 	EngineerRepairable:
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
+		RequiresCondition: !being-demolished
 		SellSounds: cashturn.aud
 	CaptureManager:
 	Capturable:

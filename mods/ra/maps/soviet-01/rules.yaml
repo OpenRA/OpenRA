@@ -39,13 +39,19 @@ AFLD:
 		DropItems: E1,E1,E1,E2,E2
 	-RallyPoint:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 DOME:
 	CaptureManager:
 		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:
 
 POWR:
 	CaptureManager:
 		-BeingCapturedCondition:
 	-Sellable:
+	Demolishable:
+		-Condition:

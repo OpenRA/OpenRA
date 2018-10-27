@@ -409,11 +409,13 @@
 	ActorLostNotification:
 		Notification: BuildingLost
 	ShakeOnDeath:
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
+		RequiresCondition: !being-demolished
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
-	Demolishable:
 	DamagedByTerrain:
 		Damage: 500
 		DamageInterval: 100

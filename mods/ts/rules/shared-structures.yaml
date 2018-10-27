@@ -28,11 +28,12 @@ GACNST:
 		Value: 2500
 	BaseBuilding:
 	Transforms:
+		RequiresCondition: factundeploy
+		PauseOnCondition: being-demolished
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
 		DeployCursor: undeploy
-		RequiresCondition: factundeploy
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy

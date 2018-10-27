@@ -102,6 +102,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveRepairBuildingsFromAircraft(),
 				new AddRearmable(),
 				new MergeAttackPlaneAndHeli(),
+				new RemovedDemolishLocking(),
 			})
 		};
 
