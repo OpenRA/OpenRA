@@ -79,10 +79,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitPaused || IsTraitDisabled)
 				return false;
 
-			var building = self.TraitOrDefault<Building>();
-			if (building != null && building.Locked)
-				return false;
-
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
