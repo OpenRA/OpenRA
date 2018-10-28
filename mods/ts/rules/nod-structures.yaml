@@ -119,6 +119,7 @@ NAHAND:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
@@ -180,6 +181,7 @@ NAWEAP:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
@@ -242,6 +244,7 @@ NAHPAD:
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
 	ProductionBar:
+		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-platform

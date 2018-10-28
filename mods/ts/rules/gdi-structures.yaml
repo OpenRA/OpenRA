@@ -110,6 +110,7 @@ GAPILE:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
@@ -174,6 +175,7 @@ GAWEAP:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
@@ -242,6 +244,7 @@ GAHPAD:
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
 	ProductionBar:
+		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
