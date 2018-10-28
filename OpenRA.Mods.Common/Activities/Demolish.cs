@@ -25,11 +25,10 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int flashes;
 		readonly int flashesDelay;
 		readonly int flashInterval;
-		readonly int flashDuration;
 		readonly INotifyDemolition[] notifiers;
 
 		public Demolish(Actor self, Actor target, EnterBehaviour enterBehaviour, int delay,
-			int flashes, int flashesDelay, int flashInterval, int flashDuration)
+			int flashes, int flashesDelay, int flashInterval)
 			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
@@ -39,7 +38,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
 			this.flashInterval = flashInterval;
-			this.flashDuration = flashDuration;
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -57,9 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var ind in notifiers)
 					ind.Demolishing(self);
 
-				for (var f = 0; f < flashes; f++)
-					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>
-						w.Add(new FlashTarget(target, ticks: flashDuration))));
+				w.Add(new FlashTarget(target, count: flashes, delay: flashesDelay, interval: flashInterval));
 
 				w.Add(new DelayedAction(delay, () =>
 				{
