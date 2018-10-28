@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MergeCaptureTraits(),
 				new RemovedNotifyBuildComplete(),
 				new LowPowerSlowdownToModifier(),
+				new RenameCrateActionNotification(),
 			})
 		};
 
