@@ -405,7 +405,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void UnitProducedByOther(Actor self, Actor producee, Actor produced, string productionType)
+		public void UnitProducedByOther(Actor self, Actor producee, Actor produced, string productionType, TypeDictionary init)
 		{
 			if (world.Disposing)
 				return;
