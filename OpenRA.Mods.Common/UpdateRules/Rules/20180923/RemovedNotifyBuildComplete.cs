@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			get
 			{
 				return "Traits are no longer force-disabled while the WithMakeAnimation trait is active.\n" +
-					"This affects the With*Animation, With*Overlay, Transforms, Sellable, Gate, ToggleConditionOnOrder, and ConyardChronoReturn traits.\n" +
-				    "The AnnounceOnBuild trait has been replaced with a new VoiceAnnouncement trait.\n" +
+					"This affects the With*Animation, With*Overlay, *Production, Transforms, Sellable,\n" +
+					"Gate, ToggleConditionOnOrder, and ConyardChronoReturn traits.\n" +
+					"The AnnounceOnBuild trait has been replaced with a new VoiceAnnouncement trait.\n" +
 					"Affected actors are listed so that conditions may be manually defined.";
 			}
 		}
@@ -52,6 +53,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"WithDeliveryAnimation",
 			"WithCrumbleOverlay",
 			"WithDeliveryOverlay",
+			"Production",
+			"ProductionAirdrop",
+			"ProductionFromMapEdge",
+			"ProductionParadrop",
 			"Transforms",
 			"Sellable",
 			"Gate",
