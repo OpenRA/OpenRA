@@ -89,6 +89,7 @@ construction_yard:
 		ActorTypes: light_inf, light_inf, engineer
 	BaseBuilding:
 	ProductionBar:
+		ProductionType: Building
 	Power:
 		Amount: 20
 	RenderSprites:
@@ -215,6 +216,7 @@ barracks:
 		ProductionQueues: Infantry
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	ProvidesPrerequisite@atreides:
 		Prerequisite: barracks.atreides
 		Factions: atreides
@@ -426,6 +428,7 @@ light_factory:
 		ProductionQueues: Vehicle
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	ProvidesPrerequisite@atreides:
 		Prerequisite: light.atreides
 		Factions: atreides
@@ -507,6 +510,7 @@ heavy_factory:
 		ProductionQueues: Armor
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Armor
 	ProvidesPrerequisite@atreides:
 		Prerequisite: heavy.atreides
 		Factions: atreides
@@ -669,6 +673,7 @@ starport:
 		RequiresCondition: !build-incomplete
 		Palette: starportlights
 	ProductionBar:
+		ProductionType: Starport
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Starport
@@ -933,6 +938,7 @@ high_tech_factory:
 	ProductionFromMapEdge:
 		Produces: Aircraft, Upgrade
 	ProductionBar:
+		ProductionType: Aircraft
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		ProductionQueues: Aircraft

@@ -17,73 +17,72 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining build time of actor produced here.")]
-	class ProductionBarInfo : ITraitInfo, Requires<ProductionInfo>
+	class ProductionBarInfo : ConditionalTraitInfo, Requires<ProductionInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Production queue type, for actors with multiple queues.")]
 		public readonly string ProductionType = null;
 
 		public readonly Color Color = Color.SkyBlue;
 
-		public object Create(ActorInitializer init) { return new ProductionBar(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ProductionBar(init.Self, this); }
 	}
 
-	class ProductionBar : ISelectionBar, ITick, INotifyCreated, INotifyOwnerChanged
+	class ProductionBar : ConditionalTrait<ProductionBarInfo>, ISelectionBar, ITick, INotifyOwnerChanged
 	{
-		readonly ProductionBarInfo info;
 		readonly Actor self;
 		ProductionQueue queue;
 		float value;
 
 		public ProductionBar(Actor self, ProductionBarInfo info)
+			: base(info)
 		{
 			this.self = self;
-			this.info = info;
+		}
+
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+			FindQueue();
 		}
 
 		void FindQueue()
 		{
-			var type = info.ProductionType ?? self.Info.TraitInfo<ProductionInfo>().Produces.First();
-
 			// Per-actor queue
 			// Note: this includes disabled queues, as each bar must bind to exactly one queue.
 			queue = self.TraitsImplementing<ProductionQueue>()
-				.FirstOrDefault(q => type == null || type == q.Info.Type);
+				.FirstOrDefault(q => Info.ProductionType == q.Info.Type);
 
 			if (queue == null)
 			{
 				// No queues available - check for classic production queues
 				queue = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => type == null || type == q.Info.Type);
+					.FirstOrDefault(q => Info.ProductionType == q.Info.Type);
 			}
-
-			if (queue == null)
-				throw new InvalidOperationException("No queues available for production type '{0}'".F(type));
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			FindQueue();
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			var current = queue.AllQueued().Where(i => i.Started).OrderBy(i => i.RemainingTime).FirstOrDefault();
 			value = current != null ? 1 - (float)current.RemainingCost / current.TotalCost : 0;
 		}
 
 		float ISelectionBar.GetValue()
 		{
-			// only people we like should see our production status.
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
+			// Only people we like should see our production status.
+			if (IsTraitDisabled || !self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0;
 
 			return value;
 		}
 
-		Color ISelectionBar.GetColor() { return info.Color; }
+		Color ISelectionBar.GetColor() { return Info.Color; }
 		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 
-		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			FindQueue();
 		}

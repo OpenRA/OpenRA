@@ -322,6 +322,7 @@ PYLE:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Infantry.GDI
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -372,6 +373,7 @@ HAND:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Infantry.Nod
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -431,6 +433,7 @@ AFLD:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Vehicle.Nod
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -489,6 +492,7 @@ WEAP:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Vehicle.GDI
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:

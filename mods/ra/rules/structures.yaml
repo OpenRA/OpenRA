@@ -205,6 +205,7 @@ SPEN:
 		PlayerExperience: 15
 	RallyPoint:
 	ProductionBar:
+		ProductionType: Ship
 	Power:
 		Amount: -30
 	DetectCloaked:
@@ -326,6 +327,7 @@ SYRD:
 		PlayerExperience: 15
 	RallyPoint:
 	ProductionBar:
+		ProductionType: Ship
 	Power:
 		Amount: -30
 	DetectCloaked:
@@ -1055,6 +1057,7 @@ WEAP:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
@@ -1320,6 +1323,7 @@ HPAD:
 		Produces: Aircraft, Helicopter
 	Reservable:
 	ProductionBar:
+		ProductionType: Aircraft
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
@@ -1488,6 +1492,7 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 	ProductionBar:
+		ProductionType: Aircraft
 	SupportPowerChargeBar:
 	PrimaryBuilding:
 		PrimaryCondition: primary
@@ -1684,6 +1689,7 @@ BARR:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	ProvidesPrerequisite@soviet:
@@ -1766,6 +1772,7 @@ KENN:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
@@ -1826,6 +1833,7 @@ TENT:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	ProvidesPrerequisite@barracks:
 		Prerequisite: barracks
 	ProvidesPrerequisite@allies:

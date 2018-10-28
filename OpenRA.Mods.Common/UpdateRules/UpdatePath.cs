@@ -103,6 +103,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddRearmable(),
 				new MergeAttackPlaneAndHeli(),
 				new RemovedDemolishLocking(),
+				new RequireProductionType(),
 			})
 		};
 
