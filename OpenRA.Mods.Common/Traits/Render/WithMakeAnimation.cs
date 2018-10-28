@@ -68,11 +68,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			wsb.PlayCustomAnimation(self, info.Sequence, () =>
 			{
-				if (token != ConditionManager.InvalidConditionToken)
-					token = conditionManager.RevokeCondition(self, token);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (token != ConditionManager.InvalidConditionToken)
+						token = conditionManager.RevokeCondition(self, token);
 
-				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+					// TODO: Rewrite this to use a trait notification for save game support
+					onComplete();
+				});
 			});
 		}
 
@@ -88,11 +91,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
 			{
-				if (token != ConditionManager.InvalidConditionToken)
-					token = conditionManager.RevokeCondition(self, token);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (token != ConditionManager.InvalidConditionToken)
+						token = conditionManager.RevokeCondition(self, token);
 
-				// TODO: Rewrite this to use a trait notification for save game support
-				onComplete();
+					// TODO: Rewrite this to use a trait notification for save game support
+					onComplete();
+				});
 			});
 		}
 
