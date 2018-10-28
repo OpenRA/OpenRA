@@ -34,18 +34,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string Faction { get; private set; }
 
-		Building building;
-
 		public Production(ActorInitializer init, ProductionInfo info)
 			: base(info)
 		{
 			rp = Exts.Lazy(() => init.Self.IsDead ? null : init.Self.TraitOrDefault<RallyPoint>());
 			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			building = self.TraitOrDefault<Building>();
 		}
 
 		public virtual void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string productionType, TypeDictionary inits)
@@ -131,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
-			if (IsTraitDisabled || IsTraitPaused || Reservable.IsReserved(self) || (building != null && building.Locked))
+			if (IsTraitDisabled || IsTraitPaused || Reservable.IsReserved(self))
 				return false;
 
 			// Pick a spawn/exit point pair
