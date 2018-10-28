@@ -45,20 +45,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
+	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, INotifyAttack, INotifyIdle, INotifyMoving
 	{
-		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
 		readonly bool hasIdleSequence;
 
-		bool dirty;
 		string idleSequence;
 		int idleDelay;
 		AnimationState state;
 		IRenderInfantrySequenceModifier rsm;
 
 		bool IsModifyingSequence { get { return rsm != null && rsm.IsModifyingSequence; } }
-		bool wasModifying;
 
 		public WithInfantryBody(ActorInitializer init, WithInfantryBodyInfo info)
 			: base(info)
@@ -70,7 +67,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 			PlayStandAnimation(self);
 
-			move = init.Self.Trait<IMove>();
 			hasIdleSequence = Info.IdleSequences.Length > 0;
 		}
 
@@ -118,6 +114,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
+		protected virtual void PlayMoveAnimation(Actor self)
+		{
+			state = AnimationState.Moving;
+			DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.MoveSequence));
+		}
+
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			PlayAttackAnimation(self, target, a);
@@ -125,32 +127,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		void ITick.Tick(Actor self)
+		void INotifyMoving.StartedMoving(Actor self)
 		{
-			Tick(self);
+			PlayMoveAnimation(self);
 		}
 
-		protected virtual void Tick(Actor self)
+		void INotifyMoving.StoppedMoving(Actor self)
 		{
-			if (rsm != null)
-			{
-				if (wasModifying != rsm.IsModifyingSequence)
-					dirty = true;
-
-				wasModifying = rsm.IsModifyingSequence;
-			}
-
-			if ((state != AnimationState.Moving || dirty) && move.IsMoving)
-			{
-				state = AnimationState.Moving;
-				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.MoveSequence));
-			}
-			else if (((state == AnimationState.Moving || dirty) && !move.IsMoving)
-				|| ((state == AnimationState.Idle || state == AnimationState.IdleAnimating) && !self.IsIdle))
-				PlayStandAnimation(self);
-
-			dirty = false;
+			PlayStandAnimation(self);
 		}
+
+		void INotifyMoving.StartedMovingVertically(Actor self) { }
+		void INotifyMoving.StoppedMovingVertically(Actor self) { }
 
 		void INotifyIdle.TickIdle(Actor self)
 		{

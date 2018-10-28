@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithDisguisingInfantryBody(init, this); }
 	}
 
-	class WithDisguisingInfantryBody : WithInfantryBody
+	class WithDisguisingInfantryBody : WithInfantryBody, ITick
 	{
 		readonly WithDisguisingInfantryBodyInfo info;
 		readonly Disguise disguise;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			disguise = init.Self.Trait<Disguise>();
 		}
 
-		protected override void Tick(Actor self)
+		void ITick.Tick(Actor self)
 		{
 			if (disguise.AsActor != disguiseActor || disguise.AsPlayer != disguisePlayer)
 			{
@@ -57,8 +57,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 					DefaultAnimation.ChangeImage(disguiseImage ?? rs.GetImage(self), sequence);
 				rs.UpdatePalette();
 			}
-
-			base.Tick(self);
 		}
 	}
 }
