@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 				tokens[a] = external.GrantCondition(a, self);
 		}
 
-		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType)
+		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init)
 		{
 			// If the produced Actor doesn't occupy space, it can't be in range
 			if (produced.OccupiesSpace == null)

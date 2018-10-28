@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();
 				foreach (var notify in notifyOthers)
-					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType);
+					notify.Trait.UnitProducedByOther(notify.Actor, self, newUnit, productionType, td);
 			});
 		}
 	}
