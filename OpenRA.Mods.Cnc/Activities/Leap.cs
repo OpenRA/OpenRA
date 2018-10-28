@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Cnc.Activities
 	{
 		readonly Mobile mobile;
 		readonly INotifyMoving[] notifyMoving;
+		readonly INotifyAttack[] notifyAttack;
 		readonly WeaponInfo weapon;
 		readonly int length;
 		readonly bool wasMoving;
@@ -46,6 +47,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.damageTypes = damageTypes;
 			mobile = self.Trait<Mobile>();
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
+			notifyAttack = self.TraitsImplementing<INotifyAttack>().ToArray();
 			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, targetMobile.FromCell, targetMobile.FromSubCell);
 			wasMoving = mobile.IsMoving;
 			mobile.IsMoving = true;
@@ -54,8 +56,9 @@ namespace OpenRA.Mods.Cnc.Activities
 			to = self.World.Map.CenterOfSubCell(targetMobile.FromCell, targetMobile.FromSubCell);
 			length = Math.Max((to - from).Length / speed.Length, 1);
 
-			// HACK: why isn't this using the interface?
-			self.Trait<WithInfantryBody>().Attacking(self, Target.FromActor(target), a);
+			// HACK that should work well enough until this is rewritten in #15008
+			foreach (var n in notifyAttack)
+				n.PreparingAttack(self, Target.FromActor(target), a, null);
 
 			if (weapon.Report != null && weapon.Report.Any())
 				Game.Sound.Play(SoundType.World, weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);

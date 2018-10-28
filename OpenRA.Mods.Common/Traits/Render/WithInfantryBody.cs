@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
+		readonly bool hasIdleSequence;
 
 		bool dirty;
 		string idleSequence;
@@ -70,18 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			PlayStandAnimation(self);
 
 			move = init.Self.Trait<IMove>();
-		}
-
-		public void PlayStandAnimation(Actor self)
-		{
-			state = AnimationState.Waiting;
-
-			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
-			if (sequence != null)
-			{
-				var normalized = NormalizeInfantrySequence(self, sequence);
-				DefaultAnimation.PlayRepeating(normalized);
-			}
+			hasIdleSequence = Info.IdleSequences.Length > 0;
 		}
 
 		protected override void Created(Actor self)
@@ -101,12 +91,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return baseSequence;
 		}
 
-		protected virtual bool AllowIdleAnimation(Actor self)
+		protected virtual bool AllowIdleAnimation { get { return hasIdleSequence && !IsModifyingSequence && state == AnimationState.Idle; } }
+
+		protected virtual void PlayStandAnimation(Actor self)
 		{
-			return !IsModifyingSequence;
+			state = AnimationState.Waiting;
+
+			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
+			if (sequence != null)
+			{
+				var normalized = NormalizeInfantrySequence(self, sequence);
+				DefaultAnimation.PlayRepeating(normalized);
+			}
 		}
 
-		public void Attacking(Actor self, Target target, Armament a)
+		protected virtual void PlayAttackAnimation(Actor self, Target target, Armament a)
 		{
 			string sequence;
 			if (!Info.AttackSequences.TryGetValue(a.Info.Name, out sequence))
@@ -121,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			Attacking(self, target, a);
+			PlayAttackAnimation(self, target, a);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { }
@@ -155,22 +154,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
-			if (state != AnimationState.Idle && state != AnimationState.IdleAnimating && state != AnimationState.Attacking)
+			if (state == AnimationState.Waiting)
 			{
 				PlayStandAnimation(self);
 				state = AnimationState.Idle;
 
-				if (Info.IdleSequences.Length > 0)
+				if (hasIdleSequence)
 				{
 					idleSequence = Info.IdleSequences.Random(self.World.SharedRandom);
 					idleDelay = self.World.SharedRandom.Next(Info.MinIdleDelay, Info.MaxIdleDelay);
 				}
 			}
-			else if (AllowIdleAnimation(self))
+			else if (AllowIdleAnimation)
 			{
-				if (idleSequence != null && DefaultAnimation.HasSequence(idleSequence))
+				if (DefaultAnimation.HasSequence(idleSequence))
 				{
-					if (idleDelay > 0 && --idleDelay == 0)
+					if (--idleDelay == 0)
 					{
 						state = AnimationState.IdleAnimating;
 						DefaultAnimation.PlayThen(idleSequence, () => PlayStandAnimation(self));
