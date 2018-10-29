@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.AI
 				var location = ai.ChooseBuildLocation(currentBuilding.Item, true, type);
 				if (location == null)
 				{
-					HackyAI.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
+					AIUtils.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
 					ai.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
 					failCount += failCount;
 
@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.AI
 			{
 				if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount) > 0)
 				{
-					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
+					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (low power)", queue.Actor.Owner, power.Name);
 					return power;
 				}
 			}
@@ -227,13 +227,13 @@ namespace OpenRA.Mods.Common.AI
 				var refinery = GetProducibleBuilding(ai.Info.BuildingCommonNames.Refinery, buildableThings);
 				if (refinery != null && HasSufficientPowerForActor(refinery))
 				{
-					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
+					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
 					return refinery;
 				}
 
 				if (power != null && refinery != null && !HasSufficientPowerForActor(refinery))
 				{
-					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 					return power;
 				}
 			}
@@ -244,13 +244,13 @@ namespace OpenRA.Mods.Common.AI
 				var production = GetProducibleBuilding(ai.Info.BuildingCommonNames.Production, buildableThings);
 				if (production != null && HasSufficientPowerForActor(production))
 				{
-					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
+					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
 					return production;
 				}
 
 				if (power != null && production != null && !HasSufficientPowerForActor(production))
 				{
-					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 					return power;
 				}
 			}
@@ -263,13 +263,13 @@ namespace OpenRA.Mods.Common.AI
 				var navalproduction = GetProducibleBuilding(ai.Info.BuildingCommonNames.NavalProduction, buildableThings);
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
 				{
-					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
+					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
 					return navalproduction;
 				}
 
 				if (power != null && navalproduction != null && !HasSufficientPowerForActor(navalproduction))
 				{
-					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 					return power;
 				}
 			}
@@ -280,13 +280,13 @@ namespace OpenRA.Mods.Common.AI
 				var silo = GetProducibleBuilding(ai.Info.BuildingCommonNames.Silo, buildableThings);
 				if (silo != null && HasSufficientPowerForActor(silo))
 				{
-					HackyAI.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
+					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
 					return silo;
 				}
 
 				if (power != null && silo != null && !HasSufficientPowerForActor(silo))
 				{
-					HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 					return power;
 				}
 			}
@@ -324,22 +324,22 @@ namespace OpenRA.Mods.Common.AI
 					if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(pi => pi.Amount) > 0)
 					{
 						if (playerPower.PowerOutageRemainingTicks > 0)
-							HackyAI.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
+							AIUtils.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
 						else
-							HackyAI.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+							AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 
 						return power;
 					}
 				}
 
 				// Lets build this
-				HackyAI.BotDebug("{0} decided to build {1}: Desired is {2} ({3} / {4}); current is {5} / {4}",
+				AIUtils.BotDebug("{0} decided to build {1}: Desired is {2} ({3} / {4}); current is {5} / {4}",
 					queue.Actor.Owner, name, frac.Value, frac.Value * playerBuildings.Length, playerBuildings.Length, count);
 				return actor;
 			}
 
 			// Too spammy to keep enabled all the time, but very useful when debugging specific issues.
-			// HackyAI.BotDebug("{0} couldn't decide what to build for queue {1}.", queue.Actor.Owner, queue.Info.Group);
+			// AIUtils.BotDebug("{0} couldn't decide what to build for queue {1}.", queue.Actor.Owner, queue.Info.Group);
 			return null;
 		}
 	}

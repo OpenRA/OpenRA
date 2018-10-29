@@ -47,5 +47,11 @@ namespace OpenRA.Mods.Common.AI
 						.All(ac => terrainTypes.Contains(map.GetTerrainInfo(ac).Type))))
 							.Any(availableCells => availableCells > 0);
 		}
+
+		public static void BotDebug(string s, params object[] args)
+		{
+			if (Game.Settings.Debug.BotDebug)
+				Game.Debug(s, args);
+		}
 	}
 }

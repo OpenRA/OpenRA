@@ -1,4 +1,5 @@
 Player:
+	BotOrderManager:
 	HackyAI@RushAI:
 		Name: Rush AI
 		Type: rush
