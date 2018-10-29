@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
 
+		[Desc("List of bot modules to use.")]
+		public readonly string[] Modules = { };
+
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
 
@@ -269,6 +272,8 @@ namespace OpenRA.Mods.Common.AI
 		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
+		IBotModule[] botModules;
+
 		CPos initialBaseCenter;
 		PowerManager playerPower;
 		PlayerResources playerResource;
@@ -334,6 +339,9 @@ namespace OpenRA.Mods.Common.AI
 		{
 			Player = p;
 			IsEnabled = true;
+
+			botModules = p.PlayerActor.TraitsImplementing<IBotModule>().Where(t => Info.Modules.Contains(t.Name)).ToArray();
+
 			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 
@@ -361,6 +369,9 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
+
+			foreach (var module in botModules)
+				module.Activate(this);
 		}
 
 		public void QueueOrder(Order order)
@@ -553,6 +564,9 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var b in builders)
 				b.Tick();
+
+			foreach (var module in botModules)
+				module.Tick();
 
 			var ordersToIssueThisTick = Math.Min((orders.Count + Info.MinOrderQuotientPerTick - 1) / Info.MinOrderQuotientPerTick, orders.Count);
 			for (var i = 0; i < ordersToIssueThisTick; i++)

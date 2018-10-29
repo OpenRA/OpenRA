@@ -14,6 +14,7 @@ using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.AI;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -442,4 +443,15 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface IBotModuleInfo : ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
+	public interface IBotModule
+	{
+		string Name { get; }
+		void Activate(HackyAI ai);
+		void Tick();
+	}
 }
