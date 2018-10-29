@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 		readonly IShader shader;
 
 		readonly Vertex[] vertices;
-		readonly Sheet[] sheets = new Sheet[8];
+		readonly Sheet[] sheets = new Sheet[7];
 
 		BlendMode currentBlend = BlendMode.Alpha;
 		int nv = 0;
