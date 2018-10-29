@@ -1,7 +1,9 @@
 Player:
+	HarvesterBotModule:
 	HackyAI@Omnius:
 		Name: Omnius
 		Type: omnius
+		Modules: harvester-module
 		MinimumExcessPower: 50
 		ExcessPowerIncrement: 50
 		ExcessPowerIncreaseThreshold: 4
@@ -127,6 +129,7 @@ Player:
 	HackyAI@Vidius:
 		Name: Vidious
 		Type: vidious
+		Modules: harvester-module
 		MinimumExcessPower: 50
 		ExcessPowerIncrement: 50
 		ExcessPowerIncreaseThreshold: 4
@@ -252,6 +255,7 @@ Player:
 	HackyAI@Gladius:
 		Name: Gladius
 		Type: gladius
+		Modules: harvester-module
 		MinimumExcessPower: 50
 		ExcessPowerIncrement: 50
 		ExcessPowerIncreaseThreshold: 4

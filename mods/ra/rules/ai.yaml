@@ -1,7 +1,9 @@
 Player:
+	HarvesterBotModule:
 	HackyAI@RushAI:
 		Name: Rush AI
 		Type: rush
+		Modules: harvester-module
 		MinimumExcessPower: 60
 		MaximumExcessPower: 160
 		ExcessPowerIncrement: 40
@@ -123,6 +125,7 @@ Player:
 	HackyAI@NormalAI:
 		Name: Normal AI
 		Type: normal
+		Modules: harvester-module
 		MinimumExcessPower: 60
 		MaximumExcessPower: 200
 		ExcessPowerIncrement: 40
@@ -263,6 +266,7 @@ Player:
 	HackyAI@TurtleAI:
 		Name: Turtle AI
 		Type: turtle
+		Modules: harvester-module
 		MinimumExcessPower: 60
 		MaximumExcessPower: 250
 		ExcessPowerIncrement: 50
@@ -404,6 +408,7 @@ Player:
 	HackyAI@NavalAI:
 		Name: Naval AI
 		Type: naval
+		Modules: harvester-module
 		MinimumExcessPower: 60
 		MaximumExcessPower: 200
 		ExcessPowerIncrement: 40

@@ -1,7 +1,9 @@
 Player:
+	HarvesterBotModule:
 	HackyAI@Cabal:
 		Name: Cabal
 		Type: cabal
+		Modules: harvester-module
 		MinimumExcessPower: 30
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 5
@@ -133,6 +135,7 @@ Player:
 	HackyAI@Watson:
 		Name: Watson
 		Type: watson
+		Modules: harvester-module
 		MinimumExcessPower: 30
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
@@ -264,6 +267,7 @@ Player:
 	HackyAI@HAL9001:
 		Name: HAL 9001
 		Type: hal9001
+		Modules: harvester-module
 		MinimumExcessPower: 30
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4

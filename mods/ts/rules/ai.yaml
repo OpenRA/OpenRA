@@ -1,7 +1,9 @@
 Player:
+	HarvesterBotModule:
 	HackyAI@TestAI:
 		Name: Test AI
 		Type: test
+		Modules: harvester-module
 		MinimumExcessPower: 30
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
