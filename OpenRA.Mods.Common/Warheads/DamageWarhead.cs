@@ -34,9 +34,6 @@ namespace OpenRA.Mods.Common.Warheads
 			if (!victim.Info.HasTraitInfo<IHealthInfo>())
 				return false;
 
-			if (Damage < 0 && victim.GetDamageState() == DamageState.Undamaged)
-				return false;
-
 			return base.IsValidAgainst(victim, firedBy);
 		}
 
