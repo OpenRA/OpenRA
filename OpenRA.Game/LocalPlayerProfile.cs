@@ -168,7 +168,11 @@ namespace OpenRA
 
 		public string Sign(params string[] data)
 		{
-			if (State != LinkState.Linked)
+			// If we don't have any keys, or we know for sure that they haven't been linked to the forum
+			// then we can't do much here. If we have keys but don't yet know if they have been linked to the
+			// forum (LinkState.CheckingLink or ConnectionFailed) then we sign to avoid blocking the main thread
+			// but accept that - if the cert is invalid - the server will reject the result.
+			if (State <= LinkState.Unlinked)
 				return null;
 
 			return CryptoUtil.Sign(parameters, data.Where(x => !string.IsNullOrEmpty(x)).JoinWith(string.Empty));
@@ -176,7 +180,7 @@ namespace OpenRA
 
 		public string DecryptString(string data)
 		{
-			if (State != LinkState.Linked)
+			if (State <= LinkState.Unlinked)
 				return null;
 
 			return CryptoUtil.DecryptString(parameters, data);
