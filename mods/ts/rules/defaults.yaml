@@ -550,6 +550,12 @@
 	Targetable:
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Infantry
+	Targetable@HEAL:
+		RequiresCondition: !inside-tunnel && damaged
+		TargetTypes: Heal
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -734,7 +740,13 @@
 		VoiceSet: Vehicle
 	Targetable:
 		RequiresCondition: !inside-tunnel
-		TargetTypes: Ground, Vehicle, Repair
+		TargetTypes: Ground, Vehicle
+	Targetable@REPAIR:
+		RequiresCondition: !inside-tunnel && damaged
+		TargetTypes: Repair
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	Repairable:
 		RepairBuildings: gadept
 		Voice: Move
@@ -764,10 +776,10 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	GrantConditionOnDamageState@DAMAGED:
+	GrantConditionOnDamageState@DAMAGEDSPEED:
 		Condition: damagedspeed
 		ValidDamageStates: Heavy
-	GrantConditionOnDamageState@CRITICAL:
+	GrantConditionOnDamageState@CRITICALSPEED:
 		Condition: criticalspeed
 		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:

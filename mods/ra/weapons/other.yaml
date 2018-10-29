@@ -120,14 +120,14 @@ Heal:
 	ReloadDelay: 80
 	Range: 4c0
 	Report: heal2.aud
-	ValidTargets: Infantry
+	ValidTargets: Heal
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
 		Damage: -5000
 		ValidStances: Ally
-		ValidTargets: Infantry
+		ValidTargets: Heal
 		DebugOverlayColor: 00FF00
 
 Repair:
