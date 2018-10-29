@@ -249,8 +249,14 @@
 	Selectable:
 		Bounds: 24, 24
 	Targetable:
-		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !parachute
+		TargetTypes: Ground, Vehicle
+	Targetable@REPAIR:
+		RequiresCondition: !parachute && damaged
+		TargetTypes: Repair
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	Repairable:
 	Chronoshiftable:
 	Passenger:
@@ -330,8 +336,14 @@
 		Bounds: 18,20,0,-6
 		DecorationBounds: 12,18,0,-8
 	Targetable:
-		TargetTypes: Ground, Infantry, Disguise
 		RequiresCondition: !parachute
+		TargetTypes: Ground, Infantry, Disguise
+	Targetable@HEAL:
+		RequiresCondition: !parachute && damaged
+		TargetTypes: Heal
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -479,7 +491,13 @@
 	Selectable:
 		Bounds: 24,24
 	Targetable:
-		TargetTypes: Ground, Water, Ship, Repair
+		TargetTypes: Ground, Water, Ship
+	Targetable@REPAIR:
+		RequiresCondition: damaged
+		TargetTypes: Repair
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	HiddenUnderFog:
 	AttackMove:
 	ActorLostNotification:
@@ -528,11 +546,17 @@
 	Aircraft:
 		AirborneCondition: airborne
 	Targetable@GROUND:
-		TargetTypes: Ground, Repair, Vehicle
 		RequiresCondition: !airborne
+		TargetTypes: Ground, Vehicle
 	Targetable@AIRBORNE:
-		TargetTypes: Air
 		RequiresCondition: airborne
+		TargetTypes: Air
+	Targetable@REPAIR:
+		RequiresCondition: !airborne && damaged
+		TargetTypes: Repair
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	HiddenUnderFog:
 		Type: GroundPosition
 	AttackMove:
