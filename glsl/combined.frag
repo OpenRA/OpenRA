@@ -5,7 +5,6 @@ uniform sampler2D Texture3;
 uniform sampler2D Texture4;
 uniform sampler2D Texture5;
 uniform sampler2D Texture6;
-uniform sampler2D Texture7;
 uniform sampler2D Palette;
 
 uniform bool EnableDepthPreview;
@@ -50,10 +49,8 @@ vec4 Sample(float samplerIndex, vec2 pos)
 		return texture2D(Texture4, pos);
 	else if (samplerIndex < 5.5)
 		return texture2D(Texture5, pos);
-	else if (samplerIndex < 6.5)
-		return texture2D(Texture6, pos);
 
-	return texture2D(Texture7, pos);
+	return texture2D(Texture6, pos);
 }
 
 void main()
