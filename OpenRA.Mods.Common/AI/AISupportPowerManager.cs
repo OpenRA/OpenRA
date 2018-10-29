@@ -65,14 +65,14 @@ namespace OpenRA.Mods.Common.AI
 					var powerDecision = powerDecisions[sp.Info.OrderName];
 					if (powerDecision == null)
 					{
-						HackyAI.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", sp.Info.OrderName);
+						AIUtils.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", sp.Info.OrderName);
 						continue;
 					}
 
 					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
 					if (attackLocation == null)
 					{
-						HackyAI.BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
+						AIUtils.BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
 						waitingPowers[sp] += powerDecision.GetNextScanTime(ai);
 
 						continue;
@@ -82,14 +82,14 @@ namespace OpenRA.Mods.Common.AI
 					attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
 					if (attackLocation == null)
 					{
-						HackyAI.BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
+						AIUtils.BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
 						waitingPowers[sp] += powerDecision.GetNextScanTime(ai);
 
 						continue;
 					}
 
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
-					HackyAI.BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, player.PlayerName);
+					AIUtils.BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, player.PlayerName);
 					waitingPowers[sp] += 10;
 					ai.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true });
 				}
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.AI
 			var powerDecision = powerDecisions[readyPower.Info.OrderName];
 			if (powerDecision == null)
 			{
-				HackyAI.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
+				AIUtils.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
 				return null;
 			}
 
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.AI
 			var powerDecision = powerDecisions[readyPower.Info.OrderName];
 			if (powerDecision == null)
 			{
-				HackyAI.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
+				AIUtils.BotDebug("Bot Bug: FindAttackLocationToSupportPower, couldn't find powerDecision for {0}", readyPower.Info.OrderName);
 				return null;
 			}
 

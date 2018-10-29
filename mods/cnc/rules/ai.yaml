@@ -1,4 +1,5 @@
 Player:
+	BotOrderManager:
 	HackyAI@Cabal:
 		Name: Cabal
 		Type: cabal

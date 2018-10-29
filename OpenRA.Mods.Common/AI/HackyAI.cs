@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
+	public sealed class HackyAIInfo : IBotInfo, ITraitInfo, Requires<BotOrderManagerInfo>
 	{
 		public class UnitCategories
 		{
@@ -49,6 +49,11 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
 
+		[FieldLoader.Require]
+		[GrantedConditionReference]
+		[Desc("Condition to grant. Mostly used to activate modules.")]
+		public readonly string Condition = null;
+
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
 
@@ -72,9 +77,6 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Minimum delay (in ticks) between creating squads.")]
 		public readonly int MinimumAttackForceDelay = 0;
-
-		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
-		public readonly int MinOrderQuotientPerTick = 5;
 
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
@@ -269,6 +271,9 @@ namespace OpenRA.Mods.Common.AI
 		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
+		BotOrderManager botOrderManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
+
 		CPos initialBaseCenter;
 		PowerManager playerPower;
 		PlayerResources playerResource;
@@ -303,8 +308,6 @@ namespace OpenRA.Mods.Common.AI
 		int minCaptureDelayTicks;
 		readonly int maximumCaptureTargetOptions;
 
-		readonly Queue<Order> orders = new Queue<Order>();
-
 		public HackyAI(HackyAIInfo info, ActorInitializer init)
 		{
 			Info = info;
@@ -323,12 +326,6 @@ namespace OpenRA.Mods.Common.AI
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
 		}
 
-		public static void BotDebug(string s, params object[] args)
-		{
-			if (Game.Settings.Debug.BotDebug)
-				Game.Debug(s, args);
-		}
-
 		// Called by the host's player creation code
 		public void Activate(Player p)
 		{
@@ -336,6 +333,7 @@ namespace OpenRA.Mods.Common.AI
 			IsEnabled = true;
 			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
+			botOrderManager = p.PlayerActor.Trait<BotOrderManager>();
 
 			harvManager = new AIHarvesterManager(this, p);
 			supportPowerManager = new AISupportPowerManager(this, p);
@@ -361,11 +359,16 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
+
+			var conditionManager = p.PlayerActor.TraitOrDefault<ConditionManager>();
+			if (conditionManager != null && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(p.PlayerActor, Info.Condition);
 		}
 
+		// DEPRECATED: Bot modules should queue orders directly.
 		public void QueueOrder(Order order)
 		{
-			orders.Enqueue(order);
+			botOrderManager.QueueOrder(order);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -553,10 +556,6 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var b in builders)
 				b.Tick();
-
-			var ordersToIssueThisTick = Math.Min((orders.Count + Info.MinOrderQuotientPerTick - 1) / Info.MinOrderQuotientPerTick, orders.Count);
-			for (var i = 0; i < ordersToIssueThisTick; i++)
-				World.IssueOrder(orders.Dequeue());
 		}
 
 		internal Actor FindClosestEnemy(WPos pos)
@@ -711,7 +710,7 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			QueueOrder(new Order(target.OrderString, capturer, Target.FromActor(target.Actor), true));
-			BotDebug("AI ({0}): Ordered {1} to capture {2}", Player.ClientIndex, capturer, target.Actor);
+			AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", Player.ClientIndex, capturer, target.Actor);
 			activeUnits.Remove(capturer);
 		}
 
@@ -853,7 +852,7 @@ namespace OpenRA.Mods.Common.AI
 
 			if (!possibleRallyPoints.Any())
 			{
-				BotDebug("Bot Bug: No possible rallypoint near {0}", producer.Location);
+				AIUtils.BotDebug("Bot Bug: No possible rallypoint near {0}", producer.Location);
 				return producer.Location;
 			}
 
@@ -976,7 +975,7 @@ namespace OpenRA.Mods.Common.AI
 			{
 				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light && !rb.RepairActive)
 				{
-					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
+					AIUtils.BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
 					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(self), false));
 				}
