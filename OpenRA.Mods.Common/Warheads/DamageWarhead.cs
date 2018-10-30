@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
 			// Cannot be damaged without a Health trait
-			if (!victim.Info.HasTraitInfo<HealthInfo>())
+			if (!victim.Info.HasTraitInfo<IHealthInfo>())
 				return false;
 
 			if (Damage < 0 && victim.GetDamageState() == DamageState.Undamaged)
