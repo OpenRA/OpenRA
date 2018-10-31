@@ -106,7 +106,9 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				aircraft.MakeReservation(dest);
 
-				landingProcedures.Add(new Turn(self, initialFacing));
+				if (aircraft.Info.TurnToDock)
+					landingProcedures.Add(new Turn(self, initialFacing));
+
 				landingProcedures.Add(new HeliLand(self, false));
 				landingProcedures.Add(new ResupplyAircraft(self));
 				if (!abortOnResupply)
