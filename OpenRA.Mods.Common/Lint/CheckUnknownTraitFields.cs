@@ -41,6 +41,13 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 					}
 
+					// Inherits can never define children
+					if (NormalizeName(t.Key) == "Inherits" && t.Value.Nodes.Any())
+					{
+						emitError("{0} defines child nodes, which are not valid for Inherits.".F(t.Location));
+						continue;
+					}
+
 					var traitName = NormalizeName(t.Key);
 					var traitInfo = modData.ObjectCreator.FindType(traitName + "Info");
 					foreach (var field in t.Value.Nodes)
