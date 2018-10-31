@@ -585,6 +585,7 @@
 		WaitDistanceFromResupplyBase: 4c0
 		TakeOffOnResupply: true
 		VTOL: true
+		InitialFacing: 224
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:

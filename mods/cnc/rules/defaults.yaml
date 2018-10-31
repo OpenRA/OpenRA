@@ -316,6 +316,7 @@
 		CanHover: True
 		TakeOffOnResupply: true
 		VTOL: true
+		InitialFacing: 224
 	HiddenUnderFog:
 		Type: GroundPosition
 	ActorLostNotification:
