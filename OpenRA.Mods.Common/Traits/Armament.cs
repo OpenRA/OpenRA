@@ -251,26 +251,29 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public virtual Barrel CheckFire(Actor self, IFacing facing, Target target)
+		public virtual Barrel[] CheckFire(Actor self, IFacing facing, Target target)
 		{
-			if (!CanFire(self, target))
-				return null;
+			var barrels = new List<Barrel>();
 
-			if (ticksSinceLastShot >= Weapon.ReloadDelay)
-				Burst = Weapon.Burst;
+			while (CanFire(self, target))
+			{
+				if (ticksSinceLastShot >= Weapon.ReloadDelay)
+					Burst = Weapon.Burst;
 
-			ticksSinceLastShot = 0;
+				ticksSinceLastShot = 0;
 
-			// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
-			currentBarrel %= barrelCount;
-			var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
-			currentBarrel++;
+				// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
+				currentBarrel %= barrelCount;
+				var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
+				currentBarrel++;
 
-			FireBarrel(self, facing, target, barrel);
+				FireBarrel(self, facing, target, barrel);
 
-			UpdateBurst(self, target);
+				UpdateBurst(self, target);
+				barrels.Add(barrel);
+			}
 
-			return barrel;
+			return barrels.ToArray();
 		}
 
 		protected virtual void FireBarrel(Actor self, IFacing facing, Target target, Barrel barrel)

@@ -163,8 +163,8 @@ namespace OpenRA.Mods.Common.Traits
 				paxFacing[a.Actor].Facing = muzzleFacing;
 				paxPos[a.Actor].SetVisualPosition(a.Actor, pos + PortOffset(self, port));
 
-				var barrel = a.CheckFire(a.Actor, facing, target);
-				if (barrel == null)
+				var barrels = a.CheckFire(a.Actor, facing, target);
+				if (barrels.Length == 0)
 					continue;
 
 				if (a.Info.MuzzleSequence != null)
@@ -186,7 +186,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				foreach (var npa in self.TraitsImplementing<INotifyAttack>())
-					npa.Attacking(self, target, a, barrel);
+					foreach (var barrel in barrels)
+						npa.Attacking(self, target, a, barrel);
 			}
 		}
 

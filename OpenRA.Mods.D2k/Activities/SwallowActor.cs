@@ -84,13 +84,14 @@ namespace OpenRA.Mods.D2k.Activities
 			foreach (var player in affectedPlayers)
 				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
-			var barrel = armament.CheckFire(self, facing, target);
-			if (barrel == null)
+			var barrels = armament.CheckFire(self, facing, target);
+			if (barrels.Length == 0)
 				return false;
 
 			// armament.CheckFire already calls INotifyAttack.PreparingAttack
 			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
-				notify.Attacking(self, target, armament, barrel);
+				foreach (var barrel in barrels)
+					notify.Attacking(self, target, armament, barrel);
 
 			return true;
 		}
