@@ -229,7 +229,6 @@ TRAN:
 		Range: 6c0
 		Type: GroundPosition
 	Aircraft:
-		InitialFacing: 224
 		TurnSpeed: 5
 		Speed: 128
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
@@ -295,7 +294,6 @@ HELI:
 		FacingTolerance: 20
 	Aircraft:
 		LandWhenIdle: false
-		InitialFacing: 224
 		TurnSpeed: 4
 		Speed: 149
 	AutoTarget:
@@ -361,7 +359,6 @@ HIND:
 		FacingTolerance: 20
 	Aircraft:
 		LandWhenIdle: false
-		InitialFacing: 224
 		TurnSpeed: 4
 		Speed: 112
 	AutoTarget:

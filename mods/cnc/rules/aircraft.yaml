@@ -13,7 +13,6 @@ TRAN:
 		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 150
-		InitialFacing: 224
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
 	Health:
@@ -63,7 +62,6 @@ HELI:
 		Queue: Aircraft.Nod
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
-		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 180
 	Health:
@@ -124,7 +122,6 @@ ORCA:
 		Queue: Aircraft.GDI
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
-		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 186
 	Health:
