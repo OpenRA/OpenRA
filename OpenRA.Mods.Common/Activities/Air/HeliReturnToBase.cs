@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -95,24 +96,26 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
+			var landingProcedures = new List<Activity>();
 			var exit = dest.FirstExitOrDefault(null);
 			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
+
+			landingProcedures.Add(new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)));
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
 				aircraft.MakeReservation(dest);
 
-				return ActivityUtils.SequenceActivities(
-					new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
-					new Turn(self, initialFacing),
-					new HeliLand(self, false),
-					new ResupplyAircraft(self),
-					!abortOnResupply ? NextActivity : null);
+				landingProcedures.Add(new Turn(self, initialFacing));
+				landingProcedures.Add(new HeliLand(self, false));
+				landingProcedures.Add(new ResupplyAircraft(self));
+				if (!abortOnResupply)
+					landingProcedures.Add(NextActivity);
 			}
+			else
+				landingProcedures.Add(NextActivity);
 
-			return ActivityUtils.SequenceActivities(
-				new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)),
-				NextActivity);
+			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)
