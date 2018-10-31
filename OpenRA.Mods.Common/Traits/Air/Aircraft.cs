@@ -69,8 +69,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
-		[Desc("Does this actor need to turn before landing?")]
+		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
+
+		[Desc("Does this VTOL actor need to turn before landing on a resupplier?")]
+		public readonly bool TurnToDock = true;
 
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
@@ -752,7 +755,9 @@ namespace OpenRA.Mods.Common.Traits
 							var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
 							self.QueueActivity(new HeliFly(self, Target.FromPos(targetActor.CenterPosition + offset)));
-							self.QueueActivity(new Turn(self, Info.InitialFacing));
+							if (Info.TurnToDock)
+								self.QueueActivity(new Turn(self, Info.InitialFacing));
+
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
 						};
