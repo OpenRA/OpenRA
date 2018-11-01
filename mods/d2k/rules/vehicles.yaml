@@ -116,6 +116,8 @@ trike:
 		Cost: 300
 	Tooltip:
 		Name: Trike
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Selectable:
 		Class: trike
 	Health:
@@ -157,6 +159,8 @@ quad:
 		Cost: 400
 	Tooltip:
 		Name: Missile Quad
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 11000
 	Armor:
@@ -193,6 +197,8 @@ siege_tank:
 		Cost: 700
 	Tooltip:
 		Name: Siege Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 12000
 	Armor:
@@ -234,6 +240,8 @@ missile_tank:
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Tooltip:
 		Name: Missile Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Armor
 		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre, ~techlevel.high
@@ -285,6 +293,8 @@ sonic_tank:
 		Cost: 1000
 	Tooltip:
 		Name: Sonic Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 30000
 	Armor:
@@ -323,6 +333,8 @@ devastator:
 		Cost: 1050
 	Tooltip:
 		Name: Devastator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 50000
 	Armor:
@@ -393,6 +405,8 @@ raider:
 		Cost: 350
 	Tooltip:
 		Name: Raider Trike
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Armor:
@@ -429,6 +443,8 @@ stealth_raider:
 		Cost: 400
 	Tooltip:
 		Name: Stealth Raider Trike
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
@@ -451,6 +467,8 @@ deviator:
 		Cost: 1000
 	Tooltip:
 		Name: Deviator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
@@ -497,6 +515,8 @@ deviator:
 		Cost: 700
 	Tooltip:
 		Name: Combat Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 21000
 	Armor:
