@@ -6,6 +6,8 @@ BOAT:
 		Cost: 300
 	Tooltip:
 		Name: Gunboat
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 70000
 	Armor:

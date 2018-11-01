@@ -4,6 +4,8 @@ TRAN:
 		Cost: 750
 	Tooltip:
 		Name: Chinook Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
@@ -56,6 +58,8 @@ HELI:
 		Cost: 1200
 	Tooltip:
 		Name: Apache Longbow
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
@@ -116,6 +120,8 @@ ORCA:
 		Cost: 1200
 	Tooltip:
 		Name: Orca
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
