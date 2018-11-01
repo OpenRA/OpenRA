@@ -593,6 +593,7 @@
     <Compile Include="UpdateRules\Rules\20180923\MergeCaptureTraits.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemovedNotifyBuildComplete.cs" />
     <Compile Include="UpdateRules\Rules\20180923\ChangeTakeOffSoundAndLandingSound.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\AddCarryableHarvester.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />

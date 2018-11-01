@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new UpdatePath("release-20180923", new UpdateRule[]
 			{
 				// Bleed only changes here
+				new AddCarryableHarvester(),
 				new RenameEditorTilesetFilter(),
 				new DefineNotificationDefaults(),
 				new MergeRearmAndRepairAnimation(),
