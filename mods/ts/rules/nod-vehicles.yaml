@@ -7,6 +7,8 @@ BGGY:
 		Cost: 500
 	Tooltip:
 		Name: Attack Buggy
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
@@ -45,6 +47,8 @@ BIKE:
 		Cost: 600
 	Tooltip:
 		Name: Attack Cycle
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
@@ -90,6 +94,8 @@ TTNK:
 	Tooltip@DEPLOYED:
 		Name: Tick Tank (deployed)
 		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
@@ -203,6 +209,8 @@ ART2:
 	Tooltip@DEPLOYED:
 		Name: Artillery (deployed)
 		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -285,6 +293,8 @@ REPAIR:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Repair Vehicle
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Mobile:
@@ -357,6 +367,8 @@ SAPC:
 		Cost: 800
 	Tooltip:
 		Name: Subterranean APC
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -401,6 +413,8 @@ SUBTANK:
 		Cost: 750
 	Tooltip:
 		Name: Devil's Tongue
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
@@ -442,6 +456,8 @@ STNK:
 		Cost: 1100
 	Tooltip:
 		Name: Stealth Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 150
 		Prerequisites: ~naweap, natech, ~techlevel.high

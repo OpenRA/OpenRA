@@ -38,6 +38,8 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Aircraft:
 		LandWhenIdle: true
 		TurnSpeed: 5
@@ -72,6 +74,8 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -120,6 +124,8 @@ ORCAB:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 30
@@ -173,6 +179,8 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 50
@@ -209,6 +217,8 @@ TRNSPORT:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 60
@@ -249,6 +259,8 @@ SCRIN:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 40
@@ -305,6 +317,8 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20

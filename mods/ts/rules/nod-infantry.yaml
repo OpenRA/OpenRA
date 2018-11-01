@@ -12,6 +12,8 @@ E3:
 		Cost: 250
 	Tooltip:
 		Name: Rocket Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Voiced:
 		VoiceSet: Rocket
 	Health:
@@ -43,6 +45,8 @@ CYBORG:
 		Cost: 650
 	Tooltip:
 		Name: Cyborg Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -79,6 +83,8 @@ CYC2:
 		Cost: 2000
 	Tooltip:
 		Name: Cyborg Commando
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
@@ -119,6 +125,8 @@ MHIJACK:
 		Cost: 1850
 	Tooltip:
 		Name: Mutant Hijacker
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Voiced:
 		VoiceSet: Hijacker
 	Health:

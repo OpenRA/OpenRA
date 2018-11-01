@@ -5,6 +5,8 @@ APC:
 		Cost: 800
 	Tooltip:
 		Name: Amphibious APC
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
@@ -55,6 +57,8 @@ HVR:
 		Cost: 900
 	Tooltip:
 		Name: Hover MLRS
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
@@ -101,6 +105,8 @@ SMECH:
 		Cost: 500
 	Tooltip:
 		Name: Wolverine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 20
@@ -146,6 +152,8 @@ MMCH:
 		Cost: 800
 	Tooltip:
 		Name: Titan
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
@@ -206,6 +214,8 @@ HMEC:
 		Cost: 3000
 	Tooltip:
 		Name: Mammoth Mk. II
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
@@ -252,6 +262,8 @@ SONIC:
 		Cost: 1300
 	Tooltip:
 		Name: Disruptor
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
@@ -299,6 +311,8 @@ JUGG:
 	Tooltip@DEPLOYED:
 		Name: Juggernaut (deployed)
 		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
