@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnProducedInternal(self, other);
 		}
 
-		public void OnPlayerWon(Player player)
+		void INotifyObjectivesUpdated.OnPlayerWon(Player player)
 		{
 			if (world.Disposing)
 				return;
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void OnPlayerLost(Player player)
+		void INotifyObjectivesUpdated.OnPlayerLost(Player player)
 		{
 			if (world.Disposing)
 				return;
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void OnObjectiveAdded(Player player, int id)
+		void INotifyObjectivesUpdated.OnObjectiveAdded(Player player, int id)
 		{
 			if (world.Disposing)
 				return;
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void OnObjectiveCompleted(Player player, int id)
+		void INotifyObjectivesUpdated.OnObjectiveCompleted(Player player, int id)
 		{
 			if (world.Disposing)
 				return;
@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void OnObjectiveFailed(Player player, int id)
+		void INotifyObjectivesUpdated.OnObjectiveFailed(Player player, int id)
 		{
 			if (world.Disposing)
 				return;

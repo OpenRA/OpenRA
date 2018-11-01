@@ -425,6 +425,7 @@ namespace OpenRA.Mods.Common.Traits
 		int ExitDelay { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface INotifyObjectivesUpdated
 	{
 		void OnPlayerWon(Player winner);
