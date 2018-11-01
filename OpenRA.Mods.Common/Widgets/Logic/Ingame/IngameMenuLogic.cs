@@ -74,8 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (logicArgs.TryGetValue("ButtonStride", out buttonStrideNode))
 				buttonStride = FieldLoader.GetValue<int2>("ButtonStride", buttonStrideNode.Value);
 
-			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
-			hasError = scriptContext != null && scriptContext.FatalErrorOccurred;
+			hasError = world.WorldActor.TraitsImplementing<LuaScript>().Any(sc => !sc.IsTraitDisabled && sc.FatalErrorOccurred);
 
 			MiniYaml buttonsNode;
 			if (logicArgs.TryGetValue("Buttons", out buttonsNode))

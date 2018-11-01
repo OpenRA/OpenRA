@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -62,9 +63,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (world.LocalPlayer != null)
 				{
-					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 					var missionData = world.WorldActor.Info.TraitInfoOrDefault<MissionDataInfo>();
-					if (missionData != null && !(scriptContext != null && scriptContext.FatalErrorOccurred))
+					if (missionData != null && !world.WorldActor.TraitsImplementing<LuaScript>().Any(sc => !sc.IsTraitDisabled && sc.FatalErrorOccurred))
 					{
 						var video = world.LocalPlayer.WinState == WinState.Won ? missionData.WinVideo : missionData.LossVideo;
 						if (!string.IsNullOrEmpty(video))
