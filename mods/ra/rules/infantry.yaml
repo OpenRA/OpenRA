@@ -11,6 +11,8 @@ DOG:
 	Tooltip:
 		Name: Attack Dog
 		GenericName: Dog
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Selectable:
 		Bounds: 12,17,-1,-4
 		DecorationBounds: 12,17,-1,-4
@@ -79,6 +81,8 @@ E1:
 		Cost: 100
 	Tooltip:
 		Name: Rifle Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	Armament@PRIMARY:
@@ -119,6 +123,8 @@ E2:
 		Cost: 160
 	Tooltip:
 		Name: Grenadier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	Mobile:
@@ -162,6 +168,8 @@ E3:
 		Cost: 300
 	Tooltip:
 		Name: Rocket Soldier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 4500
 	Armament@PRIMARY:
@@ -210,6 +218,8 @@ E4:
 		Cost: 300
 	Tooltip:
 		Name: Flamethrower
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 4000
 	Armament@PRIMARY:
@@ -247,6 +257,8 @@ E6:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	WithInfantryBody:
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
@@ -293,6 +305,8 @@ SPY:
 	DisguiseTooltip:
 		Name: Spy
 		GenericName: Soldier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	-Guard:
 	Mobile:
 		Voice: Move
@@ -361,6 +375,8 @@ E7:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Mobile:
@@ -413,6 +429,8 @@ MEDI:
 		Cost: 200
 	Tooltip:
 		Name: Medic
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 6000
 	RevealsShroud:
@@ -448,6 +466,8 @@ MECH:
 		Cost: 500
 	Tooltip:
 		Name: Mechanic
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 8000
 	Mobile:
@@ -551,6 +571,8 @@ THF:
 		Cost: 500
 	Tooltip:
 		Name: Thief
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	RevealsShroud:
@@ -599,6 +621,8 @@ SHOK:
 		Cost: 350
 	Tooltip:
 		Name: Shock Trooper
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	Mobile:
@@ -638,6 +662,8 @@ SNIPER:
 		Cost: 700
 	Tooltip:
 		Name: Sniper
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -689,6 +715,8 @@ Zombie:
 		Cost: 100
 	Tooltip:
 		Name: Zombie
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -719,6 +747,8 @@ Ant:
 	Tooltip:
 		Name: Giant Ant
 		GenericName: Ant
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
