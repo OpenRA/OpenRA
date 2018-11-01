@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 		}
 
-		public void OnPlayerWon(Player player)
+		void INotifyObjectivesUpdated.OnPlayerWon(Player player)
 		{
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 			CheckIfGameIsOver(player);
 		}
 
-		public void OnPlayerLost(Player player)
+		void INotifyObjectivesUpdated.OnPlayerLost(Player player)
 		{
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
@@ -259,9 +259,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public event Action<Player, bool> ObjectiveAdded = (player, inhibitAnnouncement) => { player.HasObjectives = true; };
 
-		public void OnObjectiveAdded(Player player, int id) { }
-		public void OnObjectiveCompleted(Player player, int id) { }
-		public void OnObjectiveFailed(Player player, int id) { }
+		void INotifyObjectivesUpdated.OnObjectiveAdded(Player player, int id) { }
+		void INotifyObjectivesUpdated.OnObjectiveCompleted(Player player, int id) { }
+		void INotifyObjectivesUpdated.OnObjectiveFailed(Player player, int id) { }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
