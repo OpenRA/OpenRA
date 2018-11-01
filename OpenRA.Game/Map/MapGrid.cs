@@ -168,7 +168,11 @@ namespace OpenRA
 			if (subCell == SubCell.Invalid || subCell == SubCell.Any)
 				return WVec.Zero;
 
-			return SubCellOffsets[(int)subCell];
+			var index = (int)subCell;
+			if (index >= 0 && index < SubCellOffsets.Length)
+				return SubCellOffsets[index];
+
+			return WVec.Zero;
 		}
 	}
 }
