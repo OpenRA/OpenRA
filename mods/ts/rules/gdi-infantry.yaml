@@ -12,6 +12,8 @@ E2:
 		Cost: 200
 	Tooltip:
 		Name: Disc Thrower
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Mobile:
@@ -39,6 +41,8 @@ MEDIC:
 		Cost: 600
 	Tooltip:
 		Name: Medic
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
@@ -81,6 +85,8 @@ JUMPJET:
 		Cost: 600
 	Tooltip:
 		Name: Jumpjet Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
@@ -201,6 +207,8 @@ GHOST:
 		Cost: 1750
 	Tooltip:
 		Name: Ghost Stalker
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 90
