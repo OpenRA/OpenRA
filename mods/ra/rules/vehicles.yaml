@@ -11,6 +11,8 @@ V2RL:
 		Cost: 900
 	Tooltip:
 		Name: V2 Rocket Launcher
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Armor:
@@ -58,6 +60,8 @@ V2RL:
 	Tooltip:
 		Name: Light Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 22000
 	Armor:
@@ -99,6 +103,8 @@ V2RL:
 	Tooltip:
 		Name: Medium Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 45000
 	Armor:
@@ -143,6 +149,8 @@ V2RL:
 	Tooltip:
 		Name: Heavy Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 60000
 	Armor:
@@ -188,6 +196,8 @@ V2RL:
 	Tooltip:
 		Name: Mammoth Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 90000
 	Armor:
@@ -246,6 +256,8 @@ ARTY:
 		Cost: 850
 	Tooltip:
 		Name: Artillery
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Armor:
@@ -376,6 +388,8 @@ JEEP:
 		Cost: 500
 	Tooltip:
 		Name: Ranger
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Armor:
@@ -420,6 +434,8 @@ APC:
 		Cost: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 30000
 	Armor:
@@ -457,6 +473,8 @@ MNLY:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Selectable:
 		Priority: 5
 	Health:
@@ -526,6 +544,8 @@ MGG:
 		Cost: 1200
 	Tooltip:
 		Name: Mobile Gap Generator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 22000
 	Armor:
@@ -552,6 +572,8 @@ MRJ:
 		Cost: 1100
 	Tooltip:
 		Name: Mobile Radar Jammer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
@@ -599,6 +621,8 @@ TTNK:
 	Tooltip:
 		Name: Tesla Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 45000
 	Armor:
@@ -636,6 +660,8 @@ FTRK:
 		Cost: 600
 	Tooltip:
 		Name: Mobile Flak
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Armor:
@@ -681,6 +707,8 @@ DTRK:
 		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	Armor:
@@ -715,6 +743,8 @@ CTNK:
 	Tooltip:
 		Name: Chrono Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	SelectionDecorations:
 	Health:
 		HP: 45000
@@ -756,6 +786,8 @@ QTNK:
 	Tooltip:
 		Name: MAD Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 90000
 	Armor:
@@ -792,6 +824,8 @@ STNK:
 		Cost: 1350
 	Tooltip:
 		Name: Phase Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 30000
 	Armor:

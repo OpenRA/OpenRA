@@ -11,6 +11,8 @@ SS:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 25000
 	Armor:
@@ -79,6 +81,8 @@ MSUB:
 		Cost: 2000
 	Tooltip:
 		Name: Missile Submarine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 40000
 	Armor:
@@ -147,6 +151,8 @@ DD:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 40000
 	Armor:
@@ -198,6 +204,8 @@ CA:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 80000
 	Armor:
@@ -256,6 +264,8 @@ LST:
 		Cost: 700
 	Tooltip:
 		Name: Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 35000
 	Armor:
@@ -296,6 +306,8 @@ PT:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Armor:
