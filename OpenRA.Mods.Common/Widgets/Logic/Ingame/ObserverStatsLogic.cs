@@ -31,12 +31,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContainerWidget productionStatsHeaders;
 		readonly ContainerWidget combatStatsHeaders;
 		readonly ContainerWidget earnedThisMinuteGraphHeaders;
+		readonly ContainerWidget armyThisMinuteGraphHeaders;
 		readonly ScrollPanelWidget playerStatsPanel;
 		readonly ScrollItemWidget basicPlayerTemplate;
 		readonly ScrollItemWidget economyPlayerTemplate;
 		readonly ScrollItemWidget productionPlayerTemplate;
 		readonly ScrollItemWidget combatPlayerTemplate;
 		readonly ContainerWidget earnedThisMinuteGraphTemplate;
+		readonly ContainerWidget armyThisMinuteGraphTemplate;
 		readonly ScrollItemWidget teamTemplate;
 		readonly IEnumerable<Player> players;
 		readonly World world;
@@ -64,6 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			productionStatsHeaders = widget.Get<ContainerWidget>("PRODUCTION_STATS_HEADERS");
 			combatStatsHeaders = widget.Get<ContainerWidget>("COMBAT_STATS_HEADERS");
 			earnedThisMinuteGraphHeaders = widget.Get<ContainerWidget>("EARNED_THIS_MIN_GRAPH_HEADERS");
+			armyThisMinuteGraphHeaders = widget.Get<ContainerWidget>("ARMY_THIS_MIN_GRAPH_HEADERS");
 
 			playerStatsPanel = widget.Get<ScrollPanelWidget>("PLAYER_STATS_PANEL");
 			playerStatsPanel.Layout = new GridLayout(playerStatsPanel);
@@ -73,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			productionPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("PRODUCTION_PLAYER_TEMPLATE");
 			combatPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("COMBAT_PLAYER_TEMPLATE");
 			earnedThisMinuteGraphTemplate = playerStatsPanel.Get<ContainerWidget>("EARNED_THIS_MIN_GRAPH_TEMPLATE");
+			armyThisMinuteGraphTemplate = playerStatsPanel.Get<ContainerWidget>("ARMY_THIS_MIN_GRAPH_TEMPLATE");
 
 			teamTemplate = playerStatsPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 
@@ -98,7 +102,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				createStatsOption("Economy", economyStatsHeaders, () => DisplayStats(EconomyStats)),
 				createStatsOption("Production", productionStatsHeaders, () => DisplayStats(ProductionStats)),
 				createStatsOption("Combat", combatStatsHeaders, () => DisplayStats(CombatStats)),
-				createStatsOption("Earnings (graph)", earnedThisMinuteGraphHeaders, () => EarnedThisMinuteGraph())
+				createStatsOption("Earnings (graph)", earnedThisMinuteGraphHeaders, () => EarnedThisMinuteGraph()),
+				createStatsOption("Army (graph)", armyThisMinuteGraphHeaders, () => ArmyThisMinuteGraph()),
 			};
 
 			Func<StatsDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -108,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			};
 
-			statsDropDown.OnMouseDown = _ => statsDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, statsDropDownOptions, setupItem);
+			statsDropDown.OnMouseDown = _ => statsDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 155, statsDropDownOptions, setupItem);
 			statsDropDownOptions[(int)activePanel].OnClick();
 
 			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
@@ -151,6 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			productionStatsHeaders.Visible = false;
 			combatStatsHeaders.Visible = false;
 			earnedThisMinuteGraphHeaders.Visible = false;
+			armyThisMinuteGraphHeaders.Visible = false;
 		}
 
 		void EarnedThisMinuteGraph()
@@ -164,6 +170,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					p.PlayerName,
 					p.Color.RGB,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)));
+
+			playerStatsPanel.AddChild(template);
+			playerStatsPanel.ScrollToTop();
+		}
+
+		void ArmyThisMinuteGraph()
+		{
+			armyThisMinuteGraphHeaders.Visible = true;
+			var template = armyThisMinuteGraphTemplate.Clone();
+
+			var graph = template.Get<LineGraphWidget>("ARMY_THIS_MIN_GRAPH");
+			graph.GetSeries = () =>
+				players.Select(p => new LineGraphSeries(
+					p.PlayerName,
+					p.Color.RGB,
+					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).ArmySamples.Select(s => (float)s)));
 
 			playerStatsPanel.AddChild(template);
 			playerStatsPanel.ScrollToTop();
