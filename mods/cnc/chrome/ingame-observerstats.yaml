@@ -284,6 +284,20 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Font: Bold
 							Text: Earnings received each minute
 							Align: Center
+				Container@ARMY_THIS_MIN_GRAPH_HEADERS:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@EARNED_THIS_MIN_HEADER:
+							X: 0
+							Y: 40
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Bold
+							Text: Army value over time
+							Align: Center
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 15
 					Y: 70
@@ -552,6 +566,26 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Height: PARENT_BOTTOM - 60
 							Children:
 								LineGraph@EARNED_THIS_MIN_GRAPH:
+									X: 0
+									Y: 0
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									ValueFormat: ${0}
+									XAxisValueFormat: {0}
+									YAxisValueFormat: ${0:F0}
+									XAxisSize: 20
+									YAxisSize: 10
+									XAxisLabel: m
+									YAxisLabel: $
+									LabelFont: TinyBold
+									AxisFont: Bold
+						Container@ARMY_THIS_MIN_GRAPH_TEMPLATE:
+							X: 10
+							Y: 10
+							Width: PARENT_RIGHT - 100
+							Height: PARENT_BOTTOM - 60
+							Children:
+								LineGraph@ARMY_THIS_MIN_GRAPH:
 									X: 0
 									Y: 0
 									Width: PARENT_RIGHT
