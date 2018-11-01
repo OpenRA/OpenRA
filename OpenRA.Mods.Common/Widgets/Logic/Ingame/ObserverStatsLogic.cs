@@ -202,6 +202,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			template.Get<LabelWidget>("UNITS_DEAD").GetText = () => stats.UnitsDead.ToString();
 			template.Get<LabelWidget>("BUILDINGS_KILLED").GetText = () => stats.BuildingsKilled.ToString();
 			template.Get<LabelWidget>("BUILDINGS_DEAD").GetText = () => stats.BuildingsDead.ToString();
+			template.Get<LabelWidget>("ARMY_VALUE").GetText = () => "$" + stats.ArmyValue.ToString();
 
 			return template;
 		}

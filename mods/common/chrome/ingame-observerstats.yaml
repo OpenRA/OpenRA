@@ -262,6 +262,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Font: Bold
 							Text: Bldg Lost
 							Align: Right
+						Label@ARMY_VALUE_HEADER:
+							X: 845
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Army Value
+							Align: Right
 				Container@EARNED_THIS_MIN_GRAPH_HEADERS:
 					X: 0
 					Y: 0
@@ -525,6 +533,13 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Shadow: True
 								Label@BUILDINGS_DEAD:
 									X: 715
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
+									Shadow: True
+								Label@ARMY_VALUE:
+									X: 815
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
