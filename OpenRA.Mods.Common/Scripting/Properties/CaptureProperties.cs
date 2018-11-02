@@ -20,25 +20,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Ability")]
-	public class CaptureProperties : ScriptActorProperties
+	public class CaptureProperties : ScriptActorProperties, Requires<CaptureManagerInfo>
 	{
-		readonly Captures[] captures;
+		readonly CaptureManager captureManager;
 
 		public CaptureProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			captures = Self.TraitsImplementing<Captures>().ToArray();
+			captureManager = Self.Trait<CaptureManager>();
 		}
 
 		[Desc("Captures the target actor.")]
 		public void Capture(Actor target)
 		{
-			var capturable = target.Info.TraitInfoOrDefault<CapturableInfo>();
-			if (capturable == null)
+			var targetManager = target.TraitOrDefault<CaptureManager>();
+			if (targetManager == null || !targetManager.CanBeTargetedBy(target, Self, captureManager))
 				throw new LuaException("Actor '{0}' cannot capture actor '{1}'!".F(Self, target));
 
-			if (captures.Any(x => !x.IsTraitDisabled && x.Info.CaptureTypes.Overlaps(capturable.Types)))
-				Self.QueueActivity(new CaptureActor(Self, target));
+			Self.QueueActivity(new CaptureActor(Self, target));
 		}
 	}
 }
