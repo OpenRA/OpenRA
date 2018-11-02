@@ -127,7 +127,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				cursor = captures.Info.EnterCursor;
-
 				if (captures.Info.SabotageThreshold > 0 && !target.Owner.NonCombatant)
 				{
 					var health = target.Trait<IHealth>();
@@ -142,11 +141,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				// Actors with FrozenUnderFog should not disable the Capturable trait.
-				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
-				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
+				var captureManagerInfo = target.Info.TraitInfoOrDefault<CaptureManagerInfo>();
+				if (captureManagerInfo == null || !captureManagerInfo.CanBeTargetedBy(target, self, captures))
 				{
-					cursor = captures.Info.EnterCursor;
+					cursor = captures.Info.EnterBlockedCursor;
 					return false;
 				}
 
