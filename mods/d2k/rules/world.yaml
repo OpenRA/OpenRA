@@ -235,6 +235,7 @@ World:
 	ScriptTriggers:
 	StartGameNotification:
 	TimeLimitManager:
+	RejectsOrders:
 
 EditorWorld:
 	Inherits: ^BaseWorld

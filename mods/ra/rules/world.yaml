@@ -276,6 +276,7 @@ World:
 			3: WarningThreeMinutesRemaining
 			2: WarningTwoMinutesRemaining
 			1: WarningOneMinuteRemaining
+	RejectsOrders:
 
 EditorWorld:
 	Inherits: ^BaseWorld

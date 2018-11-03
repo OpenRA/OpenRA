@@ -370,6 +370,7 @@ World:
 		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
 	ScriptTriggers:
 	TimeLimitManager:
+	RejectsOrders:
 
 EditorWorld:
 	Inherits: ^BaseWorld
