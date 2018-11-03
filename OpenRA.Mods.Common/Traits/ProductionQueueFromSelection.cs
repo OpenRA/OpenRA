@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (queue == null)
 			{
 				var types = world.Selection.Actors.Where(a => a.IsInWorld && a.World.LocalPlayer == a.Owner)
-					.SelectMany(a => a.TraitsImplementing<Production>())
+					.SelectMany(a => a.TraitsImplementing<Production>().Where(p => !p.IsTraitDisabled))
 					.SelectMany(t => t.Info.Produces);
 
 				queue = world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
