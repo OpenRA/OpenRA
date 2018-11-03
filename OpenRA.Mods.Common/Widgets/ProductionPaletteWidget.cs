@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, int handleCount)
+		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, int handleCount, Modifiers modifiers)
 		{
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
@@ -287,7 +287,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (canQueue)
 				{
-					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount));
+					var queued = !modifiers.HasModifier(Modifiers.Ctrl);
+					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount, queued));
 					return true;
 				}
 			}
@@ -338,7 +339,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// PERF: avoid an unnecessary enumeration by casting back to its known type
 			var cancelCount = modifiers.HasModifier(Modifiers.Ctrl) ? ((List<ProductionItem>)CurrentQueue.AllQueued()).Count : startCount;
 			var item = icon.Queued.FirstOrDefault();
-			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount)
+			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount, modifiers)
 				: btn == MouseButton.Right ? HandleRightClick(item, icon, cancelCount)
 				: btn == MouseButton.Middle ? HandleMiddleClick(item, icon, cancelCount)
 				: false;

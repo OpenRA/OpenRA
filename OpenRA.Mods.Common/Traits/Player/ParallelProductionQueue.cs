@@ -50,6 +50,12 @@ namespace OpenRA.Mods.Common.Traits
 			return Queue.Contains(item);
 		}
 
+		protected override void BeginProduction(ProductionItem item, bool hasPriority)
+		{
+			// Ignore `hasPriority` as it's not relevant in parallel production context.
+			Queue.Add(item);
+		}
+
 		public override int RemainingTimeActual(ProductionItem item)
 		{
 			var parallelBuilds = Queue.FindAll(i => !i.Paused && !i.Done)
