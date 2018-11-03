@@ -34,18 +34,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class ProductionAirdrop : Production
 	{
-		readonly ProductionAirdropInfo info;
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
-			: base(init, info)
-		{
-			this.info = info;
-		}
+			: base(init, info) { }
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
 			if (IsTraitDisabled || IsTraitPaused)
 				return false;
 
+			var info = (ProductionAirdropInfo)Info;
 			var owner = self.Owner;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 
