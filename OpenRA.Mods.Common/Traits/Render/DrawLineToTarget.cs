@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static void SetTargetLine(this Actor self, Target target, Color color, bool display)
 		{
-			if (self.Owner != self.World.LocalPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer))
 				return;
 
 			self.World.AddFrameEndTask(w =>
