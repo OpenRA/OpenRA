@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -29,14 +30,12 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class ClonesProducedUnits : INotifyOtherProduction
 	{
 		readonly ClonesProducedUnitsInfo info;
-		readonly Production production;
-		readonly string faction;
+		readonly Production[] productionTraits;
 
 		public ClonesProducedUnits(ActorInitializer init, ClonesProducedUnitsInfo info)
 		{
 			this.info = info;
-			production = init.Self.Trait<Production>();
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : init.Self.Owner.Faction.InternalName;
+			productionTraits = init.Self.TraitsImplementing<Production>().ToArray();
 		}
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init)
@@ -49,13 +48,23 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (ci == null || !info.CloneableTypes.Overlaps(ci.Types))
 				return;
 
-			var inits = new TypeDictionary
-			{
-				new OwnerInit(self.Owner),
-				new FactionInit(BuildableInfo.GetInitialFaction(produced.Info, faction))
-			};
+			var factionInit = init.GetOrDefault<FactionInit>();
 
-			production.Produce(self, produced.Info, productionType, inits);
+			// Stop as soon as one production trait successfully produced
+			foreach (var p in productionTraits)
+			{
+				if (!string.IsNullOrEmpty(productionType) && !p.Info.Produces.Contains(productionType))
+					continue;
+
+				var inits = new TypeDictionary
+				{
+					new OwnerInit(self.Owner),
+					factionInit ?? new FactionInit(BuildableInfo.GetInitialFaction(produced.Info, p.Faction))
+				};
+
+				if (p.Produce(self, produced.Info, productionType, inits))
+					return;
+			}
 		}
 	}
 }
