@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
-	class ProductionFromMapEdge : Production, INotifyCreated
+	class ProductionFromMapEdge : Production
 	{
 		readonly CPos? spawnLocation;
 		readonly DomainIndex domainIndex;
@@ -36,8 +36,10 @@ namespace OpenRA.Mods.Common.Traits
 				spawnLocation = init.Get<ProductionSpawnLocationInit, CPos>();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
+			base.Created(self);
+
 			rp = self.TraitOrDefault<RallyPoint>();
 		}
 
