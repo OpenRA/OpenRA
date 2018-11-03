@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithProductionOverlay : PausableConditionalTrait<WithProductionOverlayInfo>, INotifyDamageStateChanged, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly Animation overlay;
-		readonly ProductionInfo production;
+		readonly ProductionInfo[] productionInfos;
 		ProductionQueue[] queues;
 
 		bool IsProducing
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
 
-			production = self.Info.TraitInfo<ProductionInfo>();
+			productionInfos = self.Info.TraitInfos<ProductionInfo>().ToArray();
 
 			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.PlayRepeating(info.Sequence);
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			// Per-actor production
 			queues = self.TraitsImplementing<ProductionQueue>()
-				.Where(q => production.Produces.Contains(q.Info.Type))
+				.Where(q => productionInfos.Any(p => p.Produces.Contains(q.Info.Type)))
 				.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
 				.ToArray();
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				// Player-wide production
 				queues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.Where(q => production.Produces.Contains(q.Info.Type))
+					.Where(q => productionInfos.Any(p => p.Produces.Contains(q.Info.Type)))
 					.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
 					.ToArray();
 			}
