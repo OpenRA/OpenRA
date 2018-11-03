@@ -125,6 +125,7 @@ Player:
 				OrderName: ProduceActorPower.Fremen
 				Consideration@1:
 					Against: Ally
+		Condition: enable-omnius-ai
 	HackyAI@Vidius:
 		Name: Vidious
 		Type: vidious
@@ -250,6 +251,7 @@ Player:
 				OrderName: ProduceActorPower.Fremen
 				Consideration@1:
 					Against: Ally
+		Condition: enable-vidious-ai
 	HackyAI@Gladius:
 		Name: Gladius
 		Type: gladius
@@ -374,3 +376,6 @@ Player:
 				OrderName: ProduceActorPower.Fremen
 				Consideration@1:
 					Against: Ally
+		Condition: enable-gladius-ai
+	HarvesterBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai

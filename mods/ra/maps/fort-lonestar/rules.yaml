@@ -105,6 +105,8 @@ Player:
 		DefaultCashDropdownLocked: True
 		DefaultCashDropdownVisible: False
 		DefaultCash: 50
+	-ConditionManager:
+	-HarvesterBotModule:
 	-HackyAI@RushAI:
 	-HackyAI@NormalAI:
 	-HackyAI@NavalAI:

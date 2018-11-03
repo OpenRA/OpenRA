@@ -78,3 +78,6 @@ Player:
 			medic: 3
 			repair: 3
 		SquadSize: 20
+		Condition: enable-test-ai
+	HarvesterBotModule:
+		RequiresCondition: enable-test-ai
