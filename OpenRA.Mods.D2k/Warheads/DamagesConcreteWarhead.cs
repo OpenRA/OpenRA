@@ -25,6 +25,9 @@ namespace OpenRA.Mods.D2k.Warheads
 
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
+			if (target.Type == TargetType.Invalid)
+				return;
+
 			var world = firedBy.World;
 			var layer = world.WorldActor.Trait<BuildableTerrainLayer>();
 			var cell = world.Map.CellContaining(target.CenterPosition);
