@@ -131,6 +131,7 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
+		Condition: enable-cabal-ai
 	HackyAI@Watson:
 		Name: Watson
 		Type: watson
@@ -262,6 +263,7 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
+		Condition: enable-watson-ai
 	HackyAI@HAL9001:
 		Name: HAL 9001
 		Type: hal9001
@@ -395,3 +397,6 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
+		Condition: enable-hal9001-ai
+	HarvesterBotModule:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
