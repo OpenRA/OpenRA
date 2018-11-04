@@ -187,11 +187,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
-		// TODO Update OpenRA.Utility/Command.cs#L300 to first handle lists and also read nested ones
-		[Desc("Tells the AI how to use its support powers.")]
-		[FieldLoader.LoadUsing("LoadDecisions")]
-		public readonly List<SupportPowerDecision> SupportPowerDecisions = new List<SupportPowerDecision>();
-
 		[Desc("Actor types that can capture other actors (via `Captures` or `ExternalCaptures`).",
 			"Leave this empty to disable capturing.")]
 		public HashSet<string> CapturingActorTypes = new HashSet<string>();
@@ -225,17 +220,6 @@ namespace OpenRA.Mods.Common.AI
 			return FieldLoader.Load<BuildingCategories>(categories.Value);
 		}
 
-		static object LoadDecisions(MiniYaml yaml)
-		{
-			var ret = new List<SupportPowerDecision>();
-			var decisions = yaml.Nodes.FirstOrDefault(n => n.Key == "SupportPowerDecisions");
-			if (decisions != null)
-				foreach (var d in decisions.Value.Nodes)
-					ret.Add(new SupportPowerDecision(d.Value));
-
-			return ret;
-		}
-
 		string IBotInfo.Type { get { return Type; } }
 
 		string IBotInfo.Name { get { return Name; } }
@@ -245,6 +229,7 @@ namespace OpenRA.Mods.Common.AI
 
 	public sealed class HackyAI : ITick, IBot, INotifyDamage
 	{
+		// DEPRECATED: Modules should use World.LocalRandom.
 		public MersenneTwister Random { get; private set; }
 		public readonly HackyAIInfo Info;
 
@@ -274,8 +259,6 @@ namespace OpenRA.Mods.Common.AI
 		int ticks;
 
 		BitArray resourceTypeIndices;
-
-		AISupportPowerManager supportPowerManager;
 
 		List<BaseBuilder> builders = new List<BaseBuilder>();
 
@@ -323,8 +306,6 @@ namespace OpenRA.Mods.Common.AI
 			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
-
-			supportPowerManager = new AISupportPowerManager(this, p);
 
 			foreach (var building in Info.BuildingQueues)
 				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
@@ -541,7 +522,6 @@ namespace OpenRA.Mods.Common.AI
 
 			AssignRolesToIdleUnits(self);
 			SetRallyPointsForNewProductionBuildings(self);
-			supportPowerManager.TryToUseSupportPower(self);
 
 			foreach (var b in builders)
 				b.Tick();

@@ -83,47 +83,6 @@ Player:
 			carryall: 4
 		SquadSize: 8
 		MaxBaseRadius: 40
-		SupportPowerDecisions:
-			Airstrike:
-				OrderName: AirstrikePowerInfoOrder
-				MinimumAttractiveness: 2000
-				Consideration@1:
-					Against: Enemy
-					Types: Vehicle, Tank, Infantry
-					Attractiveness: 2
-					TargetMetric: Value
-					CheckRadius: 3c0
-				Consideration@2:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 2c0
-				Consideration@3:
-					Against: Ally
-					Types: Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 4c0
-			NukePower:
-				OrderName: NukePowerInfoOrder
-				MinimumAttractiveness: 3000
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 5c0
-				Consideration@2:
-					Against: Ally
-					Types: Air, Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 7c0
-			Fremen:
-				OrderName: ProduceActorPower.Fremen
-				Consideration@1:
-					Against: Ally
 	HackyAI@Vidius:
 		Name: Vidious
 		Type: vidious
@@ -208,47 +167,6 @@ Player:
 			carryall: 4
 		SquadSize: 6
 		MaxBaseRadius: 40
-		SupportPowerDecisions:
-			Airstrike:
-				OrderName: AirstrikePowerInfoOrder
-				MinimumAttractiveness: 2000
-				Consideration@1:
-					Against: Enemy
-					Types: Vehicle, Tank, Infantry
-					Attractiveness: 2
-					TargetMetric: Value
-					CheckRadius: 3c0
-				Consideration@2:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 2c0
-				Consideration@3:
-					Against: Ally
-					Types: Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 4c0
-			NukePower:
-				OrderName: NukePowerInfoOrder
-				MinimumAttractiveness: 3000
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 5c0
-				Consideration@2:
-					Against: Ally
-					Types: Air, Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 7c0
-			Fremen:
-				OrderName: ProduceActorPower.Fremen
-				Consideration@1:
-					Against: Ally
 	HackyAI@Gladius:
 		Name: Gladius
 		Type: gladius
@@ -332,7 +250,9 @@ Player:
 			carryall: 4
 		SquadSize: 10
 		MaxBaseRadius: 40
-		SupportPowerDecisions:
+	SupportPowerBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		Decisions:
 			Airstrike:
 				OrderName: AirstrikePowerInfoOrder
 				MinimumAttractiveness: 2000
