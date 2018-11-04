@@ -1,6 +1,4 @@
-
-
---------Adapted from the global script for d2k, can/should be moved to a global campaign script at some point 
+--Adapted from the global script for d2k, can/should be moved to a global campaign script at some point 
 IdleHunt = function(actor)
 	if actor.HasProperty("Hunt") and not actor.IsDead then
 		Trigger.OnIdle(actor, actor.Hunt)
@@ -18,7 +16,6 @@ SetupAttackGroup = function(owner, size)
 		if #IdlingUnits[owner] == 0 then
 			return units
 		end
-
 		local number = Utils.RandomInteger(1, #IdlingUnits[owner] + 1)
 
 		if IdlingUnits[owner][number] and not IdlingUnits[owner][number].IsDead then
@@ -26,7 +23,6 @@ SetupAttackGroup = function(owner, size)
 			table.remove(IdlingUnits[owner], number)
 		end
 	end
-
 	return units
 end
 
@@ -71,7 +67,6 @@ DefendActor = function(unit, defendingPlayer, defenderCount)
 		Trigger.OnAllRemovedFromWorld(Guards, function() Attacking[defendingPlayer] = false end)
 	end)
 end
-
 
 RepairBuilding = function(owner, actor, modifier)
 	Trigger.OnDamaged(actor, function(building)
@@ -138,12 +133,11 @@ InitialProductionDelay =
 NodInfantryTypes = { "e1", "e1", "e1","e3", "e3", "e4", "e4"}
 NodVehicleTypes = { "bggy", "bggy", "bike", "ltnk"}
 
-
 ActivateAI = function()
 	IdlingUnits[Nod] = {}
 	DefendAndRepairBase(Nod, NodBase, 1, AttackGroupSize[Difficulty])
 	DefendAndRepairBase(Nod, Samsites, 1, AttackGroupSize[Difficulty])
-
+  NodAirfield.RallyPoint = waypoint4.Location
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return { Utils.Random(NodInfantryTypes) } end
 	local vehiclesToBuild = function() return { Utils.Random(NodVehicleTypes) } end

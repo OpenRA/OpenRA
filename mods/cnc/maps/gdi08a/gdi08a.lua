@@ -10,8 +10,7 @@ AttackPosition = HQ.Location
 
 Difficulty = Map.LobbyOption("difficulty")
 
-------------------------
--- The following can/should be moved to a global campaign script at some point --
+----------- The following can/should be moved to a global campaign script at some point --
 InitObjectives = function(player)
 	Trigger.OnObjectiveAdded(player, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
@@ -35,9 +34,7 @@ InitObjectives = function(player)
 		end)
 	end)
 end
-
 ---------------
-
 
 WorldLoaded = function()
 	GDI = Player.GetPlayer("GDI")
@@ -47,8 +44,7 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
--- Not sure what the original mission statements were. Can/Should be changes accordingly
-	gdiMainObjective = GDI.AddPrimaryObjective("Destroy any Nod structures and units.")
+	gdiMainObjective = GDI.AddPrimaryObjective("Destroy all Nod structures and units.")
 	gdiAirSupportObjective = GDI.AddSecondaryObjective("Destroy the SAM sites to receive air support.")
 	nodObjective = Nod.AddPrimaryObjective("Kill all enemies!")
 	
