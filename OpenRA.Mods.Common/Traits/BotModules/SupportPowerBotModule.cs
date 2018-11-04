@@ -10,37 +10,59 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Traits;
+using System.Linq;
+using OpenRA.Mods.Common.AI;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits
 {
-	class AISupportPowerManager
+	[Desc("Manages bot support power handling.")]
+	public class SupportPowerBotModuleInfo : ConditionalTraitInfo, Requires<SupportPowerManagerInfo>
 	{
-		readonly HackyAI ai;
+		[Desc("Tells the AI how to use its support powers.")]
+		[FieldLoader.LoadUsing("LoadDecisions")]
+		public readonly List<SupportPowerDecision> Decisions = new List<SupportPowerDecision>();
+
+		static object LoadDecisions(MiniYaml yaml)
+		{
+			var ret = new List<SupportPowerDecision>();
+			var decisions = yaml.Nodes.FirstOrDefault(n => n.Key == "Decisions");
+			if (decisions != null)
+				foreach (var d in decisions.Value.Nodes)
+					ret.Add(new SupportPowerDecision(d.Value));
+
+			return ret;
+		}
+
+		public override object Create(ActorInitializer init) { return new SupportPowerBotModule(init.Self, this); }
+	}
+
+	public class SupportPowerBotModule : ConditionalTrait<SupportPowerBotModuleInfo>, IBotTick
+	{
 		readonly World world;
 		readonly Player player;
-		readonly FrozenActorLayer frozenLayer;
-		readonly SupportPowerManager supportPowerManager;
+		FrozenActorLayer frozenLayer;
+		SupportPowerManager supportPowerManager;
 		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
 		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
-		public AISupportPowerManager(HackyAI ai, Player p)
+		public SupportPowerBotModule(Actor self, SupportPowerBotModuleInfo info)
+			: base(info)
 		{
-			this.ai = ai;
-			world = p.World;
-			player = p;
-			frozenLayer = p.PlayerActor.Trait<FrozenActorLayer>();
-			supportPowerManager = p.PlayerActor.TraitOrDefault<SupportPowerManager>();
-			foreach (var decision in ai.Info.SupportPowerDecisions)
+			world = self.World;
+			player = self.Owner;
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			frozenLayer = player.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			supportPowerManager = player.PlayerActor.Trait<SupportPowerManager>();
+			foreach (var decision in Info.Decisions)
 				powerDecisions.Add(decision.OrderName, decision);
 		}
 
-		public void TryToUseSupportPower(Actor self)
+		void IBotTick.BotTick(IBot bot)
 		{
-			if (supportPowerManager == null)
-				return;
-
 			foreach (var sp in supportPowerManager.Powers.Values)
 			{
 				if (sp.Disabled)
@@ -68,7 +90,7 @@ namespace OpenRA.Mods.Common.AI
 					if (attackLocation == null)
 					{
 						AIUtils.BotDebug("AI: {1} can't find suitable coarse attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
-						waitingPowers[sp] += powerDecision.GetNextScanTime(ai);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(world);
 
 						continue;
 					}
@@ -78,7 +100,7 @@ namespace OpenRA.Mods.Common.AI
 					if (attackLocation == null)
 					{
 						AIUtils.BotDebug("AI: {1} can't find suitable final attack location for support power {0}. Delaying rescan.", sp.Info.OrderName, player.PlayerName);
-						waitingPowers[sp] += powerDecision.GetNextScanTime(ai);
+						waitingPowers[sp] += powerDecision.GetNextScanTime(world);
 
 						continue;
 					}
@@ -86,7 +108,7 @@ namespace OpenRA.Mods.Common.AI
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
 					AIUtils.BotDebug("AI: {2} found new target location {0} for support power {1}.", attackLocation, sp.Info.OrderName, player.PlayerName);
 					waitingPowers[sp] += 10;
-					ai.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true });
+					bot.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true });
 				}
 			}
 		}
@@ -118,7 +140,7 @@ namespace OpenRA.Mods.Common.AI
 					var wbr = world.Map.CenterOfCell(br.ToCPos(map));
 					var targets = world.ActorMap.ActorsInBox(wtl, wbr);
 
-					var frozenTargets = frozenLayer.FrozenActorsInRegion(region);
+					var frozenTargets = frozenLayer != null ? frozenLayer.FrozenActorsInRegion(region) : Enumerable.Empty<FrozenActor>();
 					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player) + powerDecision.GetAttractiveness(frozenTargets, player);
 					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;

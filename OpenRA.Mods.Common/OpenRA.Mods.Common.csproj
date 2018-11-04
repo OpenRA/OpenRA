@@ -125,7 +125,7 @@
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="Traits\BotModules\HarvesterBotModule.cs" />
-    <Compile Include="AI\AISupportPowerManager.cs" />
+    <Compile Include="Traits\BotModules\SupportPowerBotModule.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
@@ -133,7 +133,7 @@
     <Compile Include="AI\States\NavyStates.cs" />
     <Compile Include="AI\States\ProtectionStates.cs" />
     <Compile Include="AI\States\StateBase.cs" />
-    <Compile Include="AI\SupportPowerDecision.cs" />
+    <Compile Include="Traits\BotModules\BotModuleLogic\SupportPowerDecision.cs" />
     <Compile Include="AudioLoaders\AudLoader.cs" />
     <Compile Include="AudioLoaders\VocLoader.cs" />
     <Compile Include="AudioLoaders\WavLoader.cs" />

@@ -10,11 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.AI;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Adds metadata for the AI bots.")]
 	public class SupportPowerDecision
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.AI
 			return answer;
 		}
 
-		public int GetNextScanTime(HackyAI ai) { return ai.Random.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
+		public int GetNextScanTime(World world) { return world.LocalRandom.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
 
 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
 		public class Consideration

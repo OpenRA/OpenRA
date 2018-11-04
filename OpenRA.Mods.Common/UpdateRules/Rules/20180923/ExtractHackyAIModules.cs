@@ -33,6 +33,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"HarvesterEnemyAvoidanceRadius", "AssignRolesInterval"
 		};
 
+		readonly string[] supportPowerFields =
+		{
+			"SupportPowerDecisions"
+		};
+
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			var message = "You may want to check your AI yamls for possible redundant module entries.\n" +
@@ -117,6 +122,21 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 						requiresConditionNode.ReplaceValue(oldValue + " || " + conditionString);
 					}
+				}
+
+				if (supportPowerFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
+				{
+					var spNode = new MiniYamlNode("SupportPowerBotModule@" + aiType, "");
+					spNode.AddNode(requiresCondition);
+
+					foreach (var spf in supportPowerFields)
+					{
+						var fieldNode = hackyAINode.LastChildMatching(spf);
+						if (fieldNode != null)
+							fieldNode.MoveAndRenameNode(hackyAINode, spNode, "Decisions");
+					}
+
+					addNodes.Add(spNode);
 				}
 			}
 
