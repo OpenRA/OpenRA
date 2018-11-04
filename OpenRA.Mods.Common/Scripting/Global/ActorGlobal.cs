@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Scripting
 					var genericType = initType.GetInterfaces()
 						.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
 					var innerType = genericType.GetGenericArguments().First();
-					var valueType = innerType.IsEnum ? typeof(int) : innerType;
+					var valueType = innerType.IsEnum ? Enum.GetUnderlyingType(innerType) : innerType;
 
 					// Try and coerce the table value to the required type
 					object value;
