@@ -11,11 +11,14 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
 	public enum BuildingType { Building, Defense, Refinery }
+
+	public enum WaterCheck { NotChecked, EnoughWater, NotEnoughWater }
 
 	public class CaptureTarget<TInfoType> where TInfoType : class, ITraitInfoInterface
 	{
@@ -46,6 +49,40 @@ namespace OpenRA.Mods.Common.AI
 					Util.AdjacentCells(world, Target.FromCell(world, c))
 						.All(ac => terrainTypes.Contains(map.GetTerrainInfo(ac).Type))))
 							.Any(availableCells => availableCells > 0);
+		}
+
+		public static IEnumerable<ProductionQueue> FindQueues(Player player, string category)
+		{
+			return player.World.ActorsWithTrait<ProductionQueue>()
+				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category && a.Trait.Enabled)
+				.Select(a => a.Trait);
+		}
+
+		public static IEnumerable<Actor> GetActorsWithTrait<T>(World world)
+		{
+			return world.ActorsHavingTrait<T>();
+		}
+
+		public static int CountActorsWithTrait<T>(string actorName, Player owner)
+		{
+			return GetActorsWithTrait<T>(owner.World).Count(a => a.Owner == owner && a.Info.Name == actorName);
+		}
+
+		public static int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
+		{
+			return GetActorsWithTrait<Building>(owner.World)
+				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
+		}
+
+		public static List<Actor> FindEnemiesByCommonName(HashSet<string> commonNames, Player player)
+		{
+			return player.World.Actors.Where(a => !a.IsDead && player.Stances[a.Owner] == Stance.Enemy &&
+				commonNames.Contains(a.Info.Name)).ToList();
+		}
+
+		public static ActorInfo GetInfoByCommonName(HashSet<string> names, Player owner)
+		{
+			return owner.World.Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(owner.World.LocalRandom).Value;
 		}
 
 		public static void BotDebug(string s, params object[] args)

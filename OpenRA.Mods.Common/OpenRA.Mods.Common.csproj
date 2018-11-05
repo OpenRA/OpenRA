@@ -122,10 +122,12 @@
     <Compile Include="ActorExts.cs" />
     <Compile Include="AI\AIUtils.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
-    <Compile Include="AI\BaseBuilder.cs" />
+    <Compile Include="Traits\BotModules\BotModuleLogic\BaseBuilderQueueManager.cs" />
     <Compile Include="AI\HackyAI.cs" />
     <Compile Include="Traits\BotModules\HarvesterBotModule.cs" />
     <Compile Include="Traits\BotModules\SupportPowerBotModule.cs" />
+    <Compile Include="Traits\BotModules\BaseBuilderBotModule.cs" />
+    <Compile Include="Traits\BotModules\BuildingRepairBotModule.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
