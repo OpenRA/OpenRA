@@ -164,9 +164,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Terrain types which are considered water for base building purposes.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
 
-		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
-		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
-
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
