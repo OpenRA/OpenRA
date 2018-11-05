@@ -175,6 +175,7 @@
     <Compile Include="Yupgi\EnterCarrierMaster.cs" />
     <Compile Include="Yupgi\MobSpawnerMaster.cs" />
     <Compile Include="Yupgi\MobSpawnerSlave.cs" />
+    <Compile Include="Yupgi\GrantConditionOnActivity.cs" />
   </ItemGroup>
   <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
