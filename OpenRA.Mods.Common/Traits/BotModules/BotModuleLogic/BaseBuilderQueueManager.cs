@@ -10,18 +10,19 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.AI;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits
 {
-	class BaseBuilder
+	class BaseBuilderQueueManager
 	{
 		readonly string category;
 
-		readonly HackyAI ai;
+		readonly BaseBuilderBotModule baseBuilder;
 		readonly World world;
 		readonly Player player;
 		readonly PowerManager playerPower;
@@ -35,32 +36,28 @@ namespace OpenRA.Mods.Common.AI
 		int cachedBases;
 		int cachedBuildings;
 		int minimumExcessPower;
+		BitArray resourceTypeIndices;
 
-		enum Water
+		WaterCheck waterState = WaterCheck.NotChecked;
+
+		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string category, Player p, PowerManager pm,
+			PlayerResources pr, BitArray resourceTypeIndices)
 		{
-			NotChecked,
-			EnoughWater,
-			NotEnoughWater
-		}
-
-		Water waterState = Water.NotChecked;
-
-		public BaseBuilder(HackyAI ai, string category, Player p, PowerManager pm, PlayerResources pr)
-		{
-			this.ai = ai;
+			this.baseBuilder = baseBuilder;
 			world = p.World;
 			player = p;
 			playerPower = pm;
 			playerResources = pr;
 			this.category = category;
-			failRetryTicks = ai.Info.StructureProductionResumeDelay;
-			minimumExcessPower = ai.Info.MinimumExcessPower;
+			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
+			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
+			this.resourceTypeIndices = resourceTypeIndices;
 		}
 
-		public void Tick()
+		public void Tick(IBot bot)
 		{
 			// If failed to place something N consecutive times, wait M ticks until resuming building production
-			if (failCount >= ai.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
+			if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
 			{
 				var currentBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
 				var baseProviders = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
@@ -71,28 +68,28 @@ namespace OpenRA.Mods.Common.AI
 				if (currentBuildings < cachedBuildings || baseProviders > cachedBases)
 					failCount = 0;
 				else
-					failRetryTicks = ai.Info.StructureProductionResumeDelay;
+					failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			}
 
-			if (waterState == Water.NotChecked)
+			if (waterState == WaterCheck.NotChecked)
 			{
-				if (AIUtils.IsAreaAvailable<BaseProvider>(ai.World, ai.Player, ai.Map, ai.Info.MaxBaseRadius, ai.Info.WaterTerrainTypes))
-					waterState = Water.EnoughWater;
+				if (AIUtils.IsAreaAvailable<BaseProvider>(world, player, world.Map, baseBuilder.Info.MaxBaseRadius, baseBuilder.Info.WaterTerrainTypes))
+					waterState = WaterCheck.EnoughWater;
 				else
 				{
-					waterState = Water.NotEnoughWater;
-					checkForBasesTicks = ai.Info.CheckForNewBasesDelay;
+					waterState = WaterCheck.NotEnoughWater;
+					checkForBasesTicks = baseBuilder.Info.CheckForNewBasesDelay;
 				}
 			}
 
-			if (waterState == Water.NotEnoughWater && --checkForBasesTicks <= 0)
+			if (waterState == WaterCheck.NotEnoughWater && --checkForBasesTicks <= 0)
 			{
 				var currentBases = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
 
 				if (currentBases > cachedBases)
 				{
 					cachedBases = currentBases;
-					waterState = Water.NotChecked;
+					waterState = WaterCheck.NotChecked;
 				}
 			}
 
@@ -101,35 +98,35 @@ namespace OpenRA.Mods.Common.AI
 				return;
 
 			playerBuildings = world.ActorsHavingTrait<Building>().Where(a => a.Owner == player).ToArray();
-			var excessPowerBonus = ai.Info.ExcessPowerIncrement * (playerBuildings.Count() / ai.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
-			minimumExcessPower = (ai.Info.MinimumExcessPower + excessPowerBonus).Clamp(ai.Info.MinimumExcessPower, ai.Info.MaximumExcessPower);
+			var excessPowerBonus = baseBuilder.Info.ExcessPowerIncrement * (playerBuildings.Count() / baseBuilder.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
+			minimumExcessPower = (baseBuilder.Info.MinimumExcessPower + excessPowerBonus).Clamp(baseBuilder.Info.MinimumExcessPower, baseBuilder.Info.MaximumExcessPower);
 
 			var active = false;
-			foreach (var queue in ai.FindQueues(category))
-				if (TickQueue(queue))
+			foreach (var queue in AIUtils.FindQueues(player, category))
+				if (TickQueue(bot, queue))
 					active = true;
 
 			// Add a random factor so not every AI produces at the same tick early in the game.
 			// Minimum should not be negative as delays in HackyAI could be zero.
-			var randomFactor = ai.Random.Next(0, ai.Info.StructureProductionRandomBonusDelay);
+			var randomFactor = world.LocalRandom.Next(0, baseBuilder.Info.StructureProductionRandomBonusDelay);
 
 			// Needs to be at least 4 * OrderLatency because otherwise the AI frequently duplicates build orders (i.e. makes the same build decision twice)
-			waitTicks = active ? 4 * world.LobbyInfo.GlobalSettings.OrderLatency + ai.Info.StructureProductionActiveDelay + randomFactor
-				: ai.Info.StructureProductionInactiveDelay + randomFactor;
+			waitTicks = active ? 4 * world.LobbyInfo.GlobalSettings.OrderLatency + baseBuilder.Info.StructureProductionActiveDelay + randomFactor
+				: baseBuilder.Info.StructureProductionInactiveDelay + randomFactor;
 		}
 
-		bool TickQueue(ProductionQueue queue)
+		bool TickQueue(IBot bot, ProductionQueue queue)
 		{
 			var currentBuilding = queue.AllQueued().FirstOrDefault();
 
 			// Waiting to build something
-			if (currentBuilding == null && failCount < ai.Info.MaximumFailedPlacementAttempts)
+			if (currentBuilding == null && failCount < baseBuilder.Info.MaximumFailedPlacementAttempts)
 			{
 				var item = ChooseBuildingToBuild(queue);
 				if (item == null)
 					return false;
 
-				ai.QueueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
+				bot.QueueOrder(Order.StartProduction(queue.Actor, item.Name, 1));
 			}
 			else if (currentBuilding != null && currentBuilding.Done)
 			{
@@ -140,18 +137,18 @@ namespace OpenRA.Mods.Common.AI
 				var type = BuildingType.Building;
 				if (world.Map.Rules.Actors[currentBuilding.Item].HasTraitInfo<AttackBaseInfo>())
 					type = BuildingType.Defense;
-				else if (world.Map.Rules.Actors[currentBuilding.Item].HasTraitInfo<RefineryInfo>())
+				else if (baseBuilder.Info.RefineryTypes.Contains(world.Map.Rules.Actors[currentBuilding.Item].Name))
 					type = BuildingType.Refinery;
 
-				var location = ai.ChooseBuildLocation(currentBuilding.Item, true, type);
+				var location = ChooseBuildLocation(currentBuilding.Item, true, type);
 				if (location == null)
 				{
 					AIUtils.BotDebug("AI: {0} has nowhere to place {1}".F(player, currentBuilding.Item));
-					ai.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
+					bot.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
 					failCount += failCount;
 
 					// If we just reached the maximum fail count, cache the number of current structures
-					if (failCount == ai.Info.MaximumFailedPlacementAttempts)
+					if (failCount == baseBuilder.Info.MaximumFailedPlacementAttempts)
 					{
 						cachedBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
 						cachedBases = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
@@ -160,7 +157,7 @@ namespace OpenRA.Mods.Common.AI
 				else
 				{
 					failCount = 0;
-					ai.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, Target.FromCell(world, location.Value), false)
+					bot.QueueOrder(new Order("PlaceBuilding", player.PlayerActor, Target.FromCell(world, location.Value), false)
 					{
 						// Building to place
 						TargetString = currentBuilding.Item,
@@ -185,22 +182,22 @@ namespace OpenRA.Mods.Common.AI
 				if (!actors.Contains(actor.Name))
 					return false;
 
-				if (!ai.Info.BuildingLimits.ContainsKey(actor.Name))
+				if (!baseBuilder.Info.BuildingLimits.ContainsKey(actor.Name))
 					return true;
 
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < ai.Info.BuildingLimits[actor.Name];
+				return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.Info.BuildingLimits[actor.Name];
 			});
 
 			if (orderBy != null)
 				return available.MaxByOrDefault(orderBy);
 
-			return available.RandomOrDefault(ai.Random);
+			return available.RandomOrDefault(world.LocalRandom);
 		}
 
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
 		{
 			return playerPower == null || (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
-				.Sum(p => p.Amount) + playerPower.ExcessPower) >= minimumExcessPower;
+				.Sum(p => p.Amount) + playerPower.ExcessPower) >= baseBuilder.Info.MinimumExcessPower;
 		}
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
@@ -208,7 +205,7 @@ namespace OpenRA.Mods.Common.AI
 			var buildableThings = queue.BuildableItems();
 
 			// This gets used quite a bit, so let's cache it here
-			var power = GetProducibleBuilding(ai.Info.BuildingCommonNames.Power, buildableThings,
+			var power = GetProducibleBuilding(baseBuilder.Info.PowerTypes, buildableThings,
 				a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
@@ -222,9 +219,9 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			// Next is to build up a strong economy
-			if (!ai.HasAdequateProc() || !ai.HasMinimumProc())
+			if (!HasAdequateRefineryCount)
 			{
-				var refinery = GetProducibleBuilding(ai.Info.BuildingCommonNames.Refinery, buildableThings);
+				var refinery = GetProducibleBuilding(baseBuilder.Info.RefineryTypes, buildableThings);
 				if (refinery != null && HasSufficientPowerForActor(refinery))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
@@ -239,9 +236,9 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			// Make sure that we can spend as fast as we are earning
-			if (ai.Info.NewProductionCashThreshold > 0 && playerResources.Resources > ai.Info.NewProductionCashThreshold)
+			if (baseBuilder.Info.NewProductionCashThreshold > 0 && playerResources.Resources > baseBuilder.Info.NewProductionCashThreshold)
 			{
-				var production = GetProducibleBuilding(ai.Info.BuildingCommonNames.Production, buildableThings);
+				var production = GetProducibleBuilding(baseBuilder.Info.ProductionTypes, buildableThings);
 				if (production != null && HasSufficientPowerForActor(production))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
@@ -256,11 +253,11 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
-			if (waterState == Water.EnoughWater && ai.Info.NewProductionCashThreshold > 0
-				&& playerResources.Resources > ai.Info.NewProductionCashThreshold
-				&& AIUtils.IsAreaAvailable<GivesBuildableArea>(ai.World, ai.Player, ai.Map, ai.Info.CheckForWaterRadius, ai.Info.WaterTerrainTypes))
+			if (waterState == WaterCheck.EnoughWater && baseBuilder.Info.NewProductionCashThreshold > 0
+				&& playerResources.Resources > baseBuilder.Info.NewProductionCashThreshold
+				&& AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes))
 			{
-				var navalproduction = GetProducibleBuilding(ai.Info.BuildingCommonNames.NavalProduction, buildableThings);
+				var navalproduction = GetProducibleBuilding(baseBuilder.Info.NavalProductionTypes, buildableThings);
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
@@ -277,7 +274,7 @@ namespace OpenRA.Mods.Common.AI
 			// Create some head room for resource storage if we really need it
 			if (playerResources.Resources > 0.8 * playerResources.ResourceCapacity)
 			{
-				var silo = GetProducibleBuilding(ai.Info.BuildingCommonNames.Silo, buildableThings);
+				var silo = GetProducibleBuilding(baseBuilder.Info.SiloTypes, buildableThings);
 				if (silo != null && HasSufficientPowerForActor(silo))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
@@ -292,7 +289,7 @@ namespace OpenRA.Mods.Common.AI
 			}
 
 			// Build everything else
-			foreach (var frac in ai.Info.BuildingFractions.Shuffle(ai.Random))
+			foreach (var frac in baseBuilder.Info.BuildingFractions.Shuffle(world.LocalRandom))
 			{
 				var name = frac.Key;
 
@@ -302,18 +299,18 @@ namespace OpenRA.Mods.Common.AI
 
 				// Do we want to build this structure?
 				var count = playerBuildings.Count(a => a.Info.Name == name);
-				if (count > frac.Value * playerBuildings.Length)
+				if (count * 100 > frac.Value * playerBuildings.Length)
 					continue;
 
-				if (ai.Info.BuildingLimits.ContainsKey(name) && ai.Info.BuildingLimits[name] <= count)
+				if (baseBuilder.Info.BuildingLimits.ContainsKey(name) && baseBuilder.Info.BuildingLimits[name] <= count)
 					continue;
 
 				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
 				// and any structure providing buildable area close enough to that water.
 				// TODO: Extend this check to cover any naval structure, not just production.
-				if (ai.Info.BuildingCommonNames.NavalProduction.Contains(name)
-					&& (waterState == Water.NotEnoughWater
-						|| !AIUtils.IsAreaAvailable<GivesBuildableArea>(ai.World, ai.Player, ai.Map, ai.Info.CheckForWaterRadius, ai.Info.WaterTerrainTypes)))
+				if (baseBuilder.Info.NavalProductionTypes.Contains(name)
+					&& (waterState == WaterCheck.NotEnoughWater
+						|| !AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes)))
 					continue;
 
 				// Will this put us into low power?
@@ -341,6 +338,98 @@ namespace OpenRA.Mods.Common.AI
 			// Too spammy to keep enabled all the time, but very useful when debugging specific issues.
 			// AIUtils.BotDebug("{0} couldn't decide what to build for queue {1}.", queue.Actor.Owner, queue.Info.Group);
 			return null;
+		}
+
+		CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
+		{
+			var actorInfo = world.Map.Rules.Actors[actorType];
+			var bi = actorInfo.TraitInfoOrDefault<BuildingInfo>();
+			if (bi == null)
+				return null;
+
+			// Find the buildable cell that is closest to pos and centered around center
+			Func<CPos, CPos, int, int, CPos?> findPos = (center, target, minRange, maxRange) =>
+			{
+				var cells = world.Map.FindTilesInAnnulus(center, minRange, maxRange);
+
+				// Sort by distance to target if we have one
+				if (center != target)
+					cells = cells.OrderBy(c => (c - target).LengthSquared);
+				else
+					cells = cells.Shuffle(world.LocalRandom);
+
+				foreach (var cell in cells)
+				{
+					if (!world.CanPlaceBuilding(cell, actorInfo, bi, null))
+						continue;
+
+					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(world, player, actorInfo, cell))
+						continue;
+
+					return cell;
+				}
+
+				return null;
+			};
+
+			var baseCenter = baseBuilder.GetRandomBaseCenter();
+
+			switch (type)
+			{
+				case BuildingType.Defense:
+
+					// Build near the closest enemy structure
+					var closestEnemy = world.ActorsHavingTrait<Building>().Where(a => !a.Disposed && player.Stances[a.Owner] == Stance.Enemy)
+						.ClosestTo(world.Map.CenterOfCell(baseBuilder.DefenseCenter));
+
+					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
+					return findPos(baseBuilder.DefenseCenter, targetCell, baseBuilder.Info.MinimumDefenseRadius, baseBuilder.Info.MaximumDefenseRadius);
+
+				case BuildingType.Refinery:
+
+					// Try and place the refinery near a resource field
+					var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+						.Where(a => resourceTypeIndices.Get(world.Map.GetTerrainIndex(a)))
+						.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+
+					foreach (var r in nearbyResources)
+					{
+						var found = findPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+						if (found != null)
+							return found;
+					}
+
+					// Try and find a free spot somewhere else in the base
+					return findPos(baseCenter, baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+
+				case BuildingType.Building:
+					return findPos(baseCenter, baseCenter, baseBuilder.Info.MinBaseRadius,
+						distanceToBaseIsImportant ? baseBuilder.Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
+			}
+
+			// Can't find a build location
+			return null;
+		}
+
+		bool HasAdequateRefineryCount
+		{
+			get
+			{
+				// Require at least one refinery, unless we can't build it.
+				return AIUtils.CountBuildingByCommonName(baseBuilder.Info.RefineryTypes, player) >= MinimumRefineryCount ||
+					AIUtils.CountBuildingByCommonName(baseBuilder.Info.PowerTypes, player) == 0 ||
+					AIUtils.CountBuildingByCommonName(baseBuilder.Info.ConstructionYardTypes, player) == 0;
+			}
+		}
+
+		int MinimumRefineryCount
+		{
+			get
+			{
+				// Unless we have no barracks (higher priority), require a 2nd refinery.
+				// TODO: Possibly unhardcode this, at least the targeted minimum of 2 (the fallback can probably stay at 1).
+				return AIUtils.CountBuildingByCommonName(baseBuilder.Info.BarracksTypes, player) > 0 ? 2 : 1;
+			}
 		}
 	}
 }

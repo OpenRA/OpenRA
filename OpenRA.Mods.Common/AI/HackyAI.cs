@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.AI
 			public readonly HashSet<string> ExcludeFromSquads = new HashSet<string>();
 		}
 
+		// TODO: Move this to SquadManagerBotModule later
 		public class BuildingCategories
 		{
 			public readonly HashSet<string> ConstructionYard = new HashSet<string>();
@@ -53,12 +54,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Random number of up to this many units is added to squad size when creating an attack squad.")]
 		public readonly int SquadSizeRandomBonus = 30;
 
-		[Desc("Production queues AI uses for buildings.")]
-		public readonly HashSet<string> BuildingQueues = new HashSet<string> { "Building" };
-
-		[Desc("Production queues AI uses for defenses.")]
-		public readonly HashSet<string> DefenseQueues = new HashSet<string> { "Defense" };
-
 		[Desc("Delay (in ticks) between giving out orders to units.")]
 		public readonly int AssignRolesInterval = 20;
 
@@ -74,51 +69,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
 		public readonly int MinOrderQuotientPerTick = 5;
 
-		[Desc("Minimum excess power the AI should try to maintain.")]
-		public readonly int MinimumExcessPower = 0;
-
-		[Desc("Increase maintained excess power by this amount for every ExcessPowerIncreaseThreshold of base buildings.")]
-		public readonly int ExcessPowerIncrement = 0;
-
-		[Desc("Increase maintained excess power by ExcessPowerIncrement for every N base buildings.")]
-		public readonly int ExcessPowerIncreaseThreshold = 1;
-
-		[Desc("The targeted excess power the AI tries to maintain cannot rise above this.")]
-		public readonly int MaximumExcessPower = 0;
-
-		[Desc("Additional delay (in ticks) between structure production checks when there is no active production.",
-			"StructureProductionRandomBonusDelay is added to this.")]
-		public readonly int StructureProductionInactiveDelay = 125;
-
-		[Desc("Additional delay (in ticks) added between structure production checks when actively building things.",
-			"Note: The total delay is gamespeed OrderLatency x 4 + this + StructureProductionRandomBonusDelay.")]
-		public readonly int StructureProductionActiveDelay = 0;
-
-		[Desc("A random delay (in ticks) of up to this is added to active/inactive production delays.")]
-		public readonly int StructureProductionRandomBonusDelay = 10;
-
-		[Desc("Delay (in ticks) until retrying to build structure after the last 3 consecutive attempts failed.")]
-		public readonly int StructureProductionResumeDelay = 1500;
-
-		[Desc("After how many failed attempts to place a structure should AI give up and wait",
-			"for StructureProductionResumeDelay before retrying.")]
-		public readonly int MaximumFailedPlacementAttempts = 3;
-
-		[Desc("How many randomly chosen cells with resources to check when deciding refinery placement.")]
-		public readonly int MaxResourceCellsToCheck = 3;
-
-		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
-		public readonly int CheckForNewBasesDelay = 1500;
-
-		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
-		public readonly int MinimumDefenseRadius = 5;
-
-		[Desc("Maximum range at which to build defensive structures near a combat hotspot.")]
-		public readonly int MaximumDefenseRadius = 20;
-
-		[Desc("Try to build another production building if there is too much cash.")]
-		public readonly int NewProductionCashThreshold = 5000;
-
 		[Desc("Only produce units as long as there are less than this amount of units idling inside the base.")]
 		public readonly int IdleBaseUnitsMaximum = 12;
 
@@ -128,13 +78,11 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Radius in cells around the base that should be scanned for units to be protected.")]
 		public readonly int ProtectUnitScanRadius = 15;
 
-		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
-		public readonly int RallyPointScanRadius = 8;
-
-		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
+		[Desc("Minimum distance in cells from center of the base when checking for MCV deployment location.")]
 		public readonly int MinBaseRadius = 2;
 
-		[Desc("Radius in cells around the center of the base to expand.")]
+		[Desc("Maximum distance in cells from center of the base when checking for MCV deployment location.",
+			"Only applies if RestrictMCVDeploymentFallbackToBase is enabled and there's at least one construction yard.")]
 		public readonly int MaxBaseRadius = 20;
 
 		[Desc("Radius in cells that squads should scan for enemies around their position while idle.")]
@@ -152,19 +100,8 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Should deployment of additional MCVs be restricted to MaxBaseRadius if explicit deploy locations are missing or occupied?")]
 		public readonly bool RestrictMCVDeploymentFallbackToBase = true;
 
-		[Desc("Radius in cells around each building with ProvideBuildableArea",
-			"to check for a 3x3 area of water where naval structures can be built.",
-			"Should match maximum adjacency of naval structures.")]
-		public readonly int CheckForWaterRadius = 8;
-
-		[Desc("Terrain types which are considered water for base building purposes.")]
-		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
-
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
-
-		[Desc("Should the AI repair its buildings if damaged?")]
-		public readonly bool ShouldRepairBuildings = true;
 
 		[Desc("What units to the AI should build.", "What % of the total army must be this type of unit.")]
 		public readonly Dictionary<string, float> UnitsToBuild = null;
@@ -172,20 +109,15 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("What units should the AI have a maximum limit to train.")]
 		public readonly Dictionary<string, int> UnitLimits = null;
 
-		[Desc("What buildings to the AI should build.", "What % of the total base must be this type of building.")]
-		public readonly Dictionary<string, float> BuildingFractions = null;
-
 		[Desc("Tells the AI what unit types fall under the same common name. Supported entries are Mcv and ExcludeFromSquads.")]
 		[FieldLoader.LoadUsing("LoadUnitCategories", true)]
 		public readonly UnitCategories UnitsCommonNames;
 
+		// TODO: Move this to SquadManagerBotModule later
 		[Desc("Tells the AI what building types fall under the same common name.",
 			"Possible keys are ConstructionYard, Power, Refinery, Silo, Barracks, Production, VehiclesFactory, NavalProduction.")]
 		[FieldLoader.LoadUsing("LoadBuildingCategories", true)]
 		public readonly BuildingCategories BuildingCommonNames;
-
-		[Desc("What buildings should the AI have a maximum limit to build.")]
-		public readonly Dictionary<string, int> BuildingLimits = null;
 
 		[Desc("Actor types that can capture other actors (via `Captures` or `ExternalCaptures`).",
 			"Leave this empty to disable capturing.")]
@@ -214,6 +146,7 @@ namespace OpenRA.Mods.Common.AI
 			return FieldLoader.Load<UnitCategories>(categories.Value);
 		}
 
+		// TODO: Move this to SquadManagerBotModule later
 		static object LoadBuildingCategories(MiniYaml yaml)
 		{
 			var categories = yaml.Nodes.First(n => n.Key == "BuildingCommonNames");
@@ -227,7 +160,7 @@ namespace OpenRA.Mods.Common.AI
 		public object Create(ActorInitializer init) { return new HackyAI(this, init); }
 	}
 
-	public sealed class HackyAI : ITick, IBot, INotifyDamage
+	public sealed class HackyAI : ITick, IBot, INotifyDamage, IBotPositionsUpdated
 	{
 		// DEPRECATED: Modules should use World.LocalRandom.
 		public MersenneTwister Random { get; private set; }
@@ -252,15 +185,11 @@ namespace OpenRA.Mods.Common.AI
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
 		IBotTick[] tickModules;
+		IBotRespondToAttack[] attackResponseModules;
+		IBotPositionsUpdated[] positionsUpdatedModules;
 
 		CPos initialBaseCenter;
-		PowerManager playerPower;
-		PlayerResources playerResource;
 		int ticks;
-
-		BitArray resourceTypeIndices;
-
-		List<BaseBuilder> builders = new List<BaseBuilder>();
 
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
 
@@ -303,14 +232,9 @@ namespace OpenRA.Mods.Common.AI
 		{
 			Player = p;
 			IsEnabled = true;
-			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
-			playerResource = p.PlayerActor.Trait<PlayerResources>();
 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
-
-			foreach (var building in Info.BuildingQueues)
-				builders.Add(new BaseBuilder(this, building, p, playerPower, playerResource));
-			foreach (var defense in Info.DefenseQueues)
-				builders.Add(new BaseBuilder(this, defense, p, playerPower, playerResource));
+			attackResponseModules = p.PlayerActor.TraitsImplementing<IBotRespondToAttack>().ToArray();
+			positionsUpdatedModules = p.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
 
 			Random = new MersenneTwister(Game.CosmeticRandom.Next());
 
@@ -323,11 +247,6 @@ namespace OpenRA.Mods.Common.AI
 			attackForceTicks = Random.Next(0, Info.AttackForceInterval);
 			minAttackForceDelayTicks = Random.Next(0, Info.MinimumAttackForceDelay);
 			minCaptureDelayTicks = Random.Next(0, Info.MinimumCaptureDelay);
-
-			var tileset = World.Map.Rules.TileSet;
-			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
-			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
-				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 		}
 
 		void IBot.QueueOrder(Order order)
@@ -371,49 +290,25 @@ namespace OpenRA.Mods.Common.AI
 			return null;
 		}
 
-		IEnumerable<Actor> GetActorsWithTrait<T>()
+		bool HasAdequateConstructionYardCount
 		{
-			return World.ActorsHavingTrait<T>();
+			get
+			{
+				// Require at least one construction yard, unless we have no vehicles factory (can't build it).
+				return AIUtils.CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0 ||
+					AIUtils.CountBuildingByCommonName(Info.BuildingCommonNames.VehiclesFactory, Player) == 0;
+			}
 		}
 
-		int CountActorsWithTrait<T>(string actorName, Player owner)
+		bool HasAdequateRefineryCount
 		{
-			return GetActorsWithTrait<T>().Count(a => a.Owner == owner && a.Info.Name == actorName);
-		}
-
-		int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
-		{
-			return GetActorsWithTrait<Building>()
-				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
-		}
-
-		public ActorInfo GetInfoByCommonName(HashSet<string> names, Player owner)
-		{
-			return Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(Random).Value;
-		}
-
-		public bool HasAdequateFact()
-		{
-			// Require at least one construction yard, unless we have no vehicles factory (can't build it).
-			return CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0 ||
-				CountBuildingByCommonName(Info.BuildingCommonNames.VehiclesFactory, Player) == 0;
-		}
-
-		public bool HasAdequateProc()
-		{
-			// Require at least one refinery, unless we can't build it.
-			return CountBuildingByCommonName(Info.BuildingCommonNames.Refinery, Player) > 0 ||
-				CountBuildingByCommonName(Info.BuildingCommonNames.Power, Player) == 0 ||
-				CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) == 0;
-		}
-
-		public bool HasMinimumProc()
-		{
-			// Require at least two refineries, unless we have no power (can't build it)
-			// or barracks (higher priority?)
-			return CountBuildingByCommonName(Info.BuildingCommonNames.Refinery, Player) >= 2 ||
-				CountBuildingByCommonName(Info.BuildingCommonNames.Power, Player) == 0 ||
-				CountBuildingByCommonName(Info.BuildingCommonNames.Barracks, Player) == 0;
+			get
+			{
+				// Require at least one refinery, unless we can't build it.
+				return AIUtils.CountBuildingByCommonName(Info.BuildingCommonNames.Refinery, Player) > 0 ||
+					AIUtils.CountBuildingByCommonName(Info.BuildingCommonNames.Power, Player) == 0 ||
+					AIUtils.CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) == 0;
+			}
 		}
 
 		// For mods like RA (number of RearmActors must match the number of aircraft)
@@ -428,39 +323,38 @@ namespace OpenRA.Mods.Common.AI
 			if (rearmableInfo == null)
 				return true;
 
-			var countOwnAir = CountActorsWithTrait<IPositionable>(actorInfo.Name, Player);
-			var countBuildings = rearmableInfo.RearmActors.Sum(b => CountActorsWithTrait<Building>(b, Player));
+			var countOwnAir = AIUtils.CountActorsWithTrait<IPositionable>(actorInfo.Name, Player);
+			var countBuildings = rearmableInfo.RearmActors.Sum(b => AIUtils.CountActorsWithTrait<Building>(b, Player));
 			if (countOwnAir >= countBuildings)
 				return false;
 
 			return true;
 		}
 
-		CPos defenseCenter;
-		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
+		CPos? ChooseMcvDeployLocation(string actorType, bool distanceToBaseIsImportant)
 		{
-			var ai = Map.Rules.Actors[actorType];
-			var bi = ai.TraitInfoOrDefault<BuildingInfo>();
+			var actorInfo = World.Map.Rules.Actors[actorType];
+			var bi = actorInfo.TraitInfoOrDefault<BuildingInfo>();
 			if (bi == null)
 				return null;
 
 			// Find the buildable cell that is closest to pos and centered around center
 			Func<CPos, CPos, int, int, CPos?> findPos = (center, target, minRange, maxRange) =>
 			{
-				var cells = Map.FindTilesInAnnulus(center, minRange, maxRange);
+				var cells = World.Map.FindTilesInAnnulus(center, minRange, maxRange);
 
 				// Sort by distance to target if we have one
 				if (center != target)
 					cells = cells.OrderBy(c => (c - target).LengthSquared);
 				else
-					cells = cells.Shuffle(Random);
+					cells = cells.Shuffle(World.LocalRandom);
 
 				foreach (var cell in cells)
 				{
-					if (!World.CanPlaceBuilding(cell, ai, bi, null))
+					if (!World.CanPlaceBuilding(cell, actorInfo, bi, null))
 						continue;
 
-					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, ai, cell))
+					if (distanceToBaseIsImportant && !bi.IsCloseEnoughToBase(World, Player, actorInfo, cell))
 						continue;
 
 					return cell;
@@ -471,40 +365,8 @@ namespace OpenRA.Mods.Common.AI
 
 			var baseCenter = GetRandomBaseCenter();
 
-			switch (type)
-			{
-				case BuildingType.Defense:
-
-					// Build near the closest enemy structure
-					var closestEnemy = World.ActorsHavingTrait<Building>().Where(a => !a.Disposed && Player.Stances[a.Owner] == Stance.Enemy)
-						.ClosestTo(World.Map.CenterOfCell(defenseCenter));
-
-					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
-					return findPos(defenseCenter, targetCell, Info.MinimumDefenseRadius, Info.MaximumDefenseRadius);
-
-				case BuildingType.Refinery:
-
-					// Try and place the refinery near a resource field
-					var nearbyResources = Map.FindTilesInAnnulus(baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius)
-						.Where(a => resourceTypeIndices.Get(Map.GetTerrainIndex(a)))
-						.Shuffle(Random).Take(Info.MaxResourceCellsToCheck);
-
-					foreach (var r in nearbyResources)
-					{
-						var found = findPos(baseCenter, r, Info.MinBaseRadius, Info.MaxBaseRadius);
-						if (found != null)
-							return found;
-					}
-
-					// Try and find a free spot somewhere else in the base
-					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, Info.MaxBaseRadius);
-
-				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, Info.MinBaseRadius, distanceToBaseIsImportant ? Info.MaxBaseRadius : Map.Grid.MaximumTileSearchRange);
-			}
-
-			// Can't find a build location
-			return null;
+			return findPos(baseCenter, baseCenter, Info.MinBaseRadius,
+				distanceToBaseIsImportant ? Info.MaxBaseRadius : World.Map.Grid.MaximumTileSearchRange);
 		}
 
 		void ITick.Tick(Actor self)
@@ -521,15 +383,11 @@ namespace OpenRA.Mods.Common.AI
 				ProductionUnits(self);
 
 			AssignRolesToIdleUnits(self);
-			SetRallyPointsForNewProductionBuildings(self);
 
-			foreach (var b in builders)
-				b.Tick();
-
-			// TODO: Add an option to include this in CheckSyncAroundUnsyncedCode.
+			// TODO: Add an option to include this in CheckSyncUnchanged.
 			// Checking sync for this is too expensive to include it by default,
 			// so it should be implemented as separate sub-option checkbox.
-			using (new PerfSample("tick_bots"))
+			using (new PerfSample("bot_tick"))
 				foreach (var t in tickModules)
 					if (t.IsTraitEnabled())
 						t.BotTick(this);
@@ -547,12 +405,6 @@ namespace OpenRA.Mods.Common.AI
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
 			return World.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
-		}
-
-		List<Actor> FindEnemyConstructionYards()
-		{
-			return World.Actors.Where(a => Player.Stances[a.Owner] == Stance.Enemy && !a.IsDead &&
-				Info.BuildingCommonNames.ConstructionYard.Contains(a.Info.Name)).ToList();
 		}
 
 		void CleanSquads()
@@ -752,7 +604,7 @@ namespace OpenRA.Mods.Common.AI
 
 		void TryToRushAttack()
 		{
-			var allEnemyBaseBuilder = FindEnemyConstructionYards();
+			var allEnemyBaseBuilder = AIUtils.FindEnemiesByCommonName(Info.BuildingCommonNames.ConstructionYard, Player);
 			var ownUnits = activeUnits
 				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
 					&& !unit.Info.HasTraitInfo<AircraftInfo>() && !unit.Info.HasTraitInfo<HarvesterInfo>()).ToList();
@@ -800,41 +652,6 @@ namespace OpenRA.Mods.Common.AI
 			}
 		}
 
-		bool IsRallyPointValid(CPos x, BuildingInfo info)
-		{
-			return info != null && World.IsCellBuildable(x, null, info);
-		}
-
-		void SetRallyPointsForNewProductionBuildings(Actor self)
-		{
-			foreach (var rp in self.World.ActorsWithTrait<RallyPoint>())
-			{
-				if (rp.Actor.Owner == Player &&
-					!IsRallyPointValid(rp.Trait.Location, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
-				{
-					QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(World, ChooseRallyLocationNear(rp.Actor)), false)
-					{
-						SuppressVisualFeedback = true
-					});
-				}
-			}
-		}
-
-		// Won't work for shipyards...
-		CPos ChooseRallyLocationNear(Actor producer)
-		{
-			var possibleRallyPoints = Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius)
-				.Where(c => IsRallyPointValid(c, producer.Info.TraitInfoOrDefault<BuildingInfo>()));
-
-			if (!possibleRallyPoints.Any())
-			{
-				AIUtils.BotDebug("Bot Bug: No possible rallypoint near {0}", producer.Location);
-				return producer.Location;
-			}
-
-			return possibleRallyPoints.Random(Random);
-		}
-
 		void InitializeBase(Actor self, bool chooseLocation)
 		{
 			var mcv = FindAndDeployMcv(self, chooseLocation);
@@ -842,9 +659,19 @@ namespace OpenRA.Mods.Common.AI
 			if (mcv == null)
 				return;
 
-			initialBaseCenter = mcv.Location;
-			defenseCenter = mcv.Location;
+			foreach (var n in positionsUpdatedModules)
+			{
+				n.UpdatedBaseCenter(mcv.Location);
+				n.UpdatedDefenseCenter(mcv.Location);
+			}
 		}
+
+		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
+		{
+			initialBaseCenter = newLocation;
+		}
+
+		void IBotPositionsUpdated.UpdatedDefenseCenter(CPos newLocation) { }
 
 		// Find any MCV and deploy them at a sensible location.
 		Actor FindAndDeployMcv(Actor self, bool move)
@@ -862,11 +689,11 @@ namespace OpenRA.Mods.Common.AI
 
 			// If we lack a base, we need to make sure we don't restrict deployment of the MCV to the base!
 			var restrictToBase = Info.RestrictMCVDeploymentFallbackToBase &&
-				CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
+				AIUtils.CountBuildingByCommonName(Info.BuildingCommonNames.ConstructionYard, Player) > 0;
 
 			if (move)
 			{
-				var desiredLocation = ChooseBuildLocation(transformsInfo.IntoActor, restrictToBase, BuildingType.Building);
+				var desiredLocation = ChooseMcvDeployLocation(transformsInfo.IntoActor, restrictToBase);
 				if (desiredLocation == null)
 					return null;
 
@@ -878,23 +705,16 @@ namespace OpenRA.Mods.Common.AI
 			return mcv;
 		}
 
-		internal IEnumerable<ProductionQueue> FindQueues(string category)
-		{
-			return World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == Player && a.Trait.Info.Type == category && a.Trait.Enabled)
-				.Select(a => a.Trait);
-		}
-
 		void ProductionUnits(Actor self)
 		{
 			// Stop building until economy is restored
-			if (!HasAdequateProc())
+			if (!HasAdequateRefineryCount)
 				return;
 
 			// No construction yards - Build a new MCV
-			if (Info.UnitsCommonNames.Mcv.Any() && !HasAdequateFact() && !self.World.Actors.Any(a => a.Owner == Player &&
-				Info.UnitsCommonNames.Mcv.Contains(a.Info.Name)))
-				BuildUnit("Vehicle", GetInfoByCommonName(Info.UnitsCommonNames.Mcv, Player).Name);
+			if (Info.UnitsCommonNames.Mcv.Any() && HasAdequateConstructionYardCount &&
+				!self.World.Actors.Any(a => a.Owner == Player && Info.UnitsCommonNames.Mcv.Contains(a.Info.Name)))
+				BuildUnit("Vehicle", AIUtils.GetInfoByCommonName(Info.UnitsCommonNames.Mcv, Player).Name);
 
 			foreach (var q in Info.UnitQueues)
 				BuildUnit(q, unitsHangingAroundTheBase.Count < Info.IdleBaseUnitsMaximum);
@@ -903,7 +723,7 @@ namespace OpenRA.Mods.Common.AI
 		void BuildUnit(string category, bool buildRandom)
 		{
 			// Pick a free queue
-			var queue = FindQueues(category).FirstOrDefault(q => !q.AllQueued().Any());
+			var queue = AIUtils.FindQueues(Player, category).FirstOrDefault(q => !q.AllQueued().Any());
 			if (queue == null)
 				return;
 
@@ -929,7 +749,7 @@ namespace OpenRA.Mods.Common.AI
 
 		void BuildUnit(string category, string name)
 		{
-			var queue = FindQueues(category).FirstOrDefault(q => !q.AllQueued().Any());
+			var queue = AIUtils.FindQueues(Player, category).FirstOrDefault(q => !q.AllQueued().Any());
 			if (queue == null)
 				return;
 
@@ -939,37 +759,30 @@ namespace OpenRA.Mods.Common.AI
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (!IsEnabled || e.Attacker == null)
+			if (!IsEnabled)
 				return;
 
-			if (e.Attacker.Owner.Stances[self.Owner] == Stance.Neutral)
+			// TODO: Add an option to include this in CheckSyncUnchanged.
+			// Checking sync for this is too expensive to include it by default,
+			// so it should be implemented as separate sub-option checkbox.
+			using (new PerfSample("bot_attack_response"))
+				foreach (var t in attackResponseModules)
+					if (t.IsTraitEnabled())
+						t.RespondToAttack(this, self, e);
+
+			if (e.Attacker == null || e.Attacker.Disposed)
 				return;
 
-			var rb = self.TraitOrDefault<RepairableBuilding>();
-
-			if (Info.ShouldRepairBuildings && rb != null)
-			{
-				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light && !rb.RepairActive)
-				{
-					AIUtils.BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
-						self, e.PreviousDamageState, e.DamageState);
-					QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(self), false));
-				}
-			}
-
-			if (e.Attacker.Disposed)
+			if (e.Attacker.Owner.Stances[self.Owner] != Stance.Enemy)
 				return;
 
 			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
 				return;
 
 			// Protected priority assets, MCVs, harvesters and buildings
-			if ((self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>() || self.Info.HasTraitInfo<BaseBuildingInfo>()) &&
-				Player.Stances[e.Attacker.Owner] == Stance.Enemy)
-			{
-				defenseCenter = e.Attacker.Location;
+			// TODO: Use *CommonNames, instead of hard-coding trait(info)s.
+			if (self.Info.HasTraitInfo<HarvesterInfo>() || self.Info.HasTraitInfo<BuildingInfo>() || self.Info.HasTraitInfo<BaseBuildingInfo>())
 				ProtectOwn(e.Attacker);
-			}
 		}
 	}
 }
