@@ -96,7 +96,7 @@ namespace OpenRA
 			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
-				il.EmitCall(OpCodes.Call, prop.GetGetMethod(), null);
+				il.EmitCall(OpCodes.Call, prop.GetGetMethod(true), null);
 
 				EmitSyncOpcodes(prop.PropertyType, il);
 			}
