@@ -14,7 +14,6 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -48,12 +47,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void DrawRollover(Actor unit)
 		{
-			// TODO: Integrate this with SelectionDecorations to unhardcode the *Renderable
-			if (unit.Info.HasTraitInfo<SelectableInfo>())
-			{
-				var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, worldRenderer);
-				new SelectionBarsRenderable(unit, bounds, true, true).Render(worldRenderer);
-			}
+			var selectionDecorations = unit.TraitOrDefault<ISelectionDecorations>();
+			if (selectionDecorations == null)
+				return;
+
+			selectionDecorations.DrawRollover(unit, worldRenderer);
 		}
 
 		public override void Draw()
