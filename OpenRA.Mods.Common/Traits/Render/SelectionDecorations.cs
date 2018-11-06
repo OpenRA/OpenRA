@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 	}
 
-	public class SelectionDecorations : IRenderAboveShroud, INotifyCreated, ITick
+	public class SelectionDecorations : ISelectionDecorations, IRenderAboveShroud, INotifyCreated, ITick
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
@@ -119,6 +119,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			foreach (var r in DrawPips(self, bounds, wr))
 				yield return r;
+		}
+
+		public void DrawRollover(Actor self, WorldRenderer worldRenderer)
+		{
+			var bounds = decorationBounds.FirstNonEmptyBounds(self, worldRenderer);
+			new SelectionBarsRenderable(self, bounds, true, true).Render(worldRenderer);
 		}
 
 		IEnumerable<IRenderable> DrawPips(Actor self, Rectangle bounds, WorldRenderer wr)

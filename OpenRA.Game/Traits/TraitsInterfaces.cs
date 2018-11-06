@@ -286,6 +286,8 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
+	public interface ISelectionDecorations { void DrawRollover(Actor self, WorldRenderer worldRenderer); }
+
 	public interface IOccupySpaceInfo : ITraitInfoInterface
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
