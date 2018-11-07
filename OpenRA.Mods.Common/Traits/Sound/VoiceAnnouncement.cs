@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Disable the announcement after it has been triggered.")]
 		public readonly bool OneShot = false;
 
+		[Desc("Wether the announcement will also be triggered by actors spawned at game start.")]
+		public readonly bool AnnounceWhenSpawnedByMap = true;
+
 		public override object Create(ActorInitializer init) { return new VoiceAnnouncement(this); }
 	}
 
@@ -42,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		protected override void TraitEnabled(Actor self)
 		{
 			if (IsTraitDisabled)
+				return;
+
+			if (!Info.AnnounceWhenSpawnedByMap && self.World.WorldTick == 0)
 				return;
 
 			if (Info.OneShot && triggered)
