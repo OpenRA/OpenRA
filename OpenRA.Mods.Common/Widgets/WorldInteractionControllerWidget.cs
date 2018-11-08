@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 						var unit = World.ScreenMap.ActorsAtMouse(mousePos)
 							.WithHighestSelectionPriority(mousePos);
 
-						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
+						if (unit != null && unit.Owner.IsAlliedWith(World.RenderPlayer ?? World.LocalPlayer))
 						{
 							var s = unit.TraitOrDefault<Selectable>();
 							if (s != null)
@@ -273,14 +273,32 @@ namespace OpenRA.Mods.Common.Widgets
 					if (!World.Selection.Actors.Any())
 						return false;
 
+					var selectedActors = World.Selection.Actors
+						.Where(x => !x.IsDead);
+
+					var actorOwners = selectedActors
+						.Select(a => a.Owner)
+						.ToList()
+						.Distinct();
+
+					// Selection code works only for a single owner so prioritize local player
+					var owner = actorOwners.Count() > 1 ? player : actorOwners.First();
+
+					if (owner == null || !owner.IsAlliedWith(player))
+						return false;
+
+					var ownedActors = selectedActors.Where(x => x.Owner == owner);
+
+					if (!ownedActors.Any())
+						return false;
+
 					// Get all the selected actors' selection classes
-					var selectedClasses = World.Selection.Actors
-						.Where(x => !x.IsDead && x.Owner == player)
+					var selectedClasses = ownedActors
 						.Select(a => a.Trait<Selectable>().Class)
 						.ToHashSet();
 
 					// Select actors on the screen that have the same selection class as one of the already selected actors
-					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, player).ToList();
+					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, owner).ToList();
 
 					// Check if selecting actors on the screen has selected new units
 					if (newSelection.Count > World.Selection.Actors.Count())
@@ -288,7 +306,7 @@ namespace OpenRA.Mods.Common.Widgets
 					else
 					{
 						// Select actors in the world that have the same selection class as one of the already selected actors
-						newSelection = SelectActorsInWorld(World, selectedClasses, player).ToList();
+						newSelection = SelectActorsInWorld(World, selectedClasses, owner).ToList();
 						Game.AddChatLine(Color.White, "Battlefield Control", "Selected across map");
 					}
 
