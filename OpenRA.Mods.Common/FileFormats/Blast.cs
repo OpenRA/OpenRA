@@ -6,7 +6,10 @@
  * as published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version. For more
  * information, see COPYING.
- *
+ */
+#endregion
+#region Additional Copyright & License Information
+/*
  * This file is based on the blast routines (version 1.1 by Mark Adler)
  * included in zlib/contrib
  */
