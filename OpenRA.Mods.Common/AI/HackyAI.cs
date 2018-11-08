@@ -49,11 +49,6 @@ namespace OpenRA.Mods.Common.AI
 		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
 
-		[FieldLoader.Require]
-		[GrantedConditionReference]
-		[Desc("Condition to grant. Mostly used to activate modules.")]
-		public readonly string Condition = null;
-
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
 
@@ -269,7 +264,6 @@ namespace OpenRA.Mods.Common.AI
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
 		BotOrderManager botOrderManager;
-		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		CPos initialBaseCenter;
 		PowerManager playerPower;
@@ -350,10 +344,6 @@ namespace OpenRA.Mods.Common.AI
 			resourceTypeIndices = new BitArray(tileset.TerrainInfo.Length); // Big enough
 			foreach (var t in Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
-
-			var conditionManager = p.PlayerActor.TraitOrDefault<ConditionManager>();
-			if (conditionManager != null && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(p.PlayerActor, Info.Condition);
 		}
 
 		// DEPRECATED: Bot modules should queue orders directly.
