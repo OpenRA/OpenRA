@@ -66,11 +66,21 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var aiType = hackyAINode.LastChildMatching("Type").NodeValue<string>();
 				var conditionString = "enable-" + aiType + "-ai";
 				var requiresCondition = new MiniYamlNode("RequiresCondition", conditionString);
-				var conditionNode = hackyAINode.LastChildMatching("Condition");
-				if (conditionNode == null)
+
+				var addGrantConditionOnBotOwner = true;
+				var grantBotConditions = actorNode.ChildrenMatching("GrantConditionOnBotOwner");
+				foreach (var grant in grantBotConditions)
+					if (grant.LastChildMatching("Condition").NodeValue<string>() == conditionString)
+						addGrantConditionOnBotOwner = false;
+
+				if (addGrantConditionOnBotOwner)
 				{
-					var enableModule = new MiniYamlNode("Condition", conditionString);
-					hackyAINode.AddNode(enableModule);
+					var grantNode = new MiniYamlNode("GrantConditionOnBotOwner@" + aiType, "");
+					var grantCondition = new MiniYamlNode("Condition", conditionString);
+					var bot = new MiniYamlNode("Bots", aiType);
+					grantNode.AddNode(grantCondition);
+					grantNode.AddNode(bot);
+					addNodes.Add(grantNode);
 				}
 
 				if (harvesterFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
