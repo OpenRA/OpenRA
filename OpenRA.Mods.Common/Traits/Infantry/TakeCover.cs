@@ -56,6 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
+			if (IsTraitPaused || IsTraitDisabled)
+				return;
+
 			if (e.Damage.Value <= 0 || !e.Damage.DamageTypes.Overlaps(info.DamageTriggers))
 				return;
 
@@ -69,7 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.Tick(self);
 
-			if (IsProne && --remainingProneTime == 0)
+			if (!IsTraitPaused && remainingProneTime > 0)
+				remainingProneTime--;
+
+			if (remainingProneTime == 0)
 				localOffset = WVec.Zero;
 		}
 
@@ -93,6 +99,11 @@ namespace OpenRA.Mods.Common.Traits
 		int ISpeedModifier.GetSpeedModifier()
 		{
 			return IsProne ? info.SpeedModifier : 100;
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			remainingProneTime = 0;
 		}
 	}
 }
