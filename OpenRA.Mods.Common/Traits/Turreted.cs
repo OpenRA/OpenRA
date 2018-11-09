@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void StopAiming(Actor self)
 		{
-			if (attack.IsAiming)
+			if (attack != null && attack.IsAiming)
 				attack.OnStopOrder(self);
 		}
 
