@@ -77,7 +77,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
-					teamRating.GetText = () => t.Sum(gg => gg.Second != null ? gg.Second.Experience : 0).ToString();
+					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
+					teamRating.GetText = () => scoreCache.Update(t.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
 
 					playerPanel.AddChild(teamHeader);
 				}
@@ -120,8 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayFaction.Name;
 					}
 
-					var experience = p.Second != null ? p.Second.Experience : 0;
-					item.Get<LabelWidget>("SCORE").GetText = () => experience.ToString();
+					item.Get<LabelWidget>("SCORE").GetText = () => (p.Second != null ? p.Second.Experience : 0).ToString();
 
 					playerPanel.AddChild(item);
 				}
