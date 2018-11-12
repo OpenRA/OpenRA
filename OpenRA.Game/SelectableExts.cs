@@ -30,7 +30,21 @@ namespace OpenRA.Traits
 
 		public static int SelectionPriority(this Actor a)
 		{
+			var selectAll = Game.GetModifierKeys().HasModifier(Modifiers.Ctrl);
+			var selectSpecial = Game.GetModifierKeys().HasModifier(Modifiers.Alt);
+
 			var basePriority = a.Info.TraitInfo<SelectableInfo>().Priority;
+
+			if (selectAll)
+			{
+				basePriority = a.Info.TraitInfo<SelectableInfo>().IncludeInSelectAll ? 10 : basePriority;
+			}
+
+			if (selectSpecial)
+			{
+				basePriority = !a.Info.TraitInfo<SelectableInfo>().IncludeInSelectSpecial ? 0 : basePriority;
+			}
+
 			var lp = a.World.LocalPlayer;
 
 			if (a.Owner == lp || lp == null)

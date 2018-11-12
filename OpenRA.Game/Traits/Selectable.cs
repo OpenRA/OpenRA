@@ -20,6 +20,10 @@ namespace OpenRA.Traits
 	{
 		public readonly int Priority = 10;
 
+		public readonly bool IncludeInSelectAll = true;
+
+		public readonly bool IncludeInSelectSpecial = false;
+
 		[Desc("All units having the same selection class specified will be selected with select-by-type commands (e.g. double-click). "
 		+ "Defaults to the actor name when not defined or inherited.")]
 		public readonly string Class = null;
