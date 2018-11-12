@@ -28,9 +28,16 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("How close to ground must the impact happen to spawn smudges.")]
 		public readonly WDist AirThreshold = new WDist(128);
 
+		[Desc("Percentual chance the smudge is created.")]
+		public readonly int Chance = 100;
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
+
+			if (Chance < world.LocalRandom.Next(100))
+				return;
+
 			var pos = target.CenterPosition;
 			var dat = world.Map.DistanceAboveTerrain(pos);
 
