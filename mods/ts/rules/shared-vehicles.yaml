@@ -13,6 +13,7 @@ MCV:
 	Selectable:
 		Priority: 3
 		DecorationBounds: 42,42
+		IncludeInSelectSpecial: true
 	Health:
 		HP: 100000
 	Armor:
@@ -56,6 +57,7 @@ HARV:
 		Priority: 7
 		Bounds: 36,36
 		DecorationBounds: 36,36
+		IncludeInSelectSpecial: true
 	Harvester:
 		DeliveryBuildings: proc
 		Capacity: 28

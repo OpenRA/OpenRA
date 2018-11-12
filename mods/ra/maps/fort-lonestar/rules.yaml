@@ -142,6 +142,7 @@ MOBILETENT:
 	Selectable:
 		Priority: 4
 		DecorationBounds: 21,21
+		IncludeInSelectSpecial: true
 	SelectionDecorations:
 	Health:
 		HP: 60000

@@ -368,6 +368,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 2
+		IncludeInSelectAll: false
 	RevealsShroud:
 	Targetable:
 		TargetTypes: Ground, C4, Structure

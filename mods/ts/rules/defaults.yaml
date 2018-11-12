@@ -302,6 +302,7 @@
 		Palette: pips
 	Selectable:
 		Priority: 3
+		IncludeInSelectAll: false
 	Targetable:
 		TargetTypes: Ground, Building, C4
 	HitShape:
@@ -824,6 +825,7 @@
 		TargetTypes: Air
 		RequiresCondition: airborne
 	Selectable:
+		IncludeInSelectSpecial: true
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips

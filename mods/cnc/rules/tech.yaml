@@ -39,6 +39,7 @@ HOSP:
 	Selectable:
 		Bounds: 48,48
 		Priority: 0
+		IncludeInSelectAll: false
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

@@ -796,6 +796,7 @@ medium_gun_turret:
 		Bounds: 32,32
 		DecorationBounds: 32,40,0,-8
 		Priority: 3
+		IncludeInSelectAll: false
 	Health:
 		HP: 27000
 	Armor:
@@ -844,6 +845,7 @@ large_gun_turret:
 		Bounds: 32,32
 		DecorationBounds: 32,40,0,-8
 		Priority: 3
+		IncludeInSelectAll: false
 	Health:
 		HP: 30000
 	Armor:

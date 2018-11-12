@@ -525,6 +525,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
+		IncludeInSelectSpecial: true
 	Aircraft:
 		AirborneCondition: airborne
 	Targetable@GROUND:
@@ -603,6 +604,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 3
+		IncludeInSelectAll: false
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure
 	Building:

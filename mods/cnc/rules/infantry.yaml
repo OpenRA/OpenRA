@@ -184,6 +184,7 @@ E6:
 		PlayerExperience: 50
 	Selectable:
 		Priority: 5
+		IncludeInSelectSpecial: true
 
 RMBO:
 	Inherits: ^Soldier
@@ -232,6 +233,8 @@ RMBO:
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: CommandoVoice
+	Selectable:
+		IncludeInSelectSpecial: true
 
 PVICE:
 	Inherits: ^Viceroid

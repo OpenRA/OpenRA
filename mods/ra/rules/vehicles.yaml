@@ -294,6 +294,7 @@ HARV:
 	Selectable:
 		Priority: 7
 		DecorationBounds: 42,42
+		IncludeInSelectSpecial: true
 	SelectionDecorations:
 	Harvester:
 		Capacity: 20
@@ -345,6 +346,7 @@ MCV:
 	Selectable:
 		Priority: 4
 		DecorationBounds: 42,42
+		IncludeInSelectSpecial: true
 	SelectionDecorations:
 	Health:
 		HP: 60000
@@ -467,6 +469,7 @@ MNLY:
 		Name: Minelayer
 	Selectable:
 		Priority: 5
+		IncludeInSelectSpecial: true
 	Health:
 		HP: 15000
 	Armor:
@@ -508,6 +511,7 @@ TRUK:
 		Name: Supply Truck
 	Selectable:
 		Priority: 6
+		IncludeInSelectSpecial: true
 	Health:
 		HP: 11000
 	Armor:

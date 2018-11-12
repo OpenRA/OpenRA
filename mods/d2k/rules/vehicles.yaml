@@ -15,6 +15,7 @@ mcv:
 		Class: mcv
 		Priority: 3
 		DecorationBounds: 42,42
+		IncludeInSelectSpecial: true
 	Health:
 		HP: 45000
 	Armor:
@@ -65,6 +66,7 @@ harvester:
 		Class: harvester
 		Priority: 7
 		DecorationBounds: 42,42
+		IncludeInSelectSpecial: true
 	Harvester:
 		PipCount: 7
 		Capacity: 28

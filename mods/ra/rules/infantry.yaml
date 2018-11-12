@@ -261,6 +261,7 @@ E6:
 		VoiceSet: EngineerVoice
 	Selectable:
 		Priority: 5
+		IncludeInSelectSpecial: true
 
 SPY:
 	Inherits: ^Soldier
@@ -271,6 +272,8 @@ SPY:
 		BuildPaletteOrder: 90
 		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
 		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
+	Selectable:
+		IncludeInSelectSpecial: true
 	Valued:
 		Cost: 500
 	-Tooltip:
@@ -340,6 +343,8 @@ E7:
 		Prerequisites: ~tent, atek, ~techlevel.high
 		BuildLimit: 1
 		Description: Elite commando infantry. Armed with\ndual pistols and C4.\nCan detect cloaked units.\nMaximum 1 can be trained.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
+	Selectable:
+		IncludeInSelectSpecial: true
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -424,6 +429,8 @@ MECH:
 		BuildPaletteOrder: 100
 		Prerequisites: ~tent, fix, ~techlevel.medium
 		Description: Repairs nearby vehicles and restores\nhusks to working condition by capturing them.\n  Unarmed
+	Selectable:
+		IncludeInSelectSpecial: true
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -542,6 +549,8 @@ HIJACKER:
 		BuildPaletteOrder: 110
 		Prerequisites: ~barr, fix, ~techlevel.medium
 		Description: Hijacks enemy vehicles.\n  Unarmed
+	Selectable:
+		IncludeInSelectSpecial: true
 	Valued:
 		Cost: 500
 	Tooltip:

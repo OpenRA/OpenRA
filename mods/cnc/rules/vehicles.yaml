@@ -14,6 +14,7 @@ MCV:
 	Selectable:
 		Priority: 4
 		DecorationBounds: 36,36
+		IncludeInSelectSpecial: true
 	Mobile:
 		Speed: 71
 		Locomotor: heavywheeled
@@ -58,6 +59,7 @@ HARV:
 	Selectable:
 		Priority: 7
 		DecorationBounds: 36,36
+		IncludeInSelectSpecial: true
 	Harvester:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
@@ -662,6 +664,7 @@ TRUCK:
 		Name: Supply Truck
 	Selectable:
 		Priority: 6
+		IncludeInSelectSpecial: true
 	Health:
 		HP: 11000
 	Armor:

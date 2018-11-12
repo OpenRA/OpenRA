@@ -69,6 +69,7 @@ ENGINEER:
 			nod: engineer.nod
 	Selectable:
 		Priority: 5
+		IncludeInSelectSpecial: true
 
 FLAMEGUY:
 	Inherits@1: ^ExistsInWorld

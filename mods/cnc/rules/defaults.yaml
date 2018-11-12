@@ -307,6 +307,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Bounds: 24,24
+		IncludeInSelectSpecial: true
 	Repairable:
 		RepairBuildings: hpad
 	Aircraft:
@@ -687,6 +688,7 @@
 	WithSpriteControlGroupDecoration:
 	Selectable:
 		Priority: 3
+		IncludeInSelectAll: false
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	Armor:

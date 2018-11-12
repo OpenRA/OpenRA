@@ -115,6 +115,8 @@ MHIJACK:
 		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		BuildLimit: 1
 		Description: Hijacks enemy vehicles.\n  Unarmed
+	Selectable:
+		IncludeInSelectSpecial: true
 	Valued:
 		Cost: 1850
 	Tooltip:
