@@ -44,7 +44,10 @@ namespace OpenRA.Mods.Common.Activities
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
 			if (NextInQueue == null)
-				return new AttackMoveActivity(self, move.MoveTo(destination, 1));
+			{
+				Queue(new AttackMoveActivity(self, move.MoveTo(destination, 1)));
+				return NextInQueue;
+			}
 			else
 				return NextInQueue;
 		}

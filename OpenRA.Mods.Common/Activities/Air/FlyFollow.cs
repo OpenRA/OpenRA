@@ -48,7 +48,9 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			return ActivityUtils.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
+			Queue(new Fly(self, target, minRange, maxRange));
+			Queue(new FlyFollow(self, target, minRange, maxRange));
+			return NextActivity;
 		}
 	}
 }

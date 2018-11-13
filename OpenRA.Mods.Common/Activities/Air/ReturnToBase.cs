@@ -163,10 +163,11 @@ namespace OpenRA.Mods.Common.Activities
 						if (distanceFromResupplier > distanceLength)
 						{
 							var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
-
 							var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
-							return ActivityUtils.SequenceActivities(new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
+							Queue(new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase));
+							Queue(new ReturnToBase(self, abortOnResupply, dest, alwaysLand));
+							return NextActivity;
 						}
 
 						return this;
@@ -175,10 +176,16 @@ namespace OpenRA.Mods.Common.Activities
 				else
 				{
 					if (nearestResupplier != null)
-						return ActivityUtils.SequenceActivities(
-							new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase),
-							new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
-							this);
+					{
+						Queue(new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase));
+						if (aircraft.Info.CanHover)
+							Queue(new Wait(aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
+						else
+							Queue(new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
+
+						Queue(new ReturnToBase(self, abortOnResupply, dest, alwaysLand));
+						return NextActivity;
+					}
 					else
 					{
 						// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
@@ -229,7 +236,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (!abortOnResupply)
 				landingProcedures.Add(NextActivity);
 
-			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
+			Queue(ActivityUtils.SequenceActivities(landingProcedures.ToArray()));
+			return NextActivity;
 		}
 	}
 }

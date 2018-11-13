@@ -73,12 +73,17 @@ namespace OpenRA.Mods.Common.Activities
 
 				Cancel(self);
 				self.SetTargetLine(newTarget, Color.Green);
-				return new Fly(self, newTarget);
+				Queue(new Fly(self, newTarget));
+				return NextActivity;
 			}
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
 			if (rearmable != null && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
-				return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
+			{
+				Queue(new ReturnToBase(self, aircraft.Info.AbortOnResupply));
+				Queue(new FlyAttack(self, Target, attackOnlyVisibleTargets));
+				return NextActivity;
+			}
 
 			if (aircraft.Info.CanHover)
 			{
@@ -129,16 +134,22 @@ namespace OpenRA.Mods.Common.Activities
 					if (IsCanceled)
 						return NextActivity;
 
+					// HACK: This needs to be done in this round-about way because TakeOff doesn't behave as expected when it doesn't have a NextActivity.
+					if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
+						QueueChild(new TakeOff(self));
+
 					// TODO: This should fire each weapon at its maximum range
 					if (target.IsInRange(self.CenterPosition, attackAircraft.Armaments.Where(Exts.IsTraitEnabled).Select(a => a.Weapon.MinRange).Min()))
-						ChildActivity = ActivityUtils.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
+					{
+						QueueChild(new FlyTimed(ticksUntilTurn, self));
+						QueueChild(new Fly(self, target));
+						QueueChild(new FlyTimed(ticksUntilTurn, self));
+					}
 					else
-						ChildActivity = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
-
-					// HACK: This needs to be done in this round-about way because TakeOff doesn't behave as expected when it doesn't have a NextActivity.
-					// TODO: Fix this, if possible.
-					if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
-						ChildActivity = ActivityUtils.SequenceActivities(new TakeOff(self), ChildActivity);
+					{
+						QueueChild(new Fly(self, target));
+						QueueChild(new FlyTimed(ticksUntilTurn, self));
+					}
 				}
 
 				ActivityUtils.RunActivity(self, ChildActivity);
