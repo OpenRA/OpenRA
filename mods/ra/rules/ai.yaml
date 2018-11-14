@@ -1,174 +1,16 @@
 Player:
-	HackyAI@RushAI:
+	ModularBot@RushAI:
 		Name: Rush AI
 		Type: rush
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
-		UnitsToBuild:
-			e1: 65%
-			e2: 15%
-			e3: 30%
-			e4: 15%
-			dog: 15%
-			shok: 15%
-			harv: 10%
-			apc: 30%
-			jeep: 20%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 30%
-			1tnk: 50%
-			2tnk: 50%
-			3tnk: 50%
-			4tnk: 25%
-			ttnk: 25%
-			stnk: 5%
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
-		SquadSize: 20
-	HackyAI@NormalAI:
+	ModularBot@NormalAI:
 		Name: Normal AI
 		Type: normal
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
-		UnitsToBuild:
-			e1: 65%
-			e2: 15%
-			e3: 30%
-			e4: 15%
-			dog: 15%
-			shok: 15%
-			harv: 15%
-			apc: 30%
-			jeep: 20%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 30%
-			1tnk: 40%
-			2tnk: 50%
-			3tnk: 50%
-			4tnk: 25%
-			ttnk: 25%
-			stnk: 5%
-			heli: 30%
-			hind: 30%
-			mig: 30%
-			yak: 30%
-			ss: 10%
-			msub: 10%
-			dd: 10%
-			ca: 10%
-			pt: 10%
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
-		SquadSize: 40
-	HackyAI@TurtleAI:
+	ModularBot@TurtleAI:
 		Name: Turtle AI
 		Type: turtle
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
-		UnitsToBuild:
-			e1: 65%
-			e2: 15%
-			e3: 30%
-			e4: 15%
-			dog: 15%
-			shok: 15%
-			harv: 15%
-			apc: 30%
-			jeep: 20%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 50%
-			1tnk: 50%
-			2tnk: 50%
-			3tnk: 50%
-			4tnk: 25%
-			ttnk: 25%
-			stnk: 10%
-			heli: 30%
-			hind: 30%
-			mig: 30%
-			yak: 30%
-			ss: 10%
-			msub: 10%
-			dd: 10%
-			ca: 10%
-			pt: 10%
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
-		SquadSize: 10
-	HackyAI@NavalAI:
+	ModularBot@NavalAI:
 		Name: Naval AI
 		Type: naval
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
-		UnitsToBuild:
-			harv: 1%
-			heli: 30%
-			hind: 30%
-			mig: 30%
-			yak: 30%
-			ss: 10%
-			msub: 30%
-			dd: 30%
-			ca: 20%
-			pt: 10%
-		UnitLimits:
-			harv: 8
-		SquadSize: 1
 	SupportPowerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		Decisions:
@@ -427,3 +269,146 @@ Player:
 			mslo: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	SquadManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		SquadSize: 20
+		ExcludeFromSquadsTypes: harv, mcv
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+	McvManagerBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+	UnitBuilderBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+			shok: 15
+			harv: 10
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		SquadSize: 40
+		ExcludeFromSquadsTypes: harv, mcv
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 40
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+			heli: 30
+			hind: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		SquadSize: 10
+		ExcludeFromSquadsTypes: harv, mcv
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 50
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 10
+			heli: 30
+			hind: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		SquadSize: 1
+		ExcludeFromSquadsTypes: harv, mcv
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		UnitsToBuild:
+			harv: 1
+			heli: 30
+			hind: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 30
+			dd: 30
+			ca: 20
+			pt: 10
+		UnitLimits:
+			harv: 8

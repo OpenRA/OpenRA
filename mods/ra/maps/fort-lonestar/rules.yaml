@@ -105,11 +105,11 @@ Player:
 		DefaultCashDropdownLocked: True
 		DefaultCashDropdownVisible: False
 		DefaultCash: 50
-	-HackyAI@RushAI:
-	-HackyAI@NormalAI:
-	-HackyAI@NavalAI:
-	-HackyAI@TurtleAI:
-	DummyAI@LonestarAI:
+	-ModularBot@RushAI:
+	-ModularBot@NormalAI:
+	-ModularBot@NavalAI:
+	-ModularBot@TurtleAI:
+	DummyBot@LonestarAI:
 		Name: Lonestar AI
 		Type: lonestar
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:

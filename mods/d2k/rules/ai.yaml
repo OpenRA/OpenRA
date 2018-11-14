@@ -1,139 +1,13 @@
 Player:
-	HackyAI@Omnius:
+	ModularBot@Omnius:
 		Name: Omnius
 		Type: omnius
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
-		BuildingCommonNames:
-			ConstructionYard: construction_yard
-			Refinery: refinery
-			Power: wind_trap
-			VehiclesFactory: light_factory, heavy_factory, starport
-			Production: light_factory, heavy_factory, barracks, starport
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harvester
-		UnitsToBuild:
-			carryall: 1%
-			light_inf: 65%
-			trooper: 40%
-			mpsardaukar: 20%
-			grenadier: 20%
-			harvester: 1%
-			trike.starport: 5%
-			quad.starport: 7.5%
-			siege_tank.starport: 5%
-			missile_tank.starport: 7.5%
-			combat_tank_a.starport: 15%
-			combat_tank_h.starport: 15%
-			combat_tank_o.starport: 15%
-			sonic_tank: 10%
-			devastator: 10%
-			deviator: 7.5%
-			trike: 10%
-			raider: 10%
-			quad: 15%
-			siege_tank: 10%
-			missile_tank: 15%
-			stealth_raider: 5%
-			combat_tank_a: 100%
-			combat_tank_h: 100%
-			combat_tank_o: 100%
-		UnitLimits:
-			harvester: 8
-			carryall: 4
-		SquadSize: 8
-		MaxBaseRadius: 40
-	HackyAI@Vidius:
+	ModularBot@Vidius:
 		Name: Vidious
 		Type: vidious
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
-		BuildingCommonNames:
-			ConstructionYard: construction_yard
-			Refinery: refinery
-			Power: wind_trap
-			VehiclesFactory: light_factory, heavy_factory, starport
-			Production: light_factory, heavy_factory, barracks, starport
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harvester
-		UnitsToBuild:
-			carryall: 1%
-			light_inf: 65%
-			trooper: 40%
-			mpsardaukar: 20%
-			grenadier: 20%
-			harvester: 1%
-			trike.starport: 7.5%
-			quad.starport: 12.5%
-			siege_tank.starport: 5%
-			missile_tank.starport: 7.5%
-			combat_tank_a.starport: 15%
-			combat_tank_h.starport: 15%
-			combat_tank_o.starport: 15%
-			sonic_tank: 50%
-			devastator: 40%
-			deviator: 5%
-			trike: 15%
-			raider: 15%
-			quad: 25%
-			siege_tank: 10%
-			missile_tank: 15%
-			stealth_raider: 5%
-			combat_tank_a: 100%
-			combat_tank_h: 100%
-			combat_tank_o: 100%
-		UnitLimits:
-			harvester: 8
-			carryall: 4
-		SquadSize: 6
-		MaxBaseRadius: 40
-	HackyAI@Gladius:
+	ModularBot@Gladius:
 		Name: Gladius
 		Type: gladius
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
-		BuildingCommonNames:
-			ConstructionYard: construction_yard
-			Refinery: refinery
-			Power: wind_trap
-			VehiclesFactory: light_factory, heavy_factory, starport
-			Production: light_factory, heavy_factory, barracks, starport
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harvester
-		UnitsToBuild:
-			carryall: 1%
-			light_inf: 65%
-			trooper: 40%
-			mpsardaukar: 20%
-			grenadier: 20%
-			harvester: 1%
-			trike.starport: 5%
-			quad.starport: 7.5%
-			siege_tank.starport: 5%
-			missile_tank.starport: 7.5%
-			combat_tank_a.starport: 15%
-			combat_tank_h.starport: 15%
-			combat_tank_o.starport: 15%
-			sonic_tank: 10%
-			devastator: 10%
-			deviator: 7.5%
-			trike: 10%
-			raider: 10%
-			quad: 15%
-			siege_tank: 10%
-			missile_tank: 15%
-			stealth_raider: 7.5%
-			combat_tank_a: 100%
-			combat_tank_h: 100%
-			combat_tank_o: 100%
-		UnitLimits:
-			harvester: 8
-			carryall: 4
-		SquadSize: 10
-		MaxBaseRadius: 40
 	SupportPowerBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		Decisions:
@@ -333,3 +207,122 @@ Player:
 			upgrade.hightech: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+	SquadManagerBotModule@omnius:
+		RequiresCondition: enable-omnius-ai
+		SquadSize: 8
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv
+		ConstructionYardTypes: construction_yard
+	UnitBuilderBotModule@omnius:
+		RequiresCondition: enable-omnius-ai
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+		UnitsToBuild:
+			carryall: 1
+			light_inf: 65
+			trooper: 40
+			mpsardaukar: 20
+			grenadier: 20
+			harvester: 1
+			trike.starport: 5
+			quad.starport: 7
+			siege_tank.starport: 5
+			missile_tank.starport: 7
+			combat_tank_a.starport: 15
+			combat_tank_h.starport: 15
+			combat_tank_o.starport: 15
+			sonic_tank: 10
+			devastator: 10
+			deviator: 7
+			trike: 10
+			raider: 10
+			quad: 15
+			siege_tank: 10
+			missile_tank: 15
+			stealth_raider: 5
+			combat_tank_a: 100
+			combat_tank_h: 100
+			combat_tank_o: 100
+		UnitLimits:
+			harvester: 8
+			carryall: 4
+	McvManagerBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		McvTypes: mcv
+		ConstructionYardTypes: construction_yard
+		McvFactoryTypes: heavy_factory, starport
+	SquadManagerBotModule@vidious:
+		RequiresCondition: enable-vidious-ai
+		SquadSize: 6
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv
+		ConstructionYardTypes: construction_yard
+	UnitBuilderBotModule@vidious:
+		RequiresCondition: enable-vidious-ai
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+		UnitsToBuild:
+			carryall: 1
+			light_inf: 65
+			trooper: 40
+			mpsardaukar: 20
+			grenadier: 20
+			harvester: 1
+			trike.starport: 7
+			quad.starport: 12
+			siege_tank.starport: 5
+			missile_tank.starport: 7
+			combat_tank_a.starport: 15
+			combat_tank_h.starport: 15
+			combat_tank_o.starport: 15
+			sonic_tank: 50
+			devastator: 40
+			deviator: 5
+			trike: 15
+			raider: 15
+			quad: 25
+			siege_tank: 10
+			missile_tank: 15
+			stealth_raider: 5
+			combat_tank_a: 100
+			combat_tank_h: 100
+			combat_tank_o: 100
+		UnitLimits:
+			harvester: 8
+			carryall: 4
+	SquadManagerBotModule@gladius:
+		RequiresCondition: enable-gladius-ai
+		SquadSize: 10
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv
+		ConstructionYardTypes: construction_yard
+	UnitBuilderBotModule@gladius:
+		RequiresCondition: enable-gladius-ai
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+		UnitsToBuild:
+			carryall: 1
+			light_inf: 65
+			trooper: 40
+			mpsardaukar: 20
+			grenadier: 20
+			harvester: 1
+			trike.starport: 5
+			quad.starport: 7
+			siege_tank.starport: 5
+			missile_tank.starport: 7
+			combat_tank_a.starport: 15
+			combat_tank_h.starport: 15
+			combat_tank_o.starport: 15
+			sonic_tank: 10
+			devastator: 10
+			deviator: 7
+			trike: 10
+			raider: 10
+			quad: 15
+			siege_tank: 10
+			missile_tank: 15
+			stealth_raider: 7
+			combat_tank_a: 100
+			combat_tank_h: 100
+			combat_tank_o: 100
+		UnitLimits:
+			harvester: 8
+			carryall: 4
