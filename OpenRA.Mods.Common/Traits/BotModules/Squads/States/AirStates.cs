@@ -12,11 +12,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class AirStateBase : StateBase
 	{
@@ -64,7 +63,7 @@ namespace OpenRA.Mods.Common.AI
 		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
 		{
 			var map = owner.World.Map;
-			var dangerRadius = owner.Bot.Info.DangerScanRadius;
+			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			detectedEnemyTarget = null;
 			var x = (map.MapSize.X % dangerRadius) == 0 ? map.MapSize.X : map.MapSize.X + dangerRadius;
 			var y = (map.MapSize.Y % dangerRadius) == 0 ? map.MapSize.Y : map.MapSize.Y + dangerRadius;
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Common.AI
 		protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 		{
 			detectedEnemyTarget = null;
-			var dangerRadius = owner.Bot.Info.DangerScanRadius;
+			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WDist.FromCells(dangerRadius))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
@@ -200,7 +199,7 @@ namespace OpenRA.Mods.Common.AI
 			if (!owner.IsTargetValid)
 			{
 				var a = owner.Units.Random(owner.Random);
-				var closestEnemy = owner.Bot.FindClosestEnemy(a.CenterPosition);
+				var closestEnemy = owner.SquadManager.FindClosestEnemy(a.CenterPosition);
 				if (closestEnemy != null)
 					owner.TargetActor = closestEnemy;
 				else

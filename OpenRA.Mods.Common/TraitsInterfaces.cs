@@ -15,7 +15,6 @@ using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.AI;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -461,6 +460,24 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void UpdatedBaseCenter(CPos newLocation);
 		void UpdatedDefenseCenter(CPos newLocation);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotNotifyIdleBaseUnits
+	{
+		void UpdatedIdleBaseUnits(List<Actor> idleUnits);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotRequestUnitProduction
+	{
+		void RequestUnitProduction(IBot bot, string requestedActor);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotRequestPauseUnitProduction
+	{
+		bool PauseUnitProduction { get; }
 	}
 
 	[RequireExplicitImplementation]

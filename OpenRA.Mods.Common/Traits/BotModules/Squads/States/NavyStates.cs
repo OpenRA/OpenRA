@@ -10,10 +10,9 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class NavyStateBase : StateBase
 	{
@@ -33,7 +32,7 @@ namespace OpenRA.Mods.Common.AI
 			var locomotorInfo = first.Info.TraitInfo<MobileInfo>().LocomotorInfo;
 
 			var navalProductions = owner.World.ActorsHavingTrait<Building>().Where(a
-				=> owner.Bot.Info.BuildingCommonNames.NavalProduction.Contains(a.Info.Name)
+				=> owner.SquadManager.Info.NavalProductionTypes.Contains(a.Info.Name)
 				&& domainIndex.IsPassable(first.Location, a.Location, locomotorInfo)
 				&& a.AppearsHostileTo(first));
 
@@ -45,11 +44,11 @@ namespace OpenRA.Mods.Common.AI
 				// If the naval production is within MaxBaseRadius, it implies that
 				// this squad is close to enemy territory and they should expect a naval combat;
 				// closest enemy makes more sense in that case.
-				if ((nearest.Location - first.Location).LengthSquared > owner.Bot.Info.MaxBaseRadius * owner.Bot.Info.MaxBaseRadius)
+				if ((nearest.Location - first.Location).LengthSquared > owner.SquadManager.Info.MaxBaseRadius * owner.SquadManager.Info.MaxBaseRadius)
 					return nearest;
 			}
 
-			return owner.Bot.FindClosestEnemy(first.CenterPosition);
+			return owner.SquadManager.FindClosestEnemy(first.CenterPosition);
 		}
 	}
 
@@ -71,7 +70,7 @@ namespace OpenRA.Mods.Common.AI
 				owner.TargetActor = closestEnemy;
 			}
 
-			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.Bot.Info.IdleScanRadius))
+			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.SquadManager.Info.IdleScanRadius))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (enemyUnits.Count == 0)
@@ -130,7 +129,7 @@ namespace OpenRA.Mods.Common.AI
 			}
 			else
 			{
-				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Bot.Info.AttackScanRadius))
+				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
 					.Where(a => !a.IsDead && leader.Owner.Stances[a.Owner] == Stance.Enemy && !a.GetEnabledTargetTypes().IsEmpty);
 				var target = enemies.ClosestTo(leader.CenterPosition);
 				if (target != null)

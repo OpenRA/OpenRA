@@ -13,10 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class StateBase
 	{
@@ -29,7 +28,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected static CPos RandomBuildingLocation(Squad squad)
 		{
-			var location = squad.Bot.GetRandomBaseCenter();
+			var location = squad.SquadManager.GetRandomBaseCenter();
 			var buildings = squad.World.ActorsHavingTrait<Building>()
 				.Where(a => a.Owner == squad.Bot.Player).ToList();
 			if (buildings.Count > 0)
@@ -87,7 +86,7 @@ namespace OpenRA.Mods.Common.AI
 				return false;
 
 			var randomSquadUnit = squad.Units.Random(squad.Random);
-			var dangerRadius = squad.Bot.Info.DangerScanRadius;
+			var dangerRadius = squad.SquadManager.Info.DangerScanRadius;
 			var units = squad.World.FindActorsInCircle(randomSquadUnit.CenterPosition, WDist.FromCells(dangerRadius)).ToList();
 
 			// If there are any own buildings within the DangerRadius, don't flee

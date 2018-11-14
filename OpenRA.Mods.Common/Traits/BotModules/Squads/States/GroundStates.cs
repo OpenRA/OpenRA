@@ -12,7 +12,7 @@
 using System.Linq;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class GroundStateBase : StateBase
 	{
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.AI
 
 		protected Actor FindClosestEnemy(Squad owner)
 		{
-			return owner.Bot.FindClosestEnemy(owner.Units.First().CenterPosition);
+			return owner.SquadManager.FindClosestEnemy(owner.Units.First().CenterPosition);
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.AI
 				owner.TargetActor = closestEnemy;
 			}
 
-			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.Bot.Info.IdleScanRadius))
+			var enemyUnits = owner.World.FindActorsInCircle(owner.TargetActor.CenterPosition, WDist.FromCells(owner.SquadManager.Info.IdleScanRadius))
 				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (enemyUnits.Count == 0)
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.AI
 			}
 			else
 			{
-				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Bot.Info.AttackScanRadius))
+				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
 					.Where(a => !a.IsDead && leader.Owner.Stances[a.Owner] == Stance.Enemy && !a.GetEnabledTargetTypes().IsEmpty);
 				var target = enemies.ClosestTo(leader.CenterPosition);
 				if (target != null)

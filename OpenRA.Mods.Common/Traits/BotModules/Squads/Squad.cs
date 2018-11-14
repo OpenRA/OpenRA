@@ -11,11 +11,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	public enum SquadType { Assault, Air, Rush, Protection, Naval }
 
@@ -24,20 +23,22 @@ namespace OpenRA.Mods.Common.AI
 		public List<Actor> Units = new List<Actor>();
 		public SquadType Type;
 
+		internal IBot Bot;
 		internal World World;
-		internal HackyAI Bot;
+		internal SquadManagerBotModule SquadManager;
 		internal MersenneTwister Random;
 
 		internal Target Target;
 		internal StateMachine FuzzyStateMachine;
 
-		public Squad(HackyAI bot, SquadType type) : this(bot, type, null) { }
+		public Squad(IBot bot, SquadManagerBotModule squadManager, SquadType type) : this(bot, squadManager, type, null) { }
 
-		public Squad(HackyAI bot, SquadType type, Actor target)
+		public Squad(IBot bot, SquadManagerBotModule squadManager, SquadType type, Actor target)
 		{
 			Bot = bot;
-			World = bot.World;
-			Random = bot.Random;
+			SquadManager = squadManager;
+			World = bot.Player.PlayerActor.World;
+			Random = World.LocalRandom;
 			Type = type;
 			Target = Target.FromActor(target);
 			FuzzyStateMachine = new StateMachine();

@@ -13,11 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AI.Fuzzy.Library;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	sealed class AttackOrFleeFuzzy
 	{

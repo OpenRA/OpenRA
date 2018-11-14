@@ -9,7 +9,7 @@
  */
 #endregion
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	class StateMachine
 	{

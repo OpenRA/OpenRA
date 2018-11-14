@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common
 {
 	public enum BuildingType { Building, Defense, Refinery }
 
@@ -66,6 +66,12 @@ namespace OpenRA.Mods.Common.AI
 		public static int CountActorsWithTrait<T>(string actorName, Player owner)
 		{
 			return GetActorsWithTrait<T>(owner.World).Count(a => a.Owner == owner && a.Info.Name == actorName);
+		}
+
+		public static int CountActorByCommonName(HashSet<string> commonNames, Player owner)
+		{
+			return owner.World.Actors.Count(a => !a.IsDead && a.Owner == owner &&
+				commonNames.Contains(a.Info.Name));
 		}
 
 		public static int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
