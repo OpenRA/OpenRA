@@ -11,9 +11,10 @@
 
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.AI
+namespace OpenRA.Mods.Common.Traits
 {
-	public sealed class DummyAIInfo : ITraitInfo, IBotInfo
+	[Desc("A placeholder bot that doesn't do anything.")]
+	public sealed class DummyBotInfo : ITraitInfo, IBotInfo
 	{
 		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = "Unnamed Bot";
@@ -26,26 +27,29 @@ namespace OpenRA.Mods.Common.AI
 
 		string IBotInfo.Name { get { return Name; } }
 
-		public object Create(ActorInitializer init) { return new DummyAI(this); }
+		public object Create(ActorInitializer init) { return new DummyBot(this); }
 	}
 
-	public sealed class DummyAI : IBot
+	public sealed class DummyBot : IBot
 	{
-		readonly DummyAIInfo info;
-		public bool Enabled { get; private set; }
+		readonly DummyBotInfo info;
+		public bool IsEnabled { get; private set; }
+		Player player;
 
-		public DummyAI(DummyAIInfo info)
+		public DummyBot(DummyBotInfo info)
 		{
 			this.info = info;
 		}
 
 		void IBot.Activate(Player p)
 		{
-			Enabled = true;
+			IsEnabled = true;
+			player = p;
 		}
 
 		void IBot.QueueOrder(Order order) { }
 
 		IBotInfo IBot.Info { get { return info; } }
+		Player IBot.Player { get { return player; } }
 	}
 }

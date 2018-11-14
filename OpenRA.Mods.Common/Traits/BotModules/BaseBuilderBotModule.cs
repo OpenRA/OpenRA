@@ -13,7 +13,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.AI;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -123,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
-	public class BaseBuilderBotModule : ConditionalTrait<BaseBuilderBotModuleInfo>, IBotTick, IBotPositionsUpdated, IBotRespondToAttack
+	public class BaseBuilderBotModule : ConditionalTrait<BaseBuilderBotModuleInfo>, IBotTick, IBotPositionsUpdated, IBotRespondToAttack, IBotRequestPauseUnitProduction
 	{
 		public CPos GetRandomBaseCenter()
 		{
@@ -181,6 +180,11 @@ namespace OpenRA.Mods.Common.Traits
 			defenseCenter = newLocation;
 		}
 
+		bool IBotRequestPauseUnitProduction.PauseUnitProduction
+		{
+			get { return !IsTraitDisabled && !HasAdequateRefineryCount; }
+		}
+
 		void IBotTick.BotTick(IBot bot)
 		{
 			SetRallyPointsForNewProductionBuildings(bot);
@@ -200,8 +204,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
 				return;
 
-			// Protected priority assets, MCVs, harvesters and buildings
-			if (self.Info.HasTraitInfo<BuildingInfo>() || self.Info.HasTraitInfo<BaseBuildingInfo>())
+			// Protect buildings
+			if (self.Info.HasTraitInfo<BuildingInfo>())
 				foreach (var n in positionsUpdatedModules)
 					n.UpdatedDefenseCenter(e.Attacker.Location);
 		}
@@ -239,6 +243,27 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsRallyPointValid(CPos x, BuildingInfo info)
 		{
 			return info != null && world.IsCellBuildable(x, null, info);
+		}
+
+		public bool HasAdequateRefineryCount
+		{
+			get
+			{
+				// Require at least one refinery, unless we can't build it.
+				return AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player) >= MinimumRefineryCount ||
+					AIUtils.CountBuildingByCommonName(Info.PowerTypes, player) == 0 ||
+					AIUtils.CountBuildingByCommonName(Info.ConstructionYardTypes, player) == 0;
+			}
+		}
+
+		int MinimumRefineryCount
+		{
+			get
+			{
+				// Unless we have no barracks (higher priority), require a 2nd refinery.
+				// TODO: Possibly unhardcode this, at least the targeted minimum of 2 (the fallback can probably stay at 1).
+				return AIUtils.CountBuildingByCommonName(Info.BarracksTypes, player) > 0 ? 2 : 1;
+			}
 		}
 	}
 }

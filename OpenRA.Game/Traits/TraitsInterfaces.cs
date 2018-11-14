@@ -365,6 +365,7 @@ namespace OpenRA.Traits
 		void Activate(Player p);
 		void QueueOrder(Order order);
 		IBotInfo Info { get; }
+		Player Player { get; }
 	}
 
 	[RequireExplicitImplementation]

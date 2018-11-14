@@ -13,7 +13,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.AI;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -219,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Next is to build up a strong economy
-			if (!HasAdequateRefineryCount)
+			if (!baseBuilder.HasAdequateRefineryCount)
 			{
 				var refinery = GetProducibleBuilding(baseBuilder.Info.RefineryTypes, buildableThings);
 				if (refinery != null && HasSufficientPowerForActor(refinery))
@@ -409,27 +408,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Can't find a build location
 			return null;
-		}
-
-		bool HasAdequateRefineryCount
-		{
-			get
-			{
-				// Require at least one refinery, unless we can't build it.
-				return AIUtils.CountBuildingByCommonName(baseBuilder.Info.RefineryTypes, player) >= MinimumRefineryCount ||
-					AIUtils.CountBuildingByCommonName(baseBuilder.Info.PowerTypes, player) == 0 ||
-					AIUtils.CountBuildingByCommonName(baseBuilder.Info.ConstructionYardTypes, player) == 0;
-			}
-		}
-
-		int MinimumRefineryCount
-		{
-			get
-			{
-				// Unless we have no barracks (higher priority), require a 2nd refinery.
-				// TODO: Possibly unhardcode this, at least the targeted minimum of 2 (the fallback can probably stay at 1).
-				return AIUtils.CountBuildingByCommonName(baseBuilder.Info.BarracksTypes, player) > 0 ? 2 : 1;
-			}
 		}
 	}
 }

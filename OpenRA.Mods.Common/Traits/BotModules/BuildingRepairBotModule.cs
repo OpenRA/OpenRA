@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.AI;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits

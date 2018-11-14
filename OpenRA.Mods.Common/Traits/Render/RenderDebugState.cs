@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.AI;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
@@ -27,13 +26,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
 	}
 
-	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, IRenderAboveShroudWhenSelected
+	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, INotifyCreated, IRenderAboveShroudWhenSelected
 	{
 		readonly DebugVisualizations debugVis;
 		readonly SpriteFont font;
 		readonly Actor self;
 		readonly WVec offset;
-		readonly HackyAI ai;
+		SquadManagerBotModule ai;
 
 		Color color;
 		string tagString;
@@ -49,7 +48,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			font = Game.Renderer.Fonts[info.Font];
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
-			ai = self.Owner.PlayerActor.TraitsImplementing<HackyAI>().FirstOrDefault(x => x.IsEnabled);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			ai = self.Owner.PlayerActor.TraitsImplementing<SquadManagerBotModule>().FirstOrDefault(Exts.IsTraitEnabled);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
