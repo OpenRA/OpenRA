@@ -525,7 +525,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+			var team = parent.Get<LabelWidget>("TEAM");
+			team.IsVisible = () => true;
+			team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 			HideChildWidget(parent, "TEAM_DROPDOWN");
 		}
 
@@ -548,7 +550,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+			var spawn = parent.Get<LabelWidget>("SPAWN");
+			spawn.IsVisible = () => true;
+			spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 			HideChildWidget(parent, "SPAWN_DROPDOWN");
 		}
 
