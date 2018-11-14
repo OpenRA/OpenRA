@@ -67,7 +67,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"BuildingFractions",
 		};
 
-		// Fields that should (for now) only be copied instead of moved, for backwards-compatibility reasons
 		readonly string[] copyBaseBuilderFields =
 		{
 			"MinBaseRadius",
@@ -82,6 +81,50 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"MaximumCaptureTargetOptions",
 			"CheckCaptureTargetsForVisibility",
 			"CapturableStances",
+		};
+
+		readonly string[] squadManagerFields =
+		{
+			"SquadSize",
+			"SquadSizeRandomBonus",
+			"AssignRolesInterval",
+			"RushInterval",
+			"AttackForceInterval",
+			"MinimumAttackForceDelay",
+			"RushAttackScanRadius",
+			"ProtectUnitScanRadius",
+			"MaxBaseRadius",
+			"MaximumDefenseRadius",
+			"IdleScanRadius",
+			"DangerScanRadius",
+			"AttackScanRadius",
+			"ProtectionScanRadius",
+			"UnitsCommonNames",
+			"BuildingCommonNames",
+		};
+
+		readonly string[] squadManagerCommonNames =
+		{
+			"ConstructionYard",
+			"NavalProduction",
+		};
+
+		readonly string[] unitBuilderFields =
+		{
+			"IdleBaseUnitsMaximum",
+			"UnitQueues",
+			"UnitsToBuild",
+			"UnitLimits",
+		};
+
+		readonly string[] mcvManagerFields =
+		{
+			"AssignRolesInterval",
+			"MinBaseRadius",
+			"MaxBaseRadius",
+			"RestrictMCVDeploymentFallbackToBase",
+			"UnitsCommonNames",
+			"BuildingCommonNames",
 		};
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
@@ -105,6 +148,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			if (actorNode.Key != "Player")
 				yield break;
+
+			var dummyAIs = actorNode.ChildrenMatching("DummyAI");
+			foreach (var dummyAINode in dummyAIs)
+				dummyAINode.RenameKey("DummyBot");
+
+			var hackyAIRemovals = actorNode.ChildrenMatching("-HackyAI");
+			foreach (var hackyAIRemovalNode in hackyAIRemovals)
+				hackyAIRemovalNode.RenameKey("-ModularBot");
 
 			var hackyAIs = actorNode.ChildrenMatching("HackyAI", includeRemovals: false);
 			if (!hackyAIs.Any())
@@ -270,6 +321,118 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 					addNodes.Add(node);
 				}
+
+				if (squadManagerFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
+				{
+					var node = new MiniYamlNode("SquadManagerBotModule@" + aiType, "");
+					node.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
+
+					foreach (var field in squadManagerFields)
+					{
+						var fieldNode = hackyAINode.LastChildMatching(field);
+						if (fieldNode != null)
+						{
+							if (fieldNode.KeyMatches("UnitsCommonNames", includeRemovals: false))
+							{
+								var mcvNode = fieldNode.LastChildMatching("Mcv");
+								var excludeNode = fieldNode.LastChildMatching("ExcludeFromSquads");
+								var navalUnitsNode = fieldNode.LastChildMatching("NavalUnits");
+
+								// In the old code, actors listed under Mcv were also excluded from squads.
+								// However, Mcv[Types] is moved to McvManagerBotModule now, so we need to add them under ExcludeFromSquads as well.
+								if (excludeNode == null && mcvNode != null)
+									node.AddNode("ExcludeFromSquadsTypes", mcvNode.Value.Value);
+								else if (excludeNode != null && mcvNode != null)
+								{
+									var mcvValue = mcvNode.NodeValue<string>();
+									var excludeValue = excludeNode.NodeValue<string>();
+									node.AddNode("ExcludeFromSquadsTypes", excludeValue + ", " + mcvValue);
+								}
+
+								if (navalUnitsNode != null)
+									node.AddNode("NavalUnitsTypes", navalUnitsNode.Value.Value);
+							}
+							else if (fieldNode.KeyMatches("BuildingCommonNames", includeRemovals: false))
+							{
+								foreach (var b in fieldNode.Value.Nodes)
+									if (squadManagerCommonNames.Any(f => f == b.Key))
+										node.AddNode(b.Key + "Types", b.Value.Value);
+							}
+							else if (fieldNode.KeyMatches("AssignRolesInterval") || fieldNode.KeyMatches("MaxBaseRadius"))
+								node.AddNode(fieldNode.Key, fieldNode.Value.Value);
+							else
+								fieldNode.MoveNode(hackyAINode, node);
+						}
+					}
+
+					addNodes.Add(node);
+				}
+
+				if (unitBuilderFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
+				{
+					var node = new MiniYamlNode("UnitBuilderBotModule@" + aiType, "");
+					node.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
+
+					foreach (var field in unitBuilderFields)
+					{
+						var fieldNode = hackyAINode.LastChildMatching(field);
+						if (fieldNode != null)
+						{
+							if (fieldNode.KeyMatches("UnitsToBuild", includeRemovals: false))
+							{
+								var unitNodes = fieldNode.Value.Nodes;
+								foreach (var n in unitNodes)
+									ConvertFractionToInteger(n);
+							}
+
+							fieldNode.MoveNode(hackyAINode, node);
+						}
+					}
+
+					addNodes.Add(node);
+				}
+
+				if (mcvManagerFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
+				{
+					var node = new MiniYamlNode("McvManagerBotModule@" + aiType, "");
+					node.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
+
+					foreach (var field in mcvManagerFields)
+					{
+						var fieldNode = hackyAINode.LastChildMatching(field);
+						if (fieldNode != null)
+						{
+							if (fieldNode.KeyMatches("UnitsCommonNames", includeRemovals: false))
+							{
+								var mcvNode = fieldNode.LastChildMatching("Mcv");
+								if (mcvNode != null)
+									mcvNode.MoveAndRenameNode(hackyAINode, node, "McvTypes");
+
+								// Nothing left that needs UnitCommonNames, so we can finally remove it
+								hackyAINode.RemoveNode(fieldNode);
+							}
+							else if (fieldNode.KeyMatches("BuildingCommonNames", includeRemovals: false))
+							{
+								foreach (var n in fieldNode.Value.Nodes)
+								{
+									if (n.KeyMatches("VehiclesFactory"))
+										node.AddNode("McvFactoryTypes", n.Value.Value);
+									else if (n.KeyMatches("ConstructionYard"))
+										node.AddNode("ConstructionYardTypes", n.Value.Value);
+								}
+
+								// Nothing left that needs BuildingCommonNames, so we can finally remove it
+								hackyAINode.RemoveNode(fieldNode);
+							}
+							else
+								fieldNode.MoveNode(hackyAINode, node);
+						}
+					}
+
+					addNodes.Add(node);
+				}
+
+				hackyAINode.RenameKey("ModularBot");
 			}
 
 			// Only add module if any bot is using/enabling it.
