@@ -82,7 +82,8 @@ fact:
 proc:
 	idle:
 		ZOffset: -1c511
-	damaged-idle:
+	critical-idle:
+		Start: 1
 		ZOffset: -1c511
 	idle-top: proctop
 		ZOffset: 0
