@@ -324,7 +324,6 @@ namespace OpenRA.Server
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
-					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.PreferredColor,
 					Color = handshake.Client.Color,
 					Faction = "Random",
@@ -340,11 +339,6 @@ namespace OpenRA.Server
 					DropClient(newConn);
 					return;
 				}
-
-				if (client.Slot != null)
-					SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
-				else
-					client.Color = HSLColor.FromRGB(255, 255, 255);
 
 				if (ModData.Manifest.Id != handshake.Mod)
 				{
@@ -378,6 +372,13 @@ namespace OpenRA.Server
 
 				Action completeConnection = () =>
 				{
+					client.Slot = LobbyInfo.FirstEmptySlot();
+
+					if (client.Slot != null)
+						SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
+					else
+						client.Color = HSLColor.FromRGB(255, 255, 255);
+
 					// Promote connection to a valid client
 					PreConns.Remove(newConn);
 					Conns.Add(newConn);
