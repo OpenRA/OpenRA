@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips, IExplodeModifier, IOrderVoice,
+	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated, INotifyIdle, INotifyBlockingMove
 	{
 		public readonly HarvesterInfo Info;
@@ -469,8 +469,6 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
 		}
-
-		bool IExplodeModifier.ShouldExplode(Actor self) { return !IsEmpty; }
 
 		int ISpeedModifier.GetSpeedModifier()
 		{

@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddBotOrderManager(),
 				new AddHarvesterBotModule(),
 				new RemoveNegativeDamageFullHealthCheck(),
+				new RemoveResourceExplodeModifier(),
 			})
 		};
 

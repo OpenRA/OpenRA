@@ -67,6 +67,7 @@ HARV:
 		SearchFromOrderRadius: 18
 		HarvestVoice: Attack
 		DeliverVoice: Move
+		EmptyCondition: no-tiberium
 	Mobile:
 		Speed: 71
 	Health:
@@ -85,6 +86,7 @@ HARV:
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
 	Explodes:
+		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
 	WithHarvestOverlay:
 		LocalOffset: 543,0,0

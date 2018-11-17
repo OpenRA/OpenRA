@@ -142,7 +142,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 
-	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface IHuskModifier { string HuskActor(Actor self); }
 
 	public interface ISeedableResource { void Seed(Actor self); }
