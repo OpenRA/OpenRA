@@ -70,6 +70,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The pathfinding cost penalty applied for each harvester waiting to unload at a refinery.")]
 		public readonly int UnloadQueueCostModifier = 12;
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant while empty.")]
+		public readonly string EmptyCondition = null;
+
 		[VoiceReference] public readonly string HarvestVoice = "Action";
 		[VoiceReference] public readonly string DeliverVoice = "Action";
 
@@ -86,6 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		bool idleSmart = true;
 		INotifyHarvesterAction[] notifyHarvesterAction;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 		int idleDuration;
 
 		[Sync] public bool LastSearchFailed;
@@ -95,6 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
 		public CPos? LastOrderLocation = null;
+
 		[Sync]
 		public int ContentValue
 		{
@@ -120,6 +127,8 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			UpdateCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
@@ -212,12 +221,27 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
 		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
 
-		public void AcceptResource(ResourceType type)
+		void UpdateCondition(Actor self)
+		{
+			if (string.IsNullOrEmpty(Info.EmptyCondition) || conditionManager == null)
+				return;
+
+			var enabled = IsEmpty;
+
+			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.EmptyCondition);
+			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+		}
+
+		public void AcceptResource(Actor self, ResourceType type)
 		{
 			if (!contents.ContainsKey(type.Info))
 				contents[type.Info] = 1;
 			else
 				contents[type.Info]++;
+
+			UpdateCondition(self);
 		}
 
 		public void UnblockRefinery(Actor self)
@@ -307,6 +331,7 @@ namespace OpenRA.Mods.Common.Traits
 					contents.Remove(type);
 
 				currentUnloadTicks = Info.BaleUnloadDelay;
+				UpdateCondition(self);
 			}
 
 			return contents.Count == 0;
