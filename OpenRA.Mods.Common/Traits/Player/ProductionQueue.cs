@@ -50,6 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The build time is multiplied with this percentage on low power.")]
 		public readonly int LowPowerModifier = 100;
 
+		[Desc("Production items that have more than this many items in the queue will be produced in a loop.")]
+		public readonly int InfiniteBuildLimit = -1;
+
 		[NotificationReference("Speech")]
 		[Desc("Notification played when production is complete.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
@@ -456,9 +459,19 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (item != null)
 			{
-				// Refund what has been paid
-				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
-				EndProduction(item);
+				if (item.Infinite)
+				{
+					item.Infinite = false;
+					for (var i = 1; i < Info.InfiniteBuildLimit; i++)
+						Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete));
+				}
+				else
+				{
+					// Refund what has been paid
+					playerResources.GiveCash(item.TotalCost - item.RemainingCost);
+					EndProduction(item);
+				}
+
 				return true;
 			}
 
@@ -468,14 +481,37 @@ namespace OpenRA.Mods.Common.Traits
 		public void EndProduction(ProductionItem item)
 		{
 			Queue.Remove(item);
+
+			if (item.Infinite)
+				Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true });
 		}
 
 		protected virtual void BeginProduction(ProductionItem item, bool hasPriority)
 		{
+			if (Queue.Any(i => i.Item == item.Item && i.Infinite))
+				return;
+
 			if (hasPriority && Queue.Count > 1)
 				Queue.Insert(1, item);
 			else
 				Queue.Add(item);
+
+			if (Info.InfiniteBuildLimit < 0)
+				return;
+
+			var queued = Queue.FindAll(i => i.Item == item.Item);
+
+			if (queued.Count <= Info.InfiniteBuildLimit)
+				return;
+
+			queued[0].Infinite = true;
+
+			for (var i = 1; i < queued.Count; i++)
+			{
+				// Refund what has been paid
+				playerResources.GiveCash(queued[i].TotalCost - queued[i].RemainingCost);
+				EndProduction(queued[i]);
+			}
 		}
 
 		public virtual int RemainingTimeActual(ProductionItem item)
@@ -552,6 +588,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Done { get; private set; }
 		public bool Started { get; private set; }
 		public int Slowdown { get; private set; }
+		public bool Infinite { get; set; }
 
 		readonly ActorInfo ai;
 		readonly BuildableInfo bi;
@@ -567,6 +604,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.pm = pm;
 			ai = Queue.Actor.World.Map.Rules.Actors[Item];
 			bi = ai.TraitInfo<BuildableInfo>();
+			Infinite = false;
 		}
 
 		public void Tick(PlayerResources pr)

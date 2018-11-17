@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void BeginProduction(ProductionItem item, bool hasPriority)
 		{
 			// Ignore `hasPriority` as it's not relevant in parallel production context.
-			Queue.Add(item);
+			base.BeginProduction(item, false);
 		}
 
 		public override int RemainingTimeActual(ProductionItem item)
