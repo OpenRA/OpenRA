@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
+		[Translate] public readonly string InfiniteSymbol = "\u221E";
 
 		public int DisplayedIconCount { get; private set; }
 		public int TotalIconCount { get; private set; }
@@ -102,8 +103,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly WorldRenderer worldRenderer;
 
-		SpriteFont overlayFont;
-		float2 holdOffset, readyOffset, timeOffset, queuedOffset;
+		SpriteFont overlayFont, symbolFont;
+		float2 holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -141,6 +142,9 @@ namespace OpenRA.Mods.Common.Widgets
 			cantBuild = new Animation(world, NotBuildableAnimation);
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			clock = new Animation(world, ClockAnimation);
+
+			overlayFont = Game.Renderer.Fonts["TinyBold"];
+			Game.Renderer.Fonts.TryGetValue("Symbols", out symbolFont);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -283,7 +287,9 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Sound.Play(SoundType.UI, TabClick);
 				string notification;
 				var canQueue = CurrentQueue.CanQueue(buildable, out notification);
-				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);
+
+				if (!CurrentQueue.AllQueued().Any(qi => qi.Item == icon.Name && !qi.Paused && qi.Infinite))
+					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);
 
 				if (canQueue)
 				{
@@ -423,11 +429,15 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 
-			overlayFont = Game.Renderer.Fonts["TinyBold"];
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
 			queuedOffset = new float2(4, 2);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+
+			if (ChromeMetrics.TryGet("InfiniteOffset", out infiniteOffset))
+				infiniteOffset += queuedOffset;
+			else
+				infiniteOffset = queuedOffset;
 
 			if (CurrentQueue == null)
 				return;
@@ -485,7 +495,11 @@ namespace OpenRA.Mods.Common.Widgets
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);
 
-					if (total > 1 || waiting)
+					if (first.Infinite)
+						symbolFont.DrawTextWithContrast(InfiniteSymbol,
+							icon.Pos + infiniteOffset,
+							Color.White, Color.Black, 1);
+					else if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
 							icon.Pos + queuedOffset,
 							Color.White, Color.Black, 1);
