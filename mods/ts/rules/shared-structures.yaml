@@ -123,7 +123,10 @@ PROC:
 		FactionImages:
 			gdi: proc.gdi
 			nod: proc.nod
+	GrantConditionOnPlayerResources:
+		Condition: contains-tiberium
 	Explodes:
+		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 
 GASILO:
@@ -172,7 +175,10 @@ GASILO:
 	Power:
 		Amount: -10
 	SelectionDecorations:
+	GrantConditionOnPlayerResources:
+		Condition: contains-tiberium
 	Explodes:
+		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 
 ANYPOWER:

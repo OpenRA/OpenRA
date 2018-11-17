@@ -66,6 +66,7 @@ HARV:
 		BaleUnloadDelay: 6
 		SearchFromProcRadius: 25
 		SearchFromOrderRadius: 15
+		EmptyCondition: no-tiberium
 	Mobile:
 		Speed: 85
 	Health:
@@ -83,6 +84,7 @@ HARV:
 	WithHarvestAnimation:
 	WithDockingAnimation:
 	Explodes:
+		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
 	SelectionDecorations:
 

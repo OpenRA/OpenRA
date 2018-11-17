@@ -301,6 +301,7 @@ HARV:
 		BaleUnloadDelay: 1
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 11
+		EmptyCondition: no-ore
 	Health:
 		HP: 60000
 	Armor:
@@ -328,6 +329,7 @@ HARV:
 		HealIfBelow: 50
 		DamageCooldown: 500
 	Explodes:
+		RequiresCondition: !no-ore
 		Weapon: OreExplosion
 
 MCV:

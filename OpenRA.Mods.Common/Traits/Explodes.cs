@@ -127,7 +127,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
 		{
-			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
+			var armaments = self.TraitsImplementing<Armament>();
+			if (!armaments.Any())
+				return Info.WeaponInfo;
+
+			// TODO: EmptyWeapon should be removed in favour of conditions
+			var shouldExplode = !armaments.All(a => a.IsReloading);
 			var useFullExplosion = self.World.SharedRandom.Next(100) <= Info.LoadedChance;
 			return (shouldExplode && useFullExplosion) ? Info.WeaponInfo : Info.EmptyWeaponInfo;
 		}
