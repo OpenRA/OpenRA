@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			harv.AcceptResource(resource);
+			harv.AcceptResource(self, resource);
 
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
