@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {

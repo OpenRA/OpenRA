@@ -14,7 +14,6 @@ using System.Drawing;
 using System.IO;
 using Eluant;
 using OpenRA.Effects;
-using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;

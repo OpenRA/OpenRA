@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Traits.Sound;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits

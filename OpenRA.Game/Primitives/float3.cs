@@ -9,9 +9,7 @@
  */
 #endregion
 
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace OpenRA

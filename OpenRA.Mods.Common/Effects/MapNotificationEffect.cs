@@ -14,7 +14,6 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Effects
 {

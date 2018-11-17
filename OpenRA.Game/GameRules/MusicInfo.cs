@@ -10,7 +10,6 @@
 #endregion
 
 using System.IO;
-using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 
 namespace OpenRA.GameRules

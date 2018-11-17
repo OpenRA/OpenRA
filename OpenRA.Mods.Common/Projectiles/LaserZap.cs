@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;

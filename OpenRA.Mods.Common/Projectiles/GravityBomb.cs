@@ -10,10 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles

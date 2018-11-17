@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Lint

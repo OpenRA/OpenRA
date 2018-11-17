@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;

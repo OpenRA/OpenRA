@@ -15,7 +15,6 @@ using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.AI;
 using OpenRA.Mods.Common.Pathfinder;
-using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
