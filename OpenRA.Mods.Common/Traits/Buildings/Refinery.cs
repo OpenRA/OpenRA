@@ -113,6 +113,14 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				amount = playerResources.ChangeCash(amount);
 
+			foreach (var notify in self.World.ActorsWithTrait<INotifyResourceAccepted>())
+			{
+				if (notify.Actor.Owner != self.Owner)
+					continue;
+
+				notify.Trait.OnResourceAccepted(notify.Actor, self, amount);
+			}
+
 			if (info.ShowTicks)
 				currentDisplayValue += amount;
 		}
