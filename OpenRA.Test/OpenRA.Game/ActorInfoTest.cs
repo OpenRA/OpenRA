@@ -9,9 +9,7 @@
  */
 #endregion
 
-using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
 using OpenRA.Traits;
 

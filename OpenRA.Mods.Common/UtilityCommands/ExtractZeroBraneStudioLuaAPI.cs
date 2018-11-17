@@ -13,7 +13,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {

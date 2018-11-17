@@ -9,8 +9,6 @@
  */
 #endregion
 
-using OpenRA.Traits;
-
 namespace OpenRA.Mods.Common.Traits
 {
 	public class GrantConditionOnTunnelLayerInfo : GrantConditionOnLayerInfo

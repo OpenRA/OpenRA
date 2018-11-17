@@ -10,7 +10,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

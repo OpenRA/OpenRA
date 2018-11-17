@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting.Metadata;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace OpenRA.Test
 {

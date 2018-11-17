@@ -9,13 +9,9 @@
  */
 #endregion
 
-using System;
 using OpenRA.Effects;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits

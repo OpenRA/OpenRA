@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Widgets;

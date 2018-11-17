@@ -10,9 +10,7 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic

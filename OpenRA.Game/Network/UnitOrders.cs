@@ -9,12 +9,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using OpenRA.Traits;
 
 namespace OpenRA.Network

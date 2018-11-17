@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Graphics;

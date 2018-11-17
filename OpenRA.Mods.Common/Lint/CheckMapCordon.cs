@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {

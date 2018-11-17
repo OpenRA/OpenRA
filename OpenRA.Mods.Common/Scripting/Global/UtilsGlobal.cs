@@ -9,11 +9,9 @@
  */
 #endregion
 
-using System.Collections;
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Scripting
