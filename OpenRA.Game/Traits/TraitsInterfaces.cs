@@ -365,6 +365,7 @@ namespace OpenRA.Traits
 	public interface IBot
 	{
 		void Activate(Player p);
+		void QueueOrder(Order order);
 		IBotInfo Info { get; }
 	}
 

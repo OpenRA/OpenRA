@@ -44,6 +44,8 @@ namespace OpenRA.Mods.Common.AI
 			Enabled = true;
 		}
 
+		void IBot.QueueOrder(Order order) { }
+
 		IBotInfo IBot.Info { get { return info; } }
 	}
 }

@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Put this on the Player actor. Manages bot harvesters to ensure they always continue harvesting as long as there are resources on the map.")]
-	public class HarvesterBotModuleInfo : ConditionalTraitInfo, Requires<BotOrderManagerInfo>
+	public class HarvesterBotModuleInfo : ConditionalTraitInfo
 	{
 		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
 		public readonly int ScanForIdleHarvestersInterval = 20;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new HarvesterBotModule(init.Self, this); }
 	}
 
-	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, ITick
+	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick
 	{
 		readonly World world;
 		readonly Player player;
@@ -40,7 +40,6 @@ namespace OpenRA.Mods.Common.Traits
 		DomainIndex domainIndex;
 		ResourceLayer resLayer;
 		ResourceClaimLayer claimLayer;
-		BotOrderManager botOrderManager;
 		List<Actor> harvesters = new List<Actor>();
 		int scanForIdleHarvestersTicks;
 
@@ -58,15 +57,11 @@ namespace OpenRA.Mods.Common.Traits
 			domainIndex = world.WorldActor.Trait<DomainIndex>();
 			resLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
 			claimLayer = world.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-			botOrderManager = self.Owner.PlayerActor.Trait<BotOrderManager>();
 			scanForIdleHarvestersTicks = Info.ScanForIdleHarvestersInterval;
 		}
 
-		void ITick.Tick(Actor self)
+		void IBotTick.BotTick(IBot bot)
 		{
-			if (IsTraitDisabled)
-				return;
-
 			if (resLayer == null || resLayer.IsResourceLayerEmpty)
 				return;
 
@@ -103,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Tell the idle harvester to quit slacking:
 				var newSafeResourcePatch = FindNextResource(harvester, harv);
 				AIUtils.BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
-				botOrderManager.QueueOrder(new Order("Harvest", harvester, Target.FromCell(world, newSafeResourcePatch), false));
+				bot.QueueOrder(new Order("Harvest", harvester, Target.FromCell(world, newSafeResourcePatch), false));
 			}
 		}
 
