@@ -33,9 +33,13 @@ namespace OpenRA.Mods.Common.Traits
 			busy = false;
 			FindCarryableForTransport(self);
 
-			// TODO: This should be handled by the aircraft trait
+			// TODO: This should be handled by the Aircraft trait
 			if (!busy)
-				self.QueueActivity(new HeliFlyCircle(self));
+			{
+				var aircraft = self.Trait<Aircraft>();
+				var turnSpeedOverride = aircraft.Info.IdleTurnSpeed > -1 ? aircraft.Info.IdleTurnSpeed : aircraft.TurnSpeed;
+				self.QueueActivity(new HeliFlyCircle(self, turnSpeedOverride));
+			}
 		}
 
 		// A carryable notifying us that he'd like to be carried

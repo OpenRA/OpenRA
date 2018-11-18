@@ -40,6 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int TurnSpeed = 255;
 
+		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if negative.")]
+		public readonly int IdleTurnSpeed = -1;
+
 		public readonly int Speed = 1;
 
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
