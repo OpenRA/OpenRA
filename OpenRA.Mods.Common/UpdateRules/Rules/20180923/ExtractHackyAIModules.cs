@@ -14,15 +14,15 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	public class AddHarvesterBotModule : UpdateRule
+	public class ExtractHackyAIModules : UpdateRule
 	{
-		public override string Name { get { return "Split HackyAI harvester handling to HarvesterBotModule"; } }
+		public override string Name { get { return "Split HackyAI logic handling to BotModules"; } }
 		public override string Description
 		{
 			get
 			{
-				return "Some properties and all harvester handling have been moved from HackyAI\n" +
-					"to the new HarvesterBotModule.";
+				return "Most properties and logic are being moved from HackyAI\n" +
+					"to *BotModules.";
 			}
 		}
 

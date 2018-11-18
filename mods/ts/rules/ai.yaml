@@ -1,5 +1,4 @@
 Player:
-	BotOrderManager:
 	HackyAI@TestAI:
 		Name: Test AI
 		Type: test

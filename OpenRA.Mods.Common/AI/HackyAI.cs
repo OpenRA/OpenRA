@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.AI
 {
-	public sealed class HackyAIInfo : IBotInfo, ITraitInfo, Requires<BotOrderManagerInfo>
+	public sealed class HackyAIInfo : IBotInfo, ITraitInfo
 	{
 		public class UnitCategories
 		{
@@ -70,6 +70,9 @@ namespace OpenRA.Mods.Common.AI
 
 		[Desc("Minimum delay (in ticks) between creating squads.")]
 		public readonly int MinimumAttackForceDelay = 0;
+
+		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
+		public readonly int MinOrderQuotientPerTick = 5;
 
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
@@ -258,10 +261,12 @@ namespace OpenRA.Mods.Common.AI
 		public List<Squad> Squads = new List<Squad>();
 		public Player Player { get; private set; }
 
+		readonly Queue<Order> orders = new Queue<Order>();
+
 		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
-		BotOrderManager botOrderManager;
+		IBotTick[] tickModules;
 
 		CPos initialBaseCenter;
 		PowerManager playerPower;
@@ -317,7 +322,7 @@ namespace OpenRA.Mods.Common.AI
 			IsEnabled = true;
 			playerPower = p.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
-			botOrderManager = p.PlayerActor.Trait<BotOrderManager>();
+			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
 
 			supportPowerManager = new AISupportPowerManager(this, p);
 
@@ -344,10 +349,15 @@ namespace OpenRA.Mods.Common.AI
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 		}
 
-		// DEPRECATED: Bot modules should queue orders directly.
+		void IBot.QueueOrder(Order order)
+		{
+			orders.Enqueue(order);
+		}
+
+		// DEPRECATED: Modules should use IBot.QueueOrder instead
 		public void QueueOrder(Order order)
 		{
-			botOrderManager.QueueOrder(order);
+			orders.Enqueue(order);
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
@@ -535,6 +545,18 @@ namespace OpenRA.Mods.Common.AI
 
 			foreach (var b in builders)
 				b.Tick();
+
+			// TODO: Add an option to include this in CheckSyncAroundUnsyncedCode.
+			// Checking sync for this is too expensive to include it by default,
+			// so it should be implemented as separate sub-option checkbox.
+			using (new PerfSample("tick_bots"))
+				foreach (var t in tickModules)
+					if (t.IsTraitEnabled())
+						t.BotTick(this);
+
+			var ordersToIssueThisTick = Math.Min((orders.Count + Info.MinOrderQuotientPerTick - 1) / Info.MinOrderQuotientPerTick, orders.Count);
+			for (var i = 0; i < ordersToIssueThisTick; i++)
+				World.IssueOrder(orders.Dequeue());
 		}
 
 		internal Actor FindClosestEnemy(WPos pos)

@@ -1,5 +1,4 @@
 Player:
-	BotOrderManager:
 	HackyAI@Omnius:
 		Name: Omnius
 		Type: omnius
