@@ -20,6 +20,7 @@ carryall.reinforce:
 		AirborneCondition: airborne
 		CanHover: True
 		VTOL: true
+		IdleTurnSpeed: 1
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne

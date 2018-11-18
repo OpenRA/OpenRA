@@ -109,6 +109,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveNegativeDamageFullHealthCheck(),
 				new RemoveResourceExplodeModifier(),
 				new DefineLevelUpImageDefault(),
+				new RemovedAutoCarryallCircleTurnSpeed(),
 			})
 		};
 

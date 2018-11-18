@@ -17,14 +17,14 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyCircle : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly WDist cruiseAltitude;
+		readonly int turnSpeedOverride;
 		int remainingTicks;
 
-		public FlyCircle(Actor self, int ticks = -1)
+		public FlyCircle(Actor self, int ticks = -1, int turnSpeedOverride = -1)
 		{
 			aircraft = self.Trait<Aircraft>();
-			cruiseAltitude = aircraft.Info.CruiseAltitude;
 			remainingTicks = ticks;
+			this.turnSpeedOverride = turnSpeedOverride;
 		}
 
 		public override Activity Tick(Actor self)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// We can't possibly turn this fast
 			var desiredFacing = aircraft.Facing + 64;
-			Fly.FlyToward(self, aircraft, desiredFacing, cruiseAltitude);
+			Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, turnSpeedOverride);
 
 			return this;
 		}

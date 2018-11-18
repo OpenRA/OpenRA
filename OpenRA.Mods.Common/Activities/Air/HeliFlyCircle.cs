@@ -17,10 +17,12 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliFlyCircle : Activity
 	{
 		readonly Aircraft aircraft;
+		readonly int turnSpeedOverride;
 
-		public HeliFlyCircle(Actor self)
+		public HeliFlyCircle(Actor self, int turnSpeedOverride = -1)
 		{
 			aircraft = self.Trait<Aircraft>();
+			this.turnSpeedOverride = turnSpeedOverride;
 		}
 
 		public override Activity Tick(Actor self)
@@ -42,7 +44,8 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
 			var desiredFacing = aircraft.Facing + 64;
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed / 3);
+			var turnSpeed = turnSpeedOverride > -1 ? turnSpeedOverride : aircraft.TurnSpeed;
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
 
 			return this;
 		}
