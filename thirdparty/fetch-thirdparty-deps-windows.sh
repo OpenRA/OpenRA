@@ -6,7 +6,7 @@ set -e
 download_dir="${0%/*}/download/windows"
 
 mkdir -p "${download_dir}"
-cd "${download_dir}"
+cd "${download_dir}" || exit 1
 
 if [ ! -f SDL2.dll ]; then
 	echo "Fetching SDL2 from libsdl.org"

@@ -4,7 +4,7 @@ LAUNCHER_TAG="osx-launcher-20171118"
 
 download_dir="${0%/*}/download/osx"
 mkdir -p "$download_dir"
-cd "$download_dir"
+cd "$download_dir" || exit 1
 
 if [ ! -f libSDL2.dylib ]; then
 	echo "Fetching OS X SDL2 library from GitHub."

@@ -5,7 +5,7 @@ MODLAUNCHER=$(python -c "import os; print(os.path.realpath('$0'))")
 MODARG=''
 if [ z"${*#*Game.Mod}" = z"$*" ]
 then
-	if which zenity > /dev/null
+	if command -v zenity > /dev/null
 	then
 		TITLE=$(zenity --forms --add-combo="" --combo-values="Red Alert|Tiberian Dawn|Dune 2000|Tiberian Sun" --text "Select mod" --title="" || echo "cancel")
 		if [ "$TITLE" = "cancel" ]; then exit 0
@@ -31,7 +31,7 @@ if [ $? != 0 ] && [ $? != 1 ]; then
 	elif command -v kdialog > /dev/null; then
 		kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
 	else
-		printf "${ERROR_MESSAGE}\n"
+		printf "%s\n" "${ERROR_MESSAGE}"
 	fi
 	exit 1
 fi

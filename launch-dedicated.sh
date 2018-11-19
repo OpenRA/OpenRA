@@ -14,8 +14,8 @@ EnableSingleplayer="${EnableSingleplayer:-"False"}"
 Password="${Password:-""}"
 
 while true; do
-     mono --debug OpenRA.Server.exe Game.Mod=$Mod \
-     Server.Name="$Name" Server.ListenPort=$ListenPort \
-     Server.AdvertiseOnline=$AdvertiseOnline \
-     Server.EnableSingleplayer=$EnableSingleplayer Server.Password=$Password
+     mono --debug OpenRA.Server.exe Game.Mod="$Mod" \
+     Server.Name="$Name" Server.ListenPort="$ListenPort" \
+     Server.AdvertiseOnline="$AdvertiseOnline" \
+     Server.EnableSingleplayer="$EnableSingleplayer" Server.Password="$Password"
 done
