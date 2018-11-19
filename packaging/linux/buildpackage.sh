@@ -10,12 +10,12 @@ command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&
 DEPENDENCIES_TAG="20180723"
 
 if [ $# -eq "0" ]; then
-	echo "Usage: `basename $0` version [outputdir]"
+	echo "Usage: $(basename "$0") version [outputdir]"
 	exit 1
 fi
 
 # Set the working dir to the location of this script
-cd $(dirname $0)
+cd "$(dirname "$0")" || exit 1
 
 TAG="$1"
 OUTPUTDIR="$2"
@@ -35,7 +35,7 @@ elif [[ ${TAG} == pkgtest* ]]; then
 	SUFFIX="-pkgtest"
 fi
 
-pushd "${TEMPLATE_ROOT}" > /dev/null
+pushd "${TEMPLATE_ROOT}" > /dev/null || exit 1
 
 if [ ! -d "${OUTPUTDIR}" ]; then
 	echo "Output directory '${OUTPUTDIR}' does not exist.";
@@ -44,14 +44,14 @@ fi
 
 echo "Building core files"
 
-pushd ${SRCDIR} > /dev/null
+pushd "${SRCDIR}" > /dev/null || exit 1
 make linux-dependencies
 make core SDK="-sdk:4.5"
 make version VERSION="${TAG}"
 make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
 make install-common-mod-files prefix="usr" DESTDIR="${BUILTDIR}/"
 
-popd > /dev/null
+popd > /dev/null || exit 1
 
 # Add native libraries
 echo "Downloading dependencies"
@@ -79,14 +79,14 @@ build_appimage() {
 	MOD_ID=${1}
 	DISPLAY_NAME=${2}
 	APPDIR="$(pwd)/${MOD_ID}.appdir"
-	APPIMAGE="OpenRA-$(echo ${DISPLAY_NAME} | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
+	APPIMAGE="OpenRA-$(echo "${DISPLAY_NAME}" | sed 's/ /-/g')${SUFFIX}-x86_64.AppImage"
 
 	cp -r "${BUILTDIR}" "${APPDIR}"
 
 	# Add mod files
-	pushd "${SRCDIR}" > /dev/null
+	pushd "${SRCDIR}" > /dev/null || exit 1
 	cp -r "mods/${MOD_ID}" mods/modcontent "${APPDIR}/usr/lib/openra/mods"
-	popd > /dev/null
+	popd > /dev/null || exit 1
 
 	# Add launcher and icons
 	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > AppRun.temp

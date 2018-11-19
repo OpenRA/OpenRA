@@ -11,7 +11,7 @@ set -e
 download_dir="${0%/*}/download"
 
 mkdir -p "${download_dir}"
-cd "${download_dir}"
+cd "${download_dir}" || exit 1
 
 if [ ! -f StyleCopPlus.dll ]; then
 	echo "Fetching StyleCopPlus from NuGet"
@@ -79,7 +79,7 @@ if [ ! -f FuzzyLogicLibrary.dll ]; then
 	rm -rf FuzzyLogicLibrary
 fi
 
-if [ ! -f SDL2-CS.dll -o ! -f SDL2-CS.dll.config ]; then
+if [ ! -f SDL2-CS.dll ] || [ ! -f SDL2-CS.dll.config ]; then
 	echo "Fetching SDL2-CS from GitHub."
 	if command -v curl >/dev/null 2>&1; then
 		curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20161223/SDL2-CS.dll
@@ -90,7 +90,7 @@ if [ ! -f SDL2-CS.dll -o ! -f SDL2-CS.dll.config ]; then
 	fi
 fi
 
-if [ ! -f OpenAL-CS.dll -o ! -f OpenAL-CS.dll.config ]; then
+if [ ! -f OpenAL-CS.dll ] || [ ! -f OpenAL-CS.dll.config ]; then
 	echo "Fetching OpenAL-CS from GitHub."
 	if command -v curl >/dev/null 2>&1; then
 		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll

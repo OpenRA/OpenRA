@@ -5,7 +5,7 @@ set -e
 
 download_dir="${0%/*}/download"
 mkdir -p "${download_dir}"
-cd "${download_dir}"
+cd "${download_dir}" || exit 1
 
 filename="GeoLite2-Country.mmdb.gz"
 
