@@ -101,6 +101,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
+				// Aircraft handle Repair orders directly in the Aircraft trait
+				if (self.Info.HasTraitInfo<AircraftInfo>())
+					return;
+
 				if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
 					return;
 
