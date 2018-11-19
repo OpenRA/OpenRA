@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var prefix = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "assaultmove" : "attackmove";
 
-			if (world.Map.Contains(cell))
+			if (world.Map.Contains(cell) && subjects.Any())
 			{
 				var explored = subjects.First().Actor.Owner.Shroud.IsExplored(cell);
 				var blocked = !explored && subjects.Any(a => !a.Trait.Info.MoveIntoShroud);
