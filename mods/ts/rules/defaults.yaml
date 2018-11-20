@@ -984,6 +984,8 @@
 		Name: Tree
 	MapEditorData:
 		Categories: Tree
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -1002,6 +1004,8 @@
 		Name: Rock
 	MapEditorData:
 		Categories: Decoration
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
@@ -1015,6 +1019,8 @@
 		Dimensions: 1, 1
 	MapEditorData:
 		Categories: Decoration
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Box:
 	Inherits: ^Decoration
