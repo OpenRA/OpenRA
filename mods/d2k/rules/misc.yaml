@@ -152,6 +152,8 @@ mpspawn:
 		QuantizedFacings: 1
 	MapEditorData:
 		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 waypoint:
 	Interactable:
