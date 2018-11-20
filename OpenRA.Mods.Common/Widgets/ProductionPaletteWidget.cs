@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
+		[Translate] public readonly string NextText = "";
 		[Translate] public readonly string InfiniteSymbol = "\u221E";
 
 		public int DisplayedIconCount { get; private set; }
@@ -104,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		SpriteFont overlayFont, symbolFont;
-		float2 holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset;
+		float2 nextOffset, holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -432,6 +433,7 @@ namespace OpenRA.Mods.Common.Widgets
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
 			queuedOffset = new float2(4, 2);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			nextOffset = iconOffset - overlayFont.Measure(NextText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 
 			if (ChromeMetrics.TryGet("InfiniteOffset", out infiniteOffset))
@@ -478,6 +480,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (total > 0)
 				{
 					var first = icon.Queued[0];
+					var isNext = CurrentQueue.IsNextInQueue(first);
 					var waiting = !CurrentQueue.IsProducing(first) && !first.Done;
 					if (first.Done)
 					{
@@ -502,6 +505,11 @@ namespace OpenRA.Mods.Common.Widgets
 					else if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
 							icon.Pos + queuedOffset,
+							Color.White, Color.Black, 1);
+
+					if (isNext)
+						overlayFont.DrawTextWithContrast(NextText,
+							icon.Pos + nextOffset,
 							Color.White, Color.Black, 1);
 				}
 			}

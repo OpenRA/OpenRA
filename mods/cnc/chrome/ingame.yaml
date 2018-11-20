@@ -752,6 +752,7 @@ Container@PLAYER_WIDGETS:
 			TooltipContainer: TOOLTIP_CONTAINER
 			ReadyText: Ready
 			HoldText: On Hold
+			NextText: Next
 			HotkeyPrefix: Production
 			HotkeyCount: 24
 		ProductionTabs@PRODUCTION_TABS:

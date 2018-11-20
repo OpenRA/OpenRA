@@ -50,6 +50,11 @@ namespace OpenRA.Mods.Common.Traits
 			return Queue.Contains(item);
 		}
 
+		public override bool IsNextInQueue(ProductionItem item)
+		{
+			return false;
+		}
+
 		protected override void BeginProduction(ProductionItem item, bool hasPriority)
 		{
 			// Ignore `hasPriority` as it's not relevant in parallel production context.

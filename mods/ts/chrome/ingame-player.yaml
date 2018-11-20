@@ -481,6 +481,7 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
 					HoldText: ON HOLD
+					NextText: NEXT
 					ClockPalette: iconclock
 					NotBuildableAnimation: darken
 					NotBuildablePalette: chromewithshadow
