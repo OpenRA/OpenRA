@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
+		[Translate] public readonly string NextSymbol = "\u2190";
 		[Translate] public readonly string InfiniteSymbol = "\u221E";
 
 		public int DisplayedIconCount { get; private set; }
@@ -104,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		SpriteFont overlayFont, symbolFont;
-		float2 holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset;
+		float2 holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset, infiniteSymbolSize, nextOffset;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -428,16 +429,23 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
-
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
 			queuedOffset = new float2(4, 2);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 
-			if (ChromeMetrics.TryGet("InfiniteOffset", out infiniteOffset))
+			if (ChromeMetrics.TryGet("InfiniteProductionSymbolOffset", out infiniteOffset))
 				infiniteOffset += queuedOffset;
 			else
 				infiniteOffset = queuedOffset;
+
+			if (ChromeMetrics.TryGet("NextProductionSymbolOffset", out nextOffset))
+				nextOffset += queuedOffset;
+			else
+				nextOffset = queuedOffset;
+
+			if (!ChromeMetrics.TryGet("InfiniteProductionSymbolSize", out infiniteSymbolSize))
+				infiniteSymbolSize = overlayFont.Measure(InfiniteSymbol);
 
 			if (CurrentQueue == null)
 				return;
@@ -475,10 +483,14 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var icon in icons.Values)
 			{
 				var total = icon.Queued.Count;
+
 				if (total > 0)
 				{
 					var first = icon.Queued[0];
 					var waiting = !CurrentQueue.IsProducing(first) && !first.Done;
+					var isNext = CurrentQueue.IsNextInQueue(first) || (total > 1 && CurrentQueue.IsNextInQueue(icon.Queued[1]));
+					var nextOffsetLocal = first.Infinite ? nextOffset + infiniteSymbolSize : nextOffset + new float2(overlayFont.Measure(total.ToString()).X, 0);
+
 					if (first.Done)
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
@@ -502,6 +514,11 @@ namespace OpenRA.Mods.Common.Widgets
 					else if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
 							icon.Pos + queuedOffset,
+							Color.White, Color.Black, 1);
+
+					if (isNext)
+						symbolFont.DrawTextWithContrast(NextSymbol,
+							icon.Pos + nextOffsetLocal,
 							Color.White, Color.Black, 1);
 				}
 			}

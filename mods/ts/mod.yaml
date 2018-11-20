@@ -232,6 +232,9 @@ Fonts:
 	Title:
 		Font: common|FreeSansBold.ttf
 		Size: 32
+	Symbols:
+		Font: common|FreeSans.ttf
+		Size: 10
 
 SupportsMapsFrom: ts
 

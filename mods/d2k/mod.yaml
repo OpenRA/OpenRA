@@ -174,6 +174,9 @@ Fonts:
 	Title:
 		Font: d2k|Dune2k.ttf
 		Size: 32
+	Symbols:
+		Font: common|FreeSans.ttf
+		Size: 10
 
 Missions:
 	d2k|missions.yaml

@@ -190,6 +190,9 @@ Fonts:
 	Title:
 		Font: ra|ZoodRangmah.ttf
 		Size: 48
+	Symbols:
+		Font: common|FreeSans.ttf
+		Size: 10
 
 Missions:
 	ra|missions.yaml

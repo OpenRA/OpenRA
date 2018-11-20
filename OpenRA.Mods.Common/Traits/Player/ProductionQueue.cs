@@ -232,6 +232,11 @@ namespace OpenRA.Mods.Common.Traits
 			return Queue.Count > 0 && Queue[0] == item;
 		}
 
+		public virtual bool IsNextInQueue(ProductionItem item)
+		{
+			return Queue.Count > 1 && Queue[1] == item;
+		}
+
 		public virtual IEnumerable<ProductionItem> AllQueued()
 		{
 			return Queue;

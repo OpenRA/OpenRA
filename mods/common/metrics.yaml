@@ -18,6 +18,9 @@ Metrics:
 	IncompatibleProtectedGameColor: 8B0000
 	IncompatibleVersionColor: FF0000
 	IncompatibleWaitingGameColor: 32CD32
+	InfiniteProductionSymbolOffset: 0,1
+	InfiniteProductionSymbolSize: 8,2
+	NextProductionSymbolOffset: 1,-1
 	PlayerStanceColorAllies: FFFF00
 	PlayerStanceColorEnemies: FF0000
 	PlayerStanceColorNeutrals: D2B48C
