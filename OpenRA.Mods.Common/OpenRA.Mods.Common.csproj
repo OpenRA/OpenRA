@@ -332,6 +332,8 @@
     <Compile Include="Traits\Conditions\GrantRandomCondition.cs" />
     <Compile Include="Traits\Contrail.cs" />
     <Compile Include="Traits\SupportPowers\SelectDirectionalTarget.cs" />
+    <Compile Include="Traits\Multipliers\ProductionCostMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\ProductionTimeMultiplier.cs" />
     <Compile Include="Traits\TemporaryOwnerManager.cs" />
     <Compile Include="Traits\TooltipDescription.cs" />
     <Compile Include="Traits\Health.cs" />
