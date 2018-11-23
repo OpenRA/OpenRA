@@ -845,9 +845,9 @@
 		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne
-		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
+		ActionsOnIdle: Hover, Circle
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
@@ -880,6 +880,7 @@
 		CruisingCondition: cruising
 		TakeOffOnResupply: true
 		VTOL: true
+		ActionsOnIdle: Land, Hover
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 

@@ -611,6 +611,7 @@
 		TakeOffOnResupply: true
 		VTOL: true
 		InitialFacing: 224
+		ActionsOnIdle: Land, Hover
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:

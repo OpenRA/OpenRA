@@ -115,13 +115,13 @@ MIG:
 		Speed: 223
 		RepulsionSpeed: 40
 		MaximumPitch: 56
+		ActionsOnIdle: ReturnToBase
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
 	AmmoPool:
 		Ammo: 8
 		AmmoCondition: ammo
-	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
 		DecorationBounds: 40,29,0,1
@@ -182,6 +182,7 @@ YAK:
 		Speed: 178
 		RepulsionSpeed: 40
 		MaximumPitch: 56
+		ActionsOnIdle: ReturnToBase
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -190,7 +191,6 @@ YAK:
 		PipCount: 6
 		ReloadDelay: 11
 		AmmoCondition: ammo
-	ReturnOnIdle:
 	SelectionDecorations:
 	WithMuzzleOverlay:
 	Contrail:
@@ -293,9 +293,9 @@ HELI:
 	AttackAircraft:
 		FacingTolerance: 20
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 4
 		Speed: 149
+		ActionsOnIdle: Hover
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -358,9 +358,9 @@ HIND:
 	AttackAircraft:
 		FacingTolerance: 20
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 4
 		Speed: 112
+		ActionsOnIdle: Hover
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire

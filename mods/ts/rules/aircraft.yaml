@@ -6,7 +6,6 @@ DPOD:
 	Tooltip:
 		Name: Drop Pod
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
@@ -39,7 +38,6 @@ DSHP:
 	Tooltip:
 		Name: Dropship
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
@@ -85,6 +83,7 @@ ORCA:
 		MoveIntoShroud: false
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
+		ActionsOnIdle: Hover
 	Health:
 		HP: 20000
 	Armor:
@@ -136,7 +135,7 @@ ORCAB:
 		MoveIntoShroud: false
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
-	ReturnOnIdle:
+		ActionsOnIdle: ReturnToBase
 	Health:
 		HP: 26000
 	Armor:
@@ -179,7 +178,6 @@ ORCATRAN:
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
@@ -215,7 +213,6 @@ TRNSPORT:
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
@@ -267,7 +264,7 @@ SCRIN:
 		MoveIntoShroud: false
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
-	ReturnOnIdle:
+		ActionsOnIdle: ReturnToBase
 	Health:
 		HP: 28000
 	Armor:
@@ -316,6 +313,7 @@ APACHE:
 		TurnSpeed: 5
 		Speed: 130
 		MoveIntoShroud: false
+		ActionsOnIdle: Hover
 	Health:
 		HP: 22500
 	Armor:

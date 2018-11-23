@@ -311,13 +311,13 @@
 	Repairable:
 		RepairBuildings: hpad
 	Aircraft:
-		LandWhenIdle: false
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CanHover: True
 		TakeOffOnResupply: true
 		VTOL: true
 		InitialFacing: 224
+		ActionsOnIdle: Hover
 	HiddenUnderFog:
 		Type: GroundPosition
 	ActorLostNotification:
@@ -641,10 +641,10 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	WithFacingSpriteBody:
-	FlyAwayOnIdle:
 	RejectsOrders:
 	Aircraft:
 		CruiseAltitude: 2560
+		ActionsOnIdle: LeaveMap
 	MapEditorData:
 		Categories: Aircraft
 

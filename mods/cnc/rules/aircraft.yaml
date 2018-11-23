@@ -10,11 +10,11 @@ TRAN:
 		Queue: Aircraft.GDI, Aircraft.Nod
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 150
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
+		ActionsOnIdle: Land, Hover
 	Health:
 		HP: 9000
 	Armor:
