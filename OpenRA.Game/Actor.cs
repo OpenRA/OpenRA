@@ -77,6 +77,7 @@ namespace OpenRA
 		readonly IMouseBounds[] mouseBounds;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
+		readonly INotifyBecomingIdle[] becomingIdles;
 		readonly INotifyIdle[] tickIdles;
 		readonly ITargetablePositions[] targetablePositions;
 		WPos[] staticTargetablePositions;
@@ -120,6 +121,7 @@ namespace OpenRA
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
+			becomingIdles = TraitsImplementing<INotifyBecomingIdle>().ToArray();
 			tickIdles = TraitsImplementing<INotifyIdle>().ToArray();
 			Targetables = TraitsImplementing<ITargetable>().ToArray();
 			targetablePositions = TraitsImplementing<ITargetablePositions>().ToArray();
@@ -141,8 +143,15 @@ namespace OpenRA
 			CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
 
 			if (!wasIdle && IsIdle)
-				foreach (var n in TraitsImplementing<INotifyBecomingIdle>())
+			{
+				foreach (var n in becomingIdles)
 					n.OnBecomingIdle(this);
+
+				// If IsIdle is true, it means the last CurrentActivity.Tick returned null.
+				// If a next activity has been queued via OnBecomingIdle, we need to start running it now,
+				// to avoid an 'empty' null tick where the actor will (visibly, if moving) do nothing.
+				CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
+			}
 			else if (wasIdle)
 				foreach (var tickIdle in tickIdles)
 					tickIdle.TickIdle(this);
