@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
-		EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
+		public EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
 		{
 			var owner = Players.Players[reference.InitDict.Get<OwnerInit>().PlayerName];
 
