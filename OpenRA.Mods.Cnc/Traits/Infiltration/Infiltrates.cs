@@ -42,6 +42,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
 
+		public readonly string EnterCursor = "enter";
+
 		public override object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 
@@ -113,7 +115,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly InfiltratesInfo info;
 
 		public InfiltrationOrderTargeter(InfiltratesInfo info)
-			: base("Infiltrate", 7, "enter", true, false)
+			: base("Infiltrate", 7, info.EnterCursor, true, true)
 		{
 			this.info = info;
 		}
