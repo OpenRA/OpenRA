@@ -207,8 +207,9 @@ Container@EDITOR_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
-	Logic: LoadIngamePerfLogic, MapEditorLogic
+	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic
 		ChangeZoomKey: TogglePixelDouble
+		EditPanelPadding: 5
 	Children:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
@@ -223,6 +224,71 @@ Container@EDITOR_WORLD_ROOT:
 					Visible: false
 				ActorPreview@DRAG_ACTOR_PREVIEW:
 					Visible: false
+				Container@ACTOR_SELECT_BORDER:
+					X: 32
+					Y: 32
+					Width: 32
+					Height: 32
+				Background@ACTOR_EDIT_PANEL:
+					Background: panel-black
+					Width: 269
+					Height: 114
+					Children:
+						Label@ACTOR_TYPE_LABEL:
+							X: 2
+							Y: 1
+							Width: 265
+							Height: 24
+							Align: Center
+							Font: Bold
+						Label@ACTOR_ID_LABEL:
+							X: 0
+							Y: 29
+							Width: 55
+							Height: 24
+							Text: ID
+							Align: Right
+						TextField@ACTOR_ID:
+							X: 65
+							Y: 29
+							Width: 200
+							Height: 25
+						Label@ACTOR_ID_ERROR_LABEL:
+							X: 65
+							Y: 54
+							Width: 260
+							Height: 15
+							Font: TinyBold
+							TextColor: FF0000
+						Container@ACTOR_INIT_CONTAINER:
+							Y: 57
+							Width: PARENT_RIGHT
+							Children:
+								Label@OWNERS_LABEL:
+									Width: 55
+									Height: 24
+									Text: Owner
+									Align: Right
+								DropDownButton@OWNERS_DROPDOWN:
+									X: 65
+									Width: 200
+									Height: 25
+									Font: Bold
+						Container@BUTTON_CONTAINER:
+							Y: 85
+							Children:
+								Button@DELETE_BUTTON:
+									X: 4
+									Width: 85
+									Height: 25
+									Text: Delete
+									Font: Bold
+								Button@CLOSE_BUTTON:
+									X: 180
+									Width: 85
+									Height: 25
+									Text: Close
+									Font: Bold
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM

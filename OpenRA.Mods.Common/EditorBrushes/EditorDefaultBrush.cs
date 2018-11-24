@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActorLayer editorLayer;
 		readonly Dictionary<int, ResourceType> resources;
+		public EditorActorPreview SelectedActor;
 		int2 worldPixel;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
@@ -60,9 +61,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public bool HandleMouseInput(MouseInput mi)
 		{
-			// Exclusively uses mouse wheel and right mouse buttons, but nothing else
+			// Exclusively uses mouse wheel and both mouse buttons, but nothing else
 			// Mouse move events are important for tooltips, so we always allow these through
-			if ((mi.Button != MouseButton.Right && mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll) ||
+			if ((mi.Button != MouseButton.Left && mi.Button != MouseButton.Right
+				&& mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll) ||
 				mi.Event == MouseInputEvent.Down)
 				return false;
 
@@ -84,11 +86,17 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
 
+			if (mi.Button == MouseButton.Left)
+			{
+				editorWidget.SetTooltip(null);
+				SelectedActor = underCursor;
+			}
+
 			if (mi.Button == MouseButton.Right)
 			{
 				editorWidget.SetTooltip(null);
 
-				if (underCursor != null)
+				if (underCursor != null && underCursor != SelectedActor)
 					editorLayer.Remove(underCursor);
 
 				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
