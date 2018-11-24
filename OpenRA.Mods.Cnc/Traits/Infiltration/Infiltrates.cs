@@ -23,9 +23,10 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class InfiltratesInfo : ConditionalTraitInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("What diplomatic stances can be infiltrated by this actor.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[NotificationReference("Speech")]
 		[Desc("Notification to play when a building is infiltrated.")]
-		public readonly string Notification = "BuildingInfiltrated";
+		public readonly string Notification = null;
 
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;

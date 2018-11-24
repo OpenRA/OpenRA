@@ -79,6 +79,7 @@ CHAMSPY:
 		RequiresCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
+		Notification: BuildingInfiltrated
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1,idle2

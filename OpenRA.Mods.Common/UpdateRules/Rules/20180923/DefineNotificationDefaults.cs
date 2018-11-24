@@ -76,6 +76,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}),
 			new TraitWrapper("PowerManager", new Dictionary<string, string> {
 				{ "SpeechNotification", "LowPower" }
+			}),
+			new TraitWrapper("Infiltrates", new Dictionary<string, string> {
+				{ "Notification", "BuildingInfiltrated" }
 			})
 		};
 

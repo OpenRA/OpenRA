@@ -289,6 +289,7 @@ SPY:
 		DisguisedCondition: disguise
 	Infiltrates:
 		Types: SpyInfiltrate
+		Notification: BuildingInfiltrated
 		PlayerExperience: 50
 	AutoTarget:
 		InitialStance: HoldFire
@@ -525,6 +526,7 @@ THF:
 	Passenger:
 		PipType: Blue
 	Infiltrates:
+		Notification: BuildingInfiltrated
 		PlayerExperience: 50
 	Voiced:
 		VoiceSet: ThiefVoice
