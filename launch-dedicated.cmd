@@ -6,11 +6,17 @@ set Name="Dedicated Server"
 set Mod=ra
 set ListenPort=1234
 set AdvertiseOnline=True
-set EnableSingleplayer=False
 set Password=""
+
+set RequireAuthentication=False
+set ProfileIDBlacklist=""
+set ProfileIDWhitelist=""
+
+set EnableSingleplayer=False
+set EnableSyncReports=False
 
 :loop
 
-OpenRA.Server.exe Game.Mod=%Mod% Server.Name=%Name% Server.ListenPort=%ListenPort% Server.AdvertiseOnline=%AdvertiseOnline% Server.EnableSingleplayer=%EnableSingleplayer% Server.Password=%Password%
+OpenRA.Server.exe Game.Mod=%Mod% Server.Name=%Name% Server.ListenPort=%ListenPort% Server.AdvertiseOnline=%AdvertiseOnline% Server.EnableSingleplayer=%EnableSingleplayer% Server.Password=%Password% Server.RequireAuthentication=%RequireAuthentication% Server.ProfileIDBlacklist=%ProfileIDBlacklist% Server.ProfileIDWhitelist=%ProfileIDWhitelist% Server.EnableSyncReports=%EnableSyncReports%
 
 goto loop
