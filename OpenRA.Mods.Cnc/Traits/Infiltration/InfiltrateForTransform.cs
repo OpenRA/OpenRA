@@ -18,11 +18,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("This structure can be infiltrated causing funds to be stolen.")]
+	[Desc("Transform into a different actor type.")]
 	class InfiltrateForTransformInfo : ITraitInfo
 	{
-		[ActorReference, FieldLoader.Require] public readonly string IntoActor = null;
+		[ActorReference, FieldLoader.Require]
+		public readonly string IntoActor = null;
+
 		public readonly int ForceHealthPercentage = 0;
+
 		public readonly bool SkipMakeAnims = true;
 
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
@@ -46,10 +49,17 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.Types.Overlaps(types))
 				return;
 
+			var transform = new Transform(self, info.IntoActor)
+			{
+				ForceHealthPercentage = info.ForceHealthPercentage,
+				Faction = faction,
+				SkipMakeAnims = info.SkipMakeAnims
+			};
+
 			var facing = self.TraitOrDefault<IFacing>();
-			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
-			if (facing != null) transform.Facing = facing.Facing;
-			transform.SkipMakeAnims = info.SkipMakeAnims;
+			if (facing != null)
+				transform.Facing = facing.Facing;
+
 			self.CancelActivity();
 			self.QueueActivity(transform);
 		}

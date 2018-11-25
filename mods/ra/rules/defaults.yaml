@@ -961,8 +961,11 @@
 	CaptureManager:
 	Capturable:
 		Types: husk
-		ValidStances: Enemy, Neutral, Ally
+		ValidStances: Enemy, Neutral
 	TransformOnCapture:
+		ForceHealthPercentage: 25
+	InfiltrateForTransform:
+		Types: Husk
 		ForceHealthPercentage: 25
 	WithColoredOverlay@IDISABLE:
 		Palette: disabled

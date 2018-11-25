@@ -450,6 +450,11 @@ MECH:
 	Captures:
 		CaptureTypes: husk
 		PlayerExperience: 25
+	Infiltrates:
+		Types: Husk
+		ValidStances: Ally
+		EnterCursor: goldwrench
+		PlayerExperience: 25
 	WithInfantryBody:
 		IdleSequences: idle
 		DefaultAttackSequence: repair
