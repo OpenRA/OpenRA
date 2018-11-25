@@ -74,6 +74,9 @@ namespace OpenRA
 		[Desc("Query map information from the Resource Center if they are not available locally.")]
 		public bool QueryMapRepository = true;
 
+		[Desc("Enable client-side report generation to help debug desync errors.")]
+		public bool EnableSyncReports = false;
+
 		public string TimestampFormat = "s";
 
 		public ServerSettings Clone()
