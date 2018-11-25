@@ -52,9 +52,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (NextInQueue != null)
-				return NextInQueue;
-
 			if (harv.IsFull)
 				return ActivityUtils.SequenceActivities(new DeliverResources(self), NextActivity);
 
