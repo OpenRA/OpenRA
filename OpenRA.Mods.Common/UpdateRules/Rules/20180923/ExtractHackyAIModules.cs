@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
+		readonly List<string> locations = new List<string>();
 		bool messageShown;
 
 		readonly string[] harvesterFields =
@@ -40,13 +41,19 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			var message = "You may want to check your AI yamls for possible redundant module entries.\n" +
-				"Additionally, make sure the Player actor has the ConditionManager trait and add it manually if it doesn't.";
-
 			if (!messageShown)
-				yield return message;
+				yield return "You may want to check your AI yamls for possible redundant module entries.\n" +
+					"Additionally, make sure the Player actor has the ConditionManager trait and add it manually if it doesn't.";
 
 			messageShown = true;
+
+			if (locations.Any())
+				yield return "This update rule can only autoamtically update the base HackyAI definitions,\n" +
+					"not any overrides in other files (unless they redefine Type).\n" +
+					"You will have to manually check and possibly update the following locations:\n" +
+					UpdateUtils.FormatMessageList(locations);
+
+			locations.Clear();
 		}
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
@@ -54,24 +61,39 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			if (actorNode.Key != "Player")
 				yield break;
 
-			var hackyAIs = actorNode.ChildrenMatching("HackyAI");
+			var hackyAIs = actorNode.ChildrenMatching("HackyAI", includeRemovals: false);
 			if (!hackyAIs.Any())
 				yield break;
 
 			var addNodes = new List<MiniYamlNode>();
 
-			// We add a 'default' HarvesterBotModule in any case,
+			// We add a 'default' HarvesterBotModule in any case (unless the file doesn't contain any HackyAI base definition),
 			// and only add more for AIs that define custom values for one of its fields.
 			var defaultHarvNode = new MiniYamlNode("HarvesterBotModule", "");
+			var addDefaultHarvModule = false;
 
 			foreach (var hackyAINode in hackyAIs)
 			{
-				// HackyAIInfo.Name might contain spaces, so Type is better suited to be used as condition name
-				var aiType = hackyAINode.LastChildMatching("Type").NodeValue<string>();
+				// HackyAIInfo.Name might contain spaces, so Type is better suited to be used as condition name.
+				// Type can be 'null' if the place we're updating is overriding the default rules (like a map's rules.yaml).
+				// If that's the case, it's better to not perform most of the updates on this particular yaml file,
+				// as most - or more likely all - necessary updates will already have been performed on the base ai yaml.
+				var aiTypeNode = hackyAINode.LastChildMatching("Type");
+				var aiType = aiTypeNode != null ? aiTypeNode.NodeValue<string>() : null;
+				if (aiType == null)
+				{
+					locations.Add("{0} ({1})".F(hackyAINode.Key, hackyAINode.Location.Filename));
+					continue;
+				}
+
+				addDefaultHarvModule = true;
+
 				var conditionString = "enable-" + aiType + "-ai";
 				var requiresCondition = new MiniYamlNode("RequiresCondition", conditionString);
 
 				var addGrantConditionOnBotOwner = true;
+
+				// Don't add GrantConditionOnBotOwner if it's already been added with matching condition
 				var grantBotConditions = actorNode.ChildrenMatching("GrantConditionOnBotOwner");
 				foreach (var grant in grantBotConditions)
 					if (grant.LastChildMatching("Condition").NodeValue<string>() == conditionString)
@@ -140,7 +162,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				}
 			}
 
-			addNodes.Add(defaultHarvNode);
+			if (addDefaultHarvModule)
+				addNodes.Add(defaultHarvNode);
 
 			foreach (var node in addNodes)
 				actorNode.AddNode(node);
