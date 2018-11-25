@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("This structure can be infiltrated causing funds to be stolen.")]
+	[Desc("Funds are transferred from the owner to the infiltrator.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
 		public readonly BitSet<TargetableType> Types;

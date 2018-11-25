@@ -31,12 +31,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("What diplomatic stances can be infiltrated by this actor.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
-		[Desc("Behaviour when entering the structure.",
+		[Desc("Behaviour when entering the target.",
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when a building is infiltrated.")]
+		[Desc("Notification to play when a target is infiltrated.")]
 		public readonly string Notification = null;
 
 		[Desc("Experience to grant to the infiltrating player.")]
