@@ -157,6 +157,7 @@ namespace OpenRA.Server
 					Map = settings.Map,
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || !dedicated,
+					EnableSyncReports = settings.EnableSyncReports,
 					GameUid = Guid.NewGuid().ToString(),
 					Dedicated = dedicated
 				}

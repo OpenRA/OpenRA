@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA.Network
 {
@@ -67,7 +68,7 @@ namespace OpenRA.Network
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
-			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.NonBotClients.Count() > 1;
+			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
 			for (var i = NetFrameNumber; i <= FramesAhead; i++)
