@@ -6,6 +6,8 @@
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 1tnk
+	InfiltrateForTransform:
+		IntoActor: 1tnk
 	RenderSprites:
 		Image: 1tnk.destroyed
 
@@ -16,6 +18,8 @@
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
+		IntoActor: 2tnk
+	InfiltrateForTransform:
 		IntoActor: 2tnk
 	RenderSprites:
 		Image: 2tnk.destroyed
@@ -28,6 +32,8 @@
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 3tnk
+	InfiltrateForTransform:
+		IntoActor: 3tnk
 	RenderSprites:
 		Image: 3tnk.destroyed
 
@@ -39,6 +45,8 @@
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: 4tnk
+	InfiltrateForTransform:
+		IntoActor: 4tnk
 	RenderSprites:
 		Image: 4tnk.destroyed
 
@@ -47,6 +55,8 @@ HARV.FullHusk:
 	Tooltip:
 		Name: Husk (Ore Truck)
 	TransformOnCapture:
+		IntoActor: harv
+	InfiltrateForTransform:
 		IntoActor: harv
 	RenderSprites:
 		Image: hhusk
@@ -57,6 +67,8 @@ HARV.EmptyHusk:
 		Name: Husk (Ore Truck)
 	TransformOnCapture:
 		IntoActor: harv
+	InfiltrateForTransform:
+		IntoActor: harv
 	RenderSprites:
 		Image: hhusk2
 
@@ -65,6 +77,8 @@ MCV.Husk:
 	Tooltip:
 		Name: Husk (Mobile Construction Vehicle)
 	TransformOnCapture:
+		IntoActor: mcv
+	InfiltrateForTransform:
 		IntoActor: mcv
 	RenderSprites:
 		Image: mcvhusk
@@ -77,6 +91,8 @@ MGG.Husk:
 		Anim: spinner-idle
 		Offset: -299,0,171
 	TransformOnCapture:
+		IntoActor: mgg
+	InfiltrateForTransform:
 		IntoActor: mgg
 	RenderSprites:
 		Image: mgg.destroyed
@@ -112,6 +128,7 @@ TRAN.Husk1:
 		Image: tran1husk
 	-Capturable:
 	-TransformOnCapture:
+	-InfiltrateForTransform:
 
 TRAN.Husk2:
 	Inherits: ^Husk
@@ -121,6 +138,7 @@ TRAN.Husk2:
 		Image: tran2husk
 	-Capturable:
 	-TransformOnCapture:
+	-InfiltrateForTransform:
 
 BADR.Husk:
 	Inherits: ^PlaneHusk
