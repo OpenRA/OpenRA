@@ -98,9 +98,6 @@ namespace OpenRA
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 
-		[Desc("Show incompatible games in server browser.")]
-		public bool IgnoreVersionMismatch = false;
-
 		public bool StrictActivityChecking = false;
 
 		[Desc("Check whether a newer version is available online.")]
