@@ -187,7 +187,8 @@ namespace OpenRA.Network
 			Connection.SendSync(NetFrameNumber, OrderIO.SerializeSync(World.SyncHash()));
 
 			if (generateSyncReport)
-				syncReport.UpdateSyncReport();
+				using (new PerfSample("sync_report"))
+					syncReport.UpdateSyncReport();
 
 			++NetFrameNumber;
 		}
