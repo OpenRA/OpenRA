@@ -198,7 +198,6 @@ namespace OpenRA.Network
 			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
 			public bool AllowSpectators = true;
-			public bool AllowVersionMismatch;
 			public string GameUid;
 			public bool EnableSingleplayer;
 			public bool EnableSyncReports;
