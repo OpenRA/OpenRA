@@ -917,6 +917,8 @@
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Tree
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -937,6 +939,8 @@
 	ScriptTriggers:
 	MapEditorData:
 		Categories: Tree
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^BasicHusk:
 	Inherits@1: ^SpriteActor
@@ -1061,6 +1065,8 @@
 	MapEditorData:
 		RequireTilesets: DESERT
 		Categories: Decoration
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
