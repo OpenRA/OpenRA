@@ -935,6 +935,8 @@
 	HitShape:
 	MapEditorData:
 		Categories: Tree
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^TreeHusk:
 	Inherits@1: ^SpriteActor
@@ -953,6 +955,8 @@
 	ScriptTriggers:
 	MapEditorData:
 		Categories: Tree
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^TibTree:
 	Inherits@1: ^SpriteActor
@@ -973,6 +977,8 @@
 	WithMakeAnimation:
 	MapEditorData:
 		Categories: Resource spawn
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -994,6 +1000,8 @@
 	MapEditorData:
 		RequireTilesets: DESERT
 		Categories: Decoration
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^CommonHuskDefaults:
 	Inherits@1: ^SpriteActor
@@ -1080,6 +1088,8 @@
 	ShakeOnDeath:
 		Duration: 15
 		Intensity: 6
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Crate:
 	Inherits@1: ^SpriteActor
