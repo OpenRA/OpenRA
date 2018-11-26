@@ -28,6 +28,8 @@ spicebloom.spawnpoint:
 			Radius: 1
 	MapEditorData:
 		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 spicebloom:
 	HiddenUnderShroud:
@@ -64,6 +66,8 @@ spicebloom:
 	MapEditorData:
 		Categories: System
 	Interactable:
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 sandworm:
 	Inherits@1: ^SpriteActor
@@ -124,6 +128,8 @@ sandworm:
 	RevealOnFire:
 		Duration: 50
 		Radius: 2c512
+	RequiresSpecificOwners:
+		ValidOwnerNames: Creeps
 
 sietch:
 	Inherits: ^Building
