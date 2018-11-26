@@ -221,6 +221,8 @@ MINE:
 	SeedsResource:
 	MapEditorData:
 		Categories: Resource spawn
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 GMINE:
 	Inherits@1: ^SpriteActor
@@ -241,6 +243,8 @@ GMINE:
 		ResourceType: Gems
 	MapEditorData:
 		Categories: Resource spawn
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 RAILMINE:
 	Inherits@1: ^SpriteActor
@@ -257,6 +261,8 @@ RAILMINE:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 QUEE:
 	Inherits@1: ^SpriteActor
