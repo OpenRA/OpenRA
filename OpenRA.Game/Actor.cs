@@ -48,6 +48,7 @@ namespace OpenRA
 		public Activity CurrentActivity { get; private set; }
 
 		public int Generation;
+		public Actor ReplacedByActor;
 
 		public IEffectiveOwner EffectiveOwner { get; private set; }
 		public IOccupySpace OccupiesSpace { get; private set; }
