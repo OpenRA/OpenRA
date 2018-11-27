@@ -132,6 +132,8 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 					nt.AfterTransform(a);
 
+				self.ReplacedByActor = a;
+
 				if (selected)
 					w.Selection.Add(w, a);
 
