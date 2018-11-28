@@ -81,8 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// IsValid check filters out Frozen Actors that have not initizialized their Owner
 				foreach (var scrutinized in checkFrozen)
-					if (scrutinized.IsValid)
-						answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.Stances[scrutinized.Owner], firedBy);
 			}
 
 			return answer;

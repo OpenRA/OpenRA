@@ -323,11 +323,28 @@ namespace OpenRA.Traits
 			return fa;
 		}
 
-		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region)
+		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region, bool onlyVisible = true)
 		{
 			var tl = region.TopLeft;
 			var br = region.BottomRight;
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y)).Select(FromID);
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
+				.Select(FromID)
+				.Where(fa => fa.IsValid && (!onlyVisible || fa.Visible));
+		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInCircle(World world, WPos origin, WDist r, bool onlyVisible = true)
+		{
+			var centerCell = world.Map.CellContaining(origin);
+			var cellRange = (r.Length + 1023) / 1024;
+			var tl = centerCell - new CVec(cellRange, cellRange);
+			var br = centerCell + new CVec(cellRange, cellRange);
+
+			// Target ranges are calculated in 2D, so ignore height differences
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
+				.Select(FromID)
+				.Where(fa => fa.IsValid &&
+					(!onlyVisible || fa.Visible) &&
+					(fa.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
 		}
 	}
 }
