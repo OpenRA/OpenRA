@@ -15,13 +15,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[RequireExplicitImplementation]
-	public interface IConditionTimerWatcher
-	{
-		string Condition { get; }
-		void Update(int duration, int remaining);
-	}
-
 	[Desc("Allows a condition to be granted from an external source (Lua, warheads, etc).")]
 	public class ExternalConditionInfo : ITraitInfo, Requires<ConditionManagerInfo>
 	{

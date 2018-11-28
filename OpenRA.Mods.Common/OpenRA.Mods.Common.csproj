@@ -315,6 +315,7 @@
     <Compile Include="Traits\CaptureProgressBlink.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPlayerResources.cs" />
     <Compile Include="Traits\GrantExternalConditionToProduced.cs" />
+    <Compile Include="Traits\Conditions\GrantTimedCondition.cs" />
     <Compile Include="Traits\Multipliers\CreatesShroudMultiplier.cs" />
     <Compile Include="Traits\Multipliers\RevealsShroudMultiplier.cs" />
     <Compile Include="Traits\Conditions\GrantConditionAfterDelay.cs" />

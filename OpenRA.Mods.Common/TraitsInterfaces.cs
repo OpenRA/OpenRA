@@ -518,4 +518,11 @@ namespace OpenRA.Mods.Common.Traits
 			OnChange = onChange;
 		}
 	}
+
+	[RequireExplicitImplementation]
+	public interface IConditionTimerWatcher
+	{
+		string Condition { get; }
+		void Update(int duration, int remaining);
+	}
 }
