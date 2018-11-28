@@ -56,6 +56,8 @@ namespace OpenRA
 		public readonly PlayerReference PlayerReference;
 		public readonly bool IsBot;
 		public readonly string BotType;
+		public readonly Shroud Shroud;
+		public readonly FrozenActorLayer FrozenActorLayer;
 
 		/// <summary>The faction (including Random, etc) that was selected in the lobby.</summary>
 		public readonly FactionInfo DisplayFaction;
@@ -65,7 +67,6 @@ namespace OpenRA
 		public bool HasObjectives = false;
 		public bool Spectating;
 
-		public Shroud Shroud;
 		public World World { get; private set; }
 
 		readonly bool inMissionMap;
@@ -156,6 +157,7 @@ namespace OpenRA
 			var playerActorType = world.Type == WorldType.Editor ? "EditorPlayer" : "Player";
 			PlayerActor = world.CreateActor(playerActorType, new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
+			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
 
 			// Enable the bot logic on the host
 			IsBot = BotType != null;

@@ -112,11 +112,10 @@ namespace OpenRA
 										if (world == null || !TryGetActorFromUInt(world, playerActorID, out playerActor))
 											break;
 
-										var frozenLayer = playerActor.TraitOrDefault<FrozenActorLayer>();
-										if (frozenLayer == null)
+										if (playerActor.Owner.FrozenActorLayer == null)
 											break;
 
-										var frozen = frozenLayer.FromID(frozenActorID);
+										var frozen = playerActor.Owner.FrozenActorLayer.FromID(frozenActorID);
 										if (frozen != null)
 											target = Target.FromFrozenActor(frozen);
 

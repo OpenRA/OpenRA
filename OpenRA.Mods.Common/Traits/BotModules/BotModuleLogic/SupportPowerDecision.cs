@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Evaluates the attractiveness of a position according to all considerations</summary>
-		public int GetAttractiveness(WPos pos, Player firedBy, FrozenActorLayer frozenLayer)
+		public int GetAttractiveness(WPos pos, Player firedBy)
 		{
 			var answer = 0;
 			var world = firedBy.World;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				var delta = new WVec(radiusToUse, radiusToUse, WDist.Zero);
 				var tl = world.Map.CellContaining(pos - delta);
 				var br = world.Map.CellContaining(pos + delta);
-				var checkFrozen = frozenLayer.FrozenActorsInRegion(new CellRegion(world.Map.Grid.Type, tl, br));
+				var checkFrozen = firedBy.FrozenActorLayer.FrozenActorsInRegion(new CellRegion(world.Map.Grid.Type, tl, br));
 
 				// IsValid check filters out Frozen Actors that have not initizialized their Owner
 				foreach (var scrutinized in checkFrozen)

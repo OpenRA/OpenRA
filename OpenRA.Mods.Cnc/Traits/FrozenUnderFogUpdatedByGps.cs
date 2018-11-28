@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			public readonly GpsWatcher GpsWatcher;
 			public Traits(Player player, FrozenUnderFogUpdatedByGps frozenUnderFogUpdatedByGps)
 			{
-				FrozenActorLayer = player.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+				FrozenActorLayer = player.FrozenActorLayer;
 				GpsWatcher = player.PlayerActor.TraitOrDefault<GpsWatcher>();
 				GpsWatcher.RegisterForOnGpsRefreshed(frozenUnderFogUpdatedByGps.self, frozenUnderFogUpdatedByGps);
 			}
