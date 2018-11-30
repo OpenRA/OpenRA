@@ -1,0 +1,80 @@
+Player:
+    PlayerResources:
+        DefaultCash: 1500
+	-ConquestVictoryConditions:
+    MissionObjectives: 
+        EarlyGameOver: true
+    Shroud:
+        FogCheckboxLocked: true
+        FogCheckboxEnabled: false
+      
+World:
+    LuaScript:
+		Scripts: sca01ea.lua
+    MissionData:
+        BackgroundVideo: antintro.vqa
+        Briefing: We've lost contact with one of our outposts. Before it went off-line, we recieved a brief communique about giant ants. We're unsure what to make of this report, so we want you to investigate. \nScout the area, bring the outpost back on-line, and report your findings. If there is a threat, reinforcements will be sent in to help you. \nKeep the base functional and radio contact open -- we don't want to lose the outpost again.
+    MapOptions:
+        TechLevel: low
+
+Ant3:
+	Inherits: Ant
+	Tooltip:
+		Name: Giant Ant
+		GenericName: Ant
+	Health:
+		HP: 16000
+	Armament:
+		Weapon: mandible
+    RenderSprites:
+		Image: ant
+
+Ant2:
+	Inherits: Ant
+	Tooltip:
+		Name: Fire Ant
+		GenericName: Ant
+	Health:
+		HP: 16000
+	Armament:
+		Weapon: FireballLauncher
+    RenderSprites:
+		Image: ant
+
+TRAN.Insertion:
+	Inherits: TRAN
+	WithFacingSpriteBody:
+	RevealsShroud:
+		Range: 0c0
+	RejectsOrders:
+	-Selectable:
+	Cargo:
+		MaxWeight: 0
+	RenderSprites:
+		Image: tran
+	Interactable:
+ 
+
+1TNK:
+    Buildable:
+        Prerequisites: ~disabled	
+TRUK:
+    Buildable:
+        Prerequisites: ~disabled	
+E2:
+    Buildable:
+        Queue: Infantry
+        BuildAtProductionType: Soldier
+        BuildPaletteOrder: 40
+        Prerequisites: ~tent, ~techlevel.infonly	
+E3:
+    Buildable:
+        Prerequisites: ~disabled	
+E6:
+    Buildable:
+        Prerequisites: ~disabled	
+MNLY:
+    Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: fix
