@@ -85,8 +85,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
-				return null;
+			if (!Info.MoveIntoShroud && order.Target.Type != TargetType.Invalid)
+			{
+				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
+				if (!self.Owner.Shroud.IsExplored(cell))
+					return null;
+			}
 
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 				return Info.Voice;
@@ -116,10 +120,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
+				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
+				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				TargetLocation = move.NearestMoveableCell(order.TargetLocation);
+				TargetLocation = move.NearestMoveableCell(cell);
 				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
 				Activate(self, order.OrderString == "AssaultMove");
 			}
