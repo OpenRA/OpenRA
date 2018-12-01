@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == OrderID)
-				Location = order.TargetLocation;
+				Location = self.World.Map.CellContaining(order.Target.CenterPosition);
 		}
 
 		public static bool IsForceSet(Order order)
