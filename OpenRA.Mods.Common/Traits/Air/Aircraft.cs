@@ -740,12 +740,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(order.TargetLocation))
-				return null;
-
 			switch (order.OrderString)
 			{
 				case "Move":
+					if (!Info.MoveIntoShroud && order.Target.Type != TargetType.Invalid)
+					{
+						var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
+						if (!self.Owner.Shroud.IsExplored(cell))
+							return null;
+					}
+
+					return Info.Voice;
 				case "Enter":
 				case "Stop":
 					return Info.Voice;
@@ -759,8 +764,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Move")
 			{
-				var cell = self.World.Map.Clamp(order.TargetLocation);
-
+				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
