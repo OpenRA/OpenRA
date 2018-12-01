@@ -48,17 +48,15 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				self.World.AddFrameEndTask(w =>
 				{
-					var location = self.World.Map.CenterOfCell(order.TargetLocation);
-
 					PlayLaunchSounds();
-					Game.Sound.Play(SoundType.World, info.DeploySound, location);
+					Game.Sound.Play(SoundType.World, info.DeploySound, order.Target.CenterPosition);
 
 					if (!string.IsNullOrEmpty(info.EffectSequence) && !string.IsNullOrEmpty(info.EffectPalette))
-						w.Add(new SpriteEffect(location, w, info.EffectImage, info.EffectSequence, info.EffectPalette));
+						w.Add(new SpriteEffect(order.Target.CenterPosition, w, info.EffectImage, info.EffectSequence, info.EffectPalette));
 
 					var actor = w.CreateActor(info.Actor, new TypeDictionary
 					{
-						new LocationInit(order.TargetLocation),
+						new LocationInit(self.World.Map.CellContaining(order.Target.CenterPosition)),
 						new OwnerInit(self.Owner),
 					});
 

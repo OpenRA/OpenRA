@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.Activate(self, order, manager);
 
-			SendParatroopers(self, self.World.Map.CenterOfCell(order.TargetLocation));
+			SendParatroopers(self, order.Target.CenterPosition);
 		}
 
 		public Actor[] SendParatroopers(Actor self, WPos target, bool randomize = true, int dropFacing = 0)

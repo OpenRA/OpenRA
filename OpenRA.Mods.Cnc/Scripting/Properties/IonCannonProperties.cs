@@ -30,7 +30,7 @@ namespace OpenRA.Mods.CnC.Scripting
 		[Desc("Activate the actor's IonCannonPower.")]
 		public void ActivateIonCannon(CPos target)
 		{
-			icp.Activate(Self, target);
+			icp.Activate(Self, Target.FromCell(Self.World, target));
 		}
 	}
 }

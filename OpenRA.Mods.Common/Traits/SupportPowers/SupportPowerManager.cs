@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (a.Self.OccupiesSpace == null)
 						return 0;
 
-					return (a.Self.CenterPosition - a.Self.World.Map.CenterOfCell(order.TargetLocation)).HorizontalLengthSquared;
+					return (a.Self.CenterPosition - order.Target.CenterPosition).HorizontalLengthSquared;
 				});
 
 			if (power == null)
