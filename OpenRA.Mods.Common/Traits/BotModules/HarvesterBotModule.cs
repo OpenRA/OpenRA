@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Tell the idle harvester to quit slacking:
 				var newSafeResourcePatch = FindNextResource(h.Key, h.Value);
 				AIUtils.BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(h.Key, newSafeResourcePatch));
-				bot.QueueOrder(new Order("Harvest", h.Key, Target.FromCell(world, newSafeResourcePatch), false));
+				bot.QueueOrder(new Order("Harvest", h.Key, newSafeResourcePatch, false));
 			}
 
 			// Less harvesters than refineries - build a new harvester
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		CPos FindNextResource(Actor actor, HarvesterTraitWrapper harv)
+		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
 			Func<CPos, bool> isValidResource = cell =>
 				domainIndex.IsPassable(actor.Location, cell, harv.LocomotorInfo) &&
@@ -153,9 +153,9 @@ namespace OpenRA.Mods.Common.Traits
 					.FromPoint(actor.Location));
 
 			if (path.Count == 0)
-				return CPos.Zero;
+				return Target.Invalid;
 
-			return path[0];
+			return Target.FromCell(world, path[0]);
 		}
 	}
 }
