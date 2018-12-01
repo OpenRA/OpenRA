@@ -44,7 +44,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
-			attack.AttackTarget(Target.FromCell(self.World, order.TargetLocation), false, false, true);
+
+			attack.AttackTarget(order.Target, false, false, true);
 		}
 
 		protected override void Created(Actor self)

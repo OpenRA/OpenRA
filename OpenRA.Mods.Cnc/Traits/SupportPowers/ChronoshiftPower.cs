@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class ChronoshiftPower : SupportPower
 	{
-		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info) : base(self, info) { }
+		public ChronoshiftPower(Actor self, ChronoshiftPowerInfo info)
+			: base(self, info) { }
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
@@ -62,6 +63,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			base.Activate(self, order, manager);
 
+			var info = (ChronoshiftPowerInfo)Info;
+			var targetDelta = self.World.Map.CellContaining(order.Target.CenterPosition) - order.ExtraLocation;
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
 				var cs = target.TraitsImplementing<Chronoshiftable>()
@@ -70,11 +73,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (cs == null)
 					continue;
 
-				var targetCell = target.Location + (order.TargetLocation - order.ExtraLocation);
-				var cpi = Info as ChronoshiftPowerInfo;
+				var targetCell = target.Location + targetDelta;
 
 				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
-					cs.Teleport(target, targetCell, cpi.Duration, cpi.KillCargo, self);
+					cs.Teleport(target, targetCell, info.Duration, info.KillCargo, self);
 			}
 		}
 

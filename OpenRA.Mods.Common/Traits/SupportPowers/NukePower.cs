@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Activate(self, order, manager);
 			PlayLaunchSounds();
 
-			Activate(self, self.World.Map.CenterOfCell(order.TargetLocation));
+			Activate(self, order.Target.CenterPosition);
 		}
 
 		public void Activate(Actor self, WPos targetPosition)

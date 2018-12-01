@@ -71,9 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (wsb != null && wsb.DefaultAnimation.HasSequence(info.Sequence))
 				wsb.PlayCustomAnimation(self, info.Sequence);
 
-			Game.Sound.Play(SoundType.World, info.OnFireSound, self.World.Map.CenterOfCell(order.TargetLocation));
+			Game.Sound.Play(SoundType.World, info.OnFireSound, order.Target.CenterPosition);
 
-			foreach (var a in UnitsInRange(order.TargetLocation))
+			foreach (var a in UnitsInRange(self.World.Map.CellContaining(order.Target.CenterPosition)))
 			{
 				var external = a.TraitsImplementing<ExternalCondition>()
 					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));

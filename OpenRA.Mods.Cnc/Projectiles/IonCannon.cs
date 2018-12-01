@@ -28,13 +28,13 @@ namespace OpenRA.Mods.Cnc.Effects
 		int weaponDelay;
 		bool impacted = false;
 
-		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, CPos location, string effect, string sequence, string palette, int delay)
+		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, Target target, string effect, string sequence, string palette, int delay)
 		{
+			this.target = target;
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.palette = palette;
 			weaponDelay = delay;
-			target = Target.FromCell(world, location);
 			anim = new Animation(world, effect);
 			anim.PlayThen(sequence, () => Finish(world));
 
