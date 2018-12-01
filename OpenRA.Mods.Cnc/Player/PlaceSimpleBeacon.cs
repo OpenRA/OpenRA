@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (order.OrderString != "PlaceBeacon")
 				return;
 
-			var pos = self.World.Map.CenterOfCell(order.TargetLocation);
+			var pos = order.Target.CenterPosition;
 
 			self.World.AddFrameEndTask(w =>
 			{
