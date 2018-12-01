@@ -49,17 +49,6 @@ namespace OpenRA
 		public bool SuppressVisualFeedback;
 		public Target VisualFeedbackTarget;
 
-		/// <summary>
-		/// DEPRECATED: Use Target instead.
-		/// </summary>
-		public CPos TargetLocation
-		{
-			get
-			{
-				return Target.SerializableCell ?? CPos.Zero;
-			}
-		}
-
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
 		Order(string orderString, Actor subject, Target target, string targetString, bool queued, CPos extraLocation, uint extraData)
@@ -331,10 +320,9 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t TargetActor: \"{2}\" \n\t TargetLocation: {3}." +
-				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
-				OrderString, Subject, Target.Type == TargetType.Actor ? Target.Actor.Info.Name : null, TargetLocation,
-				TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
+			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t Target: \"{2}\"." +
+				"\n\t TargetString: \"{3}\".\n\t IsImmediate: {4}.\n\t Player(PlayerName): {5}\n").F(
+				OrderString, Subject, Target, TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
 		}
 	}
 }
