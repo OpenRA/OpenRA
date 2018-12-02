@@ -102,24 +102,6 @@ namespace OpenRA.Mods.Common.Widgets
 				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
 					mapResources[cell] = new ResourceTile();
 			}
-			else if (mi.Event == MouseInputEvent.Scroll)
-			{
-				if (underCursor != null)
-				{
-					// Test case / demonstration of how to edit an existing actor
-					var facing = underCursor.Init<FacingInit>();
-					if (facing != null)
-						underCursor.ReplaceInit(new FacingInit((facing.Value(world) + mi.ScrollDelta) % 256));
-					else if (underCursor.Info.HasTraitInfo<UsesInit<FacingInit>>())
-						underCursor.ReplaceInit(new FacingInit(mi.ScrollDelta));
-
-					var turret = underCursor.Init<TurretFacingInit>();
-					if (turret != null)
-						underCursor.ReplaceInit(new TurretFacingInit((turret.Value(world) + mi.ScrollDelta) % 256));
-					else if (underCursor.Info.HasTraitInfo<UsesInit<TurretFacingInit>>())
-						underCursor.ReplaceInit(new TurretFacingInit(mi.ScrollDelta));
-				}
-			}
 
 			return true;
 		}

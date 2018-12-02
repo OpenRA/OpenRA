@@ -19,8 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class TDGunboatInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo,
-		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
+	public class TDGunboatInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, IActorPreviewInitInfo
 	{
 		public readonly int Speed = 28;
 

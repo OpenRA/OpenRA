@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>
 	{
 		[Desc("It will try to hunt down the enemy if it is set to AttackAnything.")]
 		public readonly bool AllowMovement = true;

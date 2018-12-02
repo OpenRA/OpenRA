@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : PausableConditionalTraitInfo, UsesInit<TurretFacingInit>, Requires<BodyOrientationInfo>, IActorPreviewInitInfo
+	public class TurretedInfo : PausableConditionalTraitInfo, Requires<BodyOrientationInfo>, IActorPreviewInitInfo
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
