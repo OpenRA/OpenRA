@@ -72,35 +72,16 @@ HuntTriggerActivator = { SAM03, SAM04, SAM05, SAM06, LightTank1, LightTank2, Lig
 AttackCellTriggerActivator = { CPos.New(57,26), CPos.New(56,26), CPos.New(57,25), CPos.New(56,25), CPos.New(57,24), CPos.New(56,24), CPos.New(57,23), CPos.New(56,23), CPos.New(57,22), CPos.New(56,22), CPos.New(57,21), CPos.New(56,21) }
 AttackUnits = { LightTank2, LightTank3 }
 
-KillCounter = 0
 
-WorldLoaded = function()
-	player = Player.GetPlayer("GDI")
-	enemy = Player.GetPlayer("Nod")
+function WorldLoaded()
+	InitObjectives(GDI)
+
 	civilian = Player.GetPlayer("Neutral")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		CommandoType = "rmbo.easy"
 		KillCounterHuntThreshold = 30
-	elseif Map.LobbyOption("difficulty") == "hard" then
+	elseif Difficulty == "hard" then
 		CommandoType = "rmbo.hard"
 		KillCounterHuntThreshold = 15
 	else
@@ -108,21 +89,22 @@ WorldLoaded = function()
 		KillCounterHuntThreshold = 20
 	end
 
-	destroyObjective = player.AddPrimaryObjective("Destroy the Nod ********.")
+	destroyObjective = GDI.AddPrimaryObjective("Destroy the Nod ********.")
 
 	Trigger.OnKilled(Airfield, function()
-		player.MarkCompletedObjective(destroyObjective)
+		GDI.MarkCompletedObjective(destroyObjective)
 	end)
 
 	Utils.Do(NodBase, function(structure)
 		Trigger.OnKilled(structure, function()
-			player.MarkCompletedObjective(destroyObjective)
+			GDI.MarkCompletedObjective(destroyObjective)
 		end)
 	end)
 
 	Trigger.OnAllKilled(IslandSamSites, function()
-		TransportFlare = Actor.Create('flare', true, { Owner = player, Location = Flare.Location })
-		Reinforcements.ReinforceWithTransport(player, 'tran', nil, { lstStart.Location, TransportRally.Location })
+		TransportFlare = Actor.Create('flare', true, { Owner = GDI, Location = Flare.Location })
+		Media.PlaySpeechNotification(GDI, "Reinforce")
+		Reinforcements.ReinforceWithTransport(GDI, 'tran', nil, { lstStart.Location, TransportRally.Location })
 	end)
 
 	Trigger.OnKilled(CivFleeTrigger, function()
@@ -140,7 +122,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(AttackCellTriggerActivator, function(a, id)
-		if a.Owner == player then
+		if a.Owner == GDI then
 			Utils.Do(AttackUnits, function(unit)
 				if not unit.IsDead then
 					unit.AttackMove(waypoint10.Location)
@@ -178,67 +160,39 @@ WorldLoaded = function()
 	Buggy2.Patrol(Buggy2Route, true, 25)
 
 	Camera.Position = UnitsRally.CenterPosition
-	Reinforce({ CommandoType })
+	ReinforceWithLandingCraft(GDI, { CommandoType }, lstStart.Location, lstEnd.Location, UnitsRally.Location)
 end
 
-Tick = function()
-	if DateTime.GameTime > DateTime.Seconds(5) and player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(destroyObjective)
+
+function Tick()
+	if DateTime.GameTime > DateTime.Seconds(5) and GDI.HasNoRequiredUnits() then
+		GDI.MarkFailedObjective(destroyObjective)
 	end
 end
 
-Reinforce = function(units)
-	Media.PlaySpeechNotification(player, "Reinforce")
-	ReinforceWithLandingCraft(units, lstStart.Location, lstEnd.Location, UnitsRally.Location)
-end
 
-ReinforceWithLandingCraft = function(units, transportStart, transportUnload, rallypoint)
-	local transport = Actor.Create("oldlst", true, { Owner = player, Facing = 0, Location = transportStart })
-	local subcell = 0
-	Utils.Do(units, function(a)
-		transport.LoadPassenger(Actor.Create(a, false, { Owner = transport.Owner, Facing = transport.Facing, Location = transportUnload, SubCell = subcell }))
-		subcell = subcell + 1
-	end)
-
-	transport.ScriptedMove(transportUnload)
-
-	transport.CallFunc(function()
-		Utils.Do(units, function()
-			local a = transport.UnloadPassenger()
-			a.IsInWorld = true
-			a.MoveIntoWorld(transport.Location - CVec.New(0, 1))
-
-			if rallypoint ~= nil then
-				a.Move(rallypoint)
-			end
-		end)
-	end)
-
-	transport.Wait(5)
-	transport.ScriptedMove(transportStart)
-	transport.Destroy()
-end
-
-NodKillCounter = function()
-	local enemyUnits = enemy.GetGroundAttackers()
-	Utils.Do(enemyUnits, function(unit)
+function NodKillCounter()
+	local NodUnits = Nod.GetGroundAttackers()
+	Utils.Do(NodUnits, function(unit)
 		Trigger.OnKilled(unit, function()
-			KillCounter = KillCounter + 1
-			if KillCounter >= KillCounterHuntThreshold then
+			KillCounter()
+			if kills >= KillCounterHuntThreshold then
 				HuntTriggerFunction()
 			end
 		end)
 	end)
 end
 
-HuntTriggerFunction = function()
-	local list = enemy.GetGroundAttackers()
+
+function HuntTriggerFunction()
+	local list = Nod.GetGroundAttackers()
 	Utils.Do(list, function(unit)
 		IdleHunt(unit)
 	end)
 end
 
-IdleHunt = function(unit)
+
+function IdleHunt(unit)
 	if not unit.IsDead then
 		Trigger.OnIdle(unit, unit.Hunt)
 	end

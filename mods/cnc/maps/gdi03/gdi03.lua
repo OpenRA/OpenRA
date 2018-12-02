@@ -13,8 +13,9 @@ NodAttackRoutes = { { AttackWaypoint }, { AttackWaypoint }, { AttackRallypoint1,
 InfantryReinforcements = { "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2" }
 JeepReinforcements = { "jeep", "jeep", "jeep" }
 
-AttackPlayer = function()
-	if NodBarracks.IsDead or NodBarracks.Owner == player then
+
+function AttackGDI()
+	if NodBarracks.IsDead or NodBarracks.Owner == GDI then
 		return
 	end
 
@@ -37,57 +38,40 @@ AttackPlayer = function()
 				end
 			end)
 		end)
-		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(15), AttackPlayer) end)
+		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(15), AttackGDI) end)
 	end
 
 	NodBarracks.Build(NodInfantrySquad, after)
 end
 
-SendReinforcements = function()
-	Reinforcements.Reinforce(player, JeepReinforcements, { VehicleStart.Location, VehicleStop.Location })
-	Reinforcements.Reinforce(player, InfantryReinforcements, { InfantryStart.Location, InfantryStop.Location }, 5)
+
+function SendReinforcements()
+	Media.PlaySpeechNotification(GDI, "Reinforce")
+	Reinforcements.Reinforce(GDI, JeepReinforcements, { VehicleStart.Location, VehicleStop.Location })
+	Reinforcements.Reinforce(GDI, InfantryReinforcements, { InfantryStart.Location, InfantryStop.Location }, 5)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Reinforcements.Reinforce(player, { "mcv" }, { VehicleStart.Location, MCVwaypoint.Location })
+		Reinforcements.Reinforce(GDI, { "mcv" }, { VehicleStart.Location, MCVwaypoint.Location })
 		InitialUnitsArrived = true
 	end)
-	Media.PlaySpeechNotification(player, "Reinforce")
 end
 
-WorldLoaded = function()
-	player = Player.GetPlayer("GDI")
-	enemy = Player.GetPlayer("Nod")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+function WorldLoaded()
+	InitObjectives(GDI)
 
-	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops.")
-	gdiMainObjective = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	gdiAirSupportObjective = player.AddSecondaryObjective("Destroy the SAM sites to receive air support.")
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
+	nodObjective = Nod.AddPrimaryObjective("Destroy all GDI troops.")
+	gdiMainObjective = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	gdiAirSupportObjective = GDI.AddSecondaryObjective("Destroy the SAM sites to receive air support.")
 
 	Trigger.OnAllKilled(SamSites, function()
-		player.MarkCompletedObjective(gdiAirSupportObjective)
-		Actor.Create("airstrike.proxy", true, { Owner = player })
+		GDI.MarkCompletedObjective(gdiAirSupportObjective)
+		Actor.Create("airstrike.proxy", true, { Owner = GDI })
 	end)
 
 	Utils.Do(Map.NamedActors, function(actor)
-		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
+		if actor.Owner == Nod and actor.HasProperty("StartBuildingRepairs") then
 			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == enemy and building.Health < 0.25 * building.MaxHealth then
+				if building.Owner == Nod and building.Health < 0.25 * building.MaxHealth then
 					building.StartBuildingRepairs()
 				end
 			end)
@@ -107,16 +91,17 @@ WorldLoaded = function()
 
 	Camera.Position = MCVwaypoint.CenterPosition
 
-	Trigger.AfterDelay(DateTime.Seconds(15), AttackPlayer)
+	Trigger.AfterDelay(DateTime.Seconds(15), AttackGDI)
 end
 
-Tick = function()
+
+function Tick()
 	if InitialUnitsArrived then
-		if player.HasNoRequiredUnits() then
-			enemy.MarkCompletedObjective(nodObjective)
+		if GDI.HasNoRequiredUnits() then
+			Nod.MarkCompletedObjective(nodObjective)
 		end
-		if enemy.HasNoRequiredUnits() then
-			player.MarkCompletedObjective(gdiMainObjective)
+		if Nod.HasNoRequiredUnits() then
+			GDI.MarkCompletedObjective(gdiMainObjective)
 		end
 	end
 end

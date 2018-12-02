@@ -26,6 +26,7 @@ Packages:
 	~transit.mix
 	cnc|bits/snow.mix
 	cnc|bits
+	cnc|bits/scripts
 	cnc|bits/jungle
 	cnc|bits/desert
 	cnc|bits/ss

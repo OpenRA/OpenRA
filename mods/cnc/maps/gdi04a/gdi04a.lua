@@ -24,8 +24,9 @@ NodHelis = {
 	{ delay = DateTime.Seconds(HeliDelay[3]), entry = { NodHeliEntry.Location, NodHeliLZ3.Location }, types = { "e1", "e1", "e3" } }
 }
 
-SendHeli = function(heli)
-	units = Reinforcements.ReinforceWithTransport(enemy, "tran", heli.types, heli.entry, { heli.entry[1] })
+
+function SendHeli(heli)
+	units = Reinforcements.ReinforceWithTransport(Nod, "tran", heli.types, heli.entry, { heli.entry[1] })
 	Utils.Do(units[2], function(actor)
 		actor.Hunt()
 		Trigger.OnIdle(actor, actor.Hunt)
@@ -34,16 +35,18 @@ SendHeli = function(heli)
 	Trigger.AfterDelay(heli.delay, function() SendHeli(heli) end)
 end
 
-SendGDIReinforcements = function()
-	Media.PlaySpeechNotification(player, "Reinforce")
-	Reinforcements.ReinforceWithTransport(player, "apc", GDIReinforcements, GDIReinforcementsWaypoints, nil, function(apc, team)
+
+function SendGDIReinforcements()
+	Media.PlaySpeechNotification(GDI, "Reinforce")
+	Reinforcements.ReinforceWithTransport(GDI, "apc", GDIReinforcements, GDIReinforcementsWaypoints, nil, function(apc, team)
 		table.insert(team, apc)
 		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(5), SendGDIReinforcements) end)
 		Utils.Do(team, function(unit) unit.Stance = "Defend" end)
 	end)
 end
 
-BuildNod1 = function()
+
+function BuildNod1()
 	if HandOfNod.IsDead then
 		return
 	end
@@ -61,7 +64,8 @@ BuildNod1 = function()
 	end
 end
 
-BuildAuto1 = function()
+
+function BuildAuto1()
 	if HandOfNod.IsDead then
 		return
 	end
@@ -78,67 +82,49 @@ BuildAuto1 = function()
 	end
 end
 
-kills = 0
-KillCounter = function() kills = kills + 1 end
 
 ReinforcementsSent = false
-Tick = function()
-	enemy.Cash = 1000
+
+
+function Tick()
+	Nod.Cash = 1000
 
 	if not ReinforcementsSent and kills >= KillsUntilReinforcements then
 		ReinforcementsSent = true
-		player.MarkCompletedObjective(reinforcementsObjective)
+		GDI.MarkCompletedObjective(reinforcementsObjective)
 		SendGDIReinforcements()
 	end
 
-	if player.HasNoRequiredUnits() then
-		Trigger.AfterDelay(DateTime.Seconds(1), function() player.MarkFailedObjective(gdiObjective) end)
+	if GDI.HasNoRequiredUnits() then
+		Trigger.AfterDelay(DateTime.Seconds(1), function() GDI.MarkFailedObjective(gdiObjective) end)
 	end
 end
 
-SetupWorld = function()
-	Utils.Do(enemy.GetGroundAttackers(enemy), function(unit)
+
+function SetupWorld()
+	Utils.Do(Nod.GetGroundAttackers(Nod), function(unit)
 		Trigger.OnKilled(unit, KillCounter)
 	end)
 
-	Utils.Do(player.GetGroundAttackers(), function(unit)
+	Utils.Do(GDI.GetGroundAttackers(), function(unit)
 		unit.Stance = "Defend"
 	end)
 
 	Hunter1.Hunt()
 	Hunter2.Hunt()
 
-	Trigger.OnRemovedFromWorld(crate, function() player.MarkCompletedObjective(gdiObjective) end)
+	Trigger.OnRemovedFromWorld(crate, function() GDI.MarkCompletedObjective(gdiObjective) end)
 end
 
-WorldLoaded = function()
-	player = Player.GetPlayer("GDI")
-	enemy = Player.GetPlayer("Nod")
+
+function WorldLoaded()
+	InitObjectives(GDI)
 
 	SetupWorld()
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-
-	gdiObjective = player.AddPrimaryObjective("Retrieve the crate with the stolen rods.")
-	reinforcementsObjective = player.AddSecondaryObjective("Eliminate " .. KillsUntilReinforcements .. " Nod units for reinforcements.")
-	enemy.AddPrimaryObjective("Defend against the GDI forces.")
+	gdiObjective = GDI.AddPrimaryObjective("Retrieve the crate with the stolen rods.")
+	reinforcementsObjective = GDI.AddSecondaryObjective("Eliminate " .. KillsUntilReinforcements .. " Nod units for reinforcements.")
+	Nod.AddPrimaryObjective("Defend against the GDI forces.")
 
 	BuildNod1()
 	Utils.Do(NodHelis, function(heli)
@@ -147,7 +133,7 @@ WorldLoaded = function()
 
 	autoTrigger = false
 	Trigger.OnEnteredFootprint(AutoTrigger, function(a, id)
-		if not autoTrigger and a.Owner == player then
+		if not autoTrigger and a.Owner == GDI then
 			autoTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
 			BuildAuto1()
@@ -156,10 +142,10 @@ WorldLoaded = function()
 
 	gdiHeliTrigger = false
 	Trigger.OnEnteredFootprint(GDIHeliTrigger, function(a, id)
-		if not gdiHeliTrigger and a.Owner == player then
+		if not gdiHeliTrigger and a.Owner == GDI then
 			gdiHeliTrigger = true
 			Trigger.RemoveFootprintTrigger(id)
-			Reinforcements.ReinforceWithTransport(player, "tran", nil, { GDIHeliEntry.Location, GDIHeliLZ.Location })
+			Reinforcements.ReinforceWithTransport(GDI, "tran", nil, { GDIHeliEntry.Location, GDIHeliLZ.Location })
 		end
 	end)
 

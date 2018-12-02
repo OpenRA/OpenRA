@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi02.lua
+		Scripts: campaign-global.lua, gdi02.lua
 	MusicPlaylist:
 		StartingMusic: befeared
 	MissionData:
