@@ -96,16 +96,16 @@ namespace OpenRA.Mods.Common.Graphics
 			if (hf <= 0)
 				return DamageState.Dead;
 
-			if (hf < 0.25f)
+			if (hf < 25)
 				return DamageState.Critical;
 
-			if (hf < 0.5f)
+			if (hf < 50)
 				return DamageState.Heavy;
 
-			if (hf < 0.75f)
+			if (hf < 75)
 				return DamageState.Medium;
 
-			if (hf < 1.0f)
+			if (hf < 100)
 				return DamageState.Light;
 
 			return DamageState.Undamaged;
