@@ -43,7 +43,7 @@ DOG:
 		StandSequences: stand
 	IgnoresDisguise:
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
+		CloakTypes: Cloak, Thief
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -309,7 +309,7 @@ SPY:
 		RequiresCondition: disguise
 	IgnoresDisguise:
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
+		CloakTypes: Cloak, Thief
 	Armament:
 		Weapon: SilencedPPK
 	AttackFrontal:
@@ -376,7 +376,7 @@ E7:
 		Voice: Build
 	AnnounceOnKill:
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
+		CloakTypes: Cloak, Thief
 	Voiced:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
@@ -522,37 +522,16 @@ GNRL:
 
 THF:
 	Inherits: ^Soldier
-	Valued:
-		Cost: 400
-	Tooltip:
-		Name: Thief
-	RevealsShroud:
-		Range: 5c0
-	Passenger:
-		PipType: Blue
-	Infiltrates:
-		Notification: BuildingInfiltrated
-		PlayerExperience: 50
-	Voiced:
-		VoiceSet: ThiefVoice
-	WithInfantryBody:
-		IdleSequences: idle
-		StandSequences: stand
-	Buildable:
-		Description: Steals enemy credits.\n  Unarmed
-
-HIJACKER:
-	Inherits: ^Soldier
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 110
 		Prerequisites: ~barr, fix, ~techlevel.medium
-		Description: Hijacks enemy vehicles.\n  Unarmed
+		Description: Steals enemy credits.\nHijacks enemy vehicles.\n  Unarmed
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Hijacker
+		Name: Thief
 	Health:
 		HP: 5000
 	RevealsShroud:
@@ -562,6 +541,10 @@ HIJACKER:
 	CaptureManager:
 	Captures:
 		CaptureTypes: vehicle
+		PlayerExperience: 50
+	Infiltrates:
+		Types: ThiefInfiltrate
+		Notification: BuildingInfiltrated
 		PlayerExperience: 50
 	Voiced:
 		VoiceSet: ThiefVoice
@@ -575,7 +558,7 @@ HIJACKER:
 		InitialDelay: 250
 		CloakDelay: 120
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
-		CloakTypes: Cloak, Hijacker
+		CloakTypes: Cloak, Thief
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
@@ -674,7 +657,7 @@ SNIPER:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	DetectCloaked:
-		CloakTypes: Cloak, Hijacker
+		CloakTypes: Cloak, Thief
 		Range: 6c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:

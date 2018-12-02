@@ -665,58 +665,6 @@ thf:
 		Tick: 80
 	icon: thficon
 
-hijacker:
-	stand: thf
-		Facings: 8
-	run: thf
-		Start: 8
-		Length: 6
-		Facings: 8
-		Tick: 100
-	idle: thf
-		Start: 120
-		Length: 19
-		Tick: 120
-	die1: thf
-		Start: 139
-		Length: 8
-	die2: thf
-		Start: 147
-		Length: 8
-	die3: thf
-		Start: 155
-		Length: 8
-	die4: thf
-		Start: 163
-		Length: 12
-	die5: thf
-		Start: 175
-		Length: 18
-	die6: electro
-		Length: *
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
-		Length: 6
-		Tick: 1600
-		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	prone-stand: thf
-		Start: 72
-		Stride: 4
-		Facings: 8
-	prone-run: thf
-		Start: 72
-		Length: 4
-		Facings: 8
-		Tick: 80
-	icon: hijackericon
-
 e7:
 	stand:
 		Facings: 8

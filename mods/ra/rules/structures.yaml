@@ -1192,7 +1192,7 @@ PROC:
 		DecorationBounds: 72,70,0,-2
 	SelectionDecorations:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate
 	Health:
 		HP: 90000
 	Armor:
@@ -1217,7 +1217,7 @@ PROC:
 		Facing: 64
 	InfiltrateForCash:
 		Percentage: 50
-		Types: SpyInfiltrate
+		Types: ThiefInfiltrate
 		Notification: CreditsStolen
 	WithBuildingBib:
 	WithIdleOverlay@TOP:
@@ -1255,6 +1255,8 @@ SILO:
 		Description: Stores excess refined\nOre and Gems.
 	Valued:
 		Cost: 150
+	Targetable:
+		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate
 	Tooltip:
 		Name: Silo
 	-GivesBuildableArea:
@@ -1265,6 +1267,10 @@ SILO:
 		Type: Wood
 	RevealsShroud:
 		Range: 4c0
+	InfiltrateForCash:
+		Percentage: 50
+		Types: ThiefInfiltrate
+		Notification: CreditsStolen
 	WithBuildingBib:
 		HasMinibib: Yes
 	WithSiloAnimation:
