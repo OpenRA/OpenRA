@@ -125,10 +125,6 @@ THF:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
-	Buildable:
-		Prerequisites: ~disabled
-
 SHOK:
 	Buildable:
 		Prerequisites: ~disabled

@@ -172,7 +172,7 @@ camera.spyplane:
 		Name: (support power proxy camera)
 	DetectCloaked:
 		Range: 10c0
-		CloakTypes: Cloak, Hijacker
+		CloakTypes: Cloak, Thief
 
 SONAR:
 	Inherits: camera.spyplane

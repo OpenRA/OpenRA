@@ -440,7 +440,7 @@
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	DetectCloaked:
-		CloakTypes: Hijacker
+		CloakTypes: Thief
 
 ^CivInfantry:
 	Inherits: ^Infantry

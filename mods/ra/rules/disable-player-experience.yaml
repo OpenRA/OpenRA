@@ -19,11 +19,9 @@ MECH:
 		PlayerExperience: 0
 
 THF:
-	Infiltrates:
-		PlayerExperience: 0
-
-HIJACKER:
 	Captures:
+		PlayerExperience: 0
+	Infiltrates:
 		PlayerExperience: 0
 
 SPEN:

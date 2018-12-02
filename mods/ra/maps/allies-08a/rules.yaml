@@ -106,7 +106,7 @@ MECH:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 
