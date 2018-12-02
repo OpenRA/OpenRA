@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		SpriteFont overlayFont, symbolFont;
-		float2 holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset, infiniteSymbolSize, nextOffset;
+		float2 iconOffset, holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset, infiniteSymbolSize, nextOffset;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -154,6 +154,25 @@ namespace OpenRA.Mods.Common.Widgets
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
 				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
+
+			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
+			queuedOffset = new float2(4, 2);
+			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+
+			if (ChromeMetrics.TryGet("InfiniteProductionSymbolOffset", out infiniteOffset))
+				infiniteOffset += queuedOffset;
+			else
+				infiniteOffset = queuedOffset;
+
+			if (ChromeMetrics.TryGet("NextProductionSymbolOffset", out nextOffset))
+				nextOffset += queuedOffset;
+			else
+				nextOffset = queuedOffset;
+
+			if (!ChromeMetrics.TryGet("InfiniteProductionSymbolSize", out infiniteSymbolSize))
+				infiniteSymbolSize = overlayFont.Measure(InfiniteSymbol);
 		}
 
 		public void ScrollDown()
@@ -428,25 +447,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
-			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
-			queuedOffset = new float2(4, 2);
-			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
-			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
-
-			if (ChromeMetrics.TryGet("InfiniteProductionSymbolOffset", out infiniteOffset))
-				infiniteOffset += queuedOffset;
-			else
-				infiniteOffset = queuedOffset;
-
-			if (ChromeMetrics.TryGet("NextProductionSymbolOffset", out nextOffset))
-				nextOffset += queuedOffset;
-			else
-				nextOffset = queuedOffset;
-
-			if (!ChromeMetrics.TryGet("InfiniteProductionSymbolSize", out infiniteSymbolSize))
-				infiniteSymbolSize = overlayFont.Measure(InfiniteSymbol);
-
 			if (CurrentQueue == null)
 				return;
 
