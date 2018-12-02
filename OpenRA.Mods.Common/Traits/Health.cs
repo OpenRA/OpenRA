@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HealthInfo : IHealthInfo, UsesInit<HealthInit>, IRulesetLoaded
+	public class HealthInfo : IHealthInfo, IRulesetLoaded
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;

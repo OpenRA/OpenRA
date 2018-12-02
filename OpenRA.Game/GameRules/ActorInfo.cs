@@ -147,20 +147,6 @@ namespace OpenRA
 				.Select(t => t.GetGenericArguments()[0]);
 		}
 
-		public IEnumerable<Pair<string, Type>> GetInitKeys()
-		{
-			var inits = traits.WithInterface<ITraitInfo>().SelectMany(
-				t => t.GetType().GetInterfaces()
-					.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(UsesInit<>))
-					.Select(i => i.GetGenericArguments()[0])).ToList();
-
-			inits.Add(typeof(OwnerInit));		/* not exposed by a trait; this is used by the Actor itself */
-
-			return inits.Select(
-				i => Pair.New(
-					i.Name.Replace("Init", ""), i));
-		}
-
 		public bool HasTraitInfo<T>() where T : ITraitInfoInterface { return traits.Contains<T>(); }
 		public T TraitInfo<T>() where T : ITraitInfoInterface { return traits.Get<T>(); }
 		public T TraitInfoOrDefault<T>() where T : ITraitInfoInterface { return traits.GetOrDefault<T>(); }

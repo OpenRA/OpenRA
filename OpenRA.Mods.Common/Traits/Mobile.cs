@@ -22,8 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo,
-		UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>, IActorPreviewInitInfo
+	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo
 	{
 		[Desc("Which Locomotor does this trait use. Must be defined on the World actor.")]
 		[LocomotorReference, FieldLoader.Require]
