@@ -42,6 +42,7 @@ namespace OpenRA
 		public Player Owner { get; internal set; }
 
 		public bool IsInWorld { get; internal set; }
+		public bool WillDispose { get; private set; }
 		public bool Disposed { get; private set; }
 
 		public Activity CurrentActivity { get; private set; }
@@ -265,6 +266,9 @@ namespace OpenRA
 
 		public void Dispose()
 		{
+			// Allow traits/activities to prevent a race condition when they depend on disposing the actor (e.g. Transforms)
+			WillDispose = true;
+
 			World.AddFrameEndTask(w =>
 			{
 				if (Disposed)
