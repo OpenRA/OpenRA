@@ -50,6 +50,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ActorInfo lastActor = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
 			var lastPowerState = pm == null ? PowerState.Normal : pm.PowerState;
+			var descLabelY = descLabel.Bounds.Y;
+			var descLabelPadding = descLabel.Bounds.Height;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -88,8 +90,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
 					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
-				requiresLabel.Text = prereqs.Any() ? requiresFormat.F(prereqs.JoinWith(", ")) : "";
-				var requiresSize = requiresFont.Measure(requiresLabel.Text);
+
+				var requiresSize = int2.Zero;
+				if (prereqs.Any())
+				{
+					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
+					requiresSize = requiresFont.Measure(requiresLabel.Text);
+					requiresLabel.Visible = true;
+					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
+				}
+				else
+				{
+					requiresLabel.Visible = false;
+					descLabel.Bounds.Y = descLabelY;
+				}
 
 				var powerSize = new int2(0, 0);
 				if (pm != null)
@@ -116,6 +130,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				descLabel.Text = buildable.Description.Replace("\\n", "\n");
 				var descSize = descFont.Measure(descLabel.Text);
+				descLabel.Bounds.Width = descSize.X;
+				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
 
 				var leftWidth = new[] { nameSize.X + hotkeyWidth, requiresSize.X, descSize.X }.Aggregate(Math.Max);
 				var rightWidth = new[] { powerSize.X, timeSize.X, costSize.X }.Aggregate(Math.Max);
@@ -124,9 +140,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
 				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
 
-				var leftHeight = nameSize.Y + requiresSize.Y + descSize.Y;
-				var rightHeight = powerSize.Y + timeSize.Y + costSize.Y;
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
+				// Set the bottom margin to match the left margin
+				var leftHeight = descLabel.Bounds.Bottom + descLabel.Bounds.X;
+
+				// Set the bottom margin to match the top margin
+				var rightHeight = (powerLabel.Visible ? powerIcon.Bounds.Bottom : timeIcon.Bounds.Bottom) + costIcon.Bounds.Top;
+
+				widget.Bounds.Height = Math.Max(leftHeight, rightHeight);
 
 				lastActor = actor;
 				lastHotkey = hotkey;
