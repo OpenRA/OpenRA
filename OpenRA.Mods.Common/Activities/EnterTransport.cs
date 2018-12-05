@@ -55,6 +55,10 @@ namespace OpenRA.Mods.Common.Activities
 			});
 
 			Done(self);
+
+			// Preemptively cancel any activities to avoid an edge-case where successively queued
+			// EnterTransports corrupt the actor state. Activities are cancelled again on unload
+			self.CancelActivity();
 		}
 
 		protected override bool TryGetAlternateTarget(Actor self, int tries, ref Target target)
