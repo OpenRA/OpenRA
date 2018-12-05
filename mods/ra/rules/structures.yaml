@@ -1685,6 +1685,8 @@ BARR:
 		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
+	GrantExternalConditionToProduced:
+		Condition: produced
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
@@ -1829,6 +1831,8 @@ TENT:
 		ProductionTypes: Soldier, Infantry
 	Production:
 		Produces: Infantry, Soldier
+	GrantExternalConditionToProduced:
+		Condition: produced
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected

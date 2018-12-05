@@ -227,7 +227,10 @@ RMBO:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		IdleSequences: idle1,idle2,idle3
+	ExternalCondition@PRODUCED:
+		Condition: produced
 	VoiceAnnouncement:
+		RequiresCondition: produced
 		Voice: Build
 	AnnounceOnKill:
 	Voiced:
