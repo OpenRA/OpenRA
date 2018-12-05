@@ -312,6 +312,7 @@
     <Compile Include="Traits\CaptureProgressBar.cs" />
     <Compile Include="Traits\CaptureProgressBlink.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPlayerResources.cs" />
+    <Compile Include="Traits\GrantExternalConditionToProduced.cs" />
     <Compile Include="Traits\Multipliers\CreatesShroudMultiplier.cs" />
     <Compile Include="Traits\Multipliers\RevealsShroudMultiplier.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
