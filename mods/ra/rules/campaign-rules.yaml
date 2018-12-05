@@ -52,3 +52,14 @@ MONEYCRATE:
 		Amount: 2000
 	RenderSprites:
 		Image: scrate
+
+FCOM:
+	Capturable:
+		Types: ~disabled
+	-GivesBuildableArea:
+	-BaseProvider:
+
+MISS:
+	RevealsShroud:
+		Range: 3c0
+	-RevealsShroud@GAPGEN:
