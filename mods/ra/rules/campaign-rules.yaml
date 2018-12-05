@@ -44,3 +44,14 @@ E7.noautotarget:
 
 ^Vehicle:
 	Demolishable:
+
+FCOM:
+	Capturable:
+		Types: ~disabled
+	-GivesBuildableArea:
+	-BaseProvider:
+
+MISS:
+	RevealsShroud:
+		Range: 3c0
+	-RevealsShroud@GAPGEN:
