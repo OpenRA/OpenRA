@@ -102,18 +102,19 @@ Background@PRODUCTION_TOOLTIP:
 		Label@REQUIRES:
 			X: 5
 			Y: 19
-			Height: 23
+			Height: 15
 			Font: TinyBold
 			Text: Requires {0}
 		Label@DESC:
 			X: 5
-			Y: 39
-			Height: 23
+			Y: 19
+			Height: 5
 			Font: TinyBold
 			VAlign: Top
 		Image@COST_ICON:
 			Y: 5
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-cost
 		Label@COST:
@@ -123,6 +124,7 @@ Background@PRODUCTION_TOOLTIP:
 			X: 3
 			Y: 24
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-time
 		Label@TIME:
@@ -132,6 +134,7 @@ Background@PRODUCTION_TOOLTIP:
 		Image@POWER_ICON:
 			Y: 44
 			Width: 16
+			Height: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-power
 		Label@POWER:
