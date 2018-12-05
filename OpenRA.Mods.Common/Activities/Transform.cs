@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead)
+				if (self.IsDead || self.WillDispose)
 					return;
 
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())

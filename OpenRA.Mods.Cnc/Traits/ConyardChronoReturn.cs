@@ -204,6 +204,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			if (self.WillDispose)
+				return;
+
 			if (triggered)
 				health.InflictDamage(self, chronosphere, new Damage(info.Damage, info.DamageTypes), true);
 
