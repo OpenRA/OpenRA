@@ -372,7 +372,10 @@ E7:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		StandSequences: stand
+	ExternalCondition@PRODUCED:
+		Condition: produced
 	VoiceAnnouncement:
+		RequiresCondition: produced
 		Voice: Build
 	AnnounceOnKill:
 	DetectCloaked:
