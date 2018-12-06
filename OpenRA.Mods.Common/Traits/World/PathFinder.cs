@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 				return EmptyPath;
 
 			var distance = source - target;
-			if (distance.LengthSquared < 3 && li.CanMoveFreelyInto(world, self, target, null, CellConditions.All))
+			if (distance.LengthSquared < 3 && locomotor.CanMoveFreelyInto(self, target, null, CellConditions.All))
 				return new List<CPos> { target };
 
 			List<CPos> pb;

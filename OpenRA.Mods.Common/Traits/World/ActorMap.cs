@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -169,6 +170,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new Dictionary<CPos, List<CellTrigger>>();
 		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new Dictionary<int, ProximityTrigger>();
 		int nextTriggerId;
+
+		public event Action<CPos> CellsUpdated = null;
 
 		readonly CellLayer<InfluenceNode> influence;
 		readonly Dictionary<int, CellLayer<InfluenceNode>> customInfluence = new Dictionary<int, CellLayer<InfluenceNode>>();
@@ -359,17 +362,21 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				var uv = c.First.ToMPos(map);
+				var cell = c.First;
+				var uv = cell.ToMPos(map);
 				if (!influence.Contains(uv))
 					continue;
 
-				var layer = c.First.Layer == 0 ? influence : customInfluence[c.First.Layer];
+				var layer = cell.Layer == 0 ? influence : customInfluence[cell.Layer];
 				layer[uv] = new InfluenceNode { Next = layer[uv], SubCell = c.Second, Actor = self };
 
 				List<CellTrigger> triggers;
-				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
+				if (cellTriggerInfluence.TryGetValue(cell, out triggers))
 					foreach (var t in triggers)
 						t.Dirty = true;
+
+				if (CellsUpdated != null)
+					CellsUpdated(cell);
 			}
 		}
 
@@ -377,19 +384,23 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var c in ios.OccupiedCells())
 			{
-				var uv = c.First.ToMPos(map);
+				var cell = c.First;
+				var uv = cell.ToMPos(map);
 				if (!influence.Contains(uv))
 					continue;
 
-				var layer = c.First.Layer == 0 ? influence : customInfluence[c.First.Layer];
+				var layer = cell.Layer == 0 ? influence : customInfluence[cell.Layer];
 				var temp = layer[uv];
 				RemoveInfluenceInner(ref temp, self);
 				layer[uv] = temp;
 
 				List<CellTrigger> triggers;
-				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
+				if (cellTriggerInfluence.TryGetValue(cell, out triggers))
 					foreach (var t in triggers)
 						t.Dirty = true;
+
+				if (CellsUpdated != null)
+					CellsUpdated(cell);
 			}
 		}
 

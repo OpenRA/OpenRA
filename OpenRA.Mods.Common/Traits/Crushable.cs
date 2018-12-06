@@ -73,8 +73,19 @@ namespace OpenRA.Mods.Common.Traits
 			// Only make actor crushable if it is on the ground.
 			if (!self.IsAtGroundLevel())
 				return false;
-
 			if (!Info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))
+				return false;
+
+			return Info.CrushClasses.Overlaps(crushClasses);
+		}
+
+		public bool CrushableInner(BitSet<CrushClass> crushClasses)
+		{
+			if (IsTraitDisabled)
+				return false;
+
+			// Only make actor crushable if it is on the ground.
+			if (!self.IsAtGroundLevel())
 				return false;
 
 			return Info.CrushClasses.Overlaps(crushClasses);
