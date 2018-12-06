@@ -45,11 +45,6 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < Size; i++)
 				pal.Entries[i] = palette.GetColor(i);
 
-			// hack around a mono bug -- the palette flags get set wrong.
-			if (Platform.CurrentPlatform != PlatformType.Windows)
-				typeof(ColorPalette).GetField("flags",
-					BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pal, 1);
-
 			return pal;
 		}
 
