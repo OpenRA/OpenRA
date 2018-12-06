@@ -120,6 +120,9 @@ build_appimage() {
 	sed "s/{MODID}/${MOD_ID}/g" openra-server.appimage.in > openra-mod-server.temp
 	install -m 0755 openra-mod-server.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-server"
 
+	sed "s/{MODID}/${MOD_ID}/g" openra-utility.appimage.in > openra-mod-utility.temp
+	install -m 0755 openra-mod-utility.temp "${APPDIR}/usr/bin/openra-${MOD_ID}-utility"
+
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
 
 	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
@@ -141,4 +144,4 @@ build_appimage "cnc" "Tiberian Dawn"
 build_appimage "d2k" "Dune 2000"
 
 # Clean up
-rm -rf openra-mod.temp openra-mod-server.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
+rm -rf openra-mod.temp openra-mod-server.temp openra-mod-utility.temp temp.desktop temp.xml AppRun.temp appimagetool-x86_64.AppImage squashfs-root "${BUILTDIR}"
