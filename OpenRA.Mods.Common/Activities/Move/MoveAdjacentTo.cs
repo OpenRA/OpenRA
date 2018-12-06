@@ -138,6 +138,7 @@ namespace OpenRA.Mods.Common.Activities
 			var targetCells = CandidateMovementCells(self);
 			var searchCells = new List<CPos>();
 			var loc = self.Location;
+			var locomotor = Mobile.Locomotor;
 
 			foreach (var cell in targetCells)
 				if (domainIndex.IsPassable(loc, cell, Mobile.Info.LocomotorInfo) && Mobile.CanEnterCell(cell))
@@ -146,8 +147,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (!searchCells.Any())
 				return NoPath;
 
-			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Info.LocomotorInfo, self, searchCells, loc, true))
-			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Info.LocomotorInfo, self, loc, targetPosition, true).Reverse())
+			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Info.LocomotorInfo, locomotor, self, searchCells, loc, true))
+			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Info.LocomotorInfo, locomotor, self, loc, targetPosition, true).Reverse())
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 

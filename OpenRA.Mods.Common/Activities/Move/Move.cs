@@ -47,11 +47,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile = self.Trait<Mobile>();
 
+			var locomotor = mobile.Locomotor;
+
 			getPath = () =>
 			{
 				List<CPos> path;
 				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, self, mobile.ToCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, locomotor, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias())
 					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 				return path;
@@ -60,9 +62,12 @@ namespace OpenRA.Mods.Common.Activities
 			nearEnough = WDist.Zero;
 		}
 
-		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
+		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null,
+			bool evaluateNearestMovableCell = false)
 		{
 			mobile = self.Trait<Mobile>();
+
+			var locomotor = mobile.Locomotor;
 
 			getPath = () =>
 			{
@@ -70,7 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NoPath;
 
 				return self.World.WorldActor.Trait<IPathFinder>()
-					.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor);
+					.FindUnitPath(mobile.ToCell, this.destination.Value, self, locomotor, ignoreActor);
 			};
 
 			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true

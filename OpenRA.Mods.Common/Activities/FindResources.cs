@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
@@ -23,6 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Harvester harv;
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
+		readonly Locomotor locomotor;
 		readonly LocomotorInfo locomotorInfo;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
@@ -35,6 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			mobile = self.Trait<Mobile>();
+			locomotor = mobile.Locomotor;
 			locomotorInfo = mobile.Info.LocomotorInfo;
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
@@ -117,8 +120,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Find any harvestable resources:
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, locomotorInfo, self, true, loc =>
-					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
+			using (var search = PathSearch.Search(self.World, locomotorInfo, locomotor, self, true,
+					loc => domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
 					if ((avoidCell.HasValue && loc == avoidCell.Value) ||

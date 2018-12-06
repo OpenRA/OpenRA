@@ -104,7 +104,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos FindNextResource(Actor actor, Harvester harv)
 		{
-			var locomotorInfo = actor.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			var mobileInfo = actor.Info.TraitInfo<MobileInfo>();
+			var locomotorInfo = mobileInfo.LocomotorInfo;
+
+			var mobile = actor.Trait<Mobile>();
+			var locomotor = mobile.Locomotor;
 
 			Func<CPos, bool> isValidResource = cell =>
 				domainIndex.IsPassable(actor.Location, cell, locomotorInfo) &&
@@ -112,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 				claimLayer.CanClaimCell(actor, cell);
 
 			var path = pathfinder.FindPath(
-				PathSearch.Search(world, locomotorInfo, actor, true, isValidResource)
+				PathSearch.Search(world, locomotorInfo, locomotor, actor, true, isValidResource)
 					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && actor.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))

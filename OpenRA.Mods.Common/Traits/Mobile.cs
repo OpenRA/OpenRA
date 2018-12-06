@@ -120,6 +120,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
+		public Locomotor Locomotor { get; private set; }
+
 		#region IOccupySpace
 		[Sync] public WPos CenterPosition { get; private set; }
 		public CPos TopLeft { get { return ToCell; } }
@@ -165,6 +167,8 @@ namespace OpenRA.Mods.Common.Traits
 			notifyCustomLayerChanged = self.TraitsImplementing<INotifyCustomLayerChanged>().ToArray();
 			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
+			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
+				.SingleOrDefault(l => l.Info.Name == Info.Locomotor);
 
 			base.Created(self);
 		}
@@ -576,8 +580,9 @@ namespace OpenRA.Mods.Common.Traits
 				return above;
 
 			var pathFinder = self.World.WorldActor.Trait<IPathFinder>();
+
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, Info.LocomotorInfo, self, true,
+			using (var search = PathSearch.Search(self.World, Info.LocomotorInfo, Locomotor, self, true,
 					loc => loc.Layer == 0 && CanEnterCell(loc))
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);
@@ -685,6 +690,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				mobile = unit;
 				locomotorInfo = mobile.Info.LocomotorInfo;
+				locomotor = mobile.Locomotor;
 				rejectMove = !self.AcceptsOrder("Move");
 			}
 

@@ -92,7 +92,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
 			new Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>>();
 
-		public PathGraph(CellInfoLayerPool layerPool, LocomotorInfo li, Actor actor, World world, bool checkForBlocked)
+		public PathGraph(CellInfoLayerPool layerPool, LocomotorInfo li, Locomotor locomotor, Actor actor, World world,
+			bool checkForBlocked)
 		{
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
