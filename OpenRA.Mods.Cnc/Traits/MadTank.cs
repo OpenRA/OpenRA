@@ -212,7 +212,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 			else if (order.OrderString == "Detonate")
 			{
-				self.CancelActivity();
+				if (!order.Queued)
+					self.CancelActivity();
 				self.QueueActivity(new CallFunc(StartDetonationSequence));
 			}
 		}
