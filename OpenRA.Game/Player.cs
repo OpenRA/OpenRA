@@ -82,6 +82,10 @@ namespace OpenRA
 			}
 		}
 
+		public int EnemyMask { get; set; }
+		public int PlayerMask { get; set; }
+		public int AllyMask { get; set; }
+
 		readonly StanceColors stanceColors;
 
 		static FactionInfo ChooseFaction(World world, string name, bool requireSelectable = true)
@@ -118,7 +122,6 @@ namespace OpenRA
 			World = world;
 			InternalName = pr.Name;
 			PlayerReference = pr;
-
 			inMissionMap = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 
 			// Real player or host-created bot

@@ -73,9 +73,54 @@ namespace OpenRA.Mods.Common.Traits
 			w.SetPlayers(worldPlayers, localPlayer);
 
 			foreach (var p in w.Players)
+			{
+				if (!p.Spectating)
+				{
+					SetUpPlayerMask(p, w.Players);
+				}
+
 				foreach (var q in w.Players)
+				{
 					if (!p.Stances.ContainsKey(q))
 						p.Stances[q] = ChooseInitialStance(p, q);
+				}
+			}
+		}
+
+		void SetUpPlayerMask(Player player, Player[] wPlayers)
+		{
+			var clientIndexes = wPlayers.Where(p => !p.Spectating);
+			var id = 0;
+
+			foreach (var clientIndex in clientIndexes)
+			{
+				var stance = ChooseInitialStance(player, clientIndex);
+
+				var clientIndexId = id + 3;
+				id++;
+
+				if (player == clientIndex)
+				{
+					player.PlayerMask |= 1 << clientIndexId;
+					player.AllyMask |= 1 << clientIndexId;
+					continue;
+				}
+
+				switch (stance)
+				{
+					case Stance.None:
+						break;
+					case Stance.Neutral:
+					case Stance.Enemy:
+						player.EnemyMask |= 1 << clientIndexId;
+						break;
+					case Stance.Ally:
+						player.AllyMask |= 1 << clientIndexId;
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
 		}
 
 		static Stance ChooseInitialStance(Player p, Player q)
