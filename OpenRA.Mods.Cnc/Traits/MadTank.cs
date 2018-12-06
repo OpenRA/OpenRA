@@ -174,8 +174,6 @@ namespace OpenRA.Mods.Cnc.Traits
 				driverMobile.Nudge(driver, driver, true);
 		}
 
-		public bool PreventsTeleport(Actor self) { return deployed; }
-
 		void StartDetonationSequence()
 		{
 			if (deployed)
