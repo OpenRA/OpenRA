@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
-				anim = new Animation(args.SourceActor.World, info.Image);
+				anim = new Animation(args.SourceActor.World, info.Image, () => args.Facing);
 
 				if (!string.IsNullOrEmpty(info.OpenSequence))
 					anim.PlayThen(info.OpenSequence, () => anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom)));
