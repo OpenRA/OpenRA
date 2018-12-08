@@ -224,7 +224,7 @@ Container@EDITOR_WORLD_ROOT:
 					X: 32
 					Y: 32
 					Width: 294
-					Height: 144
+					Height: 114
 					Children:
 						Label@ACTOR_TYPE_LABEL:
 							X: 15
@@ -241,34 +241,53 @@ Container@EDITOR_WORLD_ROOT:
 							Text: ID
 							Align: Right
 						TextField@ACTOR_ID:
-							X: 80
+							X: 84
 							Y: 45
-							Width: 200
+							Width: 192
 							Height: 25
 						Label@ACTOR_ID_ERROR_LABEL:
-							X: 80
+							X: 84
 							Y: 70
-							Width: 260
+							Width: 192
 							Height: 15
 							Font: TinyBold
 							TextColor: FF0000
 						Container@ACTOR_INIT_CONTAINER:
-							Y: 75
+							Y: 73
 							Width: PARENT_RIGHT
 							Children:
-								Label@OWNERS_LABEL:
-									X: 15
-									Width: 55
-									Height: 24
-									Text: Owner
-									Align: Right
-								DropDownButton@OWNERS_DROPDOWN:
-									X: 80
-									Width: 200
-									Height: 25
-									Font: Bold
+								Container@SLIDER_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 22
+									Children:
+										Label@LABEL:
+											X: 15
+											Width: 55
+											Height: 16
+											Align: Right
+										Slider@OPTION:
+											X: 75
+											Y: 1
+											Width: 210
+											Height: 20
+								Container@DROPDOWN_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 27
+									Children:
+										Label@LABEL:
+											X: 15
+											Y: 1
+											Width: 55
+											Height: 24
+											Align: Right
+										DropDownButton@OPTION:
+											X: 84
+											Y: 1
+											Width: 192
+											Height: 25
+											Font: Bold
 						Container@BUTTON_CONTAINER:
-							Y: 105
+							Y: 75
 							Children:
 								Button@DELETE_BUTTON:
 									X: 15

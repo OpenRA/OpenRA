@@ -16,8 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
+
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>
+	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, IEditorActorOptions
 	{
 		[Desc("It will try to hunt down the enemy if it is set to AttackAnything.")]
 		public readonly bool AllowMovement = true;
@@ -60,6 +62,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MaximumScanTimeInterval = 8;
 
+		[Desc("Display order for the stance dropdown in the map editor")]
+		public readonly int EditorStanceDisplayOrder = 1;
+
 		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
@@ -78,9 +83,30 @@ namespace OpenRA.Mods.Common.Traits
 			if (AttackAnythingCondition != null)
 				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
 		}
-	}
 
-	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			// Indexed by UnitStance
+			var stances = new[] { "holdfire", "returnfire", "defend", "attackanything" };
+
+			var labels = new Dictionary<string, string>()
+			{
+				{ "holdfire", "Hold Fire" },
+				{ "returnfire", "Return Fire" },
+				{ "defend", "Defend" },
+				{ "attackanything", "Attack Anything" },
+			};
+
+			yield return new EditorActorDropdown("Stance", EditorStanceDisplayOrder, labels,
+				actor =>
+				{
+					var init = actor.Init<StanceInit>();
+					var stance = init != null ? init.Value(world) : InitialStance;
+					return stances[(int)stance];
+				},
+				(actor, value) => actor.ReplaceInit(new StanceInit((UnitStance)stances.IndexOf(value))));
+		}
+	}
 
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
 	{

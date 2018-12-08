@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		IActorPreviewInitInfo
+		IActorPreviewInitInfo, IEditorActorOptions
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
@@ -111,6 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
 
+		[Desc("Display order for the facing slider in the map editor")]
+		public readonly int EditorFacingDisplayOrder = 3;
+
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
@@ -146,6 +149,17 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			return !world.ActorMap.GetActorsAt(cell).Any(x => x != ignoreActor);
+		}
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
+				actor =>
+				{
+					var init = actor.Init<FacingInit>();
+					return init != null ? init.Value(world) : InitialFacing;
+				},
+				(actor, value) => actor.ReplaceInit(new FacingInit((int)value)));
 		}
 	}
 

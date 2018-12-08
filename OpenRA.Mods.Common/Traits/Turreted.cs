@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TurretedInfo : PausableConditionalTraitInfo, Requires<BodyOrientationInfo>, IActorPreviewInitInfo
+	public class TurretedInfo : PausableConditionalTraitInfo, Requires<BodyOrientationInfo>, IActorPreviewInitInfo, IEditorActorOptions
 	{
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
@@ -33,12 +33,41 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
 
+		[Desc("Display order for the turret facing slider in the map editor")]
+		public readonly int EditorTurretFacingDisplayOrder = 4;
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			// HACK: The ActorInit system does not support multiple instances of the same type
 			// Make sure that we only return one TurretFacingInit, even for actors with multiple turrets
 			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() == this)
 				yield return new TurretFacingInit(PreviewFacing);
+		}
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			// TODO: Handle multiple turrets properly (will probably require a rewrite of the Init system)
+			if (ai.TraitInfos<TurretedInfo>().FirstOrDefault() != this)
+				yield break;
+
+			yield return new EditorActorSlider("Turret", EditorTurretFacingDisplayOrder, 0, 255, 8,
+				actor =>
+				{
+					var init = actor.Init<TurretFacingInit>();
+					if (init != null)
+						return init.Value(world);
+
+					var facingInit = actor.Init<FacingInit>();
+					if (facingInit != null)
+						return facingInit.Value(world);
+
+					return InitialFacing;
+				},
+				(actor, value) =>
+				{
+					actor.RemoveInit<TurretFacingsInit>();
+					actor.ReplaceInit(new TurretFacingInit((int)value));
+				});
 		}
 
 		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
