@@ -134,6 +134,14 @@ namespace OpenRA.Mods.Common.Traits
 			GeneratePreviews();
 		}
 
+		public void RemoveInit<T>()
+		{
+			var original = actor.InitDict.GetOrDefault<T>();
+			if (original != null)
+				actor.InitDict.Remove(original);
+			GeneratePreviews();
+		}
+
 		public T Init<T>()
 		{
 			return actor.InitDict.GetOrDefault<T>();

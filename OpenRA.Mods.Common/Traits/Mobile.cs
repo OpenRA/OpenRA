@@ -22,7 +22,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo
+	public class MobileInfo : ConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo,
+		IEditorActorOptions
 	{
 		[Desc("Which Locomotor does this trait use. Must be defined on the World actor.")]
 		[LocomotorReference, FieldLoader.Require]
@@ -45,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
+
+		[Desc("Display order for the facing slider in the map editor")]
+		public readonly int EditorFacingDisplayOrder = 3;
 
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
@@ -84,6 +88,41 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool IOccupySpaceInfo.SharesCell { get { return LocomotorInfo.SharesCell; } }
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
+				actor =>
+				{
+					var init = actor.Init<FacingInit>();
+					return init != null ? init.Value(world) : InitialFacing;
+				},
+				(actor, value) =>
+				{
+					// TODO: This can all go away once turrets are properly defined as a relative facing
+					var turretInit = actor.Init<TurretFacingInit>();
+					var turretsInit = actor.Init<TurretFacingsInit>();
+					var facingInit = actor.Init<FacingInit>();
+
+					var oldFacing = facingInit != null ? facingInit.Value(world) : InitialFacing;
+					var newFacing = (int)value;
+
+					if (turretInit != null)
+					{
+						var newTurretFacing = (turretInit.Value(world) + newFacing - oldFacing + 255) % 255;
+						actor.ReplaceInit(new TurretFacingInit(newTurretFacing));
+					}
+
+					if (turretsInit != null)
+					{
+						var newTurretFacings = turretsInit.Value(world)
+							.ToDictionary(kv => kv.Key, kv => (kv.Value + newFacing - oldFacing + 255) % 255);
+						actor.ReplaceInit(new TurretFacingsInit(newTurretFacings));
+					}
+
+					actor.ReplaceInit(new FacingInit(newFacing));
+				});
+		}
 	}
 
 	public class Mobile : ConditionalTrait<MobileInfo>, INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove,

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
@@ -450,4 +451,62 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IBotTick { void BotTick(IBot bot); }
+
+	[RequireExplicitImplementation]
+	public interface IEditorActorOptions : ITraitInfoInterface
+	{
+		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);
+	}
+
+	public abstract class EditorActorOption
+	{
+		public readonly string Name;
+		public readonly int DisplayOrder;
+
+		public EditorActorOption(string name, int displayOrder)
+		{
+			Name = name;
+			DisplayOrder = displayOrder;
+		}
+	}
+
+	public class EditorActorSlider : EditorActorOption
+	{
+		public readonly float MinValue;
+		public readonly float MaxValue;
+		public readonly int Ticks;
+		public readonly Func<EditorActorPreview, float> GetValue;
+		public readonly Action<EditorActorPreview, float> OnChange;
+
+		public EditorActorSlider(string name, int displayOrder,
+			float minValue, float maxValue, int ticks,
+			Func<EditorActorPreview, float> getValue,
+			Action<EditorActorPreview, float> onChange)
+			: base(name, displayOrder)
+		{
+			MinValue = minValue;
+			MaxValue = maxValue;
+			Ticks = ticks;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
+	public class EditorActorDropdown : EditorActorOption
+	{
+		public readonly Dictionary<string, string> Labels;
+		public readonly Func<EditorActorPreview, string> GetValue;
+		public readonly Action<EditorActorPreview, string> OnChange;
+
+		public EditorActorDropdown(string name, int displayOrder,
+			Dictionary<string, string> labels,
+			Func<EditorActorPreview, string> getValue,
+			Action<EditorActorPreview, string> onChange)
+			: base(name, displayOrder)
+		{
+			Labels = labels;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
 }

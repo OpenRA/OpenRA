@@ -9,19 +9,23 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HealthInfo : IHealthInfo, IRulesetLoaded
+	public class HealthInfo : IHealthInfo, IRulesetLoaded, IEditorActorOptions
 	{
 		[Desc("HitPoints")]
 		public readonly int HP = 0;
 
 		[Desc("Trigger interfaces such as AnnounceOnKill?")]
 		public readonly bool NotifyAppliedDamage = true;
+
+		[Desc("Display order for the health slider in the map editor")]
+		public readonly int EditorHealthDisplayOrder = 2;
 
 		public virtual object Create(ActorInitializer init) { return new Health(init, this); }
 
@@ -32,6 +36,17 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		int IHealthInfo.MaxHP { get { return HP; } }
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			yield return new EditorActorSlider("Health", EditorHealthDisplayOrder, 0, 100, 5,
+				actor =>
+				{
+					var init = actor.Init<HealthInit>();
+					return init != null ? init.Value(world) : 100;
+				},
+				(actor, value) => actor.ReplaceInit(new HealthInit((int)value)));
+		}
 	}
 
 	public class Health : IHealth, ISync, ITick, INotifyCreated, INotifyOwnerChanged
