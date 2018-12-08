@@ -2,11 +2,6 @@ Player:
 	HackyAI@Omnius:
 		Name: Omnius
 		Type: omnius
-		MinimumExcessPower: 50
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
-		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
 			ConstructionYard: construction_yard
@@ -18,40 +13,6 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 			ExcludeFromSquads: harvester
-		BuildingLimits:
-			barracks: 1
-			refinery: 4
-			outpost: 1
-			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingFractions:
-			barracks: 0.1%
-			refinery: 20.1%
-			medium_gun_turret: 8%
-			outpost: 0.1%
-			high_tech_factory: 0.1%
-			large_gun_turret: 6%
-			light_factory: 0.1%
-			heavy_factory: 0.1%
-			starport: 0.1%
-			repair_pad: 0.1%
-			research_centre: 0.1%
-			palace: 0.1%
-			upgrade.conyard: 0.1%
-			upgrade.barracks: 0.1%
-			upgrade.light: 0.1%
-			upgrade.heavy: 0.1%
-			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
 			light_inf: 65%
@@ -86,11 +47,6 @@ Player:
 	HackyAI@Vidius:
 		Name: Vidious
 		Type: vidious
-		MinimumExcessPower: 50
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
-		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
 			ConstructionYard: construction_yard
@@ -102,40 +58,6 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 			ExcludeFromSquads: harvester
-		BuildingLimits:
-			barracks: 1
-			refinery: 4
-			outpost: 1
-			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingFractions:
-			barracks: 0.1%
-			refinery: 20.1%
-			medium_gun_turret: 5%
-			outpost: 0.1%
-			high_tech_factory: 0.1%
-			large_gun_turret: 10%
-			light_factory: 0.1%
-			heavy_factory: 0.1%
-			starport: 0.1%
-			repair_pad: 0.1%
-			research_centre: 0.1%
-			palace: 0.1%
-			upgrade.conyard: 0.1%
-			upgrade.barracks: 0.1%
-			upgrade.light: 0.1%
-			upgrade.heavy: 0.1%
-			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
 			light_inf: 65%
@@ -170,11 +92,6 @@ Player:
 	HackyAI@Gladius:
 		Name: Gladius
 		Type: gladius
-		MinimumExcessPower: 50
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
-		BuildingQueues: Building, Upgrade
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
 		BuildingCommonNames:
 			ConstructionYard: construction_yard
@@ -186,39 +103,6 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 			ExcludeFromSquads: harvester
-		BuildingLimits:
-			barracks: 1
-			refinery: 4
-			outpost: 1
-			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingFractions:
-			barracks: 0.1%
-			refinery: 20.1%
-			medium_gun_turret: 4%
-			outpost: 0.1%
-			high_tech_factory: 0.1%
-			large_gun_turret: 12%
-			light_factory: 0.1%
-			heavy_factory: 0.1%
-			repair_pad: 0.1%
-			research_centre: 0.1%
-			palace: 0.1%
-			upgrade.conyard: 0.1%
-			upgrade.barracks: 0.1%
-			upgrade.light: 0.1%
-			upgrade.heavy: 0.1%
-			upgrade.hightech: 0.1%
 		UnitsToBuild:
 			carryall: 1%
 			light_inf: 65%
@@ -303,4 +187,149 @@ Player:
 		Condition: enable-gladius-ai
 		Bots: gladius
 	HarvesterBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+	BaseBuilderBotModule@omnius:
+		RequiresCondition: enable-omnius-ai
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 50
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		VehiclesFactoryTypes: light_factory, heavy_factory, starport
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		BuildingLimits:
+			barracks: 1
+			refinery: 4
+			outpost: 1
+			high_tech_factory: 1
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
+			palace: 1
+			upgrade.conyard: 1
+			upgrade.barracks: 1
+			upgrade.light: 1
+			upgrade.heavy: 1
+			upgrade.hightech: 1
+		BuildingFractions:
+			barracks: 1
+			refinery: 20
+			medium_gun_turret: 8
+			outpost: 1
+			high_tech_factory: 1
+			large_gun_turret: 6
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
+			palace: 1
+			upgrade.conyard: 1
+			upgrade.barracks: 1
+			upgrade.light: 1
+			upgrade.heavy: 1
+			upgrade.hightech: 1
+	BaseBuilderBotModule@vidious:
+		RequiresCondition: enable-vidious-ai
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 50
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		VehiclesFactoryTypes: light_factory, heavy_factory, starport
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		BuildingLimits:
+			barracks: 1
+			refinery: 4
+			outpost: 1
+			high_tech_factory: 1
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
+			palace: 1
+			upgrade.conyard: 1
+			upgrade.barracks: 1
+			upgrade.light: 1
+			upgrade.heavy: 1
+			upgrade.hightech: 1
+		BuildingFractions:
+			barracks: 1
+			refinery: 20
+			medium_gun_turret: 5
+			outpost: 1
+			high_tech_factory: 1
+			large_gun_turret: 10
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
+			palace: 1
+			upgrade.conyard: 1
+			upgrade.barracks: 1
+			upgrade.light: 1
+			upgrade.heavy: 1
+			upgrade.hightech: 1
+	BaseBuilderBotModule@gladius:
+		RequiresCondition: enable-gladius-ai
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 50
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		VehiclesFactoryTypes: light_factory, heavy_factory, starport
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		BuildingLimits:
+			barracks: 1
+			refinery: 4
+			outpost: 1
+			high_tech_factory: 1
+			light_factory: 1
+			heavy_factory: 1
+			starport: 1
+			repair_pad: 1
+			research_centre: 1
+			palace: 1
+			upgrade.conyard: 1
+			upgrade.barracks: 1
+			upgrade.light: 1
+			upgrade.heavy: 1
+			upgrade.hightech: 1
+		BuildingFractions:
+			barracks: 1
+			refinery: 20
+			medium_gun_turret: 4
+			outpost: 1
+			high_tech_factory: 1
+			large_gun_turret: 12
+			light_factory: 1
+			heavy_factory: 1
+			repair_pad: 1
+			research_centre: 1
+			palace: 1
+			upgrade.conyard: 1
+			upgrade.barracks: 1
+			upgrade.light: 1
+			upgrade.heavy: 1
+			upgrade.hightech: 1
+	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai

@@ -2,10 +2,6 @@ Player:
 	HackyAI@TestAI:
 		Name: Test AI
 		Type: test
-		MinimumExcessPower: 30
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
 		BuildingCommonNames:
 			ConstructionYard: gacnst
 			Refinery: proc
@@ -17,43 +13,6 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 			ExcludeFromSquads: harv
-		BuildingLimits:
-			proc: 4
-			gasilo: 2
-			gapowr: 8
-			napowr: 8
-			gapile: 1
-			nahand: 1
-			gaweap: 1
-			naweap: 1
-			garadr: 1
-			naradr: 1
-			gatech: 1
-			natech: 1
-			nastlh: 1
-			gavulc: 8
-			garock: 2
-			gacsam: 4
-			naobel: 2
-			nalasr: 8
-			nasam: 4
-		BuildingFractions:
-			proc: 30%
-			gapile: 1%
-			nahand: 1%
-			gaweap: 1%
-			naweap: 1%
-			garadr: 1%
-			naradr: 1%
-			gatech: 1%
-			natech: 1%
-			nastlh: 1%
-			nalasr: 10%
-			gavulc: 10%
-			garock: 3%
-			gacsam: 6%
-			nasam: 6%
-			naobel: 3%
 		UnitsToBuild:
 			e1: 80%
 			e2: 25%
@@ -81,4 +40,56 @@ Player:
 		Condition: enable-test-ai
 		Bots: test
 	HarvesterBotModule:
+		RequiresCondition: enable-test-ai
+	BaseBuilderBotModule@test:
+		RequiresCondition: enable-test-ai
+		MinimumExcessPower: 30
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: gacnst
+		RefineryTypes: proc
+		PowerTypes: gapowr, napowr, naapwr
+		BarracksTypes: gapile, nahand
+		VehiclesFactoryTypes: gaweap, naweap
+		ProductionTypes: gapile, nahand, gaweap, naweap
+		SiloTypes: gasilo
+		BuildingLimits:
+			proc: 4
+			gasilo: 2
+			gapowr: 8
+			napowr: 8
+			gapile: 1
+			nahand: 1
+			gaweap: 1
+			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
+			gavulc: 8
+			garock: 2
+			gacsam: 4
+			naobel: 2
+			nalasr: 8
+			nasam: 4
+		BuildingFractions:
+			proc: 30
+			gapile: 1
+			nahand: 1
+			gaweap: 1
+			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
+			nalasr: 10
+			gavulc: 10
+			garock: 3
+			gacsam: 6
+			nasam: 6
+			naobel: 3
+	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai

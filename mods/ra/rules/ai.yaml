@@ -2,10 +2,6 @@ Player:
 	HackyAI@RushAI:
 		Name: Rush AI
 		Type: rush
-		MinimumExcessPower: 60
-		MaximumExcessPower: 160
-		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -18,34 +14,6 @@ Player:
 			Mcv: mcv
 			ExcludeFromSquads: harv
 			NavalUnits: ss,msub,dd,ca,lst,pt
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30%
-			barr: 1%
-			kenn: 0.5%
-			tent: 1%
-			weap: 1%
-			pbox: 7%
-			gun: 7%
-			tsla: 5%
-			gap: 2%
-			ftur: 10%
-			agun: 5%
-			sam: 5%
-			atek: 1%
-			stek: 1%
-			fix: 0.1%
-			dome: 10%
-			mslo: 1%
 		UnitsToBuild:
 			e1: 65%
 			e2: 15%
@@ -74,10 +42,6 @@ Player:
 	HackyAI@NormalAI:
 		Name: Normal AI
 		Type: normal
-		MinimumExcessPower: 60
-		MaximumExcessPower: 200
-		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -91,43 +55,6 @@ Player:
 			Mcv: mcv
 			ExcludeFromSquads: harv
 			NavalUnits: ss,msub,dd,ca,lst,pt
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			dome: 1
-			weap: 1
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			afld.ukraine: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 15%
-			tent: 1%
-			barr: 1%
-			kenn: 0.5%
-			dome: 1%
-			weap: 6%
-			hpad: 4%
-			spen: 1%
-			syrd: 1%
-			afld: 4%
-			afld.ukraine: 4%
-			pbox: 7%
-			gun: 7%
-			ftur: 10%
-			tsla: 5%
-			gap: 2%
-			fix: 1%
-			agun: 5%
-			sam: 1%
-			atek: 1%
-			stek: 1%
-			mslo: 1%
 		UnitsToBuild:
 			e1: 65%
 			e2: 15%
@@ -165,10 +92,6 @@ Player:
 	HackyAI@TurtleAI:
 		Name: Turtle AI
 		Type: turtle
-		MinimumExcessPower: 60
-		MaximumExcessPower: 250
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -182,44 +105,6 @@ Player:
 			Mcv: mcv
 			ExcludeFromSquads: harv
 			NavalUnits: ss,msub,dd,ca,lst,pt
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			afld.ukraine: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30%
-			tent: 1%
-			barr: 1%
-			kenn: 0.5%
-			weap: 3%
-			hpad: 2%
-			afld: 2%
-			afld.ukraine: 2%
-			spen: 1%
-			syrd: 1%
-			pbox: 10%
-			gun: 10%
-			ftur: 10%
-			tsla: 7%
-			gap: 3%
-			fix: 0.1%
-			dome: 10%
-			agun: 5%
-			sam: 5%
-			atek: 1%
-			stek: 1%
-			mslo: 1%
 		UnitsToBuild:
 			e1: 65%
 			e2: 15%
@@ -257,10 +142,6 @@ Player:
 	HackyAI@NavalAI:
 		Name: Naval AI
 		Type: naval
-		MinimumExcessPower: 60
-		MaximumExcessPower: 200
-		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -274,39 +155,6 @@ Player:
 			Mcv: mcv
 			ExcludeFromSquads: harv
 			NavalUnits: ss,msub,dd,ca,lst,pt
-		BuildingLimits:
-			proc: 4
-			dome: 1
-			barr: 1
-			tent: 1
-			spen: 1
-			syrd: 1
-			hpad: 8
-			afld: 8
-			afld.ukraine: 8
-			weap: 1
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30%
-			dome: 1%
-			weap: 1%
-			hpad: 20%
-			afld: 20%
-			afld.ukraine: 20%
-			atek: 1%
-			stek: 1%
-			spen: 1%
-			syrd: 1%
-			fix: 0.1%
-			pbox: 12%
-			gun: 12%
-			ftur: 12%
-			tsla: 12%
-			agun: 5%
-			sam: 5%
-			mslo: 1%
 		UnitsToBuild:
 			harv: 1%
 			heli: 30%
@@ -385,4 +233,197 @@ Player:
 		Condition: enable-naval-ai
 		Bots: naval
 	HarvesterBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	BaseBuilderBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 160
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			kenn: 1
+			dome: 1
+			weap: 1
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 30
+			barr: 1
+			kenn: 1
+			tent: 1
+			weap: 1
+			pbox: 7
+			gun: 7
+			tsla: 5
+			gap: 2
+			ftur: 10
+			agun: 5
+			sam: 5
+			atek: 1
+			stek: 1
+			fix: 1
+			dome: 10
+			mslo: 1
+	BaseBuilderBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen,syrd
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			afld.ukraine: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 15
+			tent: 1
+			barr: 1
+			kenn: 1
+			dome: 1
+			weap: 6
+			hpad: 4
+			spen: 1
+			syrd: 1
+			afld: 4
+			afld.ukraine: 4
+			pbox: 7
+			gun: 7
+			ftur: 10
+			tsla: 5
+			gap: 2
+			fix: 1
+			agun: 5
+			sam: 1
+			atek: 1
+			stek: 1
+			mslo: 1
+	BaseBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 250
+		ExcessPowerIncrement: 50
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen,syrd
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			kenn: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			afld.ukraine: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 30
+			tent: 1
+			barr: 1
+			kenn: 1
+			weap: 3
+			hpad: 2
+			afld: 2
+			afld.ukraine: 2
+			spen: 1
+			syrd: 1
+			pbox: 10
+			gun: 10
+			ftur: 10
+			tsla: 7
+			gap: 3
+			fix: 1
+			dome: 10
+			agun: 5
+			sam: 5
+			atek: 1
+			stek: 1
+			mslo: 1
+	BaseBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen,syrd
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 4
+			dome: 1
+			barr: 1
+			tent: 1
+			spen: 1
+			syrd: 1
+			hpad: 8
+			afld: 8
+			afld.ukraine: 8
+			weap: 1
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 30
+			dome: 1
+			weap: 1
+			hpad: 20
+			afld: 20
+			afld.ukraine: 20
+			atek: 1
+			stek: 1
+			spen: 1
+			syrd: 1
+			fix: 1
+			pbox: 12
+			gun: 12
+			ftur: 12
+			tsla: 12
+			agun: 5
+			sam: 5
+			mslo: 1
+	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
