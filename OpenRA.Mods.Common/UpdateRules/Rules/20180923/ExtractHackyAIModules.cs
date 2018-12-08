@@ -70,7 +70,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			// We add a 'default' HarvesterBotModule in any case (unless the file doesn't contain any HackyAI base definition),
 			// and only add more for AIs that define custom values for one of its fields.
 			var defaultHarvNode = new MiniYamlNode("HarvesterBotModule", "");
-			var addDefaultHarvModule = false;
 
 			foreach (var hackyAINode in hackyAIs)
 			{
@@ -86,10 +85,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					continue;
 				}
 
-				addDefaultHarvModule = true;
-
 				var conditionString = "enable-" + aiType + "-ai";
-				var requiresCondition = new MiniYamlNode("RequiresCondition", conditionString);
 
 				var addGrantConditionOnBotOwner = true;
 
@@ -112,7 +108,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (harvesterFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
 				{
 					var harvNode = new MiniYamlNode("HarvesterBotModule@" + aiType, "");
-					harvNode.AddNode(requiresCondition);
+					harvNode.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
 
 					foreach (var hf in harvesterFields)
 					{
@@ -130,12 +126,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				}
 				else
 				{
-					// We want the default module to be enabled for every AI that didn't customise one of its fields,
+					// We want the default harvester module to be enabled for every AI that didn't customise one of its fields,
 					// so we need to update RequiresCondition to be enabled on any of the conditions granted by these AIs,
 					// but only if the condition hasn't been added yet.
 					var requiresConditionNode = defaultHarvNode.LastChildMatching("RequiresCondition");
 					if (requiresConditionNode == null)
-						defaultHarvNode.AddNode(requiresCondition);
+						defaultHarvNode.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
 					else
 					{
 						var oldValue = requiresConditionNode.NodeValue<string>();
@@ -149,7 +145,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (supportPowerFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
 				{
 					var spNode = new MiniYamlNode("SupportPowerBotModule@" + aiType, "");
-					spNode.AddNode(requiresCondition);
+					spNode.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
 
 					foreach (var spf in supportPowerFields)
 					{
@@ -162,7 +158,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				}
 			}
 
-			if (addDefaultHarvModule)
+			// Only add module if any bot is using/enabling it.
+			var harvRequiresConditionNode = defaultHarvNode.LastChildMatching("RequiresCondition");
+			if (harvRequiresConditionNode != null)
 				addNodes.Add(defaultHarvNode);
 
 			foreach (var node in addNodes)
