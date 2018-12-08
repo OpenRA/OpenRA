@@ -39,6 +39,41 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"SupportPowerDecisions"
 		};
 
+		readonly string[] baseBuilderFields =
+		{
+			"BuildingQueues",
+			"DefenseQueues",
+			"MinimumExcessPower",
+			"MaximumExcessPower",
+			"ExcessPowerIncrement",
+			"ExcessPowerIncreaseThreshold",
+			"StructureProductionInactiveDelay",
+			"StructureProductionActiveDelay",
+			"StructureProductionRandomBonusDelay",
+			"StructureProductionResumeDelay",
+			"MaximumFailedPlacementAttempts",
+			"MaxResourceCellsToCheck",
+			"CheckForNewBasesDelay",
+			"MinBaseRadius",
+			"MaxBaseRadius",
+			"MinimumDefenseRadius",
+			"MaximumDefenseRadius",
+			"RallyPointScanRadius",
+			"CheckForWaterRadius",
+			"WaterTerrainTypes",
+			"NewProductionCashThreshold",
+			"BuildingCommonNames",
+			"BuildingLimits",
+			"BuildingFractions",
+		};
+
+		// Fields that should (for now) only be copied instead of moved, for backwards-compatibility reasons
+		readonly string[] copyBaseBuilderFields =
+		{
+			"MinBaseRadius",
+			"MaxBaseRadius",
+		};
+
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			if (!messageShown)
@@ -70,6 +105,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			// We add a 'default' HarvesterBotModule in any case (unless the file doesn't contain any HackyAI base definition),
 			// and only add more for AIs that define custom values for one of its fields.
 			var defaultHarvNode = new MiniYamlNode("HarvesterBotModule", "");
+
+			// We add a 'default' BuildingRepairBotModule in any case,
+			// and just don't enable it for AIs that had 'ShouldRepairBuildings: false'.
+			var defaultRepairNode = new MiniYamlNode("BuildingRepairBotModule", "");
 
 			foreach (var hackyAINode in hackyAIs)
 			{
@@ -156,6 +195,56 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 					addNodes.Add(spNode);
 				}
+
+				if (baseBuilderFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
+				{
+					var bmNode = new MiniYamlNode("BaseBuilderBotModule@" + aiType, "");
+					bmNode.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
+
+					foreach (var bmf in baseBuilderFields)
+					{
+						var fieldNode = hackyAINode.LastChildMatching(bmf);
+						if (fieldNode != null)
+						{
+							if (fieldNode.KeyMatches("BuildingFractions", includeRemovals: false))
+							{
+								var buildingNodes = fieldNode.Value.Nodes;
+								foreach (var n in buildingNodes)
+									ConvertFractionToInteger(n);
+							}
+
+							if (copyBaseBuilderFields.Any(f => f == bmf))
+								bmNode.AddNode(fieldNode);
+							else if (fieldNode.KeyMatches("BuildingCommonNames", includeRemovals: false))
+								foreach (var n in fieldNode.Value.Nodes)
+									bmNode.AddNode(n.Key + "Types", n.Value.Value);
+							else
+								fieldNode.MoveNode(hackyAINode, bmNode);
+						}
+					}
+
+					addNodes.Add(bmNode);
+				}
+
+				// We want the default repair module to be enabled for every AI that didn't disable 'ShouldRepairBuildings',
+				// so we need to update RequiresCondition to be enabled on any of the conditions granted by these AIs,
+				// but only if the condition hasn't been added yet.
+				var shouldRepairNode = hackyAINode.LastChildMatching("ShouldRepairBuildings");
+				var enableBuildingRepair = shouldRepairNode == null || shouldRepairNode.NodeValue<bool>();
+				if (enableBuildingRepair)
+				{
+					var requiresConditionNode = defaultRepairNode.LastChildMatching("RequiresCondition");
+					if (requiresConditionNode == null)
+						defaultRepairNode.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
+					else
+					{
+						var oldValue = requiresConditionNode.NodeValue<string>();
+						if (oldValue.Contains(conditionString))
+							continue;
+
+						requiresConditionNode.ReplaceValue(oldValue + " || " + conditionString);
+					}
+				}
 			}
 
 			// Only add module if any bot is using/enabling it.
@@ -163,10 +252,42 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			if (harvRequiresConditionNode != null)
 				addNodes.Add(defaultHarvNode);
 
+			// Only add module if any bot is using/enabling it.
+			var repRequiresConditionNode = defaultRepairNode.LastChildMatching("RequiresCondition");
+			if (repRequiresConditionNode != null)
+				addNodes.Add(defaultRepairNode);
+
 			foreach (var node in addNodes)
 				actorNode.AddNode(node);
 
 			yield break;
+		}
+
+		void ConvertFractionToInteger(MiniYamlNode node)
+		{
+			// Is the value a percentage or a 'real' float?
+			var isPercentage = node.NodeValue<string>().Contains("%");
+			if (isPercentage)
+			{
+				// Remove '%' first, then remove potential '.' and finally clamp to minimum of 1, unless the old value was really zero
+				var oldValueAsString = node.NodeValue<string>().Split('%')[0];
+				var oldValueWasZero = oldValueAsString == "0";
+				var newValue = oldValueAsString.Split('.')[0];
+				newValue = !oldValueWasZero && newValue == "0" ? "1" : newValue;
+
+				node.ReplaceValue(newValue);
+			}
+			else
+			{
+				var oldValueAsFloat = node.NodeValue<float>();
+				var oldValueWasZero = node.NodeValue<string>() == "0" || node.NodeValue<string>() == "0.0";
+				var newValue = (int)(oldValueAsFloat * 100);
+
+				// Clamp to minimum of 1, unless the old value was really zero
+				newValue = !oldValueWasZero && newValue == 0 ? 1 : newValue;
+
+				node.ReplaceValue(newValue.ToString());
+			}
 		}
 	}
 }
