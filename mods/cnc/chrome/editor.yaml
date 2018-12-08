@@ -224,11 +224,6 @@ Container@EDITOR_WORLD_ROOT:
 					Visible: false
 				ActorPreview@DRAG_ACTOR_PREVIEW:
 					Visible: false
-				Container@ACTOR_SELECT_BORDER:
-					X: 32
-					Y: 32
-					Width: 32
-					Height: 32
 				Background@ACTOR_EDIT_PANEL:
 					Background: panel-black
 					Width: 269
