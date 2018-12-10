@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
+		[Desc("How many times to grant the condition.")]
+		public readonly int Levels = 1;
+
 		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
@@ -70,11 +73,21 @@ namespace OpenRA.Mods.Common.Traits
 					if (!a.IsInWorld || a.IsDead)
 						continue;
 
-					var external = a.TraitsImplementing<ExternalCondition>()
-						.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
+					var externals = a.TraitsImplementing<ExternalCondition>()
+						.Where(t => t.Info.Condition == info.Condition);
 
-					if (external != null)
+					ExternalCondition external = null;
+					for (var n = 0; n < info.Levels; n++)
+					{
+						if (external == null || !external.CanGrantCondition(a, self))
+						{
+							external = externals.FirstOrDefault(t => t.CanGrantCondition(a, self));
+							if (external == null)
+								break;
+						}
+
 						external.GrantCondition(a, self, info.Duration);
+					}
 				}
 			});
 
