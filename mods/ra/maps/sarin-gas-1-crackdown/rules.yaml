@@ -1,0 +1,119 @@
+World:
+	LuaScript:
+		Scripts: crackdown.lua, crackdown-AI.lua
+	MissionData:
+		Briefing: A Soviet convoy of Sarin nerve gas has stopped at a riverside outpost for refuelling. This is a perfect opportunity to destroy the Sarin shipment, and remove the Soviet threat in the area.\n\nUse your forces to destroy the convoy trucks and the base. It is imperative that none of the convoy trucks escape.\n\nThe Soviets keep their convoy information in their radar center. If a spy was to infiltrate the facility, it may help us locate the convoy escape routes.
+		WinVideo: allymorf.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+APC:
+	Buildable:
+		Prerequisites: ~vehicles.allies
+
+E3:
+	Buildable:
+		Prerequisites: ~infantry.allies
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+TTNK:
+	Buildable:
+		Prerequisites: tsla, ~vehicles.soviet
+
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+	-SpawnActorOnDeath:
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SS:
+	AutoTarget:
+		InitialStanceAI: AttackAnything
