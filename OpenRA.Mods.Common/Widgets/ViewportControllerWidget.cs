@@ -246,26 +246,20 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var frozen = world.ScreenMap.FrozenActorsAtMouse(world.RenderPlayer, worldPixel)
-				.Where(a => a.TooltipInfo != null && a.IsValid)
+				.Where(a => a.TooltipInfo != null && a.IsValid && a.Visible && !a.Hidden)
 				.WithHighestSelectionPriority(worldPixel);
 
 			if (frozen != null)
 			{
-				var actor = frozen.Actor;
+				FrozenActorTooltip = frozen;
 
-				// HACK: This leaks the cloak state through the fog (cloaked buildings will not show tooltips)
-				if (actor == null || actor.TraitsImplementing<IVisibilityModifier>().All(t => t.IsVisible(actor, world.RenderPlayer)))
-				{
-					FrozenActorTooltip = frozen;
+				// HACK: This leaks the tooltip state through the fog
+				// This will cause issues for any downstream mods that use IProvideTooltipInfo on enemy actors
+				if (frozen.Actor != null)
+					ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
 
-					// HACK: This leaks the tooltip state through the fog
-					// This will cause issues for any downstream mods that use IProvideTooltipInfo on enemy actors
-					if (frozen.Actor != null)
-						ActorTooltipExtra = frozen.Actor.TraitsImplementing<IProvideTooltipInfo>().ToArray();
-
-					TooltipType = WorldTooltipType.FrozenActor;
-					return;
-				}
+				TooltipType = WorldTooltipType.FrozenActor;
+				return;
 			}
 
 			if (resourceLayer != null)
