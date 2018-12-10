@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		static readonly FrozenActorAction Remove = (fufubg, fal, gps, fa) =>
 		{
 			// Removes the frozen actor. Once done, we no longer need to track GPS updates.
+			fa.Invalidate();
 			fal.Remove(fa);
 			gps.UnregisterForOnGpsRefreshed(fufubg.self, fufubg);
 		};
