@@ -1,0 +1,54 @@
+World:
+	LuaScript:
+		Scripts: nod10b.lua
+	MissionData:
+		Briefing: GDI is developing a new, heavily armored tank. Our spies have located the GDI R&D base.\n\nUse your small strike force to locate and penetrate the center. Be sure to destroy the tanks in the base and the factory.
+		BackgroundVideo: kanepre.vqa
+		LossVideo: deskill.vqa
+		WinVideo: tankkill.vqa
+		BriefingVideo: nod10b.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+	-LegacyBridgeLayer:
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+TRAN.IN:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Interactable:
+	-RevealsShroud:
+
+RMBO.easy:
+	Inherits: RMBO
+	Health:
+		HP: 30000
+	SelfHealing:
+		Step: 500
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	RenderSprites:
+		Image: RMBO
+
+RMBO.hard:
+	Inherits: RMBO
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
+	-AttackMove:
+	RenderSprites:
+		Image: RMBO
