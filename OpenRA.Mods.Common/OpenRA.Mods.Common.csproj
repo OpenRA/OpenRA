@@ -856,7 +856,7 @@
     <Compile Include="Traits\World\ElevatedBridgeLayer.cs" />
     <Compile Include="Traits\World\ElevatedBridgePlaceholder.cs" />
     <Compile Include="Traits\Attack\AttackCharges.cs" />
-    <Compile Include="Traits\Render\WithChargeAnimation.cs" />
+    <Compile Include="Traits\Render\WithChargeSpriteBody.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="WebServices.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnLineBuildDirection.cs" />
@@ -948,6 +948,7 @@
     <Compile Include="UpdateRules\Rules\20180923\ExtractHackyAIModules.cs" />
     <Compile Include="UpdateRules\Rules\20180923\DefineLevelUpImageDefault.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemovedAutoCarryallCircleTurnSpeed.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\ReplacedWithChargeAnimation.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
