@@ -923,8 +923,9 @@ OBLI:
 		Range: 8c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithChargeAnimation:
-		RequiresCondition: !build-incomplete
+	-WithSpriteBody:
+	WithChargeSpriteBody:
+		Sequence: active
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
