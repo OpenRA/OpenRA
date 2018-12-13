@@ -360,6 +360,10 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
+		CargoCondition: disable-experience
+	GainsExperienceMultiplier:
+		Modifier: 0
+		RequiresCondition: disable-experience
 	HiddenUnderFog:
 	ActorLostNotification:
 	GpsDot:
