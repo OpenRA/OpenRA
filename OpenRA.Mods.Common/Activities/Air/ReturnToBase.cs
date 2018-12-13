@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.Activities
 				return null;
 
 			return self.World.ActorsHavingTrait<Reservable>()
-				.Where(a => a.Owner == self.Owner
+				.Where(a => !a.IsDead
+					&& a.Owner == self.Owner
 					&& rearmInfo.RearmActors.Contains(a.Info.Name)
 					&& (!unreservedOnly || !Reservable.IsReserved(a)))
 				.ClosestTo(self);
