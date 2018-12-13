@@ -164,7 +164,6 @@ JUMPJET.Husk:
 	RenderSprites:
 	BodyOrientation:
 		QuantizedFacings: 1
-	Aircraft:
 	HiddenUnderFog:
 		Type: GroundPosition
 	ScriptTriggers:
