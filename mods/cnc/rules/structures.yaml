@@ -228,7 +228,7 @@ PROC:
 		SpawnOffset: 1,2
 		Facing: 64
 	WithBuildingBib:
-	WithResources:
+	WithResourceLevelOverlay:
 		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
@@ -257,8 +257,9 @@ SILO:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithSiloAnimation:
-		RequiresCondition: !build-incomplete
+	-WithSpriteBody:
+	WithResourceLevelSpriteBody:
+		Sequence: stages
 	StoresResources:
 		PipCount: 10
 		PipColor: Green

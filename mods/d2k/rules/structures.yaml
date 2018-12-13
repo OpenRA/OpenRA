@@ -353,8 +353,9 @@ silo:
 			fremen: silo.atreides
 			harkonnen: silo.harkonnen
 			corrino: silo.harkonnen
-	WithSiloAnimation:
-		RequiresCondition: !build-incomplete
+	-WithSpriteBody:
+	WithResourceLevelSpriteBody:
+		Sequence: stages
 	StoresResources:
 		PipColor: green
 		PipCount: 5

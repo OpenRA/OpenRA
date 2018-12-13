@@ -15,16 +15,15 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the fill status of PlayerResources with an extra sprite overlay on the actor.")]
-	class WithResourcesInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
+	class WithResourceLevelOverlayInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
 		[Desc("Sequence name to use")]
 		[SequenceReference] public readonly string Sequence = "resources";
 
-		public override object Create(ActorInitializer init) { return new WithResources(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithResourceLevelOverlay(init.Self, this); }
 	}
 
-	// TODO: Rename to WithResourcesOverlay to conform with our naming conventions
-	class WithResources : ConditionalTrait<WithResourcesInfo>, INotifyOwnerChanged, INotifyDamageStateChanged
+	class WithResourceLevelOverlay : ConditionalTrait<WithResourceLevelOverlayInfo>, INotifyOwnerChanged, INotifyDamageStateChanged
 	{
 		readonly AnimationWithOffset anim;
 		readonly RenderSprites rs;
@@ -32,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		PlayerResources playerResources;
 
-		public WithResources(Actor self, WithResourcesInfo info)
+		public WithResourceLevelOverlay(Actor self, WithResourceLevelOverlayInfo info)
 			: base(info)
 		{
 			rs = self.Trait<RenderSprites>();

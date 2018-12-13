@@ -112,6 +112,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemovedAutoCarryallCircleTurnSpeed(),
 				new RemoveAttackIgnoresVisibility(),
 				new ReplacedWithChargeAnimation(),
+				new RefactorResourceLevelAnimating(),
 			})
 		};
 
