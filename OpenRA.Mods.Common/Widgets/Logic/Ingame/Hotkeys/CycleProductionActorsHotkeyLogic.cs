@@ -43,12 +43,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
 			var player = world.RenderPlayer ?? world.LocalPlayer;
-
-			var facilities = world.ActorsHavingTrait<Production>()
-				.Where(a => a.Owner == player && !a.Info.HasTraitInfo<BaseBuildingInfo>()
-					&& a.TraitsImplementing<Production>().Any(t => !t.IsTraitDisabled))
-				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces.First())
-				.ToList();
+			var facilities = world.ActorsHavingTrait<Production>().
+				Where(a => a.Owner == player && a.Info != null && !a.Info.HasTraitInfo<BaseBuildingInfo>()).
+				OrderBy(f => f.Info.TraitInfo<ProductionInfo>().Produces.FirstOrDefault()).ToList();
 
 			if (!facilities.Any())
 				return true;
@@ -61,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			if (next == null)
 				next = facilities.First();
 
-			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", clickSound, null);
+			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
 
 			selection.Combine(world, new Actor[] { next }, false, true);
 			viewport.Center(selection.Actors);
