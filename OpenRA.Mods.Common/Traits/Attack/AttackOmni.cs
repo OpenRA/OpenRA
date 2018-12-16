@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -32,9 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		// Some 3rd-party mods rely on this being public
 		public class SetTarget : Activity
 		{
-			readonly Target target;
 			readonly AttackOmni attack;
 			readonly bool allowMove;
+			Target target;
 
 			public SetTarget(AttackOmni attack, Target target, bool allowMove)
 			{
@@ -45,6 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override Activity Tick(Actor self)
 			{
+				target = target.Recalculate(self.Owner);
 				if (IsCanceled || !target.IsValidFor(self) || !attack.IsReachableTarget(target, allowMove))
 					return NextActivity;
 

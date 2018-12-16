@@ -258,6 +258,7 @@ ART2:
 		Turrets: deployed
 		RequiresCondition: deployed
 		PauseOnCondition: empdisable
+		TargetFrozenActors: True
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed

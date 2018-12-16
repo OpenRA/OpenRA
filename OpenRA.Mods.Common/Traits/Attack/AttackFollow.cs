@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -31,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Tick(Actor self)
 		{
+			Target = Target.Recalculate(self.Owner);
 			if (IsTraitDisabled)
 			{
 				Target = Target.Invalid;
@@ -62,15 +64,17 @@ namespace OpenRA.Mods.Common.Traits
 		class AttackActivity : Activity
 		{
 			readonly AttackFollow attack;
+			readonly RevealsShroud[] revealsShroud;
 			readonly IMove move;
-			readonly Target target;
 			readonly bool forceAttack;
+			Target target;
 			bool hasTicked;
 
 			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
+				revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
 
 				this.target = target;
 				this.forceAttack = forceAttack;
@@ -78,6 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override Activity Tick(Actor self)
 			{
+				target = target.Recalculate(self.Owner);
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
@@ -87,6 +92,11 @@ namespace OpenRA.Mods.Common.Traits
 				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
 				if (weapon != null)
 				{
+					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
+					// Having both this and AttackFollow modify that field is a horrible hack.
+					if (hasTicked && attack.Target.Type == TargetType.Invalid)
+						return NextActivity;
+
 					var targetIsMobile = (target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<IMoveInfo>())
 						|| (target.Type == TargetType.FrozenActor && target.FrozenActor.Info.HasTraitInfo<IMoveInfo>());
 
@@ -95,10 +105,18 @@ namespace OpenRA.Mods.Common.Traits
 					var maxRange = targetIsMobile ? new WDist(Math.Max(weapon.Weapon.MinRange.Length, modifiedRange.Length - 1024))
 						: modifiedRange;
 
-					// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
-					// Having both this and AttackFollow modify that field is a horrible hack.
-					if (hasTicked && attack.Target.Type == TargetType.Invalid)
-						return NextActivity;
+					// Most actors want to be able to see their target before shooting
+					if (!attack.Info.TargetFrozenActors && !forceAttack && target.Type == TargetType.FrozenActor)
+					{
+						var rs = revealsShroud
+							.Where(Exts.IsTraitEnabled)
+							.MaxByOrDefault(s => s.Range);
+
+						// Default to 2 cells if there are no active traits
+						var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
+						if (sightRange < maxRange)
+							maxRange = sightRange;
+					}
 
 					attack.Target = target;
 					hasTicked = true;

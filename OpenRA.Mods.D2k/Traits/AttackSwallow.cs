@@ -72,16 +72,19 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new SwallowTarget(self, newTarget, allowMove, forceAttack, Info.FacingTolerance);
+			return new SwallowTarget(self, newTarget, allowMove, forceAttack);
 		}
 
 		public class SwallowTarget : Attack
 		{
-			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack, int facingTolerance)
-				: base(self, target, allowMovement, forceAttack, facingTolerance) { }
+			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack)
+				: base(self, target, allowMovement, forceAttack) { }
 
-			// Worms ignore visibility, so don't need to recalculate targets
-			protected override bool IgnoresVisibility { get { return true; } }
+			protected override Target RecalculateTarget(Actor self)
+			{
+				// Worms ignore visibility, so don't need to recalculate targets
+				return target;
+			}
 		}
 	}
 }

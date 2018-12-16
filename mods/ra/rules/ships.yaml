@@ -118,6 +118,7 @@ MSUB:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
+		TargetFrozenActors: True
 	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
@@ -234,6 +235,7 @@ CA:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		Turrets: primary, secondary
+		TargetFrozenActors: True
 	WithMuzzleOverlay:
 	SelectionDecorations:
 	WithSpriteTurret@PRIMARY:

@@ -28,6 +28,7 @@ V2RL:
 	AutoTarget:
 		ScanRadius: 10
 	AttackFrontal:
+		TargetFrozenActors: True
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
 		Name: loaded
@@ -263,6 +264,7 @@ ARTY:
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		TargetFrozenActors: True
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode
