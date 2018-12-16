@@ -23,13 +23,13 @@ namespace OpenRA.Mods.Common.Activities
 		[Flags]
 		protected enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
 
-		protected readonly Target Target;
-		readonly AttackBase[] attackTraits;
+		readonly AttackFrontal[] attackTraits;
+		readonly RevealsShroud[] revealsShroud;
 		readonly IMove move;
 		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
-		readonly int facingTolerance;
+		protected Target target;
 
 		WDist minRange;
 		WDist maxRange;
@@ -37,22 +37,27 @@ namespace OpenRA.Mods.Common.Activities
 		Activity moveActivity;
 		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
-		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack, int facingTolerance)
+		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack)
 		{
-			Target = target;
-
+			this.target = target;
 			this.forceAttack = forceAttack;
-			this.facingTolerance = facingTolerance;
 
-			attackTraits = self.TraitsImplementing<AttackBase>().ToArray();
+			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray();
+			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
 
 			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
 		}
 
+		protected virtual Target RecalculateTarget(Actor self)
+		{
+			return target.Recalculate(self.Owner);
+		}
+
 		public override Activity Tick(Actor self)
 		{
+			target = RecalculateTarget(self);
 			turnActivity = moveActivity = null;
 			attackStatus = AttackStatus.UnableToAttack;
 
@@ -74,31 +79,37 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
-		protected virtual bool IgnoresVisibility { get { return false; } }
-
-		protected virtual AttackStatus TickAttack(Actor self, AttackBase attack)
+		protected virtual AttackStatus TickAttack(Actor self, AttackFrontal attack)
 		{
 			if (IsCanceled)
 				return AttackStatus.UnableToAttack;
 
-			var type = Target.Type;
-			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
+			if (!target.IsValidFor(self))
 				return AttackStatus.UnableToAttack;
 
-			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(Target.Actor.Location, null, false))
+			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(target.Actor.Location, null, false))
 				return AttackStatus.UnableToAttack;
 
-			// Drop the target if it moves under the shroud / fog.
-			// HACK: This would otherwise break targeting frozen actors
-			// The problem is that Shroud.IsTargetable returns false (as it should) for
-			// frozen actors, but we do want to explicitly target the underlying actor here.
-			if (!IgnoresVisibility && type == TargetType.Actor
-					&& !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>()
-					&& !Target.Actor.CanBeViewedByPlayer(self.Owner))
-				return AttackStatus.UnableToAttack;
+			if (!attack.Info.TargetFrozenActors && !forceAttack && target.Type == TargetType.FrozenActor)
+			{
+				// Try to move within range, drop the target otherwise
+				if (move == null)
+					return AttackStatus.UnableToAttack;
+
+				var rs = revealsShroud
+					.Where(Exts.IsTraitEnabled)
+					.MaxByOrDefault(s => s.Range);
+
+				// Default to 2 cells if there are no active traits
+				var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
+
+				attackStatus |= AttackStatus.NeedsToMove;
+				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, sightRange), this);
+				return AttackStatus.NeedsToMove;
+			}
 
 			// Drop the target once none of the weapons are effective against it
-			var armaments = attack.ChooseArmamentsForTarget(Target, forceAttack).ToList();
+			var armaments = attack.ChooseArmamentsForTarget(target, forceAttack).ToList();
 			if (armaments.Count == 0)
 				return AttackStatus.UnableToAttack;
 
@@ -108,8 +119,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			var pos = self.CenterPosition;
 			var mobile = move as Mobile;
-			if (!Target.IsInRange(pos, maxRange)
-				|| (minRange.Length != 0 && Target.IsInRange(pos, minRange))
+			if (!target.IsInRange(pos, maxRange)
+				|| (minRange.Length != 0 && target.IsInRange(pos, minRange))
 				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
@@ -117,13 +128,13 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(Target, minRange, maxRange), this);
+				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, minRange, maxRange), this);
 				return AttackStatus.NeedsToMove;
 			}
 
-			var targetedPosition = attack.GetTargetPosition(pos, Target);
+			var targetedPosition = attack.GetTargetPosition(pos, target);
 			var desiredFacing = (targetedPosition - pos).Yaw.Facing;
-			if (!Util.FacingWithinTolerance(facing.Facing, desiredFacing, facingTolerance))
+			if (!Util.FacingWithinTolerance(facing.Facing, desiredFacing, ((AttackFrontalInfo)attack.Info).FacingTolerance))
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
 				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
@@ -131,9 +142,48 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			attackStatus |= AttackStatus.Attacking;
-			attack.DoAttack(self, Target, armaments);
+			attack.DoAttack(self, target, armaments);
 
 			return AttackStatus.Attacking;
+		}
+	}
+
+	public static class TargetExts
+	{
+		/// <summary>Update (Frozen)Actor targets to account for visibility changes or actor replacement</summary>
+		public static Target Recalculate(this Target t, Player viewer)
+		{
+			// Check whether the target has transformed into something else
+			// HACK: This relies on knowing the internal implementation details of Target
+			if (t.Type == TargetType.Invalid && t.Actor != null && t.Actor.ReplacedByActor != null)
+				t = Target.FromActor(t.Actor.ReplacedByActor);
+
+			if (t.Type == TargetType.Actor)
+			{
+				// Actor has been hidden under the fog
+				if (!t.Actor.CanBeViewedByPlayer(viewer))
+				{
+					// Replace with FrozenActor if applicable, otherwise drop the target
+					var frozen = viewer.FrozenActorLayer.FromID(t.Actor.ActorID);
+					return frozen != null ? Target.FromFrozenActor(frozen) : Target.Invalid;
+				}
+			}
+			else if (t.Type == TargetType.FrozenActor)
+			{
+				// Frozen actor has been revealed
+				if (!t.FrozenActor.Visible || !t.FrozenActor.IsValid)
+				{
+					// Original actor is still alive
+					if (t.FrozenActor.Actor != null && t.FrozenActor.Actor.CanBeViewedByPlayer(viewer))
+						return Target.FromActor(t.FrozenActor.Actor);
+
+					// Original actor was killed while hidden
+					if (t.Actor == null)
+						return Target.Invalid;
+				}
+			}
+
+			return t;
 		}
 	}
 }

@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyAttack : Activity
 	{
-		readonly Target target;
 		readonly Aircraft aircraft;
 		readonly AttackAircraft attackAircraft;
 		readonly Rearmable rearmable;
+		Target target;
 
 		int ticksUntilTurn;
 
@@ -42,6 +42,8 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self);
 				return NextActivity;
 			}
+
+			target = target.Recalculate(self.Owner);
 
 			if (!target.IsValidFor(self))
 				return NextActivity;

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new Activities.Attack(self, newTarget, allowMove, forceAttack, info.FacingTolerance);
+			return new Activities.Attack(self, newTarget, allowMove, forceAttack);
 		}
 	}
 }
