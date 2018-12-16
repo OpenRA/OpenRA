@@ -63,3 +63,11 @@ MISS:
 	RevealsShroud:
 		Range: 3c0
 	-RevealsShroud@GAPGEN:
+
+Ant:
+	Buildable:
+		Prerequisites: ~disabled
+
+Zombie:
+	Buildable:
+		Prerequisites: ~disabled
