@@ -113,6 +113,31 @@ namespace OpenRA.Platforms.Default
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
 					windowSize.Width, windowSize.Height, windowFlags);
 
+				// Work around an issue in macOS's GL backend where the window remains permanently black
+				// (if dark mode is enabled) unless we drain the event queue before initializing GL
+				if (Platform.CurrentPlatform == PlatformType.OSX)
+				{
+					SDL.SDL_Event e;
+					while (SDL.SDL_PollEvent(out e) != 0)
+					{
+						// We can safely ignore all mouse/keyboard events and window size changes
+						// (these will be caught in the window setup below), but do need to process focus
+						if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
+						{
+							switch (e.window.windowEvent)
+							{
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
+									Game.HasInputFocus = false;
+									break;
+
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
+									Game.HasInputFocus = true;
+									break;
+							}
+						}
+					}
+				}
+
 				surfaceSize = windowSize;
 				windowScale = 1;
 
