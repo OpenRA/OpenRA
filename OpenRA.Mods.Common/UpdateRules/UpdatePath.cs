@@ -110,6 +110,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveResourceExplodeModifier(),
 				new DefineLevelUpImageDefault(),
 				new RemovedAutoCarryallCircleTurnSpeed(),
+				new RemoveAttackIgnoresVisibility(),
 			})
 		};
 

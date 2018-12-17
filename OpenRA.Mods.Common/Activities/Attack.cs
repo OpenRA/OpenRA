@@ -74,6 +74,8 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
+		protected virtual bool IgnoresVisibility { get { return false; } }
+
 		protected virtual AttackStatus TickAttack(Actor self, AttackBase attack)
 		{
 			if (IsCanceled)
@@ -90,7 +92,7 @@ namespace OpenRA.Mods.Common.Activities
 			// HACK: This would otherwise break targeting frozen actors
 			// The problem is that Shroud.IsTargetable returns false (as it should) for
 			// frozen actors, but we do want to explicitly target the underlying actor here.
-			if (!attack.Info.IgnoresVisibility && type == TargetType.Actor
+			if (!IgnoresVisibility && type == TargetType.Actor
 					&& !Target.Actor.Info.HasTraitInfo<FrozenUnderFogInfo>()
 					&& !Target.Actor.CanBeViewedByPlayer(self.Owner))
 				return AttackStatus.UnableToAttack;

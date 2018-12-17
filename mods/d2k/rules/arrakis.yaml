@@ -104,7 +104,6 @@ sandworm:
 		UseLocation: true
 	AttackSwallow:
 		AttackRequiresEnteringCell: true
-		IgnoresVisibility: true
 		AttackingCondition: attacking
 	Armament:
 		Weapon: WormJaw

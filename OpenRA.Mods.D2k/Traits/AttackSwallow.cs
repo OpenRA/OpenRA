@@ -11,6 +11,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
@@ -66,6 +68,20 @@ namespace OpenRA.Mods.D2k.Traits
 
 			self.CancelActivity();
 			self.QueueActivity(new SwallowActor(self, target, a, facing));
+		}
+
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		{
+			return new SwallowTarget(self, newTarget, allowMove, forceAttack, Info.FacingTolerance);
+		}
+
+		public class SwallowTarget : Attack
+		{
+			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack, int facingTolerance)
+				: base(self, target, allowMovement, forceAttack, facingTolerance) { }
+
+			// Worms ignore visibility, so don't need to recalculate targets
+			protected override bool IgnoresVisibility { get { return true; } }
 		}
 	}
 }

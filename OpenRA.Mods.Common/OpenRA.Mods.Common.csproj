@@ -592,6 +592,7 @@
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="Traits\World\ActorSpawnManager.cs" />
     <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\20180923\RemoveAttackIgnoresVisibility.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemovedDemolishLocking.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemoveNegativeDamageFullHealthCheck.cs" />
     <Compile Include="UpdateRules\Rules\20180923\RemoveResourceExplodeModifier.cs" />
