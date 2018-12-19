@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Although MoveFirstHalf and MoveSecondHalf can't be interrupted,
 			// we prevent them from moving forever by removing the path.
-			if (path != null)
+			if (path != null && self.Location.Layer != CustomMovementLayerType.Tunnel)
 				path.Clear();
 
 			// Remove queued activities
