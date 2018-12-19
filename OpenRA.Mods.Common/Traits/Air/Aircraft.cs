@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.
-			if (landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
+			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
 				&& !(self.CurrentActivity is HeliLand || self.CurrentActivity is Turn))
 			{
 				self.CancelActivity();
@@ -306,7 +306,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add takeoff activity if LandOnCondidion resolves to false and the actor should not land when idle.
-			if (landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
+			if (ForceLanding && landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
 			{
 				ForceLanding = false;
 
