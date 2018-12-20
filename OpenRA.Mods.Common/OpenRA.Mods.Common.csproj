@@ -128,6 +128,7 @@
     <Compile Include="Traits\BotModules\SupportPowerBotModule.cs" />
     <Compile Include="Traits\BotModules\BaseBuilderBotModule.cs" />
     <Compile Include="Traits\BotModules\BuildingRepairBotModule.cs" />
+    <Compile Include="Traits\BotModules\CaptureManagerBotModule.cs" />
     <Compile Include="AI\Squad.cs" />
     <Compile Include="AI\StateMachine.cs" />
     <Compile Include="AI\States\AirStates.cs" />
