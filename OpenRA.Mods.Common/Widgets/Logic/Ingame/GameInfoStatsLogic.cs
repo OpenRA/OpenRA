@@ -78,7 +78,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => t.Key == 0 ? "No Team" : "Team {0}".F(t.Key);
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
-					teamRating.GetText = () => scoreCache.Update(t.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+					var teamMemberScores = t.Select(tt => tt.Second).Where(s => s != null).ToArray().Select(s => s.Experience);
+					teamRating.GetText = () => scoreCache.Update(teamMemberScores.Sum());
 
 					playerPanel.AddChild(teamHeader);
 				}
@@ -94,8 +95,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-					var name = new CachedTransform<Pair<string, int>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
+					var name = new CachedTransform<Pair<string, string>, string>(c =>
+						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
 
 					nameLabel.GetText = () =>
 					{
@@ -103,8 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (client != null && client.State == Session.ClientState.Disconnected)
 							suffix = " (Gone)";
 
-						var sl = suffixLength.Update(suffix);
-						return name.Update(Pair.New(pp.PlayerName, sl)) + suffix;
+						return name.Update(Pair.New(pp.PlayerName, suffix));
 					};
 					nameLabel.GetColor = () => pp.Color.RGB;
 
@@ -121,7 +121,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayFaction.Name;
 					}
 
-					item.Get<LabelWidget>("SCORE").GetText = () => (p.Second != null ? p.Second.Experience : 0).ToString();
+					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
+					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.Second != null ? p.Second.Experience : 0);
 
 					playerPanel.AddChild(item);
 				}
@@ -144,14 +145,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
-					var name = new CachedTransform<Pair<string, int>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - c.Second, nameFont));
+					var name = new CachedTransform<Pair<string, string>, string>(c =>
+						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
 
 					nameLabel.GetText = () =>
 					{
 						var suffix = client.State == Session.ClientState.Disconnected ? " (Gone)" : "";
-						var sl = suffixLength.Update(suffix);
-						return name.Update(Pair.New(client.Name, sl)) + suffix;
+						return name.Update(Pair.New(client.Name, suffix));
 					};
 
 					item.Get<ImageWidget>("FACTIONFLAG").IsVisible = () => false;
