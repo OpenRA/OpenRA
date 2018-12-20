@@ -74,6 +74,16 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"MaxBaseRadius",
 		};
 
+		readonly string[] captureManagerFields =
+		{
+			"CapturingActorTypes",
+			"CapturableActorTypes",
+			"MinimumCaptureDelay",
+			"MaximumCaptureTargetOptions",
+			"CheckCaptureTargetsForVisibility",
+			"CapturableStances",
+		};
+
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			if (!messageShown)
@@ -244,6 +254,21 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 						requiresConditionNode.ReplaceValue(oldValue + " || " + conditionString);
 					}
+				}
+
+				if (captureManagerFields.Any(f => hackyAINode.ChildrenMatching(f).Any()))
+				{
+					var node = new MiniYamlNode("CaptureManagerBotModule@" + aiType, "");
+					node.AddNode(new MiniYamlNode("RequiresCondition", conditionString));
+
+					foreach (var field in captureManagerFields)
+					{
+						var fieldNode = hackyAINode.LastChildMatching(field);
+						if (fieldNode != null)
+							fieldNode.MoveNode(hackyAINode, node);
+					}
+
+					addNodes.Add(node);
 				}
 			}
 

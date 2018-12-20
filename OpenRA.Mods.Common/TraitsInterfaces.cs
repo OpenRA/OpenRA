@@ -453,6 +453,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IBotTick { void BotTick(IBot bot); }
 
+	[RequireExplicitImplementation]
 	public interface IBotRespondToAttack { void RespondToAttack(IBot bot, Actor self, AttackInfo e); }
 
 	[RequireExplicitImplementation]
