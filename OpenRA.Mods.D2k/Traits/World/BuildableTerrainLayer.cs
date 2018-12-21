@@ -53,6 +53,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void AddTile(CPos cell, TerrainTile tile)
 		{
+			if (!strength.Contains(cell))
+				return;
+
 			map.CustomTerrain[cell] = map.Rules.TileSet.GetTerrainIndex(tile);
 			strength[cell] = info.MaxStrength;
 
@@ -63,7 +66,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void HitTile(CPos cell, int damage)
 		{
-			if (strength[cell] == 0)
+			if (!strength.Contains(cell) || strength[cell] == 0)
 				return;
 
 			strength[cell] = strength[cell] - damage;
@@ -73,6 +76,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void RemoveTile(CPos cell)
 		{
+			if (!strength.Contains(cell))
+				return;
+
 			map.CustomTerrain[cell] = byte.MaxValue;
 			strength[cell] = 0;
 			dirty[cell] = null;
