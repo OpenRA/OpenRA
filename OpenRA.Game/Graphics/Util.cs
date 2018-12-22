@@ -122,56 +122,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public static void FastCopyIntoSprite(Sprite dest, Bitmap src)
-		{
-			var createdTempBitmap = false;
-			if (src.PixelFormat != PixelFormat.Format32bppArgb)
-			{
-				src = src.CloneWith32bbpArgbPixelFormat();
-				createdTempBitmap = true;
-			}
-
-			try
-			{
-				var destData = dest.Sheet.GetData();
-				var destStride = dest.Sheet.Size.Width;
-				var width = dest.Bounds.Width;
-				var height = dest.Bounds.Height;
-
-				var srcData = src.LockBits(src.Bounds(),
-					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-				unsafe
-				{
-					var c = (int*)srcData.Scan0;
-
-					// Cast the data to an int array so we can copy the src data directly
-					fixed (byte* bd = &destData[0])
-					{
-						var data = (int*)bd;
-						var x = dest.Bounds.Left;
-						var y = dest.Bounds.Top;
-
-						for (var j = 0; j < height; j++)
-						{
-							for (var i = 0; i < width; i++)
-							{
-								var cc = Color.FromArgb(*(c + (j * srcData.Stride >> 2) + i));
-								data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
-							}
-						}
-					}
-				}
-
-				src.UnlockBits(srcData);
-			}
-			finally
-			{
-				if (createdTempBitmap)
-					src.Dispose();
-			}
-		}
-
 		public static Color PremultiplyAlpha(Color c)
 		{
 			if (c.A == byte.MaxValue)

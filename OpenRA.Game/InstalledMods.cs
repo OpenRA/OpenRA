@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -83,8 +84,7 @@ namespace OpenRA
 					{
 						using (var stream = package.GetStream("icon.png"))
 							if (stream != null)
-								using (var bitmap = new Bitmap(stream))
-									icons[id] = sheetBuilder.Add(bitmap);
+								icons[id] = sheetBuilder.Add(new Png(stream));
 					}
 					else if (!manifest.Metadata.Hidden)
 						Log.Write("debug", "Mod '{0}' is missing 'icon.png'.".F(path));

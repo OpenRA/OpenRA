@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA
@@ -77,8 +78,7 @@ namespace OpenRA
 			if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
 			{
 				using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
-				using (var bitmap = new Bitmap(stream))
-					mod.Icon = sheetBuilder.Add(bitmap);
+					mod.Icon = sheetBuilder.Add(new Png(stream));
 			}
 
 			// Avoid possibly overwriting a valid mod with an obviously bogus one

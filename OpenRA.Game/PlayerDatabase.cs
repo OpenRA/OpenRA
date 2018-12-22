@@ -15,6 +15,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA
@@ -64,7 +65,7 @@ namespace OpenRA
 
 						try
 						{
-							var icon = new Bitmap(new MemoryStream(i.Result));
+							var icon = new Png(new MemoryStream(i.Result));
 							if (icon.Width == 24 && icon.Height == 24)
 							{
 								Game.RunAfterTick(() =>
