@@ -104,6 +104,7 @@
     <Compile Include="Activities\CallFunc.cs" />
     <Compile Include="Actor.cs" />
     <Compile Include="CacheStorage.cs" />
+    <Compile Include="FileFormats\Png.cs" />
     <Compile Include="FileSystem\IPackage.cs" />
     <Compile Include="Primitives\Int32Matrix4x4.cs" />
     <Compile Include="LogProxy.cs" />
