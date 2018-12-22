@@ -76,14 +76,6 @@ namespace OpenRA.Graphics
 			return rect;
 		}
 
-		public Sprite Add(Bitmap src)
-		{
-			var rect = Allocate(src.Size);
-			Util.FastCopyIntoSprite(rect, src);
-			current.CommitBufferedData();
-			return rect;
-		}
-
 		public Sprite Add(Png src)
 		{
 			var rect = Allocate(new Size(src.Width, src.Height));
