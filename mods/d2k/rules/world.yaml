@@ -234,6 +234,7 @@ World:
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
 	StartGameNotification:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld

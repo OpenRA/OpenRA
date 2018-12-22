@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
 
-	public class ConquestVictoryConditions : ITick, INotifyWinStateChanged
+	public class ConquestVictoryConditions : ITick, INotifyWinStateChanged, INotifyTimeLimit
 	{
 		readonly ConquestVictoryConditionsInfo info;
 		readonly MissionObjectives mo;
@@ -67,6 +68,27 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 			mo.MarkCompleted(self.Owner, objectiveID);
+		}
+
+		void INotifyTimeLimit.NotifyTimerExpired(Actor self)
+		{
+			if (objectiveID < 0)
+				return;
+
+			var myTeam = self.World.LobbyInfo.ClientWithIndex(self.Owner.ClientIndex).Team;
+			var teams = self.World.Players.Where(p => !p.NonCombatant && p.Playable)
+				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
+				.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
+				.GroupBy(p => (self.World.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
+				.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+
+			if (teams.First().Key == myTeam && (myTeam != 0 || teams.First().First().First == self.Owner))
+			{
+				mo.MarkCompleted(self.Owner, objectiveID);
+				return;
+			}
+
+			mo.MarkFailed(self.Owner, objectiveID);
 		}
 
 		void INotifyWinStateChanged.OnPlayerLost(Player player)

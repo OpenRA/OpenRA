@@ -369,6 +369,7 @@ World:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
 	ScriptTriggers:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld

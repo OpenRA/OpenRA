@@ -583,4 +583,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void MovementTypeChanged(Actor self, MovementType type);
 	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyTimeLimit
+	{
+		void NotifyTimerExpired(Actor self);
+	}
 }
