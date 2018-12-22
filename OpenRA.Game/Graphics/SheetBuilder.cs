@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
@@ -78,6 +79,14 @@ namespace OpenRA.Graphics
 		public Sprite Add(Bitmap src)
 		{
 			var rect = Allocate(src.Size);
+			Util.FastCopyIntoSprite(rect, src);
+			current.CommitBufferedData();
+			return rect;
+		}
+
+		public Sprite Add(Png src)
+		{
+			var rect = Allocate(new Size(src.Width, src.Height));
 			Util.FastCopyIntoSprite(rect, src);
 			current.CommitBufferedData();
 			return rect;

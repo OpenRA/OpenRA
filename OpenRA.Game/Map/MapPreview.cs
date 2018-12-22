@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -78,7 +79,7 @@ namespace OpenRA
 			public CPos[] SpawnPoints;
 			public MapGridType GridType;
 			public Rectangle Bounds;
-			public Bitmap Preview;
+			public Png Preview;
 			public MapStatus Status;
 			public MapClassification Class;
 			public MapVisibility Visibility;
@@ -147,7 +148,7 @@ namespace OpenRA
 		public CPos[] SpawnPoints { get { return innerData.SpawnPoints; } }
 		public MapGridType GridType { get { return innerData.GridType; } }
 		public Rectangle Bounds { get { return innerData.Bounds; } }
-		public Bitmap Preview { get { return innerData.Preview; } }
+		public Png Preview { get { return innerData.Preview; } }
 		public MapStatus Status { get { return innerData.Status; } }
 		public MapClassification Class { get { return innerData.Class; } }
 		public MapVisibility Visibility { get { return innerData.Visibility; } }
@@ -323,7 +324,7 @@ namespace OpenRA
 
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
-					newData.Preview = new Bitmap(dataStream);
+					newData.Preview = new Png(dataStream);
 
 			// Assign the new data atomically
 			innerData = newData;
@@ -376,7 +377,7 @@ namespace OpenRA
 					newData.GridType = r.map_grid_type;
 					try
 					{
-						newData.Preview = new Bitmap(new MemoryStream(Convert.FromBase64String(r.minimap)));
+						newData.Preview = new Png(new MemoryStream(Convert.FromBase64String(r.minimap)));
 					}
 					catch (Exception e)
 					{
