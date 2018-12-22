@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var timer = widget.GetOrNull<LabelWidget>("GAME_TIMER");
 			var status = widget.GetOrNull<LabelWidget>("GAME_TIMER_STATUS");
+			var tlm = world.WorldActor.TraitOrDefault<TimeLimitManager>();
 			var startTick = Ui.LastTickTime;
 
 			Func<bool> shouldShowStatus = () => (world.Paused || world.Timestep != world.LobbyInfo.GlobalSettings.Timestep)
@@ -51,7 +52,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (status == null && shouldShowStatus())
 						return statusText();
 
-					return WidgetUtils.FormatTime(world.WorldTick, timestep);
+					var timeLimit = tlm != null ? tlm.TimeLimit : 0;
+					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
+					return WidgetUtils.FormatTime(displayTick, timestep);
 				};
 			}
 
