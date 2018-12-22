@@ -265,6 +265,17 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
+	TimeLimitManager:
+		TimeLimitWarnings:
+			40: FourtyMinutesRemaining
+			30: ThirtyMinutesRemaining
+			20: TwentyMinutesRemaining
+			10: TenMinutesRemaining
+			5: WarningFiveMinutesRemaining
+			4: WarningFourMinutesRemaining
+			3: WarningThreeMinutesRemaining
+			2: WarningTwoMinutesRemaining
+			1: WarningOneMinuteRemaining
 
 EditorWorld:
 	Inherits: ^BaseWorld

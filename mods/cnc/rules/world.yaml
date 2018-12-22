@@ -259,6 +259,7 @@ World:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
 	ScriptTriggers:
+	TimeLimitManager:
 
 EditorWorld:
 	Inherits: ^BaseWorld
