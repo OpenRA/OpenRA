@@ -43,7 +43,6 @@ namespace OpenRA.Platforms.Default
 		Action doPresent;
 		Func<string> getGLVersion;
 		Func<ITexture> getCreateTexture;
-		Func<object, ITexture> getCreateTextureBitmap;
 		Func<Bitmap> getTakeScreenshot;
 		Func<object, IFrameBuffer> getCreateFrameBuffer;
 		Func<object, IShader> getCreateShader;
@@ -87,7 +86,6 @@ namespace OpenRA.Platforms.Default
 					doPresent = () => context.Present();
 					getGLVersion = () => context.GLVersion;
 					getCreateTexture = () => new ThreadedTexture(this, (ITextureInternal)context.CreateTexture());
-					getCreateTextureBitmap = bitmap => new ThreadedTexture(this, (ITextureInternal)context.CreateTexture((Bitmap)bitmap));
 					getTakeScreenshot = () => context.TakeScreenshot();
 					getCreateFrameBuffer = s => new ThreadedFrameBuffer(this, context.CreateFrameBuffer((Size)s, (ITextureInternal)CreateTexture()));
 					getCreateShader = name => new ThreadedShader(this, context.CreateShader((string)name));
@@ -399,11 +397,6 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateTexture);
 		}
 
-		public ITexture CreateTexture(Bitmap bitmap)
-		{
-			return Send(getCreateTextureBitmap, bitmap);
-		}
-
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
 		{
 			return Send(getCreateVertexBuffer, length);
@@ -549,8 +542,7 @@ namespace OpenRA.Platforms.Default
 		readonly Action<object> setEmpty;
 		readonly Func<byte[]> getData;
 		readonly Func<object, object> setData1;
-		readonly Func<object, object> setData2;
-		readonly Action<object> setData3;
+		readonly Action<object> setData2;
 		readonly Action dispose;
 
 		public ThreadedTexture(ThreadedGraphicsContext device, ITextureInternal texture)
@@ -563,8 +555,7 @@ namespace OpenRA.Platforms.Default
 			setEmpty = tuple => { var t = (Tuple<int, int>)tuple; texture.SetEmpty(t.Item1, t.Item2); };
 			getData = () => texture.GetData();
 			setData1 = colors => { texture.SetData((uint[,])colors); return null; };
-			setData2 = bitmap => { texture.SetData((Bitmap)bitmap); return null; };
-			setData3 = tuple => { var t = (Tuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
+			setData2 = tuple => { var t = (Tuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
 			dispose = texture.Dispose;
 		}
 
@@ -613,19 +604,13 @@ namespace OpenRA.Platforms.Default
 			device.Send(setData1, colors);
 		}
 
-		public void SetData(Bitmap bitmap)
-		{
-			// We can't return until we are finished with the data, so we must Send here.
-			device.Send(setData2, bitmap);
-		}
-
 		public void SetData(byte[] colors, int width, int height)
 		{
 			// This creates some garbage for the GC to clean up,
 			// but allows us post a message instead of blocking the message queue by sending it.
 			var temp = new byte[colors.Length];
 			Array.Copy(colors, temp, temp.Length);
-			device.Post(setData3, Tuple.Create(temp, width, height));
+			device.Post(setData2, Tuple.Create(temp, width, height));
 		}
 
 		public void Dispose()

@@ -57,7 +57,6 @@ namespace OpenRA
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer(int size);
 		ITexture CreateTexture();
-		ITexture CreateTexture(Bitmap bitmap);
 		IFrameBuffer CreateFrameBuffer(Size s);
 		IShader CreateShader(string name);
 		void EnableScissor(int left, int top, int width, int height);
@@ -97,7 +96,6 @@ namespace OpenRA
 
 	public interface ITexture : IDisposable
 	{
-		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
 		void SetData(byte[] colors, int width, int height);
 		byte[] GetData();

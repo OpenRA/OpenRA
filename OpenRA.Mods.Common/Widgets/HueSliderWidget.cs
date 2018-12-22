@@ -27,23 +27,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			using (var hueBitmap = new Bitmap(256, 256))
-			{
-				var hueSheet = new Sheet(SheetType.BGRA, new Size(256, 256));
-				hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.RGBA);
+			var hueSheet = new Sheet(SheetType.BGRA, new Size(256, 1));
+			hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.RGBA);
 
-				var bitmapData = hueBitmap.LockBits(hueBitmap.Bounds(),
-					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-				unsafe
-				{
-					var c = (int*)bitmapData.Scan0;
-					for (var h = 0; h < 256; h++)
-						*(c + h) = HSLColor.FromHSV(h / 255f, 1, 1).RGB.ToArgb();
-				}
+			var hueData = new uint[1, 256];
+			for (var x = 0; x < 256; x++)
+				hueData[0, x] = (uint)HSLColor.FromHSV(x / 255f, 1, 1).RGB.ToArgb();
 
-				hueBitmap.UnlockBits(bitmapData);
-				hueSheet.GetTexture().SetData(hueBitmap);
-			}
+			hueSheet.GetTexture().SetData(hueData);
 		}
 
 		public override void Draw()

@@ -11,7 +11,6 @@
 
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace OpenRA.Platforms.Default
@@ -48,13 +47,6 @@ namespace OpenRA.Platforms.Default
 		{
 			OpenGL.glGenTextures(1, out texture);
 			OpenGL.CheckGLError();
-		}
-
-		public Texture(Bitmap bitmap)
-		{
-			OpenGL.glGenTextures(1, out texture);
-			OpenGL.CheckGLError();
-			SetData(bitmap);
 		}
 
 		void PrepareTexture()
@@ -121,35 +113,6 @@ namespace OpenRA.Platforms.Default
 						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
 					OpenGL.CheckGLError();
 				}
-			}
-		}
-
-		public void SetData(Bitmap bitmap)
-		{
-			VerifyThreadAffinity();
-			var allocatedBitmap = false;
-			if (!Exts.IsPowerOf2(bitmap.Width) || !Exts.IsPowerOf2(bitmap.Height))
-			{
-				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
-				allocatedBitmap = true;
-			}
-
-			try
-			{
-				Size = new Size(bitmap.Width, bitmap.Height);
-				var bits = bitmap.LockBits(bitmap.Bounds(),
-					ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-				PrepareTexture();
-				OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, bits.Width, bits.Height,
-					0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, bits.Scan0); // TODO: weird strides
-				OpenGL.CheckGLError();
-				bitmap.UnlockBits(bits);
-			}
-			finally
-			{
-				if (allocatedBitmap)
-					bitmap.Dispose();
 			}
 		}
 
