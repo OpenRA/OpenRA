@@ -95,7 +95,7 @@ namespace OpenRA
 		[Desc("Amount of time required for triggering perf.log output.")]
 		public float LongTickThresholdMs = 1;
 
-		public bool SanityCheckUnsyncedCode = false;
+		public bool SyncCheckUnsyncedCode = false;
 		public int Samples = 25;
 
 		public bool StrictActivityChecking = false;

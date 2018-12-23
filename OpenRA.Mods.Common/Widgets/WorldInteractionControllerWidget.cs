@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override string GetCursor(int2 screenPos)
 		{
-			return Sync.CheckSyncUnchanged(World, () =>
+			return Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, World, () =>
 			{
 				// Always show an arrow while selecting
 				if (IsValidDragbox)
