@@ -12,12 +12,11 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace OpenRA.FileFormats
 {
@@ -25,7 +24,6 @@ namespace OpenRA.FileFormats
 	{
 		public int Width { get; set; }
 		public int Height { get; set; }
-		public PixelFormat PixelFormat { get; set; }
 		public Color[] Palette { get; set; }
 		public byte[] Data { get; set; }
 		public Dictionary<string, string> EmbeddedData = new Dictionary<string, string>();
@@ -37,7 +35,7 @@ namespace OpenRA.FileFormats
 
 			s.Position += 8;
 			var headerParsed = false;
-
+			var isPaletted = false;
 			var data = new List<byte>();
 
 			for (;;)
@@ -60,11 +58,16 @@ namespace OpenRA.FileFormats
 								throw new InvalidDataException("Invalid PNG file - duplicate header.");
 							Width = IPAddress.NetworkToHostOrder(ms.ReadInt32());
 							Height = IPAddress.NetworkToHostOrder(ms.ReadInt32());
-							Data = new byte[Width * Height];
 
 							var bitDepth = ms.ReadUInt8();
 							var colorType = (PngColorType)ms.ReadByte();
-							PixelFormat = MakePixelFormat(bitDepth, colorType);
+							isPaletted = IsPaletted(bitDepth, colorType);
+
+							var dataLength = Width * Height;
+							if (!isPaletted)
+								dataLength *= 4;
+
+							Data = new byte[dataLength];
 
 							var compression = ms.ReadByte();
 							/*var filter = */ms.ReadByte();
@@ -123,30 +126,29 @@ namespace OpenRA.FileFormats
 						{
 							using (var ns = new MemoryStream(data.ToArray()))
 							{
-								// 'zlib' flags bytes; confuses the DeflateStream.
-								/*var flags = (byte)*/ns.ReadByte();
-								/*var moreFlags = (byte)*/ns.ReadByte();
-
-								using (var ds = new DeflateStream(ns, CompressionMode.Decompress))
+								using (var ds = new InflaterInputStream(ns))
 								{
-									var prevLine = new byte[Width];  // all zero
+									var pxStride = isPaletted ? 1 : 4;
+									var stride = Width * pxStride;
+
+									var prevLine = new byte[stride];
 									for (var y = 0; y < Height; y++)
 									{
 										var filter = (PngFilter)ds.ReadByte();
-										var line = ds.ReadBytes(Width);
+										var line = ds.ReadBytes(stride);
 
-										for (var i = 0; i < Width; i++)
-											line[i] = i > 0
-												? UnapplyFilter(filter, line[i], line[i - 1], prevLine[i], prevLine[i - 1])
-												: UnapplyFilter(filter, line[i], 0, prevLine[i], 0);
+										for (var i = 0; i < stride; i++)
+											line[i] = i < pxStride
+												? UnapplyFilter(filter, line[i], 0, prevLine[i], 0)
+												: UnapplyFilter(filter, line[i], line[i - pxStride], prevLine[i], prevLine[i - pxStride]);
 
-										Array.Copy(line, 0, Data, y * Width, line.Length);
+										Array.Copy(line, 0, Data, y * stride, line.Length);
 										prevLine = line;
 									}
 								}
 							}
 
-							if (Palette == null)
+							if (isPaletted && Palette == null)
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
 
 							return;
@@ -194,10 +196,13 @@ namespace OpenRA.FileFormats
 		enum PngColorType { Indexed = 1, Color = 2, Alpha = 4 }
 		enum PngFilter { None, Sub, Up, Average, Paeth }
 
-		static PixelFormat MakePixelFormat(byte bitDepth, PngColorType colorType)
+		static bool IsPaletted(byte bitDepth, PngColorType colorType)
 		{
 			if (bitDepth == 8 && colorType == (PngColorType.Indexed | PngColorType.Color))
-				return PixelFormat.Format8bppIndexed;
+				return true;
+
+			if (bitDepth == 8 && colorType == (PngColorType.Color | PngColorType.Alpha))
+				return false;
 
 			throw new InvalidDataException("Unknown pixel format");
 		}
