@@ -358,13 +358,15 @@ namespace OpenRA.Mods.Common.AI
 
 			AssignRolesToIdleUnits(self);
 
-			// TODO: Add an option to include this in CheckSyncUnchanged.
-			// Checking sync for this is too expensive to include it by default,
-			// so it should be implemented as separate sub-option checkbox.
 			using (new PerfSample("bot_tick"))
-				foreach (var t in tickModules)
-					if (t.IsTraitEnabled())
-						t.BotTick(this);
+			{
+				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckBotModuleCode, World, () =>
+				{
+					foreach (var t in tickModules)
+						if (t.IsTraitEnabled())
+							t.BotTick(this);
+				});
+			}
 
 			var ordersToIssueThisTick = Math.Min((orders.Count + Info.MinOrderQuotientPerTick - 1) / Info.MinOrderQuotientPerTick, orders.Count);
 			for (var i = 0; i < ordersToIssueThisTick; i++)
@@ -543,11 +545,14 @@ namespace OpenRA.Mods.Common.AI
 			if (mcv == null)
 				return;
 
-			foreach (var n in positionsUpdatedModules)
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckBotModuleCode, World, () =>
 			{
-				n.UpdatedBaseCenter(mcv.Location);
-				n.UpdatedDefenseCenter(mcv.Location);
-			}
+				foreach (var n in positionsUpdatedModules)
+				{
+					n.UpdatedBaseCenter(mcv.Location);
+					n.UpdatedDefenseCenter(mcv.Location);
+				}
+			});
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -650,9 +655,14 @@ namespace OpenRA.Mods.Common.AI
 			// Checking sync for this is too expensive to include it by default,
 			// so it should be implemented as separate sub-option checkbox.
 			using (new PerfSample("bot_attack_response"))
-				foreach (var t in attackResponseModules)
-					if (t.IsTraitEnabled())
-						t.RespondToAttack(this, self, e);
+			{
+				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckBotModuleCode, World, () =>
+				{
+					foreach (var t in attackResponseModules)
+						if (t.IsTraitEnabled())
+							t.RespondToAttack(this, self, e);
+				});
+			}
 
 			if (e.Attacker == null || e.Attacker.Disposed)
 				return;

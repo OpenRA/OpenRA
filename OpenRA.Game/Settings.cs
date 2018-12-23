@@ -96,6 +96,7 @@ namespace OpenRA
 		public float LongTickThresholdMs = 1;
 
 		public bool SyncCheckUnsyncedCode = false;
+		public bool SyncCheckBotModuleCode = false;
 		public int Samples = 25;
 
 		public bool StrictActivityChecking = false;
