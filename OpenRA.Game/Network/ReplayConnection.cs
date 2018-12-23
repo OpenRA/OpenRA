@@ -33,6 +33,7 @@ namespace OpenRA.Network
 		public int LocalClientId { get { return 0; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
 		public readonly int TickCount;
+		public readonly int FinalGameTick;
 		public readonly bool IsValid;
 		public readonly Session LobbyInfo;
 		public readonly string Filename;
@@ -40,6 +41,7 @@ namespace OpenRA.Network
 		public ReplayConnection(string replayFilename)
 		{
 			Filename = replayFilename;
+			FinalGameTick = ReplayMetadata.Read(replayFilename).GameInfo.FinalGameTick;
 
 			// Parse replay data into a struct that can be fed to the game in chunks
 			// to avoid issues with all immediate orders being resolved on the first tick.
