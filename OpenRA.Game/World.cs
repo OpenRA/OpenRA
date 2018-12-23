@@ -65,7 +65,7 @@ namespace OpenRA
 
 				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
 					t.GameOver(this);
-
+				gameInfo.FinalGameTick = WorldTick;
 				GameOver();
 			}
 		}
