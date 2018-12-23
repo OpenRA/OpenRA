@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
@@ -50,13 +51,10 @@ namespace OpenRA.Graphics
 
 		public Sheet(SheetType type, Stream stream)
 		{
-			using (var bitmap = (Bitmap)Image.FromStream(stream))
-			{
-				Size = bitmap.Size;
-				data = new byte[4 * Size.Width * Size.Height];
-
-				Util.FastCopyIntoSprite(new Sprite(this, bitmap.Bounds(), TextureChannel.Red), bitmap);
-			}
+			var png = new Png(stream);
+			Size = new Size(png.Width, png.Height);
+			data = new byte[4 * Size.Width * Size.Height];
+			Util.FastCopyIntoSprite(new Sprite(this, new Rectangle(0, 0, png.Width, png.Height), TextureChannel.Red), png);
 
 			Type = type;
 			ReleaseBuffer();

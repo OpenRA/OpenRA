@@ -12,6 +12,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
 {
@@ -78,6 +79,46 @@ namespace OpenRA.Graphics
 				}
 
 				destOffset += destSkip;
+			}
+		}
+
+		public static void FastCopyIntoSprite(Sprite dest, Png src)
+		{
+			var destData = dest.Sheet.GetData();
+			var destStride = dest.Sheet.Size.Width;
+			var width = dest.Bounds.Width;
+			var height = dest.Bounds.Height;
+
+			unsafe
+			{
+				// Cast the data to an int array so we can copy the src data directly
+				fixed (byte* bd = &destData[0])
+				{
+					var data = (int*)bd;
+					var x = dest.Bounds.Left;
+					var y = dest.Bounds.Top;
+
+					var k = 0;
+					for (var j = 0; j < height; j++)
+					{
+						for (var i = 0; i < width; i++)
+						{
+							Color cc;
+							if (src.Palette == null)
+							{
+								var r = src.Data[k++];
+								var g = src.Data[k++];
+								var b = src.Data[k++];
+								var a = src.Data[k++];
+								cc = Color.FromArgb(a, r, g, b);
+							}
+							else
+								cc = src.Palette[src.Data[k++]];
+
+							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+						}
+					}
+				}
 			}
 		}
 
