@@ -483,7 +483,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "NAT_DISCOVERY", ss, "DiscoverNatDevices");
 			BindCheckboxPref(panel, "PERFTEXT_CHECKBOX", ds, "PerfText");
 			BindCheckboxPref(panel, "PERFGRAPH_CHECKBOX", ds, "PerfGraph");
-			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
+			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SyncCheckUnsyncedCode");
 			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
 			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
@@ -509,7 +509,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.DiscoverNatDevices = dss.DiscoverNatDevices;
 				ds.PerfText = dds.PerfText;
 				ds.PerfGraph = dds.PerfGraph;
-				ds.SanityCheckUnsyncedCode = dds.SanityCheckUnsyncedCode;
+				ds.SyncCheckUnsyncedCode = dds.SyncCheckUnsyncedCode;
 				ds.BotDebug = dds.BotDebug;
 				ds.LuaDebug = dds.LuaDebug;
 				ds.SendSystemInformation = dds.SendSystemInformation;
