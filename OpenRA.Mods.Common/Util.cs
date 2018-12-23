@@ -49,8 +49,10 @@ namespace OpenRA.Mods.Common
 		public static int QuantizeFacing(int facing, int numFrames)
 		{
 			var step = 256 / numFrames;
-			var a = (facing + step / 2) & 0xff;
-			return a / step;
+			var f = NormalizeFacing(facing + step / 2) / step;
+
+			// f may be >= numFrames so wrap it back in range
+			return f % numFrames;
 		}
 
 		public static int QuantizeFacing(int facing, int numFrames, bool useClassicFacingFudge)
