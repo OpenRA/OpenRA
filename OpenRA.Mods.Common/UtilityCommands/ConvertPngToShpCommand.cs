@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var dest = inputFiles[0].Split('-').First() + ".shp";
 
 			var frames = inputFiles.Select(a => new Png(File.OpenRead(a))).ToList();
+			if (frames.Any(f => f.Palette == null))
+				throw new InvalidOperationException("All frames must be paletted");
+
 			var size = new Size(frames[0].Width, frames[0].Height);
 			if (frames.Any(f => f.Width != size.Width || f.Height != size.Height))
 				throw new InvalidOperationException("All frames must be the same size");
