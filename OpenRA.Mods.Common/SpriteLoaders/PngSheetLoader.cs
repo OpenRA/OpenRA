@@ -45,13 +45,16 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
 			metadata = null;
+			frames = null;
 			if (!Png.Verify(s))
-			{
-				frames = null;
 				return false;
-			}
 
 			var png = new Png(s);
+
+			// Only supports paletted images
+			if (png.Palette == null)
+				return false;
+
 			List<Rectangle> frameRegions;
 			List<float2> frameOffsets;
 
