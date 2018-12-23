@@ -967,6 +967,8 @@
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	Burns:
 		Damage: 200
+	OwnerLostAction:
+		Action: ChangeOwner
 	CaptureManager:
 	Capturable:
 		Types: husk
