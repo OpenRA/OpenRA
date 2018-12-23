@@ -73,6 +73,12 @@ ATEK:
 	GpsPower:
 		ChargeInterval: 15000
 	-Sellable:
+	WithMakeAnimation:
+		-Condition:
+	Demolishable:
+		-Condition:
+	CaptureManager:
+		-BeingCapturedCondition:
 
 PDOX:
 	Inherits@IDISABLE: ^DisableOnLowPower
@@ -81,6 +87,12 @@ PDOX:
 	ChronoshiftPower@chronoshift:
 		Prerequisites: ~disabled
 	-Sellable:
+	WithMakeAnimation:
+		-Condition:
+	Demolishable:
+		-Condition:
+	CaptureManager:
+		-BeingCapturedCondition:
 
 IRON:
 	Buildable:
@@ -94,7 +106,7 @@ MECH:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 
