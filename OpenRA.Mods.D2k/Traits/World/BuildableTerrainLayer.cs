@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly Map map;
 		readonly CellLayer<int> strength;
 
+		BuildingInfluence bi;
 		TerrainSpriteLayer render;
 		Theater theater;
 		bool disposed;
@@ -48,6 +50,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			theater = wr.Theater;
+			bi = w.WorldActor.Trait<BuildingInfluence>();
 			render = new TerrainSpriteLayer(w, wr, theater.Sheet, BlendMode.Alpha, wr.Palette(info.Palette), wr.World.Type != WorldType.Editor);
 		}
 
@@ -66,7 +69,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void HitTile(CPos cell, int damage)
 		{
-			if (!strength.Contains(cell) || strength[cell] == 0)
+			if (!strength.Contains(cell) || strength[cell] == 0 || bi.GetBuildingAt(cell) != null)
 				return;
 
 			strength[cell] = strength[cell] - damage;
