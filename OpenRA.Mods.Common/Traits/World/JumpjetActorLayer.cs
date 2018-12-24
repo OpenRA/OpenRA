@@ -65,6 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return li is JumpjetLocomotorInfo; }
 		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.Jumpjet; } }
 		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return true; } }
+		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle { get { return true; } }
 
 		WPos ICustomMovementLayer.CenterOfCell(CPos cell)
 		{

@@ -367,6 +367,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		byte Index { get; }
 		bool InteractsWithDefaultLayer { get; }
+		bool ReturnToGroundLayerOnIdle { get; }
 
 		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
 		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
