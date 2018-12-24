@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return enabled; }
 		byte ICustomMovementLayer.Index { get { return CustomMovementLayerType.Tunnel; } }
 		bool ICustomMovementLayer.InteractsWithDefaultLayer { get { return false; } }
+		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle { get { return true; } }
 
 		WPos ICustomMovementLayer.CenterOfCell(CPos cell)
 		{
