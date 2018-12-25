@@ -317,6 +317,7 @@
     <Compile Include="Traits\GrantExternalConditionToProduced.cs" />
     <Compile Include="Traits\Multipliers\CreatesShroudMultiplier.cs" />
     <Compile Include="Traits\Multipliers\RevealsShroudMultiplier.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionWhileAiming.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
     <Compile Include="Traits\Rearmable.cs" />
     <Compile Include="Traits\Burns.cs" />
