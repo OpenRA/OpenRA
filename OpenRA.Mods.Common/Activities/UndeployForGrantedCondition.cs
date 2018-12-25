@@ -24,24 +24,8 @@ namespace OpenRA.Mods.Common.Activities
 			this.deploy = deploy;
 		}
 
-		protected override void OnFirstRun(Actor self)
-		{
-			var tInfo = self.Info.TraitInfoOrDefault<TurretedInfo>();
-			if (tInfo != null)
-				QueueChild(new WaitForTurretAlignment(self, tInfo.InitialFacing));
-		}
-
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
-			}
-
-			if (IsCanceled)
-				return NextActivity;
-
 			IsInterruptible = false; // must DEPLOY from now.
 			deploy.Undeploy();
 
