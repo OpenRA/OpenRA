@@ -188,15 +188,6 @@ namespace OpenRA.Mods.Common.Traits
 			return HasAchievedDesiredFacing;
 		}
 
-		public void StopAiming(Actor self)
-		{
-			if (IsTraitDisabled)
-				return;
-
-			if (attack != null && attack.IsAiming)
-				attack.OnStopOrder(self);
-		}
-
 		public virtual bool HasAchievedDesiredFacing
 		{
 			get { return DesiredFacing == null || TurretFacing == DesiredFacing.Value; }
