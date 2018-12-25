@@ -425,6 +425,7 @@
 			Radius: 128
 	MapEditorData:
 		Categories: Infantry
+	EdibleByLeap:
 
 ^Soldier:
 	Inherits: ^Infantry

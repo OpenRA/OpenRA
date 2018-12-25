@@ -20,6 +20,7 @@ DOG:
 	Mobile:
 		Speed: 99
 		Voice: Move
+		RequiresCondition: !attack-cooldown && !eating
 	Guard:
 		Voice: Move
 	Passenger:
@@ -28,10 +29,17 @@ DOG:
 		Range: 5c0
 	Armament:
 		Weapon: DogJaw
+		ReloadingCondition: attack-cooldown
 	AttackLeap:
 		Voice: Attack
+		PauseOnCondition: attacking || attack-cooldown
 	AttackMove:
 		Voice: Move
+	GrantConditionOnAttack:
+		Condition: eating
+		RevokeDelay: 45
+	GrantConditionWhileAiming:
+		Condition: run
 	AutoTarget:
 		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
@@ -39,8 +47,16 @@ DOG:
 	Targetable:
 		TargetTypes: Ground, Infantry
 	WithInfantryBody:
-		DefaultAttackSequence: shoot
+		MoveSequence: walk
 		StandSequences: stand
+		DefaultAttackSequence: eat
+		RequiresCondition: !attacking && !run
+	WithInfantryBody@RUN:
+		MoveSequence: run
+		RequiresCondition: run
+	SpeedMultiplier:
+		Modifier: 150
+		RequiresCondition: run
 	IgnoresDisguise:
 	DetectCloaked:
 		CloakTypes: Cloak, Thief

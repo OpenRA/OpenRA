@@ -62,7 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\LeapAttack.cs" />
     <Compile Include="CncLoadScreen.cs" />
+    <Compile Include="Traits\EdibleByLeap.cs" />
     <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
     <Compile Include="Traits\Infiltration\InfiltrateForTransform.cs" />
