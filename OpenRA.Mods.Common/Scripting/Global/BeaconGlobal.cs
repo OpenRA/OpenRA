@@ -30,7 +30,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public Beacon New(Player owner, WPos position, int duration = 30 * 25, bool showRadarPings = true)
 		{
 			var beacon = owner.PlayerActor.Info.TraitInfo<PlaceBeaconInfo>();
-			var playerBeacon = new Beacon(owner, position, duration, beacon.Palette, beacon.IsPlayerPalette, beacon.BeaconImage, beacon.ArrowSequence, beacon.CircleSequence);
+			var playerBeacon = new Beacon(owner, position, duration, beacon.Palette, beacon.IsPlayerPalette,
+				beacon.BeaconImage, beacon.BeaconSequence, beacon.ArrowSequence, beacon.CircleSequence);
+
 			owner.PlayerActor.World.AddFrameEndTask(w => w.Add(playerBeacon));
 
 			if (showRadarPings && radarPings != null)

@@ -95,7 +95,12 @@ Player:
 		AllyNotification: OurAllyIsUnderAttack
 	HarvesterAttackNotifier:
 	PlayerStatistics:
-	PlaceSimpleBeacon:
+	PlaceBeacon:
+		Palette: effect
+		IsPlayerPalette: false
+		BeaconSequence: idle
+		ArrowSequence:
+		CircleSequence:
 	ProvidesTechPrerequisite@low:
 		Name: Low
 		Prerequisites: techlevel.low

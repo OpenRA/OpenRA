@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
 
 		public readonly string BeaconImage = "beacon";
+		[SequenceReference("BeaconImage")] public readonly string BeaconSequence = null;
 		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
 		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
 
@@ -58,8 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (playerBeacon != null)
 					self.World.Remove(playerBeacon);
 
-				playerBeacon = new Beacon(self.Owner, order.Target.CenterPosition, info.Duration,
-					info.Palette, info.IsPlayerPalette, info.BeaconImage, info.ArrowSequence, info.CircleSequence);
+				playerBeacon = new Beacon(self.Owner, order.Target.CenterPosition, info.Duration, info.Palette, info.IsPlayerPalette,
+					info.BeaconImage, info.BeaconSequence, info.ArrowSequence, info.CircleSequence);
 
 				self.World.Add(playerBeacon);
 
