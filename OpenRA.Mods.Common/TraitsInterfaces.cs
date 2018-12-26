@@ -520,4 +520,10 @@ namespace OpenRA.Mods.Common.Traits
 			OnChange = onChange;
 		}
 	}
+
+	[RequireExplicitImplementation]
+	public interface IPreventMapSpawn
+	{
+		bool PreventMapSpawn(World world, ActorReference actorReference);
+	}
 }
