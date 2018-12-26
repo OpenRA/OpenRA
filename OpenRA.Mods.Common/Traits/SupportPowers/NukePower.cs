@@ -140,6 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.BeaconImage,
 					Info.BeaconPoster,
 					Info.BeaconPosterPalette,
+					Info.BeaconSequence,
 					Info.ArrowSequence,
 					Info.CircleSequence,
 					Info.ClockSequence,
