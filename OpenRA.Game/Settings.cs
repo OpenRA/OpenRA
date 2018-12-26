@@ -87,6 +87,8 @@ namespace OpenRA
 
 	public class DebugSettings
 	{
+		public bool DisplayDeveloperSettings = false;
+
 		public bool BotDebug = false;
 		public bool LuaDebug = false;
 		public bool PerfText = false;
