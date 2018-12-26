@@ -119,6 +119,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				// Bleed only changes here
 				new RemoveAttackSuicides(),
 				new MultipleDeploySounds(),
+				new RemoveSimpleBeacon(),
 				new MakeMobilePausableConditional(),
 				new StreamlineRepairableTraits(),
 			})
