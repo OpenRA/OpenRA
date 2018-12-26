@@ -495,6 +495,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ssi = panel.Get<CheckboxWidget>("SENDSYSINFO_CHECKBOX");
 			ssi.IsDisabled = () => !gs.FetchNews;
 
+			panel.Get("DEBUG_OPTIONS").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("DEBUG_HIDDEN_LABEL").IsVisible = () => !ds.DisplayDeveloperSettings;
+
 			return () => { };
 		}
 

@@ -571,43 +571,64 @@ Container@SETTINGS_PANEL:
 							Y: 200
 							Width: PARENT_RIGHT
 							Font: Bold
-							Text: Debug
+							Text: Developer
 							Align: Center
-						Checkbox@BOTDEBUG_CHECKBOX:
-							X: 15
-							Y: 220
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Show Bot Debug Messages
-						Checkbox@CHECKUNSYNCED_CHECKBOX:
-							X: 15
+						Container@DEBUG_HIDDEN_LABEL:
 							Y: 250
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Check Sync around Unsynced Code
-						Checkbox@CHECKBOTSYNC_CHECKBOX:
-							X: 15
-							Y: 280
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Check Sync around BotModule Code
-						Checkbox@LUADEBUG_CHECKBOX:
-							X: 310
-							Y: 220
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Show Map Debug Messages
-						Checkbox@REPLAY_COMMANDS_CHECKBOX:
-							X: 310
-							Y: 250
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Enable Debug Commands in Replays
+							Width: PARENT_RIGHT
+							Children:
+								Label@A:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Additional developer-specific options can be enabled via the 
+									Align: Center
+								Label@B:
+									Y: 20
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Debug.DisplayDeveloperSettings setting or launch flag
+									Align: Center
+						Container@DEBUG_OPTIONS:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Checkbox@BOTDEBUG_CHECKBOX:
+									X: 15
+									Y: 220
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Show Bot Debug Messages
+								Checkbox@CHECKUNSYNCED_CHECKBOX:
+									X: 15
+									Y: 250
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Check Sync around Unsynced Code
+								Checkbox@CHECKBOTSYNC_CHECKBOX:
+									X: 15
+									Y: 280
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Check Sync around BotModule Code
+								Checkbox@LUADEBUG_CHECKBOX:
+									X: 310
+									Y: 220
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Show Map Debug Messages
+								Checkbox@REPLAY_COMMANDS_CHECKBOX:
+									X: 310
+									Y: 250
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Enable Debug Commands in Replays
 		Button@BACK_BUTTON:
 			Key: escape
 			Y: 393
