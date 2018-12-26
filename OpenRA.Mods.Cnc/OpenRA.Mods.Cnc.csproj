@@ -87,8 +87,6 @@
     <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
     <Compile Include="Traits\World\TSShroudPalette.cs" />
     <Compile Include="UtilityCommands\ImportTSMapCommand.cs" />
-    <Compile Include="Player\PlaceSimpleBeacon.cs" />
-    <Compile Include="Effects\AnimatedBeacon.cs" />
     <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
     <Compile Include="UtilityCommands\LegacySequenceImporter.cs" />
     <Compile Include="Widgets\Logic\PreReleaseWarningPrompt.cs" />
