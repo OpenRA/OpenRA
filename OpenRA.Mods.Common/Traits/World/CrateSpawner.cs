@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Translate]
 		[Desc("Tooltip description for the crates checkbox in the lobby.")]
-		public readonly string CheckboxDescription = "Collect crates with units to recieve random bonuses or penalties";
+		public readonly string CheckboxDescription = "Collect crates with units to receive random bonuses or penalties";
 
 		[Desc("Default value of the crates checkbox in the lobby.")]
 		public readonly bool CheckboxEnabled = true;
