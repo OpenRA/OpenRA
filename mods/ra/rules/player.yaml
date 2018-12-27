@@ -49,6 +49,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: True
+		InfiniteBuildLimit: 5
 	ClassicProductionQueue@Ship:
 		Type: Ship
 		LowPowerModifier: 300
