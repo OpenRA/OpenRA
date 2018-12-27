@@ -6,19 +6,19 @@ ObserverWorldView: EQUALS
 	Description: Disable Shroud
 	Types: Observer
 
-ReplaySpeedSlow: F5
+ReplaySpeedSlow: F9
 	Description: Slow speed
 	Types: Replay
 
-ReplaySpeedRegular: F6
+ReplaySpeedRegular: F10
 	Description: Regular speed
 	Types: Replay
 
-ReplaySpeedFast: F7
+ReplaySpeedFast: F11
 	Description: Fast speed
 	Types: Replay
 
-ReplaySpeedMax: F8
+ReplaySpeedMax: F12
 	Description: Maximum speed
 	Types: Replay
 
@@ -38,6 +38,6 @@ StatisticsCombat: F4
 	Description: Combat statistics
 	Types: Observer, Replay
 
-StatisticsGraph:
+StatisticsGraph: F5
 	Description: Statistics graph
 	Types: Observer, Replay
