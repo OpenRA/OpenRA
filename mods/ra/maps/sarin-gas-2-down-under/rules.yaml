@@ -1,0 +1,54 @@
+World:
+	LuaScript:
+		Scripts: downunder.lua
+	MissionData:
+		Briefing: We've traced the convoy's route to this underground facility. We suspect that this is a hidden access to the Soviet's main Sarin plant.\n\nLead your troops through the tunnels and remove any opposition you may find. Be careful -- the Soviets are conducting all kinds of research in this facility, and we don't know what they may throw at you.\n\nUse spies to scout and infiltrate factories where they can steal vehicles.\n\nThe mission is complete when your forces reach the far exit of the facility.\n
+		WinVideo: spy.vqa
+		LossVideo: execute.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			normal: Normal
+			hard: Hard
+		Default: Normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+SPY:
+	RevealsShroud:
+		Range: 7c0
+
+4TNK:
+	AutoTarget:
+		InitialStanceAI: Defend
+
+TSLA:
+	Health:
+		HP: 300000
+
+GNRL:
+	Tooltip:
+		Name: Officer
+
+C5:
+	-Wanders:
+
+C6:
+	-Wanders:
+
+CHAN:
+	-Wanders:
+
+DTRK:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+	RevealsShroud:
+		Range: 4c0
+		ValidStances: Neutral
+		RequiresCondition: mission
+	ExternalCondition@mission:
+		Condition: mission
