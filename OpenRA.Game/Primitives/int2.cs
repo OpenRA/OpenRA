@@ -20,7 +20,6 @@ namespace OpenRA
 	{
 		public readonly int X, Y;
 		public int2(int x, int y) { X = x; Y = y; }
-		public int2(Point p) { X = p.X; Y = p.Y; }
 		public int2(Size p) { X = p.Width; Y = p.Height; }
 
 		public static int2 operator +(int2 a, int2 b) { return new int2(a.X + b.X, a.Y + b.Y); }
@@ -60,8 +59,6 @@ namespace OpenRA
 		public static int2 Min(int2 a, int2 b) { return new int2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
 		public static readonly int2 Zero = new int2(0, 0);
-		public Point ToPoint() { return new Point(X, Y); }
-		public PointF ToPointF() { return new PointF(X, Y); }
 		public float2 ToFloat2() { return new float2(X, Y); }
 
 		// Change endianness of a uint32
@@ -87,5 +84,16 @@ namespace OpenRA
 		}
 
 		public static int Dot(int2 a, int2 b) { return a.X * b.X + a.Y * b.Y; }
+
+		// Temporary shims that will be removed when System.Drawing.Rectangle is replaced with our own implementation
+		public static implicit operator Point(int2 xy)
+		{
+			return new Point(xy.X, xy.Y);
+		}
+
+		public static implicit operator int2(Point xy)
+		{
+			return new int2(xy.X, xy.Y);
+		}
 	}
 }

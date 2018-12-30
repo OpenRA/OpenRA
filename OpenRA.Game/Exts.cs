@@ -78,16 +78,6 @@ namespace OpenRA
 				return val;
 		}
 
-		public static bool Contains(this Rectangle r, int2 p)
-		{
-			return r.Contains(p.ToPoint());
-		}
-
-		public static bool Contains(this RectangleF r, int2 p)
-		{
-			return r.Contains(p.ToPointF());
-		}
-
 		static int WindingDirectionTest(int2 v0, int2 v1, int2 p)
 		{
 			return (v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y);
