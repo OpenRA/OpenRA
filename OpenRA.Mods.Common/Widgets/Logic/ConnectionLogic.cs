@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -212,10 +213,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// Hide the logo and center just the text
 				if (title != null)
-					title.Bounds.Offset(logo.Bounds.Left - title.Bounds.Left, 0);
+					title.Bounds.X = logo.Bounds.Left;
 
 				if (version != null)
-					version.Bounds.Offset(logo.Bounds.Left - version.Bounds.Left, 0);
+					version.Bounds.X = logo.Bounds.X;
 
 				width -= logo.Bounds.Width;
 			}
@@ -228,7 +229,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var container = panel.GetOrNull("MOD_CONTAINER");
 			if (container != null)
 			{
-				container.Bounds.Offset((container.Bounds.Width - width) / 2, 0);
+				container.Bounds.X += (container.Bounds.Width - width) / 2;
 				container.Bounds.Width = width;
 			}
 		}
