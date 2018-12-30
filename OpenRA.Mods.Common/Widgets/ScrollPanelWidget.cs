@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var drawBounds = backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth);
 			Game.Renderer.EnableScissor(drawBounds);
 
-			drawBounds.Offset((-ChildOrigin).ToPoint());
+			drawBounds.Offset(-ChildOrigin);
 			foreach (var child in Children)
 				if (child.Bounds.IntersectsWith(drawBounds))
 					child.DrawOuter();

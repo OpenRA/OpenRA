@@ -23,13 +23,8 @@ namespace OpenRA
 		public readonly float X, Y;
 
 		public float2(float x, float y) { X = x; Y = y; }
-		public float2(PointF p) { X = p.X; Y = p.Y; }
-		public float2(Point p) { X = p.X; Y = p.Y; }
 		public float2(Size p) { X = p.Width; Y = p.Height; }
-		public float2(SizeF p) { X = p.Width; Y = p.Height; }
-
-		public PointF ToPointF() { return new PointF(X, Y); }
-		public SizeF ToSizeF() { return new SizeF(X, Y); }
+		public float2(int2 p) { X = p.X; Y = p.Y; }
 
 		public static implicit operator float2(int2 src) { return new float2(src.X, src.Y); }
 
