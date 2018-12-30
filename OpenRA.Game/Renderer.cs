@@ -214,7 +214,7 @@ namespace OpenRA
 		{
 			// Must remain inside the current scissor rect
 			if (scissorState.Any())
-				rect.Intersect(scissorState.Peek());
+				rect = Rectangle.Intersect(rect, scissorState.Peek());
 
 			Flush();
 			Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
