@@ -58,7 +58,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var line = l;
 					var lineWidth = 0;
-					var xOffset = descTemplate.Bounds.X;
 
 					while (line.Length > 0)
 					{
