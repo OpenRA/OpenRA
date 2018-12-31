@@ -46,6 +46,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public int MinimumThumbSize = 10;
 		public ScrollPanelAlign Align = ScrollPanelAlign.Top;
 		public bool CollapseHiddenChildren;
+
+		// Fraction of the remaining scroll-delta to move in 40ms
 		public float SmoothScrollSpeed = 0.333f;
 
 		protected bool upPressed;
@@ -64,6 +66,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		// The current value is the actual list offset at the moment
 		float currentListOffset;
+
+		// The Game.Runtime value when UpdateSmoothScrolling was last called
+		// Used for calculating the per-frame smooth-scrolling delta
+		long lastSmoothScrollTime = 0;
 
 		// Setting "smooth" to true will only update the target list offset.
 		// Setting "smooth" to false will also set the current list offset,
@@ -128,6 +134,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (!IsVisible())
 				return;
+
+			UpdateSmoothScrolling();
 
 			var rb = RenderBounds;
 
@@ -253,6 +261,29 @@ namespace OpenRA.Mods.Common.Widgets
 				ScrollToItem(item);
 		}
 
+		void UpdateSmoothScrolling()
+		{
+			if (lastSmoothScrollTime == 0)
+			{
+				lastSmoothScrollTime = Game.RunTime;
+				return;
+			}
+
+			var offsetDiff = targetListOffset - currentListOffset;
+			var absOffsetDiff = Math.Abs(offsetDiff);
+			if (absOffsetDiff > 1f)
+			{
+				var dt = Game.RunTime - lastSmoothScrollTime;
+				currentListOffset += offsetDiff * SmoothScrollSpeed.Clamp(0.1f, 1.0f) * dt / 40;
+
+				Ui.ResetTooltips();
+			}
+			else
+				SetListOffset(targetListOffset, false);
+
+			lastSmoothScrollTime = Game.RunTime;
+		}
+
 		public override void Tick()
 		{
 			if (upPressed)
@@ -260,17 +291,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (downPressed)
 				Scroll(-1);
-
-			var offsetDiff = targetListOffset - currentListOffset;
-			var absOffsetDiff = Math.Abs(offsetDiff);
-			if (absOffsetDiff > 1f)
-			{
-				currentListOffset += offsetDiff * SmoothScrollSpeed.Clamp(0.1f, 1.0f);
-
-				Ui.ResetTooltips();
-			}
-			else
-				SetListOffset(targetListOffset, false);
 		}
 
 		public override bool YieldMouseFocus(MouseInput mi)
