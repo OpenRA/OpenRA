@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -19,9 +20,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public abstract class CommonSelectorLogic : ChromeLogic
 	{
 		protected readonly Widget Widget;
+		protected readonly TextFieldWidget SearchTextField;
 		protected readonly World World;
 		protected readonly WorldRenderer WorldRenderer;
 		protected readonly EditorViewportControllerWidget Editor;
+		protected readonly ScrollPanelWidget Panel;
+		protected readonly ScrollItemWidget ItemTemplate;
 
 		protected readonly HashSet<string> SelectedCategories = new HashSet<string>();
 		protected readonly List<string> FilteredCategories = new List<string>();
@@ -29,17 +33,55 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected string[] allCategories;
 		protected string searchFilter;
 
-		public CommonSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
+		public CommonSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{
 			this.Widget = widget;
 			this.World = world;
 			this.WorldRenderer = worldRenderer;
 			Editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			Panel = widget.Get<ScrollPanelWidget>(templateListId);
+			ItemTemplate = Panel.Get<ScrollItemWidget>(previewTemplateId);
+			Panel.Layout = new GridLayout(Panel);
+
+			SearchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
+			SearchTextField.OnEscKey = () =>
+			{
+				SearchTextField.Text = "";
+				SearchTextField.YieldKeyboardFocus();
+				return true;
+			};
+
+			var categorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
+			categorySelector.GetText = () =>
+			{
+				if (SelectedCategories.Count == 0)
+					return "None";
+
+				if (!string.IsNullOrEmpty(searchFilter))
+					return "Search Results";
+
+				if (SelectedCategories.Count == 1)
+					return SelectedCategories.First();
+
+				if (SelectedCategories.Count == allCategories.Length)
+					return "All";
+
+				return "Multiple";
+			};
+
+			categorySelector.OnMouseDown = _ =>
+			{
+				if (SearchTextField != null)
+					SearchTextField.YieldKeyboardFocus();
+
+				categorySelector.RemovePanel();
+				categorySelector.AttachPanel(CreateCategoriesPanel(Panel));
+			};
 		}
 
 		protected Widget CreateCategoriesPanel(ScrollPanelWidget panel)
 		{
-			var categoriesPanel = Ui.LoadWidget("ACTOR_CATEGORY_FILTER_PANEL", null, new WidgetArgs());
+			var categoriesPanel = Ui.LoadWidget("CATEGORY_FILTER_PANEL", null, new WidgetArgs());
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
 			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");

@@ -569,7 +569,7 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 
-ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
+ScrollPanel@CATEGORY_FILTER_PANEL:
 	Width: 190
 	Children:
 		Container@SELECT_CATEGORIES_BUTTONS:
