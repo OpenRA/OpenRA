@@ -9,8 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -94,6 +92,11 @@ namespace OpenRA.Mods.Common.Traits
 		void IBotRequestUnitProduction.RequestUnitProduction(IBot bot, string requestedActor)
 		{
 			queuedBuildRequests.Add(requestedActor);
+		}
+
+		int IBotRequestUnitProduction.RequestedProductionCount(IBot bot, string requestedActor)
+		{
+			return queuedBuildRequests.Count(r => r == requestedActor);
 		}
 
 		void BuildUnit(IBot bot, string category, bool buildRandom)
