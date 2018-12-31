@@ -158,6 +158,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (t.Type == TargetType.Invalid && t.Actor != null && t.Actor.ReplacedByActor != null)
 				t = Target.FromActor(t.Actor.ReplacedByActor);
 
+			// Bot-controlled units aren't yet capable of understanding visibility changes
+			if (viewer.IsBot)
+				return t;
+
 			if (t.Type == TargetType.Actor)
 			{
 				// Actor has been hidden under the fog
