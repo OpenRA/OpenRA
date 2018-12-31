@@ -39,15 +39,32 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick
 	{
+		class HarvesterTraitWrapper
+		{
+			public readonly Actor Actor;
+			public readonly Harvester Harvester;
+			public readonly Parachutable Parachutable;
+			public readonly LocomotorInfo LocomotorInfo;
+
+			public HarvesterTraitWrapper(Actor actor)
+			{
+				Actor = actor;
+				Harvester = actor.Trait<Harvester>();
+				Parachutable = actor.TraitOrDefault<Parachutable>();
+				LocomotorInfo = actor.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			}
+		}
+
 		readonly World world;
 		readonly Player player;
-		readonly Predicate<Actor> unitCannotBeOrdered;
-		IBotRequestUnitProduction[] requestUnitProduction;
+		readonly Func<Actor, bool> unitCannotBeOrdered;
+		readonly Dictionary<Actor, HarvesterTraitWrapper> harvesters = new Dictionary<Actor, HarvesterTraitWrapper>();
+
 		IPathFinder pathfinder;
 		DomainIndex domainIndex;
 		ResourceLayer resLayer;
 		ResourceClaimLayer claimLayer;
-		List<Actor> harvesters = new List<Actor>();
+		IBotRequestUnitProduction[] requestUnitProduction;
 		int scanForIdleHarvestersTicks;
 
 		public HarvesterBotModule(Actor self, HarvesterBotModuleInfo info)
@@ -76,37 +93,38 @@ namespace OpenRA.Mods.Common.Traits
 			if (--scanForIdleHarvestersTicks > 0)
 				return;
 
-			harvesters.RemoveAll(unitCannotBeOrdered);
+			var toRemove = harvesters.Keys.Where(unitCannotBeOrdered).ToList();
+			foreach (var a in toRemove)
+				harvesters.Remove(a);
+
 			scanForIdleHarvestersTicks = Info.ScanForIdleHarvestersInterval;
 
 			// Find new harvesters
 			// TODO: Look for a more performance-friendly way to update this list
-			var newHarvesters = world.ActorsHavingTrait<Harvester>().Where(a => a.Owner == player && !harvesters.Contains(a));
+			var newHarvesters = world.ActorsHavingTrait<Harvester>().Where(a => a.Owner == player && !harvesters.ContainsKey(a));
 			foreach (var a in newHarvesters)
-				harvesters.Add(a);
+				harvesters[a] = new HarvesterTraitWrapper(a);
 
 			// Find idle harvesters and give them orders:
-			foreach (var harvester in harvesters)
+			foreach (var h in harvesters)
 			{
-				var harv = harvester.Trait<Harvester>();
-				if (!harv.IsEmpty)
+				if (!h.Value.Harvester.IsEmpty)
 					continue;
 
-				if (!harvester.IsIdle)
+				if (!h.Key.IsIdle)
 				{
-					var act = harvester.CurrentActivity;
-					if (!harv.LastSearchFailed || act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
+					var act = h.Key.CurrentActivity;
+					if (!h.Value.Harvester.LastSearchFailed || act.NextActivity == null || act.NextActivity.GetType() != typeof(FindResources))
 						continue;
 				}
 
-				var para = harvester.TraitOrDefault<Parachutable>();
-				if (para != null && para.IsInAir)
+				if (h.Value.Parachutable != null && h.Value.Parachutable.IsInAir)
 					continue;
 
 				// Tell the idle harvester to quit slacking:
-				var newSafeResourcePatch = FindNextResource(harvester, harv);
-				AIUtils.BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
-				bot.QueueOrder(new Order("Harvest", harvester, Target.FromCell(world, newSafeResourcePatch), false));
+				var newSafeResourcePatch = FindNextResource(h.Key, h.Value);
+				AIUtils.BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(h.Key, newSafeResourcePatch));
+				bot.QueueOrder(new Order("Harvest", h.Key, Target.FromCell(world, newSafeResourcePatch), false));
 			}
 
 			// Less harvesters than refineries - build a new harvester
@@ -120,17 +138,15 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		CPos FindNextResource(Actor actor, Harvester harv)
+		CPos FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
-			var locomotorInfo = actor.Info.TraitInfo<MobileInfo>().LocomotorInfo;
-
 			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, locomotorInfo) &&
-				harv.CanHarvestCell(actor, cell) &&
+				domainIndex.IsPassable(actor.Location, cell, harv.LocomotorInfo) &&
+				harv.Harvester.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
 			var path = pathfinder.FindPath(
-				PathSearch.Search(world, locomotorInfo, actor, true, isValidResource)
+				PathSearch.Search(world, harv.LocomotorInfo, actor, true, isValidResource)
 					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && actor.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))
