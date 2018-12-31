@@ -38,26 +38,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		readonly DropDownButtonWidget ownersDropDown;
-		readonly ScrollPanelWidget panel;
-		readonly ScrollItemWidget itemTemplate;
 		readonly Ruleset mapRules;
-
 		readonly ActorSelectorActor[] allActors;
 
 		PlayerReference selectedOwner;
 
 		[ObjectCreator.UseCtor]
 		public ActorSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
-			: base(widget, world, worldRenderer)
+			: base(widget, world, worldRenderer, "ACTORTEMPLATE_LIST", "ACTORPREVIEW_TEMPLATE")
 		{
 			mapRules = world.Map.Rules;
-
 			ownersDropDown = widget.Get<DropDownButtonWidget>("OWNERS_DROPDOWN");
-
-			panel = widget.Get<ScrollPanelWidget>("ACTORTEMPLATE_LIST");
-			itemTemplate = panel.Get<ScrollItemWidget>("ACTORPREVIEW_TEMPLATE");
-			panel.Layout = new GridLayout(panel);
-
 			var editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 
 			selectedOwner = editorLayer.Players.Players.Values.First();
@@ -136,10 +127,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				FilteredCategories.Add(c);
 			}
 
-			var searchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
-			searchTextField.OnTextEdited = () =>
+			SearchTextField.OnTextEdited = () =>
 			{
-				searchFilter = searchTextField.Text.Trim();
+				searchFilter = SearchTextField.Text.Trim();
 				FilteredCategories.Clear();
 
 				if (!string.IsNullOrEmpty(searchFilter))
@@ -155,40 +145,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitializePreviews();
 			};
 
-			searchTextField.OnEscKey = () =>
-			{
-				searchTextField.Text = "";
-				searchTextField.YieldKeyboardFocus();
-				return true;
-			};
-
-			var actorCategorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
-			actorCategorySelector.GetText = () =>
-			{
-				if (SelectedCategories.Count == 0)
-					return "None";
-
-				if (!string.IsNullOrEmpty(searchFilter))
-					return "Search Results";
-
-				if (SelectedCategories.Count == 1)
-					return SelectedCategories.First();
-
-				if (SelectedCategories.Count == allCategories.Length)
-					return "All";
-
-				return "Multiple";
-			};
-
-			actorCategorySelector.OnMouseDown = _ =>
-			{
-				if (searchTextField != null)
-					searchTextField.YieldKeyboardFocus();
-
-				actorCategorySelector.RemovePanel();
-				actorCategorySelector.AttachPanel(CreateCategoriesPanel(panel));
-			};
-
 			InitializePreviews();
 		}
 
@@ -202,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected override void InitializePreviews()
 		{
-			panel.RemoveChildren();
+			Panel.RemoveChildren();
 			if (!SelectedCategories.Any())
 				return;
 
@@ -224,7 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					var item = ScrollItemWidget.Setup(itemTemplate,
+					var item = ScrollItemWidget.Setup(ItemTemplate,
 						() => { var brush = Editor.CurrentBrush as EditorActorBrush; return brush != null && brush.Actor == actor; },
 						() => Editor.SetBrush(new EditorActorBrush(Editor, actor, selectedOwner, WorldRenderer)));
 
@@ -233,8 +189,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					// Scale templates to fit within the panel
 					var scale = 1f;
-					if (scale * preview.IdealPreviewSize.X > itemTemplate.Bounds.Width)
-						scale = (itemTemplate.Bounds.Width - panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
+					if (scale * preview.IdealPreviewSize.X > ItemTemplate.Bounds.Width)
+						scale = (ItemTemplate.Bounds.Width - Panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
 
 					preview.GetScale = () => scale;
 					preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.X);
@@ -246,7 +202,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					item.GetTooltipText = () => a.Tooltip;
 
-					panel.AddChild(item);
+					Panel.AddChild(item);
 				}
 				catch
 				{
