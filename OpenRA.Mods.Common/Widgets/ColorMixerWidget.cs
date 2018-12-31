@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 						var c = (int*)cc;
 						for (var v = 0; v < 256; v++)
 							for (var s = 0; s < 256; s++)
-								*(c + (v * 256) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
+								*(c + (v * 256) + s) = Color.FromAhsv(hue, s / 255f, (255 - v) / 255f).ToArgb();
 					}
 				}
 
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
 			var pos = RenderOrigin + PxFromValue() - new int2(sprite.Bounds.Width, sprite.Bounds.Height) / 2;
-			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, sprite.Bounds.Width - 2, sprite.Bounds.Height - 2), Color.RGB);
+			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, sprite.Bounds.Width - 2, sprite.Bounds.Height - 2), Color);
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos);
 		}
 
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		public HSLColor Color { get { return HSLColor.FromHSV(H, S, V); } }
+		public Color Color { get { return Color.FromAhsv(H, S, V); } }
 
 		public void Set(float hue)
 		{
@@ -233,10 +233,11 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public void Set(HSLColor color)
+		public void Set(Color color)
 		{
 			float h, s, v;
-			color.ToHSV(out h, out s, out v);
+			int a;
+			color.ToAhsv(out a, out h, out s, out v);
 
 			if (H != h || S != s || V != v)
 			{

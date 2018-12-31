@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var hueData = new uint[1, 256];
 			for (var x = 0; x < 256; x++)
-				hueData[0, x] = (uint)HSLColor.FromHSV(x / 255f, 1, 1).RGB.ToArgb();
+				hueData[0, x] = (uint)Color.FromAhsv(x / 255f, 1, 1).ToArgb();
 
 			hueSheet.GetTexture().SetData(hueData);
 		}

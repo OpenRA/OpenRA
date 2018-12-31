@@ -33,9 +33,9 @@ namespace OpenRA.Traits
 			this.info = info;
 		}
 
-		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
-			var argb = (uint)Color.FromArgb(128, color.RGB).ToArgb();
+			var argb = (uint)Color.FromArgb(128, color).ToArgb();
 			var pal = new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => i == 0 ? 0 : argb));
 			wr.AddPalette(info.BaseName + playerName, pal, false, replaceExisting);
 		}

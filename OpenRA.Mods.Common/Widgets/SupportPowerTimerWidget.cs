@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var time = WidgetUtils.FormatTime(p.RemainingTime, false, timestep);
 				var text = Format.F(p.Info.Description, time);
 				var self = p.Instances[0].Self;
-				var playerColor = self.Owner.Color.RGB;
+				var playerColor = self.Owner.Color;
 
 				if (Game.Settings.Game.UsePlayerStanceColors)
 					playerColor = self.Owner.PlayerStanceColor(self);

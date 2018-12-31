@@ -9,8 +9,8 @@
  */
 #endregion
 
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -26,14 +26,14 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Creates a new radar ping that stays for the specified time at the specified WPos.")]
-		public void Ping(Player player, WPos position, HSLColor color, int duration = 30 * 25)
+		public void Ping(Player player, WPos position, Color color, int duration = 30 * 25)
 		{
 			if (radarPings != null)
 			{
 				radarPings.Add(
 					() => player.World.RenderPlayer == player,
 					position,
-					color.RGB,
+					color,
 					duration);
 			}
 		}

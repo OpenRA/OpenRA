@@ -238,7 +238,7 @@
     <Compile Include="Scripting\Global\CoordinateGlobals.cs" />
     <Compile Include="Scripting\Global\DateTimeGlobal.cs" />
     <Compile Include="Scripting\Global\FacingGlobal.cs" />
-    <Compile Include="Scripting\Global\HSLColorGlobal.cs" />
+    <Compile Include="Scripting\Global\ColorGlobal.cs" />
     <Compile Include="Scripting\Global\MapGlobal.cs" />
     <Compile Include="Scripting\Global\MediaGlobal.cs" />
     <Compile Include="Scripting\Global\PlayerGlobal.cs" />

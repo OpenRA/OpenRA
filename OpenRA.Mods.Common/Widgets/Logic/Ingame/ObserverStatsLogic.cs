@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			graph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
-					p.Color.RGB,
+					p.Color,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)));
 
 			playerStatsPanel.AddChild(template);
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			graph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
-					p.Color.RGB,
+					p.Color,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).ArmySamples.Select(s => (float)s)));
 
 			playerStatsPanel.AddChild(template);

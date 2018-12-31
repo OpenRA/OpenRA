@@ -24,12 +24,12 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			: base(context) { }
 
 		[Desc("Displays a text message at the top center of the screen.")]
-		public void SetMissionText(string text, HSLColor? color = null)
+		public void SetMissionText(string text, Color? color = null)
 		{
 			var luaLabel = Ui.Root.Get("INGAME_ROOT").Get<LabelWidget>("MISSION_TEXT");
 			luaLabel.GetText = () => text;
 
-			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
+			var c = color.HasValue ? color.Value : Color.White;
 			luaLabel.GetColor = () => c;
 		}
 	}

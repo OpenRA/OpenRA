@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Player = p;
 				Label = p.PlayerName;
-				Color = p.Color.RGB;
+				Color = p.Color;
 				Faction = p.Faction.InternalName;
 				IsSelected = () => p.World.RenderPlayer == p;
 				OnClick = () => { p.World.RenderPlayer = p; logic.selected = this; p.World.Selection.Clear(); };

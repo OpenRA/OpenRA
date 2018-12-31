@@ -296,7 +296,6 @@
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapCache.cs" />
     <Compile Include="Map\MapPreview.cs" />
-    <Compile Include="Graphics\HSLColor.cs" />
     <Compile Include="CPos.cs" />
     <Compile Include="CVec.cs" />
     <Compile Include="WAngle.cs" />

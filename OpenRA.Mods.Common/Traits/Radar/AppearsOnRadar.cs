@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			if (IsTraitDisabled || (viewer != null && !Info.ValidStances.HasStance(self.Owner.Stances[viewer])))
 				return;
 
-			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color.RGB;
+			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerStanceColor(self) : self.Owner.Color;
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 

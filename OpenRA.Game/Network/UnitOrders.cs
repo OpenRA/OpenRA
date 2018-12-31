@@ -58,7 +58,7 @@ namespace OpenRA.Network
 							if (orderManager.LocalClient != null && client != orderManager.LocalClient && client.Team > 0 && client.Team == orderManager.LocalClient.Team)
 								suffix += " (Ally)";
 
-							Game.AddChatLine(client.Color.RGB, client.Name + suffix, message);
+							Game.AddChatLine(client.Color, client.Name + suffix, message);
 						}
 						else
 							Game.AddChatLine(Color.White, "(player {0})".F(clientId), message);
@@ -86,17 +86,17 @@ namespace OpenRA.Network
 							if (world == null)
 							{
 								if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-									Game.AddChatLine(client.Color.RGB, "[Team] " + client.Name, order.TargetString);
+									Game.AddChatLine(client.Color, "[Team] " + client.Name, order.TargetString);
 							}
 							else
 							{
 								var player = world.FindPlayerByClient(client);
 								if (player != null && player.WinState == WinState.Lost)
-									Game.AddChatLine(client.Color.RGB, client.Name + " (Dead)", order.TargetString);
+									Game.AddChatLine(client.Color, client.Name + " (Dead)", order.TargetString);
 								else if ((player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || (world.IsReplay && player != null))
-									Game.AddChatLine(client.Color.RGB, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, order.TargetString);
+									Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, order.TargetString);
 								else if ((orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver) || (world.IsReplay  && client.IsObserver))
-									Game.AddChatLine(client.Color.RGB, "[Spectators] " + client.Name, order.TargetString);
+									Game.AddChatLine(client.Color, "[Spectators] " + client.Name, order.TargetString);
 							}
 						}
 

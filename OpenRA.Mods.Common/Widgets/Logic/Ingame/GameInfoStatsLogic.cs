@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						return name.Update(Pair.New(pp.PlayerName, suffix));
 					};
-					nameLabel.GetColor = () => pp.Color.RGB;
+					nameLabel.GetColor = () => pp.Color;
 
 					var flag = item.Get<ImageWidget>("FACTIONFLAG");
 					flag.GetImageCollection = () => "flags";

@@ -378,7 +378,7 @@ namespace OpenRA.Server
 					if (client.Slot != null)
 						SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
 					else
-						client.Color = HSLColor.FromRGB(255, 255, 255);
+						client.Color = Color.White;
 
 					// Promote connection to a valid client
 					PreConns.Remove(newConn);

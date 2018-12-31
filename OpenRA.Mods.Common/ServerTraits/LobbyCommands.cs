@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Server;
 using OpenRA.Traits;
 using S = OpenRA.Server.Server;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Server
 			{ "faction", Faction },
 			{ "team", Team },
 			{ "spawn", Spawn },
-			{ "color", Color },
+			{ "color", PlayerColor },
 			{ "sync_lobby", SyncLobby }
 		};
 
@@ -212,7 +213,7 @@ namespace OpenRA.Mods.Common.Server
 				client.Slot = null;
 				client.SpawnPoint = 0;
 				client.Team = 0;
-				client.Color = HSLColor.FromRGB(255, 255, 255);
+				client.Color = Color.White;
 				server.SyncLobbyClients();
 				CheckAutoStart(server);
 				return true;
@@ -345,8 +346,8 @@ namespace OpenRA.Mods.Common.Server
 				var validator = server.ModData.Manifest.Get<ColorValidator>();
 				var tileset = server.Map.Rules.TileSet;
 				var terrainColors = tileset.TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color);
-				var playerColors = server.LobbyInfo.Clients.Select(c => c.Color.RGB)
-					.Concat(server.Map.Players.Players.Values.Select(p => p.Color.RGB));
+				var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
+					.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
 				bot.Color = bot.PreferredColor = validator.RandomPresetColor(server.Random, terrainColors, playerColors);
 
 				server.LobbyInfo.Clients.Add(bot);
@@ -653,7 +654,7 @@ namespace OpenRA.Mods.Common.Server
 			targetClient.Slot = null;
 			targetClient.SpawnPoint = 0;
 			targetClient.Team = 0;
-			targetClient.Color = HSLColor.FromRGB(255, 255, 255);
+			targetClient.Color = Color.White;
 			targetClient.State = Session.ClientState.NotReady;
 			server.SendMessage("{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
 			Log.Write("server", "{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
@@ -785,7 +786,7 @@ namespace OpenRA.Mods.Common.Server
 			return true;
 		}
 
-		static bool Color(S server, Connection conn, Session.Client client, string s)
+		static bool PlayerColor(S server, Connection conn, Session.Client client, string s)
 		{
 			var parts = s.Split(' ');
 			var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
@@ -799,7 +800,7 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 
 			// Validate if color is allowed and get an alternative it isn't
-			var newColor = FieldLoader.GetValue<HSLColor>("(value)", parts[1]);
+			var newColor = FieldLoader.GetValue<Color>("(value)", parts[1]);
 			targetClient.Color = SanitizePlayerColor(server, newColor, targetClient.Index, conn);
 
 			// Only update player's preferred color if new color is valid
@@ -906,7 +907,7 @@ namespace OpenRA.Mods.Common.Server
 			}
 		}
 
-		static HSLColor SanitizePlayerColor(S server, HSLColor askedColor, int playerIndex, Connection connectionToEcho = null)
+		static Color SanitizePlayerColor(S server, Color askedColor, int playerIndex, Connection connectionToEcho = null)
 		{
 			var validator = server.ModData.Manifest.Get<ColorValidator>();
 			var askColor = askedColor;
@@ -919,10 +920,10 @@ namespace OpenRA.Mods.Common.Server
 
 			var tileset = server.Map.Rules.TileSet;
 			var terrainColors = tileset.TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color).ToList();
-			var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color.RGB)
-				.Concat(server.Map.Players.Players.Values.Select(p => p.Color.RGB)).ToList();
+			var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color)
+				.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 
-			return validator.MakeValid(askColor.RGB, server.Random, terrainColors, playerColors, onError);
+			return validator.MakeValid(askColor, server.Random, terrainColors, playerColors, onError);
 		}
 
 		static string MissionBriefingOrDefault(S server)

@@ -189,12 +189,12 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Display a text message to the player.")]
-		public void DisplayMessage(string text, string prefix = "Mission", HSLColor? color = null)
+		public void DisplayMessage(string text, string prefix = "Mission", Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
-			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
+			var c = color.HasValue ? color.Value : Color.White;
 			Game.AddChatLine(c, prefix, text);
 		}
 
@@ -208,12 +208,12 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Display a text message at the specified location.")]
-		public void FloatingText(string text, WPos position, int duration = 30, HSLColor? color = null)
+		public void FloatingText(string text, WPos position, int duration = 30, Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text) || !world.Map.Contains(world.Map.CellContaining(position)))
 				return;
 
-			Color c = color.HasValue ? HSLColor.RGBFromHSL(color.Value.H / 255f, color.Value.S / 255f, color.Value.L / 255f) : Color.White;
+			var c = color.HasValue ? color.Value : Color.White;
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
 		}
 

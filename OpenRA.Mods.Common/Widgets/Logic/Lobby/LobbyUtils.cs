@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, preview.Color)));
 			};
 
-			Action<HSLColor> onChange = c => preview.Color = c;
+			Action<Color> onChange = c => preview.Color = c;
 
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
@@ -484,7 +484,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupColorWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			var color = parent.Get<ColorBlockWidget>("COLORBLOCK");
-			color.GetColor = () => c.Color.RGB;
+			color.GetColor = () => c.Color;
 		}
 
 		public static void SetupEditableFactionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager,
@@ -604,7 +604,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return name.Update(Pair.New(player.PlayerName, sl)) + suffix;
 			};
 
-			playerName.GetColor = () => player.Color.RGB;
+			playerName.GetColor = () => player.Color;
 		}
 
 		public static string GetExternalIP(Session.Client client, OrderManager orderManager)

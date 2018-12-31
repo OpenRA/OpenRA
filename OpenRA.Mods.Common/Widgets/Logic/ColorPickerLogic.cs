@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int paletteTabHighlighted = 0;
 
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, string initialFaction, Action<HSLColor> onChange,
+		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, string initialFaction, Action<Color> onChange,
 			Dictionary<string, MiniYaml> logicArgs)
 		{
 			string actorType;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var sat = (byte)Game.CosmeticRandom.Next(70, 255);
 					var lum = (byte)Game.CosmeticRandom.Next(70, 255);
 
-					mixer.Set(new HSLColor(hue, sat, lum));
+					mixer.Set(Color.FromAhsl(hue, sat, lum));
 					hueSlider.Value = hue / 255f;
 				};
 			}
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mixer.SetPaletteRange(validator.HsvSaturationRange[0], validator.HsvSaturationRange[1], validator.HsvValueRange[0], validator.HsvValueRange[1]);
 			mixer.Set(initialColor);
 
-			hueSlider.Value = initialColor.H / 255f;
+			hueSlider.Value = initialColor.GetHue() / 360f;
 			onChange(mixer.Color);
 
 			// Setup tab controls
@@ -117,10 +117,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						break;
 
 					var color = validator.TeamColorPresets[colorIndex];
-					var rgbColor = color.RGB;
 
 					var newSwatch = (ColorBlockWidget)presetColorTemplate.Clone();
-					newSwatch.GetColor = () => rgbColor;
+					newSwatch.GetColor = () => color;
 					newSwatch.IsVisible = () => true;
 					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
 					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
@@ -141,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var colorIndex = j * paletteCols + i;
 
 					var newSwatch = (ColorBlockWidget)customColorTemplate.Clone();
-					newSwatch.GetColor = () => Game.Settings.Player.CustomColors[colorIndex].RGB;
+					newSwatch.GetColor = () => Game.Settings.Player.CustomColors[colorIndex];
 					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;
 					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
 					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
@@ -190,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			color.RemovePanel();
 
-			Action<HSLColor> onChange = c => preview.Color = c;
+			Action<Color> onChange = c => preview.Color = c;
 
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{

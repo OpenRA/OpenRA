@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public PaletteFromPlayerPaletteWithAlpha(PaletteFromPlayerPaletteWithAlphaInfo info) { this.info = info; }
 
-		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, HSLColor color, bool replaceExisting)
+		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
 			var remap = new AlphaPaletteRemap(info.Alpha, info.Premultiply);
 			var pal = new ImmutablePalette(wr.Palette(info.BasePalette + playerName).Palette, remap);

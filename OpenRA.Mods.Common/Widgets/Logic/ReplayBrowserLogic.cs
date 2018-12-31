@@ -648,7 +648,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var o = option;
 
-						var color = o.Color.RGB;
+						var color = o.Color;
 
 						var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
 
