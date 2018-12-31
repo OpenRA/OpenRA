@@ -118,7 +118,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (unitBuilder != null)
 					{
 						var mcvInfo = AIUtils.GetInfoByCommonName(Info.McvTypes, player);
-						unitBuilder.RequestUnitProduction(bot, mcvInfo.Name);
+						if (unitBuilder.RequestedProductionCount(bot, mcvInfo.Name) == 0)
+							unitBuilder.RequestUnitProduction(bot, mcvInfo.Name);
 					}
 				}
 			}
