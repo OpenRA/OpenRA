@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			font = Game.Renderer.Fonts[info.Font];
 			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
-			color = Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color;
+			color = Info.UsePlayerColor ? self.Owner.Color : Info.Color;
 		}
 
 		public virtual bool ShouldRender(Actor self) { return true; }
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (Info.UsePlayerColor)
-				color = newOwner.Color.RGB;
+				color = newOwner.Color;
 		}
 	}
 }

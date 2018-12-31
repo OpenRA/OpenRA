@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
@@ -21,7 +21,7 @@ namespace OpenRA.Network
 	{
 		public readonly string Name;
 		public readonly string Fingerprint;
-		public readonly HSLColor Color;
+		public readonly Color Color;
 		public readonly string Faction;
 		public readonly int Team;
 		public readonly int SpawnPoint;

@@ -329,18 +329,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static Dictionary<string, HSLColor> namedColorMapping = new Dictionary<string, HSLColor>()
+		static Dictionary<string, Color> namedColorMapping = new Dictionary<string, Color>()
 		{
-			{ "gold", HSLColor.FromRGB(246, 214, 121) },
-			{ "blue", HSLColor.FromRGB(226, 230, 246) },
-			{ "red", HSLColor.FromRGB(255, 20, 0) },
-			{ "neutral", HSLColor.FromRGB(238, 238, 238) },
-			{ "orange", HSLColor.FromRGB(255, 230, 149) },
-			{ "teal", HSLColor.FromRGB(93, 194, 165) },
-			{ "salmon", HSLColor.FromRGB(210, 153, 125) },
-			{ "green", HSLColor.FromRGB(160, 240, 140) },
-			{ "white", HSLColor.FromRGB(255, 255, 255) },
-			{ "black", HSLColor.FromRGB(80, 80, 80) },
+			{ "gold", Color.FromArgb(246, 214, 121) },
+			{ "blue", Color.FromArgb(226, 230, 246) },
+			{ "red", Color.FromArgb(255, 20, 0) },
+			{ "neutral", Color.FromArgb(238, 238, 238) },
+			{ "orange", Color.FromArgb(255, 230, 149) },
+			{ "teal", Color.FromArgb(93, 194, 165) },
+			{ "salmon", Color.FromArgb(210, 153, 125) },
+			{ "green", Color.FromArgb(160, 240, 140) },
+			{ "white", Color.FromArgb(255, 255, 255) },
+			{ "black", Color.FromArgb(80, 80, 80) },
 		};
 
 		public static void SetMapPlayers(string section, string faction, string color, IniFile file, List<string> players, MapPlayers mapPlayers)

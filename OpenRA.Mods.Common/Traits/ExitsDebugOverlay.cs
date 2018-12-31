@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var exitCell in exitCells)
 				{
-					var color = self.Owner.Color.RGB;
+					var color = self.Owner.Color;
 					var vec = exitCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(exitCell);
 					new TextRenderable(manager.Font, center, 0, color, vec.ToString()).Render(wr);
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var exitCellCenter = self.World.Map.CenterOfCell(exitCells[i]);
-					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
+					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color);
 				}
 			}
 		}

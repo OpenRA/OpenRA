@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public static Color ChooseColor(Actor self)
 		{
-			var ownerColor = Color.FromArgb(255, self.Owner.Color.RGB);
+			var ownerColor = Color.FromArgb(255, self.Owner.Color);
 			return Exts.ColorLerp(0.5f, ownerColor, Color.White);
 		}
 	}

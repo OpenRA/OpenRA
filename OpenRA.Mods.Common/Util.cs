@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common
 			if (t == typeof(WVec))
 				return "3D World Vector";
 
-			if (t == typeof(HSLColor) || t == typeof(Color))
+			if (t == typeof(Color))
 				return "Color (RRGGBB[AA] notation)";
 
 			if (t == typeof(IProjectileInfo))

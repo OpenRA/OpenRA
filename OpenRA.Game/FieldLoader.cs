@@ -228,7 +228,7 @@ namespace OpenRA
 			else if (fieldType == typeof(Color))
 			{
 				Color color;
-				if (value != null && HSLColor.TryParseRGB(value, out color))
+				if (value != null && Color.TryParse(value, out color))
 					return color;
 
 				return InvalidValueAction(value, fieldType, fieldName);
@@ -241,29 +241,10 @@ namespace OpenRA
 					var colors = new Color[parts.Length];
 
 					for (var i = 0; i < colors.Length; i++)
-						if (!HSLColor.TryParseRGB(parts[i], out colors[i]))
+						if (!Color.TryParse(parts[i], out colors[i]))
 							return InvalidValueAction(value, fieldType, fieldName);
 
 					return colors;
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
-			else if (fieldType == typeof(HSLColor))
-			{
-				if (value != null)
-				{
-					Color rgb;
-					if (HSLColor.TryParseRGB(value, out rgb))
-						return new HSLColor(rgb);
-
-					// Allow old HSLColor/ColorRamp formats to be parsed as HSLColor
-					var parts = value.Split(',');
-					if (parts.Length == 3 || parts.Length == 4)
-						return new HSLColor(
-							(byte)Exts.ParseIntegerInvariant(parts[0]).Clamp(0, 255),
-							(byte)Exts.ParseIntegerInvariant(parts[1]).Clamp(0, 255),
-							(byte)Exts.ParseIntegerInvariant(parts[2]).Clamp(0, 255));
 				}
 
 				return InvalidValueAction(value, fieldType, fieldName);

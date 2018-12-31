@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
@@ -26,7 +27,7 @@ namespace OpenRA.Traits
 		public readonly int[] RemapIndex = { };
 
 		[Desc("The fixed color to remap.")]
-		public readonly HSLColor Color;
+		public readonly Color Color;
 
 		[Desc("Luminosity range to span.")]
 		public readonly float Ramp = 0.05f;

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 				radarPings.Add(
 					() => owner.IsAlliedWith(owner.World.RenderPlayer),
 					position,
-					owner.Color.RGB,
+					owner.Color,
 					duration);
 			}
 

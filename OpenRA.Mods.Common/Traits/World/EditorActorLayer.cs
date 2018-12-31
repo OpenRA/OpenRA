@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var previewsForCell in cellMap)
 				foreach (var preview in previewsForCell.Value)
-					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color.RGB));
+					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color));
 		}
 
 		public EditorActorPreview this[string id]

@@ -212,12 +212,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						});
 
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
-						item.GetColor = () => option.Color.RGB;
+						item.GetColor = () => option.Color;
 						return item;
 					};
 
 					ownerDropdown.GetText = () => selectedOwner.Name;
-					ownerDropdown.GetColor = () => selectedOwner.Color.RGB;
+					ownerDropdown.GetColor = () => selectedOwner.Color;
 					ownerDropdown.OnClick = () =>
 					{
 						var owners = editorActorLayer.Players.Players.Values.OrderBy(p => p.Name);

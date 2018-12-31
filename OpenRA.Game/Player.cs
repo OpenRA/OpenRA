@@ -44,7 +44,7 @@ namespace OpenRA
 		}
 
 		public readonly Actor PlayerActor;
-		public readonly HSLColor Color;
+		public readonly Color Color;
 
 		public readonly string PlayerName;
 		public readonly string InternalName;

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () => SelectOwner(option));
 
 				item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
-				item.GetColor = () => option.Color.RGB;
+				item.GetColor = () => option.Color;
 
 				return item;
 			};
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			ownersDropDown.Text = selectedOwner.Name;
-			ownersDropDown.TextColor = selectedOwner.Color.RGB;
+			ownersDropDown.TextColor = selectedOwner.Color;
 
 			var tileSetId = world.Map.Rules.TileSet.Id;
 			var allActorsTemp = new List<ActorSelectorActor>();
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			selectedOwner = option;
 			ownersDropDown.Text = option.Name;
-			ownersDropDown.TextColor = option.Color.RGB;
+			ownersDropDown.TextColor = option.Color;
 			InitializePreviews();
 		}
 

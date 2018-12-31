@@ -25,12 +25,16 @@ namespace OpenRA.Graphics
 			return ramp[i];
 		}
 
-		public PlayerColorRemap(int[] ramp, HSLColor c, float rampFraction)
+		public PlayerColorRemap(int[] ramp, Color c, float rampFraction)
 		{
+			var h = c.GetHue() / 360.0f;
+			var s = c.GetSaturation();
+			var l = c.GetBrightness();
+
 			// Increase luminosity if required to represent the full ramp
-			var rampRange = (byte)((1 - rampFraction) * c.L);
-			var c1 = new HSLColor(c.H, c.S, Math.Max(rampRange, c.L)).RGB;
-			var c2 = new HSLColor(c.H, c.S, (byte)Math.Max(0, c.L - rampRange)).RGB;
+			var rampRange = (byte)((1 - rampFraction) * l);
+			var c1 = Color.FromAhsl(h, s, Math.Max(rampRange, l));
+			var c2 = Color.FromAhsl(h, s, (byte)Math.Max(0, l - rampRange));
 			var baseIndex = ramp[0];
 			var remapRamp = ramp.Select(r => r - ramp[0]);
 			var rampMaxIndex = ramp.Length - 1;

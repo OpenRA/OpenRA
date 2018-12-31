@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
 			return new LaserZap(this, args, c);
 		}
 	}
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.args = args;
 			this.info = info;
 			this.color = color;
-			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color.RGB : info.SecondaryBeamColor;
+			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
 			source = args.Source;
 

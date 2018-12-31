@@ -74,16 +74,9 @@ namespace OpenRA
 
 			var t = v.GetType();
 
-			// Color.ToString() does the wrong thing; force it to format as rgb[a] hex
 			if (t == typeof(Color))
 			{
-				return HSLColor.ToHexString((Color)v);
-			}
-
-			// HSLColor.ToString() does the wrong thing; force it to format as rgb[a] hex
-			if (t == typeof(HSLColor))
-			{
-				return ((HSLColor)v).ToHexString();
+				return ((Color)v).ToString();
 			}
 
 			if (t == typeof(Rectangle))

@@ -12,8 +12,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Eluant;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public string Name { get { return Player.PlayerName; } }
 
 		[Desc("The player's color.")]
-		public HSLColor Color { get { return Player.Color; } }
+		public Color Color { get { return Player.Color; } }
 
 		[Desc("The player's faction.")]
 		public string Faction { get { return Player.Faction.InternalName; } }

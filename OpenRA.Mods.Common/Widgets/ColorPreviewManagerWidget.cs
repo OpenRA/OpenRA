@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -19,9 +20,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string PaletteName = "colorpicker";
 		public readonly int[] RemapIndices = ChromeMetrics.Get<int[]>("ColorPickerRemapIndices");
 		public readonly float Ramp = 0.05f;
-		public HSLColor Color;
+		public Color Color;
 
-		HSLColor cachedColor;
+		Color cachedColor;
 		WorldRenderer worldRenderer;
 		IPalette preview;
 

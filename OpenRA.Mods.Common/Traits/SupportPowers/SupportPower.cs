@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 				ping = manager.RadarPings.Value.Add(
 					() => order.Player.IsAlliedWith(self.World.RenderPlayer),
 					order.Target.CenterPosition,
-					order.Player.Color.RGB,
+					order.Player.Color,
 					Info.RadarPingDuration);
 			}
 		}

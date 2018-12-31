@@ -12,7 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
@@ -110,8 +110,8 @@ namespace OpenRA.Network
 			}
 
 			public int Index;
-			public HSLColor PreferredColor; // Color that the client normally uses from settings.yaml.
-			public HSLColor Color; // Actual color that the client is using. Usually the same as PreferredColor but can be different on maps with locked colors.
+			public Color PreferredColor; // Color that the client normally uses from settings.yaml.
+			public Color Color; // Actual color that the client is using. Usually the same as PreferredColor but can be different on maps with locked colors.
 			public string Faction;
 			public int SpawnPoint;
 			public string Name;

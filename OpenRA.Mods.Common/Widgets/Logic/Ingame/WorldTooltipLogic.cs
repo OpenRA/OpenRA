@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					flagFaction = o.Faction.InternalName;
 					ownerName = o.PlayerName;
-					ownerColor = o.Color.RGB;
+					ownerColor = o.Color;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
 						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);

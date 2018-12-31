@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Network;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -155,7 +155,7 @@ namespace OpenRA
 
 			/// <summary>The faction ID, a.k.a. the faction's internal name.</summary>
 			public string FactionId;
-			public HSLColor Color;
+			public Color Color;
 
 			/// <summary>The team ID on start-up, or 0 if the player is not part of a team.</summary>
 			public int Team;

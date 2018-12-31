@@ -9,7 +9,7 @@
  */
 #endregion
 
-using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -30,7 +30,7 @@ namespace OpenRA
 		public string Faction;
 
 		public bool LockColor = false;
-		public HSLColor Color = new HSLColor(0, 0, 238);
+		public Color Color = Color.FromAhsl(0, 0, 238);
 
 		public bool LockSpawn = false;
 		public int Spawn = 0;

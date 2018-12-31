@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					playerRadarPing = radarPings.Add(
 						() => self.Owner.IsAlliedWith(self.World.RenderPlayer),
 						order.Target.CenterPosition,
-						self.Owner.Color.RGB,
+						self.Owner.Color,
 						info.Duration);
 				}
 			});

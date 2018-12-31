@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -186,9 +187,9 @@ namespace OpenRA
 	{
 		[Desc("Sets the player nickname for in-game and IRC chat.")]
 		public string Name = "Newbie";
-		public HSLColor Color = new HSLColor(75, 255, 180);
+		public Color Color = Color.FromAhsl(75, 255, 180);
 		public string LastServer = "localhost:1234";
-		public HSLColor[] CustomColors = { };
+		public Color[] CustomColors = { };
 	}
 
 	public class GameSettings

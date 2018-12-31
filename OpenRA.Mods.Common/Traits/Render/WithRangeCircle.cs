@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					self.CenterPosition,
 					Info.Range,
 					0,
-					Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color,
+					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
 					Color.FromArgb(96, Color.Black));
 
 			yield break;
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					self.CenterPosition,
 					Info.Range,
 					1,
-					Info.UsePlayerColor ? self.Owner.Color.RGB : Info.Color,
+					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
 					3,
 					Color.FromArgb(96, Color.Black));
 		}
