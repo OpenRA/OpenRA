@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class TileSelectorLogic : ChromeLogic
+	public class TileSelectorLogic : CommonSelectorLogic
 	{
 		class TileSelectorTemplate
 		{
@@ -35,23 +35,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		readonly TileSet tileset;
-		readonly WorldRenderer worldRenderer;
-		readonly EditorViewportControllerWidget editor;
 		readonly ScrollPanelWidget panel;
 		readonly ScrollItemWidget itemTemplate;
 		readonly TileSelectorTemplate[] allTemplates;
 
 		string selectedCategory;
 		string userSelectedCategory;
-		string searchFilter;
 
 		[ObjectCreator.UseCtor]
-		public TileSelectorLogic(Widget widget, WorldRenderer worldRenderer)
+		public TileSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer) :
+			base(widget, world, worldRenderer)
 		{
-			tileset = worldRenderer.World.Map.Rules.TileSet;
-			this.worldRenderer = worldRenderer;
+			tileset = world.Map.Rules.TileSet;
 
-			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			panel = widget.Get<ScrollPanelWidget>("TILETEMPLATE_LIST");
 			itemTemplate = panel.Get<ScrollItemWidget>("TILEPREVIEW_TEMPLATE");
 			panel.Layout = new GridLayout(panel);
@@ -69,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				searchFilter = searchTextField.Text.Trim();
 				selectedCategory = string.IsNullOrEmpty(searchFilter) ? userSelectedCategory : null;
 
-				InitializeTilePreview();
+				InitializePreviews();
 			};
 
 			searchTextField.OnEscKey = () =>
@@ -88,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (option != null)
 						userSelectedCategory = option;
 
-					InitializeTilePreview();
+					InitializePreviews();
 				});
 
 				var title = categoryTitle(option);
@@ -120,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorCategorySelector.GetText = () => categoryTitle(selectedCategory);
 
 			selectedCategory = userSelectedCategory = orderedCategories.First();
-			InitializeTilePreview();
+			InitializePreviews();
 		}
 
 		int CategoryOrder(string category)
@@ -129,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return i >= 0 ? i : int.MaxValue;
 		}
 
-		void InitializeTilePreview()
+		protected override void InitializePreviews()
 		{
 			panel.RemoveChildren();
 
@@ -143,13 +139,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tileId = t.Template.Id;
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => { var brush = editor.CurrentBrush as EditorTileBrush; return brush != null && brush.Template == tileId; },
-					() => editor.SetBrush(new EditorTileBrush(editor, tileId, worldRenderer)));
+					() => { var brush = Editor.CurrentBrush as EditorTileBrush; return brush != null && brush.Template == tileId; },
+					() => Editor.SetBrush(new EditorTileBrush(Editor, tileId, WorldRenderer)));
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				var template = tileset.Templates[tileId];
-				var grid = worldRenderer.World.Map.Grid;
-				var bounds = worldRenderer.Theater.TemplateBounds(template, grid.TileSize, grid.Type);
+				var grid = WorldRenderer.World.Map.Grid;
+				var bounds = WorldRenderer.Theater.TemplateBounds(template, grid.TileSize, grid.Type);
 
 				// Scale templates to fit within the panel
 				var scale = 1f;

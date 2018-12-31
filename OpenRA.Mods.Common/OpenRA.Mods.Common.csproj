@@ -694,6 +694,7 @@
     <Compile Include="Widgets\Logic\Lobby\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\ActorSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\CommonSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\LayerSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\MapEditorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\MapEditorTabsLogic.cs" />
