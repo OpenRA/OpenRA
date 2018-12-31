@@ -94,7 +94,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly World World;
 		public readonly Player Player;
 
-		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrdered;
 
 		public List<Squad> Squads = new List<Squad>();
@@ -119,12 +118,14 @@ namespace OpenRA.Mods.Common.Traits
 			World = self.World;
 			Player = self.Owner;
 
-			isEnemyUnit = unit =>
-				Player.Stances[unit.Owner] == Stance.Enemy
-					&& !unit.Info.HasTraitInfo<HuskInfo>()
-					&& unit.Info.HasTraitInfo<ITargetableInfo>();
-
 			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld;
+		}
+
+		public bool IsEnemyUnit(Actor a)
+		{
+			return a != null && !a.IsDead && Player.Stances[a.Owner] == Stance.Enemy
+				&& !a.Info.HasTraitInfo<HuskInfo>()
+				&& !a.GetEnabledTargetTypes().IsEmpty;
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -149,12 +150,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			return World.Actors.Where(isEnemyUnit).ClosestTo(pos);
+			return World.Actors.Where(IsEnemyUnit).ClosestTo(pos);
 		}
 
 		internal Actor FindClosestEnemy(WPos pos, WDist radius)
 		{
-			return World.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
+			return World.FindActorsInCircle(pos, radius).Where(IsEnemyUnit).ClosestTo(pos);
 		}
 
 		void CleanSquads()
@@ -283,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var b in allEnemyBaseBuilder)
 			{
 				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => Player.Stances[unit.Owner] == Stance.Enemy && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
+					.Where(unit => IsEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>()).ToList();
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
 				{
@@ -329,16 +330,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
 		{
-			if (e.Attacker == null)
-				return;
-
-			if (e.Attacker.Disposed)
-				return;
-
-			if (e.Attacker.Owner.Stances[self.Owner] != Stance.Enemy)
-				return;
-
-			if (!e.Attacker.Info.HasTraitInfo<ITargetableInfo>())
+			if (!IsEnemyUnit(e.Attacker))
 				return;
 
 			// Protected priority assets, MCVs, harvesters and buildings
