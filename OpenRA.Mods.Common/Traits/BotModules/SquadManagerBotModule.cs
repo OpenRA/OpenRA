@@ -41,13 +41,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SquadSizeRandomBonus = 30;
 
 		[Desc("Delay (in ticks) between giving out orders to units.")]
-		public readonly int AssignRolesInterval = 20;
+		public readonly int AssignRolesInterval = 50;
 
 		[Desc("Delay (in ticks) between attempting rush attacks.")]
 		public readonly int RushInterval = 600;
 
 		[Desc("Delay (in ticks) between updating squads.")]
-		public readonly int AttackForceInterval = 30;
+		public readonly int AttackForceInterval = 75;
 
 		[Desc("Minimum delay (in ticks) between creating squads.")]
 		public readonly int MinimumAttackForceDelay = 0;
