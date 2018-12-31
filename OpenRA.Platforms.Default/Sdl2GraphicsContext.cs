@@ -134,6 +134,16 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glPopClientAttrib();
 
+			// Reset alpha channel to fully opaque
+			unsafe
+			{
+				var colors = (int*)data.Scan0;
+				var stride = data.Stride / 4;
+				for (var y = 0; y < rect.Height; y++)
+				for (var x = 0; x < rect.Width; x++)
+					colors[y * stride + x] |= 0xFF << 24;
+			}
+
 			bitmap.UnlockBits(data);
 
 			// OpenGL standard defines the origin in the bottom left corner which is why this is upside-down by default.
