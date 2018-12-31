@@ -62,9 +62,6 @@ namespace OpenRA.Mods.Common.Traits
 			"Only applies if RestrictMCVDeploymentFallbackToBase is enabled and there's at least one construction yard.")]
 		public readonly int MaxBaseRadius = 20;
 
-		[Desc("Maximum range at which to scan for enemies when creating protection squads.")]
-		public readonly int MaximumDefenseRadius = 20;
-
 		[Desc("Radius in cells that squads should scan for enemies around their position while idle.")]
 		public readonly int IdleScanRadius = 10;
 
