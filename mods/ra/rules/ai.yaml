@@ -272,7 +272,7 @@ Player:
 	SquadManagerBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 	McvManagerBotModule:
@@ -309,7 +309,7 @@ Player:
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
@@ -351,7 +351,7 @@ Player:
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
@@ -393,7 +393,7 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, dog
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen,syrd
