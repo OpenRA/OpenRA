@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			detectedEnemyTarget = null;
 			var dangerRadius = owner.SquadManager.Info.DangerScanRadius;
 			var unitsAroundPos = owner.World.FindActorsInCircle(loc, WDist.FromCells(dangerRadius))
-				.Where(unit => owner.Bot.Player.Stances[unit.Owner] == Stance.Enemy).ToList();
+				.Where(owner.SquadManager.IsEnemyUnit).ToList();
 
 			if (!unitsAroundPos.Any())
 				return true;
