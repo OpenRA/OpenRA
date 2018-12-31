@@ -11,6 +11,18 @@ Player:
 	ModularBot@NavalAI:
 		Name: Naval AI
 		Type: naval
+	GrantConditionOnBotOwner@rush:
+		Condition: enable-rush-ai
+		Bots: rush
+	GrantConditionOnBotOwner@normal:
+		Condition: enable-normal-ai
+		Bots: normal
+	GrantConditionOnBotOwner@turtle:
+		Condition: enable-turtle-ai
+		Bots: turtle
+	GrantConditionOnBotOwner@naval:
+		Condition: enable-naval-ai
+		Bots: naval
 	SupportPowerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		Decisions:
@@ -62,18 +74,6 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
-	GrantConditionOnBotOwner@rush:
-		Condition: enable-rush-ai
-		Bots: rush
-	GrantConditionOnBotOwner@normal:
-		Condition: enable-normal-ai
-		Bots: normal
-	GrantConditionOnBotOwner@turtle:
-		Condition: enable-turtle-ai
-		Bots: turtle
-	GrantConditionOnBotOwner@naval:
-		Condition: enable-naval-ai
-		Bots: naval
 	HarvesterBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	BaseBuilderBotModule@rush:
