@@ -196,6 +196,7 @@ C17:
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
+	-MapEditorData:
 
 A10:
 	Inherits: ^Plane
