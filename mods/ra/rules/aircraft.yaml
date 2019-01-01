@@ -71,6 +71,7 @@ BADR.Bomber:
 		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
+	-MapEditorData:
 	RejectsOrders:
 	RenderSprites:
 		Image: badr
@@ -427,3 +428,4 @@ U2:
 		Interval: 2
 	RejectsOrders:
 	Interactable:
+	-MapEditorData:

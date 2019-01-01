@@ -225,6 +225,7 @@ A10:
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
+	-MapEditorData:
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
