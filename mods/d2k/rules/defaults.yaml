@@ -262,6 +262,7 @@
 		Spins: False
 		Moves: True
 		Explosion: UnitExplodeLarge
+	-MapEditorData:
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld

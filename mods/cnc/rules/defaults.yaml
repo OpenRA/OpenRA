@@ -1065,6 +1065,7 @@
 		GenericName: Destroyed Helicopter
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	-MapEditorData:
 
 ^Bridge:
 	Inherits@shape: ^1x1Shape

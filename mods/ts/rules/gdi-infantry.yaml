@@ -193,8 +193,6 @@ JUMPJET.Husk:
 	WithDeathAnimation@SPLASH:
 		RequiresCondition: water-death
 		FallbackSequence: die-splash
-	MapEditorData:
-		Categories: Husk
 	Interactable:
 
 GHOST:

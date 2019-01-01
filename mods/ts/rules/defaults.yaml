@@ -906,8 +906,6 @@
 		Moves: true
 		Velocity: 86
 	HitShape:
-	MapEditorData:
-		Categories: Husk
 
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
