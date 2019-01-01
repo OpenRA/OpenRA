@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sabotage damage expressed as a percentage of maximum target health.")]
 		public readonly int SabotageHPRemoval = 50;
 
+		[Desc("Damage types that applied with the sabotage damage.")]
+		public readonly BitSet<DamageType> SabotageDamageTypes = default(BitSet<DamageType>);
+
 		[Desc("Delay (in ticks) that to wait next to the target before initiating the capture.")]
 		public readonly int CaptureDelay = 0;
 
