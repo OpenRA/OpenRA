@@ -14,6 +14,7 @@ TRAN.Extraction:
 	WithFacingSpriteBody:
 	RevealsShroud:
 		Range: 0c0
+	-RevealsShroud@GAPGEN:
 	RejectsOrders:
 	-Selectable:
 	Cargo:
