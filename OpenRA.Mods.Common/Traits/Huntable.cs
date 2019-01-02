@@ -14,6 +14,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be targeted by the Hunt activity.")]
-	public class HuntableInfo : TraitInfo<Huntable> { }
-	public class Huntable { }
+	public class HuntableInfo : ConditionalTraitInfo
+	{
+		public override object Create(ActorInitializer init) { return new Huntable(init.Self, this); }
+	}
+
+	public class Huntable : ConditionalTrait<HuntableInfo>
+	{
+		public Huntable(Actor self, HuntableInfo info)
+			: base(info) { }
+	}
 }
