@@ -18,6 +18,10 @@ SelectUnitsByType: W
 	Description: Select units by type
 	Types: World
 
+RemoveFromControlGroup:
+	Description: Remove from control group
+	Types: World
+
 Pause: PAUSE
 	Description: Pause / Unpause
 	Types: World

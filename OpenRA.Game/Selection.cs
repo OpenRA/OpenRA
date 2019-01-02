@@ -187,6 +187,13 @@ namespace OpenRA
 				controlGroups[group].Add(a);
 		}
 
+		public void RemoveFromControlGroup(Actor a)
+		{
+			var group = GetControlGroupForActor(a);
+			if (group.HasValue)
+				controlGroups[group.Value].Remove(a);
+		}
+
 		public int? GetControlGroupForActor(Actor a)
 		{
 			return controlGroups.Where(g => g.Value.Contains(a))
