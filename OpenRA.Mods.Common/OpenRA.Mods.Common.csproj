@@ -892,6 +892,7 @@
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\TogglePlayerStanceColorHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\PauseHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\Ingame\Hotkeys\CycleStatusBarsHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\Ingame\Hotkeys\RemoveFromControlGroupHotkeyLogic.cs" />
     <Compile Include="Widgets\Logic\Lobby\LobbyOptionsLogic.cs" />
     <Compile Include="Traits\World\LobbyPrerequisiteCheckbox.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
