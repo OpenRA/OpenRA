@@ -221,6 +221,10 @@ InitTriggers = function()
 	end)
 
 	Trigger.OnKilled(ExplosiveBarrel, function()
+		if reinforcementsTriggered then
+			return
+		end
+
 		if not ExplodingBridge.IsDead then ExplodingBridge.Kill() end
 		reinforcementsTriggered = true
 		Trigger.AfterDelay(DateTime.Seconds(1), SendUSSRTankReinforcements)
