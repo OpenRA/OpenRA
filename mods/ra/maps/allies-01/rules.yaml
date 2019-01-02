@@ -11,7 +11,6 @@ World:
 
 TRAN.Extraction:
 	Inherits: TRAN
-	WithFacingSpriteBody:
 	RevealsShroud:
 		Range: 0c0
 	-RevealsShroud@GAPGEN:
@@ -26,12 +25,8 @@ TRAN.Extraction:
 
 TRAN.Insertion:
 	Inherits: TRAN.Extraction
-	WithFacingSpriteBody:
 	Cargo:
 		MaxWeight: 0
-	RenderSprites:
-		Image: tran
-	Interactable:
 
 EINSTEIN:
 	Passenger:
