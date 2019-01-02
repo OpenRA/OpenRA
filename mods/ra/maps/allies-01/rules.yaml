@@ -37,10 +37,6 @@ EINSTEIN:
 	Passenger:
 		CargoType: Einstein
 
-^CivInfantry:
-	RevealsShroud:
-		Range: 0c0
-
 C8:
 	Inherits@2: ^ArmedCivilian
 
