@@ -5,6 +5,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 		StatisticsProductionKey: StatisticsProduction
 		StatisticsCombatKey: StatisticsCombat
 		StatisticsGraphKey: StatisticsGraph
+		StatisticsArmyGraphKey: StatisticsArmyGraph
 	X: 25
 	Y: 50
 	Width: 1025

@@ -21,9 +21,9 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public enum ObserverStatsPanel { Basic, Economy, Production, Combat, Graph }
+	public enum ObserverStatsPanel { Basic, Economy, Production, Combat, Graph, ArmyGraph }
 
-	[ChromeLogicArgsHotkeys("StatisticsBasicKey", "StatisticsEconomyKey", "StatisticsProductionKey", "StatisticsCombatKey", "StatisticsGraphKey")]
+	[ChromeLogicArgsHotkeys("StatisticsBasicKey", "StatisticsEconomyKey", "StatisticsProductionKey", "StatisticsCombatKey", "StatisticsGraphKey", "StatisticsArmyGraphKey")]
 	public class ObserverStatsLogic : ChromeLogic
 	{
 		readonly ContainerWidget basicStatsHeaders;

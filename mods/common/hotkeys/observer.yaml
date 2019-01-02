@@ -41,3 +41,7 @@ StatisticsCombat: F4
 StatisticsGraph: F5
 	Description: Statistics graph
 	Types: Observer, Replay
+
+StatisticsArmyGraph: F6
+	Description: Army value graph
+	Types: Observer, Replay

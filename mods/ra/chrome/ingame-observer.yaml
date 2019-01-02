@@ -36,6 +36,7 @@ Container@OBSERVER_WIDGETS:
 						StatisticsProductionKey: StatisticsProduction
 						StatisticsCombatKey: StatisticsCombat
 						StatisticsGraphKey: StatisticsGraph
+						StatisticsArmyGraphKey: StatisticsArmyGraph
 					X: 9
 					Y: 7
 					Children:
