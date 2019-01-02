@@ -17,6 +17,16 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
 {
+	[Flags]
+	public enum MapCopyFilters
+	{
+		None = 0,
+		Terrain = 1,
+		Resources = 2,
+		Actors = 4,
+		All = Terrain | Resources | Actors
+	}
+
 	public sealed class EditorCopyPasteBrush : IEditorBrush
 	{
 		enum State { SelectFirst, SelectSecond, Paste }
@@ -25,18 +35,20 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorSelectionLayer selectionLayer;
 		readonly EditorActorLayer editorLayer;
+		readonly Func<MapCopyFilters> getCopyFilters;
 
 		State state;
 		CPos start;
 		CPos end;
 
-		public EditorCopyPasteBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
+		public EditorCopyPasteBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr, Func<MapCopyFilters> getCopyFilters)
 		{
 			this.editorWidget = editorWidget;
 			worldRenderer = wr;
 
 			selectionLayer = wr.World.WorldActor.Trait<EditorSelectionLayer>();
 			editorLayer = wr.World.WorldActor.Trait<EditorActorLayer>();
+			this.getCopyFilters = getCopyFilters;
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -102,6 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var previews = new Dictionary<string, ActorReference>();
 			var tiles = new Dictionary<CPos, Tuple<TerrainTile, ResourceTile, byte>>();
+			var copyFilters = getCopyFilters();
 
 			foreach (var cell in source)
 			{
@@ -110,33 +123,43 @@ namespace OpenRA.Mods.Common.Widgets
 
 				tiles.Add(cell + offset, Tuple.Create(mapTiles[cell], mapResources[cell], mapHeight[cell]));
 
-				foreach (var preview in editorLayer.PreviewsAt(cell))
+				if (copyFilters.HasFlag(MapCopyFilters.Actors))
 				{
-					if (previews.ContainsKey(preview.ID))
-						continue;
-
-					var copy = preview.Export();
-					if (copy.InitDict.Contains<LocationInit>())
+					foreach (var preview in editorLayer.PreviewsAt(cell))
 					{
-						var location = copy.InitDict.Get<LocationInit>();
-						copy.InitDict.Remove(location);
-						copy.InitDict.Add(new LocationInit(location.Value(worldRenderer.World) + offset));
-					}
+						if (previews.ContainsKey(preview.ID))
+							continue;
 
-					previews.Add(preview.ID, copy);
+						var copy = preview.Export();
+						if (copy.InitDict.Contains<LocationInit>())
+						{
+							var location = copy.InitDict.Get<LocationInit>();
+							copy.InitDict.Remove(location);
+							copy.InitDict.Add(new LocationInit(location.Value(worldRenderer.World) + offset));
+						}
+
+						previews.Add(preview.ID, copy);
+					}
 				}
 			}
 
 			foreach (var kv in tiles)
 			{
-				mapTiles[kv.Key] = kv.Value.Item1;
-				mapResources[kv.Key] = kv.Value.Item2;
+				if (copyFilters.HasFlag(MapCopyFilters.Terrain))
+					mapTiles[kv.Key] = kv.Value.Item1;
+
+				if (copyFilters.HasFlag(MapCopyFilters.Resources))
+					mapResources[kv.Key] = kv.Value.Item2;
+
 				mapHeight[kv.Key] = kv.Value.Item3;
 			}
 
-			var removeActors = dest.SelectMany(editorLayer.PreviewsAt).Distinct().ToList();
-			foreach (var preview in removeActors)
-				editorLayer.Remove(preview);
+			if (copyFilters.HasFlag(MapCopyFilters.Actors))
+			{
+				var removeActors = dest.SelectMany(editorLayer.PreviewsAt).Distinct().ToList();
+				foreach (var preview in removeActors)
+					editorLayer.Remove(preview);
+			}
 
 			foreach (var kv in previews)
 				editorLayer.Add(kv.Value);

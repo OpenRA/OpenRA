@@ -509,8 +509,14 @@ Container@EDITOR_WORLD_ROOT:
 			Height: 25
 			Text: Copy/Paste
 			Font: Bold
-		Button@GRID_BUTTON:
+		DropDownButton@COPYFILTER_BUTTON:
 			X: 270
+			Width: 140
+			Height: 25
+			Text: Copy Filters
+			Font: Bold
+		Button@GRID_BUTTON:
+			X: 420
 			Width: 70
 			Height: 25
 			Text: Grid
@@ -520,7 +526,7 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Key: f1
 		Label@ZOOM_LABEL:
-			X: 345
+			X: 495
 			Width: 50
 			Height: 25
 			Text: Zoom:
@@ -528,20 +534,20 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		DropDownButton@ZOOM_BUTTON:
-			X: 400
+			X: 550
 			Width: 70
 			Height: 25
 			Font: Bold
 			Key: TogglePixelDouble
 		Label@COORDINATE_LABEL:
-			X: 485
+			X: 635
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 600
+			X: 750
 			Width: 50
 			Height: 25
 			Align: Left
@@ -569,6 +575,17 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 					Height: 25
 					Text: None
 					Font: Bold
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Visible: false
+
+ScrollPanel@COPY_FILTER_PANEL:
+	Width: 140
+	Height: 65
+	Children:
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
 			Y: 5
