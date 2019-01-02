@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("ChangeZoomKey")]
 	public class MapEditorLogic : ChromeLogic
 	{
+		MapCopyFilters copyFilters = MapCopyFilters.All;
+
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -86,9 +88,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var copypasteButton = widget.GetOrNull<ButtonWidget>("COPYPASTE_BUTTON");
 			if (copypasteButton != null)
 			{
-				copypasteButton.OnClick = () => editorViewport.SetBrush(new EditorCopyPasteBrush(editorViewport, worldRenderer));
+				copypasteButton.OnClick = () => editorViewport.SetBrush(new EditorCopyPasteBrush(editorViewport, worldRenderer, () => copyFilters));
 				copypasteButton.IsHighlighted = () => editorViewport.CurrentBrush is EditorCopyPasteBrush;
 			}
+
+			var copyFilterDropdown = widget.Get<DropDownButtonWidget>("COPYFILTER_BUTTON");
+			copyFilterDropdown.OnMouseDown = _ =>
+			{
+				copyFilterDropdown.RemovePanel();
+				copyFilterDropdown.AttachPanel(CreateCategoriesPanel());
+			};
 
 			var coordinateLabel = widget.GetOrNull<LabelWidget>("COORDINATE_LABEL");
 			if (coordinateLabel != null)
@@ -109,6 +118,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (reslayer != null)
 					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
 			}
+		}
+
+		Widget CreateCategoriesPanel()
+		{
+			var categoriesPanel = Ui.LoadWidget("COPY_FILTER_PANEL", null, new WidgetArgs());
+			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
+
+			MapCopyFilters[] allCategories = { MapCopyFilters.Terrain, MapCopyFilters.Resources, MapCopyFilters.Actors };
+			foreach (var cat in allCategories)
+			{
+				var category = (CheckboxWidget)categoryTemplate.Clone();
+				category.GetText = () => cat.ToString();
+				category.IsChecked = () => copyFilters.HasFlag(cat);
+				category.IsVisible = () => true;
+				category.OnClick = () => copyFilters ^= cat;
+
+				categoriesPanel.AddChild(category);
+			}
+
+			return categoriesPanel;
 		}
 	}
 }
