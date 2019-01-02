@@ -84,7 +84,7 @@ end
 EvacuateHelicopter = function()
 	if heli.HasPassengers then
 		heli.Move(ExtractionExitPoint.Location)
-		Trigger.OnIdle(heli, heli.Destroy)
+		heli.Destroy()
 	end
 end
 
