@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class HarvesterBotModuleInfo : ConditionalTraitInfo
 	{
 		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
-		public readonly int ScanForIdleHarvestersInterval = 20;
+		public readonly int ScanForIdleHarvestersInterval = 50;
 
 		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
 		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
