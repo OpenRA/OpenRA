@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Activities
 			// path guarantees that they will return as soon as possible, once the actor is back in a
 			// valid position.
 			// This means that it is safe to unconditionally return true, which avoids breaking parent
-			// activities that rely on cancellation succeeding (but not necessarily immediately
+			// activities that rely on cancellation succeeding (but not necessarily immediately)
 			ChildActivity.Cancel(self, false);
 
 			return true;
