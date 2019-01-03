@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos initialBaseCenter;
 		int scanInterval;
-		int ticks;
+		bool firstTick = true;
 
 		// MCVs that the bot already knows about. Any MCV not on this list needs to be given an order.
 		List<Actor> activeMCVs = new List<Actor>();
@@ -101,10 +101,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
-			ticks++;
-
-			if (ticks == 1)
+			if (firstTick)
+			{
 				DeployMcvs(bot, false);
+				firstTick = false;
+			}
 
 			if (--scanInterval <= 0)
 			{
