@@ -84,8 +84,6 @@ namespace OpenRA.Mods.Common.Traits
 			using (var fromDest = PathSearch.FromPoint(world, li, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
 				pb = FindBidiPath(fromSrc, fromDest);
 
-			CheckSanePath2(pb, source, target);
-
 			return pb;
 		}
 
@@ -197,7 +195,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			ret.Add(currentNode);
-			CheckSanePath(ret);
 			return ret;
 		}
 
@@ -226,35 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 				ret.Add(q);
 			}
 
-			CheckSanePath(ret);
 			return ret;
-		}
-
-		[Conditional("SANITY_CHECKS")]
-		static void CheckSanePath(IList<CPos> path)
-		{
-			if (path.Count == 0)
-				return;
-			var prev = path[0];
-			foreach (var cell in path)
-			{
-				var d = cell - prev;
-				if (Math.Abs(d.X) > 1 || Math.Abs(d.Y) > 1)
-					throw new InvalidOperationException("(PathFinder) path sanity check failed");
-				prev = cell;
-			}
-		}
-
-		[Conditional("SANITY_CHECKS")]
-		static void CheckSanePath2(IList<CPos> path, CPos src, CPos dest)
-		{
-			if (path.Count == 0)
-				return;
-
-			if (path[0] != dest)
-				throw new InvalidOperationException("(PathFinder) sanity check failed: doesn't go to dest");
-			if (path[path.Count - 1] != src)
-				throw new InvalidOperationException("(PathFinder) sanity check failed: doesn't come from src");
 		}
 	}
 }

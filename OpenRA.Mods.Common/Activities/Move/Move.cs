@@ -197,10 +197,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (path == null)
-			{
 				path = EvalPath();
-				SanityCheckPath(mobile);
-			}
 
 			if (path.Count == 0)
 			{
@@ -258,16 +255,6 @@ namespace OpenRA.Mods.Common.Activities
 			// If we only queue the activity and not run it, units will lose one tick and pause briefly!
 			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 			return this;
-		}
-
-		[Conditional("SANITY_CHECKS")]
-		void SanityCheckPath(Mobile mobile)
-		{
-			if (path.Count == 0)
-				return;
-			var d = path[path.Count - 1] - mobile.ToCell;
-			if (d.LengthSquared > 2)
-				throw new InvalidOperationException("(Move) Sanity check failed");
 		}
 
 		Pair<CPos, SubCell>? PopPath(Actor self)
