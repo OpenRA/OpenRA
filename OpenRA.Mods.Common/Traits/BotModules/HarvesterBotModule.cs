@@ -21,6 +21,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Put this on the Player actor. Manages bot harvesters to ensure they always continue harvesting as long as there are resources on the map.")]
 	public class HarvesterBotModuleInfo : ConditionalTraitInfo
 	{
+		[Desc("Actor types that are considered harvesters. If harvester count drops below RefineryTypes count, a new harvester is built.",
+			"Leave empty to disable harvester replacement. Currently only needed by harvester replacement system.")]
+		public readonly HashSet<string> HarvesterTypes = new HashSet<string>();
+
+		[Desc("Actor types that are counted as refineries. Currently only needed by harvester replacement system.")]
+		public readonly HashSet<string> RefineryTypes = new HashSet<string>();
+
 		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
 		public readonly int ScanForIdleHarvestersInterval = 50;
 
@@ -35,6 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly World world;
 		readonly Player player;
 		readonly Predicate<Actor> unitCannotBeOrdered;
+		IBotRequestUnitProduction[] requestUnitProduction;
 		IPathFinder pathfinder;
 		DomainIndex domainIndex;
 		ResourceLayer resLayer;
@@ -52,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self)
 		{
+			requestUnitProduction = player.PlayerActor.TraitsImplementing<IBotRequestUnitProduction>().ToArray();
 			pathfinder = world.WorldActor.Trait<IPathFinder>();
 			domainIndex = world.WorldActor.Trait<DomainIndex>();
 			resLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
@@ -98,6 +107,16 @@ namespace OpenRA.Mods.Common.Traits
 				var newSafeResourcePatch = FindNextResource(harvester, harv);
 				AIUtils.BotDebug("AI: Harvester {0} is idle. Ordering to {1} in search for new resources.".F(harvester, newSafeResourcePatch));
 				bot.QueueOrder(new Order("Harvest", harvester, Target.FromCell(world, newSafeResourcePatch), false));
+			}
+
+			// Less harvesters than refineries - build a new harvester
+			var unitBuilder = requestUnitProduction.FirstOrDefault(Exts.IsTraitEnabled);
+			if (unitBuilder != null && Info.HarvesterTypes.Any())
+			{
+				var harvInfo = AIUtils.GetInfoByCommonName(Info.HarvesterTypes, player);
+				var harvCountTooLow = AIUtils.CountActorByCommonName(Info.HarvesterTypes, player) < AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player);
+				if (harvCountTooLow && unitBuilder.RequestedProductionCount(bot, harvInfo.Name) == 0)
+					unitBuilder.RequestUnitProduction(bot, harvInfo.Name);
 			}
 		}
 
