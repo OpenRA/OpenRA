@@ -7,6 +7,8 @@ Player:
 		Bots: test
 	HarvesterBotModule:
 		RequiresCondition: enable-test-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
 	BaseBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		MinimumExcessPower: 30

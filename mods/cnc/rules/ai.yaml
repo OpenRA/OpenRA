@@ -80,6 +80,8 @@ Player:
 					CheckRadius: 7c0
 	HarvesterBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI

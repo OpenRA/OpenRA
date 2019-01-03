@@ -62,6 +62,8 @@ Player:
 					Against: Ally
 	HarvesterBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		HarvesterTypes: harvester
+		RefineryTypes: refinery
 	BaseBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		BuildingQueues: Building, Upgrade

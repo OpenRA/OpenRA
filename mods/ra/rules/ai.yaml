@@ -76,6 +76,8 @@ Player:
 					CheckRadius: 7c0
 	HarvesterBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
 	BaseBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		MinimumExcessPower: 60
