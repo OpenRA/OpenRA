@@ -66,8 +66,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (timerTooltip != null)
 			{
 				var connection = orderManager.Connection as ReplayConnection;
-				if (connection != null && connection.TickCount != 0)
+				if (connection != null && connection.FinalGameTick != 0)
 					timerTooltip.GetTooltipText = () => "{0}% complete".F(world.WorldTick * 100 / connection.FinalGameTick);
+				else if (connection != null && connection.TickCount != 0)
+					timerTooltip.GetTooltipText = () => "{0}% complete".F(orderManager.NetFrameNumber * 100 / connection.TickCount);
 				else
 					timerTooltip.GetTooltipText = null;
 			}
