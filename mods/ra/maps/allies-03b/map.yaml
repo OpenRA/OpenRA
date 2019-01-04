@@ -1124,22 +1124,22 @@ Actors:
 		Health: 15
 		Facing: 192
 		SubCell: 0
-	PrisonedEngi1: hacke6
+	PrisonedEngi1: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
 		SubCell: 0
-	PrisonedEngi2: hacke6
+	PrisonedEngi2: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
 		SubCell: 1
-	PrisonedEngi3: hacke6
+	PrisonedEngi3: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
 		SubCell: 2
-	PrisonedEngi4: hacke6
+	PrisonedEngi4: e6
 		Location: 91,86
 		Owner: Greece
 		Facing: 192
