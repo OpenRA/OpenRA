@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		bool canceled = false;
 		bool jumpComplete = false;
 		int ticks = 0;
+		WPos targetPosition;
 
 		public Leap(Actor self, Target target, Mobile mobile, Mobile targetMobile, int speed, AttackLeap attack, EdibleByLeap edible)
 		{
@@ -65,6 +66,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (canceled)
 				return;
 
+			targetPosition = target.CenterPosition;
 			attack.GrantLeapCondition(self);
 		}
 
@@ -83,7 +85,10 @@ namespace OpenRA.Mods.Cnc.Activities
 				return this;
 			}
 
-			var position = length > 1 ? WPos.Lerp(origin, target.CenterPosition, ticks, length - 1) : target.CenterPosition;
+			if (target.Type != TargetType.Invalid)
+				targetPosition = target.CenterPosition;
+
+			var position = length > 1 ? WPos.Lerp(origin, targetPosition, ticks, length - 1) : targetPosition;
 			mobile.SetVisualPosition(self, position);
 
 			// We are at the destination
