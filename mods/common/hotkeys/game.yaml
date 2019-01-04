@@ -74,20 +74,20 @@ Guard: D
 	Description: Guard
 	Types: Unit
 
-StanceHoldFire: F Alt
-	Description: Hold fire
-	Types: Stance
-
-StanceReturnFire: D Alt
-	Description: Return fire
+StanceAttackAnything: A Alt
+	Description: Attack anything
 	Types: Stance
 
 StanceDefend: S Alt
 	Description: Defend
 	Types: Stance
 
-StanceAttackAnything: A Alt
-	Description: Attack anything
+StanceReturnFire: D Alt
+	Description: Return fire
+	Types: Stance
+
+StanceHoldFire: F Alt
+	Description: Hold fire
 	Types: Stance
 
 StopMusic: AUDIOSTOP
