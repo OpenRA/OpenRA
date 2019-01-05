@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -61,13 +62,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
-			playerPanel.RemoveChildren();
 
-			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
-				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
-				.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
-				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+			var teamHeaders = new Dictionary<int, ScrollItemWidget>();
+			var playerItems = new Dictionary<int, Widget>();
+			var spectatorItems = new List<Widget>();
+			var playerStats = world.Players.Where(p => !p.NonCombatant && p.Playable)
+				.Select(p => new Pair<Player, PlayerStatistics>(p, p.PlayerActor.TraitOrDefault<PlayerStatistics>())).ToList();
+			var teams = playerStats.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team);
 
 			foreach (var t in teams)
 			{
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var teamMemberScores = t.Select(tt => tt.Second).Where(s => s != null).ToArray().Select(s => s.Experience);
 					teamRating.GetText = () => scoreCache.Update(teamMemberScores.Sum());
 
-					playerPanel.AddChild(teamHeader);
+					teamHeaders[t.Key] = teamHeader;
 				}
 
 				foreach (var p in t.ToList())
@@ -123,17 +124,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
 					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.Second != null ? p.Second.Experience : 0);
 
-					playerPanel.AddChild(item);
+					playerItems[pp.ClientIndex] = item;
 				}
 			}
 
+			ScrollItemWidget spectatorHeader = null;
 			var spectators = orderManager.LobbyInfo.Clients.Where(c => c.IsObserver).ToList();
 			if (spectators.Any())
 			{
-				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
+				spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
 				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => "Spectators";
-
-				playerPanel.AddChild(spectatorHeader);
 
 				foreach (var client in spectators)
 				{
@@ -154,9 +154,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					};
 
 					item.Get<ImageWidget>("FACTIONFLAG").IsVisible = () => false;
-					playerPanel.AddChild(item);
+
+					spectatorItems.Add(item);
 				}
 			}
+
+			var previousSumScore = -1;
+			var ticker = widget.Get<LogicTickerWidget>("STATS_TICKER");
+			ticker.OnTick = () =>
+			{
+				var sumScore = playerStats.Sum(p => p.Second != null ? p.Second.Experience : 0);
+				if (sumScore == previousSumScore)
+					return;
+
+				previousSumScore = sumScore;
+
+				playerPanel.RemoveChildren();
+
+				var orderedTeams = playerStats.OrderByDescending(p => p.Second != null ? p.Second.Experience : 0)
+					.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.First.ClientIndex) ?? new Session.Client()).Team)
+					.OrderByDescending(g => g.Sum(gg => gg.Second != null ? gg.Second.Experience : 0));
+
+				foreach (var t in orderedTeams)
+				{
+					if (orderedTeams.Count() > 1)
+						playerPanel.AddChild(teamHeaders[t.Key]);
+
+					foreach (var p in t.ToList())
+						playerPanel.AddChild(playerItems[p.First.ClientIndex]);
+				}
+
+				if (spectators.Any())
+				{
+					playerPanel.AddChild(spectatorHeader);
+
+					foreach (var item in spectatorItems)
+						playerPanel.AddChild(item);
+				}
+			};
 		}
 	}
 }

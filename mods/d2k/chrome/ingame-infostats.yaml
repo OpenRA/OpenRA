@@ -3,6 +3,7 @@ Container@SKIRMISH_STATS:
 	Width: PARENT_RIGHT
 	Logic: GameInfoStatsLogic
 	Children:
+		LogicTicker@STATS_TICKER:
 		Container@OBJECTIVE:
 			Height: 75
 			Children:
