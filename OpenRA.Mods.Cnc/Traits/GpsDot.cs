@@ -10,12 +10,13 @@
 #endregion
 
 using OpenRA.Mods.Cnc.Effects;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Show an indicator revealing the actor underneath the fog when a GPSWatcher is activated.")]
-	class GpsDotInfo : ITraitInfo
+	class GpsDotInfo : ConditionalTraitInfo
 	{
 		[Desc("Sprite collection for symbols.")]
 		public readonly string Image = "gpsdot";
@@ -25,30 +26,45 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[PaletteReference(true)] public readonly string IndicatorPalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new GpsDot(this); }
+		public override object Create(ActorInitializer init) { return new GpsDot(this); }
 	}
 
-	class GpsDot : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	class GpsDot : ConditionalTrait<GpsDotInfo>, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		readonly GpsDotInfo info;
 		GpsDotEffect effect;
 
 		public GpsDot(GpsDotInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		void INotifyCreated.Created(Actor self)
 		{
-			effect = new GpsDotEffect(self, info);
+			effect = new GpsDotEffect(self, Info);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			self.World.AddFrameEndTask(w => w.Add(effect));
+			self.World.AddFrameEndTask(w =>
+			{
+				if (!IsTraitDisabled)
+					w.Add(effect);
+			});
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			self.World.AddFrameEndTask(w => w.Remove(effect));
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			self.World.AddFrameEndTask(w =>
+			{
+				if (self.IsInWorld)
+					w.Add(effect);
+			});
+		}
+
+		protected override void TraitDisabled(Actor self)
 		{
 			self.World.AddFrameEndTask(w => w.Remove(effect));
 		}
