@@ -17,14 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Required for `GpsPower`. Attach this to the player actor.")]
-	class GpsWatcherInfo : ITraitInfo
+	class GpsWatcherInfo : ConditionalTraitInfo
 	{
-		public object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
+		public override object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner, this); }
 	}
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
-	class GpsWatcher : ISync, IPreventsShroudReset
+	class GpsWatcher : ConditionalTrait<GpsWatcherInfo>, ISync, IPreventsShroudReset
 	{
 		[Sync] public bool Launched { get; private set; }
 		[Sync] public bool GrantedAllies { get; private set; }
@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly List<Actor> actors = new List<Actor>();
 		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
 
-		public GpsWatcher(Player owner)
+		public GpsWatcher(Player owner, GpsWatcherInfo info)
+			: base(info)
 		{
 			this.owner = owner;
 		}
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var wasGrantedAllies = GrantedAllies;
 			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner));
 
-			Granted = actors.Count > 0 && Launched;
+			Granted = actors.Count > 0 && Launched && !IsTraitDisabled;
 			GrantedAllies = allyWatchers.Any(w => w.Trait.Granted);
 
 			var allyLaunched = allyWatchers.Any(w => w.Trait.Launched);
@@ -103,6 +104,16 @@ namespace OpenRA.Mods.Cnc.Traits
 		public void UnregisterForOnGpsRefreshed(Actor actor, IOnGpsRefreshed toBeNotified)
 		{
 			notifyOnRefresh.Remove(new TraitPair<IOnGpsRefreshed>(actor, toBeNotified));
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			self.World.AddFrameEndTask(w => GpsAdd(self));
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			self.World.AddFrameEndTask(w => GpsRemove(self));
 		}
 	}
 }
