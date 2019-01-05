@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (targetMobile != null)
 				destinationSubCell = targetMobile.ToSubCell;
 
-			origin = self.World.Map.CenterOfSubCell(self.Location, mobile.FromSubCell);
+			origin = self.CenterPosition;
 			destination = self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell);
 			length = Math.Max((origin - destination).Length / speed, 1);
 
