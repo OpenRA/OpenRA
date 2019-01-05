@@ -52,7 +52,7 @@ DOG:
 		MoveSequence: walk
 		StandSequences: stand
 		DefaultAttackSequence: eat
-		RequiresCondition: !attacking && !run
+		RequiresCondition: !run
 	WithInfantryBody@RUN:
 		MoveSequence: run
 		RequiresCondition: run
