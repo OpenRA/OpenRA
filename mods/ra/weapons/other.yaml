@@ -107,7 +107,7 @@ TTankZap:
 DogJaw:
 	ValidTargets: Infantry
 	ReloadDelay: 10
-	Range: 3c0
+	Range: 2c0
 	Report: dogg5p.aud
 	TargetActorCenter: true
 	Projectile: InstantHit
