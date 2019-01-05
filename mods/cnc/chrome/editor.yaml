@@ -548,12 +548,19 @@ Container@EDITOR_WORLD_ROOT:
 			Height: 25
 			Font: Bold
 			Key: TogglePixelDouble
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Zoom
+			TooltipContainer: TOOLTIP_CONTAINER
 		Button@COPYPASTE_BUTTON:
 			X: WINDOW_RIGHT - 540
 			Y: 5
 			Width: 96
 			Height: 25
 			Text: Copy/Paste
+			Key: c ctrl
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Copy
+			TooltipContainer: TOOLTIP_CONTAINER
 		DropDownButton@COPYFILTER_BUTTON:
 			X: WINDOW_RIGHT - 435
 			Y: 5
