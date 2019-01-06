@@ -146,7 +146,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (queue != null)
+			{
 				bot.QueueOrder(Order.StartProduction(queue.Actor, name, 1));
+				AIUtils.BotDebug("AI: {0} decided to build {1} (external request)", queue.Actor.Owner, name);
+			}
 		}
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
