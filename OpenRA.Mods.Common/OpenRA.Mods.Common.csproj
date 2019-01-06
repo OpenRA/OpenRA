@@ -149,6 +149,7 @@
     <Compile Include="Effects\MapNotificationEffect.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
+    <Compile Include="Effects\SpawnActorEffect.cs" />
     <Compile Include="Graphics\RailgunRenderable.cs" />
     <Compile Include="Lint\CheckNotifications.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
