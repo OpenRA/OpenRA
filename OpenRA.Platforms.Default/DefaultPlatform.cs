@@ -10,7 +10,6 @@
 #endregion
 
 using System.Drawing;
-using OpenRA;
 
 namespace OpenRA.Platforms.Default
 {

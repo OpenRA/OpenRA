@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class Sell : Activity
 	{
-		readonly Health health;
+		readonly IHealth health;
 		readonly SellableInfo sellableInfo;
 		readonly PlayerResources playerResources;
 		bool showTicks;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		public Sell(Actor self, bool showTicks)
 		{
 			this.showTicks = showTicks;
-			health = self.TraitOrDefault<Health>();
+			health = self.TraitOrDefault<IHealth>();
 			sellableInfo = self.Info.TraitInfo<SellableInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			IsInterruptible = false;

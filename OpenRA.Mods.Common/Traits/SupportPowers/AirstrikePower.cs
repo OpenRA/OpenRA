@@ -44,8 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AirstrikePower : SupportPower
 	{
+		readonly AirstrikePowerInfo info;
+
 		public AirstrikePower(Actor self, AirstrikePowerInfo info)
-			: base(self, info) { }
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
@@ -56,8 +61,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SendAirstrike(Actor self, WPos target, bool randomize = true, int attackFacing = 0)
 		{
-			var info = Info as AirstrikePowerInfo;
-
 			if (randomize)
 				attackFacing = 256 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings;
 
@@ -87,14 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 					});
 				}
 
-				if (beacon != null)
-				{
-					self.World.AddFrameEndTask(w =>
-					{
-						w.Remove(beacon);
-						beacon = null;
-					});
-				}
+				RemoveBeacon(beacon);
 
 				aircraftInRange[a] = true;
 			};
@@ -105,23 +101,18 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Remove the camera when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
+					RemoveCamera(camera);
+			};
+
+			Action<Actor> onRemovedFromWorld = a =>
+			{
+				// Checking for attack range is not relevant here because
+				// aircraft may be shot down before entering. Thus we remove
+				// the camera and beacon only if the whole squad is dead.
+				if (aircraftInRange.All(kv => kv.Key.IsDead))
 				{
-					if (camera != null)
-					{
-						camera.QueueActivity(new Wait(info.CameraRemoveDelay));
-						camera.QueueActivity(new RemoveSelf());
-					}
-
-					camera = null;
-
-					if (beacon != null)
-					{
-						self.World.AddFrameEndTask(w =>
-						{
-							w.Remove(beacon);
-							beacon = null;
-						});
-					}
+					RemoveCamera(camera);
+					RemoveBeacon(beacon);
 				}
 			};
 
@@ -152,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 					attack.SetTarget(w, target + targetOffset);
 					attack.OnEnteredAttackRange += onEnterRange;
 					attack.OnExitedAttackRange += onExitRange;
-					attack.OnRemovedFromWorld += onExitRange;
+					attack.OnRemovedFromWorld += onRemovedFromWorld;
 
 					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
@@ -181,6 +172,28 @@ namespace OpenRA.Mods.Common.Traits
 
 					w.Add(beacon);
 				}
+			});
+		}
+
+		void RemoveCamera(Actor camera)
+		{
+			if (camera == null)
+				return;
+
+			camera.QueueActivity(new Wait(info.CameraRemoveDelay));
+			camera.QueueActivity(new RemoveSelf());
+			camera = null;
+		}
+
+		void RemoveBeacon(Beacon beacon)
+		{
+			if (beacon == null)
+				return;
+
+			Self.World.AddFrameEndTask(w =>
+			{
+				w.Remove(beacon);
+				beacon = null;
 			});
 		}
 	}

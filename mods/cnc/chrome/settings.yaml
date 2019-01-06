@@ -277,12 +277,12 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Align: Right
 							Text: Sound Volume:
-						Slider@SOUND_VOLUME:
+						ExponentialSlider@SOUND_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 43
 							Width: 250
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 						Checkbox@CASH_TICKS:
 							X: 15
 							Y: 40
@@ -304,12 +304,12 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Align: Right
 							Text: Music Volume:
-						Slider@MUSIC_VOLUME:
+						ExponentialSlider@MUSIC_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 73
 							Width: 250
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 						Label@VIDEO_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
 							Y: 97
@@ -317,12 +317,12 @@ Container@SETTINGS_PANEL:
 							Height: 25
 							Align: Right
 							Text: Video Volume:
-						Slider@VIDEO_VOLUME:
+						ExponentialSlider@VIDEO_VOLUME:
 							X: PARENT_RIGHT - WIDTH - 15
 							Y: 103
 							Width: 250
 							Height: 20
-							Ticks: 5
+							Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5
 							Y: 244
@@ -571,36 +571,71 @@ Container@SETTINGS_PANEL:
 							Y: 200
 							Width: PARENT_RIGHT
 							Font: Bold
-							Text: Debug
+							Text: Developer
 							Align: Center
-						Checkbox@BOTDEBUG_CHECKBOX:
-							X: 15
-							Y: 220
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Show Bot Debug Messages
-						Checkbox@CHECKUNSYNCED_CHECKBOX:
-							X: 15
+						Container@DEBUG_HIDDEN_LABEL:
 							Y: 250
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Check Sync around Unsynced Code
-						Checkbox@LUADEBUG_CHECKBOX:
-							X: 310
-							Y: 220
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Show Map Debug Messages
-						Checkbox@REPLAY_COMMANDS_CHECKBOX:
-							X: 310
-							Y: 250
-							Width: 300
-							Height: 20
-							Font: Regular
-							Text: Enable Debug Commands in Replays
+							Width: PARENT_RIGHT
+							Children:
+								Label@A:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Additional developer-specific options can be enabled via the 
+									Align: Center
+								Label@B:
+									Y: 20
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Debug.DisplayDeveloperSettings setting or launch flag
+									Align: Center
+						Container@DEBUG_OPTIONS:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Checkbox@BOTDEBUG_CHECKBOX:
+									X: 15
+									Y: 220
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Show Bot Debug Messages
+								Checkbox@CHECKUNSYNCED_CHECKBOX:
+									X: 15
+									Y: 250
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Check Sync around Unsynced Code
+								Checkbox@CHECKBOTSYNC_CHECKBOX:
+									X: 15
+									Y: 280
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Check Sync around BotModule Code
+								Checkbox@LUADEBUG_CHECKBOX:
+									X: 310
+									Y: 220
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Show Map Debug Messages
+								Checkbox@REPLAY_COMMANDS_CHECKBOX:
+									X: 310
+									Y: 250
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Enable Debug Commands in Replays
+								Checkbox@STRICTACTIVITY_CHECKBOX:
+									X: 310
+									Y: 280
+									Width: 300
+									Height: 20
+									Font: Regular
+									Text: Strict Activity checking
 		Button@BACK_BUTTON:
 			Key: escape
 			Y: 393

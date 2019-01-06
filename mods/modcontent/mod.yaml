@@ -8,6 +8,9 @@ Packages:
 	./mods/modcontent: modcontent
 	./mods/common: common
 
+Rules:
+	modcontent|rules.yaml
+
 Cursors:
 	modcontent|cursors.yaml
 

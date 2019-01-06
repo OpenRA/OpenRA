@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (p.Trait.Produce(p.Actor, unit, type, inits))
 				{
-					FinishProduction();
+					EndProduction(Queue.FirstOrDefault(i => i.Done && i.Item == unit.Name));
 					return true;
 				}
 			}

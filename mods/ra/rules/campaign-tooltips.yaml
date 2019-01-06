@@ -73,3 +73,19 @@ FLARE:
 SPY:
 	DisguiseTooltip:
 		ShowOwnerRow: false
+
+BIO:
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
+
+FCOM:
+	Tooltip:
+		GenericVisibility: Enemy
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
+
+MISS:
+	Tooltip:
+		Name: Technology Center
+	-TooltipDescription@ally:
+	-TooltipDescription@other:

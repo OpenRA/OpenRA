@@ -9,10 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Drawing;
-using OpenRA.Graphics;
-
 namespace OpenRA.Traits
 {
 	[Desc("This actor is selectable. Defines bounds of selectable area, selection class and selection priority.")]

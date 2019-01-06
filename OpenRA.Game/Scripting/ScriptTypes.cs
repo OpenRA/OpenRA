@@ -79,6 +79,18 @@ namespace OpenRA.Scripting
 				return true;
 			}
 
+			if (value is LuaNumber && t.IsAssignableFrom(typeof(short)))
+			{
+				clrObject = (short)value.ToNumber().Value;
+				return true;
+			}
+
+			if (value is LuaNumber && t.IsAssignableFrom(typeof(byte)))
+			{
+				clrObject = (byte)value.ToNumber().Value;
+				return true;
+			}
+
 			if (value is LuaString && t.IsAssignableFrom(typeof(string)))
 			{
 				clrObject = value.ToString();

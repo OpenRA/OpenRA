@@ -12,14 +12,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
+
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
-	public class AutoTargetInfo : ConditionalTraitInfo, IRulesetLoaded, Requires<AttackBaseInfo>, UsesInit<StanceInit>
+	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, IEditorActorOptions
 	{
-		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
+		[Desc("It will try to hunt down the enemy if it is set to AttackAnything.")]
 		public readonly bool AllowMovement = true;
 
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
@@ -60,6 +63,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MaximumScanTimeInterval = 8;
 
+		[Desc("Display order for the stance dropdown in the map editor")]
+		public readonly int EditorStanceDisplayOrder = 1;
+
 		public override object Create(ActorInitializer init) { return new AutoTarget(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
@@ -78,9 +84,30 @@ namespace OpenRA.Mods.Common.Traits
 			if (AttackAnythingCondition != null)
 				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
 		}
-	}
 
-	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			// Indexed by UnitStance
+			var stances = new[] { "holdfire", "returnfire", "defend", "attackanything" };
+
+			var labels = new Dictionary<string, string>()
+			{
+				{ "holdfire", "Hold Fire" },
+				{ "returnfire", "Return Fire" },
+				{ "defend", "Defend" },
+				{ "attackanything", "Attack Anything" },
+			};
+
+			yield return new EditorActorDropdown("Stance", EditorStanceDisplayOrder, labels,
+				actor =>
+				{
+					var init = actor.Init<StanceInit>();
+					var stance = init != null ? init.Value(world) : InitialStance;
+					return stances[(int)stance];
+				},
+				(actor, value) => actor.ReplaceInit(new StanceInit((UnitStance)stances.IndexOf(value))));
+		}
+	}
 
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
 	{
@@ -91,7 +118,6 @@ namespace OpenRA.Mods.Common.Traits
 		public UnitStance Stance { get { return stance; } }
 
 		[Sync] public Actor Aggressor;
-		[Sync] public Actor TargetedActor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
@@ -191,7 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			bool allowMove;
 			if (ShouldAttack(out allowMove))
-				Attack(self, Aggressor, allowMove);
+				Attack(self, Target.FromActor(Aggressor), allowMove);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -206,7 +232,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldAttack(out bool allowMove)
 		{
-			allowMove = Info.AllowMovement && Stance != UnitStance.Defend;
+			allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
 
 			// PERF: Avoid LINQ.
 			foreach (var attackFollow in attackFollows)
@@ -225,7 +251,7 @@ namespace OpenRA.Mods.Common.Traits
 				--nextScanTime;
 		}
 
-		public Actor ScanForTarget(Actor self, bool allowMove)
+		public Target ScanForTarget(Actor self, bool allowMove)
 		{
 			if (nextScanTime <= 0 && activeAttackBases.Any())
 			{
@@ -243,48 +269,67 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			return null;
+			return Target.Invalid;
 		}
 
 		public void ScanAndAttack(Actor self, bool allowMove)
 		{
-			var targetActor = ScanForTarget(self, allowMove);
-			if (targetActor != null)
-				Attack(self, targetActor, allowMove);
+			var target = ScanForTarget(self, allowMove);
+			if (target.Type != TargetType.Invalid)
+				Attack(self, target, allowMove);
 		}
 
-		void Attack(Actor self, Actor targetActor, bool allowMove)
+		void Attack(Actor self, Target target, bool allowMove)
 		{
-			TargetedActor = targetActor;
-			var target = Target.FromActor(targetActor);
 			self.SetTargetLine(target, Color.Red, false);
 
 			foreach (var ab in activeAttackBases)
 				ab.AttackTarget(target, false, allowMove);
 		}
 
-		Actor ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove)
+		Target ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove)
 		{
-			Actor chosenTarget = null;
+			var chosenTarget = Target.Invalid;
 			var chosenTargetPriority = int.MinValue;
 			int chosenTargetRange = 0;
 
 			var activePriorities = activeTargetPriorities.ToList();
 			if (activePriorities.Count == 0)
-				return null;
+				return chosenTarget;
 
-			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange);
-			foreach (var actor in actorsInRange)
+			var targetsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange)
+				.Select(Target.FromActor)
+				.Concat(self.Owner.FrozenActorLayer.FrozenActorsInCircle(self.World, self.CenterPosition, scanRange)
+					.Select(Target.FromFrozenActor));
+
+			foreach (var target in targetsInRange)
 			{
-				// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
-				// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
-				// allied units, this helps significantly reduce the cost of auto target scans. This is important as
-				// these groups will continuously rescan their allies until an enemy finally comes into range.
-				if (attackStances == OpenRA.Traits.Stance.Enemy && !actor.AppearsHostileTo(self))
+				BitSet<TargetableType> targetTypes;
+				if (target.Type == TargetType.Actor)
+				{
+					// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
+					// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
+					// allied units, this helps significantly reduce the cost of auto target scans. This is important as
+					// these groups will continuously rescan their allies until an enemy finally comes into range.
+					if (attackStances == OpenRA.Traits.Stance.Enemy && !target.Actor.AppearsHostileTo(self))
+						continue;
+
+					// Check whether we can auto-target this actor
+					targetTypes = target.Actor.GetEnabledTargetTypes();
+
+					if (PreventsAutoTarget(self, target.Actor) || !target.Actor.CanBeViewedByPlayer(self.Owner))
+						continue;
+				}
+				else if (target.Type == TargetType.FrozenActor)
+				{
+					if (attackStances == OpenRA.Traits.Stance.Enemy && self.Owner.Stances[target.FrozenActor.Owner] == OpenRA.Traits.Stance.Ally)
+						continue;
+
+					targetTypes = target.FrozenActor.TargetTypes;
+				}
+				else
 					continue;
 
-				// Check whether we can auto-target this actor
-				var targetTypes = actor.GetEnabledTargetTypes();
 				var validPriorities = activePriorities.Where(ati =>
 				{
 					// Already have a higher priority target
@@ -298,11 +343,10 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 				}).ToList();
 
-				if (validPriorities.Count == 0 || PreventsAutoTarget(self, actor) || !actor.CanBeViewedByPlayer(self.Owner))
+				if (validPriorities.Count == 0)
 					continue;
 
 				// Make sure that we can actually fire on the actor
-				var target = Target.FromActor(actor);
 				var armaments = ab.ChooseArmamentsForTarget(target, false);
 				if (!allowMove)
 					armaments = armaments.Where(arm =>
@@ -316,10 +360,10 @@ namespace OpenRA.Mods.Common.Traits
 				var targetRange = (target.CenterPosition - self.CenterPosition).Length;
 				foreach (var ati in validPriorities)
 				{
-					if (chosenTarget == null || chosenTargetPriority < ati.Priority
+					if (chosenTarget.Type == TargetType.Invalid || chosenTargetPriority < ati.Priority
 						|| (chosenTargetPriority == ati.Priority && targetRange < chosenTargetRange))
 					{
-						chosenTarget = actor;
+						chosenTarget = target;
 						chosenTargetPriority = ati.Priority;
 						chosenTargetRange = targetRange;
 					}

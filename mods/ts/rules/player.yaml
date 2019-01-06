@@ -12,53 +12,72 @@ Player:
 	ClassicProductionQueue@Building:
 		Type: Building
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
-		BlockedAudio:
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
-		BlockedAudio:
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		BlockedAudio:
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		BlockedAudio:
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
 		BuildDurationModifier: 120
-		LowPowerSlowdown: 3
-		BlockedAudio:
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 		SpeedUp: True
 	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
 		Palette: placebuilding
 		LineBuildSegmentPalette: placelinesegment
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
 	ConquestVictoryConditions:
 	PowerManager:
+		SpeechNotification: LowPower
 	AllyRepair:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
 	DeveloperMode:
 		CheckboxEnabled: true
 		CheckboxDisplayOrder: 8
@@ -95,3 +114,4 @@ Player:
 		Id: unrestricted
 	ResourceStorageWarning:
 	PlayerExperience:
+	ConditionManager:

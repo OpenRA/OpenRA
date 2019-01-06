@@ -80,13 +80,21 @@ namespace OpenRA.Traits
 
 		public bool IsValidFor(Actor targeter)
 		{
-			if (targeter == null || Type == TargetType.Invalid)
+			if (targeter == null)
 				return false;
 
-			if (actor != null && !actor.IsTargetableBy(targeter))
-				return false;
-
-			return true;
+			switch (Type)
+			{
+				case TargetType.Actor:
+					return actor.IsTargetableBy(targeter);
+				case TargetType.FrozenActor:
+					return frozen.IsValid && frozen.Visible && !frozen.Hidden;
+				case TargetType.Invalid:
+					return false;
+				default:
+				case TargetType.Terrain:
+					return true;
+			}
 		}
 
 		// Currently all or nothing.

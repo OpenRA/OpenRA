@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<DamageType> CrushDamageTypes = default(BitSet<DamageType>);
 
 		[FieldLoader.LoadUsing("LoadSpeeds", true)]
-		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
+		[Desc("Lower the value on rough terrain. Leave out entries for impassable terrain.")]
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
 
 		protected static object LoadSpeeds(MiniYaml y)
@@ -75,11 +75,14 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
 			{
 				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
-				var nodesDict = t.Value.ToDictionary();
-				var cost = nodesDict.ContainsKey("PathingCost")
-					? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
-					: 10000 / speed;
-				ret.Add(t.Key, new TerrainInfo(speed, cost));
+				if (speed > 0)
+				{
+					var nodesDict = t.Value.ToDictionary();
+					var cost = nodesDict.ContainsKey("PathingCost")
+						? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
+						: 10000 / speed;
+					ret.Add(t.Key, new TerrainInfo(speed, cost));
+				}
 			}
 
 			return ret;

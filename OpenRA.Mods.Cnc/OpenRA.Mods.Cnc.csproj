@@ -39,7 +39,6 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <OutputPath>bin\Debug\</OutputPath>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>5</LangVersion>
   </PropertyGroup>
@@ -51,7 +50,6 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
@@ -64,9 +62,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\LeapAttack.cs" />
     <Compile Include="CncLoadScreen.cs" />
+    <Compile Include="Traits\EdibleByLeap.cs" />
     <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
     <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
+    <Compile Include="Traits\Infiltration\InfiltrateForTransform.cs" />
     <Compile Include="Traits\Render\WithGunboatBody.cs" />
     <Compile Include="Traits\Render\WithEmbeddedTurretSpriteBody.cs" />
     <Compile Include="Traits\Render\WithCargo.cs" />

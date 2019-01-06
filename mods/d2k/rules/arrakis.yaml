@@ -26,8 +26,10 @@ spicebloom.spawnpoint:
 	HitShape:
 		Type: Circle
 			Radius: 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 spicebloom:
 	HiddenUnderShroud:
@@ -61,9 +63,11 @@ spicebloom:
 	HitShape:
 		Type: Circle
 			Radius: 512
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 sandworm:
 	Inherits@1: ^SpriteActor
@@ -100,7 +104,6 @@ sandworm:
 		UseLocation: true
 	AttackSwallow:
 		AttackRequiresEnteringCell: true
-		IgnoresVisibility: true
 		AttackingCondition: attacking
 	Armament:
 		Weapon: WormJaw
@@ -124,6 +127,8 @@ sandworm:
 	RevealOnFire:
 		Duration: 50
 		Radius: 2c512
+	RequiresSpecificOwners:
+		ValidOwnerNames: Creeps
 
 sietch:
 	Inherits: ^Building
@@ -144,6 +149,8 @@ sietch:
 	-Sellable:
 	-Capturable:
 	-RepairableBuilding:
+	Demolishable:
+		-Condition:
 	ProvidesPrerequisite@buildingname:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:

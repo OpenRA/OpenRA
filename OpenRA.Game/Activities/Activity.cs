@@ -200,6 +200,24 @@ namespace OpenRA.Activities
 		/// </summary>
 		protected virtual void OnLastRun(Actor self) { }
 
+		/// <summary>
+		/// Runs once on Actor.Dispose() (through OnActorDisposeOuter) and can be used to perform activity clean-up on actor death/disposal,
+		/// for example by force-triggering OnLastRun (which would otherwise be skipped).
+		/// </summary>
+		protected virtual void OnActorDispose(Actor self) { }
+
+		/// <summary>
+		/// Runs once on Actor.Dispose().
+		/// Main purpose is to ensure ChildActivity.OnActorDispose runs as well (which isn't otherwise accessible due to protection level).
+		/// </summary>
+		internal void OnActorDisposeOuter(Actor self)
+		{
+			if (ChildActivity != null)
+				ChildActivity.OnActorDisposeOuter(self);
+
+			OnActorDispose(self);
+		}
+
 		public virtual bool Cancel(Actor self, bool keepQueue = false)
 		{
 			if (!IsInterruptible)

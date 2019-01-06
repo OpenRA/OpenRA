@@ -157,6 +157,7 @@ namespace OpenRA.Server
 					Map = settings.Map,
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || !dedicated,
+					EnableSyncReports = settings.EnableSyncReports,
 					GameUid = Guid.NewGuid().ToString(),
 					Dedicated = dedicated
 				}
@@ -324,7 +325,6 @@ namespace OpenRA.Server
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ((IPEndPoint)newConn.Socket.RemoteEndPoint).Address.ToString(),
 					Index = newConn.PlayerIndex,
-					Slot = LobbyInfo.FirstEmptySlot(),
 					PreferredColor = handshake.Client.PreferredColor,
 					Color = handshake.Client.Color,
 					Faction = "Random",
@@ -333,18 +333,6 @@ namespace OpenRA.Server
 					State = Session.ClientState.Invalid,
 					IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin)
 				};
-
-				if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
-				{
-					SendOrderTo(newConn, "ServerError", "The game is full");
-					DropClient(newConn);
-					return;
-				}
-
-				if (client.Slot != null)
-					SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
-				else
-					client.Color = HSLColor.FromRGB(255, 255, 255);
 
 				if (ModData.Manifest.Id != handshake.Mod)
 				{
@@ -356,7 +344,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				if (ModData.Manifest.Metadata.Version != handshake.Version && !LobbyInfo.GlobalSettings.AllowVersionMismatch)
+				if (ModData.Manifest.Metadata.Version != handshake.Version)
 				{
 					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.Socket.RemoteEndPoint);
@@ -378,6 +366,20 @@ namespace OpenRA.Server
 
 				Action completeConnection = () =>
 				{
+					client.Slot = LobbyInfo.FirstEmptySlot();
+
+					if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
+					{
+						SendOrderTo(newConn, "ServerError", "The game is full");
+						DropClient(newConn);
+						return;
+					}
+
+					if (client.Slot != null)
+						SyncClientToPlayerReference(client, Map.Players.Players[client.Slot]);
+					else
+						client.Color = HSLColor.FromRGB(255, 255, 255);
+
 					// Promote connection to a valid client
 					PreConns.Remove(newConn);
 					Conns.Add(newConn);

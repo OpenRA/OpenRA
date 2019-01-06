@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IExplodeModifier, IStoreResources, ISync, INotifyKilled
+	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled
 	{
 		readonly StoresResourcesInfo info;
 		PlayerResources player;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			player = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			var resources = Stored;
 			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
@@ -69,7 +70,5 @@ namespace OpenRA.Mods.Common.Traits
 				player.Resources * info.PipCount > i * player.ResourceCapacity
 				? info.PipColor : PipType.Transparent);
 		}
-
-		bool IExplodeModifier.ShouldExplode(Actor self) { return Stored > 0; }
 	}
 }

@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -18,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("This structure can be infiltrated causing funds to be stolen.")]
+	[Desc("Funds are transferred from the owner to the infiltrator.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
 		public readonly BitSet<TargetableType> Types;
@@ -33,6 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Maximum amount of funds which will be stolen.")]
 		public readonly int Maximum = int.MaxValue;
 
+		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when they get robbed.")]
 		public readonly string Notification = null;
 

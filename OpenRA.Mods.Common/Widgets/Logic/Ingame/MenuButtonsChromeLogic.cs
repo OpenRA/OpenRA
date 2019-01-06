@@ -18,12 +18,14 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[ChromeLogicArgsHotkeys("StatisticsBasicKey", "StatisticsEconomyKey", "StatisticsProductionKey", "StatisticsCombatKey", "StatisticsGraphKey")]
+	[ChromeLogicArgsHotkeys("StatisticsBasicKey", "StatisticsEconomyKey", "StatisticsProductionKey", "StatisticsCombatKey", "StatisticsGraphKey", "StatisticsArmyGraphKey")]
 	public class MenuButtonsChromeLogic : ChromeLogic
 	{
 		readonly World world;
 		readonly Widget worldRoot;
 		readonly Widget menuRoot;
+		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
+
 		bool disableSystemButtons;
 		Widget currentWidget;
 
@@ -107,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							if (statsHotkeys[i].IsActivatedBy(e))
 							{
-								Game.Sound.PlayNotification(modData.DefaultRules, null, "Sounds", "ClickSound", null);
+								Game.Sound.PlayNotification(modData.DefaultRules, null, "Sounds", clickSound, null);
 								OpenMenuPanel(stats, new WidgetArgs() { { "activePanel", i } });
 								return true;
 							}
@@ -117,6 +119,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return false;
 				});
 			}
+
+			if (logicArgs.TryGetValue("ClickSound", out yaml))
+				clickSound = yaml.Value;
 		}
 
 		void OpenMenuPanel(MenuButtonWidget button, WidgetArgs widgetArgs = null)

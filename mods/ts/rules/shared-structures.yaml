@@ -28,11 +28,12 @@ GACNST:
 		Value: 2500
 	BaseBuilding:
 	Transforms:
+		RequiresCondition: factundeploy && !build-incomplete
+		PauseOnCondition: being-demolished
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
 		DeployCursor: undeploy
-		RequiresCondition: factundeploy
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -41,12 +42,16 @@ GACNST:
 	ProductionBar@Defense:
 		ProductionType: Defense
 	WithIdleOverlay@TOP:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-top
 	WithIdleOverlay@SIDE:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-side
 	WithIdleOverlay@FRONT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-front
 	WithBuildingPlacedOverlay:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
 	Selectable:
@@ -98,13 +103,17 @@ PROC:
 		SpawnOffset: 2,1
 		Facing: 160
 	WithIdleOverlay@REDLIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-redlights
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	WithDockedOverlay@FLAME:
+		RequiresCondition: !build-incomplete
 		Sequence: flame
 		Palette: effect
 	WithDockingOverlay@UNLOAD:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
@@ -114,7 +123,10 @@ PROC:
 		FactionImages:
 			gdi: proc.gdi
 			nod: proc.nod
+	GrantConditionOnPlayerResources:
+		Condition: contains-tiberium
 	Explodes:
+		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 
 GASILO:
@@ -148,11 +160,13 @@ GASILO:
 		FactionImages:
 			gdi: gasilo.gdi
 			nod: gasilo.nod
+	WithResourceLevelOverlay@FILLSTAGE:
+		RequiresCondition: !build-incomplete
+		Sequence: stages
 	WithSpriteBody:
-	WithSiloAnimation:
-	WithIdleOverlay@UNDERLAY:
 		Sequence: idle-underlay
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	StoresResources:
 		PipColor: Green
@@ -161,7 +175,10 @@ GASILO:
 	Power:
 		Amount: -10
 	SelectionDecorations:
+	GrantConditionOnPlayerResources:
+		Condition: contains-tiberium
 	Explodes:
+		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 
 ANYPOWER:

@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Armament : PausableConditionalTrait<ArmamentInfo>, ITick, IExplodeModifier
+	public class Armament : PausableConditionalTrait<ArmamentInfo>, ITick
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
@@ -275,8 +275,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void FireBarrel(Actor self, IFacing facing, Target target, Barrel barrel)
 		{
+			foreach (var na in notifyAttacks)
+				na.PreparingAttack(self, target, this, barrel);
+
 			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
+			Func<int> legacyMuzzleFacing = () => MuzzleOrientation(self, barrel).Yaw.Angle / 4;
 
 			var passiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition());
 			var initialOffset = Weapon.FirstBurstTargetOffset;
@@ -299,6 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Weapon = Weapon,
 				Facing = legacyFacing,
+				CurrentMuzzleFacing = legacyMuzzleFacing,
 
 				DamageModifiers = damageModifiers.ToArray(),
 
@@ -312,9 +317,6 @@ namespace OpenRA.Mods.Common.Traits
 				PassiveTarget = passiveTarget,
 				GuidedTarget = target
 			};
-
-			foreach (var na in notifyAttacks)
-				na.PreparingAttack(self, target, this, barrel);
 
 			ScheduleDelayedAction(Info.FireDelay, () =>
 			{
@@ -367,8 +369,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public virtual bool IsReloading { get { return FireDelay > 0 || IsTraitDisabled; } }
-		public virtual bool AllowExplode { get { return !IsReloading; } }
-		bool IExplodeModifier.ShouldExplode(Actor self) { return AllowExplode; }
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{

@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to use when repairing is denied.")]
 		public readonly string TargetBlockedCursor = "goldwrench-blocked";
 
+		[NotificationReference("Speech")]
 		[Desc("Speech notification to play when a bridge is repaired.")]
 		public readonly string RepairNotification = null;
 

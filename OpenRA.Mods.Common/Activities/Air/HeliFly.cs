@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
-		bool playedSound;
+		bool soundPlayed;
 
 		public HeliFly(Actor self, Target t)
 		{
@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
-			if (!playedSound && aircraft.Info.TakeoffSound != null && self.IsAtGroundLevel())
+			if (!soundPlayed && aircraft.Info.TakeoffSounds.Length > 0 && self.IsAtGroundLevel())
 			{
-				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSound);
-				playedSound = true;
+				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
+				soundPlayed = true;
 			}
 
 			if (AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))

@@ -20,6 +20,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target target;
 		readonly Aircraft aircraft;
 
+		bool soundPlayed;
+
 		public Land(Actor self, Target t)
 		{
 			target = t;
@@ -33,6 +35,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (IsCanceled)
 				return NextActivity;
+
+			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
+			{
+				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
+				soundPlayed = true;
+			}
 
 			var d = target.CenterPosition - self.CenterPosition;
 

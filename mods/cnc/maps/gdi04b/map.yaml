@@ -499,7 +499,7 @@ Actors:
 		Location: 14,13
 		Owner: Neutral
 	HeliEntry: waypoint
-		Location: 4,26
+		Location: 5,26
 		Owner: Neutral
 	GDIHeliLZ: waypoint
 		Location: 8,14

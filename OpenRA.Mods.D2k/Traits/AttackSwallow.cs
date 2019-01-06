@@ -11,6 +11,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Activities;
 using OpenRA.Traits;
@@ -32,6 +34,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public readonly string WormAttackSound = "WORM.WAV";
 
+		[NotificationReference("Speech")]
 		public readonly string WormAttackNotification = "WormAttack";
 
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.Self, this); }
@@ -65,6 +68,23 @@ namespace OpenRA.Mods.D2k.Traits
 
 			self.CancelActivity();
 			self.QueueActivity(new SwallowActor(self, target, a, facing));
+		}
+
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		{
+			return new SwallowTarget(self, newTarget, allowMove, forceAttack);
+		}
+
+		public class SwallowTarget : Attack
+		{
+			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack)
+				: base(self, target, allowMovement, forceAttack) { }
+
+			protected override Target RecalculateTarget(Actor self)
+			{
+				// Worms ignore visibility, so don't need to recalculate targets
+				return target;
+			}
 		}
 	}
 }

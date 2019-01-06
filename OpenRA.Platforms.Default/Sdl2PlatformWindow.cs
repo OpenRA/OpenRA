@@ -113,6 +113,31 @@ namespace OpenRA.Platforms.Default
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED, SDL.SDL_WINDOWPOS_CENTERED,
 					windowSize.Width, windowSize.Height, windowFlags);
 
+				// Work around an issue in macOS's GL backend where the window remains permanently black
+				// (if dark mode is enabled) unless we drain the event queue before initializing GL
+				if (Platform.CurrentPlatform == PlatformType.OSX)
+				{
+					SDL.SDL_Event e;
+					while (SDL.SDL_PollEvent(out e) != 0)
+					{
+						// We can safely ignore all mouse/keyboard events and window size changes
+						// (these will be caught in the window setup below), but do need to process focus
+						if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
+						{
+							switch (e.window.windowEvent)
+							{
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
+									Game.HasInputFocus = false;
+									break;
+
+								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
+									Game.HasInputFocus = true;
+									break;
+							}
+						}
+					}
+				}
+
 				surfaceSize = windowSize;
 				windowScale = 1;
 
@@ -189,7 +214,7 @@ namespace OpenRA.Platforms.Default
 			// If the calling thread is the main game thread, this means it can run more logic and render ticks.
 			// This is disabled on Windows because it breaks the ability to minimize/restore the window from the taskbar for reasons that we dont understand.
 			var threadedRenderer = Platform.CurrentPlatform != PlatformType.Windows || !Game.Settings.Graphics.DisableWindowsRenderThread;
-			if (threadedRenderer)
+			if (!threadedRenderer)
 			{
 				var ctx = new Sdl2GraphicsContext(this);
 				ctx.InitializeOpenGL();

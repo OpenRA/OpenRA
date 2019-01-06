@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
 			dotStates = new PlayerDictionary<DotState>(actor.World,
-				p => new DotState(actor, p.PlayerActor.Trait<GpsWatcher>(), p.PlayerActor.TraitOrDefault<FrozenActorLayer>()));
+				p => new DotState(actor, p.PlayerActor.Trait<GpsWatcher>(), p.FrozenActorLayer));
 		}
 
 		bool ShouldRender(DotState state, Player toPlayer)

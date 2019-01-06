@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SquadSize = 1;
 		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when entering the drop zone.")]
 		public readonly string ReinforcementsArrivedSpeechNotification = null;
 
@@ -57,7 +58,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ParatroopersPower : SupportPower
 	{
-		public ParatroopersPower(Actor self, ParatroopersPowerInfo info) : base(self, info) { }
+		readonly ParatroopersPowerInfo info;
+
+		public ParatroopersPower(Actor self, ParatroopersPowerInfo info)
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
@@ -106,14 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 					});
 				}
 
-				if (beacon != null)
-				{
-					self.World.AddFrameEndTask(w =>
-					{
-						w.Remove(beacon);
-						beacon = null;
-					});
-				}
+				RemoveBeacon(beacon);
 
 				if (!aircraftInRange.Any(kv => kv.Value))
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
@@ -128,23 +128,18 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Remove the camera when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
+					RemoveCamera(camera);
+			};
+
+			Action<Actor> onRemovedFromWorld = a =>
+			{
+				// Checking for attack range is not relevant here because
+				// aircraft may be shot down before entering. Thus we remove
+				// the camera and beacon only if the whole squad is dead.
+				if (aircraftInRange.All(kv => kv.Key.IsDead))
 				{
-					if (camera != null)
-					{
-						camera.QueueActivity(new Wait(info.CameraRemoveDelay));
-						camera.QueueActivity(new RemoveSelf());
-					}
-
-					camera = null;
-
-					if (beacon != null)
-					{
-						self.World.AddFrameEndTask(w =>
-						{
-							w.Remove(beacon);
-							beacon = null;
-						});
-					}
+					RemoveCamera(camera);
+					RemoveBeacon(beacon);
 				}
 			};
 
@@ -186,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 					drop.SetLZ(w.Map.CellContaining(target + targetOffset), !info.AllowImpassableCells);
 					drop.OnEnteredDropRange += onEnterRange;
 					drop.OnExitedDropRange += onExitRange;
-					drop.OnRemovedFromWorld += onExitRange;
+					drop.OnRemovedFromWorld += onRemovedFromWorld;
 
 					var cargo = a.Trait<Cargo>();
 					var passengers = units.Skip(added).Take(passengersPerPlane);
@@ -225,6 +220,28 @@ namespace OpenRA.Mods.Common.Traits
 			});
 
 			return units.ToArray();
+		}
+
+		void RemoveCamera(Actor camera)
+		{
+			if (camera == null)
+				return;
+
+			camera.QueueActivity(new Wait(info.CameraRemoveDelay));
+			camera.QueueActivity(new RemoveSelf());
+			camera = null;
+		}
+
+		void RemoveBeacon(Beacon beacon)
+		{
+			if (beacon == null)
+				return;
+
+			Self.World.AddFrameEndTask(w =>
+			{
+				w.Remove(beacon);
+				beacon = null;
+			});
 		}
 	}
 }

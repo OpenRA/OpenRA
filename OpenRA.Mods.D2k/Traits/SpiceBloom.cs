@@ -11,14 +11,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -137,6 +134,7 @@ namespace OpenRA.Mods.D2k.Traits
 				{
 					Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()],
 					Facing = 0,
+					CurrentMuzzleFacing = () => 0,
 
 					DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 						.Select(a => a.GetFirepowerModifier()).ToArray(),

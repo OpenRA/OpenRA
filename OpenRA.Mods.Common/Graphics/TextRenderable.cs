@@ -39,9 +39,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public TextRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text)
 			: this(font, pos, zOffset, color,
-			       ChromeMetrics.Get<Color>("TextContrastColorDark"),
-			       ChromeMetrics.Get<Color>("TextContrastColorLight"),
-			       text) { }
+				ChromeMetrics.Get<Color>("TextContrastColorDark"),
+				ChromeMetrics.Get<Color>("TextContrastColorLight"),
+				text) { }
 
 		public WPos Pos { get { return pos; } }
 		public PaletteReference Palette { get { return null; } }

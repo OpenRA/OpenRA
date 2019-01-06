@@ -1,0 +1,62 @@
+World:
+	LuaScript:
+		Scripts: nod10a.lua
+	MissionData:
+		Briefing: GDI is developing an orbital weapon. Our spies have told us of a large lake near the location of the R&D center.\n\nFind the base, and use the sniper to eliminate their scientist.
+		BackgroundVideo: kanepre.vqa
+		LossVideo: nodlose.vqa
+		BriefingVideo: nod10a.vqa
+	SmudgeLayer@SCORCH:
+		InitialSmudges:
+			59,55: sc4,0
+			43,53: sc3,0
+			8,22: sc1,0
+			8,19: sc1,0
+			8,16: sc1,0
+			7,16: sc1,0
+			3,14: sc5,0
+			30,5: sc1,0
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			7,15: cr1,0
+			35,5: cr1,0
+			51,4: cr1,0
+			41,3: cr1,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+	-LegacyBridgeLayer:
+
+^CivBuilding:
+	AnnounceOnSeen:
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+RMBO.easy:
+	Inherits: RMBO
+	Health:
+		HP: 30000
+	SelfHealing:
+		Step: 500
+		Delay: 10
+		HealIfBelow: 50
+		DamageCooldown: 200
+	RenderSprites:
+		Image: RMBO
+
+RMBO.hard:
+	Inherits: RMBO
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
+	-AttackMove:
+	RenderSprites:
+		Image: RMBO

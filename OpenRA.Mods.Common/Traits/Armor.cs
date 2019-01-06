@@ -11,6 +11,9 @@
 
 namespace OpenRA.Mods.Common.Traits
 {
+	// Type tag for armor type bits
+	public class ArmorType { }
+
 	[Desc("Used to define weapon efficiency modifiers with different percentages per Type.")]
 	public class ArmorInfo : ConditionalTraitInfo
 	{

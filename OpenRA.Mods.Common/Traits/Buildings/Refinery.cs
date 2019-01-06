@@ -16,6 +16,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, IAcceptResources, INotifySold, INotifyCapture, INotifyOwnerChanged, IExplodeModifier, ISync, INotifyActorDisposing
+	public class Refinery : ITick, IAcceptResources, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyActorDisposing
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
@@ -60,7 +61,6 @@ namespace OpenRA.Mods.Common.Traits
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
 
-		[Sync] public int Ore = 0;
 		[Sync] Actor dockedHarv = null;
 		[Sync] bool preventDock = false;
 
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			// Steal any docked harv too
 			if (dockedHarv != null)
@@ -185,7 +185,5 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
-
-		public bool ShouldExplode(Actor self) { return Ore > 0; }
 	}
 }

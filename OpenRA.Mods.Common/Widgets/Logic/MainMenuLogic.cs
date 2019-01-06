@@ -122,7 +122,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			missionsButton.Disabled = !hasCampaign && !hasMissions;
 
-			singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON").OnClick = StartSkirmishGame;
+			var hasMaps = modData.MapCache.Any(p => p.Visibility.HasFlag(MapVisibility.Lobby));
+			var skirmishButton = singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON");
+			skirmishButton.OnClick = StartSkirmishGame;
+			skirmishButton.Disabled = !hasMaps;
 
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
@@ -199,6 +202,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },
 				});
 			};
+
+			loadMapButton.Disabled = !hasMaps;
 
 			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 

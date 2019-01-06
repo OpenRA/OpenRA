@@ -4,6 +4,8 @@ TRAN:
 		Cost: 750
 	Tooltip:
 		Name: Chinook Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
@@ -13,7 +15,6 @@ TRAN:
 		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 150
-		InitialFacing: 224
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
 		AltitudeVelocity: 0c100
 	Health:
@@ -57,13 +58,14 @@ HELI:
 		Cost: 1200
 	Tooltip:
 		Name: Apache Longbow
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
 	Aircraft:
-		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 180
 	Health:
@@ -86,7 +88,7 @@ HELI:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 4
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 10
@@ -118,13 +120,14 @@ ORCA:
 		Cost: 1200
 	Tooltip:
 		Name: Orca
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Aircraft:
-		InitialFacing: 224
 		TurnSpeed: 7
 		Speed: 186
 	Health:
@@ -144,7 +147,7 @@ ORCA:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 5
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 	AmmoPool:
 		Ammo: 6
@@ -193,8 +196,7 @@ C17:
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
-	Buildable:
-		Description: Drops vehicle reinforcements on Airstrips
+	-MapEditorData:
 
 A10:
 	Inherits: ^Plane
@@ -224,8 +226,7 @@ A10:
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
-	Buildable:
-		Description: Used to deliver air strikes.
+	-MapEditorData:
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk

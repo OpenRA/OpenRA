@@ -46,7 +46,17 @@ namespace OpenRA.Traits
 		public DamageState DamageState { get; private set; }
 		readonly IHealth health;
 
+		// The Visible flag is tied directly to the actor visibility under the fog.
+		// If Visible is true, the actor is made invisible (via FrozenUnderFog/IDefaultVisibility)
+		// and this FrozenActor is rendered instead.
+		// The Hidden flag covers the edge case that occurs when the backing actor was last "seen"
+		// to be cloaked or otherwise not CanBeViewedByPlayer()ed. Setting Visible to true when
+		// the actor is hidden under the fog would leak the actors position via the tooltips and
+		// AutoTargetability, and keeping Visible as false would cause the actor to be rendered
+		// under the fog.
 		public bool Visible = true;
+		public bool Hidden = false;
+
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
@@ -101,6 +111,7 @@ namespace OpenRA.Traits
 		{
 			Owner = actor.Owner;
 			TargetTypes = actor.GetEnabledTargetTypes();
+			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
 			if (health != null)
 			{
@@ -143,6 +154,11 @@ namespace OpenRA.Traits
 			}
 
 			NeedRenderables |= Visible && !wasVisible;
+		}
+
+		public void Invalidate()
+		{
+			Owner = null;
 		}
 
 		public void Flash()
@@ -323,11 +339,28 @@ namespace OpenRA.Traits
 			return fa;
 		}
 
-		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region)
+		public IEnumerable<FrozenActor> FrozenActorsInRegion(CellRegion region, bool onlyVisible = true)
 		{
 			var tl = region.TopLeft;
 			var br = region.BottomRight;
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y)).Select(FromID);
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
+				.Select(FromID)
+				.Where(fa => fa.IsValid && (!onlyVisible || fa.Visible));
+		}
+
+		public IEnumerable<FrozenActor> FrozenActorsInCircle(World world, WPos origin, WDist r, bool onlyVisible = true)
+		{
+			var centerCell = world.Map.CellContaining(origin);
+			var cellRange = (r.Length + 1023) / 1024;
+			var tl = centerCell - new CVec(cellRange, cellRange);
+			var br = centerCell + new CVec(cellRange, cellRange);
+
+			// Target ranges are calculated in 2D, so ignore height differences
+			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
+				.Select(FromID)
+				.Where(fa => fa.IsValid &&
+					(!onlyVisible || fa.Visible) &&
+					(fa.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);
 		}
 	}
 }

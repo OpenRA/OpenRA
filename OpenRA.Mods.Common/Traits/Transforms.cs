@@ -34,9 +34,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sounds to play when the transformation is blocked.")]
 		public readonly string[] NoTransformSounds = { };
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when transforming.")]
 		public readonly string TransformNotification = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when the transformation is blocked.")]
 		public readonly string NoTransformNotification = null;
 
@@ -77,10 +79,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitPaused || IsTraitDisabled)
 				return false;
 
-			var building = self.TraitOrDefault<Building>();
-			if (building != null && building.Locked)
-				return false;
-
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
@@ -102,9 +100,9 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			return new Order("DeployTransform", self, false);
+			return new Order("DeployTransform", self, queued);
 		}
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitPaused && !IsTraitDisabled; }

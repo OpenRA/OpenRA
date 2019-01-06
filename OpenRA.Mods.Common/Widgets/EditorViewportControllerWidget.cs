@@ -21,9 +21,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate;
+		public readonly EditorDefaultBrush DefaultBrush;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
-		readonly EditorDefaultBrush defaultBrush;
 		readonly WorldRenderer worldRenderer;
 
 		bool enableTooltips;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-			CurrentBrush = defaultBrush = new EditorDefaultBrush(this, worldRenderer);
+			CurrentBrush = DefaultBrush = new EditorDefaultBrush(this, worldRenderer);
 		}
 
 		public void ClearBrush() { SetBrush(null); }
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (CurrentBrush != null)
 				CurrentBrush.Dispose();
 
-			CurrentBrush = brush ?? defaultBrush;
+			CurrentBrush = brush ?? DefaultBrush;
 		}
 
 		public override void MouseEntered()

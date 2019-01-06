@@ -13,21 +13,33 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can capture other actors which have the Capturable: trait.")]
-	public class CapturesInfo : ConditionalTraitInfo
+	public class CapturesInfo : ConditionalTraitInfo, Requires<CaptureManagerInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
-		public readonly HashSet<string> CaptureTypes = new HashSet<string> { "building" };
+		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
 
-		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
-		public readonly bool Sabotage = true;
+		[Desc("Targets with health above this percentage will be sabotaged instead of captured.",
+			"Set to 0 to disable sabotaging.")]
+		public readonly int SabotageThreshold = 0;
 
-		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
+		[Desc("Sabotage damage expressed as a percentage of maximum target health.")]
 		public readonly int SabotageHPRemoval = 50;
+
+		[Desc("Damage types that applied with the sabotage damage.")]
+		public readonly BitSet<DamageType> SabotageDamageTypes = default(BitSet<DamageType>);
+
+		[Desc("Delay (in ticks) that to wait next to the target before initiating the capture.")]
+		public readonly int CaptureDelay = 0;
+
+		[Desc("Enter the target actor and be consumed by the capture.")]
+		public readonly bool ConsumedByCapture = true;
 
 		[Desc("Experience granted to the capturing player.")]
 		public readonly int PlayerExperience = 0;
@@ -41,13 +53,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public override object Create(ActorInitializer init) { return new Captures(this); }
+		public override object Create(ActorInitializer init) { return new Captures(init.Self, this); }
 	}
 
 	public class Captures : ConditionalTrait<CapturesInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public Captures(CapturesInfo info)
-			: base(info) { }
+		readonly CaptureManager captureManager;
+
+		public Captures(Actor self, CapturesInfo info)
+			: base(info)
+		{
+			captureManager = self.Trait<CaptureManager>();
+		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -56,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					yield break;
 
-				yield return new CaptureOrderTargeter(Info);
+				yield return new CaptureOrderTargeter(this);
 			}
 		}
 
@@ -89,54 +106,59 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(new CaptureActor(self, target.Actor));
 		}
 
+		protected override void TraitEnabled(Actor self) { captureManager.RefreshCaptures(self); }
+		protected override void TraitDisabled(Actor self) { captureManager.RefreshCaptures(self); }
+
 		class CaptureOrderTargeter : UnitOrderTargeter
 		{
-			readonly CapturesInfo capturesInfo;
+			readonly Captures captures;
 
-			public CaptureOrderTargeter(CapturesInfo info)
-				: base("CaptureActor", 6, info.EnterCursor, true, true)
+			public CaptureOrderTargeter(Captures captures)
+				: base("CaptureActor", 6, captures.Info.EnterCursor, true, true)
 			{
-				capturesInfo = info;
+				this.captures = captures;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var c = target.TraitOrDefault<Capturable>();
-				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
+				var captureManager = target.TraitOrDefault<CaptureManager>();
+				if (captureManager == null || !captureManager.CanBeTargetedBy(target, self, captures))
 				{
-					cursor = capturesInfo.EnterBlockedCursor;
+					cursor = captures.Info.EnterBlockedCursor;
 					return false;
 				}
 
-				var health = target.Trait<Health>();
+				cursor = captures.Info.EnterCursor;
+				if (captures.Info.SabotageThreshold > 0 && !target.Owner.NonCombatant)
+				{
+					var health = target.Trait<IHealth>();
 
-				// Cast to long to avoid overflow when multiplying by the health
-				var lowEnoughHealth = health.HP <= (int)(c.Info.CaptureThreshold * (long)health.MaxHP / 100);
-
-				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
-					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
+					// Sabotage instead of capture
+					if ((long)health.HP * 100 > captures.Info.SabotageThreshold * (long)health.MaxHP)
+						cursor = captures.Info.SabotageCursor;
+				}
 
 				return true;
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				// TODO: This doesn't account for disabled traits.
-				// Actors with FrozenUnderFog should not disable the Capturable trait.
-				var c = target.Info.TraitInfoOrDefault<CapturableInfo>();
-				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
+				var captureManagerInfo = target.Info.TraitInfoOrDefault<CaptureManagerInfo>();
+				if (captureManagerInfo == null || !captureManagerInfo.CanBeTargetedBy(target, self, captures))
 				{
-					cursor = capturesInfo.EnterCursor;
+					cursor = captures.Info.EnterBlockedCursor;
 					return false;
 				}
 
-				var health = target.Info.TraitInfoOrDefault<HealthInfo>();
+				cursor = captures.Info.EnterCursor;
+				if (captures.Info.SabotageThreshold > 0 && !target.Owner.NonCombatant)
+				{
+					var healthInfo = target.Info.TraitInfoOrDefault<IHealthInfo>();
 
-				// Cast to long to avoid overflow when multiplying by the health
-				var lowEnoughHealth = target.HP <= (int)(c.CaptureThreshold * (long)health.HP / 100);
-
-				cursor = !capturesInfo.Sabotage || lowEnoughHealth || target.Owner.NonCombatant
-					? capturesInfo.EnterCursor : capturesInfo.SabotageCursor;
+					// Sabotage instead of capture
+					if ((long)target.HP * 100 > captures.Info.SabotageThreshold * (long)healthInfo.MaxHP)
+						cursor = captures.Info.SabotageCursor;
+				}
 
 				return true;
 			}

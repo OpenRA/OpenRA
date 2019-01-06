@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		[Translate] public readonly string ReadyText = "";
 		[Translate] public readonly string HoldText = "";
+		[Translate] public readonly string InfiniteSymbol = "\u221E";
 
 		public int DisplayedIconCount { get; private set; }
 		public int TotalIconCount { get; private set; }
@@ -102,8 +103,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly WorldRenderer worldRenderer;
 
-		SpriteFont overlayFont;
-		float2 holdOffset, readyOffset, timeOffset, queuedOffset;
+		SpriteFont overlayFont, symbolFont;
+		float2 holdOffset, readyOffset, timeOffset, queuedOffset, infiniteOffset;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -141,6 +142,9 @@ namespace OpenRA.Mods.Common.Widgets
 			cantBuild = new Animation(world, NotBuildableAnimation);
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			clock = new Animation(world, ClockAnimation);
+
+			overlayFont = Game.Renderer.Fonts["TinyBold"];
+			Game.Renderer.Fonts.TryGetValue("Symbols", out symbolFont);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -259,7 +263,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, int handleCount)
+		bool HandleLeftClick(ProductionItem item, ProductionIcon icon, int handleCount, Modifiers modifiers)
 		{
 			if (PickUpCompletedBuildingIcon(icon, item))
 			{
@@ -283,11 +287,14 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Sound.Play(SoundType.UI, TabClick);
 				string notification;
 				var canQueue = CurrentQueue.CanQueue(buildable, out notification);
-				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);
+
+				if (!CurrentQueue.AllQueued().Any(qi => qi.Item == icon.Name && !qi.Paused && qi.Infinite))
+					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);
 
 				if (canQueue)
 				{
-					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount));
+					var queued = !modifiers.HasModifier(Modifiers.Ctrl);
+					World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, handleCount, queued));
 					return true;
 				}
 			}
@@ -334,9 +341,11 @@ namespace OpenRA.Mods.Common.Widgets
 		bool HandleEvent(ProductionIcon icon, MouseButton btn, Modifiers modifiers)
 		{
 			var startCount = modifiers.HasModifier(Modifiers.Shift) ? 5 : 1;
-			var cancelCount = modifiers.HasModifier(Modifiers.Ctrl) ? CurrentQueue.QueueLength : startCount;
+
+			// PERF: avoid an unnecessary enumeration by casting back to its known type
+			var cancelCount = modifiers.HasModifier(Modifiers.Ctrl) ? ((List<ProductionItem>)CurrentQueue.AllQueued()).Count : startCount;
 			var item = icon.Queued.FirstOrDefault();
-			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount)
+			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount, modifiers)
 				: btn == MouseButton.Right ? HandleRightClick(item, icon, cancelCount)
 				: btn == MouseButton.Middle ? HandleMiddleClick(item, icon, cancelCount)
 				: false;
@@ -420,11 +429,15 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 
-			overlayFont = Game.Renderer.Fonts["TinyBold"];
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
 			queuedOffset = new float2(4, 2);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+
+			if (ChromeMetrics.TryGet("InfiniteOffset", out infiniteOffset))
+				infiniteOffset += queuedOffset;
+			else
+				infiniteOffset = queuedOffset;
 
 			if (CurrentQueue == null)
 				return;
@@ -465,7 +478,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (total > 0)
 				{
 					var first = icon.Queued[0];
-					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
+					var waiting = !CurrentQueue.IsProducing(first) && !first.Done;
 					if (first.Done)
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
@@ -478,11 +491,15 @@ namespace OpenRA.Mods.Common.Widgets
 							icon.Pos + holdOffset,
 							Color.White, Color.Black, 1);
 					else if (!waiting && DrawTime)
-						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.RemainingTimeActual, World.Timestep),
+						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.Queue.RemainingTimeActual(first), World.Timestep),
 							icon.Pos + timeOffset,
 							Color.White, Color.Black, 1);
 
-					if (total > 1 || waiting)
+					if (first.Infinite)
+						symbolFont.DrawTextWithContrast(InfiniteSymbol,
+							icon.Pos + infiniteOffset,
+							Color.White, Color.Black, 1);
+					else if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
 							icon.Pos + queuedOffset,
 							Color.White, Color.Black, 1);

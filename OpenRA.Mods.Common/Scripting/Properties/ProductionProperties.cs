@@ -24,12 +24,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Production")]
 	public class ProductionProperties : ScriptActorProperties, Requires<ProductionInfo>
 	{
-		readonly Production p;
+		readonly Production[] productionTraits;
 
 		public ProductionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			p = self.Trait<Production>();
+			productionTraits = self.TraitsImplementing<Production>().ToArray();
 		}
 
 		[ScriptActorPropertyActivity]
@@ -41,14 +41,27 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Self.World.Map.Rules.Actors.TryGetValue(actorType, out actorInfo))
 				throw new LuaException("Unknown actor type '{0}'".F(actorType));
 
-			var faction = factionVariant ?? BuildableInfo.GetInitialFaction(actorInfo, p.Faction);
-			var inits = new TypeDictionary
+			Self.QueueActivity(new WaitFor(() =>
 			{
-				new OwnerInit(Self.Owner),
-				new FactionInit(faction)
-			};
+				// Go through all available traits and see which one successfully produces
+				foreach (var p in productionTraits)
+				{
+					if (!string.IsNullOrEmpty(productionType) && !p.Info.Produces.Contains(productionType))
+						continue;
 
-			Self.QueueActivity(new WaitFor(() => p.Produce(Self, actorInfo, productionType, inits)));
+					var inits = new TypeDictionary
+					{
+						new OwnerInit(Self.Owner),
+						new FactionInit(factionVariant ?? BuildableInfo.GetInitialFaction(actorInfo, p.Faction))
+					};
+
+					if (p.Produce(Self, actorInfo, productionType, inits))
+						return true;
+				}
+
+				// We didn't produce anything, wait until we do
+				return false;
+			}));
 		}
 	}
 
@@ -114,7 +127,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 
 			var queue = queues.Where(q => actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
-				.FirstOrDefault(q => q.CurrentItem() == null);
+				.FirstOrDefault(q => !q.AllQueued().Any());
 
 			if (queue == null)
 				return false;
@@ -163,7 +176,7 @@ namespace OpenRA.Mods.Common.Scripting
 				return true;
 
 			return queues.Where(q => GetBuildableInfo(actorType).Queue.Contains(q.Info.Type))
-				.Any(q => q.CurrentItem() != null);
+				.Any(q => q.AllQueued().Any());
 		}
 
 		BuildableInfo GetBuildableInfo(string actorType)
@@ -225,7 +238,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (queueTypes.Any(t => !queues.ContainsKey(t) || productionHandlers.ContainsKey(t)))
 				return false;
 
-			if (queueTypes.Any(t => queues[t].CurrentItem() != null))
+			if (queueTypes.Any(t => queues[t].AllQueued().Any()))
 				return false;
 
 			if (actionFunc != null)
@@ -270,7 +283,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!queues.ContainsKey(queue))
 				return true;
 
-			return productionHandlers.ContainsKey(queue) || queues[queue].CurrentItem() != null;
+			return productionHandlers.ContainsKey(queue) || queues[queue].AllQueued().Any();
 		}
 
 		BuildableInfo GetBuildableInfo(string actorType)

@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
-using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -23,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum DamageSource { Self, Killer }
 
 	[Desc("This actor explodes when killed.")]
-	public class ExplodesInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	public class ExplodesInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[WeaponReference, FieldLoader.Require, Desc("Default weapon to use for explosion if ammo/payload is loaded.")]
 		public readonly string Weapon = null;
@@ -81,13 +79,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage, INotifyCreated
 	{
-		readonly Health health;
+		readonly IHealth health;
 		BuildingInfo buildingInfo;
 
 		public Explodes(ExplodesInfo info, Actor self)
 			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -129,7 +127,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
 		{
-			var shouldExplode = self.TraitsImplementing<IExplodeModifier>().All(a => a.ShouldExplode(self));
+			var armaments = self.TraitsImplementing<Armament>();
+			if (!armaments.Any())
+				return Info.WeaponInfo;
+
+			// TODO: EmptyWeapon should be removed in favour of conditions
+			var shouldExplode = !armaments.All(a => a.IsReloading);
 			var useFullExplosion = self.World.SharedRandom.Next(100) <= Info.LoadedChance;
 			return (shouldExplode && useFullExplosion) ? Info.WeaponInfo : Info.EmptyWeaponInfo;
 		}

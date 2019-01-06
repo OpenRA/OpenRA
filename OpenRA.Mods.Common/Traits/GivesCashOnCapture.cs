@@ -9,11 +9,8 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -30,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Amount = 0;
 
 		[Desc("Award cash only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
-		public readonly HashSet<string> CaptureTypes = new HashSet<string>();
+		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
 
 		public override object Create(ActorInitializer init) { return new GivesCashOnCapture(this); }
 	}
@@ -45,36 +42,21 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
-			if (IsTraitDisabled || !IsValidCaptor(captor))
+			if (IsTraitDisabled)
+				return;
+
+			if (!info.CaptureTypes.IsEmpty && !info.CaptureTypes.Overlaps(captureTypes))
 				return;
 
 			var resources = newOwner.PlayerActor.Trait<PlayerResources>();
-
 			var amount = resources.ChangeCash(info.Amount);
-
 			if (!info.ShowTicks && amount != 0)
 				return;
 
 			self.World.AddFrameEndTask(w => w.Add(
 				new FloatingText(self.CenterPosition, self.Owner.Color.RGB, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
-		}
-
-		bool IsValidCaptor(Actor captor)
-		{
-			if (!info.CaptureTypes.Any())
-				return true;
-
-			var capturesInfo = captor.Info.TraitInfoOrDefault<CapturesInfo>();
-			if (capturesInfo != null && info.CaptureTypes.Overlaps(capturesInfo.CaptureTypes))
-				return true;
-
-			var externalCapturesInfo = captor.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
-			if (externalCapturesInfo != null && info.CaptureTypes.Overlaps(externalCapturesInfo.CaptureTypes))
-				return true;
-
-			return false;
 		}
 	}
 }

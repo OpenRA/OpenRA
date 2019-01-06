@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows this actor to be 'tagged' with arbitrary strings. Tags must be unique or they will be rejected.")]
-	public class ScriptTagsInfo : UsesInit<ScriptTagsInit>
+	public class ScriptTagsInfo : ITraitInfo
 	{
 		object ITraitInfo.Create(ActorInitializer init) { return new ScriptTags(init, this); }
 	}

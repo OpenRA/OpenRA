@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -80,7 +79,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!AffectsParent && victim == firedBy)
 					continue;
 
-				if (!victim.Info.HasTraitInfo<HealthInfo>())
+				if (!victim.Info.HasTraitInfo<IHealthInfo>())
 					continue;
 
 				// If the impact position is within any HitShape, we have a direct hit
@@ -119,7 +118,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (UsePlayerPalette)
 				palette += firedBy.Owner.InternalName;
 
-			var explosion = Explosions.RandomOrDefault(Game.CosmeticRandom);
+			var explosion = Explosions.RandomOrDefault(world.LocalRandom);
 			if (Image != null && explosion != null)
 			{
 				if (ForceDisplayAtGroundLevel)
@@ -131,8 +130,8 @@ namespace OpenRA.Mods.Common.Warheads
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
 			}
 
-			var impactSound = ImpactSounds.RandomOrDefault(Game.CosmeticRandom);
-			if (impactSound != null && Game.CosmeticRandom.Next(0, 100) < ImpactSoundChance)
+			var impactSound = ImpactSounds.RandomOrDefault(world.LocalRandom);
+			if (impactSound != null && world.LocalRandom.Next(0, 100) < ImpactSoundChance)
 				Game.Sound.Play(SoundType.World, impactSound, pos);
 		}
 

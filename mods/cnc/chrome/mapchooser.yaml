@@ -116,7 +116,7 @@ Container@MAPCHOOSER_PANEL:
 					Y: 539
 					Width: 140
 					Height: 35
-					Text: Cancel
+					Text: Back
 				Button@RANDOMMAP_BUTTON:
 					Key: space
 					X: PARENT_RIGHT - 150 - WIDTH

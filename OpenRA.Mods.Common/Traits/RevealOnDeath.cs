@@ -9,8 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -51,10 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo attack)
 		{
-			if (IsTraitDisabled)
-				return;
-
-			if (!self.IsInWorld)
+			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
 			if (!info.DeathTypes.IsEmpty && !attack.Damage.DamageTypes.Overlaps(info.DeathTypes))

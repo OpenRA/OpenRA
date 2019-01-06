@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -141,7 +140,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			source = args.CurrentSource();
 
 			if (hasLaunchEffect && ticks == 0)
-				world.AddFrameEndTask(w => w.Add(new LaunchEffect(world, args.CurrentSource, () => 0,
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(args.CurrentSource, args.CurrentMuzzleFacing, world,
 					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
 
 			// Beam tracks target

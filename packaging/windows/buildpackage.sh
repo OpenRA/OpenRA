@@ -5,12 +5,12 @@ command -v markdown >/dev/null 2>&1 || { echo >&2 "Windows packaging requires ma
 command -v makensis >/dev/null 2>&1 || { echo >&2 "Windows packaging requires makensis."; exit 1; }
 
 if [ $# -ne "2" ]; then
-	echo "Usage: `basename $0` tag outputdir"
+	echo "Usage: $(basename "$0") tag outputdir"
     exit 1
 fi
 
 # Set the working dir to the location of this script
-cd $(dirname $0)
+cd "$(dirname "$0")" || exit 1
 
 TAG="$1"
 OUTPUTDIR="$2"
@@ -32,17 +32,17 @@ function makelauncher()
 	sed "s|DISPLAY_NAME|$2|" WindowsLauncher.cs.in | sed "s|MOD_ID|$3|" | sed "s|FAQ_URL|${FAQ_URL}|" > WindowsLauncher.cs
 	mcs -sdk:4.5 WindowsLauncher.cs -warn:4 -codepage:utf8 -warnaserror -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
 	rm WindowsLauncher.cs
-	mono "${SRCDIR}/fixheader.exe" $1 > /dev/null
+	mono "${SRCDIR}/fixheader.exe" "$1" > /dev/null
 }
 
 echo "Building core files"
 
-pushd ${SRCDIR} > /dev/null
+pushd "${SRCDIR}" > /dev/null || exit 1
 make windows-dependencies
 make core SDK="-sdk:4.5"
 make version VERSION="${TAG}"
 make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"
-popd > /dev/null
+popd > /dev/null || exit 1
 
 echo "Compiling Windows launchers"
 makelauncher "${BUILTDIR}/RedAlert.exe" "Red Alert" "ra" RedAlert.ico

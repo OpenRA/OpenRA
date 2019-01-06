@@ -18,11 +18,28 @@ namespace OpenRA
 {
 	public struct CPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CPos>
 	{
-		public readonly int X, Y;
-		public readonly byte Layer;
+		// Coordinates are packed in a 32 bit signed int
+		// X and Y are 12 bits (signed): -2048...2047
+		// Layer is an unsigned byte
+		// Packing is XXXX XXXX XXXX YYYY YYYY YYYY LLLL LLLL
+		public readonly int Bits;
 
-		public CPos(int x, int y) { X = x; Y = y; Layer = 0; }
-		public CPos(int x, int y, byte layer) { X = x; Y = y; Layer = layer; }
+		// X is padded to MSB, so bit shift does the correct sign extension
+		public int X { get { return Bits >> 20; } }
+
+		// Align Y with a short, cast, then shift the rest of the way
+		// The signed short bit shift does the correct sign extension
+		public int Y { get { return ((short)(Bits >> 4)) >> 4; } }
+
+		public byte Layer { get { return (byte)Bits; } }
+
+		public CPos(int bits) { Bits = bits; }
+		public CPos(int x, int y) : this(x, y, 0) { }
+		public CPos(int x, int y, byte layer)
+		{
+			Bits = (x & 0xFFF) << 20 | (y & 0xFFF) << 8 | layer;
+		}
+
 		public static readonly CPos Zero = new CPos(0, 0, 0);
 
 		public static explicit operator CPos(int2 a) { return new CPos(a.X, a.Y); }
@@ -32,12 +49,12 @@ namespace OpenRA
 		public static CPos operator -(CPos a, CVec b) { return new CPos(a.X - b.X, a.Y - b.Y, a.Layer); }
 		public static CVec operator -(CPos a, CPos b) { return new CVec(a.X - b.X, a.Y - b.Y); }
 
-		public static bool operator ==(CPos me, CPos other) { return me.X == other.X && me.Y == other.Y && me.Layer == other.Layer; }
+		public static bool operator ==(CPos me, CPos other) { return me.Bits == other.Bits; }
 		public static bool operator !=(CPos me, CPos other) { return !(me == other); }
 
-		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Layer.GetHashCode(); }
+		public override int GetHashCode() { return Bits.GetHashCode(); }
 
-		public bool Equals(CPos other) { return X == other.X && Y == other.Y && Layer == other.Layer; }
+		public bool Equals(CPos other) { return Bits == other.Bits; }
 		public override bool Equals(object obj) { return obj is CPos && Equals((CPos)obj); }
 
 		public override string ToString() { return X + "," + Y; }

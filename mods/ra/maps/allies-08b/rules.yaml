@@ -1,0 +1,127 @@
+Player:
+	PlayerResources:
+		DefaultCash: 15000
+
+World:
+	LuaScript:
+		Scripts: allies08b.lua, allies08b-AI.lua
+	MissionData:
+		Briefing: Our latest technology, the Chronosphere, is housed in this research station. The timer represents the appointed time for the completion of a vital experiment. The Soviets have learned of this and are moving in. \n\nProtect the Chronosphere and the Advanced-Tech research center. Make sure the base is fully powered at the appointed time. If not, all will be lost!
+		BriefingVideo: ally8.vqa
+		WinVideo: crontest.vqa
+		LossVideo: cronfail.vqa
+		StartVideo: aagun.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: easy
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD.Ukraine:
+	-AirstrikePower@spyplane:
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+	GpsPower:
+		ChargeInterval: 15000
+	-Sellable:
+	WithMakeAnimation:
+		-Condition:
+	Demolishable:
+		-Condition:
+	CaptureManager:
+		-BeingCapturedCondition:
+
+PDOX:
+	Inherits@IDISABLE: ^DisableOnLowPower
+	Buildable:
+		Prerequisites: ~disabled
+	ChronoshiftPower@chronoshift:
+		Prerequisites: ~disabled
+	-Sellable:
+	WithMakeAnimation:
+		-Condition:
+	Demolishable:
+		-Condition:
+	CaptureManager:
+		-BeingCapturedCondition:
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled

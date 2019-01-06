@@ -63,8 +63,6 @@ NAPOST:
 		NodeTypes: laserfencenode
 		SegmentType: nafnce
 		SegmentsRequireNode: true
-	WithMakeAnimation:
-		Condition: make-animation-playing
 	Selectable:
 		Bounds: 42, 44, 0, -12
 	LineBuildNode:
@@ -74,13 +72,13 @@ NAPOST:
 	RevealsShroud:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: lights
 	WithIdleOverlay@CHAINOFLIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: chainoflights
 	LineBuildSegmentExternalCondition:
-		RequiresCondition: !disabled && !make-animation-playing
+		RequiresCondition: !build-incomplete && !disabled
 		Condition: active-posts
 
 NAFNCE:
@@ -93,6 +91,8 @@ NAFNCE:
 		Types: laserfence
 	-Crushable:
 	-Sellable:
+	Demolishable:
+		-Condition:
 	-Targetable:
 	-Building:
 	EnergyWall:
@@ -169,12 +169,14 @@ NALASR:
 		InitialFacing: 224
 		Offset: 298,-171,288
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable || disabled
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
 	RenderVoxels:
 	WithVoxelTurret:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
 	SelectionDecorations:
@@ -211,6 +213,7 @@ NAOBEL:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1980,297,1131
 	AttackCharges:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable || disabled
 		ChargeLevel: 65
 		ChargingCondition: charging
@@ -219,10 +222,11 @@ NAOBEL:
 		SoundFiles: obelpowr.aud
 		Interval: 30, 40
 	WithChargeOverlay:
+		RequiresCondition: !build-incomplete
 		Palette: player
 		IsPlayerPalette: true
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
@@ -256,8 +260,10 @@ NASAM:
 		TurnSpeed: 10
 		InitialFacing: 224
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable || disabled
 	WithSpriteTurret:
+		RequiresCondition: !build-incomplete
 		Recoils: false
 	Armament:
 		Weapon: RedEye2
@@ -292,8 +298,8 @@ NASTLH:
 		Range: 6c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@pulse:
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: pulse
-		RequiresCondition: !disabled
 	WithRangeCircle:
 		Range: 12c0
 		Type: cloakgenerator
@@ -340,7 +346,7 @@ NAMISL:
 	RevealsShroud:
 		Range: 4c0
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -50
@@ -408,11 +414,13 @@ NAWAST:
 		SpawnOffset: 3,1
 		Facing: 160
 	WithIdleOverlay@GLOW:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-glow
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
-	RenderSprites:

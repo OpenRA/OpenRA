@@ -11,6 +11,8 @@ light_inf:
 		Cost: 50
 	Tooltip:
 		Name: Light Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 6000
 	Mobile:
@@ -34,6 +36,8 @@ engineer:
 		Cost: 400
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	RevealsShroud:
@@ -41,8 +45,9 @@ engineer:
 	Mobile:
 		Speed: 31
 	EngineerRepair:
+	CaptureManager:
 	Captures:
-		CaptureTypes: building, husk
+		CaptureTypes: building
 		PlayerExperience: 50
 	-RevealOnFire:
 	Voiced:
@@ -62,6 +67,8 @@ trooper:
 		Cost: 90
 	Tooltip:
 		Name: Trooper
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 7000
 	RevealsShroud:
@@ -91,6 +98,8 @@ thumper:
 		Cost: 200
 	Tooltip:
 		Name: Thumper Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 3750
 	RevealsShroud:
@@ -127,6 +136,8 @@ fremen:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
 		Name: Fremen
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
@@ -156,7 +167,7 @@ fremen:
 		CloakDelay: 85
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -178,6 +189,8 @@ grenadier:
 		Cost: 80
 	Tooltip:
 		Name: Grenadier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 6000
 	Mobile:
@@ -209,6 +222,8 @@ sardaukar:
 		Cost: 120
 	Tooltip:
 		Name: Sardaukar
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Mobile:
@@ -257,6 +272,8 @@ saboteur:
 		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
 		Name: Saboteur
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 4000
 	Mobile:
@@ -272,7 +289,7 @@ saboteur:
 		CloakSound: STEALTH1.WAV
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

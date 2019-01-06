@@ -96,7 +96,7 @@ namespace OpenRA
 			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
-				il.EmitCall(OpCodes.Call, prop.GetGetMethod(), null);
+				il.EmitCall(OpCodes.Call, prop.GetGetMethod(true), null);
 
 				EmitSyncOpcodes(prop.PropertyType, il);
 			}
@@ -161,20 +161,19 @@ namespace OpenRA
 			return t.GetHashCode();
 		}
 
-		public static void CheckSyncUnchanged(World world, Action fn)
+		public static void RunUnsynced(bool checkSyncHash, World world, Action fn)
 		{
-			CheckSyncUnchanged(world, () => { fn(); return true; });
+			RunUnsynced(checkSyncHash, world, () => { fn(); return true; });
 		}
 
 		static bool inUnsyncedCode = false;
 
-		public static T CheckSyncUnchanged<T>(World world, Func<T> fn)
+		public static T RunUnsynced<T>(bool checkSyncHash, World world, Func<T> fn)
 		{
 			if (world == null)
 				return fn();
 
-			var shouldCheckSync = Game.Settings.Debug.SanityCheckUnsyncedCode;
-			var sync = shouldCheckSync ? world.SyncHash() : 0;
+			var sync = checkSyncHash ? world.SyncHash() : 0;
 			var prevInUnsyncedCode = inUnsyncedCode;
 			inUnsyncedCode = true;
 
@@ -185,8 +184,8 @@ namespace OpenRA
 			finally
 			{
 				inUnsyncedCode = prevInUnsyncedCode;
-				if (shouldCheckSync && sync != world.SyncHash())
-					throw new InvalidOperationException("CheckSyncUnchanged: sync-changing code may not run here");
+				if (checkSyncHash && sync != world.SyncHash())
+					throw new InvalidOperationException("RunUnsynced: sync-changing code may not run here");
 			}
 		}
 

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -56,8 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Prevent deployment in bogus locations
 			var transforms = self.TraitOrDefault<Transforms>();
-			var building = self.TraitOrDefault<Building>();
-			if ((transforms != null && !transforms.CanDeploy()) || (building != null && !building.Lock()))
+			if (transforms != null && !transforms.CanDeploy())
 			{
 				Cancel(self, true);
 				return NextActivity;
@@ -91,7 +89,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.IsDead)
+				if (self.IsDead || self.WillDispose)
 					return;
 
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
@@ -119,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (Faction != null)
 					init.Add(new FactionInit(Faction));
 
-				var health = self.TraitOrDefault<Health>();
+				var health = self.TraitOrDefault<IHealth>();
 				if (health != null)
 				{
 					// Cast to long to avoid overflow when multiplying by the health
@@ -133,6 +131,8 @@ namespace OpenRA.Mods.Common.Activities
 				var a = w.CreateActor(ToActor, init);
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 					nt.AfterTransform(a);
+
+				self.ReplacedByActor = a;
 
 				if (selected)
 					w.Selection.Add(w, a);

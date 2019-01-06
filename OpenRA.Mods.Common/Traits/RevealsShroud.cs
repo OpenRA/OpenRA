@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -28,6 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly RevealsShroudInfo info;
 		readonly Shroud.SourceType type;
+		IRevealsShroudModifier[] rangeModifiers;
 
 		public RevealsShroud(Actor self, RevealsShroudInfo info)
 			: base(self, info)
@@ -35,6 +37,13 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			type = info.RevealGeneratedShroud ? Shroud.SourceType.Visibility
 				: Shroud.SourceType.PassiveVisibility;
+		}
+
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+
+			rangeModifiers = self.TraitsImplementing<IRevealsShroudModifier>().ToArray();
 		}
 
 		protected override void AddCellsToPlayerShroud(Actor self, Player p, PPos[] uv)
@@ -46,5 +55,18 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveSource(this); }
+
+		public override WDist Range
+		{
+			get
+			{
+				if (CachedTraitDisabled)
+					return WDist.Zero;
+
+				var revealsShroudModifier = rangeModifiers.Select(x => x.GetRevealsShroudModifier());
+				var range = Util.ApplyPercentageModifiers(Info.Range.Length, revealsShroudModifier);
+				return new WDist(range);
+			}
+		}
 	}
 }

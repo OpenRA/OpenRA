@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
-	class AttackPopupTurreted : AttackTurreted, INotifyBuildComplete, INotifyIdle, IDamageModifier
+	class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 
@@ -64,9 +64,22 @@ namespace OpenRA.Mods.Cnc.Traits
 			skippedMakeAnimation = init.Contains<SkipMakeAnimsInit>();
 		}
 
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+
+			// Map placed actors are created in the closed state
+			if (skippedMakeAnimation)
+			{
+				state = PopupState.Closed;
+				wsb.PlayCustomAnimationRepeating(self, info.ClosedIdleSequence);
+				turret.DesiredFacing = null;
+			}
+		}
+
 		protected override bool CanAttack(Actor self, Target target)
 		{
-			if (state == PopupState.Transitioning || !building.BuildComplete)
+			if (state == PopupState.Transitioning)
 				return false;
 
 			if (!base.CanAttack(self, target))
@@ -103,16 +116,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					wsb.PlayCustomAnimationRepeating(self, info.ClosedIdleSequence);
 					turret.DesiredFacing = null;
 				});
-			}
-		}
-
-		void INotifyBuildComplete.BuildingComplete(Actor self)
-		{
-			if (skippedMakeAnimation)
-			{
-				state = PopupState.Closed;
-				wsb.PlayCustomAnimationRepeating(self, info.ClosedIdleSequence);
-				turret.DesiredFacing = null;
 			}
 		}
 

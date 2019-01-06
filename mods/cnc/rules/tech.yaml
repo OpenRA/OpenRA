@@ -96,9 +96,15 @@ BIO:
 	ProductionQueue:
 		Type: Biolab
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Biolab
 	RallyPoint:
 		Offset: -1,-1
 	SpawnActorOnDeath:

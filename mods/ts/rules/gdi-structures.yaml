@@ -23,9 +23,10 @@ GAPOWR:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
 	WithIdleOverlay@PLUG:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		Sequence: idle-plug
 	Selectable:
@@ -42,19 +43,23 @@ GAPOWR:
 		Offset: 0,1
 		Conditions:
 			powrup: powrup.a
+		Requirements:
+			powrup: !build-incomplete
 	Power@pluga:
 		RequiresCondition: !empdisable && powrup.a
 		Amount: 50
 	WithIdleOverlay@pluga:
-		RequiresCondition: powrup.a
+		RequiresCondition: !build-incomplete && powrup.a
 		PauseOnCondition: empdisable
 		Sequence: idle-powrupa
 	Pluggable@plugb:
 		Offset: 1,1
 		Conditions:
 			powrup: powrup.b
+		Requirements:
+			powrup: !build-incomplete
 	WithIdleOverlay@plugb:
-		RequiresCondition: powrup.b
+		RequiresCondition: !build-incomplete && powrup.b
 		PauseOnCondition: empdisable
 		Sequence: idle-powrupb
 	Power@plugb:
@@ -103,12 +108,17 @@ GAPILE:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Infantry
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithIdleOverlay@LIGHT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-light
 	WithIdleOverlay@FLAG:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-flag
 	Power:
 		Amount: -20
@@ -163,17 +173,25 @@ GAWEAP:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	ProductionBar:
+		ProductionType: Vehicle
 	WithIdleOverlay@ROOF:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-roof
 	WithProductionDoorOverlay@DOOR:
+		RequiresCondition: !build-incomplete
 	WithIdleOverlay@WHITELIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-white
 	WithIdleOverlay@REDLIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-red
 	WithIdleOverlay@TURBINES:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-turbines
 	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
 		Sequence: bib
 	Power:
 		Amount: -30
@@ -218,15 +236,20 @@ GAHPAD:
 		PauseOnCondition: empdisable
 	PrimaryBuilding:
 		PrimaryCondition: primary
+		SelectionNotification: PrimaryBuildingSelected
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		StartRepairingNotification: Repairing
 	ProductionBar:
+		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-platform
 	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-platform
@@ -274,22 +297,27 @@ GADEPT:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+		StartRepairingNotification: Repairing
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
 	WithIdleOverlay@LIGHT:
+		RequiresCondition: !build-incomplete
 		Sequence: idle-light
 	WithIdleOverlay@GROUND:
+		RequiresCondition: !build-incomplete
 		Sequence: ground
 	WithIdleOverlay@CIRCUITS:
+		RequiresCondition: !build-incomplete
 		Sequence: circuits
 	WithRepairOverlay@CRANE:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		StartSequence: crane-start
 		Sequence: crane-loop
 		EndSequence: crane-end
 	WithRepairOverlay@PLATFORM:
-		RequiresCondition: !empdisable
+		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: platform
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-ground
@@ -339,8 +367,9 @@ GARADR:
 		Range: 10c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@DISH:
-		Sequence: idle-dish
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
+		Sequence: idle-dish
 	Targetable:
 		TargetTypes: Ground, Building, C4, SpyInfiltrate
 	Power:
@@ -377,7 +406,7 @@ GATECH:
 		Range: 4c0
 		MaxHeightDelta: 3
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled
+		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
 	Power:
 		Amount: -150
@@ -404,13 +433,14 @@ GAPLUG:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	WithIdleOverlay@DISH:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled && !empdisable
+		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
-		RequiresCondition: !disabled && !empdisable
+		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
 		HP: 100000
@@ -464,14 +494,14 @@ GAPLUG:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
 		Requirements:
-			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
-			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
+			plug.ioncannon: !build-incomplete && !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
+			plug.hunterseeker: !build-incomplete && !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
 	WithIdleOverlay@ioncannona:
-		RequiresCondition: plug.ioncannona
+		RequiresCondition: !build-incomplete && plug.ioncannona
 		PauseOnCondition: disabled
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
-		RequiresCondition: plug.hunterseekera
+		RequiresCondition: !build-incomplete && plug.hunterseekera
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
 	Pluggable@plugb:
@@ -480,14 +510,14 @@ GAPLUG:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
 		Requirements:
-			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
-			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
+			plug.ioncannon: !build-incomplete && !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
+			plug.hunterseeker: !build-incomplete && !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
 	WithIdleOverlay@ioncannonb:
-		RequiresCondition: plug.ioncannonb
+		RequiresCondition: !build-incomplete && plug.ioncannonb
 		PauseOnCondition: disabled
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
-		RequiresCondition: plug.hunterseekerb
+		RequiresCondition: !build-incomplete && plug.hunterseekerb
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
 	ProvidesPrerequisite@buildingname:

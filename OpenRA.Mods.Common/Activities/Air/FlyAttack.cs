@@ -18,20 +18,20 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyAttack : Activity
 	{
-		readonly Target target;
 		readonly Aircraft aircraft;
-		readonly AttackPlane attackPlane;
+		readonly AttackAircraft attackAircraft;
+		readonly Rearmable rearmable;
+		Target target;
 
-		readonly bool autoReloads;
 		int ticksUntilTurn;
 
 		public FlyAttack(Actor self, Target target)
 		{
 			this.target = target;
 			aircraft = self.Trait<Aircraft>();
-			attackPlane = self.TraitOrDefault<AttackPlane>();
-			ticksUntilTurn = attackPlane.AttackPlaneInfo.AttackTurnDelay;
-			autoReloads = self.TraitsImplementing<AmmoPool>().All(p => p.AutoReloads);
+			attackAircraft = self.Trait<AttackAircraft>();
+			rearmable = self.TraitOrDefault<Rearmable>();
+			ticksUntilTurn = attackAircraft.AttackAircraftInfo.AttackTurnDelay;
 		}
 
 		public override Activity Tick(Actor self)
@@ -43,15 +43,16 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
+			target = target.Recalculate(self.Owner);
+
 			if (!target.IsValidFor(self))
 				return NextActivity;
 
-			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
-			if (!autoReloads && aircraft.Info.RearmBuildings.Any() && attackPlane.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
+			if (rearmable != null && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
-			if (attackPlane != null)
-				attackPlane.DoAttack(self, target);
+			attackAircraft.DoAttack(self, target);
 
 			if (ChildActivity == null)
 			{
@@ -59,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NextActivity;
 
 				// TODO: This should fire each weapon at its maximum range
-				if (attackPlane != null && target.IsInRange(self.CenterPosition, attackPlane.Armaments.Where(Exts.IsTraitEnabled).Select(a => a.Weapon.MinRange).Min()))
+				if (attackAircraft != null && target.IsInRange(self.CenterPosition, attackAircraft.Armaments.Where(Exts.IsTraitEnabled).Select(a => a.Weapon.MinRange).Min()))
 					ChildActivity = ActivityUtils.SequenceActivities(new FlyTimed(ticksUntilTurn, self), new Fly(self, target), new FlyTimed(ticksUntilTurn, self));
 				else
 					ChildActivity = ActivityUtils.SequenceActivities(new Fly(self, target), new FlyTimed(ticksUntilTurn, self));

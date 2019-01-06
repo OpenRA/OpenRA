@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
@@ -34,7 +33,6 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
@@ -98,7 +96,6 @@
     <Compile Include="Activities\DonateExperience.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
-    <Compile Include="Activities\ExternalCaptureActor.cs" />
     <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\HarvestResource.cs" />
     <Compile Include="Activities\HarvesterDockSequence.cs" />
@@ -125,34 +122,40 @@
     <Compile Include="Activities\Wait.cs" />
     <Compile Include="Activities\WaitForTransport.cs" />
     <Compile Include="ActorExts.cs" />
-    <Compile Include="AI\AIUtils.cs" />
-    <Compile Include="AI\AttackOrFleeFuzzy.cs" />
-    <Compile Include="AI\BaseBuilder.cs" />
-    <Compile Include="AI\HackyAI.cs" />
-    <Compile Include="AI\AIHarvesterManager.cs" />
-    <Compile Include="AI\AISupportPowerManager.cs" />
-    <Compile Include="AI\Squad.cs" />
-    <Compile Include="AI\StateMachine.cs" />
-    <Compile Include="AI\States\AirStates.cs" />
-    <Compile Include="AI\States\GroundStates.cs" />
-    <Compile Include="AI\States\NavyStates.cs" />
-    <Compile Include="AI\States\ProtectionStates.cs" />
-    <Compile Include="AI\States\StateBase.cs" />
-    <Compile Include="AI\SupportPowerDecision.cs" />
+    <Compile Include="AIUtils.cs" />
+    <Compile Include="Traits\BotModules\Squads\AttackOrFleeFuzzy.cs" />
+    <Compile Include="Traits\BotModules\BotModuleLogic\BaseBuilderQueueManager.cs" />
+    <Compile Include="Traits\Player\ModularBot.cs" />
+    <Compile Include="Traits\BotModules\HarvesterBotModule.cs" />
+    <Compile Include="Traits\BotModules\SupportPowerBotModule.cs" />
+    <Compile Include="Traits\BotModules\BaseBuilderBotModule.cs" />
+    <Compile Include="Traits\BotModules\BuildingRepairBotModule.cs" />
+    <Compile Include="Traits\BotModules\CaptureManagerBotModule.cs" />
+    <Compile Include="Traits\BotModules\SquadManagerBotModule.cs" />
+    <Compile Include="Traits\BotModules\McvManagerBotModule.cs" />
+    <Compile Include="Traits\BotModules\UnitBuilderBotModule.cs" />
+    <Compile Include="Traits\BotModules\Squads\Squad.cs" />
+    <Compile Include="Traits\BotModules\Squads\StateMachine.cs" />
+    <Compile Include="Traits\BotModules\Squads\States\AirStates.cs" />
+    <Compile Include="Traits\BotModules\Squads\States\GroundStates.cs" />
+    <Compile Include="Traits\BotModules\Squads\States\NavyStates.cs" />
+    <Compile Include="Traits\BotModules\Squads\States\ProtectionStates.cs" />
+    <Compile Include="Traits\BotModules\Squads\States\StateBase.cs" />
+    <Compile Include="Traits\BotModules\BotModuleLogic\SupportPowerDecision.cs" />
     <Compile Include="AudioLoaders\AudLoader.cs" />
     <Compile Include="AudioLoaders\VocLoader.cs" />
     <Compile Include="AudioLoaders\WavLoader.cs" />
     <Compile Include="Effects\Beacon.cs" />
     <Compile Include="Effects\ContrailFader.cs" />
-    <Compile Include="Effects\CrateEffect.cs" />
     <Compile Include="Effects\RevealShroudEffect.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
     <Compile Include="Effects\FloatingText.cs" />
     <Compile Include="Effects\MapNotificationEffect.cs" />
     <Compile Include="Effects\RallyPointIndicator.cs" />
     <Compile Include="Effects\SpriteEffect.cs" />
+    <Compile Include="FileFormats\Png.cs" />
     <Compile Include="Graphics\RailgunRenderable.cs" />
-    <Compile Include="Effects\LaunchEffect.cs" />
+    <Compile Include="Lint\CheckNotifications.cs" />
     <Compile Include="Projectiles\AreaBeam.cs" />
     <Compile Include="Projectiles\Bullet.cs" />
     <Compile Include="Projectiles\InstantHit.cs" />
@@ -277,8 +280,7 @@
     <Compile Include="Traits\AcceptsDeliveredExperience.cs" />
     <Compile Include="Traits\Air\Aircraft.cs" />
     <Compile Include="Traits\Air\AttackBomber.cs" />
-    <Compile Include="Traits\Air\AttackHeli.cs" />
-    <Compile Include="Traits\Air\AttackPlane.cs" />
+    <Compile Include="Traits\Air\AttackAircraft.cs" />
     <Compile Include="Traits\Air\FlyAwayOnIdle.cs" />
     <Compile Include="Traits\Air\FallsToEarth.cs" />
     <Compile Include="Traits\Air\ReturnOnIdle.cs" />
@@ -315,8 +317,18 @@
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RequiresBuildableArea.cs" />
     <Compile Include="Traits\Buildings\Reservable.cs" />
+    <Compile Include="Traits\CapturableProgressBar.cs" />
+    <Compile Include="Traits\CaptureProgressBar.cs" />
+    <Compile Include="Traits\CaptureProgressBlink.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnPlayerResources.cs" />
+    <Compile Include="Traits\GrantExternalConditionToProduced.cs" />
+    <Compile Include="Traits\Multipliers\CreatesShroudMultiplier.cs" />
+    <Compile Include="Traits\Multipliers\RevealsShroudMultiplier.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionWhileAiming.cs" />
     <Compile Include="Traits\RepairsUnits.cs" />
+    <Compile Include="Traits\Rearmable.cs" />
     <Compile Include="Traits\Burns.cs" />
+    <Compile Include="Traits\CarryableHarvester.cs" />
     <Compile Include="Traits\ChangesTerrain.cs" />
     <Compile Include="Traits\CommandBarBlacklist.cs" />
     <Compile Include="Traits\Conditions\GrantExternalConditionToCrusher.cs" />
@@ -357,15 +369,12 @@
     <Compile Include="Traits\Demolishable.cs" />
     <Compile Include="Traits\Demolition.cs" />
     <Compile Include="Traits\DetectCloaked.cs" />
-    <Compile Include="Traits\EditorTilesetFilter.cs" />
+    <Compile Include="Traits\MapEditorData.cs" />
     <Compile Include="Traits\EjectOnDeath.cs" />
     <Compile Include="Traits\SpawnActorsOnSell.cs" />
     <Compile Include="Traits\EngineerRepair.cs" />
     <Compile Include="Traits\Explodes.cs" />
     <Compile Include="Traits\ExplosionOnDamageTransition.cs" />
-    <Compile Include="Traits\ExternalCapturable.cs" />
-    <Compile Include="Traits\ExternalCapturableBar.cs" />
-    <Compile Include="Traits\ExternalCaptures.cs" />
     <Compile Include="Traits\GainsExperience.cs" />
     <Compile Include="Traits\GivesCashOnCapture.cs" />
     <Compile Include="Traits\GivesBounty.cs" />
@@ -415,6 +424,7 @@
     <Compile Include="Traits\Player\GrantConditionOnPrerequisiteManager.cs" />
     <Compile Include="Traits\Player\HarvesterAttackNotifier.cs" />
     <Compile Include="Traits\Player\MissionObjectives.cs" />
+    <Compile Include="Traits\Player\ParallelProductionQueue.cs" />
     <Compile Include="Traits\Player\PlaceBeacon.cs" />
     <Compile Include="Traits\Player\PlaceBuilding.cs" />
     <Compile Include="Traits\Player\PlayerExperience.cs" />
@@ -462,7 +472,7 @@
     <Compile Include="Traits\Render\WithAimAnimation.cs" />
     <Compile Include="Traits\Render\WithAttackOverlay.cs" />
     <Compile Include="Traits\Render\WithMoveAnimation.cs" />
-    <Compile Include="Traits\Render\WithSiloAnimation.cs" />
+    <Compile Include="Traits\Render\WithResourceLevelSpriteBody.cs" />
     <Compile Include="Traits\Render\WithBuildingPlacedAnimation.cs" />
     <Compile Include="Traits\Render\WithMakeAnimation.cs" />
     <Compile Include="Traits\Render\WithCrateBody.cs" />
@@ -480,10 +490,9 @@
     <Compile Include="Traits\Render\WithNukeLaunchOverlay.cs" />
     <Compile Include="Traits\Render\WithParachute.cs" />
     <Compile Include="Traits\Render\WithRangeCircle.cs" />
-    <Compile Include="Traits\Render\WithRearmAnimation.cs" />
-    <Compile Include="Traits\Render\WithRepairAnimation.cs" />
+    <Compile Include="Traits\Render\WithResupplyAnimation.cs" />
     <Compile Include="Traits\Render\WithRepairOverlay.cs" />
-    <Compile Include="Traits\Render\WithResources.cs" />
+    <Compile Include="Traits\Render\WithResourceLevelOverlay.cs" />
     <Compile Include="Traits\Render\WithShadow.cs" />
     <Compile Include="Traits\Render\WithSpriteBody.cs" />
     <Compile Include="Traits\Render\WithSpriteTurret.cs" />
@@ -501,6 +510,7 @@
     <Compile Include="Traits\RepairsBridges.cs" />
     <Compile Include="Traits\Replaceable.cs" />
     <Compile Include="Traits\Replacement.cs" />
+    <Compile Include="Traits\RequiresSpecificOwners.cs" />
     <Compile Include="Traits\SeedsResource.cs" />
     <Compile Include="Traits\StoresResources.cs" />
     <Compile Include="Traits\Render\SelectionDecorations.cs" />
@@ -512,7 +522,7 @@
     <Compile Include="Traits\SmokeTrailWhenDamaged.cs" />
     <Compile Include="Traits\Sound\ActorLostNotification.cs" />
     <Compile Include="Traits\Sound\AmbientSound.cs" />
-    <Compile Include="Traits\Sound\AnnounceOnBuild.cs" />
+    <Compile Include="Traits\Sound\VoiceAnnouncement.cs" />
     <Compile Include="Traits\Sound\AnnounceOnKill.cs" />
     <Compile Include="Traits\Sound\AnnounceOnSeen.cs" />
     <Compile Include="Traits\Sound\CaptureNotification.cs" />
@@ -548,6 +558,7 @@
     <Compile Include="Traits\Conditions\GrantConditionOnSubterraneanLayer.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnMovement.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnPrerequisite.cs" />
+    <Compile Include="Traits\Conditions\GrantConditionOnProduction.cs" />
     <Compile Include="Traits\Conditions\ConditionManager.cs" />
     <Compile Include="Traits\Valued.cs" />
     <Compile Include="Traits\Voiced.cs" />
@@ -558,13 +569,16 @@
     <Compile Include="Traits\World\DomainIndex.cs" />
     <Compile Include="Traits\World\Locomotor.cs" />
     <Compile Include="Traits\World\JumpjetLocomotor.cs" />
+    <Compile Include="Traits\World\PaletteFromEmbeddedSpritePalette.cs" />
     <Compile Include="Traits\World\SubterraneanLocomotor.cs" />
     <Compile Include="Traits\World\LoadWidgetAtGameStart.cs" />
     <Compile Include="Traits\World\MPStartLocations.cs" />
     <Compile Include="Traits\World\MPStartUnits.cs" />
     <Compile Include="Traits\World\PaletteFromFile.cs" />
     <Compile Include="Traits\World\PaletteFromGimpOrJascFile.cs" />
+    <Compile Include="Traits\World\PaletteFromPng.cs" />
     <Compile Include="Traits\World\PaletteFromRGBA.cs" />
+    <Compile Include="Traits\World\TerrainRenderer.cs" />
     <Compile Include="Traits\World\ValidateOrder.cs" />
     <Compile Include="Pathfinder\CellInfoLayerPool.cs" />
     <Compile Include="Pathfinder\Constants.cs" />
@@ -588,6 +602,17 @@
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="Traits\World\ActorSpawnManager.cs" />
     <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemoveAttackIgnoresVisibility.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemovedDemolishLocking.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemoveNegativeDamageFullHealthCheck.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemoveResourceExplodeModifier.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RenameCrateActionNotification.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\CloakRequiresConditionToPause.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\MergeCaptureTraits.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemovedNotifyBuildComplete.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\ChangeTakeOffSoundAndLandingSound.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\AddCarryableHarvester.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RequireProductionType.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\CheckCodeStyle.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
@@ -602,6 +627,10 @@
     <Compile Include="UtilityCommands\ExtractTraitDocsCommand.cs" />
     <Compile Include="UtilityCommands\ExtractWeaponDocsCommand.cs" />
     <Compile Include="Warheads\ChangeOwnerWarhead.cs" />
+    <Compile Include="UtilityCommands\PngSheetExportMetadataCommand.cs" />
+    <Compile Include="UtilityCommands\PngSheetImportMetadataCommand.cs" />
+    <Compile Include="Widgets\Logic\Editor\ActorEditLogic.cs" />
+    <Compile Include="Widgets\ExponentialSliderWidget.cs" />
     <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
@@ -670,6 +699,7 @@
     <Compile Include="Widgets\Logic\Lobby\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\MainMenuLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\ActorSelectorLogic.cs" />
+    <Compile Include="Widgets\Logic\Editor\CommonSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\LayerSelectorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\MapEditorLogic.cs" />
     <Compile Include="Widgets\Logic\Editor\MapEditorTabsLogic.cs" />
@@ -703,6 +733,7 @@
     <Compile Include="SpriteLoaders\TmpRALoader.cs" />
     <Compile Include="SpriteLoaders\TmpTDLoader.cs" />
     <Compile Include="SpriteLoaders\ShpD2Loader.cs" />
+    <Compile Include="SpriteLoaders\PngSheetLoader.cs" />
     <Compile Include="LoadScreens\LogoStripeLoadScreen.cs" />
     <Compile Include="LoadScreens\BlankLoadScreen.cs" />
     <Compile Include="Widgets\Logic\ReplayUtils.cs" />
@@ -735,7 +766,6 @@
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Traits\Render\WithInfantryBody.cs" />
     <Compile Include="UtilityCommands\CheckSequenceSprites.cs" />
-    <Compile Include="UtilityCommands\FixClassicTilesets.cs" />
     <Compile Include="Graphics\TilesetSpecificSpriteSequence.cs" />
     <Compile Include="Traits\Pluggable.cs" />
     <Compile Include="Traits\Plug.cs" />
@@ -790,7 +820,7 @@
     <Compile Include="Traits\Radar\AppearsOnRadar.cs" />
     <Compile Include="Traits\Radar\ProvidesRadar.cs" />
     <Compile Include="Traits\Radar\RadarColorFromTerrain.cs" />
-    <Compile Include="AI\DummyAI.cs" />
+    <Compile Include="Traits\Player\DummyBot.cs" />
     <Compile Include="UtilityCommands\ListInstallShieldContentsCommand.cs" />
     <Compile Include="Widgets\Logic\Installation\ModContentLogic.cs" />
     <Compile Include="Widgets\Logic\Installation\DownloadPackageLogic.cs" />
@@ -835,7 +865,7 @@
     <Compile Include="Traits\World\ElevatedBridgeLayer.cs" />
     <Compile Include="Traits\World\ElevatedBridgePlaceholder.cs" />
     <Compile Include="Traits\Attack\AttackCharges.cs" />
-    <Compile Include="Traits\Render\WithChargeAnimation.cs" />
+    <Compile Include="Traits\Render\WithChargeSpriteBody.cs" />
     <Compile Include="Traits\Render\WithChargeOverlay.cs" />
     <Compile Include="WebServices.cs" />
     <Compile Include="Traits\Conditions\GrantConditionOnLineBuildDirection.cs" />
@@ -916,6 +946,19 @@
     <Compile Include="UpdateRules\Rules\20180307\AddShakeToBridge.cs" />
     <Compile Include="UpdateRules\Rules\20180307\IgnoreAbstractActors.cs" />
     <Compile Include="UpdateRules\Rules\20180307\RemoveCanUndeployFromGrantConditionOnDeploy.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\DefineNotificationDefaults.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RenameEditorTilesetFilter.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\MergeRearmAndRepairAnimation.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\LowPowerSlowdownToModifier.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemoveHealthPercentageRing.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemoveRepairBuildingsFromAircraft.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\AddRearmable.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\MergeAttackPlaneAndHeli.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\ExtractHackyAIModules.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\DefineLevelUpImageDefault.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RemovedAutoCarryallCircleTurnSpeed.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\ReplacedWithChargeAnimation.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\RefactorResourceLevelAnimating.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
@@ -923,6 +966,7 @@
     <Compile Include="Lint\CheckUnknownTraitFields.cs" />
     <Compile Include="Lint\CheckUnknownWeaponFields.cs" />
     <Compile Include="Widgets\Logic\PlayerProfileLogic.cs" />
+    <Compile Include="Traits\CaptureManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">

@@ -17,14 +17,14 @@ FACT:
 		Type: Wood
 	RevealsShroud:
 		Range: 10c0
-	WithBuildingBib:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
+		RequiresCondition: factundeploy && !build-incomplete
+		PauseOnCondition: being-demolished
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
-		RequiresCondition: factundeploy
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
@@ -32,34 +32,46 @@ FACT:
 		Type: Building.GDI
 		Factions: gdi
 		Group: Building
-		LowPowerSlowdown: 2
-		QueuedAudio: Building
+		LowPowerModifier: 200
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@NodBuilding:
 		Type: Building.Nod
 		Factions: nod
 		Group: Building
-		LowPowerSlowdown: 2
-		QueuedAudio: Building
+		LowPowerModifier: 200
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@GDIDefense:
 		Type: Defence.GDI
 		Factions: gdi
 		Group: Defence
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@NodDefense:
 		Type: Defence.Nod
 		Factions: nod
 		Group: Defence
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
+		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	BaseBuilding:
 	ProductionBar@BuildingGDI:
 		ProductionType: Building.GDI
@@ -72,7 +84,9 @@ FACT:
 	BaseProvider:
 		Cooldown: 75
 		Range: 14c0
+	WithBuildingBib:
 	WithBuildingPlacedAnimation:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
@@ -193,7 +207,6 @@ PROC:
 		HP: 100000
 	RevealsShroud:
 		Range: 6c0
-	WithBuildingBib:
 	Refinery:
 		DockAngle: 112
 		DockOffset: 0,2
@@ -214,7 +227,9 @@ PROC:
 		Actor: HARV
 		SpawnOffset: 1,2
 		Facing: 64
-	WithResources:
+	WithBuildingBib:
+	WithResourceLevelOverlay:
+		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -242,9 +257,9 @@ SILO:
 		Range: 4c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	RenderSprites:
-	WithSpriteBody:
-	WithSiloAnimation:
+	-WithSpriteBody:
+	WithResourceLevelSpriteBody:
+		Sequence: stages
 	StoresResources:
 		PipCount: 10
 		PipColor: Green
@@ -297,12 +312,20 @@ PYLE:
 		ExitCell: 1,1
 	Production:
 		Produces: Infantry.GDI
+	GrantExternalConditionToProduced:
+		Condition: produced
 	ProductionQueue:
 		Type: Infantry.GDI
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Infantry.GDI
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -345,9 +368,15 @@ HAND:
 	ProductionQueue:
 		Type: Infantry.Nod
 		Group: Infantry
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Infantry.Nod
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -384,9 +413,6 @@ AFLD:
 		HP: 110000
 	RevealsShroud:
 		Range: 7c0
-	WithBuildingBib:
-	WithIdleOverlay@DISH:
-		Sequence: idle-dish
 	RallyPoint:
 		Offset: 4,2
 	Exit@1:
@@ -394,14 +420,23 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
+	WithBuildingBib:
+	WithIdleOverlay@DISH:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-dish
 	WithDeliveryAnimation:
+		RequiresCondition: !build-incomplete
 	ProductionQueue:
 		Type: Vehicle.Nod
 		Group: Vehicle
-		LowPowerSlowdown: 3
-		ReadyAudio:
+		LowPowerModifier: 300
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Vehicle.Nod
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -439,6 +474,7 @@ WEAP:
 		Range: 4c0
 	WithBuildingBib:
 	WithProductionDoorOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
 		Offset: 0,2
@@ -451,9 +487,15 @@ WEAP:
 	ProductionQueue:
 		Type: Vehicle.GDI
 		Group: Vehicle
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar:
+		ProductionType: Vehicle.GDI
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
@@ -490,20 +532,32 @@ HPAD:
 	RepairsUnits:
 		HpPerStep: 1000
 		PlayerExperience: 25
-	WithRepairAnimation:
+		StartRepairingNotification: Repairing
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	RallyPoint:
 	ProductionQueue@GDI:
 		Type: Aircraft.GDI
 		Factions: gdi
 		Group: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionQueue@Nod:
 		Type: Aircraft.Nod
 		Factions: nod
 		Group: Aircraft
-		LowPowerSlowdown: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
 		LimitedAudio: BuildingInProgress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
 	ProductionBar@GDI:
 		ProductionType: Aircraft.GDI
 	ProductionBar@Nod:
@@ -606,13 +660,15 @@ FIX:
 		Range: 5c0
 	WithBuildingBib:
 		HasMinibib: Yes
+	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 15
 		PlayerExperience: 25
+		StartRepairingNotification: Repairing
 	RallyPoint:
-	WithRepairAnimation:
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:
@@ -707,7 +763,6 @@ TMPL:
 		HP: 210000
 	RevealsShroud:
 		Range: 6c0
-	WithBuildingBib:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5c0
@@ -736,8 +791,11 @@ TMPL:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+	WithBuildingBib:
 	WithNukeLaunchAnimation:
+		RequiresCondition: !build-incomplete
 	WithNukeLaunchOverlay:
+		RequiresCondition: !build-incomplete
 		Sequence: smoke
 	SupportPowerChargeBar:
 	Power:
@@ -779,6 +837,7 @@ GUN:
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	WithMuzzleOverlay:
 	-WithDeathAnimation:
 	DetectCloaked:
@@ -829,6 +888,7 @@ SAM:
 		Weapon: Dragon
 		MuzzleSequence: muzzle
 	AttackPopupTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 	WithMuzzleOverlay:
 	-RenderDetectionCircle:
@@ -864,11 +924,14 @@ OBLI:
 		Range: 8c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithChargeAnimation:
+	-WithSpriteBody:
+	WithChargeSpriteBody:
+		Sequence: active
 	Armament:
 		Weapon: Laser
 		LocalOffset: 0,-85,1280
 	AttackCharges:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 		ChargeLevel: 50
 		ChargingCondition: charging
@@ -911,6 +974,7 @@ GTWR:
 		LocalOffset: 256,0,256
 		MuzzleSequence: muzzle
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 	BodyOrientation:
 		QuantizedFacings: 8
 	DetectCloaked:
@@ -960,6 +1024,7 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: lowpower
 	BodyOrientation:
 		QuantizedFacings: 8

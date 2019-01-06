@@ -25,11 +25,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int paletteTabHighlighted = 0;
 
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, Action<HSLColor> onChange, Dictionary<string, MiniYaml> logicArgs)
+		public ColorPickerLogic(Widget widget, ModData modData, World world, HSLColor initialColor, string initialFaction, Action<HSLColor> onChange,
+			Dictionary<string, MiniYaml> logicArgs)
 		{
 			string actorType;
-			if (!ChromeMetrics.TryGet("ColorPickerActorType", out actorType))
-				actorType = "mcv";
+			if (initialFaction == null || !ChromeMetrics.TryGet("ColorPickerActorType-" + initialFaction, out actorType))
+				actorType = ChromeMetrics.Get<string>("ColorPickerActorType");
 
 			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
 			var actor = world.Map.Rules.Actors[actorType];
@@ -194,7 +195,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
-				{ "initialColor", Game.Settings.Player.Color }
+				{ "initialColor", Game.Settings.Player.Color },
+				{ "initialFaction", null }
 			});
 
 			color.AttachPanel(colorChooser, onExit);

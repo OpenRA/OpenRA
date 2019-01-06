@@ -45,11 +45,6 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < Size; i++)
 				pal.Entries[i] = palette.GetColor(i);
 
-			// hack around a mono bug -- the palette flags get set wrong.
-			if (Platform.CurrentPlatform != PlatformType.Windows)
-				typeof(ColorPalette).GetField("flags",
-					BindingFlags.Instance | BindingFlags.NonPublic).SetValue(pal, 1);
-
 			return pal;
 		}
 
@@ -117,6 +112,12 @@ namespace OpenRA.Graphics
 					var r = (byte)(reader.ReadByte() << 2);
 					var g = (byte)(reader.ReadByte() << 2);
 					var b = (byte)(reader.ReadByte() << 2);
+
+					// Replicate high bits into the (currently zero) low bits.
+					r |= (byte)(r >> 6);
+					g |= (byte)(g >> 6);
+					b |= (byte)(b >> 6);
+
 					colors[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 				}
 

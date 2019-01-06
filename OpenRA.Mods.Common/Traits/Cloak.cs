@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -34,8 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 		Dock = 256
 	}
 
+	// Type tag for cloaktypes
+	public class CloakType { }
+
 	[Desc("This unit can cloak and uncloak in specific situations.")]
-	public class CloakInfo : ConditionalTraitInfo
+	public class CloakInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Measured in game ticks.")]
 		public readonly int InitialDelay = 10;
@@ -53,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "cloak";
 		public readonly bool IsPlayerPalette = false;
 
-		public readonly HashSet<string> CloakTypes = new HashSet<string> { "Cloak" };
+		public readonly BitSet<CloakType> CloakTypes = new BitSet<CloakType>("Cloak");
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while cloaked.")]
@@ -62,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : ConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
+	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
 		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
 		[Sync] int remainingTime;
@@ -98,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public bool Cloaked { get { return !IsTraitDisabled && remainingTime <= 0; } }
+		public bool Cloaked { get { return !IsTraitDisabled && !IsTraitPaused && remainingTime <= 0; } }
 
 		public void Uncloak() { Uncloak(Info.CloakDelay); }
 
@@ -122,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			if (remainingTime > 0 || IsTraitDisabled)
+			if (remainingTime > 0 || IsTraitDisabled || IsTraitPaused)
 				return r;
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
@@ -144,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!IsTraitDisabled)
+			if (!IsTraitDisabled && !IsTraitPaused)
 			{
 				if (remainingTime > 0 && !isDocking)
 					remainingTime--;
@@ -177,6 +181,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			wasCloaked = isCloaked;
 			firstTick = false;
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			remainingTime = Info.InitialDelay;
 		}
 
 		protected override void TraitDisabled(Actor self) { Uncloak(); }

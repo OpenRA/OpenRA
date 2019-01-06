@@ -205,6 +205,10 @@ namespace OpenRA
 					var yaml = MiniYaml.FromString(data);
 					foreach (var kv in yaml)
 						maps[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
+
+					foreach (var map in maps)
+						if (map.Value.Status != MapStatus.DownloadAvailable)
+							map.Value.UpdateRemoteSearch(MapStatus.Unavailable, null);
 				}
 				catch (Exception e)
 				{
@@ -332,8 +336,8 @@ namespace OpenRA
 			if (string.IsNullOrEmpty(initialUid) || previews[initialUid].Status != MapStatus.Available)
 			{
 				var selected = previews.Values.Where(IsSuitableInitialMap).RandomOrDefault(random) ??
-					previews.Values.First(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
-				return selected.Uid;
+					previews.Values.FirstOrDefault(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby));
+				return selected == null ? string.Empty : selected.Uid;
 			}
 
 			return initialUid;

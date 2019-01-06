@@ -64,7 +64,7 @@ namespace OpenRA.Test
 			var o = new Order("Test", null, Target.Invalid, true)
 			{
 				TargetString = "TargetString",
-				ExtraLocation = new CPos(int.MinValue, int.MaxValue, 128),
+				ExtraLocation = new CPos(2047, 2047, 128),
 				ExtraData = uint.MaxValue,
 				IsImmediate = true,
 			}.Serialize();

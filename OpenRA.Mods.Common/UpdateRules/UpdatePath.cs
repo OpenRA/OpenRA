@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("release-20180218", "release-20180307", new UpdateRule[0]),
 
-			new UpdatePath("release-20180307", "playtest-20180729", new UpdateRule[]
+			new UpdatePath("release-20180307", "release-20180923", new UpdateRule[]
 			{
 				new RemoveTerrainTypeIsWaterFlag(),
 				new DefineSquadExcludeHarvester(),
@@ -84,9 +84,35 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveCanUndeployFromGrantConditionOnDeploy(),
 			}),
 
-			new UpdatePath("playtest-20180729", new UpdateRule[]
+			new UpdatePath("release-20180923", "release-20181215", new UpdateRule[0]),
+
+			new UpdatePath("release-20181215", new UpdateRule[]
 			{
 				// Bleed only changes here
+				new AddCarryableHarvester(),
+				new RenameEditorTilesetFilter(),
+				new DefineNotificationDefaults(),
+				new MergeRearmAndRepairAnimation(),
+				new MergeCaptureTraits(),
+				new RemovedNotifyBuildComplete(),
+				new LowPowerSlowdownToModifier(),
+				new ChangeTakeOffSoundAndLandingSound(),
+				new RemoveHealthPercentageRing(),
+				new RenameCrateActionNotification(),
+				new RemoveRepairBuildingsFromAircraft(),
+				new AddRearmable(),
+				new MergeAttackPlaneAndHeli(),
+				new RemovedDemolishLocking(),
+				new RequireProductionType(),
+				new CloakRequiresConditionToPause(),
+				new ExtractHackyAIModules(),
+				new RemoveNegativeDamageFullHealthCheck(),
+				new RemoveResourceExplodeModifier(),
+				new DefineLevelUpImageDefault(),
+				new RemovedAutoCarryallCircleTurnSpeed(),
+				new RemoveAttackIgnoresVisibility(),
+				new ReplacedWithChargeAnimation(),
+				new RefactorResourceLevelAnimating(),
 			})
 		};
 

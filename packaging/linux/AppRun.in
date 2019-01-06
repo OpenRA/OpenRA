@@ -70,7 +70,13 @@ fi
 
 # Run the game or server
 if [ -n "$1" ] && [ "$1" = "--server" ]; then
+  # Drop the --server argument
+  shift
   exec "openra-{MODID}-server" "$@"
+elif [ -n "$1" ] && [ "$1" = "--utility" ]; then
+  # Drop the --utility argument
+  shift
+  exec "openra-{MODID}-utility" "$@"
 else
   exec "openra-{MODID}" "$@"
 fi

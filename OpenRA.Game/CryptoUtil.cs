@@ -123,14 +123,14 @@ namespace OpenRA
 
 				// SEQUENCE -> BIT_STRING -> SEQUENCE -> INTEGER
 				// Modulus is padded with a zero to avoid issues with the sign bit
-			    writer.Write((byte)0x02);
+				writer.Write((byte)0x02);
 				WriteTLVLength(writer, parameters.Modulus.Length + 1);
 				writer.Write((byte)0);
 				writer.Write(parameters.Modulus);
 
 				// SEQUENCE -> BIT_STRING -> SEQUENCE -> INTEGER
 				// Exponent is padded with a zero to avoid issues with the sign bit
-			    writer.Write((byte)0x02);
+				writer.Write((byte)0x02);
 				WriteTLVLength(writer, parameters.Exponent.Length + 1);
 				writer.Write((byte)0);
 				writer.Write(parameters.Exponent);
@@ -180,7 +180,7 @@ namespace OpenRA
 			try
 			{
 				using (var rsa = new RSACryptoServiceProvider())
-	    		{
+				{
 					rsa.ImportParameters(parameters);
 					return Encoding.UTF8.GetString(rsa.Decrypt(Convert.FromBase64String(data), false));
 				}
@@ -203,7 +203,7 @@ namespace OpenRA
 			try
 			{
 				using (var rsa = new RSACryptoServiceProvider())
-	    		{
+				{
 					rsa.ImportParameters(parameters);
 					using (var csp = SHA1.Create())
 						return Convert.ToBase64String(rsa.SignHash(csp.ComputeHash(data), CryptoConfig.MapNameToOID("SHA1")));
@@ -227,7 +227,7 @@ namespace OpenRA
 			try
 			{
 				using (var rsa = new RSACryptoServiceProvider())
-	    		{
+				{
 					rsa.ImportParameters(parameters);
 					using (var csp = SHA1.Create())
 						return rsa.VerifyHash(csp.ComputeHash(data), CryptoConfig.MapNameToOID("SHA1"), Convert.FromBase64String(signature));

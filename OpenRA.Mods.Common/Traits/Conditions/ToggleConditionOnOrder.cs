@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,10 +25,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Order name that toggles the condition.")]
 		public readonly string OrderName = null;
 
+		[NotificationReference("Sounds")]
 		public readonly string EnabledSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string EnabledSpeech = null;
 
+		[NotificationReference("Sounds")]
 		public readonly string DisabledSound = null;
+
+		[NotificationReference("Speech")]
 		public readonly string DisabledSpeech = null;
 
 		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(init.Self, this); }

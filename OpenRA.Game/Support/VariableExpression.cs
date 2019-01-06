@@ -168,8 +168,8 @@ namespace OpenRA.Support
 			public readonly Grouping Closes;
 
 			public TokenTypeInfo(string symbol, Precedence precedence, Sides operandSides = Sides.None,
-			                     Associativity associativity = Associativity.Left,
-			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
+				Associativity associativity = Associativity.Left,
+				Grouping opens = Grouping.None, Grouping closes = Grouping.None)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
@@ -181,9 +181,9 @@ namespace OpenRA.Support
 			}
 
 			public TokenTypeInfo(string symbol, Precedence precedence, Sides operandSides,
-			                     Sides whitespaceSides,
-			                     Associativity associativity = Associativity.Left,
-			                     Grouping opens = Grouping.None, Grouping closes = Grouping.None)
+				Sides whitespaceSides,
+				Associativity associativity = Associativity.Left,
+				Grouping opens = Grouping.None, Grouping closes = Grouping.None)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
@@ -195,15 +195,14 @@ namespace OpenRA.Support
 			}
 
 			public TokenTypeInfo(string symbol, Precedence precedence, Grouping opens, Grouping closes = Grouping.None,
-			                     Associativity associativity = Associativity.Left)
+				Associativity associativity = Associativity.Left)
 			{
 				Symbol = symbol;
 				Precedence = precedence;
 				WhitespaceSides = Sides.None;
 				OperandSides = opens == Grouping.None ?
-				                                (closes == Grouping.None ? Sides.None : Sides.Left)
-				                                :
-				                                (closes == Grouping.None ? Sides.Right : Sides.Both);
+					(closes == Grouping.None ? Sides.None : Sides.Left) :
+					(closes == Grouping.None ? Sides.Right : Sides.Both);
 				Associativity = associativity;
 				Opens = opens;
 				Closes = closes;

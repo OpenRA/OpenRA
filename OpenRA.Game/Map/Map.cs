@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -786,7 +785,7 @@ namespace OpenRA
 		public WPos CenterOfSubCell(CPos cell, SubCell subCell)
 		{
 			var index = (int)subCell;
-			if (index >= 0 && index <= Grid.SubCellOffsets.Length)
+			if (index >= 0 && index < Grid.SubCellOffsets.Length)
 				return CenterOfCell(cell) + Grid.SubCellOffsets[index];
 			return CenterOfCell(cell);
 		}

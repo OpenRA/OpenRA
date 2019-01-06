@@ -12,6 +12,8 @@ E1:
 		Cost: 120
 	Tooltip:
 		Name: Light Infantry
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 12500
 	Mobile:
@@ -42,6 +44,8 @@ ENGINEER:
 		Cost: 500
 	Tooltip:
 		Name: Engineer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 40
@@ -58,6 +62,7 @@ ENGINEER:
 	EngineerRepair:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
+	CaptureManager:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 50
@@ -89,5 +94,5 @@ FLAMEGUY:
 		FallbackSequence: die
 		UseDeathTypeSuffix: false
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System

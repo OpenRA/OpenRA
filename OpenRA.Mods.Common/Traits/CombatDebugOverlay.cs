@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly WVec TargetPosVLine = new WVec(128, 0, 0);
 
 		readonly DebugVisualizations debugVis;
-		readonly HealthInfo healthInfo;
+		readonly IHealthInfo healthInfo;
 		readonly Lazy<BodyOrientation> coords;
 
 		HitShape[] shapes;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CombatDebugOverlay(Actor self)
 		{
-			healthInfo = self.Info.TraitInfoOrDefault<HealthInfo>();
+			healthInfo = self.Info.TraitInfoOrDefault<IHealthInfo>();
 			coords = Exts.Lazy(self.Trait<BodyOrientation>);
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (healthInfo == null)
 				return;
 
-			var maxHP = healthInfo.HP > 0 ? healthInfo.HP : 1;
+			var maxHP = healthInfo.MaxHP > 0 ? healthInfo.MaxHP : 1;
 			var damageText = "{0} ({1}%)".F(-e.Damage.Value, e.Damage.Value * 100 / maxHP);
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color.RGB, damageText, 30)));

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -17,7 +16,7 @@ namespace OpenRA.Mods.Common.Activities
 	class RepairBuilding : Enter
 	{
 		readonly Actor target;
-		readonly Health health;
+		readonly IHealth health;
 		readonly Stance validStances;
 
 		public RepairBuilding(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances)
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			this.validStances = validStances;
-			health = target.Trait<Health>();
+			health = target.Trait<IHealth>();
 		}
 
 		protected override bool CanReserve(Actor self)

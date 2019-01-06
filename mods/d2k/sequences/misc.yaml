@@ -438,6 +438,7 @@ moveflsh:
 		Tick: 80
 		BlendMode: Multiply
 		ZOffset: 2047
+		EmbeddedPalette: moveflash
 
 resources:
 	spice: BLOXBASE.R8
@@ -450,6 +451,9 @@ shroud:
 		BlendMode: Subtractive
 		Offset: -16,-16
 		Length: 14
+	palette: DATA.R8
+		Start: 38
+		EmbeddedPalette: shroud
 	shrouda: DATA.R8
 		Start: 40
 	shroudb: DATA.R8

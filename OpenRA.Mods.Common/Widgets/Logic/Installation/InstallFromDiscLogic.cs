@@ -14,8 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using OpenRA;
-using OpenRA.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
 
@@ -119,6 +117,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var volumes = DriveInfo.GetDrives()
 					.Where(IsValidDrive)
 					.Select(v => v.RootDirectory.FullName);
+
+				if (Platform.CurrentPlatform == PlatformType.Linux)
+				{
+					// Outside of Gnome, most mounting tools on Linux don't set DriveType.CDRom
+					// so provide a fallback by allowing users to manually mount images on known paths
+					volumes = volumes.Concat(new[]
+					{
+						"/media/openra",
+						"/media/" + Environment.UserName + "/openra",
+						"/mnt/openra"
+					});
+				}
 
 				foreach (var kv in sources)
 				{

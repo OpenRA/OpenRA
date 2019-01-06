@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
@@ -23,7 +22,9 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
 	{
+		[NotificationReference("Speech")]
 		public readonly string ReadyAudio = "Reinforce";
+
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
 		[ActorReference(typeof(AircraftInfo))] public readonly string ActorType = "c17";
 
@@ -32,18 +33,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class ProductionAirdrop : Production
 	{
-		readonly ProductionAirdropInfo info;
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
-			: base(init, info)
-		{
-			this.info = info;
-		}
+			: base(init, info) { }
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
 			if (IsTraitDisabled || IsTraitPaused)
 				return false;
 
+			var info = (ProductionAirdropInfo)Info;
 			var owner = self.Owner;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 

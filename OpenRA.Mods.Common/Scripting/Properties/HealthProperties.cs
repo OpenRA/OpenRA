@@ -9,20 +9,19 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("General")]
-	public class HealthProperties : ScriptActorProperties, Requires<HealthInfo>
+	public class HealthProperties : ScriptActorProperties, Requires<IHealthInfo>
 	{
-		Health health;
+		IHealth health;
 		public HealthProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		[Desc("Current health of the actor.")]

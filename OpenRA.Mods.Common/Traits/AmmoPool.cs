@@ -97,15 +97,9 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		// This mostly serves to avoid complicated ReloadAmmoPool look-ups in various other places.
-		// TODO: Investigate removing this when the Rearm activity is replaced with a condition-based solution.
-		public bool AutoReloads { get; private set; }
-
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			AutoReloads = self.TraitsImplementing<ReloadAmmoPool>().Any(r => r.Info.AmmoPool == Info.Name && r.Info.RequiresCondition == null);
-
 			UpdateCondition(self);
 
 			// HACK: Temporarily needed until Rearm activity is gone for good

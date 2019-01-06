@@ -18,52 +18,69 @@ You need to fetch the thirdparty dependencies and place them at the appropriate 
 
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with MSBuild or use the Makefile analogue command `make all` scripted in PowerShell syntax.
 
-Run the game with `OpenRA.Game.exe Game.Mod=ra` for Red Alert or `OpenRA.Game.exe Game.Mod=cnc` for Tiberian Dawn.
+Run the game with `launch-game.cmd`. It can be handed arguments that specify the exact mod one wishes to run, for example, run `launch-game.cmd Game.Mod=ra` to launch Red Alert, `launch-game.cmd Game.Mod=cnc` to start Tiberian dawn or `launch-game.cmd Game.Mod=d2k` to launch Dune 2000.
 
 Linux
 =====
 
 Use `make dependencies` to map the native libraries to your system and fetch the remaining CLI dependencies to place them at the appropriate places.
 
-To compile OpenRA, run `make all` from the command line.
+To compile OpenRA, run `make all` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod. 
 
-Run with either `launch-game.sh` or `mono --debug OpenRA.Game.exe`.
+Type `sudo make install` for system-wide installation. Run `sudo make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run the Red Alert by executing the `openra-ra` command, the Dune 2000 mod by running the `openra-d2k` command and Tiberian Dawn by the `openra-cnc` command. Alternatively, you can also run these mods by clicking on their desktop shortcuts if you ran `sudo make install-linux-shortcuts`. 
 
-Type `sudo make install` for system wide installation. Run `make install-linux-shortcuts` to get startup scripts, icons and desktop files. You can then run from the `openra` shortcut.
+Arch Linux
+----------
+
+It is important to note there is an unofficial [`openra-git`](https://aur.archlinux.org/packages/openra-git) package in the Arch User Repository (AUR) of Arch Linux. If manually compiling is the way you wish to go the build and runtime dependencies can be installed with:
+
+```
+sudo pacman -S mono openal libgl freetype2 sdl2 lua51 xdg-utils zenity
+```
 
 Debian/Ubuntu
 -------------
 
-* mono-devel
-* libfreetype6
-* libopenal1
-* liblua5.1-0
-* libsdl2-2.0-0
-* xdg-utils
-* zenity
-* curl
+```
+sudo apt install mono-devel libfreetype6 libopenal1 liblua5.1-0 libsdl2-2.0-0 xdg-utils zenity wget
+```
 
-openSUSE
---------
+Fedora
+------
 
 ```
-sudo zypper in mono-devel openal-soft freetype2 SDL2 lua51 xdg-utils zenity curl
+sudo dnf install "pkgconfig(mono)" SDL2 freetype "lua = 5.1" openal-soft xdg-utils zenity
 ```
 
 Gentoo
 ------
 
-* dev-lang/mono
-* dev-dotnet/libgdiplus
-* media-libs/freetype:2
-* media-libs/libsdl2
-* media-libs/openal
-* virtual/jpeg
-* virtual/opengl
-* dev-lang/lua-5.1.5
-* x11-misc/xdg-utils
-* gnome-extra/zenity
-* net-misc/curl
+```
+sudo emerge -av dev-lang/mono dev-dotnet/libgdiplus media-libs/freetype:2 media-libs/libsdl2 media-libs/openal virtual/jpeg virtual/opengl '=dev-lang/lua-5.1.5*' x11-misc/xdg-utils gnome-extra/zenity
+```
+
+Mageia
+------
+
+```
+sudo dnf install "pkgconfig(mono)" SDL2 freetype "lib*lua5.1" "lib*freetype2" "lib*sdl2.0_0" openal-soft xdg-utils zenity
+```
+
+openSUSE
+--------
+
+```
+sudo zypper in mono-devel openal-soft freetype2 SDL2 lua51 xdg-utils zenity
+```
+
+Red Hat Enterprise Linux (and rebuilds, e.g. CentOS)
+----------------------------------------------------
+
+The EPEL repository is required in order for the following command to run properly. 
+
+```
+sudo yum install "pkgconfig(mono)" SDL2 freetype "lua = 5.1" openal-soft xdg-utils zenity
+```
 
 OSX
 =====
@@ -72,4 +89,4 @@ Use `make dependencies` to map the native libraries to your system.
 
 To compile OpenRA, run `make` from the command line.
 
-Run with `mono --debug OpenRA.Game.exe`.
+Run with `./launch-game.sh`.

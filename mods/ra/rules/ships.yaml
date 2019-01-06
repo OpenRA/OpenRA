@@ -11,6 +11,8 @@ SS:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 25000
 	Armor:
@@ -37,7 +39,7 @@ SS:
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		Palette: submerged
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -79,6 +81,8 @@ MSUB:
 		Cost: 2000
 	Tooltip:
 		Name: Missile Submarine
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 40000
 	Armor:
@@ -105,7 +109,7 @@ MSUB:
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		Palette: submerged
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -118,6 +122,7 @@ MSUB:
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
+		TargetFrozenActors: True
 	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
@@ -146,6 +151,8 @@ DD:
 		Cost: 1000
 	Tooltip:
 		Name: Destroyer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 40000
 	Armor:
@@ -197,6 +204,8 @@ CA:
 		Cost: 2400
 	Tooltip:
 		Name: Cruiser
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 80000
 	Armor:
@@ -234,6 +243,7 @@ CA:
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		Turrets: primary, secondary
+		TargetFrozenActors: True
 	WithMuzzleOverlay:
 	SelectionDecorations:
 	WithSpriteTurret@PRIMARY:
@@ -254,6 +264,8 @@ LST:
 		Cost: 700
 	Tooltip:
 		Name: Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 35000
 	Armor:
@@ -294,6 +306,8 @@ PT:
 		Cost: 500
 	Tooltip:
 		Name: Gunboat
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Armor:

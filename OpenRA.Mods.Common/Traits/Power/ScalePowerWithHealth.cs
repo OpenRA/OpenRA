@@ -14,20 +14,20 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Scale power amount with the current health.")]
-	public class ScalePowerWithHealthInfo : ITraitInfo, Requires<PowerInfo>, Requires<HealthInfo>
+	public class ScalePowerWithHealthInfo : ITraitInfo, Requires<PowerInfo>, Requires<IHealthInfo>
 	{
 		public object Create(ActorInitializer init) { return new ScalePowerWithHealth(init.Self); }
 	}
 
 	public class ScalePowerWithHealth : IPowerModifier, INotifyDamage, INotifyOwnerChanged
 	{
-		readonly Health health;
+		readonly IHealth health;
 		PowerManager power;
 
 		public ScalePowerWithHealth(Actor self)
 		{
 			power = self.Owner.PlayerActor.Trait<PowerManager>();
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		int IPowerModifier.GetPowerModifier()

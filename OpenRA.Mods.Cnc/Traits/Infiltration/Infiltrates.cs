@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
@@ -24,22 +23,26 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class InfiltratesInfo : ConditionalTraitInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("What diplomatic stances can be infiltrated by this actor.")]
 		public readonly Stance ValidStances = Stance.Neutral | Stance.Enemy;
 
-		[Desc("Behaviour when entering the structure.",
+		[Desc("Behaviour when entering the target.",
 			"Possible values are Exit, Suicide, Dispose.")]
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
 
-		[Desc("Notification to play when a building is infiltrated.")]
-		public readonly string Notification = "BuildingInfiltrated";
+		[NotificationReference("Speech")]
+		[Desc("Notification to play when a target is infiltrated.")]
+		public readonly string Notification = null;
 
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
+
+		public readonly string EnterCursor = "enter";
 
 		public override object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
@@ -112,7 +115,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly InfiltratesInfo info;
 
 		public InfiltrationOrderTargeter(InfiltratesInfo info)
-			: base("Infiltrate", 7, "enter", true, false)
+			: base("Infiltrate", 7, info.EnterCursor, true, true)
 		{
 			this.info = info;
 		}

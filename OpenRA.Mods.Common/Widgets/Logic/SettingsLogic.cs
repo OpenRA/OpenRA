@@ -7,7 +7,6 @@
  * the License, or (at your option) any later version. For more
  * information, see COPYING.
  */
-
 #endregion
 
 using System;
@@ -481,19 +480,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ss = Game.Settings.Server;
 			var gs = Game.Settings.Game;
 
+			// Advanced
 			BindCheckboxPref(panel, "NAT_DISCOVERY", ss, "DiscoverNatDevices");
 			BindCheckboxPref(panel, "PERFTEXT_CHECKBOX", ds, "PerfText");
 			BindCheckboxPref(panel, "PERFGRAPH_CHECKBOX", ds, "PerfGraph");
-			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SanityCheckUnsyncedCode");
-			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
 			BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gs, "FetchNews");
-			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
 			BindCheckboxPref(panel, "SENDSYSINFO_CHECKBOX", ds, "SendSystemInformation");
 			BindCheckboxPref(panel, "CHECK_VERSION_CHECKBOX", ds, "CheckVersion");
-			BindCheckboxPref(panel, "REPLAY_COMMANDS_CHECKBOX", ds, "EnableDebugCommandsInReplays");
 
 			var ssi = panel.Get<CheckboxWidget>("SENDSYSINFO_CHECKBOX");
 			ssi.IsDisabled = () => !gs.FetchNews;
+
+			// Developer
+			BindCheckboxPref(panel, "BOTDEBUG_CHECKBOX", ds, "BotDebug");
+			BindCheckboxPref(panel, "LUADEBUG_CHECKBOX", ds, "LuaDebug");
+			BindCheckboxPref(panel, "REPLAY_COMMANDS_CHECKBOX", ds, "EnableDebugCommandsInReplays");
+			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SyncCheckUnsyncedCode");
+			BindCheckboxPref(panel, "CHECKBOTSYNC_CHECKBOX", ds, "SyncCheckBotModuleCode");
+			BindCheckboxPref(panel, "STRICTACTIVITY_CHECKBOX", ds, "StrictActivityChecking");
+
+			panel.Get("DEBUG_OPTIONS").IsVisible = () => ds.DisplayDeveloperSettings;
+			panel.Get("DEBUG_HIDDEN_LABEL").IsVisible = () => !ds.DisplayDeveloperSettings;
 
 			return () => { };
 		}
@@ -510,7 +517,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ss.DiscoverNatDevices = dss.DiscoverNatDevices;
 				ds.PerfText = dds.PerfText;
 				ds.PerfGraph = dds.PerfGraph;
-				ds.SanityCheckUnsyncedCode = dds.SanityCheckUnsyncedCode;
+				ds.SyncCheckUnsyncedCode = dds.SyncCheckUnsyncedCode;
+				ds.SyncCheckBotModuleCode = dds.SyncCheckBotModuleCode;
 				ds.BotDebug = dds.BotDebug;
 				ds.LuaDebug = dds.LuaDebug;
 				ds.SendSystemInformation = dds.SendSystemInformation;

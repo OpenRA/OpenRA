@@ -9,18 +9,21 @@
  */
 #endregion
 
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
 {
 	public class CaptureNotificationInfo : ITraitInfo
 	{
+		[NotificationReference("Speech")]
 		[Desc("The speech notification to play to the new owner.")]
 		public readonly string Notification = "BuildingCaptured";
 
 		[Desc("Specifies if Notification is played with the voice of the new owners faction.")]
 		public readonly bool NewOwnerVoice = true;
 
+		[NotificationReference("Speech")]
 		[Desc("The speech notification to play to the old owner.")]
 		public readonly string LoseNotification = null;
 
@@ -38,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			this.info = info;
 		}
 
-		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);

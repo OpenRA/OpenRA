@@ -9,8 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -20,38 +18,24 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Scripting
 {
 	[ScriptPropertyGroup("Ability")]
-	public class CaptureProperties : ScriptActorProperties
+	public class CaptureProperties : ScriptActorProperties, Requires<CaptureManagerInfo>
 	{
-		readonly Captures[] captures;
-		readonly ExternalCapturesInfo externalInfo;
+		readonly CaptureManager captureManager;
 
 		public CaptureProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			captures = Self.TraitsImplementing<Captures>().ToArray();
-			externalInfo = Self.Info.TraitInfoOrDefault<ExternalCapturesInfo>();
+			captureManager = Self.Trait<CaptureManager>();
 		}
 
 		[Desc("Captures the target actor.")]
 		public void Capture(Actor target)
 		{
-			var capturable = target.Info.TraitInfoOrDefault<CapturableInfo>();
-
-			if (capturable != null)
-			{
-				if (captures.Any(x => !x.IsTraitDisabled && x.Info.CaptureTypes.Overlaps(capturable.Types)))
-				{
-					Self.QueueActivity(new CaptureActor(Self, target));
-					return;
-				}
-			}
-
-			var externalCapturable = target.Info.TraitInfoOrDefault<ExternalCapturableInfo>();
-
-			if (externalInfo != null && externalCapturable != null && externalInfo.CaptureTypes.Overlaps(externalCapturable.Types))
-				Self.QueueActivity(new ExternalCaptureActor(Self, Target.FromActor(target)));
-			else
+			var targetManager = target.TraitOrDefault<CaptureManager>();
+			if (targetManager == null || !targetManager.CanBeTargetedBy(target, Self, captureManager))
 				throw new LuaException("Actor '{0}' cannot capture actor '{1}'!".F(Self, target));
+
+			Self.QueueActivity(new CaptureActor(Self, target));
 		}
 	}
 }

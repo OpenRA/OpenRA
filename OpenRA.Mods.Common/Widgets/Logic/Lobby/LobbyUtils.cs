@@ -217,7 +217,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
-				{ "initialColor", client.Color }
+				{ "initialColor", client.Color },
+				{ "initialFaction", client.Faction }
 			});
 
 			color.AttachPanel(colorChooser, onExit);
@@ -296,8 +297,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return "Poor";
 		}
 
-		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager, bool visible)
+		public static void SetupLatencyWidget(Widget parent, Session.Client c, OrderManager orderManager)
 		{
+			var visible = c != null && c.Bot == null;
 			var block = parent.GetOrNull("LATENCY");
 			if (block != null)
 			{
@@ -309,31 +311,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var tooltip = parent.Get<ClientTooltipRegionWidget>("LATENCY_REGION");
-			tooltip.IsVisible = () => c != null && visible;
-			if (c != null)
+			tooltip.IsVisible = () => visible;
+			if (visible)
 				tooltip.Bind(orderManager, null, c);
 		}
 
 		public static void SetupProfileWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
+			var visible = c != null && c.Bot == null;
 			var profile = parent.GetOrNull<ImageWidget>("PROFILE");
-			if (profile != null && c.Bot == null)
+			if (profile != null)
 			{
 				var imageName = (c != null && c.IsAdmin ? "admin-" : "player-")
 					+ (c.Fingerprint != null ? "registered" : "anonymous");
 
 				profile.GetImageName = () => imageName;
-				profile.IsVisible = () => true;
+				profile.IsVisible = () => visible;
 			}
 
 			var profileTooltip = parent.GetOrNull<ClientTooltipRegionWidget>("PROFILE_TOOLTIP");
-			if (profileTooltip != null && c.Bot == null)
+			if (profileTooltip != null)
 			{
 				if (c != null && c.Fingerprint != null)
 					profileTooltip.Template = "REGISTERED_PLAYER_TOOLTIP";
 
-				profileTooltip.Bind(orderManager, worldRenderer, c);
-				profileTooltip.IsVisible = () => true;
+				if (visible)
+					profileTooltip.Bind(orderManager, worldRenderer, c);
+
+				profileTooltip.IsVisible = () => visible;
 			}
 		}
 
@@ -520,7 +525,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+			var team = parent.Get<LabelWidget>("TEAM");
+			team.IsVisible = () => true;
+			team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 			HideChildWidget(parent, "TEAM_DROPDOWN");
 		}
 
@@ -543,7 +550,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
-			parent.Get<LabelWidget>("SPAWN").GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
+			var spawn = parent.Get<LabelWidget>("SPAWN");
+			spawn.IsVisible = () => true;
+			spawn.GetText = () => (c.SpawnPoint == 0) ? "-" : Convert.ToChar('A' - 1 + c.SpawnPoint).ToString();
 			HideChildWidget(parent, "SPAWN_DROPDOWN");
 		}
 

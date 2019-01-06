@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to actors which should be able to regenerate their health points.")]
-	class SelfHealingInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	class SelfHealingInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Absolute amount of health points added in each step.")]
 		public readonly int Step = 5;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class SelfHealing : ConditionalTrait<SelfHealingInfo>, ITick, INotifyDamage
 	{
-		readonly Health health;
+		readonly IHealth health;
 
 		[Sync] int ticks;
 		[Sync] int damageTicks;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public SelfHealing(Actor self, SelfHealingInfo info)
 			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 		}
 
 		void ITick.Tick(Actor self)

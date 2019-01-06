@@ -91,9 +91,11 @@ FCOM:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	WithBuildingBib:
-	ExternalCapturable:
-		CaptureCompleteTime: 30
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	GivesBuildableArea:
 		AreaTypes: building
 	BaseProvider:
@@ -118,8 +120,11 @@ HOSP:
 		Dimensions: 2,2
 	Health:
 		HP: 80000
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	EngineerRepairable:
 	Tooltip:
 		Name: Hospital
@@ -149,7 +154,7 @@ V01:
 		Name: Church
 	RevealsShroud:
 		Range: 10c0
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
 		UseTargetableCellsOffsets: false
@@ -163,7 +168,7 @@ V02:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
 		UseTargetableCellsOffsets: false
@@ -177,7 +182,7 @@ V03:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
 		UseTargetableCellsOffsets: false
@@ -191,7 +196,7 @@ V04:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 	HitShape:
 		UseTargetableCellsOffsets: false
@@ -206,7 +211,7 @@ V05:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V06:
@@ -215,7 +220,7 @@ V06:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V07:
@@ -224,62 +229,62 @@ V07:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V08:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V09:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V10:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V11:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V12:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V13:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V14:
 	Inherits: ^CivField
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V15:
 	Inherits: ^CivField
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V16:
 	Inherits: ^CivField
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V17:
 	Inherits: ^CivField
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V18:
 	Inherits: ^CivField
-	EditorTilesetFilter:
+	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
 V19:
@@ -336,7 +341,7 @@ BARL:
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 	Interactable:
 		Bounds: 24,24
@@ -360,7 +365,7 @@ BRL3:
 	-ShakeOnDeath:
 	-SoundOnDamageTransition:
 	-Demolishable:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
 	Interactable:
 		Bounds: 24,24
@@ -407,8 +412,11 @@ MISS:
 		Description: Capture to give visual range.
 		ValidStances: Neutral, Enemy
 	WithBuildingBib:
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	EngineerRepairable:
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -429,8 +437,11 @@ BIO:
 		Dimensions: 2,2
 	RevealsShroud:
 		Range: 4c0
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	CapturableProgressBlink:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
 	EngineerRepairable:
 	Tooltip:
 		Name: Biological Lab
@@ -465,8 +476,11 @@ OILB:
 		HP: 80000
 	RevealsShroud:
 		Range: 4c0
-	ExternalCapturable:
-	ExternalCapturableBar:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
 	EngineerRepairable:
 	CashTrickler:
 		Interval: 375
@@ -814,12 +828,12 @@ V37:
 
 RICE:
 	Inherits: ^CivField
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT
 
 RUSHOUSE:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT
 	Building:
 		Footprint: x x
@@ -829,12 +843,12 @@ RUSHOUSE:
 
 ASIANHUT:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT
 
 SNOWHUT:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: SNOW
 	Building:
 		Footprint: x x
@@ -846,7 +860,7 @@ SNOWHUT:
 
 LHUS:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT
 	Selectable:
 		Bounds: 24,48,0,-16
@@ -858,7 +872,7 @@ LHUS:
 
 WINDMILL:
 	Inherits: ^CivBuilding
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERAT
 	Selectable:
 		Bounds: 24,24,0,-14

@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace OpenRA.Mods.Common.FileFormats

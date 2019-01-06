@@ -158,7 +158,7 @@ FACTOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: fact
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 MoneyCrate:
 	Inherits: ^Crate
@@ -175,7 +175,7 @@ NUKEOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 PROCOUT.IN:
 	Inherits: PROC
@@ -186,7 +186,7 @@ PROCOUT.IN:
 	ProvidesPrerequisite:
 		Prerequisite: proc
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 
 TRAN.IN:
 	Inherits: TRAN

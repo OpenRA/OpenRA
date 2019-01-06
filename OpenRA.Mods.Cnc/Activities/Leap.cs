@@ -13,70 +13,126 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.GameRules;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	class Leap : Activity
+	public class Leap : Activity
 	{
 		readonly Mobile mobile;
-		readonly WeaponInfo weapon;
-		readonly int length;
+		readonly Mobile targetMobile;
+		readonly int speed;
+		readonly AttackLeap attack;
+		readonly EdibleByLeap edible;
+		readonly Target target;
 
-		WPos from;
-		WPos to;
-		int ticks;
-		WAngle angle;
-		BitSet<DamageType> damageTypes;
+		CPos destinationCell;
+		SubCell destinationSubCell = SubCell.Any;
+		WPos destination, origin;
+		int length;
+		bool canceled = false;
+		bool jumpComplete = false;
+		int ticks = 0;
+		WPos targetPosition;
 
-		public Leap(Actor self, Actor target, Armament a, WDist speed, WAngle angle, BitSet<DamageType> damageTypes)
+		public Leap(Actor self, Target target, Mobile mobile, Mobile targetMobile, int speed, AttackLeap attack, EdibleByLeap edible)
 		{
-			var targetMobile = target.TraitOrDefault<Mobile>();
-			if (targetMobile == null)
-				throw new InvalidOperationException("Leap requires a target actor with the Mobile trait");
+			this.mobile = mobile;
+			this.targetMobile = targetMobile;
+			this.attack = attack;
+			this.target = target;
+			this.edible = edible;
+			this.speed = speed;
+		}
 
-			this.weapon = a.Weapon;
-			this.angle = angle;
-			this.damageTypes = damageTypes;
-			mobile = self.Trait<Mobile>();
-			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, targetMobile.FromCell, targetMobile.FromSubCell);
-			mobile.IsMoving = true;
+		protected override void OnFirstRun(Actor self)
+		{
+			destinationCell = target.Actor.Location;
+			if (targetMobile != null)
+				destinationSubCell = targetMobile.ToSubCell;
 
-			from = self.CenterPosition;
-			to = self.World.Map.CenterOfSubCell(targetMobile.FromCell, targetMobile.FromSubCell);
-			length = Math.Max((to - from).Length / speed.Length, 1);
+			origin = self.CenterPosition;
+			destination = self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell);
+			length = Math.Max((origin - destination).Length / speed, 1);
 
-			// HACK: why isn't this using the interface?
-			self.Trait<WithInfantryBody>().Attacking(self, Target.FromActor(target), a);
+			// First check if we are still allowed to leap
+			// We need an extra boolean as using Cancel() in OnFirstRun doesn't work
+			canceled = !edible.GetLeapAtBy(self) || target.Type != TargetType.Actor;
 
-			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(SoundType.World, weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+			IsInterruptible = false;
+
+			if (canceled)
+				return;
+
+			targetPosition = target.CenterPosition;
+			attack.GrantLeapCondition(self);
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (ticks == 0 && IsCanceled)
+			if (canceled)
 				return NextActivity;
 
-			mobile.SetVisualPosition(self, WPos.LerpQuadratic(from, to, angle, ++ticks, length));
-			if (ticks >= length)
+			// Correct the visual position after we jumped
+			if (jumpComplete)
 			{
-				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
-				mobile.FinishedMoving(self);
-				mobile.IsMoving = false;
+				if (ChildActivity == null)
+					return NextActivity;
 
-				self.World.ActorMap.GetActorsAt(mobile.ToCell, mobile.ToSubCell)
-					.Except(new[] { self }).Where(t => weapon.IsValidAgainst(t, self))
-					.Do(t => t.Kill(self, damageTypes));
-
-				return NextActivity;
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
 			}
 
+			if (target.Type != TargetType.Invalid)
+				targetPosition = target.CenterPosition;
+
+			var position = length > 1 ? WPos.Lerp(origin, targetPosition, ticks, length - 1) : targetPosition;
+			mobile.SetVisualPosition(self, position);
+
+			// We are at the destination
+			if (++ticks >= length)
+			{
+				mobile.IsMoving = false;
+
+				// Revoke the run condition
+				attack.IsAiming = false;
+
+				// Move to the correct subcells, if our target actor uses subcells
+				// (This does not update the visual position!)
+				mobile.SetLocation(destinationCell, destinationSubCell, destinationCell, destinationSubCell);
+
+				// Revoke the condition before attacking, as it is usually used to pause the attack trait
+				attack.RevokeLeapCondition(self);
+				attack.DoAttack(self, target);
+
+				jumpComplete = true;
+				QueueChild(mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));
+
+				return this;
+			}
+
+			mobile.IsMoving = true;
+
 			return this;
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			attack.RevokeLeapCondition(self);
+			base.OnLastRun(self);
+		}
+
+		protected override void OnActorDispose(Actor self)
+		{
+			attack.RevokeLeapCondition(self);
+			base.OnActorDispose(self);
+		}
+
+		public override IEnumerable<Target> GetTargets(Actor self)
+		{
+			yield return Target.FromPos(ticks < length / 2 ? origin : destination);
 		}
 	}
 }

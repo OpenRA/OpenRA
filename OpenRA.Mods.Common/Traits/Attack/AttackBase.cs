@@ -31,24 +31,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;
 
-		[Desc("Does not care about shroud or fog. Enables the actor to launch an attack against a target even if he has no visibility of it.")]
-		public readonly bool IgnoresVisibility = false;
+		[Desc("Allow firing into the fog to target frozen actors without requiring force-fire.")]
+		public readonly bool TargetFrozenActors = false;
 
 		[VoiceReference] public readonly string Voice = "Action";
 
 		public override abstract object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, INotifyCreated, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
 
-		[Sync] public bool IsAiming { get; internal set; }
+		[Sync] public bool IsAiming { get; set; }
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
 
 		protected IFacing facing;
-		protected Building building;
 		protected IPositionable positionable;
 		protected INotifyAiming[] notifyAiming;
 		protected Func<IEnumerable<Armament>> getArmaments;
@@ -66,7 +65,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			building = self.TraitOrDefault<Building>();
 			positionable = self.TraitOrDefault<IPositionable>();
 			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
@@ -115,10 +113,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return false;
 
-			// Building is under construction or is being sold
-			if (building != null && !building.BuildComplete)
-				return false;
-
 			if (Armaments.All(a => a.IsReloading))
 				return false;
 
@@ -163,12 +157,11 @@ namespace OpenRA.Mods.Common.Traits
 			var forceAttack = order.OrderString == forceAttackOrderName;
 			if (forceAttack || order.OrderString == attackOrderName)
 			{
-				var target = self.ResolveFrozenActorOrder(order, Color.Red);
-				if (!target.IsValidFor(self))
+				if (!order.Target.IsValidFor(self))
 					return;
 
-				self.SetTargetLine(target, Color.Red);
-				AttackTarget(target, order.Queued, true, forceAttack);
+				self.SetTargetLine(order.Target, Color.Red);
+				AttackTarget(order.Target, order.Queued, true, forceAttack);
 			}
 
 			if (order.OrderString == "Stop")
@@ -426,7 +419,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (a == null)
 					a = armaments.First();
 
-				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
+				         (!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors)
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
 					: ab.Info.Cursor ?? a.Info.Cursor;
 

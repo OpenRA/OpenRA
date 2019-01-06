@@ -24,6 +24,7 @@ namespace OpenRA
 
 		public string MapUid;
 		public string MapTitle;
+		public int FinalGameTick;
 
 		/// <summary>Game start timestamp (when the recoding started).</summary>
 		public DateTime StartTimeUtc;

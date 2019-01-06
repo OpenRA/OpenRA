@@ -100,6 +100,6 @@ namespace OpenRA.Mods.Common.Traits
 					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color.RGB);
 				}
 			}
-	    }
+		}
 	}
 }

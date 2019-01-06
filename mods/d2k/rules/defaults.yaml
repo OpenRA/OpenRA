@@ -15,11 +15,13 @@
 
 ^GainsExperience:
 	GainsExperience:
+		LevelUpNotification: LevelUp
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
 			800: rank-veteran
 			1600: rank-veteran
+		LevelUpImage: crate-effects
 	GrantCondition@RANK-ELITE:
 		RequiresCondition: rank-veteran >= 4
 		Condition: rank-elite
@@ -210,7 +212,7 @@
 		Duration: 100
 		Radius: 2c512
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 
 ^Tank:
@@ -232,7 +234,7 @@
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Husk
 
 ^VehicleHusk:
@@ -260,6 +262,7 @@
 		Spins: False
 		Moves: True
 		Explosion: UnitExplodeLarge
+	-MapEditorData:
 
 ^Infantry:
 	Inherits@1: ^ExistsInWorld
@@ -329,7 +332,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 96
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
 
 ^Plane:
@@ -352,7 +355,7 @@
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 
 ^Building:
@@ -385,12 +388,12 @@
 		Adjacent: 3
 	GivesBuildableArea:
 		AreaTypes: building
+	CaptureManager:
 	Capturable:
-		CaptureThreshold: 100
+		Types: building
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	WithSpriteBody:
 	Explodes:
 		Type: Footprint
 		Weapon: BuildingExplode
@@ -398,6 +401,7 @@
 	RepairableBuilding:
 		RepairStep: 500
 		PlayerExperience: 25
+		RepairingNotification: Repairing
 	SpawnActorsOnSell:
 		ActorTypes: light_inf
 	MustBeDestroyed:
@@ -407,12 +411,13 @@
 	ActorLostNotification:
 		Notification: BuildingLost
 	ShakeOnDeath:
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
+		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
-	WithCrumbleOverlay:
-	Demolishable:
 	DamagedByTerrain:
 		Damage: 500
 		DamageInterval: 100
@@ -423,11 +428,15 @@
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
 		Range: 1c512, 4c0
+	WithSpriteBody:
 	WithMakeAnimation:
+		Condition: build-incomplete
+	WithCrumbleOverlay:
+		RequiresCondition: !build-incomplete
 	RevealOnDeath:
 		Duration: 100
 		Radius: 4c768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 	WithBuildingRepairDecoration:
@@ -446,8 +455,11 @@
 		Range: 1c768
 	-GivesBuildableArea:
 	-WithMakeAnimation:
+	-WithCrumbleOverlay:
 	-Capturable:
 	-WithSpriteBody:
+	Sellable:
+		RequiresCondition: !being-demolished
 	WithWallSpriteBody:
 	LineBuildNode:
 		Types: turret
@@ -460,7 +472,7 @@
 	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 

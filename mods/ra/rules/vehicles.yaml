@@ -11,6 +11,8 @@ V2RL:
 		Cost: 900
 	Tooltip:
 		Name: V2 Rocket Launcher
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 20000
 	Armor:
@@ -28,6 +30,7 @@ V2RL:
 	AutoTarget:
 		ScanRadius: 10
 	AttackFrontal:
+		TargetFrozenActors: True
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
 		Name: loaded
@@ -57,6 +60,8 @@ V2RL:
 	Tooltip:
 		Name: Light Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 22000
 	Armor:
@@ -81,8 +86,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 1TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 
@@ -100,6 +103,8 @@ V2RL:
 	Tooltip:
 		Name: Medium Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 45000
 	Armor:
@@ -124,8 +129,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 2TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -146,6 +149,8 @@ V2RL:
 	Tooltip:
 		Name: Heavy Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 60000
 	Armor:
@@ -170,8 +175,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 3TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
@@ -193,6 +196,8 @@ V2RL:
 	Tooltip:
 		Name: Mammoth Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 90000
 	Armor:
@@ -225,8 +230,6 @@ V2RL:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: 4TNK.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	SelfHealing:
 		Step: 100
 		Delay: 3
@@ -253,6 +256,8 @@ ARTY:
 		Cost: 850
 	Tooltip:
 		Name: Artillery
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 10000
 	Armor:
@@ -271,6 +276,7 @@ ARTY:
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		TargetFrozenActors: True
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode
@@ -301,6 +307,7 @@ HARV:
 		BaleUnloadDelay: 1
 		SearchFromProcRadius: 30
 		SearchFromOrderRadius: 11
+		EmptyCondition: no-ore
 	Health:
 		HP: 60000
 	Armor:
@@ -317,8 +324,6 @@ HARV:
 		String: Harvester
 	SpawnActorOnDeath:
 		Actor: HARV.EmptyHusk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	HarvesterHuskModifier:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
@@ -328,6 +333,7 @@ HARV:
 		HealIfBelow: 50
 		DamageCooldown: 500
 	Explodes:
+		RequiresCondition: !no-ore
 		Weapon: OreExplosion
 
 MCV:
@@ -366,8 +372,6 @@ MCV:
 	BaseBuilding:
 	SpawnActorOnDeath:
 		Actor: MCV.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 	TransferTimedExternalConditionOnTransform:
 		Condition: invulnerability
 
@@ -384,6 +388,8 @@ JEEP:
 		Cost: 500
 	Tooltip:
 		Name: Ranger
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Armor:
@@ -391,7 +397,7 @@ JEEP:
 	Mobile:
 		TurnSpeed: 10
 		Speed: 170
-		RequiresCondition: !notmobile
+		RequiresCondition: !notmobile && !being-captured
 	RevealsShroud:
 		Range: 8c0
 		RevealGeneratedShroud: False
@@ -428,13 +434,15 @@ APC:
 		Cost: 850
 	Tooltip:
 		Name: Armored Personnel Carrier
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 30000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Speed: 142
-		RequiresCondition: !notmobile
+		RequiresCondition: !notmobile && !being-captured
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False
@@ -465,6 +473,8 @@ MNLY:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Selectable:
 		Priority: 5
 	Health:
@@ -492,6 +502,8 @@ MNLY:
 		Weapon: ATMine
 	RenderSprites:
 		Image: MNLY
+	Rearmable:
+		RearmActors: fix
 
 TRUK:
 	Inherits: ^Vehicle
@@ -532,6 +544,8 @@ MGG:
 		Cost: 1200
 	Tooltip:
 		Name: Mobile Gap Generator
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 22000
 	Armor:
@@ -551,8 +565,6 @@ MGG:
 	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
-		OwnerType: InternalName
-		EffectiveOwnerFromOwner: true
 
 MRJ:
 	Inherits: ^Vehicle
@@ -560,6 +572,8 @@ MRJ:
 		Cost: 1100
 	Tooltip:
 		Name: Mobile Radar Jammer
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
@@ -607,6 +621,8 @@ TTNK:
 	Tooltip:
 		Name: Tesla Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 45000
 	Armor:
@@ -644,6 +660,8 @@ FTRK:
 		Cost: 600
 	Tooltip:
 		Name: Mobile Flak
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 15000
 	Armor:
@@ -689,6 +707,8 @@ DTRK:
 		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 5000
 	Armor:
@@ -723,6 +743,8 @@ CTNK:
 	Tooltip:
 		Name: Chrono Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	SelectionDecorations:
 	Health:
 		HP: 45000
@@ -764,15 +786,17 @@ QTNK:
 	Tooltip:
 		Name: MAD Tank
 		GenericName: Tank
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 90000
 	Armor:
 		Type: Heavy
 	Mobile:
-		RequiresCondition: !deployed
+		RequiresCondition: !deployed && !being-captured
 		Speed: 56
 	Chronoshiftable:
-		RequiresCondition: !deployed
+		RequiresCondition: !deployed && !being-captured
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
@@ -800,6 +824,8 @@ STNK:
 		Cost: 1350
 	Tooltip:
 		Name: Phase Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Health:
 		HP: 30000
 	Armor:
@@ -807,7 +833,7 @@ STNK:
 	Mobile:
 		Speed: 142
 		Locomotor: heavywheeled
-		RequiresCondition: !notmobile
+		RequiresCondition: !notmobile && !being-captured
 	RevealsShroud:
 		Range: 7c0
 		RevealGeneratedShroud: False
@@ -834,7 +860,7 @@ STNK:
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
-		RequiresCondition: !cloak-force-disabled
+		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

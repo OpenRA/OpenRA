@@ -46,6 +46,8 @@ Sound:
 			cy: 20
 			harvester: 50
 		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
+	Warhead@3Concrete: DamagesConcrete
+		Damage: 1720
 
 WormJaw:
 	ReloadDelay: 10
@@ -86,6 +88,8 @@ OrniBomb:
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 6750
 
 Crush:
 	Warhead@1Dam: SpreadDamage
@@ -122,6 +126,8 @@ Atomic:
 		Explosions: nuke
 		ImpactSounds: EXPLLG2.WAV
 		ImpactActors: false
+	Warhead@3Concrete: DamagesConcrete
+		Damage: 24300
 
 CrateNuke:
 	Inherits: Atomic
@@ -152,6 +158,8 @@ CrateExplosion:
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
 		ImpactActors: false
+	Warhead@2Concrete: DamagesConcrete
+		Damage: 4500
 
 UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
@@ -212,6 +220,8 @@ grenade:
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 1875
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
@@ -233,6 +243,8 @@ GrenDeath:
 		Explosions: building
 		ImpactSounds: EXPLSML4.WAV
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 1875
 
 SardDeath:
 	Warhead@1Dam: SpreadDamage
@@ -255,6 +267,8 @@ SardDeath:
 		Explosions: small_napalm
 		ImpactSounds: EXPLSML2.WAV
 		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 450
 
 SpiceExplosion:
 	Projectile: Bullet
@@ -323,3 +337,5 @@ PlasmaExplosion:
 		SmudgeType: SandCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: devastator
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 20000

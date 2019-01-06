@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
 				if (optionsButton != null)
-					Sync.CheckSyncUnchanged(world, optionsButton.OnClick);
+					Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, optionsButton.OnClick);
 			};
 		}
 	}

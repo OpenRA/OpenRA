@@ -23,7 +23,7 @@ DPOD:
 		EjectOnDeath: true
 	Armament:
 		Weapon: Vulcan2
-	AttackHeli:
+	AttackAircraft:
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
@@ -38,14 +38,16 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Aircraft:
 		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
+		TakeoffSounds: dropup1.aud
+		LandingSounds: dropdwn1.aud
 		IdealSeparation: 1275
 	Health:
 		HP: 20000
@@ -72,6 +74,8 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -80,12 +84,11 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 186
 		MoveIntoShroud: false
-		TakeoffSound: orcaup1.aud
-		LandingSound: orcadwn1.aud
+		TakeoffSounds: orcaup1.aud
+		LandingSounds: orcadwn1.aud
 	Health:
 		HP: 20000
 	Armor:
@@ -96,7 +99,7 @@ ORCA:
 	Armament:
 		Weapon: Hellfire
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -109,6 +112,8 @@ ORCA:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 ORCAB:
 	Inherits: ^Aircraft
@@ -119,6 +124,8 @@ ORCAB:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 30
@@ -127,15 +134,14 @@ ORCAB:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 3072
 		MaximumPitch: 120
 		TurnSpeed: 3
 		Speed: 96
 		CruisingCondition: cruising
 		MoveIntoShroud: false
-		TakeoffSound: orcaup1.aud
-		LandingSound: orcadwn1.aud
+		TakeoffSounds: orcaup1.aud
+		LandingSounds: orcadwn1.aud
 	ReturnOnIdle:
 	Health:
 		HP: 26000
@@ -147,7 +153,7 @@ ORCAB:
 	Armament:
 		Weapon: Bomb
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
 		PauseOnCondition: empdisable
@@ -164,6 +170,8 @@ ORCAB:
 		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 ORCATRAN:
 	Inherits: ^Helicopter
@@ -171,6 +179,8 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 50
@@ -182,8 +192,8 @@ ORCATRAN:
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		TakeoffSound: orcaup1.aud
-		LandingSound: orcadwn1.aud
+		TakeoffSounds: orcaup1.aud
+		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
 	Health:
 		HP: 20000
@@ -207,6 +217,8 @@ TRNSPORT:
 		Cost: 750
 	Tooltip:
 		Name: Carryall
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 60
@@ -218,8 +230,8 @@ TRNSPORT:
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
+		TakeoffSounds: dropup1.aud
+		LandingSounds: dropdwn1.aud
 		AltitudeVelocity: 64
 		MoveIntoShroud: false
 	Carryall:
@@ -247,6 +259,8 @@ SCRIN:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 40
@@ -257,15 +271,14 @@ SCRIN:
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		CruiseAltitude: 2560
 		MaximumPitch: 90
 		TurnSpeed: 3
 		Speed: 168
 		AirborneCondition: airborne
 		MoveIntoShroud: false
-		TakeoffSound: dropup1.aud
-		LandingSound: dropdwn1.aud
+		TakeoffSounds: dropup1.aud
+		LandingSounds: dropdwn1.aud
 	ReturnOnIdle:
 	Health:
 		HP: 28000
@@ -277,7 +290,7 @@ SCRIN:
 	Armament:
 		Weapon: Proton
 		PauseOnCondition: !ammo
-	AttackPlane:
+	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
 		PauseOnCondition: empdisable
@@ -292,6 +305,8 @@ SCRIN:
 	DeathSounds:
 	SpawnActorOnDeath:
 		Actor: SCRIN.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 APACHE:
 	Inherits: ^Helicopter
@@ -302,6 +317,8 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -310,7 +327,6 @@ APACHE:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		RearmBuildings: gahpad, nahpad
 		TurnSpeed: 5
 		Speed: 130
 		MoveIntoShroud: false
@@ -324,7 +340,7 @@ APACHE:
 	Armament:
 		Weapon: HarpyClaw
 		PauseOnCondition: !ammo
-	AttackHeli:
+	AttackAircraft:
 		FacingTolerance: 20
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -345,6 +361,8 @@ APACHE:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: APACHE.Husk
+	Rearmable:
+		RearmActors: gahpad, nahpad
 
 HUNTER:
 	Inherits@2: ^ExistsInWorld
@@ -387,5 +405,5 @@ HUNTER:
 		Palette: pips
 	ActorLostNotification:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System

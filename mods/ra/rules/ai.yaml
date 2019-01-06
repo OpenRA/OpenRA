@@ -1,210 +1,31 @@
 Player:
-	HackyAI@RushAI:
+	ModularBot@RushAI:
 		Name: Rush AI
 		Type: rush
-		MinimumExcessPower: 20
-		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 160
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30%
-			barr: 1%
-			kenn: 0.5%
-			tent: 1%
-			weap: 1%
-			pbox: 7%
-			gun: 7%
-			tsla: 5%
-			gap: 2%
-			ftur: 10%
-			agun: 5%
-			sam: 5%
-			atek: 1%
-			stek: 1%
-			fix: 0.1%
-			dome: 10%
-		UnitsToBuild:
-			e1: 65%
-			e2: 25%
-			e3: 40%
-			e4: 15%
-			dog: 15%
-			shok: 15%
-			harv: 10%
-			apc: 30%
-			jeep: 40%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 50%
-			1tnk: 70%
-			2tnk: 25%
-			3tnk: 50%
-			4tnk: 10%
-			ttnk: 10%
-			stnk: 5%
-		UnitLimits:
-			dog: 4
-			harv: 8
-		SquadSize: 20
-		SupportPowerDecisions:
-			spyplane:
-				OrderName: SovietSpyPlane
-				MinimumAttractiveness: 1
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 5c0
-			paratroopers:
-				OrderName: SovietParatroopers
-				MinimumAttractiveness: 5
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 8c0
-				Consideration@2:
-					Against: Enemy
-					Types: Water
-					Attractiveness: -5
-					TargetMetric: None
-					CheckRadius: 8c0
-			parabombs:
-				OrderName: UkraineParabombs
-				MinimumAttractiveness: 1
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 5c0
-			nukepower:
-				OrderName: NukePowerInfoOrder
-				MinimumAttractiveness: 3000
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 5c0
-				Consideration@2:
-					Against: Ally
-					Types: Air, Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 7c0
-	HackyAI@NormalAI:
+	ModularBot@NormalAI:
 		Name: Normal AI
 		Type: normal
-		MinimumExcessPower: 40
-		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			dome: 1
-			weap: 1
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 10%
-			tent: 1%
-			barr: 1%
-			kenn: 0.5%
-			dome: 1%
-			weap: 6%
-			hpad: 4%
-			spen: 1%
-			syrd: 1%
-			afld: 4%
-			pbox: 7%
-			gun: 7%
-			ftur: 10%
-			tsla: 5%
-			gap: 2%
-			fix: 1%
-			agun: 5%
-			sam: 1%
-			atek: 1%
-			stek: 1%
-			mslo: 1%
-		UnitsToBuild:
-			e1: 65%
-			e2: 25%
-			e3: 40%
-			e4: 15%
-			dog: 15%
-			shok: 15%
-			harv: 10%
-			apc: 30%
-			jeep: 40%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 50%
-			1tnk: 70%
-			2tnk: 25%
-			3tnk: 50%
-			4tnk: 15%
-			ttnk: 15%
-			stnk: 10%
-			heli: 30%
-			hind: 30%
-			mig: 30%
-			yak: 30%
-			ss: 10%
-			msub: 10%
-			dd: 10%
-			ca: 10%
-			pt: 10%
-		UnitLimits:
-			dog: 4
-			harv: 8
-		SquadSize: 40
-		SupportPowerDecisions:
+	ModularBot@TurtleAI:
+		Name: Turtle AI
+		Type: turtle
+	ModularBot@NavalAI:
+		Name: Naval AI
+		Type: naval
+	GrantConditionOnBotOwner@rush:
+		Condition: enable-rush-ai
+		Bots: rush
+	GrantConditionOnBotOwner@normal:
+		Condition: enable-normal-ai
+		Bots: normal
+	GrantConditionOnBotOwner@turtle:
+		Condition: enable-turtle-ai
+		Bots: turtle
+	GrantConditionOnBotOwner@naval:
+		Condition: enable-naval-ai
+		Bots: naval
+	SupportPowerBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		Decisions:
 			spyplane:
 				OrderName: SovietSpyPlane
 				MinimumAttractiveness: 1
@@ -253,26 +74,116 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
-	HackyAI@TurtleAI:
-		Name: Turtle AI
-		Type: turtle
-		MinimumExcessPower: 50
+	HarvesterBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+	BaseBuilderBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 160
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			kenn: 1
+			dome: 1
+			weap: 1
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 30
+			barr: 1
+			kenn: 1
+			tent: 1
+			weap: 1
+			pbox: 7
+			gun: 7
+			tsla: 5
+			gap: 2
+			ftur: 10
+			agun: 5
+			sam: 5
+			atek: 1
+			stek: 1
+			fix: 1
+			dome: 10
+			mslo: 1
+	BaseBuilderBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen,syrd
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			afld.ukraine: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			proc: 15
+			tent: 1
+			barr: 1
+			kenn: 1
+			dome: 1
+			weap: 6
+			hpad: 4
+			spen: 1
+			syrd: 1
+			afld: 4
+			afld.ukraine: 4
+			pbox: 7
+			gun: 7
+			ftur: 10
+			tsla: 5
+			gap: 2
+			fix: 1
+			agun: 5
+			sam: 1
+			atek: 1
+			stek: 1
+			mslo: 1
+	BaseBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 250
 		ExcessPowerIncrement: 50
 		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 250
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen,syrd
+		SiloTypes: silo
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -284,131 +195,47 @@ Player:
 			syrd: 1
 			hpad: 4
 			afld: 4
+			afld.ukraine: 4
 			atek: 1
 			stek: 1
 			fix: 1
 		BuildingFractions:
-			proc: 30%
-			tent: 1%
-			barr: 1%
-			kenn: 0.5%
-			weap: 3%
-			hpad: 2%
-			spen: 1%
-			syrd: 1%
-			pbox: 10%
-			gun: 10%
-			ftur: 10%
-			tsla: 7%
-			gap: 3%
-			fix: 0.1%
-			dome: 10%
-			agun: 5%
-			sam: 5%
-			atek: 1%
-			stek: 1%
-			mslo: 1%
-		UnitsToBuild:
-			e1: 65%
-			e2: 25%
-			e3: 40%
-			e4: 15%
-			dog: 15%
-			shok: 15%
-			harv: 10%
-			apc: 30%
-			jeep: 40%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 50%
-			1tnk: 70%
-			2tnk: 25%
-			3tnk: 50%
-			4tnk: 20%
-			ttnk: 20%
-			stnk: 15%
-			heli: 30%
-			hind: 30%
-			mig: 30%
-			yak: 30%
-			ss: 10%
-			msub: 10%
-			dd: 10%
-			ca: 10%
-			pt: 10%
-		UnitLimits:
-			dog: 4
-			harv: 8
-		SquadSize: 10
-		SupportPowerDecisions:
-			spyplane:
-				OrderName: SovietSpyPlane
-				MinimumAttractiveness: 1
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 5c0
-			paratroopers:
-				OrderName: SovietParatroopers
-				MinimumAttractiveness: 5
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 8c0
-				Consideration@2:
-					Against: Enemy
-					Types: Water
-					Attractiveness: -5
-					TargetMetric: None
-					CheckRadius: 8c0
-			parabombs:
-				OrderName: UkraineParabombs
-				MinimumAttractiveness: 1
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 5c0
-			nukepower:
-				OrderName: NukePowerInfoOrder
-				MinimumAttractiveness: 3000
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 5c0
-				Consideration@2:
-					Against: Ally
-					Types: Air, Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 7c0
-	HackyAI@NavalAI:
-		Name: Naval AI
-		Type: naval
-		MinimumExcessPower: 20
+			proc: 30
+			tent: 1
+			barr: 1
+			kenn: 1
+			weap: 3
+			hpad: 2
+			afld: 2
+			afld.ukraine: 2
+			spen: 1
+			syrd: 1
+			pbox: 10
+			gun: 10
+			ftur: 10
+			tsla: 7
+			gap: 3
+			fix: 1
+			dome: 10
+			agun: 5
+			sam: 5
+			atek: 1
+			stek: 1
+			mslo: 1
+	BaseBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		MinimumExcessPower: 60
+		MaximumExcessPower: 200
 		ExcessPowerIncrement: 40
 		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap
-			Production: barr,tent,weap,afld,hpad
-			NavalProduction: spen,syrd
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
-			NavalUnits: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		BarracksTypes: barr,tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen,syrd
+		SiloTypes: silo
 		BuildingLimits:
 			proc: 4
 			dome: 1
@@ -418,88 +245,172 @@ Player:
 			syrd: 1
 			hpad: 8
 			afld: 8
+			afld.ukraine: 8
 			weap: 1
 			atek: 1
 			stek: 1
 			fix: 1
 		BuildingFractions:
-			proc: 29%
-			dome: 1%
-			weap: 1%
-			hpad: 20%
-			afld: 20%
-			atek: 1%
-			stek: 1%
-			spen: 1%
-			syrd: 1%
-			fix: 0.1%
-			pbox: 12%
-			gun: 12%
-			ftur: 12%
-			tsla: 12%
-			agun: 5%
-			sam: 5%
-			mslo: 1%
+			proc: 30
+			dome: 1
+			weap: 1
+			hpad: 20
+			afld: 20
+			afld.ukraine: 20
+			atek: 1
+			stek: 1
+			spen: 1
+			syrd: 1
+			fix: 1
+			pbox: 12
+			gun: 12
+			ftur: 12
+			tsla: 12
+			agun: 5
+			sam: 5
+			mslo: 1
+	BuildingRepairBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	SquadManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		SquadSize: 20
+		ExcludeFromSquadsTypes: harv, mcv, dog
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+	McvManagerBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+	UnitBuilderBotModule@rush:
+		RequiresCondition: enable-rush-ai
 		UnitsToBuild:
-			harv: 1%
-			heli: 30%
-			hind: 30%
-			mig: 30%
-			yak: 30%
-			ss: 10%
-			msub: 30%
-			dd: 30%
-			ca: 20%
-			pt: 10%
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+			shok: 15
+			harv: 10
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		SquadSize: 40
+		ExcludeFromSquadsTypes: harv, mcv, dog
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 40
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+			heli: 30
+			hind: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		SquadSize: 10
+		ExcludeFromSquadsTypes: harv, mcv, dog
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 50
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 10
+			heli: 30
+			hind: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		SquadSize: 1
+		ExcludeFromSquadsTypes: harv, mcv, dog
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		UnitsToBuild:
+			harv: 1
+			heli: 30
+			hind: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 30
+			dd: 30
+			ca: 20
+			pt: 10
 		UnitLimits:
 			harv: 8
-		SquadSize: 1
-		SupportPowerDecisions:
-			spyplane:
-				OrderName: SovietSpyPlane
-				MinimumAttractiveness: 1
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 5c0
-			paratroopers:
-				OrderName: SovietParatroopers
-				MinimumAttractiveness: 5
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 8c0
-				Consideration@2:
-					Against: Enemy
-					Types: Water
-					Attractiveness: -5
-					TargetMetric: None
-					CheckRadius: 8c0
-			parabombs:
-				OrderName: UkraineParabombs
-				MinimumAttractiveness: 1
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: None
-					CheckRadius: 5c0
-			nukepower:
-				OrderName: NukePowerInfoOrder
-				MinimumAttractiveness: 3000
-				Consideration@1:
-					Against: Enemy
-					Types: Structure
-					Attractiveness: 1
-					TargetMetric: Value
-					CheckRadius: 5c0
-				Consideration@2:
-					Against: Ally
-					Types: Air, Ground, Water
-					Attractiveness: -10
-					TargetMetric: Value
-					CheckRadius: 7c0

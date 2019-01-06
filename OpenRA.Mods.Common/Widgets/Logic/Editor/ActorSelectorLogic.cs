@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ActorSelectorLogic : ChromeLogic
+	public class ActorSelectorLogic : CommonSelectorLogic
 	{
 		class ActorSelectorActor
 		{
@@ -37,55 +37,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		readonly EditorViewportControllerWidget editor;
 		readonly DropDownButtonWidget ownersDropDown;
-		readonly ScrollPanelWidget panel;
-		readonly ScrollItemWidget itemTemplate;
 		readonly Ruleset mapRules;
-		readonly World world;
-		readonly WorldRenderer worldRenderer;
-		readonly string[] allCategories;
-		readonly HashSet<string> selectedCategories = new HashSet<string>();
-		readonly List<string> filteredCategories = new List<string>();
-
 		readonly ActorSelectorActor[] allActors;
 
 		PlayerReference selectedOwner;
-		string searchFilter;
 
 		[ObjectCreator.UseCtor]
 		public ActorSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
+			: base(widget, world, worldRenderer, "ACTORTEMPLATE_LIST", "ACTORPREVIEW_TEMPLATE")
 		{
 			mapRules = world.Map.Rules;
-			this.world = world;
-			this.worldRenderer = worldRenderer;
-
-			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			ownersDropDown = widget.Get<DropDownButtonWidget>("OWNERS_DROPDOWN");
-
-			panel = widget.Get<ScrollPanelWidget>("ACTORTEMPLATE_LIST");
-			itemTemplate = panel.Get<ScrollItemWidget>("ACTORPREVIEW_TEMPLATE");
-			panel.Layout = new GridLayout(panel);
-
 			var editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 
 			selectedOwner = editorLayer.Players.Players.Values.First();
 			Func<PlayerReference, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 			{
-				var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () =>
-				{
-					selectedOwner = option;
-
-					ownersDropDown.Text = selectedOwner.Name;
-					ownersDropDown.TextColor = selectedOwner.Color.RGB;
-
-					InitializeActorPreviews();
-				});
+				var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () => SelectOwner(option));
 
 				item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
 				item.GetColor = () => option.Color.RGB;
 
 				return item;
+			};
+
+			editorLayer.OnPlayerRemoved = () =>
+			{
+				if (editorLayer.Players.Players.Values.Any(p => p.Name == selectedOwner.Name))
+					return;
+				SelectOwner(editorLayer.Players.Players.Values.First());
 			};
 
 			ownersDropDown.OnClick = () =>
@@ -109,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!a.HasTraitInfo<IRenderActorPreviewInfo>())
 					continue;
 
-				var editorData = a.TraitInfoOrDefault<EditorTilesetFilterInfo>();
+				var editorData = a.TraitInfoOrDefault<MapEditorDataInfo>();
 
 				// Actor must be included in at least one category
 				if (editorData == null || editorData.Categories == null)
@@ -131,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tooltipText = (tooltip == null ? "Type: " : tooltip.Name + "\nType: ") + a.Name;
 				allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), tooltipText));
- 			}
+			}
 
 			allActors = allActorsTemp.ToArray();
 
@@ -142,124 +123,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var c in allCategories)
 			{
-				selectedCategories.Add(c);
-				filteredCategories.Add(c);
+				SelectedCategories.Add(c);
+				FilteredCategories.Add(c);
 			}
 
-			var searchTextField = widget.Get<TextFieldWidget>("SEARCH_TEXTFIELD");
-			searchTextField.OnTextEdited = () =>
+			SearchTextField.OnTextEdited = () =>
 			{
-				searchFilter = searchTextField.Text.Trim();
-				filteredCategories.Clear();
+				searchFilter = SearchTextField.Text.Trim();
+				FilteredCategories.Clear();
 
 				if (!string.IsNullOrEmpty(searchFilter))
-					filteredCategories.AddRange(
+					FilteredCategories.AddRange(
 						allActors.Where(t => t.SearchTerms.Any(
 							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
 						.SelectMany(t => t.Categories)
 						.Distinct()
 						.OrderBy(x => x));
 				else
-					filteredCategories.AddRange(allCategories);
+					FilteredCategories.AddRange(allCategories);
 
-				InitializeActorPreviews();
+				InitializePreviews();
 			};
 
-			searchTextField.OnEscKey = () =>
-			{
-				searchTextField.Text = "";
-				searchTextField.YieldKeyboardFocus();
-				return true;
-			};
-
-			var actorCategorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
-			actorCategorySelector.GetText = () =>
-			{
-				if (selectedCategories.Count == 0)
-					return "None";
-
-				if (!string.IsNullOrEmpty(searchFilter))
-					return "Search Results";
-
-				if (selectedCategories.Count == 1)
-					return selectedCategories.First();
-
-				if (selectedCategories.Count == allCategories.Length)
-					return "All";
-
-				return "Multiple";
-			};
-
-			actorCategorySelector.OnMouseDown = _ =>
-			{
-				if (searchTextField != null)
-					searchTextField.YieldKeyboardFocus();
-
-				actorCategorySelector.RemovePanel();
-				actorCategorySelector.AttachPanel(CreateCategoriesPanel());
-			};
-
-			InitializeActorPreviews();
+			InitializePreviews();
 		}
 
-		Widget CreateCategoriesPanel()
+		void SelectOwner(PlayerReference option)
 		{
-			var categoriesPanel = Ui.LoadWidget("ACTOR_CATEGORY_FILTER_PANEL", null, new WidgetArgs());
-			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
-
-			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");
-			categoriesPanel.AddChild(selectButtons);
-
-			var selectAll = selectButtons.Get<ButtonWidget>("SELECT_ALL");
-			selectAll.OnClick = () =>
-			{
-				selectedCategories.Clear();
-				foreach (var c in allCategories)
-					selectedCategories.Add(c);
-
-				InitializeActorPreviews();
-			};
-
-			var selectNone = selectButtons.Get<ButtonWidget>("SELECT_NONE");
-			selectNone.OnClick = () =>
-			{
-				selectedCategories.Clear();
-				InitializeActorPreviews();
-			};
-
-			var categoryHeight = 5 + selectButtons.Bounds.Height;
-			foreach (var cat in filteredCategories)
-			{
-				var category = (CheckboxWidget)categoryTemplate.Clone();
-				category.GetText = () => cat;
-				category.IsChecked = () => selectedCategories.Contains(cat);
-				category.IsVisible = () => true;
-				category.OnClick = () =>
-				{
-					if (!selectedCategories.Remove(cat))
-						selectedCategories.Add(cat);
-
-					InitializeActorPreviews();
-				};
-
-				categoriesPanel.AddChild(category);
-				categoryHeight += categoryTemplate.Bounds.Height;
-			}
-
-			categoriesPanel.Bounds.Height = Math.Min(categoryHeight, panel.Bounds.Height);
-
-			return categoriesPanel;
+			selectedOwner = option;
+			ownersDropDown.Text = option.Name;
+			ownersDropDown.TextColor = option.Color.RGB;
+			InitializePreviews();
 		}
 
-		void InitializeActorPreviews()
+		protected override void InitializePreviews()
 		{
-			panel.RemoveChildren();
-			if (!selectedCategories.Any())
+			Panel.RemoveChildren();
+			if (!SelectedCategories.Any())
 				return;
 
 			foreach (var a in allActors)
 			{
-				if (!selectedCategories.Overlaps(a.Categories))
+				if (!SelectedCategories.Overlaps(a.Categories))
 					continue;
 
 				if (!string.IsNullOrEmpty(searchFilter) && !a.SearchTerms.Any(s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
@@ -275,17 +180,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					var item = ScrollItemWidget.Setup(itemTemplate,
-						() => { var brush = editor.CurrentBrush as EditorActorBrush; return brush != null && brush.Actor == actor; },
-						() => editor.SetBrush(new EditorActorBrush(editor, actor, selectedOwner, worldRenderer)));
+					var item = ScrollItemWidget.Setup(ItemTemplate,
+						() => { var brush = Editor.CurrentBrush as EditorActorBrush; return brush != null && brush.Actor == actor; },
+						() => Editor.SetBrush(new EditorActorBrush(Editor, actor, selectedOwner, WorldRenderer)));
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");
 					preview.SetPreview(actor, td);
 
 					// Scale templates to fit within the panel
 					var scale = 1f;
-					if (scale * preview.IdealPreviewSize.X > itemTemplate.Bounds.Width)
-						scale = (itemTemplate.Bounds.Width - panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
+					if (scale * preview.IdealPreviewSize.X > ItemTemplate.Bounds.Width)
+						scale = (ItemTemplate.Bounds.Width - Panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
 
 					preview.GetScale = () => scale;
 					preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.X);
@@ -297,12 +202,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					item.GetTooltipText = () => a.Tooltip;
 
-					panel.AddChild(item);
+					Panel.AddChild(item);
 				}
 				catch
 				{
 					Log.Write("debug", "Map editor ignoring actor {0}, because of missing sprites for tileset {1}.",
-						actor.Name, world.Map.Rules.TileSet.Id);
+						actor.Name, World.Map.Rules.TileSet.Id);
 					continue;
 				}
 			}

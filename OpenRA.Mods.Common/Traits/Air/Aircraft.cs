@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		UsesInit<LocationInit>, UsesInit<FacingInit>, IActorPreviewInitInfo
+		IActorPreviewInitInfo, IEditorActorOptions
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
@@ -36,15 +36,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
 
-		[ActorReference]
-		public readonly HashSet<string> RepairBuildings = new HashSet<string> { };
-
-		[ActorReference]
-		public readonly HashSet<string> RearmBuildings = new HashSet<string> { };
-
 		public readonly int InitialFacing = 0;
 
 		public readonly int TurnSpeed = 255;
+
+		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if negative.")]
+		public readonly int IdleTurnSpeed = -1;
 
 		public readonly int Speed = 1;
 
@@ -75,8 +72,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
-		[Desc("Does this actor need to turn before landing?")]
+		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
+
+		[Desc("Does this VTOL actor need to turn before landing on a resupplier?")]
+		public readonly bool TurnToDock = true;
 
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
@@ -96,11 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast this actor ascends or descends when using vertical take off/landing.")]
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
-		[Desc("Sound to play when the actor is taking off.")]
-		public readonly string TakeoffSound = null;
+		[Desc("Sounds to play when the actor is taking off.")]
+		public readonly string[] TakeoffSounds = { };
 
-		[Desc("Sound to play when the actor is landing.")]
-		public readonly string LandingSound = null;
+		[Desc("Sounds to play when the actor is landing.")]
+		public readonly string[] LandingSounds = { };
 
 		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
 		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
@@ -110,6 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
+
+		[Desc("Display order for the facing slider in the map editor")]
+		public readonly int EditorFacingDisplayOrder = 3;
 
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
@@ -147,16 +150,30 @@ namespace OpenRA.Mods.Common.Traits
 
 			return !world.ActorMap.GetActorsAt(cell).Any(x => x != ignoreActor);
 		}
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			yield return new EditorActorSlider("Facing", EditorFacingDisplayOrder, 0, 255, 8,
+				actor =>
+				{
+					var init = actor.Init<FacingInit>();
+					return init != null ? init.Value(world) : InitialFacing;
+				},
+				(actor, value) => actor.ReplaceInit(new FacingInit((int)value)));
+		}
 	}
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
+		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
+		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
+		RepairableInfo repairableInfo;
+		RearmableInfo rearmableInfo;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -212,6 +229,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Created(Actor self)
 		{
+			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -273,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.
-			if (landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
+			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
 				&& !(self.CurrentActivity is HeliLand || self.CurrentActivity is Turn))
 			{
 				self.CancelActivity();
@@ -287,7 +306,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add takeoff activity if LandOnCondidion resolves to false and the actor should not land when idle.
-			if (landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
+			if (ForceLanding && landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
 			{
 				ForceLanding = false;
 
@@ -451,8 +470,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return Info.RearmBuildings.Contains(a.Info.Name)
-				|| Info.RepairBuildings.Contains(a.Info.Name);
+			return (rearmableInfo != null && rearmableInfo.RearmActors.Contains(a.Info.Name))
+				|| (repairableInfo != null && repairableInfo.RepairBuildings.Contains(a.Info.Name));
 		}
 
 		public int MovementSpeed
@@ -488,17 +507,40 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
-				yield return new Rearm(self);
+			if (rearmableInfo != null && rearmableInfo.RearmActors.Contains(name))
+				yield return new Rearm(self, a, WDist.Zero);
 
 			// The ResupplyAircraft activity guarantees that we're on the helipad
-			if (Info.RepairBuildings.Contains(name))
+			if (repairableInfo != null && repairableInfo.RepairBuildings.Contains(name))
 				yield return new Repair(self, a, WDist.Zero);
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
 			init.Add(new FacingInit(Facing));
+		}
+
+		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
+		{
+			OnBecomingIdle(self);
+		}
+
+		protected virtual void OnBecomingIdle(Actor self)
+		{
+			if (Info.VTOL && Info.LandWhenIdle)
+			{
+				if (Info.TurnToLand)
+					self.QueueActivity(new Turn(self, Info.InitialFacing));
+
+				self.QueueActivity(new HeliLand(self, true));
+			}
+			else if (!Info.CanHover)
+				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
+
+			// Temporary HACK for the AutoCarryall special case (needs CanHover, but also HeliFlyCircle on idle).
+			// Will go away soon (in a separate PR) with the arrival of ActionsWhenIdle.
+			else if (Info.CanHover && self.Info.HasTraitInfo<AutoCarryallInfo>() && Info.IdleTurnSpeed > -1)
+				self.QueueActivity(new HeliFlyCircle(self, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 		}
 
 		#region Implement IPositionable
@@ -550,7 +592,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveTo(CPos cell, int nearEnough)
 		{
 			if (!Info.CanHover)
-				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
+				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
 		}
@@ -558,7 +600,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveTo(CPos cell, Actor ignoreActor)
 		{
 			if (!Info.CanHover)
-				return new FlyAndContinueWithCirclesWhenIdle(self, Target.FromCell(self.World, cell));
+				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
 		}
@@ -566,7 +608,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveWithinRange(Target target, WDist range)
 		{
 			if (!Info.CanHover)
-				return new FlyAndContinueWithCirclesWhenIdle(self, target, WDist.Zero, range);
+				return new Fly(self, target, WDist.Zero, range);
 
 			return new HeliFly(self, target, WDist.Zero, range);
 		}
@@ -574,7 +616,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
 		{
 			if (!Info.CanHover)
-				return new FlyAndContinueWithCirclesWhenIdle(self, target, minRange, maxRange);
+				return new Fly(self, target, minRange, maxRange);
 
 			return new HeliFly(self, target, minRange, maxRange);
 		}
@@ -624,6 +666,12 @@ namespace OpenRA.Mods.Common.Traits
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
 
+		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
+		{
+			var speed = MovementSpeed;
+			return speed > 0 ? (toPos - fromPos).Length / speed : 0;
+		}
+
 		public CPos NearestMoveableCell(CPos cell) { return cell; }
 
 		public bool IsMoving { get { return isMoving; } set { } }
@@ -662,15 +710,15 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			if (!Info.RearmBuildings.Any())
+			if (rearmableInfo == null || !rearmableInfo.RearmActors.Any())
 				return null;
 
-			return new Order("ReturnToBase", self, false);
+			return new Order("ReturnToBase", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return Info.RearmBuildings.Any(); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return rearmableInfo != null && rearmableInfo.RearmActors.Any(); }
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
@@ -684,7 +732,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "Stop":
 					return Info.Voice;
 				case "ReturnToBase":
-					return Info.RearmBuildings.Any() ? Info.Voice : null;
+					return rearmableInfo != null && rearmableInfo.RearmActors.Any() ? Info.Voice : null;
 				default: return null;
 			}
 		}
@@ -706,13 +754,13 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(target, Color.Green);
 
 				if (!Info.CanHover)
-					self.QueueActivity(order.Queued, new FlyAndContinueWithCirclesWhenIdle(self, target));
+					self.QueueActivity(order.Queued, new Fly(self, target));
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
 			}
-			else if (order.OrderString == "Enter")
+			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
 			{
-				// Enter orders are only valid for own/allied actors,
+				// Enter and Repair orders are only valid for own/allied actors,
 				// which are guaranteed to never be frozen.
 				if (order.Target.Type != TargetType.Actor)
 					return;
@@ -744,11 +792,13 @@ namespace OpenRA.Mods.Common.Traits
 
 						Action enter = () =>
 						{
-							var exit = targetActor.Info.FirstExitOrDefault(null);
-							var offset = (exit != null) ? exit.SpawnOffset : WVec.Zero;
+							var exit = targetActor.FirstExitOrDefault(null);
+							var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
 							self.QueueActivity(new HeliFly(self, Target.FromPos(targetActor.CenterPosition + offset)));
-							self.QueueActivity(new Turn(self, Info.InitialFacing));
+							if (Info.TurnToDock)
+								self.QueueActivity(new Turn(self, Info.InitialFacing));
+
 							self.QueueActivity(new HeliLand(self, false));
 							self.QueueActivity(new ResupplyAircraft(self));
 						};
@@ -767,17 +817,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				UnReserve();
-
-				// TODO: Implement INotifyBecomingIdle instead
-				if (Info.VTOL && Info.LandWhenIdle)
-				{
-					if (Info.TurnToLand)
-						self.QueueActivity(new Turn(self, Info.InitialFacing));
-
-					self.QueueActivity(new HeliLand(self, true));
-				}
 			}
-			else if (order.OrderString == "ReturnToBase" && Info.RearmBuildings.Any())
+			else if (order.OrderString == "ReturnToBase" && rearmableInfo != null && rearmableInfo.RearmActors.Any())
 			{
 				UnReserve();
 				self.CancelActivity();

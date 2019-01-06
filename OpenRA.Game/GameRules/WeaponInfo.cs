@@ -25,6 +25,7 @@ namespace OpenRA.GameRules
 		public int[] InaccuracyModifiers;
 		public int[] RangeModifiers;
 		public int Facing;
+		public Func<int> CurrentMuzzleFacing;
 		public WPos Source;
 		public Func<WPos> CurrentSource;
 		public Actor SourceActor;

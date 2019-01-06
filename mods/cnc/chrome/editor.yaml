@@ -207,8 +207,9 @@ Container@EDITOR_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
-	Logic: LoadIngamePerfLogic, MapEditorLogic
+	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic
 		ChangeZoomKey: TogglePixelDouble
+		EditPanelPadding: 5
 	Children:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
@@ -223,6 +224,83 @@ Container@EDITOR_WORLD_ROOT:
 					Visible: false
 				ActorPreview@DRAG_ACTOR_PREVIEW:
 					Visible: false
+				Background@ACTOR_EDIT_PANEL:
+					Background: panel-black
+					Width: 269
+					Height: 89
+					Children:
+						Label@ACTOR_TYPE_LABEL:
+							X: 2
+							Y: 1
+							Width: 265
+							Height: 24
+							Align: Center
+							Font: Bold
+						Label@ACTOR_ID_LABEL:
+							Y: 29
+							Width: 55
+							Height: 24
+							Text: ID
+							Align: Right
+						TextField@ACTOR_ID:
+							X: 67
+							Y: 29
+							Width: 189
+							Height: 25
+						Label@ACTOR_ID_ERROR_LABEL:
+							X: 67
+							Y: 54
+							Width: 189
+							Height: 15
+							Font: TinyBold
+							TextColor: FF0000
+						Container@ACTOR_INIT_CONTAINER:
+							Y: 57
+							Width: PARENT_RIGHT
+							Children:
+								Container@SLIDER_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 22
+									Children:
+										Label@LABEL:
+											Width: 55
+											Height: 16
+											Align: Right
+										Slider@OPTION:
+											X: 58
+											Y: 1
+											Width: 207
+											Height: 20
+								Container@DROPDOWN_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 27
+									Children:
+										Label@LABEL:
+											Y: 1
+											Width: 55
+											Height: 24
+											Align: Right
+										DropDownButton@OPTION:
+											X: 67
+											Y: 1
+											Width: 189
+											Height: 25
+											Font: Bold
+						Container@BUTTON_CONTAINER:
+							Y: 60
+							Children:
+								Button@DELETE_BUTTON:
+									X: 4
+									Width: 85
+									Height: 25
+									Text: Delete
+									Font: Bold
+								Button@CLOSE_BUTTON:
+									X: 180
+									Width: 85
+									Height: 25
+									Text: Close
+									Font: Bold
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -444,7 +522,7 @@ Container@EDITOR_WORLD_ROOT:
 					Text: Actors
 					Font: Bold
 		Button@GRID_BUTTON:
-			X: WINDOW_RIGHT - 500
+			X: WINDOW_RIGHT - 650
 			Y: 5
 			Width: 100
 			Height: 25
@@ -455,7 +533,7 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Toggle the terrain grid
 			TooltipContainer: TOOLTIP_CONTAINER
 		Label@ZOOM_LABEL:
-			X: WINDOW_RIGHT - 580 - 55
+			X: WINDOW_RIGHT - 730 - 55
 			Y: 5
 			Width: 50
 			Height: 25
@@ -464,18 +542,25 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 		DropDownButton@ZOOM_BUTTON:
-			X: WINDOW_RIGHT - 580
+			X: WINDOW_RIGHT - 730
 			Y: 5
 			Width: 70
 			Height: 25
 			Font: Bold
 			Key: TogglePixelDouble
 		Button@COPYPASTE_BUTTON:
-			X: WINDOW_RIGHT - 390
+			X: WINDOW_RIGHT - 540
 			Y: 5
 			Width: 96
 			Height: 25
 			Text: Copy/Paste
+		DropDownButton@COPYFILTER_BUTTON:
+			X: WINDOW_RIGHT - 435
+			Y: 5
+			Width: 140
+			Height: 25
+			Text: Copy Filters
+			Font: Bold
 		Label@COORDINATE_LABEL:
 			X: 10
 			Width: 50
@@ -491,7 +576,7 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Contrast: true
 
-ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
+ScrollPanel@CATEGORY_FILTER_PANEL:
 	Width: 190
 	Children:
 		Container@SELECT_CATEGORIES_BUTTONS:
@@ -515,4 +600,15 @@ ScrollPanel@ACTOR_CATEGORY_FILTER_PANEL:
 			Y: 5
 			Width: PARENT_RIGHT - 29
 			Height: 22
+			Visible: false
+
+ScrollPanel@COPY_FILTER_PANEL:
+	Width: 140
+	Height: 65
+	Children:
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
 			Visible: false

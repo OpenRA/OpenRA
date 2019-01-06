@@ -7,6 +7,7 @@
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
 	DebugVisualizations:
+	TerrainRenderer:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: typea, typeb, typec, typed

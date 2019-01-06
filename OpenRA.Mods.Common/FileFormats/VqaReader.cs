@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Common.FileFormats
 {

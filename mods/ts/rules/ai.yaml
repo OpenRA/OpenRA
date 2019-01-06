@@ -1,22 +1,27 @@
 Player:
-	HackyAI@TestAI:
+	ModularBot@TestAI:
 		Name: Test AI
 		Type: test
+	GrantConditionOnBotOwner@test:
+		Condition: enable-test-ai
+		Bots: test
+	HarvesterBotModule:
+		RequiresCondition: enable-test-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+	BaseBuilderBotModule@test:
+		RequiresCondition: enable-test-ai
 		MinimumExcessPower: 30
+		MaximumExcessPower: 200
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
-		MaximumExcessPower: 200
-		BuildingCommonNames:
-			ConstructionYard: gacnst
-			Refinery: proc
-			Power: gapowr, napowr, naapwr
-			Barracks: gapile, nahand
-			VehiclesFactory: gaweap, naweap
-			Production: gapile, nahand, gaweap, naweap
-			Silo: gasilo
-		UnitsCommonNames:
-			Mcv: mcv
-			ExcludeFromSquads: harv
+		ConstructionYardTypes: gacnst
+		RefineryTypes: proc
+		PowerTypes: gapowr, napowr, naapwr
+		BarracksTypes: gapile, nahand
+		VehiclesFactoryTypes: gaweap, naweap
+		ProductionTypes: gapile, nahand, gaweap, naweap
+		SiloTypes: gasilo
 		BuildingLimits:
 			proc: 4
 			gasilo: 2
@@ -38,42 +43,55 @@ Player:
 			nalasr: 8
 			nasam: 4
 		BuildingFractions:
-			proc: 30%
-			gapile: 1%
-			nahand: 1%
-			gaweap: 1%
-			naweap: 1%
-			garadr: 1%
-			naradr: 1%
-			gatech: 1%
-			natech: 1%
-			nastlh: 1%
-			nalasr: 10%
-			gavulc: 10%
-			garock: 3%
-			gacsam: 6%
-			nasam: 6%
-			naobel: 3%
+			proc: 30
+			gapile: 1
+			nahand: 1
+			gaweap: 1
+			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
+			nalasr: 10
+			gavulc: 10
+			garock: 3
+			gacsam: 6
+			nasam: 6
+			naobel: 3
+	BuildingRepairBotModule:
+		RequiresCondition: enable-test-ai
+	SquadManagerBotModule@test:
+		RequiresCondition: enable-test-ai
+		SquadSize: 20
+		ExcludeFromSquadsTypes: harv, mcv
+		ConstructionYardTypes: gacnst
+	UnitBuilderBotModule@test:
+		RequiresCondition: enable-test-ai
 		UnitsToBuild:
-			e1: 80%
-			e2: 25%
-			e3: 25%
-			cyborg: 15%
-			jumpjet: 15%
-			repair: 2%
-			medic: 2%
-			harv: 10%
-			mmch: 15%
-			ttnk: 15%
-			smech: 25%
-			bggy: 25%
-			hvr: 20%
-			bike: 20%
-			subtank: 10%
-			sonic: 10%
-			stnk: 8%
+			e1: 80
+			e2: 25
+			e3: 25
+			cyborg: 15
+			jumpjet: 15
+			repair: 2
+			medic: 2
+			harv: 10
+			mmch: 15
+			ttnk: 15
+			smech: 25
+			bggy: 25
+			hvr: 20
+			bike: 20
+			subtank: 10
+			sonic: 10
+			stnk: 8
 		UnitLimits:
 			harv: 12
 			medic: 3
 			repair: 3
-		SquadSize: 20
+	McvManagerBotModule@test:
+		RequiresCondition: enable-test-ai
+		McvTypes: mcv
+		ConstructionYardTypes: gacnst
+		McvFactoryTypes: gaweap, naweap

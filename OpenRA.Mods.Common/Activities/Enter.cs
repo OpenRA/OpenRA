@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 	public abstract class Enter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
-		enum EnterState { ApproachingOrEntering, Inside, Exiting, Done }
+		enum EnterState { ApproachingOrEntering, WaitingToEnter, Inside, Exiting, Done }
 
 		readonly IMove move;
 		readonly int maxTries = 0;
@@ -57,6 +57,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected virtual void Unreserve(Actor self, bool abort) { }
 		protected virtual void OnInside(Actor self) { }
+
+		/// <summary>
+		/// Called when the actor is ready to transition from approaching to entering the target.
+		/// Return true to start entering, or false to wait in the WaitingToEnter state.
+		/// </summary>
+		protected virtual bool TryStartEnter(Actor self) { return true; }
 
 		protected bool TryGetAlternateTargetInCircle(
 			Actor self, WDist radius, Action<Target> update, Func<Actor, bool> primaryFilter, Func<Actor, bool>[] preferenceFilters = null)
@@ -186,6 +192,10 @@ namespace OpenRA.Mods.Common.Activities
 						case ReserveStatus.Ready:
 							break; // Reserved target -> start entering target
 					}
+
+					// Can we enter yet?
+					if (!TryStartEnter(self))
+						return EnterState.WaitingToEnter;
 
 					// Entering
 					isEnteringOrInside = true;

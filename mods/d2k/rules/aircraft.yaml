@@ -20,6 +20,7 @@ carryall.reinforce:
 		AirborneCondition: airborne
 		CanHover: True
 		VTOL: true
+		IdleTurnSpeed: 1
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne
@@ -112,6 +113,7 @@ ornithopter:
 		Actor: ornithopter.husk
 	RejectsOrders:
 	RevealOnFire:
+	-MapEditorData:
 
 ornithopter.husk:
 	Inherits: ^AircraftHusk

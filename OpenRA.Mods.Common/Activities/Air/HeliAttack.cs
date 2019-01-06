@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Common.Activities
 	public class HeliAttack : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly AttackHeli attackHeli;
+		readonly AttackAircraft attackAircraft;
 		readonly bool attackOnlyVisibleTargets;
-		readonly bool autoReloads;
+		readonly Rearmable rearmable;
 
 		Target target;
 		bool canHideUnderFog;
@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			Target = target;
 			aircraft = self.Trait<Aircraft>();
-			attackHeli = self.Trait<AttackHeli>();
+			attackAircraft = self.Trait<AttackAircraft>();
 			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
-			autoReloads = self.TraitsImplementing<AmmoPool>().All(p => p.AutoReloads);
+			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			var pos = self.CenterPosition;
-			var targetPos = attackHeli.GetTargetPosition(pos, target);
+			var targetPos = attackAircraft.GetTargetPosition(pos, target);
 			if (attackOnlyVisibleTargets && target.Type == TargetType.Actor && canHideUnderFog
 				&& !target.Actor.CanBeViewedByPlayer(self.Owner))
 			{
@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Common.Activities
 				return new HeliFly(self, newTarget);
 			}
 
-			// If all valid weapons have depleted their ammo and RearmBuilding is defined, return to RearmBuilding to reload and then resume the activity
-			if (!autoReloads && aircraft.Info.RearmBuildings.Any() && attackHeli.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
+			if (rearmable != null && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
 			var dist = targetPos - pos;
@@ -88,11 +88,11 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			// Fly towards the target
-			if (!target.IsInRange(pos, attackHeli.GetMaximumRangeVersusTarget(target)))
+			if (!target.IsInRange(pos, attackAircraft.GetMaximumRangeVersusTarget(target)))
 				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
 
 			// Fly backwards from the target
-			if (target.IsInRange(pos, attackHeli.GetMinimumRangeVersusTarget(target)))
+			if (target.IsInRange(pos, attackAircraft.GetMinimumRangeVersusTarget(target)))
 			{
 				// Facing 0 doesn't work with the following position change
 				var facing = 1;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(-facing));
 			}
 
-			attackHeli.DoAttack(self, target);
+			attackAircraft.DoAttack(self, target);
 
 			return this;
 		}

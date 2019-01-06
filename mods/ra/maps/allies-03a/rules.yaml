@@ -14,14 +14,6 @@ World:
 			normal: Normal
 		Default: easy
 
-^Building:
-	Capturable:
-		CaptureThreshold: 25
-
-^TechBuilding:
-	Capturable:
-		Types: ~disabled
-
 powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
@@ -29,9 +21,6 @@ powerproxy.paratroopers:
 HACKE6:
 	Inherits: E6
 	-RepairsBridges:
-	-ExternalCaptures:
-	Captures:
-		CaptureTypes: building
 	Targetable:
 		RequiresCondition: !jail
 	Targetable@PRISONER:
@@ -66,13 +55,6 @@ CAMERA.VeryLarge:
 	Inherits: CAMERA
 	RevealsShroud:
 		Range: 40c0
-
-MONEYCRATE:
-	Tooltip:
-		Name: Crate
-	WithCrateBody:
-	RenderSprites:
-		Image: scrate
 
 E1.Autotarget:
 	Inherits: E1
@@ -206,7 +188,7 @@ E6:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 

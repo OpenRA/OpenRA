@@ -5,6 +5,7 @@ Background@INGAME_OBSERVERSTATS_BG:
 		StatisticsProductionKey: StatisticsProduction
 		StatisticsCombatKey: StatisticsCombat
 		StatisticsGraphKey: StatisticsGraph
+		StatisticsArmyGraphKey: StatisticsArmyGraph
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 1005
@@ -262,6 +263,14 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Font: Bold
 							Text: Bldg Lost
 							Align: Right
+						Label@ARMY_VALUE_HEADER:
+							X: 835
+							Y: 40
+							Width: 40
+							Height: 25
+							Font: Bold
+							Text: Army Value
+							Align: Right
 				Container@EARNED_THIS_MIN_GRAPH_HEADERS:
 					X: 0
 					Y: 0
@@ -275,6 +284,20 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Height: 25
 							Font: Bold
 							Text: Earnings received each minute
+							Align: Center
+				Container@ARMY_THIS_MIN_GRAPH_HEADERS:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						Label@EARNED_THIS_MIN_HEADER:
+							X: 0
+							Y: 40
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Bold
+							Text: Army value over time
 							Align: Center
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 15
@@ -530,6 +553,13 @@ Background@INGAME_OBSERVERSTATS_BG:
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+								Label@ARMY_VALUE:
+									X: 815
+									Y: 0
+									Width: 40
+									Height: PARENT_BOTTOM
+									Align: Right
+									Shadow: True
 						Container@EARNED_THIS_MIN_GRAPH_TEMPLATE:
 							X: 10
 							Y: 10
@@ -537,6 +567,26 @@ Background@INGAME_OBSERVERSTATS_BG:
 							Height: PARENT_BOTTOM - 60
 							Children:
 								LineGraph@EARNED_THIS_MIN_GRAPH:
+									X: 0
+									Y: 0
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									ValueFormat: ${0}
+									XAxisValueFormat: {0}
+									YAxisValueFormat: ${0:F0}
+									XAxisSize: 20
+									YAxisSize: 10
+									XAxisLabel: m
+									YAxisLabel: $
+									LabelFont: TinyBold
+									AxisFont: Bold
+						Container@ARMY_THIS_MIN_GRAPH_TEMPLATE:
+							X: 10
+							Y: 10
+							Width: PARENT_RIGHT - 100
+							Height: PARENT_BOTTOM - 60
+							Children:
+								LineGraph@ARMY_THIS_MIN_GRAPH:
 									X: 0
 									Y: 0
 									Width: PARENT_RIGHT

@@ -63,11 +63,11 @@ FORTCRATE:
 	SupportPowerCrateAction@parabombs:
 		SelectionShares: 30
 		Proxy: powerproxy.parabombs
-		Effect: parabombs
+		Sequence: parabombs
 	HealUnitsCrateAction:
 		SelectionShares: 30
-		Notification: heal2.aud
-		Effect: heal
+		Sound: heal2.aud
+		Sequence: heal
 	GiveCashCrateAction:
 		Amount: 400
 		UseCashTick: true
@@ -77,8 +77,8 @@ FORTCRATE:
 		SelectionShares: 10
 	GrantExternalConditionCrateAction@ironcurtain:
 		SelectionShares: 10
-		Effect: invuln
-		Notification: ironcur9.aud
+		Sequence: invuln
+		Sound: ironcur9.aud
 		Condition: invulnerability
 		Duration: 1200
 	ExplodeCrateAction@bigboom:
@@ -105,11 +105,11 @@ Player:
 		DefaultCashDropdownLocked: True
 		DefaultCashDropdownVisible: False
 		DefaultCash: 50
-	-HackyAI@RushAI:
-	-HackyAI@NormalAI:
-	-HackyAI@NavalAI:
-	-HackyAI@TurtleAI:
-	DummyAI@LonestarAI:
+	-ModularBot@RushAI:
+	-ModularBot@NormalAI:
+	-ModularBot@NavalAI:
+	-ModularBot@TurtleAI:
+	DummyBot@LonestarAI:
 		Name: Lonestar AI
 		Type: lonestar
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
@@ -170,6 +170,10 @@ TENT:
 	Production:
 		Produces: Infantry, Soldier, Dog, Defense
 	-Sellable:
+	Demolishable:
+		-Condition:
+	WithMakeAnimation:
+		-Condition:
 	BaseProvider:
 		Range: 12c0
 	Power:
@@ -417,6 +421,6 @@ TSLA:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled

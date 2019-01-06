@@ -44,3 +44,30 @@ E7.noautotarget:
 
 ^Vehicle:
 	Demolishable:
+
+MONEYCRATE:
+	Tooltip:
+		Name: Crate
+	GiveCashCrateAction:
+		Amount: 2000
+	RenderSprites:
+		Image: scrate
+
+FCOM:
+	Capturable:
+		Types: ~disabled
+	-GivesBuildableArea:
+	-BaseProvider:
+
+MISS:
+	RevealsShroud:
+		Range: 3c0
+	-RevealsShroud@GAPGEN:
+
+Ant:
+	Buildable:
+		Prerequisites: ~disabled
+
+Zombie:
+	Buildable:
+		Prerequisites: ~disabled

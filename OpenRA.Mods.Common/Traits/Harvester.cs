@@ -70,22 +70,28 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The pathfinding cost penalty applied for each harvester waiting to unload at a refinery.")]
 		public readonly int UnloadQueueCostModifier = 12;
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant while empty.")]
+		public readonly string EmptyCondition = null;
+
 		[VoiceReference] public readonly string HarvestVoice = "Action";
 		[VoiceReference] public readonly string DeliverVoice = "Action";
 
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
 
-	public class Harvester : IIssueOrder, IResolveOrder, IPips, IExplodeModifier, IOrderVoice,
+	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated, INotifyIdle, INotifyBlockingMove
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
-		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		INotifyHarvesterAction[] notify;
+		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 		bool idleSmart = true;
+		INotifyHarvesterAction[] notifyHarvesterAction;
+		ConditionManager conditionManager;
+		int conditionToken = ConditionManager.InvalidConditionToken;
 		int idleDuration;
 
 		[Sync] public bool LastSearchFailed;
@@ -95,6 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
 		public CPos? LastOrderLocation = null;
+
 		[Sync]
 		public int ContentValue
 		{
@@ -119,7 +126,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			notify = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			UpdateCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
@@ -212,12 +221,27 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsEmpty { get { return contents.Values.Sum() == 0; } }
 		public int Fullness { get { return contents.Values.Sum() * 100 / Info.Capacity; } }
 
-		public void AcceptResource(ResourceType type)
+		void UpdateCondition(Actor self)
+		{
+			if (string.IsNullOrEmpty(Info.EmptyCondition) || conditionManager == null)
+				return;
+
+			var enabled = IsEmpty;
+
+			if (enabled && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.EmptyCondition);
+			else if (!enabled && conditionToken != ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+		}
+
+		public void AcceptResource(Actor self, ResourceType type)
 		{
 			if (!contents.ContainsKey(type.Info))
 				contents[type.Info] = 1;
 			else
 				contents[type.Info]++;
+
+			UpdateCondition(self);
 		}
 
 		public void UnblockRefinery(Actor self)
@@ -233,11 +257,8 @@ namespace OpenRA.Mods.Common.Traits
 					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
 					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 
-					// TODO: The harvest-deliver-return sequence is a horrible mess of duplicated code and edge-cases
-					var notify = self.TraitsImplementing<INotifyHarvesterAction>();
-					var findResources = new FindResources(self);
-					foreach (var n in notify)
-						n.MovingToResources(self, moveTo, findResources);
+					// FindResources takes care of calling INotifyHarvesterAction
+					self.QueueActivity(new FindResources(self));
 
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
@@ -310,6 +331,7 @@ namespace OpenRA.Mods.Common.Traits
 					contents.Remove(type);
 
 				currentUnloadTicks = Info.BaleUnloadDelay;
+				UpdateCondition(self);
 			}
 
 			return contents.Count == 0;
@@ -381,12 +403,10 @@ namespace OpenRA.Mods.Common.Traits
 					loc = self.Location;
 				}
 
-				var findResources = new FindResources(self);
-				self.QueueActivity(findResources);
 				self.SetTargetLine(Target.FromCell(self.World, loc.Value), Color.Red);
 
-				foreach (var n in notify)
-					n.MovingToResources(self, loc.Value, findResources);
+				// FindResources takes care of calling INotifyHarvesterAction
+				self.QueueActivity(new FindResources(self));
 
 				LastOrderLocation = loc;
 
@@ -414,16 +434,14 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(order.Target, Color.Green);
 
 				self.CancelActivity();
+				self.QueueActivity(new DeliverResources(self));
 
-				var deliver = new DeliverResources(self);
-				self.QueueActivity(deliver);
-
-				foreach (var n in notify)
-					n.MovingToRefinery(self, targetActor, deliver);
+				foreach (var n in notifyHarvesterAction)
+					n.MovingToRefinery(self, targetActor, null);
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
-				foreach (var n in notify)
+				foreach (var n in notifyHarvesterAction)
 					n.MovementCancelled(self);
 
 				// Turn off idle smarts to obey the stop/move:
@@ -451,8 +469,6 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = 0; i < numPips; i++)
 				yield return GetPipAt(i);
 		}
-
-		bool IExplodeModifier.ShouldExplode(Actor self) { return !IsEmpty; }
 
 		int ISpeedModifier.GetSpeedModifier()
 		{

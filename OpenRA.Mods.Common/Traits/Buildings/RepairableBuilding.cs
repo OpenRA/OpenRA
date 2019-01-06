@@ -12,13 +12,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Building can be repaired by the repair button.")]
-	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<HealthInfo>
+	public class RepairableBuildingInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Cost to fully repair the actor as a percent of its value.")]
 		public readonly int RepairPercent = 20;
@@ -43,12 +42,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while being repaired.")]
 		public readonly string RepairCondition = null;
 
+		[NotificationReference("Speech")]
+		public readonly string RepairingNotification = null;
+
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
 	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
-		readonly Health health;
+		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
 		readonly Stack<int> repairTokens = new Stack<int>();
 		ConditionManager conditionManager;
@@ -60,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 			: base(info)
 		{
-			health = self.Trait<Health>();
+			health = self.Trait<IHealth>();
 			isNotActiveAlly = player => player.WinState != WinState.Undefined || player.Stances[self.Owner] != Stance.Ally;
 		}
 
@@ -112,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Repairers.Add(player);
-			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", "Repairing", player.Faction.InternalName);
+			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
 			UpdateCondition(self);
 		}
 

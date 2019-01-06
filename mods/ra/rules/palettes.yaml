@@ -28,6 +28,7 @@
 		Filename: temperat.pal
 		ShadowIndex: 3
 		AllowModifiers: false
+		CursorPalette: true
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal

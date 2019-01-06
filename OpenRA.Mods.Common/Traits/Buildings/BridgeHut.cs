@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -164,17 +165,36 @@ namespace OpenRA.Mods.Common.Traits
 			repairDelay = Info.RepairPropagationDelay;
 		}
 
-		public void Demolish(Actor self, Actor saboteur)
+		bool IDemolishable.IsValidTarget(Actor self, Actor saboteur)
 		{
-			if (Info.DemolishPropagationDelay > 0)
+			return true;
+		}
+
+		void IDemolishable.Demolish(Actor self, Actor saboteur, int delay)
+		{
+			// TODO: Handle using ITick
+			self.World.Add(new DelayedAction(delay, () =>
 			{
-				demolishStep = 0;
-				demolishSaboteur = saboteur;
-				DemolishStep();
-			}
-			else
-				foreach (var s in segments.Values)
-					s.Demolish(saboteur);
+				if (self.IsDead)
+					return;
+
+				var modifiers = self.TraitsImplementing<IDamageModifier>()
+					.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
+					.Select(t => t.GetDamageModifier(self, null));
+
+				if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
+				{
+					if (Info.DemolishPropagationDelay > 0)
+					{
+						demolishStep = 0;
+						demolishSaboteur = saboteur;
+						DemolishStep();
+					}
+					else
+						foreach (var s in segments.Values)
+							s.Demolish(saboteur);
+				}
+			}));
 		}
 
 		public void DemolishStep()
@@ -200,11 +220,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Always advance at least one step (prevents sticking on placeholders)
 			demolishStep++;
-		}
-
-		public bool IsValidTarget(Actor self, Actor saboteur)
-		{
-			return true;
 		}
 
 		public DamageState BridgeDamageState

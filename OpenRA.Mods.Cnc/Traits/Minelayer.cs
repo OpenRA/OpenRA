@@ -21,10 +21,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class MinelayerInfo : ITraitInfo
+	public class MinelayerInfo : ITraitInfo, Requires<RearmableInfo>
 	{
 		[ActorReference] public readonly string Mine = "minv";
-		[ActorReference] public readonly HashSet<string> RearmBuildings = new HashSet<string> { "fix" };
 
 		public readonly string AmmoPoolName = "primary";
 
@@ -81,9 +80,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self)
+		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), false);
+			return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), queued);
 		}
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return true; }

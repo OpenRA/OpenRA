@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to instantly play at the targeted area.")]
 		public readonly string OnFireSound = null;
 
+		[Desc("Player stances which condition can be applied to.")]
+		public readonly Stance ValidStances = Stance.Ally;
+
 		[SequenceReference, Desc("Sequence to play for granting actor when activated.",
 			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
 		public readonly string Sequence = "active";
@@ -90,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return units.Distinct().Where(a =>
 			{
-				if (!a.Owner.IsAlliedWith(Self.Owner))
+				if (!info.ValidStances.HasStance(a.Owner.Stances[Self.Owner]))
 					return false;
 
 				return a.TraitsImplementing<ExternalCondition>()

@@ -10,10 +10,8 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -25,11 +23,10 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int flashes;
 		readonly int flashesDelay;
 		readonly int flashInterval;
-		readonly int flashDuration;
 		readonly INotifyDemolition[] notifiers;
 
 		public Demolish(Actor self, Actor target, EnterBehaviour enterBehaviour, int delay,
-			int flashes, int flashesDelay, int flashInterval, int flashDuration)
+			int flashes, int flashesDelay, int flashInterval)
 			: base(self, target, enterBehaviour)
 		{
 			this.target = target;
@@ -39,7 +36,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.flashes = flashes;
 			this.flashesDelay = flashesDelay;
 			this.flashInterval = flashInterval;
-			this.flashDuration = flashDuration;
 		}
 
 		protected override bool CanReserve(Actor self)
@@ -54,25 +50,13 @@ namespace OpenRA.Mods.Common.Activities
 				if (target.IsDead)
 					return;
 
+				w.Add(new FlashTarget(target, count: flashes, delay: flashesDelay, interval: flashInterval));
+
 				foreach (var ind in notifiers)
 					ind.Demolishing(self);
 
-				for (var f = 0; f < flashes; f++)
-					w.Add(new DelayedAction(flashesDelay + f * flashInterval, () =>
-						w.Add(new FlashTarget(target, ticks: flashDuration))));
-
-				w.Add(new DelayedAction(delay, () =>
-				{
-					if (target.IsDead)
-						return;
-
-					var modifiers = target.TraitsImplementing<IDamageModifier>()
-						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-						.Select(t => t.GetDamageModifier(self, null));
-
-					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
-						demolishables.Do(d => d.Demolish(target, self));
-				}));
+				foreach (var d in demolishables)
+					d.Demolish(target, self, delay);
 			});
 		}
 	}

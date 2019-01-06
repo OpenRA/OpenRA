@@ -185,6 +185,7 @@ PBOX:
 		Image: 4TNK
 	-Capturable:
 	-TransformOnCapture:
+	-InfiltrateForTransform:
 
 DOME.NoInfiltrate:
 	Inherits: DOME
@@ -333,7 +334,7 @@ SHOK:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIJACKER:
+THF:
 	Buildable:
 		Prerequisites: ~disabled
 

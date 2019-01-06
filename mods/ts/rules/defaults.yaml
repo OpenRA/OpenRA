@@ -17,9 +17,11 @@
 
 ^GainsExperience:
 	GainsExperience:
+		LevelUpNotification: LevelUp
 		Conditions:
 			500: rank
 			1000: rank
+		LevelUpImage: crate-effects
 	GrantCondition@RANK-VETERAN:
 		RequiresCondition: rank == 1
 		Condition: rank-veteran
@@ -340,7 +342,7 @@
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
 
@@ -349,10 +351,13 @@
 	Inherits@2: ^EmpDisable
 	GivesBuildableArea:
 		AreaTypes: building
+	CaptureManager:
 	Capturable:
+		Types: building
 	RepairableBuilding:
 		RepairStep: 700
 		PlayerExperience: 25
+		RepairingNotification: Repairing
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -365,9 +370,13 @@
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	CaptureNotification:
+	Demolishable:
+		Condition: being-demolished
 	Sellable:
+		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: cashturn.aud
 	WithMakeAnimation:
+		Condition: build-incomplete
 	ThrowsShrapnel@SMALL:
 		Pieces: 3, 5
 	ThrowsShrapnel@LARGE:
@@ -390,7 +399,7 @@
 		MaxHeightDelta: 3
 	RenderSprites:
 		Palette: terraindecoration
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian building
 
 ^OldBase:
@@ -418,13 +427,13 @@
 		Type: heavy
 	Health:
 		HP: 40000
-	EditorTilesetFilter:
+	MapEditorData:
 		RequireTilesets: TEMPERATE
 	ThrowsShrapnel@SMALL:
 		Pieces: 1, 3
 	ThrowsShrapnel@LARGE:
 		Pieces: 1, 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Billboard
 
 ^Crate:
@@ -437,7 +446,7 @@
 	RenderSprites:
 		Palette: terraindecoration
 	WithCrateBody:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: System
 	Interactable:
 		Bounds: 24,24
@@ -474,9 +483,11 @@
 		TargetTypes: Ground, Wall, C4
 	WithWallSpriteBody:
 		Type: wall
-	Sellable:
-		SellSounds: cashturn.aud
 	Demolishable:
+		Condition: being-demolished
+	Sellable:
+		RequiresCondition: !being-demolished
+		SellSounds: cashturn.aud
 	ScriptTriggers:
 	ConditionManager:
 	Health:
@@ -486,7 +497,7 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Wall
 	Valued:
 		Cost: 50
@@ -540,6 +551,12 @@
 	Targetable:
 		RequiresCondition: !inside-tunnel
 		TargetTypes: Ground, Infantry
+	Targetable@HEAL:
+		RequiresCondition: !inside-tunnel && damaged
+		TargetTypes: Heal
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -588,7 +605,7 @@
 	HitShape:
 		Type: Circle
 			Radius: 128
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Infantry
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -697,7 +714,7 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Civilian infantry
 
 ^Vehicle:
@@ -711,10 +728,10 @@
 		Action: Kill
 	DrawLineToTarget:
 	Mobile:
+		RequiresCondition: !empdisable && !being-captured
+		Locomotor: wheeled
 		TurnSpeed: 5
 		Voice: Move
-		RequiresCondition: !empdisable
-		Locomotor: wheeled
 	Selectable:
 		Bounds: 40,24
 	WithTextControlGroupDecoration:
@@ -724,7 +741,13 @@
 		VoiceSet: Vehicle
 	Targetable:
 		RequiresCondition: !inside-tunnel
-		TargetTypes: Ground, Vehicle, Repair
+		TargetTypes: Ground, Vehicle
+	Targetable@REPAIR:
+		RequiresCondition: !inside-tunnel && damaged
+		TargetTypes: Repair
+	GrantConditionOnDamageState@DAMAGED:
+		Condition: damaged
+		ValidDamageStates: Light, Medium, Heavy, Critical
 	Repairable:
 		RepairBuildings: gadept
 		Voice: Move
@@ -735,9 +758,10 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
+	CaptureManager:
+		BeingCapturedCondition: being-captured
 	Capturable:
 		Types: Vehicle
-		CaptureThreshold: 100
 		CancelActivity: True
 	Guard:
 		Voice: Move
@@ -753,10 +777,10 @@
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
-	GrantConditionOnDamageState@DAMAGED:
+	GrantConditionOnDamageState@DAMAGEDSPEED:
 		Condition: damagedspeed
 		ValidDamageStates: Heavy
-	GrantConditionOnDamageState@CRITICAL:
+	GrantConditionOnDamageState@CRITICALSPEED:
 		Condition: criticalspeed
 		ValidDamageStates: Critical
 	SpeedMultiplier@DAMAGED:
@@ -771,7 +795,7 @@
 	EntersTunnels:
 		Voice: Move
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Vehicle
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -816,9 +840,11 @@
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
+	Repairable:
+		RepairBuildings: gadept
+		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne
-		RepairBuildings: gadept
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
@@ -841,7 +867,7 @@
 	WithVoxelBody:
 	RevealOnFire:
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
@@ -880,8 +906,6 @@
 		Moves: true
 		Velocity: 86
 	HitShape:
-	EditorTilesetFilter:
-		Categories: Husk
 
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
@@ -914,7 +938,7 @@
 		Type: Circle
 			Radius: 256
 			VerticalTopOffset: 512
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Critter
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -938,7 +962,7 @@
 		ResourceType: Tiberium
 		Interval: 55
 	WithIdleAnimation:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Resource spawn
 
 ^Tree:
@@ -956,8 +980,10 @@
 		Terrain: Tree
 	Tooltip:
 		Name: Tree
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tree
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -974,8 +1000,10 @@
 		Terrain: Rock
 	Tooltip:
 		Name: Rock
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Decoration:
 	Inherits@1: ^SpriteActor
@@ -987,8 +1015,10 @@
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Decoration
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
 
 ^Box:
 	Inherits: ^Decoration
@@ -1018,7 +1048,7 @@
 		TargetTypes: Ground, Building, C4, Defense
 	-Capturable:
 	RevealOnFire:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Defense
 	-CommandBarBlacklist:
 
@@ -1072,7 +1102,7 @@
 		Pieces: 3, 7
 		Range: 2c0, 5c0
 	HitShape:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Railway
 	GrantConditionOnTunnelLayer:
 		Condition: inside-tunnel
@@ -1094,7 +1124,7 @@
 		Name: Railway
 	ChangesTerrain:
 		TerrainType: Rail
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Railway
 	Interactable:
 
@@ -1111,7 +1141,7 @@
 	Targetable:
 	AlwaysVisible:
 	TunnelEntrance:
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Tunnel
 	Interactable:
 		Bounds: 144, 144
@@ -1131,8 +1161,11 @@
 	-Capturable:
 	-GivesBuildableArea:
 	-MustBeDestroyed:
+	WithMakeAnimation:
+		Condition: build-incomplete
 	-WithSpriteBody:
 	WithGateSpriteBody:
+		PauseOnCondition: !build-incomplete
 		OpenSequence: open
 	Tooltip:
 	Buildable:
@@ -1143,13 +1176,13 @@
 			TopLeft: -512, -512
 			BottomRight: 512, 512
 			VerticalTopOffset: 768
-	EditorTilesetFilter:
+	MapEditorData:
 		Categories: Wall
 	Gate:
+		PauseOnCondition: empdisable || build-incomplete
 		OpeningSound: gateup1.aud
 		ClosingSound: gatedwn1.aud
 		BlocksProjectilesHeight: 768
-		PauseOnCondition: empdisable
 
 ^Gate_A:
 	Inherits: ^Gate

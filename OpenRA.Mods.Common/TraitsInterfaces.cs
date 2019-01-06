@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Activities;
@@ -71,8 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
-		void Demolish(Actor self, Actor saboteur);
 		bool IsValidTarget(Actor self, Actor saboteur);
+		void Demolish(Actor self, Actor saboteur, int delay);
 	}
 
 	// Type tag for crush class bits
@@ -106,9 +107,6 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
-
-	[RequireExplicitImplementation]
 	public interface INotifyDamageStateChanged { void DamageStateChanged(Actor self, AttackInfo e); }
 
 	[RequireExplicitImplementation]
@@ -134,16 +132,17 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, Target target, Armament a); }
 	public interface INotifyChat { bool OnChat(string from, string message); }
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
-	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType); }
+	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self, Actor ignore); }
-	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes); }
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfo { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfo { WDist GetCruiseAltitude(); }
 
-	public interface IExplodeModifier { bool ShouldExplode(Actor self); }
 	public interface IHuskModifier { string HuskActor(Actor self); }
 
 	public interface ISeedableResource { void Seed(Actor self); }
@@ -317,7 +316,12 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyRearm { void Rearming(Actor host, Actor other); }
+	public interface INotifyRearm
+	{
+		void RearmingStarted(Actor host, Actor other);
+		void Rearming(Actor host, Actor other);
+		void RearmingFinished(Actor host, Actor other);
+	}
 
 	[RequireExplicitImplementation]
 	public interface IRenderInfantrySequenceModifier
@@ -360,6 +364,12 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IGainsExperienceModifier { int GetGainsExperienceModifier(); }
 
 	[RequireExplicitImplementation]
+	public interface ICreatesShroudModifier { int GetCreatesShroudModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IRevealsShroudModifier { int GetRevealsShroudModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface ICustomMovementLayer
 	{
 		byte Index { get; }
@@ -377,7 +387,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IIssueDeployOrder
 	{
-		Order IssueDeployOrder(Actor self);
+		Order IssueDeployOrder(Actor self, bool queued);
 		bool CanIssueDeployOrder(Actor self);
 	}
 
@@ -400,6 +410,7 @@ namespace OpenRA.Mods.Common.Traits
 		Activity MoveToTarget(Actor self, Target target);
 		Activity MoveIntoTarget(Actor self, Target target);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
+		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
 		bool IsMoving { get; set; }
 		bool IsMovingVertically { get; set; }
@@ -419,6 +430,7 @@ namespace OpenRA.Mods.Common.Traits
 		int ExitDelay { get; }
 	}
 
+	[RequireExplicitImplementation]
 	public interface INotifyObjectivesUpdated
 	{
 		void OnPlayerWon(Player winner);
@@ -442,4 +454,94 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
+
+	[RequireExplicitImplementation]
+	public interface IBotTick { void BotTick(IBot bot); }
+
+	[RequireExplicitImplementation]
+	public interface IBotRespondToAttack { void RespondToAttack(IBot bot, Actor self, AttackInfo e); }
+
+	[RequireExplicitImplementation]
+	public interface IBotPositionsUpdated
+	{
+		void UpdatedBaseCenter(CPos newLocation);
+		void UpdatedDefenseCenter(CPos newLocation);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotNotifyIdleBaseUnits
+	{
+		void UpdatedIdleBaseUnits(List<Actor> idleUnits);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotRequestUnitProduction
+	{
+		void RequestUnitProduction(IBot bot, string requestedActor);
+		int RequestedProductionCount(IBot bot, string requestedActor);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotRequestPauseUnitProduction
+	{
+		bool PauseUnitProduction { get; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IEditorActorOptions : ITraitInfoInterface
+	{
+		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);
+	}
+
+	public abstract class EditorActorOption
+	{
+		public readonly string Name;
+		public readonly int DisplayOrder;
+
+		public EditorActorOption(string name, int displayOrder)
+		{
+			Name = name;
+			DisplayOrder = displayOrder;
+		}
+	}
+
+	public class EditorActorSlider : EditorActorOption
+	{
+		public readonly float MinValue;
+		public readonly float MaxValue;
+		public readonly int Ticks;
+		public readonly Func<EditorActorPreview, float> GetValue;
+		public readonly Action<EditorActorPreview, float> OnChange;
+
+		public EditorActorSlider(string name, int displayOrder,
+			float minValue, float maxValue, int ticks,
+			Func<EditorActorPreview, float> getValue,
+			Action<EditorActorPreview, float> onChange)
+			: base(name, displayOrder)
+		{
+			MinValue = minValue;
+			MaxValue = maxValue;
+			Ticks = ticks;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
+	public class EditorActorDropdown : EditorActorOption
+	{
+		public readonly Dictionary<string, string> Labels;
+		public readonly Func<EditorActorPreview, string> GetValue;
+		public readonly Action<EditorActorPreview, string> OnChange;
+
+		public EditorActorDropdown(string name, int displayOrder,
+			Dictionary<string, string> labels,
+			Func<EditorActorPreview, string> getValue,
+			Action<EditorActorPreview, string> onChange)
+			: base(name, displayOrder)
+		{
+			Labels = labels;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
 }

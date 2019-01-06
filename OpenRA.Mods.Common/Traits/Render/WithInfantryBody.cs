@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -69,12 +68,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 			PlayStandAnimation(self);
 
-			state = AnimationState.Waiting;
 			move = init.Self.Trait<IMove>();
 		}
 
 		public void PlayStandAnimation(Actor self)
 		{
+			state = AnimationState.Waiting;
+
 			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
 			if (sequence != null)
 			{
@@ -96,8 +96,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (DefaultAnimation.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
-			else
-				return baseSequence;
+
+			return baseSequence;
 		}
 
 		protected virtual bool AllowIdleAnimation(Actor self)
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!string.IsNullOrEmpty(sequence) && DefaultAnimation.HasSequence(NormalizeInfantrySequence(self, sequence)))
 			{
 				state = AnimationState.Attacking;
-				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, sequence), () => state = AnimationState.Idle);
+				DefaultAnimation.PlayThen(NormalizeInfantrySequence(self, sequence), () => PlayStandAnimation(self));
 			}
 		}
 
@@ -147,10 +147,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 			else if (((state == AnimationState.Moving || dirty) && !move.IsMoving)
 				|| ((state == AnimationState.Idle || state == AnimationState.IdleAnimating) && !self.IsIdle))
-			{
-				state = AnimationState.Waiting;
 				PlayStandAnimation(self);
-			}
 
 			dirty = false;
 		}
@@ -175,18 +172,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 					if (idleDelay > 0 && --idleDelay == 0)
 					{
 						state = AnimationState.IdleAnimating;
-						DefaultAnimation.PlayThen(idleSequence, () =>
-						{
-							PlayStandAnimation(self);
-							state = AnimationState.Waiting;
-						});
+						DefaultAnimation.PlayThen(idleSequence, () => PlayStandAnimation(self));
 					}
 				}
 				else
-				{
 					PlayStandAnimation(self);
-					state = AnimationState.Waiting;
-				}
 			}
 		}
 

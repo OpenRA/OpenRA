@@ -26,9 +26,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Length of time (in ticks) to display a location ping in the minimap.")]
 		public readonly int RadarPingDuration = 10 * 25;
 
+		[NotificationReference("Speech")]
 		[Desc("The audio notification type to play.")]
 		public string Notification = "BaseAttack";
 
+		[NotificationReference("Speech")]
 		[Desc("The audio notification to play to allies when under attack.",
 			"Won't play a notification to allies if this is null.")]
 		public string AllyNotification = null;

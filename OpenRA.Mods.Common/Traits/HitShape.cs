@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.HitShapes;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -24,6 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
 		public readonly bool UseTargetableCellsOffsets = false;
+
+		[Desc("Defines which Armor types apply when the actor receives damage to this HitShape.",
+			"If none specified, all armor types the actor has are valid.")]
+		public readonly BitSet<ArmorType> ArmorTypes = default(BitSet<ArmorType>);
 
 		[FieldLoader.LoadUsing("LoadShape")]
 		public readonly IHitShape Type;

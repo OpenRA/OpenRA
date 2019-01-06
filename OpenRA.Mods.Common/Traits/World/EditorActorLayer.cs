@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
-		EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
+		public EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
 		{
 			var owner = Players.Players[reference.InitDict.Get<OwnerInit>().PlayerName];
 
@@ -172,7 +172,10 @@ namespace OpenRA.Mods.Common.Traits
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
+				{
 					Players.Players.Remove(name);
+					OnPlayerRemoved();
+				}
 			}
 
 			for (var index = 0; index < newCount; index++)
@@ -237,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!previews.Any())
 				return map.Grid.DefaultSubCell;
 
-			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
+			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 				if (!previews.Any(p => p.Footprint[cell] == (SubCell)i))
 					return (SubCell)i;
 
@@ -248,6 +251,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return screenMap.At(worldPx);
 		}
+
+		public Action OnPlayerRemoved = () => { };
 
 		string NextActorName()
 		{

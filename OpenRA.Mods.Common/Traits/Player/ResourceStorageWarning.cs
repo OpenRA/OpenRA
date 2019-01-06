@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The percentage threshold above which a warning is played.")]
 		public readonly int Threshold = 80;
 
+		[NotificationReference("Speech")]
 		[Desc("The speech to play for the warning.")]
 		public readonly string Notification = "SilosNeeded";
 

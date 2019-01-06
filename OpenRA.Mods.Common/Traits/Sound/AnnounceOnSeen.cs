@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Should there be a radar ping on enemies' radar at the actor's location when they see him")]
 		public readonly bool PingRadar = false;
 
+		[NotificationReference("Speech")]
 		public readonly string Notification = null;
 
 		public readonly bool AnnounceNeutrals = false;

@@ -33,19 +33,41 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load(this, y);
 
-			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
-			NotificationsPools = Exts.Lazy(() => Notifications.ToDictionary(a => a.Key, a => new SoundPool(a.Value)));
+			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(0, a.Value)));
+			NotificationsPools = Exts.Lazy(() => ParseSoundPool(y, "Notifications"));
+		}
+
+		Dictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
+		{
+			var ret = new Dictionary<string, SoundPool>();
+			var classifiction = y.Nodes.First(x => x.Key == key);
+			foreach (var t in classifiction.Value.Nodes)
+			{
+				var rateLimit = 0;
+				var rateLimitNode = t.Value.Nodes.FirstOrDefault(x => x.Key == "RateLimit");
+				if (rateLimitNode != null)
+					rateLimit = FieldLoader.GetValue<int>(rateLimitNode.Key, rateLimitNode.Value.Value);
+
+				var names = FieldLoader.GetValue<string[]>(t.Key, t.Value.Value);
+				var sp = new SoundPool(rateLimit, names);
+				ret.Add(t.Key, sp);
+			}
+
+			return ret;
 		}
 	}
 
 	public class SoundPool
 	{
 		readonly string[] clips;
+		readonly int rateLimit;
 		readonly List<string> liveclips = new List<string>();
+		long lastPlayed = 0;
 
-		public SoundPool(params string[] clips)
+		public SoundPool(int rateLimit, params string[] clips)
 		{
 			this.clips = clips;
+			this.rateLimit = rateLimit;
 		}
 
 		public string GetNext()
@@ -53,8 +75,19 @@ namespace OpenRA.GameRules
 			if (liveclips.Count == 0)
 				liveclips.AddRange(clips);
 
+			// Avoid crashing if there's no clips at all
 			if (liveclips.Count == 0)
-				return null;		/* avoid crashing if there's no clips at all */
+				return null;
+
+			// Perform rate limiting if necessary
+			if (rateLimit != 0)
+			{
+				var now = Game.RunTime;
+				if (lastPlayed != 0 && now < lastPlayed + rateLimit)
+					return null;
+
+				lastPlayed = now;
+			}
 
 			var i = Game.CosmeticRandom.Next(liveclips.Count);
 			var s = liveclips[i];

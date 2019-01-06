@@ -25,6 +25,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		readonly Selection selection;
 		readonly World world;
 
+		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
+
 		[ObjectCreator.UseCtor]
 		public CycleProductionActorsHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, World world, Dictionary<string, MiniYaml> logicArgs)
 			: base(widget, modData, "CycleProductionActorsKey", "WORLD_KEYHANDLER", logicArgs)
@@ -32,6 +34,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			viewport = worldRenderer.Viewport;
 			selection = world.Selection;
 			this.world = world;
+
+			MiniYaml yaml;
+			if (logicArgs.TryGetValue("ClickSound", out yaml))
+				clickSound = yaml.Value;
 		}
 
 		protected override bool OnHotkeyActivated(KeyInput e)
@@ -39,8 +45,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			var player = world.RenderPlayer ?? world.LocalPlayer;
 
 			var facilities = world.ActorsHavingTrait<Production>()
-				.Where(a => a.Owner == player && !a.Info.HasTraitInfo<BaseBuildingInfo>())
-				.OrderBy(f => f.Info.TraitInfo<ProductionInfo>().Produces.First())
+				.Where(a => a.Owner == player && !a.Info.HasTraitInfo<BaseBuildingInfo>()
+					&& a.TraitsImplementing<Production>().Any(t => !t.IsTraitDisabled))
+				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces.First())
 				.ToList();
 
 			if (!facilities.Any())
@@ -54,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			if (next == null)
 				next = facilities.First();
 
-			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", "ClickSound", null);
+			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", clickSound, null);
 
 			selection.Combine(world, new Actor[] { next }, false, true);
 			viewport.Center(selection.Actors);

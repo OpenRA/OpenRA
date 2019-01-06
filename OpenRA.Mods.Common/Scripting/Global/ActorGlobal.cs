@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Scripting
 					var genericType = initType.GetInterfaces()
 						.First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IActorInit<>));
 					var innerType = genericType.GetGenericArguments().First();
-					var valueType = innerType.IsEnum ? typeof(int) : innerType;
+					var valueType = innerType.IsEnum ? Enum.GetUnderlyingType(innerType) : innerType;
 
 					// Try and coerce the table value to the required type
 					object value;
@@ -55,6 +56,10 @@ namespace OpenRA.Mods.Common.Scripting
 					initDict.Add(test);
 				}
 			}
+
+			var owner = initDict.GetOrDefault<OwnerInit>();
+			if (owner == null)
+				throw new LuaException("Tried to create actor '{0}' with an invalid or no owner init!".F(type));
 
 			// The actor must be added to the world at the end of the tick
 			var a = Context.World.CreateActor(false, type, initDict);
