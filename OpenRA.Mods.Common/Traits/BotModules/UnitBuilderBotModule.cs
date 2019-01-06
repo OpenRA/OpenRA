@@ -126,16 +126,6 @@ namespace OpenRA.Mods.Common.Traits
 			bot.QueueOrder(Order.StartProduction(queue.Actor, name, 1));
 		}
 
-		void BuildUnit(IBot bot, string category, string name)
-		{
-			var queue = AIUtils.FindQueues(player, category).FirstOrDefault(q => !q.AllQueued().Any());
-			if (queue == null)
-				return;
-
-			if (world.Map.Rules.Actors[name] != null)
-				bot.QueueOrder(Order.StartProduction(queue.Actor, name, 1));
-		}
-
 		// In cases where we want to build a specific unit but don't know the queue name (because there's more than one possibility)
 		void BuildUnit(IBot bot, string name)
 		{
