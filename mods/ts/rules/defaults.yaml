@@ -897,6 +897,7 @@
 		Type: Heavy
 	HiddenUnderFog:
 		Type: GroundPosition
+		AlwaysVisibleStances: None
 	ScriptTriggers:
 	Interactable:
 	Tooltip:

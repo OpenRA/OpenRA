@@ -1012,6 +1012,7 @@
 		Type: Light
 	HiddenUnderFog:
 		Type: CenterPosition
+		AlwaysVisibleStances: None
 	WithFacingSpriteBody:
 	HitShape:
 	MapEditorData:
