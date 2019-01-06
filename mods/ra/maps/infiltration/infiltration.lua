@@ -143,6 +143,10 @@ LabInfiltrated = function()
 		end
 	end)
 
+	if BridgeTank.IsDead then
+		return
+	end
+
 	local attackPoint = BridgeAttackPoint.CenterPosition
 	local radius = WDist.FromCells(5)
 	local bridge = Map.ActorsInCircle(attackPoint, radius, function(actor)
