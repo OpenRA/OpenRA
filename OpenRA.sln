@@ -100,6 +100,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua
 		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
 		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
+                mods\ra\maps\allies-04\allies04.lua = mods\ra\maps\allies-04\allies04.lua
+                mods\ra\maps\allies-04\allies04-AI.lua = mods\ra\maps\allies-04\allies04-AI.lua
+                mods\ra\maps\allies-07\allies07.lua = mods\ra\maps\allies-07\allies07.lua
+                mods\ra\maps\allies-07\allies07-AI.lua = mods\ra\maps\allies-07\allies07-AI.lua
+                mods\ra\maps\allies-08a\allies08a.lua = mods\ra\maps\allies-08a\allies08a.lua
+                mods\ra\maps\allies-08a\allies08a-AI.lua = mods\ra\maps\allies-08a\allies08a-AI.lua
+                mods\ra\maps\allies-08b\allies08b.lua = mods\ra\maps\allies-08b\allies08b.lua
+                mods\ra\maps\allies-08b\allies08b-AI.lua = mods\ra\maps\allies-08b\allies08b-AI.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Dune 2000 Lua scripts", "{06B1AE07-DDB0-4287-8700-A8CD9A0E652E}"

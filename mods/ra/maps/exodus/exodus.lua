@@ -210,6 +210,10 @@ AircraftTargets = function(yak)
 end
 
 YakAttack = function(yak, target)
+	if yak.IsDead then
+		return
+	end
+
 	if not target or target.IsDead or (not target.IsInWorld) or (not yak.CanTarget(target)) then
 		local targets = AircraftTargets(yak)
 		if #targets > 0 then
@@ -217,15 +221,16 @@ YakAttack = function(yak, target)
 		end
 	end
 
-	if target and yak.AmmoCount() > 0 and yak.CanTarget(target) then
+	-- Attack, and keep attacking even after automatic return to base
+	if yak.CanTarget(target) then
+		yak.AbortOnResupply = false
 		yak.Attack(target)
-	else
-		-- Includes yak.Resupply()
-		yak.ReturnToBase()
 	end
 
+	-- Next activity is to do this again
+	-- Short delay guards against fatal CallFunc loop, if Attack() was not possible or fails to queue an activity
 	yak.CallFunc(function()
-		YakAttack(yak, target)
+		Trigger.AfterDelay(DateTime.Seconds(1), function() TargetAndAttack(yak, target) end)
 	end)
 end
 
