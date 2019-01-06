@@ -229,6 +229,7 @@
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
+		AlwaysVisibleStances: None
 	Tooltip:
 		GenericName: Destroyed Unit
 	ScriptTriggers:
