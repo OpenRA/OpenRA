@@ -116,10 +116,10 @@ namespace OpenRA.Mods.Common.Traits
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
-				info.FlightVelocity, info.FlightDelay, info.SkipAscent,
+				info.FlightVelocity, info.MissileDelay, info.FlightDelay, info.SkipAscent,
 				info.FlashType);
 
-			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(info.MissileDelay, () => self.World.Add(missile))));
+			self.World.AddFrameEndTask(w => w.Add(missile));
 
 			if (info.CameraRange != WDist.Zero)
 			{

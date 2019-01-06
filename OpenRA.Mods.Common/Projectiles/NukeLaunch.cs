@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 		readonly WeaponInfo weapon;
 		readonly string weaponPalette;
+		readonly string upSequence;
 		readonly string downSequence;
 		readonly string flashType;
 
@@ -32,44 +33,51 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WPos ascendTarget;
 		readonly WPos descendSource;
 		readonly WPos descendTarget;
-		readonly int delay;
+		readonly int impactDelay;
 		readonly int turn;
 
 		WPos pos;
 		int ticks;
-		bool isAddedToScreenMap;
+		int launchDelay;
+		bool isLaunched;
 
 		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
-			WPos launchPos, WPos targetPos, WDist velocity, int delay, bool skipAscent, string flashType)
+			WPos launchPos, WPos targetPos, WDist velocity, int launchDelay, int impactDelay, bool skipAscent, string flashType)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
 			this.weaponPalette = weaponPalette;
+			this.upSequence = upSequence;
 			this.downSequence = downSequence;
-			this.delay = delay;
-			turn = skipAscent ? 0 : delay / 2;
+			this.launchDelay = launchDelay;
+			this.impactDelay = impactDelay;
+			turn = skipAscent ? 0 : impactDelay / 2;
 			this.flashType = flashType;
 
-			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * (delay - turn));
+			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * (impactDelay - turn));
 			ascendSource = launchPos;
 			ascendTarget = launchPos + offset;
 			descendSource = targetPos + offset;
 			descendTarget = targetPos;
 
 			anim = new Animation(firedBy.World, name);
-			anim.PlayRepeating(upSequence);
 
 			pos = skipAscent ? descendSource : ascendSource;
-			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(SoundType.World, weapon.Report.Random(firedBy.World.SharedRandom), pos);
 		}
 
 		public void Tick(World world)
 		{
-			if (!isAddedToScreenMap)
+			if (launchDelay-- > 0)
+				return;
+
+			if (!isLaunched)
 			{
+				anim.PlayRepeating(upSequence);
+				if (weapon.Report != null && weapon.Report.Any())
+					Game.Sound.Play(SoundType.World, weapon.Report.Random(firedBy.World.SharedRandom), pos);
+
 				world.ScreenMap.Add(this, pos, anim.Image);
-				isAddedToScreenMap = true;
+				isLaunched = true;
 			}
 
 			anim.Tick();
@@ -80,9 +88,9 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks < turn)
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
 			else
-				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, delay - turn);
+				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, impactDelay - turn);
 
-			if (ticks == delay)
+			if (ticks == impactDelay)
 				Explode(world);
 
 			world.ScreenMap.Update(this, pos, anim.Image);
@@ -103,9 +111,12 @@ namespace OpenRA.Mods.Common.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (!isLaunched)
+				return Enumerable.Empty<IRenderable>();
+
 			return anim.Render(pos, wr.Palette(weaponPalette));
 		}
 
-		public float FractionComplete { get { return ticks * 1f / delay; } }
+		public float FractionComplete { get { return ticks * 1f / impactDelay; } }
 	}
 }
