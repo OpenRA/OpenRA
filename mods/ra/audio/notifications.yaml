@@ -123,7 +123,9 @@ Sounds:
 		RadarUp: radaron2
 		RadarDown: radardn1
 		CashTickUp: cashup1
+			VolumeModifier: 0.33
 		CashTickDown: cashdn1
+			VolumeModifier: 0.33
 		LevelUp: hydrod1
 		DisablePower: bleep11
 		EnablePower: bleep12
