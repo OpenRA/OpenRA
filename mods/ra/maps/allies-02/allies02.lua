@@ -17,6 +17,8 @@ TruckPath = { TruckEntryPoint.Location, TruckRallyPoint.Location }
 
 PathGuards = { PathGuard1, PathGuard2, PathGuard3, PathGuard4, PathGuard5, PathGuard6, PathGuard7, PathGuard8, PathGuard9, PathGuard10, PathGuard11, PathGuard12, PathGuard13, PathGuard14, PathGuard15 }
 
+SovietBase = { SovietConyard, SovietRefinery, SovietPower1, SovietPower2, SovietSilo, SovietKennel, SovietBarracks, SovietWarfactory }
+
 IdlingUnits = { }
 
 if Map.LobbyOption("difficulty") == "easy" then
@@ -85,6 +87,14 @@ RunInitialActivities = function()
 	Trigger.OnAllKilled(PathGuards, function()
 		player.MarkCompletedObjective(SecureObjective)
 		SendTrucks()
+	end)
+
+	Trigger.OnAllKilled(SovietBase, function()
+		Utils.Do(ussr.GetGroundAttackers(), function(unit)
+			if not Utils.Any(PathGuards, function(pg) return pg == unit end) then
+				Trigger.OnIdle(unit, unit.Hunt)
+			end
+		end)
 	end)
 
 	if InfantryTypes then
