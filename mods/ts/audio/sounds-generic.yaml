@@ -9,7 +9,9 @@ Sounds:
 		Button: button
 		CantPushButtonSound: scold8
 		CashTickDown: creddwn1
+			VolumeModifier: 0.33
 		CashTickUp: credup1
+			VolumeModifier: 0.33
 		ChatLine: message1
 		ClickDisabledSound: wrong1
 		ClickSound: clicky1
