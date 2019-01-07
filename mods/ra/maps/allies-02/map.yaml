@@ -207,19 +207,6 @@ Actors:
 	Actor56: tc03
 		Location: 43,70
 		Owner: Neutral
-	Actor58: fact
-		Location: 62,61
-		Owner: USSR
-	Actor59: proc
-		Location: 53,62
-		Owner: USSR
-		FreeActor: False
-	Actor60: powr
-		Location: 57,62
-		Owner: USSR
-	Actor62: powr
-		Location: 59,62
-		Owner: USSR
 	Actor64: brl3
 		Location: 65,59
 		Owner: USSR
@@ -243,9 +230,6 @@ Actors:
 		Owner: USSR
 	Actor71: barl
 		Location: 65,62
-		Owner: USSR
-	Actor72: silo
-		Location: 54,68
 		Owner: USSR
 	Actor73: brl3
 		Location: 55,70
@@ -547,6 +531,22 @@ Actors:
 		Owner: USSR
 	Actor170: fenc
 		Location: 50,51
+		Owner: USSR
+	SovietConyard: fact
+		Location: 62,61
+		Owner: USSR
+	SovietRefinery: proc
+		Location: 53,62
+		Owner: USSR
+		FreeActor: False
+	SovietPower1: powr
+		Location: 57,62
+		Owner: USSR
+	SovietPower2: powr
+		Location: 59,62
+		Owner: USSR
+	SovietSilo: silo
+		Location: 54,68
 		Owner: USSR
 	SovietKennel: kenn
 		Location: 58,68
