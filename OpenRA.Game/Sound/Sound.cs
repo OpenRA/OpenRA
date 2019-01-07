@@ -352,7 +352,7 @@ namespace OpenRA
 
 			var id = voicedActor != null ? voicedActor.ActorID : 0;
 
-			string clip;
+			SoundPool pool;
 			var suffix = rules.DefaultVariant;
 			var prefix = rules.DefaultPrefix;
 
@@ -361,16 +361,17 @@ namespace OpenRA
 				if (!rules.VoicePools.Value.ContainsKey(definition))
 					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
 
-				clip = rules.VoicePools.Value[definition].GetNext();
+				pool = rules.VoicePools.Value[definition];
 			}
 			else
 			{
 				if (!rules.NotificationsPools.Value.ContainsKey(definition))
 					throw new InvalidOperationException("Can't find {0} in notification pool.".F(definition));
 
-				clip = rules.NotificationsPools.Value[definition].GetNext();
+				pool = rules.NotificationsPools.Value[definition];
 			}
 
+			var clip = pool.GetNext();
 			if (string.IsNullOrEmpty(clip))
 				return false;
 
@@ -388,7 +389,7 @@ namespace OpenRA
 			{
 				var sound = soundEngine.Play2D(sounds[name],
 					false, relative, pos,
-					InternalSoundVolume * volumeModifier, attenuateVolume);
+					InternalSoundVolume * volumeModifier * pool.VolumeModifier, attenuateVolume);
 				if (id != 0)
 				{
 					if (currentSounds.ContainsKey(id))
