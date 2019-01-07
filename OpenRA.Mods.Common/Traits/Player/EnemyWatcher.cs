@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Tracks neutral and enemy actors' visibility and notifies the player.",
-		"Attach this to the player actor.")]
+		"Attach this to the player actor. The actors to track need the 'AnnounceOnSeen' trait.")]
 	class EnemyWatcherInfo : ITraitInfo
 	{
 		[Desc("Interval in ticks between scanning for enemies.")]
