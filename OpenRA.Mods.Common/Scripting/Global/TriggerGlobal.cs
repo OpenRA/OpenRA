@@ -441,7 +441,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Call a function when this actor is discovered by an enemy or a player with a Neutral stance. " +
-			"The callback function will be called as func(Actor discovered, Player discoverer). +" +
+			"The callback function will be called as func(Actor discovered, Player discoverer). " +
 			"The player actor needs the 'EnemyWatcher' trait.")]
 		public void OnDiscovered(Actor a, LuaFunction func)
 		{
