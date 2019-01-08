@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using OpenRA.Graphics;
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						.Select(p => new
 						{
 							Preview = p,
-							Index = missionMapPaths.IndexOf(Platform.UnresolvePath(p.Package.Name))
+							Index = missionMapPaths.IndexOf(Path.GetFileName(p.Package.Name))
 						})
 						.Where(x => x.Index != -1)
 						.OrderBy(x => x.Index)
