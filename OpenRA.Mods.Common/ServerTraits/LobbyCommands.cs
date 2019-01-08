@@ -654,6 +654,7 @@ namespace OpenRA.Mods.Common.Server
 			targetClient.SpawnPoint = 0;
 			targetClient.Team = 0;
 			targetClient.Color = HSLColor.FromRGB(255, 255, 255);
+			targetClient.State = Session.ClientState.NotReady;
 			server.SendMessage("{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
 			Log.Write("server", "{0} moved {1} to spectators.".F(client.Name, targetClient.Name));
 			server.SyncLobbyClients();
