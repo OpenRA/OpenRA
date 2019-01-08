@@ -118,7 +118,9 @@ MissionStart = function()
 end
 
 SendPatrol = function(mammoth)
-	mammoth.Patrol(MammothPath, true, 20)
+	if not mammoth.IsDead then
+		mammoth.Patrol(MammothPath, true, 20)
+	end
 end
 
 MoveTruckNorth = function(truck)
