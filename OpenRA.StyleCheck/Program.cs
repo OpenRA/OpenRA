@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, and is made available under the terms of the MS-PL license.
  * For more information, see https://opensource.org/licenses/MS-PL
  */
