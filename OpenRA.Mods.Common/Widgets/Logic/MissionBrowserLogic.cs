@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var missionMapPaths = kv.Value.Nodes.Select(n => n.Key).ToList();
 
 					var previews = modData.MapCache
-						.Where(p => p.Status == MapStatus.Available)
+						.Where(p => p.Class == MapClassification.System && p.Status == MapStatus.Available)
 						.Select(p => new
 						{
 							Preview = p,
