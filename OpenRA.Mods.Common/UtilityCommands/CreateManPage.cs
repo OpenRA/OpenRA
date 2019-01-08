@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(".SH BUGS");
 			Console.WriteLine("Known issues are tracked at http://bugs.openra.net");
 			Console.WriteLine(".SH COPYRIGHT");
-			Console.WriteLine("Copyright 2007-2018 The OpenRA Developers (see AUTHORS)");
+			Console.WriteLine("Copyright 2007-2019 The OpenRA Developers (see AUTHORS)");
 			Console.WriteLine("This manual is part of OpenRA, which is free software. It is GNU GPL v3 licensed. See COPYING for details.");
 		}
 	}
