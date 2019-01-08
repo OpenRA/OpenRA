@@ -65,7 +65,7 @@ StartAntAttack = function()
 	local max = MaxAnts[DifficultySetting] - math.ceil(timeTracker / DateTime.Minutes(6))
 	if timeTracker > DateTime.Minutes(3) and antType == "fireant" then
 		amount = Utils.RandomInteger(1, MaxFireAnts[DifficultySetting])
-	elseif timeTracker > 15 and antType == "fireant" then 
+	elseif timeTracker > 15 and antType == "fireant" then
 		antType = "scoutant"
 	else
 		amount = Utils.RandomInteger(1, max)
@@ -75,12 +75,12 @@ StartAntAttack = function()
 		Reinforcements.Reinforce(AntMan, { antType }, path, DateTime.Seconds(5), function(actor)
 			actor.AttackMove(CPos.New(65, 65))
 			Trigger.OnIdle(actor, function()
-				actor.Hunt() 
+				actor.Hunt()
 			end)
 		end)
 	end
 
-	-- Setup next wave 
+	-- Setup next wave
 	if SendAnts then
 		Trigger.AfterDelay(AttackInterval[DifficultySetting], function()
 			StartAntAttack()
