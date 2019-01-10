@@ -82,6 +82,9 @@ namespace OpenRA.Mods.Common.Warheads
 		/// <summary>Checks if the warhead is valid against (can do something to) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
+			if (!victim.IsValid)
+				return false;
+
 			// AffectsParent checks do not make sense for FrozenActors, so skip to stance checks
 			var stance = firedBy.Owner.Stances[victim.Owner];
 			if (!ValidStances.HasStance(stance))
