@@ -125,7 +125,7 @@ namespace OpenRA.Network
 
 		// Do nothing: ignore locally generated orders
 		public void Send(int frame, List<byte[]> orders) { }
-		public void SendImmediate(List<byte[]> orders) { }
+		public void SendImmediate(IEnumerable<byte[]> orders) { }
 
 		public void SendSync(int frame, byte[] syncData)
 		{

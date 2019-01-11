@@ -49,6 +49,7 @@ namespace OpenRA.Network
 		internal int GameSaveLastSyncFrame = -1;
 
 		List<Order> localOrders = new List<Order>();
+		List<Order> localImmediateOrders = new List<Order>();
 
 		List<ChatLine> chatCache = new List<ChatLine>();
 
@@ -98,7 +99,10 @@ namespace OpenRA.Network
 
 		public void IssueOrder(Order order)
 		{
-			localOrders.Add(order);
+			if (order.IsImmediate)
+				localImmediateOrders.Add(order);
+			else
+				localOrders.Add(order);
 		}
 
 		public Action<Color, string, string> AddChatLine = (c, n, s) => { };
@@ -109,10 +113,9 @@ namespace OpenRA.Network
 
 		public void TickImmediate()
 		{
-			var immediateOrders = localOrders.Where(o => o.IsImmediate).ToList();
-			if (immediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
-				Connection.SendImmediate(immediateOrders.Select(o => o.Serialize()).ToList());
-			localOrders.RemoveAll(o => o.IsImmediate);
+			if (localImmediateOrders.Count != 0 && GameSaveLastFrame < NetFrameNumber + FramesAhead)
+				Connection.SendImmediate(localImmediateOrders.Select(o => o.Serialize()));
+			localImmediateOrders.Clear();
 
 			var immediatePackets = new List<Pair<int, byte[]>>();
 
