@@ -68,11 +68,13 @@ namespace OpenRA.Network
 
 		public virtual void SendImmediate(IEnumerable<byte[]> orders)
 		{
-			var ms = new MemoryStream();
-			ms.WriteArray(BitConverter.GetBytes(0));
 			foreach (var o in orders)
+			{
+				var ms = new MemoryStream();
+				ms.WriteArray(BitConverter.GetBytes(0));
 				ms.WriteArray(o);
-			Send(ms.ToArray());
+				Send(ms.ToArray());
+			}
 		}
 
 		public virtual void SendSync(int frame, byte[] syncData)
