@@ -185,11 +185,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "Unload")
 			{
-				if (!CanUnload())
+				if (!order.Queued && !CanUnload())
 					return;
 
+				if (!order.Queued)
+					self.CancelActivity();
+
 				Unloading = true;
-				self.CancelActivity();
 				if (aircraft != null)
 					self.QueueActivity(new HeliLand(self, true));
 				self.QueueActivity(new UnloadCargo(self, true));
@@ -201,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => self.Location != c);
 		}
 
-		bool CanUnload()
+		public bool CanUnload()
 		{
 			if (checkTerrainType)
 			{

@@ -60,6 +60,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || cargo.IsEmpty(self))
 				return NextActivity;
 
+			if (!cargo.CanUnload())
+			{
+				Cancel(self, true);
+				return NextActivity;
+			}
+
 			foreach (var inu in notifiers)
 				inu.Unloading(self);
 
