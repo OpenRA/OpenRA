@@ -65,6 +65,12 @@ namespace OpenRA.Mods.Common.Traits
 			return res != null && res.reservedForAircraft != null && !res.reservedForAircraft.MayYieldReservation;
 		}
 
+		public static bool IsAvailableFor(Actor reservable, Actor forActor)
+		{
+			var res = reservable.TraitOrDefault<Reservable>();
+			return res == null || res.reservedForAircraft == null || res.reservedForAircraft.MayYieldReservation || res.reservedFor == forActor;
+		}
+
 		private void UnReserve()
 		{
 			if (reservedForAircraft != null)
