@@ -1,0 +1,255 @@
+--[[
+   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+   This file is part of OpenRA, which is free software. It is made
+   available to you under the terms of the GNU General Public License
+   as published by the Free Software Foundation, either version 3 of
+   the License, or (at your option) any later version. For more
+   information, see COPYING.
+]]
+
+Base =
+{
+	Atreides = { AConyard, APower1, APower2, APower3, APower4, APower5, APower6, APower7, APower8, APower9, APower10, APower11, APower12, ABarracks, ARefinery, ALightFactory, AHeavyFactory, ARepair, AResearch, AGunt1, AGunt2, ARock1, ARock2, ARock3, ARock4 },
+	Harkonnen = { HConyard, HPower1, HPower2, HPower3, HPower4, HPower5, HPower6, HPower7, HPower8, HPower9, HPower10, HBarracks, HRefinery, HOutpost, HHeavyFactory, HGunt1, HGunt2, HGunt3, HGunt4, HRock, HSilo1, HSilo2, HSilo3 }
+}
+
+AtreidesReinforcements =
+{
+	easy =
+	{
+		{ "light_inf", "light_inf", "light_inf", "trooper", "trooper", "quad" },
+		{ "quad", "quad", "quad", "combat_tank_a" },
+		{ "light_inf", "light_inf", "light_inf", "trooper", "trooper", "quad", "quad" }
+	},
+
+	normal =
+	{
+		{ "light_inf", "light_inf", "light_inf", "trooper", "trooper", "quad", "quad" },
+		{ "quad", "quad", "combat_tank_a", "combat_tank_a" },
+		{ "light_inf", "light_inf", "light_inf", "trooper", "trooper", "quad", "quad", "quad" },
+		{ "combat_tank_a", "combat_tank_a", "combat_tank_a" }
+	},
+
+	hard =
+	{
+		{ "light_inf", "light_inf", "light_inf", "trooper", "trooper", "trooper", "quad", "quad" },
+		{ "quad", "quad", "quad", "combat_tank_a", "combat_tank_a" },
+		{ "light_inf", "light_inf", "light_inf", "trooper", "trooper", "quad", "quad", "quad", "quad" },
+		{ "combat_tank_a", "combat_tank_a", "combat_tank_a", "quad" },
+		{ "combat_tank_a", "combat_tank_a", "missile_tank", "siege_tank" }
+	}
+}
+
+HarkonnenReinforcements =
+{
+	easy =
+	{
+		{ "combat_tank_h", "trike", "trike" },
+		{ "light_inf", "light_inf", "light_inf", "light_inf", "trooper", "trooper" },
+		{ "combat_tank_h", "quad" },
+		{ "trooper", "trooper", "trooper", "trooper", "trooper", "trooper" }
+	},
+
+	normal =
+	{
+		{ "combat_tank_h", "combat_tank_h", "trike", "trike" },
+		{ "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "trooper", "trooper" },
+		{ "combat_tank_h", "quad", "quad" },
+		{ "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper" },
+		{ "trike", "trike", "quad", "siege_tank" }
+	},
+
+	hard =
+	{
+		{ "combat_tank_h", "combat_tank_h", "trike", "trike", "trike" },
+		{ "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "trooper", "trooper" },
+		{ "combat_tank_h", "combat_tank_h", "quad", "quad" },
+		{ "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper", "trooper" },
+		{ "trike", "trike", "quad", "quad", "siege_tank" },
+		{ "missile_tank", "missile_tank", "missile_tank", "missile_tank" }
+	}
+}
+
+IxianReinforcements =
+{
+	easy = { "deviator", "deviator", "missile_tank", "missile_tank", "missile_tank", "siege_tank", "siege_tank", "combat_tank_o", "combat_tank_o" },
+	normal = { "deviator", "deviator", "missile_tank", "missile_tank", "missile_tank", "siege_tank", "siege_tank", "combat_tank_o" },
+	hard = { "deviator", "deviator", "missile_tank", "missile_tank", "siege_tank", "siege_tank", "combat_tank_o" }
+}
+
+EnemyAttackDelay =
+{
+	easy = DateTime.Minutes(3) + DateTime.Seconds(15),
+	normal = DateTime.Minutes(2) + DateTime.Seconds(15),
+	hard = DateTime.Minutes(1) + DateTime.Seconds(15)
+}
+
+AtreidesPaths =
+{
+	{ AtreidesEntry2.Location, AtreidesRally2.Location },
+	{ AtreidesEntry3.Location, AtreidesRally3.Location },
+	{ AtreidesEntry4.Location, AtreidesRally4.Location }
+}
+
+HarkonnenPaths =
+{
+	{ HarkonnenEntry2.Location, HarkonnenRally2.Location },
+	{ HarkonnenEntry3.Location, HarkonnenRally3.Location },
+	{ HarkonnenEntry4.Location, HarkonnenRally4.Location },
+	{ HarkonnenEntry5.Location, HarkonnenRally5.Location },
+	{ HarkonnenEntry6.Location, HarkonnenRally6.Location },
+	{ HarkonnenEntry7.Location, HarkonnenRally7.Location }
+}
+
+AtreidesAttackWaves =
+{
+	easy = 3,
+	normal = 4,
+	hard = 5
+}
+
+HarkonnenAttackWaves =
+{
+	easy = 4,
+	normal = 5,
+	hard = 6
+}
+
+InitialReinforcements = 
+{
+	Atreides = { "combat_tank_a", "quad", "quad", "trike", "trike" },
+	Harkonnen = { "trooper", "trooper", "trooper", "trooper", "trooper", "combat_tank_h" }
+}
+
+InitialReinforcementsPaths =
+{
+	Atreides = { AtreidesEntry1.Location, AtreidesRally1.Location },
+	Harkonnen = { HarkonnenEntry1.Location, HarkonnenRally1.Location }
+}
+
+InitialContrabandTimes =
+{
+	easy = DateTime.Minutes(20),
+	normal = DateTime.Minutes(30),
+	hard = DateTime.Minutes(40)
+}
+
+ContrabandTimes =
+{
+	easy = DateTime.Minutes(5),
+	normal = DateTime.Minutes(6),
+	hard = DateTime.Minutes(7)
+}
+
+SendContraband = function()
+	UserInterface.SetMissionText("Ixian reinforcements have arrived!", player.Color)
+	Media.PlaySpeechNotification(player, "Reinforce")
+
+	local entryLocation = CPos.New(82, playerStarports[1].Location.Y + 1)
+	local exitLocation = CPos.New(2, playerStarports[1].Location.Y + 1)
+	Reinforcements.ReinforceWithTransport(player, "frigate", IxianReinforcements[Difficulty], { entryLocation, playerStarports[1].Location + CVec.New(1, 1) }, { exitLocation })
+
+	Trigger.AfterDelay(DateTime.Seconds(5), function()
+		UserInterface.SetMissionText("")
+	end)
+
+	Trigger.AfterDelay(ContrabandTimes[Difficulty], function()
+		SendContraband()
+	end)
+end
+
+Hunt = function(house)
+	Trigger.OnAllKilledOrCaptured(Base[house.InternalName], function()
+		Utils.Do(house.GetGroundAttackers(), IdleHunt)
+	end)
+end
+
+CheckHarvester = function(house)
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[house] then
+		local units = house.GetActorsByType("harvester")
+
+		if #units > 0 then
+			LastHarvesterEaten[house] = false
+			ProtectHarvester(units[1], house, AttackGroupSize[Difficulty])
+		end
+	end
+end
+
+Tick = function()
+	playerStarports = player.GetActorsByType("starport")
+
+	if #playerStarports < 1 and not player.IsObjectiveFailed(GuardStarport) then
+		player.MarkFailedObjective(GuardStarport)
+		atreides.MarkCompletedObjective(KillStarport1)
+		harkonnen.MarkCompletedObjective(KillStarport2)
+	end
+
+	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
+		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		player.MarkCompletedObjective(KillAtreides)
+	end
+
+	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
+		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		player.MarkCompletedObjective(KillHarkonnen)
+	end
+
+	if player.IsObjectiveCompleted(KillAtreides) and player.IsObjectiveCompleted(KillHarkonnen) then
+		player.MarkCompletedObjective(GuardStarport)
+	end
+
+	if TimerTicks and not FirstIxiansArrived then
+		TimerTicks = TimerTicks - 1
+		UserInterface.SetMissionText("The first batch of reinforcements will arrive in " .. Utils.FormatTime(TimerTicks), player.Color)
+
+		if TimerTicks <= 0 then
+			FirstIxiansArrived = true
+			SendContraband()
+		end
+	end
+
+	CheckHarvester(atreides)
+	CheckHarvester(harkonnen)
+end
+
+WorldLoaded = function()
+	atreides = Player.GetPlayer("Atreides")
+	harkonnen = Player.GetPlayer("Harkonnen")
+	player = Player.GetPlayer("Ordos")
+
+	InitObjectives(player)
+	KillStarport1 = atreides.AddPrimaryObjective("Kill all Ordos units.")
+	KillStarport2 = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
+	GuardStarport = player.AddPrimaryObjective("Guard the Starport at all costs.")
+	KillAtreides = player.AddPrimaryObjective("Destroy the Atreides.")
+	KillHarkonnen = player.AddPrimaryObjective("Destroy the Harkonnen.")
+
+	Camera.Position = OConyard.CenterPosition
+	EnemyAttackLocations = { OConyard.Location, OStarport.Location }
+
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		TimerTicks = InitialContrabandTimes[Difficulty]
+		Media.DisplayMessage("The first batch of Ixian reinforcements will arrive in " .. Utils.FormatTime(TimerTicks) .. ".", "Mentat")
+	end)
+
+	Hunt(atreides)
+	Hunt(harkonnen)
+
+	local atreidesPath = function() return Utils.Random(AtreidesPaths) end
+	local harkonnenPath = function() return Utils.Random(HarkonnenPaths) end
+	local atreidesCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
+	local harkonnenCondition = function() return player.IsObjectiveCompleted(KillHarkonnen) end
+	local huntFunction = function(unit)
+		unit.AttackMove(Utils.Random(EnemyAttackLocations))
+		IdleHunt(unit)
+	end
+	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], atreidesPath, AtreidesReinforcements[Difficulty], atreidesCondition, huntFunction)
+	SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], harkonnenPath, HarkonnenReinforcements[Difficulty], harkonnenCondition, huntFunction)
+
+	Actor.Create("upgrade.barracks", true, { Owner = atreides })
+	Actor.Create("upgrade.light", true, { Owner = atreides })
+	Actor.Create("upgrade.heavy", true, { Owner = atreides })
+	Actor.Create("upgrade.barracks", true, { Owner = harkonnen })
+	Actor.Create("upgrade.heavy", true, { Owner = harkonnen })
+	Trigger.AfterDelay(0, ActivateAI)
+end
