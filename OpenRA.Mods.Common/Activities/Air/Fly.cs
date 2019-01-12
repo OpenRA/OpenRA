@@ -123,6 +123,26 @@ namespace OpenRA.Mods.Common.Activities
 			var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
 			if (aircraft.CenterPosition.Z < targetAltitude)
 				desiredFacing = aircraft.Facing;
+			else
+			{
+				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
+				// If it contains the destination point, it's unreachable without more complex manuvering.
+				var turnRadius = CalculateTurnRadius(aircraft.MovementSpeed, aircraft.TurnSpeed);
+
+				// The current facing is a tangent of the minimal turn circle.
+				// Make a perpendicular vector, and use it to locate the turn's center.
+				var turnCenterFacing = aircraft.Facing;
+				turnCenterFacing += Util.GetNearestFacing(aircraft.Facing, desiredFacing) > 0 ? 64 : -64;
+
+				var turnCenterDir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(turnCenterFacing));
+				turnCenterDir *= turnRadius;
+				turnCenterDir /= 1024;
+
+				// Compare with the target point, and keep flying away if it's inside the circle.
+				var turnCenter = aircraft.CenterPosition + turnCenterDir;
+				if ((checkTarget.CenterPosition - turnCenter).HorizontalLengthSquared < turnRadius * turnRadius)
+					desiredFacing = aircraft.Facing;
+			}
 
 			FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 
@@ -132,6 +152,14 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return target;
+		}
+
+		public static int CalculateTurnRadius(int speed, int turnSpeed)
+		{
+			// turnSpeed -> divide into 256 to get the number of ticks per complete rotation
+			// speed -> multiply to get distance travelled per rotation (circumference)
+			// 45 -> divide by 2*pi to get the turn radius: 45==256/(2*pi), with some extra leeway
+			return 45 * speed / turnSpeed;
 		}
 	}
 }
