@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			return self.World.Actors.Where(a => a.Owner == self.Owner
 				&& rearmable.Info.RearmActors.Contains(a.Info.Name)
-				&& (!unreservedOnly || !Reservable.IsReserved(a)))
+				&& (!unreservedOnly || Reservable.IsAvailableFor(a, self)))
 				.ClosestTo(self);
 		}
 
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
+			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))
 				dest = ChooseResupplier(self, true);
 
 			var initialFacing = aircraft.Info.InitialFacing;

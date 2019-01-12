@@ -714,7 +714,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
-					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
+					target => AircraftCanEnter(target), target => Reservable.IsAvailableFor(target, self));
 
 				yield return new AircraftMoveOrderTargeter(Info);
 			}
@@ -787,7 +787,7 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				var targetActor = order.Target.Actor;
-				if (Reservable.IsReserved(targetActor))
+				if (!Reservable.IsAvailableFor(targetActor, self))
 				{
 					if (!Info.CanHover)
 						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));

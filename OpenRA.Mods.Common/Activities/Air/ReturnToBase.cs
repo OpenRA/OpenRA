@@ -49,13 +49,13 @@ namespace OpenRA.Mods.Common.Activities
 			return self.World.ActorsHavingTrait<Reservable>()
 				.Where(a => a.Owner == self.Owner
 					&& rearmInfo.RearmActors.Contains(a.Info.Name)
-					&& (!unreservedOnly || !Reservable.IsReserved(a)))
+					&& (!unreservedOnly || Reservable.IsAvailableFor(a, self)))
 				.ClosestTo(self);
 		}
 
 		void Calculate(Actor self)
 		{
-			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
+			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))
 				dest = ChooseResupplier(self, true);
 
 			if (dest == null)
