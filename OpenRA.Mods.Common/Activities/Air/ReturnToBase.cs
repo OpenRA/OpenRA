@@ -53,11 +53,6 @@ namespace OpenRA.Mods.Common.Activities
 				.ClosestTo(self);
 		}
 
-		int CalculateTurnRadius(int speed)
-		{
-			return 45 * speed / aircraft.Info.TurnSpeed;
-		}
-
 		void Calculate(Actor self)
 		{
 			if (dest == null || dest.IsDead || Reservable.IsReserved(dest))
@@ -77,7 +72,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Add 10% to the turning radius to ensure we have enough room
 			var speed = aircraft.MovementSpeed * 32 / 35;
-			var turnRadius = CalculateTurnRadius(speed);
+			var turnRadius = Fly.CalculateTurnRadius(speed, aircraft.Info.TurnSpeed);
 
 			// Find the center of the turning circles for clockwise and counterclockwise turns
 			var angle = WAngle.FromFacing(aircraft.Facing);
@@ -154,7 +149,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			List<Activity> landingProcedures = new List<Activity>();
 
-			var turnRadius = CalculateTurnRadius(aircraft.Info.Speed);
+			var turnRadius = Fly.CalculateTurnRadius(aircraft.Info.Speed, aircraft.Info.TurnSpeed);
 
 			landingProcedures.Add(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
 			landingProcedures.Add(new Fly(self, Target.FromPos(w2)));
