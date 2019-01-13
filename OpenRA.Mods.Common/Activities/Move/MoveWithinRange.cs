@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override bool ShouldRepath(Actor self, CPos oldTargetPosition)
 		{
-			return targetPosition != oldTargetPosition && (!AtCorrectRange(self.CenterPosition)
+			return lastVisibleTargetLocation != oldTargetPosition && (!AtCorrectRange(self.CenterPosition)
 				|| !Mobile.CanInteractWithGroundLayer(self));
 		}
 
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			var maxCells = (maxRange.Length + 1023) / 1024;
 			var minCells = minRange.Length / 1024;
 
-			return map.FindTilesInAnnulus(targetPosition, minCells, maxCells)
+			return map.FindTilesInAnnulus(lastVisibleTargetLocation, minCells, maxCells)
 				.Where(c => AtCorrectRange(map.CenterOfSubCell(c, Mobile.FromSubCell)));
 		}
 

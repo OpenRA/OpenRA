@@ -26,40 +26,45 @@ namespace OpenRA.Mods.Common.Activities
 		protected readonly Mobile Mobile;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
+		readonly Color? targetLineColor;
 
-		Target target;
-		bool canHideUnderFog;
 		protected Target Target
 		{
 			get
 			{
-				return target;
-			}
-
-			private set
-			{
-				target = value;
-				if (target.Type == TargetType.Actor)
-					canHideUnderFog = target.Actor.Info.HasTraitInfo<HiddenUnderFogInfo>();
+				return useLastVisibleTarget ? lastVisibleTarget : target;
 			}
 		}
 
-		protected CPos targetPosition;
+		Target target;
+		Target lastVisibleTarget;
+		protected CPos lastVisibleTargetLocation;
+		bool useLastVisibleTarget;
+
 		Activity inner;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			Target = target;
-
+			this.target = target;
+			this.targetLineColor = targetLineColor;
 			Mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 
-			if (initialTargetPosition.HasValue)
-				targetPosition = self.World.Map.CellContaining(initialTargetPosition.Value);
-			else if (target.IsValidFor(self) && target.Actor.CanBeViewedByPlayer(self.Owner))
-				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+			{
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+				lastVisibleTargetLocation = self.World.Map.CellContaining(target.CenterPosition);
+			}
+			else if (initialTargetPosition.HasValue)
+			{
+				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
+				lastVisibleTargetLocation = self.World.Map.CellContaining(initialTargetPosition.Value);
+			}
 
 			repath = true;
 		}
@@ -69,9 +74,9 @@ namespace OpenRA.Mods.Common.Activities
 			return false;
 		}
 
-		protected virtual bool ShouldRepath(Actor self, CPos oldTargetPosition)
+		protected virtual bool ShouldRepath(Actor self, CPos targetLocation)
 		{
-			return targetPosition != oldTargetPosition;
+			return lastVisibleTargetLocation != targetLocation;
 		}
 
 		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
@@ -81,18 +86,29 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			var targetIsValid = Target.IsValidFor(self);
-
-			// Target moved under the fog. Move to its last known position.
-			if (Target.Type == TargetType.Actor && canHideUnderFog
-				&& !Target.Actor.CanBeViewedByPlayer(self.Owner))
+			bool targetIsHiddenActor;
+			var oldTargetLocation = lastVisibleTargetLocation;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
-				if (inner != null)
-					inner.Cancel(self);
-
-				self.SetTargetLine(Target.FromCell(self.World, targetPosition), Color.Green);
-				return ActivityUtils.RunActivity(self, new AttackMoveActivity(self, Mobile.MoveTo(targetPosition, 0)));
+				lastVisibleTarget = Target.FromTargetPositions(target);
+				lastVisibleTargetLocation = self.World.Map.CellContaining(target.CenterPosition);
 			}
+
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// Update target lines if required
+			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
+				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
+
+			// Target is hidden or dead, and we don't have a fallback position to move towards
+			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+				return NextActivity;
+
+			// Target is equivalent to checkTarget variable in other activities
+			// value is either lastVisibleTarget or target based on visibility and validity
+			var targetIsValid = Target.IsValidFor(self);
 
 			// Inner move order has completed.
 			if (inner == null)
@@ -107,26 +123,16 @@ namespace OpenRA.Mods.Common.Activities
 				repath = false;
 			}
 
-			if (targetIsValid)
+			// Cancel the current path if the activity asks to stop, or asks to repath
+			// The repath happens once the move activity stops in the next cell
+			var shouldStop = ShouldStop(self, oldTargetLocation);
+			var shouldRepath = targetIsValid && !repath && ShouldRepath(self, oldTargetLocation);
+			if (shouldStop || shouldRepath)
 			{
-				// Check if the target has moved
-				var oldTargetPosition = targetPosition;
-				targetPosition = self.World.Map.CellContaining(Target.CenterPosition);
+				if (inner != null)
+					inner.Cancel(self);
 
-				var shouldStop = ShouldStop(self, oldTargetPosition);
-				if (shouldStop || (!repath && ShouldRepath(self, oldTargetPosition)))
-				{
-					// Finish moving into the next cell and then repath.
-					if (inner != null)
-						inner.Cancel(self);
-
-					repath = !shouldStop;
-				}
-			}
-			else
-			{
-				// Target became invalid. Move to its last known position.
-				Target = Target.FromCell(self.World, targetPosition);
+				repath = shouldRepath;
 			}
 
 			// Ticks the inner move activity to actually move the actor.
@@ -149,7 +155,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NoPath;
 
 			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Info.LocomotorInfo, self, searchCells, loc, true))
-			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Info.LocomotorInfo, self, loc, targetPosition, true).Reverse())
+			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Info.LocomotorInfo, self, loc, lastVisibleTargetLocation, true).Reverse())
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
