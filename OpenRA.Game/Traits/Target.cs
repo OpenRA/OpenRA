@@ -24,15 +24,17 @@ namespace OpenRA.Traits
 		readonly TargetType type;
 		readonly Actor actor;
 		readonly FrozenActor frozen;
-		readonly WPos pos;
+		readonly WPos terrainCenterPosition;
+		readonly WPos[] terrainPositions;
 		readonly CPos? cell;
 		readonly SubCell? subCell;
 		readonly int generation;
 
-		Target(WPos pos)
+		Target(WPos terrainCenterPosition, WPos[] terrainPositions = null)
 		{
 			type = TargetType.Terrain;
-			this.pos = pos;
+			this.terrainCenterPosition = terrainCenterPosition;
+			this.terrainPositions = terrainPositions ?? new[] { terrainCenterPosition };
 
 			actor = null;
 			frozen = null;
@@ -44,7 +46,8 @@ namespace OpenRA.Traits
 		Target(World w, CPos c, SubCell subCell)
 		{
 			type = TargetType.Terrain;
-			pos = w.Map.CenterOfSubCell(c, subCell);
+			terrainCenterPosition = w.Map.CenterOfSubCell(c, subCell);
+			terrainPositions = new[] { terrainCenterPosition };
 			cell = c;
 			this.subCell = subCell;
 
@@ -59,7 +62,8 @@ namespace OpenRA.Traits
 			actor = a;
 			generation = a.Generation;
 
-			pos = WPos.Zero;
+			terrainCenterPosition = WPos.Zero;
+			terrainPositions = null;
 			frozen = null;
 			cell = null;
 			subCell = null;
@@ -70,7 +74,8 @@ namespace OpenRA.Traits
 			type = TargetType.FrozenActor;
 			frozen = fa;
 
-			pos = WPos.Zero;
+			terrainCenterPosition = WPos.Zero;
+			terrainPositions = null;
 			actor = null;
 			cell = null;
 			subCell = null;
@@ -78,6 +83,7 @@ namespace OpenRA.Traits
 		}
 
 		public static Target FromPos(WPos p) { return new Target(p); }
+		public static Target FromTargetPositions(Target t) { return new Target(t.CenterPosition, t.Positions.ToArray()); }
 		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell) { return new Target(w, c, subCell); }
 		public static Target FromActor(Actor a) { return a != null ? new Target(a) : Invalid; }
 		public static Target FromFrozenActor(FrozenActor fa) { return new Target(fa); }
@@ -160,7 +166,7 @@ namespace OpenRA.Traits
 					case TargetType.FrozenActor:
 						return frozen.CenterPosition;
 					case TargetType.Terrain:
-						return pos;
+						return terrainCenterPosition;
 					default:
 					case TargetType.Invalid:
 						throw new InvalidOperationException("Attempting to query the position of an invalid Target");
@@ -184,7 +190,7 @@ namespace OpenRA.Traits
 					case TargetType.FrozenActor:
 						return new[] { frozen.CenterPosition };
 					case TargetType.Terrain:
-						return new[] { pos };
+						return terrainPositions;
 					default:
 					case TargetType.Invalid:
 						return NoPositions;
@@ -212,7 +218,7 @@ namespace OpenRA.Traits
 					return frozen.ToString();
 
 				case TargetType.Terrain:
-					return pos.ToString();
+					return terrainCenterPosition.ToString();
 
 				default:
 				case TargetType.Invalid:
@@ -225,6 +231,6 @@ namespace OpenRA.Traits
 		internal Actor SerializableActor { get { return actor; } }
 		internal CPos? SerializableCell { get { return cell; } }
 		internal SubCell? SerializableSubCell { get { return subCell; } }
-		internal WPos SerializablePos { get { return pos; } }
+		internal WPos SerializablePos { get { return terrainCenterPosition; } }
 	}
 }
