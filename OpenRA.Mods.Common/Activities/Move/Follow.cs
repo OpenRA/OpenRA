@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -21,12 +22,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		readonly WDist maxRange;
 		readonly IMove move;
+		readonly Color? targetLineColor;
 
-		public Follow(Actor self, Target target, WDist minRange, WDist maxRange)
+		public Follow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
 		{
 			this.target = target;
 			this.minRange = minRange;
 			this.maxRange = maxRange;
+			this.targetLineColor = targetLineColor;
 
 			move = self.Trait<IMove>();
 		}
@@ -37,7 +40,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			var cachedPosition = target.CenterPosition;
-			var path = move.MoveWithinRange(target, minRange, maxRange);
+			var path = move.MoveWithinRange(target, minRange, maxRange, targetLineColor: targetLineColor);
 
 			// We are already in range, so wait until the target moves before doing anything
 			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))

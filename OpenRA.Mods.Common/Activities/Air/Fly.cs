@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -24,13 +25,13 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		bool soundPlayed;
 
-		public Fly(Actor self, Target t)
+		public Fly(Actor self, Target t, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
 		}
 
-		public Fly(Actor self, Target t, WDist minRange, WDist maxRange)
+		public Fly(Actor self, Target t, WDist minRange, WDist maxRange, Color? targetLineColor = null)
 			: this(self, t)
 		{
 			this.maxRange = maxRange;

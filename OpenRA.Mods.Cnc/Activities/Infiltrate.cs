@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly INotifyInfiltration[] notifiers;
 
 		public Infiltrate(Actor self, Actor target, Infiltrates infiltrate)
-			: base(self, target, infiltrate.Info.EnterBehaviour)
+			: base(self, target, infiltrate.Info.EnterBehaviour, targetLineColor: Color.Red)
 		{
 			this.target = target;
 			infiltrates  = infiltrate;

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Stance validStances;
 
 		public RepairBuilding(Actor self, Actor target, EnterBehaviour enterBehaviour, Stance validStances)
-			: base(self, target, enterBehaviour)
+			: base(self, target, enterBehaviour, targetLineColor: Color.Yellow)
 		{
 			this.target = target;
 			this.validStances = validStances;

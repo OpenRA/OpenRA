@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(target, Color.Red);
 
-				self.QueueActivity(move.MoveToTarget(self, target));
+				self.QueueActivity(move.MoveToTarget(self, target, targetLineColor: Color.Red));
 
 				self.QueueActivity(new CallFunc(() => self.Kill(self, Info.DamageTypes)));
 			}

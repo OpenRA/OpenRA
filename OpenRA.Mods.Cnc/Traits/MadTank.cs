@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					self.CancelActivity();
 
 				self.SetTargetLine(target, Color.Red);
-				self.QueueActivity(new MoveAdjacentTo(self, target));
+				self.QueueActivity(new MoveAdjacentTo(self, target, targetLineColor: Color.Red));
 				self.QueueActivity(new CallFunc(StartDetonationSequence));
 			}
 			else if (order.OrderString == "Detonate")

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly string notification;
 
 		public RepairBridge(Actor self, Actor target, EnterBehaviour enterBehaviour, string notification)
-			: base(self, target, enterBehaviour)
+			: base(self, target, enterBehaviour, targetLineColor: Color.Yellow)
 		{
 			this.target = target;
 			legacyHut = target.TraitOrDefault<LegacyBridgeHut>();

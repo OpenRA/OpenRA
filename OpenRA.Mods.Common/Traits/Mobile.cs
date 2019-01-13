@@ -457,11 +457,30 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region IMove
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(self, cell, WDist.FromCells(nearEnough)); }
-		public Activity MoveTo(CPos cell, Actor ignoreActor) { return new Move(self, cell, WDist.Zero, ignoreActor); }
-		public Activity MoveWithinRange(Target target, WDist range) { return new MoveWithinRange(self, target, WDist.Zero, range); }
-		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return new MoveWithinRange(self, target, minRange, maxRange); }
-		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange) { return new Follow(self, target, minRange, maxRange); }
+		public Activity MoveTo(CPos cell, int nearEnough)
+		{
+			return new Move(self, cell, WDist.FromCells(nearEnough));
+		}
+
+		public Activity MoveTo(CPos cell, Actor ignoreActor)
+		{
+			return new Move(self, cell, WDist.Zero, ignoreActor);
+		}
+
+		public Activity MoveWithinRange(Target target, WDist range, Color? targetLineColor = null)
+		{
+			return new MoveWithinRange(self, target, WDist.Zero, range, targetLineColor);
+		}
+
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+		{
+			return new MoveWithinRange(self, target, minRange, maxRange, targetLineColor);
+		}
+
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+		{
+			return new Follow(self, target, minRange, maxRange, targetLineColor);
+		}
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
@@ -481,12 +500,12 @@ namespace OpenRA.Mods.Common.Traits
 			return VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell), cell);
 		}
 
-		public Activity MoveToTarget(Actor self, Target target)
+		public Activity MoveToTarget(Actor self, Target target, Color? targetLineColor = null)
 		{
 			if (target.Type == TargetType.Invalid)
 				return null;
 
-			return new MoveAdjacentTo(self, target);
+			return new MoveAdjacentTo(self, target, targetLineColor);
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)

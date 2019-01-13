@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -20,8 +21,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly WDist minRange;
 
-		public MoveWithinRange(Actor self, Target target, WDist minRange, WDist maxRange)
-			: base(self, target)
+		public MoveWithinRange(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+			: base(self, target, targetLineColor)
 		{
 			this.minRange = minRange;
 			this.maxRange = maxRange;

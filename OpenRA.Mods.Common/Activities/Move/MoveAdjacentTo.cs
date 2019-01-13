@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool repath;
 
-		public MoveAdjacentTo(Actor self, Target target)
+		public MoveAdjacentTo(Actor self, Target target, Color? targetLineColor = null)
 		{
 			Target = target;
 
