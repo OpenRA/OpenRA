@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
@@ -181,11 +182,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough) { return null; }
 		public Activity MoveTo(CPos cell, Actor ignoreActor) { return null; }
-		public Activity MoveWithinRange(Target target, WDist range) { return null; }
-		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange) { return null; }
-		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange) { return null; }
+		public Activity MoveWithinRange(Target target, WDist range, Color? targetLineColor = null) { return null; }
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null) { return null; }
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null) { return null; }
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any) { return null; }
-		public Activity MoveToTarget(Actor self, Target target) { return null; }
+		public Activity MoveToTarget(Actor self, Target target, Color? targetLineColor = null) { return null; }
 		public Activity MoveIntoTarget(Actor self, Target target) { return null; }
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos) { return null; }
 

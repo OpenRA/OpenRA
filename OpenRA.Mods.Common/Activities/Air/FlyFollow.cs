@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -17,17 +18,19 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyFollow : Activity
 	{
+		readonly Aircraft aircraft;
+		readonly WDist minRange;
+		readonly WDist maxRange;
+		readonly Color? targetLineColor;
 		Target target;
-		Aircraft aircraft;
-		WDist minRange;
-		WDist maxRange;
 
-		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange)
+		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
 		{
 			this.target = target;
 			aircraft = self.Trait<Aircraft>();
 			this.minRange = minRange;
 			this.maxRange = maxRange;
+			this.targetLineColor = targetLineColor;
 		}
 
 		public override Activity Tick(Actor self)
@@ -48,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			return ActivityUtils.SequenceActivities(new Fly(self, target, minRange, maxRange), this);
+			return ActivityUtils.SequenceActivities(new Fly(self, target, minRange, maxRange, targetLineColor: targetLineColor), this);
 		}
 	}
 }

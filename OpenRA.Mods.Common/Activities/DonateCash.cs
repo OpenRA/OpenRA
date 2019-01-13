@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int experience;
 
 		public DonateCash(Actor self, Actor target, int payload, int playerExperience)
-			: base(self, target, EnterBehaviour.Dispose)
+			: base(self, target, EnterBehaviour.Dispose, targetLineColor: Color.Yellow)
 		{
 			this.target = target;
 			this.payload = payload;

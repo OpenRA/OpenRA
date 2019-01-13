@@ -397,11 +397,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		Activity MoveTo(CPos cell, int nearEnough);
 		Activity MoveTo(CPos cell, Actor ignoreActor);
-		Activity MoveWithinRange(Target target, WDist range);
-		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange);
-		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange);
+		Activity MoveWithinRange(Target target, WDist range, Color? targetLineColor = null);
+		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null);
+		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null);
 		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
-		Activity MoveToTarget(Actor self, Target target);
+		Activity MoveToTarget(Actor self, Target target, Color? targetLineColor = null);
 		Activity MoveIntoTarget(Actor self, Target target);
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
 		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);

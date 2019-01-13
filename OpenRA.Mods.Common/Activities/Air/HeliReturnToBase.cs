@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -89,7 +90,9 @@ namespace OpenRA.Mods.Common.Activities
 
 						var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
-						return ActivityUtils.SequenceActivities(new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase), this);
+						return ActivityUtils.SequenceActivities(
+							new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green),
+							this);
 					}
 
 					return this;

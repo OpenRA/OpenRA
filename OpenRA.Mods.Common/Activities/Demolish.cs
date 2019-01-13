@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Demolish(Actor self, Actor target, EnterBehaviour enterBehaviour, int delay,
 			int flashes, int flashesDelay, int flashInterval)
-			: base(self, target, enterBehaviour)
+			: base(self, target, enterBehaviour, targetLineColor: Color.Red)
 		{
 			this.target = target;
 			demolishables = target.TraitsImplementing<IDemolishable>().ToArray();
