@@ -19,42 +19,68 @@ namespace OpenRA.Traits
 	public struct Target
 	{
 		public static readonly Target[] None = { };
-		public static readonly Target Invalid = new Target { type = TargetType.Invalid };
+		public static readonly Target Invalid = new Target();
 
-		TargetType type;
-		Actor actor;
-		FrozenActor frozen;
-		WPos pos;
-		CPos? cell;
-		SubCell? subCell;
-		int generation;
+		readonly TargetType type;
+		readonly Actor actor;
+		readonly FrozenActor frozen;
+		readonly WPos pos;
+		readonly CPos? cell;
+		readonly SubCell? subCell;
+		readonly int generation;
 
-		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
-		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell)
+		Target(WPos pos)
 		{
-			return new Target
-			{
-				pos = w.Map.CenterOfSubCell(c, subCell),
-				cell = c,
-				subCell = subCell,
-				type = TargetType.Terrain
-			};
+			type = TargetType.Terrain;
+			this.pos = pos;
+
+			actor = null;
+			frozen = null;
+			cell = null;
+			subCell = null;
+			generation = 0;
 		}
 
-		public static Target FromActor(Actor a)
+		Target(World w, CPos c, SubCell subCell)
 		{
-			if (a == null)
-				return Invalid;
+			type = TargetType.Terrain;
+			pos = w.Map.CenterOfSubCell(c, subCell);
+			cell = c;
+			this.subCell = subCell;
 
-			return new Target
-			{
-				actor = a,
-				type = TargetType.Actor,
-				generation = a.Generation,
-			};
+			actor = null;
+			frozen = null;
+			generation = 0;
 		}
 
-		public static Target FromFrozenActor(FrozenActor a) { return new Target { frozen = a, type = TargetType.FrozenActor }; }
+		Target(Actor a)
+		{
+			type = TargetType.Actor;
+			actor = a;
+			generation = a.Generation;
+
+			pos = WPos.Zero;
+			frozen = null;
+			cell = null;
+			subCell = null;
+		}
+
+		Target(FrozenActor fa)
+		{
+			type = TargetType.FrozenActor;
+			frozen = fa;
+
+			pos = WPos.Zero;
+			actor = null;
+			cell = null;
+			subCell = null;
+			generation = 0;
+		}
+
+		public static Target FromPos(WPos p) { return new Target(p); }
+		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell) { return new Target(w, c, subCell); }
+		public static Target FromActor(Actor a) { return a != null ? new Target(a) : Invalid; }
+		public static Target FromFrozenActor(FrozenActor fa) { return new Target(fa); }
 
 		public Actor Actor { get { return actor; } }
 		public FrozenActor FrozenActor { get { return frozen; } }
