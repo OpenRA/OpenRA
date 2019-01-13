@@ -30,7 +30,12 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
+
 		protected Target target;
+		Target lastVisibleTarget;
+		WDist lastVisibleMaximumRange;
+		bool useLastVisibleTarget;
+		bool wasMovingWithinRange;
 
 		WDist minRange;
 		WDist maxRange;
@@ -49,16 +54,71 @@ namespace OpenRA.Mods.Common.Activities
 			positionable = self.Trait<IPositionable>();
 
 			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
+
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+			{
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
+					.Min(x => x.GetMaximumRangeVersusTarget(target));
+			}
 		}
 
-		protected virtual Target RecalculateTarget(Actor self)
+		protected virtual Target RecalculateTarget(Actor self, out bool targetIsHiddenActor)
 		{
-			return target.RecalculateInvalidatingHiddenTargets(self.Owner);
+			return target.Recalculate(self.Owner, out targetIsHiddenActor);
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			target = RecalculateTarget(self);
+			if (IsCanceled)
+				return NextActivity;
+
+			bool targetIsHiddenActor;
+			target = RecalculateTarget(self, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+			{
+				lastVisibleTarget = Target.FromTargetPositions(target);
+				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
+					.Min(x => x.GetMaximumRangeVersusTarget(target));
+			}
+
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
+			// Either we are in range and can see the target, or we've lost track of it and should give up
+			if (wasMovingWithinRange && targetIsHiddenActor)
+				return NextActivity;
+
+			// Update target lines if required
+			if (useLastVisibleTarget != oldUseLastVisibleTarget)
+				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
+
+			// Target is hidden or dead, and we don't have a fallback position to move towards
+			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+				return NextActivity;
+
+			wasMovingWithinRange = false;
+			var pos = self.CenterPosition;
+			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
+
+			// We don't know where the target actually is, so move to where we last saw it
+			if (useLastVisibleTarget)
+			{
+				// We've reached the assumed position but it is not there or we can't move any further - give up
+				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange) || move == null)
+					return NextActivity;
+
+				// Move towards the last known position
+				wasMovingWithinRange = true;
+				return ActivityUtils.SequenceActivities(
+					move.MoveWithinRange(target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red),
+					this);
+			}
+
 			turnActivity = moveActivity = null;
 			attackStatus = AttackStatus.UnableToAttack;
 
@@ -75,7 +135,10 @@ namespace OpenRA.Mods.Common.Activities
 				return turnActivity;
 
 			if (attackStatus.HasFlag(AttackStatus.NeedsToMove))
+			{
+				wasMovingWithinRange = true;
 				return moveActivity;
+			}
 
 			return NextActivity;
 		}
@@ -105,7 +168,10 @@ namespace OpenRA.Mods.Common.Activities
 				var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, sightRange, targetLineColor: Color.Red), this);
+				moveActivity = ActivityUtils.SequenceActivities(
+					move.MoveWithinRange(target, sightRange, target.CenterPosition, Color.Red),
+					this);
+
 				return AttackStatus.NeedsToMove;
 			}
 
@@ -129,7 +195,10 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, minRange, maxRange, targetLineColor: Color.Red), this);
+				moveActivity = ActivityUtils.SequenceActivities(
+					move.MoveWithinRange(target, minRange, maxRange, lastVisibleTarget.CenterPosition, Color.Red),
+					this);
+
 				return AttackStatus.NeedsToMove;
 			}
 
