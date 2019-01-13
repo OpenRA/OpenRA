@@ -80,9 +80,10 @@ namespace OpenRA.Mods.D2k.Traits
 			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack)
 				: base(self, target, allowMovement, forceAttack) { }
 
-			protected override Target RecalculateTarget(Actor self)
+			protected override Target RecalculateTarget(Actor self, out bool targetIsHiddenActor)
 			{
 				// Worms ignore visibility, so don't need to recalculate targets
+				targetIsHiddenActor = false;
 				return target;
 			}
 		}
