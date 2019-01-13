@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		Cargo cargo;
 
 		public EnterTransport(Actor self, Actor transport, int maxTries = 0, bool repathWhileMoving = true)
-			: base(self, transport, EnterBehaviour.Exit, maxTries, repathWhileMoving)
+			: base(self, transport, EnterBehaviour.Exit, maxTries, repathWhileMoving, Color.Green)
 		{
 			this.transport = transport;
 			this.maxTries = maxTries;

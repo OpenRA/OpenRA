@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough));
+			self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough, targetLineColor: Color.Green));
 			self.QueueActivity(new Repair(self, order.Target.Actor, info.CloseEnough));
 
 			self.SetTargetLine(order.Target, Color.Green, false);

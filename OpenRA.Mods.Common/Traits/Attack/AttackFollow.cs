@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -122,7 +123,10 @@ namespace OpenRA.Mods.Common.Traits
 					hasTicked = true;
 
 					if (move != null)
-						return ActivityUtils.SequenceActivities(move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange), this);
+						return ActivityUtils.SequenceActivities(
+							move.MoveFollow(self, target, weapon.Weapon.MinRange, maxRange, targetLineColor: Color.Red),
+							this);
+
 					if (target.IsInRange(self.CenterPosition, weapon.MaxRange()) &&
 						!target.IsInRange(self.CenterPosition, weapon.Weapon.MinRange))
 						return this;

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -72,7 +73,8 @@ namespace OpenRA.Mods.Common.Activities
 			switch (state)
 			{
 				case PickupState.Intercept:
-					innerActivity = movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4));
+					innerActivity = movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4),
+						targetLineColor: Color.Yellow);
 					state = PickupState.LockCarryable;
 					return this;
 

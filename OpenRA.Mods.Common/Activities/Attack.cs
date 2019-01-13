@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -104,7 +105,7 @@ namespace OpenRA.Mods.Common.Activities
 				var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, sightRange), this);
+				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, sightRange, targetLineColor: Color.Red), this);
 				return AttackStatus.NeedsToMove;
 			}
 
@@ -128,7 +129,7 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, minRange, maxRange), this);
+				moveActivity = ActivityUtils.SequenceActivities(move.MoveWithinRange(target, minRange, maxRange, targetLineColor: Color.Red), this);
 				return AttackStatus.NeedsToMove;
 			}
 

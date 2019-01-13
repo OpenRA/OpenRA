@@ -605,28 +605,28 @@ namespace OpenRA.Mods.Common.Traits
 			return new HeliFly(self, Target.FromCell(self.World, cell));
 		}
 
-		public Activity MoveWithinRange(Target target, WDist range)
+		public Activity MoveWithinRange(Target target, WDist range, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new Fly(self, target, WDist.Zero, range);
+				return new Fly(self, target, WDist.Zero, range, targetLineColor);
 
-			return new HeliFly(self, target, WDist.Zero, range);
+			return new HeliFly(self, target, WDist.Zero, range, targetLineColor);
 		}
 
-		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange)
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new Fly(self, target, minRange, maxRange);
+				return new Fly(self, target, minRange, maxRange, targetLineColor);
 
-			return new HeliFly(self, target, minRange, maxRange);
+			return new HeliFly(self, target, minRange, maxRange, targetLineColor);
 		}
 
-		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange)
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new FlyFollow(self, target, minRange, maxRange);
+				return new FlyFollow(self, target, minRange, maxRange, targetLineColor);
 
-			return new Follow(self, target, minRange, maxRange);
+			return new Follow(self, target, minRange, maxRange, targetLineColor);
 		}
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
@@ -637,12 +637,12 @@ namespace OpenRA.Mods.Common.Traits
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
-		public Activity MoveToTarget(Actor self, Target target)
+		public Activity MoveToTarget(Actor self, Target target, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5));
+				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5), targetLineColor);
 
-			return ActivityUtils.SequenceActivities(new HeliFly(self, target), new Turn(self, Info.InitialFacing));
+			return ActivityUtils.SequenceActivities(new HeliFly(self, target, targetLineColor), new Turn(self, Info.InitialFacing));
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)

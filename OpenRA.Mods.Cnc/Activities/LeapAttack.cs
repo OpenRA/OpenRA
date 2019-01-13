@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (!allowMovement)
 					return NextActivity;
 
-				QueueChild(new MoveWithinRange(self, target, minRange, maxRange));
+				QueueChild(mobile.MoveWithinRange(target, minRange, maxRange, targetLineColor: Color.Red));
 				return this;
 			}
 
