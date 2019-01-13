@@ -21,71 +21,83 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly AttackAircraft attackAircraft;
-		readonly bool attackOnlyVisibleTargets;
 		readonly Rearmable rearmable;
 
 		Target target;
-		bool canHideUnderFog;
-		protected Target Target
-		{
-			get
-			{
-				return target;
-			}
+		Target lastVisibleTarget;
+		WDist lastVisibleMaximumRange;
+		bool useLastVisibleTarget;
 
-			private set
-			{
-				target = value;
-				if (target.Type == TargetType.Actor)
-					canHideUnderFog = target.Actor.Info.HasTraitInfo<HiddenUnderFogInfo>();
-			}
-		}
-
-		public HeliAttack(Actor self, Target target, bool attackOnlyVisibleTargets = true)
+		public HeliAttack(Actor self, Target target)
 		{
-			Target = target;
+			this.target = target;
 			aircraft = self.Trait<Aircraft>();
 			attackAircraft = self.Trait<AttackAircraft>();
-			this.attackOnlyVisibleTargets = attackOnlyVisibleTargets;
 			rearmable = self.TraitOrDefault<Rearmable>();
+
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+			{
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
+			}
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
-			{
 				Cancel(self);
-				return NextActivity;
-			}
 
-			if (IsCanceled || !target.IsValidFor(self))
+			if (IsCanceled)
 				return NextActivity;
 
-			var pos = self.CenterPosition;
-			var targetPos = attackAircraft.GetTargetPosition(pos, target);
-			if (attackOnlyVisibleTargets && target.Type == TargetType.Actor && canHideUnderFog
-				&& !target.Actor.CanBeViewedByPlayer(self.Owner))
+			bool targetIsHiddenActor;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
-				var newTarget = Target.FromCell(self.World, self.World.Map.CellContaining(targetPos));
-
-				Cancel(self);
-				self.SetTargetLine(newTarget, Color.Green);
-				return new HeliFly(self, newTarget);
+				lastVisibleTarget = Target.FromTargetPositions(target);
+				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
 			}
+
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// Update target lines if required
+			if (useLastVisibleTarget != oldUseLastVisibleTarget)
+				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
+
+			// Target is hidden or dead, and we don't have a fallback position to move towards
+			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+				return NextActivity;
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
-			if (rearmable != null && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 				return ActivityUtils.SequenceActivities(new HeliReturnToBase(self, aircraft.Info.AbortOnResupply), this);
 
-			var dist = targetPos - pos;
+			var pos = self.CenterPosition;
+			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
-			// Can rotate facing while ascending
-			var desiredFacing = dist.HorizontalLengthSquared != 0 ? dist.Yaw.Facing : aircraft.Facing;
+			// Update facing
+			var delta = attackAircraft.GetTargetPosition(pos, checkTarget) - pos;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
-
 			if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
 				return this;
+
+			// We don't know where the target actually is, so move to where we last saw it
+			if (useLastVisibleTarget)
+			{
+				// We've reached the assumed position but it is not there - give up
+				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
+					return NextActivity;
+
+				// Fly towards the last known position
+				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
+				return this;
+			}
 
 			// Fly towards the target
 			if (!target.IsInRange(pos, attackAircraft.GetMaximumRangeVersusTarget(target)))
