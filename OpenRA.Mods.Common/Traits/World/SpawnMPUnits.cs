@@ -103,20 +103,20 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var actorRules = w.Map.Rules.Actors[s.ToLowerInvariant()];
 				var ip = actorRules.TraitInfo<IPositionableInfo>();
-				var validCells = supportSpawnCells.Where(c => ip.CanEnterCell(w, null, c));
-				if (!validCells.Any())
+				var validCell = supportSpawnCells.Shuffle(w.SharedRandom).FirstOrDefault(c => ip.CanEnterCell(w, null, c));
+
+				if (validCell == CPos.Zero)
 				{
 					Log.Write("debug", "No cells available to spawn starting unit {0} for player {1}".F(s, p));
 					continue;
 				}
 
-				var cell = validCells.Random(w.SharedRandom);
-				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(cell) : 0;
+				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(validCell) : 0;
 
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{
 					new OwnerInit(p),
-					new LocationInit(cell),
+					new LocationInit(validCell),
 					new SubCellInit(subCell),
 					new FacingInit(unitGroup.SupportActorsFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.SupportActorsFacing)
 				});
