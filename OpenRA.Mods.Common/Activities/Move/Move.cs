@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Remove queued activities
 			if (!keepQueue && NextInQueue != null)
-				NextInQueue = null;
+				NextInQueue.Cancel(self);
 
 			// In current implementation, ChildActivity can be Turn, MoveFirstHalf and MoveSecondHalf.
 			// Turn may be interrupted freely while they are turning.
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Activities
 			// This means that it is safe to unconditionally return true, which avoids breaking parent
 			// activities that rely on cancellation succeeding (but not necessarily immediately
 			ChildActivity.Cancel(self, false);
-
+			State = ActivityState.Canceled;
 			return true;
 		}
 

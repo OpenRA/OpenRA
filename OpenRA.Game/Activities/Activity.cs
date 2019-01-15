@@ -58,7 +58,7 @@ namespace OpenRA.Activities
 	*/
 	public abstract class Activity
 	{
-		public ActivityState State { get; private set; }
+		public ActivityState State { get; protected set; }
 
 		/// <summary>
 		/// Returns the top-most activity *from the point of view of the calling activity*. Note that the root activity
@@ -226,12 +226,10 @@ namespace OpenRA.Activities
 			if (ChildActivity != null && !ChildActivity.Cancel(self))
 				return false;
 
-			if (!keepQueue)
-				NextActivity = null;
+			if (!keepQueue && NextInQueue != null)
+				NextInQueue.Cancel(self);
 
-			ChildActivity = null;
 			State = ActivityState.Canceled;
-
 			return true;
 		}
 
