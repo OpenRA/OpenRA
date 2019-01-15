@@ -30,11 +30,14 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
-			IsInterruptible = false;
+			IsInterruptible = true;
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			if (IsCanceled)
+				return NextActivity;
+
 			if (NextInQueue != null)
 				return NextInQueue;
 
