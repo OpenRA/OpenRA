@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool repath;
 
-		public MoveAdjacentTo(Actor self, Target target, Color? targetLineColor = null)
+		public MoveAdjacentTo(Actor self, Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			Target = target;
 
@@ -56,7 +56,9 @@ namespace OpenRA.Mods.Common.Activities
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 
-			if (target.IsValidFor(self))
+			if (initialTargetPosition.HasValue)
+				targetPosition = self.World.Map.CellContaining(initialTargetPosition.Value);
+			else if (target.IsValidFor(self) && target.Actor.CanBeViewedByPlayer(self.Owner))
 				targetPosition = self.World.Map.CellContaining(target.CenterPosition);
 
 			repath = true;

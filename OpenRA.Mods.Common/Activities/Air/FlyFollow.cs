@@ -24,7 +24,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Color? targetLineColor;
 		Target target;
 
-		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition, Color? targetLineColor = null)
 		{
 			this.target = target;
 			aircraft = self.Trait<Aircraft>();
