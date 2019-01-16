@@ -46,7 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				target = target.Recalculate(self.Owner);
+				// This activity can't move to reacquire hidden targets, so use the
+				// Recalculate overload that invalidates hidden targets.
+				target = target.RecalculateInvalidatingHiddenTargets(self.Owner);
 				if (IsCanceled || !target.IsValidFor(self) || !attack.IsReachableTarget(target, allowMove))
 					return NextActivity;
 
