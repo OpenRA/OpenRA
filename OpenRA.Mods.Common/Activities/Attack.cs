@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected virtual Target RecalculateTarget(Actor self)
 		{
-			return target.Recalculate(self.Owner);
+			return target.RecalculateInvalidatingHiddenTargets(self.Owner);
 		}
 
 		public override Activity Tick(Actor self)
@@ -146,49 +146,6 @@ namespace OpenRA.Mods.Common.Activities
 			attack.DoAttack(self, target, armaments);
 
 			return AttackStatus.Attacking;
-		}
-	}
-
-	public static class TargetExts
-	{
-		/// <summary>Update (Frozen)Actor targets to account for visibility changes or actor replacement</summary>
-		public static Target Recalculate(this Target t, Player viewer)
-		{
-			// Check whether the target has transformed into something else
-			// HACK: This relies on knowing the internal implementation details of Target
-			if (t.Type == TargetType.Invalid && t.Actor != null && t.Actor.ReplacedByActor != null)
-				t = Target.FromActor(t.Actor.ReplacedByActor);
-
-			// Bot-controlled units aren't yet capable of understanding visibility changes
-			if (viewer.IsBot)
-				return t;
-
-			if (t.Type == TargetType.Actor)
-			{
-				// Actor has been hidden under the fog
-				if (!t.Actor.CanBeViewedByPlayer(viewer))
-				{
-					// Replace with FrozenActor if applicable, otherwise drop the target
-					var frozen = viewer.FrozenActorLayer.FromID(t.Actor.ActorID);
-					return frozen != null ? Target.FromFrozenActor(frozen) : Target.Invalid;
-				}
-			}
-			else if (t.Type == TargetType.FrozenActor)
-			{
-				// Frozen actor has been revealed
-				if (!t.FrozenActor.Visible || !t.FrozenActor.IsValid)
-				{
-					// Original actor is still alive
-					if (t.FrozenActor.Actor != null && t.FrozenActor.Actor.CanBeViewedByPlayer(viewer))
-						return Target.FromActor(t.FrozenActor.Actor);
-
-					// Original actor was killed while hidden
-					if (t.Actor == null)
-						return Target.Invalid;
-				}
-			}
-
-			return t;
 		}
 	}
 }

@@ -33,7 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Tick(Actor self)
 		{
-			Target = Target.Recalculate(self.Owner);
+			// We can safely ignore target visibility here - the armament will handle this for us.
+			bool targetIsHiddenActor;
+			Target = Target.Recalculate(self.Owner, out targetIsHiddenActor);
 			if (IsTraitDisabled)
 			{
 				Target = Target.Invalid;
@@ -83,7 +85,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				target = target.Recalculate(self.Owner);
+				// All of the interesting behaviour to move to the last known target position if it becomes hidden
+				// and to reacquire the target if it is revealed enroute is handled inside MoveWithinRange.
+				// At this point in the activity chain we are either ticking against the target for the first time
+				// (and so don't know where it is), or after MoveWithinRange has lost the target and given up.
+				// We can therefore treat a hidden targets as invalid and give up if we can't currently see it.
+				target = target.RecalculateInvalidatingHiddenTargets(self.Owner);
 				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
