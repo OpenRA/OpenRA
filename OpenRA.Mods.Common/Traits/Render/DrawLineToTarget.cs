@@ -115,15 +115,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer))
 				return;
 
-			self.World.AddFrameEndTask(w =>
-			{
-				if (self.Disposed)
-					return;
+			if (self.Disposed)
+				return;
 
-				var line = self.TraitOrDefault<DrawLineToTarget>();
-				if (line != null)
-					line.SetTarget(self, target, color, display);
-			});
+			var line = self.TraitOrDefault<DrawLineToTarget>();
+			if (line != null)
+				line.SetTarget(self, target, color, display);
 		}
 	}
 }
