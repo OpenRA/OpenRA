@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			target = target.Recalculate(self.Owner);
+			target = target.RecalculateInvalidatingHiddenTargets(self.Owner);
 
 			if (!target.IsValidFor(self))
 				return NextActivity;
