@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 
-		void INotifyBecomingIdle.OnBecomingIdle(Actor a)
+		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
 		{
 			targets = null;
 		}
