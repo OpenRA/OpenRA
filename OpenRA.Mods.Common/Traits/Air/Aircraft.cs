@@ -605,28 +605,35 @@ namespace OpenRA.Mods.Common.Traits
 			return new HeliFly(self, Target.FromCell(self.World, cell));
 		}
 
-		public Activity MoveWithinRange(Target target, WDist range, Color? targetLineColor = null)
+		public Activity MoveWithinRange(Target target, WDist range,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new Fly(self, target, WDist.Zero, range, targetLineColor);
+				return new Fly(self, target, WDist.Zero, range, initialTargetPosition, targetLineColor);
 
-			return new HeliFly(self, target, WDist.Zero, range, targetLineColor);
+			return new HeliFly(self, target, WDist.Zero, range, initialTargetPosition, targetLineColor);
 		}
 
-		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new Fly(self, target, minRange, maxRange, targetLineColor);
+				return new Fly(self, target, minRange, maxRange,
+					initialTargetPosition, targetLineColor);
 
-			return new HeliFly(self, target, minRange, maxRange, targetLineColor);
+			return new HeliFly(self, target, minRange, maxRange,
+				initialTargetPosition, targetLineColor);
 		}
 
-		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new FlyFollow(self, target, minRange, maxRange, targetLineColor);
+				return new FlyFollow(self, target, minRange, maxRange,
+					initialTargetPosition, targetLineColor);
 
-			return new Follow(self, target, minRange, maxRange, targetLineColor);
+			return new Follow(self, target, minRange, maxRange,
+				initialTargetPosition, targetLineColor);
 		}
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
@@ -637,12 +644,16 @@ namespace OpenRA.Mods.Common.Traits
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
 		}
 
-		public Activity MoveToTarget(Actor self, Target target, Color? targetLineColor = null)
+		public Activity MoveToTarget(Actor self, Target target,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			if (!Info.CanHover)
-				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5), targetLineColor);
+				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5),
+					initialTargetPosition, targetLineColor);
 
-			return ActivityUtils.SequenceActivities(new HeliFly(self, target, targetLineColor), new Turn(self, Info.InitialFacing));
+			return ActivityUtils.SequenceActivities(
+				new HeliFly(self, target, initialTargetPosition, targetLineColor),
+				new Turn(self, Info.InitialFacing));
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)

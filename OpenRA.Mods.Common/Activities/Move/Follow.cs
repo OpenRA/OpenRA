@@ -24,7 +24,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove move;
 		readonly Color? targetLineColor;
 
-		public Follow(Actor self, Target target, WDist minRange, WDist maxRange, Color? targetLineColor = null)
+		public Follow(Actor self, Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition, Color? targetLineColor = null)
 		{
 			this.target = target;
 			this.minRange = minRange;

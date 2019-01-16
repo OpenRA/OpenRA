@@ -25,14 +25,15 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		bool soundPlayed;
 
-		public HeliFly(Actor self, Target t, Color? targetLineColor = null)
+		public HeliFly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
 		}
 
-		public HeliFly(Actor self, Target t, WDist minRange, WDist maxRange, Color? targetLineColor = null)
-			: this(self, t)
+		public HeliFly(Actor self, Target t, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+			: this(self, t, initialTargetPosition, targetLineColor)
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;
