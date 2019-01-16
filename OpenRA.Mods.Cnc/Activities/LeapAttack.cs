@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -22,13 +23,16 @@ namespace OpenRA.Mods.Cnc.Activities
 {
 	public class LeapAttack : Activity
 	{
-		readonly Target target;
 		readonly AttackLeapInfo info;
 		readonly AttackLeap attack;
-		readonly Mobile mobile, targetMobile;
-		readonly EdibleByLeap edible;
+		readonly Mobile mobile;
 		readonly bool allowMovement;
-		readonly IFacing facing;
+
+		Target target;
+		Target lastVisibleTarget;
+		bool useLastVisibleTarget;
+		WDist lastVisibleMinRange;
+		WDist lastVisibleMaxRange;
 
 		public LeapAttack(Actor self, Target target, bool allowMovement, AttackLeap attack, AttackLeapInfo info)
 		{
@@ -36,14 +40,16 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.info = info;
 			this.attack = attack;
 			this.allowMovement = allowMovement;
-
 			mobile = self.Trait<Mobile>();
-			facing = self.TraitOrDefault<IFacing>();
 
-			if (target.Type == TargetType.Actor)
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
-				targetMobile = target.Actor.TraitOrDefault<Mobile>();
-				edible = target.Actor.TraitOrDefault<EdibleByLeap>();
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+				lastVisibleMinRange = attack.GetMinimumRangeVersusTarget(target);
+				lastVisibleMaxRange = attack.GetMaximumRangeVersusTarget(target);
 			}
 		}
 
@@ -54,9 +60,6 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || edible == null)
-				return NextActivity;
-
 			// Run this even if the target became invalid to avoid visual glitches
 			if (ChildActivity != null)
 			{
@@ -64,30 +67,66 @@ namespace OpenRA.Mods.Cnc.Activities
 				return this;
 			}
 
-			if (target.Type != TargetType.Actor || !edible.CanLeap(self) || !target.IsValidFor(self) || !attack.HasAnyValidWeapons(target))
+			if (IsCanceled)
 				return NextActivity;
 
-			var minRange = attack.GetMinimumRangeVersusTarget(target);
-			var maxRange = attack.GetMaximumRangeVersusTarget(target);
-			if (!target.IsInRange(self.CenterPosition, maxRange) || target.IsInRange(self.CenterPosition, minRange))
+			bool targetIsHiddenActor;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+			{
+				lastVisibleTarget = Target.FromTargetPositions(target);
+				lastVisibleMinRange = attack.GetMinimumRangeVersusTarget(target);
+				lastVisibleMaxRange = attack.GetMaximumRangeVersusTarget(target);
+			}
+
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// Update target lines if required
+			if (useLastVisibleTarget != oldUseLastVisibleTarget)
+				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
+
+			// Target is hidden or dead, and we don't have a fallback position to move towards
+			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+				return NextActivity;
+
+			var pos = self.CenterPosition;
+			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
+
+			if (!checkTarget.IsInRange(pos, lastVisibleMaxRange) || checkTarget.IsInRange(pos, lastVisibleMinRange))
 			{
 				if (!allowMovement)
 					return NextActivity;
 
-				QueueChild(mobile.MoveWithinRange(target, minRange, maxRange, targetLineColor: Color.Red));
+				QueueChild(mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red));
 				return this;
 			}
 
+			// Ready to leap, but target isn't visible
+			if (targetIsHiddenActor || target.Type != TargetType.Actor)
+				return NextActivity;
+
+			// Target is not valid
+			if (!target.IsValidFor(self) || !attack.HasAnyValidWeapons(target))
+				return NextActivity;
+
+			var edible = target.Actor.TraitOrDefault<EdibleByLeap>();
+			if (edible == null || !edible.CanLeap(self))
+				return NextActivity;
+
+			// Can't leap yet
 			if (attack.Armaments.All(a => a.IsReloading))
 				return this;
 
 			// Use CenterOfSubCell with ToSubCell instead of target.Centerposition
 			// to avoid continuous facing adjustments as the target moves
+			var targetMobile = target.Actor.TraitOrDefault<Mobile>();
 			var targetSubcell = targetMobile != null ? targetMobile.ToSubCell : SubCell.Any;
+
 			var destination = self.World.Map.CenterOfSubCell(target.Actor.Location, targetSubcell);
 			var origin = self.World.Map.CenterOfSubCell(self.Location, mobile.FromSubCell);
 			var desiredFacing = (destination - origin).Yaw.Facing;
-			if (facing != null && facing.Facing != desiredFacing)
+			if (mobile.Facing != desiredFacing)
 			{
 				QueueChild(new Turn(self, desiredFacing));
 				return this;
