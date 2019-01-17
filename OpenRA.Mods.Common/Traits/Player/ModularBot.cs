@@ -63,6 +63,11 @@ namespace OpenRA.Mods.Common.Traits
 		// Called by the host's player creation code
 		public void Activate(Player p)
 		{
+			// Bot logic is not allowed to affect world state, and can only act by issuing orders
+			// These orders are recorded in the replay, so bots shouldn't be enabled during replays
+			if (p.World.IsReplay)
+				return;
+
 			IsEnabled = true;
 			player = p;
 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
