@@ -44,7 +44,10 @@ namespace OpenRA.Mods.Cnc.Activities
 				targetMobile = target.Actor.TraitOrDefault<Mobile>();
 				edible = target.Actor.TraitOrDefault<EdibleByLeap>();
 			}
+		}
 
+		protected override void OnFirstRun(Actor self)
+		{
 			attack.IsAiming = true;
 		}
 
@@ -98,7 +101,6 @@ namespace OpenRA.Mods.Cnc.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			attack.IsAiming = false;
-			base.OnLastRun(self);
 		}
 	}
 }
