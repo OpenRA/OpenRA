@@ -105,6 +105,7 @@ TRAN:
 	-Selectable:
 	RevealsShroud:
 		Range: 0c0
+	-RevealsShroud@GAPGEN:
 	Cargo:
 		Types: ~disabled
 	Interactable:
