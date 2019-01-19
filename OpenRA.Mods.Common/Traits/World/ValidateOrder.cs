@@ -29,18 +29,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (subjectClient == null)
 			{
-				Game.Debug("Order sent to {0}: resolved ClientIndex `{1}` doesn't exist", order.Subject.Owner.PlayerName, subjectClientId);
+				Log.Write("debug", "Order sent to {0}: resolved ClientIndex `{1}` doesn't exist", order.Subject.Owner.PlayerName, subjectClientId);
 				return false;
 			}
 
 			var isBotOrder = subjectClient.Bot != null && clientId == subjectClient.BotControllerClientIndex;
 
-			// Drop exploiting orders
+			// Drop orders from players who shouldn't be able to control this actor
+			// This may be because the owner changed within the last net tick,
+			// or, less likely, the client may be trying to do something malicious.
 			if (subjectClientId != clientId && !isBotOrder)
-			{
-				Game.Debug("Detected exploit order from client {0}: {1}", clientId, order.OrderString);
 				return false;
-			}
 
 			return order.Subject.AcceptsOrder(order.OrderString);
 		}
