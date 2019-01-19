@@ -275,6 +275,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Resume a paused item
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, World.LocalPlayer.Faction.InternalName);
 				World.IssueOrder(Order.PauseProduction(CurrentQueue.Actor, icon.Name, false));
 				return true;
 			}
@@ -288,7 +289,7 @@ namespace OpenRA.Mods.Common.Widgets
 				string notification;
 				var canQueue = CurrentQueue.CanQueue(buildable, out notification);
 
-				if (!CurrentQueue.AllQueued().Any(qi => qi.Item == icon.Name && !qi.Paused && qi.Infinite))
+				if (!CurrentQueue.AllQueued().Any())
 					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", notification, World.LocalPlayer.Faction.InternalName);
 
 				if (canQueue)
