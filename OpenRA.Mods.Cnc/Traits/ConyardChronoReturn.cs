@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				nt.AfterTransform(a);
 
 			if (selected)
-				self.World.Selection.Add(self.World, a);
+				self.World.Selection.Add(a);
 
 			if (controlgroup.HasValue)
 				self.World.Selection.AddToControlGroup(a, controlgroup.Value);
