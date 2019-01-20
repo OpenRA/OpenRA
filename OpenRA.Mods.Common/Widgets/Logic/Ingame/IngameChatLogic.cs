@@ -85,8 +85,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					else if (chatTraits != null)
 					{
 						var text = chatText.Text.Trim();
+						var from = world.IsReplay ? null : orderManager.LocalClient.Name;
 						foreach (var trait in chatTraits)
-							trait.OnChat(orderManager.LocalClient.Name, text);
+							trait.OnChat(from, text);
 					}
 				}
 
