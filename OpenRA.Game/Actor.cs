@@ -336,6 +336,8 @@ namespace OpenRA
 			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 				t.OnOwnerChanged(this, oldOwner, newOwner);
 
+			World.Selection.OnOwnerChanged(this, oldOwner, newOwner);
+
 			if (wasInWorld)
 				World.Add(this);
 		}
