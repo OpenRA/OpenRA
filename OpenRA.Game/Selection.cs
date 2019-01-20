@@ -50,6 +50,29 @@ namespace OpenRA
 				ns.SelectionChanged();
 		}
 
+		public void Remove(Actor a)
+		{
+			if (actors.Remove(a))
+			{
+				UpdateHash();
+				foreach (var ns in worldNotifySelection)
+					ns.SelectionChanged();
+			}
+		}
+
+		internal void OnOwnerChanged(Actor a, Player oldOwner, Player newOwner)
+		{
+			if (!actors.Contains(a))
+				return;
+
+			// Remove the actor from the original owners selection
+			// Call UpdateHash directly for everyone else so watchers can account for the owner change if needed
+			if (oldOwner == a.World.LocalPlayer)
+				Remove(a);
+			else
+				UpdateHash();
+		}
+
 		public bool Contains(Actor a)
 		{
 			return actors.Contains(a);
