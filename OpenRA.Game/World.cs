@@ -142,7 +142,7 @@ namespace OpenRA
 			}
 		}
 
-		public readonly Selection Selection = new Selection();
+		public readonly Selection Selection;
 
 		public void CancelInputMode() { OrderGenerator = new UnitOrderGenerator(); }
 
@@ -178,6 +178,8 @@ namespace OpenRA
 			WorldActor = CreateActor(worldActorType, new TypeDictionary());
 			ActorMap = WorldActor.Trait<IActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
+
+			Selection = new Selection(WorldActor.TraitsImplementing<INotifySelection>());
 
 			// Add players
 			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())

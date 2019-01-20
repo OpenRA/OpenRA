@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Activities
 				self.ReplacedByActor = a;
 
 				if (selected)
-					w.Selection.Add(w, a);
+					w.Selection.Add(a);
 
 				if (controlgroup.HasValue)
 					w.Selection.AddToControlGroup(a, controlgroup.Value);
