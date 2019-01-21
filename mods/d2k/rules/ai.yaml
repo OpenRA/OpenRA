@@ -112,6 +112,8 @@ Player:
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
+		BuildingDelays:
+			upgrade.conyard: 3750
 	BaseBuilderBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
 		BuildingQueues: Building, Upgrade
@@ -160,6 +162,8 @@ Player:
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
+		BuildingDelays:
+			upgrade.conyard: 3750
 	BaseBuilderBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
 		BuildingQueues: Building, Upgrade
@@ -207,6 +211,8 @@ Player:
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
+		BuildingDelays:
+			upgrade.conyard: 3750
 	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	SquadManagerBotModule@omnius:
