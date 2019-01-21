@@ -292,6 +292,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var name = frac.Key;
 
+				// Does this building have initial delay, if so have we passed it?
+				if (baseBuilder.Info.BuildingDelays != null &&
+					baseBuilder.Info.BuildingDelays.ContainsKey(name) &&
+					baseBuilder.Info.BuildingDelays[name] > world.WorldTick)
+					continue;
+
 				// Can we build this structure?
 				if (!buildableThings.Any(b => b.Name == name))
 					continue;

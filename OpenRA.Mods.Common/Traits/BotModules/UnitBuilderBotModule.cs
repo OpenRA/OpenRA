@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What units should the AI have a maximum limit to train.")]
 		public readonly Dictionary<string, int> UnitLimits = null;
 
+		[Desc("When should the AI start train specific units.")]
+		public readonly Dictionary<string, int> UnitDelays = null;
+
 		public override object Create(ActorInitializer init) { return new UnitBuilderBotModule(init.Self, this); }
 	}
 
@@ -116,6 +119,11 @@ namespace OpenRA.Mods.Common.Traits
 			var name = unit.Name;
 
 			if (Info.UnitsToBuild != null && !Info.UnitsToBuild.ContainsKey(name))
+				return;
+
+			if (Info.UnitDelays != null &&
+				Info.UnitDelays.ContainsKey(name) &&
+				Info.UnitDelays[name] > world.WorldTick)
 				return;
 
 			if (Info.UnitLimits != null &&
