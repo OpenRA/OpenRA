@@ -119,6 +119,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What buildings should the AI have a maximum limit to build.")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
 
+		[Desc("When should the AI start building specific buildings.")]
+		public readonly Dictionary<string, int> BuildingDelays = null;
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
