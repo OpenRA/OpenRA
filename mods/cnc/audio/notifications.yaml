@@ -82,7 +82,6 @@ Sounds:
 		SignalFlareNorth: flaren1
 		SignalFlareSouth: flares1
 		SignalFlareWest: flarew1
-		TabClick: button
 		Target1: target1
 		Target2: target2
 		Target3: target3
