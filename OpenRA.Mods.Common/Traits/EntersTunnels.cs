@@ -62,15 +62,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "EnterTunnel")
+			if (order.OrderString != "EnterTunnel" || order.Target.Type != TargetType.Actor)
 				return;
 
-			var target = self.ResolveFrozenActorOrder(order, Color.Red);
-			if (target.Type != TargetType.Actor)
-				return;
-
-			var tunnel = target.Actor.TraitOrDefault<TunnelEntrance>();
-			if (!tunnel.Exit.HasValue)
+			var tunnel = order.Target.Actor.TraitOrDefault<TunnelEntrance>();
+			if (tunnel == null || !tunnel.Exit.HasValue)
 				return;
 
 			if (!order.Queued)
