@@ -265,18 +265,17 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (order.OrderString == "PickupUnit")
 				{
-					var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
-					if (target.Type != TargetType.Actor)
+					if (order.Target.Type != TargetType.Actor)
 						return;
 
-					if (!ReserveCarryable(self, target.Actor))
+					if (!ReserveCarryable(self, order.Target.Actor))
 						return;
 
 					if (!order.Queued)
 						self.CancelActivity();
 
-					self.SetTargetLine(target, Color.Yellow);
-					self.QueueActivity(order.Queued, new PickupUnit(self, target.Actor, Info.LoadingDelay));
+					self.SetTargetLine(order.Target, Color.Yellow);
+					self.QueueActivity(order.Queued, new PickupUnit(self, order.Target.Actor, Info.LoadingDelay));
 				}
 			}
 		}
