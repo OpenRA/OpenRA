@@ -48,9 +48,13 @@ HARV:
 	Health:
 		HP: 10000
 	Explodes:
+		-RequiresCondition:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
-	AttackSuicides:
+	GrantConditionOnDeploy:
+		DeployedCondition: triggered
+	KillsSelf:
+		RequiresCondition: triggered
 	Buildable:
 		Description: Explodes like a damn nuke!
 
