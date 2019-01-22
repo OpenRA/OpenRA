@@ -142,8 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (armament == null)
 					yield break;
 
-				var negativeDamage = (armament.Weapon.Warheads.FirstOrDefault(w => (w is DamageWarhead)) as DamageWarhead).Damage < 0;
-				yield return new AttackOrderTargeter(this, 6, negativeDamage);
+				yield return new AttackOrderTargeter(this, 6);
 			}
 		}
 
@@ -387,7 +386,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly AttackBase ab;
 
-			public AttackOrderTargeter(AttackBase ab, int priority, bool negativeDamage)
+			public AttackOrderTargeter(AttackBase ab, int priority)
 			{
 				this.ab = ab;
 				OrderID = ab.attackOrderName;
