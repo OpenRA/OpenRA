@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("release-20180923", "release-20181215", new UpdateRule[0]),
 
-			new UpdatePath("release-20181215", new UpdateRule[]
+			new UpdatePath("release-20181215", "playtest-20190106", new UpdateRule[]
 			{
 				// Bleed only changes here
 				new AddCarryableHarvester(),
@@ -113,6 +113,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAttackIgnoresVisibility(),
 				new ReplacedWithChargeAnimation(),
 				new RefactorResourceLevelAnimating(),
+			}),
+
+			new UpdatePath("playtest-20190106", new UpdateRule[]
+			{
+				new RemoveAttackSuicides(),
 			})
 		};
 
