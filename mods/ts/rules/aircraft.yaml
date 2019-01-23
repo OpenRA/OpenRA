@@ -374,10 +374,6 @@ HUNTER:
 		HP: 50000
 	Armor:
 		Type: Light
-	AttackSuicides:
-	Explodes:
-		Weapon: SuicideBomb
-		EmptyWeapon: SuicideBomb
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 355
@@ -385,6 +381,14 @@ HUNTER:
 		CanHover: True
 		CruisingCondition: cruising
 		VTOL: true
+	AttackAircraft:
+		FacingTolerance: 128
+	Armament@PRIMARY:
+		Weapon: SuicideBomb
+	GrantConditionOnAttack:
+		Condition: triggered
+	KillsSelf:
+		RequiresCondition: triggered
 	Targetable:
 		TargetTypes: Ground, Vehicle
 	HiddenUnderFog:
@@ -403,7 +407,6 @@ HUNTER:
 	Interactable:
 	SelectionDecorations:
 		Palette: pips
-	ActorLostNotification:
 	HitShape:
 	MapEditorData:
 		Categories: System

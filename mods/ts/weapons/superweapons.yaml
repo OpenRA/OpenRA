@@ -41,20 +41,15 @@ MultiCluster:
 		InvalidTargets: Vehicle, Building, Wall
 
 SuicideBomb:
-	ReloadDelay: 1
 	Range: 0c512
+	TargetActorCenter: true
 	Report: hunter2.aud
-	Warhead@1Dam: SpreadDamage
-		Spread: 256
-		Damage: 11000
-		Falloff: 10000, 3680, 1350, 500, 180, 70, 0
-		Versus:
-			None: 90
-			Light: 60
-			Heavy: 25
-			Concrete: 50
-		DamageTypes: Prone50Percent, TriggerProne, FireDeath
-	Warhead@2Res: DestroyResource
+	Projectile: InstantHit
+	ValidTargets: Vehicle, Building, Defense, Infantry
+	Warhead@1Dam: TargetDamage
+		Damage: 1000000
+		DamageTypes: FireDeath
+		ValidTargets: Vehicle, Building, Defense, Infantry
 
 IonCannon:
 	ValidTargets: Ground, Water, Air
