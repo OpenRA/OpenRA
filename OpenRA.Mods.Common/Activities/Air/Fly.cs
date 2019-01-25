@@ -20,15 +20,27 @@ namespace OpenRA.Mods.Common.Activities
 	public class Fly : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly Target target;
 		readonly WDist maxRange;
 		readonly WDist minRange;
+		readonly Color? targetLineColor;
+		Target target;
+		Target lastVisibleTarget;
+		bool useLastVisibleTarget;
 		bool soundPlayed;
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			target = t;
+			this.targetLineColor = targetLineColor;
+
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+			else if (initialTargetPosition.HasValue)
+				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
 		}
 
 		public Fly(Actor self, Target t, WDist minRange, WDist maxRange,
@@ -63,13 +75,29 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
-			{
 				Cancel(self);
-				return NextActivity;
-			}
 
-			if (IsCanceled || !target.IsValidFor(self))
+			if (IsCanceled)
 				return NextActivity;
+
+			bool targetIsHiddenActor;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+				lastVisibleTarget = Target.FromTargetPositions(target);
+
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// Update target lines if required
+			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
+				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
+
+			// Target is hidden or dead, and we don't have a fallback position to move towards
+			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+				return NextActivity;
+
+			var pos = self.CenterPosition;
+			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
 			if (!soundPlayed && aircraft.Info.TakeoffSounds.Length > 0 && self.IsAtGroundLevel())
 			{
@@ -78,20 +106,20 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Inside the target annulus, so we're done
-			var insideMaxRange = maxRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, maxRange);
-			var insideMinRange = minRange.Length > 0 && target.IsInRange(aircraft.CenterPosition, minRange);
+			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, maxRange);
+			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, minRange);
 			if (insideMaxRange && !insideMinRange)
 				return NextActivity;
 
-			var d = target.CenterPosition - self.CenterPosition;
+			var delta = checkTarget.CenterPosition - self.CenterPosition;
 
 			// The next move would overshoot, so consider it close enough
 			var move = aircraft.FlyStep(aircraft.Facing);
-			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
 				return NextActivity;
 
 			// Don't turn until we've reached the cruise altitude
-			var desiredFacing = d.Yaw.Facing;
+			var desiredFacing = delta.Yaw.Facing;
 			var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
 			if (aircraft.CenterPosition.Z < targetAltitude)
 				desiredFacing = aircraft.Facing;
