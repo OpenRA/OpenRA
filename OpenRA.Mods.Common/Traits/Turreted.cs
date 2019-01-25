@@ -255,12 +255,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (attack != null && attack.IsAiming)
 				attack.OnStopOrder(self);
 		}
-
-		protected override void TraitResumed(Actor self)
-		{
-			if (attack != null)
-				FaceTarget(self, attack.Target);
-		}
 	}
 
 	public class TurretFacingInit : IActorInit<int>
