@@ -378,6 +378,7 @@ JUGG:
 		RequiresCondition: deployed
 		PauseOnCondition: empdisable
 		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
