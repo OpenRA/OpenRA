@@ -288,6 +288,7 @@ SONIC:
 	AttackTurreted:
 		Voice: Attack
 		PauseOnCondition: empdisable
+		OpportunityFire: False
 	Turreted:
 		TurnSpeed: 5
 		Offset: -170,0,0
