@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// PERF: Avoid LINQ.
 			foreach (var attackFollow in attackFollows)
-				if (!attackFollow.IsTraitDisabled && attackFollow.IsReachableTarget(attackFollow.Target, allowMove))
+				if (!attackFollow.IsTraitDisabled && attackFollow.HasReachableTarget(allowMove))
 					return false;
 
 			return true;
