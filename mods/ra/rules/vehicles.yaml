@@ -31,6 +31,7 @@ V2RL:
 		ScanRadius: 10
 	AttackFrontal:
 		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
 		Name: loaded
@@ -277,6 +278,7 @@ ARTY:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: ArtilleryExplode

@@ -179,6 +179,7 @@ ARTY:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
 	AutoTarget:
 		InitialStanceAI: Defend
@@ -542,6 +543,7 @@ MSAM:
 		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
 		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
 	WithSpriteTurret:
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
