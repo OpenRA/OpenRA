@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly Color? targetLineColor;
 		Target target;
+		Target lastVisibleTarget;
+		bool useLastVisibleTarget;
+		bool wasMovingWithinRange;
 
 		public FlyFollow(Actor self, Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition, Color? targetLineColor = null)
@@ -32,27 +35,63 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 			this.maxRange = maxRange;
 			this.targetLineColor = targetLineColor;
+
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+			else if (initialTargetPosition.HasValue)
+				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
-			{
 				Cancel(self);
-				return NextActivity;
-			}
 
-			if (IsCanceled || !target.IsValidFor(self))
+			if (IsCanceled)
 				return NextActivity;
 
-			if (target.IsInRange(self.CenterPosition, maxRange) && !target.IsInRange(self.CenterPosition, minRange))
+			bool targetIsHiddenActor;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+				lastVisibleTarget = Target.FromTargetPositions(target);
+
+			var oldUseLastVisibleTarget = useLastVisibleTarget;
+			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
+			// Either we are in range and can see the target, or we've lost track of it and should give up
+			if (wasMovingWithinRange && targetIsHiddenActor)
+				return NextActivity;
+
+			wasMovingWithinRange = false;
+
+			// Update target lines if required
+			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
+				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
+
+			// Target is hidden or dead, and we don't have a fallback position to move towards
+			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+				return NextActivity;
+
+			var pos = self.CenterPosition;
+			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
+
+			// We've reached the required range - if the target is visible and valid then we wait
+			// otherwise if it is hidden or dead we give up
+			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
 			{
 				Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-				return this;
+				return useLastVisibleTarget ? NextActivity : this;
 			}
 
-			return ActivityUtils.SequenceActivities(new Fly(self, target, minRange, maxRange, targetLineColor: targetLineColor), this);
+			wasMovingWithinRange = true;
+			return ActivityUtils.SequenceActivities(
+				aircraft.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor),
+				this);
 		}
 	}
 }
