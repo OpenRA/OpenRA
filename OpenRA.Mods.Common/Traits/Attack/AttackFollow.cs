@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor will follow units until in range to attack them.")]
 	public class AttackFollowInfo : AttackBaseInfo
 	{
+		[Desc("Automatically acquire and fire on targets of opportunity when not actively attacking.")]
+		public readonly bool OpportunityFire = true;
+
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
@@ -31,6 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected Target opportunityTarget;
 		protected bool opportunityForceAttack;
 		Mobile mobile;
+		AutoTarget autoTarget;
 
 		public AttackFollow(Actor self, AttackFollowInfo info)
 			: base(self, info) { }
@@ -38,6 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			mobile = self.TraitOrDefault<Mobile>();
+			autoTarget = self.TraitOrDefault<AutoTarget>();
 			base.Created(self);
 		}
 
@@ -81,14 +86,26 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsAiming)
 					DoAttack(self, requestedTarget);
 			}
-			else if (opportunityTarget.Type != TargetType.Invalid)
+			else
 			{
-				IsAiming = CanAimAtTarget(self, opportunityTarget, opportunityForceAttack);
+				IsAiming = false;
+
+				if (opportunityTarget.Type != TargetType.Invalid)
+					IsAiming = CanAimAtTarget(self, opportunityTarget, opportunityForceAttack);
+
+				if (!IsAiming && ((AttackFollowInfo)Info).OpportunityFire && autoTarget != null &&
+				    !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.Defend)
+				{
+					opportunityTarget = autoTarget.ScanForTarget(self, false);
+					opportunityForceAttack = false;
+
+					if (opportunityTarget.Type != TargetType.Invalid)
+						IsAiming = CanAimAtTarget(self, opportunityTarget, opportunityForceAttack);
+				}
+
 				if (IsAiming)
 					DoAttack(self, opportunityTarget);
 			}
-			else
-				IsAiming = false;
 
 			base.Tick(self);
 		}
