@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated
+	public class FrozenUnderFog : ICreatesFrozenActors, IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated
 	{
 		[Sync] public int VisibilityHash;
 
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		PlayerDictionary<FrozenState> frozenStates;
 		bool isRendering;
+		bool created;
 
 		class FrozenState
 		{
@@ -67,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			frozenStates = new PlayerDictionary<FrozenState>(self.World, (player, playerIndex) =>
 			{
-				var frozenActor = new FrozenActor(self, footprint, player, startsRevealed);
+				var frozenActor = new FrozenActor(self, this, footprint, player, startsRevealed);
 				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
 				return new FrozenState(frozenActor) { IsVisible = startsRevealed };
 			});
@@ -75,12 +77,25 @@ namespace OpenRA.Mods.Common.Traits
 			if (startsRevealed)
 				for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 					UpdateFrozenActor(self, frozenStates[playerIndex].FrozenActor, playerIndex);
+
+			created = true;
 		}
 
 		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
 		{
 			VisibilityHash |= 1 << (playerIndex % 32);
 			frozenActor.RefreshState();
+		}
+
+		void ICreatesFrozenActors.OnVisibilityChanged(FrozenActor frozen)
+		{
+			// Ignore callbacks during initial setup
+			if (!created)
+				return;
+
+			// Update state visibility to match the frozen actor to ensure consistency within the tick
+			// The rest of the state will be updated by ITick.Tick below
+			frozenStates[frozen.Viewer].IsVisible = !frozen.Visible;
 		}
 
 		bool IsVisibleInner(Actor self, Player byPlayer)
