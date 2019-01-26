@@ -18,6 +18,11 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
+	public interface ICreatesFrozenActors
+	{
+		void OnVisibilityChanged(FrozenActor frozen);
+	}
+
 	[Desc("Required for FrozenUnderFog to work. Attach this to the player actor.")]
 	public class FrozenActorLayerInfo : Requires<ShroudInfo>, ITraitInfo
 	{
@@ -32,6 +37,7 @@ namespace OpenRA.Traits
 		public readonly PPos[] Footprint;
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
+		readonly ICreatesFrozenActors frozenTrait;
 		readonly Player viewer;
 		readonly Shroud shroud;
 
@@ -70,9 +76,10 @@ namespace OpenRA.Traits
 
 		int flashTicks;
 
-		public FrozenActor(Actor actor, PPos[] footprint, Player viewer, bool startsRevealed)
+		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, PPos[] footprint, Player viewer, bool startsRevealed)
 		{
 			this.actor = actor;
+			this.frozenTrait = frozenTrait;
 			this.viewer = viewer;
 			shroud = viewer.Shroud;
 			NeedRenderables = startsRevealed;
@@ -152,6 +159,11 @@ namespace OpenRA.Traits
 				if (Shrouded && shroud.IsExplored(puv))
 					Shrouded = false;
 			}
+
+			// Force the backing trait to update so other actors can't
+			// query inconsistent state (both hidden or both visible)
+			if (Visible != wasVisible)
+				frozenTrait.OnVisibilityChanged(this);
 
 			NeedRenderables |= Visible && !wasVisible;
 		}
