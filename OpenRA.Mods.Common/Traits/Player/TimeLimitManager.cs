@@ -12,8 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -55,6 +57,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Notification text for time limit warnings. The string '{0}' will be replaced by the remaining time in minutes, '{1}' is used for the plural form.")]
 		public readonly string Notification = "{0} minute{1} remaining.";
 
+		[Desc("ID of the LabelWidget used to display a text ingame that will be updated every second.")]
+		public readonly string CountdownLabel = null;
+
+		[Desc("Text to be shown using the CountdownLabel. The string '{0}' will be replaced by the time in hh:mm:ss format.")]
+		public readonly string CountdownText = null;
+
+		[Desc("Will prevent showing/playing the built-in time limit warnings when set to true.")]
+		public readonly bool SkipTimeRemainingNotifications = false;
+
+		[Desc("Will prevent showing/playing the built-in timer expired notification when set to true.")]
+		public readonly bool SkipTimerExpiredNotification = false;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
 			var timelimits = TimeLimitOptions.ToDictionary(c => c.ToString(), c =>
@@ -76,6 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly TimeLimitManagerInfo info;
 		MapOptions mapOptions;
+		LabelWidget countdownLabel;
+		CachedTransform<int, string> countdown;
 		int ticksRemaining;
 
 		public int TimeLimit;
@@ -97,6 +113,16 @@ namespace OpenRA.Mods.Common.Traits
 		void IWorldLoaded.WorldLoaded(World w, OpenRA.Graphics.WorldRenderer wr)
 		{
 			mapOptions = w.WorldActor.Trait<MapOptions>();
+			if (string.IsNullOrWhiteSpace(info.CountdownLabel) || string.IsNullOrWhiteSpace(info.CountdownText))
+				return;
+
+			countdownLabel = Ui.Root.GetOrNull<LabelWidget>(info.CountdownLabel);
+			if (countdownLabel != null)
+			{
+				countdown = new CachedTransform<int, string>(t =>
+					info.CountdownText.F(WidgetUtils.FormatTime(t, true, w.IsReplay ? mapOptions.GameSpeed.Timestep : w.Timestep)));
+				countdownLabel.GetText = () => countdown.Update(ticksRemaining);
+			}
 		}
 
 		void ITick.Tick(Actor self)
@@ -119,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			if (ticksRemaining < 0)
+			if (ticksRemaining < 0 || info.SkipTimeRemainingNotifications)
 				return;
 
 			foreach (var m in info.TimeLimitWarnings.Keys)
@@ -136,7 +162,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyTimeLimit.NotifyTimerExpired(Actor self)
 		{
-			Game.AddSystemLine("Battlefield Control", "Time limit has expired.");
+			if (countdownLabel != null)
+				countdownLabel.GetText = () => null;
+
+			if (!info.SkipTimerExpiredNotification)
+				Game.AddSystemLine("Battlefield Control", "Time limit has expired.");
 		}
 	}
 }

@@ -470,6 +470,12 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnSold, func, Context);
 		}
 
+		[Desc("Call a function when the game timer expires. The callback function will be called as func().")]
+		public void OnTimerExpired(LuaFunction func)
+		{
+			GetScriptTriggers(Context.World.WorldActor).RegisterCallback(Trigger.OnTimerExpired, func, Context);
+		}
+
 		[Desc("Removes all triggers from this actor. " +
 			"Note that the removal will only take effect at the end of a tick, " +
 			"so you must not add new triggers at the same time that you are calling this function.")]
