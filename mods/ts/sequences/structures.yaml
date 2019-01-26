@@ -706,9 +706,6 @@ gagate_a:
 		Start: 20
 		Tick: 400
 		ShadowStart: 41
-	make:
-		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
-		Length: 9
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 25
@@ -750,9 +747,6 @@ gagate_b:
 		Start: 20
 		Tick: 400
 		ShadowStart: 41
-	make:
-		Frames: 9, 8, 7, 6, 5, 4, 3, 2, 1
-		Length: 9
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 25
@@ -799,9 +793,6 @@ nagate_a:
 		Start: 14
 		Tick: 400
 		ShadowStart: 29
-	make:
-		Frames: 6, 5, 4, 3, 2, 1
-		Length: 6
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 25
@@ -844,9 +835,6 @@ nagate_b:
 		Start: 14
 		Tick: 400
 		ShadowStart: 29
-	make:
-		Frames: 6, 5, 4, 3, 2, 1
-		Length: 6
 	emp-overlay: emp_fx01
 		Length: *
 		Offset: 0, 0, 25

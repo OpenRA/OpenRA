@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			self = init.Self;
-			OpenPosition = Info.TransitionDelay;
+			Position = OpenPosition = Info.TransitionDelay;
 			building = self.Trait<Building>();
 			blockedPositions = building.Info.Tiles(self.Location);
 			Footprint = blockedPositions;
