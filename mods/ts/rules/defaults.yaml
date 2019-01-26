@@ -1162,11 +1162,9 @@
 	-Capturable:
 	-GivesBuildableArea:
 	-MustBeDestroyed:
-	WithMakeAnimation:
-		Condition: build-incomplete
+	-WithMakeAnimation:
 	-WithSpriteBody:
 	WithGateSpriteBody:
-		PauseOnCondition: !build-incomplete
 		OpenSequence: open
 	Tooltip:
 	Buildable:
@@ -1180,10 +1178,12 @@
 	MapEditorData:
 		Categories: Wall
 	Gate:
-		PauseOnCondition: empdisable || build-incomplete
+		PauseOnCondition: empdisable
 		OpeningSound: gateup1.aud
 		ClosingSound: gatedwn1.aud
 		BlocksProjectilesHeight: 768
+	Sellable:
+		RequiresCondition: !being-demolished
 
 ^Gate_A:
 	Inherits: ^Gate
