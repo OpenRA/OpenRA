@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => a.Owner == player && !activeCapturers.Contains(a));
 
 			var capturers = newUnits
-				.Where(a => a.IsIdle && Info.CapturingActorTypes.Contains(a.Info.Name))
+				.Where(a => a.IsIdle && Info.CapturingActorTypes.Contains(a.Info.Name) && a.Info.HasTraitInfo<CapturesInfo>())
 				.Select(a => new TraitPair<CaptureManager>(a, a.TraitOrDefault<CaptureManager>()))
 				.Where(tp => tp.Trait != null)
 				.ToArray();
@@ -140,52 +140,33 @@ namespace OpenRA.Mods.Common.Traits
 				: GetActorsThatCanBeOrderedByPlayer(randPlayer);
 
 			var capturableTargetOptions = targetOptions
-				.Select(a => new CaptureTarget<CapturableInfo>(a, "CaptureActor"))
 				.Where(target =>
 				{
-					if (target.Info == null)
-						return false;
-
-					var captureManager = target.Actor.TraitOrDefault<CaptureManager>();
+					var captureManager = target.TraitOrDefault<CaptureManager>();
 					if (captureManager == null)
 						return false;
 
-					return capturers.Any(tp => captureManager.CanBeTargetedBy(target.Actor, tp.Actor, tp.Trait));
+					return capturers.Any(tp => captureManager.CanBeTargetedBy(target, tp.Actor, tp.Trait));
 				})
-				.OrderByDescending(target => target.Actor.GetSellValue())
+				.OrderByDescending(target => target.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
 			if (Info.CapturableActorTypes.Any())
-				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Actor.Info.Name.ToLowerInvariant()));
+				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Info.Name.ToLowerInvariant()));
 
 			if (!capturableTargetOptions.Any())
 				return;
 
-			var capturesCapturers = capturers.Where(tp => tp.Actor.Info.HasTraitInfo<CapturesInfo>());
-			foreach (var tp in capturesCapturers)
-				QueueCaptureOrderFor(bot, tp.Actor, GetCapturerTargetClosestToOrDefault(tp.Actor, capturableTargetOptions));
-		}
+			foreach (var capturer in capturers)
+			{
+				var targetActor = capturableTargetOptions.MinByOrDefault(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
+				if (targetActor == null)
+					continue;
 
-		void QueueCaptureOrderFor<TTargetType>(IBot bot, Actor capturer, CaptureTarget<TTargetType> target) where TTargetType : class, ITraitInfoInterface
-		{
-			if (capturer == null)
-				return;
-
-			if (target == null)
-				return;
-
-			if (target.Actor == null)
-				return;
-
-			bot.QueueOrder(new Order(target.OrderString, capturer, Target.FromActor(target.Actor), true));
-			AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", player.ClientIndex, capturer, target.Actor);
-			activeCapturers.Add(capturer);
-		}
-
-		CaptureTarget<TTargetType> GetCapturerTargetClosestToOrDefault<TTargetType>(Actor capturer, IEnumerable<CaptureTarget<TTargetType>> targets)
-			where TTargetType : class, ITraitInfoInterface
-		{
-			return targets.MinByOrDefault(target => (target.Actor.CenterPosition - capturer.CenterPosition).LengthSquared);
+				bot.QueueOrder(new Order("CaptureActor", capturer.Actor, Target.FromActor(targetActor), true));
+				AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", player.ClientIndex, capturer.Actor, targetActor);
+				activeCapturers.Add(capturer.Actor);
+			}
 		}
 	}
 }

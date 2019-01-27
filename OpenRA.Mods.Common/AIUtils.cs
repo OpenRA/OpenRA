@@ -20,23 +20,6 @@ namespace OpenRA.Mods.Common
 
 	public enum WaterCheck { NotChecked, EnoughWater, NotEnoughWater }
 
-	public class CaptureTarget<TInfoType> where TInfoType : class, ITraitInfoInterface
-	{
-		internal readonly Actor Actor;
-		internal readonly TInfoType Info;
-
-		/// <summary>The order string given to the capturer so they can capture this actor.</summary>
-		/// <example>ExternalCaptureActor</example>
-		internal readonly string OrderString;
-
-		internal CaptureTarget(Actor actor, string orderString)
-		{
-			Actor = actor;
-			Info = actor.Info.TraitInfoOrDefault<TInfoType>();
-			OrderString = orderString;
-		}
-	}
-
 	public static class AIUtils
 	{
 		public static bool IsAreaAvailable<T>(World world, Player player, Map map, int radius, HashSet<string> terrainTypes)
