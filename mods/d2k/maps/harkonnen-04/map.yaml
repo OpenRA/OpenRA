@@ -43,6 +43,7 @@ Players:
 		Color: 9191FF
 		Allies: Fremen
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Fremen:
 		Name: Fremen
 		LockFaction: True
@@ -51,6 +52,7 @@ Players:
 		Color: DDDDDD
 		Allies: Atreides
 		Enemies: Harkonnen
+		Bot: campaign
 
 Actors:
 	Actor0: spicebloom.spawnpoint

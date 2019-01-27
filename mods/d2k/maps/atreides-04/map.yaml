@@ -45,6 +45,7 @@ Players:
 		LockColor: True
 		Color: FE0000
 		Enemies: Atreides, Creeps, Fremen
+		Bot: campaign
 	PlayerReference@Fremen:
 		Name: Fremen
 		LockFaction: True
@@ -53,6 +54,7 @@ Players:
 		Color: DDDDDD
 		Allies: Atreides
 		Enemies: Harkonnen, Creeps
+		Bot: campaign
 
 Actors:
 	Actor0: wormspawner

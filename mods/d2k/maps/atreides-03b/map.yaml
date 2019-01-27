@@ -42,6 +42,7 @@ Players:
 		LockColor: True
 		Color: B3EAA5
 		Enemies: Atreides, Creeps
+		Bot: campaign
 
 Actors:
 	Actor3: wormspawner

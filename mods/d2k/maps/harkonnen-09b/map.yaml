@@ -43,6 +43,7 @@ Players:
 		Color: 9191FF
 		Allies: Atreides Small Base, Corrino Main Base, Corrino Small Base
 		Enemies: Harkonnen, Smugglers - Enemy to AI, Smugglers - Enemy to Both
+		Bot: campaign
 	PlayerReference@Atreides Small Base:
 		Name: Atreides Small Base
 		LockFaction: True
@@ -51,6 +52,7 @@ Players:
 		Color: 9191FF
 		Allies: Atreides Main Base, Corrino Main Base, Corrino Small Base
 		Enemies: Harkonnen, Smugglers - Enemy to AI, Smugglers - Enemy to Both
+		Bot: campaign
 	PlayerReference@Corrino Main Base:
 		Name: Corrino Main Base
 		LockFaction: True
@@ -59,6 +61,7 @@ Players:
 		Color: 7D00FE
 		Allies: Atreides Main Base, Atreides Small Base, Corrino Small Base
 		Enemies: Harkonnen, Smugglers - Enemy to AI, Smugglers - Enemy to Both
+		Bot: campaign
 	PlayerReference@Corrino Small Base:
 		Name: Corrino Small Base
 		LockFaction: True
@@ -67,6 +70,7 @@ Players:
 		Color: 7D00FE
 		Allies: Atreides Main Base, Atreides Small Base, Corrino Main Base
 		Enemies: Harkonnen, Smugglers - Enemy to AI, Smugglers - Enemy to Both
+		Bot: campaign
 	PlayerReference@Smugglers - Neutral:
 		Name: Smugglers - Neutral
 		NonCombatant: True
@@ -74,6 +78,7 @@ Players:
 		Faction: smuggler
 		LockColor: True
 		Color: 542209
+		Bot: campaign
 	PlayerReference@Smugglers - Enemy to Harkonnen:
 		Name: Smugglers - Enemy to Harkonnen
 		NonCombatant: True
@@ -82,6 +87,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Smugglers - Enemy to AI:
 		Name: Smugglers - Enemy to AI
 		NonCombatant: True
@@ -90,6 +96,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Enemies: Atreides Main Base, Atreides Small Base, Corrino Main Base, Corrino Small Base
+		Bot: campaign
 	PlayerReference@Smugglers - Enemy to Both:
 		Name: Smugglers - Enemy to Both
 		NonCombatant: True
@@ -98,6 +105,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Enemies: Harkonnen, Atreides Main Base, Atreides Small Base, Corrino Main Base, Corrino Small Base
+		Bot: campaign
 
 Actors:
 	Actor0: trooper
