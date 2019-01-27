@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		protected Target requestedTarget;
 		protected bool requestedForceAttack;
+		protected int requestedTargetLastTick;
 		Mobile mobile;
 
 		public AttackFollow(Actor self, AttackFollowInfo info)
@@ -60,6 +61,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				requestedTarget = Target.Invalid;
 
+			if (requestedTargetLastTick != self.World.WorldTick)
+			{
+				// Activities tick before traits, so if we are here it means the activity didn't run
+				// (either queued next or already cancelled) and we need to recalculate the target ourself
+				bool targetIsHiddenActor;
+				requestedTarget = requestedTarget.Recalculate(self.Owner, out targetIsHiddenActor);
+			}
+
 			// Can't fire on anything
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return;
@@ -79,6 +88,19 @@ namespace OpenRA.Mods.Common.Traits
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
 			return new AttackActivity(self, newTarget, allowMove, forceAttack);
+		}
+
+		public override void OnQueueAttackActivity(Actor self, Target target, bool queued, bool allowMove, bool forceAttack)
+		{
+			// If not queued we know that the attack activity will run next
+			// We can improve responsiveness for turreted actors by preempting
+			// the last order (usually a move) and set the target immediately
+			if (!queued)
+			{
+				requestedTarget = target;
+				requestedForceAttack = forceAttack;
+				requestedTargetLastTick = self.World.WorldTick;
+			}
 		}
 
 		public override void OnStopOrder(Actor self)
@@ -148,6 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 				bool targetIsHiddenActor;
 				attack.requestedForceAttack = forceAttack;
 				attack.requestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+				attack.requestedTargetLastTick = self.World.WorldTick;
 				hasTicked = true;
 
 				if (!targetIsHiddenActor && target.Type == TargetType.Actor)
