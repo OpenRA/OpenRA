@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		public override Activity Tick(Actor self)
 		{
 			var pc = self.TraitOrDefault<PortableChrono>();
-			if (teleporter == self && pc != null && !pc.CanTeleport)
+			if (teleporter == self && pc != null && (!pc.CanTeleport || IsCanceling))
 			{
 				if (killOnFailure)
 					self.Kill(teleporter, killDamageTypes);
