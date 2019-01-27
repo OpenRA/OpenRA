@@ -34,18 +34,21 @@ Players:
 		Color: FF1400
 		Allies: BadGuy
 		Enemies: England, Greece
+		Bot: campaign
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR
 		Enemies: England, Greece
+		Bot: campaign
 	PlayerReference@England:
 		Name: England
 		Faction: allies
 		Color: A0F08C
 		Allies: Greece
 		Enemies: USSR, BadGuy
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False

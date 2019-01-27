@@ -25,6 +25,7 @@ Players:
 		Color: 5CC1A3
 		Allies: Germany
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Germany:
 		Name: Germany
 		NonCombatant: True
@@ -32,6 +33,7 @@ Players:
 		Color: 505050
 		Allies: France
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		Playable: True

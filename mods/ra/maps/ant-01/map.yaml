@@ -46,6 +46,7 @@ Players:
 		Name: AntMan 
 		Faciton: soviet
 		Enemies: Spain, Creeps
+		Bot: campaign
 
 Actors:
 	Actor0: brik

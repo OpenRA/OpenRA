@@ -29,12 +29,14 @@ Players:
 		Faction: england
 		Allies: Greece
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
 		Color: E2E6F5
 		Allies: Spain
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		Playable: True

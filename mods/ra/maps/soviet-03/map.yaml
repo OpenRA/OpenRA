@@ -34,17 +34,20 @@ Players:
 		Color: E2E6F5
 		Allies: Greece, BadGuy
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FE1100
 		Allies: England, Greece, USSR
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
 		Color: E2E6F5
 		Allies: England, BadGuy
 		Enemies: USSR, Creeps
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
