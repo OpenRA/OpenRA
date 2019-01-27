@@ -14,12 +14,13 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PortableChronoInfo : ITraitInfo
+	class PortableChronoInfo : ITraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Cooldown in ticks until the unit can teleport.")]
 		public readonly int ChargeDelay = 500;
@@ -53,17 +54,19 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
-		public object Create(ActorInitializer init) { return new PortableChrono(this); }
+		public object Create(ActorInitializer init) { return new PortableChrono(init.Self, this); }
 	}
 
 	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
-		[Sync] int chargeTick = 0;
 		public readonly PortableChronoInfo Info;
+		readonly IMove move;
+		[Sync] int chargeTick = 0;
 
-		public PortableChrono(PortableChronoInfo info)
+		public PortableChrono(Actor self, PortableChronoInfo info)
 		{
 			Info = info;
+			move = self.Trait<IMove>();
 		}
 
 		void ITick.Tick(Actor self)
@@ -102,19 +105,25 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "PortableChronoTeleport" && CanTeleport && order.Target.Type != TargetType.Invalid)
+			if (order.OrderString == "PortableChronoTeleport" && order.Target.Type != TargetType.Invalid)
 			{
 				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
-				self.CancelActivity();
+				if (!order.Queued)
+					self.CancelActivity();
 
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
+				self.SetTargetLine(order.Target, Color.LawnGreen);
+				if (maxDistance != null)
+					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value)));
+
 				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
+				self.QueueActivity(move.MoveTo(cell, 5));
 			}
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "PortableChronoTeleport" && CanTeleport ? Info.Voice : null;
+			return order.OrderString == "PortableChronoTeleport" ? Info.Voice : null;
 		}
 
 		public void ResetChargeTime()
