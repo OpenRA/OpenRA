@@ -10,7 +10,7 @@ AlliedUnits =
 {
 	{ delay = 0, types = { "1tnk", "1tnk", "2tnk", "2tnk" } },
 	{ delay = DateTime.Seconds(3), types = { "e1", "e1", "e1", "e3", "e3" } },
-	{ delay = DateTime.Seconds(7), types = { "e6" } }
+	{ delay = DateTime.Seconds(7), types = { "e6", "e6", "thf" } }
 }
 ReinforceBaseUnits = { "1tnk", "1tnk", "2tnk", "arty", "arty" }
 CivilianEvacuees = { "c1", "c2", "c5", "c7", "c8" }
@@ -289,9 +289,6 @@ InitPlayers = function()
 
 	ussr.Cash = 2000
 	Trigger.AfterDelay(0, function() badguy.Resources = badguy.ResourceCapacity * 0.75 end)
-	Trigger.OnCapture(USSROutpostSilo, function() -- getting money through capturing doesn't work
-		player.Cash = player.Cash + Utils.RandomInteger(1200, 1300)
-	end)
 end
 
 InitObjectives = function()
