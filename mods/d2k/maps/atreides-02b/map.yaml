@@ -42,6 +42,7 @@ Players:
 		LockColor: True
 		Color: FE0000
 		Enemies: Atreides, Creeps
+		Bot: campaign
 
 Actors:
 	Actor0: light_inf

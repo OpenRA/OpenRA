@@ -42,6 +42,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Enemies: Harkonnen
+		Bot: campaign
 
 Actors:
 	HConyard: construction_yard

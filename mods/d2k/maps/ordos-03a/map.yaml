@@ -44,6 +44,7 @@ Players:
 		LockColor: True
 		Color: FE0000
 		Enemies: Ordos
+		Bot: campaign
 
 Actors:
 	Actor0: light_inf
