@@ -28,12 +28,14 @@ Players:
 		Name: Villagers
 		NonCombatant: True
 		Faction: gdi
+		Bot: campaign
 	PlayerReference@GDI:
 		Name: GDI
 		Faction: gdi
 		Color: F5D378
 		Allies: Villagers
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True

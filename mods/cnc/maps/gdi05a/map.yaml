@@ -25,6 +25,7 @@ Players:
 		Color: FE1100
 		Allies: Nod
 		Enemies: GDI
+		Bot: campaign
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -43,6 +44,7 @@ Players:
 		NonCombatant: True
 		Color: F5D378
 		Faction: gdi
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True

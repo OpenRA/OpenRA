@@ -30,6 +30,7 @@ Players:
 		Color: FE1100
 		Allies: Nod
 		Enemies: GDI, Civilians
+		Bot: campaign
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -48,6 +49,7 @@ Players:
 		NonCombatant: True
 		Faction: gdi
 		Enemies: Nod
+		Bot: campaign
 
 Actors:
 	Actor0: v17
