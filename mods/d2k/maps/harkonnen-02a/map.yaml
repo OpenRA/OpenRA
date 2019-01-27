@@ -42,6 +42,7 @@ Players:
 		LockColor: True
 		Color: 9191FF
 		Enemies: Harkonnen
+		Bot: campaign
 
 Actors:
 	Actor0: light_inf

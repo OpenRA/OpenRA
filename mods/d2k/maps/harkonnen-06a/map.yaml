@@ -43,6 +43,7 @@ Players:
 		Color: B3EAA5
 		Allies: Ordos Small Base
 		Enemies: Harkonnen, Smugglers - Enemy to Ordos, Smugglers - Enemy to Both
+		Bot: campaign
 	PlayerReference@Ordos Small Base:
 		Name: Ordos Small Base
 		LockFaction: True
@@ -51,6 +52,7 @@ Players:
 		Color: B3EAA5
 		Allies: Ordos Main Base
 		Enemies: Harkonnen, Smugglers - Enemy to Ordos, Smugglers - Enemy to Both
+		Bot: campaign
 	PlayerReference@Smugglers - Neutral:
 		Name: Smugglers - Neutral
 		NonCombatant: True
@@ -58,6 +60,7 @@ Players:
 		Faction: smuggler
 		LockColor: True
 		Color: 542209
+		Bot: campaign
 	PlayerReference@Smugglers - Enemy to Harkonnen:
 		Name: Smugglers - Enemy to Harkonnen
 		NonCombatant: True
@@ -66,6 +69,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Smugglers - Enemy to Ordos:
 		Name: Smugglers - Enemy to Ordos
 		NonCombatant: True
@@ -74,6 +78,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Enemies: Ordos Main Base, Ordos Small Base
+		Bot: campaign
 	PlayerReference@Smugglers - Enemy to Both:
 		Name: Smugglers - Enemy to Both
 		NonCombatant: True
@@ -82,6 +87,7 @@ Players:
 		LockColor: True
 		Color: 542209
 		Enemies: Harkonnen, Ordos Main Base, Ordos Small Base
+		Bot: campaign
 
 Actors:
 	Actor0: wormspawner

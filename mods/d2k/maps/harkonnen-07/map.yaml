@@ -43,6 +43,7 @@ Players:
 		Color: 9191FF
 		Allies: Atreides Small Base, Corrino
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Atreides Small Base:
 		Name: Atreides Small Base
 		LockFaction: True
@@ -51,6 +52,7 @@ Players:
 		Color: 9191FF
 		Allies: Atreides Main Base, Corrino
 		Enemies: Harkonnen
+		Bot: campaign
 	PlayerReference@Corrino:
 		Name: Corrino
 		LockFaction: True
@@ -59,6 +61,7 @@ Players:
 		Color: 7D00FE
 		Allies: Atreides Main Base, Atreides Small Base
 		Enemies: Harkonnen
+		Bot: campaign
 
 Actors:
 	Actor0: wormspawner

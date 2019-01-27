@@ -44,6 +44,7 @@ Players:
 		Color: FE0000
 		LockColor: true
 		Enemies: Atreides, Creeps
+		Bot: campaign
 
 Actors:
 	Actor0: trike
