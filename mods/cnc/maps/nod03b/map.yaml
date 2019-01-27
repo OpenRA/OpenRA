@@ -30,6 +30,7 @@ Players:
 		Color: F5D378
 		Allies: GDI
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Playable: True

@@ -24,6 +24,7 @@ Players:
 		Faction: gdi
 		Color: F5D378
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True

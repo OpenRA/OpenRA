@@ -31,6 +31,7 @@ Players:
 		Faction: gdi
 		Color: F6D679
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		AllowBots: False
@@ -42,6 +43,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GDI
+
 Actors:
 	Actor0: brik
 		Location: 38,55

@@ -24,6 +24,7 @@ Players:
 		Faction: nod
 		Color: FE1100
 		Enemies: GDI, AbandonedBase
+		Bot: campaign
 	PlayerReference@GDI:
 		Name: GDI
 		Playable: True
@@ -48,6 +49,7 @@ Players:
 		Faction: gdi
 		Color: F5D378
 		Enemies: Nod
+		Bot: campaign
 
 Actors:
 	Actor0: sbag
