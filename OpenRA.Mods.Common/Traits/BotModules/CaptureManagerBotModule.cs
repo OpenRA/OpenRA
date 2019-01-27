@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly World world;
 		readonly Player player;
 		readonly Func<Actor, bool> isEnemyUnit;
-		readonly Predicate<Actor> unitCannotBeOrdered;
+		readonly Predicate<Actor> unitCannotBeOrderedOrIsIdle;
 		readonly int maximumCaptureTargetOptions;
 		int minCaptureDelayTicks;
 
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 					&& !unit.Info.HasTraitInfo<HuskInfo>()
 					&& unit.Info.HasTraitInfo<ITargetableInfo>();
 
-			unitCannotBeOrdered = a => a.Owner != player || a.IsDead || !a.IsInWorld;
+			unitCannotBeOrderedOrIsIdle = a => a.Owner != player || a.IsDead || !a.IsInWorld || a.IsIdle;
 
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
 		}
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CapturingActorTypes.Any() || player.WinState != WinState.Undefined)
 				return;
 
-			activeCapturers.RemoveAll(unitCannotBeOrdered);
+			activeCapturers.RemoveAll(unitCannotBeOrderedOrIsIdle);
 
 			var newUnits = world.ActorsHavingTrait<IPositionable>()
 				.Where(a => a.Owner == player && !activeCapturers.Contains(a));
