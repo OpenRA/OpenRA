@@ -33,11 +33,13 @@ Players:
 		Faction: soviet
 		Color: FF1400
 		Enemies: Greece, Germany
+		Bot: campaign
 	PlayerReference@Germany:
 		Name: Germany
 		Faction: allies
 		Color: 505050
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False

@@ -36,6 +36,7 @@ Players:
 		Faction: allies
 		Color: E2E6F5
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True

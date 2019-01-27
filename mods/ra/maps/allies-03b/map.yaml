@@ -29,6 +29,7 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Enemies: Greece
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True
@@ -42,6 +43,7 @@ Players:
 		Name: England
 		Color: A1EF8C
 		Faction: allies
+		Bot: campaign
 
 Actors:
 	Actor0: cycl

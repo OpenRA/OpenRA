@@ -34,18 +34,21 @@ Players:
 		Color: FF1400
 		Allies: Ukraine, Turkey, BadGuy
 		Enemies: Greece
+		Bot: campaign
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR, Ukraine, Turkey
 		Enemies: Greece
+		Bot: campaign
 	PlayerReference@Ukraine:
 		Name: Ukraine
 		Faction: soviet
 		Color: FFE695
 		Allies: USSR, Turkey, BadGuy
 		Enemies: Greece
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False
@@ -64,6 +67,7 @@ Players:
 		Color: D2997D
 		Allies: USSR, Ukraine, BadGuy
 		Enemies: Greece
+		Bot: campaign
 
 Actors:
 	Actor0: brik

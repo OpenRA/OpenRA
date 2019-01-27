@@ -48,6 +48,7 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Enemies: Civilians, Allies
+		Bot: campaign
 
 Actors:
 	Actor1: mine
