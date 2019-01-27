@@ -42,12 +42,14 @@ Players:
 		Color: 505050
 		Allies: Greece
 		Enemies: USSR
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Faction: allies
 		Color: E2E6F6
 		Allies: Germany
 		Enemies: USSR
+		Bot: campaign
 
 Actors:
 	Actor0: brik

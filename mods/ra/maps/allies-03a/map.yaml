@@ -29,6 +29,7 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Enemies: Greece
+		Bot: campaign
 	PlayerReference@Greece:
 		Name: Greece
 		Playable: True

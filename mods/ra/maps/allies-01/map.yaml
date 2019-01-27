@@ -24,6 +24,7 @@ Players:
 		Faction: soviet
 		Color: FE1100
 		Enemies: Greece, England
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -48,6 +49,7 @@ Players:
 		Color: A1EF8C
 		Allies: Greece
 		Enemies: USSR
+		Bot: campaign
 
 Actors:
 	Actor0: t16

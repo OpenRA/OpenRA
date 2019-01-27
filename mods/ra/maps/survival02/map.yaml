@@ -41,6 +41,7 @@ Players:
 		Faction: soviet
 		Color: FF0101
 		Enemies: Allies
+		Bot: campaign
 
 Actors:
 	Actor0: tc05

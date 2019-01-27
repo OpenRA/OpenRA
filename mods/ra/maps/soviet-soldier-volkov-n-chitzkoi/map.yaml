@@ -35,6 +35,7 @@ Players:
 		Color: ABB7E4
 		Allies: Spain, France, GoodGuy
 		Enemies: USSR, Creeps
+		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -53,18 +54,21 @@ Players:
 		Color: ABB7E4
 		Allies: Greece, Spain, France
 		Enemies: USSR, Creeps
+		Bot: campaign
 	PlayerReference@Spain:
 		Name: Spain
 		Faction: allies
 		Color: F6D679
 		Allies: Greece, GoodGuy, France
 		Enemies: USSR, Creeps
+		Bot: campaign
 	PlayerReference@France:
 		Name: France
 		Faction: allies
 		Color: 5DC2A5
 		Allies: Greece, GoodGuy, Spain
 		Enemies: USSR, Creeps
+		Bot: campaign
 
 Actors:
 	Actor0: cycl
