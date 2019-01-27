@@ -276,7 +276,7 @@ E6:
 		RequiresCondition: !global-reusable-engineers
 		CaptureTypes: building
 		PlayerExperience: 25
-		CaptureDelay: 200
+		CaptureDelay: 125
 	Captures@REUSABLE:
 		RequiresCondition: global-reusable-engineers
 		CaptureTypes: building
@@ -606,7 +606,7 @@ THF:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Mobile:
-		Speed: 85
+		Speed: 71
 
 SHOK:
 	Inherits: ^Soldier
