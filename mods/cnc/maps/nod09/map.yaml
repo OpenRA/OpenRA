@@ -26,6 +26,7 @@ Players:
 		Color: F5D378
 		Allies: Outpost
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -36,12 +37,14 @@ Players:
 		NonCombatant: True
 		Faction: gdi
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Outpost:
 		Name: Outpost
 		Faction: gdi
 		Color: F5D378
 		Allies: GDI
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		AllowBots: False
@@ -59,6 +62,7 @@ Players:
 		Faction: nod
 		Color: FE1100
 		Enemies: Nod
+		Bot: campaign
 
 Actors:
 	Actor0: brik

@@ -29,6 +29,7 @@ Players:
 		Faction: gdi
 		Color: F5D378
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		AllowBots: False

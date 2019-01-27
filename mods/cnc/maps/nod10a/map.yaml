@@ -34,6 +34,7 @@ Players:
 		Color: F6D679
 		Allies: GDI
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		AllowBots: False
@@ -46,6 +47,7 @@ Players:
 		LockTeam: True
 		Allies: Nod
 		Enemies: GDI, Creeps
+
 Actors:
 	Actor0: brik
 		Location: 34,34

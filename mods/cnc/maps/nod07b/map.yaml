@@ -25,6 +25,7 @@ Players:
 		Color: F5D378
 		Allies: Civilians
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True
@@ -36,6 +37,7 @@ Players:
 		Faction: gdi
 		Allies: GDI
 		Enemies: Nod
+		Bot: campaign
 	PlayerReference@Nod:
 		Name: Nod
 		Faction: nod
