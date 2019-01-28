@@ -56,6 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		int GetDisplayedBountyValue(Actor self)
 		{
+			if (self.IsDead)
+				return 0;
+
 			var bounty = GetBountyValue(self);
 			if (cargo == null)
 				return bounty;
