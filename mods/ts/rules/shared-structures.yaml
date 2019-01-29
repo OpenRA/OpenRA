@@ -28,7 +28,7 @@ GACNST:
 		Value: 2500
 	BaseBuilding:
 	Transforms:
-		RequiresCondition: factundeploy && !build-incomplete
+		RequiresCondition: factundeploy
 		PauseOnCondition: empdisable || being-demolished
 		IntoActor: mcv
 		Offset: 1,1

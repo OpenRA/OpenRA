@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -57,10 +57,15 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Can this actor be ordered to move when deployed? [Always, ForceOnly, Never]")]
+		public readonly UndeployOnMoveType UndeployOnMove = UndeployOnMoveType.Always;
+
 		public override object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
+
+	public enum UndeployOnMoveType { Always, ForceOnly, Never }
 
 	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder, INotifyCreated,
 		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice
@@ -118,20 +123,19 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
-						() => IsCursorBlocked() ? Info.DeployBlockedCursor : Info.DeployCursor);
+					yield return new MoveDeployOrderTargeter(self, this);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "GrantConditionOnDeploy")
-				return new Order(order.OrderID, self, queued);
+			if (order is MoveDeployOrderTargeter)
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -148,16 +152,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
-			if (order.OrderString != "GrantConditionOnDeploy" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
+			if (order.OrderString != "GrantConditionOnDeploy")
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			if (deployState == DeployState.Deployed)
-				self.QueueActivity(new UndeployForGrantedCondition(self, this));
-			else if (deployState == DeployState.Undeployed)
-				self.QueueActivity(new DeployForGrantedCondition(self, this));
+			self.SetTargetLine(order.Target, Color.Green);
+			self.QueueActivity(order.Queued, new DeployForGrantedCondition(self, this, order.Target));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -165,12 +164,12 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == "GrantConditionOnDeploy" ? Info.Voice : null;
 		}
 
-		bool IsCursorBlocked()
+		bool CanDeploy()
 		{
-			if (IsTraitPaused)
-				return true;
+			if (IsTraitPaused || IsTraitDisabled)
+				return false;
 
-			return !IsValidTerrain(self.Location) && (deployState != DeployState.Deployed);
+			return IsValidTerrain(self.Location) || (deployState == DeployState.Deployed);
 		}
 
 		public bool IsValidTerrain(CPos location)
@@ -298,6 +297,59 @@ namespace OpenRA.Mods.Common.Traits
 				undeployedToken = conditionManager.GrantCondition(self, Info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
+		}
+
+		class MoveDeployOrderTargeter : IOrderTargeter
+		{
+			readonly IMoveInfo info;
+			readonly bool rejectMove;
+			readonly GrantConditionOnDeploy unit;
+
+			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			{
+				return modifiers.HasModifier(TargetModifiers.ForceMove);
+			}
+
+			public MoveDeployOrderTargeter(Actor self, GrantConditionOnDeploy unit)
+			{
+				this.unit = unit;
+				info = self.Info.TraitInfoOrDefault<IMoveInfo>();
+				rejectMove = !self.AcceptsOrder("Move");
+			}
+
+			public string OrderID { get { return "GrantConditionOnDeploy"; } }
+			public int OrderPriority { get { return 5; } }
+			public bool IsQueued { get; protected set; }
+
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			{
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+
+				if (target.Type == TargetType.Actor)
+				{
+					cursor = unit.CanDeploy() ? unit.Info.DeployCursor : unit.Info.DeployBlockedCursor;
+					return self == target.Actor;
+				}
+
+				if (rejectMove || unit.Info.UndeployOnMove == UndeployOnMoveType.Never ||
+				    info == null || target.Type != TargetType.Terrain)
+					return false;
+
+				if (unit.Info.UndeployOnMove == UndeployOnMoveType.ForceOnly && !modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
+				var location = self.World.Map.CellContaining(target.CenterPosition);
+				var explored = self.Owner.Shroud.IsExplored(location);
+				cursor = self.World.Map.Contains(location) ?
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") : "move-blocked";
+
+				if (unit.IsTraitPaused
+					|| (!explored && info != null && !info.CanMoveIntoShroud())
+					|| (explored && info != null && !info.CanMoveInCell(self.World, self, location, null, false)))
+					cursor = "move-blocked";
+
+				return true;
+			}
 		}
 	}
 

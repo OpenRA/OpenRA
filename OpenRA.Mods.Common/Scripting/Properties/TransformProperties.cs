@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Queue a new transformation.")]
 		public void Deploy()
 		{
-			transforms.DeployTransform(true);
+			transforms.DeployTransform(true, Target.Invalid);
 		}
 	}
 }

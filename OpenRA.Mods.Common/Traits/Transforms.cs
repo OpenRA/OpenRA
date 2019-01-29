@@ -10,8 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -53,15 +54,20 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Can this actor be ordered to move when deployed? [Always, ForceOnly, Never]")]
+		public readonly UndeployOnMoveType UndeployOnMove = UndeployOnMoveType.Always;
+
 		public override object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}
 
-	public class Transforms : PausableConditionalTrait<TransformsInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	public class Transforms : PausableConditionalTrait<TransformsInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder,
+		INotifyCreated
 	{
 		readonly Actor self;
 		readonly ActorInfo actorInfo;
 		readonly BuildingInfo buildingInfo;
-		readonly string faction;
+		public readonly string Faction;
+		readonly Activity initialActivity;
 
 		public Transforms(ActorInitializer init, TransformsInfo info)
 			: base(info)
@@ -69,7 +75,15 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			actorInfo = self.World.Map.Rules.Actors[info.IntoActor];
 			buildingInfo = actorInfo.TraitInfoOrDefault<BuildingInfo>();
-			faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			Faction = init.Contains<FactionInit>() ? init.Get<FactionInit, string>() : self.Owner.Faction.InternalName;
+			if (init.Contains<ActivityInit>())
+				initialActivity = init.Get<ActivityInit, Activity>();
+		}
+
+		protected override void Created(Actor self)
+		{
+			self.QueueActivity(initialActivity);
+			base.Created(self);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -90,15 +104,14 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new DeployOrderTargeter("DeployTransform", 5,
-						() => CanDeploy() ? Info.DeployCursor : Info.DeployBlockedCursor);
+					yield return new MoveDeployOrderTargeter(self, actorInfo, this);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "DeployTransform")
-				return new Order(order.OrderID, self, queued);
+			if (order is MoveDeployOrderTargeter)
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -108,11 +121,11 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("DeployTransform", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitPaused && !IsTraitDisabled; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitDisabled && !IsTraitPaused; }
 
-		public void DeployTransform(bool queued)
+		public void DeployTransform(bool queued, Target target)
 		{
-			if (!queued && !CanDeploy())
+			if (!queued && !CanDeploy() && !(target.Type == TargetType.Terrain || (target.Type == TargetType.Actor && target.Actor != self)))
 			{
 				// Only play the "Cannot deploy here" audio
 				// for non-queued orders
@@ -124,23 +137,80 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			if (!queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new Transform(self, Info.IntoActor)
-			{
-				Offset = Info.Offset,
-				Facing = Info.Facing,
-				Sounds = Info.TransformSounds,
-				Notification = Info.TransformNotification,
-				Faction = faction
-			});
+			self.QueueActivity(queued, new Transform(self, target));
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployTransform" && !IsTraitPaused && !IsTraitDisabled)
-				DeployTransform(order.Queued);
+			if (order.OrderString != "DeployTransform" || IsTraitDisabled || IsTraitPaused)
+				return;
+
+			self.SetTargetLine(order.Target, Color.Green);
+			DeployTransform(order.Queued, order.Target);
 		}
+
+		class MoveDeployOrderTargeter : IOrderTargeter
+		{
+			readonly IMoveInfo info;
+			readonly bool rejectMove;
+			readonly Transforms unit;
+
+			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			{
+				return modifiers.HasModifier(TargetModifiers.ForceMove);
+			}
+
+			public MoveDeployOrderTargeter(Actor self, ActorInfo otherActorInfo, Transforms unit)
+			{
+				this.unit = unit;
+				info = self.Info.TraitInfoOrDefault<IMoveInfo>();
+				if (info == null)
+					 info = otherActorInfo.TraitInfoOrDefault<IMoveInfo>();
+
+				rejectMove = !self.AcceptsOrder("Move");
+			}
+
+			public string OrderID { get { return "DeployTransform"; } }
+			public int OrderPriority { get { return 5; } }
+			public bool IsQueued { get; protected set; }
+
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			{
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+
+				if (target.Type == TargetType.Actor)
+				{
+					cursor = unit.CanDeploy() ? unit.Info.DeployCursor : unit.Info.DeployBlockedCursor;
+					return self == target.Actor;
+				}
+
+				if (rejectMove || unit.Info.UndeployOnMove == UndeployOnMoveType.Never ||
+				    info == null || target.Type != TargetType.Terrain)
+					return false;
+
+				if (unit.Info.UndeployOnMove == UndeployOnMoveType.ForceOnly && !modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
+				var location = self.World.Map.CellContaining(target.CenterPosition);
+				var explored = self.Owner.Shroud.IsExplored(location);
+				cursor = self.World.Map.Contains(location) ?
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") : "move-blocked";
+
+				if (unit.IsTraitPaused
+					|| (!explored && info != null && !info.CanMoveIntoShroud())
+					|| (explored && info != null && !info.CanMoveInCell(self.World, self, location, null, false)))
+					cursor = "move-blocked";
+
+				return true;
+			}
+		}
+	}
+
+	public class ActivityInit : IActorInit<Activity>
+	{
+		[FieldFromYamlKey] readonly Activity value = null;
+		public ActivityInit() { }
+		public ActivityInit(Activity init) { value = init; }
+		public Activity Value(World world) { return value; }
 	}
 }

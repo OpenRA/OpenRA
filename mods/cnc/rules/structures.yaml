@@ -20,7 +20,7 @@ FACT:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
-		RequiresCondition: factundeploy && !build-incomplete
+		RequiresCondition: factundeploy
 		PauseOnCondition: being-demolished
 		IntoActor: mcv
 		Offset: 1,1

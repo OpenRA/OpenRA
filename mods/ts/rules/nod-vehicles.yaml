@@ -140,6 +140,7 @@ TTNK:
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
 		Voice: Move
+		UndeployOnMove: ForceOnly
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	WithVoxelBody:
@@ -246,6 +247,7 @@ ART2:
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
 		Voice: Move
+		UndeployOnMove: ForceOnly
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	WithVoxelBody:
