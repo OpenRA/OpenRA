@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class DonateExperience : Enter
+	class DonateExperience : LegacyEnter
 	{
 		readonly Actor target;
 		readonly GainsExperience targetGainsExperience;
