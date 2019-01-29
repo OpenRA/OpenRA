@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class CaptureActor : Enter
+	public class CaptureActor : LegacyEnter
 	{
 		readonly Actor actor;
 		readonly CaptureManager targetManager;

@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class RepairBridge : Enter
+	class RepairBridge : LegacyEnter
 	{
 		readonly Actor target;
 		readonly LegacyBridgeHut legacyHut;

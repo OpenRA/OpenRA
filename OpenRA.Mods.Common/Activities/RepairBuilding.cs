@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class RepairBuilding : Enter
+	class RepairBuilding : LegacyEnter
 	{
 		readonly Actor target;
 		readonly IHealth health;

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class EnterTransport : Enter
+	class EnterTransport : LegacyEnter
 	{
 		readonly Passenger passenger;
 		readonly int maxTries;

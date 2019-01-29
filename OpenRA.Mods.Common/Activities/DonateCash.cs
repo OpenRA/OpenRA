@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class DonateCash : Enter
+	class DonateCash : LegacyEnter
 	{
 		readonly Actor target;
 		readonly int payload;

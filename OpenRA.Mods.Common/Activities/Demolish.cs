@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class Demolish : Enter
+	class Demolish : LegacyEnter
 	{
 		readonly Actor target;
 		readonly IDemolishable[] demolishables;
