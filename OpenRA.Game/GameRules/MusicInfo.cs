@@ -19,6 +19,7 @@ namespace OpenRA.GameRules
 		public readonly string Filename;
 		public readonly string Title;
 		public readonly bool Hidden;
+		public readonly float VolumeModifier = 1f;
 
 		public int Length { get; private set; } // seconds
 		public bool Exists { get; private set; }
@@ -30,6 +31,9 @@ namespace OpenRA.GameRules
 			var nd = value.ToDictionary();
 			if (nd.ContainsKey("Hidden"))
 				bool.TryParse(nd["Hidden"].Value, out Hidden);
+
+			if (nd.ContainsKey("VolumeModifier"))
+				VolumeModifier = FieldLoader.GetValue<float>("VolumeModifier", nd["VolumeModifier"].Value);
 
 			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
 			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
