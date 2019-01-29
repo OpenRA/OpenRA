@@ -214,7 +214,7 @@ namespace OpenRA
 
 			Func<ISoundFormat, ISound> stream = soundFormat => soundEngine.Play2DStream(
 				soundFormat.GetPCMInputStream(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate,
-				false, true, WPos.Zero, MusicVolume);
+				false, true, WPos.Zero, MusicVolume * m.VolumeModifier);
 			music = LoadSound(m.Filename, stream);
 
 			if (music == null)
