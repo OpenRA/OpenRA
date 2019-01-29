@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	class Infiltrate : Enter
+	class Infiltrate : LegacyEnter
 	{
 		readonly Actor target;
 		readonly Infiltrates infiltrates;

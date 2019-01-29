@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public enum EnterBehaviour { Exit, Suicide, Dispose }
 
-	public abstract class Enter : Activity
+	public abstract class LegacyEnter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
 		enum EnterState { ApproachingOrEntering, WaitingToEnter, Inside, Exiting, Done }
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 		Activity inner;
 		bool firstApproach = true;
 
-		protected Enter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1,
+		protected LegacyEnter(Actor self, Actor target, EnterBehaviour enterBehaviour, int maxTries = 1,
 			bool repathWhileMoving = true, Color? targetLineColor = null)
 		{
 			move = self.Trait<IMove>();
