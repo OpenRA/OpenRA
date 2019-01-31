@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Activities
 					isEnteringOrInside = true;
 					savedPos = self.CenterPosition; // Save position of self, before entering, for returning on exit
 
-					inner = move.MoveIntoTarget(self, target); // Enter
+					inner = move.VisualMove(self, self.CenterPosition,  target.Positions.PositionClosestTo(self.CenterPosition));
 
 					if (inner != null)
 					{
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Activities
 						Unreserve(self, false);
 						if (Reserve(self) == ReserveStatus.Ready)
 						{
-							inner = move.MoveIntoTarget(self, target); // Enter
+							inner = move.VisualMove(self, self.CenterPosition, target.Positions.PositionClosestTo(self.CenterPosition));
 							if (inner != null)
 								return EnterState.ApproachingOrEntering;
 
