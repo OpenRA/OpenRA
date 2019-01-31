@@ -16,51 +16,64 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class CaptureActor : LegacyEnter
+	public class CaptureActor : Enter
 	{
-		readonly Actor actor;
-		readonly CaptureManager targetManager;
 		readonly CaptureManager manager;
 
-		public CaptureActor(Actor self, Actor target)
-			: base(self, target, EnterBehaviour.Exit, targetLineColor: Color.Red)
+		Actor enterActor;
+		CaptureManager enterCaptureManager;
+
+		public CaptureActor(Actor self, Target target)
+			: base(self, target, Color.Red)
 		{
-			actor = target;
 			manager = self.Trait<CaptureManager>();
-			targetManager = target.Trait<CaptureManager>();
 		}
 
-		protected override bool CanReserve(Actor self)
+		protected override bool TryStartEnter(Actor self, Actor targetActor)
 		{
-			return !actor.IsDead && !targetManager.BeingCaptured && targetManager.CanBeTargetedBy(actor, self, manager);
-		}
+			if (enterActor != targetActor)
+			{
+				enterActor = targetActor;
+				enterCaptureManager = targetActor.TraitOrDefault<CaptureManager>();
+			}
 
-		protected override bool TryStartEnter(Actor self)
-		{
+			// Make sure we can still capture the target before entering
+			// (but not before, because this may stop the actor in the middle of nowhere)
+			if (enterCaptureManager == null || !enterCaptureManager.CanBeTargetedBy(enterActor, self, manager))
+			{
+				Cancel(self, true);
+				return false;
+			}
+
 			// StartCapture returns false when a capture delay is enabled
 			// We wait until it returns true before allowing entering the target
 			Captures captures;
-			if (!manager.StartCapture(self, actor, targetManager, out captures))
+			if (!manager.StartCapture(self, enterActor, enterCaptureManager, out captures))
 				return false;
 
 			if (!captures.Info.ConsumedByCapture)
 			{
 				// Immediately capture without entering or disposing the actor
 				DoCapture(self, captures);
-				AbortOrExit(self);
+				Cancel(self, true);
 				return false;
 			}
 
 			return true;
 		}
 
-		protected override void OnInside(Actor self)
+		protected override void OnEnterComplete(Actor self, Actor targetActor)
 		{
-			if (!CanReserve(self))
+			// Make sure the target hasn't changed while entering
+			// OnEnterComplete is only called if targetActor is alive
+			if (enterActor != targetActor)
+				return;
+
+			if (enterCaptureManager.BeingCaptured || !enterCaptureManager.CanBeTargetedBy(enterActor, self, manager))
 				return;
 
 			// Prioritize capturing over sabotaging
-			var captures = manager.ValidCapturesWithLowestSabotageThreshold(self, actor, targetManager);
+			var captures = manager.ValidCapturesWithLowestSabotageThreshold(self, enterActor, enterCaptureManager);
 			if (captures == null)
 				return;
 
@@ -69,23 +82,23 @@ namespace OpenRA.Mods.Common.Activities
 
 		void DoCapture(Actor self, Captures captures)
 		{
-			var oldOwner = actor.Owner;
+			var oldOwner = enterActor.Owner;
 			self.World.AddFrameEndTask(w =>
 			{
 				// The target died or was already captured during this tick
-				if (actor.IsDead || oldOwner != actor.Owner)
+				if (enterActor.IsDead || oldOwner != enterActor.Owner)
 					return;
 
 				// Sabotage instead of capture
-				if (captures.Info.SabotageThreshold > 0 && !actor.Owner.NonCombatant)
+				if (captures.Info.SabotageThreshold > 0 && !enterActor.Owner.NonCombatant)
 				{
-					var health = actor.Trait<IHealth>();
+					var health = enterActor.Trait<IHealth>();
 
 					// Cast to long to avoid overflow when multiplying by the health
 					if (100 * (long)health.HP > captures.Info.SabotageThreshold * (long)health.MaxHP)
 					{
 						var damage = (int)((long)health.MaxHP * captures.Info.SabotageHPRemoval / 100);
-						actor.InflictDamage(self, new Damage(damage, captures.Info.SabotageDamageTypes));
+						enterActor.InflictDamage(self, new Damage(damage, captures.Info.SabotageDamageTypes));
 
 						if (captures.Info.ConsumedByCapture)
 							self.Dispose();
@@ -95,10 +108,10 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				// Do the capture
-				actor.ChangeOwnerSync(self.Owner);
+				enterActor.ChangeOwnerSync(self.Owner);
 
-				foreach (var t in actor.TraitsImplementing<INotifyCapture>())
-					t.OnCapture(actor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
+				foreach (var t in enterActor.TraitsImplementing<INotifyCapture>())
+					t.OnCapture(enterActor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
 
 				if (self.Owner.Stances[oldOwner].HasStance(captures.Info.PlayerExperienceStances))
 				{
@@ -124,17 +137,14 @@ namespace OpenRA.Mods.Common.Activities
 			base.OnActorDispose(self);
 		}
 
-		void CancelCapture(Actor self)
+		protected override void OnCancel(Actor self)
 		{
-			manager.CancelCapture(self, actor, targetManager);
+			CancelCapture(self);
 		}
 
-		public override Activity Tick(Actor self)
+		void CancelCapture(Actor self)
 		{
-			if (!targetManager.CanBeTargetedBy(actor, self, manager))
-				Cancel(self);
-
-			return base.Tick(self);
+			manager.CancelCapture(self, enterActor, enterCaptureManager);
 		}
 	}
 }
