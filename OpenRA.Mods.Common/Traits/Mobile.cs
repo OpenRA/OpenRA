@@ -517,7 +517,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Type == TargetType.Invalid)
 				return null;
 
-			return VisualMove(self, self.CenterPosition, target.Positions.PositionClosestTo(self.CenterPosition));
+			// Activity cancels if the target moves by more than half a cell
+			// to avoid problems with the cell grid
+			return new VisualMoveIntoTarget(self, target, new WDist(512));
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
