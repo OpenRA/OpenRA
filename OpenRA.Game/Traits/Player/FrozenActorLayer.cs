@@ -43,6 +43,7 @@ namespace OpenRA.Traits
 
 		public Player Owner { get; private set; }
 		public BitSet<TargetableType> TargetTypes { get; private set; }
+		public WPos[] TargetablePositions { get; private set; }
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
@@ -118,6 +119,7 @@ namespace OpenRA.Traits
 		{
 			Owner = actor.Owner;
 			TargetTypes = actor.GetEnabledTargetTypes();
+			TargetablePositions = actor.GetTargetablePositions().ToArray();
 			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
 			if (health != null)
