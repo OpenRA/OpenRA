@@ -18,8 +18,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public enum EnterBehaviour { Exit, Suicide, Dispose }
-
 	public abstract class LegacyEnter : Activity
 	{
 		public enum ReserveStatus { None, TooFar, Pending, Ready }
