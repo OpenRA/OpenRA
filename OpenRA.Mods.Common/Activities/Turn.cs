@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			// If Mobile.IsMoving was set to 'true' earlier, we want to reset it to 'false' before the next tick.
-			if (mobile != null && mobile.IsMoving)
+			if (setIsMoving && mobile != null && mobile.IsMoving)
 				mobile.IsMoving = false;
 		}
 	}
