@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (targetManager == null || !targetManager.CanBeTargetedBy(target, Self, captureManager))
 				throw new LuaException("Actor '{0}' cannot capture actor '{1}'!".F(Self, target));
 
-			Self.QueueActivity(new CaptureActor(Self, target));
+			Self.QueueActivity(new CaptureActor(Self, Target.FromActor(target)));
 		}
 	}
 }
