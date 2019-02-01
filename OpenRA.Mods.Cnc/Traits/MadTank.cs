@@ -197,21 +197,18 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (order.OrderString == "DetonateAttack")
 			{
-				var target = self.ResolveFrozenActorOrder(order, Color.Red);
-				if (target.Type != TargetType.Actor)
-					return;
-
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(target, Color.Red);
-				self.QueueActivity(new MoveAdjacentTo(self, target, targetLineColor: Color.Red));
+				self.SetTargetLine(order.Target, Color.Red);
+				self.QueueActivity(new MoveAdjacentTo(self, order.Target, targetLineColor: Color.Red));
 				self.QueueActivity(new CallFunc(StartDetonationSequence));
 			}
 			else if (order.OrderString == "Detonate")
 			{
 				if (!order.Queued)
 					self.CancelActivity();
+
 				self.QueueActivity(new CallFunc(StartDetonationSequence));
 			}
 		}
