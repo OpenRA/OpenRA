@@ -65,8 +65,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 			var level = gainsExperience.Level;
 
-			Self.SetTargetLine(Target.FromActor(target), Color.Yellow);
-			Self.QueueActivity(new DonateExperience(Self, target, level, deliversExperience.PlayerExperience, targetGainsExperience));
+			var t = Target.FromActor(target);
+			Self.SetTargetLine(t, Color.Yellow);
+			Self.QueueActivity(new DonateExperience(Self, t, level, deliversExperience.PlayerExperience));
 		}
 	}
 }
