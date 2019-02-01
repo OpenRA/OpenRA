@@ -32,9 +32,6 @@ namespace OpenRA.Mods.Common.Traits
 			"Default - use force move modifier (Alt) to disable.")]
 		public readonly AlternateTransportsMode AlternateTransportsMode = AlternateTransportsMode.Force;
 
-		[Desc("Number of retries using alternate transports.")]
-		public readonly int MaxAlternateTransportAttempts = 1;
-
 		[Desc("Range from self for looking for an alternate transport (default: 5.5 cells).")]
 		public readonly WDist AlternateTransportScanRange = WDist.FromCells(11) / 2;
 
@@ -161,9 +158,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			var transports = order.OrderString == "EnterTransports";
 			self.SetTargetLine(order.Target, Color.Green);
-			self.QueueActivity(new EnterTransport(self, targetActor, transports ? Info.MaxAlternateTransportAttempts : 0, !transports));
+			if (order.OrderString == "EnterTransports")
+				self.QueueActivity(new EnterTransports(self, order.Target));
+			else
+				self.QueueActivity(new EnterTransport(self, order.Target));
 		}
 
 		public bool Reserve(Actor self, Cargo cargo)
