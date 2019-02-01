@@ -92,7 +92,6 @@
     <Compile Include="Activities\DonateCash.cs" />
     <Compile Include="Activities\DonateExperience.cs" />
     <Compile Include="Activities\Enter.cs" />
-    <Compile Include="Activities\LegacyEnter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
     <Compile Include="Activities\FindResources.cs" />
     <Compile Include="Activities\HarvestResource.cs" />
