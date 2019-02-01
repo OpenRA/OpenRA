@@ -397,7 +397,8 @@ namespace OpenRA.Mods.Common.Traits
 				LinkProc(self, OwnerLinkedProc = null);
 				idleSmart = true;
 
-				self.CancelActivity();
+				if (!order.Queued)
+					self.CancelActivity();
 
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
@@ -442,7 +443,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(order.Target, Color.Green);
 
-				self.CancelActivity();
+				if (!order.Queued)
+					self.CancelActivity();
+
 				self.QueueActivity(new DeliverResources(self));
 
 				foreach (var n in notifyHarvesterAction)
