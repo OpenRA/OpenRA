@@ -30,12 +30,17 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
-			IsInterruptible = false;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (NextActivity != null)
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
+			}
+
+			if (IsCanceling || isDocking)
 				return NextActivity;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
@@ -57,7 +62,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
-				return ActivityUtils.SequenceActivities(self, new Wait(harv.Info.SearchForDeliveryBuildingDelay), this);
+			{
+				QueueChild(self, new Wait(harv.Info.SearchForDeliveryBuildingDelay), true);
+				return this;
+			}
 
 			var proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
@@ -68,16 +76,19 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
 					n.MovingToRefinery(self, proc, null);
 
-				return ActivityUtils.SequenceActivities(self, movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), this);
+				QueueChild(self, movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), true);
+				return this;
 			}
 
 			if (!isDocking)
 			{
+				QueueChild(self, new Wait(10), true);
 				isDocking = true;
 				iao.OnDock(self, this);
+				return this;
 			}
 
-			return ActivityUtils.SequenceActivities(self, new Wait(10), this);
+			return NextActivity;
 		}
 	}
 }
