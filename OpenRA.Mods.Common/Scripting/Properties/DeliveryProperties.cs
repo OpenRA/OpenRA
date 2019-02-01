@@ -33,8 +33,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Deliver cash to the target actor.")]
 		public void DeliverCash(Actor target)
 		{
-			Self.SetTargetLine(Target.FromActor(target), Color.Yellow);
-			Self.QueueActivity(new DonateCash(Self, target, info.Payload, info.PlayerExperience));
+			var t = Target.FromActor(target);
+			Self.SetTargetLine(t, Color.Yellow);
+			Self.QueueActivity(new DonateCash(Self, t, info.Payload, info.PlayerExperience));
 		}
 	}
 
