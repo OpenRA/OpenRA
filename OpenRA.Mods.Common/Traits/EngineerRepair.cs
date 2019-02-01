@@ -76,15 +76,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "EngineerRepair" || !IsValidOrder(self, order))
 				return;
 
-			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
-			if (target.Type != TargetType.Actor)
-				return;
-
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new RepairBuilding(self, target.Actor, info.EnterBehaviour, info.ValidStances));
+			self.SetTargetLine(order.Target, Color.Yellow);
+			self.QueueActivity(new RepairBuilding(self, order.Target, info.EnterBehaviour, info.ValidStances));
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
