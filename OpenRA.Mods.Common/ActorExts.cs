@@ -59,43 +59,6 @@ namespace OpenRA.Mods.Common
 			return stance == Stance.Enemy;
 		}
 
-		/// <summary>
-		/// DEPRECATED: Write code that can handle FrozenActors correctly instead.
-		/// </summary>
-		public static Target ResolveFrozenActorOrder(this Actor self, Order order, Color targetLineColor)
-		{
-			// Not targeting a frozen actor
-			if (order.Target.Type != TargetType.FrozenActor)
-				return order.Target;
-
-			var frozen = order.Target.FrozenActor;
-
-			self.SetTargetLine(order.Target, targetLineColor, true);
-
-			// Target is still alive - resolve the real order
-			if (frozen.Actor != null && frozen.Actor.IsInWorld)
-				return Target.FromActor(frozen.Actor);
-
-			if (!order.Queued)
-				self.CancelActivity();
-
-			var move = self.TraitOrDefault<IMove>();
-			if (move != null)
-			{
-				// Move within sight range of the frozen actor
-				var range = self.TraitsImplementing<RevealsShroud>()
-					.Where(s => !s.IsTraitDisabled)
-					.Select(s => s.Range)
-					.Append(WDist.FromCells(2))
-					.Max();
-
-				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), range,
-					targetLineColor: targetLineColor));
-			}
-
-			return Target.Invalid;
-		}
-
 		public static void NotifyBlocker(this Actor self, IEnumerable<Actor> blockers)
 		{
 			foreach (var blocker in blockers)
