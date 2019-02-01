@@ -82,6 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			// TODO: Add support for FrozenActors
+			// The activity supports it, but still missing way to freeze bridge state on the hut
 			if (order.OrderString == "RepairBridge" && order.Target.Type == TargetType.Actor)
 			{
 				var targetActor = order.Target.Actor;
@@ -104,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.CancelActivity();
 
 				self.SetTargetLine(order.Target, Color.Yellow);
-				self.QueueActivity(new RepairBridge(self, targetActor, info.EnterBehaviour, info.RepairNotification));
+				self.QueueActivity(new RepairBridge(self, order.Target, info.EnterBehaviour, info.RepairNotification));
 			}
 		}
 
