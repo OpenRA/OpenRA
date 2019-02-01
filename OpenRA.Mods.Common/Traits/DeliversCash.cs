@@ -69,15 +69,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeliverCash")
 				return;
 
-			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
-			if (target.Type != TargetType.Actor)
-				return;
-
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(target, Color.Yellow);
-			self.QueueActivity(new DonateCash(self, target.Actor, info.Payload, info.PlayerExperience));
+			self.SetTargetLine(order.Target, Color.Yellow);
+			self.QueueActivity(new DonateCash(self, order.Target, info.Payload, info.PlayerExperience));
 		}
 
 		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor) { }
