@@ -14,6 +14,8 @@ CABHUT:
 	-SelectionDecorations:
 	-Demolishable:
 	-Explodes:
+	-FrozenUnderFog:
+	HiddenUnderShroud:
 	MapEditorData:
 		Categories: Bridge
 
