@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		ConditionManager conditionManager;
 		List<DemolishAction> actions = new List<DemolishAction>();
+		List<DemolishAction> removeActions = new List<DemolishAction>();
 
 		public Demolishable(DemolishableInfo info)
 			: base(info) { }
@@ -88,9 +89,18 @@ namespace OpenRA.Mods.Common.Traits
 					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
 						self.Kill(a.Saboteur);
 					else if (a.Token != ConditionManager.InvalidConditionToken)
+					{
 						conditionManager.RevokeCondition(self, a.Token);
+						removeActions.Add(a);
+					}
 				}
 			}
+
+			// Remove expired actions to avoid double-revoking
+			foreach (var a in removeActions)
+				actions.Remove(a);
+
+			removeActions.Clear();
 		}
 	}
 }
