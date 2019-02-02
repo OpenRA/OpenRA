@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : ICreatesFrozenActors, IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated
+	public class FrozenUnderFog : ICreatesFrozenActors, IRenderModifier, IDefaultVisibility, ITick, ITickRender, ISync, INotifyCreated, INotifyOwnerChanged, INotifyActorDisposing
 	{
 		[Sync] public int VisibilityHash;
 
@@ -172,6 +172,20 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
 		{
 			return bounds;
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			// Force a state update for the old owner so the tooltip etc doesn't show them as the owner
+			var oldOwnerIndex = self.World.Players.IndexOf(oldOwner);
+			UpdateFrozenActor(self, frozenStates[oldOwnerIndex].FrozenActor, oldOwnerIndex);
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			// Invalidate the frozen actor (which exists if this actor was captured from an enemy)
+			// for the current owner
+			frozenStates[self.Owner].FrozenActor.Invalidate();
 		}
 	}
 
