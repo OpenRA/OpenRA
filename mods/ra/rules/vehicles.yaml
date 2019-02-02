@@ -560,9 +560,18 @@ MGG:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	CreatesShroud:
+	CreatesShroud@TEST:
 		Range: 6c0
-	RenderShroudCircle:
+		RequiresCondition: activated
+	GrantConditionOnDeploy@TEST:
+		DeployedCondition: activated
+	RenderShroudCircle@TEST:
+		RequiresCondition: activated
+	WithRangeCircle@TEST:
+		Type: jammer
+		Range: 18c0
+		Color: 0000FF80
+		RequiresCondition: activated
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
 
