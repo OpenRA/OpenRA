@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class RenderShroudCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
+	public class RenderShroudCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Color of the circle.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Cyan);
@@ -48,18 +48,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			return otherRangeRenderables.Append(localRangeRenderable);
 		}
 
-		public object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self, this); }
 	}
 
-	class RenderShroudCircle : INotifyCreated, IRenderAboveShroudWhenSelected
+	public class RenderShroudCircle : ConditionalTrait<RenderShroudCircleInfo>, INotifyCreated, IRenderAboveShroudWhenSelected
 	{
-		readonly RenderShroudCircleInfo info;
 		WDist range;
 
 		public RenderShroudCircle(Actor self, RenderShroudCircleInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -71,6 +68,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public IEnumerable<IRenderable> RangeCircleRenderables(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				yield break;
+
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
@@ -78,8 +78,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.CenterPosition,
 				range,
 				0,
-				info.Color,
-				info.ContrastColor);
+				Info.Color,
+				Info.ContrastColor);
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
