@@ -386,6 +386,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			public override Activity Tick(Actor self)
 			{
+				if (Move.mobile.IsTraitDisabled)
+					return this;
+
 				var ret = InnerTick(self, Move.mobile);
 				Move.mobile.IsMoving = ret is MovePart;
 
