@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public enum RangeCircleVisibility { Always, WhenSelected }
 
 	[Desc("Renders an arbitrary circle when selected or placing a structure")]
-	class WithRangeCircleInfo : ITraitInfo, IPlaceBuildingDecorationInfo
+	public class WithRangeCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Type of range circle. used to decide which circles to draw on other structures during building placement.")]
 		public readonly string Type = null;
@@ -56,18 +56,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 						yield return r;
 		}
 
-		public object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
-	class WithRangeCircle : IRenderAboveShroudWhenSelected, IRenderAboveWorld
+	public class WithRangeCircle : ConditionalTrait<WithRangeCircleInfo>, IRenderAboveShroudWhenSelected, IRenderAboveWorld
 	{
-		public readonly WithRangeCircleInfo Info;
 		readonly Actor self;
 
 		public WithRangeCircle(Actor self, WithRangeCircleInfo info)
+			: base(info)
 		{
 			this.self = self;
-			Info = info;
 		}
 
 		bool Visible
@@ -81,6 +80,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				yield break;
+
 			if (Info.Visible == RangeCircleVisibility.WhenSelected && Visible)
 				yield return new RangeCircleRenderable(
 					self.CenterPosition,
