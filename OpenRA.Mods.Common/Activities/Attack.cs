@@ -195,8 +195,10 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
+
+				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 				moveActivity = ActivityUtils.SequenceActivities(
-					move.MoveWithinRange(target, minRange, maxRange, lastVisibleTarget.CenterPosition, Color.Red),
+					move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red),
 					this);
 
 				return AttackStatus.NeedsToMove;
