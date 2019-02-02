@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated
+	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly IEnumerable<AttackBase> activeAttackBases;
 		readonly AttackFollow[] attackFollows;
@@ -175,6 +175,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			ApplyStanceCondition(self);
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			PredictedStance = self.Owner.IsBot || !self.Owner.Playable ? Info.InitialStanceAI : Info.InitialStance;
+			SetStance(self, PredictedStance);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
