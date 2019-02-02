@@ -112,7 +112,6 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly IEnumerable<AttackBase> activeAttackBases;
-		readonly AttackFollow[] attackFollows;
 		[Sync] int nextScanTime = 0;
 
 		public UnitStance Stance { get { return stance; } }
@@ -161,7 +160,6 @@ namespace OpenRA.Mods.Common.Traits
 				stance = self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance;
 
 			PredictedStance = stance;
-			attackFollows = self.TraitsImplementing<AttackFollow>().ToArray();
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -221,9 +219,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			Aggressor = attacker;
 
-			bool allowMove;
-			if (ShouldAttack(out allowMove))
-				Attack(self, Target.FromActor(Aggressor), allowMove);
+			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
+			Attack(self, Target.FromActor(Aggressor), allowMove);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -231,21 +228,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || Stance < UnitStance.Defend)
 				return;
 
-			bool allowMove;
-			if (ShouldAttack(out allowMove))
-				ScanAndAttack(self, allowMove);
-		}
-
-		bool ShouldAttack(out bool allowMove)
-		{
-			allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
-
-			// PERF: Avoid LINQ.
-			foreach (var attackFollow in attackFollows)
-				if (!attackFollow.IsTraitDisabled && attackFollow.HasReachableTarget(allowMove))
-					return false;
-
-			return true;
+			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
+			ScanAndAttack(self, allowMove);
 		}
 
 		void ITick.Tick(Actor self)
