@@ -106,6 +106,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			Action<Actor> onRemovedFromWorld = a =>
 			{
+				aircraftInRange[a] = false;
+
 				// Checking for attack range is not relevant here because
 				// aircraft may be shot down before entering. Thus we remove
 				// the camera and beacon only if the whole squad is dead.
