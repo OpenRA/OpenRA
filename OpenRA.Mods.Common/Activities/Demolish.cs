@@ -9,11 +9,10 @@
  */
 #endregion
 
-using System;
-using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities

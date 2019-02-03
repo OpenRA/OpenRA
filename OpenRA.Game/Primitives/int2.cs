@@ -11,7 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -23,6 +23,7 @@ namespace OpenRA
 		public int2(Size p) { X = p.Width; Y = p.Height; }
 
 		public static int2 operator +(int2 a, int2 b) { return new int2(a.X + b.X, a.Y + b.Y); }
+		public static int2 operator +(int2 a, Size b) { return new int2(a.X + b.Width, a.Y + b.Height); }
 		public static int2 operator -(int2 a, int2 b) { return new int2(a.X - b.X, a.Y - b.Y); }
 		public static int2 operator *(int a, int2 b) { return new int2(a * b.X, a * b.Y); }
 		public static int2 operator *(int2 b, int a) { return new int2(a * b.X, a * b.Y); }
@@ -84,16 +85,5 @@ namespace OpenRA
 		}
 
 		public static int Dot(int2 a, int2 b) { return a.X * b.X + a.Y * b.Y; }
-
-		// Temporary shims that will be removed when System.Drawing.Rectangle is replaced with our own implementation
-		public static implicit operator Point(int2 xy)
-		{
-			return new Point(xy.X, xy.Y);
-		}
-
-		public static implicit operator int2(Point xy)
-		{
-			return new int2(xy.X, xy.Y);
-		}
 	}
 }

@@ -11,9 +11,9 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc

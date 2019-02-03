@@ -9,9 +9,9 @@
  */
 #endregion
 
-using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 using OpenRA.Widgets;
 

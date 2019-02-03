@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Drawing;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 

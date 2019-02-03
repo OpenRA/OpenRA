@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Support;
 
 namespace OpenRA.Graphics

@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 
 namespace OpenRA

@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
