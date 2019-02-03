@@ -10,12 +10,10 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.IO;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Support;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default

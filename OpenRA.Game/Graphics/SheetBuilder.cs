@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using OpenRA.FileFormats;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -40,7 +40,7 @@ namespace OpenRA.Graphics
 		Sheet current;
 		TextureChannel channel;
 		int rowHeight = 0;
-		Point p;
+		int2 p;
 
 		public static Sheet AllocateSheet(SheetType type, int sheetSize)
 		{
@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 		{
 			if (imageSize.Width + p.X > current.Size.Width)
 			{
-				p = new Point(0, p.Y + rowHeight);
+				p = new int2(0, p.Y + rowHeight);
 				rowHeight = imageSize.Height;
 			}
 
@@ -128,11 +128,11 @@ namespace OpenRA.Graphics
 					channel = next.Value;
 
 				rowHeight = imageSize.Height;
-				p = new Point(0, 0);
+				p = int2.Zero;
 			}
 
-			var rect = new Sprite(current, new Rectangle(p, imageSize), zRamp, spriteOffset, channel, BlendMode.Alpha);
-			p.X += imageSize.Width;
+			var rect = new Sprite(current, new Rectangle(p.X, p.Y, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha);
+			p += new int2(imageSize.Width, 0);
 
 			return rect;
 		}

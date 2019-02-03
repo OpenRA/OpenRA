@@ -106,6 +106,7 @@
     <Compile Include="CacheStorage.cs" />
     <Compile Include="FileFormats\Png.cs" />
     <Compile Include="FileSystem\IPackage.cs" />
+    <Compile Include="Primitives\Color.cs" />
     <Compile Include="Primitives\Int32Matrix4x4.cs" />
     <Compile Include="LogProxy.cs" />
     <Compile Include="Map\MapGrid.cs" />
@@ -160,7 +161,9 @@
     <Compile Include="Primitives\MergedStream.cs" />
     <Compile Include="Primitives\PlayerDictionary.cs" />
     <Compile Include="Primitives\ReadOnlyAdapterStream.cs" />
+    <Compile Include="Primitives\Rectangle.cs" />
     <Compile Include="Primitives\SegmentStream.cs" />
+    <Compile Include="Primitives\Size.cs" />
     <Compile Include="Primitives\SpatiallyPartitioned.cs" />
     <Compile Include="Primitives\ConcurrentCache.cs" />
     <Compile Include="Primitives\ZipFileHelper.cs" />

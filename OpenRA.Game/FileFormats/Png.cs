@@ -11,8 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,6 +18,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using OpenRA.Primitives;
 
 namespace OpenRA.FileFormats
 {
@@ -231,22 +230,22 @@ namespace OpenRA.FileFormats
 
 		public byte[] Save()
 		{
-			var pixelFormat = Palette != null ? PixelFormat.Format8bppIndexed : PixelFormat.Format32bppArgb;
+			var pixelFormat = Palette != null ? System.Drawing.Imaging.PixelFormat.Format8bppIndexed : System.Drawing.Imaging.PixelFormat.Format32bppArgb;
 
 			// Save to a memory stream that we can then parse to add the embedded data
 			using (var bitmapStream = new MemoryStream())
 			{
-				using (var bitmap = new Bitmap(Width, Height, pixelFormat))
+				using (var bitmap = new System.Drawing.Bitmap(Width, Height, pixelFormat))
 				{
 					if (Palette != null)
 					{
 						// Setting bitmap.Palette.Entries directly doesn't work
 						var bPal = bitmap.Palette;
 						for (var i = 0; i < 256; i++)
-							bPal.Entries[i] = Palette[i];
+							bPal.Entries[i] = System.Drawing.Color.FromArgb(Palette[i].ToArgb());
 
 						bitmap.Palette = bPal;
-						var bd = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly,
+						var bd = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.WriteOnly,
 							pixelFormat);
 						for (var i = 0; i < Height; i++)
 							Marshal.Copy(Data, i * Width, IntPtr.Add(bd.Scan0, i * bd.Stride), Width);
@@ -257,7 +256,7 @@ namespace OpenRA.FileFormats
 					{
 						unsafe
 						{
-							var bd = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly, pixelFormat);
+							var bd = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, Width, Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, pixelFormat);
 							var colors = (int*)bd.Scan0;
 							for (var y = 0; y < Height; y++)
 							{
@@ -275,7 +274,7 @@ namespace OpenRA.FileFormats
 						}
 					}
 
-					bitmap.Save(bitmapStream, ImageFormat.Png);
+					bitmap.Save(bitmapStream, System.Drawing.Imaging.ImageFormat.Png);
 				}
 
 				if (!EmbeddedData.Any())

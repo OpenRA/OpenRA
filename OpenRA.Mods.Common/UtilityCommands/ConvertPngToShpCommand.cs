@@ -11,11 +11,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.Common.SpriteLoaders;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {

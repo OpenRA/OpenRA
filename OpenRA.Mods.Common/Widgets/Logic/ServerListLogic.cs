@@ -11,12 +11,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
 using BeaconLib;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Server;
 using OpenRA.Traits;
 using OpenRA.Widgets;

@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default

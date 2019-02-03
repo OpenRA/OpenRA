@@ -11,10 +11,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Platforms.Default
 {
