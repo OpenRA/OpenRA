@@ -27,10 +27,6 @@ Player:
 ^Infantry:
 	AnnounceOnSeen:
 
-HARV:
-	Harvester:
-		SearchFromProcRadius: 64
-
 FLARE:
 	Tooltip:
 		ShowOwnerRow: false

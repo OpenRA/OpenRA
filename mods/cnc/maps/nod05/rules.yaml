@@ -90,8 +90,6 @@ ATWR:
 HARV:
 	Buildable:
 		Prerequisites: ~disabled
-	Harvester:
-		SearchFromOrderRadius: 24
 
 FTNK:
 	Buildable:

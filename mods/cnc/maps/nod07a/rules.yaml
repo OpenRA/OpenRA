@@ -65,10 +65,6 @@ E5:
 E6:
 	-RepairsBridges:
 
-HARV:
-	Harvester:
-		SearchFromOrderRadius: 45
-
 HTNK:
 	Buildable:
 		Prerequisites: ~disabled

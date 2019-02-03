@@ -66,6 +66,8 @@ HARV:
 		BaleUnloadDelay: 6
 		SearchFromRefineryRadius: 25
 		SearchFromOrderRadius: 15
+		SearchFromRefineryRadiusAI: 60
+		SearchFromOrderRadiusAI: 30
 		EmptyCondition: no-tiberium
 	Mobile:
 		Speed: 85

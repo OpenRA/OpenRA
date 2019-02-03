@@ -83,10 +83,6 @@ E5:
 	Buildable:
 		Prerequisites: ~disabled
 
-HARV:
-	Harvester:
-		SearchFromOrderRadius: 45
-
 HTNK:
 	Buildable:
 		Prerequisites: ~disabled
