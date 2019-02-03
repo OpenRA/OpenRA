@@ -73,6 +73,8 @@ harvester:
 		BaleUnloadDelay: 5
 		SearchFromRefineryRadius: 30
 		SearchFromOrderRadius: 15
+		SearchFromRefineryRadiusAI: 60
+		SearchFromOrderRadiusAI: 30
 	CarryableHarvester:
 	Health:
 		HP: 45000
