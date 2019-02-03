@@ -56,11 +56,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Automatically scan for resources when created.")]
 		public readonly bool SearchOnCreation = true;
 
-		[Desc("Initial search radius (in cells) from the refinery that created us.")]
-		public readonly int SearchFromProcRadius = 24;
+		[Desc("Initial search radius (in cells) from the refinery (or factory) that created us.",
+			"Also used to perform fallback scan if nothing is found within SearchFromOrderRadius.")]
+		public readonly int SearchFromRefineryRadius = 24;
 
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
 		public readonly int SearchFromOrderRadius = 12;
+
+		[Desc("AI override for initial search radius (in cells) from the refinery (or factory) that created us.",
+			"Negative values make it default to the normal SearchFromRefineryRadius.")]
+		public readonly int SearchFromRefineryRadiusAI = -1;
+
+		[Desc("AI override for search radius (in cells) from the last harvest order location to find more resources.",
+			"Negative values make it default to the normal SearchFromOrderRadius.")]
+		public readonly int SearchFromOrderRadiusAI = -1;
 
 		[Desc("Maximum duration of being idle before queueing a Wait activity.")]
 		public readonly int MaxIdleDuration = 25;
@@ -105,6 +114,22 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
 		public CPos? LastOrderLocation = null;
+
+		public int AIFromOrderScanRadius
+		{
+			get
+			{
+				return Info.SearchFromOrderRadiusAI > -1 ? Info.SearchFromOrderRadiusAI : Info.SearchFromOrderRadius;
+			}
+		}
+
+		public int AIFromRefineryScanRadius
+		{
+			get
+			{
+				return Info.SearchFromRefineryRadiusAI > -1 ? Info.SearchFromRefineryRadiusAI : Info.SearchFromRefineryRadius;
+			}
+		}
 
 		[Sync]
 		public int ContentValue

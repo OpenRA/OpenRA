@@ -63,7 +63,7 @@ HARV:
 		BaleLoadDelay: 15
 		BaleUnloadDelay: 15
 		FullyLoadedSpeed: 100
-		SearchFromProcRadius: 36
+		SearchFromRefineryRadius: 36
 		SearchFromOrderRadius: 18
 		HarvestVoice: Attack
 		DeliverVoice: Move

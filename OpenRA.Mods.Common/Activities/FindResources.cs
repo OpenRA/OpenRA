@@ -115,7 +115,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Determine where to search from and how far to search:
 			var searchFromLoc = GetSearchFromLocation(self);
-			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			var fromOrderRadius = (self.Owner.IsBot || !self.Owner.Playable) ? harv.AIFromOrderScanRadius : harvInfo.SearchFromOrderRadius;
+			var fromRefineryRadius = (self.Owner.IsBot || !self.Owner.Playable) ? harv.AIFromRefineryScanRadius : harvInfo.SearchFromRefineryRadius;
+			var searchRadius = harv.LastOrderLocation.HasValue ? fromOrderRadius : fromRefineryRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:

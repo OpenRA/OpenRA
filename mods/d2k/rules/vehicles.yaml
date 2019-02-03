@@ -71,7 +71,7 @@ harvester:
 		HarvestFacings: 8
 		Resources: Spice
 		BaleUnloadDelay: 5
-		SearchFromProcRadius: 30
+		SearchFromRefineryRadius: 30
 		SearchFromOrderRadius: 15
 	CarryableHarvester:
 	Health:

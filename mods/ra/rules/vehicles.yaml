@@ -307,7 +307,7 @@ HARV:
 		Capacity: 20
 		Resources: Ore,Gems
 		BaleUnloadDelay: 1
-		SearchFromProcRadius: 30
+		SearchFromRefineryRadius: 30
 		SearchFromOrderRadius: 11
 		EmptyCondition: no-ore
 	Health:
