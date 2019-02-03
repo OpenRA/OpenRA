@@ -338,7 +338,7 @@ WEED:
 		Resources: Veins
 		BaleUnloadDelay: 20
 		BaleLoadDelay: 40
-		SearchFromProcRadius: 72
+		SearchFromRefineryRadius: 72
 		SearchFromOrderRadius: 36
 		HarvestVoice: Attack
 		DeliverVoice: Move
