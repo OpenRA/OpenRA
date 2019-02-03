@@ -226,8 +226,8 @@ CreateDemitri = function()
 	end)
 	Trigger.OnRemovedFromWorld(demitri, function()
 		if not demitriChinook.IsDead and demitriChinook.HasPassengers then
-			demitriChinook.Move(ExtractionWaypoint)
-			Trigger.OnIdle(demitriChinook, demitriChinook.Destroy)
+			demitriChinook.Move(ExtractionWaypoint + CVec.New(0, -1))
+			demitriChinook.Destroy()
 			demitriLZFlare.Destroy()
 		end
 	end)
