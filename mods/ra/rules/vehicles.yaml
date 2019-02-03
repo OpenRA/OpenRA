@@ -309,6 +309,8 @@ HARV:
 		BaleUnloadDelay: 1
 		SearchFromRefineryRadius: 30
 		SearchFromOrderRadius: 11
+		SearchFromRefineryRadiusAI: 60
+		SearchFromOrderRadiusAI: 30
 		EmptyCondition: no-ore
 	Health:
 		HP: 60000
