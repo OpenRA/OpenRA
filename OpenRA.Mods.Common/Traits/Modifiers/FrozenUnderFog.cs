@@ -74,11 +74,16 @@ namespace OpenRA.Mods.Common.Traits
 				return new FrozenState(frozenActor) { IsVisible = startsRevealed };
 			});
 
-			if (startsRevealed)
-				for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
-					UpdateFrozenActor(self, frozenStates[playerIndex].FrozenActor, playerIndex);
+			// Defer updating the frozen actor until we are sure that the
+			// actor's ITargetablePositions traits have been initialized
+			self.World.AddFrameEndTask(w =>
+			{
+				if (startsRevealed)
+					for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
+						UpdateFrozenActor(self, frozenStates[playerIndex].FrozenActor, playerIndex);
 
-			created = true;
+				created = true;
+			});
 		}
 
 		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
