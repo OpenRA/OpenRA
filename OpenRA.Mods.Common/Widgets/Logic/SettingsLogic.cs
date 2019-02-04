@@ -158,6 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
 			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
+			BindCheckboxPref(panel, "USE_CUSTOM_RESOLUTION_CHECKBOX", ds, "UseCustomResolution");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "DISPLAY_TARGET_LINES_CHECKBOX", gs, "DrawTargetLine");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
@@ -170,6 +171,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed ?
 				"Windowed" : ds.Mode == WindowMode.Fullscreen ? "Fullscreen (Legacy)" : "Fullscreen";
+
+			// Show Custom Resolution Input or Most Common Dropdown
+			var useCustomResolutionCheckbox = panel.Get<CheckboxWidget>("USE_CUSTOM_RESOLUTION_CHECKBOX");
+			var useCustomResolutionOnClick = useCustomResolutionCheckbox.OnClick;
+			useCustomResolutionCheckbox.IsVisible = () => ds.Mode == WindowMode.Windowed;
+			useCustomResolutionCheckbox.OnClick = () =>
+			{
+				useCustomResolutionOnClick();
+				panel.Get("CUSTOM_WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed && ds.UseCustomResolution;
+				panel.Get("STANDARD_WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed && !ds.UseCustomResolution;
+			};
 
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
@@ -192,12 +204,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var cursorDoubleIsChecked = cursorDoubleCheckbox.IsChecked;
 			cursorDoubleCheckbox.IsChecked = () => !cursorDoubleCheckbox.IsDisabled() && cursorDoubleIsChecked();
 
-			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
+			// Determine which type of window resolution to show, e.g. custom or premade dropdown
+			panel.Get("CUSTOM_WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed && ds.UseCustomResolution;
+			panel.Get("STANDARD_WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed && !ds.UseCustomResolution;
+
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = ds.WindowedSize.X.ToString();
 
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = ds.WindowedSize.Y.ToString();
+
+			var standardResolutionDropdown = panel.Get<DropDownButtonWidget>("WINDOW_RESOLUTION_DROPDOWN");
+			standardResolutionDropdown.GetText = () => ds.WindowedSize.X + "x" + ds.WindowedSize.Y;
+			standardResolutionDropdown.OnMouseDown = _ => ShowDisplayResolutionDropdown(standardResolutionDropdown, ds);
+			standardResolutionDropdown.OnMouseUp = _ =>
+			{
+				windowWidth.Text = ds.WindowedSize.X.ToString();
+				windowHeight.Text = ds.WindowedSize.Y.ToString();
+			};
 
 			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
 			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
@@ -270,10 +294,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return () =>
 			{
-				int x, y;
-				Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
-				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
-				ds.WindowedSize = new int2(x, y);
+				if (ds.UseCustomResolution)
+				{
+					int x, y;
+					Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
+					Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
+					ds.WindowedSize = new int2(x, y);
+				}
+
 				frameLimitTextfield.YieldKeyboardFocus();
 				nameTextfield.YieldKeyboardFocus();
 			};
@@ -616,6 +644,50 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		static bool ShowDisplayResolutionDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		{
+			var options = new Dictionary<string, int2>()
+			{
+				{ "320x240 - 4:3", new int2(320, 240) },
+				{ "640x480 - 4:3", new int2(640, 480) },
+				{ "800x600 - 4:3", new int2(800, 600) },
+				{ "1024x768 - 4:3", new int2(1024, 768) },
+				{ "1152x864 - 4:3", new int2(1152, 864) },
+				{ "1280x960 - 4:3", new int2(1280, 960) },
+				{ "1400x1050 - 4:3", new int2(1400, 1050) },
+				{ "1600x1200 - 4:3", new int2(1600, 1200) },
+				{ "2048x1536 - 4:3", new int2(2048, 1536) },
+				{ "852x480 - 16:9", new int2(852, 480) },
+				{ "1280x720 - 16:9", new int2(1280, 720) },
+				{ "1365x768 - 16:9", new int2(1365, 768) },
+				{ "1600x900 - 16:9", new int2(1600, 900) },
+				{ "1920x1080 - 16:9", new int2(1920, 1080) },
+				{ "320x200 - 16:10", new int2(320, 200) },
+				{ "640x400 - 16:10", new int2(640, 400) },
+				{ "1280x800 - 16:10", new int2(1280, 800) },
+				{ "1440x900 - 16:10", new int2(1440, 900) },
+				{ "1680x1050 - 16:10", new int2(1680, 1050) },
+				{ "1920x1200 - 16:10", new int2(1920, 1200) },
+				{ "2560x1600 - 16:10", new int2(2560, 1600) },
+				{ "3840x2400 - 16:10", new int2(3840, 2400) },
+				{ "2560x1080 - 21:9", new int2(2560, 1080) },
+				{ "3440x1440 - 21:9", new int2(3440, 1440) }
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => new int2(s.WindowedSize.X, s.WindowedSize.X) == options[o],
+					() => s.WindowedSize = options[o]);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 300, options.Keys, setupItem);
 			return true;
 		}
 

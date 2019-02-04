@@ -101,7 +101,7 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Font: Regular
 					Text: Windowed
-				Container@WINDOW_RESOLUTION:
+				Container@CUSTOM_WINDOW_RESOLUTION:
 					X: 330
 					Y: 40
 					Children:
@@ -132,13 +132,39 @@ Background@SETTINGS_PANEL:
 							Height: 25
 							MaxLength: 5
 							Type: Integer
+				Container@STANDARD_WINDOW_RESOLUTION:
+					X: 330
+					Y: 40
+					Children:
+						Label@At:
+							Text: @
+							Font: Bold
+							Y: 0 - 1
+							Height: 25
+							Width: 25
+							Align: Center
+						DropDownButton@WINDOW_RESOLUTION_DROPDOWN:
+							X: 25
+							Width: 200
+							Height: 25
+							Font: Regular
+							Text: SelectedResolution:
+							Visible: true
+					Visible: false
 				Checkbox@HARDWARECURSORS_CHECKBOX:
-					X: 310
+					X: 15
 					Y: 75
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Use Hardware Cursors
+				Checkbox@USE_CUSTOM_RESOLUTION_CHECKBOX:
+					X: 310
+					Y: 75
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Use Custom Resolution
 				Label@VIDEO_DESC:
 					Y: 93
 					Width: PARENT_RIGHT

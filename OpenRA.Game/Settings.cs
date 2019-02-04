@@ -144,6 +144,7 @@ namespace OpenRA
 		[Desc("Screen resolution in windowed mode.")]
 		public int2 WindowedSize = new int2(1024, 768);
 
+		public bool UseCustomResolution = true;
 		public bool HardwareCursors = true;
 
 		public bool PixelDouble = false;
