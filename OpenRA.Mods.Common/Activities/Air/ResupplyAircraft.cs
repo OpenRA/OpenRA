@@ -38,12 +38,10 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else
 			{
-				// HACK: Append NextInQueue to TakeOff to avoid moving to the Rallypoint (if NextInQueue is non-null).
 				ChildActivity = ActivityUtils.SequenceActivities(
 					aircraft.GetResupplyActivities(host)
 					.Append(new AllowYieldingReservation(self))
-					.Append(new TakeOff(self))
-					.Append(NextInQueue)
+					.Append(new TakeOff(self, (a, b, c) => NextInQueue == null && b.NextInQueue == null))
 					.ToArray());
 			}
 		}
