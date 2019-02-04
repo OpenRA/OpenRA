@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 
@@ -18,11 +19,19 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
+		Func<Actor, Activity, CPos, bool> moveToRallyPoint;
 
 		public TakeOff(Actor self)
 		{
 			aircraft = self.Trait<Aircraft>();
 			move = self.Trait<IMove>();
+			moveToRallyPoint = (actor, activity, pos) => NextActivity == null;
+		}
+
+		public TakeOff(Actor self, Func<Actor, Activity, CPos, bool> moveToRallyPoint)
+			: this(self)
+		{
+			this.moveToRallyPoint = moveToRallyPoint;
 		}
 
 		public override Activity Tick(Actor self)
@@ -43,10 +52,10 @@ namespace OpenRA.Mods.Common.Activities
 			var destination = rp != null ? rp.Location :
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
-			if (NextInQueue == null)
+			if (moveToRallyPoint(self, this, destination))
 				return new AttackMoveActivity(self, move.MoveTo(destination, 1));
 			else
-				return NextInQueue;
+				return NextActivity;
 		}
 	}
 }
