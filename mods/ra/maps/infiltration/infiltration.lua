@@ -82,8 +82,8 @@ reinforcementsHaveArrived = false
 LabInfiltrated = function()
 	Utils.Do(humans, function(player)
 		if player then
-			secureLab = player.AddPrimaryObjective("Eliminate all units guarding the lab.")
-			destroyBase = player.AddPrimaryObjective("Destroy the soviet installation.")
+			secureLab = player.AddPrimaryObjective("Secure the laboratory by eliminating its guards.")
+			destroyBase = player.AddPrimaryObjective("Destroy the remaining Soviet presence.")
 			player.MarkCompletedObjective(infiltrateLab)
 			Trigger.ClearAll(Lab)
 			Trigger.AfterDelay(0, function()
