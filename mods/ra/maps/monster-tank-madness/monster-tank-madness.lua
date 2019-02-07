@@ -422,6 +422,7 @@ InitTriggers = function()
 
 	LstProduced = 0
 	Trigger.OnKilled(USSRSpen, LandingPossible)
+	Trigger.OnSold(USSRSpen, LandingPossible)
 	Trigger.OnProduction(USSRSpen, function(self, produced)
 		if produced.Type == "lst" then
 			LstProduced = LstProduced + 1
