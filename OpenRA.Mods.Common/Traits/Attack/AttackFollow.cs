@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// We can't move into range, so give up
-				if (move == null)
+				if (move == null || maxRange == WDist.Zero || maxRange < minRange)
 				{
 					attack.requestedTarget = Target.Invalid;
 					return NextActivity;
