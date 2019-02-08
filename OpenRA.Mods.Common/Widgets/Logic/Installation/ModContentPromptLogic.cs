@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var quickButton = panel.Get<ButtonWidget>("QUICK_BUTTON");
-			quickButton.IsVisible = () => !string.IsNullOrEmpty(content.QuickDownload);
+			quickButton.IsVisible = () => content.QuickDownloads.Length > 0;
 			quickButton.Bounds.Y += headerHeight;
 			quickButton.OnClick = () =>
 			{
@@ -71,15 +71,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
 				modFileSystem.UnmountAll();
 
-				var download = downloadYaml.FirstOrDefault(n => n.Key == content.QuickDownload);
-				if (download == null)
-					throw new InvalidOperationException("Mod QuickDownload `{0}` definition not found.".F(content.QuickDownload));
+				var downloads = downloadYaml.Where(n => content.QuickDownloads.Contains(n.Key)).ToArray();
+				if (downloads.Length != content.QuickDownloads.Length)
+					throw new InvalidOperationException("Mod QuickDownloads `{0}` definitions not found."
+						.F(string.Join(", ", content.QuickDownloads.Where(p => !downloads.Any(p2 => p2.Key == p)))));
 
-				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
+				var nextAction = continueLoading;
+				for (int i = downloads.Length - 1; i >= 0; i--)
 				{
-					{ "download", new ModContent.ModDownload(download.Value) },
-					{ "onSuccess", continueLoading }
-				});
+					nextAction = GetDownloadWindowAction(downloads[i], nextAction);
+				}
+
+				nextAction();
 			};
 
 			var quitButton = panel.Get<ButtonWidget>("QUIT_BUTTON");
@@ -94,6 +97,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			Game.RunAfterTick(Ui.ResetTooltips);
+		}
+
+		Action GetDownloadWindowAction(MiniYamlNode download, Action nextAction)
+		{
+			return () =>
+			{
+				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
+				{
+					{ "download", new ModContent.ModDownload(download.Value) },
+					{ "onSuccess", nextAction }
+				});
+			};
 		}
 
 		void CheckRequiredContentInstalled()

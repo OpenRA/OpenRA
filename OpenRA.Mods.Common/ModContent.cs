@@ -83,7 +83,7 @@ namespace OpenRA
 		}
 
 		public readonly string InstallPromptMessage;
-		public readonly string QuickDownload;
+		public readonly string[] QuickDownloads = { };
 		public readonly string HeaderMessage;
 		public readonly string ContentInstallerMod = "modcontent";
 
