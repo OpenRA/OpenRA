@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (useLastVisibleTarget)
 			{
 				// We've reached the assumed position but it is not there or we can't move any further - give up
-				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange) || move == null)
+				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange) || move == null || lastVisibleMaximumRange == WDist.Zero)
 					return NextActivity;
 
 				// Move towards the last known position
