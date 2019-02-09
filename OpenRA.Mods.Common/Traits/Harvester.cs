@@ -397,9 +397,6 @@ namespace OpenRA.Mods.Common.Traits
 				LinkProc(self, OwnerLinkedProc = null);
 				idleSmart = true;
 
-				if (!order.Queued)
-					self.CancelActivity();
-
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
 				{
@@ -416,7 +413,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 				// FindResources takes care of calling INotifyHarvesterAction
-				self.QueueActivity(new FindResources(self));
+				self.QueueActivity(order.Queued, new FindResources(self));
 
 				LastOrderLocation = loc;
 
@@ -442,11 +439,7 @@ namespace OpenRA.Mods.Common.Traits
 				idleSmart = true;
 
 				self.SetTargetLine(order.Target, Color.Green);
-
-				if (!order.Queued)
-					self.CancelActivity();
-
-				self.QueueActivity(new DeliverResources(self));
+				self.QueueActivity(order.Queued, new DeliverResources(self));
 
 				foreach (var n in notifyHarvesterAction)
 					n.MovingToRefinery(self, targetActor, null);
