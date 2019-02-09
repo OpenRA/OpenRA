@@ -104,7 +104,7 @@ SPEF:
 	RenderSprites:
 		Image: SPEN
 	Valued:
-		Cost: 100
+		Cost: 80
 	Health:
 		HP: 100000
 	Armor:
@@ -257,7 +257,7 @@ FAPW:
 		DecorationBounds: 72,68,0,-10
 	SelectionDecorations:
 	Valued:
-		Cost: 60
+		Cost: 50
 
 ATEF:
 	Inherits: ^FakeBuilding
@@ -379,7 +379,7 @@ FACF:
 	RenderSprites:
 		Image: FACT
 	Valued:
-		Cost: 250
+		Cost: 200
 	Health:
 		HP: 150000
 	Armor:
