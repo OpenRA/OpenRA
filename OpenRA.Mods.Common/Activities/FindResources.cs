@@ -49,14 +49,17 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
+			}
+
 			if (IsCanceling)
 				return NextActivity;
 
 			if (harv.IsFull)
-			{
-				// HACK: DeliverResources is ignored if there are queued activities, so discard NextActivity
-				return ActivityUtils.SequenceActivities(self, new DeliverResources(self));
-			}
+				return NextActivity;
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
@@ -65,43 +68,43 @@ namespace OpenRA.Mods.Common.Activities
 			if (!closestHarvestablePosition.HasValue)
 			{
 				if (!harv.IsEmpty)
-					return new DeliverResources(self);
+					return NextActivity;
 
 				harv.LastSearchFailed = true;
 
 				var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
 				var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
-				self.QueueActivity(mobile.MoveTo(moveTo, 1));
 
 				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-					n.MovingToResources(self, moveTo, this);
+					n.MovingToResources(self, moveTo, new FindResources(self));
 
 				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
 				var randFrames = self.World.SharedRandom.Next(100, 175);
-
-				// Avoid creating an activity cycle
-				var next = NextActivity;
-				NextActivity = null;
-				return ActivityUtils.SequenceActivities(self, next, new Wait(randFrames), this);
+				QueueChild(self, mobile.MoveTo(moveTo, 1), true);
+				QueueChild(self, new Wait(randFrames));
+				return this;
 			}
-			else
+
+			// Attempt to claim the target cell
+			if (!claimLayer.TryClaimCell(self, closestHarvestablePosition.Value))
 			{
-				// Attempt to claim the target cell
-				if (!claimLayer.TryClaimCell(self, closestHarvestablePosition.Value))
-					return ActivityUtils.SequenceActivities(self, new Wait(25), this);
-
-				harv.LastSearchFailed = false;
-
-				// If not given a direct order, assume ordered to the first resource location we find:
-				if (!harv.LastOrderLocation.HasValue)
-					harv.LastOrderLocation = closestHarvestablePosition;
-
-				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-					n.MovingToResources(self, closestHarvestablePosition.Value, this);
-
-				self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
-				return ActivityUtils.SequenceActivities(self, mobile.MoveTo(closestHarvestablePosition.Value, 1), new HarvestResource(self), this);
+				QueueChild(self, new Wait(25), true);
+				return this;
 			}
+
+			harv.LastSearchFailed = false;
+
+			// If not given a direct order, assume ordered to the first resource location we find:
+			if (!harv.LastOrderLocation.HasValue)
+				harv.LastOrderLocation = closestHarvestablePosition;
+
+			foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
+				n.MovingToResources(self, closestHarvestablePosition.Value, new FindResources(self));
+
+			self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
+			QueueChild(self, mobile.MoveTo(closestHarvestablePosition.Value, 1), true);
+			QueueChild(self, new HarvestResource(self));
+			return this;
 		}
 
 		/// <summary>
