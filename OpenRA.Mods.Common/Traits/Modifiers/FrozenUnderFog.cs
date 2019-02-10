@@ -73,17 +73,6 @@ namespace OpenRA.Mods.Common.Traits
 				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
 				return new FrozenState(frozenActor) { IsVisible = startsRevealed };
 			});
-
-			// Defer updating the frozen actor until we are sure that the
-			// actor's ITargetablePositions traits have been initialized
-			self.World.AddFrameEndTask(w =>
-			{
-				if (startsRevealed)
-					for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
-						UpdateFrozenActor(self, frozenStates[playerIndex].FrozenActor, playerIndex);
-
-				created = true;
-			});
 		}
 
 		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
@@ -125,6 +114,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (self.Disposed)
 				return;
+
+			// Set the initial visibility state
+			// This relies on actor.GetTargetablePositions(), which is not safe to use from Created
+			// so we defer until the first real tick.
+			if (!created && startsRevealed)
+			{
+				for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
+					UpdateFrozenActor(self, frozenStates[playerIndex].FrozenActor, playerIndex);
+
+				created = true;
+				return;
+			}
 
 			VisibilityHash = 0;
 
