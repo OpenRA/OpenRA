@@ -186,6 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
+		public bool AbortOnResupply { get; set; }
 
 		bool airborne;
 		bool cruising;
@@ -210,6 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
+			AbortOnResupply = Info.AbortOnResupply;
 		}
 
 		public virtual IEnumerable<VariableObserver> GetVariableObservers()
@@ -790,9 +792,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Reservable.IsAvailableFor(targetActor, self))
 				{
 					if (!Info.CanHover)
-						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
+						self.QueueActivity(new ReturnToBase(self, AbortOnResupply));
 					else
-						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
+						self.QueueActivity(new HeliReturnToBase(self, AbortOnResupply));
 				}
 				else
 				{
@@ -801,7 +803,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (!Info.CanHover && !Info.VTOL)
 					{
 						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, Info.AbortOnResupply, targetActor),
+							new ReturnToBase(self, AbortOnResupply, targetActor),
 							new ResupplyAircraft(self)));
 					}
 					else
@@ -842,9 +844,9 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				if (!Info.CanHover)
-					self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, false));
+					self.QueueActivity(order.Queued, new ReturnToBase(self, AbortOnResupply, null, false));
 				else
-					self.QueueActivity(order.Queued, new HeliReturnToBase(self, Info.AbortOnResupply, null, false));
+					self.QueueActivity(order.Queued, new HeliReturnToBase(self, AbortOnResupply, null, false));
 			}
 		}
 

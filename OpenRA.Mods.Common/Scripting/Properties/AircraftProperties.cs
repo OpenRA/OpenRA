@@ -19,19 +19,25 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class AircraftProperties : ScriptActorProperties, Requires<AircraftInfo>
 	{
-		readonly AircraftInfo aircraftInfo;
+		readonly Aircraft aircraft;
 
 		public AircraftProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
+			aircraft = self.Trait<Aircraft>();
+		}
+
+		[Desc("Boolean for whether the aircraft's activity is cancelled when returning to base.")]
+		public bool AbortOnResupply {
+			get { return aircraft.AbortOnResupply; }
+			set { aircraft.AbortOnResupply = value; }
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Fly within the cell grid.")]
 		public void Move(CPos cell)
 		{
-			if (!aircraftInfo.CanHover)
+			if (!aircraft.Info.CanHover)
 				Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 			else
 				Self.QueueActivity(new HeliFly(Self, Target.FromCell(Self.World, cell)));
@@ -41,10 +47,10 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Return to the base, which is either the destination given, or an auto-selected one otherwise.")]
 		public void ReturnToBase(Actor destination = null)
 		{
-			if (!aircraftInfo.CanHover)
-				Self.QueueActivity(new ReturnToBase(Self, false, destination));
+			if (!aircraft.Info.CanHover)
+				Self.QueueActivity(new ReturnToBase(Self, aircraft.AbortOnResupply, destination));
 			else
-				Self.QueueActivity(new HeliReturnToBase(Self, false, destination));
+				Self.QueueActivity(new HeliReturnToBase(Self, aircraft.AbortOnResupply, destination));
 		}
 
 		[ScriptActorPropertyActivity]

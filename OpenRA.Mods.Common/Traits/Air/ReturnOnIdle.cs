@@ -23,23 +23,23 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ReturnOnIdle : INotifyIdle
 	{
-		readonly AircraftInfo aircraftInfo;
+		readonly Aircraft aircraft;
 
 		public ReturnOnIdle(Actor self, ReturnOnIdleInfo info)
 		{
-			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
+			aircraft = self.Trait<Aircraft>();
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
 			// We're on the ground, let's stay there.
-			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude)
+			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
 				return;
 
 			var resupplier = ReturnToBase.ChooseResupplier(self, true);
 			if (resupplier != null)
 			{
-				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, resupplier));
+				self.QueueActivity(new ReturnToBase(self, aircraft.AbortOnResupply, resupplier));
 				self.QueueActivity(new ResupplyAircraft(self));
 			}
 			else
