@@ -21,7 +21,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[ChromeLogicArgsHotkeys("CombinedViewKey", "WorldViewKey")]
+	[ChromeLogicArgsHotkeys("CombinedViewKey", "WorldViewKey", "LockToPlayerCameraKey")]
 	public class ObserverShroudSelectorLogic : ChromeLogic
 	{
 		readonly CameraOption combined, disableShroud;
@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly HotkeyReference combinedViewKey = new HotkeyReference();
 		readonly HotkeyReference worldViewKey = new HotkeyReference();
+		readonly HotkeyReference lockToPlayerCameraKey = new HotkeyReference();
 
 		readonly World world;
 
@@ -101,6 +102,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
 				worldViewKey = modData.Hotkeys[yaml.Value];
+
+			if (logicArgs.TryGetValue("LockToPlayerCameraKey", out yaml))
+				lockToPlayerCameraKey = modData.Hotkeys[yaml.Value];
 
 			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 
@@ -202,6 +206,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					selected = disableShroud;
 					selected.OnClick(isPlayerViewLocked);
+
+					return true;
+				}
+
+				if (lockToPlayerCameraKey.IsActivatedBy(e) && !lockCheckbox.IsDisabled())
+				{
+					lockCheckbox.OnClick();
 
 					return true;
 				}

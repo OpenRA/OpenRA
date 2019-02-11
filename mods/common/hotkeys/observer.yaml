@@ -6,6 +6,10 @@ ObserverWorldView: EQUALS
 	Description: Disable Shroud
 	Types: Observer, Spectator
 
+ObserverLockToPlayerCamera: C
+	Description: Lock the observer view to the player view
+	Types: Observer
+
 ReplaySpeedSlow: F9
 	Description: Slow speed
 	Types: Replay, Spectator

@@ -257,6 +257,7 @@ Container@OBSERVER_WIDGETS:
 			Logic: ObserverShroudSelectorLogic
 				CombinedViewKey: ObserverCombinedView
 				WorldViewKey: ObserverWorldView
+				LockToPlayerCameraKey: ObserverLockToPlayerCamera
 			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 260
 			Width: 256
