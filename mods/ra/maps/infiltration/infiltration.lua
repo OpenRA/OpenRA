@@ -163,8 +163,10 @@ InfiltrateLabFailed = function()
 	end)
 end
 
-ChangeOwnerOnAddedToWorld = function(actor, newOwner)
+OnSpyAddedToWorld = function(actor, newOwner)
 	Trigger.OnAddedToWorld(actor, function(unloadedActor)
+		Media.PlaySpeechNotification(player, "StartGame")
+		Camera.IsViewportMovementLocked = false
 		unloadedActor.Owner = newOwner
 		Trigger.Clear(unloadedActor, "OnAddedToWorld")
 	end)
@@ -203,16 +205,17 @@ InsertSpies = function()
 	local exit = { SpyReinforcementsExitPoint.Location }
 	local reinforcements = Reinforcements.ReinforceWithTransport(allies, TransportType, spyActors, entryPath, exit)
 
-	local transport = reinforcements[1]
-	Camera.Position = transport.CenterPosition
+	LandingTransport = reinforcements[1]
+	Camera.IsViewportMovementLocked = true
+	Camera.Position = LandingTransport.CenterPosition
 
 	spies = reinforcements[2]
 	Trigger.OnAnyKilled(spies, InfiltrateLabFailed)
 
-	ChangeOwnerOnAddedToWorld(spies[1], player1)
+	OnSpyAddedToWorld(spies[1], player1)
 
 	if player2 then
-		ChangeOwnerOnAddedToWorld(spies[2], player2)
+		OnSpyAddedToWorld(spies[2], player2)
 	end
 end
 
@@ -340,6 +343,10 @@ CheckLabSecured = function()
 end
 
 Tick = function()
+	if LandingTransport.IsInWorld and Camera.IsViewportMovementLocked then
+		Camera.Position = LandingTransport.CenterPosition
+	end
+
 	CapOre(soviets)
 	SecureLabTimer()
 	CheckLabSecured()

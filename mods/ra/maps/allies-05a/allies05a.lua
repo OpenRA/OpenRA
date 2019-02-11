@@ -149,6 +149,7 @@ SendWaterExtraction = function()
 end
 
 WarfactoryInfiltrated = function()
+	Camera.IsViewportMovementLocked = true
 	FollowTruk = true
 	Truk.GrantCondition("hijacked")
 
@@ -296,6 +297,7 @@ InitTriggers = function()
 			Media.PlaySoundNotification(greece, SpyVoice)
 
 			FollowTruk = false
+			Camera.IsViewportMovementLocked = false
 
 			if SpecialCameras then
 				PrisonCamera = Actor.Create("camera", true, { Owner = greece, Location = TrukWaypoint5.Location })
