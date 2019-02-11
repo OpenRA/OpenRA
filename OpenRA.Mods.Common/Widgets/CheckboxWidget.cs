@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<bool> IsChecked = () => false;
 		public int CheckOffset = 2;
 		public bool HasPressedState = ChromeMetrics.Get<bool>("CheckboxPressedState");
+		public new string Background = "checkbox";
 
 		[ObjectCreator.UseCtor]
 		public CheckboxWidget(ModData modData)
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 			IsChecked = other.IsChecked;
 			CheckOffset = other.CheckOffset;
 			HasPressedState = other.HasPressedState;
+			Background = other.Background;
 		}
 
 		public override void Draw()
@@ -54,11 +56,13 @@ namespace OpenRA.Mods.Common.Widgets
 			var text = GetText();
 			var textSize = font.Measure(text);
 			var check = new Rectangle(rect.Location, new Size(Bounds.Height, Bounds.Height));
-			var state = disabled ? "checkbox-disabled" :
-						highlighted ? "checkbox-highlighted" :
-						Depressed && HasPressedState ? "checkbox-pressed" :
-						Ui.MouseOverWidget == this ? "checkbox-hover" :
-						"checkbox";
+			var stateSuffix = disabled ? "-disabled" :
+						highlighted ? "-highlighted" :
+						Depressed && HasPressedState ? "-pressed" :
+						Ui.MouseOverWidget == this ? "-hover" :
+						"";
+
+			var state = Background + stateSuffix;
 
 			WidgetUtils.DrawPanel(state, check);
 
