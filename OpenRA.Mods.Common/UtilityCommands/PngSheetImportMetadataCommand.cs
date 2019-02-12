@@ -10,9 +10,7 @@
 #endregion
 
 using System.IO;
-using System.Net;
-using System.Text;
-using ICSharpCode.SharpZipLib.Checksums;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -28,60 +26,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("PNGFILE", "Import yaml metadata to png")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			// HACK: This could eventually be merged into the Png class (add a Write method), however this requires complex png writing algorythms.
-			var rs = File.OpenRead(args[1]);
-			var ws = new MemoryStream();
+			Png png;
+			using (var pngStream = File.OpenRead(args[1]))
+				png = new Png(pngStream);
 
-			using (var bw = new BinaryWriter(ws))
-			{
-				bw.Write(rs.ReadBytes(8));
-				var crc32 = new Crc32();
+			foreach (var node in MiniYaml.FromFile(Path.ChangeExtension(args[1], "yaml")))
+				png.EmbeddedData[node.Key] = node.Value.Value;
 
-				for (;;)
-				{
-					var length = IPAddress.NetworkToHostOrder(rs.ReadInt32());
-					var type = Encoding.UTF8.GetString(rs.ReadBytes(4));
-					var content = rs.ReadBytes(length);
-					var crc = rs.ReadUInt32();
-
-					switch (type)
-					{
-						case "tEXt":
-							break;
-
-						case "IEND":
-							rs.Close();
-
-							foreach (var node in MiniYaml.FromFile(Path.ChangeExtension(args[1], "yaml")))
-							{
-								bw.Write(IPAddress.NetworkToHostOrder(node.Key.Length + 1 + node.Value.Value.Length));
-								bw.Write("tEXt".ToCharArray());
-								bw.Write(node.Key.ToCharArray());
-								bw.Write((byte)0x00);
-								bw.Write(node.Value.Value.ToCharArray());
-								crc32.Reset();
-								crc32.Update(Encoding.ASCII.GetBytes("tEXt"));
-								crc32.Update(Encoding.ASCII.GetBytes(node.Key + (char)0x00 + node.Value.Value));
-								bw.Write((uint)IPAddress.NetworkToHostOrder((int)crc32.Value));
-							}
-
-							bw.Write(0);
-							bw.Write(type.ToCharArray());
-							bw.Write(crc);
-
-							File.WriteAllBytes(args[1], ws.ToArray());
-							ws.Close();
-							return;
-
-						default:
-							bw.Write(IPAddress.NetworkToHostOrder(length));
-							bw.Write(type.ToCharArray());
-							bw.Write(content);
-							bw.Write(crc);
-							break;
-					}
-				}
-			}
+			png.Save(args[1]);
 		}
 	}
 }
