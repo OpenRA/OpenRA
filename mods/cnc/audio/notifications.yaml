@@ -6,13 +6,11 @@ Speech:
 		AirstrikeReady: airredy1
 		BaseAttack: baseatk1
 		Building: bldging1
-			RateLimit: 600
 		BuildingCannotPlaceAudio: deploy1
 		BuildingCaptured: capt1
 		BuildingInProgress: bldg1
 		BuildingLost: strclost
 		Cancelled: cancel1
-			RateLimit: 500
 		CivilianBuildingCaptured: civcapt1
 		CivilianKilled: civdead1
 		ConstructionComplete: constru1
@@ -43,11 +41,9 @@ Speech:
 		SilosNeeded: silos1
 		StartGame:
 		Training: bldging1
-			RateLimit: 800
 		UnitDestroyed: dead1
 		UnitLost: unitlost
 		UnitReady: unitredy
-			RateLimit: 900
 		Win: accom1
 	DisablePrefixes: AbilityInsufficientPower, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
 

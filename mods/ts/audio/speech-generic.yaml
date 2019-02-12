@@ -14,12 +14,10 @@ Speech:
 		BridgeRepaired2: 00-n128
 		BridgeRepaired: 00-i118
 		Building: 00-i216
-			RateLimit: 600
 		BuildingCannotPlaceAudio: 00-i016 #CannotDeployHere
 		BuildingCaptured: 00-i056
 		BuildingInfiltrated: 00-i014
 		Cancelled: 00-i220
-			RateLimit: 500
 		ChemicalMissileReady: 00-i152
 		CivilianKilled: 00-n018
 		CloakedUnitDetected: 00-i172
@@ -73,12 +71,10 @@ Speech:
 		TiberiumMissileReady2: 01-n194
 		TiberiumMissileReady: 01-n176
 		Training: 00-i062
-			RateLimit: 800
 		UnitArmourUpgraded: 00-i068
 		UnitFirepowerUpgraded: 00-i070
 		UnitLost: 00-i074
 		UnitReady: 00-i076
-			RateLimit: 900
 		UnitRepaired: 00-i078
 		UnitSold: 00-i226
 		UnitSpeedUpgraded: 00-i080
