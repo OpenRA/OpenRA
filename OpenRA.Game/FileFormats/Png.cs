@@ -161,6 +161,25 @@ namespace OpenRA.FileFormats
 			}
 		}
 
+		public Png(byte[] data, int width, int height, Color[] palette = null,
+			Dictionary<string, string> embeddedData = null)
+		{
+			var expectLength = width * height;
+			if (palette == null)
+				expectLength *= 4;
+
+			if (data.Length != expectLength)
+				throw new InvalidDataException("Input data does not match expected length");
+			Width = width;
+			Height = height;
+
+			Palette = palette;
+			Data = data;
+
+			if (embeddedData != null)
+				EmbeddedData = embeddedData;
+		}
+
 		public static bool Verify(Stream s)
 		{
 			var pos = s.Position;
