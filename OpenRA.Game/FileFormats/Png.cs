@@ -12,10 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
+using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace OpenRA.FileFormats
@@ -205,6 +208,117 @@ namespace OpenRA.FileFormats
 				return false;
 
 			throw new InvalidDataException("Unknown pixel format");
+		}
+
+		public byte[] Save()
+		{
+			var pixelFormat = Palette != null ? PixelFormat.Format8bppIndexed : PixelFormat.Format32bppArgb;
+
+			// Save to a memory stream that we can then parse to add the embedded data
+			using (var bitmapStream = new MemoryStream())
+			{
+				using (var bitmap = new Bitmap(Width, Height, pixelFormat))
+				{
+					if (Palette != null)
+					{
+						// Setting bitmap.Palette.Entries directly doesn't work
+						var bPal = bitmap.Palette;
+						for (var i = 0; i < 256; i++)
+							bPal.Entries[i] = Palette[i];
+
+						bitmap.Palette = bPal;
+						var bd = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly,
+							pixelFormat);
+						for (var i = 0; i < Height; i++)
+							Marshal.Copy(Data, i * Width, IntPtr.Add(bd.Scan0, i * bd.Stride), Width);
+
+						bitmap.UnlockBits(bd);
+					}
+					else
+					{
+						unsafe
+						{
+							var bd = bitmap.LockBits(new Rectangle(0, 0, Width, Height), ImageLockMode.WriteOnly, pixelFormat);
+							var colors = (int*)bd.Scan0;
+							for (var y = 0; y < Height; y++)
+							{
+								for (var x = 0; x < Width; x++)
+								{
+									var i = y * Width + x;
+
+									// Convert RGBA to ARGB
+									colors[i] = Color.FromArgb(Data[4 * i + 3], Data[4 * i + 0], Data[4 * i + 1],
+										Data[4 * i + 2]).ToArgb();
+								}
+							}
+
+							bitmap.UnlockBits(bd);
+						}
+					}
+
+					bitmap.Save(bitmapStream, ImageFormat.Png);
+				}
+
+				if (!EmbeddedData.Any())
+					return bitmapStream.ToArray();
+
+				// Add embedded metadata to the end of the image
+				bitmapStream.Position = 0;
+				var outputStream = new MemoryStream();
+				using (var bw = new BinaryWriter(outputStream))
+				{
+					bw.Write(bitmapStream.ReadBytes(8));
+					var crc32 = new Crc32();
+
+					for (;;)
+					{
+						var length = IPAddress.NetworkToHostOrder(bitmapStream.ReadInt32());
+						var type = Encoding.UTF8.GetString(bitmapStream.ReadBytes(4));
+						var content = bitmapStream.ReadBytes(length);
+						var crc = bitmapStream.ReadUInt32();
+
+						switch (type)
+						{
+							case "tEXt":
+								break;
+
+							case "IEND":
+								bitmapStream.Close();
+
+								foreach (var kv in EmbeddedData)
+								{
+									bw.Write(IPAddress.NetworkToHostOrder(kv.Key.Length + 1 + kv.Value.Length));
+									bw.Write("tEXt".ToCharArray());
+									bw.Write(kv.Key.ToCharArray());
+									bw.Write((byte)0x00);
+									bw.Write(kv.Value.ToCharArray());
+									crc32.Reset();
+									crc32.Update(Encoding.ASCII.GetBytes("tEXt"));
+									crc32.Update(Encoding.ASCII.GetBytes(kv.Key + (char)0x00 + kv.Value));
+									bw.Write((uint)IPAddress.NetworkToHostOrder((int)crc32.Value));
+								}
+
+								bw.Write(0);
+								bw.Write(type.ToCharArray());
+								bw.Write(crc);
+
+								return outputStream.ToArray();
+
+							default:
+								bw.Write(IPAddress.NetworkToHostOrder(length));
+								bw.Write(type.ToCharArray());
+								bw.Write(content);
+								bw.Write(crc);
+								break;
+						}
+					}
+				}
+			}
+		}
+
+		public void Save(string path)
+		{
+			File.WriteAllBytes(path, Save());
 		}
 	}
 }
