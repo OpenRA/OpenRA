@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
 				for (var i = 0; i < max; i++)
-					s.AsBitmap((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
+					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save("{0}.png".F(count++));
 			}
 
 			Console.WriteLine("Saved [0..{0}].png", count - 1);
