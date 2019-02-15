@@ -98,6 +98,9 @@ namespace OpenRA.Mods.Common.Activities
 				soundPlayed = true;
 			}
 
+			if (self.IsAtGroundLevel())
+				aircraft.RemoveInfluence();
+
 			if (AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
 				return this;
 

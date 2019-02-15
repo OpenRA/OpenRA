@@ -105,6 +105,9 @@ namespace OpenRA.Mods.Common.Activities
 				soundPlayed = true;
 			}
 
+			if (self.IsAtGroundLevel())
+				aircraft.RemoveInfluence();
+
 			// Inside the target annulus, so we're done
 			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, maxRange);
 			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, minRange);

@@ -166,8 +166,6 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
 		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
 	{
-		static readonly Pair<CPos, SubCell>[] NoCells = { };
-
 		public readonly AircraftInfo Info;
 		readonly Actor self;
 
@@ -185,6 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
+		CPos landingCell;
 
 		bool airborne;
 		bool cruising;
@@ -493,7 +492,13 @@ namespace OpenRA.Mods.Common.Traits
 			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
 		}
 
-		public Pair<CPos, SubCell>[] OccupiedCells() { return NoCells; }
+		public Pair<CPos, SubCell>[] OccupiedCells()
+		{
+			if (!self.IsAtGroundLevel())
+				return new[] { Pair.New(landingCell, SubCell.FullCell) };
+
+			return new[] { Pair.New(TopLeft, SubCell.FullCell) };
+		}
 
 		public WVec FlyStep(int facing)
 		{
@@ -506,13 +511,22 @@ namespace OpenRA.Mods.Common.Traits
 			return speed * dir / 1024;
 		}
 
-		public bool CanLand(CPos cell)
+		public bool CanLand(CPos cell, Actor ignoreActor = null)
 		{
 			if (!self.World.Map.Contains(cell))
 				return false;
 
-			if (self.World.ActorMap.AnyActorsAt(cell))
-				return false;
+			foreach (var otherActor in self.World.ActorMap.GetActorsAt(cell))
+			{
+				if (otherActor != ignoreActor)
+					return false;
+			}
+
+			foreach (var otherActor in self.World.ActorMap.GetActorsAt(cell))
+			{
+				if (AircraftCanEnter(otherActor))
+					return true;
+			}
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
 			return Info.LandableTerrainTypes.Contains(type);
@@ -575,7 +589,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (!Info.CanHover && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
-			else if (atLandAltitude && !CanLand(self.Location) && ReservedActor == null)
+			else if (atLandAltitude && !CanLand(self.Location, self) && ReservedActor == null)
 				self.QueueActivity(new TakeOff(self));
 			else if (Info.CanHover && self.Info.HasTraitInfo<AutoCarryallInfo>() && Info.IdleTurnSpeed > -1)
 			{
@@ -625,6 +639,19 @@ namespace OpenRA.Mods.Common.Traits
 				OnCruisingAltitudeReached();
 			else if (!isCruising && cruising)
 				OnCruisingAltitudeLeft();
+		}
+
+		public void AddInfluence(CPos landingCell)
+		{
+			this.landingCell = landingCell;
+			if (self.IsInWorld)
+				self.World.ActorMap.AddInfluence(self, this);
+		}
+
+		public void RemoveInfluence()
+		{
+			if (self.IsInWorld)
+				self.World.ActorMap.RemoveInfluence(self, this);
 		}
 
 		#endregion
@@ -701,7 +728,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveIntoTarget(Actor self, Target target)
 		{
 			if (!Info.VTOL)
-				return new Land(self, target);
+				return new Land(self, target, false);
 
 			return new HeliLand(self, false);
 		}

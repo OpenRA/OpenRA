@@ -19,22 +19,52 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Target target;
 		readonly Aircraft aircraft;
+		readonly bool requireSpace;
+		readonly Actor ignoreActor;
 
+		bool landingInitiated;
 		bool soundPlayed;
 
-		public Land(Actor self, Target t)
+		public Land(Actor self, Target t, bool requireSpace, Actor ignoreActor = null)
 		{
 			target = t;
 			aircraft = self.Trait<Aircraft>();
+			this.requireSpace = requireSpace;
+			this.ignoreActor = ignoreActor;
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			if (!target.IsValidFor(self))
-				Cancel(self);
+				return NextActivity;
 
 			if (IsCanceling)
+			{
+				aircraft.RemoveInfluence();
 				return NextActivity;
+			}
+
+			if (requireSpace && !landingInitiated)
+			{
+				var landingCell = self.World.Map.CellContaining(target.CenterPosition);
+				if (!aircraft.CanLand(landingCell, ignoreActor))
+				{
+					// Maintain holding pattern.
+					QueueChild(self, new FlyCircle(self, 25), true);
+					self.NotifyBlocker(landingCell);
+					return this;
+				}
+
+				aircraft.AddInfluence(landingCell);
+				landingInitiated = true;
+			}
 
 			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
 			{

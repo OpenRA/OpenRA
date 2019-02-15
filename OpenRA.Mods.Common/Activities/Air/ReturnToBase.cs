@@ -230,10 +230,10 @@ namespace OpenRA.Mods.Common.Activities
 					if (aircraft.Info.TurnToDock)
 						QueueChild(self, new Turn(self, aircraft.Info.InitialFacing), true);
 
-					QueueChild(self, new HeliLand(self, false), true);
+					QueueChild(self, new HeliLand(self, true, dest), true);
 				}
 				else
-					QueueChild(self, new Land(self, Target.FromPos(dest.CenterPosition + offset)), true);
+					QueueChild(self, new Land(self, Target.FromPos(dest.CenterPosition + offset), true, dest), true);
 
 				QueueChild(self, new ResupplyAircraft(self), true);
 				resupplied = true;
