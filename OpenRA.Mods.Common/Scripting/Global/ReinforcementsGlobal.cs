@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Scripting
 					}
 					else
 					{
-						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination)));
+						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination), true));
 					}
 
 					transport.QueueActivity(new Wait(15));

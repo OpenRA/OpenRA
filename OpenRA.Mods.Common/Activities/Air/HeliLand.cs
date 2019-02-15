@@ -19,26 +19,42 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly WDist landAltitude;
 		readonly bool requireSpace;
+		readonly Actor ignoreActor;
 
 		bool soundPlayed;
+		bool landingInitiated;
 
-		public HeliLand(Actor self, bool requireSpace)
-			: this(self, requireSpace, self.Info.TraitInfo<AircraftInfo>().LandAltitude) { }
+		public HeliLand(Actor self, bool requireSpace, Actor ignoreActor = null)
+			: this(self, requireSpace, self.Info.TraitInfo<AircraftInfo>().LandAltitude, ignoreActor) { }
 
-		public HeliLand(Actor self, bool requireSpace, WDist landAltitude)
+		public HeliLand(Actor self, bool requireSpace, WDist landAltitude, Actor ignoreActor = null)
 		{
 			this.requireSpace = requireSpace;
 			this.landAltitude = landAltitude;
+			this.ignoreActor = ignoreActor;
 			aircraft = self.Trait<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceling)
+			{
+				aircraft.RemoveInfluence();
 				return NextActivity;
+			}
 
-			if (requireSpace && !aircraft.CanLand(self.Location))
-				return this;
+			if (requireSpace && !landingInitiated)
+			{
+				var landingCell = self.Location;
+				if (!aircraft.CanLand(landingCell, ignoreActor))
+				{
+					self.NotifyBlocker(landingCell);
+					return this;
+				}
+
+				aircraft.AddInfluence(landingCell);
+				landingInitiated = true;
+			}
 
 			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
 			{
