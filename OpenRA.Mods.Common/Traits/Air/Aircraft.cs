@@ -790,43 +790,15 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				var targetActor = order.Target.Actor;
-				if (!Reservable.IsAvailableFor(targetActor, self))
-				{
-					if (!Info.CanHover)
-						self.QueueActivity(new ReturnToBase(self, Info.AbortOnResupply));
-					else
-						self.QueueActivity(new HeliReturnToBase(self, Info.AbortOnResupply));
-				}
-				else
-				{
+
+				// We only want to set a target line if the order will (most likely) succeed
+				if (Reservable.IsAvailableFor(targetActor, self))
 					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 
-					if (!Info.CanHover && !Info.VTOL)
-					{
-						self.QueueActivity(order.Queued, ActivityUtils.SequenceActivities(
-							new ReturnToBase(self, Info.AbortOnResupply, targetActor),
-							new ResupplyAircraft(self)));
-					}
-					else
-					{
-						MakeReservation(targetActor);
-
-						Action enter = () =>
-						{
-							var exit = targetActor.FirstExitOrDefault(null);
-							var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-
-							self.QueueActivity(new HeliFly(self, Target.FromPos(targetActor.CenterPosition + offset)));
-							if (Info.TurnToDock)
-								self.QueueActivity(new Turn(self, Info.InitialFacing));
-
-							self.QueueActivity(new HeliLand(self, false));
-							self.QueueActivity(new ResupplyAircraft(self));
-						};
-
-						self.QueueActivity(order.Queued, new CallFunc(enter));
-					}
-				}
+				if (!Info.CanHover && !Info.VTOL)
+					self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));
+				else
+					self.QueueActivity(order.Queued, new HeliReturnToBase(self, Info.AbortOnResupply, targetActor));
 			}
 			else if (order.OrderString == "Stop")
 			{
