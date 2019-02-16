@@ -29,16 +29,16 @@ namespace OpenRA.Mods.Common.Activities
 			this.maxRange = maxRange;
 		}
 
-		protected override bool ShouldStop(Actor self, CPos oldTargetPosition)
+		protected override bool ShouldStop(Actor self)
 		{
 			// We are now in range. Don't move any further!
 			// HACK: This works around the pathfinder not returning the shortest path
 			return AtCorrectRange(self.CenterPosition) && Mobile.CanInteractWithGroundLayer(self);
 		}
 
-		protected override bool ShouldRepath(Actor self, CPos oldTargetPosition)
+		protected override bool ShouldRepath(Actor self, CPos targetLocation)
 		{
-			return lastVisibleTargetLocation != oldTargetPosition && (!AtCorrectRange(self.CenterPosition)
+			return lastVisibleTargetLocation != targetLocation && (!AtCorrectRange(self.CenterPosition)
 				|| !Mobile.CanInteractWithGroundLayer(self));
 		}
 
