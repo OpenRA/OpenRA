@@ -37,17 +37,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.dest = dest;
 		}
 
-		public Actor ChooseResupplier(Actor self, bool unreservedOnly)
-		{
-			if (rearmable == null)
-				return null;
-
-			return self.World.Actors.Where(a => a.Owner == self.Owner
-				&& rearmable.Info.RearmActors.Contains(a.Info.Name)
-				&& (!unreservedOnly || Reservable.IsAvailableFor(a, self)))
-				.ClosestTo(self);
-		}
-
 		public override Activity Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
@@ -59,13 +48,13 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))
-				dest = ChooseResupplier(self, true);
+				dest = ReturnToBase.ChooseResupplier(self, true);
 
 			var initialFacing = aircraft.Info.InitialFacing;
 
 			if (dest == null || dest.IsDead)
 			{
-				var nearestResupplier = ChooseResupplier(self, false);
+				var nearestResupplier = ReturnToBase.ChooseResupplier(self, false);
 
 				// If a heli was told to return and there's no (available) RearmBuilding, going to the probable next queued activity (HeliAttack)
 				// would be pointless (due to lack of ammo), and possibly even lead to an infinite loop due to HeliAttack.cs:L79.
