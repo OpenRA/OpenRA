@@ -40,8 +40,6 @@ namespace OpenRA.Mods.Common.Activities
 		Target lastVisibleTarget;
 		protected CPos lastVisibleTargetLocation;
 		bool useLastVisibleTarget;
-
-		Activity inner;
 		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
@@ -69,7 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 			repath = true;
 		}
 
-		protected virtual bool ShouldStop(Actor self, CPos oldTargetPosition)
+		protected virtual bool ShouldStop(Actor self)
 		{
 			return false;
 		}
@@ -95,23 +93,21 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTargetLocation = self.World.Map.CellContaining(target.CenterPosition);
 			}
 
+			// Target is equivalent to checkTarget variable in other activities
+			// value is either lastVisibleTarget or target based on visibility and validity
+			var targetIsValid = Target.IsValidFor(self);
 			var oldUseLastVisibleTarget = useLastVisibleTarget;
-			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+			useLastVisibleTarget = targetIsHiddenActor || !targetIsValid;
 
 			// Update target lines if required
 			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
 				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
-			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
-				return NextActivity;
-
-			// Target is equivalent to checkTarget variable in other activities
-			// value is either lastVisibleTarget or target based on visibility and validity
-			var targetIsValid = Target.IsValidFor(self);
+			var noTarget = useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self);
 
 			// Inner move order has completed.
-			if (inner == null)
+			if (ChildActivity == null)
 			{
 				// We are done here if the order was cancelled for any
 				// reason except the target moving.
@@ -119,24 +115,24 @@ namespace OpenRA.Mods.Common.Activities
 					return NextActivity;
 
 				// Target has moved, and MoveAdjacentTo is still valid.
-				inner = Mobile.MoveTo(() => CalculatePathToTarget(self));
+				ChildActivity = Mobile.MoveTo(() => CalculatePathToTarget(self));
 				repath = false;
 			}
 
 			// Cancel the current path if the activity asks to stop, or asks to repath
 			// The repath happens once the move activity stops in the next cell
-			var shouldStop = ShouldStop(self, oldTargetLocation);
+			var shouldStop = ShouldStop(self);
 			var shouldRepath = targetIsValid && !repath && ShouldRepath(self, oldTargetLocation);
-			if (shouldStop || shouldRepath)
+			if (shouldStop || shouldRepath || noTarget)
 			{
-				if (inner != null)
-					inner.Cancel(self);
+				if (ChildActivity != null)
+					ChildActivity.Cancel(self);
 
 				repath = shouldRepath;
 			}
 
 			// Ticks the inner move activity to actually move the actor.
-			inner = ActivityUtils.RunActivity(self, inner);
+			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 
 			return this;
 		}
@@ -161,18 +157,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			if (inner != null)
-				return inner.GetTargets(self);
+			if (ChildActivity != null)
+				return ChildActivity.GetTargets(self);
 
 			return Target.None;
-		}
-
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			if (!IsCanceling && inner != null)
-				inner.Cancel(self);
-
-			base.Cancel(self);
 		}
 	}
 }
