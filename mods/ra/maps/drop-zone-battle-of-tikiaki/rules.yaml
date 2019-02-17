@@ -48,7 +48,7 @@ HARV:
 	Health:
 		HP: 10000
 	Explodes:
-		-RequiresCondition:
+		RequiresCondition:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
 	GrantConditionOnDeploy:
