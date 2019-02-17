@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -86,11 +85,6 @@ namespace OpenRA
 			if (t == typeof(HSLColor))
 			{
 				return ((HSLColor)v).ToHexString();
-			}
-
-			if (t == typeof(ImageFormat))
-			{
-				return ((ImageFormat)v).ToString();
 			}
 
 			if (t == typeof(Rectangle))
