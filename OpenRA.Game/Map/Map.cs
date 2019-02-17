@@ -12,11 +12,11 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -664,61 +664,67 @@ namespace OpenRA
 				if (isRectangularIsometric)
 					bitmapWidth = 2 * bitmapWidth - 1;
 
-				using (var bitmap = new Bitmap(bitmapWidth, height))
+				var stride = bitmapWidth * 4;
+				var minimapData = new byte[stride * height];
+				Color leftColor, rightColor;
+				for (var y = 0; y < height; y++)
 				{
-					var bitmapData = bitmap.LockBits(bitmap.Bounds(),
-						ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-					unsafe
+					for (var x = 0; x < width; x++)
 					{
-						var colors = (int*)bitmapData.Scan0;
-						var stride = bitmapData.Stride / 4;
-						Color leftColor, rightColor;
-
-						for (var y = 0; y < height; y++)
+						var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
+						var resourceType = Resources[uv].Type;
+						if (resourceType != 0)
 						{
-							for (var x = 0; x < width; x++)
+							// Cell contains resources
+							string res;
+							if (!resources.TryGetValue(resourceType, out res))
+								continue;
+
+							leftColor = rightColor = tileset[tileset.GetTerrainIndex(res)].Color;
+						}
+						else
+						{
+							// Cell contains terrain
+							var type = tileset.GetTileInfo(Tiles[uv]);
+							leftColor = type != null ? type.LeftColor : Color.Black;
+							rightColor = type != null ? type.RightColor : Color.Black;
+						}
+
+						if (isRectangularIsometric)
+						{
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							if (x + dx > 0)
 							{
-								var uv = new MPos(x + Bounds.Left, y + Bounds.Top);
-								var resourceType = Resources[uv].Type;
-								if (resourceType != 0)
-								{
-									// Cell contains resources
-									string res;
-									if (!resources.TryGetValue(resourceType, out res))
-										continue;
+								var z = y * stride + 8 * x + dx - 4;
+								minimapData[z++] = leftColor.R;
+								minimapData[z++] = leftColor.G;
+								minimapData[z++] = leftColor.B;
+								minimapData[z++] = leftColor.A;
+							}
 
-									leftColor = rightColor = tileset[tileset.GetTerrainIndex(res)].Color;
-								}
-								else
-								{
-									// Cell contains terrain
-									var type = tileset.GetTileInfo(Tiles[uv]);
-									leftColor = type != null ? type.LeftColor : Color.Black;
-									rightColor = type != null ? type.RightColor : Color.Black;
-								}
-
-								if (isRectangularIsometric)
-								{
-									// Odd rows are shifted right by 1px
-									var dx = uv.V & 1;
-									if (x + dx > 0)
-										colors[y * stride + 2 * x + dx - 1] = leftColor.ToArgb();
-
-									if (2 * x + dx < stride)
-										colors[y * stride + 2 * x + dx] = rightColor.ToArgb();
-								}
-								else
-									colors[y * stride + x] = leftColor.ToArgb();
+							if (2 * x + dx < stride)
+							{
+								var z = y * stride + 8 * x + dx;
+								minimapData[z++] = rightColor.R;
+								minimapData[z++] = rightColor.G;
+								minimapData[z++] = rightColor.B;
+								minimapData[z++] = rightColor.A;
 							}
 						}
+						else
+						{
+							var z = y * stride + 4 * x;
+							minimapData[z++] = leftColor.R;
+							minimapData[z++] = leftColor.G;
+							minimapData[z++] = leftColor.B;
+							minimapData[z++] = leftColor.A;
+						}
 					}
-
-					bitmap.UnlockBits(bitmapData);
-					bitmap.Save(stream, ImageFormat.Png);
 				}
 
-				return stream.ToArray();
+				var png = new Png(minimapData, bitmapWidth, height);
+				return png.Save();
 			}
 		}
 
