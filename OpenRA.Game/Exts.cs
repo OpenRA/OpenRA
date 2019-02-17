@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -447,8 +446,6 @@ namespace OpenRA
 
 			return result;
 		}
-
-		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
 
 		public static int ToBits(this IEnumerable<bool> bits)
 		{
