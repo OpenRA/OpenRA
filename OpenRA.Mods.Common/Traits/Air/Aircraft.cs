@@ -844,10 +844,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Reservable.IsAvailableFor(targetActor, self))
 					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 
-				if (!Info.CanHover && !Info.VTOL)
-					self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));
-				else
-					self.QueueActivity(order.Queued, new HeliReturnToBase(self, Info.AbortOnResupply, targetActor));
+				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));
 			}
 			else if (order.OrderString == "Stop")
 			{
@@ -865,10 +862,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					UnReserve();
 
-				if (!Info.CanHover)
-					self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, false));
-				else
-					self.QueueActivity(order.Queued, new HeliReturnToBase(self, Info.AbortOnResupply, null, false));
+				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, false));
 			}
 		}
 
