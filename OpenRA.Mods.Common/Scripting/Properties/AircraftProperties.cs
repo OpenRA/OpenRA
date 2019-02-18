@@ -41,10 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Return to the base, which is either the destination given, or an auto-selected one otherwise.")]
 		public void ReturnToBase(Actor destination = null)
 		{
-			if (!aircraftInfo.CanHover)
-				Self.QueueActivity(new ReturnToBase(Self, false, destination));
-			else
-				Self.QueueActivity(new HeliReturnToBase(Self, false, destination));
+			Self.QueueActivity(new ReturnToBase(Self, false, destination));
 		}
 
 		[ScriptActorPropertyActivity]
