@@ -32,7 +32,11 @@ namespace OpenRA.Mods.Cnc.Traits
 			// This only makes sense if the frozen actor has already been revealed (i.e. has renderables)
 			if (fa.HasRenderables)
 			{
+				// HACK: RefreshState updated *all* actor state, not just the owner
+				// This is generally bogus, and specifically breaks cursors and tooltips by setting Hidden to false
+				var hidden = fa.Hidden;
 				fa.RefreshState();
+				fa.Hidden = hidden;
 				fa.NeedRenderables = true;
 			}
 		};
