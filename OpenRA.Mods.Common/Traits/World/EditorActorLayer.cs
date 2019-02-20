@@ -283,5 +283,10 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var preview in previewsForCell.Value)
 					destinationBuffer.Add(Pair.New(previewsForCell.Key, preview.Owner.Color.RGB));
 		}
+
+		public EditorActorPreview this[string id]
+		{
+			get { return previews.FirstOrDefault(p => p.ID.ToLowerInvariant() == id); }
+		}
 	}
 }
