@@ -67,6 +67,8 @@ HVR:
 	Mobile:
 		Speed: 99
 		Locomotor: hover
+	Selectable:
+		Bounds: 40,24,0,-10
 	Health:
 		HP: 23000
 	Armor:
@@ -86,6 +88,8 @@ HVR:
 		PauseOnCondition: empdisable
 	WithVoxelTurret:
 	Hovers:
+		RequiresCondition: !empdisable
+		OffsetModifier: 64
 	LeavesTrails:
 		RequiresCondition: !inside-tunnel
 		Image: wake
