@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -37,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("How fast it can dump it's carryage.")]
 		public readonly int BaleUnloadDelay = 4;
+
+		[Desc("How many bales can it dump at once.")]
+		public readonly int BaleUnloadAmount = 1;
 
 		[Desc("How many squares to show the fill level.")]
 		public readonly int PipCount = 7;
@@ -323,11 +327,15 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var type = contents.First().Key;
 				var iao = proc.Trait<IAcceptResources>();
-				if (!iao.CanGiveResource(type.ValuePerUnit))
+				var count = Math.Min(contents[type], Info.BaleUnloadAmount);
+				var value = type.ValuePerUnit * count;
+
+				if (!iao.CanGiveResource(value))
 					return false;
 
-				iao.GiveResource(type.ValuePerUnit);
-				if (--contents[type] == 0)
+				iao.GiveResource(value);
+				contents[type] -= count;
+				if (contents[type] == 0)
 					contents.Remove(type);
 
 				currentUnloadTicks = Info.BaleUnloadDelay;
