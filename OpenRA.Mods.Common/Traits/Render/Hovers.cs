@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Changes the visual Z position periodically.")]
-	public class HoversInfo : ConditionalTraitInfo, Requires<IMoveInfo>
+	public class HoversInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Amount of Z axis changes in world units.")]
 		public readonly int OffsetModifier = -43;
@@ -29,14 +29,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
 	}
 
-	public class Hovers : ConditionalTrait<HoversInfo>, IRenderModifier
+	public class Hovers : PausableConditionalTrait<HoversInfo>, IRenderModifier, ITick
 	{
 		readonly HoversInfo info;
+		int ticks = 0;
 
 		public Hovers(HoversInfo info, Actor self)
 			: base(info)
 		{
 			this.info = info;
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (!IsTraitDisabled && !IsTraitPaused)
+				ticks++;
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
@@ -45,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return r;
 
 			var visualOffset = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length >= info.MinHoveringAltitude
-				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1
+				? (int)Math.Abs((self.ActorID + ticks) / 5 % 4 - 1) - 1
 				: 0;
 			var worldVisualOffset = new WVec(0, 0, info.OffsetModifier * visualOffset);
 
