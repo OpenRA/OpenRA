@@ -120,6 +120,7 @@
     <Compile Include="TargetExtensions.cs" />
     <Compile Include="Traits\BotModules\Squads\AttackOrFleeFuzzy.cs" />
     <Compile Include="Traits\BotModules\BotModuleLogic\BaseBuilderQueueManager.cs" />
+    <Compile Include="Traits\ExperienceTrickler.cs" />
     <Compile Include="Traits\Player\ModularBot.cs" />
     <Compile Include="Traits\BotModules\HarvesterBotModule.cs" />
     <Compile Include="Traits\BotModules\SupportPowerBotModule.cs" />
