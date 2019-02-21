@@ -20,8 +20,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor can be sold")]
 	public class SellableInfo : ConditionalTraitInfo
 	{
+		[Desc("Percentage of units value to give back after selling.")]
 		public readonly int RefundPercent = 50;
+
+		[Desc("List of audio clips to play when the actor is being sold.")]
 		public readonly string[] SellSounds = { };
+
+		[Desc("Whether to show the cash tick indicators rising from the actor.")]
 		public readonly bool ShowTicks = true;
 
 		[Desc("Skip playing (reversed) make animation.")]
