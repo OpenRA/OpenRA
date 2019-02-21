@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Whether to show the cash tick indicators rising from the actor.")]
 		public readonly bool ShowTicks = true;
 
+		[Desc("Whether to show the refund text on the tooltip, when actor is hovered over with sell order.")]
+		public readonly bool ShowTooltipText = true;
+
 		[Desc("Skip playing (reversed) make animation.")]
 		public readonly bool SkipMakeAnimation = false;
 
@@ -86,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsTooltipVisible(Player forPlayer)
 		{
-			if (!IsTraitDisabled && self.World.OrderGenerator is SellOrderGenerator)
+			if (info.ShowTooltipText && !IsTraitDisabled && self.World.OrderGenerator is SellOrderGenerator)
 				return forPlayer == self.Owner;
 			return false;
 		}
