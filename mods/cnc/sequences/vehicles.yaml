@@ -234,6 +234,11 @@ msam:
 		Start: 64
 		Facings: 32
 		UseClassicFacingFudge: True
+	attack: msamtur-atk
+		Length: 4
+		Tick: 80
+		Facings: 32
+		UseClassicFacingFudge: True
 	icon: msamicnh.tem
 		AddExtension: False
 

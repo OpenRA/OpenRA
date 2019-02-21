@@ -551,6 +551,8 @@ MSAM:
 		EffectiveOwnerFromOwner: true
 	WithTurretAimAnimation:
 		Sequence: aim
+	WithTurretAttackAnimation:
+		Sequence: attack
 
 MLRS:
 	Inherits: ^Tank
