@@ -838,6 +838,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (order.OrderString == "ReturnToBase" && rearmableInfo != null && rearmableInfo.RearmActors.Any())
 			{
+				if (!order.Queued)
+					UnReserve();
+
 				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, false));
 				else
