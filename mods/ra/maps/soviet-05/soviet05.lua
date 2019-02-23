@@ -144,7 +144,10 @@ end
 Tick = function()
 	if Greece.HasNoRequiredUnits() and GoodGuy.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(KillAll)
-		player.MarkCompletedObjective(HoldObjective)
+
+		if HoldObjective then
+			player.MarkCompletedObjective(HoldObjective)
+		end
 	end
 
 	if player.HasNoRequiredUnits() then
@@ -226,6 +229,11 @@ WorldLoaded = function()
 
 	RadarDome.GrantCondition("french")
 	Trigger.OnCapture(RadarDome, function()
+		if player.IsObjectiveCompleted(KillAll) then
+			player.MarkCompletedObjective(CaptureObjective)
+			return
+		end
+
 		HoldObjective = player.AddPrimaryObjective("Defend the Radar Dome.")
 		player.MarkCompletedObjective(CaptureObjective)
 		Beacon.New(player, MCVDeploy.CenterPosition)
