@@ -403,6 +403,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			currentServer = server;
 			currentMap = server != null ? modData.MapCache[server.Map] : null;
 
+			// Can only show factions if the server is running the same mod
+			if (server != null && mapPreview != null)
+			{
+				var spawns = currentMap.SpawnPoints;
+				var occupants = server.Clients
+					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
+					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c, server.Mod != modData.Manifest.Id));
+
+				mapPreview.SpawnOccupants = () => occupants;
+			}
+
 			if (server == null || !server.Clients.Any())
 			{
 				if (joinButton != null)
@@ -413,19 +424,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (joinButton != null)
 				joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
-
-			// Can only show factions if the server is running the same mod
-			var disableFactionDisplay = server.Mod != modData.Manifest.Id;
-
-			if (server != null && mapPreview != null)
-			{
-				var spawns = currentMap.SpawnPoints;
-				var occupants = server.Clients
-					.Where(c => (c.SpawnPoint - 1 >= 0) && (c.SpawnPoint - 1 < spawns.Length))
-					.ToDictionary(c => spawns[c.SpawnPoint - 1], c => new SpawnOccupant(c, disableFactionDisplay));
-
-				mapPreview.SpawnOccupants = () => occupants;
-			}
 
 			if (clientList == null)
 				return;
@@ -464,7 +462,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var o = option;
 
 					var item = ScrollItemWidget.Setup(clientTemplate, () => false, () => { });
-					if (!o.IsSpectator && !disableFactionDisplay)
+					if (!o.IsSpectator && server.Mod == modData.Manifest.Id)
 					{
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
