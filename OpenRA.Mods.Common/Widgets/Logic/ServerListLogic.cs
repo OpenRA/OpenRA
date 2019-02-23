@@ -235,9 +235,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mapTitle != null)
 			{
 				var font = Game.Renderer.Fonts[mapTitle.Font];
-				var title = new CachedTransform<MapPreview, string>(m => m == null ? "No Server Selected" :
+				var title = new CachedTransform<MapPreview, string>(m =>
 					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
-				mapTitle.GetText = () => title.Update(currentMap);
+
+				mapTitle.GetText = () =>
+				{
+					if (currentMap == null)
+						return "No Server Selected";
+
+					if (currentMap.Status == MapStatus.Searching)
+						return "Searching...";
+
+					if (currentMap.Class == MapClassification.Unknown)
+						return "Unknown Map";
+
+					return title.Update(currentMap);
+				};
 			}
 
 			var ip = widget.GetOrNull<LabelWidget>("SELECTED_IP");
