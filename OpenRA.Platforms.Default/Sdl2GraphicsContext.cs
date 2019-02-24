@@ -11,7 +11,11 @@
 
 using System;
 using System.Drawing;
+using System.IO;
+using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Support;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -111,39 +115,49 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		public Bitmap TakeScreenshot()
+		public void SaveScreenshot(string path)
 		{
-			var rect = new Rectangle(Point.Empty, window.SurfaceSize);
-			var bitmap = new Bitmap(rect.Width, rect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-			var data = bitmap.LockBits(rect,
-				System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			var s = window.SurfaceSize;
+			var raw = new byte[s.Width * s.Height * 4];
 
 			OpenGL.glPushClientAttrib(OpenGL.GL_CLIENT_PIXEL_STORE_BIT);
 
-			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, data.Stride / 4f);
+			OpenGL.glPixelStoref(OpenGL.GL_PACK_ROW_LENGTH, s.Width);
 			OpenGL.glPixelStoref(OpenGL.GL_PACK_ALIGNMENT, 1);
 
-			OpenGL.glReadPixels(rect.X, rect.Y, rect.Width, rect.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data.Scan0);
-			OpenGL.glFinish();
-
-			OpenGL.glPopClientAttrib();
-
-			// Reset alpha channel to fully opaque
 			unsafe
 			{
-				var colors = (int*)data.Scan0;
-				var stride = data.Stride / 4;
-				for (var y = 0; y < rect.Height; y++)
-				for (var x = 0; x < rect.Width; x++)
-					colors[y * stride + x] |= 0xFF << 24;
+				fixed (byte* pRaw = raw)
+					OpenGL.glReadPixels(0, 0, s.Width, s.Height,
+						OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, (IntPtr)pRaw);
 			}
 
-			bitmap.UnlockBits(data);
+			OpenGL.glFinish();
+			OpenGL.glPopClientAttrib();
 
-			// OpenGL standard defines the origin in the bottom left corner which is why this is upside-down by default.
-			bitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+			ThreadPool.QueueUserWorkItem(_ =>
+			{
+				// Convert GL pixel data into format expected by png
+				// - Flip vertically
+				// - BGRA to RGBA
+				// - Force A to 255 (no transparent pixels!)
+				var data = new byte[raw.Length];
+				for (var y = 0; y < s.Height; y++)
+				{
+					for (var x = 0; x < s.Width; x++)
+					{
+						var iData = 4 * (y * s.Width + x);
+						var iRaw = 4 * ((s.Height - y - 1) * s.Width + x);
+						data[iData] = raw[iRaw + 2];
+						data[iData + 1] = raw[iRaw + 1];
+						data[iData + 2] = raw[iRaw + 0];
+						data[iData + 3] = byte.MaxValue;
+					}
+				}
 
-			return bitmap;
+				var screenshot = new Png(data, window.SurfaceSize.Width, window.SurfaceSize.Height);
+				screenshot.Save(path);
+			});
 		}
 
 		public void Present()

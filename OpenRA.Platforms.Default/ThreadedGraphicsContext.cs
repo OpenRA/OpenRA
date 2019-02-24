@@ -43,13 +43,13 @@ namespace OpenRA.Platforms.Default
 		Action doPresent;
 		Func<string> getGLVersion;
 		Func<ITexture> getCreateTexture;
-		Func<Bitmap> getTakeScreenshot;
 		Func<object, IFrameBuffer> getCreateFrameBuffer;
 		Func<object, IShader> getCreateShader;
 		Func<object, IVertexBuffer<Vertex>> getCreateVertexBuffer;
 		Action<object> doDrawPrimitives;
 		Action<object> doEnableScissor;
 		Action<object> doSetBlendMode;
+		Action<object> doSaveScreenshot;
 
 		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int batchSize)
 		{
@@ -86,7 +86,6 @@ namespace OpenRA.Platforms.Default
 					doPresent = () => context.Present();
 					getGLVersion = () => context.GLVersion;
 					getCreateTexture = () => new ThreadedTexture(this, (ITextureInternal)context.CreateTexture());
-					getTakeScreenshot = () => context.TakeScreenshot();
 					getCreateFrameBuffer = s => new ThreadedFrameBuffer(this, context.CreateFrameBuffer((Size)s, (ITextureInternal)CreateTexture()));
 					getCreateShader = name => new ThreadedShader(this, context.CreateShader((string)name));
 					getCreateVertexBuffer = length => new ThreadedVertexBuffer(this, context.CreateVertexBuffer((int)length));
@@ -103,6 +102,7 @@ namespace OpenRA.Platforms.Default
 							context.EnableScissor(t.Item1, t.Item2, t.Item3, t.Item4);
 						};
 					doSetBlendMode = mode => { context.SetBlendMode((BlendMode)mode); };
+					doSaveScreenshot = path => context.SaveScreenshot((string)path);
 
 					Monitor.Pulse(syncObject);
 				}
@@ -437,9 +437,9 @@ namespace OpenRA.Platforms.Default
 			Post(doSetBlendMode, mode);
 		}
 
-		public Bitmap TakeScreenshot()
+		public void SaveScreenshot(string path)
 		{
-			return Send(getTakeScreenshot);
+			Post(doSaveScreenshot, path);
 		}
 	}
 
