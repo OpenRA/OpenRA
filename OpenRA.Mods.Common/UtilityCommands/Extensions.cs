@@ -11,48 +11,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public static class Extensions
 	{
-		public static string ToCharacterSeparatedValues(this DataTable table, string delimiter, bool includeHeader)
-		{
-			var result = new StringBuilder();
-
-			if (includeHeader)
-			{
-				foreach (DataColumn column in table.Columns)
-				{
-					result.Append(column.ColumnName);
-					result.Append(delimiter);
-				}
-
-				result.Remove(result.Length, 0);
-				result.AppendLine();
-			}
-
-			foreach (DataRow row in table.Rows)
-			{
-				for (var x = 0; x < table.Columns.Count; x++)
-				{
-					if (x != 0)
-						result.Append(delimiter);
-
-					result.Append(row[table.Columns[x]]);
-				}
-
-				result.AppendLine();
-			}
-
-			result.Remove(result.Length, 0);
-			result.AppendLine();
-
-			return result.ToString();
-		}
-
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 		{
 			var knownKeys = new HashSet<TKey>();
