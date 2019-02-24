@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class ResupplyAircraft : CompositeActivity
+	public class ResupplyAircraft : Activity
 	{
 		public ResupplyAircraft(Actor self) { }
 
@@ -48,9 +48,18 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
+			}
+
 			// Conditional fixes being able to stop aircraft from resupplying.
 			if (IsCanceled && NextInQueue == null)
+			{
 				OnFirstRun(self);
+				return this;
+			}
 
 			return NextActivity;
 		}
