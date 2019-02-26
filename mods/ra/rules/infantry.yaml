@@ -28,7 +28,7 @@ DOG:
 	Passenger:
 		Voice: Move
 	RevealsShroud:
-		Range: 5c0
+		Range: 5c512
 	Armament:
 		Weapon: DogJaw
 		ReloadingCondition: attack-cooldown
@@ -254,7 +254,7 @@ E6:
 		Prerequisites: ~barracks, ~techlevel.infonly
 		Description: Infiltrates and captures\nenemy structures.\n  Unarmed
 	Valued:
-		Cost: 500
+		Cost: 400
 	Tooltip:
 		Name: Engineer
 	UpdatesPlayerStatistics:
@@ -276,7 +276,7 @@ E6:
 		RequiresCondition: !global-reusable-engineers
 		CaptureTypes: building
 		PlayerExperience: 25
-		CaptureDelay: 125
+		CaptureDelay: 200
 	Captures@REUSABLE:
 		RequiresCondition: global-reusable-engineers
 		CaptureTypes: building
@@ -433,6 +433,8 @@ MEDI:
 		AddToArmyValue: true
 	Health:
 		HP: 6000
+	Mobile:
+		Speed: 50
 	RevealsShroud:
 		Range: 3c0
 	Passenger:
@@ -471,6 +473,7 @@ MECH:
 	Health:
 		HP: 8000
 	Mobile:
+		Speed: 50
 		Voice: Move
 	RevealsShroud:
 		Range: 3c0

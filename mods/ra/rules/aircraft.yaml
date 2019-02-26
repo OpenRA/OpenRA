@@ -341,7 +341,7 @@ HIND:
 		Prerequisites: ~hpad, ~techlevel.medium
 		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 1350
+		Cost: 1500
 	Tooltip:
 		Name: Hind
 	UpdatesPlayerStatistics:

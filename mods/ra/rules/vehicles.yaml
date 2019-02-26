@@ -571,7 +571,7 @@ MGG:
 MRJ:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 1100
+		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
 	UpdatesPlayerStatistics:
@@ -587,7 +587,7 @@ MRJ:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 99
+		Speed: 85
 	RevealsShroud:
 		Range: 7c0
 	WithIdleOverlay@SPINNER:

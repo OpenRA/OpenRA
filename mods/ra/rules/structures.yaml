@@ -495,7 +495,7 @@ PDOX:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
-		Duration: 500
+		Duration: 400
 		KillCargo: yes
 		DisplayRadarPing: True
 	ChronoshiftPower@advancedchronoshift:
@@ -510,7 +510,7 @@ PDOX:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
-		Duration: 500
+		Duration: 400
 		KillCargo: yes
 		DisplayRadarPing: True
 		Range: 2
@@ -729,9 +729,9 @@ HBOX:
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
 		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 700
+		Cost: 750
 	CustomSellValue:
-		Value: 500
+		Value: 550
 	Health:
 		HP: 40000
 	Armor:
