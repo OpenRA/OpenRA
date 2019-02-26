@@ -118,6 +118,12 @@ TurretGun:
 	TargetActorCenter: true
 	Projectile: Bullet
 		ContrailLength: 30
+		Speed: 170
+		Inaccuracy: 1c138
+	Warhead@1Dam: SpreadDamage
+		Falloff: 100, 55, 20, 5
+		Versus:
+			None: 60
 
 8Inch:
 	Inherits: ^Artillery
