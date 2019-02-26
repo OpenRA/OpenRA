@@ -53,7 +53,7 @@ Maverick:
 	BurstDelays: 7
 	Projectile: Missile
 		Speed: 256
-		Inaccuracy: 512
+		Inaccuracy: 316
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
