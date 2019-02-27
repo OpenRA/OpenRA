@@ -285,29 +285,6 @@ namespace OpenRA.Activities
 		}
 	}
 
-	/// <summary>
-	/// In contrast to the base activity class, which is responsible for running its children itself,
-	/// composite activities rely on the actor's activity-running logic for their children.
-	/// </summary>
-	public abstract class CompositeActivity : Activity
-	{
-		/// <summary>
-		/// The getter will return the first non-null value of either child, next or parent activity, in that order, or ultimately null.
-		/// </summary>
-		public override Activity NextActivity
-		{
-			get
-			{
-				if (ChildActivity != null)
-					return ChildActivity;
-				else if (NextInQueue != null)
-					return NextInQueue;
-				else
-					return ParentActivity;
-			}
-		}
-	}
-
 	public static class ActivityExts
 	{
 		public static IEnumerable<Target> GetTargetQueue(this Actor self)
