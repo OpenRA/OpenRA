@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Activities
 					return new Wait(20);
 
 				// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
-				return ActivityUtils.SequenceActivities(
+				return ActivityUtils.SequenceActivities(self,
 					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
 					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
 					new Rearm(self, rearmTarget, new WDist(512)),
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
-				return ActivityUtils.SequenceActivities(new Wait(20), this); // A little wait after placing each mine, for show
+				return ActivityUtils.SequenceActivities(self, new Wait(20), this); // A little wait after placing each mine, for show
 			}
 
 			if (minelayer.Minefield.Length > 0)
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				{
 					var p = minelayer.Minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
-						return ActivityUtils.SequenceActivities(movement.MoveTo(p, 0), this);
+						return ActivityUtils.SequenceActivities(self, movement.MoveTo(p, 0), this);
 				}
 			}
 

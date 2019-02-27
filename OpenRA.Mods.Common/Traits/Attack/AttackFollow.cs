@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				wasMovingWithinRange = true;
-				return ActivityUtils.SequenceActivities(
+				return ActivityUtils.SequenceActivities(self,
 					move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red),
 					this);
 			}

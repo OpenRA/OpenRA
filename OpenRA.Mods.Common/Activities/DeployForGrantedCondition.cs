@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Turn to the required facing.
 			if (deploy.Info.Facing != -1 && canTurn)
-				QueueChild(new Turn(self, deploy.Info.Facing));
+				QueueChild(self, new Turn(self, deploy.Info.Facing));
 		}
 
 		public override Activity Tick(Actor self)

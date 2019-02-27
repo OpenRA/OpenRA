@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				attack.DoAttack(self, target);
 
 				jumpComplete = true;
-				QueueChild(mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));
+				QueueChild(self, mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)), true);
 
 				return this;
 			}

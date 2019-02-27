@@ -227,8 +227,7 @@ namespace OpenRA.Mods.Common.Activities
 				// To avoid issues, we also make these mini-turns uninterruptible (like MovePart activities) to ensure the actor
 				// finishes that mini-turn before starting something else.
 				var facingWithinTolerance = Util.FacingWithinTolerance(mobile.Facing, firstFacing, mobile.TurnSpeed);
-				QueueChild(new Turn(self, firstFacing, facingWithinTolerance, !facingWithinTolerance));
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				QueueChild(self, new Turn(self, firstFacing, facingWithinTolerance, !facingWithinTolerance), true);
 				return this;
 			}
 
@@ -242,18 +241,7 @@ namespace OpenRA.Mods.Common.Activities
 			var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
 				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
-			QueueChild(new MoveFirstHalf(
-				this,
-				from,
-				to,
-				mobile.Facing,
-				mobile.Facing,
-				0));
-
-			// While carrying out one Move order, MoveSecondHalf finishes its work from time to time and returns null.
-			// That causes the ChildActivity to be null and makes us return to this part of code.
-			// If we only queue the activity and not run it, units will lose one tick and pause briefly!
-			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+			QueueChild(self, new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, 0), true);
 			return this;
 		}
 
@@ -387,7 +375,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (ret == this)
 					return ret;
 
-				Queue(ret);
+				Queue(self, ret);
 				return NextActivity;
 			}
 

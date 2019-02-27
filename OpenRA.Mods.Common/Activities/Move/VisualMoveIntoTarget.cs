@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var turn = ActivityUtils.RunActivity(self, new Turn(self, facing));
 				if (turn != null)
-					QueueChild(turn);
+					QueueChild(self, turn);
 
 				return this;
 			}

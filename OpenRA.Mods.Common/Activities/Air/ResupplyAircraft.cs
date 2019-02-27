@@ -30,19 +30,15 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!aircraft.Info.TakeOffOnResupply)
 			{
-				ChildActivity = ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new AllowYieldingReservation(self))
-					.Append(new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null))
-					.ToArray());
+				ChildActivity = ActivityUtils.SequenceActivities(self, aircraft.GetResupplyActivities(host).ToArray());
+				QueueChild(self, new AllowYieldingReservation(self));
+				QueueChild(self, new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null));
 			}
 			else
 			{
-				ChildActivity = ActivityUtils.SequenceActivities(
-					aircraft.GetResupplyActivities(host)
-					.Append(new AllowYieldingReservation(self))
-					.Append(new TakeOff(self, (a, b, c) => NextInQueue == null && b.NextInQueue == null))
-					.ToArray());
+				ChildActivity = ActivityUtils.SequenceActivities(self, aircraft.GetResupplyActivities(host).ToArray());
+				QueueChild(self, new AllowYieldingReservation(self));
+				QueueChild(self, new TakeOff(self, (a, b, c) => NextInQueue == null && b.NextInQueue == null));
 			}
 		}
 

@@ -657,7 +657,7 @@ namespace OpenRA.Mods.Common.Traits
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5),
 					initialTargetPosition, targetLineColor);
 
-			return ActivityUtils.SequenceActivities(
+			return ActivityUtils.SequenceActivities(self,
 				new HeliFly(self, target, initialTargetPosition, targetLineColor),
 				new Turn(self, Info.InitialFacing));
 		}
@@ -674,11 +674,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// TODO: Ignore repulsion when moving
 			if (!Info.CanHover)
-				return ActivityUtils.SequenceActivities(
+				return ActivityUtils.SequenceActivities(self,
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
 
-			return ActivityUtils.SequenceActivities(
+			return ActivityUtils.SequenceActivities(self,
 				new CallFunc(() => SetVisualPosition(self, fromPos)),
 				new HeliFly(self, Target.FromPos(toPos)));
 		}
