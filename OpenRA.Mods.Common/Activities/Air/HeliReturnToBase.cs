@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (nearestResupplier == null && aircraft.Info.LandWhenIdle)
 				{
 					if (aircraft.Info.TurnToLand)
-						return ActivityUtils.SequenceActivities(new Turn(self, initialFacing), new HeliLand(self, true));
+						return ActivityUtils.SequenceActivities(self, new Turn(self, initialFacing), new HeliLand(self, true));
 
 					return new HeliLand(self, true);
 				}
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 
 						var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
-						return ActivityUtils.SequenceActivities(
+						return ActivityUtils.SequenceActivities(self,
 							new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green),
 							this);
 					}
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 				landingProcedures.Add(NextActivity);
 
-			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
+			return ActivityUtils.SequenceActivities(self, landingProcedures.ToArray());
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)

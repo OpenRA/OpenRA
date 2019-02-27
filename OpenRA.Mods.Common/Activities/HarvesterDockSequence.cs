@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Common.Activities
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
 					if (IsDragRequired)
-						return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), new Drag(self, StartDrag, EndDrag, DragLength), this);
-					return ActivityUtils.SequenceActivities(new Turn(self, DockAngle), this);
+						return ActivityUtils.SequenceActivities(self, new Turn(self, DockAngle), new Drag(self, StartDrag, EndDrag, DragLength), this);
+					return ActivityUtils.SequenceActivities(self, new Turn(self, DockAngle), this);
 				case DockingState.Dock:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
 						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Activities
 					Harv.LastLinkedProc = Harv.LinkedProc;
 					Harv.LinkProc(self, null);
 					if (IsDragRequired)
-						return ActivityUtils.SequenceActivities(new Drag(self, EndDrag, StartDrag, DragLength), NextActivity);
+						return ActivityUtils.SequenceActivities(self, new Drag(self, EndDrag, StartDrag, DragLength), NextActivity);
 					return NextActivity;
 			}
 

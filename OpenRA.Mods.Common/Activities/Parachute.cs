@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		// Only the last queued activity (given order) is kept
-		public override void Queue(Activity activity)
+		public override void Queue(Actor self, Activity activity, bool pretick = false)
 		{
 			NextActivity = activity;
 		}

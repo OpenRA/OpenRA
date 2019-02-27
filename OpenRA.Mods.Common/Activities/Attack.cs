@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Move towards the last known position
 				wasMovingWithinRange = true;
-				return ActivityUtils.SequenceActivities(
+				return ActivityUtils.SequenceActivities(self,
 					move.MoveWithinRange(target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red),
 					this);
 			}
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Activities
 				var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				moveActivity = ActivityUtils.SequenceActivities(
+				moveActivity = ActivityUtils.SequenceActivities(self,
 					move.MoveWithinRange(target, sightRange, target.CenterPosition, Color.Red),
 					this);
 
@@ -195,9 +195,8 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
-
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
-				moveActivity = ActivityUtils.SequenceActivities(
+				moveActivity = ActivityUtils.SequenceActivities(self,
 					move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red),
 					this);
 
@@ -209,7 +208,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!Util.FacingWithinTolerance(facing.Facing, desiredFacing, ((AttackFrontalInfo)attack.Info).FacingTolerance))
 			{
 				attackStatus |= AttackStatus.NeedsToTurn;
-				turnActivity = ActivityUtils.SequenceActivities(new Turn(self, desiredFacing), this);
+				turnActivity = ActivityUtils.SequenceActivities(self, new Turn(self, desiredFacing), this);
 				return AttackStatus.NeedsToTurn;
 			}
 

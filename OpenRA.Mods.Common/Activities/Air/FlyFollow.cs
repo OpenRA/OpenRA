@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			wasMovingWithinRange = true;
-			return ActivityUtils.SequenceActivities(
+			return ActivityUtils.SequenceActivities(self,
 				aircraft.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor),
 				this);
 		}

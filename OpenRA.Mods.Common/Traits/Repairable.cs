@@ -112,13 +112,11 @@ namespace OpenRA.Mods.Common.Traits
 					self.CancelActivity();
 
 				self.SetTargetLine(order.Target, Color.Green);
-
-				var activities = ActivityUtils.SequenceActivities(
+				var activities = ActivityUtils.SequenceActivities(self,
 					movement.MoveToTarget(self, order.Target, targetLineColor: Color.Green),
 					new CallFunc(() => AfterReachActivities(self, order, movement)));
 
 				self.QueueActivity(new WaitForTransport(self, activities));
-
 				TryCallTransport(self, order.Target, new CallFunc(() => AfterReachActivities(self, order, movement)));
 			}
 		}

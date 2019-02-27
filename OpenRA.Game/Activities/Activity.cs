@@ -234,20 +234,20 @@ namespace OpenRA.Activities
 			return true;
 		}
 
-		public virtual void Queue(Activity activity)
+		public virtual void Queue(Actor self, Activity activity, bool pretick = false)
 		{
 			if (NextInQueue != null)
-				NextInQueue.Queue(activity);
+				NextInQueue.Queue(self, activity);
 			else
-				NextInQueue = activity;
+				NextInQueue = pretick ? ActivityUtils.RunActivity(self, activity) : activity;
 		}
 
-		public virtual void QueueChild(Activity activity)
+		public virtual void QueueChild(Actor self, Activity activity, bool pretick = false)
 		{
 			if (ChildActivity != null)
-				ChildActivity.Queue(activity);
+				ChildActivity.Queue(self, activity);
 			else
-				ChildActivity = activity;
+				ChildActivity = pretick ? ActivityUtils.RunActivity(self, activity) : activity;
 		}
 
 		/// <summary>
@@ -258,10 +258,10 @@ namespace OpenRA.Activities
 		/// </summary>
 		/// <param name="origin">Activity from which to start traversing, and which to mark. If null, mark the calling activity, and start traversal from the root.</param>
 		/// <param name="level">Initial level of indentation.</param>
-		protected void PrintActivityTree(Activity origin = null, int level = 0)
+		protected void PrintActivityTree(Actor self, Activity origin = null, int level = 0)
 		{
 			if (origin == null)
-				RootActivity.PrintActivityTree(this);
+				RootActivity.PrintActivityTree(self, this);
 			else
 			{
 				Console.Write(new string(' ', level * 2));
@@ -271,10 +271,10 @@ namespace OpenRA.Activities
 				Console.WriteLine(this.GetType().ToString().Split('.').Last());
 
 				if (ChildActivity != null)
-					ChildActivity.PrintActivityTree(origin, level + 1);
+					ChildActivity.PrintActivityTree(self, origin, level + 1);
 
 				if (NextInQueue != null)
-					NextInQueue.PrintActivityTree(origin, level);
+					NextInQueue.PrintActivityTree(self, origin, level);
 			}
 		}
 

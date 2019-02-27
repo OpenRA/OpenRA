@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nearestResupplier = ChooseResupplier(self, false);
 
 				if (nearestResupplier != null)
-					return ActivityUtils.SequenceActivities(
+					return ActivityUtils.SequenceActivities(self,
 						new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green),
 						new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport),
 						this);
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!abortOnResupply)
 				landingProcedures.Add(NextActivity);
 
-			return ActivityUtils.SequenceActivities(landingProcedures.ToArray());
+			return ActivityUtils.SequenceActivities(self, landingProcedures.ToArray());
 		}
 	}
 }
