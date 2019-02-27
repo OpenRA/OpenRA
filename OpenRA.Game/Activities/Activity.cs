@@ -99,7 +99,7 @@ namespace OpenRA.Activities
 		{
 			get
 			{
-				return childActivity != null && childActivity.State < ActivityState.Done ? childActivity : null;
+				return childActivity != null && childActivity.State != ActivityState.Done ? childActivity : null;
 			}
 
 			set
@@ -229,7 +229,6 @@ namespace OpenRA.Activities
 			if (!keepQueue)
 				NextActivity = null;
 
-			ChildActivity = null;
 			State = ActivityState.Canceled;
 
 			return true;
