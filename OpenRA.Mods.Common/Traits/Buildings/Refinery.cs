@@ -148,8 +148,6 @@ namespace OpenRA.Mods.Common.Traits
 				dockOrder.QueueChild(self, DockSequence(harv, self));
 				dockOrder.QueueChild(self, new CallFunc(() => dockedHarv = null, false));
 			}
-
-			dockOrder.QueueChild(self, new CallFunc(() => harv.Trait<Harvester>().ContinueHarvesting(harv)));
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

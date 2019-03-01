@@ -123,6 +123,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MakeMobilePausableConditional(),
 				new StreamlineRepairableTraits(),
 				new ReplaceSpecialMoveConsiderations(),
+				new RefactorHarvesterIdle(),
 			})
 		};
 

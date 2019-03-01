@@ -67,22 +67,23 @@ namespace OpenRA.Mods.Common.Activities
 			// or get out of the way and do not disturb.
 			if (!closestHarvestablePosition.HasValue)
 			{
-				if (!harv.IsEmpty)
-					return NextActivity;
-
 				harv.LastSearchFailed = true;
+				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
+				if (lastproc != null && !lastproc.Disposed)
+				{
+					var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
+					if (self.Location == deliveryLoc && harv.IsEmpty)
+					{
+						// Get out of the way:
+						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
+						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
+						self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Green, false);
+						QueueChild(self, mobile.MoveTo(moveTo, 1), true);
+						return this;
+					}
+				}
 
-				var unblockCell = harv.LastHarvestedCell ?? (self.Location + harvInfo.UnblockCell);
-				var moveTo = mobile.NearestMoveableCell(unblockCell, 2, 5);
-
-				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-					n.MovingToResources(self, moveTo, new FindResources(self));
-
-				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
-				var randFrames = self.World.SharedRandom.Next(100, 175);
-				QueueChild(self, mobile.MoveTo(moveTo, 1), true);
-				QueueChild(self, new Wait(randFrames));
-				return this;
+				return NextActivity;
 			}
 
 			// Attempt to claim the target cell

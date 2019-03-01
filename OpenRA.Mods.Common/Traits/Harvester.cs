@@ -62,10 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
 		public readonly int SearchFromOrderRadius = 12;
 
-		[Desc("Maximum duration of being idle before queueing a Wait activity.")]
-		public readonly int MaxIdleDuration = 25;
-
-		[Desc("Duration to wait before becoming idle again.")]
+		[Desc("Duration to wait before searching for resources again.")]
 		public readonly int WaitDuration = 25;
 
 		[Desc("Find a new refinery to unload at if more than this many harvesters are already waiting.")]
@@ -174,7 +171,6 @@ namespace OpenRA.Mods.Common.Traits
 		public void ContinueHarvesting(Actor self)
 		{
 			// Move out of the refinery dock and continue harvesting
-			UnblockRefinery(self);
 			self.QueueActivity(new FindResources(self));
 		}
 
@@ -248,28 +244,6 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateCondition(self);
 		}
 
-		public void UnblockRefinery(Actor self)
-		{
-			// Check that we're not in a critical location and being useless (refinery drop-off):
-			var lastproc = LastLinkedProc ?? LinkedProc;
-			if (lastproc != null && !lastproc.Disposed)
-			{
-				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
-				if (self.Location == deliveryLoc)
-				{
-					// Get out of the way:
-					var unblockCell = LastHarvestedCell ?? (deliveryLoc + Info.UnblockCell);
-					var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
-
-					// FindResources takes care of calling INotifyHarvesterAction
-					self.QueueActivity(new FindResources(self));
-
-					self.QueueActivity(mobile.MoveTo(moveTo, 1));
-					self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
-				}
-			}
-		}
-
 		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
 			// I'm blocking someone else from moving to my location:
@@ -303,17 +277,16 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			UnblockRefinery(self);
-			idleDuration += 1;
-
-			// Wait a bit before queueing Wait activity
-			if (idleDuration > Info.MaxIdleDuration)
+			if (LastSearchFailed)
 			{
-				idleDuration = 0;
-
-				// Wait for a bit before becoming idle again:
-				self.QueueActivity(new Wait(Info.WaitDuration));
+				// Wait a bit before searching again.
+				idleDuration += 1;
+				if (idleDuration <= Info.WaitDuration)
+					return;
 			}
+
+			idleDuration = 0;
+			self.QueueActivity(new FindResources(self));
 		}
 
 		// Returns true when unloading is complete
