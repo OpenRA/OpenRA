@@ -961,6 +961,7 @@
     <Compile Include="UpdateRules\Rules\20181215\RefactorResourceLevelAnimating.cs" />
     <Compile Include="UpdateRules\Rules\20190314\StreamlineRepairableTraits.cs" />
     <Compile Include="UpdateRules\Rules\20190314\ReplaceSpecialMoveConsiderations.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\RefactorHarvesterIdle.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
