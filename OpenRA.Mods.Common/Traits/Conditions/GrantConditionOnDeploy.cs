@@ -45,11 +45,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Facing that the actor must face before deploying. Set to -1 to deploy regardless of facing.")]
 		public readonly int Facing = -1;
 
-		[Desc("Sound to play when deploying.")]
-		public readonly string DeploySound = null;
+		[Desc("Play a randomly selected sound from this list when deploying.")]
+		public readonly string[] DeploySounds = null;
 
-		[Desc("Sound to play when undeploying.")]
-		public readonly string UndeploySound = null;
+		[Desc("Play a randomly selected sound from this list when undeploying.")]
+		public readonly string[] UndeploySounds = null;
 
 		[Desc("Skip make/deploy animation?")]
 		public readonly bool SkipMakeAnimation = false;
@@ -221,8 +221,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsValidTerrain(self.Location))
 				return;
 
-			if (!string.IsNullOrEmpty(Info.DeploySound))
-				Game.Sound.Play(SoundType.World, Info.DeploySound, self.CenterPosition);
+			if (Info.DeploySounds != null && Info.DeploySounds.Any())
+				Game.Sound.Play(SoundType.World, Info.DeploySounds.Random(self.World.LocalRandom), self.CenterPosition);
 
 			// Revoke condition that is applied while undeployed.
 			if (!init)
@@ -245,8 +245,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!init && deployState != DeployState.Deployed)
 				return;
 
-			if (!string.IsNullOrEmpty(Info.UndeploySound))
-				Game.Sound.Play(SoundType.World, Info.UndeploySound, self.CenterPosition);
+			if (Info.UndeploySounds != null && Info.UndeploySounds.Any())
+				Game.Sound.Play(SoundType.World, Info.UndeploySounds.Random(self.World.LocalRandom), self.CenterPosition);
 
 			if (!init)
 				OnUndeployStarted();

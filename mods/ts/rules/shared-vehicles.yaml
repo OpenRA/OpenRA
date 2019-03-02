@@ -147,8 +147,8 @@ LPST:
 		UndeployedCondition: undeployed
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
-		DeploySound: place2.aud
-		UndeploySound: clicky1.aud
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
 	WithVoxelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
