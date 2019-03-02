@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		bool idleSmart = true;
+		bool idleSmart = false;
 		INotifyHarvesterAction[] notifyHarvesterAction;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
@@ -130,10 +130,8 @@ namespace OpenRA.Mods.Common.Traits
 			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
-
-			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
-				self.World.AddFrameEndTask(w => self.QueueActivity(new FindResources(self)));
+				idleSmart = true;
 		}
 
 		public void SetProcLines(Actor proc)
@@ -280,8 +278,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (LastSearchFailed)
 			{
 				// Wait a bit before searching again.
-				idleDuration += 1;
-				if (idleDuration <= Info.WaitDuration)
+				if (idleDuration++ < Info.WaitDuration)
 					return;
 			}
 
