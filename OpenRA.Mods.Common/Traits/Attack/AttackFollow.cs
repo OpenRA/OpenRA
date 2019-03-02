@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 					lastVisibleMinimumRange = attack.GetMinimumRange();
 
 					// Try and sit at least one cell away from the min or max ranges to give some leeway if the target starts moving.
-					if (target.Actor.Info.HasTraitInfo<IMoveInfo>())
+					if (move != null && target.Actor.Info.HasTraitInfo<IMoveInfo>())
 					{
 						var preferMinRange = Math.Min(lastVisibleMinimumRange.Length + 1024, lastVisibleMaximumRange.Length);
 						var preferMaxRange = Math.Max(lastVisibleMaximumRange.Length - 1024, lastVisibleMinimumRange.Length);
