@@ -53,7 +53,10 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (harv.IsFull)
-				return ActivityUtils.SequenceActivities(new DeliverResources(self), NextActivity);
+			{
+				// HACK: DeliverResources is ignored if there are queued activities, so discard NextActivity
+				return ActivityUtils.SequenceActivities(new DeliverResources(self));
+			}
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
