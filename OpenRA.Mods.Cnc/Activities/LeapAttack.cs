@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				return this;
 			}
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			bool targetIsHiddenActor;

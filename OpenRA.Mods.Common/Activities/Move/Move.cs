@@ -144,37 +144,9 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public override bool Cancel(Actor self, bool keepQueue = false)
-		{
-			if (ChildActivity == null)
-				return base.Cancel(self, keepQueue);
-
-			// Although MoveFirstHalf and MoveSecondHalf can't be interrupted,
-			// we prevent them from moving forever by removing the path.
-			if (path != null)
-				path.Clear();
-
-			// Remove queued activities
-			if (!keepQueue && NextInQueue != null)
-				NextInQueue = null;
-
-			// In current implementation, ChildActivity can be Turn, MoveFirstHalf and MoveSecondHalf.
-			// Turn may be interrupted freely while they are turning.
-			// Unlike Turn, MoveFirstHalf and MoveSecondHalf are not Interruptable, but clearing the
-			// path guarantees that they will return as soon as possible, once the actor is back in a
-			// valid position.
-			// This means that it is safe to unconditionally return true, which avoids breaking parent
-			// activities that rely on cancellation succeeding (but not necessarily immediately)
-			ChildActivity.Cancel(self, false);
-
-			return true;
-		}
-
 		public override Activity Tick(Actor self)
 		{
-			// ChildActivity is the top priority, unlike other activities.
-			// Even if this activity is canceled, we must let the child be run so that units
-			// will not end up in an odd place.
+			// Let the child be run so that units will not end up in an odd place.
 			if (ChildActivity != null)
 			{
 				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
@@ -187,7 +159,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If the actor is inside a tunnel then we must let them move
 			// all the way through before moving to the next activity
-			if (IsCanceled && self.Location.Layer != CustomMovementLayerType.Tunnel)
+			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel)
 				return NextActivity;
 
 			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
@@ -440,7 +412,7 @@ namespace OpenRA.Mods.Common.Activities
 				var fromSubcellOffset = map.Grid.OffsetOfSubCell(mobile.FromSubCell);
 				var toSubcellOffset = map.Grid.OffsetOfSubCell(mobile.ToSubCell);
 
-				if (!IsCanceled || self.Location.Layer == CustomMovementLayerType.Tunnel)
+				if (!IsCanceling || self.Location.Layer == CustomMovementLayerType.Tunnel)
 				{
 					var nextCell = parent.PopPath(self);
 					if (nextCell != null)

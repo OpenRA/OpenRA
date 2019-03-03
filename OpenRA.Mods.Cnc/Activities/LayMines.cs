@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == info.AmmoPoolName && !p.HasAmmo()))

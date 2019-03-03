@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (remainingTicks > 0)

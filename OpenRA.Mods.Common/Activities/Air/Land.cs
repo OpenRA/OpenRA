@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!target.IsValidFor(self))
 				Cancel(self);
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Without this, turn for facing deploy angle will be canceled and immediately deploy!
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (IsInterruptible)

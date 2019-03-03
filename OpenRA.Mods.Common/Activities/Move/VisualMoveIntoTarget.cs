@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 			}
 
-			if (IsCanceled || target.Type == TargetType.Invalid)
+			if (IsCanceling || target.Type == TargetType.Invalid)
 				return NextActivity;
 
 			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)

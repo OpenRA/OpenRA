@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Try and find a new transport nearby
-			if (IsCanceled || string.IsNullOrEmpty(type))
+			if (IsCanceling || string.IsNullOrEmpty(type))
 				return NextActivity;
 
 			Func<Actor, bool> isValidTransport = a =>
@@ -135,8 +135,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!IsCanceled && enterTransport != null && !enterTransport.Cancel(self))
-				return false;
+			if (!IsCanceling && enterTransport != null)
+				enterTransport.Cancel(self);
 
 			return base.Cancel(self, keepQueue);
 		}

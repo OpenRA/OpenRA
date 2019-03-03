@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 				// This activity can't move to reacquire hidden targets, so use the
 				// Recalculate overload that invalidates hidden targets.
 				target = target.RecalculateInvalidatingHiddenTargets(self.Owner);
-				if (IsCanceled || !target.IsValidFor(self) || !attack.IsReachableTarget(target, allowMove))
+				if (IsCanceling || !target.IsValidFor(self) || !attack.IsReachableTarget(target, allowMove))
 					return NextActivity;
 
 				attack.DoAttack(self, target);

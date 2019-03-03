@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsInterruptible && IsCanceled)
+			if (IsInterruptible && IsCanceling)
 				return NextActivity;
 
 			if (disablable != null && disablable.IsTraitDisabled)

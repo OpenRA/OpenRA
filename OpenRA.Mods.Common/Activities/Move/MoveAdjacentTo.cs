@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// We are done here if the order was cancelled for any
 				// reason except the target moving.
-				if (IsCanceled || !repath || !targetIsValid)
+				if (IsCanceling || !repath || !targetIsValid)
 					return NextActivity;
 
 				// Target has moved, and MoveAdjacentTo is still valid.
@@ -169,8 +169,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!IsCanceled && inner != null && !inner.Cancel(self))
-				return false;
+			if (!IsCanceling && inner != null)
+				inner.Cancel(self);
 
 			return base.Cancel(self);
 		}

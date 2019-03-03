@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			if (IsCanceled || !self.World.Map.Contains(self.Location))
+			if (IsCanceling || !self.World.Map.Contains(self.Location))
 				return NextActivity;
 
 			Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);

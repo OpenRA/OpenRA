@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (ChildActivity != null)
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnLastRun(Actor self)
 		{
-			if (!IsCanceled)
+			if (!IsCanceling)
 				DoTransform(self);
 		}
 

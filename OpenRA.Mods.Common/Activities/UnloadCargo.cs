@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override Activity Tick(Actor self)
 		{
 			cargo.Unloading = false;
-			if (IsCanceled || cargo.IsEmpty(self))
+			if (IsCanceling || cargo.IsEmpty(self))
 				return NextActivity;
 
 			foreach (var inu in notifiers)

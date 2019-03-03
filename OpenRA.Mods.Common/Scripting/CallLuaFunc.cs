@@ -45,9 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!base.Cancel(self, keepQueue))
-				return false;
-
+			base.Cancel(self, keepQueue);
 			Dispose();
 			return true;
 		}

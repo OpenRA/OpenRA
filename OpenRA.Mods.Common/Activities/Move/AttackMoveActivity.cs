@@ -48,8 +48,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!IsCanceled && inner != null && !inner.Cancel(self))
-				return false;
+			if (!IsCanceling && inner != null)
+				inner.Cancel(self);
 
 			return base.Cancel(self, keepQueue);
 		}

@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.ForceLanding)
 				return NextActivity;
 
-			if (IsCanceled || self.IsDead)
+			if (IsCanceling || self.IsDead)
 				return NextActivity;
 
 			if (!isCalculated)

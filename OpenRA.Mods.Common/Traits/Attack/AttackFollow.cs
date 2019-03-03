@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled)
+				if (IsCanceling)
 				{
 					// Cancel the requested target, but keep firing on it while in range
 					attack.opportunityTarget = attack.requestedTarget;

@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			bool targetIsHiddenActor;
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected virtual AttackStatus TickAttack(Actor self, AttackFrontal attack)
 		{
-			if (IsCanceled)
+			if (IsCanceling)
 				return AttackStatus.UnableToAttack;
 
 			if (!target.IsValidFor(self))
