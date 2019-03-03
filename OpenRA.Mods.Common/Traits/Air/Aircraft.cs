@@ -122,6 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
+		public bool CanMoveIntoShroud() { return MoveIntoShroud; }
 
 		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
@@ -155,6 +156,11 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			return !world.ActorMap.GetActorsAt(cell).Any(x => x != ignoreActor);
+		}
+
+		public bool CanMoveInCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return true;
 		}
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)

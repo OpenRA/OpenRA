@@ -71,6 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetInitialFacing() { return InitialFacing; }
 
+		public bool CanMoveIntoShroud() { return LocomotorInfo.MoveIntoShroud; }
+
 		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (LocomotorInfo.MovementCostForCell(world, cell) == int.MaxValue)
@@ -78,6 +80,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
 			return LocomotorInfo.CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+		}
+
+		public bool CanMoveInCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return CanEnterCell(world, self, cell, ignoreActor, checkTransientActors);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -805,7 +812,7 @@ namespace OpenRA.Mods.Common.Traits
 		class MoveOrderTargeter : IOrderTargeter
 		{
 			readonly Mobile mobile;
-			readonly LocomotorInfo locomotorInfo;
+			readonly MobileInfo info;
 			readonly bool rejectMove;
 			public bool TargetOverridesSelection(TargetModifiers modifiers)
 			{
@@ -815,7 +822,7 @@ namespace OpenRA.Mods.Common.Traits
 			public MoveOrderTargeter(Actor self, Mobile unit)
 			{
 				mobile = unit;
-				locomotorInfo = mobile.Info.LocomotorInfo;
+				info = mobile.Info;
 				rejectMove = !self.AcceptsOrder("Move");
 			}
 
@@ -833,12 +840,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? info.Cursor) : info.BlockedCursor;
 
 				if (mobile.IsTraitPaused
-					|| (!explored && !locomotorInfo.MoveIntoShroud)
-					|| (explored && locomotorInfo.MovementCostForCell(self.World, location) == int.MaxValue))
-					cursor = mobile.Info.BlockedCursor;
+					|| (!explored && !info.CanMoveIntoShroud())
+					|| (explored && !mobile.CanEnterCell(location, null, false)))
+					cursor = info.BlockedCursor;
 
 				return true;
 			}

@@ -54,6 +54,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			return true;
 		}
+
+		public bool CanMoveInCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		{
+			return CanEnterCell(world, self, cell, ignoreActor, checkTransientActors);
+		}
+
+		public bool CanMoveIntoShroud() { return true; }
 	}
 
 	public class TDGunboat : ITick, ISync, IFacing, IPositionable, IMove, IDeathActorInitModifier,

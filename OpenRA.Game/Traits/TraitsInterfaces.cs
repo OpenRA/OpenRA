@@ -438,7 +438,11 @@ namespace OpenRA.Traits
 		bool AlwaysEnabled { get; }
 	}
 
-	public interface IMoveInfo : ITraitInfoInterface { }
+	public interface IMoveInfo : ITraitInfoInterface
+	{
+		bool CanMoveIntoShroud();
+		bool CanMoveInCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true);
+	}
 
 	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }
