@@ -118,6 +118,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new UpdatePath("playtest-20190106", new UpdateRule[]
 			{
 				new RemoveAttackSuicides(),
+				new MakeMobilePausableConditional(),
 			})
 		};
 

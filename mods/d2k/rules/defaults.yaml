@@ -174,7 +174,7 @@
 	Mobile:
 		TurnSpeed: 5
 		Locomotor: vehicle
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
 	Selectable:

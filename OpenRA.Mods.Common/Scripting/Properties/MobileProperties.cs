@@ -64,6 +64,6 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Whether the actor can move (false if immobilized).")]
-		public bool IsMobile { get { return !mobile.IsTraitDisabled; } }
+		public bool IsMobile { get { return !mobile.IsTraitDisabled && !mobile.IsTraitPaused; } }
 	}
 }

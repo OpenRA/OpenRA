@@ -275,7 +275,7 @@ LST:
 	Mobile:
 		Locomotor: lcraft
 		Speed: 113
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	RevealsShroud:
 		Range: 6c0
 		RevealGeneratedShroud: False
