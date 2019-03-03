@@ -109,7 +109,7 @@ APC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 132
-		RequiresCondition: !notmobile
+		PauseOnCondition: notmobile
 	Health:
 		HP: 19000
 	Repairable:

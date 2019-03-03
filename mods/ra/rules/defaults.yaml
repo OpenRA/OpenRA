@@ -242,7 +242,7 @@
 	DrawLineToTarget:
 	UpdatesPlayerStatistics:
 	Mobile:
-		RequiresCondition: !being-captured
+		PauseOnCondition: being-captured
 		Locomotor: wheeled
 		TurnSpeed: 5
 	SelectionDecorations:

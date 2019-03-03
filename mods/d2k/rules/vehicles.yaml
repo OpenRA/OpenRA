@@ -343,7 +343,8 @@ devastator:
 		TurnSpeed: 3
 		Speed: 31
 		Locomotor: devastator
-		RequiresCondition: !overload && !notmobile
+		RequiresCondition: !overload
+		PauseOnCondition: notmobile
 	AutoCarryable:
 		RequiresCondition: !overload
 	RevealsShroud:

@@ -594,6 +594,7 @@
     <Compile Include="Traits\World\WeatherOverlay.cs" />
     <Compile Include="Traits\World\ActorSpawnManager.cs" />
     <Compile Include="Traits\ActorSpawner.cs" />
+    <Compile Include="UpdateRules\Rules\20181215\MakeMobilePausableConditional.cs" />
     <Compile Include="UpdateRules\Rules\20181215\RemoveAttackIgnoresVisibility.cs" />
     <Compile Include="UpdateRules\Rules\20181215\RemoveAttackSuicides.cs" />
     <Compile Include="UpdateRules\Rules\20181215\RemovedDemolishLocking.cs" />

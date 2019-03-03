@@ -124,7 +124,8 @@ LPST:
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
-		RequiresCondition: !empdisable && undeployed && !being-captured
+		RequiresCondition: undeployed
+		PauseOnCondition: empdisable || being-captured
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel && undeployed
 		Range: 10c0

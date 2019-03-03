@@ -701,7 +701,7 @@
 		RequiresCondition: criticalspeed
 		Modifier: 50
 	Mobile:
-		RequiresCondition: !empdisable
+		PauseOnCondition: empdisable
 
 ^CivilianInfantry:
 	Inherits@1: ^Infantry
@@ -728,7 +728,7 @@
 		Action: Kill
 	DrawLineToTarget:
 	Mobile:
-		RequiresCondition: !empdisable && !being-captured
+		PauseOnCondition: empdisable || being-captured
 		Locomotor: wheeled
 		TurnSpeed: 5
 		Voice: Move
@@ -1066,7 +1066,7 @@
 		TurnSpeed: 5
 		Voice: Move
 		Speed: 113
-		RequiresCondition: !empdisable
+		PauseOnCondition: empdisable
 		Locomotor: train
 	Cargo:
 		Types: Infantry

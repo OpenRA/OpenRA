@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled || target.Type == TargetType.Invalid)
 				return NextActivity;
 
-			if (mobile.IsTraitDisabled)
+			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
 				return this;
 
 			var currentPos = self.CenterPosition;

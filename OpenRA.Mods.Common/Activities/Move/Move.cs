@@ -190,7 +190,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceled && self.Location.Layer != CustomMovementLayerType.Tunnel)
 				return NextActivity;
 
-			if (mobile.IsTraitDisabled)
+			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
 				return this;
 
 			if (destination == mobile.ToCell)
