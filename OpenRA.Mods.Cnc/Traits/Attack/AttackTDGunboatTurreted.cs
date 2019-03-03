@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled || !target.IsValidFor(self))
+				if (IsCanceling || !target.IsValidFor(self))
 					return NextActivity;
 
 				if (attack.IsTraitDisabled)

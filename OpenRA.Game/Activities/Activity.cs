@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Activities
 {
-	public enum ActivityState { Queued, Active, Done, Canceled }
+	public enum ActivityState { Queued, Active, Canceling, Done }
 
 	/*
 	 * Activities are actions carried out by actors during each tick.
@@ -99,7 +99,7 @@ namespace OpenRA.Activities
 		{
 			get
 			{
-				return childActivity != null && childActivity.State != ActivityState.Done ? childActivity : null;
+				return childActivity != null && childActivity.State < ActivityState.Done ? childActivity : null;
 			}
 
 			set
@@ -153,7 +153,7 @@ namespace OpenRA.Activities
 		}
 
 		public bool IsInterruptible { get; protected set; }
-		public bool IsCanceled { get { return State == ActivityState.Canceled; } }
+		public bool IsCanceling { get { return State == ActivityState.Canceling; } }
 
 		public Activity()
 		{
@@ -179,8 +179,7 @@ namespace OpenRA.Activities
 				if (ParentActivity != null && ParentActivity != ret)
 					ParentActivity.ChildActivity = ret;
 
-				if (State != ActivityState.Canceled)
-					State = ActivityState.Done;
+				State = ActivityState.Done;
 
 				OnLastRun(self);
 			}
@@ -220,16 +219,16 @@ namespace OpenRA.Activities
 
 		public virtual bool Cancel(Actor self, bool keepQueue = false)
 		{
+			if (!keepQueue)
+				NextInQueue = null;
+
 			if (!IsInterruptible)
 				return false;
 
-			if (ChildActivity != null && !ChildActivity.Cancel(self))
-				return false;
+			if (ChildActivity != null)
+				ChildActivity.Cancel(self);
 
-			if (!keepQueue)
-				NextActivity = null;
-
-			State = ActivityState.Canceled;
+			State = ActivityState.Canceling;
 
 			return true;
 		}

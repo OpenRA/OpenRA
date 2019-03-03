@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if ((carryall.State == Carryall.CarryallState.Idle || carryall.Carryable.IsDead) && state != DeliveryState.TakeOff)
@@ -208,8 +208,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Cancel(Actor self, bool keepQueue = false)
 		{
-			if (!IsCanceled && innerActivity != null && !innerActivity.Cancel(self))
-				return false;
+			if (!IsCanceling && innerActivity != null)
+				innerActivity.Cancel(self);
 
 			return base.Cancel(self);
 		}

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.ForceLanding)
 				Cancel(self);
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			bool targetIsHiddenActor;

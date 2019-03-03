@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled || !attack.CanAttack(self, target))
+				if (IsCanceling || !attack.CanAttack(self, target))
 					return NextActivity;
 
 				if (attack.charges == 0)
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled || !attack.CanAttack(self, target))
+				if (IsCanceling || !attack.CanAttack(self, target))
 					return NextActivity;
 
 				if (attack.charges == 0)

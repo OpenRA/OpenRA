@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.ForceLanding)
 				return NextActivity;
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))

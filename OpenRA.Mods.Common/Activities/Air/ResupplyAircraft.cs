@@ -51,11 +51,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Conditional fixes being able to stop aircraft from resupplying.
-			if (IsCanceled && NextInQueue == null)
-			{
-				OnFirstRun(self);
-				return this;
-			}
+			if (IsCanceling && NextInQueue == null)
+				return new ResupplyAircraft(self);
 
 			return NextActivity;
 		}

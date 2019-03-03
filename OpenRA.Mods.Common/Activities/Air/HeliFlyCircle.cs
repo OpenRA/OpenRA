@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			if (IsCanceled)
+			if (IsCanceling)
 				return NextActivity;
 
 			if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
