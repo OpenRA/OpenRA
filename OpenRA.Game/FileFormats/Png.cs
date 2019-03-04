@@ -38,6 +38,7 @@ namespace OpenRA.FileFormats
 			s.Position += 8;
 			var headerParsed = false;
 			var isPaletted = false;
+			var is24Bit = false;
 			var data = new List<byte>();
 
 			for (;;)
@@ -64,6 +65,7 @@ namespace OpenRA.FileFormats
 							var bitDepth = ms.ReadUInt8();
 							var colorType = (PngColorType)ms.ReadByte();
 							isPaletted = IsPaletted(bitDepth, colorType);
+							is24Bit = colorType == PngColorType.Color;
 
 							var dataLength = Width * Height;
 							if (!isPaletted)
@@ -130,21 +132,33 @@ namespace OpenRA.FileFormats
 							{
 								using (var ds = new InflaterInputStream(ns))
 								{
-									var pxStride = isPaletted ? 1 : 4;
-									var stride = Width * pxStride;
+									var pxStride = isPaletted ? 1 : is24Bit ? 3 : 4;
+									var srcStride = Width * pxStride;
+									var destStride = Width * (isPaletted ? 1 : 4);
 
-									var prevLine = new byte[stride];
+									var prevLine = new byte[srcStride];
 									for (var y = 0; y < Height; y++)
 									{
 										var filter = (PngFilter)ds.ReadByte();
-										var line = ds.ReadBytes(stride);
+										var line = ds.ReadBytes(srcStride);
 
-										for (var i = 0; i < stride; i++)
+										for (var i = 0; i < srcStride; i++)
 											line[i] = i < pxStride
 												? UnapplyFilter(filter, line[i], 0, prevLine[i], 0)
 												: UnapplyFilter(filter, line[i], line[i - pxStride], prevLine[i], prevLine[i - pxStride]);
 
-										Array.Copy(line, 0, Data, y * stride, line.Length);
+										if (is24Bit)
+										{
+											// Fold alpha channel into RGB data
+											for (var i = 0; i < line.Length / 3; i++)
+											{
+												Array.Copy(line, 3 * i, Data, y * destStride + 4 * i, 3);
+												Data[y * destStride + 4 * i + 3] = 255;
+											}
+										}
+										else
+											Array.Copy(line, 0, Data, y * destStride, line.Length);
+
 										prevLine = line;
 									}
 								}
@@ -169,6 +183,7 @@ namespace OpenRA.FileFormats
 
 			if (data.Length != expectLength)
 				throw new InvalidDataException("Input data does not match expected length");
+
 			Width = width;
 			Height = height;
 
@@ -223,6 +238,9 @@ namespace OpenRA.FileFormats
 				return true;
 
 			if (bitDepth == 8 && colorType == (PngColorType.Color | PngColorType.Alpha))
+				return false;
+
+			if (bitDepth == 8 && colorType == PngColorType.Color)
 				return false;
 
 			throw new InvalidDataException("Unknown pixel format");
