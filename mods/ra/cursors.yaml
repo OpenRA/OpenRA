@@ -1,5 +1,5 @@
 Cursors:
-	mouse.shp: chrome
+	mouse.shp: cursor
 		scroll-t:
 			Start: 1
 			Y: -7
@@ -200,14 +200,14 @@ Cursors:
 		sell2:
 			Start: 148
 			Length: 12
-	nopower.shp: chrome
+	nopower.shp: cursor
 		powerdown-blocked:
 			Start: 0
 			Length: 1
 		powerdown:
 			Start: 1
 			Length: 3
-	attackmove.shp: chrome
+	attackmove.shp: cursor
 		attackmove:
 			Start: 0
 			Length: 4
