@@ -76,7 +76,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="SharpFont">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\download\SharpFont.dll</HintPath>
