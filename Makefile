@@ -102,7 +102,7 @@ endif
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) $(game_DEPS) System.Drawing.dll thirdparty/download/SharpFont.dll thirdparty/download/Open.Nat.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SharpFont.dll thirdparty/download/Open.Nat.dll
 PROGRAMS += game
 game: $(game_TARGET)
 
