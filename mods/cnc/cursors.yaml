@@ -1,5 +1,5 @@
 Cursors:
-	mouse2.shp: chrome
+	mouse2.shp: cursor
 		scroll-t:
 			Start: 1
 			Y: -12
@@ -136,7 +136,7 @@ Cursors:
 		sell-vehicle:
 			Start: 154
 			Length: 24
-	mouse3.shp: chrome
+	mouse3.shp: cursor
 		default:
 			Start: 0
 			X: -16
@@ -148,7 +148,7 @@ Cursors:
 		deploy-blocked:
 			Start: 1
 			Length: 1
-	mouse4.shp: chrome
+	mouse4.shp: cursor
 		move:
 			Start: 0
 			Length: 8
@@ -188,14 +188,14 @@ Cursors:
 		assaultmove-blocked-minimap:
 			Start: 40
 			Length: 1
-	mouse5.shp: chrome
+	mouse5.shp: cursor
 		guard:
 			Start: 0
 			Length: 8
 		guard-minimap:
 			Start: 8
 			Length: 8
-	mouse6.shp: chrome
+	mouse6.shp: cursor
 		goldwrench:
 			Start: 0
 			Length: 3
@@ -226,7 +226,7 @@ Cursors:
 		enter-blocked-minimap:
 			Start: 17
 			Length: 1
-	mouse7.shp: chrome
+	mouse7.shp: cursor
 		attackoutsiderange:
 			Start: 0
 			Length: 8
