@@ -540,6 +540,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterTargetNow(Actor self, Target target)
 		{
+			if (target.Type == TargetType.FrozenActor && !target.FrozenActor.IsValid)
+				return false;
+
 			return self.Location == self.World.Map.CellContaining(target.CenterPosition) || Util.AdjacentCells(self.World, target).Any(c => c == self.Location);
 		}
 
