@@ -289,7 +289,8 @@ mods: mod_common mod_cnc mod_d2k
 all: dependencies core stylecheck
 
 clean:
-	@-$(RM_F) *.exe *.dll *.dylib *.dll.config ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+	@-$(RM_F) $(shell find . -maxdepth 1 -iname '*.dll.config' -a ! -iname 'OpenRA.Platforms.Default.dll.config')
+	@-$(RM_F) *.exe *.dll *.dylib ./OpenRA*/*.dll ./OpenRA*/*.mdb *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 	@-$(RM_RF) ./*/bin ./*/obj
 	@-$(RM_RF) ./thirdparty/download
 
@@ -340,6 +341,7 @@ install-engine:
 	@-echo "Installing OpenRA engine to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
+	@$(CP) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
 
 	@$(INSTALL_DATA) "GeoLite2-Country.mmdb.gz" "$(DATA_INSTALL_DIR)/GeoLite2-Country.mmdb.gz"
 	@$(INSTALL_DATA) VERSION "$(DATA_INSTALL_DIR)/VERSION"
