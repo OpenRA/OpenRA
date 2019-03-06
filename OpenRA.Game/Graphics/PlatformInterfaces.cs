@@ -19,6 +19,7 @@ namespace OpenRA
 	{
 		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, int batchSize);
 		ISoundEngine CreateSound(string device);
+		IFont CreateFont(byte[] data);
 	}
 
 	public interface IHardwareCursor : IDisposable { }
@@ -128,5 +129,18 @@ namespace OpenRA
 		Windowed,
 		Fullscreen,
 		PseudoFullscreen,
+	}
+
+	public interface IFont : IDisposable
+	{
+		FontGlyph CreateGlyph(char c, int size, float deviceScale);
+	}
+
+	public struct FontGlyph
+	{
+		public int2 Offset;
+		public Size Size;
+		public float Advance;
+		public byte[] Data;
 	}
 }

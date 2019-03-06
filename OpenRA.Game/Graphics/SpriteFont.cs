@@ -14,18 +14,15 @@ using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
-using SharpFont;
 
 namespace OpenRA.Graphics
 {
 	public sealed class SpriteFont : IDisposable
 	{
-		static readonly Library Library = new Library();
-
 		readonly int size;
 		readonly SheetBuilder builder;
 		readonly Func<string, float> lineWidth;
-		readonly Face face;
+		readonly IFont font;
 		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
 
 		float deviceScale;
@@ -39,8 +36,7 @@ namespace OpenRA.Graphics
 			this.size = size;
 			this.builder = builder;
 
-			face = new Face(Library, data, 0);
-			face.SetPixelSizes((uint)(size * deviceScale), (uint)(size * deviceScale));
+			font = Game.Renderer.CreateFont(data);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
@@ -55,7 +51,6 @@ namespace OpenRA.Graphics
 		public void SetScale(float scale)
 		{
 			deviceScale = scale;
-			face.SetPixelSizes((uint)(size * deviceScale), (uint)(size * deviceScale));
 			glyphs.Clear();
 		}
 
@@ -136,11 +131,9 @@ namespace OpenRA.Graphics
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			try
-			{
-				face.LoadChar(c.First, LoadFlags.Default, LoadTarget.Normal);
-			}
-			catch (FreeTypeException)
+			var glyph = font.CreateGlyph(c.First, this.size, deviceScale);
+
+			if (glyph.Data == null)
 			{
 				return new GlyphInfo
 				{
@@ -150,44 +143,31 @@ namespace OpenRA.Graphics
 				};
 			}
 
-			face.Glyph.RenderGlyph(RenderMode.Normal);
-
-			var size = new Size((int)face.Glyph.Metrics.Width, (int)face.Glyph.Metrics.Height);
-			var s = builder.Allocate(size);
-
+			var s = builder.Allocate(glyph.Size);
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = (float)face.Glyph.Metrics.HorizontalAdvance,
-				Offset = new int2(face.Glyph.BitmapLeft, -face.Glyph.BitmapTop)
+				Advance = glyph.Advance,
+				Offset = glyph.Offset
 			};
 
-			// A new bitmap is generated each time this property is accessed, so we do need to dispose it.
-			using (var bitmap = face.Glyph.Bitmap)
+			var dest = s.Sheet.GetData();
+			var destStride = s.Sheet.Size.Width * 4;
+
+			for (var j = 0; j < s.Size.Y; j++)
 			{
-				unsafe
+				for (var i = 0; i < s.Size.X; i++)
 				{
-					var p = (byte*)bitmap.Buffer;
-					var dest = s.Sheet.GetData();
-					var destStride = s.Sheet.Size.Width * 4;
-
-					for (var j = 0; j < s.Size.Y; j++)
+					var p = glyph.Data[j * glyph.Size.Width + i];
+					if (p != 0)
 					{
-						for (var i = 0; i < s.Size.X; i++)
-						{
-							if (p[i] != 0)
-							{
-								var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
-								var pmc = Util.PremultiplyAlpha(Color.FromArgb(p[i], c.Second));
+						var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
+						var pmc = Util.PremultiplyAlpha(Color.FromArgb(p, c.Second));
 
-								dest[q] = pmc.B;
-								dest[q + 1] = pmc.G;
-								dest[q + 2] = pmc.R;
-								dest[q + 3] = pmc.A;
-							}
-						}
-
-						p += bitmap.Pitch;
+						dest[q] = pmc.B;
+						dest[q + 1] = pmc.G;
+						dest[q + 2] = pmc.R;
+						dest[q + 3] = pmc.A;
 					}
 				}
 			}
@@ -199,7 +179,7 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
-			face.Dispose();
+			font.Dispose();
 		}
 	}
 

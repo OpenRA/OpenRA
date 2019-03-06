@@ -33,6 +33,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="SharpFont">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\thirdparty\download\SharpFont.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
     </Reference>
@@ -45,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultPlatform.cs" />
+    <Compile Include="FreeTypeFont.cs" />
     <Compile Include="Sdl2PlatformWindow.cs" />
     <Compile Include="ITextureInternal.cs" />
     <Compile Include="Sdl2Input.cs" />

@@ -102,7 +102,7 @@ endif
 game_SRCS := $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET = OpenRA.Game.exe
 game_KIND = winexe
-game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/SharpFont.dll thirdparty/download/Open.Nat.dll
+game_LIBS = $(COMMON_LIBS) $(game_DEPS) thirdparty/download/Open.Nat.dll
 PROGRAMS += game
 game: $(game_TARGET)
 
@@ -111,7 +111,7 @@ pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
 pdefault_TARGET = OpenRA.Platforms.Default.dll
 pdefault_KIND = library
 pdefault_DEPS = $(game_TARGET)
-pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll $(pdefault_DEPS)
+pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll thirdparty/download/SharpFont.dll $(pdefault_DEPS)
 PROGRAMS += pdefault
 platforms: $(pdefault_TARGET)
 
