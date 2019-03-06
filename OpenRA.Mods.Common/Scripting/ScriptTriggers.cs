@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyOtherProduction,
 		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDiscovered, INotifyActorDisposing,
-		INotifyPassengerEntered, INotifyPassengerExited, INotifySold
+		INotifyPassengerEntered, INotifyPassengerExited, INotifySold, INotifyWinStateChanged
 	{
 		readonly World world;
 		readonly Actor self;
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnProducedInternal(self, other);
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerWon(Player player)
+		void INotifyWinStateChanged.OnPlayerWon(Player player)
 		{
 			if (world.Disposing)
 				return;
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerLost(Player player)
+		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
 			if (world.Disposing)
 				return;
