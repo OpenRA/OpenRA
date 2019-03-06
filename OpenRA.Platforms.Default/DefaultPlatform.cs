@@ -24,5 +24,10 @@ namespace OpenRA.Platforms.Default
 		{
 			return new OpenAlSoundEngine(device);
 		}
+
+		public IFont CreateFont(byte[] data)
+		{
+			return new FreeTypeFont(data);
+		}
 	}
 }

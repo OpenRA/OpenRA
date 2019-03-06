@@ -39,6 +39,7 @@ namespace OpenRA
 		readonly Stack<Rectangle> scissorState = new Stack<Rectangle>();
 
 		SheetBuilder fontSheetBuilder;
+		readonly IPlatform platform;
 
 		float depthScale;
 		float depthOffset;
@@ -51,6 +52,7 @@ namespace OpenRA
 
 		public Renderer(IPlatform platform, GraphicSettings graphicSettings)
 		{
+			this.platform = platform;
 			var resolution = GetResolution(graphicSettings);
 
 			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.BatchSize);
@@ -289,6 +291,11 @@ namespace OpenRA
 		public string GLVersion
 		{
 			get { return Context.GLVersion; }
+		}
+
+		public IFont CreateFont(byte[] data)
+		{
+			return platform.CreateFont(data);
 		}
 	}
 }
