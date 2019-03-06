@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(init.Self, this); }
 	}
 
-	public class ConquestVictoryConditions : ITick, INotifyObjectivesUpdated
+	public class ConquestVictoryConditions : ITick, INotifyWinStateChanged
 	{
 		readonly ConquestVictoryConditionsInfo info;
 		readonly MissionObjectives mo;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			mo.MarkCompleted(self.Owner, objectiveID);
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerLost(Player player)
+		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
 			foreach (var a in player.World.ActorsWithTrait<INotifyOwnerLost>().Where(a => a.Actor.Owner == player))
 				a.Trait.OnOwnerLost(a.Actor);
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerWon(Player player)
+		void INotifyWinStateChanged.OnPlayerWon(Player player)
 		{
 			if (info.SuppressNotifications)
 				return;
@@ -96,9 +96,5 @@ namespace OpenRA.Mods.Common.Traits
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.WinNotification, player.Faction.InternalName);
 			});
 		}
-
-		void INotifyObjectivesUpdated.OnObjectiveAdded(Player player, int id) { }
-		void INotifyObjectivesUpdated.OnObjectiveCompleted(Player player, int id) { }
-		void INotifyObjectivesUpdated.OnObjectiveFailed(Player player, int id) { }
 	}
 }

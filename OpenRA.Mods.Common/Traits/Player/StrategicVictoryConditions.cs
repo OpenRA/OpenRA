@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new StrategicVictoryConditions(init.Self, this); }
 	}
 
-	public class StrategicVictoryConditions : ITick, ISync, INotifyObjectivesUpdated
+	public class StrategicVictoryConditions : ITick, ISync, INotifyWinStateChanged
 	{
 		readonly StrategicVictoryConditionsInfo info;
 
@@ -75,7 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (player.WinState != WinState.Undefined || player.NonCombatant) return;
+			if (player.WinState != WinState.Undefined || player.NonCombatant)
+				return;
 
 			if (objectiveID < 0)
 				objectiveID = mo.Add(player, info.Objective, ObjectiveType.Primary, true);
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerLost(Player player)
+		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
 			foreach (var a in player.World.ActorsWithTrait<INotifyOwnerLost>().Where(a => a.Actor.Owner == player))
 				a.Trait.OnOwnerLost(a.Actor);
@@ -123,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerWon(Player player)
+		void INotifyWinStateChanged.OnPlayerWon(Player player)
 		{
 			if (info.SuppressNotifications)
 				return;
@@ -135,9 +136,5 @@ namespace OpenRA.Mods.Common.Traits
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.WinNotification, player.Faction.InternalName);
 			});
 		}
-
-		void INotifyObjectivesUpdated.OnObjectiveAdded(Player player, int id) { }
-		void INotifyObjectivesUpdated.OnObjectiveCompleted(Player player, int id) { }
-		void INotifyObjectivesUpdated.OnObjectiveFailed(Player player, int id) { }
 	}
 }

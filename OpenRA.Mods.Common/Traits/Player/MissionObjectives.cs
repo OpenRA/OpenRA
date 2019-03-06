@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new MissionObjectives(init.World, this); }
 	}
 
-	public class MissionObjectives : INotifyObjectivesUpdated, ISync, IResolveOrder
+	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder
 	{
 		public readonly MissionObjectivesInfo Info;
 		readonly List<MissionObjective> objectives = new List<MissionObjective>();
@@ -106,10 +106,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (objectiveID >= objectives.Count || objectives[objectiveID].State != ObjectiveState.Incomplete)
 				return;
 
-			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
-
 			objectives[objectiveID].State = ObjectiveState.Completed;
-			foreach (var inou in inous)
+			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
 				inou.OnObjectiveCompleted(player, objectiveID);
 
 			if (objectives[objectiveID].Type == ObjectiveType.Primary)
@@ -118,8 +116,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (playerWon)
 				{
-					foreach (var inou in inous)
-						inou.OnPlayerWon(player);
+					foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
+						inwc.OnPlayerWon(player);
 
 					CheckIfGameIsOver(player);
 				}
@@ -131,10 +129,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (objectiveID >= objectives.Count || objectives[objectiveID].State == ObjectiveState.Failed)
 				return;
 
-			var inous = player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>();
-
 			objectives[objectiveID].State = ObjectiveState.Failed;
-			foreach (var inou in inous)
+			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
 				inou.OnObjectiveFailed(player, objectiveID);
 
 			if (objectives[objectiveID].Type == ObjectiveType.Primary)
@@ -143,8 +139,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (playerLost)
 				{
-					foreach (var inou in inous)
-						inou.OnPlayerLost(player);
+					foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
+						inwc.OnPlayerLost(player);
 
 					CheckIfGameIsOver(player);
 				}
@@ -168,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerWon(Player player)
+		void INotifyWinStateChanged.OnPlayerWon(Player player)
 		{
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
@@ -204,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 			CheckIfGameIsOver(player);
 		}
 
-		void INotifyObjectivesUpdated.OnPlayerLost(Player player)
+		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
 			var players = player.World.Players.Where(p => !p.NonCombatant);
 			var enemies = players.Where(p => !p.IsAlliedWith(player));
@@ -258,10 +254,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public event Action<Player, bool> ObjectiveAdded = (player, inhibitAnnouncement) => { player.HasObjectives = true; };
-
-		void INotifyObjectivesUpdated.OnObjectiveAdded(Player player, int id) { }
-		void INotifyObjectivesUpdated.OnObjectiveCompleted(Player player, int id) { }
-		void INotifyObjectivesUpdated.OnObjectiveFailed(Player player, int id) { }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
