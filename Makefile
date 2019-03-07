@@ -111,7 +111,7 @@ pdefault_SRCS := $(shell find OpenRA.Platforms.Default/ -iname '*.cs')
 pdefault_TARGET = OpenRA.Platforms.Default.dll
 pdefault_KIND = library
 pdefault_DEPS = $(game_TARGET)
-pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll thirdparty/download/SharpFont.dll $(pdefault_DEPS)
+pdefault_LIBS = $(COMMON_LIBS) thirdparty/download/SDL2-CS.dll thirdparty/download/OpenAL-CS.dll $(pdefault_DEPS)
 PROGRAMS += pdefault
 platforms: $(pdefault_TARGET)
 
@@ -355,8 +355,7 @@ install-engine:
 	@$(CP) Eluant* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) SharpFont.dll "$(DATA_INSTALL_DIR)"
-	@$(CP) SharpFont.dll.config "$(DATA_INSTALL_DIR)"
+	@$(CP) OpenRA.Platforms.Default.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) Open.Nat.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) MaxMind.Db.dll "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) rix0rrr.BeaconLib.dll "$(DATA_INSTALL_DIR)"

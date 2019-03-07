@@ -43,16 +43,6 @@ if (!(Test-Path "MaxMind.Db.dll"))
 	rmdir MaxMind.Db -Recurse
 }
 
-if (!(Test-Path "SharpFont.dll"))
-{
-	echo "Fetching SharpFont from NuGet."
-	./nuget.exe install SharpFont -Version 4.0.1 -ExcludeVersion -Verbosity quiet -Source nuget.org
-	cp SharpFont/lib/net45/SharpFont* .
-	cp SharpFont/config/SharpFont.dll.config .
-	rmdir SharpFont -Recurse
-	rmdir SharpFont.Dependencies -Recurse
-}
-
 if (!(Test-Path "nunit.framework.dll"))
 {
 	echo "Fetching NUnit from NuGet."

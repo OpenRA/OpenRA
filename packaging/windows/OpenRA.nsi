@@ -115,7 +115,6 @@ Section "Game" GAME
 	File "${SRCDIR}\RedAlert.ico"
 	File "${SRCDIR}\TiberianDawn.ico"
 	File "${SRCDIR}\Dune2000.ico"
-	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\SDL2-CS.dll"
 	File "${SRCDIR}\OpenAL-CS.dll"
 	File "${SRCDIR}\global mix database.dat"
@@ -229,7 +228,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Open.Nat.dll
-	Delete $INSTDIR\SharpFont.dll
 	Delete $INSTDIR\VERSION
 	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING

@@ -41,14 +41,6 @@ if [ ! -f MaxMind.Db.dll ]; then
 	rm -rf MaxMind.Db
 fi
 
-if [ ! -f SharpFont.dll ]; then
-	echo "Fetching SharpFont from NuGet"
-	../noget.sh SharpFont 4.0.1
-	cp ./SharpFont/lib/net45/SharpFont* .
-	cp ./SharpFont/config/SharpFont.dll.config .
-	rm -rf SharpFont SharpFont.Dependencies
-fi
-
 if [ ! -f nunit.framework.dll ]; then
 	echo "Fetching NUnit from NuGet"
 	../noget.sh NUnit 3.0.1
