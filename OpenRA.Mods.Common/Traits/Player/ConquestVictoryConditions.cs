@@ -46,10 +46,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
+			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant)
+				return;
 
 			if (objectiveID < 0)
-				objectiveID = mo.Add(self.Owner, info.Objective, ObjectiveType.Primary, true);
+				objectiveID = mo.Add(self.Owner, info.Objective, "Primary", inhibitAnnouncement: true);
 
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits(shortGame))
 				mo.MarkFailed(self.Owner, objectiveID);
