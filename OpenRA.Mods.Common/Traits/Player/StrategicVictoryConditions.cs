@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (objectiveID < 0)
-				objectiveID = mo.Add(player, info.Objective, ObjectiveType.Primary, true);
+				objectiveID = mo.Add(player, info.Objective, "Primary", inhibitAnnouncement: true);
 
 			if (!self.Owner.NonCombatant && self.Owner.HasNoRequiredUnits(shortGame))
 				mo.MarkFailed(self.Owner, objectiveID);

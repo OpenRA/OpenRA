@@ -30,11 +30,19 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
+		[Desc("Add a mission objective for this player. The function returns the " +
+			"ID of the newly created objective, so that it can be referred to later.")]
+		public int AddObjective(string description, string type = "Primary", bool required = true)
+		{
+			return mo.Add(Player, description, type, required);
+		}
+
+		[ScriptActorPropertyActivity]
 		[Desc("Add a primary mission objective for this player. The function returns the " +
 			"ID of the newly created objective, so that it can be referred to later.")]
 		public int AddPrimaryObjective(string description)
 		{
-			return mo.Add(Player, description, ObjectiveType.Primary);
+			return AddObjective(description);
 		}
 
 		[ScriptActorPropertyActivity]
@@ -42,7 +50,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"ID of the newly created objective, so that it can be referred to later.")]
 		public int AddSecondaryObjective(string description)
 		{
-			return mo.Add(Player, description, ObjectiveType.Secondary);
+			return AddObjective(description, "Secondary", false);
 		}
 
 		[ScriptActorPropertyActivity]
@@ -106,7 +114,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (id < 0 || id >= mo.Objectives.Count)
 				throw new LuaException("Objective ID is out of range.");
 
-			return mo.Objectives[id].Type == ObjectiveType.Primary ? "Primary" : "Secondary";
+			return mo.Objectives[id].Type;
 		}
 
 		[ScriptActorPropertyActivity]

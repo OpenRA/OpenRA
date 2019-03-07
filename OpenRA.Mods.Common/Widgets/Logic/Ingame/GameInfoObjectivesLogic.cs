@@ -62,13 +62,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			parent.RemoveChildren();
 
-			foreach (var o in mo.Objectives.OrderBy(o => o.Type))
+			foreach (var objective in mo.Objectives.OrderBy(o => o.Type))
 			{
-				var objective = o; // Work around the loop closure issue in older versions of C#
 				var widget = template.Clone();
-
 				var label = widget.Get<LabelWidget>("OBJECTIVE_TYPE");
-				label.GetText = () => objective.Type == ObjectiveType.Primary ? "Primary" : "Secondary";
+				label.GetText = () => objective.Type;
 
 				var checkbox = widget.Get<CheckboxWidget>("OBJECTIVE_STATUS");
 				checkbox.IsChecked = () => objective.State != ObjectiveState.Incomplete;

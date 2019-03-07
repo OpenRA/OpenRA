@@ -16,19 +16,20 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public enum ObjectiveType { Primary, Secondary }
 	public enum ObjectiveState { Incomplete, Completed, Failed }
 
 	public class MissionObjective
 	{
-		public readonly ObjectiveType Type;
+		public readonly bool Required;
 		public readonly string Description;
+		public readonly string Type;
 		public ObjectiveState State;
 
-		public MissionObjective(ObjectiveType type, string description)
+		public MissionObjective(string description, string type, bool required = true)
 		{
-			Type = type;
 			Description = description;
+			Type = type;
+			Required = required;
 			State = ObjectiveState.Incomplete;
 		}
 	}
@@ -88,11 +89,10 @@ namespace OpenRA.Mods.Common.Traits
 			Objectives = new ReadOnlyList<MissionObjective>(objectives);
 		}
 
-		public int Add(Player player, string description, ObjectiveType type = ObjectiveType.Primary, bool inhibitAnnouncement = false)
+		public int Add(Player player, string description, string type, bool required = true, bool inhibitAnnouncement = false)
 		{
 			var newID = objectives.Count;
-
-			objectives.Insert(newID, new MissionObjective(type, description));
+			objectives.Insert(newID, new MissionObjective(description, type, required));
 
 			ObjectiveAdded(player, inhibitAnnouncement);
 			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
@@ -110,17 +110,13 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
 				inou.OnObjectiveCompleted(player, objectiveID);
 
-			if (objectives[objectiveID].Type == ObjectiveType.Primary)
+			if (objectives[objectiveID].Required
+				&& objectives.Where(o => o.Required).All(o => o.State == ObjectiveState.Completed))
 			{
-				var playerWon = objectives.Where(o => o.Type == ObjectiveType.Primary).All(o => o.State == ObjectiveState.Completed);
+				foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
+					inwc.OnPlayerWon(player);
 
-				if (playerWon)
-				{
-					foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
-						inwc.OnPlayerWon(player);
-
-					CheckIfGameIsOver(player);
-				}
+				CheckIfGameIsOver(player);
 			}
 		}
 
@@ -133,17 +129,12 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
 				inou.OnObjectiveFailed(player, objectiveID);
 
-			if (objectives[objectiveID].Type == ObjectiveType.Primary)
+			if (objectives[objectiveID].Required)
 			{
-				var playerLost = objectives.Where(o => o.Type == ObjectiveType.Primary).Any(o => o.State == ObjectiveState.Failed);
+				foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
+					inwc.OnPlayerLost(player);
 
-				if (playerLost)
-				{
-					foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
-						inwc.OnPlayerLost(player);
-
-					CheckIfGameIsOver(player);
-				}
+				CheckIfGameIsOver(player);
 			}
 		}
 
