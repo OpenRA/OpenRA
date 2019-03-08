@@ -664,6 +664,7 @@ namespace OpenRA
 					bitmapWidth = 2 * bitmapWidth - 1;
 
 				var stride = bitmapWidth * 4;
+				var pxStride = 4;
 				var minimapData = new byte[stride * height];
 				Color leftColor, rightColor;
 				for (var y = 0; y < height; y++)
@@ -693,18 +694,19 @@ namespace OpenRA
 						{
 							// Odd rows are shifted right by 1px
 							var dx = uv.V & 1;
+							var xOffset = pxStride * (2 * x + dx);
 							if (x + dx > 0)
 							{
-								var z = y * stride + 8 * x + dx - 4;
+								var z = y * stride + xOffset - pxStride;
 								minimapData[z++] = leftColor.R;
 								minimapData[z++] = leftColor.G;
 								minimapData[z++] = leftColor.B;
 								minimapData[z++] = leftColor.A;
 							}
 
-							if (2 * x + dx < stride)
+							if (xOffset < stride)
 							{
-								var z = y * stride + 8 * x + dx;
+								var z = y * stride + xOffset;
 								minimapData[z++] = rightColor.R;
 								minimapData[z++] = rightColor.G;
 								minimapData[z++] = rightColor.B;
@@ -713,7 +715,7 @@ namespace OpenRA
 						}
 						else
 						{
-							var z = y * stride + 4 * x;
+							var z = y * stride + pxStride * x;
 							minimapData[z++] = leftColor.R;
 							minimapData[z++] = leftColor.G;
 							minimapData[z++] = leftColor.B;
