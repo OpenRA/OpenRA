@@ -2,8 +2,6 @@ c1:
 	stand:
 		Facings: 8
 	panic-stand:
-		Start: 8
-		Length: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -87,9 +85,6 @@ moebius:
 	stand:
 		Facings: 8
 	panic-stand:
-		Start: 8
-		Length: 1
-		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
