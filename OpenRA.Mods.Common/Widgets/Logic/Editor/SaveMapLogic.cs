@@ -203,6 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				catch (Exception e)
 				{
 					Log.Write("debug", "Failed to save map at {0}: {1}", combinedPath, e.Message);
+					Log.Write("debug", "{0}", e.StackTrace);
 
 					ConfirmationDialogs.ButtonPrompt(
 						title: "Failed to save map",
