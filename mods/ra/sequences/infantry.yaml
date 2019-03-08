@@ -964,8 +964,6 @@ c1:
 	stand:
 		Facings: 8
 	panic-stand:
-		Start: 8
-		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -1014,8 +1012,6 @@ c2:
 	stand:
 		Facings: 8
 	panic-stand:
-		Start: 8
-		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -1064,8 +1060,6 @@ c3:
 	stand:
 		Facings: 8
 	panic-stand:
-		Start: 8
-		Stride: 6
 		Facings: 8
 	panic-run:
 		Start: 8
@@ -1113,13 +1107,11 @@ c3:
 einstein:
 	stand:
 		Facings: 8
+	panic-stand:
+		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
-		Facings: 8
-	panic-stand:
-		Start: 8
-		Stride: 6
 		Facings: 8
 	run:
 		Start: 56
@@ -1159,13 +1151,11 @@ einstein:
 delphi:
 	stand:
 		Facings: 8
+	panic-stand:
+		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
-		Facings: 8
-	panic-stand:
-		Start: 8
-		Stride: 6
 		Facings: 8
 	run:
 		Start: 56
@@ -1205,13 +1195,11 @@ delphi:
 chan:
 	stand:
 		Facings: 8
+	panic-stand:
+		Facings: 8
 	panic-run:
 		Start: 8
 		Length: 6
-		Facings: 8
-	panic-stand:
-		Start: 8
-		Stride: 6
 		Facings: 8
 	run:
 		Start: 56
