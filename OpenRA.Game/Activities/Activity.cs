@@ -25,11 +25,6 @@ namespace OpenRA.Activities
 	 * optionally child activities, and usually a next activity. An actor's CurrentActivity is a pointer into that graph
 	 * and moves through it as activities run.
 	 *
-	 * There are two kinds of activities, the base activity and composite activities. They differ in the way their children
-	 * are run: while a base activity is responsible for running its children itself, a composite activity relies on the actor's
-	 * activity-running code. Therefore, the actor's CurrentActivity stays on the base activity while it runs its children. With
-	 * composite activities however, the CurrentActivity moves through the list of children as they run.
-	 *
 	 *
 	 * Things to be aware of when writing activities:
 	 *
@@ -38,24 +33,13 @@ namespace OpenRA.Activities
 	 * - Do not "reuse" (with "SequenceActivities", for example) activity objects that have already finished running.
 	 *   Queue a new instance instead.
 	 * - Avoid calling actor.CancelActivity(). It is almost always a bug. Call activity.Cancel() instead.
-	 * - A composite activity will run at least twice. The first time when it returns its children,
-	 *   the second time when its last child returns its Parent.
 	 * - Do not return the Parent explicitly unless you have an extremly good reason. "return NextActivity"
 	 *   will do the right thing in all circumstances.
 	 * - You do not need to care about the ChildActivity pointer advancing through the list of children,
 	 *   the activity code already takes care of that.
 	 * - If you want to check whether there are any follow-up activities queued, check against "NextInQueue"
 	 *   in favour of "NextActivity" to avoid checking against the Parent activity.
-	 *
-	 *
-	 * Guide when to use which kind of activity:
-	 *
-	 * - The activity does not have any children -> base activity
-	 * - The activity needs to run preparatory steps during each tick before its children can be run -> base activity
-	 * - The activity or the actor is left in a bogus state when one of the child activities is canceled -> base activity
-	 * - The activity's children are self-contained and can run independently of the parent -> composite activity
-	 * - The activity does not have any or little logic of its own, but is just composed of sub-steps -> composite activity
-	*/
+	 */
 	public abstract class Activity
 	{
 		public ActivityState State { get; private set; }
@@ -217,20 +201,18 @@ namespace OpenRA.Activities
 			OnActorDispose(self);
 		}
 
-		public virtual bool Cancel(Actor self, bool keepQueue = false)
+		public virtual void Cancel(Actor self, bool keepQueue = false)
 		{
 			if (!keepQueue)
 				NextInQueue = null;
 
 			if (!IsInterruptible)
-				return false;
+				return;
 
 			if (ChildActivity != null)
 				ChildActivity.Cancel(self);
 
 			State = ActivityState.Canceling;
-
-			return true;
 		}
 
 		public virtual void Queue(Actor self, Activity activity, bool pretick = false)

@@ -160,14 +160,14 @@ namespace OpenRA.Mods.Common.Activities
 			return this;
 		}
 
-		public override bool Cancel(Actor self, bool keepQueue = false)
+		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			OnCancel(self);
 
 			if (!IsCanceling && moveActivity != null)
 				moveActivity.Cancel(self);
 
-			return base.Cancel(self, keepQueue);
+			base.Cancel(self, keepQueue);
 		}
 	}
 }
