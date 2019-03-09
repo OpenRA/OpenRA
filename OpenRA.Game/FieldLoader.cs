@@ -233,22 +233,6 @@ namespace OpenRA
 
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
-			else if (fieldType == typeof(Color[]))
-			{
-				if (value != null)
-				{
-					var parts = value.Split(',');
-					var colors = new Color[parts.Length];
-
-					for (var i = 0; i < colors.Length; i++)
-						if (!Color.TryParse(parts[i], out colors[i]))
-							return InvalidValueAction(value, fieldType, fieldName);
-
-					return colors;
-				}
-
-				return InvalidValueAction(value, fieldType, fieldName);
-			}
 			else if (fieldType == typeof(Hotkey))
 			{
 				Hotkey res;
