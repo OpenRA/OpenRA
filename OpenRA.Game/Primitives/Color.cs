@@ -59,6 +59,11 @@ namespace OpenRA.Primitives
 			return FromArgb(alpha, (int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
 		}
 
+		public static Color FromAhsl(int h, int s, int l)
+		{
+			return FromAhsl(255, h / 255f, s / 255f, l / 255f);
+		}
+
 		public static Color FromAhsl(float h, float s, float l)
 		{
 			return FromAhsl(255, h, s, l);
