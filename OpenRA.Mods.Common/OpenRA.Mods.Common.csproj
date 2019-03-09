@@ -615,6 +615,7 @@
     <Compile Include="UpdateRules\Rules\20190314\MakeMobilePausableConditional.cs" />
     <Compile Include="UpdateRules\Rules\20190314\MultipleDeploySounds.cs" />
     <Compile Include="UpdateRules\Rules\20190314\RemoveSimpleBeacon.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\SplitHarvesterSpriteBody.cs" />
     <Compile Include="UtilityCommands\CheckRuntimeAssembliesCommand.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
