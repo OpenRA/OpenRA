@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated, INotifyOwnerChanged
 	{
-		readonly IEnumerable<AttackBase> activeAttackBases;
+		public readonly IEnumerable<AttackBase> ActiveAttackBases;
 		[Sync] int nextScanTime = 0;
 
 		public UnitStance Stance { get { return stance; } }
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			var self = init.Self;
-			activeAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
+			ActiveAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
 
 			if (init.Contains<StanceInit>())
 				stance = init.Get<StanceInit, UnitStance>();
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attackerAsTarget = Target.FromActor(attacker);
-			if (!activeAttackBases.Any(a => a.HasAnyValidWeapons(attackerAsTarget)))
+			if (!ActiveAttackBases.Any(a => a.HasAnyValidWeapons(attackerAsTarget)))
 				return;
 
 			// Don't retaliate against own units force-firing on us. It's usually not what the player wanted.
@@ -242,11 +242,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Target ScanForTarget(Actor self, bool allowMove)
 		{
-			if (nextScanTime <= 0 && activeAttackBases.Any())
+			if (nextScanTime <= 0 && ActiveAttackBases.Any())
 			{
 				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
-				foreach (var ab in activeAttackBases)
+				foreach (var ab in ActiveAttackBases)
 				{
 					// If we can't attack right now, there's no need to try and find a target.
 					var attackStances = ab.UnforcedAttackTargetStances();
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.SetTargetLine(target, Color.Red, false);
 
-			foreach (var ab in activeAttackBases)
+			foreach (var ab in ActiveAttackBases)
 				ab.AttackTarget(target, false, allowMove);
 		}
 

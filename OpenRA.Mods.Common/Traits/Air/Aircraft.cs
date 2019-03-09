@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
+		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing,
 		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
@@ -173,7 +173,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		RepairableInfo repairableInfo;
 		RearmableInfo rearmableInfo;
-		AttackMove attackMove;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
@@ -231,7 +230,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
-			attackMove = self.TraitOrDefault<AttackMove>();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
@@ -519,16 +517,6 @@ namespace OpenRA.Mods.Common.Traits
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
 			init.Add(new FacingInit(Facing));
-		}
-
-		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
-		{
-			// HACK: Work around AttackMove relying on INotifyIdle.TickIdle to continue its path
-			// AttackMoveActivity needs to be rewritten to use child activities instead!
-			if (attackMove != null && attackMove.TargetLocation.HasValue)
-				((INotifyIdle)attackMove).TickIdle(self);
-			else
-				OnBecomingIdle(self);
 		}
 
 		protected virtual void OnBecomingIdle(Actor self)

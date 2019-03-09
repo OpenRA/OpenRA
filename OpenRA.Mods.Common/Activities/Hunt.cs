@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			return ActivityUtils.SequenceActivities(self,
-				new AttackMoveActivity(self, move.MoveTo(target.Location, 2)),
+				new AttackMoveActivity(self, () => move.MoveTo(target.Location, 2)),
 				new Wait(25),
 				this);
 		}
