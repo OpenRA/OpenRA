@@ -159,12 +159,12 @@ namespace OpenRA.Mods.Common.Activities
 			});
 		}
 
-		public override bool Cancel(Actor self, bool keepQueue = false)
+		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			if (!IsCanceling && innerActivity != null)
 				innerActivity.Cancel(self);
 
-			return base.Cancel(self, keepQueue);
+			base.Cancel(self, keepQueue);
 		}
 	}
 }

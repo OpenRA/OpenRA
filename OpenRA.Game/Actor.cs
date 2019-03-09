@@ -225,12 +225,10 @@ namespace OpenRA
 				CurrentActivity.RootActivity.Queue(this, nextActivity);
 		}
 
-		public bool CancelActivity()
+		public void CancelActivity()
 		{
 			if (CurrentActivity != null)
-				return CurrentActivity.RootActivity.Cancel(this);
-
-			return true;
+				CurrentActivity.RootActivity.Cancel(this);
 		}
 
 		public override int GetHashCode()

@@ -133,12 +133,12 @@ namespace OpenRA.Mods.Common.Activities
 			return NextActivity;
 		}
 
-		public override bool Cancel(Actor self, bool keepQueue = false)
+		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			if (!IsCanceling && enterTransport != null)
 				enterTransport.Cancel(self);
 
-			return base.Cancel(self, keepQueue);
+			base.Cancel(self, keepQueue);
 		}
 	}
 }

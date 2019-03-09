@@ -27,16 +27,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (IsCanceling)
+				return NextActivity;
+
 			return (remainingTicks-- == 0) ? NextActivity : this;
-		}
-
-		public override bool Cancel(Actor self, bool keepQueue = false)
-		{
-			if (!base.Cancel(self, keepQueue))
-				return false;
-
-			remainingTicks = 0;
-			return true;
 		}
 	}
 
@@ -53,16 +47,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (IsCanceling)
+				return NextActivity;
+
 			return (f == null || f()) ? NextActivity : this;
-		}
-
-		public override bool Cancel(Actor self, bool keepQueue = false)
-		{
-			if (!base.Cancel(self, keepQueue))
-				return false;
-
-			f = null;
-			return true;
 		}
 	}
 }
