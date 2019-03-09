@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Traits
 			var power = Instances.Where(i => !i.IsTraitPaused && !i.IsTraitDisabled)
 				.MinByOrDefault(a =>
 				{
-					if (a.Self.OccupiesSpace == null)
+					if (a.Self.OccupiesSpace == null || order.Target.Type == TargetType.Invalid)
 						return 0;
 
 					return (a.Self.CenterPosition - order.Target.CenterPosition).HorizontalLengthSquared;
