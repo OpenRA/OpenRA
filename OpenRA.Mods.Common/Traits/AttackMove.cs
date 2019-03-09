@@ -38,19 +38,14 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
-	class AttackMove : INotifyCreated, ITick, IResolveOrder, IOrderVoice, INotifyIdle, ISync
+	class AttackMove : INotifyCreated, ITick, IResolveOrder, IOrderVoice, ISync
 	{
 		public readonly AttackMoveInfo Info;
-
-		[Sync] public CPos _targetLocation { get { return TargetLocation.HasValue ? TargetLocation.Value : CPos.Zero; } }
-		public CPos? TargetLocation = null;
-
 		readonly IMove move;
 
 		ConditionManager conditionManager;
 		int attackMoveToken = ConditionManager.InvalidConditionToken;
 		int assaultMoveToken = ConditionManager.InvalidConditionToken;
-		bool assaultMoving = false;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
@@ -69,8 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var activity = self.CurrentActivity as AttackMoveActivity;
-			var attackActive = activity != null && !assaultMoving;
-			var assaultActive = activity != null && assaultMoving;
+			var attackActive = activity != null && !activity.IsAssaultMove;
+			var assaultActive = activity != null && activity.IsAssaultMove;
 
 			if (attackActive && attackMoveToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.AttackMoveScanCondition))
 				attackMoveToken = conditionManager.GrantCondition(self, Info.AttackMoveScanCondition);
@@ -98,23 +93,8 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		void Activate(Actor self, bool assaultMove)
-		{
-			assaultMoving = assaultMove;
-			self.QueueActivity(new AttackMoveActivity(self, move.MoveTo(TargetLocation.Value, 1)));
-		}
-
-		void INotifyIdle.TickIdle(Actor self)
-		{
-			// This might cause the actor to be stuck if the target location is unreachable
-			if (TargetLocation.HasValue && self.Location != TargetLocation.Value)
-				Activate(self, assaultMoving);
-		}
-
 		public void ResolveOrder(Actor self, Order order)
 		{
-			TargetLocation = null;
-
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 			{
 				if (!order.Queued)
@@ -124,9 +104,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				TargetLocation = move.NearestMoveableCell(cell);
-				self.SetTargetLine(Target.FromCell(self.World, TargetLocation.Value), Color.Red);
-				Activate(self, order.OrderString == "AssaultMove");
+				var targetLocation = move.NearestMoveableCell(cell);
+				self.SetTargetLine(Target.FromCell(self.World, targetLocation), Color.Red);
+				var assaultMoving = order.OrderString == "AssaultMove";
+				self.QueueActivity(new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 1), assaultMoving));
 			}
 		}
 	}

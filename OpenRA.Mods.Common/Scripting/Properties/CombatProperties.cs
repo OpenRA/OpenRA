@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Activities;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"close enough to complete the activity.")]
 		public void AttackMove(CPos cell, int closeEnough = 0)
 		{
-			Self.QueueActivity(new AttackMoveActivity(Self, move.MoveTo(cell, closeEnough)));
+			Self.QueueActivity(new AttackMoveActivity(Self, () => move.MoveTo(cell, closeEnough)));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			foreach (var wpt in waypoints)
 			{
-				Self.QueueActivity(new AttackMoveActivity(Self, move.MoveTo(wpt, 2)));
+				Self.QueueActivity(new AttackMoveActivity(Self, () => move.MoveTo(wpt, 2)));
 				Self.QueueActivity(new Wait(wait));
 			}
 

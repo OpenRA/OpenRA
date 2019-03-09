@@ -53,9 +53,9 @@ namespace OpenRA.Mods.Common.Activities
 				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
 
 			if (moveToRallyPoint(self, this, destination))
-				return new AttackMoveActivity(self, move.MoveTo(destination, 1));
-			else
-				return NextActivity;
+				return new AttackMoveActivity(self, () => move.MoveTo(destination, 1));
+
+			return NextActivity;
 		}
 	}
 }
