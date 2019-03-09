@@ -17,42 +17,27 @@ truk:
 	icon: trukicon
 
 harv:
-	idle: harvempty
+	idle:
 		Facings: 32
 		UseClassicFacingFudge: True
-	harvest: harvempty
+	harvest:
 		Start: 32
 		Length: 8
 		Facings: 8
-	empty-idle: harvempty
-		Facings: 32
-		UseClassicFacingFudge: True
-	empty-harvest: harvempty
-		Start: 32
-		Length: 8
-		Facings: 8
-	half-idle: harvhalf
-		Facings: 32
-		UseClassicFacingFudge: True
-	half-harvest: harvhalf
-		Start: 32
-		Length: 8
-		Facings: 8
-	full-idle:
-		Facings: 32
-		UseClassicFacingFudge: True
-	full-harvest:
-		Start: 32
-		Length: 8
-		Facings: 8
-	dock:
+	dock: harv
 		Start: 96
 		Length: 8
-	dock-loop:
+	dock-loop: harv
 		Start: 104
 		Length: 7
 	icon: harvicon
 		Start: 0
+
+harvempty:
+	Inherits: harv
+
+harvhalf:
+	Inherits: harv
 
 hhusk:
 	idle:

@@ -124,6 +124,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new StreamlineRepairableTraits(),
 				new ReplaceSpecialMoveConsiderations(),
 				new RefactorHarvesterIdle(),
+				new SplitHarvesterSpriteBody(),
 			})
 		};
 
