@@ -122,7 +122,8 @@ namespace OpenRA
 				Team = client.Team,
 				SpawnPoint = runtimePlayer.SpawnPoint,
 				IsRandomFaction = runtimePlayer.Faction.InternalName != client.Faction,
-				IsRandomSpawnPoint = runtimePlayer.SpawnPoint != client.SpawnPoint
+				IsRandomSpawnPoint = runtimePlayer.SpawnPoint != client.SpawnPoint,
+				Fingerprint = client.Fingerprint
 			};
 
 			playersByRuntime.Add(runtimePlayer, player);
@@ -166,6 +167,9 @@ namespace OpenRA
 
 			/// <summary>True if the spawn point was chosen at random; otherwise, false.</summary>
 			public bool IsRandomSpawnPoint;
+
+			/// <summary>Player authentication fingerprint for the OpenRA forum.</summary>
+			public string Fingerprint;
 
 			#endregion
 
