@@ -20,16 +20,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant.")]
 		public readonly string Condition = null;
 
-		[Desc("Apply condition on straight vertical movement as well.")]
-		public readonly bool ConsiderVerticalMovement = false;
+		[Desc("Apply condition on listed movement types. Available options are: None, Horizontal, Vertical, Turn.")]
+		public readonly MovementType ValidMovementTypes = MovementType.Horizontal;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnMovement(init.Self, this); }
 	}
 
-	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, ITick
+	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, INotifyMoving
 	{
 		readonly IMove movement;
-
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
@@ -45,17 +44,32 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		void ITick.Tick(Actor self)
+		void UpdateCondition(Actor self, MovementType types)
 		{
 			if (conditionManager == null)
 				return;
 
-			var isMovingVertically = Info.ConsiderVerticalMovement ? movement.CurrentMovementTypes.HasFlag(MovementType.Vertical);
-			var isMoving = !IsTraitDisabled && !self.IsDead && (movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal) || isMovingVertically);
-			if (isMoving && conditionToken == ConditionManager.InvalidConditionToken)
-				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
-			else if (!isMoving && conditionToken != ConditionManager.InvalidConditionToken)
+			var validMovement = !IsTraitDisabled && (types & Info.ValidMovementTypes) != 0;
+
+			if (!validMovement && conditionToken != ConditionManager.InvalidConditionToken)
 				conditionToken = conditionManager.RevokeCondition(self, conditionToken);
+			else if (validMovement && conditionToken == ConditionManager.InvalidConditionToken)
+				conditionToken = conditionManager.GrantCondition(self, Info.Condition);
+		}
+
+		void INotifyMoving.MovementTypeChanged(Actor self, MovementType types)
+		{
+			UpdateCondition(self, types);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			UpdateCondition(self, movement.CurrentMovementTypes);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			UpdateCondition(self, movement.CurrentMovementTypes);
 		}
 	}
 }
