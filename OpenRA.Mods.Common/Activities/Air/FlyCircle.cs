@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (NextActivity != null && remainingTicks <= 0)
+			if (remainingTicks == 0 || (NextActivity != null && remainingTicks < 0))
 				return NextActivity;
 
 			// Refuse to take off if it would land immediately again.
