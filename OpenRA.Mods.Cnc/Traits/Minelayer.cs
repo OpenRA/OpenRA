@@ -70,11 +70,11 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (self.World.OrderGenerator is MinefieldOrderGenerator)
 						((MinefieldOrderGenerator)self.World.OrderGenerator).AddMinelayer(self, start);
 					else
-						self.World.OrderGenerator = new MinefieldOrderGenerator(self, start);
+						self.World.OrderGenerator = new MinefieldOrderGenerator(self, start, queued);
 
-					return new Order("BeginMinefield", self, Target.FromCell(self.World, start), false);
+					return new Order("BeginMinefield", self, Target.FromCell(self.World, start), queued);
 				case "PlaceMine":
-					return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), false);
+					return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), queued);
 				default:
 					return null;
 			}
@@ -96,12 +96,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (order.OrderString == "BeginMinefield")
 				minefieldStart = cell;
 			else if (order.OrderString == "PlaceMine")
-			{
-				minefieldStart = cell;
-				Minefield = new[] { cell };
-				self.CancelActivity();
-				self.QueueActivity(new LayMines(self));
-			}
+				self.QueueActivity(order.Queued, new LayMines(self, null));
 			else if (order.OrderString == "PlaceMinefield")
 			{
 				var movement = self.Trait<IPositionable>();
@@ -112,8 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (Minefield.Length == 1 && Minefield[0] != self.Location)
 					self.SetTargetLine(Target.FromCell(self.World, Minefield[0]), Color.Red);
 
-				self.CancelActivity();
-				self.QueueActivity(new LayMines(self));
+				self.QueueActivity(order.Queued, new LayMines(self, Minefield));
 			}
 		}
 
@@ -167,11 +161,13 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly Sprite tileOk;
 			readonly Sprite tileBlocked;
 			readonly CPos minefieldStart;
+			readonly bool queued;
 
-			public MinefieldOrderGenerator(Actor a, CPos xy)
+			public MinefieldOrderGenerator(Actor a, CPos xy, bool queued)
 			{
 				minelayers = new List<Actor>() { a };
 				minefieldStart = xy;
+				this.queued = queued;
 
 				var tileset = a.World.Map.Tileset.ToLowerInvariant();
 				tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
@@ -201,7 +197,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					minelayers.First().World.CancelInputMode();
 					foreach (var minelayer in minelayers)
-						yield return new Order("PlaceMinefield", minelayer, Target.FromCell(world, cell), false);
+						yield return new Order("PlaceMinefield", minelayer, Target.FromCell(world, cell), queued);
 				}
 			}
 

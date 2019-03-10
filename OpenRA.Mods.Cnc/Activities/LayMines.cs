@@ -22,23 +22,29 @@ namespace OpenRA.Mods.Cnc.Activities
 	// Assumes you have Minelayer on that unit
 	public class LayMines : Activity
 	{
-		readonly Minelayer minelayer;
 		readonly MinelayerInfo info;
 		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
 		readonly RearmableInfo rearmableInfo;
+		readonly CPos[] minefield;
 
-		public LayMines(Actor self)
+		public LayMines(Actor self, CPos[] minefield)
 		{
-			minelayer = self.TraitOrDefault<Minelayer>();
 			info = self.Info.TraitInfo<MinelayerInfo>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			this.minefield = minefield;
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				return this;
+			}
+
 			if (IsCanceling)
 				return NextActivity;
 
@@ -50,36 +56,39 @@ namespace OpenRA.Mods.Cnc.Activities
 					.ClosestTo(self);
 
 				if (rearmTarget == null)
-					return new Wait(20);
+					return NextActivity;
 
 				// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
-				return ActivityUtils.SequenceActivities(self,
-					new MoveAdjacentTo(self, Target.FromActor(rearmTarget)),
-					movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget),
-					new Rearm(self, rearmTarget, new WDist(512)),
-					new Repair(self, rearmTarget, new WDist(512)),
-					this);
+				QueueChild(self, new MoveAdjacentTo(self, Target.FromActor(rearmTarget)), true);
+				QueueChild(self, movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget));
+				QueueChild(self, new Rearm(self, rearmTarget, new WDist(512)));
+				QueueChild(self, new Repair(self, rearmTarget, new WDist(512)));
+				return this;
 			}
 
-			if (minelayer.Minefield.Contains(self.Location) && ShouldLayMine(self, self.Location))
+			if ((minefield == null || minefield.Contains(self.Location)) && ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
-				return ActivityUtils.SequenceActivities(self, new Wait(20), this); // A little wait after placing each mine, for show
+				QueueChild(self, new Wait(20), true); // A little wait after placing each mine, for show
+				return this;
 			}
 
-			if (minelayer.Minefield.Length > 0)
+			if (minefield != null && minefield.Length > 0)
 			{
 				// Don't get stuck forever here
 				for (var n = 0; n < 20; n++)
 				{
-					var p = minelayer.Minefield.Random(self.World.SharedRandom);
+					var p = minefield.Random(self.World.SharedRandom);
 					if (ShouldLayMine(self, p))
-						return ActivityUtils.SequenceActivities(self, movement.MoveTo(p, 0), this);
+					{
+						QueueChild(self, movement.MoveTo(p, 0), true);
+						return this;
+					}
 				}
 			}
 
 			// TODO: Return somewhere likely to be safe (near rearm building) so we're not sitting out in the minefield.
-			return new Wait(20);	// nothing to do here
+			return NextActivity;
 		}
 
 		static bool ShouldLayMine(Actor self, CPos p)
