@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Which sprite body to modify.")]
 		public readonly string Body = "body";
 
+		[Desc("Apply condition on listed movement types. Available options are: None, Horizontal, Vertical, Turn.")]
+		public readonly MovementType ValidMovementTypes = MovementType.Horizontal;
+
 		public override object Create(ActorInitializer init) { return new WithMoveAnimation(init, this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -34,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithMoveAnimation : ConditionalTrait<WithMoveAnimationInfo>, ITick
+	public class WithMoveAnimation : ConditionalTrait<WithMoveAnimationInfo>, INotifyMoving
 	{
 		readonly IMove movement;
 		readonly WithSpriteBody wsb;
@@ -46,17 +49,35 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
-		void ITick.Tick(Actor self)
+		void UpdateAnimation(Actor self, MovementType types)
 		{
-			if (IsTraitDisabled || wsb.IsTraitDisabled)
+			var playAnim = false;
+			if (!IsTraitDisabled && (types & Info.ValidMovementTypes) != 0)
+				playAnim = true;
+
+			if (!playAnim && wsb.DefaultAnimation.CurrentSequence.Name == Info.MoveSequence)
+			{
+				wsb.CancelCustomAnimation(self);
 				return;
+			}
 
-			var isMoving = movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal) && !self.IsDead;
+			if (playAnim && wsb.DefaultAnimation.CurrentSequence.Name != Info.MoveSequence)
+				wsb.PlayCustomAnimationRepeating(self, Info.MoveSequence);
+		}
 
-			if (isMoving ^ (wsb.DefaultAnimation.CurrentSequence.Name != Info.MoveSequence))
-				return;
+		void INotifyMoving.MovementTypeChanged(Actor self, MovementType types)
+		{
+			UpdateAnimation(self, types);
+		}
 
-			wsb.DefaultAnimation.ReplaceAnim(isMoving ? Info.MoveSequence : wsb.Info.Sequence);
+		protected override void TraitEnabled(Actor self)
+		{
+			UpdateAnimation(self, movement.CurrentMovementTypes);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			UpdateAnimation(self, movement.CurrentMovementTypes);
 		}
 	}
 }
