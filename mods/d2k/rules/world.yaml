@@ -232,6 +232,7 @@ World:
 		ExitDelay: 0
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
+	ScriptTriggers:
 
 EditorWorld:
 	Inherits: ^BaseWorld
