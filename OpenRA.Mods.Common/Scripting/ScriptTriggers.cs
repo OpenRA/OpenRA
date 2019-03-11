@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnPlayerWon, OnPlayerLost,
 		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated,
 		OnAddedToWorld, OnRemovedFromWorld, OnDiscovered, OnPlayerDiscovered,
-		OnPassengerEntered, OnPassengerExited, OnSelling, OnSold
+		OnPassengerEntered, OnPassengerExited, OnSold
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
@@ -369,26 +369,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnRemovedInternal(self);
 		}
 
-		void INotifySold.Selling(Actor self)
-		{
-			if (world.Disposing)
-				return;
-
-			// Run Lua callbacks
-			foreach (var f in Triggerables(Trigger.OnSelling))
-			{
-				try
-				{
-					f.Function.Call(f.Self).Dispose();
-				}
-				catch (Exception ex)
-				{
-					f.Context.FatalError(ex.Message);
-					return;
-				}
-			}
-		}
-
+		void INotifySold.Selling(Actor self) { }
 		void INotifySold.Sold(Actor self)
 		{
 			if (world.Disposing)
