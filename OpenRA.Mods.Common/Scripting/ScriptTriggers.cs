@@ -421,7 +421,8 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					using (var a = producee.ToLuaValue(f.Context))
 					using (var b = produced.ToLuaValue(f.Context))
-						f.Function.Call(a, b).Dispose();
+					using (var c = productionType.ToLuaValue(f.Context))
+						f.Function.Call(a, b, c).Dispose();
 				}
 				catch (Exception ex)
 				{

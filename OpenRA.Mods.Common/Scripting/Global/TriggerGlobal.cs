@@ -147,6 +147,13 @@ namespace OpenRA.Mods.Common.Scripting
 			GetScriptTriggers(a).RegisterCallback(Trigger.OnProduction, func, Context);
 		}
 
+		[Desc("Call a function when any actor produces another actor. The callback " +
+			"function will be called as func(Actor producer, Actor produced, string productionType).")]
+		public void OnAnyProduction(LuaFunction func)
+		{
+			GetScriptTriggers(Context.World.WorldActor).RegisterCallback(Trigger.OnOtherProduction, func, Context);
+		}
+
 		[Desc("Call a function when this player completes all primary objectives. " +
 			"The callback function will be called as func(Player player).")]
 		public void OnPlayerWon(Player player, LuaFunction func)
@@ -454,6 +461,13 @@ namespace OpenRA.Mods.Common.Scripting
 		public void OnPlayerDiscovered(Player discovered, LuaFunction func)
 		{
 			GetScriptTriggers(discovered.PlayerActor).RegisterCallback(Trigger.OnPlayerDiscovered, func, Context);
+		}
+
+		[Desc("Call a function when this actor is sold. The callback function " +
+			"will be called as func(Actor self).")]
+		public void OnSold(Actor a, LuaFunction func)
+		{
+			GetScriptTriggers(a).RegisterCallback(Trigger.OnSold, func, Context);
 		}
 
 		[Desc("Removes all triggers from this actor. " +
