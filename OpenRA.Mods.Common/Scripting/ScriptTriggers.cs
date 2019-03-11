@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnKilledInternal(self);
 		}
 
-		public void UnitProduced(Actor self, Actor other, CPos exit)
+		void INotifyProduction.UnitProduced(Actor self, Actor other, CPos exit)
 		{
 			if (world.Disposing)
 				return;
@@ -409,7 +409,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 		}
 
-		public void UnitProducedByOther(Actor self, Actor producee, Actor produced, string productionType, TypeDictionary init)
+		void INotifyOtherProduction.UnitProducedByOther(Actor self, Actor producee, Actor produced, string productionType, TypeDictionary init)
 		{
 			if (world.Disposing)
 				return;
@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Scripting
 			OnOtherProducedInternal(producee, produced);
 		}
 
-		public void OnDiscovered(Actor self, Player discoverer, bool playNotification)
+		void INotifyDiscovered.OnDiscovered(Actor self, Player discoverer, bool playNotification)
 		{
 			if (world.Disposing)
 				return;
