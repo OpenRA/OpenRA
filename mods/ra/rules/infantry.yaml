@@ -487,7 +487,7 @@ MECH:
 		TargetStances: Ally
 		ForceTargetStances: None
 	AttackFrontal:
-		Voice: Move
+		Voice: Action
 	CaptureManager:
 	Captures:
 		CaptureTypes: husk
