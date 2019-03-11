@@ -368,6 +368,7 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
+	ScriptTriggers:
 
 EditorWorld:
 	Inherits: ^BaseWorld

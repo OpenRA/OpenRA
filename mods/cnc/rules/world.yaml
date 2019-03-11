@@ -258,6 +258,7 @@ World:
 	RadarPings:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
+	ScriptTriggers:
 
 EditorWorld:
 	Inherits: ^BaseWorld
