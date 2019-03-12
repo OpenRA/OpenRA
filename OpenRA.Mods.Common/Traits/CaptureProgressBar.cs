@@ -9,48 +9,45 @@
  */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Visualize capture progress.")]
-	class CapturableProgressBarInfo : ITraitInfo, Requires<CapturableInfo>
+	[Desc("Visualize the progress of this actor being captured.")]
+	class CaptureProgressBarInfo : ITraitInfo, Requires<CapturesInfo>
 	{
 		public readonly Color Color = Color.Orange;
 
-		public object Create(ActorInitializer init) { return new CapturableProgressBar(init.Self, this); }
+		public object Create(ActorInitializer init) { return new CaptureProgressBar(init.Self, this); }
 	}
 
-	class CapturableProgressBar : ISelectionBar, ICaptureProgressWatcher
+	class CaptureProgressBar : ISelectionBar, ICaptureProgressWatcher
 	{
-		readonly CapturableProgressBarInfo info;
-		Dictionary<Actor, Pair<int, int>> progress = new Dictionary<Actor, Pair<int, int>>();
+		readonly CaptureProgressBarInfo info;
+		int current;
+		int total;
 
-		public CapturableProgressBar(Actor self, CapturableProgressBarInfo info)
+		public CaptureProgressBar(Actor self, CaptureProgressBarInfo info)
 		{
 			this.info = info;
 		}
 
 		void ICaptureProgressWatcher.Update(Actor self, Actor captor, Actor target, int current, int total)
 		{
-			if (self != target)
+			if (self != captor)
 				return;
 
-			if (total == 0)
-				progress.Remove(captor);
-			else
-				progress[captor] = Pair.New(current, total);
+			this.current = current;
+			this.total = total;
 		}
 
 		float ISelectionBar.GetValue()
 		{
-			if (!progress.Any())
+			if (total == 0)
 				return 0f;
 
-			return progress.Values.Max(p => (float)p.First / p.Second);
+			return (float)current / total;
 		}
 
 		Color ISelectionBar.GetColor() { return info.Color; }
