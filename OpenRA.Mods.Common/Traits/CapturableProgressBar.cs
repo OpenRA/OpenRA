@@ -17,22 +17,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualize capture progress.")]
-	class CapturableProgressBarInfo : ITraitInfo, Requires<CapturableInfo>
+	class CapturableProgressBarInfo : ConditionalTraitInfo, Requires<CapturableInfo>
 	{
 		public readonly Color Color = Color.Orange;
 
-		public object Create(ActorInitializer init) { return new CapturableProgressBar(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CapturableProgressBar(init.Self, this); }
 	}
 
-	class CapturableProgressBar : ISelectionBar, ICaptureProgressWatcher
+	class CapturableProgressBar : ConditionalTrait<CapturableProgressBarInfo>, ISelectionBar, ICaptureProgressWatcher
 	{
-		readonly CapturableProgressBarInfo info;
 		Dictionary<Actor, Pair<int, int>> progress = new Dictionary<Actor, Pair<int, int>>();
 
 		public CapturableProgressBar(Actor self, CapturableProgressBarInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		void ICaptureProgressWatcher.Update(Actor self, Actor captor, Actor target, int current, int total)
 		{
@@ -47,13 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		float ISelectionBar.GetValue()
 		{
-			if (!progress.Any())
+			if (IsTraitDisabled || !progress.Any())
 				return 0f;
 
 			return progress.Values.Max(p => (float)p.First / p.Second);
 		}
 
-		Color ISelectionBar.GetColor() { return info.Color; }
+		Color ISelectionBar.GetColor() { return Info.Color; }
 		bool ISelectionBar.DisplayWhenEmpty { get { return false; } }
 	}
 }
