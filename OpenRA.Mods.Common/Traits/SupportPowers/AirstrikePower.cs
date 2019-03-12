@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			Action<Actor> onEnterRange = a =>
 			{
 				// Spawn a camera and remove the beacon when the first plane enters the target area
-				if (info.CameraActor != null && !aircraftInRange.Any(kv => kv.Value))
+				if (info.CameraActor != null && camera == null && !aircraftInRange.Any(kv => kv.Value))
 				{
 					self.World.AddFrameEndTask(w =>
 					{
