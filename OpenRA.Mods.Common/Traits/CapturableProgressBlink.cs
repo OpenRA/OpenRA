@@ -17,25 +17,22 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Blinks the actor and captor when it is being captured.")]
-	class CapturableProgressBlinkInfo : ITraitInfo, Requires<CapturableInfo>
+	class CapturableProgressBlinkInfo : ConditionalTraitInfo, Requires<CapturableInfo>
 	{
 		[Desc("Number of ticks to wait between repeating blinks.")]
 		public readonly int Interval = 50;
 
-		public object Create(ActorInitializer init) { return new CapturableProgressBlink(this); }
+		public override object Create(ActorInitializer init) { return new CapturableProgressBlink(this); }
 	}
 
-	class CapturableProgressBlink : ITick, ICaptureProgressWatcher
+	class CapturableProgressBlink : ConditionalTrait<CapturableProgressBlinkInfo>, ITick, ICaptureProgressWatcher
 	{
-		readonly CapturableProgressBlinkInfo info;
 		List<Player> captorOwners = new List<Player>();
 		HashSet<Actor> captors = new HashSet<Actor>();
 		int tick = 0;
 
 		public CapturableProgressBlink(CapturableProgressBlinkInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		void ICaptureProgressWatcher.Update(Actor self, Actor captor, Actor target, int current, int total)
 		{
@@ -54,6 +51,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			if (!captorOwners.Any())
 			{
 				tick = 0;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.Add(new FlashTarget(captor, captorOwner));
 			}
 
-			if (++tick >= info.Interval)
+			if (++tick >= Info.Interval)
 				tick = 0;
 		}
 	}
