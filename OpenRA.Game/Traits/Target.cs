@@ -29,6 +29,8 @@ namespace OpenRA.Traits
 		readonly CPos? cell;
 		readonly SubCell? subCell;
 		readonly int generation;
+		readonly int ownerGeneration;
+		public bool AllowOwnerChange;
 
 		Target(WPos terrainCenterPosition, WPos[] terrainPositions = null)
 		{
@@ -41,6 +43,8 @@ namespace OpenRA.Traits
 			cell = null;
 			subCell = null;
 			generation = 0;
+			ownerGeneration = 0;
+			AllowOwnerChange = false;
 		}
 
 		Target(World w, CPos c, SubCell subCell)
@@ -54,6 +58,8 @@ namespace OpenRA.Traits
 			actor = null;
 			frozen = null;
 			generation = 0;
+			ownerGeneration = 0;
+			AllowOwnerChange = false;
 		}
 
 		Target(Actor a)
@@ -61,25 +67,27 @@ namespace OpenRA.Traits
 			type = TargetType.Actor;
 			actor = a;
 			generation = a.Generation;
-
+			ownerGeneration = a.OwnerGeneration;
 			terrainCenterPosition = WPos.Zero;
 			terrainPositions = null;
 			frozen = null;
 			cell = null;
 			subCell = null;
+			AllowOwnerChange = false;
 		}
 
 		Target(FrozenActor fa)
 		{
 			type = TargetType.FrozenActor;
 			frozen = fa;
-
+			AllowOwnerChange = false;
 			terrainCenterPosition = WPos.Zero;
 			terrainPositions = null;
 			actor = null;
 			cell = null;
 			subCell = null;
 			generation = 0;
+			ownerGeneration = 0;
 		}
 
 		public static Target FromPos(WPos p) { return new Target(p); }
@@ -95,19 +103,24 @@ namespace OpenRA.Traits
 		{
 			get
 			{
-				if (type == TargetType.Actor)
-				{
-					// Actor is no longer in the world
-					if (!actor.IsInWorld || actor.IsDead)
-						return TargetType.Invalid;
-
-					// Actor generation has changed (teleported or captured)
-					if (actor.Generation != generation)
-						return TargetType.Invalid;
-				}
-
-				return type;
+				return GetTargetType(AllowOwnerChange);
 			}
+		}
+
+		public TargetType GetTargetType(bool allowOwnerChange = false)
+		{
+			if (type == TargetType.Actor)
+			{
+				// Actor is no longer in the world
+				if (!actor.IsInWorld || actor.IsDead)
+					return TargetType.Invalid;
+
+				// Actor generation has changed (teleported or captured)
+				if (actor.Generation != generation || (!allowOwnerChange && actor.OwnerGeneration != ownerGeneration))
+					return TargetType.Invalid;
+			}
+
+			return type;
 		}
 
 		public bool IsValidFor(Actor targeter)

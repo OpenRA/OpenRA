@@ -30,11 +30,12 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		EnterState lastState = EnterState.Approaching;
 
-		protected Enter(Actor self, Target target, Color? targetLineColor = null)
+		protected Enter(Actor self, Target target, Color? targetLineColor = null, bool allowOwnerChange = true)
 		{
 			move = self.Trait<IMove>();
 			this.target = target;
 			this.targetLineColor = targetLineColor;
+			this.target.AllowOwnerChange = allowOwnerChange;
 		}
 
 		/// <summary>
@@ -58,6 +59,11 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual void OnEnterComplete(Actor self, Actor targetActor) { }
 
 		/// <summary>
+		/// Called when the target has changed owner. If false, cancels Activity
+		/// </summary>
+		protected virtual bool IsOwnerChangeValid(Player owner) { return false; }
+
+		/// <summary>
 		/// Called when the activity is cancelled to allow subclasses to clean up their own state.
 		/// </summary>
 		protected virtual void OnCancel(Actor self) { }
@@ -73,6 +79,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
+
+			// Cancel if the target changed owner, and the valid owner check fails.
+			if (target.AllowOwnerChange && target.GetTargetType(true) != target.GetTargetType(false) && !IsOwnerChangeValid(target.Actor.Owner))
+				Cancel(self, true);
 
 			// Cancel immediately if the target died while we were entering it
 			if (!IsCanceling && useLastVisibleTarget && lastState == EnterState.Entering)

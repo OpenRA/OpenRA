@@ -31,20 +31,20 @@ namespace OpenRA.Mods.Common
 		/// If the target actor becomes hidden without a FrozenActor, the target actor is kept
 		/// and the actorHidden flag is set to true.
 		/// </summary>
-		public static Target Recalculate(this Target t, Player viewer, out bool targetIsHiddenActor)
+		public static Target Recalculate(this Target t, Player viewer, out bool targetIsHiddenActor, bool allowOwnerChange = false)
 		{
 			targetIsHiddenActor = false;
 
 			// Check whether the target has transformed into something else
 			// HACK: This relies on knowing the internal implementation details of Target
-			if (t.Type == TargetType.Invalid && t.Actor != null && t.Actor.ReplacedByActor != null)
+			if (t.GetTargetType(allowOwnerChange) == TargetType.Invalid && t.Actor != null && t.Actor.ReplacedByActor != null)
 				t = Target.FromActor(t.Actor.ReplacedByActor);
 
 			// Bot-controlled units aren't yet capable of understanding visibility changes
 			if (viewer.IsBot)
 				return t;
 
-			if (t.Type == TargetType.Actor)
+			if (t.GetTargetType(allowOwnerChange) == TargetType.Actor)
 			{
 				// Actor has been hidden under the fog
 				if (!t.Actor.CanBeViewedByPlayer(viewer))
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common
 					return t;
 				}
 			}
-			else if (t.Type == TargetType.FrozenActor)
+			else if (t.GetTargetType(allowOwnerChange) == TargetType.FrozenActor)
 			{
 				// Frozen actor has been revealed
 				if (!t.FrozenActor.Visible || !t.FrozenActor.IsValid)

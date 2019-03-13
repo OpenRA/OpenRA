@@ -47,6 +47,7 @@ namespace OpenRA
 		public Activity CurrentActivity { get; private set; }
 
 		public int Generation;
+		public int OwnerGeneration;
 		public Actor ReplacedByActor;
 
 		public IEffectiveOwner EffectiveOwner { get; private set; }
@@ -328,7 +329,7 @@ namespace OpenRA
 				World.Remove(this);
 
 			Owner = newOwner;
-			Generation++;
+			OwnerGeneration++;
 
 			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 				t.OnOwnerChanged(this, oldOwner, newOwner);
