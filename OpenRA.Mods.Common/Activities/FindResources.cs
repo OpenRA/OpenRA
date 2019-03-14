@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
 
-		CPos? avoidCell;
+		CPos? orderLocation;
 
 		public FindResources(Actor self)
 		{
@@ -41,10 +41,18 @@ namespace OpenRA.Mods.Common.Activities
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 		}
 
-		public FindResources(Actor self, CPos avoidCell)
+		public FindResources(Actor self, CPos orderLocation)
 			: this(self)
 		{
-			this.avoidCell = avoidCell;
+			this.orderLocation = orderLocation;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			// Without this, multiple "Harvest" orders queued directly after each other
+			// will be skipped because the harvester starts off full.
+			if (harv.IsFull)
+				QueueChild(self, new DeliverResources(self));
 		}
 
 		public override Activity Tick(Actor self)
@@ -59,7 +67,17 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (harv.IsFull)
+			{
 				return NextActivity;
+			}
+
+			// If an explicit order is given, direct the harvester to the ordered location instead of the previous
+			// harvested cell for the initial search.
+			if (orderLocation != null)
+			{
+				harv.LastHarvestedCell = orderLocation;
+				orderLocation = null;
+			}
 
 			var closestHarvestablePosition = ClosestHarvestablePos(self);
 
@@ -67,7 +85,13 @@ namespace OpenRA.Mods.Common.Activities
 			// or get out of the way and do not disturb.
 			if (!closestHarvestablePosition.HasValue)
 			{
-				harv.LastSearchFailed = true;
+				// If no resources are found near the current field, search near the refinery instead.
+				// If that doesn't help, give up for now.
+				if (harv.LastHarvestedCell != null)
+					harv.LastHarvestedCell = null;
+				else
+					harv.LastSearchFailed = true;
+
 				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
 				if (lastproc != null && !lastproc.Disposed)
 				{
@@ -95,10 +119,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			harv.LastSearchFailed = false;
 
-			// If not given a direct order, assume ordered to the first resource location we find:
-			if (!harv.LastOrderLocation.HasValue)
-				harv.LastOrderLocation = closestHarvestablePosition;
-
 			foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
 				n.MovingToResources(self, closestHarvestablePosition.Value, new FindResources(self));
 
@@ -118,8 +138,8 @@ namespace OpenRA.Mods.Common.Activities
 				return self.Location;
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = GetSearchFromLocation(self);
-			var searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			var searchFromLoc = harv.LastHarvestedCell ?? GetSearchFromLocation(self);
+			var searchRadius = harv.LastHarvestedCell.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:
@@ -128,14 +148,13 @@ namespace OpenRA.Mods.Common.Activities
 					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((avoidCell.HasValue && loc == avoidCell.Value) ||
-						(loc - self.Location).LengthSquared > searchRadiusSquared)
+					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
 						return int.MaxValue;
 
 					return 0;
 				})
-				.FromPoint(self.Location)
-				.FromPoint(searchFromLoc))
+				.FromPoint(searchFromLoc)
+				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);
 
 			if (path.Count > 0)
@@ -151,12 +170,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		CPos GetSearchFromLocation(Actor self)
 		{
-			if (harv.LastOrderLocation.HasValue)
-				return harv.LastOrderLocation.Value;
-			else if (harv.LastLinkedProc != null)
+			if (harv.LastLinkedProc != null)
 				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;
-			else if (harv.LinkedProc != null)
+
+			if (harv.LinkedProc != null)
 				return harv.LinkedProc.Location + harv.LinkedProc.Trait<IAcceptResources>().DeliveryOffset;
+
 			return self.Location;
 		}
 	}

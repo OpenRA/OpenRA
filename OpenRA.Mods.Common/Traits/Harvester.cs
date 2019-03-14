@@ -82,14 +82,14 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
-		ISpeedModifier, ISync, INotifyCreated, INotifyIdle, INotifyBlockingMove
+		ISpeedModifier, ISync, INotifyCreated, INotifyIdle
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		bool idleSmart = false;
+		bool idleSmart;
 		INotifyHarvesterAction[] notifyHarvesterAction;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
@@ -101,7 +101,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public Actor LinkedProc = null;
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
-		public CPos? LastOrderLocation = null;
 
 		[Sync]
 		public int ContentValue
@@ -121,6 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			idleSmart = info.SearchOnCreation;
 
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
@@ -130,8 +130,6 @@ namespace OpenRA.Mods.Common.Traits
 			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
-			if (Info.SearchOnCreation)
-				idleSmart = true;
 		}
 
 		public void SetProcLines(Actor proc)
@@ -240,26 +238,6 @@ namespace OpenRA.Mods.Common.Traits
 				contents[type.Info]++;
 
 			UpdateCondition(self);
-		}
-
-		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
-		{
-			// I'm blocking someone else from moving to my location:
-			var act = self.CurrentActivity;
-
-			// If I'm just waiting around then get out of the way:
-			if (act is Wait)
-			{
-				self.CancelActivity();
-
-				var cell = self.Location;
-				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
-				self.QueueActivity(mobile.MoveTo(moveTo, 0));
-				self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Gray, false);
-
-				// Find more resources but not at this location:
-				self.QueueActivity(new FindResources(self, cell));
-			}
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -383,12 +361,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 				// FindResources takes care of calling INotifyHarvesterAction
-				self.QueueActivity(order.Queued, new FindResources(self));
-
-				LastOrderLocation = loc;
-
-				// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
-				LastHarvestedCell = LastOrderLocation;
+				self.QueueActivity(order.Queued, new FindResources(self, loc));
 			}
 			else if (order.OrderString == "Deliver")
 			{
