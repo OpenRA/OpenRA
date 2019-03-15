@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => self.Location != c);
 		}
 
-		public bool CanUnload()
+		public bool CanUnload(bool immediate = false)
 		{
 			if (checkTerrainType)
 			{
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return !IsEmpty(self) && (aircraft == null || aircraft.CanLand(self.Location))
-				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c)));
+				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c, null, immediate)));
 		}
 
 		public bool CanLoad(Actor self, Actor a)
@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (Info.EjectOnDeath)
-				while (!IsEmpty(self) && CanUnload())
+				while (!IsEmpty(self) && CanUnload(true))
 				{
 					var passenger = Unload(self);
 					var cp = self.CenterPosition;
