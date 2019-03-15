@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
+			conditionManager = self.Trait<ConditionManager>();
 			GrantConditionOnValidDamageState(self, health.DamageState);
 		}
 
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{
 			var granted = conditionToken != ConditionManager.InvalidConditionToken;
-			if ((granted && info.GrantPermanently) || conditionManager == null)
+			if (granted && info.GrantPermanently)
 				return;
 
 			if (!granted && !info.ValidDamageStates.HasFlag(e.PreviousDamageState))
