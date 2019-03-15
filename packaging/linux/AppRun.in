@@ -1,71 +1,23 @@
 #!/bin/sh
 
-# Make sure the user has a sufficiently recent version of mono on the PATH
-MINIMUM_MONO_VERSION="4.2"
-
-prompt_apt_install_mono_complete() {
-  command -v mono >/dev/null 2>&1 && command -v cert-sync >/dev/null 2>&1 && return 1
-  command -v apt-cache > /dev/null || return 1
-  command -v xdg-mime > /dev/null || return 1
-  command -v xdg-open > /dev/null || return 1
-  [ ! "$(xdg-mime query default x-scheme-handler/apt)" ] && return 1
-  apt-cache search --names-only mono-complete | cut -d' ' -f1 | grep "^mono-complete$" > /dev/null || return 1
-  return 0
-}
-
-make_version() {
-  echo "$1" | tr '.' '\n' | head -n 4 | xargs printf "%03d%03d%03d%03d";
-}
-
-mono_missing_or_old() {
-  command -v mono >/dev/null 2>&1 || return 0
-  command -v cert-sync >/dev/null 2>&1 || return 0
-  MONO_VERSION=$(mono --version | head -n1 | cut -d' ' -f5)
-  [ "$(make_version "${MONO_VERSION}")" -lt "$(make_version "${MINIMUM_MONO_VERSION}")" ] && return 0
-  return 1
-}
-
 HERE="$(dirname "$(readlink -f "${0}")")"
-export PATH="${HERE}"/usr/bin/:"${PATH}"
-export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
 
-# If mono is not installed, and the user has apt-cache, apt-url,
-# xdg-open, and either zenity or kdialog, then we can prompt to
-# automatically install the mono-complete package
-if prompt_apt_install_mono_complete; then
-  PROMPT_MESSAGE="{MODNAME} requires the Mono runtime.\nWould you like to install it now?"
-  if command -v zenity > /dev/null; then
-    zenity --no-wrap --question --title "{MODNAME}" --text "${PROMPT_MESSAGE}" 2> /dev/null && xdg-open apt://mono-complete && exit 0
-  elif command -v kdialog > /dev/null; then
-    kdialog --title "{MODNAME}" --yesno "${PROMPT_MESSAGE}" && xdg-open apt://mono-complete && exit 0
-  elif "${HERE}/usr/bin/gtk-dialog.py" test > /dev/null; then
-    "${HERE}/usr/bin/gtk-dialog.py" question --title "{MODNAME}" --text "${PROMPT_MESSAGE}" 2> /dev/null && xdg-open apt://mono-complete && exit 0
-  fi
-fi
+# Override runtime paths
+export PATH="${HERE}/usr/bin:${PATH}"
+export XDG_DATA_DIRS="${HERE}/usr/share:${XDG_DATA_DIRS}"
+export DYLD_LIBRARY_PATH="${HERE}/usr/lib:$DYLD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="${HERE}/usr/lib:$LD_LIBRARY_PATH"
+export MONO_PATH="${HERE}/usr/lib/mono/4.5"
+export MONO_CFG_DIR="${HERE}/etc"
+export MONO_CONFIG="${HERE}/etc/mono/config"
 
-if mono_missing_or_old; then
-  ERROR_MESSAGE="{MODNAME} requires Mono ${MINIMUM_MONO_VERSION} or greater and the cert-sync utility.\nPlease install Mono using your system package manager.\n\nSee http://wiki.openra.net/AppImages for more information."
-  if command -v zenity > /dev/null; then
-    zenity --no-wrap --error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
-  elif command -v kdialog > /dev/null; then
-    kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
-  elif "${HERE}/usr/bin/gtk-dialog.py" test > /dev/null; then
-    "${HERE}/usr/bin/gtk-dialog.py" error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
-  else
-    printf "${ERROR_MESSAGE}"
-  fi
-  exit 1
-fi
-
-# Some distros and self-compiled mono installations don't set up
-# the SSL required for http web queries. If we detect that these
-# are missing we can try and create a local sync as a fallback.
-if [ ! -d "/usr/share/.mono/certs" ] && [ ! -d "${HOME}/.config/.mono/certs" ]; then
-  if [ -f "/etc/pki/tls/certs/ca-bundle.crt" ]; then
-    cert-sync --quiet --user /etc/pki/tls/certs/ca-bundle.crt
-  elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
-    cert-sync --quiet --user /etc/ssl/certs/ca-certificates.crt
-  fi
+# Update/create the mono certificate store to enable https web queries
+if [ -f "/etc/pki/tls/certs/ca-bundle.crt" ]; then
+  mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/pki/tls/certs/ca-bundle.crt
+elif [ -f "/etc/ssl/certs/ca-certificates.crt" ]; then
+  mono "${HERE}/usr/lib/mono/4.5/cert-sync.exe" --quiet --user /etc/ssl/certs/ca-certificates.crt
+else
+  echo "WARNING: Unable to sync system certificate store - https requests will fail"
 fi
 
 # Run the game or server

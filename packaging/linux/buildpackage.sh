@@ -7,7 +7,7 @@ command -v python >/dev/null 2>&1 || { echo >&2 "Linux packaging requires python
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
 
-DEPENDENCIES_TAG="20180723"
+DEPENDENCIES_TAG="20190316"
 
 if [ $# -eq "0" ]; then
 	echo "Usage: $(basename "$0") version [outputdir]"
@@ -46,6 +46,7 @@ echo "Building core files"
 
 pushd "${SRCDIR}" > /dev/null || exit 1
 make linux-dependencies
+sed "s/@LIBLUA51@/liblua5.1.so.0/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
 make core SDK="-sdk:4.5"
 make version VERSION="${TAG}"
 make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
@@ -66,14 +67,25 @@ fi
 chmod a+x appimagetool-x86_64.AppImage
 
 echo "Building AppImage"
-tar xf libs.tar.bz2
-install -Dm 0755 libSDL2.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 SDL2-CS.dll.config "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0755 libopenal.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 OpenAL-CS.dll.config "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0755 liblua.so "${BUILTDIR}/usr/lib/openra/"
-install -Dm 0644 Eluant.dll.config "${BUILTDIR}/usr/lib/openra/"
-rm libs.tar.bz2 libSDL2.so SDL2-CS.dll.config libopenal.so OpenAL-CS.dll.config liblua.so Eluant.dll.config
+mkdir libs
+pushd libs
+tar xf ../libs.tar.bz2
+
+install -d "${BUILTDIR}/usr/bin"
+install -d "${BUILTDIR}/etc/mono/4.5"
+install -d "${BUILTDIR}/usr/lib/mono/4.5"
+
+install -Dm 0755 usr/bin/mono "${BUILTDIR}/usr/bin/"
+
+install -Dm 0644 /etc/mono/config "${BUILTDIR}/etc/mono/"
+install -Dm 0644 /etc/mono/4.5/machine.config "${BUILTDIR}/etc/mono/4.5"
+
+for f in $(ls usr/lib/mono/4.5/*.dll usr/lib/mono/4.5/*.exe); do install -Dm 0644 "$f" "${BUILTDIR}/usr/lib/mono/4.5/"; done
+for f in $(ls usr/lib/*.so usr/lib/*.so.*); do install -Dm 0755 "$f" "${BUILTDIR}/usr/lib/"; done
+
+popd
+
+rm -rf libs libs.tar.bz2
 
 build_appimage() {
 	MOD_ID=${1}
@@ -111,8 +123,6 @@ build_appimage() {
 			install -m644 "icons/${MOD_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
 		fi
 	done
-
-	install -d "${APPDIR}/usr/bin"
 
 	sed "s/{MODID}/${MOD_ID}/g" openra.appimage.in | sed "s/{TAG}/${TAG}/g" | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > openra-mod.temp
 	install -m 0755 openra-mod.temp "${APPDIR}/usr/bin/openra-${MOD_ID}"
