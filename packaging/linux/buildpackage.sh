@@ -45,8 +45,13 @@ fi
 echo "Building core files"
 
 pushd "${SRCDIR}" > /dev/null || exit 1
-make linux-dependencies
+
+make clean
+
+# linux-dependencies target will trigger the lua detection script, which we don't want during packaging
+make cli-dependencies geoip-dependencies
 sed "s/@LIBLUA51@/liblua5.1.so.0/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
+
 make core SDK="-sdk:4.5"
 make version VERSION="${TAG}"
 make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
