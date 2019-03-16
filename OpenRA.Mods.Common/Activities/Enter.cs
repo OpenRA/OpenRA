@@ -81,7 +81,8 @@ namespace OpenRA.Mods.Common.Activities
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
 			// Cancel if the target changed owner, and the valid owner check fails.
-			if (target.AllowOwnerChange && target.GetTargetType(true) != target.GetTargetType(false) && !IsOwnerChangeValid(target.Actor.Owner))
+			bool ownerHasChanged = target.GetTargetType(true) != target.GetTargetType(false);
+			if (target.AllowOwnerChange && ownerHasChanged && !IsOwnerChangeValid(target.Actor.Owner))
 				Cancel(self, true);
 
 			// Cancel immediately if the target died while we were entering it
