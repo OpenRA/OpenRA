@@ -42,6 +42,18 @@ CSC         = mcs $(SDK)
 CSFLAGS     = -nologo -warn:4 -codepage:utf8 -langversion:5 -unsafe -warnaserror
 DEFINE      = TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Numerics.dll thirdparty/download/ICSharpCode.SharpZipLib.dll thirdparty/download/FuzzyLogicLibrary.dll thirdparty/download/MaxMind.Db.dll thirdparty/download/Eluant.dll thirdparty/download/rix0rrr.BeaconLib.dll
+
+# List of .NET assemblies that we can guarantee exist
+# OpenRA.Game.dll is a harmless false positive that we can ignore
+WHITELISTED_OPENRA_ASSEMBLIES = $(game_TARGET) $(utility_TARGET) $(pdefault_TARGET) $(mod_common_TARGET) $(mod_cnc_TARGET) $(mod_d2k_TARGET) OpenRA.Game.dll
+
+# These are explicitly shipped alongside our core files by the packaging script
+WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll MaxMind.Db.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll 
+
+# These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
+# This list *must* be kept in sync with the files packaged by the AppImageSupport repository
+WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll
+
 NUNIT_LIBS_PATH :=
 NUNIT_LIBS  := $(NUNIT_LIBS_PATH)nunit.framework.dll
 
@@ -164,6 +176,9 @@ check-scripts:
 	@luac -p $(shell find lua/* -iname '*.lua')
 
 check: utility stylecheck mods
+	@echo
+	@echo "Checking runtime assemblies..."
+	@mono --debug OpenRA.Utility.exe all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)
 	@echo
 	@echo "Checking for explicit interface violations..."
 	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
