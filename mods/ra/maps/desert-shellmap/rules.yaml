@@ -72,6 +72,10 @@ World:
 	DamageMultiplier:
 		Modifier: 0
 
+^Wall:
+	DamageMultiplier:
+		Modifier: 0
+
 OILB:
 	CashTrickler:
 		ShowTicks: false
