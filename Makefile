@@ -295,9 +295,9 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-default: core
+default: dependencies core
 
-core: dependencies game platforms mods utility server
+core: game platforms mods utility server
 
 mods: mod_common mod_cnc mod_d2k
 

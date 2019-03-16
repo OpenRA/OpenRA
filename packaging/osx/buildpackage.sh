@@ -71,6 +71,7 @@ modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${BUILTDIR}/OpenRA.app/Co
 echo "Building core files"
 
 pushd "${SRCDIR}" > /dev/null || exit 1
+make clean
 make osx-dependencies
 make core SDK="-sdk:4.5"
 make version VERSION="${TAG}"

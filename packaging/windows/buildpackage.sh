@@ -38,6 +38,7 @@ function makelauncher()
 echo "Building core files"
 
 pushd "${SRCDIR}" > /dev/null || exit 1
+make clean
 make windows-dependencies
 make core SDK="-sdk:4.5"
 make version VERSION="${TAG}"
