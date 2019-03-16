@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing,
+		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
 		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
@@ -519,7 +519,7 @@ namespace OpenRA.Mods.Common.Traits
 			init.Add(new FacingInit(Facing));
 		}
 
-		protected virtual void OnBecomingIdle(Actor self)
+		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
 		{
 			if (Info.VTOL && Info.LandWhenIdle)
 			{
