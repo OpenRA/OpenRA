@@ -23,6 +23,11 @@ World:
 			hard: Hard
 			tough: Real tough guy
 		Default: easy
+	TimeLimitManager:
+		CountdownLabel: MISSION_TEXT
+		CountdownText: The convoy will arrive in {0}
+		Notification: {0} minute{1} remaining
+		SkipTimerExpiredNotification: True
 
 APWR:
 	Buildable:
