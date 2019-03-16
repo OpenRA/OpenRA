@@ -612,6 +612,7 @@
     <Compile Include="UpdateRules\Rules\20190106\MakeMobilePausableConditional.cs" />
     <Compile Include="UpdateRules\Rules\20190106\MultipleDeploySounds.cs" />
     <Compile Include="UpdateRules\Rules\20190106\RemoveSimpleBeacon.cs" />
+    <Compile Include="UtilityCommands\CheckRuntimeAssembliesCommand.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
     <Compile Include="UtilityCommands\ConvertSpriteToPngCommand.cs" />
