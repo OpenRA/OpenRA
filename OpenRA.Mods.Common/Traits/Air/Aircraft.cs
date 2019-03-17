@@ -414,8 +414,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Map.DistanceAboveTerrain(WPos pos) is called directly because Aircraft is an IPositionable trait
 			// and all calls occur in Tick methods.
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length != 0)
-				return null; // not on the ground.
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition) != Info.LandAltitude)
+				return null; // Not on the resupplier.
 
 			return self.World.ActorMap.GetActorsAt(self.Location)
 				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
