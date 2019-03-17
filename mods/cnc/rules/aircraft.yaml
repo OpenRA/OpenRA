@@ -16,6 +16,7 @@ TRAN:
 		TurnSpeed: 5
 		Speed: 150
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Tiberium,BlueTiberium
+		Crushes: crate, infantry
 		AltitudeVelocity: 0c100
 	Health:
 		HP: 9000

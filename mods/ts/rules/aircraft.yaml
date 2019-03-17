@@ -11,6 +11,7 @@ DPOD:
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
+		Crushes: crate, infantry
 	Health:
 		HP: 6000
 	Armor:
@@ -46,6 +47,7 @@ DSHP:
 		Speed: 168
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
+		Crushes: crate, infantry
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		IdealSeparation: 1275
@@ -192,6 +194,7 @@ ORCATRAN:
 		Speed: 84
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
+		Crushes: crate, infantry
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
@@ -230,6 +233,7 @@ TRNSPORT:
 		Speed: 149
 		InitialFacing: 0
 		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
+		Crushes: crate, infantry
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		AltitudeVelocity: 64

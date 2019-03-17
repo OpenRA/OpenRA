@@ -11,6 +11,7 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -37,6 +38,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			if (IsCanceling)
 			{
 				aircraft.RemoveInfluence();
@@ -48,11 +56,13 @@ namespace OpenRA.Mods.Common.Activities
 				var landingCell = self.Location;
 				if (!aircraft.CanLand(landingCell, ignoreActor))
 				{
+					QueueChild(self, new Wait(25), true);
 					self.NotifyBlocker(landingCell);
 					return this;
 				}
 
 				aircraft.AddInfluence(landingCell);
+				aircraft.EnteringCell(self);
 				landingInitiated = true;
 			}
 

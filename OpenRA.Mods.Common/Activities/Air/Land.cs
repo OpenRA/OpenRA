@@ -63,6 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				aircraft.AddInfluence(landingCell);
+				aircraft.EnteringCell(self);
 				landingInitiated = true;
 			}
 
