@@ -51,7 +51,7 @@ WHITELISTED_OPENRA_ASSEMBLIES = $(game_TARGET) $(utility_TARGET) $(pdefault_TARG
 WHITELISTED_THIRDPARTY_ASSEMBLIES = ICSharpCode.SharpZipLib.dll FuzzyLogicLibrary.dll MaxMind.Db.dll Eluant.dll rix0rrr.BeaconLib.dll Open.Nat.dll SDL2-CS.dll OpenAL-CS.dll 
 
 # These are shipped in our custom minimal mono runtime and also available in the full system-installed .NET/mono stack
-# This list *must* be kept in sync with the files packaged by the AppImageSupport repository
+# This list *must* be kept in sync with the files packaged by the AppImageSupport and OpenRALauncherOSX repositories
 WHITELISTED_CORE_ASSEMBLIES = mscorlib.dll System.dll System.Configuration.dll System.Core.dll System.Numerics.dll System.Security.dll System.Xml.dll Mono.Security.dll
 
 NUNIT_LIBS_PATH :=
