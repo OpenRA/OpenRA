@@ -528,7 +528,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(new HeliLand(self, true));
 			}
-			else if (!Info.CanHover)
+			else if (!Info.CanHover && (Info.TakeOffOnResupply || ReservedActor == null || self.World.Map.DistanceAboveTerrain(CenterPosition) != Info.LandAltitude))
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 
 			// Temporary HACK for the AutoCarryall special case (needs CanHover, but also HeliFlyCircle on idle).
