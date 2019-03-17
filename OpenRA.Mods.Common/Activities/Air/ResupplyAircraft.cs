@@ -28,18 +28,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return;
 
-			if (!aircraft.Info.TakeOffOnResupply)
-			{
-				ChildActivity = ActivityUtils.SequenceActivities(self, aircraft.GetResupplyActivities(host).ToArray());
-				QueueChild(self, new AllowYieldingReservation(self));
-				QueueChild(self, new WaitFor(() => NextActivity != null || aircraft.ReservedActor == null));
-			}
-			else
-			{
-				ChildActivity = ActivityUtils.SequenceActivities(self, aircraft.GetResupplyActivities(host).ToArray());
-				QueueChild(self, new AllowYieldingReservation(self));
+			var resupplyActivities = aircraft.GetResupplyActivities(host).ToArray();
+			if (resupplyActivities.Any())
+				QueueChild(self, ActivityUtils.SequenceActivities(self, resupplyActivities));
+
+			QueueChild(self, new AllowYieldingReservation(self));
+
+			if (aircraft.Info.TakeOffOnResupply)
 				QueueChild(self, new TakeOff(self, (a, b, c) => NextActivity == null && b.NextActivity == null));
-			}
 		}
 
 		public override Activity Tick(Actor self)
