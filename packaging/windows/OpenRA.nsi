@@ -22,6 +22,8 @@
 Name "OpenRA"
 OutFile "OpenRA.Setup.exe"
 
+ManifestDPIAware true
+
 InstallDir "$PROGRAMFILES\OpenRA${SUFFIX}"
 InstallDirRegKey HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
 
