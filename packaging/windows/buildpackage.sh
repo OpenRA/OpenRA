@@ -30,7 +30,7 @@ fi
 function makelauncher()
 {
 	sed "s|DISPLAY_NAME|$2|" WindowsLauncher.cs.in | sed "s|MOD_ID|$3|" | sed "s|FAQ_URL|${FAQ_URL}|" > WindowsLauncher.cs
-	mcs -sdk:4.5 WindowsLauncher.cs -warn:4 -codepage:utf8 -warnaserror -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
+	mcs WindowsLauncher.cs -warn:4 -codepage:utf8 -warnaserror -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
 	rm WindowsLauncher.cs
 	mono "${SRCDIR}/fixheader.exe" "$1" > /dev/null
 }
@@ -40,7 +40,7 @@ echo "Building core files"
 pushd "${SRCDIR}" > /dev/null || exit 1
 make clean
 make windows-dependencies
-make core SDK="-sdk:4.5"
+make core
 make version VERSION="${TAG}"
 make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"
 popd > /dev/null || exit 1
