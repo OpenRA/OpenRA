@@ -52,7 +52,7 @@ make clean
 make cli-dependencies geoip-dependencies
 sed "s/@LIBLUA51@/liblua5.1.so.0/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
 
-make core SDK="-sdk:4.5"
+make core
 make version VERSION="${TAG}"
 make install-engine prefix="usr" DESTDIR="${BUILTDIR}/"
 make install-common-mod-files prefix="usr" DESTDIR="${BUILTDIR}/"

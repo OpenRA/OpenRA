@@ -73,7 +73,7 @@ echo "Building core files"
 pushd "${SRCDIR}" > /dev/null || exit 1
 make clean
 make osx-dependencies
-make core SDK="-sdk:4.5"
+make core
 make version VERSION="${TAG}"
 make install-core gameinstalldir="/Contents/Resources/" DESTDIR="${BUILTDIR}/OpenRA.app"
 popd > /dev/null || exit 1
