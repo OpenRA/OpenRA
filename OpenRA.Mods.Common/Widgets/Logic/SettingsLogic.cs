@@ -179,8 +179,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			useCustomResolutionCheckbox.OnClick = () =>
 			{
 				useCustomResolutionOnClick();
-				panel.Get("CUSTOM_WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed && ds.UseCustomResolution;
-				panel.Get("STANDARD_WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed && !ds.UseCustomResolution;
 			};
 
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
@@ -216,12 +214,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var standardResolutionDropdown = panel.Get<DropDownButtonWidget>("WINDOW_RESOLUTION_DROPDOWN");
 			standardResolutionDropdown.GetText = () => ds.WindowedSize.X + "x" + ds.WindowedSize.Y;
-			standardResolutionDropdown.OnMouseDown = _ => ShowDisplayResolutionDropdown(standardResolutionDropdown, ds);
-			standardResolutionDropdown.OnMouseUp = _ =>
-			{
-				windowWidth.Text = ds.WindowedSize.X.ToString();
-				windowHeight.Text = ds.WindowedSize.Y.ToString();
-			};
+			standardResolutionDropdown.OnMouseDown = _ => ShowDisplayResolutionDropdown(standardResolutionDropdown, ds, this.logicArgs);
 
 			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
 			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
@@ -647,35 +640,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return true;
 		}
 
-		static bool ShowDisplayResolutionDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		static bool ShowDisplayResolutionDropdown(DropDownButtonWidget dropdown, GraphicSettings s, Dictionary<string, MiniYaml> logicArgs)
 		{
-			var options = new Dictionary<string, int2>()
+			var options = new Dictionary<string, int2>();
+			MiniYaml yaml;
+			if (logicArgs.TryGetValue("SupportedResolutions", out yaml))
 			{
-				{ "320x240 - 4:3", new int2(320, 240) },
-				{ "640x480 - 4:3", new int2(640, 480) },
-				{ "800x600 - 4:3", new int2(800, 600) },
-				{ "1024x768 - 4:3", new int2(1024, 768) },
-				{ "1152x864 - 4:3", new int2(1152, 864) },
-				{ "1280x960 - 4:3", new int2(1280, 960) },
-				{ "1400x1050 - 4:3", new int2(1400, 1050) },
-				{ "1600x1200 - 4:3", new int2(1600, 1200) },
-				{ "2048x1536 - 4:3", new int2(2048, 1536) },
-				{ "852x480 - 16:9", new int2(852, 480) },
-				{ "1280x720 - 16:9", new int2(1280, 720) },
-				{ "1365x768 - 16:9", new int2(1365, 768) },
-				{ "1600x900 - 16:9", new int2(1600, 900) },
-				{ "1920x1080 - 16:9", new int2(1920, 1080) },
-				{ "320x200 - 16:10", new int2(320, 200) },
-				{ "640x400 - 16:10", new int2(640, 400) },
-				{ "1280x800 - 16:10", new int2(1280, 800) },
-				{ "1440x900 - 16:10", new int2(1440, 900) },
-				{ "1680x1050 - 16:10", new int2(1680, 1050) },
-				{ "1920x1200 - 16:10", new int2(1920, 1200) },
-				{ "2560x1600 - 16:10", new int2(2560, 1600) },
-				{ "3840x2400 - 16:10", new int2(3840, 2400) },
-				{ "2560x1080 - 21:9", new int2(2560, 1080) },
-				{ "3440x1440 - 21:9", new int2(3440, 1440) }
-			};
+				var resolutions = (Dictionary<int2, string>)FieldLoader.GetValue("SupportedResolutions", typeof(Dictionary<int2, string>), yaml, null);
+				foreach (var resolution in resolutions)
+				{
+					options.Add(resolution.Value, resolution.Key);
+				}
+			}
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
