@@ -18,18 +18,23 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class DeliverResources : Activity
 	{
-		const int NextChooseTime = 100;
-
 		readonly IMove movement;
 		readonly Harvester harv;
+		readonly Actor targetActor;
 
 		bool isDocking;
-		int chosenTicks;
 
-		public DeliverResources(Actor self)
+		public DeliverResources(Actor self, Actor targetActor = null)
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
+			this.targetActor = targetActor;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			if (targetActor != null && targetActor.IsInWorld)
+				harv.LinkProc(self, targetActor);
 		}
 
 		public override Activity Tick(Actor self)
@@ -37,26 +42,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 			{
 				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
+				if (ChildActivity != null)
+					return this;
 			}
 
 			if (IsCanceling || isDocking)
 				return NextActivity;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
-			if (harv.OwnerLinkedProc == null || !harv.OwnerLinkedProc.IsInWorld)
-			{
-				// Maybe we lost the owner-linked refinery:
-				harv.OwnerLinkedProc = null;
-				if (self.World.WorldTick - chosenTicks > NextChooseTime)
-				{
-					harv.ChooseNewProc(self, null);
-					chosenTicks = self.World.WorldTick;
-				}
-			}
-			else
-				harv.LinkProc(self, harv.OwnerLinkedProc);
-
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
 				harv.ChooseNewProc(self, null);
 
@@ -74,7 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
 				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-					n.MovingToRefinery(self, proc, null);
+					n.MovingToRefinery(self, proc, new FindAndDeliverResources(self));
 
 				QueueChild(self, movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), true);
 				return this;

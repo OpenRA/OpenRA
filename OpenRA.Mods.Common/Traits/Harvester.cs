@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
 		public readonly int SearchFromOrderRadius = 12;
 
-		[Desc("Duration to wait before searching for resources again.")]
+		[Desc("Interval to wait between searches when there are no resources nearby.")]
 		public readonly int WaitDuration = 25;
 
 		[Desc("Find a new refinery to unload at if more than this many harvesters are already waiting.")]
@@ -70,6 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The pathfinding cost penalty applied for each harvester waiting to unload at a refinery.")]
 		public readonly int UnloadQueueCostModifier = 12;
+
+		[Desc("Does the unit queue harvesting runs instead of individual harvest actions?")]
+		public readonly bool QueueFullLoad = false;
 
 		[GrantedConditionReference]
 		[Desc("Condition to grant while empty.")]
@@ -82,18 +85,16 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips, IOrderVoice,
-		ISpeedModifier, ISync, INotifyCreated, INotifyIdle
+		ISpeedModifier, ISync, INotifyCreated
 	{
 		public readonly HarvesterInfo Info;
 		readonly Mobile mobile;
 		readonly ResourceLayer resLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
-		bool idleSmart;
 		INotifyHarvesterAction[] notifyHarvesterAction;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
-		int idleDuration;
 
 		[Sync] public bool LastSearchFailed;
 		[Sync] public Actor OwnerLinkedProc = null;
@@ -120,7 +121,6 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
-			idleSmart = info.SearchOnCreation;
 
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
@@ -130,6 +130,10 @@ namespace OpenRA.Mods.Common.Traits
 			notifyHarvesterAction = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
+
+			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
+			if (Info.SearchOnCreation)
+				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
 		}
 
 		public void SetProcLines(Actor proc)
@@ -162,12 +166,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			LastLinkedProc = null;
 			LinkProc(self, ClosestProc(self, ignore));
-		}
-
-		public void ContinueHarvesting(Actor self)
-		{
-			// Move out of the refinery dock and continue harvesting
-			self.QueueActivity(new FindResources(self));
 		}
 
 		bool IsAcceptableProcType(Actor proc)
@@ -238,30 +236,6 @@ namespace OpenRA.Mods.Common.Traits
 				contents[type.Info]++;
 
 			UpdateCondition(self);
-		}
-
-		void INotifyIdle.TickIdle(Actor self)
-		{
-			// Should we be intelligent while idle?
-			if (!idleSmart)
-				return;
-
-			// Are we not empty? Deliver resources:
-			if (!IsEmpty)
-			{
-				self.QueueActivity(new DeliverResources(self));
-				return;
-			}
-
-			if (LastSearchFailed)
-			{
-				// Wait a bit before searching again.
-				if (idleDuration++ < Info.WaitDuration)
-					return;
-			}
-
-			idleDuration = 0;
-			self.QueueActivity(new FindResources(self));
 		}
 
 		// Returns true when unloading is complete
@@ -343,7 +317,6 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
 				LinkProc(self, OwnerLinkedProc = null);
-				idleSmart = true;
 
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
@@ -361,7 +334,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(Target.FromCell(self.World, loc), Color.Red);
 
 				// FindResources takes care of calling INotifyHarvesterAction
-				self.QueueActivity(order.Queued, new FindResources(self, loc));
+				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, loc));
 			}
 			else if (order.OrderString == "Deliver")
 			{
@@ -370,30 +343,18 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
 				var targetActor = order.Target.Actor;
 				var iao = targetActor.TraitOrDefault<IAcceptResources>();
 				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(targetActor))
 					return;
 
-				if (targetActor != OwnerLinkedProc)
-					LinkProc(self, OwnerLinkedProc = targetActor);
-
-				idleSmart = true;
-
 				self.SetTargetLine(order.Target, Color.Green);
-				self.QueueActivity(order.Queued, new DeliverResources(self));
-
-				foreach (var n in notifyHarvesterAction)
-					n.MovingToRefinery(self, targetActor, null);
+				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));
 			}
 			else if (order.OrderString == "Stop" || order.OrderString == "Move")
 			{
 				foreach (var n in notifyHarvesterAction)
 					n.MovementCancelled(self);
-
-				// Turn off idle smarts to obey the stop/move:
-				idleSmart = false;
 			}
 		}
 

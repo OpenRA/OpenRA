@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -18,19 +19,15 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class HarvesterProperties : ScriptActorProperties, Requires<HarvesterInfo>
 	{
-		readonly Harvester harvester;
-
 		public HarvesterProperties(ScriptContext context, Actor self)
 			: base(context, self)
-		{
-			harvester = self.Trait<Harvester>();
-		}
+		{ }
 
 		[ScriptActorPropertyActivity]
 		[Desc("Search for nearby resources and begin harvesting.")]
 		public void FindResources()
 		{
-			harvester.ContinueHarvesting(Self);
+			Self.QueueActivity(new FindAndDeliverResources(Self));
 		}
 	}
 }

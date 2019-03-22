@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 			{
 				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
+				if (ChildActivity != null)
+					return this;
 			}
 
 			if (IsCanceling)
