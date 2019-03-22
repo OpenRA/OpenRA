@@ -37,6 +37,7 @@ git config --local user.email "orabot@users.noreply.github.com"
 git config --local user.name "orabot"
 git add "Traits${TAG}.md"
 git add "Lua API${TAG}.md"
+git add "Weapons${TAG}.md"
 git add "Settings${TAG}.md"
 git commit -m "Update trait and scripting documentation for branch $1" &&
 git push origin master
