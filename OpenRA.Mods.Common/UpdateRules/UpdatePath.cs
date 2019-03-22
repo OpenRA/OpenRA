@@ -122,6 +122,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveSimpleBeacon(),
 				new MakeMobilePausableConditional(),
 				new StreamlineRepairableTraits(),
+				new ReplaceSpecialMoveConsiderations(),
 			})
 		};
 

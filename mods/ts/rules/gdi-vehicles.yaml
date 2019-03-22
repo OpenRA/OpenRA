@@ -119,7 +119,6 @@ SMECH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 99
-		AlwaysConsiderTurnAsMove: true
 	Health:
 		HP: 17500
 	Armor:
@@ -143,6 +142,7 @@ SMECH:
 		Sequence: shoot
 	WithMoveAnimation:
 		MoveSequence: walk
+		ValidMovementTypes: Horizontal, Turn
 	Selectable:
 		Bounds: 20, 32, 0, -8
 	-DamagedByTerrain@VEINS:
@@ -166,7 +166,6 @@ MMCH:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 56
-		AlwaysConsiderTurnAsMove: true
 	Health:
 		HP: 40000
 	Armor:
@@ -182,6 +181,7 @@ MMCH:
 		Sequence: stand
 	WithMoveAnimation:
 		MoveSequence: walk
+		ValidMovementTypes: Horizontal, Turn
 	Turreted:
 		TurnSpeed: 5
 	AttackTurreted:
@@ -229,7 +229,6 @@ HMEC:
 	Mobile:
 		TurnSpeed: 3
 		Speed: 42
-		AlwaysConsiderTurnAsMove: true
 	Health:
 		HP: 80000
 	SelfHealing:
@@ -332,7 +331,6 @@ JUGG:
 		TurnSpeed: 5
 		RequiresCondition: undeployed
 		PauseOnCondition: empdisable || being-captured
-		AlwaysConsiderTurnAsMove: true
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
@@ -348,6 +346,7 @@ JUGG:
 		RequiresCondition: undeployed
 	WithMoveAnimation:
 		MoveSequence: walk
+		ValidMovementTypes: Horizontal, Turn
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
