@@ -28,15 +28,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		readonly List<string> locations = new List<string>();
 
-		public override IEnumerable<string> AfterUpdate(ModData modData)
-		{
-			if (locations.Any())
-				yield return "The MaxIdleDuration parameter has been removed from the harvester logic on the following actors:\n" +
-					UpdateUtils.FormatMessageList(locations) + "\n\n";
-
-			locations.Clear();
-		}
-
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			foreach (var t in actorNode.ChildrenMatching("Harvester"))

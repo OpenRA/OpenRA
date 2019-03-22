@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class FindResources : Activity
+	public class FindAndDeliverResources : Activity
 	{
 		readonly Harvester harv;
 		readonly HarvesterInfo harvInfo;
@@ -27,10 +27,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
+		readonly Actor deliverActor;
 
 		CPos? orderLocation;
+		bool hasDeliveredLoad;
+		bool hasHarvestedCell;
+		bool hasWaited;
 
-		public FindResources(Actor self)
+		public FindAndDeliverResources(Actor self, Actor deliverActor = null)
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
@@ -39,20 +43,36 @@ namespace OpenRA.Mods.Common.Activities
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
+			this.deliverActor = deliverActor;
 		}
 
-		public FindResources(Actor self, CPos orderLocation)
-			: this(self)
+		public FindAndDeliverResources(Actor self, CPos orderLocation)
+			: this(self, null)
 		{
 			this.orderLocation = orderLocation;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
-			// Without this, multiple "Harvest" orders queued directly after each other
-			// will be skipped because the harvester starts off full.
-			if (harv.IsFull)
-				QueueChild(self, new DeliverResources(self));
+			// If an explicit "harvest" order is given, direct the harvester to the ordered location instead of
+			// the previous harvested cell for the initial search.
+			if (orderLocation != null)
+			{
+				harv.LastHarvestedCell = orderLocation;
+
+				// If two "harvest" orders are issued consecutively, we deliver the load first if needed.
+				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
+				// so we keep deliveredLoad false.
+				if (harv.IsFull)
+					QueueChild(self, new DeliverResources(self), true);
+			}
+
+			// If an explicit "deliver" order is given, the harvester goes immediately to the refinery.
+			if (deliverActor != null)
+			{
+				QueueChild(self, new DeliverResources(self, deliverActor), true);
+				hasDeliveredLoad = true;
+			}
 		}
 
 		public override Activity Tick(Actor self)
@@ -60,38 +80,60 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 			{
 				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
+				if (ChildActivity != null)
+					return this;
 			}
 
 			if (IsCanceling)
 				return NextActivity;
 
-			if (harv.IsFull)
+			if (NextActivity != null)
 			{
-				return NextActivity;
+				// Interrupt automated harvesting after clearing the first cell.
+				if (!harvInfo.QueueFullLoad && (hasHarvestedCell || harv.LastSearchFailed))
+					return NextActivity;
+
+				// Interrupt automated harvesting after first complete harvest cycle.
+				if (hasDeliveredLoad || harv.IsFull)
+					return NextActivity;
 			}
 
-			// If an explicit order is given, direct the harvester to the ordered location instead of the previous
-			// harvested cell for the initial search.
-			if (orderLocation != null)
+			// Are we full or have nothing more to gather? Deliver resources.
+			if (harv.IsFull || (!harv.IsEmpty && harv.LastSearchFailed))
 			{
-				harv.LastHarvestedCell = orderLocation;
-				orderLocation = null;
+				QueueChild(self, new DeliverResources(self), true);
+				hasDeliveredLoad = true;
+				return this;
 			}
 
-			var closestHarvestablePosition = ClosestHarvestablePos(self);
-
-			// If no harvestable position could be found, either deliver the remaining resources
-			// or get out of the way and do not disturb.
-			if (!closestHarvestablePosition.HasValue)
+			// After a failed search, wait and sit still for a bit before searching again.
+			if (harv.LastSearchFailed && !hasWaited)
 			{
-				// If no resources are found near the current field, search near the refinery instead.
-				// If that doesn't help, give up for now.
+				QueueChild(self, new Wait(harv.Info.WaitDuration), true);
+				hasWaited = true;
+				return this;
+			}
+
+			var closestHarvestableCell = ClosestHarvestablePos(self);
+
+			// If no resources are found near the current field, search near the refinery instead.
+			// If that doesn't help, give up for now.
+			if (!closestHarvestableCell.HasValue)
+			{
 				if (harv.LastHarvestedCell != null)
-					harv.LastHarvestedCell = null;
+				{
+					harv.LastHarvestedCell = null; // Forces search from backup position.
+					closestHarvestableCell = ClosestHarvestablePos(self);
+					harv.LastSearchFailed = !closestHarvestableCell.HasValue;
+				}
 				else
 					harv.LastSearchFailed = true;
+			}
 
+			if (harv.LastSearchFailed)
+			{
+				// If no harvestable position could be found and we are at the refinery, get out of the way
+				// of the refinery entrance.
 				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
 				if (lastproc != null && !lastproc.Disposed)
 				{
@@ -103,15 +145,14 @@ namespace OpenRA.Mods.Common.Activities
 						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 						self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Green, false);
 						QueueChild(self, mobile.MoveTo(moveTo, 1), true);
-						return this;
 					}
 				}
 
-				return NextActivity;
+				return this;
 			}
 
 			// Attempt to claim the target cell
-			if (!claimLayer.TryClaimCell(self, closestHarvestablePosition.Value))
+			if (!claimLayer.TryClaimCell(self, closestHarvestableCell.Value))
 			{
 				QueueChild(self, new Wait(25), true);
 				return this;
@@ -120,11 +161,12 @@ namespace OpenRA.Mods.Common.Activities
 			harv.LastSearchFailed = false;
 
 			foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-				n.MovingToResources(self, closestHarvestablePosition.Value, new FindResources(self));
+				n.MovingToResources(self, closestHarvestableCell.Value, new FindAndDeliverResources(self));
 
-			self.SetTargetLine(Target.FromCell(self.World, closestHarvestablePosition.Value), Color.Red, false);
-			QueueChild(self, mobile.MoveTo(closestHarvestablePosition.Value, 1), true);
+			self.SetTargetLine(Target.FromCell(self.World, closestHarvestableCell.Value), Color.Red, false);
+			QueueChild(self, mobile.MoveTo(closestHarvestableCell.Value, 1), true);
 			QueueChild(self, new HarvestResource(self));
+			hasHarvestedCell = true;
 			return this;
 		}
 
@@ -134,8 +176,19 @@ namespace OpenRA.Mods.Common.Activities
 		/// </summary>
 		CPos? ClosestHarvestablePos(Actor self)
 		{
-			if (harv.CanHarvestCell(self, self.Location) && claimLayer.CanClaimCell(self, self.Location))
-				return self.Location;
+			// Harvesters should respect an explicit harvest order instead of harvesting the current cell.
+			if (orderLocation == null)
+			{
+				if (harv.CanHarvestCell(self, self.Location) && claimLayer.CanClaimCell(self, self.Location))
+					return self.Location;
+			}
+			else
+			{
+				if (harv.CanHarvestCell(self, orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
+					return orderLocation;
+
+				orderLocation = null;
+			}
 
 			// Determine where to search from and how far to search:
 			var searchFromLoc = harv.LastHarvestedCell ?? GetSearchFromLocation(self);

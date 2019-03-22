@@ -89,7 +89,7 @@
     <Compile Include="Activities\DonateExperience.cs" />
     <Compile Include="Activities\Enter.cs" />
     <Compile Include="Activities\EnterTransport.cs" />
-    <Compile Include="Activities\FindResources.cs" />
+    <Compile Include="Activities\FindAndDeliverResources.cs" />
     <Compile Include="Activities\HarvestResource.cs" />
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="Activities\Hunt.cs" />
