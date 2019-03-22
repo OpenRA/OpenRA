@@ -274,7 +274,7 @@ SONIC:
 		Prerequisites: ~gaweap, gatech, ~techlevel.high
 		Description: Armored high-tech vehicle with\nlong range and sonic armament.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
 	Targetable:
-		TargetTypes: Ground, Vehicle, Repair, Disruptor
+		TargetTypes: Ground, Vehicle, Disruptor
 	Mobile:
 		TurnSpeed: 4
 		Speed: 56
