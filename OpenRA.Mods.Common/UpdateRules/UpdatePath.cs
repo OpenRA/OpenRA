@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("release-20180923", "release-20181215", new UpdateRule[0]),
 
-			new UpdatePath("release-20181215", "playtest-20190106", new UpdateRule[]
+			new UpdatePath("release-20181215", "release-20190314", new UpdateRule[]
 			{
 				new AddCarryableHarvester(),
 				new RenameEditorTilesetFilter(),
@@ -112,12 +112,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAttackIgnoresVisibility(),
 				new ReplacedWithChargeAnimation(),
 				new RefactorResourceLevelAnimating(),
+				new RemoveAttackSuicides(),
 			}),
 
-			new UpdatePath("playtest-20190106", new UpdateRule[]
+			new UpdatePath("release-20190314", new UpdateRule[]
 			{
 				// Bleed only changes here
-				new RemoveAttackSuicides(),
 				new MultipleDeploySounds(),
 				new RemoveSimpleBeacon(),
 				new MakeMobilePausableConditional(),
