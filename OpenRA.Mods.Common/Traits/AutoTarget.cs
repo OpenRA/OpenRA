@@ -294,6 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var target in targetsInRange)
 			{
 				BitSet<TargetableType> targetTypes;
+				Player owner;
 				if (target.Type == TargetType.Actor)
 				{
 					// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
@@ -308,6 +309,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (PreventsAutoTarget(self, target.Actor) || !target.Actor.CanBeViewedByPlayer(self.Owner))
 						continue;
+
+					owner = target.Actor.Owner;
 				}
 				else if (target.Type == TargetType.FrozenActor)
 				{
@@ -315,6 +318,7 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					targetTypes = target.FrozenActor.TargetTypes;
+					owner = target.FrozenActor.Owner;
 				}
 				else
 					continue;
@@ -323,6 +327,10 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					// Already have a higher priority target
 					if (ati.Priority < chosenTargetPriority)
+						return false;
+
+					// Incompatible stances
+					if (!ati.ValidStances.HasStance(self.Owner.Stances[owner]))
 						return false;
 
 					// Incompatible target types
