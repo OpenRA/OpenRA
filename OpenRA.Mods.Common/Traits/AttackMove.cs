@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
-	class AttackMove : INotifyCreated, ITick, IResolveOrder, IOrderVoice, ISync
+	class AttackMove : INotifyCreated, ITick, IResolveOrder, IOrderVoice
 	{
 		public readonly AttackMoveInfo Info;
 		readonly IMove move;
