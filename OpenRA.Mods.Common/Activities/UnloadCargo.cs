@@ -55,6 +55,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			cargo.Unloading = false;
 			if (IsCanceling || cargo.IsEmpty(self))
 				return NextActivity;
@@ -75,8 +82,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (exitSubCell == null)
 			{
 				self.NotifyBlocker(BlockedExitCells(actor));
-
-				return ActivityUtils.SequenceActivities(self, new Wait(10), this);
+				QueueChild(self, new Wait(10), true);
+				return this;
 			}
 
 			cargo.Unload(self);

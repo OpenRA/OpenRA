@@ -47,6 +47,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			if (IsCanceling)
 				return NextActivity;
 
@@ -83,9 +90,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Move into range
 			wasMovingWithinRange = true;
-			return ActivityUtils.SequenceActivities(self,
-				move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor),
-				this);
+			QueueChild(self, move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor), true);
+			return this;
 		}
 	}
 }
