@@ -609,9 +609,9 @@
     <Compile Include="UpdateRules\Rules\20181215\ChangeTakeOffSoundAndLandingSound.cs" />
     <Compile Include="UpdateRules\Rules\20181215\AddCarryableHarvester.cs" />
     <Compile Include="UpdateRules\Rules\20181215\RequireProductionType.cs" />
-    <Compile Include="UpdateRules\Rules\20190106\MakeMobilePausableConditional.cs" />
-    <Compile Include="UpdateRules\Rules\20190106\MultipleDeploySounds.cs" />
-    <Compile Include="UpdateRules\Rules\20190106\RemoveSimpleBeacon.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\MakeMobilePausableConditional.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\MultipleDeploySounds.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\RemoveSimpleBeacon.cs" />
     <Compile Include="UtilityCommands\CheckRuntimeAssembliesCommand.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
@@ -958,7 +958,7 @@
     <Compile Include="UpdateRules\Rules\20181215\RemovedAutoCarryallCircleTurnSpeed.cs" />
     <Compile Include="UpdateRules\Rules\20181215\ReplacedWithChargeAnimation.cs" />
     <Compile Include="UpdateRules\Rules\20181215\RefactorResourceLevelAnimating.cs" />
-    <Compile Include="UpdateRules\Rules\20190106\StreamlineRepairableTraits.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\StreamlineRepairableTraits.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="UtilityCommands\DumpSequenceSheetsCommand.cs" />
     <Compile Include="Traits\Render\WithBuildingRepairDecoration.cs" />
