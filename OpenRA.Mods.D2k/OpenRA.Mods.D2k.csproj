@@ -118,18 +118,10 @@
     <Copy
       SourceFiles="$(TargetPath)"
       DestinationFolder="$(SolutionDir)mods/d2k/"/>
-    <!--
-      csc generates .pdb symbol files (not `.dll.pdb`).
-      mcs generates .dll.mdb symbol files.
-    -->
     <Copy
       SourceFiles="$(TargetDir)$(TargetName).pdb"
       DestinationFolder="$(SolutionDir)mods/d2k/"
       Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
-    <Copy
-      SourceFiles="$(TargetPath).mdb"
-      DestinationFolder="$(SolutionDir)mods/d2k/"
-      Condition="Exists('$(TargetPath).mdb')"/>
     <!-- Uncomment these lines when debugging or adding to this target
     <Message Text="DEBUG OS:                     $(OS)"/>
     <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>

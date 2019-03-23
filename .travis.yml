@@ -38,7 +38,7 @@ script:
  - sudo dpkg -i nsis_3.03-2_amd64.deb
  - makensis -VERSION
  - travis_retry make all-dependencies
- - make all SDK="-sdk:4.5"
+ - make all
  - make check
  - make check-scripts
  - make test
