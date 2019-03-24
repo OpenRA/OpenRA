@@ -61,8 +61,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
 				QueueChild(self, new MoveAdjacentTo(self, Target.FromActor(rearmTarget)), true);
 				QueueChild(self, movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget));
-				QueueChild(self, new Rearm(self, rearmTarget, new WDist(512)));
-				QueueChild(self, new Repair(self, rearmTarget, new WDist(512)));
+				QueueChild(self, new Resupply(self, rearmTarget, new WDist(512)));
 				return this;
 			}
 

@@ -134,11 +134,9 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This is hacky, but almost every single component affected
 			// will need to be rewritten anyway, so this is OK for now.
 			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
-			if (CanRearmAt(targetActor) && CanRearm())
-				self.QueueActivity(new Rearm(self, targetActor, new WDist(512)));
 
 			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Repair(self, targetActor, new WDist(512)));
+			self.QueueActivity(new Resupply(self, targetActor, new WDist(512)));
 
 			var rp = targetActor.TraitOrDefault<RallyPoint>();
 			if (rp != null)

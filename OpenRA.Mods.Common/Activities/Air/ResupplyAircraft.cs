@@ -28,12 +28,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (host == null)
 				return;
 
-			var resupplyActivities = aircraft.GetResupplyActivities(host).ToArray();
-			if (resupplyActivities.Any())
-				QueueChild(self, ActivityUtils.SequenceActivities(self, resupplyActivities));
-
+			QueueChild(self, new Resupply(self, host, WDist.Zero));
 			QueueChild(self, new AllowYieldingReservation(self));
-
 			if (aircraft.Info.TakeOffOnResupply)
 				QueueChild(self, new TakeOff(self, (a, b, c) => NextActivity == null && b.NextActivity == null));
 		}

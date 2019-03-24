@@ -541,16 +541,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.LandableTerrainTypes.Contains(type);
 		}
 
-		public bool CanRearmAt(Actor host)
-		{
-			return rearmable != null && rearmable.Info.RearmActors.Contains(host.Info.Name) && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
-		}
-
-		public bool CanRepairAt(Actor host)
-		{
-			return repairable != null && repairable.Info.RepairActors.Contains(host.Info.Name) && self.GetDamageState() != DamageState.Undamaged;
-		}
-
 		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor)
 		{
 			// We are not blocked by the actor we are ignoring.
@@ -580,14 +570,14 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public virtual IEnumerable<Activity> GetResupplyActivities(Actor a)
+		public bool CanRearmAt(Actor host)
 		{
-			// The ResupplyAircraft activity guarantees that we're on the helipad/repair depot
-			if (CanRearmAt(a))
-				yield return new Rearm(self, a, WDist.Zero);
+			return rearmable != null && rearmable.Info.RearmActors.Contains(host.Info.Name) && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
+		}
 
-			if (CanRepairAt(a))
-				yield return new Repair(self, a, WDist.Zero);
+		public bool CanRepairAt(Actor host)
+		{
+			return repairable != null && repairable.Info.RepairActors.Contains(host.Info.Name) && self.GetDamageState() != DamageState.Undamaged;
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
