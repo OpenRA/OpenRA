@@ -161,8 +161,8 @@ namespace OpenRA.Platforms.Default
 								KeyInputEvent.Down : KeyInputEvent.Up;
 
 							var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
-								MultiTapDetection.DetectFromKeyboard(keyCode) :
-								MultiTapDetection.InfoFromKeyboard(keyCode);
+								MultiTapDetection.DetectFromKeyboard(keyCode, mods) :
+								MultiTapDetection.InfoFromKeyboard(keyCode, mods);
 
 							var keyEvent = new KeyInput
 							{
