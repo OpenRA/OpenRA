@@ -15,13 +15,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	[Flags]
-	public enum ResupplyType
-	{
-		Rearm = 1,
-		Repair = 2
-	}
-
 	[Desc("Replaces the default animation when actor resupplies a unit.")]
 	public class WithResupplyAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
@@ -37,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithResupplyAnimation(init.Self, this); }
 	}
 
-	public class WithResupplyAnimation : ConditionalTrait<WithResupplyAnimationInfo>, INotifyRepair, INotifyRearm, ITick
+	public class WithResupplyAnimation : ConditionalTrait<WithResupplyAnimationInfo>, INotifyResupply, ITick
 	{
 		readonly WithSpriteBody wsb;
 		bool animPlaying;
@@ -71,28 +64,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyRepair.BeforeRepair(Actor self, Actor target)
+		void INotifyResupply.BeforeResupply(Actor self, Actor target, ResupplyType types)
 		{
-			repairing = true;
+			repairing = types.HasFlag(ResupplyType.Repair);
+			rearming = types.HasFlag(ResupplyType.Rearm);
 		}
 
-		void INotifyRepair.RepairTick(Actor self, Actor target) { }
-
-		void INotifyRepair.AfterRepair(Actor self, Actor target)
+		void INotifyResupply.ResupplyTick(Actor self, Actor target, ResupplyType types)
 		{
-			repairing = false;
-		}
-
-		void INotifyRearm.RearmingStarted(Actor self, Actor target)
-		{
-			rearming = true;
-		}
-
-		void INotifyRearm.Rearming(Actor self, Actor target) { }
-
-		void INotifyRearm.RearmingFinished(Actor self, Actor target)
-		{
-			rearming = false;
+			repairing = types.HasFlag(ResupplyType.Repair);
+			rearming = types.HasFlag(ResupplyType.Rearm);
 		}
 
 		protected override void TraitDisabled(Actor self)
