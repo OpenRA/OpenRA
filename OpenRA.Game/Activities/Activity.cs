@@ -215,12 +215,12 @@ namespace OpenRA.Activities
 			State = ActivityState.Canceling;
 		}
 
-		public virtual void Queue(Actor self, Activity activity, bool pretick = false)
+		public virtual void Queue(Actor self, Activity activity)
 		{
 			if (NextInQueue != null)
 				NextInQueue.Queue(self, activity);
 			else
-				NextInQueue = pretick ? ActivityUtils.RunActivity(self, activity) : activity;
+				NextInQueue = activity;
 		}
 
 		public virtual void QueueChild(Actor self, Activity activity, bool pretick = false)
