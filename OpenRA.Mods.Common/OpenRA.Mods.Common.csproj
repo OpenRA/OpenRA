@@ -100,9 +100,8 @@
     <Compile Include="Activities\Move\MoveWithinRange.cs" />
     <Compile Include="Activities\Move\VisualMoveIntoTarget.cs" />
     <Compile Include="Activities\Parachute.cs" />
-    <Compile Include="Activities\Rearm.cs" />
     <Compile Include="Activities\RemoveSelf.cs" />
-    <Compile Include="Activities\Repair.cs" />
+    <Compile Include="Activities\Resupply.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="Activities\RepairBuilding.cs" />
     <Compile Include="Activities\Sell.cs" />

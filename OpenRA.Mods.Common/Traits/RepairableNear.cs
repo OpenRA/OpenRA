@@ -31,14 +31,14 @@ namespace OpenRA.Mods.Common.Traits
 
 	class RepairableNear : IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		public readonly RepairableNearInfo Info;
 		readonly Actor self;
-		readonly RepairableNearInfo info;
 		readonly IMove movement;
 
 		public RepairableNear(Actor self, RepairableNearInfo info)
 		{
 			this.self = self;
-			this.info = info;
+			Info = info;
 			movement = self.Trait<IMove>();
 		}
 
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepairAt(Actor target)
 		{
-			return info.RepairActors.Contains(target.Info.Name);
+			return Info.RepairActors.Contains(target.Info.Name);
 		}
 
 		bool ShouldRepair()
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "RepairNear" && ShouldRepair() ? info.Voice : null;
+			return order.OrderString == "RepairNear" && ShouldRepair() ? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -87,8 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.QueueActivity(movement.MoveWithinRange(order.Target, info.CloseEnough, targetLineColor: Color.Green));
-			self.QueueActivity(new Repair(self, order.Target.Actor, info.CloseEnough));
+			self.QueueActivity(movement.MoveWithinRange(order.Target, Info.CloseEnough, targetLineColor: Color.Green));
+			self.QueueActivity(new Resupply(self, order.Target.Actor, Info.CloseEnough));
 
 			self.SetTargetLine(order.Target, Color.Green, false);
 		}
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					info.RepairActors.Contains(a.Actor.Info.Name))
+					Info.RepairActors.Contains(a.Actor.Info.Name))
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.

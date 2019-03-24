@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			var activity = a.CurrentActivity;
 			var type = activity.GetType();
-			if (type == typeof(Rearm) || type == typeof(ResupplyAircraft))
+			if (type == typeof(Resupply) || type == typeof(ResupplyAircraft))
 				return true;
 
 			var next = activity.NextActivity;
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				return false;
 
 			var nextType = next.GetType();
-			if (nextType == typeof(Rearm) || nextType == typeof(ResupplyAircraft))
+			if (nextType == typeof(Resupply) || nextType == typeof(ResupplyAircraft))
 				return true;
 
 			return false;
