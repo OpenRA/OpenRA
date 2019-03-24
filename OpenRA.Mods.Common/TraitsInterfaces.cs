@@ -24,6 +24,14 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum AttackDelayType { Preparation, Attack }
 
+	[Flags]
+	public enum ResupplyType
+	{
+		None = 0,
+		Rearm = 1,
+		Repair = 2
+	}
+
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
@@ -116,11 +124,10 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyRepair
+	public interface INotifyResupply
 	{
-		void BeforeRepair(Actor self, Actor target);
-		void RepairTick(Actor self, Actor target);
-		void AfterRepair(Actor self, Actor target);
+		void BeforeResupply(Actor host, Actor target, ResupplyType types);
+		void ResupplyTick(Actor host, Actor target, ResupplyType types);
 	}
 
 	[RequireExplicitImplementation]

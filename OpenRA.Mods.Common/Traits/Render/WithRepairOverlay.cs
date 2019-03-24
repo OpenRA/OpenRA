@@ -14,6 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
+	// TODO: Refactor this trait into WithResupplyOverlay
 	[Desc("Displays an overlay when the building is being repaired by the player.")]
 	public class WithRepairOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
@@ -38,10 +39,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithRepairOverlay(init.Self, this); }
 	}
 
-	public class WithRepairOverlay : PausableConditionalTrait<WithRepairOverlayInfo>, INotifyDamageStateChanged, INotifyRepair
+	public class WithRepairOverlay : PausableConditionalTrait<WithRepairOverlayInfo>, INotifyDamageStateChanged, INotifyResupply
 	{
 		readonly Animation overlay;
 		bool visible;
+		bool repairing;
 
 		public WithRepairOverlay(Actor self, WithRepairOverlayInfo info)
 			: base(info)
@@ -65,8 +67,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
 		}
 
-		void INotifyRepair.BeforeRepair(Actor self, Actor host)
+		void INotifyResupply.BeforeResupply(Actor self, Actor target, ResupplyType types)
 		{
+			repairing = types.HasFlag(ResupplyType.Repair);
+			if (!repairing)
+				return;
+
 			if (Info.StartSequence != null)
 			{
 				visible = true;
@@ -75,18 +81,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		void INotifyRepair.RepairTick(Actor self, Actor host)
+		void INotifyResupply.ResupplyTick(Actor self, Actor target, ResupplyType types)
 		{
-			if (Info.StartSequence == null)
+			var wasRepairing = repairing;
+			repairing = types.HasFlag(ResupplyType.Repair);
+
+			if (repairing && Info.StartSequence == null && !visible)
 			{
 				visible = true;
 				overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);
 			}
-		}
 
-		void INotifyRepair.AfterRepair(Actor self, Actor target)
-		{
-			if (Info.EndSequence != null)
+			if (!repairing && wasRepairing && Info.EndSequence != null)
 			{
 				visible = true;
 				overlay.PlayThen(Info.EndSequence, () => visible = false);

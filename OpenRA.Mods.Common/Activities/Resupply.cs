@@ -26,12 +26,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Repairable repairable;
 		readonly RepairableNear repairableNear;
 		readonly Rearmable rearmable;
+		readonly INotifyResupply[] notifyResupplies;
 
 		int remainingTicks;
 		bool played;
-		bool paused;
-		bool repairComplete;
-		bool rearmComplete;
+		ResupplyType activeResupplyTypes = ResupplyType.None;
 
 		public Resupply(Actor self, Actor host, WDist closeEnough)
 		{
@@ -42,13 +41,19 @@ namespace OpenRA.Mods.Common.Activities
 			repairable = self.TraitOrDefault<Repairable>();
 			repairableNear = self.TraitOrDefault<RepairableNear>();
 			rearmable = self.TraitOrDefault<Rearmable>();
+			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
 
-			repairComplete = health == null || health.DamageState == DamageState.Undamaged
+			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| !allRepairsUnits.Any()
 				|| ((repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name))
 					&& (repairableNear == null || !repairableNear.Info.RepairActors.Contains(host.Info.Name)));
 
-			rearmComplete = rearmable == null || !rearmable.Info.RearmActors.Contains(host.Info.Name) || rearmable.RearmableAmmoPools.All(p => p.FullAmmo());
+			if (!cannotRepairAtHost)
+				activeResupplyTypes |= ResupplyType.Repair;
+
+			var cannotRearmAtHost = rearmable == null || !rearmable.Info.RearmActors.Contains(host.Info.Name) || rearmable.RearmableAmmoPools.All(p => p.FullAmmo());
+			if (!cannotRearmAtHost)
+				activeResupplyTypes |= ResupplyType.Rearm;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -56,21 +61,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (host.Type == TargetType.Invalid)
 				return;
 
-			if (!repairComplete)
-				foreach (var notifyRepair in host.Actor.TraitsImplementing<INotifyRepair>())
-					notifyRepair.BeforeRepair(host.Actor, self);
+			if (activeResupplyTypes > 0)
+				foreach (var notifyResupply in notifyResupplies)
+					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
 
-			if (!rearmComplete)
-			{
-				foreach (var notifyRearm in host.Actor.TraitsImplementing<INotifyRearm>())
-					notifyRearm.RearmingStarted(host.Actor, self);
-
-				// Reset the ReloadDelay to avoid any issues with early cancellation
-				// from previous reload attempts (explicit order, host building died, etc).
-				// HACK: this really shouldn't be managed from here
+			// Reset the ReloadDelay to avoid any issues with early cancellation
+			// from previous reload attempts (explicit order, host building died, etc).
+			// HACK: this really shouldn't be managed from here
+			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
 				foreach (var pool in rearmable.RearmableAmmoPools)
 					pool.RemainingTicks = pool.Info.ReloadDelay;
-			}
 		}
 
 		public override Activity Tick(Actor self)
@@ -78,19 +78,22 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return NextActivity;
 
-			if (host.Type == TargetType.Invalid || health == null)
+			if (host.Type == TargetType.Invalid)
 				return NextActivity;
 
 			if (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough))
 				return NextActivity;
 
-			if (!repairComplete)
+			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
 				RepairTick(self);
 
-			if (!rearmComplete)
+			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
 				RearmTick(self);
 
-			if (repairComplete && rearmComplete)
+			foreach (var notifyResupply in notifyResupplies)
+				notifyResupply.ResupplyTick(host.Actor, self, activeResupplyTypes);
+
+			if (activeResupplyTypes == 0)
 				return NextActivity;
 
 			return this;
@@ -99,26 +102,11 @@ namespace OpenRA.Mods.Common.Activities
 		void RepairTick(Actor self)
 		{
 			// First active.
-			RepairsUnits repairsUnits = null;
-			paused = false;
-			foreach (var r in allRepairsUnits)
-			{
-				if (!r.IsTraitDisabled)
-				{
-					if (r.IsTraitPaused)
-						paused = true;
-					else
-					{
-						repairsUnits = r;
-						break;
-					}
-				}
-			}
-
+			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
 			if (repairsUnits == null)
 			{
-				if (!paused)
-					repairComplete = true;
+				if (!allRepairsUnits.Any(r => r.IsTraitPaused))
+					activeResupplyTypes &= ~ResupplyType.Repair;
 
 				return;
 			}
@@ -134,10 +122,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.FinishRepairingNotification, self.Owner.Faction.InternalName);
 
-				foreach (var notifyRepair in host.Actor.TraitsImplementing<INotifyRepair>())
-					notifyRepair.AfterRepair(host.Actor, self);
-
-				repairComplete = true;
+				activeResupplyTypes &= ~ResupplyType.Repair;
 				return;
 			}
 
@@ -163,10 +148,6 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				self.InflictDamage(host.Actor, new Damage(-hpToRepair));
-
-				foreach (var depot in host.Actor.TraitsImplementing<INotifyRepair>())
-					depot.RepairTick(host.Actor, self);
-
 				remainingTicks = repairsUnits.Info.Interval;
 			}
 			else
@@ -175,34 +156,26 @@ namespace OpenRA.Mods.Common.Activities
 
 		void RearmTick(Actor self)
 		{
-			rearmComplete = true;
-			foreach (var pool in rearmable.RearmableAmmoPools)
+			var rearmComplete = true;
+			foreach (var ammoPool in rearmable.RearmableAmmoPools)
 			{
-				if (!pool.FullAmmo())
+				if (!ammoPool.FullAmmo())
 				{
-					Reload(self, host.Actor, pool);
+					if (--ammoPool.RemainingTicks <= 0)
+					{
+						ammoPool.RemainingTicks = ammoPool.Info.ReloadDelay;
+						if (!string.IsNullOrEmpty(ammoPool.Info.RearmSound))
+							Game.Sound.PlayToPlayer(SoundType.World, self.Owner, ammoPool.Info.RearmSound, self.CenterPosition);
+
+						ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
+					}
+
 					rearmComplete = false;
 				}
 			}
 
 			if (rearmComplete)
-				foreach (var notifyRearm in host.Actor.TraitsImplementing<INotifyRearm>())
-					notifyRearm.RearmingFinished(host.Actor, self);
-		}
-
-		void Reload(Actor self, Actor host, AmmoPool ammoPool)
-		{
-			if (--ammoPool.RemainingTicks <= 0)
-			{
-				foreach (var notify in host.TraitsImplementing<INotifyRearm>())
-					notify.Rearming(host, self);
-
-				ammoPool.RemainingTicks = ammoPool.Info.ReloadDelay;
-				if (!string.IsNullOrEmpty(ammoPool.Info.RearmSound))
-					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, ammoPool.Info.RearmSound, self.CenterPosition);
-
-				ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
-			}
+				activeResupplyTypes &= ~ResupplyType.Rearm;
 		}
 	}
 }
