@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Make sure that the carried actor is on the ground before releasing it
 			if (self.World.Map.DistanceAboveTerrain(carryablePosition) != WDist.Zero)
-				QueueChild(self, new HeliLand(self, true), true);
+				QueueChild(self, new Land(self, true), true);
 
 			// Pause briefly before releasing for visual effect
 			if (carryall.Info.UnloadingDelay > 0)

@@ -21,17 +21,32 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly bool requireSpace;
 		readonly Actor ignoreActor;
+		readonly WDist landAltitude;
+		readonly bool ignoreTarget;
 
 		bool landingInitiated;
 		bool soundPlayed;
 
-		public Land(Actor self, Target t, bool requireSpace, Actor ignoreActor = null)
+		public Land(Actor self, Target t, bool requireSpace, WDist landAltitude, Actor ignoreActor = null)
 		{
 			target = t;
 			aircraft = self.Trait<Aircraft>();
 			this.requireSpace = requireSpace;
 			this.ignoreActor = ignoreActor;
+			this.landAltitude = landAltitude != WDist.Zero ? landAltitude : aircraft.Info.LandAltitude;
 		}
+
+		public Land(Actor self, Target t, bool requireSpace, Actor ignoreActor = null)
+			: this(self, t, requireSpace, WDist.Zero, ignoreActor) { }
+
+		public Land(Actor self, bool requireSpace, WDist landAltitude, Actor ignoreActor = null)
+			: this(self, Target.FromPos(self.CenterPosition), requireSpace, landAltitude, ignoreActor)
+		{
+			ignoreTarget = true;
+		}
+
+		public Land(Actor self, bool requireSpace, Actor ignoreActor = null)
+			: this(self, requireSpace, WDist.Zero, ignoreActor) { }
 
 		public override Activity Tick(Actor self)
 		{
@@ -42,8 +57,11 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 			}
 
-			if (!target.IsValidFor(self))
+			if (!ignoreTarget && !target.IsValidFor(self))
+			{
+				Cancel(self);
 				return NextActivity;
+			}
 
 			if (IsCanceling)
 			{
@@ -53,11 +71,13 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (requireSpace && !landingInitiated)
 			{
-				var landingCell = self.World.Map.CellContaining(target.CenterPosition);
+				var landingCell = !aircraft.Info.VTOL ? self.World.Map.CellContaining(target.CenterPosition) : self.Location;
 				if (!aircraft.CanLand(landingCell, ignoreActor))
 				{
 					// Maintain holding pattern.
-					QueueChild(self, new FlyCircle(self, 25), true);
+					if (!aircraft.Info.CanHover)
+						QueueChild(self, new FlyCircle(self, 25), true);
+
 					self.NotifyBlocker(landingCell);
 					return this;
 				}
@@ -67,11 +87,21 @@ namespace OpenRA.Mods.Common.Activities
 				landingInitiated = true;
 			}
 
-			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
+			var altitude = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
+			if (aircraft.Info.VTOL)
 			{
-				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds, self.World, aircraft.CenterPosition);
-				soundPlayed = true;
+				var landAlt = !ignoreTarget ? self.World.Map.DistanceAboveTerrain(target.CenterPosition) : landAltitude;
+				if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && altitude != landAlt)
+					PlayLandingSound(self);
+
+				if (HeliFly.AdjustAltitude(self, aircraft, landAlt))
+					return this;
+
+				return NextActivity;
 			}
+
+			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && altitude != landAltitude)
+				PlayLandingSound(self);
 
 			var d = target.CenterPosition - self.CenterPosition;
 
@@ -87,6 +117,12 @@ namespace OpenRA.Mods.Common.Activities
 			Fly.FlyToward(self, aircraft, d.Yaw.Facing, landingAlt);
 
 			return this;
+		}
+
+		void PlayLandingSound(Actor self)
+		{
+			Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds, self.World, aircraft.CenterPosition);
+			soundPlayed = true;
 		}
 	}
 }
