@@ -32,13 +32,13 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				ChildActivity = ActivityUtils.SequenceActivities(self, aircraft.GetResupplyActivities(host).ToArray());
 				QueueChild(self, new AllowYieldingReservation(self));
-				QueueChild(self, new WaitFor(() => NextInQueue != null || aircraft.ReservedActor == null));
+				QueueChild(self, new WaitFor(() => NextActivity != null || aircraft.ReservedActor == null));
 			}
 			else
 			{
 				ChildActivity = ActivityUtils.SequenceActivities(self, aircraft.GetResupplyActivities(host).ToArray());
 				QueueChild(self, new AllowYieldingReservation(self));
-				QueueChild(self, new TakeOff(self, (a, b, c) => NextInQueue == null && b.NextInQueue == null));
+				QueueChild(self, new TakeOff(self, (a, b, c) => NextActivity == null && b.NextActivity == null));
 			}
 		}
 

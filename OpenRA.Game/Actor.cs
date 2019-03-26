@@ -222,13 +222,13 @@ namespace OpenRA
 			if (CurrentActivity == null)
 				CurrentActivity = nextActivity;
 			else
-				CurrentActivity.RootActivity.Queue(this, nextActivity);
+				CurrentActivity.Queue(this, nextActivity);
 		}
 
 		public void CancelActivity()
 		{
 			if (CurrentActivity != null)
-				CurrentActivity.RootActivity.Cancel(this);
+				CurrentActivity.Cancel(this);
 		}
 
 		public override int GetHashCode()
@@ -281,7 +281,7 @@ namespace OpenRA
 			// If CurrentActivity isn't null, run OnActorDisposeOuter in case some cleanups are needed.
 			// This should be done before the FrameEndTask to avoid dependency issues.
 			if (CurrentActivity != null)
-				CurrentActivity.RootActivity.OnActorDisposeOuter(this);
+				CurrentActivity.OnActorDisposeOuter(this);
 
 			// Allow traits/activities to prevent a race condition when they depend on disposing the actor (e.g. Transforms)
 			WillDispose = true;

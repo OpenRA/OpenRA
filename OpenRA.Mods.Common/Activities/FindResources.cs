@@ -80,8 +80,8 @@ namespace OpenRA.Mods.Common.Activities
 				var randFrames = self.World.SharedRandom.Next(100, 175);
 
 				// Avoid creating an activity cycle
-				var next = NextInQueue;
-				NextInQueue = null;
+				var next = NextActivity;
+				NextActivity = null;
 				return ActivityUtils.SequenceActivities(self, next, new Wait(randFrames), this);
 			}
 			else
