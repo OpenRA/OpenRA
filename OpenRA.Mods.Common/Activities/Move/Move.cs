@@ -25,11 +25,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		static readonly List<CPos> NoPath = new List<CPos>();
 
-		readonly Mobile mobile;
 		readonly WDist nearEnough;
-		readonly Func<List<CPos>> getPath;
+		readonly Func<Mobile, Actor, List<CPos>> getPath;
 		readonly Actor ignoreActor;
 
+		Mobile mobile;
 		List<CPos> path;
 		CPos? destination;
 
@@ -45,13 +45,11 @@ namespace OpenRA.Mods.Common.Activities
 		// Ignores lane bias and nearby units
 		public Move(Actor self, CPos destination)
 		{
-			mobile = self.Trait<Mobile>();
-
-			getPath = () =>
+			getPath = (mobile, a) =>
 			{
 				List<CPos> path;
 				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, self, mobile.ToCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, a, mobile.ToCell, destination, false)
 					.WithoutLaneBias())
 					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 				return path;
@@ -62,15 +60,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
 		{
-			mobile = self.Trait<Mobile>();
-
-			getPath = () =>
+			getPath = (mobile, a) =>
 			{
 				if (!this.destination.HasValue)
 					return NoPath;
 
 				return self.World.WorldActor.Trait<IPathFinder>()
-					.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor);
+					.FindUnitPath(mobile.ToCell, this.destination.Value, a, ignoreActor);
 			};
 
 			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true
@@ -83,25 +79,21 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
 		{
-			mobile = self.Trait<Mobile>();
-
-			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
-				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
+			getPath = (mobile, a) => self.World.WorldActor.Trait<IPathFinder>()
+				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, a);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
 
 		public Move(Actor self, Target target, WDist range)
 		{
-			mobile = self.Trait<Mobile>();
-
-			getPath = () =>
+			getPath = (mobile, a) =>
 			{
 				if (!target.IsValidFor(self))
 					return NoPath;
 
 				return self.World.WorldActor.Trait<IPathFinder>().FindUnitPathToRange(
-					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self);
+					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, a);
 			};
 
 			destination = null;
@@ -110,9 +102,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, Func<List<CPos>> getPath)
 		{
-			mobile = self.Trait<Mobile>();
-
-			this.getPath = getPath;
+			this.getPath = (mobile, a) => { return getPath(); };
 
 			destination = null;
 			nearEnough = WDist.Zero;
@@ -128,15 +118,17 @@ namespace OpenRA.Mods.Common.Activities
 			return hash;
 		}
 
-		List<CPos> EvalPath()
+		List<CPos> EvalPath(Actor self)
 		{
-			var path = getPath().TakeWhile(a => a != mobile.ToCell).ToList();
+			var path = getPath(mobile, self).TakeWhile(a => a != mobile.ToCell).ToList();
 			mobile.PathHash = HashList(path);
 			return path;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
+			mobile = self.Trait<Mobile>();
+
 			if (evaluateNearestMovableCell && destination.HasValue)
 			{
 				var movableDestination = mobile.NearestMoveableCell(destination.Value);
@@ -169,7 +161,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (path == null)
-				path = EvalPath();
+				path = EvalPath(self);
 
 			if (path.Count == 0)
 			{
@@ -247,7 +239,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Calculate a new path
 				mobile.RemoveInfluence();
-				var newPath = EvalPath();
+				var newPath = EvalPath(self);
 				mobile.AddInfluence();
 
 				if (newPath.Count != 0)

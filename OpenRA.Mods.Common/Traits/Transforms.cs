@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Primitives;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Transforms : PausableConditionalTrait<TransformsInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder,
-		INotifyCreated
+		INotifyCreated, IWrapMove
 	{
 		readonly Actor self;
 		readonly ActorInfo actorInfo;
@@ -99,19 +99,33 @@ namespace OpenRA.Mods.Common.Traits
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
+		public Activity WrapMove(Activity moveInner)
+		{
+			var activity = new Transform(self, true);
+			activity.Queue(self, moveInner);
+			return activity;
+		}
+
+		public bool CanWrapMoveOrder(TargetModifiers modifiers)
+		{
+			return Info.UndeployOnMove == UndeployOnMoveType.Always ||
+				(Info.UndeployOnMove == UndeployOnMoveType.ForceOnly && modifiers.HasModifier(TargetModifiers.ForceMove));
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new MoveDeployOrderTargeter(self, actorInfo, this);
+					yield return new DeployOrderTargeter("DeployTransform", 5,
+						() => CanDeploy() ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order is MoveDeployOrderTargeter)
-				return new Order(order.OrderID, self, target, queued);
+			if (order.OrderID == "DeployTransform")
+				return new Order(order.OrderID, self, queued);
 
 			return null;
 		}
@@ -123,12 +137,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self) { return !IsTraitDisabled && !IsTraitPaused; }
 
-		public void DeployTransform(bool queued, Target target)
+		public void DeployTransform(bool queued)
 		{
-			if (!queued && !CanDeploy() && !(target.Type == TargetType.Terrain || (target.Type == TargetType.Actor && target.Actor != self)))
+			if (!queued && !CanDeploy())
 			{
-				// Only play the "Cannot deploy here" audio
-				// for non-queued orders
+				// Only play the "Cannot deploy here" audio for non-queued orders
 				foreach (var s in Info.NoTransformSounds)
 					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s);
 
@@ -137,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			self.QueueActivity(queued, new Transform(self, target));
+			self.QueueActivity(queued, new Transform(self));
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -145,70 +158,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeployTransform" || IsTraitDisabled || IsTraitPaused)
 				return;
 
-			self.SetTargetLine(order.Target, Color.Green);
-			DeployTransform(order.Queued, order.Target);
-		}
-
-		class MoveDeployOrderTargeter : IOrderTargeter
-		{
-			readonly IMoveInfo info;
-			readonly bool rejectMove;
-			readonly Transforms unit;
-
-			public bool TargetOverridesSelection(TargetModifiers modifiers)
-			{
-				return modifiers.HasModifier(TargetModifiers.ForceMove);
-			}
-
-			public MoveDeployOrderTargeter(Actor self, ActorInfo otherActorInfo, Transforms unit)
-			{
-				this.unit = unit;
-				info = self.Info.TraitInfoOrDefault<IMoveInfo>();
-				if (info == null)
-					 info = otherActorInfo.TraitInfoOrDefault<IMoveInfo>();
-
-				rejectMove = !self.AcceptsOrder("Move");
-			}
-
-			public string OrderID { get { return "DeployTransform"; } }
-			public int OrderPriority { get { return 5; } }
-			public bool IsQueued { get; protected set; }
-
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
-			{
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
-				if (target.Type == TargetType.Actor)
-				{
-					cursor = unit.CanDeploy() ? unit.Info.DeployCursor : unit.Info.DeployBlockedCursor;
-					return self == target.Actor;
-				}
-
-				if (rejectMove || unit.Info.UndeployOnMove == UndeployOnMoveType.Never ||
-				    info == null || target.Type != TargetType.Terrain)
-					return false;
-
-				if (unit.Info.UndeployOnMove == UndeployOnMoveType.ForceOnly && !modifiers.HasModifier(TargetModifiers.ForceMove))
-					return false;
-
-				var location = self.World.Map.CellContaining(target.CenterPosition);
-				var explored = self.Owner.Shroud.IsExplored(location);
-				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") : "move-blocked";
-
-				if (unit.IsTraitPaused
-					|| (!explored && info != null && !info.CanMoveIntoShroud())
-					|| (explored && info != null && !info.CanMoveInCell(self.World, self, location, null, false)))
-					cursor = "move-blocked";
-
-				return true;
-			}
+			DeployTransform(order.Queued);
 		}
 	}
 
 	public class ActivityInit : IActorInit<Activity>
 	{
-		[FieldFromYamlKey] readonly Activity value = null;
+		[FieldFromYamlKey]
+		readonly Activity value = null;
+
 		public ActivityInit() { }
 		public ActivityInit(Activity init) { value = init; }
 		public Activity Value(World world) { return value; }

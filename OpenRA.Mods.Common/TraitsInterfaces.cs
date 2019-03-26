@@ -416,9 +416,16 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
 	}
 
+	public interface IMoveInfo : ITraitInfoInterface
+	{
+		bool CanMoveIntoShroud();
+		bool CanMoveInCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true);
+		LocomotorInfo LocomotorInfo { get; }
+	}
+
 	public interface IMove
 	{
-		Activity MoveTo(CPos cell, int nearEnough);
+		Activity MoveTo(CPos cell, int nearEnough, bool evaluateNearestMovableCell = false);
 		Activity MoveTo(CPos cell, Actor ignoreActor);
 		Activity MoveWithinRange(Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
@@ -435,6 +442,12 @@ namespace OpenRA.Mods.Common.Traits
 		CPos NearestMoveableCell(CPos target);
 		MovementType CurrentMovementTypes { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
+	}
+
+	public interface IWrapMove
+	{
+		Activity WrapMove(Activity moveInner);
+		bool CanWrapMoveOrder(TargetModifiers modifiers);
 	}
 
 	public interface IRadarSignature

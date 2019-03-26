@@ -34,6 +34,17 @@ GACNST:
 		Offset: 1,1
 		Facing: 96
 		DeployCursor: undeploy
+	TransformToMobile:
+		PauseOnCondition: empdisable || being-demolished
+		Speed: 42
+		Locomotor: tracked
+		TurnSpeed: 5
+		Voice: Move
+	EntersTunnels:
+		Voice: Move
+	Passenger:
+		CargoType: Vehicle
+		Voice: Move
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy

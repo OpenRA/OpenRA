@@ -28,28 +28,26 @@ namespace OpenRA.Mods.Common.Activities
 		public bool SkipMakeAnims = false;
 		public string Faction = null;
 
-		readonly bool orderedMove;
 		readonly Target target = Target.Invalid;
-		readonly CPos cell;
-		IMove move;
-		bool hasMoved;
+		readonly bool moving;
+
+		Mobile mobile;
+		Aircraft air;
+		bool initiated;
 
 		public Transform(Actor self, string toActor)
 		{
 			ToActor = toActor;
 		}
 
-		public Transform(Actor self, Target target)
+		public Transform(Actor self, bool moving = false)
 		{
-			this.target = target;
-			orderedMove = target.Type == TargetType.Terrain || (target.Type == TargetType.Actor && target.Actor != self);
-			if (orderedMove)
-				cell = self.World.Map.Clamp(self.World.Map.CellContaining(target.CenterPosition));
+			this.moving = moving;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
-			if (!orderedMove)
+			if (!moving)
 			{
 				if (self.Info.HasTraitInfo<IFacingInfo>())
 					QueueChild(self, new Turn(self, Facing), true);
@@ -57,6 +55,9 @@ namespace OpenRA.Mods.Common.Activities
 				if (self.Info.HasTraitInfo<AircraftInfo>())
 					QueueChild(self, new Land(self));
 			}
+
+			mobile = self.TraitOrDefault<Mobile>();
+			air = self.TraitOrDefault<Aircraft>();
 		}
 
 		public override Activity Tick(Actor self)
@@ -64,58 +65,47 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 			{
 				ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
+			if (IsCanceling || initiated || (moving && (mobile != null || air != null)))
+				return NextActivity;
+
+			// Prevent deployment in bogus locations
+			var transforms = self.TraitOrDefault<Transforms>();
+			if (transforms != null && !transforms.CanDeploy())
+				return NextActivity;
+
+			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				nt.BeforeTransform(self);
+
+			var actorInfo = self.World.Map.Rules.Actors[self.Info.TraitInfo<TransformsInfo>().IntoActor];
+			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
+			if (!SkipMakeAnims && makeAnimation != null)
+			{
+				// Once the make animation starts the activity must not be stopped anymore.
+				IsInterruptible = false;
+
+				// Wait for the (reverse) make animation to complete
+				QueueChild(self, new Wait(makeAnimation.Info.SequenceDuration, false), true);
+
+				initiated = true;
+				makeAnimation.Reverse(self, () => DoTransform(self));
 				return this;
 			}
 
-			if (IsCanceling)
-				return NextActivity;
-
-			if (!hasMoved)
+			// Wait for the future actors make animation to complete.
+			if (actorInfo != null)
 			{
-				move = self.TraitOrDefault<IMove>();
-				if (orderedMove && move != null)
-				{
-					hasMoved = true;
-					QueueChild(self, move.MoveTo(cell, 8), true);
-					return this;
-				}
-
-				// Prevent deployment in bogus locations
-				var transforms = self.TraitOrDefault<Transforms>();
-				if (transforms != null && !transforms.CanDeploy())
-					return NextActivity;
-
-				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
-					nt.BeforeTransform(self);
-
-				var actorInfo = self.World.Map.Rules.Actors[self.Info.TraitInfo<TransformsInfo>().IntoActor];
-				var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
-				if (!SkipMakeAnims && makeAnimation != null)
-				{
-					// Once the make animation starts the activity must not be stopped anymore.
-					IsInterruptible = false;
-
-					// Wait forever
-					QueueChild(self, new WaitFor(() => false), true);
-
-					// Insert a move into the future actors activity queue.
-					if (actorInfo != null && actorInfo.HasTraitInfo<IMoveInfo>() && orderedMove)
-						NextInQueue = ActivityUtils.SequenceActivities(self, new Transform(self, target), NextInQueue);
-
-					makeAnimation.Reverse(self, () => DoTransform(self));
-					return this;
-				}
-
-				// Wait for the future actors make animation to complete.
-				// TODO: Wait for the end of the animation instead of a fixed time.
-				if (actorInfo != null && actorInfo.HasTraitInfo<WithMakeAnimationInfo>())
-					NextInQueue = ActivityUtils.SequenceActivities(self, new Wait(25, false), NextInQueue);
-
-				DoTransform(self);
-				return null;
+				var makeAnimInfo = actorInfo.TraitInfoOrDefault<WithMakeAnimationInfo>();
+				if (makeAnimInfo != null)
+					QueueChild(self, new Wait(makeAnimInfo.SequenceDuration, false));
 			}
 
-			return NextActivity;
+			initiated = true;
+			DoTransform(self);
+			return this;
 		}
 
 		void DoTransform(Actor self)
@@ -169,8 +159,7 @@ namespace OpenRA.Mods.Common.Activities
 					init.Add(new HealthInit(newHP));
 				}
 
-				if (NextInQueue != null)
-					init.Add(new ActivityInit(NextInQueue));
+				init.Add(new ActivityInit(self.CurrentActivity));
 
 				foreach (var modifier in self.TraitsImplementing<ITransformActorInitModifier>())
 					modifier.ModifyTransformActorInit(self, init);

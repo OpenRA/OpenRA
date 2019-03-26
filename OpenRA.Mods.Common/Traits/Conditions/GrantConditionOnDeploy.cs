@@ -11,8 +11,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Primitives;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -68,11 +69,12 @@ namespace OpenRA.Mods.Common.Traits
 	public enum UndeployOnMoveType { Always, ForceOnly, Never }
 
 	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder, INotifyCreated,
-		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice
+		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove
 	{
 		readonly Actor self;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
+		readonly IMove move;
 
 		DeployState deployState;
 		ConditionManager conditionManager;
@@ -88,6 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
+			move = self.TraitOrDefault<IMove>();
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
@@ -123,18 +126,32 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public Activity WrapMove(Activity moveInner)
+		{
+			var activity = new DeployForGrantedCondition(self, this, true);
+			activity.Queue(self, moveInner);
+			return activity;
+		}
+
+		public bool CanWrapMoveOrder(TargetModifiers modifiers)
+		{
+			return Info.UndeployOnMove == UndeployOnMoveType.Always ||
+				(Info.UndeployOnMove == UndeployOnMoveType.ForceOnly && modifiers.HasModifier(TargetModifiers.ForceMove));
+		}
+
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new MoveDeployOrderTargeter(self, this);
+					yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
+						() => CanDeploy() ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order is MoveDeployOrderTargeter)
+			if (order.OrderID == "GrantConditionOnDeploy")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -155,8 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "GrantConditionOnDeploy")
 				return;
 
-			self.SetTargetLine(order.Target, Color.Green);
-			self.QueueActivity(order.Queued, new DeployForGrantedCondition(self, this, order.Target));
+			self.QueueActivity(order.Queued, new DeployForGrantedCondition(self, this));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -297,59 +313,6 @@ namespace OpenRA.Mods.Common.Traits
 				undeployedToken = conditionManager.GrantCondition(self, Info.UndeployedCondition);
 
 			deployState = DeployState.Undeployed;
-		}
-
-		class MoveDeployOrderTargeter : IOrderTargeter
-		{
-			readonly IMoveInfo info;
-			readonly bool rejectMove;
-			readonly GrantConditionOnDeploy unit;
-
-			public bool TargetOverridesSelection(TargetModifiers modifiers)
-			{
-				return modifiers.HasModifier(TargetModifiers.ForceMove);
-			}
-
-			public MoveDeployOrderTargeter(Actor self, GrantConditionOnDeploy unit)
-			{
-				this.unit = unit;
-				info = self.Info.TraitInfoOrDefault<IMoveInfo>();
-				rejectMove = !self.AcceptsOrder("Move");
-			}
-
-			public string OrderID { get { return "GrantConditionOnDeploy"; } }
-			public int OrderPriority { get { return 5; } }
-			public bool IsQueued { get; protected set; }
-
-			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
-			{
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
-				if (target.Type == TargetType.Actor)
-				{
-					cursor = unit.CanDeploy() ? unit.Info.DeployCursor : unit.Info.DeployBlockedCursor;
-					return self == target.Actor;
-				}
-
-				if (rejectMove || unit.Info.UndeployOnMove == UndeployOnMoveType.Never ||
-				    info == null || target.Type != TargetType.Terrain)
-					return false;
-
-				if (unit.Info.UndeployOnMove == UndeployOnMoveType.ForceOnly && !modifiers.HasModifier(TargetModifiers.ForceMove))
-					return false;
-
-				var location = self.World.Map.CellContaining(target.CenterPosition);
-				var explored = self.Owner.Shroud.IsExplored(location);
-				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") : "move-blocked";
-
-				if (unit.IsTraitPaused
-					|| (!explored && info != null && !info.CanMoveIntoShroud())
-					|| (explored && info != null && !info.CanMoveInCell(self.World, self, location, null, false)))
-					cursor = "move-blocked";
-
-				return true;
-			}
 		}
 	}
 

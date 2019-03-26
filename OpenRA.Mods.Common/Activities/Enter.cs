@@ -22,7 +22,6 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		enum EnterState { Approaching, Entering, Exiting }
 
-		readonly IMove move;
 		readonly Color? targetLineColor;
 
 		Target target;
@@ -32,7 +31,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected Enter(Actor self, Target target, Color? targetLineColor = null)
 		{
-			move = self.Trait<IMove>();
 			this.target = target;
 			this.targetLineColor = targetLineColor;
 		}
@@ -101,6 +99,8 @@ namespace OpenRA.Mods.Common.Activities
 					if (useLastVisibleTarget && lastVisibleTarget.Type == TargetType.Invalid)
 						return NextActivity;
 
+					var move = self.Trait<IMove>();
+
 					// We are not next to the target - lets fix that
 					if (target.Type != TargetType.Invalid && !move.CanEnterTargetNow(self, target))
 					{
@@ -139,6 +139,7 @@ namespace OpenRA.Mods.Common.Activities
 						OnEnterComplete(self, target.Actor);
 
 					lastState = EnterState.Exiting;
+					var move = self.Trait<IMove>();
 					QueueChild(self, move.MoveIntoWorld(self, self.Location), true);
 					return this;
 				}

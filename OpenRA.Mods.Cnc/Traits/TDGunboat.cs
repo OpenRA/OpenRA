@@ -33,6 +33,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public int GetInitialFacing() { return InitialFacing; }
 
+		public LocomotorInfo LocomotorInfo { get; private set; }
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
@@ -190,7 +192,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.World.UpdateMaps(self, this);
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough) { return null; }
+		public Activity MoveTo(CPos cell, int nearEnough, bool evaluateNearestMovableCell = false) { return null; }
 		public Activity MoveTo(CPos cell, Actor ignoreActor) { return null; }
 		public Activity MoveWithinRange(Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }

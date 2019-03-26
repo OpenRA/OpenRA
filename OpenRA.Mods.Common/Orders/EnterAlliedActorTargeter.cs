@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
@@ -29,6 +30,11 @@ namespace OpenRA.Mods.Common.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
+			var wrapMove = self.TraitOrDefault<IWrapMove>();
+			var move = self.TraitOrDefault<Mobile>();
+			if (move != null && move.IsTraitDisabled && (wrapMove == null || !wrapMove.CanWrapMoveOrder(modifiers)))
+				return false;
+
 			if (!self.Owner.IsAlliedWith(target.Owner) || !target.Info.HasTraitInfo<T>() || !canTarget(target))
 				return false;
 

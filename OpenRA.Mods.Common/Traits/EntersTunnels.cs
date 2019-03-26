@@ -93,6 +93,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (target == null || target.IsDead)
 					return false;
 
+				var wrapMove = self.TraitOrDefault<IWrapMove>();
+				var move = self.TraitOrDefault<Mobile>();
+				if (move != null && move.IsTraitDisabled && (wrapMove == null || !wrapMove.CanWrapMoveOrder(modifiers)))
+					return false;
+
 				var tunnel = target.TraitOrDefault<TunnelEntrance>();
 				if (tunnel == null)
 					return false;

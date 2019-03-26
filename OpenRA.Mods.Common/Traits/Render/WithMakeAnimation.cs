@@ -30,12 +30,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Apply to sprite bodies with these names.")]
 		public readonly string[] BodyNames = { "body" };
 
+		[Desc("Duration to wait for the animation to finish in ticks")]
+		public readonly int SequenceDuration = 25;
+
 		public object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
 
 	public class WithMakeAnimation : INotifyCreated, INotifyDeployTriggered
 	{
-		readonly WithMakeAnimationInfo info;
+		public readonly WithMakeAnimationInfo Info;
 		readonly WithSpriteBody[] wsbs;
 		readonly bool skipMakeAnimation;
 
@@ -44,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public WithMakeAnimation(ActorInitializer init, WithMakeAnimationInfo info)
 		{
-			this.info = info;
+			this.Info = info;
 			var self = init.Self;
 			wsbs = self.TraitsImplementing<WithSpriteBody>().Where(w => info.BodyNames.Contains(w.Info.Name)).ToArray();
 			skipMakeAnimation = init.Contains<SkipMakeAnimsInit>();
@@ -59,15 +62,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Forward(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (conditionManager != null && !string.IsNullOrEmpty(Info.Condition) && token == ConditionManager.InvalidConditionToken)
+				token = conditionManager.GrantCondition(self, Info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
 			if (wsb == null)
 				return;
 
-			wsb.PlayCustomAnimation(self, info.Sequence, () =>
+			wsb.PlayCustomAnimation(self, Info.Sequence, () =>
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -82,15 +85,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public void Reverse(Actor self, Action onComplete)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.Condition) && token == ConditionManager.InvalidConditionToken)
-				token = conditionManager.GrantCondition(self, info.Condition);
+			if (conditionManager != null && !string.IsNullOrEmpty(Info.Condition) && token == ConditionManager.InvalidConditionToken)
+				token = conditionManager.GrantCondition(self, Info.Condition);
 
 			var wsb = wsbs.FirstEnabledTraitOrDefault();
 
 			if (wsb == null)
 				return;
 
-			wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
+			wsb.PlayCustomAnimationBackwards(self, Info.Sequence, () =>
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -114,10 +117,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 				// by forcing the animation to frame 0 and regranting the make condition.
 				// These workarounds will break the actor if the followup activity doesn't dispose it!
 				if (wsb != null)
-					wsb.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+					wsb.DefaultAnimation.PlayFetchIndex(Info.Sequence, () => 0);
 
-				if (conditionManager != null && !string.IsNullOrEmpty(info.Condition))
-					token = conditionManager.GrantCondition(self, info.Condition);
+				if (conditionManager != null && !string.IsNullOrEmpty(Info.Condition))
+					token = conditionManager.GrantCondition(self, Info.Condition);
 
 				self.QueueActivity(queued, activity);
 			});
@@ -142,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (wsb.IsTraitDisabled)
 					continue;
 
-				wsb.PlayCustomAnimation(self, info.Sequence, () =>
+				wsb.PlayCustomAnimation(self, Info.Sequence, () =>
 				{
 					if (notified)
 						return;
@@ -175,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (wsb.IsTraitDisabled)
 					continue;
 
-				wsb.PlayCustomAnimationBackwards(self, info.Sequence, () =>
+				wsb.PlayCustomAnimationBackwards(self, Info.Sequence, () =>
 				{
 					if (notified)
 						return;

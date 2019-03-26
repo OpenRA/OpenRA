@@ -126,6 +126,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
+		public LocomotorInfo LocomotorInfo { get; private set; }
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
@@ -759,7 +761,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement IMove
 
-		public Activity MoveTo(CPos cell, int nearEnough)
+		public Activity MoveTo(CPos cell, int nearEnough, bool evaluateNearestMoveableCell = false)
 		{
 			if (!Info.CanHover)
 				return new Fly(self, Target.FromCell(self.World, cell));

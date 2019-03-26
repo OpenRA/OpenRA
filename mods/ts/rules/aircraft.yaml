@@ -61,7 +61,7 @@ DSHP:
 		Range: 3c0
 		Type: CenterPosition
 	Cargo:
-		Types: Infantry
+		Types: Vehicle
 		MaxWeight: 5
 		PipCount: 5
 		UnloadVoice: Move

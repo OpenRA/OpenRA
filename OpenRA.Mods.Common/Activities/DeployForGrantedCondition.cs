@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -18,27 +19,21 @@ namespace OpenRA.Mods.Common.Activities
 	public class DeployForGrantedCondition : Activity
 	{
 		readonly GrantConditionOnDeploy deploy;
-		readonly IMove move;
 		readonly bool canTurn;
-		readonly bool orderedMove;
-		readonly CPos cell;
+		readonly bool moving;
 		bool initiated;
 
-		public DeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy, Target target)
+		public DeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy, bool moving = false)
 		{
 			this.deploy = deploy;
+			this.moving = moving;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			orderedMove = target.Type == TargetType.Terrain || (target.Type == TargetType.Actor && target.Actor != self);
-			if (orderedMove)
-				cell = self.World.Map.Clamp(self.World.Map.CellContaining(target.CenterPosition));
-
-			move = self.TraitOrDefault<IMove>();
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			// Turn to the required facing.
-			if (deploy.DeployState == DeployState.Undeployed && deploy.Info.Facing != -1 && canTurn && !orderedMove)
+			if (deploy.DeployState == DeployState.Undeployed && deploy.Info.Facing != -1 && canTurn && !moving)
 				QueueChild(self, new Turn(self, deploy.Info.Facing));
 		}
 
@@ -47,50 +42,28 @@ namespace OpenRA.Mods.Common.Activities
 			if (ChildActivity != null)
 			{
 				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
+				if (ChildActivity != null)
+					return this;
 			}
 
-			if (IsCanceling)
+			if (IsCanceling || initiated || (deploy.DeployState != DeployState.Deployed && moving))
 				return NextActivity;
 
-			if (!initiated)
-			{
-				initiated = true;
-				if (deploy.DeployState == DeployState.Undeployed)
-				{
-					if (orderedMove && move != null)
-						QueueChild(self, move.MoveTo(cell, 8), true);
-					else
-						QueueChild(self, new DeployInner(self, deploy, true));
-				}
-				else if (deploy.DeployState == DeployState.Deployed)
-				{
-					QueueChild(self, new DeployInner(self, deploy, false));
-					if (orderedMove && move != null)
-						QueueChild(self, move.MoveTo(cell, 8), true);
-				}
+			QueueChild(self, new DeployInner(self, deploy), true);
 
-				return this;
-			}
-
-			// Failed or success, we are going to NextActivity.
-			// Deploy() at the first run would have put DeployState == Deploying so
-			// if we are back to DeployState.Undeployed, it means deploy failure.
-			// Parent activity will see the status and will take appropriate action.
-			return NextActivity;
+			initiated = true;
+			return this;
 		}
 	}
 
 	public class DeployInner : Activity
 	{
 		readonly GrantConditionOnDeploy deployment;
-		readonly bool towardDeploy;
 		bool initiated;
 
-		public DeployInner(Actor self, GrantConditionOnDeploy deployment, bool towardDeploy)
+		public DeployInner(Actor self, GrantConditionOnDeploy deployment)
 		{
 			this.deployment = deployment;
-			this.towardDeploy = towardDeploy;
 
 			// Once deployment animation starts, the animation must finish.
 			IsInterruptible = false;
@@ -102,18 +75,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (deployment.DeployState == DeployState.Deploying || deployment.DeployState == DeployState.Undeploying)
 				return this;
 
-			if (!initiated)
-			{
-				if (towardDeploy)
-					deployment.Deploy();
-				else
-					deployment.Undeploy();
+			if (initiated)
+				return NextActivity;
 
-				initiated = true;
-				return this;
-			}
+			if (deployment.DeployState == DeployState.Undeployed)
+				deployment.Deploy();
+			else
+				deployment.Undeploy();
 
-			return NextActivity;
+			initiated = true;
+			return this;
 		}
 	}
 }

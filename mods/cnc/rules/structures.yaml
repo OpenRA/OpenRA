@@ -25,6 +25,14 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
+	WithMakeAnimation:
+		SequenceDuration: 70
+	TransformToMobile:
+		Speed: 71
+		Locomotor: heavywheeled
+		TurnSpeed: 5
+	Passenger:
+		CargoType: Vehicle
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy

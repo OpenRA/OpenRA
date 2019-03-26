@@ -1138,6 +1138,15 @@ FACT:
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
+	WithMakeAnimation:
+		SequenceDuration: 35
+	TransformToMobile:
+		Speed: 71
+		Locomotor: heavywheeled
+		PauseOnCondition: chrono-vortex || being-captured || being-demolished
+		TurnSpeed: 5
+	Passenger:
+		CargoType: Vehicle
 	Sellable:
 		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
