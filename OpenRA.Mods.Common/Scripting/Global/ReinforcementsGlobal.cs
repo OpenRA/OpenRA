@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Scripting
 							Move(transport, destination);
 
 						transport.QueueActivity(new Turn(transport, aircraft.Info.InitialFacing));
-						transport.QueueActivity(new HeliLand(transport, true));
+						transport.QueueActivity(new Land(transport, true));
 					}
 					else
 					{

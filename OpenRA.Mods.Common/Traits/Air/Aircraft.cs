@@ -314,14 +314,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.
 			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
-				&& !(self.CurrentActivity is HeliLand || self.CurrentActivity is Turn))
+				&& !((self.CurrentActivity is Land && Info.VTOL) || self.CurrentActivity is Turn))
 			{
 				self.CancelActivity();
 
 				if (Info.TurnToLand)
 					self.QueueActivity(new Turn(self, Info.InitialFacing));
 
-				self.QueueActivity(new HeliLand(self, true));
+				self.QueueActivity(new Land(self, true));
 
 				ForceLanding = true;
 			}
@@ -625,7 +625,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.TurnToLand)
 					self.QueueActivity(new Turn(self, Info.InitialFacing));
 
-				self.QueueActivity(new HeliLand(self, true));
+				self.QueueActivity(new Land(self, true));
 			}
 			else if (!Info.CanHover && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
@@ -815,7 +815,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.VTOL)
 				return new Land(self, target, false);
 
-			return new HeliLand(self, false);
+			return new Land(self, false);
 		}
 
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
