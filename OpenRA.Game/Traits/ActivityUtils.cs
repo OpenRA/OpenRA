@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 				else
 					start = current;
 
-				if (act == prev || act == prev.ParentActivity)
+				if (act == prev)
 					break;
 			}
 
