@@ -24,17 +24,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				faction = world.LocalPlayer.Faction.InternalName;
 			var suffix = "-" + faction;
 
-			var buttonWidget = widget as ButtonWidget;
-			if (buttonWidget != null)
-				buttonWidget.Background += suffix;
-			else
+			if (widget is ButtonWidget)
+				((ButtonWidget)widget).Background += suffix;
+			else if (widget is ImageWidget)
+				((ImageWidget)widget).ImageCollection += suffix;
+			else if (widget is BackgroundWidget)
+				((BackgroundWidget)widget).Background += suffix;
+			else if (widget is ProductionTabsWidget)
 			{
-				var imageWidget = widget as ImageWidget;
-				if (imageWidget != null)
-					imageWidget.ImageCollection += suffix;
-				else
-					throw new InvalidOperationException("AddFactionSuffixLogic only supports ButtonWidget and ImageWidget");
+				((ProductionTabsWidget)widget).Button += suffix;
+				((ProductionTabsWidget)widget).Background += suffix;
 			}
+			else
+				throw new InvalidOperationException("AddFactionSuffixLogic only supports ButtonWidget, ImageWidget, BackgroundWidget and ProductionTabsWidget");
 		}
 	}
 }
