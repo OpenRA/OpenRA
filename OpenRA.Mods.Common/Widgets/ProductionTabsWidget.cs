@@ -81,6 +81,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly Dictionary<string, ProductionTabGroup> Groups;
 
+		public string Button = "button";
+		public string Background = "panel-black";
+
 		int contentWidth = 0;
 		float listOffset = 0;
 		bool leftPressed = false;
@@ -175,9 +178,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var rightDisabled = listOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
 			var rightHover = Ui.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
-			WidgetUtils.DrawPanel("panel-black", rb);
-			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled, leftPressed, leftHover, false);
-			ButtonWidget.DrawBackground("button", rightButtonRect, rightDisabled, rightPressed, rightHover, false);
+			WidgetUtils.DrawPanel(Background, rb);
+			ButtonWidget.DrawBackground(Button, leftButtonRect, leftDisabled, leftPressed, leftHover, false);
+			ButtonWidget.DrawBackground(Button, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", leftPressed || leftDisabled ? "left_pressed" : "left_arrow"),
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
@@ -194,8 +197,8 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var rect = new Rectangle(origin.X + contentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
-				var baseName = tab.Queue == CurrentQueue ? "button-highlighted" : "button";
-				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
+				var highlighted = tab.Queue == CurrentQueue;
+				ButtonWidget.DrawBackground(Button, rect, false, false, hover, highlighted);
 				contentWidth += TabWidth - 1;
 
 				var textSize = font.Measure(tab.Name);
