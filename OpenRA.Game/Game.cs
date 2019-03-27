@@ -465,6 +465,9 @@ namespace OpenRA
 				Log.Write("nat", e.ToString());
 			}
 
+			chatMessageColor = ChromeMetrics.Get<Color>("ChatMessageColor");
+			systemMessageColor = ChromeMetrics.Get<Color>("SystemMessageColor");
+
 			ModData.LoadScreen.StartGame(args);
 		}
 
@@ -524,6 +527,8 @@ namespace OpenRA
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
+		static Color systemMessageColor;
+		static Color chatMessageColor;
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
@@ -836,14 +841,19 @@ namespace OpenRA
 			state = RunStatus.Success;
 		}
 
-		public static void AddChatLine(Color color, string name, string text)
+		public static void AddSystemLine(string name, string text)
 		{
-			OrderManager.AddChatLine(color, name, text);
+			OrderManager.AddChatLine(name, systemMessageColor, text, systemMessageColor);
+		}
+
+		public static void AddChatLine(string name, Color nameColor, string text)
+		{
+			OrderManager.AddChatLine(name, nameColor, text, chatMessageColor);
 		}
 
 		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", string.Format(s, args));
+			AddSystemLine("Debug", string.Format(s, args));
 		}
 
 		public static void Disconnect()

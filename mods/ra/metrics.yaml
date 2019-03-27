@@ -19,3 +19,5 @@ Metrics:
 	ChatLineSound: ChatLine
 	ClickDisabledSound: ClickDisabledSound
 	ClickSound: ClickSound
+	ChatMessageColor: FFFFFF
+	SystemMessageColor: FFFF00

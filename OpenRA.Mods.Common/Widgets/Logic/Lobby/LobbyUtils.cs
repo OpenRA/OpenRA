@@ -621,21 +621,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return address;
 		}
 
-		public static void SetupChatLine(ContainerWidget template, Color c, DateTime time, string from, string text)
+		public static void SetupChatLine(ContainerWidget template, DateTime time, string name, Color nameColor, string text, Color textColor)
 		{
 			var nameLabel = template.Get<LabelWidget>("NAME");
 			var timeLabel = template.Get<LabelWidget>("TIME");
 			var textLabel = template.Get<LabelWidget>("TEXT");
 
-			var name = from + ":";
+			var nameText = name + ":";
 			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(from);
+			var nameSize = font.Measure(nameText);
 
 			timeLabel.GetText = () => "{0:D2}:{1:D2}".F(time.Hour, time.Minute);
 
-			nameLabel.GetColor = () => c;
-			nameLabel.GetText = () => name;
+			nameLabel.GetColor = () => nameColor;
+			nameLabel.GetText = () => nameText;
 			nameLabel.Bounds.Width = nameSize.X;
+
+			textLabel.GetColor = () => textColor;
 			textLabel.Bounds.X += nameSize.X;
 			textLabel.Bounds.Width -= nameSize.X;
 

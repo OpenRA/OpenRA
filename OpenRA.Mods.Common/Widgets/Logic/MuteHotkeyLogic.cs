@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (Game.Settings.Sound.Mute)
 			{
 				Game.Sound.MuteAudio();
-				Game.AddChatLine(Color.White, "Battlefield Control", "Audio muted");
+				Game.AddChatLine("Battlefield Control", Color.White, "Audio muted");
 			}
 			else
 			{
 				Game.Sound.UnmuteAudio();
-				Game.AddChatLine(Color.White, "Battlefield Control", "Audio unmuted");
+				Game.AddChatLine("Battlefield Control", Color.White, "Audio unmuted");
 			}
 
 			return true;
