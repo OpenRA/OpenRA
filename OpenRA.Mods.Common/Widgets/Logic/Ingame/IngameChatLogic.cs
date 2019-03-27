@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatScrollPanel.ScrollToBottom();
 
 			foreach (var chatLine in orderManager.ChatCache)
-				AddChatLine(chatLine.Color, chatLine.Name, chatLine.Text, true);
+				AddChatLine(chatLine.Name, chatLine.Color, chatLine.Text, chatLine.TextColor, true);
 
 			orderManager.AddChatLine += AddChatLineWrapper;
 
@@ -255,17 +255,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatOverlay.Visible = true;
 		}
 
-		public void AddChatLineWrapper(Color c, string from, string text)
+		public void AddChatLineWrapper(string name, Color nameColor, string text, Color textColor)
 		{
 			if (chatOverlayDisplay != null)
-				chatOverlayDisplay.AddLine(c, from, text);
+				chatOverlayDisplay.AddLine(name, nameColor, text, textColor);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
-			AddChatLine(c, from, text, chatOverlay == null);
+			AddChatLine(name, nameColor, text, textColor, chatOverlay == null);
 		}
 
-		void AddChatLine(Color c, string from, string text, bool suppressSound)
+		void AddChatLine(string @from, Color nameColor, string text, Color textColor, bool suppressSound)
 		{
 			var template = chatTemplate.Clone();
 			var nameLabel = template.Get<LabelWidget>("NAME");
@@ -278,9 +278,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var nameSize = font.Measure(from);
 
-			nameLabel.GetColor = () => c;
+			nameLabel.GetColor = () => nameColor;
 			nameLabel.GetText = () => name;
 			nameLabel.Bounds.Width = nameSize.X;
+
+			textLabel.GetColor = () => textColor;
 			textLabel.Bounds.X += nameSize.X;
 			textLabel.Bounds.Width -= nameSize.X;
 

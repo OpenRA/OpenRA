@@ -43,12 +43,12 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
 				var inset = 0;
-				string owner = null;
+				string name = null;
 
-				if (!string.IsNullOrEmpty(line.Owner))
+				if (!string.IsNullOrEmpty(line.Name))
 				{
-					owner = line.Owner + ":";
-					inset = font.Measure(owner).X + 5;
+					name = line.Name + ":";
+					inset = font.Measure(name).X + 5;
 				}
 
 				var text = WidgetUtils.WrapText(line.Text, chatLogArea.Width - inset - 6, font);
@@ -57,24 +57,24 @@ namespace OpenRA.Mods.Common.Widgets
 				if (chatpos.Y < pos.Y)
 					break;
 
-				if (owner != null)
+				if (name != null)
 				{
 					if (UseContrast)
-						font.DrawTextWithContrast(owner, chatpos,
-							line.Color, BackgroundColorDark, BackgroundColorLight, 1);
+						font.DrawTextWithContrast(name, chatpos,
+							line.NameColor, BackgroundColorDark, BackgroundColorLight, 1);
 					else if (UseShadow)
-						font.DrawTextWithShadow(owner, chatpos,
-							line.Color, BackgroundColorDark, BackgroundColorLight, 1);
+						font.DrawTextWithShadow(name, chatpos,
+							line.NameColor, BackgroundColorDark, BackgroundColorLight, 1);
 					else
-						font.DrawText(owner, chatpos, line.Color);
+						font.DrawText(name, chatpos, line.NameColor);
 				}
 
 				if (UseContrast)
 					font.DrawTextWithContrast(text, chatpos + new int2(inset, 0),
-						Color.White, Color.Black, 1);
+						line.TextColor, Color.Black, 1);
 				else if (UseShadow)
 					font.DrawTextWithShadow(text, chatpos + new int2(inset, 0),
-						Color.White, Color.Black, 1);
+						line.TextColor, Color.Black, 1);
 				else
 					font.DrawText(text, chatpos + new int2(inset, 0), Color.White);
 			}
@@ -82,9 +82,9 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public void AddLine(Color c, string from, string text)
+		public void AddLine(string name, Color nameColor, string text, Color textColor)
 		{
-			recentLines.Add(new ChatLine(from, text, Game.LocalTick + RemoveTime, c));
+			recentLines.Add(new ChatLine(name, nameColor, text, textColor, Game.LocalTick + RemoveTime));
 
 			if (Notification != null)
 				Game.Sound.Play(SoundType.UI, Notification);
@@ -112,16 +112,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class ChatLine
 	{
-		public readonly Color Color;
-		public readonly string Owner, Text;
+		public readonly Color NameColor;
+		public readonly Color TextColor;
+		public readonly string Name, Text;
 		public readonly int Expiration;
 
-		public ChatLine(string owner, string text, int expiration, Color color)
+		public ChatLine(string name, Color nameColor, string text, Color textColor, int expiration)
 		{
-			Owner = owner;
+			Name = name;
 			Text = text;
 			Expiration = expiration;
-			Color = color;
+			NameColor = nameColor;
+			TextColor = textColor;
 		}
 	}
 }
