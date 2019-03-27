@@ -41,7 +41,7 @@ Container@PLAYER_WIDGETS:
 					Key: AttackMove
 					DisableKeySound: true
 					TooltipText: Attack Move
-					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold {(Ctrl)} while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.
+					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold {(Ctrl)} while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.\n\nAlternatively, hold {(Alt)} while right-clicking on\na target location to start a patrol route. Place\nadditional waypoints by right-clicking.\n\nMistakes can be corrected by right-clicking on the\nmisplaced waypoint again to remove it.\n\nThe patrol will start when you close the route by\nright-clicking on the first waypoint again. Holding\n {(Ctrl)} while doing so will order an Assault Patrol.
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
