@@ -40,7 +40,7 @@ Inf02Trigger = { CPos.New(85, 90), CPos.New(85, 91), CPos.New(85, 92), CPos.New(
 RevealBridgeTrigger = { CPos.New(74, 52), CPos.New(75, 52), CPos.New(76, 52), CPos.New(77, 52), CPos.New(78, 52), CPos.New(79, 52), CPos.New(80, 52), CPos.New(81, 52), CPos.New(82, 52), CPos.New(83, 52), CPos.New(84, 52), CPos.New(85, 52), CPos.New(86, 52), CPos.New(87, 52), CPos.New(88, 52), CPos.New(76, 53), CPos.New(77, 53), CPos.New(78, 53), CPos.New(79, 53), CPos.New(80, 53), CPos.New(81, 53), CPos.New(82, 53), CPos.New(83, 53), CPos.New(84, 53), CPos.New(85, 53), CPos.New(86, 53), CPos.New(87, 53) }
 
 --Mission Variables Setup
-RemainingTime = DateTime.Minutes(36)
+DateTime.TimeLimit = DateTime.Minutes(36)
 BridgeIsIntact = true
 
 --Mission Functions Setup
@@ -150,7 +150,7 @@ WorldLoaded = function()
 
 --Triggers Setup
 	SpawnAlliedHuntingParty()
-	
+
 	Trigger.AfterDelay(0, function()
 		local playerrevealcam = Actor.Create("camera", true, { Owner = player, Location = PlayerStartLocation.Location })
 		Trigger.AfterDelay(1, function()
@@ -326,36 +326,13 @@ WorldLoaded = function()
 		if not USSRMTank01.IsDead then USSRMTank01.Kill() end
 	end)
 
-	Trigger.AfterDelay(DateTime.Minutes(36), function()
-		if not ObjectiveTruck01.IsDead then ObjectiveTruck01.Kill() end
+	Trigger.OnTimerExpired(function()
+		if not ObjectiveTruck01.IsDead then
+			ObjectiveTruck01.Kill()
+
+			-- Set the limit to one so that the timer displays 0 and never ends
+			-- (which would display the game time instead of 0)
+			DateTime.TimeLimit = 1
+		end
 	end)
-end
-
-Tick = function()
-
--- Timer Setup
-	if RemainingTime == DateTime.Minutes(30) then
-		Media.PlaySpeechNotification(player, "ThirtyMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(20) then
-		Media.PlaySpeechNotification(player, "TwentyMinutesRemainingg")
-	elseif RemainingTime == DateTime.Minutes(10) then
-		Media.PlaySpeechNotification(player, "TenMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(5) then
-		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(4) then
-		Media.PlaySpeechNotification(player, "WarningFourMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(3) then
-		Media.PlaySpeechNotification(player, "WarningThreeMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(2) then
-		Media.PlaySpeechNotification(player, "WarningTwoMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(1) then
-		Media.PlaySpeechNotification(player, "WarningOneMinuteRemaining")
-	end
-
-	if RemainingTime > 0 then
-		UserInterface.SetMissionText("Time Remaining: " .. Utils.FormatTime(RemainingTime), neutral.Color)
-		RemainingTime = RemainingTime - 1
-	elseif RemainingTime == 0 then
-		UserInterface.SetMissionText("")
-	end
 end
