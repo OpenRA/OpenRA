@@ -13,6 +13,8 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+	TimeLimitManager:
+		SkipTimerExpiredNotification: True
 
 ^Palettes:
 	IndexedPlayerPalette@truk:
