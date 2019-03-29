@@ -44,7 +44,7 @@ GAPOWR:
 		Conditions:
 			powrup: powrup.a
 		Requirements:
-			powrup: !build-incomplete
+			powrup: !build-incomplete && !powrup.a
 	Power@pluga:
 		RequiresCondition: !empdisable && powrup.a
 		Amount: 50
@@ -57,7 +57,7 @@ GAPOWR:
 		Conditions:
 			powrup: powrup.b
 		Requirements:
-			powrup: !build-incomplete
+			powrup: !build-incomplete && !powrup.b
 	WithIdleOverlay@plugb:
 		RequiresCondition: !build-incomplete && powrup.b
 		PauseOnCondition: empdisable

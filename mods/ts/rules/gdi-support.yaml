@@ -133,9 +133,9 @@ GACTWR:
 			tower.rocket: tower.rocket
 			tower.sam: tower.sam
 		Requirements:
-			tower.vulcan: !build-incomplete
-			tower.rocket: !build-incomplete
-			tower.sam: !build-incomplete
+			tower.vulcan: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+			tower.rocket: !build-incomplete && !tower.rocket && !tower.vulcan && !tower.sam
+			tower.sam: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:
 	Replacement:
