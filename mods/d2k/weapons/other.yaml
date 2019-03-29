@@ -106,36 +106,48 @@ Demolish:
 		ImpactSounds: EXPLLG2.WAV
 		ImpactActors: false
 
-Atomic:
+DeathHand:
+	Warhead@Cluster: FireCluster
+		Weapon: DeathHandCluster
+		RandomClusterCount: 14
+		Dimensions: 3,3
+		Footprint: xxx xXx xxx
+	Warhead@2Eff: CreateEffect
+		Explosions: nuke
+		ImpactSounds: EXPLLG2.WAV
+		ImpactActors: false
+
+DeathHandCluster:
+	Inherits: Debris2
+	Range: 7c0
+	Projectile: Bullet
+		Image: 120mm
+		TrailImage: small_trail2
+		Speed: 96
+		LaunchAngle: 0, 32
+		Inaccuracy: 1c512
+		BounceCount: 0
 	Warhead@1Dam: SpreadDamage
-		Spread: 1c0
-		Falloff: 200, 100, 50, 25, 12, 0
-		Damage: 27000 ##225 in vanilla but of course is a cluster bomb instead, so damage spread out
+		Damage: 4500
 		Versus:
 			none: 90
 			wall: 50
-			building: 75
+			building: 100
 			wood: 60
 			light: 60
 			heavy: 60
 			invulnerable: 0
 			cy: 25
 			harvester: 60
-		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
-	Warhead@2Eff: CreateEffect
-		Explosions: nuke
-		ImpactSounds: EXPLLG2.WAV
-		ImpactActors: false
-	Warhead@3Concrete: DamagesConcrete
-		Damage: 24300
-
-CrateNuke:
-	Inherits: Atomic
-	Warhead@1Dam: SpreadDamage
-		Spread: 320
-		Falloff: 100, 60, 30, 15, 0
-		Damage: 5000
-		AffectsParent: true
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: EXPLSML4.WAV
+	Warhead@2Concrete: DamagesConcrete
+		Damage: 4500
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage

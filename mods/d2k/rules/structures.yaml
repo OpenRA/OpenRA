@@ -1151,9 +1151,11 @@ palace:
 		BeginChargeSpeechNotification: DeathHandMissilePrepping
 		EndChargeSpeechNotification: DeathHandMissileReady
 		LaunchSpeechNotification: MissileLaunchDetected
-		MissileWeapon: atomic
+		MissileWeapon: deathhand
 		MissileDelay: 18
 		SpawnOffset: 32,816,0
+		DetonationAltitude: 3c0
+		RemoveMissileOnDetonation: False
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraRange: 10c0
