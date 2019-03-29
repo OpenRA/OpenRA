@@ -33,6 +33,8 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WPos ascendTarget;
 		readonly WPos descendSource;
 		readonly WPos descendTarget;
+		readonly WDist detonationAltitude;
+		readonly bool removeOnDetonation;
 		readonly int impactDelay;
 		readonly int turn;
 		readonly string trailImage;
@@ -45,9 +47,11 @@ namespace OpenRA.Mods.Common.Effects
 		int ticks, trailTicks;
 		int launchDelay;
 		bool isLaunched;
+		bool detonated;
 
 		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
-			WPos launchPos, WPos targetPos, WDist velocity, int launchDelay, int impactDelay, bool skipAscent, string flashType,
+			WPos launchPos, WPos targetPos, WDist detonationAltitude, bool removeOnDetonation, WDist velocity, int launchDelay, int impactDelay,
+			bool skipAscent, string flashType,
 			string trailImage, string[] trailSequences, string trailPalette, bool trailUsePlayerPalette, int trailDelay, int trailInterval)
 		{
 			this.firedBy = firedBy;
@@ -74,6 +78,8 @@ namespace OpenRA.Mods.Common.Effects
 			ascendTarget = launchPos + offset;
 			descendSource = targetPos + offset;
 			descendTarget = targetPos;
+			this.detonationAltitude = detonationAltitude;
+			this.removeOnDetonation = removeOnDetonation;
 
 			anim = new Animation(firedBy.World, name);
 
@@ -100,14 +106,15 @@ namespace OpenRA.Mods.Common.Effects
 			if (ticks == turn)
 				anim.PlayRepeating(downSequence);
 
-			if (ticks < turn)
+			var isDescending = ticks >= turn;
+			if (!isDescending)
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
 			else
 				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, impactDelay - turn);
 
 			if (!string.IsNullOrEmpty(trailImage) && --trailTicks < 0)
 			{
-				var trailPos = ticks < turn ? WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks - trailDelay, turn)
+				var trailPos = !isDescending ? WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks - trailDelay, turn)
 					: WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn - trailDelay, impactDelay - turn);
 
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(trailPos, w, trailImage, trailSequences.Random(world.SharedRandom),
@@ -116,23 +123,31 @@ namespace OpenRA.Mods.Common.Effects
 				trailTicks = trailInterval;
 			}
 
-			if (ticks == impactDelay)
-				Explode(world);
+			var dat = world.Map.DistanceAboveTerrain(pos);
+			if (ticks == impactDelay || (isDescending && dat <= detonationAltitude))
+				Explode(world, ticks == impactDelay || removeOnDetonation);
 
 			world.ScreenMap.Update(this, pos, anim.Image);
 
 			ticks++;
 		}
 
-		void Explode(World world)
+		void Explode(World world, bool removeProjectile)
 		{
-			world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+			if (removeProjectile)
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+
+			if (detonated)
+				return;
+
 			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var flash in world.WorldActor.TraitsImplementing<FlashPaletteEffect>())
 				if (flash.Info.Type == flashType)
 					flash.Enable(-1);
+
+			detonated = true;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

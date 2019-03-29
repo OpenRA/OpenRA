@@ -35,6 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Offset from the actor the missile spawns on.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
 
+		[Desc("Altitude offset from the target position at which the warhead should detonate.")]
+		public readonly WDist DetonationAltitude = WDist.Zero;
+
+		[Desc("Should nuke missile projectile be removed on detonation above ground.",
+			"'False' will make the missile continue until it hits the ground and disappears (without triggering another explosion).")]
+		public readonly bool RemoveMissileOnDetonation = true;
+
 		[Desc("Palette to use for the missile weapon image.")]
 		[PaletteReference("IsPlayerPalette")] public readonly string MissilePalette = "effect";
 
@@ -133,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
-				targetPosition,
+				targetPosition, info.DetonationAltitude, info.RemoveMissileOnDetonation,
 				info.FlightVelocity, info.MissileDelay, info.FlightDelay, info.SkipAscent,
 				info.FlashType,
 				info.TrailImage, info.TrailSequences, info.TrailPalette, info.TrailUsePlayerPalette, info.TrailDelay, info.TrailInterval);
