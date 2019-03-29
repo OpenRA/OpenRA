@@ -259,7 +259,7 @@ missile2:
 		Facings: -32
 		ZOffset: 1023
 
-atomic:
+deathhand:
 	up: DATA.R8
 		Start: 2147
 		ZOffset: 1023
