@@ -358,12 +358,13 @@ NAMISL:
 		Icon: clustermissile
 		ChargeInterval: 13500
 		Description: Cluster Missile
-		LongDesc: Launches a conventional warhead\nat a target location.
+		LongDesc: Launches an explosive cluster warhead\nat a target location.
 		EndChargeSpeechNotification: ClusterMissileReady
 		SelectTargetSpeechNotification: SelectTarget
 		IncomingSpeechNotification: MissileLaunchDetected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
+		DetonationAltitude: 5c0
 		SpawnOffset: 0,427,0
 		DisplayTimerStances: None
 		DisplayBeacon: False
