@@ -21,6 +21,7 @@ namespace OpenRA.Graphics
 		void Render(Renderer renderer);
 		void SetCursor(string cursor);
 		void Tick();
+		int Frame { get; }
 	}
 
 	public sealed class SoftwareCursor : ICursor
@@ -77,7 +78,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var cursorSequence = cursorProvider.GetCursorSequence(cursorName);
-			var cursorSprite = sprites[cursorName][((int)cursorFrame % cursorSequence.Length)];
+			var cursorSprite = sprites[cursorName][Frame];
 			var cursorSize = CursorProvider.CursorViewportZoomed ? 2.0f * cursorSprite.Size : cursorSprite.Size;
 
 			var cursorOffset = CursorProvider.CursorViewportZoomed ?
@@ -89,6 +90,15 @@ namespace OpenRA.Graphics
 				Viewport.LastMousePos - cursorOffset,
 				paletteReferences[cursorSequence.Palette],
 				cursorSize);
+		}
+
+		public int Frame
+		{
+			get
+			{
+				var cursorSequence = cursorProvider.GetCursorSequence(cursorName);
+				return (int)cursorFrame % cursorSequence.Length;
+			}
 		}
 
 		public void Dispose()
