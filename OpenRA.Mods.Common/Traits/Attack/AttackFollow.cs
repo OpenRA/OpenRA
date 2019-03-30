@@ -28,10 +28,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackFollow : AttackBase, INotifyOwnerChanged
 	{
-		protected Target requestedTarget;
+		public Target RequestedTarget;
 		protected bool requestedForceAttack;
-		protected int requestedTargetLastTick;
-		protected Target opportunityTarget;
+		public int RequestedTargetLastTick;
+		public Target OpportunityTarget;
 		protected bool opportunityForceAttack;
 		Mobile mobile;
 		AutoTarget autoTarget;
@@ -66,45 +66,45 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
-				requestedTarget = opportunityTarget = Target.Invalid;
+				RequestedTarget = OpportunityTarget = Target.Invalid;
 
-			if (requestedTargetLastTick != self.World.WorldTick)
+			if (RequestedTargetLastTick != self.World.WorldTick)
 			{
 				// Activities tick before traits, so if we are here it means the activity didn't run
 				// (either queued next or already cancelled) and we need to recalculate the target ourself
 				bool targetIsHiddenActor;
-				requestedTarget = requestedTarget.Recalculate(self.Owner, out targetIsHiddenActor);
+				RequestedTarget = RequestedTarget.Recalculate(self.Owner, out targetIsHiddenActor);
 			}
 
 			// Can't fire on anything
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return;
 
-			if (requestedTarget.Type != TargetType.Invalid)
+			if (RequestedTarget.Type != TargetType.Invalid)
 			{
-				IsAiming = CanAimAtTarget(self, requestedTarget, requestedForceAttack);
+				IsAiming = CanAimAtTarget(self, RequestedTarget, requestedForceAttack);
 				if (IsAiming)
-					DoAttack(self, requestedTarget);
+					DoAttack(self, RequestedTarget);
 			}
 			else
 			{
 				IsAiming = false;
 
-				if (opportunityTarget.Type != TargetType.Invalid)
-					IsAiming = CanAimAtTarget(self, opportunityTarget, opportunityForceAttack);
+				if (OpportunityTarget.Type != TargetType.Invalid)
+					IsAiming = CanAimAtTarget(self, OpportunityTarget, opportunityForceAttack);
 
 				if (!IsAiming && ((AttackFollowInfo)Info).OpportunityFire && autoTarget != null &&
 				    !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.Defend)
 				{
-					opportunityTarget = autoTarget.ScanForTarget(self, false);
+					OpportunityTarget = autoTarget.ScanForTarget(self, false);
 					opportunityForceAttack = false;
 
-					if (opportunityTarget.Type != TargetType.Invalid)
-						IsAiming = CanAimAtTarget(self, opportunityTarget, opportunityForceAttack);
+					if (OpportunityTarget.Type != TargetType.Invalid)
+						IsAiming = CanAimAtTarget(self, OpportunityTarget, opportunityForceAttack);
 				}
 
 				if (IsAiming)
-					DoAttack(self, opportunityTarget);
+					DoAttack(self, OpportunityTarget);
 			}
 
 			base.Tick(self);
@@ -122,21 +122,21 @@ namespace OpenRA.Mods.Common.Traits
 			// the last order (usually a move) and set the target immediately
 			if (!queued)
 			{
-				requestedTarget = target;
+				RequestedTarget = target;
 				requestedForceAttack = forceAttack;
-				requestedTargetLastTick = self.World.WorldTick;
+				RequestedTargetLastTick = self.World.WorldTick;
 			}
 		}
 
 		public override void OnStopOrder(Actor self)
 		{
-			requestedTarget = opportunityTarget = Target.Invalid;
+			RequestedTarget = OpportunityTarget = Target.Invalid;
 			base.OnStopOrder(self);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			requestedTarget = opportunityTarget = Target.Invalid;
+			RequestedTarget = OpportunityTarget = Target.Invalid;
 		}
 
 		class AttackActivity : Activity
@@ -186,15 +186,15 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsCanceling)
 				{
 					// Cancel the requested target, but keep firing on it while in range
-					attack.opportunityTarget = attack.requestedTarget;
+					attack.OpportunityTarget = attack.RequestedTarget;
 					attack.opportunityForceAttack = attack.requestedForceAttack;
-					attack.requestedTarget = Target.Invalid;
+					attack.RequestedTarget = Target.Invalid;
 					return NextActivity;
 				}
 
 				// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 				// Having both this and AttackFollow modify that field is a horrible hack.
-				if (hasTicked && attack.requestedTarget.Type == TargetType.Invalid)
+				if (hasTicked && attack.RequestedTarget.Type == TargetType.Invalid)
 					return NextActivity;
 
 				if (attack.IsTraitPaused)
@@ -202,8 +202,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				bool targetIsHiddenActor;
 				attack.requestedForceAttack = forceAttack;
-				attack.requestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
-				attack.requestedTargetLastTick = self.World.WorldTick;
+				attack.RequestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+				attack.RequestedTargetLastTick = self.World.WorldTick;
 				hasTicked = true;
 
 				if (!targetIsHiddenActor && target.Type == TargetType.Actor)
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Either we are in range and can see the target, or we've lost track of it and should give up
 				if (wasMovingWithinRange && targetIsHiddenActor)
 				{
-					attack.requestedTarget = Target.Invalid;
+					attack.RequestedTarget = Target.Invalid;
 					return NextActivity;
 				}
 
@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Target is hidden or dead, and we don't have a fallback position to move towards
 				if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				{
-					attack.requestedTarget = Target.Invalid;
+					attack.RequestedTarget = Target.Invalid;
 					return NextActivity;
 				}
 
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (useLastVisibleTarget)
 					{
-						attack.requestedTarget = Target.Invalid;
+						attack.RequestedTarget = Target.Invalid;
 						return NextActivity;
 					}
 
@@ -277,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 				// We can't move into range, so give up
 				if (move == null || maxRange == WDist.Zero || maxRange < minRange)
 				{
-					attack.requestedTarget = Target.Invalid;
+					attack.RequestedTarget = Target.Invalid;
 					return NextActivity;
 				}
 

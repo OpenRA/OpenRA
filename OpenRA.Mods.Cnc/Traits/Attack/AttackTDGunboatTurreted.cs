@@ -59,10 +59,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					// Check that AttackTDGunboatTurreted hasn't cancelled the target by modifying attack.Target
 					// Having both this and AttackTDGunboatTurreted modify that field is a horrible hack.
-					if (hasTicked && attack.requestedTarget.Type == TargetType.Invalid)
+					if (hasTicked && attack.RequestedTarget.Type == TargetType.Invalid)
 						return NextActivity;
 
-					attack.requestedTarget = target;
+					attack.RequestedTarget = target;
 					hasTicked = true;
 				}
 

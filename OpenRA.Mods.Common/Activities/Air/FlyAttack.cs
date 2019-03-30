@@ -22,12 +22,13 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly AttackAircraft attackAircraft;
 		readonly Rearmable rearmable;
+		readonly int ticksUntilTurn;
+
 		Target target;
 		Target lastVisibleTarget;
 		WDist lastVisibleMaximumRange;
 		bool useLastVisibleTarget;
-
-		int ticksUntilTurn;
+		bool hasTicked;
 
 		public FlyAttack(Actor self, Target target)
 		{
@@ -49,15 +50,38 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 				Cancel(self);
 
 			if (IsCanceling)
+			{
+				// Cancel the requested target, but keep firing on it while in range
+				attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
+				attackAircraft.RequestedTarget = Target.Invalid;
+				return NextActivity;
+			}
+
+			// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
+			// Having both this and AttackFollow modify that field is a horrible hack.
+			if (hasTicked && attackAircraft.RequestedTarget.Type == TargetType.Invalid)
 				return NextActivity;
 
+			if (attackAircraft.IsTraitPaused)
+				return this;
+
 			bool targetIsHiddenActor;
-			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			attackAircraft.RequestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			attackAircraft.RequestedTargetLastTick = self.World.WorldTick;
+			hasTicked = true;
+
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
@@ -73,11 +97,17 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+			{
+				attackAircraft.RequestedTarget = Target.Invalid;
 				return NextActivity;
+			}
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
 			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
-				return ActivityUtils.SequenceActivities(self, new ReturnToBase(self, aircraft.Info.AbortOnResupply), this);
+			{
+				QueueChild(self, new ReturnToBase(self, aircraft.Info.AbortOnResupply), true);
+				return this;
+			}
 
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
@@ -87,37 +117,25 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// We've reached the assumed position but it is not there - give up
 				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
+				{
+					attackAircraft.RequestedTarget = Target.Invalid;
 					return NextActivity;
+				}
 
 				// Fly towards the last known position
-				return ActivityUtils.SequenceActivities(self,
-					new Fly(self, target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red),
-					this);
+				QueueChild(self, new Fly(self, target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red), true);
+				return this;
 			}
 
-			// If we reach here the target is guaranteed to be both visible and alive, so use target instead of checkTarget.
-			// The target may not be in range, but try attacking anyway...
-			attackAircraft.DoAttack(self, target);
+			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
+				QueueChild(self, new TakeOff(self), true);
 
-			if (ChildActivity == null)
-			{
-				// TODO: This should fire each weapon at its maximum range
-				if (attackAircraft != null && target.IsInRange(self.CenterPosition, attackAircraft.GetMinimumRange()))
-					ChildActivity = ActivityUtils.SequenceActivities(self,
-						new FlyTimed(ticksUntilTurn, self),
-						new Fly(self, target, checkTarget.CenterPosition, Color.Red),
-						new FlyTimed(ticksUntilTurn, self));
-				else
-					ChildActivity = ActivityUtils.SequenceActivities(self,
-						new Fly(self, target, checkTarget.CenterPosition, Color.Red),
-						new FlyTimed(ticksUntilTurn, self));
+			// TODO: This should fire each weapon at its maximum range
+			if (attackAircraft != null && target.IsInRange(self.CenterPosition, attackAircraft.GetMinimumRange()))
+				QueueChild(self, new FlyTimed(ticksUntilTurn, self), true);
 
-				// HACK: This needs to be done in this round-about way because TakeOff doesn't behave as expected when it doesn't have a NextActivity.
-				if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
-					ChildActivity = ActivityUtils.SequenceActivities(self, new TakeOff(self), ChildActivity);
-			}
-
-			ActivityUtils.RunActivity(self, ChildActivity);
+			QueueChild(self, new Fly(self, target, checkTarget.CenterPosition, Color.Red), true);
+			QueueChild(self, new FlyTimed(ticksUntilTurn, self));
 
 			return this;
 		}
