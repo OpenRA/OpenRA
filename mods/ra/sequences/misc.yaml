@@ -627,3 +627,47 @@ ctflag:
 	bib: mbGAP
 		Length: *
 		UseTilesetExtension: true
+
+paratarget:
+	cursor: mouse
+		Start: 82
+		Length: 8
+		Tick: 80
+
+paradirection:
+	arrow-t: mouse
+		Start: 1
+		Y: -7
+		Offset: 0, -19, 0
+	arrow-tr: mouse
+		Start: 2
+		X: 6
+		Y: -5
+		Offset: 15, -15, 0
+	arrow-r: mouse
+		Start: 3
+		X: 7
+		Offset: 19, 0, 0
+	arrow-br: mouse
+		Start: 4
+		X: 6
+		Y: 5
+		Offset: 15, 15, 0
+	arrow-b: mouse
+		Start: 5
+		Y: 7
+		Offset: 0, 19, 0
+	arrow-bl: mouse
+		Start: 6
+		X: -6
+		Y: 5
+		Offset: -15, 15, 0
+	arrow-l: mouse
+		Start: 7
+		X: -8
+		Offset: -19, 0, 0
+	arrow-tl: mouse
+		Start: 8
+		X: -6
+		y: 5
+		Offset: -15, -15, 0

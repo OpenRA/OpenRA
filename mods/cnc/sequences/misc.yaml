@@ -436,3 +436,47 @@ smokland:
 		Length: 32
 		Tick: 120
 		ZOffset: 1023
+
+airstriketarget:
+	cursor: mouse2
+		Start: 88
+		Length: 8
+		Tick: 80
+
+airstrikedirection:
+	arrow-t: mouse2
+		Start: 1
+		Y: -12
+		Offset: 0, -15, 0
+	arrow-tr: mouse2
+		Start: 2
+		X: 14
+		Y: -12
+		Offset: 7, -7, 0
+	arrow-r: mouse2
+		Start: 3
+		X: 14
+		Offset: 12, 0, 0
+	arrow-br: mouse2
+		Start: 4
+		X: 14
+		Y: 11
+		Offset: 7, 7, 0
+	arrow-b: mouse2
+		Start: 5
+		Y: 11
+		Offset: 0, 15, 0
+	arrow-bl: mouse2
+		Start: 6
+		X: -15
+		Y: 11
+		Offset: -7, 7, 0
+	arrow-l: mouse2
+		Start: 7
+		X: -15
+		Offset: -12, 0, 0
+	arrow-tl: mouse2
+		Start: 8
+		X: -15
+		Y: -12
+		Offset: -7, -7, 0

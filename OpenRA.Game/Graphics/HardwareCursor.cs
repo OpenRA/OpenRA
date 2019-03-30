@@ -125,6 +125,8 @@ namespace OpenRA.Graphics
 
 		public void Render(Renderer renderer) { }
 
+		public int Frame { get { return frame; } }
+
 		public void Dispose()
 		{
 			foreach (var cursors in hardwareCursors)

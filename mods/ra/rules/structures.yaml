@@ -1461,6 +1461,8 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		TargetPlaceholderCursorAnimation: paratarget
+		DirectionArrowAnimation: paradirection
 	ParatroopersPower@paratroopers:
 		OrderName: SovietParatroopers
 		Prerequisites: aircraft.soviet
@@ -1479,6 +1481,8 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		TargetPlaceholderCursorAnimation: paratarget
+		DirectionArrowAnimation: paradirection
 	AirstrikePower@parabombs:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
@@ -1498,6 +1502,8 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		TargetPlaceholderCursorAnimation: paratarget
+		DirectionArrowAnimation: paradirection
 	ProductionBar:
 		ProductionType: Aircraft
 	SupportPowerChargeBar:

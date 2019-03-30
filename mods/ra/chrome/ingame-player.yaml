@@ -8,14 +8,6 @@ Container@PLAYER_WIDGETS:
 			X: 10
 			Y: 10
 			Children:
-				SupportPowers@SUPPORT_PALETTE:
-					IconSize: 62, 46
-					IconSpriteOffset: -1, -1
-					TooltipContainer: TOOLTIP_CONTAINER
-					ReadyText: READY
-					HoldText: ON HOLD
-					HotkeyPrefix: SupportPower
-					HotkeyCount: 6
 				Container@PALETTE_FOREGROUND:
 					Children:
 						Image@ICON_TEMPLATE:
@@ -24,9 +16,18 @@ Container@PLAYER_WIDGETS:
 							Y: 0 - 2
 							Width: 62
 							Height: 46
+							ClickThrough: false
 							IgnoreMouseOver: true
 							ImageCollection: sidebar
 							ImageName: background-supportoverlay
+				SupportPowers@SUPPORT_PALETTE:
+					IconSize: 62, 46
+					IconSpriteOffset: -1, -1
+					TooltipContainer: TOOLTIP_CONTAINER
+					ReadyText: READY
+					HoldText: ON HOLD
+					HotkeyPrefix: SupportPower
+					HotkeyCount: 6
 		SupportPowerTimer@SUPPORT_POWER_TIMER:
 			X: 80
 			Y: 10

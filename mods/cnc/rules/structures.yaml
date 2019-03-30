@@ -628,6 +628,8 @@ HQ:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		TargetPlaceholderCursorAnimation: airstriketarget
+		DirectionArrowAnimation: airstrikedirection
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
