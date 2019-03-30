@@ -1437,6 +1437,9 @@ Rules:
 		GlobalLightingPaletteEffect:
 			Blue: 0.7
 			Ambient: 0.7
+	^ExistsInWorld:
+		GivesExperience:
+			ActorExperienceModifier: 0
 	HARV:
 		-Targetable:
 	GALITE:
