@@ -50,7 +50,7 @@ namespace OpenRA.Mods.D2k.Traits
 			Info = info;
 		}
 
-		public override void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
+		public override void DoAttack(Actor self, Target target)
 		{
 			// This is so that the worm does not launch an attack against a target that has reached solid rock
 			if (target.Type != TargetType.Actor || !CanAttack(self, target))
@@ -85,6 +85,11 @@ namespace OpenRA.Mods.D2k.Traits
 				// Worms ignore visibility, so don't need to recalculate targets
 				targetIsHiddenActor = false;
 				return target;
+			}
+
+			protected override void DoAttack(Actor self, AttackFrontal attack, IEnumerable<Armament> armaments)
+			{
+				attack.DoAttack(self, target);
 			}
 		}
 	}
