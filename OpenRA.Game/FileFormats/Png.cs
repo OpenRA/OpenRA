@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using OpenRA.Primitives;
 

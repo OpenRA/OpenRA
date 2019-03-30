@@ -33,7 +33,7 @@ namespace OpenRA.FileSystem
 			public ReadOnlyZipFile(Stream s, string filename)
 			{
 				Name = filename;
-				pkg = ZipFileHelper.Create(s);
+				pkg = new ZipFile(s);
 			}
 
 			public Stream GetStream(string filename)
@@ -113,7 +113,7 @@ namespace OpenRA.FileSystem
 				}
 
 				pkgStream.Position = 0;
-				pkg = ZipFileHelper.Create(pkgStream);
+				pkg = new ZipFile(pkgStream);
 				Name = filename;
 			}
 
