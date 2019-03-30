@@ -6,15 +6,16 @@ The following lists per-platform dependencies required to build from source.
 Windows
 =======
 
-* [Windows PowerShell >= 4.0](http://microsoft.com/powershell)
-* [.NET Framework >= 4.5 (Client Profile)](http://www.microsoft.com/en-us/download/details.aspx?id=30653)
-* [SDL 2](http://www.libsdl.org/download-2.0.php) (included)
-* [FreeType](http://gnuwin32.sourceforge.net/packages/freetype.htm) (included)
-* [zlib](http://gnuwin32.sourceforge.net/packages/zlib.htm) (included)
-* [OpenAL](http://kcat.strangesoft.net/openal.html) (included)
-* [liblua 5.1](http://luabinaries.sourceforge.net/download.html) (included)
+Compiling OpenRA requires the following dependencies:
+* [Windows PowerShell >= 4.0](http://microsoft.com/powershell) (included by default in recent Windows 10 versions)
+* [.NET Framework >= 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) (included by default in recent Windows 10 versions)
 
-You need to fetch the thirdparty dependencies and place them at the appropriate places by typing `make dependencies` in a command terminal.
+Type `make dependencies` in a command terminal to download pre-compiled native libraries for:
+* [SDL 2](http://www.libsdl.org/download-2.0.php)
+* [FreeType](http://gnuwin32.sourceforge.net/packages/freetype.htm)
+* [zlib](http://gnuwin32.sourceforge.net/packages/zlib.htm)
+* [OpenAL](http://kcat.strangesoft.net/openal.html)
+* [liblua 5.1](http://luabinaries.sourceforge.net/download.html)
 
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with MSBuild or use the Makefile analogue command `make all` scripted in PowerShell syntax.
 
@@ -22,6 +23,8 @@ Run the game with `launch-game.cmd`. It can be handed arguments that specify the
 
 Linux
 =====
+
+Mono, version 5.4 or later, is required to compile OpenRA. You can add the [upstream mono repository](https://www.mono-project.com/download/stable/#download-lin) for your distro to obtain the latest version if your system packages are not sufficient.
 
 Use `make dependencies` to map the native libraries to your system and fetch the remaining CLI dependencies to place them at the appropriate places.
 
@@ -41,12 +44,21 @@ sudo pacman -S mono openal libgl freetype2 sdl2 lua51 xdg-utils zenity
 Debian/Ubuntu
 -------------
 
+:warning: The `mono` packages in the Ubuntu < 19.04 and Debian < 10 repositories are too old to support OpenRA. :warning:
+
+See the instructions under the *Linux* section above to upgrade `mono` using the upstream releases if needed.
+
 ```
 sudo apt install mono-devel libfreetype6 libopenal1 liblua5.1-0 libsdl2-2.0-0 xdg-utils zenity wget
 ```
 
 Fedora
 ------
+
+:warning: The `mono` packages in the Fedora repositories are too old to support OpenRA. :warning:
+
+See the instructions under the *Linux* section above to upgrade `mono` using the upstream releases.
+
 
 ```
 sudo dnf install "pkgconfig(mono)" SDL2 freetype "lua = 5.1" openal-soft xdg-utils zenity
@@ -85,7 +97,14 @@ sudo yum install "pkgconfig(mono)" SDL2 freetype "lua = 5.1" openal-soft xdg-uti
 OSX
 =====
 
-Use `make dependencies` to map the native libraries to your system.
+Before compiling OpenRA you must install the following dependencies:
+* [Mono >= 5.4](https://www.mono-project.com/download/stable/#download-mac)
+
+Use `make dependencies` to download pre-compiled native libraries for:
+* [SDL 2](http://www.libsdl.org/download-2.0.php)
+* [FreeType](http://gnuwin32.sourceforge.net/packages/freetype.htm)
+* [OpenAL](http://kcat.strangesoft.net/openal.html)
+* [liblua 5.1](http://luabinaries.sourceforge.net/download.html)
 
 To compile OpenRA, run `make` from the command line.
 
