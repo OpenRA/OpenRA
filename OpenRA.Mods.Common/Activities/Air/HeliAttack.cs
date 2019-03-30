@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		Target lastVisibleTarget;
 		WDist lastVisibleMaximumRange;
 		bool useLastVisibleTarget;
+		bool hasTicked;
 
 		public HeliAttack(Actor self, Target target)
 		{
@@ -59,10 +60,26 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self);
 
 			if (IsCanceling)
+			{
+				// Cancel the requested target, but keep firing on it while in range
+				attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
+				attackAircraft.RequestedTarget = Target.Invalid;
+				return NextActivity;
+			}
+
+			// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
+			// Having both this and AttackFollow modify that field is a horrible hack.
+			if (hasTicked && attackAircraft.RequestedTarget.Type == TargetType.Invalid)
 				return NextActivity;
 
+			if (attackAircraft.IsTraitPaused)
+				return this;
+
 			bool targetIsHiddenActor;
-			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			attackAircraft.RequestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			attackAircraft.RequestedTargetLastTick = self.World.WorldTick;
+			hasTicked = true;
+
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
@@ -78,7 +95,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
+			{
+				attackAircraft.RequestedTarget = Target.Invalid;
 				return NextActivity;
+			}
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
 			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
@@ -102,7 +122,10 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// We've reached the assumed position but it is not there - give up
 				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
+				{
+					attackAircraft.RequestedTarget = Target.Invalid;
 					return NextActivity;
+				}
 
 				// Fly towards the last known position
 				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
@@ -124,8 +147,6 @@ namespace OpenRA.Mods.Common.Activities
 					facing = aircraft.Facing;
 				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(-facing));
 			}
-
-			attackAircraft.DoAttack(self, target);
 
 			return this;
 		}

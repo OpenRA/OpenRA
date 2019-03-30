@@ -15,15 +15,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AttackAircraftInfo : AttackFrontalInfo, Requires<AircraftInfo>
+	public class AttackAircraftInfo : AttackFollowInfo, Requires<AircraftInfo>
 	{
 		[Desc("Delay, in game ticks, before non-hovering aircraft turns to attack.")]
 		public readonly int AttackTurnDelay = 50;
 
+		[Desc("Tolerance for attack angle. Range [0, 128], 128 covers 360 degrees.")]
+		public readonly int FacingTolerance = 0;
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			if (FacingTolerance < 0 || FacingTolerance > 128)
+				throw new YamlException("Facing tolerance must be in range of [0, 128], 128 covers 360 degrees.");
+		}
+
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 
-	public class AttackAircraft : AttackFrontal
+	public class AttackAircraft : AttackFollow
 	{
 		public readonly AttackAircraftInfo AttackAircraftInfo;
 		readonly AircraftInfo aircraftInfo;
@@ -46,9 +57,21 @@ namespace OpenRA.Mods.Common.Traits
 		protected override bool CanAttack(Actor self, Target target)
 		{
 			// Don't fire while landed or when outside the map.
-			return base.CanAttack(self, target)
-				&& self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length >= aircraftInfo.MinAirborneAltitude
-				&& self.World.Map.Contains(self.Location);
+			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude
+				|| !self.World.Map.Contains(self.Location))
+				return false;
+
+			if (!base.CanAttack(self, target))
+				return false;
+
+			var pos = self.CenterPosition;
+			var targetedPosition = GetTargetPosition(pos, target);
+			var delta = targetedPosition - pos;
+
+			if (delta.HorizontalLengthSquared == 0)
+				return true;
+
+			return Util.FacingWithinTolerance(facing.Facing, delta.Yaw.Facing, AttackAircraftInfo.FacingTolerance);
 		}
 	}
 }
