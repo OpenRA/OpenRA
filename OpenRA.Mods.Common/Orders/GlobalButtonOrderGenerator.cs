@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Orders
 {
-	public abstract class GlobalButtonOrderGenerator<T> : IOrderGenerator
+	public abstract class GlobalButtonOrderGenerator<T> : OrderGenerator
 	{
 		string order;
 
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Orders
 			this.order = order;
 		}
 
-		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
@@ -54,17 +54,17 @@ namespace OpenRA.Mods.Common.Orders
 			}
 		}
 
-		public void Tick(World world)
+		protected override void Tick(World world)
 		{
 			if (world.LocalPlayer != null &&
 				world.LocalPlayer.WinState != WinState.Undefined)
 				world.CancelInputMode();
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
+		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 
-		public abstract string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		protected abstract override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
 	}
 
 	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<ToggleConditionOnOrder>
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Orders
 			return !t.IsTraitDisabled && !t.IsTraitPaused;
 		}
 
-		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(world, mi).Any() ? "powerdown" : "powerdown-blocked";
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		public SellOrderGenerator() : base("Sell") { }
 
-		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 

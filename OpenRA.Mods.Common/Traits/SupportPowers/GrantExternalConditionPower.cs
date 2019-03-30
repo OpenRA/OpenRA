@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -101,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		class SelectConditionTarget : IOrderGenerator
+		class SelectConditionTarget : OrderGenerator
 		{
 			readonly GrantExternalConditionPower power;
 			readonly int range;
@@ -122,21 +123,21 @@ namespace OpenRA.Mods.Common.Traits
 				tile = world.Map.Rules.Sequences.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left && power.UnitsInRange(cell).Any())
 					yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 			}
 
-			public void Tick(World world)
+			protected override void Tick(World world)
 			{
 				// Cancel the OG if we can't use the power
 				if (!manager.Powers.ContainsKey(order))
 					world.CancelInputMode();
 			}
 
-			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
@@ -146,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
+			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
@@ -155,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, true);
 			}
 
-			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				return power.UnitsInRange(cell).Any() ? power.info.Cursor : power.info.BlockedCursor;
 			}

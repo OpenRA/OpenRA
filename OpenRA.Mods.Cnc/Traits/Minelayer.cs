@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 
-		class MinefieldOrderGenerator : IOrderGenerator
+		class MinefieldOrderGenerator : OrderGenerator
 		{
 			readonly List<Actor> minelayers;
 			readonly Sprite tileOk;
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				minelayers.Add(a);
 			}
 
-			public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 				{
@@ -201,15 +201,15 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 			}
 
-			public void Tick(World world)
+			protected override void Tick(World world)
 			{
 				minelayers.RemoveAll(minelayer => !minelayer.IsInWorld || minelayer.IsDead);
 				if (!minelayers.Any())
 					world.CancelInputMode();
 			}
 
-			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-			public IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
 				var minelayer = minelayers.FirstOrDefault(m => m.IsInWorld && !m.IsDead);
 				if (minelayer == null)
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 			}
 
-			public string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				return "ability";
 			}
