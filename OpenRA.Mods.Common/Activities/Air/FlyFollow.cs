@@ -47,6 +47,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 				Cancel(self);
@@ -89,9 +96,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			wasMovingWithinRange = true;
-			return ActivityUtils.SequenceActivities(self,
-				aircraft.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor),
-				this);
+			QueueChild(self, aircraft.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor), true);
+			return this;
 		}
 	}
 }
