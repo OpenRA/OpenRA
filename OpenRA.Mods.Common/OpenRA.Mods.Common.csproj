@@ -117,6 +117,7 @@
     <Compile Include="Activities\WaitForTransport.cs" />
     <Compile Include="ActorExts.cs" />
     <Compile Include="AIUtils.cs" />
+    <Compile Include="Orders\OrderGenerator.cs" />
     <Compile Include="TargetExtensions.cs" />
     <Compile Include="Traits\BotModules\Squads\AttackOrFleeFuzzy.cs" />
     <Compile Include="Traits\BotModules\BotModuleLogic\BaseBuilderQueueManager.cs" />
