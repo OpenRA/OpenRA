@@ -30,8 +30,8 @@ if (!(Test-Path "StyleCop.dll"))
 if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 {
 	echo "Fetching ICSharpCode.SharpZipLib from NuGet."
-	./nuget.exe install SharpZipLib -Version 0.86.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
-	cp SharpZipLib/lib/20/ICSharpCode.SharpZipLib.dll .
+	./nuget.exe install SharpZipLib -Version 1.1.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
+	cp SharpZipLib/lib/net45/ICSharpCode.SharpZipLib.dll .
 	rmdir SharpZipLib -Recurse
 }
 

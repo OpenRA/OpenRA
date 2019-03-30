@@ -29,8 +29,8 @@ fi
 
 if [ ! -f ICSharpCode.SharpZipLib.dll ]; then
 	echo "Fetching ICSharpCode.SharpZipLib from NuGet"
-	../noget.sh SharpZipLib 0.86.0
-	cp ./SharpZipLib/lib/20/ICSharpCode.SharpZipLib.dll .
+	../noget.sh SharpZipLib 1.1.0
+	cp ./SharpZipLib/lib/net45/ICSharpCode.SharpZipLib.dll .
 	rm -rf SharpZipLib
 fi
 
