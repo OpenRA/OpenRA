@@ -122,12 +122,12 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public virtual void DoAttack(Actor self, Target target, IEnumerable<Armament> armaments = null)
+		public virtual void DoAttack(Actor self, Target target)
 		{
-			if (armaments == null && !CanAttack(self, target))
+			if (!CanAttack(self, target))
 				return;
 
-			foreach (var a in armaments ?? Armaments)
+			foreach (var a in Armaments)
 				a.CheckFire(self, facing, target);
 		}
 
@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
 		{
-			if (IsTraitDisabled || IsTraitPaused)
+			if (IsTraitDisabled)
 				return;
 
 			if (!target.IsValidFor(self))

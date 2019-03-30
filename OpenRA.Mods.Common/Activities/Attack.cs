@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -200,8 +201,16 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			attackStatus |= AttackStatus.Attacking;
-			attack.DoAttack(self, target, armaments);
+			DoAttack(self, attack, armaments);
+
 			return AttackStatus.Attacking;
+		}
+
+		protected virtual void DoAttack(Actor self, AttackFrontal attack, IEnumerable<Armament> armaments)
+		{
+			if (!attack.IsTraitPaused)
+				foreach (var a in armaments)
+					a.CheckFire(self, facing, target);
 		}
 	}
 }
