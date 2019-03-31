@@ -862,7 +862,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					UnReserve();
 
-				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, false));
+				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in forcing them to land
+				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier, though.
+				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, !Info.TakeOffOnResupply));
 			}
 		}
 
