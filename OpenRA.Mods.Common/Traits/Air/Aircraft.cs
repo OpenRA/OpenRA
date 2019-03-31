@@ -575,7 +575,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (!Info.CanHover && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
-			else if (atLandAltitude && (Info.TakeOffOnResupply || ReservedActor == null))
+			else if (atLandAltitude && !CanLand(self.Location) && ReservedActor == null)
 				self.QueueActivity(new TakeOff(self));
 			else if (Info.CanHover && self.Info.HasTraitInfo<AutoCarryallInfo>() && Info.IdleTurnSpeed > -1)
 			{
