@@ -19,7 +19,6 @@ light_inf:
 		Speed: 43
 	Armament:
 		Weapon: LMG
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -52,6 +51,7 @@ engineer:
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
+	-AttackFrontal:
 
 trooper:
 	Inherits: ^Infantry
@@ -80,7 +80,6 @@ trooper:
 		LocalOffset: 128,0,256
 	TakeCover:
 		ProneOffset: 324,0,-204
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -130,6 +129,7 @@ thumper:
 		Intensity: 1000
 		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
 		RequiresCondition: deployed
+	-AttackFrontal:
 
 fremen:
 	Inherits: ^Infantry
@@ -159,7 +159,6 @@ fremen:
 		Weapon: Fremen_S
 	Armament@SECONDARY:
 		Weapon: Fremen_L
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	Cloak:
@@ -201,7 +200,6 @@ grenadier:
 		FireDelay: 3
 	TakeCover:
 		ProneOffset: 96,100,-64
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
 	Explodes:
@@ -236,7 +234,6 @@ sardaukar:
 		Weapon: M_LMG
 	Armament@SECONDARY:
 		Weapon: M_HMG
-	AttackFrontal:
 	Voiced:
 		VoiceSet: GenericVoice
 	Explodes:
@@ -295,6 +292,7 @@ saboteur:
 		ValidDamageStates: Critical
 	Voiced:
 		VoiceSet: SaboteurVoice
+	-AttackFrontal:
 
 nsfremen:
 	Inherits: fremen

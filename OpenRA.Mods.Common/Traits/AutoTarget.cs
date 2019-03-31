@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("It will try to hunt down the enemy if it is set to AttackAnything.")]
 		public readonly bool AllowMovement = true;
 
+		[Desc("It will try to pivot to face the enemy if stance is not HoldFire.")]
+		public readonly bool AllowTurning = true;
+
 		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
 
@@ -228,7 +231,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
-			ScanAndAttack(self, allowMove);
+			var allowTurn = Info.AllowTurning && Stance > UnitStance.HoldFire;
+			ScanAndAttack(self, allowMove, allowTurn);
 		}
 
 		void ITick.Tick(Actor self)
@@ -240,7 +244,7 @@ namespace OpenRA.Mods.Common.Traits
 				--nextScanTime;
 		}
 
-		public Target ScanForTarget(Actor self, bool allowMove)
+		public Target ScanForTarget(Actor self, bool allowMove, bool allowTurn)
 		{
 			if (nextScanTime <= 0 && ActiveAttackBases.Any())
 			{
@@ -253,7 +257,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (attackStances != OpenRA.Traits.Stance.None)
 					{
 						var range = Info.ScanRadius > 0 ? WDist.FromCells(Info.ScanRadius) : ab.GetMaximumRange();
-						return ChooseTarget(self, ab, attackStances, range, allowMove);
+						return ChooseTarget(self, ab, attackStances, range, allowMove, allowTurn);
 					}
 				}
 			}
@@ -261,9 +265,9 @@ namespace OpenRA.Mods.Common.Traits
 			return Target.Invalid;
 		}
 
-		public void ScanAndAttack(Actor self, bool allowMove)
+		public void ScanAndAttack(Actor self, bool allowMove, bool allowTurn)
 		{
-			var target = ScanForTarget(self, allowMove);
+			var target = ScanForTarget(self, allowMove, allowTurn);
 			if (target.Type != TargetType.Invalid)
 				Attack(self, target, allowMove);
 		}
@@ -276,7 +280,7 @@ namespace OpenRA.Mods.Common.Traits
 				ab.AttackTarget(target, false, allowMove);
 		}
 
-		Target ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove)
+		Target ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove, bool allowTurn)
 		{
 			var chosenTarget = Target.Invalid;
 			var chosenTargetPriority = int.MinValue;
@@ -351,6 +355,9 @@ namespace OpenRA.Mods.Common.Traits
 						!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange));
 
 				if (!armaments.Any())
+					continue;
+
+				if (!allowTurn && !ab.TargetInFiringArc(self, target, ab.Info.FacingTolerance))
 					continue;
 
 				// Evaluate whether we want to target this actor

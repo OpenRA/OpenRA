@@ -103,6 +103,7 @@ ORCA:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	AmmoPool:
@@ -158,6 +159,7 @@ ORCAB:
 	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
+		PersistentTargeting: false
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 10
@@ -297,6 +299,7 @@ SCRIN:
 	AttackAircraft:
 		Voice: Attack
 		FacingTolerance: 20
+		PersistentTargeting: false
 		PauseOnCondition: empdisable
 	AmmoPool:
 		Ammo: 15
@@ -346,6 +349,7 @@ APACHE:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	AmmoPool:

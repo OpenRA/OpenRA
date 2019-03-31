@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			attackAircraft = self.Trait<AttackAircraft>();
 			rearmable = self.TraitOrDefault<Rearmable>();
-			ticksUntilTurn = attackAircraft.AttackAircraftInfo.AttackTurnDelay;
+			ticksUntilTurn = attackAircraft.Info.AttackTurnDelay;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -64,7 +64,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 			{
 				// Cancel the requested target, but keep firing on it while in range
-				attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
+				if (attackAircraft.Info.PersistentTargeting)
+				{
+					attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
+					attackAircraft.OpportunityForceAttack = attackAircraft.RequestedForceAttack;
+				}
+
 				attackAircraft.RequestedTarget = Target.Invalid;
 				return NextActivity;
 			}
@@ -130,7 +135,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
 				QueueChild(self, new TakeOff(self), true);
 
-			// TODO: This should fire each weapon at its maximum range
 			if (attackAircraft != null && target.IsInRange(self.CenterPosition, attackAircraft.GetMinimumRange()))
 				QueueChild(self, new FlyTimed(ticksUntilTurn, self), true);
 

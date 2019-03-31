@@ -32,6 +32,7 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 		ReloadingCondition: attack-cooldown
+	-AttackFrontal:	
 	AttackLeap:
 		Voice: Attack
 		PauseOnCondition: attacking || attack-cooldown
@@ -91,7 +92,6 @@ E1:
 		Name: garrisoned
 		Weapon: Vulcan
 		MuzzleSequence: garrison-muzzle
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
@@ -139,7 +139,6 @@ E2:
 		FireDelay: 15
 	TakeCover:
 		ProneOffset: 256,64,-331
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
 		RequiresCondition: !parachute
@@ -184,7 +183,6 @@ E3:
 		Weapon: Dragon
 	TakeCover:
 		ProneOffset: 384,0,-395
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
@@ -231,7 +229,6 @@ E4:
 		Weapon: Flamer
 	TakeCover:
 		ProneOffset: 160,0,-288
-	AttackFrontal:
 	Explodes:
 		Weapon: VisualExplode
 		EmptyWeapon: VisualExplode
@@ -289,6 +286,7 @@ E6:
 		VoiceSet: EngineerVoice
 	Selectable:
 		Priority: 5
+	-AttackFrontal:
 
 SPY:
 	Inherits: ^Soldier
@@ -342,7 +340,6 @@ SPY:
 		CloakTypes: Cloak, Thief
 	Armament:
 		Weapon: SilencedPPK
-	AttackFrontal:
 	AttackMove:
 		Voice: Move
 	Voiced:
@@ -400,7 +397,6 @@ E7:
 		Name: garrisoned
 		Weapon: Colt45
 		MuzzleSequence: garrison-muzzle
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		StandSequences: stand
@@ -445,7 +441,6 @@ MEDI:
 		OutsideRangeCursor: heal
 		TargetStances: Ally
 		ForceTargetStances: None
-	AttackFrontal:
 	WithInfantryBody:
 		IdleSequences: idle
 		StandSequences: stand
@@ -610,6 +605,7 @@ THF:
 		ValidDamageStates: Critical
 	Mobile:
 		Speed: 71
+	-AttackFrontal:
 
 SHOK:
 	Inherits: ^Soldier
@@ -690,7 +686,6 @@ SNIPER:
 		Name: garrisoned
 		Weapon: Sniper
 		MuzzleSequence: garrison-muzzle
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	Cloak:
@@ -732,7 +727,6 @@ Zombie:
 		Speed: 42
 	AutoTarget:
 		ScanRadius: 5
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: bite
 		IdleSequences: idle1

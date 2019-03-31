@@ -448,6 +448,7 @@
 		StandSequences: stand,stand2
 	DetectCloaked:
 		CloakTypes: Thief
+	AttackFrontal:
 
 ^CivInfantry:
 	Inherits: ^Infantry

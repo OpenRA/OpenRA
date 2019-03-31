@@ -335,6 +335,7 @@
 			Radius: 96
 	MapEditorData:
 		Categories: Infantry
+	AttackFrontal:
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld

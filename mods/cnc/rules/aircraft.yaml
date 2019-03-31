@@ -91,6 +91,8 @@ HELI:
 		ScanRadius: 4
 	AttackAircraft:
 		FacingTolerance: 20
+		OpportunityFire: false
+		PersistentTargeting: false
 	AmmoPool:
 		Ammo: 10
 		PipCount: 5
@@ -150,6 +152,8 @@ ORCA:
 		ScanRadius: 5
 	AttackAircraft:
 		FacingTolerance: 20
+		OpportunityFire: false
+		PersistentTargeting: false
 	AmmoPool:
 		Ammo: 6
 		PipCount: 6

@@ -111,6 +111,7 @@ MIG:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
@@ -180,6 +181,7 @@ YAK:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
@@ -302,6 +304,7 @@ HELI:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 	Aircraft:
 		LandWhenIdle: false
 		TurnSpeed: 4
@@ -369,6 +372,7 @@ HIND:
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
+		PersistentTargeting: false
 	Aircraft:
 		LandWhenIdle: false
 		TurnSpeed: 4

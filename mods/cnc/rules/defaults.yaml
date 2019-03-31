@@ -475,6 +475,7 @@
 	WithInfantryBody:
 		IdleSequences: idle1, idle2
 		StandSequences: stand, stand2
+	AttackFrontal:
 
 ^CivInfantry:
 	Inherits: ^Infantry

@@ -20,29 +20,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay, in game ticks, before non-hovering aircraft turns to attack.")]
 		public readonly int AttackTurnDelay = 50;
 
-		[Desc("Tolerance for attack angle. Range [0, 128], 128 covers 360 degrees.")]
-		public readonly int FacingTolerance = 0;
-
-		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
-		{
-			base.RulesetLoaded(rules, ai);
-
-			if (FacingTolerance < 0 || FacingTolerance > 128)
-				throw new YamlException("Facing tolerance must be in range of [0, 128], 128 covers 360 degrees.");
-		}
-
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 
 	public class AttackAircraft : AttackFollow
 	{
-		public readonly AttackAircraftInfo AttackAircraftInfo;
+		public new readonly AttackAircraftInfo Info;
 		readonly AircraftInfo aircraftInfo;
 
 		public AttackAircraft(Actor self, AttackAircraftInfo info)
 			: base(self, info)
 		{
-			AttackAircraftInfo = info;
+			Info = info;
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
@@ -64,14 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!base.CanAttack(self, target))
 				return false;
 
-			var pos = self.CenterPosition;
-			var targetedPosition = GetTargetPosition(pos, target);
-			var delta = targetedPosition - pos;
-
-			if (delta.HorizontalLengthSquared == 0)
-				return true;
-
-			return Util.FacingWithinTolerance(facing.Facing, delta.Yaw.Facing, AttackAircraftInfo.FacingTolerance);
+			return TargetInFiringArc(self, target, base.Info.FacingTolerance);
 		}
 	}
 }
