@@ -23,21 +23,28 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Automatically acquire and fire on targets of opportunity when not actively attacking.")]
 		public readonly bool OpportunityFire = true;
 
+		[Desc("Keep firing on targets even after attack order is cancelled")]
+		public readonly bool PersistentTargeting = true;
+
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
 	public class AttackFollow : AttackBase, INotifyOwnerChanged
 	{
+		public new readonly AttackFollowInfo Info;
 		public Target RequestedTarget;
-		protected bool requestedForceAttack;
+		public bool RequestedForceAttack;
 		public int RequestedTargetLastTick;
 		public Target OpportunityTarget;
-		protected bool opportunityForceAttack;
+		public bool OpportunityForceAttack;
 		Mobile mobile;
 		AutoTarget autoTarget;
 
 		public AttackFollow(Actor self, AttackFollowInfo info)
-			: base(self, info) { }
+			: base(self, info)
+		{
+			Info = info;
+		}
 
 		protected override void Created(Actor self)
 		{
@@ -58,7 +65,8 @@ namespace OpenRA.Mods.Common.Traits
 			var armaments = ChooseArmamentsForTarget(target, forceAttack);
 			foreach (var a in armaments)
 				if (target.IsInRange(pos, a.MaxRange()) && (a.Weapon.MinRange == WDist.Zero || !target.IsInRange(pos, a.Weapon.MinRange)))
-					return true;
+					if (TargetInFiringArc(self, target, Info.FacingTolerance))
+						return true;
 
 			return false;
 		}
@@ -82,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (RequestedTarget.Type != TargetType.Invalid)
 			{
-				IsAiming = CanAimAtTarget(self, RequestedTarget, requestedForceAttack);
+				IsAiming = CanAimAtTarget(self, RequestedTarget, RequestedForceAttack);
 				if (IsAiming)
 					DoAttack(self, RequestedTarget);
 			}
@@ -91,16 +99,16 @@ namespace OpenRA.Mods.Common.Traits
 				IsAiming = false;
 
 				if (OpportunityTarget.Type != TargetType.Invalid)
-					IsAiming = CanAimAtTarget(self, OpportunityTarget, opportunityForceAttack);
+					IsAiming = CanAimAtTarget(self, OpportunityTarget, OpportunityForceAttack);
 
-				if (!IsAiming && ((AttackFollowInfo)Info).OpportunityFire && autoTarget != null &&
+				if (!IsAiming && Info.OpportunityFire && autoTarget != null &&
 				    !autoTarget.IsTraitDisabled && autoTarget.Stance >= UnitStance.Defend)
 				{
-					OpportunityTarget = autoTarget.ScanForTarget(self, false);
-					opportunityForceAttack = false;
+					OpportunityTarget = autoTarget.ScanForTarget(self, false, false);
+					OpportunityForceAttack = false;
 
 					if (OpportunityTarget.Type != TargetType.Invalid)
-						IsAiming = CanAimAtTarget(self, OpportunityTarget, opportunityForceAttack);
+						IsAiming = CanAimAtTarget(self, OpportunityTarget, OpportunityForceAttack);
 				}
 
 				if (IsAiming)
@@ -123,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 			{
 				RequestedTarget = target;
-				requestedForceAttack = forceAttack;
+				RequestedForceAttack = forceAttack;
 				RequestedTargetLastTick = self.World.WorldTick;
 			}
 		}
@@ -186,8 +194,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsCanceling)
 				{
 					// Cancel the requested target, but keep firing on it while in range
-					attack.OpportunityTarget = attack.RequestedTarget;
-					attack.opportunityForceAttack = attack.requestedForceAttack;
+					if (attack.Info.PersistentTargeting)
+					{
+						attack.OpportunityTarget = attack.RequestedTarget;
+						attack.OpportunityForceAttack = attack.RequestedForceAttack;
+					}
+
 					attack.RequestedTarget = Target.Invalid;
 					return NextActivity;
 				}
@@ -201,7 +213,7 @@ namespace OpenRA.Mods.Common.Traits
 					return this;
 
 				bool targetIsHiddenActor;
-				attack.requestedForceAttack = forceAttack;
+				attack.RequestedForceAttack = forceAttack;
 				attack.RequestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
 				attack.RequestedTargetLastTick = self.World.WorldTick;
 				hasTicked = true;

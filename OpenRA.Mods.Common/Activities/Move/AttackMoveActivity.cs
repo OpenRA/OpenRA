@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (attack == null && autoTarget != null)
 			{
-				var target = autoTarget.ScanForTarget(self, true);
+				var target = autoTarget.ScanForTarget(self, true, true);
 				if (target.Type != TargetType.Invalid)
 				{
 					if (inner != null)

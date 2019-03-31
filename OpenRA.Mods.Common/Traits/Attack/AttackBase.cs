@@ -39,6 +39,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference] public readonly string Voice = "Action";
 
+		[Desc("Tolerance for attack angle. Range [0, 128], 128 covers 360 degrees.")]
+		public readonly int FacingTolerance = 128;
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			base.RulesetLoaded(rules, ai);
+
+			if (FacingTolerance < 0 || FacingTolerance > 128)
+				throw new YamlException("Facing tolerance must be in range of [0, 128], 128 covers 360 degrees.");
+		}
+
 		public override abstract object Create(ActorInitializer init);
 	}
 
@@ -99,6 +110,21 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(a => Info.Armaments.Contains(a.Info.Name)).ToArray();
 
 			return () => armaments;
+		}
+
+		public bool TargetInFiringArc(Actor self, Target target, int facingTolerance)
+		{
+			if (facing == null)
+				return true;
+
+			var pos = self.CenterPosition;
+			var targetedPosition = GetTargetPosition(pos, target);
+			var delta = targetedPosition - pos;
+
+			if (delta.HorizontalLengthSquared == 0)
+				return true;
+
+			return Util.FacingWithinTolerance(facing.Facing, delta.Yaw.Facing, facingTolerance);
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)

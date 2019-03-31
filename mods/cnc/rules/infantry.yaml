@@ -22,7 +22,6 @@ E1:
 		ScanRadius: 4
 	Armament:
 		Weapon: M16
-	AttackFrontal:
 	WithInfantryBody:
 		IdleSequences: idle1,idle2,idle3,idle4
 		DefaultAttackSequence: shoot
@@ -55,7 +54,6 @@ E2:
 		FireDelay: 15
 	TakeCover:
 		ProneOffset: 300,0,-227
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: throw
 	Explodes:
@@ -91,7 +89,6 @@ E3:
 		FireDelay: 5
 	TakeCover:
 		ProneOffset: 180,0,-200
-	AttackFrontal:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -124,7 +121,6 @@ E4:
 		MuzzleSequence: muzzle
 	TakeCover:
 		ProneOffset: 190,0,-198
-	AttackFrontal:
 	WithMuzzleOverlay:
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
@@ -159,7 +155,6 @@ E5:
 		MuzzleSequence: muzzle
 	TakeCover:
 		ProneOffset: 190,0,-190
-	AttackFrontal:
 	WithMuzzleOverlay:
 	-DamagedByTerrain:
 	WithInfantryBody:
@@ -196,6 +191,7 @@ E6:
 		PlayerExperience: 50
 	Selectable:
 		Priority: 5
+	-AttackFrontal:
 
 RMBO:
 	Inherits: ^Soldier

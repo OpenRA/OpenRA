@@ -62,7 +62,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 			{
 				// Cancel the requested target, but keep firing on it while in range
-				attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
+				if (attackAircraft.Info.PersistentTargeting)
+				{
+					attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
+					attackAircraft.OpportunityForceAttack = attackAircraft.RequestedForceAttack;
+				}
+
 				attackAircraft.RequestedTarget = Target.Invalid;
 				return NextActivity;
 			}
