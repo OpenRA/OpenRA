@@ -26,10 +26,9 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing carryallFacing;
 		readonly CPos destination;
 
-		enum DeliveryState { Transport, Land, Wait, Release, TakeOff, Aborted }
+		enum DeliveryState { Transport, Land, Wait, Release, TakeOff, Done, Aborted }
 
 		DeliveryState state;
-		Activity innerActivity;
 
 		public DeliverUnit(Actor self, CPos destination)
 		{
@@ -77,10 +76,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (innerActivity != null)
+			if (ChildActivity != null)
 			{
-				innerActivity = ActivityUtils.RunActivity(self, innerActivity);
-				return this;
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
 			}
 
 			if (IsCanceling)
@@ -98,10 +98,8 @@ namespace OpenRA.Mods.Common.Activities
 					// Can't land, so wait at the target until something changes
 					if (!targetLocation.HasValue)
 					{
-						innerActivity = ActivityUtils.SequenceActivities(self,
-							new HeliFly(self, Target.FromCell(self.World, destination)),
-							new Wait(25));
-
+						QueueChild(self, new HeliFly(self, Target.FromCell(self.World, destination)), true);
+						QueueChild(self, new Wait(25));
 						return this;
 					}
 
@@ -117,14 +115,12 @@ namespace OpenRA.Mods.Common.Activities
 						{
 							var facing = (targetPosition - self.CenterPosition).Yaw.Facing;
 							localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(facing)));
-							innerActivity = ActivityUtils.SequenceActivities(self,
-								new HeliFly(self, Target.FromPos(targetPosition - body.LocalToWorld(localOffset))),
-								new Turn(self, facing));
-
+							QueueChild(self, new HeliFly(self, Target.FromPos(targetPosition - body.LocalToWorld(localOffset))), true);
+							QueueChild(self, new Turn(self, facing));
 							return this;
 						}
 
-						innerActivity = new HeliFly(self, Target.FromPos(targetPosition));
+						QueueChild(self, new HeliFly(self, Target.FromPos(targetPosition)), true);
 						return this;
 					}
 
@@ -145,7 +141,7 @@ namespace OpenRA.Mods.Common.Activities
 					var carryablePosition = self.CenterPosition + body.LocalToWorld(localOffset);
 					if (self.World.Map.DistanceAboveTerrain(carryablePosition) != WDist.Zero)
 					{
-						innerActivity = new HeliLand(self, false, -new WDist(carryall.CarryableOffset.Z));
+						QueueChild(self, new HeliLand(self, false, -new WDist(carryall.CarryableOffset.Z)), true);
 						return this;
 					}
 
@@ -155,7 +151,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DeliveryState.Wait:
 					state = DeliveryState.Release;
-					innerActivity = new Wait(carryall.Info.UnloadingDelay, false);
+					QueueChild(self, new Wait(carryall.Info.UnloadingDelay, false), true);
 					return this;
 
 				case DeliveryState.Release:
@@ -170,7 +166,9 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 
 				case DeliveryState.TakeOff:
-					return ActivityUtils.SequenceActivities(self, new HeliFly(self, Target.FromPos(self.CenterPosition)), NextActivity);
+					QueueChild(self, new HeliFly(self, Target.FromPos(self.CenterPosition)), true);
+					state = DeliveryState.Done;
+					return this;
 
 				case DeliveryState.Aborted:
 					carryall.UnreserveCarryable(self);
@@ -204,14 +202,6 @@ namespace OpenRA.Mods.Common.Activities
 				carryable.UnReserve(cargo);
 				carryable.Detached(cargo);
 			});
-		}
-
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			if (!IsCanceling && innerActivity != null)
-				innerActivity.Cancel(self);
-
-			base.Cancel(self);
 		}
 	}
 }
