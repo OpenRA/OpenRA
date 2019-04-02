@@ -136,9 +136,10 @@ namespace OpenRA.Mods.Common.Activities
 			base.OnActorDispose(self);
 		}
 
-		protected override void OnCancel(Actor self)
+		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			CancelCapture(self);
+			base.Cancel(self, keepQueue);
 		}
 
 		void CancelCapture(Actor self)
