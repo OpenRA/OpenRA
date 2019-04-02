@@ -19,34 +19,25 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly ICallForTransport transportable;
 
-		Activity inner;
-
 		public WaitForTransport(Actor self, Activity innerActivity)
 		{
 			transportable = self.TraitOrDefault<ICallForTransport>();
-			inner = innerActivity;
+			QueueChild(self, innerActivity);
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (inner == null)
+			if (ChildActivity != null)
 			{
-				if (transportable != null)
-					transportable.MovementCancelled(self);
-
-				return NextActivity;
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
 			}
 
-			inner = ActivityUtils.RunActivity(self, inner);
-			return this;
-		}
+			if (transportable != null)
+				transportable.MovementCancelled(self);
 
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			if (!IsCanceling && inner != null)
-				inner.Cancel(self);
-
-			base.Cancel(self, keepQueue);
+			return NextActivity;
 		}
 	}
 }
