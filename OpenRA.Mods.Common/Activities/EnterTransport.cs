@@ -68,14 +68,16 @@ namespace OpenRA.Mods.Common.Activities
 			});
 		}
 
-		protected override void OnCancel(Actor self)
+		protected override void OnLastRun(Actor self)
 		{
 			passenger.Unreserve(self);
 		}
 
-		protected override void OnLastRun(Actor self)
+		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			passenger.Unreserve(self);
+
+			base.Cancel(self, keepQueue);
 		}
 	}
 
@@ -84,23 +86,21 @@ namespace OpenRA.Mods.Common.Activities
 		readonly string type;
 		readonly Passenger passenger;
 
-		Activity enterTransport;
-
 		public EnterTransports(Actor self, Target primaryTarget)
 		{
 			passenger = self.Trait<Passenger>();
 			if (primaryTarget.Type == TargetType.Actor)
 				type = primaryTarget.Actor.Info.Name;
 
-			enterTransport = new EnterTransport(self, primaryTarget);
+			QueueChild(self, new EnterTransport(self, primaryTarget));
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (enterTransport != null)
+			if (ChildActivity != null)
 			{
-				enterTransport = ActivityUtils.RunActivity(self, enterTransport);
-				if (enterTransport != null)
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
 					return this;
 			}
 
@@ -126,19 +126,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (transport != null)
 			{
-				enterTransport = ActivityUtils.RunActivity(self, new EnterTransport(self, Target.FromActor(transport)));
+				QueueChild(self, ActivityUtils.RunActivity(self, new EnterTransport(self, Target.FromActor(transport))), true);
 				return this;
 			}
 
 			return NextActivity;
-		}
-
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			if (!IsCanceling && enterTransport != null)
-				enterTransport.Cancel(self);
-
-			base.Cancel(self, keepQueue);
 		}
 	}
 }

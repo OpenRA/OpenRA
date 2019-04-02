@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 
 	public abstract class Enter : Activity
 	{
-		enum EnterState { Approaching, Waiting, Entering, Exiting }
+		enum EnterState { Approaching, Entering, Exiting }
 
 		readonly IMove move;
 		readonly Color? targetLineColor;
@@ -57,12 +57,6 @@ namespace OpenRA.Mods.Common.Activities
 		/// </summary>
 		protected virtual void OnEnterComplete(Actor self, Actor targetActor) { }
 
-		/// <summary>
-		/// Called when the activity is cancelled to allow subclasses to clean up their own state.
-		/// </summary>
-		protected virtual void OnCancel(Actor self) { }
-
-		Activity moveActivity;
 		public override Activity Tick(Actor self)
 		{
 			// Update our view of the target
@@ -86,10 +80,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			// We need to wait for movement to finish before transitioning to
 			// the next state or next activity
-			if (moveActivity != null)
+			if (ChildActivity != null)
 			{
-				moveActivity = ActivityUtils.RunActivity(self, moveActivity);
-				if (moveActivity != null)
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
 					return this;
 			}
 
@@ -97,7 +91,6 @@ namespace OpenRA.Mods.Common.Activities
 			switch (lastState)
 			{
 				case EnterState.Approaching:
-				case EnterState.Waiting:
 				{
 					// NOTE: We can safely cancel in this case because we know the
 					// actor has finished any in-progress move activities
@@ -111,12 +104,10 @@ namespace OpenRA.Mods.Common.Activities
 					// We are not next to the target - lets fix that
 					if (target.Type != TargetType.Invalid && !move.CanEnterTargetNow(self, target))
 					{
-						lastState = EnterState.Approaching;
-
 						// Target lines are managed by this trait, so we do not pass targetLineColor
 						var initialTargetPosition = (useLastVisibleTarget ? lastVisibleTarget : target).CenterPosition;
-						moveActivity = ActivityUtils.RunActivity(self, move.MoveToTarget(self, target, initialTargetPosition));
-						break;
+						QueueChild(self, move.MoveToTarget(self, target, initialTargetPosition), true);
+						return this;
 					}
 
 					// We are next to where we thought the target should be, but it isn't here
@@ -128,7 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (TryStartEnter(self, target.Actor))
 					{
 						lastState = EnterState.Entering;
-						moveActivity = ActivityUtils.RunActivity(self, move.MoveIntoTarget(self, target));
+						QueueChild(self, move.MoveIntoTarget(self, target), true);
 						return this;
 					}
 
@@ -137,8 +128,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (IsCanceling)
 						return NextActivity;
 
-					lastState = EnterState.Waiting;
-					break;
+					return this;
 				}
 
 				case EnterState.Entering:
@@ -149,8 +139,8 @@ namespace OpenRA.Mods.Common.Activities
 						OnEnterComplete(self, target.Actor);
 
 					lastState = EnterState.Exiting;
-					moveActivity = ActivityUtils.RunActivity(self, move.MoveIntoWorld(self, self.Location));
-					break;
+					QueueChild(self, move.MoveIntoWorld(self, self.Location), true);
+					return this;
 				}
 
 				case EnterState.Exiting:
@@ -158,16 +148,6 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return this;
-		}
-
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			OnCancel(self);
-
-			if (!IsCanceling && moveActivity != null)
-				moveActivity.Cancel(self);
-
-			base.Cancel(self, keepQueue);
 		}
 	}
 }
