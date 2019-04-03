@@ -20,92 +20,80 @@ namespace OpenRA.Mods.Common.Activities
 	public class AttackMoveActivity : Activity
 	{
 		readonly Func<Activity> getInner;
-		public readonly bool IsAssaultMove;
-		Activity inner;
-		Activity attack;
+		readonly bool isAssaultMove;
 		AutoTarget autoTarget;
-		bool moving;
+		ConditionManager conditionManager;
+		AttackMove attackMove;
+		int token = ConditionManager.InvalidConditionToken;
 
 		public AttackMoveActivity(Actor self, Func<Activity> getInner, bool assaultMoving = false)
 		{
 			this.getInner = getInner;
 			autoTarget = self.TraitOrDefault<AutoTarget>();
-			moving = false;
-			IsAssaultMove = assaultMoving;
+			conditionManager = self.TraitOrDefault<ConditionManager>();
+			attackMove = self.TraitOrDefault<AttackMove>();
+			isAssaultMove = assaultMoving;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			// Start moving.
+			QueueChild(self, getInner());
+
+			if (conditionManager == null || attackMove == null)
+				return;
+
+			if (!isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AttackMoveScanCondition))
+				token = conditionManager.GrantCondition(self, attackMove.Info.AttackMoveScanCondition);
+			else if (isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AssaultMoveScanCondition))
+				token = conditionManager.GrantCondition(self, attackMove.Info.AssaultMoveScanCondition);
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceling)
+			// We are not currently attacking a target, so scan for new targets.
+			if (!IsCanceling && ChildActivity != null && ChildActivity.NextActivity == null && autoTarget != null)
 			{
-				if (attack != null)
-				{
-					attack = ActivityUtils.RunActivity(self, attack);
-					return this;
-				}
-
-				if (inner != null)
-				{
-					inner = ActivityUtils.RunActivity(self, inner);
-					return this;
-				}
-
-				return NextActivity;
-			}
-
-			if (attack == null && autoTarget != null)
-			{
+				// ScanForTarget already limits the scanning rate for performance so we don't need to do that here.
 				var target = autoTarget.ScanForTarget(self, true, true);
 				if (target.Type != TargetType.Invalid)
 				{
-					if (inner != null)
-						inner.Cancel(self);
-
+					// We have found a target so cancel the current move activity and queue attack activities.
+					ChildActivity.Cancel(self);
 					var attackBases = autoTarget.ActiveAttackBases;
 					foreach (var ab in attackBases)
 					{
-						if (attack == null)
-							attack = ab.GetAttackActivity(self, target, true, false);
-						else
-							attack = ActivityUtils.SequenceActivities(self, attack, ab.GetAttackActivity(self, target, true, false));
+						QueueChild(self, ab.GetAttackActivity(self, target, true, false));
 						ab.OnQueueAttackActivity(self, target, false, true, false);
 					}
 
-					moving = false;
+					// Make sure to continue moving when the attack activities have finished.
+					QueueChild(self, getInner());
 				}
 			}
 
-			if (attack == null && inner == null)
+			if (ChildActivity != null)
 			{
-				if (moving)
-					return NextActivity;
-
-				inner = getInner();
-				moving = true;
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
 			}
 
-			if (inner == null)
-				attack = ActivityUtils.RunActivity(self, attack);
-
-			inner = ActivityUtils.RunActivity(self, inner);
-			return this;
+			// The last queued childactivity is guaranteed to be the inner move, so if we get here it means
+			// we have reached our destination and there are no more enemies on our path.
+			return NextActivity;
 		}
 
-		public override void Cancel(Actor self, bool keepQueue = false)
+		protected override void OnLastRun(Actor self)
 		{
-			if (!IsCanceling && inner != null)
-				inner.Cancel(self);
-
-			if (!IsCanceling && attack != null)
-				attack.Cancel(self);
-
-			base.Cancel(self, keepQueue);
+			if (conditionManager != null && token != ConditionManager.InvalidConditionToken)
+				token = conditionManager.RevokeCondition(self, token);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			if (inner != null)
-				return inner.GetTargets(self);
+			if (ChildActivity != null)
+				return ChildActivity.GetTargets(self);
 
 			return Target.None;
 		}

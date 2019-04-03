@@ -38,44 +38,15 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
-	class AttackMove : INotifyCreated, ITick, IResolveOrder, IOrderVoice
+	class AttackMove : IResolveOrder, IOrderVoice
 	{
 		public readonly AttackMoveInfo Info;
 		readonly IMove move;
-
-		ConditionManager conditionManager;
-		int attackMoveToken = ConditionManager.InvalidConditionToken;
-		int assaultMoveToken = ConditionManager.InvalidConditionToken;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
 			move = self.Trait<IMove>();
 			Info = info;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
-		void ITick.Tick(Actor self)
-		{
-			if (conditionManager == null)
-				return;
-
-			var activity = self.CurrentActivity as AttackMoveActivity;
-			var attackActive = activity != null && !activity.IsAssaultMove;
-			var assaultActive = activity != null && activity.IsAssaultMove;
-
-			if (attackActive && attackMoveToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.AttackMoveScanCondition))
-				attackMoveToken = conditionManager.GrantCondition(self, Info.AttackMoveScanCondition);
-			else if (!attackActive && attackMoveToken != ConditionManager.InvalidConditionToken)
-				attackMoveToken = conditionManager.RevokeCondition(self, attackMoveToken);
-
-			if (assaultActive && assaultMoveToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.AssaultMoveScanCondition))
-				assaultMoveToken = conditionManager.GrantCondition(self, Info.AssaultMoveScanCondition);
-			else if (!assaultActive && assaultMoveToken != ConditionManager.InvalidConditionToken)
-				assaultMoveToken = conditionManager.RevokeCondition(self, assaultMoveToken);
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
