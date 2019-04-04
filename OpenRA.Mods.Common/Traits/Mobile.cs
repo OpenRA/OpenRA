@@ -224,8 +224,11 @@ namespace OpenRA.Mods.Common.Traits
 		void ITick.Tick(Actor self)
 		{
 			var newMovementTypes = MovementType.None;
-			if (oldPos != CenterPosition)
+			if ((oldPos - CenterPosition).HorizontalLengthSquared != 0)
 				newMovementTypes |= MovementType.Horizontal;
+
+			if (oldPos.Z != CenterPosition.Z)
+				newMovementTypes |= MovementType.Vertical;
 
 			if (oldFacing != Facing)
 				newMovementTypes |= MovementType.Turn;
