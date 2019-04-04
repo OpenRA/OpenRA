@@ -860,7 +860,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "ReturnToBase" && rearmable != null && rearmable.Info.RearmActors.Any())
 			{
 				// Don't restart activity every time deploy hotkey is triggered
-				if (self.CurrentActivity is ReturnToBase)
+				if (self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
 					return;
 
 				if (!order.Queued)
