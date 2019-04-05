@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Actor deliverActor;
 
 		CPos? orderLocation;
+		CPos? lastHarvestedCell;
 		bool hasDeliveredLoad;
 		bool hasHarvestedCell;
 		bool hasWaited;
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 			// the previous harvested cell for the initial search.
 			if (orderLocation != null)
 			{
-				harv.LastHarvestedCell = orderLocation;
+				lastHarvestedCell = orderLocation;
 
 				// If two "harvest" orders are issued consecutively, we deliver the load first if needed.
 				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
@@ -114,33 +115,35 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			var closestHarvestableCell = ClosestHarvestablePos(self);
+			hasWaited = false;
 
-			// If no resources are found near the current field, search near the refinery instead.
-			// If that doesn't help, give up for now.
+			// Scan for resources. If no resources are found near the current field, search near the refinery
+			// instead. If that doesn't help, give up for now.
+			var closestHarvestableCell = ClosestHarvestablePos(self);
 			if (!closestHarvestableCell.HasValue)
 			{
-				if (harv.LastHarvestedCell != null)
+				if (lastHarvestedCell != null)
 				{
-					harv.LastHarvestedCell = null; // Forces search from backup position.
+					lastHarvestedCell = null; // Forces search from backup position.
 					closestHarvestableCell = ClosestHarvestablePos(self);
 					harv.LastSearchFailed = !closestHarvestableCell.HasValue;
 				}
 				else
 					harv.LastSearchFailed = true;
 			}
+			else
+				harv.LastSearchFailed = false;
 
+			// If no harvestable position could be found and we are at the refinery, get out of the way
+			// of the refinery entrance.
 			if (harv.LastSearchFailed)
 			{
-				// If no harvestable position could be found and we are at the refinery, get out of the way
-				// of the refinery entrance.
 				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
 				if (lastproc != null && !lastproc.Disposed)
 				{
 					var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
 					if (self.Location == deliveryLoc && harv.IsEmpty)
 					{
-						// Get out of the way:
 						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
 						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 						self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Green, false);
@@ -151,21 +154,9 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			// Attempt to claim the target cell
-			if (!claimLayer.TryClaimCell(self, closestHarvestableCell.Value))
-			{
-				QueueChild(self, new Wait(25), true);
-				return this;
-			}
-
-			harv.LastSearchFailed = false;
-
-			foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-				n.MovingToResources(self, closestHarvestableCell.Value, new FindAndDeliverResources(self));
-
-			self.SetTargetLine(Target.FromCell(self.World, closestHarvestableCell.Value), Color.Red, false);
-			QueueChild(self, mobile.MoveTo(closestHarvestableCell.Value, 1), true);
-			QueueChild(self, new HarvestResource(self));
+			// If we get here, our search for resources was successful. Commence harvesting.
+			QueueChild(self, new HarvestResource(self, closestHarvestableCell.Value), true);
+			lastHarvestedCell = closestHarvestableCell.Value;
 			hasHarvestedCell = true;
 			return this;
 		}
@@ -191,8 +182,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = harv.LastHarvestedCell ?? GetSearchFromLocation(self);
-			var searchRadius = harv.LastHarvestedCell.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			var searchFromLoc = lastHarvestedCell ?? GetSearchFromLocation(self);
+			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:
