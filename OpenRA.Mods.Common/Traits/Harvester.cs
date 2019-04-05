@@ -101,7 +101,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync] public Actor LastLinkedProc = null;
 		[Sync] public Actor LinkedProc = null;
 		[Sync] int currentUnloadTicks;
-		public CPos? LastHarvestedCell = null;
 
 		[Sync]
 		public int ContentValue

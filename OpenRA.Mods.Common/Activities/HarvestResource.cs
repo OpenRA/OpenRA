@@ -11,6 +11,7 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -23,15 +24,27 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ResourceClaimLayer claimLayer;
 		readonly ResourceLayer resLayer;
 		readonly BodyOrientation body;
+		readonly IMove move;
+		readonly CPos targetCell;
 
-		public HarvestResource(Actor self)
+		public HarvestResource(Actor self, CPos targetcell)
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			facing = self.Trait<IFacing>();
 			body = self.Trait<BodyOrientation>();
+			move = self.Trait<IMove>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			this.targetCell = targetcell;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			// We can safely assume the claim is successful, since this is only called in the
+			// same actor-tick as the targetCell is selected. Therefore no other harvester
+			// would have been able to claim.
+			claimLayer.TryClaimCell(self, targetCell);
 		}
 
 		public override Activity Tick(Actor self)
@@ -43,19 +56,22 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 			}
 
-			if (IsCanceling)
-			{
-				claimLayer.RemoveClaim(self);
+			if (IsCanceling || harv.IsFull)
 				return NextActivity;
+
+			// Move towards the target cell
+			if (self.Location != targetCell)
+			{
+				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
+					n.MovingToResources(self, targetCell, new FindAndDeliverResources(self));
+
+				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
+				QueueChild(self, move.MoveTo(targetCell, 0), true);
+				return this;
 			}
 
-			harv.LastHarvestedCell = self.Location;
-
-			if (harv.IsFull)
-			{
-				claimLayer.RemoveClaim(self);
+			if (!harv.CanHarvestCell(self, self.Location))
 				return NextActivity;
-			}
 
 			// Turn to one of the harvestable facings
 			if (harvInfo.HarvestFacings != 0)
@@ -71,10 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
-			{
-				claimLayer.RemoveClaim(self);
 				return NextActivity;
-			}
 
 			harv.AcceptResource(self, resource);
 
@@ -83,6 +96,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			QueueChild(self, new Wait(harvInfo.BaleLoadDelay), true);
 			return this;
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			claimLayer.RemoveClaim(self);
 		}
 	}
 }
