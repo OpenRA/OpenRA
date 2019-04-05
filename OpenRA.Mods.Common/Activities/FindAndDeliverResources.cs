@@ -223,10 +223,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		CPos GetSearchFromLocation(Actor self)
 		{
-			if (harv.LastLinkedProc != null)
+			if (harv.LastLinkedProc != null && !harv.LastLinkedProc.IsDead && harv.LastLinkedProc.IsInWorld)
 				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;
 
-			if (harv.LinkedProc != null)
+			if (harv.LinkedProc != null && !harv.LinkedProc.IsDead && harv.LinkedProc.IsInWorld)
 				return harv.LinkedProc.Location + harv.LinkedProc.Trait<IAcceptResources>().DeliveryOffset;
 
 			return self.Location;
