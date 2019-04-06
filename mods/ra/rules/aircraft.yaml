@@ -116,6 +116,9 @@ MIG:
 		InitialFacing: 192
 		TurnSpeed: 4
 		Speed: 223
+		IdleTurnSpeed: 2
+		IdleSpeed: 150
+		Acceleration: 2
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
@@ -185,6 +188,9 @@ YAK:
 		InitialFacing: 192
 		TurnSpeed: 4
 		Speed: 178
+		IdleTurnSpeed: 2
+		IdleSpeed: 112
+		Acceleration: 2
 		RepulsionSpeed: 40
 		MaximumPitch: 56
 	AutoTarget:
