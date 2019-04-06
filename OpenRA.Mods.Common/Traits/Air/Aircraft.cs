@@ -44,6 +44,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
+		[Desc("Speed to apply when aircraft flies in circles while idle. Defaults to Speed if negative.")]
+		public readonly int IdleSpeed = -1;
+
+		[Desc("Speed can change at most this much when transitioning between idle and combat speed. Values less than 1 result in instant speed change.")]
+		public readonly int Acceleration = -1;
+
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
 
@@ -191,6 +197,9 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
+		public bool IsIdleCircling { get { return self.CurrentActivity is FlyCircle || self.CurrentActivity is HeliFlyCircle; } }
+		int CurrentBaseSpeed { get { return (self.IsIdle || IsIdleCircling) && Info.IdleSpeed > -1 ? Info.IdleSpeed : Info.Speed; } }
+
 		CPos? landingCell;
 
 		bool airborne;
@@ -202,6 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 		MovementType movementTypes;
 		WPos cachedPosition;
 		int cachedFacing;
+		int movementSpeed;
 		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
@@ -242,6 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
+			MovementSpeed = UpdateMovementSpeed();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -344,6 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			CurrentMovementTypes = newMovementTypes;
 
+			MovementSpeed = UpdateMovementSpeed();
 			Repulse();
 		}
 
@@ -495,9 +507,18 @@ namespace OpenRA.Mods.Common.Traits
 				|| (repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name));
 		}
 
-		public int MovementSpeed
+		public int MovementSpeed { get { return movementSpeed; } private set { movementSpeed = value; } }
+
+		int UpdateMovementSpeed()
 		{
-			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
+			if (Info.Acceleration < 1)
+				movementSpeed = Util.ApplyPercentageModifiers(CurrentBaseSpeed, speedModifiers);
+			else if (movementSpeed < CurrentBaseSpeed)
+				movementSpeed += Info.Acceleration;
+			else if (movementSpeed > CurrentBaseSpeed)
+				movementSpeed -= Info.Acceleration;
+
+			return movementSpeed.Clamp(Util.ApplyPercentageModifiers(Info.IdleSpeed, speedModifiers), Util.ApplyPercentageModifiers(Info.Speed, speedModifiers));
 		}
 
 		public Pair<CPos, SubCell>[] OccupiedCells()
