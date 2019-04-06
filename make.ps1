@@ -38,8 +38,8 @@ function Clean-Command
 	{
 		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
 		rm *.dll
-		rm *.dll.config
 		rm mods/*/*.dll
+		Get-ChildItem *.dll.config -exclude OpenRA.Platforms.Default.dll.config | Remove-Item
 		rm *.pdb
 		rm mods/*/*.pdb
 		rm *.exe
