@@ -39,16 +39,16 @@ namespace OpenRA
 		public string Name = "OpenRA Game";
 
 		[Desc("Sets the internal port.")]
-		private int listenPort = 49152; //default of the first dynamic port
+		private int listenPort = 49152;
 		public int ListenPort
 		{
 			get
 			{
 				return this.listenPort;
 			}
+
 			set
-			{//these port restrictions are so we are compliant with IANA. port 1234 should have been registered (it's already in use).
-			 //see (https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml)
+			{
 				if (value > 49151 & value < 65535)
 					listenPort = value;
 				else
