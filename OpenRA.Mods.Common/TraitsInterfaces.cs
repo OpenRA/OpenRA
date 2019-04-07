@@ -32,6 +32,17 @@ namespace OpenRA.Mods.Common.Traits
 		Repair = 2
 	}
 
+	public interface IResupplyable
+	{
+		bool CanResupplyAt(Actor target);
+		bool NeedsResupplyAt(Actor target);
+
+		// Temporary shim
+		WDist CloseEnough { get; }
+	}
+
+	public interface IResupplier { }
+
 	public interface IQuantizeBodyOrientationInfo : ITraitInfo
 	{
 		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);

@@ -929,7 +929,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
 			}
-			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
+			else if (order.OrderString == "Enter" || order.OrderString == "Resupply")
 			{
 				// Enter and Repair orders are only valid for own/allied actors,
 				// which are guaranteed to never be frozen.

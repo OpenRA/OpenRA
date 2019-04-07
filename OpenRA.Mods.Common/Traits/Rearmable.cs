@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("This actor can be sent to a structure for reloading ammo.")]
 	public class RearmableInfo : ITraitInfo
 	{
 		[Desc("Actors that this actor can dock to and get rearmed by.")]
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Rearmable(this); }
 	}
 
-	public class Rearmable : INotifyCreated
+	public class Rearmable : IResupplyable, INotifyCreated
 	{
 		public readonly RearmableInfo Info;
 
@@ -42,5 +43,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			RearmableAmmoPools = self.TraitsImplementing<AmmoPool>().Where(p => Info.AmmoPools.Contains(p.Info.Name)).ToArray();
 		}
+
+		bool CanRearmAt(Actor target)
+		{
+			return Info.RearmActors.Contains(target.Info.Name);
+		}
+
+		bool IResupplyable.CanResupplyAt(Actor target)
+		{
+			return CanRearmAt(target);
+		}
+
+		bool IResupplyable.NeedsResupplyAt(Actor target)
+		{
+			return CanRearmAt(target) && RearmableAmmoPools.Any(p => !p.FullAmmo());
+		}
+
+		WDist IResupplyable.CloseEnough { get { return new WDist(512); } }
 	}
 }

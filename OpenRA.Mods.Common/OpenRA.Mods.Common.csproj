@@ -502,6 +502,7 @@
     <Compile Include="Traits\Render\WithVoxelTurret.cs" />
     <Compile Include="Traits\Render\DrawLineToTarget.cs" />
     <Compile Include="Traits\RejectsOrders.cs" />
+    <Compile Include="Traits\ResupplyManager.cs" />
     <Compile Include="Traits\Repairable.cs" />
     <Compile Include="Traits\RepairableNear.cs" />
     <Compile Include="Traits\RepairsBridges.cs" />

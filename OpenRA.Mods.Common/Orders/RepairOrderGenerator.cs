@@ -50,27 +50,18 @@ namespace OpenRA.Mods.Common.Orders
 			if (underCursor.Owner != world.LocalPlayer)
 				yield break;
 
-			Actor repairBuilding = null;
-			var orderId = "Repair";
+			Actor resupplyActor = null;
+			var orderId = "Resupply";
 
-			// Test for generic Repairable (used on units).
-			var repairable = underCursor.TraitOrDefault<Repairable>();
-			if (repairable != null)
-				repairBuilding = repairable.FindRepairBuilding(underCursor);
-			else
-			{
-				var repairableNear = underCursor.TraitOrDefault<RepairableNear>();
-				if (repairableNear != null)
-				{
-					orderId = "RepairNear";
-					repairBuilding = repairableNear.FindRepairBuilding(underCursor);
-				}
-			}
+			// Test for ResupplyManager (used on units).
+			var resupplyManager = underCursor.TraitOrDefault<ResupplyManager>();
+			if (resupplyManager != null)
+				resupplyActor = resupplyManager.FindResupplyActor(underCursor);
 
-			if (repairBuilding == null)
+			if (resupplyActor == null)
 				yield break;
 
-			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), false) { VisualFeedbackTarget = Target.FromActor(underCursor) };
+			yield return new Order(orderId, underCursor, Target.FromActor(resupplyActor), false) { VisualFeedbackTarget = Target.FromActor(underCursor) };
 		}
 
 		protected override void Tick(World world)

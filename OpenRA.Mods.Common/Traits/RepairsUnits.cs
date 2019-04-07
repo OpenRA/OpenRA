@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RepairsUnits(this); }
 	}
 
-	public class RepairsUnits : PausableConditionalTrait<RepairsUnitsInfo>
+	public class RepairsUnits : PausableConditionalTrait<RepairsUnitsInfo>, IResupplier
 	{
 		public RepairsUnits(RepairsUnitsInfo info) : base(info) { }
 	}
