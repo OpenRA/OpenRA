@@ -603,11 +603,11 @@ craters:
 mine:
 	idle:
 		UseTilesetExtension: true
-		ZOffset: -512
+		ZOffset: -1024
 
 gmine:
 	idle:
-		ZOffset: -512
+		ZOffset: -1024
 		UseTilesetExtension: true
 		TilesetOverrides:
 			INTERIOR: TEMPERAT
