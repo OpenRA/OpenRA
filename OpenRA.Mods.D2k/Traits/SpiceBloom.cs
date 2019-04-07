@@ -157,7 +157,7 @@ namespace OpenRA.Mods.D2k.Traits
 							self.World.Add(projectile);
 
 						if (args.Weapon.Report != null && args.Weapon.Report.Any())
-							Game.Sound.Play(SoundType.World, args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+							Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
 					}
 				});
 			}
