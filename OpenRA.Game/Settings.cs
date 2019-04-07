@@ -39,7 +39,22 @@ namespace OpenRA
 		public string Name = "OpenRA Game";
 
 		[Desc("Sets the internal port.")]
-		public int ListenPort = 1234;
+		private int listenPort = 49152; //default of the first dynamic port
+		public int ListenPort
+		{
+			get
+			{
+				return this.listenPort;
+			}
+			set
+			{//these port restrictions are so we are compliant with IANA. port 1234 should have been registered (it's already in use).
+			 //see (https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml)
+				if (value > 49151 & value < 65535)
+					listenPort = value;
+				else
+					throw new System.Exception("Port must be between 49151 and 65535.");
+			}
+		}
 
 		[Desc("Reports the game to the master server list.")]
 		public bool AdvertiseOnline = true;

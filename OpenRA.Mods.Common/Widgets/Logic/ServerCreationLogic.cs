@@ -180,18 +180,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var name = Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
 			int listenPort;
 			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
-				listenPort = 1234;
+				listenPort = Game.Settings.Server.ListenPort;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			var password = passwordField != null ? passwordField.Text : "";
 
 			// Save new settings
-			Game.Settings.Server.Name = name;
-			Game.Settings.Server.ListenPort = listenPort;
-			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
-			Game.Settings.Server.Map = preview.Uid;
-			Game.Settings.Server.Password = password;
-			Game.Settings.Save();
+			try
+			{
+				Game.Settings.Server.Name = name;
+				Game.Settings.Server.ListenPort = listenPort;
+				Game.Settings.Server.AdvertiseOnline = advertiseOnline;
+				Game.Settings.Server.Map = preview.Uid;
+				Game.Settings.Server.Password = password;
+				Game.Settings.Save();
+			}
+			catch (System.Exception e)
+			{
+				var message = "{0}".F(e.Message);
+				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
+				return;
+			}
 
 			// Take a copy so that subsequent changes don't affect the server
 			var settings = Game.Settings.Server.Clone();
