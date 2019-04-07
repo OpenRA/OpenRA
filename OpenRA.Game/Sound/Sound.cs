@@ -147,6 +147,16 @@ namespace OpenRA
 		public ISound PlayLooped(SoundType type, string name) { return Play(type, null, name, true, WPos.Zero, 1f, true); }
 		public ISound PlayLooped(SoundType type, string name, WPos pos) { return Play(type, null, name, false, pos, 1f, true); }
 
+		public ISound Play(SoundType type, string[] names, World world, Player player = null, float volumeModifier = 1f)
+		{
+			return Play(type, player, names.Random(world.LocalRandom), true, WPos.Zero, volumeModifier);
+		}
+
+		public ISound Play(SoundType type, string[] names, World world, WPos pos, Player player = null, float volumeModifier = 1f)
+		{
+			return Play(type, player, names.Random(world.LocalRandom), false, pos, volumeModifier);
+		}
+
 		public void PlayVideo(byte[] raw, int channels, int sampleBits, int sampleRate)
 		{
 			StopVideo();

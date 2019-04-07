@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (weapon.Report != null && weapon.Report.Any())
-				Game.Sound.Play(SoundType.World, weapon.Report.Random(source.World.SharedRandom), self.CenterPosition);
+				Game.Sound.Play(SoundType.World, weapon.Report, self.World, self.CenterPosition);
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{

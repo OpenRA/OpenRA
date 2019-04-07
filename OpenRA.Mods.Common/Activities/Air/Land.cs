@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!soundPlayed && aircraft.Info.LandingSounds.Length > 0 && !self.IsAtGroundLevel())
 			{
-				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds.Random(self.World.SharedRandom), aircraft.CenterPosition);
+				Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds, self.World, aircraft.CenterPosition);
 				soundPlayed = true;
 			}
 
