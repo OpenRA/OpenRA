@@ -853,7 +853,7 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
+			server = new Server.Server(IPAddress.Any, settings.ListenPort, settings, ModData, false);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -865,7 +865,7 @@ namespace OpenRA
 				AdvertiseOnline = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
+			server = new Server.Server(IPAddress.Loopback, 0, settings, ModData, false);
 
 			return server.Port;
 		}

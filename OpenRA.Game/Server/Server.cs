@@ -121,10 +121,13 @@ namespace OpenRA.Server
 				t.GameEnded(this);
 		}
 
-		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData, bool dedicated)
+		public Server(IPAddress address, int port, ServerSettings settings, ModData modData, bool dedicated)
 		{
 			Log.AddChannel("server", "server.log");
 
+			if (port < 49152 | port > 65534)
+				throw new System.Net.Sockets.SocketException(10022);
+			var endpoint = new IPEndPoint(address, port);
 			listener = new TcpListener(endpoint);
 			listener.Start();
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;

@@ -39,22 +39,7 @@ namespace OpenRA
 		public string Name = "OpenRA Game";
 
 		[Desc("Sets the internal port.")]
-		private int listenPort = 49152;
-		public int ListenPort
-		{
-			get
-			{
-				return this.listenPort;
-			}
-
-			set
-			{
-				if (value > 49151 & value < 65535)
-					listenPort = value;
-				else
-					throw new System.Exception("Port must be between 49151 and 65535.");
-			}
-		}
+		public int ListenPort = 49152;
 
 		[Desc("Reports the game to the master server list.")]
 		public bool AdvertiseOnline = true;

@@ -4,7 +4,7 @@
 
 set Name="Dedicated Server"
 set Mod=ra
-set ListenPort=1234
+set ListenPort=49152
 set AdvertiseOnline=True
 set Password=""
 

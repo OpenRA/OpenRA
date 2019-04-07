@@ -186,21 +186,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var password = passwordField != null ? passwordField.Text : "";
 
 			// Save new settings
-			try
-			{
-				Game.Settings.Server.Name = name;
-				Game.Settings.Server.ListenPort = listenPort;
-				Game.Settings.Server.AdvertiseOnline = advertiseOnline;
-				Game.Settings.Server.Map = preview.Uid;
-				Game.Settings.Server.Password = password;
-				Game.Settings.Save();
-			}
-			catch (System.Exception e)
-			{
-				var message = "{0}".F(e.Message);
-				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");
-				return;
-			}
+			Game.Settings.Server.Name = name;
+			Game.Settings.Server.ListenPort = listenPort;
+			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
+			Game.Settings.Server.Map = preview.Uid;
+			Game.Settings.Server.Password = password;
+			Game.Settings.Save();
 
 			// Take a copy so that subsequent changes don't affect the server
 			var settings = Game.Settings.Server.Clone();
@@ -216,7 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (e.ErrorCode == 10048) { // AddressAlreadyInUse (WSAEADDRINUSE)
 					message += "\nCheck if the port is already being used.";
 				} else {
-					message += "\nError is: \"{0}\" ({1})".F(e.Message, e.ErrorCode);
+					message += "\nError is: \"{0}\" ({1})\nPort must be between 49151 and 65535.".F(e.Message, e.ErrorCode);
 				}
 
 				ConfirmationDialogs.ButtonPrompt("Server Creation Failed", message, onCancel: () => { }, cancelText: "Back");

@@ -65,7 +65,7 @@ namespace OpenRA.Server
 			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), modID);
 			while (true)
 			{
-				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, true);
+				var server = new Server(IPAddress.Any, settings.ListenPort, settings, modData, true);
 
 				while (true)
 				{
