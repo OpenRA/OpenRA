@@ -751,6 +751,7 @@
 		ValidDamageStates: Light, Medium, Heavy, Critical
 	Repairable:
 		RepairActors: gadept
+	ResupplyManager:
 		Voice: Move
 	Passenger:
 		CargoType: Vehicle
@@ -843,6 +844,7 @@
 		Palette: pips
 	Repairable:
 		RepairActors: gadept
+	ResupplyManager:
 		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne

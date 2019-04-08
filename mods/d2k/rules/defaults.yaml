@@ -189,6 +189,7 @@
 	ActorLostNotification:
 	Repairable:
 		RepairActors: repair_pad
+	ResupplyManager:
 	Guard:
 		Voice: Guard
 	Guardable:

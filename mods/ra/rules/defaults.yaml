@@ -260,6 +260,7 @@
 		ValidDamageStates: Light, Medium, Heavy, Critical
 	Repairable:
 		RepairActors: fix
+	ResupplyManager:
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
@@ -515,6 +516,7 @@
 	Chronoshiftable:
 	RepairableNear:
 		RepairActors: spen, syrd
+	ResupplyManager:
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
@@ -605,6 +607,7 @@
 ^Plane:
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
+	ResupplyManager:
 	Repairable:
 		RepairActors: fix
 
