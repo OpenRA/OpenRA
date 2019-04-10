@@ -433,14 +433,13 @@ GAPLUG:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	WithIdleOverlay@DISH:
-		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !build-incomplete && !disabled && !empdisable
+		RequiresCondition: !disabled && !empdisable
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
-		RequiresCondition: !build-incomplete && !disabled && !empdisable
+		RequiresCondition: !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
 		HP: 100000
@@ -465,6 +464,20 @@ GAPLUG:
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
 		CameraActor: camera
+    DropPodsPower:
+		Cursor: ioncannon
+		PauseOnCondition: disabled || empdisable
+		RequiresCondition: plug.droppoda || plug.droppodb
+		Icon: droppods
+		Description: Drop Pods
+		LongDesc: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
+		DropPodsAvailableNotification: DropPodsAvailable
+		SelectTargetSpeechNotification: SelectTarget
+		DisplayRadarPing: True
+        ChargeInterval: 100
+        UnitType: DPOD2
+        DropItems: E1,E1,E2,E2
+        PodFacing: 32
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
@@ -488,37 +501,52 @@ GAPLUG:
 	Power@hunterseeker:
 		RequiresCondition: (plug.hunterseekera || plug.hunterseekerb)
 		Amount: -50
+    Power@droppod:
+		RequiresCondition: (plug.droppoda || plug.droppodb)
+		Amount: -20
 	Pluggable@pluga:
 		Offset: 0,2
 		Conditions:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
+            plug.droppod: plug.droppoda
 		Requirements:
-			plug.ioncannon: !build-incomplete && !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera
-			plug.hunterseeker: !build-incomplete && !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera
+			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
+			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
+            plug.droppod: !plug.droppodb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
 	WithIdleOverlay@ioncannona:
-		RequiresCondition: !build-incomplete && plug.ioncannona
+		RequiresCondition: plug.ioncannona
 		PauseOnCondition: disabled
 		Sequence: idle-ioncannona
 	WithIdleOverlay@hunterseekera:
-		RequiresCondition: !build-incomplete && plug.hunterseekera
+		RequiresCondition: plug.hunterseekera
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
+    WithIdleOverlay@droppoda:
+		RequiresCondition: plug.droppoda
+		PauseOnCondition: disabled
+		Sequence: idle-droppoda
 	Pluggable@plugb:
 		Offset: 1,2
 		Conditions:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
+            plug.droppod: plug.droppodb
 		Requirements:
-			plug.ioncannon: !build-incomplete && !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb
-			plug.hunterseeker: !build-incomplete && !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb
+			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb && !plug.droppodb
+			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb  && !plug.droppodb
+            plug.droppod: !plug.droppoda && !plug.ioncannonb && !plug.hunterseekerb  && !plug.droppodb
 	WithIdleOverlay@ioncannonb:
-		RequiresCondition: !build-incomplete && plug.ioncannonb
+		RequiresCondition: plug.ioncannonb
 		PauseOnCondition: disabled
 		Sequence: idle-ioncannonb
 	WithIdleOverlay@hunterseekerb:
-		RequiresCondition: !build-incomplete && plug.hunterseekerb
+		RequiresCondition: plug.hunterseekerb
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
+    WithIdleOverlay@droppodb:
+		RequiresCondition: plug.droppodb
+		PauseOnCondition: disabled
+		Sequence: idle-droppodb
 	ProvidesPrerequisite@buildingname:
 	SelectionDecorations:

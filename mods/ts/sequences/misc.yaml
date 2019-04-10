@@ -211,6 +211,9 @@ explosion:
 	small_grey_explosion: xgrysml2
 	medium_grey_explosion: xgrymed1
 	large_grey_explosion: xgrymed2
+    droppod_explosion: droppody
+        Length: 8
+        Tick: 750
 
 discus:
 	idle:
@@ -439,6 +442,7 @@ icon:
 	ioncannon: ioncicon
 	hunterseeker: detnicon
 	emp: pulsicon
+    droppods: podsicon
 
 clustermissile:
 	up: mltimisl-placeholder # TODO: use voxel

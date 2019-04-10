@@ -28,3 +28,9 @@ apache:
 
 orcatran:
 	icon: crryicon
+
+pod:
+    Inherits: ^VehicleOverlays
+    idle:
+		Facings: 1
+		Length: 1

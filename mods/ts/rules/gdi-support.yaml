@@ -236,3 +236,19 @@ GAPLUG3:
 		Type: plug.ioncannon
 	Power:
 		Amount: -100
+
+GAPLUG4:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Drop Pod Node
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 180
+		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
+		Description: Enables use of the Drop Pod Reinforcements.
+	Plug:
+		Type: plug.droppod
+	Power:
+		Amount: -20

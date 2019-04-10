@@ -32,6 +32,49 @@ DPOD:
 		PipTypeEmpty: AmmoEmpty
 	-SpawnActorOnDeath:
 
+DPOD2:
+	Inherits@2: ^ExistsInWorld
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Drop Pod
+	Health:
+		HP: 6000
+	Armor:
+		Type: Light
+	Aircraft:
+		TurnSpeed: 5
+		Speed: 300
+		CruiseAltitude: 8000
+        MaximumPitch: 110
+        LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
+	HiddenUnderFog:
+		Type: CenterPosition
+	BodyOrientation:
+		UseClassicPerspectiveFudge: False
+	RenderSprites:
+		Image: pod
+	WithFacingSpriteBody:
+	QuantizeFacingsFromSequence:
+	SelectionDecorations:
+		Palette: pips
+	ActorLostNotification:
+        Notification:
+	HitShape:
+    Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+		UnloadVoice: Move
+		EjectOnDeath: true
+    Interactable:
+    WithShadow:
+    SmokeTrailWhenDamaged:
+        Sprite: largesmoke
+        MinDamage: Undamaged
+    Explodes:
+        Weapon: DropPodExplode
+
 DSHP:
 	Inherits: ^Helicopter
 	Valued:

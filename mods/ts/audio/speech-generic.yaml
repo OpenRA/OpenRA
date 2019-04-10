@@ -26,6 +26,7 @@ Speech:
 		CriticalStructureLost: 00-i196
 		CriticalUnitLost: 00-i194
 		DisablePower: 00-i230
+        DropPodsAvailable: 00-i506
 		EnablePower: 00-i232
 		EmPulseCannonReady: 00-i158
 		EstablishingBattleControlStandBy: 01-n006
