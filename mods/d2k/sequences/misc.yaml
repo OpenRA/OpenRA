@@ -66,7 +66,7 @@ large_trail:
 	idle: DATA.R8
 		Start: 4126
 		Length: 4
-		Tick: 80
+		Tick: 120
 		BlendMode: Additive
 		ZOffset: 1023
 
@@ -263,10 +263,11 @@ atomic:
 	up: DATA.R8
 		Start: 2147
 		ZOffset: 1023
-		Offset: -9,-9
+		Offset: 2,0
 	down: DATA.R8
 		Start: 2148
 		ZOffset: 1023
+		Offset: -1,0
 
 fire:
 	1: DATA.R8

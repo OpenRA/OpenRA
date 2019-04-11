@@ -1154,12 +1154,15 @@ palace:
 		LaunchSpeechNotification: MissileLaunchDetected
 		MissileWeapon: atomic
 		MissileDelay: 18
-		SpawnOffset: -512,1c171,0
+		SpawnOffset: 32,816,0
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraRange: 10c0
 		ArrowSequence: arrow
 		CircleSequence: circles
+		FlightVelocity: 384
+		TrailInterval: 0
+		TrailImage: large_trail
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
