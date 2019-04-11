@@ -54,6 +54,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
 		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
 
+		[Desc("Interval in ticks between each spawned Trail animation.")]
+		public readonly int TrailInterval = 2;
+
+		[Desc("Delay in ticks until trail animation is spawned.")]
+		public readonly int TrailDelay = 1;
+
+		[Desc("Palette used to render the trail sequence.")]
+		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
+
+		[Desc("Use the Player Palette to render the trail sequence.")]
+		public readonly bool TrailUsePlayerPalette = false;
+
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
 
@@ -73,20 +85,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("If projectile touches an actor with one of these stances during or after the first bounce, trigger explosion.")]
 		public readonly Stance ValidBounceBlockerStances = Stance.Enemy | Stance.Neutral;
 
-		[Desc("Interval in ticks between each spawned Trail animation.")]
-		public readonly int TrailInterval = 2;
-
-		[Desc("Delay in ticks until trail animation is spawned.")]
-		public readonly int TrailDelay = 1;
-
 		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
 		public readonly WDist AirburstAltitude = WDist.Zero;
-
-		[Desc("Palette used to render the trail sequence.")]
-		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
-
-		[Desc("Use the Player Palette to render the trail sequence.")]
-		public readonly bool TrailUsePlayerPalette = false;
 
 		public readonly int ContrailLength = 0;
 		public readonly int ContrailZOffset = 2047;
