@@ -57,6 +57,8 @@ carryall:
 		LocalOffset: 0, 0, -128
 	Aircraft:
 		MinAirborneAltitude: 400
+		IdleSpeed: 112
+		Acceleration: 2
 	RevealsShroud@lifting_low:
 		Range: 2c512
 		Type: GroundPosition
