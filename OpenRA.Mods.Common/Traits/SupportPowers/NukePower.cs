@@ -41,6 +41,24 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Custom palette is a player palette BaseName.")]
 		public readonly bool IsPlayerPalette = false;
 
+		[Desc("Trail animation.")]
+		public readonly string TrailImage = null;
+
+		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
+		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
+
+		[Desc("Interval in ticks between each spawned Trail animation.")]
+		public readonly int TrailInterval = 1;
+
+		[Desc("Delay in ticks until trail animation is spawned.")]
+		public readonly int TrailDelay = 1;
+
+		[Desc("Palette used to render the trail sequence.")]
+		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
+
+		[Desc("Use the Player Palette to render the trail sequence.")]
+		public readonly bool TrailUsePlayerPalette = false;
+
 		[Desc("Travel time - split equally between ascent and descent.")]
 		public readonly int FlightDelay = 400;
 
@@ -117,7 +135,8 @@ namespace OpenRA.Mods.Common.Traits
 				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
 				targetPosition,
 				info.FlightVelocity, info.MissileDelay, info.FlightDelay, info.SkipAscent,
-				info.FlashType);
+				info.FlashType,
+				info.TrailImage, info.TrailSequences, info.TrailPalette, info.TrailUsePlayerPalette, info.TrailDelay, info.TrailInterval);
 
 			self.World.AddFrameEndTask(w => w.Add(missile));
 

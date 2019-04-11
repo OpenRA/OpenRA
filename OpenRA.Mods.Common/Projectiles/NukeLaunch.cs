@@ -35,14 +35,20 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WPos descendTarget;
 		readonly int impactDelay;
 		readonly int turn;
+		readonly string trailImage;
+		readonly string[] trailSequences;
+		readonly string trailPalette;
+		readonly int trailInterval;
+		readonly int trailDelay;
 
 		WPos pos;
-		int ticks;
+		int ticks, trailTicks;
 		int launchDelay;
 		bool isLaunched;
 
 		public NukeLaunch(Player firedBy, string name, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
-			WPos launchPos, WPos targetPos, WDist velocity, int launchDelay, int impactDelay, bool skipAscent, string flashType)
+			WPos launchPos, WPos targetPos, WDist velocity, int launchDelay, int impactDelay, bool skipAscent, string flashType,
+			string trailImage, string[] trailSequences, string trailPalette, bool trailUsePlayerPalette, int trailDelay, int trailInterval)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
@@ -53,6 +59,15 @@ namespace OpenRA.Mods.Common.Effects
 			this.impactDelay = impactDelay;
 			turn = skipAscent ? 0 : impactDelay / 2;
 			this.flashType = flashType;
+			this.trailImage = trailImage;
+			this.trailSequences = trailSequences;
+			this.trailPalette = trailPalette;
+			if (trailUsePlayerPalette)
+				trailPalette += firedBy.InternalName;
+
+			this.trailInterval = trailInterval;
+			this.trailDelay = trailDelay;
+			trailTicks = trailDelay;
 
 			var offset = new WVec(WDist.Zero, WDist.Zero, velocity * (impactDelay - turn));
 			ascendSource = launchPos;
@@ -89,6 +104,17 @@ namespace OpenRA.Mods.Common.Effects
 				pos = WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks, turn);
 			else
 				pos = WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn, impactDelay - turn);
+
+			if (!string.IsNullOrEmpty(trailImage) && --trailTicks < 0)
+			{
+				var trailPos = ticks < turn ? WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks - trailDelay, turn)
+					: WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn - trailDelay, impactDelay - turn);
+
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(trailPos, w, trailImage, trailSequences.Random(world.SharedRandom),
+					trailPalette, false, false, 0)));
+
+				trailTicks = trailInterval;
+			}
 
 			if (ticks == impactDelay)
 				Explode(world);
