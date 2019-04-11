@@ -234,15 +234,20 @@ namespace OpenRA
 			using (new PerfTimer("ScreenMap.WorldLoaded"))
 				ScreenMap.WorldLoaded(this, wr);
 
-			foreach (var wlh in WorldActor.TraitsImplementing<IWorldLoaded>())
+			foreach (var iwl in WorldActor.TraitsImplementing<IWorldLoaded>())
 			{
 				// These have already been initialized
-				if (wlh == ScreenMap)
+				if (iwl == ScreenMap)
 					continue;
 
-				using (new PerfTimer(wlh.GetType().Name + ".WorldLoaded"))
-					wlh.WorldLoaded(this, wr);
+				using (new PerfTimer(iwl.GetType().Name + ".WorldLoaded"))
+					iwl.WorldLoaded(this, wr);
 			}
+
+			foreach (var p in Players)
+				foreach (var iwl in p.PlayerActor.TraitsImplementing<IWorldLoaded>())
+					using (new PerfTimer(iwl.GetType().Name + ".WorldLoaded"))
+						iwl.WorldLoaded(this, wr);
 
 			gameInfo.StartTimeUtc = DateTime.UtcNow;
 			foreach (var player in Players)
