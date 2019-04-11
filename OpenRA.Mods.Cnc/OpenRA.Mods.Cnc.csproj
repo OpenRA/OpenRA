@@ -73,7 +73,7 @@
     <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
     <Compile Include="Traits\Render\WithRoof.cs" />
     <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
-	<Compile Include="Traits\SupportPowers\DropPodsPower.cs" />
+    <Compile Include="Traits\SupportPowers\DropPodsPower.cs" />
     <Compile Include="UtilityCommands\ImportTiberianDawnLegacyMapCommand.cs" />
     <Compile Include="Projectiles\IonCannon.cs" />
     <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />

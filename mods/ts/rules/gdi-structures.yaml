@@ -433,13 +433,14 @@ GAPLUG:
 		Footprint: xxx xxx
 		Dimensions: 2,3
 	WithIdleOverlay@DISH:
+		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled || empdisable
 		Sequence: idle-dish
 	WithIdleOverlay@LIGHTS:
-		RequiresCondition: !disabled && !empdisable
+		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-lights
 	WithIdleOverlay@STRIP:
-		RequiresCondition: !disabled && !empdisable
+		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-strip
 	Health:
 		HP: 100000
@@ -464,7 +465,7 @@ GAPLUG:
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
 		CameraActor: camera
-    DropPodsPower:
+	DropPodsPower:
 		Cursor: ioncannon
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.droppoda || plug.droppodb
@@ -474,10 +475,10 @@ GAPLUG:
 		DropPodsAvailableNotification: DropPodsAvailable
 		SelectTargetSpeechNotification: SelectTarget
 		DisplayRadarPing: True
-        ChargeInterval: 100
-        UnitType: DPOD2
-        DropItems: E1,E1,E2,E2
-        PodFacing: 32
+		ChargeInterval: 100
+		DropPodType: DPOD2
+		DropItems: E1,E1,E2,E2
+		PodFacing: 32
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
@@ -501,7 +502,7 @@ GAPLUG:
 	Power@hunterseeker:
 		RequiresCondition: (plug.hunterseekera || plug.hunterseekerb)
 		Amount: -50
-    Power@droppod:
+	Power@droppod:
 		RequiresCondition: (plug.droppoda || plug.droppodb)
 		Amount: -20
 	Pluggable@pluga:
@@ -509,11 +510,11 @@ GAPLUG:
 		Conditions:
 			plug.ioncannon: plug.ioncannona
 			plug.hunterseeker: plug.hunterseekera
-            plug.droppod: plug.droppoda
+			plug.droppod: plug.droppoda
 		Requirements:
 			plug.ioncannon: !plug.ioncannonb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
 			plug.hunterseeker: !plug.hunterseekerb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
-            plug.droppod: !plug.droppodb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
+			plug.droppod: !plug.droppodb && !plug.ioncannona && !plug.hunterseekera && !plug.droppoda
 	WithIdleOverlay@ioncannona:
 		RequiresCondition: plug.ioncannona
 		PauseOnCondition: disabled
@@ -522,7 +523,7 @@ GAPLUG:
 		RequiresCondition: plug.hunterseekera
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
-    WithIdleOverlay@droppoda:
+	WithIdleOverlay@droppoda:
 		RequiresCondition: plug.droppoda
 		PauseOnCondition: disabled
 		Sequence: idle-droppoda
@@ -531,11 +532,11 @@ GAPLUG:
 		Conditions:
 			plug.ioncannon: plug.ioncannonb
 			plug.hunterseeker: plug.hunterseekerb
-            plug.droppod: plug.droppodb
+			plug.droppod: plug.droppodb
 		Requirements:
 			plug.ioncannon: !plug.ioncannona && !plug.ioncannonb && !plug.hunterseekerb && !plug.droppodb
 			plug.hunterseeker: !plug.hunterseekera && !plug.ioncannonb && !plug.hunterseekerb  && !plug.droppodb
-            plug.droppod: !plug.droppoda && !plug.ioncannonb && !plug.hunterseekerb  && !plug.droppodb
+			plug.droppod: !plug.droppoda && !plug.ioncannonb && !plug.hunterseekerb  && !plug.droppodb
 	WithIdleOverlay@ioncannonb:
 		RequiresCondition: plug.ioncannonb
 		PauseOnCondition: disabled
@@ -544,7 +545,7 @@ GAPLUG:
 		RequiresCondition: plug.hunterseekerb
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
-    WithIdleOverlay@droppodb:
+	WithIdleOverlay@droppodb:
 		RequiresCondition: plug.droppodb
 		PauseOnCondition: disabled
 		Sequence: idle-droppodb

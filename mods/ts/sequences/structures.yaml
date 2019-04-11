@@ -1958,7 +1958,7 @@ gaplug:
 		Length: 15
 		Reverses: true
 		Tick: 120
-    idle-droppoda: gaplug_d
+	idle-droppoda: gaplug_d
 		Length: 15
 		Tick: 120
 		Offset: -12, -42, 30

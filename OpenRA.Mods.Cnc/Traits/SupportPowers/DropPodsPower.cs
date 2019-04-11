@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2018 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,9 +26,10 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class DropPodsPowerInfo : SupportPowerInfo, IRulesetLoaded
 	{
+		[FieldLoader.Require]
 		[Desc("DropPod Unit")]
 		[ActorReference(typeof(AircraftInfo))]
-		public readonly string UnitType = "badr";
+		public readonly string DropPodType = null;
 
 		[Desc("Notification to play when spawning drop pods.")]
 		public readonly string DropPodsAvailableNotification = null;
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var units = new List<Actor>();
 			var info = Info as DropPodsPowerInfo;
 
-			var utLower = info.UnitType.ToLowerInvariant();
+			var utLower = info.DropPodType.ToLowerInvariant();
 			ActorInfo unitType;
 			if (!self.World.Map.Rules.Actors.TryGetValue(utLower, out unitType))
 				throw new YamlException("Actors ruleset does not include the entry '{0}'".F(utLower));
@@ -135,7 +136,7 @@ namespace OpenRA.Mods.Cnc.Traits
 						w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, self.World.Map.CenterOfCell(podDropCellPos), Target.FromCell(w, podDropCellPos),
 						info.Effect, info.EffectSequence, info.EffectPalette, info.WeaponDelay));
 
-						var a = w.CreateActor(info.UnitType, new TypeDictionary
+						var a = w.CreateActor(info.DropPodType, new TypeDictionary
 						{
 							new CenterPositionInit(self.World.Map.CenterOfCell(podDropCellPos) - delta + new WVec(0, 0, altitude)),
 							new OwnerInit(self.Owner),

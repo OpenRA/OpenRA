@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			if (info.Notification != null && info.Notification != "")
+			if (!string.IsNullOrEmpty(info.Notification))
 			{
 				var player = info.NotifyAll ? self.World.LocalPlayer : self.Owner;
 				Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", info.Notification, self.Owner.Faction.InternalName);

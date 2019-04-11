@@ -46,8 +46,8 @@ DPOD2:
 		TurnSpeed: 5
 		Speed: 300
 		CruiseAltitude: 8000
-        MaximumPitch: 110
-        LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
+		MaximumPitch: 110
+		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
 	HiddenUnderFog:
 		Type: CenterPosition
 	BodyOrientation:
@@ -59,21 +59,21 @@ DPOD2:
 	SelectionDecorations:
 		Palette: pips
 	ActorLostNotification:
-        Notification:
+		Notification:
 	HitShape:
-    Cargo:
+	Cargo:
 		Types: Infantry
 		MaxWeight: 1
 		PipCount: 1
 		UnloadVoice: Move
 		EjectOnDeath: true
-    Interactable:
-    WithShadow:
-    SmokeTrailWhenDamaged:
-        Sprite: largesmoke
-        MinDamage: Undamaged
-    Explodes:
-        Weapon: DropPodExplode
+	Interactable:
+	WithShadow:
+	SmokeTrailWhenDamaged:
+		Sprite: largesmoke
+		MinDamage: Undamaged
+	Explodes:
+		Weapon: DropPodExplode
 
 DSHP:
 	Inherits: ^Helicopter
