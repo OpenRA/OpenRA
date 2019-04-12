@@ -279,6 +279,8 @@ Cursors:
 			Length: 8
 			X: 24
 			Y: 24
+		invisible:
+			Start: 264
 	nopower.shp: d2k
 		powerdown-blocked:
 			Start: 0

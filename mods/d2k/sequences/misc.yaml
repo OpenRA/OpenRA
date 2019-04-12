@@ -505,3 +505,54 @@ sandcraters:
 null:
 	idle: DATA.R8
 		Start: 3552
+
+ornistriketarget:
+	cursor: MOUSE.R8
+		Start: 72
+		Length: 8
+		X: 24
+		Y: 24
+		Tick: 80
+		Offset: -24, -24, 0
+
+ornistrikedirection:
+	arrow-t: MOUSE.R8
+		Start: 112
+		X: 24
+		Y: 24
+		Offset: -25, -58, 0
+	arrow-tr: MOUSE.R8
+		Start: 120
+		X: 24
+		Y: 24
+		Offset: 7, -50, 0
+	arrow-r: MOUSE.R8
+		Start: 128
+		X: 24
+		Y: 24
+		Offset: 20, -25, 0
+	arrow-br: MOUSE.R8
+		Start: 136
+		X: 24
+		Y: 24
+		Offset: 10, 4, 0
+	arrow-b: MOUSE.R8
+		Start: 148
+		X: 24
+		Y: 24
+		Offset: -25, 10, 0
+	arrow-bl: MOUSE.R8
+		Start: 156
+		X: 24
+		Y: 24
+		Offset: -50, 0, 0
+	arrow-l: MOUSE.R8
+		Start: 164
+		X: 24
+		Y: 24
+		Offset: -63, -25, 0
+	arrow-tl: MOUSE.R8
+		Start: 172
+		X: 24
+		Y: 24
+		Offset: -55, -55, 0

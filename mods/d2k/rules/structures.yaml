@@ -997,6 +997,8 @@ high_tech_factory:
 		CameraActor: camera
 		ArrowSequence: arrow
 		CircleSequence: circles
+		TargetPlaceholderCursorAnimation: ornistriketarget
+		DirectionArrowAnimation: ornistrikedirection
 	Power:
 		Amount: -75
 	GrantConditionOnPrerequisite:

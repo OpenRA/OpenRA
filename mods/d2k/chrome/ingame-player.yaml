@@ -8,6 +8,13 @@ Container@PLAYER_WIDGETS:
 			X: 10
 			Y: 10
 			Children:
+				Container@PALETTE_BACKGROUND:
+					Children:
+						Background@ICON_TEMPLATE:
+							Width: 60
+							Height: 48
+							ClickThrough: false
+							Background: panel-black
 				SupportPowers@SUPPORT_PALETTE:
 					IconSize: 60, 48
 					IconSpriteOffset: -1, -1
