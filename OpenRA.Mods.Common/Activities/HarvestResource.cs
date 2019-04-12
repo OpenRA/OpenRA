@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notifyHarvesterActions)
 					n.MovingToResources(self, targetCell);
 
-				QueueChild(move.MoveTo(targetCell, 2));
+				QueueChild(move.MoveTo(targetCell, 0));
 				return false;
 			}
 

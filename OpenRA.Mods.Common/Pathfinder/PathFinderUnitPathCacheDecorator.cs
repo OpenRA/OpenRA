@@ -30,37 +30,47 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.cacheStorage = cacheStorage;
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
 				var key = "FindUnitPath" + self.ActorID + source.X + source.Y + target.X + target.Y;
-				var cachedPath = cacheStorage.Retrieve(key);
 
-				if (cachedPath != null)
-					return cachedPath;
+				// Only cache path when transient actors are ignored, otherwise there is no guarantee that the path
+				// is still valid at the next check.
+				if (check == BlockedByActor.None)
+				{
+					var cachedPath = cacheStorage.Retrieve(key);
+					if (cachedPath != null)
+						return cachedPath;
+				}
 
-				var pb = pathFinder.FindUnitPath(source, target, self, ignoreActor);
+				var pb = pathFinder.FindUnitPath(source, target, self, ignoreActor, check);
 
-				cacheStorage.Store(key, pb);
+				if (check == BlockedByActor.None)
+					cacheStorage.Store(key, pb);
 
 				return pb;
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
 				var key = "FindUnitPathToRange" + self.ActorID + source.X + source.Y + target.X + target.Y;
-				var cachedPath = cacheStorage.Retrieve(key);
 
-				if (cachedPath != null)
-					return cachedPath;
+				if (check == BlockedByActor.None)
+				{
+					var cachedPath = cacheStorage.Retrieve(key);
+					if (cachedPath != null)
+						return cachedPath;
+				}
 
-				var pb = pathFinder.FindUnitPathToRange(source, srcSub, target, range, self);
+				var pb = pathFinder.FindUnitPathToRange(source, srcSub, target, range, self, check);
 
-				cacheStorage.Store(key, pb);
+				if (check == BlockedByActor.None)
+					cacheStorage.Store(key, pb);
 
 				return pb;
 			}

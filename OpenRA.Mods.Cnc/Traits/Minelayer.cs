@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var movement = self.Trait<IPositionable>();
 
 				var minefield = GetMinefieldCells(minefieldStart, cell, Info.MinefieldDepth)
-					.Where(c => movement.CanEnterCell(c, null, false))
+					.Where(c => movement.CanEnterCell(c, null, BlockedByActor.None))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
 
 				self.QueueActivity(order.Queued, new LayMines(self, minefield));
@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
-					var tile = movement.CanEnterCell(c, null, false) && !world.ShroudObscures(c) ? tileOk : tileBlocked;
+					var tile = movement.CanEnterCell(c, null, BlockedByActor.None) && !world.ShroudObscures(c) ? tileOk : tileBlocked;
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
 						WVec.Zero, -511, pal, 1f, true);
 				}

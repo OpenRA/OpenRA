@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Start a search from each refinery's delivery location:
 			List<CPos> path;
 
-			using (var search = PathSearch.FromPoints(self.World, mobile.Locomotor, self, refs.Values.Select(r => r.Location), self.Location, false)
+			using (var search = PathSearch.FromPoints(self.World, mobile.Locomotor, self, refs.Values.Select(r => r.Location), self.Location, BlockedByActor.None)
 				.WithCustomCost(loc =>
 				{
 					if (!refs.ContainsKey(loc))

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly Mobile mobile;
 		readonly WDist nearEnough;
-		readonly Func<List<CPos>> getPath;
+		readonly Func<BlockedByActor, List<CPos>> getPath;
 		readonly Actor ignoreActor;
 		readonly Color? targetLineColor;
 
@@ -36,7 +35,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		// For dealing with blockers
 		bool hasWaited;
-		bool hasNotifiedBlocker;
 		int waitTicksRemaining;
 
 		// To work around queued activity issues while minimizing changes to legacy behaviour
@@ -48,11 +46,11 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile = self.Trait<Mobile>();
 
-			getPath = () =>
+			getPath = check =>
 			{
 				List<CPos> path;
 				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, check)
 					.WithoutLaneBias())
 					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 				return path;
@@ -67,13 +65,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile = self.Trait<Mobile>();
 
-			getPath = () =>
+			getPath = check =>
 			{
 				if (!this.destination.HasValue)
 					return NoPath;
 
 				return self.World.WorldActor.Trait<IPathFinder>()
-					.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor);
+					.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor, check);
 			};
 
 			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true
@@ -89,8 +87,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile = self.Trait<Mobile>();
 
-			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
-				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
+			getPath = check => self.World.WorldActor.Trait<IPathFinder>()
+				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self, check);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 			this.targetLineColor = targetLineColor;
@@ -100,13 +98,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile = self.Trait<Mobile>();
 
-			getPath = () =>
+			getPath = check =>
 			{
 				if (!target.IsValidFor(self))
 					return NoPath;
 
 				return self.World.WorldActor.Trait<IPathFinder>().FindUnitPathToRange(
-					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self);
+					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self, check);
 			};
 
 			destination = null;
@@ -114,7 +112,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, Func<List<CPos>> getPath, Color? targetLineColor = null)
+		public Move(Actor self, Func<BlockedByActor, List<CPos>> getPath, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -135,9 +133,9 @@ namespace OpenRA.Mods.Common.Activities
 			return hash;
 		}
 
-		List<CPos> EvalPath()
+		List<CPos> EvalPath(BlockedByActor check)
 		{
-			var path = getPath().TakeWhile(a => a != mobile.ToCell).ToList();
+			var path = getPath(check).TakeWhile(a => a != mobile.ToCell).ToList();
 			mobile.PathHash = HashList(path);
 			return path;
 		}
@@ -149,10 +147,16 @@ namespace OpenRA.Mods.Common.Activities
 				var movableDestination = mobile.NearestMoveableCell(destination.Value);
 				destination = mobile.CanEnterCell(movableDestination) ? movableDestination : (CPos?)null;
 			}
+
+			path = EvalPath(BlockedByActor.Stationary);
+			if (path.Count == 0)
+				path = EvalPath(BlockedByActor.None);
 		}
 
 		public override bool Tick(Actor self)
 		{
+			mobile.TurnToMove = false;
+
 			// If the actor is inside a tunnel then we must let them move
 			// all the way through before moving to the next activity
 			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel)
@@ -163,9 +167,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (destination == mobile.ToCell)
 				return true;
-
-			if (path == null)
-				path = EvalPath();
 
 			if (path.Count == 0)
 			{
@@ -184,6 +185,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				path.Add(nextCell.Value.First);
 				QueueChild(new Turn(self, firstFacing));
+				mobile.TurnToMove = true;
 				return false;
 			}
 
@@ -211,7 +213,7 @@ namespace OpenRA.Mods.Common.Activities
 			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
 
 			// Next cell in the move is blocked by another actor
-			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoreActor, true))
+			if (containsTemporaryBlocker || !mobile.CanEnterCell(nextCell, ignoreActor))
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
@@ -221,42 +223,116 @@ namespace OpenRA.Mods.Common.Activities
 					return null;
 				}
 
-				// See if they will move
-				if (!hasNotifiedBlocker)
+				// There is no point in waiting for the other actor to move if it is incapable of moving.
+				if (!mobile.CanEnterCell(nextCell, ignoreActor, BlockedByActor.Immovable))
 				{
-					self.NotifyBlocker(nextCell);
-					hasNotifiedBlocker = true;
+					path = EvalPath(BlockedByActor.Immovable);
+					return null;
 				}
+
+				// See if they will move
+				self.NotifyBlocker(nextCell);
 
 				// Wait a bit to see if they leave
 				if (!hasWaited)
 				{
-					waitTicksRemaining = mobile.Info.LocomotorInfo.WaitAverage
-						+ self.World.SharedRandom.Next(-mobile.Info.LocomotorInfo.WaitSpread, mobile.Info.LocomotorInfo.WaitSpread);
-
+					waitTicksRemaining = mobile.Info.LocomotorInfo.WaitAverage;
 					hasWaited = true;
+					return null;
 				}
 
 				if (--waitTicksRemaining >= 0)
 					return null;
 
+				hasWaited = false;
+
+				// If the blocking actors are already leaving, wait a little longer instead of repathing
+				if (CellIsEvacuating(self, nextCell))
+					return null;
+
 				// Calculate a new path
 				mobile.RemoveInfluence();
-				var newPath = EvalPath();
+				var newPath = EvalPath(BlockedByActor.All);
 				mobile.AddInfluence();
 
 				if (newPath.Count != 0)
+				{
 					path = newPath;
+					var newCell = path[path.Count - 1];
+					path.RemoveAt(path.Count - 1);
+
+					return Pair.New(newCell, mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreActor));
+				}
+				else if (mobile.IsBlocking)
+				{
+					// If there is no way around the blocker and blocker will not move and we are blocking others, back up to let others pass.
+					var newCell = GetAdjacentCell(self, nextCell);
+					if (newCell != null)
+					{
+						if ((nextCell - newCell).Value.LengthSquared > 2)
+							path.Add(mobile.ToCell);
+
+						return Pair.New(newCell.Value, mobile.GetAvailableSubCell(newCell.Value, SubCell.Any, ignoreActor));
+					}
+				}
 
 				return null;
 			}
 
-			hasNotifiedBlocker = false;
 			hasWaited = false;
 			path.RemoveAt(path.Count - 1);
 
-			var subCell = mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreActor);
-			return Pair.New(nextCell, subCell);
+			return Pair.New(nextCell, mobile.GetAvailableSubCell(nextCell, SubCell.Any, ignoreActor));
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			path = null;
+		}
+
+		bool CellIsEvacuating(Actor self, CPos cell)
+		{
+			foreach (var actor in self.World.ActorMap.GetActorsAt(cell))
+			{
+				var move = actor.TraitOrDefault<Mobile>();
+				if (move == null || !move.IsTraitEnabled() || !move.IsLeaving())
+					return false;
+			}
+
+			return true;
+		}
+
+		CPos? GetAdjacentCell(Actor self, CPos nextCell)
+		{
+			var availCells = new List<CPos>();
+			var notStupidCells = new List<CPos>();
+			for (var i = -1; i <= 1; i++)
+			{
+				for (var j = -1; j <= 1; j++)
+				{
+					var p = mobile.ToCell + new CVec(i, j);
+					if (mobile.CanEnterCell(p))
+						availCells.Add(p);
+					else if (p != nextCell && p != mobile.ToCell)
+						notStupidCells.Add(p);
+				}
+			}
+
+			CPos? newCell = null;
+			if (availCells.Count > 0)
+				newCell = availCells.Random(self.World.SharedRandom);
+			else
+			{
+				var cellInfo = notStupidCells
+					.SelectMany(c => self.World.ActorMap.GetActorsAt(c)
+						.Where(a => a.IsIdle && a.Info.HasTraitInfo<MobileInfo>()),
+						(c, a) => new { Cell = c, Actor = a })
+					.RandomOrDefault(self.World.SharedRandom);
+				if (cellInfo != null)
+					newCell = cellInfo.Cell;
+			}
+
+			return newCell;
 		}
 
 		public override void Cancel(Actor self, bool keepQueue = false)
@@ -397,10 +473,13 @@ namespace OpenRA.Mods.Common.Activities
 			public MoveFirstHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
 
-			static bool IsTurn(Mobile mobile, CPos nextCell)
+			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
 			{
-				return nextCell - mobile.ToCell !=
-					mobile.ToCell - mobile.FromCell;
+				// Tight U-turns should be done in place instead of making silly looking loops.
+				var nextFacing = map.FacingBetween(nextCell, mobile.ToCell, mobile.Facing);
+				var currentFacing = map.FacingBetween(mobile.ToCell, mobile.FromCell, mobile.Facing);
+				var delta = Util.NormalizeFacing(nextFacing - currentFacing);
+				return delta != 0 && (delta < 96 || delta > 160);
 			}
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
@@ -412,7 +491,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (IsTurn(mobile, nextCell.Value.First))
+					if (IsTurn(mobile, nextCell.Value.First, map))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(

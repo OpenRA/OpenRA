@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			QueueChild(Mobile.MoveTo(() => CalculatePathToTarget(self)));
+			QueueChild(Mobile.MoveTo(check => CalculatePathToTarget(self, check)));
 		}
 
 		public override bool Tick(Actor self)
@@ -112,14 +112,14 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target has moved, and MoveAdjacentTo is still valid.
 			if (!IsCanceling && shouldRepath)
-				QueueChild(Mobile.MoveTo(() => CalculatePathToTarget(self)));
+				QueueChild(Mobile.MoveTo(check => CalculatePathToTarget(self, check)));
 
 			// The last queued childactivity is guaranteed to be the inner move, so if the childactivity
 			// queue is empty it means we have reached our destination.
 			return TickChild(self);
 		}
 
-		List<CPos> CalculatePathToTarget(Actor self)
+		List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
 		{
 			var targetCells = CandidateMovementCells(self);
 			var searchCells = new List<CPos>();
@@ -132,8 +132,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (!searchCells.Any())
 				return NoPath;
 
-			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Locomotor, self, searchCells, loc, true))
-			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, true).Reverse())
+			using (var fromSrc = PathSearch.FromPoints(self.World, Mobile.Locomotor, self, searchCells, loc, check))
+			using (var fromDest = PathSearch.FromPoint(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check).Reverse())
 				return pathFinder.FindBidiPath(fromSrc, fromDest);
 		}
 
