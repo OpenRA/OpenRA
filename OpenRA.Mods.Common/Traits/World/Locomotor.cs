@@ -20,32 +20,18 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Flags]
-	public enum CellConditions
-	{
-		None = 0,
-		TransientActors,
-		BlockedByMovers,
-		All = TransientActors | BlockedByMovers
-	}
-
-	[Flags]
 	public enum CellFlag : byte
 	{
 		HasFreeSpace = 0,
-		HasActor = 1,
-		HasMovingActor = 2,
-		HasCrushableActor = 4,
-		HasTemporaryBlocker = 8
+		HasMovingActor = 1,
+		HasStationaryActor = 2,
+		HasMovableActor = 4,
+		HasCrushableActor = 8,
+		HasTemporaryBlocker = 16
 	}
 
 	public static class LocomoterExts
 	{
-		public static bool HasCellCondition(this CellConditions c, CellConditions cellCondition)
-		{
-			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (c & cellCondition) == cellCondition;
-		}
-
 		public static bool HasCellFlag(this CellFlag c, CellFlag cellFlag)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
@@ -204,13 +190,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		struct CellCache
 		{
-			public readonly LongBitSet<PlayerBitMask> Blocking;
+			public readonly LongBitSet<PlayerBitMask> Immovable;
 			public readonly LongBitSet<PlayerBitMask> Crushable;
 			public readonly CellFlag CellFlag;
 
-			public CellCache(LongBitSet<PlayerBitMask> blocking, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default(LongBitSet<PlayerBitMask>))
+			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default(LongBitSet<PlayerBitMask>))
 			{
-				Blocking = blocking;
+				Immovable = immovable;
 				Crushable = crushable;
 				CellFlag = cellFlag;
 			}
@@ -244,7 +230,7 @@ namespace OpenRA.Mods.Common.Traits
 			return cell.Layer == 0 ? cellsCost[cell] : customLayerCellsCost[cell.Layer][cell];
 		}
 
-		public short MovementCostToEnterCell(Actor actor, CPos destNode, Actor ignoreActor, CellConditions check)
+		public short MovementCostToEnterCell(Actor actor, CPos destNode, BlockedByActor check, Actor ignoreActor)
 		{
 			if (!world.Map.Contains(destNode))
 				return short.MaxValue;
@@ -252,19 +238,20 @@ namespace OpenRA.Mods.Common.Traits
 			var cellCost = destNode.Layer == 0 ? cellsCost[destNode] : customLayerCellsCost[destNode.Layer][destNode];
 
 			if (cellCost == short.MaxValue ||
-				!CanMoveFreelyInto(actor, destNode, ignoreActor, check))
+				!CanMoveFreelyInto(actor, destNode, check, ignoreActor))
 				return short.MaxValue;
 
 			return cellCost;
 		}
 
 		// Determines whether the actor is blocked by other Actors
-		public bool CanMoveFreelyInto(Actor actor, CPos cell, Actor ignoreActor, CellConditions check)
+		public bool CanMoveFreelyInto(Actor actor, CPos cell, BlockedByActor check, Actor ignoreActor)
 		{
 			var cellCache = GetCache(cell);
 			var cellFlag = cellCache.CellFlag;
 
-			if (!check.HasCellCondition(CellConditions.TransientActors))
+			// If the check allows: We are not blocked by transient actors.
+			if (check == BlockedByActor.None)
 				return true;
 
 			// No actor in the cell or free SubCell.
@@ -281,14 +268,31 @@ namespace OpenRA.Mods.Common.Traits
 			if (cellCache.Crushable.Overlaps(actor.Owner.PlayerMask))
 				return true;
 
+			// If the check allows: We are not blocked by moving units.
+			if (check <= BlockedByActor.Stationary && !cellFlag.HasCellFlag(CellFlag.HasStationaryActor))
+				return true;
+
+			// If the check allows: We are not blocked by units that we can force to move out of the way.
+			if (check <= BlockedByActor.Immovable && !cellCache.Immovable.Overlaps(actor.Owner.PlayerMask))
+				return true;
+
 			// Cache doesn't account for ignored actors or temporary blockers - these must use the slow path.
 			if (ignoreActor == null && !cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
 			{
-				// We are blocked by another actor in the cell.
-				if (cellCache.Blocking.Overlaps(actor.Owner.PlayerMask))
+				// We already know there are uncrushable actors in the cell so we are always blocked.
+				if (check == BlockedByActor.All)
 					return false;
 
-				if (check == CellConditions.BlockedByMovers && cellFlag < CellFlag.HasCrushableActor)
+				// We already know there are either immovable or stationary actors which the check does not allow.
+				if (!cellFlag.HasCellFlag(CellFlag.HasCrushableActor))
+					return false;
+
+				// All actors in the cell are immovable and some cannot be crushed.
+				if (!cellFlag.HasCellFlag(CellFlag.HasMovableActor))
+					return false;
+
+				// All actors in the cell are stationary and some cannot be crushed.
+				if (check == BlockedByActor.Stationary && !cellFlag.HasCellFlag(CellFlag.HasMovingActor))
 					return false;
 			}
 
@@ -299,12 +303,12 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public SubCell GetAvailableSubCell(Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
+		public SubCell GetAvailableSubCell(Actor self, CPos cell, BlockedByActor check, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null)
 		{
 			if (MovementCostForCell(cell) == short.MaxValue)
 				return SubCell.Invalid;
 
-			if (check.HasCellCondition(CellConditions.TransientActors))
+			if (check > BlockedByActor.None)
 			{
 				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check, GetCache(cell).CellFlag);
 
@@ -320,15 +324,20 @@ namespace OpenRA.Mods.Common.Traits
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
 
-		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, CellConditions check, CellFlag cellFlag)
+		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, BlockedByActor check, CellFlag cellFlag)
 		{
 			if (otherActor == ignoreActor)
 				return false;
 
-			// If the check allows: we are not blocked by allied units moving in our direction.
-			if (!check.HasCellCondition(CellConditions.BlockedByMovers) && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
+			// If the check allows: We are not blocked by units that we can force to move out of the way.
+			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
 				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
-				IsMovingInMyDirection(self, otherActor))
+				otherActor.TraitOrDefault<IMove>() != null)
+				return false;
+
+			// If the check allows: we are not blocked by moving units.
+			if (check <= BlockedByActor.Stationary && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
+				IsMoving(self, otherActor))
 				return false;
 
 			if (cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
@@ -339,11 +348,8 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 			}
 
-			if (!cellFlag.HasCellFlag(CellFlag.HasCrushableActor))
-				return true;
-
 			// If we cannot crush the other actor in our way, we are blocked.
-			if (Info.Crushes.IsEmpty)
+			if (!cellFlag.HasCellFlag(CellFlag.HasCrushableActor) || Info.Crushes.IsEmpty)
 				return true;
 
 			// If the other actor in our way cannot be crushed, we are blocked.
@@ -356,7 +362,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		static bool IsMovingInMyDirection(Actor self, Actor other)
+		static bool IsMoving(Actor self, Actor other)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here we can save some performance by avoiding querying for the trait.
 			var otherMobile = other.OccupiesSpace as Mobile;
@@ -368,9 +374,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (selfMobile == null)
 				return false;
 
-			// Moving in the same direction if the facing delta is between +/- 90 degrees
-			var delta = Util.NormalizeFacing(otherMobile.Facing - selfMobile.Facing);
-			return delta < 64 || delta > 192;
+			return true;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -456,31 +460,32 @@ namespace OpenRA.Mods.Common.Traits
 				var cache = cell.Layer == 0 ? blockingCache : customLayerBlockingCache[cell.Layer];
 
 				var actors = actorMap.GetActorsAt(cell);
+				var cellFlag = CellFlag.HasFreeSpace;
 
 				if (!actors.Any())
 				{
-					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), CellFlag.HasFreeSpace);
+					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), cellFlag);
 					return;
 				}
 
 				if (sharesCell && actorMap.HasFreeSubCell(cell))
 				{
-					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), CellFlag.HasFreeSpace);
+					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), cellFlag);
 					return;
 				}
 
-				var cellFlag = CellFlag.HasActor;
-				var cellBlockedPlayers = default(LongBitSet<PlayerBitMask>);
+				var cellImmovablePlayers = default(LongBitSet<PlayerBitMask>);
 				var cellCrushablePlayers = world.AllPlayersMask;
 
 				foreach (var actor in actors)
 				{
-					var actorBlocksPlayers = world.AllPlayersMask;
+					var actorImmovablePlayers = world.AllPlayersMask;
 					var actorCrushablePlayers = world.NoPlayersMask;
 
 					var crushables = actor.TraitsImplementing<ICrushable>();
 					var mobile = actor.OccupiesSpace as Mobile;
-					var isMoving = mobile != null && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
+					var isMovable = mobile != null;
+					var isMoving = isMovable && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
 
 					if (crushables.Any())
 					{
@@ -490,9 +495,14 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					if (isMoving)
-					{
-						actorBlocksPlayers = actorBlocksPlayers.Except(actor.Owner.AlliedPlayersMask);
 						cellFlag |= CellFlag.HasMovingActor;
+					else
+						cellFlag |= CellFlag.HasStationaryActor;
+
+					if (isMovable)
+					{
+						cellFlag |= CellFlag.HasMovableActor;
+						actorImmovablePlayers = actorImmovablePlayers.Except(actor.Owner.AlliedPlayersMask);
 					}
 
 					// PERF: Only perform ITemporaryBlocker trait look-up if mod/map rules contain any actors that are temporary blockers
@@ -504,10 +514,10 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					cellCrushablePlayers = cellCrushablePlayers.Intersect(actorCrushablePlayers);
-					cellBlockedPlayers = cellBlockedPlayers.Union(actorBlocksPlayers);
+					cellImmovablePlayers = cellImmovablePlayers.Union(actorImmovablePlayers);
 				}
 
-				cache[cell] = new CellCache(cellBlockedPlayers, cellFlag, cellCrushablePlayers);
+				cache[cell] = new CellCache(cellImmovablePlayers, cellFlag, cellCrushablePlayers);
 			}
 		}
 	}

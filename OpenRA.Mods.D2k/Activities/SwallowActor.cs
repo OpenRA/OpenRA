@@ -121,7 +121,7 @@ namespace OpenRA.Mods.D2k.Activities
 					}
 
 					// The target reached solid ground
-					if (!positionable.CanEnterCell(targetLocation, null, false))
+					if (!positionable.CanEnterCell(targetLocation, null, BlockedByActor.None))
 					{
 						RevokeCondition(self);
 						return true;

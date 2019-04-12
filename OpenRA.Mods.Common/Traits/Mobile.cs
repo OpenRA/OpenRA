@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		// initialized and used by CanEnterCell
 		Locomotor locomotor;
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
 			if (locomotor == null)
@@ -92,8 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (locomotor.MovementCostForCell(cell) == short.MaxValue)
 				return false;
 
-			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
-			return locomotor.CanMoveFreelyInto(self, cell, ignoreActor, check);
+			return locomotor.CanMoveFreelyInto(self, cell, check, ignoreActor);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -176,6 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyFinishedMoving[] notifyFinishedMoving;
 		IWrapMove[] moveWrappers;
 		bool requireForceMove;
+		public bool TurnToMove;
+		public bool IsBlocking { get; private set; }
 
 		#region IFacing
 		[Sync]
@@ -298,15 +299,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
-			// Initial fairly braindead implementation.
-			// don't allow ourselves to be pushed around by the enemy!
-			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)
-				return;
-
-			// Don't nudge if we're busy doing something!
-			if (!force && !self.IsIdle)
-				return;
-
 			// Pick an adjacent available cell.
 			var availCells = new List<CPos>();
 			var notStupidCells = new List<CPos>();
@@ -356,6 +348,17 @@ namespace OpenRA.Mods.Common.Traits
 						self.ActorID, self.Location);
 				}
 			}
+		}
+
+		public bool IsLeaving()
+		{
+			if (CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+				return true;
+
+			if (CurrentMovementTypes.HasFlag(MovementType.Turn))
+				return TurnToMove;
+
+			return false;
 		}
 
 		public bool CanInteractWithGroundLayer(Actor self)
@@ -442,10 +445,9 @@ namespace OpenRA.Mods.Common.Traits
 				&& (subCell == SubCell.Any || FromSubCell == subCell || subCell == SubCell.FullCell || FromSubCell == SubCell.FullCell);
 		}
 
-		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
+		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
-			var cellConditions = checkTransientActors ? CellConditions.All : CellConditions.None;
-			return Locomotor.GetAvailableSubCell(self, a, preferredSubCell, ignoreActor, cellConditions);
+			return Locomotor.GetAvailableSubCell(self, a, check, preferredSubCell, ignoreActor);
 		}
 
 		public bool CanExistInCell(CPos cell)
@@ -453,9 +455,9 @@ namespace OpenRA.Mods.Common.Traits
 			return Locomotor.MovementCostForCell(cell) != short.MaxValue;
 		}
 
-		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors);
+			return Info.CanEnterCell(self.World, self, cell, ignoreActor, check);
 		}
 
 		#endregion
@@ -474,6 +476,7 @@ namespace OpenRA.Mods.Common.Traits
 			FromSubCell = fromSub;
 			ToSubCell = toSub;
 			AddInfluence();
+			IsBlocking = false;
 
 			// Most custom layer conditions are added/removed when starting the transition between layers.
 			if (toCell.Layer != fromCell.Layer)
@@ -737,7 +740,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Activity ScriptedMove(CPos cell) { return new Move(self, cell); }
-		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(self, pathFunc); }
+		public Activity MoveTo(Func<BlockedByActor, List<CPos>> pathFunc) { return new Move(self, pathFunc); }
 
 		Activity VisualMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
 		{
@@ -758,7 +761,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, Locomotor, self, true,
+			using (var search = PathSearch.Search(self.World, Locomotor, self, BlockedByActor.All,
 					loc => loc.Layer == 0 && CanEnterCell(loc))
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);
@@ -782,7 +785,7 @@ namespace OpenRA.Mods.Common.Traits
 			init.Add(new FacingInit(facing));
 
 			// Allows the husk to drag to its final position
-			if (CanEnterCell(self.Location, self, false))
+			if (CanEnterCell(self.Location, self, BlockedByActor.Stationary))
 				init.Add(new HuskSpeedInit(MovementSpeedForCell(self, self.Location)));
 		}
 
@@ -804,8 +807,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyBlockingMove.OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
-			if (self.IsIdle && self.AppearsFriendlyTo(blocking))
+			if (!self.AppearsFriendlyTo(blocking))
+				return;
+
+			if (self.IsIdle)
+			{
 				Nudge(self, blocking, true);
+				return;
+			}
+
+			IsBlocking = true;
 		}
 
 		public override IEnumerable<VariableObserver> GetVariableObservers()

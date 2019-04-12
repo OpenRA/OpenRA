@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!target.IsValidFor(self))
 				return AttackStatus.UnableToAttack;
 
-			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(target.Actor.Location, null, false))
+			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(target.Actor.Location, null, BlockedByActor.None))
 				return AttackStatus.UnableToAttack;
 
 			if (!attack.Info.TargetFrozenActors && !forceAttack && target.Type == TargetType.FrozenActor)

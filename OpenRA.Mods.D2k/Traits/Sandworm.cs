@@ -98,7 +98,7 @@ namespace OpenRA.Mods.D2k.Traits
 				if (!a.Info.HasTraitInfo<AttractsWormsInfo>())
 					return false;
 
-				return mobile.CanEnterCell(a.Location, null, false);
+				return mobile.CanEnterCell(a.Location, null, BlockedByActor.None);
 			};
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.MaxSearchRadius)
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			var moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
 
-			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, false))
+			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, BlockedByActor.None))
 			{
 				// without this check, this while can be infinity loop
 				if (moveTo == self.Location)
