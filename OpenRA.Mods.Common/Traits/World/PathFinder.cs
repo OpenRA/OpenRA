@@ -33,9 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		/// Calculates a path for the actor from source to destination
 		/// </summary>
 		/// <returns>A path from start to target</returns>
-		List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor);
+		List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check);
 
-		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self);
+		List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check);
 
 		/// <summary>
 		/// Calculates a path given a search specification
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.world = world;
 		}
 
-		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
+		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor, BlockedByActor check)
 		{
 			var mobile = self.Trait<Mobile>();
 			var locomotor = mobile.Locomotor;
@@ -78,19 +78,23 @@ namespace OpenRA.Mods.Common.Traits
 				return EmptyPath;
 
 			var distance = source - target;
-			if (source.Layer == target.Layer && distance.LengthSquared < 3 && locomotor.CanMoveFreelyInto(self, target, null, CellConditions.All))
+			var canMoveFreely = locomotor.CanMoveFreelyInto(self, target, check, null);
+			if (distance.LengthSquared < 3 && !canMoveFreely)
+				return new List<CPos> { };
+
+			if (source.Layer == target.Layer && distance.LengthSquared < 3 && canMoveFreely)
 				return new List<CPos> { target };
 
 			List<CPos> pb;
 
-			using (var fromSrc = PathSearch.FromPoint(world, locomotor, self, target, source, true).WithIgnoredActor(ignoreActor))
-			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
+			using (var fromSrc = PathSearch.FromPoint(world, locomotor, self, target, source, check).WithIgnoredActor(ignoreActor))
+			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, target, check).WithIgnoredActor(ignoreActor).Reverse())
 				pb = FindBidiPath(fromSrc, fromDest);
 
 			return pb;
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos source, SubCell srcSub, WPos target, WDist range, Actor self, BlockedByActor check)
 		{
 			if (!cached)
 			{
@@ -123,8 +127,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var locomotor = mobile.Locomotor;
 
-			using (var fromSrc = PathSearch.FromPoints(world, locomotor, self, tilesInRange, source, true))
-			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, targetCell, true).Reverse())
+			using (var fromSrc = PathSearch.FromPoints(world, locomotor, self, tilesInRange, source, check))
+			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, targetCell, check).Reverse())
 				return FindBidiPath(fromSrc, fromDest);
 		}
 

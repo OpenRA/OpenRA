@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (mobile.locomotor.MovementCostForCell(cell) == short.MaxValue)
 					return false;
 
-				return mobile.locomotor.CanMoveFreelyInto(self, cell, null, CellConditions.BlockedByMovers);
+				return mobile.locomotor.CanMoveFreelyInto(self, cell, BlockedByActor.All, null);
 			}
 		}
 	}

@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => self.Location != c);
 		}
 
-		public bool CanUnload(bool immediate = false)
+		public bool CanUnload(BlockedByActor check = BlockedByActor.None)
 		{
 			if (checkTerrainType)
 			{
@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return !IsEmpty(self) && (aircraft == null || aircraft.CanLand(self.Location, blockedByMobile: false))
-				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => !p.IsDead && p.Trait<IPositionable>().CanEnterCell(c, null, immediate)));
+				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => !p.IsDead && p.Trait<IPositionable>().CanEnterCell(c, null, check)));
 		}
 
 		public bool CanLoad(Actor self, Actor a)
@@ -430,7 +430,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (Info.EjectOnDeath)
-				while (!IsEmpty(self) && CanUnload(true))
+				while (!IsEmpty(self) && CanUnload(BlockedByActor.All))
 				{
 					var passenger = Unload(self);
 					var cp = self.CenterPosition;
@@ -438,7 +438,7 @@ namespace OpenRA.Mods.Common.Traits
 					var positionable = passenger.Trait<IPositionable>();
 					positionable.SetPosition(passenger, self.Location);
 
-					if (!inAir && positionable.CanEnterCell(self.Location, self, false))
+					if (!inAir && positionable.CanEnterCell(self.Location, self, BlockedByActor.None))
 					{
 						self.World.AddFrameEndTask(w => w.Add(passenger));
 						var nbms = passenger.TraitsImplementing<INotifyBlockingMove>();

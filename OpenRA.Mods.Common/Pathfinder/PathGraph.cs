@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public bool InReverse { get; set; }
 		public Actor IgnoreActor { get; set; }
 
-		readonly CellConditions checkConditions;
+		readonly BlockedByActor checkConditions;
 		readonly Locomotor locomotor;
 		readonly LocomotorInfo.WorldMovementInfo worldMovementInfo;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
 			new Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>>();
 
-		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, bool checkForBlocked)
+		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check)
 		{
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
@@ -108,7 +109,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			worldMovementInfo = locomotorInfo.GetWorldMovementInfo(world);
 			Actor = actor;
 			LaneBias = 1;
-			checkConditions = checkForBlocked ? CellConditions.TransientActors : CellConditions.None;
+			checkConditions = check;
 			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
 		}
 
@@ -172,8 +173,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		int GetCostToNode(CPos destNode, CVec direction)
 		{
-			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, IgnoreActor, checkConditions);
-
+			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, checkConditions, IgnoreActor);
 			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
