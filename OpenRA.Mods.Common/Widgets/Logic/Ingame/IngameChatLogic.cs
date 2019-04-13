@@ -124,7 +124,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (chatText.Text != "")
 				{
 					if (!chatText.Text.StartsWith("/", StringComparison.Ordinal))
-						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim()));
+					{
+						// This should never happen, but avoid a crash if it does somehow (chat will just stay open)
+						if (!isObserver && orderManager.LocalClient == null && world.LocalPlayer == null)
+							return true;
+
+						var teamNumber = (isObserver || world.LocalPlayer.WinState != WinState.Undefined) ? 0 : orderManager.LocalClient.Team;
+						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim(), teamNumber));
+					}
 					else if (chatTraits != null)
 					{
 						var text = chatText.Text.Trim();

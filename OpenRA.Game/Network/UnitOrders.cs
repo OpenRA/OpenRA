@@ -100,14 +100,25 @@ namespace OpenRA.Network
 						if (orderManager.LocalClient == null)
 							break;
 
-						if (client.IsObserver && (orderManager.LocalClient.IsObserver || world.IsReplay))
+						var player = world.FindPlayerByClient(client);
+						var localClientIsObserver = orderManager.LocalClient.IsObserver || (world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined);
+
+						// ExtraData gives us the team number, 0 means Spectators
+						if (order.ExtraData == 0 && (localClientIsObserver || world.IsReplay))
 						{
-							Game.AddChatLine(client.Color, "[Spectators] " + client.Name, message);
+							// Validate before adding the line
+							if (client.IsObserver || (player != null && player.WinState != WinState.Undefined))
+								Game.AddChatLine(client.Color, "[Spectators] " + client.Name, message);
+
 							break;
 						}
 
-						if (client.Team == orderManager.LocalClient.Team || world.IsReplay)
-							Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, message);
+						var valid = client.Team == order.ExtraData && player != null && player.WinState == WinState.Undefined;
+						var isSameTeam = order.ExtraData == orderManager.LocalClient.Team && world.LocalPlayer != null
+							&& world.LocalPlayer.WinState == WinState.Undefined;
+
+						if (valid && (isSameTeam || world.IsReplay))
+							Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + order.ExtraData : "") + "] " + client.Name, message);
 
 						break;
 					}
