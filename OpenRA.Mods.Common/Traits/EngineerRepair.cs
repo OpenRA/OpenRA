@@ -117,9 +117,4 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 	}
-
-	[Desc("Eligible for instant repair.")]
-	class EngineerRepairableInfo : TraitInfo<EngineerRepairable> { }
-
-	class EngineerRepairable { }
 }
