@@ -18,11 +18,13 @@ namespace OpenRA.Server
 	{
 		public readonly string Name;
 		public readonly string Data;
+		public readonly uint ExtraData;
 
-		public ServerOrder(string name, string data)
+		public ServerOrder(string name, string data, uint extraData = 0)
 		{
 			Name = name;
 			Data = data;
+			ExtraData = extraData;
 		}
 
 		public static ServerOrder Deserialize(BinaryReader r)
@@ -40,9 +42,11 @@ namespace OpenRA.Server
 				case 0xfe:
 					{
 						var name = r.ReadString();
-						var data = r.ReadString();
+						var flags = (OrderFields)r.ReadByte();
+						var data = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
+						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
-						return new ServerOrder(name, data);
+						return new ServerOrder(name, data, extraData);
 					}
 
 				default:
@@ -52,12 +56,26 @@ namespace OpenRA.Server
 
 		public byte[] Serialize()
 		{
-			var ms = new MemoryStream(1 + Name.Length + 1 + Data.Length + 1);
+			var ms = new MemoryStream(1 + Name.Length + 1 + 1 + Data.Length + 1 + 4);
 			var bw = new BinaryWriter(ms);
+
+			OrderFields fields = 0;
+			if (Data != null)
+				fields |= OrderFields.TargetString;
+
+			if (ExtraData != 0)
+				fields |= OrderFields.ExtraData;
 
 			bw.Write((byte)0xfe);
 			bw.Write(Name);
-			bw.Write(Data);
+			bw.Write((byte)fields);
+
+			if (fields.HasField(OrderFields.TargetString))
+				bw.Write(Data);
+
+			if (fields.HasField(OrderFields.ExtraData))
+				bw.Write(ExtraData);
+
 			return ms.ToArray();
 		}
 	}

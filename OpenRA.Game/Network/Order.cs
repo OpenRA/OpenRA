@@ -148,9 +148,11 @@ namespace OpenRA
 					case 0xfe:
 					{
 						var name = r.ReadString();
-						var data = r.ReadString();
+						var flags = (OrderFields)r.ReadByte();
+						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
+						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
-						return new Order(name, null, false) { IsImmediate = true, TargetString = data };
+						return new Order(name, null, false) { IsImmediate = true, TargetString = targetString, ExtraData = extraData };
 					}
 
 					default:
@@ -245,15 +247,29 @@ namespace OpenRA
 
 		public byte[] Serialize()
 		{
-			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + TargetString.Length + 1 : 6);
+			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + 1 + TargetString.Length + 1 + 4 : 6);
 			var ret = new MemoryStream(minLength);
 			var w = new BinaryWriter(ret);
+
+			OrderFields fields = 0;
+			if (TargetString != null)
+				fields |= OrderFields.TargetString;
+
+			if (ExtraData != 0)
+				fields |= OrderFields.ExtraData;
 
 			if (IsImmediate)
 			{
 				w.Write((byte)0xFE);
 				w.Write(OrderString);
-				w.Write(TargetString);
+				w.Write((byte)fields);
+
+				if (fields.HasField(OrderFields.TargetString))
+					w.Write(TargetString);
+
+				if (fields.HasField(OrderFields.ExtraData))
+					w.Write(ExtraData);
+
 				return ret.ToArray();
 			}
 
@@ -261,21 +277,14 @@ namespace OpenRA
 			w.Write(OrderString);
 			w.Write(UIntFromActor(Subject));
 
-			OrderFields fields = 0;
 			if (Target.SerializableType != TargetType.Invalid)
 				fields |= OrderFields.Target;
-
-			if (TargetString != null)
-				fields |= OrderFields.TargetString;
 
 			if (Queued)
 				fields |= OrderFields.Queued;
 
 			if (ExtraLocation != CPos.Zero)
 				fields |= OrderFields.ExtraLocation;
-
-			if (ExtraData != 0)
-				fields |= OrderFields.ExtraData;
 
 			if (Target.SerializableCell != null)
 				fields |= OrderFields.TargetIsCell;
