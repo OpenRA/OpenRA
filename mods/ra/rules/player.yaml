@@ -144,3 +144,4 @@ Player:
 	ResourceStorageWarning:
 	PlayerExperience:
 	ConditionManager:
+	GameSaveViewportManager:
