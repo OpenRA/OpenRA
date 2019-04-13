@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IDisabledTrait disablable;
 		readonly IFacing facing;
+		readonly Mobile mobile;
 		readonly int desiredFacing;
 
 		public Turn(Actor self, int desiredFacing)
@@ -26,6 +27,10 @@ namespace OpenRA.Mods.Common.Activities
 			disablable = self.TraitOrDefault<IMove>() as IDisabledTrait;
 			facing = self.Trait<IFacing>();
 			this.desiredFacing = desiredFacing;
+
+			// The current implementation of Mobile is both IMove and IDisabledTrait,
+			// and this way we can save a separate Mobile trait look-up.
+			mobile = disablable as Mobile;
 		}
 
 		public override Activity Tick(Actor self)
@@ -33,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return NextActivity;
 
-			if (disablable != null && disablable.IsTraitDisabled)
+			if ((disablable != null && disablable.IsTraitDisabled) || (mobile != null && mobile.IsTraitPaused))
 				return this;
 
 			if (desiredFacing == facing.Facing)
