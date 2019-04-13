@@ -262,7 +262,7 @@ Container@TEXT_INPUT_PROMPT:
 			X: PARENT_RIGHT - 160
 			Y: PARENT_BOTTOM - 1
 			Width: 160
-			Height: 30
+			Height: 34
 			Text: OK
 			Font: Bold
 			Key: return
@@ -270,7 +270,7 @@ Container@TEXT_INPUT_PROMPT:
 			X: 0
 			Y: PARENT_BOTTOM - 1
 			Width: 160
-			Height: 30
+			Height: 35
 			Text: Cancel
 			Font: Bold
 			Key: escape
