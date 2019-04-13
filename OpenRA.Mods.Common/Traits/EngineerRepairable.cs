@@ -9,12 +9,19 @@
  */
 #endregion
 
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public class EngineerRepairType { }
+
 	[Desc("Eligible for instant repair.")]
-	class EngineerRepairableInfo : TraitInfo<EngineerRepairable> { }
+	class EngineerRepairableInfo : TraitInfo<EngineerRepairable>
+	{
+		[Desc("Actors with these Types under EngineerRepair trait can repair me.")]
+		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
+	}
 
 	class EngineerRepairable { }
 }

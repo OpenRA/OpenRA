@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
 	class EngineerRepairInfo : ITraitInfo
 	{
+		[Desc("Uses the \"EngineerRepairable\" trait to determine repairability.")]
+		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
+
 		[VoiceReference] public readonly string Voice = "Action";
 
 		[Desc("Behaviour when entering the structure.",
@@ -104,7 +108,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
+				var engineerRepairable = target.Info.TraitInfoOrDefault<EngineerRepairableInfo>();
+				if (engineerRepairable == null)
+					return false;
+
+				if (!engineerRepairable.Types.IsEmpty && !engineerRepairable.Types.Overlaps(info.Types))
 					return false;
 
 				if (!info.ValidStances.HasStance(self.Owner.Stances[target.Owner]))
@@ -118,7 +126,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
+				var engineerRepairable = target.Info.TraitInfoOrDefault<EngineerRepairableInfo>();
+				if (engineerRepairable == null)
+					return false;
+
+				if (!engineerRepairable.Types.IsEmpty && !engineerRepairable.Types.Overlaps(info.Types))
 					return false;
 
 				if (!info.ValidStances.HasStance(self.Owner.Stances[target.Owner]))
