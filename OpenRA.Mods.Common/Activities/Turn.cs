@@ -17,13 +17,13 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Turn : Activity
 	{
-		readonly IDisabledTrait disablable;
+		readonly Mobile mobile;
 		readonly IFacing facing;
 		readonly int desiredFacing;
 
 		public Turn(Actor self, int desiredFacing)
 		{
-			disablable = self.TraitOrDefault<IMove>() as IDisabledTrait;
+			mobile = self.TraitOrDefault<Mobile>();
 			facing = self.Trait<IFacing>();
 			this.desiredFacing = desiredFacing;
 		}
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return NextActivity;
 
-			if (disablable != null && disablable.IsTraitDisabled)
+			if (mobile != null && (mobile.IsTraitDisabled || mobile.IsTraitPaused))
 				return this;
 
 			if (desiredFacing == facing.Facing)
