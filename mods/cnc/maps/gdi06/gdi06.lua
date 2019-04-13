@@ -108,15 +108,18 @@ WorldLoaded = function()
 		KillCounterHuntThreshold = 20
 	end
 
-	destroyObjective = player.AddPrimaryObjective("Destroy the Nod ********.")
+	destroyObjective = player.AddObjective("Destroy the Nod ********.", "Primary", false)
+	dummyObjective = enemy.AddObjective("Dummy objective.", "Primary", true)
 
 	Trigger.OnKilled(Airfield, function()
 		player.MarkCompletedObjective(destroyObjective)
+		enemy.MarkFailedObjective(dummyObjective)
 	end)
 
 	Utils.Do(NodBase, function(structure)
 		Trigger.OnKilled(structure, function()
-			player.MarkCompletedObjective(destroyObjective)
+			player.MarkFailedObjective(destroyObjective)
+			enemy.MarkFailedObjective(dummyObjective)
 		end)
 	end)
 
@@ -184,6 +187,7 @@ end
 Tick = function()
 	if DateTime.GameTime > DateTime.Seconds(5) and player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(destroyObjective)
+		enemy.MarkCompletedObjective(dummyObjective)
 	end
 end
 
