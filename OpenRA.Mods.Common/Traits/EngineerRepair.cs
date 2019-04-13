@@ -29,6 +29,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What diplomatic stances allow target to be repaired by this actor.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
+		[Desc("Cursor to show when hovering over a valid actor to repair.")]
+		public readonly string Cursor = "goldwrench";
+
+		[Desc("Cursor to show when target actor has full health so it can't be repaired.")]
+		public readonly string RepairBlockedCursor = "goldwrench-blocked";
+
 		public object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
 	}
 
@@ -88,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			EngineerRepairInfo info;
 
 			public EngineerRepairOrderTargeter(EngineerRepairInfo info)
-				: base("EngineerRepair", 6, "goldwrench", true, true)
+				: base("EngineerRepair", 6, info.Cursor, true, true)
 			{
 				this.info = info;
 			}
@@ -102,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
-					cursor = "goldwrench-blocked";
+					cursor = info.RepairBlockedCursor;
 
 				return true;
 			}
@@ -116,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)
-					cursor = "goldwrench-blocked";
+					cursor = info.RepairBlockedCursor;
 
 				return true;
 			}
