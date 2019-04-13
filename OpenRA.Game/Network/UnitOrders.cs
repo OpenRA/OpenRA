@@ -24,10 +24,7 @@ namespace OpenRA.Network
 
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
-			/* TODO: this is still a hack.
-			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,..*/
-			return world.Players.FirstOrDefault(
-				p => (p.ClientIndex == c.Index && p.PlayerReference.Playable));
+			return world.Players.FirstOrDefault(p => (p.ClientIndex == c.Index && p.PlayerReference.Playable));
 		}
 
 		internal static void ProcessOrder(OrderManager orderManager, World world, int clientId, Order order)
@@ -66,11 +63,13 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "Message": // Server message
+				// Server message
+				case "Message":
 					Game.AddChatLine(Color.White, ServerChatName, order.TargetString);
 					break;
 
-				case "Disconnected": /* reports that the target player disconnected */
+				// Reports that the target player disconnected
+				case "Disconnected":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
