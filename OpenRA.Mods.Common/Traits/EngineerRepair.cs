@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
-	class EngineerRepairInfo : ITraitInfo
+	class EngineerRepairInfo : ConditionalTraitInfo
 	{
 		[Desc("Uses the \"EngineerRepairable\" trait to determine repairability.")]
 		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
@@ -42,21 +42,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to show when target actor has full health so it can't be repaired.")]
 		public readonly string RepairBlockedCursor = "goldwrench-blocked";
 
-		public object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
+		public override object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
 	}
 
-	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
+	class EngineerRepair : ConditionalTrait<EngineerRepairInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly EngineerRepairInfo info;
-
 		public EngineerRepair(ActorInitializer init, EngineerRepairInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new EngineerRepairOrderTargeter(); }
+			get
+			{
+				if (IsTraitDisabled)
+					yield break;
+
+				yield return new EngineerRepairOrderTargeter(Info);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -81,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "EngineerRepair" && IsValidOrder(self, order)
-				? info.Voice : null;
+				? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -93,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(order.Target, Color.Yellow);
-			self.QueueActivity(new RepairBuilding(self, order.Target, info));
+			self.QueueActivity(new RepairBuilding(self, order.Target, Info));
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
