@@ -97,11 +97,17 @@ namespace OpenRA.Network
 							break;
 						}
 
-						var player = world.FindPlayerByClient(client);
-						if ((player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || (world.IsReplay && player != null))
-							Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, message);
-						else if ((orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver) || (world.IsReplay  && client.IsObserver))
+						if (orderManager.LocalClient == null)
+							break;
+
+						if (client.IsObserver && (orderManager.LocalClient.IsObserver || world.IsReplay))
+						{
 							Game.AddChatLine(client.Color, "[Spectators] " + client.Name, message);
+							break;
+						}
+
+						if (client.Team == orderManager.LocalClient.Team || world.IsReplay)
+							Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, message);
 
 						break;
 					}
