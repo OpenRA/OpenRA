@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("What diplomatic stances allow target to be repaired by this actor.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
+		[Desc("Sound to play when repairing is done.")]
+		public readonly string RepairSound = null;
+
 		[Desc("Cursor to show when hovering over a valid actor to repair.")]
 		public readonly string Cursor = "goldwrench";
 
