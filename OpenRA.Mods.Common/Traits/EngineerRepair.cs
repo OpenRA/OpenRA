@@ -80,20 +80,25 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(order.Target, Color.Yellow);
-			self.QueueActivity(new RepairBuilding(self, order.Target, info.EnterBehaviour, info.ValidStances));
+			self.QueueActivity(new RepairBuilding(self, order.Target, info));
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
 		{
-			public EngineerRepairOrderTargeter()
-				: base("EngineerRepair", 6, "goldwrench", false, true) { }
+			EngineerRepairInfo info;
+
+			public EngineerRepairOrderTargeter(EngineerRepairInfo info)
+				: base("EngineerRepair", 6, "goldwrench", true, true)
+			{
+				this.info = info;
+			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (!info.ValidStances.HasStance(self.Owner.Stances[target.Owner]))
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
@@ -107,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!target.Info.HasTraitInfo<EngineerRepairableInfo>())
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				if (!info.ValidStances.HasStance(self.Owner.Stances[target.Owner]))
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)
