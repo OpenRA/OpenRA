@@ -80,30 +80,30 @@ namespace OpenRA.Network
 				case "TeamChat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+						if (client == null)
+							break;
 
 						// Cut chat messages to the hard limit to avoid exploits
 						var message = order.TargetString;
 						if (message.Length > ChatMessageMaxLength)
 							message = order.TargetString.Substring(0, ChatMessageMaxLength);
 
-						if (client != null)
+						// We are still in the lobby
+						if (world == null)
 						{
-							if (world == null)
-							{
-								if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-									Game.AddChatLine(client.Color, "[Team] " + client.Name, message);
-							}
-							else
-							{
-								var player = world.FindPlayerByClient(client);
-								if (player != null && player.WinState == WinState.Lost)
-									Game.AddChatLine(client.Color, client.Name + " (Dead)", message);
-								else if ((player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || (world.IsReplay && player != null))
-									Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, message);
-								else if ((orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver) || (world.IsReplay  && client.IsObserver))
-									Game.AddChatLine(client.Color, "[Spectators] " + client.Name, message);
-							}
+							if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
+								Game.AddChatLine(client.Color, "[Team] " + client.Name, message);
+
+							break;
 						}
+
+						var player = world.FindPlayerByClient(client);
+						if (player != null && player.WinState == WinState.Lost)
+							Game.AddChatLine(client.Color, client.Name + " (Dead)", message);
+						else if ((player != null && world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally) || (world.IsReplay && player != null))
+							Game.AddChatLine(client.Color, "[Team" + (world.IsReplay ? " " + client.Team : "") + "] " + client.Name, message);
+						else if ((orderManager.LocalClient != null && orderManager.LocalClient.IsObserver && client.IsObserver) || (world.IsReplay  && client.IsObserver))
+							Game.AddChatLine(client.Color, "[Spectators] " + client.Name, message);
 
 						break;
 					}
