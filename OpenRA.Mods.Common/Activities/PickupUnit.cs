@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly int delay;
 
-		enum PickupState { Intercept, LockCarryable, MoveToCarryable, Turn, Land, Wait, Pickup, Aborted }
+		enum PickupState { Intercept, LockCarryable, MoveToCarryable, Turn, Land, Wait, Pickup }
 
 		PickupState state;
 
@@ -47,6 +47,11 @@ namespace OpenRA.Mods.Common.Activities
 			carryallFacing = self.Trait<IFacing>();
 
 			state = PickupState.Intercept;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			carryall.ReserveCarryable(self, cargo);
 		}
 
 		public override Activity Tick(Actor self)
@@ -67,7 +72,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			if (carryall.State == Carryall.CarryallState.Idle)
+			if (carryall.State != Carryall.CarryallState.Reserved)
 				return NextActivity;
 
 			switch (state)
@@ -78,9 +83,10 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 
 				case PickupState.LockCarryable:
-					state = PickupState.MoveToCarryable;
 					if (!carryable.LockForPickup(cargo, self))
-						state = PickupState.Aborted;
+						Cancel(self);
+
+					state = PickupState.MoveToCarryable;
 					return this;
 
 				case PickupState.MoveToCarryable:
@@ -129,19 +135,14 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				case PickupState.Wait:
-					state = PickupState.Pickup;
 					QueueChild(self, new Wait(delay, false), true);
+					state = PickupState.Pickup;
 					return this;
 
 				case PickupState.Pickup:
 					// Remove our carryable from world
 					Attach(self);
-					return NextActivity;
-
-				case PickupState.Aborted:
-					// We got cancelled
-					carryall.UnreserveCarryable(self);
-					break;
+					return this;
 			}
 
 			return NextActivity;

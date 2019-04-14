@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool landingInitiated;
 
 		public HeliLand(Actor self, bool requireSpace, Actor ignoreActor = null)
-			: this(self, requireSpace, self.Info.TraitInfo<AircraftInfo>().LandAltitude, ignoreActor) { }
+			: this(self, requireSpace, self.Trait<Aircraft>().LandAltitude, ignoreActor) { }
 
 		public HeliLand(Actor self, bool requireSpace, WDist landAltitude, Actor ignoreActor = null)
 		{

@@ -193,6 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 		public bool ForceLanding { get; private set; }
 		CPos? landingCell;
 
+		public WDist LandAltitude { get; private set; }
+
 		bool airborne;
 		bool cruising;
 		bool firstTick = true;
@@ -216,6 +218,17 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
+			LandAltitude = info.LandAltitude;
+		}
+
+		public void AddLandingOffset(int offset)
+		{
+			LandAltitude += new WDist(offset);
+		}
+
+		public void SubtractLandingOffset(int offset)
+		{
+			LandAltitude -= new WDist(offset);
 		}
 
 		public virtual IEnumerable<VariableObserver> GetVariableObservers()
@@ -435,7 +448,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Map.DistanceAboveTerrain(WPos pos) is called directly because Aircraft is an IPositionable trait
 			// and all calls occur in Tick methods.
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition) != Info.LandAltitude)
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition) != LandAltitude)
 				return null; // Not on the resupplier.
 
 			return self.World.ActorMap.GetActorsAt(self.Location)
@@ -481,7 +494,7 @@ namespace OpenRA.Mods.Common.Traits
 			ReservedActor = null;
 			MayYieldReservation = false;
 
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= Info.LandAltitude.Length)
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
 				self.QueueActivity(new TakeOff(self));
 		}
 
@@ -591,7 +604,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void OnBecomingIdle(Actor self)
 		{
-			var atLandAltitude = self.World.Map.DistanceAboveTerrain(CenterPosition) == Info.LandAltitude;
+			var atLandAltitude = self.World.Map.DistanceAboveTerrain(CenterPosition) == LandAltitude;
 
 			// Work-around to prevent players from accidentally canceling resupply by pressing 'Stop',
 			// by re-queueing Resupply as long as resupply hasn't finished and aircraft is still on resupplier.
