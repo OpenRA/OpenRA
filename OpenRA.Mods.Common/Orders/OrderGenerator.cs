@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Orders
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { return Render(wr, world); }
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world) { return RenderAboveShroud(wr, world); }
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return GetCursor(world, cell, worldPixel, mi); }
+		void IOrderGenerator.Deactivate() { }
 
 		protected abstract void Tick(World world);
 		protected abstract IEnumerable<IRenderable> Render(WorldRenderer wr, World world);

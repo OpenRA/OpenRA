@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enables the player directional targeting")]
 		public readonly bool UseDirectionalTarget = false;
 
-		[Desc("Placeholder cursor animation for the target cursor when the real cursor is invisible.")]
+		[Desc("Placeholder cursor animation for the target cursor when using directional targeting.")]
 		public readonly string TargetPlaceholderCursorAnimation = null;
 
 		[Desc("Palette for placeholder cursor animation.")]
