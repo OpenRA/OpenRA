@@ -100,6 +100,7 @@
     <Compile Include="CacheStorage.cs" />
     <Compile Include="FileFormats\Png.cs" />
     <Compile Include="FileSystem\IPackage.cs" />
+    <Compile Include="Network\GameSave.cs" />
     <Compile Include="Primitives\Color.cs" />
     <Compile Include="Primitives\Int32Matrix4x4.cs" />
     <Compile Include="LogProxy.cs" />
