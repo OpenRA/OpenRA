@@ -402,11 +402,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Always scroll to bottom when we've typed something
 				lobbyChatPanel.ScrollToBottom();
 
-				var teamNumber = 0;
-				if (teamChat && orderManager.LocalClient != null && !orderManager.LocalClient.IsObserver)
-					teamNumber = orderManager.LocalClient.Team;
+				var teamNumber = (uint)0;
+				if (teamChat && orderManager.LocalClient != null)
+					teamNumber = orderManager.LocalClient.IsObserver ? uint.MaxValue : (uint)orderManager.LocalClient.Team;
 
-				orderManager.IssueOrder(Order.Chat(teamChat, chatTextField.Text, teamNumber));
+				orderManager.IssueOrder(Order.Chat(chatTextField.Text, teamNumber));
 				chatTextField.Text = "";
 				return true;
 			};

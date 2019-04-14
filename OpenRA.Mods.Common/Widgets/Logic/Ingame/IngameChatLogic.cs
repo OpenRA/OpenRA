@@ -136,8 +136,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!isObserver && orderManager.LocalClient == null && world.LocalPlayer == null)
 							return true;
 
-						var teamNumber = (isObserver || world.LocalPlayer.WinState != WinState.Undefined) ? 0 : orderManager.LocalClient.Team;
-						orderManager.IssueOrder(Order.Chat(team, chatText.Text.Trim(), teamNumber));
+						var teamNumber = (uint)0;
+						if (team)
+							teamNumber = (isObserver || world.LocalPlayer.WinState != WinState.Undefined) ? uint.MaxValue : (uint)orderManager.LocalClient.Team;
+
+						orderManager.IssueOrder(Order.Chat(chatText.Text.Trim(), teamNumber));
 					}
 					else if (chatTraits != null)
 					{

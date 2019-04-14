@@ -38,31 +38,6 @@ namespace OpenRA.Network
 
 			switch (order.OrderString)
 			{
-				case "Chat":
-					{
-						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-
-						// Cut chat messages to the hard limit to avoid exploits
-						var message = order.TargetString;
-						if (message.Length > ChatMessageMaxLength)
-							message = order.TargetString.Substring(0, ChatMessageMaxLength);
-
-						if (client != null)
-						{
-							var player = world != null ? world.FindPlayerByClient(client) : null;
-							var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : "";
-							suffix = client.IsObserver ? " (Spectator)" : suffix;
-
-							if (orderManager.LocalClient != null && client != orderManager.LocalClient && client.Team > 0 && client.Team == orderManager.LocalClient.Team)
-								suffix += " (Ally)";
-
-							Game.AddChatLine(client.Color, client.Name + suffix, message);
-						}
-						else
-							Game.AddChatLine(Color.White, "(player {0})".F(clientId), message);
-						break;
-					}
-
 				// Server message
 				case "Message":
 					Game.AddChatLine(Color.White, ServerChatName, order.TargetString);
@@ -77,7 +52,7 @@ namespace OpenRA.Network
 						break;
 					}
 
-				case "TeamChat":
+				case "Chat":
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client == null)
@@ -87,6 +62,20 @@ namespace OpenRA.Network
 						var message = order.TargetString;
 						if (message.Length > ChatMessageMaxLength)
 							message = order.TargetString.Substring(0, ChatMessageMaxLength);
+
+						// ExtraData 0 means this is a normal chat order, everything else is team chat
+						if (order.ExtraData == 0)
+						{
+							var p = world != null ? world.FindPlayerByClient(client) : null;
+							var suffix = (p != null && p.WinState == WinState.Lost) ? " (Dead)" : "";
+							suffix = client.IsObserver ? " (Spectator)" : suffix;
+
+							if (orderManager.LocalClient != null && client != orderManager.LocalClient && client.Team > 0 && client.Team == orderManager.LocalClient.Team)
+								suffix += " (Ally)";
+
+							Game.AddChatLine(client.Color, client.Name + suffix, message);
+							break;
+						}
 
 						// We are still in the lobby
 						if (world == null)
@@ -103,8 +92,8 @@ namespace OpenRA.Network
 						var player = world.FindPlayerByClient(client);
 						var localClientIsObserver = orderManager.LocalClient.IsObserver || (world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Undefined);
 
-						// ExtraData gives us the team number, 0 means Spectators
-						if (order.ExtraData == 0 && (localClientIsObserver || world.IsReplay))
+						// ExtraData gives us the team number, uint.MaxValue means Spectators
+						if (order.ExtraData == uint.MaxValue && (localClientIsObserver || world.IsReplay))
 						{
 							// Validate before adding the line
 							if (client.IsObserver || (player != null && player.WinState != WinState.Undefined))

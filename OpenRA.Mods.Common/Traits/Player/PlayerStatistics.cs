@@ -96,7 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 			switch (order.OrderString)
 			{
 				case "Chat":
-				case "TeamChat":
 				case "HandshakeResponse":
 				case "PauseGame":
 				case "StartGame":
