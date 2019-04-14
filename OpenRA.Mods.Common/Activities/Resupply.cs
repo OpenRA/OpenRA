@@ -75,14 +75,15 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceling)
-				return NextActivity;
+			if (IsCanceling || host.Type == TargetType.Invalid
+				|| (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
+			{
+				// This is necessary to ensure host resupply actions (like animations) finish properly
+				foreach (var notifyResupply in notifyResupplies)
+					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
-			if (host.Type == TargetType.Invalid)
 				return NextActivity;
-
-			if (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough))
-				return NextActivity;
+			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
 				RepairTick(self);
