@@ -80,8 +80,9 @@ namespace OpenRA.Network
 						// We are still in the lobby
 						if (world == null)
 						{
+							var prefix = order.ExtraData == uint.MaxValue ? "[Spectators] " : "[Team] ";
 							if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-								Game.AddChatLine(client.Color, "[Team] " + client.Name, message);
+								Game.AddChatLine(client.Color, prefix + client.Name, message);
 
 							break;
 						}
