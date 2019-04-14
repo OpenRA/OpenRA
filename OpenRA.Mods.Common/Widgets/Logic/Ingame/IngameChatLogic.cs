@@ -93,7 +93,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (world.IsGameOver)
 						return true;
 
-					// Nothing changed since the start
+					// Check if we are the only living team member
+					if (players.All(p => p.WinState != WinState.Undefined || !p.IsAlliedWith(world.LocalPlayer)))
+					{
+						disableTeamChat = true;
+						return disableTeamChat;
+					}
+
+					// Still alive and nothing changed since the start
 					if (world.LocalPlayer.WinState == WinState.Undefined)
 						return disableTeamChat;
 
