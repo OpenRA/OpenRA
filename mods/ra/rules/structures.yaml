@@ -1461,6 +1461,7 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 	ParatroopersPower@paratroopers:
@@ -1481,6 +1482,7 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 	AirstrikePower@parabombs:
@@ -1502,6 +1504,7 @@ AFLD:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 	ProductionBar:
