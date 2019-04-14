@@ -8,18 +8,6 @@ Container@PLAYER_WIDGETS:
 			X: 10
 			Y: 10
 			Children:
-				Container@PALETTE_FOREGROUND:
-					Children:
-						Image@ICON_TEMPLATE:
-							Logic: AddFactionSuffixLogic
-							X: 0 - 2
-							Y: 0 - 2
-							Width: 62
-							Height: 46
-							ClickThrough: false
-							IgnoreMouseOver: true
-							ImageCollection: sidebar
-							ImageName: background-supportoverlay
 				SupportPowers@SUPPORT_PALETTE:
 					IconSize: 62, 46
 					IconSpriteOffset: -1, -1
@@ -28,6 +16,17 @@ Container@PLAYER_WIDGETS:
 					HoldText: ON HOLD
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
+				Container@PALETTE_FOREGROUND:
+					Children:
+						Image@ICON_TEMPLATE:
+							Logic: AddFactionSuffixLogic
+							X: 0 - 2
+							Y: 0 - 2
+							Width: 62
+							Height: 46
+							IgnoreMouseOver: true
+							ImageCollection: sidebar
+							ImageName: background-supportoverlay
 		SupportPowerTimer@SUPPORT_POWER_TIMER:
 			X: 80
 			Y: 10
