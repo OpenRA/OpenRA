@@ -30,10 +30,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Arrow[] directionArrows;
 
 		CPos targetCell;
-		int2 location;
+		int2 targetLocation;
 		int2 dragLocation;
 		bool activated;
 		bool dragStarted;
+		bool hideMouse = true;
 		Arrow currentArrow;
 
 		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, string cursor, string targetPlaceholderCursorAnimation,
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!activated)
 				{
 					targetCell = cell;
-					location = mi.Location;
+					targetLocation = mi.Location;
 					activated = true;
 				}
 
@@ -80,11 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (mi.Event == MouseInputEvent.Move)
 			{
 				dragLocation = mi.Location;
-				var angle = AngleBetween(location, dragLocation);
+
+				var angle = AngleBetween(targetLocation, dragLocation);
 				currentArrow = GetArrow(angle);
 				dragStarted = true;
-
-				yield break;
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsOutsideDragZone
 		{
-			get { return dragStarted && (dragLocation - location).Length > 20; }
+			get { return dragStarted && (dragLocation - targetLocation).Length > 20; }
 		}
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
@@ -121,6 +121,8 @@ namespace OpenRA.Mods.Common.Traits
 				return Enumerable.Empty<IRenderable>();
 
 			var targetPalette = wr.Palette(targetPlaceholderCursorPalette);
+
+			var location = activated ? targetLocation : Viewport.LastMousePos;
 			var worldPx = wr.Viewport.ViewToWorldPx(location);
 			var worldPos = wr.ProjectedPosition(worldPx);
 			var renderables = new List<IRenderable>(targetCursor.Render(worldPos, WVec.Zero, -511, targetPalette, 1 / wr.Viewport.Zoom));
@@ -131,10 +133,22 @@ namespace OpenRA.Mods.Common.Traits
 				renderables.Add(new SpriteRenderable(currentArrow.Sprite, worldPos, WVec.Zero, -511, directionPalette, 1 / wr.Viewport.Zoom, true));
 			}
 
+			if (hideMouse)
+			{
+				hideMouse = false;
+				Game.RunAfterTick(() => Game.HideCursor = true);
+			}
+
 			return renderables;
 		}
 
-		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return activated ? "invisible" : cursor; }
+		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return cursor; }
+
+		void IOrderGenerator.Deactivate()
+		{
+			if (activated)
+				Game.HideCursor = false;
+		}
 
 		// Starting at (0, -1) and rotating in CCW
 		static double AngleBetween(int2 p1, int2 p2)

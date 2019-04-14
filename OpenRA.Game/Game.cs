@@ -39,6 +39,7 @@ namespace OpenRA
 		public static ModData ModData;
 		public static Settings Settings;
 		public static ICursor Cursor;
+		public static bool HideCursor;
 		static WorldRenderer worldRenderer;
 
 		internal static OrderManager OrderManager;
@@ -659,8 +660,13 @@ namespace OpenRA
 
 					if (ModData != null && ModData.CursorProvider != null)
 					{
-						Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
-						Cursor.Render(Renderer);
+						if (HideCursor)
+							Cursor.SetCursor(null);
+						else
+						{
+							Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
+							Cursor.Render(Renderer);
+						}
 					}
 				}
 

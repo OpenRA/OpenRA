@@ -84,6 +84,8 @@ namespace OpenRA.Orders
 			return cursorOrder != null ? cursorOrder.Cursor : (useSelect ? "select" : "default");
 		}
 
+		public void Deactivate() { }
+
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
 		public virtual bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
 		{

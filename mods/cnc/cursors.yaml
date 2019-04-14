@@ -136,8 +136,6 @@ Cursors:
 		sell-vehicle:
 			Start: 154
 			Length: 24
-		invisible:
-			Start: 28
 	mouse3.shp: cursor
 		default:
 			Start: 0
