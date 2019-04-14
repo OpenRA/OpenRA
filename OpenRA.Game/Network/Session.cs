@@ -202,6 +202,7 @@ namespace OpenRA.Network
 			public bool EnableSingleplayer;
 			public bool EnableSyncReports;
 			public bool Dedicated;
+			public bool GameSavesEnabled;
 
 			[FieldLoader.Ignore]
 			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();

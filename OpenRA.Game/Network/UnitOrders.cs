@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -114,10 +115,44 @@ namespace OpenRA.Network
 							break;
 						}
 
-						Game.AddChatLine(Color.White, ServerChatName, "The game has started.");
+						if (!string.IsNullOrEmpty(order.TargetString))
+						{
+							var data = MiniYaml.FromString(order.TargetString);
+							var saveLastOrdersFrame = data.FirstOrDefault(n => n.Key == "SaveLastOrdersFrame");
+							if (saveLastOrdersFrame != null)
+								orderManager.GameSaveLastFrame =
+									FieldLoader.GetValue<int>("saveLastOrdersFrame", saveLastOrdersFrame.Value.Value);
+
+							var saveSyncFrame = data.FirstOrDefault(n => n.Key == "SaveSyncFrame");
+							if (saveSyncFrame != null)
+								orderManager.GameSaveLastSyncFrame =
+									FieldLoader.GetValue<int>("SaveSyncFrame", saveSyncFrame.Value.Value);
+						}
+						else
+							Game.AddChatLine(Color.White, ServerChatName, "The game has started.");
+
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
 					}
+
+				case "SaveTraitData":
+					{
+						var data = MiniYaml.FromString(order.TargetString)[0];
+						var traitIndex = int.Parse(data.Key);
+
+						if (world != null)
+							world.AddGameSaveTraitData(traitIndex, data.Value);
+
+						break;
+					}
+
+				case "GameSaved":
+					if (!orderManager.World.IsReplay)
+						Game.AddChatLine(Color.White, ServerChatName, "Game saved");
+
+					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementing<INotifyGameSaved>())
+						nsr.GameSaved(orderManager.World);
+					break;
 
 				case "PauseGame":
 					{

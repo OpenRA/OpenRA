@@ -561,7 +561,7 @@ namespace OpenRA
 				Cursor.Tick();
 			}
 
-			var worldTimestep = world == null ? Timestep : world.Timestep;
+			var worldTimestep = world == null ? Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
 			var worldTickDelta = tick - orderManager.LastTickTime;
 			if (worldTimestep != 0 && worldTickDelta >= worldTimestep)
 			{
@@ -645,7 +645,10 @@ namespace OpenRA
 				{
 					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
 					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
-					worldRenderer.Draw();
+
+					// Use worldRenderer.World instead of OrderManager.World to avoid a rendering mismatch while processing orders
+					if (!worldRenderer.World.IsLoadingGameSave)
+						worldRenderer.Draw();
 				}
 				else
 					Renderer.BeginFrame(int2.Zero, 1f);
@@ -743,6 +746,13 @@ namespace OpenRA
 				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
 				var renderInterval = 1000 / maxFramerate;
 
+				// Tick as fast as possible while restoring game saves, capping rendering at 5 FPS
+				if (OrderManager.World != null && OrderManager.World.IsLoadingGameSave)
+				{
+					logicInterval = 1;
+					renderInterval = 200;
+				}
+
 				var now = RunTime;
 
 				// If the logic has fallen behind too much, skip it and catch up
@@ -762,7 +772,7 @@ namespace OpenRA
 						LogicTick();
 
 						// Force at least one render per tick during regular gameplay
-						if (OrderManager.World != null && !OrderManager.World.IsReplay)
+						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave)
 							forceRender = true;
 					}
 
