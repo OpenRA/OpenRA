@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		CPos targetCell;
 		int2 location;
 		int2 dragLocation;
-		bool beginDrag;
+		bool activated;
 		bool dragStarted;
 		Arrow currentArrow;
 
@@ -64,27 +64,27 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (!beginDrag)
+				if (!activated)
 				{
 					targetCell = cell;
 					location = mi.Location;
-					beginDrag = true;
+					activated = true;
 				}
 
 				yield break;
 			}
 
+			if (!activated)
+				yield break;
+
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				if (beginDrag)
-				{
-					dragLocation = mi.Location;
-					var angle = AngleBetween(location, dragLocation);
-					currentArrow = GetArrow(angle);
-					dragStarted = true;
+				dragLocation = mi.Location;
+				var angle = AngleBetween(location, dragLocation);
+				currentArrow = GetArrow(angle);
+				dragStarted = true;
 
-					yield break;
-				}
+				yield break;
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
 		{
-			if (!beginDrag)
+			if (!activated)
 				return Enumerable.Empty<IRenderable>();
 
 			var targetPalette = wr.Palette(targetPlaceholderCursorPalette);
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 			return renderables;
 		}
 
-		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return beginDrag ? "invisible" : cursor; }
+		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return activated ? "invisible" : cursor; }
 
 		// Starting at (0, -1) and rotating in CCW
 		static double AngleBetween(int2 p1, int2 p2)
