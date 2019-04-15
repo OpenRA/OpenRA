@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (exit != null || self.OccupiesSpace == null)
 			{
-				DoProduction(self, producee, exit.Info, productionType, inits);
+				DoProduction(self, producee, exit == null ? null : exit.Info, productionType, inits);
 
 				return true;
 			}
