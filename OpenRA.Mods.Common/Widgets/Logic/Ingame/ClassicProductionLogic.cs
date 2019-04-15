@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Classic production queues are initialized at game start, and then never change.
 			var queues = world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
-				.Where(q => q.Info.Type == button.ProductionGroup)
+				.Where(q => (q.Info.Group ?? q.Info.Type) == button.ProductionGroup)
 				.ToArray();
 
 			Action<bool> selectTab = reverse =>
