@@ -238,6 +238,29 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices);
 		}
 
+		public void FillRect(float3 a, float3 b, float3 c, float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor)
+		{
+			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
+			vertices[1] = VertexWithColor(b + Offset, topRightColor);
+			vertices[2] = VertexWithColor(c + Offset, bottomRightColor);
+			vertices[3] = VertexWithColor(c + Offset, bottomRightColor);
+			vertices[4] = VertexWithColor(d + Offset, bottomLeftColor);
+			vertices[5] = VertexWithColor(a + Offset, topLeftColor);
+
+			parent.DrawRGBAVertices(vertices);
+		}
+
+		static Vertex VertexWithColor(float3 xyz, Color color)
+		{
+			color = Util.PremultiplyAlpha(color);
+			var cr = color.R / 255.0f;
+			var cg = color.G / 255.0f;
+			var cb = color.B / 255.0f;
+			var ca = color.A / 255.0f;
+
+			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
+		}
+
 		public void FillEllipse(float3 tl, float3 br, Color color, int vertices = 32)
 		{
 			// TODO: Create an ellipse polygon instead
