@@ -29,6 +29,13 @@ namespace OpenRA.Mods.Common.Widgets
 		Top
 	}
 
+	public enum ScrollBar
+	{
+		Left,
+		Right,
+		Hidden
+	}
+
 	public class ScrollPanelWidget : Widget
 	{
 		readonly Ruleset modRules;
@@ -39,11 +46,13 @@ namespace OpenRA.Mods.Common.Widgets
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
 		public string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public string Background = "scrollpanel-bg";
+		public string ScrollBarBackground = "scrollpanel-bg";
 		public string Button = "scrollpanel-button";
 		public int ContentHeight;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
 		public ScrollPanelAlign Align = ScrollPanelAlign.Top;
+		public ScrollBar ScrollBar = ScrollBar.Right;
 		public bool CollapseHiddenChildren;
 
 		// Fraction of the remaining scroll-delta to move in 40ms
@@ -145,34 +154,55 @@ namespace OpenRA.Mods.Common.Widgets
 			if (thumbHeight == scrollbarHeight)
 				thumbHeight = 0;
 
-			backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth + 1, rb.Height);
-			upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
-			downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
-			scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, scrollbarHeight + 2);
-			thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
+			switch (ScrollBar)
+			{
+				case ScrollBar.Left:
+					backgroundRect = new Rectangle(rb.X + ScrollbarWidth, rb.Y, rb.Width + 1, rb.Height);
+					upButtonRect = new Rectangle(rb.X, rb.Y, ScrollbarWidth, ScrollbarWidth);
+					downButtonRect = new Rectangle(rb.X, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
+					scrollbarRect = new Rectangle(rb.X, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, scrollbarHeight + 2);
+					thumbRect = new Rectangle(rb.X, thumbOrigin, ScrollbarWidth, thumbHeight);
+					break;
+				case ScrollBar.Right:
+					backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width - ScrollbarWidth + 1, rb.Height);
+					upButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y, ScrollbarWidth, ScrollbarWidth);
+					downButtonRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Bottom - ScrollbarWidth, ScrollbarWidth, ScrollbarWidth);
+					scrollbarRect = new Rectangle(rb.Right - ScrollbarWidth, rb.Y + ScrollbarWidth - 1, ScrollbarWidth, scrollbarHeight + 2);
+					thumbRect = new Rectangle(rb.Right - ScrollbarWidth, thumbOrigin, ScrollbarWidth, thumbHeight);
+					break;
+				case ScrollBar.Hidden:
+					backgroundRect = new Rectangle(rb.X, rb.Y, rb.Width + 1, rb.Height);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 
-			var upHover = Ui.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
-			upDisabled = thumbHeight == 0 || currentListOffset >= 0;
-
-			var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
-			downDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
-
-			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
-			WidgetUtils.DrawPanel(Background, scrollbarRect);
-			ButtonWidget.DrawBackground(Button, upButtonRect, upDisabled, upPressed, upHover, false);
-			ButtonWidget.DrawBackground(Button, downButtonRect, downDisabled, downPressed, downHover, false);
 
-			if (thumbHeight > 0)
-				ButtonWidget.DrawBackground(Button, thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
+			if (ScrollBar != ScrollBar.Hidden)
+			{
+				var upHover = Ui.MouseOverWidget == this && upButtonRect.Contains(Viewport.LastMousePos);
+				upDisabled = thumbHeight == 0 || currentListOffset >= 0;
 
-			var upOffset = !upPressed || upDisabled ? 4 : 4 + ButtonDepth;
-			var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
+				var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
+				downDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
 
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", upPressed || upDisabled ? "up_pressed" : "up_arrow"),
-				new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
-			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", downPressed || downDisabled ? "down_pressed" : "down_arrow"),
-				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
+				var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
+				WidgetUtils.DrawPanel(ScrollBarBackground, scrollbarRect);
+				ButtonWidget.DrawBackground(Button, upButtonRect, upDisabled, upPressed, upHover, false);
+				ButtonWidget.DrawBackground(Button, downButtonRect, downDisabled, downPressed, downHover, false);
+
+				if (thumbHeight > 0)
+					ButtonWidget.DrawBackground(Button, thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
+
+				var upOffset = !upPressed || upDisabled ? 4 : 4 + ButtonDepth;
+				var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
+
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", upPressed || upDisabled ? "up_pressed" : "up_arrow"),
+					new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
+				WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", downPressed || downDisabled ? "down_pressed" : "down_arrow"),
+					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
+			}
 
 			var drawBounds = backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth);
 			Game.Renderer.EnableScissor(drawBounds);
@@ -189,7 +219,13 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public override int2 ChildOrigin { get { return RenderOrigin + new int2(0, (int)currentListOffset); } }
+		public override int2 ChildOrigin
+		{
+			get
+			{
+				return RenderOrigin + new int2(ScrollBar == ScrollBar.Left ? ScrollbarWidth : 0, (int)currentListOffset);
+			}
+		}
 
 		public override Rectangle GetEventBounds()
 		{
