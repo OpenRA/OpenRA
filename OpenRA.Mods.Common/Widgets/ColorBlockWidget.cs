@@ -17,14 +17,14 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ColorBlockWidget : Widget
 	{
+		public Color Color { get; set; }
 		public Func<Color> GetColor;
-
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public Action<MouseInput> OnMouseUp = _ => { };
 
 		public ColorBlockWidget()
 		{
-			GetColor = () => Color.White;
+			GetColor = () => Color;
 		}
 
 		protected ColorBlockWidget(ColorBlockWidget widget)
