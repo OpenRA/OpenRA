@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!IsEnabled)
+			if (!IsEnabled || self.World.IsLoadingGameSave)
 				return;
 
 			using (new PerfSample("bot_tick"))
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (!IsEnabled)
+			if (!IsEnabled || self.World.IsLoadingGameSave)
 				return;
 
 			using (new PerfSample("bot_attack_response"))
