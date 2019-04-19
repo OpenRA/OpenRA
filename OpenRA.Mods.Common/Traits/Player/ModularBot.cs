@@ -72,6 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 			player = p;
 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
 			attackResponseModules = p.PlayerActor.TraitsImplementing<IBotRespondToAttack>().ToArray();
+			foreach (var ibe in p.PlayerActor.TraitsImplementing<IBotEnabled>())
+				ibe.BotEnabled(this);
 		}
 
 		void IBot.QueueOrder(Order order)

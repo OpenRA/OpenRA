@@ -471,6 +471,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IPreventsShroudReset { bool PreventShroudReset(Actor self); }
 
 	[RequireExplicitImplementation]
+	public interface IBotEnabled { void BotEnabled(IBot bot); }
+
+	[RequireExplicitImplementation]
 	public interface IBotTick { void BotTick(IBot bot); }
 
 	[RequireExplicitImplementation]
