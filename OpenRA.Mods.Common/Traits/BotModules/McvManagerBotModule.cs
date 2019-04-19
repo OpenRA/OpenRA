@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new McvManagerBotModule(init.Self, this); }
 	}
 
-	public class McvManagerBotModule : ConditionalTrait<McvManagerBotModuleInfo>, IBotTick, IBotPositionsUpdated
+	public class McvManagerBotModule : ConditionalTrait<McvManagerBotModuleInfo>, IBotTick, IBotPositionsUpdated, IGameSaveTraitData
 	{
 		public CPos GetRandomBaseCenter()
 		{
@@ -219,6 +219,36 @@ namespace OpenRA.Mods.Common.Traits
 
 			return findPos(baseCenter, baseCenter, Info.MinBaseRadius,
 				distanceToBaseIsImportant ? Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
+		}
+
+		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
+		{
+			if (IsTraitDisabled)
+				return null;
+
+			return new List<MiniYamlNode>()
+			{
+				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
+				new MiniYamlNode("ActiveMCVs", FieldSaver.FormatValue(activeMCVs.Select(a => a.ActorID).ToArray()))
+			};
+		}
+
+		void IGameSaveTraitData.ResolveTraitData(Actor self, List<MiniYamlNode> data)
+		{
+			if (self.World.IsReplay)
+				return;
+
+			var initialBaseCenterNode = data.FirstOrDefault(n => n.Key == "InitialBaseCenter");
+			if (initialBaseCenterNode != null)
+				initialBaseCenter = FieldLoader.GetValue<CPos>("InitialBaseCenter", initialBaseCenterNode.Value.Value);
+
+			var activeMCVsNode = data.FirstOrDefault(n => n.Key == "ActiveMCVs");
+			if (activeMCVsNode != null)
+			{
+				activeMCVs.Clear();
+				activeMCVs.AddRange(FieldLoader.GetValue<uint[]>("ActiveMCVs", activeMCVsNode.Value.Value)
+					.Select(a => world.GetActorById(a)));
+			}
 		}
 	}
 }

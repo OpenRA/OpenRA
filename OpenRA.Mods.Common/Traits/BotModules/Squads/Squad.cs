@@ -86,5 +86,42 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		}
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
+
+		public MiniYaml Serialize()
+		{
+			var nodes = new MiniYaml("", new List<MiniYamlNode>()
+			{
+				new MiniYamlNode("Type", FieldSaver.FormatValue(Type)),
+				new MiniYamlNode("Units", FieldSaver.FormatValue(Units.Select(a => a.ActorID).ToArray())),
+			});
+
+			if (Target.Type == TargetType.Actor)
+				nodes.Nodes.Add(new MiniYamlNode("Target", FieldSaver.FormatValue(Target.Actor.ActorID)));
+
+			return nodes;
+		}
+
+		public static Squad Deserialize(IBot bot, SquadManagerBotModule squadManager, MiniYaml yaml)
+		{
+			var type = SquadType.Rush;
+			Actor targetActor = null;
+
+			var typeNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Type");
+			if (typeNode != null)
+				type = FieldLoader.GetValue<SquadType>("Type", typeNode.Value.Value);
+
+			var targetNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Target");
+			if (targetNode != null)
+				targetActor = squadManager.World.GetActorById(FieldLoader.GetValue<uint>("ActiveUnits", targetNode.Value.Value));
+
+			var squad = new Squad(bot, squadManager, type, targetActor);
+
+			var unitsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Units");
+			if (unitsNode != null)
+				squad.Units.AddRange(FieldLoader.GetValue<uint[]>("Units", unitsNode.Value.Value)
+					.Select(a => squadManager.World.GetActorById(a)));
+
+			return squad;
+		}
 	}
 }

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SupportPowerBotModule(init.Self, this); }
 	}
 
-	public class SupportPowerBotModule : ConditionalTrait<SupportPowerBotModuleInfo>, IBotTick
+	public class SupportPowerBotModule : ConditionalTrait<SupportPowerBotModuleInfo>, IBotTick, IGameSaveTraitData
 	{
 		readonly World world;
 		readonly Player player;
@@ -184,6 +184,32 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return bestLocation;
+		}
+
+		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
+		{
+			if (IsTraitDisabled)
+				return null;
+
+			var waitingPowersNodes = waitingPowers
+				.Select(kv => new MiniYamlNode(kv.Key.Key, FieldSaver.FormatValue(kv.Value)))
+				.ToList();
+
+			return new List<MiniYamlNode>()
+			{
+				new MiniYamlNode("WaitingPowers", "", waitingPowersNodes)
+			};
+		}
+
+		void IGameSaveTraitData.ResolveTraitData(Actor self, List<MiniYamlNode> data)
+		{
+			if (self.World.IsReplay)
+				return;
+
+			var waitingPowersNode = data.FirstOrDefault(n => n.Key == "WaitingPowers");
+			if (waitingPowersNode != null)
+				foreach (var n in waitingPowersNode.Value.Nodes)
+					waitingPowers[supportPowerManager.Powers[n.Key]] = FieldLoader.GetValue<int>("WaitingPowers", n.Value.Value);
 		}
 	}
 }
