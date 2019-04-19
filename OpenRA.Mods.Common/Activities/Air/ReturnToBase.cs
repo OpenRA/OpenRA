@@ -61,10 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null)
 				return;
 
-			var exit = dest.FirstExitOrDefault(null);
-			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-
-			var landPos = dest.CenterPosition + offset;
+			var landPos = dest.CenterPosition + aircraft.ReservedActorDockOffset;
 			var altitude = aircraft.Info.CruiseAltitude.Length;
 
 			// Distance required for descent.
@@ -150,9 +147,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (dest == null || dest.IsDead || !Dock.IsAvailableFor(dest, self))
 				dest = ReturnToBase.ChooseResupplier(self, true);
 
-			if (!isCalculated)
-				Calculate(self);
-
 			if (dest == null)
 			{
 				var nearestResupplier = ChooseResupplier(self, false);
@@ -203,15 +197,19 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			var exit = dest.FirstExitOrDefault(null);
-			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
+			var shouldLandAtBuilding = ShouldLandAtBuilding(self, dest);
+			if (shouldLandAtBuilding)
+				aircraft.MakeReservation(dest);
 
 			if (aircraft.Info.CanHover)
-				QueueChild(self, new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)), true);
+				QueueChild(self, new HeliFly(self, Target.FromPos(dest.CenterPosition + aircraft.ReservedActorDockOffset)), true);
 			else if (aircraft.Info.VTOL)
-				QueueChild(self, new Fly(self, Target.FromPos(dest.CenterPosition + offset)), true);
+				QueueChild(self, new Fly(self, Target.FromPos(dest.CenterPosition + aircraft.ReservedActorDockOffset)), true);
 			else
 			{
+				if (!isCalculated)
+					Calculate(self);
+
 				var turnRadius = Fly.CalculateTurnRadius(aircraft.Info.Speed, aircraft.Info.TurnSpeed);
 
 				QueueChild(self, new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)), true);
@@ -221,10 +219,8 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(self, new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)), true);
 			}
 
-			if (ShouldLandAtBuilding(self, dest))
+			if (shouldLandAtBuilding)
 			{
-				aircraft.MakeReservation(dest);
-
 				if (aircraft.Info.VTOL)
 				{
 					if (aircraft.Info.TurnToDock)
@@ -233,7 +229,7 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(self, new HeliLand(self, true, dest), true);
 				}
 				else
-					QueueChild(self, new Land(self, Target.FromPos(dest.CenterPosition + offset), true, dest), true);
+					QueueChild(self, new Land(self, Target.FromPos(dest.CenterPosition + aircraft.ReservedActorDockOffset), true, dest), true);
 
 				QueueChild(self, new Resupply(self, dest, WDist.Zero), true);
 				resupplied = true;
