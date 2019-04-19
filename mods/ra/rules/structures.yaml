@@ -1328,7 +1328,7 @@ HPAD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Helicopter
-	Reservable:
+	Dock:
 	ProductionBar:
 		ProductionType: Aircraft
 	PrimaryBuilding:
@@ -1418,7 +1418,7 @@ AFLD:
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
-	Reservable:
+	Dock:
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
@@ -1929,7 +1929,7 @@ FIX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Reservable:
+	Dock:
 	RallyPoint:
 	RepairsUnits:
 		HpPerStep: 1000

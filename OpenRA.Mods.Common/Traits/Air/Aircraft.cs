@@ -440,7 +440,7 @@ namespace OpenRA.Mods.Common.Traits
 				return null; // Not on the resupplier.
 
 			return self.World.ActorMap.GetActorsAt(self.Location)
-				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
+				.FirstOrDefault(a => a.Info.HasTraitInfo<DockInfo>());
 		}
 
 		protected void ReserveSpawnBuilding()
@@ -456,7 +456,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void MakeReservation(Actor target)
 		{
 			UnReserve();
-			var reservable = target.TraitOrDefault<Reservable>();
+			var reservable = target.TraitOrDefault<Dock>();
 			if (reservable != null)
 			{
 				reservation = reservable.Reserve(target, self, this);
@@ -862,7 +862,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
-					target => AircraftCanEnter(target), target => Reservable.IsAvailableFor(target, self));
+					target => AircraftCanEnter(target), target => Dock.IsAvailableFor(target, self));
 
 				yield return new AircraftMoveOrderTargeter(Info);
 			}
@@ -942,7 +942,7 @@ namespace OpenRA.Mods.Common.Traits
 				var targetActor = order.Target.Actor;
 
 				// We only want to set a target line if the order will (most likely) succeed
-				if (Reservable.IsAvailableFor(targetActor, self))
+				if (Dock.IsAvailableFor(targetActor, self))
 					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 
 				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));

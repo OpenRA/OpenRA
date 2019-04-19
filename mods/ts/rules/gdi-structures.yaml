@@ -237,7 +237,7 @@ GAHPAD:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
-	Reservable:
+	Dock:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
@@ -292,7 +292,7 @@ GADEPT:
 	RevealsShroud:
 		Range: 5c0
 		MaxHeightDelta: 3
-	Reservable:
+	Dock:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable

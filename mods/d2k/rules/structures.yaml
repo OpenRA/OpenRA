@@ -898,7 +898,7 @@ repair_pad:
 		Range: 3c768
 	Selectable:
 		Bounds: 96,96
-	Reservable:
+	Dock:
 	RepairsUnits:
 		Interval: 10
 		HpPerStep: 800

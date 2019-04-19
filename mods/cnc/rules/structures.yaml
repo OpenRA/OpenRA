@@ -528,7 +528,7 @@ HPAD:
 		SpawnOffset: 0,-256,0
 	Production:
 		Produces: Aircraft.GDI, Aircraft.Nod
-	Reservable:
+	Dock:
 	RepairsUnits:
 		HpPerStep: 1000
 		PlayerExperience: 25
@@ -665,7 +665,7 @@ FIX:
 		HasMinibib: Yes
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
-	Reservable:
+	Dock:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 15

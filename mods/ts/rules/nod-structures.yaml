@@ -237,7 +237,7 @@ NAHPAD:
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
-	Reservable:
+	Dock:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable

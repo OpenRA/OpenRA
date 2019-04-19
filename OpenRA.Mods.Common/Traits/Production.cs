@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits)
 		{
-			if (IsTraitDisabled || IsTraitPaused || Reservable.IsReserved(self))
+			if (IsTraitDisabled || IsTraitPaused || Dock.IsReserved(self))
 				return false;
 
 			// Pick a spawn/exit point pair

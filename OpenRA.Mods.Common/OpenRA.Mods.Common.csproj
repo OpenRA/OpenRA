@@ -310,7 +310,7 @@
     <Compile Include="Traits\Buildings\Refinery.cs" />
     <Compile Include="Traits\Buildings\RepairableBuilding.cs" />
     <Compile Include="Traits\Buildings\RequiresBuildableArea.cs" />
-    <Compile Include="Traits\Buildings\Reservable.cs" />
+    <Compile Include="Traits\Buildings\Dock.cs" />
     <Compile Include="Traits\CaptureProgressBar.cs" />
     <Compile Include="Traits\CapturableProgressBar.cs" />
     <Compile Include="Traits\CapturableProgressBlink.cs" />
@@ -617,6 +617,7 @@
     <Compile Include="UpdateRules\Rules\20190314\MultipleDeploySounds.cs" />
     <Compile Include="UpdateRules\Rules\20190314\RemoveSimpleBeacon.cs" />
     <Compile Include="UpdateRules\Rules\20190314\SplitHarvesterSpriteBody.cs" />
+    <Compile Include="UpdateRules\Rules\20190314\RenameReservableToDock.cs" />
     <Compile Include="UtilityCommands\CheckRuntimeAssembliesCommand.cs" />
     <Compile Include="UtilityCommands\CheckYaml.cs" />
     <Compile Include="UtilityCommands\ConvertPngToShpCommand.cs" />
