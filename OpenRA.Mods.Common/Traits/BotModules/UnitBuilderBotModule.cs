@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new UnitBuilderBotModule(init.Self, this); }
 	}
 
-	public class UnitBuilderBotModule : ConditionalTrait<UnitBuilderBotModuleInfo>, IBotTick, IBotNotifyIdleBaseUnits, IBotRequestUnitProduction
+	public class UnitBuilderBotModule : ConditionalTrait<UnitBuilderBotModuleInfo>, IBotTick, IBotNotifyIdleBaseUnits, IBotRequestUnitProduction, IGameSaveTraitData
 	{
 		public const int FeedbackTime = 30; // ticks; = a bit over 1s. must be >= netlag.
 
@@ -208,6 +208,39 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			return true;
+		}
+
+		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
+		{
+			if (IsTraitDisabled)
+				return null;
+
+			return new List<MiniYamlNode>()
+			{
+				new MiniYamlNode("QueuedBuildRequests", FieldSaver.FormatValue(queuedBuildRequests.ToArray())),
+				new MiniYamlNode("IdleUnits", FieldSaver.FormatValue(idleUnits.Select(a => a.ActorID).ToArray()))
+			};
+		}
+
+		void IGameSaveTraitData.ResolveTraitData(Actor self, List<MiniYamlNode> data)
+		{
+			if (self.World.IsReplay)
+				return;
+
+			var queuedBuildRequestsNode = data.FirstOrDefault(n => n.Key == "QueuedBuildRequests");
+			if (queuedBuildRequestsNode != null)
+			{
+				queuedBuildRequests.Clear();
+				queuedBuildRequests.AddRange(FieldLoader.GetValue<string[]>("QueuedBuildRequests", queuedBuildRequestsNode.Value.Value));
+			}
+
+			var idleUnitsNode = data.FirstOrDefault(n => n.Key == "IdleUnits");
+			if (idleUnitsNode != null)
+			{
+				idleUnits.Clear();
+				idleUnits.AddRange(FieldLoader.GetValue<uint[]>("IdleUnits", idleUnitsNode.Value.Value)
+					.Select(a => world.GetActorById(a)));
+			}
 		}
 	}
 }

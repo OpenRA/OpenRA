@@ -125,7 +125,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
-	public class BaseBuilderBotModule : ConditionalTrait<BaseBuilderBotModuleInfo>, IBotTick, IBotPositionsUpdated, IBotRespondToAttack, IBotRequestPauseUnitProduction
+	public class BaseBuilderBotModule : ConditionalTrait<BaseBuilderBotModuleInfo>, IGameSaveTraitData,
+		IBotTick, IBotPositionsUpdated, IBotRespondToAttack, IBotRequestPauseUnitProduction
 	{
 		public CPos GetRandomBaseCenter()
 		{
@@ -267,6 +268,32 @@ namespace OpenRA.Mods.Common.Traits
 				// TODO: Possibly unhardcode this, at least the targeted minimum of 2 (the fallback can probably stay at 1).
 				return AIUtils.CountBuildingByCommonName(Info.BarracksTypes, player) > 0 ? 2 : 1;
 			}
+		}
+
+		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
+		{
+			if (IsTraitDisabled)
+				return null;
+
+			return new List<MiniYamlNode>()
+			{
+				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
+				new MiniYamlNode("DefenseCenter", FieldSaver.FormatValue(defenseCenter))
+			};
+		}
+
+		void IGameSaveTraitData.ResolveTraitData(Actor self, List<MiniYamlNode> data)
+		{
+			if (self.World.IsReplay)
+				return;
+
+			var initialBaseCenterNode = data.FirstOrDefault(n => n.Key == "InitialBaseCenter");
+			if (initialBaseCenterNode != null)
+				initialBaseCenter = FieldLoader.GetValue<CPos>("InitialBaseCenter", initialBaseCenterNode.Value.Value);
+
+			var defenseCenterNode = data.FirstOrDefault(n => n.Key == "DefenseCenter");
+			if (defenseCenterNode != null)
+				defenseCenter = FieldLoader.GetValue<CPos>("DefenseCenter", defenseCenterNode.Value.Value);
 		}
 	}
 }

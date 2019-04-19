@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SquadManagerBotModule(init.Self, this); }
 	}
 
-	public class SquadManagerBotModule : ConditionalTrait<SquadManagerBotModuleInfo>, IBotTick, IBotRespondToAttack, IBotPositionsUpdated
+	public class SquadManagerBotModule : ConditionalTrait<SquadManagerBotModuleInfo>, IBotEnabled, IBotTick, IBotRespondToAttack, IBotPositionsUpdated, IGameSaveTraitData
 	{
 		public CPos GetRandomBaseCenter()
 		{
@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<Squad> Squads = new List<Squad>();
 
+		IBot bot;
 		IBotPositionsUpdated[] notifyPositionsUpdated;
 		IBotNotifyIdleBaseUnits[] notifyIdleBaseUnits;
 
@@ -138,6 +139,11 @@ namespace OpenRA.Mods.Common.Traits
 			assignRolesTicks = World.LocalRandom.Next(0, Info.AssignRolesInterval);
 			attackForceTicks = World.LocalRandom.Next(0, Info.AttackForceInterval);
 			minAttackForceDelayTicks = World.LocalRandom.Next(0, Info.MinimumAttackForceDelay);
+		}
+
+		void IBotEnabled.BotEnabled(IBot bot)
+		{
+			this.bot = bot;
 		}
 
 		void IBotTick.BotTick(IBot bot)
@@ -339,6 +345,74 @@ namespace OpenRA.Mods.Common.Traits
 					n.UpdatedDefenseCenter(e.Attacker.Location);
 
 				ProtectOwn(bot, e.Attacker);
+			}
+		}
+
+		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
+		{
+			if (IsTraitDisabled)
+				return null;
+
+			return new List<MiniYamlNode>()
+			{
+				new MiniYamlNode("Squads", "", Squads.Select(s => new MiniYamlNode("Squad", s.Serialize())).ToList()),
+				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
+				new MiniYamlNode("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase.Select(a => a.ActorID).ToArray())),
+				new MiniYamlNode("ActiveUnits", FieldSaver.FormatValue(activeUnits.Select(a => a.ActorID).ToArray())),
+				new MiniYamlNode("RushTicks", FieldSaver.FormatValue(rushTicks)),
+				new MiniYamlNode("AssignRolesTicks", FieldSaver.FormatValue(assignRolesTicks)),
+				new MiniYamlNode("AttackForceTicks", FieldSaver.FormatValue(attackForceTicks)),
+				new MiniYamlNode("MinAttackForceDelayTicks", FieldSaver.FormatValue(minAttackForceDelayTicks)),
+			};
+		}
+
+		void IGameSaveTraitData.ResolveTraitData(Actor self, List<MiniYamlNode> data)
+		{
+			if (self.World.IsReplay)
+				return;
+
+			var initialBaseCenterNode = data.FirstOrDefault(n => n.Key == "InitialBaseCenter");
+			if (initialBaseCenterNode != null)
+				initialBaseCenter = FieldLoader.GetValue<CPos>("InitialBaseCenter", initialBaseCenterNode.Value.Value);
+
+			var unitsHangingAroundTheBaseNode = data.FirstOrDefault(n => n.Key == "UnitsHangingAroundTheBase");
+			if (unitsHangingAroundTheBaseNode != null)
+			{
+				unitsHangingAroundTheBase.Clear();
+				unitsHangingAroundTheBase.AddRange(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value.Value)
+					.Select(a => self.World.GetActorById(a)));
+			}
+
+			var activeUnitsNode = data.FirstOrDefault(n => n.Key == "ActiveUnits");
+			if (activeUnitsNode != null)
+			{
+				activeUnits.Clear();
+				activeUnits.AddRange(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value.Value)
+					.Select(a => self.World.GetActorById(a)));
+			}
+
+			var rushTicksNode = data.FirstOrDefault(n => n.Key == "RushTicks");
+			if (rushTicksNode != null)
+				rushTicks = FieldLoader.GetValue<int>("RushTicks", rushTicksNode.Value.Value);
+
+			var assignRolesTicksNode = data.FirstOrDefault(n => n.Key == "AssignRolesTicks");
+			if (assignRolesTicksNode != null)
+				assignRolesTicks = FieldLoader.GetValue<int>("AssignRolesTicks", assignRolesTicksNode.Value.Value);
+
+			var attackForceTicksNode = data.FirstOrDefault(n => n.Key == "AttackForceTicks");
+			if (attackForceTicksNode != null)
+				attackForceTicks = FieldLoader.GetValue<int>("AttackForceTicks", attackForceTicksNode.Value.Value);
+
+			var minAttackForceDelayTicksNode = data.FirstOrDefault(n => n.Key == "MinAttackForceDelayTicks");
+			if (minAttackForceDelayTicksNode != null)
+				minAttackForceDelayTicks = FieldLoader.GetValue<int>("MinAttackForceDelayTicks", minAttackForceDelayTicksNode.Value.Value);
+
+			var squadsNode = data.FirstOrDefault(n => n.Key == "Squads");
+			if (squadsNode != null)
+			{
+				Squads.Clear();
+				foreach (var n in squadsNode.Value.Nodes)
+					Squads.Add(Squad.Deserialize(bot, this, n.Value));
 			}
 		}
 	}
