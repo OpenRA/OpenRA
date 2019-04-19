@@ -934,10 +934,8 @@ namespace OpenRA.Server
 				LobbyInfo.GlobalSettings.OrderLatency = 1;
 
 			// Enable game saves for singleplayer missions only
-			// TODO: Enable for skirmish once the AI supports state-restoration
 			// TODO: Enable for multiplayer (non-dedicated servers only) once the lobby UI has been created
-			LobbyInfo.GlobalSettings.GameSavesEnabled = !Dedicated && Map.Visibility == MapVisibility.MissionSelector &&
-			                                           LobbyInfo.NonBotClients.Count() == 1;
+			LobbyInfo.GlobalSettings.GameSavesEnabled = !Dedicated && LobbyInfo.NonBotClients.Count() == 1;
 
 			SyncLobbyInfo();
 			State = ServerState.GameStarted;
