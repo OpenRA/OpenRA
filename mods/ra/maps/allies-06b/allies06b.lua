@@ -166,20 +166,6 @@ InfiltrateTechCenter = function()
 	end)
 end
 
-InfiltrateRef = function()
-	Trigger.OnInfiltrated(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnCapture(Refinery, function()
-		player.MarkCompletedObjective(InfiltrateRefObj)
-	end)
-	Trigger.OnKilled(Refinery, function()
-		if not player.IsObjectiveCompleted(InfiltrateRefObj) then
-			player.MarkFailedObjective(InfiltrateRefObj)
-		end
-	end)
-end
-
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		player.MarkFailedObjective(InfiltrateTechCenterObj)
@@ -215,7 +201,6 @@ WorldLoaded = function()
 
 	InfiltrateTechCenterObj = player.AddPrimaryObjective("Infiltrate one of the Soviet tech centers with a spy.")
 	CaptureRadarDomeObj = player.AddSecondaryObjective("Capture the Radar Dome at the shore.")
-	InfiltrateRefObj = player.AddSecondaryObjective("Infiltrate the Refinery for money.")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
@@ -264,6 +249,5 @@ WorldLoaded = function()
 	end)
 	CaptureRadarDome()
 	InfiltrateTechCenter()
-	InfiltrateRef()
 	Trigger.AfterDelay(0, ActivateAI)
 end
