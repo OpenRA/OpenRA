@@ -39,7 +39,9 @@ Speech:
 		Repairing: repair1
 		SelectTarget: select1
 		SilosNeeded: silos1
-		StartGame:
+		StartGame: 
+		GameLoaded:
+		GameSaved: scold1
 		Training: bldging1
 		UnitDestroyed: dead1
 		UnitLost: unitlost
