@@ -163,6 +163,7 @@ ChromeLayout:
 	common|chrome/multiplayer-directconnect.yaml
 	common|chrome/connection.yaml
 	common|chrome/replaybrowser.yaml
+	common|chrome/gamesave-browser.yaml
 	common|chrome/gamesave-loading.yaml
 	ts|chrome/dropdowns.yaml
 	common|chrome/musicplayer.yaml

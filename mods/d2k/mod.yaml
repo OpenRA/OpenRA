@@ -107,6 +107,7 @@ ChromeLayout:
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
 	common|chrome/replaybrowser.yaml
+	common|chrome/gamesave-browser.yaml
 	common|chrome/gamesave-loading.yaml
 
 Weapons:

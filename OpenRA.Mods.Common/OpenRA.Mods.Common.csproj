@@ -636,6 +636,7 @@
     <Compile Include="Widgets\ExponentialSliderWidget.cs" />
     <Compile Include="Widgets\Logic\Ingame\GameSaveLoadingLogic.cs" />
     <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
+    <Compile Include="Widgets\Logic\GameSaveBrowserLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />
     <Compile Include="UtilityCommands\Glob.cs" />

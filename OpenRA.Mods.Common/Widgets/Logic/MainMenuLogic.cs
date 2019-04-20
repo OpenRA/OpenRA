@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, SystemInfoPrompt, None }
 
-		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays }
+		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
 
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
@@ -126,6 +126,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var skirmishButton = singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON");
 			skirmishButton.OnClick = StartSkirmishGame;
 			skirmishButton.Disabled = !hasMaps;
+
+			var loadButton = singleplayerMenu.Get<ButtonWidget>("LOAD_BUTTON");
+			loadButton.IsDisabled = () => !GameSaveBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
+			loadButton.OnClick = OpenGameSaveBrowserPanel;
 
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
@@ -500,6 +504,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
+		void OpenGameSaveBrowserPanel()
+		{
+			SwitchMenu(MenuType.None);
+			Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
+			{
+				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
+				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.GameSaves; } },
+				{ "isSavePanel", false },
+				{ "world", null }
+			});
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
@@ -534,6 +550,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				case MenuPanel.MapEditor:
 					SwitchMenu(MenuType.MapEditor);
+					break;
+
+				case MenuPanel.GameSaves:
+					SwitchMenu(MenuType.Singleplayer);
 					break;
 			}
 
