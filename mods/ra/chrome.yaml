@@ -1046,6 +1046,9 @@ scrollheader-selected: dialog.png
 logos: loadscreen.png
 	logo: 0,0,256,256
 
+loadscreen-stripe: loadscreen.png
+	background: 256,0,256,256
+
 mainmenu-border: dialog.png
 	border-r: 728,427,40,40
 	border-l: 648,427,40,40

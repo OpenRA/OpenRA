@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new MenuPaletteEffect(this); }
 	}
 
-	public class MenuPaletteEffect : IPaletteModifier, IRender, IWorldLoaded
+	public class MenuPaletteEffect : IPaletteModifier, IRender, IWorldLoaded, INotifyGameLoaded
 	{
 		public enum EffectType { None, Black, Desaturated }
 		public readonly MenuPaletteEffectInfo Info;
@@ -110,9 +110,20 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			Fade(Info.Effect);
+			// HACK: Defer fade-in until the GameLoaded notification for game saves
+			if (!w.IsLoadingGameSave)
+				Fade(Info.Effect);
+		}
+
+		void INotifyGameLoaded.GameLoaded(World world)
+		{
+			// HACK: Let the menu opening trigger the fade for game saves
+			// to avoid glitches resulting from trying to trigger both
+			// the standard and menu fades at the same time
+			if (world.IsReplay)
+				Fade(Info.Effect);
 		}
 	}
 }

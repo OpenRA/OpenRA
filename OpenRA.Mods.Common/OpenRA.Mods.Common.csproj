@@ -634,6 +634,7 @@
     <Compile Include="UtilityCommands\PngSheetImportMetadataCommand.cs" />
     <Compile Include="Widgets\Logic\Editor\ActorEditLogic.cs" />
     <Compile Include="Widgets\ExponentialSliderWidget.cs" />
+    <Compile Include="Widgets\Logic\Ingame\GameSaveLoadingLogic.cs" />
     <Compile Include="Widgets\Logic\MusicHotkeyLogic.cs" />
     <Compile Include="WorldExtensions.cs" />
     <Compile Include="UtilityCommands\GetMapHashCommand.cs" />

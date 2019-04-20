@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new MusicPlaylist(init.World, this); }
 	}
 
-	public class MusicPlaylist : INotifyActorDisposing, IGameOver
+	public class MusicPlaylist : INotifyActorDisposing, IGameOver, IWorldLoaded, INotifyGameLoaded
 	{
 		readonly MusicPlaylistInfo info;
 		readonly World world;
@@ -89,7 +90,16 @@ namespace OpenRA.Mods.Common.Traits
 				currentSong = world.Map.Rules.Music[info.StartingMusic];
 				CurrentSongIsBackground = false;
 			}
+		}
 
+		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		{
+			if (!world.IsLoadingGameSave)
+				Play();
+		}
+
+		void INotifyGameLoaded.GameLoaded(World world)
+		{
 			Play();
 		}
 
