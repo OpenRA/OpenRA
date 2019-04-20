@@ -29,6 +29,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly HotkeyReference combinedViewKey = new HotkeyReference();
 		readonly HotkeyReference worldViewKey = new HotkeyReference();
 
+		readonly World world;
+
 		CameraOption selected;
 
 		class CameraOption
@@ -64,6 +66,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ObserverShroudSelectorLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
+			this.world = world;
+
 			MiniYaml yaml;
 			if (logicArgs.TryGetValue("CombinedViewKey", out yaml))
 				combinedViewKey = modData.Hotkeys[yaml.Value];
@@ -181,6 +185,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			return false;
+		}
+
+		public override void Tick()
+		{
+			// Fix the selector if something else has changed the render player
+			if (selected != null && world.RenderPlayer != selected.Player)
+			{
+				if (combined.Player == world.RenderPlayer)
+					combined.OnClick();
+				else if (disableShroud.Player == world.RenderPlayer)
+					disableShroud.OnClick();
+				else
+					foreach (var group in teams)
+						foreach (var option in group)
+							if (option.Player == world.RenderPlayer)
+								option.OnClick();
+			}
 		}
 	}
 }
