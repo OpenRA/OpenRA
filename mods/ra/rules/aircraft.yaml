@@ -330,7 +330,7 @@ HELI:
 	Selectable:
 		DecorationBounds: 36,28
 	Rearmable:
-		RearmActors: hpad
+		RearmActors: hpad, afld, afld.ukraine
 
 HIND:
 	Inherits: ^Helicopter
@@ -398,7 +398,7 @@ HIND:
 	Selectable:
 		DecorationBounds: 38,32
 	Rearmable:
-		RearmActors: hpad
+		RearmActors: hpad, afld, afld.ukraine
 
 U2:
 	Inherits: ^NeutralPlane

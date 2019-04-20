@@ -299,29 +299,67 @@ afld:
 	idle: afldidle
 		Length: 8
 		Tick: 160
-		ZOffset: -1023
-		Offset: 0,-4
+		ZOffset: -2047
+		Offset: 0,-28
 	damaged-idle: afldidle
 		Start: 8
 		Length: 8
 		Tick: 160
-		ZOffset: -1023
-		Offset: 0,-4
+		ZOffset: -2047
+		Offset: 0,-28
 	active:
 		Length: 8
 		Tick: 160
-		ZOffset: -1023
-		Offset: 0,-4
+		ZOffset: -2047
+		Offset: 0,-28
 	damaged-active:
 		Start: 8
 		Length: 8
 		Tick: 160
-		ZOffset: -1023
-		Offset: 0,-4
+		ZOffset: -2047
+		Offset: 0,-28
 	make: afldmake
 		Length: *
-		Offset: 0,-4
+		Offset: 0,-28
 	icon: afldicon
+	idle-hpad1: hpad
+		ZOffset: -1023
+		Offset: -24,24
+	damaged-idle-hpad1: hpad
+		Start: 7
+		ZOffset: -1023
+		Offset: -24,24
+	active-hpad1: hpad
+		Start: 1
+		Length: 6
+		Tick: 100
+		ZOffset: -1023
+		Offset: -24,24
+	damaged-active-hpad1: hpad
+		Start: 8
+		Length: 6
+		Tick: 100
+		ZOffset: -1023
+		Offset: -24,24
+	idle-hpad2: hpad
+		ZOffset: -1023
+		Offset: 24,24
+	damaged-idle-hpad2: hpad
+		Start: 7
+		ZOffset: -1023
+		Offset: 24,24
+	active-hpad2: hpad
+		Start: 1
+		Length: 6
+		Tick: 100
+		ZOffset: -1023
+		Offset: 24,24
+	damaged-active-hpad2: hpad
+		Start: 8
+		Length: 6
+		Tick: 100
+		ZOffset: -1023
+		Offset: 24,24
 
 spen:
 	idle:

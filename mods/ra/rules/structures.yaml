@@ -1382,7 +1382,6 @@ HPAD:
 
 AFLD:
 	Inherits: ^Building
-	Inherits@shape: ^3x2Shape
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 420,0,0, 420,-1024,0, 420,1024,0, -777,0,0, -777,-1024,0, -777,1024,0
@@ -1397,10 +1396,10 @@ AFLD:
 		Name: Airfield
 	Selectable:
 		Class: afld
-		Bounds: 72,48
+		Bounds: 96,96
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4,4
 	Health:
 		HP: 100000
 	Armor:
@@ -1419,6 +1418,14 @@ AFLD:
 	Production:
 		Produces: Aircraft, Plane
 	Dock:
+		Offset: 0, -1024, 0
+		ValidActorTypes: yak, mig
+	Dock@2:
+		Offset: -1024, 768, 0
+		ValidActorTypes: heli
+	Dock@3:
+		Offset: 1024, 768, 0
+		ValidActorTypes: hind
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
@@ -1530,6 +1537,22 @@ AFLD:
 		ZOffset: 256
 		RequiresCondition: primary
 	WithResupplyAnimation:
+		RequiresCondition: !build-incomplete
+	WithSpriteBody@HPAD1:
+		Name: hpad1
+		Sequence: idle-hpad1
+		RequiresCondition: !build-incomplete
+	WithSpriteBody@HPAD2:
+		Name: hpad2
+		Sequence: idle-hpad2
+		RequiresCondition: !build-incomplete
+	WithResupplyAnimation@HPAD1:
+		Body: hpad1
+		Sequence: active-hpad1
+		RequiresCondition: !build-incomplete
+	WithResupplyAnimation@HPAD2:
+		Body: hpad2
+		Sequence: active-hpad2
 		RequiresCondition: !build-incomplete
 
 AFLD.Ukraine:
