@@ -233,6 +233,7 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
+	StartGameNotification:
 
 EditorWorld:
 	Inherits: ^BaseWorld

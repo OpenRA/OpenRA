@@ -19,10 +19,16 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string Notification = "StartGame";
 
+		[NotificationReference("Speech")]
+		public readonly string LoadedNotification = "GameLoaded";
+
+		[NotificationReference("Speech")]
+		public readonly string SavedNotification = "GameSaved";
+
 		public object Create(ActorInitializer init) { return new StartGameNotification(this); }
 	}
 
-	class StartGameNotification : IWorldLoaded
+	class StartGameNotification : IWorldLoaded, INotifyGameLoaded, INotifyGameSaved
 	{
 		StartGameNotificationInfo info;
 		public StartGameNotification(StartGameNotificationInfo info)
@@ -34,6 +40,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!world.IsLoadingGameSave)
 				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+		}
+
+		void INotifyGameLoaded.GameLoaded(World world)
+		{
+			if (!world.IsReplay)
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.LoadedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+		}
+
+		void INotifyGameSaved.GameSaved(World world)
+		{
+			if (!world.IsReplay)
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.SavedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
 		}
 	}
 }
