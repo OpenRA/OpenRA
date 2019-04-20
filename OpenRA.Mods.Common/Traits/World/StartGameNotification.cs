@@ -30,9 +30,10 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void WorldLoaded(World world, WorldRenderer wr)
+		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
-			Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+			if (!world.IsLoadingGameSave)
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
 		}
 	}
 }
