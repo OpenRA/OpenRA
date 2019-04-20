@@ -49,6 +49,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "ABORT_MISSION", CreateAbortMissionButton },
 				{ "SURRENDER", CreateSurrenderButton },
+				{ "LOAD_GAME", CreateLoadGameButton },
+				{ "SAVE_GAME", CreateSaveGameButton },
 				{ "MUSIC", CreateMusicButton },
 				{ "SETTINGS", CreateSettingsButton },
 				{ "RESUME", CreateResumeButton },
@@ -248,6 +250,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onCancel: ShowMenu,
 					confirmText: "Surrender",
 					cancelText: "Stay");
+			};
+		}
+
+		void CreateLoadGameButton()
+		{
+			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.GameSavesEnabled || world.IsReplay)
+				return;
+
+			var button = AddButton("LOAD_GAME", "Load Game");
+			button.IsDisabled = () => leaving || !GameSaveBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
+			button.OnClick = () =>
+			{
+				hideMenu = true;
+				Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
+				{
+					{ "onExit", () => hideMenu = false },
+					{ "onStart", CloseMenu },
+					{ "isSavePanel", false },
+					{ "world", null }
+				});
+			};
+		}
+
+		void CreateSaveGameButton()
+		{
+			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.GameSavesEnabled || world.IsReplay)
+				return;
+
+			var button = AddButton("SAVE_GAME", "Save Game");
+			button.IsDisabled = () => hasError || leaving || !world.Players.Any(p => p.Playable && p.WinState == WinState.Undefined);
+			button.OnClick = () =>
+			{
+				hideMenu = true;
+				Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
+				{
+					{ "onExit", () => hideMenu = false },
+					{ "onStart", () => { } },
+					{ "isSavePanel", true },
+					{ "world", world }
+				});
 			};
 		}
 

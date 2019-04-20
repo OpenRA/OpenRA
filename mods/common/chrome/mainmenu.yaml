@@ -114,6 +114,13 @@ Container@MAINMENU:
 							Height: 30
 							Text: Missions
 							Font: Bold
+						Button@LOAD_BUTTON:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: Load
+							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape
