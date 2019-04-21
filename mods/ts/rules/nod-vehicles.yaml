@@ -260,10 +260,10 @@ ART2:
 		Armament: deployed
 		LocalOffset: 203,0,0
 		LocalOrientation: 0, 128, 0
-		RequiresCondition: deployed
+		RequiresCondition: !undeployed
 	WithVoxelTurret@deployed:
 		Turret: deployed
-		RequiresCondition: deployed
+		RequiresCondition: !undeployed
 	AttackTurreted@deployed:
 		Voice: Attack
 		Armaments: deployed
