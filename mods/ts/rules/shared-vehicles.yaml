@@ -18,6 +18,7 @@ MCV:
 	Armor:
 		Type: Heavy
 	Mobile:
+		PauseOnCondition: empdisable || being-captured
 		Speed: 42
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -27,6 +28,7 @@ MCV:
 		RequiredForShortGame: true
 	BaseBuilding:
 	Transforms:
+		PauseOnCondition: empdisable || being-captured
 		IntoActor: gacnst
 		Offset: -1,-1
 		Facing: 96
@@ -143,6 +145,7 @@ LPST:
 			gdi: lpst.gdi
 			nod: lpst.nod
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
 		Facing: 160
