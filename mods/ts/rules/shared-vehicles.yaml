@@ -152,6 +152,7 @@ LPST:
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
+		Voice: Move
 	WithVoxelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
