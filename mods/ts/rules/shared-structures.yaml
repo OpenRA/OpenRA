@@ -29,7 +29,7 @@ GACNST:
 	BaseBuilding:
 	Transforms:
 		RequiresCondition: factundeploy && !build-incomplete
-		PauseOnCondition: being-demolished
+		PauseOnCondition: empdisable || being-demolished
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96

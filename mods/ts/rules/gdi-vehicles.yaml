@@ -348,6 +348,7 @@ JUGG:
 		MoveSequence: walk
 		ValidMovementTypes: Horizontal, Turn
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
 		Facing: 96

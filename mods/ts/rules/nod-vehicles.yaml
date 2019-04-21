@@ -132,6 +132,7 @@ TTNK:
 		Image: ttnk
 	WithMakeAnimation:
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
 		Facing: 160
@@ -236,6 +237,7 @@ ART2:
 		Image: art2
 	WithMakeAnimation:
 	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
 		Facing: 96
