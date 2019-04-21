@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToResources(self, targetCell, new FindAndDeliverResources(self));
 
 				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
-				QueueChild(self, move.MoveTo(targetCell, 0), true);
+				QueueChild(self, move.MoveTo(targetCell, 2), true);
 				return this;
 			}
 
