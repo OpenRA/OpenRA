@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "DeployTransform") ? Info.Voice : null;
+			return order.OrderString == "DeployTransform" ? Info.Voice : null;
 		}
 
 		public bool CanDeploy()
