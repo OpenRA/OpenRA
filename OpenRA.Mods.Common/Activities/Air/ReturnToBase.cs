@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Activities
 				else
 					QueueChild(self, new Land(self, Target.FromPos(dest.CenterPosition + offset), true, dest), true);
 
-				QueueChild(self, new ResupplyAircraft(self), true);
+				QueueChild(self, new Resupply(self, dest, WDist.Zero), true);
 				resupplied = true;
 			}
 

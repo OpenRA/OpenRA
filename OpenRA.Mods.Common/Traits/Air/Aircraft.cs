@@ -595,7 +595,7 @@ namespace OpenRA.Mods.Common.Traits
 			var atLandAltitude = self.World.Map.DistanceAboveTerrain(CenterPosition) == Info.LandAltitude;
 
 			// Work-around to prevent players from accidentally canceling resupply by pressing 'Stop',
-			// by re-queueing ResupplyAircraft as long as resupply hasn't finished and aircraft is still on resupplier.
+			// by re-queueing Resupply as long as resupply hasn't finished and aircraft is still on resupplier.
 			// TODO: Investigate moving this back to ResolveOrder's "Stop" handling,
 			// once conflicts with other traits' "Stop" orders have been fixed.
 			if (atLandAltitude)
@@ -603,7 +603,7 @@ namespace OpenRA.Mods.Common.Traits
 				var host = GetActorBelow();
 				if (host != null && (CanRearmAt(host) || CanRepairAt(host)))
 				{
-					self.QueueActivity(new ResupplyAircraft(self));
+					self.QueueActivity(new Resupply(self, host, WDist.Zero));
 					return;
 				}
 			}

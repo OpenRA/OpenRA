@@ -95,7 +95,17 @@ namespace OpenRA.Mods.Common.Activities
 				notifyResupply.ResupplyTick(host.Actor, self, activeResupplyTypes);
 
 			if (activeResupplyTypes == 0)
+			{
+				var aircraft = self.TraitOrDefault<Aircraft>();
+				if (aircraft != null)
+				{
+					aircraft.AllowYieldingReservation();
+					if (aircraft.Info.TakeOffOnResupply)
+						Queue(self, new TakeOff(self, (a, b, c) => NextActivity == null && b.NextActivity == null));
+				}
+
 				return NextActivity;
+			}
 
 			return this;
 		}
