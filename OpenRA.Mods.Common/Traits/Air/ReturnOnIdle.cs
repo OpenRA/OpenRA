@@ -38,10 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var resupplier = ReturnToBase.ChooseResupplier(self, true);
 			if (resupplier != null)
-			{
 				self.QueueActivity(new ReturnToBase(self, aircraftInfo.AbortOnResupply, resupplier));
-				self.QueueActivity(new ResupplyAircraft(self));
-			}
 			else
 			{
 				// nowhere to land, pick something friendly and circle over it.
