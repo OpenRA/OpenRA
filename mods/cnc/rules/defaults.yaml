@@ -315,7 +315,7 @@
 		LandWhenIdle: false
 		AirborneCondition: airborne
 		CruisingCondition: cruising
-		CanHover: True
+		IdleSpeed: 0
 		TakeOffOnResupply: true
 		VTOL: true
 		InitialFacing: 224
@@ -1067,7 +1067,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Aircraft:
-		CanHover: True
+		IdleSpeed: 0
 		VTOL: true
 	FallsToEarth:
 		Spins: True

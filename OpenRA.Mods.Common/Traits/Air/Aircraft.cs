@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int Speed = 1;
 
-		[Desc("Speed to apply when aircraft flies in circles while idle. Defaults to Speed if negative.")]
+		[Desc("Speed to apply when aircraft flies in circles while idle. Defaults to Speed if negative. Activates hovering while idle if zero.")]
 		public readonly int IdleSpeed = -1;
 
 		[Desc("Speed can change at most this much when transitioning between idle and combat speed. Values less than 1 result in instant speed change.")]
@@ -73,9 +73,6 @@ namespace OpenRA.Mods.Common.Traits
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while at cruise altitude.")]
 		public readonly string CruisingCondition = null;
-
-		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
-		public readonly bool CanHover = false;
 
 		[Desc("Does the actor land and take off vertically?")]
 		public readonly bool VTOL = false;
@@ -197,6 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
+		public bool ShouldHover { get { return Info.IdleSpeed == 0; } }
 		public bool IsIdleCircling { get { return self.CurrentActivity is FlyCircle || self.CurrentActivity is HeliFlyCircle; } }
 		int CurrentBaseSpeed { get { return (self.IsIdle || IsIdleCircling) && Info.IdleSpeed > -1 ? Info.IdleSpeed : Info.Speed; } }
 
@@ -409,7 +407,7 @@ namespace OpenRA.Mods.Common.Traits
 				repulsionForce += new WVec(1024, 0, 0).Rotate(WRot.FromYaw((self.CenterPosition - center).Yaw));
 			}
 
-			if (Info.CanHover)
+			if (ShouldHover)
 				return repulsionForce;
 
 			// Non-hovering actors mush always keep moving forward, so they need extra calculations.
@@ -646,13 +644,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.QueueActivity(new HeliLand(self, true));
 			}
-			else if (!Info.CanHover && !atLandAltitude)
+			else if (!ShouldHover && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 			else if (atLandAltitude && !CanLand(self.Location) && ReservedActor == null)
 				self.QueueActivity(new TakeOff(self));
-			else if (Info.CanHover && self.Info.HasTraitInfo<AutoCarryallInfo>() && Info.IdleTurnSpeed > -1)
+			else if (ShouldHover && self.Info.HasTraitInfo<AutoCarryallInfo>() && Info.IdleTurnSpeed > -1)
 			{
-				// Temporary HACK for the AutoCarryall special case (needs CanHover, but also HeliFlyCircle on idle).
+				// Temporary HACK for the AutoCarryall special case (needs ShouldHover, but also HeliFlyCircle on idle).
 				// Will go away soon (in a separate PR) with the arrival of ActionsWhenIdle.
 				self.QueueActivity(new HeliFlyCircle(self, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 			}
@@ -764,7 +762,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
@@ -772,7 +770,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, Actor ignoreActor)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell));
@@ -781,7 +779,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveWithinRange(Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new Fly(self, target, WDist.Zero, range, initialTargetPosition, targetLineColor);
 
 			return new HeliFly(self, target, WDist.Zero, range, initialTargetPosition, targetLineColor);
@@ -790,7 +788,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new Fly(self, target, minRange, maxRange,
 					initialTargetPosition, targetLineColor);
 
@@ -801,7 +799,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new FlyFollow(self, target, minRange, maxRange,
 					initialTargetPosition, targetLineColor);
 
@@ -811,7 +809,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new Fly(self, Target.FromCell(self.World, cell));
 
 			return new HeliFly(self, Target.FromCell(self.World, cell, subCell));
@@ -820,7 +818,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveToTarget(Actor self, Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5),
 					initialTargetPosition, targetLineColor);
 
@@ -840,7 +838,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				return ActivityUtils.SequenceActivities(self,
 					new CallFunc(() => SetVisualPosition(self, fromPos)),
 					new Fly(self, Target.FromPos(toPos)));
@@ -955,7 +953,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(target, Color.Green);
 
-				if (!Info.CanHover)
+				if (!ShouldHover)
 					self.QueueActivity(order.Queued, new Fly(self, target));
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
@@ -1021,7 +1019,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.CancelActivity();
 			self.SetTargetLine(target, Color.Green, false);
 
-			if (!Info.CanHover)
+			if (!ShouldHover)
 				self.QueueActivity(new Fly(self, target));
 			else
 				self.QueueActivity(new HeliFlyAndLandWhenIdle(self, target, Info));

@@ -877,7 +877,7 @@
 	Inherits: ^Aircraft
 	Aircraft:
 		CruiseAltitude: 2048
-		CanHover: True
+		IdleSpeed: 0
 		CruisingCondition: cruising
 		TakeOffOnResupply: true
 		VTOL: true

@@ -174,7 +174,7 @@ JUMPJET.Husk:
 		Explosion:
 	Aircraft:
 		Speed: 186
-		CanHover: True
+		IdleSpeed: 0
 		VTOL: true
 	RenderSprites:
 		Image: jumpjet

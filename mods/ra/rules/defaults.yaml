@@ -613,7 +613,7 @@
 	Tooltip:
 		GenericName: Helicopter
 	Aircraft:
-		CanHover: True
+		IdleSpeed: 0
 		CruisingCondition: cruising
 		WaitDistanceFromResupplyBase: 4c0
 		TakeOffOnResupply: true
@@ -1025,7 +1025,7 @@
 	Tooltip:
 		GenericName: Destroyed Helicopter
 	Aircraft:
-		CanHover: True
+		IdleSpeed: 0
 		VTOL: true
 	FallsToEarth:
 		Explosion: UnitExplodeHeli

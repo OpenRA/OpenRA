@@ -382,7 +382,7 @@ HUNTER:
 		TurnSpeed: 16
 		Speed: 355
 		CruiseAltitude: 256
-		CanHover: True
+		IdleSpeed: 0
 		CruisingCondition: cruising
 		VTOL: true
 	AttackAircraft:

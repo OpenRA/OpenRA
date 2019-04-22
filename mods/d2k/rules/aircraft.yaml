@@ -18,7 +18,7 @@ carryall.reinforce:
 		Repulsable: False
 		LandWhenIdle: False
 		AirborneCondition: airborne
-		CanHover: True
+		IdleSpeed: 0
 		VTOL: true
 		IdleTurnSpeed: 1
 	Targetable@GROUND:
@@ -104,7 +104,7 @@ ornithopter:
 		Speed: 224 # 189 * ~1.2 for balance reasons
 		TurnSpeed: 2
 		Repulsable: False
-		CanHover: True
+		IdleSpeed: 0
 		CruiseAltitude: 1920
 		VTOL: true
 	AmmoPool:
@@ -134,7 +134,7 @@ carryall.husk:
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 144
-		CanHover: True
+		IdleSpeed: 0
 		VTOL: true
 	RenderSprites:
 		Image: carryall
@@ -148,7 +148,7 @@ carryall.huskVTOL:
 		Velocity: 0c128
 	Aircraft:
 		TurnSpeed: 4
-		CanHover: True
+		IdleSpeed: 0
 		VTOL: true
 	RenderSprites:
 		Image: carryall

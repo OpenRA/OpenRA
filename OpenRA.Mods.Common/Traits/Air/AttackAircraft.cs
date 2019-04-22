@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			if (aircraftInfo.CanHover)
+			if (aircraftInfo.IdleSpeed == 0)
 				return new HeliAttack(self, newTarget);
 
 			return new FlyAttack(self, newTarget);

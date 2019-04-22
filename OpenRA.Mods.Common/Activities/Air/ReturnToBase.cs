@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 				.ClosestTo(self);
 		}
 
-		// Calculates non-CanHover/non-VTOL approach vector and waypoints
+		// Calculates non-ShouldHover/non-VTOL approach vector and waypoints
 		void Calculate(Actor self)
 		{
 			if (dest == null)
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (nearestResupplier != null)
 				{
-					if (aircraft.Info.CanHover)
+					if (aircraft.ShouldHover)
 					{
 						var distanceFromResupplier = (nearestResupplier.CenterPosition - self.CenterPosition).HorizontalLength;
 						var distanceLength = aircraft.Info.WaitDistanceFromResupplyBase.Length;
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Activities
 			var exit = dest.FirstExitOrDefault(null);
 			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
-			if (aircraft.Info.CanHover)
+			if (aircraft.ShouldHover)
 				QueueChild(self, new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)), true);
 			else if (aircraft.Info.VTOL)
 				QueueChild(self, new Fly(self, Target.FromPos(dest.CenterPosition + offset)), true);
