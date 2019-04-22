@@ -911,6 +911,7 @@ namespace OpenRA.Mods.Common.Traits
 					return Info.Voice;
 				case "Enter":
 				case "Stop":
+				case "Scatter":
 					return Info.Voice;
 				case "ReturnToBase":
 					return rearmable != null && rearmable.Info.RearmActors.Any() ? Info.Voice : null;
@@ -980,9 +981,32 @@ namespace OpenRA.Mods.Common.Traits
 				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier, though.
 				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, !Info.TakeOffOnResupply));
 			}
+			else if (order.OrderString == "Scatter")
+				Nudge(self);
 		}
 
 		#endregion
+
+		void Nudge(Actor self)
+		{
+			// Disable nudging if the aircraft is outside the map
+			if (!self.World.Map.Contains(self.Location))
+				return;
+
+			var offset = new WVec(0, -self.World.SharedRandom.Next(512, 2048), 0)
+				.Rotate(WRot.FromFacing(self.World.SharedRandom.Next(256)));
+			var target = Target.FromPos(self.CenterPosition + offset);
+
+			self.CancelActivity();
+			self.SetTargetLine(target, Color.Green, false);
+
+			if (!Info.CanHover)
+				self.QueueActivity(new Fly(self, target));
+			else
+				self.QueueActivity(new HeliFlyAndLandWhenIdle(self, target, Info));
+
+			UnReserve();
+		}
 
 		#region Airborne conditions
 
