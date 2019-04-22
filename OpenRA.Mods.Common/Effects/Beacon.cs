@@ -53,13 +53,13 @@ namespace OpenRA.Mods.Common.Effects
 			if (!string.IsNullOrEmpty(arrowSprite))
 			{
 				arrow = new Animation(owner.World, beaconCollection);
-				arrow.Play(arrowSprite);
+				arrow.PlayRepeating(arrowSprite);
 			}
 
 			if (!string.IsNullOrEmpty(circleSprite))
 			{
 				circles = new Animation(owner.World, beaconCollection);
-				circles.Play(circleSprite);
+				circles.PlayRepeating(circleSprite);
 			}
 		}
 
