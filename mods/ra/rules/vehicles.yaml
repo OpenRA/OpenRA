@@ -597,6 +597,10 @@ MRJ:
 		Range: 18c0
 		ValidStances: Enemy, Neutral
 		Condition: jammed
+	ProximityExternalCondition@GPS_JAMMER:
+		Range: 18c0
+		ValidStances: Ally
+		Condition: gpsjammed
 	WithRangeCircle@JAMMER:
 		Type: jammer
 		Range: 18c0

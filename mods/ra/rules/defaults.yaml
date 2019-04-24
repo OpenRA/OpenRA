@@ -270,6 +270,9 @@
 		Types: Vehicle
 	GpsDot:
 		String: Vehicle
+		RequiresCondition: !gpsjammed
+	ExternalCondition@GPSJAMMED:
+		Condition: gpsjammed
 	WithDamageOverlay:
 	Guard:
 	Guardable:
@@ -370,6 +373,9 @@
 	ActorLostNotification:
 	GpsDot:
 		String: Infantry
+		RequiresCondition: !gpsjammed
+	ExternalCondition@GPSJAMMED:
+		Condition: gpsjammed
 	Crushable:
 		CrushSound: squishy2.aud
 	Guard:
@@ -517,6 +523,9 @@
 		RepairActors: spen, syrd
 	GpsDot:
 		String: Ship
+		RequiresCondition: !gpsjammed
+	ExternalCondition@GPSJAMMED:
+		Condition: gpsjammed
 	WithDamageOverlay:
 	Explodes:
 		Weapon: UnitExplodeShip
@@ -584,6 +593,9 @@
 		ChuteSound: chute1.aud
 	GpsDot:
 		String: Plane
+		RequiresCondition: !gpsjammed
+	ExternalCondition@GPSJAMMED:
+		Condition: gpsjammed
 	Tooltip:
 		GenericName: Plane
 	WithShadow:
@@ -621,6 +633,9 @@
 		InitialFacing: 224
 	GpsDot:
 		String: Helicopter
+		RequiresCondition: !gpsjammed
+	ExternalCondition@GPSJAMMED:
+		Condition: gpsjammed
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 	BodyOrientation:
@@ -698,6 +713,9 @@
 		RequiredForShortGame: true
 	GpsDot:
 		String: Structure
+		RequiresCondition: !gpsjammed
+	ExternalCondition@GPSJAMMED:
+		Condition: gpsjammed
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
