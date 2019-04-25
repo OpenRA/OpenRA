@@ -28,7 +28,8 @@ namespace OpenRA
 
 		public static string WriteToString(this MiniYamlNodes y)
 		{
-			return y.ToLines().JoinWith("\n");
+			// Remove all trailing newlines and restore the final EOF newline
+			return y.ToLines().JoinWith("\n").TrimEnd('\n') + "\n";
 		}
 
 		public static IEnumerable<string> ToLines(this MiniYamlNodes y)
