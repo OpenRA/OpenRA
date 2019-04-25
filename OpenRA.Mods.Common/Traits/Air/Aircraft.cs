@@ -861,16 +861,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Resupply", 5,
-					target => AircraftCanEnter(target), target => Reservable.IsAvailableFor(target, self));
-
 				yield return new AircraftMoveOrderTargeter(Info);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Resupply" || order.OrderID == "Move")
+			if (order.OrderID == "Move")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -878,9 +875,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			if (rearmable == null || !rearmable.Info.RearmActors.Any())
-				return null;
-
 			return new Order("ReturnToBase", self, queued);
 		}
 
@@ -898,8 +892,6 @@ namespace OpenRA.Mods.Common.Traits
 							return null;
 					}
 
-					return Info.Voice;
-				case "Resupply":
 					return Info.Voice;
 				case "Stop":
 				case "Scatter":
@@ -929,20 +921,6 @@ namespace OpenRA.Mods.Common.Traits
 					self.QueueActivity(order.Queued, new Fly(self, target));
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
-			}
-			else if (order.OrderString == "Resupply")
-			{
-				// Resupply orders are only valid for own/allied actors,
-				// which are guaranteed to never be frozen.
-				if (order.Target.Type != TargetType.Actor)
-					return;
-
-				if (!order.Queued)
-					UnReserve();
-
-				var targetActor = order.Target.Actor;
-				self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
-				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));
 			}
 			else if (order.OrderString == "Stop")
 			{

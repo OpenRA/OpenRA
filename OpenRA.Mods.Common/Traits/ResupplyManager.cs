@@ -30,17 +30,21 @@ namespace OpenRA.Mods.Common.Traits
 	public class ResupplyManager : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated
 	{
 		public readonly ResupplyManagerInfo Info;
-		readonly IMove movement;
+		readonly Actor self;
+		IMove movement;
+		Aircraft aircraft;
 		IResupplyable[] resupplyables;
 
 		public ResupplyManager(Actor self, ResupplyManagerInfo info)
 		{
 			Info = info;
-			movement = self.Trait<IMove>();
+			this.self = self;
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			movement = self.Trait<IMove>();
+			aircraft = movement as Aircraft;
 			resupplyables = self.TraitsImplementing<IResupplyable>().ToArray();
 		}
 
@@ -48,6 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				if (aircraft != null)
+					yield return new EnterAlliedActorTargeter<BuildingInfo>("Resupply", 5,
+						target => aircraft.AircraftCanEnter(target), target => Reservable.IsAvailableFor(target, self));
+
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Resupply", 5, CanResupplyAt, NeedsResupplyAt);
 			}
 		}
@@ -92,9 +100,16 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				// Aircraft handle Resupply orders directly in the Aircraft trait
-				if (self.Info.HasTraitInfo<AircraftInfo>())
+				if (aircraft != null)
+				{
+					if (!order.Queued)
+						aircraft.UnReserve();
+
+					var targetActor = order.Target.Actor;
+					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
+					self.QueueActivity(order.Queued, new ReturnToBase(self, aircraft.Info.AbortOnResupply, targetActor));
 					return;
+				}
 
 				if (!order.Queued)
 					self.CancelActivity();
