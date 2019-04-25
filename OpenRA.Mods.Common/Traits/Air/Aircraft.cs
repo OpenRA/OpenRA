@@ -317,13 +317,13 @@ namespace OpenRA.Mods.Common.Traits
 					self.QueueActivity(new TakeOff(self));
 			}
 
-			// Add land activity if LandOnCondidion resolves to true and the actor can land at the current location.
+			// Add land activity if LandOnCondition resolves to true and the actor can land at the current location.
 			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
-				&& !((self.CurrentActivity is Land && Info.VTOL) || self.CurrentActivity is Turn))
+				&& !((self.CurrentActivity is Land) || self.CurrentActivity is Turn))
 			{
 				self.CancelActivity();
 
-				if (Info.TurnToLand)
+				if (Info.VTOL && Info.TurnToLand)
 					self.QueueActivity(new Turn(self, Info.InitialFacing));
 
 				self.QueueActivity(new Land(self));
@@ -625,9 +625,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (!atLandAltitude && Info.VTOL && Info.LandWhenIdle)
+			if (!atLandAltitude && Info.LandWhenIdle)
 			{
-				if (Info.TurnToLand)
+				if (Info.VTOL && Info.TurnToLand)
 					self.QueueActivity(new Turn(self, Info.InitialFacing));
 
 				self.QueueActivity(new Land(self));
