@@ -861,7 +861,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("Resupply", 5,
 					target => AircraftCanEnter(target), target => Reservable.IsAvailableFor(target, self));
 
 				yield return new AircraftMoveOrderTargeter(Info);
@@ -870,7 +870,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter" || order.OrderID == "Move")
+			if (order.OrderID == "Resupply" || order.OrderID == "Move")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -899,7 +899,8 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					return Info.Voice;
-				case "Enter":
+				case "Resupply":
+					return Info.Voice;
 				case "Stop":
 				case "Scatter":
 					return Info.Voice;
@@ -929,9 +930,9 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
 			}
-			else if (order.OrderString == "Enter" || order.OrderString == "Resupply")
+			else if (order.OrderString == "Resupply")
 			{
-				// Enter and Repair orders are only valid for own/allied actors,
+				// Resupply orders are only valid for own/allied actors,
 				// which are guaranteed to never be frozen.
 				if (order.Target.Type != TargetType.Actor)
 					return;
@@ -940,11 +941,7 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				var targetActor = order.Target.Actor;
-
-				// We only want to set a target line if the order will (most likely) succeed
-				if (Reservable.IsAvailableFor(targetActor, self))
-					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
-
+				self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));
 			}
 			else if (order.OrderString == "Stop")
