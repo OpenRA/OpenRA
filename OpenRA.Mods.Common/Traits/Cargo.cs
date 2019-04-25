@@ -193,7 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				Unloading = true;
 				if (aircraft != null)
-					self.QueueActivity(new Land(self, true));
+					self.QueueActivity(new Land(self));
+
 				self.QueueActivity(new UnloadCargo(self, true));
 			}
 		}

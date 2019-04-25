@@ -183,11 +183,11 @@ namespace OpenRA.Mods.Common.Scripting
 							Move(transport, destination);
 
 						transport.QueueActivity(new Turn(transport, aircraft.Info.InitialFacing));
-						transport.QueueActivity(new Land(transport, true));
+						transport.QueueActivity(new Land(transport));
 					}
 					else
 					{
-						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination), true));
+						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination)));
 					}
 
 					transport.QueueActivity(new Wait(15));

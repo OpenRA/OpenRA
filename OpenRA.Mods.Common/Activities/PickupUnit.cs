@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					if (targetPosition.Z != self.CenterPosition.Z)
 					{
-						QueueChild(self, new Land(self, false, self.World.Map.DistanceAboveTerrain(targetPosition)), true);
+						QueueChild(self, new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset)));
 						return this;
 					}
 
