@@ -592,7 +592,7 @@ Background@SETTINGS_PANEL:
 							Width: PARENT_RIGHT
 							Height: 20
 							Font: Regular
-							Text: Additional developer-specific options can be enabled via the 
+							Text: Additional developer-specific options can be enabled via the
 							Align: Center
 						Label@B:
 							Y: 20
