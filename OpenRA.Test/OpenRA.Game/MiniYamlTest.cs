@@ -269,7 +269,8 @@ Parent: # comment without value
 
 			var strippedYaml = @"Parent:
 	First: value containing a \# character
-	Second: value".Replace("\r\n", "\n");
+	Second: value
+".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(yaml).WriteToString();
 			Assert.AreEqual(strippedYaml, result);
