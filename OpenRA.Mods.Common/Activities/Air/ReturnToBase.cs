@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (aircraft.Info.TurnToLand)
 						Queue(self, new Turn(self, aircraft.Info.InitialFacing));
 
-					Queue(self, new Land(self, true));
+					Queue(self, new Land(self));
 					return NextActivity;
 				}
 				else
@@ -225,16 +225,10 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				aircraft.MakeReservation(dest);
 
-				if (aircraft.Info.VTOL)
-				{
-					if (aircraft.Info.TurnToDock)
-						QueueChild(self, new Turn(self, aircraft.Info.InitialFacing), true);
+				if (aircraft.Info.VTOL && aircraft.Info.TurnToDock)
+					QueueChild(self, new Turn(self, aircraft.Info.InitialFacing), true);
 
-					QueueChild(self, new Land(self, true, dest), true);
-				}
-				else
-					QueueChild(self, new Land(self, Target.FromPos(dest.CenterPosition + offset), true, dest), true);
-
+				QueueChild(self, new Land(self, Target.FromActor(dest), offset), true);
 				QueueChild(self, new Resupply(self, dest, WDist.Zero), true);
 				resupplied = true;
 			}

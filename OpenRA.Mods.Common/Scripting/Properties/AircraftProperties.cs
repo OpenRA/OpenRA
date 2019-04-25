@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Queues a landing activity on the specififed actor.")]
 		public void Land(Actor landOn)
 		{
-			Self.QueueActivity(new Land(Self, Target.FromActor(landOn), true, landOn));
+			Self.QueueActivity(new Land(Self, Target.FromActor(landOn)));
 		}
 
 		[ScriptActorPropertyActivity]

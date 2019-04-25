@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if (info.TurnToLand)
 					self.QueueActivity(new Turn(self, info.InitialFacing));
-				self.QueueActivity(new Land(self, true));
+				self.QueueActivity(new Land(self));
 				activity = NextActivity;
 			}
 
