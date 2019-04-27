@@ -57,6 +57,8 @@ World:
 		SeparateTeamSpawnsCheckboxEnabled: False
 		SeparateTeamSpawnsCheckboxLocked: True
 		SeparateTeamSpawnsCheckboxVisible: False
+	TimeLimitManager:
+		TimeLimitLocked: True
 
 FORTCRATE:
 	Inherits: ^Crate
