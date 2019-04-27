@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Commands;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -52,6 +53,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				};
 			}
+
+			var devMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+			if (devMode.Enabled)
+				Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
 
 			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs() { { "isMenuChat", false } });
 
