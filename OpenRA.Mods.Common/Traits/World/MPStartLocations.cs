@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Translate]
 		[Desc("Tooltip description for the spawn positions checkbox in the lobby.")]
-		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players.";
+		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players";
 
 		[Desc("Default value of the spawn positions checkbox in the lobby.")]
 		public readonly bool SeparateTeamSpawnsCheckboxEnabled = true;
