@@ -16,6 +16,8 @@ World:
 			easy: Easy
 			normal: Normal
 		Default: normal
+	TimeLimitManager:
+		TimeLimitLocked: True
 
 ^Palettes:
 	IndexedPlayerPalette:
