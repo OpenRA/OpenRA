@@ -1,0 +1,14 @@
+Container@DEBUG_WIDGETS:
+	Logic: DebugLogic
+	X: WINDOW_RIGHT / 2 - WIDTH
+	Y: 60
+	Width: 100
+	Height: 55
+	Children:
+		Label@DEBUG_TEXT:
+			Y: 35
+			Width: PARENT_RIGHT
+			Height: 15
+			Align: Center
+			Font: Bold
+			Contrast: true
