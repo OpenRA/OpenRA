@@ -224,7 +224,7 @@ TorpTube:
 	ReloadDelay: 100
 	Range: 9c0
 	Report: torpedo1.aud
-	ValidTargets: Water, Underwater, Bridge
+	ValidTargets: Water, Underwater, Bridge, Wall
 	Burst: 2
 	BurstDelays: 20
 	Projectile: Missile
