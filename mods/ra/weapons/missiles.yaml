@@ -241,7 +241,7 @@ TorpTube:
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 18000
-		ValidTargets: Water, Underwater, Bridge
+		ValidTargets: Water, Underwater, Bridge, Wall
 		Versus:
 			Wood: 75
 			Light: 75
