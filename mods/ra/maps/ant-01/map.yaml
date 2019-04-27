@@ -43,7 +43,7 @@ Players:
 		Enemies: AntMan
 		Color: F6D679
 	PlayerReference@AntMan:
-		Name: AntMan 
+		Name: AntMan
 		Faciton: soviet
 		Enemies: Spain, Creeps
 		Bot: campaign
