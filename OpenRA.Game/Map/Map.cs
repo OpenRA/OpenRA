@@ -566,6 +566,10 @@ namespace OpenRA
 			foreach (var field in YamlFields)
 				field.Serialize(this, root);
 
+			// HACK: map.yaml is expected to have empty lines between top-level blocks
+			for (var i = root.Count - 1; i > 0; i--)
+				root.Insert(i, new MiniYamlNode("", ""));
+
 			// Saving to a new package: copy over all the content from the map
 			if (Package != null && toPackage != Package)
 				foreach (var file in Package.Contents)
