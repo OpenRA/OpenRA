@@ -16,6 +16,8 @@ Visibility: MissionSelector
 
 Categories: Mission
 
+LockPreview: True
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
