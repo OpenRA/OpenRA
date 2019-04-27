@@ -181,9 +181,9 @@ Section "-DotNet" DotNet
 	; https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
 	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" "Release"
 	IfErrors error 0
-	IntCmp $0 461808 done error done
+	IntCmp $0 394254 done error done
 	error:
-		MessageBox MB_OK ".NET Framework v4.7.2 or later is required to run OpenRA."
+		MessageBox MB_OK ".NET Framework v4.6.1 or later is required to run OpenRA."
 		Abort
 	done:
 SectionEnd
