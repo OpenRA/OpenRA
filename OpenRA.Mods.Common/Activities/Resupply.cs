@@ -75,6 +75,25 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
+			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
+			// move actor outside the resupplier footprint
+			// TODO: This check is nowhere near robust enough, and should be rewritten
+			if (IsCanceling && host.IsInRange(self.CenterPosition, closeEnough))
+			{
+				QueueChild(self, self.Trait<IMove>().MoveToTarget(self, host), true);
+				foreach (var notifyResupply in notifyResupplies)
+					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
+
+				return this;
+			}
+
 			if (IsCanceling || host.Type == TargetType.Invalid
 				|| (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
 			{
