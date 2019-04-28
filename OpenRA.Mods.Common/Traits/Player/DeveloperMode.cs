@@ -116,6 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 				return;
 
+			var debugSuffix = "";
 			switch (order.OrderString)
 			{
 				case "DevAll":
@@ -162,6 +163,20 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 					self.Trait<PlayerResources>().ChangeCash(amount);
+
+					debugSuffix = " ({0} credits)".F(amount);
+					break;
+				}
+
+				case "DevGiveCashAll":
+				{
+					var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
+					var receivingPlayers = self.World.Players.Where(p => p.Playable);
+
+					foreach (var player in receivingPlayers)
+						player.PlayerActor.Trait<PlayerResources>().ChangeCash(amount);
+
+					debugSuffix = " ({0} credits)".F(amount);
 					break;
 				}
 
@@ -240,7 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			Game.Debug("Cheat used: {0} by {1}", order.OrderString, self.Owner.PlayerName);
+			Game.Debug("Cheat used: {0} by {1}{2}", order.OrderString, self.Owner.PlayerName, debugSuffix);
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked { get { return Enabled; } }
