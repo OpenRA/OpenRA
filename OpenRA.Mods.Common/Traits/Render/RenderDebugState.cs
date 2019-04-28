@@ -80,10 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Get the actor's activity.
 			var activity = self.CurrentActivity;
 			if (activity != null)
-			{
-				var activityName = activity.GetType().ToString().Split('.').Last();
-				yield return new TextRenderable(font, self.CenterPosition, 0, color, activityName);
-			}
+				yield return new TextRenderable(font, self.CenterPosition, 0, color, activity.DebugLabelComponents().JoinWith("."));
 
 			// Get the AI squad that this actor belongs to.
 			if (!self.Owner.IsBot)

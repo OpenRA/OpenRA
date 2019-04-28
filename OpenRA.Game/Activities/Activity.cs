@@ -161,6 +161,16 @@ namespace OpenRA.Activities
 		{
 			yield break;
 		}
+
+		public IEnumerable<string> DebugLabelComponents()
+		{
+			var act = this;
+			while (act != null)
+			{
+				yield return act.GetType().Name;
+				act = act.childActivity;
+			}
+		}
 	}
 
 	public static class ActivityExts
