@@ -26,6 +26,16 @@ namespace OpenRA.Mods.Common
 			return false;
 		}
 
+		public static bool AnyExplored(this Shroud shroud, PPos[] puvs)
+		{
+			// PERF: Avoid LINQ.
+			foreach (var puv in puvs)
+				if (shroud.IsExplored(puv))
+					return true;
+
+			return false;
+		}
+
 		public static bool AnyVisible(this Shroud shroud, Pair<CPos, SubCell>[] cells)
 		{
 			// PERF: Avoid LINQ.
