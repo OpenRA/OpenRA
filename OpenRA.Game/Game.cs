@@ -465,8 +465,8 @@ namespace OpenRA
 				Log.Write("nat", e.ToString());
 			}
 
-			chatMessageColor = ChromeMetrics.Get<Color>("ChatMessageColor");
-			systemMessageColor = ChromeMetrics.Get<Color>("SystemMessageColor");
+			ChromeMetrics.TryGet("ChatMessageColor", out chatMessageColor);
+			ChromeMetrics.TryGet("SystemMessageColor", out systemMessageColor);
 
 			ModData.LoadScreen.StartGame(args);
 		}
@@ -527,8 +527,8 @@ namespace OpenRA
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
-		static Color systemMessageColor;
-		static Color chatMessageColor;
+		static Color systemMessageColor = Color.White;
+		static Color chatMessageColor = Color.White;
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
