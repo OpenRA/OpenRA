@@ -71,30 +71,8 @@ namespace OpenRA.Mods.Common.Commands
 
 			switch (name)
 			{
-				case "givecash":
-					var givecashorder = new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false);
-					int cash;
-					int.TryParse(arg, out cash);
-
-					givecashorder.ExtraData = (uint)cash;
-					Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), world.LocalPlayer.PlayerName);
-					world.IssueOrder(givecashorder);
-
-					break;
-
-				case "givecashall":
-					int.TryParse(arg, out cash);
-
-					foreach (var player in world.Players.Where(p => !p.NonCombatant))
-					{
-						var givecashall = new Order("DevGiveCash", player.PlayerActor, false);
-						givecashall.ExtraData = (uint)cash;
-						Game.Debug("Giving {0} credits to player {1}.", cash == 0 ? "cheat default" : cash.ToString(CultureInfo.InvariantCulture), player.PlayerName);
-						world.IssueOrder(givecashall);
-					}
-
-					break;
-
+				case "givecash": IssueGiveCashDevCommand(false, arg); break;
+				case "givecashall": IssueGiveCashDevCommand(true, arg); break;
 				case "visibility": IssueDevCommand(world, "DevVisibility"); break;
 				case "instantbuild": IssueDevCommand(world, "DevFastBuild"); break;
 				case "buildanywhere": IssueDevCommand(world, "DevBuildAnywhere"); break;
@@ -154,6 +132,18 @@ namespace OpenRA.Mods.Common.Commands
 
 					break;
 			}
+		}
+
+		void IssueGiveCashDevCommand(bool toAll, string arg)
+		{
+			var orderString = toAll ? "DevGiveCashAll" : "DevGiveCash";
+			var giveCashOrder = new Order(orderString, world.LocalPlayer.PlayerActor, false);
+
+			int cash;
+			int.TryParse(arg, out cash);
+			giveCashOrder.ExtraData = (uint)cash;
+
+			world.IssueOrder(giveCashOrder);
 		}
 
 		static void IssueDevCommand(World world, string command)
