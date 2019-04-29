@@ -275,8 +275,13 @@ namespace OpenRA.Server
 				// Assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
 				newConn.AuthToken = token;
-				SendData(newConn.Socket, BitConverter.GetBytes(ProtocolVersion.Version));
-				SendData(newConn.Socket, BitConverter.GetBytes(newConn.PlayerIndex));
+
+				// Send handshake and client index.
+				var ms = new MemoryStream(8);
+				ms.WriteArray(BitConverter.GetBytes(ProtocolVersion.Version));
+				ms.WriteArray(BitConverter.GetBytes(newConn.PlayerIndex));
+				SendData(newConn.Socket, ms.ToArray());
+
 				PreConns.Add(newConn);
 
 				// Dispatch a handshake order
@@ -533,10 +538,12 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				SendData(c.Socket, BitConverter.GetBytes(data.Length + 4));
-				SendData(c.Socket, BitConverter.GetBytes(client));
-				SendData(c.Socket, BitConverter.GetBytes(frame));
-				SendData(c.Socket, data);
+				var ms = new MemoryStream(data.Length + 12);
+				ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
+				ms.WriteArray(BitConverter.GetBytes(client));
+				ms.WriteArray(BitConverter.GetBytes(frame));
+				ms.WriteArray(data);
+				SendData(c.Socket, ms.ToArray());
 			}
 			catch (Exception e)
 			{
