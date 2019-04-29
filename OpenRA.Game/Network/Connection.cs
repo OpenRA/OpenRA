@@ -166,13 +166,19 @@ namespace OpenRA.Network
 			try
 			{
 				var networkStream = (NetworkStream)networkStreamObject;
-				var reader = new BinaryReader(networkStream);
-				var serverProtocol = reader.ReadInt32();
 
-				if (ProtocolVersion.Version != serverProtocol)
+				// We only support a single version at the moment so use it as min and max.
+				networkStream.WriteArray(new byte[] { ProtocolVersion.Version, ProtocolVersion.Version });
+
+				var reader = new BinaryReader(networkStream);
+				var min = reader.ReadByte();
+				var max = reader.ReadByte();
+
+				// We only support a single version at the moment but other implementations might support more.
+				if (min > ProtocolVersion.Version || max < ProtocolVersion.Version)
 					throw new InvalidOperationException(
-						"Protocol version mismatch. Server={0} Client={1}"
-							.F(serverProtocol, ProtocolVersion.Version));
+						"Protocol version mismatch. Server Min={0}, Server Max={1}, Client={2}"
+							.F(min, max, ProtocolVersion.Version));
 
 				clientId = reader.ReadInt32();
 				connectionState = ConnectionState.Connected;

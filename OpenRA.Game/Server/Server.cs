@@ -277,8 +277,10 @@ namespace OpenRA.Server
 				newConn.AuthToken = token;
 
 				// Send handshake and client index.
+				// We only support a single version at the moment so use it as min and max.
 				var ms = new MemoryStream(8);
-				ms.WriteArray(BitConverter.GetBytes(ProtocolVersion.Version));
+				ms.WriteByte(ProtocolVersion.Version);
+				ms.WriteByte(ProtocolVersion.Version);
 				ms.WriteArray(BitConverter.GetBytes(newConn.PlayerIndex));
 				SendData(newConn.Socket, ms.ToArray());
 

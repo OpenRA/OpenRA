@@ -21,8 +21,8 @@ namespace OpenRA.Server
 		public const int MaxOrderLength = 131072;
 		public Socket Socket;
 		public List<byte> Data = new List<byte>();
-		public ReceiveState State = ReceiveState.Header;
-		public int ExpectLength = 8;
+		public ReceiveState State = ReceiveState.Handshake;
+		public int ExpectLength = 2;
 		public int Frame = 0;
 		public int MostRecentFrame = 0;
 		public bool Validated;
@@ -90,33 +90,51 @@ namespace OpenRA.Server
 					var bytes = PopBytes(ExpectLength);
 					switch (State)
 					{
-						case ReceiveState.Header:
+						case ReceiveState.Handshake:
+							var min = bytes[0];
+							var max = bytes[1];
+
+							// We only support a single version at the moment but other implementations might support more.
+							if (min > ProtocolVersion.Version || max < ProtocolVersion.Version)
 							{
-								ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
-								Frame = BitConverter.ToInt32(bytes, 4);
-								State = ReceiveState.Data;
-
-								if (ExpectLength < 0 || ExpectLength > MaxOrderLength)
-								{
-									server.DropClient(this);
-									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
-									return;
-								}
-							} break;
-
-						case ReceiveState.Data:
+								Log.Write("server", "Dropping client {0} for unsupported version: Server={1}, Client Min={2}, Client Max={3}",
+										PlayerIndex, ProtocolVersion.Version, min, max);
+								server.DropClient(this);
+							}
+							else
 							{
-								if (MostRecentFrame < Frame)
-									MostRecentFrame = Frame;
-
-								server.DispatchOrders(this, Frame, bytes);
 								ExpectLength = 8;
 								State = ReceiveState.Header;
-							} break;
+							}
+
+							break;
+
+						case ReceiveState.Header:
+							ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
+							Frame = BitConverter.ToInt32(bytes, 4);
+							State = ReceiveState.Data;
+
+							if (ExpectLength < 0 || ExpectLength > MaxOrderLength)
+							{
+								server.DropClient(this);
+								Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
+								return;
+							}
+
+							break;
+
+						case ReceiveState.Data:
+							if (MostRecentFrame < Frame)
+								MostRecentFrame = Frame;
+
+							server.DispatchOrders(this, Frame, bytes);
+							ExpectLength = 8;
+							State = ReceiveState.Header;
+							break;
 					}
 				}
 		}
 	}
 
-	public enum ReceiveState { Header, Data }
+	public enum ReceiveState { Handshake, Header, Data }
 }
