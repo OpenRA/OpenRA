@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IOrderGenerator.Deactivate()
 		{
 			if (activated)
-				Game.HideCursor = false;
+				Game.RunAfterTick(() => Game.HideCursor = false);
 		}
 
 		// Starting at (0, -1) and rotating in CCW
