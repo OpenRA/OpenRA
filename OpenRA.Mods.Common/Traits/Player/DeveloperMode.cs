@@ -229,6 +229,15 @@ namespace OpenRA.Mods.Common.Traits
 					break;
 				}
 
+				case "DevPlayerExperience":
+				{
+					var playerExperience = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+					if (playerExperience != null)
+						playerExperience.GiveExperience((int)order.ExtraData);
+
+					break;
+				}
+
 				case "DevKill":
 				{
 					if (order.Target.Type != TargetType.Actor)

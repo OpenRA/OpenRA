@@ -53,7 +53,8 @@ namespace OpenRA.Mods.Common.Commands
 			register("all", "toggles all cheats and gives you some cash for your trouble.");
 			register("crash", "crashes the game.");
 			register("levelup", "adds a specified number of levels to the selected actors.");
-			register("poweroutage", "causes owners of selected actors to have a 5 second power outage.");
+			register("playerexperience", "adds a specified amount of player experience to the owner(s) of selected actors.");
+			register("poweroutage", "causes owner(s) of selected actors to have a 5 second power outage.");
 			register("kill", "kills selected actors.");
 			register("dispose", "disposes selected actors.");
 		}
@@ -103,6 +104,14 @@ namespace OpenRA.Mods.Common.Commands
 							world.IssueOrder(leveluporder);
 					}
 
+					break;
+
+				case "playerexperience":
+					var experience = 0;
+					int.TryParse(arg, out experience);
+
+					foreach (var player in world.Selection.Actors.Select(a => a.Owner.PlayerActor).Distinct())
+						world.IssueOrder(new Order("DevPlayerExperience", player, false) { ExtraData = (uint)experience });
 					break;
 
 				case "poweroutage":
