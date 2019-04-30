@@ -64,13 +64,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 			{
@@ -100,7 +93,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!aircraft.Info.VTOL && assignTargetOnFirstRun)
 					return NextActivity;
 
-				QueueChild(self, new AttackMoveActivity(self, () => move.MoveToTarget(self, target)), true);
+				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, target)));
 				moveToRallyPoint = false;
 				return this;
 			}

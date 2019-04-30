@@ -33,12 +33,13 @@ namespace OpenRA.Mods.Common.Activities
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			attackMove = self.TraitOrDefault<AttackMove>();
 			isAssaultMove = assaultMoving;
+			ChildHasPriority = false;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			// Start moving.
-			QueueChild(self, getInner());
+			QueueChild(getInner());
 
 			if (conditionManager == null || attackMove == null)
 				return;
@@ -64,21 +65,18 @@ namespace OpenRA.Mods.Common.Activities
 					foreach (var ab in attackBases)
 					{
 						var activity = ab.GetAttackActivity(self, target, true, false);
-						QueueChild(self, activity);
+						QueueChild(activity);
 						ab.OnQueueAttackActivity(self, activity, target, true, false);
 					}
 
 					// Make sure to continue moving when the attack activities have finished.
-					QueueChild(self, getInner());
+					QueueChild(getInner());
 				}
 			}
 
+			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
+				return this;
 
 			// The last queued childactivity is guaranteed to be the inner move, so if we get here it means
 			// we have reached our destination and there are no more enemies on our path.

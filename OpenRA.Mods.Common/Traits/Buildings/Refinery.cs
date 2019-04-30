@@ -164,9 +164,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!preventDock)
 			{
-				dockOrder.QueueChild(self, new CallFunc(() => dockedHarv = harv, false));
-				dockOrder.QueueChild(self, DockSequence(harv, self));
-				dockOrder.QueueChild(self, new CallFunc(() => dockedHarv = null, false));
+				dockOrder.QueueChild(new CallFunc(() => dockedHarv = harv, false));
+				dockOrder.QueueChild(DockSequence(harv, self));
+				dockOrder.QueueChild(new CallFunc(() => dockedHarv = null, false));
 			}
 		}
 

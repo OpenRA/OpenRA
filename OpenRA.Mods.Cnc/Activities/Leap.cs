@@ -72,18 +72,9 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (canceled)
-				return NextActivity;
-
 			// Correct the visual position after we jumped
-			if (jumpComplete)
-			{
-				if (ChildActivity == null)
-					return NextActivity;
-
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
-			}
+			if (canceled || jumpComplete)
+				return NextActivity;
 
 			if (target.Type != TargetType.Invalid)
 				targetPosition = target.CenterPosition;
@@ -106,9 +97,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				attack.DoAttack(self, target);
 
 				jumpComplete = true;
-				QueueChild(self, mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)), true);
-
-				return this;
+				QueueChild(mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));
 			}
 
 			return this;

@@ -74,13 +74,6 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			// Run this even if the target became invalid to avoid visual glitches
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
-			}
-
 			if (IsCanceling)
 				return NextActivity;
 
@@ -114,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (!allowMovement || lastVisibleMaxRange == WDist.Zero || lastVisibleMaxRange < lastVisibleMinRange)
 					return NextActivity;
 
-				QueueChild(self, mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red), true);
+				QueueChild(mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red));
 				return this;
 			}
 
@@ -144,11 +137,11 @@ namespace OpenRA.Mods.Cnc.Activities
 			var desiredFacing = (destination - origin).Yaw.Facing;
 			if (mobile.Facing != desiredFacing)
 			{
-				QueueChild(self, new Turn(self, desiredFacing), true);
+				QueueChild(new Turn(self, desiredFacing));
 				return this;
 			}
 
-			QueueChild(self, new Leap(self, target, mobile, targetMobile, info.Speed.Length, attack, edible), true);
+			QueueChild(new Leap(self, target, mobile, targetMobile, info.Speed.Length, attack, edible));
 
 			// Re-queue the child activities to kill the target if it didn't die in one go
 			return this;

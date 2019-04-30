@@ -146,17 +146,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			// Let the child be run so that units will not end up in an odd place.
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-
-				// Child activities such as Turn might have finished.
-				// If we "return this" in this situation, the unit loses one tick and pauses movement briefly.
-				if (ChildActivity != null)
-					return this;
-			}
-
 			// If the actor is inside a tunnel then we must let them move
 			// all the way through before moving to the next activity
 			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel)
@@ -188,7 +177,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				path.Add(nextCell.Value.First);
 
-				QueueChild(self, new Turn(self, firstFacing), true);
+				QueueChild(new Turn(self, firstFacing));
 				return this;
 			}
 
@@ -202,7 +191,7 @@ namespace OpenRA.Mods.Common.Activities
 			var to = Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) +
 				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
-			QueueChild(self, new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, 0), true);
+			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, 0));
 			return this;
 		}
 
@@ -335,7 +324,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (ret == this)
 					return ret;
 
-				Queue(self, ret);
+				Queue(ret);
 				return NextActivity;
 			}
 

@@ -68,13 +68,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			// Refuse to take off if it would land immediately again.
 			// Special case: Don't kill other deploy hotkey activities.
 			if (aircraft.ForceLanding)
@@ -113,15 +106,14 @@ namespace OpenRA.Mods.Common.Activities
 							var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
 							var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
-							QueueChild(self, new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green), true);
+							QueueChild(new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green));
 						}
 
 						return this;
 					}
 
-					QueueChild(self, new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green),
-							true);
-					QueueChild(self, new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport), true);
+					QueueChild(new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green));
+					QueueChild(new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
 					return this;
 				}
 
@@ -140,13 +132,13 @@ namespace OpenRA.Mods.Common.Activities
 					facing = 192;
 
 				aircraft.MakeReservation(dest);
-				QueueChild(self, new Land(self, Target.FromActor(dest), offset, facing), true);
-				QueueChild(self, new Resupply(self, dest, WDist.Zero), true);
+				QueueChild(new Land(self, Target.FromActor(dest), offset, facing));
+				QueueChild(new Resupply(self, dest, WDist.Zero));
 				if (aircraft.Info.TakeOffOnResupply && !alwaysLand)
-					QueueChild(self, new TakeOff(self));
+					QueueChild(new TakeOff(self));
 			}
 			else
-				QueueChild(self, new Fly(self, Target.FromActor(dest)), true);
+				QueueChild(new Fly(self, Target.FromActor(dest)));
 
 			resupplied = true;
 			return this;

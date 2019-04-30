@@ -222,7 +222,7 @@ namespace OpenRA
 			if (CurrentActivity == null)
 				CurrentActivity = nextActivity;
 			else
-				CurrentActivity.Queue(this, nextActivity);
+				CurrentActivity.Queue(nextActivity);
 		}
 
 		public void CancelActivity()

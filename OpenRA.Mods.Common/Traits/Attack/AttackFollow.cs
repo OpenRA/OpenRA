@@ -257,13 +257,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override Activity Tick(Actor self)
 			{
-				if (ChildActivity != null)
-				{
-					ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-					if (ChildActivity != null)
-						return this;
-				}
-
 				if (IsCanceling)
 				{
 					// Cancel the requested target, but keep firing on it while in range
@@ -362,7 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				wasMovingWithinRange = true;
-				QueueChild(self, move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red), true);
+				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
 				return this;
 			}
 

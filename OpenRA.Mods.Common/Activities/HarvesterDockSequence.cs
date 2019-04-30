@@ -47,13 +47,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			switch (dockingState)
 			{
 				case DockingState.Wait:
@@ -61,9 +54,9 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
-					QueueChild(self, new Turn(self, DockAngle), true);
+					QueueChild(new Turn(self, DockAngle));
 					if (IsDragRequired)
-						QueueChild(self, new Drag(self, StartDrag, EndDrag, DragLength));
+						QueueChild(new Drag(self, StartDrag, EndDrag, DragLength));
 					return this;
 
 				case DockingState.Dock:
@@ -90,7 +83,7 @@ namespace OpenRA.Mods.Common.Activities
 					Harv.LastLinkedProc = Harv.LinkedProc;
 					Harv.LinkProc(self, null);
 					if (IsDragRequired)
-						QueueChild(self, new Drag(self, EndDrag, StartDrag, DragLength), true);
+						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
 
 					dockingState = DockingState.Finished;
 					return this;

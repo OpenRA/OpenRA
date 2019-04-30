@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 					var notifyBlocking = new CallFunc(() => self.NotifyBlocker(cellInfo.Cell));
 					var waitFor = new WaitFor(() => CanEnterCell(cellInfo.Cell));
 					var move = new Move(self, cellInfo.Cell);
-					self.QueueActivity(ActivityUtils.SequenceActivities(self, notifyBlocking, waitFor, move));
+					self.QueueActivity(ActivityUtils.SequenceActivities(notifyBlocking, waitFor, move));
 
 					Log.Write("debug", "OnNudge (notify next blocking actor, wait and move) #{0} from {1} to {2}",
 						self.ActorID, self.Location, cellInfo.Cell);
@@ -691,7 +691,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var delta = toPos - fromPos;
 			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : Facing;
-			return ActivityUtils.SequenceActivities(self, new Turn(self, facing), new Drag(self, fromPos, toPos, length));
+			return ActivityUtils.SequenceActivities(new Turn(self, facing), new Drag(self, fromPos, toPos, length));
 		}
 
 		CPos? ClosestGroundCell()
