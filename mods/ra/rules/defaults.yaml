@@ -181,7 +181,7 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Defense
+		ValidTargets: Infantry, Vehicle, Water, Underwater, Defense, Mine
 		InvalidTargets: NoAutoTarget, WaterStructure
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
@@ -208,11 +208,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Defense
+		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Defense, Mine
 		InvalidTargets: NoAutoTarget, WaterStructure
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Water, Underwater, Air, Structure, Defense, Mine
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAllAssaultMove:
@@ -1154,7 +1154,7 @@
 	Tooltip:
 		Name: Mine
 	Targetable:
-		TargetTypes: Ground, Defense
+		TargetTypes: Ground, Mine
 	Immobile:
 		OccupiesSpace: true
 	HitShape:

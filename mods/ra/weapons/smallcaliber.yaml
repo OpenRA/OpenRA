@@ -266,7 +266,7 @@ M60mg:
 	Range: 2c512
 	Report: gun5.aud
 	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk, Mine
 	Projectile: Bullet
 		Speed: 1c682
 	Warhead@1Dam: SpreadDamage
