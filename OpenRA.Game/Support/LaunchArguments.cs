@@ -22,8 +22,11 @@ namespace OpenRA
 		[Desc("Automatically start playing the given replay file.")]
 		public string Replay;
 
-		[Desc("Dump performance data into cpu.csv and render.csv in the logs folder.")]
-		public bool Benchmark;
+		[Desc("Dump performance data into cpu.csv and render.csv in the logs folder with the given prefix.")]
+		public string Benchmark;
+
+		[Desc("Automatically start playing the given map.")]
+		public string Map;
 
 		public LaunchArguments(Arguments args)
 		{

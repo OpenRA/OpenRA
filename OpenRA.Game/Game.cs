@@ -51,13 +51,12 @@ namespace OpenRA
 		public static Sound Sound;
 		public static bool HasInputFocus = false;
 
-		public static bool BenchmarkMode = false;
-
 		public static string EngineVersion { get; private set; }
 		public static LocalPlayerProfile LocalPlayerProfile;
 
 		static Task discoverNat;
 		static bool takeScreenshot = false;
+		static Benchmark benchmark = null;
 
 		public static event Action OnShellmapLoaded = () => { };
 
@@ -166,6 +165,8 @@ namespace OpenRA
 				map = ModData.PrepareMap(mapUID);
 			using (new PerfTimer("NewWorld"))
 				OrderManager.World = new World(ModData, map, OrderManager, type);
+
+			OrderManager.World.GameOver += FinishBenchmark;
 
 			worldRenderer = new WorldRenderer(ModData, OrderManager.World);
 
@@ -593,9 +594,6 @@ namespace OpenRA
 
 						Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
-						if (BenchmarkMode)
-							Log.Write("cpu", "{0};{1}".F(LocalTick, PerfHistory.Items["tick_time"].LastValue));
-
 						if (isNetTick)
 							orderManager.Tick();
 
@@ -615,6 +613,9 @@ namespace OpenRA
 					if (orderManager.LocalFrameNumber > 0)
 						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () => world.TickRender(worldRenderer));
 				}
+
+				if (benchmark != null)
+					benchmark.Tick(LocalTick);
 			}
 		}
 
@@ -691,9 +692,6 @@ namespace OpenRA
 			PerfHistory.Items["batches"].Tick();
 			PerfHistory.Items["render_widgets"].Tick();
 			PerfHistory.Items["render_flip"].Tick();
-
-			if (BenchmarkMode)
-				Log.Write("render", "{0};{1}".F(RenderFrame, PerfHistory.Items["render"].LastValue));
 		}
 
 		static void Loop()
@@ -903,6 +901,38 @@ namespace OpenRA
 		public static bool SetClipboardText(string text)
 		{
 			return Renderer.Window.SetClipboardText(text);
+		}
+
+		public static void BenchmarkMode(string prefix)
+		{
+			benchmark = new Benchmark(prefix);
+		}
+
+		public static void LoadMap(string launchMap)
+		{
+			var orders = new List<Order>
+			{
+				Order.Command("option gamespeed {0}".F("default")),
+				Order.Command("state {0}".F(Session.ClientState.Ready))
+			};
+
+			var path = Platform.ResolvePath(launchMap);
+			var map = ModData.MapCache.SingleOrDefault(m => m.Uid == launchMap) ??
+				ModData.MapCache.SingleOrDefault(m => m.Package.Name == path);
+
+			if (map == null)
+				throw new InvalidOperationException("Could not find map '{0}'.".F(launchMap));
+
+			CreateAndStartLocalServer(map.Uid, orders);
+		}
+
+		public static void FinishBenchmark()
+		{
+			if (benchmark != null)
+			{
+				benchmark.Write();
+				Exit();
+			}
 		}
 	}
 }

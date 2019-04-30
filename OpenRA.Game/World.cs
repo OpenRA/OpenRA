@@ -565,6 +565,8 @@ namespace OpenRA
 			// Actor disposals are done in a FrameEndTask
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
+
+			Game.FinishBenchmark();
 		}
 	}
 
