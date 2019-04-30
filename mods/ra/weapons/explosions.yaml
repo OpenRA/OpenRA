@@ -157,6 +157,7 @@ ATMine:
 		Spread: 256
 		Damage: 40000
 		AffectsParent: true
+		InvalidTargets: Mine
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
