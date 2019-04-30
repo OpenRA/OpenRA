@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued && activity.NextActivity != null)
 					activity.NextActivity.Cancel(self);
 
-				activity.Queue(self, new IssueOrderAfterTransform("Move", order.Target));
+				activity.Queue(new IssueOrderAfterTransform("Move", order.Target));
 
 				if (currentTransform == null)
 					self.QueueActivity(order.Queued, activity);

@@ -102,13 +102,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 				Cancel(self);
@@ -125,7 +118,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
 				{
 					if (dat <= aircraft.LandAltitude)
-						QueueChild(self, new TakeOff(self, target), true);
+						QueueChild(new TakeOff(self, target));
 					else
 						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 
@@ -136,7 +129,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else if (dat <= aircraft.LandAltitude)
 			{
-				QueueChild(self, new TakeOff(self, target), true);
+				QueueChild(new TakeOff(self, target));
 				return this;
 			}
 

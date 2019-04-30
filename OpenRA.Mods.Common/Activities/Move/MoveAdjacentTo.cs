@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 			Mobile = self.Trait<Mobile>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
+			ChildHasPriority = false;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			QueueChild(self, Mobile.MoveTo(() => CalculatePathToTarget(self)));
+			QueueChild(Mobile.MoveTo(() => CalculatePathToTarget(self)));
 		}
 
 		public override Activity Tick(Actor self)
@@ -116,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target has moved, and MoveAdjacentTo is still valid.
 			if (!IsCanceling && shouldRepath)
-				QueueChild(self, Mobile.MoveTo(() => CalculatePathToTarget(self)));
+				QueueChild(Mobile.MoveTo(() => CalculatePathToTarget(self)));
 
 			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 			if (ChildActivity != null)

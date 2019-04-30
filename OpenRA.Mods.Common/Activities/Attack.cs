@@ -85,12 +85,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
-			}
-
 			if (IsCanceling)
 				return NextActivity;
 
@@ -135,7 +129,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Move towards the last known position
 				wasMovingWithinRange = true;
-				QueueChild(self, move.MoveWithinRange(target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red), true);
+				QueueChild(move.MoveWithinRange(target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red));
 				return this;
 			}
 
@@ -178,7 +172,7 @@ namespace OpenRA.Mods.Common.Activities
 				var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
 
 				attackStatus |= AttackStatus.NeedsToMove;
-				QueueChild(self, move.MoveWithinRange(target, sightRange, target.CenterPosition, Color.Red), true);
+				QueueChild(move.MoveWithinRange(target, sightRange, target.CenterPosition, Color.Red));
 				return AttackStatus.NeedsToMove;
 			}
 
@@ -203,7 +197,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				attackStatus |= AttackStatus.NeedsToMove;
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
-				QueueChild(self, move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red), true);
+				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
 				return AttackStatus.NeedsToMove;
 			}
 
@@ -211,7 +205,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var desiredFacing = (attack.GetTargetPosition(pos, target) - pos).Yaw.Facing;
 				attackStatus |= AttackStatus.NeedsToTurn;
-				QueueChild(self, new Turn(self, desiredFacing), true);
+				QueueChild(new Turn(self, desiredFacing));
 				return AttackStatus.NeedsToTurn;
 			}
 

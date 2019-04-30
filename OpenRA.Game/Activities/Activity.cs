@@ -41,11 +41,13 @@ namespace OpenRA.Activities
 		public Activity NextActivity { get; protected set; }
 
 		public bool IsInterruptible { get; protected set; }
+		public bool ChildHasPriority { get; protected set; }
 		public bool IsCanceling { get { return State == ActivityState.Canceling; } }
 
 		public Activity()
 		{
 			IsInterruptible = true;
+			ChildHasPriority = true;
 		}
 
 		public Activity TickOuter(Actor self)
@@ -59,7 +61,18 @@ namespace OpenRA.Activities
 				State = ActivityState.Active;
 			}
 
+			if (ChildHasPriority)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			var ret = Tick(self);
+
+			if (ChildActivity != null && ChildActivity.State == ActivityState.Queued)
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+
 			if (ret != this)
 			{
 				State = ActivityState.Done;
@@ -113,20 +126,20 @@ namespace OpenRA.Activities
 			State = ActivityState.Canceling;
 		}
 
-		public virtual void Queue(Actor self, Activity activity)
+		public void Queue(Activity activity)
 		{
 			if (NextActivity != null)
-				NextActivity.Queue(self, activity);
+				NextActivity.Queue(activity);
 			else
 				NextActivity = activity;
 		}
 
-		public virtual void QueueChild(Actor self, Activity activity, bool pretick = false)
+		public void QueueChild(Activity activity)
 		{
 			if (ChildActivity != null)
-				ChildActivity.Queue(self, activity);
+				ChildActivity.Queue(activity);
 			else
-				ChildActivity = pretick ? ActivityUtils.RunActivity(self, activity) : activity;
+				ChildActivity = activity;
 		}
 
 		/// <summary>
@@ -185,17 +198,6 @@ namespace OpenRA.Activities
 			if (NextActivity != null)
 				foreach (var a in NextActivity.ActivitiesImplementing<T>())
 					yield return a;
-		}
-	}
-
-	public static class ActivityExts
-	{
-		public static IEnumerable<Target> GetTargetQueue(this Actor self)
-		{
-			return self.CurrentActivity
-				.Iterate(u => u.NextActivity)
-				.TakeWhile(u => u != null)
-				.SelectMany(u => u.GetTargets(self));
 		}
 	}
 }

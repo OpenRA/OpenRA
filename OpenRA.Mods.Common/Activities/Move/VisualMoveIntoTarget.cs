@@ -37,13 +37,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			if (IsCanceling || target.Type == TargetType.Invalid)
 				return NextActivity;
 
@@ -64,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var turn = ActivityUtils.RunActivity(self, new Turn(self, facing));
 				if (turn != null)
-					QueueChild(self, turn);
+					QueueChild(turn);
 
 				return this;
 			}

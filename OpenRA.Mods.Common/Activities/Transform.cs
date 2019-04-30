@@ -37,22 +37,16 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			if (self.Info.HasTraitInfo<IFacingInfo>())
-				QueueChild(self, new Turn(self, Facing));
+				QueueChild(new Turn(self, Facing));
 
 			if (self.Info.HasTraitInfo<AircraftInfo>())
-				QueueChild(self, new Land(self));
+				QueueChild(new Land(self));
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceling)
 				return NextActivity;
-
-			if (ChildActivity != null)
-			{
-				ActivityUtils.RunActivity(self, ChildActivity);
-				return this;
-			}
 
 			// Prevent deployment in bogus locations
 			var transforms = self.TraitOrDefault<Transforms>();
@@ -72,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 				IsInterruptible = false;
 
 				// Wait forever
-				QueueChild(self, new WaitFor(() => false));
+				QueueChild(new WaitFor(() => false));
 				makeAnimation.Reverse(self, () => DoTransform(self));
 				return this;
 			}

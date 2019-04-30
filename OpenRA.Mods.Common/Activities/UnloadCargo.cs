@@ -77,27 +77,20 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft != null)
 			{
 				// Queue the activity even if already landed in case self.Location != destination
-				QueueChild(self, new Land(self, destination, unloadRange));
+				QueueChild(new Land(self, destination, unloadRange));
 				takeOffAfterUnload = !aircraft.AtLandAltitude;
 			}
 			else
 			{
 				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(destination.CenterPosition));
-				QueueChild(self, new Move(self, cell, unloadRange));
+				QueueChild(new Move(self, cell, unloadRange));
 			}
 
-			QueueChild(self, new Wait(cargo.Info.BeforeUnloadDelay));
+			QueueChild(new Wait(cargo.Info.BeforeUnloadDelay));
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			if (IsCanceling || cargo.IsEmpty(self))
 				return NextActivity;
 
@@ -113,7 +106,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (exitSubCell == null)
 				{
 					self.NotifyBlocker(BlockedExitCells(actor));
-					QueueChild(self, new Wait(10), true);
+					QueueChild(new Wait(10));
 					return this;
 				}
 
@@ -138,10 +131,10 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				Cancel(self, true);
 				if (cargo.Info.AfterUnloadDelay > 0)
-					QueueChild(self, new Wait(cargo.Info.AfterUnloadDelay, false), true);
+					QueueChild(new Wait(cargo.Info.AfterUnloadDelay, false));
 
 				if (takeOffAfterUnload)
-					QueueChild(self, new TakeOff(self), true);
+					QueueChild(new TakeOff(self));
 			}
 
 			return this;

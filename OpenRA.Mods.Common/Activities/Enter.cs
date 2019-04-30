@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			move = self.Trait<IMove>();
 			this.target = target;
 			this.targetLineColor = targetLineColor;
+			ChildHasPriority = false;
 		}
 
 		/// <summary>
@@ -80,12 +81,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// We need to wait for movement to finish before transitioning to
 			// the next state or next activity
+			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
 			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
+				return this;
 
 			// Note that lastState refers to what we have just *finished* doing
 			switch (lastState)
@@ -106,7 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						// Target lines are managed by this trait, so we do not pass targetLineColor
 						var initialTargetPosition = (useLastVisibleTarget ? lastVisibleTarget : target).CenterPosition;
-						QueueChild(self, move.MoveToTarget(self, target, initialTargetPosition), true);
+						QueueChild(move.MoveToTarget(self, target, initialTargetPosition));
 						return this;
 					}
 
@@ -119,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (TryStartEnter(self, target.Actor))
 					{
 						lastState = EnterState.Entering;
-						QueueChild(self, move.MoveIntoTarget(self, target), true);
+						QueueChild(move.MoveIntoTarget(self, target));
 						return this;
 					}
 
@@ -139,7 +137,7 @@ namespace OpenRA.Mods.Common.Activities
 						OnEnterComplete(self, target.Actor);
 
 					lastState = EnterState.Exiting;
-					QueueChild(self, move.MoveIntoWorld(self, self.Location), true);
+					QueueChild(move.MoveIntoWorld(self, self.Location));
 					return this;
 				}
 

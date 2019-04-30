@@ -73,13 +73,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			if (IsCanceling || target.Type == TargetType.Invalid)
 			{
 				if (landingInitiated)
@@ -94,7 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 						var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 						if (dat > aircraft.LandAltitude && dat < aircraft.Info.CruiseAltitude)
 						{
-							QueueChild(self, new TakeOff(self), true);
+							QueueChild(new TakeOff(self));
 							return this;
 						}
 
@@ -125,7 +118,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!newLocation.HasValue)
 				{
 					Cancel(self, true);
-					QueueChild(self, aircraft.MoveTo(landingCell, 0), true);
+					QueueChild(aircraft.MoveTo(landingCell, 0));
 					return this;
 				}
 
@@ -140,10 +133,10 @@ namespace OpenRA.Mods.Common.Activities
 			// Move towards landing location
 			if (aircraft.Info.VTOL && (pos - targetPosition).HorizontalLengthSquared != 0)
 			{
-				QueueChild(self, new Fly(self, Target.FromPos(targetPosition)), true);
+				QueueChild(new Fly(self, Target.FromPos(targetPosition)));
 
 				if (desiredFacing != -1)
-					QueueChild(self, new Turn(self, desiredFacing));
+					QueueChild(new Turn(self, desiredFacing));
 
 				return this;
 			}
@@ -199,11 +192,11 @@ namespace OpenRA.Mods.Common.Activities
 				turnRadius = Fly.CalculateTurnRadius(aircraft.Info.Speed, aircraft.Info.TurnSpeed);
 
 				// Move along approach trajectory.
-				QueueChild(self, new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)), true);
-				QueueChild(self, new Fly(self, Target.FromPos(w2)), true);
+				QueueChild(new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)));
+				QueueChild(new Fly(self, Target.FromPos(w2)));
 
 				// Fix a problem when the airplane is sent to land near the landing cell
-				QueueChild(self, new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)), true);
+				QueueChild(new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)));
 				finishedApproach = true;
 				return this;
 			}
@@ -216,9 +209,9 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					// Maintain holding pattern.
 					if (aircraft.Info.CanHover)
-						QueueChild(self, new Wait(25), true);
+						QueueChild(new Wait(25));
 					else
-						QueueChild(self, new FlyCircle(self, 25), true);
+						QueueChild(new FlyCircle(self, 25));
 
 					self.NotifyBlocker(blockingCells);
 					finishedApproach = false;

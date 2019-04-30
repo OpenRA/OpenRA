@@ -56,13 +56,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			if (cargo != carryall.Carryable)
 				return NextActivity;
 
@@ -86,7 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 			switch (state)
 			{
 				case PickupState.Intercept:
-					QueueChild(self, movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4), targetLineColor: Color.Yellow), true);
+					QueueChild(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4), targetLineColor: Color.Yellow));
 					state = PickupState.LockCarryable;
 					return this;
 
@@ -101,15 +94,15 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					// Land at the target location
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
-					QueueChild(self, new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing), true);
+					QueueChild(new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing));
 
 					// Pause briefly before attachment for visual effect
 					if (delay > 0)
-						QueueChild(self, new Wait(delay, false));
+						QueueChild(new Wait(delay, false));
 
 					// Remove our carryable from world
-					QueueChild(self, new CallFunc(() => Attach(self)));
-					QueueChild(self, new TakeOff(self));
+					QueueChild(new CallFunc(() => Attach(self)));
+					QueueChild(new TakeOff(self));
 					return this;
 				}
 			}

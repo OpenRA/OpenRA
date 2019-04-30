@@ -39,13 +39,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			if (IsCanceling || isDocking)
 				return NextActivity;
 
@@ -56,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 			// No refineries exist; check again after delay defined in Harvester.
 			if (harv.LinkedProc == null)
 			{
-				QueueChild(self, new Wait(harv.Info.SearchForDeliveryBuildingDelay), true);
+				QueueChild(new Wait(harv.Info.SearchForDeliveryBuildingDelay));
 				return this;
 			}
 
@@ -69,13 +62,13 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
 					n.MovingToRefinery(self, proc, new FindAndDeliverResources(self));
 
-				QueueChild(self, movement.MoveTo(proc.Location + iao.DeliveryOffset, 0), true);
+				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
 				return this;
 			}
 
 			if (!isDocking)
 			{
-				QueueChild(self, new Wait(10), true);
+				QueueChild(new Wait(10));
 				isDocking = true;
 				iao.OnDock(self, this);
 				return this;

@@ -49,13 +49,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (ChildActivity != null)
-			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
-			}
-
 			if (IsCanceling || harv.IsFull)
 				return NextActivity;
 
@@ -66,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToResources(self, targetCell, new FindAndDeliverResources(self));
 
 				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
-				QueueChild(self, move.MoveTo(targetCell, 2), true);
+				QueueChild(move.MoveTo(targetCell, 2));
 				return this;
 			}
 
@@ -80,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 				var desired = body.QuantizeFacing(current, harvInfo.HarvestFacings);
 				if (desired != current)
 				{
-					QueueChild(self, new Turn(self, desired), true);
+					QueueChild(new Turn(self, desired));
 					return this;
 				}
 			}
@@ -94,7 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
 				t.Harvested(self, resource);
 
-			QueueChild(self, new Wait(harvInfo.BaleLoadDelay), true);
+			QueueChild(new Wait(harvInfo.BaleLoadDelay));
 			return this;
 		}
 
