@@ -655,7 +655,6 @@ HQ:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: airstriketarget
 		DirectionArrowAnimation: airstrikedirection
 		SupportPowerPaletteOrder: 10
 	SupportPowerChargeBar:

@@ -430,12 +430,6 @@ smokland:
 		Tick: 120
 		ZOffset: 1023
 
-airstriketarget:
-	cursor: mouse2
-		Start: 88
-		Length: 8
-		Tick: 80
-
 airstrikedirection:
 	arrow-t: mouse2
 		Start: 1

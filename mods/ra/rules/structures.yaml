@@ -1487,7 +1487,6 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 		SupportPowerPaletteOrder: 60
 	ParatroopersPower@paratroopers:
@@ -1509,7 +1508,6 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 		SupportPowerPaletteOrder: 50
 	AirstrikePower@parabombs:
@@ -1532,7 +1530,6 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 		SupportPowerPaletteOrder: 40
 	ProductionBar:

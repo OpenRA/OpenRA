@@ -30,6 +30,7 @@ namespace OpenRA.Platforms.Default
 		Size windowSize;
 		Size surfaceSize;
 		float windowScale;
+		int2 mousePosition;
 
 		internal IntPtr Window
 		{
@@ -273,6 +274,22 @@ namespace OpenRA.Platforms.Default
 			{
 				SDL.SDL_ShowCursor((int)SDL.SDL_bool.SDL_TRUE);
 				SDL.SDL_SetCursor(c.Cursor);
+			}
+		}
+
+		public void SetRelativeMouseMode(bool mode)
+		{
+			if (mode)
+			{
+				int x, y;
+				SDL.SDL_GetMouseState(out x, out y);
+				mousePosition = new int2(x, y);
+				SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_TRUE);
+			}
+			else
+			{
+				SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_FALSE);
+				SDL.SDL_WarpMouseInWindow(window, mousePosition.X, mousePosition.Y);
 			}
 		}
 

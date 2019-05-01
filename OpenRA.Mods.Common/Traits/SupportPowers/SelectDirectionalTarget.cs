@@ -22,9 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string order;
 		readonly SupportPowerManager manager;
 		readonly string cursor;
-		readonly string targetPlaceholderCursorPalette;
 		readonly string directionArrowPalette;
-		readonly Animation targetCursor;
 
 		readonly string[] arrows = { "arrow-t", "arrow-tl", "arrow-l", "arrow-bl", "arrow-b", "arrow-br", "arrow-r", "arrow-tr" };
 		readonly Arrow[] directionArrows;
@@ -34,23 +32,16 @@ namespace OpenRA.Mods.Common.Traits
 		int2 dragLocation;
 		bool activated;
 		bool dragStarted;
-		bool hideMouse = true;
 		Arrow currentArrow;
 
-		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, string cursor, string targetPlaceholderCursorAnimation,
-			string directionArrowAnimation, string targetPlaceholderCursorPalette, string directionArrowPalette)
+		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, string cursor,
+			string directionArrowAnimation, string directionArrowPalette)
 		{
 			this.order = order;
 			this.manager = manager;
 			this.cursor = cursor;
-			this.targetPlaceholderCursorPalette = targetPlaceholderCursorPalette;
+
 			this.directionArrowPalette = directionArrowPalette;
-
-			targetCursor = new Animation(world, targetPlaceholderCursorAnimation);
-			targetCursor.PlayRepeating("cursor");
-
-			for (var i = 0; i < Game.Cursor.Frame; i++)
-				targetCursor.Tick();
 
 			directionArrows = LoadArrows(directionArrowAnimation, world, arrows.Length);
 		}
@@ -70,6 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 					targetCell = cell;
 					targetLocation = mi.Location;
 					activated = true;
+					Game.Cursor.Lock();
 				}
 
 				yield break;
@@ -101,8 +93,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IOrderGenerator.Tick(World world)
 		{
-			targetCursor.Tick();
-
 			// Cancel the OG if we can't use the power
 			if (!manager.Powers.ContainsKey(order))
 				world.CancelInputMode();
@@ -118,28 +108,16 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			if (!activated)
-				return Enumerable.Empty<IRenderable>();
+				yield break;
 
-			var targetPalette = wr.Palette(targetPlaceholderCursorPalette);
-
-			var location = activated ? targetLocation : Viewport.LastMousePos;
-			var worldPx = wr.Viewport.ViewToWorldPx(location);
+			var worldPx = wr.Viewport.ViewToWorldPx(targetLocation);
 			var worldPos = wr.ProjectedPosition(worldPx);
-			var renderables = new List<IRenderable>(targetCursor.Render(worldPos, WVec.Zero, -511, targetPalette, 1 / wr.Viewport.Zoom));
 
 			if (IsOutsideDragZone)
 			{
 				var directionPalette = wr.Palette(directionArrowPalette);
-				renderables.Add(new SpriteRenderable(currentArrow.Sprite, worldPos, WVec.Zero, -511, directionPalette, 1 / wr.Viewport.Zoom, true));
+				yield return new SpriteRenderable(currentArrow.Sprite, worldPos, WVec.Zero, -511, directionPalette, 1 / wr.Viewport.Zoom, true);
 			}
-
-			if (hideMouse)
-			{
-				hideMouse = false;
-				Game.RunAfterTick(() => Game.HideCursor = true);
-			}
-
-			return renderables;
 		}
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return cursor; }
@@ -149,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IOrderGenerator.Deactivate()
 		{
 			if (activated)
-				Game.HideCursor = false;
+				Game.Cursor.Unlock();
 		}
 
 		// Starting at (0, -1) and rotating in CCW
