@@ -1482,7 +1482,6 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 	ParatroopersPower@paratroopers:
 		OrderName: SovietParatroopers
@@ -1503,7 +1502,6 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 	AirstrikePower@parabombs:
 		OrderName: UkraineParabombs
@@ -1525,7 +1523,6 @@ AFLD:
 		ClockSequence: clock
 		CircleSequence: circles
 		UseDirectionalTarget: True
-		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
 	ProductionBar:
 		ProductionType: Aircraft

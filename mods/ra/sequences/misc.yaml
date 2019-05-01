@@ -623,12 +623,6 @@ ctflag:
 		Length: *
 		UseTilesetExtension: true
 
-paratarget:
-	cursor: mouse
-		Start: 82
-		Length: 8
-		Tick: 80
-
 paradirection:
 	arrow-t: mouse
 		Start: 1

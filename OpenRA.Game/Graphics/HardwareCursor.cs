@@ -20,12 +20,26 @@ namespace OpenRA.Graphics
 	{
 		readonly Dictionary<string, IHardwareCursor[]> hardwareCursors = new Dictionary<string, IHardwareCursor[]>();
 		readonly CursorProvider cursorProvider;
+		readonly Dictionary<string, Sprite[]> sprites = new Dictionary<string, Sprite[]>();
+		readonly SheetBuilder sheetBuilder;
+		readonly HardwarePalette hardwarePalette = new HardwarePalette();
+		readonly Cache<string, PaletteReference> paletteReferences;
+
 		CursorSequence cursor;
+		bool isLocked = false;
+		int2 lockedPosition;
 
 		public HardwareCursor(CursorProvider cursorProvider)
 		{
 			this.cursorProvider = cursorProvider;
 
+			paletteReferences = new Cache<string, PaletteReference>(CreatePaletteReference);
+			foreach (var p in cursorProvider.Palettes)
+				hardwarePalette.AddPalette(p.Key, p.Value, false);
+
+			hardwarePalette.Initialize();
+
+			sheetBuilder = new SheetBuilder(SheetType.Indexed);
 			foreach (var kv in cursorProvider.Cursors)
 			{
 				var palette = cursorProvider.Palettes[kv.Value.Palette];
@@ -34,9 +48,20 @@ namespace OpenRA.Graphics
 					.ToArray();
 
 				hardwareCursors.Add(kv.Key, hc);
+
+				var s = kv.Value.Frames.Select(a => sheetBuilder.Add(a)).ToArray();
+				sprites.Add(kv.Key, s);
 			}
 
+			sheetBuilder.Current.ReleaseBuffer();
+
 			Update();
+		}
+
+		PaletteReference CreatePaletteReference(string name)
+		{
+			var pal = hardwarePalette.GetPalette(name);
+			return new PaletteReference(name, hardwarePalette.GetPaletteIndex(name), pal, hardwarePalette);
 		}
 
 		IHardwareCursor CreateCursor(ISpriteFrame f, ImmutablePalette palette, string name, CursorSequence sequence)
@@ -96,6 +121,7 @@ namespace OpenRA.Graphics
 
 		int frame;
 		int ticks;
+
 		public void Tick()
 		{
 			if (cursor == null || cursor.Length == 1)
@@ -123,9 +149,35 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void Render(Renderer renderer) { }
+		public void Render(Renderer renderer)
+		{
+			if (cursor.Name == null || !isLocked)
+				return;
 
-		public int Frame { get { return frame; } }
+			var cursorSequence = cursorProvider.GetCursorSequence(cursor.Name);
+			var cursorSprite = sprites[cursor.Name][frame];
+
+			var cursorOffset = cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2();
+
+			renderer.SetPalette(hardwarePalette);
+			renderer.SpriteRenderer.DrawSprite(cursorSprite,
+				lockedPosition - cursorOffset,
+				paletteReferences[cursorSequence.Palette],
+				cursorSprite.Size);
+		}
+
+		public void Lock()
+		{
+			lockedPosition = Viewport.LastMousePos;
+			Game.Renderer.Window.SetRelativeMouseMode(true);
+			isLocked = true;
+		}
+
+		public void Unlock()
+		{
+			Game.Renderer.Window.SetRelativeMouseMode(false);
+			isLocked = false;
+		}
 
 		public void Dispose()
 		{
@@ -133,6 +185,7 @@ namespace OpenRA.Graphics
 				foreach (var cursor in cursors.Value)
 					cursor.Dispose();
 
+			sheetBuilder.Dispose();
 			hardwareCursors.Clear();
 		}
 	}

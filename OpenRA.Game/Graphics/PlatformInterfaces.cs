@@ -52,6 +52,7 @@ namespace OpenRA
 
 		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot);
 		void SetHardwareCursor(IHardwareCursor cursor);
+		void SetRelativeMouseMode(bool mode);
 	}
 
 	public interface IGraphicsContext : IDisposable

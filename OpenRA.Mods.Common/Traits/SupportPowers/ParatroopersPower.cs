@@ -53,12 +53,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enables the player directional targeting")]
 		public readonly bool UseDirectionalTarget = false;
 
-		[Desc("Placeholder cursor animation for the target cursor when using directional targeting.")]
-		public readonly string TargetPlaceholderCursorAnimation = null;
-
-		[Desc("Palette for placeholder cursor animation.")]
-		public readonly string TargetPlaceholderCursorPalette = "chrome";
-
 		[Desc("Animation used to render the direction arrows.")]
 		public readonly string DirectionArrowAnimation = null;
 
@@ -89,8 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 					Info.SelectTargetSpeechNotification, self.Owner.Faction.InternalName);
 
-				self.World.OrderGenerator = new SelectDirectionalTarget(self.World, order, manager, Info.Cursor,
-					info.TargetPlaceholderCursorAnimation, info.DirectionArrowAnimation, info.TargetPlaceholderCursorPalette, info.DirectionArrowPalette);
+				self.World.OrderGenerator = new SelectDirectionalTarget(self.World, order, manager, Info.Cursor, info.DirectionArrowAnimation, info.DirectionArrowPalette);
 			}
 			else
 				base.SelectTarget(self, order, manager);
