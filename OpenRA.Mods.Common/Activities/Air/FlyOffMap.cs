@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || !self.World.Map.Contains(self.Location))
 				return NextActivity;
 
-			Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+			Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 			return this;
 		}
 	}

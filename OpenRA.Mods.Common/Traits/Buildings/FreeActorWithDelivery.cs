@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			carrier.Trait<Carryall>().AttachCarryable(carrier, cargo);
 			carrier.QueueActivity(new DeliverUnit(carrier, location));
-			carrier.QueueActivity(new HeliFly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
+			carrier.QueueActivity(new Fly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
 			carrier.QueueActivity(new RemoveSelf());
 
 			self.World.AddFrameEndTask(w => self.World.Add(carrier));

@@ -47,7 +47,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// We can't possibly turn this fast
 			var desiredFacing = aircraft.Facing + 64;
-			Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, turnSpeedOverride);
+
+			// This override is necessary, otherwise CanHover aircraft would circle sideways
+			var move = aircraft.FlyStep(aircraft.Facing);
+
+			Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, turnSpeedOverride);
 
 			return this;
 		}
