@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod10a.lua
+		Scripts: campaign-global.lua, nod10a.lua
 	MissionData:
 		Briefing: GDI is developing an orbital weapon. Our spies have told us of a large lake near the location of the R&D center.\n\nFind the base, and use the sniper to eliminate their scientist.
 		BackgroundVideo: kanepre.vqa
@@ -30,6 +30,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 	-LegacyBridgeLayer:
 
 ^CivBuilding:

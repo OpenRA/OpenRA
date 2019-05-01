@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod06a.lua
+		Scripts: campaign-global.lua, nod06a.lua
 	MusicPlaylist:
 		StartingMusic: rout
 		VictoryMusic: nod_win1
@@ -18,6 +18,7 @@ World:
 			hard: Hard
 			tough: Real tough guy
 		Default: normal
+		Locked: false
 
 Player:
 	EnemyWatcher:

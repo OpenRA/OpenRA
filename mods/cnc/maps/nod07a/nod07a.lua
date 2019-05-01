@@ -6,29 +6,30 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-GDI1 = { teamType = "atk", units = { ['e2'] = 3 }, waypoints = { waypoint0, waypoint1, waypoint2, waypoint14 }, delay = 40 }
-GDI2 = { teamType = "atk", units = { ['mtnk'] = 2 }, waypoints = { waypoint0, waypoint1, waypoint2, waypoint3, waypoint4, waypoint9 }, delay = 30 }
-GDI3 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint0, waypoint4, waypoint5, waypoint6, waypoint7, waypoint8 }, delay = 40 }
-GDI4 = { teamType = "atk", units = { ['e1'] = 1, ['e2'] = 2 }, waypoints = { waypoint0, waypoint4, waypoint9 }, delay = 30 }
-GDI5 = { teamType = "atk", units = { ['mtnk'] = 1 }, waypoints = { waypoint0, waypoint4, waypoint10, waypoint11, waypoint12, waypoint13 }, delay = 80 }
-GDI6 = { teamType = "atk", units = { ['mtnk'] = 1 }, waypoints = { waypoint0, waypoint4, waypoint9 }, delay = 50 }
-GDI7 = { teamType = "atk", units = { ['jeep'] = 1 }, waypoints = { waypoint0, waypoint4, waypoint5, waypoint6, waypoint7, waypoint8 }, delay = 40 }
-GDI8 = { teamType = "rei", units = { ['e2'] = 3, ['e6'] = 2 }, waypoints = { waypoint12, waypoint11, waypoint10, waypoint4, waypoint5, waypoint8 },	delay = 8 }
-GDI9 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint8 }, delay = 80 }
-GDI10 = { teamType = "atk", units = { ['e2'] = 4 }, waypoints = { waypoint14 }, delay = 0 }
+
+GDI1 = { teamType = "atk", units = { "e2", "e2", "e2" }, waypoints = { waypoint0, waypoint1, waypoint2, waypoint14 }, delay = 40 }
+GDI2 = { teamType = "atk", units = { "mtnk", "mtnk" }, waypoints = { waypoint0, waypoint1, waypoint2, waypoint3, waypoint4, waypoint9 }, delay = 30 }
+GDI3 = { teamType = "atk", units = { "e2", "e2", "e2", "e2" }, waypoints = { waypoint0, waypoint4, waypoint5, waypoint6, waypoint7, waypoint8 }, delay = 40 }
+GDI4 = { teamType = "atk", units = { "e1", "e2", "e2" }, waypoints = { waypoint0, waypoint4, waypoint9 }, delay = 30 }
+GDI5 = { teamType = "atk", units = { "mtnk" }, waypoints = { waypoint0, waypoint4, waypoint10, waypoint11, waypoint12, waypoint13 }, delay = 80 }
+GDI6 = { teamType = "atk", units = { "mtnk" }, waypoints = { waypoint0, waypoint4, waypoint9 }, delay = 50 }
+GDI7 = { teamType = "atk", units = { "jeep" }, waypoints = { waypoint0, waypoint4, waypoint5, waypoint6, waypoint7, waypoint8 }, delay = 40 }
+GDI8 = { teamType = "rei", units = { "e2", "e2", "e2", "e6", "e6" }, waypoints = { waypoint12, waypoint11, waypoint10, waypoint4, waypoint5, waypoint8 }, delay = 8 }
+GDI9 = { teamType = "atk", units = { "e2", "e2", "e2", "e2" }, waypoints = { waypoint8 }, delay = 80 }
+GDI10 = { teamType = "atk", units = { "e2", "e2", "e2", "e2" }, waypoints = { waypoint14 }, delay = 0 }
 
 AirstrikeDelay = DateTime.Minutes(2) + DateTime.Seconds(20)
 
 AutoAttackWaves = { GDI3, GDI4, GDI5, GDI6, GDI7, GDI8, GDI9, GDI10 }
 IntroAttackWaves = { GDI1, GDI2 }
-WhitelistedStructures = { 'afld', 'hand', 'hq', 'nuke', 'silo', 'proc', 'sam' }
+WhitelistedStructures = { "afld", "hand", "hq", "nuke", "silo", "proc", "sam" }
 
-NodUnitsBikes = { 'bike', 'bike', 'bike' }
-NodUnitsEngineers = { 'e6', 'e6' }
-NodUnitsRockets = { 'e3', 'e3', 'e3', 'e3' }
-NodUnitsGunners = { 'e1', 'e1', 'e1', 'e1' }
-NodUnitsFlamers = { 'e4', 'e4', 'e4', 'e4' }
-ReinforcementsRockets = { 'e3', 'e3', 'e3', 'e3', 'e3' }
+NodUnitsBikes = { "bike", "bike", "bike" }
+NodUnitsEngineers = { "e6", "e6" }
+NodUnitsRockets = { "e3", "e3", "e3", "e3" }
+NodUnitsGunners = { "e1", "e1", "e1", "e1" }
+NodUnitsFlamers = { "e4", "e4", "e4", "e4" }
+ReinforcementsRockets = { "e3", "e3", "e3", "e3", "e3" }
 
 NodBase = { NodBuilding1, NodBuilding2, NodBuilding3, NodHarvester }
 
@@ -37,98 +38,42 @@ ReinforcementsTrigger = { CPos.New(35, 23), CPos.New(34, 23), CPos.New(35, 22), 
 
 CaptureStructures = function(actor)
 	for i = 1, #WhitelistedStructures do
-		structures = player.GetActorsByType(WhitelistedStructures[i])
-		if #structures > 0 then
-			if not actor.IsDead and not structures[1].IsDead then
-				actor.Capture(structures[1])
-				return
-			end
+		structures = Nod.GetActorsByType(WhitelistedStructures[i])
+		if #structures > 0 and not actor.IsDead and not structures[1].IsDead then
+			actor.Capture(structures[1])
+			return
 		end
 	end
 end
 
 CheckForSams = function()
-	local sams = player.GetActorsByType("sam")
+	local sams = Nod.GetActorsByType("sam")
 	return #sams >= 3
 end
 
-searches = 0
-getAirstrikeTarget = function()
-	local list = player.GetGroundAttackers()
-
-	if #list == 0 then
-		return
-	end
-
-	local target = list[DateTime.GameTime % #list + 1].CenterPosition
-
-	local sams = Map.ActorsInCircle(target, WDist.New(8 * 1024), function(actor)
-		return actor.Type == "sam" end)
-
-	if #sams == 0 then
-		searches = 0
-		return target
-	elseif searches < 6 then
-		searches = searches + 1
-		return getAirstrikeTarget()
-	else
-		searches = 0
-		return nil
-	end
-end
-
-GetCargo = function(team)
-	cargo = { }
-	for type, count in pairs(team.units) do
-		for i = 1, count, 1 do
-			cargo[#cargo + 1] = type
-		end
-	end
-	return cargo
-end
-
 InsertNodUnits = function()
-	Media.PlaySpeechNotification(player, "Reinforce")
-	Reinforcements.Reinforce(player, { 'ltnk'}, { ReinforcementsTopSpawn.Location, ReinforcementsTank1Rally.Location }, 1)
-	Reinforcements.Reinforce(player, NodUnitsEngineers, { ReinforcementsTopSpawn.Location, ReinforcementsEngineersRally.Location }, 10)
-	Reinforcements.Reinforce(player, NodUnitsRockets, { ReinforcementsTopSpawn.Location, ReinforcementsRocketsRally.Location }, 10)
+	Media.PlaySpeechNotification(Nod, "Reinforce")
+	Reinforcements.Reinforce(Nod, { "ltnk" }, { ReinforcementsTopSpawn.Location, ReinforcementsTank1Rally.Location }, 1)
+	Reinforcements.Reinforce(Nod, NodUnitsEngineers, { ReinforcementsTopSpawn.Location, ReinforcementsEngineersRally.Location }, 10)
+	Reinforcements.Reinforce(Nod, NodUnitsRockets, { ReinforcementsTopSpawn.Location, ReinforcementsRocketsRally.Location }, 10)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Reinforcements.Reinforce(player, NodUnitsGunners, { ReinforcementsBottomSpawn.Location, ReinforcementsGunnersRally.Location }, 10)
-		Reinforcements.Reinforce(player, NodUnitsFlamers, { ReinforcementsTopSpawn.Location, ReinforcementsFlamersRally.Location }, 10)
-		Reinforcements.Reinforce(player, { 'ltnk'}, { ReinforcementsBottomSpawn.Location, ReinforcementsTank2Rally.Location }, 10)
+		Reinforcements.Reinforce(Nod, NodUnitsGunners, { ReinforcementsBottomSpawn.Location, ReinforcementsGunnersRally.Location }, 10)
+		Reinforcements.Reinforce(Nod, NodUnitsFlamers, { ReinforcementsTopSpawn.Location, ReinforcementsFlamersRally.Location }, 10)
+		Reinforcements.Reinforce(Nod, { "ltnk" }, { ReinforcementsBottomSpawn.Location, ReinforcementsTank2Rally.Location }, 10)
 	end)
 end
 
 SendAttackWave = function(team)
-	for type, amount in pairs(team.units) do
-		count = 0
-		actors = enemy.GetActorsByType(type)
-		Utils.Do(actors, function(actor)
-			if actor.IsIdle and count < amount then
-				SetAttackWaypoints(actor, team.waypoints)
-				if actor.Type == "e6" then 
-					CaptureStructures(actor)
-				else
-					IdleHunt(actor)
-				end
-				count = count + 1
-			end
-		end)
-	end
-end
-
-SetAttackWaypoints = function(actor, waypoints)
-	if not actor.IsDead then
-		Utils.Do(waypoints, function(waypoint)
-			actor.AttackMove(waypoint.Location)
-		end)
-	end
+	Utils.Do(team.units, function(unitType)
+		local actors = Utils.Where(GDI.GetActorsByType(unitType), function(unit) return unit.IsIdle end)
+		MoveAndHunt(Utils.Take(1, actors), team.waypoints)
+	end)
 end
 
 SendGDIAirstrike = function(hq, delay)
-	if not hq.IsDead and hq.Owner == enemy then
-		local target = getAirstrikeTarget()
+	if not hq.IsDead and hq.Owner == GDI then
+		local target = GetAirstrikeTarget(Nod)
 
 		if target then
 			hq.SendAirstrike(target, false, Facing.NorthEast + 4)
@@ -147,22 +92,27 @@ SendWaves = function(counter, Waves)
 		elseif team.teamType == "rei" then
 			SendReinforcementsWave(team)
 		end
+
 		Trigger.AfterDelay(DateTime.Seconds(team.delay), function() SendWaves(counter + 1, Waves) end)
 	end
 end
 
 SendReinforcementsWave = function(team)
-	Reinforcements.ReinforceWithTransport(enemy, "apc", GetCargo(team), { ReinforcementsGDISpawn.Location, waypoint12.Location}, nil, function(transport, passengers)
-		SetReinforcementsWaypoints(transport, team.waypoints)
+	Reinforcements.ReinforceWithTransport(GDI, "apc", team.units, { ReinforcementsGDISpawn.Location, waypoint12.Location }, nil, function(transport, passengers)
+		Utils.Do(team.waypoints, function(waypoint)
+			transport.Move(waypoint.Location)
+		end)
+
 		transport.UnloadPassengers()
 		Trigger.OnPassengerExited(transport, function(_, passenger)
 			Utils.Do(passengers, function(actor)
-				if actor.Type == "e6" then 
+				if actor.Type == "e6" then
 					CaptureStructures(actor)
 				else
 					IdleHunt(actor)
 				end
 			end)
+
 			if not transport.HasPassengers then
 				IdleHunt(transport)
 			end
@@ -170,58 +120,42 @@ SendReinforcementsWave = function(team)
 	end)
 end
 
-SetReinforcementsWaypoints = function(actor, waypoints)
-	if not actor.IsDead then
-		Utils.Do(waypoints, function(waypoint)
-			actor.Move(waypoint.Location)
-		end)
-	end
-end
-
-StartWaves = function(Waves)
-	SendWaves(1, Waves)
-end
-
 Trigger.OnEnteredFootprint(AbandonedBaseTrigger, function(a, id)
-	if not abandonedBaseTrigger and a.Owner == player then
+	if not abandonedBaseTrigger and a.Owner == Nod then
 		abandonedBaseTrigger = true
+		Trigger.RemoveFootprintTrigger(id)
 
-		FlareCamera = Actor.Create("camera", true, { Owner = player, Location = waypoint25.Location })
-		Flare = Actor.Create("flare", true, { Owner = player, Location = waypoint25.Location })
+		FlareCamera = Actor.Create("camera", true, { Owner = Nod, Location = waypoint25.Location })
+		Flare = Actor.Create("flare", true, { Owner = Nod, Location = waypoint25.Location })
 
 		Utils.Do(NodBase, function(actor)
 			if not actor.IsDead then
-				actor.Owner = player
+				actor.Owner = Nod
 			end
 		end)
 
-		player.MarkCompletedObjective(NodObjective1)
+		Nod.MarkCompletedObjective(FindBase)
 
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			Media.PlaySpeechNotification(player, "NewOptions")
+			Media.PlaySpeechNotification(Nod, "NewOptions")
 		end)
 	end
 end)
 
 Trigger.OnEnteredFootprint(ReinforcementsTrigger, function(a, id)
-	if not reinforcementsTrigger and a.Owner == player and a.Type ~= 'harv' then
+	if not reinforcementsTrigger and a.Owner == Nod and a.Type ~= "harv" then
 		reinforcementsTrigger = true
+		Trigger.RemoveFootprintTrigger(id)
 
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
-			Media.PlaySpeechNotification(player, "Reinforce")
-			Reinforcements.ReinforceWithTransport(player, 'tran.in', ReinforcementsRockets, { ReinforcementsHelicopterSpawn.Location, waypoint24.Location }, { ReinforcementsHelicopterSpawn.Location }, nil, nil)
+			Media.PlaySpeechNotification(Nod, "Reinforce")
+			Reinforcements.ReinforceWithTransport(Nod, "tran.in", ReinforcementsRockets, { ReinforcementsHelicopterSpawn.Location, waypoint24.Location }, { ReinforcementsHelicopterSpawn.Location })
 		end)
 
-		StartWaves(IntroAttackWaves)
+		SendWaves(1, IntroAttackWaves)
 
 		Trigger.AfterDelay(AirstrikeDelay, function() SendGDIAirstrike(GDIHQ, AirstrikeDelay) end)
-
-		Trigger.AfterDelay(DateTime.Minutes(2), function() ProduceInfantry(GDIPyle) end)
-
-		Trigger.AfterDelay(DateTime.Minutes(3), function() ProduceVehicle(GDIWeap) end)
-
-		Trigger.AfterDelay(DateTime.Minutes(3), function()StartWaves(AutoAttackWaves) end)
-
+		Trigger.AfterDelay(DateTime.Minutes(3), function() SendWaves(1, AutoAttackWaves) end)
 		Trigger.AfterDelay(DateTime.Minutes(2), function()
 			Flare.Destroy()
 			FlareCamera.Destroy()
@@ -230,49 +164,31 @@ Trigger.OnEnteredFootprint(ReinforcementsTrigger, function(a, id)
 end)
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Nod")
-	enemy = Player.GetPlayer("GDI")
+	Nod = Player.GetPlayer("Nod")
+	GDI = Player.GetPlayer("GDI")
 	Camera.Position = waypoint26.CenterPosition
 
 	InsertNodUnits()
-	StartAI(GDICYard)
+	StartAI()
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Nod)
 
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	NodObjective1 = player.AddPrimaryObjective("Find the Nod base.")
-	NodObjective2 = player.AddPrimaryObjective("Eliminate all GDI forces in the area.")
-	NodObjective3 = player.AddSecondaryObjective("Build 3 SAMs to fend off the GDI bombers.")
-	GDIObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	FindBase = Nod.AddObjective("Find the Nod base.")
+	EliminateGDI = Nod.AddObjective("Eliminate all GDI forces in the area.")
+	BuildSAMs = Nod.AddObjective("Build 3 SAMs to fend off the GDI bombers.", "Secondary", false)
+	GDIObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
 end
 
 Tick = function()
-	if DateTime.GameTime > 2 and player.HasNoRequiredUnits() then
-		enemy.MarkCompletedObjective(GDIObjective)
+	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
+		GDI.MarkCompletedObjective(GDIObjective)
 	end
 
-	if DateTime.GameTime > 2 and enemy.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(NodObjective2)
+	if DateTime.GameTime > 2 and GDI.HasNoRequiredUnits() then
+		Nod.MarkCompletedObjective(EliminateGDI)
 	end
 
-	if not player.IsObjectiveCompleted(NodObjective3) and CheckForSams() then
-		player.MarkCompletedObjective(NodObjective3)
+	if not Nod.IsObjectiveCompleted(BuildSAMs) and CheckForSams() then
+		Nod.MarkCompletedObjective(BuildSAMs)
 	end
 end
