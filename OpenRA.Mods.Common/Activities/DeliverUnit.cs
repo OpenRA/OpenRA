@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Can't land, so wait at the target until something changes
 			if (target.Type == TargetType.Invalid)
 			{
-				QueueChild(self, new HeliFly(self, destination), true);
+				QueueChild(self, new Fly(self, destination), true);
 				QueueChild(self, new Wait(25));
 				return this;
 			}
@@ -98,12 +98,12 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					var dropFacing = (target.CenterPosition - self.CenterPosition).Yaw.Facing;
 					localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(dropFacing)));
-					QueueChild(self, new HeliFly(self, Target.FromPos(target.CenterPosition - body.LocalToWorld(localOffset))), true);
+					QueueChild(self, new Fly(self, Target.FromPos(target.CenterPosition - body.LocalToWorld(localOffset))), true);
 					QueueChild(self, new Turn(self, dropFacing));
 					return this;
 				}
 
-				QueueChild(self, new HeliFly(self, target), true);
+				QueueChild(self, new Fly(self, target), true);
 				return this;
 			}
 
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Release carried actor
 			QueueChild(self, new ReleaseUnit(self));
-			QueueChild(self, new HeliFly(self, Target.FromPos(self.CenterPosition)));
+			QueueChild(self, new Fly(self, Target.FromPos(self.CenterPosition)));
 			return this;
 		}
 

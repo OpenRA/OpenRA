@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 			var delta = attackAircraft.GetTargetPosition(pos, checkTarget) - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
-			if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+			if (Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, -1, aircraft.Info.VTOL))
 				return this;
 
 			// We don't know where the target actually is, so move to where we last saw it

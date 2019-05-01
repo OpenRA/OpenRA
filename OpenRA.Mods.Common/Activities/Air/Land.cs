@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 			// For VTOLs we assume we've already arrived at the target location and just need to move downward
 			if (aircraft.Info.VTOL)
 			{
-				if (HeliFly.AdjustAltitude(self, aircraft, landAltitude))
+				if (Fly.FlyToward(self, aircraft, aircraft.Facing, landAltitude, -1, MovementType.Vertical))
 					return this;
 
 				return NextActivity;
