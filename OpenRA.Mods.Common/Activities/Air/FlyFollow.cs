@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Activities
 			// otherwise if it is hidden or dead we give up
 			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
 			{
-				Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 				return useLastVisibleTarget ? NextActivity : this;
 			}
 

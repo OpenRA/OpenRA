@@ -133,12 +133,14 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
-			// Update facing
+			// Update facing and altitude
 			var delta = attackAircraft.GetTargetPosition(pos, checkTarget) - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
-			if (HeliFly.AdjustAltitude(self, aircraft, aircraft.Info.CruiseAltitude))
+			if (Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude))
 				return this;
+
+			var move = aircraft.FlyStep(desiredFacing);
 
 			// We don't know where the target actually is, so move to where we last saw it
 			if (useLastVisibleTarget)
@@ -151,16 +153,14 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				// Fly towards the last known position
-				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, move);
 				return this;
 			}
 
-			// Fly towards the target
+			// Fly towards the target if outside max range and backwards if within min range
 			if (!target.IsInRange(pos, attackAircraft.GetMaximumRangeVersusTarget(target)))
-				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
-
-			// Fly backwards from the target
-			if (target.IsInRange(pos, attackAircraft.GetMinimumRangeVersusTarget(target)))
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, move);
+			else if (target.IsInRange(pos, attackAircraft.GetMinimumRangeVersusTarget(target)))
 			{
 				// Facing 0 doesn't work with the following position change
 				var facing = 1;
@@ -168,7 +168,9 @@ namespace OpenRA.Mods.Common.Activities
 					facing = desiredFacing;
 				else if (aircraft.Facing != 0)
 					facing = aircraft.Facing;
-				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(-facing));
+
+				move = aircraft.FlyStep(-facing);
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, move);
 			}
 
 			return this;

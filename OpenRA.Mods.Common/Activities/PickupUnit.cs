@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
 					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0)
 					{
-						QueueChild(self, new HeliFly(self, Target.FromPos(targetPosition)), true);
+						QueueChild(self, new Fly(self, Target.FromPos(targetPosition)), true);
 						return this;
 					}
 

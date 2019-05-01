@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Activities
 							var randomPosition = WVec.FromPDF(self.World.SharedRandom, 2) * distanceLength / 1024;
 							var target = Target.FromPos(nearestResupplier.CenterPosition + randomPosition);
 
-							QueueChild(self, new HeliFly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green), true);
+							QueueChild(self, new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green), true);
 						}
 
 						return this;
@@ -206,9 +206,7 @@ namespace OpenRA.Mods.Common.Activities
 			var exit = dest.FirstExitOrDefault(null);
 			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
 
-			if (aircraft.Info.CanHover)
-				QueueChild(self, new HeliFly(self, Target.FromPos(dest.CenterPosition + offset)), true);
-			else if (aircraft.Info.VTOL)
+			if (aircraft.Info.VTOL || aircraft.Info.CanHover)
 				QueueChild(self, new Fly(self, Target.FromPos(dest.CenterPosition + offset)), true);
 			else
 			{
