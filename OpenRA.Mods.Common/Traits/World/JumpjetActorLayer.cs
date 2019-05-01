@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string TerrainType = "Jumpjet";
 
 		[Desc("Height offset relative to the smoothed terrain for movement.")]
-		public readonly WDist HeightOffset = new WDist(2304);
+		public readonly WDist HeightOffset = new WDist(3992);
 
 		[Desc("Cell radius for smoothing adjacent cell heights.")]
 		public readonly int SmoothingRadius = 2;
