@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: cnc64gdi01.lua
+		Scripts: campaign-global.lua, cnc64gdi01.lua
 	MusicPlaylist:
 		StartingMusic: aoi
 	MissionData:

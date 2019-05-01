@@ -727,13 +727,13 @@ Actors:
 		Location: 48,54
 		Owner: GDI
 		ScriptTags: GDIBuilding
-	GDIBuilding9: gtwr
+	GuardTower1: gtwr
 		Location: 36,51
 		Owner: GDI
-	GDIBuilding10: gtwr
+	GuardTower2: gtwr
 		Location: 36,57
 		Owner: GDI
-	GDIBuilding11: gtwr
+	GuardTower3: gtwr
 		Location: 55,48
 		Owner: GDI
 	GDIHpad: hpad.in

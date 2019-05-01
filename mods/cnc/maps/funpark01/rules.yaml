@@ -1,10 +1,10 @@
 World:
 	LuaScript:
-		Scripts: scj01ea.lua
+		Scripts: campaign-global.lua, scj01ea.lua
 	MusicPlaylist:
 		StartingMusic: j1
 	MissionData:
-		Briefing: There have been some reports of strange animals in this area. \n\nTake your units to investigate, and report back your findings.
+		Briefing: There have been some reports of strange animals in this area.\n\nTake your units to investigate, and report back your findings.
 		BriefingVideo: generic.vqa
 		StartVideo: dino.vqa
 	MapOptions:
@@ -17,6 +17,7 @@ World:
 			easy: Easy
 			normal: Normal
 		Default: easy
+		Locked: false
 
 Player:
 	EnemyWatcher:
