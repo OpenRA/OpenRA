@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi07.lua
+		Scripts: campaign-global.lua, gdi07.lua
 	MissionData:
 		Briefing: Previous mission objective not complete.\nAirfield was to be targeted. \n\nNew objective:  Build up a base and Destroy remaining Nod structures and units.\n\nReinforcements will be provided.
 		BriefingVideo: gdi7.vqa

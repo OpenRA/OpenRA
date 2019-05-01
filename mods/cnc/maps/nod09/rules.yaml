@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod09.lua, nod09-AI.lua
+		Scripts: campaign-global.lua, nod09.lua, nod09-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: nod_win1
@@ -35,6 +35,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 
 Player:
 	PlayerResources:

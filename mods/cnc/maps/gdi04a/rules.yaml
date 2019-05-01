@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi04a.lua
+		Scripts: campaign-global.lua, gdi04a.lua
 	MusicPlaylist:
 		StartingMusic: fist226m
 	MissionData:
