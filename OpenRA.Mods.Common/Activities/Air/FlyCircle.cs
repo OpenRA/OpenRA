@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// We can't possibly turn this fast
 			var desiredFacing = aircraft.Facing + 64;
-			Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, turnSpeedOverride);
+			Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, turnSpeedOverride);
 
 			return this;
 		}

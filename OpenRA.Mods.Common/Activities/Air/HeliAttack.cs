@@ -119,8 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Update facing
 			var delta = attackAircraft.GetTargetPosition(pos, checkTarget) - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
-			if (Fly.FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, -1, aircraft.Info.VTOL))
+			if (Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Turn | MovementType.Vertical))
 				return this;
 
 			// We don't know where the target actually is, so move to where we last saw it

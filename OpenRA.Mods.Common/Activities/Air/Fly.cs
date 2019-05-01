@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
 		bool soundPlayed;
+		bool isTakeOff;
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -51,31 +52,45 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 		}
 
-		public static bool FlyToward(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, int turnSpeedOverride = -1, bool isVTOL = false)
+		// Use this overload for normal movement vectors
+		public static bool FlyTick(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude,
+			int turnSpeedOverride = -1, MovementType types = MovementType.Horizontal | MovementType.Vertical | MovementType.Turn)
 		{
-			desiredAltitude = new WDist(aircraft.CenterPosition.Z) + desiredAltitude - self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			var move = aircraft.Info.CanHover ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
+			return FlyTick(self, aircraft, move, desiredFacing, desiredAltitude, turnSpeedOverride, types);
+		}
 
-			var move = aircraft.FlyStep(aircraft.Facing);
-			var altitude = aircraft.CenterPosition.Z;
+		static bool FlyTick(Actor self, Aircraft aircraft, WVec move, int desiredFacing, WDist desiredAltitude,
+			int turnSpeedOverride = -1, MovementType types = MovementType.Horizontal | MovementType.Vertical | MovementType.Turn)
+		{
+			var adjustedMove = types.HasFlag(MovementType.Horizontal) ? move : WVec.Zero;
+			var hasMoved = adjustedMove != WVec.Zero;
 
-			var turnSpeed = turnSpeedOverride > -1 ? turnSpeedOverride : aircraft.TurnSpeed;
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
-
-			if (altitude != desiredAltitude.Length)
+			if (types.HasFlag(MovementType.Turn) && aircraft.Facing != desiredFacing)
 			{
-				var maxDelta = aircraft.Info.VTOL ? aircraft.Info.AltitudeVelocity.Length : (move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024);
-				var dz = (desiredAltitude.Length - altitude).Clamp(-maxDelta, maxDelta);
-				if (isVTOL)
-					move = new WVec(0, 0, dz);
-				else
-					move += new WVec(0, 0, dz);
+				var turnSpeed = turnSpeedOverride > -1 ? turnSpeedOverride : aircraft.TurnSpeed;
+				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
+				hasMoved = true;
+			}
+
+			if (types.HasFlag(MovementType.Vertical))
+			{
+				var altitude = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+				if (altitude != desiredAltitude)
+				{
+					var maxDelta = aircraft.Info.VTOL ? aircraft.Info.AltitudeVelocity.Length : (move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024);
+
+					// If move contained an explicit Z value, use it instead of the desiredAltitude - altitude delta.
+					var deltaZ = move.Z != 0 ? adjustedMove.Z.Clamp(-maxDelta, maxDelta) : (desiredAltitude.Length - altitude.Length).Clamp(-maxDelta, maxDelta);
+					adjustedMove = new WVec(adjustedMove.X, adjustedMove.Y, deltaZ);
+					hasMoved = true;
+				}
 			}
 			else
-				if (isVTOL)
-					return false;
+				adjustedMove = new WVec(adjustedMove.X, adjustedMove.Y, 0);
 
-			aircraft.SetPosition(self, aircraft.CenterPosition + move);
-			return true;
+			aircraft.SetPosition(self, aircraft.CenterPosition + adjustedMove);
+			return hasMoved;
 		}
 
 		public override Activity Tick(Actor self)
@@ -113,58 +128,65 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				aircraft.RemoveInfluence();
+				isTakeOff = true;
 			}
-
-			// If we're a VTOL, rise before flying forward
-			if (aircraft.Info.VTOL)
-				if (FlyToward(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude, -1, true))
-					return this;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var delta = checkTarget.CenterPosition - self.CenterPosition;
-			var desiredFacing = !aircraft.Info.CanHover || delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
-			// Update facing if CanHover
-			if (aircraft.Info.CanHover)
-				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
+			// If we're a VTOL, rise before flying forward
+			if (isTakeOff && aircraft.Info.VTOL)
+			{
+				if (FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Vertical | MovementType.Turn))
+					return this;
+				else
+					isTakeOff = false;
+			}
+
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			var targetAltitude = aircraft.Info.CruiseAltitude;
+			var move = aircraft.Info.CanHover ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
 			// Inside the target annulus, so we're done
 			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, maxRange);
 			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, minRange);
 			if (insideMaxRange && !insideMinRange)
-				return NextActivity;
-
-			var move = aircraft.Info.CanHover ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
-
-			// Inside the minimum range, so reverse if CanHover
-			if (aircraft.Info.CanHover && insideMinRange)
 			{
-				aircraft.SetPosition(self, aircraft.CenterPosition - move);
+				if (aircraft.Info.CanHover && dat != targetAltitude)
+				{
+					FlyTick(self, aircraft, desiredFacing, targetAltitude, -1, MovementType.Vertical | MovementType.Turn);
+					return this;
+				}
+
+				return NextActivity;
+			}
+			else if (insideMinRange && aircraft.Info.CanHover)
+			{
+				// Inside the minimum range, so reverse if CanHover
+				FlyTick(self, aircraft, -move, aircraft.Facing, dat);
 				return this;
 			}
-
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length;
-			var targetAltitude = aircraft.CenterPosition.Z + aircraft.Info.CruiseAltitude.Length - dat;
 
 			// The next move would overshoot, so consider it close enough or set final position if CanHover
-			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
+			var horizontalDelta = delta.HorizontalLengthSquared;
+			if (horizontalDelta == 0 || horizontalDelta < move.HorizontalLengthSquared)
 			{
 				if (aircraft.Info.CanHover)
-					aircraft.SetPosition(self, checkTarget.CenterPosition + new WVec(0, 0, targetAltitude - checkTarget.CenterPosition.Z));
+				{
+					FlyTick(self, aircraft, delta, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Horizontal | MovementType.Turn);
+					dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+					if (dat != aircraft.Info.CruiseAltitude)
+						return this;
+				}
 
 				return NextActivity;
-			}
-
-			if (aircraft.Info.CanHover)
-			{
-				aircraft.SetPosition(self, aircraft.CenterPosition + move);
-				return this;
 			}
 
 			// Don't turn until we've reached the cruise altitude
-			if (aircraft.CenterPosition.Z < targetAltitude)
+			if (!aircraft.Info.CanHover && dat < targetAltitude)
 				desiredFacing = aircraft.Facing;
-			else
+			else if (!aircraft.Info.CanHover)
 			{
 				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
 				// If it contains the destination point, it's unreachable without more complex manuvering.
@@ -185,7 +207,7 @@ namespace OpenRA.Mods.Common.Activities
 					desiredFacing = aircraft.Facing;
 			}
 
-			FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+			FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 
 			return this;
 		}

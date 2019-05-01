@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 			// For VTOLs we assume we've already arrived at the target location and just need to move downward
 			if (aircraft.Info.VTOL)
 			{
-				if (Fly.FlyToward(self, aircraft, aircraft.Facing, landAltitude, -1, MovementType.Vertical))
+				if (Fly.FlyTick(self, aircraft, aircraft.Facing, landAltitude, -1, MovementType.Vertical))
 					return this;
 
 				return NextActivity;
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var landingAlt = self.World.Map.DistanceAboveTerrain(target.CenterPosition + offset) + aircraft.LandAltitude;
-			Fly.FlyToward(self, aircraft, d.Yaw.Facing, landingAlt);
+			Fly.FlyTick(self, aircraft, d.Yaw.Facing, landingAlt);
 
 			return this;
 		}
