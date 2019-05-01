@@ -876,7 +876,8 @@
 ^Helicopter:
 	Inherits: ^Aircraft
 	Aircraft:
-		CruiseAltitude: 2048
+		CruiseAltitude: 4c704
+		AltitudeVelocity: 96
 		CanHover: True
 		CruisingCondition: cruising
 		TakeOffOnResupply: true

@@ -51,6 +51,8 @@ DSHP:
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		IdealSeparation: 1275
+		CruiseAltitude: 12c512
+		AltitudeVelocity: 256
 	Health:
 		HP: 20000
 	Armor:
@@ -91,6 +93,7 @@ ORCA:
 		MoveIntoShroud: false
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
+		AltitudeVelocity: 128
 	Health:
 		HP: 20000
 	Armor:
@@ -137,7 +140,7 @@ ORCAB:
 	Selectable:
 		Bounds: 30,24
 	Aircraft:
-		CruiseAltitude: 3072
+		CruiseAltitude: 5c512
 		MaximumPitch: 120
 		TurnSpeed: 3
 		Speed: 96
@@ -238,7 +241,6 @@ TRNSPORT:
 		Crushes: crate, infantry
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
-		AltitudeVelocity: 64
 		MoveIntoShroud: false
 	Carryall:
 		Voice: Move
@@ -277,7 +279,7 @@ SCRIN:
 	Voiced:
 		VoiceSet: Scrin
 	Aircraft:
-		CruiseAltitude: 2560
+		CruiseAltitude: 5c0
 		MaximumPitch: 90
 		TurnSpeed: 3
 		Speed: 168
@@ -385,7 +387,7 @@ HUNTER:
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 355
-		CruiseAltitude: 256
+		CruiseAltitude: 3c128
 		CanHover: True
 		CruisingCondition: cruising
 		VTOL: true
