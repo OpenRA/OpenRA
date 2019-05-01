@@ -361,11 +361,11 @@ APACHE:
 		PipTypeEmpty: AmmoEmpty
 		AmmoCondition: ammo
 	WithIdleOverlay@ROTORAIR:
-		Offset: 85,0,384
+		Offset: 85,0,598
 		Sequence: rotor
 		RequiresCondition: airborne
 	WithIdleOverlay@ROTORGROUND:
-		Offset: 85,0,384
+		Offset: 85,0,598
 		Sequence: slow-rotor
 		RequiresCondition: !airborne
 	RenderSprites:
