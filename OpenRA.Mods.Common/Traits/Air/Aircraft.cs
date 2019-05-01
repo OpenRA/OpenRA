@@ -941,7 +941,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.CanHover)
 					self.QueueActivity(order.Queued, new Fly(self, target));
 				else
-					self.QueueActivity(order.Queued, new HeliFlyAndLandWhenIdle(self, target, Info));
+					self.QueueActivity(order.Queued, new HeliFly(self, target));
 			}
 			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
 			{
@@ -1007,7 +1007,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.CanHover)
 				self.QueueActivity(new Fly(self, target));
 			else
-				self.QueueActivity(new HeliFlyAndLandWhenIdle(self, target, Info));
+				self.QueueActivity(new HeliFly(self, target));
 
 			UnReserve();
 		}
