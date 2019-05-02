@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Text = other.Text;
 			Align = other.Align;
+			VAlign = other.VAlign;
 			Font = other.Font;
 			TextColor = other.TextColor;
 			Contrast = other.Contrast;
@@ -74,9 +75,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var textSize = font.Measure(text);
 			var position = RenderOrigin;
+			var offset = font.TopOffset;
+
+			if (VAlign == TextVAlign.Top)
+				position += new int2(0, -offset);
 
 			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
+				position += new int2(0, (Bounds.Height - textSize.Y - offset) / 2);
 
 			if (VAlign == TextVAlign.Bottom)
 				position += new int2(0, Bounds.Height - textSize.Y);
