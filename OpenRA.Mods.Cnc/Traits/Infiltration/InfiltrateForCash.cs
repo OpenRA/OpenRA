@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Funds are transferred from the owner to the infiltrator.")]
 	class InfiltrateForCashInfo : ITraitInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		[Desc("Percentage of the victim's resources that will be stolen.")]
 		public readonly int Percentage = 100;

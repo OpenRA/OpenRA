@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Reveals a decoration sprite to the indicated players when infiltrated.")]
 	class InfiltrateForDecorationInfo : WithDecorationInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		public override object Create(ActorInitializer init) { return new InfiltrateForDecoration(init.Self, this); }
 	}
