@@ -9,7 +9,12 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
+  <ItemGroup>
+    <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
+    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)"/>
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
