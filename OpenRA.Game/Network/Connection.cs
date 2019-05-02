@@ -169,7 +169,7 @@ namespace OpenRA.Network
 				var reader = new BinaryReader(networkStream);
 				var serverProtocol = reader.ReadInt32();
 
-				if (ProtocolVersion.Version != serverProtocol)
+				if (serverProtocol != ProtocolVersion.Version)
 					throw new InvalidOperationException(
 						"Protocol version mismatch. Server={0} Client={1}"
 							.F(serverProtocol, ProtocolVersion.Version));

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 	{
 		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
+			return ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
 		}
 
 		protected Actor FindClosestEnemy(Squad owner)

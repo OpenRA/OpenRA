@@ -82,7 +82,7 @@ namespace OpenRA
 		{
 			if (isClick)
 			{
-				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
+				var adjNewSelection = newSelection.Take(1); // TODO: select BEST, not FIRST
 				if (isCombine)
 					actors.SymmetricExceptWith(adjNewSelection);
 				else
@@ -163,7 +163,7 @@ namespace OpenRA
 				if (!mods.HasModifier(Modifiers.Shift))
 					controlGroups[group].Clear();
 
-				for (var i = 0; i < 10; i++)	/* all control groups */
+				for (var i = 0; i < 10; i++) // all control groups
 					controlGroups[i].RemoveAll(a => actors.Contains(a));
 
 				controlGroups[group].AddRange(actors.Where(a => a.Owner == world.LocalPlayer));

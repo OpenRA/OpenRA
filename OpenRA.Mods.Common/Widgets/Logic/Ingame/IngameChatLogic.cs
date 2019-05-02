@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!isObserver && orderManager.LocalClient == null && world.LocalPlayer == null)
 							return true;
 
-						var teamNumber = (uint)0;
+						var teamNumber = 0U;
 						if (team)
 							teamNumber = (isObserver || world.LocalPlayer.WinState != WinState.Undefined) ? uint.MaxValue : (uint)orderManager.LocalClient.Team;
 

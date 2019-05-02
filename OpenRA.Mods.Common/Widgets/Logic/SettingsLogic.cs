@@ -70,11 +70,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				current.Save();
 
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
-				if (OriginalSoundDevice != current.Sound.Device ||
-					OriginalGraphicsMode != current.Graphics.Mode ||
-					OriginalGraphicsWindowedSize != current.Graphics.WindowedSize ||
-					OriginalGraphicsFullscreenSize != current.Graphics.FullscreenSize ||
-					OriginalServerDiscoverNatDevices != current.Server.DiscoverNatDevices)
+				if (current.Sound.Device != OriginalSoundDevice ||
+				    current.Graphics.Mode != OriginalGraphicsMode ||
+				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
+					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
+					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
 				{
 					Action restart = () =>
 					{

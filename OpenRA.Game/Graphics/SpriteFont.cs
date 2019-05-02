@@ -83,7 +83,7 @@ namespace OpenRA.Graphics
 						new float2(
 							(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
 							p.Y + g.Offset.Y / deviceScale),
-							g.Sprite.Size / deviceScale);
+						g.Sprite.Size / deviceScale);
 
 				p += new float2(g.Advance / deviceScale, 0);
 			}

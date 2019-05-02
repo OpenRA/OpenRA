@@ -102,7 +102,9 @@ namespace OpenRA.Server
 									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
 									return;
 								}
-							} break;
+
+								break;
+							}
 
 						case ReceiveState.Data:
 							{
@@ -112,7 +114,9 @@ namespace OpenRA.Server
 								server.DispatchOrders(this, Frame, bytes);
 								ExpectLength = 8;
 								State = ReceiveState.Header;
-							} break;
+
+								break;
+							}
 					}
 				}
 		}

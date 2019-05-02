@@ -441,7 +441,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 
 		// NOTE: It might be desirable to make lookahead more intelligent by outputting more information
-		//		 than just the highest point in the lookahead distance
+		// than just the highest point in the lookahead distance
 		void InclineLookahead(World world, int distCheck, out int predClfHgt, out int predClfDist, out int lastHtChg, out int lastHt)
 		{
 			predClfHgt = 0; // Highest probed terrain height
