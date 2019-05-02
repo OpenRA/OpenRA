@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class InfiltrateForPowerOutageInfo : ITraitInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		public readonly int Duration = 25 * 20;
 

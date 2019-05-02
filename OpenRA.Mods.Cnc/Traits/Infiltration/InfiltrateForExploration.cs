@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Steal and reset the owner's exploration.")]
 	class InfiltrateForExplorationInfo : ITraitInfo
 	{
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		public object Create(ActorInitializer init) { return new InfiltrateForExploration(init.Self, this); }
 	}

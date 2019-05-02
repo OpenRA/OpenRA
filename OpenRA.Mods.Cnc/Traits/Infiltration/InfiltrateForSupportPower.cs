@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[ActorReference, FieldLoader.Require] public readonly string Proxy = null;
 
-		public readonly BitSet<TargetableType> Types;
+		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
