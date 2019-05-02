@@ -118,7 +118,7 @@ namespace OpenRA.Network
 			public string IpAddress;
 			public ClientState State = ClientState.Invalid;
 			public int Team;
-			public string Slot;	// Slot ID, or null for observer
+			public string Slot; // Slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
 			public int BotControllerClientIndex; // who added the bot to the slot
 			public bool IsAdmin;
@@ -160,8 +160,8 @@ namespace OpenRA.Network
 
 		public class Slot
 		{
-			public string PlayerReference;	// PlayerReference to bind against.
-			public bool Closed;	// Host has explicitly closed this slot.
+			public string PlayerReference; // PlayerReference to bind against.
+			public bool Closed; // Host has explicitly closed this slot.
 
 			public bool AllowBots;
 			public bool LockFaction;

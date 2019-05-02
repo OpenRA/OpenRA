@@ -128,7 +128,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
-					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi)) },
+					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
+				},
 				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
 				{ "showUnoccupiedSpawnpoints", true },
 			});
@@ -402,7 +403,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Always scroll to bottom when we've typed something
 				lobbyChatPanel.ScrollToBottom();
 
-				var teamNumber = (uint)0;
+				var teamNumber = 0U;
 				if (teamChat && orderManager.LocalClient != null)
 					teamNumber = orderManager.LocalClient.IsObserver ? uint.MaxValue : (uint)orderManager.LocalClient.Team;
 

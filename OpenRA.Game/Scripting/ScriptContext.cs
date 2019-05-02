@@ -123,17 +123,17 @@ namespace OpenRA.Scripting
 
 	public sealed class ScriptContext : IDisposable
 	{
-		public World World { get; private set; }
-		public WorldRenderer WorldRenderer { get; private set; }
-
-		readonly MemoryConstrainedLuaRuntime runtime;
-		readonly LuaFunction tick;
-
 		// Restrict user scripts (excluding system libraries) to 50 MB of memory use
 		const int MaxUserScriptMemory = 50 * 1024 * 1024;
 
 		// Restrict the number of instructions that will be run per map function call
 		const int MaxUserScriptInstructions = 1000000;
+
+		public World World { get; private set; }
+		public WorldRenderer WorldRenderer { get; private set; }
+
+		readonly MemoryConstrainedLuaRuntime runtime;
+		readonly LuaFunction tick;
 
 		readonly Type[] knownActorCommands;
 		public readonly Cache<ActorInfo, Type[]> ActorCommands;

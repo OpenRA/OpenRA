@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
- 		public readonly HashSet<string> Types = new HashSet<string>() { };
+		public readonly HashSet<string> Types = new HashSet<string>() { };
 
 		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
 	}

@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 						var c = (int*)cc;
 						for (var v = 0; v < 256; v++)
 							for (var s = 0; s < 256; s++)
-								*(c + (v * 256) + s) = Color.FromAhsv(hue, s / 255f, (255 - v) / 255f).ToArgb();
+								(*(c + (v * 256) + s)) = Color.FromAhsv(hue, s / 255f, (255 - v) / 255f).ToArgb();
 					}
 				}
 

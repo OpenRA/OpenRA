@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -18,8 +19,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	using System.Globalization;
-
 	class SyncReport
 	{
 		const int NumSyncReports = 5;

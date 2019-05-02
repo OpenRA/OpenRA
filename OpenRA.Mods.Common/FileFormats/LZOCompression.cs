@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.FileFormats
 					{
 						*op++ = *ip++;
 						if (t > 2)
-							*op++ = *ip++;
+							(*op++) = *ip++;
 					}
 
 					t = *ip++;

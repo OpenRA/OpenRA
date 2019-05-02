@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		// Checks the number of anti air enemies around units
 		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.Units.Count);
+			return ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.Units.Count);
 		}
 	}
 

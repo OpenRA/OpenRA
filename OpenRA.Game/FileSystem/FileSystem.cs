@@ -328,7 +328,7 @@ namespace OpenRA.FileSystem
 					if (!(mod.Package is Folder))
 						return null;
 
-					 path = Path.Combine(mod.Package.Name, filename);
+					path = Path.Combine(mod.Package.Name, filename);
 				}
 				else
 					path = Path.Combine(parentPath, filename);
