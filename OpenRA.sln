@@ -176,8 +176,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", 
 		mods\ts\maps\fields-of-green\fields-of-green.lua = mods\ts\maps\fields-of-green\fields-of-green.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.StyleCheck", "OpenRA.StyleCheck\OpenRA.StyleCheck.csproj", "{5FEAB6DC-4E81-4B63-958B-22FC3534C606}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.PostProcess", "OpenRA.PostProcess\OpenRA.PostProcess.csproj", "{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}"
 EndProject
 Global
@@ -218,10 +216,6 @@ Global
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.Build.0 = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.ActiveCfg = Release|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.Build.0 = Release|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.ActiveCfg = Debug|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Debug|x86.Build.0 = Debug|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.ActiveCfg = Release|x86
-		{5FEAB6DC-4E81-4B63-958B-22FC3534C606}.Release|x86.Build.0 = Release|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Debug|x86.ActiveCfg = Debug|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Debug|x86.Build.0 = Debug|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Release|x86.ActiveCfg = Release|x86

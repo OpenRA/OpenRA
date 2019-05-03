@@ -11,22 +11,6 @@ if (!(Test-Path "nuget.exe"))
 	(New-Object System.Net.WebClient).DownloadFile("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", $target)
 }
 
-if (!(Test-Path "StyleCopPlus.dll"))
-{
-	echo "Fetching StyleCopPlus from NuGet."
-	./nuget.exe install StyleCopPlus.MSBuild -Version 4.7.49.5 -ExcludeVersion -Verbosity quiet -Source nuget.org
-	cp StyleCopPlus.MSBuild/tools/StyleCopPlus.dll .
-	rmdir StyleCopPlus.MSBuild -Recurse
-}
-
-if (!(Test-Path "StyleCop.dll"))
-{
-	echo "Fetching StyleCop files from NuGet."
-	./nuget.exe install StyleCop.MSBuild -Version 4.7.49.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
-	cp StyleCop.MSBuild/tools/StyleCop*.dll .
-	rmdir StyleCop.MSBuild -Recurse
-}
-
 if (!(Test-Path "ICSharpCode.SharpZipLib.dll"))
 {
 	echo "Fetching ICSharpCode.SharpZipLib from NuGet."

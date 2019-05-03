@@ -96,37 +96,17 @@ check-scripts:
 	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
 	@luac -p $(shell find lua/* -iname '*.lua')
 
-check: core
+check: dependencies
+	@echo
+	@echo "Compiling in debug mode..."
+	@$(MSBUILD) -t:build -p:Configuration=Debug
 	@echo
 	@echo "Checking runtime assemblies..."
 	@mono --debug OpenRA.Utility.exe all --check-runtime-assemblies $(WHITELISTED_OPENRA_ASSEMBLIES) $(WHITELISTED_THIRDPARTY_ASSEMBLIES) $(WHITELISTED_CORE_ASSEMBLIES)
 	@echo
 	@echo "Checking for explicit interface violations..."
 	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
-	@echo
-	@echo "Checking for code style violations in OpenRA.Game..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Game
-	@echo
-	@echo "Checking for code style violations in OpenRA.Platforms.Default..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Platforms.Default
-	@echo
-	@echo "Checking for code style violations in OpenRA.Mods.Common..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.Common
-	@echo
-	@echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
-	@echo
-	@echo "Checking for code style violations in OpenRA.Mods.D2k..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Mods.D2k
-	@echo
-	@echo "Checking for code style violations in OpenRA.Utility..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Utility
-	@echo
-	@echo "Checking for code style violations in OpenRA.Test..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Test
-	@echo
-	@echo "Checking for code style violations in OpenRA.Server..."
-	@mono --debug OpenRA.StyleCheck.exe OpenRA.Server
+
 
 NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
 	which nunit3-console 2>/dev/null || which nunit2-console 2>/dev/null || which nunit-console 2>/dev/null)
