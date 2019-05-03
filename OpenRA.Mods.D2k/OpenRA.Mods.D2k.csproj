@@ -11,6 +11,7 @@
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
@@ -33,5 +34,13 @@
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
       <Private>False</Private>
     </ProjectReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
+    <AdditionalFiles Include="../stylecop.json" />
   </ItemGroup>
+  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
+    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
+    <ItemGroup Condition="'$(Configuration)'=='Release'">
+      <Analyzer Remove="@(Analyzer)"/>
+    </ItemGroup>
+  </Target>
 </Project>

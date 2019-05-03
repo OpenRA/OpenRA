@@ -1,0 +1,10 @@
+{
+  "settings": {
+    "indentation": {
+      "useTabs": true
+    },
+    "layoutRules": {
+      "newlineAtEndOfFile": "require"
+    }
+  }
+}

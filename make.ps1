@@ -136,32 +136,17 @@ function Test-Command
 
 function Check-Command
 {
+	echo "Compiling in debug configuration..."
+	dotnet build /p:Configuration=Debug /nologo
+	if ($lastexitcode -ne 0)
+	{
+		echo "Build failed."
+	}
+
 	if (CheckForUtility -eq 0)
 	{
 		echo "Checking for explicit interface violations..."
 		./OpenRA.Utility.exe all --check-explicit-interfaces
-	}
-
-	if (Test-Path OpenRA.StyleCheck.exe)
-	{
-		echo "Checking for code style violations in OpenRA.Platforms.Default..."
-		./OpenRA.StyleCheck.exe OpenRA.Platforms.Default
-		echo "Checking for code style violations in OpenRA.Game..."
-		./OpenRA.StyleCheck.exe OpenRA.Game
-		echo "Checking for code style violations in OpenRA.Mods.Common..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.Common
-		echo "Checking for code style violations in OpenRA.Mods.Cnc..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.Cnc
-		echo "Checking for code style violations in OpenRA.Mods.D2k..."
-		./OpenRA.StyleCheck.exe OpenRA.Mods.D2k
-		echo "Checking for code style violations in OpenRA.Utility..."
-		./OpenRA.StyleCheck.exe OpenRA.Utility
-		echo "Checking for code style violations in OpenRA.Test..."
-		./OpenRA.StyleCheck.exe OpenRA.Test
-	}
-	else
-	{
-		echo "OpenRA.StyleCheck.exe could not be found. Build the project first using the `"all`" command."
 	}
 }
 

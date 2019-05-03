@@ -13,20 +13,6 @@ download_dir="${0%/*}/download"
 mkdir -p "${download_dir}"
 cd "${download_dir}" || exit 1
 
-if [ ! -f StyleCopPlus.dll ]; then
-	echo "Fetching StyleCopPlus from NuGet"
-	../noget.sh StyleCopPlus.MSBuild 4.7.49.5
-	cp ./StyleCopPlus.MSBuild/tools/StyleCopPlus.dll .
-	rm -rf StyleCopPlus.MSBuild
-fi
-
-if [ ! -f StyleCop.dll ]; then
-	echo "Fetching StyleCop files from NuGet"
-	../noget.sh StyleCop.MSBuild 4.7.49.0
-	cp ./StyleCop.MSBuild/tools/StyleCop*.dll .
-	rm -rf StyleCop.MSBuild
-fi
-
 if [ ! -f ICSharpCode.SharpZipLib.dll ]; then
 	echo "Fetching ICSharpCode.SharpZipLib from NuGet"
 	../noget.sh SharpZipLib 1.1.0
