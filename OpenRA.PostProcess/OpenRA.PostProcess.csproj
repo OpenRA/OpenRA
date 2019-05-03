@@ -13,17 +13,10 @@
     <Platforms>x86</Platforms>
     <PlatformTarget>x86</PlatformTarget>
     <ExternalConsole>false</ExternalConsole>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="StyleCop">
-      <HintPath>..\StyleCop.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
 </Project>

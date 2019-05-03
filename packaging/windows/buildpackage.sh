@@ -30,9 +30,9 @@ fi
 function makelauncher()
 {
 	sed "s|DISPLAY_NAME|$2|" WindowsLauncher.cs.in | sed "s|MOD_ID|$3|" | sed "s|FAQ_URL|${FAQ_URL}|" > WindowsLauncher.cs
-	csc WindowsLauncher.cs -warn:4 -warnaserror -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
+	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"x86" -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
 	rm WindowsLauncher.cs
-	mono "${SRCDIR}/fixheader.exe" "$1" > /dev/null
+	mono "${SRCDIR}/OpenRA.PostProcess.exe" "$1" -LAA > /dev/null
 }
 
 echo "Building core files"

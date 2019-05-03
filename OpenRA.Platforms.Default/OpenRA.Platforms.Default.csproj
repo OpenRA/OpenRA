@@ -1,38 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{33D03738-C154-4028-8EA8-63A3C488A651}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>OpenRA.Platforms.Default</RootNamespace>
-    <AssemblyName>OpenRA.Platforms.Default</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+      <TargetFramework>net461</TargetFramework>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <Optimize>true</Optimize>
+      <LangVersion>5</LangVersion>
+      <DebugSymbols>true</DebugSymbols>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <OutputPath>..</OutputPath>
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+      <Platforms>x86</Platforms>
+      <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <Optimize>true</Optimize>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
     </Reference>
@@ -44,29 +27,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultPlatform.cs" />
-    <Compile Include="FreeTypeFont.cs" />
-    <Compile Include="Sdl2PlatformWindow.cs" />
-    <Compile Include="ITextureInternal.cs" />
-    <Compile Include="Sdl2Input.cs" />
-    <Compile Include="Shader.cs" />
-    <Compile Include="FrameBuffer.cs" />
-    <Compile Include="MultiTapDetection.cs" />
-    <Compile Include="Texture.cs" />
-    <Compile Include="ThreadAffine.cs" />
-    <Compile Include="ThreadedGraphicsContext.cs" />
-    <Compile Include="VertexBuffer.cs" />
-    <Compile Include="OpenAlSoundEngine.cs" />
-    <Compile Include="OpenGL.cs" />
-    <Compile Include="Sdl2HardwareCursor.cs" />
-    <Compile Include="Sdl2GraphicsContext.cs" />
+    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
-      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
-      <Name>OpenRA.Game</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Content Include="OpenRA.Platforms.Default.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
