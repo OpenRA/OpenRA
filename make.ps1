@@ -6,51 +6,45 @@
 function All-Command 
 {
 	Dependencies-Command 
-	$msBuild = FindMSBuild
-	$msBuildArguments = "/t:Rebuild /nr:false"
-	if ($msBuild -eq $null)
+
+	if (!(Test-Path "C:\Program Files\dotnet\dotnet.exe"))
 	{
-		echo "Unable to locate an appropriate version of MSBuild."
+		DotnetNotFound
+		return
+	}
+
+	$proc = Start-Process "C:\Program Files\dotnet\dotnet.exe" "build /nr:false" -NoNewWindow -PassThru -Wait
+	if ($proc.ExitCode -ne 0)
+	{
+		echo "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game."
 	}
 	else
 	{
-		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
-		if ($proc.ExitCode -ne 0)
-		{
-			echo "Build failed. If just the development tools failed to build, try installing Visual Studio. You may also still be able to run the game."
-		}
-		else
-		{
-			echo "Build succeeded."
-		}
+		echo "Build succeeded."
 	}
 }
 
 function Clean-Command 
 {
-	$msBuild = FindMSBuild
-	$msBuildArguments = "/t:Clean /nr:false"
-	if ($msBuild -eq $null)
+	if (!(Test-Path "C:\Program Files\dotnet\dotnet.exe"))
 	{
-		echo "Unable to locate an appropriate version of MSBuild."
+		DotnetNotFound
+		return
 	}
-	else
+	$proc = Start-Process "C:\Program Files\dotnet\dotnet.exe" "clean /nr:false" -NoNewWindow -PassThru -Wait
+	rm *.dll
+	rm mods/*/*.dll
+	rm *.config
+	rm *.pdb
+	rm mods/*/*.pdb
+	rm *.exe
+	rm ./*/bin -r
+	rm ./*/obj -r
+	if (Test-Path thirdparty/download/)
 	{
-		$proc = Start-Process $msBuild $msBuildArguments -NoNewWindow -PassThru -Wait
-		rm *.dll
-		rm mods/*/*.dll
-		Get-ChildItem *.dll.config -exclude OpenRA.Platforms.Default.dll.config | Remove-Item
-		rm *.pdb
-		rm mods/*/*.pdb
-		rm *.exe
-		rm ./*/bin -r
-		rm ./*/obj -r
-		if (Test-Path thirdparty/download/)
-		{
-			rmdir thirdparty/download -Recurse -Force
-		}
-		echo "Clean complete."
+		rmdir thirdparty/download -Recurse -Force
 	}
+	echo "Clean complete."
 }
 
 function Version-Command 
@@ -110,6 +104,18 @@ function Dependencies-Command
 	cp download/windows/*.dll ..
 	cd ..
 	echo "Dependencies copied."
+
+	if (!(Test-Path "C:\Program Files\dotnet\dotnet.exe"))
+	{
+		DotnetNotFound
+		return
+	}
+
+	$proc = Start-Process "C:\Program Files\dotnet\dotnet.exe" "restore /nr:false" -NoNewWindow -PassThru -Wait
+	if ($proc.ExitCode -ne 0)
+	{
+		echo "Project restoration failed."
+	}
 }
 
 function Test-Command
@@ -203,27 +209,14 @@ function Docs-Command
 	}
 }
 
-function FindMSBuild
-{
-	$key = "HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\4.0"
-	$property = Get-ItemProperty $key -ErrorAction SilentlyContinue
-	if ($property -eq $null -or $property.MSBuildToolsPath -eq $null)
-	{
-		return $null
-	}
-
-	$path = Join-Path $property.MSBuildToolsPath -ChildPath "MSBuild.exe"
-	if (Test-Path $path)
-	{
-		return $path
-	}
-
-	return $null
-}
-
 function UtilityNotFound
 {
 	echo "OpenRA.Utility.exe could not be found. Build the project first using the `"all`" command."
+}
+
+function DotnetNotFound
+{
+	echo "The 'dotnet' tool is required to compile OpenRA. Please install the .NET Core SDK or Visual studio and try again."
 }
 
 function WaitForInput

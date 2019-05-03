@@ -9,6 +9,7 @@ Windows
 Compiling OpenRA requires the following dependencies:
 * [Windows PowerShell >= 4.0](http://microsoft.com/powershell) (included by default in recent Windows 10 versions)
 * [.NET Framework 4.6.1 (Developer Pack)](https://dotnet.microsoft.com/download/dotnet-framework/net461) (or via Visual Studio 2017)
+* [.NET Core 2.2 SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) (or via Visual Studio 2017)
 
 Type `make dependencies` in a command terminal to download pre-compiled native libraries for:
 * [SDL 2](http://www.libsdl.org/download-2.0.php)

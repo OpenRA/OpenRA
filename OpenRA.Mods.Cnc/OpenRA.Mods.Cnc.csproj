@@ -1,210 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2881135D-4D62-493E-8F83-5EEE92CCC6BE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRA.Mods.Cnc</RootNamespace>
-    <AssemblyName>OpenRA.Mods.Cnc</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <OutputPath>bin\Debug\</OutputPath>
+    <TargetFramework>net461</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <Optimize>true</Optimize>
+    <LangVersion>5</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputPath>../mods/common</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\LeapAttack.cs" />
-    <Compile Include="CncLoadScreen.cs" />
-    <Compile Include="Traits\EdibleByLeap.cs" />
-    <Compile Include="Traits\Attack\AttackPopupTurreted.cs" />
-    <Compile Include="Traits\Buildings\ProductionAirdrop.cs" />
-    <Compile Include="Traits\Infiltration\InfiltrateForTransform.cs" />
-    <Compile Include="Traits\Render\WithGunboatBody.cs" />
-    <Compile Include="Traits\Render\WithHarvesterSpriteBody.cs" />
-    <Compile Include="Traits\Render\WithEmbeddedTurretSpriteBody.cs" />
-    <Compile Include="Traits\Render\WithCargo.cs" />
-    <Compile Include="Traits\Render\WithDeliveryAnimation.cs" />
-    <Compile Include="Traits\Render\WithRoof.cs" />
-    <Compile Include="Traits\SupportPowers\IonCannonPower.cs" />
-    <Compile Include="UtilityCommands\ImportTiberianDawnLegacyMapCommand.cs" />
-    <Compile Include="Projectiles\IonCannon.cs" />
-    <Compile Include="Activities\VoxelHarvesterDockSequence.cs" />
-    <Compile Include="SpriteLoaders\TmpTSLoader.cs" />
-    <Compile Include="Traits\Buildings\TiberianSunRefinery.cs" />
-    <Compile Include="Traits\Render\WithBuildingBib.cs" />
-    <Compile Include="Traits\Render\WithDockingOverlay.cs" />
-    <Compile Include="Traits\Render\WithPermanentInjury.cs" />
-    <Compile Include="Traits\Render\WithVoxelWalkerBody.cs" />
-    <Compile Include="Traits\Render\WithVoxelUnloadBody.cs" />
-    <Compile Include="Traits\SupportPowers\AttackOrderPower.cs" />
-    <Compile Include="UtilityCommands\LegacyTilesetImporter.cs" />
-    <Compile Include="Traits\World\TSShroudPalette.cs" />
-    <Compile Include="UtilityCommands\ImportTSMapCommand.cs" />
-    <Compile Include="UtilityCommands\LegacyRulesImporter.cs" />
-    <Compile Include="UtilityCommands\LegacySequenceImporter.cs" />
-    <Compile Include="Widgets\Logic\PreReleaseWarningPrompt.cs" />
-    <Compile Include="Traits\Attack\AttackTesla.cs" />
-    <Compile Include="Traits\Render\WithTeslaChargeAnimation.cs" />
-    <Compile Include="Traits\Render\WithTeslaChargeOverlay.cs" />
-    <Compile Include="Activities\Infiltrate.cs" />
-    <Compile Include="Activities\LayMines.cs" />
-    <Compile Include="Activities\Leap.cs" />
-    <Compile Include="Activities\Teleport.cs" />
-    <Compile Include="Effects\GpsDotEffect.cs" />
-    <Compile Include="Effects\GpsSatellite.cs" />
-    <Compile Include="Effects\SatelliteLaunch.cs" />
-    <Compile Include="Projectiles\TeslaZap.cs" />
-    <Compile Include="Graphics\TeslaZapRenderable.cs" />
-    <Compile Include="Scripting\Properties\InfiltrateProperties.cs" />
-    <Compile Include="Scripting\Properties\DisguiseProperties.cs" />
-    <Compile Include="Traits\Attack\AttackLeap.cs" />
-    <Compile Include="Traits\Buildings\ClonesProducedUnits.cs" />
-    <Compile Include="Traits\Chronoshiftable.cs" />
-    <Compile Include="Traits\Cloneable.cs" />
-    <Compile Include="Traits\Disguise.cs" />
-    <Compile Include="Traits\EnergyWall.cs" />
-    <Compile Include="Traits\FrozenUnderFogUpdatedByGps.cs" />
-    <Compile Include="Traits\HarvesterHuskModifier.cs" />
-    <Compile Include="Traits\Infiltration\InfiltrateForCash.cs" />
-    <Compile Include="Traits\Infiltration\InfiltrateForExploration.cs" />
-    <Compile Include="Traits\Infiltration\InfiltrateForPowerOutage.cs" />
-    <Compile Include="Traits\Infiltration\InfiltrateForSupportPower.cs" />
-    <Compile Include="Traits\Infiltration\Infiltrates.cs" />
-    <Compile Include="Traits\MadTank.cs" />
-    <Compile Include="Traits\Mine.cs" />
-    <Compile Include="Traits\Minelayer.cs" />
-    <Compile Include="Traits\PaletteEffects\ChronoshiftPaletteEffect.cs" />
-    <Compile Include="Traits\PaletteEffects\LightPaletteRotator.cs" />
-    <Compile Include="Traits\PortableChrono.cs" />
-    <Compile Include="Traits\Render\RenderJammerCircle.cs" />
-    <Compile Include="Traits\Render\WithLandingCraftAnimation.cs" />
-    <Compile Include="Traits\Render\RenderShroudCircle.cs" />
-    <Compile Include="Traits\SupportPowers\ChronoshiftPower.cs" />
-    <Compile Include="Traits\SupportPowers\GpsPower.cs" />
-    <Compile Include="Traits\GpsWatcher.cs" />
-    <Compile Include="Scripting\Properties\ChronosphereProperties.cs" />
-    <Compile Include="Scripting\Properties\IonCannonProperties.cs" />
-    <Compile Include="Traits\Render\WithDisguisingInfantryBody.cs" />
-    <Compile Include="UtilityCommands\ImportRedAlertLegacyMapCommand.cs" />
-    <Compile Include="Traits\Infiltration\InfiltrateForDecoration.cs" />
-    <Compile Include="TraitsInterfaces.cs" />
-    <Compile Include="FileSystem\BigFile.cs" />
-    <Compile Include="FileSystem\MixFile.cs" />
-    <Compile Include="FileSystem\PackageEntry.cs" />
-    <Compile Include="FileSystem\Pak.cs" />
-    <Compile Include="UtilityCommands\ListMixContentsCommand.cs" />
-    <Compile Include="FileFormats\Blowfish.cs" />
-    <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
-    <Compile Include="FileFormats\IdxEntry.cs" />
-    <Compile Include="FileFormats\IdxReader.cs" />
-    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
-    <Compile Include="FileFormats\XccLocalDatabase.cs" />
-    <Compile Include="FileFormats\CRC32.cs" />
-    <Compile Include="Graphics\VoxelModelSequenceLoader.cs" />
-    <Compile Include="Graphics\VoxelLoader.cs" />
-    <Compile Include="Graphics\Voxel.cs" />
-    <Compile Include="FileFormats\HvaReader.cs" />
-    <Compile Include="FileFormats\VxlReader.cs" />
-    <Compile Include="Traits\World\VoxelNormalsPalette.cs" />
-    <Compile Include="Traits\TDGunboat.cs" />
-    <Compile Include="Traits\Attack\AttackTDGunboatTurreted.cs" />
-    <Compile Include="Traits\GpsDot.cs" />
-    <Compile Include="Traits\ConyardChronoReturn.cs" />
-    <Compile Include="Traits\TransferTimedExternalConditionOnTransform.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
-      <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
-      <Name>OpenRA.Game</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
-      <Project>{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}</Project>
-      <Name>OpenRA.Mods.Common</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Target Name="AfterBuild">
-    <MakeDir Directories="$(SolutionDir)mods/common/"/>
-    <Copy
-      SourceFiles="$(TargetPath)"
-      DestinationFolder="$(SolutionDir)mods/common/"/>
-    <Copy
-      SourceFiles="$(TargetDir)$(TargetName).pdb"
-      DestinationFolder="$(SolutionDir)mods/common/"
-      Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
-    <!-- Uncomment these lines when debugging or adding to this target
-    <Message Text="DEBUG OS:                     $(OS)"/>
-    <Message Text="DEBUG SolutionDir:            $(SolutionDir)"/>
-    <Message Text="DEBUG TargetPath:             $(TargetPath)"/>
-    <Message Text="DEBUG TargetDir:              $(TargetDir)"/>
-    <Message Text="DEBUG TargetName:             $(TargetName)"/>
-    -->
-  </Target>
 </Project>

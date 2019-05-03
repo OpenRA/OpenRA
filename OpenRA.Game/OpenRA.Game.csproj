@@ -1,61 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenRA</RootNamespace>
-    <AssemblyName>OpenRA.Game</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <OutputPath>..</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net461</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <StartArguments>Game.Mod=ra</StartArguments>
-    <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
     <Optimize>true</Optimize>
-    <StartArguments>Game.Mod=ra</StartArguments>
-    <Commandlineparameters>Game.Mod=ra</Commandlineparameters>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <LangVersion>5</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <RootNamespace>OpenRA</RootNamespace>
+    <OutputPath>..</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <ExternalConsole>false</ExternalConsole>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <StartAction>Project</StartAction>
@@ -74,8 +37,6 @@
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="Open.Nat">
       <HintPath>..\thirdparty\download\Open.Nat.dll</HintPath>
     </Reference>
@@ -91,247 +52,13 @@
       <HintPath>..\thirdparty\download\MaxMind.Db.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Numerics" />
+    <ProjectReference Include="..\OpenRA.PostProcess\OpenRA.PostProcess.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Activities\Activity.cs" />
-    <Compile Include="Activities\CallFunc.cs" />
-    <Compile Include="Actor.cs" />
-    <Compile Include="CacheStorage.cs" />
-    <Compile Include="FileFormats\Png.cs" />
-    <Compile Include="FileSystem\IPackage.cs" />
-    <Compile Include="Network\GameSave.cs" />
-    <Compile Include="Primitives\Color.cs" />
-    <Compile Include="Primitives\Int32Matrix4x4.cs" />
-    <Compile Include="LogProxy.cs" />
-    <Compile Include="Map\MapGrid.cs" />
-    <Compile Include="Map\MapPlayers.cs" />
-    <Compile Include="MPos.cs" />
-    <Compile Include="Download.cs" />
-    <Compile Include="Effects\AsyncAction.cs" />
-    <Compile Include="Effects\DelayedAction.cs" />
-    <Compile Include="Effects\DelayedImpact.cs" />
-    <Compile Include="Effects\IEffect.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameRules\ActorInfo.cs" />
-    <Compile Include="GameRules\MusicInfo.cs" />
-    <Compile Include="GameRules\SoundInfo.cs" />
-    <Compile Include="GameRules\WeaponInfo.cs" />
-    <Compile Include="Graphics\Animation.cs" />
-    <Compile Include="Graphics\AnimationWithOffset.cs" />
-    <Compile Include="Graphics\ChromeProvider.cs" />
-    <Compile Include="Graphics\CursorProvider.cs" />
-    <Compile Include="Graphics\CursorSequence.cs" />
-    <Compile Include="Graphics\HardwarePalette.cs" />
-    <Compile Include="Graphics\MappedImage.cs" />
-    <Compile Include="Graphics\SequenceProvider.cs" />
-    <Compile Include="Graphics\Sheet.cs" />
-    <Compile Include="Graphics\SheetBuilder.cs" />
-    <Compile Include="Graphics\Sprite.cs" />
-    <Compile Include="Graphics\SpriteFont.cs" />
-    <Compile Include="Graphics\SpriteLoader.cs" />
-    <Compile Include="Graphics\SpriteRenderer.cs" />
-    <Compile Include="Graphics\Util.cs" />
-    <Compile Include="Graphics\Viewport.cs" />
-    <Compile Include="Graphics\WorldRenderer.cs" />
-    <Compile Include="IUtilityCommand.cs" />
-    <Compile Include="ModData.cs" />
-    <Compile Include="Network\Connection.cs" />
-    <Compile Include="Network\FrameData.cs" />
-    <Compile Include="Network\GameServer.cs" />
-    <Compile Include="Network\GeoIP.cs" />
-    <Compile Include="Network\Handshake.cs" />
-    <Compile Include="Network\Order.cs" />
-    <Compile Include="Network\OrderIO.cs" />
-    <Compile Include="Network\OrderManager.cs" />
-    <Compile Include="Network\ReplayConnection.cs" />
-    <Compile Include="Network\Session.cs" />
-    <Compile Include="Network\SyncReport.cs" />
-    <Compile Include="Network\UnitOrders.cs" />
-    <Compile Include="ObjectCreator.cs" />
-    <Compile Include="Orders\GenericSelectTarget.cs" />
-    <Compile Include="Orders\IOrderGenerator.cs" />
-    <Compile Include="Orders\UnitOrderGenerator.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Primitives\MergedStream.cs" />
-    <Compile Include="Primitives\PlayerDictionary.cs" />
-    <Compile Include="Primitives\ReadOnlyAdapterStream.cs" />
-    <Compile Include="Primitives\Rectangle.cs" />
-    <Compile Include="Primitives\SegmentStream.cs" />
-    <Compile Include="Primitives\Size.cs" />
-    <Compile Include="Primitives\SpatiallyPartitioned.cs" />
-    <Compile Include="Primitives\ConcurrentCache.cs" />
-    <Compile Include="SelectableExts.cs" />
-    <Compile Include="Selection.cs" />
-    <Compile Include="Server\Connection.cs" />
-    <Compile Include="Server\Exts.cs" />
-    <Compile Include="Server\ProtocolVersion.cs" />
-    <Compile Include="Server\Server.cs" />
-    <Compile Include="Server\ServerOrder.cs" />
-    <Compile Include="Server\TraitInterfaces.cs" />
-    <Compile Include="Support\Arguments.cs" />
-    <Compile Include="Support\ExceptionHandler.cs" />
-    <Compile Include="Support\LaunchArguments.cs" />
-    <Compile Include="Support\PerfHistory.cs" />
-    <Compile Include="Support\Program.cs" />
-    <Compile Include="Sync.cs" />
-    <Compile Include="TraitDictionary.cs" />
-    <Compile Include="Traits\LintAttributes.cs" />
-    <Compile Include="Traits\Player\Shroud.cs" />
-    <Compile Include="Traits\Selectable.cs" />
-    <Compile Include="Traits\Target.cs" />
-    <Compile Include="Traits\TraitsInterfaces.cs" />
-    <Compile Include="Traits\World\Faction.cs" />
-    <Compile Include="Traits\World\ScreenShaker.cs" />
-    <Compile Include="Traits\World\DebugVisualizations.cs" />
-    <Compile Include="World.cs" />
-    <Compile Include="WorldUtils.cs" />
-    <Compile Include="VoiceExts.cs" />
-    <Compile Include="Network\ReplayRecorder.cs" />
-    <Compile Include="Traits\DebugPauseState.cs" />
-    <Compile Include="Network\UPnP.cs" />
-    <Compile Include="Graphics\Renderable.cs" />
-    <Compile Include="Graphics\ModelRenderer.cs" />
-    <Compile Include="Graphics\ModelAnimation.cs" />
-    <Compile Include="Traits\Player\FrozenActorLayer.cs" />
-    <Compile Include="Graphics\Theater.cs" />
-    <Compile Include="Traits\Player\PlayerColorPalette.cs" />
-    <Compile Include="Traits\Player\PlayerHighlightPalette.cs" />
-    <Compile Include="Traits\World\ScreenMap.cs" />
-    <Compile Include="Scripting\ScriptContext.cs" />
-    <Compile Include="Scripting\ScriptActorInterface.cs" />
-    <Compile Include="Scripting\ScriptObjectWrapper.cs" />
-    <Compile Include="Scripting\ScriptTypes.cs" />
-    <Compile Include="Scripting\ScriptMemberWrapper.cs" />
-    <Compile Include="Scripting\ScriptMemberExts.cs" />
-    <Compile Include="Scripting\ScriptPlayerInterface.cs" />
-    <Compile Include="Traits\Player\FixedColorPalette.cs" />
-    <Compile Include="Primitives\ReadOnlyDictionary.cs" />
-    <Compile Include="Primitives\ReadOnlyList.cs" />
-    <Compile Include="GameRules\Ruleset.cs" />
-    <Compile Include="Support\MersenneTwister.cs" />
-    <Compile Include="GameInformation.cs" />
-    <Compile Include="Map\CellLayer.cs" />
-    <Compile Include="Map\CellRegion.cs" />
-    <Compile Include="Input\IInputHandler.cs" />
-    <Compile Include="Input\InputHandler.cs" />
-    <Compile Include="Input\Keycode.cs" />
-    <Compile Include="Input\Hotkey.cs" />
-    <Compile Include="Input\HotkeyReference.cs" />
-    <Compile Include="Graphics\PlatformInterfaces.cs" />
-    <Compile Include="Sound\Sound.cs" />
-    <Compile Include="Sound\SoundDevice.cs" />
-    <Compile Include="Graphics\TargetLineRenderable.cs" />
-    <Compile Include="Graphics\UISpriteRenderable.cs" />
-    <Compile Include="Graphics\SoftwareCursor.cs" />
-    <Compile Include="Graphics\HardwareCursor.cs" />
-    <Compile Include="Support\PerfItem.cs" />
-    <Compile Include="Support\PerfSample.cs" />
-    <Compile Include="Graphics\SpriteRenderable.cs" />
-    <Compile Include="Widgets\Widget.cs" />
-    <Compile Include="Widgets\WidgetLoader.cs" />
-    <Compile Include="Widgets\ChromeMetrics.cs" />
-    <Compile Include="Widgets\WidgetUtils.cs" />
-    <Compile Include="Graphics\PaletteReference.cs" />
-    <Compile Include="Graphics\TerrainSpriteLayer.cs" />
-    <Compile Include="Map\ProjectedCellRegion.cs" />
-    <Compile Include="Map\MapCoordsRegion.cs" />
-    <Compile Include="Renderer.cs" />
-    <Compile Include="Platform.cs" />
-    <Compile Include="GameSpeed.cs" />
-    <Compile Include="Primitives\ObservableList.cs" />
-    <Compile Include="Graphics\RgbaColorRenderer.cs" />
-    <Compile Include="Traits\Player\IndexedPlayerPalette.cs" />
-    <Compile Include="Traits\ActivityUtils.cs" />
-    <Compile Include="Primitives\float3.cs" />
-    <Compile Include="InstalledMods.cs" />
-    <Compile Include="CryptoUtil.cs" />
-    <Compile Include="Support\VariableExpression.cs" />
-    <Compile Include="ExternalMods.cs" />
-    <Compile Include="Graphics\Model.cs" />
-    <Compile Include="UtilityCommands\RegisterModCommand.cs" />
-    <Compile Include="UtilityCommands\UnregisterModCommand.cs" />
-    <Compile Include="UtilityCommands\ClearInvalidModRegistrationsCommand.cs" />
-    <Compile Include="HotkeyManager.cs" />
-    <Compile Include="HotkeyDefinition.cs" />
-    <Compile Include="Traits\Interactable.cs" />
-    <Compile Include="Graphics\RgbaSpriteRenderer.cs" />
-    <Compile Include="LocalPlayerProfile.cs" />
-    <Compile Include="PlayerProfile.cs" />
-    <Compile Include="PlayerDatabase.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="FileSystem\Folder.cs" />
-    <Compile Include="FileSystem\ZipFile.cs" />
-    <Compile Include="Map\PlayerReference.cs" />
-    <Compile Include="Map\TileReference.cs" />
-    <Compile Include="Map\TileSet.cs" />
-    <Compile Include="FieldLoader.cs" />
-    <Compile Include="FieldSaver.cs" />
-    <Compile Include="Manifest.cs" />
-    <Compile Include="Graphics\Vertex.cs" />
-    <Compile Include="Primitives\ActionQueue.cs" />
-    <Compile Include="Primitives\BitSet.cs" />
-    <Compile Include="Primitives\Cache.cs" />
-    <Compile Include="Primitives\DisposableAction.cs" />
-    <Compile Include="Primitives\float2.cs" />
-    <Compile Include="Primitives\int2.cs" />
-    <Compile Include="Primitives\IObservableCollection.cs" />
-    <Compile Include="Primitives\ObservableCollection.cs" />
-    <Compile Include="Primitives\ObservableDictionary.cs" />
-    <Compile Include="Primitives\Pair.cs" />
-    <Compile Include="Primitives\PriorityQueue.cs" />
-    <Compile Include="Support\Log.cs" />
-    <Compile Include="Support\PerfTimer.cs" />
-    <Compile Include="Exts.cs" />
-    <Compile Include="MiniYaml.cs" />
-    <Compile Include="StreamExts.cs" />
-    <Compile Include="Map\Map.cs" />
-    <Compile Include="Map\MapCache.cs" />
-    <Compile Include="Map\MapPreview.cs" />
-    <Compile Include="CPos.cs" />
-    <Compile Include="CVec.cs" />
-    <Compile Include="WAngle.cs" />
-    <Compile Include="WDist.cs" />
-    <Compile Include="WPos.cs" />
-    <Compile Include="WRot.cs" />
-    <Compile Include="WVec.cs" />
-    <Compile Include="Primitives\TypeDictionary.cs" />
-    <Compile Include="Map\ActorInitializer.cs" />
-    <Compile Include="Map\ActorReference.cs" />
-    <Compile Include="Support\Evaluator.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Graphics\PlayerColorRemap.cs" />
-    <Compile Include="Graphics\Palette.cs" />
-    <Compile Include="FileSystem\FileSystem.cs" />
-    <Compile Include="FileFormats\ReplayMetadata.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="PostProcess" AfterTargets="Build" Inputs="$(TargetPath)" Outputs="$(IntermediateOutputPath)\$(TargetFileName).processed">
+    <Exec Command="$(TargetDir)/OpenRA.PostProcess.exe $(TargetPath) -LAA" />
+    <Touch Files="$(IntermediateOutputPath)\$(TargetFileName).processed" AlwaysCreate="true" />
+  </Target>
 </Project>
