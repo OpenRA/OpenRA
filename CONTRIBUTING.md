@@ -1,5 +1,8 @@
 # OpenRA Contributing Guidelines
 
+## Participating
+Help us keep OpenRA open and inclusive. Please read and follow our [Code of Conduct](https://github.com/OpenRA/OpenRA/blob/bleed/CODE_OF_CONDUCT.md).
+
 ## Bug reports
 
 * Have you read the [FAQ](https://github.com/OpenRA/OpenRA/wiki/FAQ)?
