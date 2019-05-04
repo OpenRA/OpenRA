@@ -34,10 +34,15 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var field in weapon.Value.Nodes)
 				{
-					// Removals can never define children
-					if (field.Key.StartsWith("-", StringComparison.Ordinal) && field.Value.Nodes.Any())
+					// Removals can never define children or values
+					if (field.Key.StartsWith("-", StringComparison.Ordinal))
 					{
-						emitError("{0} has child nodes, which is not valid for removals.".F(field.Key));
+						if (field.Value.Nodes.Any())
+							emitError("{0} {1} defines child nodes, which is not valid for removals.".F(field.Location, field.Key));
+
+						if (!string.IsNullOrEmpty(field.Value.Value))
+							emitError("{0} {1} defines a value, which is not valid for removals.".F(field.Location, field.Key));
+
 						continue;
 					}
 
