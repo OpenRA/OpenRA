@@ -89,7 +89,7 @@ MammothTusk:
 		ImpactActors: false
 		Explosions: medium_twlt
 		ImpactSounds: expnew07.aud
-	-Warhead@3EffWater: CreateEffect
+	-Warhead@3EffWater:
 
 BikeMissile:
 	Inherits: ^DefaultMissile

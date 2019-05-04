@@ -149,7 +149,7 @@ DeviatorMissile:
 			invulnerable: 0
 			cy: 50
 			harvester: 100
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 	Warhead@3Eff: CreateEffect
 		Explosions: deviator
 		ExplosionPalette: deviatorgas
