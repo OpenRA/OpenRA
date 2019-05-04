@@ -44,7 +44,7 @@
 			Light: 116
 			Heavy: 48
 			Concrete: 32
-	-Warhead@2Smu: LeaveSmudge
+	-Warhead@2Smu:
 	Warhead@3Eff: CreateEffect
 		-ImpactSounds:
 	Warhead@4EffWater: CreateEffect
