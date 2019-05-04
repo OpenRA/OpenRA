@@ -40,6 +40,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly WDist InitialHeight = new WDist(43);
 
 		public override object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (OffsetModifier.Length > -1)
+				throw new YamlException("Hovers.OffsetModifier must be a negative value.");
+
+			if (Ticks < 1)
+				throw new YamlException("Hovers.Ticks must be higher than zero.");
+
+			if (FallTicks < 1)
+				throw new YamlException("Hovers.FallTicks must be higher than zero.");
+
+			if (RiseTicks < 1)
+				throw new YamlException("Hovers.RiseTicks must be higher than zero.");
+
+			if (InitialHeight.Length < RiseTicks)
+				throw new YamlException("Hovers.InitialHeight must be at least as high as RiseTicks.");
+
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
 	public class Hovers : ConditionalTrait<HoversInfo>, IRenderModifier, ITick
@@ -56,7 +76,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			this.info = info;
 			stepPercentage = 256 / info.Ticks;
-			fallTickHeight = (info.InitialHeight + info.OffsetModifier).Length / info.FallTicks;
+
+			// fallTickHeight must be at least 1 to avoid a DivideByZeroException and other potential problems when trait is disabled.
+			fallTickHeight = (info.InitialHeight.Length + info.OffsetModifier.Length).Clamp(info.FallTicks, int.MaxValue) / info.FallTicks;
 		}
 
 		void ITick.Tick(Actor self)
