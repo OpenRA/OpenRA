@@ -107,17 +107,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
 		{
-			if (!activated)
+			if (!activated || !IsOutsideDragZone)
 				yield break;
 
 			var worldPx = wr.Viewport.ViewToWorldPx(targetLocation);
 			var worldPos = wr.ProjectedPosition(worldPx);
 
-			if (IsOutsideDragZone)
-			{
-				var directionPalette = wr.Palette(directionArrowPalette);
-				yield return new SpriteRenderable(currentArrow.Sprite, worldPos, WVec.Zero, -511, directionPalette, 1 / wr.Viewport.Zoom, true);
-			}
+			var scale = (Game.Cursor is SoftwareCursor && CursorProvider.CursorViewportZoomed ? 2 : 1) / wr.Viewport.Zoom;
+
+			var directionPalette = wr.Palette(directionArrowPalette);
+			yield return new SpriteRenderable(currentArrow.Sprite, worldPos, WVec.Zero, -511, directionPalette, scale, true);
 		}
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return cursor; }
