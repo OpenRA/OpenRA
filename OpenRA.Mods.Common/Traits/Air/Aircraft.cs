@@ -345,7 +345,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			CurrentMovementTypes = newMovementTypes;
 
-			Repulse();
+			// Disable repulsing while landing or taking off
+			if (self.World.Map.DistanceAboveTerrain(CenterPosition) == Info.CruiseAltitude)
+				Repulse();
 		}
 
 		public void Repulse()
