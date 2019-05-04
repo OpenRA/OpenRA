@@ -897,6 +897,8 @@
 		VTOL: true
 	Hovers@CRUISING:
 		RequiresCondition: cruising
+		OffsetModifier: -64
+		InitialHeight: 64
 
 ^AircraftHusk:
 	RenderVoxels:

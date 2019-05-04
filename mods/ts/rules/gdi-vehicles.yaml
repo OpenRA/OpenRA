@@ -89,7 +89,8 @@ HVR:
 	WithVoxelTurret:
 	Hovers:
 		RequiresCondition: !empdisable
-		OffsetModifier: 64
+		OffsetModifier: -64
+		InitialHeight: 384
 	LeavesTrails:
 		RequiresCondition: !inside-tunnel
 		Image: wake
