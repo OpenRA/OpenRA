@@ -1,4 +1,5 @@
 basefiles: Base Freeware Content
+	SHA1: 824df30de0004ad13fac29cf16450caafee9fb1b
 	MirrorList: http://www.openra.net/packages/ts-mirrors.txt
 	Extract:
 		^Content/ts/cache.mix: cache.mix
@@ -17,11 +18,13 @@ basefiles: Base Freeware Content
 		^Content/ts/temperat.mix: temperat.mix
 
 tibsun-music: Base Freeware Music
+	SHA1: f445cf47ffa343d9e211ec31f29fb45c8aefac80
 	MirrorList: http://www.openra.net/packages/ts-music-mirrors.txt
 	Extract:
 		^Content/ts/scores.mix: scores.mix
 
 fstorm: Expansion Freeware Content
+	SHA1: 8bff90870a9348b72cbe91314aec7d3a50311aa9
 	MirrorList: http://www.openra.net/packages/fs-mirrors.txt
 	Extract:
 		^Content/ts/firestorm/c_kodiak.shp: firestorm/c_kodiak.shp
@@ -204,6 +207,7 @@ fstorm: Expansion Freeware Content
 		^Content/ts/firestorm/bigblue3.tem: firestorm/bigblue3.tem
 
 fstorm-music: Expansion Freeware Music
+	SHA1: 74b1ec47ea8c9815fb85c998963229aa0a8f8619
 	MirrorList: http://www.openra.net/packages/fs-music-mirrors.txt
 	Extract:
 		^Content/ts/firestorm/dmachine.aud: firestorm/dmachine.aud
@@ -218,6 +222,7 @@ fstorm-music: Expansion Freeware Music
 		^Content/ts/firestorm/slavesys.aud: firestorm/slavesys.aud
 
 quickinstall: Quick Install Package
+	SHA1: d9339e7b6ecf624ac6ca91d25c58b88fb88a49d2
 	MirrorList: http://www.openra.net/packages/ts-quickinstall-mirrors.txt
 	Extract:
 		^Content/ts/cache.mix: cache.mix

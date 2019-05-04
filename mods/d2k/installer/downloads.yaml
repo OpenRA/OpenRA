@@ -1,4 +1,5 @@
 quickinstall: Quick Install Package
+	SHA1: eb9ff88ca24858bd06a752f923156a6480c25c06
 	MirrorList: http://www.openra.net/packages/d2k-quickinstall-mirrors.txt
 	Extract:
 		^Content/d2k/v2/BLOXBASE.R8: v2/BLOXBASE.R8
@@ -266,7 +267,9 @@ quickinstall: Quick Install Package
 		^Content/d2k/v2/SOUND.RS: v2/SOUND.RS
 		^Content/d2k/v2/BLOXXMAS.R8: v2/BLOXXMAS.R8
 		^Content/d2k/v2/DATA.R8: v2/DATA.R8
+
 basefiles: Base Content
+	SHA1: 82221691fe843a5a245969095f147e929c364234
 	MirrorList: http://www.openra.net/packages/d2k-base-mirrors.txt
 	Extract:
 		^Content/d2k/v2/BLOXBASE.R8: v2/BLOXBASE.R8
@@ -532,7 +535,9 @@ basefiles: Base Content
 		^Content/d2k/v2/MOUSE.R8: v2/MOUSE.R8
 		^Content/d2k/v2/PALETTE.BIN: v2/PALETTE.BIN
 		^Content/d2k/v2/SOUND.RS: v2/SOUND.RS
+
 patch106: Patch 1.06 Content
+	SHA1: 90924e5254468ec79c71e456384f5895a6c84bae
 	MirrorList: http://www.openra.net/packages/d2k-patch106-mirrors.txt
 	Extract:
 		^Content/d2k/v2/BLOXXMAS.R8: v2/BLOXXMAS.R8
