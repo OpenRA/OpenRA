@@ -111,8 +111,11 @@
 		Palettes: terrain
 		Tilesets: DESERT
 		RotationBase: 32
+	RotationPaletteEffect@desertwater-actor:
+		Palettes: desert
+		RotationBase: 32
 	LightPaletteRotator:
-		ExcludePalettes: terrain, effect
+		ExcludePalettes: terrain, effect, desert
 	ChronoshiftPaletteEffect:
 	FlashPaletteEffect@NUKE:
 		Type: Nuke
