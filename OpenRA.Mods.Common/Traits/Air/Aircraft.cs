@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void Repulse()
 		{
 			var repulsionForce = GetRepulsionForce();
-			if (repulsionForce.HorizontalLengthSquared == 0)
+			if (repulsionForce == WVec.Zero)
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
@@ -369,9 +369,8 @@ namespace OpenRA.Mods.Common.Traits
 					return WVec.Zero;
 			}
 
-			// Repulsion only applies when we're flying!
-			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition).Length;
-			if (altitude != Info.CruiseAltitude.Length)
+			// Repulsion only applies when we're flying at CruiseAltitude!
+			if (!cruising)
 				return WVec.Zero;
 
 			// PERF: Avoid LINQ.
@@ -1038,6 +1037,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!cruising)
 				return;
+
 			cruising = false;
 			if (conditionManager != null && cruisingToken != ConditionManager.InvalidConditionToken)
 				cruisingToken = conditionManager.RevokeCondition(self, cruisingToken);
