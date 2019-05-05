@@ -546,6 +546,10 @@ TRUK:
 	DeliversCash:
 		Payload: 500
 		PlayerExperience: 50
+		RequiresCondition: dome
+	GrantConditionOnPrerequisite:
+		Condition: dome
+		Prerequisites: dome
 	SpawnActorOnDeath:
 		Actor: moneycrate
 

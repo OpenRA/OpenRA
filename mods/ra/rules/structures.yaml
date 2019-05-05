@@ -46,6 +46,7 @@ MSLO:
 		IncomingSpeechNotification: AbombLaunchDetected
 		MissileWeapon: atomic
 		MissileDelay: 5
+		StartFullyCharged: true
 		SpawnOffset: 1c0,427,0
 		DisplayTimerStances: Ally, Neutral, Enemy
 		DisplayBeacon: True
@@ -107,6 +108,7 @@ GAP:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	-AcceptsDeliveredCash:
+	-GrantConditionOnPrerequisite@WFAC:
 	Explodes:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
