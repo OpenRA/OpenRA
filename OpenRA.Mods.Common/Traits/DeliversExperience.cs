@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can grant experience levels equal to it's own current level via entering to other actors with the `AcceptsDeliveredExperience` trait.")]
-	class DeliversExperienceInfo : TraitInfo, Requires<GainsExperienceInfo>
+	class DeliversExperienceInfo : ConditionalTraitInfo, Requires<GainsExperienceInfo>
 	{
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
@@ -32,15 +32,14 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DeliversExperience(init, this); }
 	}
 
-	class DeliversExperience : IIssueOrder, IResolveOrder, IOrderVoice
+	class DeliversExperience : ConditionalTrait<DeliversExperienceInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly DeliversExperienceInfo info;
 		readonly Actor self;
 		readonly GainsExperience gainsExperience;
 
 		public DeliversExperience(ActorInitializer init, DeliversExperienceInfo info)
+			: base(info)
 		{
-			this.info = info;
 			self = init.Self;
 			gainsExperience = self.Trait<GainsExperience>();
 		}
@@ -49,8 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				if (gainsExperience.Level != 0)
-					yield return new DeliversExperienceOrderTargeter();
+				if (!IsTraitDisabled && gainsExperience.Level != 0)
+					yield return new DeliversExperienceOrderTargeter(Info);
 			}
 		}
 
@@ -67,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeliverExperience")
 				return null;
 
-			return info.Voice;
+			return Info.Voice;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -84,33 +83,41 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.Target.Type != TargetType.FrozenActor)
 				return;
 
-			self.QueueActivity(order.Queued, new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience));
+			self.QueueActivity(order.Queued, new DonateExperience(self, order.Target, gainsExperience.Level, this));
 			self.ShowTargetLines();
 		}
 
 		public class DeliversExperienceOrderTargeter : UnitOrderTargeter
 		{
-			public DeliversExperienceOrderTargeter()
-				: base("DeliverExperience", 5, "enter", true, true) { }
+			readonly DeliversExperienceInfo info;
+
+			public DeliversExperienceOrderTargeter(DeliversExperienceInfo info)
+				: base("DeliverExperience", 5, "enter", true, true)
+			{
+				this.info = info;
+			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				if (target == self)
 					return false;
 
-				var type = self.Info.TraitInfo<DeliversExperienceInfo>().Type;
-				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
+				var type = info.Type;
+				var ade = target.TraitOrDefault<AcceptsDeliveredExperience>();
 				var targetGainsExperience = target.TraitOrDefault<GainsExperience>();
 
-				if (targetGainsExperience == null || targetInfo == null)
+				if (targetGainsExperience == null || ade == null)
+					return false;
+
+				if (ade.IsTraitDisabled)
 					return false;
 
 				if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
 					return false;
 
-				return targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
-					&& (targetInfo.ValidTypes.Count == 0
-						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
+				return ade.Info.ValidStances.HasStance(target.Owner.Stances[self.Owner])
+					&& (ade.Info.ValidTypes.Count == 0
+						|| (!string.IsNullOrEmpty(type) && ade.Info.ValidTypes.Contains(type)));
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
@@ -118,19 +125,23 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Actor == null || target.Actor == self)
 					return false;
 
-				var type = self.Info.TraitInfo<DeliversExperienceInfo>().Type;
-				var targetInfo = target.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
+				var type = info.Type;
+				var ade = target.Info.TraitInfoOrDefault<AcceptsDeliveredExperienceInfo>();
 				var targetGainsExperience = target.Actor.TraitOrDefault<GainsExperience>();
 
-				if (targetGainsExperience == null || targetInfo == null)
+				if (targetGainsExperience == null || ade == null)
 					return false;
 
+				// TODO: FrozenActors don't yet have a way of caching conditions, so we can't filter disabled traits
+				// This therefore assumes that all AcceptsDeliveredExperience traits are enabled, which is probably wrong.
+				// Actors with FrozenUnderFog should therefore not disable the AcceptsDeliveredExperience trait if
+				// ValidStances includes Enemy actors.
 				if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
 					return false;
 
-				return targetInfo.ValidStances.HasStance(target.Owner.Stances[self.Owner])
-					&& (targetInfo.ValidTypes.Count == 0
-						|| (!string.IsNullOrEmpty(type) && targetInfo.ValidTypes.Contains(type)));
+				return ade.ValidStances.HasStance(target.Owner.Stances[self.Owner])
+					&& (ade.ValidTypes.Count == 0
+						|| (!string.IsNullOrEmpty(type) && ade.ValidTypes.Contains(type)));
 			}
 		}
 	}

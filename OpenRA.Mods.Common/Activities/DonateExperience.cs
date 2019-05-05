@@ -18,24 +18,26 @@ namespace OpenRA.Mods.Common.Activities
 	class DonateExperience : Enter
 	{
 		readonly int level;
-		readonly int playerExperience;
+		readonly DeliversExperience deliversExperience;
 
 		Actor enterActor;
 		GainsExperience enterGainsExperience;
 
-		public DonateExperience(Actor self, Target target, int level, int playerExperience)
+		public DonateExperience(Actor self, Target target, int level, DeliversExperience deliversExperience)
 			: base(self, target, Color.Yellow)
 		{
 			this.level = level;
-			this.playerExperience = playerExperience;
+			this.deliversExperience = deliversExperience;
 		}
 
 		protected override bool TryStartEnter(Actor self, Actor targetActor)
 		{
 			enterActor = targetActor;
 			enterGainsExperience = targetActor.TraitOrDefault<GainsExperience>();
+			var enterAcceptsExperience = targetActor.TraitsImplementing<AcceptsDeliveredExperience>().FirstEnabledTraitOrDefault();
 
-			if (enterGainsExperience == null || enterGainsExperience.Level == enterGainsExperience.MaxLevel)
+			if (enterGainsExperience == null || enterGainsExperience.Level == enterGainsExperience.MaxLevel
+				|| enterAcceptsExperience == null || enterAcceptsExperience.IsTraitDisabled || deliversExperience.IsTraitDisabled)
 			{
 				Cancel(self, true);
 				return false;
@@ -58,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
 			if (exp != null && enterActor.Owner != self.Owner)
-				exp.GiveExperience(playerExperience);
+				exp.GiveExperience(deliversExperience.Info.PlayerExperience);
 
 			self.Dispose();
 		}

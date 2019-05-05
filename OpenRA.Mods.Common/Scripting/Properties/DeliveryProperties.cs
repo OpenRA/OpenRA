@@ -21,33 +21,40 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Ability")]
 	public class DeliversCashProperties : ScriptActorProperties, Requires<IMoveInfo>, Requires<DeliversCashInfo>
 	{
-		readonly DeliversCashInfo info;
+		readonly DeliversCash deliversCash;
 
 		public DeliversCashProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			info = Self.Info.TraitInfo<DeliversCashInfo>();
+			deliversCash = Self.Trait<DeliversCash>();
 		}
 
 		[ScriptActorPropertyActivity]
 		[Desc("Deliver cash to the target actor.")]
 		public void DeliverCash(Actor target)
 		{
+			var acceptsDeliveredCash = target.TraitOrDefault<AcceptsDeliveredCash>();
+			if (acceptsDeliveredCash == null || acceptsDeliveredCash.IsTraitDisabled)
+				throw new LuaException("Actor '{0}' does not accept delivered cash!".F(target));
+
+			if (deliversCash.IsTraitDisabled)
+				throw new LuaException("Actor '{0}' does not deliver cash!".F(Self));
+
 			var t = Target.FromActor(target);
-			Self.QueueActivity(new DonateCash(Self, t, info.Payload, info.PlayerExperience));
+			Self.QueueActivity(new DonateCash(Self, t, deliversCash));
 		}
 	}
 
 	[ScriptPropertyGroup("Ability")]
 	public class DeliversExperienceProperties : ScriptActorProperties, Requires<IMoveInfo>, Requires<DeliversExperienceInfo>
 	{
-		readonly DeliversExperienceInfo deliversExperience;
+		readonly DeliversExperience deliversExperience;
 		readonly GainsExperience gainsExperience;
 
 		public DeliversExperienceProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			deliversExperience = Self.Info.TraitInfo<DeliversExperienceInfo>();
+			deliversExperience = Self.Trait<DeliversExperience>();
 			gainsExperience = Self.Trait<GainsExperience>();
 		}
 
@@ -56,8 +63,15 @@ namespace OpenRA.Mods.Common.Scripting
 		public void DeliverExperience(Actor target)
 		{
 			var targetGainsExperience = target.TraitOrDefault<GainsExperience>();
+			var acceptsDeliveredExperience = target.TraitOrDefault<AcceptsDeliveredExperience>();
 			if (targetGainsExperience == null)
 				throw new LuaException("Actor '{0}' cannot gain experience!".F(target));
+
+			if (acceptsDeliveredExperience == null || acceptsDeliveredExperience.IsTraitDisabled)
+				throw new LuaException("Actor '{0}' does not accept delivered experience!".F(target));
+
+			if (deliversExperience.IsTraitDisabled)
+				throw new LuaException("Actor '{0}' does not deliver experience!".F(Self));
 
 			if (targetGainsExperience.Level == targetGainsExperience.MaxLevel)
 				return;
@@ -65,7 +79,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var level = gainsExperience.Level;
 
 			var t = Target.FromActor(target);
-			Self.QueueActivity(new DonateExperience(Self, t, level, deliversExperience.PlayerExperience));
+			Self.QueueActivity(new DonateExperience(Self, t, level, deliversExperience));
 		}
 	}
 }

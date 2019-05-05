@@ -18,24 +18,34 @@ namespace OpenRA.Mods.Common.Activities
 {
 	class DonateCash : Enter
 	{
-		readonly int payload;
-		readonly int playerExperience;
+		readonly DeliversCash deliversCash;
 
-		public DonateCash(Actor self, Target target, int payload, int playerExperience)
+		public DonateCash(Actor self, Target target, DeliversCash deliversCash)
 			: base(self, target, Color.Yellow)
 		{
-			this.payload = payload;
-			this.playerExperience = playerExperience;
+			this.deliversCash = deliversCash;
+		}
+
+		protected override bool TryStartEnter(Actor self, Actor targetActor)
+		{
+			var enterAcceptsCash = targetActor.TraitsImplementing<AcceptsDeliveredCash>().FirstEnabledTraitOrDefault();
+			if (enterAcceptsCash == null || enterAcceptsCash.IsTraitDisabled || deliversCash.IsTraitDisabled)
+			{
+				Cancel(self, true);
+				return false;
+			}
+
+			return true;
 		}
 
 		protected override void OnEnterComplete(Actor self, Actor targetActor)
 		{
 			var targetOwner = targetActor.Owner;
-			var donated = targetOwner.PlayerActor.Trait<PlayerResources>().ChangeCash(payload);
+			var donated = targetOwner.PlayerActor.Trait<PlayerResources>().ChangeCash(deliversCash.Info.Payload);
 
 			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
 			if (exp != null && targetOwner != self.Owner)
-				exp.GiveExperience(playerExperience);
+				exp.GiveExperience(deliversCash.Info.PlayerExperience);
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(targetActor.CenterPosition, targetOwner.Color, FloatingText.FormatCashTick(donated), 30)));
