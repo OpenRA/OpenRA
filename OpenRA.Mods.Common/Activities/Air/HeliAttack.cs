@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Target target;
 		Target lastVisibleTarget;
+		WDist lastVisibleMinimumRange;
 		WDist lastVisibleMaximumRange;
 		bool useLastVisibleTarget;
 		bool hasTicked;
@@ -42,6 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+				lastVisibleMinimumRange = attackAircraft.GetMinimumRangeVersusTarget(target);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
 			}
 		}
@@ -89,6 +91,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
+				lastVisibleMinimumRange = attackAircraft.GetMinimumRangeVersusTarget(target);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
 			}
 
@@ -116,42 +119,24 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
-			// Update facing
+			// We've reached the assumed position of lastVisibleTarget but it is not there - give up
+			if (useLastVisibleTarget && checkTarget.IsInRange(pos, lastVisibleMaximumRange))
+			{
+				attackAircraft.RequestedTarget = Target.Invalid;
+				return NextActivity;
+			}
+
 			var delta = attackAircraft.GetTargetPosition(pos, checkTarget) - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
-			if (Fly.FlyToward(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Turn | MovementType.Vertical))
-				return this;
+			var inRange = target.IsInRange(pos, lastVisibleMaximumRange) && !target.IsInRange(pos, lastVisibleMinimumRange);
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 
-			// We don't know where the target actually is, so move to where we last saw it
-			if (useLastVisibleTarget)
-			{
-				// We've reached the assumed position but it is not there - give up
-				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
-				{
-					attackAircraft.RequestedTarget = Target.Invalid;
-					return NextActivity;
-				}
-
-				// Fly towards the last known position
-				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
-				return this;
-			}
-
-			// Fly towards the target
-			if (!target.IsInRange(pos, attackAircraft.GetMaximumRangeVersusTarget(target)))
-				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(desiredFacing));
-
-			// Fly backwards from the target
-			if (target.IsInRange(pos, attackAircraft.GetMinimumRangeVersusTarget(target)))
-			{
-				// Facing 0 doesn't work with the following position change
-				var facing = 1;
-				if (desiredFacing != 0)
-					facing = desiredFacing;
-				else if (aircraft.Facing != 0)
-					facing = aircraft.Facing;
-				aircraft.SetPosition(self, aircraft.CenterPosition + aircraft.FlyStep(-facing));
-			}
+			// If not within range, fly towards target (or the last known position if useLastVisibleTarget is true).
+			// If VTOL and not at CruiseAltitude or within range & CanHover & not facing target, adjust altitude and/or facing first.
+			if ((inRange && aircraft.Info.CanHover && aircraft.Facing != desiredFacing) || (aircraft.Info.VTOL && dat != aircraft.Info.CruiseAltitude))
+				Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Vertical | MovementType.Turn);
+			else if (!inRange)
+				QueueChild(self, aircraft.MoveWithinRange(checkTarget, lastVisibleMinimumRange, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red), true);
 
 			return this;
 		}
