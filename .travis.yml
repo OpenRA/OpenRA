@@ -32,11 +32,6 @@ env:
 # call OpenRA to check for YAML errors
 # Run the NUnit tests
 script:
- - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.03-2_all.deb
- - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis_3.03-2_amd64.deb
- - sudo dpkg -i nsis-common_3.03-2_all.deb
- - sudo dpkg -i nsis_3.03-2_amd64.deb
- - makensis -VERSION
  - travis_retry make all-dependencies
  - make all
  - make check
@@ -68,6 +63,11 @@ notifications:
     skip_join: true
 
 before_deploy:
+ - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.03-2_all.deb
+ - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis_3.03-2_amd64.deb
+ - sudo dpkg -i nsis-common_3.03-2_all.deb
+ - sudo dpkg -i nsis_3.03-2_amd64.deb
+ - makensis -VERSION
  - export PATH=$PATH:$HOME/usr/bin
  - DOTVERSION=`echo ${TRAVIS_TAG} | sed "s/-/\\./g"`
  - cd packaging
