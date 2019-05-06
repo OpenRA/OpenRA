@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string CannotPlaceNotification = null;
 
+		[Desc("Hotkey to toggle between PlaceBuildingVariants when placing a structure.")]
+		public HotkeyReference ToggleVariantKey = new HotkeyReference();
+
 		public object Create(ActorInitializer init) { return new PlaceBuilding(this); }
 	}
 
@@ -56,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				var prevItems = GetNumBuildables(self.Owner);
-				var targetActor = w.GetActorById(order.ExtraData);
+				var targetActor = w.GetActorById((uint)order.ExtraLocation.X);
 				var targetLocation = w.Map.CellContaining(order.Target.CenterPosition);
 
 				if (targetActor == null || targetActor.IsDead)
@@ -75,6 +78,18 @@ namespace OpenRA.Mods.Common.Traits
 				if (item == null)
 					return;
 
+				// Override with the alternate actor
+				if (order.ExtraLocation.Y > 0)
+				{
+					var variant = actorInfo.TraitInfos<PlaceBuildingVariantsInfo>()
+						.SelectMany(p => p.Actors)
+						.Skip(order.ExtraLocation.Y - 1)
+						.FirstOrDefault();
+
+					if (variant != null)
+						actorInfo = self.World.Map.Rules.Actors[variant];
+				}
+
 				var producer = queue.MostLikelyProducer();
 				var faction = producer.Trait != null ? producer.Trait.Faction : self.Owner.Faction.InternalName;
 				var buildingInfo = actorInfo.TraitInfo<BuildingInfo>();
@@ -86,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (os == "LineBuild")
 				{
 					// Build the parent actor first
-					var placed = w.CreateActor(order.TargetString, new TypeDictionary
+					var placed = w.CreateActor(actorInfo.Name, new TypeDictionary
 					{
 						new LocationInit(targetLocation),
 						new OwnerInit(order.Player),
@@ -100,14 +115,14 @@ namespace OpenRA.Mods.Common.Traits
 					// Build the connection segments
 					var segmentType = actorInfo.TraitInfo<LineBuildInfo>().SegmentType;
 					if (string.IsNullOrEmpty(segmentType))
-						segmentType = order.TargetString;
+						segmentType = actorInfo.Name;
 
 					foreach (var t in BuildingUtils.GetLineBuildCells(w, targetLocation, actorInfo, buildingInfo))
 					{
 						if (t.First == targetLocation)
 							continue;
 
-						w.CreateActor(t.First == targetLocation ? order.TargetString : segmentType, new TypeDictionary
+						w.CreateActor(t.First == targetLocation ? actorInfo.Name : segmentType, new TypeDictionary
 						{
 							new LocationInit(t.First),
 							new OwnerInit(order.Player),
@@ -157,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 						}
 					}
 
-					var building = w.CreateActor(order.TargetString, new TypeDictionary
+					var building = w.CreateActor(actorInfo.Name, new TypeDictionary
 					{
 						new LocationInit(targetLocation),
 						new OwnerInit(order.Player),

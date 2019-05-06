@@ -36,15 +36,58 @@ namespace OpenRA.Mods.Common.Orders
 		IEnumerable<IRenderable> Render(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint);
 	}
 
-	public class PlaceBuildingOrderGenerator : OrderGenerator
+	public class PlaceBuildingOrderGenerator : IOrderGenerator
 	{
+		class VariantWrapper
+		{
+			public readonly ActorInfo ActorInfo;
+			public readonly BuildingInfo BuildingInfo;
+			public readonly PlugInfo PlugInfo;
+			public readonly LineBuildInfo LineBuildInfo;
+			public readonly IPlaceBuildingPreview Preview;
+
+			public VariantWrapper(WorldRenderer wr, ProductionQueue queue, ActorInfo ai)
+			{
+				ActorInfo = ai;
+				BuildingInfo = ActorInfo.TraitInfo<BuildingInfo>();
+				PlugInfo = ActorInfo.TraitInfoOrDefault<PlugInfo>();
+				LineBuildInfo = ActorInfo.TraitInfoOrDefault<LineBuildInfo>();
+
+				var previewGeneratorInfo = ActorInfo.TraitInfoOrDefault<IPlaceBuildingPreviewGeneratorInfo>();
+				if (previewGeneratorInfo != null)
+				{
+					string faction;
+					var buildableInfo = ActorInfo.TraitInfoOrDefault<BuildableInfo>();
+					if (buildableInfo != null && buildableInfo.ForceFaction != null)
+						faction = buildableInfo.ForceFaction;
+					else
+					{
+						var mostLikelyProducer = queue.MostLikelyProducer();
+						faction = mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName;
+					}
+
+					var td = new TypeDictionary()
+					{
+						new FactionInit(faction),
+						new OwnerInit(queue.Actor.Owner),
+					};
+
+					foreach (var api in ActorInfo.TraitInfos<IActorPreviewInitInfo>())
+						foreach (var o in api.ActorPreviewInits(ActorInfo, ActorPreviewType.PlaceBuilding))
+							td.Add(o);
+
+					Preview = previewGeneratorInfo.CreatePreview(wr, ActorInfo, td);
+				}
+			}
+		}
+
 		readonly ProductionQueue queue;
 		readonly PlaceBuildingInfo placeBuildingInfo;
 		readonly BuildingInfluence buildingInfluence;
+		readonly ResourceLayer resourceLayer;
 		readonly Viewport viewport;
-		readonly ActorInfo actorInfo;
-		readonly BuildingInfo buildingInfo;
-		readonly IPlaceBuildingPreview preview;
+		readonly VariantWrapper[] variants;
+		int variant;
 
 		public PlaceBuildingOrderGenerator(ProductionQueue queue, string name, WorldRenderer worldRenderer)
 		{
@@ -52,37 +95,23 @@ namespace OpenRA.Mods.Common.Orders
 			this.queue = queue;
 			placeBuildingInfo = queue.Actor.Owner.PlayerActor.Info.TraitInfo<PlaceBuildingInfo>();
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
+			resourceLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
 			viewport = worldRenderer.Viewport;
 
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
 				world.Selection.Clear();
 
-			actorInfo = world.Map.Rules.Actors[name];
-			buildingInfo = actorInfo.TraitInfo<BuildingInfo>();
-
-			var previewGeneratorInfo = actorInfo.TraitInfoOrDefault<IPlaceBuildingPreviewGeneratorInfo>();
-			if (previewGeneratorInfo != null)
+			var variants = new List<VariantWrapper>()
 			{
-				var faction = actorInfo.TraitInfo<BuildableInfo>().ForceFaction;
-				if (faction == null)
-				{
-					var mostLikelyProducer = queue.MostLikelyProducer();
-					faction = mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName;
-				}
+				new VariantWrapper(worldRenderer, queue, world.Map.Rules.Actors[name])
+			};
 
-				var td = new TypeDictionary()
-				{
-					new FactionInit(faction),
-					new OwnerInit(queue.Actor.Owner),
-				};
+			foreach (var v in variants[0].ActorInfo.TraitInfos<PlaceBuildingVariantsInfo>())
+				foreach (var a in v.Actors)
+					variants.Add(new VariantWrapper(worldRenderer, queue, world.Map.Rules.Actors[a]));
 
-				foreach (var api in actorInfo.TraitInfos<IActorPreviewInitInfo>())
-					foreach (var o in api.ActorPreviewInits(actorInfo, ActorPreviewType.PlaceBuilding))
-						td.Add(o);
-
-				preview = previewGeneratorInfo.CreatePreview(worldRenderer, actorInfo, td);
-			}
+			this.variants = variants.ToArray();
 		}
 
 		PlaceBuildingCellType MakeCellType(bool valid, bool lineBuild = false)
@@ -94,20 +123,25 @@ namespace OpenRA.Mods.Common.Orders
 			return cell;
 		}
 
-		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (mi.Button == MouseButton.Right)
-				world.CancelInputMode();
+			if ((mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down) || (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up))
+			{
+				if (mi.Button == MouseButton.Right)
+					world.CancelInputMode();
 
-			var ret = InnerOrder(world, cell, mi).ToArray();
+				var ret = InnerOrder(world, cell, mi).ToArray();
 
-			// If there was a successful placement order
-			if (ret.Any(o => o.OrderString == "PlaceBuilding"
-				|| o.OrderString == "LineBuild"
-				|| o.OrderString == "PlacePlug"))
-				world.CancelInputMode();
+				// If there was a successful placement order
+				if (ret.Any(o => o.OrderString == "PlaceBuilding"
+				                 || o.OrderString == "LineBuild"
+				                 || o.OrderString == "PlacePlug"))
+					world.CancelInputMode();
 
-			return ret;
+				return ret;
+			}
+
+			return Enumerable.Empty<Order>();
 		}
 
 		CPos TopLeft
@@ -115,8 +149,8 @@ namespace OpenRA.Mods.Common.Orders
 			get
 			{
 				var offsetPos = Viewport.LastMousePos;
-				if (preview != null)
-					offsetPos += preview.TopLeftScreenOffset;
+				if (variants[variant].Preview != null)
+					offsetPos += variants[variant].Preview.TopLeftScreenOffset;
 
 				return viewport.ViewToWorld(offsetPos);
 			}
@@ -128,12 +162,15 @@ namespace OpenRA.Mods.Common.Orders
 				yield break;
 
 			var owner = queue.Actor.Owner;
+			var ai = variants[variant].ActorInfo;
+			var bi = variants[variant].BuildingInfo;
+
 			if (mi.Button == MouseButton.Left)
 			{
 				var orderType = "PlaceBuilding";
 				var topLeft = TopLeft;
 
-				var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
+				var plugInfo = ai.TraitInfoOrDefault<PlugInfo>();
 				if (plugInfo != null)
 				{
 					orderType = "PlacePlug";
@@ -145,8 +182,8 @@ namespace OpenRA.Mods.Common.Orders
 				}
 				else
 				{
-					if (!world.CanPlaceBuilding(topLeft, actorInfo, buildingInfo, null)
-						|| !buildingInfo.IsCloseEnoughToBase(world, owner, actorInfo, topLeft))
+					if (!world.CanPlaceBuilding(topLeft, ai, bi, null)
+						|| !bi.IsCloseEnoughToBase(world, owner, ai, topLeft))
 					{
 						foreach (var order in ClearBlockersOrders(world, topLeft))
 							yield return order;
@@ -155,29 +192,31 @@ namespace OpenRA.Mods.Common.Orders
 						yield break;
 					}
 
-					if (actorInfo.HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
+					if (ai.HasTraitInfo<LineBuildInfo>() && !mi.Modifiers.HasModifier(Modifiers.Shift))
 						orderType = "LineBuild";
 				}
 
 				yield return new Order(orderType, owner.PlayerActor, Target.FromCell(world, topLeft), false)
 				{
 					// Building to place
-					TargetString = actorInfo.Name,
+					TargetString = variants[0].ActorInfo.Name,
 
-					// Actor to associate the placement with
-					ExtraData = queue.Actor.ActorID,
+					// Pack the actor to associate the placement with and the alternate actor flag together
+					ExtraLocation = new CPos((int)queue.Actor.ActorID, variant),
+
 					SuppressVisualFeedback = true
 				};
 			}
 		}
 
-		protected override void Tick(World world)
+		void IOrderGenerator.Tick(World world)
 		{
-			if (queue.AllQueued().All(i => !i.Done || i.Item != actorInfo.Name))
+			if (queue.AllQueued().All(i => !i.Done || i.Item != variants[0].ActorInfo.Name))
 				world.CancelInputMode();
 
-			if (preview != null)
-				preview.Tick();
+			foreach (var v in variants)
+				if (v.Preview != null)
+					v.Preview.Tick();
 		}
 
 		bool AcceptsPlug(CPos cell, PlugInfo plug)
@@ -190,12 +229,18 @@ namespace OpenRA.Mods.Common.Orders
 			return host.TraitsImplementing<Pluggable>().Any(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type));
 		}
 
-		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
-		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
+		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
 		{
 			var topLeft = TopLeft;
 			var footprint = new Dictionary<CPos, PlaceBuildingCellType>();
-			var plugInfo = actorInfo.TraitInfoOrDefault<PlugInfo>();
+			var activeVariant = variants[variant];
+			var actorInfo = activeVariant.ActorInfo;
+			var buildingInfo = activeVariant.BuildingInfo;
+			var plugInfo = activeVariant.PlugInfo;
+			var lineBuildInfo = activeVariant.LineBuildInfo;
+			var preview = activeVariant.Preview;
+
 			if (plugInfo != null)
 			{
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
@@ -203,7 +248,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				footprint.Add(topLeft, MakeCellType(AcceptsPlug(topLeft, plugInfo)));
 			}
-			else if (actorInfo.HasTraitInfo<LineBuildInfo>())
+			else if (lineBuildInfo != null)
 			{
 				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
@@ -225,20 +270,34 @@ namespace OpenRA.Mods.Common.Orders
 			}
 			else
 			{
-				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
 				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft);
 				foreach (var t in buildingInfo.Tiles(topLeft))
-					footprint.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (res == null || res.GetResource(t) == null)));
+					footprint.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (resourceLayer == null || resourceLayer.GetResource(t) == null)));
 			}
 
 			return preview != null ? preview.Render(wr, topLeft, footprint) : Enumerable.Empty<IRenderable>();
 		}
 
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
+		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
+
+		bool IOrderGenerator.HandleKeyPress(KeyInput e)
+		{
+			if (variants.Length > 0 && placeBuildingInfo.ToggleVariantKey.IsActivatedBy(e))
+			{
+				if (++variant >= variants.Length)
+					variant = 0;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		void IOrderGenerator.Deactivate() { }
 
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
-			var allTiles = buildingInfo.Tiles(topLeft).ToArray();
+			var allTiles = variants[variant].BuildingInfo.Tiles(topLeft).ToArray();
 			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 
