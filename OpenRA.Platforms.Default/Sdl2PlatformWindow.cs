@@ -30,7 +30,7 @@ namespace OpenRA.Platforms.Default
 		Size windowSize;
 		Size surfaceSize;
 		float windowScale;
-		int2 mousePosition;
+		int2? lockedMousePosition;
 
 		internal IntPtr Window
 		{
@@ -283,13 +283,16 @@ namespace OpenRA.Platforms.Default
 			{
 				int x, y;
 				SDL.SDL_GetMouseState(out x, out y);
-				mousePosition = new int2(x, y);
+				lockedMousePosition = new int2(x, y);
 				SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_TRUE);
 			}
 			else
 			{
 				SDL.SDL_SetRelativeMouseMode(SDL.SDL_bool.SDL_FALSE);
-				SDL.SDL_WarpMouseInWindow(window, mousePosition.X, mousePosition.Y);
+				if (lockedMousePosition.HasValue)
+					SDL.SDL_WarpMouseInWindow(window, lockedMousePosition.Value.X, lockedMousePosition.Value.Y);
+
+				lockedMousePosition = null;
 			}
 		}
 
@@ -348,7 +351,7 @@ namespace OpenRA.Platforms.Default
 		public void PumpInput(IInputHandler inputHandler)
 		{
 			VerifyThreadAffinity();
-			input.PumpInput(this, inputHandler);
+			input.PumpInput(this, inputHandler, lockedMousePosition);
 		}
 
 		public string GetClipboardText()

@@ -336,7 +336,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event == MouseInputEvent.Scroll &&
 				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
 			{
-				Zoom(mi.ScrollDelta);
+				Zoom(mi.Delta.Y);
 				return true;
 			}
 

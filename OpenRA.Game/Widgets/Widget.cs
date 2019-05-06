@@ -153,8 +153,8 @@ namespace OpenRA.Widgets
 		public static void ResetTooltips()
 		{
 			// Issue a no-op mouse move to force any tooltips to be recalculated
-			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None, 0,
-				Viewport.LastMousePos, Modifiers.None, 0));
+			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None,
+				Viewport.LastMousePos, int2.Zero, Modifiers.None, 0));
 		}
 	}
 
