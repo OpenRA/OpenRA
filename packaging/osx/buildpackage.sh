@@ -9,7 +9,7 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
 	command -v genisoimage >/dev/null 2>&1 || { echo >&2 "macOS packaging requires genisoimage."; exit 1; }
 fi
 
-LAUNCHER_TAG="osx-launcher-20190317"
+LAUNCHER_TAG="osx-launcher-20190506"
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"
