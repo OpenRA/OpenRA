@@ -3,7 +3,7 @@
 
 dist: xenial
 language: csharp
-mono: 5.10.0
+mono: 5.20.1
 
 cache:
   directories:
