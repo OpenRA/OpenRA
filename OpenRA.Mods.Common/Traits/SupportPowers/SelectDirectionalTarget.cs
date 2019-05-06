@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class SelectDirectionalTarget : IOrderGenerator
 	{
+		const int MinDragThreshold = 20;
+		const int MaxDragThreshold = 75;
+
 		readonly string order;
 		readonly SupportPowerManager manager;
 		readonly string cursor;
@@ -29,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos targetCell;
 		int2 targetLocation;
-		int2 dragLocation;
+		float2 dragDirection;
 		bool activated;
 		bool dragStarted;
 		Arrow currentArrow;
@@ -72,9 +75,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				dragLocation = mi.Location;
+				dragDirection += mi.Delta;
 
-				var angle = AngleBetween(targetLocation, dragLocation);
+				var angle = AngleOf(dragDirection);
+				if (dragDirection.Length > MaxDragThreshold)
+					dragDirection = -MaxDragThreshold * float2.FromAngle((float)(angle * (Math.PI / 180)));
+
 				currentArrow = GetArrow(angle);
 				dragStarted = true;
 			}
@@ -100,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsOutsideDragZone
 		{
-			get { return dragStarted && (dragLocation - targetLocation).Length > 20; }
+			get { return dragStarted && dragDirection.Length > MinDragThreshold; }
 		}
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
@@ -130,9 +136,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Starting at (0, -1) and rotating in CCW
-		static double AngleBetween(int2 p1, int2 p2)
+		static double AngleOf(float2 delta)
 		{
-			var radian = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
+			var radian = Math.Atan2(delta.Y, delta.X);
 			var d = radian * (180 / Math.PI);
 			if (d < 0.0)
 				d += 360.0;

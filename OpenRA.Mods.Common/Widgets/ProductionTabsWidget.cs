@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (mi.Event == MouseInputEvent.Scroll)
 			{
-				Scroll(mi.ScrollDelta);
+				Scroll(mi.Delta.Y);
 				return true;
 			}
 
