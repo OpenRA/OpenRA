@@ -162,6 +162,7 @@ E5:
 
 E6:
 	Inherits: ^Soldier
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Valued:
 		Cost: 500
 	Tooltip:

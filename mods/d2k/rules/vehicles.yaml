@@ -1,5 +1,6 @@
 mcv:
 	Inherits: ^Tank
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
@@ -50,6 +51,7 @@ mcv:
 
 harvester:
 	Inherits: ^Tank
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Armor
 		Prerequisites: refinery

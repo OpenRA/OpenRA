@@ -244,6 +244,7 @@ E4:
 
 E6:
 	Inherits: ^Soldier
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
