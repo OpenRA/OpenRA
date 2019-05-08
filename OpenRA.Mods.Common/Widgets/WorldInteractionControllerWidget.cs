@@ -56,6 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			var modifiers = Game.GetModifierKeys();
 			if (IsValidDragbox)
 			{
 				// Render actors in the dragbox
@@ -63,13 +64,13 @@ namespace OpenRA.Mods.Common.Widgets
 				var b = new float3(mousePos.X, mousePos.Y, mousePos.Y);
 				Game.Renderer.WorldRgbaColorRenderer.DrawRect(a, b,
 					1 / worldRenderer.Viewport.Zoom, Color.White);
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, dragStart, mousePos))
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, modifiers))
 					DrawRollover(u);
 			}
 			else
 			{
 				// Render actors under the mouse pointer
-				foreach (var u in SelectActorsInBoxWithDeadzone(World, mousePos, mousePos))
+				foreach (var u in SelectActorsInBoxWithDeadzone(World, mousePos, mousePos, modifiers))
 					DrawRollover(u);
 			}
 		}
@@ -125,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (multiClick)
 					{
 						var unit = World.ScreenMap.ActorsAtMouse(mousePos)
-							.WithHighestSelectionPriority(mousePos);
+							.WithHighestSelectionPriority(mousePos, mi.Modifiers);
 
 						if (unit != null && unit.Owner == (World.RenderPlayer ?? World.LocalPlayer))
 						{
@@ -152,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 						*/
 						if (isDragging && (!(World.OrderGenerator is GenericSelectTarget) || IsValidDragbox))
 						{
-							var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos);
+							var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, mi.Modifiers);
 							World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
 						}
 					}
@@ -251,7 +252,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (SelectAllKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
 					// Select actors on the screen which belong to the current player
-					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority().ToList();
+					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, player).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
 
 					// Check if selecting actors on the screen has selected new units
 					if (ownUnitsOnScreen.Count > World.Selection.Actors.Count())
@@ -259,7 +260,7 @@ namespace OpenRA.Mods.Common.Widgets
 					else
 					{
 						// Select actors in the world that have highest selection priority
-						ownUnitsOnScreen = SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority().ToList();
+						ownUnitsOnScreen = SelectActorsInWorld(World, null, player).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
 						Game.AddSystemLine("Battlefield Control", "Selected across map");
 					}
 
@@ -321,29 +322,29 @@ namespace OpenRA.Mods.Common.Widgets
 			});
 		}
 
-		static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, int2 a)
+		static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, int2 a, Modifiers modifiers)
 		{
 			var selected = world.ScreenMap.ActorsAtMouse(a)
 				.Where(x => x.Actor.Info.HasTraitInfo<SelectableInfo>() && (x.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x.Actor)))
-				.WithHighestSelectionPriority(a);
+				.WithHighestSelectionPriority(a, modifiers);
 
 			if (selected != null)
 				yield return selected;
 		}
 
-		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b)
+		static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b, Modifiers modifiers)
 		{
 			// For dragboxes that are too small, shrink the dragbox to a single point (point b)
 			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)
 				a = b;
 
 			if (a == b)
-				return SelectHighestPriorityActorAtPoint(world, a);
+				return SelectHighestPriorityActorAtPoint(world, a, modifiers);
 
 			return world.ScreenMap.ActorsInMouseBox(a, b)
 				.Select(x => x.Actor)
 				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
-				.SubsetWithHighestSelectionPriority();
+				.SubsetWithHighestSelectionPriority(modifiers);
 		}
 	}
 }
