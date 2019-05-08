@@ -1,6 +1,7 @@
 MCV:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
@@ -45,6 +46,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Valued:
 		Cost: 1400
 	Tooltip:

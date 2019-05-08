@@ -289,6 +289,7 @@ ARTY:
 
 HARV:
 	Inherits: ^Vehicle
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
@@ -342,6 +343,7 @@ HARV:
 
 MCV:
 	Inherits: ^Vehicle
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 90
@@ -468,6 +470,7 @@ APC:
 
 MNLY:
 	Inherits: ^TrackedVehicle
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -511,6 +514,7 @@ MNLY:
 
 TRUK:
 	Inherits: ^Vehicle
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 20

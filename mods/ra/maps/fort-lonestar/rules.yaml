@@ -138,6 +138,7 @@ OILB:
 
 MOBILETENT:
 	Inherits: ^Vehicle
+	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
 	Valued:
 		Cost: 2000
 	Tooltip:

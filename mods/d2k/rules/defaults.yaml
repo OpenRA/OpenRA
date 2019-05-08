@@ -163,9 +163,18 @@
 	AttackMove:
 		AssaultMoveCondition: assault-move
 
+^FlatSelectionMode:
+	Selectable:
+		PriorityModifiers: Ctrl
+
+^LowPrioritySelectionMode:
+	Selectable:
+		PriorityModifiers: Ctrl, Alt
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@SELECTION_MODE: ^FlatSelectionMode
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -269,6 +278,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
+	Inherits@SELECTION_MODE: ^FlatSelectionMode
 	Tooltip:
 		GenericName: Unit
 	Huntable:
