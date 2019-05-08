@@ -9,12 +9,28 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA.Traits
 {
-	[Desc("This actor is selectable. Defines bounds of selectable area, selection class and selection priority.")]
+	[Flags]
+	public enum SelectionPriorityModifiers
+	{
+		None = 0,
+		Ctrl = 1,
+		Alt = 2
+	}
+
+	[Desc("This actor is selectable. Defines bounds of selectable area, selection class, selection priority and selection priority modifiers.")]
 	public class SelectableInfo : InteractableInfo
 	{
 		public readonly int Priority = 10;
+
+		[Desc("Allow selection priority to be modified using a hotkey.",
+			"Valid values are None (priority is not affected by modifiers)",
+			"Ctrl (priority is raised when Ctrl pressed) and",
+			"Alt (priority is raised when Alt pressed).")]
+		public readonly SelectionPriorityModifiers PriorityModifiers = SelectionPriorityModifiers.None;
 
 		[Desc("All units having the same selection class specified will be selected with select-by-type commands (e.g. double-click). "
 		+ "Defaults to the actor name when not defined or inherited.")]

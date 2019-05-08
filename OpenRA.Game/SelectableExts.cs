@@ -18,17 +18,19 @@ namespace OpenRA.Traits
 {
 	public static class SelectableExts
 	{
-		public static int SelectionPriority(this ActorInfo a)
+		public static int SelectionPriority(this ActorInfo a, Modifiers modifiers)
 		{
 			var selectableInfo = a.TraitInfoOrDefault<SelectableInfo>();
-			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
+			return selectableInfo != null ? BaseSelectionPriority(selectableInfo, modifiers) : int.MinValue;
 		}
 
 		const int PriorityRange = 30;
 
-		public static int SelectionPriority(this Actor a)
+		public static int SelectionPriority(this Actor a, Modifiers modifiers)
 		{
-			var basePriority = a.Info.TraitInfo<SelectableInfo>().Priority;
+			var info = a.Info.TraitInfo<SelectableInfo>();
+			var basePriority = BaseSelectionPriority(info, modifiers);
+
 			var lp = a.World.LocalPlayer;
 
 			if (a.Owner == lp || lp == null)
@@ -45,37 +47,50 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, int2 selectionPixel)
+		static int BaseSelectionPriority(SelectableInfo info, Modifiers modifiers)
+		{
+			var priority = info.Priority;
+
+			if (modifiers.HasModifier(Modifiers.Ctrl) && !modifiers.HasModifier(Modifiers.Alt) && info.PriorityModifiers.HasFlag(SelectionPriorityModifiers.Ctrl))
+				priority = int.MaxValue;
+
+			if (modifiers.HasModifier(Modifiers.Alt) && !modifiers.HasModifier(Modifiers.Ctrl) && info.PriorityModifiers.HasFlag(SelectionPriorityModifiers.Alt))
+				priority = int.MaxValue;
+
+			return priority;
+		}
+
+		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, int2 selectionPixel, Modifiers modifiers)
 		{
 			if (!actors.Any())
 				return null;
 
-			return actors.MaxBy(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel)).Actor;
+			return actors.MaxBy(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel, modifiers)).Actor;
 		}
 
-		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel)
+		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel, Modifiers modifiers)
 		{
-			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel));
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel, modifiers));
 		}
 
-		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel)
+		static long CalculateActorSelectionPriority(ActorInfo info, Rectangle bounds, int2 selectionPixel, Modifiers modifiers)
 		{
 			if (bounds.IsEmpty)
-				return info.SelectionPriority();
+				return info.SelectionPriority(modifiers);
 
 			var centerPixel = new int2(
 				bounds.Left + bounds.Size.Width / 2,
 				bounds.Top + bounds.Size.Height / 2);
 
 			var pixelDistance = (centerPixel - selectionPixel).Length;
-			return ((long)-pixelDistance << 32) + info.SelectionPriority();
+			return ((long)-pixelDistance << 32) + info.SelectionPriority(modifiers);
 		}
 
 		static readonly Actor[] NoActors = { };
 
-		public static IEnumerable<Actor> SubsetWithHighestSelectionPriority(this IEnumerable<Actor> actors)
+		public static IEnumerable<Actor> SubsetWithHighestSelectionPriority(this IEnumerable<Actor> actors, Modifiers modifiers)
 		{
-			return actors.GroupBy(x => x.SelectionPriority())
+			return actors.GroupBy(x => x.SelectionPriority(modifiers))
 				.OrderByDescending(g => g.Key)
 				.Select(g => g.AsEnumerable())
 				.DefaultIfEmpty(NoActors)

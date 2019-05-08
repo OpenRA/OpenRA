@@ -22,14 +22,14 @@ namespace OpenRA.Orders
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(mi)
 				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a.Actor))
-				.WithHighestSelectionPriority(worldPixel);
+				.WithHighestSelectionPriority(worldPixel, mi.Modifiers);
 
 			if (actor != null)
 				return Target.FromActor(actor);
 
 			var frozen = world.ScreenMap.FrozenActorsAtMouse(world.RenderPlayer, mi)
 				.Where(a => a.Info.HasTraitInfo<ITargetableInfo>() && a.Visible && a.HasRenderables)
-				.WithHighestSelectionPriority(worldPixel);
+				.WithHighestSelectionPriority(worldPixel, mi.Modifiers);
 
 			if (frozen != null)
 				return Target.FromFrozenActor(frozen);
@@ -93,7 +93,7 @@ namespace OpenRA.Orders
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(xy)
 				.Where(a => !a.Actor.IsDead)
-				.WithHighestSelectionPriority(xy);
+				.WithHighestSelectionPriority(xy, mi.Modifiers);
 
 			if (actor == null)
 				return true;
@@ -103,7 +103,7 @@ namespace OpenRA.Orders
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 			var underCursor = world.Selection.Actors
 				.Select(a => new ActorBoundsPair(a, a.MouseBounds(wr)))
-				.WithHighestSelectionPriority(xy);
+				.WithHighestSelectionPriority(xy, mi.Modifiers);
 
 			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
 			if (o != null)
