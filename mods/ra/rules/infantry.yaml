@@ -32,7 +32,7 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 		ReloadingCondition: attack-cooldown
-	-AttackFrontal:	
+	-AttackFrontal:
 	AttackLeap:
 		Voice: Attack
 		PauseOnCondition: attacking || attack-cooldown

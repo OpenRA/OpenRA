@@ -25,12 +25,12 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference] public readonly string Voice = "Action";
 
 		[GrantedConditionReference]
-		[Desc("The condition to grant to self while scanning for targets during an attack-move.")]
-		public readonly string AttackMoveScanCondition = null;
+		[Desc("The condition to grant to self while an attack-move is active.")]
+		public readonly string AttackMoveCondition = null;
 
 		[GrantedConditionReference]
-		[Desc("The condition to grant to self while scanning for targets during an assault-move.")]
-		public readonly string AssaultMoveScanCondition = null;
+		[Desc("The condition to grant to self while an assault-move is active.")]
+		public readonly string AssaultMoveCondition = null;
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;

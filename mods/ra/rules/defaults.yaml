@@ -195,7 +195,7 @@
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
 	AttackMove:
-		AssaultMoveScanCondition: assault-move
+		AssaultMoveCondition: assault-move
 
 ^AutoTargetAir:
 	AutoTarget:
@@ -222,7 +222,7 @@
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything || assault-move
 	AttackMove:
-		AssaultMoveScanCondition: assault-move
+		AssaultMoveCondition: assault-move
 
 ^GlobalBounty:
 	GrantConditionOnPrerequisite@GLOBALBOUNTY:

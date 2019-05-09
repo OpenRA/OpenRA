@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (conditionManager == null || attackMove == null)
 				return;
 
-			if (!isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AttackMoveScanCondition))
-				token = conditionManager.GrantCondition(self, attackMove.Info.AttackMoveScanCondition);
-			else if (isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AssaultMoveScanCondition))
-				token = conditionManager.GrantCondition(self, attackMove.Info.AssaultMoveScanCondition);
+			if (!isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AttackMoveCondition))
+				token = conditionManager.GrantCondition(self, attackMove.Info.AttackMoveCondition);
+			else if (isAssaultMove && !string.IsNullOrEmpty(attackMove.Info.AssaultMoveCondition))
+				token = conditionManager.GrantCondition(self, attackMove.Info.AssaultMoveCondition);
 		}
 
 		public override Activity Tick(Actor self)
