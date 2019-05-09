@@ -125,6 +125,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceSpecialMoveConsiderations(),
 				new RefactorHarvesterIdle(),
 				new SplitHarvesterSpriteBody(),
+				new RenameAttackMoveConditions(),
 			})
 		};
 
