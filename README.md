@@ -8,7 +8,7 @@ A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
 
 Please read the [FAQ](http://wiki.openra.net/FAQ) in our [Wiki](http://wiki.openra.net) and report problems at [http://bugs.openra.net](http://bugs.openra.net).
 
-Join the [Forums](http://www.sleipnirstuff.com/forum/viewforum.php?f=80) for discussion.
+Join the [Forums](https://forum.openra.net/) for discussion.
 
 ## Play
 
