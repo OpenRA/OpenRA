@@ -489,10 +489,11 @@ Container@SETTINGS_PANEL:
 													Width: PARENT_RIGHT - 85
 													Height: 25
 													Align: Right
-												HotkeyEntry@HOTKEY:
+												Button@HOTKEY:
 													X: PARENT_RIGHT - WIDTH
 													Width: 80
 													Height: 25
+													Align: Left
 										Container@THREE_COLUMN:
 											Width: 173
 											Height: 25
@@ -503,10 +504,11 @@ Container@SETTINGS_PANEL:
 													Width: PARENT_RIGHT - 84
 													Height: 25
 													Align: Right
-												HotkeyEntry@HOTKEY:
+												Button@HOTKEY:
 													X: PARENT_RIGHT - WIDTH + 1
 													Width: 80
 													Height: 25
+													Align: Left
 				Container@ADVANCED_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM

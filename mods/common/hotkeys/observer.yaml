@@ -1,47 +1,47 @@
 ObserverCombinedView: MINUS
 	Description: All Players
-	Types: Observer
+	Types: Observer, Spectator
 
 ObserverWorldView: EQUALS
 	Description: Disable Shroud
-	Types: Observer
+	Types: Observer, Spectator
 
 ReplaySpeedSlow: F9
 	Description: Slow speed
-	Types: Replay
+	Types: Replay, Spectator
 
 ReplaySpeedRegular: F10
 	Description: Regular speed
-	Types: Replay
+	Types: Replay, Spectator
 
 ReplaySpeedFast: F11
 	Description: Fast speed
-	Types: Replay
+	Types: Replay, Spectator
 
 ReplaySpeedMax: F12
 	Description: Maximum speed
-	Types: Replay
+	Types: Replay, Spectator
 
 StatisticsBasic: F1
 	Description: Basic statistics
-	Types: Observer, Replay
+	Types: Observer, Replay, Spectator
 
 StatisticsEconomy: F2
 	Description: Economy statistics
-	Types: Observer, Replay
+	Types: Observer, Replay, Spectator
 
 StatisticsProduction: F3
 	Description: Production statistics
-	Types: Observer, Replay
+	Types: Observer, Replay, Spectator
 
 StatisticsCombat: F4
 	Description: Combat statistics
-	Types: Observer, Replay
+	Types: Observer, Replay, Spectator
 
 StatisticsGraph: F5
 	Description: Statistics graph
-	Types: Observer, Replay
+	Types: Observer, Replay, Spectator
 
 StatisticsArmyGraph: F6
 	Description: Army value graph
-	Types: Observer, Replay
+	Types: Observer, Replay, Spectator

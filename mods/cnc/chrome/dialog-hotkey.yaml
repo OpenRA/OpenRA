@@ -1,0 +1,103 @@
+Container@HOTKEY_DIALOG:
+	Logic: HotkeyDialogLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - 90)/2
+	Width: 370
+	Height: 135
+	Children:
+		Label@TITLE:
+			Width: PARENT_RIGHT
+			Y: 0-25
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: Hotkey remap
+		Background@bg:
+			Width: PARENT_RIGHT
+			Height: 100
+			Background: panel-black
+			Children:
+				Label@HOTKEY_LABEL:
+					X: 20
+					Y: 14
+					Width: PARENT_RIGHT - 40
+					Height: 25
+					Font: Bold
+				HotkeyEntry@HOTKEY_ENTRY:
+					X: 20
+					Y: 40
+					Width: PARENT_RIGHT - 40 - 70
+					Height: 25
+				Container@NOTICES:
+					X: 20
+					Y: 65
+					Width: PARENT_RIGHT - 40
+					Height: 25
+					Children:
+						Label@DEFAULT_NOTICE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: Tiny
+							Align: Left
+							Text: This is the default hotkey.
+						Label@ORIGINAL_NOTICE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: Tiny
+							Align: Left
+							Text: The default is "{0}".
+						Label@DUPLICATE_NOTICE:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: Tiny
+							Align: Left
+							Text: This hotkey is already used for "{0}".
+		Button@CLEAR_BUTTON:
+			X: PARENT_RIGHT - 2*WIDTH - 30
+			Y: 40
+			Width: 25
+			Height: 25
+			TooltipText: Unbind the hotkey
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
+			Children:
+				Image:
+					ImageCollection: lobby-bits
+					ImageName: kick
+					X: 7
+					Y: 8
+					IgnoreMouseOver: True
+		Button@RESET_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 40
+			Width: 25
+			Height: 25
+			TooltipText: Reset to default
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+		Button@ACCEPT_BUTTON:
+			X: PARENT_RIGHT - WIDTH
+			Y: PARENT_BOTTOM - HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: Save
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 0
+			Y: PARENT_BOTTOM - HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: Cancel
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:

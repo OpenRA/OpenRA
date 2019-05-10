@@ -131,9 +131,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			key.Get<LabelWidget>("FUNCTION").GetText = () => hd.Description + ":";
 
-			var textBox = key.Get<HotkeyEntryWidget>("HOTKEY");
-			textBox.Key = manager[hd.Name].GetValue();
-			textBox.OnLoseFocus = () => manager.Set(hd.Name, textBox.Key);
+			var remapButton = key.Get<ButtonWidget>("HOTKEY");
+			remapButton.GetText = () => manager[hd.Name].GetValue().DisplayString();
+			remapButton.OnClick = () => {
+				Ui.OpenWindow("HOTKEY_DIALOG", new WidgetArgs
+				{
+					{ "onExit", () => { remapButton.GetText = () => manager[hd.Name].GetValue().DisplayString(); } },
+					{ "hotkeyDefinition", hd },
+					{ "hotkeyManager", manager },
+				});
+			};
 			parent.AddChild(key);
 		}
 

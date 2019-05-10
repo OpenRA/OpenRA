@@ -1,0 +1,84 @@
+Background@HOTKEY_DIALOG:
+	Logic: HotkeyDialogLogic
+	X: (WINDOW_RIGHT - WIDTH)/2
+	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	Width: 450
+	Height: 185
+	Children:
+		Label@TITLE:
+			Y: 20
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Hotkey remap
+			Align: Center
+			Font: Bold
+		Label@HOTKEY_LABEL:
+			X: 20
+			Y: 54
+			Width: PARENT_RIGHT - 40
+			Height: 25
+			Font: Bold
+		HotkeyEntry@HOTKEY_ENTRY:
+			X: 20
+			Y: 80
+			Width: 280
+			Height: 25
+		Container@NOTICES:
+			X: 20
+			Y: 105
+			Width: PARENT_RIGHT - 40
+			Height: 25
+			Children:
+				Label@DEFAULT_NOTICE:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Font: Tiny
+					Align: Left
+					Text: This is the default.
+				Label@ORIGINAL_NOTICE:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Font: Tiny
+					Align: Left
+					Text: The default is "{0}".
+				Label@DUPLICATE_NOTICE:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Font: Tiny
+					Align: Left
+					Text: This hotkey is already used for "{0}".
+		Button@CLEAR_BUTTON:
+			X: PARENT_RIGHT - 2*WIDTH - 30
+			Y: 80
+			Width: 55
+			Height: 25
+			Text: Clear
+			TooltipText: Unbind the hotkey
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
+		Button@RESET_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: 80
+			Width: 55
+			Height: 25
+			Text: Reset
+			TooltipText: Reset to default
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
+		Button@ACCEPT_BUTTON:
+			X: 20
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Save
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_RIGHT - WIDTH - 20
+			Y: PARENT_BOTTOM - 45
+			Width: 120
+			Height: 25
+			Text: Cancel
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
