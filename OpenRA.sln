@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Cnc", "OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj", "{2881135D-4D62-493E-8F83-5EEE92CCC6BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Mods.Cnc", "OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj", "{2881135D-4D62-493E-8F83-5EEE92CCC6BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Utility", "OpenRA.Utility\OpenRA.Utility.csproj", "{F33337BE-CB69-4B24-850F-07D23E408DDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Utility", "OpenRA.Utility\OpenRA.Utility.csproj", "{F33337BE-CB69-4B24-850F-07D23E408DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Server", "OpenRA.Server\OpenRA.Server.csproj", "{76F621A1-3D8E-4A99-9F7E-B071EB657817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Server", "OpenRA.Server\OpenRA.Server.csproj", "{76F621A1-3D8E-4A99-9F7E-B071EB657817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.D2k", "OpenRA.Mods.D2k\OpenRA.Mods.D2k.csproj", "{C0B0465C-6BE2-409C-8770-3A9BF64C4344}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Mods.D2k", "OpenRA.Mods.D2k\OpenRA.Mods.D2k.csproj", "{C0B0465C-6BE2-409C-8770-3A9BF64C4344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Platforms.Default", "OpenRA.Platforms.Default\OpenRA.Platforms.Default.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Platforms.Default", "OpenRA.Platforms.Default\OpenRA.Platforms.Default.csproj", "{33D03738-C154-4028-8EA8-63A3C488A651}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Mods.Common", "OpenRA.Mods.Common\OpenRA.Mods.Common.csproj", "{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Mods.Common", "OpenRA.Mods.Common\OpenRA.Mods.Common.csproj", "{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Dawn Lua scripts", "Tiberian Dawn Lua scripts", "{62FCD0D0-6D24-435D-9DD8-3CCADCF7ECAB}"
 	ProjectSection(SolutionItems) = preProject
@@ -66,8 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\allies-05a\allies05a.lua = mods\ra\maps\allies-05a\allies05a.lua
 		mods\ra\maps\allies-06a\allies06a-AI.lua = mods\ra\maps\allies-06a\allies06a-AI.lua
 		mods\ra\maps\allies-06a\allies06a.lua = mods\ra\maps\allies-06a\allies06a.lua
-		mods\ra\maps\allies-06b\allies06b.lua = mods\ra\maps\allies-06b\allies06b.lua
 		mods\ra\maps\allies-06b\allies06b-AI.lua = mods\ra\maps\allies-06b\allies06b-AI.lua
+		mods\ra\maps\allies-06b\allies06b.lua = mods\ra\maps\allies-06b\allies06b.lua
 		mods\ra\maps\desert-shellmap\desert-shellmap.lua = mods\ra\maps\desert-shellmap\desert-shellmap.lua
 		mods\ra\maps\evacuation\evacuation.lua = mods\ra\maps\evacuation\evacuation.lua
 		mods\ra\maps\exodus\exodus.lua = mods\ra\maps\exodus\exodus.lua
@@ -76,6 +76,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\infiltration\infiltration.lua = mods\ra\maps\infiltration\infiltration.lua
 		mods\ra\maps\intervention\intervention.lua = mods\ra\maps\intervention\intervention.lua
 		mods\ra\maps\monster-tank-madness\monster-tank-madness.lua = mods\ra\maps\monster-tank-madness\monster-tank-madness.lua
+		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua
+		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea.lua
+		mods\ra\maps\top-o-the-world\scu36ea.lua = mods\ra\maps\top-o-the-world\scu36ea.lua
 		mods\ra\maps\soviet-01\soviet01.lua = mods\ra\maps\soviet-01\soviet01.lua
 		mods\ra\maps\soviet-02a\soviet02a.lua = mods\ra\maps\soviet-02a\soviet02a.lua
 		mods\ra\maps\soviet-02b\soviet02b.lua = mods\ra\maps\soviet-02b\soviet02b.lua
@@ -96,16 +99,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Red Alert Lua scripts", "Re
 		mods\ra\maps\soviet-06b\soviet06b-reinforcements_teams.lua = mods\ra\maps\soviet-06b\soviet06b-reinforcements_teams.lua
 		mods\ra\maps\soviet-06b\soviet06b.lua = mods\ra\maps\soviet-06b\soviet06b.lua
 		mods\ra\maps\soviet-07\soviet07.lua = mods\ra\maps\soviet-07\soviet07.lua
-		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea.lua
-		mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua = mods\ra\maps\soviet-soldier-volkov-n-chitzkoi\scu35ea-AI.lua
-		mods\ra\maps\top-o-the-world\scu36ea.lua = mods\ra\maps\top-o-the-world\scu36ea.lua
 		mods\ra\maps\survival01\survival01.lua = mods\ra\maps\survival01\survival01.lua
 		mods\ra\maps\survival02\survival02.lua = mods\ra\maps\survival02\survival02.lua
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Dune 2000 Lua scripts", "{06B1AE07-DDB0-4287-8700-A8CD9A0E652E}"
 	ProjectSection(SolutionItems) = preProject
-		mods\d2k\bits\scripts\campaign-global.lua = mods\d2k\bits\scripts\campaign-global.lua
 		mods\d2k\maps\atreides-01a\atreides01a.lua = mods\d2k\maps\atreides-01a\atreides01a.lua
 		mods\d2k\maps\atreides-01b\atreides01b.lua = mods\d2k\maps\atreides-01b\atreides01b.lua
 		mods\d2k\maps\atreides-02a\atreides02a-AI.lua = mods\d2k\maps\atreides-02a\atreides02a-AI.lua
@@ -120,6 +119,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\atreides-04\atreides04.lua = mods\d2k\maps\atreides-04\atreides04.lua
 		mods\d2k\maps\atreides-05\atreides05-AI.lua = mods\d2k\maps\atreides-05\atreides05-AI.lua
 		mods\d2k\maps\atreides-05\atreides05.lua = mods\d2k\maps\atreides-05\atreides05.lua
+		mods\d2k\bits\scripts\campaign-global.lua = mods\d2k\bits\scripts\campaign-global.lua
 		mods\d2k\maps\harkonnen-01a\harkonnen01a.lua = mods\d2k\maps\harkonnen-01a\harkonnen01a.lua
 		mods\d2k\maps\harkonnen-01b\harkonnen01b.lua = mods\d2k\maps\harkonnen-01b\harkonnen01b.lua
 		mods\d2k\maps\harkonnen-02a\harkonnen02a-AI.lua = mods\d2k\maps\harkonnen-02a\harkonnen02a-AI.lua
@@ -140,10 +140,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dune 2000 Lua scripts", "Du
 		mods\d2k\maps\harkonnen-06b\harkonnen06b.lua = mods\d2k\maps\harkonnen-06b\harkonnen06b.lua
 		mods\d2k\maps\harkonnen-07\harkonnen07-AI.lua = mods\d2k\maps\harkonnen-07\harkonnen07-AI.lua
 		mods\d2k\maps\harkonnen-07\harkonnen07.lua = mods\d2k\maps\harkonnen-07\harkonnen07.lua
-		mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua
-		mods\d2k\maps\harkonnen-09a\harkonnen09a.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a.lua
 		mods\d2k\maps\harkonnen-08\harkonnen08-AI.lua = mods\d2k\maps\harkonnen-08\harkonnen08-AI.lua
 		mods\d2k\maps\harkonnen-08\harkonnen08.lua = mods\d2k\maps\harkonnen-08\harkonnen08.lua
+		mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a-AI.lua
+		mods\d2k\maps\harkonnen-09a\harkonnen09a.lua = mods\d2k\maps\harkonnen-09a\harkonnen09a.lua
 		mods\d2k\maps\harkonnen-09b\harkonnen09b-AI.lua = mods\d2k\maps\harkonnen-09b\harkonnen09b-AI.lua
 		mods\d2k\maps\harkonnen-09b\harkonnen09b.lua = mods\d2k\maps\harkonnen-09b\harkonnen09b.lua
 		mods\d2k\maps\ordos-01a\ordos01a.lua = mods\d2k\maps\ordos-01a\ordos01a.lua
@@ -169,60 +169,139 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System Lua scripts", "Syste
 		lua\stacktraceplus.lua = lua\stacktraceplus.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Test", "OpenRA.Test\OpenRA.Test.csproj", "{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Test", "OpenRA.Test\OpenRA.Test.csproj", "{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiberian Sun Lua scripts", "Tiberian Sun Lua scripts", "{85159569-F5BD-458E-B5C0-EB16690C432B}"
 	ProjectSection(SolutionItems) = preProject
 		mods\ts\maps\fields-of-green\fields-of-green.lua = mods\ts\maps\fields-of-green\fields-of-green.lua
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.PostProcess", "OpenRA.PostProcess\OpenRA.PostProcess.csproj", "{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.PostProcess", "OpenRA.PostProcess\OpenRA.PostProcess.csproj", "{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
+		Dune 2000|x86 = Dune 2000|x86
+		Red Alert|x86 = Red Alert|x86
 		Release|x86 = Release|x86
+		Tiberian Dawn|x86 = Tiberian Dawn|x86
+		Tiberian Sun|x86 = Tiberian Sun|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.ActiveCfg = Debug|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Debug|x86.Build.0 = Debug|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Dune 2000|x86.ActiveCfg = Dune 2000|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Dune 2000|x86.Build.0 = Dune 2000|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Red Alert|x86.ActiveCfg = Red Alert|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Red Alert|x86.Build.0 = Red Alert|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|x86.ActiveCfg = Release|x86
 		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Release|x86.Build.0 = Release|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Tiberian Dawn|x86.ActiveCfg = Tiberian Dawn|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Tiberian Dawn|x86.Build.0 = Tiberian Dawn|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Tiberian Sun|x86.ActiveCfg = Tiberian Sun|x86
+		{0DFB103F-2962-400F-8C6D-E2C28CCBA633}.Tiberian Sun|x86.Build.0 = Tiberian Sun|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.ActiveCfg = Debug|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Debug|x86.Build.0 = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Dune 2000|x86.Build.0 = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Red Alert|x86.ActiveCfg = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Red Alert|x86.Build.0 = Debug|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|x86.ActiveCfg = Release|x86
 		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Release|x86.Build.0 = Release|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{2881135D-4D62-493E-8F83-5EEE92CCC6BE}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.ActiveCfg = Debug|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Debug|x86.Build.0 = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Dune 2000|x86.Build.0 = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Red Alert|x86.ActiveCfg = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Red Alert|x86.Build.0 = Debug|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|x86.ActiveCfg = Release|x86
 		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Release|x86.Build.0 = Release|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{F33337BE-CB69-4B24-850F-07D23E408DDF}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Debug|x86.ActiveCfg = Debug|x86
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Debug|x86.Build.0 = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Dune 2000|x86.Build.0 = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Red Alert|x86.ActiveCfg = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Red Alert|x86.Build.0 = Debug|x86
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Release|x86.ActiveCfg = Release|x86
 		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Release|x86.Build.0 = Release|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{76F621A1-3D8E-4A99-9F7E-B071EB657817}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.ActiveCfg = Debug|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Debug|x86.Build.0 = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Dune 2000|x86.Build.0 = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Red Alert|x86.ActiveCfg = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Red Alert|x86.Build.0 = Debug|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.ActiveCfg = Release|x86
 		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Release|x86.Build.0 = Release|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{C0B0465C-6BE2-409C-8770-3A9BF64C4344}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.ActiveCfg = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Debug|x86.Build.0 = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Dune 2000|x86.Build.0 = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Red Alert|x86.ActiveCfg = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Red Alert|x86.Build.0 = Debug|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.ActiveCfg = Release|x86
 		{33D03738-C154-4028-8EA8-63A3C488A651}.Release|x86.Build.0 = Release|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{33D03738-C154-4028-8EA8-63A3C488A651}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.ActiveCfg = Debug|x86
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Debug|x86.Build.0 = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Dune 2000|x86.Build.0 = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Red Alert|x86.ActiveCfg = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Red Alert|x86.Build.0 = Debug|x86
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|x86.ActiveCfg = Release|x86
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|x86.Build.0 = Release|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.ActiveCfg = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|x86.Build.0 = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Dune 2000|x86.Build.0 = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Red Alert|x86.ActiveCfg = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Red Alert|x86.Build.0 = Debug|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.ActiveCfg = Release|x86
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|x86.Build.0 = Release|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Tiberian Sun|x86.Build.0 = Debug|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Debug|x86.ActiveCfg = Debug|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Debug|x86.Build.0 = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Dune 2000|x86.ActiveCfg = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Dune 2000|x86.Build.0 = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Red Alert|x86.ActiveCfg = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Red Alert|x86.Build.0 = Debug|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Release|x86.ActiveCfg = Release|x86
 		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Release|x86.Build.0 = Release|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Tiberian Dawn|x86.ActiveCfg = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Tiberian Dawn|x86.Build.0 = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Tiberian Sun|x86.ActiveCfg = Debug|x86
+		{EE63AF7E-92EA-48FB-81E2-53D7D92F8050}.Tiberian Sun|x86.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E2FAACA-DADB-4EEB-9898-2B0269F45E69}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = OpenRA.Game\OpenRA.Game.csproj
