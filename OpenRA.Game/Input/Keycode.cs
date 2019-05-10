@@ -258,7 +258,7 @@ namespace OpenRA
 	{
 		static readonly Dictionary<Keycode, string> KeyNames = new Dictionary<Keycode, string>
 		{
-			{ Keycode.UNKNOWN, "Unknown" },
+			{ Keycode.UNKNOWN, "Undefined" },
 			{ Keycode.RETURN, "Return" },
 			{ Keycode.ESCAPE, "Escape" },
 			{ Keycode.BACKSPACE, "Backspace" },
