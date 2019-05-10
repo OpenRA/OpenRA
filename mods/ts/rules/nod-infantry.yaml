@@ -27,6 +27,7 @@ E3:
 		ProneOffset: 52,64,-652
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
@@ -39,6 +40,7 @@ CYBORG:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@EXPHOSPITAL: ^InfantryExperienceHospitalOverrides
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@WEBDISABLE: ^WebDisable
 	Armor:
 		Type: Light
 	Valued:
@@ -59,6 +61,7 @@ CYBORG:
 		VoiceSet: Cyborg
 	Mobile:
 		Speed: 56
+		PauseOnCondition: webdisable
 	Health:
 		HP: 30000
 	Passenger:
@@ -68,9 +71,12 @@ CYBORG:
 		Weapon: Vulcan3
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	SelectionDecorations:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	WithInfantryBody:
+		RequiresCondition: !webdisable
 
 CYC2:
 	Inherits: ^Cyborg

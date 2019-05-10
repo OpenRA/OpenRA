@@ -130,6 +130,24 @@ Veins:
 		Explosions: veins
 		ExplosionPalette: player
 
+WebLauncher:
+	ReloadDelay: 200
+	Range: 7c0
+	Report: fireweb1.aud
+	ValidTargets: Unwebbed
+	InvalidTargets: Webbed
+	Projectile: Bullet
+		Speed: 150
+		Image: web
+		Shadow: true
+		LaunchAngle: 112
+		Palette: ra
+	Warhead@WebMass: GrantExternalCondition
+		Range: 2c0
+		Duration: 600
+		ValidTargets: Unwebbed
+		Condition: webdisable	
+
 ^Debris:
 	Range: 5c0
 	Projectile: Bullet

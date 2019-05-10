@@ -26,6 +26,7 @@ E1:
 		RequiresCondition: rank-elite
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:

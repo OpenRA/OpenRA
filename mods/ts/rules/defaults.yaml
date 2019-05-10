@@ -117,6 +117,22 @@
 	ExternalCondition@EMPDISABLE:
 		Condition: empdisable
 
+^WebDisable:
+	TimedConditionBar@WEBDISABLE:
+		Condition: webdisable
+		Color: FFFFFF
+	ExternalCondition@WEBDISABLE:
+		Condition: webdisable
+	Targetable@WEBBED:
+		RequiresCondition: webdisable
+		TargetTypes: Webbed
+	Targetable@FREE:
+		RequiresCondition: !webdisable
+		TargetTypes: Unwebbed
+	WithSpriteBody@WEBBED:
+		Sequence: struggle
+		RequiresCondition: webdisable
+
 ^Cloakable:
 	Cloak@EXTERNALCLOAK:
 		RequiresCondition: cloakgenerator || crate-cloak
@@ -660,6 +676,7 @@
 ^Soldier:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
+	Inherits@Web: ^WebDisable
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
@@ -674,6 +691,9 @@
 		ProneOffset: 300,0,0
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
+		RequiresCondition: !webdisable
+	Mobile:
+		PauseOnCondition: webdisable
 
 ^Cyborg:
 	Inherits@1: ^Infantry
@@ -707,6 +727,7 @@
 ^CivilianInfantry:
 	Inherits@1: ^Infantry
 	Inherits@2: ^RegularInfantryDeath
+	Inherits@Web: ^WebDisable
 	Voiced:
 		VoiceSet: Civilian
 	Tooltip:
@@ -717,6 +738,10 @@
 		MaxMoveDelay: 750
 	MapEditorData:
 		Categories: Civilian infantry
+	WithInfantryBody:
+		RequiresCondition: !webdisable
+	Mobile:
+		PauseOnCondition: webdisable
 
 ^Vehicle:
 	Inherits@2: ^ExistsInWorld

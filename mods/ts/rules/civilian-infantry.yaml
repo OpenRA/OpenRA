@@ -19,6 +19,7 @@ WEEDGUY:
 		ProneOffset: 128,0,-320
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
 		DeathSequence: die-
@@ -48,6 +49,7 @@ UMAGON:
 		Weapon: Sniper
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
@@ -83,6 +85,7 @@ CHAMSPY:
 	-WithInfantryBody:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1,idle2
+		RequiresCondition: !webdisable
 
 MUTANT:
 	Inherits: ^Soldier
@@ -106,6 +109,7 @@ MUTANT:
 		Weapon: Vulcan
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
@@ -133,6 +137,7 @@ MWMN:
 		Weapon: Vulcan
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
@@ -160,6 +165,7 @@ MUTANT3:
 		Weapon: Vulcan
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 	WithInfantryBody:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
@@ -226,6 +232,7 @@ CIV1:
 		Weapon: Pistola
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
 
 CIV2:
 	Inherits: ^CivilianInfantry
@@ -239,3 +246,4 @@ CIV3:
 		Weapon: Pistola
 	AttackFrontal:
 		Voice: Attack
+		PauseOnCondition: webdisable
