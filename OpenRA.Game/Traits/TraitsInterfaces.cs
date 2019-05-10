@@ -445,7 +445,7 @@ namespace OpenRA.Traits
 		int Delay { get; }
 		bool IsValidAgainst(Actor victim, Actor firedBy);
 		bool IsValidAgainst(FrozenActor victim, Actor firedBy);
-		void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
+		void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers);
 	}
 
 	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }

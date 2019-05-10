@@ -18,18 +18,20 @@ namespace OpenRA.Effects
 	public class DelayedImpact : IEffect
 	{
 		readonly Target target;
+		readonly Target guidedTarget;
 		readonly Actor firedBy;
 		readonly IEnumerable<int> damageModifiers;
 		readonly IWarhead wh;
 
 		int delay;
 
-		public DelayedImpact(int delay, IWarhead wh, Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public DelayedImpact(int delay, IWarhead wh, Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			this.wh = wh;
 			this.delay = delay;
 
 			this.target = target;
+			this.guidedTarget = guidedTarget;
 			this.firedBy = firedBy;
 			this.damageModifiers = damageModifiers;
 		}
@@ -37,7 +39,7 @@ namespace OpenRA.Effects
 		public void Tick(World world)
 		{
 			if (--delay <= 0)
-				world.AddFrameEndTask(w => { w.Remove(this); wh.DoImpact(target, firedBy, damageModifiers); });
+				world.AddFrameEndTask(w => { w.Remove(this); wh.DoImpact(target, guidedTarget, firedBy, damageModifiers); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr) { yield break; }

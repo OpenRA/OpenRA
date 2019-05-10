@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public readonly WDist Range = WDist.FromCells(1);
 
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :
 				firedBy.World.FindActorsInCircle(target.CenterPosition, Range);

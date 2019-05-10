@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly string AddsResourceType = null;
 
 		// TODO: Allow maximum resource splatter to be defined. (Per tile, and in total).
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			if (string.IsNullOrEmpty(AddsResourceType))
 				return;

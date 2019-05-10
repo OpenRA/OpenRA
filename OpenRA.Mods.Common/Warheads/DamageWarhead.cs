@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Warheads
 			return Util.ApplyPercentageModifiers(100, armor);
 		}
 
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			// Used by traits or warheads that damage a single actor, rather than a position
 			if (target.Type == TargetType.Actor)

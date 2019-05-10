@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Warheads
 		}
 
 		/// <summary>Applies the warhead's effect against the target.</summary>
-		public abstract void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers);
+		public abstract void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers);
 
 		/// <summary>Checks if the warhead is valid against (can do something to) the actor.</summary>
 		public virtual bool IsValidAgainst(Actor victim, Actor firedBy)

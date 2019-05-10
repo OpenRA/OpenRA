@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Percentual chance the smudge is created.")]
 		public readonly int Chance = 100;
 
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			var world = firedBy.World;
 

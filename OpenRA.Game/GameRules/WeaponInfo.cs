@@ -176,18 +176,24 @@ namespace OpenRA.GameRules
 			return true;
 		}
 
-		/// <summary>Applies all the weapon's warheads to the target.</summary>
-		public void Impact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		/// <summary>Applies all the weapon's warheads to the target and passes projectile's guided target.</summary>
+		public void Impact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			foreach (var warhead in Warheads)
 			{
 				var wh = warhead; // force the closure to bind to the current warhead
 
 				if (wh.Delay > 0)
-					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedImpact(wh.Delay, wh, target, firedBy, damageModifiers)));
+					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedImpact(wh.Delay, wh, target, guidedTarget, firedBy, damageModifiers)));
 				else
-					wh.DoImpact(target, firedBy, damageModifiers);
+					wh.DoImpact(target, guidedTarget, firedBy, damageModifiers);
 			}
+		}
+
+		/// <summary>Applies all the weapon's warheads to the target. Use for places that trigger explosion directly (no projectile).</summary>
+		public void Impact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		{
+			Impact(target, target, firedBy, damageModifiers);
 		}
 	}
 }

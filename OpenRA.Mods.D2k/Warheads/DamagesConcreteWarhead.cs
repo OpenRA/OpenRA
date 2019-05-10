@@ -23,7 +23,7 @@ namespace OpenRA.Mods.D2k.Warheads
 		[FieldLoader.Require]
 		public readonly int Damage = 0;
 
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, Target guidedTarget, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			if (target.Type == TargetType.Invalid)
 				return;

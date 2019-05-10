@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				foreach (var a in actors)
 				{
 					var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - a.CenterPosition).Length));
-					args.Weapon.Impact(Target.FromActor(a), args.SourceActor, adjustedModifiers);
+					args.Weapon.Impact(Target.FromActor(a), args.GuidedTarget, args.SourceActor, adjustedModifiers);
 				}
 			}
 
