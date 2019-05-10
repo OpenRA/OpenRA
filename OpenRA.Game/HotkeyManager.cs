@@ -34,7 +34,10 @@ namespace OpenRA
 			}
 
 			foreach (var kv in settings)
-				keys[kv.Key] = kv.Value;
+			{
+				if (definitions.ContainsKey(kv.Key))
+					keys[kv.Key] = kv.Value;
+			}
 		}
 
 		internal Func<Hotkey> GetHotkeyReference(string name)
