@@ -17,28 +17,37 @@
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
+    <Configurations>Release;Debug;Red Alert;Tiberian Dawn;Dune 2000;Tiberian Sun</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
-    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)"/>
+    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+  <PropertyGroup Condition="'$(Configuration)' == 'Red Alert' OR '$(RunConfiguration)' == 'Red Alert' ">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ra</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Dune 2000' ">
+  <PropertyGroup Condition="'$(Configuration)' == 'Dune 2000' OR '$(RunConfiguration)' == 'Dune 2000' ">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=d2k</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Dawn' ">
+  <PropertyGroup Condition="'$(Configuration)' == 'Tiberian Dawn' OR '$(RunConfiguration)' == 'Tiberian Dawn' ">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=cnc</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Sun' ">
+  <PropertyGroup Condition="'$(Configuration)'=='Tiberian Sun' OR '$(RunConfiguration)' == 'Tiberian Sun' ">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
@@ -68,7 +77,7 @@
   <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
     <!-- Disable code style analysis on Release builds to improve compile-time performance -->
     <ItemGroup Condition="'$(Configuration)'=='Release'">
-      <Analyzer Remove="@(Analyzer)"/>
+      <Analyzer Remove="@(Analyzer)" />
     </ItemGroup>
   </Target>
   <Target Name="PostProcess" AfterTargets="Build" Inputs="$(TargetPath)" Outputs="$(IntermediateOutputPath)\$(TargetFileName).processed">
