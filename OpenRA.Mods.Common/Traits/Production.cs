@@ -108,7 +108,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual Exit SelectExit(Actor self, ActorInfo producee, string productionType, Func<Exit, bool> p)
 		{
-			return self.RandomExitOrDefault(self.World, productionType, p);
+			if (self.Info.TraitInfos<ExitInfo>().FirstEnabledTraitOrDefault().RandomExit)
+			{
+				return self.RandomExitOrDefault(self.World, productionType, p);
+			}
+
+			return self.ClosestExitOrDefault(productionType, rp.Value.Location, p);
 		}
 
 		protected Exit SelectExit(Actor self, ActorInfo producee, string productionType)

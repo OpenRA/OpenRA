@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;
 
+		[Desc("Select a random exit instead of always using the closest to the rally point.")]
+		public bool RandomExit = false;
+
 		public override object Create(ActorInitializer init) { return new Exit(init, this); }
 	}
 
@@ -70,12 +73,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static Exit RandomExitOrDefault(this Actor actor, World world, string productionType, Func<Exit, bool> p = null)
 		{
-			var allOfType = Exits(actor, productionType);
-			if (!allOfType.Any())
-				return null;
+			return Exits(actor, productionType)
+				.Shuffle(world.SharedRandom)
+				.FirstOrDefault(e => p == null || p(e));
+		}
 
-			var shuffled = allOfType.Shuffle(world.SharedRandom);
-			return p != null ? shuffled.FirstOrDefault(p) : shuffled.First();
+		public static Exit ClosestExitOrDefault(this Actor actor, string productionType, CPos target, Func<Exit, bool> p = null)
+		{
+			return Exits(actor, productionType)
+				.OrderBy(x => (actor.Location + x.Info.ExitCell - target).LengthSquared)
+				.FirstOrDefault(e => p == null || p(e));
 		}
 	}
 }
