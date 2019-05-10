@@ -70,8 +70,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Width of projectile (used for finding blocking actors).")]
 		public readonly WDist Width = new WDist(1);
 
-		[Desc("Maximum offset at the maximum range")]
+		[Desc("Maximum inaccuracy offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
+
+		[Desc("Inaccuracy override when sucessfully locked onto target. Defaults to Inaccuracy if negative.")]
+		public readonly WDist LockOnInaccuracy = new WDist(-1);
 
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
@@ -226,9 +229,13 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			var world = args.SourceActor.World;
 
-			if (info.Inaccuracy.Length > 0)
+			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
+				lockOn = true;
+
+			var inaccuracy = lockOn && info.LockOnInaccuracy.Length > -1 ? info.LockOnInaccuracy.Length : info.Inaccuracy.Length;
+			if (inaccuracy > 0)
 			{
-				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
+				inaccuracy = Util.ApplyPercentageModifiers(inaccuracy, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
 			}
 
@@ -237,9 +244,6 @@ namespace OpenRA.Mods.Common.Projectiles
 			velocity = new WVec(0, -speed, 0)
 				.Rotate(new WRot(WAngle.FromFacing(vFacing), WAngle.Zero, WAngle.Zero))
 				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing)));
-
-			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
-				lockOn = true;
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
