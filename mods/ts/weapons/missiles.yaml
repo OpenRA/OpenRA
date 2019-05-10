@@ -148,3 +148,56 @@ RedEye2:
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
 		ImpactActors: false
+
+QuadLauncher:
+	ReloadDelay: 180
+	Burst: 2
+	Range: 7c0
+	MinRange: 3c0
+	Report: samshot1.aud
+	ValidTargets: Ground, Air
+	InvalidTargets: Unwebbed
+	Projectile: Missile
+		MaximumLaunchSpeed: 72
+		Blockable: false
+		Shadow: true
+		Image: DRAGON
+		TrailImage: small_smoke_trail
+		TrailPalette: effectalpha75
+		HorizontalRateOfTurn: 5
+		RangeLimit: 3c0
+		Palette: ra
+		MinimumLaunchSpeed: 72
+		Speed: 128
+		Acceleration: 4
+		MinimumLaunchAngle: 192
+		MaximumLaunchAngle: 224
+		VerticalRateOfTurn: 20
+		CruiseAltitude: 3c0
+		TerrainHeightAware: true
+		CloseEnough: 1c0
+		Arm: 2
+	Warhead@Targeting: SpreadDamage
+		Spread: 1
+		Damage: 1
+		ValidTargets: Air, Ground
+	Warhead@Split1: FireWeaponAtTarget
+		Weapon: DualRockets
+		RandomYawRange: 128, 224
+	Warhead@Split2: FireWeaponAtTarget
+		Weapon: DualRockets
+		RandomYawRange: -224, -128
+
+DualRockets:
+	Inherits: ^DefaultMissile
+	Report: rketinf1.aud
+	Projectile: Missile
+		Arm: 2
+		LockOnProbability: 75
+		DisableInaccuracyOnLockOn: true
+		HorizontalRateOfTurn: 6
+		Inaccuracy: 3c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 5000
+	Warhead@2Eff: CreateEffect
+		Explosions: medium_clsn
