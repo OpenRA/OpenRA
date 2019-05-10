@@ -76,12 +76,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Cache the bounds from the default sequence to avoid flickering when the animation changes
 			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
 			boundsAnimation.PlayRepeating(info.Sequence);
-
-			if (info.StartSequence != null)
-				PlayCustomAnimation(init.Self, info.StartSequence,
-					() => DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence)));
-			else
-				DefaultAnimation.PlayRepeating(NormalizeSequence(init.Self, info.Sequence));
 		}
 
 		public string NormalizeSequence(Actor self, string sequence)
@@ -91,7 +85,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override void TraitEnabled(Actor self)
 		{
-			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
+			if (Info.StartSequence != null)
+				PlayCustomAnimation(self, Info.StartSequence,
+					() => DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence)));
+			else
+				DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 		}
 
 		public virtual void PlayCustomAnimation(Actor self, string name, Action after = null)
