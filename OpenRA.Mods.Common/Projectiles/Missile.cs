@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Maximum offset at the maximum range")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
+		[Desc("Is inaccuracy disabled when sucessfully locked onto target.")]
+		public readonly bool DisableInaccuracyOnLockOn = false;
+
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
 
@@ -219,7 +222,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			var world = args.SourceActor.World;
 
-			if (info.Inaccuracy.Length > 0)
+			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
+				lockOn = true;
+
+			if (!(info.DisableInaccuracyOnLockOn && lockOn) && info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * inaccuracy / 1024;
@@ -230,9 +236,6 @@ namespace OpenRA.Mods.Common.Projectiles
 			velocity = new WVec(0, -speed, 0)
 				.Rotate(new WRot(WAngle.FromFacing(vFacing), WAngle.Zero, WAngle.Zero))
 				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing)));
-
-			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
-				lockOn = true;
 
 			if (!string.IsNullOrEmpty(info.Image))
 			{
