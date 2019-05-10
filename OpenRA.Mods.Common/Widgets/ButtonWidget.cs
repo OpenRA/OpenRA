@@ -245,6 +245,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+
+			// Scissor when the text overflows
+			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			{
+				Game.Renderer.EnableScissor(new Rectangle(RenderOrigin.X + LeftMargin, RenderOrigin.Y,
+					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
+			}
+
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
 					disabled ? colordisabled : color, bgDark, bgLight, 2);
@@ -253,6 +261,9 @@ namespace OpenRA.Mods.Common.Widgets
 			else
 				font.DrawText(text, position + stateOffset,
 					disabled ? colordisabled : color);
+
+			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+				Game.Renderer.DisableScissor();
 		}
 
 		int2 GetTextPosition(int2 textSize, Rectangle rb)
