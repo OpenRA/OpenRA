@@ -243,12 +243,27 @@ namespace OpenRA.Mods.Common.Widgets
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
 
+			var contentWidth = Bounds.Width - LeftMargin - RightMargin;
 			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
 			var position = GetTextPosition(text, font, rb);
 
 			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+
+			// Scissor when the text overflows
+			var isTextOverflowing = font.Measure(text).X > contentWidth;
+			if (isTextOverflowing && TooltipContainer != null)
+			{
+				Game.Renderer.EnableScissor(new Rectangle(RenderOrigin.X + LeftMargin, RenderOrigin.Y,
+					contentWidth, Bounds.Bottom));
+
+				if (GetTooltipText() == null)
+					GetTooltipText = () => GetText();
+
+				text = WidgetUtils.TruncateText(text, contentWidth, font);
+			}
+
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
 					disabled ? colordisabled : color, bgDark, bgLight, 2);
@@ -257,6 +272,9 @@ namespace OpenRA.Mods.Common.Widgets
 			else
 				font.DrawText(text, position + stateOffset,
 					disabled ? colordisabled : color);
+
+			if (isTextOverflowing && TooltipContainer != null)
+				Game.Renderer.DisableScissor();
 		}
 
 		int2 GetTextPosition(string text, SpriteFont font, Rectangle rb)

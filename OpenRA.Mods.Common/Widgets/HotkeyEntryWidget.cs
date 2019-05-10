@@ -124,7 +124,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var textPos = pos + new int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
 
 			// Scissor when the text overflows
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
+			if (isTextOverflowing)
 			{
 				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var color = disabled ? TextColorDisabled : TextColor;
 			font.DrawText(apparentText, textPos, color);
 
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
+			if (isTextOverflowing)
 				Game.Renderer.DisableScissor();
 		}
 
