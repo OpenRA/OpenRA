@@ -11,6 +11,7 @@ Metrics:
 	GameStartedColor: FFA500
 	HotkeyColor: FFFFFF
 	HotkeyColorDisabled: 808080
+	HotkeyColorInvalid: FF0000
 	HotkeyFont: Regular
 	IncompatibleGameColor: A9A9A9
 	IncompatibleGameStartedColor: D2691E

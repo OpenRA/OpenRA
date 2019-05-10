@@ -24,12 +24,17 @@ namespace OpenRA.Mods.Common.Widgets
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
 
+		public Action OnTakeFocus = () => { };
 		public Action OnLoseFocus = () => { };
+		public Action OnEscape = () => { };
+		public Action OnReturn = () => { };
 
 		public Func<bool> IsDisabled = () => false;
+		public Func<bool> IsValid = () => false;
 		public string Font = ChromeMetrics.Get<string>("HotkeyFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("HotkeyColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("HotkeyColorDisabled");
+		public Color TextColorInvalid = ChromeMetrics.Get<Color>("HotkeyColorInvalid");
 
 		public HotkeyEntryWidget() { }
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
@@ -38,12 +43,22 @@ namespace OpenRA.Mods.Common.Widgets
 			Font = widget.Font;
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
+			TextColorInvalid = widget.TextColorInvalid;
 			VisualHeight = widget.VisualHeight;
+		}
+
+		public override bool TakeKeyboardFocus()
+		{
+			OnTakeFocus();
+			return base.TakeKeyboardFocus();
 		}
 
 		public override bool YieldKeyboardFocus()
 		{
 			OnLoseFocus();
+			if (!IsValid())
+				return false;
+
 			return base.YieldKeyboardFocus();
 		}
 
@@ -80,7 +95,14 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!HasKeyboardFocus || IgnoreKeys.Contains(e.Key))
 				return false;
 
-			Key = Hotkey.FromKeyInput(e);
+			if (e.Key != Keycode.ESCAPE && e.Key != Keycode.RETURN)
+				Key = Hotkey.FromKeyInput(e);
+
+			if (e.Key == Keycode.ESCAPE)
+				OnEscape();
+
+			if (e.Key == Keycode.RETURN)
+				OnReturn();
 
 			YieldKeyboardFocus();
 
@@ -109,6 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var textSize = font.Measure(apparentText);
 
 			var disabled = IsDisabled();
+			var valid = IsValid();
 			var state = disabled ? "textfield-disabled" :
 				HasKeyboardFocus ? "textfield-focused" :
 					Ui.MouseOverWidget == this ? "textfield-hover" :
@@ -131,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
 			}
 
-			var color = disabled ? TextColorDisabled : TextColor;
+			var color = disabled ? TextColorDisabled : !valid ? TextColorInvalid : TextColor;
 			font.DrawText(apparentText, textPos, color);
 
 			if (isTextOverflowing)

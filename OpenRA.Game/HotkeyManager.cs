@@ -67,6 +67,20 @@ namespace OpenRA
 				settings.Remove(name);
 		}
 
+		public HotkeyDefinition GetFirstDuplicate(string name, Hotkey value, HotkeyDefinition definition)
+		{
+			foreach (var kv in keys)
+			{
+				if (kv.Key == name)
+					continue;
+
+				if (kv.Value == value && definitions[kv.Key].Types.Overlaps(definition.Types))
+					return definitions[kv.Key];
+			}
+
+			return null;
+		}
+
 		public HotkeyReference this[string name]
 		{
 			get
