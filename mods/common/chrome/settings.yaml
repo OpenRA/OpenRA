@@ -58,25 +58,31 @@ Background@SETTINGS_PANEL:
 			Height: 25
 			Children:
 				Button@DISPLAY_TAB:
-					X: 115
+					X: 70
 					Width: 90
 					Height: 25
 					Text: Display
 					Font: Bold
 				Button@AUDIO_TAB:
-					X: 205
+					X: 70 + WIDTH
 					Width: 90
 					Height: 25
 					Text: Audio
 					Font: Bold
 				Button@INPUT_TAB:
-					X: 295
+					X: 70 + 2 * WIDTH
 					Width: 90
 					Height: 25
 					Text: Input
 					Font: Bold
+				Button@HOTKEYS_TAB:
+					X: 70 + 3 * WIDTH
+					Width: 90
+					Height: 25
+					Text: Hotkeys
+					Font: Bold
 				Button@ADVANCED_TAB:
-					X: 385
+					X: 70 + 4 * WIDTH
 					Width: 90
 					Height: 25
 					Text: Advanced
@@ -457,19 +463,19 @@ Background@SETTINGS_PANEL:
 					Ticks: 5
 					MinimumValue: 1
 					MaximumValue: 100
-				Label@HOTKEYS_TITLE:
-					Y: 165
-					Width: PARENT_RIGHT
-					Font: Bold
-					Text: Hotkeys
-					Align: Center
+		Container@HOTKEYS_PANEL:
+			X: 5
+			Y: 50
+			Width: PARENT_RIGHT - 10
+			Height: PARENT_BOTTOM
+			Children:
 				ScrollPanel@HOTKEY_LIST:
 					X: 15
-					Y: 185
-					Width: 560
+					Y: 40
+					Width: PARENT_RIGHT - 30
 					TopBottomSpacing: 4
 					ItemSpacing: 4
-					Height: 160
+					Height: 183
 					Children:
 						ScrollItem@HEADER:
 							BaseName: scrollheader
@@ -504,10 +510,12 @@ Background@SETTINGS_PANEL:
 													Width: PARENT_RIGHT - 85
 													Height: 25
 													Align: Right
-												HotkeyEntry@HOTKEY:
+												Button@HOTKEY:
 													X: PARENT_RIGHT - WIDTH
 													Width: 80
 													Height: 25
+													Align: Left
+													TooltipContainer: TOOLTIP_CONTAINER
 										Container@THREE_COLUMN:
 											Width: 173
 											Height: 25
@@ -518,10 +526,31 @@ Background@SETTINGS_PANEL:
 													Width: PARENT_RIGHT - 84
 													Height: 25
 													Align: Right
-												HotkeyEntry@HOTKEY:
+												Button@HOTKEY:
 													X: PARENT_RIGHT - WIDTH + 1
 													Width: 80
 													Height: 25
+													Align: Left
+													TooltipContainer: TOOLTIP_CONTAINER
+				Background@HOTKEY_DIALOG_PLACEHOLDER:
+					X: 15
+					Y: 232
+					Width: PARENT_RIGHT - 30
+					Height: 108
+					Background: dialog3
+					Children:
+						Label@HOTKEY_DIALOG_HELPTEXT:
+							Y: PARENT_BOTTOM / 2 - 12
+							Width: PARENT_RIGHT
+							Height: 25
+							Font: Tiny
+							Align: Center
+							Text: Click on a hotkey to start rebinding
+				Container@HOTKEY_DIALOG_ROOT:
+					X: 15
+					Y: 232
+					Width: PARENT_RIGHT - 30
+					Height: 108
 		Container@ADVANCED_PANEL:
 			X: 5
 			Y: 50
@@ -647,3 +676,4 @@ Background@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Strict Activity checking
+		TooltipContainer@TOOLTIP_CONTAINER:
