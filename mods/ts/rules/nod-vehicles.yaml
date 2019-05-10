@@ -507,3 +507,83 @@ STNK:
 	Explodes@ELITE:
 		RequiresCondition: rank-elite
 		Weapon: UnitExplode
+
+REAPER:
+	Inherits: ^Vehicle
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@TIBHEAL: ^HealsOnTiberium
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Cyborg Reaper
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 160
+		Prerequisites: ~naweap, natech, ~techlevel.high
+		Description: Cyborg walker.\n  Strong vs Infantry, Aircraft\n  Weak vs Artillery, Defenses
+	Mobile:
+		TurnSpeed: 128
+		Speed: 71
+		Locomotor: creep
+	Health:
+		HP: 40000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 7c0
+		MaxHeightDelta: 3
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+	Armament@1:
+		Weapon: QuadLauncher
+		LocalOffset: 0,-363,543, 0,363,543
+	Armament@2:
+		Name: secondary
+		Weapon: WebLauncher
+		LocalOffset: 0,0,1c512
+	Voiced:
+		VoiceSet: CyborgReaper
+	QuantizeFacingsFromSequence:
+		Sequence: stand
+	WithFacingSpriteBody:
+		Sequence: stand
+	WithMoveAnimation:
+		MoveSequence: walk
+		ValidMovementTypes: Horizontal
+	Selectable:
+		Bounds: 40, 40, 0, -10
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+	SpawnActorOnDeath:
+		Actor: REAPER.Husk
+
+REAPER.Husk:
+	Inherits@1: ^SpriteActor
+	Husk:
+		AllowedTerrain: Clear, Rough, Road, Bridge, Rail, DirtRoad, Tiberium, BlueTiberium, Veins
+	Tooltip:
+		Name: Dying Cyborg Reaper
+	WithSpriteBody:
+		StartSequence: start
+	Interactable:
+	Health:
+		HP: 12000
+	SelfHealing:
+		Step: -1000
+		HealIfBelow: 101
+	Explodes:
+		Weapon: TiberiumExplosion
+	Armor:
+		Type: Heavy
+	HiddenUnderFog:
+		Type: CenterPosition
+		AlwaysVisibleStances: None
+	HitShape:
+	Targetable:
+		TargetTypes: Ground, Husk, NoAutoTarget
+		RequiresForceFire: true

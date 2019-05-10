@@ -178,6 +178,19 @@
 			Tiberium: 100
 			BlueTiberium: 100
 			Veins: 100
+	Locomotor@CREEP:
+		Name: creep
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
 	Locomotor@TRAIN:
 		Name: train
 		TerrainSpeeds:
