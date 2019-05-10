@@ -51,6 +51,9 @@
 		ShadowStart: 552
 	die-melting: electro
 		Length: *
+	struggle: webguy
+		Length: 6
+		ShadowStart: 6
 
 ^BasicInfantryAttack:
 	attack:
@@ -220,6 +223,9 @@ cyborg:
 		Length: *
 		ZOffset: 512
 		BlendMode: Additive
+	struggle: webguy
+		Length: 6
+		ShadowStart: 6
 	icon: cybiicon
 
 cyc2:
@@ -323,6 +329,9 @@ medic:
 		Start: 292
 		Length: 14
 		ShadowStart: 599
+	struggle: webguy
+		Length: 6
+		ShadowStart: 6
 	die-melting: electro
 		Length: *
 	icon: mediicon
@@ -400,6 +409,9 @@ jumpjet:
 		Length: 2
 		Facings: 8
 		ShadowStart: 711
+	struggle: webguy
+		Length: 6
+		ShadowStart: 6
 	die-melting: electro
 		Length: *
 	icon: jjeticon
@@ -471,6 +483,9 @@ weedguy:
 		Length: 3
 		ShadowStart: 376
 		Tick: 1000
+	struggle: webguy
+		Length: 6
+		ShadowStart: 6
 
 flameguy:
 	Defaults:

@@ -245,6 +245,12 @@ crystal4:
 		ZOffset: 1023
 		Offset: 0, 0, 6
 
+web:
+	idle:
+		Length: *
+		ZOffset: 1023
+		Offset: 0, 0, 6
+
 120mm:
 	idle:
 		ZOffset: 1023

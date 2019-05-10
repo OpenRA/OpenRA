@@ -206,6 +206,36 @@ jugg:
 		Length: *
 		Offset: 0, 0, 24
 
+reaper:
+	Inherits: ^VehicleOverlays
+	Defaults:
+		Tick: 80
+	stand:
+		Facings: -8
+		ShadowStart: 117
+		Offset: 0, 0, 12
+	walk:
+		Start: 8
+		Tick: 60
+		Length: 12
+		Facings: -8
+		ShadowStart: 125
+		Offset: 0, 0, 12
+	icon: reapicon
+
+reaper.husk:
+	start: reaper
+		Start: 104
+		Length: 13
+		ShadowStart: 221
+		Tick: 120
+		Offset: 0, 0, 12
+	idle: reaper
+		Start: 116
+		Length: 1
+		ShadowStart: 233
+		Offset: 0, 0, 12
+
 gghunt:
 	Inherits: ^VehicleOverlays
 	idle:
