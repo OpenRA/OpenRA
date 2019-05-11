@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Network
@@ -232,7 +233,12 @@ namespace OpenRA.Network
 						if (request.AuthToken != null && response.Fingerprint != null)
 							response.AuthSignature = localProfile.Sign(request.AuthToken);
 
-						orderManager.IssueOrder(Order.HandshakeResponse(response.Serialize()));
+						orderManager.IssueOrder(new Order("HandshakeResponse", null, false)
+						{
+							IsImmediate = true,
+							TargetString = response.Serialize()
+						});
+
 						break;
 					}
 
@@ -326,19 +332,15 @@ namespace OpenRA.Network
 
 				case "Ping":
 					{
-						orderManager.IssueOrder(Order.Pong(order.TargetString));
+						orderManager.IssueOrder(Order.FromTargetString("Pong", order.TargetString, true));
 						break;
 					}
 
 				default:
 					{
-						if (!order.IsImmediate)
-						{
-							var self = order.Subject;
-							if (!self.IsDead)
-								foreach (var t in self.TraitsImplementing<IResolveOrder>())
-									t.ResolveOrder(self, order);
-						}
+						if (order.Subject != null && !order.Subject.IsDead)
+							foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
+								t.ResolveOrder(order.Subject, order);
 
 						break;
 					}

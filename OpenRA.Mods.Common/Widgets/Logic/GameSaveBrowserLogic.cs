@@ -290,11 +290,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var orders = new List<Order>()
 			{
-				new Order("LoadGameSave", null, false)
-				{
-					IsImmediate = true,
-					TargetString = Path.GetFileName(selectedSave)
-				},
+				Order.FromTargetString("LoadGameSave", Path.GetFileName(selectedSave), true),
 				Order.Command("state {0}".F(Session.ClientState.Ready))
 			};
 

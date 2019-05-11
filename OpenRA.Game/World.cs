@@ -135,7 +135,8 @@ namespace OpenRA
 
 		readonly GameInformation gameInfo;
 
-		public void IssueOrder(Order o) { OrderManager.IssueOrder(o); } /* avoid exposing the OM to mod code */
+		// Hide the OrderManager from mod code
+		public void IssueOrder(Order o) { OrderManager.IssueOrder(o); }
 
 		IOrderGenerator orderGenerator;
 		public IOrderGenerator OrderGenerator
@@ -377,7 +378,7 @@ namespace OpenRA
 			if (PauseStateLocked)
 				return;
 
-			IssueOrder(Order.PauseGame(paused));
+			IssueOrder(Order.FromTargetString("PauseGame", paused ? "Pause" : "UnPause", false));
 			PredictedPaused = paused;
 		}
 
@@ -523,21 +524,13 @@ namespace OpenRA
 				if (data != null)
 				{
 					var yaml = new List<MiniYamlNode>() { new MiniYamlNode(i.ToString(), new MiniYaml("", data)) };
-					IssueOrder(new Order("GameSaveTraitData", null, false)
-					{
-						IsImmediate = true,
-						TargetString = yaml.WriteToString()
-					});
+					IssueOrder(Order.FromTargetString("GameSaveTraitData", yaml.WriteToString(), true));
 				}
 
 				i++;
 			}
 
-			IssueOrder(new Order("CreateGameSave", null, false)
-			{
-				IsImmediate = true,
-				TargetString = filename
-			});
+			IssueOrder(Order.FromTargetString("CreateGameSave", filename, true));
 		}
 
 		public bool Disposing;

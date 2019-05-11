@@ -19,12 +19,14 @@ namespace OpenRA
 	[Flags]
 	enum OrderFields : byte
 	{
+		None = 0x0,
 		Target = 0x01,
 		TargetString = 0x04,
 		Queued = 0x08,
 		ExtraLocation = 0x10,
 		ExtraData = 0x20,
-		TargetIsCell = 0x40
+		TargetIsCell = 0x40,
+		Subject = 0x80
 	}
 
 	static class OrderFieldsExts
@@ -72,12 +74,15 @@ namespace OpenRA
 					case 0xFF:
 					{
 						var order = r.ReadString();
-						var subjectId = r.ReadUInt32();
 						var flags = (OrderFields)r.ReadByte();
 
 						Actor subject = null;
-						if (world != null)
-							TryGetActorFromUInt(world, subjectId, out subject);
+						if (flags.HasField(OrderFields.Subject))
+						{
+							var subjectId = r.ReadUInt32();
+							if (world != null)
+								TryGetActorFromUInt(world, subjectId, out subject);
+						}
 
 						var target = Target.Invalid;
 						if (flags.HasField(OrderFields.Target))
@@ -139,20 +144,10 @@ namespace OpenRA
 						if (world == null)
 							return new Order(order, null, target, targetString, queued, extraLocation, extraData);
 
-						if (subject == null && subjectId != uint.MaxValue)
+						if (subject == null && flags.HasField(OrderFields.Subject))
 							return null;
 
 						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
-					}
-
-					case 0xfe:
-					{
-						var name = r.ReadString();
-						var flags = (OrderFields)r.ReadByte();
-						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
-						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
-
-						return new Order(name, null, false) { IsImmediate = true, TargetString = targetString, ExtraData = extraData };
 					}
 
 					default:
@@ -200,19 +195,9 @@ namespace OpenRA
 			return new Order("Chat", null, false) { IsImmediate = true, TargetString = text, ExtraData = teamNumber };
 		}
 
-		public static Order HandshakeResponse(string text)
+		public static Order FromTargetString(string order, string targetString, bool isImmediate)
 		{
-			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
-		}
-
-		public static Order Pong(string pingTime)
-		{
-			return new Order("Pong", null, false) { IsImmediate = true, TargetString = pingTime };
-		}
-
-		public static Order PauseGame(bool paused)
-		{
-			return new Order("PauseGame", null, false) { TargetString = paused ? "Pause" : "UnPause" };
+			return new Order(order, null, false) { IsImmediate = isImmediate, TargetString = targetString };
 		}
 
 		public static Order Command(string text)
@@ -247,35 +232,22 @@ namespace OpenRA
 
 		public byte[] Serialize()
 		{
-			var minLength = OrderString.Length + 1 + (IsImmediate ? 1 + 1 + TargetString.Length + 1 + 4 : 6);
+			var minLength = 1 + OrderString.Length + 1 + 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4;
 			var ret = new MemoryStream(minLength);
 			var w = new BinaryWriter(ret);
 
-			OrderFields fields = 0;
+			w.Write((byte)0xFF);
+			w.Write(OrderString);
+
+			var fields = OrderFields.None;
+			if (Subject != null)
+				fields |= OrderFields.Subject;
+
 			if (TargetString != null)
 				fields |= OrderFields.TargetString;
 
 			if (ExtraData != 0)
 				fields |= OrderFields.ExtraData;
-
-			if (IsImmediate)
-			{
-				w.Write((byte)0xFE);
-				w.Write(OrderString);
-				w.Write((byte)fields);
-
-				if (fields.HasField(OrderFields.TargetString))
-					w.Write(TargetString);
-
-				if (fields.HasField(OrderFields.ExtraData))
-					w.Write(ExtraData);
-
-				return ret.ToArray();
-			}
-
-			w.Write((byte)0xFF);
-			w.Write(OrderString);
-			w.Write(UIntFromActor(Subject));
 
 			if (Target.SerializableType != TargetType.Invalid)
 				fields |= OrderFields.Target;
@@ -290,6 +262,9 @@ namespace OpenRA
 				fields |= OrderFields.TargetIsCell;
 
 			w.Write((byte)fields);
+
+			if (fields.HasField(OrderFields.Subject))
+				w.Write(UIntFromActor(Subject));
 
 			if (fields.HasField(OrderFields.Target))
 			{

@@ -230,7 +230,7 @@ namespace OpenRA.Network
 			foreach (var kv in TraitData)
 			{
 				var data = new List<MiniYamlNode>() { new MiniYamlNode(kv.Key.ToString(), kv.Value) }.WriteToString();
-				packetFn(0, 0, new ServerOrder("SaveTraitData", data).Serialize());
+				packetFn(0, 0, Order.FromTargetString("SaveTraitData", data, true).Serialize());
 			}
 
 			ordersStream.Seek(0, SeekOrigin.Begin);
