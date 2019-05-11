@@ -18,7 +18,6 @@ namespace OpenRA.Network
 	{
 		public string Mod;
 		public string Version;
-		public string Map;
 		public string AuthToken;
 
 		public static HandshakeRequest Deserialize(string data)

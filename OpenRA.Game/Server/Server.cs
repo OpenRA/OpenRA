@@ -289,7 +289,6 @@ namespace OpenRA.Server
 				{
 					Mod = ModData.Manifest.Id,
 					Version = ModData.Manifest.Metadata.Version,
-					Map = LobbyInfo.GlobalSettings.Map,
 					AuthToken = token
 				};
 
