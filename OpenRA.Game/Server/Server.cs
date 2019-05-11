@@ -294,6 +294,7 @@ namespace OpenRA.Server
 
 				DispatchOrdersToClient(newConn, 0, 0, new Order("HandshakeRequest", null, false)
 				{
+					Type = OrderType.Handshake,
 					IsImmediate = true,
 					TargetString = request.Serialize()
 				}.Serialize());

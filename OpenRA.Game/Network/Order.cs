@@ -20,6 +20,7 @@ namespace OpenRA
 	{
 		SyncHash = 0x65,
 		Disconnect = 0xBF,
+		Handshake = 0xFE,
 		Fields = 0xFF
 	}
 
@@ -54,6 +55,7 @@ namespace OpenRA
 		public CPos ExtraLocation;
 		public uint ExtraData;
 		public bool IsImmediate;
+		public OrderType Type = OrderType.Fields;
 
 		public bool SuppressVisualFeedback;
 		public Target VisualFeedbackTarget;
@@ -157,6 +159,14 @@ namespace OpenRA
 						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
 					}
 
+					case OrderType.Handshake:
+					{
+						var name = r.ReadString();
+						var targetString = r.ReadString();
+
+						return new Order(name, null, false) { Type = OrderType.Handshake, TargetString = targetString };
+					}
+
 					default:
 					{
 						Log.Write("debug", "Received unknown order with type {0}", type);
@@ -239,81 +249,108 @@ namespace OpenRA
 
 		public byte[] Serialize()
 		{
-			var minLength = 1 + OrderString.Length + 1 + 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4;
+			var minLength = 1 + OrderString.Length + 1;
+			if (Type == OrderType.Handshake)
+				minLength += TargetString.Length + 1;
+			else if (Type == OrderType.Fields)
+				minLength += 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4;
+
+			// ProtocolVersion.Orders and the associated documentation MUST be updated if the serialized format changes
 			var ret = new MemoryStream(minLength);
 			var w = new BinaryWriter(ret);
 
-			w.Write((byte)OrderType.Fields);
+			w.Write((byte)Type);
 			w.Write(OrderString);
 
-			var fields = OrderFields.None;
-			if (Subject != null)
-				fields |= OrderFields.Subject;
-
-			if (TargetString != null)
-				fields |= OrderFields.TargetString;
-
-			if (ExtraData != 0)
-				fields |= OrderFields.ExtraData;
-
-			if (Target.SerializableType != TargetType.Invalid)
-				fields |= OrderFields.Target;
-
-			if (Queued)
-				fields |= OrderFields.Queued;
-
-			if (ExtraLocation != CPos.Zero)
-				fields |= OrderFields.ExtraLocation;
-
-			if (Target.SerializableCell != null)
-				fields |= OrderFields.TargetIsCell;
-
-			w.Write((byte)fields);
-
-			if (fields.HasField(OrderFields.Subject))
-				w.Write(UIntFromActor(Subject));
-
-			if (fields.HasField(OrderFields.Target))
+			switch (Type)
 			{
-				w.Write((byte)Target.SerializableType);
-				switch (Target.SerializableType)
+				case OrderType.Handshake:
 				{
-					case TargetType.Actor:
-						w.Write(UIntFromActor(Target.SerializableActor));
-						break;
-					case TargetType.FrozenActor:
-						w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
-						w.Write(Target.FrozenActor.ID);
-						break;
-					case TargetType.Terrain:
-						if (fields.HasField(OrderFields.TargetIsCell))
-						{
-							w.Write(Target.SerializableCell.Value);
-							w.Write((byte)Target.SerializableSubCell);
-						}
-						else
-							w.Write(Target.SerializablePos);
-						break;
+					// Changing the Handshake order format will break cross-version switching
+					// Don't do this unless you really have to!
+					w.Write(TargetString ?? "");
+
+					break;
 				}
+
+				case OrderType.Fields:
+				{
+					var fields = OrderFields.None;
+					if (Subject != null)
+						fields |= OrderFields.Subject;
+
+					if (TargetString != null)
+						fields |= OrderFields.TargetString;
+
+					if (ExtraData != 0)
+						fields |= OrderFields.ExtraData;
+
+					if (Target.SerializableType != TargetType.Invalid)
+						fields |= OrderFields.Target;
+
+					if (Queued)
+						fields |= OrderFields.Queued;
+
+					if (ExtraLocation != CPos.Zero)
+						fields |= OrderFields.ExtraLocation;
+
+					if (Target.SerializableCell != null)
+						fields |= OrderFields.TargetIsCell;
+
+					w.Write((byte)fields);
+
+					if (fields.HasField(OrderFields.Subject))
+						w.Write(UIntFromActor(Subject));
+
+					if (fields.HasField(OrderFields.Target))
+					{
+						w.Write((byte)Target.SerializableType);
+						switch (Target.SerializableType)
+						{
+							case TargetType.Actor:
+								w.Write(UIntFromActor(Target.SerializableActor));
+								break;
+							case TargetType.FrozenActor:
+								w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
+								w.Write(Target.FrozenActor.ID);
+								break;
+							case TargetType.Terrain:
+								if (fields.HasField(OrderFields.TargetIsCell))
+								{
+									w.Write(Target.SerializableCell.Value);
+									w.Write((byte)Target.SerializableSubCell);
+								}
+								else
+									w.Write(Target.SerializablePos);
+								break;
+						}
+					}
+
+					if (fields.HasField(OrderFields.TargetString))
+						w.Write(TargetString);
+
+					if (fields.HasField(OrderFields.ExtraLocation))
+						w.Write(ExtraLocation);
+
+					if (fields.HasField(OrderFields.ExtraData))
+						w.Write(ExtraData);
+
+					break;
+				}
+
+				default:
+					throw new InvalidDataException("Cannot serialize order type {0}".F(Type));
 			}
-
-			if (fields.HasField(OrderFields.TargetString))
-				w.Write(TargetString);
-
-			if (fields.HasField(OrderFields.ExtraLocation))
-				w.Write(ExtraLocation);
-
-			if (fields.HasField(OrderFields.ExtraData))
-				w.Write(ExtraData);
 
 			return ret.ToArray();
 		}
 
 		public override string ToString()
 		{
-			return ("OrderString: \"{0}\" \n\t Subject: \"{1}\". \n\t Target: \"{2}\"." +
-				"\n\t TargetString: \"{3}\".\n\t IsImmediate: {4}.\n\t Player(PlayerName): {5}\n").F(
-				OrderString, Subject, Target, TargetString, IsImmediate, Player != null ? Player.PlayerName : null);
+			return ("OrderString: \"{0}\" \n\t Type: \"{1}\".  \n\t Subject: \"{2}\". \n\t Target: \"{3}\"." +
+				"\n\t TargetString: \"{4}\".\n\t IsImmediate: {5}.\n\t Player(PlayerName): {6}\n").F(
+				OrderString, Type, Subject, Target, TargetString, IsImmediate,
+				Player != null ? Player.PlayerName : null);
 		}
 	}
 }

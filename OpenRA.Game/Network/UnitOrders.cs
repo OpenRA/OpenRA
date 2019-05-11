@@ -235,6 +235,7 @@ namespace OpenRA.Network
 
 						orderManager.IssueOrder(new Order("HandshakeResponse", null, false)
 						{
+							Type = OrderType.Handshake,
 							IsImmediate = true,
 							TargetString = response.Serialize()
 						});
