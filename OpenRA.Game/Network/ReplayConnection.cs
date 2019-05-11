@@ -65,9 +65,9 @@ namespace OpenRA.Network
 						(!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
 						lastClientsFrame[client] = frame;
 
-					if (packet.Length == 5 && packet[4] == 0xBF)
+					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
 						continue; // disconnect
-					else if (packet.Length >= 5 && packet[4] == 0x65)
+					else if (packet.Length >= 5 && packet[4] == (byte)OrderType.SyncHash)
 						continue; // sync
 					else if (frame == 0)
 					{
@@ -110,7 +110,7 @@ namespace OpenRA.Network
 							continue;
 
 						var packet = tmpPacketPair.Second;
-						if (packet.Length == 5 && packet[4] == 0xBF)
+						if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
 						{
 							var lastClientFrame = lastClientsFrame[client];
 							var lastFramePacket = BitConverter.GetBytes(lastClientFrame);

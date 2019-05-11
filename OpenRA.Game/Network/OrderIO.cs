@@ -36,7 +36,7 @@ namespace OpenRA.Network
 			var ms = new MemoryStream(1 + 4);
 			using (var writer = new BinaryWriter(ms))
 			{
-				writer.Write((byte)0x65);
+				writer.Write((byte)OrderType.SyncHash);
 				writer.Write(sync);
 			}
 

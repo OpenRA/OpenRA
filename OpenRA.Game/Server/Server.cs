@@ -834,7 +834,7 @@ namespace OpenRA.Server
 					}
 				}
 
-				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf });
+				DispatchOrders(toDrop, toDrop.MostRecentFrame, new[] { (byte)OrderType.Disconnect });
 
 				// All clients have left: clean up
 				if (!Conns.Any())
@@ -944,7 +944,7 @@ namespace OpenRA.Server
 
 			foreach (var c in Conns)
 				foreach (var d in Conns)
-					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
+					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new[] { (byte)OrderType.Disconnect });
 
 			if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
 				GameSave = new GameSave();
