@@ -188,7 +188,7 @@ namespace OpenRA.Network
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			// Sync packet - we only care about the last value
-			if (data.Length > 0 && data[0] == 0x65 && frame > LastSyncFrame)
+			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash && frame > LastSyncFrame)
 			{
 				LastSyncFrame = frame;
 				lastSyncPacket = data;

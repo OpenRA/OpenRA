@@ -123,9 +123,9 @@ namespace OpenRA.Network
 				(clientId, packet) =>
 				{
 					var frame = BitConverter.ToInt32(packet, 0);
-					if (packet.Length == 5 && packet[4] == 0xBF)
+					if (packet.Length == 5 && packet[4] == (byte)OrderType.Disconnect)
 						frameData.ClientQuit(clientId, frame);
-					else if (packet.Length >= 5 && packet[4] == 0x65)
+					else if (packet.Length >= 5 && packet[4] == (byte)OrderType.SyncHash)
 						CheckSync(packet);
 					else if (frame == 0)
 						immediatePackets.Add(Pair.New(clientId, packet));

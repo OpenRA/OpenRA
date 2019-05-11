@@ -16,6 +16,13 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public enum OrderType : byte
+	{
+		SyncHash = 0x65,
+		Disconnect = 0xBF,
+		Fields = 0xFF
+	}
+
 	[Flags]
 	enum OrderFields : byte
 	{
@@ -68,10 +75,10 @@ namespace OpenRA
 		{
 			try
 			{
-				var magic = r.ReadByte();
-				switch (magic)
+				var type = (OrderType)r.ReadByte();
+				switch (type)
 				{
-					case 0xFF:
+					case OrderType.Fields:
 					{
 						var order = r.ReadString();
 						var flags = (OrderFields)r.ReadByte();
@@ -152,7 +159,7 @@ namespace OpenRA
 
 					default:
 					{
-						Log.Write("debug", "Received unknown order with magic {0}", magic);
+						Log.Write("debug", "Received unknown order with type {0}", type);
 						return null;
 					}
 				}
@@ -236,7 +243,7 @@ namespace OpenRA
 			var ret = new MemoryStream(minLength);
 			var w = new BinaryWriter(ret);
 
-			w.Write((byte)0xFF);
+			w.Write((byte)OrderType.Fields);
 			w.Write(OrderString);
 
 			var fields = OrderFields.None;
