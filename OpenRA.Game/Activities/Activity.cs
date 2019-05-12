@@ -82,7 +82,13 @@ namespace OpenRA.Activities
 			return ret;
 		}
 
-		public abstract Activity Tick(Actor self);
+		/// <summary>
+		/// Runs every timestep as long as this activity is active.
+		/// </summary>
+		public virtual Activity Tick(Actor self)
+		{
+			return NextActivity;
+		}
 
 		/// <summary>
 		/// Runs once immediately before the first Tick() execution.
