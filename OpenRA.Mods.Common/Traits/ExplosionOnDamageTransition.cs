@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 					triggered = true;
 
 				// Use .FromPos since the actor might have been killed, don't use Target.FromActor
-				info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), e.Attacker, Enumerable.Empty<int>());
+				info.WeaponInfo.Impact(Target.FromPos(self.CenterPosition), e.Attacker);
 			}
 		}
 	}

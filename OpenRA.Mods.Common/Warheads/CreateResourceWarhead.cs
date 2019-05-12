@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -25,11 +26,12 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly string AddsResourceType = null;
 
 		// TODO: Allow maximum resource splatter to be defined. (Per tile, and in total).
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, WarheadArgs args)
 		{
 			if (string.IsNullOrEmpty(AddsResourceType))
 				return;
 
+			var firedBy = args.SourceActor;
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(target.CenterPosition);
 			var resLayer = world.WorldActor.Trait<ResourceLayer>();

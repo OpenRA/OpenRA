@@ -120,13 +120,13 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var cells = buildingInfo.OccupiedTiles(self.Location);
 				foreach (var c in cells)
-					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source, Enumerable.Empty<int>());
+					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source);
 
 				return;
 			}
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition), source, Enumerable.Empty<int>());
+			weapon.Impact(Target.FromPos(self.CenterPosition), source);
 		}
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)

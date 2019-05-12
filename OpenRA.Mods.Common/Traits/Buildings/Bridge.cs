@@ -376,7 +376,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-				info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
+				info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur);
 
 				self.Kill(saboteur);
 			});

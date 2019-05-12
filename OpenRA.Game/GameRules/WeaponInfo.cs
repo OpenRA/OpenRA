@@ -33,6 +33,27 @@ namespace OpenRA.GameRules
 		public Target GuidedTarget;
 	}
 
+	public class WarheadArgs
+	{
+		public WeaponInfo Weapon;
+		public int[] DamageModifiers = { };
+		public WPos Source;
+		public Actor SourceActor;
+		public Target WeaponTarget;
+
+		public WarheadArgs(ProjectileArgs args)
+		{
+			Weapon = args.Weapon;
+			DamageModifiers = args.DamageModifiers;
+			Source = args.Source;
+			SourceActor = args.SourceActor;
+			WeaponTarget = args.GuidedTarget;
+		}
+
+		// Default empty constructor for callers that want to initialize fields themselves
+		public WarheadArgs() { }
+	}
+
 	public interface IProjectile : IEffect { }
 	public interface IProjectileInfo { IProjectile Create(ProjectileArgs args); }
 
@@ -177,17 +198,33 @@ namespace OpenRA.GameRules
 		}
 
 		/// <summary>Applies all the weapon's warheads to the target.</summary>
-		public void Impact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public void Impact(Target target, WarheadArgs args)
 		{
+			var world = args.SourceActor.World;
 			foreach (var warhead in Warheads)
 			{
 				var wh = warhead; // force the closure to bind to the current warhead
 
 				if (wh.Delay > 0)
-					firedBy.World.AddFrameEndTask(w => w.Add(new DelayedImpact(wh.Delay, wh, target, firedBy, damageModifiers)));
+			 		world.AddFrameEndTask(w => w.Add(new DelayedImpact(wh.Delay, wh, target, args)));
 				else
-					wh.DoImpact(target, firedBy, damageModifiers);
+					wh.DoImpact(target, args);
 			}
+		}
+
+		/// <summary>Applies all the weapon's warheads to the target. Only use for projectile-less, special-case impacts.</summary>
+		public void Impact(Target target, Actor firedBy)
+		{
+			// The impact will happen immediately at target.CenterPosition.
+			var args = new WarheadArgs
+			{
+				Weapon = this,
+				Source = firedBy.CenterPosition,
+				SourceActor = firedBy,
+				WeaponTarget = target
+			};
+
+			Impact(target, args);
 		}
 	}
 }

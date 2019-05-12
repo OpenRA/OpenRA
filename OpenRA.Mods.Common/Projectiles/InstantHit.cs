@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					target = Target.FromPos(blockedPos);
 			}
 
-			args.Weapon.Impact(target, args.SourceActor, args.DamageModifiers);
+			args.Weapon.Impact(target, new WarheadArgs(args));
 			world.AddFrameEndTask(w => w.Remove(this));
 		}
 

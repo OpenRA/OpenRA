@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -21,8 +22,9 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int[] Size = { 0, 0 };
 
 		// TODO: Allow maximum resource removal to be defined. (Per tile, and in total).
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, WarheadArgs args)
 		{
+			var firedBy = args.SourceActor;
 			var world = firedBy.World;
 			var targetTile = world.Map.CellContaining(target.CenterPosition);
 			var resLayer = world.WorldActor.Trait<ResourceLayer>();

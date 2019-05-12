@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var blockers = self.World.ActorMap.GetActorsAt(loc).Where(a => !a.IsDead && a != self);
 				foreach (var blocker in blockers)
-					info.WeaponInfo.Impact(Target.FromActor(blocker), self, Enumerable.Empty<int>());
+					info.WeaponInfo.Impact(Target.FromActor(blocker), self);
 			}
 		}
 

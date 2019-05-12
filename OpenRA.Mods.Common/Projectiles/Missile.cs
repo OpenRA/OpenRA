@@ -891,7 +891,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (ticks <= info.Arm)
 				return;
 
-			args.Weapon.Impact(Target.FromPos(pos), args.SourceActor, args.DamageModifiers);
+			args.Weapon.Impact(Target.FromPos(pos), new WarheadArgs(args));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)

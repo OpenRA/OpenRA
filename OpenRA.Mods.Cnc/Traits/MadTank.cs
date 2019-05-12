@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (mad.info.ThumpDamageWeapon != null)
 					{
 						// Use .FromPos since this weapon needs to affect more than just the MadTank actor
-						mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+						mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
 					}
 
 					screenShaker.AddEffect(mad.info.ThumpShakeTime, self.CenterPosition, mad.info.ThumpShakeIntensity, mad.info.ThumpShakeMultiplier);
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (mad.info.DetonationWeapon != null)
 					{
 						// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-						mad.info.DetonationWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+						mad.info.DetonationWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
 					}
 
 					self.Kill(self, mad.info.DamageTypes);
