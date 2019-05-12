@@ -51,6 +51,12 @@ namespace OpenRA.Mods.Common.Warheads
 			return Util.ApplyPercentageModifiers(100, armor);
 		}
 
+		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShapeInfo hitshapeInfo, IEnumerable<int> damageModifiers)
+		{
+			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, hitshapeInfo)));
+			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+		}
+
 		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
 		{
 			// Used by traits or warheads that damage a single actor, rather than a position
@@ -68,8 +74,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (closestActiveShape == null)
 					return;
 
-				var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, closestActiveShape.Info)));
-				victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+				InflictDamage(victim, firedBy, closestActiveShape.Info, damageModifiers);
 			}
 			else if (target.Type != TargetType.Invalid)
 				DoImpact(target.CenterPosition, firedBy, damageModifiers);

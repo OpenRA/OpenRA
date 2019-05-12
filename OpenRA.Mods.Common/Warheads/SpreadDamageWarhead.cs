@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				var localModifiers = damageModifiers.Append(GetDamageFalloff(closestActiveShape.Second.Length));
-				var damage = Util.ApplyPercentageModifiers(Damage, localModifiers.Append(DamageVersus(victim, closestActiveShape.First.Info)));
-				victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
+				InflictDamage(victim, firedBy, closestActiveShape.First.Info, localModifiers);
 			}
 		}
 
