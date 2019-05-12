@@ -21,9 +21,15 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Carryall carryall;
 		readonly BodyOrientation body;
 		readonly IFacing facing;
-		CPos? destination;
+		Target destination;
 
-		public DeliverUnit(Actor self, CPos? destination = null)
+		public DeliverUnit(Actor self, CPos destination)
+			: this(self, Target.FromCell(self.World, destination)) { }
+
+		public DeliverUnit(Actor self)
+			: this(self, Target.Invalid) { }
+
+		DeliverUnit(Actor self, Target destination)
 		{
 			this.self = self;
 			this.destination = destination;
@@ -33,16 +39,17 @@ namespace OpenRA.Mods.Common.Activities
 			body = self.Trait<BodyOrientation>();
 		}
 
-		CPos? FindDropLocation(CPos targetCell, WDist maxSearchDistance)
+		Target FindDropLocation(Target requested, WDist maxSearchDistance)
 		{
 			var positionable = carryall.Carryable.Trait<IPositionable>();
+			var centerPosition = requested.CenterPosition;
+			var targetCell = self.World.Map.CellContaining(centerPosition);
 
 			// The easy case
 			if (positionable.CanEnterCell(targetCell, self))
-				return targetCell;
+				return requested;
 
 			var cellRange = (maxSearchDistance.Length + 1023) / 1024;
-			var centerPosition = self.World.Map.CenterOfCell(targetCell);
 			foreach (var c in self.World.Map.FindTilesInCircle(targetCell, cellRange))
 			{
 				if (!positionable.CanEnterCell(c, self))
@@ -50,10 +57,10 @@ namespace OpenRA.Mods.Common.Activities
 
 				var delta = self.World.Map.CenterOfCell(c) - centerPosition;
 				if (delta.LengthSquared < maxSearchDistance.LengthSquared)
-					return c;
+					return Target.FromCell(self.World, c);
 			}
 
-			return null;
+			return Target.Invalid;
 		}
 
 		public override Activity Tick(Actor self)
@@ -68,37 +75,37 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || carryall.State != Carryall.CarryallState.Carrying || carryall.Carryable.IsDead)
 				return NextActivity;
 
-			if (destination == null)
-				destination = self.Location;
+			// Drop the actor at the current position
+			if (destination.Type == TargetType.Invalid)
+				destination = Target.FromCell(self.World, self.Location);
 
-			var targetLocation = FindDropLocation(destination.Value, carryall.Info.DropRange);
+			var target = FindDropLocation(destination, carryall.Info.DropRange);
 
 			// Can't land, so wait at the target until something changes
-			if (!targetLocation.HasValue)
+			if (target.Type == TargetType.Invalid)
 			{
-				QueueChild(self, new HeliFly(self, Target.FromCell(self.World, destination.Value)), true);
+				QueueChild(self, new HeliFly(self, destination), true);
 				QueueChild(self, new Wait(25));
 				return this;
 			}
 
 			// Move to drop-off location
-			var targetPosition = self.World.Map.CenterOfCell(targetLocation.Value);
 			var localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 			var carryablePosition = self.CenterPosition + body.LocalToWorld(localOffset);
-			if ((carryablePosition - targetPosition).HorizontalLengthSquared != 0)
+			if ((carryablePosition - target.CenterPosition).HorizontalLengthSquared != 0)
 			{
 				// For non-zero offsets the drop position depends on the carryall facing
 				// We therefore need to predict/correct for the facing *at the drop point*
 				if (carryall.CarryableOffset.HorizontalLengthSquared != 0)
 				{
-					var facing = (targetPosition - self.CenterPosition).Yaw.Facing;
+					var facing = (target.CenterPosition - self.CenterPosition).Yaw.Facing;
 					localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(facing)));
-					QueueChild(self, new HeliFly(self, Target.FromPos(targetPosition - body.LocalToWorld(localOffset))), true);
+					QueueChild(self, new HeliFly(self, Target.FromPos(target.CenterPosition - body.LocalToWorld(localOffset))), true);
 					QueueChild(self, new Turn(self, facing));
 					return this;
 				}
 
-				QueueChild(self, new HeliFly(self, Target.FromPos(targetPosition)), true);
+				QueueChild(self, new HeliFly(self, target), true);
 				return this;
 			}
 
