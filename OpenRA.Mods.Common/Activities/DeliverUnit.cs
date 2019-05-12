@@ -50,12 +50,6 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(new TakeOff(self));
 		}
 
-		public override Activity Tick(Actor self)
-		{
-
-			return NextActivity;
-		}
-
 		class ReleaseUnit : Activity
 		{
 			readonly Carryall carryall;
@@ -97,11 +91,6 @@ namespace OpenRA.Mods.Common.Activities
 					carryable.UnReserve(cargo);
 					carryable.Detached(cargo);
 				});
-			}
-
-			public override Activity Tick(Actor self)
-			{
-				return NextActivity;
 			}
 		}
 	}

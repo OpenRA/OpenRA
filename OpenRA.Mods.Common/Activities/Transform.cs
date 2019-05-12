@@ -168,11 +168,5 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			return new Order(orderString, newActor, target, true);
 		}
-
-		public override Activity Tick(Actor self)
-		{
-			// Activity is a placeholder that should never run
-			return NextActivity;
-		}
 	}
 }
