@@ -659,13 +659,6 @@ Container@SETTINGS_PANEL:
 									Height: 20
 									Font: Regular
 									Text: Enable Debug Commands in Replays
-								Checkbox@STRICTACTIVITY_CHECKBOX:
-									X: 310
-									Y: 280
-									Width: 300
-									Height: 20
-									Font: Regular
-									Text: Strict Activity checking
 		Button@BACK_BUTTON:
 			Key: escape
 			Y: 393
