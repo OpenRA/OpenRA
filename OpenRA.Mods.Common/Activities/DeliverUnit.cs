@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Actor self;
 		readonly Carryall carryall;
 		readonly BodyOrientation body;
-		readonly IFacing facing;
 		Target destination;
 
 		public DeliverUnit(Actor self, CPos destination)
@@ -34,7 +33,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.self = self;
 			this.destination = destination;
 
-			facing = self.Trait<IFacing>();
 			carryall = self.Trait<Carryall>();
 			body = self.Trait<BodyOrientation>();
 		}
@@ -98,10 +96,10 @@ namespace OpenRA.Mods.Common.Activities
 				// We therefore need to predict/correct for the facing *at the drop point*
 				if (carryall.CarryableOffset.HorizontalLengthSquared != 0)
 				{
-					var facing = (target.CenterPosition - self.CenterPosition).Yaw.Facing;
-					localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(facing)));
+					var dropFacing = (target.CenterPosition - self.CenterPosition).Yaw.Facing;
+					localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, WRot.FromFacing(dropFacing)));
 					QueueChild(self, new HeliFly(self, Target.FromPos(target.CenterPosition - body.LocalToWorld(localOffset))), true);
-					QueueChild(self, new Turn(self, facing));
+					QueueChild(self, new Turn(self, dropFacing));
 					return this;
 				}
 
@@ -118,39 +116,58 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(self, new Wait(carryall.Info.UnloadingDelay, false), true);
 
 			// Release carried actor
-			QueueChild(self, new CallFunc(Release));
+			QueueChild(self, new ReleaseUnit(self));
 			QueueChild(self, new HeliFly(self, Target.FromPos(self.CenterPosition)));
 			return this;
 		}
 
-		void Release()
+		class ReleaseUnit : Activity
 		{
-			self.Trait<Aircraft>().RemoveInfluence();
+			readonly Carryall carryall;
+			readonly BodyOrientation body;
+			readonly IFacing facing;
 
-			var localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-			var targetPosition = self.CenterPosition + body.LocalToWorld(localOffset);
-			var targetLocation = self.World.Map.CellContaining(targetPosition);
-			carryall.Carryable.Trait<IPositionable>().SetPosition(carryall.Carryable, targetLocation, SubCell.FullCell);
-
-			// HACK: directly manipulate the turret facings to match the new orientation
-			// This can eventually go away, when we make turret facings relative to the body
-			var carryableFacing = carryall.Carryable.Trait<IFacing>();
-			var facingDelta = facing.Facing - carryableFacing.Facing;
-			foreach (var t in carryall.Carryable.TraitsImplementing<Turreted>())
-				t.TurretFacing += facingDelta;
-
-			carryableFacing.Facing = facing.Facing;
-
-			// Put back into world
-			self.World.AddFrameEndTask(w =>
+			public ReleaseUnit(Actor self)
 			{
-				var cargo = carryall.Carryable;
-				var carryable = carryall.Carryable.Trait<Carryable>();
-				w.Add(cargo);
-				carryall.DetachCarryable(self);
-				carryable.UnReserve(cargo);
-				carryable.Detached(cargo);
-			});
+				facing = self.Trait<IFacing>();
+				carryall = self.Trait<Carryall>();
+				body = self.Trait<BodyOrientation>();
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				self.Trait<Aircraft>().RemoveInfluence();
+
+				var localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+				var targetPosition = self.CenterPosition + body.LocalToWorld(localOffset);
+				var targetLocation = self.World.Map.CellContaining(targetPosition);
+				carryall.Carryable.Trait<IPositionable>().SetPosition(carryall.Carryable, targetLocation, SubCell.FullCell);
+
+				// HACK: directly manipulate the turret facings to match the new orientation
+				// This can eventually go away, when we make turret facings relative to the body
+				var carryableFacing = carryall.Carryable.Trait<IFacing>();
+				var facingDelta = facing.Facing - carryableFacing.Facing;
+				foreach (var t in carryall.Carryable.TraitsImplementing<Turreted>())
+					t.TurretFacing += facingDelta;
+
+				carryableFacing.Facing = facing.Facing;
+
+				// Put back into world
+				self.World.AddFrameEndTask(w =>
+				{
+					var cargo = carryall.Carryable;
+					var carryable = carryall.Carryable.Trait<Carryable>();
+					w.Add(cargo);
+					carryall.DetachCarryable(self);
+					carryable.UnReserve(cargo);
+					carryable.Detached(cargo);
+				});
+			}
+
+			public override Activity Tick(Actor self)
+			{
+				return NextActivity;
+			}
 		}
 	}
 }
