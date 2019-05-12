@@ -103,19 +103,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly BulletInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
-		[Sync] readonly WAngle angle;
-		[Sync] readonly WDist speed;
+		readonly int facing;
+		readonly WAngle angle;
+		readonly WDist speed;
+		readonly string trailPalette;
+		readonly ContrailRenderable contrail;
 
-		ContrailRenderable contrail;
-		string trailPalette;
+		[Sync]
+		WPos pos, target, source;
 
-		[Sync] WPos pos, target, source;
 		int length;
-		[Sync] int facing;
 		int ticks, smokeTicks;
 		int remainingBounces;
-
-		public Actor SourceActor { get { return args.SourceActor; } }
 
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{

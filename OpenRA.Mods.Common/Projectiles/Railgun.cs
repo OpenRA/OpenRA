@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly Color BeamColor;
 		public readonly Color HelixColor;
 
-		int ticks = 0;
+		int ticks;
 		bool animationComplete;
 		WPos target;
 
