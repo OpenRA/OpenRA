@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				// Use .FromPos since this actor is dead. Cannot use Target.FromActor
-				Info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur, Enumerable.Empty<int>());
+				Info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur);
 
 				self.Kill(saboteur);
 			});

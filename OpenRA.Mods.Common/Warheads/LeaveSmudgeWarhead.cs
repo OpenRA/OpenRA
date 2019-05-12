@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -31,8 +32,9 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Percentual chance the smudge is created.")]
 		public readonly int Chance = 100;
 
-		public override void DoImpact(Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public override void DoImpact(Target target, WarheadArgs args)
 		{
+			var firedBy = args.SourceActor;
 			var world = firedBy.World;
 
 			if (Chance < world.LocalRandom.Next(100))

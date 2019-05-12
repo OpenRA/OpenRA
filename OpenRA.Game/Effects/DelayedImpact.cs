@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -18,26 +19,23 @@ namespace OpenRA.Effects
 	public class DelayedImpact : IEffect
 	{
 		readonly Target target;
-		readonly Actor firedBy;
-		readonly IEnumerable<int> damageModifiers;
 		readonly IWarhead wh;
+		readonly WarheadArgs args;
 
 		int delay;
 
-		public DelayedImpact(int delay, IWarhead wh, Target target, Actor firedBy, IEnumerable<int> damageModifiers)
+		public DelayedImpact(int delay, IWarhead wh, Target target, WarheadArgs args)
 		{
 			this.wh = wh;
 			this.delay = delay;
-
 			this.target = target;
-			this.firedBy = firedBy;
-			this.damageModifiers = damageModifiers;
+			this.args = args;
 		}
 
 		public void Tick(World world)
 		{
 			if (--delay <= 0)
-				world.AddFrameEndTask(w => { w.Remove(this); wh.DoImpact(target, firedBy, damageModifiers); });
+				world.AddFrameEndTask(w => { w.Remove(this); wh.DoImpact(target, args); });
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr) { yield break; }

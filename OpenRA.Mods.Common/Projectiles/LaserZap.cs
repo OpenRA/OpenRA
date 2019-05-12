@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (ticks < info.DamageDuration && --interval <= 0)
 			{
-				args.Weapon.Impact(Target.FromPos(target), args.SourceActor, args.DamageModifiers);
+				args.Weapon.Impact(Target.FromPos(target), new WarheadArgs(args));
 				interval = info.DamageInterval;
 			}
 

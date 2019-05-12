@@ -45,9 +45,18 @@ namespace OpenRA.Mods.Cnc.Effects
 		public void Tick(World world)
 		{
 			anim.Tick();
+
 			if (!impacted && weaponDelay-- <= 0)
 			{
-				weapon.Impact(target, firedBy.PlayerActor, Enumerable.Empty<int>());
+				var warheadArgs = new WarheadArgs
+				{
+					Weapon = weapon,
+					Source = target.CenterPosition,
+					SourceActor = firedBy.PlayerActor,
+					WeaponTarget = target
+				};
+
+				weapon.Impact(target, warheadArgs);
 				impacted = true;
 			}
 		}

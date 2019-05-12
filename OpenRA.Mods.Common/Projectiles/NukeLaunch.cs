@@ -140,7 +140,17 @@ namespace OpenRA.Mods.Common.Effects
 			if (detonated)
 				return;
 
-			weapon.Impact(Target.FromPos(pos), firedBy.PlayerActor, Enumerable.Empty<int>());
+			var target = Target.FromPos(pos);
+			var warheadArgs = new WarheadArgs
+			{
+				Weapon = weapon,
+				Source = target.CenterPosition,
+				SourceActor = firedBy.PlayerActor,
+				WeaponTarget = target
+			};
+
+			weapon.Impact(target, warheadArgs);
+
 			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var flash in world.WorldActor.TraitsImplementing<FlashPaletteEffect>())
