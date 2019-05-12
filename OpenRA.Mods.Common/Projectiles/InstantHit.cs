@@ -43,20 +43,18 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly InstantHitInfo info;
 
 		Target target;
-		WPos source;
 
 		public InstantHit(InstantHitInfo info, ProjectileArgs args)
 		{
 			this.args = args;
 			this.info = info;
-			source = args.Source;
 
 			if (args.Weapon.TargetActorCenter)
 				target = args.GuidedTarget;
 			else if (info.Inaccuracy.Length > 0)
 			{
 				var inaccuracy = Util.ApplyPercentageModifiers(info.Inaccuracy.Length, args.InaccuracyModifiers);
-				var maxOffset = inaccuracy * (args.PassiveTarget - source).Length / args.Weapon.Range.Length;
+				var maxOffset = inaccuracy * (args.PassiveTarget - args.Source).Length / args.Weapon.Range.Length;
 				target = Target.FromPos(args.PassiveTarget + WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024);
 			}
 			else
@@ -67,7 +65,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			// Check for blocking actors
 			WPos blockedPos;
-			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, source, target.CenterPosition,
+			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, args.Source, target.CenterPosition,
 				info.Width, out blockedPos))
 			{
 				target = Target.FromPos(blockedPos);

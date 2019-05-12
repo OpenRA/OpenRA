@@ -51,8 +51,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation anim;
 		readonly ProjectileArgs args;
 		readonly WVec acceleration;
-		[Sync] WVec velocity;
-		[Sync] WPos pos;
+		WVec velocity;
+
+		[Sync]
+		WPos pos;
 
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{

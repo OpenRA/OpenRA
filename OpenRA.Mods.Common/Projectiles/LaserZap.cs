@@ -103,12 +103,16 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Animation hitanim;
 		readonly Color color;
 		readonly Color secondaryColor;
-		int ticks = 0;
+		readonly bool hasLaunchEffect;
+		int ticks;
 		int interval;
 		bool showHitAnim;
-		bool hasLaunchEffect;
-		[Sync] WPos target;
-		[Sync] WPos source;
+
+		[Sync]
+		WPos target;
+
+		[Sync]
+		WPos source;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)
 		{

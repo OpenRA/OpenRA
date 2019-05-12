@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		States state;
 		bool targetPassedBy;
-		bool lockOn = false;
+		bool lockOn;
 		bool allowPassBy; // TODO: use this also with high minimum launch angle settings
 
 		WPos targetPosition;
@@ -187,7 +187,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		WVec tarVel;
 		WVec predVel;
 
-		[Sync] WPos pos;
+		[Sync]
+		WPos pos;
+
 		WVec velocity;
 		int speed;
 		int loopRadius;
@@ -195,11 +197,12 @@ namespace OpenRA.Mods.Common.Projectiles
 		WDist rangeLimit;
 
 		int renderFacing;
-		[Sync] int hFacing;
-		[Sync] int vFacing;
 
-		public Actor SourceActor { get { return args.SourceActor; } }
-		public Target GuidedTarget { get { return args.GuidedTarget; } }
+		[Sync]
+		int hFacing;
+
+		[Sync]
+		int vFacing;
 
 		public Missile(MissileInfo info, ProjectileArgs args)
 		{
