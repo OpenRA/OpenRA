@@ -556,7 +556,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "REPLAY_COMMANDS_CHECKBOX", ds, "EnableDebugCommandsInReplays");
 			BindCheckboxPref(panel, "CHECKUNSYNCED_CHECKBOX", ds, "SyncCheckUnsyncedCode");
 			BindCheckboxPref(panel, "CHECKBOTSYNC_CHECKBOX", ds, "SyncCheckBotModuleCode");
-			BindCheckboxPref(panel, "STRICTACTIVITY_CHECKBOX", ds, "StrictActivityChecking");
 
 			panel.Get("DEBUG_OPTIONS").IsVisible = () => ds.DisplayDeveloperSettings;
 			panel.Get("DEBUG_HIDDEN_LABEL").IsVisible = () => !ds.DisplayDeveloperSettings;

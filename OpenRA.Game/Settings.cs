@@ -128,9 +128,6 @@ namespace OpenRA
 
 		[Desc("Throw an exception if the world sync hash changes while evaluating BotModules.")]
 		public bool SyncCheckBotModuleCode = false;
-
-		[Desc("Throw an exception if an actor activity is ticked after it has been marked as completed.")]
-		public bool StrictActivityChecking = false;
 	}
 
 	public class GraphicSettings

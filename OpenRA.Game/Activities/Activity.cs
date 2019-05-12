@@ -31,13 +31,7 @@ namespace OpenRA.Activities
 	{
 		public ActivityState State { get; private set; }
 
-		Activity childActivity;
-		protected Activity ChildActivity
-		{
-			get { return childActivity != null && childActivity.State < ActivityState.Done ? childActivity : null; }
-			set { childActivity = value; }
-		}
-
+		protected Activity ChildActivity { get; private set; }
 		public Activity NextActivity { get; protected set; }
 
 		public bool IsInterruptible { get; protected set; }
@@ -52,7 +46,7 @@ namespace OpenRA.Activities
 
 		public Activity TickOuter(Actor self)
 		{
-			if (State == ActivityState.Done && Game.Settings.Debug.StrictActivityChecking)
+			if (State == ActivityState.Done)
 				throw new InvalidOperationException("Actor {0} attempted to tick activity {1} after it had already completed.".F(self, GetType()));
 
 			if (State == ActivityState.Queued)
@@ -188,14 +182,14 @@ namespace OpenRA.Activities
 			while (act != null)
 			{
 				yield return act.GetType().Name;
-				act = act.childActivity;
+				act = act.ChildActivity;
 			}
 		}
 
 		public IEnumerable<T> ActivitiesImplementing<T>(bool includeChildren = true) where T : IActivityInterface
 		{
-			if (includeChildren && childActivity != null)
-				foreach (var a in childActivity.ActivitiesImplementing<T>())
+			if (includeChildren && ChildActivity != null)
+				foreach (var a in ChildActivity.ActivitiesImplementing<T>())
 					yield return a;
 
 			if (this is T)
