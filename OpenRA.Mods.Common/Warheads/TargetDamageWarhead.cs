@@ -48,11 +48,5 @@ namespace OpenRA.Mods.Common.Warheads
 				InflictDamage(victim, firedBy, closestActiveShape.First.Info, damageModifiers);
 			}
 		}
-
-		protected virtual void InflictDamage(Actor victim, Actor firedBy, HitShapeInfo hitshapeInfo, IEnumerable<int> damageModifiers)
-		{
-			var damage = Util.ApplyPercentageModifiers(Damage, damageModifiers.Append(DamageVersus(victim, hitshapeInfo)));
-			victim.InflictDamage(firedBy, new Damage(damage, DamageTypes));
-		}
 	}
 }
