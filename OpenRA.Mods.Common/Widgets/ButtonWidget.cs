@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public Action<MouseInput> OnMouseUp = _ => { };
 
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		protected Lazy<TooltipContainerWidget> tooltipContainer;
 		[Translate] public string TooltipText;
 		public Func<string> GetTooltipText;
 		[Translate] public string TooltipDesc;

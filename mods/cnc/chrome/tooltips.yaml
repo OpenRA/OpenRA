@@ -12,6 +12,20 @@ Background@SIMPLE_TOOLTIP:
 			Height: 23
 			Font: Bold
 
+Background@SIMPLE_TOOLTIP_FACTIONSUFFIX:
+	Logic: SimpleTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Height: 27
+	Children:
+		Container@LINE_HEIGHT:
+			Y: 2
+			Height: 19
+		Label@LABEL:
+			X: 5
+			Y: 0 - 2
+			Height: 23
+			Font: Bold
+
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic
 	Background: panel-black
@@ -33,8 +47,51 @@ Background@BUTTON_TOOLTIP:
 			Font: TinyBold
 			VAlign: Top
 
+Background@BUTTON_TOOLTIP_FACTIONSUFFIX:
+	Logic: ButtonTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Height: 25
+	Children:
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 23
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 	Logic: ButtonTooltipWithDescHighlightLogic
+		Highlight: FFFF00
+	Background: panel-black
+	Height: 25
+	Children:
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 23
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX:
+	Logic: ButtonTooltipWithDescHighlightLogic, AddFactionSuffixLogic
 		Highlight: FFFF00
 	Background: panel-black
 	Height: 25
@@ -84,8 +141,37 @@ Background@WORLD_TOOLTIP:
 			Height: 5
 			Font: Bold
 
+Background@WORLD_TOOLTIP_FACTIONSUFFIX:
+	Logic: WorldTooltipLogic, AddFactionSuffixLogic
+	Background: panel-black
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height: 25
+		Container@DOUBLE_HEIGHT:
+			Height: 45
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+		Image@FLAG:
+			X: 5
+			Y: 24
+			Width: 32
+			Height: 16
+		Label@OWNER:
+			X: 42
+			Y: 19
+			Height: 23
+			Font: Bold
+			Shadow: True
+		Label@EXTRA:
+			X: 5
+			Y: 47
+			Height: 5
+			Font: Bold
+
 Background@PRODUCTION_TOOLTIP:
-	Logic: ProductionTooltipLogic
+	Logic: ProductionTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
 	Width: 200
 	Height: 65
@@ -143,7 +229,7 @@ Background@PRODUCTION_TOOLTIP:
 			Font: Bold
 
 Background@SUPPORT_POWER_TOOLTIP:
-	Logic: SupportPowerTooltipLogic
+	Logic: SupportPowerTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
 	Width: 200
 	Height: 25

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string TooltipTemplate;
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		protected Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public Func<string> GetTooltipText = () => "";
 

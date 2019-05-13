@@ -42,21 +42,6 @@ Container@INGAME_ROOT:
 					Height: WINDOW_BOTTOM
 					SelectAllKey: SelectAllUnits
 					SelectSameTypeKey: SelectUnitsByType
-				ViewportController:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
-					TooltipContainer: TOOLTIP_CONTAINER
-					ScrollUpKey: MapScrollUp
-					ScrollDownKey: MapScrollDown
-					ScrollLeftKey: MapScrollLeft
-					ScrollRightKey: MapScrollRight
-					JumpToTopEdgeKey: MapJumpToTopEdge
-					JumpToBottomEdgeKey: MapJumpToBottomEdge
-					JumpToLeftEdgeKey: MapJumpToLeftEdge
-					JumpToRightEdgeKey: MapJumpToRightEdge
-					BookmarkSaveKeyPrefix: MapBookmarkSave
-					BookmarkRestoreKeyPrefix: MapBookmarkRestore
-					BookmarkKeyCount: 4
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
@@ -93,6 +78,21 @@ Container@OBSERVER_WIDGETS:
 		StatisticsGraphKey: StatisticsGraph
 		StatisticsArmyGraphKey: StatisticsArmyGraph
 	Children:
+		ViewportController:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipContainer: TOOLTIP_CONTAINER
+			ScrollUpKey: MapScrollUp
+			ScrollDownKey: MapScrollDown
+			ScrollLeftKey: MapScrollLeft
+			ScrollRightKey: MapScrollRight
+			JumpToTopEdgeKey: MapJumpToTopEdge
+			JumpToBottomEdgeKey: MapJumpToBottomEdge
+			JumpToLeftEdgeKey: MapJumpToLeftEdge
+			JumpToRightEdgeKey: MapJumpToRightEdge
+			BookmarkSaveKeyPrefix: MapBookmarkSave
+			BookmarkRestoreKeyPrefix: MapBookmarkRestore
+			BookmarkKeyCount: 4
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
 			X: WINDOW_RIGHT / 2 - WIDTH
@@ -285,6 +285,22 @@ Container@OBSERVER_WIDGETS:
 
 Container@PLAYER_WIDGETS:
 	Children:
+		ViewportController:
+			Width: WINDOW_RIGHT
+			Height: WINDOW_BOTTOM
+			TooltipTemplate: WORLD_TOOLTIP_FACTIONSUFFIX
+			TooltipContainer: TOOLTIP_CONTAINER
+			ScrollUpKey: MapScrollUp
+			ScrollDownKey: MapScrollDown
+			ScrollLeftKey: MapScrollLeft
+			ScrollRightKey: MapScrollRight
+			JumpToTopEdgeKey: MapJumpToTopEdge
+			JumpToBottomEdgeKey: MapJumpToBottomEdge
+			JumpToLeftEdgeKey: MapJumpToLeftEdge
+			JumpToRightEdgeKey: MapJumpToRightEdge
+			BookmarkSaveKeyPrefix: MapBookmarkSave
+			BookmarkRestoreKeyPrefix: MapBookmarkRestore
+			BookmarkKeyCount: 4
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
 		LogicTicker@SIDEBAR_TICKER:
@@ -326,7 +342,7 @@ Container@PLAYER_WIDGETS:
 			Height: 26
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
-				Button@ATTACK_MOVE:
+				WorldButton@ATTACK_MOVE:
 					Logic: AddFactionSuffixLogic
 					X: 0
 					Y: 0
@@ -338,7 +354,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Attack Move
 					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold {(Ctrl)} while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.
 					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -351,7 +367,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@FORCE_MOVE:
+				WorldButton@FORCE_MOVE:
 					Logic: AddFactionSuffixLogic
 					X: 39
 					Y: 0
@@ -362,7 +378,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Force Move
 					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -375,7 +391,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@FORCE_ATTACK:
+				WorldButton@FORCE_ATTACK:
 					Logic: AddFactionSuffixLogic
 					X: 78
 					Y: 0
@@ -386,7 +402,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Force Attack
 					TooltipDesc: Selected units will attack the targeted unit or location\n - Default activity for the target is suppressed\n - Allows targeting of own or ally forces\n - Long-range artillery units will always target the\n   location, ignoring units and buildings\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -399,7 +415,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@GUARD:
+				WorldButton@GUARD:
 					Logic: AddFactionSuffixLogic
 					X: 117
 					Y: 0
@@ -411,6 +427,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Guard
 					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -423,7 +440,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@DEPLOY:
+				WorldButton@DEPLOY:
 					Logic: AddFactionSuffixLogic
 					X: 156
 					Y: 0
@@ -436,6 +453,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Deploy
 					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Construction Yards will re-pack into a MCV\n - Transports will unload their passengers\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -448,7 +466,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@SCATTER:
+				WorldButton@SCATTER:
 					Logic: AddFactionSuffixLogic
 					X: 195
 					Y: 0
@@ -461,6 +479,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Scatter
 					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -473,7 +492,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@STOP:
+				WorldButton@STOP:
 					Logic: AddFactionSuffixLogic
 					X: 234
 					Y: 0
@@ -486,6 +505,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Stop
 					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -498,7 +518,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@QUEUE_ORDERS:
+				WorldButton@QUEUE_ORDERS:
 					Logic: AddFactionSuffixLogic
 					X: 273
 					Y: 0
@@ -509,7 +529,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Waypoint Mode
 					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
 					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 7
@@ -523,7 +543,7 @@ Container@PLAYER_WIDGETS:
 			Width: 155
 			Height: 26
 			Children:
-				Button@STANCE_ATTACKANYTHING:
+				WorldButton@STANCE_ATTACKANYTHING:
 					Logic: AddFactionSuffixLogic
 					X: 0
 					Y: 0
@@ -536,6 +556,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Attack Anything Stance
 					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 11
@@ -548,7 +569,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@STANCE_DEFEND:
+				WorldButton@STANCE_DEFEND:
 					Logic: AddFactionSuffixLogic
 					X: 39
 					Y: 0
@@ -561,6 +582,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Defend Stance
 					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 11
@@ -573,7 +595,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@STANCE_RETURNFIRE:
+				WorldButton@STANCE_RETURNFIRE:
 					Logic: AddFactionSuffixLogic
 					X: 78
 					Y: 0
@@ -586,6 +608,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Return Fire Stance
 					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 11
@@ -598,7 +621,7 @@ Container@PLAYER_WIDGETS:
 							Y: 2
 							ImageCollection: chrome-button
 							ImageName: separator
-				Button@STANCE_HOLDFIRE:
+				WorldButton@STANCE_HOLDFIRE:
 					Logic: AddFactionSuffixLogic
 					X: 117
 					Y: 0
@@ -611,6 +634,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: Hold Fire Stance
 					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
 							X: 11
@@ -631,7 +655,7 @@ Container@PLAYER_WIDGETS:
 					X: 18
 					Y: 1
 					Children:
-						Button@SELL_BUTTON:
+						WorldButton@SELL_BUTTON:
 							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
 							X: 0
 							Width: 28
@@ -640,6 +664,7 @@ Container@PLAYER_WIDGETS:
 							Key: Sell
 							TooltipText: Sell
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							VisualHeight: 0
 							Children:
 								Image@ICON:
@@ -652,7 +677,7 @@ Container@PLAYER_WIDGETS:
 									Y: 2
 									ImageCollection: chrome-button
 									ImageName: separator
-						Button@REPAIR_BUTTON:
+						WorldButton@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
 							X: 29
 							Width: 28
@@ -661,6 +686,7 @@ Container@PLAYER_WIDGETS:
 							Key: Repair
 							TooltipText: Repair
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							VisualHeight: 0
 							Children:
 								Image@ICON:
@@ -673,7 +699,7 @@ Container@PLAYER_WIDGETS:
 									Y: 2
 									ImageCollection: chrome-button
 									ImageName: separator
-						Button@BEACON_BUTTON:
+						WorldButton@BEACON_BUTTON:
 							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
 							X: 58
 							Width: 28
@@ -682,6 +708,7 @@ Container@PLAYER_WIDGETS:
 							Key: PlaceBeacon
 							TooltipText: Place Beacon
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							VisualHeight: 0
 							Children:
 								Image@ICON:
@@ -697,6 +724,7 @@ Container@PLAYER_WIDGETS:
 							Background: chrome-button-background
 							TooltipText: Options
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							DisableWorldSounds: true
 							VisualHeight: 0
 							Children:
@@ -741,7 +769,7 @@ Container@PLAYER_WIDGETS:
 							Width: 10
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 							IndicatorImage: indicator-left
 						Image@POWERBAR_PANEL:
 							ImageCollection: vertical-bars
@@ -757,7 +785,7 @@ Container@PLAYER_WIDGETS:
 							Width: 10
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 							IndicatorImage: indicator-right
 						Image@SILOBAR_PANEL:
 							ImageCollection: vertical-bars
@@ -770,7 +798,7 @@ Container@PLAYER_WIDGETS:
 					Height: 22
 					Align: Center
 					Font: TinyBold
-				LabelWithTooltip@POWER:
+				WorldLabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
 					X: 35
 					Y: 232
@@ -779,14 +807,14 @@ Container@PLAYER_WIDGETS:
 					Font: Bold
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
+					TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@POWER_ICON:
 							X: 0 - 16
 							Y: 5
 							ImageCollection: power-icons
 							ImageName: power-normal
-				LabelWithTooltip@CASH:
+				WorldLabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
 					X: PARENT_RIGHT - WIDTH - 35
 					Y: 232
@@ -796,7 +824,7 @@ Container@PLAYER_WIDGETS:
 					Font: Bold
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
+					TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@CASH_ICON:
 							X: PARENT_RIGHT
@@ -816,6 +844,7 @@ Container@PLAYER_WIDGETS:
 							Background: chrome-button-background
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Building
 							Key: ProductionTypeBuilding
 							Children:
@@ -837,6 +866,7 @@ Container@PLAYER_WIDGETS:
 							Background: chrome-button-background
 							TooltipText: Support
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Defence
 							Key: ProductionTypeDefense
 							Children:
@@ -858,6 +888,7 @@ Container@PLAYER_WIDGETS:
 							Background: chrome-button-background
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Infantry
 							Key: ProductionTypeInfantry
 							Children:
@@ -879,6 +910,7 @@ Container@PLAYER_WIDGETS:
 							Background: chrome-button-background
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Vehicle
 							Key: ProductionTypeVehicle
 							Children:
@@ -900,6 +932,7 @@ Container@PLAYER_WIDGETS:
 							Background: chrome-button-background
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Aircraft
 							Key: ProductionTypeAircraft
 							Children:

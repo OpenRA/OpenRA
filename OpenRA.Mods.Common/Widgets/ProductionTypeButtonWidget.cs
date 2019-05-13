@@ -11,13 +11,13 @@
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class ProductionTypeButtonWidget : ButtonWidget
+	public class ProductionTypeButtonWidget : WorldButtonWidget
 	{
 		public readonly string ProductionGroup;
 
 		[ObjectCreator.UseCtor]
-		public ProductionTypeButtonWidget(ModData modData)
-			: base(modData) { }
+		public ProductionTypeButtonWidget(ModData modData, World world)
+			: base(modData, world) { }
 
 		protected ProductionTypeButtonWidget(ProductionTypeButtonWidget other)
 			: base(other)
