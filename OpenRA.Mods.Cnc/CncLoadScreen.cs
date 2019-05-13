@@ -61,13 +61,13 @@ namespace OpenRA.Mods.Cnc
 
 			nodLogo = new Sprite(sheet, new Rectangle(0, 256, 256, 256), TextureChannel.RGBA);
 			gdiLogo = new Sprite(sheet, new Rectangle(256, 256, 256, 256), TextureChannel.RGBA);
-			evaLogo = new Sprite(sheet, new Rectangle(256, 64, 128, 64), TextureChannel.RGBA);
+			evaLogo = new Sprite(sheet, new Rectangle(768, 320, 128, 64), TextureChannel.RGBA);
 			nodPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
 			gdiPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
 			evaPos = new float2(bounds.Width - 43 - 128, 43);
 
-			brightBlock = new Sprite(sheet, new Rectangle(320, 0, 16, 35), TextureChannel.RGBA);
-			dimBlock = new Sprite(sheet, new Rectangle(336, 0, 16, 35), TextureChannel.RGBA);
+			brightBlock = new Sprite(sheet, new Rectangle(776, 384, 16, 35), TextureChannel.RGBA);
+			dimBlock = new Sprite(sheet, new Rectangle(792, 384, 16, 35), TextureChannel.RGBA);
 
 			versionText = modData.Manifest.Metadata.Version;
 		}

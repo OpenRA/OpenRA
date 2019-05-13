@@ -57,27 +57,6 @@ Container@INGAME_ROOT:
 					BookmarkSaveKeyPrefix: MapBookmarkSave
 					BookmarkRestoreKeyPrefix: MapBookmarkRestore
 					BookmarkKeyCount: 4
-				Container@GAME_TIMER_BLOCK:
-					Logic: GameTimerLogic
-					X: WINDOW_RIGHT / 2 - WIDTH
-					Width: 100
-					Height: 55
-					Children:
-						LabelWithTooltip@GAME_TIMER:
-							Width: PARENT_RIGHT
-							Height: 30
-							Align: Center
-							Font: Title
-							Contrast: true
-							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipTemplate: SIMPLE_TOOLTIP
-						Label@GAME_TIMER_STATUS:
-							Y: 35
-							Width: PARENT_RIGHT
-							Height: 15
-							Align: Center
-							Font: Bold
-							Contrast: true
 				Container@PLAYER_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
@@ -94,7 +73,7 @@ Container@PERF_WIDGETS:
 			VAlign: Top
 		Background@GRAPH_BG:
 			X: 5
-			Y: WINDOW_BOTTOM - HEIGHT - 45
+			Y: WINDOW_BOTTOM - HEIGHT - 56
 			Width: 220
 			Height: 220
 			Background: panel-black
@@ -114,6 +93,27 @@ Container@OBSERVER_WIDGETS:
 		StatisticsGraphKey: StatisticsGraph
 		StatisticsArmyGraphKey: StatisticsArmyGraph
 	Children:
+		Container@GAME_TIMER_BLOCK:
+			Logic: GameTimerLogic
+			X: WINDOW_RIGHT / 2 - WIDTH
+			Width: 100
+			Height: 55
+			Children:
+				LabelWithTooltip@GAME_TIMER:
+					Width: PARENT_RIGHT
+					Height: 30
+					Align: Center
+					Font: Title
+					Contrast: true
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@GAME_TIMER_STATUS:
+					Y: 35
+					Width: PARENT_RIGHT
+					Height: 15
+					Align: Center
+					Font: Bold
+					Contrast: true
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
@@ -296,6 +296,7 @@ Container@PLAYER_WIDGETS:
 				Container@PALETTE_BACKGROUND:
 					Children:
 						Background@ICON_TEMPLATE:
+							Logic: AddFactionSuffixLogic
 							Width: 66
 							Height: 50
 							ClickThrough: false
@@ -308,21 +309,30 @@ Container@PLAYER_WIDGETS:
 					HoldText: On Hold
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
-		Background@COMMAND_BAR:
-			Logic: CommandBarLogic
+		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
 			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Background: panel-black
-			Width: 276
-			Height: 36
+			Width: 494
+			Height: 44
+			ImageCollection: sidebar
+			ImageName: background-commandbar
+			ClickThrough: False
+		Container@COMMAND_BAR:
+			Logic: CommandBarLogic
+				HighlightOnButtonPress: True
+			X: 14
+			Y: WINDOW_BOTTOM - HEIGHT - 14
+			Width: 311
+			Height: 26
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
 				Button@ATTACK_MOVE:
-					X: 1
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 0
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					Key: AttackMove
 					DisableKeySound: true
 					TooltipText: Attack Move
@@ -331,16 +341,23 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: attack-move
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@FORCE_MOVE:
-					X: 35
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 39
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					DisableKeySound: true
 					TooltipText: Force Move
 					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Units entering transports will consider nearby alternatives\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
@@ -348,16 +365,23 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: force-move
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@FORCE_ATTACK:
-					X: 69
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 78
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					DisableKeySound: true
 					TooltipText: Force Attack
 					TooltipDesc: Selected units will attack the targeted unit or location\n - Default activity for the target is suppressed\n - Allows targeting of own or ally forces\n - Long-range artillery units will always target the\n   location, ignoring units and buildings\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
@@ -365,16 +389,23 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: force-attack
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@GUARD:
-					X: 105
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 117
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					Key: Guard
 					DisableKeySound: true
 					TooltipText: Guard
@@ -382,16 +413,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: guard
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@DEPLOY:
-					X: 139
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 156
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					Key: Deploy
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -400,16 +438,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: deploy
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@SCATTER:
-					X: 173
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 195
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					Key: Scatter
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -418,16 +463,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: scatter
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@STOP:
-					X: 207
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 234
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					Key: Stop
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -436,16 +488,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: stop
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@QUEUE_ORDERS:
-					X: 241
-					Y: 1
-					Width: 34
-					Height: 34
-					Background: command-button
+					Logic: AddFactionSuffixLogic
+					X: 273
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
 					DisableKeySound: true
 					TooltipText: Waypoint Mode
 					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
@@ -453,24 +512,24 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
 						Image@ICON:
-							X: 5
-							Y: 5
+							X: 7
+							Y: 1
 							ImageCollection: command-icons
 							ImageName: queue-orders
-		Background@STANCE_BAR:
+		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 280
-			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Background: panel-black
-			Width: 138
-			Height: 28
+			X: 335
+			Y: WINDOW_BOTTOM - HEIGHT - 14
+			Width: 155
+			Height: 26
 			Children:
 				Button@STANCE_ATTACKANYTHING:
-					X: 1
-					Y: 1
-					Width: 34
+					Logic: AddFactionSuffixLogic
+					X: 0
+					Y: 0
+					Width: 38
 					Height: 26
-					Background: stance-button
+					Background: chrome-button-background
 					Key: StanceAttackAnything
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -479,16 +538,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 9
+							X: 11
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: attack-anything
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@STANCE_DEFEND:
-					X: 35
-					Y: 1
-					Width: 34
+					Logic: AddFactionSuffixLogic
+					X: 39
+					Y: 0
+					Width: 38
 					Height: 26
-					Background: stance-button
+					Background: chrome-button-background
 					Key: StanceDefend
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -497,16 +563,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 9
+							X: 11
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: defend
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@STANCE_RETURNFIRE:
-					X: 69
-					Y: 1
-					Width: 34
+					Logic: AddFactionSuffixLogic
+					X: 78
+					Y: 0
+					Width: 38
 					Height: 26
-					Background: stance-button
+					Background: chrome-button-background
 					Key: StanceReturnFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -515,16 +588,23 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 9
+							X: 11
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: return-fire
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
 				Button@STANCE_HOLDFIRE:
-					X: 103
-					Y: 1
-					Width: 34
+					Logic: AddFactionSuffixLogic
+					X: 117
+					Y: 0
+					Width: 38
 					Height: 26
-					Background: stance-button
+					Background: chrome-button-background
 					Key: StanceHoldFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
@@ -533,238 +613,327 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 9
+							X: 11
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
-		Background@SIDEBAR_BACKGROUND:
-			Logic: MenuButtonsChromeLogic
-			X: WINDOW_RIGHT - 204
-			Y: 30
-			Width: 194
-			Height: 240
-			Background: panel-black
+		Image@SIDEBAR_BACKGROUND:
+			X: WINDOW_RIGHT - WIDTH - 5
+			Y: 5
+			Width: 230
+			Height: 291
+			ImageCollection: sidebar
+			ImageName: background-sidebar
+			ClickThrough: false
 			Children:
-				MenuButton@OPTIONS_BUTTON:
-					X: 22
-					Y: 0 - 24
-					Width: 30
-					Height: 25
-					Font: Bold
-					Key: escape
-					TooltipText: Menu
-					TooltipContainer: TOOLTIP_CONTAINER
-					DisableWorldSounds: true
+				Container@TOP_BUTTONS:
+					Logic: MenuButtonsChromeLogic
+					X: 18
+					Y: 1
 					Children:
-						Image@ICON:
-							X: 7
-							Y: 5
-							ImageCollection: order-icons
-							ImageName: options
-				Button@BEACON_BUTTON:
-					Logic: BeaconOrderButtonLogic
-					X: 62
-					Y: 0 - 24
-					Width: 30
-					Height: 25
-					Font: Bold
-					Key: PlaceBeacon
-					TooltipText: Place Beacon
-					TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELL_BUTTON:
+							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
+							X: 0
+							Width: 28
+							Height: 26
+							Background: chrome-button-background
+							Key: Sell
+							TooltipText: Sell
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 5
+									ImageCollection: order-icons
+								Image@SEPARATOR:
+									Logic: AddFactionSuffixLogic
+									X: 28
+									Y: 2
+									ImageCollection: chrome-button
+									ImageName: separator
+						Button@REPAIR_BUTTON:
+							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
+							X: 29
+							Width: 28
+							Height: 26
+							Background: chrome-button-background
+							Key: Repair
+							TooltipText: Repair
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 5
+									ImageCollection: order-icons
+								Image@SEPARATOR:
+									Logic: AddFactionSuffixLogic
+									X: 28
+									Y: 2
+									ImageCollection: chrome-button
+									ImageName: separator
+						Button@BEACON_BUTTON:
+							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
+							X: 58
+							Width: 28
+							Height: 26
+							Background: chrome-button-background
+							Key: PlaceBeacon
+							TooltipText: Place Beacon
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 5
+									ImageCollection: order-icons
+						MenuButton@OPTIONS_BUTTON:
+							Logic: AddFactionSuffixLogic
+							Key: escape
+							X: 156
+							Width: 38
+							Height: 26
+							Background: chrome-button-background
+							TooltipText: Options
+							TooltipContainer: TOOLTIP_CONTAINER
+							DisableWorldSounds: true
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 11
+									Y: 5
+									ImageCollection: order-icons
+									ImageName: options
+				Container@RADAR:
+					Logic: IngameRadarDisplayLogic
+					X: 18
+					Y: 39
 					Children:
-						Image@ICON:
-							X: 7
-							Y: 5
-							ImageCollection: order-icons
-				Button@SELL_BUTTON:
-					Logic: SellOrderButtonLogic
-					X: 102
-					Y: 0 - 24
-					Width: 30
-					Height: 25
-					Font: Bold
-					Key: Sell
-					TooltipText: Sell
-					TooltipContainer: TOOLTIP_CONTAINER
-					Children:
-						Image@ICON:
-							X: 7
-							Y: 5
-							ImageCollection: order-icons
-				Button@REPAIR_BUTTON:
-					Logic: RepairOrderButtonLogic
-					X: 142
-					Y: 0 - 24
-					Width: 30
-					Height: 25
-					Font: Bold
-					Key: Repair
-					TooltipText: Repair
-					TooltipContainer: TOOLTIP_CONTAINER
-					Children:
-						Image@ICON:
-							X: 7
-							Y: 5
-							ImageCollection: order-icons
-				Background@RADAR:
-					X: 13
-					Y: 5
-					Width: 168
-					Height: 168
-					Background: panel-gray
-					Children:
+						LogicTicker@RADAR_TICKER:
+						ColorBlock@RADAR_FADETOBLACK:
+							Width: 194
+							Height: 194
+						Image@RADAR_LOGO:
+							Logic: AddFactionSuffixLogic
+							X: 31
+							Y: 31
+							ImageCollection: chrome-radar
+							ImageName: logo
 						Radar@RADAR_MINIMAP:
-							Logic: IngameRadarDisplayLogic
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
 							WorldInteractionController: INTERACTION_CONTROLLER
+							Width: 194
+							Height: 194
 							SoundUp: RadarUp
 							SoundDown: RadarDown
-							Children:
-								LogicTicker@RADAR_TICKER:
 						VqaPlayer@PLAYER:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							Width: 194
+							Height: 194
 							Skippable: false
-				Background@POWERBAR_PANEL:
+				Container@POWERBAR_PANEL:
 					Logic: IngamePowerBarLogic
-					X: 4
-					Y: 5
+					X: 0
+					Y: 51
 					Width: 10
-					Height: 168
-					Background: panel-black
+					Height: 190
 					Children:
 						ResourceBar@POWERBAR:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
+							Width: 10
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-left
-				Background@SILOBAR_PANEL:
+						Image@POWERBAR_PANEL:
+							ImageCollection: vertical-bars
+							ImageName: power
+				Container@SILOBAR_PANEL:
 					Logic: IngameSiloBarLogic
-					X: 180
-					Y: 5
+					X: 220
+					Y: 51
 					Width: 10
-					Height: 168
-					Background: panel-black
+					Height: 190
 					Children:
 						ResourceBar@SILOBAR:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
+							Width: 10
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IndicatorImage: indicator-right
+						Image@SILOBAR_PANEL:
+							ImageCollection: vertical-bars
+							ImageName: silo
+				Label@GAME_TIMER:
+					Logic: GameTimerLogic
+					X: 0
+					Y: 233
+					Width: PARENT_RIGHT
+					Height: 22
+					Align: Center
+					Font: TinyBold
+				LabelWithTooltip@POWER:
+					Logic: IngamePowerCounterLogic
+					X: 35
+					Y: 232
+					Width: 50
+					Height: 22
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@POWER_ICON:
+							X: 0 - 16
+							Y: 5
+							ImageCollection: power-icons
+							ImageName: power-normal
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
-					Y: 170
-					Width: PARENT_RIGHT
-					Height: 25
-					Align: Center
+					X: PARENT_RIGHT - WIDTH - 35
+					Y: 232
+					Width: 50
+					Height: 22
+					Align: Right
 					Font: Bold
-					Text: ${0}
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@CASH_ICON:
+							X: PARENT_RIGHT
+							Y: 5
+							ImageCollection: cash-icons
+							ImageName: cash-normal
 				Container@PRODUCTION_TYPES:
-					X: 12
-					Y: 197
-					Width: 170
-					Height: 30
+					X: 18
+					Y: 267
+					Width: 194
+					Height: 26
 					Children:
 						ProductionTypeButton@BUILDING:
-							Width: 30
-							Height: 30
+							Logic: AddFactionSuffixLogic
+							Width: 38
+							Height: 26
+							Background: chrome-button-background
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
 							Key: ProductionTypeBuilding
 							Children:
 								Image@ICON:
-									X: 7
-									Y: 7
+									X: 11
+									Y: 5
 									ImageCollection: production-icons
+								Image@SEPARATOR:
+									Logic: AddFactionSuffixLogic
+									X: 38
+									Y: 2
+									ImageCollection: chrome-button
+									ImageName: separator
 						ProductionTypeButton@DEFENCE:
-							X: 35
-							Width: 30
-							Height: 30
+							Logic: AddFactionSuffixLogic
+							X: 39
+							Width: 38
+							Height: 26
+							Background: chrome-button-background
 							TooltipText: Support
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defence
 							Key: ProductionTypeDefense
 							Children:
 								Image@ICON:
-									X: 7
-									Y: 7
+									X: 11
+									Y: 5
 									ImageCollection: production-icons
+								Image@SEPARATOR:
+									Logic: AddFactionSuffixLogic
+									X: 38
+									Y: 2
+									ImageCollection: chrome-button
+									ImageName: separator
 						ProductionTypeButton@INFANTRY:
-							X: 70
-							Width: 30
-							Height: 30
+							Logic: AddFactionSuffixLogic
+							X: 78
+							Width: 38
+							Height: 26
+							Background: chrome-button-background
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
 							Key: ProductionTypeInfantry
 							Children:
 								Image@ICON:
-									X: 7
-									Y: 7
+									X: 11
+									Y: 5
 									ImageCollection: production-icons
+								Image@SEPARATOR:
+									Logic: AddFactionSuffixLogic
+									X: 38
+									Y: 2
+									ImageCollection: chrome-button
+									ImageName: separator
 						ProductionTypeButton@VEHICLE:
-							X: 105
-							Width: 30
-							Height: 30
+							Logic: AddFactionSuffixLogic
+							X: 117
+							Width: 38
+							Height: 26
+							Background: chrome-button-background
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
 							Key: ProductionTypeVehicle
 							Children:
 								Image@ICON:
-									X: 7
-									Y: 7
+									X: 11
+									Y: 5
 									ImageCollection: production-icons
+								Image@SEPARATOR:
+									Logic: AddFactionSuffixLogic
+									X: 38
+									Y: 2
+									ImageCollection: chrome-button
+									ImageName: separator
 						ProductionTypeButton@AIRCRAFT:
-							X: 140
-							Width: 30
-							Height: 30
+							Logic: AddFactionSuffixLogic
+							X: 156
+							Width: 38
+							Height: 26
+							Background: chrome-button-background
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
 							Key: ProductionTypeAircraft
 							Children:
 								Image@ICON:
-									X: 7
-									Y: 7
+									X: 11
+									Y: 5
 									ImageCollection: production-icons
 		Container@PRODUCTION_BACKGROUND:
-			X: WINDOW_RIGHT - 204
-			Y: 287
+			X: WINDOW_RIGHT - 5 - 18 - 194
+			Y: 319
 			Children:
 				Background@ICON_TEMPLATE:
+					Logic: AddFactionSuffixLogic
 					Width: 66
 					Height: 50
 					Background: panel-black
 		ProductionPalette@PRODUCTION_PALETTE:
-			X: WINDOW_RIGHT - 203
-			Y: 288
+			X: WINDOW_RIGHT - 5 - 17 - 194
+			Y: 320
+			Width: 192
 			TooltipContainer: TOOLTIP_CONTAINER
 			ReadyText: Ready
 			HoldText: On Hold
 			HotkeyPrefix: Production
 			HotkeyCount: 24
 		ProductionTabs@PRODUCTION_TABS:
-			Logic: ProductionTabsLogic
+			Logic: AddFactionSuffixLogic, ProductionTabsLogic
 			PaletteWidget: PRODUCTION_PALETTE
 			TypesContainer: PRODUCTION_TYPES
 			BackgroundContainer: PRODUCTION_BACKGROUND
 			PreviousProductionTabKey: PreviousProductionTab
 			NextProductionTabKey: NextProductionTab
-			X: WINDOW_RIGHT - 204
-			Y: 268
+			X: WINDOW_RIGHT - 5 - 18 - 194
+			Y: 299
 			Width: 194
 			Height: 20
 
