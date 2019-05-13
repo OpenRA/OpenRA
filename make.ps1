@@ -5,7 +5,7 @@
 ###############################################################
 function All-Command 
 {
-	if (CheckForDotnet -eq 1)
+	if ((CheckForDotnet) -eq 1)
 	{
 		return
 	}
@@ -25,7 +25,7 @@ function All-Command
 
 function Clean-Command 
 {
-	if (CheckForDotnet -eq 1)
+	if ((CheckForDotnet) -eq 1)
 	{
 		return
 	}
@@ -104,7 +104,7 @@ function Dependencies-Command
 	cd ..
 	echo "Dependencies copied."
 
-	if (CheckForDotnet -eq 1)
+	if ((CheckForDotnet) -eq 1)
 	{
 		return
 	}
@@ -118,7 +118,7 @@ function Dependencies-Command
 
 function Test-Command
 {
-	if (CheckForUtility -eq 1)
+	if ((CheckForUtility) -eq 1)
 	{
 		return
 	}
@@ -143,7 +143,7 @@ function Check-Command
 		echo "Build failed."
 	}
 
-	if (CheckForUtility -eq 0)
+	if ((CheckForUtility) -eq 0)
 	{
 		echo "Checking for explicit interface violations..."
 		./OpenRA.Utility.exe all --check-explicit-interfaces
@@ -173,7 +173,7 @@ function Check-Scripts-Command
 
 function Docs-Command
 {
-	if (CheckForUtility -eq 1)
+	if ((CheckForUtility) -eq 1)
 	{
 		return
 	}
