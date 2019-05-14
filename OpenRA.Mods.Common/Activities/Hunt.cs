@@ -31,18 +31,18 @@ namespace OpenRA.Mods.Common.Activities
 				&& a.IsTargetableBy(self) && attack.HasAnyValidWeapons(Target.FromActor(a)));
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			var target = targets.ClosestTo(self);
 			if (target == null)
-				return this;
+				return false;
 
 			QueueChild(new AttackMoveActivity(self, () => move.MoveTo(target.Location, 2)));
 			QueueChild(new Wait(25));
-			return this;
+			return false;
 		}
 	}
 }

@@ -28,20 +28,20 @@ namespace OpenRA.Mods.Common.Activities
 			this.desiredFacing = desiredFacing;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			if (mobile != null && (mobile.IsTraitDisabled || mobile.IsTraitPaused))
-				return this;
+				return false;
 
 			if (desiredFacing == facing.Facing)
-				return NextActivity;
+				return true;
 
 			facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.TurnSpeed);
 
-			return this;
+			return false;
 		}
 	}
 }

@@ -37,10 +37,10 @@ namespace OpenRA.Mods.Common.Activities
 				harv.LinkProc(self, targetActor);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || isDocking)
-				return NextActivity;
+				return true;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (harv.LinkedProc == null)
 			{
 				QueueChild(new Wait(harv.Info.SearchForDeliveryBuildingDelay));
-				return this;
+				return false;
 			}
 
 			var proc = harv.LinkedProc;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToRefinery(self, proc, new FindAndDeliverResources(self));
 
 				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
-				return this;
+				return false;
 			}
 
 			if (!isDocking)
@@ -71,10 +71,10 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Wait(10));
 				isDocking = true;
 				iao.OnDock(self, this);
-				return this;
+				return false;
 			}
 
-			return NextActivity;
+			return true;
 		}
 	}
 }

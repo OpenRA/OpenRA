@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(Mobile.MoveTo(() => CalculatePathToTarget(self)));
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			bool targetIsHiddenActor;
 			var oldTargetLocation = lastVisibleTargetLocation;
@@ -119,11 +119,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!IsCanceling && shouldRepath)
 				QueueChild(Mobile.MoveTo(() => CalculatePathToTarget(self)));
 
-			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-			if (ChildActivity != null)
-				return this;
-
-			return NextActivity;
+			// The last queued childactivity is guaranteed to be the inner move, so if the childactivity
+			// queue is empty it means we have reached our destination.
+			return TickChild(self);
 		}
 
 		List<CPos> CalculatePathToTarget(Actor self)

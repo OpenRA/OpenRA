@@ -39,15 +39,15 @@ namespace OpenRA.Mods.Common.Activities
 				np.OnParachute(self);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			var nextPosition = self.CenterPosition - fallVector;
 			if (nextPosition.Z < groundLevel)
-				return NextActivity;
+				return true;
 
 			pos.SetVisualPosition(self, nextPosition);
 
-			return this;
+			return false;
 		}
 
 		protected override void OnLastRun(Actor self)

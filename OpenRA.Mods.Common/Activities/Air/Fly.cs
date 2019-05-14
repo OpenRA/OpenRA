@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 			return true;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
@@ -122,15 +122,15 @@ namespace OpenRA.Mods.Common.Activities
 					else
 						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 
-					return this;
+					return false;
 				}
 
-				return NextActivity;
+				return true;
 			}
 			else if (dat <= aircraft.LandAltitude)
 			{
 				QueueChild(new TakeOff(self, target));
-				return this;
+				return false;
 			}
 
 			bool targetIsHiddenActor;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
-				return NextActivity;
+				return true;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var pos = aircraft.GetPosition();
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Activities
 			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos, maxRange);
 			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(pos, minRange);
 			if (insideMaxRange && !insideMinRange)
-				return NextActivity;
+				return true;
 
 			var move = aircraft.Info.CanHover ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.Info.CanHover && insideMinRange)
 			{
 				FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
-				return this;
+				return false;
 			}
 
 			// The next move would overshoot, so consider it close enough or set final position if CanHover
@@ -186,11 +186,11 @@ namespace OpenRA.Mods.Common.Activities
 					if (dat != aircraft.Info.CruiseAltitude)
 					{
 						Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-						return this;
+						return false;
 					}
 				}
 
-				return NextActivity;
+				return true;
 			}
 
 			if (!aircraft.Info.CanHover)
@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 
-			return this;
+			return false;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

@@ -70,11 +70,11 @@ namespace OpenRA.Mods.Cnc.Activities
 			attack.GrantLeapCondition(self);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// Correct the visual position after we jumped
 			if (canceled || jumpComplete)
-				return NextActivity;
+				return true;
 
 			if (target.Type != TargetType.Invalid)
 				targetPosition = target.CenterPosition;
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				QueueChild(mobile.VisualMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));
 			}
 
-			return this;
+			return false;
 		}
 
 		protected override void OnLastRun(Actor self)

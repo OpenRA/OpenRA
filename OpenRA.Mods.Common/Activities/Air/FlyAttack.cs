@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
@@ -73,16 +73,16 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Cancel the requested target, but keep firing on it while in range
 				attackAircraft.ClearRequestedTarget();
-				return NextActivity;
+				return true;
 			}
 
 			// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 			// Having both this and AttackFollow modify that field is a horrible hack.
 			if (hasTicked && attackAircraft.RequestedTarget.Type == TargetType.Invalid)
-				return NextActivity;
+				return true;
 
 			if (attackAircraft.IsTraitPaused)
-				return this;
+				return false;
 
 			bool targetIsHiddenActor;
 			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
@@ -108,14 +108,14 @@ namespace OpenRA.Mods.Common.Activities
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 			{
 				attackAircraft.ClearRequestedTarget();
-				return NextActivity;
+				return true;
 			}
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
 			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
 				QueueChild(new ReturnToBase(self, aircraft.Info.AbortOnResupply));
-				return this;
+				return false;
 			}
 
 			var pos = self.CenterPosition;
@@ -128,12 +128,12 @@ namespace OpenRA.Mods.Common.Activities
 				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
 				{
 					attackAircraft.ClearRequestedTarget();
-					return NextActivity;
+					return true;
 				}
 
 				// Fly towards the last known position
 				QueueChild(new Fly(self, target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red));
-				return this;
+				return false;
 			}
 
 			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Activities
 					Fly.VerticalTakeOffOrLandTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 			}
 
-			return this;
+			return false;
 		}
 
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)

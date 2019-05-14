@@ -46,13 +46,13 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.forceAttack = forceAttack;
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				if (IsCanceling || !target.IsValidFor(self))
-					return NextActivity;
+					return true;
 
 				if (attack.IsTraitDisabled)
-					return this;
+					return false;
 
 				var weapon = attack.ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
 				if (weapon != null)
@@ -60,13 +60,13 @@ namespace OpenRA.Mods.Cnc.Traits
 					// Check that AttackTDGunboatTurreted hasn't cancelled the target by modifying attack.Target
 					// Having both this and AttackTDGunboatTurreted modify that field is a horrible hack.
 					if (hasTicked && attack.RequestedTarget.Type == TargetType.Invalid)
-						return NextActivity;
+						return true;
 
 					attack.SetRequestedTarget(self, target);
 					hasTicked = true;
 				}
 
-				return NextActivity;
+				return true;
 			}
 		}
 	}

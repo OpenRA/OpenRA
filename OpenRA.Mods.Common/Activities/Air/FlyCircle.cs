@@ -27,20 +27,20 @@ namespace OpenRA.Mods.Common.Activities
 			this.turnSpeedOverride = turnSpeedOverride;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (remainingTicks == 0 || (NextActivity != null && remainingTicks < 0))
-				return NextActivity;
+				return true;
 
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
-				return NextActivity;
+				return true;
 			}
 
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			if (remainingTicks > 0)
 				remainingTicks--;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, turnSpeedOverride);
 
-			return this;
+			return false;
 		}
 	}
 }

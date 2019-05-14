@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 					pool.RemainingTicks = pool.Info.ReloadDelay;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
 			// move actor outside the resupplier footprint
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
-				return this;
+				return false;
 			}
 
 			if (IsCanceling || host.Type == TargetType.Invalid
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
-				return NextActivity;
+				return true;
 			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
@@ -112,10 +112,10 @@ namespace OpenRA.Mods.Common.Activities
 				if (aircraft != null)
 					aircraft.AllowYieldingReservation();
 
-				return NextActivity;
+				return true;
 			}
 
-			return this;
+			return false;
 		}
 
 		public override void Cancel(Actor self, bool keepQueue = false)

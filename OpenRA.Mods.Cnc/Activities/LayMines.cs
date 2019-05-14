@@ -37,10 +37,10 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.minefield = minefield;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == info.AmmoPoolName && !p.HasAmmo()))
 			{
@@ -50,20 +50,20 @@ namespace OpenRA.Mods.Cnc.Activities
 					.ClosestTo(self);
 
 				if (rearmTarget == null)
-					return NextActivity;
+					return true;
 
 				// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
 				QueueChild(new MoveAdjacentTo(self, Target.FromActor(rearmTarget)));
 				QueueChild(movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget));
 				QueueChild(new Resupply(self, rearmTarget, new WDist(512)));
-				return this;
+				return false;
 			}
 
 			if ((minefield == null || minefield.Contains(self.Location)) && ShouldLayMine(self, self.Location))
 			{
 				LayMine(self);
 				QueueChild(new Wait(20)); // A little wait after placing each mine, for show
-				return this;
+				return false;
 			}
 
 			if (minefield != null && minefield.Length > 0)
@@ -75,13 +75,13 @@ namespace OpenRA.Mods.Cnc.Activities
 					if (ShouldLayMine(self, p))
 					{
 						QueueChild(movement.MoveTo(p, 0));
-						return this;
+						return false;
 					}
 				}
 			}
 
 			// TODO: Return somewhere likely to be safe (near rearm building) so we're not sitting out in the minefield.
-			return NextActivity;
+			return true;
 		}
 
 		static bool ShouldLayMine(Actor self, CPos p)

@@ -27,17 +27,16 @@ namespace OpenRA.Mods.Common.Activities
 			wda = self.Info.TraitInfo<WithDockingAnimationInfo>();
 		}
 
-		public override Activity OnStateDock(Actor self)
+		public override void OnStateDock(Actor self)
 		{
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Docked();
 
 			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
 			dockingState = DockingState.Loop;
-			return this;
 		}
 
-		public override Activity OnStateUndock(Actor self)
+		public override void OnStateUndock(Actor self)
 		{
 			wsb.PlayCustomAnimationBackwards(self, wda.DockSequence,
 				() =>
@@ -47,8 +46,6 @@ namespace OpenRA.Mods.Common.Activities
 						trait.Undocked();
 				});
 			dockingState = DockingState.Wait;
-
-			return this;
 		}
 	}
 }

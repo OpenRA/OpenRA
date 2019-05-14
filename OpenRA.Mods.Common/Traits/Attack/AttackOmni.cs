@@ -46,16 +46,16 @@ namespace OpenRA.Mods.Common.Traits
 				this.forceAttack = forceAttack;
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				// This activity can't move to reacquire hidden targets, so use the
 				// Recalculate overload that invalidates hidden targets.
 				target = target.RecalculateInvalidatingHiddenTargets(self.Owner);
 				if (IsCanceling || !target.IsValidFor(self) || !attack.IsReachableTarget(target, allowMove))
-					return NextActivity;
+					return true;
 
 				attack.DoAttack(self, target);
-				return this;
+				return false;
 			}
 
 			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)

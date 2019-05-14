@@ -66,12 +66,12 @@ namespace OpenRA.Mods.Common.Activities
 					&& rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
 			// Special case: Don't kill other deploy hotkey activities.
 			if (aircraft.ForceLanding)
-				return NextActivity;
+				return true;
 
 			// If a Cancel was triggered at this point, it's unlikely that previously queued child activities finished,
 			// so 'resupplied' needs to be set to false, else it + abortOnResupply might cause another Cancel
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Activities
 				self.CancelActivity();
 
 			if (resupplied || IsCanceling || self.IsDead)
-				return NextActivity;
+				return true;
 
 			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))
 				dest = ChooseResupplier(self, true);
@@ -109,17 +109,17 @@ namespace OpenRA.Mods.Common.Activities
 							QueueChild(new Fly(self, target, WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green));
 						}
 
-						return this;
+						return false;
 					}
 
 					QueueChild(new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green));
 					QueueChild(new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
-					return this;
+					return false;
 				}
 
 				// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
 				self.CancelActivity();
-				return NextActivity;
+				return true;
 			}
 
 			if (ShouldLandAtBuilding(self, dest))
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Fly(self, Target.FromActor(dest)));
 
 			resupplied = true;
-			return this;
+			return false;
 		}
 	}
 }
