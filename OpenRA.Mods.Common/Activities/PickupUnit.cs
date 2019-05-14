@@ -54,41 +54,41 @@ namespace OpenRA.Mods.Common.Activities
 			carryall.ReserveCarryable(self, cargo);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (cargo != carryall.Carryable)
-				return NextActivity;
+				return true;
 
 			if (IsCanceling)
 			{
 				if (carryall.State == Carryall.CarryallState.Reserved)
 					carryall.UnreserveCarryable(self);
 
-				return NextActivity;
+				return true;
 			}
 
 			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
 			{
 				carryall.UnreserveCarryable(self);
-				return NextActivity;
+				return true;
 			}
 
 			if (carryall.State != Carryall.CarryallState.Reserved)
-				return NextActivity;
+				return true;
 
 			switch (state)
 			{
 				case PickupState.Intercept:
 					QueueChild(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4), targetLineColor: Color.Yellow));
 					state = PickupState.LockCarryable;
-					return this;
+					return false;
 
 				case PickupState.LockCarryable:
 					if (!carryable.LockForPickup(cargo, self))
 						Cancel(self);
 
 					state = PickupState.Pickup;
-					return this;
+					return false;
 
 				case PickupState.Pickup:
 				{
@@ -103,11 +103,11 @@ namespace OpenRA.Mods.Common.Activities
 					// Remove our carryable from world
 					QueueChild(new CallFunc(() => Attach(self)));
 					QueueChild(new TakeOff(self));
-					return this;
+					return false;
 				}
 			}
 
-			return NextActivity;
+			return true;
 		}
 
 		void Attach(Actor self)

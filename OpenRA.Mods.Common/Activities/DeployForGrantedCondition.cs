@@ -36,15 +36,15 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Turn(self, deploy.Info.Facing));
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || initiated || (deploy.DeployState != DeployState.Deployed && moving))
-				return NextActivity;
+				return true;
 
 			QueueChild(new DeployInner(self, deploy));
 
 			initiated = true;
-			return this;
+			return false;
 		}
 	}
 
@@ -61,14 +61,14 @@ namespace OpenRA.Mods.Common.Activities
 			IsInterruptible = false;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// Wait for deployment
 			if (deployment.DeployState == DeployState.Deploying || deployment.DeployState == DeployState.Undeploying)
-				return this;
+				return false;
 
 			if (initiated)
-				return NextActivity;
+				return true;
 
 			if (deployment.DeployState == DeployState.Undeployed)
 				deployment.Deploy();
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Activities
 				deployment.Undeploy();
 
 			initiated = true;
-			return this;
+			return false;
 		}
 	}
 }

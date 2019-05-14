@@ -72,10 +72,10 @@ namespace OpenRA.Mods.Cnc.Activities
 			attack.IsAiming = true;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			bool targetIsHiddenActor;
 			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
-				return NextActivity;
+				return true;
 
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
@@ -105,27 +105,27 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (!checkTarget.IsInRange(pos, lastVisibleMaxRange) || checkTarget.IsInRange(pos, lastVisibleMinRange))
 			{
 				if (!allowMovement || lastVisibleMaxRange == WDist.Zero || lastVisibleMaxRange < lastVisibleMinRange)
-					return NextActivity;
+					return true;
 
 				QueueChild(mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red));
-				return this;
+				return false;
 			}
 
 			// Ready to leap, but target isn't visible
 			if (targetIsHiddenActor || target.Type != TargetType.Actor)
-				return NextActivity;
+				return true;
 
 			// Target is not valid
 			if (!target.IsValidFor(self) || !attack.HasAnyValidWeapons(target))
-				return NextActivity;
+				return true;
 
 			var edible = target.Actor.TraitOrDefault<EdibleByLeap>();
 			if (edible == null || !edible.CanLeap(self))
-				return NextActivity;
+				return true;
 
 			// Can't leap yet
 			if (attack.Armaments.All(a => a.IsReloading))
-				return this;
+				return false;
 
 			// Use CenterOfSubCell with ToSubCell instead of target.Centerposition
 			// to avoid continuous facing adjustments as the target moves
@@ -138,13 +138,13 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (mobile.Facing != desiredFacing)
 			{
 				QueueChild(new Turn(self, desiredFacing));
-				return this;
+				return false;
 			}
 
 			QueueChild(new Leap(self, target, mobile, targetMobile, info.Speed.Length, attack, edible));
 
 			// Re-queue the child activities to kill the target if it didn't die in one go
-			return this;
+			return false;
 		}
 
 		protected override void OnLastRun(Actor self)

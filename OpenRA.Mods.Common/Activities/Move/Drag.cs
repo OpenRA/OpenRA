@@ -34,10 +34,10 @@ namespace OpenRA.Mods.Common.Activities
 			IsInterruptible = false;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (disableable != null && disableable.IsTraitDisabled)
-				return this;
+				return false;
 
 			var pos = length > 1
 				? WPos.Lerp(start, end, ticks, length - 1)
@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			positionable.SetVisualPosition(self, pos);
 			if (++ticks >= length)
-				return NextActivity;
+				return true;
 
-			return this;
+			return false;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

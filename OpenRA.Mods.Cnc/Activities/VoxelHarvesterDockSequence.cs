@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			spriteOverlay = refinery.TraitOrDefault<WithDockingOverlay>();
 		}
 
-		public override Activity OnStateDock(Actor self)
+		public override void OnStateDock(Actor self)
 		{
 			body.Docked = true;
 
@@ -42,11 +42,9 @@ namespace OpenRA.Mods.Cnc.Activities
 			}
 			else
 				dockingState = DockingState.Loop;
-
-			return this;
 		}
 
-		public override Activity OnStateUndock(Actor self)
+		public override void OnStateUndock(Actor self)
 		{
 			dockingState = DockingState.Wait;
 
@@ -65,8 +63,6 @@ namespace OpenRA.Mods.Cnc.Activities
 				dockingState = DockingState.Complete;
 				body.Docked = false;
 			}
-
-			return this;
 		}
 	}
 }

@@ -27,21 +27,21 @@ namespace OpenRA.Mods.Common.Activities
 			cruiseAltitude = aircraft.Info.CruiseAltitude;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 			{
 				Cancel(self);
-				return NextActivity;
+				return true;
 			}
 
 			if (IsCanceling || remainingTicks-- == 0)
-				return NextActivity;
+				return true;
 
 			Fly.FlyTick(self, aircraft, aircraft.Facing, cruiseAltitude);
 
-			return this;
+			return false;
 		}
 	}
 }

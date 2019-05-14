@@ -144,18 +144,18 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// If the actor is inside a tunnel then we must let them move
 			// all the way through before moving to the next activity
 			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel)
-				return NextActivity;
+				return true;
 
 			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
-				return this;
+				return false;
 
 			if (destination == mobile.ToCell)
-				return NextActivity;
+				return true;
 
 			if (path == null)
 				path = EvalPath();
@@ -163,22 +163,21 @@ namespace OpenRA.Mods.Common.Activities
 			if (path.Count == 0)
 			{
 				destination = mobile.ToCell;
-				return this;
+				return false;
 			}
 
 			destination = path[0];
 
 			var nextCell = PopPath(self);
 			if (nextCell == null)
-				return this;
+				return false;
 
 			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.First, mobile.Facing);
 			if (firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.First);
-
 				QueueChild(new Turn(self, firstFacing));
-				return this;
+				return false;
 			}
 
 			mobile.SetLocation(mobile.FromCell, mobile.FromSubCell, nextCell.Value.First, nextCell.Value.Second);
@@ -192,7 +191,7 @@ namespace OpenRA.Mods.Common.Activities
 				(map.Grid.OffsetOfSubCell(mobile.FromSubCell) + map.Grid.OffsetOfSubCell(mobile.ToSubCell)) / 2;
 
 			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, 0));
-			return this;
+			return false;
 		}
 
 		Pair<CPos, SubCell>? PopPath(Actor self)
@@ -309,10 +308,10 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				if (Move.mobile.IsTraitDisabled)
-					return this;
+					return false;
 
 				var ret = InnerTick(self, Move.mobile);
 
@@ -322,10 +321,10 @@ namespace OpenRA.Mods.Common.Activities
 				UpdateCenterLocation(self, Move.mobile);
 
 				if (ret == this)
-					return ret;
+					return false;
 
 				Queue(ret);
-				return NextActivity;
+				return true;
 			}
 
 			Activity InnerTick(Actor self, Mobile mobile)

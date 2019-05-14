@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 				token = conditionManager.GrantCondition(self, attackMove.Info.AssaultMoveCondition);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			// We are not currently attacking a target, so scan for new targets.
 			if (!IsCanceling && ChildActivity != null && ChildActivity.NextActivity == null && autoTarget != null)
@@ -74,13 +74,9 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-			if (ChildActivity != null)
-				return this;
-
-			// The last queued childactivity is guaranteed to be the inner move, so if we get here it means
-			// we have reached our destination and there are no more enemies on our path.
-			return NextActivity;
+			// The last queued childactivity is guaranteed to be the inner move, so if the childactivity
+			// queue is empty it means we have reached our destination and there are no more enemies on our path.
+			return TickChild(self);
 		}
 
 		protected override void OnLastRun(Actor self)

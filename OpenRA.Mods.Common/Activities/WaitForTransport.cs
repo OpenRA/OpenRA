@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(inner);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (transportable != null)
 				transportable.MovementCancelled(self);
 
-			return NextActivity;
+			return true;
 		}
 	}
 }

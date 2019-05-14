@@ -43,17 +43,17 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Land(self));
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			// Prevent deployment in bogus locations
 			var transforms = self.TraitOrDefault<Transforms>();
 			if (transforms != null && !transforms.CanDeploy())
 			{
 				Cancel(self, true);
-				return NextActivity;
+				return true;
 			}
 
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
@@ -68,10 +68,10 @@ namespace OpenRA.Mods.Common.Activities
 				// Wait forever
 				QueueChild(new WaitFor(() => false));
 				makeAnimation.Reverse(self, () => DoTransform(self));
-				return this;
+				return false;
 			}
 
-			return NextActivity;
+			return true;
 		}
 
 		protected override void OnLastRun(Actor self)

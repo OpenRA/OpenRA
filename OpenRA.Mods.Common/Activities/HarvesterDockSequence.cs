@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public abstract class HarvesterDockSequence : Activity
 	{
-		protected enum DockingState { Wait, Turn, Dock, Loop, Undock, Complete, Finished }
+		protected enum DockingState { Wait, Turn, Dock, Loop, Undock, Complete }
 
 		protected readonly Actor Refinery;
 		protected readonly Harvester Harv;
@@ -45,35 +45,37 @@ namespace OpenRA.Mods.Common.Activities
 			EndDrag = refinery.CenterPosition + DragOffset;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			switch (dockingState)
 			{
 				case DockingState.Wait:
-					return this;
+					return false;
 
 				case DockingState.Turn:
 					dockingState = DockingState.Dock;
 					QueueChild(new Turn(self, DockAngle));
 					if (IsDragRequired)
 						QueueChild(new Drag(self, StartDrag, EndDrag, DragLength));
-					return this;
+					return false;
 
 				case DockingState.Dock:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
 						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
 							nd.Docked(Refinery, self);
 
-					return OnStateDock(self);
+					OnStateDock(self);
+					return false;
 
 				case DockingState.Loop:
 					if (!Refinery.IsInWorld || Refinery.IsDead || Harv.TickUnload(self, Refinery))
 						dockingState = DockingState.Undock;
 
-					return this;
+					return false;
 
 				case DockingState.Undock:
-					return OnStateUndock(self);
+					OnStateUndock(self);
+					return false;
 
 				case DockingState.Complete:
 					if (Refinery.IsInWorld && !Refinery.IsDead)
@@ -85,11 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (IsDragRequired)
 						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
 
-					dockingState = DockingState.Finished;
-					return this;
-
-				case DockingState.Finished:
-					return NextActivity;
+					return true;
 			}
 
 			throw new InvalidOperationException("Invalid harvester dock state");
@@ -106,8 +104,8 @@ namespace OpenRA.Mods.Common.Activities
 			yield return Target.FromActor(Refinery);
 		}
 
-		public abstract Activity OnStateDock(Actor self);
+		public abstract void OnStateDock(Actor self);
 
-		public abstract Activity OnStateUndock(Actor self);
+		public abstract void OnStateUndock(Actor self);
 	}
 }

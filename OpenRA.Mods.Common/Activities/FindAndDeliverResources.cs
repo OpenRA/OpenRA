@@ -76,20 +76,20 @@ namespace OpenRA.Mods.Common.Activities
 			}
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			if (NextActivity != null)
 			{
 				// Interrupt automated harvesting after clearing the first cell.
 				if (!harvInfo.QueueFullLoad && (hasHarvestedCell || harv.LastSearchFailed))
-					return NextActivity;
+					return true;
 
 				// Interrupt automated harvesting after first complete harvest cycle.
 				if (hasDeliveredLoad || harv.IsFull)
-					return NextActivity;
+					return true;
 			}
 
 			// Are we full or have nothing more to gather? Deliver resources.
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				QueueChild(new DeliverResources(self));
 				hasDeliveredLoad = true;
-				return this;
+				return false;
 			}
 
 			// After a failed search, wait and sit still for a bit before searching again.
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				QueueChild(new Wait(harv.Info.WaitDuration));
 				hasWaited = true;
-				return this;
+				return false;
 			}
 
 			hasWaited = false;
@@ -144,14 +144,14 @@ namespace OpenRA.Mods.Common.Activities
 					}
 				}
 
-				return this;
+				return false;
 			}
 
 			// If we get here, our search for resources was successful. Commence harvesting.
 			QueueChild(new HarvestResource(self, closestHarvestableCell.Value));
 			lastHarvestedCell = closestHarvestableCell.Value;
 			hasHarvestedCell = true;
-			return this;
+			return false;
 		}
 
 		/// <summary>

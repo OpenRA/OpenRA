@@ -89,10 +89,10 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(new Wait(cargo.Info.BeforeUnloadDelay));
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || cargo.IsEmpty(self))
-				return NextActivity;
+				return true;
 
 			if (cargo.CanUnload())
 			{
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					self.NotifyBlocker(BlockedExitCells(actor));
 					QueueChild(new Wait(10));
-					return this;
+					return false;
 				}
 
 				cargo.Unload(self);
@@ -130,6 +130,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!unloadAll || !cargo.CanUnload())
 			{
 				Cancel(self, true);
+
 				if (cargo.Info.AfterUnloadDelay > 0)
 					QueueChild(new Wait(cargo.Info.AfterUnloadDelay, false));
 
@@ -137,7 +138,7 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(new TakeOff(self));
 			}
 
-			return this;
+			return false;
 		}
 	}
 }

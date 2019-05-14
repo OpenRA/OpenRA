@@ -255,22 +255,22 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				if (IsCanceling)
 				{
 					// Cancel the requested target, but keep firing on it while in range
 					attack.ClearRequestedTarget();
-					return NextActivity;
+					return true;
 				}
 
 				// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 				// Having both this and AttackFollow modify that field is a horrible hack.
 				if (hasTicked && attack.RequestedTarget.Type == TargetType.Invalid)
-					return NextActivity;
+					return true;
 
 				if (attack.IsTraitPaused)
-					return this;
+					return false;
 
 				bool targetIsHiddenActor;
 				target = target.Recalculate(self.Owner, out targetIsHiddenActor);
@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (wasMovingWithinRange && targetIsHiddenActor)
 				{
 					attack.ClearRequestedTarget();
-					return NextActivity;
+					return true;
 				}
 
 				// Update target lines if required
@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				{
 					attack.ClearRequestedTarget();
-					return NextActivity;
+					return true;
 				}
 
 				var pos = self.CenterPosition;
@@ -341,22 +341,22 @@ namespace OpenRA.Mods.Common.Traits
 					if (useLastVisibleTarget)
 					{
 						attack.ClearRequestedTarget();
-						return NextActivity;
+						return true;
 					}
 
-					return this;
+					return false;
 				}
 
 				// We can't move into range, so give up
 				if (move == null || maxRange == WDist.Zero || maxRange < minRange)
 				{
 					attack.ClearRequestedTarget();
-					return NextActivity;
+					return true;
 				}
 
 				wasMovingWithinRange = true;
 				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
-				return this;
+				return false;
 			}
 
 			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)

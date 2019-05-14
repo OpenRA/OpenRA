@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public SimpleTeleport(CPos destination) { this.destination = destination; }
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
-			return NextActivity;
+			return true;
 		}
 	}
 }

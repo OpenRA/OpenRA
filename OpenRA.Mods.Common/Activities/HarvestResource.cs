@@ -47,10 +47,10 @@ namespace OpenRA.Mods.Common.Activities
 			claimLayer.TryClaimCell(self, targetCell);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || harv.IsFull)
-				return NextActivity;
+				return true;
 
 			// Move towards the target cell
 			if (self.Location != targetCell)
@@ -60,11 +60,11 @@ namespace OpenRA.Mods.Common.Activities
 
 				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
 				QueueChild(move.MoveTo(targetCell, 2));
-				return this;
+				return false;
 			}
 
 			if (!harv.CanHarvestCell(self, self.Location))
-				return NextActivity;
+				return true;
 
 			// Turn to one of the harvestable facings
 			if (harvInfo.HarvestFacings != 0)
@@ -74,13 +74,13 @@ namespace OpenRA.Mods.Common.Activities
 				if (desired != current)
 				{
 					QueueChild(new Turn(self, desired));
-					return this;
+					return false;
 				}
 			}
 
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
-				return NextActivity;
+				return true;
 
 			harv.AcceptResource(self, resource);
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 				t.Harvested(self, resource);
 
 			QueueChild(new Wait(harvInfo.BaleLoadDelay));
-			return this;
+			return false;
 		}
 
 		protected override void OnLastRun(Actor self)

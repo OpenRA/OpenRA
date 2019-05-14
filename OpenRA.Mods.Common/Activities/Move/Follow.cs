@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling)
-				return NextActivity;
+				return true;
 
 			bool targetIsHiddenActor;
 			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
 			// Either we are in range and can see the target, or we've lost track of it and should give up
 			if (wasMovingWithinRange && targetIsHiddenActor)
-				return NextActivity;
+				return true;
 
 			wasMovingWithinRange = false;
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
-				return NextActivity;
+				return true;
 
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
@@ -79,12 +79,12 @@ namespace OpenRA.Mods.Common.Activities
 			// We've reached the required range - if the target is visible and valid then we wait
 			// otherwise if it is hidden or dead we give up
 			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
-				return useLastVisibleTarget ? NextActivity : this;
+				return useLastVisibleTarget;
 
 			// Move into range
 			wasMovingWithinRange = true;
 			QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
-			return this;
+			return false;
 		}
 	}
 }

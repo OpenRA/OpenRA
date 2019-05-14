@@ -35,31 +35,28 @@ namespace OpenRA.Mods.Common.Activities
 			targetStartPos = target.Positions.PositionClosestTo(self.CenterPosition);
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (IsCanceling || target.Type == TargetType.Invalid)
-				return NextActivity;
+				return true;
 
 			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
-				return this;
+				return false;
 
 			var currentPos = self.CenterPosition;
 			var targetPos = target.Positions.PositionClosestTo(currentPos);
 
 			// Give up if the target has moved too far
 			if (targetMovementThreshold > WDist.Zero && (targetPos - targetStartPos).LengthSquared > targetMovementThreshold.LengthSquared)
-				return NextActivity;
+				return true;
 
 			// Turn if required
 			var delta = targetPos - currentPos;
 			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : mobile.Facing;
 			if (facing != mobile.Facing)
 			{
-				var turn = ActivityUtils.RunActivity(self, new Turn(self, facing));
-				if (turn != null)
-					QueueChild(turn);
-
-				return this;
+				QueueChild(new Turn(self, facing));
+				return false;
 			}
 
 			// Can complete the move in this step
@@ -67,13 +64,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (delta.LengthSquared <= speed * speed)
 			{
 				mobile.SetVisualPosition(self, targetPos);
-				return NextActivity;
+				return true;
 			}
 
 			// Move towards the target
 			mobile.SetVisualPosition(self, currentPos + delta * speed / delta.Length);
-
-			return this;
+			return false;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

@@ -94,13 +94,13 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.forceAttack = forceAttack;
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				if (IsCanceling || !attack.CanAttack(self, target))
-					return NextActivity;
+					return true;
 
 				if (attack.charges == 0)
-					return this;
+					return false;
 
 				foreach (var notify in self.TraitsImplementing<INotifyTeslaCharging>())
 					notify.Charging(self, target);
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				QueueChild(new Wait(attack.info.InitialChargeDelay));
 				QueueChild(new ChargeFire(attack, target));
-				return this;
+				return false;
 			}
 
 			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
@@ -145,18 +145,18 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.target = target;
 			}
 
-			public override Activity Tick(Actor self)
+			public override bool Tick(Actor self)
 			{
 				if (IsCanceling || !attack.CanAttack(self, target))
-					return NextActivity;
+					return true;
 
 				if (attack.charges == 0)
-					return NextActivity;
+					return true;
 
 				attack.DoAttack(self, target);
 
 				QueueChild(new Wait(attack.info.ChargeDelay));
-				return this;
+				return false;
 			}
 		}
 	}

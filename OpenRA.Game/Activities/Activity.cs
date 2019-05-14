@@ -21,8 +21,7 @@ namespace OpenRA.Activities
 	/*
 	 * Things to be aware of when writing activities:
 	 *
-	 * - Use "return NextActivity" at least once somewhere in the tick method.
-	 * - Do not use "return new SomeActivity()" as that will break the queue. Queue the new activity and use "return NextActivity" instead.
+	 * - Use "return true" at least once somewhere in the tick method.
 	 * - Do not "reuse" (with "SequenceActivities", for example) activity objects that have already started running.
 	 *   Queue a new instance instead.
 	 * - Avoid calling actor.CancelActivity(). It is almost always a bug. Call activity.Cancel() instead.
@@ -32,11 +31,13 @@ namespace OpenRA.Activities
 		public ActivityState State { get; private set; }
 
 		protected Activity ChildActivity { get; private set; }
-		public Activity NextActivity { get; protected set; }
+		public Activity NextActivity { get; private set; }
 
 		public bool IsInterruptible { get; protected set; }
 		public bool ChildHasPriority { get; protected set; }
 		public bool IsCanceling { get { return State == ActivityState.Canceling; } }
+		bool finishing;
+		bool lastRun;
 
 		public Activity()
 		{
@@ -55,33 +56,60 @@ namespace OpenRA.Activities
 				State = ActivityState.Active;
 			}
 
+			// Only run the parent tick when the child is done.
+			// We must always let the child finish on its own before continuing.
 			if (ChildHasPriority)
 			{
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
-				if (ChildActivity != null)
-					return this;
+				lastRun = TickChild(self) && (finishing || Tick(self));
+				finishing |= lastRun;
 			}
 
-			var ret = Tick(self);
+			// The parent determines whether the child gets a chance at ticking.
+			else
+				lastRun = Tick(self);
 
+			// Avoid a single tick delay if the childactivity was just queued.
 			if (ChildActivity != null && ChildActivity.State == ActivityState.Queued)
-				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+			{
+				if (ChildHasPriority)
+					lastRun = TickChild(self) && finishing;
+				else
+					TickChild(self);
+			}
 
-			if (ret != this)
+			if (lastRun)
 			{
 				State = ActivityState.Done;
 				OnLastRun(self);
+				return NextActivity;
 			}
 
-			return ret;
+			return this;
+		}
+
+		protected bool TickChild(Actor self)
+		{
+			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+			return ChildActivity == null;
 		}
 
 		/// <summary>
-		/// Runs every timestep as long as this activity is active.
+		/// Called every tick to run activity logic. Returns false if the activity should
+		/// remain active, or true if it is complete. Cancelled activities must ensure they
+		/// return the actor to a consistent state before returning true.
+		///
+		/// Child activities can be queued using QueueChild, and these will be ticked
+		/// instead of the parent while they are active. Activities that need to run logic
+		/// in parallel with child activities should set ChildHasPriority to false and
+		/// manually call TickChildren.
+		///
+		/// Queuing one or more child activities and returning true is valid, and causes
+		/// the activity to be completed immediately (without ticking again) once the
+		/// children have completed.
 		/// </summary>
-		public virtual Activity Tick(Actor self)
+		public virtual bool Tick(Actor self)
 		{
-			return NextActivity;
+			return true;
 		}
 
 		/// <summary>

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
 		}
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length <= 0)
 			{
@@ -43,7 +43,8 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				self.Kill(self);
-				return null;
+				Cancel(self);
+				return true;
 			}
 
 			if (info.Spins)
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 			move -= new WVec(WDist.Zero, WDist.Zero, info.Velocity);
 			aircraft.SetPosition(self, aircraft.CenterPosition + move);
 
-			return this;
+			return false;
 		}
 	}
 }

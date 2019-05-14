@@ -24,10 +24,10 @@ namespace OpenRA.Activities
 
 		Action a;
 
-		public override Activity Tick(Actor self)
+		public override bool Tick(Actor self)
 		{
 			if (a != null) a();
-			return NextActivity;
+			return true;
 		}
 	}
 }
