@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
 
+		[Desc("Disable actor preview during building placement.")]
+		public readonly bool DisableActorPreview = false;
+
 		[NotificationReference("Speech")]
 		[Desc("Notification to play after building placement if new construction options are available.")]
 		public readonly string NewOptionsNotification = null;

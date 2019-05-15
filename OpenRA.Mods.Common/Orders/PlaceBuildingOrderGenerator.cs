@@ -212,14 +212,19 @@ namespace OpenRA.Mods.Common.Orders
 						new OwnerInit(queue.Actor.Owner),
 					};
 
-					foreach (var api in actorInfo.TraitInfos<IActorPreviewInitInfo>())
-						foreach (var o in api.ActorPreviewInits(actorInfo, ActorPreviewType.PlaceBuilding))
-							td.Add(o);
+					if (!placeBuildingInfo.DisableActorPreview)
+					{
+						foreach (var api in actorInfo.TraitInfos<IActorPreviewInitInfo>())
+							foreach (var o in api.ActorPreviewInits(actorInfo, ActorPreviewType.PlaceBuilding))
+								td.Add(o);
 
-					var init = new ActorPreviewInitializer(actorInfo, wr, td);
-					preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
-						.SelectMany(rpi => rpi.RenderPreview(init))
-						.ToArray();
+						var init = new ActorPreviewInitializer(actorInfo, wr, td);
+						preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
+							.SelectMany(rpi => rpi.RenderPreview(init))
+							.ToArray();
+					}
+					else
+						preview = new IActorPreview[0];
 
 					initialized = true;
 				}
