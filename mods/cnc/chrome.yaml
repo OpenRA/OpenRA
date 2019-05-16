@@ -675,7 +675,7 @@ panel-gray-gdi: chrome.png
 panel-allblack: chrome.png
 	background: 1,1,30,30
 	border-r: 31,1,1,30
-	border-l: 0,1,3,30
+	border-l: 0,1,1,30
 	border-b: 1,31,30,1
 	border-t: 1,0,30,1
 	corner-tl: 0,0,1,1
@@ -686,7 +686,7 @@ panel-allblack: chrome.png
 panel-allblack-nod: chrome.png
 	background: 1,1,30,30
 	border-r: 31,1,1,30
-	border-l: 0,1,3,30
+	border-l: 0,1,1,30
 	border-b: 1,31,30,1
 	border-t: 1,0,30,1
 	corner-tl: 0,0,1,1
@@ -697,7 +697,7 @@ panel-allblack-nod: chrome.png
 panel-allblack-gdi: chrome.png
 	background: 257,1,30,30
 	border-r: 287,1,1,30
-	border-l: 256,1,3,30
+	border-l: 256,1,1,30
 	border-b: 257,31,30,1
 	border-t: 257,0,30,1
 	corner-tl: 256,0,1,1
