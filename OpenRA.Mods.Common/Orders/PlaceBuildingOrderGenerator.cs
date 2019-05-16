@@ -64,11 +64,14 @@ namespace OpenRA.Mods.Common.Orders
 			faction = buildableInfo.ForceFaction
 				?? (mostLikelyProducer.Trait != null ? mostLikelyProducer.Trait.Faction : queue.Actor.Owner.Faction.InternalName);
 
-			if (map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
-				buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
-			else
-				buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
-			buildBlocked = map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+			if (!placeBuildingInfo.DisableFootprint)
+			{
+				if (map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
+					buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				else
+					buildOk = map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
+				buildBlocked = map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+			}
 
 			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
@@ -236,10 +239,13 @@ namespace OpenRA.Mods.Common.Orders
 				foreach (var r in previewRenderables)
 					yield return r;
 
-				var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
-				var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft);
-				foreach (var t in buildingInfo.Tiles(topLeft))
-					cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (res == null || res.GetResource(t) == null)));
+				if (!placeBuildingInfo.DisableFootprint)
+				{
+					var res = world.WorldActor.TraitOrDefault<ResourceLayer>();
+					var isCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft);
+					foreach (var t in buildingInfo.Tiles(topLeft))
+						cells.Add(t, MakeCellType(isCloseEnough && world.IsCellBuildable(t, actorInfo, buildingInfo) && (res == null || res.GetResource(t) == null)));
+				}
 			}
 
 			var cellPalette = wr.Palette(placeBuildingInfo.Palette);

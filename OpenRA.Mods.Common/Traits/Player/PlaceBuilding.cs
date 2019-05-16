@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Disable actor preview during building placement.")]
 		public readonly bool DisableActorPreview = false;
 
+		[Desc("Disable footprint overlay during building placement.")]
+		public readonly bool DisableFootprint = false;
+
 		[NotificationReference("Speech")]
 		[Desc("Notification to play after building placement if new construction options are available.")]
 		public readonly string NewOptionsNotification = null;
