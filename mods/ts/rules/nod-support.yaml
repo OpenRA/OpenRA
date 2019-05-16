@@ -376,6 +376,7 @@ NAMISL:
 		TrailImage: small_smoke_trail
 		TrailPalette: effectalpha75
 		TrailInterval: 0
+		TrailSequences: idle
 	WithNukeLaunchOverlay:
 	SelectionDecorations:
 

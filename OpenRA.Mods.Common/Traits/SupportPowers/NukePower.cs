@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string TrailImage = null;
 
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
+		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { };
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 1;
