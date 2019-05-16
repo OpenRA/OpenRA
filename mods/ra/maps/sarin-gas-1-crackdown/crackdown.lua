@@ -16,8 +16,8 @@ SovAttackStart2 = { StartRifle5, StartRifle6, StartGren }
 RunAway = { IntroTruck2, StartRifle3, StartRifle4 }
 GreeceRifles = { GreeceRifle1, GreeceRifle2, GreeceRifle3, GreeceRifle4, GreeceRifle5 }
 CombatTeam1 = { "mnly", "spy", "spy", "mcv" }
-CombatTeam2 = 
-{ 
+CombatTeam2 =
+{
 	easy = { "2tnk", "2tnk", "2tnk", "e3", "e3", "e3" },
 	normal = { "e3", "e3", "e3", "2tnk", "1tnk" },
 	hard = { "e3", "e3", "e3", "1tnk" }
@@ -154,13 +154,17 @@ Tick = function()
 	if ussr.HasNoRequiredUnits() and badguy.HasNoRequiredUnits() then
 		greece.MarkCompletedObjective(objKillAll)
 	end
+
+	if greece.HasNoRequiredUnits() then
+		ussr.MarkCompletedObjective(ussrObj)
+	end
 end
 
 WorldLoaded = function()
 	greece = Player.GetPlayer("Greece")
 	ussr = Player.GetPlayer("USSR")
 	badguy = Player.GetPlayer("BadGuy")
-	
+
 	Trigger.OnObjectiveAdded(greece, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
 	end)
