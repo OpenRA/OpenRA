@@ -9,7 +9,7 @@
  */
 #endregion
 
-using OpenRA.Effects;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
@@ -101,6 +101,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
+			if (!string.IsNullOrEmpty(TrailImage) && !TrailSequences.Any())
+				throw new YamlException("At least one entry in TrailSequences must be defined when TrailImage is defined.");
+
 			WeaponInfo weapon;
 			var weaponToLower = (MissileWeapon ?? string.Empty).ToLowerInvariant();
 			if (!rules.Weapons.TryGetValue(weaponToLower, out weapon))
