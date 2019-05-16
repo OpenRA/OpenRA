@@ -46,6 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Prevent the time limit option from being changed in the lobby.")]
 		public readonly bool TimeLimitLocked = false;
 
+		[Desc("Whether to display the options dropdown in the lobby.")]
+		public readonly bool TimeLimitDropdownVisible = true;
+
 		[Desc("Display order for the time limit dropdown in the lobby.")]
 		public readonly int TimeLimitDisplayOrder = 0;
 
@@ -62,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 					return c.ToString() + " minute{0}".F(c > 1 ? "s" : null);
 			});
 
-			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, true, TimeLimitDisplayOrder,
+			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
 				new ReadOnlyDictionary<string, string>(timelimits), TimeLimitDefault.ToString(), TimeLimitLocked);
 		}
 
