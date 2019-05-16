@@ -1164,6 +1164,7 @@ palace:
 		FlightVelocity: 384
 		TrailInterval: 0
 		TrailImage: large_trail
+		TrailSequences: idle
 	ProduceActorPower@fremen:
 		Description: Recruit Fremen
 		LongDesc: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
