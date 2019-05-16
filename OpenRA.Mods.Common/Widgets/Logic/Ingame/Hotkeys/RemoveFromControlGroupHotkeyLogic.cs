@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Lint;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	[ChromeLogicArgsHotkeys("RemoveFromControlGroupKey")]
 	public class RemoveFromControlGroupHotkeyLogic : SingleHotkeyBaseLogic
 	{
-		readonly Selection selection;
+		readonly ISelection selection;
 		readonly World world;
 
 		[ObjectCreator.UseCtor]

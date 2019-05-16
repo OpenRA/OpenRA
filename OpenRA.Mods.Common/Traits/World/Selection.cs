@@ -15,19 +15,26 @@ using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common.Traits
 {
-	public class Selection
+	public class SelectionInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new Selection(this); }
+	}
+
+	public class Selection : ISelection, INotifyCreated, INotifyOwnerChanged, ITick, IGameSaveTraitData
 	{
 		public int Hash { get; private set; }
 		public IEnumerable<Actor> Actors { get { return actors; } }
 
 		readonly HashSet<Actor> actors = new HashSet<Actor>();
-		readonly INotifySelection[] worldNotifySelection;
+		INotifySelection[] worldNotifySelection;
 
-		internal Selection(IEnumerable<INotifySelection> worldNotifySelection)
+		public Selection(SelectionInfo info) { }
+
+		void INotifyCreated.Created(Actor self)
 		{
-			this.worldNotifySelection = worldNotifySelection.ToArray();
+			this.worldNotifySelection = self.TraitsImplementing<INotifySelection>().ToArray();
 		}
 
 		void UpdateHash()
@@ -38,7 +45,7 @@ namespace OpenRA
 			Hash += 1;
 		}
 
-		public void Add(Actor a)
+		public virtual void Add(Actor a)
 		{
 			actors.Add(a);
 			UpdateHash();
@@ -50,7 +57,7 @@ namespace OpenRA
 				ns.SelectionChanged();
 		}
 
-		public void Remove(Actor a)
+		public virtual void Remove(Actor a)
 		{
 			if (actors.Remove(a))
 			{
@@ -60,7 +67,7 @@ namespace OpenRA
 			}
 		}
 
-		internal void OnOwnerChanged(Actor a, Player oldOwner, Player newOwner)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor a, Player oldOwner, Player newOwner)
 		{
 			if (!actors.Contains(a))
 				return;
@@ -78,7 +85,7 @@ namespace OpenRA
 			return actors.Contains(a);
 		}
 
-		public void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
+		public virtual void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
 			if (isClick)
 			{
@@ -137,16 +144,16 @@ namespace OpenRA
 			UpdateHash();
 		}
 
-		public void Tick(World world)
+		void ITick.Tick(Actor self)
 		{
-			var removed = actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(world.RenderPlayer) && world.FogObscures(a)));
+			var removed = actors.RemoveWhere(a => !a.IsInWorld || (!a.Owner.IsAlliedWith(self.World.RenderPlayer) && self.World.FogObscures(a)));
 			if (removed > 0)
 				UpdateHash();
 
 			foreach (var cg in controlGroups.Values)
 			{
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
-				cg.RemoveAll(a => a.Disposed || a.Owner != world.LocalPlayer);
+				cg.RemoveAll(a => a.Disposed || a.Owner != self.World.LocalPlayer);
 			}
 		}
 
@@ -201,7 +208,7 @@ namespace OpenRA
 				.FirstOrDefault();
 		}
 
-		public List<MiniYamlNode> Serialize()
+		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
 		{
 			var groups = controlGroups
 				.Where(cg => cg.Value.Any())
@@ -216,14 +223,14 @@ namespace OpenRA
 			};
 		}
 
-		public void Deserialize(World world, List<MiniYamlNode> data)
+		void IGameSaveTraitData.ResolveTraitData(Actor self, List<MiniYamlNode> data)
 		{
 			var selectionNode = data.FirstOrDefault(n => n.Key == "Selection");
 			if (selectionNode != null)
 			{
 				var selected = FieldLoader.GetValue<uint[]>("Selection", selectionNode.Value.Value)
-					.Select(a => world.GetActorById(a));
-				Combine(world, selected, false, false);
+					.Select(a => self.World.GetActorById(a));
+				Combine(self.World, selected, false, false);
 			}
 
 			var groupsNode = data.FirstOrDefault(n => n.Key == "Groups");
@@ -232,7 +239,7 @@ namespace OpenRA
 				foreach (var n in groupsNode.Value.Nodes)
 				{
 					var group = FieldLoader.GetValue<uint[]>(n.Key, n.Value.Value)
-						.Select(a => world.GetActorById(a));
+						.Select(a => self.World.GetActorById(a));
 					controlGroups[int.Parse(n.Key)].AddRange(group);
 				}
 			}

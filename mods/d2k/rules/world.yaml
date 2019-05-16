@@ -3,6 +3,7 @@
 	AlwaysVisible:
 	ScreenMap:
 	ActorMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: score
