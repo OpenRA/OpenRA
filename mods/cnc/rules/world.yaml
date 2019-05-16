@@ -3,6 +3,7 @@
 	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
+	Selection:
 	MusicPlaylist:
 		VictoryMusic: win1
 		DefeatMusic: nod_map1

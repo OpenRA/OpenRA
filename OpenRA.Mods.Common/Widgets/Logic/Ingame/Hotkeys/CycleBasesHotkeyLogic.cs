@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	public class CycleBasesHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		readonly Viewport viewport;
-		readonly Selection selection;
+		readonly ISelection selection;
 		readonly World world;
 
 		[ObjectCreator.UseCtor]

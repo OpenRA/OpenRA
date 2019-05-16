@@ -45,9 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (localPlayer == null && renderPlayer != null)
 				nodes.Add(new MiniYamlNode("RenderPlayer", FieldSaver.FormatValue(renderPlayer.PlayerActor.ActorID)));
 
-			if (localPlayer != null && localPlayer.PlayerActor == self)
-				nodes.Add(new MiniYamlNode("Selection", "", self.World.Selection.Serialize()));
-
 			return nodes;
 		}
 
@@ -56,10 +53,6 @@ namespace OpenRA.Mods.Common.Traits
 			var viewportNode = data.FirstOrDefault(n => n.Key == "Viewport");
 			if (viewportNode != null)
 				worldRenderer.Viewport.Center(FieldLoader.GetValue<WPos>("Viewport", viewportNode.Value.Value));
-
-			var selectionNode = data.FirstOrDefault(n => n.Key == "Selection");
-			if (selectionNode != null)
-				self.World.Selection.Deserialize(self.World, selectionNode.Value.Nodes);
 
 			var renderPlayerNode = data.FirstOrDefault(n => n.Key == "RenderPlayer");
 			if (renderPlayerNode != null)

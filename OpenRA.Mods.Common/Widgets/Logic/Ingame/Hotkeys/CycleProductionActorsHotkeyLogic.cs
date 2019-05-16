@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	public class CycleProductionActorsHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		readonly Viewport viewport;
-		readonly Selection selection;
+		readonly ISelection selection;
 		readonly World world;
 
 		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");

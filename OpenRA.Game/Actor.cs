@@ -333,7 +333,8 @@ namespace OpenRA
 			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
 				t.OnOwnerChanged(this, oldOwner, newOwner);
 
-			World.Selection.OnOwnerChanged(this, oldOwner, newOwner);
+			foreach (var t in World.WorldActor.TraitsImplementing<INotifyOwnerChanged>())
+				t.OnOwnerChanged(this, oldOwner, newOwner);
 
 			if (wasInWorld)
 				World.Add(this);

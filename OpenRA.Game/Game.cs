@@ -602,7 +602,6 @@ namespace OpenRA
 						Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, () =>
 						{
 							world.OrderGenerator.Tick(world);
-							world.Selection.Tick(world);
 						});
 
 						world.Tick();
