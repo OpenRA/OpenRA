@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This trait allows setting a time limit on matches. Attach this to the World actor.")]
-	public class TimeLimitManagerInfo : ITraitInfo, ILobbyOptions
+	public class TimeLimitManagerInfo : ITraitInfo, ILobbyOptions, IRulesetLoaded
 	{
 		[Desc("Label that will be shown for the time limit option in the lobby.")]
 		public readonly string TimeLimitLabel = "Time Limit";
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 			{ 10, null },
 		};
 
-		[Desc("Default selection for the time limit option in the lobby. Should use one of the TimeLimitOptions.")]
+		[Desc("Default selection for the time limit option in the lobby. Needs to use one of the TimeLimitOptions.")]
 		public readonly int TimeLimitDefault = 0;
 
 		[Desc("Prevent the time limit option from being changed in the lobby.")]
@@ -68,6 +68,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Will prevent showing/playing the built-in timer expired notification when set to true.")]
 		public readonly bool SkipTimerExpiredNotification = false;
+
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (!TimeLimitOptions.Contains(TimeLimitDefault))
+				throw new YamlException("TimeLimitDefault must be a value from TimeLimitOptions");
+		}
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(Ruleset rules)
 		{
