@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var timeLimit = tlm != null ? tlm.TimeLimit : 0;
 					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
-					return WidgetUtils.FormatTime(displayTick, timestep);
+					return WidgetUtils.FormatTime(Math.Max(0, displayTick), timestep);
 				};
 			}
 
