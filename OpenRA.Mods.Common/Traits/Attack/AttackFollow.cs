@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, INotifyOwnerChanged
+	public class AttackFollow : AttackBase, INotifyOwnerChanged, IDisableAutoTarget
 	{
 		public new readonly AttackFollowInfo Info;
 		public Target RequestedTarget;
@@ -37,6 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		public int RequestedTargetLastTick;
 		public Target OpportunityTarget;
 		public bool OpportunityForceAttack;
+		public bool OpportunityTargetIsPersistentTarget;
+
 		Mobile mobile;
 		AutoTarget autoTarget;
 
@@ -74,7 +76,10 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Tick(Actor self)
 		{
 			if (IsTraitDisabled)
+			{
 				RequestedTarget = OpportunityTarget = Target.Invalid;
+				OpportunityTargetIsPersistentTarget = false;
+			}
 
 			if (RequestedTargetLastTick != self.World.WorldTick)
 			{
@@ -106,6 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					OpportunityTarget = autoTarget.ScanForTarget(self, false, false);
 					OpportunityForceAttack = false;
+					OpportunityTargetIsPersistentTarget = false;
 
 					if (OpportunityTarget.Type != TargetType.Invalid)
 						IsAiming = CanAimAtTarget(self, OpportunityTarget, OpportunityForceAttack);
@@ -139,12 +145,20 @@ namespace OpenRA.Mods.Common.Traits
 		public override void OnStopOrder(Actor self)
 		{
 			RequestedTarget = OpportunityTarget = Target.Invalid;
+			OpportunityTargetIsPersistentTarget = false;
 			base.OnStopOrder(self);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			RequestedTarget = OpportunityTarget = Target.Invalid;
+			OpportunityTargetIsPersistentTarget = false;
+		}
+
+		bool IDisableAutoTarget.DisableAutoTarget(Actor self)
+		{
+			return RequestedTarget.Type != TargetType.Invalid ||
+				(OpportunityTargetIsPersistentTarget && OpportunityTarget.Type != TargetType.Invalid);
 		}
 
 		class AttackActivity : Activity
@@ -198,6 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						attack.OpportunityTarget = attack.RequestedTarget;
 						attack.OpportunityForceAttack = attack.RequestedForceAttack;
+						attack.OpportunityTargetIsPersistentTarget = true;
 					}
 
 					attack.RequestedTarget = Target.Invalid;

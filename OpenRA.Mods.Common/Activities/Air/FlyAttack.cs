@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
 					attackAircraft.OpportunityForceAttack = attackAircraft.RequestedForceAttack;
+					attackAircraft.OpportunityTargetIsPersistentTarget = true;
 				}
 
 				attackAircraft.RequestedTarget = Target.Invalid;
