@@ -125,6 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		UnitStance stance;
 		ConditionManager conditionManager;
+		IDisableAutoTarget[] disableAutoTarget;
 		IEnumerable<AutoTargetPriorityInfo> activeTargetPriorities;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
@@ -174,6 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(Exts.IsTraitEnabled).Select(atp => atp.Info);
 
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			disableAutoTarget = self.TraitsImplementing<IDisableAutoTarget>().ToArray();
 			ApplyStanceCondition(self);
 		}
 
@@ -201,6 +203,10 @@ namespace OpenRA.Mods.Common.Traits
 			var attacker = e.Attacker;
 			if (attacker.Disposed)
 				return;
+
+			foreach (var dat in disableAutoTarget)
+				if (dat.DisableAutoTarget(self))
+					return;
 
 			if (!attacker.IsInWorld)
 			{
@@ -249,6 +255,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (nextScanTime <= 0 && ActiveAttackBases.Any())
 			{
 				nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
+
+				foreach (var dat in disableAutoTarget)
+					if (dat.DisableAutoTarget(self))
+						return Target.Invalid;
 
 				foreach (var ab in ActiveAttackBases)
 				{
@@ -379,8 +389,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool PreventsAutoTarget(Actor attacker, Actor target)
 		{
-			foreach (var pat in target.TraitsImplementing<IPreventsAutoTarget>())
-				if (pat.PreventsAutoTarget(target, attacker))
+			foreach (var deat in target.TraitsImplementing<IDisableEnemyAutoTarget>())
+				if (deat.DisableEnemyAutoTarget(target, attacker))
 					return true;
 
 			return false;
