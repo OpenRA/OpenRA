@@ -210,10 +210,18 @@ namespace OpenRA.Mods.Common.Orders
 					throw new InvalidOperationException("LineBuild requires a 1x1 sized Building");
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
+				{
 					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo))
-						footprint.Add(t.First, MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, t.First), true));
+					{
+						var lineBuildable = world.IsCellBuildable(t.First, actorInfo, buildingInfo);
+						var lineCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, t.First);
+						footprint.Add(t.First, MakeCellType(lineBuildable && lineCloseEnough, true));
+					}
+				}
 
-				footprint[topLeft] = MakeCellType(buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft));
+				var buildable = world.IsCellBuildable(topLeft, actorInfo, buildingInfo);
+				var closeEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, topLeft);
+				footprint[topLeft] = MakeCellType(buildable && closeEnough);
 			}
 			else
 			{
