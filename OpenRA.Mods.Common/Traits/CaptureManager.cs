@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class CaptureManager : INotifyCreated, INotifyCapture, ITick, IPreventsAutoTarget
+	public class CaptureManager : INotifyCreated, INotifyCapture, ITick, IDisableEnemyAutoTarget
 	{
 		readonly CaptureManagerInfo info;
 		ConditionManager conditionManager;
@@ -283,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 				w.Update(currentTarget, self, currentTarget, currentTargetDelay, currentTargetTotal);
 		}
 
-		bool IPreventsAutoTarget.PreventsAutoTarget(Actor self, Actor attacker)
+		bool IDisableEnemyAutoTarget.DisableEnemyAutoTarget(Actor self, Actor attacker)
 		{
 			return info.PreventsAutoTarget && currentCaptors.Any(c => attacker.AppearsFriendlyTo(c));
 		}

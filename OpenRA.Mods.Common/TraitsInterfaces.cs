@@ -297,9 +297,16 @@ namespace OpenRA.Mods.Common.Traits
 		void ModifyTransformActorInit(Actor self, TypeDictionary init);
 	}
 
-	public interface IPreventsAutoTarget
+	[RequireExplicitImplementation]
+	public interface IDisableEnemyAutoTarget
 	{
-		bool PreventsAutoTarget(Actor self, Actor attacker);
+		bool DisableEnemyAutoTarget(Actor self, Actor attacker);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IDisableAutoTarget
+	{
+		bool DisableAutoTarget(Actor self);
 	}
 
 	[RequireExplicitImplementation]
