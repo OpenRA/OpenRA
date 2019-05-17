@@ -337,7 +337,6 @@ namespace OpenRA.Server
 					SpawnPoint = 0,
 					Team = 0,
 					State = Session.ClientState.Invalid,
-					IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin)
 				};
 
 				if (ModData.Manifest.Id != handshake.Mod)
@@ -373,6 +372,7 @@ namespace OpenRA.Server
 				Action completeConnection = () =>
 				{
 					client.Slot = LobbyInfo.FirstEmptySlot();
+					client.IsAdmin = !LobbyInfo.Clients.Any(c1 => c1.IsAdmin);
 
 					if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 					{
