@@ -31,16 +31,16 @@ namespace OpenRA.Mods.Cnc.Traits
 		[PaletteReference]
 		public readonly string TargetOverlayPalette = TileSet.TerrainPaletteInternalName;
 
-		public readonly string OverlaySpriteGroup = "overlay";
+		public readonly string FootprintImage = "overlay";
 
-		[SequenceReference("OverlaySpriteGroup", true)]
-		public readonly string ValidTileSequencePrefix = "target-valid-";
+		[SequenceReference("FootprintImage", true)]
+		public readonly string ValidFootprintSequence = "target-valid";
 
-		[SequenceReference("OverlaySpriteGroup")]
-		public readonly string InvalidTileSequence = "target-invalid";
+		[SequenceReference("FootprintImage")]
+		public readonly string InvalidFootprintSequence = "target-invalid";
 
-		[SequenceReference("OverlaySpriteGroup")]
-		public readonly string SourceTileSequence = "target-select";
+		[SequenceReference("FootprintImage")]
+		public readonly string SourceFootprintSequence = "target-select";
 
 		public readonly bool KillCargo = true;
 
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				var info = (ChronoshiftPowerInfo)power.Info;
 				range = info.Range;
-				tile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
+				tile = world.Map.Rules.Sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence).GetSprite(0);
 			}
 
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -216,10 +216,15 @@ namespace OpenRA.Mods.Cnc.Traits
 				var info = (ChronoshiftPowerInfo)power.Info;
 				range = info.Range;
 
-				var tileset = world.Map.Tileset.ToLowerInvariant();
-				validTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.ValidTileSequencePrefix + tileset).GetSprite(0);
-				invalidTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.InvalidTileSequence).GetSprite(0);
-				sourceTile = world.Map.Rules.Sequences.GetSequence(info.OverlaySpriteGroup, info.SourceTileSequence).GetSprite(0);
+				var sequences = world.Map.Rules.Sequences;
+				var tilesetValid = info.ValidFootprintSequence + "-" + world.Map.Tileset.ToLowerInvariant();
+				if (sequences.HasSequence(info.FootprintImage, tilesetValid))
+					validTile = sequences.GetSequence(info.FootprintImage, tilesetValid).GetSprite(0);
+				else
+					validTile = sequences.GetSequence(info.FootprintImage, info.ValidFootprintSequence).GetSprite(0);
+
+				invalidTile = sequences.GetSequence(info.FootprintImage, info.InvalidFootprintSequence).GetSprite(0);
+				sourceTile = sequences.GetSequence(info.FootprintImage, info.SourceFootprintSequence).GetSprite(0);
 			}
 
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)

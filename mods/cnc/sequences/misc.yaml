@@ -268,24 +268,16 @@ pips:
 		Offset: -3, 0
 
 overlay:
-	build-valid-desert:
-	build-valid-snow:
-		Start: 2
-	build-valid-temperat:
-	build-valid-winter:
-	build-valid-jungle:
+	Defaults: trans.icn
+		AddExtension: False
+	build-valid:
 	build-invalid:
-		Start: 1
-	target-select:
-		Start: 3
-	target-valid-desert:
-	target-valid-snow:
 		Start: 2
-	target-valid-temperat:
-	target-valid-winter:
-	target-valid-jungle:
-	target-invalid:
+	target-valid:
+	target-select:
 		Start: 1
+	target-invalid:
+		Start: 2
 
 editor-overlay:
 	copy: overlay
