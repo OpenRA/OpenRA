@@ -954,6 +954,7 @@ Container@PLAYER_WIDGETS:
 			Y: 320
 			Width: 192
 			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: PRODUCTION_TOOLTIP_FACTIONSUFFIX
 			ReadyText: Ready
 			HoldText: On Hold
 			HotkeyPrefix: Production
