@@ -1,5 +1,6 @@
 ^Palettes:
 	-PlayerColorPalette:
+	-PaletteFromPlayerPaletteWithAlpha@placebuilding:
 	IndexedPlayerPalette:
 		BasePalette: terrain
 		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
@@ -15,6 +16,10 @@
 			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
 			Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
 			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	PaletteFromPlayerPaletteWithAlpha@Placebuilding:
+		BaseName: placebuilding
+		Alpha: 0.65
+		BasePalette: player
 
 ^Vehicle:
 	RenderSprites:

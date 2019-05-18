@@ -119,3 +119,7 @@
 	ChronoshiftPaletteEffect:
 	FlashPaletteEffect@NUKE:
 		Type: Nuke
+	PaletteFromPlayerPaletteWithAlpha@placebuilding:
+		BaseName: placebuilding
+		BasePalette: player
+		Alpha: 0.65

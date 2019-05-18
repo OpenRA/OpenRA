@@ -154,6 +154,10 @@ WEAF:
 		HP: 150000
 	Armor:
 		Type: Wood
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequencePalette: placebuilding
 
 DOMF:
 	Inherits: ^FakeBuilding

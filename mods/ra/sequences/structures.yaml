@@ -255,6 +255,8 @@ weap:
 	idle:
 	damaged-idle:
 		Start: 1
+	place: weapmake
+		Start: 14
 	make: weapmake
 		Length: *
 	build-top: weap3
