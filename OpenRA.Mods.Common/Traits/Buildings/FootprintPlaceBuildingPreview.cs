@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class FootprintPlaceBuildingPreview { }
 
-	class FootprintPlaceBuildingPreviewPreview : IPlaceBuildingPreview
+	public class FootprintPlaceBuildingPreviewPreview : IPlaceBuildingPreview
 	{
 		protected readonly ActorInfo actorInfo;
 		protected readonly WVec centerOffset;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void TickInner() { }
 
-		protected IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
+		protected virtual IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
 			var cellPalette = wr.Palette(info.Palette);
