@@ -529,22 +529,16 @@ minv:
 	icon: jmin
 
 overlay:
-	build-valid-desert:
-	build-valid-interior:
-	build-valid-snow:
-		Start: 2
-	build-valid-temperat:
+	Defaults: trans.icn
+		AddExtension: False
+	build-valid:
 	build-invalid:
-		Start: 1
+		Start: 2
+	target-valid:
 	target-select:
-		Start: 2
-	target-valid-desert:
-	target-valid-interior:
-	target-valid-snow:
-		Start: 2
-	target-valid-temperat:
-	target-invalid:
 		Start: 1
+	target-invalid:
+		Start: 2
 
 editor-overlay:
 	copy: overlay
