@@ -1,6 +1,7 @@
 ^Palettes:
 	-PlayerColorPalette:
 	-PaletteFromPlayerPaletteWithAlpha@cloak:
+	-PaletteFromPlayerPaletteWithAlpha@placebuilding:
 	IndexedPlayerPalette:
 		BasePalette: player
 		BaseName: player
@@ -22,3 +23,7 @@
 		BaseName: cloak
 		BasePalette: player
 		Alpha: 0.55
+	PaletteFromPlayerPaletteWithAlpha@Placebuilding:
+		BaseName: placebuilding
+		BasePalette: player
+		Alpha: 0.65

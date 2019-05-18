@@ -123,14 +123,6 @@
 		G: 0
 		B: 0
 		A: 180
-	PaletteFromPaletteWithAlpha@placebuilding:
-		Name: placebuilding
-		BasePalette: ra
-		Alpha: 0.75
-	PaletteFromPaletteWithAlpha@placelinesegment:
-		Name: placelinesegment
-		BasePalette: ra
-		Alpha: 0.4
 	TSShroudPalette@shroud:
 		Name: shroud
 	VoxelNormalsPalette@normals:
@@ -149,6 +141,18 @@
 	PlayerColorPalette:
 		BasePalette: player
 		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	PaletteFromPaletteWithAlpha@placebuilding:
+		Name: placefootprint
+		BasePalette: ra
+		Alpha: 0.7
+	PaletteFromPaletteWithAlpha@placelinesegment:
+		Name: placelinesegment
+		BasePalette: ra
+		Alpha: 0.5
+	PaletteFromPlayerPaletteWithAlpha@placebuilding:
+		BaseName: placebuilding
+		BasePalette: player
+		Alpha: 0.55
 	PaletteFromPlayerPaletteWithAlpha@cloak:
 		BaseName: cloak
 		BasePalette: player

@@ -166,6 +166,8 @@ weap:
 		Start: 10
 		Length: 10
 		ZOffset: -1024
+	place: weapmake
+		Start: 19
 	make: weapmake
 		Length: *
 		Tick: 80
@@ -496,6 +498,8 @@ sam:
 	dead:
 		Start: 128
 		Tick: 800
+	place:
+		Start: 0
 	make: sammake
 		Length: 20
 		Tick: 30

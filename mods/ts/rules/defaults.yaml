@@ -318,8 +318,11 @@
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		UndeploySounds: cashturn.aud
 	ActorPreviewPlaceBuildingPreview:
-		Palette: placebuilding
+		Palette: placefootprint
 		LineBuildSegmentPalette: placelinesegment
+		OverridePalette: placebuilding
+		FootprintUnderPreview: Valid, LineBuild, Invalid
+		FootprintOverPreview: None
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
@@ -470,7 +473,7 @@
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		UndeploySounds: cashturn.aud
 	FootprintPlaceBuildingPreview:
-		Palette: placebuilding
+		Palette: placefootprint
 		LineBuildSegmentPalette: placelinesegment
 	RequiresBuildableArea:
 		AreaTypes: building
@@ -520,8 +523,7 @@
 		BuildSounds: place2.aud
 		UndeploySounds: cashturn.aud
 	FootprintPlaceBuildingPreview:
-		Palette: placebuilding
-		LineBuildSegmentPalette: placelinesegment
+		Palette: placefootprint
 	KillsSelf:
 		RemoveInstead: true
 	RenderSprites:

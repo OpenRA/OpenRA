@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool SequencePaletteIsPlayerPalette = true;
 
 		[Desc("Footprint types to draw underneath the actor preview.")]
-		public readonly PlaceBuildingCellType FootprintUnderPreview = PlaceBuildingCellType.None;
+		public readonly PlaceBuildingCellType FootprintUnderPreview = PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild;
 
 		[Desc("Footprint types to draw above the actor preview.")]
-		public readonly PlaceBuildingCellType FootprintOverPreview = PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild | PlaceBuildingCellType.Invalid;
+		public readonly PlaceBuildingCellType FootprintOverPreview = PlaceBuildingCellType.Invalid;
 
 		protected override IPlaceBuildingPreview CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
 		{

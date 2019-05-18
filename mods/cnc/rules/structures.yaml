@@ -507,6 +507,10 @@ WEAP:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequencePalette: placebuilding
 
 HPAD:
 	Inherits: ^BaseBuilding
@@ -909,6 +913,10 @@ SAM:
 		Amount: -20
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	-ActorPreviewPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequencePalette: placebuilding
 
 OBLI:
 	Inherits: ^Defense

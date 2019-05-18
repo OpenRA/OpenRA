@@ -386,6 +386,7 @@
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
 	ActorPreviewPlaceBuildingPreview:
+		OverridePalette: placebuilding
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 3
