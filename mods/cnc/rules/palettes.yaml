@@ -123,6 +123,10 @@
 	RotationPaletteEffect@water:
 		ExcludePalettes: effect, chrome
 		RotationBase: 32
+	PaletteFromPaletteWithAlpha@placelinesegment:
+		Name: placelinesegment
+		BasePalette: terrain
+		Alpha: 0.65
 	PaletteFromPlayerPaletteWithAlpha@placebuilding:
 		BaseName: placebuilding
 		Alpha: 0.65

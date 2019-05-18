@@ -752,6 +752,7 @@
 		TerrainTypes: Clear,Road
 		UndeploySounds: cashturn.aud
 	FootprintPlaceBuildingPreview:
+		LineBuildSegmentPalette: placelinesegment
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7
