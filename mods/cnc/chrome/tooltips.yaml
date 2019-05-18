@@ -171,6 +171,64 @@ Background@WORLD_TOOLTIP_FACTIONSUFFIX:
 			Font: Bold
 
 Background@PRODUCTION_TOOLTIP:
+	Logic: ProductionTooltipLogic
+	Background: panel-black
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 5
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+		Label@REQUIRES:
+			X: 5
+			Y: 19
+			Height: 15
+			Font: TinyBold
+			Text: Requires {0}
+		Label@DESC:
+			X: 5
+			Y: 19
+			Height: 5
+			Font: TinyBold
+			VAlign: Top
+		Image@COST_ICON:
+			Y: 5
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
+		Label@COST:
+			Height: 23
+			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 24
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
+		Label@TIME:
+			Y: 19
+			Height: 23
+			Font: Bold
+		Image@POWER_ICON:
+			Y: 44
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
+		Label@POWER:
+			Y: 39
+			Height: 23
+			Font: Bold
+
+Background@PRODUCTION_TOOLTIP_FACTIONSUFFIX:
 	Logic: ProductionTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
 	Width: 200
