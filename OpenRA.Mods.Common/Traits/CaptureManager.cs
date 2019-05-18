@@ -189,6 +189,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			captures = null;
 
+			// Prevent a capture being restarted after it has been canceled during disposal
+			if (self.WillDispose)
+				return false;
+
 			if (target != currentTarget)
 			{
 				if (currentTarget != null)
