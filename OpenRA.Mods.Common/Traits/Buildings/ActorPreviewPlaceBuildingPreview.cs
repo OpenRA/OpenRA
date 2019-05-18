@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ActorPreviewPlaceBuildingPreview { }
 
-	class ActorPreviewPlaceBuildingPreviewPreview : FootprintPlaceBuildingPreviewPreview
+	public class ActorPreviewPlaceBuildingPreviewPreview : FootprintPlaceBuildingPreviewPreview
 	{
 		readonly ActorPreviewPlaceBuildingPreviewInfo info;
 		readonly PaletteReference palette;

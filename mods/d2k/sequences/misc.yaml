@@ -169,12 +169,14 @@ rank:
 overlay:
 	Defaults: DATA.R8
 		Offset: -16,-16
-	build-valid-arrakis:
+	build-valid:
+	build-unsafe: concfoot.shp
+		Offset: 0, 0
 	build-invalid:
 		Start: 1
 	target-select:
 		Start: 2
-	target-valid-arrakis:
+	target-valid:
 	target-invalid:
 		Start: 1
 
