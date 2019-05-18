@@ -734,6 +734,7 @@ wall:
 		BuildSounds: CHUNG.WAV
 		TerrainTypes: Rock, Concrete
 	FootprintPlaceBuildingPreview:
+		LineBuildSegmentPalette: placelinesegment
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7

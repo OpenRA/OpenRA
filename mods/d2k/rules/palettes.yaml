@@ -84,6 +84,10 @@
 		BaseName: cloak
 		BasePalette: player
 		Alpha: 0.55
+	PaletteFromPaletteWithAlpha@placelinesegment:
+		Name: placelinesegment
+		BasePalette: terrain
+		Alpha: 0.65
 	PaletteFromPlayerPaletteWithAlpha@placebuilding:
 		BaseName: placebuilding
 		BasePalette: player

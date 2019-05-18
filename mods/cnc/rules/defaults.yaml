@@ -873,6 +873,7 @@
 		BuildSounds: hvydoor1.aud
 		TerrainTypes: Clear,Road
 	FootprintPlaceBuildingPreview:
+		LineBuildSegmentPalette: placelinesegment
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4

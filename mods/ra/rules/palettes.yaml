@@ -119,6 +119,10 @@
 	ChronoshiftPaletteEffect:
 	FlashPaletteEffect@NUKE:
 		Type: Nuke
+	PaletteFromPaletteWithAlpha@placelinesegment:
+		Name: placelinesegment
+		BasePalette: terrain
+		Alpha: 0.65
 	PaletteFromPlayerPaletteWithAlpha@placebuilding:
 		BaseName: placebuilding
 		BasePalette: player
