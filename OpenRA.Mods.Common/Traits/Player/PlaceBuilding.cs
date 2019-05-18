@@ -21,14 +21,6 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Allows the player to execute build orders.", " Attach this to the player actor.")]
 	public class PlaceBuildingInfo : ITraitInfo
 	{
-		[PaletteReference]
-		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
-		[PaletteReference]
-		[Desc("Palette to use for rendering the placement sprite for line build segments.")]
-		public readonly string LineBuildSegmentPalette = TileSet.TerrainPaletteInternalName;
-
 		[Desc("Play NewOptionsNotification this many ticks after building placement.")]
 		public readonly int NewOptionsNotificationDelay = 10;
 

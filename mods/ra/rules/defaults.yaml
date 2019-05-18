@@ -646,6 +646,7 @@
 		RequiresBaseProvider: True
 		BuildSounds: placbldg.aud, build5.aud
 		UndeploySounds: cashturn.aud
+	ActorPreviewPlaceBuildingPreview:
 	RequiresBuildableArea:
 		AreaTypes: building
 	SoundOnDamageTransition:
@@ -749,6 +750,7 @@
 		BuildSounds: placbldg.aud
 		TerrainTypes: Clear,Road
 		UndeploySounds: cashturn.aud
+	FootprintPlaceBuildingPreview:
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7

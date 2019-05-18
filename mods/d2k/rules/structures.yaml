@@ -5,6 +5,7 @@
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
+	FootprintPlaceBuildingPreview:
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
@@ -732,6 +733,7 @@ wall:
 	Building:
 		BuildSounds: CHUNG.WAV
 		TerrainTypes: Rock, Concrete
+	FootprintPlaceBuildingPreview:
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 7

@@ -67,8 +67,6 @@ Player:
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
-		Palette: placebuilding
-		LineBuildSegmentPalette: placelinesegment
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
