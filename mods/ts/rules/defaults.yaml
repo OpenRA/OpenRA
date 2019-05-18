@@ -522,7 +522,9 @@
 	Building:
 		BuildSounds: place2.aud
 		UndeploySounds: cashturn.aud
-	FootprintPlaceBuildingPreview:
+	SequencePlaceBuildingPreview:
+		Sequence: place
+		SequencePalette: placebuilding
 		Palette: placefootprint
 	KillsSelf:
 		RemoveInstead: true
