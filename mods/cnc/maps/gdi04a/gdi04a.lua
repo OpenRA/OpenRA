@@ -18,6 +18,7 @@ HeliDelay = { 83, 137, 211 }
 
 GDIReinforcements = { "e2", "e2", "e2", "e2", "e2" }
 GDIReinforcementsWaypoints = { GDIReinforcementsEntry.Location, GDIReinforcementsWP1.Location }
+GDIReinforcementsLeft = 3
 
 NodHelis =
 {
@@ -49,8 +50,15 @@ SendGDIReinforcements = function()
 	Media.PlaySpeechNotification(GDI, "Reinforce")
 	Reinforcements.ReinforceWithTransport(GDI, "apc", GDIReinforcements, GDIReinforcementsWaypoints, nil, function(apc, team)
 		table.insert(team, apc)
-		Trigger.OnAllKilled(team, function() Trigger.AfterDelay(DateTime.Seconds(5), SendGDIReinforcements) end)
-		Utils.Do(team, function(unit) unit.Stance = "Defend" end)
+		Trigger.OnAllKilled(team, function()
+			if GDIReinforcementsLeft > 0 then
+				GDIReinforcementsLeft = GDIReinforcementsLeft - 1
+				Trigger.AfterDelay(DateTime.Seconds(5), function()
+					Media.DisplayMessage("APC squads in reserve: " .. GDIReinforcementsLeft, "Battlefield Control")
+					SendGDIReinforcements()
+				end)
+			end
+		end)
 	end)
 end
 
@@ -81,8 +89,8 @@ end
 Tick = function()
 	Nod.Cash = 1000
 
-	if GDI.HasNoRequiredUnits() then
-		Trigger.AfterDelay(DateTime.Seconds(1), function() GDI.MarkFailedObjective(GDIObjective) end)
+	if (GDIReinforcementsLeft == 0 or not GDI.IsObjectiveCompleted(ReinforcementsObjective)) and GDI.HasNoRequiredUnits() then
+		GDI.MarkFailedObjective(GDIObjective)
 	end
 end
 
