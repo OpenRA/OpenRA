@@ -112,6 +112,11 @@ gapowr:
 		-DepthSprite:
 
 gapowrup:
+	place: gtpowr_b
+		Offset: -24, -24, 24
+		Start: 0
+		Length: 11
+		Tick: 200
 	icon: turbicon
 
 gapile:
@@ -1248,12 +1253,24 @@ gactwr:
 		-DepthSprite:
 
 gavulc:
+	place: gtctwr_b
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		Start: 28
 	icon: twr1icon
 
 garock:
+	place: gtctwr_c
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		Start: 28
 	icon: twr2icon
 
 gacsam:
+	place: gtctwr_d
+		Offset: 0, -12, 12
+		UseTilesetCode: true
+		Start: 28
 	icon: twr3icon
 
 gahpad:
@@ -1974,7 +1991,19 @@ gaplug:
 		-DepthSprite:
 
 gaplug2:
+	place: gtplug_e
+		Offset: 24,-48, 48
+		UseTilesetCode: true
+		Reverses: true
+		Length: 14
+		Tick: 120
 	icon: rad2icon
 
 gaplug3:
+	place: gtplug_f
+		Offset: 24,-48, 48
+		UseTilesetCode: true
+		Reverses: true
+		Length: 14
+		Tick: 120
 	icon: rad3icon
