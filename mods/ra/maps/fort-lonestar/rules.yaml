@@ -213,6 +213,7 @@ PBOX:
 DOG:
 	Buildable:
 		Prerequisites: barracks
+		BuildAtProductionType: Soldier
 	Valued:
 		Cost: 20
 
