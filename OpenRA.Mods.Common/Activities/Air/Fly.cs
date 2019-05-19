@@ -58,10 +58,16 @@ namespace OpenRA.Mods.Common.Activities
 			return FlyTick(self, aircraft, move, desiredFacing, desiredAltitude, turnSpeedOverride, types);
 		}
 
-		static bool FlyTick(Actor self, Aircraft aircraft, WVec move, int desiredFacing, WDist desiredAltitude,
+		public static bool FlyTick(Actor self, Aircraft aircraft, WVec move, int desiredFacing, WDist desiredAltitude,
 			int turnSpeedOverride = -1, MovementType types = MovementType.Horizontal | MovementType.Vertical | MovementType.Turn)
 		{
-			var adjustedMove = types.HasFlag(MovementType.Horizontal) ? move : WVec.Zero;
+			var isHorizontalMove = types.HasFlag(MovementType.Horizontal) && move.HorizontalLengthSquared != 0;
+			var isVerticalMove = types.HasFlag(MovementType.Vertical);
+
+			var adjustedMove = new WVec(isHorizontalMove ? move.X : 0, isHorizontalMove ? move.Y : 0,  isVerticalMove ? move.Z : 0);
+			if (isVerticalMove)
+				adjustedMove = VerticalAdjust(self, aircraft, adjustedMove, desiredAltitude);
+
 			var hasMoved = adjustedMove != WVec.Zero;
 
 			if (types.HasFlag(MovementType.Turn) && aircraft.Facing != desiredFacing)
@@ -71,24 +77,22 @@ namespace OpenRA.Mods.Common.Activities
 				hasMoved = true;
 			}
 
-			if (types.HasFlag(MovementType.Vertical))
-			{
-				var altitude = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-				if (altitude != desiredAltitude)
-				{
-					var maxDelta = aircraft.Info.VTOL ? aircraft.Info.AltitudeVelocity.Length : (move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024);
-
-					// If move contained an explicit Z value, use it instead of the desiredAltitude - altitude delta.
-					var deltaZ = move.Z != 0 ? adjustedMove.Z.Clamp(-maxDelta, maxDelta) : (desiredAltitude.Length - altitude.Length).Clamp(-maxDelta, maxDelta);
-					adjustedMove = new WVec(adjustedMove.X, adjustedMove.Y, deltaZ);
-					hasMoved = true;
-				}
-			}
-			else
-				adjustedMove = new WVec(adjustedMove.X, adjustedMove.Y, 0);
-
 			aircraft.SetPosition(self, aircraft.CenterPosition + adjustedMove);
 			return hasMoved;
+		}
+
+		static WVec VerticalAdjust(Actor self, Aircraft aircraft, WVec move, WDist desiredAltitude)
+		{
+			var altitude = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			if (altitude != desiredAltitude)
+			{
+				var maxDelta = aircraft.Info.VTOL ? aircraft.Info.AltitudeVelocity.Length : (move.HorizontalLength * aircraft.Info.MaximumPitch.Tan() / 1024);
+				var deltaZ = move.Z != 0 ? move.Z.Clamp(-maxDelta, maxDelta) : (desiredAltitude.Length - altitude.Length).Clamp(-maxDelta, maxDelta);
+
+				return new WVec(move.X, move.Y, deltaZ);
+			}
+
+			return move;
 		}
 
 		public override Activity Tick(Actor self)

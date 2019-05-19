@@ -72,23 +72,21 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			if (dat < aircraft.Info.CruiseAltitude)
-			{
-				var delta = target.CenterPosition - self.CenterPosition;
-				var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
+			var delta = target.CenterPosition - self.CenterPosition;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
-				// If we're a VTOL, rise before flying forward
-				if (aircraft.Info.VTOL)
-				{
-					Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Vertical | MovementType.Turn);
+			// If we're a VTOL, rise before flying forward
+			if (aircraft.Info.VTOL)
+				if (Fly.FlyTick(self, aircraft, WVec.Zero, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Vertical | MovementType.Turn))
 					return this;
-				}
-				else
-				{
-					// Don't turn until we've reached the cruise altitude
-					if (!aircraft.Info.CanHover)
-						desiredFacing = aircraft.Facing;
+			else
+			{
+				// Don't turn until we've reached the cruise altitude
+				if (!aircraft.Info.CanHover)
+					desiredFacing = aircraft.Facing;
 
+				if (dat < aircraft.Info.CruiseAltitude)
+				{
 					Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 					return this;
 				}
