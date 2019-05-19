@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new LeapAttack(self, newTarget, allowMove, this, info);
+			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, info);
 		}
 	}
 }

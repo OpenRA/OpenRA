@@ -75,18 +75,20 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new ChargeAttack(this, newTarget);
+			return new ChargeAttack(this, newTarget, forceAttack);
 		}
 
-		class ChargeAttack : Activity
+		class ChargeAttack : Activity, IActivityNotifyStanceChanged
 		{
 			readonly AttackTesla attack;
 			readonly Target target;
+			readonly bool forceAttack;
 
-			public ChargeAttack(AttackTesla attack, Target target)
+			public ChargeAttack(AttackTesla attack, Target target, bool forceAttack)
 			{
 				this.attack = attack;
 				this.target = target;
+				this.forceAttack = forceAttack;
 			}
 
 			public override Activity Tick(Actor self)
@@ -113,6 +115,26 @@ namespace OpenRA.Mods.Cnc.Traits
 				QueueChild(self, new Wait(attack.info.InitialChargeDelay), true);
 				QueueChild(self, new ChargeFire(attack, target));
 				return this;
+			}
+
+			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+			{
+				// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+				if (newStance > oldStance || forceAttack)
+					return;
+
+				if (target.Type == TargetType.Actor)
+				{
+					var a = target.Actor;
+					if (!autoTarget.HasValidTargetPriority(self, a.Owner, a.GetEnabledTargetTypes()))
+						Cancel(self, true);
+				}
+				else if (target.Type == TargetType.FrozenActor)
+				{
+					var fa = target.FrozenActor;
+					if (!autoTarget.HasValidTargetPriority(self, fa.Owner, fa.TargetTypes))
+						Cancel(self, true);
+				}
 			}
 		}
 

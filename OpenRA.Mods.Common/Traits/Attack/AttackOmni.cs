@@ -27,21 +27,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
 		{
-			return new SetTarget(this, newTarget, allowMove);
+			return new SetTarget(this, newTarget, allowMove, forceAttack);
 		}
 
 		// Some 3rd-party mods rely on this being public
-		public class SetTarget : Activity
+		public class SetTarget : Activity, IActivityNotifyStanceChanged
 		{
 			readonly AttackOmni attack;
 			readonly bool allowMove;
+			readonly bool forceAttack;
 			Target target;
 
-			public SetTarget(AttackOmni attack, Target target, bool allowMove)
+			public SetTarget(AttackOmni attack, Target target, bool allowMove, bool forceAttack)
 			{
 				this.target = target;
 				this.attack = attack;
 				this.allowMove = allowMove;
+				this.forceAttack = forceAttack;
 			}
 
 			public override Activity Tick(Actor self)
@@ -54,6 +56,26 @@ namespace OpenRA.Mods.Common.Traits
 
 				attack.DoAttack(self, target);
 				return this;
+			}
+
+			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+			{
+				// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+				if (newStance > oldStance || forceAttack)
+					return;
+
+				if (target.Type == TargetType.Actor)
+				{
+					var a = target.Actor;
+					if (!autoTarget.HasValidTargetPriority(self, a.Owner, a.GetEnabledTargetTypes()))
+						target = Target.Invalid;
+				}
+				else if (target.Type == TargetType.FrozenActor)
+				{
+					var fa = target.FrozenActor;
+					if (!autoTarget.HasValidTargetPriority(self, fa.Owner, fa.TargetTypes))
+						target = Target.Invalid;
+				}
 			}
 		}
 	}

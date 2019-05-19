@@ -20,25 +20,29 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	public class LeapAttack : Activity
+	public class LeapAttack : Activity, IActivityNotifyStanceChanged
 	{
 		readonly AttackLeapInfo info;
 		readonly AttackLeap attack;
 		readonly Mobile mobile;
 		readonly bool allowMovement;
+		readonly bool forceAttack;
 
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
 		WDist lastVisibleMinRange;
 		WDist lastVisibleMaxRange;
+		BitSet<TargetableType> lastVisibleTargetTypes;
+		Player lastVisibleOwner;
 
-		public LeapAttack(Actor self, Target target, bool allowMovement, AttackLeap attack, AttackLeapInfo info)
+		public LeapAttack(Actor self, Target target, bool allowMovement, bool forceAttack, AttackLeap attack, AttackLeapInfo info)
 		{
 			this.target = target;
 			this.info = info;
 			this.attack = attack;
 			this.allowMovement = allowMovement;
+			this.forceAttack = forceAttack;
 			mobile = self.Trait<Mobile>();
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
@@ -49,6 +53,17 @@ namespace OpenRA.Mods.Cnc.Activities
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 				lastVisibleMinRange = attack.GetMinimumRangeVersusTarget(target);
 				lastVisibleMaxRange = attack.GetMaximumRangeVersusTarget(target);
+
+				if (target.Type == TargetType.Actor)
+				{
+					lastVisibleOwner = target.Actor.Owner;
+					lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
+				}
+				else if (target.Type == TargetType.FrozenActor)
+				{
+					lastVisibleOwner = target.FrozenActor.Owner;
+					lastVisibleTargetTypes = target.FrozenActor.TargetTypes;
+				}
 			}
 		}
 
@@ -76,6 +91,8 @@ namespace OpenRA.Mods.Cnc.Activities
 				lastVisibleTarget = Target.FromTargetPositions(target);
 				lastVisibleMinRange = attack.GetMinimumRangeVersusTarget(target);
 				lastVisibleMaxRange = attack.GetMaximumRangeVersusTarget(target);
+				lastVisibleOwner = target.Actor.Owner;
+				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
 			var oldUseLastVisibleTarget = useLastVisibleTarget;
@@ -140,6 +157,16 @@ namespace OpenRA.Mods.Cnc.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			attack.IsAiming = false;
+		}
+
+		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+		{
+			// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+			if (newStance > oldStance || forceAttack)
+				return;
+
+			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
+				target = Target.Invalid;
 		}
 	}
 }

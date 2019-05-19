@@ -17,21 +17,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class HeliAttack : Activity
+	public class HeliAttack : Activity, IActivityNotifyStanceChanged
 	{
 		readonly Aircraft aircraft;
 		readonly AttackAircraft attackAircraft;
 		readonly Rearmable rearmable;
+		readonly bool forceAttack;
 
 		Target target;
 		Target lastVisibleTarget;
 		WDist lastVisibleMaximumRange;
+		BitSet<TargetableType> lastVisibleTargetTypes;
+		Player lastVisibleOwner;
 		bool useLastVisibleTarget;
 		bool hasTicked;
 
-		public HeliAttack(Actor self, Target target)
+		public HeliAttack(Actor self, Target target, bool forceAttack)
 		{
 			this.target = target;
+			this.forceAttack = forceAttack;
 			aircraft = self.Trait<Aircraft>();
 			attackAircraft = self.Trait<AttackAircraft>();
 			rearmable = self.TraitOrDefault<Rearmable>();
@@ -43,6 +47,17 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
+
+				if (target.Type == TargetType.Actor)
+				{
+					lastVisibleOwner = target.Actor.Owner;
+					lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
+				}
+				else if (target.Type == TargetType.FrozenActor)
+				{
+					lastVisibleOwner = target.FrozenActor.Owner;
+					lastVisibleTargetTypes = target.FrozenActor.TargetTypes;
+				}
 			}
 		}
 
@@ -90,6 +105,8 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
+				lastVisibleOwner = target.Actor.Owner;
+				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
 			var oldUseLastVisibleTarget = useLastVisibleTarget;
@@ -155,6 +172,16 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return this;
+		}
+
+		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+		{
+			// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+			if (newStance > oldStance || forceAttack)
+				return;
+
+			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
+				attackAircraft.RequestedTarget = Target.Invalid;
 		}
 	}
 }
