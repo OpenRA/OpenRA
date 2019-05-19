@@ -26,8 +26,6 @@ namespace OpenRA.Mods.Common.Activities
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
-		bool soundPlayed;
-		bool isTakeOff;
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -118,34 +116,17 @@ namespace OpenRA.Mods.Common.Activities
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return NextActivity;
 
-			// We are taking off, so remove influence in ground cells.
-			if (self.IsAtGroundLevel())
-			{
-				if (!soundPlayed && aircraft.Info.TakeoffSounds.Length > 0)
-				{
-					Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds, self.World, aircraft.CenterPosition);
-					soundPlayed = true;
-				}
-
-				aircraft.RemoveInfluence();
-				isTakeOff = true;
-			}
-
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var delta = checkTarget.CenterPosition - self.CenterPosition;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
 
-			// If we're a VTOL, rise before flying forward
-			if (isTakeOff && aircraft.Info.VTOL)
+			if (dat == WDist.Zero)
 			{
-				if (FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Vertical | MovementType.Turn))
-					return this;
-				else
-					isTakeOff = false;
+				QueueChild(self, new TakeOff(self, checkTarget), true);
+				return this;
 			}
 
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var targetAltitude = aircraft.Info.CruiseAltitude;
 			var move = aircraft.Info.CanHover ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
 			// Inside the target annulus, so we're done
@@ -153,9 +134,9 @@ namespace OpenRA.Mods.Common.Activities
 			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, minRange);
 			if (insideMaxRange && !insideMinRange)
 			{
-				if (aircraft.Info.CanHover && dat != targetAltitude)
+				if (aircraft.Info.CanHover && dat != aircraft.Info.CruiseAltitude)
 				{
-					FlyTick(self, aircraft, desiredFacing, targetAltitude, -1, MovementType.Vertical | MovementType.Turn);
+					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -1, MovementType.Vertical | MovementType.Turn);
 					return this;
 				}
 
@@ -183,10 +164,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			// Don't turn until we've reached the cruise altitude
-			if (!aircraft.Info.CanHover && dat < targetAltitude)
-				desiredFacing = aircraft.Facing;
-			else if (!aircraft.Info.CanHover)
+			if (!aircraft.Info.CanHover)
 			{
 				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
 				// If it contains the destination point, it's unreachable without more complex manuvering.
