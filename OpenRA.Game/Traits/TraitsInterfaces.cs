@@ -350,6 +350,8 @@ namespace OpenRA.Traits
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfoInterface { }
 
+	public interface IActivityInterface { }
+
 	[RequireExplicitImplementation]
 	public interface INotifySelected { void Selected(Actor self); }
 	[RequireExplicitImplementation]

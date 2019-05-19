@@ -171,6 +171,20 @@ namespace OpenRA.Activities
 				act = act.childActivity;
 			}
 		}
+
+		public IEnumerable<T> ActivitiesImplementing<T>() where T : IActivityInterface
+		{
+			if (childActivity != null)
+				foreach (var a in childActivity.ActivitiesImplementing<T>())
+					yield return a;
+
+			if (this is T)
+				yield return (T)(object)this;
+
+			if (NextActivity != null)
+				foreach (var a in NextActivity.ActivitiesImplementing<T>())
+					yield return a;
+		}
 	}
 
 	public static class ActivityExts

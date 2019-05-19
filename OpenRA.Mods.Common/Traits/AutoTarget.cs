@@ -11,12 +11,25 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything }
+
+	[RequireExplicitImplementation]
+	public interface IActivityNotifyStanceChanged : IActivityInterface
+	{
+		void StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyStanceChanged
+	{
+		void StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance);
+	}
 
 	[Desc("The actor will automatically engage the enemy when it is in range.")]
 	public class AutoTargetInfo : ConditionalTraitInfo, Requires<AttackBaseInfo>, IEditorActorOptions
@@ -126,6 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 		UnitStance stance;
 		ConditionManager conditionManager;
 		IDisableAutoTarget[] disableAutoTarget;
+		INotifyStanceChanged[] notifyStanceChanged;
 		IEnumerable<AutoTargetPriorityInfo> activeTargetPriorities;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
@@ -134,8 +148,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (stance == value)
 				return;
 
+			var oldStance = stance;
 			stance = value;
 			ApplyStanceCondition(self);
+
+			foreach (var nsc in notifyStanceChanged)
+				nsc.StanceChanged(self, this, oldStance, stance);
+
+			if (self.CurrentActivity != null)
+				foreach (var a in self.CurrentActivity.ActivitiesImplementing<IActivityNotifyStanceChanged>())
+					a.StanceChanged(self, this, oldStance, stance);
 		}
 
 		void ApplyStanceCondition(Actor self)
@@ -176,6 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			disableAutoTarget = self.TraitsImplementing<IDisableAutoTarget>().ToArray();
+			notifyStanceChanged = self.TraitsImplementing<INotifyStanceChanged>().ToArray();
 			ApplyStanceCondition(self);
 		}
 
