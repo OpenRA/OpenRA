@@ -313,6 +313,25 @@ namespace OpenRA.Mods.Common.Traits
 				ab.AttackTarget(target, false, allowMove);
 		}
 
+		public bool HasValidTargetPriority(Actor self, Player owner, BitSet<TargetableType> targetTypes)
+		{
+			if (Stance <= UnitStance.ReturnFire)
+				return false;
+
+			return activeTargetPriorities.Any(ati =>
+			{
+				// Incompatible stances
+				if (!ati.ValidStances.HasStance(self.Owner.Stances[owner]))
+					return false;
+
+				// Incompatible target types
+				if (!ati.ValidTargets.Overlaps(targetTypes) || ati.InvalidTargets.Overlaps(targetTypes))
+					return false;
+
+				return true;
+			});
+		}
+
 		Target ChooseTarget(Actor self, AttackBase ab, Stance attackStances, WDist scanRange, bool allowMove, bool allowTurn)
 		{
 			var chosenTarget = Target.Invalid;

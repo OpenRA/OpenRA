@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Activities
 {
 	/* non-turreted attack */
-	public class Attack : Activity
+	public class Attack : Activity, IActivityNotifyStanceChanged
 	{
 		[Flags]
 		protected enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
@@ -35,6 +35,8 @@ namespace OpenRA.Mods.Common.Activities
 		protected Target target;
 		Target lastVisibleTarget;
 		WDist lastVisibleMaximumRange;
+		BitSet<TargetableType> lastVisibleTargetTypes;
+		Player lastVisibleOwner;
 		bool useLastVisibleTarget;
 		bool wasMovingWithinRange;
 
@@ -62,6 +64,17 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
 					.Min(x => x.GetMaximumRangeVersusTarget(target));
+
+				if (target.Type == TargetType.Actor)
+				{
+					lastVisibleOwner = target.Actor.Owner;
+					lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
+				}
+				else if (target.Type == TargetType.FrozenActor)
+				{
+					lastVisibleOwner = target.FrozenActor.Owner;
+					lastVisibleTargetTypes = target.FrozenActor.TargetTypes;
+				}
 			}
 		}
 
@@ -88,6 +101,9 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTarget = Target.FromTargetPositions(target);
 				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
 					.Min(x => x.GetMaximumRangeVersusTarget(target));
+
+				lastVisibleOwner = target.Actor.Owner;
+				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
 			var oldUseLastVisibleTarget = useLastVisibleTarget;
@@ -210,6 +226,16 @@ namespace OpenRA.Mods.Common.Activities
 			if (!attack.IsTraitPaused)
 				foreach (var a in armaments)
 					a.CheckFire(self, facing, target);
+		}
+
+		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+		{
+			// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+			if (newStance > oldStance || forceAttack)
+				return;
+
+			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
+				target = Target.Invalid;
 		}
 	}
 }

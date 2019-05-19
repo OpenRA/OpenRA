@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, INotifyOwnerChanged, IDisableAutoTarget
+	public class AttackFollow : AttackBase, INotifyOwnerChanged, IDisableAutoTarget, INotifyStanceChanged
 	{
 		public new readonly AttackFollowInfo Info;
 		public Target RequestedTarget;
@@ -161,7 +161,27 @@ namespace OpenRA.Mods.Common.Traits
 				(OpportunityTargetIsPersistentTarget && OpportunityTarget.Type != TargetType.Invalid);
 		}
 
-		class AttackActivity : Activity
+		void INotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+		{
+			// Cancel opportunity targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+			if (newStance > oldStance || OpportunityForceAttack)
+				return;
+
+			if (OpportunityTarget.Type == TargetType.Actor)
+			{
+				var a = OpportunityTarget.Actor;
+				if (!autoTarget.HasValidTargetPriority(self, a.Owner, a.GetEnabledTargetTypes()))
+					OpportunityTarget = Target.Invalid;
+			}
+			else if (OpportunityTarget.Type == TargetType.FrozenActor)
+			{
+				var fa = OpportunityTarget.FrozenActor;
+				if (!autoTarget.HasValidTargetPriority(self, fa.Owner, fa.TargetTypes))
+					OpportunityTarget = Target.Invalid;
+			}
+		}
+
+		class AttackActivity : Activity, IActivityNotifyStanceChanged
 		{
 			readonly AttackFollow attack;
 			readonly RevealsShroud[] revealsShroud;
@@ -173,6 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 			bool useLastVisibleTarget;
 			WDist lastVisibleMaximumRange;
 			WDist lastVisibleMinimumRange;
+			BitSet<TargetableType> lastVisibleTargetTypes;
+			Player lastVisibleOwner;
 			bool wasMovingWithinRange;
 			bool hasTicked;
 
@@ -193,6 +215,17 @@ namespace OpenRA.Mods.Common.Traits
 					lastVisibleTarget = Target.FromPos(target.CenterPosition);
 					lastVisibleMaximumRange = attack.GetMaximumRangeVersusTarget(target);
 					lastVisibleMinimumRange = attack.GetMinimumRangeVersusTarget(target);
+
+					if (target.Type == TargetType.Actor)
+					{
+						lastVisibleOwner = target.Actor.Owner;
+						lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
+					}
+					else if (target.Type == TargetType.FrozenActor)
+					{
+						lastVisibleOwner = target.FrozenActor.Owner;
+						lastVisibleTargetTypes = target.FrozenActor.TargetTypes;
+					}
 				}
 			}
 
@@ -238,6 +271,8 @@ namespace OpenRA.Mods.Common.Traits
 					lastVisibleTarget = Target.FromTargetPositions(target);
 					lastVisibleMaximumRange = attack.GetMaximumRangeVersusTarget(target);
 					lastVisibleMinimumRange = attack.GetMinimumRange();
+					lastVisibleOwner = target.Actor.Owner;
+					lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 
 					// Try and sit at least one cell away from the min or max ranges to give some leeway if the target starts moving.
 					if (move != null && target.Actor.Info.HasTraitInfo<IMoveInfo>())
@@ -311,6 +346,16 @@ namespace OpenRA.Mods.Common.Traits
 				wasMovingWithinRange = true;
 				QueueChild(self, move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red), true);
 				return this;
+			}
+
+			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
+			{
+				// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
+				if (newStance > oldStance || forceAttack)
+					return;
+
+				if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
+					attack.RequestedTarget = Target.Invalid;
 			}
 		}
 	}
