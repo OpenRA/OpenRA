@@ -17,7 +17,7 @@
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
-    <Configurations>Release;Debug;Red Alert;Tiberian Dawn;Dune 2000;Tiberian Sun</Configurations>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
@@ -27,27 +27,19 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Red Alert' OR '$(RunConfiguration)' == 'Red Alert' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Red Alert' ">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ra</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Dune 2000' OR '$(RunConfiguration)' == 'Dune 2000' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Dune 2000' ">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=d2k</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Tiberian Dawn' OR '$(RunConfiguration)' == 'Tiberian Dawn' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Dawn' ">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=cnc</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Tiberian Sun' OR '$(RunConfiguration)' == 'Tiberian Sun' ">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>false</Optimize>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Sun' ">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
@@ -73,6 +65,7 @@
     <None Include="App.config" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" /> 
     <AdditionalFiles Include="../stylecop.json" />
+    <AdditionalFiles Include="Properties/launchSettings.json" />
   </ItemGroup>
   <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
     <!-- Disable code style analysis on Release builds to improve compile-time performance -->
