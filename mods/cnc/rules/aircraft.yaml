@@ -181,6 +181,7 @@ C17:
 		Speed: 326
 		Repulsable: False
 		MaximumPitch: 36
+		LandableTerrainTypes: Clear, Rough, Road, Beach
 	HiddenUnderFog:
 		AlwaysVisibleStances: None
 		Type: CenterPosition
