@@ -74,11 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var tile = c.Value.HasFlag(PlaceBuildingCellType.Invalid) ? buildBlocked :
+				var tile = HasFlag(c.Value, PlaceBuildingCellType.Invalid) ? buildBlocked :
 					candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type)
 					? buildUnsafe : buildOk;
 
-				var pal = c.Value.HasFlag(PlaceBuildingCellType.LineBuild) ? linePalette : cellPalette;
+				var pal = HasFlag(c.Value, PlaceBuildingCellType.LineBuild) ? linePalette : cellPalette;
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
 				yield return new SpriteRenderable(tile, pos, offset, -511, pal, 1f, true);
