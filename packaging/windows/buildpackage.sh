@@ -39,7 +39,7 @@ echo "Building core files"
 
 pushd "${SRCDIR}" > /dev/null || exit 1
 make clean
-make windows-dependencies
+make windows-dependencies WIN32=true
 make core
 make version VERSION="${TAG}"
 make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"

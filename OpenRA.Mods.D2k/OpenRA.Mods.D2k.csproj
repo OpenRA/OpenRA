@@ -8,8 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputPath>../mods/d2k</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Platforms>x86</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CodeAnalysisRuleSet>..\OpenRA.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
