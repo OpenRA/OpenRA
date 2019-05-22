@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public int IconWidth = 32;
 		public int IconHeight = 24;
-		public int IconSpacing = 8;
+		public int IconSpacing = 1;
 
 		public string ClockAnimation = "clock";
 		public string ClockSequence = "idle";
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var tiny = Game.Renderer.Fonts["Tiny"];
 				var text = GetOverlayForItem(item, timestep);
 				tiny.DrawTextWithContrast(text,
-					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
+					location + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
 			}
 		}

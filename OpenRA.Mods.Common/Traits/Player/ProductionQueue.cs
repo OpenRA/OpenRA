@@ -236,6 +236,11 @@ namespace OpenRA.Mods.Common.Traits
 			return Queue.Count > 0 && Queue[0] == item;
 		}
 
+		public ProductionItem CurrentItem()
+		{
+			return Queue.ElementAtOrDefault(0);
+		}
+
 		public virtual IEnumerable<ProductionItem> AllQueued()
 		{
 			return Queue;

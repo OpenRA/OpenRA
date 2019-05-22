@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public int IconWidth = 32;
 		public int IconHeight = 24;
-		public int IconSpacing = 8;
+		public int IconSpacing = 1;
 
 		public string ClockAnimation = "clock";
 		public string ClockSequence = "idle";
@@ -41,12 +41,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<ProductionIcon> GetTooltipIcon;
 
 		Dictionary<ProductionQueue, Animation> clocks;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly List<ProductionIcon> productionIcons = new List<ProductionIcon>();
+		readonly List<Rectangle> productionIconsBounds = new List<Rectangle>();
+
 		float2 iconSize;
-		Rectangle[] iconRects = new Rectangle[0];
-		ProductionIcon[] icons;
-		Rectangle renderBounds;
 		int lastIconIdx;
-		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		[ObjectCreator.UseCtor]
 		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
@@ -87,11 +87,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-			renderBounds = Rectangle.Empty;
 		}
 
 		public override void Draw()
 		{
+			productionIcons.Clear();
+			productionIconsBounds.Clear();
+
 			var player = GetPlayer();
 			if (player == null)
 				return;
@@ -100,57 +102,75 @@ namespace OpenRA.Mods.Common.Widgets
 				.Where(a => a.Actor.Owner == player)
 				.Select((a, i) => new { a.Trait, i });
 
-			if (renderBounds != RenderBounds)
-			{
-				renderBounds = RenderBounds;
-				InitIcons(renderBounds);
-			}
-			else
-				for (var i = 0; i < icons.Length; i++)
-					icons[i].Actor = null;
-
 			foreach (var queue in queues)
-			{
 				if (!clocks.ContainsKey(queue.Trait))
 					clocks.Add(queue.Trait, new Animation(world, ClockAnimation));
 
-				var current = queue.Trait.AllQueued().FirstOrDefault();
-				if (current == null || queue.i >= icons.Length)
-					continue;
+			var currentItemsByItem = queues
+					.Select(a => a.Trait.CurrentItem())
+					.Where(pi => pi != null)
+					.GroupBy(pr => pr.Item)
+					.OrderBy(g => g.First().Queue.Info.Type)
+					.ThenBy(g => g.First().Item)
+					.ToList();
 
-				var faction = queue.Trait.Actor.Owner.Faction.InternalName;
-				var actor = queue.Trait.AllItems().FirstOrDefault(a => a.Name == current.Item);
+			Bounds.Width = currentItemsByItem.Count * (IconWidth + IconSpacing);
+
+			var queueCol = 0;
+			foreach (var currentItems in currentItemsByItem)
+			{
+				var current = currentItems.OrderBy(pi => pi.Done ? 0 : (pi.Paused ? 2 : 1)).ThenBy(q => q.RemainingTimeActual).First();
+				var queue = current.Queue;
+
+				var faction = queue.Actor.Owner.Faction.InternalName;
+				var actor = queue.AllItems().FirstOrDefault(a => a.Name == current.Item);
 				if (actor == null)
 					continue;
 
 				var rsi = actor.TraitInfo<RenderSpritesInfo>();
 				var icon = new Animation(world, rsi.GetImage(actor, world.Map.Rules.Sequences, faction));
 				var bi = actor.TraitInfo<BuildableInfo>();
+
 				icon.Play(bi.Icon);
-				var location = new float2(iconRects[queue.i].Location);
-				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
+				var topLeftOffset = new float2(queueCol * (IconWidth + IconSpacing), 0);
 
-				icons[queue.i].Actor = actor;
-				icons[queue.i].ProductionQueue = queue.Trait;
+				var iconTopLeft = RenderOrigin + topLeftOffset;
+				var centerPosition = iconTopLeft;
 
-				var pio = queue.Trait.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
+				WidgetUtils.DrawSHPCentered(icon.Image, centerPosition + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
+
+				productionIcons.Add(new ProductionIcon { Actor = actor, ProductionQueue = current.Queue });
+				productionIconsBounds.Add(new Rectangle((int)iconTopLeft.X, (int)iconTopLeft.Y, (int)iconSize.X, (int)iconSize.Y));
+
+				var pio = queue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
 					.FirstOrDefault(p => p.IsOverlayActive(actor));
+
 				if (pio != null)
-					WidgetUtils.DrawSHPCentered(pio.Sprite, location + 0.5f * iconSize + pio.Offset(iconSize),
+					WidgetUtils.DrawSHPCentered(pio.Sprite, centerPosition + 0.5f * iconSize + pio.Offset(iconSize),
 						worldRenderer.Palette(pio.Palette), 0.5f);
 
-				var clock = clocks[queue.Trait];
-				clock.PlayFetchIndex(ClockSequence,
-					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
-					* (clock.CurrentSequence.Length - 1) / current.TotalTime));
+				var clock = clocks[queue];
+				clock.PlayFetchIndex(ClockSequence, () => current.TotalTime == 0 ? 0 :
+					(current.TotalTime - current.RemainingTime) * (clock.CurrentSequence.Length - 1) / current.TotalTime);
+
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
+				WidgetUtils.DrawSHPCentered(clock.Image, centerPosition + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
 
 				var tiny = Game.Renderer.Fonts["Tiny"];
 				var text = GetOverlayForItem(current, timestep);
 				tiny.DrawTextWithContrast(text,
-					location + new float2(16, 16) - new float2(tiny.Measure(text).X / 2, 0),
+					centerPosition + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
+
+				if (currentItems.Count() > 1)
+				{
+					var bold = Game.Renderer.Fonts["Small"];
+					text = currentItems.Count().ToString();
+					bold.DrawTextWithContrast(text, centerPosition + new float2(16, 0) - new float2(bold.Measure(text).X / 2, 0),
+						Color.White, Color.Black, 1);
+				}
+
+				queueCol++;
 			}
 		}
 
@@ -172,9 +192,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void MouseEntered()
 		{
-			if (TooltipContainer != null)
-				tooltipContainer.Value.SetTooltip(TooltipTemplate,
-					new WidgetArgs() { { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
+			if (TooltipContainer == null)
+				return;
+
+			for (var i = 0; i < productionIconsBounds.Count; i++)
+			{
+				if (!productionIconsBounds[i].Contains(Viewport.LastMousePos))
+					continue;
+
+				TooltipIcon = productionIcons[i];
+				break;
+			}
+
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs { { "player", GetPlayer() }, { "getTooltipIcon", GetTooltipIcon } });
 		}
 
 		public override void MouseExited()
@@ -187,34 +217,26 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Tick()
 		{
-			if (TooltipIcon != null && iconRects[lastIconIdx].Contains(Viewport.LastMousePos))
+			if (lastIconIdx >= productionIconsBounds.Count)
+			{
+				TooltipIcon = null;
+				return;
+			}
+
+			if (TooltipIcon != null && productionIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
 				return;
 
-			for (var i = 0; i < iconRects.Length; i++)
+			for (var i = 0; i < productionIconsBounds.Count; i++)
 			{
-				if (iconRects[i].Contains(Viewport.LastMousePos))
-				{
-					lastIconIdx = i;
-					TooltipIcon = icons[i];
-					return;
-				}
+				if (!productionIconsBounds[i].Contains(Viewport.LastMousePos))
+					continue;
+
+				lastIconIdx = i;
+				TooltipIcon = productionIcons[i];
+				return;
 			}
 
 			TooltipIcon = null;
-		}
-
-		void InitIcons(Rectangle renderBounds)
-		{
-			var iconWidthWithSpacing = IconWidth + IconSpacing;
-			var numOfIcons = renderBounds.Width / iconWidthWithSpacing;
-			iconRects = new Rectangle[numOfIcons];
-			icons = new ProductionIcon[numOfIcons];
-
-			for (var i = 0; i < numOfIcons; i++)
-			{
-				iconRects[i] = new Rectangle(renderBounds.X + i * iconWidthWithSpacing, renderBounds.Y, IconWidth, IconHeight);
-				icons[i] = new ProductionIcon();
-			}
 		}
 	}
 }
