@@ -78,6 +78,9 @@ INSTALL_DATA = $(INSTALL) -m644
 # Toolchain
 MSBUILD = msbuild -verbosity:m -nologo
 
+# Enable 32 bit builds while generating the windows installer
+WIN32 = false
+
 # program targets
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
@@ -146,7 +149,11 @@ all: dependencies core
 
 core:
 	@command -v $(MSBUILD) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.4."; exit 1)
+ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
+	@$(MSBUILD) -t:build -p:Configuration="Release-x86"
+else
 	@$(MSBUILD) -t:build -p:Configuration=Release
+endif
 
 clean:
 	@ $(MSBUILD) -t:clean
@@ -169,7 +176,11 @@ linux-native-dependencies:
 	@./thirdparty/configure-native-deps.sh
 
 windows-dependencies: cli-dependencies geoip-dependencies
-	@./thirdparty/fetch-thirdparty-deps-windows.sh
+ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
+	@./thirdparty/fetch-thirdparty-deps-windows.sh x86
+else
+	@./thirdparty/fetch-thirdparty-deps-windows.sh x64
+endif
 
 osx-dependencies: cli-dependencies geoip-dependencies
 	@./thirdparty/fetch-thirdparty-deps-osx.sh
