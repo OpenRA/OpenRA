@@ -54,10 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var devMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
-			if (devMode.Enabled)
-				Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
-
+			Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
 			Game.LoadWidget(world, "CHAT_PANEL", worldRoot, new WidgetArgs() { { "isMenuChat", false } });
 
 			world.GameOver += () =>
