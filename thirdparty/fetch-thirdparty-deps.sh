@@ -71,11 +71,11 @@ fi
 if [ ! -f OpenAL-CS.dll ] || [ ! -f OpenAL-CS.dll.config ]; then
 	echo "Fetching OpenAL-CS from GitHub."
 	if command -v curl >/dev/null 2>&1; then
-		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll
-		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll.config
+		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll
+		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll.config
 	else
-		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll
-		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll.config
+		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll
+		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll.config
 	fi
 fi
 

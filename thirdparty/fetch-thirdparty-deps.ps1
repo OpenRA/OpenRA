@@ -124,7 +124,7 @@ if (!(Test-Path "OpenAL-CS.dll"))
 {
 	echo "Fetching OpenAL-CS from GitHub."
 	$target = Join-Path $pwd.ToString() "OpenAL-CS.dll"
-	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/OpenAL-CS/releases/download/20151227/OpenAL-CS.dll", $target)
+	(New-Object System.Net.WebClient).DownloadFile("https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll", $target)
 }
 
 if (!(Test-Path "Eluant.dll"))
