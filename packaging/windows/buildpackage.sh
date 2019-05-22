@@ -6,7 +6,7 @@ command -v makensis >/dev/null 2>&1 || { echo >&2 "Windows packaging requires ma
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"
-    exit 1
+	exit 1
 fi
 
 # Set the working dir to the location of this script
@@ -30,44 +30,54 @@ fi
 function makelauncher()
 {
 	sed "s|DISPLAY_NAME|$2|" WindowsLauncher.cs.in | sed "s|MOD_ID|$3|" | sed "s|FAQ_URL|${FAQ_URL}|" > WindowsLauncher.cs
-	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"x86" -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
+	csc WindowsLauncher.cs -warn:4 -warnaserror -platform:"$5" -out:"$1" -t:winexe ${LAUNCHER_LIBS} -win32icon:"$4"
 	rm WindowsLauncher.cs
 	mono "${SRCDIR}/OpenRA.PostProcess.exe" "$1" -LAA > /dev/null
 }
 
-echo "Building core files"
+function build_platform()
+{
+	echo "Building core files ($1)"
+	if [ "$1" = "x86" ]; then
+		IS_WIN32="WIN32=true"
+	else
+		IS_WIN32="WIN32=false"
+	fi
 
-pushd "${SRCDIR}" > /dev/null || exit 1
-make clean
-make windows-dependencies WIN32=true
-make core
-make version VERSION="${TAG}"
-make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"
-popd > /dev/null || exit 1
+	pushd "${SRCDIR}" > /dev/null || exit 1
+	make clean
+	make windows-dependencies "${IS_WIN32}"
+	make core "${IS_WIN32}"
+	make version VERSION="${TAG}"
+	make install-core gameinstalldir="" DESTDIR="${BUILTDIR}"
+	popd > /dev/null || exit 1
 
-echo "Compiling Windows launchers"
-makelauncher "${BUILTDIR}/RedAlert.exe" "Red Alert" "ra" RedAlert.ico
-makelauncher "${BUILTDIR}/TiberianDawn.exe" "Tiberian Dawn" "cnc" TiberianDawn.ico
-makelauncher "${BUILTDIR}/Dune2000.exe" "Dune 2000" "d2k" Dune2000.ico
+	echo "Compiling Windows launchers ($1)"
+	makelauncher "${BUILTDIR}/RedAlert.exe" "Red Alert" "ra" RedAlert.ico $1
+	makelauncher "${BUILTDIR}/TiberianDawn.exe" "Tiberian Dawn" "cnc" TiberianDawn.ico $1
+	makelauncher "${BUILTDIR}/Dune2000.exe" "Dune 2000" "d2k" Dune2000.ico $1
 
-# Windows specific files
-cp OpenRA.ico RedAlert.ico TiberianDawn.ico Dune2000.ico "${BUILTDIR}"
-cp "${SRCDIR}/OpenRA.Game.exe.config" "${BUILTDIR}"
+	# Windows specific files
+	cp OpenRA.ico RedAlert.ico TiberianDawn.ico Dune2000.ico "${BUILTDIR}"
+	cp "${SRCDIR}/OpenRA.Game.exe.config" "${BUILTDIR}"
 
-curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
-markdown Changelog.md > "${BUILTDIR}/CHANGELOG.html"
-rm Changelog.md
+	curl -s -L -O https://raw.githubusercontent.com/wiki/OpenRA/OpenRA/Changelog.md
+	markdown Changelog.md > "${BUILTDIR}/CHANGELOG.html"
+	rm Changelog.md
 
-markdown "${SRCDIR}/README.md" > "${BUILTDIR}/README.html"
-markdown "${SRCDIR}/CONTRIBUTING.md" > "${BUILTDIR}/CONTRIBUTING.html"
+	markdown "${SRCDIR}/README.md" > "${BUILTDIR}/README.html"
+	markdown "${SRCDIR}/CONTRIBUTING.md" > "${BUILTDIR}/CONTRIBUTING.html"
 
-echo "Building Windows setup.exe"
-makensis -V2 -DSRCDIR="${BUILTDIR}" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" OpenRA.nsi
-if [ $? -eq 0 ]; then
-    mv OpenRA.Setup.exe "${OUTPUTDIR}/OpenRA-$TAG.exe"
-else
-    exit 1
-fi
+	echo "Building Windows setup.exe ($1)"
+	makensis -V2 -DSRCDIR="${BUILTDIR}" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" OpenRA.nsi
+	if [ $? -eq 0 ]; then
+		mv OpenRA.Setup.exe "${OUTPUTDIR}/OpenRA-$TAG-$1.exe"
+	else
+		exit 1
+	fi
 
-# Cleanup
-rm -rf "${BUILTDIR}"
+	rm -rf "${BUILTDIR}"
+}
+
+build_platform "x86"
+build_platform "x64"
