@@ -445,6 +445,9 @@ scrollitem-selected: chrome.png
 	corner-bl: 128,63,1,1
 	corner-br: 159,63,1,1
 
+scrollitem-nohover: chrome.png
+
+
 #
 # Slider
 # ===

@@ -22,26 +22,34 @@ ReplaySpeedMax: F12
 	Description: Maximum speed
 	Types: Replay
 
-StatisticsBasic: F1
+StatisticsNone: F1
+	Description: Disable statistics
+	Types: Observer, Replay
+
+StatisticsBasic: F2
 	Description: Basic statistics
 	Types: Observer, Replay
 
-StatisticsEconomy: F2
+StatisticsEconomy: F3
 	Description: Economy statistics
 	Types: Observer, Replay
 
-StatisticsProduction: F3
+StatisticsProduction: F4
 	Description: Production statistics
 	Types: Observer, Replay
 
-StatisticsCombat: F4
+StatisticsSupportPowers: F5
+	Description: Support Power statistics
+	Types: Observer, Replay
+
+StatisticsCombat: F6
 	Description: Combat statistics
 	Types: Observer, Replay
 
-StatisticsGraph: F5
+StatisticsGraph: F7
 	Description: Statistics graph
 	Types: Observer, Replay
 
-StatisticsArmyGraph: F6
+StatisticsArmyGraph: F8
 	Description: Army value graph
 	Types: Observer, Replay
