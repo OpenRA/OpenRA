@@ -79,8 +79,12 @@ namespace OpenRA.Mods.Common.Traits
 		IFacing facing;
 		BodyOrientation body;
 
-		[Sync] public int QuantizedFacings = 0;
-		[Sync] public int TurretFacing = 0;
+		[Sync]
+		public int QuantizedFacings = 0;
+
+		[Sync]
+		public int TurretFacing = 0;
+
 		public int? DesiredFacing;
 		int realignTick = 0;
 
@@ -259,7 +263,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TurretFacingInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] readonly int value = 128;
+		[FieldFromYamlKey]
+		readonly int value = 128;
+
 		public TurretFacingInit() { }
 		public TurretFacingInit(int init) { value = init; }
 		public int Value(World world) { return value; }
@@ -269,6 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[DictionaryFromYamlKey]
 		readonly Dictionary<string, int> value = new Dictionary<string, int>();
+
 		public TurretFacingsInit() { }
 		public TurretFacingsInit(Dictionary<string, int> init) { value = init; }
 		public Dictionary<string, int> Value(World world) { return value; }

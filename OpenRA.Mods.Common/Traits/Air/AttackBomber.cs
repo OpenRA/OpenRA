@@ -27,9 +27,15 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
 	{
 		readonly AttackBomberInfo info;
-		[Sync] Target target;
-		[Sync] bool inAttackRange;
-		[Sync] bool facingTarget = true;
+
+		[Sync]
+		Target target;
+
+		[Sync]
+		bool inAttackRange;
+
+		[Sync]
+		bool facingTarget = true;
 
 		public event Action<Actor> OnRemovedFromWorld = self => { };
 		public event Action<Actor> OnEnteredAttackRange = self => { };

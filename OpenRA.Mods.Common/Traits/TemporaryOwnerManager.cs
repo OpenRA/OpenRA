@@ -30,7 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 		Player originalOwner;
 		Player changingOwner;
 
-		[Sync] int remaining = -1;
+		[Sync]
+		int remaining = -1;
 		int duration;
 
 		public TemporaryOwnerManager(Actor self, TemporaryOwnerManagerInfo info)

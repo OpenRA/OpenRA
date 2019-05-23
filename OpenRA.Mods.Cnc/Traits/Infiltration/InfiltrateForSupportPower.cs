@@ -17,7 +17,9 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class InfiltrateForSupportPowerInfo : ITraitInfo
 	{
-		[ActorReference, FieldLoader.Require] public readonly string Proxy = null;
+		[ActorReference]
+		[FieldLoader.Require]
+		public readonly string Proxy = null;
 
 		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
 

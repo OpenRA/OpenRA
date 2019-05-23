@@ -22,10 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor can be sent to a structure for repairs.")]
 	public class RepairableInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
 	{
+		[ActorReference]
 		[FieldLoader.Require]
-		[ActorReference] public readonly HashSet<string> RepairActors = new HashSet<string> { };
+		public readonly HashSet<string> RepairActors = new HashSet<string> { };
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairsUnits trait will be used.")]
 		public readonly int HpPerStep = -1;

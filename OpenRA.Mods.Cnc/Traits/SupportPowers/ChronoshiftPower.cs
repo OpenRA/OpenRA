@@ -28,12 +28,19 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Ticks until returning after teleportation.")]
 		public readonly int Duration = 750;
 
-		[PaletteReference] public readonly string TargetOverlayPalette = TileSet.TerrainPaletteInternalName;
+		[PaletteReference]
+		public readonly string TargetOverlayPalette = TileSet.TerrainPaletteInternalName;
 
 		public readonly string OverlaySpriteGroup = "overlay";
-		[SequenceReference("OverlaySpriteGroup", true)] public readonly string ValidTileSequencePrefix = "target-valid-";
-		[SequenceReference("OverlaySpriteGroup")] public readonly string InvalidTileSequence = "target-invalid";
-		[SequenceReference("OverlaySpriteGroup")] public readonly string SourceTileSequence = "target-select";
+
+		[SequenceReference("OverlaySpriteGroup", true)]
+		public readonly string ValidTileSequencePrefix = "target-valid-";
+
+		[SequenceReference("OverlaySpriteGroup")]
+		public readonly string InvalidTileSequence = "target-invalid";
+
+		[SequenceReference("OverlaySpriteGroup")]
+		public readonly string SourceTileSequence = "target-select";
 
 		public readonly bool KillCargo = true;
 

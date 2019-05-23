@@ -60,9 +60,14 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int dragSpeed;
 		readonly WPos finalPosition;
 
-		[Sync] public CPos TopLeft { get; private set; }
-		[Sync] public WPos CenterPosition { get; private set; }
-		[Sync] public int Facing { get; set; }
+		[Sync]
+		public CPos TopLeft { get; private set; }
+
+		[Sync]
+		public WPos CenterPosition { get; private set; }
+
+		[Sync]
+		public int Facing { get; set; }
 
 		public int TurnSpeed { get { return 0; } }
 
@@ -159,7 +164,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class HuskSpeedInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] readonly int value = 0;
+		[FieldFromYamlKey]
+		readonly int value = 0;
+
 		public HuskSpeedInit() { }
 		public HuskSpeedInit(int init) { value = init; }
 		public int Value(World world) { return value; }

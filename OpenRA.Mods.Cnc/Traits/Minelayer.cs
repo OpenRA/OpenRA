@@ -23,14 +23,16 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class MinelayerInfo : ITraitInfo, Requires<RearmableInfo>
 	{
-		[ActorReference] public readonly string Mine = "minv";
+		[ActorReference]
+		public readonly string Mine = "minv";
 
 		public readonly string AmmoPoolName = "primary";
 
 		public readonly WDist MinefieldDepth = new WDist(1536);
 
+		[VoiceReference]
 		[Desc("Voice to use when ordered to lay a minefield.")]
-		[VoiceReference] public readonly string Voice = "Action";
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
@@ -39,10 +41,13 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		readonly MinelayerInfo info;
 
-		/* TODO: [Sync] when sync can cope with arrays! */
+		// TODO: [Sync] when sync can cope with arrays!
 		public CPos[] Minefield = null;
+
 		readonly Sprite tile;
-		[Sync] CPos minefieldStart;
+
+		[Sync]
+		CPos minefieldStart;
 
 		public Minelayer(Actor self, MinelayerInfo info)
 		{

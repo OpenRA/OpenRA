@@ -64,8 +64,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		IEnumerable<int> speedModifiers;
 
-		[Sync] public int Facing { get; set; }
-		[Sync] public WPos CenterPosition { get; private set; }
+		[Sync]
+		public int Facing { get; set; }
+
+		[Sync]
+		public WPos CenterPosition { get; private set; }
+
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 
 		// Isn't used anyway

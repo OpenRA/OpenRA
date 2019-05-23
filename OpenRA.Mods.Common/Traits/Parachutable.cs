@@ -29,15 +29,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";
 
-		[SequenceReference("Image")] public readonly string GroundCorpseSequence = null;
+		[SequenceReference("Image")]
+		public readonly string GroundCorpseSequence = null;
 
-		[PaletteReference] public readonly string GroundCorpsePalette = "effect";
+		[PaletteReference]
+		public readonly string GroundCorpsePalette = "effect";
 
 		public readonly string GroundImpactSound = null;
 
-		[SequenceReference("Image")] public readonly string WaterCorpseSequence = null;
+		[SequenceReference("Image")]
+		public readonly string WaterCorpseSequence = null;
 
-		[PaletteReference] public readonly string WaterCorpsePalette = "effect";
+		[PaletteReference]
+		public readonly string WaterCorpsePalette = "effect";
 
 		[Desc("Terrain types on which to display WaterCorpseSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };

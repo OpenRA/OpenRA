@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Minimum duration (in seconds) between sound events.")]
 		public readonly int Interval = 5;
 
+		[VoiceReference]
 		[Desc("Voice to use when killing something.")]
-		[VoiceReference] public readonly string Voice = "Kill";
+		public readonly string Voice = "Kill";
 
 		public object Create(ActorInitializer init) { return new AnnounceOnKill(init.Self, this); }
 	}

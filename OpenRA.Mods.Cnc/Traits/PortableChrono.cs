@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Flash the screen on teleporting.")]
 		public readonly bool FlashScreen = false;
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new PortableChrono(init.Self, this); }
 	}
@@ -61,7 +62,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly PortableChronoInfo Info;
 		readonly IMove move;
-		[Sync] int chargeTick = 0;
+		[Sync]
+		int chargeTick = 0;
 
 		public PortableChrono(Actor self, PortableChronoInfo info)
 		{

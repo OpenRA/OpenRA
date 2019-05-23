@@ -33,11 +33,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("A dictionary of faction-specific image overrides.")]
 		public readonly Dictionary<string, string> FactionImages = null;
 
+		[PaletteReference]
 		[Desc("Custom palette name")]
-		[PaletteReference] public readonly string Palette = null;
+		public readonly string Palette = null;
 
+		[PaletteReference(true)]
 		[Desc("Custom PlayerColorPalette: BaseName")]
-		[PaletteReference(true)] public readonly string PlayerPalette = "player";
+		public readonly string PlayerPalette = "player";
 
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;

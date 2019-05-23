@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Derive facings from sprite body sequence.")]
 	public class QuantizeFacingsFromSequenceInfo : ConditionalTraitInfo, IQuantizeBodyOrientationInfo, Requires<RenderSpritesInfo>
 	{
-		[Desc("Defines sequence to derive facings from."), SequenceReference]
+		[SequenceReference]
+		[Desc("Defines sequence to derive facings from.")]
 		public readonly string Sequence = "idle";
 
 		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)

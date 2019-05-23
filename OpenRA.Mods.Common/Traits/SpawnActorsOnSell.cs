@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ValuePercent = 40;
 		public readonly int MinHpPercent = 30;
 
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Actor types to spawn on sell. Be sure to use lowercase.")]
 		public readonly string[] ActorTypes = null;
 

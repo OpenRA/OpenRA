@@ -53,7 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
 
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "cloak";
+		[PaletteReference("IsPlayerPalette")]
+		public readonly string Palette = "cloak";
 		public readonly bool IsPlayerPalette = false;
 
 		public readonly BitSet<CloakType> CloakTypes = new BitSet<CloakType>("Cloak");
@@ -68,7 +69,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
 		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction
 	{
-		[Sync] int remainingTime;
+		[Sync]
+		int remainingTime;
+
 		bool isDocking;
 		ConditionManager conditionManager;
 		Cloak[] otherCloaks;

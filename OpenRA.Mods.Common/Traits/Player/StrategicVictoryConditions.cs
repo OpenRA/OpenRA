@@ -36,8 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay for the end game notification in milliseconds.")]
 		public readonly int NotificationDelay = 1500;
 
+		[Translate]
 		[Desc("Description of the objective")]
-		[Translate] public readonly string Objective = "Hold all the strategic positions!";
+		public readonly string Objective = "Hold all the strategic positions!";
 
 		[Desc("Disable the win/loss messages and audio notifications?")]
 		public readonly bool SuppressNotifications = false;
@@ -49,7 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly StrategicVictoryConditionsInfo info;
 
-		[Sync] public int TicksLeft;
+		[Sync]
+		public int TicksLeft;
+
 		readonly Player player;
 		readonly MissionObjectives mo;
 		readonly bool shortGame;

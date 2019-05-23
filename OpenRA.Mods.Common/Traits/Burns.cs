@@ -28,7 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 	class Burns : ITick, ISync
 	{
 		readonly BurnsInfo info;
-		[Sync] int ticks;
+		[Sync]
+		int ticks;
 
 		public Burns(Actor self, BurnsInfo info)
 		{

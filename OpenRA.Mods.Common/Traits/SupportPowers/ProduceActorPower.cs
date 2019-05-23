@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Produces an actor without using the standard production queue.")]
 	public class ProduceActorPowerInfo : SupportPowerInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Actors to produce.")]
 		public readonly string[] Actors = null;
 

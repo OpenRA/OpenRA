@@ -20,9 +20,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		public readonly string Image = "smoke_m";
 
-		[SequenceReference("Image")] public readonly string IdleSequence = "idle";
-		[SequenceReference("Image")] public readonly string LoopSequence = "loop";
-		[SequenceReference("Image")] public readonly string EndSequence = "end";
+		[SequenceReference("Image")]
+		public readonly string IdleSequence = "idle";
+
+		[SequenceReference("Image")]
+		public readonly string LoopSequence = "loop";
+
+		[SequenceReference("Image")]
+		public readonly string EndSequence = "end";
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"Leave empty to disable all filtering.")]

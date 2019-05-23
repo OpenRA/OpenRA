@@ -22,8 +22,11 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
-		[Translate] public readonly string ReadyText = "";
-		[Translate] public readonly string HoldText = "";
+		[Translate]
+		public readonly string ReadyText = "";
+
+		[Translate]
+		public readonly string HoldText = "";
 
 		public readonly int2 IconSize = new int2(64, 48);
 		public readonly int IconMargin = 10;

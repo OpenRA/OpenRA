@@ -20,8 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Adds the hard-coded shroud palette to the game")]
 	class ShroudPaletteInfo : ITraitInfo
 	{
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("Internal palette name")]
-		[FieldLoader.Require, PaletteDefinition]
 		public readonly string Name = "shroud";
 
 		[Desc("Palette type")]

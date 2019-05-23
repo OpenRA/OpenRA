@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class PaletteFromEmbeddedSpritePaletteInfo : ITraitInfo, IProvidesCursorPaletteInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
 

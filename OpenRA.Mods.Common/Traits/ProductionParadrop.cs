@@ -20,8 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Deliver the unit in production via paradrop.")]
 	public class ProductionParadropInfo : ProductionInfo, Requires<ExitInfo>
 	{
+		[ActorReference(typeof(AircraftInfo))]
 		[Desc("Cargo aircraft used. Must have Aircraft trait.")]
-		[ActorReference(typeof(AircraftInfo))] public readonly string ActorType = "badr";
+		public readonly string ActorType = "badr";
 
 		[Desc("Sound to play when dropping the unit.")]
 		public readonly string ChuteSound = null;

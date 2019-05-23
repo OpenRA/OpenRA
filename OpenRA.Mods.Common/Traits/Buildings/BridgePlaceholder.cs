@@ -21,8 +21,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly DamageState DamageState = DamageState.Undamaged;
 
+		[ActorReference]
 		[Desc("Actor type to replace with on repair.")]
-		[ActorReference] public readonly string ReplaceWithActor = null;
+		public readonly string ReplaceWithActor = null;
 
 		public readonly CVec[] NeighbourOffsets = { };
 

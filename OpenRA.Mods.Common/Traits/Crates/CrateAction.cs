@@ -23,17 +23,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Image containing the crate effect animation sequence.")]
 		public readonly string Image = "crate-effects";
 
+		[SequenceReference("Image")]
 		[Desc("Animation sequence played when collected. Leave empty for no effect.")]
-		[SequenceReference("Image")] public readonly string Sequence = null;
+		public readonly string Sequence = null;
 
+		[PaletteReference]
 		[Desc("Palette to draw the animation in.")]
-		[PaletteReference] public readonly string Palette = "effect";
+		public readonly string Palette = "effect";
 
 		[Desc("Audio clip to play when the crate is collected.")]
 		public readonly string Sound = null;
 
+		[NotificationReference("Speech")]
 		[Desc("Notification to play when the crate is collected.")]
-		[NotificationReference("Speech")] public readonly string Notification = null;
+		public readonly string Notification = null;
 
 		[Desc("The earliest time (in ticks) that this crate action can occur on.")]
 		public readonly int TimeDelay = 0;
@@ -41,8 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Only allow this crate action when the collector has these prerequisites")]
 		public readonly string[] Prerequisites = { };
 
+		[ActorReference]
 		[Desc("Actor types that this crate action will not occur for.")]
-		[ActorReference] public string[] ExcludedActorTypes = { };
+		public string[] ExcludedActorTypes = { };
 
 		public override object Create(ActorInitializer init) { return new CrateAction(init.Self, this); }
 	}

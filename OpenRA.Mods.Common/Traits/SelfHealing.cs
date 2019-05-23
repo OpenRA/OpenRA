@@ -41,8 +41,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 
-		[Sync] int ticks;
-		[Sync] int damageTicks;
+		[Sync]
+		int ticks;
+
+		[Sync]
+		int damageTicks;
 
 		public SelfHealing(Actor self, SelfHealingInfo info)
 			: base(info)

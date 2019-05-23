@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 		"If you want more than one unit to appear copy this section and assign IDs like FreeActor@2, ...")]
 	public class FreeActorInfo : ConditionalTraitInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Name of the actor.")]
 		public readonly string Actor = null;
 

@@ -19,7 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Actor becomes a specified actor type when this trait is triggered.")]
 	public class TransformsInfo : PausableConditionalTraitInfo
 	{
-		[Desc("Actor to transform into."), ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
+		[Desc("Actor to transform into.")]
 		public readonly string IntoActor = null;
 
 		[Desc("Offset to spawn the transformed actor relative to the current cell.")]
@@ -48,7 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to (un)deploy the actor.")]
 		public readonly string DeployBlockedCursor = "deploy-blocked";
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public override object Create(ActorInitializer init) { return new Transforms(init, this); }
 	}

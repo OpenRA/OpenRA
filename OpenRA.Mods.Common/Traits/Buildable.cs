@@ -34,11 +34,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Force a specific faction variant, overriding the faction of the producing actor.")]
 		public readonly string ForceFaction = null;
 
+		[SequenceReference]
 		[Desc("Sequence of the actor that contains the icon.")]
-		[SequenceReference] public readonly string Icon = "icon";
+		public readonly string Icon = "icon";
 
+		[PaletteReference]
 		[Desc("Palette used for the production icon.")]
-		[PaletteReference] public readonly string IconPalette = "chrome";
+		public readonly string IconPalette = "chrome";
 
 		[Desc("Base build time in frames (-1 indicates to use the unit's Value).")]
 		public readonly int BuildDuration = -1;
@@ -49,8 +51,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sort order for the production palette. Smaller numbers are presented earlier.")]
 		public readonly int BuildPaletteOrder = 9999;
 
+		[Translate]
 		[Desc("Text shown in the production tooltip.")]
-		[Translate] public readonly string Description = "";
+		public readonly string Description = "";
 
 		public static string GetInitialFaction(ActorInfo ai, string defaultFaction)
 		{

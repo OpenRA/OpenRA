@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class NukePowerInfo : SupportPowerInfo, IRulesetLoaded, Requires<BodyOrientationInfo>
 	{
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("Weapon to use for the impact.",
 			"Also image to use for the missile.")]
 		public readonly string MissileWeapon = "";
@@ -26,11 +27,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
 		public readonly int MissileDelay = 0;
 
+		[SequenceReference("MissileWeapon")]
 		[Desc("Sprite sequence for the ascending missile.")]
-		[SequenceReference("MissileWeapon")] public readonly string MissileUp = "up";
+		public readonly string MissileUp = "up";
 
+		[SequenceReference("MissileWeapon")]
 		[Desc("Sprite sequence for the descending missile.")]
-		[SequenceReference("MissileWeapon")] public readonly string MissileDown = "down";
+		public readonly string MissileDown = "down";
 
 		[Desc("Offset from the actor the missile spawns on.")]
 		public readonly WVec SpawnOffset = WVec.Zero;
@@ -42,8 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 			"'False' will make the missile continue until it hits the ground and disappears (without triggering another explosion).")]
 		public readonly bool RemoveMissileOnDetonation = true;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Palette to use for the missile weapon image.")]
-		[PaletteReference("IsPlayerPalette")] public readonly string MissilePalette = "effect";
+		public readonly string MissilePalette = "effect";
 
 		[Desc("Custom palette is a player palette BaseName.")]
 		public readonly bool IsPlayerPalette = false;
@@ -51,8 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Trail animation.")]
 		public readonly string TrailImage = null;
 
+		[SequenceReference("TrailImage")]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { };
+		public readonly string[] TrailSequences = { "idle" };
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 1;
@@ -60,8 +65,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
 
+		[PaletteReference("TrailUsePlayerPalette")]
 		[Desc("Palette used to render the trail sequence.")]
-		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
+		public readonly string TrailPalette = "effect";
 
 		[Desc("Use the Player Palette to render the trail sequence.")]
 		public readonly bool TrailUsePlayerPalette = false;

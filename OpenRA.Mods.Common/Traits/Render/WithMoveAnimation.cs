@@ -16,8 +16,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	public class WithMoveAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<IMoveInfo>
 	{
+		[SequenceReference]
 		[Desc("Displayed while moving.")]
-		[SequenceReference] public readonly string MoveSequence = "move";
+		public readonly string MoveSequence = "move";
 
 		[Desc("Which sprite body to modify.")]
 		public readonly string Body = "body";

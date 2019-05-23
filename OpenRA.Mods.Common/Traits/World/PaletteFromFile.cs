@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Load VGA palette (.pal) registers.")]
 	class PaletteFromFileInfo : ITraitInfo, IProvidesCursorPaletteInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("internal palette name")]
 		public readonly string Name = null;
 

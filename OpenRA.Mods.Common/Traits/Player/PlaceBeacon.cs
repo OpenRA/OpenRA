@@ -25,12 +25,20 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Notification = "Beacon";
 
 		public readonly bool IsPlayerPalette = true;
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
+
+		[PaletteReference("IsPlayerPalette")]
+		public readonly string Palette = "player";
 
 		public readonly string BeaconImage = "beacon";
-		[SequenceReference("BeaconImage")] public readonly string BeaconSequence = null;
-		[SequenceReference("BeaconImage")] public readonly string ArrowSequence = "arrow";
-		[SequenceReference("BeaconImage")] public readonly string CircleSequence = "circles";
+
+		[SequenceReference("BeaconImage")]
+		public readonly string BeaconSequence = null;
+
+		[SequenceReference("BeaconImage")]
+		public readonly string ArrowSequence = "arrow";
+
+		[SequenceReference("BeaconImage")]
+		public readonly string CircleSequence = "circles";
 
 		public object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
 	}

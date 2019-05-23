@@ -31,12 +31,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[Desc("Custom palette name")]
-		[PaletteReference] public readonly string Palette = null;
+		[PaletteReference]
+		public readonly string Palette = null;
 
+		[PaletteReference]
 		[Desc("Custom PlayerColorPalette: BaseName")]
-		[PaletteReference] public readonly string PlayerPalette = "player";
-		[PaletteReference] public readonly string NormalsPalette = "normals";
-		[PaletteReference] public readonly string ShadowPalette = "shadow";
+		public readonly string PlayerPalette = "player";
+
+		[PaletteReference]
+		public readonly string NormalsPalette = "normals";
+
+		[PaletteReference]
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Change the image size.")]
 		public readonly float Scale = 12;

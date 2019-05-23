@@ -50,7 +50,9 @@ namespace OpenRA.Mods.Common.Traits
 	/// <summary>Allows mappers to 'tag' actors with arbitrary strings that may have meaning in their scripts.</summary>
 	public class ScriptTagsInit : IActorInit<string[]>
 	{
-		[FieldFromYamlKey] readonly string[] value = new string[0];
+		[FieldFromYamlKey]
+		readonly string[] value = new string[0];
+
 		public ScriptTagsInit() { }
 		public ScriptTagsInit(string[] init) { value = init; }
 		public string[] Value(World world) { return value; }

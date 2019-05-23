@@ -40,7 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly CashTricklerInfo info;
 		PlayerResources resources;
-		[Sync] public int Ticks { get; private set; }
+		[Sync]
+		public int Ticks { get; private set; }
 
 		public CashTrickler(CashTricklerInfo info)
 			: base(info)

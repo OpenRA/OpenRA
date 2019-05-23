@@ -83,10 +83,14 @@ namespace OpenRA.Mods.Common.Traits
 				Cash = info.DefaultCash;
 		}
 
-		[Sync] public int Cash;
+		[Sync]
+		public int Cash;
 
-		[Sync] public int Resources;
-		[Sync] public int ResourceCapacity;
+		[Sync]
+		public int Resources;
+
+		[Sync]
+		public int ResourceCapacity;
 
 		public int Earned;
 		public int Spent;

@@ -127,11 +127,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		public readonly IEnumerable<AttackBase> ActiveAttackBases;
-		[Sync] int nextScanTime = 0;
+		[Sync]
+		int nextScanTime = 0;
 
 		public UnitStance Stance { get { return stance; } }
 
-		[Sync] public Actor Aggressor;
+		[Sync]
+		public Actor Aggressor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
@@ -441,7 +443,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class StanceInit : IActorInit<UnitStance>
 	{
-		[FieldFromYamlKey] readonly UnitStance value = UnitStance.AttackAnything;
+		[FieldFromYamlKey]
+		readonly UnitStance value = UnitStance.AttackAnything;
+
 		public StanceInit() { }
 		public StanceInit(UnitStance init) { value = init; }
 		public UnitStance Value(World world) { return value; }

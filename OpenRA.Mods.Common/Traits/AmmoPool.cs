@@ -63,9 +63,11 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
-		[Sync] public int RemainingTicks;
+		[Sync]
+		public int RemainingTicks;
 
-		[Sync] int currentAmmo;
+		[Sync]
+		int currentAmmo;
 
 		public AmmoPool(Actor self, AmmoPoolInfo info)
 		{

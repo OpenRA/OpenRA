@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Traits
 		"If you want more than one unit to be delivered, copy this section and assign IDs like FreeActorWithDelivery@2, ...")]
 	public class FreeActorWithDeliveryInfo : FreeActorInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Name of the delivering actor. This actor must have the `Carryall` trait")]
 		public readonly string DeliveringActor = null;
 

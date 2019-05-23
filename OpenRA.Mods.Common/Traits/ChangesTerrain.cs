@@ -16,7 +16,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Modifies the terrain type underneath the actors location.")]
 	class ChangesTerrainInfo : ITraitInfo, Requires<ImmobileInfo>
 	{
-		[FieldLoader.Require] public readonly string TerrainType = null;
+		[FieldLoader.Require]
+		public readonly string TerrainType = null;
 
 		public object Create(ActorInitializer init) { return new ChangesTerrain(this); }
 	}

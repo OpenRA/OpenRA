@@ -19,11 +19,13 @@ namespace OpenRA.Traits
 	[Desc("Define a player palette by swapping palette indices.")]
 	public class IndexedPlayerPaletteInfo : ITraitInfo, IRulesetLoaded
 	{
+		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
-		[PaletteReference] public readonly string BasePalette = null;
+		public readonly string BasePalette = null;
 
+		[PaletteDefinition(true)]
 		[Desc("The prefix for the resulting player palettes")]
-		[PaletteDefinition(true)] public readonly string BaseName = "player";
+		public readonly string BaseName = "player";
 
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = { };

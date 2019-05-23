@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Load a PNG and use its embedded palette.")]
 	class PaletteFromPngInfo : ITraitInfo, IProvidesCursorPaletteInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
 

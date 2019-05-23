@@ -37,7 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Force-fire mode ignores actors and targets the ground instead.")]
 		public readonly bool ForceFireIgnoresActors = false;
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("Tolerance for attack angle. Range [0, 128], 128 covers 360 degrees.")]
 		public readonly int FacingTolerance = 128;
@@ -58,7 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
 
-		[Sync] public bool IsAiming { get; set; }
+		[Sync]
+		public bool IsAiming { get; set; }
+
 		public IEnumerable<Armament> Armaments { get { return getArmaments(); } }
 
 		protected IFacing facing;

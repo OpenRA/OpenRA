@@ -82,9 +82,15 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly Color color;
 		readonly WDist speed;
 
-		[Sync] WPos headPos;
-		[Sync] WPos tailPos;
-		[Sync] WPos target;
+		[Sync]
+		WPos headPos;
+
+		[Sync]
+		WPos tailPos;
+
+		[Sync]
+		WPos target;
+
 		int length;
 		int towardsTargetFacing;
 		int headTicks;

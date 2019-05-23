@@ -25,7 +25,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class D2kResourceLayer : ResourceLayer
 	{
-		[Flags] public enum ClearSides : byte
+		[Flags]
+		public enum ClearSides : byte
 		{
 			None = 0x0,
 			Left = 0x1,

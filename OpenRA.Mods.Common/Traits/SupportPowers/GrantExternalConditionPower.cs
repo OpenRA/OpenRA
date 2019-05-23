@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Player stances which condition can be applied to.")]
 		public readonly Stance ValidStances = Stance.Ally;
 
-		[SequenceReference, Desc("Sequence to play for granting actor when activated.",
+		[SequenceReference]
+		[Desc("Sequence to play for granting actor when activated.",
 			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
 		public readonly string Sequence = "active";
 

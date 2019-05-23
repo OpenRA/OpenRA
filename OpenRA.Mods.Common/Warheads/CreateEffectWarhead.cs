@@ -20,13 +20,15 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class CreateEffectWarhead : Warhead
 	{
+		[SequenceReference("Image")]
 		[Desc("List of explosion sequences that can be used.")]
-		[SequenceReference("Image")] public readonly string[] Explosions = new string[0];
+		public readonly string[] Explosions = new string[0];
 
 		[Desc("Image containing explosion effect sequence.")]
 		public readonly string Image = "explosion";
 
-		[Desc("Palette to use for explosion effect."), PaletteReference("UsePlayerPalette")]
+		[PaletteReference("UsePlayerPalette")]
+		[Desc("Palette to use for explosion effect.")]
 		public readonly string ExplosionPalette = "effect";
 
 		[Desc("Remap explosion effect to player color, if art supports it.")]

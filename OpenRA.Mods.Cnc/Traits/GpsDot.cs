@@ -20,10 +20,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sprite collection for symbols.")]
 		public readonly string Image = "gpsdot";
 
+		[SequenceReference("Image")]
 		[Desc("Sprite used for this actor.")]
-		[SequenceReference("Image")] public readonly string String = "Infantry";
+		public readonly string String = "Infantry";
 
-		[PaletteReference(true)] public readonly string IndicatorPalettePrefix = "player";
+		[PaletteReference(true)]
+		public readonly string IndicatorPalettePrefix = "player";
 
 		public object Create(ActorInitializer init) { return new GpsDot(this); }
 	}

@@ -33,9 +33,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly HashSet<PPos> footprint;
 
-		[Sync] CPos cachedLocation;
-		[Sync] WDist cachedRange;
-		[Sync] protected bool CachedTraitDisabled { get; private set; }
+		[Sync]
+		CPos cachedLocation;
+
+		[Sync]
+		WDist cachedRange;
+
+		[Sync]
+		protected bool CachedTraitDisabled { get; private set; }
 
 		protected abstract void AddCellsToPlayerShroud(Actor self, Player player, PPos[] uv);
 		protected abstract void RemoveCellsFromPlayerShroud(Actor self, Player player);

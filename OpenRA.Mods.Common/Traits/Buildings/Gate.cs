@@ -42,7 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly IEnumerable<CPos> Footprint;
 
 		public readonly int OpenPosition;
-		[Sync] public int Position { get; private set; }
+
+		[Sync]
+		public int Position { get; private set; }
+
 		int desiredPosition;
 		int remainingOpenTime;
 

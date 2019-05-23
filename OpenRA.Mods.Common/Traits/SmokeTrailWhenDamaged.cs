@@ -18,10 +18,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
+
 		public readonly int Interval = 3;
+
 		public readonly string Sprite = "smokey";
-		[SequenceReference("Sprite")] public readonly string Sequence = "idle";
+
+		[SequenceReference("Sprite")]
+		public readonly string Sequence = "idle";
+
 		public readonly string Palette = "effect";
+
 		public readonly DamageState MinDamage = DamageState.Heavy;
 
 		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.Self, this); }

@@ -17,7 +17,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Periodically plays an idle animation, replacing the default body animation.")]
 	public class WithIdleAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
-		[SequenceReference, Desc("Sequence names to use.")]
+		[SequenceReference]
+		[Desc("Sequence names to use.")]
 		public readonly string[] Sequences = { "active" };
 
 		public readonly int Interval = 750;

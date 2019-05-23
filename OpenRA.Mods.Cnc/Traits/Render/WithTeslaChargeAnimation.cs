@@ -18,8 +18,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	[Desc("This actor displays a charge-up animation before firing.")]
 	public class WithTeslaChargeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence to use for charge animation.")]
-		[SequenceReference] public readonly string ChargeSequence = "active";
+		public readonly string ChargeSequence = "active";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

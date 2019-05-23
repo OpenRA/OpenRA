@@ -60,7 +60,8 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyKilled[] notifyKilled;
 		INotifyKilled[] notifyKilledPlayer;
 
-		[Sync] int hp;
+		[Sync]
+		int hp;
 
 		public int DisplayHP { get; private set; }
 
@@ -232,7 +233,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class HealthInit : IActorInit<int>
 	{
-		[FieldFromYamlKey] readonly int value = 100;
+		[FieldFromYamlKey]
+		readonly int value = 100;
+
 		readonly bool allowZero;
 		public HealthInit() { }
 		public HealthInit(int init)

@@ -73,7 +73,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
 	class DisguiseInfo : ITraitInfo
 	{
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while disguised.")]

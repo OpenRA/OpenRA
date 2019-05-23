@@ -18,8 +18,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Replaces the default animation when actor resupplies a unit.")]
 	public class WithResupplyAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "active";
+		public readonly string Sequence = "active";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

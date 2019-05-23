@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns units when collected.")]
 	class GiveUnitCrateActionInfo : CrateActionInfo
 	{
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("The list of units to spawn.")]
-		[ActorReference, FieldLoader.Require]
 		public readonly string[] Units = { };
 
 		[Desc("Factions that are allowed to trigger this action.")]

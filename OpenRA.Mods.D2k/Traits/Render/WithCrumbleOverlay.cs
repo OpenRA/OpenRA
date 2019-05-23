@@ -19,11 +19,13 @@ namespace OpenRA.Mods.D2k.Traits.Render
 	[Desc("Rendered together with the \"make\" animation.")]
 	public class WithCrumbleOverlayInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "crumble-overlay";
+		public readonly string Sequence = "crumble-overlay";
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

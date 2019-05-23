@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string EnterCursor = "enter";
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new EntersTunnels(init.Self, this); }
 	}

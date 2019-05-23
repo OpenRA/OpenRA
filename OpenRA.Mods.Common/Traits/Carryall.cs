@@ -75,7 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		// The actor we are currently carrying.
-		[Sync] public Actor Carryable { get; private set; }
+		[Sync]
+		public Actor Carryable { get; private set; }
 		public CarryallState State { get; private set; }
 
 		int cachedFacing;

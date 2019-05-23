@@ -115,10 +115,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor Actor { get { return self; } }
 
-		[Sync] public bool Enabled { get; protected set; }
+		[Sync]
+		public bool Enabled { get; protected set; }
 
 		public string Faction { get; private set; }
-		[Sync] public bool IsValidFaction { get; private set; }
+
+		[Sync]
+		public bool IsValidFaction { get; private set; }
 
 		public ProductionQueue(ActorInitializer init, Actor playerActor, ProductionQueueInfo info)
 		{

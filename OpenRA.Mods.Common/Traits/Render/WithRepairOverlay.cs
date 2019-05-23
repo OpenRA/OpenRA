@@ -18,20 +18,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays an overlay when the building is being repaired by the player.")]
 	public class WithRepairOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[SequenceReference("Image")]
 		[Desc("Sequence to use upon repair beginning.")]
-		[SequenceReference("Image")] public readonly string StartSequence = null;
+		public readonly string StartSequence = null;
 
+		[SequenceReference]
 		[Desc("Sequence name to play once during repair intervals or repeatedly if a start sequence is set.")]
-		[SequenceReference] public readonly string Sequence = "active";
+		public readonly string Sequence = "active";
 
+		[SequenceReference("Image")]
 		[Desc("Sequence to use after repairing has finished.")]
-		[SequenceReference("Image")] public readonly string EndSequence = null;
+		public readonly string EndSequence = null;
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

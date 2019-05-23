@@ -21,7 +21,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays a text overlay relative to the selection box.")]
 	public class WithTextDecorationInfo : ConditionalTraitInfo, Requires<IDecorationBoundsInfo>
 	{
-		[FieldLoader.Require] [Translate] public readonly string Text = null;
+		[Translate]
+		[FieldLoader.Require]
+		public readonly string Text = null;
 
 		public readonly string Font = "TinyBold";
 

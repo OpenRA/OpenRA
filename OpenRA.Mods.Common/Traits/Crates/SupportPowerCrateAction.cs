@@ -17,8 +17,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Gives a supportpower to the collector.")]
 	class SupportPowerCrateActionInfo : CrateActionInfo
 	{
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Which proxy actor, which grants the support power, to spawn.")]
-		[ActorReference, FieldLoader.Require] public readonly string Proxy = null;
+		public readonly string Proxy = null;
 
 		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.Self, this); }
 	}

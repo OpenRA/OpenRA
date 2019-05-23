@@ -21,8 +21,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence to use for the charge levels.")]
 		public readonly string Sequence = "active";
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when delivering cash")]
 		public readonly string[] Sounds = { };
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new DeliversCash(this); }
 	}

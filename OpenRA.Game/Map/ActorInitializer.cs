@@ -49,7 +49,9 @@ namespace OpenRA
 
 	public class LocationInit : IActorInit<CPos>
 	{
-		[FieldFromYamlKey] readonly CPos value = CPos.Zero;
+		[FieldFromYamlKey]
+		readonly CPos value = CPos.Zero;
+
 		public LocationInit() { }
 		public LocationInit(CPos init) { value = init; }
 		public CPos Value(World world) { return value; }
@@ -57,7 +59,9 @@ namespace OpenRA
 
 	public class OwnerInit : IActorInit<Player>
 	{
-		[FieldFromYamlKey] public readonly string PlayerName = "Neutral";
+		[FieldFromYamlKey]
+		public readonly string PlayerName = "Neutral";
+
 		Player player;
 
 		public OwnerInit() { }

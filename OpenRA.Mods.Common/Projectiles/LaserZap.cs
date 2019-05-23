@@ -75,19 +75,23 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Impact animation.")]
 		public readonly string HitAnim = null;
 
+		[SequenceReference("HitAnim")]
 		[Desc("Sequence of impact animation to use.")]
-		[SequenceReference("HitAnim")] public readonly string HitAnimSequence = "idle";
+		public readonly string HitAnimSequence = "idle";
 
-		[PaletteReference] public readonly string HitAnimPalette = "effect";
+		[PaletteReference]
+		public readonly string HitAnimPalette = "effect";
 
 		[Desc("Image containing launch effect sequence.")]
 		public readonly string LaunchEffectImage = null;
 
+		[SequenceReference("LaunchEffectImage")]
 		[Desc("Launch effect sequence to play.")]
-		[SequenceReference("LaunchEffectImage")] public readonly string LaunchEffectSequence = null;
+		public readonly string LaunchEffectSequence = null;
 
+		[PaletteReference]
 		[Desc("Palette to use for launch effect.")]
-		[PaletteReference] public readonly string LaunchEffectPalette = "effect";
+		public readonly string LaunchEffectPalette = "effect";
 
 		public IProjectile Create(ProjectileArgs args)
 		{

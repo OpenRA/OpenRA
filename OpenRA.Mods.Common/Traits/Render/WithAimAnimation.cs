@@ -19,9 +19,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Armament name")]
 		public readonly string Armament = "primary";
 
-		[Desc("Displayed while targeting.")]
+		[SequenceReference]
 		[FieldLoader.Require]
-		[SequenceReference] public readonly string Sequence = null;
+		[Desc("Displayed while targeting.")]
+		public readonly string Sequence = null;
 
 		[Desc("Which sprite body to modify.")]
 		public readonly string Body = "body";

@@ -20,9 +20,15 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	public class WithLandingCraftAnimationInfo : ITraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{
 		public readonly HashSet<string> OpenTerrainTypes = new HashSet<string> { "Clear" };
-		[SequenceReference] public readonly string OpenSequence = "open";
-		[SequenceReference] public readonly string CloseSequence = "close";
-		[SequenceReference] public readonly string UnloadSequence = "unload";
+
+		[SequenceReference]
+		public readonly string OpenSequence = "open";
+
+		[SequenceReference]
+		public readonly string CloseSequence = "close";
+
+		[SequenceReference]
+		public readonly string UnloadSequence = "unload";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

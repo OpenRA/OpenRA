@@ -27,9 +27,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Terrain types on which to display WaterSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
 
-		[SequenceReference] public readonly string IdleSequence = "idle";
-		[SequenceReference] public readonly string WaterSequence = null;
-		[SequenceReference] public readonly string LandSequence = null;
+		[SequenceReference]
+		public readonly string IdleSequence = "idle";
+
+		[SequenceReference]
+		public readonly string WaterSequence = null;
+
+		[SequenceReference]
+		public readonly string LandSequence = null;
 
 		public object Create(ActorInitializer init) { return new WithCrateBody(init.Self, this); }
 

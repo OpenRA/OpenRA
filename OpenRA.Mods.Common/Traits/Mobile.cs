@@ -24,8 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class MobileInfo : PausableConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo,
 		IEditorActorOptions
 	{
+		[LocomotorReference]
+		[FieldLoader.Require]
 		[Desc("Which Locomotor does this trait use. Must be defined on the World actor.")]
-		[LocomotorReference, FieldLoader.Require]
 		public readonly string Locomotor = null;
 
 		public readonly int InitialFacing = 0;
@@ -38,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Cursor = "move";
 		public readonly string BlockedCursor = "move-blocked";
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly int PreviewFacing = 92;
@@ -157,7 +159,8 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyFinishedMoving[] notifyFinishedMoving;
 
 		#region IFacing
-		[Sync] public int Facing
+		[Sync]
+		public int Facing
 		{
 			get { return facing; }
 			set { facing = value; }
@@ -166,13 +169,20 @@ namespace OpenRA.Mods.Common.Traits
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		#endregion
 
-		[Sync] public CPos FromCell { get { return fromCell; } }
-		[Sync] public CPos ToCell { get { return toCell; } }
+		[Sync]
+		public CPos FromCell { get { return fromCell; } }
 
-		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
+		[Sync]
+		public CPos ToCell { get { return toCell; } }
+
+		[Sync]
+		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
 		#region IOccupySpace
-		[Sync] public WPos CenterPosition { get; private set; }
+
+		[Sync]
+		public WPos CenterPosition { get; private set; }
+
 		public CPos TopLeft { get { return ToCell; } }
 
 		public Pair<CPos, SubCell>[] OccupiedCells()

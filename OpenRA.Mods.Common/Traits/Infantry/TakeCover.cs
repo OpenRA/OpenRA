@@ -34,7 +34,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly WVec ProneOffset = new WVec(500, 0, 0);
 
-		[SequenceReference(null, true)] public readonly string ProneSequencePrefix = "prone-";
+		[SequenceReference(null, true)]
+		public readonly string ProneSequencePrefix = "prone-";
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
 	}
@@ -42,7 +43,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
 	{
 		readonly TakeCoverInfo info;
-		[Sync] int remainingProneTime = 0;
+		[Sync]
+		int remainingProneTime = 0;
+
 		bool IsProne { get { return remainingProneTime > 0; } }
 
 		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return IsProne; } }
