@@ -495,7 +495,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			return false;
+			return world.OrderGenerator.HandleKeyPress(e);
 		}
 
 		ScrollDirection CheckForDirections()

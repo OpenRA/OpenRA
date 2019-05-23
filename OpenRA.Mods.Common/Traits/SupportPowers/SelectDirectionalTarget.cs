@@ -144,6 +144,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return cursor; }
 
+		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
+
 		void IOrderGenerator.Deactivate()
 		{
 			if (activated)
