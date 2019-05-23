@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Common.Activities
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
-		bool soundPlayed;
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -103,12 +102,26 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 				Cancel(self);
 
 			if (IsCanceling)
 				return NextActivity;
+
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			if (dat <= aircraft.LandAltitude)
+			{
+				QueueChild(self, new TakeOff(self, target), true);
+				return this;
+			}
 
 			bool targetIsHiddenActor;
 			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
@@ -125,25 +138,6 @@ namespace OpenRA.Mods.Common.Activities
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return NextActivity;
-
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-
-			// We are taking off, so remove influence in ground cells.
-			if (dat <= aircraft.LandAltitude)
-			{
-				if (!soundPlayed && aircraft.Info.TakeoffSounds.Length > 0)
-				{
-					Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds, self.World, aircraft.CenterPosition);
-					soundPlayed = true;
-				}
-
-				aircraft.RemoveInfluence();
-			}
-
-			// If we're a VTOL, rise before flying forward
-			if (aircraft.Info.VTOL)
-				if (VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude))
-					return this;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var delta = checkTarget.CenterPosition - self.CenterPosition;
@@ -188,10 +182,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			// Don't turn until we've reached the cruise altitude
-			if (dat < aircraft.Info.CruiseAltitude)
-				desiredFacing = aircraft.Facing;
-			else if (!aircraft.Info.CanHover)
+			if (!aircraft.Info.CanHover)
 			{
 				// Using the turn rate, compute a hypothetical circle traced by a continuous turn.
 				// If it contains the destination point, it's unreachable without more complex manuvering.

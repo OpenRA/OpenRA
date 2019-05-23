@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					aircraft.AllowYieldingReservation();
 					if (aircraft.Info.TakeOffOnResupply)
-						Queue(self, new TakeOff(self, (a, b, c) => NextActivity == null && b.NextActivity == null));
+						Queue(self, new TakeOff(self));
 				}
 
 				return NextActivity;
