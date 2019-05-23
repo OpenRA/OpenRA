@@ -287,6 +287,31 @@ Background@PRODUCTION_TOOLTIP_FACTIONSUFFIX:
 			Font: Bold
 
 Background@SUPPORT_POWER_TOOLTIP:
+	Logic: SupportPowerTooltipLogic
+	Background: panel-black
+	Width: 200
+	Height: 25
+	Children:
+		Label@NAME:
+			X: 5
+			Height: 20
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Height: 20
+			TextColor: FFFF00
+			Font: Bold
+		Label@TIME:
+			Y: 6
+			Font: TinyBold
+			VAlign: Top
+		Label@DESC:
+			X: 5
+			Y: 20
+			Font: TinyBold
+			VAlign: Top
+
+Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
 	Logic: SupportPowerTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
 	Width: 200
