@@ -982,6 +982,7 @@ Container@OBSERVER_WIDGETS:
 									Y: 0
 									Width: 0
 									Height: PARENT_BOTTOM
+									TooltipContainer: TOOLTIP_CONTAINER
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
@@ -1155,6 +1156,7 @@ Container@PLAYER_WIDGETS:
 					X: 1
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX
 					ReadyText: Ready
 					HoldText: On Hold
 					HotkeyPrefix: SupportPower

@@ -879,6 +879,7 @@ Container@OBSERVER_WIDGETS:
 									Y: 0
 									Width: 0
 									Height: PARENT_BOTTOM
+									TooltipContainer: TOOLTIP_CONTAINER
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0

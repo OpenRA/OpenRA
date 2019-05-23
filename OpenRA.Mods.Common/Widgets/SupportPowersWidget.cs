@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
+		public Func<SupportPowerIcon> GetTooltipIcon;
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		HotkeyReference[] hotkeys;
 
@@ -92,6 +93,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.modData = modData;
 			this.worldRenderer = worldRenderer;
+			GetTooltipIcon = () => TooltipIcon;
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -239,7 +241,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() { { "world", worldRenderer.World }, { "player", spm.Self.Owner }, { "palette", this } });
+				new WidgetArgs() { { "world", worldRenderer.World }, { "player", spm.Self.Owner }, { "getTooltipIcon", GetTooltipIcon } });
 		}
 
 		public override void MouseExited()
