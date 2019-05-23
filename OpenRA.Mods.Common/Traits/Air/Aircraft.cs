@@ -795,13 +795,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveToTarget(Actor self, Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			if (!Info.CanHover)
-				return new Fly(self, target, WDist.FromCells(3), WDist.FromCells(5),
-					initialTargetPosition, targetLineColor);
-
-			return ActivityUtils.SequenceActivities(self,
-				new Fly(self, target, initialTargetPosition, targetLineColor),
-				new Turn(self, Info.InitialFacing));
+			return new Fly(self, target, initialTargetPosition, targetLineColor);
 		}
 
 		public Activity MoveIntoTarget(Actor self, Target target)

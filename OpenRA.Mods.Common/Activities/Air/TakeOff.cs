@@ -12,6 +12,7 @@
 using System;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
@@ -19,23 +20,51 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
-		Func<Actor, Activity, CPos, bool> moveToRallyPoint;
+		readonly Target target;
+		bool moveToRallyPoint;
 
-		public TakeOff(Actor self)
+		public TakeOff(Actor self, Target target)
 		{
 			aircraft = self.Trait<Aircraft>();
 			move = self.Trait<IMove>();
-			moveToRallyPoint = (actor, activity, pos) => NextActivity == null;
+			this.target = target;
 		}
 
-		public TakeOff(Actor self, Func<Actor, Activity, CPos, bool> moveToRallyPoint)
-			: this(self)
+		public TakeOff(Actor self)
+			: this(self, Target.FromCell(self.World, self.Location))
 		{
-			this.moveToRallyPoint = moveToRallyPoint;
+			var host = aircraft.GetActorBelow();
+			var rp = host != null ? host.TraitOrDefault<RallyPoint>() : null;
+
+			var rallyPointDestination = rp != null ? rp.Location :
+				(host != null ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
+
+			this.target = Target.FromCell(self.World, rallyPointDestination);
+			moveToRallyPoint = NextActivity == null && rallyPointDestination != self.Location;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			if (aircraft.ForceLanding)
+				return;
+
+			// We are taking off, so remove reservation and influence in ground cells.
+			aircraft.UnReserve();
+			aircraft.RemoveInfluence();
+
+			if (aircraft.Info.TakeoffSounds.Length > 0)
+				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds, self.World, aircraft.CenterPosition);
 		}
 
 		public override Activity Tick(Actor self)
 		{
+			if (ChildActivity != null)
+			{
+				ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+				if (ChildActivity != null)
+					return this;
+			}
+
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 			{
@@ -43,17 +72,29 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 			}
 
-			aircraft.UnReserve();
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			if (dat < aircraft.Info.CruiseAltitude)
+			{
+				// If we're a VTOL, rise before flying forward
+				if (aircraft.Info.VTOL)
+				{
+					Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+					return this;
+				}
+				else
+				{
+					Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+					return this;
+				}
+			}
 
-			var host = aircraft.GetActorBelow();
-			var hasHost = host != null;
-			var rp = hasHost ? host.TraitOrDefault<RallyPoint>() : null;
-
-			var destination = rp != null ? rp.Location :
-				(hasHost ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
-
-			if (moveToRallyPoint(self, this, destination))
-				return new AttackMoveActivity(self, () => move.MoveTo(destination, 1));
+			// Checking for NextActivity == null again in case another activity was queued while taking off
+			if (moveToRallyPoint && NextActivity == null)
+			{
+				QueueChild(self, new AttackMoveActivity(self, () => move.MoveToTarget(self, target)), true);
+				moveToRallyPoint = false;
+				return this;
+			}
 
 			return NextActivity;
 		}
