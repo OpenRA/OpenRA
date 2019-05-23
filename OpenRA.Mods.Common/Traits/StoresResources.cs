@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Adds capacity to a player's harvested resource limit.")]
-	class StoresResourcesInfo : ITraitInfo
+	public class StoresResourcesInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly int Capacity = 0;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled
+	public class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled
 	{
 		readonly StoresResourcesInfo info;
 		PlayerResources player;
