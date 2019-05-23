@@ -99,22 +99,48 @@ namespace OpenRA
 			if (Directory.Exists(localSupportDir))
 				return localSupportDir + Path.DirectorySeparatorChar;
 
-			var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
+			// The preferred support dir location for Windows and Linux was changed in mid 2019 to match modern platform conventions
+			string preferredSupportDir;
+			string fallbackSupportDir;
 			switch (CurrentPlatform)
 			{
 				case PlatformType.Windows:
-					dir += Path.DirectorySeparatorChar + "OpenRA";
+				{
+					preferredSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
+					fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA");
 					break;
+				}
 				case PlatformType.OSX:
-					dir += "/Library/Application Support/OpenRA";
+				{
+					preferredSupportDir = fallbackSupportDir = Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+						"Library", "Application Support", "OpenRA");
 					break;
+				}
+				case PlatformType.Linux:
+				{
+					fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
+
+					var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
+					if (string.IsNullOrEmpty(xdgConfigHome))
+						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config");
+
+					preferredSupportDir = Path.Combine(xdgConfigHome, "openra");
+
+					break;
+				}
 				default:
-					dir += "/.openra";
+				{
+					preferredSupportDir = fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
 					break;
+				}
 			}
 
-			return dir + Path.DirectorySeparatorChar;
+			// Use the fallback directory if it exists and the preferred one does not
+			if (!Directory.Exists(preferredSupportDir) && Directory.Exists(fallbackSupportDir))
+				return fallbackSupportDir + Path.DirectorySeparatorChar;
+
+			return preferredSupportDir + Path.DirectorySeparatorChar;
 		}
 
 		/// <summary>
