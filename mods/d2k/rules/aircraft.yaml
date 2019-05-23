@@ -83,6 +83,7 @@ frigate:
 		MaximumPitch: 20
 		CruiseAltitude: 2048
 		LandableTerrainTypes: Rock, Concrete
+		VTOL: true
 	-AppearsOnRadar:
 	Cargo:
 		MaxWeight: 20
