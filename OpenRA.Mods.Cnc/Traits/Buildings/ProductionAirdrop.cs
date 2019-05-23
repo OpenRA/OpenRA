@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 
 			// WDist required to take off or land
-			var landDistance = aircraftInfo.CruiseAltitude.Length * 1024 / aircraftInfo.MaximumPitch.Tan();
+			var landDistance = !aircraftInfo.VTOL ? aircraftInfo.CruiseAltitude.Length * 1024 / aircraftInfo.MaximumPitch.Tan() : 0;
 
 			// Start a fixed distance away: the width of the map.
 			// This makes the production timing independent of spawnpoint
