@@ -112,7 +112,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WAngle angle;
 		readonly WDist speed;
 		readonly string trailPalette;
-		readonly ContrailRenderable contrail;
+
+		ContrailRenderable contrail;
 
 		[Sync]
 		WPos pos, target, source;
