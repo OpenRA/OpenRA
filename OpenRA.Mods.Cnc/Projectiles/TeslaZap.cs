@@ -21,10 +21,14 @@ namespace OpenRA.Mods.Cnc.Projectiles
 	{
 		public readonly string Image = "litning";
 
-		[SequenceReference("Image")] public readonly string BrightSequence = "bright";
-		[SequenceReference("Image")] public readonly string DimSequence = "dim";
+		[SequenceReference("Image")]
+		public readonly string BrightSequence = "bright";
 
-		[PaletteReference] public readonly string Palette = "effect";
+		[SequenceReference("Image")]
+		public readonly string DimSequence = "dim";
+
+		[PaletteReference]
+		public readonly string Palette = "effect";
 
 		public readonly int BrightZaps = 1;
 		public readonly int DimZaps = 2;
@@ -45,7 +49,9 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		TeslaZapRenderable zap;
 		int ticksUntilRemove;
 		int damageDuration;
-		[Sync] WPos target;
+
+		[Sync]
+		WPos target;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{

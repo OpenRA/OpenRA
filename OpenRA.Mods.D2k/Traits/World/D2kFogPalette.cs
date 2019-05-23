@@ -18,11 +18,13 @@ namespace OpenRA.Mods.D2k.Traits
 {
 	class D2kFogPaletteInfo : ITraitInfo
 	{
-		[FieldLoader.Require, PaletteDefinition]
+		[PaletteDefinition]
+		[FieldLoader.Require]
 		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
-		[FieldLoader.Require, PaletteReference]
+		[PaletteReference]
+		[FieldLoader.Require]
 		[Desc("The name of the shroud palette to base off.")]
 		public readonly string BasePalette = null;
 

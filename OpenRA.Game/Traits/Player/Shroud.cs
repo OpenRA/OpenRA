@@ -102,7 +102,8 @@ namespace OpenRA.Traits
 		// Per-cell cache of the resolved cell type (shroud/fog/visible)
 		readonly CellLayer<ShroudCellType> resolvedType;
 
-		[Sync] bool disabled;
+		[Sync]
+		bool disabled;
 		public bool Disabled
 		{
 			get

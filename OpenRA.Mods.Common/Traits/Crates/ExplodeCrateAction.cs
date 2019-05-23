@@ -17,8 +17,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Fires a weapon at the location when collected.")]
 	class ExplodeCrateActionInfo : CrateActionInfo
 	{
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("The weapon to fire upon collection.")]
-		[WeaponReference, FieldLoader.Require] public string Weapon = null;
+		public string Weapon = null;
 
 		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.Self, this); }
 	}

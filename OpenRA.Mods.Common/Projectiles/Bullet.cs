@@ -33,11 +33,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Image to display.")]
 		public readonly string Image = null;
 
+		[SequenceReference("Image")]
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
-		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = { "idle" };
 
+		[PaletteReference]
 		[Desc("The palette used to draw this projectile.")]
-		[PaletteReference] public readonly string Palette = "effect";
+		public readonly string Palette = "effect";
 
 		[Desc("Palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
@@ -45,14 +47,16 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
+		[PaletteReference]
 		[Desc("Palette to use for this projectile's shadow if Shadow is true.")]
-		[PaletteReference] public readonly string ShadowPalette = "shadow";
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Trail animation.")]
 		public readonly string TrailImage = null;
 
+		[SequenceReference("TrailImage")]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		[SequenceReference("TrailImage")] public readonly string[] TrailSequences = { "idle" };
+		public readonly string[] TrailSequences = { "idle" };
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 2;
@@ -60,8 +64,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
 
+		[PaletteReference("TrailUsePlayerPalette")]
 		[Desc("Palette used to render the trail sequence.")]
-		[PaletteReference("TrailUsePlayerPalette")] public readonly string TrailPalette = "effect";
+		public readonly string TrailPalette = "effect";
 
 		[Desc("Use the Player Palette to render the trail sequence.")]
 		public readonly bool TrailUsePlayerPalette = false;

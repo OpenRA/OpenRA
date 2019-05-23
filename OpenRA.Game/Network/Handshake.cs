@@ -46,7 +46,8 @@ namespace OpenRA.Network
 		public string Fingerprint;
 		public string AuthSignature;
 
-		[FieldLoader.Ignore] public Session.Client Client;
+		[FieldLoader.Ignore]
+		public Session.Client Client;
 
 		public static HandshakeResponse Deserialize(string data)
 		{

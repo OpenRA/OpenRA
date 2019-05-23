@@ -79,8 +79,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CrateInfo info;
 		bool collected;
 
-		[Sync] int ticks;
-		[Sync] public CPos Location;
+		[Sync]
+		int ticks;
+
+		[Sync]
+		public CPos Location;
 
 		public Crate(ActorInitializer init, CrateInfo info)
 		{

@@ -17,8 +17,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	public class WithHarvestAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
 	{
+		[SequenceReference]
 		[Desc("Displayed while harvesting.")]
-		[SequenceReference] public readonly string HarvestSequence = "harvest";
+		public readonly string HarvestSequence = "harvest";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

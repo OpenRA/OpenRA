@@ -25,40 +25,52 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class MadTankInfo : ITraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
-		[SequenceReference] public readonly string ThumpSequence = "piston";
+		[SequenceReference]
+		public readonly string ThumpSequence = "piston";
+
 		public readonly int ThumpInterval = 8;
+
 		[WeaponReference]
 		public readonly string ThumpDamageWeapon = "MADTankThump";
+
 		public readonly int ThumpShakeIntensity = 3;
+
 		public readonly float2 ThumpShakeMultiplier = new float2(1, 0);
+
 		public readonly int ThumpShakeTime = 10;
 
 		[Desc("Measured in ticks.")]
 		public readonly int ChargeDelay = 96;
+
 		public readonly string ChargeSound = "madchrg2.aud";
 
 		[Desc("Measured in ticks.")]
 		public readonly int DetonationDelay = 42;
+
 		public readonly string DetonationSound = "madexplo.aud";
+
 		[WeaponReference]
 		public readonly string DetonationWeapon = "MADTankDetonate";
 
 		[ActorReference]
 		public readonly string DriverActor = "e1";
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while deployed.")]
 		public readonly string DeployedCondition = null;
 
 		public WeaponInfo ThumpDamageWeaponInfo { get; private set; }
+
 		public WeaponInfo DetonationWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this trait causes to self while self-destructing. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
 		public object Create(ActorInitializer init) { return new MadTank(init.Self, this); }
+
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			WeaponInfo thumpDamageWeapon;

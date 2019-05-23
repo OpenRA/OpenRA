@@ -63,8 +63,11 @@ namespace OpenRA.Mods.Common.Traits
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
 
-		[Sync] Actor dockedHarv = null;
-		[Sync] bool preventDock = false;
+		[Sync]
+		Actor dockedHarv = null;
+
+		[Sync]
+		bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
 		public CVec DeliveryOffset { get { return info.DockOffset; } }

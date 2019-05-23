@@ -21,7 +21,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ActorEditLogic : ChromeLogic
 	{
 		// Error states define overlapping bits to simplify panel reflow logic
-		[Flags] enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
+		[Flags]
+		enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
 
 		readonly WorldRenderer worldRenderer;
 		readonly EditorActorLayer editorActorLayer;

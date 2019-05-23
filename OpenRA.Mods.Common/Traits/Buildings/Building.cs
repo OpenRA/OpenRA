@@ -247,7 +247,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly BuildingInfo Info;
 
-		[Sync] readonly CPos topLeft;
+		[Sync]
+		readonly CPos topLeft;
+
 		readonly Actor self;
 		readonly BuildingInfluence influence;
 

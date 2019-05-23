@@ -17,12 +17,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Rendered together with an attack.")]
 	public class WithAttackOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
+		[SequenceReference]
 		[FieldLoader.Require]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = null;
+		public readonly string Sequence = null;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

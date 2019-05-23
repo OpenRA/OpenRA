@@ -25,7 +25,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference("Image")]
 		public readonly string[] Sequences = { "idle" };
 
-		[PaletteReference] public readonly string Palette = "effect";
+		[PaletteReference]
+		public readonly string Palette = "effect";
 
 		[Desc("Only leave trail on listed terrain types. Leave empty to leave trail on all terrain types.")]
 		public readonly HashSet<string> TerrainTypes = new HashSet<string>();

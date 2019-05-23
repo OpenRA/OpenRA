@@ -20,7 +20,8 @@ namespace OpenRA.Traits
 		+ "Defaults to the actor name when not defined or inherited.")]
 		public readonly string Class = null;
 
-		[VoiceReference] public readonly string Voice = "Select";
+		[VoiceReference]
+		public readonly string Voice = "Select";
 
 		public override object Create(ActorInitializer init) { return new Selectable(init.Self, this); }
 	}

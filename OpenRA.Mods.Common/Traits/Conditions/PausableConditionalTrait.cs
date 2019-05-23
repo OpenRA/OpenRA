@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 	/// </summary>
 	public abstract class PausableConditionalTrait<InfoType> : ConditionalTrait<InfoType> where InfoType : PausableConditionalTraitInfo
 	{
-		[Sync] public bool IsTraitPaused { get; private set; }
+		[Sync]
+		public bool IsTraitPaused { get; private set; }
 
 		protected PausableConditionalTrait(InfoType info) : base(info) { IsTraitPaused = info.PausedByDefault; }
 

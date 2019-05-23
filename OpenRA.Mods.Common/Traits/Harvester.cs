@@ -78,8 +78,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant while empty.")]
 		public readonly string EmptyCondition = null;
 
-		[VoiceReference] public readonly string HarvestVoice = "Action";
-		[VoiceReference] public readonly string DeliverVoice = "Action";
+		[VoiceReference]
+		public readonly string HarvestVoice = "Action";
+
+		[VoiceReference]
+		public readonly string DeliverVoice = "Action";
 
 		public object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
 	}
@@ -97,11 +100,20 @@ namespace OpenRA.Mods.Common.Traits
 		int conditionToken = ConditionManager.InvalidConditionToken;
 		HarvesterResourceMultiplier[] resourceMultipliers;
 
-		[Sync] public bool LastSearchFailed;
-		[Sync] public Actor OwnerLinkedProc = null;
-		[Sync] public Actor LastLinkedProc = null;
-		[Sync] public Actor LinkedProc = null;
-		[Sync] int currentUnloadTicks;
+		[Sync]
+		public bool LastSearchFailed;
+
+		[Sync]
+		public Actor OwnerLinkedProc = null;
+
+		[Sync]
+		public Actor LastLinkedProc = null;
+
+		[Sync]
+		public Actor LinkedProc = null;
+
+		[Sync]
+		int currentUnloadTicks;
 
 		[Sync]
 		public int ContentValue

@@ -169,7 +169,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class RuntimeNeighbourInit : IActorInit<Dictionary<CPos, string[]>>, ISuppressInitExport
 	{
-		[FieldFromYamlKey] readonly Dictionary<CPos, string[]> value = null;
+		[FieldFromYamlKey]
+		readonly Dictionary<CPos, string[]> value = null;
+
 		public RuntimeNeighbourInit() { }
 		public RuntimeNeighbourInit(Dictionary<CPos, string[]> init) { value = init; }
 		public Dictionary<CPos, string[]> Value(World world) { return value; }

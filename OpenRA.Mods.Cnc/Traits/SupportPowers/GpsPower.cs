@@ -24,19 +24,25 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int RevealDelay = 0;
 
 		public readonly string DoorImage = "atek";
-		[SequenceReference("DoorImage")] public readonly string DoorSequence = "active";
 
+		[SequenceReference("DoorImage")]
+		public readonly string DoorSequence = "active";
+
+		[PaletteReference("DoorPaletteIsPlayerPalette")]
 		[Desc("Palette to use for rendering the launch animation")]
-		[PaletteReference("DoorPaletteIsPlayerPalette")] public readonly string DoorPalette = "player";
+		public readonly string DoorPalette = "player";
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool DoorPaletteIsPlayerPalette = true;
 
 		public readonly string SatelliteImage = "sputnik";
-		[SequenceReference("SatelliteImage")] public readonly string SatelliteSequence = "idle";
 
+		[SequenceReference("SatelliteImage")]
+		public readonly string SatelliteSequence = "idle";
+
+		[PaletteReference("SatellitePaletteIsPlayerPalette")]
 		[Desc("Palette to use for rendering the satellite projectile")]
-		[PaletteReference("SatellitePaletteIsPlayerPalette")] public readonly string SatellitePalette = "player";
+		public readonly string SatellitePalette = "player";
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool SatellitePaletteIsPlayerPalette = true;

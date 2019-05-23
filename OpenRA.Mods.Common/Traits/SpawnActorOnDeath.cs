@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawn another actor immediately upon death.")]
 	public class SpawnActorOnDeathInfo : ConditionalTraitInfo
 	{
-		[ActorReference, FieldLoader.Require]
+		[ActorReference]
+		[FieldLoader.Require]
 		[Desc("Actor to spawn on death.")]
 		public readonly string Actor = null;
 

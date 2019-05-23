@@ -19,12 +19,14 @@ namespace OpenRA.Mods.Common.Traits
 	class PaletteFromPlayerPaletteWithAlphaInfo : ITraitInfo
 	{
 		[FieldLoader.Require]
+		[PaletteDefinition(true)]
 		[Desc("The prefix for the resulting player palettes")]
-		[PaletteDefinition(true)] public readonly string BaseName = null;
+		public readonly string BaseName = null;
 
 		[FieldLoader.Require]
+		[PaletteReference(true)]
 		[Desc("The name of the player palette to base off.")]
-		[PaletteReference(true)] public readonly string BasePalette = null;
+		public readonly string BasePalette = null;
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;

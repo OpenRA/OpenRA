@@ -20,21 +20,25 @@ namespace OpenRA.Mods.Common.Projectiles
 	{
 		public readonly string Image = null;
 
+		[SequenceReference("Image")]
 		[Desc("Loop a randomly chosen sequence of Image from this list while falling.")]
-		[SequenceReference("Image")] public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = { "idle" };
 
+		[SequenceReference("Image")]
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
-		[SequenceReference("Image")] public readonly string OpenSequence = null;
+		public readonly string OpenSequence = null;
 
+		[PaletteReference]
 		[Desc("The palette used to draw this projectile.")]
-		[PaletteReference] public readonly string Palette = "effect";
+		public readonly string Palette = "effect";
 
 		[Desc("Palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
 		public readonly bool Shadow = false;
 
-		[PaletteReference] public readonly string ShadowPalette = "shadow";
+		[PaletteReference]
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Projectile movement vector per tick (forward, right, up), use negative values for opposite directions.")]
 		public readonly WVec Velocity = WVec.Zero;

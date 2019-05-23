@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<string> GetImageName;
 		public Func<string> GetImageCollection;
 
-		[Translate] public string TooltipText;
+		[Translate]
+		public string TooltipText;
 
 		Lazy<TooltipContainerWidget> tooltipContainer;
 		public Func<string> GetTooltipText;

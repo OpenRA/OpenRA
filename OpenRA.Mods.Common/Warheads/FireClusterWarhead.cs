@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public class FireClusterWarhead : Warhead, IRulesetLoaded<WeaponInfo>
 	{
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
 

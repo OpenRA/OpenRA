@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Display a colored overlay when a timed condition is active.")]
 	public class WithColoredOverlayInfo : ConditionalTraitInfo
 	{
+		[PaletteReference]
 		[Desc("Palette to use when rendering the overlay")]
-		[PaletteReference] public readonly string Palette = "invuln";
+		public readonly string Palette = "invuln";
 
 		public override object Create(ActorInitializer init) { return new WithColoredOverlay(this); }
 	}

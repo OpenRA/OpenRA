@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Turret name")]
 		public readonly string Turret = "primary";
 
+		[SequenceReference]
 		[Desc("Displayed while attacking.")]
-		[SequenceReference] public readonly string Sequence = null;
+		public readonly string Sequence = null;
 
 		[Desc("Delay in ticks before animation starts, either relative to attack preparation or attack.")]
 		public readonly int Delay = 0;

@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	[Desc("Building animation to play when ProductionAirdrop is used to deliver units.")]
 	public class WithDeliveryAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
-		[SequenceReference] public readonly string ActiveSequence = "active";
+		[SequenceReference]
+		public readonly string ActiveSequence = "active";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

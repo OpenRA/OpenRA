@@ -21,7 +21,8 @@ namespace OpenRA.Network
 	{
 		public class GeoIP2Record
 		{
-			[MaxMind.Db.Constructor] public GeoIP2Record(GeoIP2Country country)
+			[Constructor]
+			public GeoIP2Record(GeoIP2Country country)
 			{
 				Country = country;
 			}
@@ -31,7 +32,8 @@ namespace OpenRA.Network
 
 		public class GeoIP2Country
 		{
-			[MaxMind.Db.Constructor] public GeoIP2Country(GeoIP2CountryNames names)
+			[Constructor]
+			public GeoIP2Country(GeoIP2CountryNames names)
 			{
 				Names = names;
 			}
@@ -41,7 +43,8 @@ namespace OpenRA.Network
 
 		public class GeoIP2CountryNames
 		{
-			[MaxMind.Db.Constructor] public GeoIP2CountryNames(string en)
+			[Constructor]
+			public GeoIP2CountryNames(string en)
 			{
 				English = en;
 			}

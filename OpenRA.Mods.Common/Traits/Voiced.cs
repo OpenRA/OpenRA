@@ -16,9 +16,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor has a voice.")]
 	public class VoicedInfo : ITraitInfo
 	{
+		[VoiceSetReference]
 		[FieldLoader.Require]
 		[Desc("Which voice set to use.")]
-		[VoiceSetReference] public readonly string VoiceSet = null;
+		public readonly string VoiceSet = null;
 
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;

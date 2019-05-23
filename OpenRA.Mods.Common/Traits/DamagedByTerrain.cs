@@ -18,8 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor receives damage from the given weapon when on the specified terrain type.")]
 	class DamagedByTerrainInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
+		[FieldLoader.Require]
 		[Desc("Amount of damage received per DamageInterval ticks.")]
-		[FieldLoader.Require] public readonly int Damage = 0;
+		public readonly int Damage = 0;
 
 		[Desc("Delay between receiving damage.")]
 		public readonly int DamageInterval = 0;
@@ -27,8 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Apply the damage using these damagetypes.")]
 		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
 
+		[FieldLoader.Require]
 		[Desc("Terrain types where the actor will take damage.")]
-		[FieldLoader.Require] public readonly string[] Terrain = { };
+		public readonly string[] Terrain = { };
 
 		[Desc("Percentage health below which the actor will not receive further damage.")]
 		public readonly int DamageThreshold = 0;
@@ -43,8 +45,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 
-		[Sync] int damageTicks;
-		[Sync] int damageThreshold;
+		[Sync]
+		int damageTicks;
+
+		[Sync]
+		int damageThreshold;
 
 		public DamagedByTerrain(Actor self, DamagedByTerrainInfo info) : base(info)
 		{

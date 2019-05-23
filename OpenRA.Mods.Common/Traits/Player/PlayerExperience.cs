@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class PlayerExperience : ISync
 	{
-		[Sync] public int Experience { get; private set; }
+		[Sync]
+		public int Experience { get; private set; }
 
 		public void GiveExperience(int num)
 		{

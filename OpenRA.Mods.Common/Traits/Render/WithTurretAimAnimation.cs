@@ -22,9 +22,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Turret name")]
 		public readonly string Turret = "primary";
 
-		[Desc("Displayed while targeting.")]
+		[SequenceReference]
 		[FieldLoader.Require]
-		[SequenceReference] public readonly string Sequence = null;
+		[Desc("Displayed while targeting.")]
+		public readonly string Sequence = null;
 
 		public override object Create(ActorInitializer init) { return new WithTurretAimAnimation(init, this); }
 

@@ -19,8 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Replaces the sprite during construction/deploy/undeploy.")]
 	public class WithMakeAnimationInfo : ITraitInfo, Requires<WithSpriteBodyInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use.")]
-		[SequenceReference] public readonly string Sequence = "make";
+		public readonly string Sequence = "make";
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while the make animation is playing.")]

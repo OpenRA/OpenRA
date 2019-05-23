@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string EnterCursor = "enter";
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public override object Create(ActorInitializer init) { return new Captures(init.Self, this); }
 	}

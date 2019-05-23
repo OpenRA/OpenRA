@@ -34,10 +34,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
 
-		[Sync] int totalProvided;
+		[Sync]
+		int totalProvided;
+
 		public int PowerProvided { get { return totalProvided; } }
 
-		[Sync] int totalDrained;
+		[Sync]
+		int totalDrained;
+
 		public int PowerDrained { get { return totalDrained; } }
 
 		public int ExcessPower { get { return totalProvided - totalDrained; } }

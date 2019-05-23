@@ -36,11 +36,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Sprite sequence name")]
 		public readonly string SmokeType = "smoke_m";
-		[SequenceReference("SmokeType")] public readonly string SmokeSequence = "idle";
 
-		[PaletteReference] public readonly string SmokePalette = "effect";
+		[SequenceReference("SmokeType")]
+		public readonly string SmokeSequence = "idle";
 
-		[PaletteReference] public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		[PaletteReference]
+		public readonly string SmokePalette = "effect";
+
+		[PaletteReference]
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[FieldLoader.LoadUsing("LoadInitialSmudges")]
 		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;

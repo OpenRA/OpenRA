@@ -20,17 +20,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders a decorative animation on units and buildings.")]
 	public class WithIdleOverlayInfo : PausableConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[SequenceReference]
 		[Desc("Animation to play when the actor is created.")]
-		[SequenceReference] public readonly string StartSequence = null;
+		public readonly string StartSequence = null;
 
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "idle-overlay";
+		public readonly string Sequence = "idle-overlay";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 {
 	public class ShpD2Loader : ISpriteLoader
 	{
-		[Flags] enum FormatFlags : int
+		[Flags]
+		enum FormatFlags : int
 		{
 			PaletteTable = 1,
 			NotLCWCompressed = 2,

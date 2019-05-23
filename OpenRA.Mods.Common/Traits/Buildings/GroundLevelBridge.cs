@@ -26,8 +26,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly CVec[] NeighbourOffsets = { };
 
+		[WeaponReference]
 		[Desc("The name of the weapon to use when demolishing the bridge")]
-		[WeaponReference] public readonly string DemolishWeapon = "Demolish";
+		public readonly string DemolishWeapon = "Demolish";
 
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 

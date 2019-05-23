@@ -19,12 +19,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders Ctrl groups using pixel art.")]
 	public class WithSpriteControlGroupDecorationInfo : ITraitInfo, Requires<IDecorationBoundsInfo>
 	{
-		[PaletteReference] public readonly string Palette = "chrome";
+		[PaletteReference]
+		public readonly string Palette = "chrome";
 
 		public readonly string Image = "pips";
 
+		[SequenceReference("Image")]
 		[Desc("Sprite sequence used to render the control group 0-9 numbers.")]
-		[SequenceReference("Image")] public readonly string GroupSequence = "groups";
+		public readonly string GroupSequence = "groups";
 
 		[Desc("Point in the actor's selection box used as reference for offsetting the decoration image. " +
 			"Possible values are combinations of Center, Top, Bottom, Left, Right.")]

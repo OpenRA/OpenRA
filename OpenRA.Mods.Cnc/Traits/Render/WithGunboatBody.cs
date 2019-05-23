@@ -23,10 +23,17 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
-		[SequenceReference] public readonly string LeftSequence = "left";
-		[SequenceReference] public readonly string RightSequence = "right";
-		[SequenceReference] public readonly string WakeLeftSequence = "wake-left";
-		[SequenceReference] public readonly string WakeRightSequence = "wake-right";
+		[SequenceReference]
+		public readonly string LeftSequence = "left";
+
+		[SequenceReference]
+		public readonly string RightSequence = "right";
+
+		[SequenceReference]
+		public readonly string WakeLeftSequence = "wake-left";
+
+		[SequenceReference]
+		public readonly string WakeRightSequence = "wake-right";
 
 		public override object Create(ActorInitializer init) { return new WithGunboatBody(init, this); }
 	}

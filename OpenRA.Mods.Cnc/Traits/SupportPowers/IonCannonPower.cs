@@ -30,12 +30,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Effect sequence sprite image")]
 		public readonly string Effect = "ionsfx";
 
+		[SequenceReference("Effect")]
 		[Desc("Effect sequence to display")]
-		[SequenceReference("Effect")] public readonly string EffectSequence = "idle";
+		public readonly string EffectSequence = "idle";
 
-		[PaletteReference] public readonly string EffectPalette = "effect";
+		[PaletteReference]
+		public readonly string EffectPalette = "effect";
 
-		[Desc("Which weapon to fire"), WeaponReference]
+		[WeaponReference]
+		[Desc("Which weapon to fire")]
 		public readonly string Weapon = "IonCannon";
 
 		public WeaponInfo WeaponInfo { get; private set; }

@@ -17,14 +17,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Rendered when a harvester is docked.")]
 	public class WithDockedOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "docking-overlay";
+		public readonly string Sequence = "docking-overlay";
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

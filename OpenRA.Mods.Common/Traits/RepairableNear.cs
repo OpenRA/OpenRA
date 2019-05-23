@@ -20,11 +20,14 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class RepairableNearInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
 	{
+		[ActorReference]
 		[FieldLoader.Require]
-		[ActorReference] public readonly HashSet<string> RepairActors = new HashSet<string> { };
+		public readonly HashSet<string> RepairActors = new HashSet<string> { };
 
 		public readonly WDist CloseEnough = WDist.FromCells(4);
-		[VoiceReference] public readonly string Voice = "Action";
+
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
 	}

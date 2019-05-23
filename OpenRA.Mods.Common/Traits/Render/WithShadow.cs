@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Clones the actor sprite with another palette below it.")]
 	public class WithShadowInfo : ConditionalTraitInfo
 	{
-		[PaletteReference] public readonly string Palette = "shadow";
+		[PaletteReference]
+		public readonly string Palette = "shadow";
 
 		[Desc("Shadow position offset relative to actor position (ground level).")]
 		public readonly WVec Offset = WVec.Zero;

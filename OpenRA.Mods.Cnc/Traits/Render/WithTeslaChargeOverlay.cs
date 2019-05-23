@@ -19,11 +19,13 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	[Desc("Rendered together with AttackCharge.")]
 	public class WithTeslaChargeOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "active";
+		public readonly string Sequence = "active";
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = null;
+		public readonly string Palette = null;
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

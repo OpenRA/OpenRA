@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterCargoConditions { get { return CargoConditions.Values; } }
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}

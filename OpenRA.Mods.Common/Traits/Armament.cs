@@ -29,7 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Name = "primary";
 
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
 
@@ -55,8 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle flash sequence to render")]
 		public readonly string MuzzleSequence = null;
 
+		[PaletteReference]
 		[Desc("Palette to render Muzzle flash sequence in")]
-		[PaletteReference] public readonly string MuzzlePalette = "effect";
+		public readonly string MuzzlePalette = "effect";
 
 		[Desc("Use multiple muzzle images if non-zero")]
 		public readonly int MuzzleSplitFacings = 0;

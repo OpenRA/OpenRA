@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
 	public class ThrowsShrapnelInfo : ConditionalTraitInfo, IRulesetLoaded
 	{
-		[WeaponReference, FieldLoader.Require]
+		[WeaponReference]
+		[FieldLoader.Require]
 		[Desc("The weapons used for shrapnel.")]
 		public readonly string[] Weapons = { };
 

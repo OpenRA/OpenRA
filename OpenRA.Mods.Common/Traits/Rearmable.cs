@@ -17,9 +17,10 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class RearmableInfo : ITraitInfo
 	{
-		[Desc("Actors that this actor can dock to and get rearmed by.")]
+		[ActorReference]
 		[FieldLoader.Require]
-		[ActorReference] public readonly HashSet<string> RearmActors = new HashSet<string> { };
+		[Desc("Actors that this actor can dock to and get rearmed by.")]
+		public readonly HashSet<string> RearmActors = new HashSet<string> { };
 
 		[Desc("Name(s) of AmmoPool(s) that use this trait to rearm.")]
 		public readonly HashSet<string> AmmoPools = new HashSet<string> { "primary" };

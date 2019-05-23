@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		// If the trait is paused this may be true with no condition granted
-		[Sync] bool enabled = false;
+		[Sync]
+		bool enabled = false;
 
 		public ToggleConditionOnOrder(Actor self, ToggleConditionOnOrderInfo info)
 			: base(info) { }

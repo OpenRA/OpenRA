@@ -41,8 +41,6 @@
     <Rule Id="SA1128" Action="None" /><!-- ConstructorInitializerMustBeOnOwnLine -->
     <Rule Id="SA1129" Action="None" /><!-- DoNotUseDefaultValueTypeConstructor -->
     <Rule Id="SA1132" Action="None" /><!-- DoNotCombineFields -->
-    <Rule Id="SA1133" Action="None" /><!-- DoNotCombineAttributes -->
-    <Rule Id="SA1134" Action="None" /><!-- AttributesMustNotShareLine -->
     <Rule Id="SA1204" Action="None" /><!-- StaticElementsMustAppearBeforeInstanceElements -->
     <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
     <Rule Id="SA1413" Action="None" /><!-- UseTrailingCommasInMultiLineInitializers -->

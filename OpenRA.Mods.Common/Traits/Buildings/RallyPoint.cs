@@ -20,13 +20,18 @@ namespace OpenRA.Mods.Common.Traits
 	public class RallyPointInfo : ITraitInfo
 	{
 		public readonly string Image = "rallypoint";
-		[SequenceReference("Image")] public readonly string FlagSequence = "flag";
-		[SequenceReference("Image")] public readonly string CirclesSequence = "circles";
+
+		[SequenceReference("Image")]
+		public readonly string FlagSequence = "flag";
+
+		[SequenceReference("Image")]
+		public readonly string CirclesSequence = "circles";
 
 		public readonly string Cursor = "ability";
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Custom indicator palette name")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
+		public readonly string Palette = "player";
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = true;
@@ -40,7 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		const string OrderID = "SetRallyPoint";
 
-		[Sync] public CPos Location;
+		[Sync]
+		public CPos Location;
+
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 

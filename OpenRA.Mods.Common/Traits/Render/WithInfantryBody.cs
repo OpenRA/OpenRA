@@ -22,14 +22,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int MinIdleDelay = 30;
 		public readonly int MaxIdleDelay = 110;
 
-		[SequenceReference] public readonly string MoveSequence = "run";
-		[SequenceReference] public readonly string DefaultAttackSequence = null;
+		[SequenceReference]
+		public readonly string MoveSequence = "run";
+
+		[SequenceReference]
+		public readonly string DefaultAttackSequence = null;
 
 		// TODO: [SequenceReference] isn't smart enough to use Dictionaries.
 		[Desc("Attack sequence to use for each armament.")]
 		public readonly Dictionary<string, string> AttackSequences = new Dictionary<string, string>();
-		[SequenceReference] public readonly string[] IdleSequences = { };
-		[SequenceReference] public readonly string[] StandSequences = { "stand" };
+
+		[SequenceReference]
+		public readonly string[] IdleSequences = { };
+
+		[SequenceReference]
+		public readonly string[] StandSequences = { "stand" };
 
 		public override object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
 

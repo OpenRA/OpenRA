@@ -154,7 +154,8 @@ namespace OpenRA.Traits
 		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
 	}
 
-	[Flags] public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
+	[Flags]
+	public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 }
 
 	public static class TargetModifiersExts
 	{

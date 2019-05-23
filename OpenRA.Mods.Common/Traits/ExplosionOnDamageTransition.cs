@@ -18,7 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This actor triggers an explosion on itself when transitioning to a specific damage state.")]
 	public class ExplosionOnDamageTransitionInfo : ITraitInfo, IRulesetLoaded, Requires<IHealthInfo>
 	{
-		[WeaponReference, FieldLoader.Require, Desc("Weapon to use for explosion.")]
+		[WeaponReference]
+		[FieldLoader.Require]
+		[Desc("Weapon to use for explosion.")]
 		public readonly string Weapon = null;
 
 		[Desc("At which damage state explosion will trigger.")]

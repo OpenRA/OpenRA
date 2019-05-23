@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Can enter a BridgeHut or LegacyBridgeHut to trigger a repair.")]
 	class RepairsBridgesInfo : ITraitInfo
 	{
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[Desc("Behaviour when entering the structure.",
 			"Possible values are Exit, Suicide, Dispose.")]

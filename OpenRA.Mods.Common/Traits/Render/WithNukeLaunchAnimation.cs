@@ -17,8 +17,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Replaces the building animation when `NukePower` is triggered.")]
 	public class WithNukeLaunchAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "active";
+		public readonly string Sequence = "active";
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

@@ -17,8 +17,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Displays the fill status of PlayerResources with an extra sprite overlay on the actor.")]
 	class WithResourceLevelOverlayInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>, Requires<RenderSpritesInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use")]
-		[SequenceReference] public readonly string Sequence = "resources";
+		public readonly string Sequence = "resources";
 
 		public override object Create(ActorInitializer init) { return new WithResourceLevelOverlay(init.Self, this); }
 	}

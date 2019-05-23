@@ -33,8 +33,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		[Sync] readonly CPos location;
-		[Sync] readonly WPos position;
+		[Sync]
+		readonly CPos location;
+
+		[Sync]
+		readonly WPos position;
+
 		readonly Pair<CPos, SubCell>[] occupied;
 
 		public Immobile(ActorInitializer init, ImmobileInfo info)

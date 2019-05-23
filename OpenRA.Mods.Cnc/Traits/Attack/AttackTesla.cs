@@ -41,8 +41,11 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		readonly AttackTeslaInfo info;
 
-		[Sync] int charges;
-		[Sync] int timeToRecharge;
+		[Sync]
+		int charges;
+
+		[Sync]
+		int timeToRecharge;
 
 		public AttackTesla(Actor self, AttackTeslaInfo info)
 			: base(self, info)

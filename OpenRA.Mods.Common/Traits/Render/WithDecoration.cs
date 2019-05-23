@@ -39,8 +39,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for this decoration (can be animated).")]
 		public readonly string Sequence = null;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "chrome";
+		public readonly string Palette = "chrome";
 
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;

@@ -58,7 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> CrushDamageTypes = default(BitSet<DamageType>);
 
-		[VoiceReference] public readonly string Voice = "Action";
+		[VoiceReference]
+		public readonly string Voice = "Action";
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while airborne.")]
@@ -184,8 +185,12 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<int> speedModifiers;
 		INotifyMoving[] notifyMoving;
 
-		[Sync] public int Facing { get; set; }
-		[Sync] public WPos CenterPosition { get; private set; }
+		[Sync]
+		public int Facing { get; set; }
+
+		[Sync]
+		public WPos CenterPosition { get; private set; }
+
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
 		public int TurnSpeed { get { return Info.TurnSpeed; } }
 		public Actor ReservedActor { get; private set; }

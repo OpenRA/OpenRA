@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteBarrelInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<TurretedInfo>,
 		Requires<ArmamentInfo>, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
+		[SequenceReference]
 		[Desc("Sequence name to use.")]
-		[SequenceReference] public readonly string Sequence = "barrel";
+		public readonly string Sequence = "barrel";
 
 		[Desc("Armament to use for recoil.")]
 		public readonly string Armament = "primary";

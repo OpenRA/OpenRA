@@ -25,17 +25,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("The image that contains the parachute sequences.")]
 		public readonly string Image = null;
 
+		[SequenceReference("Image")]
 		[Desc("Parachute opening sequence.")]
-		[SequenceReference("Image")] public readonly string OpeningSequence = null;
+		public readonly string OpeningSequence = null;
 
+		[SequenceReference("Image")]
 		[Desc("Parachute idle sequence.")]
-		[SequenceReference("Image")] public readonly string Sequence = null;
+		public readonly string Sequence = null;
 
+		[SequenceReference("Image")]
 		[Desc("Parachute closing sequence. Defaults to opening sequence played backwards.")]
-		[SequenceReference("Image")] public readonly string ClosingSequence = null;
+		public readonly string ClosingSequence = null;
 
+		[PaletteReference("IsPlayerPalette")]
 		[Desc("Palette used to render the parachute.")]
-		[PaletteReference("IsPlayerPalette")] public readonly string Palette = "player";
+		public readonly string Palette = "player";
+
 		public readonly bool IsPlayerPalette = true;
 
 		[Desc("Parachute position relative to the paradropped unit.")]
@@ -44,11 +49,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("The image that contains the shadow sequence for the paradropped unit.")]
 		public readonly string ShadowImage = null;
 
+		[SequenceReference("ShadowImage")]
 		[Desc("Paradropped unit's shadow sequence.")]
-		[SequenceReference("ShadowImage")] public readonly string ShadowSequence = null;
+		public readonly string ShadowSequence = null;
 
+		[PaletteReference(false)]
 		[Desc("Palette used to render the paradropped unit's shadow.")]
-		[PaletteReference(false)] public readonly string ShadowPalette = "shadow";
+		public readonly string ShadowPalette = "shadow";
 
 		[Desc("Shadow position relative to the paradropped unit's intended landing position.")]
 		public readonly WVec ShadowOffset = new WVec(0, 128, 0);

@@ -36,7 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly StoresResourcesInfo info;
 		PlayerResources player;
 
-		[Sync] public int Stored { get { return player.ResourceCapacity == 0 ? 0 : (int)((long)info.Capacity * player.Resources / player.ResourceCapacity); } }
+		[Sync]
+		public int Stored { get { return player.ResourceCapacity == 0 ? 0 : (int)((long)info.Capacity * player.Resources / player.ResourceCapacity); } }
 
 		public StoresResources(Actor self, StoresResourcesInfo info)
 		{

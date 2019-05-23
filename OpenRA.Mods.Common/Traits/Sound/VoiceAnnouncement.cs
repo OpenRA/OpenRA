@@ -16,9 +16,10 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	[Desc("Plays a voice clip when the trait is enabled.")]
 	public class VoiceAnnouncementInfo : ConditionalTraitInfo
 	{
+		[VoiceReference]
 		[FieldLoader.Require]
 		[Desc("Voice to play.")]
-		[VoiceReference] public readonly string Voice = null;
+		public readonly string Voice = null;
 
 		[Desc("Player stances who can hear this voice.")]
 		public readonly Stance ValidStances = Stance.Ally | Stance.Neutral | Stance.Enemy;

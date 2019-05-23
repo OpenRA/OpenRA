@@ -18,8 +18,12 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Replaces the captured actor with a new one.")]
 	public class TransformOnCaptureInfo : ITraitInfo
 	{
-		[ActorReference, FieldLoader.Require] public readonly string IntoActor = null;
+		[ActorReference]
+		[FieldLoader.Require]
+		public readonly string IntoActor = null;
+
 		public readonly int ForceHealthPercentage = 0;
+
 		public readonly bool SkipMakeAnims = true;
 
 		[Desc("Transform only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
