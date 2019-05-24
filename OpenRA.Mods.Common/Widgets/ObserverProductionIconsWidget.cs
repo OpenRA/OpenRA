@@ -110,8 +110,8 @@ namespace OpenRA.Mods.Common.Widgets
 					.Select(a => a.Trait.CurrentItem())
 					.Where(pi => pi != null)
 					.GroupBy(pr => pr.Item)
-					.OrderBy(g => g.First().Queue.Info.Type)
-					.ThenBy(g => g.First().Item)
+					.OrderBy(g => g.First().Queue.Info.DisplayOrder)
+					.ThenBy(g => g.First().BuildPaletteOrder)
 					.ToList();
 
 			Bounds.Width = currentItemsByItem.Count * (IconWidth + IconSpacing);
