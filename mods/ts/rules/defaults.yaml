@@ -863,6 +863,7 @@
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
+		MaximumPitch: 120
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
