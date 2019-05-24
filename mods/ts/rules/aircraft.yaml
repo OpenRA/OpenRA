@@ -141,7 +141,6 @@ ORCAB:
 		Bounds: 30,24
 	Aircraft:
 		CruiseAltitude: 5c512
-		MaximumPitch: 120
 		TurnSpeed: 3
 		Speed: 96
 		CruisingCondition: cruising
@@ -280,7 +279,6 @@ SCRIN:
 		VoiceSet: Scrin
 	Aircraft:
 		CruiseAltitude: 5c0
-		MaximumPitch: 90
 		TurnSpeed: 3
 		Speed: 168
 		AirborneCondition: airborne
