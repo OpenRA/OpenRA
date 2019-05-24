@@ -96,10 +96,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
-		[Desc("How fast this actor ascends or descends when using horizontal take off/landing.")]
+		[Desc("How fast this actor ascends or descends during horizontal movement.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
-		[Desc("How fast this actor ascends or descends when using vertical take off/landing.")]
+		[Desc("How fast this actor ascends or descends when moving vertically only (vertical take off/landing or hovering towards CruiseAltitude).")]
 		public readonly WDist AltitudeVelocity = new WDist(43);
 
 		[Desc("Sounds to play when the actor is taking off.")]
