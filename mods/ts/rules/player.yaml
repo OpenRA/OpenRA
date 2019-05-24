@@ -11,6 +11,7 @@ Player:
 	GrantConditionOnPrerequisiteManager:
 	ClassicProductionQueue@Building:
 		Type: Building
+		DisplayOrder: 0
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
@@ -21,6 +22,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Defense:
 		Type: Defense
+		DisplayOrder: 1
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
@@ -31,6 +33,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
+		DisplayOrder: 3
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
@@ -41,6 +44,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
+		DisplayOrder: 2
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
@@ -51,6 +55,7 @@ Player:
 		SpeedUp: True
 	ClassicProductionQueue@Air:
 		Type: Air
+		DisplayOrder: 4
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
