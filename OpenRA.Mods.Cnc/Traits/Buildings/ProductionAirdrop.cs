@@ -33,14 +33,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("The cargo aircraft will spawn at the player baseline (map edge closest to the player spawn)")]
 		public readonly bool BaselineSpawn = false;
 
+		[Desc("Direction the aircraft should face to land.")]
+		public readonly int Facing = 64;
+
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
 	class ProductionAirdrop : Production
 	{
-		CPos startPos;
-		CPos endPos;
-
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
 			: base(init, info) { }
 
@@ -55,6 +55,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 			var mpStart = owner.World.WorldActor.TraitOrDefault<MPStartLocations>();
 
+			CPos startPos;
+			CPos endPos;
+			int spawnFacing;
+
 			if (info.BaselineSpawn && mpStart != null)
 			{
 				var spawn = mpStart.Start[owner];
@@ -63,6 +67,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				var spawnVec = spawn - center;
 				startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
 				endPos = startPos;
+				var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
+				spawnFacing = spawnDirection.Yaw.Facing;
 			}
 			else
 			{
@@ -71,6 +77,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var loc = self.Location.ToMPos(map);
 				startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
 				endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
+				spawnFacing = info.Facing;
 			}
 
 			// Assume a single exit point for simplicity
@@ -88,11 +95,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, aircraftInfo.CruiseAltitude)),
 					new OwnerInit(owner),
-					new FacingInit(64)
+					new FacingInit(spawnFacing)
 				});
 
 				var exitCell = self.Location + exit.ExitCell;
-				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, 64, clearCells: new CPos[1] { exitCell }));
+				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, info.Facing, clearCells: new CPos[1] { exitCell }));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
