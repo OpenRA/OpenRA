@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 

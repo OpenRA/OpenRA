@@ -11,6 +11,7 @@
 
 using System.Linq;
 using Eluant;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Scripting;
 using OpenRA.Widgets;
 

@@ -112,7 +112,7 @@ namespace OpenRA.Graphics
 
 		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
-			DrawTextWithContrast(text, location, fg, WidgetUtils.GetContrastColor(fg, bgDark, bgLight), offset);
+			DrawTextWithContrast(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
 		}
 
 		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bg, int offset)
@@ -125,7 +125,7 @@ namespace OpenRA.Graphics
 
 		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
-			DrawTextWithShadow(text, location, fg, WidgetUtils.GetContrastColor(fg, bgDark, bgLight), offset);
+			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
 		}
 
 		public int2 Measure(string text)
@@ -183,6 +183,11 @@ namespace OpenRA.Graphics
 			s.Sheet.CommitBufferedData();
 
 			return g;
+		}
+
+		static Color GetContrastColor(Color fgColor, Color bgDark, Color bgLight)
+		{
+			return fgColor == Color.White || fgColor.GetBrightness() > 0.33 ? bgDark : bgLight;
 		}
 
 		public void Dispose()
