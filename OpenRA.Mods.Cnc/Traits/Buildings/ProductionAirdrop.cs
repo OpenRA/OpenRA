@@ -51,24 +51,26 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var info = (ProductionAirdropInfo)Info;
 			var owner = self.Owner;
+			var map = owner.World.Map;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
 			var mpStart = owner.World.WorldActor.TraitOrDefault<MPStartLocations>();
 
 			if (info.BaselineSpawn && mpStart != null)
 			{
 				var spawn = mpStart.Start[owner];
-				var bounds = owner.World.Map.Bounds;
-				var center = new CPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2);
+				var bounds = map.Bounds;
+				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
 				var spawnVec = spawn - center;
-				startPos = spawn + spawnVec * (Math.Max(bounds.Height, bounds.Width) / (2 * spawnVec.Length));
+				startPos = spawn + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
 				endPos = startPos;
 			}
 			else
 			{
 				// Start a fixed distance away: the width of the map.
 				// This makes the production timing independent of spawnpoint
-				startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
-				endPos = new CPos(owner.World.Map.Bounds.Left, self.Location.Y);
+				var loc = self.Location.ToMPos(map);
+				startPos = new MPos(loc.U + map.Bounds.Width, loc.V).ToCPos(map);
+				endPos = new MPos(map.Bounds.Left, loc.V).ToCPos(map);
 			}
 
 			// Assume a single exit point for simplicity
