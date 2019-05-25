@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
@@ -29,11 +30,17 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
 		public readonly string ActorType = "c17";
 
+		[Desc("The cargo aircraft will spawn at the player baseline (map edge closest to the player spawn)")]
+		public readonly bool BaselineSpawn = false;
+
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
 	class ProductionAirdrop : Production
 	{
+		CPos startPos;
+		CPos endPos;
+
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
 			: base(init, info) { }
 
@@ -45,11 +52,24 @@ namespace OpenRA.Mods.Cnc.Traits
 			var info = (ProductionAirdropInfo)Info;
 			var owner = self.Owner;
 			var aircraftInfo = self.World.Map.Rules.Actors[info.ActorType].TraitInfo<AircraftInfo>();
+			var mpStart = owner.World.WorldActor.TraitOrDefault<MPStartLocations>();
 
-			// Start a fixed distance away: the width of the map.
-			// This makes the production timing independent of spawnpoint
-			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
-			var endPos = new CPos(owner.World.Map.Bounds.Left, self.Location.Y);
+			if (info.BaselineSpawn && mpStart != null)
+			{
+				var spawn = mpStart.Start[owner];
+				var bounds = owner.World.Map.Bounds;
+				var center = new CPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2);
+				var spawnVec = spawn - center;
+				startPos = spawn + spawnVec * (Math.Max(bounds.Height, bounds.Width) / (2 * spawnVec.Length));
+				endPos = startPos;
+			}
+			else
+			{
+				// Start a fixed distance away: the width of the map.
+				// This makes the production timing independent of spawnpoint
+				startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
+				endPos = new CPos(owner.World.Map.Bounds.Left, self.Location.Y);
+			}
 
 			// Assume a single exit point for simplicity
 			var exit = self.Info.TraitInfos<ExitInfo>().First();
