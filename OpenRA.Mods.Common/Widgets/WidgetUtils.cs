@@ -14,7 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
-namespace OpenRA.Widgets
+namespace OpenRA.Mods.Common.Widgets
 {
 	public static class WidgetUtils
 	{
@@ -265,9 +265,16 @@ namespace OpenRA.Widgets
 			return trimmed;
 		}
 
-		public static Color GetContrastColor(Color fgColor, Color bgDark, Color bgLight)
+		public static void TruncateLabelToTooltip(LabelWithTooltipWidget label, string text)
 		{
-			return fgColor == Color.White || fgColor.GetBrightness() > 0.33 ? bgDark : bgLight;
+			var truncatedText = TruncateText(text, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+
+			label.GetText = () => truncatedText;
+
+			if (text != truncatedText)
+				label.GetTooltipText = () => text;
+			else
+				label.GetTooltipText = null;
 		}
 	}
 
