@@ -287,7 +287,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				() => currentFilename == filepath && currentPackage == package,
 				() => { LoadAsset(package, filepath); });
 
-			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
+			var label = item.Get<LabelWithTooltipWidget>("TITLE");
+			WidgetUtils.TruncateLabelToTooltip(label, filepath);
+
 			item.IsVisible = () =>
 			{
 				bool visible;

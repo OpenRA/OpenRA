@@ -155,7 +155,7 @@ Background@REPLAYBROWSER_PANEL:
 		Container@REPLAY_LIST_CONTAINER:
 			X: 310
 			Y: 20
-			Width: 245
+			Width: 250
 			Height: PARENT_BOTTOM - 20 - 55
 			Children:
 				Label@REPLAYBROWSER_LABEL_TITLE:
@@ -176,11 +176,14 @@ Background@REPLAYBROWSER_PANEL:
 							Height: 25
 							X: 2
 							Visible: false
+							EnableChildMouseOver: True
 							Children:
-								Label@TITLE:
+								LabelWithTooltip@TITLE:
 									X: 10
 									Width: PARENT_RIGHT - 20
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 		Container@MAP_PREVIEW_ROOT:
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: 50

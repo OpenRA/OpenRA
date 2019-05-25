@@ -192,7 +192,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => SelectMap(preview),
 					StartMissionClicked);
 
-				item.Get<LabelWidget>("TITLE").GetText = () => preview.Title;
+				var label = item.Get<LabelWithTooltipWidget>("TITLE");
+				WidgetUtils.TruncateLabelToTooltip(label, preview.Title);
+
 				missionList.AddChild(item);
 			}
 		}
