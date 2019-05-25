@@ -113,11 +113,28 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.ForceLanding)
 				Cancel(self);
 
-			if (IsCanceling)
-				return NextActivity;
-
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			if (dat <= aircraft.LandAltitude)
+			if (IsCanceling)
+			{
+				// We must return the actor to a sensible height before continuing.
+				// If the aircraft is on the ground we queue TakeOff to manage the influence reservation and takeoff sounds etc.
+				// TODO: It would be better to not take off at all, but we lack the plumbing to detect current airborne/landed state.
+				// If the aircraft lands when idle and is idle, we let the default idle handler manage this.
+				// TODO: Remove this after fixing all activities to work properly with arbitrary starting altitudes.
+				var skipHeightAdjustment = aircraft.Info.LandWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
+				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
+				{
+					if (dat <= aircraft.LandAltitude)
+						QueueChild(self, new TakeOff(self, target), true);
+					else
+						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+
+					return this;
+				}
+
+				return NextActivity;
+			}
+			else if (dat <= aircraft.LandAltitude)
 			{
 				QueueChild(self, new TakeOff(self, target), true);
 				return this;
