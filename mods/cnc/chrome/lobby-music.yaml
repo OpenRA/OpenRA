@@ -154,11 +154,14 @@ Container@LOBBY_MUSIC_BIN:
 					Height: 25
 					X: 2
 					Visible: false
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 50
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LENGTH:
 							X: PARENT_RIGHT - 60
 							Width: 50

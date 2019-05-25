@@ -594,12 +594,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var canJoin = game.IsJoinable;
 						var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => onJoin(game));
-						var title = item.GetOrNull<LabelWidget>("TITLE");
+						var title = item.GetOrNull<LabelWithTooltipWidget>("TITLE");
 						if (title != null)
 						{
-							var font = Game.Renderer.Fonts[title.Font];
-							var label = WidgetUtils.TruncateText(game.Name, title.Bounds.Width, font);
-							title.GetText = () => label;
+							WidgetUtils.TruncateLabelToTooltip(title, game.Name);
 							title.GetColor = () => canJoin ? title.TextColor : incompatibleGameColor;
 						}
 

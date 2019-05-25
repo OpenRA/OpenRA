@@ -30,11 +30,14 @@ Container@MUSIC_PANEL:
 							X: 2
 							Y: 0
 							Visible: false
+							EnableChildMouseOver: True
 							Children:
-								Label@TITLE:
+								LabelWithTooltip@TITLE:
 									X: 10
 									Width: PARENT_RIGHT - 50
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@LENGTH:
 									Width: 50
 									X: PARENT_RIGHT - 60
@@ -192,3 +195,4 @@ Container@MUSIC_PANEL:
 			Width: 300
 			Height: 20
 			Font: Small
+		TooltipContainer@TOOLTIP_CONTAINER:

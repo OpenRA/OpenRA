@@ -48,11 +48,14 @@ Container@ASSETBROWSER_PANEL:
 							X: 2
 							Y: 0
 							Visible: false
+							EnableChildMouseOver: True
 							Children:
-								Label@TITLE:
+								LabelWithTooltip@TITLE:
 									X: 10
 									Width: PARENT_RIGHT - 15
 									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 				Label@FILENAME_DESC:
 					X: 15
 					Y: 340
@@ -200,3 +203,4 @@ Container@ASSETBROWSER_PANEL:
 			Width: 140
 			Height: 35
 			Text: Back
+		TooltipContainer@TOOLTIP_CONTAINER:

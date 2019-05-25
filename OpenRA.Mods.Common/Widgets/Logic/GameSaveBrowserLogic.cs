@@ -201,7 +201,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.OnDoubleClick = Load;
 
 				var title = Path.GetFileNameWithoutExtension(savePath);
-				item.Get<LabelWidget>("TITLE").GetText = () => title;
+				var label = item.Get<LabelWithTooltipWidget>("TITLE");
+				WidgetUtils.TruncateLabelToTooltip(label, title);
 
 				var date = File.GetLastWriteTime(savePath).ToString("yyyy-MM-dd HH:mm:ss");
 				item.Get<LabelWidget>("DATE").GetText = () => date;

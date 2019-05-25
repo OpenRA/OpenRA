@@ -709,7 +709,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			item.Text = Path.GetFileNameWithoutExtension(replay.FilePath);
-			item.Get<LabelWidget>("TITLE").GetText = () => item.Text;
+			var label = item.Get<LabelWithTooltipWidget>("TITLE");
+			WidgetUtils.TruncateLabelToTooltip(label, item.Text);
+
 			item.IsVisible = () => replayState[replay].Visible;
 			replayList.AddChild(item);
 		}

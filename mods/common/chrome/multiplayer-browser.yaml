@@ -98,10 +98,12 @@ Background@MULTIPLAYER_PANEL:
 					Height: 25
 					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 5
 							Width: 245
 							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Image@PASSWORD_PROTECTED:
 							X: 272
 							Y: 6

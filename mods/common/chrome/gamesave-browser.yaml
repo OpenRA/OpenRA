@@ -43,11 +43,14 @@ Background@GAMESAVE_BROWSER_PANEL:
 					Height: 25
 					X: 2
 					Visible: false
+					EnableChildMouseOver: True
 					Children:
-						Label@TITLE:
+						LabelWithTooltip@TITLE:
 							X: 10
 							Width: PARENT_RIGHT - 200 - 10
 							Height: 25
+							TooltipContainer: GAMESAVE_TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@DATE:
 							X: PARENT_RIGHT - WIDTH - 10
 							Width: 200
@@ -113,4 +116,4 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Text: Save
 			Font: Bold
 			Visible: False
-		TooltipContainer@TOOLTIP_CONTAINER:
+		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:
