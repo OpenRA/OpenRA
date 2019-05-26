@@ -175,14 +175,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			};
 
-			foreach (var p in info.DropItems)
-			{
-				var unit = self.World.CreateActor(false, p.ToLowerInvariant(),
-					new TypeDictionary { new OwnerInit(self.Owner) });
-
-				units.Add(unit);
-			}
-
 			self.World.AddFrameEndTask(w =>
 			{
 				PlayLaunchSounds();
@@ -216,11 +208,17 @@ namespace OpenRA.Mods.Common.Traits
 					drop.OnRemovedFromWorld += onRemovedFromWorld;
 
 					var cargo = a.Trait<Cargo>();
-					var passengers = units.Skip(added).Take(passengersPerPlane);
-					added += passengersPerPlane;
+					foreach (var p in info.DropItems.Skip(added).Take(passengersPerPlane))
+					{
+						var unit = self.World.CreateActor(false, p.ToLowerInvariant(), new TypeDictionary
+						{
+							new OwnerInit(self.Owner)
+						});
 
-					foreach (var p in passengers)
-						cargo.Load(a, p);
+						cargo.Load(a, unit);
+						units.Add(unit);
+						added++;
+					}
 
 					a.QueueActivity(new Fly(a, Target.FromPos(target + spawnOffset)));
 					a.QueueActivity(new Fly(a, Target.FromPos(finishEdge + spawnOffset)));
