@@ -127,6 +127,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new SplitHarvesterSpriteBody(),
 				new RenameAttackMoveConditions(),
 				new RemovePlaceBuildingPalettes(),
+				new RenameHoversOffsetModifier(),
 			})
 		};
 
