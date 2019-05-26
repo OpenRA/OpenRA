@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc
 			versionText = modData.Manifest.Metadata.Version;
 		}
 
-		bool setup;
+		object rendererFonts;
 		SpriteFont loadingFont, versionFont;
 		string loadingText, versionText;
 		float2 loadingPos, versionPos;
@@ -96,8 +96,10 @@ namespace OpenRA.Mods.Cnc
 				null);
 			var barY = bounds.Height - 78;
 
-			if (!setup && r.Fonts != null)
+			// The fonts dictionary may change when switching between the mod and content installer
+			if (r.Fonts != rendererFonts)
 			{
+				rendererFonts = r.Fonts;
 				loadingFont = r.Fonts["BigBold"];
 				loadingText = loadInfo["Text"];
 				loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
@@ -105,8 +107,6 @@ namespace OpenRA.Mods.Cnc
 				versionFont = r.Fonts["Regular"];
 				var versionSize = versionFont.Measure(versionText);
 				versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
-
-				setup = true;
 			}
 
 			if (loadingFont != null)
