@@ -29,19 +29,19 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release-x86'">
     <Prefer32bit>true</Prefer32bit>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Red Alert' ">
+  <PropertyGroup Condition="'$(RunConfiguration)' == 'Red Alert'">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ra</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Dune 2000' ">
+  <PropertyGroup Condition="'$(RunConfiguration)' == 'Dune 2000'">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=d2k</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Dawn' ">
+  <PropertyGroup Condition="'$(RunConfiguration)' == 'Tiberian Dawn'">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=cnc</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Tiberian Sun' ">
+  <PropertyGroup Condition="'$(RunConfiguration)' == 'Tiberian Sun'">
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
