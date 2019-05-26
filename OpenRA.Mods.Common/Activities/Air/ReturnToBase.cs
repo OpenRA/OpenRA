@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
-				Cancel(self);
+				self.CancelActivity();
 				return NextActivity;
 			}
 
