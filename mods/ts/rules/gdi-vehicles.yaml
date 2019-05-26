@@ -89,7 +89,7 @@ HVR:
 	WithVoxelTurret:
 	Hovers:
 		RequiresCondition: !empdisable
-		OffsetModifier: -64
+		BobDistance: -64
 		InitialHeight: 384
 	LeavesTrails:
 		RequiresCondition: !inside-tunnel

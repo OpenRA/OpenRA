@@ -22,12 +22,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class HoversInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Maximum visual Z axis distance relative to actual position + InitialHeight.")]
-		public readonly WDist OffsetModifier = new WDist(-43);
+		public readonly WDist BobDistance = new WDist(-43);
 
 		[Desc("Actual altitude of actor needs to be this or higher to enable hover effect.")]
 		public readonly WDist MinHoveringAltitude = WDist.Zero;
 
-		[Desc("Amount of ticks it takes to reach OffsetModifier.")]
+		[Desc("Amount of ticks it takes to reach BobDistance.")]
 		public readonly int Ticks = 6;
 
 		[Desc("Amount of ticks it takes to fall to the ground from the highest point when disabled.")]
@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (OffsetModifier.Length > -1)
-				throw new YamlException("Hovers.OffsetModifier must be a negative value.");
+			if (BobDistance.Length > -1)
+				throw new YamlException("Hovers.BobDistance must be a negative value.");
 
 			if (Ticks < 1)
 				throw new YamlException("Hovers.Ticks must be higher than zero.");
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			stepPercentage = 256 / info.Ticks;
 
 			// fallTickHeight must be at least 1 to avoid a DivideByZeroException and other potential problems when trait is disabled.
-			fallTickHeight = (info.InitialHeight.Length + info.OffsetModifier.Length).Clamp(info.FallTicks, int.MaxValue) / info.FallTicks;
+			fallTickHeight = (info.InitialHeight.Length + info.BobDistance.Length).Clamp(info.FallTicks, int.MaxValue) / info.FallTicks;
 		}
 
 		void ITick.Tick(Actor self)
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				var visualOffset = self.World.Map.DistanceAboveTerrain(self.CenterPosition) >= info.MinHoveringAltitude
 					? new WAngle(ticks % (info.Ticks * 4) * stepPercentage).Sin() : 0;
-				var currentHeight = info.OffsetModifier.Length * visualOffset / 1024 + info.InitialHeight.Length;
+				var currentHeight = info.BobDistance.Length * visualOffset / 1024 + info.InitialHeight.Length;
 
 				// This part rises the actor up from disabled state
 				if (worldVisualOffset.Z < currentHeight)

@@ -897,7 +897,7 @@
 		VTOL: true
 	Hovers@CRUISING:
 		RequiresCondition: cruising
-		OffsetModifier: -64
+		BobDistance: -64
 		InitialHeight: 64
 
 ^AircraftHusk:
