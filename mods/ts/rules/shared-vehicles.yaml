@@ -127,6 +127,7 @@ LPST:
 		Speed: 85
 		TurnSpeed: 5
 		PauseOnCondition: empdisable || being-captured
+		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel && undeployed
 		Range: 10c0

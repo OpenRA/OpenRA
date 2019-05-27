@@ -331,6 +331,7 @@ JUGG:
 		Speed: 71
 		TurnSpeed: 5
 		PauseOnCondition: empdisable || being-captured
+		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
