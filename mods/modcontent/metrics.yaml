@@ -1,7 +1,6 @@
 # General dumping-ground for UI element sizes, etc.
 
 Metrics:
-	ButtonBaseLine: 2
 	ButtonDepth: 0
 	ButtonFont: Bold
 	CheckboxPressedState: true
