@@ -27,11 +27,6 @@ namespace OpenRA.Platforms.Default
 		internal const int FT_LOAD_RENDER = 0x04;
 
 		internal static readonly int FaceRecGlyphOffset = IntPtr.Size == 8 ? 152 : 84; // offsetof(FT_FaceRec, glyph)
-		internal static readonly int FaceRecSizeOffset = IntPtr.Size == 8 ? 160 : 88; // offsetof(FT_FaceRec, size)
-		internal static readonly int SizeRecMetricsOffset = IntPtr.Size == 8 ? 24 : 12; // offsetof(FT_SizeRec, metrics)
-		internal static readonly int SizeMetricsAscenderOffset = IntPtr.Size == 8 ? 24 : 12; // offsetof(FT_Size_Metrics, ascender)
-		internal static readonly int SizeMetricsDescenderOffset = IntPtr.Size == 8 ? 32 : 16; // offsetof(FT_Size_Metrics, descender)
-
 		internal static readonly int GlyphSlotMetricsOffset = IntPtr.Size == 8 ? 48 : 24; // offsetof(FT_GlyphSlotRec, metrics)
 		internal static readonly int GlyphSlotBitmapOffset = IntPtr.Size == 8 ? 152 : 76; // offsetof(FT_GlyphSlotRec, bitmap)
 		internal static readonly int GlyphSlotBitmapLeftOffset = IntPtr.Size == 8 ? 192 : 100; // offsetof(FT_GlyphSlotRec, bitmap_left)
@@ -73,8 +68,6 @@ namespace OpenRA.Platforms.Default
 		readonly IntPtr face;
 		bool disposed;
 
-		public int Height { get; private set; }
-
 		public FreeTypeFont(byte[] data)
 		{
 			if (library == IntPtr.Zero && FreeType.FT_Init_FreeType(out library) != FreeType.OK)
@@ -85,25 +78,12 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidDataException("Failed to initialize font");
 		}
 
-		public void SetSize(int size, float deviceScale)
+		public FontGlyph CreateGlyph(char c, int size, float deviceScale)
 		{
 			var scaledSize = (uint)(size * deviceScale);
 			if (FreeType.FT_Set_Pixel_Sizes(face, scaledSize, scaledSize) != FreeType.OK)
-				throw new InvalidDataException("Failed to set size");
+				return EmptyGlyph;
 
-			var faceSize = Marshal.ReadIntPtr(IntPtr.Add(face, FreeType.FaceRecSizeOffset)); // face->size
-			var metrics = IntPtr.Add(faceSize, FreeType.SizeRecMetricsOffset); // face->size->metrics
-			var ascender = Marshal.ReadIntPtr(IntPtr.Add(metrics, FreeType.SizeMetricsAscenderOffset)); // face->size->metrics.ascender
-			var descender = Marshal.ReadIntPtr(IntPtr.Add(metrics, FreeType.SizeMetricsDescenderOffset)); // face->size->metrics.descender
-
-			var ascenderValue = (int)ascender >> 6;
-			var descenderValue = (int)descender >> 6;
-
-			Height = (int)((ascenderValue - Math.Abs(descenderValue)) / deviceScale);
-		}
-
-		public FontGlyph CreateGlyph(char c)
-		{
 			if (FreeType.FT_Load_Char(face, c, FreeType.FT_LOAD_RENDER) != FreeType.OK)
 				return EmptyGlyph;
 

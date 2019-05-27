@@ -90,9 +90,9 @@ namespace OpenRA
 				if (fontSheetBuilder != null)
 					fontSheetBuilder.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
-				Fonts = modData.Manifest.Fonts.ToDictionary(x => x.Key,
-					x => new SpriteFont(x.Value.First, modData.DefaultFileSystem.Open(x.Value.First).ReadAllBytes(),
-										x.Value.Second, Window.WindowScale, fontSheetBuilder)).AsReadOnly();
+				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
+					x => new SpriteFont(x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
+										x.Value.Size, x.Value.Ascender, Window.WindowScale, fontSheetBuilder)).AsReadOnly();
 			}
 
 			Window.OnWindowScaleChanged += (before, after) =>
