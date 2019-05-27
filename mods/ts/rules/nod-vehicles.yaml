@@ -105,6 +105,7 @@ TTNK:
 		TurnSpeed: 5
 		Speed: 85
 		PauseOnCondition: empdisable || being-captured
+		RequireForceMoveCondition: !undeployed
 	Health:
 		HP: 35000
 	Armor:
@@ -227,6 +228,7 @@ ART2:
 		Speed: 71
 		TurnSpeed: 2
 		PauseOnCondition: empdisable || being-captured
+		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
