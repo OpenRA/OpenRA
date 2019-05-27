@@ -61,7 +61,9 @@ namespace OpenRA.Mods.Common.Widgets
 						"checkbox";
 
 			WidgetUtils.DrawPanel(state, check);
-			var position = new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y) / 2);
+
+			var topOffset = font.TopOffset;
+			var position = new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y + (Bounds.Height - textSize.Y - topOffset) / 2);
 
 			if (Contrast)
 				font.DrawTextWithContrast(text, position,

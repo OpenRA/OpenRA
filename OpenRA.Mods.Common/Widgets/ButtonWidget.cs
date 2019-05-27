@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -33,7 +34,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Background = "button";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
-		public int BaseLine = ChromeMetrics.Get<int>("ButtonBaseLine");
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("ButtonTextColor");
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("ButtonTextColorDisabled");
@@ -102,7 +102,6 @@ namespace OpenRA.Mods.Common.Widgets
 			LeftMargin = other.LeftMargin;
 			RightMargin = other.RightMargin;
 			Font = other.Font;
-			BaseLine = other.BaseLine;
 			TextColor = other.TextColor;
 			TextColorDisabled = other.TextColorDisabled;
 			Contrast = other.Contrast;
@@ -243,10 +242,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var colordisabled = GetColorDisabled();
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
-			var textSize = font.Measure(text);
+
 			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
-			var position = GetTextPosition(textSize, rb);
+			var position = GetTextPosition(text, font, rb);
 
 			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 			DrawBackground(rb, disabled, Depressed, hover, highlighted);
@@ -260,9 +259,10 @@ namespace OpenRA.Mods.Common.Widgets
 					disabled ? colordisabled : color);
 		}
 
-		int2 GetTextPosition(int2 textSize, Rectangle rb)
+		int2 GetTextPosition(string text, SpriteFont font, Rectangle rb)
 		{
-			var y = rb.Y - BaseLine + (Bounds.Height - textSize.Y) / 2;
+			var textSize = font.Measure(text);
+			var y = rb.Y + (Bounds.Height - textSize.Y - font.TopOffset) / 2;
 
 			switch (Align)
 			{

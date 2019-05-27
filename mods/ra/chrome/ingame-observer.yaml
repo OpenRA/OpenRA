@@ -150,7 +150,6 @@ Container@OBSERVER_WIDGETS:
 					Y: 8
 					Width: 42
 					Height: 22
-					BaseLine: 1
 					Background: sidebar-button-observer
 					Key: ReplaySpeedSlow
 					TooltipText: Slow speed
@@ -163,7 +162,6 @@ Container@OBSERVER_WIDGETS:
 					Y: 8
 					Width: 42
 					Height: 22
-					BaseLine: 1
 					Background: sidebar-button-observer
 					Key: ReplaySpeedRegular
 					TooltipText: Regular speed
@@ -176,7 +174,6 @@ Container@OBSERVER_WIDGETS:
 					Y: 8
 					Width: 42
 					Height: 22
-					BaseLine: 1
 					Background: sidebar-button-observer
 					Key: ReplaySpeedFast
 					TooltipText: Fast speed
@@ -189,7 +186,6 @@ Container@OBSERVER_WIDGETS:
 					Y: 8
 					Width: 42
 					Height: 22
-					BaseLine: 1
 					Background: sidebar-button-observer
 					Key: ReplaySpeedMax
 					TooltipText: Maximum speed

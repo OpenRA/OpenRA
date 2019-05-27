@@ -125,7 +125,6 @@ Container@OBSERVER_WIDGETS:
 							Y: 13
 							Width: 36
 							Height: 20
-							BaseLine: 1
 							Key: ReplaySpeedSlow
 							TooltipText: Slow speed
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -136,7 +135,6 @@ Container@OBSERVER_WIDGETS:
 							Y: 13
 							Width: 38
 							Height: 20
-							BaseLine: 1
 							Key: ReplaySpeedRegular
 							TooltipText: Regular speed
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -147,7 +145,6 @@ Container@OBSERVER_WIDGETS:
 							Y: 13
 							Width: 38
 							Height: 20
-							BaseLine: 1
 							Key: ReplaySpeedFast
 							TooltipText: Fast speed
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -158,7 +155,6 @@ Container@OBSERVER_WIDGETS:
 							Y: 13
 							Width: 38
 							Height: 20
-							BaseLine: 1
 							Key: ReplaySpeedMax
 							TooltipText: Maximum speed
 							TooltipContainer: TOOLTIP_CONTAINER
