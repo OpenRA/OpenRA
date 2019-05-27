@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -36,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Force-fire mode ignores actors and targets the ground instead.")]
 		public readonly bool ForceFireIgnoresActors = false;
+
+		[Desc("Force-fire mode is required to enable targeting against targets outside of range.")]
+		public readonly bool OutsideRangeRequiresForceFire = false;
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -456,10 +460,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (a == null)
 					a = armaments.First();
 
-				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
-				         (!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors)
-					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
-					: ab.Info.Cursor ?? a.Info.Cursor;
+				var outOfRange = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
+					(!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors);
+
+				if (outOfRange && ab.Info.OutsideRangeRequiresForceFire && !modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				cursor = outOfRange ? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor : ab.Info.Cursor ?? a.Info.Cursor;
 
 				if (!forceAttack)
 					return true;

@@ -170,6 +170,7 @@ TTNK:
 		Turrets: deployed
 		RequiresCondition: deployed
 		PauseOnCondition: empdisable
+		OutsideRangeRequiresForceFire: True
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
@@ -276,6 +277,7 @@ ART2:
 		PauseOnCondition: empdisable
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		OutsideRangeRequiresForceFire: True
 	Armament@deployed:
 		Name: deployed
 		Turret: deployed
