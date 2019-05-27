@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 
 		float deviceScale;
 
-		public SpriteFont(string name, byte[] data, int size, float scale, SheetBuilder builder)
+		public SpriteFont(string name, byte[] data, int size, int ascender, float scale, SheetBuilder builder)
 		{
 			if (builder.Type != SheetType.BGRA)
 				throw new ArgumentException("The sheet builder must create BGRA sheets.", "builder");
@@ -38,7 +38,6 @@ namespace OpenRA.Graphics
 			this.builder = builder;
 
 			font = Game.Renderer.CreateFont(data);
-			font.SetSize(size, deviceScale);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
 
@@ -49,17 +48,13 @@ namespace OpenRA.Graphics
 			if (size <= 24)
 				PrecacheColor(Color.White, name);
 
-			TopOffset = size - font.Height;
+			TopOffset = size - ascender;
 		}
 
 		public void SetScale(float scale)
 		{
 			deviceScale = scale;
-
-			font.SetSize(size, scale);
 			glyphs.Clear();
-
-			TopOffset = size - font.Height;
 		}
 
 		void PrecacheColor(Color c, string name)
@@ -139,7 +134,7 @@ namespace OpenRA.Graphics
 
 		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			var glyph = font.CreateGlyph(c.First);
+			var glyph = font.CreateGlyph(c.First, size, deviceScale);
 
 			if (glyph.Data == null)
 			{

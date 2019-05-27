@@ -66,7 +66,6 @@ namespace OpenRA
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
 		public readonly MiniYaml LoadScreen;
-		public readonly Dictionary<string, Pair<string, int>> Fonts;
 
 		public readonly string[] SoundFormats = { };
 		public readonly string[] SpriteFormats = { };
@@ -77,7 +76,7 @@ namespace OpenRA
 			"Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
-			"ServerTraits", "LoadScreen", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
+			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
 			"RequiresMods", "PackageFormats"
 		};
 
@@ -122,12 +121,6 @@ namespace OpenRA
 
 			if (!yaml.TryGetValue("LoadScreen", out LoadScreen))
 				throw new InvalidDataException("`LoadScreen` section is not defined.");
-
-			Fonts = yaml["Fonts"].ToDictionary(my =>
-			{
-				var nd = my.ToDictionary();
-				return Pair.New(nd["Font"].Value, Exts.ParseIntegerInvariant(nd["Size"].Value));
-			});
 
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string> { Id };
