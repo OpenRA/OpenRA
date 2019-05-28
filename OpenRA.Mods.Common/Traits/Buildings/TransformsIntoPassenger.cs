@@ -26,11 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string CargoType = null;
 		public readonly int Weight = 1;
 
-		[Desc("Use to set when to use alternate transports (Never, Force, Default, Always).",
-			"Force - use force move modifier (Alt) to enable.",
-			"Default - use force move modifier (Alt) to disable.")]
-		public readonly AlternateTransportsMode AlternateTransportsMode = AlternateTransportsMode.Force;
-
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -39,20 +34,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TransformsIntoPassenger : ConditionalTrait<TransformsIntoPassengerInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly IOrderTargeter[] orders;
 		Transforms[] transforms;
 
 		public TransformsIntoPassenger(TransformsIntoPassengerInfo info)
-			: base(info)
-		{
-			Func<Actor, bool> canTarget = IsCorrectCargoType;
-			Func<Actor, bool> useEnterCursor = CanEnter;
-			orders = new EnterAlliedActorTargeter<CargoInfo>[]
-			{
-				new EnterTransportTargeter("EnterTransport", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode),
-				new EnterTransportsTargeter("EnterTransports", 5, canTarget, useEnterCursor, Info.AlternateTransportsMode)
-			};
-		}
+			: base(info) { }
 
 		protected override void Created(Actor self)
 		{
@@ -64,13 +49,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				return !IsTraitDisabled ? orders : Enumerable.Empty<IOrderTargeter>();
+				if (!IsTraitDisabled)
+					yield return new EnterAlliedActorTargeter<CargoInfo>("EnterTransport", 5, IsCorrectCargoType, CanEnter);
 			}
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "EnterTransport" || order.OrderID == "EnterTransports")
+			if (order.OrderID == "EnterTransport")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -96,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports")
+			if (order.OrderString != "EnterTransport")
 				return;
 
 			// Enter orders are only valid for own/allied actors,
@@ -130,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return null;
 
-			if (order.OrderString != "EnterTransport" && order.OrderString != "EnterTransports")
+			if (order.OrderString != "EnterTransport")
 				return null;
 
 			if (order.Target.Type != TargetType.Actor || !CanEnter(order.Target.Actor))
