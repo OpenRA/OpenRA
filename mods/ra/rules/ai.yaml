@@ -337,7 +337,7 @@ Player:
 			ttnk: 25
 			stnk: 5
 			heli: 30
-			hind: 30
+			mh60: 30
 			mig: 30
 			yak: 30
 			ss: 10
@@ -379,7 +379,7 @@ Player:
 			ttnk: 25
 			stnk: 10
 			heli: 30
-			hind: 30
+			mh60: 30
 			mig: 30
 			yak: 30
 			ss: 10
@@ -404,7 +404,7 @@ Player:
 		UnitsToBuild:
 			harv: 1
 			heli: 30
-			hind: 30
+			mh60: 30
 			mig: 30
 			yak: 30
 			ss: 10

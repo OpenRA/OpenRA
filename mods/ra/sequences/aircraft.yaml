@@ -70,3 +70,17 @@ u2:
 badr:
 	idle:
 		Facings: 16
+
+mh60:
+	idle:
+		Facings: 32
+		UseClassicFacingFudge: True
+	rotor: yrotorlg
+		Length: 4
+	slow-rotor: yrotorlg
+		Start: 4
+		Length: 8
+	muzzle: minigun
+		Length: 6
+		Facings: 8
+	icon: mh60icon
