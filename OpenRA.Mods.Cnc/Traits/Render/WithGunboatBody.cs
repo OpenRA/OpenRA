@@ -62,11 +62,16 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var name = rs.GetImage(init.Self);
 			turret = init.Self.TraitsImplementing<Turreted>()
 				.First(t => t.Name == info.Turret);
-			turret.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 
 			wake = new Animation(init.World, name);
 			wake.PlayRepeating(info.WakeLeftSequence);
 			rs.Add(new AnimationWithOffset(wake, null, null, -87));
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			base.TraitEnabled(self);
+			turret.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 
 		void ITick.Tick(Actor self)
