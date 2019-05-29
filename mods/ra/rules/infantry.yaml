@@ -193,7 +193,7 @@ E3:
 		Prerequisites: barracks.upgraded
 	AutoTarget:
 		ScanRadius: 5
-
+	 	 
 E3R1:
 	Inherits: E3
 	RenderSprites:
