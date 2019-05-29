@@ -58,6 +58,11 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
 			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			base.TraitEnabled(self);
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;
 		}
 

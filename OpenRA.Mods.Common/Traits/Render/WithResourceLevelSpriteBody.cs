@@ -47,7 +47,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			this.info = info;
 			playerResources = init.Self.Owner.PlayerActor.Trait<PlayerResources>();
-			ConfigureAnimation(init.Self);
 		}
 
 		void ConfigureAnimation(Actor self)
@@ -65,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override void TraitEnabled(Actor self)
 		{
-			// Do nothing - we just want to disable the default WithSpriteBody implementation
+			base.TraitEnabled(self);
+			ConfigureAnimation(self);
 		}
 
 		public override void CancelCustomAnimation(Actor self)
