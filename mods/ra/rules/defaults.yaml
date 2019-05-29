@@ -626,7 +626,7 @@
 		RequiresCondition: cruising
 	BodyOrientation:
 		UseClassicFacingFudge: True
-		 
+	
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable

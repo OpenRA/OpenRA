@@ -286,7 +286,7 @@ ARTY:
 		LoadedChance: 75
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
-
+ 
 HARV:
 	Inherits: ^Vehicle
 	Inherits@SELECTION_TIER: ^SelectableEconomicUnit
