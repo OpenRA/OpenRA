@@ -24,6 +24,7 @@ light_inf:
 
 engineer:
 	Inherits: ^Infantry
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30

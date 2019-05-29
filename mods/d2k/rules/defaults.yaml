@@ -226,6 +226,7 @@
 
 ^Tank:
 	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableCombatUnit
 	Mobile:
 		Locomotor: tank
 
@@ -279,6 +280,7 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -373,6 +375,7 @@
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@selection: ^SelectableBuilding
 	Tooltip:
 		GenericName: Structure
 	Huntable:
@@ -380,8 +383,6 @@
 		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 2
 	RevealsShroud:
 	Targetable:
 		TargetTypes: Ground, C4, Structure
@@ -463,6 +464,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	WithSpriteTurret:
 	AttackTurreted:
 	RenderRangeCircle:
@@ -528,3 +530,23 @@
 	WithBuildingRepairDecoration:
 		Offsets:
 			powerdown: -10, 0
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority:8
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2

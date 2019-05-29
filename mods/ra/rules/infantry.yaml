@@ -245,6 +245,7 @@ E4:
 E6:
 	Inherits: ^Soldier
 	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
@@ -285,8 +286,6 @@ E6:
 		EnterBlockedCursor: move-blocked
 	Voiced:
 		VoiceSet: EngineerVoice
-	Selectable:
-		Priority: 5
 	-AttackFrontal:
 
 SPY:

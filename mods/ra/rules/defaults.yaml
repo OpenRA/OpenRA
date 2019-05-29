@@ -647,10 +647,9 @@
 	Inherits@3: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Inherits@bounty: ^GlobalBounty
+	Inherits@selection: ^SelectableBuilding
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure
 	Building:
@@ -735,6 +734,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -1231,3 +1231,23 @@
 		Types: SpyInfiltrate
 	Power:
 		RequiresCondition: !disabled
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2

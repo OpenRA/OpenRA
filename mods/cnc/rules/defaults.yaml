@@ -254,6 +254,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -474,6 +475,7 @@
 
 ^Soldier:
 	Inherits: ^Infantry
+	Inherits@selection: ^SelectableCombatUnit
 	MustBeDestroyed:
 	Tooltip:
 		GenericName: Soldier
@@ -699,13 +701,12 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
+	Inherits@selection: ^SelectableBuilding
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, Structure
 	Armor:
@@ -1146,6 +1147,7 @@
 
 ^Defense:
 	Inherits: ^BaseBuilding
+	Inherits@selection: ^SelectableCombatBuilding
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	-GivesBuildableArea:
@@ -1165,3 +1167,23 @@
 	WithColoredOverlay@IDISABLE:
 		RequiresCondition: lowpower
 		Palette: disabled
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2
