@@ -206,6 +206,8 @@ V2RL:
 	Mobile:
 		Speed: 50
 		Locomotor: heavytracked
+	Passenger:
+		Weight: 6
 	RevealsShroud:
 		Range: 7c0
 		RevealGeneratedShroud: False
@@ -363,6 +365,8 @@ MCV:
 	Mobile:
 		Speed: 71
 		Locomotor: heavywheeled
+	Passenger:
+		Weight: 6
 	RevealsShroud:
 		Range: 4c0
 	Transforms:
@@ -807,6 +811,8 @@ QTNK:
 		RequiresCondition: !deployed
 		PauseOnCondition: being-captured
 		Speed: 56
+	Passenger:
+		Weight: 6
 	Chronoshiftable:
 		RequiresCondition: !deployed && !being-captured
 	RevealsShroud:

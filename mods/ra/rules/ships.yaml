@@ -286,8 +286,8 @@ LST:
 		OpenTerrainTypes: Clear, Rough, Road, Ore, Gems, Beach
 	Cargo:
 		Types: Infantry, Vehicle
-		MaxWeight: 5
-		PipCount: 5
+		MaxWeight: 12
+		PipCount: 12
 		PassengerFacing: 0
 		LoadingCondition: notmobile
 	-Chronoshiftable:

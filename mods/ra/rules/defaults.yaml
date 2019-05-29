@@ -263,6 +263,7 @@
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
+		Weight: 4
 	AttackMove:
 	HiddenUnderFog:
 	ActorLostNotification:
