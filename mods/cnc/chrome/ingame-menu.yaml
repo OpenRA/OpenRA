@@ -14,7 +14,7 @@ Container@INGAME_MENU:
 			ImageName: eva
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 128 - 43
-			Y: 115
+			Y: 116
 			Width: 128
 			Align: Center
 			Contrast: true

@@ -8,7 +8,7 @@ Container@MUSIC_PANEL:
 		LogicTicker@SONG_WATCHER:
 		Label@TITLE:
 			Width: 360
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -45,7 +45,7 @@ Container@MUSIC_PANEL:
 									Height: 25
 				Container@LABEL_CONTAINER:
 					X: 25
-					Y: 5
+					Y: 4
 					Width: 330
 					Children:
 						Label@TITLE:
@@ -139,7 +139,7 @@ Container@MUSIC_PANEL:
 							Ticks: 7
 				Label@TIME_LABEL:
 					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 315
+					Y: 317
 					Width: 140
 					Height: 25
 					Align: Center
@@ -159,7 +159,7 @@ Container@MUSIC_PANEL:
 					Text: Loop
 				Container@NO_MUSIC_LABEL:
 					X: 15
-					Y: 120
+					Y: 121
 					Width: 330
 					Height: 60
 					Visible: false
@@ -191,7 +191,7 @@ Container@MUSIC_PANEL:
 			Text: Back
 		Label@MUTE_LABEL:
 			X: 100
-			Y: 337
+			Y: 339
 			Width: 300
 			Height: 20
 			Font: Small

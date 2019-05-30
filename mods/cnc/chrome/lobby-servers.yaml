@@ -4,7 +4,7 @@ Container@LOBBY_SERVERS_BIN:
 	Height: PARENT_BOTTOM
 	Children:
 		Container@LABEL_CONTAINER:
-			Y: 0 - 25
+			Y: 0 - 24
 			Width: PARENT_RIGHT
 			Children:
 				Label@NAME:
