@@ -23,7 +23,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			ImageName: eva
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 128 - 43
-			Y: 115
+			Y: 116
 			Width: 128
 			Align: Center
 			Shadow: true
@@ -33,7 +33,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			Background: shellmapborder
 		Label@TITLE:
 			Width: WINDOW_RIGHT
-			Y: 3 * WINDOW_BOTTOM / 4 - 30
+			Y: 3 * WINDOW_BOTTOM / 4 - 29
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -45,7 +45,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			Height: 20
 		Label@DESC:
 			Width: WINDOW_RIGHT
-			Y: 3 * WINDOW_BOTTOM / 4 + 20
+			Y: 3 * WINDOW_BOTTOM / 4 + 19
 			Height: 25
 			Font: Regular
 			Align: Center

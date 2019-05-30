@@ -8,7 +8,7 @@ Container@NEW_MAP_BG:
 		Label@TITLE:
 			Text: New Map
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -19,7 +19,7 @@ Container@NEW_MAP_BG:
 			Children:
 				Label@TILESET_LABEL:
 					X: 25
-					Y: 14
+					Y: 15
 					Width: 95
 					Height: 25
 					Align: Right
@@ -31,7 +31,7 @@ Container@NEW_MAP_BG:
 					Height: 25
 				Label@WIDTH_LABEL:
 					X: 25
-					Y: 49
+					Y: 50
 					Width: 95
 					Height: 25
 					Align: Right
@@ -46,7 +46,7 @@ Container@NEW_MAP_BG:
 					Type: Integer
 				Label@HEIGHT_LABEL:
 					X: 135
-					Y: 49
+					Y: 50
 					Width: 95
 					Height: 25
 					Align: Right
@@ -85,7 +85,7 @@ Container@SAVE_MAP_PANEL:
 		Label@LABEL_TITLE:
 			Text: Save Map
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -96,7 +96,7 @@ Container@SAVE_MAP_PANEL:
 			Children:
 				Label@TITLE_LABEL:
 					X: 10
-					Y: 14
+					Y: 15
 					Width: 95
 					Height: 25
 					Align: Right
@@ -109,7 +109,7 @@ Container@SAVE_MAP_PANEL:
 					Height: 25
 				Label@AUTHOR_LABEL:
 					X: 10
-					Y: 49
+					Y: 50
 					Width: 95
 					Height: 25
 					Align: Right
@@ -122,7 +122,7 @@ Container@SAVE_MAP_PANEL:
 					Height: 25
 				Label@VISIBILITY_LABEL:
 					X: 10
-					Y: 84
+					Y: 85
 					Width: 95
 					Height: 25
 					Align: Right
@@ -136,7 +136,7 @@ Container@SAVE_MAP_PANEL:
 					Font: Regular
 				Label@DIRECTORY_LABEL:
 					X: 10
-					Y: 119
+					Y: 120
 					Width: 95
 					Height: 25
 					Align: Right
@@ -149,7 +149,7 @@ Container@SAVE_MAP_PANEL:
 					Font: Regular
 				Label@FILENAME_LABEL:
 					X: 10
-					Y: 154
+					Y: 155
 					Width: 95
 					Height: 25
 					Align: Right
@@ -231,13 +231,13 @@ Container@EDITOR_WORLD_ROOT:
 					Children:
 						Label@ACTOR_TYPE_LABEL:
 							X: 2
-							Y: 1
+							Y: 2
 							Width: 265
 							Height: 24
 							Align: Center
 							Font: Bold
 						Label@ACTOR_ID_LABEL:
-							Y: 29
+							Y: 30
 							Width: 55
 							Height: 24
 							Text: ID
@@ -249,7 +249,7 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 						Label@ACTOR_ID_ERROR_LABEL:
 							X: 67
-							Y: 54
+							Y: 55
 							Width: 189
 							Height: 15
 							Font: TinyBold
@@ -263,6 +263,7 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 22
 									Children:
 										Label@LABEL:
+											Y: 1
 											Width: 55
 											Height: 16
 											Align: Right
@@ -276,7 +277,7 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 27
 									Children:
 										Label@LABEL:
-											Y: 1
+											Y: 2
 											Width: 55
 											Height: 24
 											Align: Right
@@ -361,13 +362,14 @@ Container@EDITOR_WORLD_ROOT:
 							Background: panel-black
 							Children:
 								Label@SEARCH_LABEL:
+									Y: 1
 									Width: PARENT_RIGHT - 5
 									Height: 25
 									Text: Search:
 									Align: Right
 									Font: TinyBold
 								Label@CATEGORIES_LABEL:
-									Y: 24
+									Y: 25
 									Width: PARENT_RIGHT - 5
 									Height: 25
 									Text: Filter:
@@ -443,20 +445,21 @@ Container@EDITOR_WORLD_ROOT:
 							Background: panel-black
 							Children:
 								Label@SEARCH_LABEL:
+									Y: 1
 									Width: PARENT_RIGHT - 5
 									Height: 25
 									Text: Search:
 									Align: Right
 									Font: TinyBold
 								Label@CATEGORIES_LABEL:
-									Y: 24
+									Y: 25
 									Width: PARENT_RIGHT - 5
 									Height: 25
 									Text: Filter:
 									Align: Right
 									Font: TinyBold
 								Label@OWNERS_LABEL:
-									Y: 48
+									Y: 49
 									Width: PARENT_RIGHT - 5
 									Height: 25
 									Text: Owner:

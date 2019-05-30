@@ -32,7 +32,7 @@ Container@SETTINGS_PANEL:
 	Children:
 		Label@TITLE:
 			Width: 590
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -69,14 +69,14 @@ Container@SETTINGS_PANEL:
 					Height: PARENT_BOTTOM
 					Children:
 						Label@VIDEO_TITLE:
-							Y: 20
+							Y: 21
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Display
 							Align: Center
 						Label@MODE_LABEL:
 							X: 110
-							Y: 39
+							Y: 40
 							Width: 45
 							Height: 25
 							Align: Right
@@ -95,7 +95,7 @@ Container@SETTINGS_PANEL:
 								Label@At:
 									Text: @
 									Font: Bold
-									Y: 0 - 1
+									Y: 0
 									Height: 25
 									Width: 25
 									Align: Center
@@ -109,7 +109,7 @@ Container@SETTINGS_PANEL:
 									Text: x
 									Font: Bold
 									X: 70
-									Y: 0 - 1
+									Y: 0
 									Height: 25
 									Width: 15
 									Align: Center
@@ -127,7 +127,7 @@ Container@SETTINGS_PANEL:
 							Font: Regular
 							Text: Use Hardware Cursors
 						Label@VIDEO_DESC:
-							Y: 93
+							Y: 92
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
@@ -156,7 +156,7 @@ Container@SETTINGS_PANEL:
 							Text: Also Double Cursor
 						Label@FRAME_LIMIT_DESC_A:
 							X: 45
-							Y: 152
+							Y: 153
 							Width: 50
 							Height: 25
 							Text: Limit to
@@ -170,7 +170,7 @@ Container@SETTINGS_PANEL:
 							Type: Integer
 						Label@FRAME_LIMIT_DESC_B:
 							X: 150
-							Y: 152
+							Y: 153
 							Height: 25
 							Text: FPS
 						Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
@@ -183,7 +183,7 @@ Container@SETTINGS_PANEL:
 						Label@PLAYER:
 							Text: Player:
 							X: 15
-							Y: 195
+							Y: 197
 						TextField@PLAYERNAME:
 							Text: Name
 							X: 65
@@ -206,7 +206,7 @@ Container@SETTINGS_PANEL:
 									Height: PARENT_BOTTOM - 12
 						Label@STATUS_BARS:
 							X: 310
-							Y: 255
+							Y: 257
 							Text: Status Bars:
 						DropDownButton@STATUS_BAR_DROPDOWN:
 							X: 400
@@ -265,14 +265,14 @@ Container@SETTINGS_PANEL:
 					Height: PARENT_BOTTOM
 					Children:
 						Label@AUDIO_TITLE:
-							Y: 20
+							Y: 21
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Audio
 							Align: Center
 						Label@SOUND_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 37
+							Y: 38
 							Width: 95
 							Height: 25
 							Align: Right
@@ -299,7 +299,7 @@ Container@SETTINGS_PANEL:
 							Text: Mute Sound
 						Label@MUSIC_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 67
+							Y: 68
 							Width: 95
 							Height: 25
 							Align: Right
@@ -312,7 +312,7 @@ Container@SETTINGS_PANEL:
 							Ticks: 7
 						Label@VIDEO_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 97
+							Y: 98
 							Width: 95
 							Height: 25
 							Align: Right
@@ -325,7 +325,7 @@ Container@SETTINGS_PANEL:
 							Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5
-							Y: 244
+							Y: 245
 							Width: 75
 							Height: 25
 							Align: Right
@@ -336,7 +336,7 @@ Container@SETTINGS_PANEL:
 							Width: 300
 							Height: 25
 						Label@AUDIO_DEVICE_DESC:
-							Y: 265
+							Y: 266
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
@@ -347,7 +347,7 @@ Container@SETTINGS_PANEL:
 					Height: PARENT_BOTTOM
 					Children:
 						Label@INPUT_TITLE:
-							Y: 20
+							Y: 21
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Input
@@ -361,7 +361,7 @@ Container@SETTINGS_PANEL:
 							Text: Left-click Orders
 						Label@MIDDLE_MOUSE_SCROLL_LABEL:
 							X: PARENT_RIGHT - WIDTH - 120
-							Y: 39
+							Y: 41
 							Width: 160
 							Height: 20
 							Font: Regular
@@ -375,7 +375,7 @@ Container@SETTINGS_PANEL:
 							Font: Regular
 						Label@MIDDLE_MOUSE_SCROLL_LABEL:
 							X: PARENT_RIGHT - WIDTH - 120
-							Y: 69
+							Y: 71
 							Width: 160
 							Height: 20
 							Font: Regular
@@ -389,7 +389,7 @@ Container@SETTINGS_PANEL:
 							Font: Regular
 						Label@ZOOM_MODIFIER_LABEL:
 							X: PARENT_RIGHT - WIDTH - 120
-							Y: 98
+							Y: 101
 							Width: 160
 							Height: 20
 							Font: Regular
@@ -425,7 +425,7 @@ Container@SETTINGS_PANEL:
 							Text: Lock Mouse to Window
 						Label@SCROLL_SPEED_LABEL:
 							X: PARENT_RIGHT - WIDTH - 270
-							Y: 127
+							Y: 128
 							Width: 95
 							Height: 25
 							Text: Scroll Speed:
@@ -440,7 +440,7 @@ Container@SETTINGS_PANEL:
 							MaximumValue: 50
 						Label@UI_SCROLL_SPEED_LABEL:
 							X: PARENT_RIGHT - WIDTH - 106
-							Y: 127
+							Y: 128
 							Width: 95
 							Height: 25
 							Text: UI Scroll:
@@ -454,7 +454,7 @@ Container@SETTINGS_PANEL:
 							MinimumValue: 1
 							MaximumValue: 100
 						Label@HOTKEYS_TITLE:
-							Y: 165
+							Y: 166
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Hotkeys
@@ -475,7 +475,7 @@ Container@SETTINGS_PANEL:
 										Label@LABEL:
 											Font: TinyBold
 											Width: PARENT_RIGHT
-											Height: 10
+											Height: 13
 											Align: Center
 								Container@TEMPLATES:
 									Children:
@@ -485,7 +485,7 @@ Container@SETTINGS_PANEL:
 											Visible: false
 											Children:
 												Label@FUNCTION:
-													Y: 0 - 1
+													Y: 0
 													Width: PARENT_RIGHT - 85
 													Height: 25
 													Align: Right
@@ -512,7 +512,7 @@ Container@SETTINGS_PANEL:
 					Height: PARENT_BOTTOM
 					Children:
 						Label@ADVANCED_TITLE:
-							Y: 20
+							Y: 21
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Advanced
@@ -561,20 +561,20 @@ Container@SETTINGS_PANEL:
 							Text: Send System Information
 						Label@SENDSYSINFO_DESC:
 							X: 310
-							Y: 115
+							Y: 116
 							Width: 250
 							Height: 30
 							Font: Tiny
 							WordWrap: True
 							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 						Label@DEBUG_TITLE:
-							Y: 200
+							Y: 201
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Developer
 							Align: Center
 						Container@DEBUG_HIDDEN_LABEL:
-							Y: 250
+							Y: 252
 							Width: PARENT_RIGHT
 							Children:
 								Label@A:

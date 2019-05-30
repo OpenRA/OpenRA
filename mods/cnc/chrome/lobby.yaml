@@ -8,7 +8,7 @@ Container@SERVER_LOBBY:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -96,7 +96,7 @@ Container@SERVER_LOBBY:
 						ScrollPanel@CHAT_DISPLAY:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM - 30
-							TopBottomSpacing: 2
+							TopBottomSpacing: 3
 							ItemSpacing: 2
 							Children:
 								Container@CHAT_TEMPLATE:
@@ -108,21 +108,18 @@ Container@SERVER_LOBBY:
 										Label@TIME:
 											X: 3
 											Width: 50
-											Height: 15
-											VAlign: Top
+											Height: 16
 											Shadow: True
 										Label@NAME:
 											X: 45
 											Width: 50
-											Height: 15
-											VAlign: Top
+											Height: 16
 											Shadow: True
 										Label@TEXT:
 											X: 55
 											Width: PARENT_RIGHT - 60
-											Height: 15
+											Height: 16
 											WordWrap: true
-											VAlign: Top
 											Shadow: True
 						Button@CHAT_MODE:
 							Y: PARENT_BOTTOM - HEIGHT

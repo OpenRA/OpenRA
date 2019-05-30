@@ -8,14 +8,14 @@ Container@GAME_INFO_PANEL:
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 20
+			Y: 0 - 17
 			Text: Game Information
 			Align: Center
 			Font: BigBold
 			Contrast: true
 		Label@TITLE_NO_TABS:
 			Width: PARENT_RIGHT
-			Y: 15
+			Y: 18
 			Text: Game Information
 			Align: Center
 			Font: BigBold

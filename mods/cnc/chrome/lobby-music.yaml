@@ -5,7 +5,7 @@ Container@LOBBY_MUSIC_BIN:
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Container@LABEL_CONTAINER:
-			Y: 0 - 25
+			Y: 0 - 23
 			Width: PARENT_RIGHT
 			Children:
 				Label@MUSIC:
@@ -133,7 +133,7 @@ Container@LOBBY_MUSIC_BIN:
 					Font: Regular
 					Text: Loop
 				Label@VOLUME_LABEL:
-					Y: 180
+					Y: 182
 					Width: 65
 					Height: 25
 					Align: Right

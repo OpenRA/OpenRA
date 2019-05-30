@@ -4,7 +4,7 @@ Container@LOBBY_PLAYER_BIN:
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
-			Y: 0 - 25
+			Y: 0 - 24
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
 			Children:

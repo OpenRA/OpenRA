@@ -7,7 +7,7 @@ Container@MAPCHOOSER_PANEL:
 	Children:
 		Label@TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 25
+			Y: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -19,7 +19,7 @@ Container@MAPCHOOSER_PANEL:
 			Children:
 				Label@FILTER_DESC:
 					X: PARENT_RIGHT - WIDTH - 401
-					Y: 15
+					Y: 16
 					Width: 60
 					Height: 25
 					Font: Bold
@@ -32,7 +32,7 @@ Container@MAPCHOOSER_PANEL:
 					Height: 25
 				Label@FILTER_DESC_JOINER:
 					X: PARENT_RIGHT - WIDTH - 215
-					Y: 15
+					Y: 16
 					Width: 30
 					Height: 25
 					Font: Bold
@@ -90,25 +90,25 @@ Container@MAPCHOOSER_PANEL:
 							IgnoreMouseInput: true
 						Label@TITLE:
 							X: 4
-							Y: PARENT_BOTTOM - 48
+							Y: PARENT_BOTTOM - 46
 							Width: PARENT_RIGHT - 8
 							Align: Center
 						Label@DETAILS:
 							Width: PARENT_RIGHT - 8
 							X: 4
-							Y: PARENT_BOTTOM - 34
+							Y: PARENT_BOTTOM - 32
 							Align: Center
 							Font: Tiny
 						Label@AUTHOR:
 							Width: PARENT_RIGHT - 8
 							X: 4
-							Y: PARENT_BOTTOM - 22
+							Y: PARENT_BOTTOM - 20
 							Align: Center
 							Font: Tiny
 						Label@SIZE:
 							Width: PARENT_RIGHT - 8
 							X: 4
-							Y: PARENT_BOTTOM - 10
+							Y: PARENT_BOTTOM - 8
 							Align: Center
 							Font: Tiny
 				Button@BUTTON_CANCEL:
