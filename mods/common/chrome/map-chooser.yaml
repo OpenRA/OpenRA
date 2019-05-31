@@ -6,7 +6,7 @@ Background@MAPCHOOSER_PANEL:
 	Height: 600
 	Children:
 		Label@MAPCHOOSER_TITLE:
-			Y: 15
+			Y: 17
 			Align: Center
 			Width: PARENT_RIGHT
 			Height: 20
@@ -61,30 +61,30 @@ Background@MAPCHOOSER_PANEL:
 					IgnoreMouseInput: true
 				Label@TITLE:
 					X: 4
-					Y: PARENT_BOTTOM - 53
+					Y: PARENT_BOTTOM - 52
 					Width: PARENT_RIGHT - 8
 					Align: Center
 				Label@DETAILS:
 					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM - 37
+					Y: PARENT_BOTTOM - 36
 					Align: Center
 					Font: Tiny
 				Label@AUTHOR:
 					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM - 25
+					Y: PARENT_BOTTOM - 24
 					Align: Center
 					Font: Tiny
 				Label@SIZE:
 					Width: PARENT_RIGHT - 8
 					X: 4
-					Y: PARENT_BOTTOM - 13
+					Y: PARENT_BOTTOM - 12
 					Align: Center
 					Font: Tiny
 		Label@FILTER_DESC:
 			X: PARENT_RIGHT - 467
-			Y: 48
+			Y: 50
 			Width: 60
 			Height: 24
 			Font: Bold

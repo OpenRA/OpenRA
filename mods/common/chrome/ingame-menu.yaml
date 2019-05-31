@@ -18,7 +18,7 @@ Container@INGAME_MENU:
 			ImageName: logo
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 296
-			Y: 296 - 20
+			Y: 296 - 19
 			Width: 296 - 20
 			Height: 25
 			Align: Center

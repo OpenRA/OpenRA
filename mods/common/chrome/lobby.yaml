@@ -7,7 +7,7 @@ Background@SERVER_LOBBY:
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@SERVER_NAME:
-			Y: 15
+			Y: 16
 			Align: Center
 			Width: PARENT_RIGHT
 			Height: 25
@@ -111,21 +111,18 @@ Background@SERVER_LOBBY:
 								Label@TIME:
 									X: 3
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@NAME:
 									X: 45
 									Width: 50
-									Height: 15
-									VAlign: Top
+									Height: 16
 									Shadow: True
 								Label@TEXT:
 									X: 55
 									Width: PARENT_RIGHT - 60
-									Height: 15
+									Height: 16
 									WordWrap: true
-									VAlign: Top
 									Shadow: True
 				Button@CHAT_MODE:
 					Y: PARENT_BOTTOM - HEIGHT

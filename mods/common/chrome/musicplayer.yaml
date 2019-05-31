@@ -33,7 +33,7 @@ Background@MUSIC_PANEL:
 							Height: 25
 		Container@LABEL_CONTAINER:
 			X: 25
-			Y: 15
+			Y: 16
 			Width: 330
 			Children:
 				Label@TITLE:
@@ -127,7 +127,7 @@ Background@MUSIC_PANEL:
 					Ticks: 7
 		Label@TIME_LABEL:
 			X: (PARENT_RIGHT - WIDTH) / 2
-			Y: 330
+			Y: 332
 			Width: 140
 			Height: 25
 			Align: Center
@@ -146,7 +146,7 @@ Background@MUSIC_PANEL:
 			Text: Loop
 		Container@NO_MUSIC_LABEL:
 			X: 15
-			Y: 135
+			Y: 136
 			Width: 330
 			Height: 60
 			Visible: false

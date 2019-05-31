@@ -27,7 +27,7 @@ Container@INGAME_ROOT:
 					Logic: DisconnectWatcherLogic
 				Label@MISSION_TEXT:
 					X: WINDOW_RIGHT / 2 - 256
-					Y: 22
+					Y: 23
 					Width: 512
 					Height: 25
 					Font: Bold

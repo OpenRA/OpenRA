@@ -127,6 +127,7 @@ Background@REPLAYBROWSER_PANEL:
 					Height: 115
 					Children:
 						Label@MANAGE_TITLE:
+							Y: 1
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Bold
@@ -159,6 +160,7 @@ Background@REPLAYBROWSER_PANEL:
 			Height: PARENT_BOTTOM - 20 - 55
 			Children:
 				Label@REPLAYBROWSER_LABEL_TITLE:
+					Y: 1
 					Width: PARENT_RIGHT
 					Height: 25
 					Text: Choose Replay
@@ -196,7 +198,7 @@ Background@REPLAYBROWSER_PANEL:
 			Height: PARENT_BOTTOM - 250 - 45
 			Children:
 				Label@DURATION:
-					Y: 20
+					Y: 19
 					Width: PARENT_RIGHT
 					Height: 15
 					Font: Tiny
@@ -218,7 +220,7 @@ Background@REPLAYBROWSER_PANEL:
 								Label@LABEL:
 									Font: TinyBold
 									Width: PARENT_RIGHT
-									Height: 10
+									Height: 13
 									Align: Center
 						ScrollItem@TEMPLATE:
 							Width: PARENT_RIGHT - 27

@@ -3,7 +3,7 @@ Container@PERF_WIDGETS:
 	Children:
 		Label@PERF_TEXT:
 			X: WINDOW_RIGHT - 200
-			Y: WINDOW_BOTTOM - 70
+			Y: WINDOW_BOTTOM - 69
 			Width: 170
 			Height: 40
 			Contrast: true

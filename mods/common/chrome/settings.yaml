@@ -89,7 +89,7 @@ Background@SETTINGS_PANEL:
 			Children:
 				Label@MODE_LABEL:
 					X: 110
-					Y: 39
+					Y: 41
 					Width: 45
 					Height: 25
 					Align: Right
@@ -108,7 +108,7 @@ Background@SETTINGS_PANEL:
 						Label@At:
 							Text: @
 							Font: Bold
-							Y: 0 - 1
+							Y: 1
 							Height: 25
 							Width: 25
 							Align: Center
@@ -122,7 +122,7 @@ Background@SETTINGS_PANEL:
 							Text: x
 							Font: Bold
 							X: 70
-							Y: 0 - 1
+							Y: 0
 							Height: 25
 							Width: 15
 							Align: Center
@@ -169,7 +169,7 @@ Background@SETTINGS_PANEL:
 					Text: Also Double Cursor
 				Label@FRAME_LIMIT_DESC_A:
 					X: 45
-					Y: 157
+					Y: 159
 					Width: 50
 					Height: 25
 					Text: Limit to
@@ -183,7 +183,7 @@ Background@SETTINGS_PANEL:
 					Type: Integer
 				Label@FRAME_LIMIT_DESC_B:
 					X: 150
-					Y: 157
+					Y: 159
 					Height: 25
 					Text: FPS
 				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
@@ -196,7 +196,7 @@ Background@SETTINGS_PANEL:
 				Label@PLAYER:
 					Text: Player:
 					X: 15
-					Y: 205
+					Y: 208
 				TextField@PLAYERNAME:
 					Text: Name
 					X: 65
@@ -219,7 +219,7 @@ Background@SETTINGS_PANEL:
 							Height: PARENT_BOTTOM - 12
 				Label@STATUS_BARS:
 					X: 310
-					Y: 275
+					Y: 278
 					Text: Status Bars:
 				DropDownButton@STATUS_BAR_DROPDOWN:
 					X: 400
@@ -280,7 +280,7 @@ Background@SETTINGS_PANEL:
 			Children:
 				Label@SOUND_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 37
+					Y: 39
 					Width: 95
 					Height: 25
 					Align: Right
@@ -307,7 +307,7 @@ Background@SETTINGS_PANEL:
 					Text: Mute Sound
 				Label@MUSIC_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 67
+					Y: 69
 					Width: 95
 					Height: 25
 					Align: Right
@@ -320,7 +320,7 @@ Background@SETTINGS_PANEL:
 					Ticks: 7
 				Label@VIDEO_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 97
+					Y: 99
 					Width: 95
 					Height: 25
 					Align: Right
@@ -333,7 +333,7 @@ Background@SETTINGS_PANEL:
 					Ticks: 7
 				Label@AUDIO_DEVICE_LABEL:
 					X: 190 - WIDTH - 5
-					Y: 244
+					Y: 245
 					Width: 75
 					Height: 25
 					Align: Right
@@ -344,7 +344,7 @@ Background@SETTINGS_PANEL:
 					Width: 300
 					Height: 25
 				Label@AUDIO_DEVICE_DESC:
-					Y: 265
+					Y: 266
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -365,7 +365,7 @@ Background@SETTINGS_PANEL:
 					Text: Left-click Orders
 				Label@MIDDLE_MOUSE_SCROLL_LABEL:
 					X: PARENT_RIGHT - WIDTH - 120
-					Y: 39
+					Y: 41
 					Width: 160
 					Height: 20
 					Font: Regular
@@ -379,7 +379,7 @@ Background@SETTINGS_PANEL:
 					Font: Regular
 				Label@MIDDLE_MOUSE_SCROLL_LABEL:
 					X: PARENT_RIGHT - WIDTH - 120
-					Y: 69
+					Y: 71
 					Width: 160
 					Height: 20
 					Font: Regular
@@ -393,7 +393,7 @@ Background@SETTINGS_PANEL:
 					Font: Regular
 				Label@ZOOM_MODIFIER_LABEL:
 					X: PARENT_RIGHT - WIDTH - 120
-					Y: 98
+					Y: 101
 					Width: 160
 					Height: 20
 					Font: Regular
@@ -429,7 +429,7 @@ Background@SETTINGS_PANEL:
 					Text: Lock mouse to window
 				Label@SCROLL_SPEED_LABEL:
 					X: PARENT_RIGHT - WIDTH - 270
-					Y: 127
+					Y: 129
 					Width: 95
 					Height: 25
 					Text: Scroll Speed:
@@ -444,7 +444,7 @@ Background@SETTINGS_PANEL:
 					MaximumValue: 50
 				Label@UI_SCROLL_SPEED_LABEL:
 					X: PARENT_RIGHT - WIDTH - 106
-					Y: 127
+					Y: 129
 					Width: 95
 					Height: 25
 					Text: UI Scroll:
