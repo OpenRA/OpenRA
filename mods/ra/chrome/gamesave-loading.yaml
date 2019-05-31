@@ -16,7 +16,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			ImageName: logo
 		Label@TITLE:
 			Width: WINDOW_RIGHT
-			Y: 3 * WINDOW_BOTTOM / 4 - 30
+			Y: 3 * WINDOW_BOTTOM / 4 - 29
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -30,7 +30,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			Bar: observer-scrollpanel-button
 		Label@DESC:
 			Width: WINDOW_RIGHT
-			Y: 3 * WINDOW_BOTTOM / 4 + 20
+			Y: 3 * WINDOW_BOTTOM / 4 + 19
 			Height: 25
 			Font: Regular
 			Align: Center
