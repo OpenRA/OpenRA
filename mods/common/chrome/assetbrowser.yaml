@@ -9,7 +9,7 @@ Background@ASSETBROWSER_PANEL:
 		LogicTicker@ANIMATION_TICKER:
 		ColorPreviewManager@COLOR_MANAGER:
 		Label@ASSETBROWSER_TITLE:
-			Y: 20
+			Y: 21
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Bold
@@ -17,7 +17,7 @@ Background@ASSETBROWSER_PANEL:
 			Text: Asset Browser
 		Label@SOURCE_SELECTOR_DESC:
 			X: 20
-			Y: 35
+			Y: 36
 			Width: 160
 			Height: 25
 			Font: TinyBold
@@ -53,7 +53,7 @@ Background@ASSETBROWSER_PANEL:
 							TooltipTemplate: SIMPLE_TOOLTIP
 		Label@FILENAME_DESC:
 			X: 20
-			Y: 370
+			Y: 371
 			Width: 160
 			Height: 25
 			Font: TinyBold
@@ -105,6 +105,7 @@ Background@ASSETBROWSER_PANEL:
 					Height: PARENT_BOTTOM
 					AspectRatio: 1
 				Label@ERROR:
+					Y: 1
 					X: 5
 					Width: 490 - 10
 					Height: 330
@@ -194,6 +195,7 @@ Background@ASSETBROWSER_PANEL:
 					MinimumValue: 0
 				Label@FRAME_COUNT:
 					X: 445
+					Y: 1
 					Width: 40
 					Height: 25
 					Font: TinyBold

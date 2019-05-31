@@ -6,13 +6,13 @@ Background@THREEBUTTON_PROMPT:
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 20
+			Y: 21
 			Height: 25
 			Font: Bold
 			Align: Center
 		Label@PROMPT_TEXT:
 			X: 15
-			Y: 50
+			Y: 51
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Align: Center
@@ -51,13 +51,13 @@ Background@TWOBUTTON_PROMPT:
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 20
+			Y: 21
 			Height: 25
 			Font: Bold
 			Align: Center
 		Label@PROMPT_TEXT:
 			X: 15
-			Y: 50
+			Y: 51
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Align: Center
@@ -88,13 +88,13 @@ Background@TEXT_INPUT_PROMPT:
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 20
+			Y: 21
 			Height: 25
 			Font: Bold
 			Align: Center
 		Label@PROMPT_TEXT:
 			X: 20
-			Y: 50
+			Y: 51
 			Width: PARENT_RIGHT - 40
 			Height: 25
 			Align: Center

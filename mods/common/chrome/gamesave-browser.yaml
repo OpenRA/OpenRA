@@ -7,7 +7,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 	Children:
 		Label@LOAD_TITLE:
 			Width: PARENT_RIGHT
-			Y: 20
+			Y: 21
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -15,7 +15,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Visible: False
 		Label@SAVE_TITLE:
 			Width: PARENT_RIGHT
-			Y: 20
+			Y: 21
 			Height: 25
 			Font: Bold
 			Align: Center

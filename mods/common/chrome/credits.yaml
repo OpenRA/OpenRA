@@ -7,7 +7,7 @@ Background@CREDITS_PANEL:
 	Children:
 		Label@CREDITS_TITLE:
 			Width: PARENT_RIGHT
-			Y: 20
+			Y: 21
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -34,7 +34,7 @@ Background@CREDITS_PANEL:
 			Y: 50
 			Width: PARENT_RIGHT - 30
 			Height: 345
-			TopBottomSpacing: 6
+			TopBottomSpacing: 8
 			Children:
 				Label@CREDITS_TEMPLATE:
 					X: 8

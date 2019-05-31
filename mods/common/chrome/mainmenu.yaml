@@ -40,7 +40,7 @@ Container@MAINMENU:
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
-							Y: 20
+							Y: 22
 							Width: 200
 							Height: 30
 							Text: OpenRA

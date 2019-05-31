@@ -19,7 +19,7 @@ Container@MAP_PREVIEW:
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
-					Y: 172
+					Y: 173
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
@@ -27,14 +27,14 @@ Container@MAP_PREVIEW:
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@MAP_TYPE:
-					Y: 187
+					Y: 188
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
 				Label@MAP_AUTHOR:
-					Y: 200
+					Y: 201
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -55,7 +55,7 @@ Container@MAP_PREVIEW:
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
-					Y: 172
+					Y: 173
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
@@ -63,7 +63,7 @@ Container@MAP_PREVIEW:
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@MAP_STATUS_A:
-					Y: 187
+					Y: 188
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -71,7 +71,7 @@ Container@MAP_PREVIEW:
 					Text: This map is not compatible
 					IgnoreMouseOver: true
 				Label@MAP_STATUS_B:
-					Y: 200
+					Y: 201
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -93,7 +93,7 @@ Container@MAP_PREVIEW:
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
-					Y: 142
+					Y: 143
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
@@ -101,14 +101,14 @@ Container@MAP_PREVIEW:
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@MAP_TYPE:
-					Y: 157
+					Y: 158
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
 				Label@MAP_AUTHOR:
-					Y: 170
+					Y: 171
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -135,7 +135,7 @@ Container@MAP_PREVIEW:
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
-					Y: 142
+					Y: 143
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Bold
@@ -143,7 +143,7 @@ Container@MAP_PREVIEW:
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@MAP_STATUS_SEARCHING:
-					Y: 157
+					Y: 158
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -154,28 +154,28 @@ Container@MAP_PREVIEW:
 					Width: PARENT_RIGHT
 					Children:
 						Label@a:
-							Y: 157
+							Y: 158
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 							Text: This map was not found on the
 						Label@b:
-							Y: 170
+							Y: 171
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 							Text: OpenRA Resource Center
 				Label@MAP_STATUS_ERROR:
-					Y: 157
+					Y: 158
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
 					Text: An error occurred during installation
 				Label@MAP_STATUS_DOWNLOADING:
-					Y: 157
+					Y: 158
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny

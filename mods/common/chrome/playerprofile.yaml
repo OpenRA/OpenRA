@@ -10,13 +10,13 @@ Container@LOCAL_PROFILE_PANEL:
 			Children:
 				Label@PROFILE_NAME:
 					X: 10
-					Y: 3
+					Y: 5
 					Width: PARENT_RIGHT - 20
 					Height: 25
 					Font: MediumBold
 				Label@PROFILE_RANK:
 					X: 10
-					Y: 23
+					Y: 24
 					Width: PARENT_RIGHT - 20
 					Height: 25
 					Font: TinyBold
@@ -224,6 +224,7 @@ Container@PLAYER_PROFILE_BADGES_INSERT:
 					Height: 24
 				Label@LABEL:
 					X: 36
+					Y: 2
 					Width: PARENT_RIGHT - 60
 					Height: 24
 					Font: Bold

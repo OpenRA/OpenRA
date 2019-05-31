@@ -7,7 +7,7 @@ Background@DIRECTCONNECT_PANEL:
 	Children:
 		Label@DIRECTCONNECT_LABEL_TITLE:
 			X: 0
-			Y: 20
+			Y: 21
 			Width: 450
 			Height: 25
 			Text: Connect to Server
@@ -15,7 +15,7 @@ Background@DIRECTCONNECT_PANEL:
 			Font: Bold
 		Label@ADDRESS_LABEL:
 			X: 50
-			Y: 59
+			Y: 60
 			Width: 95
 			Height: 25
 			Align: Right
@@ -28,7 +28,7 @@ Background@DIRECTCONNECT_PANEL:
 			Height: 25
 		Label@PORT_LABEL:
 			X: 360
-			Y: 59
+			Y: 60
 			Width: 10
 			Height: 25
 			Align: Center
