@@ -421,7 +421,7 @@ Container@PLAYER_WIDGETS:
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
 					X: 10
-					Y: 2
+					Y: 4
 					Width: PARENT_RIGHT
 					Height: 22
 					Align: Center
@@ -429,7 +429,7 @@ Container@PLAYER_WIDGETS:
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
 					X: 29
-					Y: 2
+					Y: 4
 					Width: 50
 					Height: 22
 					Font: Bold
@@ -439,7 +439,7 @@ Container@PLAYER_WIDGETS:
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
 					X: PARENT_RIGHT - WIDTH - 30
-					Y: 2
+					Y: 4
 					Width: 50
 					Height: 22
 					Align: Right
@@ -450,7 +450,7 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@POWER_ICON:
 							X: PARENT_RIGHT + 0
-							Y: 5
+							Y: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:
