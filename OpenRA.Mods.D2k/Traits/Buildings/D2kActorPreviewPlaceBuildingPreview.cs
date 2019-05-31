@@ -13,8 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
-using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
