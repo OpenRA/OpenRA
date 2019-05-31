@@ -13,7 +13,13 @@ namespace OpenRA.Server
 {
 	public static class ProtocolVersion
 	{
-		// you *must* increment this whenever you make an incompatible protocol change
-		public static readonly int Version = 7;
+		// The protocol for the initial handshake request and response
+		// Backwards incompatible changes will break runtime mod switching, so only change as a last resort!
+		public const int Handshake = 7;
+
+		// The protocol for server and world orders
+		// This applies after the handshake has completed, and is provided to support
+		// alternative server implementations that wish to support multiple versions in parallel
+		public const int Orders = 8;
 	}
 }

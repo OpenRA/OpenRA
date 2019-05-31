@@ -278,7 +278,7 @@ namespace OpenRA.Server
 
 				// Send handshake and client index.
 				var ms = new MemoryStream(8);
-				ms.WriteArray(BitConverter.GetBytes(ProtocolVersion.Version));
+				ms.WriteArray(BitConverter.GetBytes(ProtocolVersion.Handshake));
 				ms.WriteArray(BitConverter.GetBytes(newConn.PlayerIndex));
 				SendData(newConn.Socket, ms.ToArray());
 
@@ -359,6 +359,16 @@ namespace OpenRA.Server
 						newConn.Socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Server is running an incompatible version");
+					DropClient(newConn);
+					return;
+				}
+
+				if (handshake.OrdersProtocol != ProtocolVersion.Orders)
+				{
+					Log.Write("server", "Rejected connection from {0}; incompatible Orders protocol version {1}.",
+						newConn.Socket.RemoteEndPoint, handshake.OrdersProtocol);
+
+					SendOrderTo(newConn, "ServerError", "Server is running an incompatible protocol");
 					DropClient(newConn);
 					return;
 				}

@@ -227,7 +227,8 @@ namespace OpenRA.Network
 							Mod = mod.Id,
 							Version = mod.Metadata.Version,
 							Password = orderManager.Password,
-							Fingerprint = localProfile.Fingerprint
+							Fingerprint = localProfile.Fingerprint,
+							OrdersProtocol = ProtocolVersion.Orders
 						};
 
 						if (request.AuthToken != null && response.Fingerprint != null)

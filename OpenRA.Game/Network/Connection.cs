@@ -167,12 +167,12 @@ namespace OpenRA.Network
 			{
 				var networkStream = (NetworkStream)networkStreamObject;
 				var reader = new BinaryReader(networkStream);
-				var serverProtocol = reader.ReadInt32();
+				var handshakeProtocol = reader.ReadInt32();
 
-				if (serverProtocol != ProtocolVersion.Version)
+				if (handshakeProtocol != ProtocolVersion.Handshake)
 					throw new InvalidOperationException(
-						"Protocol version mismatch. Server={0} Client={1}"
-							.F(serverProtocol, ProtocolVersion.Version));
+						"Handshake protocol version mismatch. Server={0} Client={1}"
+							.F(handshakeProtocol, ProtocolVersion.Handshake));
 
 				clientId = reader.ReadInt32();
 				connectionState = ConnectionState.Connected;
