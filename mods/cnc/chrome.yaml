@@ -859,7 +859,7 @@ sidebar-bits: chrome.png
 	indicator-right: 960,8,16,8
 	production-tooltip-time: 896,48,16,16
 	production-tooltip-power: 864,48,16,16
-	production-tooltip-cost: 836,48,16,16
+	production-tooltip-cost: 832,48,16,16
 
 vertical-bars: chrome.png
 	power: 743,0,10,190
