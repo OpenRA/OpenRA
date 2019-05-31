@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				createStatsOption("Basic", basicStatsHeaders, basicPlayerTemplate, () => DisplayStats(BasicStats)),
 				createStatsOption("Economy", economyStatsHeaders, economyPlayerTemplate, () => DisplayStats(EconomyStats)),
 				createStatsOption("Production", productionStatsHeaders, productionPlayerTemplate, () => DisplayStats(ProductionStats)),
-				createStatsOption("Support powers", supportPowerStatsHeaders, supportPowersPlayerTemplate, () => DisplayStats(SupportPowerStats)),
+				createStatsOption("Support Powers", supportPowerStatsHeaders, supportPowersPlayerTemplate, () => DisplayStats(SupportPowerStats)),
 				createStatsOption("Combat", combatStatsHeaders, combatPlayerTemplate, () => DisplayStats(CombatStats)),
 				createStatsOption("Earnings (graph)", earnedThisMinuteGraphHeaders, null, () => EarnedThisMinuteGraph()),
 				createStatsOption("Army (graph)", armyThisMinuteGraphHeaders, null, () => ArmyThisMinuteGraph()),
