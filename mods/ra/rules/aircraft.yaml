@@ -85,7 +85,7 @@ MIG:
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Plane
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: ~afld, stek, ~techlevel.high
 		BuildDurationModifier: 50
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
@@ -275,7 +275,7 @@ HELI:
 	Buildable:
 		Queue: Aircraft
 		BuildAtProductionType: Helicopter
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		Prerequisites: ~hpad, atek, ~techlevel.high
 		BuildDurationModifier: 50
 		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Buildings, Vehicles, Aircraft\n  Weak vs Infantry
@@ -340,12 +340,12 @@ HIND:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Aircraft
-		BuildAtProductionType: Helicopter
-		BuildPaletteOrder: 20
-		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		BuildAtProductionType: Plane
+		BuildPaletteOrder: 40
+		Prerequisites: ~afld, ~techlevel.medium
+		Description: Fast infantry transport helicopter\narmed with dual chainguns.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Valued:
-		Cost: 1500
+		Cost: 1000
 	Tooltip:
 		Name: Hind
 	UpdatesPlayerStatistics:
@@ -353,30 +353,33 @@ HIND:
 	Health:
 		HP: 10000
 	RevealsShroud:
-		Range: 10c0
+		Range: 9c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 8c0
+		Range: 7c0
 		Type: GroundPosition
 	Armament@PRIMARY:
-		Weapon: ChainGun
+		Weapon: ChainGun.Hind
 		LocalOffset: 85,-213,-85, 85,213,-85
 		MuzzleSequence: muzzle
-		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
-		Weapon: ChainGun
+		Weapon: ChainGun.Hind
 		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
-		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 4
 		Speed: 112
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach,Gems
+		AltitudeVelocity: 0c58
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 4
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -386,11 +389,6 @@ HIND:
 	WithIdleOverlay@ROTORGROUND:
 		Sequence: slow-rotor
 		RequiresCondition: !airborne
-	AmmoPool:
-		Ammo: 24
-		PipCount: 6
-		ReloadDelay: 8
-		AmmoCondition: ammo
 	SelectionDecorations:
 	WithMuzzleOverlay:
 	SpawnActorOnDeath:
@@ -401,8 +399,6 @@ HIND:
 		Prerequisites: aircraft.upgraded
 	Selectable:
 		DecorationBounds: 38,32
-	Rearmable:
-		RearmActors: hpad
 
 U2:
 	Inherits: ^NeutralPlane

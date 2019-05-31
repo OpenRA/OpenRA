@@ -215,6 +215,15 @@ ChainGun:
 		Versus:
 			None: 144
 
+ChainGun.Hind:
+	Inherits: ChainGun
+	ReloadDelay: 25
+	Warhead@1Dam: SpreadDamage
+		Damage: 1000
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		InvalidTargets: Ship, Structure, Bridge 
+
 ChainGun.Yak:
 	Inherits: ^HeavyMG
 	ReloadDelay: 3
