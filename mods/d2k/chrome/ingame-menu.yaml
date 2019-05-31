@@ -7,7 +7,7 @@ Container@INGAME_MENU:
 	Children:
 		Label@VERSION_LABEL:
 			X: WINDOW_RIGHT - 10
-			Y: WINDOW_BOTTOM - 20
+			Y: WINDOW_BOTTOM - 19
 			Align: Right
 			Font: Regular
 			Contrast: True
@@ -20,7 +20,7 @@ Container@INGAME_MENU:
 			Children:
 				Label@LABEL_TITLE:
 					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 20
+					Y: 21
 					Width: 200
 					Height: 30
 					Text: Options

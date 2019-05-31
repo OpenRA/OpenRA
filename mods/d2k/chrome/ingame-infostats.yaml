@@ -8,14 +8,14 @@ Container@SKIRMISH_STATS:
 			Children:
 				Label@MISSION:
 					X: 20
-					Y: 20
+					Y: 22
 					Width: 482
 					Height: 25
 					Font: MediumBold
 					Text: Mission:
 				Label@STATS_STATUS:
 					X: 100
-					Y: 20
+					Y: 22
 					Width: PARENT_RIGHT - 10
 					Height: 25
 					Font: MediumBold
@@ -30,23 +30,26 @@ Container@SKIRMISH_STATS:
 					TextColorDisabled: FFFFFF
 		Container@STATS_HEADERS:
 			X: 22
-			Y: 80
+			Y: 81
 			Width: 393
 			Children:
 				Label@NAME:
 					X: 10
+					Y: 1
 					Width: 210
 					Height: 25
 					Text: Player
 					Font: Bold
 				Label@FACTION:
 					X: 230
+					Y: 1
 					Width: 120
 					Height: 25
 					Text: Faction
 					Font: Bold
 				Label@SCORE:
 					X: 360
+					Y: 1
 					Width: 75
 					Height: 25
 					Text: Score
@@ -68,13 +71,11 @@ Container@SKIRMISH_STATS:
 					Children:
 						Label@TEAM:
 							X: 6
-							Y: 0 - 2
 							Width: 160
 							Height: 20
 							Font: Bold
 						Label@TEAM_SCORE:
 							X: 360
-							Y: 0 - 2
 							Width: 75
 							Height: 20
 							Font: Bold
@@ -104,7 +105,7 @@ Container@SKIRMISH_STATS:
 							Shadow: True
 						Image@FACTIONFLAG:
 							X: 230
-							Y: 6
+							Y: 4
 							Width: 32
 							Height: 16
 						Label@FACTION:
