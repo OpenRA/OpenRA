@@ -394,6 +394,7 @@
 		AreaTypes: building
 	CaptureManager:
 	Capturable:
+		RequiresCondition: !build-incomplete
 		Types: building
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV

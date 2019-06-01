@@ -73,8 +73,6 @@ ATEK:
 	GpsPower:
 		ChargeInterval: 15000
 	-Sellable:
-	WithMakeAnimation:
-		-Condition:
 	Demolishable:
 		-Condition:
 	CaptureManager:
@@ -87,8 +85,6 @@ PDOX:
 	ChronoshiftPower@chronoshift:
 		Prerequisites: ~disabled
 	-Sellable:
-	WithMakeAnimation:
-		-Condition:
 	Demolishable:
 		-Condition:
 	CaptureManager:

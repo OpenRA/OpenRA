@@ -175,8 +175,6 @@ TENT:
 	-Sellable:
 	Demolishable:
 		-Condition:
-	WithMakeAnimation:
-		-Condition:
 	BaseProvider:
 		Range: 12c0
 	Power:

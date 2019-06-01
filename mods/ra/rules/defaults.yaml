@@ -692,6 +692,7 @@
 	CaptureManager:
 		BeingCapturedCondition: being-captured
 	Capturable:
+		RequiresCondition: !build-incomplete
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:

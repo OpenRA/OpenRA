@@ -1423,6 +1423,8 @@ GALITE:
 	-ExternalCondition@CRATE-CLOAK:
 	MapEditorData:
 		Categories: Civilian building
+	Capturable:
+		-RequiresCondition:
 
 TSTLAMP:
 	Inherits: GALITE

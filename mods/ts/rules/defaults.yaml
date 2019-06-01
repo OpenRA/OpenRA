@@ -359,6 +359,7 @@
 		AreaTypes: building
 	CaptureManager:
 	Capturable:
+		RequiresCondition: !build-incomplete
 		Types: building
 	RepairableBuilding:
 		RepairStep: 700
