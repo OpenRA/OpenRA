@@ -15,16 +15,12 @@ NUKE:
 	-Sellable:
 	Demolishable:
 		-Condition:
-	WithMakeAnimation:
-		-Condition:
 	Buildable:
 		BuildLimit: 1
 
 PYLE:
 	-Sellable:
 	Demolishable:
-		-Condition:
-	WithMakeAnimation:
 		-Condition:
 	Buildable:
 		BuildLimit: 1

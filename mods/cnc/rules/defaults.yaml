@@ -758,6 +758,7 @@
 		SellSounds: cashturn.aud
 	CaptureManager:
 	Capturable:
+		RequiresCondition: !build-incomplete
 		Types: building-sabotage
 	WithMakeAnimation:
 		Condition: build-incomplete

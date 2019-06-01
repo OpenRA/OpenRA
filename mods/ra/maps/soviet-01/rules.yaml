@@ -48,14 +48,10 @@ DOME:
 	-Sellable:
 	Demolishable:
 		-Condition:
-	WithMakeAnimation:
-		-Condition:
 
 POWR:
 	CaptureManager:
 		-BeingCapturedCondition:
 	-Sellable:
 	Demolishable:
-		-Condition:
-	WithMakeAnimation:
 		-Condition:

@@ -77,8 +77,6 @@ ATEK:
 	-Sellable:
 	Demolishable:
 		-Condition:
-	WithMakeAnimation:
-		-Condition:
 
 PDOX:
 	Inherits@IDISABLE: ^DisableOnLowPower
@@ -90,8 +88,6 @@ PDOX:
 		-BeingCapturedCondition:
 	-Sellable:
 	Demolishable:
-		-Condition:
-	WithMakeAnimation:
 		-Condition:
 
 IRON:
