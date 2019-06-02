@@ -494,7 +494,7 @@ namespace OpenRA.Mods.Common.Traits
 			MayYieldReservation = true;
 		}
 
-		public void UnReserve()
+		public void UnReserve(bool takeOff = false)
 		{
 			if (reservation == null)
 				return;
@@ -504,7 +504,7 @@ namespace OpenRA.Mods.Common.Traits
 			ReservedActor = null;
 			MayYieldReservation = false;
 
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
+			if (takeOff && self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
 				self.QueueActivity(new TakeOff(self));
 		}
 

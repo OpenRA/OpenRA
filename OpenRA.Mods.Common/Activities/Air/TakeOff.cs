@@ -20,8 +20,9 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
-		readonly Target target;
+		Target target;
 		bool moveToRallyPoint;
+		bool assignTargetOnFirstRun;
 
 		public TakeOff(Actor self, Target target)
 		{
@@ -31,22 +32,27 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public TakeOff(Actor self)
-			: this(self, Target.FromCell(self.World, self.Location))
+			: this(self, Target.Invalid)
 		{
-			var host = aircraft.GetActorBelow();
-			var rp = host != null ? host.TraitOrDefault<RallyPoint>() : null;
-
-			var rallyPointDestination = rp != null ? rp.Location :
-				(host != null ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
-
-			this.target = Target.FromCell(self.World, rallyPointDestination);
-			moveToRallyPoint = NextActivity == null && rallyPointDestination != self.Location;
+			assignTargetOnFirstRun = true;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			if (aircraft.ForceLanding)
 				return;
+
+			if (assignTargetOnFirstRun)
+			{
+				var host = aircraft.GetActorBelow();
+				var rp = host != null ? host.TraitOrDefault<RallyPoint>() : null;
+
+				var rallyPointDestination = rp != null ? rp.Location :
+					(host != null ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
+
+				target = Target.FromCell(self.World, rallyPointDestination);
+				moveToRallyPoint = self.CurrentActivity.NextActivity == null && rallyPointDestination != self.Location;
+			}
 
 			// We are taking off, so remove reservation and influence in ground cells.
 			aircraft.UnReserve();
