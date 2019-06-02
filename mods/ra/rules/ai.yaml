@@ -91,34 +91,6 @@ Player:
 		VehiclesFactoryTypes: weap
 		ProductionTypes: barr,tent,weap
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30
-			barr: 1
-			kenn: 1
-			tent: 1
-			weap: 1
-			pbox: 7
-			gun: 7
-			tsla: 5
-			gap: 2
-			ftur: 10
-			agun: 5
-			sam: 5
-			atek: 1
-			stek: 1
-			fix: 1
-			dome: 10
-			mslo: 1
 	BaseBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		MinimumExcessPower: 60
@@ -133,43 +105,6 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen,syrd
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			dome: 1
-			weap: 1
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			afld.ukraine: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 15
-			tent: 1
-			barr: 1
-			kenn: 1
-			dome: 1
-			weap: 6
-			hpad: 4
-			spen: 1
-			syrd: 1
-			afld: 4
-			afld.ukraine: 4
-			pbox: 7
-			gun: 7
-			ftur: 10
-			tsla: 5
-			gap: 2
-			fix: 1
-			agun: 5
-			sam: 1
-			atek: 1
-			stek: 1
-			mslo: 1
 	BaseBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		MinimumExcessPower: 60
@@ -184,44 +119,6 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen,syrd
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			afld.ukraine: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30
-			tent: 1
-			barr: 1
-			kenn: 1
-			weap: 3
-			hpad: 2
-			afld: 2
-			afld.ukraine: 2
-			spen: 1
-			syrd: 1
-			pbox: 10
-			gun: 10
-			ftur: 10
-			tsla: 7
-			gap: 3
-			fix: 1
-			dome: 10
-			agun: 5
-			sam: 5
-			atek: 1
-			stek: 1
-			mslo: 1
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		MinimumExcessPower: 60
@@ -236,39 +133,6 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen,syrd
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			dome: 1
-			barr: 1
-			tent: 1
-			spen: 1
-			syrd: 1
-			hpad: 8
-			afld: 8
-			afld.ukraine: 8
-			weap: 1
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30
-			dome: 1
-			weap: 1
-			hpad: 20
-			afld: 20
-			afld.ukraine: 20
-			atek: 1
-			stek: 1
-			spen: 1
-			syrd: 1
-			fix: 1
-			pbox: 12
-			gun: 12
-			ftur: 12
-			tsla: 12
-			agun: 5
-			sam: 5
-			mslo: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	SquadManagerBotModule@rush:
@@ -284,30 +148,6 @@ Player:
 		McvFactoryTypes: weap
 	UnitBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
-		UnitsToBuild:
-			e1: 65
-			e2: 15
-			e3: 30
-			e4: 15
-			dog: 15
-			shok: 15
-			harv: 10
-			apc: 30
-			jeep: 20
-			arty: 15
-			v2rl: 40
-			ftrk: 30
-			1tnk: 50
-			2tnk: 50
-			3tnk: 50
-			4tnk: 25
-			ttnk: 25
-			stnk: 5
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
@@ -317,19 +157,70 @@ Player:
 		NavalProductionTypes: spen,syrd
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
-		UnitsToBuild:
+	SquadManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		SquadSize: 10
+		ExcludeFromSquadsTypes: harv, mcv, dog
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+	SquadManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		SquadSize: 1
+		ExcludeFromSquadsTypes: harv, mcv, dog
+		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen,syrd
+	UnitBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+	BotProductionConsideration@units-rush:
+		RequiresCondition: enable-rush-ai
+		Queues:
+		Actors:
 			e1: 65
 			e2: 15
 			e3: 30
 			e4: 15
 			dog: 15
+				Limit: 4
 			shok: 15
-			harv: 15
+			harv: 10
+				Limit: 8
 			apc: 30
 			jeep: 20
+				Limit: 4
 			arty: 15
 			v2rl: 40
 			ftrk: 30
+				Limit: 4
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+	BotProductionConsideration@units-normal:
+		RequiresCondition: enable-normal-ai
+		Queues:
+		Actors:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			dog: 15
+				Limit: 4
+			shok: 15
+			harv: 15
+				Limit: 8
+			apc: 30
+			jeep: 20
+				Limit: 4
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+				Limit: 4
 			1tnk: 40
 			2tnk: 50
 			3tnk: 50
@@ -345,33 +236,26 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
-	SquadManagerBotModule@turtle:
+	BotProductionConsideration@units-turtle:
 		RequiresCondition: enable-turtle-ai
-		SquadSize: 10
-		ExcludeFromSquadsTypes: harv, mcv, dog
-		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
-		ConstructionYardTypes: fact
-		NavalProductionTypes: spen,syrd
-	UnitBuilderBotModule@turtle:
-		RequiresCondition: enable-turtle-ai
-		UnitsToBuild:
+		Queues:
+		Actors:
 			e1: 65
 			e2: 15
 			e3: 30
 			e4: 15
 			dog: 15
+				Limit: 4
 			shok: 15
 			harv: 15
+				Limit: 8
 			apc: 30
 			jeep: 20
+				Limit: 4
 			arty: 15
 			v2rl: 40
 			ftrk: 50
+				Limit: 4
 			1tnk: 50
 			2tnk: 50
 			3tnk: 50
@@ -387,22 +271,12 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
-	SquadManagerBotModule@naval:
+	BotProductionConsideration@units-naval:
 		RequiresCondition: enable-naval-ai
-		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog
-		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
-		ConstructionYardTypes: fact
-		NavalProductionTypes: spen,syrd
-	UnitBuilderBotModule@naval:
-		RequiresCondition: enable-naval-ai
-		UnitsToBuild:
+		Queues:
+		Actors:
 			harv: 1
+				Limit: 8
 			heli: 30
 			mh60: 30
 			mig: 30
@@ -412,5 +286,145 @@ Player:
 			dd: 30
 			ca: 20
 			pt: 10
-		UnitLimits:
-			harv: 8
+	BotProductionConsideration@buildings-rush:
+		RequiresCondition: enable-rush-ai
+		Queues:
+		Actors:
+			proc: 30
+				Limit: 4
+			barr: 1
+				Limit: 1
+			kenn: 1
+				Limit: 1
+			tent: 1
+				Limit: 1
+			weap: 1
+				Limit: 1
+			pbox: 7
+			gun: 7
+			tsla: 5
+			gap: 2
+			ftur: 10
+			agun: 5
+			sam: 5
+			atek: 1
+				Limit: 1
+			stek: 1
+				Limit: 1
+			fix: 1
+				Limit: 1
+			dome: 10
+				Limit: 1
+			mslo: 1
+	BotProductionConsideration@buildings-normal:
+		RequiresCondition: enable-normal-ai
+		Queues:
+		Actors:
+			proc: 15
+				Limit: 4
+			tent: 1
+				Limit: 1
+			barr: 1
+				Limit: 1
+			kenn: 1
+			dome: 1
+				Limit: 1
+			weap: 6
+				Limit: 1
+			hpad: 4
+				Limit: 4
+			spen: 1
+				Limit: 1
+			syrd: 1
+				Limit: 1
+			afld: 4
+				Limit: 4
+			afld.ukraine: 4
+				Limit: 4
+			pbox: 7
+			gun: 7
+			ftur: 10
+			tsla: 5
+			gap: 2
+			fix: 1
+				Limit: 1
+			agun: 5
+			sam: 1
+			atek: 1
+				Limit: 1
+			stek: 1
+				Limit: 1
+			mslo: 1
+	BotProductionConsideration@buildings-turtle:
+		RequiresCondition: enable-turtle-ai
+		Queues:
+		Actors:
+			proc: 30
+				Limit: 4
+			tent: 1
+				Limit: 1
+			barr: 1
+				Limit: 1
+			kenn: 1
+				Limit: 1
+			weap: 3
+				Limit: 1
+			hpad: 2
+				Limit: 4
+			afld: 2
+				Limit: 4
+			afld.ukraine: 2
+				Limit: 4
+			spen: 1
+				Limit: 1
+			syrd: 1
+				Limit: 1
+			pbox: 10
+			gun: 10
+			ftur: 10
+			tsla: 7
+			gap: 3
+			fix: 1
+				Limit: 1
+			dome: 10
+				Limit: 1
+			agun: 5
+			sam: 5
+			atek: 1
+				Limit: 1
+			stek: 1
+				Limit: 1
+			mslo: 1
+	BotProductionConsideration@buildings-naval:
+		RequiresCondition: enable-naval-ai
+		Queues:
+		Actors:
+			proc: 30
+				Limit: 4
+			dome: 1
+				Limit: 1
+			weap: 1
+				Limit: 1
+			hpad: 20
+				Limit: 8
+			afld: 20
+				Limit: 8
+			afld.ukraine: 20
+				Limit: 8
+			atek: 1
+				Limit: 1
+			stek: 1
+				Limit: 1
+			spen: 1
+				Limit: 1
+			syrd: 1
+				Limit: 1
+			fix: 1
+				Limit: 1
+			pbox: 12
+			gun: 12
+			ftur: 12
+			tsla: 12
+			agun: 5
+			sam: 5
+			mslo: 1

@@ -114,21 +114,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Terrain types which are considered water for base building purposes.")]
 		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
 
-		[Desc("What buildings to the AI should build.", "What integer percentage of the total base must be this type of building.")]
-		public readonly Dictionary<string, int> BuildingFractions = null;
-
-		[Desc("What buildings should the AI have a maximum limit to build.")]
-		public readonly Dictionary<string, int> BuildingLimits = null;
-
-		[Desc("When should the AI start building specific buildings.")]
-		public readonly Dictionary<string, int> BuildingDelays = null;
-
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
 	public class BaseBuilderBotModule : ConditionalTrait<BaseBuilderBotModuleInfo>, IGameSaveTraitData,
-		IBotTick, IBotPositionsUpdated, IBotRespondToAttack, IBotRequestPauseUnitProduction
+		IBotTick, IBotPositionsUpdated, IBotRespondToAttack, IBotRequestPauseUnitProduction, IBotNotifyProductionConsiderationsUpdated
 	{
+		public class Consideration
+		{
+			public int Percentage;
+			public int Limit = -1;
+			public int Delay = -1;
+		}
+
 		public CPos GetRandomBaseCenter()
 		{
 			var randomConstructionYard = world.Actors.Where(a => a.Owner == player &&
@@ -139,23 +137,30 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public CPos DefenseCenter { get { return defenseCenter; } }
+		public readonly IReadOnlyDictionary<string, Dictionary<string, Consideration>> Considerations;
 
 		readonly World world;
 		readonly Player player;
 		PowerManager playerPower;
 		PlayerResources playerResources;
 		IBotPositionsUpdated[] positionsUpdatedModules;
+		BotProductionConsideration[] considerations;
 		BitArray resourceTypeIndices;
 		CPos initialBaseCenter;
 		CPos defenseCenter;
+		bool considerationsDirty = true;
 
 		List<BaseBuilderQueueManager> builders = new List<BaseBuilderQueueManager>();
+		readonly Dictionary<string, Dictionary<string, Consideration>> resolvedConsiderations =
+			new Dictionary<string, Dictionary<string, Consideration>>();
 
 		public BaseBuilderBotModule(Actor self, BaseBuilderBotModuleInfo info)
 			: base(info)
 		{
 			world = self.World;
 			player = self.Owner;
+
+			Considerations = new ReadOnlyDictionary<string, Dictionary<string, Consideration>>(resolvedConsiderations);
 		}
 
 		protected override void Created(Actor self)
@@ -167,6 +172,11 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = self.TraitOrDefault<PowerManager>();
 			playerResources = self.Trait<PlayerResources>();
 			positionsUpdatedModules = self.TraitsImplementing<IBotPositionsUpdated>().ToArray();
+			positionsUpdatedModules = self.TraitsImplementing<IBotPositionsUpdated>().ToArray();
+			considerations = self.TraitsImplementing<BotProductionConsideration>()
+				.Where(c => c.Info.Queues.Overlaps(Info.BuildingQueues) || c.Info.Queues.Overlaps(Info.DefenseQueues))
+				.OrderBy(c => c.Info.Priority)
+				.ToArray();
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -176,10 +186,10 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var t in world.Map.Rules.Actors["world"].TraitInfos<ResourceTypeInfo>())
 				resourceTypeIndices.Set(tileset.GetTerrainIndex(t.TerrainType), true);
 
-			foreach (var building in Info.BuildingQueues)
-				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceTypeIndices));
-			foreach (var defense in Info.DefenseQueues)
-				builders.Add(new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceTypeIndices));
+			foreach (var queue in Info.BuildingQueues)
+				builders.Add(new BaseBuilderQueueManager(this, queue, player, playerPower, playerResources, resourceTypeIndices));
+			foreach (var queue in Info.DefenseQueues)
+				builders.Add(new BaseBuilderQueueManager(this, queue, player, playerPower, playerResources, resourceTypeIndices));
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -200,6 +210,35 @@ namespace OpenRA.Mods.Common.Traits
 		void IBotTick.BotTick(IBot bot)
 		{
 			SetRallyPointsForNewProductionBuildings(bot);
+
+			if (considerationsDirty)
+			{
+				resolvedConsiderations.Clear();
+				foreach (var c in considerations)
+				{
+					if (c.IsTraitDisabled)
+						continue;
+
+					foreach (var queue in c.Info.Queues)
+					{
+						var queueConsideration = resolvedConsiderations.GetOrAdd(queue);
+						foreach (var a in c.Info.Actors)
+						{
+							var queueActorConsideration = queueConsideration.GetOrAdd(a.Key);
+							if (a.Value.Percentage >= 0)
+								queueActorConsideration.Percentage = a.Value.Percentage;
+
+							if (a.Value.Limit >= 0)
+								queueActorConsideration.Limit = a.Value.Limit;
+
+							if (a.Value.Delay >= 0)
+								queueActorConsideration.Delay = a.Value.Delay;
+						}
+					}
+				}
+
+				considerationsDirty = false;
+			}
 
 			foreach (var b in builders)
 				b.Tick(bot);
@@ -304,6 +343,12 @@ namespace OpenRA.Mods.Common.Traits
 			var defenseCenterNode = data.FirstOrDefault(n => n.Key == "DefenseCenter");
 			if (defenseCenterNode != null)
 				defenseCenter = FieldLoader.GetValue<CPos>("DefenseCenter", defenseCenterNode.Value.Value);
+		}
+
+		void IBotNotifyProductionConsiderationsUpdated.ProductionConsiderationsUpdated(HashSet<string> queues)
+		{
+			if (queues.Overlaps(Info.BuildingQueues) || queues.Overlaps(Info.DefenseQueues))
+				considerationsDirty = true;
 		}
 	}
 }

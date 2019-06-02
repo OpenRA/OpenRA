@@ -274,6 +274,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 				node.Key = prefix + newKey;
 		}
 
+		public static string KeySuffix(this MiniYamlNode node)
+		{
+			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
+			return split > -1 ? node.Key.Substring(split + 1) : "";
+		}
+
 		public static T NodeValue<T>(this MiniYamlNode node)
 		{
 			return FieldLoader.GetValue<T>(node.Key, node.Value.Value);

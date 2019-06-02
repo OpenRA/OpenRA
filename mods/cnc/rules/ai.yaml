@@ -97,34 +97,6 @@ Player:
 		VehiclesFactoryTypes: weap,afld
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			pyle: 3
-			hand: 3
-			hq: 1
-			weap: 3
-			afld: 3
-			hpad: 0
-			eye: 1
-			tmpl: 1
-			fix: 1
-			silo: 1
-		BuildingFractions:
-			proc: 20
-			pyle: 5
-			hand: 5
-			hq: 4
-			weap: 9
-			afld: 9
-			gtwr: 5
-			gun: 5
-			atwr: 9
-			obli: 7
-			sam: 7
-			eye: 1
-			tmpl: 1
-			fix: 1
-			hpad: 2
 	BaseBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -140,34 +112,6 @@ Player:
 		VehiclesFactoryTypes: weap,afld
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			pyle: 3
-			hand: 3
-			hq: 1
-			weap: 3
-			afld: 3
-			hpad: 2
-			eye: 1
-			tmpl: 1
-			fix: 1
-			silo: 1
-		BuildingFractions:
-			proc: 17
-			pyle: 2
-			hand: 2
-			hq: 1
-			weap: 5
-			afld: 5
-			hpad: 4
-			gtwr: 5
-			gun: 5
-			atwr: 9
-			obli: 7
-			eye: 1
-			tmpl: 1
-			sam: 7
-			fix: 1
 	BaseBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -183,34 +127,6 @@ Player:
 		VehiclesFactoryTypes: weap,afld
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			pyle: 4
-			hand: 4
-			hq: 1
-			weap: 4
-			afld: 4
-			hpad: 2
-			eye: 1
-			tmpl: 1
-			fix: 1
-			silo: 1
-		BuildingFractions:
-			proc: 17
-			pyle: 7
-			hand: 9
-			hq: 1
-			weap: 8
-			afld: 6
-			hpad: 4
-			gtwr: 5
-			gun: 5
-			atwr: 9
-			obli: 7
-			eye: 1
-			tmpl: 1
-			sam: 7
-			fix: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 	SquadManagerBotModule@cabal:
@@ -221,27 +137,6 @@ Player:
 	UnitBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
-		UnitsToBuild:
-			e1: 65
-			e2: 25
-			e3: 40
-			e4: 15
-			e5: 15
-			harv: 10
-			bggy: 5
-			bike: 40
-			ltnk: 25
-			ftnk: 10
-			arty: 60
-			stnk: 40
-			jeep: 5
-			mtnk: 20
-			msam: 40
-			htnk: 50
-			heli: 5
-			orca: 5
-		UnitLimits:
-			harv: 8
 	McvManagerBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		McvTypes: mcv
@@ -255,13 +150,48 @@ Player:
 	UnitBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
-		UnitsToBuild:
+	SquadManagerBotModule@hal9001:
+		RequiresCondition: enable-hal9001-ai
+		SquadSize: 8
+		ExcludeFromSquadsTypes: harv, mcv
+		ConstructionYardTypes: fact
+	UnitBuilderBotModule@hal9001:
+		RequiresCondition: enable-hal9001-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+	BotProductionConsideration@units-cabal:
+		RequiresCondition: enable-cabal-ai
+		Queues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		Actors:
+			e1: 65
+			e2: 25
+			e3: 40
+			e4: 15
+			e5: 15
+			harv: 10
+				Limit: 8
+			bggy: 5
+			bike: 40
+			ltnk: 25
+			ftnk: 10
+			arty: 60
+			stnk: 40
+			jeep: 5
+			mtnk: 20
+			msam: 40
+			htnk: 50
+			heli: 5
+			orca: 5
+	BotProductionConsideration@units-watson:
+		RequiresCondition: enable-watson-ai
+		Queues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		Actors:
 			e1: 65
 			e2: 30
 			e3: 40
 			e4: 30
 			e5: 30
 			harv: 10
+				Limit: 8
 			bggy: 10
 			ftnk: 10
 			arty: 40
@@ -274,23 +204,17 @@ Player:
 			htnk: 50
 			jeep: 20
 			mtnk: 50
-		UnitLimits:
-			harv: 8
-	SquadManagerBotModule@hal9001:
+	BotProductionConsideration@units-hal9001:
 		RequiresCondition: enable-hal9001-ai
-		SquadSize: 8
-		ExcludeFromSquadsTypes: harv, mcv
-		ConstructionYardTypes: fact
-	UnitBuilderBotModule@hal9001:
-		RequiresCondition: enable-hal9001-ai
-		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
-		UnitsToBuild:
+		Queues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		Actors:
 			e1: 65
 			e2: 30
 			e3: 40
 			e4: 50
 			e5: 50
 			harv: 16
+				Limit: 8
 			bggy: 10
 			bike: 10
 			ltnk: 40
@@ -305,5 +229,90 @@ Player:
 			msam: 50
 			htnk: 50
 			orca: 10
-		UnitLimits:
-			harv: 8
+	BotProductionConsideration@buildings-cabal:
+		RequiresCondition: enable-cabal-ai
+		Queues: Building.Nod, Building.GDI, Defence.Nod, Defence.GDI
+		Actors:
+			proc: 20
+				Limit: 4
+			pyle: 5
+				Limit: 3
+			hand: 5
+				Limit: 3
+			hq: 4
+				Limit: 1
+			weap: 9
+				Limit: 3
+			afld: 9
+				Limit: 3
+			gtwr: 5
+			gun: 5
+			atwr: 9
+			obli: 7
+			sam: 7
+			eye: 1
+				Limit: 1
+			tmpl: 1
+				Limit: 1
+			fix: 1
+				Limit: 1
+			hpad: 2
+				Limit: 0
+	BotProductionConsideration@buildings-watson:
+		RequiresCondition: enable-watson-ai
+		Queues: Building.Nod, Building.GDI, Defence.Nod, Defence.GDI
+		Actors:
+			proc: 17
+				Limit: 4
+			pyle: 2
+				Limit: 3
+			hand: 2
+				Limit: 3
+			hq: 1
+				Limit: 1
+			weap: 5
+				Limit: 3
+			afld: 5
+				Limit: 3
+			hpad: 4
+				Limit: 2
+			gtwr: 5
+			gun: 5
+			atwr: 9
+			obli: 7
+			eye: 1
+				Limit: 1
+			tmpl: 1
+				Limit: 1
+			sam: 7
+			fix: 1
+				Limit: 1
+	BotProductionConsideration@buildings-hal9001:
+		RequiresCondition: enable-hal9001-ai
+		Queues: Building.Nod, Building.GDI, Defence.Nod, Defence.GDI
+		Actors:
+			proc: 17
+				Limit: 4
+			pyle: 7
+				Limit: 4
+			hand: 9
+				Limit: 4
+			hq: 1
+				Limit: 1
+			weap: 8
+				Limit: 4
+			afld: 6
+				Limit: 4
+			hpad: 4
+				Limit: 2
+			gtwr: 5
+			gun: 5
+			atwr: 9
+			obli: 7
+			eye: 1
+				Limit: 1
+			tmpl: 1
+				Limit: 1
+			sam: 7
+			fix: 1
+				Limit: 1

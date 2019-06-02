@@ -78,42 +78,6 @@ Player:
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
-		BuildingLimits:
-			barracks: 1
-			refinery: 4
-			outpost: 1
-			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingFractions:
-			barracks: 1
-			refinery: 20
-			medium_gun_turret: 8
-			outpost: 1
-			high_tech_factory: 1
-			large_gun_turret: 6
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingDelays:
-			upgrade.conyard: 3750
 	BaseBuilderBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
 		BuildingQueues: Building, Upgrade
@@ -128,42 +92,6 @@ Player:
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
-		BuildingLimits:
-			barracks: 1
-			refinery: 4
-			outpost: 1
-			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingFractions:
-			barracks: 1
-			refinery: 20
-			medium_gun_turret: 5
-			outpost: 1
-			high_tech_factory: 1
-			large_gun_turret: 10
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingDelays:
-			upgrade.conyard: 3750
 	BaseBuilderBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
 		BuildingQueues: Building, Upgrade
@@ -178,41 +106,6 @@ Player:
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
-		BuildingLimits:
-			barracks: 1
-			refinery: 4
-			outpost: 1
-			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
-			starport: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingFractions:
-			barracks: 1
-			refinery: 20
-			medium_gun_turret: 4
-			outpost: 1
-			high_tech_factory: 1
-			large_gun_turret: 12
-			light_factory: 1
-			heavy_factory: 1
-			repair_pad: 1
-			research_centre: 1
-			palace: 1
-			upgrade.conyard: 1
-			upgrade.barracks: 1
-			upgrade.light: 1
-			upgrade.heavy: 1
-			upgrade.hightech: 1
-		BuildingDelays:
-			upgrade.conyard: 3750
 	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	SquadManagerBotModule@omnius:
@@ -225,13 +118,41 @@ Player:
 	UnitBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
-		UnitsToBuild:
+	McvManagerBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		McvTypes: mcv
+		ConstructionYardTypes: construction_yard
+		McvFactoryTypes: heavy_factory, starport
+	SquadManagerBotModule@vidious:
+		RequiresCondition: enable-vidious-ai
+		SquadSize: 6
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv
+		ConstructionYardTypes: construction_yard
+	UnitBuilderBotModule@vidious:
+		RequiresCondition: enable-vidious-ai
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+	SquadManagerBotModule@gladius:
+		RequiresCondition: enable-gladius-ai
+		SquadSize: 10
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv
+		ConstructionYardTypes: construction_yard
+	UnitBuilderBotModule@gladius:
+		RequiresCondition: enable-gladius-ai
+		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+	BotProductionConsideration@units-omnius:
+		RequiresCondition: enable-omnius-ai
+		Queues: Infantry, Vehicle, Armor, Starport, Aircraft
+		Actors:
 			carryall: 1
+				Limit: 4
 			light_inf: 65
 			trooper: 40
 			mpsardaukar: 20
 			grenadier: 20
 			harvester: 1
+				Limit: 8
 			trike.starport: 5
 			quad.starport: 7
 			siege_tank.starport: 5
@@ -251,6 +172,7 @@ Player:
 			combat_tank_a: 100
 			combat_tank_h: 100
 			combat_tank_o: 100
+<<<<<<< HEAD
 		UnitLimits:
 			harvester: 8
 			carryall: 4
@@ -267,15 +189,20 @@ Player:
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep
 	UnitBuilderBotModule@vidious:
+=======
+	BotProductionConsideration@units-vidious:
+>>>>>>> c91beaba0b... Overhaul bot production logic.
 		RequiresCondition: enable-vidious-ai
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
-		UnitsToBuild:
+		Queues: Infantry, Vehicle, Armor, Starport, Aircraft
+		Actors:
 			carryall: 1
+				Limit: 4
 			light_inf: 65
 			trooper: 40
 			mpsardaukar: 20
 			grenadier: 20
 			harvester: 1
+				Limit: 8
 			trike.starport: 7
 			quad.starport: 12
 			siege_tank.starport: 5
@@ -295,6 +222,7 @@ Player:
 			combat_tank_a: 100
 			combat_tank_h: 100
 			combat_tank_o: 100
+<<<<<<< HEAD
 		UnitLimits:
 			harvester: 8
 			carryall: 4
@@ -306,15 +234,20 @@ Player:
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep
 	UnitBuilderBotModule@gladius:
+=======
+	BotProductionConsideration@units-gladius:
+>>>>>>> c91beaba0b... Overhaul bot production logic.
 		RequiresCondition: enable-gladius-ai
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
-		UnitsToBuild:
+		Queues: Infantry, Vehicle, Armor, Starport, Aircraft
+		Actors:
 			carryall: 1
+				Limit: 4
 			light_inf: 65
 			trooper: 40
 			mpsardaukar: 20
 			grenadier: 20
 			harvester: 1
+				Limit: 8
 			trike.starport: 5
 			quad.starport: 7
 			siege_tank.starport: 5
@@ -334,6 +267,112 @@ Player:
 			combat_tank_a: 100
 			combat_tank_h: 100
 			combat_tank_o: 100
-		UnitLimits:
-			harvester: 8
-			carryall: 4
+	BotProductionConsideration@buildings-omnius:
+		RequiresCondition: enable-omnius-ai
+		Queues: Building, Upgrade
+		Actors:
+			barracks: 1
+				Limit: 1
+			refinery: 20
+				Limit: 4
+			medium_gun_turret: 8
+			outpost: 1
+				Limit: 1
+			high_tech_factory: 1
+				Limit: 1
+			large_gun_turret: 6
+			light_factory: 1
+				Limit: 1
+			heavy_factory: 1
+				Limit: 1
+			starport: 1
+				Limit: 1
+			repair_pad: 1
+				Limit: 1
+			research_centre: 1
+				Limit: 1
+			palace: 1
+				Limit: 1
+			upgrade.conyard: 1
+				Limit: 1
+				Delay: 3750
+			upgrade.barracks: 1
+				Limit: 1
+			upgrade.light: 1
+				Limit: 1
+			upgrade.heavy: 1
+				Limit: 1
+			upgrade.hightech: 1
+				Limit: 1
+	BotProductionConsideration@buildings-vidious:
+		RequiresCondition: enable-vidious-ai
+		Queues: Building, Upgrade
+		Actors:
+			barracks: 1
+				Limit: 1
+			refinery: 20
+				Limit: 4
+			medium_gun_turret: 5
+			outpost: 1
+				Limit: 1
+			high_tech_factory: 1
+				Limit: 1
+			large_gun_turret: 10
+			light_factory: 1
+				Limit: 1
+			heavy_factory: 1
+				Limit: 1
+			starport: 1
+				Limit: 1
+			repair_pad: 1
+				Limit: 1
+			research_centre: 1
+				Limit: 1
+			palace: 1
+				Limit: 1
+			upgrade.conyard: 1
+				Limit: 1
+				Delay: 3750
+			upgrade.barracks: 1
+				Limit: 1
+			upgrade.light: 1
+				Limit: 1
+			upgrade.heavy: 1
+				Limit: 1
+			upgrade.hightech: 1
+				Limit: 1
+	BotProductionConsideration@buildings-gladius:
+		RequiresCondition: enable-gladius-ai
+		Queues: Building, Upgrade
+		Actors:
+			barracks: 1
+				Limit: 1
+			refinery: 20
+				Limit: 4
+			medium_gun_turret: 4
+			outpost: 1
+				Limit: 1
+			high_tech_factory: 1
+				Limit: 1
+			large_gun_turret: 12
+			light_factory: 1
+				Limit: 1
+			heavy_factory: 1
+				Limit: 1
+			repair_pad: 1
+				Limit: 1
+			research_centre: 1
+				Limit: 1
+			palace: 1
+				Limit: 1
+			upgrade.conyard: 1
+				Limit: 1
+				Delay: 3750
+			upgrade.barracks: 1
+				Limit: 1
+			upgrade.light: 1
+				Limit: 1
+			upgrade.heavy: 1
+				Limit: 1
+			upgrade.hightech: 1
+				Limit: 1

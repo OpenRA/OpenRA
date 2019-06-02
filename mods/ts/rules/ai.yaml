@@ -22,6 +22,7 @@ Player:
 		VehiclesFactoryTypes: gaweap, naweap
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		SiloTypes: gasilo
+<<<<<<< HEAD
 		BuildingLimits:
 			proc: 4
 			gasilo: 2
@@ -63,6 +64,8 @@ Player:
 			gacsam: 6
 			nasam: 6
 			naobel: 3
+=======
+>>>>>>> c91beaba0b... Overhaul bot production logic.
 	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai
 	SquadManagerBotModule@test:
@@ -72,16 +75,31 @@ Player:
 		ConstructionYardTypes: gacnst
 	UnitBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
+<<<<<<< HEAD
 		UnitQueues: Vehicle, Infantry, Air
 		UnitsToBuild:
+=======
+	McvManagerBotModule@test:
+		RequiresCondition: enable-test-ai
+		McvTypes: mcv
+		ConstructionYardTypes: gacnst
+		McvFactoryTypes: gaweap, naweap
+	BotProductionConsideration@units-test:
+		RequiresCondition: enable-test-ai
+		Queues:
+		Actors:
+>>>>>>> c91beaba0b... Overhaul bot production logic.
 			e1: 80
 			e2: 25
 			e3: 25
 			cyborg: 15
 			jumpjet: 15
 			repair: 2
+				Limit: 3
 			medic: 2
+				Limit: 3
 			harv: 10
+				Limit: 12
 			mmch: 15
 			ttnk: 15
 			smech: 25
@@ -91,6 +109,7 @@ Player:
 			subtank: 10
 			sonic: 10
 			stnk: 8
+<<<<<<< HEAD
 			orca: 5
 			orcab: 4
 			apache: 5
@@ -100,7 +119,41 @@ Player:
 			medic: 3
 			repair: 3
 	McvManagerBotModule@test:
+=======
+	BotProductionConsideration@buildings-test:
+>>>>>>> c91beaba0b... Overhaul bot production logic.
 		RequiresCondition: enable-test-ai
-		McvTypes: mcv
-		ConstructionYardTypes: gacnst
-		McvFactoryTypes: gaweap, naweap
+		Queues:
+		Actors:
+			proc: 30
+				Limit: 4
+			gapile: 1
+				Limit: 1
+			nahand: 1
+				Limit: 1
+			gaweap: 1
+				Limit: 1
+			naweap: 1
+				Limit: 1
+			garadr: 1
+				Limit: 1
+			naradr: 1
+				Limit: 1
+			gatech: 1
+				Limit: 1
+			natech: 1
+				Limit: 1
+			nastlh: 1
+				Limit: 1
+			nalasr: 10
+				Limit: 8
+			gavulc: 10
+				Limit: 8
+			garock: 3
+				Limit: 2
+			gacsam: 6
+				Limit: 4
+			nasam: 6
+				Limit: 4
+			naobel: 3
+				Limit: 2

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	class BaseBuilderQueueManager
 	{
-		readonly string category;
+		readonly string queue;
 
 		readonly BaseBuilderBotModule baseBuilder;
 		readonly World world;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		WaterCheck waterState = WaterCheck.NotChecked;
 
-		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string category, Player p, PowerManager pm,
+		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string queue, Player p, PowerManager pm,
 			PlayerResources pr, BitArray resourceTypeIndices)
 		{
 			this.baseBuilder = baseBuilder;
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			player = p;
 			playerPower = pm;
 			playerResources = pr;
-			this.category = category;
+			this.queue = queue;
 			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
 			this.resourceTypeIndices = resourceTypeIndices;
@@ -100,9 +100,15 @@ namespace OpenRA.Mods.Common.Traits
 			var excessPowerBonus = baseBuilder.Info.ExcessPowerIncrement * (playerBuildings.Count() / baseBuilder.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
 			minimumExcessPower = (baseBuilder.Info.MinimumExcessPower + excessPowerBonus).Clamp(baseBuilder.Info.MinimumExcessPower, baseBuilder.Info.MaximumExcessPower);
 
+			var ownedActorCounts = player.World.Actors
+				.Where(a => a.Owner == player)
+				.Select(a => a.Info.Name)
+				.GroupBy(a => a)
+				.ToDictionary(a => a.Key, a => a.Count());
+
 			var active = false;
-			foreach (var queue in AIUtils.FindQueues(player, category))
-				if (TickQueue(bot, queue))
+			foreach (var q in AIUtils.FindQueues(player, queue))
+				if (TickQueue(bot, q, ownedActorCounts))
 					active = true;
 
 			// Add a random factor so not every AI produces at the same tick early in the game.
@@ -114,14 +120,14 @@ namespace OpenRA.Mods.Common.Traits
 				: baseBuilder.Info.StructureProductionInactiveDelay + randomFactor;
 		}
 
-		bool TickQueue(IBot bot, ProductionQueue queue)
+		bool TickQueue(IBot bot, ProductionQueue queue, Dictionary<string, int> ownedActorCounts)
 		{
 			var currentBuilding = queue.AllQueued().FirstOrDefault();
 
 			// Waiting to build something
 			if (currentBuilding == null && failCount < baseBuilder.Info.MaximumFailedPlacementAttempts)
 			{
-				var item = ChooseBuildingToBuild(queue);
+				var item = ChooseBuildingToBuild(queue, ownedActorCounts);
 				if (item == null)
 					return false;
 
@@ -167,33 +173,12 @@ namespace OpenRA.Mods.Common.Traits
 						ExtraData = queue.Actor.ActorID,
 						SuppressVisualFeedback = true
 					});
-
-					return true;
 				}
 			}
 
 			return true;
 		}
 
-		ActorInfo GetProducibleBuilding(HashSet<string> actors, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
-		{
-			var available = buildables.Where(actor =>
-			{
-				// Are we able to build this?
-				if (!actors.Contains(actor.Name))
-					return false;
-
-				if (!baseBuilder.Info.BuildingLimits.ContainsKey(actor.Name))
-					return true;
-
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.Info.BuildingLimits[actor.Name];
-			});
-
-			if (orderBy != null)
-				return available.MaxByOrDefault(orderBy);
-
-			return available.RandomOrDefault(world.LocalRandom);
-		}
 
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
 		{
@@ -201,13 +186,39 @@ namespace OpenRA.Mods.Common.Traits
 				.Sum(p => p.Amount) + playerPower.ExcessPower) >= baseBuilder.Info.MinimumExcessPower;
 		}
 
-		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
+		ActorInfo ChooseBuildingToBuild(ProductionQueue queue, Dictionary<string, int> ownedActorCounts)
 		{
-			var buildableThings = queue.BuildableItems();
+			Dictionary<string, BaseBuilderBotModule.Consideration> queueConsiderations;
+			if (!baseBuilder.Considerations.TryGetValue(queue.Info.Type, out queueConsiderations))
+				return null;
+
+			// Create a random list of actors that are buildable and valid considerations
+			var buildableConsiderations = queue.BuildableItems().Where(ai =>
+			{
+				BaseBuilderBotModule.Consideration baseConsideratation;
+				if (!queueConsiderations.TryGetValue(ai.Name, out baseConsideratation))
+					return false;
+
+				if (baseConsideratation.Delay > world.WorldTick || baseConsideratation.Limit == 0)
+					return false;
+
+				int ownedActorCount;
+				if (baseConsideratation.Limit > 0 && ownedActorCounts.TryGetValue(ai.Name, out ownedActorCount) && ownedActorCount > baseConsideratation.Limit)
+					return false;
+
+				return true;
+			}).Shuffle(world.LocalRandom).ToList();
+
+			// Too spammy to keep enabled all the time, but very useful when debugging specific issues.
+			// AIUtils.BotDebug("{0} couldn't decide what to build for queue {1}.", queue.Actor.Owner, queue.Info.Group);
+
+			if (!buildableConsiderations.Any())
+				return null;
 
 			// This gets used quite a bit, so let's cache it here
-			var power = GetProducibleBuilding(baseBuilder.Info.PowerTypes, buildableThings,
-				a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
+			var power = buildableConsiderations
+				.Where(c => baseBuilder.Info.PowerTypes.Contains(c.Name))
+				.MaxByOrDefault(a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
 			if (playerPower != null && playerPower.ExcessPower < minimumExcessPower)
@@ -222,7 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Next is to build up a strong economy
 			if (!baseBuilder.HasAdequateRefineryCount)
 			{
-				var refinery = GetProducibleBuilding(baseBuilder.Info.RefineryTypes, buildableThings);
+				var refinery = buildableConsiderations.FirstOrDefault(c => baseBuilder.Info.RefineryTypes.Contains(c.Name));
 				if (refinery != null && HasSufficientPowerForActor(refinery))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (refinery)", queue.Actor.Owner, refinery.Name);
@@ -239,7 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Make sure that we can spend as fast as we are earning
 			if (baseBuilder.Info.NewProductionCashThreshold > 0 && playerResources.Resources > baseBuilder.Info.NewProductionCashThreshold)
 			{
-				var production = GetProducibleBuilding(baseBuilder.Info.ProductionTypes, buildableThings);
+				var production = buildableConsiderations.FirstOrDefault(c => baseBuilder.Info.ProductionTypes.Contains(c.Name));
 				if (production != null && HasSufficientPowerForActor(production))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (production)", queue.Actor.Owner, production.Name);
@@ -258,10 +269,10 @@ namespace OpenRA.Mods.Common.Traits
 				&& playerResources.Resources > baseBuilder.Info.NewProductionCashThreshold
 				&& AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes))
 			{
-				var navalproduction = GetProducibleBuilding(baseBuilder.Info.NavalProductionTypes, buildableThings);
+				var navalproduction = buildableConsiderations.FirstOrDefault(c => baseBuilder.Info.NavalProductionTypes.Contains(c.Name));
 				if (navalproduction != null && HasSufficientPowerForActor(navalproduction))
 				{
-					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (navalproduction)", queue.Actor.Owner, navalproduction.Name);
+					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (naval production)", queue.Actor.Owner, navalproduction.Name);
 					return navalproduction;
 				}
 
@@ -275,7 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Create some head room for resource storage if we really need it
 			if (playerResources.Resources > 0.8 * playerResources.ResourceCapacity)
 			{
-				var silo = GetProducibleBuilding(baseBuilder.Info.SiloTypes, buildableThings);
+				var silo = buildableConsiderations.FirstOrDefault(c => baseBuilder.Info.SiloTypes.Contains(c.Name));
 				if (silo != null && HasSufficientPowerForActor(silo))
 				{
 					AIUtils.BotDebug("AI: {0} decided to build {1}: Priority override (silo)", queue.Actor.Owner, silo.Name);
@@ -289,62 +300,61 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			// Build everything else
-			foreach (var frac in baseBuilder.Info.BuildingFractions.Shuffle(world.LocalRandom))
+			// Choose an actor to try and balance out the defined composition percentages
+			ActorInfo build = null;
+			var queueTotal = ownedActorCounts
+				.Where(c => queueConsiderations.ContainsKey(c.Key))
+				.Select(c => c.Value)
+				.Sum();
+
+			foreach (var b in buildableConsiderations)
 			{
-				var name = frac.Key;
+				int owned = 0;
+				ownedActorCounts.TryGetValue(b.Name, out owned);
 
-				// Does this building have initial delay, if so have we passed it?
-				if (baseBuilder.Info.BuildingDelays != null &&
-					baseBuilder.Info.BuildingDelays.ContainsKey(name) &&
-					baseBuilder.Info.BuildingDelays[name] > world.WorldTick)
-					continue;
-
-				// Can we build this structure?
-				if (!buildableThings.Any(b => b.Name == name))
-					continue;
-
-				// Do we want to build this structure?
-				var count = playerBuildings.Count(a => a.Info.Name == name);
-				if (count * 100 > frac.Value * playerBuildings.Length)
-					continue;
-
-				if (baseBuilder.Info.BuildingLimits.ContainsKey(name) && baseBuilder.Info.BuildingLimits[name] <= count)
-					continue;
-
-				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
-				// and any structure providing buildable area close enough to that water.
-				// TODO: Extend this check to cover any naval structure, not just production.
-				if (baseBuilder.Info.NavalProductionTypes.Contains(name)
-					&& (waterState == WaterCheck.NotEnoughWater
-						|| !AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes)))
-					continue;
-
-				// Will this put us into low power?
-				var actor = world.Map.Rules.Actors[name];
-				if (playerPower != null && (playerPower.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor)))
+				var desiredPercentage = queueConsiderations[b.Name].Percentage;
+				if (owned * 100 < desiredPercentage * queueTotal)
 				{
-					// Try building a power plant instead
-					if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(pi => pi.Amount) > 0)
+					// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
+					// and any structure providing buildable area close enough to that water.
+					// TODO: Extend this check to cover any naval structure, not just production.
+					if (baseBuilder.Info.NavalProductionTypes.Contains(b.Name)
+					    && (waterState == WaterCheck.NotEnoughWater
+					        || !AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes)))
+						continue;
+
+					// Will this put us into low power?
+					var actor = world.Map.Rules.Actors[b.Name];
+					if (playerPower != null && (playerPower.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor)))
 					{
-						if (playerPower.PowerOutageRemainingTicks > 0)
-							AIUtils.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
-						else
-							AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+						// Try building a power plant instead
+						if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(pi => pi.Amount) > 0)
+						{
+							if (playerPower.PowerOutageRemainingTicks > 0)
+								AIUtils.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
+							else
+								AIUtils.BotDebug("{0} decided to build {1}: Priority override (avoid low power)", queue.Actor.Owner, power.Name);
 
-						return power;
+							return power;
+						}
 					}
-				}
+					AIUtils.BotDebug("{0} decided to build {1}: Desired is {2:F1} current is {3}",
+						queue.Actor.Owner, b.Name, desiredPercentage * queueTotal / 100.0, owned);
 
-				// Lets build this
-				AIUtils.BotDebug("{0} decided to build {1}: Desired is {2} ({3} / {4}); current is {5} / {4}",
-					queue.Actor.Owner, name, frac.Value, frac.Value * playerBuildings.Length, playerBuildings.Length, count);
-				return actor;
+					build = b;
+					break;
+				}
 			}
 
-			// Too spammy to keep enabled all the time, but very useful when debugging specific issues.
-			// AIUtils.BotDebug("{0} couldn't decide what to build for queue {1}.", queue.Actor.Owner, queue.Info.Group);
-			return null;
+			// Pick first random choice if there is no preference
+			if (build == null)
+			{
+				build = buildableConsiderations.First();
+				AIUtils.BotDebug("{0} decided to build {1}: Random available consideration",
+					queue.Actor.Owner, build.Name);
+			}
+
+			return build;
 		}
 
 		CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)

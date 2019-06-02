@@ -518,6 +518,12 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface IBotNotifyProductionConsiderationsUpdated
+	{
+		void ProductionConsiderationsUpdated(HashSet<string> queues);
+	}
+
+	[RequireExplicitImplementation]
 	public interface IEditorActorOptions : ITraitInfoInterface
 	{
 		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);
