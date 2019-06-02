@@ -280,10 +280,11 @@ overlay:
 		Start: 2
 
 editor-overlay:
-	copy: overlay
-		Start: 0
-	paste: overlay
-		Start: 1
+	Defaults: trans.icn
+		AddExtension: False
+	copy:
+	paste:
+		Start: 2
 
 poweroff:
 	offline:
