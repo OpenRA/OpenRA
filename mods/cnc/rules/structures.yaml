@@ -20,11 +20,21 @@ FACT:
 	Production:
 		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
 	Transforms:
-		RequiresCondition: factundeploy && !build-incomplete
-		PauseOnCondition: being-demolished
+		RequiresCondition: factundeploy
+		PauseOnCondition: being-demolished || build-incomplete
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 108
+	TransformsIntoMobile:
+		RequiresCondition: factundeploy
+		Locomotor: heavywheeled
+		RequiresForceMove: true
+	TransformsIntoPassenger:
+		RequiresCondition: factundeploy
+		CargoType: Vehicle
+	TransformsIntoRepairable:
+		RequiresCondition: factundeploy
+		RepairActors: fix
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy

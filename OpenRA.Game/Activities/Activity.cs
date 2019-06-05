@@ -27,7 +27,7 @@ namespace OpenRA.Activities
 	 *   Queue a new instance instead.
 	 * - Avoid calling actor.CancelActivity(). It is almost always a bug. Call activity.Cancel() instead.
 	 */
-	public abstract class Activity
+	public abstract class Activity : IActivityInterface
 	{
 		public ActivityState State { get; private set; }
 
@@ -172,9 +172,9 @@ namespace OpenRA.Activities
 			}
 		}
 
-		public IEnumerable<T> ActivitiesImplementing<T>() where T : IActivityInterface
+		public IEnumerable<T> ActivitiesImplementing<T>(bool includeChildren = true) where T : IActivityInterface
 		{
-			if (childActivity != null)
+			if (includeChildren && childActivity != null)
 				foreach (var a in childActivity.ActivitiesImplementing<T>())
 					yield return a;
 

@@ -1137,11 +1137,21 @@ FACT:
 		ActorTypes: e1,e1,e1,tecn,tecn,e6
 	BaseBuilding:
 	Transforms:
-		RequiresCondition: factundeploy && !build-incomplete
-		PauseOnCondition: chrono-vortex || being-captured || being-demolished
+		RequiresCondition: factundeploy
+		PauseOnCondition: chrono-vortex || being-captured || being-demolished || build-incomplete
 		IntoActor: mcv
 		Offset: 1,1
 		Facing: 96
+	TransformsIntoMobile:
+		RequiresCondition: factundeploy
+		Locomotor: heavywheeled
+		RequiresForceMove: true
+	TransformsIntoPassenger:
+		RequiresCondition: factundeploy
+		CargoType: Vehicle
+	TransformsIntoRepairable:
+		RequiresCondition: factundeploy
+		RepairActors: fix
 	Sellable:
 		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
