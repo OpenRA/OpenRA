@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterTunnelOrderTargeter(info);
+				yield return new EnterTunnelOrderTargeter(info.EnterCursor, info.EnterBlockedCursor);
 			}
 		}
 
@@ -78,14 +78,16 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(move.MoveTo(tunnel.Exit.Value, tunnel.NearEnough));
 		}
 
-		class EnterTunnelOrderTargeter : UnitOrderTargeter
+		public class EnterTunnelOrderTargeter : UnitOrderTargeter
 		{
-			readonly EntersTunnelsInfo info;
+			readonly string enterCursor;
+			readonly string enterBlockedCursor;
 
-			public EnterTunnelOrderTargeter(EntersTunnelsInfo info)
-				: base("EnterTunnel", 6, info.EnterCursor, true, true)
+			public EnterTunnelOrderTargeter(string enterCursor, string enterBlockedCursor)
+				: base("EnterTunnel", 6, enterCursor, true, true)
 			{
-				this.info = info;
+				this.enterCursor = enterCursor;
+				this.enterBlockedCursor = enterBlockedCursor;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
@@ -109,11 +111,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!tunnel.Exit.HasValue)
 				{
-					cursor = info.EnterBlockedCursor;
+					cursor = enterBlockedCursor;
 					return false;
 				}
 
-				cursor = info.EnterCursor;
+				cursor = enterCursor;
 				return true;
 			}
 

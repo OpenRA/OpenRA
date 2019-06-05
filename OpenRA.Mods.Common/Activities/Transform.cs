@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -87,6 +88,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		void DoTransform(Actor self)
 		{
+			// This activity may be buried as a child within one or more parents
+			// We need to consider the top-level activities when transferring orders to the new actor!
+			var currentActivity = self.CurrentActivity;
+
 			self.World.AddFrameEndTask(w =>
 			{
 				if (self.IsDead || self.WillDispose)
@@ -132,6 +137,14 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 					nt.AfterTransform(a);
 
+				// Use self.CurrentActivity to capture the parent activity if Transform is a child
+				foreach (var transfer in currentActivity.ActivitiesImplementing<IssueOrderAfterTransform>(false))
+				{
+					var order = transfer.IssueOrderForTransformedActor(a);
+					foreach (var t in a.TraitsImplementing<IResolveOrder>())
+						t.ResolveOrder(a, order);
+				}
+
 				self.ReplacedByActor = a;
 
 				if (selected)
@@ -140,6 +153,29 @@ namespace OpenRA.Mods.Common.Activities
 				if (controlgroup.HasValue)
 					w.Selection.AddToControlGroup(a, controlgroup.Value);
 			});
+		}
+	}
+
+	class IssueOrderAfterTransform : Activity
+	{
+		readonly string orderString;
+		readonly Target target;
+
+		public IssueOrderAfterTransform(string orderString, Target target)
+		{
+			this.orderString = orderString;
+			this.target = target;
+		}
+
+		public Order IssueOrderForTransformedActor(Actor newActor)
+		{
+			return new Order(orderString, newActor, target, true);
+		}
+
+		public override Activity Tick(Actor self)
+		{
+			// Activity is a placeholder that should never run
+			return NextActivity;
 		}
 	}
 }

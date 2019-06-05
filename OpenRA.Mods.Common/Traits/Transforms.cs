@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -85,6 +86,18 @@ namespace OpenRA.Mods.Common.Traits
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
+		public Activity GetTransformActivity(Actor self)
+		{
+			return new Transform(self, Info.IntoActor)
+			{
+				Offset = Info.Offset,
+				Facing = Info.Facing,
+				Sounds = Info.TransformSounds,
+				Notification = Info.TransformNotification,
+				Faction = faction
+			};
+		}
+
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
@@ -127,14 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			self.QueueActivity(new Transform(self, Info.IntoActor)
-			{
-				Offset = Info.Offset,
-				Facing = Info.Facing,
-				Sounds = Info.TransformSounds,
-				Notification = Info.TransformNotification,
-				Faction = faction
-			});
+			self.QueueActivity(GetTransformActivity(self));
 		}
 
 		public void ResolveOrder(Actor self, Order order)
