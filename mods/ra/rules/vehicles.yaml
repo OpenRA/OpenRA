@@ -818,7 +818,7 @@ QTNK:
 	MadTank:
 		DeployedCondition: deployed
 	Targetable:
-		TargetTypes: Ground, MADTank, Repair, Vehicle
+		TargetTypes: Ground, MADTank, Vehicle
 	Selectable:
 		DecorationBounds: 44,38,0,-4
 
