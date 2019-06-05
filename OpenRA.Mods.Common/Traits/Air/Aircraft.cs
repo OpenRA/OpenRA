@@ -321,15 +321,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				firstTick = false;
 
-				// TODO: Aircraft husks don't properly unreserve.
-				if (self.Info.HasTraitInfo<FallsToEarthInfo>())
-					return;
-
-				ReserveSpawnBuilding();
-
 				var host = GetActorBelow();
 				if (host == null)
 					return;
+
+				MakeReservation(host);
 
 				if (Info.TakeOffOnCreation)
 					self.QueueActivity(new TakeOff(self));
@@ -476,16 +472,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			return self.World.ActorMap.GetActorsAt(self.Location)
 				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
-		}
-
-		protected void ReserveSpawnBuilding()
-		{
-			// HACK: Not spawning in the air, so try to associate with our spawner.
-			var spawner = GetActorBelow();
-			if (spawner == null)
-				return;
-
-			MakeReservation(spawner);
 		}
 
 		public void MakeReservation(Actor target)
