@@ -73,7 +73,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override void TraitEnabled(Actor self)
 		{
-			UpdateAnimation(self, movement.CurrentMovementTypes);
+			// HACK: Use a FrameEndTask to avoid construction order issues with WithSpriteBody
+			self.World.AddFrameEndTask(w => UpdateAnimation(self, movement.CurrentMovementTypes));
 		}
 
 		protected override void TraitDisabled(Actor self)
