@@ -55,6 +55,7 @@ MSLO:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SupportPowerPaletteOrder: 70
 	SupportPowerChargeBar:
 	Power:
 		Amount: -150
@@ -436,6 +437,7 @@ IRON:
 		DisplayRadarPing: True
 		Condition: invulnerability
 		OnFireSound: ironcur9.aud
+		SupportPowerPaletteOrder: 10
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -498,6 +500,7 @@ PDOX:
 		Duration: 400
 		KillCargo: yes
 		DisplayRadarPing: True
+		SupportPowerPaletteOrder: 20
 	ChronoshiftPower@advancedchronoshift:
 		OrderName: AdvancedChronoshift
 		PauseOnCondition: disabled
@@ -514,6 +517,7 @@ PDOX:
 		KillCargo: yes
 		DisplayRadarPing: True
 		Range: 2
+		SupportPowerPaletteOrder: 30
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -956,6 +960,7 @@ ATEK:
 		RevealDelay: 375
 		LaunchSpeechNotification: SatelliteLaunched
 		DisplayTimerStances: Ally, Neutral, Enemy
+		SupportPowerPaletteOrder: 90
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -1484,6 +1489,7 @@ AFLD:
 		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 60
 	ParatroopersPower@paratroopers:
 		OrderName: SovietParatroopers
 		Prerequisites: aircraft.soviet
@@ -1505,6 +1511,7 @@ AFLD:
 		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 50
 	AirstrikePower@parabombs:
 		OrderName: UkraineParabombs
 		Prerequisites: aircraft.ukraine
@@ -1527,6 +1534,7 @@ AFLD:
 		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: paratarget
 		DirectionArrowAnimation: paradirection
+		SupportPowerPaletteOrder: 40
 	ProductionBar:
 		ProductionType: Aircraft
 	SupportPowerChargeBar:

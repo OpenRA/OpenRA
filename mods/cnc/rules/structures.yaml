@@ -657,6 +657,7 @@ HQ:
 		UseDirectionalTarget: True
 		TargetPlaceholderCursorAnimation: airstriketarget
 		DirectionArrowAnimation: airstrikedirection
+		SupportPowerPaletteOrder: 10
 	SupportPowerChargeBar:
 	Power:
 		Amount: -50
@@ -757,6 +758,7 @@ EYE:
 		OnFireSound: ion1.aud
 		DisplayRadarPing: True
 		CameraActor: camera.small
+		SupportPowerPaletteOrder: 20
 	SupportPowerChargeBar:
 	Power:
 		Amount: -200
@@ -820,6 +822,7 @@ TMPL:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SupportPowerPaletteOrder: 30
 	WithBuildingBib:
 	WithNukeLaunchAnimation:
 		RequiresCondition: !build-incomplete

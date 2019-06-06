@@ -54,6 +54,7 @@ airstrike.proxy:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		SupportPowerPaletteOrder: 10
 
 TRUCK:
 	Buildable:
