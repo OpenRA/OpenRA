@@ -340,6 +340,7 @@ powerproxy.sonarpulse:
 		DeploySound: sonpulse.aud
 		EffectImage: moveflsh
 		EffectPalette: moveflash
+		SupportPowerPaletteOrder: 80
 
 powerproxy.paratroopers:
 	AlwaysVisible:
