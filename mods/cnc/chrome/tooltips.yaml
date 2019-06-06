@@ -403,6 +403,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 			Visible: False
 			Children:
 				Image@ICON:
+					X: 1
 					Y: 5
 					Width: 7
 					Height: 5
@@ -446,6 +447,7 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 							Visible: False
 							Children:
 								Image@ICON:
+									X: 1
 									Y: 5
 									Width: 7
 									Height: 5

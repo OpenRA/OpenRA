@@ -787,7 +787,7 @@ music: chrome.png
 lobby-bits: chrome.png
 	spawn-unclaimed: 776,420,19,19
 	spawn-claimed: 776,440,19,19
-	admin: 928,0,7,5
+	admin: 928,0,6,5
 	colorpicker: 880,0,14,14
 	huepicker: 896,0,7,15
 	kick: 912,0,11,11
