@@ -3,7 +3,7 @@ Background@MULTIPLAYER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 808
-	Height: 550
+	Height: 600
 	Children:
 		Label@TITLE:
 			Y: 16
