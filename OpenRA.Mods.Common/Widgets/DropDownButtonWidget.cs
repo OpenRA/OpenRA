@@ -101,9 +101,13 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.AddChild(fullscreenMask);
 
 			var oldBounds = panel.Bounds;
+			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
+			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
+				panelY -= (Bounds.Height + oldBounds.Height);
+
 			panel.Bounds = new Rectangle(
 				RenderOrigin.X - panelRoot.RenderOrigin.X,
-				RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y,
+				panelY,
 				oldBounds.Width,
 				oldBounds.Height);
 			panelRoot.AddChild(panel);
