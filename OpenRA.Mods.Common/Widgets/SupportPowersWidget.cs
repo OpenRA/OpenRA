@@ -123,7 +123,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public void RefreshIcons()
 		{
 			icons = new Dictionary<Rectangle, SupportPowerIcon>();
-			var powers = spm.Powers.Values.Where(p => !p.Disabled);
+			var powers = spm.Powers.Values.Where(p => !p.Disabled)
+				.OrderBy(p => p.Info.SupportPowerPaletteOrder);
 
 			var oldIconCount = IconCount;
 			IconCount = 0;

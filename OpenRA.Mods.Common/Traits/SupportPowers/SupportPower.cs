@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string OrderName;
 
+		[Desc("Sort order for the support power palette. Smaller numbers are presented earlier.")]
+		public readonly int SupportPowerPaletteOrder = 9999;
+
 		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
