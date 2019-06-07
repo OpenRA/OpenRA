@@ -302,6 +302,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						pn2++;
 						tmp >>= 16;
 					}
+
 					*pn1 += (ushort)tmp;
 				}
 			}

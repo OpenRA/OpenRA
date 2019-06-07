@@ -110,6 +110,7 @@ namespace OpenRA
 					fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA");
 					break;
 				}
+
 				case PlatformType.OSX:
 				{
 					preferredSupportDir = fallbackSupportDir = Path.Combine(
@@ -117,6 +118,7 @@ namespace OpenRA
 						"Library", "Application Support", "OpenRA");
 					break;
 				}
+
 				case PlatformType.Linux:
 				{
 					fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
@@ -129,6 +131,7 @@ namespace OpenRA
 
 					break;
 				}
+
 				default:
 				{
 					preferredSupportDir = fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
