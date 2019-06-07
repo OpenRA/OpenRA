@@ -40,7 +40,6 @@
     <Rule Id="SA1116" Action="None" /><!-- SplitParametersMustStartOnLineAfterDeclaration -->
     <Rule Id="SA1119" Action="None" /><!-- StatementMustNotUseUnnecessaryParenthesis -->
     <Rule Id="SA1128" Action="None" /><!-- ConstructorInitializerMustBeOnOwnLine -->
-    <Rule Id="SA1129" Action="None" /><!-- DoNotUseDefaultValueTypeConstructor -->
     <Rule Id="SA1132" Action="None" /><!-- DoNotCombineFields -->
     <Rule Id="SA1204" Action="None" /><!-- StaticElementsMustAppearBeforeInstanceElements -->
     <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
