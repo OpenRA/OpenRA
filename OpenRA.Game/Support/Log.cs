@@ -52,7 +52,7 @@ namespace OpenRA
 
 				if (string.IsNullOrEmpty(baseFilename))
 				{
-					Channels.Add(channelName, new ChannelInfo());
+					Channels.Add(channelName, default(ChannelInfo));
 					return;
 				}
 

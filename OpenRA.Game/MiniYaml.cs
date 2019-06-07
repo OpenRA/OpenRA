@@ -303,7 +303,7 @@ namespace OpenRA
 			foreach (var kv in tree)
 			{
 				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>();
-				inherited.Add(kv.Key, new MiniYamlNode.SourceLocation());
+				inherited.Add(kv.Key, default(MiniYamlNode.SourceLocation));
 
 				var children = ResolveInherits(kv.Key, kv.Value, tree, inherited);
 				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));

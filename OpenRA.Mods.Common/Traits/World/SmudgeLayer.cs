@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(loc))
 				return;
 
-			var tile = dirty.ContainsKey(loc) ? dirty[loc] : new Smudge();
+			var tile = dirty.ContainsKey(loc) ? dirty[loc] : default(Smudge);
 
 			// Setting Sprite to null to indicate a deleted smudge.
 			tile.Sprite = null;

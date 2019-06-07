@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var halfSize = font.Measure(number) / 2;
 
 			var boundsOffset = new int2(bounds.Left + bounds.Right, bounds.Top + bounds.Bottom) / 2;
-			var sizeOffset = new int2();
+			var sizeOffset = int2.Zero;
 			if (info.ReferencePoint.HasFlag(ReferencePoints.Top))
 			{
 				boundsOffset -= new int2(0, bounds.Height / 2);

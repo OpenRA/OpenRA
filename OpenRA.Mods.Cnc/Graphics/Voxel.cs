@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			for (var i = 0; i < vxl.LimbCount; i++)
 			{
 				var vl = vxl.Limbs[i];
-				var l = new Limb();
+				var l = default(Limb);
 				l.Scale = vl.Scale;
 				l.Bounds = (float[])vl.Bounds.Clone();
 				l.Size = (byte[])vl.Size.Clone();
