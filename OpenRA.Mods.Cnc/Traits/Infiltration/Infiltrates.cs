@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (IsTraitDisabled)
 				return false;
 
-			var targetTypes = new BitSet<TargetableType>();
+			var targetTypes = default(BitSet<TargetableType>);
 			if (order.Target.Type == TargetType.FrozenActor)
 				targetTypes = order.Target.FrozenActor.TargetTypes;
 

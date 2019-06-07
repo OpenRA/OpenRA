@@ -377,7 +377,7 @@ namespace OpenRA
 		public BitSet<TargetableType> GetAllTargetTypes()
 		{
 			// PERF: Avoid LINQ.
-			var targetTypes = new BitSet<TargetableType>();
+			var targetTypes = default(BitSet<TargetableType>);
 			foreach (var targetable in Targetables)
 				targetTypes = targetTypes.Union(targetable.TargetTypes);
 			return targetTypes;
@@ -386,7 +386,7 @@ namespace OpenRA
 		public BitSet<TargetableType> GetEnabledTargetTypes()
 		{
 			// PERF: Avoid LINQ.
-			var targetTypes = new BitSet<TargetableType>();
+			var targetTypes = default(BitSet<TargetableType>);
 			foreach (var targetable in Targetables)
 				if (targetable.IsTraitEnabled())
 					targetTypes = targetTypes.Union(targetable.TargetTypes);
