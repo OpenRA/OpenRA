@@ -14,11 +14,12 @@ using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RepairableNearInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>
+	class RepairableNearInfo : ITraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>, IObservesVariablesInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -29,14 +30,19 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
+		public readonly BooleanExpression RequireForceMoveCondition = null;
+
 		public object Create(ActorInitializer init) { return new RepairableNear(init.Self, this); }
 	}
 
-	class RepairableNear : IIssueOrder, IResolveOrder, IOrderVoice
+	class RepairableNear : IIssueOrder, IResolveOrder, IOrderVoice, IObservesVariables
 	{
 		public readonly RepairableNearInfo Info;
 		readonly Actor self;
 		readonly IMove movement;
+		bool requireForceMove;
 
 		public RepairableNear(Actor self, RepairableNearInfo info)
 		{
@@ -50,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("RepairNear", 5,
-					target => CanRepairAt(target), _ => ShouldRepair());
+					CanRepairAt, _ => ShouldRepair());
 			}
 		}
 
@@ -60,6 +66,14 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
+		}
+
+		bool CanRepairAt(Actor target, TargetModifiers modifiers)
+		{
+			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			return Info.RepairActors.Contains(target.Info.Name);
 		}
 
 		bool CanRepairAt(Actor target)
@@ -107,6 +121,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
 			return repairBuilding.FirstOrDefault().Actor;
+		}
+
+		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
+		{
+			if (Info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 	}
 }

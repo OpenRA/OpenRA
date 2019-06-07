@@ -1149,9 +1149,11 @@ FACT:
 	TransformsIntoPassenger:
 		RequiresCondition: factundeploy
 		CargoType: Vehicle
+		RequiresForceMove: true
 	TransformsIntoRepairable:
 		RequiresCondition: factundeploy
 		RepairActors: fix
+		RequiresForceMove: true
 	Sellable:
 		RequiresCondition: !build-incomplete && !chrono-vortex && !being-captured && !being-demolished
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:

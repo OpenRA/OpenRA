@@ -32,9 +32,11 @@ FACT:
 	TransformsIntoPassenger:
 		RequiresCondition: factundeploy
 		CargoType: Vehicle
+		RequiresForceMove: true
 	TransformsIntoRepairable:
 		RequiresCondition: factundeploy
 		RepairActors: fix
+		RequiresForceMove: true
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy

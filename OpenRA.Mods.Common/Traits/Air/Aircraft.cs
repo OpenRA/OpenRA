@@ -22,7 +22,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		IActorPreviewInitInfo, IEditorActorOptions
+		IActorPreviewInitInfo, IEditorActorOptions, IObservesVariablesInfo
 	{
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
@@ -120,6 +120,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
 
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
+		public readonly BooleanExpression RequireForceMoveCondition = null;
+
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
@@ -197,6 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
 		CPos? landingCell;
+		bool requireForceMove;
 
 		public WDist LandAltitude { get; private set; }
 
@@ -245,11 +250,19 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Info.LandOnCondition != null)
 				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
+
+			if (Info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
 		}
 
 		void ForceLandConditionChanged(Actor self, IReadOnlyDictionary<string, int> variables)
 		{
 			landNow = Info.LandOnCondition.Evaluate(variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -506,6 +519,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (takeOff && self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
 				self.QueueActivity(new TakeOff(self));
+		}
+
+		bool AircraftCanEnter(Actor a, TargetModifiers modifiers)
+		{
+			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			return AircraftCanEnter(a);
 		}
 
 		public bool AircraftCanEnter(Actor a)
@@ -854,9 +875,9 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
-					target => AircraftCanEnter(target), target => Reservable.IsAvailableFor(target, self));
+					AircraftCanEnter, target => Reservable.IsAvailableFor(target, self));
 
-				yield return new AircraftMoveOrderTargeter(Info);
+				yield return new AircraftMoveOrderTargeter(this);
 			}
 		}
 
@@ -1037,6 +1058,44 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
 				inits.Add(new DynamicFacingInit(() => Facing));
+		}
+
+		public class AircraftMoveOrderTargeter : IOrderTargeter
+		{
+			readonly Aircraft aircraft;
+
+			public string OrderID { get { return "Move"; } }
+			public int OrderPriority { get { return 4; } }
+			public bool IsQueued { get; protected set; }
+
+			public AircraftMoveOrderTargeter(Aircraft aircraft)
+			{
+				this.aircraft = aircraft;
+			}
+
+			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			{
+				return modifiers.HasModifier(TargetModifiers.ForceMove);
+			}
+
+			public virtual bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			{
+				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
+					return false;
+
+				var location = self.World.Map.CellContaining(target.CenterPosition);
+				var explored = self.Owner.Shroud.IsExplored(location);
+				cursor = self.World.Map.Contains(location) ?
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
+					"move-blocked";
+
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+
+				if (!explored && !aircraft.Info.MoveIntoShroud)
+					cursor = "move-blocked";
+
+				return true;
+			}
 		}
 	}
 }

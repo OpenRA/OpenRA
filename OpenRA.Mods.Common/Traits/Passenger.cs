@@ -14,12 +14,13 @@ using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can enter Cargo actors.")]
-	public class PassengerInfo : ITraitInfo
+	public class PassengerInfo : ITraitInfo, IObservesVariablesInfo
 	{
 		public readonly string CargoType = null;
 		public readonly PipType PipType = PipType.Green;
@@ -39,13 +40,18 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
+		public readonly BooleanExpression RequireForceMoveCondition = null;
+
 		public object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 
-	public class Passenger : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo, INotifyKilled
+	public class Passenger : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo, INotifyKilled, IObservesVariables
 	{
 		public readonly PassengerInfo Info;
 		public Actor Transport;
+		bool requireForceMove;
 
 		ConditionManager conditionManager;
 		int anyCargoToken = ConditionManager.InvalidConditionToken;
@@ -77,6 +83,14 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
+		}
+
+		bool IsCorrectCargoType(Actor target, TargetModifiers modifiers)
+		{
+			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			return IsCorrectCargoType(target);
 		}
 
 		bool IsCorrectCargoType(Actor target)
@@ -128,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				specificCargoToken = conditionManager.RevokeCondition(self, specificCargoToken);
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "EnterTransport")
 				return;
@@ -179,6 +193,17 @@ namespace OpenRA.Mods.Common.Traits
 			// Something killed us, but it wasn't our transport blowing up. Remove us from the cargo.
 			if (!Transport.IsDead)
 				Transport.Trait<Cargo>().Unload(Transport, self);
+		}
+
+		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
+		{
+			if (Info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 	}
 }

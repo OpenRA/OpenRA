@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Require the force-move modifier to display the enter cursor.")]
+		public readonly bool RequiresForceMove = false;
+
 		public override object Create(ActorInitializer init) { return new TransformsIntoPassenger(this); }
 	}
 
@@ -60,6 +63,14 @@ namespace OpenRA.Mods.Common.Traits
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
+		}
+
+		bool IsCorrectCargoType(Actor target, TargetModifiers modifiers)
+		{
+			if (Info.RequiresForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			return IsCorrectCargoType(target);
 		}
 
 		bool IsCorrectCargoType(Actor target)

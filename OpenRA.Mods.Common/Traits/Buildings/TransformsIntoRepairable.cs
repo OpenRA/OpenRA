@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Require the force-move modifier to display the enter cursor.")]
+		public readonly bool RequiresForceMove = false;
+
 		public override object Create(ActorInitializer init) { return new TransformsIntoRepairable(this); }
 	}
 
@@ -60,6 +63,14 @@ namespace OpenRA.Mods.Common.Traits
 		bool CanRepair()
 		{
 			return health.DamageState > DamageState.Undamaged && transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused);
+		}
+
+		bool CanRepairAt(Actor target, TargetModifiers modifiers)
+		{
+			if (Info.RequiresForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			return CanRepairAt(target);
 		}
 
 		bool CanRepairAt(Actor target)

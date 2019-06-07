@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Require the force-move modifier to display the enter cursor.")]
+		public readonly bool RequiresForceMove = false;
+
 		public override object Create(ActorInitializer init) { return new TransformsIntoEntersTunnels(this); }
 	}
 
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new EntersTunnels.EnterTunnelOrderTargeter(Info.EnterCursor, Info.EnterBlockedCursor);
+					yield return new EntersTunnels.EnterTunnelOrderTargeter(Info.EnterCursor, Info.EnterBlockedCursor, () => Info.RequiresForceMove);
 			}
 		}
 
