@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[Desc("Require the force-move modifier to display the move cursor.")]
+		public readonly bool RequiresForceMove = false;
+
 		public override object Create(ActorInitializer init) { return new TransformsIntoAircraft(init, this); }
 	}
 
@@ -64,6 +67,14 @@ namespace OpenRA.Mods.Common.Traits
 					yield return new AircraftMoveOrderTargeter(self, this);
 				}
 			}
+		}
+
+		public bool AircraftCanEnter(Actor a, TargetModifiers modifiers)
+		{
+			if (Info.RequiresForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			return AircraftCanEnter(a);
 		}
 
 		public bool AircraftCanEnter(Actor a)

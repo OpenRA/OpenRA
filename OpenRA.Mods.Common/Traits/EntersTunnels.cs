@@ -9,16 +9,18 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can interact with TunnelEntrances to move through TerrainTunnels.")]
-	public class EntersTunnelsInfo : ITraitInfo, Requires<IMoveInfo>
+	public class EntersTunnelsInfo : ITraitInfo, Requires<IMoveInfo>, IObservesVariablesInfo
 	{
 		public readonly string EnterCursor = "enter";
 		public readonly string EnterBlockedCursor = "enter-blocked";
@@ -26,13 +28,18 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
+		public readonly BooleanExpression RequireForceMoveCondition = null;
+
 		public object Create(ActorInitializer init) { return new EntersTunnels(init.Self, this); }
 	}
 
-	public class EntersTunnels : IIssueOrder, IResolveOrder, IOrderVoice
+	public class EntersTunnels : IIssueOrder, IResolveOrder, IOrderVoice, IObservesVariables
 	{
 		readonly EntersTunnelsInfo info;
 		readonly IMove move;
+		bool requireForceMove;
 
 		public EntersTunnels(Actor self, EntersTunnelsInfo info)
 		{
@@ -44,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterTunnelOrderTargeter(info.EnterCursor, info.EnterBlockedCursor);
+				yield return new EnterTunnelOrderTargeter(info.EnterCursor, info.EnterBlockedCursor, () => requireForceMove);
 			}
 		}
 
@@ -78,21 +85,34 @@ namespace OpenRA.Mods.Common.Traits
 			self.QueueActivity(move.MoveTo(tunnel.Exit.Value, tunnel.NearEnough));
 		}
 
+		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
+		{
+			if (info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, info.RequireForceMoveCondition.Variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = info.RequireForceMoveCondition.Evaluate(conditions);
+		}
+
 		public class EnterTunnelOrderTargeter : UnitOrderTargeter
 		{
 			readonly string enterCursor;
 			readonly string enterBlockedCursor;
+			readonly Func<bool> requireForceMove;
 
-			public EnterTunnelOrderTargeter(string enterCursor, string enterBlockedCursor)
+			public EnterTunnelOrderTargeter(string enterCursor, string enterBlockedCursor, Func<bool> requireForceMove)
 				: base("EnterTunnel", 6, enterCursor, true, true)
 			{
 				this.enterCursor = enterCursor;
 				this.enterBlockedCursor = enterBlockedCursor;
+				this.requireForceMove = requireForceMove;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (target == null || target.IsDead)
+				if (target == null || target.IsDead || (requireForceMove() && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
 				var tunnel = target.TraitOrDefault<TunnelEntrance>();

@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new CarryallPickupOrderTargeter();
 				yield return new DeployOrderTargeter("Unload", 10,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
-				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info, CarryableOffset);
+				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info);
 			}
 		}
 
@@ -355,23 +355,23 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class CarryallDeliverUnitTargeter : AircraftMoveOrderTargeter
+		class CarryallDeliverUnitTargeter : IOrderTargeter
 		{
 			readonly AircraftInfo aircraftInfo;
 			readonly CarryallInfo info;
-			readonly WVec carryableOffset;
 
-			public CarryallDeliverUnitTargeter(AircraftInfo aircraftInfo, CarryallInfo info, WVec carryableOffset)
-				: base(aircraftInfo)
+			public string OrderID { get { return "DeliverUnit"; } }
+			public int OrderPriority { get { return 6; } }
+			public bool IsQueued { get; protected set; }
+			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+
+			public CarryallDeliverUnitTargeter(AircraftInfo aircraftInfo, CarryallInfo info)
 			{
-				OrderID = "DeliverUnit";
-				OrderPriority = 6;
-				this.carryableOffset = carryableOffset;
 				this.aircraftInfo = aircraftInfo;
 				this.info = info;
 			}
 
-			public override bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (!info.AllowDropOff || !modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;

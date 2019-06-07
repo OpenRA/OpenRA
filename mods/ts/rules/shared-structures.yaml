@@ -43,13 +43,16 @@ GACNST:
 		RequiresCondition: factundeploy
 		RepairActors: gadept
 		Voice: Move
+		RequiresForceMove: true
 	TransformsIntoEntersTunnels:
 		RequiresCondition: factundeploy
 		Voice: Move
+		RequiresForceMove: true
 	TransformsIntoPassenger:
 		RequiresCondition: factundeploy
 		CargoType: Vehicle
 		Voice: Move
+		RequiresForceMove: true
 	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
 		Condition: factundeploy
 		Prerequisites: global-factundeploy
