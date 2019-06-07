@@ -286,6 +286,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					return;
 				}
 			}
+
 			currentBlockEnded = true;
 		}
 
@@ -327,6 +328,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					samplesLeftInBlock = currentBlock.Current.SampleBlock.Samples;
 					return;
 				}
+
 				currentBlockEnded = true;
 			}
 		}

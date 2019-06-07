@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x48, "palet03" },
 			{ 0x49, "palet04" },
 
+			// Bridges
 			{ 0x4A, "lobrdg_b" }, // lobrdg01
 			{ 0x4B, "lobrdg_b" }, // lobrdg02
 			{ 0x4C, "lobrdg_b" }, // lobrdg03
@@ -99,11 +100,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x64, "lobrdg_b_d" }, // lobrdg27
 			{ 0x65, "lobrdg_a_d" }, // lobrdg28
 
+			// Ramps
 			{ 0x7A, "lobrdg_r_se" }, // lobrdg1
 			{ 0x7B, "lobrdg_r_nw" }, // lobrdg2
 			{ 0x7C, "lobrdg_r_ne" }, // lobrdg3
 			{ 0x7D, "lobrdg_r_sw" }, // lobrdg4
 
+			// Other
 			{ 0xA7, "veinhole" },
 			{ 0xA8, "srock01" },
 			{ 0xA9, "srock02" },
@@ -162,12 +165,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x4B, DamageState.Undamaged },
 			{ 0x4C, DamageState.Undamaged },
 			{ 0x4D, DamageState.Undamaged },
-
 			{ 0x4E, DamageState.Heavy },
 			{ 0x4F, DamageState.Heavy },
-
 			{ 0x50, DamageState.Heavy },
-
 			{ 0x51, DamageState.Critical },
 			{ 0x52, DamageState.Critical },
 
@@ -176,12 +176,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x54, DamageState.Undamaged },
 			{ 0x55, DamageState.Undamaged },
 			{ 0x56, DamageState.Undamaged },
-
 			{ 0x57, DamageState.Heavy },
 			{ 0x58, DamageState.Heavy },
-
 			{ 0x59, DamageState.Heavy },
-
 			{ 0x5A, DamageState.Critical },
 			{ 0x5B, DamageState.Critical },
 
@@ -201,7 +198,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x7C, DamageState.Undamaged },
 			{ 0x7D, DamageState.Undamaged },
 
-			// actually dead, placeholders for resurrection
+			// Actually dead, placeholders for resurrection
 			{ 0x64, DamageState.Undamaged },
 			{ 0x65, DamageState.Undamaged },
 		};
