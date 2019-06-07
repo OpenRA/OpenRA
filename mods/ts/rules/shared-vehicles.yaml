@@ -126,7 +126,6 @@ LPST:
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
-		RequiresCondition: undeployed
 		PauseOnCondition: empdisable || being-captured
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel && undeployed
@@ -148,6 +147,7 @@ LPST:
 		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud

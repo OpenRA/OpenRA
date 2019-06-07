@@ -437,6 +437,11 @@ namespace OpenRA.Mods.Common.Traits
 		bool CanEnterTargetNow(Actor self, Target target);
 	}
 
+	public interface IWrapMove
+	{
+		Activity WrapMove(Activity moveInner);
+	}
+
 	public interface IRadarSignature
 	{
 		void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer);

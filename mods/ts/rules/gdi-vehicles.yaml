@@ -330,7 +330,6 @@ JUGG:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 5
-		RequiresCondition: undeployed
 		PauseOnCondition: empdisable || being-captured
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -352,6 +351,7 @@ JUGG:
 		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
 		Facing: 96
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud

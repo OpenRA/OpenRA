@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -54,6 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Skip make/deploy animation?")]
 		public readonly bool SkipMakeAnimation = false;
 
+		[Desc("Undeploy before the actor tries to move?")]
+		public readonly bool UndeployOnMove = false;
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -63,11 +67,12 @@ namespace OpenRA.Mods.Common.Traits
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
 	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder, INotifyCreated,
-		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice
+		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove
 	{
 		readonly Actor self;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
+		readonly IMove move;
 
 		DeployState deployState;
 		ConditionManager conditionManager;
@@ -83,6 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
+			move = self.TraitOrDefault<IMove>();
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
@@ -118,20 +124,32 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		Activity IWrapMove.WrapMove(Activity moveInner)
+		{
+			// Note: We can't assume anything about the current deploy state
+			// because WrapMove may be called for a queued order
+			if (!Info.UndeployOnMove)
+				return moveInner;
+
+			var activity = new DeployForGrantedCondition(self, this, true);
+			activity.Queue(self, moveInner);
+			return activity;
+		}
+
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
 				if (!IsTraitDisabled)
 					yield return new DeployOrderTargeter("GrantConditionOnDeploy", 5,
-						() => IsCursorBlocked() ? Info.DeployBlockedCursor : Info.DeployCursor);
+						() => CanDeploy() ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "GrantConditionOnDeploy")
-				return new Order(order.OrderID, self, queued);
+				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
@@ -148,16 +166,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
-			if (order.OrderString != "GrantConditionOnDeploy" || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
+			if (order.OrderString != "GrantConditionOnDeploy")
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			if (deployState == DeployState.Deployed)
-				self.QueueActivity(new UndeployForGrantedCondition(self, this));
-			else if (deployState == DeployState.Undeployed)
-				self.QueueActivity(new DeployForGrantedCondition(self, this));
+			self.QueueActivity(order.Queued, new DeployForGrantedCondition(self, this));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -165,12 +177,12 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == "GrantConditionOnDeploy" ? Info.Voice : null;
 		}
 
-		bool IsCursorBlocked()
+		bool CanDeploy()
 		{
-			if (IsTraitPaused)
-				return true;
+			if (IsTraitPaused || IsTraitDisabled)
+				return false;
 
-			return !IsValidTerrain(self.Location) && (deployState != DeployState.Deployed);
+			return IsValidTerrain(self.Location) || (deployState == DeployState.Deployed);
 		}
 
 		public bool IsValidTerrain(CPos location)
