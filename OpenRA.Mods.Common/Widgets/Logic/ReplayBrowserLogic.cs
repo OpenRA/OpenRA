@@ -371,42 +371,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetupManagement()
 		{
+			var renameButton = panel.Get<ButtonWidget>("MNG_RENSEL_BUTTON");
+			renameButton.IsDisabled = () => selectedReplay == null;
+			renameButton.OnClick = () =>
 			{
-				var button = panel.Get<ButtonWidget>("MNG_RENSEL_BUTTON");
-				button.IsDisabled = () => selectedReplay == null;
-				button.OnClick = () =>
-				{
-					var r = selectedReplay;
-					var initialName = Path.GetFileNameWithoutExtension(r.FilePath);
-					var directoryName = Path.GetDirectoryName(r.FilePath);
-					var invalidChars = Path.GetInvalidFileNameChars();
+				var r = selectedReplay;
+				var initialName = Path.GetFileNameWithoutExtension(r.FilePath);
+				var directoryName = Path.GetDirectoryName(r.FilePath);
+				var invalidChars = Path.GetInvalidFileNameChars();
 
-					ConfirmationDialogs.TextInputPrompt(
-						"Rename Replay",
-						"Enter a new file name:",
-						initialName,
-						onAccept: newName => RenameReplay(r, newName),
-						onCancel: null,
-						acceptText: "Rename",
-						cancelText: null,
-						inputValidator: newName =>
-						{
-							if (newName == initialName)
-								return false;
+				ConfirmationDialogs.TextInputPrompt(
+					"Rename Replay",
+					"Enter a new file name:",
+					initialName,
+					onAccept: newName => RenameReplay(r, newName),
+					onCancel: null,
+					acceptText: "Rename",
+					cancelText: null,
+					inputValidator: newName =>
+					{
+						if (newName == initialName)
+							return false;
 
-							if (string.IsNullOrWhiteSpace(newName))
-								return false;
+						if (string.IsNullOrWhiteSpace(newName))
+							return false;
 
-							if (newName.IndexOfAny(invalidChars) >= 0)
-								return false;
+						if (newName.IndexOfAny(invalidChars) >= 0)
+							return false;
 
-							if (File.Exists(Path.Combine(directoryName, newName)))
-								return false;
+						if (File.Exists(Path.Combine(directoryName, newName)))
+							return false;
 
-							return true;
-						});
-				};
-			}
+						return true;
+					});
+			};
 
 			Action<ReplayMetadata, Action> onDeleteReplay = (r, after) =>
 			{
@@ -423,47 +421,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onCancel: () => { });
 			};
 
+			var deleteButton = panel.Get<ButtonWidget>("MNG_DELSEL_BUTTON");
+			deleteButton.IsDisabled = () => selectedReplay == null;
+			deleteButton.OnClick = () =>
 			{
-				var button = panel.Get<ButtonWidget>("MNG_DELSEL_BUTTON");
-				button.IsDisabled = () => selectedReplay == null;
-				button.OnClick = () =>
+				onDeleteReplay(selectedReplay, () =>
 				{
-					onDeleteReplay(selectedReplay, () =>
+					if (selectedReplay == null)
+						SelectFirstVisibleReplay();
+				});
+			};
+
+			var deleteAllButton = panel.Get<ButtonWidget>("MNG_DELALL_BUTTON");
+			deleteAllButton.IsDisabled = () => replayState.Count(kvp => kvp.Value.Visible) == 0;
+			deleteAllButton.OnClick = () =>
+			{
+				var list = replayState.Where(kvp => kvp.Value.Visible).Select(kvp => kvp.Key).ToList();
+				if (list.Count == 0)
+					return;
+
+				if (list.Count == 1)
+				{
+					onDeleteReplay(list[0], () => { if (selectedReplay == null) SelectFirstVisibleReplay(); });
+					return;
+				}
+
+				ConfirmationDialogs.ButtonPrompt(
+					title: "Delete all selected replays?",
+					text: "Delete {0} replays?".F(list.Count),
+					onConfirm: () =>
 					{
+						list.ForEach(DeleteReplay);
 						if (selectedReplay == null)
 							SelectFirstVisibleReplay();
-					});
-				};
-			}
-
-			{
-				var button = panel.Get<ButtonWidget>("MNG_DELALL_BUTTON");
-				button.IsDisabled = () => replayState.Count(kvp => kvp.Value.Visible) == 0;
-				button.OnClick = () =>
-				{
-					var list = replayState.Where(kvp => kvp.Value.Visible).Select(kvp => kvp.Key).ToList();
-					if (list.Count == 0)
-						return;
-
-					if (list.Count == 1)
-					{
-						onDeleteReplay(list[0], () => { if (selectedReplay == null) SelectFirstVisibleReplay(); });
-						return;
-					}
-
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Delete all selected replays?",
-						text: "Delete {0} replays?".F(list.Count),
-						onConfirm: () =>
-						{
-							list.ForEach(DeleteReplay);
-							if (selectedReplay == null)
-								SelectFirstVisibleReplay();
-						},
-						confirmText: "Delete All",
-						onCancel: () => { });
-				};
-			}
+					},
+					confirmText: "Delete All",
+					onCancel: () => { });
+			};
 		}
 
 		void RenameReplay(ReplayMetadata replay, string newFilenameWithoutExtension)
