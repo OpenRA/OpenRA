@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AppearsOnMapPreviewInfo : TraitInfo<AppearsOnMapPreview>, IMapPreviewSignatureInfo, Requires<IOccupySpaceInfo>
 	{
 		[Desc("Use this color to render the actor, instead of owner player color.")]
-		public readonly Color Color = new Color();
+		public readonly Color Color = default(Color);
 
 		[Desc("Use this terrain color to render the actor, instead of owner player color.",
 			"Overrides `Color` if both set.")]
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				color = tileSet[tileSet.GetTerrainIndex(Terrain)].Color;
 			}
-			else if (Color != new Color())
+			else if (Color != default(Color))
 			{
 				color = Color;
 			}

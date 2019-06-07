@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 					editorLayer.Remove(underCursor);
 
 				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
-					mapResources[cell] = new ResourceTile();
+					mapResources[cell] = default(ResourceTile);
 			}
 
 			return true;

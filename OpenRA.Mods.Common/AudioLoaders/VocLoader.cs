@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			while (true)
 			{
-				VocBlock block = new VocBlock();
+				var block = default(VocBlock);
 				try
 				{
 					block.Code = stream.ReadByte();

@@ -160,7 +160,7 @@ namespace OpenRA
 			}
 
 			innerState = LinkState.Uninitialized;
-			parameters = new RSAParameters();
+			parameters = default(RSAParameters);
 			innerFingerprint = null;
 			innerData = null;
 		}
