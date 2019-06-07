@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.pos = pos;
 			this.zOffset = zOffset;
 			this.railgun = railgun;
-			this.info = railgunInfo;
+			info = railgunInfo;
 			this.ticks = ticks;
 
 			helixRadius = info.HelixRadius + new WDist(ticks * info.HelixRadiusDeltaPerTick);
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var screenWidth = wr.ScreenVector(new WVec(info.HelixThickness.Length, 0, 0))[0];
 
 			// Move forward from self to target to draw helix
-			var centerPos = this.pos;
+			var centerPos = pos;
 			var points = new float3[railgun.CycleCount * info.QuantizationCount];
 			for (var i = points.Length - 1; i >= 0; i--)
 			{

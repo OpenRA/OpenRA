@@ -114,9 +114,10 @@ namespace OpenRA
 			//  - a small margin so that tiles rendered partially above the top edge of the screen aren't pushed behind the clip plane
 			// We need an offset of mapGrid.MaximumTerrainHeight * mapGrid.TileSize.Height / 2 to cover the terrain height
 			// and choose to use mapGrid.MaximumTerrainHeight * mapGrid.TileSize.Height / 4 for each of the actor and top-edge cases
-			this.depthScale = mapGrid == null || !mapGrid.EnableDepthBuffer ? 0 :
+			depthScale = mapGrid == null || !mapGrid.EnableDepthBuffer ? 0 :
 				(float)Resolution.Height / (Resolution.Height + mapGrid.TileSize.Height * mapGrid.MaximumTerrainHeight);
-			this.depthOffset = this.depthScale / 2;
+
+			depthOffset = depthScale / 2;
 		}
 
 		public void BeginFrame(int2 scroll, float zoom)

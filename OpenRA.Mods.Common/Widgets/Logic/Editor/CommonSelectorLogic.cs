@@ -35,9 +35,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public CommonSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{
-			this.Widget = widget;
-			this.World = world;
-			this.WorldRenderer = worldRenderer;
+			Widget = widget;
+			World = world;
+			WorldRenderer = worldRenderer;
 			Editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			Panel = widget.Get<ScrollPanelWidget>(templateListId);
 			ItemTemplate = Panel.Get<ScrollItemWidget>(previewTemplateId);

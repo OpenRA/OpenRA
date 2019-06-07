@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackFrontal(Actor self, AttackFrontalInfo info)
 			: base(self, info)
 		{
-			this.Info = info;
+			Info = info;
 		}
 
 		protected override bool CanAttack(Actor self, Target target)
