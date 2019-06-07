@@ -104,7 +104,6 @@ TTNK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 85
-		RequiresCondition: undeployed
 		PauseOnCondition: empdisable || being-captured
 	Health:
 		HP: 35000
@@ -135,6 +134,7 @@ TTNK:
 		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud
@@ -226,7 +226,6 @@ ART2:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 2
-		RequiresCondition: undeployed
 		PauseOnCondition: empdisable || being-captured
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -241,6 +240,7 @@ ART2:
 		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
 		Facing: 96
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud
