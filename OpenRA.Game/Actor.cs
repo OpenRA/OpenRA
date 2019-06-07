@@ -412,7 +412,7 @@ namespace OpenRA
 			if (enabledTargetablePositionTraits.Any())
 				return enabledTargetablePositionTraits.SelectMany(tp => tp.TargetablePositions(this));
 
-			return new[] { this.CenterPosition };
+			return new[] { CenterPosition };
 		}
 
 		#region Scripting interface

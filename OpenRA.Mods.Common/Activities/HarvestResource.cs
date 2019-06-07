@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove move;
 		readonly CPos targetCell;
 
-		public HarvestResource(Actor self, CPos targetcell)
+		public HarvestResource(Actor self, CPos targetCell)
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			move = self.Trait<IMove>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			this.targetCell = targetcell;
+			this.targetCell = targetCell;
 		}
 
 		protected override void OnFirstRun(Actor self)

@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.skirmishMode = skirmishMode;
 
 			// TODO: This needs to be reworked to support per-map tech levels, bots, etc.
-			this.modRules = modData.DefaultRules;
+			modRules = modData.DefaultRules;
 			shellmapWorld = worldRenderer.World;
 
 			services = modData.Manifest.Get<WebServices>();

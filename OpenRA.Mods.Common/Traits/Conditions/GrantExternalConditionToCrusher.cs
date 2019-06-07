@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public GrantExternalConditionToCrusher(Actor self, GrantExternalConditionToCrusherInfo info)
 		{
-			this.Info = info;
+			Info = info;
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)

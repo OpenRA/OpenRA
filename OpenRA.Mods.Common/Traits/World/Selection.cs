@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			this.worldNotifySelection = self.TraitsImplementing<INotifySelection>().ToArray();
+			worldNotifySelection = self.TraitsImplementing<INotifySelection>().ToArray();
 		}
 
 		void UpdateHash()

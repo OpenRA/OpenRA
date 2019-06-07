@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ModularBot(ModularBotInfo info, ActorInitializer init)
 		{
 			this.info = info;
-			this.world = init.World;
+			world = init.World;
 		}
 
 		// Called by the host's player creation code

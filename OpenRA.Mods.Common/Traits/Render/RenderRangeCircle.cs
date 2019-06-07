@@ -50,8 +50,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				centerPosition,
 				range.Value,
 				0,
-				this.Color,
-				this.BorderColor);
+				Color,
+				BorderColor);
 
 			var otherRanges = w.ActorsWithTrait<RenderRangeCircle>()
 				.Where(a => a.Trait.Info.RangeCircleType == RangeCircleType)

@@ -125,8 +125,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.info = info;
 			target = args.PassiveTarget;
 
-			this.BeamColor = beamColor;
-			this.HelixColor = helixColor;
+			BeamColor = beamColor;
+			HelixColor = helixColor;
 
 			if (!string.IsNullOrEmpty(info.HitAnim))
 				hitanim = new Animation(args.SourceActor.World, info.HitAnim);

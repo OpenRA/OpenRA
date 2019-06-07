@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.orderManager = orderManager;
-			this.modRules = modData.DefaultRules;
+			modRules = modData.DefaultRules;
 
 			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 
