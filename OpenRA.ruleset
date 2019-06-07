@@ -2,6 +2,7 @@
 <RuleSet Name="OpenRA Code Style" ToolsVersion="14.0">
   <IncludeAll Action="Warning" />
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SX1101" Action="Warning" /><!-- DoNotPrefixLocalMembersWithThis -->
     <!-- Rules that conflict with OpenRA project style conventions -->
     <Rule Id="SA0001" Action="None" /><!-- XmlCommentAnalysisDisabled -->
     <Rule Id="SA1101" Action="None" /><!-- PrefixLocalCallsWithThis -->
