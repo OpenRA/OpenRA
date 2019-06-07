@@ -155,7 +155,7 @@ namespace OpenRA
 		public BitSet<TargetableType> GetAllTargetTypes()
 		{
 			// PERF: Avoid LINQ.
-			var targetTypes = new BitSet<TargetableType>();
+			var targetTypes = default(BitSet<TargetableType>);
 			foreach (var targetable in TraitInfos<ITargetableInfo>())
 				targetTypes = targetTypes.Union(targetable.GetTargetTypes());
 			return targetTypes;
