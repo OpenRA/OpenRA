@@ -45,8 +45,6 @@
     <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
     <Rule Id="SA1413" Action="None" /><!-- UseTrailingCommasInMultiLineInitializers -->
     <Rule Id="SA1500" Action="None" /><!-- BracesForMultiLineStatementsMustNotShareLine -->
-    <Rule Id="SA1509" Action="None" /><!-- OpeningBracesMustNotBePrecededByBlankLine -->
-    <Rule Id="SA1513" Action="None" /><!-- ClosingBraceMustBeFollowedByBlankLine -->
     <Rule Id="SA1516" Action="None" /><!-- ElementsMustBeSeparatedByBlankLine -->
   </Rules>
 </RuleSet>
