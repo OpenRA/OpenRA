@@ -128,6 +128,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameAttackMoveConditions(),
 				new RemovePlaceBuildingPalettes(),
 				new RenameHoversOffsetModifier(),
+				new AddAirAttackTypes(),
 			})
 		};
 

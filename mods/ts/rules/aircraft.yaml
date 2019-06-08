@@ -109,6 +109,7 @@ ORCA:
 		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -352,6 +353,7 @@ APACHE:
 		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4
@@ -391,6 +393,7 @@ HUNTER:
 		VTOL: true
 	AttackAircraft:
 		FacingTolerance: 128
+		AttackType: Hover
 	Armament@PRIMARY:
 		Weapon: SuicideBomb
 	GrantConditionOnAttack:

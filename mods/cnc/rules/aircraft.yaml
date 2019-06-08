@@ -93,6 +93,7 @@ HELI:
 		FacingTolerance: 20
 		OpportunityFire: false
 		PersistentTargeting: false
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 10
 		PipCount: 5
@@ -154,6 +155,7 @@ ORCA:
 		FacingTolerance: 20
 		OpportunityFire: false
 		PersistentTargeting: false
+		AttackType: Hover
 	AmmoPool:
 		Ammo: 6
 		PipCount: 6
