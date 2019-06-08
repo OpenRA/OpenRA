@@ -42,7 +42,7 @@ namespace OpenRA.FileFormats
 			var is24Bit = false;
 			var data = new List<byte>();
 
-			for (;;)
+			while (true)
 			{
 				var length = IPAddress.NetworkToHostOrder(s.ReadInt32());
 				var type = Encoding.UTF8.GetString(s.ReadBytes(4));

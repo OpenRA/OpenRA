@@ -47,7 +47,7 @@ namespace OpenRA.Server
 			var rx = new byte[1024];
 			var len = 0;
 
-			for (;;)
+			while (true)
 			{
 				try
 				{

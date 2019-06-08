@@ -177,7 +177,7 @@ namespace OpenRA.Network
 				clientId = reader.ReadInt32();
 				connectionState = ConnectionState.Connected;
 
-				for (;;)
+				while (true)
 				{
 					var len = reader.ReadInt32();
 					var client = reader.ReadInt32();

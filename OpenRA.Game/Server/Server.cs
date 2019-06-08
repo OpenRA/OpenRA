@@ -172,7 +172,7 @@ namespace OpenRA.Server
 				Log.Write("server", "Initial mod: {0}", ModData.Manifest.Id);
 				Log.Write("server", "Initial map: {0}", LobbyInfo.GlobalSettings.Map);
 
-				for (;;)
+				while (true)
 				{
 					var checkRead = new List<Socket>();
 					if (State == ServerState.WaitingPlayers)
