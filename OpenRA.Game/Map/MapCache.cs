@@ -233,7 +233,7 @@ namespace OpenRA
 			var maxKeepAlive = 5000 / emptyDelay;
 			var keepAlive = maxKeepAlive;
 
-			for (;;)
+			while (true)
 			{
 				List<MapPreview> todo;
 				lock (syncRoot)

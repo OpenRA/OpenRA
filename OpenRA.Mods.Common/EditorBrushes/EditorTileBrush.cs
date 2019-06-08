@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Func<CPos, CVec, CPos> findEdge = (refCell, direction) =>
 			{
-				for (;;)
+				while (true)
 				{
 					var newCell = refCell + direction;
 					if (!shouldPaint(newCell))

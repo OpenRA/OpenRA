@@ -164,7 +164,11 @@ namespace OpenRA
 
 		public static IEnumerable<T> Iterate<T>(this T t, Func<T, T> f)
 		{
-			for (;;) { yield return t; t = f(t); }
+			while (true)
+			{
+				yield return t;
+				t = f(t);
+			}
 		}
 
 		public static T MinBy<T, U>(this IEnumerable<T> ts, Func<T, U> selector)

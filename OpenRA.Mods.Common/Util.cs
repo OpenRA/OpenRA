@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common
 
 		public static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
 		{
-			for (;;)
+			while (true)
 			{
 				var dx = r.Next(-1, 2);
 				var dy = r.Next(-1, 2);

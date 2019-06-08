@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 			lock (syncWorker)
 				workerAlive = true;
 
-			for (;;)
+			while (true)
 			{
 				float hue;
 				lock (syncWorker)
