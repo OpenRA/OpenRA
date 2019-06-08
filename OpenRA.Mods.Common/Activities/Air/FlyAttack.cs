@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!isAirborne)
 				QueueChild(self, new TakeOff(self), true);
 
-			if (!aircraft.Info.CanHover)
+			if (attackAircraft.Info.AttackType == AirAttackType.Strafe)
 			{
 				if (target.IsInRange(pos, attackAircraft.GetMinimumRange()))
 					QueueChild(self, new FlyTimed(ticksUntilTurn, self), true);

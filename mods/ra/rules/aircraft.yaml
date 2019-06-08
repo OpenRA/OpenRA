@@ -305,6 +305,7 @@ HELI:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
+		AttackType: Hover
 	Aircraft:
 		LandWhenIdle: false
 		TurnSpeed: 4
@@ -373,6 +374,7 @@ HIND:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
+		AttackType: Hover
 	Aircraft:
 		LandWhenIdle: false
 		TurnSpeed: 4

@@ -15,9 +15,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	// TODO: Add CurleyShuffle (TD, TS), Circle (Generals Gunship-style)
+	public enum AirAttackType { Hover, Strafe }
+
 	public class AttackAircraftInfo : AttackFollowInfo, Requires<AircraftInfo>
 	{
-		[Desc("Delay, in game ticks, before non-hovering aircraft turns to attack.")]
+		[Desc("Attack behavior. Currently supported types are Strafe (default) and Hover.")]
+		public readonly AirAttackType AttackType = AirAttackType.Strafe;
+
+		[Desc("Delay, in game ticks, before strafing aircraft turns to attack.")]
 		public readonly int AttackTurnDelay = 50;
 
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
