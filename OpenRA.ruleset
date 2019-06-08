@@ -33,7 +33,6 @@
     <Rule Id="SA1649" Action="None" /><!-- FileNameMustMatchTypeName -->
 
     <!-- Rules that could potentially be enabled after existing violations are fixed -->
-    <Rule Id="SA1002" Action="None" /><!-- SemicolonsMustBeSpacedCorrectly -->
     <Rule Id="SA1027" Action="None" /><!-- UseTabsCorrectly -->
     <Rule Id="SA1107" Action="None" /><!-- CodeMustNotContainMultipleStatementsOnOneLine -->
     <Rule Id="SA1115" Action="None" /><!-- ParameterMustFollowComma -->
