@@ -25,7 +25,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (disconnected || orderManager.Connection.ConnectionState != ConnectionState.NotConnected)
 					return;
 
-				Game.RunAfterTick(() => Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs {
+				Game.RunAfterTick(() => Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs
+				{
 					{ "orderManager", orderManager },
 					{ "onAbort", null },
 					{ "onRetry", null }

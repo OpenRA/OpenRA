@@ -199,7 +199,8 @@ namespace OpenRA.Test
 				Is.EqualTo(878));
 
 			// Plus shaped dodecagon
-			shape = new PolygonShape(new int2[] {
+			shape = new PolygonShape(new[]
+			{
 				new int2(-511, -1535), new int2(511, -1535), new int2(511, -511), new int2(1535, -511),
 				new int2(1535, 511), new int2(511, 511), new int2(511, 1535), new int2(-511, 1535),
 				new int2(-511, 511), new int2(-1535, 511), new int2(-1535, -511), new int2(-511, -511)

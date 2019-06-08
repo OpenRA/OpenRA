@@ -116,7 +116,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// For horizontal/vertical directions, the set is the three cells 'ahead'. For diagonal directions, the set
 		// is the three cells ahead, plus the two cells to the side, which we cannot exclude without knowing if
 		// the cell directly between them and our parent is passable.
-		static readonly CVec[][] DirectedNeighbors = {
+		static readonly CVec[][] DirectedNeighbors =
+		{
 			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) },
 			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) },
 			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) },

@@ -81,8 +81,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "orderManager", null },
 				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) => { }) },
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
-					LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview))
+				{
+					"getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
+						LobbyUtils.GetSpawnOccupants(selectedReplay.GameInfo.Players, mapPreview))
 				},
 				{ "showUnoccupiedSpawnpoints", false },
 			});

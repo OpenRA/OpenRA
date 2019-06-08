@@ -89,11 +89,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("  },");
 			}
 
-			var actorProperties = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg => {
+			var actorProperties = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg =>
+			{
 				return ScriptMemberWrapper.WrappableMembers(cg);
 			});
 
-			var scriptProperties = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg => {
+			var scriptProperties = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg =>
+			{
 				return ScriptMemberWrapper.WrappableMembers(cg);
 			});
 

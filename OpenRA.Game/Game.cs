@@ -201,7 +201,8 @@ namespace OpenRA
 			// Reseed the RNG so this isn't an exact repeat of the last game
 			lobbyInfo.GlobalSettings.RandomSeed = CosmeticRandom.Next();
 
-			var orders = new[] {
+			var orders = new[]
+			{
 					Order.Command("sync_lobby {0}".F(lobbyInfo.Serialize())),
 					Order.Command("startgame")
 			};

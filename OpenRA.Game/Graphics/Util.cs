@@ -320,7 +320,7 @@ namespace OpenRA.Graphics
 		public static float[] MakeFloatMatrix(Int32Matrix4x4 imtx)
 		{
 			var multipler = 1f / imtx.M44;
-			return new float[]
+			return new[]
 			{
 				imtx.M11 * multipler,
 				imtx.M12 * multipler,
@@ -352,13 +352,16 @@ namespace OpenRA.Graphics
 			var iz = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
 
 			// Vectors to opposing corner
-			var ret = new float[] { float.MaxValue, float.MaxValue, float.MaxValue,
-				float.MinValue, float.MinValue, float.MinValue };
+			var ret = new[]
+			{
+				float.MaxValue, float.MaxValue, float.MaxValue,
+				float.MinValue, float.MinValue, float.MinValue
+			};
 
 			// Transform vectors and find new bounding box
 			for (var i = 0; i < 8; i++)
 			{
-				var vec = new float[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
+				var vec = new[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
 				var tvec = MatrixVectorMultiply(mtx, vec);
 
 				ret[0] = Math.Min(ret[0], tvec[0] / tvec[3]);

@@ -163,8 +163,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter("Unload", 10,
-				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor); }
+			get
+			{
+				yield return new DeployOrderTargeter("Unload", 10,
+					() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)

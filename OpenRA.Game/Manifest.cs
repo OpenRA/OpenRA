@@ -72,11 +72,14 @@ namespace OpenRA
 		public readonly string[] SpriteFormats = { };
 		public readonly string[] PackageFormats = { };
 
-		readonly string[] reservedModuleNames = { "Metadata", "Folders", "MapFolders", "Packages", "Rules",
+		readonly string[] reservedModuleNames =
+		{
+			"Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "Fonts", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
-			"RequiresMods", "PackageFormats" };
+			"RequiresMods", "PackageFormats"
+		};
 
 		readonly TypeDictionary modules = new TypeDictionary();
 		readonly Dictionary<string, MiniYaml> yaml;

@@ -127,10 +127,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
-				{ "onMouseDown",  (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
-					LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
+				{
+					"onMouseDown", (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
+						LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
 				},
-				{ "getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview => LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview)) },
+				{
+					"getSpawnOccupants", (Func<MapPreview, Dictionary<CPos, SpawnOccupant>>)(mapPreview =>
+						LobbyUtils.GetSpawnOccupants(orderManager.LobbyInfo, mapPreview))
+				},
 				{ "showUnoccupiedSpawnpoints", true },
 			});
 

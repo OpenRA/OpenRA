@@ -226,7 +226,9 @@ namespace OpenRA.Mods.Common.FileFormats
 						{
 							*(uint*)op = *(uint*)mPos;
 							op += 4; mPos += 4; t -= 4;
-						} while (t >= 4);
+						}
+						while (t >= 4);
+
 						if (t > 0)
 							do { *op++ = *mPos++; } while (--t > 0);
 					}
@@ -252,7 +254,8 @@ namespace OpenRA.Mods.Common.FileFormats
 					}
 
 					t = *ip++;
-				} while (true);
+				}
+				while (true);
 			}
 
 		eof_found:

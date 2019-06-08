@@ -147,10 +147,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				initializePalettes = false;
 			}
 
-			return new IRenderable[] { new ModelRenderable(
-				components, self.CenterPosition, 0, camera, Info.Scale,
-				lightSource, Info.LightAmbientColor, Info.LightDiffuseColor,
-				colorPalette, normalsPalette, shadowPalette) };
+			return new IRenderable[]
+			{
+				new ModelRenderable(
+					components, self.CenterPosition, 0, camera, Info.Scale,
+					lightSource, Info.LightAmbientColor, Info.LightDiffuseColor,
+					colorPalette, normalsPalette, shadowPalette)
+			};
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)

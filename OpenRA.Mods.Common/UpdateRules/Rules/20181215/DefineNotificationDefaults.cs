@@ -42,42 +42,52 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		TraitWrapper[] traits =
 		{
-			new TraitWrapper("PrimaryBuilding", new Dictionary<string, string> {
+			new TraitWrapper("PrimaryBuilding", new Dictionary<string, string>
+			{
 				{ "SelectionNotification", "PrimaryBuildingSelected" }
 			}),
-			new TraitWrapper("RepairableBuilding", new Dictionary<string, string> {
+			new TraitWrapper("RepairableBuilding", new Dictionary<string, string>
+			{
 				{ "RepairingNotification", "Repairing" }
 			}),
-			new TraitWrapper("RepairsUnits", new Dictionary<string, string> {
+			new TraitWrapper("RepairsUnits", new Dictionary<string, string>
+			{
 				{ "StartRepairingNotification", "Repairing" }
 			}),
-			new TraitWrapper("GainsExperience", new Dictionary<string, string> {
+			new TraitWrapper("GainsExperience", new Dictionary<string, string>
+			{
 				{ "LevelUpNotification", "LevelUp" }
 			}),
-			new TraitWrapper("MissionObjectives", new Dictionary<string, string> {
+			new TraitWrapper("MissionObjectives", new Dictionary<string, string>
+			{
 				{ "WinNotification", "Win" },
 				{ "LoseNotification", "Lose" },
 				{ "LeaveNotification", "Leave" }
 			}),
-			new TraitWrapper("PlaceBuilding", new Dictionary<string, string> {
+			new TraitWrapper("PlaceBuilding", new Dictionary<string, string>
+			{
 				{ "NewOptionsNotification", "NewOptions" },
 				{ "CannotPlaceNotification", "BuildingCannotPlaceAudio" }
 			}),
-			new TraitWrapper("PlayerResources", new Dictionary<string, string> {
+			new TraitWrapper("PlayerResources", new Dictionary<string, string>
+			{
 				{ "CashTickUpNotification", "CashTickUp" },
 				{ "CashTickDownNotification", "CashTickDown" }
 			}),
-			new TraitWrapper("ProductionQueue", new Dictionary<string, string> {
+			new TraitWrapper("ProductionQueue", new Dictionary<string, string>
+			{
 				{ "ReadyAudio", "UnitReady" },
 				{ "BlockedAudio", "NoBuild" },
 				{ "QueuedAudio", "Training" },
 				{ "OnHoldAudio", "OnHold" },
 				{ "CancelledAudio", "Cancelled" }
 			}),
-			new TraitWrapper("PowerManager", new Dictionary<string, string> {
+			new TraitWrapper("PowerManager", new Dictionary<string, string>
+			{
 				{ "SpeechNotification", "LowPower" }
 			}),
-			new TraitWrapper("Infiltrates", new Dictionary<string, string> {
+			new TraitWrapper("Infiltrates", new Dictionary<string, string>
+			{
 				{ "Notification", "BuildingInfiltrated" }
 			})
 		};
