@@ -66,7 +66,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					z += count;
 					l.VoxelCount += count;
 					s.Seek(2 * count + 1, SeekOrigin.Current);
-				} while (z < l.Size[2]);
+				}
+				while (z < l.Size[2]);
 			}
 
 			// Read the data
@@ -99,7 +100,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 					// Skip duplicate count
 					s.ReadUInt8();
-				} while (z < l.Size[2]);
+				}
+				while (z < l.Size[2]);
 			}
 		}
 

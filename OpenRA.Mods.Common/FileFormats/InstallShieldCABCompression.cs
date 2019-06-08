@@ -251,7 +251,8 @@ namespace OpenRA.Mods.Common.FileFormats
 						}
 
 						inf.Reset();
-					} while (toExtract > 0);
+					}
+					while (toExtract > 0);
 				}
 				else
 				{
@@ -262,7 +263,8 @@ namespace OpenRA.Mods.Common.FileFormats
 
 						toExtract -= remainingInArchive;
 						output.Write(GetBytes(remainingInArchive), 0, (int)remainingInArchive);
-					} while (toExtract > 0);
+					}
+					while (toExtract > 0);
 				}
 			}
 

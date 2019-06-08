@@ -34,7 +34,8 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
 				spriteOverlay.Visible = true;
-				spriteOverlay.WithOffset.Animation.PlayThen(spriteOverlay.Info.Sequence, () => {
+				spriteOverlay.WithOffset.Animation.PlayThen(spriteOverlay.Info.Sequence, () =>
+				{
 					dockingState = DockingState.Loop;
 					spriteOverlay.Visible = false;
 				});
@@ -52,7 +53,8 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
 				spriteOverlay.Visible = true;
-				spriteOverlay.WithOffset.Animation.PlayBackwardsThen(spriteOverlay.Info.Sequence, () => {
+				spriteOverlay.WithOffset.Animation.PlayBackwardsThen(spriteOverlay.Info.Sequence, () =>
+				{
 					dockingState = DockingState.Complete;
 					body.Docked = false;
 					spriteOverlay.Visible = false;

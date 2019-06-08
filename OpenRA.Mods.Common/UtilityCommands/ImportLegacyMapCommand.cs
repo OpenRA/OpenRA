@@ -403,7 +403,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var actorType = parts[1].ToLowerInvariant();
 
-					var actor = new ActorReference(actorType) {
+					var actor = new ActorReference(actorType)
+					{
 						new LocationInit(ParseActorLocation(actorType, loc)),
 						new OwnerInit(parts[0]),
 					};

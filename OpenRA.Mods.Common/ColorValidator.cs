@@ -114,7 +114,8 @@ namespace OpenRA.Mods.Common
 				var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
 				var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
 				color = Color.FromAhsv(h, s, v);
-			} while (!IsValid(color, out forbidden, terrainColors, playerColors, ignoreError));
+			}
+			while (!IsValid(color, out forbidden, terrainColors, playerColors, ignoreError));
 
 			return color;
 		}
@@ -172,7 +173,8 @@ namespace OpenRA.Mods.Common
 				color = Color.FromArgb(r, g, b);
 
 				attempt++;
-			} while (!IsValid(color, allForbidden, out forbiddenColor));
+			}
+			while (!IsValid(color, allForbidden, out forbiddenColor));
 
 			return color;
 		}

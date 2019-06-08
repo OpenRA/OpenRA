@@ -1079,7 +1079,8 @@ namespace OpenRA
 				var v = rand.Next(Bounds.Top, Bounds.Bottom);
 
 				cells = Unproject(new PPos(u, v));
-			} while (!cells.Any());
+			}
+			while (!cells.Any());
 
 			return cells.Random(rand).ToCPos(Grid.Type);
 		}

@@ -99,8 +99,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		bool isTailTravelling;
 		bool continueTracking = true;
 
-		bool IsBeamComplete { get { return !isHeadTravelling && headTicks >= length &&
-			!isTailTravelling && tailTicks >= length; } }
+		bool IsBeamComplete
+		{
+			get
+			{
+				return !isHeadTravelling && headTicks >= length && !isTailTravelling && tailTicks >= length;
+			}
+		}
 
 		public AreaBeam(AreaBeamInfo info, ProjectileArgs args, Color color)
 		{

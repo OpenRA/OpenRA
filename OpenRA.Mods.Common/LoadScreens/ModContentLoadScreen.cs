@@ -63,9 +63,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			{
 				var widgetArgs = new WidgetArgs
 				{
-					{ "continueLoading", () =>
-						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments()))
-					},
+					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
 					{ "mod", selectedMod },
 					{ "content", content },
 				};
@@ -78,9 +76,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				{
 					{ "mod", selectedMod },
 					{ "content", content },
-					{ "onCancel", () =>
-						Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments()))
-					}
+					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) }
 				};
 
 				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);

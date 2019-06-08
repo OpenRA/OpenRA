@@ -101,18 +101,21 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public float[] Bounds(uint frame)
 		{
-			var ret = new float[] { float.MaxValue, float.MaxValue, float.MaxValue,
-				float.MinValue, float.MinValue, float.MinValue };
+			var ret = new[]
+			{
+				float.MaxValue, float.MaxValue, float.MaxValue,
+				float.MinValue, float.MinValue, float.MinValue
+			};
 
 			for (uint j = 0; j < limbs; j++)
 			{
 				var l = limbData[j];
-				var b = new float[]
+				var b = new[]
 				{
 					0, 0, 0,
-					(l.Bounds[3] - l.Bounds[0]),
-					(l.Bounds[4] - l.Bounds[1]),
-					(l.Bounds[5] - l.Bounds[2])
+					l.Bounds[3] - l.Bounds[0],
+					l.Bounds[4] - l.Bounds[1],
+					l.Bounds[5] - l.Bounds[2]
 				};
 
 				// Calculate limb bounding box

@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		float t = 0;
 		string paletteName = "cloak";
 
-		Color[] colors = {
+		Color[] colors =
+		{
 			Color.FromArgb(55, 205, 205, 220),
 			Color.FromArgb(120, 205, 205, 230),
 			Color.FromArgb(192, 180, 180, 255),
