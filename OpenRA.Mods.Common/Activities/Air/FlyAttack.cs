@@ -150,14 +150,29 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 			}
 
-			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraft.Info.MinAirborneAltitude)
+			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
+			var isAirborne = self.World.Map.DistanceAboveTerrain(pos).Length >= aircraft.Info.MinAirborneAltitude;
+
+			if (!isAirborne)
 				QueueChild(self, new TakeOff(self), true);
 
-			if (attackAircraft != null && target.IsInRange(self.CenterPosition, attackAircraft.GetMinimumRange()))
-				QueueChild(self, new FlyTimed(ticksUntilTurn, self), true);
+			if (!aircraft.Info.CanHover)
+			{
+				if (target.IsInRange(pos, attackAircraft.GetMinimumRange()))
+					QueueChild(self, new FlyTimed(ticksUntilTurn, self), true);
 
-			QueueChild(self, new Fly(self, target, checkTarget.CenterPosition, Color.Red), true);
-			QueueChild(self, new FlyTimed(ticksUntilTurn, self));
+				QueueChild(self, new Fly(self, target, target.CenterPosition, Color.Red), true);
+				QueueChild(self, new FlyTimed(ticksUntilTurn, self));
+			}
+			else
+			{
+				var minimumRange = attackAircraft.GetMinimumRangeVersusTarget(target);
+				if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
+					QueueChild(self, new Fly(self, target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red), true);
+				else if (isAirborne) // Don't use 'else' to avoid conflict with TakeOff
+					Fly.VerticalTakeOffOrLandTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+			}
 
 			return this;
 		}
