@@ -42,7 +42,6 @@
     <Rule Id="SA1204" Action="None" /><!-- StaticElementsMustAppearBeforeInstanceElements -->
     <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
     <Rule Id="SA1413" Action="None" /><!-- UseTrailingCommasInMultiLineInitializers -->
-    <Rule Id="SA1500" Action="None" /><!-- BracesForMultiLineStatementsMustNotShareLine -->
     <Rule Id="SA1516" Action="None" /><!-- ElementsMustBeSeparatedByBlankLine -->
   </Rules>
 </RuleSet>
