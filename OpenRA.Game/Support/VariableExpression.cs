@@ -590,7 +590,7 @@ namespace OpenRA.Support
 			var tokens = new List<Token>();
 			var currentOpeners = new Stack<Token>();
 			Token lastToken = null;
-			for (var i = 0;;)
+			for (var i = 0; ;)
 			{
 				var token = Token.GetNext(Expression, ref i, lastToken != null ? lastToken.Type : TokenType.Invalid);
 				if (token == null)

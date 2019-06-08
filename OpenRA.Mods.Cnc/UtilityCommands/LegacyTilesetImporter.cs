@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var usedCategories = new HashSet<string>();
 			try
 			{
-				for (var tilesetGroupIndex = 0;; tilesetGroupIndex++)
+				for (var tilesetGroupIndex = 0; ; tilesetGroupIndex++)
 				{
 					var section = file.GetSection("TileSet{0:D4}".F(tilesetGroupIndex));
 
