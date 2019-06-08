@@ -35,7 +35,6 @@
     <!-- Rules that could potentially be enabled after existing violations are fixed -->
     <Rule Id="SA1027" Action="None" /><!-- UseTabsCorrectly -->
     <Rule Id="SA1107" Action="None" /><!-- CodeMustNotContainMultipleStatementsOnOneLine -->
-    <Rule Id="SA1115" Action="None" /><!-- ParameterMustFollowComma -->
     <Rule Id="SA1116" Action="None" /><!-- SplitParametersMustStartOnLineAfterDeclaration -->
     <Rule Id="SA1119" Action="None" /><!-- StatementMustNotUseUnnecessaryParenthesis -->
     <Rule Id="SA1132" Action="None" /><!-- DoNotCombineFields -->
