@@ -49,7 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 		int spawnCountdown;
 		int actorsPresent;
 
-		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info) : base(info)
+		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}

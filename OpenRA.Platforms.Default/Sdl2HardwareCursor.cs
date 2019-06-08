@@ -19,8 +19,11 @@ namespace OpenRA.Platforms.Default
 {
 	class Sdl2HardwareCursorException : Exception
 	{
-		public Sdl2HardwareCursorException(string message) : base(message) { }
-		public Sdl2HardwareCursorException(string message, Exception innerException) : base(message, innerException) { }
+		public Sdl2HardwareCursorException(string message)
+			: base(message) { }
+
+		public Sdl2HardwareCursorException(string message, Exception innerException)
+			: base(message, innerException) { }
 	}
 
 	sealed class Sdl2HardwareCursor : IHardwareCursor

@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 	class ImportTiberianDawnLegacyMapCommand : ImportLegacyMapCommand, IUtilityCommand
 	{
 		// NOTE: 64x64 map size is a C&C95 engine limitation
-		public ImportTiberianDawnLegacyMapCommand() : base(64) { }
+		public ImportTiberianDawnLegacyMapCommand()
+			: base(64) { }
 
 		string IUtilityCommand.Name { get { return "--import-td-map"; } }
 		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }

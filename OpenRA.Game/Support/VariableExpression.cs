@@ -561,7 +561,8 @@ namespace OpenRA.Support
 
 			public override string Symbol { get { return Name; } }
 
-			public VariableToken(int index, string symbol) : base(TokenType.Variable, index) { Name = symbol; }
+			public VariableToken(int index, string symbol)
+				: base(TokenType.Variable, index) { Name = symbol; }
 		}
 
 		class NumberToken : Token
@@ -957,7 +958,8 @@ namespace OpenRA.Support
 	{
 		readonly Func<IReadOnlyDictionary<string, int>, bool> asFunction;
 
-		public BooleanExpression(string expression) : base(expression)
+		public BooleanExpression(string expression)
+			: base(expression)
 		{
 			asFunction = Compile<bool>();
 		}
@@ -972,7 +974,8 @@ namespace OpenRA.Support
 	{
 		readonly Func<IReadOnlyDictionary<string, int>, int> asFunction;
 
-		public IntegerExpression(string expression) : base(expression)
+		public IntegerExpression(string expression)
+			: base(expression)
 		{
 			asFunction = Compile<int>();
 		}

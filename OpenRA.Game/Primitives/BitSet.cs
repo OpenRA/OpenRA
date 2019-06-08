@@ -84,7 +84,9 @@ namespace OpenRA.Primitives
 	{
 		readonly BitSetIndex bits;
 
-		public BitSet(params string[] values) : this(BitSetAllocator<T>.GetBits(values)) { }
+		public BitSet(params string[] values)
+			: this(BitSetAllocator<T>.GetBits(values)) { }
+
 		BitSet(BitSetIndex bits) { this.bits = bits; }
 
 		public static BitSet<T> FromStringsNoAlloc(string[] values)

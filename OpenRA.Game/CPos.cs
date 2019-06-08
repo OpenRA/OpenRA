@@ -34,7 +34,8 @@ namespace OpenRA
 		public byte Layer { get { return (byte)Bits; } }
 
 		public CPos(int bits) { Bits = bits; }
-		public CPos(int x, int y) : this(x, y, 0) { }
+		public CPos(int x, int y)
+			: this(x, y, 0) { }
 		public CPos(int x, int y, byte layer)
 		{
 			Bits = (x & 0xFFF) << 20 | (y & 0xFFF) << 8 | layer;

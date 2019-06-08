@@ -18,7 +18,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Player")]
 	public class PlayerGlobal : ScriptGlobal
 	{
-		public PlayerGlobal(ScriptContext context) : base(context) { }
+		public PlayerGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Returns the player with the specified internal name, or nil if a match is not found.")]
 		public Player GetPlayer(string name)

@@ -42,7 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class SpawnActorPower : SupportPower
 	{
-		public SpawnActorPower(Actor self, SpawnActorPowerInfo info) : base(self, info) { }
+		public SpawnActorPower(Actor self, SpawnActorPowerInfo info)
+			: base(self, info) { }
+
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);

@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Trigger")]
 	public class TriggerGlobal : ScriptGlobal
 	{
-		public TriggerGlobal(ScriptContext context) : base(context) { }
+		public TriggerGlobal(ScriptContext context)
+			: base(context) { }
 
 		public static ScriptTriggers GetScriptTriggers(Actor a)
 		{

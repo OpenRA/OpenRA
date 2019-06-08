@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	public class TiberianSunRefinery : Refinery
 	{
-		public TiberianSunRefinery(Actor self, RefineryInfo info) : base(self, info) { }
+		public TiberianSunRefinery(Actor self, RefineryInfo info)
+			: base(self, info) { }
 
 		public override Activity DockSequence(Actor harv, Actor self)
 		{

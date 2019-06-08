@@ -20,7 +20,8 @@ namespace OpenRA.Mods.Common.Scripting
 	{
 		readonly RadarPings radarPings;
 
-		public RadarGlobal(ScriptContext context) : base(context)
+		public RadarGlobal(ScriptContext context)
+			: base(context)
 		{
 			radarPings = context.World.WorldActor.TraitOrDefault<RadarPings>();
 		}

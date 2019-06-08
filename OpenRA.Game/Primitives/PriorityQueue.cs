@@ -28,9 +28,8 @@ namespace OpenRA.Primitives
 		readonly IComparer<T> comparer;
 		int level, index;
 
-		public PriorityQueue() : this(Comparer<T>.Default)
-		{
-		}
+		public PriorityQueue()
+			: this(Comparer<T>.Default) { }
 
 		public PriorityQueue(IComparer<T> comparer)
 		{

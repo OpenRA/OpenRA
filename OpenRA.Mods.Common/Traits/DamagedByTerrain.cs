@@ -51,7 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int damageThreshold;
 
-		public DamagedByTerrain(Actor self, DamagedByTerrainInfo info) : base(info)
+		public DamagedByTerrain(Actor self, DamagedByTerrainInfo info)
+			: base(info)
 		{
 			health = self.Trait<IHealth>();
 		}

@@ -28,7 +28,8 @@ namespace OpenRA
 
 		Lazy<TypeDictionary> initDict;
 
-		public ActorReference(string type) : this(type, new Dictionary<string, MiniYaml>()) { }
+		public ActorReference(string type)
+			: this(type, new Dictionary<string, MiniYaml>()) { }
 
 		public ActorReference(string type, Dictionary<string, MiniYaml> inits)
 		{

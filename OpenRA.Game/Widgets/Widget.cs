@@ -587,7 +587,8 @@ namespace OpenRA.Widgets
 	public class WidgetArgs : Dictionary<string, object>
 	{
 		public WidgetArgs() { }
-		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
+		public WidgetArgs(Dictionary<string, object> args)
+			: base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
 	}
 }

@@ -40,7 +40,8 @@ namespace OpenRA
 				}
 			}
 
-			public MissingFieldsException(string[] missing, string header = null, string headerSingle = null) : base(null)
+			public MissingFieldsException(string[] missing, string header = null, string headerSingle = null)
+				: base(null)
 			{
 				Header = missing.Length > 1 ? header : headerSingle ?? header;
 				Missing = missing;
