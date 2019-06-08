@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		bool allowSpawn;
 
-		public FreeActor(ActorInitializer init, FreeActorInfo info) : base(info)
+		public FreeActor(ActorInitializer init, FreeActorInfo info)
+			: base(info)
 		{
 			allowSpawn = !init.Contains<FreeActorInit>() || init.Get<FreeActorInit>().ActorValue;
 		}

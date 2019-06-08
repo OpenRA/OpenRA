@@ -22,7 +22,8 @@ namespace OpenRA.Support
 		public int Last;
 		public int TotalCount = 0;
 
-		public MersenneTwister() : this(Environment.TickCount) { }
+		public MersenneTwister()
+			: this(Environment.TickCount) { }
 
 		public MersenneTwister(int seed)
 		{

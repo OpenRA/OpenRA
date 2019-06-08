@@ -21,7 +21,8 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Actor")]
 	public class ActorGlobal : ScriptGlobal
 	{
-		public ActorGlobal(ScriptContext context) : base(context) { }
+		public ActorGlobal(ScriptContext context)
+			: base(context) { }
 
 		[Desc("Create a new actor. initTable specifies a list of key-value pairs that defines the initial parameters for the actor's traits.")]
 		public Actor Create(string type, bool addToWorld, LuaTable initTable)

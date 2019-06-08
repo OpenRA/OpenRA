@@ -41,7 +41,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public bool IsTraitPaused { get; private set; }
 
-		protected PausableConditionalTrait(InfoType info) : base(info) { IsTraitPaused = info.PausedByDefault; }
+		protected PausableConditionalTrait(InfoType info)
+			: base(info)
+		{
+			IsTraitPaused = info.PausedByDefault;
+		}
 
 		protected override void Created(Actor self)
 		{

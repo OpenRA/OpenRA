@@ -164,7 +164,8 @@ namespace OpenRA.Mods.Common.FileFormats
 			int baseOffset;
 			int index;
 
-			public AudStream(Stream stream, int outputSize, int dataSize) : base(stream)
+			public AudStream(Stream stream, int outputSize, int dataSize)
+				: base(stream)
 			{
 				this.outputSize = outputSize;
 				this.dataSize = dataSize;

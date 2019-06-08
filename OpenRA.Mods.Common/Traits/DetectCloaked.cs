@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class DetectCloaked : ConditionalTrait<DetectCloakedInfo>
 	{
-		public DetectCloaked(DetectCloakedInfo info) : base(info) { }
+		public DetectCloaked(DetectCloakedInfo info)
+			: base(info) { }
 	}
 }

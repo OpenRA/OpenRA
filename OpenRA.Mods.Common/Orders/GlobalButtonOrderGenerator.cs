@@ -69,7 +69,8 @@ namespace OpenRA.Mods.Common.Orders
 
 	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<ToggleConditionOnOrder>
 	{
-		public PowerDownOrderGenerator() : base("PowerDown") { }
+		public PowerDownOrderGenerator()
+			: base("PowerDown") { }
 
 		protected override bool IsValidTrait(ToggleConditionOnOrder t)
 		{
@@ -85,7 +86,8 @@ namespace OpenRA.Mods.Common.Orders
 
 	public class SellOrderGenerator : GlobalButtonOrderGenerator<Sellable>
 	{
-		public SellOrderGenerator() : base("Sell") { }
+		public SellOrderGenerator()
+			: base("Sell") { }
 
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{

@@ -16,7 +16,8 @@ namespace OpenRA.Mods.Common.Widgets
 	public class PasswordFieldWidget : TextFieldWidget
 	{
 		public PasswordFieldWidget() { }
-		protected PasswordFieldWidget(PasswordFieldWidget widget) : base(widget) { }
+		protected PasswordFieldWidget(PasswordFieldWidget widget)
+			: base(widget) { }
 
 		protected override string GetApparentText() { return new string('*', Text.Length); }
 		public override Widget Clone() { return new PasswordFieldWidget(this); }

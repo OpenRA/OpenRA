@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RepairsUnits : PausableConditionalTrait<RepairsUnitsInfo>
 	{
-		public RepairsUnits(RepairsUnitsInfo info) : base(info) { }
+		public RepairsUnits(RepairsUnitsInfo info)
+			: base(info) { }
 	}
 }

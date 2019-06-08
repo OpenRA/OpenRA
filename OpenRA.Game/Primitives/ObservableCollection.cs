@@ -29,7 +29,8 @@ namespace OpenRA.Primitives
 		public event Action<IObservableCollection> OnRefresh = x => { };
 
 		public ObservableCollection() { }
-		public ObservableCollection(IList<T> list) : base(list) { }
+		public ObservableCollection(IList<T> list)
+			: base(list) { }
 
 		protected override void SetItem(int index, T item)
 		{

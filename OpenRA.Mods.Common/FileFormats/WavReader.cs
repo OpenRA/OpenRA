@@ -137,7 +137,8 @@ namespace OpenRA.Mods.Common.FileFormats
 			int outOffset;
 			int currentBlock;
 
-			public WavStream(Stream stream, int dataSize, short blockAlign, short channels, int uncompressedSize) : base(stream)
+			public WavStream(Stream stream, int dataSize, short blockAlign, short channels, int uncompressedSize)
+				: base(stream)
 			{
 				this.channels = channels;
 				numBlocks = dataSize / blockAlign;

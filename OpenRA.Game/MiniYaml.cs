@@ -133,7 +133,8 @@ namespace OpenRA
 			return ret;
 		}
 
-		public MiniYaml(string value) : this(value, null) { }
+		public MiniYaml(string value)
+			: this(value, null) { }
 
 		public MiniYaml(string value, List<MiniYamlNode> nodes)
 		{
@@ -474,6 +475,7 @@ namespace OpenRA
 	[Serializable]
 	public class YamlException : Exception
 	{
-		public YamlException(string s) : base(s) { }
+		public YamlException(string s)
+			: base(s) { }
 	}
 }

@@ -19,7 +19,8 @@ namespace OpenRA
 	{
 		public readonly Dictionary<string, PlayerReference> Players;
 
-		public MapPlayers() : this(new List<MiniYamlNode>()) { }
+		public MapPlayers()
+			: this(new List<MiniYamlNode>()) { }
 
 		public MapPlayers(IEnumerable<MiniYamlNode> playerDefinitions)
 		{
