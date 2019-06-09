@@ -138,15 +138,13 @@ namespace OpenRA.Graphics
 
 		void Update()
 		{
-			if (cursor == null)
+			if (cursor != null && frame >= cursor.Length)
+				frame %= cursor.Length;
+
+			if (cursor == null || isLocked)
 				Game.Renderer.Window.SetHardwareCursor(null);
 			else
-			{
-				if (frame >= cursor.Length)
-					frame = frame % cursor.Length;
-
 				Game.Renderer.Window.SetHardwareCursor(hardwareCursors[cursor.Name][frame]);
-			}
 		}
 
 		public void Render(Renderer renderer)
@@ -171,12 +169,14 @@ namespace OpenRA.Graphics
 			lockedPosition = Viewport.LastMousePos;
 			Game.Renderer.Window.SetRelativeMouseMode(true);
 			isLocked = true;
+			Update();
 		}
 
 		public void Unlock()
 		{
 			Game.Renderer.Window.SetRelativeMouseMode(false);
 			isLocked = false;
+			Update();
 		}
 
 		public void Dispose()
