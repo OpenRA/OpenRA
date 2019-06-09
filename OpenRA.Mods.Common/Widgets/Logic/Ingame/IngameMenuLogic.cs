@@ -194,18 +194,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				hideMenu = true;
 
-				if (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Won)
-				{
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Leave Mission",
-						text: "Leave this game and return to the menu?",
-						onConfirm: OnQuit,
-						onCancel: ShowMenu,
-						confirmText: "Leave",
-						cancelText: "Stay");
-				}
-				else
-					OnQuit();
+				ConfirmationDialogs.ButtonPrompt(
+					title: "Leave Mission",
+					text: "Leave this game and return to the menu?",
+					onConfirm: OnQuit,
+					onCancel: ShowMenu,
+					confirmText: "Leave",
+					cancelText: "Stay");
 			};
 		}
 
