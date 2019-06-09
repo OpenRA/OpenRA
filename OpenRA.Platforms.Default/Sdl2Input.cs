@@ -130,9 +130,14 @@ namespace OpenRA.Platforms.Default
 
 					case SDL.SDL_EventType.SDL_MOUSEMOTION:
 						{
-							var input = lockedMousePosition ?? new int2(e.motion.x, e.motion.y);
+							var mousePos = new int2(e.motion.x, e.motion.y);
+							var input = lockedMousePosition ?? mousePos;
 							var pos = EventPosition(device, input.X, input.Y);
-							var delta = EventPosition(device, e.motion.xrel, e.motion.yrel);
+
+							var delta = lockedMousePosition == null
+								? EventPosition(device, e.motion.xrel, e.motion.yrel)
+								: mousePos - lockedMousePosition.Value;
+
 							pendingMotion = new MouseInput(
 								MouseInputEvent.Move, lastButtonBits, pos, delta, mods, 0);
 
