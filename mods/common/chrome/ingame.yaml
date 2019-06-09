@@ -60,3 +60,4 @@ Container@INGAME_ROOT:
 				Container@PERF_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+		MouseAttachment@MOUSE_ATTATCHMENT:
