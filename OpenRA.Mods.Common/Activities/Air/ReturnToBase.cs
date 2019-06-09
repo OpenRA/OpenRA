@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Activities
 				resupplied = false;
 
 			if (resupplied && abortOnResupply)
-				Cancel(self);
+				self.CancelActivity();
 
 			if (resupplied || IsCanceling || self.IsDead)
 				return NextActivity;
