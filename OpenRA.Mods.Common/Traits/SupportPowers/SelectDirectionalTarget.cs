@@ -13,7 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -36,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool activated;
 		bool dragStarted;
 		Arrow currentArrow;
+		MouseAttachmentWidget mouseAttachment;
 
 		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, string cursor,
 			string directionArrowAnimation, string directionArrowPalette)
@@ -47,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.directionArrowPalette = directionArrowPalette;
 
 			directionArrows = LoadArrows(directionArrowAnimation, world, arrows.Length);
+			mouseAttachment = Ui.Root.Get<MouseAttachmentWidget>("MOUSE_ATTATCHMENT");
 		}
 
 		IEnumerable<Order> IOrderGenerator.Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -82,6 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 					dragDirection = -MaxDragThreshold * float2.FromAngle((float)(angle * (Math.PI / 180)));
 
 				currentArrow = GetArrow(angle);
+
+				mouseAttachment.SetAttachment(targetLocation, currentArrow.Sprite, directionArrowPalette);
 				dragStarted = true;
 			}
 
@@ -111,19 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
 
-		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world)
-		{
-			if (!activated || !IsOutsideDragZone)
-				yield break;
-
-			var worldPx = wr.Viewport.ViewToWorldPx(targetLocation);
-			var worldPos = wr.ProjectedPosition(worldPx);
-
-			var scale = (Game.Cursor is SoftwareCursor && CursorProvider.CursorViewportZoomed ? 2 : 1) / wr.Viewport.Zoom;
-
-			var directionPalette = wr.Palette(directionArrowPalette);
-			yield return new SpriteRenderable(currentArrow.Sprite, worldPos, WVec.Zero, -511, directionPalette, scale, true);
-		}
+		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return cursor; }
 
@@ -132,7 +126,10 @@ namespace OpenRA.Mods.Common.Traits
 		void IOrderGenerator.Deactivate()
 		{
 			if (activated)
+			{
+				mouseAttachment.Reset();
 				Game.Cursor.Unlock();
+			}
 		}
 
 		// Starting at (0, -1) and rotating in CCW
