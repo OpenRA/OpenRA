@@ -124,7 +124,6 @@ MIG:
 	AmmoPool:
 		Ammo: 8
 		AmmoCondition: ammo
-	ReturnOnIdle:
 	Selectable:
 		Bounds: 36,28,0,2
 		DecorationBounds: 40,29,0,1
@@ -196,7 +195,6 @@ YAK:
 		PipCount: 6
 		ReloadDelay: 11
 		AmmoCondition: ammo
-	ReturnOnIdle:
 	SelectionDecorations:
 	WithMuzzleOverlay:
 	Contrail:
@@ -237,7 +235,6 @@ TRAN:
 		Range: 6c0
 		Type: GroundPosition
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 5
 		Speed: 128
 		AltitudeVelocity: 0c58
@@ -305,7 +302,6 @@ HELI:
 		PersistentTargeting: false
 		AttackType: Hover
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 4
 		Speed: 149
 	AutoTarget:
@@ -374,7 +370,6 @@ HIND:
 		PersistentTargeting: false
 		AttackType: Hover
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 4
 		Speed: 112
 	AutoTarget:
@@ -475,7 +470,6 @@ MH60:
 		PersistentTargeting: false
 		AttackType: Hover
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 4
 		Speed: 112
 	AutoTarget:

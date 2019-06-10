@@ -21,9 +21,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum IdleBehaviorType
+	{
+		None,
+		Land,
+		ReturnToBase,
+		LeaveMap,
+	}
+
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
 		IActorPreviewInitInfo, IEditorActorOptions, IObservesVariablesInfo
 	{
+		[Desc("Behavior when aircraft becomes idle. Options are Land, ReturnToBase, LeaveMap, and None.",
+			"'Land' will behave like 'None' (hover or circle) if a suitable landing site is not available.")]
+		public readonly IdleBehaviorType IdleBehavior = IdleBehaviorType.None;
+
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
 		[Desc("Whether the aircraft can be repulsed.")]
@@ -77,9 +89,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Does the actor land and take off vertically?")]
 		public readonly bool VTOL = false;
-
-		[Desc("Will this actor try to land after it has no more commands?")]
-		public readonly bool LandWhenIdle = true;
 
 		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
@@ -365,10 +374,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				ForceLanding = false;
 
-				if (!Info.LandWhenIdle)
+				if (Info.IdleBehavior != IdleBehaviorType.Land)
 				{
 					self.CancelActivity();
-
 					self.QueueActivity(new TakeOff(self));
 				}
 			}
@@ -684,15 +692,31 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			var isCircler = !Info.CanHover;
-			if (!atLandAltitude && Info.LandWhenIdle && Info.LandableTerrainTypes.Count > 0)
-				self.QueueActivity(new Land(self));
-			else if (isCircler && !atLandAltitude)
-				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
-			else if (atLandAltitude && !CanLand(self.Location) && ReservedActor == null)
-				self.QueueActivity(new TakeOff(self));
-			else if (!atLandAltitude && altitude != Info.CruiseAltitude && !Info.LandWhenIdle)
-				self.QueueActivity(new TakeOff(self));
+			if (Info.IdleBehavior == IdleBehaviorType.LeaveMap)
+			{
+				self.QueueActivity(new FlyOffMap(self));
+				self.QueueActivity(new RemoveSelf());
+			}
+			else if (Info.IdleBehavior == IdleBehaviorType.ReturnToBase && GetActorBelow() == null)
+				self.QueueActivity(new ReturnToBase(self, null, !Info.TakeOffOnResupply));
+			else
+			{
+				if (atLandAltitude)
+				{
+					if (!CanLand(self.Location) && ReservedActor == null)
+						self.QueueActivity(new TakeOff(self));
+
+					// All remaining idle behaviors rely on not being atLandAltitude, so unconditionally return
+					return;
+				}
+
+				if (Info.IdleBehavior != IdleBehaviorType.Land && altitude != Info.CruiseAltitude)
+					self.QueueActivity(new TakeOff(self));
+				else if (Info.IdleBehavior == IdleBehaviorType.Land && Info.LandableTerrainTypes.Count > 0)
+					self.QueueActivity(new Land(self));
+				else if (!Info.CanHover)
+					self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
+			}
 		}
 
 		#region Implement IPositionable
