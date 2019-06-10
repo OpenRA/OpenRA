@@ -114,7 +114,8 @@ namespace OpenRA.Mods.Common.Activities
 				// TODO: It would be better to not take off at all, but we lack the plumbing to detect current airborne/landed state.
 				// If the aircraft lands when idle and is idle, we let the default idle handler manage this.
 				// TODO: Remove this after fixing all activities to work properly with arbitrary starting altitudes.
-				var skipHeightAdjustment = aircraft.Info.LandWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
+				var landWhenIdle = aircraft.Info.IdleBehavior == IdleBehaviorType.Land;
+				var skipHeightAdjustment = landWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
 				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
 				{
 					if (dat <= aircraft.LandAltitude)

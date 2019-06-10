@@ -322,7 +322,6 @@
 	Repairable:
 		RepairActors: hpad
 	Aircraft:
-		LandWhenIdle: false
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CanHover: True
@@ -659,10 +658,10 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	WithFacingSpriteBody:
-	FlyAwayOnIdle:
 	RejectsOrders:
 	Aircraft:
 		CruiseAltitude: 2560
+		IdleBehavior: LeaveMap
 	MapEditorData:
 		Categories: Aircraft
 

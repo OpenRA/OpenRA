@@ -875,7 +875,6 @@
 		CruisingCondition: cruising
 		CruiseAltitude: 4c704
 		AltitudeVelocity: 96
-		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
 		MaximumPitch: 120
