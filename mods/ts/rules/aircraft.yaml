@@ -6,7 +6,7 @@ DPOD:
 	Tooltip:
 		Name: Drop Pod
 	Aircraft:
-		LandWhenIdle: true
+		IdleBehavior: Land
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
@@ -40,7 +40,7 @@ DSHP:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Aircraft:
-		LandWhenIdle: true
+		IdleBehavior: Land
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
@@ -147,7 +147,6 @@ ORCAB:
 		LandingSounds: orcadwn1.aud
 		CanHover: false
 		CanSlide: false
-	ReturnOnIdle:
 	Health:
 		HP: 26000
 	Armor:
@@ -193,7 +192,6 @@ ORCATRAN:
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
-		LandWhenIdle: false
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
@@ -285,7 +283,6 @@ SCRIN:
 		LandingSounds: dropdwn1.aud
 		CanHover: false
 		CanSlide: false
-	ReturnOnIdle:
 	Health:
 		HP: 28000
 	Armor:

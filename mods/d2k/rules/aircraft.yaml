@@ -16,7 +16,6 @@ carryall.reinforce:
 		TurnSpeed: 4
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
-		LandWhenIdle: False
 		AirborneCondition: airborne
 		CanSlide: True
 		VTOL: true
@@ -77,6 +76,7 @@ frigate:
 	Tooltip:
 		Name: Frigate
 	Aircraft:
+		IdleBehavior: LeaveMap
 		Speed: 189
 		TurnSpeed: 1
 		Repulsable: False
@@ -89,7 +89,6 @@ frigate:
 	Cargo:
 		MaxWeight: 20
 		PipCount: 10
-	FlyAwayOnIdle:
 	RejectsOrders:
 
 ornithopter:
