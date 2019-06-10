@@ -125,7 +125,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (transform == null && currentTransform == null)
 				return;
 
+			// Manually manage the inner activity queue
 			var activity = currentTransform ?? transform.GetTransformActivity(self);
+			if (!order.Queued && activity.NextActivity != null)
+				activity.NextActivity.Cancel(self);
+
 			activity.Queue(self, new IssueOrderAfterTransform(order.OrderString, order.Target));
 
 			if (currentTransform == null)

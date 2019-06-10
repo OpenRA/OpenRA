@@ -140,6 +140,9 @@ namespace OpenRA.Mods.Common.Activities
 				// Use self.CurrentActivity to capture the parent activity if Transform is a child
 				foreach (var transfer in currentActivity.ActivitiesImplementing<IssueOrderAfterTransform>(false))
 				{
+					if (transfer.IsCanceling)
+						continue;
+
 					var order = transfer.IssueOrderForTransformedActor(a);
 					foreach (var t in a.TraitsImplementing<IResolveOrder>())
 						t.ResolveOrder(a, order);
