@@ -106,7 +106,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.SetTargetLine(Target.FromCell(self.World, cell), Color.Green);
 
+				// Manually manage the inner activity queue
 				var activity = currentTransform ?? transform.GetTransformActivity(self);
+				if (!order.Queued && activity.NextActivity != null)
+					activity.NextActivity.Cancel(self);
+
 				activity.Queue(self, new IssueOrderAfterTransform("Move", order.Target));
 
 				if (currentTransform == null)
