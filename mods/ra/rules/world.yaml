@@ -5,6 +5,7 @@
 	ScreenMap:
 	Selection:
 	MusicPlaylist:
+		PlayRandom: True
 		VictoryMusic: score
 		DefeatMusic: map
 	TerrainGeometryOverlay:

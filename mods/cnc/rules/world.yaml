@@ -5,6 +5,7 @@
 	ActorMap:
 	Selection:
 	MusicPlaylist:
+		PlayRandom: True
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
 	DebugVisualizations:

@@ -5,6 +5,7 @@
 	ActorMap:
 	Selection:
 	MusicPlaylist:
+		PlayRandom: True
 		VictoryMusic: score
 		DefeatMusic: score
 	TerrainGeometryOverlay:
