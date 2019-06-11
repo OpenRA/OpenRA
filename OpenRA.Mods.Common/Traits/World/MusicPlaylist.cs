@@ -20,8 +20,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Trait for music handling. Attach this to the world actor.")]
 	public class MusicPlaylistInfo : ITraitInfo
 	{
-		[Desc("Music to play when the map starts.", "Plays the first song on the playlist when undefined.")]
+		[Desc("Music to play when the map starts.")]
 		public readonly string StartingMusic = null;
+
+		[Desc("Start the playlist with the first track when the map starts.")]
+		public readonly bool PlayFromStart = true;
+
+		[Desc("Start the playlist with a random track when the map starts.")]
+		public readonly bool PlayRandom = false;
 
 		[Desc("Music to play when the game has been won.")]
 		public readonly string VictoryMusic = null;
@@ -79,16 +85,18 @@ namespace OpenRA.Mods.Common.Traits
 				currentSong = currentBackgroundSong = world.Map.Rules.Music[info.BackgroundMusic];
 				CurrentSongIsBackground = true;
 			}
-			else
-			{
-				// Start playback with a random song
-				currentSong = random.FirstOrDefault();
-			}
-
-			if (SongExists(info.StartingMusic))
+			else if (SongExists(info.StartingMusic) && !CurrentSongIsBackground)
 			{
 				currentSong = world.Map.Rules.Music[info.StartingMusic];
 				CurrentSongIsBackground = false;
+			}
+			else
+			{
+				if (info.PlayFromStart)
+					currentSong = playlist.FirstOrDefault();
+
+				if (info.PlayRandom)
+					currentSong = random.FirstOrDefault();
 			}
 		}
 
