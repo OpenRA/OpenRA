@@ -871,12 +871,16 @@
 		Voice: Move
 	Aircraft:
 		AirborneCondition: airborne
+		CruisingCondition: cruising
+		CruiseAltitude: 4c704
+		AltitudeVelocity: 96
 		LandWhenIdle: false
 		Voice: Move
 		IdealSeparation: 853
 		MaximumPitch: 120
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
+		FlightDynamics: VTOL, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
@@ -900,16 +904,6 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-
-^Helicopter:
-	Inherits: ^Aircraft
-	Aircraft:
-		CruiseAltitude: 4c704
-		AltitudeVelocity: 96
-		CanHover: True
-		CruisingCondition: cruising
-		TakeOffOnResupply: true
-		VTOL: true
 	Hovers@CRUISING:
 		RequiresCondition: cruising
 		BobDistance: -64

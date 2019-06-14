@@ -325,11 +325,9 @@
 		LandWhenIdle: false
 		AirborneCondition: airborne
 		CruisingCondition: cruising
-		CanHover: True
-		TakeOffOnResupply: true
-		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Beach, Tiberium, BlueTiberium
 		Crushes: crate, infantry
+		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
 		InitialFacing: 224
 	HiddenUnderFog:
 		Type: GroundPosition
@@ -1089,8 +1087,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Aircraft:
-		CanHover: True
-		VTOL: true
+		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud, TakeOffOnCreation
 	FallsToEarth:
 		Spins: True
 		Moves: False
