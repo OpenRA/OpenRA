@@ -540,7 +540,7 @@ MSAM:
 	RevealsShroud:
 		Range: 5c0
 	Turreted:
-		TurnSpeed: 255
+		TurnSpeed: 4
 		Offset: -256,0,128
 	Armament@PRIMARY:
 		Weapon: 227mm
@@ -549,8 +549,8 @@ MSAM:
 		Name: secondary
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
-	AttackFollow:
-		FacingTolerance: 0
+	AttackTurreted:
+		FacingTolerance: 128
 		FireWhileMoving: false
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
