@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// NOTE: desiredFacing = -1 means we should not prefer any particular facing and instead just
 			// use whatever facing gives us the most direct path to the landing site.
-			if (facing == -1 && aircraft.Info.TurnToLand)
+			if (facing == -1 && aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TurnToLand))
 				desiredFacing = aircraft.Info.InitialFacing;
 			else
 				desiredFacing = facing;
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Move towards landing location
-			if (aircraft.Info.VTOL && (pos - targetPosition).HorizontalLengthSquared != 0)
+			if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL) && (pos - targetPosition).HorizontalLengthSquared != 0)
 			{
 				QueueChild(new Fly(self, Target.FromPos(targetPosition)));
 
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			if (!aircraft.Info.VTOL && !finishedApproach)
+			if (!aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL) && !finishedApproach)
 			{
 				// Calculate approach trajectory
 				var altitude = aircraft.Info.CruiseAltitude.Length;
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!aircraft.CanLand(blockingCells, target.Actor))
 				{
 					// Maintain holding pattern.
-					if (aircraft.Info.CanHover)
+					if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.Hover))
 						QueueChild(new Wait(25));
 					else
 						QueueChild(new FlyCircle(self, 25));
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Final descent.
-			if (aircraft.Info.VTOL)
+			if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL))
 			{
 				var landAltitude = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
 				if (Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, landAltitude))

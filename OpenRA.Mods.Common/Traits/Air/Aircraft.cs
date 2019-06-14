@@ -21,9 +21,34 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Flags]
+	public enum FlightDynamic
+	{
+		None = 0,
+		MoveIntoShroud = 1,
+		Slide = 2,
+		Hover = 4,
+		VTOL = 8,
+		TurnToLand = 16,
+		TurnToDock = 32,
+		TakeOffOnResupply = 64,
+		TakeOffOnCreation = 128,
+	}
+
 	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
 		IActorPreviewInitInfo, IEditorActorOptions, IObservesVariablesInfo
 	{
+		[Desc("List of flags that alter the movement behavior. Options:",
+			"MoveIntoShroud = Can be ordered to move into shroud.",
+			"Slide = Changes direction immediately, independently of current facing. Without this flag, needs to fly a curve.",
+			"Hover = Able to statically hover in air while idle or waiting. Without this flag, aircraft will fly in circles.",
+			"VTOL = Vertical-only take-off/land. Without this flag, lands/takes off diagonally.",
+			"TurnToLand = Does the aircraft need to turn towards InitialFacing before landing on terrain? No effect if VTOL flag is missing.",
+			"TurnToDock = Does the aircraft need to turn towards InitialFacing before landing on dock? No effect if VTOL flag is missing.",
+			"TakeOffOnResupply = Take off as soon as resupplies/repairs are finished.",
+			"TakeOffOnCreation = Take off from creator when spawned.")]
+		public readonly FlightDynamic FlightDynamics = FlightDynamic.TakeOffOnCreation | FlightDynamic.MoveIntoShroud;
+
 		public readonly WDist CruiseAltitude = new WDist(1280);
 
 		[Desc("Whether the aircraft can be repulsed.")]
@@ -49,9 +74,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly HashSet<string> LandableTerrainTypes = new HashSet<string>();
 
-		[Desc("Can the actor be ordered to move in to shroud?")]
-		public readonly bool MoveIntoShroud = true;
-
 		[Desc("e.g. crate, wall, infantry")]
 		public readonly BitSet<CrushClass> Crushes = default(BitSet<CrushClass>);
 
@@ -69,29 +91,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while at cruise altitude.")]
 		public readonly string CruisingCondition = null;
 
-		[Desc("Can the actor hover in place mid-air? If not, then the actor will have to remain in motion (circle around).")]
-		public readonly bool CanHover = false;
-
-		[Desc("Does the actor land and take off vertically?")]
-		public readonly bool VTOL = false;
-
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
-		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
-		public readonly bool TurnToLand = false;
-
-		[Desc("Does this VTOL actor need to turn before landing on a resupplier?")]
-		public readonly bool TurnToDock = true;
-
 		[Desc("Does this actor cancel its previous activity after resupplying?")]
 		public readonly bool AbortOnResupply = true;
-
-		[Desc("Does this actor automatically take off after resupplying?")]
-		public readonly bool TakeOffOnResupply = false;
-
-		[Desc("Does this actor automatically take off after creation?")]
-		public readonly bool TakeOffOnCreation = true;
 
 		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
@@ -344,7 +348,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				MakeReservation(host);
 
-				if (Info.TakeOffOnCreation)
+				if (Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnCreation))
 					self.QueueActivity(new TakeOff(self));
 			}
 
@@ -440,7 +444,7 @@ namespace OpenRA.Mods.Common.Traits
 				repulsionForce += new WVec(1024, 0, 0).Rotate(WRot.FromYaw((self.CenterPosition - center).Yaw));
 			}
 
-			if (Info.CanHover)
+			if (Info.FlightDynamics.HasFlag(FlightDynamic.Slide))
 				return repulsionForce;
 
 			// Non-hovering actors mush always keep moving forward, so they need extra calculations.
@@ -681,18 +685,13 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
+			var isCircler = !Info.FlightDynamics.HasFlag(FlightDynamic.Hover);
 			if (!atLandAltitude && Info.LandWhenIdle && Info.LandableTerrainTypes.Count > 0)
 				self.QueueActivity(new Land(self));
-			else if (!Info.CanHover && !atLandAltitude)
+			else if (isCircler && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 			else if (atLandAltitude && !CanLand(self.Location) && ReservedActor == null)
 				self.QueueActivity(new TakeOff(self));
-			else if (Info.CanHover && Info.IdleTurnSpeed > 0)
-			{
-				// Temporary HACK for the AutoCarryall special case (needs CanHover, but also FlyCircle on idle).
-				// Will go away soon (in a separate PR) with the arrival of ActionsWhenIdle.
-				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
-			}
 			else if (!atLandAltitude && altitude != Info.CruiseAltitude && !Info.LandWhenIdle)
 				self.QueueActivity(new TakeOff(self));
 		}
@@ -834,11 +833,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
-			if (!Info.CanHover)
-				return new FlyFollow(self, target, minRange, maxRange,
-					initialTargetPosition, targetLineColor);
-
-			return new Follow(self, target, minRange, maxRange,
+			return new FlyFollow(self, target, minRange, maxRange,
 				initialTargetPosition, targetLineColor);
 		}
 
@@ -943,7 +938,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				case "Land":
 				case "Move":
-					if (!Info.MoveIntoShroud && order.Target.Type != TargetType.Invalid)
+					if (!Info.FlightDynamics.HasFlag(FlightDynamic.MoveIntoShroud) && order.Target.Type != TargetType.Invalid)
 					{
 						var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
 						if (!self.Owner.Shroud.IsExplored(cell))
@@ -968,7 +963,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (orderString == "Move")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+				if (!Info.FlightDynamics.HasFlag(FlightDynamic.MoveIntoShroud) && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
 				if (!order.Queued)
@@ -981,7 +976,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (orderString == "Land")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+				if (!Info.FlightDynamics.HasFlag(FlightDynamic.MoveIntoShroud) && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
 				if (!order.Queued)
@@ -1011,7 +1006,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in automatically forcing
 				// them to land on a resupplier. For aircraft without it, it makes more sense to land than to idle above a
 				// free resupplier.
-				var forceLand = orderString == "ForceEnter" || !Info.TakeOffOnResupply;
+				var forceLand = orderString == "ForceEnter" || !Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply);
 				self.QueueActivity(order.Queued, new ReturnToBase(self, targetActor, forceLand));
 			}
 			else if (orderString == "Stop")
@@ -1036,7 +1031,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in forcing them to land
 				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier.
-				self.QueueActivity(order.Queued, new ReturnToBase(self, null, !Info.TakeOffOnResupply));
+				self.QueueActivity(order.Queued, new ReturnToBase(self, null, !Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply)));
 			}
 			else if (orderString == "Scatter")
 				Nudge(self);
@@ -1154,7 +1149,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				if (!explored && !aircraft.Info.MoveIntoShroud)
+				if (!explored && !aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.MoveIntoShroud))
 					cursor = "move-blocked";
 
 				return true;
