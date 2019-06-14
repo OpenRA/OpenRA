@@ -24,7 +24,9 @@ E1:
 	Armament@ELITE:
 		Weapon: M1Carbine
 		RequiresCondition: rank-elite
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack

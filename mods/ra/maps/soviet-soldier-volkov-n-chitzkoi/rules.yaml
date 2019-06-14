@@ -177,7 +177,9 @@ VOLK:
 	Demolition:
 	Mobile:
 		Voice: Action
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Action
 	AttackMove:
 		Voice: Action

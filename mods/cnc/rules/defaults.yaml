@@ -488,7 +488,9 @@
 	WithInfantryBody:
 		IdleSequences: idle1, idle2
 		StandSequences: stand, stand2
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -522,7 +524,9 @@
 ^ArmedCivilian:
 	Armament:
 		Weapon: Pistol
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -571,7 +575,9 @@
 		ScanRadius: 4
 	AttackMove:
 		Voice: Attack
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	DrawLineToTarget:
 	DeathSounds:
@@ -619,7 +625,9 @@
 		Weapon: Chemspray
 		LocalOffset: 384,0,0
 		MuzzleSequence: muzzle
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	BodyOrientation:
 		QuantizedFacings: 8

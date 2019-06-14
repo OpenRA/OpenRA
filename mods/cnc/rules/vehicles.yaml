@@ -179,7 +179,9 @@ ARTY:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
@@ -225,7 +227,9 @@ FTNK:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithMuzzleOverlay:
 	Explodes:
 		Weapon: FlametankExplode
@@ -309,7 +313,9 @@ BIKE:
 		Weapon: BikeRockets
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
 		OwnerType: InternalName
@@ -543,7 +549,9 @@ MSAM:
 		Name: secondary
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithSpriteTurret:
@@ -651,7 +659,9 @@ STNK:
 	Armament:
 		Weapon: 227mm.stnk
 		LocalOffset: 213,43,128, 213,-43,128
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Move onto the target then execute the attack.")]
-	public class AttackLeapInfo : AttackFrontalInfo, Requires<MobileInfo>
+	public class AttackLeapInfo : AttackBaseInfo, Requires<MobileInfo>
 	{
 		[Desc("Leap speed (in WDist units/tick).")]
 		public readonly WDist Speed = new WDist(426);
@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}
 
-	public class AttackLeap : AttackFrontal
+	public class AttackLeap : AttackBase
 	{
-		readonly AttackLeapInfo info;
+		public new readonly AttackLeapInfo Info;
 
 		ConditionManager conditionManager;
 		int leapToken = ConditionManager.InvalidConditionToken;
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public AttackLeap(Actor self, AttackLeapInfo info)
 			: base(self, info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
 		protected override void Created(Actor self)
@@ -57,13 +57,16 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (self.Location == target.Actor.Location && HasAnyValidWeapons(target))
 				return true;
 
-			return base.CanAttack(self, target);
+			if (!base.CanAttack(self, target))
+				return false;
+
+			return TargetInFiringArc(self, target, Info.FacingTolerance);
 		}
 
 		public void GrantLeapCondition(Actor self)
 		{
-			if (conditionManager != null && !string.IsNullOrEmpty(info.LeapCondition))
-				leapToken = conditionManager.GrantCondition(self, info.LeapCondition);
+			if (conditionManager != null && !string.IsNullOrEmpty(Info.LeapCondition))
+				leapToken = conditionManager.GrantCondition(self, Info.LeapCondition);
 		}
 
 		public void RevokeLeapCondition(Actor self)
@@ -74,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
-			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, info, targetLineColor);
+			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, Info, targetLineColor);
 		}
 	}
 }

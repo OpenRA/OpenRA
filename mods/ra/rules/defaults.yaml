@@ -452,7 +452,9 @@
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -482,7 +484,9 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Armament:
 		Weapon: Pistol
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 

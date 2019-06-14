@@ -192,7 +192,7 @@ E6:
 		PlayerExperience: 50
 	Selectable:
 		Priority: 5
-	-AttackFrontal:
+	-AttackFollow:
 
 RMBO:
 	Inherits: ^Soldier
@@ -231,7 +231,7 @@ RMBO:
 		Voice: Demolish
 	Armament:
 		Weapon: Sniper
-	AttackFrontal:
+	AttackFollow:
 		Voice: Attack
 	AttackMove:
 		Voice: Attack

@@ -25,7 +25,9 @@ DOGGIE:
 		TargetTypes: Ground
 	Armament:
 		Weapon: FiendShard
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
@@ -95,7 +97,9 @@ VISC_LRG:
 		FireDelay: 10
 	AutoTarget:
 		ScanRadius: 5
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	AttackWander:
 		WanderMoveRadius: 2
@@ -124,7 +128,9 @@ JFISH:
 		FireDelay: 10
 	AutoTarget:
 		ScanRadius: 5
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	AttackWander:
 		WanderMoveRadius: 6
 		MinMoveDelay: 250

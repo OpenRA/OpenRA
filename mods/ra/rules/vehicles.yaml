@@ -29,7 +29,9 @@ V2RL:
 		ReloadingCondition: reloading
 	AutoTarget:
 		ScanRadius: 10
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithFacingSpriteBody:
@@ -273,7 +275,9 @@ ARTY:
 		Weapon: 155mm
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithMuzzleOverlay:
@@ -451,11 +455,13 @@ APC:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Armament:
+	Armament@PRIMARY:
 		Weapon: M60mg
 		LocalOffset: 85,0,171
 		MuzzleSequence: muzzle
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithMuzzleOverlay:
 	Cargo:
 		Types: Infantry
@@ -721,8 +727,9 @@ DTRK:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 		DamageSource: Killer
-	AttackFrontal:
+	AttackFollow:
 		FacingTolerance: 128
+		FireWhileMoving: false
 	Armament@PRIMARY:
 		Weapon: DemoTruckTargeting
 	GrantConditionOnAttack:
@@ -773,7 +780,9 @@ CTNK:
 		Weapon: APTusk
 		LocalOffset: -160,276,232
 		LocalYaw: -60
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	PortableChrono:
 		ChargeDelay: 250
 	ProducibleWithLevel:

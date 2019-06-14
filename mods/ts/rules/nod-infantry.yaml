@@ -25,7 +25,9 @@ E3:
 		LocalOffset: 356,0,967
 	TakeCover:
 		ProneOffset: 52,64,-652
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
@@ -66,7 +68,9 @@ CYBORG:
 		Range: 5c0
 	Armament:
 		Weapon: Vulcan3
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	SelectionDecorations:
 	ProducibleWithLevel:
@@ -106,7 +110,9 @@ CYC2:
 	Armament:
 		Weapon: CyCannon
 		LocalOffset: 240,120,966
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	SelectionDecorations:
 	ProducibleWithLevel:

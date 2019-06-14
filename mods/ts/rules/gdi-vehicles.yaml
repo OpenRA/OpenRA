@@ -130,7 +130,9 @@ SMECH:
 		RequiresCondition: !inside-tunnel
 		Range: 6c0
 		MaxHeightDelta: 3
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	Armament:
@@ -242,7 +244,9 @@ HMEC:
 		RequiresCondition: !inside-tunnel
 		Range: 8c0
 		MaxHeightDelta: 3
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	Armament@MISSILES:

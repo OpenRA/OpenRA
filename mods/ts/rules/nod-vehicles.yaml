@@ -31,7 +31,9 @@ BGGY:
 		MuzzleSequence: muzzle
 		MuzzlePalette: effect-ignore-lighting
 		MuzzleSplitFacings: 8
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	WithMuzzleOverlay:
@@ -73,7 +75,9 @@ BIKE:
 		Weapon: HoverMissile
 		RequiresCondition: rank-elite
 		LocalOffset: -153,-204,509, -153,204,509
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	DamagedByTerrain@VEINS:
@@ -152,7 +156,9 @@ TTNK:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		RequiresCondition: undeployed
 		PauseOnCondition: empdisable
@@ -331,7 +337,9 @@ REPAIR:
 		OutsideRangeCursor: repair
 		TargetStances: Ally
 		ForceTargetStances: None
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	AutoTarget:
@@ -455,7 +463,9 @@ SUBTANK:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: FireballLauncher
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	WithVoxelBody:
@@ -509,7 +519,9 @@ STNK:
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 301,61,421, 301,-61,421
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 		PauseOnCondition: empdisable
 	AutoTarget:

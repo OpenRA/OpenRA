@@ -45,7 +45,9 @@ SLAV:
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaoldcc2
 		Description: Religious loyalist\narmed with sniper rifle.
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	Armament:
 		Weapon: Sniper

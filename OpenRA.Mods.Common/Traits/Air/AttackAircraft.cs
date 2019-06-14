@@ -57,10 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 				|| !self.World.Map.Contains(self.Location))
 				return false;
 
-			if (!base.CanAttack(self, target))
-				return false;
-
-			return TargetInFiringArc(self, target, base.Info.FacingTolerance);
+			return base.CanAttack(self, target);
 		}
 	}
 }
