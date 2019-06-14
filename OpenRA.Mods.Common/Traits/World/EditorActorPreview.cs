@@ -92,12 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			// If this is a problem, then we may need to fetch the area from somewhere else
 			var r = previews.SelectMany(p => p.ScreenBounds(worldRenderer, CenterPosition));
 
-			if (r.Any())
-			{
-				Bounds = r.First();
-				foreach (var rr in r.Skip(1))
-					Bounds = Rectangle.Union(Bounds, rr);
-			}
+			Bounds = r.Union();
 
 			SelectionBox = new SelectionBoxRenderable(new WPos(CenterPosition.X, CenterPosition.Y, 8192),
 				new Rectangle(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height), Color.White);
