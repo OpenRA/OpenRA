@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "DeliverUnit")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+				if (!aircraftInfo.FlightDynamics.HasFlag(FlightDynamic.MoveIntoShroud) && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
 				var targetLocation = move.NearestMoveableCell(cell);
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				if (!explored && !aircraftInfo.MoveIntoShroud)
+				if (!explored && !aircraftInfo.FlightDynamics.HasFlag(FlightDynamic.MoveIntoShroud))
 					cursor = info.DropOffBlockedCursor;
 
 				return true;
