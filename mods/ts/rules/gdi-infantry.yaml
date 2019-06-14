@@ -174,8 +174,7 @@ JUMPJET.Husk:
 		Explosion:
 	Aircraft:
 		Speed: 186
-		CanHover: True
-		VTOL: true
+		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud
 	RenderSprites:
 		Image: jumpjet
 	WithSpriteBody:

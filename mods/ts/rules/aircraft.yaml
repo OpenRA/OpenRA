@@ -1,5 +1,5 @@
 DPOD:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Valued:
 		Cost: 10
@@ -32,7 +32,7 @@ DPOD:
 	-SpawnActorOnDeath:
 
 DSHP:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -49,6 +49,7 @@ DSHP:
 		IdealSeparation: 1275
 		CruiseAltitude: 12c512
 		AltitudeVelocity: 256
+		FlightDynamics: VTOL, Hover, MoveIntoShroud, TakeOffOnCreation, TurnToDock
 	Health:
 		HP: 20000
 	Armor:
@@ -66,7 +67,7 @@ DSHP:
 		Actor: DSHP.Husk
 
 ORCA:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@EMPDISABLE: ^EmpDisable
@@ -86,10 +87,10 @@ ORCA:
 	Aircraft:
 		TurnSpeed: 5
 		Speed: 186
-		MoveIntoShroud: false
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		AltitudeVelocity: 128
+		FlightDynamics: VTOL, Hover, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
 	Health:
 		HP: 20000
 	Armor:
@@ -141,7 +142,6 @@ ORCAB:
 		TurnSpeed: 3
 		Speed: 96
 		CruisingCondition: cruising
-		MoveIntoShroud: false
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 	ReturnOnIdle:
@@ -177,7 +177,7 @@ ORCAB:
 		RearmActors: gahpad, nahpad
 
 ORCATRAN:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -194,9 +194,12 @@ ORCATRAN:
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
+		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
+		Crushes: crate, infantry
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
+		FlightDynamics: VTOL, Hover, MoveIntoShroud, TakeOffOnCreation, TurnToDock
 	Health:
 		HP: 20000
 	Armor:
@@ -215,7 +218,7 @@ ORCATRAN:
 		Actor: ORCATRAN.Husk
 
 TRNSPORT:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -233,7 +236,6 @@ TRNSPORT:
 		InitialFacing: 0
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
-		MoveIntoShroud: false
 	Carryall:
 		Voice: Move
 		LocalOffset: 0,0,-317
@@ -277,7 +279,6 @@ SCRIN:
 		TurnSpeed: 3
 		Speed: 168
 		AirborneCondition: airborne
-		MoveIntoShroud: false
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 	ReturnOnIdle:
@@ -311,7 +312,7 @@ SCRIN:
 		RearmActors: gahpad, nahpad
 
 APACHE:
-	Inherits: ^Helicopter
+	Inherits: ^Aircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@EMPDISABLE: ^EmpDisable
@@ -331,7 +332,7 @@ APACHE:
 	Aircraft:
 		TurnSpeed: 5
 		Speed: 130
-		MoveIntoShroud: false
+		FlightDynamics: VTOL, Hover, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
 	Health:
 		HP: 22500
 	Armor:
@@ -382,9 +383,8 @@ HUNTER:
 		TurnSpeed: 16
 		Speed: 355
 		CruiseAltitude: 3c128
-		CanHover: True
 		CruisingCondition: cruising
-		VTOL: true
+		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud, TakeOffOnCreation
 	AttackAircraft:
 		FacingTolerance: 128
 		AttackType: Hover
