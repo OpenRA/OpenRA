@@ -314,8 +314,8 @@ BIKE:
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
 	AttackFollow:
-		FacingTolerance: 0
-		FireWhileMoving: false
+		FacingTolerance: 40
+		FireWhileMoving: true
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
 		OwnerType: InternalName
