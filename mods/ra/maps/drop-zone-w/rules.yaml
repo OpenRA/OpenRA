@@ -47,7 +47,9 @@ LST:
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: M60mg
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithMuzzleOverlay:
 	MustBeDestroyed:
 		RequiredForShortGame: true

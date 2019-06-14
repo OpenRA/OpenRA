@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[Desc("Sandworms use this attack model.")]
-	class AttackSwallowInfo : AttackFrontalInfo
+	class AttackSwallowInfo : AttackBaseInfo
 	{
 		[Desc("The number of ticks it takes to return underground.")]
 		public readonly int ReturnDelay = 60;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.Self, this); }
 	}
 
-	class AttackSwallow : AttackFrontal
+	class AttackSwallow : AttackBase
 	{
 		public readonly new AttackSwallowInfo Info;
 
@@ -49,6 +49,14 @@ namespace OpenRA.Mods.D2k.Traits
 			: base(self, info)
 		{
 			Info = info;
+		}
+
+		protected override bool CanAttack(Actor self, Target target)
+		{
+			if (!base.CanAttack(self, target))
+				return false;
+
+			return TargetInFiringArc(self, target, Info.FacingTolerance);
 		}
 
 		public override void DoAttack(Actor self, Target target)
@@ -75,21 +83,84 @@ namespace OpenRA.Mods.D2k.Traits
 			return new SwallowTarget(self, newTarget, allowMove, forceAttack);
 		}
 
-		public class SwallowTarget : Attack
+		public class SwallowTarget : Activity
 		{
-			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack)
-				: base(self, target, allowMovement, forceAttack) { }
+			readonly AttackSwallow attack;
+			readonly IMove move;
+			readonly IPositionable positionable;
+			readonly bool forceAttack;
 
-			protected override Target RecalculateTarget(Actor self, out bool targetIsHiddenActor)
+			protected Target target;
+
+			WDist minRange;
+			WDist maxRange;
+
+			public SwallowTarget(Actor self, Target target, bool allowMovement, bool forceAttack)
 			{
-				// Worms ignore visibility, so don't need to recalculate targets
-				targetIsHiddenActor = false;
-				return target;
+				this.target = target;
+				this.forceAttack = forceAttack;
+
+				attack = self.Trait<AttackSwallow>();
+				positionable = self.Trait<IPositionable>();
+
+				move = allowMovement ? self.TraitOrDefault<IMove>() : null;
 			}
 
-			protected override void DoAttack(Actor self, AttackFrontal attack, IEnumerable<Armament> armaments)
+			public override bool Tick(Actor self)
 			{
+				if (IsCanceling)
+					return true;
+
+				if (!target.IsValidFor(self))
+				{
+					attack.IsAiming = false;
+					return true;
+				}
+
+				if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(target.Actor.Location, null, BlockedByActor.None))
+				{
+					attack.IsAiming = false;
+					return true;
+				}
+
+				// Drop the target once none of the weapons are effective against it
+				var armaments = attack.ChooseArmamentsForTarget(target, forceAttack).ToList();
+				if (armaments.Count == 0)
+					return true;
+
+				// Update ranges
+				minRange = armaments.Max(a => a.Weapon.MinRange);
+				maxRange = armaments.Min(a => a.MaxRange());
+
+				var pos = self.CenterPosition;
+				var mobile = move as Mobile;
+				if (!target.IsInRange(pos, maxRange)
+					|| (minRange.Length != 0 && target.IsInRange(pos, minRange))
+					|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
+				{
+					// Try to move within range, drop the target otherwise
+					if (move == null)
+					{
+						attack.IsAiming = false;
+						return true;
+					}
+
+					QueueChild(move.MoveWithinRange(target, minRange, maxRange, target.CenterPosition));
+					attack.IsAiming = false;
+					return false;
+				}
+
+				if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
+				{
+					var desiredFacing = (attack.GetTargetPosition(pos, target) - pos).Yaw.Facing;
+					QueueChild(new Turn(self, desiredFacing));
+					attack.IsAiming = true;
+					return false;
+				}
+
 				attack.DoAttack(self, target);
+				attack.IsAiming = true;
+				return false;
 			}
 		}
 	}

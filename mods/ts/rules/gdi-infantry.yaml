@@ -24,7 +24,9 @@ E2:
 		FireDelay: 5
 	TakeCover:
 		ProneOffset: 160,128,-555
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
@@ -67,7 +69,9 @@ MEDIC:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Infantry
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithInfantryBody:
 		DefaultAttackSequence: heal
 	SelfHealing:
@@ -108,7 +112,9 @@ JUMPJET:
 	Armament:
 		Weapon: JumpCannon
 	-Crushable:
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		RequiresCondition: !airborne
@@ -230,7 +236,9 @@ GHOST:
 		ProneOffset: 256,32,-384
 	Crushable:
 		CrushSound: squishy2.aud
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	Demolition:
 		DetonationDelay: 45

@@ -47,7 +47,9 @@ SS:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
@@ -120,7 +122,9 @@ MSUB:
 		Weapon: SubMissileAA
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	SelectionDecorations:

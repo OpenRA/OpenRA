@@ -32,8 +32,9 @@ DOG:
 	Armament:
 		Weapon: DogJaw
 		ReloadingCondition: attack-cooldown
-	-AttackFrontal:
+	-AttackFollow:
 	AttackLeap:
+		FacingTolerance: 0
 		Voice: Attack
 		PauseOnCondition: attacking || attack-cooldown
 	AttackMove:
@@ -285,7 +286,7 @@ E6:
 		VoiceSet: EngineerVoice
 	Selectable:
 		Priority: 5
-	-AttackFrontal:
+	-AttackFollow:
 
 SPY:
 	Inherits: ^Soldier
@@ -476,7 +477,7 @@ MECH:
 		OutsideRangeCursor: repair
 		TargetStances: Ally
 		ForceTargetStances: None
-	AttackFrontal:
+	AttackFollow:
 		Voice: Action
 	CaptureManager:
 	Captures:
@@ -534,7 +535,7 @@ GNRL:
 		Class: GNRL
 	Mobile:
 		Voice: Move
-	AttackFrontal:
+	AttackFollow:
 		Voice: Attack
 	AttackMove:
 		Voice: Move
@@ -600,7 +601,7 @@ THF:
 		ValidDamageStates: Critical
 	Mobile:
 		Speed: 71
-	-AttackFrontal:
+	-AttackFollow:
 
 SHOK:
 	Inherits: ^Soldier
@@ -631,7 +632,7 @@ SHOK:
 		Weapon: PortaTesla
 	TakeCover:
 		ProneOffset: 227,0,-245
-	AttackFrontal:
+	AttackFollow:
 		Voice: Attack
 	AttackMove:
 		Voice: Move
@@ -757,7 +758,9 @@ Ant:
 	-Crushable:
 	AutoTarget:
 		ScanRadius: 5
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 	WithInfantryBody:
 		DefaultAttackSequence: bite
 	Armament:

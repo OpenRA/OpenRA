@@ -17,7 +17,9 @@ WEEDGUY:
 		LocalOffset: 317,0,453
 	TakeCover:
 		ProneOffset: 128,0,-320
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	-SpawnActorOnDeath@FLAMEGUY:
 	WithDeathAnimation@fire:
@@ -46,7 +48,9 @@ UMAGON:
 		Range: 7c0
 	Armament:
 		Weapon: Sniper
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
@@ -104,7 +108,9 @@ MUTANT:
 		Range: 4c0
 	Armament:
 		Weapon: Vulcan
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
@@ -131,7 +137,9 @@ MWMN:
 		Range: 4c0
 	Armament:
 		Weapon: Vulcan
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
@@ -158,7 +166,9 @@ MUTANT3:
 		Range: 4c0
 	Armament:
 		Weapon: Vulcan
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 	WithInfantryBody:
 		DefaultAttackSequence: attack
@@ -224,7 +234,9 @@ CIV1:
 		DefaultAttackSequence: attack
 	Armament:
 		Weapon: Pistola
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack
 
 CIV2:
@@ -237,5 +249,7 @@ CIV3:
 		DefaultAttackSequence: attack
 	Armament:
 		Weapon: Pistola
-	AttackFrontal:
+	AttackFollow:
+		FacingTolerance: 0
+		FireWhileMoving: false
 		Voice: Attack

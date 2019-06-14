@@ -105,6 +105,7 @@ sandworm:
 	AppearsOnRadar:
 		UseLocation: true
 	AttackSwallow:
+		FacingTolerance: 0
 		AttackRequiresEnteringCell: true
 		AttackingCondition: attacking
 	Armament:

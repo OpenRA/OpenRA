@@ -51,7 +51,7 @@ engineer:
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
-	-AttackFrontal:
+	-AttackFollow:
 
 trooper:
 	Inherits: ^Infantry
@@ -129,7 +129,7 @@ thumper:
 		Intensity: 1000
 		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
 		RequiresCondition: deployed
-	-AttackFrontal:
+	-AttackFollow:
 
 fremen:
 	Inherits: ^Infantry
@@ -292,7 +292,7 @@ saboteur:
 		ValidDamageStates: Critical
 	Voiced:
 		VoiceSet: SaboteurVoice
-	-AttackFrontal:
+	-AttackFollow:
 
 nsfremen:
 	Inherits: fremen
