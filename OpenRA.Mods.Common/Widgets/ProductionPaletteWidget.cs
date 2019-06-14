@@ -425,7 +425,7 @@ namespace OpenRA.Mods.Common.Widgets
 				DisplayedIconCount++;
 			}
 
-			eventBounds = icons.Any() ? icons.Keys.Aggregate(Rectangle.Union) : Rectangle.Empty;
+			eventBounds = icons.Keys.Union();
 
 			if (oldIconCount != DisplayedIconCount)
 				OnIconCountChanged(oldIconCount, DisplayedIconCount);

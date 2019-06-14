@@ -324,12 +324,7 @@ namespace OpenRA.Mods.Common.Graphics
 				if (ShadowStart > 0)
 					boundSprites = boundSprites.Concat(SpriteBounds(sprites, Frames, ShadowStart, Facings, Length, Stride, transpose));
 
-				if (boundSprites.Any())
-				{
-					Bounds = boundSprites.First();
-					foreach (var b in boundSprites.Skip(1))
-						Bounds = Rectangle.Union(Bounds, b);
-				}
+				Bounds = boundSprites.Union();
 			}
 			catch (FormatException f)
 			{

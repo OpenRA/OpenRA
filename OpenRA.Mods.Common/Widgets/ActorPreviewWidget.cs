@@ -53,20 +53,10 @@ namespace OpenRA.Mods.Common.Widgets
 				.ToArray();
 
 			// Calculate the preview bounds
-			PreviewOffset = int2.Zero;
-			IdealPreviewSize = int2.Zero;
-
 			var r = preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
-
-			if (r.Any())
-			{
-				var b = r.First();
-				foreach (var rr in r.Skip(1))
-					b = Rectangle.Union(b, rr);
-
-				IdealPreviewSize = new int2(b.Width, b.Height);
-				PreviewOffset = -new int2(b.Left, b.Top) - IdealPreviewSize / 2;
-			}
+			var b = r.Union();
+			IdealPreviewSize = new int2(b.Width, b.Height);
+			PreviewOffset = -new int2(b.Left, b.Top) - IdealPreviewSize / 2;
 		}
 
 		IFinalizedRenderable[] renderables;
