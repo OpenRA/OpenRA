@@ -151,6 +151,26 @@ namespace OpenRA
 				return xs.ElementAt(r.Next(xs.Count));
 		}
 
+		public static Rectangle Union(this IEnumerable<Rectangle> rects)
+		{
+			// PERF: Avoid LINQ.
+			var first = true;
+			var result = Rectangle.Empty;
+			foreach (var rect in rects)
+			{
+				if (first)
+				{
+					first = false;
+					result = rect;
+					continue;
+				}
+
+				result = Rectangle.Union(rect, result);
+			}
+
+			return result;
+		}
+
 		public static float Product(this IEnumerable<float> xs)
 		{
 			return xs.Aggregate(1f, (a, x) => a * x);
