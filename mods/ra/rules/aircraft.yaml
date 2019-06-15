@@ -108,7 +108,8 @@ MIG:
 		LocalOffset: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
+		AttackType: Strafe
 		FacingTolerance: 20
 		PersistentTargeting: false
 	Aircraft:
@@ -177,7 +178,8 @@ YAK:
 		LocalOffset: 256,213,0
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
+		AttackType: Strafe
 		FacingTolerance: 20
 		PersistentTargeting: false
 	Aircraft:
@@ -297,10 +299,9 @@ HELI:
 		Weapon: HellfireAG
 		LocalOffset: 0,213,-85, 0,-213,-85
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		PersistentTargeting: false
-		AttackType: Hover
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 149
@@ -365,10 +366,9 @@ HIND:
 		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		PersistentTargeting: false
-		AttackType: Hover
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 112
@@ -465,10 +465,9 @@ MH60:
 		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		PersistentTargeting: false
-		AttackType: Hover
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 112

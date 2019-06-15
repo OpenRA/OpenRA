@@ -87,11 +87,10 @@ HELI:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 4
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		OpportunityFire: false
 		PersistentTargeting: false
-		AttackType: Hover
 	AmmoPool:
 		Ammo: 10
 		PipCount: 5
@@ -149,11 +148,10 @@ ORCA:
 		PauseOnCondition: !ammo
 	AutoTarget:
 		ScanRadius: 5
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		OpportunityFire: false
 		PersistentTargeting: false
-		AttackType: Hover
 	AmmoPool:
 		Ammo: 6
 		PipCount: 6

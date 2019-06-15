@@ -22,7 +22,8 @@ DPOD:
 		EjectOnDeath: true
 	Armament:
 		Weapon: Vulcan2
-	AttackAircraft:
+	AttackFollow:
+		AttackType: Strafe
 		Voice: Attack
 	AmmoPool:
 		Ammo: 5
@@ -102,12 +103,11 @@ ORCA:
 	Armament:
 		Weapon: Hellfire
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
-		AttackType: Hover
 	AmmoPool:
 		Ammo: 5
 		PipCount: 5
@@ -157,7 +157,8 @@ ORCAB:
 	Armament:
 		Weapon: Bomb
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
+		AttackType: Strafe
 		Voice: Attack
 		FacingTolerance: 20
 		PersistentTargeting: false
@@ -293,7 +294,8 @@ SCRIN:
 	Armament:
 		Weapon: Proton
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
+		AttackType: Strafe
 		Voice: Attack
 		FacingTolerance: 20
 		PersistentTargeting: false
@@ -345,12 +347,11 @@ APACHE:
 	Armament:
 		Weapon: HarpyClaw
 		PauseOnCondition: !ammo
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 20
 		PersistentTargeting: false
 		Voice: Attack
 		PauseOnCondition: empdisable
-		AttackType: Hover
 	AmmoPool:
 		Ammo: 12
 		PipCount: 4
@@ -387,9 +388,8 @@ HUNTER:
 		CruiseAltitude: 3c128
 		CruisingCondition: cruising
 		MoveIntoShroud: true
-	AttackAircraft:
+	AttackFollow:
 		FacingTolerance: 128
-		AttackType: Hover
 	Armament@PRIMARY:
 		Weapon: SuicideBomb
 	GrantConditionOnAttack:

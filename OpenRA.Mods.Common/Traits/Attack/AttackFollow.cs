@@ -19,6 +19,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	// TODO: Add CurleyShuffle (TD, TS), Circle (Generals Gunship-style)
+	public enum AttackType { Follow, Strafe }
+
 	[Desc("Actor will follow units until in range to attack them.")]
 	public class AttackFollowInfo : AttackBaseInfo
 	{
@@ -31,6 +34,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can attack and move at the same time.")]
 		public readonly bool FireWhileMoving = true;
 
+		[Desc("Attack behavior. Currently supported types are Follow (default) and Strafe.")]
+		public readonly AttackType AttackType = AttackType.Follow;
+
+		[Desc("Delay, in game ticks, before strafing actor turns to attack.")]
+		public readonly int AttackTurnDelay = 50;
+
+		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this" +
+			" to 'false' will make the actor resume attack after reloading.")]
+		public readonly bool AbortOnResupply = true;
+
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
@@ -40,7 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 		public Target RequestedTarget { get; private set; }
 		public Target OpportunityTarget { get; private set; }
 
+		public IMove Move;
 		public Mobile Mobile;
+		public Aircraft Aircraft;
+
 		AutoTarget autoTarget;
 		bool requestedForceAttack;
 		Activity requestedTargetPresetForActivity;
@@ -75,7 +91,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
+			Move = self.TraitOrDefault<IMove>();
 			Mobile = self.TraitOrDefault<Mobile>();
+			Aircraft = self.TraitOrDefault<Aircraft>();
 			autoTarget = self.TraitOrDefault<AutoTarget>();
 			base.Created(self);
 		}
@@ -92,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			var armaments = ChooseArmamentsForTarget(target, forceAttack);
 			foreach (var a in armaments)
 				if (target.IsInRange(pos, a.MaxRange()) && (a.Weapon.MinRange == WDist.Zero || !target.IsInRange(pos, a.Weapon.MinRange)))
-					if (TargetInFiringArc(self, target, Info.FacingTolerance) && (Info.FireWhileMoving || !Mobile.CurrentMovementTypes.HasFlag(MovementType.Horizontal)))
+					if (TargetInFiringArc(self, target, Info.FacingTolerance) && (Info.FireWhileMoving || !Move.CurrentMovementTypes.HasFlag(MovementType.Horizontal)))
 						return true;
 
 			return false;
@@ -100,10 +118,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override bool CanAttack(Actor self, Target target)
 		{
+			// Aircraft don't fire while landed or when outside the map.
+			if (Aircraft != null && (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < Aircraft.Info.MinAirborneAltitude
+				|| !self.World.Map.Contains(self.Location)))
+				return false;
+
 			if (!base.CanAttack(self, target))
 				return false;
 
-			if (!Info.FireWhileMoving && Mobile.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+			if (!Info.FireWhileMoving && Move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 				return false;
 
 			return TargetInFiringArc(self, target, Info.FacingTolerance);
@@ -169,6 +192,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
+			if (Aircraft != null)
+				return new FlyAttack(self, newTarget, forceAttack, targetLineColor);
+
 			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 	public class FlyAttack : Activity, IActivityNotifyStanceChanged
 	{
 		readonly Aircraft aircraft;
-		readonly AttackAircraft attackAircraft;
+		readonly AttackFollow attack;
 		readonly Rearmable rearmable;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 
 			aircraft = self.Trait<Aircraft>();
-			attackAircraft = self.Trait<AttackAircraft>();
+			attack = self.Trait<AttackFollow>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 				|| target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
-				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
+				lastVisibleMaximumRange = attack.GetMaximumRangeVersusTarget(target);
 
 				if (target.Type == TargetType.Actor)
 				{
@@ -80,21 +80,21 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 			// Having both this and AttackFollow modify that field is a horrible hack.
-			if (hasTicked && attackAircraft.RequestedTarget.Type == TargetType.Invalid)
+			if (hasTicked && attack.RequestedTarget.Type == TargetType.Invalid)
 				return true;
 
-			if (attackAircraft.IsTraitPaused)
+			if (attack.IsTraitPaused)
 				return false;
 
 			bool targetIsHiddenActor;
 			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
-			attackAircraft.SetRequestedTarget(self, target, forceAttack);
+			attack.SetRequestedTarget(self, target, forceAttack);
 			hasTicked = true;
 
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
-				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
+				lastVisibleMaximumRange = attack.GetMaximumRangeVersusTarget(target);
 				lastVisibleOwner = target.Actor.Owner;
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
@@ -107,11 +107,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload
 			// and resume the activity after reloading if AbortOnResupply is set to 'false'
-			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			if (rearmable != null && !useLastVisibleTarget && attack.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
 				QueueChild(new ReturnToBase(self));
 				returnToBase = true;
-				return attackAircraft.Info.AbortOnResupply;
+				return attack.Info.AbortOnResupply;
 			}
 
 			var pos = self.CenterPosition;
@@ -129,12 +129,12 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
+			var delta = attack.GetTargetPosition(pos, target) - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
 			QueueChild(new TakeOff(self));
 
-			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
+			var minimumRange = attack.Info.AttackType == AttackType.Strafe ? WDist.Zero : attack.GetMinimumRangeVersusTarget(target);
 
 			// When strafing we must move forward for a minimum number of ticks after passing the target.
 			if (remainingTicksUntilTurn > 0)
@@ -148,14 +148,14 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(aircraft.MoveWithinRange(target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red));
 
 			// The aircraft must keep moving forward even if it is already in an ideal position.
-			else if (!aircraft.Info.CanHover || attackAircraft.Info.AttackType == AirAttackType.Strafe)
+			else if (!aircraft.Info.CanHover || attack.Info.AttackType == AttackType.Strafe)
 			{
 				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-				remainingTicksUntilTurn = attackAircraft.Info.AttackTurnDelay;
+				remainingTicksUntilTurn = attack.Info.AttackTurnDelay;
 			}
 
 			// Turn to face the target if required.
-			else if (!attackAircraft.TargetInFiringArc(self, target, attackAircraft.Info.FacingTolerance))
+			else if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
 				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.TurnSpeed);
 
 			return false;
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			// Cancel the requested target, but keep firing on it while in range
-			attackAircraft.ClearRequestedTarget();
+			attack.ClearRequestedTarget();
 		}
 
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
-				attackAircraft.ClearRequestedTarget();
+				attack.ClearRequestedTarget();
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (returnToBase)
 					foreach (var n in ChildActivity.TargetLineNodes(self))
 						yield return n;
-				if (!returnToBase || !attackAircraft.Info.AbortOnResupply)
+				if (!returnToBase || !attack.Info.AbortOnResupply)
 					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 			}
 		}
