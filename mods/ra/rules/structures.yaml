@@ -998,6 +998,7 @@ WEAP:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
+		Offset: 1,2
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: 213,-128,0
@@ -1717,6 +1718,7 @@ BARR:
 		Range: 4c0
 	WithBuildingBib:
 	RallyPoint:
+		Offset: 1,2
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -170,810,0
@@ -1863,6 +1865,7 @@ TENT:
 		Range: 4c0
 	WithBuildingBib:
 	RallyPoint:
+		Offset: 1,2
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -42,810,0
