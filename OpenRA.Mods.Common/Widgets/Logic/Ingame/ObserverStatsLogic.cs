@@ -32,8 +32,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContainerWidget productionStatsHeaders;
 		readonly ContainerWidget supportPowerStatsHeaders;
 		readonly ContainerWidget combatStatsHeaders;
-		readonly ContainerWidget earnedThisMinuteGraphHeaders;
-		readonly ContainerWidget armyThisMinuteGraphHeaders;
 		readonly ScrollPanelWidget playerStatsPanel;
 		readonly ScrollItemWidget basicPlayerTemplate;
 		readonly ScrollItemWidget economyPlayerTemplate;
@@ -53,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
 		bool noneSelected = true;
+		ObserverStatsPanel activePanel;
 
 		[ObjectCreator.UseCtor]
 		public ObserverStatsLogic(World world, ModData modData, WorldRenderer worldRenderer, Widget widget, Dictionary<string, MiniYaml> logicArgs)
@@ -75,9 +74,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			productionStatsHeaders = widget.Get<ContainerWidget>("PRODUCTION_STATS_HEADERS");
 			supportPowerStatsHeaders = widget.Get<ContainerWidget>("SUPPORT_POWERS_HEADERS");
 			combatStatsHeaders = widget.Get<ContainerWidget>("COMBAT_STATS_HEADERS");
-
-			earnedThisMinuteGraphHeaders = widget.Get<ContainerWidget>("EARNED_THIS_MIN_GRAPH_HEADERS");
-			armyThisMinuteGraphHeaders = widget.Get<ContainerWidget>("ARMY_THIS_MIN_GRAPH_HEADERS");
 
 			playerStatsPanel = widget.Get<ScrollPanelWidget>("PLAYER_STATS_PANEL");
 			playerStatsPanel.Layout = new GridLayout(playerStatsPanel);
@@ -109,18 +105,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			teamTemplate = playerStatsPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 
 			var statsDropDown = widget.Get<DropDownButtonWidget>("STATS_DROPDOWN");
-			Func<string, ContainerWidget, ScrollItemWidget, Action, StatsDropDownOption> createStatsOption = (title, headers, template, a) =>
+			Func<string, ObserverStatsPanel, ScrollItemWidget, Action, StatsDropDownOption> createStatsOption = (title, panel, template, a) =>
 			{
 				return new StatsDropDownOption
 				{
 					Title = title,
-					IsSelected = () => headers.Visible,
+					IsSelected = () => activePanel == panel,
 					OnClick = () =>
 					{
 						noneSelected = false;
 						ClearStats();
 						playerStatsPanel.Visible = true;
 						statsDropDown.GetText = () => title;
+						activePanel = panel;
 						if (template != null)
 							AdjustStatisticsPanel(template);
 
@@ -144,13 +141,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ClearStats();
 					}
 				},
-				createStatsOption("Basic", basicStatsHeaders, basicPlayerTemplate, () => DisplayStats(BasicStats)),
-				createStatsOption("Economy", economyStatsHeaders, economyPlayerTemplate, () => DisplayStats(EconomyStats)),
-				createStatsOption("Production", productionStatsHeaders, productionPlayerTemplate, () => DisplayStats(ProductionStats)),
-				createStatsOption("Support Powers", supportPowerStatsHeaders, supportPowersPlayerTemplate, () => DisplayStats(SupportPowerStats)),
-				createStatsOption("Combat", combatStatsHeaders, combatPlayerTemplate, () => DisplayStats(CombatStats)),
-				createStatsOption("Earnings (graph)", earnedThisMinuteGraphHeaders, null, () => EarnedThisMinuteGraph()),
-				createStatsOption("Army (graph)", armyThisMinuteGraphHeaders, null, () => ArmyThisMinuteGraph()),
+				createStatsOption("Basic", ObserverStatsPanel.Basic, basicPlayerTemplate, () => DisplayStats(BasicStats)),
+				createStatsOption("Economy", ObserverStatsPanel.Economy, economyPlayerTemplate, () => DisplayStats(EconomyStats)),
+				createStatsOption("Production", ObserverStatsPanel.Production, productionPlayerTemplate, () => DisplayStats(ProductionStats)),
+				createStatsOption("Support Powers", ObserverStatsPanel.SupportPowers, supportPowersPlayerTemplate, () => DisplayStats(SupportPowerStats)),
+				createStatsOption("Combat", ObserverStatsPanel.Combat, combatPlayerTemplate, () => DisplayStats(CombatStats)),
+				createStatsOption("Earnings (graph)", ObserverStatsPanel.Graph, null, () => EarnedThisMinuteGraph()),
+				createStatsOption("Army (graph)", ObserverStatsPanel.ArmyGraph, null, () => ArmyThisMinuteGraph()),
 			};
 
 			Func<StatsDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -196,8 +193,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			productionStatsHeaders.Visible = false;
 			supportPowerStatsHeaders.Visible = false;
 			combatStatsHeaders.Visible = false;
-			earnedThisMinuteGraphHeaders.Visible = false;
-			armyThisMinuteGraphHeaders.Visible = false;
 
 			earnedThisMinuteGraphContainer.Visible = false;
 			armyThisMinuteGraphContainer.Visible = false;
@@ -209,7 +204,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void EarnedThisMinuteGraph()
 		{
 			playerStatsPanel.Visible = false;
-			earnedThisMinuteGraphHeaders.Visible = true;
 			earnedThisMinuteGraphContainer.Visible = true;
 
 			earnedThisMinuteGraph.GetSeries = () =>
@@ -222,7 +216,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ArmyThisMinuteGraph()
 		{
 			playerStatsPanel.Visible = false;
-			armyThisMinuteGraphHeaders.Visible = true;
 			armyThisMinuteGraphContainer.Visible = true;
 
 			armyThisMinuteGraph.GetSeries = () =>
