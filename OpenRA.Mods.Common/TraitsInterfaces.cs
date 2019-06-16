@@ -442,6 +442,8 @@ namespace OpenRA.Mods.Common.Traits
 		CPos NearestMoveableCell(CPos target);
 		MovementType CurrentMovementTypes { get; set; }
 		bool CanEnterTargetNow(Actor self, Target target);
+		int Facing { get; set; }
+		int TurnSpeed { get; }
 	}
 
 	public interface IWrapMove
