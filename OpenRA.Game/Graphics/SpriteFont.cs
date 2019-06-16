@@ -92,6 +92,52 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		float3 Rotate(float3 v, float sina, float cosa, float2 offset)
+		{
+			return new float3(
+				v.X * cosa - v.Y * sina + offset.X,
+				v.X * sina + v.Y * cosa + offset.Y,
+				0);
+		}
+
+		public void DrawText(string text, float2 location, Color c, float angle)
+		{
+			// Offset from the baseline position to the top-left of the glyph for rendering
+			var offset = new float2(0, size);
+			var cosa = (float)Math.Cos(-angle);
+			var sina = (float)Math.Sin(-angle);
+
+			var p = offset;
+			foreach (var s in text)
+			{
+				if (s == '\n')
+				{
+					offset += new float2(0, size);
+					p = offset;
+					continue;
+				}
+
+				var g = glyphs[Pair.New(s, c)];
+				if (g.Sprite != null)
+				{
+					var tl = new float3(
+						(int)Math.Round(p.X * deviceScale + g.Offset.X, 0) / deviceScale,
+						p.Y + g.Offset.Y / deviceScale, 0);
+					var br = tl + g.Sprite.Size / deviceScale;
+					var tr = new float3(br.X, tl.Y, 0);
+					var bl = new float3(tl.X, br.Y, 0);
+
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+						Rotate(tl, sina, cosa, location),
+						Rotate(tr, sina, cosa, location),
+						Rotate(br, sina, cosa, location),
+						Rotate(bl, sina, cosa, location));
+				}
+
+				p += new float2(g.Advance / deviceScale, 0);
+			}
+		}
+
 		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
 		{
 			if (offset > 0)
@@ -121,6 +167,19 @@ namespace OpenRA.Graphics
 		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
+		}
+
+		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bg, int offset, float angle)
+		{
+			if (offset != 0)
+				DrawText(text, location + new float2(offset, offset), bg, angle);
+
+			DrawText(text, location, fg, angle);
+		}
+
+		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset, float angle)
+		{
+			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
 		public int2 Measure(string text)

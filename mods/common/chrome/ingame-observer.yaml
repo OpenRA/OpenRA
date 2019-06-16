@@ -543,62 +543,6 @@ Container@OBSERVER_WIDGETS:
 									Text: Army Value
 									Align: Right
 									Shadow: True
-						Container@EARNED_THIS_MIN_GRAPH_HEADERS:
-							X: 0
-							Y: 0
-							Width: PARENT_RIGHT - 25
-							Height: PARENT_BOTTOM
-							Children:
-								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
-									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
-								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									TopLeftColor: 00000090
-									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
-								Label@EARNED_THIS_MIN_HEADER:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
-									Font: Bold
-									Text: Earnings received each minute
-									Align: Center
-									Shadow: True
-						Container@ARMY_THIS_MIN_GRAPH_HEADERS:
-							X: 0
-							Y: 0
-							Width: PARENT_RIGHT - 25
-							Height: PARENT_BOTTOM
-							Children:
-								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
-									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
-								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									TopLeftColor: 00000090
-									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
-								Label@EARNED_THIS_MIN_HEADER:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
-									Font: Bold
-									Text: Army value over time
-									Align: Center
-									Shadow: True
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 0
 					Y: 55
@@ -956,9 +900,9 @@ Container@OBSERVER_WIDGETS:
 									Shadow: True
 				Container@EARNED_THIS_MIN_GRAPH_CONTAINER:
 					X: 0
-					Y: 54
-					Width: PARENT_RIGHT - 25
-					Height: PARENT_BOTTOM - 65
+					Y: 30
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Visible: False
 					Children:
 						ColorBlock@GRAPH_BACKGROUND:
@@ -977,15 +921,15 @@ Container@OBSERVER_WIDGETS:
 							YAxisValueFormat: ${0:F0}
 							XAxisSize: 20
 							YAxisSize: 10
-							XAxisLabel: m
-							YAxisLabel: $
+							XAxisLabel: Game Minute
+							YAxisLabel: Earnings
 							LabelFont: TinyBold
-							AxisFont: Bold
+							AxisFont: TinyBold
 				Container@ARMY_THIS_MIN_GRAPH_CONTAINER:
 					X: 0
-					Y: 54
-					Width: PARENT_RIGHT - 25
-					Height: PARENT_BOTTOM - 65
+					Y: 30
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Visible: False
 					Children:
 						ColorBlock@GRAPH_BACKGROUND:
@@ -1004,7 +948,7 @@ Container@OBSERVER_WIDGETS:
 							YAxisValueFormat: ${0:F0}
 							XAxisSize: 20
 							YAxisSize: 10
-							XAxisLabel: m
-							YAxisLabel: $
+							XAxisLabel: Game Minute
+							YAxisLabel: Army Value
 							LabelFont: TinyBold
-							AxisFont: Bold
+							AxisFont: TinyBold
