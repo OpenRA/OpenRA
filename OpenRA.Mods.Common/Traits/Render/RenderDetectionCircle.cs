@@ -51,8 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var range = self.TraitsImplementing<DetectCloaked>()
-				.Where(a => !a.IsTraitDisabled)
-				.Select(a => a.Info.Range)
+				.Select(a => a.Range)
 				.Append(WDist.Zero).Max();
 
 			if (range == WDist.Zero)

@@ -197,9 +197,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => !a.Trait.IsTraitDisabled && a.Actor.Owner.IsAlliedWith(viewer)
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(viewer)
 				&& Info.CloakTypes.Overlaps(a.Trait.Info.CloakTypes)
-				&& (self.CenterPosition - a.Actor.CenterPosition).LengthSquared <= a.Trait.Info.Range.LengthSquared);
+				&& (self.CenterPosition - a.Actor.CenterPosition).LengthSquared <= a.Trait.Range.LengthSquared);
 		}
 
 		Color IRadarColorModifier.RadarColorOverride(Actor self, Color color)

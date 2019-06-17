@@ -389,6 +389,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IRevealsShroudModifier { int GetRevealsShroudModifier(); }
 
 	[RequireExplicitImplementation]
+	public interface IDetectCloakedModifier { int GetDetectCloakedModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface ICustomMovementLayer
 	{
 		byte Index { get; }
