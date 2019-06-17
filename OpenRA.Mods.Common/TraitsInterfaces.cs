@@ -362,6 +362,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IReloadModifier { int GetReloadModifier(); }
 
 	[RequireExplicitImplementation]
+	public interface IReloadAmmoModifier { int GetReloadAmmoModifier(); }
+
+	[RequireExplicitImplementation]
 	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
 
 	[RequireExplicitImplementation]
