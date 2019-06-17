@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -24,9 +26,29 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DetectCloaked(this); }
 	}
 
-	public class DetectCloaked : ConditionalTrait<DetectCloakedInfo>
+	public class DetectCloaked : ConditionalTrait<DetectCloakedInfo>, INotifyCreated
 	{
+		IDetectCloakedModifier[] rangeModifiers;
+
 		public DetectCloaked(DetectCloakedInfo info)
 			: base(info) { }
+
+		void INotifyCreated.Created(Actor self)
+		{
+			rangeModifiers = self.TraitsImplementing<IDetectCloakedModifier>().ToArray();
+		}
+
+		public WDist Range
+		{
+			get
+			{
+				if (IsTraitDisabled)
+					return WDist.Zero;
+
+				var detectCloakedModifier = rangeModifiers.Select(x => x.GetDetectCloakedModifier());
+				var range = Util.ApplyPercentageModifiers(Info.Range.Length, detectCloakedModifier);
+				return new WDist(range);
+			}
+		}
 	}
 }
