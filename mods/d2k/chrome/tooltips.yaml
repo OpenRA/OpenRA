@@ -321,3 +321,21 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y: 30
 			Font: TinyBold
 			VAlign: Top
+
+Background@ARMY_TOOLTIP:
+	Logic: ArmyTooltipLogic
+	Background: dialog3
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 7
+			Y: 23
+			Height: 3
+			Font: TinyBold
+			VAlign: Top

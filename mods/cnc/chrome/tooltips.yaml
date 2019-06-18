@@ -353,6 +353,24 @@ Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
 			Font: TinyBold
 			VAlign: Top
 
+Background@ARMY_TOOLTIP:
+	Logic: ArmyTooltipLogic
+	Background: panel-black
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 5
+			Y: 1
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 5
+			Y: 20
+			Height: 5
+			Font: TinyBold
+			VAlign: Top
+
 Background@SPAWN_TOOLTIP:
 	Logic: SpawnSelectorTooltipLogic
 	Background: panel-black

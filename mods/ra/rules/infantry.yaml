@@ -106,6 +106,8 @@ E1R1:
 	ProducibleWithLevel:
 		Prerequisites: techlevel.infonly
 		InitialLevels: 1
+	UpdatesPlayerStatistics:
+		OverrideActor: e1
 	-Buildable:
 
 E2:
@@ -199,6 +201,8 @@ E3R1:
 	ProducibleWithLevel:
 		Prerequisites: techlevel.infonly
 		InitialLevels: 1
+	UpdatesPlayerStatistics:
+		OverrideActor: e3
 	-Buildable:
 
 E4:
