@@ -15,8 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	using CellContents = D2kResourceLayer.CellContents;
-	using ClearSides = D2kResourceLayer.ClearSides;
+	using ClearSides = D2kResourceRenderer.ClearSides;
 
 	[Desc("Used to render spice with round borders.")]
 	public class D2kEditorResourceLayerInfo : EditorResourceLayerInfo
@@ -29,7 +28,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public D2kEditorResourceLayer(Actor self)
 			: base(self) { }
 
-		public override CellContents UpdateDirtyTile(CPos c)
+		public override EditorCellContents UpdateDirtyTile(CPos c)
 		{
 			var t = Tiles[c];
 
@@ -50,11 +49,11 @@ namespace OpenRA.Mods.D2k.Traits
 			var clear = FindClearSides(t.Type, c);
 			if (clear == ClearSides.None)
 			{
-				var sprites = D2kResourceLayer.Variants[t.Variant];
+				var sprites = D2kResourceRenderer.Variants[t.Variant];
 				var frame = t.Density > t.Type.Info.MaxDensity / 2 ? 1 : 0;
 				t.Sprite = t.Type.Variants.First().Value[sprites[frame]];
 			}
-			else if (D2kResourceLayer.SpriteMap.TryGetValue(clear, out index))
+			else if (D2kResourceRenderer.SpriteMap.TryGetValue(clear, out index))
 				t.Sprite = t.Type.Variants.First().Value[index];
 			else
 				t.Sprite = null;
@@ -64,7 +63,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		protected override string ChooseRandomVariant(ResourceType t)
 		{
-			return D2kResourceLayer.Variants.Keys.Random(Game.CosmeticRandom);
+			return D2kResourceRenderer.Variants.Keys.Random(Game.CosmeticRandom);
 		}
 
 		bool CellContains(CPos c, ResourceType t)

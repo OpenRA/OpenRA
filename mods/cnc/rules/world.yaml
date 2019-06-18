@@ -184,6 +184,8 @@ World:
 		Type: Crater
 		Sequence: craters
 	ResourceLayer:
+	ResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:

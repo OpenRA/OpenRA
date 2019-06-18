@@ -144,7 +144,9 @@ World:
 	DomainIndex:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
-	D2kResourceLayer:
+	ResourceLayer:
+	D2kResourceRenderer:
+		RenderTypes: Spice
 	ResourceClaimLayer:
 	CustomTerrainDebugOverlay:
 	SmudgeLayer@Rock:

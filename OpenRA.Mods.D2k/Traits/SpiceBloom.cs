@@ -126,7 +126,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			for (var i = 0; i < pieces; i++)
 			{
-				var cell = cells.SkipWhile(p => resLayer.GetResource(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
+				var cell = cells.SkipWhile(p => resLayer.GetResourceType(p) == resType && resLayer.IsFull(p)).Cast<CPos?>().RandomOrDefault(self.World.SharedRandom);
 				if (cell == null)
 					cell = cells.Random(self.World.SharedRandom);
 
