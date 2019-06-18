@@ -46,10 +46,14 @@ StatisticsCombat: F6
 	Description: Combat statistics
 	Types: Observer, Replay, Spectator
 
-StatisticsGraph: F7
+StatisticsArmy: F7
+	Description: Army statistics
+	Types: Observer, Replay, Spectator
+
+StatisticsGraph:
 	Description: Statistics graph
 	Types: Observer, Replay, Spectator
 
-StatisticsArmyGraph: F8
+StatisticsArmyGraph:
 	Description: Army value graph
 	Types: Observer, Replay, Spectator

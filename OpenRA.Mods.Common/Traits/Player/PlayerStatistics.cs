@@ -10,7 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -64,8 +68,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool armyGraphDisabled;
 		bool incomeGraphDisabled;
+		public readonly Cache<string, ArmyUnit> Units;
 
-		public PlayerStatistics(Actor self) { }
+		public PlayerStatistics(Actor self)
+		{
+			Units = new Cache<string, ArmyUnit>(name => new ArmyUnit(self.World.Map.Rules.Actors[name], self.Owner));
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
@@ -151,28 +159,74 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	public class ArmyUnit
+	{
+		public readonly ActorInfo ActorInfo;
+		public readonly Animation Icon;
+		public readonly string IconPalette;
+		public readonly int ProductionQueueOrder;
+		public readonly int BuildPaletteOrder;
+		public readonly TooltipInfo TooltipInfo;
+		public readonly BuildableInfo BuildableInfo;
+
+		public int Count { get; set; }
+
+		public ArmyUnit(ActorInfo actorInfo, Player owner)
+		{
+			ActorInfo = actorInfo;
+
+			var queues = owner.World.Map.Rules.Actors.Values
+				.SelectMany(a => a.TraitInfos<ProductionQueueInfo>());
+
+			BuildableInfo = actorInfo.TraitInfoOrDefault<BuildableInfo>();
+			TooltipInfo = actorInfo.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
+
+			ProductionQueueOrder = queues.Where(q => BuildableInfo.Queue.Contains(q.Type))
+				.Select(q => q.DisplayOrder)
+				.MinByOrDefault(o => o);
+
+			var rsi = actorInfo.TraitInfoOrDefault<RenderSpritesInfo>();
+
+			if (BuildableInfo != null && rsi != null)
+			{
+				var image = rsi.GetImage(actorInfo, owner.World.Map.Rules.Sequences, owner.Faction.Name);
+				Icon = new Animation(owner.World, image);
+				Icon.Play(BuildableInfo.Icon);
+				IconPalette = BuildableInfo.IconPalette;
+				BuildPaletteOrder = BuildableInfo.BuildPaletteOrder;
+			}
+		}
+	}
+
 	[Desc("Attach this to a unit to update observer stats.")]
 	public class UpdatesPlayerStatisticsInfo : ITraitInfo
 	{
 		[Desc("Add to army value in statistics")]
 		public bool AddToArmyValue = false;
 
+		[ActorReference]
+		[Desc("Count this actor as a different type in the spectator army display.")]
+		public string OverrideActor = null;
+
 		public object Create(ActorInitializer init) { return new UpdatesPlayerStatistics(this, init.Self); }
 	}
 
 	public class UpdatesPlayerStatistics : INotifyKilled, INotifyCreated, INotifyOwnerChanged, INotifyActorDisposing
 	{
-		UpdatesPlayerStatisticsInfo info;
+		readonly UpdatesPlayerStatisticsInfo info;
+		readonly string actorName;
+		readonly int cost = 0;
+
 		PlayerStatistics playerStats;
-		int cost = 0;
 		bool includedInArmyValue = false;
 
 		public UpdatesPlayerStatistics(UpdatesPlayerStatisticsInfo info, Actor self)
 		{
 			this.info = info;
-			if (self.Info.HasTraitInfo<ValuedInfo>())
-				cost = self.Info.TraitInfo<ValuedInfo>().Cost;
+			var valuedInfo = self.Info.TraitInfoOrDefault<ValuedInfo>();
+			cost = valuedInfo != null ? valuedInfo.Cost : 0;
 			playerStats = self.Owner.PlayerActor.Trait<PlayerStatistics>();
+			actorName = info.OverrideActor ?? self.Info.Name;
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
@@ -199,14 +253,19 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				defenderStats.ArmyValue -= cost;
 				includedInArmyValue = false;
+				playerStats.Units[actorName].Count--;
 			}
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			includedInArmyValue = info.AddToArmyValue;
+
 			if (includedInArmyValue)
+			{
 				playerStats.ArmyValue += cost;
+				playerStats.Units[actorName].Count++;
+			}
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -216,6 +275,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				playerStats.ArmyValue -= cost;
 				newOwnerStats.ArmyValue += cost;
+				playerStats.Units[actorName].Count--;
+				newOwnerStats.Units[actorName].Count++;
 			}
 
 			playerStats = newOwnerStats;
@@ -227,6 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				playerStats.ArmyValue -= cost;
 				includedInArmyValue = false;
+				playerStats.Units[actorName].Count--;
 			}
 		}
 	}
