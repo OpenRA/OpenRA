@@ -13,17 +13,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	[Desc("Used to render spice with round borders.")]
-	public class D2kResourceLayerInfo : ResourceLayerInfo
+	[Desc("Used to render spice with round borders.", "Attach this to the world actor")]
+	public class D2kResourceRendererInfo : ResourceRendererInfo
 	{
-		public override object Create(ActorInitializer init) { return new D2kResourceLayer(init.Self); }
+		public override object Create(ActorInitializer init) { return new D2kResourceRenderer(init.Self, this); }
 	}
 
-	public class D2kResourceLayer : ResourceLayer
+	public class D2kResourceRenderer : ResourceRenderer
 	{
 		[Flags]
 		public enum ClearSides : byte
@@ -101,8 +100,8 @@ namespace OpenRA.Mods.D2k.Traits
 			{ ClearSides.Bottom | ClearSides.TopLeft | ClearSides.BottomLeft | ClearSides.BottomRight, 49 },
 		};
 
-		public D2kResourceLayer(Actor self)
-			: base(self) { }
+		public D2kResourceRenderer(Actor self, D2kResourceRendererInfo info)
+			: base(self, info) { }
 
 		bool CellContains(CPos c, ResourceType t)
 		{
@@ -139,46 +138,52 @@ namespace OpenRA.Mods.D2k.Traits
 			return ret;
 		}
 
-		void UpdateRenderedTileInner(CPos p)
+		protected override void UpdateRenderedSprite(CPos cell, RendererCellContents content)
 		{
-			if (!RenderContent.Contains(p))
-				return;
+			UpdateRenderedSpriteInner(cell, content);
 
-			var t = RenderContent[p];
-			if (t.Density > 0)
+			var directions = CVec.Directions;
+			for (var i = 0; i < directions.Length; i++)
+				UpdateRenderedSpriteInner(cell + directions[i]);
+		}
+
+		void UpdateRenderedSpriteInner(CPos cell)
+		{
+			UpdateRenderedSpriteInner(cell, RenderContent[cell]);
+		}
+
+		void UpdateRenderedSpriteInner(CPos cell, RendererCellContents content)
+		{
+			var density = content.Density;
+			var renderType = content.Type;
+
+			if (density > 0 && renderType != null)
 			{
-				var clear = FindClearSides(t.Type, p);
+				// The call chain for this method (that starts with AddDirtyCell()) guarantees
+				// that the new content type would still be suitable for this renderer,
+				// but that is a bit too fragile to rely on in case the code starts changing.
+				if (!Info.RenderTypes.Contains(renderType.Info.Type))
+					return;
+
+				var clear = FindClearSides(renderType, cell);
 				int index;
 
 				if (clear == ClearSides.None)
 				{
-					var sprites = Variants[t.Variant];
-					var frame = t.Density > t.Type.Info.MaxDensity / 2 ? 1 : 0;
-					t.Sprite = t.Type.Variants.First().Value[sprites[frame]];
+					var sprites = Variants[content.Variant];
+					var frame = density > ResourceLayer.GetMaxResourceDensity(cell) / 2 ? 1 : 0;
+
+					UpdateSpriteLayers(cell, renderType.Variants.First().Value[sprites[frame]], renderType.Palette);
 				}
 				else if (SpriteMap.TryGetValue(clear, out index))
-					t.Sprite = t.Type.Variants.First().Value[index];
+				{
+					UpdateSpriteLayers(cell, renderType.Variants.First().Value[index], renderType.Palette);
+				}
 				else
-					t.Sprite = null;
+					throw new InvalidOperationException("SpriteMap does not contain an index for ClearSides type '{0}'".F(clear));
 			}
 			else
-				t.Sprite = null;
-
-			RenderContent[p] = t;
-		}
-
-		protected override void UpdateRenderedSprite(CPos p)
-		{
-			// Need to update neighbouring tiles too
-			UpdateRenderedTileInner(p);
-			UpdateRenderedTileInner(p + new CVec(-1, -1));
-			UpdateRenderedTileInner(p + new CVec(0, -1));
-			UpdateRenderedTileInner(p + new CVec(1, -1));
-			UpdateRenderedTileInner(p + new CVec(-1, 0));
-			UpdateRenderedTileInner(p + new CVec(1, 0));
-			UpdateRenderedTileInner(p + new CVec(-1, 1));
-			UpdateRenderedTileInner(p + new CVec(0, 1));
-			UpdateRenderedTileInner(p + new CVec(1, 1));
+				UpdateSpriteLayers(cell, null, null);
 		}
 
 		protected override string ChooseRandomVariant(ResourceType t)

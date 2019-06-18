@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly Map Map;
 		protected readonly TileSet Tileset;
 		protected readonly Dictionary<int, ResourceType> Resources;
-		protected readonly CellLayer<CellContents> Tiles;
+		protected readonly CellLayer<EditorCellContents> Tiles;
 		protected readonly HashSet<CPos> Dirty = new HashSet<CPos>();
 
 		readonly Dictionary<PaletteReference, TerrainSpriteLayer> spriteLayers = new Dictionary<PaletteReference, TerrainSpriteLayer>();
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			Map = self.World.Map;
 			Tileset = self.World.Map.Rules.TileSet;
 
-			Tiles = new CellLayer<CellContents>(Map);
+			Tiles = new CellLayer<EditorCellContents>(Map);
 			Resources = self.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
 
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			ResourceType type;
 			if (Resources.TryGetValue(tile.Type, out type))
 			{
-				Tiles[uv] = new CellContents
+				Tiles[uv] = new EditorCellContents
 				{
 					Type = type,
 					Variant = ChooseRandomVariant(type),
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 			{
-				Tiles[uv] = CellContents.Empty;
+				Tiles[uv] = EditorCellContents.Empty;
 				Map.CustomTerrain[uv] = byte.MaxValue;
 			}
 
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Math.Max(int2.Lerp(0, type.Info.MaxDensity, adjacent, 9), 1);
 		}
 
-		public virtual CellContents UpdateDirtyTile(CPos c)
+		public virtual EditorCellContents UpdateDirtyTile(CPos c)
 		{
 			var t = Tiles[c];
 			var type = t.Type;
@@ -212,5 +212,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			disposed = true;
 		}
+	}
+
+	public struct EditorCellContents
+	{
+		public static readonly EditorCellContents Empty = default(EditorCellContents);
+		public ResourceType Type;
+		public int Density;
+		public string Variant;
+		public Sprite Sprite;
 	}
 }
