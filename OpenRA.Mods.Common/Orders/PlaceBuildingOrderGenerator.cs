@@ -201,8 +201,11 @@ namespace OpenRA.Mods.Common.Orders
 					// Building to place
 					TargetString = variants[0].ActorInfo.Name,
 
-					// Pack the actor to associate the placement with and the alternate actor flag together
-					ExtraLocation = new CPos((int)queue.Actor.ActorID, variant),
+					// Actor ID to associate with placement may be quite large, so it gets its own uint
+					ExtraData = queue.Actor.ActorID,
+
+					// Actor variant will always be small enough to safely pack in a CPos
+					ExtraLocation = new CPos(variant, 0),
 
 					SuppressVisualFeedback = true
 				};
