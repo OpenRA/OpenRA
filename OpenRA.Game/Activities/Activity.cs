@@ -135,6 +135,7 @@ namespace OpenRA.Activities
 		/// Call this method from any place that's called during a tick, such as the Tick() method itself or
 		/// the Before(First|Last)Run() methods. The origin activity will be marked in the output.
 		/// </summary>
+		/// <param name="self">The actor performing this activity.</param>
 		/// <param name="origin">Activity from which to start traversing, and which to mark. If null, mark the calling activity, and start traversal from the top.</param>
 		/// <param name="level">Initial level of indentation.</param>
 		protected void PrintActivityTree(Actor self, Activity origin = null, int level = 0)

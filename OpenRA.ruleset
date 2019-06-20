@@ -42,5 +42,12 @@
     <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
     <Rule Id="SA1413" Action="None" /><!-- UseTrailingCommasInMultiLineInitializers -->
     <Rule Id="SA1516" Action="None" /><!-- ElementsMustBeSeparatedByBlankLine -->
+    <Rule Id="SA1604" Action="None" /><!-- ElementDocumentationShouldHaveSummary -->
+    <Rule Id="SA1611" Action="None" /><!-- ElementParametersShouldBeDocumented -->
+    <Rule Id="SA1615" Action="None" /><!-- ElementReturnValueShouldBeDocumented -->
+    <Rule Id="SA1618" Action="None" /><!-- GenericTypeParametersShouldBeDocumented -->
+    <Rule Id="SA1623" Action="None" /><!-- PropertySummaryDocumentationShouldMatchAccessors -->
+    <Rule Id="SA1629" Action="None" /><!-- DocumentationTextShouldEndWithAPeriod -->
+    <Rule Id="SA1642" Action="None" /><!-- ConstructorSummaryDocumentationShouldBeginWithStandardText -->
   </Rules>
 </RuleSet>

@@ -59,7 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>
 		/// Release the last resource claim made by this actor.
 		/// </summary>
-		/// <param name="claimer"></param>
 		public void RemoveClaim(Actor claimer)
 		{
 			CPos lastClaim;
