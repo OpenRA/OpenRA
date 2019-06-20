@@ -37,8 +37,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		Mobile mobile;
 		AutoTarget autoTarget;
-		int requestedTargetLastTick;
 		bool requestedForceAttack;
+		Activity requestedTargetPresetForActivity;
 		bool opportunityForceAttack;
 		bool opportunityTargetIsPersistentTarget;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			RequestedTarget = target;
 			requestedForceAttack = isForceAttack;
-			requestedTargetLastTick = self.World.WorldTick;
+			requestedTargetPresetForActivity = null;
 		}
 
 		public void ClearRequestedTarget()
@@ -59,6 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			RequestedTarget = Target.Invalid;
+			requestedTargetPresetForActivity = null;
 		}
 
 		public AttackFollow(Actor self, AttackFollowInfo info)
@@ -100,12 +101,19 @@ namespace OpenRA.Mods.Common.Traits
 				opportunityTargetIsPersistentTarget = false;
 			}
 
-			if (requestedTargetLastTick != self.World.WorldTick)
+			if (requestedTargetPresetForActivity != null)
 			{
-				// Activities tick before traits, so if we are here it means the activity didn't run
-				// (either queued next or already cancelled) and we need to recalculate the target ourself
-				bool targetIsHiddenActor;
-				RequestedTarget = RequestedTarget.Recalculate(self.Owner, out targetIsHiddenActor);
+				// RequestedTarget was set by OnQueueAttackActivity in preparation for a queued activity
+				// requestedTargetPresetForActivity will be cleared once the activity starts running and calls UpdateRequestedTarget
+				if (self.CurrentActivity != null && self.CurrentActivity.NextActivity == requestedTargetPresetForActivity)
+				{
+					bool targetIsHiddenActor;
+					RequestedTarget = RequestedTarget.Recalculate(self.Owner, out targetIsHiddenActor);
+				}
+
+				// Requested activity has been canceled
+				else
+					ClearRequestedTarget();
 			}
 
 			// Can't fire on anything
@@ -148,16 +156,15 @@ namespace OpenRA.Mods.Common.Traits
 			return new AttackActivity(self, newTarget, allowMove, forceAttack);
 		}
 
-		public override void OnQueueAttackActivity(Actor self, Target target, bool queued, bool allowMove, bool forceAttack)
+		public override void OnQueueAttackActivity(Actor self, Activity activity, Target target, bool allowMove, bool forceAttack)
 		{
-			// If not queued we know that the attack activity will run next
 			// We can improve responsiveness for turreted actors by preempting
-			// the last order (usually a move) and set the target immediately
-			if (!queued)
+			// the last order (usually a move) and setting the target immediately
+			if (self.CurrentActivity != null && self.CurrentActivity.NextActivity == activity)
 			{
 				RequestedTarget = target;
 				requestedForceAttack = forceAttack;
-				requestedTargetLastTick = self.World.WorldTick;
+				requestedTargetPresetForActivity = activity;
 			}
 		}
 

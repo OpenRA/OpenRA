@@ -392,11 +392,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			self.QueueActivity(GetAttackActivity(self, target, allowMove, forceAttack));
-			OnQueueAttackActivity(self, target, queued, allowMove, forceAttack);
+			var activity = GetAttackActivity(self, target, allowMove, forceAttack);
+			self.QueueActivity(activity);
+			OnQueueAttackActivity(self, activity, target, allowMove, forceAttack);
 		}
 
-		public virtual void OnQueueAttackActivity(Actor self, Target target, bool queued, bool allowMove, bool forceAttack) { }
+		public virtual void OnQueueAttackActivity(Actor self, Activity activity, Target target, bool allowMove, bool forceAttack) { }
 
 		public bool IsReachableTarget(Target target, bool allowMove)
 		{
