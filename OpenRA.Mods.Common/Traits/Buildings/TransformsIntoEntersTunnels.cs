@@ -32,15 +32,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Require the force-move modifier to display the enter cursor.")]
 		public readonly bool RequiresForceMove = false;
 
-		public override object Create(ActorInitializer init) { return new TransformsIntoEntersTunnels(this); }
+		public override object Create(ActorInitializer init) { return new TransformsIntoEntersTunnels(init.Self, this); }
 	}
 
 	public class TransformsIntoEntersTunnels : ConditionalTrait<TransformsIntoEntersTunnelsInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly Actor self;
 		Transforms[] transforms;
 
-		public TransformsIntoEntersTunnels(TransformsIntoEntersTunnelsInfo info)
-			: base(info) { }
+		public TransformsIntoEntersTunnels(Actor self, TransformsIntoEntersTunnelsInfo info)
+			: base(info)
+		{
+			this.self = self;
+		}
 
 		protected override void Created(Actor self)
 		{
@@ -53,8 +57,18 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new EntersTunnels.EnterTunnelOrderTargeter(Info.EnterCursor, Info.EnterBlockedCursor, () => Info.RequiresForceMove);
+					yield return new EntersTunnels.EnterTunnelOrderTargeter(Info.EnterCursor, Info.EnterBlockedCursor, CanEnterTunnel, UseEnterCursor);
 			}
+		}
+
+		bool CanEnterTunnel(Actor target, TargetModifiers modifiers)
+		{
+			return !Info.RequiresForceMove || modifiers.HasModifier(TargetModifiers.ForceMove);
+		}
+
+		bool UseEnterCursor(Actor target)
+		{
+			return self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused);
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)

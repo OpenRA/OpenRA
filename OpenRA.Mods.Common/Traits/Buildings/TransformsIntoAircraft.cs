@@ -184,12 +184,12 @@ namespace OpenRA.Mods.Common.Traits
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
-					"move-blocked";
+					self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move" : "move-blocked";
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				if (!explored && !aircraft.Info.MoveIntoShroud)
+				if (!(self.CurrentActivity is Transform || aircraft.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
+					|| (!explored && !aircraft.Info.MoveIntoShroud))
 					cursor = "move-blocked";
 
 				return true;

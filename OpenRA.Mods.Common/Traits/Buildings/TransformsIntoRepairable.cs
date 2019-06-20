@@ -33,16 +33,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Require the force-move modifier to display the enter cursor.")]
 		public readonly bool RequiresForceMove = false;
 
-		public override object Create(ActorInitializer init) { return new TransformsIntoRepairable(this); }
+		public override object Create(ActorInitializer init) { return new TransformsIntoRepairable(init.Self, this); }
 	}
 
 	public class TransformsIntoRepairable : ConditionalTrait<TransformsIntoRepairableInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly Actor self;
 		Transforms[] transforms;
 		IHealth health;
 
-		public TransformsIntoRepairable(TransformsIntoRepairableInfo info)
-			: base(info) { }
+		public TransformsIntoRepairable(Actor self, TransformsIntoRepairableInfo info)
+			: base(info)
+		{
+			this.self = self;
+		}
 
 		protected override void Created(Actor self)
 		{
@@ -62,7 +66,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepair()
 		{
-			return health.DamageState > DamageState.Undamaged && transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused);
+			if (!(self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)))
+				return false;
+
+			return health.DamageState > DamageState.Undamaged;
 		}
 
 		bool CanRepairAt(Actor target, TargetModifiers modifiers)

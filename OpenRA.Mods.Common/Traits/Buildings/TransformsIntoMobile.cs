@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
 
 				var locomotor = mobile.Info.LocomotorInfo;
-				if (!mobile.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)
+				if (!(self.CurrentActivity is Transform || mobile.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
 					|| (!explored && !locomotor.MoveIntoShroud)
 					|| (explored && !CanEnterCell(self.World, self, location)))
 					cursor = mobile.Info.BlockedCursor;
