@@ -51,8 +51,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterTunnelOrderTargeter(info.EnterCursor, info.EnterBlockedCursor, () => requireForceMove);
+				yield return new EnterTunnelOrderTargeter(info.EnterCursor, info.EnterBlockedCursor, CanEnterTunnel, _ => true);
 			}
+		}
+
+		bool CanEnterTunnel(Actor target, TargetModifiers modifiers)
+		{
+			return !requireForceMove || modifiers.HasModifier(TargetModifiers.ForceMove);
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -100,19 +105,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly string enterCursor;
 			readonly string enterBlockedCursor;
-			readonly Func<bool> requireForceMove;
+			readonly Func<Actor, TargetModifiers, bool> canTarget;
+			readonly Func<Actor, bool> useEnterCursor;
 
-			public EnterTunnelOrderTargeter(string enterCursor, string enterBlockedCursor, Func<bool> requireForceMove)
+			public EnterTunnelOrderTargeter(string enterCursor, string enterBlockedCursor,
+				Func<Actor, TargetModifiers, bool> canTarget, Func<Actor, bool> useEnterCursor)
 				: base("EnterTunnel", 6, enterCursor, true, true)
 			{
 				this.enterCursor = enterCursor;
 				this.enterBlockedCursor = enterBlockedCursor;
-				this.requireForceMove = requireForceMove;
+				this.canTarget = canTarget;
+				this.useEnterCursor = useEnterCursor;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (target == null || target.IsDead || (requireForceMove() && !modifiers.HasModifier(TargetModifiers.ForceMove)))
+				if (target == null || target.IsDead || !canTarget(target, modifiers))
 					return false;
 
 				var tunnel = target.TraitOrDefault<TunnelEntrance>();
@@ -135,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 				}
 
-				cursor = enterCursor;
+				cursor = useEnterCursor(target) ? enterCursor : enterBlockedCursor;
 				return true;
 			}
 

@@ -32,15 +32,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Require the force-move modifier to display the enter cursor.")]
 		public readonly bool RequiresForceMove = false;
 
-		public override object Create(ActorInitializer init) { return new TransformsIntoPassenger(this); }
+		public override object Create(ActorInitializer init) { return new TransformsIntoPassenger(init.Self, this); }
 	}
 
 	public class TransformsIntoPassenger : ConditionalTrait<TransformsIntoPassengerInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
+		readonly Actor self;
 		Transforms[] transforms;
 
-		public TransformsIntoPassenger(TransformsIntoPassengerInfo info)
-			: base(info) { }
+		public TransformsIntoPassenger(Actor self, TransformsIntoPassengerInfo info)
+			: base(info)
+		{
+			this.self = self;
+		}
 
 		protected override void Created(Actor self)
 		{
@@ -81,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanEnter(Actor target)
 		{
-			if (!transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
+			if (!(self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)))
 				return false;
 
 			var cargo = target.TraitOrDefault<Cargo>();
