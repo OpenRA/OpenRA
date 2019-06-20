@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			return domainIndexes[movementClass].IsPassable(p1, p2);
 		}
 
-		/// Regenerate the domain index for a group of cells
+		/// <summary>Regenerate the domain index for a group of cells.</summary>
 		public void UpdateCells(World world, IEnumerable<CPos> cells)
 		{
 			var dirty = cells.ToHashSet();

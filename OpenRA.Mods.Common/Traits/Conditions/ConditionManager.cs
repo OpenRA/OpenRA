@@ -114,9 +114,12 @@ namespace OpenRA.Mods.Common.Traits
 			return token;
 		}
 
-		/// <summary>Revokes a previously granted condition.</summary>
-		/// <returns>The invalid token ID.</returns>
+		/// <summary>
+		/// Revokes a previously granted condition.
+		/// </summary>
+		/// <param name="self">The actor to which this trait is attached.</param>
 		/// <param name="token">The token ID returned by GrantCondition.</param>
+		/// <returns>The invalid token ID.</returns>
 		public int RevokeCondition(Actor self, int token)
 		{
 			string condition;
