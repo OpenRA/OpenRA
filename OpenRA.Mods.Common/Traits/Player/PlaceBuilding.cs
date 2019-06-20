@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.AddFrameEndTask(w =>
 			{
 				var prevItems = GetNumBuildables(self.Owner);
-				var targetActor = w.GetActorById((uint)order.ExtraLocation.X);
+				var targetActor = w.GetActorById(order.ExtraData);
 				var targetLocation = w.Map.CellContaining(order.Target.CenterPosition);
 
 				if (targetActor == null || targetActor.IsDead)
@@ -79,11 +79,11 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				// Override with the alternate actor
-				if (order.ExtraLocation.Y > 0)
+				if (order.ExtraLocation.X > 0)
 				{
 					var variant = actorInfo.TraitInfos<PlaceBuildingVariantsInfo>()
 						.SelectMany(p => p.Actors)
-						.Skip(order.ExtraLocation.Y - 1)
+						.Skip(order.ExtraLocation.X - 1)
 						.FirstOrDefault();
 
 					if (variant != null)
