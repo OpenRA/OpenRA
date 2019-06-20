@@ -79,14 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 			{
 				// Cancel the requested target, but keep firing on it while in range
-				if (attackAircraft.Info.PersistentTargeting)
-				{
-					attackAircraft.OpportunityTarget = attackAircraft.RequestedTarget;
-					attackAircraft.OpportunityForceAttack = attackAircraft.RequestedForceAttack;
-					attackAircraft.OpportunityTargetIsPersistentTarget = true;
-				}
-
-				attackAircraft.RequestedTarget = Target.Invalid;
+				attackAircraft.ClearRequestedTarget();
 				return NextActivity;
 			}
 
@@ -99,8 +92,8 @@ namespace OpenRA.Mods.Common.Activities
 				return this;
 
 			bool targetIsHiddenActor;
-			attackAircraft.RequestedTarget = target = target.Recalculate(self.Owner, out targetIsHiddenActor);
-			attackAircraft.RequestedTargetLastTick = self.World.WorldTick;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			attackAircraft.SetRequestedTarget(self, target, forceAttack);
 			hasTicked = true;
 
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
@@ -121,7 +114,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 			{
-				attackAircraft.RequestedTarget = Target.Invalid;
+				attackAircraft.ClearRequestedTarget();
 				return NextActivity;
 			}
 
@@ -141,7 +134,7 @@ namespace OpenRA.Mods.Common.Activities
 				// We've reached the assumed position but it is not there - give up
 				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
 				{
-					attackAircraft.RequestedTarget = Target.Invalid;
+					attackAircraft.ClearRequestedTarget();
 					return NextActivity;
 				}
 
@@ -184,7 +177,7 @@ namespace OpenRA.Mods.Common.Activities
 				return;
 
 			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
-				attackAircraft.RequestedTarget = Target.Invalid;
+				attackAircraft.ClearRequestedTarget();
 		}
 	}
 }

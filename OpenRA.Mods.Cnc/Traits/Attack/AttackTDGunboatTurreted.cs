@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (hasTicked && attack.RequestedTarget.Type == TargetType.Invalid)
 						return NextActivity;
 
-					attack.RequestedTarget = target;
+					attack.SetRequestedTarget(self, target);
 					hasTicked = true;
 				}
 
