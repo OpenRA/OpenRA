@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			var centerPosition = self.CenterPosition;
-			pos.SetPosition(self, centerPosition - new WVec(0, 0, groundLevel - centerPosition.Z));
+			pos.SetPosition(self, centerPosition + new WVec(0, 0, groundLevel - centerPosition.Z));
 
 			foreach (var np in self.TraitsImplementing<INotifyParachute>())
 				np.OnLanded(self, ignore);
