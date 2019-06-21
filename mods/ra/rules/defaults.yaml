@@ -1110,7 +1110,7 @@
 		ShowOwnerRow: false
 	Crate:
 		Lifetime: 180
-		TerrainTypes: Clear, Rough, Road, Ore, Beach
+		TerrainTypes: Clear, Rough, Road, Ore, Beach, Water
 	RenderSprites:
 		Palette: effect
 		Image: scrate
