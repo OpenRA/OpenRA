@@ -68,11 +68,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			// Don't change animations while still in air
-			if (!self.IsAtGroundLevel())
-				return;
+			// Run in a frame end task to give Parachute a chance to set the actor position
+			self.World.AddFrameEndTask(w =>
+			{
+				// Don't change animations while still in air
+				if (!self.IsAtGroundLevel())
+					return;
 
-			PlaySequence();
+				PlaySequence();
+			});
 		}
 
 		void INotifyParachute.OnParachute(Actor self) { }
