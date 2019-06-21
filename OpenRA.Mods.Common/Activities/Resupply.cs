@@ -76,18 +76,29 @@ namespace OpenRA.Mods.Common.Activities
 		public override bool Tick(Actor self)
 		{
 			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
-			// move actor outside the resupplier footprint
-			// TODO: This check is nowhere near robust enough, and should be rewritten
+			// move actor outside the resupplier footprint.
+			// TODO: This check is nowhere near robust enough, and should be rewritten.
 			if (IsCanceling && host.IsInRange(self.CenterPosition, closeEnough))
 			{
-				QueueChild(self.Trait<IMove>().MoveToTarget(self, host));
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
-				return false;
-			}
+				var aircraft = self.TraitOrDefault<Aircraft>();
+				if (aircraft != null)
+				{
+					aircraft.AllowYieldingReservation();
+					if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply))
+						Queue(new TakeOff(self));
 
-			if (IsCanceling || host.Type == TargetType.Invalid
+					return true;
+				}
+				else if (self.Info.HasTraitInfo<MobileInfo>())
+				{
+					QueueChild(self.Trait<IMove>().MoveToTarget(self, host));
+					return false;
+				}
+			}
+			else if (IsCanceling || host.Type == TargetType.Invalid
 				|| (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
 			{
 				// This is necessary to ensure host resupply actions (like animations) finish properly
