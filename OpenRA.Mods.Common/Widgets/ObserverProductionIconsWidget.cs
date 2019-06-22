@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		float2 iconSize;
 		int lastIconIdx;
+		public int MinWidth = 240;
 
 		[ObjectCreator.UseCtor]
 		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
@@ -82,6 +83,8 @@ namespace OpenRA.Mods.Common.Widgets
 			TooltipIcon = other.TooltipIcon;
 			GetTooltipIcon = () => TooltipIcon;
 
+			MinWidth = other.MinWidth;
+
 			TooltipTemplate = other.TooltipTemplate;
 			TooltipContainer = other.TooltipContainer;
 
@@ -114,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets
 					.ThenBy(g => g.First().BuildPaletteOrder)
 					.ToList();
 
-			Bounds.Width = currentItemsByItem.Count * (IconWidth + IconSpacing);
+			Bounds.Width = Math.Max(currentItemsByItem.Count * (IconWidth + IconSpacing), MinWidth);
 
 			Game.Renderer.EnableAntialiasingFilter();
 
@@ -193,6 +196,19 @@ namespace OpenRA.Mods.Common.Widgets
 						Color.White, Color.Black, 1);
 				}
 			}
+
+			var parentWidth = Bounds.X + Bounds.Width;
+			Parent.Bounds.Width = parentWidth;
+
+			var gradient = Parent.Get<GradientColorBlockWidget>("PLAYER_GRADIENT");
+
+			var offset = gradient.Bounds.X - Bounds.X;
+			var gradientWidth = Math.Max(MinWidth - offset, currentItemsByItem.Count * (IconWidth + IconSpacing));
+
+			gradient.Bounds.Width = gradientWidth;
+			var widestChildWidth = Parent.Parent.Children.Max(x => x.Bounds.Width);
+
+			Parent.Parent.Bounds.Width = Math.Max(25 + widestChildWidth, Bounds.Left + MinWidth);
 		}
 
 		static string GetOverlayForItem(ProductionItem item, int timestep)
