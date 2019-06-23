@@ -19,15 +19,29 @@ ProfileIDWhitelist="${ProfileIDWhitelist:-""}"
 EnableSingleplayer="${EnableSingleplayer:-"False"}"
 EnableSyncReports="${EnableSyncReports:-"False"}"
 
-while true; do
-     mono --debug OpenRA.Server.exe Game.Mod="$Mod" \
-     Server.Name="$Name" \
-     Server.ListenPort="$ListenPort" \
-     Server.AdvertiseOnline="$AdvertiseOnline" \
-     Server.EnableSingleplayer="$EnableSingleplayer" \
-     Server.Password="$Password" \
-     Server.RequireAuthentication="$RequireAuthentication" \
-     Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
-     Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
-     Server.EnableSyncReports="$EnableSyncReports"
-done
+if [ "$Mod" = "d2k" ]; then
+    App="OpenRA-Dune-2000-x86_64.AppImage"
+elif [ "$Mod" = "cnc" ]; then
+    App="OpenRA-Tiberium-Dawn-x86_64.AppImage"
+elif [ "$Mod" = "ra" ]; then
+    App="OpenRA-Red-Alert-x86_64.AppImage"
+else
+    printf "Invalid Mod value %s provided. Allowed values are ra, cnc and d2k" $Mod
+    exit 1
+fi
+
+if [ ! -f "$App" ]; then
+    printf "Could not find AppImage %s for Mod %s in the current folder. Has it been downloaded?" $App $Mod
+    exit 1
+fi
+
+eval "./$App" --server \
+Server.Name="$Name" \
+Server.ListenPort="$ListenPort" \
+Server.AdvertiseOnline="$AdvertiseOnline" \
+Server.EnableSingleplayer="$EnableSingleplayer" \
+Server.Password="$Password" \
+Server.RequireAuthentication="$RequireAuthentication" \
+Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
+Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
+Server.EnableSyncReports="$EnableSyncReports"
