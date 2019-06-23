@@ -54,7 +54,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
-			tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			if (self.World.Map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
+				tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			else
+				tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -175,7 +178,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				this.queued = queued;
 
 				var tileset = a.World.Map.Tileset.ToLowerInvariant();
-				tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
+					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				else
+					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
+
 				tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 			}
 
