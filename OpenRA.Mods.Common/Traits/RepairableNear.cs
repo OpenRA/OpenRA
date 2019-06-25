@@ -41,14 +41,12 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly RepairableNearInfo Info;
 		readonly Actor self;
-		readonly IMove movement;
 		bool requireForceMove;
 
 		public RepairableNear(Actor self, RepairableNearInfo info)
 		{
 			this.self = self;
 			Info = info;
-			movement = self.Trait<IMove>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -104,10 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.QueueActivity(movement.MoveWithinRange(order.Target, Info.CloseEnough, targetLineColor: Color.Green));
+			self.SetTargetLine(order.Target, Color.Green);
 			self.QueueActivity(new Resupply(self, order.Target.Actor, Info.CloseEnough));
-
-			self.SetTargetLine(order.Target, Color.Green, false);
 		}
 
 		public Actor FindRepairBuilding(Actor self)

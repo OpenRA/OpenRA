@@ -44,20 +44,20 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly RepairableInfo Info;
 		readonly IHealth health;
-		readonly IMove movement;
 		Rearmable rearmable;
 		bool requireForceMove;
+		bool isAircraft;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
 			Info = info;
 			health = self.Trait<IHealth>();
-			movement = self.Trait<IMove>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			rearmable = self.TraitOrDefault<Rearmable>();
+			isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -106,58 +106,38 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Repair")
-			{
-				// Repair orders are only valid for own/allied actors,
-				// which are guaranteed to never be frozen.
-				if (order.Target.Type != TargetType.Actor)
-					return;
+			if (order.OrderString != "Repair")
+				return;
 
-				// Aircraft handle Repair orders directly in the Aircraft trait
-				if (self.Info.HasTraitInfo<AircraftInfo>())
-					return;
-
-				if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
-					return;
-
-				if (!order.Queued)
-					self.CancelActivity();
-
-				self.SetTargetLine(order.Target, Color.Green);
-				var activities = ActivityUtils.SequenceActivities(
-					movement.MoveToTarget(self, order.Target, targetLineColor: Color.Green),
-					new CallFunc(() => AfterReachActivities(self, order, movement)));
-
-				self.QueueActivity(new WaitForTransport(self, activities));
-				TryCallTransport(self, order.Target, new CallFunc(() => AfterReachActivities(self, order, movement)));
-			}
-		}
-
-		void AfterReachActivities(Actor self, Order order, IMove movement)
-		{
+			// Repair orders are only valid for own/allied actors,
+			// which are guaranteed to never be frozen.
 			if (order.Target.Type != TargetType.Actor)
 				return;
 
-			var targetActor = order.Target.Actor;
-			if (!targetActor.IsInWorld || targetActor.IsDead || targetActor.TraitsImplementing<RepairsUnits>().All(r => r.IsTraitDisabled))
+			// Aircraft handle Repair orders directly in the Aircraft trait
+			// TODO: Move the order handling of both this trait and Aircraft to a generalistic DockManager
+			if (isAircraft)
 				return;
 
-			// TODO: This is hacky, but almost every single component affected
-			// will need to be rewritten anyway, so this is OK for now.
-			self.QueueActivity(movement.MoveTo(self.World.Map.CellContaining(targetActor.CenterPosition), targetActor));
+			if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
+				return;
 
-			// Add a CloseEnough range of 512 to ensure we're at the host actor
-			self.QueueActivity(new Resupply(self, targetActor, new WDist(512)));
+			if (!order.Queued)
+				self.CancelActivity();
 
-			var rp = targetActor.TraitOrDefault<RallyPoint>();
-			if (rp != null)
-			{
-				self.QueueActivity(new CallFunc(() =>
-				{
-					self.SetTargetLine(Target.FromCell(self.World, rp.Location), Color.Green);
-					self.QueueActivity(movement.MoveTo(rp.Location, targetActor));
-				}));
-			}
+			self.SetTargetLine(order.Target, Color.Green);
+			self.QueueActivity(new Resupply(self, order.Target.Actor, new WDist(512)));
+		}
+
+		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
+		{
+			if (Info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 
 		public Actor FindRepairBuilding(Actor self)
@@ -171,28 +151,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
 			return repairBuilding.FirstOrDefault().Actor;
-		}
-
-		static void TryCallTransport(Actor self, Target target, Activity nextActivity)
-		{
-			var targetCell = self.World.Map.CellContaining(target.CenterPosition);
-			var delta = (self.CenterPosition - target.CenterPosition).LengthSquared;
-			var transports = self.TraitsImplementing<ICallForTransport>()
-				.Where(t => t.MinimumDistance.LengthSquared < delta);
-
-			foreach (var t in transports)
-				t.RequestTransport(self, targetCell, nextActivity);
-		}
-
-		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
-		{
-			if (Info.RequireForceMoveCondition != null)
-				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
-		}
-
-		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
-		{
-			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 	}
 }
