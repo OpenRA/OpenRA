@@ -10,9 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -27,9 +29,13 @@ namespace OpenRA.Mods.Common.Activities
 		readonly RepairableNear repairableNear;
 		readonly Rearmable rearmable;
 		readonly INotifyResupply[] notifyResupplies;
+		readonly ICallForTransport[] transportCallers;
+		readonly IMove move;
+		readonly Aircraft aircraft;
 
 		int remainingTicks;
 		bool played;
+		bool actualResupplyStarted;
 		ResupplyType activeResupplyTypes = ResupplyType.None;
 
 		public Resupply(Actor self, Actor host, WDist closeEnough)
@@ -42,6 +48,9 @@ namespace OpenRA.Mods.Common.Activities
 			repairableNear = self.TraitOrDefault<RepairableNear>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
+			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
+			move = self.Trait<IMove>();
+			aircraft = move as Aircraft;
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| !allRepairsUnits.Any()
@@ -56,23 +65,6 @@ namespace OpenRA.Mods.Common.Activities
 				activeResupplyTypes |= ResupplyType.Rearm;
 		}
 
-		protected override void OnFirstRun(Actor self)
-		{
-			if (host.Type == TargetType.Invalid)
-				return;
-
-			if (activeResupplyTypes > 0)
-				foreach (var notifyResupply in notifyResupplies)
-					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
-
-			// Reset the ReloadDelay to avoid any issues with early cancellation
-			// from previous reload attempts (explicit order, host building died, etc).
-			// HACK: this really shouldn't be managed from here
-			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
-				foreach (var pool in rearmable.RearmableAmmoPools)
-					pool.RemainingTicks = pool.Info.ReloadDelay;
-		}
-
 		public override bool Tick(Actor self)
 		{
 			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
@@ -83,7 +75,6 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
-				var aircraft = self.TraitOrDefault<Aircraft>();
 				if (aircraft != null)
 				{
 					aircraft.AllowYieldingReservation();
@@ -92,20 +83,65 @@ namespace OpenRA.Mods.Common.Activities
 
 					return true;
 				}
-				else if (self.Info.HasTraitInfo<MobileInfo>())
+				else if (repairableNear != null)
+					return true;
+				else
 				{
-					QueueChild(self.Trait<IMove>().MoveToTarget(self, host));
+					QueueChild(move.MoveToTarget(self, host));
 					return false;
 				}
 			}
-			else if (IsCanceling || host.Type == TargetType.Invalid
-				|| (closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
+			else if (IsCanceling || host.Type != TargetType.Actor || !host.Actor.IsInWorld || host.Actor.IsDead)
 			{
 				// This is necessary to ensure host resupply actions (like animations) finish properly
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
 				return true;
+			}
+			else if (activeResupplyTypes != 0 && aircraft == null &&
+				(closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
+			{
+				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
+				List<Activity> movement = new List<Activity>();
+
+				movement.Add(move.MoveWithinRange(host, closeEnough, targetLineColor: Color.Green));
+
+				// HACK: Repairable needs the actor to move to host center.
+				// TODO: Get rid of this or at least replace it with something less hacky.
+				if (repairableNear == null)
+					movement.Add(move.MoveTo(targetCell, host.Actor));
+
+				var moveActivities = ActivityUtils.SequenceActivities(movement.ToArray());
+
+				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
+				var transport = transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta);
+				if (transport != null)
+				{
+					QueueChild(new WaitForTransport(self, moveActivities));
+
+					// TODO: Make this compatible with RepairableNear
+					transport.RequestTransport(self, targetCell, new Resupply(self, host.Actor, closeEnough));
+				}
+				else
+					QueueChild(moveActivities);
+
+				return false;
+			}
+
+			// We don't want to trigger this until we've reached the resupplier and can start resupplying
+			if (!actualResupplyStarted && activeResupplyTypes > 0)
+			{
+				actualResupplyStarted = true;
+				foreach (var notifyResupply in notifyResupplies)
+					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
+
+				// Reset the ReloadDelay to avoid any issues with early cancellation
+				// from previous reload attempts (explicit order, host building died, etc).
+				// HACK: this really shouldn't be managed from here
+				if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
+					foreach (var pool in rearmable.RearmableAmmoPools)
+						pool.RemainingTicks = pool.Info.ReloadDelay;
 			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
@@ -119,9 +155,17 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (activeResupplyTypes == 0)
 			{
-				var aircraft = self.TraitOrDefault<Aircraft>();
 				if (aircraft != null)
 					aircraft.AllowYieldingReservation();
+
+				if (self.CurrentActivity.NextActivity == null)
+				{
+					var rp = host.Actor.TraitOrDefault<RallyPoint>();
+					if (rp != null)
+						Queue(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
+					else if (repairableNear == null)
+						Queue(move.MoveToTarget(self, host));
+				}
 
 				return true;
 			}
