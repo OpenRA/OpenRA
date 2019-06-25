@@ -135,13 +135,6 @@ namespace OpenRA.Mods.Common.Activities
 				actualResupplyStarted = true;
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
-
-				// Reset the ReloadDelay to avoid any issues with early cancellation
-				// from previous reload attempts (explicit order, host building died, etc).
-				// HACK: this really shouldn't be managed from here
-				if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
-					foreach (var pool in rearmable.RearmableAmmoPools)
-						pool.RemainingTicks = pool.Info.ReloadDelay;
 			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))

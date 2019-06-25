@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Rearmable(this); }
 	}
 
-	public class Rearmable : INotifyCreated
+	public class Rearmable : INotifyCreated, INotifyResupply
 	{
 		public readonly RearmableInfo Info;
 
@@ -43,5 +43,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			RearmableAmmoPools = self.TraitsImplementing<AmmoPool>().Where(p => Info.AmmoPools.Contains(p.Info.Name)).ToArray();
 		}
+
+		void INotifyResupply.BeforeResupply(Actor self, Actor target, ResupplyType types)
+		{
+			if (!types.HasFlag(ResupplyType.Rearm))
+				return;
+
+			// Reset the ReloadDelay to avoid any issues with early cancellation
+			// from previous reload attempts (explicit order, host building died, etc).
+			foreach (var pool in RearmableAmmoPools)
+				pool.RemainingTicks = pool.Info.ReloadDelay;
+		}
+
+		void INotifyResupply.ResupplyTick(Actor self, Actor target, ResupplyType types) { }
 	}
 }
