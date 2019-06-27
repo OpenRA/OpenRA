@@ -295,7 +295,7 @@ namespace OpenRA
 
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
-			Log.AddChannel("server", "server.log");
+			Log.AddChannel("server", "server.log", true);
 			Log.AddChannel("sound", "sound.log");
 			Log.AddChannel("graphics", "graphics.log");
 			Log.AddChannel("geoip", "geoip.log");
