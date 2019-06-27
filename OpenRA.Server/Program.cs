@@ -26,10 +26,10 @@ namespace OpenRA.Server
 			if (supportDirArg != null)
 				Platform.OverrideSupportDir(supportDirArg);
 
-			Log.AddChannel("debug", "dedicated-debug.log");
-			Log.AddChannel("perf", "dedicated-perf.log");
-			Log.AddChannel("server", "dedicated-server.log");
-			Log.AddChannel("nat", "dedicated-nat.log");
+			Log.AddChannel("debug", "dedicated-debug.log", true);
+			Log.AddChannel("perf", "dedicated-perf.log", true);
+			Log.AddChannel("server", "dedicated-server.log", true);
+			Log.AddChannel("nat", "dedicated-nat.log", true);
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id

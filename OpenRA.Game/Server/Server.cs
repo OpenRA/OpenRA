@@ -124,7 +124,7 @@ namespace OpenRA.Server
 
 		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData, bool dedicated)
 		{
-			Log.AddChannel("server", "server.log");
+			Log.AddChannel("server", "server.log", true);
 
 			listener = new TcpListener(endpoint);
 			listener.Start();
