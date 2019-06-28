@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "RepairNear")
 				return new Order(order.OrderID, self, target, queued);
@@ -84,12 +84,12 @@ namespace OpenRA.Mods.Common.Traits
 			return self.GetDamageState() > DamageState.Undamaged;
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "RepairNear" && ShouldRepair() ? Info.Voice : null;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			// RepairNear orders are only valid for own/allied actors,
 			// which are guaranteed to never be frozen.
