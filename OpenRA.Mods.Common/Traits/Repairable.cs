@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order.OrderID == "Repair")
 				return new Order(order.OrderID, self, target, queued);
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Repair" && (CanRepair() || CanRearm()) ? Info.Voice : null;
 		}
