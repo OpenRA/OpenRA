@@ -96,6 +96,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
+		[Desc("Range to search for an alternative landing location if the ordered cell is blocked.")]
+		public readonly WDist LandRange = WDist.FromCells(5);
+
 		[Desc("How fast this actor ascends or descends during horizontal movement.")]
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
@@ -200,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
-		CPos? landingCell;
+		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
 
 		public WDist LandAltitude { get; private set; }
@@ -336,12 +339,7 @@ namespace OpenRA.Mods.Common.Traits
 				&& !((self.CurrentActivity is Land) || self.CurrentActivity is Turn))
 			{
 				self.CancelActivity();
-
-				if (Info.VTOL && Info.TurnToLand)
-					self.QueueActivity(new Turn(self, Info.InitialFacing));
-
 				self.QueueActivity(new Land(self));
-
 				ForceLanding = true;
 			}
 
@@ -532,12 +530,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Pair<CPos, SubCell>[] OccupiedCells()
 		{
 			if (!self.IsAtGroundLevel())
-			{
-				if (landingCell.HasValue)
-					return new[] { Pair.New(landingCell.Value, SubCell.FullCell) };
-
-				return NoCells;
-			}
+				return landingCells.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
 			return new[] { Pair.New(TopLeft, SubCell.FullCell) };
 		}
@@ -553,27 +546,63 @@ namespace OpenRA.Mods.Common.Traits
 			return speed * dir / 1024;
 		}
 
-		public bool CanLand(CPos cell, Actor ignoreActor = null)
+		public CPos? FindLandingLocation(CPos targetCell, WDist maxSearchDistance)
+		{
+			// The easy case
+			if (CanLand(targetCell, blockedByMobile: false))
+				return targetCell;
+
+			var cellRange = (maxSearchDistance.Length + 1023) / 1024;
+			var centerPosition = self.World.Map.CenterOfCell(targetCell);
+			foreach (var c in self.World.Map.FindTilesInCircle(targetCell, cellRange))
+			{
+				if (!CanLand(c, blockedByMobile: false))
+					continue;
+
+				var delta = self.World.Map.CenterOfCell(c) - centerPosition;
+				if (delta.LengthSquared < maxSearchDistance.LengthSquared)
+					return c;
+			}
+
+			return null;
+		}
+
+		public bool CanLand(IEnumerable<CPos> cells, Actor dockingActor = null, bool blockedByMobile = true)
+		{
+			foreach (var c in cells)
+				if (!CanLand(c, dockingActor, blockedByMobile))
+					return false;
+
+			return true;
+		}
+
+		public bool CanLand(CPos cell, Actor dockingActor = null, bool blockedByMobile = true)
 		{
 			if (!self.World.Map.Contains(cell))
 				return false;
 
 			foreach (var otherActor in self.World.ActorMap.GetActorsAt(cell))
-				if (IsBlockedBy(self, otherActor, ignoreActor))
+				if (IsBlockedBy(self, otherActor, dockingActor, blockedByMobile))
 					return false;
 
-			foreach (var otherActor in self.World.ActorMap.GetActorsAt(cell))
-				if (AircraftCanEnter(otherActor))
-					return true;
+			// Terrain type is ignored when docking with an actor
+			if (dockingActor != null)
+				return true;
 
 			var type = self.World.Map.GetTerrainInfo(cell).Type;
 			return Info.LandableTerrainTypes.Contains(type);
 		}
 
-		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor)
+		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, bool blockedByMobile = true)
 		{
 			// We are not blocked by the actor we are ignoring.
 			if (otherActor == self || otherActor == ignoreActor)
+				return false;
+
+			// We are not blocked by actors we can nudge out of the way
+			// TODO: Generalize blocker checks and handling here and in Locomotor
+			if (!blockedByMobile && self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
+				otherActor.TraitOrDefault<Mobile>() != null && otherActor.CurrentActivity == null)
 				return false;
 
 			// PERF: Only perform ITemporaryBlocker trait look-up if mod/map rules contain any actors that are temporary blockers
@@ -638,12 +667,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (!atLandAltitude && Info.LandWhenIdle)
-			{
-				if (Info.VTOL && Info.TurnToLand)
-					self.QueueActivity(new Turn(self, Info.InitialFacing));
-
 				self.QueueActivity(new Land(self));
-			}
 			else if (!Info.CanHover && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 			else if (atLandAltitude && !CanLand(self.Location) && ReservedActor == null)
@@ -741,9 +765,16 @@ namespace OpenRA.Mods.Common.Traits
 				notifyCrushed.Trait.WarnCrush(notifyCrushed.Actor, self, Info.Crushes);
 		}
 
+		public void AddInfluence(IEnumerable<CPos> landingCells)
+		{
+			this.landingCells = landingCells;
+			if (self.IsInWorld)
+				self.World.ActorMap.AddInfluence(self, this);
+		}
+
 		public void AddInfluence(CPos landingCell)
 		{
-			this.landingCell = landingCell;
+			landingCells = new List<CPos> { landingCell };
 			if (self.IsInWorld)
 				self.World.ActorMap.AddInfluence(self, this);
 		}
@@ -753,7 +784,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsInWorld)
 				self.World.ActorMap.RemoveInfluence(self, this);
 
-			landingCell = null;
+			landingCells = Enumerable.Empty<CPos>();
 		}
 
 		#endregion

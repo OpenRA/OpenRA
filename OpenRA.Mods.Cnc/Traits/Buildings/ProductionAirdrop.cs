@@ -72,8 +72,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					new FacingInit(64)
 				});
 
-				actor.QueueActivity(new Fly(actor, Target.FromPos(self.CenterPosition + new WVec(landDistance, 0, 0))));
-				actor.QueueActivity(new Land(actor, Target.FromActor(self)));
+				var exitCell = self.Location + exit.ExitCell;
+				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, 64, clearCells: new CPos[1] { exitCell }));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
