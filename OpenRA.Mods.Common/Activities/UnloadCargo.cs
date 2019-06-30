@@ -24,13 +24,27 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Cargo cargo;
 		readonly INotifyUnload[] notifiers;
 		readonly bool unloadAll;
+		readonly Aircraft aircraft;
+		readonly bool assignTargetOnFirstRun;
+		readonly WDist unloadRange;
 
-		public UnloadCargo(Actor self, bool unloadAll)
+		Target destination;
+
+		public UnloadCargo(Actor self, WDist unloadRange, bool unloadAll = true)
+			: this(self, Target.Invalid, unloadRange, unloadAll)
+		{
+			assignTargetOnFirstRun = true;
+		}
+
+		public UnloadCargo(Actor self, Target destination, WDist unloadRange, bool unloadAll = true)
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();
 			notifiers = self.TraitsImplementing<INotifyUnload>().ToArray();
 			this.unloadAll = unloadAll;
+			aircraft = self.TraitOrDefault<Aircraft>();
+			this.destination = destination;
+			this.unloadRange = unloadRange;
 		}
 
 		public Pair<CPos, SubCell>? ChooseExitSubCell(Actor passenger)
@@ -53,6 +67,23 @@ namespace OpenRA.Mods.Common.Activities
 				.Where(c => pos.CanEnterCell(c, null, true) != pos.CanEnterCell(c, null, false));
 		}
 
+		protected override void OnFirstRun(Actor self)
+		{
+			if (assignTargetOnFirstRun)
+				destination = Target.FromCell(self.World, self.Location);
+
+			// Move to the target destination
+			if (aircraft != null)
+				QueueChild(self, new Land(self, destination, unloadRange));
+			else
+			{
+				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(destination.CenterPosition));
+				QueueChild(self, new Move(self, cell, unloadRange));
+			}
+
+			QueueChild(self, new Wait(cargo.Info.BeforeUnloadDelay));
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (ChildActivity != null)
@@ -62,50 +93,52 @@ namespace OpenRA.Mods.Common.Activities
 					return this;
 			}
 
-			cargo.Unloading = false;
 			if (IsCanceling || cargo.IsEmpty(self))
 				return NextActivity;
 
-			if (!cargo.CanUnload())
+			if (cargo.CanUnload())
+			{
+				foreach (var inu in notifiers)
+					inu.Unloading(self);
+
+				var actor = cargo.Peek(self);
+				var spawn = self.CenterPosition;
+
+				var exitSubCell = ChooseExitSubCell(actor);
+				if (exitSubCell == null)
+				{
+					self.NotifyBlocker(BlockedExitCells(actor));
+					QueueChild(self, new Wait(10), true);
+					return this;
+				}
+
+				cargo.Unload(self);
+				self.World.AddFrameEndTask(w =>
+				{
+					if (actor.Disposed)
+						return;
+
+					var move = actor.Trait<IMove>();
+					var pos = actor.Trait<IPositionable>();
+
+					actor.CancelActivity();
+					pos.SetVisualPosition(actor, spawn);
+					actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
+					actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
+					w.Add(actor);
+				});
+			}
+
+			if (!unloadAll || !cargo.CanUnload())
 			{
 				Cancel(self, true);
-				return NextActivity;
+				if (cargo.Info.AfterUnloadDelay > 0)
+					QueueChild(self, new Wait(cargo.Info.AfterUnloadDelay, false), true);
+
+				if (aircraft != null && !aircraft.Info.LandWhenIdle)
+					QueueChild(self, new TakeOff(self), true);
 			}
 
-			foreach (var inu in notifiers)
-				inu.Unloading(self);
-
-			var actor = cargo.Peek(self);
-			var spawn = self.CenterPosition;
-
-			var exitSubCell = ChooseExitSubCell(actor);
-			if (exitSubCell == null)
-			{
-				self.NotifyBlocker(BlockedExitCells(actor));
-				QueueChild(self, new Wait(10), true);
-				return this;
-			}
-
-			cargo.Unload(self);
-			self.World.AddFrameEndTask(w =>
-			{
-				if (actor.Disposed)
-					return;
-
-				var move = actor.Trait<IMove>();
-				var pos = actor.Trait<IPositionable>();
-
-				actor.CancelActivity();
-				pos.SetVisualPosition(actor, spawn);
-				actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
-				actor.SetTargetLine(Target.FromCell(w, exitSubCell.Value.First, exitSubCell.Value.Second), Color.Green, false);
-				w.Add(actor);
-			});
-
-			if (!unloadAll || cargo.IsEmpty(self))
-				return NextActivity;
-
-			cargo.Unloading = true;
 			return this;
 		}
 	}

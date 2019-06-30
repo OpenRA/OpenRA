@@ -47,8 +47,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice to play when ordered to unload the passengers.")]
 		public readonly string UnloadVoice = "Action";
 
+		[Desc("Radius to search for a load/unload location if the ordered cell is blocked.")]
+		public readonly WDist LoadRange = WDist.FromCells(5);
+
 		[Desc("Which direction the passenger will face (relative to the transport) when unloading.")]
 		public readonly int PassengerFacing = 128;
+
+		[Desc("Delay (in ticks) before continuing after loading a passenger.")]
+		public readonly int AfterLoadDelay = 8;
+
+		[Desc("Delay (in ticks) before unloading the first passenger.")]
+		public readonly int BeforeUnloadDelay = 8;
+
+		[Desc("Delay (in ticks) before continuing after unloading a passenger.")]
+		public readonly int AfterUnloadDelay = 25;
 
 		[Desc("Cursor to display when able to unload the passengers.")]
 		public readonly string UnloadCursor = "deploy";
@@ -96,15 +108,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
-		public bool Unloading { get; internal set; }
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 		public int PassengerCount { get { return cargo.Count; } }
+
+		enum State { Free, Locked }
+		State state = State.Free;
 
 		public Cargo(ActorInitializer init, CargoInfo info)
 		{
 			self = init.Self;
 			Info = info;
-			Unloading = false;
 			checkTerrainType = info.UnloadTerrainTypes.Count > 0;
 
 			if (init.Contains<RuntimeCargoInit>())
@@ -195,11 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
-				Unloading = true;
-				if (aircraft != null)
-					self.QueueActivity(new Land(self));
-
-				self.QueueActivity(new UnloadCargo(self, true));
+				self.QueueActivity(new UnloadCargo(self, Info.LoadRange));
 			}
 		}
 
@@ -218,13 +227,13 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 			}
 
-			return !IsEmpty(self) && (aircraft == null || aircraft.CanLand(self.Location))
+			return !IsEmpty(self) && (aircraft == null || aircraft.CanLand(self.Location, blockedByMobile: false))
 				&& CurrentAdjacentCells != null && CurrentAdjacentCells.Any(c => Passengers.Any(p => p.Trait<IPositionable>().CanEnterCell(c, null, immediate)));
 		}
 
 		public bool CanLoad(Actor self, Actor a)
 		{
-			return (reserves.Contains(a) || HasSpace(GetWeight(a))) && self.IsAtGroundLevel();
+			return reserves.Contains(a) || HasSpace(GetWeight(a));
 		}
 
 		internal bool ReserveSpace(Actor a)
@@ -241,6 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			reserves.Add(a);
 			reservedWeight += w;
+			LockForPickup(self);
 
 			return true;
 		}
@@ -252,9 +262,41 @@ namespace OpenRA.Mods.Common.Traits
 
 			reservedWeight -= GetWeight(a);
 			reserves.Remove(a);
+			ReleaseLock(self);
 
 			if (loadingToken != ConditionManager.InvalidConditionToken)
 				loadingToken = conditionManager.RevokeCondition(self, loadingToken);
+		}
+
+		// Prepare for transport pickup
+		bool LockForPickup(Actor self)
+		{
+			if (state == State.Locked)
+				return false;
+
+			state = State.Locked;
+
+			self.CancelActivity();
+
+			var air = self.TraitOrDefault<Aircraft>();
+			if (air != null && !air.AtLandAltitude)
+				self.QueueActivity(new Land(self));
+
+			self.QueueActivity(new WaitFor(() => state != State.Locked, false));
+			return true;
+		}
+
+		void ReleaseLock(Actor self)
+		{
+			if (reservedWeight != 0)
+				return;
+
+			state = State.Free;
+
+			self.QueueActivity(new Wait(Info.AfterLoadDelay, false));
+			var air = self.TraitOrDefault<Aircraft>();
+			if (air != null)
+				self.QueueActivity(new TakeOff(self));
 		}
 
 		public string CursorForOrder(Actor self, Order order)
@@ -353,6 +395,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				reservedWeight -= w;
 				reserves.Remove(a);
+				ReleaseLock(self);
 
 				if (loadingToken != ConditionManager.InvalidConditionToken)
 					loadingToken = conditionManager.RevokeCondition(self, loadingToken);

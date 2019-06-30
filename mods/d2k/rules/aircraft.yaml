@@ -34,8 +34,8 @@ carryall.reinforce:
 		Actor: carryall.huskVTOL
 		RequiresCondition: !cruising
 	Carryall:
-		LoadingDelay: 10
-		UnloadingDelay: 15
+		BeforeLoadDelay: 10
+		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
 	RenderSprites:
 		Image: carryall
@@ -52,8 +52,8 @@ carryall:
 	Inherits: carryall.reinforce
 	-Carryall:
 	AutoCarryall:
-		LoadingDelay: 10
-		UnloadingDelay: 15
+		BeforeLoadDelay: 10
+		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
 	Aircraft:
 		MinAirborneAltitude: 400

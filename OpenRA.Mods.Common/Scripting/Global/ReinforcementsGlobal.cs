@@ -150,44 +150,14 @@ namespace OpenRA.Mods.Common.Scripting
 			else
 			{
 				var aircraft = transport.TraitOrDefault<Aircraft>();
+
+				// Scripted cargo aircraft must turn to default position before unloading.
+				// TODO: pass facing through UnloadCargo instead.
 				if (aircraft != null)
-				{
-					var destination = entryPath.Last();
-
-					// Try to find an alternative landing spot if we can't land at the current destination
-					if (!aircraft.CanLand(destination) && dropRange > 0)
-					{
-						var locomotors = cargo.Passengers
-							.Select(a => a.Info.TraitInfoOrDefault<MobileInfo>())
-							.Where(m => m != null)
-							.Distinct()
-							.Select(m => m.LocomotorInfo)
-							.ToList();
-
-						foreach (var c in transport.World.Map.FindTilesInCircle(destination, dropRange))
-						{
-							if (!aircraft.CanLand(c))
-								continue;
-
-							if (!locomotors.All(m => domainIndex.IsPassable(destination, c, m)))
-								continue;
-
-							destination = c;
-							break;
-						}
-					}
-
-					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination), facing: aircraft.Info.InitialFacing));
-					transport.QueueActivity(new Wait(15));
-				}
+					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last()), WDist.FromCells(dropRange), aircraft.Info.InitialFacing));
 
 				if (cargo != null)
-				{
-					transport.QueueActivity(new UnloadCargo(transport, true));
-					transport.QueueActivity(new WaitFor(() => cargo.IsEmpty(transport)));
-				}
-
-				transport.QueueActivity(new Wait(aircraft != null ? 50 : 25));
+					transport.QueueActivity(new UnloadCargo(transport, WDist.FromCells(dropRange)));
 			}
 
 			if (exitFunc != null)

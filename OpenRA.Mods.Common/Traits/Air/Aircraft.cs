@@ -664,7 +664,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void OnBecomingIdle(Actor self)
 		{
-			var atLandAltitude = self.World.Map.DistanceAboveTerrain(CenterPosition) == LandAltitude;
+			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
+			var atLandAltitude = altitude == LandAltitude;
 
 			// Work-around to prevent players from accidentally canceling resupply by pressing 'Stop',
 			// by re-queueing Resupply as long as resupply hasn't finished and aircraft is still on resupplier.
@@ -692,6 +693,8 @@ namespace OpenRA.Mods.Common.Traits
 				// Will go away soon (in a separate PR) with the arrival of ActionsWhenIdle.
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
 			}
+			else if (!atLandAltitude && altitude != Info.CruiseAltitude && !Info.LandWhenIdle)
+				self.QueueActivity(new TakeOff(self));
 		}
 
 		#region Implement IPositionable

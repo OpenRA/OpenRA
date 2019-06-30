@@ -42,9 +42,15 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Command transport to unload passengers.")]
-		public void UnloadPassengers()
+		public void UnloadPassengers(CPos? cell = null, int unloadRange = 5)
 		{
-			Self.QueueActivity(new UnloadCargo(Self, true));
+			if (cell.HasValue)
+			{
+				var destination = Target.FromCell(Self.World, cell.Value);
+				Self.QueueActivity(new UnloadCargo(Self, destination, WDist.FromCells(unloadRange)));
+			}
+			else
+				Self.QueueActivity(new UnloadCargo(Self, WDist.FromCells(unloadRange)));
 		}
 	}
 }

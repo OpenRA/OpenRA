@@ -190,7 +190,7 @@ ORCATRAN:
 		Prerequisites: ~disabled
 	RenderSprites:
 	Aircraft:
-		LandWhenIdle: true
+		LandWhenIdle: false
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
@@ -210,6 +210,7 @@ ORCATRAN:
 		PipCount: 5
 		UnloadVoice: Move
 		EjectOnDeath: true
+		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: ORCATRAN.Husk
 
@@ -236,6 +237,8 @@ TRNSPORT:
 	Carryall:
 		Voice: Move
 		LocalOffset: 0,0,-317
+		BeforeLoadDelay: 10
+		BeforeUnloadDelay: 10
 	Health:
 		HP: 17500
 	Armor:
