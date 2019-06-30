@@ -177,19 +177,7 @@ namespace OpenRA.Mods.Common.Scripting
 						}
 					}
 
-					if (aircraft.Info.VTOL)
-					{
-						if (destination != entryPath.Last())
-							Move(transport, destination);
-
-						transport.QueueActivity(new Turn(transport, aircraft.Info.InitialFacing));
-						transport.QueueActivity(new Land(transport));
-					}
-					else
-					{
-						transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination)));
-					}
-
+					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, destination), facing: aircraft.Info.InitialFacing));
 					transport.QueueActivity(new Wait(15));
 				}
 

@@ -26,10 +26,9 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Rearmable rearmable;
 		readonly bool alwaysLand;
 		readonly bool abortOnResupply;
-		bool isCalculated;
 		bool resupplied;
 		Actor dest;
-		WPos w1, w2, w3;
+		int facing = -1;
 
 		public ReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
 		{
@@ -53,59 +52,6 @@ namespace OpenRA.Mods.Common.Activities
 					&& rearmInfo.RearmActors.Contains(a.Info.Name)
 					&& (!unreservedOnly || Reservable.IsAvailableFor(a, self)))
 				.ClosestTo(self);
-		}
-
-		// Calculates non-CanHover/non-VTOL approach vector and waypoints
-		void Calculate(Actor self)
-		{
-			if (dest == null)
-				return;
-
-			var exit = dest.FirstExitOrDefault(null);
-			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-
-			var landPos = dest.CenterPosition + offset;
-			var altitude = aircraft.Info.CruiseAltitude.Length;
-
-			// Distance required for descent.
-			var landDistance = altitude * 1024 / aircraft.Info.MaximumPitch.Tan();
-
-			// Land towards the east
-			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
-
-			// Add 10% to the turning radius to ensure we have enough room
-			var speed = aircraft.MovementSpeed * 32 / 35;
-			var turnRadius = Fly.CalculateTurnRadius(speed, aircraft.Info.TurnSpeed);
-
-			// Find the center of the turning circles for clockwise and counterclockwise turns
-			var angle = WAngle.FromFacing(aircraft.Facing);
-			var fwd = -new WVec(angle.Sin(), angle.Cos(), 0);
-
-			// Work out whether we should turn clockwise or counter-clockwise for approach
-			var side = new WVec(-fwd.Y, fwd.X, fwd.Z);
-			var approachDelta = self.CenterPosition - approachStart;
-			var sideTowardBase = new[] { side, -side }
-				.MinBy(a => WVec.Dot(a, approachDelta));
-
-			// Calculate the tangent line that joins the turning circles at the current and approach positions
-			var cp = self.CenterPosition + turnRadius * sideTowardBase / 1024;
-			var posCenter = new WPos(cp.X, cp.Y, altitude);
-			var approachCenter = approachStart + new WVec(0, turnRadius * Math.Sign(self.CenterPosition.Y - approachStart.Y), 0);
-			var tangentDirection = approachCenter - posCenter;
-			var tangentLength = tangentDirection.Length;
-			var tangentOffset = WVec.Zero;
-			if (tangentLength != 0)
-				tangentOffset = new WVec(-tangentDirection.Y, tangentDirection.X, 0) * turnRadius / tangentLength;
-
-			// TODO: correctly handle CCW <-> CW turns
-			if (tangentOffset.X > 0)
-				tangentOffset = -tangentOffset;
-
-			w1 = posCenter + tangentOffset;
-			w2 = approachCenter + tangentOffset;
-			w3 = approachStart;
-
-			isCalculated = true;
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)
@@ -148,10 +94,7 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))
-				dest = ReturnToBase.ChooseResupplier(self, true);
-
-			if (!isCalculated)
-				Calculate(self);
+				dest = ChooseResupplier(self, true);
 
 			if (dest == null)
 			{
@@ -175,62 +118,35 @@ namespace OpenRA.Mods.Common.Activities
 
 						return this;
 					}
-					else
-					{
-						QueueChild(self,
-							new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green),
+
+					QueueChild(self, new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green),
 							true);
-
-						QueueChild(self, new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport), true);
-						return this;
-					}
+					QueueChild(self, new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport), true);
+					return this;
 				}
-				else if (nearestResupplier == null && aircraft.Info.VTOL && aircraft.Info.LandWhenIdle)
-				{
-					// Using Queue instead of QueueChild here is intentional, as we want VTOLs with LandWhenIdle to land and stay there in this situation
-					Cancel(self);
-					if (aircraft.Info.TurnToLand)
-						Queue(self, new Turn(self, aircraft.Info.InitialFacing));
 
-					Queue(self, new Land(self));
-					return NextActivity;
-				}
-				else
-				{
-					// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
-					Cancel(self);
-					return NextActivity;
-				}
-			}
-
-			var exit = dest.FirstExitOrDefault(null);
-			var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-
-			if (aircraft.Info.VTOL || aircraft.Info.CanHover)
-				QueueChild(self, new Fly(self, Target.FromPos(dest.CenterPosition + offset)), true);
-			else
-			{
-				var turnRadius = Fly.CalculateTurnRadius(aircraft.Info.Speed, aircraft.Info.TurnSpeed);
-
-				QueueChild(self, new Fly(self, Target.FromPos(w1), WDist.Zero, new WDist(turnRadius * 3)), true);
-				QueueChild(self, new Fly(self, Target.FromPos(w2)), true);
-
-				// Fix a problem when the airplane is sent to resupply near the airport
-				QueueChild(self, new Fly(self, Target.FromPos(w3), WDist.Zero, new WDist(turnRadius / 2)), true);
+				// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
+				Cancel(self);
+				return NextActivity;
 			}
 
 			if (ShouldLandAtBuilding(self, dest))
 			{
+				var exit = dest.FirstExitOrDefault(null);
+				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
+				if (aircraft.Info.TurnToDock)
+					facing = aircraft.Info.InitialFacing;
+				if (!aircraft.Info.VTOL)
+					facing = 192;
+
 				aircraft.MakeReservation(dest);
-
-				if (aircraft.Info.VTOL && aircraft.Info.TurnToDock)
-					QueueChild(self, new Turn(self, aircraft.Info.InitialFacing), true);
-
-				QueueChild(self, new Land(self, Target.FromActor(dest), offset), true);
+				QueueChild(self, new Land(self, Target.FromActor(dest), offset, facing), true);
 				QueueChild(self, new Resupply(self, dest, WDist.Zero), true);
-				resupplied = true;
 			}
+			else
+				QueueChild(self, new Fly(self, Target.FromActor(dest)), true);
 
+			resupplied = true;
 			return this;
 		}
 	}
