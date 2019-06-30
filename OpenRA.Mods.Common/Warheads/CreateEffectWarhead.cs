@@ -48,55 +48,43 @@ namespace OpenRA.Mods.Common.Warheads
 
 		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
 
-		public ImpactType GetImpactType(World world, CPos cell, WPos pos, Actor firedBy)
+		/// <summary>Checks if there are any actors at impact position and if the warhead is valid against any of them.</summary>
+		ImpactActorType ActorTypeAtImpact(World world, WPos pos, Actor firedBy)
 		{
-			// Matching target actor
-			if (ImpactActors)
-			{
-				var targetType = GetDirectHitTargetType(world, cell, pos, firedBy, true);
-				if (targetType == ImpactTargetType.ValidActor)
-					return ImpactType.TargetHit;
-				if (targetType == ImpactTargetType.InvalidActor)
-					return ImpactType.None;
-			}
+			var anyInvalidActor = false;
 
-			var dat = world.Map.DistanceAboveTerrain(pos);
-			if (dat > AirThreshold)
-				return ImpactType.Air;
-
-			return ImpactType.Ground;
-		}
-
-		public ImpactTargetType GetDirectHitTargetType(World world, CPos cell, WPos pos, Actor firedBy, bool checkTargetValidity = false)
-		{
-			var victims = world.FindActorsOnCircle(pos, WDist.Zero);
-			var invalidHit = false;
-
-			foreach (var victim in victims)
+			// Check whether the impact position overlaps with an actor's hitshape
+			foreach (var victim in world.FindActorsOnCircle(pos, WDist.Zero))
 			{
 				if (!AffectsParent && victim == firedBy)
 					continue;
 
-				if (!victim.Info.HasTraitInfo<IHealthInfo>())
-					continue;
-
-				// If the impact position is within any HitShape, we have a direct hit
 				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
-				var directHit = activeShapes.Any(i => i.DistanceFromEdge(victim, pos).Length <= 0);
-
-				// If the warhead landed outside the actor's hit-shape(s), we need to skip the rest so it won't be considered an invalidHit
-				if (!directHit)
+				if (!activeShapes.Any(s => s.DistanceFromEdge(victim, pos).Length <= 0))
 					continue;
 
-				if (!checkTargetValidity || IsValidAgainst(victim, firedBy))
-					return ImpactTargetType.ValidActor;
+				if (IsValidAgainst(victim, firedBy))
+					return ImpactActorType.Valid;
 
-				// If we got here, it must be an invalid target
-				invalidHit = true;
+				anyInvalidActor = true;
 			}
 
-			// If there was at least a single direct hit, but none on valid target(s), we return InvalidActor
-			return invalidHit ? ImpactTargetType.InvalidActor : ImpactTargetType.NoActor;
+			return anyInvalidActor ? ImpactActorType.Invalid : ImpactActorType.None;
+		}
+
+		// ActorTypeAtImpact already checks AffectsParent beforehand, to avoid parent HitShape look-ups
+		// (and to prevent returning ImpactActorType.Invalid on AffectsParent=false)
+		public override bool IsValidAgainst(Actor victim, Actor firedBy)
+		{
+			var stance = firedBy.Owner.Stances[victim.Owner];
+			if (!ValidStances.HasStance(stance))
+				return false;
+
+			// A target type is valid if it is in the valid targets list, and not in the invalid targets list.
+			if (!IsValidTarget(victim.GetEnabledTargetTypes()))
+				return false;
+
+			return true;
 		}
 
 		public override void DoImpact(Target target, WarheadArgs args)
@@ -107,10 +95,15 @@ namespace OpenRA.Mods.Common.Warheads
 			var firedBy = args.SourceActor;
 			var pos = target.CenterPosition;
 			var world = firedBy.World;
-			var targetTile = world.Map.CellContaining(pos);
-			var isValid = IsValidImpact(pos, firedBy);
+			var actorAtImpact = ImpactActors ? ActorTypeAtImpact(world, pos, firedBy) : ImpactActorType.None;
 
-			if ((!world.Map.Contains(targetTile)) || (!isValid))
+			// Ignore the impact if there are only invalid actors within range
+			if (actorAtImpact == ImpactActorType.Invalid)
+				return;
+
+			// Ignore the impact if there are no valid actors and no valid terrain
+			// (impacts are allowed on valid actors sitting on invalid terrain!)
+			if (actorAtImpact == ImpactActorType.None && !IsValidAgainstTerrain(world, pos))
 				return;
 
 			var explosion = Explosions.RandomOrDefault(world.LocalRandom);
@@ -119,7 +112,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (ForceDisplayAtGroundLevel)
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
-					pos = new WPos(pos.X, pos.Y, pos.Z - dat.Length);
+					pos -= new WVec(0, 0, dat.Length);
 				}
 
 				var palette = ExplosionPalette;
@@ -134,26 +127,15 @@ namespace OpenRA.Mods.Common.Warheads
 				Game.Sound.Play(SoundType.World, impactSound, pos);
 		}
 
-		public bool IsValidImpact(WPos pos, Actor firedBy)
+		/// <summary>Checks if the warhead is valid against the terrain at impact position.</summary>
+		bool IsValidAgainstTerrain(World world, WPos pos)
 		{
-			var world = firedBy.World;
-			var targetTile = world.Map.CellContaining(pos);
-			if (!world.Map.Contains(targetTile))
+			var cell = world.Map.CellContaining(pos);
+			if (!world.Map.Contains(cell))
 				return false;
 
-			var impactType = GetImpactType(world, targetTile, pos, firedBy);
-			switch (impactType)
-			{
-				case ImpactType.TargetHit:
-					return true;
-				case ImpactType.Air:
-					return IsValidTarget(TargetTypeAir);
-				case ImpactType.Ground:
-					var tileInfo = world.Map.GetTerrainInfo(targetTile);
-					return IsValidTarget(tileInfo.TargetTypes);
-				default:
-					return false;
-			}
+			var dat = world.Map.DistanceAboveTerrain(pos);
+			return IsValidTarget(dat > AirThreshold ? TargetTypeAir : world.Map.GetTerrainInfo(cell).TargetTypes);
 		}
 	}
 }
