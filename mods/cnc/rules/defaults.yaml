@@ -328,6 +328,8 @@
 		CanHover: True
 		TakeOffOnResupply: true
 		VTOL: true
+		LandableTerrainTypes: Clear, Rough, Road, Beach, Tiberium, BlueTiberium
+		Crushes: crate, infantry
 		InitialFacing: 224
 	HiddenUnderFog:
 		Type: GroundPosition

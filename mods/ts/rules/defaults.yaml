@@ -875,6 +875,8 @@
 		Voice: Move
 		IdealSeparation: 853
 		MaximumPitch: 120
+		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
+		Crushes: crate, infantry
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:
