@@ -192,6 +192,8 @@ tent:
 		Length: *
 	icon: tenticon
 		UseTilesetExtension: false
+	fake-icon: tenficon
+		UseTilesetExtension: false
 
 kenn:
 	idle:
