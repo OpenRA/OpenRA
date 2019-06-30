@@ -192,9 +192,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
-			if (Aircraft != null)
-				return new FlyAttack(self, newTarget, forceAttack, targetLineColor);
-
 			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 

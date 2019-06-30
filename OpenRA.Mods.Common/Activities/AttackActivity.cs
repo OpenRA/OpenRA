@@ -24,8 +24,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly AttackFollow attack;
 		readonly RevealsShroud[] revealsShroud;
 		readonly IMove move;
+		readonly Aircraft aircraft;
+		readonly Rearmable rearmable;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
+		readonly int ticksUntilTurn;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -36,12 +39,17 @@ namespace OpenRA.Mods.Common.Activities
 		Player lastVisibleOwner;
 		bool wasMovingWithinRange;
 		bool hasTicked;
+		bool returnToBase;
+		int remainingTicksUntilTurn;
 
 		public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			attack = self.Trait<AttackFollow>();
 			move = allowMove ? self.TraitOrDefault<IMove>() : null;
+			aircraft = self.TraitOrDefault<Aircraft>();
 			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
+			rearmable = self.TraitOrDefault<Rearmable>();
+			ticksUntilTurn = attack.Info.AttackTurnDelay;
 
 			this.target = target;
 			this.forceAttack = forceAttack;
@@ -71,6 +79,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			returnToBase = false;
+
 			if (IsCanceling)
 				return true;
 
@@ -91,7 +101,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
 				lastVisibleMaximumRange = attack.GetMaximumRangeVersusTarget(target);
-				lastVisibleMinimumRange = attack.GetMinimumRange();
+				lastVisibleMinimumRange = attack.GetMinimumRangeVersusTarget(target);
 				lastVisibleOwner = target.Actor.Owner;
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 
@@ -130,33 +140,72 @@ namespace OpenRA.Mods.Common.Activities
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
 
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
+			// TODO: Apply to ground units as well.
+			if (aircraft != null && rearmable != null && !useLastVisibleTarget && attack.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			{
+				QueueChild(new ReturnToBase(self));
+				returnToBase = true;
+				return attack.Info.AbortOnResupply;
+			}
+
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
-			// We've reached the required range - if the target is visible and valid then we wait
-			// otherwise if it is hidden or dead we give up
-			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
+			// We don't know where the target actually is, so move to where we last saw it
+			if (useLastVisibleTarget)
 			{
-				if (useLastVisibleTarget)
+				// We've reached the assumed position but it is not there - give up
+				if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
 					return true;
 
-				// Turn to face the target if required.
-				if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
-				{
-					var desiredFacing = (attack.GetTargetPosition(pos, target) - pos).Yaw.Facing;
-					attack.Mobile.Facing = Util.TickFacing(attack.Mobile.Facing, desiredFacing, attack.Mobile.TurnSpeed);
-					return false;
-				}
+				// We can't move into range, so give up
+				if (move == null || maxRange == WDist.Zero || maxRange < minRange)
+					return true;
 
+				// Move towards the last known position
+				wasMovingWithinRange = true;
+				QueueChild(attack.Move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
 				return false;
 			}
 
-			// We can't move into range, so give up
-			if (move == null || maxRange == WDist.Zero || maxRange < minRange)
-				return true;
+			if (aircraft != null)
+				QueueChild(new TakeOff(self));
 
-			wasMovingWithinRange = true;
-			QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition));
+			// When strafing we must move forward for a minimum number of ticks after passing the target.
+			// TODO: Apply to ground units as well.
+			if (remainingTicksUntilTurn > 0)
+			{
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+				remainingTicksUntilTurn--;
+			}
+
+			// Default attack pattern --> Follow target and stop when in range.
+			else if (!target.IsInRange(pos, maxRange) || target.IsInRange(pos, minRange))
+			{
+				// We can't move into range, so give up
+				if (move == null || maxRange == WDist.Zero || maxRange < minRange)
+					return true;
+
+				QueueChild(attack.Move.MoveWithinRange(target, minRange, maxRange, target.CenterPosition, Color.Red));
+			}
+
+			// Strafing unit must keep moving forward even if it is already in an ideal position.
+			// TODO: Apply to ground units as well.
+			else if ((aircraft != null && !aircraft.Info.CanHover) || attack.Info.AttackType == AttackType.Strafe)
+			{
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+				remainingTicksUntilTurn = attack.Info.AttackTurnDelay;
+			}
+
+			// Turn to face the target if required.
+			else if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
+			{
+				var delta = attack.GetTargetPosition(pos, target) - pos;
+				var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : attack.Move.Facing;
+				attack.Move.Facing = Util.TickFacing(attack.Move.Facing, desiredFacing, attack.Move.TurnSpeed);
+			}
+
 			return false;
 		}
 
@@ -179,7 +228,13 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (targetLineColor != null)
-				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+			{
+				if (returnToBase)
+					foreach (var n in ChildActivity.TargetLineNodes(self))
+						yield return n;
+				if (!returnToBase || !attack.Info.AbortOnResupply)
+					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+			}
 		}
 	}
 }
