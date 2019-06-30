@@ -32,6 +32,42 @@ FPWR:
 	Valued:
 		Cost: 30
 
+TENF:
+	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
+	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 48,48
+	Buildable:
+		BuildPaletteOrder: 880
+		Queue: Defense
+		Prerequisites: ~structures.france, ~techlevel.infonly
+		Description: Looks like an Allied Barracks.
+		Icon: fake-icon
+	Tooltip:
+		Name: Fake Allied Barracks
+		GenericName: Allied Barracks
+		GenericVisibility: Enemy
+		GenericStancePrefix: False
+	Building:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	RenderSprites:
+		Image: TENT
+	Valued:
+		Cost: 50
+	Health:
+		HP: 60000
+	Armor:
+		Type: Wood
+	WithBuildingBib:
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
+	Selectable:
+		Bounds: 48,48
+
 SYRF:
 	Inherits: ^FakeBuilding
 	Inherits@infiltrate: ^InfiltratableFake
