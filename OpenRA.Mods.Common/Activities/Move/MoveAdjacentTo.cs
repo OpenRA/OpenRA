@@ -40,7 +40,6 @@ namespace OpenRA.Mods.Common.Activities
 		Target lastVisibleTarget;
 		protected CPos lastVisibleTargetLocation;
 		bool useLastVisibleTarget;
-		bool repath;
 
 		public MoveAdjacentTo(Actor self, Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -63,8 +62,6 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
 				lastVisibleTargetLocation = self.World.Map.CellContaining(initialTargetPosition.Value);
 			}
-
-			repath = true;
 		}
 
 		protected virtual bool ShouldStop(Actor self)
@@ -80,6 +77,11 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual IEnumerable<CPos> CandidateMovementCells(Actor self)
 		{
 			return Util.AdjacentCells(self.World, Target);
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			QueueChild(self, Mobile.MoveTo(() => CalculatePathToTarget(self)));
 		}
 
 		public override Activity Tick(Actor self)
@@ -106,35 +108,21 @@ namespace OpenRA.Mods.Common.Activities
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			var noTarget = useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self);
 
-			// Inner move order has completed.
-			if (ChildActivity == null)
-			{
-				// We are done here if the order was cancelled for any
-				// reason except the target moving.
-				if (IsCanceling || !repath || !targetIsValid)
-					return NextActivity;
-
-				// Target has moved, and MoveAdjacentTo is still valid.
-				ChildActivity = Mobile.MoveTo(() => CalculatePathToTarget(self));
-				repath = false;
-			}
-
 			// Cancel the current path if the activity asks to stop, or asks to repath
 			// The repath happens once the move activity stops in the next cell
-			var shouldStop = ShouldStop(self);
-			var shouldRepath = targetIsValid && !repath && ShouldRepath(self, oldTargetLocation);
-			if (shouldStop || shouldRepath || noTarget)
-			{
-				if (ChildActivity != null)
-					ChildActivity.Cancel(self);
+			var shouldRepath = targetIsValid && ShouldRepath(self, oldTargetLocation);
+			if (ChildActivity != null && (ShouldStop(self) || shouldRepath || noTarget))
+				ChildActivity.Cancel(self);
 
-				repath = shouldRepath;
-			}
+			// Target has moved, and MoveAdjacentTo is still valid.
+			if (!IsCanceling && shouldRepath)
+				QueueChild(self, Mobile.MoveTo(() => CalculatePathToTarget(self)));
 
-			// Ticks the inner move activity to actually move the actor.
 			ChildActivity = ActivityUtils.RunActivity(self, ChildActivity);
+			if (ChildActivity != null)
+				return this;
 
-			return this;
+			return NextActivity;
 		}
 
 		List<CPos> CalculatePathToTarget(Actor self)
