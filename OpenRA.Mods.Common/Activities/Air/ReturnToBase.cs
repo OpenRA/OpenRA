@@ -25,16 +25,13 @@ namespace OpenRA.Mods.Common.Activities
 		readonly RepairableInfo repairableInfo;
 		readonly Rearmable rearmable;
 		readonly bool alwaysLand;
-		readonly bool abortOnResupply;
-		bool resupplied;
 		Actor dest;
 		int facing = -1;
 
-		public ReturnToBase(Actor self, bool abortOnResupply, Actor dest = null, bool alwaysLand = true)
+		public ReturnToBase(Actor self, Actor dest = null, bool alwaysLand = true)
 		{
 			this.dest = dest;
 			this.alwaysLand = alwaysLand;
-			this.abortOnResupply = abortOnResupply;
 			aircraft = self.Trait<Aircraft>();
 			repairableInfo = self.Info.TraitInfoOrDefault<RepairableInfo>();
 			rearmable = self.TraitOrDefault<Rearmable>();
@@ -73,17 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft.ForceLanding)
 				return true;
 
-			// If a Cancel was triggered at this point, it's unlikely that previously queued child activities finished,
-			// so 'resupplied' needs to be set to false, else it + abortOnResupply might cause another Cancel
-			// that would cancel any other activities that were queued after the first Cancel was triggered.
-			// TODO: This is a mess, we need to somehow make the activity cancelling a bit less tricky.
-			if (resupplied && IsCanceling)
-				resupplied = false;
-
-			if (resupplied && abortOnResupply)
-				self.CancelActivity();
-
-			if (resupplied || IsCanceling || self.IsDead)
+			if (IsCanceling || self.IsDead)
 				return true;
 
 			if (dest == null || dest.IsDead || !Reservable.IsAvailableFor(dest, self))
@@ -136,11 +123,11 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Resupply(self, dest, WDist.Zero));
 				if (aircraft.Info.TakeOffOnResupply && !alwaysLand)
 					QueueChild(new TakeOff(self));
-			}
-			else
-				QueueChild(new Fly(self, Target.FromActor(dest)));
 
-			resupplied = true;
+				return true;
+			}
+
+			QueueChild(new Fly(self, Target.FromActor(dest)));
 			return false;
 		}
 	}

@@ -117,9 +117,8 @@ namespace OpenRA.Mods.Common.Activities
 				// Cannot land so fly towards the last target location instead.
 				if (!newLocation.HasValue)
 				{
-					Cancel(self, true);
 					QueueChild(aircraft.MoveTo(landingCell, 0));
-					return false;
+					return true;
 				}
 
 				if (newLocation.Value != landingCell)

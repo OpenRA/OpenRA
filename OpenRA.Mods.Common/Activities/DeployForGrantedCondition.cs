@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly GrantConditionOnDeploy deploy;
 		readonly bool canTurn;
 		readonly bool moving;
-		bool initiated;
 
 		public DeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy, bool moving = false)
 		{
@@ -38,13 +37,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			if (IsCanceling || initiated || (deploy.DeployState != DeployState.Deployed && moving))
+			if (IsCanceling || (deploy.DeployState != DeployState.Deployed && moving))
 				return true;
 
 			QueueChild(new DeployInner(self, deploy));
-
-			initiated = true;
-			return false;
+			return true;
 		}
 	}
 

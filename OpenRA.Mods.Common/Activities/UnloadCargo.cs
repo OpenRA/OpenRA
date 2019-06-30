@@ -129,13 +129,13 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!unloadAll || !cargo.CanUnload())
 			{
-				Cancel(self, true);
-
 				if (cargo.Info.AfterUnloadDelay > 0)
 					QueueChild(new Wait(cargo.Info.AfterUnloadDelay, false));
 
 				if (takeOffAfterUnload)
 					QueueChild(new TakeOff(self));
+
+				return true;
 			}
 
 			return false;
