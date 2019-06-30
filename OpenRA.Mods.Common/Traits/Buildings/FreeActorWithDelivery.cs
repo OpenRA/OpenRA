@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Offset relative to the top-left cell of the building.")]
 		public readonly CVec DeliveryOffset = CVec.Zero;
 
+		[Desc("Range to search for an alternative delivery location if the DeliveryOffset cell is blocked.")]
+		public readonly WDist DeliveryRange = WDist.Zero;
+
 		public override object Create(ActorInitializer init) { return new FreeActorWithDelivery(init, this); }
 	}
 
@@ -58,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			carryable.Reserve(cargo, carrier);
 
 			carrier.Trait<Carryall>().AttachCarryable(carrier, cargo);
-			carrier.QueueActivity(new DeliverUnit(carrier, location));
+			carrier.QueueActivity(new DeliverUnit(carrier, Target.FromCell(self.World, location), Info.DeliveryRange));
 			carrier.QueueActivity(new Fly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
 			carrier.QueueActivity(new RemoveSelf());
 

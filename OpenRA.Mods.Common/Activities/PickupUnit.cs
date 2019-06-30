@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly int delay;
 
-		enum PickupState { Intercept, LockCarryable, MoveToCarryable, Turn, Land, Wait, Pickup }
+		enum PickupState { Intercept, LockCarryable, Pickup }
 
 		PickupState state;
 
@@ -86,63 +86,23 @@ namespace OpenRA.Mods.Common.Activities
 					if (!carryable.LockForPickup(cargo, self))
 						Cancel(self);
 
-					state = PickupState.MoveToCarryable;
-					return this;
-
-				case PickupState.MoveToCarryable:
-				{
-					// Line up with the attachment point
-					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
-					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
-					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0)
-					{
-						QueueChild(self, new Fly(self, Target.FromPos(targetPosition)), true);
-						return this;
-					}
-
-					state = PickupState.Turn;
-					return this;
-				}
-
-				case PickupState.Turn:
-					if (carryallFacing.Facing != carryableFacing.Facing)
-					{
-						QueueChild(self, new Turn(self, carryableFacing.Facing), true);
-						return this;
-					}
-
-					state = PickupState.Land;
-					return this;
-
-				case PickupState.Land:
-				{
-					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
-					var targetPosition = cargo.CenterPosition - carryableBody.LocalToWorld(localOffset);
-					if ((self.CenterPosition - targetPosition).HorizontalLengthSquared != 0 || carryallFacing.Facing != carryableFacing.Facing)
-					{
-						state = PickupState.MoveToCarryable;
-						return this;
-					}
-
-					if (targetPosition.Z != self.CenterPosition.Z)
-					{
-						QueueChild(self, new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset)));
-						return this;
-					}
-
-					state = delay > 0 ? PickupState.Wait : PickupState.Pickup;
-					return this;
-				}
-
-				case PickupState.Wait:
-					QueueChild(self, new Wait(delay, false), true);
 					state = PickupState.Pickup;
 					return this;
 
 				case PickupState.Pickup:
+				{
+					// Land at the target location
+					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
+					QueueChild(self, new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing));
+
+					// Pause briefly before attachment for visual effect
+					if (delay > 0)
+						QueueChild(self, new Wait(delay, false), true);
+
 					// Remove our carryable from world
-					Attach(self);
+					QueueChild(self, new CallFunc(() => Attach(self)));
 					return this;
+				}
 			}
 
 			return NextActivity;

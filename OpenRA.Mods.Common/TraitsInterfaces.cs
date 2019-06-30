@@ -448,6 +448,16 @@ namespace OpenRA.Mods.Common.Traits
 		Activity WrapMove(Activity moveInner);
 	}
 
+	public interface IAircraftCenterPositionOffset
+	{
+		WVec PositionOffset { get; }
+	}
+
+	public interface IOverrideAircraftLanding
+	{
+		HashSet<string> LandableTerrainTypes { get; }
+	}
+
 	public interface IRadarSignature
 	{
 		void PopulateRadarSignatureCells(Actor self, List<Pair<CPos, Color>> destinationBuffer);

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Carryall : INotifyKilled, ISync, ITick, IRender, INotifyActorDisposing, IIssueOrder, IResolveOrder,
-		IOrderVoice, IIssueDeployOrder
+		IOrderVoice, IIssueDeployOrder, IAircraftCenterPositionOffset, IOverrideAircraftLanding
 	{
 		public enum CarryallState
 		{
@@ -80,7 +80,8 @@ namespace OpenRA.Mods.Common.Traits
 		public CarryallState State { get; private set; }
 
 		int cachedFacing;
-		IActorPreview[] carryablePreview = null;
+		IActorPreview[] carryablePreview;
+		HashSet<string> landableTerrainTypes;
 
 		/// <summary>Offset between the carryall's and the carried actor's CenterPositions</summary>
 		public WVec CarryableOffset { get; private set; }
@@ -154,6 +155,17 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.LocalOffset - carryable.Info.TraitInfo<CarryableInfo>().LocalOffset;
 		}
 
+		WVec IAircraftCenterPositionOffset.PositionOffset
+		{
+			get
+			{
+				var localOffset = CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+				return body.LocalToWorld(localOffset);
+			}
+		}
+
+		HashSet<string> IOverrideAircraftLanding.LandableTerrainTypes { get { return landableTerrainTypes ?? aircraft.Info.LandableTerrainTypes; } }
+
 		public virtual bool AttachCarryable(Actor self, Actor carryable)
 		{
 			if (State == CarryallState.Carrying)
@@ -164,7 +176,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ScreenMap.AddOrUpdate(self);
 
 			CarryableOffset = OffsetForCarryable(self, carryable);
-			aircraft.AddLandingOffset(-CarryableOffset.Z);
+			landableTerrainTypes = Carryable.Trait<Mobile>().Info.LocomotorInfo.TerrainSpeeds.Keys.ToHashSet();
+
 			return true;
 		}
 
@@ -174,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ScreenMap.AddOrUpdate(self);
 
 			carryablePreview = null;
-			aircraft.SubtractLandingOffset(-CarryableOffset.Z);
+			landableTerrainTypes = null;
 			CarryableOffset = WVec.Zero;
 		}
 
@@ -245,9 +258,8 @@ namespace OpenRA.Mods.Common.Traits
 		// Check if we can drop the unit at our current location.
 		public bool CanUnload()
 		{
-			var localOffset = CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-			var targetCell = self.World.Map.CellContaining(self.CenterPosition + body.LocalToWorld(localOffset));
-			return Carryable != null && Carryable.Trait<IPositionable>().CanEnterCell(targetCell, self);
+			var targetCell = self.World.Map.CellContaining(aircraft.GetPosition());
+			return Carryable != null && aircraft.CanLand(targetCell, blockedByMobile: false);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -286,14 +298,14 @@ namespace OpenRA.Mods.Common.Traits
 
 				var targetLocation = move.NearestMoveableCell(cell);
 				self.SetTargetLine(Target.FromCell(self.World, targetLocation), Color.Yellow);
-				self.QueueActivity(order.Queued, new DeliverUnit(self, targetLocation));
+				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange));
 			}
 			else if (order.OrderString == "Unload")
 			{
 				if (!order.Queued && !CanUnload())
 					return;
 
-				self.QueueActivity(order.Queued, new DeliverUnit(self));
+				self.QueueActivity(order.Queued, new DeliverUnit(self, Info.DropRange));
 			}
 
 			if (order.OrderString == "PickupUnit")
