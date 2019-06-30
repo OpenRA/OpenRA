@@ -105,6 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
+		bool takeOffAfterLoad;
 
 		CPos currentCell;
 		public IEnumerable<CPos> CurrentAdjacentCells { get; private set; }
@@ -280,7 +281,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			var air = self.TraitOrDefault<Aircraft>();
 			if (air != null && !air.AtLandAltitude)
+			{
+				takeOffAfterLoad = true;
 				self.QueueActivity(new Land(self));
+			}
 
 			self.QueueActivity(new WaitFor(() => state != State.Locked, false));
 			return true;
@@ -294,9 +298,10 @@ namespace OpenRA.Mods.Common.Traits
 			state = State.Free;
 
 			self.QueueActivity(new Wait(Info.AfterLoadDelay, false));
-			var air = self.TraitOrDefault<Aircraft>();
-			if (air != null)
+			if (takeOffAfterLoad)
 				self.QueueActivity(new TakeOff(self));
+
+			takeOffAfterLoad = false;
 		}
 
 		public string CursorForOrder(Actor self, Order order)
