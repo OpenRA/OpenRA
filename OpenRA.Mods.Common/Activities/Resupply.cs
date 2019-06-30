@@ -117,16 +117,20 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var aircraft = self.TraitOrDefault<Aircraft>();
 				if (aircraft != null)
-				{
 					aircraft.AllowYieldingReservation();
-					if (aircraft.Info.TakeOffOnResupply)
-						Queue(self, new TakeOff(self));
-				}
 
 				return NextActivity;
 			}
 
 			return this;
+		}
+
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			if (NextActivity != null)
+				return;
+
+			base.Cancel(self, keepQueue);
 		}
 
 		void RepairTick(Actor self)

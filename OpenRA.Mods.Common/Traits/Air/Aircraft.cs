@@ -527,7 +527,7 @@ namespace OpenRA.Mods.Common.Traits
 			return AircraftCanEnter(a);
 		}
 
-		public bool AircraftCanEnter(Actor a)
+		bool AircraftCanEnter(Actor a)
 		{
 			if (self.AppearsHostileTo(a))
 				return false;
@@ -905,6 +905,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				yield return new EnterAlliedActorTargeter<BuildingInfo>("ForceEnter", 6,
+					(target, modifiers) => AircraftCanEnter(target) && modifiers.HasModifier(TargetModifiers.ForceMove),
+					target => Reservable.IsAvailableFor(target, self));
+
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
 					AircraftCanEnter, target => Reservable.IsAvailableFor(target, self));
 
@@ -914,7 +918,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land")
+			if (order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land" || order.OrderID == "ForceEnter")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -945,6 +949,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					return Info.Voice;
 				case "Enter":
+				case "ForceEnter":
 				case "Stop":
 				case "Scatter":
 					return Info.Voice;
@@ -956,7 +961,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Move")
+			var orderString = order.OrderString;
+			if (orderString == "Move")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
@@ -969,7 +975,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(target, Color.Green);
 				self.QueueActivity(order.Queued, new Fly(self, target));
 			}
-			else if (order.OrderString == "Land")
+			else if (orderString == "Land")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
@@ -983,9 +989,9 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(target, Color.Green);
 				self.QueueActivity(order.Queued, new Land(self, target));
 			}
-			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
+			else if (orderString == "Enter" || orderString == "ForceEnter" || orderString == "Repair")
 			{
-				// Enter and Repair orders are only valid for own/allied actors,
+				// Enter, ForceEnter and Repair orders are only valid for own/allied actors,
 				// which are guaranteed to never be frozen.
 				if (order.Target.Type != TargetType.Actor)
 					return;
@@ -999,9 +1005,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (Reservable.IsAvailableFor(targetActor, self))
 					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 
-				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor));
+				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in automatically forcing
+				// them to land on a resupplier. For aircraft without it, it makes more sense to land than to idle above a
+				// free resupplier.
+				var forceLand = orderString == "ForceEnter" || !Info.TakeOffOnResupply;
+				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, targetActor, forceLand));
 			}
-			else if (order.OrderString == "Stop")
+			else if (orderString == "Stop")
 			{
 				self.CancelActivity();
 
@@ -1012,7 +1022,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				UnReserve();
 			}
-			else if (order.OrderString == "ReturnToBase" && rearmable != null && rearmable.Info.RearmActors.Any())
+			else if (orderString == "ReturnToBase" && rearmable != null && rearmable.Info.RearmActors.Any())
 			{
 				// Don't restart activity every time deploy hotkey is triggered
 				if (self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
@@ -1022,10 +1032,10 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in forcing them to land
-				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier, though.
+				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier.
 				self.QueueActivity(order.Queued, new ReturnToBase(self, Info.AbortOnResupply, null, !Info.TakeOffOnResupply));
 			}
-			else if (order.OrderString == "Scatter")
+			else if (orderString == "Scatter")
 				Nudge(self);
 		}
 

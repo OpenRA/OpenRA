@@ -142,6 +142,8 @@ namespace OpenRA.Mods.Common.Activities
 				aircraft.MakeReservation(dest);
 				QueueChild(self, new Land(self, Target.FromActor(dest), offset, facing), true);
 				QueueChild(self, new Resupply(self, dest, WDist.Zero), true);
+				if (aircraft.Info.TakeOffOnResupply && !alwaysLand)
+					QueueChild(self, new TakeOff(self));
 			}
 			else
 				QueueChild(self, new Fly(self, Target.FromActor(dest)), true);
