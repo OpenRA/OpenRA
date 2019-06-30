@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist unloadRange;
 
 		Target destination;
+		bool takeOffAfterUnload;
 
 		public UnloadCargo(Actor self, WDist unloadRange, bool unloadAll = true)
 			: this(self, Target.Invalid, unloadRange, unloadAll)
@@ -74,7 +75,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Move to the target destination
 			if (aircraft != null)
+			{
+				// Queue the activity even if already landed in case self.Location != destination
 				QueueChild(self, new Land(self, destination, unloadRange));
+				takeOffAfterUnload = !aircraft.AtLandAltitude;
+			}
 			else
 			{
 				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(destination.CenterPosition));
@@ -135,7 +140,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (cargo.Info.AfterUnloadDelay > 0)
 					QueueChild(self, new Wait(cargo.Info.AfterUnloadDelay, false), true);
 
-				if (aircraft != null && !aircraft.Info.LandWhenIdle)
+				if (takeOffAfterUnload)
 					QueueChild(self, new TakeOff(self), true);
 			}
 
