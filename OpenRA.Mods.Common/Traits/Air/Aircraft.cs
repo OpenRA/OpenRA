@@ -680,7 +680,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (!atLandAltitude && Info.LandWhenIdle)
+			if (!atLandAltitude && Info.LandWhenIdle && Info.LandableTerrainTypes.Count > 0)
 				self.QueueActivity(new Land(self));
 			else if (!Info.CanHover && !atLandAltitude)
 				self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
@@ -914,7 +914,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter" || order.OrderID == "Move")
+			if (order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -934,6 +934,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			switch (order.OrderString)
 			{
+				case "Land":
 				case "Move":
 					if (!Info.MoveIntoShroud && order.Target.Type != TargetType.Invalid)
 					{
@@ -967,6 +968,20 @@ namespace OpenRA.Mods.Common.Traits
 				var target = Target.FromCell(self.World, cell);
 				self.SetTargetLine(target, Color.Green);
 				self.QueueActivity(order.Queued, new Fly(self, target));
+			}
+			else if (order.OrderString == "Land")
+			{
+				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
+				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+					return;
+
+				if (!order.Queued)
+					UnReserve();
+
+				var target = Target.FromCell(self.World, cell);
+
+				self.SetTargetLine(target, Color.Green);
+				self.QueueActivity(order.Queued, new Land(self, target));
 			}
 			else if (order.OrderString == "Enter" || order.OrderString == "Repair")
 			{
@@ -1095,13 +1110,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly Aircraft aircraft;
 
-			public string OrderID { get { return "Move"; } }
+			public string OrderID { get; protected set; }
 			public int OrderPriority { get { return 4; } }
 			public bool IsQueued { get; protected set; }
 
 			public AircraftMoveOrderTargeter(Aircraft aircraft)
 			{
 				this.aircraft = aircraft;
+				OrderID = "Move";
 			}
 
 			public bool TargetOverridesSelection(TargetModifiers modifiers)
@@ -1113,6 +1129,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
+
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					OrderID = "Land";
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				var explored = self.Owner.Shroud.IsExplored(location);

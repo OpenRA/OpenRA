@@ -119,20 +119,22 @@ namespace OpenRA.Mods.Common.Activities
 			// Look for free landing cell
 			if (target.Type == TargetType.Terrain && !landingInitiated)
 			{
-				var targetLocation = aircraft.FindLandingLocation(landingCell, landRange);
-				if (!targetLocation.HasValue)
+				var newLocation = aircraft.FindLandingLocation(landingCell, landRange);
+
+				// Cannot land so fly towards the last target location instead.
+				if (!newLocation.HasValue)
 				{
-					// Maintain holding pattern.
-					if (aircraft.Info.CanHover)
-						QueueChild(self, new Wait(25), true);
-					else
-						QueueChild(self, new FlyCircle(self, 25), true);
+					Cancel(self, true);
+					QueueChild(self, aircraft.MoveTo(landingCell, 0), true);
 					return this;
 				}
 
-				target = Target.FromCell(self.World, targetLocation.Value);
-				targetPosition = target.CenterPosition + offset;
-				landingCell = self.World.Map.CellContaining(targetPosition);
+				if (newLocation.Value != landingCell)
+				{
+					target = Target.FromCell(self.World, newLocation.Value);
+					targetPosition = target.CenterPosition + offset;
+					landingCell = self.World.Map.CellContaining(targetPosition);
+				}
 			}
 
 			// Move towards landing location

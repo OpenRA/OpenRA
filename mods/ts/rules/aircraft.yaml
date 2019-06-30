@@ -10,8 +10,6 @@ DPOD:
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		Crushes: crate, infantry
 	Health:
 		HP: 6000
 	Armor:
@@ -46,8 +44,6 @@ DSHP:
 		TurnSpeed: 5
 		Speed: 168
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		Crushes: crate, infantry
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		IdealSeparation: 1275
@@ -198,8 +194,6 @@ ORCATRAN:
 		TurnSpeed: 5
 		Speed: 84
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		Crushes: crate, infantry
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
@@ -233,12 +227,9 @@ TRNSPORT:
 		Prerequisites: ~gahpad, gadept
 		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
 	Aircraft:
-		LandWhenIdle: true
 		TurnSpeed: 5
 		Speed: 149
 		InitialFacing: 0
-		LandableTerrainTypes: Clear,Road,Rail,DirtRoad,Rough,Tiberium,BlueTiberium,Veins
-		Crushes: crate, infantry
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		MoveIntoShroud: false

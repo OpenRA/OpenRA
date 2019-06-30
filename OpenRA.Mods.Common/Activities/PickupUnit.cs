@@ -66,7 +66,15 @@ namespace OpenRA.Mods.Common.Activities
 			if (cargo != carryall.Carryable)
 				return NextActivity;
 
-			if (cargo.IsDead || IsCanceling || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+			if (IsCanceling)
+			{
+				if (carryall.State == Carryall.CarryallState.Reserved)
+					carryall.UnreserveCarryable(self);
+
+				return NextActivity;
+			}
+
+			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
 			{
 				carryall.UnreserveCarryable(self);
 				return NextActivity;
@@ -93,14 +101,15 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					// Land at the target location
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
-					QueueChild(self, new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing));
+					QueueChild(self, new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing), true);
 
 					// Pause briefly before attachment for visual effect
 					if (delay > 0)
-						QueueChild(self, new Wait(delay, false), true);
+						QueueChild(self, new Wait(delay, false));
 
 					// Remove our carryable from world
 					QueueChild(self, new CallFunc(() => Attach(self)));
+					QueueChild(self, new TakeOff(self));
 					return this;
 				}
 			}

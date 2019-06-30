@@ -97,6 +97,9 @@ namespace OpenRA.Mods.Common.Activities
 			// Checking for NextActivity == null again in case another activity was queued while taking off
 			if (moveToRallyPoint && NextActivity == null)
 			{
+				if (!aircraft.Info.VTOL && assignTargetOnFirstRun)
+					return NextActivity;
+
 				QueueChild(self, new AttackMoveActivity(self, () => move.MoveToTarget(self, target)), true);
 				moveToRallyPoint = false;
 				return this;
