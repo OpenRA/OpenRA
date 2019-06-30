@@ -22,8 +22,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Harvester harv;
 		readonly Actor targetActor;
 
-		bool isDocking;
-
 		public DeliverResources(Actor self, Actor targetActor = null)
 		{
 			movement = self.Trait<IMove>();
@@ -39,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			if (IsCanceling || isDocking)
+			if (IsCanceling)
 				return true;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
@@ -66,14 +64,8 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			if (!isDocking)
-			{
-				QueueChild(new Wait(10));
-				isDocking = true;
-				iao.OnDock(self, this);
-				return false;
-			}
-
+			QueueChild(new Wait(10));
+			iao.OnDock(self, this);
 			return true;
 		}
 	}
