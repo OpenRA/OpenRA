@@ -168,9 +168,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Reserve(Actor self, Cargo cargo)
 		{
+			if (cargo == ReservedCargo)
+				return true;
+
 			Unreserve(self);
 			if (!cargo.ReserveSpace(self))
 				return false;
+
 			ReservedCargo = cargo;
 			return true;
 		}
@@ -181,6 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (ReservedCargo == null)
 				return;
+
 			ReservedCargo.UnreserveSpace(self);
 			ReservedCargo = null;
 		}

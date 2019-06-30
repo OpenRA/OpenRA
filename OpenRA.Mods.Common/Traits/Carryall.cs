@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Transports actors with the `Carryable` trait.")]
 	public class CarryallInfo : ITraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
 	{
-		[Desc("Delay on the ground while attaching an actor to the carryall.")]
-		public readonly int LoadingDelay = 0;
+		[Desc("Delay (in ticks) on the ground while attaching an actor to the carryall.")]
+		public readonly int BeforeLoadDelay = 0;
 
-		[Desc("Delay on the ground while detacting an actor to the carryall.")]
-		public readonly int UnloadingDelay = 0;
+		[Desc("Delay (in ticks) on the ground while detaching an actor from the carryall.")]
+		public readonly int BeforeUnloadDelay = 0;
 
 		[Desc("Carryable attachment point relative to body.")]
 		public readonly WVec LocalOffset = WVec.Zero;
@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.CancelActivity();
 
 				self.SetTargetLine(order.Target, Color.Yellow);
-				self.QueueActivity(order.Queued, new PickupUnit(self, order.Target.Actor, Info.LoadingDelay));
+				self.QueueActivity(order.Queued, new PickupUnit(self, order.Target.Actor, Info.BeforeLoadDelay));
 			}
 		}
 

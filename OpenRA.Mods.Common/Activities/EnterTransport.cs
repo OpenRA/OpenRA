@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Actor enterActor;
 		Cargo enterCargo;
+		Aircraft enterAircraft;
 
 		public EnterTransport(Actor self, Target target)
 			: base(self, target, Color.Green)
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			enterActor = targetActor;
 			enterCargo = targetActor.TraitOrDefault<Cargo>();
+			enterAircraft = targetActor.TraitOrDefault<Aircraft>();
 
 			// Make sure we can still enter the transport
 			// (but not before, because this may stop the actor in the middle of nowhere)
@@ -43,6 +45,9 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self, true);
 				return false;
 			}
+
+			if (enterAircraft != null && !enterAircraft.AtLandAltitude)
+				return false;
 
 			return true;
 		}

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 				destination = Target.FromCell(self.World, self.Location);
 
 			QueueChild(self, new Land(self, destination, deliverRange), true);
-			QueueChild(self, new Wait(carryall.Info.UnloadingDelay, false), true);
+			QueueChild(self, new Wait(carryall.Info.BeforeUnloadDelay, false), true);
 			QueueChild(self, new ReleaseUnit(self));
 			QueueChild(self, new TakeOff(self));
 		}

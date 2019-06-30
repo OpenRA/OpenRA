@@ -238,6 +238,7 @@ TRAN:
 		Range: 6c0
 		Type: GroundPosition
 	Aircraft:
+		LandWhenIdle: false
 		TurnSpeed: 5
 		Speed: 128
 		AltitudeVelocity: 0c58
@@ -261,6 +262,7 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 8
 		PipCount: 8
+		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	SelectionDecorations:
