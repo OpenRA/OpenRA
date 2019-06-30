@@ -18,11 +18,17 @@ namespace OpenRA.Mods.Common.Activities
 	public class WaitForTransport : Activity
 	{
 		readonly ICallForTransport transportable;
+		readonly Activity inner;
 
-		public WaitForTransport(Actor self, Activity innerActivity)
+		public WaitForTransport(Actor self, Activity inner)
 		{
 			transportable = self.TraitOrDefault<ICallForTransport>();
-			QueueChild(self, innerActivity);
+			this.inner = inner;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			QueueChild(self, inner);
 		}
 
 		public override Activity Tick(Actor self)
