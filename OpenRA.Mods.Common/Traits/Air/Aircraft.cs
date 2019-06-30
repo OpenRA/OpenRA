@@ -187,10 +187,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		Repairable repairable;
 		Rearmable rearmable;
+		IAircraftCenterPositionOffset[] positionOffsets;
 		ConditionManager conditionManager;
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
 		INotifyMoving[] notifyMoving;
+		IOverrideAircraftLanding overrideAircraftLanding;
 
 		[Sync]
 		public int Facing { get; set; }
@@ -206,12 +208,12 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
 
-		public WDist LandAltitude { get; private set; }
-
 		public static WPos GroundPosition(Actor self)
 		{
 			return self.CenterPosition - new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(self.CenterPosition));
 		}
+
+		public bool AtLandAltitude { get { return self.World.Map.DistanceAboveTerrain(GetPosition()) == LandAltitude; } }
 
 		bool airborne;
 		bool cruising;
@@ -236,17 +238,27 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
-			LandAltitude = info.LandAltitude;
 		}
 
-		public void AddLandingOffset(int offset)
+		public WDist LandAltitude
 		{
-			LandAltitude += new WDist(offset);
+			get
+			{
+				var alt = Info.LandAltitude;
+				foreach (var offset in positionOffsets)
+					alt -= new WDist(offset.PositionOffset.Z);
+
+				return alt;
+			}
 		}
 
-		public void SubtractLandingOffset(int offset)
+		public WPos GetPosition()
 		{
-			LandAltitude -= new WDist(offset);
+			var pos = self.CenterPosition;
+			foreach (var offset in positionOffsets)
+				pos += offset.PositionOffset;
+
+			return pos;
 		}
 
 		public virtual IEnumerable<VariableObserver> GetVariableObservers()
@@ -281,6 +293,8 @@ namespace OpenRA.Mods.Common.Traits
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
+			positionOffsets = self.TraitsImplementing<IAircraftCenterPositionOffset>().ToArray();
+			overrideAircraftLanding = self.TraitOrDefault<IOverrideAircraftLanding>();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -589,8 +603,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (dockingActor != null)
 				return true;
 
-			var type = self.World.Map.GetTerrainInfo(cell).Type;
-			return Info.LandableTerrainTypes.Contains(type);
+			var landableTerrain = overrideAircraftLanding != null ? overrideAircraftLanding.LandableTerrainTypes : Info.LandableTerrainTypes;
+			return landableTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type);
 		}
 
 		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, bool blockedByMobile = true)

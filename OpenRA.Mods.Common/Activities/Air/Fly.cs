@@ -157,12 +157,13 @@ namespace OpenRA.Mods.Common.Activities
 				return NextActivity;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
-			var delta = checkTarget.CenterPosition - self.CenterPosition;
+			var pos = aircraft.GetPosition();
+			var delta = checkTarget.CenterPosition - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
 			// Inside the target annulus, so we're done
-			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, maxRange);
-			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(aircraft.CenterPosition, minRange);
+			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos, maxRange);
+			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(pos, minRange);
 			if (insideMaxRange && !insideMinRange)
 				return NextActivity;
 

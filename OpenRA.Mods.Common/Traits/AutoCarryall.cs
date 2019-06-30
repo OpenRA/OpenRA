@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (ReserveCarryable(self, carryable))
 			{
 				self.QueueActivity(false, new PickupUnit(self, carryable, 0));
-				self.QueueActivity(true, new DeliverUnit(self, destination));
+				self.QueueActivity(true, new DeliverUnit(self, Target.FromCell(self.World, destination), Info.DropRange));
 				return true;
 			}
 
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					busy = true;
 					self.QueueActivity(false, new PickupUnit(self, p.Actor, 0));
-					self.QueueActivity(true, new DeliverUnit(self, p.Trait.Destination.Value));
+					self.QueueActivity(true, new DeliverUnit(self, Target.FromCell(self.World, p.Trait.Destination.Value), Info.DropRange));
 					break;
 				}
 			}

@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Activities
 					return NextActivity;
 			}
 
-			var pos = aircraft.CenterPosition;
+			var pos = aircraft.GetPosition();
 
 			// Reevaluate target position in case the target has moved.
 			targetPosition = target.CenterPosition + offset;
