@@ -15,6 +15,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	public enum ImpactType
+	{
+		None,
+		Ground,
+		Air,
+		TargetHit
+	}
+
 	public enum ImpactTargetType
 	{
 		NoActor,
