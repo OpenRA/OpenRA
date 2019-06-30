@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : mobile.Facing;
 			if (facing != mobile.Facing)
 			{
-				QueueChild(new Turn(self, facing));
+				mobile.Facing = Util.TickFacing(mobile.Facing, facing, mobile.TurnSpeed);
 				return false;
 			}
 
