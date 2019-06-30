@@ -98,7 +98,7 @@ MISS:
 		Name: Prison
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure, Mission Objectives
-	AttackOmni:
+	AttackFollow:
 	Armament:
 		Weapon: PrisonColt
 
