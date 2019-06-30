@@ -41,6 +41,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
+			// In case this activity was queued (either via queued order of via AutoCarryall)
+			// something might have happened to the cargo in the time between the activity being
+			// queued and being run, so short out if it is no longer valid.
+			if (carryall.Carryable == null)
+				return;
+
 			if (assignTargetOnFirstRun)
 				destination = Target.FromCell(self.World, self.Location);
 
