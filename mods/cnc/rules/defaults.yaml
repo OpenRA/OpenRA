@@ -644,7 +644,6 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
