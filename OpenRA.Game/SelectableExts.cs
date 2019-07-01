@@ -31,12 +31,12 @@ namespace OpenRA.Traits
 			var info = a.Info.TraitInfo<SelectableInfo>();
 			var basePriority = BaseSelectionPriority(info, modifiers);
 
-			var lp = a.World.LocalPlayer;
+			var viewer = (a.World.LocalPlayer == null || a.World.LocalPlayer.Spectating) ? a.World.RenderPlayer : a.World.LocalPlayer;
 
-			if (a.Owner == lp || lp == null)
+			if (a.Owner == viewer || viewer == null)
 				return basePriority;
 
-			switch (lp.Stances[a.Owner])
+			switch (viewer.Stances[a.Owner])
 			{
 				case Stance.Ally: return basePriority - PriorityRange;
 				case Stance.Neutral: return basePriority - 2 * PriorityRange;
