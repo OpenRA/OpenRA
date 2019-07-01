@@ -51,10 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Prevent deployment in bogus locations
 			var transforms = self.TraitOrDefault<Transforms>();
 			if (transforms != null && !transforms.CanDeploy())
-			{
-				Cancel(self, true);
 				return true;
-			}
 
 			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 				nt.BeforeTransform(self);
@@ -71,13 +68,8 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
+			DoTransform(self);
 			return true;
-		}
-
-		protected override void OnLastRun(Actor self)
-		{
-			if (!IsCanceling)
-				DoTransform(self);
 		}
 
 		void DoTransform(Actor self)
