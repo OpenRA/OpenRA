@@ -111,11 +111,12 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload and then resume the activity
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload
+			// and resume the activity after reloading if AbortOnResupply is set to 'false'
 			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
 				QueueChild(new ReturnToBase(self));
-				return aircraft.Info.AbortOnResupply;
+				return attackAircraft.Info.AbortOnResupply;
 			}
 
 			var pos = self.CenterPosition;
