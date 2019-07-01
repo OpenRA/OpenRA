@@ -137,10 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			if (!queued)
-				self.CancelActivity();
-
-			self.QueueActivity(GetTransformActivity(self));
+			self.QueueActivity(queued, GetTransformActivity(self));
 		}
 
 		public void ResolveOrder(Actor self, Order order)
