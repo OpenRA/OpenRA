@@ -1135,7 +1135,7 @@ FACT:
 	Production:
 		Produces: Building, Defense
 	Valued:
-		Cost: 2500
+		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
 	SpawnActorsOnSell:
