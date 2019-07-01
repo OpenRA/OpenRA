@@ -94,9 +94,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Will this actor try to land after it has no more commands?")]
 		public readonly bool LandWhenIdle = true;
 
-		[Desc("Does this actor cancel its previous activity after resupplying?")]
-		public readonly bool AbortOnResupply = true;
-
 		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
