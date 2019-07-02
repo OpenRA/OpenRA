@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			key.Get<LabelWidget>("FUNCTION").GetText = () => hd.Description + ":";
 
 			var remapButton = key.Get<ButtonWidget>("HOTKEY");
-			remapButton.GetText = () => manager[hd.Name].GetValue().DisplayString();
+			WidgetUtils.TruncateButtonToTooltip(remapButton, manager[hd.Name].GetValue().DisplayString());
 
 			if (manager.GetFirstDuplicate(hd.Name, manager[hd.Name].GetValue(), hd) != null)
 				remapButton.GetColor = () => ChromeMetrics.Get<Color>("HotkeyColorInvalid");
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						"onSave", () =>
 						{
-							remapButton.GetText = () => manager[hd.Name].GetValue().DisplayString();
+							WidgetUtils.TruncateButtonToTooltip(remapButton, manager[hd.Name].GetValue().DisplayString());
 							remapButton.GetColor = () => ChromeMetrics.Get<Color>("ButtonTextColor");
 						}
 					},
