@@ -207,11 +207,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void MouseEntered()
 		{
-			if (TooltipContainer == null || GetTooltipText() == null)
+			if (TooltipContainer == null)
 				return;
 
-			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs { { "button", this }, { "getText", GetTooltipText }, { "getDesc", GetTooltipDesc } });
+			if (GetTooltipText != null)
+				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs { { "button", this }, { "getText", GetTooltipText }, { "getDesc", GetTooltipDesc } });
 		}
 
 		public override void MouseExited()
