@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			combatStatsHeaders.Visible = true;
 			var template = SetupPlayerScrollItemWidget(combatPlayerTemplate, player);
 
-			LobbyUtils.AddPlayerFlagAndName(template, player);
+			AddPlayerFlagAndName(template, player);
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			productionStatsHeaders.Visible = true;
 			var template = SetupPlayerScrollItemWidget(productionPlayerTemplate, player);
 
-			LobbyUtils.AddPlayerFlagAndName(template, player);
+			AddPlayerFlagAndName(template, player);
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
@@ -320,7 +320,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			supportPowerStatsHeaders.Visible = true;
 			var template = SetupPlayerScrollItemWidget(supportPowersPlayerTemplate, player);
 
-			LobbyUtils.AddPlayerFlagAndName(template, player);
+			AddPlayerFlagAndName(template, player);
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
@@ -341,7 +341,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			economyStatsHeaders.Visible = true;
 			var template = SetupPlayerScrollItemWidget(economyPlayerTemplate, player);
 
-			LobbyUtils.AddPlayerFlagAndName(template, player);
+			AddPlayerFlagAndName(template, player);
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			basicStatsHeaders.Visible = true;
 			var template = SetupPlayerScrollItemWidget(basicPlayerTemplate, player);
 
-			LobbyUtils.AddPlayerFlagAndName(template, player);
+			AddPlayerFlagAndName(template, player);
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
@@ -458,6 +458,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				headerLabel.Bounds.X += offset;
 			}
+		}
+
+		static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
+		{
+			var flag = template.Get<ImageWidget>("FLAG");
+			flag.GetImageCollection = () => "flags";
+			flag.GetImageName = () => player.Faction.InternalName;
+
+			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
+			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerNameFont = Game.Renderer.Fonts[playerName.Font];
+			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
+			var name = new CachedTransform<Pair<string, int>, string>(c =>
+				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerNameFont));
+
+			playerName.GetText = () =>
+			{
+				var suffix = player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")";
+				if (client != null && client.State == Session.ClientState.Disconnected)
+					suffix = " (Gone)";
+
+				var sl = suffixLength.Update(suffix);
+				return name.Update(Pair.New(player.PlayerName, sl)) + suffix;
+			};
+
+			playerName.GetColor = () => player.Color;
 		}
 
 		string AverageOrdersPerMinute(double orders)
