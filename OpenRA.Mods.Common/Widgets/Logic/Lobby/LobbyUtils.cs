@@ -583,35 +583,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "STATUS_IMAGE");
 		}
 
-		public static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
-		{
-			var flag = template.Get<ImageWidget>("FLAG");
-			flag.GetImageCollection = () => "flags";
-			if (player.World.RenderPlayer != null && player.World.RenderPlayer.Stances[player] != Stance.Ally)
-				flag.GetImageName = () => player.DisplayFaction.InternalName;
-			else
-				flag.GetImageName = () => player.Faction.InternalName;
-
-			var client = player.World.LobbyInfo.ClientWithIndex(player.ClientIndex);
-			var playerName = template.Get<LabelWidget>("PLAYER");
-			var playerNameFont = Game.Renderer.Fonts[playerName.Font];
-			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
-			var name = new CachedTransform<Pair<string, int>, string>(c =>
-				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerNameFont));
-
-			playerName.GetText = () =>
-			{
-				var suffix = player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")";
-				if (client != null && client.State == Session.ClientState.Disconnected)
-					suffix = " (Gone)";
-
-				var sl = suffixLength.Update(suffix);
-				return name.Update(Pair.New(player.PlayerName, sl)) + suffix;
-			};
-
-			playerName.GetColor = () => player.Color;
-		}
-
 		public static string GetExternalIP(Session.Client client, OrderManager orderManager)
 		{
 			var address = client != null ? client.IpAddress : "";
