@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public GameInfoStatsLogic(Widget widget, World world, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
-			var player = world.RenderPlayer ?? world.LocalPlayer;
+			var player = world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
 
 			if (player != null && !player.NonCombatant)
