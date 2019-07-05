@@ -5,9 +5,9 @@ shellmapbits: chrome.png
 	record: 944,0,16,16
 
 logos: chrome.png
-	eva:768,320,128,64
-	nod-load:0,256,256,256
-	gdi-load:256,256,256,256
+	eva: 768,320,128,64
+	nod-load: 0,256,256,256
+	gdi-load: 256,256,256,256
 
 #
 # Button

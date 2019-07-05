@@ -1062,5 +1062,5 @@ mainmenu-border: dialog.png
 	corner-br: 728,467,40,40
 
 dropdown: dialog.png
-    separator: 512,1,1,19
-    observer-separator: 768,256,1,19
+	separator: 512,1,1,19
+	observer-separator: 768,256,1,19
