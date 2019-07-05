@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
-	public class PlayerResources : ITick, ISync
+	public class PlayerResources : ISync
 	{
 		public readonly PlayerResourcesInfo Info;
 		readonly Player owner;
@@ -197,13 +197,14 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		void ITick.Tick(Actor self)
+		public void AddStorage(int capacity)
 		{
-			// PERF: Avoid LINQ.
-			ResourceCapacity = 0;
-			foreach (var tp in self.World.ActorsWithTrait<IStoreResources>())
-				if (tp.Actor.Owner == owner)
-					ResourceCapacity += tp.Trait.Capacity;
+			ResourceCapacity += capacity;
+		}
+
+		public void RemoveStorage(int capacity)
+		{
+			ResourceCapacity -= capacity;
 
 			if (Resources > ResourceCapacity)
 				Resources = ResourceCapacity;
