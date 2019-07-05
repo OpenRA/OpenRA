@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Voice = "Action";
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 92;
+		public readonly int PreviewFacing = 96;
 
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
