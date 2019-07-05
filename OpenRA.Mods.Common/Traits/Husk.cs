@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> AllowedTerrain = new HashSet<string>();
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 92;
+		public readonly int PreviewFacing = 96;
 
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{

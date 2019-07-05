@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly PlayerReference owner;
 		readonly CVec[] footprint;
 
-		int facing = 92;
+		int facing = 96;
 
 		public EditorActorBrush(EditorViewportControllerWidget editorWidget, ActorInfo actor, PlayerReference owner, WorldRenderer wr)
 		{
