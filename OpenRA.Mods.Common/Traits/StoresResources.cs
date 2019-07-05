@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	public class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled
+	public class StoresResources : IPips, INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly StoresResourcesInfo info;
 		PlayerResources player;
@@ -70,6 +70,16 @@ namespace OpenRA.Mods.Common.Traits
 			return Enumerable.Range(0, info.PipCount).Select(i =>
 				player.Resources * info.PipCount > i * player.ResourceCapacity
 				? info.PipColor : PipType.Transparent);
+		}
+
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
+		{
+			player.AddStorage(info.Capacity);
+		}
+
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
+		{
+			player.RemoveStorage(info.Capacity);
 		}
 	}
 }
