@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec Offset = WVec.Zero;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 92;
+		public readonly int PreviewFacing = 96;
 
 		[Desc("Display order for the turret facing slider in the map editor")]
 		public readonly int EditorTurretFacingDisplayOrder = 4;
