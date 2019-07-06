@@ -43,10 +43,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var attackCharges = self.Trait<AttackCharges>();
 			var attackChargesInfo = (AttackChargesInfo)attackCharges.Info;
+			var maxCharge = attackChargesInfo.ChargeLevel;
+			var minCharge = attackChargesInfo.MinChargeLevel;
 
 			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
-				() => int2.Lerp(0, overlay.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
+				() => int2.Lerp(0, overlay.CurrentSequence.Length, (attackCharges.ChargeLevel - minCharge).Clamp(0, maxCharge), maxCharge - minCharge));
 
 			rs.Add(new AnimationWithOffset(overlay, null, () => IsTraitDisabled, 1024),
 				info.Palette, info.IsPlayerPalette);

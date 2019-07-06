@@ -20,14 +20,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of charge required to attack.")]
 		public readonly int ChargeLevel = 25;
 
+		[Desc("Amount of charge retained while not attacking.")]
+		public readonly int MinChargeLevel = 0;
+
 		[Desc("Amount to increase the charge level each tick with a valid target.")]
 		public readonly int ChargeRate = 1;
 
 		[Desc("Amount to decrease the charge level each tick without a valid target.")]
 		public readonly int DischargeRate = 1;
 
+		[Desc("How many charges this actor has to attack with, once charged.")]
+		public readonly int MaxCharges = 1;
+
+		[Desc("Delay between charge attacks (in ticks).")]
+		public readonly int ChargeDelay = 3;
+
 		[GrantedConditionReference]
-		[Desc("The condition to grant to self while the charge level is greater than zero.")]
+		[Desc("The condition to grant to self while the charge level is greater than MinChargeLevel.")]
 		public readonly string ChargingCondition = null;
 
 		public override object Create(ActorInitializer init) { return new AttackCharges(init.Self, this); }
@@ -39,6 +48,12 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		int chargingToken = ConditionManager.InvalidConditionToken;
 		bool charging;
+
+		[Sync]
+		int charges;
+
+		[Sync]
+		int timeToNextCharge;
 
 		public int ChargeLevel { get; private set; }
 
@@ -52,6 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 
+			ChargeLevel = info.MinChargeLevel;
+
 			base.Created(self);
 		}
 
@@ -60,14 +77,29 @@ namespace OpenRA.Mods.Common.Traits
 			// Stop charging when we lose our target
 			charging &= (RequestedTarget.Type != TargetType.Invalid) || (OpportunityTarget.Type != TargetType.Invalid);
 
-			var delta = charging ? info.ChargeRate : -info.DischargeRate;
-			ChargeLevel = (ChargeLevel + delta).Clamp(0, info.ChargeLevel);
+			var chargePrev = ChargeLevel;
 
-			if (ChargeLevel > 0 && conditionManager != null && !string.IsNullOrEmpty(info.ChargingCondition)
+			if (charging)
+				ChargeLevel = (ChargeLevel + info.ChargeRate).Clamp(0, info.ChargeLevel);
+			else
+			{
+				if (ChargeLevel < info.MinChargeLevel)
+					ChargeLevel = (ChargeLevel + info.ChargeRate).Clamp(0, info.MinChargeLevel);
+				else
+					ChargeLevel = (ChargeLevel - info.DischargeRate).Clamp(info.MinChargeLevel, info.ChargeLevel);
+			}
+
+			if ((ChargeLevel == info.ChargeLevel) && (chargePrev < info.ChargeLevel))
+				charges = info.MaxCharges;
+
+			if (timeToNextCharge > 0)
+				--timeToNextCharge;
+
+			if (ChargeLevel > info.MinChargeLevel && conditionManager != null && !string.IsNullOrEmpty(info.ChargingCondition)
 					&& chargingToken == ConditionManager.InvalidConditionToken)
 				chargingToken = conditionManager.GrantCondition(self, info.ChargingCondition);
 
-			if (ChargeLevel == 0 && conditionManager != null && chargingToken != ConditionManager.InvalidConditionToken)
+			if (ChargeLevel <= info.MinChargeLevel && conditionManager != null && chargingToken != ConditionManager.InvalidConditionToken)
 				chargingToken = conditionManager.RevokeCondition(self, chargingToken);
 
 			base.Tick(self);
@@ -76,10 +108,16 @@ namespace OpenRA.Mods.Common.Traits
 		protected override bool CanAttack(Actor self, Target target)
 		{
 			charging = base.CanAttack(self, target) && IsReachableTarget(target, true);
-			return ChargeLevel >= info.ChargeLevel && charging;
+			return (charges > 0) && (timeToNextCharge == 0) && charging;
 		}
 
-		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel) { ChargeLevel = 0; }
+		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			--charges;
+			ChargeLevel = 0;
+			timeToNextCharge = info.ChargeDelay;
+		}
+
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 		void INotifySold.Selling(Actor self) { ChargeLevel = 0; }
 		void INotifySold.Sold(Actor self) { }

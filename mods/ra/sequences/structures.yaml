@@ -481,13 +481,13 @@ tsla:
 		Length: *
 		Offset: 0,-13
 	active:
-		Start: 1
-		Length: 9
+		Start: 0
+		Length: 10
 		Tick: 100
 		Offset: 0,-13
 	damaged-active:
-		Start: 11
-		Length: 9
+		Start: 10
+		Length: 10
 		Tick: 100
 		Offset: 0,-13
 	bib: mbTSLA

@@ -48,8 +48,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void ConfigureAnimation(Actor self)
 		{
 			var attackChargesInfo = (AttackChargesInfo)attackCharges.Info;
+			var maxCharge = attackChargesInfo.ChargeLevel;
+			var minCharge = attackChargesInfo.MinChargeLevel;
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence),
-				() => int2.Lerp(0, DefaultAnimation.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
+				() => int2.Lerp(0, DefaultAnimation.CurrentSequence.Length, (attackCharges.ChargeLevel - minCharge).Clamp(0, maxCharge), maxCharge - minCharge));
 		}
 
 		protected override void TraitEnabled(Actor self)

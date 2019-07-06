@@ -553,16 +553,24 @@ TSLA:
 		Range: 6c0
 	WithBuildingBib:
 		HasMinibib: Yes
-	WithTeslaChargeAnimation:
+	-WithSpriteBody:
+	WithChargeSpriteBody:
+		Sequence: active
 	Armament:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,896
-	AttackTesla:
+	AttackCharges:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: disabled
-		ChargeAudio: tslachg2.aud
+		ChargeLevel: 142
+		MinChargeLevel: 120
+		DischargeRate: 22
 		MaxCharges: 3
-		ReloadDelay: 120
+		ChargeDelay: 6
+		ChargingCondition: charging
+	AmbientSound:
+		RequiresCondition: charging
+		SoundFiles: tslachg2.aud	
 	Power:
 		Amount: -100
 	DetectCloaked:
