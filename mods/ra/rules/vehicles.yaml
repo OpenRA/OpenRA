@@ -643,9 +643,15 @@ TTNK:
 	Armament:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
-	AttackTurreted:
-	Turreted:
-	WithIdleOverlay@SPINNER:
+	AttackCharges:
+		ChargeLevel: 142
+		MinChargeLevel: 120
+		DischargeRate: 22
+		ChargingCondition: charging
+	AmbientSound:
+		RequiresCondition: charging
+		SoundFiles: tslachg2.aud
+	WithChargeOverlay@SPINNER:
 		Sequence: spinner
 	SelectionDecorations:
 	ProducibleWithLevel:

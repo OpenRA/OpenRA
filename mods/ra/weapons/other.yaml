@@ -101,7 +101,6 @@ PortaTesla:
 
 TTankZap:
 	Inherits: ^TeslaWeapon
-	ReloadDelay: 120
 	Range: 7c0
 
 DogJaw:
