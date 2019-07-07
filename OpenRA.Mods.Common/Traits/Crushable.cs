@@ -79,5 +79,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			return Info.CrushClasses.Overlaps(crushClasses);
 		}
+
+		bool ICrushable.TryCalculatePlayerBlocking(Actor self, BitSet<CrushClass> crushClasses, out LongBitSet<PlayerBitMask> blocking)
+		{
+			if (IsTraitDisabled || !self.IsAtGroundLevel() || !Info.CrushClasses.Overlaps(crushClasses))
+				blocking = self.World.AllPlayerMask;
+			else
+				blocking = Info.CrushedByFriendlies ? default(LongBitSet<PlayerBitMask>) : self.Owner.AllyMask;
+
+			return true;
+		}
 	}
 }
