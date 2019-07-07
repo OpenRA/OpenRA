@@ -76,13 +76,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetInitialFacing() { return InitialFacing; }
 
+		// initialized and used by CanEnterCell
+		Locomotor locomotor;
+
 		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			if (LocomotorInfo.MovementCostForCell(world, cell) == int.MaxValue)
+			// PERF: Avoid repeated trait queries on the hot path
+			if (locomotor == null)
+				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
+				   .SingleOrDefault(l => l.Info.Name == Locomotor);
+
+			if (locomotor.MovementCostForCell(cell) == int.MaxValue)
 				return false;
 
 			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
-			return LocomotorInfo.CanMoveFreelyInto(world, self, cell, ignoreActor, check);
+			return locomotor.CanMoveFreelyInto(self, cell, ignoreActor, check);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -425,12 +433,12 @@ namespace OpenRA.Mods.Common.Traits
 		public SubCell GetAvailableSubCell(CPos a, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			var cellConditions = checkTransientActors ? CellConditions.All : CellConditions.None;
-			return Info.LocomotorInfo.GetAvailableSubCell(self.World, self, a, preferredSubCell, ignoreActor, cellConditions);
+			return Locomotor.GetAvailableSubCell(self, a, preferredSubCell, ignoreActor, cellConditions);
 		}
 
 		public bool CanExistInCell(CPos cell)
 		{
-			return Info.LocomotorInfo.MovementCostForCell(self.World, cell) != int.MaxValue;
+			return Locomotor.MovementCostForCell(cell) != int.MaxValue;
 		}
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
@@ -664,11 +672,6 @@ namespace OpenRA.Mods.Common.Traits
 			return target;
 		}
 
-		public bool CanMoveFreelyInto(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
-		{
-			return Info.LocomotorInfo.CanMoveFreelyInto(self.World, self, cell, ignoreActor, checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers);
-		}
-
 		public void EnteringCell(Actor self)
 		{
 			// Only make actor crush if it is on the ground
@@ -875,7 +878,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (mobile.IsTraitPaused
 					|| (!explored && !locomotorInfo.MoveIntoShroud)
-					|| (explored && locomotorInfo.MovementCostForCell(self.World, location) == int.MaxValue))
+					|| (explored && mobile.Locomotor.MovementCostForCell(location) == int.MaxValue))
 					cursor = mobile.Info.BlockedCursor;
 
 				return true;

@@ -58,6 +58,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			return info.CrushClasses.Overlaps(crushClasses);
 		}
+
+		bool ICrushable.TryCalculatePlayerBlocking(Actor self, BitSet<CrushClass> crushClasses, out LongBitSet<PlayerBitMask> blocking)
+		{
+			// Fall back to the slow path
+			blocking = default(LongBitSet<PlayerBitMask>);
+			return false;
+		}
 	}
 
 	[Desc("Tag trait for stuff that should not trigger mines.")]
