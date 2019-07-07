@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CellLayer<InfluenceNode> influence;
 		readonly Dictionary<int, CellLayer<InfluenceNode>> customInfluence = new Dictionary<int, CellLayer<InfluenceNode>>();
 		public readonly Dictionary<int, ICustomMovementLayer> CustomMovementLayers = new Dictionary<int, ICustomMovementLayer>();
-
+		public event Action<IEnumerable<CPos>> CellsUpdated;
 		readonly Bin[] bins;
 		readonly int rows, cols;
 
@@ -182,6 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HashSet<Actor> addActorPosition = new HashSet<Actor>();
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
+		readonly HashSet<CPos> updatedCells = new HashSet<CPos>();
 
 		public WDist LargestActorRadius { get; private set; }
 		public WDist LargestBlockingActorRadius { get; private set; }
@@ -370,6 +371,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
 					foreach (var t in triggers)
 						t.Dirty = true;
+
+				updatedCells.Add(c.First);
 			}
 		}
 
@@ -390,6 +393,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (cellTriggerInfluence.TryGetValue(c.First, out triggers))
 					foreach (var t in triggers)
 						t.Dirty = true;
+
+				updatedCells.Add(c.First);
 			}
 		}
 
@@ -437,6 +442,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var t in proximityTriggers)
 				t.Value.Tick(this);
+
+			self.World.AddFrameEndTask(s =>
+			{
+				if (CellsUpdated != null)
+					CellsUpdated(updatedCells);
+			});
 		}
 
 		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit)
@@ -515,7 +526,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddPosition(Actor a, IOccupySpace ios)
 		{
-			UpdatePosition(a, ios);
+			addActorPosition.Add(a);
 		}
 
 		public void RemovePosition(Actor a, IOccupySpace ios)
@@ -526,7 +537,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void UpdatePosition(Actor a, IOccupySpace ios)
 		{
 			RemovePosition(a, ios);
-			addActorPosition.Add(a);
+			AddPosition(a, ios);
 		}
 
 		int CellCoordToBinIndex(int cell)
