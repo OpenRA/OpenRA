@@ -33,6 +33,8 @@ namespace OpenRA
 
 	public enum WinState { Undefined, Won, Lost }
 
+	public class PlayerBitMask { }
+
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
 		struct StanceColors
@@ -70,6 +72,12 @@ namespace OpenRA
 
 		readonly bool inMissionMap;
 		readonly IUnlocksRenderPlayer[] unlockRenderPlayer;
+
+		// Each player is identified with a unique bit in the set
+		// Cache masks for the player's index and ally/enemy player indices for performance.
+		public LongBitSet<PlayerBitMask> PlayerMask;
+		public LongBitSet<PlayerBitMask> AllyMask = default(LongBitSet<PlayerBitMask>);
+		public LongBitSet<PlayerBitMask> EnemyMask = default(LongBitSet<PlayerBitMask>);
 
 		public bool UnlockedRenderPlayer
 		{
@@ -152,6 +160,9 @@ namespace OpenRA
 				Faction = ChooseFaction(world, pr.Faction, false);
 				DisplayFaction = ChooseDisplayFaction(world, pr.Faction);
 			}
+
+			if (!Spectating)
+				PlayerMask = new LongBitSet<PlayerBitMask>(InternalName);
 
 			var playerActorType = world.Type == WorldType.Editor ? "EditorPlayer" : "Player";
 			PlayerActor = world.CreateActor(playerActorType, new TypeDictionary { new OwnerInit(this) });
