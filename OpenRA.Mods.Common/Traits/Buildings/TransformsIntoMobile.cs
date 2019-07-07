@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		Transforms[] transforms;
+		Locomotor locomotor;
 
 		public TransformsIntoMobile(ActorInitializer init, TransformsIntoMobileInfo info)
 			: base(info)
@@ -67,6 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			transforms = self.TraitsImplementing<Transforms>().ToArray();
+			locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
+				.Single(l => l.Info.Name == Info.Locomotor);
 			base.Created(self);
 		}
 
@@ -182,21 +185,20 @@ namespace OpenRA.Mods.Common.Traits
 				cursor = self.World.Map.Contains(location) ?
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? mobile.Info.Cursor) : mobile.Info.BlockedCursor;
 
-				var locomotor = mobile.Info.LocomotorInfo;
 				if (!(self.CurrentActivity is Transform || mobile.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
-					|| (!explored && !locomotor.MoveIntoShroud)
-					|| (explored && !CanEnterCell(self.World, self, location)))
+					|| (!explored && !mobile.locomotor.Info.MoveIntoShroud)
+					|| (explored && !CanEnterCell(self, location)))
 					cursor = mobile.Info.BlockedCursor;
 
 				return true;
 			}
 
-			bool CanEnterCell(World world, Actor self, CPos cell)
+			bool CanEnterCell(Actor self, CPos cell)
 			{
-				if (mobile.Info.LocomotorInfo.MovementCostForCell(world, cell) == int.MaxValue)
+				if (mobile.locomotor.MovementCostForCell(cell) == int.MaxValue)
 					return false;
 
-				return mobile.Info.LocomotorInfo.CanMoveFreelyInto(world, self, cell, null, CellConditions.BlockedByMovers);
+				return mobile.locomotor.CanMoveFreelyInto(self, cell, null, CellConditions.BlockedByMovers);
 			}
 		}
 	}
