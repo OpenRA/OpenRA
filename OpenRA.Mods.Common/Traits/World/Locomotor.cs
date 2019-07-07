@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var nodesDict = t.Value.ToDictionary();
 					var cost = nodesDict.ContainsKey("PathingCost")
-						? FieldLoader.GetValue<int>("cost", nodesDict["PathingCost"].Value)
+						? FieldLoader.GetValue<short>("cost", nodesDict["PathingCost"].Value)
 						: 10000 / speed;
-					ret.Add(t.Key, new TerrainInfo(speed, cost));
+					ret.Add(t.Key, new TerrainInfo(speed, (short)cost));
 				}
 			}
 
@@ -108,16 +108,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public static readonly TerrainInfo Impassable = new TerrainInfo();
 
-			public readonly int Cost;
+			public readonly short Cost;
 			public readonly int Speed;
 
 			public TerrainInfo()
 			{
-				Cost = int.MaxValue;
+				Cost = short.MaxValue;
 				Speed = 0;
 			}
 
-			public TerrainInfo(int speed, int cost)
+			public TerrainInfo(int speed, short cost)
 			{
 				Speed = speed;
 				Cost = cost;
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int CalculateTilesetMovementClass(TileSet tileset)
 		{
 			// collect our ability to cross *all* terraintypes, in a bitvector
-			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < int.MaxValue).ToBits();
+			return TilesetTerrainInfo[tileset].Select(ti => ti.Cost < short.MaxValue).ToBits();
 		}
 
 		public uint GetMovementClass(TileSet tileset)
