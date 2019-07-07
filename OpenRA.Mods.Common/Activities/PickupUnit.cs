@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Activities
 						QueueChild(new Wait(delay, false));
 
 					// Remove our carryable from world
-					QueueChild(new CallFunc(() => Attach(self)));
+					QueueChild(new AttachUnit(self, cargo));
 					QueueChild(new TakeOff(self));
 					return false;
 				}
@@ -110,14 +110,32 @@ namespace OpenRA.Mods.Common.Activities
 			return true;
 		}
 
-		void Attach(Actor self)
+		class AttachUnit : Activity
 		{
-			self.World.AddFrameEndTask(w =>
+			readonly Actor cargo;
+			readonly Carryable carryable;
+			readonly Carryall carryall;
+
+			public AttachUnit(Actor self, Actor cargo)
 			{
-				cargo.World.Remove(cargo);
-				carryable.Attached(cargo);
-				carryall.AttachCarryable(self, cargo);
-			});
+				this.cargo = cargo;
+				carryable = cargo.Trait<Carryable>();
+				carryall = self.Trait<Carryall>();
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				// The cargo might have become invalid while we were moving towards it.
+				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+					return;
+
+				self.World.AddFrameEndTask(w =>
+				{
+					cargo.World.Remove(cargo);
+					carryable.Attached(cargo);
+					carryall.AttachCarryable(self, cargo);
+				});
+			}
 		}
 	}
 }
