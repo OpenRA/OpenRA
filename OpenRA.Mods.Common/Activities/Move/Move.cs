@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				List<CPos> path;
 				using (var search =
-					PathSearch.FromPoint(self.World, mobile.Info.LocomotorInfo, self, mobile.ToCell, destination, false)
+					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias())
 					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
 				return path;

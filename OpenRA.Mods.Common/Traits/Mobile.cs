@@ -185,6 +185,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
+		public Locomotor Locomotor { get; private set; }
+
 		#region IOccupySpace
 
 		[Sync]
@@ -235,6 +237,8 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 			moveWrappers = self.TraitsImplementing<IWrapMove>().ToArray();
+			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
+				.Single(l => l.Info.Name == Info.Locomotor);
 
 			base.Created(self);
 		}
@@ -704,7 +708,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, Info.LocomotorInfo, self, true,
+			using (var search = PathSearch.Search(self.World, Locomotor, self, true,
 					loc => loc.Layer == 0 && CanEnterCell(loc))
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);

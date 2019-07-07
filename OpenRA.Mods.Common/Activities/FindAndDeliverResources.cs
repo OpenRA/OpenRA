@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Find any harvestable resources:
 			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, locomotorInfo, self, true, loc =>
+			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self, true, loc =>
 					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
