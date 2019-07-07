@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Actor IgnoreActor { get; set; }
 
 		readonly CellConditions checkConditions;
-		readonly LocomotorInfo locomotorInfo;
+		readonly Locomotor locomotor;
 		readonly LocomotorInfo.WorldMovementInfo worldMovementInfo;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly bool checkTerrainHeight;
@@ -92,11 +92,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>> customLayerInfo =
 			new Dictionary<byte, Pair<ICustomMovementLayer, CellLayer<CellInfo>>>();
 
-		public PathGraph(CellInfoLayerPool layerPool, LocomotorInfo li, Actor actor, World world, bool checkForBlocked)
+		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, bool checkForBlocked)
 		{
 			pooledLayer = layerPool.Get();
 			groundInfo = pooledLayer.GetLayer();
-			locomotorInfo = li;
+			var locomotorInfo = locomotor.Info;
+			this.locomotor = locomotor;
 			var layers = world.GetCustomMovementLayers().Values
 				.Where(cml => cml.EnabledForActor(actor.Info, locomotorInfo));
 
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				foreach (var cli in customLayerInfo.Values)
 				{
 					var layerPosition = new CPos(position.X, position.Y, cli.First.Index);
-					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotorInfo, layerPosition);
+					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
 					if (entryCost != Constants.InvalidNode)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -161,7 +162,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
-				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotorInfo, layerPosition);
+				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
 				if (exitCost != Constants.InvalidNode)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}

@@ -44,14 +44,15 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly Actor Actor;
 			public readonly Harvester Harvester;
 			public readonly Parachutable Parachutable;
-			public readonly LocomotorInfo LocomotorInfo;
+			public readonly Locomotor Locomotor;
 
 			public HarvesterTraitWrapper(Actor actor)
 			{
 				Actor = actor;
 				Harvester = actor.Trait<Harvester>();
 				Parachutable = actor.TraitOrDefault<Parachutable>();
-				LocomotorInfo = actor.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+				var mobile = actor.Trait<Mobile>();
+				Locomotor = mobile.Locomotor;
 			}
 		}
 
@@ -141,12 +142,12 @@ namespace OpenRA.Mods.Common.Traits
 		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
 			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, harv.LocomotorInfo) &&
+				domainIndex.IsPassable(actor.Location, cell, harv.Locomotor.Info) &&
 				harv.Harvester.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
 			var path = pathfinder.FindPath(
-				PathSearch.Search(world, harv.LocomotorInfo, actor, true, isValidResource)
+				PathSearch.Search(world, harv.Locomotor, actor, true, isValidResource)
 					.WithCustomCost(loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 						.Where(u => !u.IsDead && actor.Owner.Stances[u.Owner] == Stance.Enemy)
 						.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)))

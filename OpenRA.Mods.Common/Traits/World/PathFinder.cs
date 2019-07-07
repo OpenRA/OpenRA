@@ -64,7 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public List<CPos> FindUnitPath(CPos source, CPos target, Actor self, Actor ignoreActor)
 		{
-			var li = self.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			var mobile = self.Trait<Mobile>();
+			var locomotor = mobile.Locomotor;
+
 			if (!cached)
 			{
 				domainIndex = world.WorldActor.TraitOrDefault<DomainIndex>();
@@ -72,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// If a water-land transition is required, bail early
-			if (domainIndex != null && !domainIndex.IsPassable(source, target, li))
+			if (domainIndex != null && !domainIndex.IsPassable(source, target, locomotor.Info))
 				return EmptyPath;
 
 			var distance = source - target;
@@ -80,8 +82,9 @@ namespace OpenRA.Mods.Common.Traits
 				return new List<CPos> { target };
 
 			List<CPos> pb;
-			using (var fromSrc = PathSearch.FromPoint(world, li, self, target, source, true).WithIgnoredActor(ignoreActor))
-			using (var fromDest = PathSearch.FromPoint(world, li, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
+
+			using (var fromSrc = PathSearch.FromPoint(world, locomotor, self, target, source, true).WithIgnoredActor(ignoreActor))
+			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, target, true).WithIgnoredActor(ignoreActor).Reverse())
 				pb = FindBidiPath(fromSrc, fromDest);
 
 			return pb;
@@ -95,7 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 				cached = true;
 			}
 
-			var mi = self.Info.TraitInfo<MobileInfo>();
+			var mobile = self.Trait<Mobile>();
+			var mi = mobile.Info;
 			var li = mi.LocomotorInfo;
 			var targetCell = world.Map.CellContaining(target);
 
@@ -117,8 +121,10 @@ namespace OpenRA.Mods.Common.Traits
 					return EmptyPath;
 			}
 
-			using (var fromSrc = PathSearch.FromPoints(world, li, self, tilesInRange, source, true))
-			using (var fromDest = PathSearch.FromPoint(world, li, self, source, targetCell, true).Reverse())
+			var locomotor = mobile.Locomotor;
+
+			using (var fromSrc = PathSearch.FromPoints(world, locomotor, self, tilesInRange, source, true))
+			using (var fromDest = PathSearch.FromPoint(world, locomotor, self, source, targetCell, true).Reverse())
 				return FindBidiPath(fromSrc, fromDest);
 		}
 
