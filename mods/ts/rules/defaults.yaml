@@ -179,14 +179,6 @@
 	AttackMove:
 		AssaultMoveCondition: assault-move
 
-^FlatSelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl
-
-^LowPrioritySelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl, Alt
-
 ^2x1Shape:
 	HitShape:
 		Type: Rectangle
@@ -305,12 +297,11 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^Cloakable
+	Inherits@selection: ^SelectableBuilding
 	Huntable:
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Priority: 3
 	Targetable:
 		TargetTypes: Ground, Building, C4
 	HitShape:
@@ -546,7 +537,7 @@
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
 	Inherits@CRATESTATS: ^CrateStatModifiers
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -751,7 +742,7 @@
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
 	Inherits@CRATESTATS: ^CrateStatModifiers
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -856,7 +847,7 @@
 ^Aircraft:
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -950,7 +941,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^HealsOnTiberium
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	DrawLineToTarget:
 		QueuedLineWidth: 2
@@ -1085,6 +1076,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	-GivesBuildableArea:
 	RenderRangeCircle:
 	RenderDetectionCircle:
@@ -1104,7 +1096,7 @@
 	Inherits@1: ^EmpDisable
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	RenderVoxels:
 	RenderSprites:
@@ -1330,3 +1322,26 @@
 	GrantCondition@IDISABLE:
 		RequiresCondition: lowpower || powerdown
 		Condition: disabled
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+		PriorityModifiers: Ctrl
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2

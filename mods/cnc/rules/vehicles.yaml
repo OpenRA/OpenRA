@@ -1,6 +1,6 @@
 MCV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 3500
 	Tooltip:
@@ -13,7 +13,6 @@ MCV:
 		BuildDurationModifier: 40
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
-		Priority: 4
 		DecorationBounds: 36,36
 	Mobile:
 		Speed: 71
@@ -44,7 +43,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Inherits@CLOAK: ^AcceptsCloakCrate
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -58,7 +57,6 @@ HARV:
 		BuildDurationModifier: 40
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
-		Priority: 7
 		DecorationBounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
@@ -683,7 +681,7 @@ MHQ:
 
 TRUCK:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle.GDI, Vehicle.Nod
 		BuildPaletteOrder: 35
@@ -693,8 +691,6 @@ TRUCK:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-	Selectable:
-		Priority: 6
 	Health:
 		HP: 11000
 	Armor:
