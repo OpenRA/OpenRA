@@ -339,6 +339,7 @@ REPAIR:
 WEED:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
 		Cost: 1400
 	Tooltip:

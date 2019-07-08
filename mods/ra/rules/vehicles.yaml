@@ -286,7 +286,7 @@ ARTY:
 
 HARV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -298,7 +298,6 @@ HARV:
 		Name: Ore Truck
 		GenericName: Harvester
 	Selectable:
-		Priority: 7
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Harvester:
@@ -340,7 +339,7 @@ HARV:
 
 MCV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 210
@@ -352,7 +351,6 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		Priority: 4
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Health:
@@ -467,7 +465,7 @@ APC:
 
 MNLY:
 	Inherits: ^TrackedVehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 310
@@ -479,8 +477,6 @@ MNLY:
 		Name: Minelayer
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
-	Selectable:
-		Priority: 5
 	Health:
 		HP: 30000
 	Armor:
@@ -511,7 +507,7 @@ MNLY:
 
 TRUK:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 410
@@ -521,8 +517,6 @@ TRUK:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-	Selectable:
-		Priority: 6
 	Health:
 		HP: 11000
 	Armor:

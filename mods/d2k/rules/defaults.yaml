@@ -163,18 +163,10 @@
 	AttackMove:
 		AssaultMoveCondition: assault-move
 
-^FlatSelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl
-
-^LowPrioritySelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl, Alt
-
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -279,7 +271,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -374,6 +366,7 @@
 ^Building:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@selection: ^SelectableBuilding
 	Tooltip:
 		GenericName: Structure
 	Huntable:
@@ -381,8 +374,6 @@
 		Action: Kill
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 2
 	RevealsShroud:
 	Targetable:
 		TargetTypes: Ground, C4, Structure
@@ -464,6 +455,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	WithSpriteTurret:
 	AttackTurreted:
 	RenderRangeCircle:
@@ -529,3 +521,26 @@
 	WithBuildingRepairDecoration:
 		Offsets:
 			powerdown: -10, 0
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+		PriorityModifiers: Ctrl
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2
