@@ -138,13 +138,12 @@ OILB:
 
 MOBILETENT:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Mobile Tent
 	Selectable:
-		Priority: 4
 		DecorationBounds: 21,21
 	SelectionDecorations:
 	Health:

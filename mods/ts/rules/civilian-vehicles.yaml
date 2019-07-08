@@ -42,6 +42,7 @@
 
 ^TRUCK:
 	Inherits: ^CivilianVoxelVehicle
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -65,6 +66,7 @@ TRUCKB:
 
 ICBM:
 	Inherits: ^CivilianVoxelCrusher
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 1400
 	Tooltip:
