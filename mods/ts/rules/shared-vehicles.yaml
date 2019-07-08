@@ -1,7 +1,7 @@
 MCV:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
@@ -12,7 +12,6 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		Priority: 3
 		DecorationBounds: 42,42
 	Health:
 		HP: 100000
@@ -45,7 +44,7 @@ MCV:
 HARV:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -56,7 +55,6 @@ HARV:
 		Prerequisites: ~factory, proc, ~techlevel.low
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Selectable:
-		Priority: 7
 		Bounds: 36,36
 		DecorationBounds: 36,36
 	Harvester:
@@ -106,6 +104,7 @@ HARV:
 LPST:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
 	-AppearsOnRadar:
 	Buildable:
 		Queue: Vehicle

@@ -39,7 +39,6 @@ HOSP:
 	Inherits@shape: ^2x2Shape
 	Selectable:
 		Bounds: 48,48
-		Priority: 0
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

@@ -1,6 +1,6 @@
 mcv:
 	Inherits: ^Tank
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
 		Queue: Armor
@@ -14,7 +14,6 @@ mcv:
 		Name: Mobile Construction Vehicle
 	Selectable:
 		Class: mcv
-		Priority: 3
 		DecorationBounds: 42,42
 	Health:
 		HP: 45000
@@ -51,7 +50,7 @@ mcv:
 
 harvester:
 	Inherits: ^Tank
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Armor
 		Prerequisites: refinery
@@ -65,7 +64,6 @@ harvester:
 		Name: Spice Harvester
 	Selectable:
 		Class: harvester
-		Priority: 7
 		DecorationBounds: 42,42
 	Harvester:
 		PipCount: 7

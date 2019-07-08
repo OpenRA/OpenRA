@@ -224,20 +224,12 @@
 	GivesBounty:
 		RequiresCondition: global-bounty
 
-^FlatSelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl
-
-^LowPrioritySelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl, Alt
-
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^IronCurtainable
 	Inherits@3: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -321,7 +313,7 @@
 	Inherits@3: ^InfantryExperienceHospitalOverrides
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -492,7 +484,7 @@
 	Inherits@3: ^IronCurtainable
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -544,7 +536,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -641,10 +633,9 @@
 	Inherits@3: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Inherits@bounty: ^GlobalBounty
+	Inherits@selection: ^SelectableBuilding
 	SelectionDecorations:
 	WithSpriteControlGroupDecoration:
-	Selectable:
-		Priority: 3
 	Targetable:
 		TargetTypes: Ground, C4, DetonateAttack, Structure
 	Building:
@@ -729,6 +720,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	Selectable:
 		Bounds: 24,24
 	Targetable:
@@ -1242,3 +1234,26 @@
 		Types: SpyInfiltrate
 	Power:
 		RequiresCondition: !disabled
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+		PriorityModifiers: Ctrl
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2

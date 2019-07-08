@@ -162,7 +162,7 @@ E5:
 
 E6:
 	Inherits: ^Soldier
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -190,8 +190,6 @@ E6:
 	Captures@CAPTURES:
 		CaptureTypes: building, husk
 		PlayerExperience: 50
-	Selectable:
-		Priority: 5
 	-AttackFrontal:
 
 RMBO:

@@ -40,7 +40,7 @@ E1:
 
 ENGINEER:
 	Inherits: ^Soldier
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -72,8 +72,6 @@ ENGINEER:
 		FactionImages:
 			gdi: engineer.gdi
 			nod: engineer.nod
-	Selectable:
-		Priority: 5
 
 FLAMEGUY:
 	Inherits@1: ^ExistsInWorld
