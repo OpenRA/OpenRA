@@ -669,3 +669,4 @@ Background@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Enable Debug Commands in Replays
+		TooltipContainer@TOOLTIP_CONTAINER:
