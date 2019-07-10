@@ -96,6 +96,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this actor automatically take off after creation?")]
 		public readonly bool TakeOffOnCreation = true;
 
+		[Desc("Can this actor be given an explicit land order using the force-move modifier?")]
+		public readonly bool CanForceLand = true;
+
 		[Desc("Altitude at which the aircraft considers itself landed.")]
 		public readonly WDist LandAltitude = WDist.Zero;
 
@@ -903,7 +906,7 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("ForceEnter", 6,
-					(target, modifiers) => AircraftCanEnter(target) && modifiers.HasModifier(TargetModifiers.ForceMove),
+					(target, modifiers) => Info.CanForceLand && modifiers.HasModifier(TargetModifiers.ForceMove) && AircraftCanEnter(target),
 					target => Reservable.IsAvailableFor(target, self));
 
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
@@ -1137,7 +1140,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
-				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) && aircraft.Info.CanForceLand)
 					OrderID = "Land";
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
