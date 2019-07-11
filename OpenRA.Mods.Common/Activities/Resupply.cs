@@ -32,16 +32,18 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ICallForTransport[] transportCallers;
 		readonly IMove move;
 		readonly Aircraft aircraft;
+		readonly bool stayOnResupplier;
 
 		int remainingTicks;
 		bool played;
 		bool actualResupplyStarted;
 		ResupplyType activeResupplyTypes = ResupplyType.None;
 
-		public Resupply(Actor self, Actor host, WDist closeEnough)
+		public Resupply(Actor self, Actor host, WDist closeEnough, bool stayOnResupplier = false)
 		{
 			this.host = Target.FromActor(host);
 			this.closeEnough = closeEnough;
+			this.stayOnResupplier = stayOnResupplier;
 			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
 			repairable = self.TraitOrDefault<Repairable>();
@@ -75,21 +77,8 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
 
-				if (aircraft != null)
-				{
-					aircraft.AllowYieldingReservation();
-					if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply))
-						Queue(new TakeOff(self));
-
-					return true;
-				}
-				else if (repairableNear != null)
-					return true;
-				else
-				{
-					QueueChild(move.MoveToTarget(self, host));
-					return false;
-				}
+				OnResupplyEnding(self);
+				return true;
 			}
 			else if (IsCanceling || host.Type != TargetType.Actor || !host.Actor.IsInWorld || host.Actor.IsDead)
 			{
@@ -148,22 +137,37 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (activeResupplyTypes == 0)
 			{
-				if (aircraft != null)
-					aircraft.AllowYieldingReservation();
-
-				if (self.CurrentActivity.NextActivity == null)
-				{
-					var rp = host.Actor.TraitOrDefault<RallyPoint>();
-					if (rp != null)
-						Queue(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
-					else if (repairableNear == null)
-						Queue(move.MoveToTarget(self, host));
-				}
-
+				OnResupplyEnding(self);
 				return true;
 			}
 
 			return false;
+		}
+
+		void OnResupplyEnding(Actor self)
+		{
+			if (aircraft != null)
+			{
+				aircraft.AllowYieldingReservation();
+				if (!stayOnResupplier && aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply))
+					QueueChild(new TakeOff(self));
+			}
+			else if (!stayOnResupplier)
+			{
+				// If there's no next activity, move to rallypoint if available, else just leave host if Repairable.
+				// Do nothing if RepairableNear (RepairableNear actors don't enter their host and will likely remain within closeEnough).
+				// If there's a next activity and we're not RepairableNear, first leave host if the next activity is not a Move.
+				if (self.CurrentActivity.NextActivity == null)
+				{
+					var rp = host.Actor.TraitOrDefault<RallyPoint>();
+					if (rp != null)
+						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
+					else if (repairableNear == null)
+						QueueChild(move.MoveToTarget(self, host));
+				}
+				else if (repairableNear == null && !(self.CurrentActivity.NextActivity is Move))
+					QueueChild(move.MoveToTarget(self, host));
+			}
 		}
 
 		void RepairTick(Actor self)

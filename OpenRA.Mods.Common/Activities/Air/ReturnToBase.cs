@@ -120,9 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				aircraft.MakeReservation(dest);
 				QueueChild(new Land(self, Target.FromActor(dest), offset, facing));
-				QueueChild(new Resupply(self, dest, WDist.Zero));
-				if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply) && !alwaysLand)
-					QueueChild(new TakeOff(self));
+				QueueChild(new Resupply(self, dest, WDist.Zero, alwaysLand));
 
 				return true;
 			}
