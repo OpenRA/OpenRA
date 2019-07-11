@@ -166,14 +166,6 @@ namespace OpenRA.Mods.Common.Activities
 			return false;
 		}
 
-		public override void Cancel(Actor self, bool keepQueue = false)
-		{
-			if (NextActivity != null)
-				return;
-
-			base.Cancel(self, keepQueue);
-		}
-
 		void RepairTick(Actor self)
 		{
 			// First active.
