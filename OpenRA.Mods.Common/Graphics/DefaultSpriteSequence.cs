@@ -204,16 +204,16 @@ namespace OpenRA.Mods.Common.Graphics
 							"{0}: Sequence {1}.{2}: Length must be <= Frames.Length"
 							.F(info.Nodes[0].Location, sequence, animation));
 
-					if (Start < 0 || Start + Facings * Stride > frameCount)
+					if (Start < 0 || Start + (Facings - 1) * Stride + Length > frameCount)
 						throw new InvalidOperationException(
 							"{5}: Sequence {0}.{1} uses frames [{2}..{3}], but only 0..{4} actually exist"
-							.F(sequence, animation, Start, Start + Facings * Stride - 1, frameCount - 1,
+							.F(sequence, animation, Start, Start + (Facings - 1) * Stride + Length - 1, frameCount - 1,
 								info.Nodes[0].Location));
 
-					if (ShadowStart + Facings * Stride > frameCount)
+					if (ShadowStart + (Facings - 1) * Stride + Length > frameCount)
 						throw new InvalidOperationException(
 							"{5}: Sequence {0}.{1}'s shadow frames use frames [{2}..{3}], but only [0..{4}] actually exist"
-							.F(sequence, animation, ShadowStart, ShadowStart + Facings * Stride - 1, frameCount - 1,
+							.F(sequence, animation, ShadowStart, ShadowStart + (Facings - 1) * Stride + Length - 1, frameCount - 1,
 								info.Nodes[0].Location));
 
 					var usedFrames = new List<int>();
