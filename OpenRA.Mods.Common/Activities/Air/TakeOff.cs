@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (dat < aircraft.Info.CruiseAltitude)
 			{
 				// If we're a VTOL, rise before flying forward
-				if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL))
+				if (aircraft.Info.VTOL)
 				{
 					Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 					return false;
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Checking for NextActivity == null again in case another activity was queued while taking off
 			if (moveToRallyPoint && NextActivity == null)
 			{
-				if (!aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL) && assignTargetOnFirstRun)
+				if (!aircraft.Info.VTOL && assignTargetOnFirstRun)
 					return true;
 
 				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, target)));

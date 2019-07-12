@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				aircraft.AllowYieldingReservation();
 				if (wasRepaired ||
-					(!stayOnResupplier && aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply)))
+					(!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 					QueueChild(new TakeOff(self));
 			}
 			else if (!stayOnResupplier)
