@@ -331,6 +331,7 @@
 		LandableTerrainTypes: Clear, Rough, Road, Beach, Tiberium, BlueTiberium
 		Crushes: crate, infantry
 		InitialFacing: 224
+		CanSlide: True
 	HiddenUnderFog:
 		Type: GroundPosition
 	ActorLostNotification:
@@ -1091,6 +1092,7 @@
 	Aircraft:
 		CanHover: True
 		VTOL: true
+		CanSlide: True
 	FallsToEarth:
 		Spins: True
 		Moves: False
