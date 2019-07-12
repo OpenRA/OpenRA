@@ -9,7 +9,6 @@ carryall.reinforce:
 	Armor:
 		Type: light
 	Aircraft:
-		FlightDynamics: VTOL, Slide, MoveIntoShroud, TakeOffOnCreation
 		CruiseAltitude: 2160
 		CruisingCondition: cruising
 		InitialFacing: 0
@@ -19,6 +18,8 @@ carryall.reinforce:
 		Repulsable: False
 		LandWhenIdle: False
 		AirborneCondition: airborne
+		CanSlide: True
+		VTOL: true
 		IdleTurnSpeed: 1
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
@@ -76,12 +77,14 @@ frigate:
 	Tooltip:
 		Name: Frigate
 	Aircraft:
-		FlightDynamics: VTOL, Hover, MoveIntoShroud, TakeOffOnCreation
 		Speed: 189
 		TurnSpeed: 1
 		Repulsable: False
 		MaximumPitch: 20
 		CruiseAltitude: 2048
+		VTOL: true
+		CanHover: true
+		CanSlide: true
 	-AppearsOnRadar:
 	Cargo:
 		MaxWeight: 20
@@ -99,7 +102,6 @@ ornithopter:
 	Armor:
 		Type: light
 	Aircraft:
-		FlightDynamics: MoveIntoShroud, TakeOffOnCreation
 		Speed: 224
 		TurnSpeed: 2
 		Repulsable: False
@@ -131,7 +133,8 @@ carryall.husk:
 	Aircraft:
 		TurnSpeed: 4
 		Speed: 144
-		FlightDynamics: VTOL, Slide, MoveIntoShroud, TakeOffOnCreation
+		CanSlide: True
+		VTOL: true
 	RenderSprites:
 		Image: carryall
 
@@ -144,6 +147,7 @@ carryall.huskVTOL:
 		Velocity: 0c128
 	Aircraft:
 		TurnSpeed: 4
-		FlightDynamics: VTOL, Slide, MoveIntoShroud, TakeOffOnCreation
+		CanSlide: True
+		VTOL: true
 	RenderSprites:
 		Image: carryall
