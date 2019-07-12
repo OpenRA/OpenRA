@@ -634,6 +634,7 @@
 		LandableTerrainTypes: Clear, Rough, Road, Ore, Beach, Gems
 		Crushes: crate, mine, infantry
 		InitialFacing: 224
+		CanSlide: True
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
@@ -1047,6 +1048,7 @@
 	Aircraft:
 		CanHover: True
 		VTOL: true
+		CanSlide: True
 	FallsToEarth:
 		Explosion: UnitExplodeHeli
 	BodyOrientation:
