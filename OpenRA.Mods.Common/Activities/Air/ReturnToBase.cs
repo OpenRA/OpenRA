@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (nearestResupplier != null)
 				{
-					if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.Hover))
+					if (aircraft.Info.CanHover)
 					{
 						var distanceFromResupplier = (nearestResupplier.CenterPosition - self.CenterPosition).HorizontalLength;
 						var distanceLength = aircraft.Info.WaitDistanceFromResupplyBase.Length;
@@ -113,9 +113,9 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var exit = dest.FirstExitOrDefault(null);
 				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-				if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TurnToDock))
+				if (aircraft.Info.TurnToDock)
 					facing = aircraft.Info.InitialFacing;
-				if (!aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL))
+				if (!aircraft.Info.VTOL)
 					facing = 192;
 
 				aircraft.MakeReservation(dest);

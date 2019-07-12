@@ -53,8 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 		public static void FlyTick(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, WVec moveOverride, int turnSpeedOverride = -1)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var isSlider = aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.Slide);
-			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
+			var move = aircraft.Info.CanSlide ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 			if (moveOverride != WVec.Zero)
 				move = moveOverride;
 
@@ -116,7 +115,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If the aircraft lands when idle and is idle, we let the default idle handler manage this.
 				// TODO: Remove this after fixing all activities to work properly with arbitrary starting altitudes.
 				var skipHeightAdjustment = aircraft.Info.LandWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
-				if (aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.Hover) && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
+				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
 				{
 					if (dat <= aircraft.LandAltitude)
 						QueueChild(new TakeOff(self, target));
@@ -161,22 +160,22 @@ namespace OpenRA.Mods.Common.Activities
 			if (insideMaxRange && !insideMinRange)
 				return true;
 
-			var isSlider = aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.Slide);
+			var isSlider = aircraft.Info.CanSlide;
 			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
-			// Inside the minimum range, so reverse if we have Slide flag
+			// Inside the minimum range, so reverse if we CanSlide
 			if (isSlider && insideMinRange)
 			{
 				FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
 				return false;
 			}
 
-			// The next move would overshoot, so consider it close enough or set final position if we have Slide flag
+			// The next move would overshoot, so consider it close enough or set final position if we CanSlide
 			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
 				// For VTOL landing to succeed, it must reach the exact target position,
-				// so for the final move it needs to behave as if it had the Slide flag.
-				if (isSlider || aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.VTOL))
+				// so for the final move it needs to behave as if it had CanSlide.
+				if (isSlider || aircraft.Info.VTOL)
 				{
 					// Set final (horizontal) position
 					if (delta.HorizontalLengthSquared != 0)
