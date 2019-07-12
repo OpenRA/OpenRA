@@ -49,7 +49,7 @@ DSHP:
 		IdealSeparation: 1275
 		CruiseAltitude: 12c512
 		AltitudeVelocity: 256
-		FlightDynamics: VTOL, Hover, MoveIntoShroud, TakeOffOnCreation, TurnToDock
+		MoveIntoShroud: true
 	Health:
 		HP: 20000
 	Armor:
@@ -90,7 +90,8 @@ ORCA:
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		AltitudeVelocity: 128
-		FlightDynamics: VTOL, Hover, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
+		CanSlide: false
+		TakeOffOnResupply: true
 	Health:
 		HP: 20000
 	Armor:
@@ -144,6 +145,8 @@ ORCAB:
 		CruisingCondition: cruising
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
+		CanHover: false
+		CanSlide: false
 	ReturnOnIdle:
 	Health:
 		HP: 26000
@@ -199,7 +202,6 @@ ORCATRAN:
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		IdealSeparation: 1275
-		FlightDynamics: VTOL, Hover, MoveIntoShroud, TakeOffOnCreation, TurnToDock
 	Health:
 		HP: 20000
 	Armor:
@@ -281,6 +283,8 @@ SCRIN:
 		AirborneCondition: airborne
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
+		CanHover: false
+		CanSlide: false
 	ReturnOnIdle:
 	Health:
 		HP: 28000
@@ -332,7 +336,8 @@ APACHE:
 	Aircraft:
 		TurnSpeed: 5
 		Speed: 130
-		FlightDynamics: VTOL, Hover, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
+		CanSlide: false
+		TakeOffOnResupply: true
 	Health:
 		HP: 22500
 	Armor:
@@ -384,7 +389,7 @@ HUNTER:
 		Speed: 355
 		CruiseAltitude: 3c128
 		CruisingCondition: cruising
-		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud, TakeOffOnCreation
+		MoveIntoShroud: true
 	AttackAircraft:
 		FacingTolerance: 128
 		AttackType: Hover

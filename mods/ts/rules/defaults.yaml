@@ -880,7 +880,10 @@
 		MaximumPitch: 120
 		LandableTerrainTypes: Clear, Road, Rail, DirtRoad, Rough, Tiberium, BlueTiberium, Veins
 		Crushes: crate, infantry
-		FlightDynamics: VTOL, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
+		MoveIntoShroud: false
+		CanHover: true
+		CanSlide: true
+		VTOL: true
 	Voiced:
 		VoiceSet: Heli
 	HiddenUnderFog:

@@ -626,12 +626,14 @@
 	Tooltip:
 		GenericName: Helicopter
 	Aircraft:
+		CanHover: True
 		CruisingCondition: cruising
 		WaitDistanceFromResupplyBase: 4c0
+		TakeOffOnResupply: true
+		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Ore, Beach, Gems
 		Crushes: crate, mine, infantry
 		InitialFacing: 224
-		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud, TakeOffOnCreation, TakeOffOnResupply, TurnToDock
 	GpsDot:
 		String: Helicopter
 	Hovers@CRUISING:
@@ -1043,7 +1045,8 @@
 	Tooltip:
 		GenericName: Destroyed Helicopter
 	Aircraft:
-		FlightDynamics: VTOL, Slide, Hover, MoveIntoShroud, TakeOffOnCreation
+		CanHover: True
+		VTOL: true
 	FallsToEarth:
 		Explosion: UnitExplodeHeli
 	BodyOrientation:
