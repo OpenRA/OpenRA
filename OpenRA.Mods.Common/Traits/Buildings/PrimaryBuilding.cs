@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PrimaryBuilding(init.Self, this); }
 	}
 
-	public class PrimaryBuilding : ConditionalTrait<PrimaryBuildingInfo>, INotifyCreated, IIssueOrder, IResolveOrder
+	public class PrimaryBuilding : ConditionalTrait<PrimaryBuildingInfo>, IIssueOrder, IResolveOrder
 	{
 		const string OrderID = "PrimaryProducer";
 
@@ -55,9 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 		public PrimaryBuilding(Actor self, PrimaryBuildingInfo info)
 			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			base.Created(self);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders

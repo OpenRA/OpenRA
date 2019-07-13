@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
 	}
 
-	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick, INotifyCreated
+	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick
 	{
 		readonly ActorSpawnManagerInfo info;
 
@@ -55,9 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			enabled = self.Trait<MapCreeps>().Enabled;
+			base.Created(self);
 		}
 
 		void ITick.Tick(Actor self)
