@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage, INotifyCreated
+	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage
 	{
 		readonly IHealth health;
 		BuildingInfo buildingInfo;
@@ -91,9 +91,10 @@ namespace OpenRA.Mods.Common.Traits
 			health = self.Trait<IHealth>();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			buildingInfo = self.Info.TraitInfoOrDefault<BuildingInfo>();
+			base.Created(self);
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

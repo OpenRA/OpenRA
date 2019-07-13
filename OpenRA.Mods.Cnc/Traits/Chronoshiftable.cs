@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	public class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
-		IDeathActorInitModifier, ITransformActorInitModifier, INotifyCreated
+		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly Actor self;
 		Actor chronosphere;
@@ -100,9 +100,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			iPositionable = self.TraitOrDefault<IPositionable>();
+			base.Created(self);
 		}
 
 		// Can't be used in synced code, except with ignoreVis.

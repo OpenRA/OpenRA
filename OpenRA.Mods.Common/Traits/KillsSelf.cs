@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
 
-	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyCreated, INotifyAddedToWorld, ITick
+	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{
 		int lifetime;
 		ConditionManager conditionManager;
@@ -51,9 +51,10 @@ namespace OpenRA.Mods.Common.Traits
 				Kill(self);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
+			base.Created(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

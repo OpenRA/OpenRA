@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class ReloadAmmoPool : PausableConditionalTrait<ReloadAmmoPoolInfo>, ITick, INotifyCreated, INotifyAttack, ISync
+	public class ReloadAmmoPool : PausableConditionalTrait<ReloadAmmoPoolInfo>, ITick, INotifyAttack, ISync
 	{
 		AmmoPool ammoPool;
 		IReloadAmmoModifier[] modifiers;
@@ -54,11 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 		public ReloadAmmoPool(ReloadAmmoPoolInfo info)
 			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			ammoPool = self.TraitsImplementing<AmmoPool>().Single(ap => ap.Info.Name == Info.AmmoPool);
 			modifiers = self.TraitsImplementing<IReloadAmmoModifier>().ToArray();
 			remainingTicks = Info.Delay;
+			base.Created(self);
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)

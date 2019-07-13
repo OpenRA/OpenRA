@@ -26,16 +26,17 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DetectCloaked(this); }
 	}
 
-	public class DetectCloaked : ConditionalTrait<DetectCloakedInfo>, INotifyCreated
+	public class DetectCloaked : ConditionalTrait<DetectCloakedInfo>
 	{
 		IDetectCloakedModifier[] rangeModifiers;
 
 		public DetectCloaked(DetectCloakedInfo info)
 			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			rangeModifiers = self.TraitsImplementing<IDetectCloakedModifier>().ToArray();
+			base.Created(self);
 		}
 
 		public WDist Range

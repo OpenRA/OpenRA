@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new ResourcePurifier(init.Self, this); }
 	}
 
-	public class ResourcePurifier : ConditionalTrait<ResourcePurifierInfo>, INotifyCreated, INotifyResourceAccepted, ITick, INotifyOwnerChanged
+	public class ResourcePurifier : ConditionalTrait<ResourcePurifierInfo>, INotifyResourceAccepted, ITick, INotifyOwnerChanged
 	{
 		readonly int[] modifier;
 
@@ -50,15 +50,16 @@ namespace OpenRA.Mods.Cnc.Traits
 			currentDisplayTick = Info.TickRate;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			// Special case handling is required for the Player actor.
 			// Created is called before Player.PlayerActor is assigned,
 			// so we must query other player traits from self, knowing that
 			// it refers to the same actor as self.Owner.PlayerActor
 			var playerActor = self.Info.Name == "player" ? self : self.Owner.PlayerActor;
-
 			playerResources = playerActor.Trait<PlayerResources>();
+
+			base.Created(self);
 		}
 
 		void INotifyResourceAccepted.OnResourceAccepted(Actor self, Actor refinery, int amount)

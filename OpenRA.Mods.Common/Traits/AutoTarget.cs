@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyCreated, INotifyOwnerChanged
+	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyOwnerChanged
 	{
 		public readonly IEnumerable<AttackBase> ActiveAttackBases;
 		[Sync]
@@ -189,19 +189,21 @@ namespace OpenRA.Mods.Common.Traits
 			PredictedStance = stance;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			// AutoTargetPriority and their Priorities are fixed - so we can safely cache them with ToArray.
 			// IsTraitEnabled can change over time, and so must appear after the ToArray so it gets re-evaluated each time.
 			activeTargetPriorities =
 				self.TraitsImplementing<AutoTargetPriority>()
-				.OrderByDescending(ati => ati.Info.Priority).ToArray()
-				.Where(Exts.IsTraitEnabled).Select(atp => atp.Info);
+					.OrderByDescending(ati => ati.Info.Priority).ToArray()
+					.Where(Exts.IsTraitEnabled).Select(atp => atp.Info);
 
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			disableAutoTarget = self.TraitsImplementing<IDisableAutoTarget>().ToArray();
 			notifyStanceChanged = self.TraitsImplementing<INotifyStanceChanged>().ToArray();
 			ApplyStanceCondition(self);
+
+			base.Created(self);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

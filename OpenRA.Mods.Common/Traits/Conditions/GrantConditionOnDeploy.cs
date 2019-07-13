@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
-	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder, INotifyCreated,
+	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder,
 		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove
 	{
 		readonly Actor self;
@@ -93,10 +93,11 @@ namespace OpenRA.Mods.Common.Traits
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			notify = self.TraitsImplementing<INotifyDeployTriggered>().ToArray();
+			base.Created(self);
 
 			switch (deployState)
 			{
