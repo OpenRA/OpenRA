@@ -108,6 +108,9 @@ check: dependencies
 	@echo
 	@echo "Checking for explicit interface violations..."
 	@mono --debug OpenRA.Utility.exe all --check-explicit-interfaces
+	@echo
+	@echo "Checking for incorrect conditional trait interface overrides..."
+	@mono --debug OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
 
 
 NUNIT_CONSOLE := $(shell test -f thirdparty/download/nunit3-console.exe && echo mono thirdparty/download/nunit3-console.exe || \
