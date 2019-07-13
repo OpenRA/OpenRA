@@ -147,6 +147,9 @@ function Check-Command
 	{
 		Write-Host "Checking for explicit interface violations..." -ForegroundColor Cyan
 		./OpenRA.Utility.exe all --check-explicit-interfaces
+
+		Write-Host "Checking for incorrect conditional trait interface overrides..." -ForegroundColor Cyan
+		./OpenRA.Utility.exe all --check-conditional-trait-interface-overrides
 	}
 }
 
