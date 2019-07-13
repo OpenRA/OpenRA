@@ -243,3 +243,4 @@ EditorWorld:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
+	EditorActionManager:

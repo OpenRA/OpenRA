@@ -128,6 +128,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (reslayer != null)
 					cashLabel.GetText = () => "$ {0}".F(reslayer.NetWorth);
 			}
+
+			var actionManager = world.WorldActor.Trait<EditorActionManager>();
+			var undoButton = widget.GetOrNull<ButtonWidget>("UNDO_BUTTON");
+			if (undoButton != null)
+			{
+				undoButton.IsDisabled = () => !actionManager.HasUndos();
+				undoButton.OnClick = () => actionManager.Undo();
+			}
+
+			var redoButton = widget.GetOrNull<ButtonWidget>("REDO_BUTTON");
+			if (redoButton != null)
+			{
+				redoButton.IsDisabled = () => !actionManager.HasRedos();
+				redoButton.OnClick = () => actionManager.Redo();
+			}
 		}
 
 		Widget CreateCategoriesPanel()

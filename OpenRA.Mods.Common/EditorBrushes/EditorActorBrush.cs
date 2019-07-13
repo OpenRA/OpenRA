@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
 		readonly EditorActorLayer editorLayer;
+		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly ActorPreviewWidget preview;
 		readonly WVec centerOffset;
@@ -38,6 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 			worldRenderer = wr;
 			world = wr.World;
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
 			Actor = actor;
 			this.owner = owner;
@@ -101,33 +103,8 @@ namespace OpenRA.Mods.Common.Widgets
 					return true;
 
 				// Enforce first entry of ValidOwnerNames as owner if the actor has RequiresSpecificOwners
-				var ownerName = owner.Name;
-				var specificOwnerInfo = Actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
-				if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
-					ownerName = specificOwnerInfo.ValidOwnerNames.First();
-
-				var newActorReference = new ActorReference(Actor.Name);
-				newActorReference.Add(new OwnerInit(ownerName));
-
-				newActorReference.Add(new LocationInit(cell));
-
-				var ios = Actor.TraitInfoOrDefault<IOccupySpaceInfo>();
-				if (ios != null && ios.SharesCell)
-				{
-					var subcell = editorLayer.FreeSubCellAt(cell);
-					if (subcell != SubCell.Invalid)
-						newActorReference.Add(new SubCellInit(subcell));
-				}
-
-				var initDict = newActorReference.InitDict;
-
-				if (Actor.HasTraitInfo<IFacingInfo>())
-					initDict.Add(new FacingInit(facing));
-
-				if (Actor.HasTraitInfo<TurretedInfo>())
-					initDict.Add(new TurretFacingInit(facing));
-
-				editorLayer.Add(newActorReference);
+				var action = new AddActorAction(editorLayer, Actor, cell, owner, facing);
+				editorActionManager.Add(action);
 			}
 
 			return true;
@@ -150,5 +127,70 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void Dispose() { }
+	}
+
+	class AddActorAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly EditorActorLayer editorLayer;
+		readonly ActorInfo actor;
+		readonly CPos cell;
+		readonly PlayerReference owner;
+		readonly int facing;
+
+		EditorActorPreview editorActorPreview;
+
+		public AddActorAction(EditorActorLayer editorLayer, ActorInfo actor, CPos cell, PlayerReference owner, int facing)
+		{
+			this.editorLayer = editorLayer;
+			this.actor = actor;
+			this.cell = cell;
+			this.owner = owner;
+			this.facing = facing;
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			var ownerName = owner.Name;
+			var specificOwnerInfo = actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
+			if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
+				ownerName = specificOwnerInfo.ValidOwnerNames.First();
+
+			var newActorReference = new ActorReference(actor.Name);
+			newActorReference.Add(new OwnerInit(ownerName));
+
+			newActorReference.Add(new LocationInit(cell));
+
+			var ios = actor.TraitInfoOrDefault<IOccupySpaceInfo>();
+			if (ios != null && ios.SharesCell)
+			{
+				var subcell = editorLayer.FreeSubCellAt(cell);
+				if (subcell != SubCell.Invalid)
+					newActorReference.Add(new SubCellInit(subcell));
+			}
+
+			var initDict = newActorReference.InitDict;
+
+			if (actor.HasTraitInfo<IFacingInfo>())
+				initDict.Add(new FacingInit(facing));
+
+			if (actor.HasTraitInfo<TurretedInfo>())
+				initDict.Add(new TurretFacingInit(facing));
+
+			editorActorPreview = editorLayer.Add(newActorReference);
+
+			Text = "Added {0} ({1})".F(editorActorPreview.Info.Name, editorActorPreview.ID);
+		}
+
+		public void Undo()
+		{
+			editorLayer.Remove(editorActorPreview);
+		}
 	}
 }

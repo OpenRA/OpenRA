@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -23,6 +24,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly SpriteWidget preview;
+		readonly EditorActionManager editorActionManager;
+
+		AddResourcesEditorAction action;
+		bool resourceAdded;
 
 		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, ResourceTypeInfo resource, WorldRenderer wr)
 		{
@@ -30,6 +35,8 @@ namespace OpenRA.Mods.Common.Widgets
 			ResourceType = resource;
 			worldRenderer = wr;
 			world = wr.World;
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+			action = new AddResourcesEditorAction(world.Map, ResourceType);
 
 			preview = editorWidget.Get<SpriteWidget>("DRAG_LAYER_PREVIEW");
 			preview.Palette = resource.Palette;
@@ -65,11 +72,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
-			if (mi.Button == MouseButton.Left && AllowResourceAt(cell))
+			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && AllowResourceAt(cell))
 			{
 				var type = (byte)ResourceType.ResourceType;
 				var index = (byte)ResourceType.MaxDensity;
-				world.Map.Resources[cell] = new ResourceTile(type, index);
+				action.Add(new CellResource(cell, world.Map.Resources[cell], new ResourceTile(type, index)));
+				resourceAdded = true;
+			}
+			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
+			{
+				editorActionManager.Add(action);
+				action = new AddResourcesEditorAction(world.Map, ResourceType);
+				resourceAdded = false;
 			}
 
 			return true;
@@ -111,5 +125,64 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void Dispose() { }
+	}
+
+	struct CellResource
+	{
+		public readonly CPos Cell;
+		public readonly ResourceTile ResourceTile;
+		public readonly ResourceTile NewResourceTile;
+
+		public CellResource(CPos cell, ResourceTile resourceTile, ResourceTile newResourceTile)
+		{
+			Cell = cell;
+			ResourceTile = resourceTile;
+			NewResourceTile = newResourceTile;
+		}
+	}
+
+	class AddResourcesEditorAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly Map map;
+		readonly ResourceTypeInfo resourceType;
+		readonly List<CellResource> cellResources = new List<CellResource>();
+
+		public AddResourcesEditorAction(Map map, ResourceTypeInfo resourceType)
+		{
+			this.map = map;
+			this.resourceType = resourceType;
+		}
+
+		public void Execute()
+		{
+		}
+
+		public void Do()
+		{
+			foreach (var resourceCell in cellResources)
+				SetTile(resourceCell.Cell, resourceCell.NewResourceTile);
+		}
+
+		void SetTile(CPos cell, ResourceTile tile)
+		{
+			map.Resources[cell] = tile;
+		}
+
+		public void Undo()
+		{
+			foreach (var resourceCell in cellResources)
+				SetTile(resourceCell.Cell, resourceCell.ResourceTile);
+		}
+
+		public void Add(CellResource cellResource)
+		{
+			SetTile(cellResource.Cell, cellResource.NewResourceTile);
+			cellResources.Add(cellResource);
+
+			var cellText = cellResources.Count != 1 ? "cells" : "cell";
+			Text = "Added {0} {1} of {2}".F(cellResources.Count, cellText, resourceType.TerrainType);
+		}
 	}
 }
