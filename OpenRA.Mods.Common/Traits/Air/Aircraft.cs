@@ -358,7 +358,7 @@ namespace OpenRA.Mods.Common.Traits
 				ForceLanding = true;
 			}
 
-			// Add takeoff activity if LandOnCondidion resolves to false and the actor should not land when idle.
+			// Add takeoff activity if LandOnCondition resolves to false and the actor should not land when idle.
 			if (ForceLanding && landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
 			{
 				ForceLanding = false;
