@@ -287,15 +287,21 @@ Container@EDITOR_WORLD_ROOT:
 							Children:
 								Button@DELETE_BUTTON:
 									X: 15
-									Width: 85
+									Width: 75
 									Height: 25
 									Text: Delete
 									Font: Bold
-								Button@CLOSE_BUTTON:
-									X: 195
-									Width: 85
+								Button@CANCEL_BUTTON:
+									X: 125
+									Width: 75
 									Height: 25
-									Text: Close
+									Text: Cancel
+									Font: Bold
+								Button@OK_BUTTON:
+									X: 205
+									Width: 75
+									Height: 25
+									Text: OK
 									Font: Bold
 		ViewportController:
 			Width: WINDOW_RIGHT
@@ -313,10 +319,10 @@ Container@EDITOR_WORLD_ROOT:
 			BookmarkRestoreKeyPrefix: MapBookmarkRestore
 			BookmarkKeyCount: 4
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT - 255
+			X: WINDOW_RIGHT - 325
 			Y: 5
-			Width: 250
-			Height: 250
+			Width: 320
+			Height: 320
 			Children:
 				Radar@INGAME_RADAR:
 					X: 10
@@ -327,10 +333,10 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: TileSelectorLogic
 			Children:
 				Background@TILES_BG:
-					X: WINDOW_RIGHT - 250
-					Y: 290
-					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					X: WINDOW_RIGHT - 320
+					Y: 360
+					Width: 310
+					Height: WINDOW_BOTTOM - 452
 					Children:
 						Label@SEARCH_LABEL:
 							Y: 12
@@ -378,10 +384,10 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: LayerSelectorLogic
 			Children:
 				Background@LAYERS_BG:
-					X: WINDOW_RIGHT - 250
-					Y: 290
-					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					X: WINDOW_RIGHT - 320
+					Y: 360
+					Width: 310
+					Height: WINDOW_BOTTOM - 452
 					Children:
 						ScrollPanel@LAYERTEMPLATE_LIST:
 							X: 10
@@ -405,10 +411,10 @@ Container@EDITOR_WORLD_ROOT:
 			Logic: ActorSelectorLogic
 			Children:
 				Background@ACTORS_BG:
-					X: WINDOW_RIGHT - 250
-					Y: 290
-					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					X: WINDOW_RIGHT - 320
+					Y: 360
+					Width: 310
+					Height: WINDOW_BOTTOM - 452
 					Children:
 						Label@SEARCH_LABEL:
 							Y: 12
@@ -467,11 +473,44 @@ Container@EDITOR_WORLD_ROOT:
 											X: 4
 											Y: 4
 											Visible: true
+		Container@HISTORY_WIDGETS:
+			Logic: HistoryLogLogic
+			Visible: false
+			Children:
+				Background@HISTORY_BG:
+					X: WINDOW_RIGHT - 320
+					Y: 360
+					Width: 310
+					Height: WINDOW_BOTTOM - 452
+					Children:
+						ScrollPanel@HISTORY_LIST:
+							X: 10
+							Y: 10
+							Width: PARENT_RIGHT - 20
+							Height: PARENT_BOTTOM - 20
+							CollapseHiddenChildren: True
+							TopBottomSpacing: 4
+							ItemSpacing: 4
+							Children:
+								ScrollItem@HISTORY_TEMPLATE:
+									X: 4
+									Visible: false
+									Width: PARENT_RIGHT - 31
+									Height: 25
+									IgnoreChildMouseOver: true
+									TextColor: ffffff
+									TextColorDisabled: 8f8f8f
+									Children:
+										Label@TITLE:
+											X: 5
+											Width: PARENT_RIGHT
+											Height: 25
+											Align: Left
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
-			X: WINDOW_RIGHT - 245
-			Y: 260
-			Width: 240
+			X: WINDOW_RIGHT - 315
+			Y: 330
+			Width: 310
 			Height: 25
 			Children:
 				Button@TILES_TAB:
@@ -491,6 +530,12 @@ Container@EDITOR_WORLD_ROOT:
 					Width: 70
 					Height: 25
 					Text: Actors
+					Font: Bold
+				Button@HISTORY_TAB:
+					X: 230
+					Width: 70
+					Height: 25
+					Text: History
 					Font: Bold
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
@@ -547,15 +592,35 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Zoom
 			TooltipContainer: TOOLTIP_CONTAINER
+		Button@UNDO_BUTTON:
+			X: 630
+			Height: 25
+			Width: 90
+			Text: Undo
+			Font: Bold
+			Key: z ctrl
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Undo last step
+			TooltipContainer: TOOLTIP_CONTAINER
+		Button@REDO_BUTTON:
+			X: 730
+			Height: 25
+			Width: 90
+			Text: Redo
+			Font: Bold
+			Key: y ctrl
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Redo last step
+			TooltipContainer: TOOLTIP_CONTAINER
 		Label@COORDINATE_LABEL:
-			X: 635
+			X: 835
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 750
+			X: 950
 			Width: 50
 			Height: 25
 			Align: Left

@@ -379,3 +379,4 @@ EditorWorld:
 	EditorSelectionLayer:
 		Palette: placefootprint
 	LoadWidgetAtGameStart:
+	EditorActionManager:
