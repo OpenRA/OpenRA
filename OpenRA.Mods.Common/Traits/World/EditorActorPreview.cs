@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class EditorActorPreview
+	public class EditorActorPreview : IEquatable<EditorActorPreview>
 	{
 		public readonly string DescriptiveName;
 		public readonly ActorInfo Info;
@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly IReadOnlyDictionary<CPos, SubCell> Footprint;
 		public readonly Rectangle Bounds;
 		public readonly SelectionBoxRenderable SelectionBox;
+		public readonly ActorReference Actor;
 
 		public string Tooltip
 		{
@@ -43,7 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 		public SubCell SubCell { get; private set; }
 		public bool Selected { get; set; }
 
-		readonly ActorReference actor;
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference actor, PlayerReference owner)
 		{
 			ID = id;
-			this.actor = actor;
+			Actor = actor;
 			Owner = owner;
 			this.worldRenderer = worldRenderer;
 
@@ -120,25 +120,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ReplaceInit<T>(T init)
 		{
-			var original = actor.InitDict.GetOrDefault<T>();
+			var original = Actor.InitDict.GetOrDefault<T>();
 			if (original != null)
-				actor.InitDict.Remove(original);
+				Actor.InitDict.Remove(original);
 
-			actor.InitDict.Add(init);
+			Actor.InitDict.Add(init);
 			GeneratePreviews();
 		}
 
 		public void RemoveInit<T>()
 		{
-			var original = actor.InitDict.GetOrDefault<T>();
+			var original = Actor.InitDict.GetOrDefault<T>();
 			if (original != null)
-				actor.InitDict.Remove(original);
+				Actor.InitDict.Remove(original);
 			GeneratePreviews();
 		}
 
 		public T Init<T>()
 		{
-			return actor.InitDict.GetOrDefault<T>();
+			return Actor.InitDict.GetOrDefault<T>();
 		}
 
 		public MiniYaml Save()
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			};
 
-			return actor.Save(saveInit);
+			return Actor.Save(saveInit);
 		}
 
 		WPos PreviewPosition(World world, TypeDictionary init)
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 				var cell = init.Get<LocationInit>().Value(world);
 				var offset = WVec.Zero;
 
-				var subCellInit = actor.InitDict.GetOrDefault<SubCellInit>();
+				var subCellInit = Actor.InitDict.GetOrDefault<SubCellInit>();
 				var subCell = subCellInit != null ? subCellInit.Value(worldRenderer.World) : SubCell.Any;
 
 				var buildingInfo = Info.TraitInfoOrDefault<BuildingInfo>();
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void GeneratePreviews()
 		{
-			var init = new ActorPreviewInitializer(Info, worldRenderer, actor.InitDict);
+			var init = new ActorPreviewInitializer(Info, worldRenderer, Actor.InitDict);
 			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
@@ -190,12 +190,39 @@ namespace OpenRA.Mods.Common.Traits
 
 		public ActorReference Export()
 		{
-			return new ActorReference(actor.Type, actor.Save().ToDictionary());
+			return new ActorReference(Actor.Type, Actor.Save().ToDictionary());
 		}
 
 		public override string ToString()
 		{
 			return "{0} {1}".F(Info.Name, ID);
+		}
+
+		public bool Equals(EditorActorPreview other)
+		{
+			if (ReferenceEquals(null, other))
+				return false;
+			if (ReferenceEquals(this, other))
+				return true;
+
+			return string.Equals(ID, other.ID, StringComparison.OrdinalIgnoreCase);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj))
+				return false;
+			if (ReferenceEquals(this, obj))
+				return true;
+			if (obj.GetType() != GetType())
+				return false;
+
+			return Equals((EditorActorPreview)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return ID != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(ID) : 0;
 		}
 	}
 }

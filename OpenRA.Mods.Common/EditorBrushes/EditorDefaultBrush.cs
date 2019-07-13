@@ -33,6 +33,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActorLayer editorLayer;
 		readonly Dictionary<int, ResourceType> resources;
+		readonly EditorActionManager editorActionManager;
+
 		public EditorActorPreview SelectedActor;
 		int2 worldPixel;
 
@@ -45,6 +47,8 @@ namespace OpenRA.Mods.Common.Widgets
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			resources = world.WorldActor.TraitsImplementing<ResourceType>()
 				.ToDictionary(r => r.Info.ResourceType, r => r);
+
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -74,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
 
 			var mapResources = world.Map.Resources;
-			ResourceType type;
+			ResourceType type = null;
 			if (underCursor != null)
 				editorWidget.SetTooltip(underCursor.Tooltip);
 			else if (mapResources.Contains(cell) && resources.TryGetValue(mapResources[cell].Type, out type))
@@ -97,10 +101,10 @@ namespace OpenRA.Mods.Common.Widgets
 				editorWidget.SetTooltip(null);
 
 				if (underCursor != null && underCursor != SelectedActor)
-					editorLayer.Remove(underCursor);
+					editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
 
 				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
-					mapResources[cell] = default(ResourceTile);
+					editorActionManager.Add(new RemoveResourceAction(mapResources, cell, type));
 			}
 
 			return true;
@@ -108,5 +112,70 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Tick() { }
 		public void Dispose() { }
+	}
+
+	class RemoveActorAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly EditorActorLayer editorActorLayer;
+		readonly EditorActorPreview actor;
+
+		public RemoveActorAction(EditorActorLayer editorActorLayer, EditorActorPreview actor)
+		{
+			this.editorActorLayer = editorActorLayer;
+			this.actor = actor;
+
+			Text = "Removed {0} ({1})".F(actor.Info.Name, actor.ID);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			editorActorLayer.Remove(actor);
+		}
+
+		public void Undo()
+		{
+			editorActorLayer.Add(actor);
+		}
+	}
+
+	class RemoveResourceAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly CellLayer<ResourceTile> mapResources;
+		readonly CPos cell;
+
+		ResourceTile resourceTile;
+
+		public RemoveResourceAction(CellLayer<ResourceTile> mapResources, CPos cell, ResourceType type)
+		{
+			this.mapResources = mapResources;
+			this.cell = cell;
+
+			Text = "Removed {0}".F(type.Info.TerrainType);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			resourceTile = mapResources[cell];
+			mapResources[cell] = default(ResourceTile);
+		}
+
+		public void Undo()
+		{
+			mapResources[cell] = resourceTile;
+		}
 	}
 }

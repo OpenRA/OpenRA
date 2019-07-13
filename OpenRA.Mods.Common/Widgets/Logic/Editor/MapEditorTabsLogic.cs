@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly Widget widget;
 
-		protected enum MenuType { Tiles, Layers, Actors }
+		protected enum MenuType { Tiles, Layers, Actors, History }
 		protected MenuType menuType = MenuType.Tiles;
 		readonly Widget tabContainer;
 
@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupTab("TILES_TAB", "TILE_WIDGETS", MenuType.Tiles);
 			SetupTab("OVERLAYS_TAB", "LAYER_WIDGETS", MenuType.Layers);
 			SetupTab("ACTORS_TAB", "ACTOR_WIDGETS", MenuType.Actors);
+			SetupTab("HISTORY_TAB", "HISTORY_WIDGETS", MenuType.History);
 		}
 
 		void SetupTab(string buttonId, string tabId, MenuType tabType)

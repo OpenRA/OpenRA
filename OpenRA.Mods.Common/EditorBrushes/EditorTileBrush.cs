@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly TerrainTemplatePreviewWidget preview;
 		readonly Rectangle bounds;
+		readonly EditorActionManager editorActionManager;
 
 		bool painting;
 
@@ -35,6 +37,8 @@ namespace OpenRA.Mods.Common.Widgets
 			Template = template;
 			worldRenderer = wr;
 			world = wr.World;
+
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
 			preview = editorWidget.Get<TerrainTemplatePreviewWidget>("DRAG_TILE_PREVIEW");
 			preview.GetScale = () => worldRenderer.Viewport.Zoom;
@@ -97,33 +101,13 @@ namespace OpenRA.Mods.Common.Widgets
 		void PaintCell(CPos cell, bool isMoving)
 		{
 			var map = world.Map;
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
-
 			var tileset = map.Rules.TileSet;
 			var template = tileset.Templates[Template];
-			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
 
 			if (isMoving && PlacementOverlapsSameTemplate(template, cell))
 				return;
 
-			var i = 0;
-			for (var y = 0; y < template.Size.Y; y++)
-			{
-				for (var x = 0; x < template.Size.X; x++, i++)
-				{
-					if (template.Contains(i) && template[i] != null)
-					{
-						var index = template.PickAny ? (byte)Game.CosmeticRandom.Next(0, template.TilesCount) : (byte)i;
-						var c = cell + new CVec(x, y);
-						if (!mapTiles.Contains(c))
-							continue;
-
-						mapTiles[c] = new TerrainTile(Template, index);
-						mapHeight[c] = (byte)(baseHeight + template[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
-					}
-				}
-			}
+			editorActionManager.Add(new PaintTileEditorAction(Template, map, cell));
 		}
 
 		void FloodFillWithBrush(CPos cell, bool isMoving)
@@ -238,5 +222,88 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void Dispose() { }
+	}
+
+	class PaintTileEditorAction : IEditorAction
+	{
+		public string Text { get; private set; }
+
+		readonly ushort template;
+		readonly Map map;
+		readonly CPos cell;
+
+		readonly Queue<UndoTile> undoTiles = new Queue<UndoTile>();
+		readonly TerrainTemplateInfo terrainTemplate;
+
+		public PaintTileEditorAction(ushort template, Map map, CPos cell)
+		{
+			this.template = template;
+			this.map = map;
+			this.cell = cell;
+
+			var tileset = map.Rules.TileSet;
+			terrainTemplate = tileset.Templates[template];
+			Text = "Added tile {0}".F(terrainTemplate.Id);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
+
+			var i = 0;
+			for (var y = 0; y < terrainTemplate.Size.Y; y++)
+			{
+				for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
+				{
+					if (terrainTemplate.Contains(i) && terrainTemplate[i] != null)
+					{
+						var index = terrainTemplate.PickAny ? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount) : (byte)i;
+						var c = cell + new CVec(x, y);
+						if (!mapTiles.Contains(c))
+							continue;
+
+						undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));
+
+						mapTiles[c] = new TerrainTile(template, index);
+						mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
+					}
+				}
+			}
+		}
+
+		public void Undo()
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+
+			while (undoTiles.Count > 0)
+			{
+				var undoTile = undoTiles.Dequeue();
+
+				mapTiles[undoTile.Cell] = undoTile.MapTile;
+				mapHeight[undoTile.Cell] = undoTile.Height;
+			}
+		}
+	}
+
+	class UndoTile
+	{
+		public CPos Cell { get; private set; }
+		public TerrainTile MapTile { get; private set; }
+		public byte Height { get; private set; }
+
+		public UndoTile(CPos cell, TerrainTile mapTile, byte height)
+		{
+			Cell = cell;
+			MapTile = mapTile;
+			Height = height;
+		}
 	}
 }
