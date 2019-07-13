@@ -80,8 +80,25 @@ namespace OpenRA.Graphics
 			var collection = new Collection()
 			{
 				Src = yaml.Value,
-				Regions = yaml.Nodes.ToDictionary(n => n.Key, n => new MappedImage(yaml.Value, n.Value))
+				Regions = new Dictionary<string, MappedImage>()
 			};
+
+			foreach (var n in yaml.Nodes.Where(n => n.Value.Value.Split(',').Length == 4))
+				collection.Regions.Add(n.Key, new MappedImage(yaml.Value, n.Value));
+
+			foreach (var n in yaml.Nodes.Where(n => n.Value.Value.Split(',').Length == 8))
+			{
+				var v = n.Value.Value.Split(',').Select(int.Parse).ToArray();
+				collection.Regions.Add(n.Key + "-background", new MappedImage(yaml.Value, v[2] + "," + v[3] + "," + (v[4] - v[2]) + "," + (v[5] - v[3])));
+				collection.Regions.Add(n.Key + "-border-r", new MappedImage(yaml.Value, v[4] + "," + v[3] + "," + (v[6] - v[4]) + "," + (v[5] - v[3])));
+				collection.Regions.Add(n.Key + "-border-l", new MappedImage(yaml.Value, v[0] + "," + v[3] + "," + (v[2] - v[0]) + "," + (v[5] - v[3])));
+				collection.Regions.Add(n.Key + "-border-b", new MappedImage(yaml.Value, v[2] + "," + v[5] + "," + (v[4] - v[2]) + "," + (v[7] - v[5])));
+				collection.Regions.Add(n.Key + "-border-t", new MappedImage(yaml.Value, v[2] + "," + v[1] + "," + (v[4] - v[2]) + "," + (v[3] - v[1])));
+				collection.Regions.Add(n.Key + "-corner-tl", new MappedImage(yaml.Value, v[0] + "," + v[1] + "," + (v[2] - v[0]) + "," + (v[3] - v[1])));
+				collection.Regions.Add(n.Key + "-corner-tr", new MappedImage(yaml.Value, v[4] + "," + v[1] + "," + (v[6] - v[4]) + "," + (v[3] - v[1])));
+				collection.Regions.Add(n.Key + "-corner-bl", new MappedImage(yaml.Value, v[0] + "," + v[5] + "," + (v[2] - v[0]) + "," + (v[7] - v[5])));
+				collection.Regions.Add(n.Key + "-corner-br", new MappedImage(yaml.Value, v[4] + "," + v[5] + "," + (v[6] - v[4]) + "," + (v[7] - v[5])));
+			}
 
 			collections.Add(name, collection);
 		}

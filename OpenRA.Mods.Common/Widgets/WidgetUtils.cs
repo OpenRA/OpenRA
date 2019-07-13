@@ -111,15 +111,15 @@ namespace OpenRA.Mods.Common.Widgets
 		public static void DrawPanelPartial(string collection, Rectangle bounds, PanelSides ps)
 		{
 			DrawPanelPartial(bounds, ps,
-				ChromeProvider.GetImage(collection, "border-t"),
-				ChromeProvider.GetImage(collection, "border-b"),
-				ChromeProvider.GetImage(collection, "border-l"),
-				ChromeProvider.GetImage(collection, "border-r"),
-				ChromeProvider.GetImage(collection, "corner-tl"),
-				ChromeProvider.GetImage(collection, "corner-tr"),
-				ChromeProvider.GetImage(collection, "corner-bl"),
-				ChromeProvider.GetImage(collection, "corner-br"),
-				ChromeProvider.GetImage(collection, "background"));
+				ChromeProvider.GetImage(collection, "border-t") ?? ChromeProvider.GetImage(collection, "ninepatch-border-t"),
+				ChromeProvider.GetImage(collection, "border-b") ?? ChromeProvider.GetImage(collection, "ninepatch-border-b"),
+				ChromeProvider.GetImage(collection, "border-l") ?? ChromeProvider.GetImage(collection, "ninepatch-border-l"),
+				ChromeProvider.GetImage(collection, "border-r") ?? ChromeProvider.GetImage(collection, "ninepatch-border-r"),
+				ChromeProvider.GetImage(collection, "corner-tl") ?? ChromeProvider.GetImage(collection, "ninepatch-corner-tl"),
+				ChromeProvider.GetImage(collection, "corner-tr") ?? ChromeProvider.GetImage(collection, "ninepatch-corner-tr"),
+				ChromeProvider.GetImage(collection, "corner-bl") ?? ChromeProvider.GetImage(collection, "ninepatch-corner-bl"),
+				ChromeProvider.GetImage(collection, "corner-br") ?? ChromeProvider.GetImage(collection, "ninepatch-corner-br"),
+				ChromeProvider.GetImage(collection, "background") ?? ChromeProvider.GetImage(collection, "ninepatch-background"));
 		}
 
 		public static void DrawPanelPartial(Rectangle bounds, PanelSides ps,

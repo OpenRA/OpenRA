@@ -15,268 +15,76 @@ logos: chrome.png
 #
 
 button: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 button-nod: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 button-gdi: chrome.png
-	background: 385,1,30,30
-	border-r: 415,1,1,30
-	border-l: 384,1,1,30
-	border-b: 385,31,30,1
-	border-t: 385,0,30,1
-	corner-tl: 384,0,1,1
-	corner-tr: 415,0,1,1
-	corner-bl: 384,31,1,1
-	corner-br: 415,31,1,1
+	ninepatch: 384,0,385,1,415,31,416,32
 
 button-hover: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 button-nod-hover: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 button-gdi-hover: chrome.png
-	background: 417,1,30,30
-	border-r: 447,1,1,30
-	border-l: 416,1,1,30
-	border-b: 417,31,30,1
-	border-t: 417,0,30,1
-	corner-tl: 416,0,1,1
-	corner-tr: 447,0,1,1
-	corner-bl: 416,31,1,1
-	corner-br: 447,31,1,1
+	ninepatch: 416,0,417,1,447,31,448,32
 
 button-disabled: chrome.png
-	background: 161,33,30,30
-	border-r: 191,33,1,30
-	border-l: 160,33,1,30
-	border-b: 161,63,30,1
-	border-t: 161,32,30,1
-	corner-tl: 160,32,1,1
-	corner-tr: 191,32,1,1
-	corner-bl: 160,63,1,1
-	corner-br: 191,63,1,1
+	ninepatch: 160,32,161,33,191,63,192,64
 
 button-nod-disabled: chrome.png
-	background: 161,33,30,30
-	border-r: 191,33,1,30
-	border-l: 160,33,1,30
-	border-b: 161,63,30,1
-	border-t: 161,32,30,1
-	corner-tl: 160,32,1,1
-	corner-tr: 191,32,1,1
-	corner-bl: 160,63,1,1
-	corner-br: 191,63,1,1
+	ninepatch: 160,32,161,33,191,63,192,64
 
 button-gdi-disabled: chrome.png
-	background: 417,33,30,30
-	border-r: 447,33,1,30
-	border-l: 416,33,1,30
-	border-b: 417,63,30,1
-	border-t: 417,32,30,1
-	corner-tl: 416,32,1,1
-	corner-tr: 447,32,1,1
-	corner-bl: 416,63,1,1
-	corner-br: 447,63,1,1
+	ninepatch: 416,32,417,33,447,63,448,64
 
 button-pressed: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 
 button-nod-pressed: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 
 button-gdi-pressed: chrome.png
-	background: 385,33,30,30
-	border-r: 415,33,1,30
-	border-l: 384,33,1,30
-	border-b: 385,63,30,1
-	border-t: 385,32,30,1
-	corner-tl: 384,32,1,1
-	corner-tr: 415,32,1,1
-	corner-bl: 384,63,1,1
-	corner-br: 415,63,1,1
+	ninepatch: 384,32,385,33,415,63,416,64
 
 button-highlighted: chrome.png
-	background: 129,65,30,30
-	border-r: 159,65,1,30
-	border-l: 128,65,1,30
-	border-b: 129,95,30,1
-	border-t: 129,64,30,1
-	corner-tl: 128,64,1,1
-	corner-tr: 159,64,1,1
-	corner-bl: 128,95,1,1
-	corner-br: 159,95,1,1
+	ninepatch: 128,64,129,65,159,95,160,96
 
 button-nod-highlighted: chrome.png
-	background: 129,65,30,30
-	border-r: 159,65,1,30
-	border-l: 128,65,1,30
-	border-b: 129,95,30,1
-	border-t: 129,64,30,1
-	corner-tl: 128,64,1,1
-	corner-tr: 159,64,1,1
-	corner-bl: 128,95,1,1
-	corner-br: 159,95,1,1
+	ninepatch: 128,64,129,65,159,95,160,96
 
 button-gdi-highlighted: chrome.png
-	background: 385,65,30,30
-	border-r: 415,65,1,30
-	border-l: 384,65,1,30
-	border-b: 385,95,30,1
-	border-t: 385,64,30,1
-	corner-tl: 354,64,1,1
-	corner-tr: 415,64,1,1
-	corner-bl: 384,95,1,1
-	corner-br: 415,95,1,1
+	ninepatch: 354,64,385,65,415,95,416,96
 
 button-highlighted-hover: chrome.png
-	background: 161,65,30,30
-	border-r: 191,65,1,30
-	border-l: 160,65,1,30
-	border-b: 161,95,30,1
-	border-t: 161,64,30,1
-	corner-tl: 160,64,1,1
-	corner-tr: 191,64,1,1
-	corner-bl: 160,95,1,1
-	corner-br: 191,95,1,1
+	ninepatch: 160,64,161,65,191,95,192,96
 
 button-nod-highlighted-hover: chrome.png
-	background: 161,65,30,30
-	border-r: 191,65,1,30
-	border-l: 160,65,1,30
-	border-b: 161,95,30,1
-	border-t: 161,64,30,1
-	corner-tl: 160,64,1,1
-	corner-tr: 191,64,1,1
-	corner-bl: 160,95,1,1
-	corner-br: 191,95,1,1
+	ninepatch: 160,64,161,65,191,95,192,96
 
 button-gdi-highlighted-hover: chrome.png
-	background: 417,65,30,30
-	border-r: 447,65,1,30
-	border-l: 416,65,1,30
-	border-b: 417,95,30,1
-	border-t: 417,64,30,1
-	corner-tl: 416,64,1,1
-	corner-tr: 447,64,1,1
-	corner-bl: 416,95,1,1
-	corner-br: 447,95,1,1
+	ninepatch: 416,64,417,65,447,95,448,96
 
 button-highlighted-pressed: chrome.png
-	background: 129,97,30,30
-	border-r: 159,97,1,30
-	border-l: 128,97,1,30
-	border-b: 129,97,30,1
-	border-t: 129,96,30,1
-	corner-tl: 128,96,1,1
-	corner-tr: 159,96,1,1
-	corner-bl: 128,97,1,1
-	corner-br: 159,97,1,1
+	ninepatch: 128,96,129,97,159,97,160,98
 
 button-nod-highlighted-pressed: chrome.png
-	background: 129,97,30,30
-	border-r: 159,97,1,30
-	border-l: 128,97,1,30
-	border-b: 129,97,30,1
-	border-t: 129,96,30,1
-	corner-tl: 128,96,1,1
-	corner-tr: 159,96,1,1
-	corner-bl: 128,97,1,1
-	corner-br: 159,97,1,1
+	ninepatch: 128,96,129,97,159,97,160,98
 
 button-gdi-highlighted-pressed: chrome.png
-	background: 385,97,30,30
-	border-r: 415,97,1,30
-	border-l: 384,97,1,30
-	border-b: 385,97,30,1
-	border-t: 385,96,30,1
-	corner-tl: 384,96,1,1
-	corner-tr: 415,96,1,1
-	corner-bl: 384,97,1,1
-	corner-br: 415,97,1,1
+	ninepatch: 384,96,385,97,415,97,416,98
 
 button-highlighted-disabled: chrome.png
-	background: 161,97,30,30
-	border-r: 191,97,1,30
-	border-l: 160,97,1,30
-	border-b: 161,97,30,1
-	border-t: 161,96,30,1
-	corner-tl: 160,96,1,1
-	corner-tr: 191,96,1,1
-	corner-bl: 160,97,1,1
-	corner-br: 191,97,1,1
+	ninepatch: 160,96,161,97,191,97,192,98
 
 button-nod-highlighted-disabled: chrome.png
-	background: 161,97,30,30
-	border-r: 191,97,1,30
-	border-l: 160,97,1,30
-	border-b: 161,97,30,1
-	border-t: 161,96,30,1
-	corner-tl: 160,96,1,1
-	corner-tr: 191,96,1,1
-	corner-bl: 160,97,1,1
-	corner-br: 191,97,1,1
+	ninepatch: 160,96,161,97,191,97,192,98
 
 button-gdi-highlighted-disabled: chrome.png
-	background: 417,97,30,30
-	border-r: 447,97,1,30
-	border-l: 416,97,1,30
-	border-b: 417,97,30,1
-	border-t: 417,96,30,1
-	corner-tl: 416,96,1,1
-	corner-tr: 447,96,1,1
-	corner-bl: 416,97,1,1
-	corner-br: 447,97,1,1
+	ninepatch: 416,96,417,97,447,97,448,98
 
 #
 # Textfield
@@ -285,51 +93,19 @@ button-gdi-highlighted-disabled: chrome.png
 
 # A copy of button
 textfield: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 # A copy of button-hover
 textfield-hover: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 # A copy of button-disabled
 textfield-disabled: chrome.png
-	background: 161,33,30,30
-	border-r: 191,33,1,30
-	border-l: 160,33,1,30
-	border-b: 161,63,30,1
-	border-t: 161,32,30,1
-	corner-tl: 160,32,1,1
-	corner-tr: 191,32,1,1
-	corner-bl: 160,63,1,1
-	corner-br: 191,63,1,1
+	ninepatch: 160,32,161,33,191,63,192,64
 
 # A copy of button-pressed
 textfield-focused: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 
 #
 # Progress bar
@@ -338,27 +114,11 @@ textfield-focused: chrome.png
 
 # A copy of button
 progressbar-bg: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 # A copy of button-hover
 progressbar-thumb: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 #
 # Scroll panel
@@ -367,83 +127,27 @@ progressbar-thumb: chrome.png
 
 # A copy of panel-gray
 scrollpanel-bg: chrome.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
+	ninepatch: 64,64,66,66,126,126,128,128
 
 scrollpanel-button: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 scrollpanel-button-hover: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 scrollpanel-button-disabled: chrome.png
-	background: 161,33,30,30
-	border-r: 191,33,1,30
-	border-l: 160,33,1,30
-	border-b: 161,63,30,1
-	border-t: 161,32,30,1
-	corner-tl: 160,32,1,1
-	corner-tr: 191,32,1,1
-	corner-bl: 160,63,1,1
-	corner-br: 191,63,1,1
+	ninepatch: 160,32,161,33,191,63,192,64
 
 scrollpanel-button-pressed: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 
 # A copy of button-hover
 scrollitem-hover: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 # A copy of button-pressed
 scrollitem-selected: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 
 scrollitem-nohover: chrome.png
 
@@ -457,119 +161,39 @@ slider: chrome.png
 
 # A copy of panel-gray
 slider-track: chrome.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
+	ninepatch: 64,64,66,66,126,126,128,128
 
 slider-thumb: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 slider-thumb-hover: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 slider-thumb-disabled: chrome.png
-	background: 161,33,30,30
-	border-r: 191,33,1,30
-	border-l: 160,33,1,30
-	border-b: 161,63,30,1
-	border-t: 161,32,30,1
-	corner-tl: 160,32,1,1
-	corner-tr: 191,32,1,1
-	corner-bl: 160,63,1,1
-	corner-br: 191,63,1,1
+	ninepatch: 160,32,161,33,191,63,192,64
 
 slider-thumb-pressed: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 	
 # A copy of button
 checkbox: chrome.png
-	background: 129,1,30,30
-	border-r: 159,1,1,30
-	border-l: 128,1,1,30
-	border-b: 129,31,30,1
-	border-t: 129,0,30,1
-	corner-tl: 128,0,1,1
-	corner-tr: 159,0,1,1
-	corner-bl: 128,31,1,1
-	corner-br: 159,31,1,1
+	ninepatch: 128,0,129,1,159,31,160,32
 
 # A copy of button-hover
 checkbox-hover: chrome.png
-	background: 161,1,30,30
-	border-r: 191,1,1,30
-	border-l: 160,1,1,30
-	border-b: 161,31,30,1
-	border-t: 161,0,30,1
-	corner-tl: 160,0,1,1
-	corner-tr: 191,0,1,1
-	corner-bl: 160,31,1,1
-	corner-br: 191,31,1,1
+	ninepatch: 160,0,161,1,191,31,192,32
 
 # A copy of button-disabled
 checkbox-disabled: chrome.png
-	background: 161,33,30,30
-	border-r: 191,33,1,30
-	border-l: 160,33,1,30
-	border-b: 161,63,30,1
-	border-t: 161,32,30,1
-	corner-tl: 160,32,1,1
-	corner-tr: 191,32,1,1
-	corner-bl: 160,63,1,1
-	corner-br: 191,63,1,1
+	ninepatch: 160,32,161,33,191,63,192,64
 
 # A copy of button-pressed
 checkbox-pressed: chrome.png
-	background: 129,33,30,30
-	border-r: 159,33,1,30
-	border-l: 128,33,1,30
-	border-b: 129,63,30,1
-	border-t: 129,32,30,1
-	corner-tl: 128,32,1,1
-	corner-tr: 159,32,1,1
-	corner-bl: 128,63,1,1
-	corner-br: 159,63,1,1
+	ninepatch: 128,32,129,33,159,63,160,64
 
 # A copy of button-highlighted-pressed
 checkbox-highlighted: chrome.png
-	background: 385,97,30,30
-	border-r: 415,97,1,30
-	border-l: 384,97,1,30
-	border-b: 385,97,30,1
-	border-t: 385,96,30,1
-	corner-tl: 384,96,1,1
-	corner-tr: 415,96,1,1
-	corner-bl: 384,97,1,1
-	corner-br: 415,97,1,1
+	ninepatch: 384,96,385,97,415,97,416,98
 
 #
 # Panels
@@ -577,198 +201,58 @@ checkbox-highlighted: chrome.png
 #
 
 panel-black: chrome.png
-	background: 66,2,60,60
-	border-r: 126,2,2,60
-	border-l: 64,2,2,60
-	border-b: 66,62,60,2
-	border-t: 66,0,60,2
-	corner-tl: 64,0,2,2
-	corner-tr: 126,0,2,2
-	corner-bl: 64,62,2,2
-	corner-br: 126,62,2,2
+	ninepatch: 64,0,66,2,126,62,128,64
 
 panel-black-nod: chrome.png
-	background: 66,2,60,60
-	border-r: 126,2,2,60
-	border-l: 64,2,2,60
-	border-b: 66,62,60,2
-	border-t: 66,0,60,2
-	corner-tl: 64,0,2,2
-	corner-tr: 126,0,2,2
-	corner-bl: 64,62,2,2
-	corner-br: 126,62,2,2
+	ninepatch: 64,0,66,2,126,62,128,64
 
 panel-black-gdi: chrome.png
-	background: 322,2,60,60
-	border-r: 382,2,2,60
-	border-l: 320,2,2,60
-	border-b: 322,62,60,2
-	border-t: 322,0,60,2
-	corner-tl: 320,0,2,2
-	corner-tr: 382,0,2,2
-	corner-bl: 320,62,2,2
-	corner-br: 382,62,2,2
+	ninepatch: 320,0,322,2,382,62,384,64
 
 panel-darkred: chrome.png
-	background: 2,66,60,60
-	border-r: 62,66,2,60
-	border-l: 0,66,2,60
-	border-b: 2,126,60,2
-	border-t: 2,64,60,2
-	corner-tl: 0,64,2,2
-	corner-tr: 62,64,2,2
-	corner-bl: 0,126,2,2
-	corner-br: 62,126,2,2
+	ninepatch: 0,64,2,66,62,126,64,128
 
 panel-darkred-nod: chrome.png
-	background: 2,66,60,60
-	border-r: 62,66,2,60
-	border-l: 0,66,2,60
-	border-b: 2,126,60,2
-	border-t: 2,64,60,2
-	corner-tl: 0,64,2,2
-	corner-tr: 62,64,2,2
-	corner-bl: 0,126,2,2
-	corner-br: 62,126,2,2
+	ninepatch: 0,64,2,66,62,126,64,128
 
 panel-darkred-gdi: chrome.png
-	background: 258,66,60,60
-	border-r: 318,66,2,60
-	border-l: 256,66,2,60
-	border-b: 258,126,60,2
-	border-t: 258,64,60,2
-	corner-tl: 256,64,2,2
-	corner-tr: 318,64,2,2
-	corner-bl: 256,126,2,2
-	corner-br: 318,126,2,2
+	ninepatch: 256,64,258,66,318,126,320,128
 
 panel-gray: chrome.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
+	ninepatch: 64,64,66,66,126,126,128,128
 
 panel-gray-nod: chrome.png
-	background: 66,66,60,60
-	border-r: 126,66,2,60
-	border-l: 64,66,2,60
-	border-b: 66,126,60,2
-	border-t: 66,64,60,2
-	corner-tl: 64,64,2,2
-	corner-tr: 126,64,2,2
-	corner-bl: 64,126,2,2
-	corner-br: 126,126,2,2
+	ninepatch: 64,64,66,66,126,126,128,128
 
 panel-gray-gdi: chrome.png
-	background: 322,66,60,60
-	border-r: 382,66,2,60
-	border-l: 320,66,2,60
-	border-b: 322,126,60,2
-	border-t: 322,64,60,2
-	corner-tl: 320,64,2,2
-	corner-tr: 382,64,2,2
-	corner-bl: 320,126,2,2
-	corner-br: 382,126,2,2
+	ninepatch: 320,64,322,66,382,126,384,128
 
 panel-allblack: chrome.png
-	background: 1,1,30,30
-	border-r: 31,1,1,30
-	border-l: 0,1,1,30
-	border-b: 1,31,30,1
-	border-t: 1,0,30,1
-	corner-tl: 0,0,1,1
-	corner-tr: 31,0,1,1
-	corner-bl: 0,31,1,1
-	corner-br: 31,31,1,1
+	ninepatch: 0,0,1,1,31,31,32,32
 
 panel-allblack-nod: chrome.png
-	background: 1,1,30,30
-	border-r: 31,1,1,30
-	border-l: 0,1,1,30
-	border-b: 1,31,30,1
-	border-t: 1,0,30,1
-	corner-tl: 0,0,1,1
-	corner-tr: 31,0,1,1
-	corner-bl: 0,31,1,1
-	corner-br: 31,31,1,1
+	ninepatch: 0,0,1,1,31,31,32,32
 
 panel-allblack-gdi: chrome.png
-	background: 257,1,30,30
-	border-r: 287,1,1,30
-	border-l: 256,1,1,30
-	border-b: 257,31,30,1
-	border-t: 257,0,30,1
-	corner-tl: 256,0,1,1
-	corner-tr: 287,0,1,1
-	corner-bl: 256,31,1,1
-	corner-br: 287,31,1,1
+	ninepatch: 256,0,257,1,287,31,288,32
 
 panel-transparent: chrome.png
-	border-r: 31,33,1,30
-	border-l: 0,33,1,30
-	border-b: 1,63,30,1
-	border-t: 1,32,30,1
-	corner-tl: 0,32,1,1
-	corner-tr: 31,32,1,1
-	corner-bl: 0,63,1,1
-	corner-br: 31,63,1,1
+	ninepatch: 0,32,1,33,31,63,32,64
 
 panel-transparent-nod: chrome.png
-	background: 1,33,30,30
-	border-r: 31,33,1,30
-	border-l: 0,33,1,30
-	border-b: 1,63,30,1
-	border-t: 1,32,30,1
-	corner-tl: 0,32,1,1
-	corner-tr: 31,32,1,1
-	corner-bl: 0,63,1,1
-	corner-br: 31,63,1,1
+	ninepatch: 0,32,1,33,31,63,32,64
 
 panel-transparent-gdi: chrome.png
-	background: 257,33,30,30
-	border-r: 287,33,1,30
-	border-l: 256,33,1,30
-	border-b: 257,63,30,1
-	border-t: 257,32,30,1
-	corner-tl: 256,32,1,1
-	corner-tr: 287,32,1,1
-	corner-bl: 256,63,1,1
-	corner-br: 287,63,1,1
+	ninepatch: 256,32,257,33,287,63,288,64
 
 shellmapborder: chrome.png
-	border-t: 161,128,62,33
-	border-b: 161,223,62,33
-	border-l: 128,161,33,62
-	border-r: 223,161,33,62
-	corner-tl: 128,128,33,33
-	corner-tr: 223,128,33,33
-	corner-bl: 128,223,33,33
-	corner-br: 223,223,33,33
+	ninepatch: 128,128,161,161,223,223,256,256
 
 shellmapborder-nod: chrome.png
-	border-t: 161,128,62,33
-	border-b: 161,223,62,33
-	border-l: 128,161,33,62
-	border-r: 223,161,33,62
-	corner-tl: 128,128,33,33
-	corner-tr: 223,128,33,33
-	corner-bl: 128,223,33,33
-	corner-br: 223,223,33,33
+	ninepatch: 128,128,161,161,223,223,256,256
 
 shellmapborder-gdi: chrome.png
-	border-t: 417,128,62,33
-	border-b: 417,223,62,33
-	border-l: 384,161,33,62
-	border-r: 479,161,33,62
-	corner-tl: 384,128,33,33
-	corner-tr: 479,128,33,33
-	corner-bl: 384,223,33,33
-	corner-br: 479,223,33,33
+	ninepatch: 384,128,417,161,479,223,512,256
 
 #
 # Misc

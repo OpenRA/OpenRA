@@ -27,6 +27,12 @@ namespace OpenRA.Graphics
 				Src = defaultSrc;
 		}
 
+		public MappedImage(string defaultSrc, string value)
+		{
+			FieldLoader.LoadField(this, "rect", value);
+			Src = defaultSrc;
+		}
+
 		public Sprite GetImage(Sheet s)
 		{
 			return new Sprite(s, rect, TextureChannel.RGBA);
