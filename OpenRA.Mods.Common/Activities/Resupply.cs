@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove move;
 		readonly Aircraft aircraft;
 		readonly bool stayOnResupplier;
+		readonly bool wasRepaired;
 
 		int remainingTicks;
 		bool played;
@@ -60,7 +61,13 @@ namespace OpenRA.Mods.Common.Activities
 					&& (repairableNear == null || !repairableNear.Info.RepairActors.Contains(host.Info.Name)));
 
 			if (!cannotRepairAtHost)
+			{
 				activeResupplyTypes |= ResupplyType.Repair;
+
+				// HACK: Reservable logic can't handle repairs, so force a take-off if resupply included repairs.
+				// TODO: Make reservation logic or future docking logic properly handle this.
+				wasRepaired = true;
+			}
 
 			var cannotRearmAtHost = rearmable == null || !rearmable.Info.RearmActors.Contains(host.Info.Name) || rearmable.RearmableAmmoPools.All(p => p.FullAmmo());
 			if (!cannotRearmAtHost)
@@ -149,7 +156,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (aircraft != null)
 			{
 				aircraft.AllowYieldingReservation();
-				if (!stayOnResupplier && aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply))
+				if (wasRepaired ||
+					(!stayOnResupplier && aircraft.Info.FlightDynamics.HasFlag(FlightDynamic.TakeOffOnResupply)))
 					QueueChild(new TakeOff(self));
 			}
 			else if (!stayOnResupplier)
