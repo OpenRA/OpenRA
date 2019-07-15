@@ -129,6 +129,10 @@ GAP:
 	Buildable:
 		Prerequisites: ~disabled
 
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
 CAMERA.Large:
 	Inherits: CAMERA
 	# Required for YakAttack to work
