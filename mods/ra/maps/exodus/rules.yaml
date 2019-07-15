@@ -39,10 +39,6 @@ E7:
 	Buildable:
 		Prerequisites: ~disabled
 
-TRAN:
-	Buildable:
-		Prerequisites: ~disabled
-
 BARR:
 	Buildable:
 		Prerequisites: ~disabled
@@ -51,39 +47,11 @@ MIG:
 	Buildable:
 		Prerequisites: ~disabled
 
-HELI:
-	Buildable:
-		Prerequisites: ~disabled
-
-MH60:
-	Buildable:
-		Prerequisites: ~disabled
-
-SS:
-	Buildable:
-		Prerequisites: ~disabled
-
 ARTY:
 	Buildable:
 		Prerequisites: ~disabled
 
 AGUN:
-	Buildable:
-		Prerequisites: ~disabled
-
-MSUB:
-	Buildable:
-		Prerequisites: ~disabled
-
-DD:
-	Buildable:
-		Prerequisites: ~disabled
-
-CA:
-	Buildable:
-		Prerequisites: ~disabled
-
-PT:
 	Buildable:
 		Prerequisites: ~disabled
 
