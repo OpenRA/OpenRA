@@ -29,18 +29,18 @@ namespace OpenRA.Mods.Common.Traits
 			transports = self.TraitsImplementing<ICallForTransport>().ToArray();
 		}
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell, Activity next)
+		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell)
 		{
 			foreach (var t in transports)
-				t.RequestTransport(self, targetCell, next);
+				t.RequestTransport(self, targetCell);
 		}
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor, Activity next)
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor)
 		{
 			var iao = refineryActor.Trait<IAcceptResources>();
 			var location = refineryActor.Location + iao.DeliveryOffset;
 			foreach (var t in transports)
-				t.RequestTransport(self, location, next);
+				t.RequestTransport(self, location);
 		}
 
 		void INotifyHarvesterAction.MovementCancelled(Actor self)

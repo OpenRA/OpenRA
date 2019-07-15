@@ -104,7 +104,6 @@ TTNK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 85
-		PauseOnCondition: empdisable || being-captured
 		RequireForceMoveCondition: !undeployed
 	Health:
 		HP: 35000
@@ -234,7 +233,6 @@ ART2:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 2
-		PauseOnCondition: empdisable || being-captured
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -400,7 +398,7 @@ SAPC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 71
-		PauseOnCondition: empdisable || loading || being-captured
+		PauseOnCondition: empdisable || loading || being-captured || carried
 		Locomotor: subterranean
 	Health:
 		HP: 17500

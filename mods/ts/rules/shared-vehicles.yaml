@@ -19,7 +19,6 @@ MCV:
 	Armor:
 		Type: Heavy
 	Mobile:
-		PauseOnCondition: empdisable || being-captured
 		Speed: 42
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -128,7 +127,6 @@ LPST:
 	Mobile:
 		Speed: 85
 		TurnSpeed: 5
-		PauseOnCondition: empdisable || being-captured
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel && undeployed

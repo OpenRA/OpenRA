@@ -25,6 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self while being carried.")]
 		public readonly string CarriedCondition = null;
 
+		[GrantedConditionReference]
+		[Desc("The condition to grant to self while being locked for carry.")]
+		public readonly string LockedCondition = null;
+
 		[Desc("Carryall attachment point relative to body.")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
@@ -36,6 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		ConditionManager conditionManager;
 		int reservedToken = ConditionManager.InvalidConditionToken;
 		int carriedToken = ConditionManager.InvalidConditionToken;
+		int lockedToken = ConditionManager.InvalidConditionToken;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
@@ -100,6 +105,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (reservedToken != ConditionManager.InvalidConditionToken)
 				reservedToken = conditionManager.RevokeCondition(self, reservedToken);
+
+			if (lockedToken != ConditionManager.InvalidConditionToken)
+				lockedToken = conditionManager.RevokeCondition(self, lockedToken);
 		}
 
 		// Prepare for transport pickup
@@ -110,7 +118,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			state = State.Locked;
 			Carrier = carrier;
-			self.QueueActivity(false, new WaitFor(() => state != State.Locked, false));
+
+			if (lockedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
+				lockedToken = conditionManager.GrantCondition(self, Info.LockedCondition);
+
 			return true;
 		}
 	}

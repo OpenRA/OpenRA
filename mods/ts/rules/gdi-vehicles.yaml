@@ -15,7 +15,7 @@ APC:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 113
-		PauseOnCondition: empdisable || loading || being-captured
+		PauseOnCondition: empdisable || loading || being-captured || carried
 		Locomotor: amphibious
 	Health:
 		HP: 20000
@@ -332,7 +332,6 @@ JUGG:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 5
-		PauseOnCondition: empdisable || being-captured
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
