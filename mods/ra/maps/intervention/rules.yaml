@@ -157,7 +157,7 @@ TRUK:
 	Buildable:
 		Prerequisites: ~disabled
 
-HIND:
+MH60:
 	Buildable:
 		Prerequisites: ~disabled
 
