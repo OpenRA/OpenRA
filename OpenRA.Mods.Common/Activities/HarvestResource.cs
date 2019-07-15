@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.Location != targetCell)
 			{
 				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
-					n.MovingToResources(self, targetCell, new FindAndDeliverResources(self));
+					n.MovingToResources(self, targetCell);
 
 				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
 				QueueChild(move.MoveTo(targetCell, 2));

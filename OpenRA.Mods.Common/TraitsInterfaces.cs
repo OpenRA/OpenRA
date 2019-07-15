@@ -196,8 +196,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface INotifyHarvesterAction
 	{
-		void MovingToResources(Actor self, CPos targetCell, Activity next);
-		void MovingToRefinery(Actor self, Actor refineryActor, Activity next);
+		void MovingToResources(Actor self, CPos targetCell);
+		void MovingToRefinery(Actor self, Actor refineryActor);
 		void MovementCancelled(Actor self);
 		void Harvested(Actor self, ResourceType resource);
 		void Docked();
@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Traits
 		WDist MinimumDistance { get; }
 		bool WantsTransport { get; }
 		void MovementCancelled(Actor self);
-		void RequestTransport(Actor self, CPos destination, Activity afterLandActivity);
+		void RequestTransport(Actor self, CPos destination);
 	}
 
 	public interface IDeathActorInitModifier

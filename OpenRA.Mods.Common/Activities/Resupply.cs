@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(new WaitForTransport(self, moveActivities));
 
 					// TODO: Make this compatible with RepairableNear
-					transport.RequestTransport(self, targetCell, new Resupply(self, host.Actor, closeEnough));
+					transport.RequestTransport(self, targetCell);
 				}
 				else
 					QueueChild(moveActivities);
