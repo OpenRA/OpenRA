@@ -79,7 +79,8 @@ namespace OpenRA.Mods.Common.Activities
 			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
 			// move actor outside the resupplier footprint.
 			// TODO: This check is nowhere near robust enough, and should be rewritten.
-			if (IsCanceling && host.IsInRange(self.CenterPosition, closeEnough))
+			var isCloseEnough = closeEnough.LengthSquared == 0 || (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
+			if (IsCanceling && isCloseEnough)
 			{
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
@@ -95,8 +96,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				return true;
 			}
-			else if (activeResupplyTypes != 0 && aircraft == null &&
-				(closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
+			else if (activeResupplyTypes != 0 && aircraft == null && !isCloseEnough)
 			{
 				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
 
