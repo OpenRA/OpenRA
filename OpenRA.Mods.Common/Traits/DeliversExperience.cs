@@ -64,6 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (order.OrderString != "DeliverExperience")
+				return null;
+
 			return info.Voice;
 		}
 
