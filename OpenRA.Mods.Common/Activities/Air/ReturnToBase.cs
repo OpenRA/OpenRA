@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			QueueChild(new Fly(self, Target.FromActor(dest)));
-			return false;
+			return true;
 		}
 	}
 }
