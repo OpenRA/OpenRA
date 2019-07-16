@@ -5,7 +5,7 @@ DOG:
 		BuildAtProductionType: Dog
 		BuildPaletteOrder: 50
 		Prerequisites: ~kenn, ~techlevel.infonly
-		Description: Anti-infantry unit.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		Description: Anti-infantry unit.\nCan detect spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -61,8 +61,6 @@ DOG:
 		Modifier: 150
 		RequiresCondition: run
 	IgnoresDisguise:
-	DetectCloaked:
-		CloakTypes: Cloak, Thief
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
@@ -297,7 +295,7 @@ SPY:
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 90
 		Prerequisites: ~!infantry.england, dome, ~tent, ~techlevel.medium
-		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect cloaked units and spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
+		Description: Infiltrates enemy structures for intel or\nsabotage. Exact effect depends on the\nbuilding infiltrated.\nLoses disguise when attacking.\nCan detect spies.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft\n  Special Ability: Disguised
 	Valued:
 		Cost: 500
 	-Tooltip:
@@ -337,8 +335,6 @@ SPY:
 		ZOffset: 256
 		RequiresCondition: disguise
 	IgnoresDisguise:
-	DetectCloaked:
-		CloakTypes: Cloak, Thief
 	Armament:
 		Weapon: SilencedPPK
 	AttackMove:
@@ -368,7 +364,7 @@ E7:
 		BuildPaletteOrder: 120
 		Prerequisites: ~tent, atek, ~techlevel.high
 		BuildLimit: 1
-		Description: Elite commando infantry. Armed with\ndual pistols and C4.\nCan detect cloaked units.\nMaximum 1 can be trained.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
+		Description: Elite commando infantry. Armed with\ndual pistols and C4.\nMaximum 1 can be trained.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -407,8 +403,6 @@ E7:
 		RequiresCondition: produced
 		Voice: Build
 	AnnounceOnKill:
-	DetectCloaked:
-		CloakTypes: Cloak, Thief
 	Voiced:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
@@ -564,7 +558,7 @@ THF:
 		Queue: Infantry
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 110
-		Prerequisites: ~barr, fix, ~techlevel.medium
+		Prerequisites: ~barr, dome, ~techlevel.medium
 		Description: Steals enemy credits.\nHijacks enemy vehicles.\n  Unarmed
 	Valued:
 		Cost: 500
@@ -598,7 +592,7 @@ THF:
 		InitialDelay: 250
 		CloakDelay: 120
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
-		CloakTypes: Cloak, Thief
+		CloakTypes: Cloak
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
@@ -700,9 +694,6 @@ SNIPER:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
-	DetectCloaked:
-		CloakTypes: Cloak, Thief
-		Range: 6c0
 	-MustBeDestroyed:
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
