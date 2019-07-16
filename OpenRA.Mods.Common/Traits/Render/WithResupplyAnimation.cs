@@ -63,6 +63,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				wsb.CancelCustomAnimation(self);
 				animPlaying = false;
 			}
+
+			// If an actor died before finishing resupply, there will never be a ResupplyTick call
+			// with ResupplyType.None (as activities tick before ITick), so reset here every tick
+			// to prevent the animation from continuing after the resupplied actor died.
+			repairing = false;
+			rearming = false;
 		}
 
 		void INotifyResupply.BeforeResupply(Actor self, Actor target, ResupplyType types)
