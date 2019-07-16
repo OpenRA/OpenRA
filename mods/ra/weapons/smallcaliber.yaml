@@ -47,6 +47,8 @@ FLAK-23-AG:
 	Inherits: ^AACannon
 	Range: 6c0
 	ValidTargets: Ground, Water
+	Projectile: Bullet
+		Blockable: True
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air, Ground, Water
 	Warhead@2Eff: CreateEffect

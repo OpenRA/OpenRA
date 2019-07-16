@@ -170,9 +170,6 @@ camera.spyplane:
 	Inherits: CAMERA
 	EditorOnlyTooltip:
 		Name: (support power proxy camera)
-	DetectCloaked:
-		Range: 10c0
-		CloakTypes: Cloak, Thief
 
 SONAR:
 	Inherits: camera.spyplane
@@ -181,6 +178,7 @@ SONAR:
 	-RevealsShroud:
 	DetectCloaked:
 		CloakTypes: Underwater
+		Range: 10c0
 
 FLARE:
 	Immobile:
