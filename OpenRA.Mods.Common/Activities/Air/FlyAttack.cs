@@ -70,11 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self);
 
 			if (IsCanceling)
-			{
-				// Cancel the requested target, but keep firing on it while in range
-				attackAircraft.ClearRequestedTarget();
 				return true;
-			}
 
 			// Check that AttackFollow hasn't cancelled the target by modifying attack.Target
 			// Having both this and AttackFollow modify that field is a horrible hack.
@@ -106,10 +102,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
-			{
-				attackAircraft.ClearRequestedTarget();
 				return true;
-			}
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload
 			// and resume the activity after reloading if AbortOnResupply is set to 'false'
@@ -127,10 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// We've reached the assumed position but it is not there - give up
 				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
-				{
-					attackAircraft.ClearRequestedTarget();
 					return true;
-				}
 
 				// Fly towards the last known position
 				QueueChild(new Fly(self, target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red));
@@ -162,6 +152,12 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return false;
+		}
+
+		protected override void OnLastRun(Actor self)
+		{
+			// Cancel the requested target, but keep firing on it while in range
+			attackAircraft.ClearRequestedTarget();
 		}
 
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
