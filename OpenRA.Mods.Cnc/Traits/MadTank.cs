@@ -156,6 +156,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (order.OrderString != "DetonateAttack" && order.OrderString != "Detonate")
+				return null;
+
 			return info.Voice;
 		}
 
