@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class GrantConditionOnAttackInfo : ITraitInfo
+	public class GrantConditionOnAttackInfo : PausableConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -43,12 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should all instances be revoked instead of only one?")]
 		public readonly bool RevokeAll = false;
 
-		public object Create(ActorInitializer init) { return new GrantConditionOnAttack(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnAttack(init, this); }
 	}
 
-	public class GrantConditionOnAttack : INotifyCreated, ITick, INotifyAttack
+	public class GrantConditionOnAttack : PausableConditionalTrait<GrantConditionOnAttackInfo>, INotifyCreated, ITick, INotifyAttack
 	{
-		readonly GrantConditionOnAttackInfo info;
 		readonly Stack<int> tokens = new Stack<int>();
 
 		int cooldown = 0;
@@ -59,12 +58,12 @@ namespace OpenRA.Mods.Common.Traits
 		Target lastTarget = Target.Invalid;
 
 		public GrantConditionOnAttack(ActorInitializer init, GrantConditionOnAttackInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
+			base.Created(self);
+
 			manager = self.TraitOrDefault<ConditionManager>();
 		}
 
@@ -94,8 +93,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (tokens.Count > 0 && --cooldown == 0)
 			{
-				cooldown = info.RevokeDelay;
-				RevokeInstance(self, info.RevokeAll);
+				cooldown = Info.RevokeDelay;
+				RevokeInstance(self, Info.RevokeAll);
 			}
 		}
 
@@ -131,38 +130,46 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			if (!info.ArmamentNames.Contains(a.Info.Name))
+			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
-			if (info.RevokeOnNewTarget)
+			if (!Info.ArmamentNames.Contains(a.Info.Name))
+				return;
+
+			if (Info.RevokeOnNewTarget)
 			{
 				if (TargetChanged(lastTarget, target))
-					RevokeInstance(self, info.RevokeAll);
+					RevokeInstance(self, Info.RevokeAll);
 
 				lastTarget = target;
 			}
 
-			cooldown = info.RevokeDelay;
+			cooldown = Info.RevokeDelay;
 
-			if (!info.IsCyclic && tokens.Count >= info.MaximumInstances)
+			if (!Info.IsCyclic && tokens.Count >= Info.MaximumInstances)
 				return;
 
 			shotsFired++;
-			var requiredShots = tokens.Count < info.RequiredShotsPerInstance.Length
-				? info.RequiredShotsPerInstance[tokens.Count]
-				: info.RequiredShotsPerInstance[info.RequiredShotsPerInstance.Length - 1];
+			var requiredShots = tokens.Count < Info.RequiredShotsPerInstance.Length
+				? Info.RequiredShotsPerInstance[tokens.Count]
+				: Info.RequiredShotsPerInstance[Info.RequiredShotsPerInstance.Length - 1];
 
 			if (shotsFired >= requiredShots)
 			{
-				if (info.IsCyclic && tokens.Count == info.MaximumInstances)
+				if (Info.IsCyclic && tokens.Count == Info.MaximumInstances)
 					RevokeInstance(self, true);
 				else
-					GrantInstance(self, info.Condition);
+					GrantInstance(self, Info.Condition);
 
 				shotsFired = 0;
 			}
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
+
+		protected override void TraitDisabled(Actor self)
+		{
+			RevokeInstance(self, true);
+		}
 	}
 }
