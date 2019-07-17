@@ -233,7 +233,7 @@ PROC:
 	StoresResources:
 		PipColor: Green
 		PipCount: 10
-		Capacity: 700
+		Capacity: 1000
 	Selectable:
 		Bounds: 72,56
 		DecorationBounds: 73,72
@@ -255,7 +255,7 @@ SILO:
 	Inherits: ^BaseBuilding
 	Inherits@shape: ^2x1Shape
 	Valued:
-		Cost: 300
+		Cost: 100
 	Tooltip:
 		Name: Tiberium Silo
 	Buildable:

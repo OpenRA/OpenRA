@@ -222,10 +222,10 @@ TowerMissile:
 		Speed: 298
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
-		Spread: 683
+		Spread: 483
 		ValidTargets: Ground
 		Versus:
-			None: 48
+			None: 52
 			Wood: 24
 			Light: 100
 			Heavy: 100
