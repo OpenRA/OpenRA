@@ -215,10 +215,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!aircraft.CanLand(blockingCells, target.Actor))
 				{
 					// Maintain holding pattern.
-					if (aircraft.Info.CanHover)
-						QueueChild(new Wait(25));
-					else
-						QueueChild(new FlyCircle(self, 25));
+					QueueChild(new FlyIdle(self, 25));
 
 					self.NotifyBlocker(blockingCells);
 					finishedApproach = false;

@@ -712,8 +712,8 @@ namespace OpenRA.Mods.Common.Traits
 					self.QueueActivity(new TakeOff(self));
 				else if (Info.IdleBehavior == IdleBehaviorType.Land && Info.LandableTerrainTypes.Count > 0)
 					self.QueueActivity(new Land(self));
-				else if (!Info.CanHover)
-					self.QueueActivity(new FlyCircle(self, -1, Info.IdleTurnSpeed > -1 ? Info.IdleTurnSpeed : TurnSpeed));
+				else
+					self.QueueActivity(new FlyIdle(self));
 			}
 		}
 
