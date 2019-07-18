@@ -9,22 +9,26 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class FlyCircle : Activity
+	public class FlyIdle : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly int turnSpeedOverride;
+		readonly INotifyIdle[] tickIdles;
+		readonly int turnSpeed;
 		int remainingTicks;
 
-		public FlyCircle(Actor self, int ticks = -1, int turnSpeedOverride = -1)
+		public FlyIdle(Actor self, int ticks = -1)
 		{
 			aircraft = self.Trait<Aircraft>();
+			tickIdles = self.TraitsImplementing<INotifyIdle>().ToArray();
+			turnSpeed = aircraft.Info.IdleTurnSpeed > -1 ? aircraft.Info.IdleTurnSpeed : aircraft.TurnSpeed;
 			remainingTicks = ticks;
-			this.turnSpeedOverride = turnSpeedOverride;
 		}
 
 		public override bool Tick(Actor self)
@@ -32,26 +36,25 @@ namespace OpenRA.Mods.Common.Activities
 			if (remainingTicks == 0 || (NextActivity != null && remainingTicks < 0))
 				return true;
 
-			// Refuse to take off if it would land immediately again.
-			if (aircraft.ForceLanding)
-			{
-				Cancel(self);
-				return true;
-			}
-
-			if (IsCanceling)
+			if (aircraft.ForceLanding || IsCanceling)
 				return true;
 
 			if (remainingTicks > 0)
 				remainingTicks--;
 
-			// We can't possibly turn this fast
-			var desiredFacing = aircraft.Facing + 64;
+			foreach (var tickIdle in tickIdles)
+				tickIdle.TickIdle(self);
 
-			// This override is necessary, otherwise aircraft with CanSlide would circle sideways
-			var move = aircraft.FlyStep(aircraft.Facing);
+			if (!aircraft.Info.CanHover)
+			{
+				// We can't possibly turn this fast
+				var desiredFacing = aircraft.Facing + 64;
 
-			Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, turnSpeedOverride);
+				// This override is necessary, otherwise aircraft with CanSlide would circle sideways
+				var move = aircraft.FlyStep(aircraft.Facing);
+
+				Fly.FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move, turnSpeed);
+			}
 
 			return false;
 		}
