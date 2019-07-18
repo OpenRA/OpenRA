@@ -804,6 +804,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true)));
 			}
 
+			// TODO: This should only cancel activities queued by this trait
 			if (order.OrderString == "Stop")
 				self.CancelActivity();
 

@@ -675,23 +675,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void OnBecomingIdle(Actor self)
 		{
-			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
-			var atLandAltitude = altitude == LandAltitude;
-
-			// Work-around to prevent players from accidentally canceling resupply by pressing 'Stop',
-			// by re-queueing Resupply as long as resupply hasn't finished and aircraft is still on resupplier.
-			// TODO: Investigate moving this back to ResolveOrder's "Stop" handling,
-			// once conflicts with other traits' "Stop" orders have been fixed.
-			if (atLandAltitude)
-			{
-				var host = GetActorBelow();
-				if (host != null && (CanRearmAt(host) || CanRepairAt(host)))
-				{
-					self.QueueActivity(new Resupply(self, host, WDist.Zero));
-					return;
-				}
-			}
-
 			if (Info.IdleBehavior == IdleBehaviorType.LeaveMap)
 			{
 				self.QueueActivity(new FlyOffMap(self));
@@ -701,16 +684,17 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new ReturnToBase(self, null, !Info.TakeOffOnResupply));
 			else
 			{
-				if (atLandAltitude)
+				var dat = self.World.Map.DistanceAboveTerrain(CenterPosition);
+				if (dat == LandAltitude)
 				{
 					if (!CanLand(self.Location) && ReservedActor == null)
 						self.QueueActivity(new TakeOff(self));
 
-					// All remaining idle behaviors rely on not being atLandAltitude, so unconditionally return
+					// All remaining idle behaviors rely on not being at LandAltitude, so unconditionally return
 					return;
 				}
 
-				if (Info.IdleBehavior != IdleBehaviorType.Land && altitude != Info.CruiseAltitude)
+				if (Info.IdleBehavior != IdleBehaviorType.Land && dat != Info.CruiseAltitude)
 					self.QueueActivity(new TakeOff(self));
 				else if (Info.IdleBehavior == IdleBehaviorType.Land && Info.LandableTerrainTypes.Count > 0)
 					self.QueueActivity(new Land(self));
@@ -1034,13 +1018,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (orderString == "Stop")
 			{
-				self.CancelActivity();
-
-				// HACK: If the player accidentally pressed 'Stop', we don't want this to cancel reservation.
-				// If unreserving is actually desired despite an actor below, it should be triggered from OnBecomingIdle.
-				if (GetActorBelow() != null)
+				// We don't want the Stop order to cancel a running Resupply activity.
+				// Resupply is always either the main activity or a child of ReturnToBase.
+				if (self.CurrentActivity is Resupply ||
+					(self.CurrentActivity is ReturnToBase && GetActorBelow() != null))
 					return;
 
+				self.CancelActivity();
 				UnReserve();
 			}
 			else if (orderString == "ReturnToBase" && rearmable != null && rearmable.Info.RearmActors.Any())

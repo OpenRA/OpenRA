@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -206,6 +207,12 @@ namespace OpenRA.Mods.Common.Traits
 		// Some 3rd-party mods rely on this being public
 		public virtual void OnStopOrder(Actor self)
 		{
+			// We don't want Stop orders from traits other than Mobile or Aircraft to cancel Resupply activity.
+			// Resupply is always either the main activity or a child of ReturnToBase.
+			// TODO: This should generally only cancel activities queued by this trait.
+			if (self.CurrentActivity == null || self.CurrentActivity is Resupply || self.CurrentActivity is ReturnToBase)
+				return;
+
 			self.CancelActivity();
 		}
 
