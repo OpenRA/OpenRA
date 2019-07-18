@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 					}
 
 					QueueChild(new Fly(self, Target.FromActor(nearestResupplier), WDist.Zero, aircraft.Info.WaitDistanceFromResupplyBase, targetLineColor: Color.Green));
-					QueueChild(new FlyCircle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
+					QueueChild(new FlyIdle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
 					return false;
 				}
 
