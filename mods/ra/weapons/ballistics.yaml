@@ -60,7 +60,6 @@
 	Inherits: ^Cannon
 	ReloadDelay: 70
 	Burst: 2
-	BurstDelays: 4
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Heavy: 115
