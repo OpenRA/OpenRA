@@ -99,23 +99,19 @@ namespace OpenRA.Mods.Common.Activities
 				(closeEnough.LengthSquared > 0 && !host.IsInRange(self.CenterPosition, closeEnough)))
 			{
 				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
-				List<Activity> movement = new List<Activity>();
 
-				movement.Add(move.MoveWithinRange(host, closeEnough, targetLineColor: Color.Green));
+				QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: Color.Green));
 
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
 				if (repairableNear == null)
-					movement.Add(move.MoveTo(targetCell, host.Actor));
-
-				var moveActivities = ActivityUtils.SequenceActivities(movement.ToArray());
+					QueueChild(move.MoveTo(targetCell, host.Actor));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				var transport = transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta);
 				if (transport != null)
 					transport.RequestTransport(self, targetCell);
 
-				QueueChild(moveActivities);
 				return false;
 			}
 
