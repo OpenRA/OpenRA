@@ -89,45 +89,20 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, ITick, IIssueDeployOrder
+	class MadTank : INotifyCreated, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
-		readonly Actor self;
 		readonly MadTankInfo info;
-		readonly WithFacingSpriteBody wfsb;
-		readonly ScreenShaker screenShaker;
+
 		ConditionManager conditionManager;
-		bool deployed;
-		int tick;
 
 		public MadTank(Actor self, MadTankInfo info)
 		{
-			this.self = self;
 			this.info = info;
-			wfsb = self.Trait<WithFacingSpriteBody>();
-			screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-		}
-
-		void ITick.Tick(Actor self)
-		{
-			if (!deployed)
-				return;
-
-			if (++tick >= info.ThumpInterval)
-			{
-				if (info.ThumpDamageWeapon != null)
-				{
-					// Use .FromPos since this weapon needs to affect more than just the MadTank actor
-					info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
-				}
-
-				screenShaker.AddEffect(info.ThumpShakeTime, self.CenterPosition, info.ThumpShakeIntensity, info.ThumpShakeMultiplier);
-				tick = 0;
-			}
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -162,68 +137,127 @@ namespace OpenRA.Mods.Cnc.Traits
 			return info.Voice;
 		}
 
-		void Detonate()
-		{
-			self.World.AddFrameEndTask(w =>
-			{
-				if (info.DetonationWeapon != null)
-				{
-					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-					info.DetonationWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
-				}
-
-				self.Kill(self, info.DamageTypes);
-			});
-		}
-
-		void EjectDriver()
-		{
-			var driver = self.World.CreateActor(info.DriverActor.ToLowerInvariant(), new TypeDictionary
-			{
-				new LocationInit(self.Location),
-				new OwnerInit(self.Owner)
-			});
-			var driverMobile = driver.TraitOrDefault<Mobile>();
-			if (driverMobile != null)
-				driverMobile.Nudge(driver, driver, true);
-		}
-
-		void StartDetonationSequence()
-		{
-			if (deployed)
-				return;
-
-			if (conditionManager != null && !string.IsNullOrEmpty(info.DeployedCondition))
-				conditionManager.GrantCondition(self, info.DeployedCondition);
-
-			self.World.AddFrameEndTask(w => EjectDriver());
-			if (info.ThumpSequence != null)
-				wfsb.PlayCustomAnimationRepeating(self, info.ThumpSequence);
-			deployed = true;
-			self.QueueActivity(new Wait(info.ChargeDelay, false));
-			self.QueueActivity(new CallFunc(() => Game.Sound.Play(SoundType.World, info.ChargeSound, self.CenterPosition)));
-			self.QueueActivity(new Wait(info.DetonationDelay, false));
-			self.QueueActivity(new CallFunc(() => Game.Sound.Play(SoundType.World, info.DetonationSound, self.CenterPosition)));
-			self.QueueActivity(new CallFunc(Detonate));
-		}
-
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "DetonateAttack")
 			{
-				if (!order.Queued)
-					self.CancelActivity();
-
 				self.SetTargetLine(order.Target, Color.Red);
-				self.QueueActivity(new MoveAdjacentTo(self, order.Target, targetLineColor: Color.Red));
-				self.QueueActivity(new CallFunc(StartDetonationSequence));
+				self.QueueActivity(order.Queued, new DetonationSequence(self, this, order.Target));
 			}
 			else if (order.OrderString == "Detonate")
-			{
-				if (!order.Queued)
-					self.CancelActivity();
+				self.QueueActivity(order.Queued, new DetonationSequence(self, this));
+		}
 
-				self.QueueActivity(new CallFunc(StartDetonationSequence));
+		class DetonationSequence : Activity
+		{
+			readonly Actor self;
+			readonly MadTank mad;
+			readonly IMove move;
+			readonly WithFacingSpriteBody wfsb;
+			readonly ScreenShaker screenShaker;
+			readonly bool assignTargetOnFirstRun;
+
+			int ticks;
+			bool initiated;
+			Target target;
+
+			public DetonationSequence(Actor self, MadTank mad)
+				: this(self, mad, Target.Invalid)
+			{
+				assignTargetOnFirstRun = true;
+			}
+
+			public DetonationSequence(Actor self, MadTank mad, Target target)
+			{
+				this.self = self;
+				this.mad = mad;
+				this.target = target;
+
+				move = self.Trait<IMove>();
+				wfsb = self.Trait<WithFacingSpriteBody>();
+				screenShaker = self.World.WorldActor.Trait<ScreenShaker>();
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				if (assignTargetOnFirstRun)
+					target = Target.FromCell(self.World, self.Location);
+			}
+
+			public override bool Tick(Actor self)
+			{
+				if (IsCanceling)
+					return true;
+
+				if (target.Type != TargetType.Invalid && !move.CanEnterTargetNow(self, target))
+				{
+					QueueChild(new MoveAdjacentTo(self, target, targetLineColor: Color.Red));
+					return false;
+				}
+
+				if (!initiated)
+				{
+					// If the target has died while we were moving, we should abort detonation.
+					if (target.Type == TargetType.Invalid)
+						return true;
+
+					if (mad.conditionManager != null && !string.IsNullOrEmpty(mad.info.DeployedCondition))
+						mad.conditionManager.GrantCondition(self, mad.info.DeployedCondition);
+
+					self.World.AddFrameEndTask(w => EjectDriver());
+					if (mad.info.ThumpSequence != null)
+						wfsb.PlayCustomAnimationRepeating(self, mad.info.ThumpSequence);
+
+					IsInterruptible = false;
+					initiated = true;
+				}
+
+				if (++ticks % mad.info.ThumpInterval == 0)
+				{
+					if (mad.info.ThumpDamageWeapon != null)
+					{
+						// Use .FromPos since this weapon needs to affect more than just the MadTank actor
+						mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+					}
+
+					screenShaker.AddEffect(mad.info.ThumpShakeTime, self.CenterPosition, mad.info.ThumpShakeIntensity, mad.info.ThumpShakeMultiplier);
+				}
+
+				if (ticks == mad.info.ChargeDelay)
+					Game.Sound.Play(SoundType.World, mad.info.ChargeSound, self.CenterPosition);
+
+				return ticks == mad.info.ChargeDelay + mad.info.DetonationDelay;
+			}
+
+			protected override void OnLastRun(Actor self)
+			{
+				if (!initiated)
+					return;
+
+				Game.Sound.Play(SoundType.World, mad.info.DetonationSound, self.CenterPosition);
+
+				self.World.AddFrameEndTask(w =>
+				{
+					if (mad.info.DetonationWeapon != null)
+					{
+						// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+						mad.info.DetonationWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self, Enumerable.Empty<int>());
+					}
+
+					self.Kill(self, mad.info.DamageTypes);
+				});
+			}
+
+			void EjectDriver()
+			{
+				var driver = self.World.CreateActor(mad.info.DriverActor.ToLowerInvariant(), new TypeDictionary
+				{
+					new LocationInit(self.Location),
+					new OwnerInit(self.Owner)
+				});
+				var driverMobile = driver.TraitOrDefault<Mobile>();
+				if (driverMobile != null)
+					driverMobile.Nudge(driver, driver, true);
 			}
 		}
 	}
