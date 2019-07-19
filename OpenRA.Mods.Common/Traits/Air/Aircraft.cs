@@ -858,9 +858,9 @@ namespace OpenRA.Mods.Common.Traits
 		public Activity VisualMove(Actor self, WPos fromPos, WPos toPos)
 		{
 			// TODO: Ignore repulsion when moving
-			return ActivityUtils.SequenceActivities(
-				new CallFunc(() => SetVisualPosition(self, fromPos)),
-				new Fly(self, Target.FromPos(toPos)));
+			var activities = new CallFunc(() => SetVisualPosition(self, fromPos));
+			activities.Queue(new Fly(self, Target.FromPos(toPos)));
+			return activities;
 		}
 
 		public int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos)
