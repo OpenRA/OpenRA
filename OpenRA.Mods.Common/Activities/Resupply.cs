@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Activities
 			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
 			// move actor outside the resupplier footprint.
 			// TODO: This check is nowhere near robust enough, and should be rewritten.
-			var isCloseEnough = closeEnough.LengthSquared == 0 || (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
+			var isCloseEnough = closeEnough < WDist.Zero || (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
 			if (IsCanceling && isCloseEnough)
 			{
 				foreach (var notifyResupply in notifyResupplies)
