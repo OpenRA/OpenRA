@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CrushableInner(crushClasses, crusher.Owner))
 				return;
 
-			var mobile = self.TraitOrDefault<Mobile>();
+			var mobile = self.OccupiesSpace as Mobile;
 			if (mobile != null && self.World.SharedRandom.Next(100) <= Info.WarnProbability)
 				mobile.Nudge(self, crusher, true);
 		}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Game.Sound.Play(SoundType.World, Info.CrushSound, crusher.CenterPosition);
 
-			var crusherMobile = crusher.TraitOrDefault<Mobile>();
+			var crusherMobile = crusher.OccupiesSpace as Mobile;
 			self.Kill(crusher, crusherMobile != null ? crusherMobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
 		}
 
