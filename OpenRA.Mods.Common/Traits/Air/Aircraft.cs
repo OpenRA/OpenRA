@@ -543,8 +543,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			return (rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name))
-				|| (repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name));
+			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
+			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
+
+			return canRearmAtActor || canRepairAtActor;
 		}
 
 		public int MovementSpeed
