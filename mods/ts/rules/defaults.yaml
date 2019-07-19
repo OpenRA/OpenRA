@@ -871,6 +871,7 @@
 		RepairActors: gadept
 		Voice: Move
 	Aircraft:
+		InitialFacing: 224
 		AirborneCondition: airborne
 		CruisingCondition: cruising
 		CruiseAltitude: 4c704
