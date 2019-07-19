@@ -53,7 +53,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithInfantryBody : ConditionalTrait<WithInfantryBodyInfo>, ITick, INotifyAttack, INotifyIdle
 	{
-		readonly IMove move;
 		protected readonly Animation DefaultAnimation;
 
 		bool dirty;
@@ -74,8 +73,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			DefaultAnimation = new Animation(init.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
 			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 			PlayStandAnimation(self);
-
-			move = init.Self.Trait<IMove>();
 		}
 
 		public void PlayStandAnimation(Actor self)
@@ -147,12 +144,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				wasModifying = rsm.IsModifyingSequence;
 			}
 
-			if ((state != AnimationState.Moving || dirty) && move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+			if ((state != AnimationState.Moving || dirty) && self.Movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 			{
 				state = AnimationState.Moving;
 				DefaultAnimation.PlayRepeating(NormalizeInfantrySequence(self, Info.MoveSequence));
 			}
-			else if (((state == AnimationState.Moving || dirty) && !move.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
+			else if (((state == AnimationState.Moving || dirty) && !self.Movement.CurrentMovementTypes.HasFlag(MovementType.Horizontal))
 				|| ((state == AnimationState.Idle || state == AnimationState.IdleAnimating) && !self.IsIdle))
 				PlayStandAnimation(self);
 

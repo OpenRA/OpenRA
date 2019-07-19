@@ -40,13 +40,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithMoveAnimation : ConditionalTrait<WithMoveAnimationInfo>, INotifyMoving
 	{
-		readonly IMove movement;
 		readonly WithSpriteBody wsb;
 
 		public WithMoveAnimation(ActorInitializer init, WithMoveAnimationInfo info)
 			: base(info)
 		{
-			movement = init.Self.Trait<IMove>();
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
@@ -74,12 +72,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected override void TraitEnabled(Actor self)
 		{
 			// HACK: Use a FrameEndTask to avoid construction order issues with WithSpriteBody
-			self.World.AddFrameEndTask(w => UpdateAnimation(self, movement.CurrentMovementTypes));
+			self.World.AddFrameEndTask(w => UpdateAnimation(self, self.Movement.CurrentMovementTypes));
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			UpdateAnimation(self, movement.CurrentMovementTypes);
+			UpdateAnimation(self, self.Movement.CurrentMovementTypes);
 		}
 	}
 }

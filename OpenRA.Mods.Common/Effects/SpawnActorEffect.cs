@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Actor actor;
 		readonly CPos[] pathAfterSpawn;
 		readonly Activity activityAtDestination;
-		readonly IMove move;
 		int remainingDelay;
 
 		public SpawnActorEffect(Actor actor)
@@ -40,7 +39,6 @@ namespace OpenRA.Mods.Common.Effects
 			remainingDelay = delay;
 			this.pathAfterSpawn = pathAfterSpawn;
 			this.activityAtDestination = activityAtDestination;
-			move = actor.TraitOrDefault<IMove>();
 		}
 
 		public void Tick(World world)
@@ -49,9 +47,9 @@ namespace OpenRA.Mods.Common.Effects
 				return;
 
 			world.Add(actor);
-			if (move != null)
+			if (actor.Movement != null)
 				for (var j = 0; j < pathAfterSpawn.Length; j++)
-					actor.QueueActivity(move.MoveTo(pathAfterSpawn[j], 2));
+					actor.QueueActivity(actor.Movement.MoveTo(pathAfterSpawn[j], 2));
 
 			if (activityAtDestination != null)
 				actor.QueueActivity(activityAtDestination);

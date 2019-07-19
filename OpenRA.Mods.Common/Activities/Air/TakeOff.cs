@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class TakeOff : Activity
 	{
 		readonly Aircraft aircraft;
-		readonly IMove move;
 		Target target;
 		bool moveToRallyPoint;
 		bool assignTargetOnFirstRun;
@@ -27,7 +26,6 @@ namespace OpenRA.Mods.Common.Activities
 		public TakeOff(Actor self, Target target)
 		{
 			aircraft = self.Trait<Aircraft>();
-			move = self.Trait<IMove>();
 			this.target = target;
 		}
 
@@ -93,7 +91,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!aircraft.Info.VTOL && assignTargetOnFirstRun)
 					return true;
 
-				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, target)));
+				QueueChild(new AttackMoveActivity(self, () => self.Movement.MoveToTarget(self, target)));
 				moveToRallyPoint = false;
 				return false;
 			}

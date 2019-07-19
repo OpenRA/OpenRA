@@ -59,7 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly CaptureManagerInfo info;
 		ConditionManager conditionManager;
-		IMove move;
 		ICaptureProgressWatcher[] progressWatchers;
 
 		BitSet<CaptureType> allyCapturableTypes;
@@ -91,7 +90,6 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			conditionManager = self.TraitOrDefault<ConditionManager>();
-			move = self.TraitOrDefault<IMove>();
 			progressWatchers = self.TraitsImplementing<ICaptureProgressWatcher>().ToArray();
 
 			enabledCapturable = self.TraitsImplementing<Capturable>()
@@ -224,10 +222,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (progressWatchers.Any() || targetManager.progressWatchers.Any())
 			{
 				currentTargetTotal = captures.Info.CaptureDelay;
-				if (move != null && captures.Info.ConsumedByCapture)
+				if (self.Movement != null && captures.Info.ConsumedByCapture)
 				{
 					var pos = target.GetTargetablePositions().PositionClosestTo(self.CenterPosition);
-					currentTargetTotal += move.EstimatedMoveDuration(self, self.CenterPosition, pos);
+					currentTargetTotal += self.Movement.EstimatedMoveDuration(self, self.CenterPosition, pos);
 				}
 
 				foreach (var w in progressWatchers)

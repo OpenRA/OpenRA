@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
-			mobile = self.Trait<Mobile>();
+			mobile = self.Movement as Mobile;
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 

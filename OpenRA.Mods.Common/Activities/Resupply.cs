@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Activities
 			rearmable = self.TraitOrDefault<Rearmable>();
 			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
-			move = self.Trait<IMove>();
+			move = self.Movement;
 			aircraft = move as Aircraft;
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged

@@ -306,7 +306,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
 				.Where(a => a.Owner == queue.Actor.Owner && a.IsIdle)
-				.Select(a => new TraitPair<Mobile>(a, a.TraitOrDefault<Mobile>()));
+				.Select(a => new TraitPair<Mobile>(a, a.Movement as Mobile));
 
 			foreach (var blocker in blockers.Where(x => x.Trait != null))
 			{

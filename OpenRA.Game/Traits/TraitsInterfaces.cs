@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using OpenRA.Activities;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -30,6 +31,15 @@ namespace OpenRA.Traits
 		Heavy = 8,
 		Critical = 16,
 		Dead = 32
+	}
+
+	[Flags]
+	public enum MovementType
+	{
+		None = 0,
+		Horizontal = 1,
+		Vertical = 2,
+		Turn = 4
 	}
 
 	/// <summary>
@@ -455,6 +465,27 @@ namespace OpenRA.Traits
 	}
 
 	public interface IMoveInfo : ITraitInfoInterface { }
+
+	public interface IMove
+	{
+		Activity MoveTo(CPos cell, int nearEnough);
+		Activity MoveTo(CPos cell, Actor ignoreActor);
+		Activity MoveWithinRange(Target target, WDist range,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveToTarget(Actor self, Target target,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
+		Activity MoveIntoTarget(Actor self, Target target);
+		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
+		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
+		CPos NearestMoveableCell(CPos target);
+		MovementType CurrentMovementTypes { get; set; }
+		bool CanEnterTargetNow(Actor self, Target target);
+	}
 
 	[RequireExplicitImplementation]
 	public interface IGameOver { void GameOver(World world); }

@@ -42,11 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 	class AttackMove : IResolveOrder, IOrderVoice
 	{
 		public readonly AttackMoveInfo Info;
-		readonly IMove move;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
-			move = self.Trait<IMove>();
 			Info = info;
 		}
 
@@ -76,10 +74,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				var targetLocation = move.NearestMoveableCell(cell);
+				var targetLocation = self.Movement.NearestMoveableCell(cell);
 				self.SetTargetLine(Target.FromCell(self.World, targetLocation), Color.Red);
 				var assaultMoving = order.OrderString == "AssaultMove";
-				self.QueueActivity(new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 1), assaultMoving));
+				self.QueueActivity(new AttackMoveActivity(self, () => self.Movement.MoveTo(targetLocation, 1), assaultMoving));
 			}
 		}
 	}

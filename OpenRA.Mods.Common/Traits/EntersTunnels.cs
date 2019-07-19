@@ -38,13 +38,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class EntersTunnels : IIssueOrder, IResolveOrder, IOrderVoice, IObservesVariables
 	{
 		readonly EntersTunnelsInfo info;
-		readonly IMove move;
 		bool requireForceMove;
 
 		public EntersTunnels(Actor self, EntersTunnelsInfo info)
 		{
 			this.info = info;
-			move = self.Trait<IMove>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -86,8 +84,8 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			self.SetTargetLine(Target.FromCell(self.World, tunnel.Exit.Value), Color.Green);
-			self.QueueActivity(move.MoveTo(tunnel.Entrance, tunnel.NearEnough));
-			self.QueueActivity(move.MoveTo(tunnel.Exit.Value, tunnel.NearEnough));
+			self.QueueActivity(self.Movement.MoveTo(tunnel.Entrance, tunnel.NearEnough));
+			self.QueueActivity(self.Movement.MoveTo(tunnel.Exit.Value, tunnel.NearEnough));
 		}
 
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()

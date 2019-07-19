@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
 				newUnit.QueueActivity(new Parachute(newUnit, self));
-				var move = newUnit.TraitOrDefault<IMove>();
+				var move = newUnit.Movement;
 				if (move != null)
 				{
 					if (exitinfo.MoveIntoWorld)

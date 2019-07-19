@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public VisualMoveIntoTarget(Actor self, Target target, WDist targetMovementThreshold)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.Movement as Mobile;
 			this.target = target;
 			this.targetMovementThreshold = targetMovementThreshold;
 		}

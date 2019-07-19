@@ -24,16 +24,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ResourceClaimLayer claimLayer;
 		readonly ResourceLayer resLayer;
 		readonly BodyOrientation body;
-		readonly IMove move;
 		readonly CPos targetCell;
 
 		public HarvestResource(Actor self, CPos targetCell)
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
-			facing = self.Trait<IFacing>();
+			facing = self.Movement as IFacing;
 			body = self.Trait<BodyOrientation>();
-			move = self.Trait<IMove>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			this.targetCell = targetCell;
@@ -59,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToResources(self, targetCell);
 
 				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
-				QueueChild(move.MoveTo(targetCell, 2));
+				QueueChild(self.Movement.MoveTo(targetCell, 2));
 				return false;
 			}
 

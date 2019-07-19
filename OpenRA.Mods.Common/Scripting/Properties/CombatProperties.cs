@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public CombatProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			move = self.Trait<IMove>();
+			move = self.Movement;
 		}
 
 		[ScriptActorPropertyActivity]

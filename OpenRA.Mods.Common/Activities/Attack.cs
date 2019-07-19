@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
 
-			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
+			move = allowMovement ? self.Movement : null;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up

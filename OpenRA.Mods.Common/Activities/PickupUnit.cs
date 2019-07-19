@@ -19,7 +19,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class PickupUnit : Activity
 	{
 		readonly Actor cargo;
-		readonly IMove movement;
 
 		readonly Carryall carryall;
 		readonly IFacing carryallFacing;
@@ -42,7 +41,6 @@ namespace OpenRA.Mods.Common.Activities
 			carryableFacing = cargo.Trait<IFacing>();
 			carryableBody = cargo.Trait<BodyOrientation>();
 
-			movement = self.Trait<IMove>();
 			carryall = self.Trait<Carryall>();
 			carryallFacing = self.Trait<IFacing>();
 
@@ -79,7 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 			switch (state)
 			{
 				case PickupState.Intercept:
-					QueueChild(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4), targetLineColor: Color.Yellow));
+					QueueChild(self.Movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4), targetLineColor: Color.Yellow));
 					state = PickupState.LockCarryable;
 					return false;
 

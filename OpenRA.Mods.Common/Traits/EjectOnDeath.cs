@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 					w.Add(pilot);
 					pilotPositionable.SetPosition(pilot, pilotCell, pilotSubCell);
 
-					var pilotMobile = pilot.TraitOrDefault<Mobile>();
+					var pilotMobile = pilot.Movement as Mobile;
 					if (pilotMobile != null)
 						pilotMobile.Nudge(pilot, pilot, true);
 				});

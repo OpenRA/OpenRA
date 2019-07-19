@@ -422,27 +422,6 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<object> ActorPreviewInits(ActorInfo ai, ActorPreviewType type);
 	}
 
-	public interface IMove
-	{
-		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoreActor);
-		Activity MoveWithinRange(Target target, WDist range,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveToTarget(Actor self, Target target,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null);
-		Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any);
-		Activity MoveIntoTarget(Actor self, Target target);
-		Activity VisualMove(Actor self, WPos fromPos, WPos toPos);
-		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
-		CPos NearestMoveableCell(CPos target);
-		MovementType CurrentMovementTypes { get; set; }
-		bool CanEnterTargetNow(Actor self, Target target);
-	}
-
 	public interface IWrapMove
 	{
 		Activity WrapMove(Activity moveInner);
@@ -598,15 +577,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IPreventMapSpawn
 	{
 		bool PreventMapSpawn(World world, ActorReference actorReference);
-	}
-
-	[Flags]
-	public enum MovementType
-	{
-		None = 0,
-		Horizontal = 1,
-		Vertical = 2,
-		Turn = 4
 	}
 
 	[RequireExplicitImplementation]

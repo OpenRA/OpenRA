@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
-				var move = newUnit.TraitOrDefault<IMove>();
+				var move = newUnit.Movement;
 				if (exitinfo != null && move != null)
 				{
 					if (exitinfo.MoveIntoWorld)

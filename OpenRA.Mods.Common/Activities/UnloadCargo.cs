@@ -116,8 +116,8 @@ namespace OpenRA.Mods.Common.Activities
 					if (actor.Disposed)
 						return;
 
-					var move = actor.Trait<IMove>();
-					var pos = actor.Trait<IPositionable>();
+					var move = actor.Movement;
+					var pos = move as IPositionable;
 
 					actor.CancelActivity();
 					pos.SetVisualPosition(actor, spawn);

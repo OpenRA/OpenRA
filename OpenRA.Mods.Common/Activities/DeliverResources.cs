@@ -18,13 +18,11 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class DeliverResources : Activity
 	{
-		readonly IMove movement;
 		readonly Harvester harv;
 		readonly Actor targetActor;
 
 		public DeliverResources(Actor self, Actor targetActor = null)
 		{
-			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			this.targetActor = targetActor;
 		}
@@ -60,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
 					n.MovingToRefinery(self, proc);
 
-				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
+				QueueChild(self.Movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
 				return false;
 			}
 

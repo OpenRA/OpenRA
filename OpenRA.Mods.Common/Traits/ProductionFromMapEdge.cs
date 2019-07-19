@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 
-				var move = newUnit.TraitOrDefault<IMove>();
+				var move = newUnit.Movement;
 				if (move != null)
 					newUnit.QueueActivity(move.MoveTo(destination, 2));
 

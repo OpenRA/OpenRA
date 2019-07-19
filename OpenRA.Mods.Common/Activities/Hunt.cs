@@ -20,11 +20,9 @@ namespace OpenRA.Mods.Common.Activities
 	public class Hunt : Activity
 	{
 		readonly IEnumerable<Actor> targets;
-		readonly IMove move;
 
 		public Hunt(Actor self)
 		{
-			move = self.Trait<IMove>();
 			var attack = self.Trait<AttackBase>();
 			targets = self.World.ActorsHavingTrait<Huntable>().Where(
 				a => self != a && !a.IsDead && a.IsInWorld && a.AppearsHostileTo(self)
@@ -40,7 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (target == null)
 				return false;
 
-			QueueChild(new AttackMoveActivity(self, () => move.MoveTo(target.Location, 2)));
+			QueueChild(new AttackMoveActivity(self, () => self.Movement.MoveTo(target.Location, 2)));
 			QueueChild(new Wait(25));
 			return false;
 		}

@@ -70,7 +70,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly AircraftInfo aircraftInfo;
 		readonly Aircraft aircraft;
 		readonly BodyOrientation body;
-		readonly IMove move;
 		readonly IFacing facing;
 		readonly Actor self;
 
@@ -93,11 +92,10 @@ namespace OpenRA.Mods.Common.Traits
 			Carryable = null;
 			State = CarryallState.Idle;
 
-			aircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
-			aircraft = self.Trait<Aircraft>();
 			body = self.Trait<BodyOrientation>();
-			move = self.Trait<IMove>();
-			facing = self.Trait<IFacing>();
+			facing = self.Movement as IFacing;
+			aircraft = self.Movement as Aircraft;
+			aircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
 			this.self = self;
 		}
 
@@ -176,7 +174,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.ScreenMap.AddOrUpdate(self);
 
 			CarryableOffset = OffsetForCarryable(self, carryable);
-			landableTerrainTypes = Carryable.Trait<Mobile>().Info.LocomotorInfo.TerrainSpeeds.Keys.ToHashSet();
+			var mobile = Carryable.Movement as Mobile;
+			landableTerrainTypes = mobile.Info.LocomotorInfo.TerrainSpeeds.Keys.ToHashSet();
 
 			return true;
 		}
@@ -296,7 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				var targetLocation = move.NearestMoveableCell(cell);
+				var targetLocation = self.Movement.NearestMoveableCell(cell);
 				self.SetTargetLine(Target.FromCell(self.World, targetLocation), Color.Yellow);
 				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange));
 			}

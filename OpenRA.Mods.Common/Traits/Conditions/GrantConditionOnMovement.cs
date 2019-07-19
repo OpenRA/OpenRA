@@ -28,15 +28,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class GrantConditionOnMovement : ConditionalTrait<GrantConditionOnMovementInfo>, INotifyMoving
 	{
-		readonly IMove movement;
 		ConditionManager conditionManager;
 		int conditionToken = ConditionManager.InvalidConditionToken;
 
 		public GrantConditionOnMovement(Actor self, GrantConditionOnMovementInfo info)
-			: base(info)
-		{
-			movement = self.Trait<IMove>();
-		}
+			: base(info) { }
 
 		protected override void Created(Actor self)
 		{
@@ -64,12 +60,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self)
 		{
-			UpdateCondition(self, movement.CurrentMovementTypes);
+			UpdateCondition(self, self.Movement.CurrentMovementTypes);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			UpdateCondition(self, movement.CurrentMovementTypes);
+			UpdateCondition(self, self.Movement.CurrentMovementTypes);
 		}
 	}
 }

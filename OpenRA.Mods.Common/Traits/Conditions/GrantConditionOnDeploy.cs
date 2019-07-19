@@ -72,7 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly bool checkTerrainType;
 		readonly bool canTurn;
-		readonly IMove move;
 
 		DeployState deployState;
 		ConditionManager conditionManager;
@@ -88,7 +87,6 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
-			move = self.TraitOrDefault<IMove>();
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();
 		}

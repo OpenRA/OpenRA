@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			move = self.Trait<IMove>() as IResolveOrder;
+			move = self.Movement as IResolveOrder;
 
 			base.Created(self);
 		}

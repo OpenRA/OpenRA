@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public MobileProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.Movement as Mobile;
 		}
 
 		[ScriptActorPropertyActivity]

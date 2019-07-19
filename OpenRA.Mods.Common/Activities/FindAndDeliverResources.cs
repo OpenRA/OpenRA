@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
-			mobile = self.Trait<Mobile>();
+			mobile = self.Movement as Mobile;
 			locomotorInfo = mobile.Info.LocomotorInfo;
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();

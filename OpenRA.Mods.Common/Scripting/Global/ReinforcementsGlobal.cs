@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		void Move(Actor actor, CPos dest)
 		{
-			var move = actor.TraitOrDefault<IMove>();
+			var move = actor.Movement;
 			if (move == null)
 				return;
 

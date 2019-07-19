@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly WDist minRange;
 		readonly WDist maxRange;
-		readonly IMove move;
 		readonly Color? targetLineColor;
 		Target target;
 		Target lastVisibleTarget;
@@ -34,7 +33,6 @@ namespace OpenRA.Mods.Common.Activities
 			this.minRange = minRange;
 			this.maxRange = maxRange;
 			this.targetLineColor = targetLineColor;
-			move = self.Trait<IMove>();
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -83,7 +81,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Move into range
 			wasMovingWithinRange = true;
-			QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
+			QueueChild(self.Movement.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
 			return false;
 		}
 	}

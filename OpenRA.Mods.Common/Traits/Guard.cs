@@ -24,19 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Guard(this); }
 	}
 
-	public class Guard : IResolveOrder, IOrderVoice, INotifyCreated
+	public class Guard : IResolveOrder, IOrderVoice
 	{
 		readonly GuardInfo info;
-		IMove move;
 
 		public Guard(GuardInfo info)
 		{
 			this.info = info;
-		}
-
-		void INotifyCreated.Created(Actor self)
-		{
-			move = self.Trait<IMove>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -56,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.SetTargetLine(target, Color.Yellow);
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.Yellow)));
+			self.QueueActivity(new AttackMoveActivity(self, () => self.Movement.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.Yellow)));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

@@ -51,6 +51,7 @@ namespace OpenRA
 
 		public IEffectiveOwner EffectiveOwner { get; private set; }
 		public IOccupySpace OccupiesSpace { get; private set; }
+		public IMove Movement { get; private set; }
 		public ITargetable[] Targetables { get; private set; }
 
 		public bool IsIdle { get { return CurrentActivity == null; } }
@@ -114,6 +115,7 @@ namespace OpenRA
 			// PERF: Cache all these traits as soon as the actor is created. This is a fairly cheap one-off cost per
 			// actor that allows us to provide some fast implementations of commonly used methods that are relied on by
 			// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
+			Movement = OccupiesSpace as IMove;
 			EffectiveOwner = TraitOrDefault<IEffectiveOwner>();
 			facing = TraitOrDefault<IFacing>();
 			health = TraitOrDefault<IHealth>();

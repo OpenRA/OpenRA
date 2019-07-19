@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
-			mobile = self.Trait<Mobile>();
+			mobile = self.Movement as Mobile;
 		}
 
 		void Panic()
