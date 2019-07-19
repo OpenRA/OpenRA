@@ -549,6 +549,20 @@ namespace OpenRA.Mods.Common.Traits
 			return canRearmAtActor || canRepairAtActor;
 		}
 
+		bool AircraftCanResupplyAt(Actor a, bool allowedToForceEnter = false)
+		{
+			if (self.AppearsHostileTo(a))
+				return false;
+
+			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
+			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
+
+			var allowedToEnterRearmer = canRearmAtActor && (allowedToForceEnter || rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo()));
+			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || self.GetDamageState() != DamageState.Undamaged);
+
+			return allowedToEnterRearmer || allowedToEnterRepairer;
+		}
+
 		public int MovementSpeed
 		{
 			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
@@ -914,10 +928,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("ForceEnter", 6,
 					(target, modifiers) => Info.CanForceLand && modifiers.HasModifier(TargetModifiers.ForceMove) && AircraftCanEnter(target),
-					target => Reservable.IsAvailableFor(target, self));
+					target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target, !Info.TakeOffOnResupply));
 
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
-					AircraftCanEnter, target => Reservable.IsAvailableFor(target, self));
+					AircraftCanEnter, target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target));
 
 				yield return new AircraftMoveOrderTargeter(this);
 			}
@@ -1003,19 +1017,24 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
+				var targetActor = order.Target.Actor;
+				var isForceEnter = orderString == "ForceEnter";
+				var canResupplyAt = AircraftCanResupplyAt(targetActor, isForceEnter && !Info.TakeOffOnResupply);
+
+				// This is what the order targeter checks to display the correct cursor, so we need to make sure
+				// the behavior matches the cursor if the player clicks despite a "blocked" cursor.
+				if (!canResupplyAt || !Reservable.IsAvailableFor(targetActor, self))
+					return;
+
 				if (!order.Queued)
 					UnReserve();
 
-				var targetActor = order.Target.Actor;
-
-				// We only want to set a target line if the order will (most likely) succeed
-				if (Reservable.IsAvailableFor(targetActor, self))
-					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
+				self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 
 				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in automatically forcing
 				// them to land on a resupplier. For aircraft without it, it makes more sense to land than to idle above a
 				// free resupplier.
-				var forceLand = orderString == "ForceEnter" || !Info.TakeOffOnResupply;
+				var forceLand = isForceEnter || !Info.TakeOffOnResupply;
 				self.QueueActivity(order.Queued, new ReturnToBase(self, targetActor, forceLand));
 			}
 			else if (orderString == "Stop")
