@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			this.targetLineColor = targetLineColor;
-			Mobile = self.Trait<Mobile>();
+			Mobile = self.OccupiesSpace as Mobile;
 			pathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 			ChildHasPriority = false;

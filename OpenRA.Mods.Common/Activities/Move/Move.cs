@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 		// Ignores lane bias and nearby units
 		public Move(Actor self, CPos destination)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.OccupiesSpace as Mobile;
 
 			getPath = () =>
 			{
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.OccupiesSpace as Mobile;
 
 			getPath = () =>
 			{
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.OccupiesSpace as Mobile;
 
 			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, Target target, WDist range)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.OccupiesSpace as Mobile;
 
 			getPath = () =>
 			{
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public Move(Actor self, Func<List<CPos>> getPath)
 		{
-			mobile = self.Trait<Mobile>();
+			mobile = self.OccupiesSpace as Mobile;
 
 			this.getPath = getPath;
 
