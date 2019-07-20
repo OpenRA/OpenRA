@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected IFacing facing;
 		protected IPositionable positionable;
+		protected Mobile mobile;
 		protected INotifyAiming[] notifyAiming;
 		protected Func<IEnumerable<Armament>> getArmaments;
 
@@ -86,7 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			positionable = self.TraitOrDefault<IPositionable>();
+			positionable = self.OccupiesSpace as IPositionable;
+			mobile = positionable as Mobile;
 			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
 			getArmaments = InitializeGetArmaments(self);
@@ -145,7 +147,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (!HasAnyValidWeapons(target))
 				return false;
 
-			var mobile = self.TraitOrDefault<Mobile>();
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return false;
 
