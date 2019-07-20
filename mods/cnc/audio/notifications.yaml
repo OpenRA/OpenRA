@@ -41,7 +41,7 @@ Speech:
 		SilosNeeded: silos1
 		StartGame: 
 		GameLoaded:
-		GameSaved: scold1
+		GameSaved:
 		Training: bldging1
 		UnitDestroyed: dead1
 		UnitLost: unitlost
