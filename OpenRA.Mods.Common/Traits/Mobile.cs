@@ -256,6 +256,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			UpdateMovement(self);
+		}
+
+		public void UpdateMovement(Actor self)
+		{
 			var newMovementTypes = MovementType.None;
 			if ((oldPos - CenterPosition).HorizontalLengthSquared != 0)
 				newMovementTypes |= MovementType.Horizontal;
