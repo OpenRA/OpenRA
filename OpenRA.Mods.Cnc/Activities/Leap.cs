@@ -92,6 +92,10 @@ namespace OpenRA.Mods.Cnc.Activities
 				// (This does not update the visual position!)
 				mobile.SetLocation(destinationCell, destinationSubCell, destinationCell, destinationSubCell);
 
+				// Update movement which results in movementType set to MovementType.None.
+				// This is needed to prevent the move animation from playing.
+				mobile.UpdateMovement(self);
+
 				// Revoke the condition before attacking, as it is usually used to pause the attack trait
 				attack.RevokeLeapCondition(self);
 				attack.DoAttack(self, target);
