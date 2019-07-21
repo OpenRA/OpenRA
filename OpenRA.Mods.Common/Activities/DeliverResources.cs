@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -21,12 +22,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove movement;
 		readonly Harvester harv;
 		readonly Actor targetActor;
+		readonly INotifyHarvesterAction[] notifyHarvesterActions;
 
 		public DeliverResources(Actor self, Actor targetActor = null)
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			this.targetActor = targetActor;
+			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -57,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
-				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
+				foreach (var n in notifyHarvesterActions)
 					n.MovingToRefinery(self, proc);
 
 				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
@@ -67,6 +70,14 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(new Wait(10));
 			iao.OnDock(self, this);
 			return true;
+		}
+
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			foreach (var n in notifyHarvesterActions)
+				n.MovementCancelled(self);
+
+			base.Cancel(self, keepQueue);
 		}
 	}
 }
