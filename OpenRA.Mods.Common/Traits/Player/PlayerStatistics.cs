@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
 	}
 
-	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated
+	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated, IWorldLoaded
 	{
 		PlayerResources resources;
 		PlayerExperience experience;
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int BuildingsDead;
 
 		public int ArmyValue;
+		int replayTimestep;
 
 		public PlayerStatistics(Actor self) { }
 
@@ -84,7 +86,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (self.World.WorldTick % 1500 == 1)
+			var timestep = self.World.IsReplay ? replayTimestep : self.World.Timestep;
+
+			if (timestep * self.World.WorldTick % 60000 == 0)
 			{
 				UpdateEarnedThisMinute();
 				UpdateArmyThisMinute();
@@ -115,6 +119,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString.StartsWith("Dev"))
 				return;
 			OrderCount++;
+		}
+
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
+			if (w.IsReplay)
+				replayTimestep = w.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
+
+			UpdateEarnedThisMinute();
+			UpdateArmyThisMinute();
 		}
 	}
 
