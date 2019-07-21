@@ -752,6 +752,11 @@ namespace OpenRA
 			if (Grid.Type == MapGridType.RectangularIsometric && cell.X < cell.Y)
 				return false;
 
+			// If the mod uses flat & rectangular maps, ToMPos and Contains(MPos) create unnecessary cost.
+			// Just check if CPos is within map bounds.
+			if (Grid.MaximumTerrainHeight == 0 && Grid.Type == MapGridType.Rectangular)
+				return Bounds.Contains(cell.X, cell.Y);
+
 			return Contains(cell.ToMPos(this));
 		}
 
