@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
 
-				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos)));
+				actor.QueueActivity(new FlyOffMap(actor, Target.FromCell(w, endPos)));
 				actor.QueueActivity(new RemoveSelf());
 			});
 

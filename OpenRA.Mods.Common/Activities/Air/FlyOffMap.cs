@@ -11,16 +11,43 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public class FlyOffMap : Activity
 	{
 		readonly Aircraft aircraft;
+		readonly Target target;
+		readonly bool hasTarget;
 
 		public FlyOffMap(Actor self)
 		{
 			aircraft = self.Trait<Aircraft>();
+			ChildHasPriority = false;
+		}
+
+		public FlyOffMap(Actor self, Target target)
+		{
+			aircraft = self.Trait<Aircraft>();
+			ChildHasPriority = false;
+			this.target = target;
+			hasTarget = true;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			if (hasTarget)
+			{
+				QueueChild(new Fly(self, target));
+				return;
+			}
+
+			// VTOLs must take off first if they're not at cruise altitude
+			if (aircraft.Info.VTOL && self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition) != aircraft.Info.CruiseAltitude)
+				QueueChild(new TakeOff(self));
+
+			QueueChild(new FlyTimed(-1, self));
 		}
 
 		public override bool Tick(Actor self)
@@ -35,8 +62,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || !self.World.Map.Contains(self.Location))
 				return true;
 
-			Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-			return false;
+			return TickChild(self);
 		}
 	}
 }
