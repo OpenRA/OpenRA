@@ -130,15 +130,19 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			// Move towards landing location
-			if (aircraft.Info.VTOL && (pos - targetPosition).HorizontalLengthSquared != 0)
+			// Move towards landing location/facing
+			if (aircraft.Info.VTOL)
 			{
-				QueueChild(new Fly(self, Target.FromPos(targetPosition)));
-
-				if (desiredFacing != -1)
+				if ((pos - targetPosition).HorizontalLengthSquared != 0)
+				{
+					QueueChild(new Fly(self, Target.FromPos(targetPosition)));
+					return false;
+				}
+				else if (desiredFacing != -1 && desiredFacing != aircraft.Facing)
+				{
 					QueueChild(new Turn(self, desiredFacing));
-
-				return false;
+					return false;
+				}
 			}
 
 			if (!aircraft.Info.VTOL && !finishedApproach)
