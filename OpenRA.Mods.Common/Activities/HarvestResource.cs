@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly BodyOrientation body;
 		readonly IMove move;
 		readonly CPos targetCell;
+		readonly INotifyHarvesterAction[] notifyHarvesterActions;
 
 		public HarvestResource(Actor self, CPos targetCell)
 		{
@@ -37,6 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			this.targetCell = targetCell;
+			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -55,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Move towards the target cell
 			if (self.Location != targetCell)
 			{
-				foreach (var n in self.TraitsImplementing<INotifyHarvesterAction>())
+				foreach (var n in notifyHarvesterActions)
 					n.MovingToResources(self, targetCell);
 
 				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			harv.AcceptResource(self, resource);
 
-			foreach (var t in self.TraitsImplementing<INotifyHarvesterAction>())
+			foreach (var t in notifyHarvesterActions)
 				t.Harvested(self, resource);
 
 			QueueChild(new Wait(harvInfo.BaleLoadDelay));
@@ -94,6 +97,14 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			claimLayer.RemoveClaim(self);
+		}
+
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			foreach (var n in notifyHarvesterActions)
+				n.MovementCancelled(self);
+
+			base.Cancel(self, keepQueue);
 		}
 	}
 }

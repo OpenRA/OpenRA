@@ -141,6 +141,14 @@ namespace OpenRA.Mods.Common.Activities
 			return false;
 		}
 
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			foreach (var t in transportCallers)
+				t.MovementCancelled(self);
+
+			base.Cancel(self, keepQueue);
+		}
+
 		void OnResupplyEnding(Actor self)
 		{
 			if (aircraft != null)

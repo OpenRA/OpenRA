@@ -365,11 +365,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.SetTargetLine(order.Target, Color.Green);
 				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));
 			}
-			else if (order.OrderString == "Stop" || order.OrderString == "Move")
-			{
-				foreach (var n in notifyHarvesterAction)
-					n.MovementCancelled(self);
-			}
 		}
 
 		PipType GetPipAt(int i)
