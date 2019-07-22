@@ -422,6 +422,8 @@ namespace OpenRA.Mods.Common.Server
 					}
 					else if (c.Bot != null)
 						server.LobbyInfo.Clients.Remove(c);
+					else
+						c.Color = Color.White;
 				}
 
 				// Validate if color is allowed and get an alternative if it isn't
