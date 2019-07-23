@@ -50,7 +50,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WorldRenderer worldRenderer;
 
 		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
-		bool noneSelected = true;
 		ObserverStatsPanel activePanel;
 
 		[ObjectCreator.UseCtor]
@@ -113,7 +112,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					IsSelected = () => activePanel == panel,
 					OnClick = () =>
 					{
-						noneSelected = false;
 						ClearStats();
 						playerStatsPanel.Visible = true;
 						statsDropDown.GetText = () => title;
@@ -132,13 +130,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				new StatsDropDownOption
 				{
 					Title = "Information: None",
-					IsSelected = () => noneSelected,
+					IsSelected = () => activePanel == ObserverStatsPanel.None,
 					OnClick = () =>
 					{
-						noneSelected = true;
 						statsDropDown.GetText = () => "Information: None";
 						playerStatsPanel.Visible = false;
 						ClearStats();
+						activePanel = ObserverStatsPanel.None;
 					}
 				},
 				createStatsOption("Basic", ObserverStatsPanel.Basic, basicPlayerTemplate, () => DisplayStats(BasicStats)),
