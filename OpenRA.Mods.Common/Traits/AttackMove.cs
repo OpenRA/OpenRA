@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var targetLocation = move.NearestMoveableCell(cell);
 				var assaultMoving = order.OrderString == "AssaultMove";
-				self.QueueActivity(new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 1, targetLineColor: Color.Red), assaultMoving));
+				self.QueueActivity(new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 1, targetLineColor: Color.OrangeRed), assaultMoving));
 				self.ShowTargetLines();
 			}
 		}
