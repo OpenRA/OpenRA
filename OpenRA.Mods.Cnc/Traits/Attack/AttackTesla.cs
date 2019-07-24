@@ -9,9 +9,11 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -76,9 +78,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
-			return new ChargeAttack(this, newTarget, forceAttack);
+			return new ChargeAttack(this, newTarget, forceAttack, targetLineColor);
 		}
 
 		class ChargeAttack : Activity, IActivityNotifyStanceChanged
@@ -86,12 +88,14 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly AttackTesla attack;
 			readonly Target target;
 			readonly bool forceAttack;
+			readonly Color? targetLineColor;
 
-			public ChargeAttack(AttackTesla attack, Target target, bool forceAttack)
+			public ChargeAttack(AttackTesla attack, Target target, bool forceAttack, Color? targetLineColor = null)
 			{
 				this.attack = attack;
 				this.target = target;
 				this.forceAttack = forceAttack;
+				this.targetLineColor = targetLineColor;
 			}
 
 			public override bool Tick(Actor self)
@@ -131,6 +135,12 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (!autoTarget.HasValidTargetPriority(self, fa.Owner, fa.TargetTypes))
 						Cancel(self, true);
 				}
+			}
+
+			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+			{
+				if (targetLineColor != null)
+					yield return new TargetLineNode(target, targetLineColor.Value);
 			}
 		}
 

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -74,10 +75,6 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self, true);
 
 			TickInner(self, target, useLastVisibleTarget);
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
 
 			// We need to wait for movement to finish before transitioning to
 			// the next state or next activity
@@ -145,6 +142,12 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return false;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 	}
 }

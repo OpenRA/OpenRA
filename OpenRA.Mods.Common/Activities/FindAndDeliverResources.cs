@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ResourceClaimLayer claimLayer;
 		readonly IPathFinder pathFinder;
 		readonly DomainIndex domainIndex;
-		readonly Actor deliverActor;
 
+		Actor deliverActor;
 		CPos? orderLocation;
 		CPos? lastHarvestedCell;
 		bool hasDeliveredLoad;
@@ -73,6 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				QueueChild(new DeliverResources(self, deliverActor));
 				hasDeliveredLoad = true;
+				deliverActor = null;
 			}
 		}
 
@@ -139,7 +140,6 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
 						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
-						self.SetTargetLine(Target.FromCell(self.World, moveTo), Color.Green, false);
 						QueueChild(mobile.MoveTo(moveTo, 1));
 					}
 				}
@@ -203,6 +203,18 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromCell(self.World, self.Location);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (ChildActivity != null)
+				foreach (var n in ChildActivity.TargetLineNodes(self))
+					yield return n;
+
+			if (orderLocation != null)
+				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Green);
+			else if (deliverActor != null)
+				yield return new TargetLineNode(Target.FromActor(deliverActor), Color.Green);
 		}
 
 		CPos GetSearchFromLocation(Actor self)

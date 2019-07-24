@@ -99,12 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Target is equivalent to checkTarget variable in other activities
 			// value is either lastVisibleTarget or target based on visibility and validity
 			var targetIsValid = Target.IsValidFor(self);
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !targetIsValid;
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			var noTarget = useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self);
@@ -148,6 +143,12 @@ namespace OpenRA.Mods.Common.Activities
 				return ChildActivity.GetTargets(self);
 
 			return Target.None;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor.HasValue)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 	}
 }

@@ -11,6 +11,7 @@
 
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -44,9 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
-			return new FlyAttack(self, newTarget, forceAttack);
+			return new FlyAttack(self, newTarget, forceAttack, targetLineColor);
 		}
 
 		protected override bool CanAttack(Actor self, Target target)

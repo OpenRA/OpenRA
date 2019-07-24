@@ -43,7 +43,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var exit = CPos.Zero;
 			var exitLocation = CPos.Zero;
-			var target = Target.Invalid;
 
 			// Clone the initializer dictionary for the new actor
 			var td = new TypeDictionary();
@@ -70,7 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				exitLocation = rp.Value != null ? rp.Value.Location : exit;
-				target = Target.FromCell(self.World, exitLocation);
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
@@ -93,8 +91,6 @@ namespace OpenRA.Mods.Common.Traits
 						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(exitLocation, 1)));
 					}
 				}
-
-				newUnit.SetTargetLine(target, rp.Value != null ? Color.Red : Color.Green, false);
 
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())

@@ -149,6 +149,15 @@ namespace OpenRA.Mods.Common.Activities
 			base.Cancel(self, keepQueue);
 		}
 
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (ChildActivity == null)
+				yield return new TargetLineNode(host, Color.Green);
+			else
+				foreach (var n in ChildActivity.TargetLineNodes(self))
+					yield return n;
+		}
+
 		void OnResupplyEnding(Actor self)
 		{
 			if (aircraft != null)

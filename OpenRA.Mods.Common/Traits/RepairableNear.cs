@@ -102,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(order.Target, Color.Green);
 			self.QueueActivity(new Resupply(self, order.Target.Actor, Info.CloseEnough));
+			self.ShowTargetLines();
 		}
 
 		public Actor FindRepairBuilding(Actor self)
