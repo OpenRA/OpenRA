@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					hasTicked = true;
 				}
 
-				return true;
+				return false;
 			}
 		}
 	}
