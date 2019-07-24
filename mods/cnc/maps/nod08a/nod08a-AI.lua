@@ -88,7 +88,7 @@ end
 
 GuardBase = function()
 	Utils.Do(GDIBase, function(building)
-		Trigger.OnDamaged(building, function(guard)
+		Trigger.OnDamaged(building, function()
 			Utils.Do(GDIOrcas, function(guard)
 				if not guard.IsDead and not building.IsDead then
 					guard.Guard(building)
@@ -126,6 +126,7 @@ ProduceInfantry = function(building)
 		return
 	elseif not CheckForHarvester() then
 		Trigger.AfterDelay(DateTime.Seconds(10), function() ProduceInfantry(building) end)
+		return
 	end
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(3), DateTime.Seconds(9))
@@ -151,6 +152,7 @@ ProduceVehicle = function(building)
 	elseif not CheckForHarvester() then
 		ProduceHarvester(building)
 		Trigger.AfterDelay(DateTime.Seconds(10), function() ProduceVehicle(building) end)
+		return
 	end
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
