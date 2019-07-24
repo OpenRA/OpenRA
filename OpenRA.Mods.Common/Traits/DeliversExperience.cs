@@ -87,8 +87,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(order.Target, Color.Yellow);
 			self.QueueActivity(new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience));
+			self.ShowTargetLines();
 		}
 
 		public class DeliversExperienceOrderTargeter : UnitOrderTargeter

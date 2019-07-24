@@ -139,12 +139,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 				lastVisibleTarget = Target.FromTargetPositions(target);
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -226,6 +221,12 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return target;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor.HasValue)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 
 		public static int CalculateTurnRadius(int speed, int turnSpeed)

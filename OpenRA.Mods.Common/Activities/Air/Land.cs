@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -25,6 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly bool assignTargetOnFirstRun;
 		readonly CPos[] clearCells;
 		readonly WDist landRange;
+		readonly Color? targetLineColor;
 
 		Target target;
 		WPos targetPosition;
@@ -32,28 +34,29 @@ namespace OpenRA.Mods.Common.Activities
 		bool landingInitiated;
 		bool finishedApproach;
 
-		public Land(Actor self, int facing = -1)
+		public Land(Actor self, int facing = -1, Color? targetLineColor = null)
 			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, null)
 		{
 			assignTargetOnFirstRun = true;
 		}
 
-		public Land(Actor self, Target target, int facing = -1)
-			: this(self, target, new WDist(-1), WVec.Zero, facing) { }
+		public Land(Actor self, Target target, int facing = -1, Color? targetLineColor = null)
+			: this(self, target, new WDist(-1), WVec.Zero, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WDist landRange, int facing = -1)
-			: this(self, target, landRange, WVec.Zero, facing) { }
+		public Land(Actor self, Target target, WDist landRange, int facing = -1, Color? targetLineColor = null)
+			: this(self, target, landRange, WVec.Zero, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WVec offset, int facing = -1)
-			: this(self, target, WDist.Zero, offset, facing) { }
+		public Land(Actor self, Target target, WVec offset, int facing = -1, Color? targetLineColor = null)
+			: this(self, target, WDist.Zero, offset, facing, targetLineColor: targetLineColor) { }
 
-		public Land(Actor self, Target target, WDist landRange, WVec offset, int facing = -1, CPos[] clearCells = null)
+		public Land(Actor self, Target target, WDist landRange, WVec offset, int facing = -1, CPos[] clearCells = null, Color? targetLineColor = null)
 		{
 			aircraft = self.Trait<Aircraft>();
 			this.target = target;
 			this.offset = offset;
 			this.clearCells = clearCells ?? new CPos[0];
 			this.landRange = landRange.Length >= 0 ? landRange : aircraft.Info.LandRange;
+			this.targetLineColor = targetLineColor;
 
 			// NOTE: desiredFacing = -1 means we should not prefer any particular facing and instead just
 			// use whatever facing gives us the most direct path to the landing site.
@@ -255,6 +258,12 @@ namespace OpenRA.Mods.Common.Activities
 			Fly.FlyTick(self, aircraft, d.Yaw.Facing, landingAlt);
 
 			return false;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(target, targetLineColor.Value);
 		}
 	}
 }

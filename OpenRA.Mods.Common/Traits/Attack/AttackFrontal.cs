@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -41,9 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 			return TargetInFiringArc(self, target, Info.FacingTolerance);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
-			return new Activities.Attack(self, newTarget, allowMove, forceAttack);
+			return new Activities.Attack(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 	}
 }

@@ -103,8 +103,6 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var target = Target.FromCell(self.World, cell);
-
-				self.SetTargetLine(target, Color.Green);
 			}
 			else if (order.OrderString == "Enter")
 			{
@@ -114,10 +112,6 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var targetActor = order.Target.Actor;
-
-				// We only want to set a target line if the order will (most likely) succeed
-				if (Reservable.IsAvailableFor(targetActor, self))
-					self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
 			}
 
 			var currentTransform = self.CurrentActivity as Transform;
@@ -130,10 +124,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued && activity.NextActivity != null)
 				activity.NextActivity.Cancel(self);
 
-			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target));
+			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Color.Green));
 
 			if (currentTransform == null)
 				self.QueueActivity(order.Queued, activity);
+
+			self.ShowTargetLines();
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)

@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string OutsideRangeCursor = null;
 
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Red;
+
 		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;
 
@@ -196,8 +199,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Target.IsValidFor(self))
 					return;
 
-				self.SetTargetLine(order.Target, Color.Red);
-				AttackTarget(order.Target, order.Queued, true, forceAttack);
+				AttackTarget(order.Target, order.Queued, true, forceAttack, Info.TargetLineColor);
+				self.ShowTargetLines();
 			}
 
 			if (order.OrderString == "Stop")
@@ -221,7 +224,7 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
-		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack);
+		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
 
 		public bool HasAnyValidWeapons(Target t, bool checkForCenterTargetingWeapons = false)
 		{
@@ -388,7 +391,7 @@ namespace OpenRA.Mods.Common.Traits
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
-		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false)
+		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -399,7 +402,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!queued)
 				self.CancelActivity();
 
-			var activity = GetAttackActivity(self, target, allowMove, forceAttack);
+			var activity = GetAttackActivity(self, target, allowMove, forceAttack, targetLineColor);
 			self.QueueActivity(activity);
 			OnQueueAttackActivity(self, activity, target, allowMove, forceAttack);
 		}

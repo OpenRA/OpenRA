@@ -111,17 +111,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (transform == null && currentTransform == null)
 				return;
 
-			self.SetTargetLine(order.Target, Color.Green);
-
 			// Manually manage the inner activity queue
 			var activity = currentTransform ?? transform.GetTransformActivity(self);
 			if (!order.Queued && activity.NextActivity != null)
 				activity.NextActivity.Cancel(self);
 
-			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target));
+			activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Color.Green));
 
 			if (currentTransform == null)
 				self.QueueActivity(order.Queued, activity);
+
+			self.ShowTargetLines();
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)

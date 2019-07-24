@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -25,9 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		public AttackOmni(Actor self, AttackOmniInfo info)
 			: base(self, info) { }
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
-			return new SetTarget(this, newTarget, allowMove, forceAttack);
+			return new SetTarget(this, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 
 		// Some 3rd-party mods rely on this being public
@@ -36,11 +38,13 @@ namespace OpenRA.Mods.Common.Traits
 			readonly AttackOmni attack;
 			readonly bool allowMove;
 			readonly bool forceAttack;
+			readonly Color? targetLineColor;
 			Target target;
 
-			public SetTarget(AttackOmni attack, Target target, bool allowMove, bool forceAttack)
+			public SetTarget(AttackOmni attack, Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 			{
 				this.target = target;
+				this.targetLineColor = targetLineColor;
 				this.attack = attack;
 				this.allowMove = allowMove;
 				this.forceAttack = forceAttack;
@@ -76,6 +80,12 @@ namespace OpenRA.Mods.Common.Traits
 					if (!autoTarget.HasValidTargetPriority(self, fa.Owner, fa.TargetTypes))
 						target = Target.Invalid;
 				}
+			}
+
+			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+			{
+				if (targetLineColor != null)
+					yield return new TargetLineNode(target, targetLineColor.Value);
 			}
 		}
 	}

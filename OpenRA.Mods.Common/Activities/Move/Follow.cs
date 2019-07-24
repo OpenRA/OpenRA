@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -55,7 +56,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 				lastVisibleTarget = Target.FromTargetPositions(target);
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
 			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
@@ -64,10 +64,6 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			wasMovingWithinRange = false;
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget && targetLineColor.HasValue)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -85,6 +81,12 @@ namespace OpenRA.Mods.Common.Activities
 			wasMovingWithinRange = true;
 			QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
 			return false;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 	}
 }

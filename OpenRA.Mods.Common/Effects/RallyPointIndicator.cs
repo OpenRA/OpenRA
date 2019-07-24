@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Effects
 		IEnumerable<IRenderable> RenderInner(WorldRenderer wr)
 		{
 			if (Game.Settings.Game.DrawTargetLine)
-				yield return new TargetLineRenderable(targetLine, building.Owner.Color);
+				yield return new TargetLineRenderable(targetLine, building.Owner.Color, rp.Info.LineWidth);
 
 			if (circles != null || flag != null)
 			{

@@ -92,5 +92,13 @@ namespace OpenRA.Mods.Common.Activities
 
 			return Target.None;
 		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			foreach (var n in getInner().TargetLineNodes(self))
+				yield return n;
+
+			yield break;
+		}
 	}
 }

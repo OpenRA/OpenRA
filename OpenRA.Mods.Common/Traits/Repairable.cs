@@ -123,8 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
 				return;
 
-			self.SetTargetLine(order.Target, Color.Green);
 			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor, new WDist(512)));
+			self.ShowTargetLines();
 		}
 
 		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()

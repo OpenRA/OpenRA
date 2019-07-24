@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -54,6 +56,11 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(new Wait(carryall.Info.BeforeUnloadDelay, false));
 			QueueChild(new ReleaseUnit(self));
 			QueueChild(new TakeOff(self));
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(destination, Color.Yellow);
 		}
 
 		class ReleaseUnit : Activity

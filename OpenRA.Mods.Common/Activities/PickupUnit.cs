@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.Common.Activities
 			switch (state)
 			{
 				case PickupState.Intercept:
-					QueueChild(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4), targetLineColor: Color.Yellow));
+					QueueChild(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4)));
 					state = PickupState.LockCarryable;
 					return false;
 
@@ -108,6 +109,11 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return true;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target.FromActor(cargo), Color.Yellow);
 		}
 
 		class AttachUnit : Activity

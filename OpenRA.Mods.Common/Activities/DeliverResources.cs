@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -23,6 +24,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Harvester harv;
 		readonly Actor targetActor;
 		readonly INotifyHarvesterAction[] notifyHarvesterActions;
+
+		Actor proc;
 
 		public DeliverResources(Actor self, Actor targetActor = null)
 		{
@@ -54,10 +57,9 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			var proc = harv.LinkedProc;
+			proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
 
-			self.SetTargetLine(Target.FromActor(proc), Color.Green, false);
 			if (self.Location != proc.Location + iao.DeliveryOffset)
 			{
 				foreach (var n in notifyHarvesterActions)
@@ -78,6 +80,14 @@ namespace OpenRA.Mods.Common.Activities
 				n.MovementCancelled(self);
 
 			base.Cancel(self, keepQueue);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (proc != null)
+				yield return new TargetLineNode(Target.FromActor(proc), Color.Green);
+			else
+				yield return new TargetLineNode(Target.FromActor(harv.LinkedProc), Color.Green);
 		}
 	}
 }

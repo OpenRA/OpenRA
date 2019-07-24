@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Rearmable rearmable;
 		readonly bool forceAttack;
 		readonly int ticksUntilTurn;
+		readonly Color? targetLineColor;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -32,11 +34,14 @@ namespace OpenRA.Mods.Common.Activities
 		Player lastVisibleOwner;
 		bool useLastVisibleTarget;
 		bool hasTicked;
+		bool returnToBase;
 
-		public FlyAttack(Actor self, Target target, bool forceAttack)
+		public FlyAttack(Actor self, Target target, bool forceAttack, Color? targetLineColor)
 		{
 			this.target = target;
 			this.forceAttack = forceAttack;
+			this.targetLineColor = targetLineColor;
+
 			aircraft = self.Trait<Aircraft>();
 			attackAircraft = self.Trait<AttackAircraft>();
 			rearmable = self.TraitOrDefault<Rearmable>();
@@ -45,7 +50,7 @@ namespace OpenRA.Mods.Common.Activities
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
 			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
-			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				|| target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
@@ -65,6 +70,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			returnToBase = false;
+
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
 				Cancel(self);
@@ -93,12 +100,7 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -109,6 +111,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
 				QueueChild(new ReturnToBase(self));
+				returnToBase = true;
 				return attackAircraft.Info.AbortOnResupply;
 			}
 
@@ -168,6 +171,18 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
 				attackAircraft.ClearRequestedTarget();
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+			{
+				if (returnToBase)
+					foreach (var n in ChildActivity.TargetLineNodes(self))
+						yield return n;
+				if (!returnToBase || !attackAircraft.Info.AbortOnResupply)
+					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+			}
 		}
 	}
 }

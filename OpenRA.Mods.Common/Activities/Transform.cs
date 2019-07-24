@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System;
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -149,16 +149,24 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly string orderString;
 		readonly Target target;
+		readonly Color? targetLineColor;
 
-		public IssueOrderAfterTransform(string orderString, Target target)
+		public IssueOrderAfterTransform(string orderString, Target target, Color? targetLineColor = null)
 		{
 			this.orderString = orderString;
 			this.target = target;
+			this.targetLineColor = targetLineColor;
 		}
 
 		public Order IssueOrderForTransformedActor(Actor newActor)
 		{
 			return new Order(orderString, newActor, target, true);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(target, targetLineColor.Value);
 		}
 	}
 }

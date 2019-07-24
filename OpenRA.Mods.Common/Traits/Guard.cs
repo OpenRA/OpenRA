@@ -53,10 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Type != TargetType.Actor)
 				return;
 
-			self.SetTargetLine(target, Color.Yellow);
-
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
 			self.QueueActivity(new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.Yellow)));
+			self.ShowTargetLines();
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)

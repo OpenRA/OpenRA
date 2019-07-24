@@ -12,6 +12,7 @@
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -71,9 +72,9 @@ namespace OpenRA.Mods.Cnc.Traits
 				leapToken = conditionManager.RevokeCondition(self, leapToken);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
-			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, info);
+			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, info, targetLineColor);
 		}
 	}
 }

@@ -311,8 +311,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Attack(Actor self, Target target, bool allowMove)
 		{
-			self.SetTargetLine(target, Color.Red, false);
-
 			foreach (var ab in ActiveAttackBases)
 				ab.AttackTarget(target, false, allowMove);
 		}
