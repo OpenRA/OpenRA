@@ -95,8 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(order.Target, Color.Yellow);
 			self.QueueActivity(new RepairBuilding(self, order.Target, Info));
+			self.ShowTargetLines();
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter

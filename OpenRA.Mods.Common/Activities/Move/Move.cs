@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist nearEnough;
 		readonly Func<List<CPos>> getPath;
 		readonly Actor ignoreActor;
+		readonly Color? targetLineColor;
 
 		List<CPos> path;
 		CPos? destination;
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		// Scriptable move order
 		// Ignores lane bias and nearby units
-		public Move(Actor self, CPos destination)
+		public Move(Actor self, CPos destination, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -57,10 +58,12 @@ namespace OpenRA.Mods.Common.Activities
 				return path;
 			};
 			this.destination = destination;
+			this.targetLineColor = targetLineColor;
 			nearEnough = WDist.Zero;
 		}
 
-		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false)
+		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false,
+			Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -79,9 +82,10 @@ namespace OpenRA.Mods.Common.Activities
 			this.nearEnough = nearEnough;
 			this.ignoreActor = ignoreActor;
 			this.evaluateNearestMovableCell = evaluateNearestMovableCell;
+			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough)
+		public Move(Actor self, CPos destination, SubCell subCell, WDist nearEnough, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -89,9 +93,10 @@ namespace OpenRA.Mods.Common.Activities
 				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
 			this.destination = destination;
 			this.nearEnough = nearEnough;
+			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, Target target, WDist range)
+		public Move(Actor self, Target target, WDist range, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -106,9 +111,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			destination = null;
 			nearEnough = range;
+			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, Func<List<CPos>> getPath)
+		public Move(Actor self, Func<List<CPos>> getPath, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 
@@ -116,6 +122,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			destination = null;
 			nearEnough = WDist.Zero;
+			this.targetLineColor = targetLineColor;
 		}
 
 		static int HashList<T>(List<T> xs)
@@ -259,6 +266,12 @@ namespace OpenRA.Mods.Common.Activities
 			if (destination != null)
 				return new Target[] { Target.FromCell(self.World, destination.Value) };
 			return Target.None;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(Target.FromCell(self.World, destination.Value), targetLineColor.Value);
 		}
 
 		abstract class MovePart : Activity

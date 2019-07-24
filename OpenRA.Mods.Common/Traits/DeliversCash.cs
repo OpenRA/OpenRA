@@ -76,8 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(order.Target, Color.Yellow);
 			self.QueueActivity(new DonateCash(self, order.Target, info.Payload, info.PlayerExperience));
+			self.ShowTargetLines();
 		}
 
 		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor) { }

@@ -9,9 +9,12 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -27,9 +30,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		public AttackTDGunboatTurreted(Actor self, AttackTDGunboatTurretedInfo info)
 			: base(self, info) { }
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
-			return new AttackTDGunboatTurretedActivity(self, newTarget, allowMove, forceAttack);
+			return new AttackTDGunboatTurretedActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 
 		class AttackTDGunboatTurretedActivity : Activity
@@ -37,13 +40,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			readonly AttackTDGunboatTurreted attack;
 			readonly Target target;
 			readonly bool forceAttack;
+			readonly Color? targetLineColor;
 			bool hasTicked;
 
-			public AttackTDGunboatTurretedActivity(Actor self, Target target, bool allowMove, bool forceAttack)
+			public AttackTDGunboatTurretedActivity(Actor self, Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 			{
 				attack = self.Trait<AttackTDGunboatTurreted>();
 				this.target = target;
 				this.forceAttack = forceAttack;
+				this.targetLineColor = targetLineColor;
 			}
 
 			public override bool Tick(Actor self)
@@ -67,6 +72,12 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 
 				return false;
+			}
+
+			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+			{
+				if (targetLineColor != null)
+					yield return new TargetLineNode(target, targetLineColor.Value);
 			}
 		}
 	}

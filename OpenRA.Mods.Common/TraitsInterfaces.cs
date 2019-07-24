@@ -425,8 +425,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IMove
 	{
-		Activity MoveTo(CPos cell, int nearEnough);
-		Activity MoveTo(CPos cell, Actor ignoreActor);
+		Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null);
+		Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null);
 		Activity MoveWithinRange(Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,

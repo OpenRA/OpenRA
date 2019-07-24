@@ -141,8 +141,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (order.OrderString == "DetonateAttack")
 			{
-				self.SetTargetLine(order.Target, Color.Red);
 				self.QueueActivity(order.Queued, new DetonationSequence(self, this, order.Target));
+				self.ShowTargetLines();
 			}
 			else if (order.OrderString == "Detonate")
 				self.QueueActivity(order.Queued, new DetonationSequence(self, this));
@@ -246,6 +246,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 					self.Kill(self, mad.info.DamageTypes);
 				});
+			}
+
+			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+			{
+				yield return new TargetLineNode(target, Color.Crimson);
 			}
 
 			void EjectDriver()

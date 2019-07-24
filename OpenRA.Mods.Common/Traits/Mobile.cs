@@ -314,8 +314,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (moveTo.HasValue)
 			{
 				self.CancelActivity();
-				self.SetTargetLine(Target.FromCell(self.World, moveTo.Value), Color.Green, false);
 				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
+				self.ShowTargetLines();
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
 					self.ActorID, self.Location, moveTo.Value);
@@ -527,14 +527,14 @@ namespace OpenRA.Mods.Common.Traits
 			return inner;
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough)
+		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
 		{
-			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), null));
+			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), targetLineColor: targetLineColor));
 		}
 
-		public Activity MoveTo(CPos cell, Actor ignoreActor)
+		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
 		{
-			return WrapMove(new Move(self, cell, WDist.Zero, ignoreActor));
+			return WrapMove(new Move(self, cell, WDist.Zero, ignoreActor, targetLineColor: targetLineColor));
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range,
@@ -805,8 +805,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					self.CancelActivity();
 
-				self.SetTargetLine(Target.FromCell(self.World, cell), Color.Green);
-				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true)));
+				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true, Color.Green)));
+				self.ShowTargetLines();
 			}
 
 			// TODO: This should only cancel activities queued by this trait

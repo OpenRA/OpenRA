@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Cnc.Traits;
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly Mobile mobile;
 		readonly bool allowMovement;
 		readonly bool forceAttack;
+		readonly Color? targetLineColor;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -36,9 +38,10 @@ namespace OpenRA.Mods.Cnc.Activities
 		BitSet<TargetableType> lastVisibleTargetTypes;
 		Player lastVisibleOwner;
 
-		public LeapAttack(Actor self, Target target, bool allowMovement, bool forceAttack, AttackLeap attack, AttackLeapInfo info)
+		public LeapAttack(Actor self, Target target, bool allowMovement, bool forceAttack, AttackLeap attack, AttackLeapInfo info, Color? targetLineColor = null)
 		{
 			this.target = target;
+			this.targetLineColor = targetLineColor;
 			this.info = info;
 			this.attack = attack;
 			this.allowMovement = allowMovement;
@@ -88,12 +91,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -160,6 +158,12 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
 				target = Target.Invalid;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 	}
 }

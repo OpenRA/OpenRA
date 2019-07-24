@@ -98,8 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(order.Target, Color.Red);
 			self.QueueActivity(new CaptureActor(self, order.Target));
+			self.ShowTargetLines();
 		}
 
 		protected override void TraitEnabled(Actor self) { captureManager.RefreshCaptures(self); }

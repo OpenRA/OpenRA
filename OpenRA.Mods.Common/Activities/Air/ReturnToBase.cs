@@ -119,14 +119,22 @@ namespace OpenRA.Mods.Common.Activities
 					facing = 192;
 
 				aircraft.MakeReservation(dest);
-				QueueChild(new Land(self, Target.FromActor(dest), offset, facing));
+				QueueChild(new Land(self, Target.FromActor(dest), offset, facing, Color.Green));
 				QueueChild(new Resupply(self, dest, WDist.Zero, alwaysLand));
-
 				return true;
 			}
 
 			QueueChild(new Fly(self, Target.FromActor(dest)));
 			return true;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (ChildActivity == null)
+				yield return new TargetLineNode(Target.FromActor(dest), Color.Green);
+			else
+				foreach (var n in ChildActivity.TargetLineNodes(self))
+					yield return n;
 		}
 	}
 }

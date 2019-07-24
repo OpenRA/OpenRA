@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
+		readonly Color? targetLineColor;
 
 		protected Target target;
 		Target lastVisibleTarget;
@@ -44,9 +45,10 @@ namespace OpenRA.Mods.Common.Activities
 		WDist maxRange;
 		AttackStatus attackStatus = AttackStatus.UnableToAttack;
 
-		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack)
+		public Attack(Actor self, Target target, bool allowMovement, bool forceAttack, Color? targetLineColor = null)
 		{
 			this.target = target;
+			this.targetLineColor = targetLineColor;
 			this.forceAttack = forceAttack;
 
 			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray();
@@ -100,17 +102,12 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
 			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
 			// Either we are in range and can see the target, or we've lost track of it and should give up
 			if (wasMovingWithinRange && targetIsHiddenActor)
 				return true;
-
-			// Update target lines if required
-			if (useLastVisibleTarget != oldUseLastVisibleTarget)
-				self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -230,6 +227,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
 				target = Target.Invalid;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 		}
 	}
 }

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Primitives;
@@ -151,9 +152,9 @@ namespace OpenRA.Mods.Common.Traits
 			base.Tick(self);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
-			return new AttackActivity(self, newTarget, allowMove, forceAttack);
+			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 
 		public override void OnQueueAttackActivity(Actor self, Activity activity, Target target, bool allowMove, bool forceAttack)
@@ -213,6 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly RevealsShroud[] revealsShroud;
 			readonly IMove move;
 			readonly bool forceAttack;
+			readonly Color? targetLineColor;
 
 			Target target;
 			Target lastVisibleTarget;
@@ -224,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 			bool wasMovingWithinRange;
 			bool hasTicked;
 
-			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack)
+			public AttackActivity(Actor self, Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
@@ -232,6 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				this.target = target;
 				this.forceAttack = forceAttack;
+				this.targetLineColor = targetLineColor;
 
 				// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 				// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -290,7 +293,6 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 
-				var oldUseLastVisibleTarget = useLastVisibleTarget;
 				var maxRange = lastVisibleMaximumRange;
 				var minRange = lastVisibleMinimumRange;
 				useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
@@ -312,10 +314,6 @@ namespace OpenRA.Mods.Common.Traits
 				// Either we are in range and can see the target, or we've lost track of it and should give up
 				if (wasMovingWithinRange && targetIsHiddenActor)
 					return true;
-
-				// Update target lines if required
-				if (useLastVisibleTarget != oldUseLastVisibleTarget)
-					self.SetTargetLine(useLastVisibleTarget ? lastVisibleTarget : target, Color.Red, false);
 
 				// Target is hidden or dead, and we don't have a fallback position to move towards
 				if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -339,7 +337,7 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 				wasMovingWithinRange = true;
-				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
+				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition));
 				return false;
 			}
 
@@ -357,6 +355,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
 					attack.ClearRequestedTarget();
+			}
+
+			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+			{
+				if (targetLineColor != null)
+					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 			}
 		}
 	}

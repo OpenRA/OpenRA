@@ -830,14 +830,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement IMove
 
-		public Activity MoveTo(CPos cell, int nearEnough)
+		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
 		{
-			return new Fly(self, Target.FromCell(self.World, cell));
+			return new Fly(self, Target.FromCell(self.World, cell), targetLineColor: targetLineColor);
 		}
 
-		public Activity MoveTo(CPos cell, Actor ignoreActor)
+		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
 		{
-			return new Fly(self, Target.FromCell(self.World, cell));
+			return new Fly(self, Target.FromCell(self.World, cell), targetLineColor: targetLineColor);
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range,
@@ -993,8 +993,8 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				var target = Target.FromCell(self.World, cell);
-				self.SetTargetLine(target, Color.Green);
-				self.QueueActivity(order.Queued, new Fly(self, target));
+				self.QueueActivity(order.Queued, new Fly(self, target, targetLineColor: Color.Green));
+				self.ShowTargetLines();
 			}
 			else if (orderString == "Land")
 			{
@@ -1007,8 +1007,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var target = Target.FromCell(self.World, cell);
 
-				self.SetTargetLine(target, Color.Green);
-				self.QueueActivity(order.Queued, new Land(self, target));
+				self.QueueActivity(order.Queued, new Land(self, target, targetLineColor: Color.Green));
+				self.ShowTargetLines();
 			}
 			else if (orderString == "Enter" || orderString == "ForceEnter" || orderString == "Repair")
 			{
@@ -1029,13 +1029,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					UnReserve();
 
-				self.SetTargetLine(Target.FromActor(targetActor), Color.Green);
-
 				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in automatically forcing
 				// them to land on a resupplier. For aircraft without it, it makes more sense to land than to idle above a
 				// free resupplier.
 				var forceLand = isForceEnter || !Info.TakeOffOnResupply;
 				self.QueueActivity(order.Queued, new ReturnToBase(self, targetActor, forceLand));
+				self.ShowTargetLines();
 			}
 			else if (orderString == "Stop")
 			{
@@ -1077,9 +1076,8 @@ namespace OpenRA.Mods.Common.Traits
 				.Rotate(WRot.FromFacing(self.World.SharedRandom.Next(256)));
 			var target = Target.FromPos(self.CenterPosition + offset);
 
-			self.CancelActivity();
-			self.SetTargetLine(target, Color.Green, false);
-			self.QueueActivity(new Fly(self, target));
+			self.QueueActivity(false, new Fly(self, target));
+			self.ShowTargetLines();
 			UnReserve();
 		}
 

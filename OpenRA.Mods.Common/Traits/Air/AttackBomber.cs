@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -85,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			OnRemovedFromWorld(self);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			throw new NotImplementedException("AttackBomber requires a scripted target");
 		}

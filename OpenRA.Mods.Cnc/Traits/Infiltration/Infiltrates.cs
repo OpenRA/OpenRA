@@ -117,8 +117,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!order.Queued)
 				self.CancelActivity();
 
-			self.SetTargetLine(order.Target, Color.Red);
 			self.QueueActivity(new Infiltrate(self, order.Target, this));
+			self.ShowTargetLines();
 		}
 	}
 

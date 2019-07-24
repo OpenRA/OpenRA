@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -61,7 +62,6 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notifyHarvesterActions)
 					n.MovingToResources(self, targetCell);
 
-				self.SetTargetLine(Target.FromCell(self.World, targetCell), Color.Red, false);
 				QueueChild(move.MoveTo(targetCell, 2));
 				return false;
 			}
@@ -105,6 +105,11 @@ namespace OpenRA.Mods.Common.Activities
 				n.MovementCancelled(self);
 
 			base.Cancel(self, keepQueue);
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			yield return new TargetLineNode(Target.FromCell(self.World, targetCell), Color.Green);
 		}
 	}
 }

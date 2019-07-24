@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -20,14 +21,16 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Mobile mobile;
 		readonly Target target;
+		readonly Color? targetLineColor;
 		readonly WDist targetMovementThreshold;
 		WPos targetStartPos;
 
-		public VisualMoveIntoTarget(Actor self, Target target, WDist targetMovementThreshold)
+		public VisualMoveIntoTarget(Actor self, Target target, WDist targetMovementThreshold, Color? targetLineColor = null)
 		{
 			mobile = self.Trait<Mobile>();
 			this.target = target;
 			this.targetMovementThreshold = targetMovementThreshold;
+			this.targetLineColor = targetLineColor;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -75,6 +78,12 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return target;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (targetLineColor != null)
+				yield return new TargetLineNode(target, targetLineColor.Value);
 		}
 	}
 }

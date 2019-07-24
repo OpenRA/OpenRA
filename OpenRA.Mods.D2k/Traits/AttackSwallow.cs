@@ -15,6 +15,7 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Activities;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.D2k.Traits
 			self.QueueActivity(new SwallowActor(self, target, a, facing));
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack)
+		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			return new SwallowTarget(self, newTarget, allowMove, forceAttack);
 		}

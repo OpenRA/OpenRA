@@ -114,12 +114,12 @@ namespace OpenRA.Mods.Cnc.Traits
 					self.CancelActivity();
 
 				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
-				self.SetTargetLine(order.Target, Color.LawnGreen);
 				if (maxDistance != null)
-					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value)));
+					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Color.LawnGreen));
 
 				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
-				self.QueueActivity(move.MoveTo(cell, 5));
+				self.QueueActivity(move.MoveTo(cell, 5, Color.LawnGreen));
+				self.ShowTargetLines();
 			}
 		}
 
