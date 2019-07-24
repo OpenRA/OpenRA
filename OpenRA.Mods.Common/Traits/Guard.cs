@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.Yellow)));
+			self.QueueActivity(new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.OrangeRed)));
 			self.ShowTargetLines();
 		}
 

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string OutsideRangeCursor = null;
 
 		[Desc("Color to use for the target line.")]
-		public readonly Color TargetLineColor = Color.Red;
+		public readonly Color TargetLineColor = Color.Crimson;
 
 		[Desc("Does the attack type require the attacker to enter the target's cell?")]
 		public readonly bool AttackRequiresEnteringCell = false;

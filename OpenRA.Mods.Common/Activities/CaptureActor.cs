@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		CaptureManager enterCaptureManager;
 
 		public CaptureActor(Actor self, Target target)
-			: base(self, target, Color.Red)
+			: base(self, target, Color.Crimson)
 		{
 			manager = self.Trait<CaptureManager>();
 		}
