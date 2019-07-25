@@ -29,23 +29,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var discTitles = getText().Split('\n');
 
 			var maxWidth = Game.Renderer.Fonts[desc.Font].Measure(desc.Text).X;
-			var sideMargin = desc.Bounds.X;
-			var bottomMargin = discs.Bounds.Height;
+			var sideMargin = (int)desc.LayoutX;
+			var bottomMargin = (int)discs.LayoutHeight;
 			foreach (var disc in discTitles)
 			{
 				var label = (LabelWidget)template.Clone();
 				var title = disc;
 				label.GetText = () => title;
-				label.Bounds.Y = discs.Bounds.Height;
-				label.Bounds.Width = font.Measure(disc).X;
+				label.Top = (int)discs.LayoutHeight;
+				label.Width = font.Measure(disc).X;
 
-				maxWidth = Math.Max(maxWidth, label.Bounds.Width + label.Bounds.X);
+				maxWidth = Math.Max(maxWidth, (int)label.LayoutWidth + (int)label.LayoutX);
 				discs.AddChild(label);
-				discs.Bounds.Height += label.Bounds.Height;
+				discs.Height = (int)discs.LayoutHeight + (int)label.LayoutHeight;
 			}
 
-			widget.Bounds.Width = 2 * sideMargin + maxWidth;
-			widget.Bounds.Height = discs.Bounds.Y + bottomMargin + discs.Bounds.Height;
+			widget.Width = 2 * sideMargin + maxWidth;
+			widget.Height = (int)discs.LayoutY + bottomMargin + (int)discs.LayoutHeight;
 		}
 	}
 }

@@ -650,7 +650,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
-						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						var name = WidgetUtils.TruncateText(o.Name, (int)label.LayoutWidth, font);
 						label.GetText = () => name;
 						label.GetColor = () => color;
 

@@ -280,20 +280,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			nameLabel.GetColor = () => nameColor;
 			nameLabel.GetText = () => name;
-			nameLabel.Bounds.Width = nameSize.X;
+			nameLabel.Width = nameSize.X;
 
 			textLabel.GetColor = () => textColor;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
+			textLabel.Left = (int)textLabel.LayoutX + nameSize.X;
+			textLabel.Width = (int)textLabel.LayoutWidth - nameSize.X;
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			text = WidgetUtils.WrapText(text, textLabel.Bounds.Width, font);
+			text = WidgetUtils.WrapText(text, (int)textLabel.LayoutWidth, font);
 			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
+			var dh = font.Measure(text).Y - (int)textLabel.LayoutHeight;
 			if (dh > 0)
 			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
+				textLabel.Height = (int)textLabel.LayoutHeight + dh;
+				template.Height = (int)template.LayoutHeight + dh;
 			}
 
 			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;

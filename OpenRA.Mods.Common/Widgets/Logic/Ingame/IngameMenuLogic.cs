@@ -91,10 +91,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (buttons.Count > 0)
 			{
 				var expand = (buttons.Count - 1) * buttonStride;
-				buttonContainer.Bounds.X -= expand.X / 2;
-				buttonContainer.Bounds.Y -= expand.Y / 2;
-				buttonContainer.Bounds.Width += expand.X;
-				buttonContainer.Bounds.Height += expand.Y;
+				buttonContainer.Left = (int)buttonContainer.LayoutX - expand.X / 2;
+				buttonContainer.Top = (int)buttonContainer.LayoutY - expand.Y / 2;
+				buttonContainer.Width = (int)buttonContainer.LayoutWidth + expand.X;
+				buttonContainer.Height = (int)buttonContainer.LayoutHeight + expand.Y;
 			}
 
 			var panelRoot = widget.GetOrNull("PANEL_ROOT");
@@ -166,8 +166,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var lastButton = buttons.LastOrDefault();
 			if (lastButton != null)
 			{
-				button.Bounds.X = lastButton.Bounds.X + buttonStride.X;
-				button.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				button.Left = (int)lastButton.LayoutX + buttonStride.X;
+				button.Top = (int)lastButton.LayoutY + buttonStride.Y;
 			}
 
 			button.Id = id;

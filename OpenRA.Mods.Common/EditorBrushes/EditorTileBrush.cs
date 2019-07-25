@@ -231,10 +231,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var cellScreenPixel = worldRenderer.Viewport.WorldToViewPx(cellScreenPosition);
 			var zoom = worldRenderer.Viewport.Zoom;
 
-			preview.Bounds.X = cellScreenPixel.X + (int)(zoom * bounds.X);
-			preview.Bounds.Y = cellScreenPixel.Y + (int)(zoom * bounds.Y);
-			preview.Bounds.Width = (int)(zoom * bounds.Width);
-			preview.Bounds.Height = (int)(zoom * bounds.Height);
+			preview.Left = cellScreenPixel.X + (int)(zoom * bounds.X);
+			preview.Top = cellScreenPixel.Y + (int)(zoom * bounds.Y);
+			preview.Width = (int)(zoom * bounds.Width);
+			preview.Height = (int)(zoom * bounds.Height);
 		}
 
 		public void Dispose() { }

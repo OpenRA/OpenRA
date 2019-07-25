@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using Facebook.Yoga;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -570,6 +571,13 @@ namespace OpenRA
 				DateTime dt;
 				if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out dt))
 					return dt;
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
+			else if (fieldType == typeof(YogaValue))
+			{
+				float res;
+				if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out res))
+					return value.Contains('%') ? YogaValue.Percent(res) : YogaValue.Point(res);
 				return InvalidValueAction(value, fieldType, fieldName);
 			}
 			else

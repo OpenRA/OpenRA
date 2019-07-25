@@ -248,13 +248,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(preview.Uid, template, () => selectedUid == preview.Uid,
 					() => selectedUid = preview.Uid, dblClick);
-				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
+				item.IsVisible = () =>
+				{
+					item.CalculateLayout();
+					return item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
+				};
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				if (titleLabel != null)
 				{
 					var font = Game.Renderer.Fonts[titleLabel.Font];
-					var title = WidgetUtils.TruncateText(preview.Title, titleLabel.Bounds.Width, font);
+					var title = WidgetUtils.TruncateText(preview.Title, (int)titleLabel.LayoutWidth, font);
 					titleLabel.GetText = () => title;
 				}
 
@@ -277,7 +281,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (authorWidget != null)
 				{
 					var font = Game.Renderer.Fonts[authorWidget.Font];
-					var author = WidgetUtils.TruncateText("Created by {0}".F(preview.Author), authorWidget.Bounds.Width, font);
+					var author = WidgetUtils.TruncateText("Created by {0}".F(preview.Author), (int)authorWidget.LayoutWidth, font);
 					authorWidget.GetText = () => author;
 				}
 

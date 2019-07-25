@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitializePreviews();
 			};
 
-			var categoryHeight = 5 + selectButtons.Bounds.Height;
+			var categoryHeight = 5 + (int)selectButtons.LayoutHeight;
 			foreach (var cat in FilteredCategories)
 			{
 				var category = (CheckboxWidget)categoryTemplate.Clone();
@@ -120,10 +120,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 
 				categoriesPanel.AddChild(category);
-				categoryHeight += categoryTemplate.Bounds.Height;
+				categoryHeight += (int)categoryTemplate.LayoutHeight;
 			}
 
-			categoriesPanel.Bounds.Height = Math.Min(categoryHeight, panel.Bounds.Height);
+			categoriesPanel.Height = Math.Min(categoryHeight, (int)panel.LayoutHeight);
 
 			return categoriesPanel;
 		}

@@ -134,6 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var categoriesPanel = Ui.LoadWidget("COPY_FILTER_PANEL", null, new WidgetArgs());
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
+			categoriesPanel.RemoveChild(categoryTemplate);
 
 			MapCopyFilters[] allCategories = { MapCopyFilters.Terrain, MapCopyFilters.Resources, MapCopyFilters.Actors };
 			foreach (var cat in allCategories)
@@ -145,6 +146,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				category.OnClick = () => copyFilters ^= cat;
 
 				categoriesPanel.AddChild(category);
+				categoriesPanel.CalculateLayout();
 			}
 
 			return categoriesPanel;

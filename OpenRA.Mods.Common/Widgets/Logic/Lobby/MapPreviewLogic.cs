@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				titleLabel.IsVisible = () => getMap() != MapCache.UnknownMap;
 				var font = Game.Renderer.Fonts[titleLabel.Font];
-				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+				var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, (int)titleLabel.LayoutWidth, font));
 				titleLabel.GetText = () => title.Update(getMap());
 				titleLabel.GetTooltipText = () => getMap().Title;
 			}
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var font = Game.Renderer.Fonts[authorLabel.Font];
 				var author = new CachedTransform<MapPreview, string>(
-					m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
+					m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), (int)authorLabel.LayoutWidth, font));
 				authorLabel.GetText = () => author.Update(getMap());
 			}
 		}

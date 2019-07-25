@@ -133,15 +133,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// Adjust the dialog once the AuthenticationError is parsed.
 					if (passwordField.IsVisible() && !passwordOffsetAdjusted)
 					{
-						var offset = passwordField.Bounds.Y - connectionError.Bounds.Y;
-						abortButton.Bounds.Y += offset;
-						retryButton.Bounds.Y += offset;
-						panel.Bounds.Height += offset;
-						panel.Bounds.Y -= offset / 2;
+						var offset = (int)passwordField.LayoutY - (int)connectionError.LayoutY;
+						abortButton.Top = (int)abortButton.LayoutY + offset;
+						retryButton.Top = (int)retryButton.LayoutY + offset;
+						panel.Height = (int)panel.LayoutHeight + offset;
+						panel.Top = (int)panel.LayoutY - offset / 2;
 
 						var background = panel.GetOrNull("CONNECTION_BACKGROUND");
 						if (background != null)
-							background.Bounds.Height += offset;
+							background.Height = (int)background.LayoutHeight + offset;
 
 						passwordOffsetAdjusted = true;
 					}
@@ -187,10 +187,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (title != null)
 			{
 				var font = Game.Renderer.Fonts[title.Font];
-				var label = WidgetUtils.TruncateText(modTitle, title.Bounds.Width, font);
+				var label = WidgetUtils.TruncateText(modTitle, (int)title.LayoutWidth, font);
 				var labelWidth = font.Measure(label).X;
-				width = Math.Max(width, title.Bounds.X + labelWidth);
-				title.Bounds.Width = labelWidth;
+				width = Math.Max(width, (int)title.LayoutX + labelWidth);
+				title.Width = labelWidth;
 				title.GetText = () => label;
 			}
 
@@ -198,10 +198,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (version != null)
 			{
 				var font = Game.Renderer.Fonts[version.Font];
-				var label = WidgetUtils.TruncateText(modVersion, version.Bounds.Width, font);
+				var label = WidgetUtils.TruncateText(modVersion, (int)version.LayoutWidth, font);
 				var labelWidth = font.Measure(label).X;
-				width = Math.Max(width, version.Bounds.X + labelWidth);
-				version.Bounds.Width = labelWidth;
+				width = Math.Max(width, (int)version.LayoutX + labelWidth);
+				version.Width = labelWidth;
 				version.GetText = () => label;
 			}
 
@@ -213,24 +213,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// Hide the logo and center just the text
 				if (title != null)
-					title.Bounds.X = logo.Bounds.Left;
+					title.Left = (int)logo.LayoutX;
 
 				if (version != null)
-					version.Bounds.X = logo.Bounds.X;
+					version.Left = (int)logo.LayoutX;
 
-				width -= logo.Bounds.Width;
+				width -= (int)logo.LayoutWidth;
 			}
 			else
 			{
 				// Add an equal logo margin on the right of the text
-				width += logo.Bounds.Width;
+				width += (int)logo.LayoutWidth;
 			}
 
 			var container = panel.GetOrNull("MOD_CONTAINER");
 			if (container != null)
 			{
-				container.Bounds.X += (container.Bounds.Width - width) / 2;
-				container.Bounds.Width = width;
+				container.Left = (int)container.LayoutX + ((int)container.LayoutWidth - width) / 2;
+				container.Width = width;
 			}
 		}
 	}

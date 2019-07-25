@@ -106,8 +106,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var cellScreenPosition = worldRenderer.ScreenPxPosition(location);
 			var cellScreenPixel = worldRenderer.Viewport.WorldToViewPx(cellScreenPosition);
 
-			preview.Bounds.X = cellScreenPixel.X;
-			preview.Bounds.Y = cellScreenPixel.Y;
+			preview.Left = cellScreenPixel.X;
+			preview.Top = cellScreenPixel.Y;
 		}
 
 		public void Dispose() { }

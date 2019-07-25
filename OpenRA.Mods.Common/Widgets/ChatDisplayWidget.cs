@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			var pos = RenderOrigin;
-			var chatLogArea = new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height);
+			var chatLogArea = new Rectangle(pos.X, pos.Y, (int)LayoutWidth, (int)LayoutHeight);
 			var chatPos = new int2(chatLogArea.X + 5, chatLogArea.Bottom - 8);
 
 			var font = Game.Renderer.Fonts["Regular"];

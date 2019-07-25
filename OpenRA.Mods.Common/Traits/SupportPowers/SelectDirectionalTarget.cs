@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (activated)
 			{
-				mouseAttachment.Reset();
+				mouseAttachment.ClassicReset();
 				Game.Cursor.Unlock();
 			}
 		}

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class VqaPlayerWidget : Widget
 	{
 		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
-		public float AspectRatio = 1.2f;
+		public float ClassicAspectRatio = 1.2f;
 		public bool DrawOverlay = true;
 		public bool Skippable = true;
 
@@ -74,13 +74,13 @@ namespace OpenRA.Mods.Common.Widgets
 					video.Height),
 				TextureChannel.RGBA);
 
-			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / video.Height * AspectRatio);
+			var scale = Math.Min((float)RenderBounds.Width / video.Width, (float)RenderBounds.Height / video.Height * ClassicAspectRatio);
 			videoOrigin = new float2(
 				RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2,
-				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
+				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * ClassicAspectRatio) / 2);
 
 			// Round size to integer pixels. Round up to be consistent with the scale calculation.
-			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
+			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * ClassicAspectRatio * scale));
 
 			if (!DrawOverlay)
 				return;

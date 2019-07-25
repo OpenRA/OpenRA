@@ -75,8 +75,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var y = i / palette.Columns;
 
 						var bg = icontemplate.Clone();
-						bg.Bounds.X = palette.IconSize.X * x;
-						bg.Bounds.Y = palette.IconSize.Y * y;
+						bg.Left = palette.IconSize.X * x;
+						bg.Top = palette.IconSize.Y * y;
 						background.AddChild(bg);
 					}
 				};

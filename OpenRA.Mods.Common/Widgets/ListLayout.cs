@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (widget.Children.Count == 0)
 				widget.ContentHeight = 2 * widget.TopBottomSpacing - widget.ItemSpacing;
 
-			w.Bounds.Y = widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing;
+			w.Top = widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing;
 			if (!widget.CollapseHiddenChildren || w.IsVisible())
-				widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
+				widget.ContentHeight += (int)w.LayoutHeight + widget.ItemSpacing;
 		}
 
 		public void AdjustChildren()
@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Common.Widgets
 			widget.ContentHeight = widget.TopBottomSpacing;
 			foreach (var w in widget.Children)
 			{
-				w.Bounds.Y = widget.ContentHeight;
+				w.Top = widget.ContentHeight;
 				if (!widget.CollapseHiddenChildren || w.IsVisible())
-					widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
+					widget.ContentHeight += (int)w.LayoutHeight + widget.ItemSpacing;
 			}
 
 			// The loop above appended an extra widget.ItemSpacing after the last item.

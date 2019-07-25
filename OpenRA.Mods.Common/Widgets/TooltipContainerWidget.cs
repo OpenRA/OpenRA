@@ -56,12 +56,12 @@ namespace OpenRA.Mods.Common.Widgets
 				if (tooltip != null)
 				{
 					// If the tooltip overlaps the right edge of the screen, move it left until it fits
-					if (pos.X + tooltip.Bounds.Right > Game.Renderer.Resolution.Width)
-						pos = pos.WithX(Game.Renderer.Resolution.Width - tooltip.Bounds.Right);
+					if (pos.X + ((int)tooltip.LayoutX + (int)tooltip.LayoutWidth) > Game.Renderer.Resolution.Width)
+						pos = pos.WithX(Game.Renderer.Resolution.Width - ((int)tooltip.LayoutX + (int)tooltip.LayoutWidth));
 
 					// If the tooltip overlaps the bottom edge of the screen, switch tooltip above cursor
-					if (pos.Y + tooltip.Bounds.Bottom > Game.Renderer.Resolution.Height)
-						pos = pos.WithY(Viewport.LastMousePos.Y + (CursorProvider.CursorViewportZoomed ? 2 : 1) * BottomEdgeYOffset - tooltip.Bounds.Height);
+					if (pos.Y + ((int)tooltip.LayoutY + (int)tooltip.LayoutHeight) > Game.Renderer.Resolution.Height)
+						pos = pos.WithY(Viewport.LastMousePos.Y + (CursorProvider.CursorViewportZoomed ? 2 : 1) * BottomEdgeYOffset - (int)tooltip.LayoutHeight);
 				}
 
 				return pos;

@@ -37,17 +37,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var line = (LabelWidget)headerTemplate.Clone();
 				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
+				line.Top = (int)line.LayoutY + headerHeight;
 				panel.AddChild(line);
 
-				headerHeight += headerTemplate.Bounds.Height;
+				headerHeight += (int)headerTemplate.LayoutHeight;
 			}
 
-			panel.Bounds.Height += headerHeight;
-			panel.Bounds.Y -= headerHeight / 2;
+			panel.Height = (int)panel.LayoutHeight + headerHeight;
+			panel.Top = (int)panel.LayoutY - headerHeight / 2;
 
 			var advancedButton = panel.Get<ButtonWidget>("ADVANCED_BUTTON");
-			advancedButton.Bounds.Y += headerHeight;
+			advancedButton.Top = (int)advancedButton.LayoutY + headerHeight;
 			advancedButton.OnClick = () =>
 			{
 				Ui.OpenWindow("CONTENT_PANEL", new WidgetArgs
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var quickButton = panel.Get<ButtonWidget>("QUICK_BUTTON");
 			quickButton.IsVisible = () => !string.IsNullOrEmpty(content.QuickDownload);
-			quickButton.Bounds.Y += headerHeight;
+			quickButton.Top = (int)quickButton.LayoutY + headerHeight;
 			quickButton.OnClick = () =>
 			{
 				var modObjectCreator = new ObjectCreator(mod, Game.Mods);
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var quitButton = panel.Get<ButtonWidget>("QUIT_BUTTON");
 			quitButton.GetText = () => requiredContentInstalled ? "Continue" : "Quit";
-			quitButton.Bounds.Y += headerHeight;
+			quitButton.Top = (int)quitButton.LayoutY + headerHeight;
 			quitButton.OnClick = () =>
 			{
 				if (requiredContentInstalled)

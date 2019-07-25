@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets
 					clocks.Add(power.a.Key, new Animation(world, ClockAnimation));
 			}
 
-			Bounds.Width = powers.Count() * (IconWidth + IconSpacing);
+			Width = powers.Count() * (IconWidth + IconSpacing);
 
 			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var power in powers)

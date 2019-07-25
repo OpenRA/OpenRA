@@ -352,7 +352,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetNewsStatus(string message)
 		{
-			message = WidgetUtils.WrapText(message, newsStatus.Bounds.Width, Game.Renderer.Fonts[newsStatus.Font]);
+			message = WidgetUtils.WrapText(message, (int)newsStatus.LayoutWidth, Game.Renderer.Fonts[newsStatus.Font]);
 			newsStatus.GetText = () => message;
 		}
 
@@ -433,10 +433,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var contentLabel = newsItem.Get<LabelWidget>("CONTENT");
 				var content = item.Content.Replace("\\n", "\n");
-				content = WidgetUtils.WrapText(content, contentLabel.Bounds.Width, Game.Renderer.Fonts[contentLabel.Font]);
+				content = WidgetUtils.WrapText(content, (int)contentLabel.LayoutWidth, Game.Renderer.Fonts[contentLabel.Font]);
 				contentLabel.GetText = () => content;
-				contentLabel.Bounds.Height = Game.Renderer.Fonts[contentLabel.Font].Measure(content).Y;
-				newsItem.Bounds.Height += contentLabel.Bounds.Height;
+				contentLabel.Height = Game.Renderer.Fonts[contentLabel.Font].Measure(content).Y;
+				newsItem.Height = (int)newsItem.LayoutHeight + (int)contentLabel.LayoutHeight;
 
 				newsPanel.AddChild(newsItem);
 				newsPanel.Layout.AdjustChildren();
@@ -445,7 +445,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void RemoveShellmapUI()
 		{
-			rootMenu.Parent.RemoveChild(rootMenu);
+			if (rootMenu.Parent != null)
+				rootMenu.Parent.RemoveChild(rootMenu);
 		}
 
 		void StartSkirmishGame()

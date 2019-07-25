@@ -144,14 +144,14 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			// Inset text by the margin and center vertically
-			var textPos = pos + new int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
+			var textPos = pos + new int2(LeftMargin, ((int)LayoutHeight - textSize.Y) / 2 - VisualHeight);
 
 			// Scissor when the text overflows
-			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
+			var isTextOverflowing = textSize.X > (int)LayoutWidth - LeftMargin - RightMargin;
 			if (isTextOverflowing)
 			{
 				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
-					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));
+					(int)LayoutWidth - LeftMargin - RightMargin, ((int)LayoutY + (int)LayoutHeight)));
 			}
 
 			var color = disabled ? TextColorDisabled : !valid ? TextColorInvalid : TextColor;

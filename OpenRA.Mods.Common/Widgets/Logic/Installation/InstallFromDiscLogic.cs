@@ -561,10 +561,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			titleLabel.Text = title;
 			messageLabel.Text = message;
 
-			primaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (messageContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = messageContainer.Bounds.Height;
+			primaryButton.Top = (int)primaryButton.LayoutY + (int)messageContainer.LayoutHeight - (int)panel.LayoutHeight;
+			secondaryButton.Top = (int)secondaryButton.LayoutY + (int)messageContainer.LayoutHeight - (int)panel.LayoutHeight;
+			panel.Top = (int)panel.LayoutY - ((int)messageContainer.LayoutHeight - (int)panel.LayoutHeight) / 2;
+			panel.Height = (int)messageContainer.LayoutHeight;
 		}
 
 		void ShowProgressbar(string title, Func<string> getMessage)
@@ -574,13 +574,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			progressBar.IsIndeterminate = () => true;
 
 			var font = Game.Renderer.Fonts[progressLabel.Font];
-			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, progressLabel.Bounds.Width, font));
+			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, (int)progressLabel.LayoutWidth, font));
 			progressLabel.GetText = () => status.Update(getMessage());
 
-			primaryButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (progressContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = progressContainer.Bounds.Height;
+			primaryButton.Top = (int)primaryButton.LayoutY + (int)progressContainer.LayoutHeight - (int)panel.LayoutHeight;
+			secondaryButton.Top = (int)secondaryButton.LayoutY + (int)progressContainer.LayoutHeight - (int)panel.LayoutHeight;
+			panel.Top = (int)panel.LayoutY - ((int)progressContainer.LayoutHeight - (int)panel.LayoutHeight) / 2;
+			panel.Height = (int)progressContainer.LayoutHeight;
 		}
 
 		void ShowList(string title, string message, IEnumerable<string> items)
@@ -598,10 +598,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				listPanel.AddChild(labelWidget);
 			}
 
-			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = listContainer.Bounds.Height;
+			primaryButton.Top = (int)primaryButton.LayoutY + (int)listContainer.LayoutHeight - (int)panel.LayoutHeight;
+			secondaryButton.Top = (int)secondaryButton.LayoutY + (int)listContainer.LayoutHeight - (int)panel.LayoutHeight;
+			panel.Top = (int)panel.LayoutY - ((int)listContainer.LayoutHeight - (int)panel.LayoutHeight) / 2;
+			panel.Height = (int)listContainer.LayoutHeight;
 		}
 
 		void ShowList(string title, string message, Dictionary<string, IEnumerable<string>> groups)
@@ -632,10 +632,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
-			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
-			panel.Bounds.Height = listContainer.Bounds.Height;
+			primaryButton.Top = (int)primaryButton.LayoutY + (int)listContainer.LayoutHeight - (int)panel.LayoutHeight;
+			secondaryButton.Top = (int)secondaryButton.LayoutY + (int)listContainer.LayoutHeight - (int)panel.LayoutHeight;
+			panel.Top = (int)panel.LayoutY - ((int)listContainer.LayoutHeight - (int)panel.LayoutHeight) / 2;
+			panel.Height = (int)listContainer.LayoutHeight;
 		}
 
 		void ShowContinueCancel(Action continueAction)

@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using Facebook.Yoga;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -20,6 +22,7 @@ namespace OpenRA.Widgets
 {
 	public static class Ui
 	{
+		public static readonly YogaConfig YogaConfig = new YogaConfig();
 		public static Widget Root = new ContainerWidget();
 
 		public static long LastTickTime = Game.RunTime;
@@ -89,7 +92,22 @@ namespace OpenRA.Widgets
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
-		public static void Draw() { Root.DrawOuter(); }
+		public static void Draw()
+		{
+			// The root element should always cover the full screen, so we do not need to depend on WINDOW_ 'variables'.
+			Root.Width = Game.Renderer.Window.WindowSize.Width;
+			Root.Height = Game.Renderer.Window.WindowSize.Height;
+
+			// This is actualy a problem: OpenRA makes use of IsVisible which returns the current state at the moment it is called.
+			// For Yoga however, we need to change the Display property to 'None' and re-calcultate the Layout of the parent.
+			Root.UpdateVisibility();
+
+			// We need to call this whenever something in the layout has changed.
+			// Its here due to the missing OnWindowResize and the UpdateVisibility hack.
+			Root.CalculateLayout();
+
+			Root.DrawOuter();
+		}
 
 		public static bool HandleInput(MouseInput mi)
 		{
@@ -167,44 +185,79 @@ namespace OpenRA.Widgets
 		protected virtual void Dispose(bool disposing) { }
 	}
 
-	public abstract class Widget
+	public abstract class Widget : YogaNode
 	{
-		public readonly List<Widget> Children = new List<Widget>();
+		private readonly List<Widget> children = new List<Widget>();
+		public ReadOnlyCollection<Widget> Children { get { return new ReadOnlyCollection<Widget>(children); } }
 
 		// Info defined in YAML
 		public string Id = null;
-		public string X = "0";
-		public string Y = "0";
-		public string Width = "0";
-		public string Height = "0";
+
+		public string ClassicX;
+		public string ClassicY;
+		public string ClassicWidth;
+		public string ClassicHeight;
+
+		public float LayoutBorderTopWidth
+		{
+			get { return float.IsNaN(BorderTopWidth) ? 0 : BorderTopWidth; }
+		}
+
+		public float LayoutBorderRightWidth
+		{
+			get { return float.IsNaN(BorderRightWidth) ? 0 : BorderRightWidth; }
+		}
+
+		public float LayoutBorderBottomWidth
+		{
+			get { return float.IsNaN(BorderBottomWidth) ? 0 : BorderBottomWidth; }
+		}
+
+		public float LayoutBorderLeftWidth
+		{
+			get { return float.IsNaN(BorderLeftWidth) ? 0 : BorderLeftWidth; }
+		}
+
 		public string[] Logic = { };
 		public ChromeLogic[] LogicObjects { get; private set; }
-		public bool Visible = true;
+
+		public bool Visible
+		{
+			get { return Display == YogaDisplay.Flex; }
+			set { Display = value ? YogaDisplay.Flex : YogaDisplay.None; }
+		}
+
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
-		// Calculated internally
-		public Rectangle Bounds;
-		public Widget Parent = null;
+		// Ugly hack as some OpenRA method rely on a parent being available, while the current widget is not the child of the parent.
+		private Widget tempParent;
+		public new Widget Parent
+		{
+			get { return base.Parent as Widget ?? tempParent; }
+			set { tempParent = value; }
+		}
+
 		public Func<bool> IsVisible;
 		public Widget() { IsVisible = () => Visible; }
 
 		public Widget(Widget widget)
+			: base(widget)
 		{
 			Id = widget.Id;
-			X = widget.X;
-			Y = widget.Y;
-			Width = widget.Width;
-			Height = widget.Height;
+
+			ClassicX = widget.ClassicX;
+			ClassicY = widget.ClassicY;
+			ClassicWidth = widget.ClassicWidth;
+			ClassicHeight = widget.ClassicHeight;
+
 			Logic = widget.Logic;
-			Visible = widget.Visible;
-
-			Bounds = widget.Bounds;
 			Parent = widget.Parent;
-
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 			IgnoreMouseOver = widget.IgnoreMouseOver;
+
+			CalculateLayout();
 
 			foreach (var child in widget.Children)
 				AddChild(child.Clone());
@@ -215,32 +268,41 @@ namespace OpenRA.Widgets
 			throw new InvalidOperationException("Widget type `{0}` is not cloneable.".F(GetType().Name));
 		}
 
-		public virtual int2 RenderOrigin
+		public int2 RenderOrigin
 		{
 			get
 			{
-				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
-				return new int2(Bounds.X, Bounds.Y) + offset;
+				var offset = Parent == null ? int2.Zero : Parent.ChildOrigin;
+				return new int2((int)LayoutX, (int)LayoutY) + offset;
 			}
 		}
 
-		public virtual int2 ChildOrigin { get { return RenderOrigin; } }
+		public virtual int2 ChildOrigin
+		{
+			get
+			{
+				return new int2((int)(LayoutBorderLeftWidth + LayoutPaddingLeft), (int)(LayoutBorderTopWidth + LayoutPaddingTop)) + RenderOrigin;
+			}
+		}
 
-		public virtual Rectangle RenderBounds
+		public Rectangle RenderBounds
 		{
 			get
 			{
 				var ro = RenderOrigin;
-				return new Rectangle(ro.X, ro.Y, Bounds.Width, Bounds.Height);
+				return new Rectangle(ro.X, ro.Y, (int)LayoutWidth, (int)LayoutHeight);
 			}
 		}
 
 		public virtual void Initialize(WidgetArgs args)
 		{
+			if (ClassicX == null && ClassicY == null && ClassicWidth == null && ClassicHeight == null)
+				return;
+
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
-				: Parent.Bounds;
+				: Parent.RenderBounds;
 
 			var substitutions = args.ContainsKey("substitutions") ?
 				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
@@ -252,16 +314,19 @@ namespace OpenRA.Widgets
 			substitutions.Add("PARENT_LEFT", parentBounds.Left);
 			substitutions.Add("PARENT_TOP", parentBounds.Top);
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
-			var width = Evaluator.Evaluate(Width, substitutions);
-			var height = Evaluator.Evaluate(Height, substitutions);
+
+			var width = Evaluator.Evaluate(ClassicWidth ?? "0", substitutions);
+			var height = Evaluator.Evaluate(ClassicHeight ?? "0", substitutions);
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 
-			Bounds = new Rectangle(Evaluator.Evaluate(X, substitutions),
-								   Evaluator.Evaluate(Y, substitutions),
-								   width,
-								   height);
+			Left = Evaluator.Evaluate(ClassicX ?? "0", substitutions);
+			Top = Evaluator.Evaluate(ClassicY ?? "0", substitutions);
+			Width = width;
+			Height = height;
+
+			CalculateLayout();
 		}
 
 		public void PostInit(WidgetArgs args)
@@ -448,6 +513,15 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		public void UpdateVisibility()
+		{
+			if (IsVisible != null)
+				Visible = IsVisible();
+
+			foreach (var child in Children)
+				child.UpdateVisibility();
+		}
+
 		public virtual void Draw() { }
 
 		public virtual void DrawOuter()
@@ -478,15 +552,23 @@ namespace OpenRA.Widgets
 
 		public virtual void AddChild(Widget child)
 		{
-			child.Parent = this;
-			Children.Add(child);
+			if (child.Parent != null)
+				child.Parent.RemoveChild(child);
+
+			base.AddChild(child);
+			children.Add(child);
 		}
 
 		public virtual void RemoveChild(Widget child)
 		{
 			if (child != null)
 			{
-				Children.Remove(child);
+				base.RemoveChild(child);
+
+				// We need to do this, otherwise LayoutWidth and LayoutHeight will be broken.
+				child.CalculateLayout();
+
+				children.Remove(child);
 				child.Removed();
 			}
 		}
@@ -495,7 +577,12 @@ namespace OpenRA.Widgets
 		{
 			if (child != null)
 			{
-				Children.Remove(child);
+				base.RemoveChild(child);
+
+				// We need to do this, otherwise LayoutWidth and LayoutHeight will be broken.
+				child.CalculateLayout();
+
+				children.Remove(child);
 				child.Hidden();
 			}
 		}

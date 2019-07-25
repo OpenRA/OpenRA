@@ -143,10 +143,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var zoom = worldRenderer.Viewport.Zoom;
 			var s = preview.IdealPreviewSize;
 			var o = preview.PreviewOffset;
-			preview.Bounds.X = origin.X - (int)(zoom * (o.X + s.X / 2));
-			preview.Bounds.Y = origin.Y - (int)(zoom * (o.Y + s.Y / 2));
-			preview.Bounds.Width = (int)(zoom * s.X);
-			preview.Bounds.Height = (int)(zoom * s.Y);
+			preview.Left = origin.X - (int)(zoom * (o.X + s.X / 2));
+			preview.Top = origin.Y - (int)(zoom * (o.Y + s.Y / 2));
+			preview.Width = (int)(zoom * s.X);
+			preview.Height = (int)(zoom * s.Y);
 		}
 
 		public void Dispose() { }

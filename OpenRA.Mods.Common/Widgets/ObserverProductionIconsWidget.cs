@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 					.ThenBy(g => g.First().BuildPaletteOrder)
 					.ToList();
 
-			Bounds.Width = currentItemsByItem.Count * (IconWidth + IconSpacing);
+			Width = currentItemsByItem.Count * (IconWidth + IconSpacing);
 
 			var queueCol = 0;
 			foreach (var currentItems in currentItemsByItem)

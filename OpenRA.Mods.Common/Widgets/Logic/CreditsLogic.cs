@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Make space to show the tabs
 				tabContainer.IsVisible = () => true;
-				scrollPanel.Bounds.Y += tabContainer.Bounds.Height;
-				scrollPanel.Bounds.Height -= tabContainer.Bounds.Height;
+				scrollPanel.Top = (int)scrollPanel.LayoutY + (int)tabContainer.LayoutHeight;
+				scrollPanel.Height = (int)scrollPanel.LayoutHeight - (int)tabContainer.LayoutHeight;
 			}
 
 			ShowCredits(hasModCredits);

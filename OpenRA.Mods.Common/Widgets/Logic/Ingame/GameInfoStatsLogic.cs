@@ -54,9 +54,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var statsHeader = widget.Get("STATS_HEADERS");
 
 				objectiveGroup.Visible = false;
-				statsHeader.Bounds.Y -= objectiveGroup.Bounds.Height;
-				playerPanel.Bounds.Y -= objectiveGroup.Bounds.Height;
-				playerPanel.Bounds.Height += objectiveGroup.Bounds.Height;
+				statsHeader.Top = (int)statsHeader.LayoutY - (int)objectiveGroup.LayoutHeight;
+				playerPanel.Top = (int)playerPanel.LayoutY - (int)objectiveGroup.LayoutHeight;
+				playerPanel.Height = (int)playerPanel.LayoutHeight + (int)objectiveGroup.LayoutHeight;
 			}
 
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
 					var name = new CachedTransform<Pair<string, string>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
+						WidgetUtils.TruncateText(c.First, (int)nameLabel.LayoutWidth - suffixLength.Update(c.Second), nameFont) + c.Second);
 
 					nameLabel.GetText = () =>
 					{
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var suffixLength = new CachedTransform<string, int>(s => nameFont.Measure(s).X);
 					var name = new CachedTransform<Pair<string, string>, string>(c =>
-						WidgetUtils.TruncateText(c.First, nameLabel.Bounds.Width - suffixLength.Update(c.Second), nameFont) + c.Second);
+						WidgetUtils.TruncateText(c.First, (int)nameLabel.LayoutWidth - suffixLength.Update(c.Second), nameFont) + c.Second);
 
 					nameLabel.GetText = () =>
 					{

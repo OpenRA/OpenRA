@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ownerColor = Color.White;
 			var extraText = "";
 
-			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
-			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
-			var extraHeightOnDouble = extras.Bounds.Y;
+			var singleHeight = (int)widget.Get("SINGLE_HEIGHT").LayoutHeight;
+			var doubleHeight = (int)widget.Get("DOUBLE_HEIGHT").LayoutHeight;
+			var extraHeightOnDouble = (int)extras.LayoutY;
 			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
 			tooltipContainer.BeforeRender = () =>
@@ -99,8 +99,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (textWidth != cachedWidth)
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					label.Width = textWidth;
+					widget.Width = 2 * (int)label.LayoutX + textWidth;
+					widget.CalculateLayout();
 				}
 
 				if (showOwner)
@@ -108,21 +109,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					flagFaction = o.Faction.InternalName;
 					ownerName = o.PlayerName;
 					ownerColor = o.Color;
-					widget.Bounds.Height = doubleHeight;
-					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
-						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
+					widget.Height = doubleHeight;
+					widget.Width = Math.Max((int)widget.LayoutWidth,
+						(int)owner.LayoutX + ownerFont.Measure(ownerName).X + (int)label.LayoutX);
 					index++;
 				}
 				else
-					widget.Bounds.Height = singleHeight;
+					widget.Height = singleHeight;
+
+				widget.CalculateLayout();
 
 				if (extraText != "")
 				{
-					widget.Bounds.Height += font.Measure(extraText).Y + extras.Bounds.Height;
+					widget.Height = (int)widget.LayoutHeight + font.Measure(extraText).Y + (int)extras.LayoutHeight;
+					widget.CalculateLayout();
 					if (showOwner)
-						extras.Bounds.Y = extraHeightOnDouble;
+						extras.Top = extraHeightOnDouble;
 					else
-						extras.Bounds.Y = extraHeightOnSingle;
+						extras.Top = extraHeightOnSingle;
 				}
 			};
 

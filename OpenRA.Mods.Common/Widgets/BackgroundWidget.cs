@@ -50,11 +50,20 @@ namespace OpenRA.Mods.Common.Widgets
 					break;
 				case MouseInputEvent.Down:
 					moving = true;
-					Bounds = new Rectangle(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
+					Left = (int)LayoutX + vec.X;
+					Top = (int)LayoutY + vec.Y;
+					Width = (int)LayoutWidth;
+					Height = (int)LayoutHeight;
 					break;
 				case MouseInputEvent.Move:
 					if (moving)
-						Bounds = new Rectangle(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
+					{
+						Left = (int)LayoutX + vec.X;
+						Top = (int)LayoutY + vec.Y;
+						Width = (int)LayoutWidth;
+						Height = (int)LayoutHeight;
+					}
+
 					break;
 			}
 

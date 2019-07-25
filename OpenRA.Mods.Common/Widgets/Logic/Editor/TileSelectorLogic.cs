@@ -108,18 +108,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Scale templates to fit within the panel
 				var scale = 1f;
-				while (scale * bounds.Width > ItemTemplate.Bounds.Width)
+				while (scale * bounds.Width > (int)ItemTemplate.LayoutWidth)
 					scale /= 2;
 
 				preview.Template = template;
 				preview.GetScale = () => scale;
-				preview.Bounds.Width = (int)(scale * bounds.Width);
-				preview.Bounds.Height = (int)(scale * bounds.Height);
+				preview.Width = (int)(scale * bounds.Width);
+				preview.Height = (int)(scale * bounds.Height);
+				preview.CalculateLayout();
 
-				item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
-				item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
+				item.Width = (int)preview.LayoutWidth + 2 * (int)preview.LayoutX;
+				item.Height = (int)preview.LayoutHeight + 2 * (int)preview.LayoutY;
 				item.IsVisible = () => true;
 				item.GetTooltipText = () => t.Tooltip;
+				item.CalculateLayout();
 
 				Panel.AddChild(item);
 			}

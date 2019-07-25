@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var key = button.Key.GetValue();
 
 			label.GetText = () => text;
-			label.Bounds.Width = labelWidth;
-			widget.Bounds.Width = 2 * label.Bounds.X + labelWidth;
+			label.Width = labelWidth;
+			widget.Width = 2 * (int)label.LayoutX + labelWidth;
 
 			if (key.IsValid())
 			{
@@ -36,9 +36,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var hotkeyLabel = "({0})".F(key.DisplayString());
 				hotkey.GetText = () => hotkeyLabel;
-				hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
+				hotkey.Left = labelWidth + 2 * (int)label.LayoutX;
 
-				widget.Bounds.Width = hotkey.Bounds.X + label.Bounds.X + font.Measure(hotkeyLabel).X;
+				widget.Width = (int)hotkey.LayoutX + (int)label.LayoutX + font.Measure(hotkeyLabel).X;
 			}
 
 			var desc = button.GetTooltipDesc();
@@ -49,19 +49,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var descFont = Game.Renderer.Fonts[descTemplate.Font];
 				var descWidth = 0;
-				var descOffset = descTemplate.Bounds.Y;
+				var descOffset = (int)descTemplate.LayoutY;
 				foreach (var line in desc.Split(new[] { "\\n" }, StringSplitOptions.None))
 				{
 					descWidth = Math.Max(descWidth, descFont.Measure(line).X);
 					var lineLabel = (LabelWidget)descTemplate.Clone();
 					lineLabel.GetText = () => line;
-					lineLabel.Bounds.Y = descOffset;
+					lineLabel.Top = descOffset;
 					widget.AddChild(lineLabel);
-					descOffset += descTemplate.Bounds.Height;
+					descOffset += (int)descTemplate.LayoutHeight;
 				}
 
-				widget.Bounds.Width = Math.Max(widget.Bounds.Width, descTemplate.Bounds.X * 2 + descWidth);
-				widget.Bounds.Height += descOffset - descTemplate.Bounds.Y + descTemplate.Bounds.X;
+				widget.Width = Math.Max((int)widget.LayoutWidth, (int)descTemplate.LayoutX * 2 + descWidth);
+				widget.Height = (int)widget.LayoutHeight + descOffset - (int)descTemplate.LayoutY + (int)descTemplate.LayoutX;
 			}
 		}
 	}

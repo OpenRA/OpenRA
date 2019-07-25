@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var leftDisabled = listOffset >= 0;
 			var leftHover = Ui.MouseOverWidget == this && leftButtonRect.Contains(Viewport.LastMousePos);
-			var rightDisabled = listOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
+			var rightDisabled = listOffset <= (int)LayoutWidth - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
 			var rightHover = Ui.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
 			WidgetUtils.DrawPanel(Background, rb);
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void Scroll(int amount)
 		{
 			listOffset += amount * Game.Settings.Game.UIScrollSpeed;
-			listOffset = Math.Min(0, Math.Max(Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth, listOffset));
+			listOffset = Math.Min(0, Math.Max((int)LayoutWidth - rightButtonRect.Width - leftButtonRect.Width - contentWidth, listOffset));
 		}
 
 		// Is added to world.ActorAdded by the SidebarLogic handler
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets
 			leftPressed = leftButtonRect.Contains(mi.Location);
 			rightPressed = rightButtonRect.Contains(mi.Location);
 			var leftDisabled = listOffset >= 0;
-			var rightDisabled = listOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
+			var rightDisabled = listOffset <= (int)LayoutWidth - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
 
 			if (leftPressed || rightPressed)
 			{

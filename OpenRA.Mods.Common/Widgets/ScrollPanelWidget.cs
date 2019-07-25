@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
-		public int BorderWidth = 1;
+		public int ClassicBorderWidth = 1;
 		public int TopBottomSpacing = 2;
 		public int ItemSpacing = 0;
 		public int ButtonDepth = ChromeMetrics.Get<int>("ButtonDepth");
@@ -131,9 +132,26 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ReplaceChild(Widget oldChild, Widget newChild)
 		{
-			oldChild.Removed();
-			newChild.Parent = this;
-			Children[Children.IndexOf(oldChild)] = newChild;
+			var append = new List<Widget>();
+
+			while (true)
+			{
+				var child = Children.Last();
+				if (child == oldChild)
+				{
+					child.Removed();
+					RemoveChild(child);
+					AddChild(newChild);
+					append.ForEach(AddChild);
+					break;
+				}
+				else
+				{
+					append.Add(child);
+					RemoveChild(child);
+				}
+			}
+
 			Layout.AdjustChildren();
 			Scroll(0);
 		}
@@ -185,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets
 				upDisabled = thumbHeight == 0 || currentListOffset >= 0;
 
 				var downHover = Ui.MouseOverWidget == this && downButtonRect.Contains(Viewport.LastMousePos);
-				downDisabled = thumbHeight == 0 || currentListOffset <= Bounds.Height - ContentHeight;
+				downDisabled = thumbHeight == 0 || currentListOffset <= (int)LayoutHeight - ContentHeight;
 
 				var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 				WidgetUtils.DrawPanel(ScrollBarBackground, scrollbarRect);
@@ -204,16 +222,11 @@ namespace OpenRA.Mods.Common.Widgets
 					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 			}
 
-			var drawBounds = backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth);
+			var drawBounds = backgroundRect.InflateBy(-ClassicBorderWidth, -ClassicBorderWidth, -ClassicBorderWidth, -ClassicBorderWidth);
 			Game.Renderer.EnableScissor(drawBounds);
 
-			// ChildOrigin enumerates the widget tree, so only evaluate it once
-			var co = ChildOrigin;
-			drawBounds.X -= co.X;
-			drawBounds.Y -= co.Y;
-
 			foreach (var child in Children)
-				if (child.Bounds.IntersectsWith(drawBounds))
+				if (child.RenderBounds.IntersectsWith(drawBounds))
 					child.DrawOuter();
 
 			Game.Renderer.DisableScissor();
@@ -235,7 +248,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void Scroll(int amount, bool smooth = false)
 		{
 			var newTarget = targetListOffset + amount * Game.Settings.Game.UIScrollSpeed;
-			newTarget = Math.Min(0, Math.Max(Bounds.Height - ContentHeight, newTarget));
+			newTarget = Math.Min(0, Math.Max((int)LayoutHeight - ContentHeight, newTarget));
 
 			SetListOffset(newTarget, smooth);
 		}
@@ -243,8 +256,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public void ScrollToBottom(bool smooth = false)
 		{
 			var value = Align == ScrollPanelAlign.Top ?
-				Math.Min(0, Bounds.Height - ContentHeight) :
-				Bounds.Height - ContentHeight;
+				Math.Min(0, (int)LayoutHeight - ContentHeight) :
+				(int)LayoutHeight - ContentHeight;
 
 			SetListOffset(value, smooth);
 		}
@@ -252,25 +265,25 @@ namespace OpenRA.Mods.Common.Widgets
 		public void ScrollToTop(bool smooth = false)
 		{
 			var value = Align == ScrollPanelAlign.Top ? 0 :
-				Math.Max(0, Bounds.Height - ContentHeight);
+				Math.Max(0, (int)LayoutHeight - ContentHeight);
 
 			SetListOffset(value, smooth);
 		}
 
 		public bool ScrolledToBottom
 		{
-			get { return targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height; }
+			get { return targetListOffset == Math.Min(0, (int)LayoutHeight - ContentHeight) || ContentHeight <= (int)LayoutHeight; }
 		}
 
 		void ScrollToItem(Widget item, bool smooth = false)
 		{
 			// Scroll the item to be visible
 			float? newOffset = null;
-			if (item.Bounds.Top + currentListOffset < 0)
-				newOffset = ItemSpacing - item.Bounds.Top;
+			if ((int)item.LayoutY + currentListOffset < 0)
+				newOffset = ItemSpacing - (int)item.LayoutY;
 
-			if (item.Bounds.Bottom + currentListOffset > RenderBounds.Height)
-				newOffset = RenderBounds.Height - item.Bounds.Bottom - ItemSpacing;
+			if (((int)item.LayoutY + (int)item.LayoutHeight) + currentListOffset > RenderBounds.Height)
+				newOffset = RenderBounds.Height - ((int)item.LayoutY + (int)item.LayoutHeight) - ItemSpacing;
 
 			if (newOffset.HasValue)
 				SetListOffset(newOffset.Value, smooth);
@@ -494,14 +507,13 @@ namespace OpenRA.Mods.Common.Widgets
 					return;
 
 				var newWidget = makeWidget(newItem);
-				newWidget.Parent = this;
 
-				var i = Children.FindIndex(w => widgetItemEquals(w, oldItem));
-				if (i >= 0)
+				var oldWidget = Children.FirstOrDefault(w => widgetItemEquals(w, oldItem));
+				if (oldWidget != null)
 				{
-					var oldWidget = Children[i];
 					oldWidget.Removed();
-					Children[i] = newWidget;
+					Insert(Children.IndexOf(oldWidget), newWidget);
+					RemoveChild(oldWidget);
 					Layout.AdjustChildren();
 				}
 				else

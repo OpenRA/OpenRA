@@ -21,6 +21,9 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook.Yoga">
+      <HintPath>..\thirdparty\download\Facebook.Yoga.dll</HintPath>
+    </Reference>
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>

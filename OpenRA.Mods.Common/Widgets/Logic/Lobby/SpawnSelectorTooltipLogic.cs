@@ -25,13 +25,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var team = widget.Get<LabelWidget>("TEAM");
-			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
-			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
+			var singleHeight = (int)widget.Get("SINGLE_HEIGHT").LayoutHeight;
+			var doubleHeight = (int)widget.Get("DOUBLE_HEIGHT").LayoutHeight;
 			var ownerFont = Game.Renderer.Fonts[label.Font];
 			var teamFont = Game.Renderer.Fonts[team.Font];
 
 			// Width specified in YAML is used as the margin between flag / label and label / border
-			var labelMargin = widget.Bounds.Width;
+			var labelMargin = (int)widget.LayoutWidth;
 
 			var cachedWidth = 0;
 			var labelText = "";
@@ -55,28 +55,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					labelText = "Available spawn";
 					playerFaction = null;
 					playerTeam = 0;
-					widget.Bounds.Height = singleHeight;
+					widget.Height = singleHeight;
 				}
 				else
 				{
 					labelText = occupant.PlayerName;
 					playerFaction = occupant.Faction;
 					playerTeam = occupant.Team;
-					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
+					widget.Height = playerTeam > 0 ? doubleHeight : singleHeight;
 					teamWidth = teamFont.Measure(team.GetText()).X;
 				}
 
-				label.Bounds.X = playerFaction != null ? flag.Bounds.Right + labelMargin : labelMargin;
+				label.Left = playerFaction != null ? ((int)flag.LayoutX + (int)flag.LayoutWidth) + labelMargin : labelMargin;
 
 				var textWidth = ownerFont.Measure(labelText).X;
 				if (textWidth != cachedWidth)
 				{
-					label.Bounds.Width = textWidth;
-					widget.Bounds.Width = 2 * label.Bounds.X + textWidth;
+					label.Width = textWidth;
+					widget.Width = 2 * (int)label.LayoutX + textWidth;
 				}
 
-				widget.Bounds.Width = Math.Max(teamWidth + 2 * labelMargin, label.Bounds.Right + labelMargin);
-				team.Bounds.Width = widget.Bounds.Width;
+				widget.Width = Math.Max(teamWidth + 2 * labelMargin, ((int)label.LayoutX + (int)label.LayoutWidth) + labelMargin);
+				team.Width = (int)widget.LayoutWidth;
 			};
 
 			label.GetText = () => labelText;

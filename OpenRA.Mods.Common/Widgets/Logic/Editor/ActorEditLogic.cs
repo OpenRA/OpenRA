@@ -153,13 +153,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if ((actorIDStatus & nextActorIDStatus) == 0)
 				{
-					var offset = actorIDErrorLabel.Bounds.Height;
+					var offset = (int)actorIDErrorLabel.LayoutHeight;
 					if (nextActorIDStatus == ActorIDStatus.Normal)
 						offset *= -1;
 
-					actorEditPanel.Bounds.Height += offset;
-					initContainer.Bounds.Y += offset;
-					buttonContainer.Bounds.Y += offset;
+					actorEditPanel.Height = (int)actorEditPanel.LayoutHeight + offset;
+					initContainer.Top = (int)initContainer.LayoutY + offset;
+					buttonContainer.Top = (int)buttonContainer.LayoutY + offset;
 				}
 
 				actorIDStatus = nextActorIDStatus;
@@ -186,16 +186,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					initialActorID = actorIDField.Text = actor.ID;
 
 					var font = Game.Renderer.Fonts[typeLabel.Font];
-					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, typeLabel.Bounds.Width, font);
+					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, (int)typeLabel.LayoutWidth, font);
 					typeLabel.Text = truncatedType;
 
 					actorIDField.CursorPosition = actor.ID.Length;
 					nextActorIDStatus = ActorIDStatus.Normal;
 
 					// Remove old widgets
-					var oldInitHeight = initContainer.Bounds.Height;
-					initContainer.Bounds.Height = 0;
+					var oldInitHeight = (int)initContainer.LayoutHeight;
+					initContainer.Height = 0;
 					initContainer.RemoveChildren();
+					initContainer.CalculateLayout();
 
 					// Add owner dropdown
 					var ownerContainer = dropdownOptionTemplate.Clone();
@@ -225,8 +226,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, setupItem);
 					};
 
-					initContainer.Bounds.Height += ownerContainer.Bounds.Height;
+					initContainer.Height = (int)initContainer.LayoutHeight + (int)ownerContainer.LayoutHeight;
 					initContainer.AddChild(ownerContainer);
+					initContainer.CalculateLayout();
 
 					// Add new children for inits
 					var options = actor.Info.TraitInfos<IEditorActorOptions>()
@@ -239,8 +241,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var so = (EditorActorSlider)o;
 							var sliderContainer = sliderOptionTemplate.Clone();
-							sliderContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += sliderContainer.Bounds.Height;
+							sliderContainer.Top = (int)initContainer.LayoutHeight;
+							initContainer.Height = (int)initContainer.LayoutHeight + (int)sliderContainer.LayoutHeight;
 							sliderContainer.Get<LabelWidget>("LABEL").GetText = () => so.Name;
 
 							var slider = sliderContainer.Get<SliderWidget>("OPTION");
@@ -257,8 +259,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var ddo = (EditorActorDropdown)o;
 							var dropdownContainer = dropdownOptionTemplate.Clone();
-							dropdownContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
+							dropdownContainer.Top = (int)initContainer.LayoutHeight;
+							initContainer.Height = (int)initContainer.LayoutHeight + (int)dropdownContainer.LayoutHeight;
 							dropdownContainer.Get<LabelWidget>("LABEL").GetText = () => ddo.Name;
 
 							var dropdown = dropdownContainer.Get<DropDownButtonWidget>("OPTION");
@@ -277,15 +279,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							initContainer.AddChild(dropdownContainer);
 						}
+
+						initContainer.CalculateLayout();
 					}
 
-					actorEditPanel.Bounds.Height += initContainer.Bounds.Height - oldInitHeight;
-					buttonContainer.Bounds.Y += initContainer.Bounds.Height - oldInitHeight;
+					initContainer.CalculateLayout();
+					actorEditPanel.Height = (int)actorEditPanel.LayoutHeight + (int)initContainer.LayoutHeight - oldInitHeight;
+					buttonContainer.Top = (int)buttonContainer.LayoutY + (int)initContainer.LayoutHeight - oldInitHeight;
 				}
 
 				// Set the edit panel to the right of the selection border.
-				actorEditPanel.Bounds.X = origin.X + editPanelPadding;
-				actorEditPanel.Bounds.Y = origin.Y;
+				actorEditPanel.Left = origin.X + editPanelPadding;
+				actorEditPanel.Top = origin.Y;
 			}
 			else
 			{

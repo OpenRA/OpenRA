@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net461</TargetFramework>
@@ -47,6 +47,9 @@
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook.Yoga">
+      <HintPath>..\thirdparty\download\Facebook.Yoga.dll</HintPath>
+    </Reference>
     <Reference Include="Open.Nat">
       <HintPath>..\thirdparty\download\Open.Nat.dll</HintPath>
     </Reference>

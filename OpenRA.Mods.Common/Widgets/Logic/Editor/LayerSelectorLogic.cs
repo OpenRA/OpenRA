@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => { var brush = editor.CurrentBrush as EditorResourceBrush; return brush != null && brush.ResourceType == resource; },
 					() => editor.SetBrush(new EditorResourceBrush(editor, resource, worldRenderer)));
 
-				newResourcePreviewTemplate.Bounds.X = 0;
-				newResourcePreviewTemplate.Bounds.Y = 0;
+				newResourcePreviewTemplate.Left = 0;
+				newResourcePreviewTemplate.Top = 0;
 
 				var layerPreview = newResourcePreviewTemplate.Get<SpriteWidget>("LAYER_PREVIEW");
 				layerPreview.IsVisible = () => true;
@@ -61,13 +61,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var frame = sequence.Frames != null ? sequence.Frames.Last() : resource.MaxDensity - 1;
 				layerPreview.GetSprite = () => sequence.GetSprite(frame);
 
-				layerPreview.Bounds.Width = tileSize.Width;
-				layerPreview.Bounds.Height = tileSize.Height;
-				newResourcePreviewTemplate.Bounds.Width = tileSize.Width + (layerPreview.Bounds.X * 2);
-				newResourcePreviewTemplate.Bounds.Height = tileSize.Height + (layerPreview.Bounds.Y * 2);
-
+				layerPreview.Width = tileSize.Width;
+				layerPreview.Height = tileSize.Height;
+				layerPreview.CalculateLayout();
+				newResourcePreviewTemplate.Width = tileSize.Width + ((int)layerPreview.LayoutX * 2);
+				newResourcePreviewTemplate.Height = tileSize.Height + ((int)layerPreview.LayoutY * 2);
 				newResourcePreviewTemplate.IsVisible = () => true;
 				newResourcePreviewTemplate.GetTooltipText = () => resource.Type;
+				newResourcePreviewTemplate.CalculateLayout();
 
 				layerTemplateList.AddChild(newResourcePreviewTemplate);
 			}

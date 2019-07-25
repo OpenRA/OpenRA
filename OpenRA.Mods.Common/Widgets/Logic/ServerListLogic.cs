@@ -105,15 +105,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var noticeWatcher = widget.Get<LogicTickerWidget>("NOTICE_WATCHER");
 			if (noticeWatcher != null && noticeContainer != null)
 			{
-				var containerHeight = noticeContainer.Bounds.Height;
+				var containerHeight = (int)noticeContainer.LayoutHeight;
 				noticeWatcher.OnTick = () =>
 				{
 					var show = services.ModVersionStatus != ModVersionStatus.NotChecked && services.ModVersionStatus != ModVersionStatus.Latest;
 					if (show != showNotices)
 					{
 						var dir = show ? 1 : -1;
-						serverList.Bounds.Y += dir * containerHeight;
-						serverList.Bounds.Height -= dir * containerHeight;
+						serverList.Top = (int)serverList.LayoutY + dir * containerHeight;
+						serverList.Height = (int)serverList.LayoutHeight - dir * containerHeight;
 						showNotices = show;
 					}
 				};
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				joinButton.IsVisible = () => currentServer != null;
 				joinButton.IsDisabled = () => !currentServer.IsJoinable;
 				joinButton.OnClick = () => onJoin(currentServer);
-				joinButtonY = joinButton.Bounds.Y;
+				joinButtonY = (int)joinButton.LayoutY;
 			}
 
 			// Display the progress label over the server list
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// but we still need to be able to set the dropdown width based on the parent
 				// The yaml should use PARENT_RIGHT instead of DROPDOWN_WIDTH
 				var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", filtersButton, new WidgetArgs());
-				filtersButton.Children.Remove(filtersPanel);
+				filtersButton.RemoveChild(filtersPanel);
 
 				var showWaitingCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
 				if (showWaitingCheckbox != null)
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var font = Game.Renderer.Fonts[mapTitle.Font];
 				var title = new CachedTransform<MapPreview, string>(m =>
-					WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font));
+					WidgetUtils.TruncateText(m.Title, (int)mapTitle.LayoutWidth, font));
 
 				mapTitle.GetText = () =>
 				{
@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modVersion.GetColor = () => currentServer.IsCompatible ? modVersion.TextColor : incompatibleVersionColor;
 
 				var font = Game.Renderer.Fonts[modVersion.Font];
-				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, modVersion.Bounds.Width, font));
+				var version = new CachedTransform<GameServer, string>(s => WidgetUtils.TruncateText(s.ModLabel, (int)modVersion.LayoutWidth, font));
 				modVersion.GetText = () => version.Update(currentServer);
 			}
 
@@ -430,13 +430,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (server == null || !server.Clients.Any())
 			{
 				if (joinButton != null)
-					joinButton.Bounds.Y = joinButtonY;
+					joinButton.Top = joinButtonY;
 
 				return;
 			}
 
 			if (joinButton != null)
-				joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
+				joinButton.Top = (int)clientContainer.LayoutY + (int)clientContainer.LayoutHeight;
 
 			if (clientList == null)
 				return;
@@ -479,7 +479,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
-						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						var name = WidgetUtils.TruncateText(o.Name, (int)label.LayoutWidth, font);
 						label.GetText = () => name;
 						label.GetColor = () => o.Color;
 
@@ -492,7 +492,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var label = item.Get<LabelWidget>("NOFLAG_LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
-						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						var name = WidgetUtils.TruncateText(o.Name, (int)label.LayoutWidth, font);
 
 						// Force spectator color to prevent spoofing by the server
 						var color = o.IsSpectator ? Color.White : o.Color;
@@ -615,7 +615,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							auth.GetImageName = () => canJoin ? "authentication" : "authentication-disabled";
 
 							if (game.Protected && password != null)
-								auth.Bounds.X -= password.Bounds.Width + 5;
+								auth.Left = (int)auth.LayoutX - (int)password.LayoutWidth + 5;
 						}
 
 						var players = item.GetOrNull<LabelWithTooltipWidget>("PLAYERS");
@@ -659,7 +659,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var font = Game.Renderer.Fonts[location.Font];
 							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
-							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
+							var label = WidgetUtils.TruncateText(cachedServerLocation, (int)location.LayoutWidth, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
 						}

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.palette = palette;
 		}
 
-		public void Reset()
+		public void ClassicReset()
 		{
 			sprite = null;
 			palette = null;

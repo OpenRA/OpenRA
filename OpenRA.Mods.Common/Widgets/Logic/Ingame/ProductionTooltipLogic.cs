@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var costIcon = widget.Get<ImageWidget>("COST_ICON");
 			var descLabel = widget.Get<LabelWidget>("DESC");
 
-			var iconMargin = timeIcon.Bounds.X;
+			var iconMargin = (int)timeIcon.LayoutX;
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
@@ -50,8 +50,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ActorInfo lastActor = null;
 			Hotkey lastHotkey = Hotkey.Invalid;
 			var lastPowerState = pm == null ? PowerState.Normal : pm.PowerState;
-			var descLabelY = descLabel.Bounds.Y;
-			var descLabelPadding = descLabel.Bounds.Height;
+			var descLabelY = (int)descLabel.LayoutY;
+			var descLabelPadding = (int)descLabel.LayoutHeight;
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -91,9 +91,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var hotkeyText = "({0})".F(hotkey.DisplayString());
 
-					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
+					hotkeyWidth = font.Measure(hotkeyText).X + 2 * (int)nameLabel.LayoutX;
 					hotkeyLabel.Text = hotkeyText;
-					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
+					hotkeyLabel.Left = nameSize.X + 2 * (int)nameLabel.LayoutX;
 				}
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
@@ -105,12 +105,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
 					requiresSize = requiresFont.Measure(requiresLabel.Text);
 					requiresLabel.Visible = true;
-					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
+					descLabel.Top = descLabelY + (int)requiresLabel.LayoutHeight;
 				}
 				else
 				{
 					requiresLabel.Visible = false;
-					descLabel.Bounds.Y = descLabelY;
+					descLabel.Top = descLabelY;
 				}
 
 				var powerSize = new int2(0, 0);
@@ -138,23 +138,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				descLabel.Text = buildable.Description.Replace("\\n", "\n");
 				var descSize = descFont.Measure(descLabel.Text);
-				descLabel.Bounds.Width = descSize.X;
-				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
+				descLabel.Width = descSize.X;
+				descLabel.Height = descSize.Y + descLabelPadding;
 
 				var leftWidth = new[] { nameSize.X + hotkeyWidth, requiresSize.X, descSize.X }.Aggregate(Math.Max);
 				var rightWidth = new[] { powerSize.X, timeSize.X, costSize.X }.Aggregate(Math.Max);
 
-				timeIcon.Bounds.X = powerIcon.Bounds.X = costIcon.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
-				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = timeIcon.Bounds.Right + iconMargin;
-				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X + timeIcon.Bounds.Width + iconMargin;
+				timeIcon.Left = powerIcon.Left = costIcon.Left = leftWidth + 2 * (int)nameLabel.LayoutX;
+				timeLabel.Left = powerLabel.Left = costLabel.Left = ((int)timeIcon.LayoutX + (int)timeIcon.LayoutWidth) + iconMargin;
+				widget.Width = leftWidth + rightWidth + 3 * (int)nameLabel.LayoutX + (int)timeIcon.LayoutWidth + iconMargin;
 
 				// Set the bottom margin to match the left margin
-				var leftHeight = descLabel.Bounds.Bottom + descLabel.Bounds.X;
+				var leftHeight = ((int)descLabel.LayoutY + (int)descLabel.LayoutHeight) + (int)descLabel.LayoutX;
 
 				// Set the bottom margin to match the top margin
-				var rightHeight = (powerLabel.Visible ? powerIcon.Bounds.Bottom : timeIcon.Bounds.Bottom) + costIcon.Bounds.Top;
+				var rightHeight = (powerLabel.Visible ? ((int)powerIcon.LayoutY + (int)powerIcon.LayoutHeight) : ((int)timeIcon.LayoutY + (int)timeIcon.LayoutHeight)) + (int)costIcon.LayoutY;
 
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight);
+				widget.Height = Math.Max(leftHeight, rightHeight);
 
 				lastActor = actor;
 				lastHotkey = hotkey;

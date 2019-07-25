@@ -185,7 +185,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ClearStats()
 		{
-			playerStatsPanel.Children.Clear();
+			foreach (var child in playerStatsPanel.Children.ToArray())
+				playerStatsPanel.RemoveChild(child);
+
 			basicStatsHeaders.Visible = false;
 			economyStatsHeaders.Visible = false;
 			productionStatsHeaders.Visible = false;
@@ -234,17 +236,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var teamLabel = tt.Get<LabelWidget>("TEAM");
 					teamLabel.GetText = () => team.Key == 0 ? "No Team" : "Team " + team.Key;
-					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(tt.Get<LabelWidget>("TEAM").GetText()).X;
+					tt.Width = teamLabel.Width = Game.Renderer.Fonts[tt.Font].Measure(tt.Get<LabelWidget>("TEAM").GetText()).X;
 
 					var colorBlockWidget = tt.Get<ColorBlockWidget>("TEAM_COLOR");
 					var scrollBarOffset = playerStatsPanel.ScrollBar != ScrollBar.Hidden
 						? playerStatsPanel.ScrollbarWidth
 						: 0;
-					var boundsWidth = tt.Parent.Bounds.Width - scrollBarOffset;
-					colorBlockWidget.Bounds.Width = boundsWidth - 200;
+					var boundsWidth = (int)tt.Parent.LayoutWidth - scrollBarOffset;
+					colorBlockWidget.Width = boundsWidth - 200;
 
 					var gradient = tt.Get<GradientColorBlockWidget>("TEAM_GRADIENT");
-					gradient.Bounds.X = boundsWidth - 200;
+					gradient.Left = boundsWidth - 200;
 
 					playerStatsPanel.AddChild(tt);
 				}
@@ -429,12 +431,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void AdjustStatisticsPanel(Widget itemTemplate)
 		{
-			var height = playerStatsPanel.Bounds.Height;
+			var height = (int)playerStatsPanel.LayoutHeight;
 
 			var scrollbarWidth = playerStatsPanel.ScrollBar != ScrollBar.Hidden ? playerStatsPanel.ScrollbarWidth : 0;
-			playerStatsPanel.Bounds.Width = itemTemplate.Bounds.Width + scrollbarWidth;
+			playerStatsPanel.Width = (int)itemTemplate.LayoutWidth + scrollbarWidth;
 
-			if (playerStatsPanel.Bounds.Height < height)
+			if ((int)playerStatsPanel.LayoutHeight < height)
 				playerStatsPanel.ScrollToTop();
 		}
 
@@ -442,12 +444,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var offset = playerStatsPanel.ScrollbarWidth;
 
-			headerTemplate.Get<ColorBlockWidget>("HEADER_COLOR").Bounds.Width += offset;
-			headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").Bounds.X += offset;
+			headerTemplate.Get<ColorBlockWidget>("HEADER_COLOR").Width = (int)headerTemplate.Get<ColorBlockWidget>("HEADER_COLOR").LayoutWidth + offset;
+			headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").Left = (int)headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").LayoutX + offset;
 
 			foreach (var headerLabel in headerTemplate.Children.OfType<LabelWidget>())
 			{
-				headerLabel.Bounds.X += offset;
+				headerLabel.Left = (int)headerLabel.LayoutX + offset;
 			}
 		}
 
@@ -462,7 +464,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playerNameFont = Game.Renderer.Fonts[playerName.Font];
 			var suffixLength = new CachedTransform<string, int>(s => playerNameFont.Measure(s).X);
 			var name = new CachedTransform<Pair<string, int>, string>(c =>
-				WidgetUtils.TruncateText(c.First, playerName.Bounds.Width - c.Second, playerNameFont));
+				WidgetUtils.TruncateText(c.First, (int)playerName.LayoutWidth - c.Second, playerNameFont));
 
 			playerName.GetText = () =>
 			{

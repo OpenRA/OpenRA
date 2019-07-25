@@ -61,18 +61,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var line = (LabelWidget)headerTemplate.Clone();
 				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
+				line.Top = (int)line.LayoutY + headerHeight;
 				panel.AddChild(line);
 
-				headerHeight += headerTemplate.Bounds.Height;
+				headerHeight += (int)headerTemplate.LayoutHeight;
 			}
 
-			panel.Bounds.Height += headerHeight;
-			panel.Bounds.Y -= headerHeight / 2;
-			scrollPanel.Bounds.Y += headerHeight;
+			panel.Height = (int)panel.LayoutHeight + headerHeight;
+			panel.Top = (int)panel.LayoutY - headerHeight / 2;
+			scrollPanel.Top = (int)scrollPanel.LayoutY + headerHeight;
 
 			var discButton = panel.Get<ButtonWidget>("CHECK_DISC_BUTTON");
-			discButton.Bounds.Y += headerHeight;
+			discButton.Top = (int)discButton.LayoutY + headerHeight;
 			discButton.IsVisible = () => discAvailable;
 
 			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			var backButton = panel.Get<ButtonWidget>("BACK_BUTTON");
-			backButton.Bounds.Y += headerHeight;
+			backButton.Top = (int)backButton.LayoutY + headerHeight;
 			backButton.OnClick = () => { Ui.CloseWindow(); onCancel(); };
 
 			PopulateContentList();

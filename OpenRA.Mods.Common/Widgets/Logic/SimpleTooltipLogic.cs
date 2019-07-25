@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.RemoveChildren();
 
 			var font = Game.Renderer.Fonts[label.Font];
-			var horizontalPadding = label.Bounds.Width - widget.Bounds.Width;
+			var horizontalPadding = (int)label.LayoutWidth - (int)widget.LayoutWidth;
 			if (horizontalPadding <= 0)
-				horizontalPadding = 2 * label.Bounds.X;
+				horizontalPadding = 2 * (int)label.LayoutX;
 
 			var cachedText = "";
 			tooltipContainer.BeforeRender = () =>
@@ -45,15 +45,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var line = (LabelWidget)label.Clone();
 					var lineText = lines[i];
-					line.Bounds.Y += spacing.Bounds.Y + i * spacing.Bounds.Height;
-					line.Bounds.Width = textWidth;
+					line.Top = (int)line.LayoutY + (int)spacing.LayoutY + i * (int)spacing.LayoutHeight;
+					line.Width = textWidth;
 					line.GetText = () => lineText;
+					line.CalculateLayout();
 					widget.AddChild(line);
-					bottom = line.Bounds.Y + line.Bounds.Height;
+					bottom = (int)line.LayoutY + (int)line.LayoutHeight;
 				}
 
-				widget.Bounds.Width = horizontalPadding + textWidth;
-				widget.Bounds.Height = bottom + spacing.Bounds.Y;
+				widget.Width = horizontalPadding + textWidth;
+				widget.Height = bottom + (int)spacing.LayoutY;
+				//widget.CalculateLayout();
 				cachedText = text;
 			};
 		}

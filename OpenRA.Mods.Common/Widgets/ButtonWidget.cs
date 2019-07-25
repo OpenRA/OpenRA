@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int2 GetTextPosition(string text, SpriteFont font, Rectangle rb)
 		{
 			var textSize = font.Measure(text);
-			var y = rb.Y + (Bounds.Height - textSize.Y - font.TopOffset) / 2;
+			var y = rb.Y + ((int)LayoutHeight - textSize.Y - font.TopOffset) / 2;
 
 			switch (Align)
 			{
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override Widget Clone() { return new ButtonWidget(this); }
-		public virtual int UsableWidth { get { return Bounds.Width; } }
+		public virtual int UsableWidth { get { return (int)LayoutWidth; } }
 
 		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{

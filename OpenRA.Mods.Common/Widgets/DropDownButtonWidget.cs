@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override Widget Clone() { return new DropDownButtonWidget(this); }
 
 		// This is crap
-		public override int UsableWidth { get { return Bounds.Width - Bounds.Height; } } /* space for button */
+		public override int UsableWidth { get { return (int)LayoutWidth - (int)LayoutHeight; } } /* space for button */
 
 		public override void Hidden()
 		{
@@ -91,7 +91,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget();
-			fullscreenMask.Bounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
+			fullscreenMask.Left = 0;
+			fullscreenMask.Top = 0;
+			fullscreenMask.Width = Game.Renderer.Resolution.Width;
+			fullscreenMask.Height = Game.Renderer.Resolution.Height;
 			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();
@@ -100,16 +103,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 			panelRoot.AddChild(fullscreenMask);
 
-			var oldBounds = panel.Bounds;
-			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
-			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
-				panelY -= (Bounds.Height + oldBounds.Height);
+			// We need to do this once here, otherwise the dropdowns will have no height.
+			panel.CalculateLayout();
 
-			panel.Bounds = new Rectangle(
-				RenderOrigin.X - panelRoot.RenderOrigin.X,
-				panelY,
-				oldBounds.Width,
-				oldBounds.Height);
+			var oldBounds = panel.RenderBounds;
+			var panelY = RenderOrigin.Y + (int)LayoutHeight - panelRoot.RenderOrigin.Y;
+			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
+				panelY -= ((int)LayoutHeight + oldBounds.Height);
+
+			panel.Left = RenderOrigin.X - panelRoot.RenderOrigin.X;
+			panel.Top = panelY;
+			panel.Width = oldBounds.Width;
+			panel.Height = oldBounds.Height;
 			panelRoot.AddChild(panel);
 
 			var scrollPanel = panel as ScrollPanelWidget;
@@ -119,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
-			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
+			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", (int)LayoutWidth } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
@@ -135,13 +140,13 @@ namespace OpenRA.Mods.Common.Widgets
 				panel.AddChild(item);
 			}
 
-			panel.Bounds.Height = Math.Min(maxHeight, panel.ContentHeight);
+			panel.Height = Math.Min(maxHeight, panel.ContentHeight);
 			AttachPanel(panel);
 		}
 
 		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
-			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
+			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", (int)LayoutWidth } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var headerTemplate = panel.GetOrNull<ScrollItemWidget>("HEADER");
@@ -170,7 +175,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
+			panel.Height = Math.Min(height, panel.ContentHeight);
 			AttachPanel(panel);
 		}
 	}

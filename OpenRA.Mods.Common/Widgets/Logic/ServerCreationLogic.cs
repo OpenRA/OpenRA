@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (titleLabel != null)
 				{
 					var font = Game.Renderer.Fonts[titleLabel.Font];
-					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font));
+					var title = new CachedTransform<MapPreview, string>(m => WidgetUtils.TruncateText(m.Title, (int)titleLabel.LayoutWidth, font));
 					titleLabel.GetText = () => title.Update(preview);
 					titleLabel.GetTooltipText = () => preview.Title;
 				}
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var font = Game.Renderer.Fonts[authorLabel.Font];
 					var author = new CachedTransform<MapPreview, string>(
-						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), authorLabel.Bounds.Width, font));
+						m => WidgetUtils.TruncateText("Created by {0}".F(m.Author), (int)authorLabel.LayoutWidth, font));
 					authorLabel.GetText = () => author.Update(preview);
 				}
 			}
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				noticesLabelA.Text = "Internet Server (UPnP ";
 				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
-				noticesLabelA.Bounds.Width = aWidth;
+				noticesLabelA.Width = aWidth;
 
 				var status = UPnP.Status;
 				noticesLabelB.Text = status == UPnPStatus.Enabled ? "Enabled" :
@@ -159,12 +159,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ChromeMetrics.Get<Color>("UPnPDisabledColor");
 
 				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
-				noticesLabelB.Bounds.X = noticesLabelA.Bounds.Right;
-				noticesLabelB.Bounds.Width = bWidth;
+				noticesLabelB.Left = (int)noticesLabelA.LayoutX + (int)noticesLabelA.LayoutWidth;
+				noticesLabelB.Width = bWidth;
 				noticesLabelB.Visible = true;
 
 				noticesLabelC.Text = "):";
-				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
+				noticesLabelC.Left = (int)noticesLabelB.LayoutX + (int)noticesLabelB.LayoutWidth;
 				noticesLabelC.Visible = true;
 			}
 			else

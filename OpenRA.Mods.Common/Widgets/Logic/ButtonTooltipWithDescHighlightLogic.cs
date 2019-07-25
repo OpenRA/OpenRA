@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var key = button.Key.GetValue();
 
 			label.GetText = () => text;
-			label.Bounds.Width = labelWidth;
-			widget.Bounds.Width = 2 * label.Bounds.X + labelWidth;
+			label.Width = labelWidth;
+			widget.Width = 2 * (int)label.LayoutX + labelWidth;
 
 			if (key.IsValid())
 			{
@@ -38,9 +38,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var hotkeyLabel = "({0})".F(key.DisplayString());
 				hotkey.GetText = () => hotkeyLabel;
-				hotkey.Bounds.X = labelWidth + 2 * label.Bounds.X;
+				hotkey.Left = labelWidth + 2 * (int)label.LayoutX;
 
-				widget.Bounds.Width = hotkey.Bounds.X + label.Bounds.X + font.Measure(hotkeyLabel).X;
+				widget.Width = (int)hotkey.LayoutX + (int)label.LayoutX + font.Measure(hotkeyLabel).X;
 			}
 
 			var desc = button.GetTooltipDesc();
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var descFont = Game.Renderer.Fonts[descTemplate.Font];
 				var descWidth = 0;
-				var descOffset = descTemplate.Bounds.Y;
+				var descOffset = (int)descTemplate.LayoutY;
 
 				foreach (var l in desc.Split(new[] { "\\n" }, StringSplitOptions.None))
 				{
@@ -73,9 +73,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								var lineNormalWidth = descFont.Measure(lineNormal).X;
 								var lineNormalLabel = (LabelWidget)descTemplate.Clone();
 								lineNormalLabel.GetText = () => lineNormal;
-								lineNormalLabel.Bounds.X = descTemplate.Bounds.X + lineWidth;
-								lineNormalLabel.Bounds.Y = descOffset;
-								lineNormalLabel.Bounds.Width = lineNormalWidth;
+								lineNormalLabel.Left = (int)descTemplate.LayoutX + lineWidth;
+								lineNormalLabel.Top = descOffset;
+								lineNormalLabel.Width = lineNormalWidth;
 								widget.AddChild(lineNormalLabel);
 
 								lineWidth += lineNormalWidth;
@@ -87,9 +87,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var lineHighlightLabel = (LabelWidget)descTemplate.Clone();
 							lineHighlightLabel.GetText = () => lineHighlight;
 							lineHighlightLabel.GetColor = () => highlightColor;
-							lineHighlightLabel.Bounds.X = descTemplate.Bounds.X + lineWidth;
-							lineHighlightLabel.Bounds.Y = descOffset;
-							lineHighlightLabel.Bounds.Width = lineHighlightWidth;
+							lineHighlightLabel.Left = (int)descTemplate.LayoutX + lineWidth;
+							lineHighlightLabel.Top = descOffset;
+							lineHighlightLabel.Width = lineHighlightWidth;
 							widget.AddChild(lineHighlightLabel);
 
 							lineWidth += lineHighlightWidth;
@@ -101,8 +101,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var lineLabel = (LabelWidget)descTemplate.Clone();
 							var width = descFont.Measure(line).X;
 							lineLabel.GetText = () => line;
-							lineLabel.Bounds.X = descTemplate.Bounds.X + lineWidth;
-							lineLabel.Bounds.Y = descOffset;
+							lineLabel.Left = (int)descTemplate.LayoutX + lineWidth;
+							lineLabel.Top = descOffset;
 							widget.AddChild(lineLabel);
 
 							lineWidth += width;
@@ -112,11 +112,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					descWidth = Math.Max(descWidth, lineWidth);
 
-					descOffset += descTemplate.Bounds.Height;
+					descOffset += (int)descTemplate.LayoutHeight;
 				}
 
-				widget.Bounds.Width = Math.Max(widget.Bounds.Width, descTemplate.Bounds.X * 2 + descWidth);
-				widget.Bounds.Height += descOffset - descTemplate.Bounds.Y + descTemplate.Bounds.X;
+				widget.Width = Math.Max((int)widget.LayoutWidth, (int)descTemplate.LayoutX * 2 + descWidth);
+				widget.Height = (int)widget.LayoutHeight + descOffset - (int)descTemplate.LayoutY + (int)descTemplate.LayoutX;
 			}
 		}
 	}
