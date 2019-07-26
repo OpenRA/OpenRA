@@ -419,6 +419,7 @@ namespace OpenRA.Traits
 	{
 		int Hash { get; }
 		IEnumerable<Actor> Actors { get; }
+		int ActorCount { get; }
 
 		void Add(Actor a);
 		void Remove(Actor a);
