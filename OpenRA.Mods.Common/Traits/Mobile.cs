@@ -217,6 +217,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Locomotor Locomotor { get; private set; }
 
+		public IPathFinder Pathfinder { get; private set; }
+
 		#region IOccupySpace
 
 		[Sync]
@@ -279,6 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 			moveWrappers = self.TraitsImplementing<IWrapMove>().ToArray();
+			Pathfinder = self.World.WorldActor.Trait<IPathFinder>();
 			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
 				.Single(l => l.Info.Name == Info.Locomotor);
 
