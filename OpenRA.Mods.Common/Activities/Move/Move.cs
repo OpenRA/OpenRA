@@ -53,9 +53,10 @@ namespace OpenRA.Mods.Common.Activities
 				using (var search =
 					PathSearch.FromPoint(self.World, mobile.Locomotor, self, mobile.ToCell, destination, false)
 					.WithoutLaneBias())
-					path = self.World.WorldActor.Trait<IPathFinder>().FindPath(search);
+					path = mobile.Pathfinder.FindPath(search);
 				return path;
 			};
+
 			this.destination = destination;
 			nearEnough = WDist.Zero;
 		}
@@ -69,8 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!this.destination.HasValue)
 					return NoPath;
 
-				return self.World.WorldActor.Trait<IPathFinder>()
-					.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor);
+				return mobile.Pathfinder.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor);
 			};
 
 			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true
@@ -85,8 +85,9 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile = self.Trait<Mobile>();
 
-			getPath = () => self.World.WorldActor.Trait<IPathFinder>()
-				.FindUnitPathToRange(mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
+			getPath = () => mobile.Pathfinder.FindUnitPathToRange(
+				mobile.FromCell, subCell, self.World.Map.CenterOfSubCell(destination, subCell), nearEnough, self);
+
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!target.IsValidFor(self))
 					return NoPath;
 
-				return self.World.WorldActor.Trait<IPathFinder>().FindUnitPathToRange(
+				return mobile.Pathfinder.FindUnitPathToRange(
 					mobile.ToCell, mobile.ToSubCell, target.CenterPosition, range, self);
 			};
 
