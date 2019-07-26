@@ -41,30 +41,6 @@ SetupTriggers = function()
 	Trigger.OnAllKilled(ConvoyTrucks, function()
 		greece.MarkCompletedObjective(objDestroyAllTrucks)
 	end)
-
-	Trigger.OnEnteredFootprint({ TruckEscapeCenter.Location }, function(actor, triggerlose1)
-		if actor.Owner == ussr and actor.Type == "truk" then
-			Trigger.RemoveProximityTrigger(triggerlose1)
-			actor.Destroy()
-			greece.MarkFailedObjective(objDestroyAllTrucks)
-		end
-	end)
-
-	Trigger.OnEnteredFootprint({ EscapeNorth10.Location }, function(actor, triggerlose2)
-		if actor.Owner == ussr and actor.Type == "truk" then
-			Trigger.RemoveProximityTrigger(triggerlose2)
-			actor.Destroy()
-			greece.MarkFailedObjective(objDestroyAllTrucks)
-		end
-	end)
-
-	Trigger.OnEnteredFootprint({ EscapeSouth5.Location }, function(actor, triggerlose3)
-		if actor.Owner == ussr and actor.Type == "truk" then
-			Trigger.RemoveProximityTrigger(triggerlose3)
-			actor.Destroy()
-			greece.MarkFailedObjective(objDestroyAllTrucks)
-		end
-	end)
 end
 
 MissionStart = function()
@@ -123,26 +99,23 @@ SendPatrol = function(mammoth)
 	end
 end
 
-MoveTruckNorth = function(truck)
+MoveTruckEscapeRoute = function(truck, route)
 	if truck.IsDead then
 		return
 	else
 		Media.DisplayMessage("Convoy truck attempting to escape!")
 		Media.PlaySoundNotification(greece, "AlertBleep")
-		Utils.Do(TruckEscapeNorth, function(waypoint)
+		Utils.Do(route, function(waypoint)
 			truck.Move(waypoint.Location)
 		end)
-	end
-end
-
-MoveTruckSouth = function(truck)
-	if truck.IsDead then
-		return
-	else
-		Media.DisplayMessage("Convoy truck attempting to escape!")
-		Media.PlaySoundNotification(greece, "AlertBleep")
-		Utils.Do(TruckEscapeSouth, function(waypoint)
-			truck.Move(waypoint.Location)
+		
+		Trigger.OnIdle(truck, function()
+			if truck.Location == route[#route].Location then
+				truck.Destroy()
+				greece.MarkFailedObjective(objDestroyAllTrucks)
+			else
+				truck.Move(route[#route].Location)
+			end
 		end)
 	end
 end
@@ -195,10 +168,10 @@ WorldLoaded = function()
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
 	Trigger.AfterDelay(DateTime.Minutes(5), function() SendPatrol(PatrolMammoth) end)
-	Trigger.AfterDelay(DateTime.Minutes(5), function() MoveTruckNorth(Truck1) end)
-	Trigger.AfterDelay(DateTime.Minutes(9), function() MoveTruckNorth(Truck2) end)
-	Trigger.AfterDelay(DateTime.Minutes(12), function() MoveTruckSouth(Truck3) end)
-	Trigger.AfterDelay(DateTime.Minutes(15), function() MoveTruckNorth(Truck4) end)
-	Trigger.AfterDelay(DateTime.Minutes(17), function() MoveTruckSouth(Truck5) end)
-	Trigger.AfterDelay(DateTime.Minutes(18), function() MoveTruckSouth(IntroTruck2) end)
+	Trigger.AfterDelay(DateTime.Minutes(5), function() MoveTruckEscapeRoute(Truck1, TruckEscapeNorth) end)
+	Trigger.AfterDelay(DateTime.Minutes(9), function() MoveTruckEscapeRoute(Truck2, TruckEscapeNorth) end)
+	Trigger.AfterDelay(DateTime.Minutes(12), function() MoveTruckEscapeRoute(Truck3, TruckEscapeSouth) end)
+	Trigger.AfterDelay(DateTime.Minutes(15), function() MoveTruckEscapeRoute(Truck4, TruckEscapeNorth) end)
+	Trigger.AfterDelay(DateTime.Minutes(17), function() MoveTruckEscapeRoute(Truck5, TruckEscapeSouth) end)
+	Trigger.AfterDelay(DateTime.Minutes(18), function() MoveTruckEscapeRoute(IntroTruck2, TruckEscapeSouth) end)
 end
