@@ -214,85 +214,31 @@ TC05:
 		Actor: TC05.Husk
 
 BOXES01:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES02:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES03:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES04:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES05:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES06:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES07:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES08:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 BOXES09:
-	Inherits: ^Tree
-	RenderSprites:
-		Palette: player
-	Tooltip:
-		Name: Boxes
-	MapEditorData:
-		Categories: Decoration
+	Inherits: ^Box
 
 ICE01:
 	Inherits: ^Tree
