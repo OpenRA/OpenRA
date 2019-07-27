@@ -242,24 +242,24 @@ namespace OpenRA.Mods.Common.Traits
 			sharesCell = info.SharesCell;
 		}
 
-		public int MovementCostForCell(CPos cell)
+		public short MovementCostForCell(CPos cell)
 		{
 			if (!world.Map.Contains(cell))
-				return int.MaxValue;
+				return short.MaxValue;
 
 			return pathabilityCache[cell].Cost;
 		}
 
-		public int MovementCostToEnterCell(Actor actor, CPos destNode, Actor ignoreActor, CellConditions check)
+		public short MovementCostToEnterCell(Actor actor, CPos destNode, Actor ignoreActor, CellConditions check)
 		{
 			if (!world.Map.Contains(destNode))
-				return int.MaxValue;
+				return short.MaxValue;
 
 			var cellCache = pathabilityCache[destNode];
 
 			if (cellCache.Cost == short.MaxValue ||
 				!CanMoveFreelyInto(actor, ignoreActor, destNode, check, cellCache))
-				return int.MaxValue;
+				return short.MaxValue;
 
 			return cellCache.Cost;
 		}
@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public SubCell GetAvailableSubCell(Actor self, CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, CellConditions check = CellConditions.All)
 		{
-			if (MovementCostForCell(cell) == int.MaxValue)
+			if (MovementCostForCell(cell) == short.MaxValue)
 				return SubCell.Invalid;
 
 			if (check.HasCellCondition(CellConditions.TransientActors))
