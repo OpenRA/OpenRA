@@ -33,7 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 		Empty = 0,
 		HasActor = 1,
 		FreeSubCell = 2,
-		Crushable = 4
+		Crushable = 4,
+		IsMoving = 8,
 	}
 
 	public static class LocomoterExts
@@ -288,11 +289,8 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			// We are blocked
-			if (ignoreActor == null && blocking.Overlaps(actor.Owner.PlayerMask))
+			if (ignoreActor == null && blocking.Overlaps(actor.Owner.PlayerMask) && cellBlocking == CellBlocking.HasActor)
 				return false;
-
-			if (cellBlocking.HasCellBlocking(CellBlocking.Crushable))
-				return true;
 
 			if (sharesCell && cellBlocking.HasCellBlocking(CellBlocking.FreeSubCell))
 				return true;
@@ -444,26 +442,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var actor in actors)
 			{
-				var actorBits = default(LongBitSet<PlayerBitMask>);
+				var actorBits = allPlayerMask;
 				var crushables = actor.TraitsImplementing<ICrushable>();
 				var mobile = actor.OccupiesSpace as Mobile;
 				var isMoving = mobile != null && mobile.CurrentMovementTypes.HasFlag(MovementType.Horizontal);
 
 				if (crushables.Any())
-				{
-					LongBitSet<PlayerBitMask> crushingBits;
-					foreach (var crushable in crushables)
-						if (crushable.TryCalculatePlayerBlocking(actor, Info.Crushes, out crushingBits))
-						{
-							actorBits = actorBits.Union(crushingBits);
-							cellBlocking |= CellBlocking.Crushable;
-						}
+						cellBlocking |= CellBlocking.Crushable;
 
-					if (isMoving)
-						actorBits = actorBits.Except(actor.Owner.AllyMask);
-				}
-				else
-					actorBits = isMoving ? actor.Owner.EnemyMask : allPlayerMask;
+				if (isMoving)
+					cellBlocking |= CellBlocking.IsMoving;
 
 				cellBits = cellBits.Union(actorBits);
 			}
