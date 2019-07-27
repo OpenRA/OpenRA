@@ -446,7 +446,10 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.AddFrameEndTask(s =>
 			{
 				if (CellsUpdated != null)
+				{
 					CellsUpdated(updatedCells);
+					updatedCells.Clear();
+				}
 			});
 		}
 
