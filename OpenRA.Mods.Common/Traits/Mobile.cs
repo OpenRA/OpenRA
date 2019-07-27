@@ -811,7 +811,15 @@ namespace OpenRA.Mods.Common.Traits
 					self.CancelActivity();
 
 				self.SetTargetLine(Target.FromCell(self.World, cell), Color.Green);
-				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true)));
+
+				var selectionCount = self.World.Selection.ActorCount;
+
+				// Scale nearEnough by the formula square root of world selection divided by 2 + half a cell safety margin.
+				// If only a single unit is selected, set nearEnough to zero.
+				// If no units are selected (order is triggered by AI, triggers and the likes), use the old default of 8 cells.
+				var nearEnough = new WDist(selectionCount == 1 ? 0 : selectionCount > 1 ? (Exts.ISqrt(selectionCount) * 1024 / 2 + 512) : 8 * 1024);
+
+				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, nearEnough, null, true)));
 			}
 
 			// TODO: This should only cancel activities queued by this trait
