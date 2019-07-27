@@ -81,8 +81,16 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (n.Target.Type != TargetType.Invalid)
 					{
-						yield return new TargetLineRenderable(new[] { prev, n.Target.CenterPosition }, n.Color, info.LineWidth, info.MarkerWidth);
-						prev = n.Target.CenterPosition;
+						var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+						var tile = n.Tile;
+						var pos = n.Target.CenterPosition;
+
+						if (tile == null)
+							yield return new TargetLineRenderable(new[] { prev, pos }, n.Color, info.LineWidth, info.MarkerWidth);
+						else
+							yield return new SpriteRenderable(tile, pos, WVec.Zero, -511, pal, 1f, true);
+
+						prev = pos;
 					}
 				}
 			}
