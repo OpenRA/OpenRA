@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			var movementCost = locomotor.MovementCostToEnterCell(Actor, destNode, IgnoreActor, checkConditions);
 
-			if (movementCost != int.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
+			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
 			return Constants.InvalidNode;
