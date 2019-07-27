@@ -970,6 +970,15 @@
 	RequiresSpecificOwners:
 		ValidOwnerNames: Neutral
 
+^Box:
+	Inherits: ^Tree
+	RenderSprites:
+		Palette: player
+	Tooltip:
+		Name: Boxes
+	MapEditorData:
+		Categories: Decoration
+
 ^BasicHusk:
 	Inherits@1: ^SpriteActor
 	Interactable:
