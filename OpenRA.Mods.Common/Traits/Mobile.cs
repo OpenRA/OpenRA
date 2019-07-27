@@ -698,9 +698,7 @@ namespace OpenRA.Mods.Common.Traits
 			var delta = toPos - fromPos;
 			var facing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : Facing;
 
-			var activities = new Turn(self, facing);
-			activities.Queue(new Drag(self, fromPos, toPos, length));
-			return activities;
+			return new Drag(self, fromPos, toPos, length, facing);
 		}
 
 		CPos? ClosestGroundCell()
