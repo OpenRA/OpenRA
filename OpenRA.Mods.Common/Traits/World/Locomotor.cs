@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -423,52 +424,55 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateCellBlocking(CPos cell)
 		{
-			var current = pathabilityCache[cell];
-
-			var actors = actorMap.GetActorsAt(cell);
-
-			if (!actors.Any())
+			using (new PerfSample("locomotor_cache"))
 			{
-				pathabilityCache[cell] = current.WithBlocking(default(LongBitSet<PlayerBitMask>), CellBlocking.Empty);
-				return;
-			}
+				var current = pathabilityCache[cell];
 
-			var cellBlocking = CellBlocking.HasActor;
-			if (sharesCell && actorMap.HasFreeSubCell(cell))
-			{
-				pathabilityCache[cell] = current.WithBlocking(default(LongBitSet<PlayerBitMask>), cellBlocking | CellBlocking.FreeSubCell);
-				return;
-			}
+				var actors = actorMap.GetActorsAt(cell);
 
-			var cellBits = default(LongBitSet<PlayerBitMask>);
-
-			foreach (var actor in actors)
-			{
-				var actorBits = default(LongBitSet<PlayerBitMask>);
-				var crushables = actor.TraitsImplementing<ICrushable>();
-				var mobile = actor.OccupiesSpace as Mobile;
-				var isMoving = mobile != null && mobile.CurrentMovementTypes.HasFlag(MovementType.Horizontal);
-
-				if (crushables.Any())
+				if (!actors.Any())
 				{
-					LongBitSet<PlayerBitMask> crushingBits;
-					foreach (var crushable in crushables)
-						if (crushable.TryCalculatePlayerBlocking(actor, Info.Crushes, out crushingBits))
-						{
-							actorBits = actorBits.Union(crushingBits);
-							cellBlocking |= CellBlocking.Crushable;
-						}
-
-					if (isMoving)
-						actorBits = actorBits.Except(actor.Owner.AllyMask);
+					pathabilityCache[cell] = current.WithBlocking(default(LongBitSet<PlayerBitMask>), CellBlocking.Empty);
+					return;
 				}
-				else
-					actorBits = isMoving ? actor.Owner.EnemyMask : allPlayerMask;
 
-				cellBits = cellBits.Union(actorBits);
+				var cellBlocking = CellBlocking.HasActor;
+				if (sharesCell && actorMap.HasFreeSubCell(cell))
+				{
+					pathabilityCache[cell] = current.WithBlocking(default(LongBitSet<PlayerBitMask>), cellBlocking | CellBlocking.FreeSubCell);
+					return;
+				}
+
+				var cellBits = default(LongBitSet<PlayerBitMask>);
+
+				foreach (var actor in actors)
+				{
+					var actorBits = default(LongBitSet<PlayerBitMask>);
+					var crushables = actor.TraitsImplementing<ICrushable>();
+					var mobile = actor.OccupiesSpace as Mobile;
+					var isMoving = mobile != null && mobile.CurrentMovementTypes.HasFlag(MovementType.Horizontal);
+
+					if (crushables.Any())
+					{
+						LongBitSet<PlayerBitMask> crushingBits;
+						foreach (var crushable in crushables)
+							if (crushable.TryCalculatePlayerBlocking(actor, Info.Crushes, out crushingBits))
+							{
+								actorBits = actorBits.Union(crushingBits);
+								cellBlocking |= CellBlocking.Crushable;
+							}
+
+						if (isMoving)
+							actorBits = actorBits.Except(actor.Owner.AllyMask);
+					}
+					else
+						actorBits = isMoving ? actor.Owner.EnemyMask : allPlayerMask;
+
+					cellBits = cellBits.Union(actorBits);
+				}
+
+				pathabilityCache[cell] = current.WithBlocking(cellBits, cellBlocking);
 			}
-
-			pathabilityCache[cell] = current.WithBlocking(cellBits, cellBlocking);
 		}
 
 		void MapCellEntryChanged(CPos cell)
