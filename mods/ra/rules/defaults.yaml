@@ -977,6 +977,7 @@
 	Tooltip:
 		Name: Boxes
 	MapEditorData:
+		-ExcludeTilesets:
 		Categories: Decoration
 
 ^BasicHusk:
