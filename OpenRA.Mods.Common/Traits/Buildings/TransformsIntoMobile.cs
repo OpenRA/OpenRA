@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			bool CanEnterCell(Actor self, CPos cell)
 			{
-				if (mobile.locomotor.MovementCostForCell(cell) == int.MaxValue)
+				if (mobile.locomotor.MovementCostForCell(cell) == short.MaxValue)
 					return false;
 
 				return mobile.locomotor.CanMoveFreelyInto(self, cell, null, CellConditions.BlockedByMovers);
