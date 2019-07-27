@@ -301,20 +301,32 @@ namespace OpenRA.Mods.Common.Orders
 		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
 		{
 			var allTiles = variants[variant].BuildingInfo.Tiles(topLeft).ToArray();
-			var neightborTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
+			var adjacentTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
 				.Where(world.Map.Contains).ToList();
 
 			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
 				.Where(a => a.Owner == queue.Actor.Owner && a.IsIdle)
-				.Select(a => new TraitPair<Mobile>(a, a.TraitOrDefault<Mobile>()));
+				.Select(a => new TraitPair<IMove>(a, a.TraitOrDefault<IMove>()))
+				.Where(x => x.Trait != null);
 
-			foreach (var blocker in blockers.Where(x => x.Trait != null))
+			foreach (var blocker in blockers)
 			{
-				var availableCells = neightborTiles.Where(t => blocker.Trait.CanEnterCell(t)).ToList();
-				if (availableCells.Count == 0)
+				CPos moveCell;
+				var mobile = blocker.Trait as Mobile;
+				if (mobile != null)
+				{
+					var availableCells = adjacentTiles.Where(t => mobile.CanEnterCell(t)).ToList();
+					if (availableCells.Count == 0)
+						continue;
+
+					moveCell = blocker.Actor.ClosestCell(availableCells);
+				}
+				else if (blocker.Trait is Aircraft)
+					moveCell = blocker.Actor.Location;
+				else
 					continue;
 
-				yield return new Order("Move", blocker.Actor, Target.FromCell(world, blocker.Actor.ClosestCell(availableCells)), false)
+				yield return new Order("Move", blocker.Actor, Target.FromCell(world, moveCell), false)
 				{
 					SuppressVisualFeedback = true
 				};
