@@ -76,23 +76,25 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			// HACK: If the activity is cancelled while we're already resupplying (or about to start resupplying),
-			// move actor outside the resupplier footprint.
-			// TODO: This check is nowhere near robust enough, and should be rewritten.
-			var isCloseEnough = closeEnough < WDist.Zero || (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
-			if (IsCanceling && isCloseEnough)
-			{
-				foreach (var notifyResupply in notifyResupplies)
-					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
+			var isHostInvalid = host.Type != TargetType.Actor || !host.Actor.IsInWorld;
+			var isCloseEnough = closeEnough < WDist.Zero || (!isHostInvalid && (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared);
 
-				OnResupplyEnding(self);
-				return true;
-			}
-			else if (IsCanceling || host.Type != TargetType.Actor || !host.Actor.IsInWorld || host.Actor.IsDead)
+			// This ensures transports are also cancelled when the host becomes invalid
+			if (!IsCanceling && isHostInvalid)
+				Cancel(self, true);
+
+			if (IsCanceling || isHostInvalid)
 			{
-				// This is necessary to ensure host resupply actions (like animations) finish properly
-				foreach (var notifyResupply in notifyResupplies)
-					notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
+				// Only tick host INotifyResupply traits one last time if host is still alive
+				if (!isHostInvalid)
+					foreach (var notifyResupply in notifyResupplies)
+						notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
+
+				// HACK: If the activity is cancelled while we're on the host resupplying (or about to start resupplying),
+				// move actor outside the resupplier footprint to prevent it from blocking other actors.
+				// Additionally, if the host is no longer valid, make aircaft take off.
+				if (isCloseEnough || isHostInvalid)
+					OnResupplyEnding(self, isHostInvalid);
 
 				return true;
 			}
@@ -158,16 +160,16 @@ namespace OpenRA.Mods.Common.Activities
 					yield return n;
 		}
 
-		void OnResupplyEnding(Actor self)
+		void OnResupplyEnding(Actor self, bool isHostInvalid = false)
 		{
 			if (aircraft != null)
 			{
 				aircraft.AllowYieldingReservation();
-				if (wasRepaired ||
+				if (wasRepaired || isHostInvalid ||
 					(!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 					QueueChild(new TakeOff(self));
 			}
-			else if (!stayOnResupplier)
+			else if (!stayOnResupplier && !isHostInvalid)
 			{
 				// If there's no next activity, move to rallypoint if available, else just leave host if Repairable.
 				// Do nothing if RepairableNear (RepairableNear actors don't enter their host and will likely remain within closeEnough).
