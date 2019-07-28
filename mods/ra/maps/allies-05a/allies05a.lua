@@ -6,6 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 if Map.LobbyOption("difficulty") == "easy" then
 	TanyaType = "e7"
 	ReinforceCash = 5000
@@ -234,12 +235,20 @@ end
 
 InitTriggers = function()
 	Trigger.OnInfiltrated(Warfactory, function()
+		if greece.IsObjectiveCompleted(infWarfactory) then
+			return
+		end
+
 		Trigger.ClearAll(Spy)
 		greece.MarkCompletedObjective(infWarfactory)
 		WarfactoryInfiltrated()
 	end)
 
 	Trigger.OnInfiltrated(Prison, function()
+		if greece.IsObjectiveCompleted(mainObj) then
+			return
+		end
+
 		if not greece.IsObjectiveCompleted(infWarfactory) then
 			Media.DisplayMessage("Good work! But next time skip the heroics!", "Battlefield Control")
 			greece.MarkCompletedObjective(infWarfactory)
