@@ -84,7 +84,7 @@ GroupPatrol = function(units, waypoints, delay)
 end
 
 Tick = function()
-	if FollowTruk then
+	if FollowTruk and not Truk.IsDead then
 		Camera.Position = Truk.CenterPosition
 	end
 
@@ -237,11 +237,25 @@ InitTriggers = function()
 	Trigger.OnInfiltrated(Warfactory, function()
 		if greece.IsObjectiveCompleted(infWarfactory) then
 			return
+		elseif Truk.IsDead then
+			if not greece.IsObjectiveCompleted(mainObj) then
+				ussr.MarkCompletedObjective(ussrObj)
+			end
+
+			return
 		end
 
 		Trigger.ClearAll(Spy)
 		greece.MarkCompletedObjective(infWarfactory)
 		WarfactoryInfiltrated()
+	end)
+
+	Trigger.OnKilled(Truk, function()
+		if not greece.IsObjectiveCompleted(infWarfactory) then
+			greece.MarkFailedObjective(infWarfactory)
+		elseif FollowTruk then
+			ussr.MarkCompletedObjective(ussrObj)
+		end
 	end)
 
 	Trigger.OnInfiltrated(Prison, function()
@@ -354,7 +368,7 @@ InitObjectives = function()
 	ussrObj = ussr.AddPrimaryObjective("Deny the Allies.")
 	mainObj = greece.AddPrimaryObjective("Rescue Tanya.")
 	KillAll = greece.AddPrimaryObjective("Eliminate all Soviet units in this area.")
-	infWarfactory = greece.AddPrimaryObjective("Infiltrate the Soviet warfactory.")
+	infWarfactory = greece.AddSecondaryObjective("Infiltrate the Soviet warfactory.")
 
 	Trigger.OnObjectiveCompleted(greece, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
