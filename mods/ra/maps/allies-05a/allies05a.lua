@@ -202,7 +202,7 @@ FreeTanya = function()
 		Media.PlaySpeechNotification(greece, "TargetFreed")
 	end
 
-	if not SpecialCameras then
+	if not SpecialCameras and PrisonCamera and PrisonCamera.IsInWorld then
 		PrisonCamera.Destroy()
 	end
 end
@@ -244,6 +244,15 @@ InitTriggers = function()
 			Media.DisplayMessage("Good work! But next time skip the heroics!", "Battlefield Control")
 			greece.MarkCompletedObjective(infWarfactory)
 		end
+
+		if not PrisonCamera then
+			if SpecialCameras then
+				PrisonCamera = Actor.Create("camera", true, { Owner = greece, Location = TrukWaypoint5.Location })
+			else
+				PrisonCamera = Actor.Create("camera.small", true, { Owner = greece, Location = Prison.Location + CVec.New(1, 1) })
+			end
+		end
+
 		Trigger.ClearAll(Spy)
 		Trigger.AfterDelay(DateTime.Seconds(2), MissInfiltrated)
 	end)
@@ -319,7 +328,7 @@ InitTriggers = function()
 					greece.MarkCompletedObjective(mainObj)
 					SendReinforcements()
 
-					if SpecialCameras then
+					if PrisonCamera and PrisonCamera.IsInWorld then
 						PrisonCamera.Destroy()
 					end
 				end)
