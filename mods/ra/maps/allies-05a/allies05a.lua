@@ -276,6 +276,11 @@ InitTriggers = function()
 			end
 		end
 
+		if SpecialCameras and SpyCameraA and not SpyCameraA.IsDead then
+			SpyCameraA.Destroy()
+			SpyCameraB.Destroy()
+		end
+
 		Trigger.ClearAll(Spy)
 		Trigger.AfterDelay(DateTime.Seconds(2), MissInfiltrated)
 	end)
