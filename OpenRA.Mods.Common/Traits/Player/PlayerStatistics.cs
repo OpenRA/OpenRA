@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Queue<int> EarnedSamples = new Queue<int>(100);
+		public List<int> EarnedSamples = new List<int>(100);
 		int earnedAtBeginningOfMinute;
 
-		public Queue<int> ArmySamples = new Queue<int>(100);
+		public List<int> ArmySamples = new List<int>(100);
 
 		public int KillsCost;
 		public int DeathsCost;
@@ -73,22 +73,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateEarnedThisMinute()
 		{
-			EarnedSamples.Enqueue(EarnedThisMinute);
+			EarnedSamples.Add(EarnedThisMinute);
 			earnedAtBeginningOfMinute = resources != null ? resources.Earned : 0;
-			if (EarnedSamples.Count > 100)
-				EarnedSamples.Dequeue();
 		}
 
 		void UpdateArmyThisMinute()
 		{
-			ArmySamples.Enqueue(ArmyValue);
-			if (ArmySamples.Count > 100)
-				ArmySamples.Dequeue();
+			ArmySamples.Add(ArmyValue);
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			if (self.Owner.WinState != WinState.Undefined)
+				return;
+
 			ticks++;
+
 			var timestep = self.World.IsReplay ? replayTimestep : self.World.Timestep;
 
 			if (ticks * timestep >= 60000)
