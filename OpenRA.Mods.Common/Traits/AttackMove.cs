@@ -70,15 +70,30 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
-					return;
-
-				var targetLocation = move.NearestMoveableCell(cell);
 				var assaultMoving = order.OrderString == "AssaultMove";
 
-				// TODO: this should scale with unit selection group size.
-				self.QueueActivity(order.Queued, new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 8, targetLineColor: Color.OrangeRed), assaultMoving));
-				self.ShowTargetLines();
+				var aircraft = self.TraitOrDefault<Aircraft>();
+				if (aircraft != null)
+				{
+					foreach (var pair in aircraft.GroupMove(cell, order))
+					{
+						var target = Target.FromCell(self.World, pair.Second);
+						var actor = pair.First;
+						actor.QueueActivity(order.Queued, new AttackMoveActivity(actor, () => new Fly(actor, target, order.Target, targetLineColor: Color.OrangeRed), assaultMoving));
+						actor.ShowTargetLines();
+					}
+				}
+				else
+				{
+					if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+						return;
+
+					var targetLocation = move.NearestMoveableCell(cell);
+
+					// TODO: this should scale with unit selection group size.
+					self.QueueActivity(order.Queued, new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 8, targetLineColor: Color.OrangeRed), assaultMoving));
+					self.ShowTargetLines();
+				}
 			}
 		}
 	}
@@ -92,10 +107,21 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			expectedButton = button;
 
-			this.subjects = subjects.Where(a => !a.IsDead)
+			this.subjects = subjects.Where(a => SelectionCondition(a))
 				.SelectMany(a => a.TraitsImplementing<AttackMove>()
 					.Select(am => new TraitPair<AttackMove>(a, am)))
 				.ToArray();
+		}
+
+		bool SelectionCondition(Actor actor)
+		{
+			if (actor.IsDead)
+				return false;
+
+			if (actor.TraitOrDefault<Aircraft>() == null)
+				return true;
+
+			return actor == actor.World.Selection.Actors.First(a => !a.IsDead && a.TraitOrDefault<Aircraft>() != null);
 		}
 
 		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -118,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Cells outside the playable area should be clamped to the edge for consistency with move orders
 				cell = world.Map.Clamp(cell);
 				foreach (var s in subjects)
-					yield return new Order(orderName, s.Actor, Target.FromCell(world, cell), queued);
+					yield return new Order(orderName, s.Actor, Target.FromCell(world, cell), queued, world.Selection.Actors.ToArray());
 			}
 		}
 

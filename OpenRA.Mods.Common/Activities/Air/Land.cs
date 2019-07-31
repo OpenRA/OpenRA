@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly CPos[] clearCells;
 		readonly WDist landRange;
 		readonly Color? targetLineColor;
+		readonly Target? orderTarget;
 
 		Target target;
 		WPos targetPosition;
@@ -38,6 +39,12 @@ namespace OpenRA.Mods.Common.Activities
 			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, null)
 		{
 			assignTargetOnFirstRun = true;
+		}
+
+		public Land(Actor self, Target target, Target orderTarget, int facing = -1, Color? targetLineColor = null)
+			: this(self, target, facing, targetLineColor)
+		{
+			this.orderTarget = orderTarget;
 		}
 
 		public Land(Actor self, Target target, int facing = -1, Color? targetLineColor = null)
@@ -260,7 +267,12 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (targetLineColor != null)
-				yield return new TargetLineNode(target, targetLineColor.Value);
+			{
+				if (orderTarget.HasValue)
+					yield return new TargetLineNode(orderTarget.Value, targetLineColor.Value);
+				else
+					yield return new TargetLineNode(target, targetLineColor.Value);
+			}
 		}
 	}
 }

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -196,6 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
 		public readonly AircraftInfo Info;
+		readonly BuildingInfluence bi;
 		readonly Actor self;
 
 		Repairable repairable;
@@ -255,6 +257,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (init.Contains<CreationActivityDelayInit>())
 				creationActivityDelay = init.Get<CreationActivityDelayInit, int>();
+
+			bi = self.World.WorldActor.TraitOrDefault<BuildingInfluence>();
 		}
 
 		public WDist LandAltitude
@@ -958,7 +962,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land" || order.OrderID == "ForceEnter")
+			if (order.OrderID == "Move" || order.OrderID == "Land")
+				return new Order(order.OrderID, self, target, queued, self.World.Selection.Actors.ToArray());
+
+			if (order.OrderID == "Enter" || order.OrderID == "ForceEnter")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -1002,34 +1009,28 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			var orderString = order.OrderString;
-			if (orderString == "Move")
+			if (orderString == "Move" || orderString == "Land")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
-					return;
+				foreach (var pair in GroupMove(cell, order))
+				{
+					var target = Target.FromCell(self.World, pair.Second);
+					var actor = pair.First;
 
-				if (!order.Queued)
-					UnReserve();
+					if (orderString == "Land" && Info.CanForceLand)
+					{
+						var building = bi.GetBuildingAt(pair.Second);
+						if (building == null || building.TraitOrDefault<Selectable>() == null || CanLand(pair.Second, blockedByMobile: false))
+						{
+							actor.QueueActivity(order.Queued, new Land(actor, target, order.Target, targetLineColor: Color.Green));
+							actor.ShowTargetLines();
+							continue;
+						}
+					}
 
-				var target = Target.FromCell(self.World, cell);
-
-				// TODO: this should scale with unit selection group size.
-				self.QueueActivity(order.Queued, new Fly(self, target, WDist.FromCells(8), targetLineColor: Color.Green));
-				self.ShowTargetLines();
-			}
-			else if (orderString == "Land")
-			{
-				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
-					return;
-
-				if (!order.Queued)
-					UnReserve();
-
-				var target = Target.FromCell(self.World, cell);
-
-				self.QueueActivity(order.Queued, new Land(self, target, targetLineColor: Color.Green));
-				self.ShowTargetLines();
+					actor.QueueActivity(order.Queued, new Fly(actor, target, order.Target, targetLineColor: Color.Green));
+					actor.ShowTargetLines();
+				}
 			}
 			else if (orderString == "Enter" || orderString == "ForceEnter" || orderString == "Repair")
 			{
@@ -1087,6 +1088,109 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		#endregion
+
+		bool CanOrder(Actor actor, CPos cell)
+		{
+			if (actor == null || actor.IsDead)
+				return false;
+
+			var aircraft = actor.TraitOrDefault<Aircraft>();
+			return aircraft != null && (aircraft.Info.MoveIntoShroud || self.Owner.Shroud.IsExplored(cell));
+		}
+
+		public IEnumerable<Pair<Actor, CPos>> GroupMove(CPos cell, Order order)
+		{
+			// Make sure we place the units that are closer to the target first to prevent unnecessary shuffles.
+			var selection = order.ExtraActors.Where(a => CanOrder(a, cell)).OrderBy(a => (a.Location - cell).LengthSquared);
+			var n = selection.Count();
+
+			// Prevent division by zero errors.
+			if (n < 1)
+				yield break;
+
+			// Calculate average group location
+			var center = CVec.Zero;
+			foreach (var a in selection)
+				center += (a.Location - CPos.Zero);
+
+			center /= n;
+
+			// Calculate variance of unit locations
+			var variance = 0;
+			foreach (var a in selection)
+				variance += CVec.Dot((a.Location - CPos.Zero) - center, (a.Location - CPos.Zero) - center);
+
+			variance /= n;
+
+			// Calculate minimum formation radius.
+			var minRadiusSq = 0;
+			foreach (var a in selection)
+				minRadiusSq += (int)a.Trait<Aircraft>().Info.IdealSeparation.LengthSquared;
+
+			minRadiusSq /= (1024 * 1024 * 2);
+
+			// Determine individual destination cells
+			var claimed = new List<CPos> { };
+			foreach (var a in selection)
+			{
+				var aircraft = a.Trait<Aircraft>();
+				var tile = aircraft.GetDestinationCell(cell, center, variance, minRadiusSq, claimed);
+
+				if (!order.Queued)
+					aircraft.UnReserve();
+
+				yield return Pair.New(a, tile);
+			}
+		}
+
+		public CPos GetDestinationCell(CPos targetCell, CVec center, int variance, int minRadiusSq, List<CPos> claimed)
+		{
+			var claimRadius = (Info.IdealSeparation).Length / 1024 - 1;
+
+			// Contract formation
+			if ((targetCell - CPos.Zero - center).LengthSquared < variance && variance * 3 > minRadiusSq * 2)
+				return GetClosestUnclaimedCell(self, targetCell, claimed, claimRadius);
+
+			// Translate formation
+			var offset = self.Location - CPos.Zero - center;
+
+			// Reign in outliers
+			if (variance > minRadiusSq && offset.LengthSquared > variance)
+				offset = offset * Exts.ISqrt(variance) / offset.Length;
+
+			return GetClosestUnclaimedCell(self, targetCell + offset, claimed, claimRadius);
+		}
+
+		CPos GetClosestUnclaimedCell(Actor a, CPos cell, List<CPos> claimed, int claimRadius)
+		{
+			CPos? oldTile = null;
+			foreach (var tile in self.World.Map.FindTilesInCircle(cell, 6))
+			{
+				var cond = !claimed.Contains(tile);
+				if (claimRadius > 0)
+					foreach (var surroundingTile in self.World.Map.FindTilesInAnnulus(tile, 1, claimRadius))
+						cond &= !claimed.Contains(surroundingTile);
+
+				if (cond)
+				{
+					if (oldTile != null && (tile - cell).LengthSquared > (cell - oldTile.Value).LengthSquared)
+					{
+						// Claim surrounding tiles for larger aircraft.
+						if (claimRadius > 0)
+							foreach (var surroundingTile in self.World.Map.FindTilesInAnnulus(oldTile.Value, 1, claimRadius))
+								claimed.Add(surroundingTile);
+
+						claimed.Add(oldTile.Value);
+						return oldTile.Value;
+					}
+
+					if (oldTile == null || (tile - a.Location).LengthSquared < (oldTile.Value - a.Location).LengthSquared)
+						oldTile = tile;
+				}
+			}
+
+			return self.Location;
+		}
 
 		void Nudge(Actor self)
 		{
@@ -1197,18 +1301,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					OrderID = "Land";
+
 				var location = self.World.Map.CellContaining(target.CenterPosition);
-
-				// Aircraft can be force-landed by issuing a force-move order on a clear terrain cell
-				// Cells that contain a blocking building are treated as regular force move orders, overriding
-				// selection for left-mouse orders
-				if (modifiers.HasModifier(TargetModifiers.ForceMove) && aircraft.Info.CanForceLand)
-				{
-					var building = bi.GetBuildingAt(location);
-					if (building == null || building.TraitOrDefault<Selectable>() == null || aircraft.CanLand(location, blockedByMobile: false))
-						OrderID = "Land";
-				}
-
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
@@ -1219,7 +1315,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!explored && !aircraft.Info.MoveIntoShroud)
 					cursor = "move-blocked";
 
-				return true;
+				return self == self.World.Selection.Actors.First(a => !a.IsDead && a.TraitOrDefault<Aircraft>() != null);
 			}
 		}
 	}

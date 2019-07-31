@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		readonly Color? targetLineColor;
 		readonly WDist nearEnough;
+		readonly Target? orderTarget;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -37,19 +38,10 @@ namespace OpenRA.Mods.Common.Activities
 			this.nearEnough = nearEnough;
 		}
 
-		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		public Fly(Actor self, Target t, Target orderTarget, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+			: this(self, t, initialTargetPosition, targetLineColor)
 		{
-			aircraft = self.Trait<Aircraft>();
-			target = t;
-			this.targetLineColor = targetLineColor;
-
-			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
-			// Moving to any position (even if quite stale) is still better than immediately giving up
-			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
-			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
-				lastVisibleTarget = Target.FromPos(target.CenterPosition);
-			else if (initialTargetPosition.HasValue)
-				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
+			this.orderTarget = orderTarget;
 		}
 
 		public Fly(Actor self, Target t, WDist minRange, WDist maxRange,
@@ -58,6 +50,22 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.maxRange = maxRange;
 			this.minRange = minRange;
+		}
+
+		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		{
+			aircraft = self.Trait<Aircraft>();
+			target = t;
+			this.targetLineColor = targetLineColor;
+			nearEnough = aircraft.Info.IdealSeparation;
+
+			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
+			// Moving to any position (even if quite stale) is still better than immediately giving up
+			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
+			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				lastVisibleTarget = Target.FromPos(target.CenterPosition);
+			else if (initialTargetPosition.HasValue)
+				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
 		}
 
 		public static void FlyTick(Actor self, Aircraft aircraft, int desiredFacing, WDist desiredAltitude, WVec moveOverride, int turnSpeedOverride = -1)
@@ -246,7 +254,12 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (targetLineColor.HasValue)
-				yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+			{
+				if (orderTarget.HasValue)
+					yield return new TargetLineNode(orderTarget.Value, targetLineColor.Value);
+				else
+					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+			}
 		}
 
 		public static int CalculateTurnRadius(int speed, int turnSpeed)
