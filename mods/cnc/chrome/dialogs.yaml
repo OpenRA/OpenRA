@@ -1,313 +1,364 @@
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 13
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 10
-					Width: PARENT_RIGHT - 20
-					Height: 25
+					ClassicX: 10
+					ClassicWidth: PARENT_RIGHT - 20
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 10
-					Width: PARENT_RIGHT - 20
-					Height: 25
+					ClassicX: 10
+					ClassicWidth: PARENT_RIGHT - 20
+					ClassicHeight: 25
 					Align: Left
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 13
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
 			Children:
 				Image@FLAG:
-					X: 4
-					Y: 4
-					Width: 32
-					Height: 16
+					ClassicX: 4
+					ClassicY: 4
+					ClassicWidth: 32
+					ClassicHeight: 16
+					PositionType: Absolute
 				Label@LABEL:
-					X: 40
-					Width: 60
-					Height: 25
+					ClassicX: 40
+					ClassicWidth: 60
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 0
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 0
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 13
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Image@FLAG:
-					X: 4
-					Y: 4
-					Width: 32
-					Height: 16
+					ClassicX: 4
+					ClassicY: 4
+					ClassicWidth: 32
+					ClassicHeight: 16
+					PositionType: Absolute
 				Label@LABEL:
-					X: 40
-					Width: 60
-					Height: 25
+					ClassicX: 40
+					ClassicWidth: 60
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
 				Label@NOFLAG_LABEL:
-					X: 5
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@THREEBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
-	Width: 500
-	Height: 41
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - 90) / 2
+	ClassicWidth: 500
+	ClassicHeight: 41
 	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
+			PositionType: Absolute
 		Label@PROMPT_TEXT:
-			Y: 22
-			Width: PARENT_RIGHT
-			Height: 20
+			ClassicY: 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 20
 			Font: Bold
 			Align: Center
+			PositionType: Absolute
 		Button@CONFIRM_BUTTON:
 			Key: return
-			X: 360
-			Y: 40
-			Width: 140
-			Height: 35
+			ClassicX: 360
+			ClassicY: 40
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Confirm
 			Visible: false
+			PositionType: Absolute
 		Button@OTHER_BUTTON:
 			Key: r
-			X: 210
-			Y: 40
-			Width: 140
-			Height: 35
+			ClassicX: 210
+			ClassicY: 40
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Restart
 			Visible: false
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
 			Key: escape
-			Y: 40
-			Width: 140
-			Height: 35
+			ClassicY: 40
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Cancel
 			Visible: false
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@TWOBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
-	Width: 370
-	Height: 31
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - 90) / 2
+	ClassicWidth: 370
+	ClassicHeight: 31
 	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
+			PositionType: Absolute
 		Label@PROMPT_TEXT:
-			Y: 17
-			Width: PARENT_RIGHT
-			Height: 20
+			ClassicY: 17
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 20
 			Font: Bold
 			Align: Center
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
 			Key: escape
-			Y: 30
-			Width: 140
-			Height: 35
+			ClassicY: 30
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Cancel
 			Visible: false
+			PositionType: Absolute
 		Button@CONFIRM_BUTTON:
 			Key: return
-			X: 230
-			Y: 30
-			Width: 140
-			Height: 35
+			ClassicX: 230
+			ClassicY: 30
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Confirm
 			Visible: false
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@TEXT_INPUT_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 370
-	Height: 80
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 370
+	ClassicHeight: 80
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
+			PositionType: Absolute
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: 80
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 80
 			Background: panel-black
 			Children:
 				Label@PROMPT_TEXT:
-					X: 20
-					Y: 12
-					Width: PARENT_RIGHT - 40
-					Height: 25
+					ClassicX: 20
+					ClassicY: 12
+					ClassicWidth: PARENT_RIGHT - 40
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
+					PositionType: Absolute
 				TextField@INPUT_TEXT:
-					X: 20
-					Y: 40
-					Width: PARENT_RIGHT - 40
-					Height: 25
+					ClassicX: 20
+					ClassicY: 40
+					ClassicWidth: PARENT_RIGHT - 40
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@ACCEPT_BUTTON:
-			X: PARENT_RIGHT - 160
-			Y: PARENT_BOTTOM - 1
-			Width: 160
-			Height: 34
+			ClassicX: PARENT_RIGHT - 160
+			ClassicY: PARENT_BOTTOM - 1
+			ClassicWidth: 160
+			ClassicHeight: 34
 			Text: OK
 			Font: Bold
 			Key: return
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: 0
-			Y: PARENT_BOTTOM - 1
-			Width: 160
-			Height: 35
+			ClassicX: 0
+			ClassicY: PARENT_BOTTOM - 1
+			ClassicWidth: 160
+			ClassicHeight: 35
 			Text: Cancel
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@NEWS_PANEL:
-	Width: 400
-	Height: 265
+	ClassicWidth: 400
+	ClassicHeight: 265
 	Background: panel-black
 	TopBottomSpacing: 5
 	ItemSpacing: 5
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:
-			X: 10
-			Y: 5
-			Width: PARENT_RIGHT - 40
-			Height: 45
+			ClassicX: 10
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 45
 			Children:
 				Label@TITLE:
-					Y: 1
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 1
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@AUTHOR_DATETIME:
-					Y: 26
-					Width: PARENT_RIGHT
-					Height: 15
+					ClassicY: 26
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 15
 					Align: Center
 					Text: by {0} at {1}
 					Font: TinyBold
+					PositionType: Absolute
 				Label@CONTENT:
-					Y: 46
-					Width: PARENT_RIGHT
+					ClassicY: 46
+					ClassicWidth: PARENT_RIGHT
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@NEWS_STATUS:
-			X: 80
-			Y: 1
-			Width: PARENT_RIGHT - 80 - 80 - 24
-			Height: PARENT_BOTTOM
+			ClassicX: 80
+			ClassicY: 1
+			ClassicWidth: PARENT_RIGHT - 80 - 80 - 24
+			ClassicHeight: PARENT_BOTTOM
 			Align: Center
 			VAlign: Middle
+			PositionType: Absolute
+	PositionType: Absolute

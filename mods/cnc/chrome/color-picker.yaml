@@ -4,135 +4,156 @@ Background@COLOR_CHOOSER:
 		PalettePresetRows: 2
 		PaletteCustomRows: 1
 	Background: panel-black
-	Width: 311
-	Height: 148
+	ClassicWidth: 311
+	ClassicHeight: 148
 	Children:
 		Button@RANDOM_BUTTON:
 			Key: tab
-			X: 229
-			Y: 89
-			Width: 77
-			Height: 25
+			ClassicX: 229
+			ClassicY: 89
+			ClassicWidth: 77
+			ClassicHeight: 25
 			Text: Random
+			PositionType: Absolute
 		Button@STORE_BUTTON:
-			X: 229
-			Y: 118
-			Width: 77
-			Height: 25
+			ClassicX: 229
+			ClassicY: 118
+			ClassicWidth: 77
+			ClassicHeight: 25
 			Text: Store
 			Font: Bold
+			PositionType: Absolute
 		ActorPreview@PREVIEW:
-			X: 232
-			Y: 7
-			Width: 77
-			Height: 73
+			ClassicX: 232
+			ClassicY: 7
+			ClassicWidth: 77
+			ClassicHeight: 73
 			Animate: true
+			PositionType: Absolute
 		Button@MIXER_TAB_BUTTON:
-			X: 5
-			Y: PARENT_BOTTOM - 30
-			Height: 25
-			Width: 80
+			ClassicX: 5
+			ClassicY: PARENT_BOTTOM - 30
+			ClassicHeight: 25
+			ClassicWidth: 80
 			Text: Mixer
 			Font: Bold
+			PositionType: Absolute
 		Button@PALETTE_TAB_BUTTON:
-			X: 90
-			Y: PARENT_BOTTOM - 30
-			Height: 25
-			Width: 80
+			ClassicX: 90
+			ClassicY: PARENT_BOTTOM - 30
+			ClassicHeight: 25
+			ClassicWidth: 80
 			Text: Palette
 			Font: Bold
+			PositionType: Absolute
 		Container@MIXER_TAB:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 91
-			Height: PARENT_BOTTOM - 34
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 91
+			ClassicHeight: PARENT_BOTTOM - 34
 			Children:
 				Background@HUEBG:
 					Background: panel-black
-					X: 0
-					Y: 0
-					Width: PARENT_RIGHT
-					Height: 17
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 17
 					Children:
 						HueSlider@HUE:
-							X: 2
-							Y: 2
-							Width: PARENT_RIGHT - 4
-							Height: PARENT_BOTTOM - 4
+							ClassicX: 2
+							ClassicY: 2
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: PARENT_BOTTOM - 4
 							Ticks: 5
+							PositionType: Absolute
+					PositionType: Absolute
 				Background@MIXERBG:
 					Background: panel-black
-					X: 0
-					Y: 22
-					Width: PARENT_RIGHT
-					Height: 92
+					ClassicX: 0
+					ClassicY: 22
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 92
 					Children:
 						ColorMixer@MIXER:
-							X: 2
-							Y: 2
-							Width: PARENT_RIGHT - 4
-							Height: PARENT_BOTTOM - 4
+							ClassicX: 2
+							ClassicY: 2
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: PARENT_BOTTOM - 4
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@PALETTE_TAB:
 			Background: panel-black
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 91
-			Height: PARENT_BOTTOM - 34
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 91
+			ClassicHeight: PARENT_BOTTOM - 34
 			Visible: false
 			Children:
 				Container@PALETTE_TAB_PANEL:
-					X: 0
-					Y: 0
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Background@PRESET_HEADER:
 							Background: panel-black
-							Width: PARENT_RIGHT - 4
-							Height: 13
-							X: 2
-							Y: 2
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 13
+							ClassicX: 2
+							ClassicY: 2
 							Children:
 								Label@LABEL:
 									Font: TinyBold
-									Width: PARENT_RIGHT
-									Height: 13
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 13
 									Align: Center
 									Text: Preset Colors
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@PRESET_AREA:
-							Width: PARENT_RIGHT - 4
-							Height: 58
-							X: 2
-							Y: 16
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 58
+							ClassicX: 2
+							ClassicY: 16
 							Children:
 								ColorBlock@COLORPRESET:
-									X: 0
-									Y: 0
-									Width: 27
-									Height: 27
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: 27
+									ClassicHeight: 27
 									Visible: false
+									PositionType: Absolute
+							PositionType: Absolute
 						Background@CUSTOM_HEADER:
 							Background: panel-black
-							Width: PARENT_RIGHT - 4
-							Height: 13
-							X: 2
-							Y: 71
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 13
+							ClassicX: 2
+							ClassicY: 71
 							Children:
 								Label@LABEL:
 									Font: TinyBold
-									Width: PARENT_RIGHT
-									Height: 13
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 13
 									Align: Center
 									Text: Custom Colors
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@CUSTOM_AREA:
-							Width: PARENT_RIGHT - 4
-							Height: 31
-							X: 2
-							Y: 85
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 31
+							ClassicX: 2
+							ClassicY: 85
 							Children:
 								ColorBlock@COLORCUSTOM:
-									X: 0
-									Y: 0
-									Width: 27
-									Height: 27
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: 27
+									ClassicHeight: 27
 									Visible: false
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

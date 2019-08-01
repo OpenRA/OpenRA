@@ -1,262 +1,304 @@
 Background@REPLAYBROWSER_PANEL:
 	Logic: ReplayBrowserLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 780
-	Height: 535
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 780
+	ClassicHeight: 535
 	Children:
 		Container@FILTER_AND_MANAGE_CONTAINER:
-			X: 20
-			Y: 20
-			Width: 280
-			Height: PARENT_BOTTOM - 75
+			ClassicX: 20
+			ClassicY: 20
+			ClassicWidth: 280
+			ClassicHeight: PARENT_BOTTOM - 75
 			Children:
 				Container@FILTERS:
-					Width: 280
-					Height: 320
+					ClassicWidth: 280
+					ClassicHeight: 320
 					Children:
 						Label@FILTERS_TITLE:
-							X: 85
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Font: Bold
 							Align: Center
 							Text: Filter
+							PositionType: Absolute
 						Label@FLT_GAMETYPE_DESC:
-							X: 0
-							Y: 30
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 30
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Type:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_GAMETYPE_DROPDOWNBUTTON:
-							X: 85
-							Y: 30
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 30
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Any
+							PositionType: Absolute
 						Label@FLT_DATE_DESC:
-							X: 0
-							Y: 60
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 60
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Date:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_DATE_DROPDOWNBUTTON:
-							X: 85
-							Y: 60
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 60
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Any
+							PositionType: Absolute
 						Label@FLT_DURATION_DESC:
-							X: 0
-							Y: 90
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 90
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Duration:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_DURATION_DROPDOWNBUTTON:
-							X: 85
-							Y: 90
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 90
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Any
+							PositionType: Absolute
 						Label@FLT_MAPNAME_DESC:
-							X: 0
-							Y: 120
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 120
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Map:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_MAPNAME_DROPDOWNBUTTON:
-							X: 85
-							Y: 120
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 120
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Any
+							PositionType: Absolute
 						Label@FLT_PLAYER_DESC:
-							X: 0
-							Y: 150
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 150
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Player:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_PLAYER_DROPDOWNBUTTON:
-							X: 85
-							Y: 150
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 150
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Anyone
+							PositionType: Absolute
 						Label@FLT_OUTCOME_DESC:
-							X: 0
-							Y: 180
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 180
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Outcome:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_OUTCOME_DROPDOWNBUTTON:
-							X: 85
-							Y: 180
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 180
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Any
+							PositionType: Absolute
 						Label@FLT_FACTION_DESC:
-							X: 0
-							Y: 210
-							Width: 80
-							Height: 25
+							ClassicX: 0
+							ClassicY: 210
+							ClassicWidth: 80
+							ClassicHeight: 25
 							Text: Faction:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@FLT_FACTION_DROPDOWNBUTTON:
-							X: 85
-							Y: 210
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 210
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Any
+							PositionType: Absolute
 						Button@FLT_RESET_BUTTON:
-							X: 85
-							Y: 250
-							Width: PARENT_RIGHT - 85
-							Height: 25
+							ClassicX: 85
+							ClassicY: 250
+							ClassicWidth: PARENT_RIGHT - 85
+							ClassicHeight: 25
 							Text: Reset Filters
 							Font: Bold
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@MANAGEMENT:
-					X: 85
-					Y: PARENT_BOTTOM - 115
-					Width: PARENT_RIGHT - 85
-					Height: 115
+					ClassicX: 85
+					ClassicY: PARENT_BOTTOM - 115
+					ClassicWidth: PARENT_RIGHT - 85
+					ClassicHeight: 115
 					Children:
 						Label@MANAGE_TITLE:
-							Y: 1
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Bold
 							Align: Center
 							Text: Manage
+							PositionType: Absolute
 						Button@MNG_RENSEL_BUTTON:
-							Y: 30
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 30
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Text: Rename
 							Font: Bold
 							Key: F2
+							PositionType: Absolute
 						Button@MNG_DELSEL_BUTTON:
-							Y: 60
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 60
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Text: Delete
 							Font: Bold
 							Key: Delete
+							PositionType: Absolute
 						Button@MNG_DELALL_BUTTON:
-							Y: 90
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 90
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Text: Delete All
 							Font: Bold
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@REPLAY_LIST_CONTAINER:
-			X: 310
-			Y: 20
-			Width: 250
-			Height: PARENT_BOTTOM - 20 - 55
+			ClassicX: 310
+			ClassicY: 20
+			ClassicWidth: 250
+			ClassicHeight: PARENT_BOTTOM - 20 - 55
 			Children:
 				Label@REPLAYBROWSER_LABEL_TITLE:
-					Y: 1
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 1
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Text: Choose Replay
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				ScrollPanel@REPLAY_LIST:
-					X: 0
-					Y: 30
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 30
+					ClassicX: 0
+					ClassicY: 30
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM - 30
 					CollapseHiddenChildren: True
 					Children:
 						ScrollItem@REPLAY_TEMPLATE:
-							Width: PARENT_RIGHT - 27
-							Height: 25
-							X: 2
+							ClassicWidth: PARENT_RIGHT - 27
+							ClassicHeight: 25
+							ClassicX: 2
 							Visible: false
 							EnableChildMouseOver: True
 							Children:
 								LabelWithTooltip@TITLE:
-									X: 10
-									Width: PARENT_RIGHT - 20
-									Height: 25
+									ClassicX: 10
+									ClassicWidth: PARENT_RIGHT - 20
+									ClassicHeight: 25
 									TooltipContainer: TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MAP_PREVIEW_ROOT:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: 50
-			Width: 194
-			Height: 250
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: 50
+			ClassicWidth: 194
+			ClassicHeight: 250
+			PositionType: Absolute
 		Container@REPLAY_INFO:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: 250
-			Width: 194
-			Height: PARENT_BOTTOM - 250 - 45
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: 250
+			ClassicWidth: 194
+			ClassicHeight: PARENT_BOTTOM - 250 - 45
 			Children:
 				Label@DURATION:
-					Y: 19
-					Width: PARENT_RIGHT
-					Height: 15
+					ClassicY: 19
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 15
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
 				ScrollPanel@PLAYER_LIST:
-					Y: 40
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 50
+					ClassicY: 40
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM - 50
 					IgnoreChildMouseOver: true
 					Children:
 						ScrollItem@HEADER:
 							BaseName: scrollheader
-							Width: PARENT_RIGHT - 27
-							Height: 13
-							X: 2
-							Y: 0
+							ClassicWidth: PARENT_RIGHT - 27
+							ClassicHeight: 13
+							ClassicX: 2
+							ClassicY: 0
 							Visible: false
 							Children:
 								Label@LABEL:
 									Font: TinyBold
-									Width: PARENT_RIGHT
-									Height: 13
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 13
 									Align: Center
+									PositionType: Absolute
+							PositionType: Absolute
 						ScrollItem@TEMPLATE:
-							Width: PARENT_RIGHT - 27
-							Height: 25
-							X: 2
-							Y: 0
+							ClassicWidth: PARENT_RIGHT - 27
+							ClassicHeight: 25
+							ClassicX: 2
+							ClassicY: 0
 							Visible: false
 							Children:
 								Image@FLAG:
-									X: 4
-									Y: 6
-									Width: 32
-									Height: 16
+									ClassicX: 4
+									ClassicY: 6
+									ClassicWidth: 32
+									ClassicHeight: 16
+									PositionType: Absolute
 								Label@LABEL:
-									X: 40
-									Width: PARENT_RIGHT - 50
-									Height: 25
+									ClassicX: 40
+									ClassicWidth: PARENT_RIGHT - 50
+									ClassicHeight: 25
 									Shadow: True
+									PositionType: Absolute
 								Label@NOFLAG_LABEL:
-									X: 5
-									Width: PARENT_RIGHT
-									Height: 25
+									ClassicX: 5
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 25
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@WATCH_BUTTON:
-			X: PARENT_RIGHT - 140 - 130
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 140 - 130
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Watch
 			Font: Bold
 			Key: return
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 140
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Back
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

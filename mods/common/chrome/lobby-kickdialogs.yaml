@@ -1,140 +1,161 @@
 Background@KICK_CLIENT_DIALOG:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Logic: KickClientLogic
 	Background: dialog3
 	Children:
 		Label@TITLE:
-			Y: 41
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 41
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
+			PositionType: Absolute
 		Label@TEXTA:
-			Y: 68
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 68
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Regular
 			Align: Center
 			Text: You may also apply a temporary ban, preventing
+			PositionType: Absolute
 		Label@TEXTB:
-			Y: 86
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 86
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Regular
 			Align: Center
 			Text: them from joining for the remainder of this game.
+			PositionType: Absolute
 		Checkbox@PREVENT_REJOINING_CHECKBOX:
-			X: (PARENT_RIGHT - WIDTH) / 2
-			Y: 120
-			Width: 150
-			Height: 20
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2
+			ClassicY: 120
+			ClassicWidth: 150
+			ClassicHeight: 20
 			Text: Temporarily Ban
+			PositionType: Absolute
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 + 75
-			Y: 155
-			Width: 120
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2 + 75
+			ClassicY: 155
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Kick
 			Font: Bold
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 - 75
-			Y: 155
-			Width: 120
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2 - 75
+			ClassicY: 155
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Cancel
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@KICK_SPECTATORS_DIALOG:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Logic: KickSpectatorsLogic
 	Background: dialog3
 	Children:
 		Label@TITLE:
-			Y: 41
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 41
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
 			Text: Kick Spectators
+			PositionType: Absolute
 		Label@TEXT:
-			Y: 86
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 86
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Regular
 			Align: Center
+			PositionType: Absolute
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 + 75
-			Y: 155
-			Width: 120
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2 + 75
+			ClassicY: 155
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Ok
 			Font: Bold
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 - 75
-			Y: 155
-			Width: 120
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2 - 75
+			ClassicY: 155
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Cancel
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@FORCE_START_DIALOG:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Background: dialog3
 	Children:
 		Label@TITLE:
-			Y: 41
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 41
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
 			Text: Start Game?
+			PositionType: Absolute
 		Label@TEXTA:
-			Y: 68
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 68
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Regular
 			Align: Center
 			Text: One or more players are not yet ready.
+			PositionType: Absolute
 		Label@TEXTB:
-			Y: 86
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 86
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Regular
 			Align: Center
 			Text: Are you sure that you want to force start the game?
+			PositionType: Absolute
 		Container@KICK_WARNING:
-			Width: PARENT_RIGHT
+			ClassicWidth: PARENT_RIGHT
 			Children:
 				Label@KICK_WARNING_A:
-					X: 0
-					Y: 107
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 0
+					ClassicY: 107
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					Text: One or more clients are missing the selected
+					PositionType: Absolute
 				Label@KICK_WARNING_B:
-					X: 0
-					Y: 124
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 0
+					ClassicY: 124
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					Text: map, and will be kicked from the server.
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 + 75
-			Y: 155
-			Width: 120
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2 + 75
+			ClassicY: 155
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Start
 			Font: Bold
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 - 75
-			Y: 155
-			Width: 120
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2 - 75
+			ClassicY: 155
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Cancel
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute

@@ -9,6 +9,7 @@ Container@INGAME_ROOT:
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+			PositionType: Absolute
 		LogicKeyListener@WORLD_KEYHANDLER:
 			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
@@ -20,27 +21,31 @@ Container@INGAME_ROOT:
 				TogglePlayerStanceColorKey: TogglePlayerStanceColor
 				CycleStatusBarsKey: CycleStatusBars
 				PauseKey: Pause
+			PositionType: Absolute
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
+					PositionType: Absolute
 				Label@MISSION_TEXT:
-					X: WINDOW_RIGHT / 2 - 256
-					Y: 23
-					Width: 512
-					Height: 25
+					ClassicX: WINDOW_RIGHT / 2 - 256
+					ClassicY: 23
+					ClassicWidth: 512
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					Contrast: true
+					PositionType: Absolute
 				WorldInteractionController@INTERACTION_CONTROLLER:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
+					ClassicWidth: WINDOW_RIGHT
+					ClassicHeight: WINDOW_BOTTOM
 					SelectAllKey: SelectAllUnits
 					SelectSameTypeKey: SelectUnitsByType
+					PositionType: Absolute
 				ViewportController:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
+					ClassicWidth: WINDOW_RIGHT
+					ClassicHeight: WINDOW_BOTTOM
 					TooltipContainer: TOOLTIP_CONTAINER
 					ScrollUpKey: MapScrollUp
 					ScrollDownKey: MapScrollDown
@@ -53,11 +58,20 @@ Container@INGAME_ROOT:
 					BookmarkSaveKeyPrefix: MapBookmarkSave
 					BookmarkRestoreKeyPrefix: MapBookmarkRestore
 					BookmarkKeyCount: 4
+					PositionType: Absolute
 				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT / 2
-					Y: 40
+					ClassicX: WINDOW_RIGHT / 2
+					ClassicY: 40
+					PositionType: Absolute
 				Container@PLAYER_ROOT:
+					PositionType: Absolute
 				Container@PERF_ROOT:
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MENU_ROOT:
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
 		MouseAttachment@MOUSE_ATTATCHMENT:
+			PositionType: Absolute
+	PositionType: Absolute

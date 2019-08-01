@@ -1,85 +1,98 @@
 ScrollPanel@MULTIPLAYER_CLIENT_LIST:
-	Width: PARENT_RIGHT
-	Height: 159
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: 159
 	IgnoreChildMouseOver: true
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 13
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Image@FLAG:
-					X: 4
-					Y: 5
-					Width: 32
-					Height: 16
+					ClassicX: 4
+					ClassicY: 5
+					ClassicWidth: 32
+					ClassicHeight: 16
 					Visible: False
+					PositionType: Absolute
 				Label@LABEL:
-					X: 40
-					Width: PARENT_RIGHT - 50
-					Height: 25
+					ClassicX: 40
+					ClassicWidth: PARENT_RIGHT - 50
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
 				Label@NOFLAG_LABEL:
-					X: 5
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@MULTIPLAYER_FILTER_PANEL:
-	Width: PARENT_RIGHT
-	Height: 130
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: 130
 	Children:
 		Checkbox@WAITING_FOR_PLAYERS:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Text: Waiting
 			TextColor: 32CD32
 			Font: Regular
+			PositionType: Absolute
 		Checkbox@EMPTY:
-			X: 5
-			Y: 30
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 30
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Text: Empty
 			Font: Regular
+			PositionType: Absolute
 		Checkbox@PASSWORD_PROTECTED:
-			X: 5
-			Y: 55
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 55
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Text: Protected
 			TextColor: FF0000
 			Font: Regular
+			PositionType: Absolute
 		Checkbox@ALREADY_STARTED:
-			X: 5
-			Y: 80
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 80
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Text: Started
 			TextColor: FFA500
 			Font: Regular
+			PositionType: Absolute
 		Checkbox@INCOMPATIBLE_VERSION:
-			X: 5
-			Y: 105
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 105
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Text: Incompatible
 			TextColor: BEBEBE
 			Font: Regular
+			PositionType: Absolute
+	PositionType: Absolute

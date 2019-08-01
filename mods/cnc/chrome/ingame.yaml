@@ -9,6 +9,7 @@ Container@INGAME_ROOT:
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+			PositionType: Absolute
 		LogicKeyListener@WORLD_KEYHANDLER:
 			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
@@ -20,62 +21,78 @@ Container@INGAME_ROOT:
 				TogglePlayerStanceColorKey: TogglePlayerStanceColor
 				CycleStatusBarsKey: CycleStatusBars
 				PauseKey: Pause
+			PositionType: Absolute
 		Container@WORLD_ROOT:
 			Logic: LoadIngamePerfLogic
 			Children:
 				LogicTicker@DISCONNECT_WATCHER:
 					Logic: DisconnectWatcherLogic
+					PositionType: Absolute
 				Label@MISSION_TEXT:
-					X: WINDOW_RIGHT / 2 - 256
-					Y: 22
-					Width: 512
-					Height: 25
+					ClassicX: WINDOW_RIGHT / 2 - 256
+					ClassicY: 22
+					ClassicWidth: 512
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					Contrast: true
+					PositionType: Absolute
 				StrategicProgress@STRATEGIC_PROGRESS:
-					X: WINDOW_RIGHT / 2
-					Y: 40
+					ClassicX: WINDOW_RIGHT / 2
+					ClassicY: 40
+					PositionType: Absolute
 				Container@PERF_ROOT:
+					PositionType: Absolute
 				WorldInteractionController@INTERACTION_CONTROLLER:
-					Width: WINDOW_RIGHT
-					Height: WINDOW_BOTTOM
+					ClassicWidth: WINDOW_RIGHT
+					ClassicHeight: WINDOW_BOTTOM
 					SelectAllKey: SelectAllUnits
 					SelectSameTypeKey: SelectUnitsByType
+					PositionType: Absolute
 				Container@PLAYER_ROOT:
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MENU_ROOT:
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
 		MouseAttachment@MOUSE_ATTATCHMENT:
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@PERF_WIDGETS:
 	Logic: PerfDebugLogic
 	Children:
 		Label@PERF_TEXT:
-			X: WINDOW_RIGHT - 200
-			Y: WINDOW_BOTTOM - 70
-			Width: 170
-			Height: 40
+			ClassicX: WINDOW_RIGHT - 200
+			ClassicY: WINDOW_BOTTOM - 70
+			ClassicWidth: 170
+			ClassicHeight: 40
 			Contrast: true
 			VAlign: Top
+			PositionType: Absolute
 		Background@GRAPH_BG:
-			X: 5
-			Y: WINDOW_BOTTOM - HEIGHT - 56
-			Width: 220
-			Height: 220
+			ClassicX: 5
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 56
+			ClassicWidth: 220
+			ClassicHeight: 220
 			Background: panel-black
 			Children:
 				PerfGraph@GRAPH:
-					X: 10
-					Y: 10
-					Width: 200
-					Height: 200
+					ClassicX: 10
+					ClassicY: 10
+					ClassicWidth: 200
+					ClassicHeight: 200
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@OBSERVER_WIDGETS:
 	Logic: MenuButtonsChromeLogic
 	Children:
 		ViewportController:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
@@ -88,174 +105,198 @@ Container@OBSERVER_WIDGETS:
 			BookmarkSaveKeyPrefix: MapBookmarkSave
 			BookmarkRestoreKeyPrefix: MapBookmarkRestore
 			BookmarkKeyCount: 4
+			PositionType: Absolute
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
-			X: WINDOW_RIGHT / 2 - WIDTH
-			Width: 100
-			Height: 55
+			ClassicX: WINDOW_RIGHT / 2 - WIDTH
+			ClassicWidth: 100
+			ClassicHeight: 55
 			Children:
 				LabelWithTooltip@GAME_TIMER:
-					Width: PARENT_RIGHT
-					Height: 30
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 30
 					Align: Center
 					Font: Title
 					Contrast: true
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					PositionType: Absolute
 				Label@GAME_TIMER_STATUS:
-					Y: 35
-					Width: PARENT_RIGHT
-					Height: 15
+					ClassicY: 35
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 15
 					Align: Center
 					Font: Bold
 					Contrast: true
+					PositionType: Absolute
+			PositionType: Absolute
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
+			PositionType: Absolute
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
-			X: WINDOW_RIGHT - 260 - WIDTH
-			Y: 5
-			Width: 30
-			Height: 25
+			ClassicX: WINDOW_RIGHT - 260 - WIDTH
+			ClassicY: 5
+			ClassicWidth: 30
+			ClassicHeight: 25
 			TooltipText: Menu
 			TooltipContainer: TOOLTIP_CONTAINER
 			DisableWorldSounds: true
 			Children:
 				Image:
-					X: 7
-					Y: 5
+					ClassicX: 7
+					ClassicY: 5
 					ImageCollection: order-icons
 					ImageName: options
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@RADAR:
-			X: WINDOW_RIGHT - WIDTH - 5
-			Y: 5
-			Width: 256
-			Height: 256
+			ClassicX: WINDOW_RIGHT - WIDTH - 5
+			ClassicY: 5
+			ClassicWidth: 256
+			ClassicHeight: 256
 			Background: panel-gray
 			Children:
 				Radar:
-					X: 1
-					Y: 1
-					Width: PARENT_RIGHT - 2
-					Height: PARENT_BOTTOM - 2
+					ClassicX: 1
+					ClassicY: 1
+					ClassicWidth: PARENT_RIGHT - 2
+					ClassicHeight: PARENT_BOTTOM - 2
+					PositionType: Absolute
 				VqaPlayer@PLAYER:
-					X: 1
-					Y: 1
-					Width: PARENT_RIGHT - 2
-					Height: PARENT_BOTTOM - 2
+					ClassicX: 1
+					ClassicY: 1
+					ClassicWidth: PARENT_RIGHT - 2
+					ClassicHeight: PARENT_BOTTOM - 2
 					Skippable: false
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
-			X: WINDOW_RIGHT - WIDTH - 5
-			Y: 283
-			Width: 256
-			Height: 46
+			ClassicX: WINDOW_RIGHT - WIDTH - 5
+			ClassicY: 283
+			ClassicWidth: 256
+			ClassicHeight: 46
 			Background: panel-black
 			Visible: false
 			Children:
 				Button@BUTTON_PAUSE:
-					X: 16
-					Y: 10
-					Width: 26
-					Height: 26
+					ClassicX: 16
+					ClassicY: 10
+					ClassicWidth: 26
+					ClassicHeight: 26
 					Key: Pause
 					TooltipText: Pause
 					TooltipContainer: TOOLTIP_CONTAINER
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 5
-							Y: 5
-							Width: 16
-							Height: 16
+							ClassicX: 5
+							ClassicY: 5
+							ClassicWidth: 16
+							ClassicHeight: 16
 							ImageCollection: music
 							ImageName: pause
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_PLAY:
-					X: 16
-					Y: 10
-					Width: 26
-					Height: 26
+					ClassicX: 16
+					ClassicY: 10
+					ClassicWidth: 26
+					ClassicHeight: 26
 					Key: Pause
 					TooltipText: Play
 					TooltipContainer: TOOLTIP_CONTAINER
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PLAY:
-							X: 5
-							Y: 5
-							Width: 16
-							Height: 16
+							ClassicX: 5
+							ClassicY: 5
+							ClassicWidth: 16
+							ClassicHeight: 16
 							ImageCollection: music
 							ImageName: play
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_SLOW:
-					X: 57
-					Y: 13
-					Width: 36
-					Height: 20
+					ClassicX: 57
+					ClassicY: 13
+					ClassicWidth: 36
+					ClassicHeight: 20
 					Key: ReplaySpeedSlow
 					TooltipText: Slow speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Text: 50%
 					Font: TinyBold
+					PositionType: Absolute
 				Button@BUTTON_REGULAR:
-					X: 57 + 48
-					Y: 13
-					Width: 38
-					Height: 20
+					ClassicX: 57 + 48
+					ClassicY: 13
+					ClassicWidth: 38
+					ClassicHeight: 20
 					Key: ReplaySpeedRegular
 					TooltipText: Regular speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Text: 100%
 					Font: TinyBold
+					PositionType: Absolute
 				Button@BUTTON_FAST:
-					X: 57 + 48 * 2
-					Y: 13
-					Width: 38
-					Height: 20
+					ClassicX: 57 + 48 * 2
+					ClassicY: 13
+					ClassicWidth: 38
+					ClassicHeight: 20
 					Key: ReplaySpeedFast
 					TooltipText: Fast speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Text: 200%
 					Font: TinyBold
+					PositionType: Absolute
 				Button@BUTTON_MAXIMUM:
-					X: 57 + 48 * 3
-					Y: 13
-					Width: 38
-					Height: 20
+					ClassicX: 57 + 48 * 3
+					ClassicY: 13
+					ClassicWidth: 38
+					ClassicHeight: 20
 					Key: ReplaySpeedMax
 					TooltipText: Maximum speed
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Text: MAX
 					Font: TinyBold
+					PositionType: Absolute
+			PositionType: Absolute
 		DropDownButton@SHROUD_SELECTOR:
 			Logic: ObserverShroudSelectorLogic
 				CombinedViewKey: ObserverCombinedView
 				WorldViewKey: ObserverWorldView
-			X: WINDOW_RIGHT - WIDTH - 5
-			Y: 260
-			Width: 256
-			Height: 25
+			ClassicX: WINDOW_RIGHT - WIDTH - 5
+			ClassicY: 260
+			ClassicWidth: 256
+			ClassicHeight: 25
 			Font: Bold
 			Children:
 				LogicKeyListener@SHROUD_KEYHANDLER:
+					PositionType: Absolute
 				Image@FLAG:
-					X: 4
-					Y: 4
-					Width: 32
-					Height: 16
+					ClassicX: 4
+					ClassicY: 4
+					ClassicWidth: 32
+					ClassicHeight: 16
+					PositionType: Absolute
 				Label@LABEL:
-					X: 40
-					Width: 60
-					Height: 25
+					ClassicX: 40
+					ClassicWidth: 60
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
 				Label@NOFLAG_LABEL:
-					X: 5
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic
 				StatisticsNoneKey: StatisticsNone
@@ -266,384 +307,432 @@ Container@OBSERVER_WIDGETS:
 				StatisticsCombatKey: StatisticsCombat
 				StatisticsGraphKey: StatisticsGraph
 				StatisticsArmyGraphKey: StatisticsArmyGraph
-			X: 5
-			Y: 5
-			Width: 765
-			Height: 240
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: 765
+			ClassicHeight: 240
 			Children:
 				DropDownButton@STATS_DROPDOWN:
-					X: 0
-					Y: 0
-					Width: 185
-					Height: 25
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: 185
+					ClassicHeight: 25
 					Font: Bold
 					Children:
 						LogicKeyListener@STATS_DROPDOWN_KEYHANDLER:
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@GRAPH_BG:
-					Y: 30
-					X: 0
-					Width: PARENT_RIGHT
-					Height: 24
+					ClassicY: 30
+					ClassicX: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 24
 					Children:
 						Container@BASIC_STATS_HEADERS:
-							X: 0
-							Y: 0
-							Width: 765
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 765
+							ClassicHeight: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Label@PLAYER_HEADER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Player
 									Align: Left
 									Shadow: True
+									PositionType: Absolute
 								Label@CASH_HEADER:
-									X: 160
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Cash
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_MIN_HEADER:
-									X: 240
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 240
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: $/min
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@POWER_HEADER:
-									X: 300
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 300
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Power
 									Align: Center
 									Shadow: True
+									PositionType: Absolute
 								Label@KILLS_HEADER:
-									X: 380
-									Y: 0
-									Width: 40
-									Height: PARENT_BOTTOM
+									ClassicX: 380
+									ClassicY: 0
+									ClassicWidth: 40
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Kills
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@DEATHS_HEADER:
-									X: 420
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 420
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Deaths
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_DESTROYED_HEADER:
-									X: 480
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 480
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Destroyed
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_LOST_HEADER:
-									X: 560
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 560
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Lost
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EXPERIENCE_HEADER:
-									X: 640
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 640
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Score
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ACTIONS_MIN_HEADER:
-									X: 700
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 700
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: APM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@ECONOMY_STATS_HEADERS:
-							X: 0
-							Y: 0
-							Width: 745
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 745
+							ClassicHeight: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Label@PLAYER_HEADER:
-									X: 40
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Player
 									Shadow: True
+									PositionType: Absolute
 								Label@CASH_HEADER:
-									X: 160
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Cash
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_MIN_HEADER:
-									X: 240
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 240
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: $/min
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_THIS_MIN_HEADER:
-									X: 300
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 300
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Earned this min
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_HEADER:
-									X: 420
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 420
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Assets
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_HEADER:
-									X: 500
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 500
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Earned
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@SPENT_HEADER:
-									X: 580
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 580
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Spent
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@HARVESTERS_HEADER:
-									X: 660
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 660
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Harvesters
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@PRODUCTION_STATS_HEADERS:
-							X: 0
-							Y: 0
-							Width: 400
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 400
+							ClassicHeight: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Label@PLAYER_HEADER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Player
 									Align: Left
 									Shadow: True
+									PositionType: Absolute
 								Label@PRODUCTION_HEADER:
-									X: 160
-									Y: 0
-									Width: 100
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 100
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Production
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@SUPPORT_POWERS_HEADERS:
-							X: 0
-							Y: 0
-							Width: 400
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 400
+							ClassicHeight: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Label@PLAYER_HEADER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Player
 									Align: Left
 									Shadow: True
+									PositionType: Absolute
 								Label@SUPPORT_POWERS_HEADER:
-									X: 160
-									Y: 0
-									Width: 100
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 100
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Support Powers
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@COMBAT_STATS_HEADERS:
-							X: 0
-							Y: 0
-							Width: 775
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 775
+							ClassicHeight: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Label@PLAYER_HEADER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Player
 									Align: Left
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_DESTROYED_HEADER:
-									X: 160
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Destroyed
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_LOST_HEADER:
-									X: 240
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 240
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Lost
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@UNITS_KILLED_HEADER:
-									X: 320
-									Y: 0
-									Width: 100
-									Height: PARENT_BOTTOM
+									ClassicX: 320
+									ClassicY: 0
+									ClassicWidth: 100
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Units Killed
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@UNITS_DEAD_HEADER:
-									X: 420
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 420
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Units Lost
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@BUILDINGS_KILLED_HEADER:
-									X: 500
-									Y: 0
-									Width: 90
-									Height: PARENT_BOTTOM
+									ClassicX: 500
+									ClassicY: 0
+									ClassicWidth: 90
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Bldg Killed
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@BUILDINGS_DEAD_HEADER:
-									X: 590
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 590
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Bldg Lost
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ARMY_VALUE_HEADER:
-									X: 670
-									Y: 0
-									Width: 100
-									Height: PARENT_BOTTOM
+									ClassicX: 670
+									ClassicY: 0
+									ClassicWidth: 100
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Text: Army Value
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
 				ScrollPanel@PLAYER_STATS_PANEL:
-					X: 0
-					Y: 54
-					Width: PARENT_RIGHT
-					Height: 240
+					ClassicX: 0
+					ClassicY: 54
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 240
 					TopBottomSpacing: 0
 					BorderWidth: 0
 					Background:
@@ -651,377 +740,433 @@ Container@OBSERVER_WIDGETS:
 					ScrollBar: Hidden
 					Children:
 						ScrollItem@TEAM_TEMPLATE:
-							X: 0
-							Y: 0
-							Width: 650 #PARENT_RIGHT - 35
-							Height: 24
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 650 #PARENT_RIGHT - 35
+							ClassicHeight: 24
 							Children:
 								ColorBlock@TEAM_COLOR:
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@TEAM_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
-									Width: 200
-									Height: PARENT_BOTTOM
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Label@TEAM:
-									X: 10
-									Y: 0
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									ClassicX: 10
+									ClassicY: 0
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						ScrollItem@BASIC_PLAYER_TEMPLATE:
-							X: 0
-							Y: 0
-							Width: 765
-							Height: 24
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 765
+							ClassicHeight: 24
 							BaseName: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									Width: 200
-									Height: PARENT_BOTTOM 
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Image@FLAG:
-									X: 5
-									Y: 4
-									Width: 35
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 5
+									ClassicY: 4
+									ClassicWidth: 35
+									ClassicHeight: PARENT_BOTTOM - 4
 									ImageName: random
 									ImageCollection: flags
+									PositionType: Absolute
 								Label@PLAYER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Shadow: True
+									PositionType: Absolute
 								Label@CASH:
-									X: 160
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_MIN:
-									X: 240
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 240
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@POWER:
-									X: 300
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 300
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Center
 									Shadow: True
+									PositionType: Absolute
 								Label@KILLS:
-									X: 380
-									Y: 0
-									Width: 40
-									Height: PARENT_BOTTOM
+									ClassicX: 380
+									ClassicY: 0
+									ClassicWidth: 40
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@DEATHS:
-									X: 420
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 420
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_DESTROYED:
-									X: 480
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 480
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_LOST:
-									X: 560
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 560
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EXPERIENCE:
-									X: 640
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 640
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ACTIONS_MIN:
-									X: 700
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 700
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
-							X: 0
-							Y: 0
-							Width: 745
-							Height: 24
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 745
+							ClassicHeight: 24
 							BaseName: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									Width: 200
-									Height: PARENT_BOTTOM 
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Image@FLAG:
-									X: 5
-									Y: 4
-									Width: 35
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 5
+									ClassicY: 4
+									ClassicWidth: 35
+									ClassicHeight: PARENT_BOTTOM - 4
 									ImageName: random
 									ImageCollection: flags
+									PositionType: Absolute
 								Label@PLAYER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Shadow: True
+									PositionType: Absolute
 								Label@CASH:
-									X: 160
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_MIN:
-									X: 240
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
+									ClassicX: 240
+									ClassicY: 0
+									ClassicWidth: 60
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED_THIS_MIN:
-									X: 300
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 300
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS:
-									X: 420
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 420
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@EARNED:
-									X: 500
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 500
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@SPENT:
-									X: 580
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 580
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@HARVESTERS:
-									X: 660
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 660
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
 						ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
-							X: 0
-							Y: 0
-							Width: 400
-							Height: 24
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 400
+							ClassicHeight: 24
 							BaseName: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									Width: 200
-									Height: PARENT_BOTTOM 
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Image@FLAG:
-									X: 5
-									Y: 4
-									Width: 35
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 5
+									ClassicY: 4
+									ClassicWidth: 35
+									ClassicHeight: PARENT_BOTTOM - 4
 									ImageName: random
 									ImageCollection: flags
+									PositionType: Absolute
 								Label@PLAYER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Shadow: True
+									PositionType: Absolute
 								ObserverProductionIcons@PRODUCTION_ICONS:
-									X: 160
-									Y: 0
-									Width: 0
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 0
+									ClassicHeight: PARENT_BOTTOM
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
+							PositionType: Absolute
 						ScrollItem@SUPPORT_POWERS_PLAYER_TEMPLATE:
-							X: 0
-							Y: 0
-							Width: 400
-							Height: 24
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 400
+							ClassicHeight: 24
 							BaseName: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									Width: 200
-									Height: PARENT_BOTTOM 
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Image@FLAG:
-									X: 5
-									Y: 4
-									Width: 35
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 5
+									ClassicY: 4
+									ClassicWidth: 35
+									ClassicHeight: PARENT_BOTTOM - 4
 									ImageName: random
 									ImageCollection: flags
+									PositionType: Absolute
 								Label@PLAYER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Shadow: True
+									PositionType: Absolute
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
-									X: 160
-									Y: 0
-									Width: 0
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 0
+									ClassicHeight: PARENT_BOTTOM
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
+							PositionType: Absolute
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
-							X: 0
-							Y: 0
-							Width: 775
-							Height: 24
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 775
+							ClassicHeight: 24
 							BaseName: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
-									X: 0
-									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: PARENT_RIGHT - 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
-									Y: 0
-									Width: 200
-									Height: PARENT_BOTTOM 
+									ClassicX: PARENT_RIGHT - 200
+									ClassicY: 0
+									ClassicWidth: 200
+									ClassicHeight: PARENT_BOTTOM
+									PositionType: Absolute
 								Image@FLAG:
-									X: 5
-									Y: 4
-									Width: 35
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 5
+									ClassicY: 4
+									ClassicWidth: 35
+									ClassicHeight: PARENT_BOTTOM - 4
 									ImageName: random
 									ImageCollection: flags
+									PositionType: Absolute
 								Label@PLAYER:
-									X: 40
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
+									ClassicX: 40
+									ClassicY: 0
+									ClassicWidth: 120
+									ClassicHeight: PARENT_BOTTOM
 									Font: Bold
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_DESTROYED:
-									X: 160
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 160
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ASSETS_LOST:
-									X: 240
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 240
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@UNITS_KILLED:
-									X: 320
-									Y: 0
-									Width: 100
-									Height: PARENT_BOTTOM
+									ClassicX: 320
+									ClassicY: 0
+									ClassicWidth: 100
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@UNITS_DEAD:
-									X: 420
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 420
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@BUILDINGS_KILLED:
-									X: 500
-									Y: 0
-									Width: 90
-									Height: PARENT_BOTTOM
+									ClassicX: 500
+									ClassicY: 0
+									ClassicWidth: 90
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@BUILDINGS_DEAD:
-									X: 590
-									Y: 0
-									Width: 80
-									Height: PARENT_BOTTOM
+									ClassicX: 590
+									ClassicY: 0
+									ClassicWidth: 80
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
 								Label@ARMY_VALUE:
-									X: 670
-									Y: 0
-									Width: 100
-									Height: PARENT_BOTTOM
+									ClassicX: 670
+									ClassicY: 0
+									ClassicWidth: 100
+									ClassicHeight: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@EARNED_THIS_MIN_GRAPH_CONTAINER:
-					X: 0
-					Y: 30
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 0
+					ClassicY: 30
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Visible: False
 					Children:
 						ColorBlock@GRAPH_BACKGROUND:
-							X: 0
-							Y: 0
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							Color: 00000090
+							PositionType: Absolute
 						LineGraph@EARNED_THIS_MIN_GRAPH:
-							X: 0
-							Y: 0
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							ValueFormat: ${0}
 							XAxisValueFormat: {0}
 							YAxisValueFormat: ${0:F0}
@@ -1031,24 +1176,27 @@ Container@OBSERVER_WIDGETS:
 							YAxisLabel: Earnings
 							LabelFont: TinyBold
 							AxisFont: TinyBold
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@ARMY_THIS_MIN_GRAPH_CONTAINER:
-					X: 0
-					Y: 30
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 0
+					ClassicY: 30
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Visible: False
 					Children:
 						ColorBlock@GRAPH_BACKGROUND:
-							X: 0
-							Y: 0
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							Color: 00000090
+							PositionType: Absolute
 						LineGraph@ARMY_THIS_MIN_GRAPH:
-							X: 0
-							Y: 0
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							ValueFormat: ${0}
 							XAxisValueFormat: {0}
 							YAxisValueFormat: ${0:F0}
@@ -1058,12 +1206,16 @@ Container@OBSERVER_WIDGETS:
 							YAxisLabel: Army Value
 							LabelFont: TinyBold
 							AxisFont: TinyBold
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@PLAYER_WIDGETS:
 	Children:
 		ViewportController:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
 			TooltipTemplate: WORLD_TOOLTIP_FACTIONSUFFIX
 			TooltipContainer: TOOLTIP_CONTAINER
 			ScrollUpKey: MapScrollUp
@@ -1077,54 +1229,63 @@ Container@PLAYER_WIDGETS:
 			BookmarkSaveKeyPrefix: MapBookmarkSave
 			BookmarkRestoreKeyPrefix: MapBookmarkRestore
 			BookmarkKeyCount: 4
+			PositionType: Absolute
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
+			PositionType: Absolute
 		LogicTicker@SIDEBAR_TICKER:
+			PositionType: Absolute
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
-			X: 10
-			Y: 10
+			ClassicX: 10
+			ClassicY: 10
 			Children:
 				Container@PALETTE_BACKGROUND:
 					Children:
 						Background@ICON_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							Width: 66
-							Height: 50
+							ClassicWidth: 66
+							ClassicHeight: 50
 							ClickThrough: false
 							Background: panel-black
+							PositionType: Absolute
+					PositionType: Absolute
 				SupportPowers@SUPPORT_PALETTE:
-					X: 1
-					Y: 1
+					ClassicX: 1
+					ClassicY: 1
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX
 					ReadyText: Ready
 					HoldText: On Hold
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
+					PositionType: Absolute
+			PositionType: Absolute
 		Image@COMMAND_BAR_BACKGROUND:
-			X: 5
-			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Width: 494
-			Height: 44
+			ClassicX: 5
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 5
+			ClassicWidth: 494
+			ClassicHeight: 44
 			ImageCollection: sidebar
 			ImageName: background-commandbar
 			ClickThrough: False
+			PositionType: Absolute
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 				HighlightOnButtonPress: True
-			X: 14
-			Y: WINDOW_BOTTOM - HEIGHT - 14
-			Width: 311
-			Height: 26
+			ClassicX: 14
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 14
+			ClassicWidth: 311
+			ClassicHeight: 26
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
+					PositionType: Absolute
 				WorldButton@ATTACK_MOVE:
 					Logic: AddFactionSuffixLogic
-					X: 0
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: AttackMove
 					DisableKeySound: true
@@ -1134,22 +1295,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: attack-move
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@FORCE_MOVE:
 					Logic: AddFactionSuffixLogic
-					X: 39
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 39
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					DisableKeySound: true
 					TooltipText: Force Move
@@ -1158,22 +1322,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: force-move
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@FORCE_ATTACK:
 					Logic: AddFactionSuffixLogic
-					X: 78
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 78
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					DisableKeySound: true
 					TooltipText: Force Attack
@@ -1182,22 +1349,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: force-attack
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@GUARD:
 					Logic: AddFactionSuffixLogic
-					X: 117
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 117
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: Guard
 					DisableKeySound: true
@@ -1207,22 +1377,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: guard
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@DEPLOY:
 					Logic: AddFactionSuffixLogic
-					X: 156
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 156
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: Deploy
 					DisableKeyRepeat: true
@@ -1233,22 +1406,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: deploy
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@SCATTER:
 					Logic: AddFactionSuffixLogic
-					X: 195
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 195
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: Scatter
 					DisableKeyRepeat: true
@@ -1259,22 +1435,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: scatter
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@STOP:
 					Logic: AddFactionSuffixLogic
-					X: 234
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 234
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: Stop
 					DisableKeyRepeat: true
@@ -1285,22 +1464,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: stop
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@QUEUE_ORDERS:
 					Logic: AddFactionSuffixLogic
-					X: 273
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 273
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					DisableKeySound: true
 					TooltipText: Waypoint Mode
@@ -1309,23 +1491,26 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 7
-							Y: 1
+							ClassicX: 7
+							ClassicY: 1
 							ImageCollection: command-icons
 							ImageName: queue-orders
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 335
-			Y: WINDOW_BOTTOM - HEIGHT - 14
-			Width: 155
-			Height: 26
+			ClassicX: 335
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 14
+			ClassicWidth: 155
+			ClassicHeight: 26
 			Children:
 				WorldButton@STANCE_ATTACKANYTHING:
 					Logic: AddFactionSuffixLogic
-					X: 0
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: StanceAttackAnything
 					DisableKeyRepeat: true
@@ -1336,22 +1521,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 11
-							Y: 5
+							ClassicX: 11
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: attack-anything
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@STANCE_DEFEND:
 					Logic: AddFactionSuffixLogic
-					X: 39
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 39
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: StanceDefend
 					DisableKeyRepeat: true
@@ -1362,22 +1550,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 11
-							Y: 5
+							ClassicX: 11
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: defend
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@STANCE_RETURNFIRE:
 					Logic: AddFactionSuffixLogic
-					X: 78
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 78
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: StanceReturnFire
 					DisableKeyRepeat: true
@@ -1388,22 +1579,25 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 11
-							Y: 5
+							ClassicX: 11
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: return-fire
+							PositionType: Absolute
 						Image@SEPARATOR:
 							Logic: AddFactionSuffixLogic
-							X: 38
-							Y: 2
+							ClassicX: 38
+							ClassicY: 2
 							ImageCollection: chrome-button
 							ImageName: separator
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldButton@STANCE_HOLDFIRE:
 					Logic: AddFactionSuffixLogic
-					X: 117
-					Y: 0
-					Width: 38
-					Height: 26
+					ClassicX: 117
+					ClassicY: 0
+					ClassicWidth: 38
+					ClassicHeight: 26
 					Background: chrome-button-background
 					Key: StanceHoldFire
 					DisableKeyRepeat: true
@@ -1414,29 +1608,32 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@ICON:
-							X: 11
-							Y: 5
+							ClassicX: 11
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Image@SIDEBAR_BACKGROUND:
-			X: WINDOW_RIGHT - WIDTH - 5
-			Y: 5
-			Width: 230
-			Height: 291
+			ClassicX: WINDOW_RIGHT - WIDTH - 5
+			ClassicY: 5
+			ClassicWidth: 230
+			ClassicHeight: 291
 			ImageCollection: sidebar
 			ImageName: background-sidebar
 			ClickThrough: false
 			Children:
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
-					X: 18
-					Y: 1
+					ClassicX: 18
+					ClassicY: 1
 					Children:
 						WorldButton@SELL_BUTTON:
 							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
-							X: 0
-							Width: 28
-							Height: 26
+							ClassicX: 0
+							ClassicWidth: 28
+							ClassicHeight: 26
 							Background: chrome-button-background
 							Key: Sell
 							TooltipText: Sell
@@ -1445,20 +1642,23 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 5
+									ClassicX: 6
+									ClassicY: 5
 									ImageCollection: order-icons
+									PositionType: Absolute
 								Image@SEPARATOR:
 									Logic: AddFactionSuffixLogic
-									X: 28
-									Y: 2
+									ClassicX: 28
+									ClassicY: 2
 									ImageCollection: chrome-button
 									ImageName: separator
+									PositionType: Absolute
+							PositionType: Absolute
 						WorldButton@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
-							X: 29
-							Width: 28
-							Height: 26
+							ClassicX: 29
+							ClassicWidth: 28
+							ClassicHeight: 26
 							Background: chrome-button-background
 							Key: Repair
 							TooltipText: Repair
@@ -1467,20 +1667,23 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 5
+									ClassicX: 6
+									ClassicY: 5
 									ImageCollection: order-icons
+									PositionType: Absolute
 								Image@SEPARATOR:
 									Logic: AddFactionSuffixLogic
-									X: 28
-									Y: 2
+									ClassicX: 28
+									ClassicY: 2
 									ImageCollection: chrome-button
 									ImageName: separator
+									PositionType: Absolute
+							PositionType: Absolute
 						WorldButton@BEACON_BUTTON:
 							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
-							X: 58
-							Width: 28
-							Height: 26
+							ClassicX: 58
+							ClassicWidth: 28
+							ClassicHeight: 26
 							Background: chrome-button-background
 							Key: PlaceBeacon
 							TooltipText: Place Beacon
@@ -1489,15 +1692,17 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 5
+									ClassicX: 6
+									ClassicY: 5
 									ImageCollection: order-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddFactionSuffixLogic
 							Key: escape
-							X: 156
-							Width: 38
-							Height: 26
+							ClassicX: 156
+							ClassicWidth: 38
+							ClassicHeight: 26
 							Background: chrome-button-background
 							TooltipText: Options
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -1506,97 +1711,115 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 11
-									Y: 5
+									ClassicX: 11
+									ClassicY: 5
 									ImageCollection: order-icons
 									ImageName: options
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@RADAR:
 					Logic: IngameRadarDisplayLogic
-					X: 18
-					Y: 39
+					ClassicX: 18
+					ClassicY: 39
 					Children:
 						LogicTicker@RADAR_TICKER:
+							PositionType: Absolute
 						ColorBlock@RADAR_FADETOBLACK:
-							Width: 194
-							Height: 194
+							ClassicWidth: 194
+							ClassicHeight: 194
+							PositionType: Absolute
 						Image@RADAR_LOGO:
 							Logic: AddFactionSuffixLogic
-							X: 31
-							Y: 31
+							ClassicX: 31
+							ClassicY: 31
 							ImageCollection: chrome-radar
 							ImageName: logo
+							PositionType: Absolute
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
-							Width: 194
-							Height: 194
+							ClassicWidth: 194
+							ClassicHeight: 194
 							SoundUp: RadarUp
 							SoundDown: RadarDown
+							PositionType: Absolute
 						VqaPlayer@PLAYER:
-							Width: 194
-							Height: 194
+							ClassicWidth: 194
+							ClassicHeight: 194
 							Skippable: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@POWERBAR_PANEL:
 					Logic: IngamePowerBarLogic
-					X: 0
-					Y: 51
-					Width: 10
-					Height: 190
+					ClassicX: 0
+					ClassicY: 51
+					ClassicWidth: 10
+					ClassicHeight: 190
 					Children:
 						ResourceBar@POWERBAR:
-							Width: 10
-							Height: PARENT_BOTTOM - 2
+							ClassicWidth: 10
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 							IndicatorImage: indicator-left
+							PositionType: Absolute
 						Image@POWERBAR_PANEL:
 							ImageCollection: vertical-bars
 							ImageName: power
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@SILOBAR_PANEL:
 					Logic: IngameSiloBarLogic
-					X: 220
-					Y: 51
-					Width: 10
-					Height: 190
+					ClassicX: 220
+					ClassicY: 51
+					ClassicWidth: 10
+					ClassicHeight: 190
 					Children:
 						ResourceBar@SILOBAR:
-							Width: 10
-							Height: PARENT_BOTTOM - 2
+							ClassicWidth: 10
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 							IndicatorImage: indicator-right
+							PositionType: Absolute
 						Image@SILOBAR_PANEL:
 							ImageCollection: vertical-bars
 							ImageName: silo
+							PositionType: Absolute
+					PositionType: Absolute
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
-					X: 0
-					Y: 234
-					Width: PARENT_RIGHT
-					Height: 22
+					ClassicX: 0
+					ClassicY: 234
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 22
 					Align: Center
 					Font: TinyBold
+					PositionType: Absolute
 				WorldLabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
-					X: 35
-					Y: 234
-					Width: 50
-					Height: 22
+					ClassicX: 35
+					ClassicY: 234
+					ClassicWidth: 50
+					ClassicHeight: 22
 					Font: Bold
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@POWER_ICON:
-							X: 0 - 16
-							Y: 3
+							ClassicX: 0 - 16
+							ClassicY: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
+							PositionType: Absolute
+					PositionType: Absolute
 				WorldLabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
-					X: PARENT_RIGHT - WIDTH - 35
-					Y: 234
-					Width: 50
-					Height: 22
+					ClassicX: PARENT_RIGHT - WIDTH - 35
+					ClassicY: 234
+					ClassicWidth: 50
+					ClassicHeight: 22
 					Align: Right
 					Font: Bold
 					Text: {0}
@@ -1604,20 +1827,22 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 					Children:
 						Image@CASH_ICON:
-							X: PARENT_RIGHT
-							Y: 3
+							ClassicX: PARENT_RIGHT
+							ClassicY: 3
 							ImageCollection: cash-icons
 							ImageName: cash-normal
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@PRODUCTION_TYPES:
-					X: 18
-					Y: 267
-					Width: 194
-					Height: 26
+					ClassicX: 18
+					ClassicY: 267
+					ClassicWidth: 194
+					ClassicHeight: 26
 					Children:
 						ProductionTypeButton@BUILDING:
 							Logic: AddFactionSuffixLogic
-							Width: 38
-							Height: 26
+							ClassicWidth: 38
+							ClassicHeight: 26
 							Background: chrome-button-background
 							TooltipText: Buildings
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -1626,20 +1851,23 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeBuilding
 							Children:
 								Image@ICON:
-									X: 11
-									Y: 5
+									ClassicX: 11
+									ClassicY: 5
 									ImageCollection: production-icons
+									PositionType: Absolute
 								Image@SEPARATOR:
 									Logic: AddFactionSuffixLogic
-									X: 38
-									Y: 2
+									ClassicX: 38
+									ClassicY: 2
 									ImageCollection: chrome-button
 									ImageName: separator
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@DEFENCE:
 							Logic: AddFactionSuffixLogic
-							X: 39
-							Width: 38
-							Height: 26
+							ClassicX: 39
+							ClassicWidth: 38
+							ClassicHeight: 26
 							Background: chrome-button-background
 							TooltipText: Support
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -1648,20 +1876,23 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeDefense
 							Children:
 								Image@ICON:
-									X: 11
-									Y: 5
+									ClassicX: 11
+									ClassicY: 5
 									ImageCollection: production-icons
+									PositionType: Absolute
 								Image@SEPARATOR:
 									Logic: AddFactionSuffixLogic
-									X: 38
-									Y: 2
+									ClassicX: 38
+									ClassicY: 2
 									ImageCollection: chrome-button
 									ImageName: separator
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@INFANTRY:
 							Logic: AddFactionSuffixLogic
-							X: 78
-							Width: 38
-							Height: 26
+							ClassicX: 78
+							ClassicWidth: 38
+							ClassicHeight: 26
 							Background: chrome-button-background
 							TooltipText: Infantry
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -1670,20 +1901,23 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeInfantry
 							Children:
 								Image@ICON:
-									X: 11
-									Y: 5
+									ClassicX: 11
+									ClassicY: 5
 									ImageCollection: production-icons
+									PositionType: Absolute
 								Image@SEPARATOR:
 									Logic: AddFactionSuffixLogic
-									X: 38
-									Y: 2
+									ClassicX: 38
+									ClassicY: 2
 									ImageCollection: chrome-button
 									ImageName: separator
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@VEHICLE:
 							Logic: AddFactionSuffixLogic
-							X: 117
-							Width: 38
-							Height: 26
+							ClassicX: 117
+							ClassicWidth: 38
+							ClassicHeight: 26
 							Background: chrome-button-background
 							TooltipText: Vehicles
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -1692,20 +1926,23 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeVehicle
 							Children:
 								Image@ICON:
-									X: 11
-									Y: 5
+									ClassicX: 11
+									ClassicY: 5
 									ImageCollection: production-icons
+									PositionType: Absolute
 								Image@SEPARATOR:
 									Logic: AddFactionSuffixLogic
-									X: 38
-									Y: 2
+									ClassicX: 38
+									ClassicY: 2
 									ImageCollection: chrome-button
 									ImageName: separator
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@AIRCRAFT:
 							Logic: AddFactionSuffixLogic
-							X: 156
-							Width: 38
-							Height: 26
+							ClassicX: 156
+							ClassicWidth: 38
+							ClassicHeight: 26
 							Background: chrome-button-background
 							TooltipText: Aircraft
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -1714,28 +1951,35 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeAircraft
 							Children:
 								Image@ICON:
-									X: 11
-									Y: 5
+									ClassicX: 11
+									ClassicY: 5
 									ImageCollection: production-icons
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@PRODUCTION_BACKGROUND:
-			X: WINDOW_RIGHT - 5 - 18 - 194
-			Y: 319
+			ClassicX: WINDOW_RIGHT - 5 - 18 - 194
+			ClassicY: 319
 			Children:
 				Background@ICON_TEMPLATE:
 					Logic: AddFactionSuffixLogic
-					Width: 66
-					Height: 50
+					ClassicWidth: 66
+					ClassicHeight: 50
 					Background: panel-black
+					PositionType: Absolute
+			PositionType: Absolute
 		ProductionPalette@PRODUCTION_PALETTE:
-			X: WINDOW_RIGHT - 5 - 17 - 194
-			Y: 320
-			Width: 192
+			ClassicX: WINDOW_RIGHT - 5 - 17 - 194
+			ClassicY: 320
+			ClassicWidth: 192
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: PRODUCTION_TOOLTIP_FACTIONSUFFIX
 			ReadyText: Ready
 			HoldText: On Hold
 			HotkeyPrefix: Production
 			HotkeyCount: 24
+			PositionType: Absolute
 		ProductionTabs@PRODUCTION_TABS:
 			Logic: AddFactionSuffixLogic, ProductionTabsLogic
 			PaletteWidget: PRODUCTION_PALETTE
@@ -1743,18 +1987,22 @@ Container@PLAYER_WIDGETS:
 			BackgroundContainer: PRODUCTION_BACKGROUND
 			PreviousProductionTabKey: PreviousProductionTab
 			NextProductionTabKey: NextProductionTab
-			X: WINDOW_RIGHT - 5 - 18 - 194
-			Y: 299
-			Width: 194
-			Height: 20
+			ClassicX: WINDOW_RIGHT - 5 - 18 - 194
+			ClassicY: 299
+			ClassicWidth: 194
+			ClassicHeight: 20
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@FMVPLAYER:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	ClassicWidth: WINDOW_RIGHT
+	ClassicHeight: WINDOW_BOTTOM
 	Background: panel-allblack
 	Children:
 		VqaPlayer@PLAYER:
-			X: 0
-			Y: 0
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicX: 0
+			ClassicY: 0
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
+			PositionType: Absolute
+	PositionType: Absolute

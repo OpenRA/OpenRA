@@ -1,73 +1,86 @@
 Container@LOBBY_OPTIONS_BIN:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Children:
 		Label@TITLE:
-			Y: 0 - 24
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 0 - 24
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
 			Text: Map Options
+			PositionType: Absolute
 		ScrollPanel:
 			Logic: LobbyOptionsLogic
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Container@LOBBY_OPTIONS:
-					X: 18
-					Y: 9
-					Width: PARENT_RIGHT - 24 - 18
+					ClassicX: 18
+					ClassicY: 9
+					ClassicWidth: PARENT_RIGHT - 24 - 18
 					Children:
 						Container@CHECKBOX_ROW_TEMPLATE:
-							Height: 34
+							ClassicHeight: 34
 							Children:
 								Checkbox@A:
-									Width: 175
-									Height: 20
+									ClassicWidth: 175
+									ClassicHeight: 20
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
 								Checkbox@B:
-									X: 195
-									Width: 175
-									Height: 20
+									ClassicX: 195
+									ClassicWidth: 175
+									ClassicHeight: 20
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
 								Checkbox@C:
-									X: 375
-									Width: 175
-									Height: 20
+									ClassicX: 375
+									ClassicWidth: 175
+									ClassicHeight: 20
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@DROPDOWN_ROW_TEMPLATE:
-							Height: 34
-							Width: PARENT_RIGHT
+							ClassicHeight: 34
+							ClassicWidth: PARENT_RIGHT
 							Children:
 								Label@A_DESC:
-									Width: 80
-									Height: 25
+									ClassicWidth: 80
+									ClassicHeight: 25
 									Align: Right
 									Visible: False
+									PositionType: Absolute
 								DropDownButton@A:
-									X: 85
-									Width: 160
-									Height: 25
+									ClassicX: 85
+									ClassicWidth: 160
+									ClassicHeight: 25
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
 								Label@B_DESC:
-									X: PARENT_RIGHT - WIDTH - 183
-									Width: 160
-									Height: 25
+									ClassicX: PARENT_RIGHT - WIDTH - 183
+									ClassicWidth: 160
+									ClassicHeight: 25
 									Align: Right
 									Visible: False
+									PositionType: Absolute
 								DropDownButton@B:
-									X: PARENT_RIGHT - WIDTH - 18
-									Width: 160
-									Height: 25
+									ClassicX: PARENT_RIGHT - WIDTH - 18
+									ClassicWidth: 160
+									ClassicHeight: 25
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

@@ -1,86 +1,96 @@
 Container@LOBBY_PLAYER_BIN:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Children:
 		Container@LABEL_CONTAINER:
-			X: 5
-			Y: 0 - 26
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicX: 5
+			ClassicY: 0 - 26
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Label@LABEL_LOBBY_NAME:
-					Width: 180
-					Height: 25
+					ClassicWidth: 180
+					ClassicHeight: 25
 					Text: Name
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@LABEL_LOBBY_COLOR:
-					X: 190
-					Width: 70
-					Height: 25
+					ClassicX: 190
+					ClassicWidth: 70
+					ClassicHeight: 25
 					Text: Color
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@LABEL_LOBBY_FACTION:
-					X: 270
-					Width: 130
-					Height: 25
+					ClassicX: 270
+					ClassicWidth: 130
+					ClassicHeight: 25
 					Text: Faction
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@LABEL_LOBBY_TEAM:
-					X: 410
-					Width: 48
-					Height: 25
+					ClassicX: 410
+					ClassicWidth: 48
+					ClassicHeight: 25
 					Text: Team
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@LABEL_LOBBY_SPAWN:
-					X: 468
-					Width: 48
-					Height: 25
+					ClassicX: 468
+					ClassicWidth: 48
+					ClassicHeight: 25
 					Text: Spawn
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@LABEL_LOBBY_STATUS:
-					X: 525
-					Width: 20
-					Height: 25
+					ClassicX: 525
+					ClassicWidth: 20
+					ClassicHeight: 25
 					Text: Ready
 					Align: Left
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollPanel@LOBBY_PLAYERS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
 				Container@TEMPLATE_EDITABLE_PLAYER:
-					X: 5
-					Width: 475
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 475
+					ClassicHeight: 25
 					Visible: false
 					Children:
 						Container@LATENCY:
-							Y: 6
-							Width: 11
-							Height: 14
+							ClassicY: 6
+							ClassicWidth: 11
+							ClassicHeight: 14
 							Visible: false
 							Children:
 								ColorBlock@LATENCY_COLOR:
-									X: 2
-									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 2
+									ClassicY: 2
+									ClassicWidth: PARENT_RIGHT - 4
+									ClassicHeight: PARENT_BOTTOM - 4
+									PositionType: Absolute
+							PositionType: Absolute
 						ClientTooltipRegion@LATENCY_REGION:
-							Width: 11
-							Height: 25
+							ClassicWidth: 11
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+							PositionType: Absolute
 						TextField@NAME:
-							X: 15
-							Width: 165
-							Height: 25
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Text: Name
 							LeftMargin: 24
 							MaxLength: 16
@@ -88,119 +98,139 @@ Container@LOBBY_PLAYER_BIN:
 							Children:
 								Image@PROFILE:
 									ImageCollection: lobby-bits
-									X: 3
-									Y: 3
+									ClassicX: 3
+									ClassicY: 3
 									Visible: false
+									PositionType: Absolute
 								ClientTooltipRegion@PROFILE_TOOLTIP:
-									X: 3
-									Y: 3
-									Width: 16
-									Height: 16
+									ClassicX: 3
+									ClassicY: 3
+									ClassicWidth: 16
+									ClassicHeight: 16
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
+									PositionType: Absolute
+							PositionType: Absolute
 						DropDownButton@SLOT_OPTIONS:
-							X: 15
-							Width: 165
-							Height: 25
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Text: Name
 							Font: Regular
 							Visible: false
+							PositionType: Absolute
 						DropDownButton@COLOR:
-							X: 190
-							Width: 70
-							Height: 25
+							ClassicX: 190
+							ClassicWidth: 70
+							ClassicHeight: 25
 							IgnoreChildMouseOver: true
 							Children:
 								ColorBlock@COLORBLOCK:
-									X: 5
-									Y: 6
-									Width: PARENT_RIGHT - 35
-									Height: PARENT_BOTTOM - 12
+									ClassicX: 5
+									ClassicY: 6
+									ClassicWidth: PARENT_RIGHT - 35
+									ClassicHeight: PARENT_BOTTOM - 12
+									PositionType: Absolute
+							PositionType: Absolute
 						DropDownButton@FACTION:
-							X: 270
-							Width: 130
-							Height: 25
+							ClassicX: 270
+							ClassicWidth: 130
+							ClassicHeight: 25
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
 							PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
 							Children:
 								Image@FACTIONFLAG:
-									X: 4
-									Y: 2
-									Width: 23
-									Height: 23
+									ClassicX: 4
+									ClassicY: 2
+									ClassicWidth: 23
+									ClassicHeight: 23
+									PositionType: Absolute
 								Label@FACTIONNAME:
-									X: 34
-									Width: 70
-									Height: 25
+									ClassicX: 34
+									ClassicWidth: 70
+									ClassicHeight: 25
 									Text: Faction
+									PositionType: Absolute
+							PositionType: Absolute
 						DropDownButton@TEAM_DROPDOWN:
-							X: 410
-							Width: 48
-							Height: 25
+							ClassicX: 410
+							ClassicWidth: 48
+							ClassicHeight: 25
 							Text: Team
+							PositionType: Absolute
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 468
-							Width: 48
-							Height: 25
+							ClassicX: 468
+							ClassicWidth: 48
+							ClassicHeight: 25
 							Text: Spawn
+							PositionType: Absolute
 						Checkbox@STATUS_CHECKBOX:
-							X: 525
-							Y: 2
-							Width: 20
-							Height: 20
+							ClassicX: 525
+							ClassicY: 2
+							ClassicWidth: 20
+							ClassicHeight: 20
 							Visible: false
+							PositionType: Absolute
 						Image@STATUS_IMAGE:
-							X: 527
-							Y: 4
-							Width: 20
-							Height: 20
+							ClassicX: 527
+							ClassicY: 4
+							ClassicWidth: 20
+							ClassicHeight: 20
 							ImageCollection: checkbox-bits
 							ImageName: checked
 							Visible: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@TEMPLATE_NONEDITABLE_PLAYER:
-					X: 5
-					Width: 475
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 475
+					ClassicHeight: 25
 					Visible: false
 					Children:
 						Container@LATENCY:
-							Y: 6
-							Width: 11
-							Height: 14
+							ClassicY: 6
+							ClassicWidth: 11
+							ClassicHeight: 14
 							Visible: false
 							Children:
 								ColorBlock@LATENCY_COLOR:
-									X: 2
-									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 2
+									ClassicY: 2
+									ClassicWidth: PARENT_RIGHT - 4
+									ClassicHeight: PARENT_BOTTOM - 4
+									PositionType: Absolute
+							PositionType: Absolute
 						ClientTooltipRegion@LATENCY_REGION:
-							Width: 11
-							Height: 25
+							ClassicWidth: 11
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+							PositionType: Absolute
 						Image@PROFILE:
 							ImageCollection: lobby-bits
-							X: 18
-							Y: 3
+							ClassicX: 18
+							ClassicY: 3
 							Visible: false
+							PositionType: Absolute
 						ClientTooltipRegion@PROFILE_TOOLTIP:
-							X: 18
-							Y: 3
-							Width: 16
-							Height: 16
+							ClassicX: 18
+							ClassicY: 3
+							ClassicWidth: 16
+							ClassicHeight: 16
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: ANONYMOUS_PLAYER_TOOLTIP
+							PositionType: Absolute
 						Label@NAME:
-							X: 39
-							Width: 146
-							Height: 25
+							ClassicX: 39
+							ClassicWidth: 146
+							ClassicHeight: 25
 							Text: Name
+							PositionType: Absolute
 						DropDownButton@PLAYER_ACTION:
-							X: 15
-							Width: 165
-							Height: 25
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Font: Regular
 							Visible: false
 							Align: Left
@@ -208,193 +238,226 @@ Container@LOBBY_PLAYER_BIN:
 							Children:
 								Image@PROFILE:
 									ImageCollection: lobby-bits
-									X: 3
-									Y: 3
+									ClassicX: 3
+									ClassicY: 3
 									Visible: false
+									PositionType: Absolute
 								ClientTooltipRegion@PROFILE_TOOLTIP:
-									X: 3
-									Y: 3
-									Width: 16
-									Height: 16
+									ClassicX: 3
+									ClassicY: 3
+									ClassicWidth: 16
+									ClassicHeight: 16
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
+									PositionType: Absolute
+							PositionType: Absolute
 						ColorBlock@COLORBLOCK:
-							X: 195
-							Y: 6
-							Width: 35
-							Height: 13
+							ClassicX: 195
+							ClassicY: 6
+							ClassicWidth: 35
+							ClassicHeight: 13
+							PositionType: Absolute
 						Container@FACTION:
-							X: 270
-							Width: 160
-							Height: 25
+							ClassicX: 270
+							ClassicWidth: 160
+							ClassicHeight: 25
 							Children:
 								Image@FACTIONFLAG:
-									X: 4
-									Y: 2
-									Width: 23
-									Height: 23
+									ClassicX: 4
+									ClassicY: 2
+									ClassicWidth: 23
+									ClassicHeight: 23
+									PositionType: Absolute
 								Label@FACTIONNAME:
-									X: 34
-									Width: 60
-									Height: 25
+									ClassicX: 34
+									ClassicWidth: 60
+									ClassicHeight: 25
 									Text: Faction
+									PositionType: Absolute
+							PositionType: Absolute
 						Label@TEAM:
-							X: 410
-							Width: 23
-							Height: 25
+							ClassicX: 410
+							ClassicWidth: 23
+							ClassicHeight: 25
 							Align: Center
 							Text: Team
+							PositionType: Absolute
 						Label@SPAWN:
-							X: 468
-							Width: 23
-							Height: 25
+							ClassicX: 468
+							ClassicWidth: 23
+							ClassicHeight: 25
 							Align: Center
+							PositionType: Absolute
 						DropDownButton@TEAM_DROPDOWN:
-							X: 410
-							Width: 48
-							Height: 25
+							ClassicX: 410
+							ClassicWidth: 48
+							ClassicHeight: 25
 							Visible: false
+							PositionType: Absolute
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 468
-							Width: 48
-							Height: 25
+							ClassicX: 468
+							ClassicWidth: 48
+							ClassicHeight: 25
 							Visible: false
+							PositionType: Absolute
 						Image@STATUS_IMAGE:
-							X: 527
-							Y: 4
-							Width: 20
-							Height: 20
+							ClassicX: 527
+							ClassicY: 4
+							ClassicWidth: 20
+							ClassicHeight: 20
 							ImageCollection: checkbox-bits
 							ImageName: checked
 							Visible: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@TEMPLATE_EMPTY:
-					X: 5
-					Width: 475
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 475
+					ClassicHeight: 25
 					Visible: false
 					Children:
 						Label@NAME:
-							X: 20
-							Width: 165
-							Height: 25
+							ClassicX: 20
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Text: Name
+							PositionType: Absolute
 						DropDownButton@SLOT_OPTIONS:
-							X: 15
-							Width: 165
-							Height: 25
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Text: Name
 							Visible: false
+							PositionType: Absolute
 						Button@JOIN:
-							X: 190
-							Width: 326
-							Height: 25
+							ClassicX: 190
+							ClassicWidth: 326
+							ClassicHeight: 25
 							Text: Play in this slot
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
-					X: 5
-					Width: 475
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 475
+					ClassicHeight: 25
 					Visible: false
 					Children:
 						Container@LATENCY:
-							Y: 6
-							Width: 11
-							Height: 14
+							ClassicY: 6
+							ClassicWidth: 11
+							ClassicHeight: 14
 							Visible: false
 							Children:
 								ColorBlock@LATENCY_COLOR:
-									X: 2
-									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 2
+									ClassicY: 2
+									ClassicWidth: PARENT_RIGHT - 4
+									ClassicHeight: PARENT_BOTTOM - 4
+									PositionType: Absolute
+							PositionType: Absolute
 						ClientTooltipRegion@LATENCY_REGION:
-							Width: 11
-							Height: 25
+							ClassicWidth: 11
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+							PositionType: Absolute
 						TextField@NAME:
-							X: 15
-							Width: 165
-							Height: 25
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Text: Name
 							LeftMargin: 24
 							MaxLength: 16
 							Children:
 								Image@PROFILE:
 									ImageCollection: lobby-bits
-									X: 3
-									Y: 3
+									ClassicX: 3
+									ClassicY: 3
 									Visible: false
+									PositionType: Absolute
 								ClientTooltipRegion@PROFILE_TOOLTIP:
-									X: 3
-									Y: 3
-									Width: 16
-									Height: 16
+									ClassicX: 3
+									ClassicY: 3
+									ClassicWidth: 16
+									ClassicHeight: 16
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
+									PositionType: Absolute
+							PositionType: Absolute
 						Label@SPECTATOR:
-							X: 190
-							Width: 326
-							Height: 25
+							ClassicX: 190
+							ClassicWidth: 326
+							ClassicHeight: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
+							PositionType: Absolute
 						Checkbox@STATUS_CHECKBOX:
-							X: 525
-							Y: 2
-							Width: 20
-							Height: 20
+							ClassicX: 525
+							ClassicY: 2
+							ClassicWidth: 20
+							ClassicHeight: 20
 							Visible: false
+							PositionType: Absolute
 						Image@STATUS_IMAGE:
-							X: 527
-							Y: 4
-							Width: 20
-							Height: 20
+							ClassicX: 527
+							ClassicY: 4
+							ClassicWidth: 20
+							ClassicHeight: 20
 							ImageCollection: checkbox-bits
 							ImageName: checked
 							Visible: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
-					X: 5
-					Width: 475
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 475
+					ClassicHeight: 25
 					Visible: false
 					Children:
 						Container@LATENCY:
-							Y: 6
-							Width: 11
-							Height: 14
+							ClassicY: 6
+							ClassicWidth: 11
+							ClassicHeight: 14
 							Visible: false
 							Children:
 								ColorBlock@LATENCY_COLOR:
-									X: 2
-									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									ClassicX: 2
+									ClassicY: 2
+									ClassicWidth: PARENT_RIGHT - 4
+									ClassicHeight: PARENT_BOTTOM - 4
+									PositionType: Absolute
+							PositionType: Absolute
 						ClientTooltipRegion@LATENCY_REGION:
-							Width: 11
-							Height: 25
+							ClassicWidth: 11
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+							PositionType: Absolute
 						Image@PROFILE:
 							ImageCollection: lobby-bits
-							X: 18
-							Y: 3
+							ClassicX: 18
+							ClassicY: 3
 							Visible: false
+							PositionType: Absolute
 						ClientTooltipRegion@PROFILE_TOOLTIP:
-							X: 18
-							Y: 3
-							Width: 16
-							Height: 16
+							ClassicX: 18
+							ClassicY: 3
+							ClassicWidth: 16
+							ClassicHeight: 16
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: ANONYMOUS_PLAYER_TOOLTIP
+							PositionType: Absolute
 						Label@NAME:
-							X: 39
-							Width: 160
-							Height: 25
+							ClassicX: 39
+							ClassicWidth: 160
+							ClassicHeight: 25
 							Text: Name
+							PositionType: Absolute
 						DropDownButton@PLAYER_ACTION:
-							X: 15
-							Width: 165
-							Height: 25
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 25
 							Font: Regular
 							Visible: false
 							Align: Left
@@ -402,80 +465,97 @@ Container@LOBBY_PLAYER_BIN:
 							Children:
 								Image@PROFILE:
 									ImageCollection: lobby-bits
-									X: 3
-									Y: 3
+									ClassicX: 3
+									ClassicY: 3
 									Visible: false
+									PositionType: Absolute
 								ClientTooltipRegion@PROFILE_TOOLTIP:
-									X: 3
-									Y: 3
-									Width: 16
-									Height: 16
+									ClassicX: 3
+									ClassicY: 3
+									ClassicWidth: 16
+									ClassicHeight: 16
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
+									PositionType: Absolute
+							PositionType: Absolute
 						Label@SPECTATOR:
-							X: 190
-							Width: 326
-							Height: 25
+							ClassicX: 190
+							ClassicWidth: 326
+							ClassicHeight: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
+							PositionType: Absolute
 						Image@STATUS_IMAGE:
-							X: 527
-							Y: 4
-							Width: 20
-							Height: 20
+							ClassicX: 527
+							ClassicY: 4
+							ClassicWidth: 20
+							ClassicHeight: 20
 							ImageCollection: checkbox-bits
 							ImageName: checked
 							Visible: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@TEMPLATE_NEW_SPECTATOR:
-					X: 5
-					Width: 475
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 475
+					ClassicHeight: 25
 					Visible: false
 					Children:
 						Checkbox@TOGGLE_SPECTATORS:
-							X: 15
-							Width: 165
-							Height: 20
+							ClassicX: 15
+							ClassicWidth: 165
+							ClassicHeight: 20
 							Text: Allow Spectators?
 							Font: Regular
+							PositionType: Absolute
 						Button@SPECTATE:
-							X: 190
-							Width: 326
-							Height: 25
+							ClassicX: 190
+							ClassicWidth: 326
+							ClassicHeight: 25
 							Text: Spectate
 							Font: Regular
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 13
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
 			Children:
 				Image@FLAG:
-					X: 2
-					Y: 2
-					Width: 30
-					Height: 15
+					ClassicX: 2
+					ClassicY: 2
+					ClassicWidth: 30
+					ClassicHeight: 15
+					PositionType: Absolute
 				Label@LABEL:
-					X: 30
-					Width: 70
-					Height: 25
+					ClassicX: 30
+					ClassicWidth: 70
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

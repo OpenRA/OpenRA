@@ -1,122 +1,142 @@
 Container@SKIRMISH_STATS:
-	Height: PARENT_BOTTOM
-	Width: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
 	Logic: GameInfoStatsLogic
 	Children:
 		Container@OBJECTIVE:
-			Height: 75
+			ClassicHeight: 75
 			Children:
 				Label@MISSION:
-					X: 15
-					Y: 12
-					Width: 85
-					Height: 25
+					ClassicX: 15
+					ClassicY: 12
+					ClassicWidth: 85
+					ClassicHeight: 25
 					Font: MediumBold
 					Text: Mission:
+					PositionType: Absolute
 				Label@STATS_STATUS:
-					X: 100
-					Y: 12
-					Width: PARENT_RIGHT - 10
-					Height: 25
+					ClassicX: 100
+					ClassicY: 12
+					ClassicWidth: PARENT_RIGHT - 10
+					ClassicHeight: 25
 					Font: MediumBold
+					PositionType: Absolute
 				Checkbox@STATS_CHECKBOX:
-					X: 15
-					Y: 45
-					Width: 482
-					Height: 20
+					ClassicX: 15
+					ClassicY: 45
+					ClassicWidth: 482
+					ClassicHeight: 20
 					Font: Bold
 					Text: Destroy all opposition!
 					Disabled: yes
 					TextColorDisabled: FFFFFF
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@STATS_HEADERS:
-			X: 17
-			Y: 80
-			Width: 393
+			ClassicX: 17
+			ClassicY: 80
+			ClassicWidth: 393
 			Children:
 				Label@NAME:
-					X: 10
-					Y: 1
-					Width: 210
-					Height: 25
+					ClassicX: 10
+					ClassicY: 1
+					ClassicWidth: 210
+					ClassicHeight: 25
 					Text: Player
 					Font: Bold
+					PositionType: Absolute
 				Label@FACTION:
-					X: 230
-					Y: 1
-					Width: 120
-					Height: 25
+					ClassicX: 230
+					ClassicY: 1
+					ClassicWidth: 120
+					ClassicHeight: 25
 					Text: Faction
 					Font: Bold
+					PositionType: Absolute
 				Label@SCORE:
-					X: 360
-					Y: 1
-					Width: 75
-					Height: 25
+					ClassicX: 360
+					ClassicY: 1
+					ClassicWidth: 75
+					ClassicHeight: 25
 					Text: Score
 					Font: Bold
 					Align: Right
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollPanel@PLAYER_LIST:
-			X: 15
-			Y: 105
-			Width: 482
-			Height: 255
+			ClassicX: 15
+			ClassicY: 105
+			ClassicWidth: 482
+			ClassicHeight: 255
 			ItemSpacing: 5
 			Children:
 				ScrollItem@TEAM_TEMPLATE:
-					Width: PARENT_RIGHT - 27
-					Height: 20
-					X: 2
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 20
+					ClassicX: 2
 					Visible: false
 					Children:
 						Label@TEAM:
-							X: 6
-							Y: 0 
-							Width: 160
-							Height: 20
+							ClassicX: 6
+							ClassicY: 0
+							ClassicWidth: 160
+							ClassicHeight: 20
 							Font: Bold
+							PositionType: Absolute
 						Label@TEAM_SCORE:
-							X: 360
-							Y: 0
-							Width: 75
-							Height: 20
+							ClassicX: 360
+							ClassicY: 0
+							ClassicWidth: 75
+							ClassicHeight: 20
 							Font: Bold
 							Align: Right
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@PLAYER_TEMPLATE:
-					Width: PARENT_RIGHT - 27
-					Height: 25
-					X: 2
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 25
+					ClassicX: 2
 					Children:
 						Image@PROFILE:
 							ImageCollection: lobby-bits
-							X: 8
-							Y: 4
+							ClassicX: 8
+							ClassicY: 4
 							Visible: false
+							PositionType: Absolute
 						ClientTooltipRegion@PROFILE_TOOLTIP:
-							X: 8
-							Y: 4
-							Width: 16
-							Height: 16
+							ClassicX: 8
+							ClassicY: 4
+							ClassicWidth: 16
+							ClassicHeight: 16
 							Visible: false
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: ANONYMOUS_PLAYER_TOOLTIP
+							PositionType: Absolute
 						Label@NAME:
-							X: 29
-							Width: 191
-							Height: 25
+							ClassicX: 29
+							ClassicWidth: 191
+							ClassicHeight: 25
 							Shadow: True
+							PositionType: Absolute
 						Image@FACTIONFLAG:
-							X: 230
-							Y: 4
-							Width: 32
-							Height: 16
+							ClassicX: 230
+							ClassicY: 4
+							ClassicWidth: 32
+							ClassicHeight: 16
+							PositionType: Absolute
 						Label@FACTION:
-							X: 264
-							Width: 86
-							Height: 25
+							ClassicX: 264
+							ClassicWidth: 86
+							ClassicHeight: 25
 							Shadow: True
+							PositionType: Absolute
 						Label@SCORE:
-							X: 360
-							Width: 75
-							Height: 25
+							ClassicX: 360
+							ClassicWidth: 75
+							ClassicHeight: 25
 							Align: Right
 							Shadow: True
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

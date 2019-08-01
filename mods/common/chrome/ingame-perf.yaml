@@ -2,21 +2,25 @@ Container@PERF_WIDGETS:
 	Logic: PerfDebugLogic
 	Children:
 		Label@PERF_TEXT:
-			X: WINDOW_RIGHT - 200
-			Y: WINDOW_BOTTOM - 69
-			Width: 170
-			Height: 40
+			ClassicX: WINDOW_RIGHT - 200
+			ClassicY: WINDOW_BOTTOM - 69
+			ClassicWidth: 170
+			ClassicHeight: 40
 			Contrast: true
+			PositionType: Absolute
 		Background@GRAPH_BG:
 			ClickThrough: true
 			Background: dialog4
-			X: 10
-			Y: WINDOW_BOTTOM - 265
-			Width: 210
-			Height: 210
+			ClassicX: 10
+			ClassicY: WINDOW_BOTTOM - 265
+			ClassicWidth: 210
+			ClassicHeight: 210
 			Children:
 				PerfGraph@GRAPH:
-					X: 5
-					Y: 5
-					Width: 200
-					Height: 200
+					ClassicX: 5
+					ClassicY: 5
+					ClassicWidth: 200
+					ClassicHeight: 200
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

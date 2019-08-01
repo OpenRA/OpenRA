@@ -1,149 +1,176 @@
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 13
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 10
-					Width: PARENT_RIGHT - 20
-					Height: 25
+					ClassicX: 10
+					ClassicWidth: PARENT_RIGHT - 20
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 10
-					Width: PARENT_RIGHT - 20
-					Height: 25
+					ClassicX: 10
+					ClassicWidth: PARENT_RIGHT - 20
+					ClassicHeight: 25
 					Align: Left
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 0
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
-					X: 0
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
-	Width: DROPDOWN_WIDTH
+	ClassicWidth: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:
 			BaseName: scrollheader
-			Width: PARENT_RIGHT - 27
-			Height: 13
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 13
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
-					Height: 10
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 10
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
-			Height: 25
-			X: 2
-			Y: 0
+			ClassicWidth: PARENT_RIGHT - 27
+			ClassicHeight: 25
+			ClassicX: 2
+			ClassicY: 0
 			Visible: false
 			Children:
 				Image@FLAG:
-					Width: 23
-					Height: 23
-					X: 4
-					Y: 2
+					ClassicWidth: 23
+					ClassicHeight: 23
+					ClassicX: 4
+					ClassicY: 2
+					PositionType: Absolute
 				Label@LABEL:
-					X: 34
-					Width: 60
-					Height: 25
+					ClassicX: 34
+					ClassicWidth: 60
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
 				Label@NOFLAG_LABEL:
-					X: 5
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Shadow: True
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@NEWS_PANEL:
-	Width: 400
-	Height: 265
+	ClassicWidth: 400
+	ClassicHeight: 265
 	TopBottomSpacing: 5
 	ItemSpacing: 5
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:
-			X: 10
-			Y: 5
-			Width: PARENT_RIGHT - 40
-			Height: 45
+			ClassicX: 10
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 45
 			Children:
 				Label@TITLE:
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@AUTHOR_DATETIME:
-					Y: 25
-					Width: PARENT_RIGHT
-					Height: 15
+					ClassicY: 25
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 15
 					Align: Center
 					Text: by {0} at {1}
 					Font: TinyBold
+					PositionType: Absolute
 				Label@CONTENT:
-					Y: 45
-					Width: PARENT_RIGHT
+					ClassicY: 45
+					ClassicWidth: PARENT_RIGHT
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@NEWS_STATUS:
-			X: 80
-			Y: 0
-			Width: PARENT_RIGHT - 80 - 80 - 24
-			Height: PARENT_BOTTOM
+			ClassicX: 80
+			ClassicY: 0
+			ClassicWidth: PARENT_RIGHT - 80 - 80 - 24
+			ClassicHeight: PARENT_BOTTOM
 			Align: Center
 			VAlign: Middle
+			PositionType: Absolute
+	PositionType: Absolute

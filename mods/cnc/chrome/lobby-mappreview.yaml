@@ -1,190 +1,222 @@
 Container@MAP_PREVIEW:
 	Logic: MapPreviewLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Children:
 		Container@MAP_AVAILABLE:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
-					Height: 174
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 174
 					Background: panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
+					PositionType: Absolute
 				LabelWithTooltip@MAP_TITLE:
-					Y: 173
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 173
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					PositionType: Absolute
 				Label@MAP_TYPE:
-					Y: 188
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 188
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
+					PositionType: Absolute
 				Label@MAP_AUTHOR:
-					Y: 201
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 201
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MAP_INVALID:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
-					Height: 174
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 174
 					Background: panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
+					PositionType: Absolute
 				LabelWithTooltip@MAP_TITLE:
-					Y: 173
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 173
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					PositionType: Absolute
 				Label@MAP_STATUS_A:
-					Y: 188
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 188
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
 					Text: This map is not compatible
 					IgnoreMouseOver: true
+					PositionType: Absolute
 				Label@MAP_STATUS_B:
-					Y: 201
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 201
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
 					Text: with this version of OpenRA
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MAP_DOWNLOADABLE:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
-					Height: 142
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 142
 					Background: panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
+					PositionType: Absolute
 				LabelWithTooltip@MAP_TITLE:
-					Y: 143
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 143
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					PositionType: Absolute
 				Label@MAP_TYPE:
-					Y: 158
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 158
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
+					PositionType: Absolute
 				Label@MAP_AUTHOR:
-					Y: 171
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 171
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
 				Button@MAP_INSTALL:
-					Y: 194
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 194
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Text: Install Map
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MAP_PROGRESS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
-					Height: 142
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 142
 					Background: panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
+					PositionType: Absolute
 				LabelWithTooltip@MAP_TITLE:
-					Y: 143
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 143
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					PositionType: Absolute
 				Label@MAP_STATUS_SEARCHING:
-					Y: 158
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 158
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
 					Text: Searching OpenRA Resource Center...
 					IgnoreMouseOver: true
+					PositionType: Absolute
 				Container@MAP_STATUS_UNAVAILABLE:
-					Width: PARENT_RIGHT
+					ClassicWidth: PARENT_RIGHT
 					Children:
 						Label@a:
-							Y: 158
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 158
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Center
 							Text: This map was not found on the
+							PositionType: Absolute
 						Label@b:
-							Y: 171
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 171
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Center
 							Text: OpenRA Resource Center
+							PositionType: Absolute
+					PositionType: Absolute
 				Label@MAP_STATUS_ERROR:
-					Y: 158
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 158
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
 					Text: An error occurred during installation
+					PositionType: Absolute
 				Label@MAP_STATUS_DOWNLOADING:
-					Y: 158
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 158
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
 				ProgressBar@MAP_PROGRESSBAR:
-					Y: 194
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 194
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Indeterminate: True
+					PositionType: Absolute
 				Button@MAP_RETRY:
-					Y: 194
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 194
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

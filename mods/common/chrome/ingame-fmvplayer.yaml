@@ -1,10 +1,12 @@
 Background@FMVPLAYER:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	ClassicWidth: WINDOW_RIGHT
+	ClassicHeight: WINDOW_BOTTOM
 	Background: dialog5
 	Children:
 		VqaPlayer@PLAYER:
-			X: 0
-			Y: 0
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicX: 0
+			ClassicY: 0
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
+			PositionType: Absolute
+	PositionType: Absolute

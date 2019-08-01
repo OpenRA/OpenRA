@@ -1,186 +1,217 @@
 Background@MUSIC_PANEL:
 	Logic: MusicPlayerLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 400) / 2
-	Width: 360
-	Height: 450
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - 400) / 2
+	ClassicWidth: 360
+	ClassicHeight: 450
 	Children:
 		LogicTicker@SONG_WATCHER:
+			PositionType: Absolute
 		ScrollPanel@MUSIC_LIST:
-			X: 15
-			Y: 45
-			Width: 330
-			Height: 275
+			ClassicX: 15
+			ClassicY: 45
+			ClassicWidth: 330
+			ClassicHeight: 275
 			Children:
 				ScrollItem@MUSIC_TEMPLATE:
-					Width: PARENT_RIGHT - 27
-					Height: 25
-					X: 2
-					Y: 0
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 25
+					ClassicX: 2
+					ClassicY: 0
 					Visible: false
 					EnableChildMouseOver: True
 					Children:
 						LabelWithTooltip@TITLE:
-							X: 10
-							Width: PARENT_RIGHT - 50
-							Height: 25
+							ClassicX: 10
+							ClassicWidth: PARENT_RIGHT - 50
+							ClassicHeight: 25
 							TooltipContainer: MUSIC_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
+							PositionType: Absolute
 						Label@LENGTH:
-							Width: 50
-							X: PARENT_RIGHT - 60
+							ClassicWidth: 50
+							ClassicX: PARENT_RIGHT - 60
 							Align: Right
-							Height: 25
+							ClassicHeight: 25
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@LABEL_CONTAINER:
-			X: 25
-			Y: 16
-			Width: 330
+			ClassicX: 25
+			ClassicY: 16
+			ClassicWidth: 330
 			Children:
 				Label@TITLE:
-					Width: 100
-					Height: 25
+					ClassicWidth: 100
+					ClassicHeight: 25
 					Text: Track
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@TYPE:
-					X: PARENT_RIGHT - 85
-					Height: 25
-					Width: 50
+					ClassicX: PARENT_RIGHT - 85
+					ClassicHeight: 25
+					ClassicWidth: 50
 					Text: Length
 					Align: Right
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@BUTTONS:
-			X: 15
-			Y: PARENT_BOTTOM - HEIGHT - 85
-			Width: 170
+			ClassicX: 15
+			ClassicY: PARENT_BOTTOM - HEIGHT - 85
+			ClassicWidth: 170
 			Children:
 				Button@BUTTON_PREV:
-					Width: 25
-					Height: 25
+					ClassicWidth: 25
+					ClassicHeight: 25
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PREV:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: prev
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_PLAY:
-					X: 35
-					Width: 25
-					Height: 25
+					ClassicX: 35
+					ClassicWidth: 25
+					ClassicHeight: 25
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PLAY:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: play
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_PAUSE:
 					Visible: false
-					X: 35
-					Width: 25
-					Height: 25
+					ClassicX: 35
+					ClassicWidth: 25
+					ClassicHeight: 25
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: pause
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_STOP:
-					X: 70
-					Width: 25
-					Height: 25
+					ClassicX: 70
+					ClassicWidth: 25
+					ClassicHeight: 25
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_STOP:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: stop
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_NEXT:
-					X: 105
-					Width: 25
-					Height: 25
+					ClassicX: 105
+					ClassicWidth: 25
+					ClassicHeight: 25
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_NEXT:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: next
+							PositionType: Absolute
+					PositionType: Absolute
 				ExponentialSlider@MUSIC_SLIDER:
-					X: 145
-					Y: 3
-					Width: 175
-					Height: 20
+					ClassicX: 145
+					ClassicY: 3
+					ClassicWidth: 175
+					ClassicHeight: 20
 					Ticks: 7
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@TIME_LABEL:
-			X: (PARENT_RIGHT - WIDTH) / 2
-			Y: 332
-			Width: 140
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2
+			ClassicY: 332
+			ClassicWidth: 140
+			ClassicHeight: 25
 			Align: Center
 			Font: Bold
+			PositionType: Absolute
 		Checkbox@SHUFFLE:
-			X: 15
-			Y: 335
-			Width: 85
-			Height: 20
+			ClassicX: 15
+			ClassicY: 335
+			ClassicWidth: 85
+			ClassicHeight: 20
 			Text: Shuffle
+			PositionType: Absolute
 		Checkbox@REPEAT:
-			X: PARENT_RIGHT - 15 - WIDTH
-			Y: 335
-			Width: 70
-			Height: 20
+			ClassicX: PARENT_RIGHT - 15 - WIDTH
+			ClassicY: 335
+			ClassicWidth: 70
+			ClassicHeight: 20
 			Text: Loop
+			PositionType: Absolute
 		Container@NO_MUSIC_LABEL:
-			X: 15
-			Y: 136
-			Width: 330
-			Height: 60
+			ClassicX: 15
+			ClassicY: 136
+			ClassicWidth: 330
+			ClassicHeight: 60
 			Visible: false
 			Children:
 				Label@TITLE:
-					Width: PARENT_RIGHT - 24
-					Height: 25
+					ClassicWidth: PARENT_RIGHT - 24
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					Text: Music Not Installed
+					PositionType: Absolute
 				Label@DESCA:
-					Y: 20
-					Width: PARENT_RIGHT - 24
-					Height: 25
+					ClassicY: 20
+					ClassicWidth: PARENT_RIGHT - 24
+					ClassicHeight: 25
 					Align: Center
 					Text: The game music can be installed
+					PositionType: Absolute
 				Label@DESCB:
-					Y: 40
-					Width: PARENT_RIGHT - 24
-					Height: 25
+					ClassicY: 40
+					ClassicWidth: PARENT_RIGHT - 24
+					ClassicHeight: 25
 					Align: Center
 					Text: from the "Manage Content" menu.
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 140
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Close
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
 		Label@MUTE_LABEL:
-			X: 25
-			Y: PARENT_BOTTOM - 45
-			Width: 300
-			Height: 20
+			ClassicX: 25
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 300
+			ClassicHeight: 20
 			Font: Small
+			PositionType: Absolute
 		TooltipContainer@MUSIC_TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

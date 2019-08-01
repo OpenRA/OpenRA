@@ -1,65 +1,79 @@
 Container@GAME_INFO_PANEL:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 512
-	Height: 405
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 512
+	ClassicHeight: 405
 	Logic: GameInfoLogic
 	Visible: False
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 17
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 17
 			Text: Game Information
 			Align: Center
 			Font: BigBold
 			Contrast: true
+			PositionType: Absolute
 		Label@TITLE_NO_TABS:
-			Width: PARENT_RIGHT
-			Y: 18
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 18
 			Text: Game Information
 			Align: Center
 			Font: BigBold
 			Contrast: true
+			PositionType: Absolute
 		Container@TAB_CONTAINER:
 			Children:
 				Button@BUTTON1:
-					Y: 5
-					Width: 140
-					Height: 35
+					ClassicY: 5
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Visible: False
+					PositionType: Absolute
 				Button@BUTTON2:
-					X: 150
-					Y: 5
-					Width: 140
-					Height: 35
+					ClassicX: 150
+					ClassicY: 5
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Visible: False
+					PositionType: Absolute
 				Button@BUTTON3:
-					X: 300
-					Y: 5
-					Width: 140
-					Height: 35
+					ClassicX: 300
+					ClassicY: 5
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Visible: False
+					PositionType: Absolute
 				Button@BUTTON4:
-					X: 450
-					Y: 5
-					Width: 140
-					Height: 35
+					ClassicX: 450
+					ClassicY: 5
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Visible: False
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@BACKGROUND:
-			Y: 39
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicY: 39
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: panel-black
 			Children:
 				Container@STATS_PANEL:
+					PositionType: Absolute
 				Container@MAP_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
+					PositionType: Absolute
 				Container@OBJECTIVES_PANEL:
-					Width: PARENT_RIGHT
+					ClassicWidth: PARENT_RIGHT
+					PositionType: Absolute
 				Container@DEBUG_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
+					PositionType: Absolute
 				Container@CHAT_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

@@ -1,256 +1,298 @@
 Background@MULTIPLAYER_PANEL:
 	Logic: MultiplayerLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 808
-	Height: 600
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 808
+	ClassicHeight: 600
 	Children:
 		Label@TITLE:
-			Y: 16
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 16
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Text: Multiplayer
 			Align: Center
 			Font: Bold
+			PositionType: Absolute
 		Container@LABEL_CONTAINER:
-			X: 20
-			Y: 43
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicX: 20
+			ClassicY: 43
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Children:
 				Label@NAME:
-					X: 5
-					Width: 255
-					Height: 25
+					ClassicX: 5
+					ClassicWidth: 255
+					ClassicHeight: 25
 					Text: Server
 					Align: Center
 					Font: Bold
+					PositionType: Absolute
 				Label@PLAYERS:
-					X: 290
-					Width: 85
-					Height: 25
+					ClassicX: 290
+					ClassicWidth: 85
+					ClassicHeight: 25
 					Text: Players
 					Font: Bold
+					PositionType: Absolute
 				Label@LOCATION:
-					X: 380
-					Width: 110
-					Height: 25
+					ClassicX: 380
+					ClassicWidth: 110
+					ClassicHeight: 25
 					Text: Location
 					Font: Bold
+					PositionType: Absolute
 				Label@STATUS:
-					X: 495
-					Width: 50
-					Height: 25
+					ClassicX: 495
+					ClassicWidth: 50
+					ClassicHeight: 25
 					Text: Status
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		LogicTicker@NOTICE_WATCHER:
+			PositionType: Absolute
 		Background@NOTICE_CONTAINER:
-			X: 20
-			Y: 67
-			Width: 583
-			Height: 20
+			ClassicX: 20
+			ClassicY: 67
+			ClassicWidth: 583
+			ClassicHeight: 20
 			Background: dialog2
 			Children:
 				Label@OUTDATED_VERSION_LABEL:
-					X: 5
-					Width: PARENT_RIGHT-10
-					Height: 20
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT-10
+					ClassicHeight: 20
 					Align: Center
 					Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
 					Font: TinyBold
+					PositionType: Absolute
 				Label@UNKNOWN_VERSION_LABEL:
-					X: 5
-					Width: PARENT_RIGHT-10
-					Height: 20
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT-10
+					ClassicHeight: 20
 					Align: Center
 					Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
 					Font: TinyBold
+					PositionType: Absolute
 				Label@PLAYTEST_AVAILABLE_LABEL:
-					X: 5
-					Width: PARENT_RIGHT-10
-					Height: 20
+					ClassicX: 5
+					ClassicWidth: PARENT_RIGHT-10
+					ClassicHeight: 20
 					Align: Center
 					Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
 					Font: TinyBold
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollPanel@SERVER_LIST:
-			X: 20
-			Y: 67
-			Width: 583
-			Height: PARENT_BOTTOM - 119
+			ClassicX: 20
+			ClassicY: 67
+			ClassicWidth: 583
+			ClassicHeight: PARENT_BOTTOM - 119
 			TopBottomSpacing: 2
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
-					X: 2
-					Width: PARENT_RIGHT - 27
-					Height: 20
+					ClassicX: 2
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 20
 					BaseName: scrollheader
 					Visible: false
 					Children:
 						Label@LABEL:
 							Font: TinyBold
-							Width: PARENT_RIGHT
-							Height: 20
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 20
 							Align: Center
+							PositionType: Absolute
+					PositionType: Absolute
 				ScrollItem@SERVER_TEMPLATE:
-					X: 2
-					Width: PARENT_RIGHT - 27
-					Height: 25
+					ClassicX: 2
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 25
 					EnableChildMouseOver: True
 					Children:
 						LabelWithTooltip@TITLE:
-							X: 5
-							Width: 245
-							Height: 25
+							ClassicX: 5
+							ClassicWidth: 245
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
+							PositionType: Absolute
 						Image@PASSWORD_PROTECTED:
-							X: 272
-							Y: 6
-							Width: 12
-							Height: 13
+							ClassicX: 272
+							ClassicY: 6
+							ClassicWidth: 12
+							ClassicHeight: 13
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires Password
+							PositionType: Absolute
 						Image@REQUIRES_AUTHENTICATION:
-							X: 272
-							Y: 6
-							Width: 12
-							Height: 13
+							ClassicX: 272
+							ClassicY: 6
+							ClassicWidth: 12
+							ClassicHeight: 13
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires OpenRA forum account
+							PositionType: Absolute
 						LabelWithTooltip@PLAYERS:
-							X: 290
-							Width: 85
-							Height: 25
+							ClassicX: 290
+							ClassicWidth: 85
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
+							PositionType: Absolute
 						Label@LOCATION:
-							X: 380
-							Width: 110
-							Height: 25
+							ClassicX: 380
+							ClassicWidth: 110
+							ClassicHeight: 25
+							PositionType: Absolute
 						Label@STATUS:
-							X: 495
-							Width: 50
-							Height: 25
+							ClassicX: 495
+							ClassicWidth: 50
+							ClassicHeight: 25
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@PROGRESS_LABEL:
-			X: 20
-			Y: 67 + (PARENT_BOTTOM - 119 - HEIGHT) / 2
-			Width: 582
-			Height: 25
+			ClassicX: 20
+			ClassicY: 67 + (PARENT_BOTTOM - 119 - HEIGHT) / 2
+			ClassicWidth: 582
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
 			Visible: false
+			PositionType: Absolute
 		Container@SELECTED_SERVER:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: 67
-			Width: 174
-			Height: 280
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: 67
+			ClassicWidth: 174
+			ClassicHeight: 280
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
-					Height: 174
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 174
 					Background: dialog3
 					Children:
 						MapPreview@SELECTED_MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
+					PositionType: Absolute
 				Label@SELECTED_MAP:
-					Y: 173
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 173
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
+					PositionType: Absolute
 				Label@SELECTED_IP:
-					Y: 188
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 188
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
 				Label@SELECTED_STATUS:
-					Y: 204
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 204
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: TinyBold
 					Align: Center
+					PositionType: Absolute
 				Label@SELECTED_MOD_VERSION:
-					Y: 217
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 217
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
 				Label@SELECTED_PLAYERS:
-					Y: 230
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 230
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: TinyBold
 					Align: Center
+					PositionType: Absolute
 				Container@CLIENT_LIST_CONTAINER:
-					Y: 240
-					Width: PARENT_RIGHT
-					Height: 166
+					ClassicY: 240
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 166
+					PositionType: Absolute
 				Button@JOIN_BUTTON:
 					Key: return
-					Y: 255
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 255
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Text: Join
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		DropDownButton@FILTERS_DROPDOWNBUTTON:
-			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 158
-			Height: 25
+			ClassicX: 20
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 158
+			ClassicHeight: 25
 			Text: Filter Games
 			Font: Bold
+			PositionType: Absolute
 		Button@RELOAD_BUTTON:
-			X: 182
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 26
-			Height: 25
+			ClassicX: 182
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 26
+			ClassicHeight: 25
 			Children:
 				Image@IMAGE_RELOAD:
-					X: 5
-					Y: 5
-					Width: 16
-					Height: 16
+					ClassicX: 5
+					ClassicY: 5
+					ClassicWidth: 16
+					ClassicHeight: 16
 					ImageCollection: reload-icon
 					ImageName: enabled
 					IgnoreMouseOver: True
 					Children:
 						LogicTicker@ANIMATION:
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@PLAYER_COUNT:
-			X: 208
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 190
-			Height: 25
+			ClassicX: 208
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 190
+			ClassicHeight: 25
 			Align: Center
 			Font: Bold
+			PositionType: Absolute
 		Button@DIRECTCONNECT_BUTTON:
-			X: 398
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 100
-			Height: 25
+			ClassicX: 398
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 100
+			ClassicHeight: 25
 			Text: Direct IP
 			Font: Bold
+			PositionType: Absolute
 		Button@CREATE_BUTTON:
-			X: 503
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 100
-			Height: 25
+			ClassicX: 503
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 100
+			ClassicHeight: 25
 			Text: Create
 			Font: Bold
+			PositionType: Absolute
 		Button@BACK_BUTTON:
 			Key: escape
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 174
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 174
+			ClassicHeight: 25
 			Text: Back
 			Font: Bold
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

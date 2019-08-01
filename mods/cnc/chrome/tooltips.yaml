@@ -1,501 +1,596 @@
 Background@SIMPLE_TOOLTIP:
 	Logic: SimpleTooltipLogic
 	Background: panel-black
-	Height: 27
+	ClassicHeight: 27
 	Children:
 		Container@LINE_HEIGHT:
-			Y: 2
-			Height: 19
+			ClassicY: 2
+			ClassicHeight: 19
+			PositionType: Absolute
 		Label@LABEL:
-			X: 5
-			Y: 0 - 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 0 - 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@SIMPLE_TOOLTIP_FACTIONSUFFIX:
 	Logic: SimpleTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
-	Height: 27
+	ClassicHeight: 27
 	Children:
 		Container@LINE_HEIGHT:
-			Y: 2
-			Height: 19
+			ClassicY: 2
+			ClassicHeight: 19
+			PositionType: Absolute
 		Label@LABEL:
-			X: 5
-			Y: 0 - 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 0 - 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic
 	Background: panel-black
-	Height: 26
+	ClassicHeight: 26
 	Children:
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 1
+			ClassicY: 1
 			Visible: false
 			TextColor: FFFF00
-			Height: 23
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 26
-			Height: 12
+			ClassicX: 5
+			ClassicY: 26
+			ClassicHeight: 12
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@BUTTON_TOOLTIP_FACTIONSUFFIX:
 	Logic: ButtonTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
-	Height: 26
+	ClassicHeight: 26
 	Children:
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 1
+			ClassicY: 1
 			Visible: false
 			TextColor: FFFF00
-			Height: 23
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 26
-			Height: 12
+			ClassicX: 5
+			ClassicY: 26
+			ClassicHeight: 12
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 	Logic: ButtonTooltipWithDescHighlightLogic
 		Highlight: FFFF00
 	Background: panel-black
-	Height: 26
+	ClassicHeight: 26
 	Children:
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 1
+			ClassicY: 1
 			Visible: false
 			TextColor: FFFF00
-			Height: 23
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 26
-			Height: 12
+			ClassicX: 5
+			ClassicY: 26
+			ClassicHeight: 12
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX:
 	Logic: ButtonTooltipWithDescHighlightLogic, AddFactionSuffixLogic
 		Highlight: FFFF00
 	Background: panel-black
-	Height: 26
+	ClassicHeight: 26
 	Children:
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 1
+			ClassicY: 1
 			Visible: false
 			TextColor: FFFF00
-			Height: 23
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 26
-			Height: 12
+			ClassicX: 5
+			ClassicY: 26
+			ClassicHeight: 12
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@WORLD_TOOLTIP:
 	Logic: WorldTooltipLogic
 	Background: panel-black
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height: 26
+			ClassicHeight: 26
+			PositionType: Absolute
 		Container@DOUBLE_HEIGHT:
-			Height: 45
+			ClassicHeight: 45
+			PositionType: Absolute
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Image@FLAG:
-			X: 5
-			Y: 24
-			Width: 32
-			Height: 16
+			ClassicX: 5
+			ClassicY: 24
+			ClassicWidth: 32
+			ClassicHeight: 16
+			PositionType: Absolute
 		Label@OWNER:
-			X: 42
-			Y: 20
-			Height: 23
+			ClassicX: 42
+			ClassicY: 20
+			ClassicHeight: 23
 			Font: Bold
 			Shadow: True
+			PositionType: Absolute
 		Label@EXTRA:
-			X: 5
-			Y: 47
-			Height: 5
+			ClassicX: 5
+			ClassicY: 47
+			ClassicHeight: 5
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@WORLD_TOOLTIP_FACTIONSUFFIX:
 	Logic: WorldTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height: 26
+			ClassicHeight: 26
+			PositionType: Absolute
 		Container@DOUBLE_HEIGHT:
-			Height: 45
+			ClassicHeight: 45
+			PositionType: Absolute
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Image@FLAG:
-			X: 5
-			Y: 24
-			Width: 32
-			Height: 16
+			ClassicX: 5
+			ClassicY: 24
+			ClassicWidth: 32
+			ClassicHeight: 16
+			PositionType: Absolute
 		Label@OWNER:
-			X: 42
-			Y: 20
-			Height: 23
+			ClassicX: 42
+			ClassicY: 20
+			ClassicHeight: 23
 			Font: Bold
 			Shadow: True
+			PositionType: Absolute
 		Label@EXTRA:
-			X: 5
-			Y: 49
-			Height: 5
+			ClassicX: 5
+			ClassicY: 49
+			ClassicHeight: 5
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@PRODUCTION_TOOLTIP:
 	Logic: ProductionTooltipLogic
 	Background: panel-black
-	Width: 200
-	Height: 65
+	ClassicWidth: 200
+	ClassicHeight: 65
 	Children:
 		Label@NAME:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 1
+			ClassicY: 1
 			Visible: false
-			Height: 23
+			ClassicHeight: 23
 			TextColor: FFFF00
 			Font: Bold
+			PositionType: Absolute
 		Label@REQUIRES:
-			X: 5
-			Y: 20
-			Height: 15
+			ClassicX: 5
+			ClassicY: 20
+			ClassicHeight: 15
 			Font: TinyBold
 			Text: Requires {0}
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 20
-			Height: 5
+			ClassicX: 5
+			ClassicY: 20
+			ClassicHeight: 5
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
 		Image@COST_ICON:
-			X: 3
-			Y: 5
-			Width: 16
-			Height: 16
+			ClassicX: 3
+			ClassicY: 5
+			ClassicWidth: 16
+			ClassicHeight: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-cost
+			PositionType: Absolute
 		Label@COST:
-			Y: 1
-			Height: 24
+			ClassicY: 1
+			ClassicHeight: 24
 			Font: Bold
+			PositionType: Absolute
 		Image@TIME_ICON:
-			X: 3
-			Y: 24
-			Width: 16
-			Height: 16
+			ClassicX: 3
+			ClassicY: 24
+			ClassicWidth: 16
+			ClassicHeight: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-time
+			PositionType: Absolute
 		Label@TIME:
-			Y: 20
-			Height: 23
+			ClassicY: 20
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Image@POWER_ICON:
-			Y: 44
-			Width: 16
-			Height: 16
+			ClassicY: 44
+			ClassicWidth: 16
+			ClassicHeight: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-power
+			PositionType: Absolute
 		Label@POWER:
-			Y: 40
-			Height: 23
+			ClassicY: 40
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@PRODUCTION_TOOLTIP_FACTIONSUFFIX:
 	Logic: ProductionTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
-	Width: 200
-	Height: 65
+	ClassicWidth: 200
+	ClassicHeight: 65
 	Children:
 		Label@NAME:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 1
+			ClassicY: 1
 			Visible: false
-			Height: 23
+			ClassicHeight: 23
 			TextColor: FFFF00
 			Font: Bold
+			PositionType: Absolute
 		Label@REQUIRES:
-			X: 5
-			Y: 20
-			Height: 15
+			ClassicX: 5
+			ClassicY: 20
+			ClassicHeight: 15
 			Font: TinyBold
 			Text: Requires {0}
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 20
-			Height: 5
+			ClassicX: 5
+			ClassicY: 20
+			ClassicHeight: 5
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
 		Image@COST_ICON:
-			Y: 5
-			Width: 16
-			Height: 16
+			ClassicY: 5
+			ClassicWidth: 16
+			ClassicHeight: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-cost
+			PositionType: Absolute
 		Label@COST:
-			Y: 1
-			Height: 23
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Image@TIME_ICON:
-			X: 3
-			Y: 24
-			Width: 16
-			Height: 16
+			ClassicX: 3
+			ClassicY: 24
+			ClassicWidth: 16
+			ClassicHeight: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-time
+			PositionType: Absolute
 		Label@TIME:
-			Y: 20
-			Height: 23
+			ClassicY: 20
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Image@POWER_ICON:
-			Y: 44
-			Width: 16
-			Height: 16
+			ClassicY: 44
+			ClassicWidth: 16
+			ClassicHeight: 16
 			ImageCollection: sidebar-bits
 			ImageName: production-tooltip-power
+			PositionType: Absolute
 		Label@POWER:
-			Y: 40
-			Height: 23
+			ClassicY: 40
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@SUPPORT_POWER_TOOLTIP:
 	Logic: SupportPowerTooltipLogic
 	Background: panel-black
-	Width: 200
-	Height: 27
+	ClassicWidth: 200
+	ClassicHeight: 27
 	Children:
 		Label@NAME:
-			X: 5
-			Height: 20
+			ClassicX: 5
+			ClassicHeight: 20
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
 			Visible: false
-			Height: 20
+			ClassicHeight: 20
 			TextColor: FFFF00
 			Font: Bold
+			PositionType: Absolute
 		Label@TIME:
-			Y: 6
+			ClassicY: 6
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 20
+			ClassicX: 5
+			ClassicY: 20
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX:
 	Logic: SupportPowerTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
-	Width: 200
-	Height: 27
+	ClassicWidth: 200
+	ClassicHeight: 27
 	Children:
 		Label@NAME:
-			X: 5
-			Y: 2
-			Height: 20
+			ClassicX: 5
+			ClassicY: 2
+			ClassicHeight: 20
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
-			Y: 2
+			ClassicY: 2
 			Visible: false
-			Height: 20
+			ClassicHeight: 20
 			TextColor: FFFF00
 			Font: Bold
+			PositionType: Absolute
 		Label@TIME:
-			Y: 8
+			ClassicY: 8
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
 		Label@DESC:
-			X: 5
-			Y: 22
+			ClassicX: 5
+			ClassicY: 22
 			Font: TinyBold
 			VAlign: Top
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@SPAWN_TOOLTIP:
 	Logic: SpawnSelectorTooltipLogic
 	Background: panel-black
-	Width: 5
+	ClassicWidth: 5
 	Children:
 		Container@SINGLE_HEIGHT:
-			Height: 26
+			ClassicHeight: 26
+			PositionType: Absolute
 		Container@DOUBLE_HEIGHT:
-			Height: 40
+			ClassicHeight: 40
+			PositionType: Absolute
 		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Image@FLAG:
-			X: 5
-			Y: 5
-			Width: 32
-			Height: 16
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: 32
+			ClassicHeight: 16
+			PositionType: Absolute
 		Label@TEAM:
-			Y: 22
-			Height: 15
+			ClassicY: 22
+			ClassicHeight: 15
 			Font: TinyBold
 			Align: center
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@LATENCY_TOOLTIP:
 	Logic: LatencyTooltipLogic
 	Background: panel-black
-	Height: 26
-	Width: 5
+	ClassicHeight: 26
+	ClassicWidth: 5
 	Children:
 		Label@LATENCY_PREFIX:
-			X: 5
-			Y: 1
-			Height: 23
+			ClassicX: 5
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
 			Text: Latency:
+			PositionType: Absolute
 		Label@LATENCY:
-			Y: 1
-			Height: 23
+			ClassicY: 1
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Logic: AnonymousProfileTooltipLogic
 	Background: panel-black
-	Height: 55
-	Width: 200
+	ClassicHeight: 55
+	ClassicWidth: 200
 	Children:
 		Label@NAME:
-			X: 5
-			Y: 2
+			ClassicX: 5
+			ClassicY: 2
 			Text: Anonymous Player
-			Height: 23
+			ClassicHeight: 23
 			Font: MediumBold
+			PositionType: Absolute
 		Label@LOCATION:
-			X: 5
-			Y: 24
-			Height: 12
+			ClassicX: 5
+			ClassicY: 24
+			ClassicHeight: 12
 			Font: TinyBold
+			PositionType: Absolute
 		Label@IP:
-			X: 5
-			Y: 37
-			Height: 12
+			ClassicX: 5
+			ClassicY: 37
+			ClassicHeight: 12
 			Font: TinyBold
+			PositionType: Absolute
 		Container@GAME_ADMIN:
-			X: 5
-			Y: 49
-			Height: 12
+			ClassicX: 5
+			ClassicY: 49
+			ClassicHeight: 12
 			Visible: False
 			Children:
 				Image@ICON:
-					X: 1
-					Y: 5
-					Width: 7
-					Height: 5
+					ClassicX: 1
+					ClassicY: 5
+					ClassicWidth: 7
+					ClassicHeight: 5
 					ImageCollection: lobby-bits
 					ImageName: admin
+					PositionType: Absolute
 				Label@LABEL:
-					X: 10
-					Y: 1
-					Height: 12
+					ClassicX: 10
+					ClassicY: 1
+					ClassicHeight: 12
 					Text: Game Admin
 					Font: TinyBold
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@REGISTERED_PLAYER_TOOLTIP:
 	Logic: RegisteredProfileTooltipLogic
-	Width: 270
-	Height: 137
+	ClassicWidth: 270
+	ClassicHeight: 137
 	Children:
 		Background@HEADER:
-			Width: PARENT_RIGHT
+			ClassicWidth: PARENT_RIGHT
 			Background: panel-black
 			Children:
 				Container@PROFILE_HEADER:
-					Width: PARENT_RIGHT
-					Height: 42
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 42
 					Children:
 						Label@PROFILE_NAME:
-							X: 5
-							Y: 2
-							Width: PARENT_RIGHT - 20
-							Height: 23
+							ClassicX: 5
+							ClassicY: 2
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: 23
 							Font: MediumBold
+							PositionType: Absolute
 						Label@PROFILE_RANK:
-							X: 5
-							Y: 24
-							Width: PARENT_RIGHT - 20
-							Height: 12
+							ClassicX: 5
+							ClassicY: 24
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: 12
 							Font: TinyBold
+							PositionType: Absolute
 						Container@GAME_ADMIN:
-							X: 5
-							Y: 36
-							Width: PARENT_RIGHT - 20
-							Height: 12
+							ClassicX: 5
+							ClassicY: 36
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: 12
 							Visible: False
 							Children:
 								Image@ICON:
-									X: 1
-									Y: 5
-									Width: 7
-									Height: 5
+									ClassicX: 1
+									ClassicY: 5
+									ClassicWidth: 7
+									ClassicHeight: 5
 									ImageCollection: lobby-bits
 									ImageName: admin
+									PositionType: Absolute
 								Label@LABEL:
-									X: 10
-									Y: 1
-									Height: 12
+									ClassicX: 10
+									ClassicY: 1
+									ClassicHeight: 12
 									Text: Game Admin
 									Font: TinyBold
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@MESSAGE_HEADER:
-					Height: 26
-					Width: PARENT_RIGHT
+					ClassicHeight: 26
+					ClassicWidth: PARENT_RIGHT
 					Children:
 						Label@MESSAGE:
-							Y: 1
-							X: 5
-							Width: PARENT_RIGHT - 20
-							Height: 23
+							ClassicY: 1
+							ClassicX: 5
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: 23
 							Font: Bold
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@BADGES_CONTAINER:
-			Width: PARENT_RIGHT
-			Y: 0-1
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0-1
 			Visible: false
 			Background: panel-black
+			PositionType: Absolute
+	PositionType: Absolute

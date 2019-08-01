@@ -4,136 +4,157 @@ Background@COLOR_CHOOSER:
 		PalettePresetRows: 2
 		PaletteCustomRows: 1
 	Background: dialog2
-	Width: 326
-	Height: 154
+	ClassicWidth: 326
+	ClassicHeight: 154
 	Children:
 		Button@RANDOM_BUTTON:
 			Key: tab
-			X: 245
-			Y: 95
-			Width: 76
-			Height: 25
+			ClassicX: 245
+			ClassicY: 95
+			ClassicWidth: 76
+			ClassicHeight: 25
 			Text: Random
 			Font: Bold
+			PositionType: Absolute
 		Button@STORE_BUTTON:
-			X: 245
-			Y: 124
-			Width: 76
-			Height: 25
+			ClassicX: 245
+			ClassicY: 124
+			ClassicWidth: 76
+			ClassicHeight: 25
 			Text: Store
 			Font: Bold
+			PositionType: Absolute
 		ActorPreview@PREVIEW:
-			X: 245
-			Y: 16
-			Width: 76
-			Height: 74
+			ClassicX: 245
+			ClassicY: 16
+			ClassicWidth: 76
+			ClassicHeight: 74
 			Animate: true
+			PositionType: Absolute
 		Button@MIXER_TAB_BUTTON:
-			X: 5
-			Y: PARENT_BOTTOM - 30
-			Height: 25
-			Width: 80
+			ClassicX: 5
+			ClassicY: PARENT_BOTTOM - 30
+			ClassicHeight: 25
+			ClassicWidth: 80
 			Text: Mixer
 			Font: Bold
+			PositionType: Absolute
 		Button@PALETTE_TAB_BUTTON:
-			X: 85
-			Y: PARENT_BOTTOM - 30
-			Height: 25
-			Width: 80
+			ClassicX: 85
+			ClassicY: PARENT_BOTTOM - 30
+			ClassicHeight: 25
+			ClassicWidth: 80
 			Text: Palette
 			Font: Bold
+			PositionType: Absolute
 		Container@MIXER_TAB:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 90
-			Height: PARENT_BOTTOM - 34
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 90
+			ClassicHeight: PARENT_BOTTOM - 34
 			Children:
 				Background@HUEBG:
 					Background: dialog3
-					X: 0
-					Y: 0
-					Width: PARENT_RIGHT
-					Height: 17
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 17
 					Children:
 						HueSlider@HUE:
-							X: 2
-							Y: 2
-							Width: PARENT_RIGHT - 4
-							Height: PARENT_BOTTOM - 4
+							ClassicX: 2
+							ClassicY: 2
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: PARENT_BOTTOM - 4
 							Ticks: 5
+							PositionType: Absolute
+					PositionType: Absolute
 				Background@MIXERBG:
 					Background: dialog3
-					X: 0
-					Y: 22
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 22
+					ClassicX: 0
+					ClassicY: 22
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM - 22
 					Children:
 						ColorMixer@MIXER:
-							X: 2
-							Y: 2
-							Width: PARENT_RIGHT - 4
-							Height: PARENT_BOTTOM - 4
+							ClassicX: 2
+							ClassicY: 2
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: PARENT_BOTTOM - 4
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@PALETTE_TAB:
 			Background: dialog3
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 90
-			Height: PARENT_BOTTOM - 34
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 90
+			ClassicHeight: PARENT_BOTTOM - 34
 			Visible: false
 			Children:
 				Container@PALETTE_TAB_PANEL:
-					X: 0
-					Y: 0
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Background@PRESET_HEADER:
 							Background: dialog2
-							Width: PARENT_RIGHT - 4
-							Height: 13
-							X: 2
-							Y: 2
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 13
+							ClassicX: 2
+							ClassicY: 2
 							Children:
 								Label@LABEL:
 									Font: TinyBold
-									Width: PARENT_RIGHT
-									Height: 13
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 13
 									Align: Center
 									Text: Preset Colors
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@PRESET_AREA:
-							Width: PARENT_RIGHT - 4
-							Height: 58
-							X: 2
-							Y: 16
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 58
+							ClassicX: 2
+							ClassicY: 16
 							Children:
 								ColorBlock@COLORPRESET:
-									X: 0
-									Y: 0
-									Width: 29
-									Height: 29
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: 29
+									ClassicHeight: 29
 									Visible: false
+									PositionType: Absolute
+							PositionType: Absolute
 						Background@CUSTOM_HEADER:
 							Background: dialog2
-							Width: PARENT_RIGHT - 4
-							Height: 13
-							X: 2
-							Y: 75
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 13
+							ClassicX: 2
+							ClassicY: 75
 							Children:
 								Label@LABEL:
 									Font: TinyBold
-									Width: PARENT_RIGHT
-									Height: 13
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 13
 									Align: Center
 									Text: Custom Colors
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@CUSTOM_AREA:
-							Width: PARENT_RIGHT - 4
-							Height: 31
-							X: 2
-							Y: 89
+							ClassicWidth: PARENT_RIGHT - 4
+							ClassicHeight: 31
+							ClassicX: 2
+							ClassicY: 89
 							Children:
 								ColorBlock@COLORCUSTOM:
-									X: 0
-									Y: 0
-									Width: 29
-									Height: 29
+									ClassicX: 0
+									ClassicY: 0
+									ClassicWidth: 29
+									ClassicHeight: 29
 									Visible: false
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

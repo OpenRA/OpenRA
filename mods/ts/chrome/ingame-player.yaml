@@ -2,11 +2,13 @@ Container@PLAYER_WIDGETS:
 	Children:
 		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
 			Logic: ControlGroupLogic
+			PositionType: Absolute
 		LogicTicker@SIDEBAR_TICKER:
+			PositionType: Absolute
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
-			X: 10
-			Y: 10
+			ClassicX: 10
+			ClassicY: 10
 			Children:
 				SupportPowers@SUPPORT_PALETTE:
 					IconSize: 64, 48
@@ -17,27 +19,31 @@ Container@PLAYER_WIDGETS:
 					ClockPalette: iconclock
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
+					PositionType: Absolute
+			PositionType: Absolute
 		Image@COMMAND_BAR_BACKGROUND:
 			Logic: AddFactionSuffixLogic
-			X: 5
-			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Width: 449
-			Height: 51
+			ClassicX: 5
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 5
+			ClassicWidth: 449
+			ClassicHeight: 51
 			ImageCollection: sidebar
 			ImageName: background-commandbar
 			ClickThrough: False
+			PositionType: Absolute
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 				HighlightOnButtonPress: True
-			X: 19
-			Y: WINDOW_BOTTOM - HEIGHT - 20
-			Width: 275
-			Height: 26
+			ClassicX: 19
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 20
+			ClassicWidth: 275
+			ClassicHeight: 26
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
+					PositionType: Absolute
 				Button@ATTACK_MOVE:
-					Width: 35
-					Height: 32
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: AttackMove
@@ -49,14 +55,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: attack-move
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@FORCE_MOVE:
-					X: 35
-					Width: 35
-					Height: 32
+					ClassicX: 35
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					DisableKeySound: true
@@ -67,14 +75,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: force-move
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@FORCE_ATTACK:
-					X: 70
-					Width: 35
-					Height: 32
+					ClassicX: 70
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					DisableKeySound: true
@@ -85,14 +95,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: force-attack
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@GUARD:
-					X: 105
-					Width: 35
-					Height: 32
+					ClassicX: 105
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: Guard
@@ -103,14 +115,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: guard
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@DEPLOY:
-					X: 140
-					Width: 35
-					Height: 32
+					ClassicX: 140
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: Deploy
@@ -122,14 +136,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: deploy
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@SCATTER:
-					X: 175
-					Width: 35
-					Height: 32
+					ClassicX: 175
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: Scatter
@@ -141,14 +157,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: scatter
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@STOP:
-					X: 210
-					Width: 35
-					Height: 32
+					ClassicX: 210
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: Stop
@@ -160,14 +178,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: stop
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@QUEUE_ORDERS:
-					X: 245
-					Width: 35
-					Height: 32
+					ClassicX: 245
+					ClassicWidth: 35
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					DisableKeySound: true
@@ -178,20 +198,23 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 5
-							Y: 3
+							ClassicX: 5
+							ClassicY: 3
 							ImageCollection: command-icons
 							ImageName: queue-orders
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 306
-			Y: WINDOW_BOTTOM - HEIGHT - 20
-			Width: 138
-			Height: 26
+			ClassicX: 306
+			ClassicY: WINDOW_BOTTOM - HEIGHT - 20
+			ClassicWidth: 138
+			ClassicHeight: 26
 			Children:
 				Button@STANCE_ATTACKANYTHING:
-					Width: 28
-					Height: 32
+					ClassicWidth: 28
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: StanceAttackAnything
@@ -203,14 +226,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 4
-							Y: 5
+							ClassicX: 4
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: attack-anything
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@STANCE_DEFEND:
-					X: 28
-					Width: 28
-					Height: 32
+					ClassicX: 28
+					ClassicWidth: 28
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: StanceDefend
@@ -222,14 +247,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 4
-							Y: 5
+							ClassicX: 4
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: defend
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@STANCE_RETURNFIRE:
-					X: 56
-					Width: 28
-					Height: 32
+					ClassicX: 56
+					ClassicWidth: 28
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: StanceReturnFire
@@ -241,14 +268,16 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 4
-							Y: 5
+							ClassicX: 4
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: return-fire
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@STANCE_HOLDFIRE:
-					X: 84
-					Width: 28
-					Height: 32
+					ClassicX: 84
+					ClassicWidth: 28
+					ClassicHeight: 32
 					VisualHeight: 0
 					Background:
 					Key: StanceHoldFire
@@ -260,31 +289,34 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ICON:
 							Logic: AddFactionSuffixLogic
-							X: 4
-							Y: 5
+							ClassicX: 4
+							ClassicY: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddFactionSuffixLogic
-			X: WINDOW_RIGHT - 235
-			Y: 0
-			Width: 235
-			Height: 260
+			ClassicX: WINDOW_RIGHT - 235
+			ClassicY: 0
+			ClassicWidth: 235
+			ClassicHeight: 260
 			ImageCollection: sidebar
 			ImageName: background-top
 			ClickThrough: false
 			Children:
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
-					X: 0
-					Y: 21
+					ClassicX: 0
+					ClassicY: 21
 					Children:
 						MenuButton@DEBUG_BUTTON:
 							Logic: AddFactionSuffixLogic
 							Key: escape Shift
-							X: 13
-							Width: 30
-							Height: 31
+							ClassicX: 13
+							ClassicWidth: 30
+							ClassicHeight: 31
 							Background: sidebar-button
 							TooltipText: Debug Menu
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -293,15 +325,17 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									ImageCollection: order-icons
 									ImageName: debug
+									PositionType: Absolute
+							PositionType: Absolute
 						Button@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
-							X: 43
-							Width: 30
-							Height: 31
+							ClassicX: 43
+							ClassicWidth: 30
+							ClassicHeight: 31
 							Background: sidebar-button
 							Key: Repair
 							TooltipText: Repair
@@ -310,14 +344,16 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									ImageCollection: order-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						Button@SELL_BUTTON:
 							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
-							X: 73
-							Width: 30
-							Height: 31
+							ClassicX: 73
+							ClassicWidth: 30
+							ClassicHeight: 31
 							Background: sidebar-button
 							Key: Sell
 							TooltipText: Sell
@@ -326,14 +362,16 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									ImageCollection: order-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						Button@BEACON_BUTTON:
 							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
-							X: 103
-							Width: 30
-							Height: 31
+							ClassicX: 103
+							ClassicWidth: 30
+							ClassicHeight: 31
 							Background: sidebar-button
 							Key: PlaceBeacon
 							TooltipText: Place Beacon
@@ -342,14 +380,16 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									ImageCollection: order-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						Button@POWER_BUTTON:
 							Logic: PowerdownOrderButtonLogic, AddFactionSuffixLogic
-							X: 133
-							Width: 30
-							Height: 31
+							ClassicX: 133
+							ClassicWidth: 30
+							ClassicHeight: 31
 							Background: sidebar-button
 							Key: PowerDown
 							TooltipText: Power Down
@@ -358,15 +398,17 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									ImageCollection: order-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddFactionSuffixLogic
 							Key: escape
-							X: 193
-							Width: 30
-							Height: 31
+							ClassicX: 193
+							ClassicWidth: 30
+							ClassicHeight: 31
 							Background: sidebar-button
 							TooltipText: Options
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -375,53 +417,63 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 0
-									Y: 0
+									ClassicX: 0
+									ClassicY: 0
 									ImageCollection: order-icons
 									ImageName: options
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@RADAR:
 					Logic: IngameRadarDisplayLogic
 					Children:
 						LogicTicker@RADAR_TICKER:
+							PositionType: Absolute
 						Image@INSIGNIA:
 							Logic: AddFactionSuffixLogic
-							X: 37
-							Y: 85
+							ClassicX: 37
+							ClassicY: 85
 							ImageCollection: radar
 							ImageName: insignia
+							PositionType: Absolute
 						ColorBlock@RADAR_FADETOBLACK:
-							X: 16
-							Y: 64
-							Width: 206
-							Height: 161
+							ClassicX: 16
+							ClassicY: 64
+							ClassicWidth: 206
+							ClassicHeight: 161
+							PositionType: Absolute
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
-							X: 16
-							Y: 64
-							Width: 206
-							Height: 161
+							ClassicX: 16
+							ClassicY: 64
+							ClassicWidth: 206
+							ClassicHeight: 161
 							SoundUp: RadarUp
 							SoundDown: RadarDown
+							PositionType: Absolute
 						VqaPlayer@PLAYER:
-							X: 16
-							Y: 64
-							Width: 206
-							Height: 161
+							ClassicX: 16
+							ClassicY: 64
+							ClassicWidth: 206
+							ClassicHeight: 161
 							Skippable: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Label@GAME_TIMER:
 					Logic: GameTimerLogic
-					X: 10
-					Y: 1
-					Width: PARENT_RIGHT
-					Height: 22
+					ClassicX: 10
+					ClassicY: 1
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 22
 					Align: Center
 					Font: TinyBold
+					PositionType: Absolute
 				LabelWithTooltip@CASH:
 					Logic: IngameCashCounterLogic
-					X: 31
-					Y: 0
-					Width: 50
-					Height: 22
+					ClassicX: 31
+					ClassicY: 0
+					ClassicWidth: 50
+					ClassicHeight: 22
 					Font: Bold
 					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -429,16 +481,18 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@CASH_ICON:
 							Logic: AddFactionSuffixLogic
-							X: 0 - 17
-							Y: 3
+							ClassicX: 0 - 17
+							ClassicY: 3
 							ImageCollection: cash-icons
 							ImageName: cash-normal
+							PositionType: Absolute
+					PositionType: Absolute
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
-					X: PARENT_RIGHT - WIDTH - 30
-					Y: 0
-					Width: 50
-					Height: 22
+					ClassicX: PARENT_RIGHT - WIDTH - 30
+					ClassicY: 0
+					ClassicWidth: 50
+					ClassicHeight: 22
 					Align: Right
 					Font: Bold
 					Text: {0}
@@ -447,37 +501,44 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@POWER_ICON:
 							Logic: AddFactionSuffixLogic
-							X: PARENT_RIGHT + 0
-							Y: 3
+							ClassicX: PARENT_RIGHT + 0
+							ClassicY: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
-			X: WINDOW_RIGHT - 235
-			Y: 260
-			Width: 235
-			Height: 250
+			ClassicX: WINDOW_RIGHT - 235
+			ClassicY: 260
+			ClassicWidth: 235
+			ClassicHeight: 250
 			Children:
 				Container@PALETTE_BACKGROUND:
 					Children:
 						Image@ROW_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							Width: 235
-							Height: 52
+							ClassicWidth: 235
+							ClassicHeight: 52
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-iconrow
+							PositionType: Absolute
 						Image@BOTTOM_CAP:
 							Logic: AddFactionSuffixLogic
-							Width: 235
-							Height: 26
+							ClassicWidth: 235
+							ClassicHeight: 26
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-bottom
+							PositionType: Absolute
+					PositionType: Absolute
 				LogicTicker@PRODUCTION_TICKER:
+					PositionType: Absolute
 				ProductionPalette@PRODUCTION_PALETTE:
-					X: 24
-					Y: 1
+					ClassicX: 24
+					ClassicY: 1
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: READY
 					HoldText: ON HOLD
@@ -491,18 +552,19 @@ Container@PLAYER_WIDGETS:
 					MaximumRows: 6
 					HotkeyPrefix: Production
 					HotkeyCount: 24
+					PositionType: Absolute
 				Container@PRODUCTION_TYPES:
-					X: 0
-					Y: 0 - 32
-					Width: 235
-					Height: 311
+					ClassicX: 0
+					ClassicY: 0 - 32
+					ClassicWidth: 235
+					ClassicHeight: 311
 					Children:
 						ProductionTypeButton@BUILDING:
 							Logic: AddFactionSuffixLogic
-							X: 41
-							Y: 1
-							Width: 30
-							Height: 31
+							ClassicX: 41
+							ClassicY: 1
+							ClassicWidth: 30
+							ClassicHeight: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Buildings
@@ -512,15 +574,17 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 7
-									Y: 7
+									ClassicX: 7
+									ClassicY: 7
 									ImageCollection: production-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@DEFENSE:
 							Logic: AddFactionSuffixLogic
-							X: 72
-							Y: 1
-							Width: 30
-							Height: 31
+							ClassicX: 72
+							ClassicY: 1
+							ClassicWidth: 30
+							ClassicHeight: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Defense
@@ -530,15 +594,17 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 7
-									Y: 7
+									ClassicX: 7
+									ClassicY: 7
 									ImageCollection: production-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@INFANTRY:
 							Logic: AddFactionSuffixLogic
-							X: 103
-							Y: 1
-							Width: 30
-							Height: 31
+							ClassicX: 103
+							ClassicY: 1
+							ClassicWidth: 30
+							ClassicHeight: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Infantry
@@ -548,15 +614,17 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 6
-									Y: 7
+									ClassicX: 6
+									ClassicY: 7
 									ImageCollection: production-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@VEHICLE:
 							Logic: AddFactionSuffixLogic
-							X: 134
-							Y: 1
-							Width: 30
-							Height: 31
+							ClassicX: 134
+							ClassicY: 1
+							ClassicWidth: 30
+							ClassicHeight: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Vehicles
@@ -566,15 +634,17 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 7
-									Y: 7
+									ClassicX: 7
+									ClassicY: 7
 									ImageCollection: production-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						ProductionTypeButton@AIRCRAFT:
 							Logic: AddFactionSuffixLogic
-							X: 165
-							Y: 1
-							Width: 30
-							Height: 31
+							ClassicX: 165
+							ClassicY: 1
+							ClassicWidth: 30
+							ClassicHeight: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: Aircraft
@@ -584,26 +654,33 @@ Container@PLAYER_WIDGETS:
 							Children:
 								Image@ICON:
 									Logic: AddFactionSuffixLogic
-									X: 7
-									Y: 7
+									ClassicX: 7
+									ClassicY: 7
 									ImageCollection: production-icons
+									PositionType: Absolute
+							PositionType: Absolute
 						Button@SCROLL_UP_BUTTON:
 							Logic: AddFactionSuffixLogic
-							X: 74
-							Y: PARENT_BOTTOM + 36
-							Width: 34
-							Height: 27
+							ClassicX: 74
+							ClassicY: PARENT_BOTTOM + 36
+							ClassicWidth: 34
+							ClassicHeight: 27
 							VisualHeight: 0
 							Background: scrollup-buttons
 							TooltipText: Scroll up
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
 						Button@SCROLL_DOWN_BUTTON:
 							Logic: AddFactionSuffixLogic
-							X: 141
-							Y: PARENT_BOTTOM + 36
-							Width: 34
-							Height: 27
+							ClassicX: 141
+							ClassicY: PARENT_BOTTOM + 36
+							ClassicWidth: 34
+							ClassicHeight: 27
 							VisualHeight: 0
 							Background: scrolldown-buttons
 							TooltipText: Scroll down
 							TooltipContainer: TOOLTIP_CONTAINER
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

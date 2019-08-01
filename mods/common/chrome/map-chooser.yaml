@@ -1,147 +1,170 @@
 Background@MAPCHOOSER_PANEL:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
 	Logic: MapChooserLogic
-	Width: 808
-	Height: 600
+	ClassicWidth: 808
+	ClassicHeight: 600
 	Children:
 		Label@MAPCHOOSER_TITLE:
-			Y: 17
+			ClassicY: 17
 			Align: Center
-			Width: PARENT_RIGHT
-			Height: 20
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 20
 			Text: Choose Map
 			Font: Bold
+			PositionType: Absolute
 		Button@SYSTEM_MAPS_TAB_BUTTON:
-			X: 20
-			Y: 48
-			Height: 31
-			Width: 140
+			ClassicX: 20
+			ClassicY: 48
+			ClassicHeight: 31
+			ClassicWidth: 140
 			Text: Official Maps
 			Font: Bold
+			PositionType: Absolute
 		Button@USER_MAPS_TAB_BUTTON:
-			X: 160
-			Y: 48
-			Height: 31
-			Width: 140
+			ClassicX: 160
+			ClassicY: 48
+			ClassicHeight: 31
+			ClassicWidth: 140
 			Text: Custom Maps
 			Font: Bold
+			PositionType: Absolute
 		Container@SYSTEM_MAPS_TAB:
-			X: 20
-			Y: 77
-			Width: PARENT_RIGHT - 40
-			Height: 471
+			ClassicX: 20
+			ClassicY: 77
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 471
 			Children:
 				ScrollPanel@MAP_LIST:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@USER_MAPS_TAB:
-			X: 20
-			Y: 77
-			Width: PARENT_RIGHT - 40
-			Height: 471
+			ClassicX: 20
+			ClassicY: 77
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 471
 			Children:
 				ScrollPanel@MAP_LIST:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollItem@MAP_TEMPLATE:
-			Width: 185
-			Height: 243
-			X: 2
+			ClassicWidth: 185
+			ClassicHeight: 243
+			ClassicX: 2
 			Visible: false
 			Children:
 				MapPreview@PREVIEW:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 3
-					Width: 179
-					Height: 179
+					ClassicX: (PARENT_RIGHT - WIDTH) / 2
+					ClassicY: 3
+					ClassicWidth: 179
+					ClassicHeight: 179
 					IgnoreMouseOver: true
 					IgnoreMouseInput: true
+					PositionType: Absolute
 				Label@TITLE:
-					X: 4
-					Y: PARENT_BOTTOM - 52
-					Width: PARENT_RIGHT - 8
+					ClassicX: 4
+					ClassicY: PARENT_BOTTOM - 52
+					ClassicWidth: PARENT_RIGHT - 8
 					Align: Center
+					PositionType: Absolute
 				Label@DETAILS:
-					Width: PARENT_RIGHT - 8
-					X: 4
-					Y: PARENT_BOTTOM - 36
+					ClassicWidth: PARENT_RIGHT - 8
+					ClassicX: 4
+					ClassicY: PARENT_BOTTOM - 36
 					Align: Center
 					Font: Tiny
+					PositionType: Absolute
 				Label@AUTHOR:
-					Width: PARENT_RIGHT - 8
-					X: 4
-					Y: PARENT_BOTTOM - 24
+					ClassicWidth: PARENT_RIGHT - 8
+					ClassicX: 4
+					ClassicY: PARENT_BOTTOM - 24
 					Align: Center
 					Font: Tiny
+					PositionType: Absolute
 				Label@SIZE:
-					Width: PARENT_RIGHT - 8
-					X: 4
-					Y: PARENT_BOTTOM - 12
+					ClassicWidth: PARENT_RIGHT - 8
+					ClassicX: 4
+					ClassicY: PARENT_BOTTOM - 12
 					Align: Center
 					Font: Tiny
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@FILTER_DESC:
-			X: PARENT_RIGHT - 467
-			Y: 50
-			Width: 60
-			Height: 24
+			ClassicX: PARENT_RIGHT - 467
+			ClassicY: 50
+			ClassicWidth: 60
+			ClassicHeight: 24
 			Font: Bold
 			Align: Right
 			Text: Filter:
+			PositionType: Absolute
 		TextField@MAPFILTER_INPUT:
-			X: PARENT_RIGHT - 401
-			Y: 48
-			Width: 150
-			Height: 25
+			ClassicX: PARENT_RIGHT - 401
+			ClassicY: 48
+			ClassicWidth: 150
+			ClassicHeight: 25
+			PositionType: Absolute
 		Label@FILTER_DESC_JOINER:
-			X: PARENT_RIGHT - 250
-			Y: 48
-			Width: 30
-			Height: 24
+			ClassicX: PARENT_RIGHT - 250
+			ClassicY: 48
+			ClassicWidth: 30
+			ClassicHeight: 24
 			Font: Bold
 			Align: Center
 			Text: in
+			PositionType: Absolute
 		DropDownButton@GAMEMODE_FILTER:
-			X: PARENT_RIGHT - 220
-			Y: 48
-			Width: 200
-			Height: 25
+			ClassicX: PARENT_RIGHT - 220
+			ClassicY: 48
+			ClassicWidth: 200
+			ClassicHeight: 25
+			PositionType: Absolute
 		Button@RANDOMMAP_BUTTON:
-			X: 20
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 20
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Random Map
 			Font: Bold
+			PositionType: Absolute
 		Button@DELETE_MAP_BUTTON:
-			X: 160
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 160
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Delete Map
 			Font: Bold
+			PositionType: Absolute
 		Button@DELETE_ALL_MAPS_BUTTON:
-			X: 300
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 300
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Delete All Maps
 			Font: Bold
+			PositionType: Absolute
 		Button@BUTTON_OK:
-			X: PARENT_RIGHT - 270
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 270
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Ok
 			Font: Bold
 			Key: return
+			PositionType: Absolute
 		Button@BUTTON_CANCEL:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 140
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Back
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute

@@ -1,137 +1,157 @@
 Container@DEBUG_PANEL:
 	Logic: DebugMenuLogic
-	Y: 10
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicY: 10
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Children:
 		Label@TITLE:
-			Y: 26
+			ClassicY: 26
 			Font: Bold
 			Text: Debug Options
 			Align: Center
-			Width: PARENT_RIGHT
+			ClassicWidth: PARENT_RIGHT
+			PositionType: Absolute
 		Checkbox@INSTANT_BUILD:
-			X: 45
-			Y: 45
-			Width: 200
-			Height: 20
+			ClassicX: 45
+			ClassicY: 45
+			ClassicWidth: 200
+			ClassicHeight: 20
 			Font: Regular
 			Text: Instant Build Speed
+			PositionType: Absolute
 		Checkbox@ENABLE_TECH:
-			X: 45
-			Y: 75
-			Width: 200
-			Height: 20
+			ClassicX: 45
+			ClassicY: 75
+			ClassicWidth: 200
+			ClassicHeight: 20
 			Font: Regular
 			Text: Build Everything
+			PositionType: Absolute
 		Checkbox@BUILD_ANYWHERE:
-			X: 45
-			Y: 105
-			Width: 200
-			Height: 20
+			ClassicX: 45
+			ClassicY: 105
+			ClassicWidth: 200
+			ClassicHeight: 20
 			Font: Regular
 			Text: Build Anywhere
+			PositionType: Absolute
 		Checkbox@UNLIMITED_POWER:
-			X: 290
-			Y: 45
-			Width: 200
-			Height: 20
+			ClassicX: 290
+			ClassicY: 45
+			ClassicWidth: 200
+			ClassicHeight: 20
 			Font: Regular
 			Text: Unlimited Power
+			PositionType: Absolute
 		Checkbox@INSTANT_CHARGE:
-			X: 290
-			Y: 75
-			Width: 200
-			Height: 20
+			ClassicX: 290
+			ClassicY: 75
+			ClassicWidth: 200
+			ClassicHeight: 20
 			Font: Regular
 			Text: Instant Charge Time
+			PositionType: Absolute
 		Checkbox@DISABLE_VISIBILITY_CHECKS:
-			X: 290
-			Y: 105
-			Height: 20
-			Width: 200
+			ClassicX: 290
+			ClassicY: 105
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Disable Visibility Checks
+			PositionType: Absolute
 		Button@GIVE_CASH:
-			X: 90
-			Y: 150
-			Width: 140
-			Height: 30
+			ClassicX: 90
+			ClassicY: 150
+			ClassicWidth: 140
+			ClassicHeight: 30
 			Font: Bold
 			Text: Give $20,000
+			PositionType: Absolute
 		Button@GROW_RESOURCES:
-			X: 271
-			Y: 150
-			Width: 140
-			Height: 30
+			ClassicX: 271
+			ClassicY: 150
+			ClassicWidth: 140
+			ClassicHeight: 30
 			Font: Bold
 			Text: Grow Resources
+			PositionType: Absolute
 		Button@GIVE_EXPLORATION:
-			X: 90
-			Y: 200
-			Width: 140
-			Height: 30
+			ClassicX: 90
+			ClassicY: 200
+			ClassicWidth: 140
+			ClassicHeight: 30
 			Font: Bold
 			Text: Clear Shroud
+			PositionType: Absolute
 		Button@RESET_EXPLORATION:
-			X: 271
-			Y: 200
-			Width: 140
-			Height: 30
+			ClassicX: 271
+			ClassicY: 200
+			ClassicWidth: 140
+			ClassicHeight: 30
 			Font: Bold
 			Text: Reset Shroud
+			PositionType: Absolute
 		Label@VISUALIZATIONS_TITLE:
-			Y: 256
+			ClassicY: 256
 			Font: Bold
 			Text: Visualizations
 			Align: Center
-			Width: PARENT_RIGHT
+			ClassicWidth: PARENT_RIGHT
+			PositionType: Absolute
 		Checkbox@SHOW_UNIT_PATHS:
-			X: 45
-			Y: 275
-			Width: 200
-			Height: 20
+			ClassicX: 45
+			ClassicY: 275
+			ClassicWidth: 200
+			ClassicHeight: 20
 			Font: Regular
 			Text: Show Unit Paths
+			PositionType: Absolute
 		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
-			X: 45
-			Y: 305
-			Height: 20
-			Width: 200
+			ClassicX: 45
+			ClassicY: 305
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Show Custom Terrain
+			PositionType: Absolute
 		Checkbox@SHOW_ACTOR_TAGS:
-			X: 45
-			Y: 335
-			Height: 20
-			Width: 200
+			ClassicX: 45
+			ClassicY: 335
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Show Actor Tags
+			PositionType: Absolute
 		Checkbox@SHOW_COMBATOVERLAY:
-			X: 290
-			Y: 275
-			Height: 20
-			Width: 200
+			ClassicX: 290
+			ClassicY: 275
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Show Combat Geometry
+			PositionType: Absolute
 		Checkbox@SHOW_GEOMETRY:
-			X: 290
-			Y: 305
-			Height: 20
-			Width: 200
+			ClassicX: 290
+			ClassicY: 305
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Show Render Geometry
+			PositionType: Absolute
 		Checkbox@SHOW_TERRAIN_OVERLAY:
-			X: 290
-			Y: 335
-			Height: 20
-			Width: 200
+			ClassicX: 290
+			ClassicY: 335
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Show Terrain Geometry
+			PositionType: Absolute
 		Checkbox@SHOW_SCREENMAP:
-			X: 290
-			Y: 365
-			Height: 20
-			Width: 200
+			ClassicX: 290
+			ClassicY: 365
+			ClassicHeight: 20
+			ClassicWidth: 200
 			Font: Regular
 			Text: Show Screen Map
+			PositionType: Absolute
+	PositionType: Absolute

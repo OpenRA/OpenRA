@@ -1,43 +1,50 @@
 Container@MISSION_OBJECTIVES:
-	Height: PARENT_BOTTOM
-	Width: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
 	Logic: GameInfoObjectivesLogic
 	Children:
 		Label@MISSION:
-			X: 20
-			Y: 21
-			Width: 80
-			Height: 25
+			ClassicX: 20
+			ClassicY: 21
+			ClassicWidth: 80
+			ClassicHeight: 25
 			Font: MediumBold
 			Text: Mission:
+			PositionType: Absolute
 		Label@MISSION_STATUS:
-			X: 100
-			Y: 21
-			Width: PARENT_RIGHT - 120
-			Height: 25
+			ClassicX: 100
+			ClassicY: 21
+			ClassicWidth: PARENT_RIGHT - 120
+			ClassicHeight: 25
 			Font: MediumBold
+			PositionType: Absolute
 		ScrollPanel@OBJECTIVES_PANEL:
-			X: 20
-			Y: 60
-			Width: 482
-			Height: 310
+			ClassicX: 20
+			ClassicY: 60
+			ClassicWidth: 482
+			ClassicHeight: 310
 			TopBottomSpacing: 15
 			ItemSpacing: 15
 			Children:
 				Container@OBJECTIVE_TEMPLATE:
-					Width: PARENT_RIGHT
-					Height: 20
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 20
 					Children:
 						Label@OBJECTIVE_TYPE:
-							X: 10
-							Y: 1
-							Width: 70
-							Height: PARENT_BOTTOM
+							ClassicX: 10
+							ClassicY: 1
+							ClassicWidth: 70
+							ClassicHeight: PARENT_BOTTOM
 							Align: Center
+							PositionType: Absolute
 						Checkbox@OBJECTIVE_STATUS:
-							X: 90
-							Y: 0
-							Width: PARENT_RIGHT - 100
-							Height: PARENT_BOTTOM
+							ClassicX: 90
+							ClassicY: 0
+							ClassicWidth: PARENT_RIGHT - 100
+							ClassicHeight: PARENT_BOTTOM
 							Disabled: True
 							TextColorDisabled: FFFFFF
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

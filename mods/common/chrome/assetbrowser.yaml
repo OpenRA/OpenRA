@@ -1,211 +1,245 @@
 Background@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
 		SupportedFormats: .shp, .r8, .tmp, .tem, .des, .sno, .int, .vqa
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 700
-	Height: 500
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 700
+	ClassicHeight: 500
 	Children:
 		LogicTicker@ANIMATION_TICKER:
+			PositionType: Absolute
 		ColorPreviewManager@COLOR_MANAGER:
+			PositionType: Absolute
 		Label@ASSETBROWSER_TITLE:
-			Y: 21
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 21
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
 			Text: Asset Browser
+			PositionType: Absolute
 		Label@SOURCE_SELECTOR_DESC:
-			X: 20
-			Y: 36
-			Width: 160
-			Height: 25
+			ClassicX: 20
+			ClassicY: 36
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Font: TinyBold
 			Align: Center
 			Text: Select asset source
+			PositionType: Absolute
 		DropDownButton@SOURCE_SELECTOR:
-			X: 20
-			Y: 60
-			Width: 160
-			Height: 25
+			ClassicX: 20
+			ClassicY: 60
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Font: Bold
 			Text: Folders
+			PositionType: Absolute
 		ScrollPanel@ASSET_LIST:
-			X: 20
-			Y: 90
-			Width: 160
-			Height: 275
+			ClassicX: 20
+			ClassicY: 90
+			ClassicWidth: 160
+			ClassicHeight: 275
 			CollapseHiddenChildren: True
 			Children:
 				ScrollItem@ASSET_TEMPLATE:
-					Width: PARENT_RIGHT - 27
-					Height: 25
-					X: 2
-					Y: 0
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 25
+					ClassicX: 2
+					ClassicY: 0
 					Visible: false
 					EnableChildMouseOver: True
 					Children:
 						LabelWithTooltip@TITLE:
-							X: 10
-							Width: PARENT_RIGHT - 20
-							Height: 25
+							ClassicX: 10
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@FILENAME_DESC:
-			X: 20
-			Y: 371
-			Width: 160
-			Height: 25
+			ClassicX: 20
+			ClassicY: 371
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Font: TinyBold
 			Align: Center
 			Text: Filter by name
+			PositionType: Absolute
 		TextField@FILENAME_INPUT:
-			X: 20
-			Y: 395
-			Width: 160
-			Height: 25
+			ClassicX: 20
+			ClassicY: 395
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Type: Filename
+			PositionType: Absolute
 		Label@PALETTE_DESC:
-			X: PARENT_RIGHT - WIDTH - 270
-			Y: 60
-			Width: 150
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 270
+			ClassicY: 60
+			ClassicWidth: 150
+			ClassicHeight: 25
 			Font: Bold
 			Align: Right
 			Text: Palette:
+			PositionType: Absolute
 		DropDownButton@PALETTE_SELECTOR:
-			X: PARENT_RIGHT - WIDTH - 110
-			Y: 60
-			Width: 150
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 110
+			ClassicY: 60
+			ClassicWidth: 150
+			ClassicHeight: 25
 			Font: Bold
+			PositionType: Absolute
 		DropDownButton@COLOR:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: 60
-			Width: 80
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: 60
+			ClassicWidth: 80
+			ClassicHeight: 25
 			Children:
 				ColorBlock@COLORBLOCK:
-					X: 5
-					Y: 6
-					Width: PARENT_RIGHT - 35
-					Height: PARENT_BOTTOM - 12
+					ClassicX: 5
+					ClassicY: 6
+					ClassicWidth: PARENT_RIGHT - 35
+					ClassicHeight: PARENT_BOTTOM - 12
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@SPRITE_BG:
-			X: 190
-			Y: 90
-			Width: 490
-			Height: 330
+			ClassicX: 190
+			ClassicY: 90
+			ClassicWidth: 490
+			ClassicHeight: 330
 			Background: dialog3
 			Children:
 				Sprite@SPRITE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
+					PositionType: Absolute
 				VqaPlayer@PLAYER:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					AspectRatio: 1
+					PositionType: Absolute
 				Label@ERROR:
-					Y: 1
-					X: 5
-					Width: 490 - 10
-					Height: 330
+					ClassicY: 1
+					ClassicX: 5
+					ClassicWidth: 490 - 10
+					ClassicHeight: 330
 					Align: Center
 					Visible: false
 					Text: Error displaying file. See assetbrowser.log for details.
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@FRAME_SELECTOR:
-			X: 190
-			Y: 425
+			ClassicX: 190
+			ClassicY: 425
 			Children:
 				Button@BUTTON_PREV:
-					X: 0
-					Y: 0
-					Width: 25
-					Height: 25
+					ClassicX: 0
+					ClassicY: 0
+					ClassicWidth: 25
+					ClassicHeight: 25
 					Key: LEFT
 					Children:
 						Image@IMAGE_PREV:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: prev
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_PLAY:
-					X: 35
-					Y: 0
-					Width: 25
-					Height: 25
+					ClassicX: 35
+					ClassicY: 0
+					ClassicWidth: 25
+					ClassicHeight: 25
 					Key: SPACE
 					Children:
 						Image@IMAGE_PLAY:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: play
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_PAUSE:
 					Visible: no
-					X: 35
-					Y: 0
-					Width: 25
-					Height: 25
+					ClassicX: 35
+					ClassicY: 0
+					ClassicWidth: 25
+					ClassicHeight: 25
 					Key: SPACE
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: pause
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_STOP:
-					X: 70
-					Y: 0
-					Width: 25
-					Height: 25
+					ClassicX: 70
+					ClassicY: 0
+					ClassicWidth: 25
+					ClassicHeight: 25
 					Key: RETURN
 					Children:
 						Image@IMAGE_STOP:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: stop
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_NEXT:
-					X: 105
-					Y: 0
-					Width: 25
-					Height: 25
+					ClassicX: 105
+					ClassicY: 0
+					ClassicWidth: 25
+					ClassicHeight: 25
 					Key: RIGHT
 					Children:
 						Image@IMAGE_NEXT:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 25
+							ClassicHeight: 25
 							ImageCollection: music
 							ImageName: next
+							PositionType: Absolute
+					PositionType: Absolute
 				Slider@FRAME_SLIDER:
-					X: 140
-					Y: 3
-					Width: 300
-					Height: 20
+					ClassicX: 140
+					ClassicY: 3
+					ClassicWidth: 300
+					ClassicHeight: 20
 					MinimumValue: 0
+					PositionType: Absolute
 				Label@FRAME_COUNT:
-					X: 445
-					Y: 1
-					Width: 40
-					Height: 25
+					ClassicX: 445
+					ClassicY: 1
+					ClassicWidth: 40
+					ClassicHeight: 25
 					Font: TinyBold
 					Align: Left
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@CLOSE_BUTTON:
 			Key: escape
-			X: PARENT_RIGHT - 180
-			Y: PARENT_BOTTOM - 45
-			Width: 160
-			Height: 25
+			ClassicX: PARENT_RIGHT - 180
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Font: Bold
 			Text: Close
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

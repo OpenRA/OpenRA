@@ -1,170 +1,197 @@
 Background@MISSIONBROWSER_PANEL:
 	Logic: MissionBrowserLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 880
-	Height: 591
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 880
+	ClassicHeight: 591
 	Children:
 		Label@MISSIONBROWSER_TITLE:
-			Y: 20
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 20
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Text: Missions
 			Align: Center
 			Font: Bold
+			PositionType: Absolute
 		ScrollPanel@MISSION_LIST:
-			X: 20
-			Y: 50
-			Width: 190
-			Height: 405
+			ClassicX: 20
+			ClassicY: 50
+			ClassicWidth: 190
+			ClassicHeight: 405
 			Children:
 				ScrollItem@HEADER:
 					BaseName: scrollheader
-					Width: PARENT_RIGHT - 27
-					Height: 13
-					X: 2
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 13
+					ClassicX: 2
 					Visible: false
 					Children:
 						Label@LABEL:
 							Font: TinyBold
-							Width: PARENT_RIGHT
-							Height: 13
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 13
 							Align: Center
+							PositionType: Absolute
+					PositionType: Absolute
 				ScrollItem@TEMPLATE:
-					Width: PARENT_RIGHT - 27
-					Height: 25
-					X: 2
+					ClassicWidth: PARENT_RIGHT - 27
+					ClassicHeight: 25
+					ClassicX: 2
 					EnableChildMouseOver: True
 					Children:
 						LabelWithTooltip@TITLE:
-							X: 10
-							Width: PARENT_RIGHT - 20
-							Height: 25
+							ClassicX: 10
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Label@DIFFICULTY_DESC:
-			X: 210 - WIDTH - 125
-			Y: 468
-			Width: 56
-			Height: 25
+			ClassicX: 210 - WIDTH - 125
+			ClassicY: 468
+			ClassicWidth: 56
+			ClassicHeight: 25
 			Text: Difficulty:
 			Align: Right
+			PositionType: Absolute
 		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X: 210 - WIDTH
-			Y: 468
-			Width: 120
-			Height: 25
+			ClassicX: 210 - WIDTH
+			ClassicY: 468
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Font: Regular
+			PositionType: Absolute
 		Label@GAMESPEED_DESC:
-			X: 210 - WIDTH - 125
-			Y: 508
-			Width: 120
-			Height: 25
+			ClassicX: 210 - WIDTH - 125
+			ClassicY: 508
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Speed:
 			Align: Right
+			PositionType: Absolute
 		DropDownButton@GAMESPEED_DROPDOWNBUTTON:
-			X: 210 - WIDTH
-			Y: 508
-			Width: 120
-			Height: 25
+			ClassicX: 210 - WIDTH
+			ClassicY: 508
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Font: Regular
+			PositionType: Absolute
 		Container@MISSION_INFO:
-			X: 220
-			Y: 50
-			Width: 642
-			Height: 800
+			ClassicX: 220
+			ClassicY: 50
+			ClassicWidth: 642
+			ClassicHeight: 800
 			Children:
 				Background@MISSION_BG:
-					Width: PARENT_RIGHT
-					Height: 327
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 327
 					Background: dialog3
 					Children:
 						MapPreview@MISSION_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_BOTTOM - 2
 							IgnoreMouseOver: True
 							IgnoreMouseInput: True
 							ShowSpawnPoints: False
+							PositionType: Absolute
+					PositionType: Absolute
 				ScrollPanel@MISSION_DESCRIPTION_PANEL:
-					Y: 337
-					Width: PARENT_RIGHT
-					Height: 146
+					ClassicY: 337
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 146
 					Children:
 						Label@MISSION_DESCRIPTION:
-							X: 4
-							Y: 1
-							Width: PARENT_RIGHT - 32
+							ClassicX: 4
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 32
 							VAlign: Top
 							Font: Small
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@START_BRIEFING_VIDEO_BUTTON:
-			X: 220
-			Y: PARENT_BOTTOM - 45
-			Width: 130
-			Height: 25
+			ClassicX: 220
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 130
+			ClassicHeight: 25
 			Text: Watch Briefing
 			Font: Bold
+			PositionType: Absolute
 		Button@STOP_BRIEFING_VIDEO_BUTTON:
-			X: 220
-			Y: PARENT_BOTTOM - 45
-			Width: 130
-			Height: 25
+			ClassicX: 220
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 130
+			ClassicHeight: 25
 			Text: Stop Briefing
 			Font: Bold
+			PositionType: Absolute
 		Button@START_INFO_VIDEO_BUTTON:
-			X: 360
-			Y: PARENT_BOTTOM - 45
-			Width: 130
-			Height: 25
+			ClassicX: 360
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 130
+			ClassicHeight: 25
 			Text: Watch Info Video
 			Font: Bold
+			PositionType: Absolute
 		Button@STOP_INFO_VIDEO_BUTTON:
-			X: 360
-			Y: PARENT_BOTTOM - 45
-			Width: 130
-			Height: 25
+			ClassicX: 360
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 130
+			ClassicHeight: 25
 			Text: Stop Info Video
 			Font: Bold
+			PositionType: Absolute
 		Button@STARTGAME_BUTTON:
-			X: PARENT_RIGHT - 140 - 130
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 140 - 130
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Play
 			Font: Bold
+			PositionType: Absolute
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - 140
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Back
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
 		Background@MISSION_BIN:
-			X: 220
-			Y: 50
-			Width: 642
-			Height: 483
+			ClassicX: 220
+			ClassicY: 50
+			ClassicWidth: 642
+			ClassicHeight: 483
 			Background: dialog3
 			Children:
 				VqaPlayer@MISSION_VIDEO:
-					X: 1
-					Y: 1
-					Width: 640
-					Height: 480
+					ClassicX: 1
+					ClassicY: 1
+					ClassicWidth: 640
+					ClassicHeight: 480
 					AspectRatio: 1.2
 					DrawOverlay: False
+					PositionType: Absolute
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@FULLSCREEN_PLAYER:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	ClassicWidth: WINDOW_RIGHT
+	ClassicHeight: WINDOW_BOTTOM
 	Background: dialog5
 	Visible: False
 	Children:
 		VqaPlayer@PLAYER:
-			X: 0
-			Y: 0
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicX: 0
+			ClassicY: 0
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
+			PositionType: Absolute
+	PositionType: Absolute

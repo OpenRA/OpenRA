@@ -25,650 +25,756 @@ Container@SETTINGS_PANEL:
 			Music Commands:
 				Template: TWO_COLUMN
 				Types: Music
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 590
-	Height: 378
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 590
+	ClassicHeight: 378
 	Children:
 		Label@TITLE:
-			Width: 590
-			Y: 0 - 22
+			ClassicWidth: 590
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Settings
+			PositionType: Absolute
 		Container@TAB_CONTAINER:
 			Children:
 				Button@DISPLAY_TAB:
-					Width: 110
-					Height: 35
+					ClassicWidth: 110
+					ClassicHeight: 35
 					Text: Display
+					PositionType: Absolute
 				Button@AUDIO_TAB:
-					X: WIDTH + 10
-					Width: 110
-					Height: 35
+					ClassicX: WIDTH + 10
+					ClassicWidth: 110
+					ClassicHeight: 35
 					Text: Audio
+					PositionType: Absolute
 				Button@INPUT_TAB:
-					X: 2 * (WIDTH + 10)
-					Width: 110
-					Height: 35
+					ClassicX: 2 * (WIDTH + 10)
+					ClassicWidth: 110
+					ClassicHeight: 35
 					Text: Input
+					PositionType: Absolute
 				Button@HOTKEYS_TAB:
-					X: 3 * (WIDTH + 10)
-					Width: 110
-					Height: 35
+					ClassicX: 3 * (WIDTH + 10)
+					ClassicWidth: 110
+					ClassicHeight: 35
 					Text: Hotkeys
+					PositionType: Absolute
 				Button@ADVANCED_TAB:
-					X: 4 * (WIDTH + 10)
-					Width: 110
-					Height: 35
+					ClassicX: 4 * (WIDTH + 10)
+					ClassicWidth: 110
+					ClassicHeight: 35
 					Text: Advanced
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@bg:
-			Y: 34
-			Width: 590
-			Height: 360
+			ClassicY: 34
+			ClassicWidth: 590
+			ClassicHeight: 360
 			Background: panel-black
 			Children:
 				Container@DISPLAY_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@VIDEO_TITLE:
-							Y: 21
-							Width: PARENT_RIGHT
+							ClassicY: 21
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Display
 							Align: Center
+							PositionType: Absolute
 						Label@MODE_LABEL:
-							X: 110
-							Y: 40
-							Width: 45
-							Height: 25
+							ClassicX: 110
+							ClassicY: 40
+							ClassicWidth: 45
+							ClassicHeight: 25
 							Align: Right
 							Text: Mode:
+							PositionType: Absolute
 						DropDownButton@MODE_DROPDOWN:
-							X: 160
-							Y: 40
-							Width: 170
-							Height: 25
+							ClassicX: 160
+							ClassicY: 40
+							ClassicWidth: 170
+							ClassicHeight: 25
 							Font: Regular
 							Text: Windowed
+							PositionType: Absolute
 						Container@WINDOW_RESOLUTION:
-							X: 330
-							Y: 40
+							ClassicX: 330
+							ClassicY: 40
 							Children:
 								Label@At:
 									Text: @
 									Font: Bold
-									Y: 0
-									Height: 25
-									Width: 25
+									ClassicY: 0
+									ClassicHeight: 25
+									ClassicWidth: 25
 									Align: Center
+									PositionType: Absolute
 								TextField@WINDOW_WIDTH:
-									X: 25
-									Width: 45
-									Height: 25
+									ClassicX: 25
+									ClassicWidth: 45
+									ClassicHeight: 25
 									MaxLength: 5
 									Type: Integer
+									PositionType: Absolute
 								Label@X:
 									Text: x
 									Font: Bold
-									X: 70
-									Y: 0
-									Height: 25
-									Width: 15
+									ClassicX: 70
+									ClassicY: 0
+									ClassicHeight: 25
+									ClassicWidth: 15
 									Align: Center
+									PositionType: Absolute
 								TextField@WINDOW_HEIGHT:
-									X: 85
-									Width: 45
-									Height: 25
+									ClassicX: 85
+									ClassicWidth: 45
+									ClassicHeight: 25
 									MaxLength: 5
 									Type: Integer
+									PositionType: Absolute
+							PositionType: Absolute
 						Checkbox@HARDWARECURSORS_CHECKBOX:
-							X: 310
-							Y: 75
-							Width: 200
-							Height: 20
+							ClassicX: 310
+							ClassicY: 75
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Use Hardware Cursors
+							PositionType: Absolute
 						Label@VIDEO_DESC:
-							Y: 92
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 92
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Center
 							Text: Mode, resolution, and cursor changes will be applied after the game is restarted
+							PositionType: Absolute
 						Checkbox@FRAME_LIMIT_CHECKBOX:
-							X: 15
-							Y: 125
-							Width: 200
-							Height: 20
+							ClassicX: 15
+							ClassicY: 125
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Enable Frame Limiter
+							PositionType: Absolute
 						Checkbox@PIXELDOUBLE_CHECKBOX:
-							X: 310
-							Y: 125
-							Width: 200
-							Height: 20
+							ClassicX: 310
+							ClassicY: 125
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Enable Pixel Doubling
+							PositionType: Absolute
 						Checkbox@CURSORDOUBLE_CHECKBOX:
-							X: 340
-							Y: 155
-							Width: 200
-							Height: 20
+							ClassicX: 340
+							ClassicY: 155
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Also Double Cursor
+							PositionType: Absolute
 						Label@FRAME_LIMIT_DESC_A:
-							X: 45
-							Y: 153
-							Width: 50
-							Height: 25
+							ClassicX: 45
+							ClassicY: 153
+							ClassicWidth: 50
+							ClassicHeight: 25
 							Text: Limit to
 							Align: Right
+							PositionType: Absolute
 						TextField@FRAME_LIMIT_TEXTFIELD:
-							X: 100
-							Y: 153
-							Width: 45
-							Height: 25
+							ClassicX: 100
+							ClassicY: 153
+							ClassicWidth: 45
+							ClassicHeight: 25
 							MaxLength: 3
 							Type: Integer
+							PositionType: Absolute
 						Label@FRAME_LIMIT_DESC_B:
-							X: 150
-							Y: 153
-							Height: 25
+							ClassicX: 150
+							ClassicY: 153
+							ClassicHeight: 25
 							Text: FPS
+							PositionType: Absolute
 						Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
-							X: 310
-							Y: 185
-							Width: 200
-							Height: 20
+							ClassicX: 310
+							ClassicY: 185
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Player Stance Colors
+							PositionType: Absolute
 						Label@PLAYER:
 							Text: Player:
-							X: 15
-							Y: 197
+							ClassicX: 15
+							ClassicY: 197
+							PositionType: Absolute
 						TextField@PLAYERNAME:
 							Text: Name
-							X: 65
-							Y: 185
-							Width: 145
-							Height: 25
+							ClassicX: 65
+							ClassicY: 185
+							ClassicWidth: 145
+							ClassicHeight: 25
 							MaxLength: 16
+							PositionType: Absolute
 						ColorPreviewManager@COLOR_MANAGER:
+							PositionType: Absolute
 						DropDownButton@PLAYERCOLOR:
-							X: 215
-							Y: 185
-							Width: 70
-							Height: 25
+							ClassicX: 215
+							ClassicY: 185
+							ClassicWidth: 70
+							ClassicHeight: 25
 							IgnoreChildMouseOver: true
 							Children:
 								ColorBlock@COLORBLOCK:
-									X: 5
-									Y: 6
-									Width: PARENT_RIGHT - 35
-									Height: PARENT_BOTTOM - 12
+									ClassicX: 5
+									ClassicY: 6
+									ClassicWidth: PARENT_RIGHT - 35
+									ClassicHeight: PARENT_BOTTOM - 12
+									PositionType: Absolute
+							PositionType: Absolute
 						Label@STATUS_BARS:
-							X: 310
-							Y: 257
+							ClassicX: 310
+							ClassicY: 257
 							Text: Status Bars:
+							PositionType: Absolute
 						DropDownButton@STATUS_BAR_DROPDOWN:
-							X: 400
-							Y: 245
-							Width: 170
-							Height: 25
+							ClassicX: 400
+							ClassicY: 245
+							ClassicWidth: 170
+							ClassicHeight: 25
 							Font: Regular
 							Text: Standard
+							PositionType: Absolute
 						Checkbox@DISPLAY_TARGET_LINES_CHECKBOX:
-							X: 310
-							Y: 215
-							Width: 200
-							Height: 20
+							ClassicX: 310
+							ClassicY: 215
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Display Target Lines
+							PositionType: Absolute
 						Label@LOCALIZATION_TITLE:
-							Y: 265
-							Width: PARENT_RIGHT
+							ClassicY: 265
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Localization
 							Align: Center
 							Visible: false
+							PositionType: Absolute
 						Label@LANGUAGE_LABEL:
-							X: 230 - WIDTH - 5
-							Y: 284
-							Width: 75
-							Height: 25
+							ClassicX: 230 - WIDTH - 5
+							ClassicY: 284
+							ClassicWidth: 75
+							ClassicHeight: 25
 							Align: Right
 							Text: Language:
 							Visible: false
+							PositionType: Absolute
 						DropDownButton@LANGUAGE_DROPDOWNBUTTON:
-							X: 230
-							Y: 285
-							Width: 200
-							Height: 25
+							ClassicX: 230
+							ClassicY: 285
+							ClassicWidth: 200
+							ClassicHeight: 25
 							Font: Regular
 							Visible: false
+							PositionType: Absolute
 						Label@LANGUAGE_DESC_A:
-							Y: 310
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 310
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Center
 							Text: Language changes will be applied after the game is restarted
 							Visible: false
+							PositionType: Absolute
 						Label@LANGUAGE_DESC_B:
-							Y: 325
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 325
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Center
 							Text: Translations apply to text strings only; Speech and build icons will remain in English
 							Visible: false
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@AUDIO_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@AUDIO_TITLE:
-							Y: 21
-							Width: PARENT_RIGHT
+							ClassicY: 21
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Audio
 							Align: Center
+							PositionType: Absolute
 						Label@SOUND_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 38
-							Width: 95
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 270
+							ClassicY: 38
+							ClassicWidth: 95
+							ClassicHeight: 25
 							Align: Right
 							Text: Sound Volume:
+							PositionType: Absolute
 						ExponentialSlider@SOUND_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 43
-							Width: 250
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 15
+							ClassicY: 43
+							ClassicWidth: 250
+							ClassicHeight: 20
 							Ticks: 7
+							PositionType: Absolute
 						Checkbox@CASH_TICKS:
-							X: 15
-							Y: 40
-							Width: 200
-							Height: 20
+							ClassicX: 15
+							ClassicY: 40
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Cash Ticks
+							PositionType: Absolute
 						Checkbox@MUTE_SOUND:
-							X: 15
-							Y: 70
-							Width: 200
-							Height: 20
+							ClassicX: 15
+							ClassicY: 70
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Mute Sound
+							PositionType: Absolute
 						Label@MUSIC_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 68
-							Width: 95
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 270
+							ClassicY: 68
+							ClassicWidth: 95
+							ClassicHeight: 25
 							Align: Right
 							Text: Music Volume:
+							PositionType: Absolute
 						ExponentialSlider@MUSIC_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 73
-							Width: 250
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 15
+							ClassicY: 73
+							ClassicWidth: 250
+							ClassicHeight: 20
 							Ticks: 7
+							PositionType: Absolute
 						Label@VIDEO_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 98
-							Width: 95
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 270
+							ClassicY: 98
+							ClassicWidth: 95
+							ClassicHeight: 25
 							Align: Right
 							Text: Video Volume:
+							PositionType: Absolute
 						ExponentialSlider@VIDEO_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 103
-							Width: 250
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 15
+							ClassicY: 103
+							ClassicWidth: 250
+							ClassicHeight: 20
 							Ticks: 7
+							PositionType: Absolute
 						Label@AUDIO_DEVICE_LABEL:
-							X: 190 - WIDTH - 5
-							Y: 245
-							Width: 75
-							Height: 25
+							ClassicX: 190 - WIDTH - 5
+							ClassicY: 245
+							ClassicWidth: 75
+							ClassicHeight: 25
 							Align: Right
 							Text: Audio Device:
+							PositionType: Absolute
 						DropDownButton@AUDIO_DEVICE:
-							X: 190
-							Y: 245
-							Width: 300
-							Height: 25
+							ClassicX: 190
+							ClassicY: 245
+							ClassicWidth: 300
+							ClassicHeight: 25
+							PositionType: Absolute
 						Label@AUDIO_DEVICE_DESC:
-							Y: 266
-							Width: PARENT_RIGHT
-							Height: 25
+							ClassicY: 266
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Center
 							Text: Device changes will be applied after the game is restarted
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@INPUT_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@INPUT_TITLE:
-							Y: 21
-							Width: PARENT_RIGHT
+							ClassicY: 21
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Input
 							Align: Center
+							PositionType: Absolute
 						Checkbox@CLASSICORDERS_CHECKBOX:
-							X: 15
-							Y: 40
-							Width: 250
-							Height: 20
+							ClassicX: 15
+							ClassicY: 40
+							ClassicWidth: 250
+							ClassicHeight: 20
 							Font: Regular
 							Text: Left-click Orders
+							PositionType: Absolute
 						Label@MIDDLE_MOUSE_SCROLL_LABEL:
-							X: PARENT_RIGHT - WIDTH - 120
-							Y: 41
-							Width: 160
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 120
+							ClassicY: 41
+							ClassicWidth: 160
+							ClassicHeight: 20
 							Font: Regular
 							Text: Middle-mouse Scrolling:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@MIDDLE_MOUSE_SCROLL:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 38
-							Width: 100
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 15
+							ClassicY: 38
+							ClassicWidth: 100
+							ClassicHeight: 25
 							Font: Regular
+							PositionType: Absolute
 						Label@MIDDLE_MOUSE_SCROLL_LABEL:
-							X: PARENT_RIGHT - WIDTH - 120
-							Y: 71
-							Width: 160
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 120
+							ClassicY: 71
+							ClassicWidth: 160
+							ClassicHeight: 20
 							Font: Regular
 							Text: Right-mouse Scrolling:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@RIGHT_MOUSE_SCROLL:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 68
-							Width: 100
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 15
+							ClassicY: 68
+							ClassicWidth: 100
+							ClassicHeight: 25
 							Font: Regular
+							PositionType: Absolute
 						Label@ZOOM_MODIFIER_LABEL:
-							X: PARENT_RIGHT - WIDTH - 120
-							Y: 101
-							Width: 160
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 120
+							ClassicY: 101
+							ClassicWidth: 160
+							ClassicHeight: 20
 							Font: Regular
 							Text: Scroll-zoom Modifier:
 							Align: Right
+							PositionType: Absolute
 						DropDownButton@ZOOM_MODIFIER:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 98
-							Width: 100
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 15
+							ClassicY: 98
+							ClassicWidth: 100
+							ClassicHeight: 25
 							Font: Regular
 							Text: Alt
+							PositionType: Absolute
 						Checkbox@EDGESCROLL_CHECKBOX:
-							X: 15
-							Y: 70
-							Width: 130
-							Height: 20
+							ClassicX: 15
+							ClassicY: 70
+							ClassicWidth: 130
+							ClassicHeight: 20
 							Font: Regular
 							Text: Edge Scrolling
+							PositionType: Absolute
 						Checkbox@ALLOW_ZOOM_CHECKBOX:
-							X: 15
-							Y: 100
-							Width: 130
-							Height: 20
+							ClassicX: 15
+							ClassicY: 100
+							ClassicWidth: 130
+							ClassicHeight: 20
 							Font: Regular
 							Text: Scroll Zooming
+							PositionType: Absolute
 						Checkbox@LOCKMOUSE_CHECKBOX:
-							X: 15
-							Y: 130
-							Width: 130
-							Height: 20
+							ClassicX: 15
+							ClassicY: 130
+							ClassicWidth: 130
+							ClassicHeight: 20
 							Font: Regular
 							Text: Lock Mouse to Window
+							PositionType: Absolute
 						Label@SCROLL_SPEED_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 128
-							Width: 95
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 270
+							ClassicY: 128
+							ClassicWidth: 95
+							ClassicHeight: 25
 							Text: Scroll Speed:
 							Align: Right
+							PositionType: Absolute
 						Slider@SCROLLSPEED_SLIDER:
-							X: PARENT_RIGHT - WIDTH - 170
-							Y: 133
-							Width: 100
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 170
+							ClassicY: 133
+							ClassicWidth: 100
+							ClassicHeight: 20
 							Ticks: 5
 							MinimumValue: 10
 							MaximumValue: 50
+							PositionType: Absolute
 						Label@UI_SCROLL_SPEED_LABEL:
-							X: PARENT_RIGHT - WIDTH - 106
-							Y: 128
-							Width: 95
-							Height: 25
+							ClassicX: PARENT_RIGHT - WIDTH - 106
+							ClassicY: 128
+							ClassicWidth: 95
+							ClassicHeight: 25
 							Text: UI Scroll:
 							Align: Right
+							PositionType: Absolute
 						Slider@UI_SCROLLSPEED_SLIDER:
-							X: PARENT_RIGHT - WIDTH - 6
-							Y: 133
-							Width: 100
-							Height: 20
+							ClassicX: PARENT_RIGHT - WIDTH - 6
+							ClassicY: 133
+							ClassicWidth: 100
+							ClassicHeight: 20
 							Ticks: 5
 							MinimumValue: 1
 							MaximumValue: 100
+							PositionType: Absolute
 						Label@HOTKEYS_TITLE:
-							Y: 166
-							Width: PARENT_RIGHT
+							ClassicY: 166
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Hotkeys
 							Align: Center
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@HOTKEYS_PANEL:
-					X: 15
-					Y: 15
-					Width: PARENT_RIGHT - 15
-					Height: PARENT_BOTTOM - 15
+					ClassicX: 15
+					ClassicY: 15
+					ClassicWidth: PARENT_RIGHT - 15
+					ClassicHeight: PARENT_BOTTOM - 15
 					Children:
 						ScrollPanel@HOTKEY_LIST:
-							Width: PARENT_RIGHT - 15
+							ClassicWidth: PARENT_RIGHT - 15
 							TopBottomSpacing: 4
 							ItemSpacing: 4
-							Height: 210
+							ClassicHeight: 210
 							Children:
 								ScrollItem@HEADER:
-									Width: 528
-									Height: 13
+									ClassicWidth: 528
+									ClassicHeight: 13
 									Visible: false
 									Children:
 										Label@LABEL:
 											Font: TinyBold
-											Width: PARENT_RIGHT
-											Height: 13
+											ClassicWidth: PARENT_RIGHT
+											ClassicHeight: 13
 											Align: Center
+											PositionType: Absolute
+									PositionType: Absolute
 								Container@TEMPLATES:
 									Children:
 										Container@TWO_COLUMN:
-											Width: 262
-											Height: 25
+											ClassicWidth: 262
+											ClassicHeight: 25
 											Visible: false
 											Children:
 												Label@FUNCTION:
-													Y: 0
-													Width: PARENT_RIGHT - 85
-													Height: 25
+													ClassicY: 0
+													ClassicWidth: PARENT_RIGHT - 85
+													ClassicHeight: 25
 													Align: Right
+													PositionType: Absolute
 												Button@HOTKEY:
-													X: PARENT_RIGHT - WIDTH
-													Width: 80
-													Height: 25
+													ClassicX: PARENT_RIGHT - WIDTH
+													ClassicWidth: 80
+													ClassicHeight: 25
 													Align: Left
 													TooltipContainer: TOOLTIP_CONTAINER
+													PositionType: Absolute
+											PositionType: Absolute
 										Container@THREE_COLUMN:
-											Width: 173
-											Height: 25
+											ClassicWidth: 173
+											ClassicHeight: 25
 											Visible: false
 											Children:
 												Label@FUNCTION:
-													Y: 0 - 1
-													Width: PARENT_RIGHT - 84
-													Height: 25
+													ClassicY: 0 - 1
+													ClassicWidth: PARENT_RIGHT - 84
+													ClassicHeight: 25
 													Align: Right
+													PositionType: Absolute
 												Button@HOTKEY:
-													X: PARENT_RIGHT - WIDTH + 1
-													Width: 80
-													Height: 25
+													ClassicX: PARENT_RIGHT - WIDTH + 1
+													ClassicWidth: 80
+													ClassicHeight: 25
 													Align: Left
 													TooltipContainer: TOOLTIP_CONTAINER
+													PositionType: Absolute
+											PositionType: Absolute
+									PositionType: Absolute
+							PositionType: Absolute
 						Background@HOTKEY_DIALOG_PLACEHOLDER:
-							Y: 225
-							Width: PARENT_RIGHT - 15
-							Height: 105
+							ClassicY: 225
+							ClassicWidth: PARENT_RIGHT - 15
+							ClassicHeight: 105
 							Background: panel-gray
 							Children:
 								Label@HOTKEY_DIALOG_HELPTEXT:
-									Y: PARENT_BOTTOM / 2 - 12
-									Width: PARENT_RIGHT
-									Height: 25
+									ClassicY: PARENT_BOTTOM / 2 - 12
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 25
 									Font: Tiny
 									Align: Center
 									Text: Click on a hotkey to start rebinding
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@HOTKEY_DIALOG_ROOT:
-							Y: 225
-							Width: PARENT_RIGHT - 15
-							Height: 105
+							ClassicY: 225
+							ClassicWidth: PARENT_RIGHT - 15
+							ClassicHeight: 105
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@ADVANCED_PANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@ADVANCED_TITLE:
-							Y: 21
-							Width: PARENT_RIGHT
+							ClassicY: 21
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Advanced
 							Align: Center
+							PositionType: Absolute
 						Checkbox@NAT_DISCOVERY:
-							X: 15
-							Y: 40
-							Width: 200
-							Height: 20
+							ClassicX: 15
+							ClassicY: 40
+							ClassicWidth: 200
+							ClassicHeight: 20
 							Font: Regular
 							Text: Enable Network Discovery (UPnP)
+							PositionType: Absolute
 						Checkbox@PERFTEXT_CHECKBOX:
-							X: 15
-							Y: 70
-							Width: 300
-							Height: 20
+							ClassicX: 15
+							ClassicY: 70
+							ClassicWidth: 300
+							ClassicHeight: 20
 							Font: Regular
 							Text: Show Performance Text
+							PositionType: Absolute
 						Checkbox@PERFGRAPH_CHECKBOX:
-							X: 15
-							Y: 100
-							Width: 300
-							Height: 20
+							ClassicX: 15
+							ClassicY: 100
+							ClassicWidth: 300
+							ClassicHeight: 20
 							Font: Regular
 							Text: Show Performance Graph
+							PositionType: Absolute
 						Checkbox@FETCH_NEWS_CHECKBOX:
-							X: 310
-							Y: 40
-							Width: 300
-							Height: 20
+							ClassicX: 310
+							ClassicY: 40
+							ClassicWidth: 300
+							ClassicHeight: 20
 							Font: Regular
 							Text: Fetch Community News
+							PositionType: Absolute
 						Checkbox@CHECK_VERSION_CHECKBOX:
-							X: 310
-							Y: 70
-							Width: 300
-							Height: 20
+							ClassicX: 310
+							ClassicY: 70
+							ClassicWidth: 300
+							ClassicHeight: 20
 							Font: Regular
 							Text: Check for Updates
+							PositionType: Absolute
 						Checkbox@SENDSYSINFO_CHECKBOX:
-							X: 310
-							Y: 100
-							Width: 300
-							Height: 20
+							ClassicX: 310
+							ClassicY: 100
+							ClassicWidth: 300
+							ClassicHeight: 20
 							Font: Regular
 							Text: Send System Information
+							PositionType: Absolute
 						Label@SENDSYSINFO_DESC:
-							X: 310
-							Y: 116
-							Width: 250
-							Height: 30
+							ClassicX: 310
+							ClassicY: 116
+							ClassicWidth: 250
+							ClassicHeight: 30
 							Font: Tiny
 							WordWrap: True
 							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+							PositionType: Absolute
 						Label@DEBUG_TITLE:
-							Y: 201
-							Width: PARENT_RIGHT
+							ClassicY: 201
+							ClassicWidth: PARENT_RIGHT
 							Font: Bold
 							Text: Developer
 							Align: Center
+							PositionType: Absolute
 						Container@DEBUG_HIDDEN_LABEL:
-							Y: 252
-							Width: PARENT_RIGHT
+							ClassicY: 252
+							ClassicWidth: PARENT_RIGHT
 							Children:
 								Label@A:
-									Width: PARENT_RIGHT
-									Height: 20
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 20
 									Font: Regular
 									Text: Additional developer-specific options can be enabled via the
 									Align: Center
+									PositionType: Absolute
 								Label@B:
-									Y: 20
-									Width: PARENT_RIGHT
-									Height: 20
+									ClassicY: 20
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 20
 									Font: Regular
 									Text: Debug.DisplayDeveloperSettings setting or launch flag
 									Align: Center
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@DEBUG_OPTIONS:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							Children:
 								Checkbox@BOTDEBUG_CHECKBOX:
-									X: 15
-									Y: 220
-									Width: 300
-									Height: 20
+									ClassicX: 15
+									ClassicY: 220
+									ClassicWidth: 300
+									ClassicHeight: 20
 									Font: Regular
 									Text: Show Bot Debug Messages
+									PositionType: Absolute
 								Checkbox@CHECKUNSYNCED_CHECKBOX:
-									X: 15
-									Y: 250
-									Width: 300
-									Height: 20
+									ClassicX: 15
+									ClassicY: 250
+									ClassicWidth: 300
+									ClassicHeight: 20
 									Font: Regular
 									Text: Check Sync around Unsynced Code
+									PositionType: Absolute
 								Checkbox@CHECKBOTSYNC_CHECKBOX:
-									X: 15
-									Y: 280
-									Width: 300
-									Height: 20
+									ClassicX: 15
+									ClassicY: 280
+									ClassicWidth: 300
+									ClassicHeight: 20
 									Font: Regular
 									Text: Check Sync around BotModule Code
+									PositionType: Absolute
 								Checkbox@LUADEBUG_CHECKBOX:
-									X: 310
-									Y: 220
-									Width: 300
-									Height: 20
+									ClassicX: 310
+									ClassicY: 220
+									ClassicWidth: 300
+									ClassicHeight: 20
 									Font: Regular
 									Text: Show Map Debug Messages
+									PositionType: Absolute
 								Checkbox@REPLAY_COMMANDS_CHECKBOX:
-									X: 310
-									Y: 250
-									Width: 300
-									Height: 20
+									ClassicX: 310
+									ClassicY: 250
+									ClassicWidth: 300
+									ClassicHeight: 20
 									Font: Regular
 									Text: Enable Debug Commands in Replays
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@BACK_BUTTON:
 			Key: escape
-			Y: 393
-			Width: 140
-			Height: 35
+			ClassicY: 393
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Back
+			PositionType: Absolute
 		Button@RESET_BUTTON:
-			X: 150
-			Y: 393
-			Width: 140
-			Height: 35
+			ClassicX: 150
+			ClassicY: 393
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Reset
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

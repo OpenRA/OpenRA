@@ -1,145 +1,169 @@
 Container@MAPCHOOSER_PANEL:
 	Logic: MapChooserLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 560) / 2
-	Width: 800
-	Height: 575
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - 560) / 2
+	ClassicWidth: 800
+	ClassicHeight: 575
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Select Map
+			PositionType: Absolute
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: 540
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 540
 			Background: panel-black
 			Children:
 				Label@FILTER_DESC:
-					X: PARENT_RIGHT - WIDTH - 401
-					Y: 16
-					Width: 60
-					Height: 25
+					ClassicX: PARENT_RIGHT - WIDTH - 401
+					ClassicY: 16
+					ClassicWidth: 60
+					ClassicHeight: 25
 					Font: Bold
 					Align: Right
 					Text: Filter:
+					PositionType: Absolute
 				TextField@MAPFILTER_INPUT:
-					X: PARENT_RIGHT - WIDTH - 245
-					Y: 15
-					Width: 150
-					Height: 25
+					ClassicX: PARENT_RIGHT - WIDTH - 245
+					ClassicY: 15
+					ClassicWidth: 150
+					ClassicHeight: 25
+					PositionType: Absolute
 				Label@FILTER_DESC_JOINER:
-					X: PARENT_RIGHT - WIDTH - 215
-					Y: 16
-					Width: 30
-					Height: 25
+					ClassicX: PARENT_RIGHT - WIDTH - 215
+					ClassicY: 16
+					ClassicWidth: 30
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					Text: in
+					PositionType: Absolute
 				DropDownButton@GAMEMODE_FILTER:
-					X: PARENT_RIGHT - WIDTH - 15
-					Y: 15
-					Width: 200
-					Height: 25
+					ClassicX: PARENT_RIGHT - WIDTH - 15
+					ClassicY: 15
+					ClassicWidth: 200
+					ClassicHeight: 25
+					PositionType: Absolute
 				Button@SYSTEM_MAPS_TAB_BUTTON:
-					X: 15
-					Y: 15
-					Height: 31
-					Width: 135
+					ClassicX: 15
+					ClassicY: 15
+					ClassicHeight: 31
+					ClassicWidth: 135
 					Text: Official Maps
+					PositionType: Absolute
 				Button@USER_MAPS_TAB_BUTTON:
-					X: 155
-					Y: 15
-					Height: 31
-					Width: 135
+					ClassicX: 155
+					ClassicY: 15
+					ClassicHeight: 31
+					ClassicWidth: 135
 					Text: Custom Maps
+					PositionType: Absolute
 				Container@SYSTEM_MAPS_TAB:
-					X: 15
-					Y: 45
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 60
+					ClassicX: 15
+					ClassicY: 45
+					ClassicWidth: PARENT_RIGHT - 30
+					ClassicHeight: PARENT_BOTTOM - 60
 					Children:
 						ScrollPanel@MAP_LIST:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							Children:
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@USER_MAPS_TAB:
-					X: 15
-					Y: 45
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 60
+					ClassicX: 15
+					ClassicY: 45
+					ClassicWidth: PARENT_RIGHT - 30
+					ClassicHeight: PARENT_BOTTOM - 60
 					Children:
 						ScrollPanel@MAP_LIST:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: PARENT_BOTTOM
 							Children:
+							PositionType: Absolute
+					PositionType: Absolute
 				ScrollItem@MAP_TEMPLATE:
-					Width: 183
-					Height: 232
-					X: 2
+					ClassicWidth: 183
+					ClassicHeight: 232
+					ClassicX: 2
 					Visible: false
 					Children:
 						MapPreview@PREVIEW:
-							X: (PARENT_RIGHT - WIDTH) / 2
-							Y: 4
-							Width: 173
-							Height: 173
+							ClassicX: (PARENT_RIGHT - WIDTH) / 2
+							ClassicY: 4
+							ClassicWidth: 173
+							ClassicHeight: 173
 							IgnoreMouseOver: true
 							IgnoreMouseInput: true
+							PositionType: Absolute
 						Label@TITLE:
-							X: 4
-							Y: PARENT_BOTTOM - 46
-							Width: PARENT_RIGHT - 8
+							ClassicX: 4
+							ClassicY: PARENT_BOTTOM - 46
+							ClassicWidth: PARENT_RIGHT - 8
 							Align: Center
+							PositionType: Absolute
 						Label@DETAILS:
-							Width: PARENT_RIGHT - 8
-							X: 4
-							Y: PARENT_BOTTOM - 32
+							ClassicWidth: PARENT_RIGHT - 8
+							ClassicX: 4
+							ClassicY: PARENT_BOTTOM - 32
 							Align: Center
 							Font: Tiny
+							PositionType: Absolute
 						Label@AUTHOR:
-							Width: PARENT_RIGHT - 8
-							X: 4
-							Y: PARENT_BOTTOM - 20
+							ClassicWidth: PARENT_RIGHT - 8
+							ClassicX: 4
+							ClassicY: PARENT_BOTTOM - 20
 							Align: Center
 							Font: Tiny
+							PositionType: Absolute
 						Label@SIZE:
-							Width: PARENT_RIGHT - 8
-							X: 4
-							Y: PARENT_BOTTOM - 8
+							ClassicWidth: PARENT_RIGHT - 8
+							ClassicX: 4
+							ClassicY: PARENT_BOTTOM - 8
 							Align: Center
 							Font: Tiny
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BUTTON_CANCEL:
 					Key: escape
-					Y: 539
-					Width: 140
-					Height: 35
+					ClassicY: 539
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Text: Back
+					PositionType: Absolute
 				Button@RANDOMMAP_BUTTON:
 					Key: space
-					X: PARENT_RIGHT - 150 - WIDTH
-					Y: 539
-					Width: 140
-					Height: 35
+					ClassicX: PARENT_RIGHT - 150 - WIDTH
+					ClassicY: 539
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Text: Random
+					PositionType: Absolute
 				Button@DELETE_MAP_BUTTON:
-					X: PARENT_RIGHT - 300 - WIDTH
-					Y: 539
-					Width: 140
-					Height: 35
+					ClassicX: PARENT_RIGHT - 300 - WIDTH
+					ClassicY: 539
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Text: Delete Map
+					PositionType: Absolute
 				Button@DELETE_ALL_MAPS_BUTTON:
-					X: PARENT_RIGHT - 450 - WIDTH
-					Y: 539
-					Width: 140
-					Height: 35
+					ClassicX: PARENT_RIGHT - 450 - WIDTH
+					ClassicY: 539
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Text: Delete All Maps
+					PositionType: Absolute
 				Button@BUTTON_OK:
 					Key: return
-					X: PARENT_RIGHT - WIDTH
-					Y: 539
-					Width: 140
-					Height: 35
+					ClassicX: PARENT_RIGHT - WIDTH
+					ClassicY: 539
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Text: Ok
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

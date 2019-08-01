@@ -1,49 +1,55 @@
 Background@HOTKEY_DIALOG:
 	Logic: HotkeyDialogLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
 	Background: panel-gray
 	Children:
 		Label@HOTKEY_LABEL:
-			X: 15
-			Y: 14
-			Width: PARENT_RIGHT - 40
-			Height: 25
+			ClassicX: 15
+			ClassicY: 14
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 25
 			Font: Bold
+			PositionType: Absolute
 		HotkeyEntry@HOTKEY_ENTRY:
-			X: 15
-			Y: 40
-			Width: 382
-			Height: 25
+			ClassicX: 15
+			ClassicY: 40
+			ClassicWidth: 382
+			ClassicHeight: 25
+			PositionType: Absolute
 		Container@NOTICES:
-			X: 15
-			Y: 65
-			Width: PARENT_RIGHT - 40
-			Height: 25
+			ClassicX: 15
+			ClassicY: 65
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 25
 			Children:
 				Label@DEFAULT_NOTICE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Font: Tiny
 					Align: Left
 					Text: This is the default hotkey.
+					PositionType: Absolute
 				Label@ORIGINAL_NOTICE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Font: Tiny
 					Align: Left
 					Text: The default is "{0}"
+					PositionType: Absolute
 				Label@DUPLICATE_NOTICE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Font: Tiny
 					Align: Left
 					Text: This hotkey is already used for "{0}"
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@CLEAR_BUTTON:
-			X: PARENT_RIGHT - 65 - 15 - 2 * (WIDTH + 10)
-			Y: 40
-			Width: 25
-			Height: 25
+			ClassicX: PARENT_RIGHT - 65 - 15 - 2 * (WIDTH + 10)
+			ClassicY: 40
+			ClassicWidth: 25
+			ClassicHeight: 25
 			TooltipText: Unbind the hotkey
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
@@ -51,33 +57,40 @@ Background@HOTKEY_DIALOG:
 				Image:
 					ImageCollection: lobby-bits
 					ImageName: kick
-					X: 7
-					Y: 8
+					ClassicX: 7
+					ClassicY: 8
 					IgnoreMouseOver: True
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@RESET_BUTTON:
-			X: PARENT_RIGHT - 65 - 15 - WIDTH - 10
-			Y: 40
-			Width: 25
-			Height: 25
+			ClassicX: PARENT_RIGHT - 65 - 15 - WIDTH - 10
+			ClassicY: 40
+			ClassicWidth: 25
+			ClassicHeight: 25
 			TooltipText: Reset to default
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
 			Children:
 				Image@IMAGE_RELOAD:
-					X: 5
-					Y: 5
-					Width: 16
-					Height: 16
+					ClassicX: 5
+					ClassicY: 5
+					ClassicWidth: 16
+					ClassicHeight: 16
 					ImageCollection: reload-icon
 					ImageName: enabled
 					IgnoreMouseOver: True
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 15
-			Y: 40
-			Width: 65
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 15
+			ClassicY: 40
+			ClassicWidth: 65
+			ClassicHeight: 25
 			Text: Cancel
 			TooltipText: Cancel the operation
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

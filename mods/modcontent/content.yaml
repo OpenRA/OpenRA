@@ -1,358 +1,414 @@
 Background@CONTENT_PANEL:
 	Logic: ModContentLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 500
-	Height: 290
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 500
+	ClassicHeight: 290
 	Background: panel-bg
 	Children:
 		Background@RULE:
-			X: 30
-			Y: 50
-			Width: 440
-			Height: 150
+			ClassicX: 30
+			ClassicY: 50
+			ClassicWidth: 440
+			ClassicHeight: 150
 			Background: panel-rule
+			PositionType: Absolute
 		Label@TITLE:
-			X: 0
-			Y: 14
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicX: 0
+			ClassicY: 14
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Text: Manage Content
 			Align: Center
 			Font: MediumBold
+			PositionType: Absolute
 		Label@HEADER_TEMPLATE:
-			Y: 66 
-			Width: PARENT_RIGHT
-			Height: 16
+			ClassicY: 66
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 16
 			Align: Center
+			PositionType: Absolute
 		ScrollPanel@PACKAGES:
-			X: 30
-			Y: 84
-			Width: PARENT_RIGHT - 60
-			Height: 137
+			ClassicX: 30
+			ClassicY: 84
+			ClassicWidth: PARENT_RIGHT - 60
+			ClassicHeight: 137
 			TopBottomSpacing: 4
 			ItemSpacing: 2
 			BorderWidth: 2
 			Children:
 				Container@PACKAGE_TEMPLATE:
-					X: 6
-					Width: PARENT_RIGHT - 16
-					Height: 23
+					ClassicX: 6
+					ClassicWidth: PARENT_RIGHT - 16
+					ClassicHeight: 23
 					Children:
 						Label@TITLE:
-							Width: 275
-							Height: 23
+							ClassicWidth: 275
+							ClassicHeight: 23
+							PositionType: Absolute
 						Label@REQUIRED:
-							X: 185 
-							Width: 90
-							Height: 23
+							ClassicX: 185
+							ClassicWidth: 90
+							ClassicHeight: 23
 							Align: Center
 							Font: Bold
 							TextColor: CC0000
 							Text: Required
+							PositionType: Absolute
 						Image@DISC:
-							X: 275
-							Y: 2
-							Width: 20
-							Height: 20
+							ClassicX: 275
+							ClassicY: 2
+							ClassicWidth: 20
+							ClassicHeight: 20
 							ImageCollection: modcontent
 							ImageName: cdicon
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: DISC_TOOLTIP
+							PositionType: Absolute
 						Button@DOWNLOAD:
-							X: 304
-							Y: 0
-							Width: 100
-							Height: 23
+							ClassicX: 304
+							ClassicY: 0
+							ClassicWidth: 100
+							ClassicHeight: 23
 							Background: button-highlighted-thin
 							Text: Download
+							PositionType: Absolute
 						Label@INSTALLED:
-							X: 304
-							Width: 100
-							Height: 23
+							ClassicX: 304
+							ClassicWidth: 100
+							ClassicHeight: 23
 							Align: Center
 							Font: Bold
 							TextColor: 00CC00
 							Text: Installed
+							PositionType: Absolute
 						Label@REQUIRES_DISC:
-							X: 304
-							Width: 100
-							Height: 23
+							ClassicX: 304
+							ClassicWidth: 100
+							ClassicHeight: 23
 							Align: Center
 							Font: Bold
 							TextColor: DDDDDD
 							Text: Requires Disc
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@CHECK_DISC_BUTTON:
-			X: 30
-			Y: PARENT_BOTTOM - 52
+			ClassicX: 30
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 200
-			Height: 32
+			ClassicWidth: 200
+			ClassicHeight: 32
 			Text: Detect Disc or Installation
 			Font: Bold
+			PositionType: Absolute
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 52
+			ClassicX: PARENT_RIGHT - 140
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
-			Height: 32
+			ClassicWidth: 110
+			ClassicHeight: 32
 			Text: Back
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@DISC_TOOLTIP:
 	Logic: ModContentDiscTooltipLogic
 	Background: panel-thinborder
-	Height: 25
+	ClassicHeight: 25
 	Children:
 		Label@DESCRIPTION:
-			X: 5
-			Height: 23
+			ClassicX: 5
+			ClassicHeight: 23
 			Font: Bold
 			Text: Content available from:
+			PositionType: Absolute
 		Container@DISCS:
-			Y: 15
-			Width: PARENT_RIGHT - 10
-			Height: 7 # used as bottom margin
+			ClassicY: 15
+			ClassicWidth: PARENT_RIGHT - 10
+			ClassicHeight: 7 # used as bottom margin
 			Children:
 				Label@DISC_TEMPLATE:
-					X: 20
-					Height: 14
+					ClassicX: 20
+					ClassicHeight: 14
 					Font: TinyBold
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@PACKAGE_DOWNLOAD_PANEL:
 	Logic: DownloadPackageLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 500
-	Height: 177
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 500
+	ClassicHeight: 177
 	Children:
 		Background:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: panel-bg
+			PositionType: Absolute
 		Background@RULE:
-			X: 30
-			Y: 50
-			Width: 440
-			Height: 150
+			ClassicX: 30
+			ClassicY: 50
+			ClassicWidth: 440
+			ClassicHeight: 150
 			Background: panel-rule
+			PositionType: Absolute
 		Label@TITLE:
-			X: 0
-			Y: 12
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicX: 0
+			ClassicY: 12
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Align: Center
 			Font: MediumBold
+			PositionType: Absolute
 		ProgressBar@PROGRESS_BAR:
-			X: 30
-			Y: 64
-			Width: PARENT_RIGHT - 60
-			Height: 16
+			ClassicX: 30
+			ClassicY: 64
+			ClassicWidth: PARENT_RIGHT - 60
+			ClassicHeight: 16
 			BarMargin: 0, 0
+			PositionType: Absolute
 		Label@STATUS_LABEL:
-			X: 30
-			Y: 85
-			Width: PARENT_RIGHT - 60
-			Height: 25
+			ClassicX: 30
+			ClassicY: 85
+			ClassicWidth: PARENT_RIGHT - 60
+			ClassicHeight: 25
 			Align: Left
+			PositionType: Absolute
 		Button@RETRY_BUTTON:
-			X: 30
-			Y: PARENT_BOTTOM - 52
+			ClassicX: 30
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 120
-			Height: 32
+			ClassicWidth: 120
+			ClassicHeight: 32
 			Visible: false
 			Text: Retry
 			Font: Bold
 			Key: return
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: PARENT_RIGHT - 30 - WIDTH
-			Y: PARENT_BOTTOM - 52
+			ClassicX: PARENT_RIGHT - 30 - WIDTH
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
-			Height: 32
+			ClassicWidth: 110
+			ClassicHeight: 32
 			Text: Cancel
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@DISC_INSTALL_PANEL:
 	Logic: InstallFromDiscLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 500
-	Height: 177
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 500
+	ClassicHeight: 177
 	Background: panel-bg
 	Children:
 		Background@RULE:
-			X: 30
-			Y: 50
-			Width: 440
-			Height:150
+			ClassicX: 30
+			ClassicY: 50
+			ClassicWidth: 440
+			ClassicHeight: 150
 			Background: panel-rule
+			PositionType: Absolute
 		Label@TITLE:
-			Y: 12
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicY: 12
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Align: Center
 			Font: MediumBold
+			PositionType: Absolute
 		Container@PROGRESS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Visible: false
 			Children:
 				ProgressBar@PROGRESS_BAR:
-					X: 30
-					Y: 60
-					Width: PARENT_RIGHT - 60
-					Height: 16
+					ClassicX: 30
+					ClassicY: 60
+					ClassicWidth: PARENT_RIGHT - 60
+					ClassicHeight: 16
 					BarMargin: 0, 0
+					PositionType: Absolute
 				Label@PROGRESS_MESSAGE:
-					X: 30
-					Y: 80
-					Width: PARENT_RIGHT - 60
-					Height: 25
+					ClassicX: 30
+					ClassicY: 80
+					ClassicWidth: PARENT_RIGHT - 60
+					ClassicHeight: 25
 					Align: Left
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MESSAGE:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
-			Height: 157
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
+			ClassicHeight: 157
 			Visible: false
 			Children:
 				Label@MESSAGE_MESSAGE:
-					Y: 65
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 65
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@LIST:
-			Width: PARENT_RIGHT
-			Height: 338
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 338
 			Visible: false
 			Children:
 				Label@LIST_MESSAGE:
-					Y: 65
-					Width: PARENT_RIGHT
-					Height: 16
+					ClassicY: 65
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 16
 					Align: Center
+					PositionType: Absolute
 				ScrollPanel@LIST_PANEL:
-					X: 30
-					Y: 99
-					Width: PARENT_RIGHT - 60
-					Height: 170
+					ClassicX: 30
+					ClassicY: 99
+					ClassicWidth: PARENT_RIGHT - 60
+					ClassicHeight: 170
 					TopBottomSpacing: 4
 					ItemSpacing: 2
 					BorderWidth: 2
 					Children:
 						Container@LIST_HEADER_TEMPLATE:
-							X: 6
-							Width: PARENT_RIGHT - 12 - 24
-							Height: 14
+							ClassicX: 6
+							ClassicWidth: PARENT_RIGHT - 12 - 24
+							ClassicHeight: 14
 							Children:
 								Background@TOP_RULE:
-									Width: PARENT_RIGHT
-									Height: 1
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 1
 									Background: panel-rule
+									PositionType: Absolute
 								Label@LABEL:
-									Y: 3
-									Width: PARENT_RIGHT
-									Height: 10
+									ClassicY: 3
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 10
 									Font: TinyBold
 									Align: Center
+									PositionType: Absolute
 								Background@BOTTOM_RULE:
-									Y: 16
-									Width: PARENT_RIGHT
-									Height: 1
+									ClassicY: 16
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 1
 									Background: panel-rule
+									PositionType: Absolute
+							PositionType: Absolute
 						Label@LIST_TEMPLATE:
-							X: 6
-							Width: PARENT_RIGHT - 16
-							Height: 23
+							ClassicX: 6
+							ClassicWidth: PARENT_RIGHT - 16
+							ClassicHeight: 23
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@PRIMARY_BUTTON:
-			X: 30
-			Y: PARENT_BOTTOM - 52
+			ClassicX: 30
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
-			Height: 32
+			ClassicWidth: 110
+			ClassicHeight: 32
 			Font: Bold
 			Key: return
+			PositionType: Absolute
 		Button@SECONDARY_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 52
+			ClassicX: PARENT_RIGHT - 140
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
-			Height: 32
+			ClassicWidth: 110
+			ClassicHeight: 32
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@CONTENT_PROMPT_PANEL:
 	Logic: ModContentPromptLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 500
-	Height: 140
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 500
+	ClassicHeight: 140
 	Background: panel-bg
 	Children:
 		Background@RULE:
-			X: 30
-			Y: 50
-			Width: 440
-			Height: 150
+			ClassicX: 30
+			ClassicY: 50
+			ClassicWidth: 440
+			ClassicHeight: 150
 			Background: panel-rule
+			PositionType: Absolute
 		Label@TITLE:
-			X: 0
-			Y: 12
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicX: 0
+			ClassicY: 12
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Text: Install Content
 			Align: Center
 			Font: MediumBold
+			PositionType: Absolute
 		Label@HEADER_TEMPLATE:
-			Y: 65
-			Width: PARENT_RIGHT
-			Height: 16
+			ClassicY: 65
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 16
 			Align: Center
+			PositionType: Absolute
 		Button@ADVANCED_BUTTON:
-			X: 30
-			Y: PARENT_BOTTOM - 52
+			ClassicX: 30
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 140
-			Height: 32
+			ClassicWidth: 140
+			ClassicHeight: 32
 			Text: Advanced Install
 			Font: Bold
+			PositionType: Absolute
 		Button@QUICK_BUTTON:
-			X: 185
-			Y: PARENT_BOTTOM - 52
+			ClassicX: 185
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
-			Height: 32
+			ClassicWidth: 110
+			ClassicHeight: 32
 			Text: Quick Install
 			Font: Bold
+			PositionType: Absolute
 		Button@QUIT_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 30
-			Y: PARENT_BOTTOM - 52
+			ClassicX: PARENT_RIGHT - WIDTH - 30
+			ClassicY: PARENT_BOTTOM - 52
 			Background: button-highlighted
-			Width: 110
-			Height: 32
+			ClassicWidth: 110
+			ClassicHeight: 32
 			Text: Quit
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@MODCONTENT_BACKGROUND:
 	Background: background
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	ClassicWidth: WINDOW_RIGHT
+	ClassicHeight: WINDOW_BOTTOM
+	PositionType: Absolute
 
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic
 	Background: panel-thinborder
-	Height: 25
+	ClassicHeight: 25
 	Children:
 		Label@LABEL:
-			X: 5
-			Height: 23
+			ClassicX: 5
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
 		Label@HOTKEY:
 			TextColor: FFFF00
-			Height: 23
+			ClassicHeight: 23
 			Font: Bold
+			PositionType: Absolute
+	PositionType: Absolute

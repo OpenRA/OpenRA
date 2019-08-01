@@ -1,186 +1,213 @@
 Background@NEW_MAP_BG:
 	Logic: NewMapLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 300
-	Height: 185
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 300
+	ClassicHeight: 185
 	Children:
 		Label@LABEL_TITLE:
-			X: 0
-			Y: 21
-			Width: 300
-			Height: 25
+			ClassicX: 0
+			ClassicY: 21
+			ClassicWidth: 300
+			ClassicHeight: 25
 			Text: New Map
 			Align: Center
 			Font: Bold
+			PositionType: Absolute
 		Label@TILESET_LABEL:
-			X: 20
-			Y: 60
-			Width: 95
-			Height: 25
+			ClassicX: 20
+			ClassicY: 60
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Tileset:
+			PositionType: Absolute
 		DropDownButton@TILESET:
-			X: 120
-			Y: 60
-			Width: 160
-			Height: 25
+			ClassicX: 120
+			ClassicY: 60
+			ClassicWidth: 160
+			ClassicHeight: 25
+			PositionType: Absolute
 		Label@WIDTH_LABEL:
-			X: 20
-			Y: 95
-			Width: 95
-			Height: 25
+			ClassicX: 20
+			ClassicY: 95
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Width:
+			PositionType: Absolute
 		TextField@WIDTH:
-			X: 120
-			Y: 95
-			Width: 50
+			ClassicX: 120
+			ClassicY: 95
+			ClassicWidth: 50
 			MaxLength: 3
-			Height: 25
+			ClassicHeight: 25
 			Text: 128
 				Type: Integer
+			PositionType: Absolute
 		Label@HEIGHT_LABEL:
-			X: 130
-			Y: 95
-			Width: 95
-			Height: 25
+			ClassicX: 130
+			ClassicY: 95
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Height:
+			PositionType: Absolute
 		TextField@HEIGHT:
-			X: 230
-			Y: 95
-			Width: 50
+			ClassicX: 230
+			ClassicY: 95
+			ClassicWidth: 50
 			MaxLength: 3
-			Height: 25
+			ClassicHeight: 25
 			Text: 128
 			Type: Integer
+			PositionType: Absolute
 		Button@CREATE_BUTTON:
-			X: 30
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 30
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Create
 			Font: Bold
 			Key: return
+			PositionType: Absolute
 		Button@CANCEL_BUTTON:
-			X: 160
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 160
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Cancel
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
 
 Background@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 350
-	Height: 300
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 350
+	ClassicHeight: 300
 	Children:
 		Label@LABEL_TITLE:
-			X: (PARENT_RIGHT - WIDTH) / 2
-			Y: 21
-			Width: 250
-			Height: 25
+			ClassicX: (PARENT_RIGHT - WIDTH) / 2
+			ClassicY: 21
+			ClassicWidth: 250
+			ClassicHeight: 25
 			Text: Save Map
 			Align: Center
 			Font: Bold
+			PositionType: Absolute
 		Label@TITLE_LABEL:
-			X: 10
-			Y: 60
-			Width: 95
-			Height: 25
+			ClassicX: 10
+			ClassicY: 60
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Title:
+			PositionType: Absolute
 		TextField@TITLE:
-			X: 110
-			Y: 60
-			Width: 220
+			ClassicX: 110
+			ClassicY: 60
+			ClassicWidth: 220
 			MaxLength: 50
-			Height: 25
+			ClassicHeight: 25
+			PositionType: Absolute
 		Label@AUTHOR_LABEL:
-			X: 10
-			Y: 95
-			Width: 95
-			Height: 25
+			ClassicX: 10
+			ClassicY: 95
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Author:
+			PositionType: Absolute
 		TextField@AUTHOR:
-			X: 110
-			Y: 95
-			Width: 220
+			ClassicX: 110
+			ClassicY: 95
+			ClassicWidth: 220
 			MaxLength: 50
-			Height: 25
+			ClassicHeight: 25
+			PositionType: Absolute
 		Label@VISIBILITY_LABEL:
-			X: 10
-			Y: 130
-			Width: 95
-			Height: 25
+			ClassicX: 10
+			ClassicY: 130
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Visibility:
+			PositionType: Absolute
 		DropDownButton@VISIBILITY_DROPDOWN:
-			X: 110
-			Y: 130
-			Width: 220
-			Height: 25
+			ClassicX: 110
+			ClassicY: 130
+			ClassicWidth: 220
+			ClassicHeight: 25
 			Text: Map Visibility
+			PositionType: Absolute
 		Label@DIRECTORY_LABEL:
-			X: 10
-			Y: 165
-			Width: 95
-			Height: 25
+			ClassicX: 10
+			ClassicY: 165
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Directory:
+			PositionType: Absolute
 		DropDownButton@DIRECTORY_DROPDOWN:
-			X: 110
-			Y: 165
-			Width: 220
-			Height: 25
+			ClassicX: 110
+			ClassicY: 165
+			ClassicWidth: 220
+			ClassicHeight: 25
+			PositionType: Absolute
 		Label@FILENAME_LABEL:
-			X: 10
-			Y: 200
-			Width: 95
-			Height: 25
+			ClassicX: 10
+			ClassicY: 200
+			ClassicWidth: 95
+			ClassicHeight: 25
 			Align: Right
 			Text: Filename:
+			PositionType: Absolute
 		TextField@FILENAME:
-			X: 110
-			Y: 200
-			Width: 105
-			Height: 25
+			ClassicX: 110
+			ClassicY: 200
+			ClassicWidth: 105
+			ClassicHeight: 25
 			Type: Filename
+			PositionType: Absolute
 		DropDownButton@TYPE_DROPDOWN:
-			X: 220
-			Y: 200
-			Width: 110
-			Height: 25
+			ClassicX: 220
+			ClassicY: 200
+			ClassicWidth: 110
+			ClassicHeight: 25
+			PositionType: Absolute
 		Button@SAVE_BUTTON:
-			X: 80
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 80
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Save
 			Font: Bold
+			PositionType: Absolute
 		Button@BACK_BUTTON:
-			X: 210
-			Y: PARENT_BOTTOM - 45
-			Width: 120
-			Height: 25
+			ClassicX: 210
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Cancel
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
-	Width: 220
-	Height: 64
+	ClassicWidth: 220
+	ClassicHeight: 64
 	Children:
 		Checkbox@VISIBILITY_TEMPLATE:
-			X: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Font: Regular
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@EDITOR_ROOT:
 	Logic: LoadMapEditorLogic
@@ -193,9 +220,14 @@ Container@EDITOR_ROOT:
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+			PositionType: Absolute
 		Container@WORLD_ROOT:
+			PositionType: Absolute
 		Container@MENU_ROOT:
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic
@@ -203,103 +235,123 @@ Container@EDITOR_WORLD_ROOT:
 		EditPanelPadding: 14
 	Children:
 		Container@PERF_ROOT:
+			PositionType: Absolute
 		EditorViewportController@MAP_EDITOR:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
 			Children:
 				ActorPreview@DRAG_ACTOR_PREVIEW:
 					Visible: false
+					PositionType: Absolute
 				TerrainTemplatePreview@DRAG_TILE_PREVIEW:
 					Visible: false
+					PositionType: Absolute
 				Sprite@DRAG_LAYER_PREVIEW:
 					Visible: false
+					PositionType: Absolute
 				Background@ACTOR_EDIT_PANEL:
-					X: 32
-					Y: 32
-					Width: 294
-					Height: 114
+					ClassicX: 32
+					ClassicY: 32
+					ClassicWidth: 294
+					ClassicHeight: 114
 					Children:
 						Label@ACTOR_TYPE_LABEL:
-							X: 15
-							Y: 16
-							Width: 265
-							Height: 24
+							ClassicX: 15
+							ClassicY: 16
+							ClassicWidth: 265
+							ClassicHeight: 24
 							Align: Center
 							Font: Bold
+							PositionType: Absolute
 						Label@ACTOR_ID_LABEL:
-							X: 15
-							Y: 45
-							Width: 55
-							Height: 25
+							ClassicX: 15
+							ClassicY: 45
+							ClassicWidth: 55
+							ClassicHeight: 25
 							Text: ID
 							Align: Right
+							PositionType: Absolute
 						TextField@ACTOR_ID:
-							X: 84
-							Y: 45
-							Width: 192
-							Height: 25
+							ClassicX: 84
+							ClassicY: 45
+							ClassicWidth: 192
+							ClassicHeight: 25
+							PositionType: Absolute
 						Label@ACTOR_ID_ERROR_LABEL:
-							X: 84
-							Y: 71
-							Width: 192
-							Height: 15
+							ClassicX: 84
+							ClassicY: 71
+							ClassicWidth: 192
+							ClassicHeight: 15
 							Font: TinyBold
 							TextColor: FF0000
+							PositionType: Absolute
 						Container@ACTOR_INIT_CONTAINER:
-							Y: 73
-							Width: PARENT_RIGHT
+							ClassicY: 73
+							ClassicWidth: PARENT_RIGHT
 							Children:
 								Container@SLIDER_OPTION_TEMPLATE:
-									Width: PARENT_RIGHT
-									Height: 22
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 22
 									Children:
 										Label@LABEL:
-											X: 15
-											Y: 1
-											Width: 55
-											Height: 16
+											ClassicX: 15
+											ClassicY: 1
+											ClassicWidth: 55
+											ClassicHeight: 16
 											Align: Right
+											PositionType: Absolute
 										Slider@OPTION:
-											X: 75
-											Y: 1
-											Width: 210
-											Height: 20
+											ClassicX: 75
+											ClassicY: 1
+											ClassicWidth: 210
+											ClassicHeight: 20
+											PositionType: Absolute
+									PositionType: Absolute
 								Container@DROPDOWN_OPTION_TEMPLATE:
-									Width: PARENT_RIGHT
-									Height: 27
+									ClassicWidth: PARENT_RIGHT
+									ClassicHeight: 27
 									Children:
 										Label@LABEL:
-											X: 15
-											Y: 2
-											Width: 55
-											Height: 24
+											ClassicX: 15
+											ClassicY: 2
+											ClassicWidth: 55
+											ClassicHeight: 24
 											Align: Right
+											PositionType: Absolute
 										DropDownButton@OPTION:
-											X: 84
-											Y: 1
-											Width: 192
-											Height: 25
+											ClassicX: 84
+											ClassicY: 1
+											ClassicWidth: 192
+											ClassicHeight: 25
 											Font: Bold
+											PositionType: Absolute
+									PositionType: Absolute
+							PositionType: Absolute
 						Container@BUTTON_CONTAINER:
-							Y: 75
+							ClassicY: 75
 							Children:
 								Button@DELETE_BUTTON:
-									X: 15
-									Width: 85
-									Height: 25
+									ClassicX: 15
+									ClassicWidth: 85
+									ClassicHeight: 25
 									Text: Delete
 									Font: Bold
+									PositionType: Absolute
 								Button@CLOSE_BUTTON:
-									X: 195
-									Width: 85
-									Height: 25
+									ClassicX: 195
+									ClassicWidth: 85
+									ClassicHeight: 25
 									Text: Close
 									Font: Bold
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		ViewportController:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
 			IgnoreMouseOver: True
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
@@ -312,82 +364,94 @@ Container@EDITOR_WORLD_ROOT:
 			BookmarkSaveKeyPrefix: MapBookmarkSave
 			BookmarkRestoreKeyPrefix: MapBookmarkRestore
 			BookmarkKeyCount: 4
+			PositionType: Absolute
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT - 255
-			Y: 5
-			Width: 250
-			Height: 250
+			ClassicX: WINDOW_RIGHT - 255
+			ClassicY: 5
+			ClassicWidth: 250
+			ClassicHeight: 250
 			Children:
 				Radar@INGAME_RADAR:
-					X: 10
-					Y: 10
-					Width: PARENT_RIGHT - 19
-					Height: PARENT_BOTTOM - 19
+					ClassicX: 10
+					ClassicY: 10
+					ClassicWidth: PARENT_RIGHT - 19
+					ClassicHeight: PARENT_BOTTOM - 19
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@TILE_WIDGETS:
 			Logic: TileSelectorLogic
 			Children:
 				Background@TILES_BG:
-					X: WINDOW_RIGHT - 250
-					Y: 290
-					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					ClassicX: WINDOW_RIGHT - 250
+					ClassicY: 290
+					ClassicWidth: 240
+					ClassicHeight: WINDOW_BOTTOM - 382
 					Children:
 						Label@SEARCH_LABEL:
-							Y: 12
-							Width: 55
-							Height: 25
+							ClassicY: 12
+							ClassicWidth: 55
+							ClassicHeight: 25
 							Text: Search:
 							Align: Right
 							Font: TinyBold
+							PositionType: Absolute
 						TextField@SEARCH_TEXTFIELD:
-							X: 60
-							Y: 10
-							Width: PARENT_RIGHT - 70
-							Height: 25
+							ClassicX: 60
+							ClassicY: 10
+							ClassicWidth: PARENT_RIGHT - 70
+							ClassicHeight: 25
+							PositionType: Absolute
 						Label@CATEGORIES_LABEL:
-							Y: 36
-							Width: 55
-							Height: 25
+							ClassicY: 36
+							ClassicWidth: 55
+							ClassicHeight: 25
 							Text: Filter:
 							Align: Right
 							Font: TinyBold
+							PositionType: Absolute
 						DropDownButton@CATEGORIES_DROPDOWN:
-							X: 60
-							Y: 34
-							Width: PARENT_RIGHT - 70
-							Height: 25
+							ClassicX: 60
+							ClassicY: 34
+							ClassicWidth: PARENT_RIGHT - 70
+							ClassicHeight: 25
 							Font: Bold
+							PositionType: Absolute
 						ScrollPanel@TILETEMPLATE_LIST:
-							X: 10
-							Y: 58
-							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 68
+							ClassicX: 10
+							ClassicY: 58
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: PARENT_BOTTOM - 68
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@TILEPREVIEW_TEMPLATE:
 									Visible: false
-									Width: PARENT_RIGHT - 35
+									ClassicWidth: PARENT_RIGHT - 35
 									TooltipContainer: TOOLTIP_CONTAINER
 									Children:
 										TerrainTemplatePreview@TILE_PREVIEW:
-											X: 4
-											Y: 4
+											ClassicX: 4
+											ClassicY: 4
+											PositionType: Absolute
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@LAYER_WIDGETS:
 			Visible: false
 			Logic: LayerSelectorLogic
 			Children:
 				Background@LAYERS_BG:
-					X: WINDOW_RIGHT - 250
-					Y: 290
-					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					ClassicX: WINDOW_RIGHT - 250
+					ClassicY: 290
+					ClassicWidth: 240
+					ClassicHeight: WINDOW_BOTTOM - 382
 					Children:
 						ScrollPanel@LAYERTEMPLATE_LIST:
-							X: 10
-							Y: 10
-							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 20
+							ClassicX: 10
+							ClassicY: 10
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: PARENT_BOTTOM - 20
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
@@ -397,206 +461,242 @@ Container@EDITOR_WORLD_ROOT:
 									TooltipContainer: TOOLTIP_CONTAINER
 									Children:
 										Sprite@LAYER_PREVIEW:
-											X: 4
-											Y: 4
+											ClassicX: 4
+											ClassicY: 4
 											Visible: false
+											PositionType: Absolute
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@ACTOR_WIDGETS:
 			Visible: false
 			Logic: ActorSelectorLogic
 			Children:
 				Background@ACTORS_BG:
-					X: WINDOW_RIGHT - 250
-					Y: 290
-					Width: 240
-					Height: WINDOW_BOTTOM - 382
+					ClassicX: WINDOW_RIGHT - 250
+					ClassicY: 290
+					ClassicWidth: 240
+					ClassicHeight: WINDOW_BOTTOM - 382
 					Children:
 						Label@SEARCH_LABEL:
-							Y: 12
-							Width: 55
-							Height: 25
+							ClassicY: 12
+							ClassicWidth: 55
+							ClassicHeight: 25
 							Text: Search:
 							Align: Right
 							Font: TinyBold
+							PositionType: Absolute
 						TextField@SEARCH_TEXTFIELD:
-							X: 60
-							Y: 10
-							Width: PARENT_RIGHT - 70
-							Height: 25
+							ClassicX: 60
+							ClassicY: 10
+							ClassicWidth: PARENT_RIGHT - 70
+							ClassicHeight: 25
+							PositionType: Absolute
 						Label@CATEGORIES_LABEL:
-							Y: 36
-							Width: 55
-							Height: 25
+							ClassicY: 36
+							ClassicWidth: 55
+							ClassicHeight: 25
 							Text: Filter:
 							Align: Right
 							Font: TinyBold
+							PositionType: Absolute
 						DropDownButton@CATEGORIES_DROPDOWN:
-							X: 60
-							Y: 34
-							Width: PARENT_RIGHT - 70
-							Height: 25
+							ClassicX: 60
+							ClassicY: 34
+							ClassicWidth: PARENT_RIGHT - 70
+							ClassicHeight: 25
 							Font: Bold
+							PositionType: Absolute
 						Label@OWNERS_LABEL:
-							Y: 60
-							Width: 55
-							Height: 25
+							ClassicY: 60
+							ClassicWidth: 55
+							ClassicHeight: 25
 							Text: Owner:
 							Align: Right
 							Font: TinyBold
+							PositionType: Absolute
 						DropDownButton@OWNERS_DROPDOWN:
-							X: 60
-							Y: 58
-							Width: PARENT_RIGHT - 70
-							Height: 25
+							ClassicX: 60
+							ClassicY: 58
+							ClassicWidth: PARENT_RIGHT - 70
+							ClassicHeight: 25
 							Font: Bold
+							PositionType: Absolute
 						ScrollPanel@ACTORTEMPLATE_LIST:
-							X: 10
-							Y: 82
-							Width: PARENT_RIGHT - 20
-							Height: PARENT_BOTTOM - 92
+							ClassicX: 10
+							ClassicY: 82
+							ClassicWidth: PARENT_RIGHT - 20
+							ClassicHeight: PARENT_BOTTOM - 92
 							TopBottomSpacing: 4
 							ItemSpacing: 4
 							Children:
 								ScrollItem@ACTORPREVIEW_TEMPLATE:
 									Visible: false
-									Width: PARENT_RIGHT - 35
+									ClassicWidth: PARENT_RIGHT - 35
 									TooltipContainer: TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
 									IgnoreChildMouseOver: true
 									Children:
 										ActorPreview@ACTOR_PREVIEW:
-											X: 4
-											Y: 4
+											ClassicX: 4
+											ClassicY: 4
 											Visible: true
+											PositionType: Absolute
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
-			X: WINDOW_RIGHT - 245
-			Y: 260
-			Width: 240
-			Height: 25
+			ClassicX: WINDOW_RIGHT - 245
+			ClassicY: 260
+			ClassicWidth: 240
+			ClassicHeight: 25
 			Children:
 				Button@TILES_TAB:
-					X: 0
-					Width: 70
-					Height: 25
+					ClassicX: 0
+					ClassicWidth: 70
+					ClassicHeight: 25
 					Text: Tiles
 					Font: Bold
+					PositionType: Absolute
 				Button@OVERLAYS_TAB:
-					X: 70
-					Width: 90
-					Height: 25
+					ClassicX: 70
+					ClassicWidth: 90
+					ClassicHeight: 25
 					Text: Overlays
 					Font: Bold
+					PositionType: Absolute
 				Button@ACTORS_TAB:
-					X: 160
-					Width: 70
-					Height: 25
+					ClassicX: 160
+					ClassicWidth: 70
+					ClassicHeight: 25
 					Text: Actors
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
 			MenuContainer: INGAME_MENU
 			HideIngameUI: true
 			Pause: true
-			Width: 160
-			Height: 25
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Text: Menu
 			TooltipText: Menu
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
 		Button@COPYPASTE_BUTTON:
-			X: 170
-			Width: 90
-			Height: 25
+			ClassicX: 170
+			ClassicWidth: 90
+			ClassicHeight: 25
 			Text: Copy/Paste
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Copy
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: c ctrl
+			PositionType: Absolute
 		DropDownButton@COPYFILTER_BUTTON:
-			X: 270
-			Width: 140
-			Height: 25
+			ClassicX: 270
+			ClassicWidth: 140
+			ClassicHeight: 25
 			Text: Copy Filters
 			Font: Bold
+			PositionType: Absolute
 		Button@GRID_BUTTON:
-			X: 420
-			Width: 70
-			Height: 25
+			ClassicX: 420
+			ClassicWidth: 70
+			ClassicHeight: 25
 			Text: Grid
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Toggle the terrain grid
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: f1
+			PositionType: Absolute
 		Label@ZOOM_LABEL:
-			X: 495
-			Width: 50
-			Height: 25
+			ClassicX: 495
+			ClassicWidth: 50
+			ClassicHeight: 25
 			Text: Zoom:
 			Align: Right
 			Font: Bold
 			Contrast: true
+			PositionType: Absolute
 		DropDownButton@ZOOM_BUTTON:
-			X: 550
-			Width: 70
-			Height: 25
+			ClassicX: 550
+			ClassicWidth: 70
+			ClassicHeight: 25
 			Font: Bold
 			Key: TogglePixelDouble
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Zoom
 			TooltipContainer: TOOLTIP_CONTAINER
+			PositionType: Absolute
 		Label@COORDINATE_LABEL:
-			X: 635
-			Width: 50
-			Height: 25
+			ClassicX: 635
+			ClassicWidth: 50
+			ClassicHeight: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
+			PositionType: Absolute
 		Label@CASH_LABEL:
-			X: 750
-			Width: 50
-			Height: 25
+			ClassicX: 750
+			ClassicWidth: 50
+			ClassicHeight: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@CATEGORY_FILTER_PANEL:
-	Width: 170
+	ClassicWidth: 170
 	Children:
 		Container@SELECT_CATEGORIES_BUTTONS:
-			Width: PARENT_RIGHT
-			Height: 29
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 29
 			Children:
 				Button@SELECT_ALL:
-					X: 10
-					Y: 2
-					Width: 60
-					Height: 25
+					ClassicX: 10
+					ClassicY: 2
+					ClassicWidth: 60
+					ClassicHeight: 25
 					Text: All
 					Font: Bold
+					PositionType: Absolute
 				Button@SELECT_NONE:
-					X: PARENT_RIGHT - WIDTH - 34
-					Y: 2
-					Width: 60
-					Height: 25
+					ClassicX: PARENT_RIGHT - WIDTH - 34
+					ClassicY: 2
+					ClassicWidth: 60
+					ClassicHeight: 25
 					Text: None
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		Checkbox@CATEGORY_TEMPLATE:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Visible: false
+			PositionType: Absolute
+	PositionType: Absolute
 
 ScrollPanel@COPY_FILTER_PANEL:
-	Width: 140
-	Height: 65
+	ClassicWidth: 140
+	ClassicHeight: 65
 	Children:
 		Checkbox@CATEGORY_TEMPLATE:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
+			ClassicX: 5
+			ClassicY: 5
+			ClassicWidth: PARENT_RIGHT - 29
+			ClassicHeight: 20
 			Visible: false
+			PositionType: Absolute
+	PositionType: Absolute

@@ -1,58 +1,67 @@
 Container@DIRECTCONNECT_PANEL:
 	Logic: DirectConnectLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
-	Width: 370
-	Height: 125
+	ClassicX: (WINDOW_RIGHT - WIDTH)/2
+	ClassicY: (WINDOW_BOTTOM - 90)/2
+	ClassicWidth: 370
+	ClassicHeight: 125
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Connect to Server
+			PositionType: Absolute
 		Background@bg:
-			Width: 370
-			Height: 90
+			ClassicWidth: 370
+			ClassicHeight: 90
 			Background: panel-black
 			Children:
 				Label@ADDRESS_LABEL:
-					X: 50
-					Y: 14
-					Width: 95
-					Height: 25
+					ClassicX: 50
+					ClassicY: 14
+					ClassicWidth: 95
+					ClassicHeight: 25
 					Align: Right
 					Text: Address:
+					PositionType: Absolute
 				TextField@IP:
-					X: 150
-					Y: 15
-					Width: 200
-					Height: 25
+					ClassicX: 150
+					ClassicY: 15
+					ClassicWidth: 200
+					ClassicHeight: 25
+					PositionType: Absolute
 				Label@PORT_LABEL:
-					X: 50
-					Y: 49
-					Width: 95
-					Height: 25
+					ClassicX: 50
+					ClassicY: 49
+					ClassicWidth: 95
+					ClassicHeight: 25
 					Align: Right
 					Text: Port:
+					PositionType: Absolute
 				TextField@PORT:
-					X: 150
-					Y: 50
-					Width: 200
-					Height: 25
+					ClassicX: 150
+					ClassicY: 50
+					ClassicWidth: 200
+					ClassicHeight: 25
 					Type: Integer
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@BACK_BUTTON:
 			Key: escape
-			X: 0
-			Y: 89
-			Width: 140
-			Height: 35
+			ClassicX: 0
+			ClassicY: 89
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Back
+			PositionType: Absolute
 		Button@JOIN_BUTTON:
 			Key: return
-			X: 230
-			Y: 89
-			Width: 140
-			Height: 35
+			ClassicX: 230
+			ClassicY: 89
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Join
+			PositionType: Absolute
+	PositionType: Absolute

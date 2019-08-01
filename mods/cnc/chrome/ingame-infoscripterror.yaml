@@ -1,27 +1,31 @@
 Container@SCRIPT_ERROR_PANEL:
-	Height: PARENT_BOTTOM
-	Width: PARENT_RIGHT
+	ClassicHeight: PARENT_BOTTOM
+	ClassicWidth: PARENT_RIGHT
 	Children:
 		Label@DESCA:
-			X: 15
-			Y: 15
-			Width: PARENT_RIGHT - 30
-			Height: 20
+			ClassicX: 15
+			ClassicY: 15
+			ClassicWidth: PARENT_RIGHT - 30
+			ClassicHeight: 20
 			Font: Bold
 			Align: Center
 			Text: The map script has encountered a fatal error
+			PositionType: Absolute
 		Label@DESCB:
-			X: 15
-			Y: 45
-			Width: PARENT_RIGHT - 30
-			Height: 20
+			ClassicX: 15
+			ClassicY: 45
+			ClassicWidth: PARENT_RIGHT - 30
+			ClassicHeight: 20
 			Font: Regular
 			WordWrap: true
 			Text: The details of the error have been saved to lua.log in the logs directory.
+			PositionType: Absolute
 		Label@DESCC:
-			X: 15
-			Y: 65
-			Width: PARENT_RIGHT - 30
-			Height: 20
+			ClassicX: 15
+			ClassicY: 65
+			ClassicWidth: PARENT_RIGHT - 30
+			ClassicHeight: 20
 			Font: Regular
 			Text: Please send this file to the map author so that they can fix this issue.
+			PositionType: Absolute
+	PositionType: Absolute

@@ -1,262 +1,302 @@
 Container@MULTIPLAYER_CREATESERVER_PANEL:
 	Logic: ServerCreationLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT - 15) / 2
-	Width: 530
-	Height: 275
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT - 15) / 2
+	ClassicWidth: 530
+	ClassicHeight: 275
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Create Server
+			PositionType: Absolute
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 35
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM - 35
 			Background: panel-black
 			Children:
 				Label@SERVER_NAME_LABEL:
-					Y: 14
-					Width: 105
-					Height: 25
+					ClassicY: 14
+					ClassicWidth: 105
+					ClassicHeight: 25
 					Align: Right
 					Text: Server Name:
+					PositionType: Absolute
 				TextField@SERVER_NAME:
-					X: 110
-					Y: 15
-					Width: 215
+					ClassicX: 110
+					ClassicY: 15
+					ClassicWidth: 215
 					MaxLength: 50
-					Height: 25
+					ClassicHeight: 25
 					Text: My OpenRA Server
+					PositionType: Absolute
 				Label@PASSWORD_LABEL:
-					Y: 49
-					Width: 105
-					Height: 25
+					ClassicY: 49
+					ClassicWidth: 105
+					ClassicHeight: 25
 					Align: Right
 					Text: Password:
+					PositionType: Absolute
 				PasswordField@PASSWORD:
-					X: 110
-					Y: 50
-					Width: 145
+					ClassicX: 110
+					ClassicY: 50
+					ClassicWidth: 145
 					MaxLength: 20
-					Height: 25
+					ClassicHeight: 25
+					PositionType: Absolute
 				Label@AFTER_PASSWORD_LABEL:
-					X: 265
-					Y: 49
-					Width: 105
-					Height: 25
+					ClassicX: 265
+					ClassicY: 49
+					ClassicWidth: 105
+					ClassicHeight: 25
 					Align: Left
 					Text: (optional)
+					PositionType: Absolute
 				Label@LISTEN_PORT_LABEL:
-					Y: 84
-					Width: 105
-					Height: 25
+					ClassicY: 84
+					ClassicWidth: 105
+					ClassicHeight: 25
 					Align: Right
 					Text: Port:
+					PositionType: Absolute
 				TextField@LISTEN_PORT:
-					X: 110
-					Y: 85
-					Width: 50
-					Height: 25
+					ClassicX: 110
+					ClassicY: 85
+					ClassicWidth: 50
+					ClassicHeight: 25
 					MaxLength: 5
 					Text: 1234
 					Type: Integer
+					PositionType: Absolute
 				Checkbox@ADVERTISE_CHECKBOX:
-					X: 180
-					Y: 87
-					Width: 150
-					Height: 20
+					ClassicX: 180
+					ClassicY: 87
+					ClassicWidth: 150
+					ClassicHeight: 20
 					Font: Regular
 					Text: Advertise Online
+					PositionType: Absolute
 				Label@NOTICES_HEADER_A:
-					X: 15
-					Y: 125
-					Height: 25
+					ClassicX: 15
+					ClassicY: 125
+					ClassicHeight: 25
 					Align: Left
 					Font: Bold
+					PositionType: Absolute
 				Label@NOTICES_HEADER_B:
-					X: 15
-					Y: 125
-					Height: 25
+					ClassicX: 15
+					ClassicY: 125
+					ClassicHeight: 25
 					Align: Left
 					Font: Bold
+					PositionType: Absolute
 				Label@NOTICES_HEADER_C:
-					X: 15
-					Y: 125
-					Height: 25
+					ClassicX: 15
+					ClassicY: 125
+					ClassicHeight: 25
 					Align: Left
 					Font: Bold
+					PositionType: Absolute
 				Container@NOTICES_LAN:
-					X: 20
-					Y: 145
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 20
+					ClassicY: 145
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@ADVERTISING:
-							Width: 305
-							Height: 25
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - Game will be advertised to the Local Area Network only.
+							PositionType: Absolute
 						Label@FIREWALL:
-							Y: 12
-							Width: 305
-							Height: 25
+							ClassicY: 12
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - You must manually configure your firewall to allow connections.
+							PositionType: Absolute
 						Label@PORTFORWARD_A:
-							Y: 24
-							Width: 305
-							Height: 25
+							ClassicY: 24
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - Players can connect using Direct IP from the Internet if you
+							PositionType: Absolute
 						Label@PORTFORWARD_B:
-							X: 7
-							Y: 36
-							Width: 295
-							Height: 25
+							ClassicX: 7
+							ClassicY: 36
+							ClassicWidth: 295
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: manually configure port forwarding on your router.
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@NOTICES_NO_UPNP:
-					X: 20
-					Y: 145
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 20
+					ClassicY: 145
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@ADVERTISING:
-							Width: 305
-							Height: 25
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - Game will be advertised to the Local Area Network and Internet.
+							PositionType: Absolute
 						Label@FIREWALL:
-							Y: 12
-							Width: 305
-							Height: 25
+							ClassicY: 12
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - You must manually configure your firewall to allow connections.
+							PositionType: Absolute
 						Label@PORTFORWARD_A:
-							Y: 24
-							Width: 305
-							Height: 25
+							ClassicY: 24
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - You must manually configure your router to allow and forward
+							PositionType: Absolute
 						Label@PORTFORWARD_B:
-							X: 7
-							Y: 36
-							Width: 295
-							Height: 25
+							ClassicX: 7
+							ClassicY: 36
+							ClassicWidth: 295
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: connections to your local IP and Port.
+							PositionType: Absolute
 						Label@SETTINGS_A:
-							Y: 48
-							Width: 305
-							Height: 25
+							ClassicY: 48
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - You can enable UPnP (if supported by your router) in the
+							PositionType: Absolute
 						Label@SETTINGS_B:
-							X: 7
-							Y: 60
-							Width: 295
-							Height: 25
+							ClassicX: 7
+							ClassicY: 60
+							ClassicWidth: 295
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: Advanced tab of the OpenRA settings menu.
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@NOTICES_UPNP:
-					X: 20
-					Y: 145
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicX: 20
+					ClassicY: 145
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Children:
 						Label@ADVERTISING:
-							Width: 305
-							Height: 25
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - Game will be advertised to the Local Area Network and Internet.
+							PositionType: Absolute
 						Label@FIREWALL:
-							Y: 12
-							Width: 305
-							Height: 25
+							ClassicY: 12
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - You must manually configure your firewall to allow connections.
+							PositionType: Absolute
 						Label@PORTFORWARD_A:
-							Y: 24
-							Width: 305
-							Height: 25
+							ClassicY: 24
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - OpenRA will use UPnP to automaticaly configure port forwarding.
+							PositionType: Absolute
 						Label@SETTINGS_A:
-							Y: 36
-							Width: 305
-							Height: 25
+							ClassicY: 36
+							ClassicWidth: 305
+							ClassicHeight: 25
 							Font: Tiny
 							Align: Left
 							Text: - You can disable UPnP in the OpenRA settings menu.
+							PositionType: Absolute
+					PositionType: Absolute
 				Background@MAP_BG:
-					X: PARENT_RIGHT - 189
-					Y: 15
-					Width: 174
-					Height: 174
+					ClassicX: PARENT_RIGHT - 189
+					ClassicY: 15
+					ClassicWidth: 174
+					ClassicHeight: 174
 					Background: panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_RIGHT - 2
+							ClassicX: 1
+							ClassicY: 1
+							ClassicWidth: PARENT_RIGHT - 2
+							ClassicHeight: PARENT_RIGHT - 2
+							PositionType: Absolute
+					PositionType: Absolute
 				LabelWithTooltip@MAP_TITLE:
-					X: PARENT_RIGHT - 189
-					Y: 187
-					Width: 174
-					Height: 25
+					ClassicX: PARENT_RIGHT - 189
+					ClassicY: 187
+					ClassicWidth: 174
+					ClassicHeight: 25
 					Font: Bold
 					Align: Center
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
+					PositionType: Absolute
 				Label@MAP_TYPE:
-					X: PARENT_RIGHT - 189
-					Y: 202
-					Width: 174
-					Height: 25
+					ClassicX: PARENT_RIGHT - 189
+					ClassicY: 202
+					ClassicWidth: 174
+					ClassicHeight: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
+					PositionType: Absolute
 				Label@MAP_AUTHOR:
-					X: PARENT_RIGHT - 189
-					Y: 215
-					Width: 174
-					Height: 25
+					ClassicX: PARENT_RIGHT - 189
+					ClassicY: 215
+					ClassicWidth: 174
+					ClassicHeight: 25
 					Font: Tiny
 					Align: Center
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@BACK_BUTTON:
 			Key: return
-			Y: PARENT_BOTTOM - 36
-			Width: 140
-			Height: 35
+			ClassicY: PARENT_BOTTOM - 36
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Back
+			PositionType: Absolute
 		Button@MAP_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 150
-			Y: PARENT_BOTTOM - 36
-			Width: 140
-			Height: 35
+			ClassicX: PARENT_RIGHT - WIDTH - 150
+			ClassicY: PARENT_BOTTOM - 36
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Change Map
+			PositionType: Absolute
 		Button@CREATE_BUTTON:
 			Key: return
-			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 36
-			Width: 140
-			Height: 35
+			ClassicX: PARENT_RIGHT - WIDTH
+			ClassicY: PARENT_BOTTOM - 36
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Create
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

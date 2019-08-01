@@ -1,52 +1,61 @@
 Container@CREDITS_PANEL:
 	Logic: CreditsLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 400) / 2
-	Width: 410
-	Height: 435
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - 400) / 2
+	ClassicWidth: 410
+	ClassicHeight: 435
 	Children:
 		Label@CREDITS_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 0 - 22
 			Font: BigBold
 			Contrast: true
 			Align: Center
 			Text: Credits
+			PositionType: Absolute
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: 400
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 400
 			Background: panel-black
 			Children:
 				Container@TAB_CONTAINER:
 					Visible: False
-					X: 15
-					Y: 15
-					Width: PARENT_RIGHT - 30
-					Height: 34
+					ClassicX: 15
+					ClassicY: 15
+					ClassicWidth: PARENT_RIGHT - 30
+					ClassicHeight: 34
 					Children:
 						Button@MOD_TAB:
-							Width: 140
-							Height: 35
+							ClassicWidth: 140
+							ClassicHeight: 35
+							PositionType: Absolute
 						Button@ENGINE_TAB:
-							X: 150
-							Width: 140
-							Height: 35
+							ClassicX: 150
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: OpenRA
+							PositionType: Absolute
+					PositionType: Absolute
 				ScrollPanel@CREDITS_DISPLAY:
-					X: 15
-					Y: 15
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 30
+					ClassicX: 15
+					ClassicY: 15
+					ClassicWidth: PARENT_RIGHT - 30
+					ClassicHeight: PARENT_BOTTOM - 30
 					TopBottomSpacing: 8
 					Children:
 						Label@CREDITS_TEMPLATE:
-							X: 8
-							Width: PARENT_RIGHT - 25
-							Height: 16
+							ClassicX: 8
+							ClassicWidth: PARENT_RIGHT - 25
+							ClassicHeight: 16
 							VAlign: Top
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@BACK_BUTTON:
-			Y: 399
-			Width: 140
-			Height: 35
+			ClassicY: 399
+			ClassicWidth: 140
+			ClassicHeight: 35
 			Text: Back
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute

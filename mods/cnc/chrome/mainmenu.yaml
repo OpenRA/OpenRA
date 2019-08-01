@@ -1,6 +1,6 @@
 Container@MENU_BACKGROUND:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	ClassicWidth: WINDOW_RIGHT
+	ClassicHeight: WINDOW_BOTTOM
 	Logic: MainMenuLogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
@@ -11,321 +11,376 @@ Container@MENU_BACKGROUND:
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+			PositionType: Absolute
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@NOD:
-					X: WINDOW_RIGHT / 2 - 384
-					Y: (WINDOW_BOTTOM - 256) / 2
+					ClassicX: WINDOW_RIGHT / 2 - 384
+					ClassicY: (WINDOW_BOTTOM - 256) / 2
 					ImageCollection: logos
 					ImageName: nod-load
+					PositionType: Absolute
 				Image@GDI:
-					X: WINDOW_RIGHT / 2 + 128
-					Y: (WINDOW_BOTTOM - 256) / 2
+					ClassicX: WINDOW_RIGHT / 2 + 128
+					ClassicY: (WINDOW_BOTTOM - 256) / 2
 					ImageCollection: logos
 					ImageName: gdi-load
+					PositionType: Absolute
+			PositionType: Absolute
 		Image@EVA:
-			X: WINDOW_RIGHT - 128 - 43
-			Y: 43
-			Width: 128
-			Height: 64
+			ClassicX: WINDOW_RIGHT - 128 - 43
+			ClassicY: 43
+			ClassicWidth: 128
+			ClassicHeight: 64
 			ImageCollection: logos
 			ImageName: eva
+			PositionType: Absolute
 		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT - 128 - 43
-			Y: 116
-			Width: 128
+			ClassicX: WINDOW_RIGHT - 128 - 43
+			ClassicY: 116
+			ClassicWidth: 128
 			Align: Center
 			Shadow: true
+			PositionType: Absolute
 		Background@BORDER:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			ClassicWidth: WINDOW_RIGHT
+			ClassicHeight: WINDOW_BOTTOM
 			Background: shellmapborder
+			PositionType: Absolute
 		Container@MENUS:
-			X: (WINDOW_RIGHT - WIDTH) / 2
-			Y: WINDOW_BOTTOM - 33 - HEIGHT - 10
-			Width: 890
-			Height: 35
+			ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+			ClassicY: WINDOW_BOTTOM - 33 - HEIGHT - 10
+			ClassicWidth: 890
+			ClassicHeight: 35
 			Children:
 				Container@MAIN_MENU:
-					Width: PARENT_RIGHT
+					ClassicWidth: PARENT_RIGHT
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
-							X: 0
-							Y: 0 - 28
-							Width: PARENT_RIGHT
-							Height: 20
+							ClassicX: 0
+							ClassicY: 0 - 28
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 20
 							Text: Main Menu
 							Align: Center
 							Font: Bold
 							Contrast: True
+							PositionType: Absolute
 						Button@SINGLEPLAYER_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Singleplayer
+							PositionType: Absolute
 						Button@MULTIPLAYER_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 150
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Multiplayer
+							PositionType: Absolute
 						Button@SETTINGS_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 300
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Settings
+							PositionType: Absolute
 						Button@EXTRAS_BUTTON:
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 450
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Extras
+							PositionType: Absolute
 						Button@CONTENT_BUTTON:
-							X: 600
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 600
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Manage Content
+							PositionType: Absolute
 						Button@QUIT_BUTTON:
-							X: 750
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 750
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Quit
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@SINGLEPLAYER_MENU:
-					Width: PARENT_RIGHT
+					ClassicWidth: PARENT_RIGHT
 					Visible: False
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
-							X: 0
-							Y: 0 - 28
-							Width: PARENT_RIGHT
-							Height: 20
+							ClassicX: 0
+							ClassicY: 0 - 28
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 20
 							Text: Singleplayer
 							Align: Center
 							Font: Bold
 							Contrast: True
+							PositionType: Absolute
 						Button@SKIRMISH_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Skirmish
+							PositionType: Absolute
 						Button@MISSIONS_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 150
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Missions
+							PositionType: Absolute
 						Button@LOAD_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 300
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Load
+							PositionType: Absolute
 						Button@BACK_BUTTON:
 							Key: escape
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 450
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Back
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@EXTRAS_MENU:
-					Width: PARENT_RIGHT
+					ClassicWidth: PARENT_RIGHT
 					Visible: False
 					Children:
 						Label@EXTRAS_MENU_TITLE:
-							X: 0
-							Y: 0 - 28
-							Width: PARENT_RIGHT
-							Height: 20
+							ClassicX: 0
+							ClassicY: 0 - 28
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 20
 							Text: Extras
 							Align: Center
 							Font: Bold
 							Contrast: True
+							PositionType: Absolute
 						Button@REPLAYS_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Replays
+							PositionType: Absolute
 						Button@MUSIC_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 150
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Music
+							PositionType: Absolute
 						Button@MAP_EDITOR_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 300
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Map Editor
 							Font: Bold
+							PositionType: Absolute
 						Button@ASSETBROWSER_BUTTON:
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 450
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Asset Browser
+							PositionType: Absolute
 						Button@CREDITS_BUTTON:
-							X: 600
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 600
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Credits
+							PositionType: Absolute
 						Button@BACK_BUTTON:
 							Key: escape
-							X: 750
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 750
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Back
+							PositionType: Absolute
+					PositionType: Absolute
 				Container@MAP_EDITOR_MENU:
-					Width: PARENT_RIGHT
+					ClassicWidth: PARENT_RIGHT
 					Visible: False
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
-							X: 0
-							Y: 0 - 28
-							Width: PARENT_RIGHT
-							Height: 20
+							ClassicX: 0
+							ClassicY: 0 - 28
+							ClassicWidth: PARENT_RIGHT
+							ClassicHeight: 20
 							Text: Map Editor
 							Align: Center
 							Font: Bold
 							Contrast: True
+							PositionType: Absolute
 						Button@NEW_MAP_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 0
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: New Map
 							Font: Bold
+							PositionType: Absolute
 						Button@LOAD_MAP_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 150
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Load Map
 							Font: Bold
+							PositionType: Absolute
 						Button@BACK_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
+							ClassicX: 300
+							ClassicY: 0
+							ClassicWidth: 140
+							ClassicHeight: 35
 							Text: Back
 							Font: Bold
 							Key: escape
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@SYSTEM_INFO_PROMPT:
-			X: (WINDOW_RIGHT - WIDTH) / 2
-			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: 490
-			Height: 222
+			ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+			ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+			ClassicWidth: 490
+			ClassicHeight: 222
 			Children:
 				Label@TITLE:
-					Width: PARENT_RIGHT
-					Y: 0 - 25
+					ClassicWidth: PARENT_RIGHT
+					ClassicY: 0 - 25
 					Font: BigBold
 					Contrast: true
 					Align: Center
 					Text: System Information
+					PositionType: Absolute
 				Background@bg:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM
 					Background: panel-black
 					Children:
 						Label@PROMPT_TEXT_A:
-							X: 15
-							Y: 15
-							Width: PARENT_RIGHT - 30
-							Height: 16
+							ClassicX: 15
+							ClassicY: 15
+							ClassicWidth: PARENT_RIGHT - 30
+							ClassicHeight: 16
 							Align: Center
 							Text: We would like to collect some details that will help us optimize OpenRA.
+							PositionType: Absolute
 						Label@PROMPT_TEXT_B:
-							X: 15
-							Y: 33
-							Width: PARENT_RIGHT - 30
-							Height: 16
+							ClassicX: 15
+							ClassicY: 33
+							ClassicWidth: PARENT_RIGHT - 30
+							ClassicHeight: 16
 							Align: Center
 							Text: With your permission, the following anonymous system data will be sent:
+							PositionType: Absolute
 						ScrollPanel@SYSINFO_DATA:
-							X: 15
-							Y: 63
-							Width: PARENT_RIGHT - 30
+							ClassicX: 15
+							ClassicY: 63
+							ClassicWidth: PARENT_RIGHT - 30
 							TopBottomSpacing: 4
 							ItemSpacing: 4
-							Height: 110
+							ClassicHeight: 110
 							Children:
 								Label@DATA_TEMPLATE:
-									X: 8
-									Height: 13
+									ClassicX: 8
+									ClassicHeight: 13
 									VAlign: Top
 									Font: Small
+									PositionType: Absolute
+							PositionType: Absolute
 						Checkbox@SYSINFO_CHECKBOX:
-							X: PARENT_RIGHT - 15 - WIDTH
-							Y: PARENT_BOTTOM - 35
-							Width: 190
-							Height: 20
+							ClassicX: PARENT_RIGHT - 15 - WIDTH
+							ClassicY: PARENT_BOTTOM - 35
+							ClassicWidth: 190
+							ClassicHeight: 20
 							Font: Regular
 							Text: Send System Information
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@BACK_BUTTON:
-					X: PARENT_RIGHT - WIDTH
-					Y: PARENT_BOTTOM - 1
-					Width: 140
-					Height: 35
+					ClassicX: PARENT_RIGHT - WIDTH
+					ClassicY: PARENT_BOTTOM - 1
+					ClassicWidth: 140
+					ClassicHeight: 35
 					Text: Continue
 					Font: Bold
 					Key: return
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@NEWS_BG:
 			Children:
 				DropDownButton@NEWS_BUTTON:
-					X: (WINDOW_RIGHT - WIDTH) / 2
-					Y: 50
-					Width: 400
-					Height: 25
+					ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+					ClassicY: 50
+					ClassicWidth: 400
+					ClassicHeight: 25
 					Text: Battlefield News
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@UPDATE_NOTICE:
-			X: (WINDOW_RIGHT - WIDTH) / 2
-			Y: 75
-			Width: 128
+			ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+			ClassicY: 75
+			ClassicWidth: 128
 			Children:
 				Label@A:
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
 					Shadow: true
 					Text: You are running an outdated version of OpenRA.
+					PositionType: Absolute
 				Label@B:
-					Y: 20
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 20
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Align: Center
 					Shadow: true
 					Text: Download the latest version from www.openra.net
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X: WINDOW_RIGHT - WIDTH - 25
-					Y: WINDOW_BOTTOM - HEIGHT - 100
-					Width: 170
+					ClassicX: WINDOW_RIGHT - WIDTH - 25
+					ClassicY: WINDOW_BOTTOM - HEIGHT - 100
+					ClassicWidth: 170
 					Contrast: true
 					VAlign: Top
+					PositionType: Absolute
 				Background@GRAPH_BG:
-					X: WINDOW_RIGHT - WIDTH - 31
-					Y: 31
-					Width: 220
-					Height: 220
+					ClassicX: WINDOW_RIGHT - WIDTH - 31
+					ClassicY: 31
+					ClassicWidth: 220
+					ClassicHeight: 220
 					Background: panel-black
 					Children:
 						PerfGraph@GRAPH:
-							X: 10
-							Y: 10
-							Width: 200
-							Height: 200
+							ClassicX: 10
+							ClassicY: 10
+							ClassicWidth: 200
+							ClassicHeight: 200
+							PositionType: Absolute
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@PLAYER_PROFILE_CONTAINER:
-			X: 31
-			Y: 31
+			ClassicX: 31
+			ClassicY: 31
+			PositionType: Absolute
+	PositionType: Absolute

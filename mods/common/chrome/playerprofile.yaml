@@ -1,230 +1,267 @@
 Container@LOCAL_PROFILE_PANEL:
 	Logic: LocalProfileLogic
-	Width: 270
-	Height: 100
+	ClassicWidth: 270
+	ClassicHeight: 100
 	Children:
 		Background@PROFILE_HEADER:
-			Width: PARENT_RIGHT
-			Height: 50
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 50
 			Background: dialog2
 			Children:
 				Label@PROFILE_NAME:
-					X: 10
-					Y: 5
-					Width: PARENT_RIGHT - 20
-					Height: 25
+					ClassicX: 10
+					ClassicY: 5
+					ClassicWidth: PARENT_RIGHT - 20
+					ClassicHeight: 25
 					Font: MediumBold
+					PositionType: Absolute
 				Label@PROFILE_RANK:
-					X: 10
-					Y: 24
-					Width: PARENT_RIGHT - 20
-					Height: 25
+					ClassicX: 10
+					ClassicY: 24
+					ClassicWidth: PARENT_RIGHT - 20
+					ClassicHeight: 25
 					Font: TinyBold
+					PositionType: Absolute
 				Button@DESTROY_KEY:
-					X: PARENT_RIGHT - 70
-					Y: 15
-					Width: 60
-					Height: 20
+					ClassicX: PARENT_RIGHT - 70
+					ClassicY: 15
+					ClassicWidth: 60
+					ClassicHeight: 20
 					Font: TinyBold
 					Text: Logout
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@BADGES_CONTAINER:
-			Width: PARENT_RIGHT
-			Y: 48
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 48
 			Visible: false
 			Background: dialog3
+			PositionType: Absolute
 		Background@GENERATE_KEYS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: dialog2
 			Children:
 				Label@DESC_A:
-					Y: 5
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 5
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: Connect to a forum account to identify
+					PositionType: Absolute
 				Label@DESC_B:
-					Y: 21
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 21
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: yourself to other players, join private
+					PositionType: Absolute
 				Label@DESC_C:
-					Y: 37
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 37
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: servers, and display badges.
+					PositionType: Absolute
 				Button@GENERATE_KEY:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 70
-					Width: 240
-					Height: 20
+					ClassicX: (PARENT_RIGHT - WIDTH) / 2
+					ClassicY: 70
+					ClassicWidth: 240
+					ClassicHeight: 20
 					Font: TinyBold
 					Text: Connect to an OpenRA forum account
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@GENERATING_KEYS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: dialog2
 			Children:
 				Label@DESC_A:
-					Y: 13
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: Generating authentication key pair.
+					PositionType: Absolute
 				Label@DESC_B:
-					Y: 29
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 29
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: This will take several seconds...
+					PositionType: Absolute
 				ProgressBar:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 70
-					Width: 240
-					Height: 20
+					ClassicX: (PARENT_RIGHT - WIDTH) / 2
+					ClassicY: 70
+					ClassicWidth: 240
+					ClassicHeight: 20
 					Indeterminate: true
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@REGISTER_FINGERPRINT:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: dialog2
 			Children:
 				Label@DESC_A:
-					Y: 2
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 2
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: An authentication key has been copied to your
+					PositionType: Absolute
 				Label@DESC_B:
-					Y: 18
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 18
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: clipboard. Add this to your User Control Panel
+					PositionType: Absolute
 				Label@DESC_C:
-					Y: 34
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 34
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: on the OpenRA forum then press Continue.
+					PositionType: Absolute
 				Button@DELETE_KEY:
-					X: 15
-					Y: 70
-					Width: 70
-					Height: 20
+					ClassicX: 15
+					ClassicY: 70
+					ClassicWidth: 70
+					ClassicHeight: 20
 					Font: TinyBold
 					Text: Cancel
+					PositionType: Absolute
 				Button@CHECK_KEY:
-					X: 185
-					Y: 70
-					Width: 70
-					Height: 20
+					ClassicX: 185
+					ClassicY: 70
+					ClassicWidth: 70
+					ClassicHeight: 20
 					Font: TinyBold
 					Text: Continue
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@CHECKING_FINGERPRINT:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: dialog2
 			Children:
 				Label@DESC_A:
-					Y: 13
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: Querying account details from
+					PositionType: Absolute
 				Label@DESC_B:
-					Y: 29
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 29
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: the OpenRA forum...
+					PositionType: Absolute
 				ProgressBar:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: 70
-					Width: 240
-					Height: 20
+					ClassicX: (PARENT_RIGHT - WIDTH) / 2
+					ClassicY: 70
+					ClassicWidth: 240
+					ClassicHeight: 20
 					Indeterminate: true
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@FINGERPRINT_NOT_FOUND:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: dialog2
 			Children:
 				Label@DESC_A:
-					Y: 13
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: Your authentication key is not connected
+					PositionType: Absolute
 				Label@DESC_B:
-					Y: 29
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 29
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: to an OpenRA forum account.
+					PositionType: Absolute
 				Button@FINGERPRINT_NOT_FOUND_CONTINUE:
-					X: 185
-					Y: 70
-					Width: 70
-					Height: 20
+					ClassicX: 185
+					ClassicY: 70
+					ClassicWidth: 70
+					ClassicHeight: 20
 					Font: TinyBold
 					Text: Back
+					PositionType: Absolute
+			PositionType: Absolute
 		Background@CONNECTION_ERROR:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: PARENT_BOTTOM
 			Background: dialog2
 			Children:
 				Label@DESC_A:
-					Y: 13
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 13
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: Failed to connect to the OpenRA forum.
+					PositionType: Absolute
 				Label@DESC_B:
-					Y: 29
-					Width: PARENT_RIGHT
-					Height: 25
+					ClassicY: 29
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: 25
 					Font: Small
 					Align: Center
 					Text: Please check your internet connection.
+					PositionType: Absolute
 				Button@CONNECTION_ERROR_RETRY:
-					X: 185
-					Y: 70
-					Width: 70
-					Height: 20
+					ClassicX: 185
+					ClassicY: 70
+					ClassicWidth: 70
+					ClassicHeight: 20
 					Font: TinyBold
 					Text: Retry
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute
 
 Container@PLAYER_PROFILE_BADGES_INSERT:
 	Logic: PlayerProfileBadgesLogic
-	Width: PARENT_RIGHT
-	Height: 110
+	ClassicWidth: PARENT_RIGHT
+	ClassicHeight: 110
 	Children:
 		Container@BADGE_TEMPLATE:
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Children:
 				Sprite@ICON:
-					X: 6
-					Y: 1
-					Width: 24
-					Height: 24
+					ClassicX: 6
+					ClassicY: 1
+					ClassicWidth: 24
+					ClassicHeight: 24
+					PositionType: Absolute
 				Label@LABEL:
-					X: 36
-					Y: 2
-					Width: PARENT_RIGHT - 60
-					Height: 24
+					ClassicX: 36
+					ClassicY: 2
+					ClassicWidth: PARENT_RIGHT - 60
+					ClassicHeight: 24
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
+	PositionType: Absolute

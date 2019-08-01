@@ -1,153 +1,181 @@
 Background@SERVER_LOBBY:
 	Logic: LobbyLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 808
-	Height: 600
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - HEIGHT) / 2
+	ClassicWidth: 808
+	ClassicHeight: 600
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
+			PositionType: Absolute
 		Label@SERVER_NAME:
-			Y: 16
+			ClassicY: 16
 			Align: Center
-			Width: PARENT_RIGHT
-			Height: 25
+			ClassicWidth: PARENT_RIGHT
+			ClassicHeight: 25
 			Font: Bold
+			PositionType: Absolute
 		Container@MAP_PREVIEW_ROOT:
-			X: PARENT_RIGHT - 20 - WIDTH
-			Y: 67
-			Width: 174
-			Height: 250
+			ClassicX: PARENT_RIGHT - 20 - WIDTH
+			ClassicY: 67
+			ClassicWidth: 174
+			ClassicHeight: 250
+			PositionType: Absolute
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
-			X: 20
-			Y: 291
-			Width: 178
-			Height: 25
+			ClassicX: 20
+			ClassicY: 291
+			ClassicWidth: 178
+			ClassicHeight: 25
 			Font: Bold
 			Text: Slot Admin
+			PositionType: Absolute
 		Container@SKIRMISH_TABS:
 			Visible: False
 			Children:
 				Button@PLAYERS_TAB:
-					X: 203
-					Y: 285
-					Width: 134
-					Height: 31
+					ClassicX: 203
+					ClassicY: 285
+					ClassicWidth: 134
+					ClassicHeight: 31
 					Font: Bold
 					Text: Players
+					PositionType: Absolute
 				Button@OPTIONS_TAB:
-					X: 337
-					Y: 285
-					Width: 133
-					Height: 31
+					ClassicX: 337
+					ClassicY: 285
+					ClassicWidth: 133
+					ClassicHeight: 31
 					Font: Bold
 					Text: Options
+					PositionType: Absolute
 				Button@MUSIC_TAB:
-					X: 470
-					Y: 285
-					Width: 133
-					Height: 31
+					ClassicX: 470
+					ClassicY: 285
+					ClassicWidth: 133
+					ClassicHeight: 31
 					Font: Bold
 					Text: Music
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@MULTIPLAYER_TABS:
 			Visible: False
 			Children:
 				Button@PLAYERS_TAB:
-					X: 203
-					Y: 285
-					Width: 100
-					Height: 31
+					ClassicX: 203
+					ClassicY: 285
+					ClassicWidth: 100
+					ClassicHeight: 31
 					Font: Bold
 					Text: Players
+					PositionType: Absolute
 				Button@OPTIONS_TAB:
-					X: 303
-					Y: 285
-					Width: 100
-					Height: 31
+					ClassicX: 303
+					ClassicY: 285
+					ClassicWidth: 100
+					ClassicHeight: 31
 					Font: Bold
 					Text: Options
+					PositionType: Absolute
 				Button@MUSIC_TAB:
-					X: 403
-					Y: 285
-					Width: 100
-					Height: 31
+					ClassicX: 403
+					ClassicY: 285
+					ClassicWidth: 100
+					ClassicHeight: 31
 					Font: Bold
 					Text: Music
+					PositionType: Absolute
 				Button@SERVERS_TAB:
-					X: 503
-					Y: 285
-					Width: 100
-					Height: 31
+					ClassicX: 503
+					ClassicY: 285
+					ClassicWidth: 100
+					ClassicHeight: 31
 					Font: Bold
 					Text: Servers
+					PositionType: Absolute
+			PositionType: Absolute
 		Container@TOP_PANELS_ROOT:
-			X: 20
-			Y: 67
-			Width: 583
-			Height: 219
+			ClassicX: 20
+			ClassicY: 67
+			ClassicWidth: 583
+			ClassicHeight: 219
+			PositionType: Absolute
 		Button@CHANGEMAP_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: 291
-			Width: 174
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: 291
+			ClassicWidth: 174
+			ClassicHeight: 25
 			Text: Change Map
 			Font: Bold
+			PositionType: Absolute
 		Container@LOBBYCHAT:
-			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: PARENT_RIGHT - 40
-			Height: 259
+			ClassicX: 20
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: PARENT_RIGHT - 40
+			ClassicHeight: 259
 			Children:
 				ScrollPanel@CHAT_DISPLAY:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 30
+					ClassicWidth: PARENT_RIGHT
+					ClassicHeight: PARENT_BOTTOM - 30
 					TopBottomSpacing: 2
 					ItemSpacing: 2
 					Children:
 						Container@CHAT_TEMPLATE:
-							X: 2
-							Width: PARENT_RIGHT - 27
-							Height: 16
+							ClassicX: 2
+							ClassicWidth: PARENT_RIGHT - 27
+							ClassicHeight: 16
 							Children:
 								Label@TIME:
-									X: 3
-									Width: 50
-									Height: 16
+									ClassicX: 3
+									ClassicWidth: 50
+									ClassicHeight: 16
 									Shadow: True
+									PositionType: Absolute
 								Label@NAME:
-									X: 45
-									Width: 50
-									Height: 16
+									ClassicX: 45
+									ClassicWidth: 50
+									ClassicHeight: 16
 									Shadow: True
+									PositionType: Absolute
 								Label@TEXT:
-									X: 55
-									Width: PARENT_RIGHT - 60
-									Height: 16
+									ClassicX: 55
+									ClassicWidth: PARENT_RIGHT - 60
+									ClassicHeight: 16
 									WordWrap: true
 									Shadow: True
+									PositionType: Absolute
+							PositionType: Absolute
+					PositionType: Absolute
 				Button@CHAT_MODE:
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: 50
-					Height: 25
+					ClassicY: PARENT_BOTTOM - HEIGHT
+					ClassicWidth: 50
+					ClassicHeight: 25
 					Text: Team
 					Font: Bold
+					PositionType: Absolute
 				TextField@CHAT_TEXTFIELD:
-					X: 55
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: PARENT_RIGHT - 260 - 55
-					Height: 25
+					ClassicX: 55
+					ClassicY: PARENT_BOTTOM - HEIGHT
+					ClassicWidth: PARENT_RIGHT - 260 - 55
+					ClassicHeight: 25
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@START_GAME_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 150
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 150
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Start Game
 			Font: Bold
+			PositionType: Absolute
 		Button@DISCONNECT_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: 120
-			Height: 25
+			ClassicX: PARENT_RIGHT - WIDTH - 20
+			ClassicY: PARENT_BOTTOM - HEIGHT - 20
+			ClassicWidth: 120
+			ClassicHeight: 25
 			Text: Leave Game
 			Font: Bold
+			PositionType: Absolute
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
+			PositionType: Absolute
 		TooltipContainer@TOOLTIP_CONTAINER:
+			PositionType: Absolute
+	PositionType: Absolute

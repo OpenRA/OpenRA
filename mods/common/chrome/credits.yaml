@@ -1,51 +1,59 @@
 Background@CREDITS_PANEL:
 	Logic: CreditsLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 400) / 2
-	Width: 410
-	Height: 450
+	ClassicX: (WINDOW_RIGHT - WIDTH) / 2
+	ClassicY: (WINDOW_BOTTOM - 400) / 2
+	ClassicWidth: 410
+	ClassicHeight: 450
 	Children:
 		Label@CREDITS_TITLE:
-			Width: PARENT_RIGHT
-			Y: 21
-			Height: 25
+			ClassicWidth: PARENT_RIGHT
+			ClassicY: 21
+			ClassicHeight: 25
 			Font: Bold
 			Align: Center
 			Text: Credits
+			PositionType: Absolute
 		Container@TAB_CONTAINER:
 			Visible: False
-			X: 15
-			Y: 50
-			Width: PARENT_RIGHT - 30
-			Height: 30
+			ClassicX: 15
+			ClassicY: 50
+			ClassicWidth: PARENT_RIGHT - 30
+			ClassicHeight: 30
 			Children:
 				Button@MOD_TAB:
-					Width: 140
-					Height: 31
+					ClassicWidth: 140
+					ClassicHeight: 31
 					Font: Bold
+					PositionType: Absolute
 				Button@ENGINE_TAB:
-					X: 140
-					Width: 140
-					Height: 31
+					ClassicX: 140
+					ClassicWidth: 140
+					ClassicHeight: 31
 					Text: OpenRA
 					Font: Bold
+					PositionType: Absolute
+			PositionType: Absolute
 		ScrollPanel@CREDITS_DISPLAY:
-			X: 15
-			Y: 50
-			Width: PARENT_RIGHT - 30
-			Height: 345
+			ClassicX: 15
+			ClassicY: 50
+			ClassicWidth: PARENT_RIGHT - 30
+			ClassicHeight: 345
 			TopBottomSpacing: 8
 			Children:
 				Label@CREDITS_TEMPLATE:
-					X: 8
-					Width: PARENT_RIGHT - 25
-					Height: 16
+					ClassicX: 8
+					ClassicWidth: PARENT_RIGHT - 25
+					ClassicHeight: 16
 					VAlign: Top
+					PositionType: Absolute
+			PositionType: Absolute
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 180
-			Y: PARENT_BOTTOM - 45
-			Width: 160
-			Height: 25
+			ClassicX: PARENT_RIGHT - 180
+			ClassicY: PARENT_BOTTOM - 45
+			ClassicWidth: 160
+			ClassicHeight: 25
 			Text: Close
 			Font: Bold
 			Key: escape
+			PositionType: Absolute
+	PositionType: Absolute
