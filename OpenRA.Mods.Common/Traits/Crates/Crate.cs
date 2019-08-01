@@ -225,14 +225,9 @@ namespace OpenRA.Mods.Common.Traits
 			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass);
 		}
 
-		bool ICrushable.TryCalculatePlayerBlocking(Actor self, BitSet<CrushClass> crushClasses, out LongBitSet<PlayerBitMask> blocking)
+		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
 		{
-			if (self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass))
-				blocking = default(LongBitSet<PlayerBitMask>);
-			else
-				blocking = self.World.AllPlayerMask;
-
-			return true;
+			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass) ? self.World.AllPlayersMask : self.World.NoPlayersMask;
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
