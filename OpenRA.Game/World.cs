@@ -43,7 +43,8 @@ namespace OpenRA
 		public readonly MersenneTwister SharedRandom;
 		public readonly MersenneTwister LocalRandom;
 		public readonly IModelCache ModelCache;
-		public LongBitSet<PlayerBitMask> AllPlayerMask = default(LongBitSet<PlayerBitMask>);
+		public LongBitSet<PlayerBitMask> AllPlayersMask = default(LongBitSet<PlayerBitMask>);
+		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default(LongBitSet<PlayerBitMask>);
 
 		public Player[] Players = new Player[0];
 
@@ -208,7 +209,7 @@ namespace OpenRA
 			foreach (var p in Players)
 			{
 				if (!p.Spectating)
-					AllPlayerMask = AllPlayerMask.Union(p.PlayerMask);
+					AllPlayersMask = AllPlayersMask.Union(p.PlayerMask);
 
 				foreach (var q in Players)
 				{
@@ -244,10 +245,10 @@ namespace OpenRA
 			{
 				case Stance.Enemy:
 				case Stance.Neutral:
-					p.EnemyMask = p.EnemyMask.Union(bitSet);
+					p.EnemyPlayersMask = p.EnemyPlayersMask.Union(bitSet);
 					break;
 				case Stance.Ally:
-					p.AllyMask = p.AllyMask.Union(bitSet);
+					p.AlliedPlayersMask = p.AlliedPlayersMask.Union(bitSet);
 					break;
 			}
 		}

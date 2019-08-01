@@ -59,11 +59,13 @@ namespace OpenRA.Mods.Cnc.Traits
 			return info.CrushClasses.Overlaps(crushClasses);
 		}
 
-		bool ICrushable.TryCalculatePlayerBlocking(Actor self, BitSet<CrushClass> crushClasses, out LongBitSet<PlayerBitMask> blocking)
+		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
 		{
-			// Fall back to the slow path
-			blocking = default(LongBitSet<PlayerBitMask>);
-			return false;
+			if (!info.CrushClasses.Overlaps(crushClasses))
+				return self.World.NoPlayersMask;
+
+			// Friendly units should move around!
+			return info.BlockFriendly ? self.Owner.EnemyPlayersMask : self.World.AllPlayersMask;
 		}
 	}
 

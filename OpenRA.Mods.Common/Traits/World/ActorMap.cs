@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CellLayer<InfluenceNode> influence;
 		readonly Dictionary<int, CellLayer<InfluenceNode>> customInfluence = new Dictionary<int, CellLayer<InfluenceNode>>();
 		public readonly Dictionary<int, ICustomMovementLayer> CustomMovementLayers = new Dictionary<int, ICustomMovementLayer>();
-		public event Action<IEnumerable<CPos>> CellsUpdated;
+		public event Action<CPos> CellUpdated;
 		readonly Bin[] bins;
 		readonly int rows, cols;
 
@@ -182,7 +182,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HashSet<Actor> addActorPosition = new HashSet<Actor>();
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
-		readonly HashSet<CPos> updatedCells = new HashSet<CPos>();
 
 		public WDist LargestActorRadius { get; private set; }
 		public WDist LargestBlockingActorRadius { get; private set; }
@@ -372,7 +371,8 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var t in triggers)
 						t.Dirty = true;
 
-				updatedCells.Add(c.First);
+				if (CellUpdated != null)
+					CellUpdated(c.First);
 			}
 		}
 
@@ -394,7 +394,8 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var t in triggers)
 						t.Dirty = true;
 
-				updatedCells.Add(c.First);
+				if (CellUpdated != null)
+					CellUpdated(c.First);
 			}
 		}
 
@@ -442,15 +443,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var t in proximityTriggers)
 				t.Value.Tick(this);
-
-			self.World.AddFrameEndTask(s =>
-			{
-				if (CellsUpdated != null)
-				{
-					CellsUpdated(updatedCells);
-					updatedCells.Clear();
-				}
-			});
 		}
 
 		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit)
