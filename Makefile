@@ -148,7 +148,7 @@ test: core
 
 ########################## MAKE/INSTALL RULES ##########################
 #
-all: dependencies core
+all: dependencies core version
 
 core:
 	@command -v $(MSBUILD) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.4."; exit 1)
