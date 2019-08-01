@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ICrushable
 	{
 		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
-		bool TryCalculatePlayerBlocking(Actor self, BitSet<CrushClass> crushClasses, out LongBitSet<PlayerBitMask> blocking);
+		LongBitSet<PlayerBitMask> CrushableBy(Actor self, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]

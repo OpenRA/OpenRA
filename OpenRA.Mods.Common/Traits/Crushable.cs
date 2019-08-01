@@ -65,6 +65,14 @@ namespace OpenRA.Mods.Common.Traits
 			return CrushableInner(crushClasses, crusher.Owner);
 		}
 
+		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
+		{
+			if (IsTraitDisabled || !self.IsAtGroundLevel() || !Info.CrushClasses.Overlaps(crushClasses))
+				return self.World.NoPlayersMask;
+
+			return Info.CrushedByFriendlies ? self.World.AllPlayersMask : self.Owner.EnemyPlayersMask;
+		}
+
 		bool CrushableInner(BitSet<CrushClass> crushClasses, Player crushOwner)
 		{
 			if (IsTraitDisabled)
@@ -78,16 +86,6 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			return Info.CrushClasses.Overlaps(crushClasses);
-		}
-
-		bool ICrushable.TryCalculatePlayerBlocking(Actor self, BitSet<CrushClass> crushClasses, out LongBitSet<PlayerBitMask> blocking)
-		{
-			if (IsTraitDisabled || !self.IsAtGroundLevel() || !Info.CrushClasses.Overlaps(crushClasses))
-				blocking = self.World.AllPlayerMask;
-			else
-				blocking = Info.CrushedByFriendlies ? default(LongBitSet<PlayerBitMask>) : self.Owner.AllyMask;
-
-			return true;
 		}
 	}
 }
