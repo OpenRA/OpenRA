@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Repulsable = true;
 
 		[Desc("The distance it tries to maintain from other aircraft if repulsable.")]
-		public readonly WDist IdealSeparation = new WDist(1706);
+		public readonly WDist IdealSeparation = new WDist(1024);
 
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;

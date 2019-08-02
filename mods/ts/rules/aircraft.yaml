@@ -46,7 +46,7 @@ DSHP:
 		InitialFacing: 0
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
-		IdealSeparation: 1275
+		IdealSeparation: 2048
 		CruiseAltitude: 12c512
 		AltitudeVelocity: 256
 		MoveIntoShroud: true
@@ -199,7 +199,7 @@ ORCATRAN:
 		Crushes: crate, infantry
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
-		IdealSeparation: 1275
+		IdealSeparation: 2048
 	Health:
 		HP: 20000
 	Armor:
