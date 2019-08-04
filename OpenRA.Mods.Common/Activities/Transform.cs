@@ -123,6 +123,9 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 					nt.AfterTransform(a);
 
+				// Wait for next tick to let the locomotor cache to be updated.
+				a.QueueActivity(new Wait(1));
+
 				// Use self.CurrentActivity to capture the parent activity if Transform is a child
 				foreach (var transfer in currentActivity.ActivitiesImplementing<IssueOrderAfterTransform>(false))
 				{
