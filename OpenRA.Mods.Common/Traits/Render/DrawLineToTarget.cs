@@ -10,9 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Activities;
+using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -35,6 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
+		readonly List<IRenderable> renderableCache = new List<IRenderable>();
 		int lifetime;
 
 		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
@@ -61,17 +61,18 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer))
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			// Players want to see the lines when in waypoint mode.
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
 
 			if (--lifetime <= 0 && !force)
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
 			if (!(force || Game.Settings.Game.DrawTargetLine))
-				yield break;
+				return Enumerable.Empty<IRenderable>();
 
+			renderableCache.Clear();
 			var prev = self.CenterPosition;
 			var a = self.CurrentActivity;
 			for (; a != null; a = a.NextActivity)
@@ -88,14 +89,18 @@ namespace OpenRA.Mods.Common.Traits
 						var pos = n.Target.CenterPosition;
 
 						if (tile == null)
-							yield return new TargetLineRenderable(new[] { prev, pos }, n.Color, info.LineWidth, info.MarkerWidth);
+							renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, info.LineWidth, info.MarkerWidth));
 						else
-							yield return new SpriteRenderable(tile, pos, WVec.Zero, -511, pal, 1f, true);
+							renderableCache.Add(new SpriteRenderable(tile, pos, WVec.Zero, -511, pal, 1f, true));
 
 						prev = pos;
 					}
 				}
 			}
+
+			// Reverse draw order so target markers are drawn on top of the next line
+			renderableCache.Reverse();
+			return renderableCache;
 		}
 
 		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
