@@ -42,23 +42,25 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public void ShowTargetLines(Actor a)
+		public void ShowTargetLines(Actor self)
 		{
-			if (a.IsIdle)
+			// Target lines are only automatically shown for the owning player
+			// Spectators and allies must use the force-display modifier
+			if (self.IsIdle || self.Owner != self.World.LocalPlayer)
 				return;
 
 			// Reset the order line timeout.
 			lifetime = info.Delay;
 		}
 
-		void INotifySelected.Selected(Actor a)
+		void INotifySelected.Selected(Actor self)
 		{
-			ShowTargetLines(a);
+			ShowTargetLines(self);
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (self.Owner != self.World.LocalPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer))
 				yield break;
 
 			// Players want to see the lines when in waypoint mode.
