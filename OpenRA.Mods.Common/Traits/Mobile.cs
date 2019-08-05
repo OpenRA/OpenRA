@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 			else if (locomotorInfos.Count(li => li.Name == Locomotor) > 1)
 				throw new YamlException("There is more than one locomotor named '{0}'.".F(Locomotor));
 
+			// We need to reset the reference to the locomotor between each worlds, otherwise we are reference the previous state.
+			locomotor = null;
+
 			base.RulesetLoaded(rules, ai);
 		}
 
