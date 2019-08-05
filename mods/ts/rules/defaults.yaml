@@ -384,6 +384,8 @@
 		Factions: nod
 	MustBeDestroyed:
 		RequiredForShortGame: true
+	OwnerLostAction:
+		Action: Kill
 	CaptureNotification:
 	Demolishable:
 		Condition: being-demolished
