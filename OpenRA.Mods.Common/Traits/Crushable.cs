@@ -87,5 +87,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			return Info.CrushClasses.Overlaps(crushClasses);
 		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			self.World.ActorMap.UpdatePosition(self, self.OccupiesSpace);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			self.World.ActorMap.UpdatePosition(self, self.OccupiesSpace);
+		}
 	}
 }
