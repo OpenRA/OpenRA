@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 	{
 		class PngSheetFrame : ISpriteFrame
 		{
+			public SpriteFrameType Type { get; set; }
 			public Size Size { get; set; }
 			public Size FrameSize { get; set; }
 			public float2 Offset { get; set; }
@@ -50,10 +51,6 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 			var png = new Png(s);
 
-			// Only supports paletted images
-			if (png.Palette == null)
-				return false;
-
 			List<Rectangle> frameRegions;
 			List<float2> frameOffsets;
 
@@ -69,23 +66,28 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			{
 				var frameStart = frameRegions[i].X + frameRegions[i].Y * png.Width;
 				var frameSize = new Size(frameRegions[i].Width, frameRegions[i].Height);
+				var pixelLength = png.Palette == null ? 4 : 1;
+
 				frames[i] = new PngSheetFrame()
 				{
 					Size = frameSize,
 					FrameSize = frameSize,
 					Offset = frameOffsets[i],
-					Data = new byte[frameRegions[i].Width * frameRegions[i].Height]
+					Data = new byte[frameRegions[i].Width * frameRegions[i].Height * pixelLength],
+					Type = png.Palette == null ? SpriteFrameType.BGRA : SpriteFrameType.Indexed
 				};
 
 				for (var y = 0; y < frames[i].Size.Height; y++)
-					Array.Copy(png.Data, frameStart + y * png.Width, frames[i].Data, y * frames[i].Size.Width, frames[i].Size.Width);
+					Array.Copy(png.Data, (frameStart + y * png.Width) * pixelLength, frames[i].Data, y * frames[i].Size.Width * pixelLength, frames[i].Size.Width * pixelLength);
 			}
 
 			metadata = new TypeDictionary
 			{
 				new PngSheetMetadata(png.EmbeddedData),
-				new EmbeddedSpritePalette(png.Palette.Select(x => (uint)x.ToArgb()).ToArray())
 			};
+
+			if (png.Palette != null)
+				metadata.Add(new EmbeddedSpritePalette(png.Palette.Select(x => (uint)x.ToArgb()).ToArray()));
 
 			return true;
 		}

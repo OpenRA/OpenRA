@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
@@ -47,6 +48,10 @@ namespace OpenRA.Mods.Common.Traits
 		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
 		{
 			var png = new Png(fileSystem.Open(Filename));
+
+			if (png.Palette == null)
+				throw new InvalidOperationException("Unable to load palette `{0}` from non-paletted png `{1}`".F(Name, Filename));
+
 			var colors = new uint[Palette.Size];
 
 			for (var i = 0; i < png.Palette.Length; i++)
