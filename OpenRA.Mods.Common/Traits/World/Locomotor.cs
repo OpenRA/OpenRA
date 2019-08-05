@@ -380,7 +380,6 @@ namespace OpenRA.Mods.Common.Traits
 			blockingCache = new CellLayer<CellCache>(map);
 			cellsCost = new CellLayer<short>(map);
 
-
 			terrainInfos = Info.TilesetTerrainInfo[map.Rules.TileSet];
 
 			foreach (var cell in map.AllCells)
