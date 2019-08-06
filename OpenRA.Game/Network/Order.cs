@@ -11,6 +11,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -29,6 +30,7 @@ namespace OpenRA
 	{
 		None = 0x0,
 		Target = 0x01,
+		ExtraActors = 0x02,
 		TargetString = 0x04,
 		Queued = 0x08,
 		ExtraLocation = 0x10,
@@ -53,6 +55,7 @@ namespace OpenRA
 		public readonly Target Target;
 		public string TargetString;
 		public CPos ExtraLocation;
+		public Actor[] ExtraActors;
 		public uint ExtraData;
 		public bool IsImmediate;
 		public OrderType Type = OrderType.Fields;
@@ -62,13 +65,14 @@ namespace OpenRA
 
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
-		Order(string orderString, Actor subject, Target target, string targetString, bool queued, CPos extraLocation, uint extraData)
+		Order(string orderString, Actor subject, Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData)
 		{
 			OrderString = orderString ?? "";
 			Subject = subject;
 			Target = target;
 			TargetString = targetString;
 			Queued = queued;
+			ExtraActors = extraActors;
 			ExtraLocation = extraLocation;
 			ExtraData = extraData;
 		}
@@ -147,16 +151,27 @@ namespace OpenRA
 
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
+
+						Actor[] extraActors = null;
+						if (flags.HasField(OrderFields.ExtraActors))
+						{
+							var count = r.ReadInt32();
+							if (world != null)
+								extraActors = Exts.MakeArray(count, _ => world.GetActorById(r.ReadUInt32()));
+							else
+								r.ReadBytes(4 * count);
+						}
+
 						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? new CPos(r.ReadInt32()) : CPos.Zero;
 						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
 						if (world == null)
-							return new Order(order, null, target, targetString, queued, extraLocation, extraData);
+							return new Order(order, null, target, targetString, queued, extraActors, extraLocation, extraData);
 
 						if (subject == null && flags.HasField(OrderFields.Subject))
 							return null;
 
-						return new Order(order, subject, target, targetString, queued, extraLocation, extraData);
+						return new Order(order, subject, target, targetString, queued, extraActors, extraLocation, extraData);
 					}
 
 					case OrderType.Handshake:
@@ -239,13 +254,13 @@ namespace OpenRA
 
 		// For scripting special powers
 		public Order()
-			: this(null, null, Target.Invalid, null, false, CPos.Zero, 0) { }
+			: this(null, null, Target.Invalid, null, false, null, CPos.Zero, 0) { }
 
-		public Order(string orderString, Actor subject, bool queued)
-			: this(orderString, subject, Target.Invalid, null, queued, CPos.Zero, 0) { }
+		public Order(string orderString, Actor subject, bool queued, Actor[] extraActors = null)
+			: this(orderString, subject, Target.Invalid, null, queued, extraActors, CPos.Zero, 0) { }
 
-		public Order(string orderString, Actor subject, Target target, bool queued)
-			: this(orderString, subject, target, null, queued, CPos.Zero, 0) { }
+		public Order(string orderString, Actor subject, Target target, bool queued, Actor[] extraActors = null)
+			: this(orderString, subject, target, null, queued, extraActors, CPos.Zero, 0) { }
 
 		public byte[] Serialize()
 		{
@@ -253,7 +268,10 @@ namespace OpenRA
 			if (Type == OrderType.Handshake)
 				minLength += TargetString.Length + 1;
 			else if (Type == OrderType.Fields)
-				minLength += 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4;
+				minLength += 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
+
+			if (ExtraActors != null)
+				minLength += ExtraActors.Count() * 4;
 
 			// ProtocolVersion.Orders and the associated documentation MUST be updated if the serialized format changes
 			var ret = new MemoryStream(minLength);
@@ -290,6 +308,9 @@ namespace OpenRA
 
 					if (Queued)
 						fields |= OrderFields.Queued;
+
+					if (ExtraActors != null)
+						fields |= OrderFields.ExtraActors;
 
 					if (ExtraLocation != CPos.Zero)
 						fields |= OrderFields.ExtraLocation;
@@ -328,6 +349,13 @@ namespace OpenRA
 
 					if (fields.HasField(OrderFields.TargetString))
 						w.Write(TargetString);
+
+					if (fields.HasField(OrderFields.ExtraActors))
+					{
+						w.Write(ExtraActors.Count());
+						foreach (var a in ExtraActors)
+							w.Write(UIntFromActor(a));
+					}
 
 					if (fields.HasField(OrderFields.ExtraLocation))
 						w.Write(ExtraLocation);
