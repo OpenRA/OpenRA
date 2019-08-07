@@ -118,6 +118,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool Tick(Actor self)
 			{
+				if (cargo.IsDead)
+					return true;
+
 				var dropRange = self.Trait<Carryall>().Info.DropRange;
 				var destination = cargo.Trait<Carryable>().Destination;
 				if (destination != null)
