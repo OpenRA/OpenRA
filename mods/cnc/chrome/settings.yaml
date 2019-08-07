@@ -210,23 +210,29 @@ Container@SETTINGS_PANEL:
 									Width: PARENT_RIGHT - 35
 									Height: PARENT_BOTTOM - 12
 						Label@STATUS_BARS:
-							X: 310
+							X: 250
 							Y: 257
+							Width: 145
 							Text: Status Bars:
+							Align: Right
 						DropDownButton@STATUS_BAR_DROPDOWN:
 							X: 400
 							Y: 245
 							Width: 170
 							Height: 25
 							Font: Regular
-							Text: Standard
-						Checkbox@DISPLAY_TARGET_LINES_CHECKBOX:
-							X: 310
+						Label@TARGET_LINES:
+							X: 250
+							Y: 228
+							Width: 145
+							Text: Target Lines:
+							Align: Right
+						DropDownButton@TARGET_LINES_DROPDOWN:
+							X: 400
 							Y: 215
-							Width: 200
-							Height: 20
+							Width: 170
+							Height: 25
 							Font: Regular
-							Text: Display Target Lines
 						Label@LOCALIZATION_TITLE:
 							Y: 265
 							Width: PARENT_RIGHT
