@@ -34,14 +34,6 @@ env:
 script:
  - travis_retry make all-dependencies
  - make all
- - make check
- - make check-scripts
- - make test
- - make nunit
-
-# Automatically update the trait documentation and Lua API
-after_success:
- - test $TRAVIS_PULL_REQUEST == "false" && cd packaging && ./update-wiki.sh $TRAVIS_BRANCH; cd ..
 
 # Only watch the development branch and tagged release.
 branches:
@@ -49,18 +41,9 @@ branches:
    - /^release-.*$/
    - /^playtest-.*$/
    - /^pkgtest-.*$/
+   - /^devtest-.*$/
    - /^prep-.*$/
    - bleed
-
-# Notify developers when build passed/failed.
-notifications:
-  irc:
-    template:
-      - "%{repository}#%{build_number} %{commit} %{author}: %{message} %{build_url}"
-    channels:
-      - "irc.freenode.net#openra"
-    use_notice: true
-    skip_join: true
 
 before_deploy:
  - wget http://mirrors.kernel.org/ubuntu/pool/universe/n/nsis/nsis-common_3.03-2_all.deb
@@ -73,14 +56,15 @@ before_deploy:
  - cd packaging
  - mkdir build
  - ./package-all.sh ${TRAVIS_TAG} ${PWD}/build/
+
 deploy:
   provider: releases
   api_key:
-    secure: "g/LU11f+mjqv+lj0sR1UliHwogXL4ofJUwoG5Dbqlvdf5UTLWytw/OWSCv8RGyuh10miyWeaoqHh1cn2C1IFhUEqN1sSeKKKOWOTvJ2FR5mzi9uH3d/MOBzG5icQ7Qh0fZ1YPz5RaJJhYu6bmfvA/1gD49GoaX2kxQL4J5cEBgg="
+    secure: BzLdjZHvDqd5jyyHS8KK8zrNiXEIQiGRS/RMfqK6LuFPC4mXYDE4C/0oLPe93ULtai6LgUUkwB+zKq4lDV109EBO8Xp0jXKdDLLsepGU5xRLt3Z2tT4Zj+Nx6daVjAJe1MaKO5Zo5ODi8kBploRnPCffA8AMzOyQ+OwwJNlcRSs=
   file_glob: true
   file: build/*
   skip_cleanup: true
   on:
     all_branches: true
     tags: true
-    repo: OpenRA/OpenRA
+    repo: pchote/OpenRA
