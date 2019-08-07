@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				return Enumerable.Empty<IRenderable>();
 
 			// Players want to see the lines when in waypoint mode.
-			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
 
 			if (--lifetime <= 0 && !force)
 				return Enumerable.Empty<IRenderable>();
