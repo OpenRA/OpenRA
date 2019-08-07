@@ -209,7 +209,7 @@ namespace OpenRA
 
 		public bool UseClassicMouseStyle = false;
 		public StatusBarsType StatusBars = StatusBarsType.Standard;
-		public TargetLinesType TargetLines = TargetLinesType.Automatic;
+		public TargetLinesType TargetLines = TargetLinesType.Manual;
 		public bool UsePlayerStanceColors = false;
 
 		public bool AllowDownloading = true;
