@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ShowTargetLines(Actor self)
 		{
+			if (Game.Settings.Game.TargetLines < TargetLinesType.Automatic)
+				return;
+
 			// Target lines are only automatically shown for the owning player
 			// Spectators and allies must use the force-display modifier
 			if (self.IsIdle || self.Owner != self.World.LocalPlayer)
@@ -61,16 +64,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer))
+			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
 				return Enumerable.Empty<IRenderable>();
 
 			// Players want to see the lines when in waypoint mode.
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
 
 			if (--lifetime <= 0 && !force)
-				return Enumerable.Empty<IRenderable>();
-
-			if (!(force || Game.Settings.Game.DrawTargetLine))
 				return Enumerable.Empty<IRenderable>();
 
 			renderableCache.Clear();
