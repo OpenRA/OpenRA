@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -23,9 +24,18 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly WDist minRange;
 		readonly Color? targetLineColor;
+		readonly WDist nearEnough;
+
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
+		readonly List<WPos> positionBuffer = new List<WPos>();
+
+		public Fly(Actor self, Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+			: this(self, t, initialTargetPosition, targetLineColor)
+		{
+			this.nearEnough = nearEnough;
+		}
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -166,6 +176,12 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
+			// HACK: Consider ourselves blocked if we have moved by less than 64 WDist in the last five ticks
+			// Stop if we are blocked and close enough
+			if (positionBuffer.Count >= 5 && (positionBuffer.Last() - positionBuffer[0]).LengthSquared < 4096 &&
+				delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
+				return true;
+
 			// The next move would overshoot, so consider it close enough or set final position if we CanSlide
 			if (delta.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
@@ -212,6 +228,10 @@ namespace OpenRA.Mods.Common.Activities
 				if ((checkTarget.CenterPosition - turnCenter).HorizontalLengthSquared < turnRadius * turnRadius)
 					desiredFacing = aircraft.Facing;
 			}
+
+			positionBuffer.Add(self.CenterPosition);
+			if (positionBuffer.Count > 5)
+				positionBuffer.RemoveAt(0);
 
 			FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
 
