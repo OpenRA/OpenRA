@@ -207,28 +207,38 @@ namespace OpenRA.Mods.Common.Widgets
 			var keyOverrides = widget.GetOrNull<LogicKeyListenerWidget>("MODIFIER_OVERRIDES");
 			if (keyOverrides != null)
 			{
+				var noShiftButtons = new[] { guardButton, deployButton, attackMoveButton };
 				keyOverrides.AddHandler(e =>
 				{
-					// HACK: allow attack move to be triggered if the ctrl key is pressed (assault move)
-					var eNoCtrl = e;
-					eNoCtrl.Modifiers &= ~Modifiers.Ctrl;
+					if (e.Event != KeyInputEvent.Down)
+						return false;
 
-					if (attackMoveButton != null && !attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(eNoCtrl))
-					{
-						attackMoveButton.OnKeyPress(e);
-						return true;
-					}
-
-					// HACK: allow deploy to be triggered if the shift key is pressed (queued order)
-					if (e.Modifiers.HasModifier(Modifiers.Shift) && e.Event == KeyInputEvent.Down)
+					// HACK: allow command buttons to be triggered if the shift (queue order modifier) key is held
+					if (e.Modifiers.HasModifier(Modifiers.Shift))
 					{
 						var eNoShift = e;
 						eNoShift.Modifiers &= ~Modifiers.Shift;
 
-						if (deployButton != null && !deployButton.IsDisabled() &&
-							deployButton.Key.IsActivatedBy(eNoShift))
+						foreach (var b in noShiftButtons)
 						{
-							deployButton.OnKeyPress(e);
+							if (b != null && !b.IsDisabled() && b.Key.IsActivatedBy(eNoShift))
+							{
+								b.OnKeyPress(e);
+								return true;
+							}
+						}
+					}
+
+					// HACK: allow attack move to be triggered if the ctrl (assault move modifier)
+					// or shift (queue order modifier) keys are pressed
+					if (e.Modifiers.HasModifier(Modifiers.Ctrl))
+					{
+						var eNoMods = e;
+						eNoMods.Modifiers &= ~(Modifiers.Ctrl | Modifiers.Shift);
+
+						if (attackMoveButton != null && !attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(eNoMods))
+						{
+							attackMoveButton.OnKeyPress(e);
 							return true;
 						}
 					}
