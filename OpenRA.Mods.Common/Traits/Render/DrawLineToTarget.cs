@@ -45,12 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ShowTargetLines(Actor self)
 		{
-			if (Game.Settings.Game.TargetLines < TargetLinesType.Automatic)
-				return;
-
-			// Target lines are only automatically shown for the owning player
-			// Spectators and allies must use the force-display modifier
-			if (self.IsIdle || self.Owner != self.World.LocalPlayer)
+			if (Game.Settings.Game.TargetLines < TargetLinesType.Automatic || self.IsIdle)
 				return;
 
 			// Reset the order line timeout.
@@ -111,6 +106,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static void ShowTargetLines(this Actor self)
 		{
+			// Target lines are only automatically shown for the owning player
+			// Spectators and allies must use the force-display modifier
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
