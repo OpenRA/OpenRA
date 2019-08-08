@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Return to the base, which is either the destination given, or an auto-selected one otherwise.")]
 		public void ReturnToBase(Actor destination = null)
 		{
-			Self.QueueActivity(new ReturnToBase(Self, destination));
+			Self.QueueActivity(new ReturnToBase(Self, destination, true));
 		}
 
 		[ScriptActorPropertyActivity]
