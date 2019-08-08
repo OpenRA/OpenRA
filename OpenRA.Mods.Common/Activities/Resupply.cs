@@ -76,6 +76,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			// Wait for the cooldown to expire before releasing the unit if this was cancelled
+			if (IsCanceling && remainingTicks > 0)
+			{
+				remainingTicks--;
+				return false;
+			}
+
 			var isHostInvalid = host.Type != TargetType.Actor || !host.Actor.IsInWorld;
 			var isCloseEnough = closeEnough < WDist.Zero || (!isHostInvalid && (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared);
 
