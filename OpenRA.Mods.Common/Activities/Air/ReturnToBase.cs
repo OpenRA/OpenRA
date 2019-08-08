@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			QueueChild(new Fly(self, Target.FromActor(dest)));
+			QueueChild(new Fly(self, Target.FromActor(dest), targetLineColor: Color.Green));
 			return true;
 		}
 
