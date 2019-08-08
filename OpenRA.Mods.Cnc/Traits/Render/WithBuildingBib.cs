@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var offset = self.World.Map.CenterOfCell(cell) - self.World.Map.CenterOfCell(location) - centerOffset;
 				var awo = new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512));
 				anims.Add(awo);
-				rs.Add(awo, info.Palette);
+				rs.AddUnder(awo, info.Palette);
 			}
 		}
 

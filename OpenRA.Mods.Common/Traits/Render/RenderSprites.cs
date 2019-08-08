@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
+	public class RenderSprites : IRender, IRenderUnder, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
 	{
 		static readonly Pair<DamageState, string>[] DamagePrefixes =
 		{
@@ -155,6 +155,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly RenderSpritesInfo Info;
 		readonly string faction;
 		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
+		readonly List<AnimationWrapper> underAnims = new List<AnimationWrapper>();
 		string cachedImage;
 
 		public static Func<int> MakeFacingFunc(Actor self)
@@ -182,6 +183,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			foreach (var anim in anims)
 				anim.OwnerChanged();
+
+			foreach (var anim in underAnims)
+				anim.OwnerChanged();
 		}
 
 		public virtual void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
@@ -205,9 +209,31 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
+		public virtual IEnumerable<IRenderable> RenderUnder(Actor self, WorldRenderer wr)
+		{
+			foreach (var a in underAnims)
+			{
+				if (!a.IsVisible)
+					continue;
+
+				if (a.PaletteReference == null)
+				{
+					var owner = self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner : self.Owner;
+					a.CachePalette(wr, owner);
+				}
+
+				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference, Info.Scale))
+					yield return r;
+			}
+		}
+
 		public virtual IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			foreach (var a in anims)
+				if (a.IsVisible)
+					yield return a.Animation.ScreenBounds(self, wr, Info.Scale);
+
+			foreach (var a in underAnims)
 				if (a.IsVisible)
 					yield return a.Animation.ScreenBounds(self, wr, Info.Scale);
 		}
@@ -221,6 +247,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var updated = false;
 			foreach (var a in anims)
+				updated |= a.Tick();
+
+			foreach (var a in underAnims)
 				updated |= a.Tick();
 
 			if (updated)
@@ -239,9 +268,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anims.Add(new AnimationWrapper(anim, palette, isPlayerPalette));
 		}
 
+		public void AddUnder(AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)
+		{
+			// Use defaults
+			if (palette == null)
+			{
+				palette = Info.Palette ?? Info.PlayerPalette;
+				isPlayerPalette = Info.Palette == null;
+			}
+
+			underAnims.Add(new AnimationWrapper(anim, palette, isPlayerPalette));
+		}
+
 		public void Remove(AnimationWithOffset anim)
 		{
 			anims.RemoveAll(a => a.Animation == anim);
+		}
+
+		public void RemoveUnder(AnimationWithOffset anim)
+		{
+			underAnims.RemoveAll(a => a.Animation == anim);
 		}
 
 		public static string UnnormalizeSequence(string sequence)

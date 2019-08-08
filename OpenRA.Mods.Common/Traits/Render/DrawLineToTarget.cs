@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
+	public class DrawLineToTarget : IRenderAboveTerrainWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
 		readonly List<IRenderable> renderableCache = new List<IRenderable>();
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			ShowTargetLines(self);
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveTerrainWhenSelected.RenderAboveTerrain(Actor self, WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer))
 				return Enumerable.Empty<IRenderable>();
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			return renderableCache;
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAboveTerrainWhenSelected.SpatiallyPartitionable { get { return false; } }
 	}
 
 	public static class LineTargetExts

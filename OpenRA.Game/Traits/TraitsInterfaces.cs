@@ -111,6 +111,12 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr);
 	}
 
+	public interface IRenderUnder
+	{
+		IEnumerable<IRenderable> RenderUnder(Actor self, WorldRenderer wr);
+		IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr);
+	}
+
 	// TODO: Replace Rectangle with an int2[] polygon
 	public interface IMouseBounds { Rectangle MouseoverBounds(Actor self, WorldRenderer wr); }
 	public interface IMouseBoundsInfo : ITraitInfoInterface { }
@@ -412,6 +418,12 @@ namespace OpenRA.Traits
 	public interface IRenderAboveShroudWhenSelected
 	{
 		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr);
+		bool SpatiallyPartitionable { get; }
+	}
+
+	public interface IRenderAboveTerrainWhenSelected
+	{
+		IEnumerable<IRenderable> RenderAboveTerrain(Actor self, WorldRenderer wr);
 		bool SpatiallyPartitionable { get; }
 	}
 

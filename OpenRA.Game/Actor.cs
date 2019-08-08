@@ -75,6 +75,7 @@ namespace OpenRA
 		readonly IHealth health;
 		readonly IRenderModifier[] renderModifiers;
 		readonly IRender[] renders;
+		readonly IRenderUnder[] underRenders;
 		readonly IMouseBounds[] mouseBounds;
 		readonly IVisibilityModifier[] visibilityModifiers;
 		readonly IDefaultVisibility defaultVisibility;
@@ -119,6 +120,7 @@ namespace OpenRA
 			health = TraitOrDefault<IHealth>();
 			renderModifiers = TraitsImplementing<IRenderModifier>().ToArray();
 			renders = TraitsImplementing<IRender>().ToArray();
+			underRenders = TraitsImplementing<IRenderUnder>().ToArray();
 			mouseBounds = TraitsImplementing<IMouseBounds>().ToArray();
 			visibilityModifiers = TraitsImplementing<IVisibilityModifier>().ToArray();
 			defaultVisibility = Trait<IDefaultVisibility>();
@@ -178,6 +180,29 @@ namespace OpenRA
 			// memory than creating the objects needed to represent a sequence.
 			foreach (var render in renders)
 				foreach (var renderable in render.Render(this, wr))
+					yield return renderable;
+		}
+
+		public IEnumerable<IRenderable> RenderUnder(WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ.
+			var renderables = UnderRenderables(wr);
+			foreach (var modifier in renderModifiers)
+				renderables = modifier.ModifyRender(this, wr, renderables);
+			return renderables;
+		}
+
+		IEnumerable<IRenderable> UnderRenderables(WorldRenderer wr)
+		{
+			// PERF: Avoid LINQ.
+			// Implementations of Render are permitted to return both an eagerly materialized collection or a lazily
+			// generated sequence.
+			// For large amounts of renderables, a lazily generated sequence (e.g. as returned by LINQ, or by using
+			// `yield`) will avoid the need to allocate a large collection.
+			// For small amounts of renderables, allocating a small collection can often be faster and require less
+			// memory than creating the objects needed to represent a sequence.
+			foreach (var render in underRenders)
+				foreach (var renderable in render.RenderUnder(this, wr))
 					yield return renderable;
 		}
 

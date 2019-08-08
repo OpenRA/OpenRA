@@ -103,6 +103,32 @@ namespace OpenRA.Graphics
 				palettes[name].Palette = pal;
 		}
 
+		List<IFinalizedRenderable> GenerateUnderlayRenderables()
+		{
+			var actors = onScreenActors.Append(World.WorldActor);
+			if (World.RenderPlayer != null)
+				actors = actors.Append(World.RenderPlayer.PlayerActor);
+
+			var worldRenderables = actors.SelectMany(a => a.RenderUnder(this));
+			if (World.OrderGenerator != null)
+				worldRenderables = worldRenderables.Concat(World.OrderGenerator.Render(this, World));
+
+			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
+
+			var aboveTerrainSelected = World.Selection.Actors.Where(a => a.IsInWorld && !a.Disposed)
+				.SelectMany(a => a.TraitsImplementing<IRenderAboveTerrainWhenSelected>()
+					.Where(t => !t.SpatiallyPartitionable || onScreenActors.Contains(a))
+					.SelectMany(t => t.RenderAboveTerrain(a, this)));
+
+			worldRenderables = worldRenderables.Concat(aboveTerrainSelected);
+
+			Game.Renderer.WorldModelRenderer.BeginFrame();
+			var finalOverlayRenderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
+			Game.Renderer.WorldModelRenderer.EndFrame();
+
+			return finalOverlayRenderables;
+		}
+
 		List<IFinalizedRenderable> GenerateRenderables()
 		{
 			var actors = onScreenActors.Append(World.WorldActor);
@@ -174,6 +200,7 @@ namespace OpenRA.Graphics
 			RefreshPalette();
 
 			onScreenActors.UnionWith(World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight));
+			var underRenderables = GenerateUnderlayRenderables();
 			var renderables = GenerateRenderables();
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
@@ -185,6 +212,15 @@ namespace OpenRA.Graphics
 				terrainRenderer.RenderTerrain(this, Viewport);
 
 			Game.Renderer.Flush();
+
+			if (enableDepthBuffer)
+				Game.Renderer.ClearDepthBuffer();
+
+			for (var i = 0; i < underRenderables.Count; i++)
+				underRenderables[i].Render(this);
+
+			if (enableDepthBuffer)
+				Game.Renderer.ClearDepthBuffer();
 
 			for (var i = 0; i < renderables.Count; i++)
 				renderables[i].Render(this);
