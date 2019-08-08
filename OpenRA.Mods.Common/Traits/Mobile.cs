@@ -570,7 +570,9 @@ namespace OpenRA.Mods.Common.Traits
 			SetPosition(self, cell, subCell);
 			SetVisualPosition(self, pos);
 
-			return WrapMove(VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell), cell));
+			var activities = new Wait(1, false);
+			activities.Queue(WrapMove(VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell), cell)));
+			return activities;
 		}
 
 		public Activity MoveToTarget(Actor self, Target target,

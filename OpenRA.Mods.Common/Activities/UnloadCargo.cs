@@ -111,17 +111,17 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				cargo.Unload(self);
+
+				var pos = actor.Trait<IPositionable>();
+				pos.SetVisualPosition(actor, spawn);
+				var move = actor.Trait<IMove>();
+				actor.QueueActivity(false, move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
+
 				self.World.AddFrameEndTask(w =>
 				{
 					if (actor.Disposed)
 						return;
 
-					var move = actor.Trait<IMove>();
-					var pos = actor.Trait<IPositionable>();
-
-					actor.CancelActivity();
-					pos.SetVisualPosition(actor, spawn);
-					actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
 					w.Add(actor);
 				});
 			}
