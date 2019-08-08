@@ -1059,6 +1059,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in forcing them to land
 				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier.
 				self.QueueActivity(order.Queued, new ReturnToBase(self, null, !Info.TakeOffOnResupply));
+				self.ShowTargetLines();
 			}
 			else if (orderString == "Scatter")
 				Nudge(self);

@@ -10,8 +10,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -93,12 +95,21 @@ namespace OpenRA.Mods.Common.Activities
 				if (!aircraft.Info.VTOL && assignTargetOnFirstRun)
 					return true;
 
-				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, target)));
+				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, target, targetLineColor: Color.OrangeRed)));
 				moveToRallyPoint = false;
 				return false;
 			}
 
 			return true;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (ChildActivity == null && moveToRallyPoint)
+				yield return new TargetLineNode(target, Color.OrangeRed);
+			else
+				foreach (var n in ChildActivity.TargetLineNodes(self))
+					yield return n;
 		}
 	}
 }
