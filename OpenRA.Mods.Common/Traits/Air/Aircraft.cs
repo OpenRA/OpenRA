@@ -928,7 +928,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("ForceEnter", 6,
 					(target, modifiers) => Info.CanForceLand && modifiers.HasModifier(TargetModifiers.ForceMove) && AircraftCanEnter(target),
-					target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target, !Info.TakeOffOnResupply));
+					target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target, true));
 
 				yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5,
 					AircraftCanEnter, target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target));
@@ -1019,7 +1019,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var targetActor = order.Target.Actor;
 				var isForceEnter = orderString == "ForceEnter";
-				var canResupplyAt = AircraftCanResupplyAt(targetActor, isForceEnter && !Info.TakeOffOnResupply);
+				var canResupplyAt = AircraftCanResupplyAt(targetActor, isForceEnter || !Info.TakeOffOnResupply);
 
 				// This is what the order targeter checks to display the correct cursor, so we need to make sure
 				// the behavior matches the cursor if the player clicks despite a "blocked" cursor.
