@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!h.Key.IsIdle)
 				{
 					var act = h.Key.CurrentActivity;
-					if (!h.Value.Harvester.LastSearchFailed || act.NextActivity == null || act.NextActivity.GetType() != typeof(FindAndDeliverResources))
+					if (!h.Value.Harvester.LastSearchFailed || act.NextActivity == null || !(act.NextActivity is FindAndDeliverResources))
 						continue;
 				}
 
