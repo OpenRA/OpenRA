@@ -157,11 +157,11 @@ namespace OpenRA.Mods.Common.Traits
 			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 
-		public override void OnQueueAttackActivity(Actor self, Activity activity, Target target, bool allowMove, bool forceAttack)
+		public override void OnResolveAttackOrder(Actor self, Activity activity, Target target, bool queued, bool forceAttack)
 		{
 			// We can improve responsiveness for turreted actors by preempting
 			// the last order (usually a move) and setting the target immediately
-			if (self.CurrentActivity != null && self.CurrentActivity.NextActivity == activity)
+			if (!queued)
 			{
 				RequestedTarget = target;
 				requestedForceAttack = forceAttack;
