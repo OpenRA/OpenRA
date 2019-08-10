@@ -589,7 +589,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static bool ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s, bool rightMouse)
+		static void ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s, bool rightMouse)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -609,10 +609,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
 		}
 
-		static bool ShowZoomModifierDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowZoomModifierDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
@@ -633,10 +632,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
 		}
 
-		bool ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundDevice[] devices)
+		void ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundDevice[] devices)
 		{
 			var i = 0;
 			var options = devices.ToDictionary(d => (i++).ToString(), d => d);
@@ -655,10 +653,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
 		}
 
-		static bool ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		static void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
@@ -678,10 +675,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
 		}
 
-		static bool ShowLanguageDropdown(DropDownButtonWidget dropdown, IEnumerable<string> languages)
+		static void ShowLanguageDropdown(DropDownButtonWidget dropdown, IEnumerable<string> languages)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
@@ -694,10 +690,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, languages, setupItem);
-			return true;
 		}
 
-		static bool ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, StatusBarsType>()
 			{
@@ -717,10 +712,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
 		}
 
-		static bool ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, TargetLinesType>()
 			{
@@ -740,7 +734,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
-			return true;
 		}
 
 		void MakeMouseFocusSettingsLive()
