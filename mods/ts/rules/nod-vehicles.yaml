@@ -357,7 +357,7 @@ WEED:
 		BaleUnloadDelay: 20
 		BaleLoadDelay: 40
 		SearchFromProcRadius: 30
-		SearchFromOrderRadius: 16
+		SearchFromHarvesterRadius: 16
 		HarvestVoice: Attack
 		DeliverVoice: Move
 	Mobile:

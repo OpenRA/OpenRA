@@ -306,7 +306,7 @@ HARV:
 		Resources: Ore,Gems
 		BaleUnloadDelay: 1
 		SearchFromProcRadius: 15
-		SearchFromOrderRadius: 8
+		SearchFromHarvesterRadius: 8
 		EmptyCondition: no-ore
 	Health:
 		HP: 60000

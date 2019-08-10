@@ -67,7 +67,7 @@ HARV:
 		BaleLoadDelay: 12
 		BaleUnloadDelay: 6
 		SearchFromProcRadius: 15
-		SearchFromOrderRadius: 8
+		SearchFromHarvesterRadius: 8
 		EmptyCondition: no-tiberium
 	Mobile:
 		Speed: 85
