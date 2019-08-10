@@ -66,8 +66,8 @@ HARV:
 		BaleLoadDelay: 15
 		BaleUnloadDelay: 15
 		FullyLoadedSpeed: 100
-		SearchFromProcRadius: 36
-		SearchFromOrderRadius: 18
+		SearchFromProcRadius: 15
+		SearchFromOrderRadius: 8
 		HarvestVoice: Attack
 		DeliverVoice: Move
 		EmptyCondition: no-tiberium
