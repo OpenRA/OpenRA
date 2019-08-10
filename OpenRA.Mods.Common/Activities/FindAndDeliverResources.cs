@@ -176,11 +176,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Determine where to search from and how far to search:
 			var searchFromLoc = lastHarvestedCell ?? GetSearchFromProcLocation(self);
-			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
 			if (!searchFromLoc.HasValue)
 			{
 				searchFromLoc = self.Location;
-				searchRadius = harvInfo.SearchFromOrderRadius;
+				searchRadius = harvInfo.SearchFromHarvesterRadius;
 			}
 
 			var searchRadiusSquared = searchRadius * searchRadius;
