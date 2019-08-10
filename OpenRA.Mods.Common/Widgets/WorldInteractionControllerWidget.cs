@@ -82,8 +82,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
 			var multiClick = mi.MultiTapCount >= 2;
+			var uog = World.OrderGenerator as UnitOrderGenerator;
 
-			if (!(World.OrderGenerator is UnitOrderGenerator))
+			if (uog == null)
 			{
 				ApplyOrders(World, mi);
 				isDragging = false;
@@ -102,70 +103,66 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (World.OrderGenerator is UnitOrderGenerator)
+				if (useClassicMouseStyle && HasMouseFocus)
 				{
-					if (useClassicMouseStyle && HasMouseFocus)
+					if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 					{
-						if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
-						{
-							var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
-								x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
+						var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
+							x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
 
-							var uog = (UnitOrderGenerator)World.OrderGenerator;
-							if (!selectableActor || uog.InputOverridesSelection(worldRenderer, World, mousePos, mi))
-							{
-								// Order units instead of selecting
-								ApplyOrders(World, mi);
-								isDragging = false;
-								YieldMouseFocus(mi);
-								return true;
-							}
+						if (!selectableActor || uog.InputOverridesSelection(worldRenderer, World, mousePos, mi))
+						{
+							// Order units instead of selecting
+							ApplyOrders(World, mi);
+							isDragging = false;
+							YieldMouseFocus(mi);
+							return true;
 						}
 					}
-
-					if (multiClick)
-					{
-						var unit = World.ScreenMap.ActorsAtMouse(mousePos)
-							.WithHighestSelectionPriority(mousePos, mi.Modifiers);
-
-						// Players to be included in the selection (the viewer or all players in "Disable shroud" / "All players" mode)
-						var viewer = World.RenderPlayer ?? World.LocalPlayer;
-						var isShroudDisabled = viewer == null || (World.RenderPlayer == null && World.LocalPlayer.Spectating);
-						var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
-						var eligiblePlayers = isShroudDisabled || isEveryone ? World.Players : new[] { viewer };
-
-						if (unit != null && eligiblePlayers.Contains(unit.Owner))
-						{
-							var s = unit.TraitOrDefault<Selectable>();
-							if (s != null)
-							{
-								// Select actors on the screen that have the same selection class as the actor under the mouse cursor
-								var newSelection = SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, eligiblePlayers);
-
-								World.Selection.Combine(World, newSelection, true, false);
-							}
-						}
-					}
-					else
-					{
-						/* The block below does three things:
-						// 1. Allows actor selection using a selection box regardless of input mode.
-						// 2. Allows actor deselection with a single click in the default input mode (UnitOrderGenerator).
-						// 3. Prevents units from getting deselected when exiting input modes (eg. AttackMove or Guard).
-						//
-						// We cannot check for UnitOrderGenerator here since it's the default order generator that gets activated in
-						// World.CancelInputMode. If we did check it, actor de-selection would not be possible by just clicking somewhere,
-						// only by dragging an empty selection box.
-						*/
-						if (isDragging && (!(World.OrderGenerator is GenericSelectTarget) || IsValidDragbox))
-						{
-							var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, mi.Modifiers);
-							World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
-						}
-					}
-
-					World.CancelInputMode();
 				}
+
+				if (multiClick)
+				{
+					var unit = World.ScreenMap.ActorsAtMouse(mousePos)
+						.WithHighestSelectionPriority(mousePos, mi.Modifiers);
+
+					// Players to be included in the selection (the viewer or all players in "Disable shroud" / "All players" mode)
+					var viewer = World.RenderPlayer ?? World.LocalPlayer;
+					var isShroudDisabled = viewer == null || (World.RenderPlayer == null && World.LocalPlayer.Spectating);
+					var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
+					var eligiblePlayers = isShroudDisabled || isEveryone ? World.Players : new[] { viewer };
+
+					if (unit != null && eligiblePlayers.Contains(unit.Owner))
+					{
+						var s = unit.TraitOrDefault<Selectable>();
+						if (s != null)
+						{
+							// Select actors on the screen that have the same selection class as the actor under the mouse cursor
+							var newSelection = SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, eligiblePlayers);
+
+							World.Selection.Combine(World, newSelection, true, false);
+						}
+					}
+				}
+				else
+				{
+					/* The block below does three things:
+					// 1. Allows actor selection using a selection box regardless of input mode.
+					// 2. Allows actor deselection with a single click in the default input mode (UnitOrderGenerator).
+					// 3. Prevents units from getting deselected when exiting input modes (eg. AttackMove or Guard).
+					//
+					// We cannot check for UnitOrderGenerator here since it's the default order generator that gets activated in
+					// World.CancelInputMode. If we did check it, actor de-selection would not be possible by just clicking somewhere,
+					// only by dragging an empty selection box.
+					*/
+					if (isDragging && (uog.ClearSelectionOnLeftClick || IsValidDragbox))
+					{
+						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, mi.Modifiers);
+						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
+					}
+				}
+
+				World.CancelInputMode();
 
 				isDragging = false;
 				YieldMouseFocus(mi);
