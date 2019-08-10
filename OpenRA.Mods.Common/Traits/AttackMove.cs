@@ -148,5 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Custom order generators always override selection
 			return true;
 		}
+
+		public override bool ClearSelectionOnLeftClick { get { return false; } }
 	}
 }
