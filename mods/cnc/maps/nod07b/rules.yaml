@@ -63,7 +63,7 @@ E5:
 
 HARV:
 	Harvester:
-		SearchFromOrderRadius: 45
+		SearchFromHarvesterRadius: 45
 
 MTNK:
 	Buildable:

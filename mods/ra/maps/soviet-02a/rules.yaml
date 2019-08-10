@@ -91,7 +91,7 @@ AFLD:
 HARV:
 	Harvester:
 		SearchFromProcRadius: 50
-		SearchFromOrderRadius: 50
+		SearchFromHarvesterRadius: 50
 
 powerproxy.paratroopers:
 	ParatroopersPower:
