@@ -132,6 +132,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameCarryallDelays(),
 				new AddCanSlide(),
 				new AddAircraftIdleBehavior(),
+				new RenameSearchRadius(),
 			})
 		};
 
