@@ -175,8 +175,14 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = lastHarvestedCell ?? GetSearchFromLocation(self);
+			var searchFromLoc = lastHarvestedCell ?? GetSearchFromProcLocation(self);
 			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			if (!searchFromLoc.HasValue)
+			{
+				searchFromLoc = self.Location;
+				searchRadius = harvInfo.SearchFromOrderRadius;
+			}
+
 			var searchRadiusSquared = searchRadius * searchRadius;
 
 			// Find any harvestable resources:
@@ -185,12 +191,12 @@ namespace OpenRA.Mods.Common.Activities
 					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
 				.WithCustomCost(loc =>
 				{
-					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
+					if ((loc - searchFromLoc.Value).LengthSquared > searchRadiusSquared)
 						return int.MaxValue;
 
 					return 0;
 				})
-				.FromPoint(searchFromLoc)
+				.FromPoint(searchFromLoc.Value)
 				.FromPoint(self.Location))
 				path = pathFinder.FindPath(search);
 
@@ -217,7 +223,7 @@ namespace OpenRA.Mods.Common.Activities
 				yield return new TargetLineNode(Target.FromActor(deliverActor), Color.Green);
 		}
 
-		CPos GetSearchFromLocation(Actor self)
+		CPos? GetSearchFromProcLocation(Actor self)
 		{
 			if (harv.LastLinkedProc != null && !harv.LastLinkedProc.IsDead && harv.LastLinkedProc.IsInWorld)
 				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;
@@ -225,7 +231,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (harv.LinkedProc != null && !harv.LinkedProc.IsDead && harv.LinkedProc.IsInWorld)
 				return harv.LinkedProc.Location + harv.LinkedProc.Trait<IAcceptResources>().DeliveryOffset;
 
-			return self.Location;
+			return null;
 		}
 	}
 }
