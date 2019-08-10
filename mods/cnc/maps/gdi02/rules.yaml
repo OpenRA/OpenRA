@@ -22,7 +22,7 @@ CYCL:
 HARV:
 	Harvester:
 		SearchFromProcRadius: 32
-		SearchFromOrderRadius: 20
+		SearchFromHarvesterRadius: 20
 
 PROC:
 	Buildable:
