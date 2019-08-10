@@ -20,17 +20,18 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly Target target;
 		readonly bool hasTarget;
+		int endingDelay;
 
-		public FlyOffMap(Actor self)
+		public FlyOffMap(Actor self, int endingDelay = 25)
 		{
 			aircraft = self.Trait<Aircraft>();
 			ChildHasPriority = false;
+			this.endingDelay = endingDelay;
 		}
 
-		public FlyOffMap(Actor self, Target target)
+		public FlyOffMap(Actor self, Target target, int endingDelay = 25)
+			: this(self, endingDelay)
 		{
-			aircraft = self.Trait<Aircraft>();
-			ChildHasPriority = false;
 			this.target = target;
 			hasTarget = true;
 		}
@@ -40,6 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (hasTarget)
 			{
 				QueueChild(new Fly(self, target));
+				QueueChild(new FlyTimed(-1, self));
 				return;
 			}
 
@@ -54,13 +56,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			// Refuse to take off if it would land immediately again.
 			if (aircraft.ForceLanding)
-			{
 				Cancel(self);
-				return true;
-			}
 
-			if (IsCanceling || !self.World.Map.Contains(self.Location))
+			if (IsCanceling)
 				return true;
+
+			if (!self.World.Map.Contains(self.Location) && --endingDelay < 0)
+				ChildActivity.Cancel(self);
 
 			return TickChild(self);
 		}
