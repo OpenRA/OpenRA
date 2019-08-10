@@ -24,10 +24,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Delay = 60;
 
 		[Desc("Width (in pixels) of the target lines.")]
-		public readonly int LineWidth = 2;
+		public readonly int LineWidth = 1;
+
+		[Desc("Width (in pixels) of the queued target lines.")]
+		public readonly int QueuedLineWidth = 1;
 
 		[Desc("Width (in pixels) of the end node markers.")]
-		public readonly int MarkerWidth = 3;
+		public readonly int MarkerWidth = 2;
+
+		[Desc("Width (in pixels) of the queued end node markers.")]
+		public readonly int QueuedMarkerWidth = 2;
 
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
@@ -80,12 +86,15 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (n.Target.Type != TargetType.Invalid)
 					{
+						var lineWidth = renderableCache.Any() ? info.QueuedLineWidth : info.LineWidth;
+						var markerWidth = renderableCache.Any() ? info.QueuedMarkerWidth : info.MarkerWidth;
+
 						var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 						var tile = n.Tile;
 						var pos = n.Target.CenterPosition;
 
 						if (tile == null)
-							renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, info.LineWidth, info.MarkerWidth));
+							renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
 						else
 							renderableCache.Add(new SpriteRenderable(tile, pos, WVec.Zero, -511, pal, 1f, true));
 

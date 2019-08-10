@@ -99,6 +99,7 @@ GAPILE:
 		Offset: 2,3
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Exit@1:
 		SpawnOffset: -256,1024,0
 		ExitCell: 2,2
@@ -163,6 +164,7 @@ GAWEAP:
 		Offset: 4,1
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -231,6 +233,7 @@ GAHPAD:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
@@ -301,6 +304,7 @@ GADEPT:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	WithIdleOverlay@LIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-light

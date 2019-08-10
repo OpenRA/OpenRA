@@ -550,6 +550,8 @@
 		Action: Kill
 		DeathTypes: BulletDeath
 	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
 	Health:
 		HP: 5000
 	Armor:
@@ -752,6 +754,8 @@
 	OwnerLostAction:
 		Action: Kill
 	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
 	Mobile:
 		PauseOnCondition: empdisable || being-captured || carried
 		Locomotor: wheeled
@@ -855,6 +859,8 @@
 	OwnerLostAction:
 		Action: Kill
 	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
 	AppearsOnRadar:
 		UseLocation: true
 	Targetable@GROUND:
@@ -945,6 +951,8 @@
 	Inherits@SELECTION_MODE: ^FlatSelectionMode
 	Huntable:
 	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
 	Health:
 	Armor:
 		Type: Light
@@ -1100,6 +1108,8 @@
 	RenderSprites:
 	WithVoxelBody:
 	DrawLineToTarget:
+		QueuedLineWidth: 2
+		QueuedMarkerWidth: 3
 	Mobile:
 		TurnSpeed: 5
 		Voice: Move

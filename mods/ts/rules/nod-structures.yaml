@@ -112,6 +112,7 @@ NAHAND:
 		Offset: 3,3
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
@@ -169,6 +170,7 @@ NAWEAP:
 		Offset: 4,1
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -231,6 +233,7 @@ NAHPAD:
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
+		LineWidth: 2
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
