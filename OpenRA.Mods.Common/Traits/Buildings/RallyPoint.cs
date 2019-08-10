@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Image = "rallypoint";
 
 		[Desc("Width (in pixels) of the rallypoint line.")]
-		public readonly int LineWidth = 2;
+		public readonly int LineWidth = 1;
 
 		[SequenceReference("Image")]
 		public readonly string FlagSequence = "flag";
