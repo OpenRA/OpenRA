@@ -66,8 +66,8 @@ HARV:
 		Capacity: 20
 		BaleLoadDelay: 12
 		BaleUnloadDelay: 6
-		SearchFromProcRadius: 25
-		SearchFromOrderRadius: 15
+		SearchFromProcRadius: 15
+		SearchFromOrderRadius: 8
 		EmptyCondition: no-tiberium
 	Mobile:
 		Speed: 85
