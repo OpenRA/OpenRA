@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (check.HasCellCondition(CellConditions.TransientActors))
 			{
-				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check, blockingCache[cell].CellFlag);
+				Func<Actor, bool> checkTransient = otherActor => IsBlockedBy(self, otherActor, ignoreActor, check, GetCache(cell).CellFlag);
 
 				if (!sharesCell)
 					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, checkTransient) ? SubCell.Invalid : SubCell.FullCell;
