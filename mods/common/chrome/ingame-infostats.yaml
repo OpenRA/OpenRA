@@ -68,7 +68,7 @@ Container@SKIRMISH_STATS:
 					Children:
 						Label@TEAM:
 							X: 6
-							Y: 0 
+							Y: 0
 							Width: 160
 							Height: 20
 							Font: Bold

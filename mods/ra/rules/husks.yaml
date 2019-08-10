@@ -441,7 +441,7 @@ TC05.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT, INTERIOR
 
-MH60.Husk: 
+MH60.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
 		Name: Black Hawk
