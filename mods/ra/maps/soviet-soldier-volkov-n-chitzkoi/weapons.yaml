@@ -5,7 +5,7 @@ HeavyTurretGun:
 CydogJaw:
 	Inherits: DogJaw
 	Range: 5c512
-        
+
 VolkovWeapon:
 	Inherits: SilencedPPK
 	ReloadDelay: 25

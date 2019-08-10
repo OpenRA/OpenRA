@@ -692,7 +692,7 @@ Container@OBSERVER_WIDGETS:
 									X: PARENT_RIGHT - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM 
+									Height: PARENT_BOTTOM
 								Image@FLAG:
 									X: 5
 									Y: 4
@@ -786,7 +786,7 @@ Container@OBSERVER_WIDGETS:
 									X: PARENT_RIGHT - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM 
+									Height: PARENT_BOTTOM
 								Image@FLAG:
 									X: 5
 									Y: 4
@@ -866,7 +866,7 @@ Container@OBSERVER_WIDGETS:
 									X: PARENT_RIGHT - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM 
+									Height: PARENT_BOTTOM
 								Image@FLAG:
 									X: 5
 									Y: 4
@@ -903,7 +903,7 @@ Container@OBSERVER_WIDGETS:
 									X: PARENT_RIGHT - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM 
+									Height: PARENT_BOTTOM
 								Image@FLAG:
 									X: 5
 									Y: 4
@@ -940,7 +940,7 @@ Container@OBSERVER_WIDGETS:
 									X: PARENT_RIGHT - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM 
+									Height: PARENT_BOTTOM
 								Image@FLAG:
 									X: 5
 									Y: 4
