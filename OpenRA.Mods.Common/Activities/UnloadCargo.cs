@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly INotifyUnload[] notifiers;
 		readonly bool unloadAll;
 		readonly Aircraft aircraft;
+		readonly Mobile mobile;
 		readonly bool assignTargetOnFirstRun;
 		readonly WDist unloadRange;
 
@@ -44,6 +45,7 @@ namespace OpenRA.Mods.Common.Activities
 			notifiers = self.TraitsImplementing<INotifyUnload>().ToArray();
 			this.unloadAll = unloadAll;
 			aircraft = self.TraitOrDefault<Aircraft>();
+			mobile = self.TraitOrDefault<Mobile>();
 			this.destination = destination;
 			this.unloadRange = unloadRange;
 		}
@@ -80,7 +82,7 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Land(self, destination, unloadRange));
 				takeOffAfterUnload = !aircraft.AtLandAltitude;
 			}
-			else
+			else if (mobile != null)
 			{
 				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(destination.CenterPosition));
 				QueueChild(new Move(self, cell, unloadRange));
