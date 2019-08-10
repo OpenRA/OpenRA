@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SearchFromProcRadius = 24;
 
 		[Desc("Search radius (in cells) from the last harvest order location to find more resources.")]
-		public readonly int SearchFromOrderRadius = 12;
+		public readonly int SearchFromHarvesterRadius = 12;
 
 		[Desc("Interval to wait between searches when there are no resources nearby.")]
 		public readonly int WaitDuration = 25;
