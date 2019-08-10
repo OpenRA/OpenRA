@@ -204,5 +204,7 @@ namespace OpenRA.Orders
 				Target = target;
 			}
 		}
+
+		public virtual bool ClearSelectionOnLeftClick { get { return true; } }
 	}
 }
