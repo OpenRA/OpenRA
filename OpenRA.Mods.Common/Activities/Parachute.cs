@@ -19,14 +19,12 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IPositionable pos;
 		readonly WVec fallVector;
-		readonly Actor ignore;
 
 		int groundLevel;
 
-		public Parachute(Actor self, Actor ignoreActor = null)
+		public Parachute(Actor self)
 		{
 			pos = self.TraitOrDefault<IPositionable>();
-			ignore = ignoreActor;
 
 			fallVector = new WVec(0, 0, self.Info.TraitInfo<ParachutableInfo>().FallRate);
 			IsInterruptible = false;
@@ -56,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 			pos.SetPosition(self, centerPosition + new WVec(0, 0, groundLevel - centerPosition.Z));
 
 			foreach (var np in self.TraitsImplementing<INotifyParachute>())
-				np.OnLanded(self, ignore);
+				np.OnLanded(self);
 		}
 	}
 }

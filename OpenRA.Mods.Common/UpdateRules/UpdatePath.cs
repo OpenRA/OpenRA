@@ -133,6 +133,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddCanSlide(),
 				new AddAircraftIdleBehavior(),
 				new RenameSearchRadius(),
+				new RemoveMoveIntoWorldFromExit(),
 			})
 		};
 
