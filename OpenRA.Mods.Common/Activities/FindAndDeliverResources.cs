@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
@@ -175,7 +176,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = lastHarvestedCell ?? GetSearchFromProcLocation(self);
+			var procLocation = GetSearchFromProcLocation(self);
+			var searchFromLoc = lastHarvestedCell ?? procLocation;
 			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
 			if (!searchFromLoc.HasValue)
 			{
@@ -183,25 +185,17 @@ namespace OpenRA.Mods.Common.Activities
 				searchRadius = harvInfo.SearchFromHarvesterRadius;
 			}
 
-			var searchRadiusSquared = searchRadius * searchRadius;
+			// Search outwards from the target position, preferring cells closest to the goal location at each step
+			var goalLocation = procLocation ?? lastHarvestedCell ?? self.Location;
+			for (var i = 0; i < searchRadius; i++)
+			{
+				var candidates = self.World.Map.FindTilesInAnnulus(searchFromLoc.Value, i, i)
+					.OrderBy(c => (c - goalLocation).LengthSquared);
 
-			// Find any harvestable resources:
-			List<CPos> path;
-			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self, true, loc =>
-					domainIndex.IsPassable(self.Location, loc, locomotorInfo) && harv.CanHarvestCell(self, loc) && claimLayer.CanClaimCell(self, loc))
-				.WithCustomCost(loc =>
-				{
-					if ((loc - searchFromLoc.Value).LengthSquared > searchRadiusSquared)
-						return int.MaxValue;
-
-					return 0;
-				})
-				.FromPoint(searchFromLoc.Value)
-				.FromPoint(self.Location))
-				path = pathFinder.FindPath(search);
-
-			if (path.Count > 0)
-				return path[0];
+				foreach (var c in candidates)
+					if (domainIndex.IsPassable(self.Location, c, locomotorInfo) && harv.CanHarvestCell(self, c) && claimLayer.CanClaimCell(self, c))
+						return c;
+			}
 
 			return null;
 		}
