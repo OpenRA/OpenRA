@@ -175,7 +175,8 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = lastHarvestedCell ?? GetSearchFromProcLocation(self);
+			var procLoc = GetSearchFromProcLocation(self);
+			var searchFromLoc = lastHarvestedCell ?? procLoc;
 			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
 			if (!searchFromLoc.HasValue)
 			{
@@ -185,6 +186,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			var searchRadiusSquared = searchRadius * searchRadius;
 
+			var procPos = procLoc.HasValue ? (WPos?)self.World.Map.CenterOfCell(procLoc.Value) : null;
+			var harvPos = self.CenterPosition;
+
 			// Find any harvestable resources:
 			List<CPos> path;
 			using (var search = PathSearch.Search(self.World, mobile.Locomotor, self, true, loc =>
@@ -193,6 +197,21 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if ((loc - searchFromLoc.Value).LengthSquared > searchRadiusSquared)
 						return int.MaxValue;
+
+					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
+					// This reduces the tendancy for harvesters to move in straight lines
+					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionCostModifier > 0 && harv.CanHarvestCell(self, loc))
+					{
+						var pos = self.World.Map.CenterOfCell(loc);
+
+						// Calculate harv-cell-refinery angle (cosine rule)
+						var aSq = (harvPos - procPos.Value).LengthSquared;
+						var bSq = (pos - procPos.Value).LengthSquared;
+						var cSq = (pos - harvPos).LengthSquared;
+						var cosA = (int)(1024 * (bSq + cSq - aSq) / (2 * Exts.ISqrt(bSq * cSq)));
+
+						return harvInfo.ResourceRefineryDirectionCostModifier * cosA / 1024;
+					}
 
 					return 0;
 				})
