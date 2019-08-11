@@ -185,7 +185,8 @@ namespace OpenRA.Traits
 					case TargetType.Actor:
 						return actor.GetTargetablePositions();
 					case TargetType.FrozenActor:
-						return frozen.TargetablePositions;
+						// TargetablePositions may be null if it is Invalid
+						return frozen.TargetablePositions ?? NoPositions;
 					case TargetType.Terrain:
 						return terrainPositions;
 					default:
