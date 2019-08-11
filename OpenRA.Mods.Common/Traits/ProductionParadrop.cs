@@ -127,25 +127,17 @@ namespace OpenRA.Mods.Common.Traits
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
 				td.Add(new FacingInit(initialFacing));
+				td.Add(new MoveIntoWorldDelayInit(exitinfo.ExitDelay));
 			}
 
 			self.World.AddFrameEndTask(w =>
 			{
 				var newUnit = self.World.CreateActor(producee.Name, td);
+				newUnit.Trait<Parachutable>().IgnoreActor = self;
 
-				newUnit.QueueActivity(new Parachute(newUnit, self));
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (move != null)
-				{
-					if (exitinfo.MoveIntoWorld)
-					{
-						if (exitinfo.ExitDelay > 0)
-							newUnit.QueueActivity(new Wait(exitinfo.ExitDelay, false));
-
-						newUnit.QueueActivity(move.MoveIntoWorld(newUnit, exit));
-						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(exitLocation, 1, targetLineColor: Color.OrangeRed)));
-					}
-				}
+					newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(exitLocation, 1, targetLineColor: Color.OrangeRed)));
 
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())

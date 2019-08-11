@@ -144,6 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
+		readonly int moveIntoWorldDelay;
 
 		#region IMove CurrentMovementTypes
 		MovementType movementTypes;
@@ -239,6 +240,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Use LocationInit if you want to insert the actor into the ActorMap!
 			if (init.Contains<CenterPositionInit>())
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
+
+			moveIntoWorldDelay = init.Contains<MoveIntoWorldDelayInit>() ? init.Get<MoveIntoWorldDelayInit, int>() : 0;
 		}
 
 		protected override void Created(Actor self)
@@ -251,6 +254,7 @@ namespace OpenRA.Mods.Common.Traits
 			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
 				.Single(l => l.Info.Name == Info.Locomotor);
 
+			self.QueueActivity(MoveIntoWorld(self, moveIntoWorldDelay));
 			base.Created(self);
 		}
 
@@ -563,22 +567,59 @@ namespace OpenRA.Mods.Common.Traits
 			return WrapMove(new Follow(self, target, minRange, maxRange, initialTargetPosition, targetLineColor));
 		}
 
-		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
+		public Activity MoveIntoWorld(Actor self, int delay = 0)
 		{
-			var pos = self.CenterPosition;
+			return new MoveIntoWorldActivity(self, delay);
+		}
 
-			if (subCell == SubCell.Any)
-				subCell = Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
+		class MoveIntoWorldActivity : Activity
+		{
+			readonly Actor self;
+			readonly Mobile mobile;
 
-			// TODO: solve/reduce cell is full problem
-			if (subCell == SubCell.Invalid)
-				subCell = self.World.Map.Grid.DefaultSubCell;
+			CPos cell;
+			SubCell subCell;
+			WPos pos;
+			int delay;
 
-			// Reserve the exit cell
-			SetPosition(self, cell, subCell);
-			SetVisualPosition(self, pos);
+			public MoveIntoWorldActivity(Actor self, int delay = 0)
+			{
+				this.self = self;
+				mobile = self.Trait<Mobile>();
+				IsInterruptible = false;
+				this.delay = delay;
+			}
 
-			return WrapMove(VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell), cell));
+			protected override void OnFirstRun(Actor self)
+			{
+				pos = self.CenterPosition;
+				if (self.World.Map.DistanceAboveTerrain(pos) > WDist.Zero && self.TraitOrDefault<Parachutable>() != null)
+					QueueChild(new Parachute(self));
+			}
+
+			public override bool Tick(Actor self)
+			{
+				pos = self.CenterPosition;
+				cell = mobile.ToCell;
+				subCell = mobile.ToSubCell;
+
+				if (subCell == SubCell.Any)
+					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
+
+				// TODO: solve/reduce cell is full problem
+				if (subCell == SubCell.Invalid)
+					subCell = self.World.Map.Grid.DefaultSubCell;
+
+				// Reserve the exit cell
+				mobile.SetPosition(self, cell, subCell);
+				mobile.SetVisualPosition(self, pos);
+
+				if (delay > 0)
+					QueueChild(new Wait(delay));
+
+				QueueChild(mobile.VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
+				return true;
+			}
 		}
 
 		public Activity MoveToTarget(Actor self, Target target,

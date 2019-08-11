@@ -121,9 +121,10 @@ namespace OpenRA.Mods.Common.Activities
 					var move = actor.Trait<IMove>();
 					var pos = actor.Trait<IPositionable>();
 
-					actor.CancelActivity();
+					pos.SetPosition(self, exitSubCell.Value.First, exitSubCell.Value.Second);
 					pos.SetVisualPosition(actor, spawn);
-					actor.QueueActivity(move.MoveIntoWorld(actor, exitSubCell.Value.First, exitSubCell.Value.Second));
+
+					actor.CancelActivity();
 					w.Add(actor);
 				});
 			}

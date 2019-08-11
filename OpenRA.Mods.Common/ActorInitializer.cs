@@ -24,6 +24,16 @@ namespace OpenRA.Mods.Common
 		public int Value(World world) { return value; }
 	}
 
+	public class MoveIntoWorldDelayInit : IActorInit<int>
+	{
+		[FieldFromYamlKey]
+		readonly int value = 0;
+
+		public MoveIntoWorldDelayInit() { }
+		public MoveIntoWorldDelayInit(int init) { value = init; }
+		public int Value(World world) { return value; }
+	}
+
 	public class DynamicFacingInit : IActorInit<Func<int>>
 	{
 		readonly Func<int> func;

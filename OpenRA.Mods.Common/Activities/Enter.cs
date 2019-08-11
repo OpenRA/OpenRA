@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 
 	public abstract class Enter : Activity
 	{
-		enum EnterState { Approaching, Entering, Exiting }
+		enum EnterState { Approaching, Entering, Exiting, Finished }
 
 		readonly IMove move;
 		readonly Color? targetLineColor;
@@ -133,15 +133,18 @@ namespace OpenRA.Mods.Common.Activities
 						OnEnterComplete(self, target.Actor);
 
 					lastState = EnterState.Exiting;
-					QueueChild(move.MoveIntoWorld(self, self.Location));
 					return false;
 				}
 
 				case EnterState.Exiting:
-					return true;
+				{
+					QueueChild(move.MoveIntoWorld(self));
+					lastState = EnterState.Finished;
+					return false;
+				}
 			}
 
-			return false;
+			return true;
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
