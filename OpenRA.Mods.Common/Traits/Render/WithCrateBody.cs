@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyParachute.OnParachute(Actor self) { }
 
-		void INotifyParachute.OnLanded(Actor self, Actor ignore)
+		void INotifyParachute.OnLanded(Actor self)
 		{
 			PlaySequence();
 		}

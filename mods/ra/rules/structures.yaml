@@ -1344,7 +1344,6 @@ HPAD:
 		RequiresCondition: !being-captured
 		SpawnOffset: 0,-256,0
 		ExitCell: 0,0
-		MoveIntoWorld: false
 		Facing: 224
 	RallyPoint:
 	Production:
@@ -1435,7 +1434,6 @@ AFLD:
 		RequiresCondition: !being-captured
 		ExitCell: 1,1
 		Facing: 192
-		MoveIntoWorld: false
 	RallyPoint:
 	Production:
 		Produces: Aircraft, Plane
