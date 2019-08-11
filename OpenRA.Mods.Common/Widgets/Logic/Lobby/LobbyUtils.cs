@@ -405,7 +405,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
-			slot.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
+
+			var truncated = new CachedTransform<string, string>(name =>
+				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
+				Game.Renderer.Fonts[slot.Font]));
+
+			slot.GetText = () => truncated.Update(c != null ? c.Name : s.Closed ? "Closed" : "Open");
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map);
 
 			// Ensure Name selector (if present) is hidden
@@ -428,7 +433,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var slot = parent.Get<DropDownButtonWidget>("PLAYER_ACTION");
 			slot.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
-			slot.GetText = () => c != null ? c.Name : string.Empty;
+
+			var truncated = new CachedTransform<string, string>(name =>
+				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
+				Game.Renderer.Fonts[slot.Font]));
+
+			slot.GetText = () => truncated.Update(c != null ? c.Name : string.Empty);
 			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, s, c, orderManager, lobby, before, after);
 
 			SetupProfileWidget(slot, c, orderManager, worldRenderer);
