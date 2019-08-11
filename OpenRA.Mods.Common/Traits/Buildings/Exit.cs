@@ -29,9 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Type tags on this exit.")]
 		public readonly HashSet<string> ProductionTypes = new HashSet<string>();
 
-		[Desc("AttackMove to a RallyPoint or stay where you are spawned.")]
-		public readonly bool MoveIntoWorld = true;
-
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;
 
