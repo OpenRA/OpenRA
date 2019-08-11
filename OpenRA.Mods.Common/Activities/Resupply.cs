@@ -169,12 +169,21 @@ namespace OpenRA.Mods.Common.Activities
 
 		void OnResupplyEnding(Actor self, bool isHostInvalid = false)
 		{
+			var rp = host.Actor.TraitOrDefault<RallyPoint>();
 			if (aircraft != null)
 			{
-				aircraft.AllowYieldingReservation();
-				if (wasRepaired || isHostInvalid ||
-					(!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
-					QueueChild(new TakeOff(self));
+				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
+				{
+					if (rp != null)
+						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
+					else
+						QueueChild(new TakeOff(self));
+				}
+
+				// Aircraft without TakeOffOnResupply remain on the resupplier until something else needs it
+				// The rally point location is queried by the aircraft before it takes off
+				else
+					aircraft.AllowYieldingReservation();
 			}
 			else if (!stayOnResupplier && !isHostInvalid)
 			{
@@ -183,7 +192,6 @@ namespace OpenRA.Mods.Common.Activities
 				// If there's a next activity and we're not RepairableNear, first leave host if the next activity is not a Move.
 				if (self.CurrentActivity.NextActivity == null)
 				{
-					var rp = host.Actor.TraitOrDefault<RallyPoint>();
 					if (rp != null)
 						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
 					else if (repairableNear == null)

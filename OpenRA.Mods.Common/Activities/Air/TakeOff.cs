@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -22,39 +21,23 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
-		Target target;
-		bool moveToRallyPoint;
-		bool assignTargetOnFirstRun;
+		Target fallbackTarget;
+		bool movedToTarget = false;
 
-		public TakeOff(Actor self, Target target)
+		public TakeOff(Actor self, Target fallbackTarget)
 		{
 			aircraft = self.Trait<Aircraft>();
 			move = self.Trait<IMove>();
-			this.target = target;
+			this.fallbackTarget = fallbackTarget;
 		}
 
 		public TakeOff(Actor self)
-			: this(self, Target.Invalid)
-		{
-			assignTargetOnFirstRun = true;
-		}
+			: this(self, Target.Invalid) { }
 
 		protected override void OnFirstRun(Actor self)
 		{
 			if (aircraft.ForceLanding)
 				return;
-
-			if (assignTargetOnFirstRun)
-			{
-				var host = aircraft.GetActorBelow();
-				var rp = host != null ? host.TraitOrDefault<RallyPoint>() : null;
-
-				var rallyPointDestination = rp != null ? rp.Location :
-					(host != null ? self.World.Map.CellContaining(host.CenterPosition) : self.Location);
-
-				target = Target.FromCell(self.World, rallyPointDestination);
-				moveToRallyPoint = self.CurrentActivity.NextActivity == null && rallyPointDestination != self.Location;
-			}
 
 			// We are taking off, so remove reservation and influence in ground cells.
 			aircraft.UnReserve();
@@ -82,21 +65,16 @@ namespace OpenRA.Mods.Common.Activities
 					Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 					return false;
 				}
-				else
-				{
-					Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-					return false;
-				}
+
+				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+				return false;
 			}
 
-			// Checking for NextActivity == null again in case another activity was queued while taking off
-			if (moveToRallyPoint && NextActivity == null)
+			// Only move to the fallback target if we don't have anything better to do
+			if (NextActivity == null && fallbackTarget.IsValidFor(self) && !movedToTarget)
 			{
-				if (!aircraft.Info.VTOL && assignTargetOnFirstRun)
-					return true;
-
-				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, target, targetLineColor: Color.OrangeRed)));
-				moveToRallyPoint = false;
+				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, fallbackTarget, targetLineColor: Color.OrangeRed)));
+				movedToTarget = true;
 				return false;
 			}
 
@@ -105,11 +83,11 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			if (ChildActivity == null && moveToRallyPoint)
-				yield return new TargetLineNode(target, Color.OrangeRed);
-			else
+			if (ChildActivity != null)
 				foreach (var n in ChildActivity.TargetLineNodes(self))
 					yield return n;
+			else
+				yield return new TargetLineNode(fallbackTarget, Color.OrangeRed);
 		}
 	}
 }

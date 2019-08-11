@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.Traits
 				MakeReservation(host);
 
 				if (Info.TakeOffOnCreation)
-					self.QueueActivity(new TakeOff(self));
+					UnReserve(true);
 			}
 
 			// Add land activity if LandOnCondition resolves to true and the actor can land at the current location.
@@ -521,13 +521,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (reservation == null)
 				return;
 
+			// Move to the host's rally point if it has one
+			var rp = ReservedActor != null ? ReservedActor.TraitOrDefault<RallyPoint>() : null;
+
 			reservation.Dispose();
 			reservation = null;
 			ReservedActor = null;
 			MayYieldReservation = false;
 
 			if (takeOff && self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
-				self.QueueActivity(new TakeOff(self));
+			{
+				if (rp != null)
+					self.QueueActivity(new TakeOff(self, Target.FromCell(self.World, rp.Location)));
+				else
+					self.QueueActivity(new TakeOff(self));
+			}
 		}
 
 		bool AircraftCanEnter(Actor a, TargetModifiers modifiers)
