@@ -124,7 +124,6 @@ ChromeLayout:
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
 	common|chrome/playerprofile.yaml
-	common|chrome/dialog-hotkey.yaml
 
 Weapons:
 	ra|weapons/explosions.yaml
