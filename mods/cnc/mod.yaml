@@ -128,7 +128,6 @@ ChromeLayout:
 	cnc|chrome/assetbrowser.yaml
 	cnc|chrome/missionbrowser.yaml
 	cnc|chrome/editor.yaml
-	cnc|chrome/dialog-hotkey.yaml
 
 Voices:
 	cnc|audio/voices.yaml
