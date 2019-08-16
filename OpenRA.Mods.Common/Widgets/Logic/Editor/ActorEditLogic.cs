@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget initContainer;
 		readonly Widget buttonContainer;
 
+		readonly Widget checkboxOptionTemplate;
 		readonly Widget sliderOptionTemplate;
 		readonly Widget dropdownOptionTemplate;
 
@@ -91,6 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			initContainer = actorEditPanel.Get("ACTOR_INIT_CONTAINER");
 			buttonContainer = actorEditPanel.Get("BUTTON_CONTAINER");
 
+			checkboxOptionTemplate = initContainer.Get("CHECKBOX_OPTION_TEMPLATE");
 			sliderOptionTemplate = initContainer.Get("SLIDER_OPTION_TEMPLATE");
 			dropdownOptionTemplate = initContainer.Get("DROPDOWN_OPTION_TEMPLATE");
 			initContainer.RemoveChildren();
@@ -264,7 +266,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					foreach (var o in options)
 					{
-						if (o is EditorActorSlider)
+						if (o is EditorActorCheckbox)
+						{
+							var co = (EditorActorCheckbox)o;
+							var checkboxContainer = checkboxOptionTemplate.Clone();
+							checkboxContainer.Bounds.Y = initContainer.Bounds.Height;
+							initContainer.Bounds.Height += checkboxContainer.Bounds.Height;
+
+							var checkbox = checkboxContainer.Get<CheckboxWidget>("OPTION");
+							checkbox.GetText = () => co.Name;
+
+							var editorActionHandle = new EditorActorOptionActionHandle<bool>(co.OnChange, co.GetValue(actor));
+							editActorPreview.Add(editorActionHandle);
+
+							checkbox.IsChecked = () => co.GetValue(actor);
+							checkbox.OnClick = () =>
+							{
+								var newValue = co.GetValue(actor) ^ true;
+								co.OnChange(actor, newValue);
+								editorActionHandle.OnChange(newValue);
+							};
+
+							initContainer.AddChild(checkboxContainer);
+						}
+						else if (o is EditorActorSlider)
 						{
 							var so = (EditorActorSlider)o;
 							var sliderContainer = sliderOptionTemplate.Clone();
