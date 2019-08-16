@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition when a deploy order is issued." +
 		"Can be paused with the granted condition to disable undeploying.")]
-	public class GrantConditionOnDeployInfo : PausableConditionalTraitInfo
+	public class GrantConditionOnDeployInfo : PausableConditionalTraitInfo, IEditorActorOptions
 	{
 		[GrantedConditionReference]
 		[Desc("The condition to grant while the actor is undeployed.")]
@@ -60,6 +60,26 @@ namespace OpenRA.Mods.Common.Traits
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
+
+		[Desc("Display order for the deployed checkbox in the map editor")]
+		public readonly int EditorDeployedDisplayOrder = 4;
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			yield return new EditorActorCheckbox("Deployed", EditorDeployedDisplayOrder,
+				actor =>
+				{
+					var init = actor.Init<DeployStateInit>();
+					if (init != null)
+						return init.Value(world) == DeployState.Deployed;
+
+					return false;
+				},
+				(actor, value) =>
+				{
+					actor.ReplaceInit(new DeployStateInit(value ? DeployState.Deployed : DeployState.Undeployed));
+				});
+		}
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }
 	}
