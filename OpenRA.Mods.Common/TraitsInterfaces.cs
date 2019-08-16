@@ -555,6 +555,21 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	public class EditorActorCheckbox : EditorActorOption
+	{
+		public readonly Func<EditorActorPreview, bool> GetValue;
+		public readonly Action<EditorActorPreview, bool> OnChange;
+
+		public EditorActorCheckbox(string name, int displayOrder,
+			Func<EditorActorPreview, bool> getValue,
+			Action<EditorActorPreview, bool> onChange)
+			: base(name, displayOrder)
+		{
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
 	public class EditorActorSlider : EditorActorOption
 	{
 		public readonly float MinValue;

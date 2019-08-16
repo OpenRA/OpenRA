@@ -258,6 +258,15 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 57
 							Width: PARENT_RIGHT
 							Children:
+								Container@CHECKBOX_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 22
+									Children:
+										Checkbox@OPTION:
+											X: 67
+											Y: 1
+											Width: PARENT_RIGHT - 67
+											Height: 20
 								Container@SLIDER_OPTION_TEMPLATE:
 									Width: PARENT_RIGHT
 									Height: 22
