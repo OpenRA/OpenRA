@@ -32,25 +32,41 @@ namespace OpenRA.Mods.Cnc.Activities
 		bool returnToBase;
 		Actor rearmTarget;
 
-		public LayMines(Actor self, CPos[] minefield)
+		public LayMines(Actor self, List<CPos> minefield = null)
 		{
 			minelayer = self.Trait<Minelayer>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
-
-			if (minefield != null)
-				this.minefield = minefield.ToList();
+			this.minefield = minefield;
+			ChildHasPriority = false;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			if (minefield == null)
-				minefield = new CPos[] { self.Location }.ToList();
+				minefield = new List<CPos> { self.Location };
+		}
+
+		CPos? NextValidCell(Actor self)
+		{
+			if (minefield != null)
+				foreach (var c in minefield)
+					if (CanLayMine(self, c))
+						return c;
+
+			return null;
 		}
 
 		public override bool Tick(Actor self)
 		{
+			// Remove cells that have already been mined
+			minefield.RemoveAll(c => self.World.ActorMap.GetActorsAt(c)
+				.Any(a => a.Info.Name == minelayer.Info.Mine.ToLowerInvariant()));
+
+			if (!TickChild(self))
+				return false;
+
 			returnToBase = false;
 
 			if (IsCanceling)
@@ -74,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				return false;
 			}
 
-			if ((minefield == null || minefield.Contains(self.Location)) && ShouldLayMine(self, self.Location))
+			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
 			{
 				LayMine(self);
 				QueueChild(new Wait(20)); // A little wait after placing each mine, for show
@@ -82,18 +98,11 @@ namespace OpenRA.Mods.Cnc.Activities
 				return false;
 			}
 
-			if (minefield != null && minefield.Count > 0)
+			var nextCell = NextValidCell(self);
+			if (nextCell != null)
 			{
-				// Don't get stuck forever here
-				for (var n = 0; n < 20; n++)
-				{
-					var p = minefield.Random(self.World.SharedRandom);
-					if (ShouldLayMine(self, p))
-					{
-						QueueChild(movement.MoveTo(p, 0));
-						return false;
-					}
-				}
+				QueueChild(movement.MoveTo(nextCell.Value, 0));
+				return false;
 			}
 
 			// TODO: Return somewhere likely to be safe (near rearm building) so we're not sitting out in the minefield.
@@ -108,15 +117,17 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (minefield == null || minefield.Count == 0)
 				yield break;
 
-			yield return new TargetLineNode(Target.FromCell(self.World, minefield[0]), Color.Crimson);
+			var nextCell = NextValidCell(self);
+			if (nextCell != null)
+				yield return new TargetLineNode(Target.FromCell(self.World, nextCell.Value), Color.Crimson);
 
 			foreach (var c in minefield)
 				yield return new TargetLineNode(Target.FromCell(self.World, c), Color.Crimson, tile: minelayer.Tile);
 		}
 
-		static bool ShouldLayMine(Actor self, CPos p)
+		static bool CanLayMine(Actor self, CPos p)
 		{
-			// If there is no unit (other than me) here, we want to place a mine here
+			// If there is no unit (other than me) here, we can place a mine here
 			return self.World.ActorMap.GetActorsAt(p).All(a => a == self);
 		}
 
@@ -130,12 +141,11 @@ namespace OpenRA.Mods.Cnc.Activities
 				pool.TakeAmmo(self, 1);
 			}
 
-			self.World.AddFrameEndTask(
-				w => w.CreateActor(minelayer.Info.Mine, new TypeDictionary
-				{
-					new LocationInit(self.Location),
-					new OwnerInit(self.Owner),
-				}));
+			self.World.AddFrameEndTask(w => w.CreateActor(minelayer.Info.Mine, new TypeDictionary
+			{
+				new LocationInit(self.Location),
+				new OwnerInit(self.Owner),
+			}));
 		}
 	}
 }
