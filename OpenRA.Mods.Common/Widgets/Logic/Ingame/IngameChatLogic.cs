@@ -49,10 +49,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			var isObserver = orderManager.LocalClient != null && orderManager.LocalClient.IsObserver;
-			var isOnlyObserver = isObserver && orderManager.LobbyInfo.Clients.All(c => c == orderManager.LocalClient || !c.IsObserver);
-			var observersExist = orderManager.LobbyInfo.Clients.Any(c => c.IsObserver);
 			var alwaysDisabled = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1;
-			var disableTeamChat = alwaysDisabled || isOnlyObserver || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
+			var disableTeamChat = alwaysDisabled || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			var teamChat = !disableTeamChat;
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
@@ -73,47 +71,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatMode.GetText = () => teamChat && !disableTeamChat ? "Team" : "All";
 			chatMode.OnClick = () => teamChat ^= true;
 
-			// Team chat is disabled if we are the only spectator
-			// This changes as soon as a defeated player can talk in the spectator chat
-			if (!alwaysDisabled && isOnlyObserver)
+			// Enable teamchat if we are a player and die,
+			// or disable it when we are the only one left in the team
+			if (!alwaysDisabled && world.LocalPlayer != null)
 			{
 				chatMode.IsDisabled = () =>
 				{
 					if (world.IsGameOver)
 						return true;
 
-					disableTeamChat = players.All(p => p.WinState == WinState.Undefined);
-					return disableTeamChat;
-				};
-			}
-			else if (!alwaysDisabled && world.LocalPlayer != null)
-			{
-				chatMode.IsDisabled = () =>
-				{
-					if (world.IsGameOver)
-						return true;
-
-					// Check if we are the only living team member
-					if (players.All(p => p.WinState != WinState.Undefined || !p.IsAlliedWith(world.LocalPlayer)))
-					{
-						disableTeamChat = true;
-						return disableTeamChat;
-					}
-
-					// Still alive and nothing changed since the start
-					if (world.LocalPlayer.WinState == WinState.Undefined)
-						return disableTeamChat;
-
-					// At this point our player is dead
-					// Allow to chat with existing spectators
-					if (observersExist)
+					// The game is over for us, join spectator team chat
+					if (world.LocalPlayer.WinState != WinState.Undefined)
 					{
 						disableTeamChat = false;
 						return disableTeamChat;
 					}
 
-					// Or wait until another player died
-					disableTeamChat = players.All(p => p.WinState == WinState.Undefined);
+					// If team chat isn't already disabled, check if we are the only living team member
+					if (!disableTeamChat)
+						disableTeamChat = players.All(p => p.WinState != WinState.Undefined || !p.IsAlliedWith(world.LocalPlayer));
+
 					return disableTeamChat;
 				};
 			}
