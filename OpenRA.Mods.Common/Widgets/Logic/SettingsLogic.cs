@@ -39,6 +39,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		SoundDevice soundDevice;
 		PanelType settingsPanel = PanelType.Display;
 
+		ButtonWidget selectedHotkeyButton;
+		HotkeyEntryWidget hotkeyEntryWidget;
+		HotkeyDefinition duplicateHotkeyDefinition, selectedHotkeyDefinition;
+		bool isHotkeyValid;
+		bool isHotkeyDefault;
+
 		static SettingsLogic()
 		{
 			var original = Game.Settings;
@@ -125,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ss.OnChange += x => field.SetValue(group, x);
 		}
 
-		static void BindHotkeyPref(HotkeyDefinition hd, HotkeyManager manager, Widget template, Widget parent, Widget remapDialogRoot, Widget remapDialogPlaceholder)
+		void BindHotkeyPref(HotkeyDefinition hd, Widget template, Widget parent)
 		{
 			var key = template.Clone() as Widget;
 			key.Id = hd.Name;
@@ -134,50 +140,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			key.Get<LabelWidget>("FUNCTION").GetText = () => hd.Description + ":";
 
 			var remapButton = key.Get<ButtonWidget>("HOTKEY");
-			WidgetUtils.TruncateButtonToTooltip(remapButton, manager[hd.Name].GetValue().DisplayString());
+			WidgetUtils.TruncateButtonToTooltip(remapButton, modData.Hotkeys[hd.Name].GetValue().DisplayString());
 
-			if (manager.GetFirstDuplicate(hd.Name, manager[hd.Name].GetValue(), hd) != null)
-				remapButton.GetColor = () => ChromeMetrics.Get<Color>("HotkeyColorInvalid");
+			remapButton.IsHighlighted = () => selectedHotkeyDefinition == hd;
+
+			var hotkeyValidColor = ChromeMetrics.Get<Color>("HotkeyColor");
+			var hotkeyInvalidColor = ChromeMetrics.Get<Color>("HotkeyColorInvalid");
+
+			remapButton.GetColor = () =>
+			{
+				return modData.Hotkeys.GetFirstDuplicate(hd.Name, modData.Hotkeys[hd.Name].GetValue(), hd) != null ?
+					hotkeyInvalidColor :
+					hotkeyValidColor;
+			};
+
+			if (selectedHotkeyDefinition == hd)
+			{
+				selectedHotkeyButton = remapButton;
+				hotkeyEntryWidget.Key = modData.Hotkeys[hd.Name].GetValue();
+				ValidateHotkey();
+			}
 
 			remapButton.OnClick = () =>
 			{
-				remapDialogRoot.RemoveChildren();
-
-				if (remapButton.IsHighlighted())
-				{
-					remapButton.IsHighlighted = () => false;
-
-					if (remapDialogPlaceholder != null)
-						remapDialogPlaceholder.Visible = true;
-
-					return;
-				}
-
-				if (remapDialogPlaceholder != null)
-					remapDialogPlaceholder.Visible = false;
-
-				var siblings = parent.Children;
-				foreach (var sibling in siblings)
-				{
-					var button = sibling.GetOrNull<ButtonWidget>("HOTKEY");
-					if (button != null)
-						button.IsHighlighted = () => false;
-				}
-
-				remapButton.IsHighlighted = () => true;
-
-				Ui.LoadWidget("HOTKEY_DIALOG", remapDialogRoot, new WidgetArgs
-				{
-					{
-						"onSave", () =>
-						{
-							WidgetUtils.TruncateButtonToTooltip(remapButton, manager[hd.Name].GetValue().DisplayString());
-							remapButton.GetColor = () => ChromeMetrics.Get<Color>("ButtonTextColor");
-						}
-					},
-					{ "hotkeyDefinition", hd },
-					{ "hotkeyManager", manager },
-				});
+				selectedHotkeyDefinition = hd;
+				selectedHotkeyButton = remapButton;
+				hotkeyEntryWidget.Key = modData.Hotkeys[hd.Name].GetValue();
+				ValidateHotkey();
+				hotkeyEntryWidget.TakeKeyboardFocus();
 			};
 
 			parent.AddChild(key);
@@ -463,6 +453,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Action InitHotkeysPanel(Widget panel)
 		{
+			var hotkeyDialogRoot = panel.Get("HOTKEY_DIALOG_ROOT");
 			var hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
 			hotkeyList.Layout = new GridLayout(hotkeyList);
 			var hotkeyHeader = hotkeyList.Get<ScrollItemWidget>("HEADER");
@@ -475,6 +466,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			MiniYaml hotkeyGroups;
 			if (logicArgs.TryGetValue("HotkeyGroups", out hotkeyGroups))
 			{
+				InitHotkeyRemapDialog(panel);
+
 				foreach (var hg in hotkeyGroups.Nodes)
 				{
 					var templateNode = hg.Value.Nodes.FirstOrDefault(n => n.Key == "Template");
@@ -489,16 +482,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var types = FieldLoader.GetValue<string[]>("Types", typesNode.Value.Value);
 					var added = new HashSet<HotkeyDefinition>();
 					var template = templates.Get(templateNode.Value.Value);
-					var remapDialogRoot = panel.Get("HOTKEY_DIALOG_ROOT");
-					var remapDialogPlaceholder = panel.GetOrNull("HOTKEY_DIALOG_PLACEHOLDER");
+
 					foreach (var t in types)
+					{
 						foreach (var hd in modData.Hotkeys.Definitions.Where(k => k.Types.Contains(t)))
+						{
 							if (added.Add(hd))
-								BindHotkeyPref(hd, modData.Hotkeys, template, hotkeyList, remapDialogRoot, remapDialogPlaceholder);
+							{
+								if (selectedHotkeyDefinition == null)
+									selectedHotkeyDefinition = hd;
+
+								BindHotkeyPref(hd, template, hotkeyList);
+							}
+						}
+					}
 				}
 			}
 
-			return () => { };
+			return () =>
+			{
+				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
+				hotkeyEntryWidget.ForceYieldKeyboardFocus();
+			};
 		}
 
 		Action ResetInputPanel(Widget panel)
@@ -532,7 +537,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var hd in modData.Hotkeys.Definitions)
 				{
 					modData.Hotkeys.Set(hd.Name, hd.Default);
-					panel.Get(hd.Name).Get<HotkeyEntryWidget>("HOTKEY").Key = hd.Default;
+					WidgetUtils.TruncateButtonToTooltip(panel.Get(hd.Name).Get<ButtonWidget>("HOTKEY"), hd.Default.DisplayString());
 				}
 			};
 		}
@@ -744,6 +749,69 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Renderer.GrabWindowMouseFocus();
 			else
 				Game.Renderer.ReleaseWindowMouseFocus();
+		}
+
+		void InitHotkeyRemapDialog(Widget panel)
+		{
+			var label = new CachedTransform<HotkeyDefinition, string>(hd => hd.Description + ":");
+			panel.Get<LabelWidget>("HOTKEY_LABEL").GetText = () => label.Update(selectedHotkeyDefinition);
+
+			var duplicateNotice = panel.Get<LabelWidget>("DUPLICATE_NOTICE");
+			duplicateNotice.TextColor = ChromeMetrics.Get<Color>("NoticeErrorColor");
+			duplicateNotice.IsVisible = () => !isHotkeyValid;
+			var duplicateNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => hd != null ? duplicateNotice.Text.F(hd.Description) : duplicateNotice.Text);
+			duplicateNotice.GetText = () => duplicateNoticeText.Update(duplicateHotkeyDefinition);
+
+			var defaultNotice = panel.Get<LabelWidget>("DEFAULT_NOTICE");
+			defaultNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
+			defaultNotice.IsVisible = () => isHotkeyValid && isHotkeyDefault;
+
+			var originalNotice = panel.Get<LabelWidget>("ORIGINAL_NOTICE");
+			originalNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
+			originalNotice.IsVisible = () => isHotkeyValid && !isHotkeyDefault;
+			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => originalNotice.Text.F(hd.Default.DisplayString()));
+			originalNotice.GetText = () => originalNoticeText.Update(selectedHotkeyDefinition);
+
+			var resetButton = panel.Get<ButtonWidget>("RESET_HOTKEY_BUTTON");
+			resetButton.IsDisabled = () => isHotkeyDefault;
+			resetButton.OnClick = ResetHotkey;
+
+			var clearButton = panel.Get<ButtonWidget>("CLEAR_HOTKEY_BUTTON");
+			clearButton.IsDisabled = () => !hotkeyEntryWidget.Key.IsValid();
+			clearButton.OnClick = ClearHotkey;
+
+			hotkeyEntryWidget = panel.Get<HotkeyEntryWidget>("HOTKEY_ENTRY");
+			hotkeyEntryWidget.IsValid = () => isHotkeyValid;
+			hotkeyEntryWidget.OnLoseFocus = ValidateHotkey;
+		}
+
+		void ValidateHotkey()
+		{
+			duplicateHotkeyDefinition = modData.Hotkeys.GetFirstDuplicate(selectedHotkeyDefinition.Name, hotkeyEntryWidget.Key, selectedHotkeyDefinition);
+			isHotkeyValid = duplicateHotkeyDefinition == null;
+			isHotkeyDefault = hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default || (!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
+
+			if (isHotkeyValid)
+				SaveHotkey();
+		}
+
+		void SaveHotkey()
+		{
+			WidgetUtils.TruncateButtonToTooltip(selectedHotkeyButton, hotkeyEntryWidget.Key.DisplayString());
+			modData.Hotkeys.Set(selectedHotkeyDefinition.Name, hotkeyEntryWidget.Key);
+			Game.Settings.Save();
+		}
+
+		void ResetHotkey()
+		{
+			hotkeyEntryWidget.Key = selectedHotkeyDefinition.Default;
+			hotkeyEntryWidget.YieldKeyboardFocus();
+		}
+
+		void ClearHotkey()
+		{
+			hotkeyEntryWidget.Key = Hotkey.Invalid;
+			hotkeyEntryWidget.YieldKeyboardFocus();
 		}
 	}
 }
