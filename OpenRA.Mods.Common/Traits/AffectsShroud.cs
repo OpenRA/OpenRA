@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly VisibilityType Type = VisibilityType.Footprint;
 	}
 
-	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyMoving
 	{
 		static readonly PPos[] NoCells = { };
 
@@ -41,6 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync]
 		protected bool CachedTraitDisabled { get; private set; }
+
+		bool dirty;
 
 		protected abstract void AddCellsToPlayerShroud(Actor self, Player player, PPos[] uv);
 		protected abstract void RemoveCellsFromPlayerShroud(Actor self, Player player);
@@ -88,12 +90,13 @@ namespace OpenRA.Mods.Common.Traits
 			var traitDisabled = IsTraitDisabled;
 			var range = Range;
 
-			if (cachedLocation == projectedLocation && cachedRange == range && traitDisabled == CachedTraitDisabled)
+			if (!dirty && cachedLocation == projectedLocation && cachedRange == range && traitDisabled == CachedTraitDisabled)
 				return;
 
 			cachedRange = range;
 			cachedLocation = projectedLocation;
 			CachedTraitDisabled = traitDisabled;
+			dirty = false;
 
 			var cells = ProjectedCells(self);
 			foreach (var p in self.World.Players)
@@ -122,5 +125,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public virtual WDist Range { get { return CachedTraitDisabled ? WDist.Zero : Info.Range; } }
+
+		void INotifyMoving.MovementTypeChanged(Actor self, MovementType type)
+		{
+			// Recalculate the visiblity at our final stop position
+			if (type == MovementType.None)
+				dirty = true;
+		}
 	}
 }
