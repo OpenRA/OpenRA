@@ -22,12 +22,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If >= 0, prevent cells that are this much higher than the actor from being revealed.")]
 		public readonly int MaxHeightDelta = -1;
 
+		[Desc("If > 0, force visibility to be recalculated if the unit moves within a cell by more than this distance.")]
+		public readonly WDist MoveRecalculationThreshold = new WDist(256);
+
 		[Desc("Possible values are CenterPosition (measure range from the center) and ",
 			"Footprint (measure range from the footprint)")]
 		public readonly VisibilityType Type = VisibilityType.Footprint;
 	}
 
-	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyMoving
 	{
 		static readonly PPos[] NoCells = { };
 
@@ -41,6 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Sync]
 		protected bool CachedTraitDisabled { get; private set; }
+
+		bool dirty;
+		WPos cachedPos;
 
 		protected abstract void AddCellsToPlayerShroud(Actor self, Player player, PPos[] uv);
 		protected abstract void RemoveCellsFromPlayerShroud(Actor self, Player player);
@@ -87,13 +93,19 @@ namespace OpenRA.Mods.Common.Traits
 			var projectedLocation = self.World.Map.CellContaining(projectedPos);
 			var traitDisabled = IsTraitDisabled;
 			var range = Range;
+			var pos = self.CenterPosition;
 
-			if (cachedLocation == projectedLocation && cachedRange == range && traitDisabled == CachedTraitDisabled)
+			if (Info.MoveRecalculationThreshold.Length > 0 && (pos - cachedPos).LengthSquared > Info.MoveRecalculationThreshold.LengthSquared)
+				dirty = true;
+
+			if (!dirty && cachedLocation == projectedLocation && cachedRange == range && traitDisabled == CachedTraitDisabled)
 				return;
 
 			cachedRange = range;
 			cachedLocation = projectedLocation;
 			CachedTraitDisabled = traitDisabled;
+			cachedPos = pos;
+			dirty = false;
 
 			var cells = ProjectedCells(self);
 			foreach (var p in self.World.Players)
@@ -122,5 +134,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public virtual WDist Range { get { return CachedTraitDisabled ? WDist.Zero : Info.Range; } }
+
+		void INotifyMoving.MovementTypeChanged(Actor self, MovementType type)
+		{
+			// Recalculate the visiblity at our final stop position
+			if (type == MovementType.None)
+				dirty = true;
+		}
 	}
 }
