@@ -482,7 +482,7 @@ Background@SETTINGS_PANEL:
 					Width: PARENT_RIGHT - 30
 					TopBottomSpacing: 4
 					ItemSpacing: 4
-					Height: 183
+					Height: 222
 					Children:
 						ScrollItem@HEADER:
 							BaseName: scrollheader
@@ -539,25 +539,69 @@ Background@SETTINGS_PANEL:
 													Height: 25
 													Align: Left
 													TooltipContainer: TOOLTIP_CONTAINER
-				Background@HOTKEY_DIALOG_PLACEHOLDER:
+				Background@HOTKEY_DIALOG_ROOT:
 					X: 15
-					Y: 232
+					Y: 270
 					Width: PARENT_RIGHT - 30
-					Height: 108
+					Height: 73
 					Background: dialog3
 					Children:
-						Label@HOTKEY_DIALOG_HELPTEXT:
-							Y: PARENT_BOTTOM / 2 - 12
-							Width: PARENT_RIGHT
+						Label@HOTKEY_LABEL:
+							X: 15
+							Y: 19
+							Width: 219 - 15 - 10
 							Height: 25
-							Font: Tiny
-							Align: Center
-							Text: Click on a hotkey to start rebinding
-				Container@HOTKEY_DIALOG_ROOT:
-					X: 15
-					Y: 232
-					Width: PARENT_RIGHT - 30
-					Height: 108
+							Font: Bold
+							Align: Right
+						HotkeyEntry@HOTKEY_ENTRY:
+							X: 219
+							Y: 20
+							Width: 170
+							Height: 25
+						Container@NOTICES:
+							X: 219
+							Y: 42
+							Width: 170
+							Height: 25
+							Children:
+								Label@DEFAULT_NOTICE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Tiny
+									Align: Left
+									Text: This is the default
+								Label@ORIGINAL_NOTICE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Tiny
+									Align: Left
+									Text: The default is "{0}"
+								Label@DUPLICATE_NOTICE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Tiny
+									Align: Left
+									Text: This is already used for "{0}"
+						Button@CLEAR_HOTKEY_BUTTON:
+							X: PARENT_RIGHT - 2 * WIDTH - 30
+							Y: 20
+							Width: 65
+							Height: 25
+							Text: Clear
+							Font: Bold
+							TooltipText: Unbind the hotkey
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Button@RESET_HOTKEY_BUTTON:
+							X: PARENT_RIGHT - WIDTH - 20
+							Y: 20
+							Width: 65
+							Height: 25
+							Text: Reset
+							Font: Bold
+							TooltipText: Reset to default
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 		Container@ADVANCED_PANEL:
 			X: 5
 			Y: 50

@@ -172,7 +172,6 @@ ChromeLayout:
 	common|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
-	common|chrome/dialog-hotkey.yaml
 
 Voices:
 	ts|audio/voices.yaml
