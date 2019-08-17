@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		void OnResupplyEnding(Actor self, bool isHostInvalid = false)
 		{
-			var rp = host.Actor.TraitOrDefault<RallyPoint>();
+			var rp = !isHostInvalid ? host.Actor.TraitOrDefault<RallyPoint>() : null;
 			if (aircraft != null)
 			{
 				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
