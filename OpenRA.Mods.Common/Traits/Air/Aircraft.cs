@@ -219,6 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool ForceLanding { get; private set; }
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
+		int moveIntoWorldDelay;
 
 		public static WPos GroundPosition(Actor self)
 		{
@@ -229,7 +230,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool airborne;
 		bool cruising;
-		bool firstTick = true;
 		int airborneToken = ConditionManager.InvalidConditionToken;
 		int cruisingToken = ConditionManager.InvalidConditionToken;
 
@@ -250,6 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
+			moveIntoWorldDelay = init.Contains<MoveIntoWorldDelayInit>() ? init.Get<MoveIntoWorldDelayInit, int>() : 0;
 		}
 
 		public WDist LandAltitude
@@ -307,6 +308,8 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			positionOffsets = self.TraitsImplementing<IAircraftCenterPositionOffset>().ToArray();
 			overrideAircraftLanding = self.TraitOrDefault<IOverrideAircraftLanding>();
+
+			self.QueueActivity(MoveIntoWorld(self, moveIntoWorldDelay));
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -346,20 +349,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Tick(Actor self)
 		{
-			if (firstTick)
-			{
-				firstTick = false;
-
-				var host = GetActorBelow();
-				if (host == null)
-					return;
-
-				MakeReservation(host);
-
-				if (Info.TakeOffOnCreation)
-					UnReserve(true);
-			}
-
 			// Add land activity if LandOnCondition resolves to true and the actor can land at the current location.
 			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
 				&& !((self.CurrentActivity is Land) || self.CurrentActivity is Turn))
@@ -868,9 +857,46 @@ namespace OpenRA.Mods.Common.Traits
 				initialTargetPosition, targetLineColor);
 		}
 
-		public Activity MoveIntoWorld(Actor self, CPos cell, SubCell subCell = SubCell.Any)
+		public Activity MoveIntoWorld(Actor self, int delay = 0)
 		{
-			return new Fly(self, Target.FromCell(self.World, cell, subCell));
+			return new MoveIntoWorldActivity(self, delay);
+		}
+
+		class MoveIntoWorldActivity : Activity
+		{
+			readonly Actor self;
+			readonly Aircraft aircraft;
+			readonly int delay;
+
+			public MoveIntoWorldActivity(Actor self, int delay = 0)
+			{
+				this.self = self;
+				aircraft = self.Trait<Aircraft>();
+				IsInterruptible = false;
+				this.delay = delay;
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				var host = aircraft.GetActorBelow();
+				if (host != null)
+					aircraft.MakeReservation(host);
+
+				if (delay > 0)
+					QueueChild(new Wait(delay));
+			}
+
+			public override bool Tick(Actor self)
+			{
+				if (!aircraft.Info.TakeOffOnCreation)
+					return true;
+
+				if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
+					QueueChild(new TakeOff(self));
+
+				aircraft.UnReserve();
+				return true;
+			}
 		}
 
 		public Activity MoveToTarget(Actor self, Target target,

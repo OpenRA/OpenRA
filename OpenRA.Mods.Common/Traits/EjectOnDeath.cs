@@ -82,11 +82,10 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.AddFrameEndTask(w =>
 				{
 					pilotPositionable.SetPosition(pilot, pilotCell, pilotSubCell);
-					w.Add(pilot);
-
 					var dropPosition = pilot.CenterPosition + new WVec(0, 0, self.CenterPosition.Z - pilot.CenterPosition.Z);
 					pilotPositionable.SetVisualPosition(pilot, dropPosition);
-					pilot.QueueActivity(new Parachute(pilot));
+
+					w.Add(pilot);
 				});
 
 				Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);

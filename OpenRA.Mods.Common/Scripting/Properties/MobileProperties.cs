@@ -46,7 +46,10 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Moves from outside the world into the cell grid.")]
 		public void MoveIntoWorld(CPos cell)
 		{
-			Self.QueueActivity(mobile.MoveIntoWorld(Self, cell, mobile.ToSubCell));
+			var pos = Self.CenterPosition;
+			mobile.SetPosition(Self, cell);
+			mobile.SetVisualPosition(Self, pos);
+			Self.QueueActivity(mobile.MoveIntoWorld(Self));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -60,7 +63,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Move to and enter the transport.")]
 		public void EnterTransport(Actor transport)
 		{
-			Self.QueueActivity(new EnterTransport(Self, Target.FromActor(transport)));
+			Self.QueueActivity(new RideTransport(Self, Target.FromActor(transport)));
 		}
 
 		[Desc("Whether the actor can move (false if immobilized).")]

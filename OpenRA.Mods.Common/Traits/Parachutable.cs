@@ -62,6 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
 
+		public Actor IgnoreActor;
+
 		ConditionManager conditionManager;
 		int parachutingToken = ConditionManager.InvalidConditionToken;
 
@@ -86,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
 		}
 
-		void INotifyParachute.OnLanded(Actor self, Actor ignore)
+		void INotifyParachute.OnLanded(Actor self)
 		{
 			IsInAir = false;
 
@@ -100,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (positionable.CanEnterCell(cell, self))
 				return;
 
-			if (ignore != null && self.World.ActorMap.GetActorsAt(cell).Any(a => a != ignore))
+			if (IgnoreActor != null && self.World.ActorMap.GetActorsAt(cell).Any(a => a != IgnoreActor))
 				return;
 
 			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);
