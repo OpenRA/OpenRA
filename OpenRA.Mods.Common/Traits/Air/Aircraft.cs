@@ -217,6 +217,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
+
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
 		int moveIntoWorldDelay;
@@ -829,7 +830,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
 		{
-			return new Fly(self, Target.FromCell(self.World, cell), targetLineColor: targetLineColor);
+			return new Fly(self, Target.FromCell(self.World, cell), WDist.FromCells(nearEnough), targetLineColor: targetLineColor);
 		}
 
 		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
@@ -1028,7 +1029,9 @@ namespace OpenRA.Mods.Common.Traits
 					UnReserve();
 
 				var target = Target.FromCell(self.World, cell);
-				self.QueueActivity(order.Queued, new Fly(self, target, targetLineColor: Color.Green));
+
+				// TODO: this should scale with unit selection group size.
+				self.QueueActivity(order.Queued, new Fly(self, target, WDist.FromCells(8), targetLineColor: Color.Green));
 				self.ShowTargetLines();
 			}
 			else if (orderString == "Land")
