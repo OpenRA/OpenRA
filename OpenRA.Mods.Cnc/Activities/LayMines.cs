@@ -39,7 +39,6 @@ namespace OpenRA.Mods.Cnc.Activities
 			movement = self.Trait<IMove>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
 			this.minefield = minefield;
-			ChildHasPriority = false;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -60,13 +59,6 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override bool Tick(Actor self)
 		{
-			// Remove cells that have already been mined
-			minefield.RemoveAll(c => self.World.ActorMap.GetActorsAt(c)
-				.Any(a => a.Info.Name == minelayer.Info.Mine.ToLowerInvariant()));
-
-			if (!TickChild(self))
-				return false;
-
 			returnToBase = false;
 
 			if (IsCanceling)
@@ -107,6 +99,14 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			// TODO: Return somewhere likely to be safe (near rearm building) so we're not sitting out in the minefield.
 			return true;
+		}
+
+		public void CleanPlacedMines(Actor self)
+		{
+			// Remove cells that have already been mined
+			if (minefield != null)
+				minefield.RemoveAll(c => self.World.ActorMap.GetActorsAt(c)
+					.Any(a => a.Info.Name == minelayer.Info.Mine.ToLowerInvariant()));
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
