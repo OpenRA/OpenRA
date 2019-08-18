@@ -65,6 +65,19 @@ BindActorTriggers = function(a)
 		Trigger.OnDamaged(a, function()
 			if a.HasPassengers then
 				a.Stop()
+
+				-- HACK: UnloadPassengers does not return the unloaded passengers, but we need to bind the triggers
+				local actors = { }
+				while a.HasPassengers do
+					local unit = a.UnloadPassenger()
+					BindActorTriggers(unit)
+					actors[#actors + 1] = unit
+				end
+
+				Utils.Do(actors, function(unit)
+					a.LoadPassenger(unit)
+				end)
+
 				a.UnloadPassengers()
 			end
 		end)
