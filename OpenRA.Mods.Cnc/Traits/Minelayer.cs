@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
-	public class Minelayer : IIssueOrder, IResolveOrder, ISync, IIssueDeployOrder, IOrderVoice
+	public class Minelayer : IIssueOrder, IResolveOrder, ISync, IIssueDeployOrder, IOrderVoice, ITick
 	{
 		public readonly MinelayerInfo Info;
 
@@ -113,6 +113,13 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.QueueActivity(order.Queued, new LayMines(self, minefield));
 				self.ShowTargetLines();
 			}
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (self.CurrentActivity != null)
+				foreach (var field in self.CurrentActivity.ActivitiesImplementing<LayMines>())
+					field.CleanPlacedMines(self);
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
