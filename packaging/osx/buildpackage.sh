@@ -54,14 +54,13 @@ echo "Building launchers"
 curl -s -L -O https://github.com/OpenRA/OpenRALauncherOSX/releases/download/${LAUNCHER_TAG}/launcher.zip || exit 3
 unzip -qq -d "${BUILTDIR}" launcher.zip
 rm launcher.zip
-mkdir -p "${BUILTDIR}/.DropDMGBackground"
 
 # Background image is created from source svg in artsrc repository
 # exported to tiff at 72 + 144 DPI, then combined using
 # tiffutil -cathidpicheck bg.tiff bg2x.tiff -out background.tiff
-cp background.tiff "${BUILTDIR}/.DropDMGBackground"
+cp background.tiff "${BUILTDIR}/.background.tiff"
 
-# Finder metadata created using free trial of DropDMG
+# Finder metadata created using create-dsstore.sh
 cp DS_Store "${BUILTDIR}/.DS_Store"
 
 ln -s /Applications/ "${BUILTDIR}/Applications"
