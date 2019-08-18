@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The pathfinding cost penalty applied for each harvester waiting to unload at a refinery.")]
 		public readonly int UnloadQueueCostModifier = 12;
 
+		[Desc("The pathfinding cost penalty applied for cells directly away from the refinery.")]
+		public readonly int ResourceRefineryDirectionPenalty = 200;
+
 		[Desc("Does the unit queue harvesting runs instead of individual harvest actions?")]
 		public readonly bool QueueFullLoad = false;
 
