@@ -56,17 +56,17 @@ namespace OpenRA.Server
 
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
-			// HACK: The engine code *still* assumes that Game.ModData is set
-			var modData = Game.ModData = new ModData(mods[modID], mods);
-			modData.MapCache.LoadMaps();
-
-			settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
-
 			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), modID);
 			while (true)
 			{
-				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, true);
+				// HACK: The engine code *still* assumes that Game.ModData is set
+				var modData = Game.ModData = new ModData(mods[modID], mods);
+				modData.MapCache.LoadMaps();
 
+				settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
+
+				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, true);
+				GC.Collect();
 				while (true)
 				{
 					Thread.Sleep(1000);
@@ -78,6 +78,7 @@ namespace OpenRA.Server
 					}
 				}
 
+				modData.Dispose();
 				Console.WriteLine("[{0}] Starting a new server instance...", DateTime.Now.ToString(settings.TimestampFormat));
 			}
 		}
