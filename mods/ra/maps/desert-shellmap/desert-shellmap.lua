@@ -62,6 +62,10 @@ BindActorTriggers = function(a)
 	end
 
 	if a.HasProperty("HasPassengers") then
+		Trigger.OnPassengerExited(a, function(t, p)
+			BindActorTriggers(p)
+		end)
+
 		Trigger.OnDamaged(a, function()
 			if a.HasPassengers then
 				a.Stop()
