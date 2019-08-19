@@ -168,6 +168,17 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			};
 
+			// Create the units immediately so they can be returned
+			foreach (var p in info.DropItems)
+			{
+				var unit = self.World.CreateActor(false, p.ToLowerInvariant(), new TypeDictionary
+				{
+					new OwnerInit(self.Owner)
+				});
+
+				units.Add(unit);
+			}
+
 			self.World.AddFrameEndTask(w =>
 			{
 				PlayLaunchSounds();
@@ -201,15 +212,9 @@ namespace OpenRA.Mods.Common.Traits
 					drop.OnRemovedFromWorld += onRemovedFromWorld;
 
 					var cargo = a.Trait<Cargo>();
-					foreach (var p in info.DropItems.Skip(added).Take(passengersPerPlane))
+					foreach (var unit in units.Skip(added).Take(passengersPerPlane))
 					{
-						var unit = self.World.CreateActor(false, p.ToLowerInvariant(), new TypeDictionary
-						{
-							new OwnerInit(self.Owner)
-						});
-
 						cargo.Load(a, unit);
-						units.Add(unit);
 						added++;
 					}
 
@@ -219,6 +224,10 @@ namespace OpenRA.Mods.Common.Traits
 					aircraftInRange.Add(a, false);
 					distanceTestActor = a;
 				}
+
+				// Dispose any unused units
+				for (var i = added; i < units.Count; i++)
+					units[i].Dispose();
 
 				if (Info.DisplayBeacon)
 				{
