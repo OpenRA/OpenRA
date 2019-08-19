@@ -626,7 +626,7 @@ namespace OpenRA
 
 		static void LogicTick()
 		{
-			delayedActions.PerformActions(RunTime);
+			PerformDelayedActions();
 
 			if (OrderManager.Connection.ConnectionState != lastConnectionState)
 			{
@@ -637,6 +637,11 @@ namespace OpenRA
 			InnerLogicTick(OrderManager);
 			if (worldRenderer != null && OrderManager.World != worldRenderer.World)
 				InnerLogicTick(worldRenderer.World.OrderManager);
+		}
+
+		public static void PerformDelayedActions()
+		{
+			delayedActions.PerformActions(RunTime);
 		}
 
 		public static void TakeScreenshot()

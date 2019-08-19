@@ -215,6 +215,10 @@ namespace OpenRA.Server
 
 					delayedActions.PerformActions(0);
 
+					// PERF: Dedicated servers need to drain the action queue to remove references blocking the GC from cleaning up disposed objects.
+					if (dedicated)
+						Game.PerformDelayedActions();
+
 					foreach (var t in serverTraits.WithInterface<ITick>())
 						t.Tick(this);
 
