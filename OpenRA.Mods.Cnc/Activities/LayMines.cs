@@ -64,26 +64,25 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (IsCanceling)
 				return true;
 
-			if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo()))
-			{
-				// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
-				rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
-					&& rearmableInfo.RearmActors.Contains(a.Info.Name))
-					.ClosestTo(self);
-
-				if (rearmTarget == null)
-					return true;
-
-				// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
-				QueueChild(new MoveAdjacentTo(self, Target.FromActor(rearmTarget)));
-				QueueChild(movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget));
-				QueueChild(new Resupply(self, rearmTarget, new WDist(512)));
-				returnToBase = true;
-				return false;
-			}
-
 			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
 			{
+				if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo()))
+				{
+					// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
+					rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally && rearmableInfo.RearmActors.Contains(a.Info.Name))
+						.ClosestTo(self);
+
+					if (rearmTarget == null)
+						return true;
+
+					// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
+					QueueChild(new MoveAdjacentTo(self, Target.FromActor(rearmTarget)));
+					QueueChild(movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), rearmTarget));
+					QueueChild(new Resupply(self, rearmTarget, new WDist(512)));
+					returnToBase = true;
+					return false;
+				}
+
 				LayMine(self);
 				QueueChild(new Wait(20)); // A little wait after placing each mine, for show
 				minefield.Remove(self.Location);
