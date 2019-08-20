@@ -33,7 +33,7 @@ concretea:
 	Valued:
 		Cost: 20
 	Buildable:
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 110
 		BuildDuration: 54
 		BuildDurationModifier: 40
 
@@ -47,7 +47,7 @@ concreteb:
 	Valued:
 		Cost: 50
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 210
 		Prerequisites: upgrade.conyard
 		BuildDuration: 81
 		BuildDurationModifier: 40
@@ -130,7 +130,7 @@ wind_trap:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 120
 		BuildDuration: 180
 		BuildDurationModifier: 40
 		Description: Provides power for other structures.
@@ -177,7 +177,7 @@ barracks:
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 220
 		BuildDuration: 231
 		BuildDurationModifier: 40
 		Description: Trains infantry.
@@ -261,7 +261,7 @@ refinery:
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 130
 		BuildDuration: 540
 		BuildDurationModifier: 40
 		Description: Harvesters unload Spice here for processing.
@@ -327,7 +327,7 @@ silo:
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
-		BuildPaletteOrder: 120
+		BuildPaletteOrder: 310
 		BuildDuration: 135
 		BuildDurationModifier: 40
 		Description: Stores excess harvested Spice.
@@ -377,7 +377,7 @@ light_factory:
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 230
 		BuildDuration: 277
 		BuildDurationModifier: 40
 		Description: Produces light vehicles.
@@ -470,7 +470,7 @@ heavy_factory:
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 330
 		BuildDuration: 648
 		BuildDurationModifier: 40
 		Description: Produces heavy vehicles.
@@ -575,7 +575,7 @@ outpost:
 	Buildable:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 320
 		BuildDuration: 270
 		BuildDurationModifier: 40
 		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
@@ -626,7 +626,7 @@ starport:
 	Buildable:
 		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 530
 		BuildDuration: 540
 		BuildDurationModifier: 40
 		Description: Dropzone for quick reinforcements, at a price.
@@ -718,7 +718,7 @@ wall:
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
-		BuildPaletteOrder: 130
+		BuildPaletteOrder: 410
 		BuildDuration: 54
 		BuildDurationModifier: 40
 		Description: Stop units and blocks enemy fire.
@@ -782,7 +782,7 @@ medium_gun_turret:
 	Buildable:
 		Queue: Building
 		Prerequisites: barracks
-		BuildPaletteOrder: 100
+		BuildPaletteOrder: 510
 		BuildDuration: 231
 		BuildDurationModifier: 40
 		Description: Defensive structure.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -830,7 +830,7 @@ large_gun_turret:
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 610
 		BuildDuration: 270
 		BuildDurationModifier: 40
 		Description: Defensive structure.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate.
@@ -874,7 +874,7 @@ repair_pad:
 	Buildable:
 		Queue: Building
 		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 430
 		BuildDuration: 324
 		BuildDurationModifier: 40
 		Description: Repairs vehicles.\n Allows construction of MCVs
@@ -929,7 +929,7 @@ high_tech_factory:
 	Buildable:
 		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
-		BuildPaletteOrder: 140
+		BuildPaletteOrder: 420
 		BuildDuration: 405
 		BuildDurationModifier: 40
 		Description: Unlocks advanced technology.
@@ -1024,7 +1024,7 @@ research_centre:
 	Buildable:
 		Queue: Building
 		Prerequisites: outpost, heavy_factory, upgrade.heavy, ~techlevel.high
-		BuildPaletteOrder: 160
+		BuildPaletteOrder: 520
 		BuildDuration: 270
 		BuildDurationModifier: 40
 		Description: Unlocks advanced tanks.
@@ -1075,7 +1075,7 @@ palace:
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
-		BuildPaletteOrder: 170
+		BuildPaletteOrder: 620
 		BuildDuration: 810
 		BuildDurationModifier: 40
 		Description: Unlocks elite infantry and weapons.
