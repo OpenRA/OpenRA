@@ -84,7 +84,20 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			var isHostInvalid = host.Type != TargetType.Actor || !host.Actor.IsInWorld;
-			var isCloseEnough = closeEnough < WDist.Zero || (!isHostInvalid && (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared);
+			var isCloseEnough = false;
+			if (!isHostInvalid)
+			{
+				// Negative means there's no distance limit.
+				// If RepairableNear, use TargetablePositions instead of CenterPosition
+				// to ensure the actor moves close enough to the host.
+				// Otherwise check against host CenterPosition.
+				if (closeEnough < WDist.Zero)
+					isCloseEnough = true;
+				else if (repairableNear != null)
+					isCloseEnough = host.IsInRange(self.CenterPosition, closeEnough);
+				else
+					isCloseEnough = (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
+			}
 
 			// This ensures transports are also cancelled when the host becomes invalid
 			if (!IsCanceling && isHostInvalid)
