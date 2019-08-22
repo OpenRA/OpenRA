@@ -206,13 +206,13 @@ namespace OpenRA.Mods.Common.Activities
 						var pos = self.World.Map.CenterOfCell(loc);
 
 						// Calculate harv-cell-refinery angle (cosine rule)
-						var aSq = (harvPos - procPos.Value).LengthSquared;
-						var bSq = (pos - procPos.Value).LengthSquared;
-						var cSq = (pos - harvPos).LengthSquared;
+						var a = harvPos - procPos.Value;
+						var b = pos - procPos.Value;
+						var c = pos - harvPos;
 
-						if (bSq > 0 && cSq > 0)
+						if (b != WVec.Zero && c != WVec.Zero)
 						{
-							var cosA = (int)(1024 * (bSq + cSq - aSq) / (2 * Exts.ISqrt(bSq * cSq)));
+							var cosA = (int)(1024 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / (2 * b.Length * c.Length));
 
 							// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
 							return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
