@@ -141,7 +141,10 @@ namespace OpenRA.Network
 						else
 							Game.AddSystemLine(ServerChatName, "The game has started.");
 
-						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
+						var gameStarter = new GameStarter(orderManager.LobbyInfo.GlobalSettings.Map);
+
+						Game.RunOnTick(gameStarter);
+
 						break;
 					}
 
@@ -356,6 +359,37 @@ namespace OpenRA.Network
 				o.FramesAhead = o.LobbyInfo.GlobalSettings.OrderLatency;
 				Log.Write("server", "Order lag is now {0} frames.", o.LobbyInfo.GlobalSettings.OrderLatency);
 			}
+		}
+	}
+
+	internal class GameStarter : ITickAction
+	{
+		readonly string mapUID;
+		int ticksPerSec;
+		int countdown = 5;
+		int ticks;
+
+		public GameStarter(string mapUID)
+		{
+			this.mapUID = mapUID;
+			ticksPerSec = 1000 / Game.Timestep;
+		}
+
+		public bool Tick()
+		{
+			if (++ticks % ticksPerSec == 0)
+			{
+				Game.AddSystemLine("Battlefield Control", "Starting in {0}".F(countdown--));
+				Game.Sound.Play(SoundType.UI, "");
+			}
+
+			if (countdown == 0)
+			{
+				Game.StartGame(mapUID, WorldType.Regular);
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

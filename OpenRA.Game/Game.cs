@@ -533,10 +533,17 @@ namespace OpenRA
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new ActionQueue();
+		static volatile TickAction tickActions = new TickAction();
+
 		static Color systemMessageColor = Color.White;
 		static Color chatMessageColor = Color.White;
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
+
+		public static void RunOnTick(ITickAction action)
+		{
+			tickActions.Add(action);
+		}
 
 		static void TakeScreenshotInner()
 		{
@@ -570,6 +577,7 @@ namespace OpenRA
 
 				Sync.RunUnsynced(Settings.Debug.SyncCheckUnsyncedCode, world, Ui.Tick);
 				Cursor.Tick();
+				tickActions.Tick();
 			}
 
 			var worldTimestep = world == null ? Timestep : world.IsLoadingGameSave ? 1 : world.Timestep;
@@ -938,6 +946,34 @@ namespace OpenRA
 				benchmark.Write();
 				Exit();
 			}
+		}
+	}
+
+	public interface ITickAction
+	{
+		bool Tick();
+	}
+
+	internal class TickAction
+	{
+		readonly List<ITickAction> actions = new List<ITickAction>();
+
+		public void Add(ITickAction action)
+		{
+			actions.Add(action);
+		}
+
+		public void Tick()
+		{
+			var toRemove = new List<ITickAction>();
+			foreach (var action in actions)
+			{
+				if (action.Tick())
+					toRemove.Add(action);
+			}
+
+			foreach (var action in toRemove)
+				actions.Remove(action);
 		}
 	}
 }
