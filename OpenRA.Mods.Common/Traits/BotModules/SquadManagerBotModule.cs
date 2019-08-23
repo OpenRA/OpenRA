@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			World = self.World;
 			Player = self.Owner;
 
-			unitCannotBeOrdered = a => a.Owner != Player || a.IsDead || !a.IsInWorld;
+			unitCannotBeOrdered = a => a == null || a.Owner != Player || a.IsDead || !a.IsInWorld;
 		}
 
 		public bool IsEnemyUnit(Actor a)
