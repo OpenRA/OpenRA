@@ -103,8 +103,6 @@ namespace OpenRA.Mods.Common.Traits
 		int conditionToken = ConditionManager.InvalidConditionToken;
 		HarvesterResourceMultiplier[] resourceMultipliers;
 
-		[Sync]
-		public bool LastSearchFailed;
 
 		[Sync]
 		public Actor OwnerLinkedProc = null;
