@@ -36,6 +36,8 @@ namespace OpenRA.Mods.Common.Activities
 		bool hasHarvestedCell;
 		bool hasWaited;
 
+		public bool LastSearchFailed { get; private set; }
+
 		public FindAndDeliverResources(Actor self, Actor deliverActor = null)
 		{
 			harv = self.Trait<Harvester>();
@@ -86,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (NextActivity != null)
 			{
 				// Interrupt automated harvesting after clearing the first cell.
-				if (!harvInfo.QueueFullLoad && (hasHarvestedCell || harv.LastSearchFailed))
+				if (!harvInfo.QueueFullLoad && (hasHarvestedCell || LastSearchFailed))
 					return true;
 
 				// Interrupt automated harvesting after first complete harvest cycle.
@@ -95,7 +97,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Are we full or have nothing more to gather? Deliver resources.
-			if (harv.IsFull || (!harv.IsEmpty && harv.LastSearchFailed))
+			if (harv.IsFull || (!harv.IsEmpty && LastSearchFailed))
 			{
 				QueueChild(new DeliverResources(self));
 				hasDeliveredLoad = true;
@@ -103,7 +105,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// After a failed search, wait and sit still for a bit before searching again.
-			if (harv.LastSearchFailed && !hasWaited)
+			if (LastSearchFailed && !hasWaited)
 			{
 				QueueChild(new Wait(harv.Info.WaitDuration));
 				hasWaited = true;
@@ -121,17 +123,17 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					lastHarvestedCell = null; // Forces search from backup position.
 					closestHarvestableCell = ClosestHarvestablePos(self);
-					harv.LastSearchFailed = !closestHarvestableCell.HasValue;
+					LastSearchFailed = !closestHarvestableCell.HasValue;
 				}
 				else
-					harv.LastSearchFailed = true;
+					LastSearchFailed = true;
 			}
 			else
-				harv.LastSearchFailed = false;
+				LastSearchFailed = false;
 
 			// If no harvestable position could be found and we are at the refinery, get out of the way
 			// of the refinery entrance.
-			if (harv.LastSearchFailed)
+			if (LastSearchFailed)
 			{
 				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
 				if (lastproc != null && !lastproc.Disposed)
