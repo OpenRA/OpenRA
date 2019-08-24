@@ -789,7 +789,10 @@
 	FrozenUnderFogUpdatedByGps:
 	Health:
 		HP: 10000
+	RadarColorFromTerrain:
+		Terrain: Wall
 	AppearsOnMapPreview:
+		Terrain: Wall
 	MapEditorData:
 		Categories: Wall
 
