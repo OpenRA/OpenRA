@@ -916,6 +916,9 @@
 	Health:
 		HP: 10000
 	AppearsOnMapPreview:
+		Terrain: Wall
+	RadarColorFromTerrain:
+		Terrain: Wall
 	MapEditorData:
 		Categories: Wall
 
