@@ -465,8 +465,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			try
 			{
+				var item = replayState[replay].Item;
 				replay.RenameFile(newFilenameWithoutExtension);
-				replayState[replay].Item.Text = newFilenameWithoutExtension;
+				item.Text = newFilenameWithoutExtension;
+
+				var label = item.Get<LabelWithTooltipWidget>("TITLE");
+				WidgetUtils.TruncateLabelToTooltip(label, item.Text);
 			}
 			catch (Exception ex)
 			{
