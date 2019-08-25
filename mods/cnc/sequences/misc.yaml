@@ -421,12 +421,12 @@ craters:
 
 smokland:
 	open:
-		Length: 60
+		Length: 72
 		Tick: 120
 		ZOffset: 1023
 	idle:
-		Start: 60
-		Length: 32
+		Start: 72
+		Length: 20
 		Tick: 120
 		ZOffset: 1023
 
