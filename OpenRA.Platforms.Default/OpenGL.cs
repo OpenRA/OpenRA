@@ -275,6 +275,9 @@ namespace OpenRA.Platforms.Default
 		public delegate void BlendEquation(int mode);
 		public static BlendEquation glBlendEquation { get; private set; }
 
+		public delegate void BlendEquationSeparate(int modeRGB, int modeAlpha);
+		public static BlendEquationSeparate glBlendEquationSeparate { get; private set; }
+
 		public delegate void BlendFunc(int sfactor, int dfactor);
 		public static BlendFunc glBlendFunc { get; private set; }
 
@@ -422,6 +425,7 @@ namespace OpenRA.Platforms.Default
 				glEnable = Bind<Enable>("glEnable");
 				glDisable = Bind<Disable>("glDisable");
 				glBlendEquation = Bind<BlendEquation>("glBlendEquation");
+				glBlendEquationSeparate = Bind<BlendEquationSeparate>("glBlendEquationSeparate");
 				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
 				glDepthFunc = Bind<DepthFunc>("glDepthFunc");
 				glScissor = Bind<Scissor>("glScissor");
