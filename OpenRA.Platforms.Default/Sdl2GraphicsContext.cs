@@ -241,7 +241,7 @@ namespace OpenRA.Platforms.Default
 					if (mode == BlendMode.Subtractive)
 					{
 						OpenGL.CheckGLError();
-						OpenGL.glBlendEquation(OpenGL.GL_FUNC_REVERSE_SUBTRACT);
+						OpenGL.glBlendEquationSeparate(OpenGL.GL_FUNC_REVERSE_SUBTRACT, OpenGL.GL_FUNC_ADD);
 					}
 
 					break;
