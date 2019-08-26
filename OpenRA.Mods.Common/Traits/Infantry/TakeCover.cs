@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsProne)
 				return 100;
 
-			if (damage.DamageTypes.IsEmpty)
+			if (damage == null || damage.DamageTypes.IsEmpty)
 				return 100;
 
 			var modifierPercentages = info.DamageModifiers.Where(x => damage.DamageTypes.Contains(x.Key)).Select(x => x.Value);
