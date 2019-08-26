@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool instancesEnabled;
 		bool prereqsAvailable = true;
 		bool oneShotFired;
-		bool notifiedCharging;
+		protected bool notifiedCharging;
 		bool notifiedReady;
 
 		public SupportPowerInstance(string key, SupportPowerInfo info, SupportPowerManager manager)
