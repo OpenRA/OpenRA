@@ -59,7 +59,7 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		internal Size SurfaceSize
+		public Size SurfaceSize
 		{
 			get
 			{

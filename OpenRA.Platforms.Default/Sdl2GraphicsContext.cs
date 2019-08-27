@@ -83,7 +83,7 @@ namespace OpenRA.Platforms.Default
 			return new Shader(name);
 		}
 
-		public void EnableScissor(int left, int top, int width, int height)
+		public void EnableScissor(int x, int y, int width, int height)
 		{
 			VerifyThreadAffinity();
 
@@ -97,16 +97,15 @@ namespace OpenRA.Platforms.Default
 			var windowScale = window.WindowScale;
 			var surfaceSize = window.SurfaceSize;
 
-			var bottom = windowSize.Height - (top + height);
 			if (windowSize != surfaceSize)
 			{
-				left = (int)Math.Round(windowScale * left);
-				bottom = (int)Math.Round(windowScale * bottom);
+				x = (int)Math.Round(windowScale * x);
+				y = (int)Math.Round(windowScale * y);
 				width = (int)Math.Round(windowScale * width);
 				height = (int)Math.Round(windowScale * height);
 			}
 
-			OpenGL.glScissor(left, bottom, width, height);
+			OpenGL.glScissor(x, y, width, height);
 			OpenGL.CheckGLError();
 			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
 			OpenGL.CheckGLError();

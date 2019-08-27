@@ -160,9 +160,9 @@ namespace OpenRA.Graphics
 			shader.SetVec("Scroll", scroll.X, scroll.Y, scroll.Y);
 			shader.SetVec("r1",
 				zoom * 2f / screen.Width,
-				-zoom * 2f / screen.Height,
+				zoom * 2f / screen.Height,
 				-depthScale * zoom / screen.Height);
-			shader.SetVec("r2", -1, 1, 1 - depthOffset);
+			shader.SetVec("r2", -1, -1, 1 - depthOffset);
 
 			// Texture index is sampled as a float, so convert to pixels then scale
 			shader.SetVec("DepthTextureScale", 128 * depthScale * zoom / screen.Height);
