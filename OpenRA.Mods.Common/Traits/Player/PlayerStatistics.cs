@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -60,6 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int ArmyValue;
 		int replayTimestep;
+		int ticks;
 
 		public PlayerStatistics(Actor self) { }
 
@@ -86,10 +88,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			ticks++;
 			var timestep = self.World.IsReplay ? replayTimestep : self.World.Timestep;
 
-			if (timestep * self.World.WorldTick % 60000 == 0)
+			if (ticks * timestep >= 60000)
 			{
+				ticks = 0;
 				UpdateEarnedThisMinute();
 				UpdateArmyThisMinute();
 			}
