@@ -27,15 +27,30 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: kaboom25.aud
-		ValidTargets: Ground, Air, Ship, Trees
-	Warhead@4EffWater: CreateEffect
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: med_splash
 		ImpactSounds: splash9.aud
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+		AffectsParent: true
+	Warhead@EffGround: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
+		ValidImpactTypes: Terrain
+		ValidTargets: Ground, Air
+		InvalidTargets: Water
+	Warhead@EffWater: CreateEffect
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
@@ -103,7 +118,9 @@ HellfireAA:
 		Versus:
 			Wood: 75
 			Light: 75
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
+		Explosions: med_explosion_air
+	Warhead@EffGround: CreateEffect
 		Explosions: med_explosion_air
 
 MammothTusk:
@@ -125,10 +142,13 @@ MammothTusk:
 			Heavy: 24
 			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		ImpactSounds: kaboom12.aud
 		ValidTargets: Ground, Trees
-	Warhead@5EffAir: CreateEffect
+	Warhead@EffGround: CreateEffect
+		ImpactSounds: kaboom12.aud
+		ValidTargets: Ground, Trees
+	Warhead@EffAir: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
 		ValidTargets: Air
@@ -150,9 +170,10 @@ Nike:
 		ValidTargets: Air
 		Versus:
 			Light: 90
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSounds: kaboom25.aud
+	Warhead@EffGround: CreateEffect
+		Explosions: med_explosion_air
 
 RedEye:
 	Inherits: Nike
@@ -196,9 +217,8 @@ StingerAA:
 	Projectile: Missile
 		Speed: 255
 		CloseEnough: 298
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: med_explosion_air
-		ImpactSounds: kaboom25.aud
 
 APTusk:
 	Inherits: ^AntiGroundMissile
@@ -246,15 +266,17 @@ TorpTube:
 			Heavy: 100
 			Concrete: 500
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Ship, Structure, Underwater, Ground, Bridge
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffGround: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+		ValidTargets: Ground, Bridge
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: large_splash
-		ImpactSounds: splash9.aud
-		ValidTargets: Water
-		InvalidTargets: Ship, Structure, Underwater, Bridge
+	Warhead@EffWater: CreateEffect
+		Explosions: large_splash
 
 ^SubMissileDefault:
 	Inherits: ^AntiGroundMissile
@@ -280,12 +302,16 @@ TorpTube:
 			Heavy: 30
 			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffGround: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: large_splash
-		ImpactSounds: splash9.aud
+	Warhead@EffWater: CreateEffect
+		Explosions: large_splash
 
 SubMissile:
 	Inherits: ^SubMissileDefault
@@ -336,8 +362,13 @@ SCUD:
 			Heavy: 40
 			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath, Incendiary
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffGround: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: large_splash
+	Warhead@EffWater: CreateEffect
 		Explosions: large_splash

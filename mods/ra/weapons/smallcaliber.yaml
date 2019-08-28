@@ -51,13 +51,26 @@ FLAK-23-AG:
 		Blockable: True
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air, Ground, Water
-	Warhead@2Eff: CreateEffect
-		Explosions: flak_explosion_ground
-		ValidTargets: Ground, Ship, Air, Trees
-	Warhead@3EffWater: CreateEffect
+	-Warhead@2Eff:
+	Warhead@EffDirectHit: CreateEffect
+		Explosions: small_explosion_air
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
+	Warhead@EffGround: CreateEffect
+		Explosions: small_explosion_air
+		ValidImpactTypes: Terrain
+		ValidTargets: Ground, Air
+		InvalidTargets: Water
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: small_splash
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+	Warhead@EffWater: CreateEffect
+		Explosions: small_splash
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 
 ^HeavyMG:
 	ReloadDelay: 30
@@ -75,13 +88,25 @@ FLAK-23-AG:
 			Heavy: 28
 			Concrete: 28
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Air, Trees
-	Warhead@3EffWater: CreateEffect
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
+	Warhead@EffGround: CreateEffect
+		Explosions: piffs
+		ValidImpactTypes: Terrain
+		ValidTargets: Ground, Air
+		InvalidTargets: Water
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+	Warhead@EffWater: CreateEffect
+		Explosions: water_piffs
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -116,14 +141,27 @@ Vulcan:
 			Heavy: 20
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@4Eff_2: CreateEffect
+	Warhead@EffDirectHit_2: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Trees
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
 		Delay: 2
-	Warhead@4Eff_2Water: CreateEffect
+	Warhead@EffGround_2: CreateEffect
+		Explosions: piffs
+		ValidImpactTypes: Terrain
+		InvalidTargets: Water
+		Delay: 2
+	Warhead@EffSubmergedHit_2: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+		Delay: 2
+	Warhead@EffWater_2: CreateEffect
+		Explosions: water_piffs
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 		Delay: 2
 	Warhead@5Dam_3: SpreadDamage
 		Spread: 128
@@ -136,14 +174,27 @@ Vulcan:
 			Heavy: 20
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@6Eff_3: CreateEffect
+	Warhead@EffDirectHit_3: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Trees
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
 		Delay: 4
-	Warhead@6Eff_3Water: CreateEffect
+	Warhead@EffGround_3: CreateEffect
+		Explosions: piffs
+		ValidImpactTypes: Terrain
+		InvalidTargets: Water
+		Delay: 4
+	Warhead@EffSubmergedHit_3: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+		Delay: 4
+	Warhead@EffWater_3: CreateEffect
+		Explosions: water_piffs
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 		Delay: 4
 	Warhead@7Dam_4: SpreadDamage
 		Spread: 128
@@ -156,14 +207,27 @@ Vulcan:
 			Heavy: 20
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@8Eff_4: CreateEffect
+	Warhead@EffDirectHit_4: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Trees
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
 		Delay: 6
-	Warhead@8Eff_4Water: CreateEffect
+	Warhead@EffGround_4: CreateEffect
+		Explosions: piffs
+		ValidImpactTypes: Terrain
+		InvalidTargets: Water
+		Delay: 6
+	Warhead@EffSubmergedHit_4: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+		Delay: 6
+	Warhead@EffWater_4: CreateEffect
+		Explosions: water_piffs
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 		Delay: 6
 	Warhead@9Dam_5: SpreadDamage
 		Spread: 128
@@ -176,14 +240,27 @@ Vulcan:
 			Heavy: 20
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@10Eff_5: CreateEffect
+	Warhead@EffDirectHit_5: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Trees
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
 		Delay: 8
-	Warhead@10Eff_5Water: CreateEffect
+	Warhead@EffGround_5: CreateEffect
+		Explosions: piffs
+		ValidImpactTypes: Terrain
+		InvalidTargets: Water
+		Delay: 8
+	Warhead@EffSubmergedHit_5: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+		Delay: 8
+	Warhead@EffWater_5: CreateEffect
+		Explosions: water_piffs
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 		Delay: 8
 	Warhead@11Dam_6: SpreadDamage
 		Spread: 128
@@ -196,14 +273,27 @@ Vulcan:
 			Heavy: 20
 			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
-	Warhead@12Eff_6: CreateEffect
+	Warhead@EffDirectHit_6: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Trees
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
 		Delay: 10
-	Warhead@12Eff_6Water: CreateEffect
+	Warhead@EffGround_6: CreateEffect
+		Explosions: piffs
+		ValidImpactTypes: Terrain
+		InvalidTargets: Water
+		Delay: 10
+	Warhead@EffSubmergedHit_6: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+		Delay: 10
+	Warhead@EffWater_6: CreateEffect
+		Explosions: water_piffs
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 		Delay: 10
 
 ChainGun:
@@ -242,9 +332,13 @@ Pistol:
 		Damage: 100
 		Versus:
 			None: 100
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: piff
-	Warhead@3EffWater: CreateEffect
+	Warhead@EffGround: CreateEffect
+		Explosions: piff
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: water_piff
+	Warhead@EffWater: CreateEffect
 		Explosions: water_piff
 
 M1Carbine:
@@ -279,19 +373,39 @@ M60mg:
 		Damage: 15000
 		ValidTargets: Barrel, Infantry
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+	Warhead@EffDirectHit: CreateEffect
+		Explosions: piff
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
+	Warhead@EffGround: CreateEffect
+		Explosions: piff
+		ValidImpactTypes: Terrain
+		ValidTargets: Ground, Air
+		InvalidTargets: Water
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: water_piff
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+	Warhead@EffWater: CreateEffect
+		Explosions: water_piff
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 
 SilencedPPK:
 	Inherits: ^SnipeWeapon
 	Report: silppk.aud
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: piffs
-		ValidTargets: Ground, Ship, Air, Trees
-	Warhead@3EffWater: CreateEffect
+	Warhead@EffGround: CreateEffect
+		Explosions: piffs
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: water_piffs
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+	Warhead@EffWater: CreateEffect
+		Explosions: water_piffs
 
 Colt45:
 	Inherits: ^SnipeWeapon
@@ -299,13 +413,6 @@ Colt45:
 	Range: 7c0
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000
-	Warhead@2Eff: CreateEffect
-		Explosions: piff
-		ValidTargets: Ground, Ship, Air, Trees
-	Warhead@3EffWater: CreateEffect
-		Explosions: water_piff
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
 
 Sniper:
 	Inherits: ^SnipeWeapon

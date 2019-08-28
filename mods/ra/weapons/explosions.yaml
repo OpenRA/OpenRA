@@ -13,15 +13,30 @@
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Structure, Wall, Trees
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: kaboom22.aud
-		ValidTargets: Ground, Air, Ship, Trees
-	Warhead@3EffWater: CreateEffect
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
+	Warhead@EffGround: CreateEffect
+		Explosions: self_destruct
+		ImpactSounds: kaboom22.aud
+		ValidImpactTypes: Terrain
+		ValidTargets: Ground, Air
+		InvalidTargets: Water
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Underwater
+	Warhead@EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidImpactTypes: Terrain
+		ValidTargets: Water
 
 CrateNapalm:
 	Inherits: ^Explosion
@@ -36,11 +51,14 @@ CrateNapalm:
 			Concrete: 50
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
-	Warhead@2Eff: CreateEffect
+	Warhead@EffGround: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+		ValidImpactTypes: Actor, Terrain
 		ValidTargets: Ground, Water, Air, Trees
-	-Warhead@3EffWater:
+	-Warhead@EffDirectHit:
+	-Warhead@EffWater:
+	-Warhead@EffSubmergedHit:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 
@@ -49,9 +67,12 @@ CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		AffectsParent: true
-	Warhead@2Eff: CreateEffect
+	Warhead@EffGround: CreateEffect
+		ValidImpactTypes: Actor, Terrain
 		ValidTargets: Ground, Water, Air
-	-Warhead@3EffWater:
+	-Warhead@EffDirectHit:
+	-Warhead@EffWater:
+	-Warhead@EffSubmergedHit:
 
 UnitExplode:
 	Inherits: ^Explosion
@@ -60,59 +81,72 @@ UnitExplode:
 
 UnitExplodePlane:
 	Inherits: UnitExplode
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
+		Explosions: large_napalm
+	Warhead@EffGround: CreateEffect
 		Explosions: large_napalm
 
 UnitExplodeHeli:
 	Inherits: UnitExplode
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
+		Explosions: napalm
+	Warhead@EffGround: CreateEffect
 		Explosions: napalm
 
 VisualExplode:
 	Inherits: ^Explosion
 	-Warhead@1Dam:
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
+		Explosions: offseted_napalm
+		ImpactSounds: firebl3.aud
+	Warhead@EffGround: CreateEffect
 		Explosions: offseted_napalm
 		ImpactSounds: firebl3.aud
 
 UnitExplodeShip:
 	Inherits: ^Explosion
 	-Warhead@Smu:
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: building
 		ImpactSounds: kaboom25.aud
-		ValidTargets: Ground, Water
+	Warhead@EffGround: CreateEffect
+		Explosions: building
+		ImpactSounds: kaboom25.aud
 
 UnitExplodeSubmarine:
 	Inherits: ^Explosion
 	-Warhead@Smu:
-	Warhead@2Eff: CreateEffect
+	-Warhead@EffDirectHit:
+	-Warhead@EffGround:
+	-Warhead@EffSubmergedHit:
+	Warhead@EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
-		ValidTargets: Ground, Water
+		ValidImpactTypes: Actor, Terrain
+		ValidTargets: Water, Underwater
 
 UnitExplodeSmall:
 	Inherits: ^Explosion
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
-	Warhead@2Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: kaboom15.aud
+	Warhead@EffGround: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: kaboom15.aud	
 
 ArtilleryExplode:
 	Inherits: ^Explosion
 	Warhead@1Dam: SpreadDamage
 		Damage: 15000
-	Warhead@2Eff: CreateEffect
-		Explosions: self_destruct
-		ImpactSounds: kaboom22.aud
 
 V2Explode:
 	Inherits: SCUD
 	-Report:
 
 BuildingExplode:
-	Warhead@2Eff: CreateEffect
+	Warhead@Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct, large_napalm
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -120,7 +154,7 @@ BuildingExplode:
 
 SmallBuildingExplode:
 	Inherits: BuildingExplode
-	Warhead@2Eff: CreateEffect
+	Warhead@Eff: CreateEffect
 		Explosions: building, building_napalm, large_explosion, self_destruct
 
 CivPanicExplosion:
@@ -142,11 +176,15 @@ BarrelExplode:
 			Light: 50
 			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, Incendiary
-	Warhead@2Eff: CreateEffect
+	Warhead@EffGround: CreateEffect
+		ValidImpactTypes: Actor, Terrain
+		ValidTargets: Ground, Water, Air, Trees
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
 		Delay: 5
-	-Warhead@3EffWater:
+	-Warhead@EffDirectHit:
+	-Warhead@EffWater:
+	-Warhead@EffSubmergedHit:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 		Size: 2
@@ -159,7 +197,7 @@ ATMine:
 		AffectsParent: true
 		InvalidTargets: Mine
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
-	Warhead@2Eff: CreateEffect
+	Warhead@Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: mineblo1.aud
 	Warhead@Smu: LeaveSmudge
@@ -170,7 +208,7 @@ APMine:
 	Inherits: ATMine
 	Warhead@1Dam: SpreadDamage
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@2Eff: CreateEffect
+	Warhead@Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: mine1.aud
 	Warhead@Smu: LeaveSmudge

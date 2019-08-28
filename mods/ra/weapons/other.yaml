@@ -19,6 +19,7 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+		ValidTargets: Ground, Water, Trees
 
 FireballLauncher:
 	Inherits: ^FireWeapon

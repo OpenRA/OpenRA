@@ -18,15 +18,29 @@
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom12.aud
-		ValidTargets: Ground, Ship, Trees
-	Warhead@4EffWater: CreateEffect
+		ValidImpactTypes: Actor
+		AffectsParent: true
+		ValidTargets: Ground, Water, Air, Trees
+		InvalidTargets: Underwater
+	Warhead@EffSubmergedHit: CreateEffect
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
-		ValidTargets: Water, Underwater
-		InvalidTargets: Ship, Structure, Bridge
+		ValidTargets: Underwater
+		ValidImpactTypes: Actor
+	Warhead@EffGround: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: kaboom12.aud
+		ValidImpactTypes: Terrain
+		ValidTargets: Ground, Air
+		InvalidTargets: Water
+	Warhead@EffWater: CreateEffect
+		Explosions: small_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+		ValidImpactTypes: Terrain
 
 25mm:
 	Inherits: ^Cannon
@@ -45,9 +59,13 @@
 			Heavy: 48
 			Concrete: 32
 	-Warhead@2Smu:
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		-ImpactSounds:
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffSubmergedHit: CreateEffect
+		-ImpactSounds:
+	Warhead@EffGround: CreateEffect
+		-ImpactSounds:
+	Warhead@EffWater: CreateEffect
 		-ImpactSounds:
 
 90mm:
@@ -104,10 +122,15 @@ TurretGun:
 			Light: 60
 			Heavy: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: artillery_explosion
 		ImpactSounds: kaboom15.aud
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: med_splash
+	Warhead@EffGround: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+	Warhead@EffWater: CreateEffect
 		Explosions: med_splash
 
 155mm:
@@ -145,7 +168,9 @@ TurretGun:
 			Light: 60
 			Heavy: 25
 			Concrete: 100
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: large_splash
+	Warhead@EffWater: CreateEffect
 		Explosions: large_splash
 
 2Inch:
@@ -182,10 +207,15 @@ Grenade:
 			Light: 25
 			Heavy: 25
 			Concrete: 100
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: kaboom25.aud
-	Warhead@4EffWater: CreateEffect
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: small_splash
+	Warhead@EffGround: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
+	Warhead@EffWater: CreateEffect
 		Explosions: small_splash
 
 DepthCharge:
@@ -205,11 +235,16 @@ DepthCharge:
 		Versus:
 			Light: 75
 		DamageTypes: ExplosionDeath
-	Warhead@4EffWater: CreateEffect
-		Explosions: large_splash
-		ImpactSounds: h2obomb2.aud
-		ValidTargets: Water, Underwater
-	Warhead@3Eff: CreateEffect
+	Warhead@EffDirectHit: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: kaboom15.aud
-		ValidTargets: Submarine
+		ValidTargets: Ship, Submarine
+	Warhead@EffSubmergedHit: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: h2obomb2.aud
+	Warhead@EffGround: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: kaboom15.aud
+	Warhead@EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: h2obomb2.aud

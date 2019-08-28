@@ -1034,6 +1034,9 @@
 		Moves: True
 		Velocity: 86
 		Explosion: UnitExplodePlane
+	Targetable:
+		TargetTypes: Air, NoAutoTarget
+		RequiresForceFire: true
 	-MapEditorData:
 	RevealOnDeath:
 		Duration: 60
@@ -1052,6 +1055,9 @@
 		CanSlide: True
 	FallsToEarth:
 		Explosion: UnitExplodeHeli
+	Targetable:
+		TargetTypes: Air, NoAutoTarget
+		RequiresForceFire: true
 	BodyOrientation:
 		UseClassicFacingFudge: True
 	-MapEditorData:
