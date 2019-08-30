@@ -297,6 +297,9 @@ namespace OpenRA.Platforms.Default
 		public delegate void DeleteTextures(int n, ref uint textures);
 		public static DeleteTextures glDeleteTextures { get; private set; }
 
+		public delegate bool IsTexture(uint texture);
+		public static IsTexture glIsTexture { get; private set; }
+
 		public delegate void BindTexture(int target, uint texture);
 		public static BindTexture glBindTexture { get; private set; }
 
@@ -423,6 +426,7 @@ namespace OpenRA.Platforms.Default
 				glReadPixels = Bind<ReadPixels>("glReadPixels");
 				glGenTextures = Bind<GenTextures>("glGenTextures");
 				glDeleteTextures = Bind<DeleteTextures>("glDeleteTextures");
+				glIsTexture = Bind<IsTexture>("glIsTexture");
 				glBindTexture = Bind<BindTexture>("glBindTexture");
 				glActiveTexture = Bind<ActiveTexture>("glActiveTexture");
 				glTexImage2D = Bind<TexImage2D>("glTexImage2D");

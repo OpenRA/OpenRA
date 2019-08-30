@@ -24,6 +24,7 @@ namespace OpenRA.Platforms.Default
 
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
+		readonly Queue<int> unbindTextures = new Queue<int>();
 		readonly uint program;
 
 		protected uint CompileShaderObject(int type, string name)
@@ -138,9 +139,20 @@ namespace OpenRA.Platforms.Default
 			// bind the textures
 			foreach (var kv in textures)
 			{
-				OpenGL.glActiveTexture(OpenGL.GL_TEXTURE0 + kv.Key);
-				OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, ((ITextureInternal)kv.Value).ID);
+				var id = ((ITextureInternal)kv.Value).ID;
+
+				// Evict disposed textures from the cache
+				if (OpenGL.glIsTexture(id))
+				{
+					OpenGL.glActiveTexture(OpenGL.GL_TEXTURE0 + kv.Key);
+					OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, id);
+				}
+				else
+					unbindTextures.Enqueue(kv.Key);
 			}
+
+			while (unbindTextures.Count > 0)
+				textures.Remove(unbindTextures.Dequeue());
 
 			OpenGL.CheckGLError();
 		}
