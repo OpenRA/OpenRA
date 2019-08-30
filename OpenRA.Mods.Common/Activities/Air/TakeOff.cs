@@ -21,18 +21,12 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly IMove move;
-		Target fallbackTarget;
-		bool movedToTarget = false;
 
-		public TakeOff(Actor self, Target fallbackTarget)
+		public TakeOff(Actor self)
 		{
 			aircraft = self.Trait<Aircraft>();
 			move = self.Trait<IMove>();
-			this.fallbackTarget = fallbackTarget;
 		}
-
-		public TakeOff(Actor self)
-			: this(self, Target.Invalid) { }
 
 		protected override void OnFirstRun(Actor self)
 		{
@@ -73,24 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			// Only move to the fallback target if we don't have anything better to do
-			if (NextActivity == null && fallbackTarget.IsValidFor(self) && !movedToTarget)
-			{
-				QueueChild(new AttackMoveActivity(self, () => move.MoveToTarget(self, fallbackTarget, targetLineColor: Color.OrangeRed)));
-				movedToTarget = true;
-				return false;
-			}
-
 			return true;
-		}
-
-		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
-		{
-			if (ChildActivity != null)
-				foreach (var n in ChildActivity.TargetLineNodes(self))
-					yield return n;
-			else
-				yield return new TargetLineNode(fallbackTarget, Color.OrangeRed);
 		}
 	}
 }
