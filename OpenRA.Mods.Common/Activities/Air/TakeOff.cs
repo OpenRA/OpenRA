@@ -36,8 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length >= aircraft.Info.MinAirborneAltitude)
 				return;
 
-			// We are taking off, so remove reservation and influence in ground cells.
-			aircraft.UnReserve();
+			// We are taking off, so remove influence in ground cells.
 			aircraft.RemoveInfluence();
 
 			if (aircraft.Info.TakeoffSounds.Length > 0)
