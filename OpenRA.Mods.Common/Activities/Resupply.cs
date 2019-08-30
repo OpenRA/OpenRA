@@ -191,6 +191,8 @@ namespace OpenRA.Mods.Common.Activities
 						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
 					else
 						QueueChild(new TakeOff(self));
+
+					aircraft.UnReserve();
 				}
 
 				// Aircraft without TakeOffOnResupply remain on the resupplier until something else needs it

@@ -506,25 +506,15 @@ namespace OpenRA.Mods.Common.Traits
 			MayYieldReservation = true;
 		}
 
-		public void UnReserve(bool takeOff = false)
+		public void UnReserve()
 		{
 			if (reservation == null)
 				return;
-
-			// Move to the host's rally point if it has one
-			var rp = ReservedActor != null ? ReservedActor.TraitOrDefault<RallyPoint>() : null;
 
 			reservation.Dispose();
 			reservation = null;
 			ReservedActor = null;
 			MayYieldReservation = false;
-
-			if (takeOff && self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
-			{
-				self.QueueActivity(new TakeOff(self));
-				if (rp != null)
-					self.QueueActivity(new AttackMoveActivity(self, () => MoveTo(rp.Location, null, targetLineColor: Color.OrangeRed)));
-			}
 		}
 
 		bool AircraftCanEnter(Actor a, TargetModifiers modifiers)
