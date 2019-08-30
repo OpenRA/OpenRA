@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -18,10 +19,16 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Reserve landing places for aircraft.")]
 	class ReservableInfo : TraitInfo<Reservable> { }
 
-	public class Reservable : ITick, INotifyOwnerChanged, INotifySold, INotifyActorDisposing
+	public class Reservable : ITick, INotifyOwnerChanged, INotifySold, INotifyActorDisposing, INotifyCreated
 	{
 		Actor reservedFor;
 		Aircraft reservedForAircraft;
+		RallyPoint rallyPoint;
+
+		void INotifyCreated.Created(Actor self)
+		{
+			rallyPoint = self.TraitOrDefault<RallyPoint>();
+		}
 
 		void ITick.Tick(Actor self)
 		{
@@ -41,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IDisposable Reserve(Actor self, Actor forActor, Aircraft forAircraft)
 		{
 			if (reservedForAircraft != null && reservedForAircraft.MayYieldReservation)
-				reservedForAircraft.UnReserve(true);
+				UnReserve(self);
 
 			reservedFor = forActor;
 			reservedForAircraft = forAircraft;
@@ -71,17 +78,27 @@ namespace OpenRA.Mods.Common.Traits
 			return res == null || res.reservedForAircraft == null || res.reservedForAircraft.MayYieldReservation || res.reservedFor == forActor;
 		}
 
-		private void UnReserve()
+		void UnReserve(Actor self)
 		{
 			if (reservedForAircraft != null)
-				reservedForAircraft.UnReserve(true);
+			{
+				if (reservedForAircraft.GetActorBelow() == self)
+				{
+					if (rallyPoint != null)
+						reservedFor.QueueActivity(reservedForAircraft.MoveTo(rallyPoint.Location, null, targetLineColor: Color.Green));
+					else
+						reservedFor.QueueActivity(new TakeOff(reservedFor));
+				}
+
+				reservedForAircraft.UnReserve();
+			}
 		}
 
-		void INotifyActorDisposing.Disposing(Actor self) { UnReserve(); }
+		void INotifyActorDisposing.Disposing(Actor self) { UnReserve(self); }
 
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UnReserve(); }
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UnReserve(self); }
 
-		void INotifySold.Selling(Actor self) { UnReserve(); }
-		void INotifySold.Sold(Actor self) { UnReserve(); }
+		void INotifySold.Selling(Actor self) { UnReserve(self); }
+		void INotifySold.Sold(Actor self) { UnReserve(self); }
 	}
 }
