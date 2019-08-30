@@ -31,7 +31,6 @@ Debris:
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
-		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 300
 

@@ -19,7 +19,6 @@
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		ImpactActors: false
 	Warhead@3Concrete: DamagesConcrete
 		Damage: 1250
 

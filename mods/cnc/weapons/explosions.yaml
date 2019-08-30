@@ -11,7 +11,6 @@
 	Warhead@2Eff: CreateEffect
 		Explosions: poof
 		ImpactSounds: xplos.aud
-		ImpactActors: false
 	Warhead@3Smu: LeaveSmudge
 		SmudgeType: Crater
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
@@ -90,7 +89,6 @@ BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, building_napalm, med_frag, poof, small_building
 		Delay: 1
-		ImpactActors: false
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
 		Delay: 1

@@ -87,7 +87,6 @@ OrniBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
-		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 6750
 
@@ -104,7 +103,6 @@ Demolish:
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLLG2.WAV
-		ImpactActors: false
 
 DeathHand:
 	Warhead@Cluster: FireCluster
@@ -115,7 +113,6 @@ DeathHand:
 	Warhead@2Eff: CreateEffect
 		Explosions: nuke
 		ImpactSounds: EXPLLG2.WAV
-		ImpactActors: false
 
 DeathHandCluster:
 	Inherits: Debris2
@@ -169,7 +166,6 @@ CrateExplosion:
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLSML4.WAV
-		ImpactActors: false
 	Warhead@2Concrete: DamagesConcrete
 		Damage: 4500
 
@@ -177,30 +173,25 @@ UnitExplodeSmall:
 	Warhead@1Eff: CreateEffect
 		Explosions: self_destruct
 		ImpactSounds: EXPLSML1.WAV
-		ImpactActors: false
 
 UnitExplodeMed:
 	Warhead@1Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML2.WAV
-		ImpactActors: false
 
 UnitExplodeLarge:
 	Warhead@1Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: EXPLLG2.WAV
-		ImpactActors: false
 
 BuildingExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building, self_destruct, large_explosion
-		ImpactActors: false
 
 WallExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: wall_explosion
 		ImpactSounds: EXPLHG1.WAV
-		ImpactActors: false
 
 grenade:
 	ReloadDelay: 50
@@ -231,7 +222,6 @@ grenade:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV
-		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 1875
 
@@ -254,7 +244,6 @@ GrenDeath:
 	Warhead@3Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML4.WAV
-		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 1875
 
@@ -278,7 +267,6 @@ SardDeath:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: EXPLSML2.WAV
-		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 450
 
@@ -310,7 +298,6 @@ SpiceExplosion:
 		Size: 1
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
-		ImpactActors: false
 
 BloomExplosion:
 	Report: EXPLMD1.WAV

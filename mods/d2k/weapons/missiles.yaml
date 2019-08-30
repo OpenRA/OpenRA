@@ -30,7 +30,6 @@
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: tiny_explosion
-		ImpactActors: false
 		ValidTargets: Ground, Air
 	Warhead@3Concrete: DamagesConcrete
 		Damage: 240

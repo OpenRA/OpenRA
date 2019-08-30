@@ -29,7 +29,6 @@ Sniper:
 		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
-		ImpactActors: false
 		ValidTargets: Ground, Water, Air
 
 HighV:

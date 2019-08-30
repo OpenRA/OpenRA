@@ -40,8 +40,6 @@
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
 	ValidTargets: Air
-	Warhead@3Eff: CreateEffect
-		ImpactActors: false
 
 Maverick:
 	Inherits: ^AntiGroundMissile

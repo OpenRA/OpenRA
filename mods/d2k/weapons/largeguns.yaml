@@ -25,7 +25,6 @@
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
-		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 540
 
