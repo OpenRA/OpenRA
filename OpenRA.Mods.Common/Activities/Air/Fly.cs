@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
 				{
 					if (dat <= aircraft.LandAltitude)
-						QueueChild(new TakeOff(self, target));
+						QueueChild(new TakeOff(self));
 					else
 						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else if (dat <= aircraft.LandAltitude)
 			{
-				QueueChild(new TakeOff(self, target));
+				QueueChild(new TakeOff(self));
 				return false;
 			}
 

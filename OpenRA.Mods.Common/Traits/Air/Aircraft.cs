@@ -521,10 +521,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (takeOff && self.World.Map.DistanceAboveTerrain(CenterPosition).Length <= LandAltitude.Length)
 			{
+				self.QueueActivity(new TakeOff(self));
 				if (rp != null)
-					self.QueueActivity(new TakeOff(self, Target.FromCell(self.World, rp.Location)));
-				else
-					self.QueueActivity(new TakeOff(self));
+					self.QueueActivity(new AttackMoveActivity(self, () => MoveTo(rp.Location, null, targetLineColor: Color.OrangeRed)));
 			}
 		}
 
