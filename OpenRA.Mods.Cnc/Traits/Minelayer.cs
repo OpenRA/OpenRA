@@ -185,13 +185,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					yield break;
 				}
 
-				var underCursor = world.ScreenMap.ActorsAtMouse(mi)
-					.Select(a => a.Actor)
-					.Where(a => !world.FogObscures(a))
-					.MaxByOrDefault(a => a.Info.HasTraitInfo<SelectableInfo>()
-						? a.Info.TraitInfo<SelectableInfo>().Priority : int.MinValue);
-
-				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action && underCursor == null)
+				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 				{
 					minelayers.First().World.CancelInputMode();
 					foreach (var minelayer in minelayers)
@@ -252,7 +246,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				cursor = "ability";
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				return !othersAtTarget.Any() && modifiers.HasModifier(TargetModifiers.ForceAttack);
+				return modifiers.HasModifier(TargetModifiers.ForceAttack);
 			}
 
 			public bool IsQueued { get; protected set; }
