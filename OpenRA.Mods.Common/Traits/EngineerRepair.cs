@@ -92,10 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "EngineerRepair" || !IsValidOrder(self, order))
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new RepairBuilding(self, order.Target, Info));
+			self.QueueActivity(order.Queued, new RepairBuilding(self, order.Target, Info));
 			self.ShowTargetLines();
 		}
 

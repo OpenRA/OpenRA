@@ -206,10 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued && !CanUnload())
 					return;
 
-				if (!order.Queued)
-					self.CancelActivity();
-
-				self.QueueActivity(new UnloadCargo(self, Info.LoadRange));
+				self.QueueActivity(order.Queued, new UnloadCargo(self, Info.LoadRange));
 			}
 		}
 

@@ -67,8 +67,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (!target.IsInRange(self.CenterPosition, a.MaxRange()))
 				return;
 
-			self.CancelActivity();
-			self.QueueActivity(new SwallowActor(self, target, a, facing));
+			self.QueueActivity(false, new SwallowActor(self, target, a, facing));
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)

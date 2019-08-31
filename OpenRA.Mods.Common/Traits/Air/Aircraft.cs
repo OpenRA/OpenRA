@@ -354,8 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
 				&& !((self.CurrentActivity is Land) || self.CurrentActivity is Turn))
 			{
-				self.CancelActivity();
-				self.QueueActivity(new Land(self));
+				self.QueueActivity(false, new Land(self));
 				ForceLanding = true;
 			}
 
@@ -365,10 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 				ForceLanding = false;
 
 				if (Info.IdleBehavior != IdleBehaviorType.Land)
-				{
-					self.CancelActivity();
-					self.QueueActivity(new TakeOff(self));
-				}
+					self.QueueActivity(false, new TakeOff(self));
 			}
 
 			var oldCachedFacing = cachedFacing;
