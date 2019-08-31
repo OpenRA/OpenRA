@@ -61,8 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (facing != null)
 				transform.Facing = facing.Facing;
 
-			self.CancelActivity();
-			self.QueueActivity(transform);
+			self.QueueActivity(false, transform);
 		}
 	}
 }

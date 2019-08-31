@@ -102,10 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					return;
 
-				if (!order.Queued)
-					self.CancelActivity();
-
-				self.QueueActivity(new RepairBridge(self, order.Target, info.EnterBehaviour, info.RepairNotification));
+				self.QueueActivity(order.Queued, new RepairBridge(self, order.Target, info.EnterBehaviour, info.RepairNotification));
 				self.ShowTargetLines();
 			}
 		}

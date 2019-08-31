@@ -53,8 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 				transform.Facing = facing.Facing;
 
 			transform.SkipMakeAnims = info.SkipMakeAnims;
-			crusher.CancelActivity();
-			crusher.QueueActivity(transform);
+			crusher.QueueActivity(false, transform);
 		}
 	}
 }

@@ -73,10 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "DeliverCash")
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new DonateCash(self, order.Target, info.Payload, info.PlayerExperience));
+			self.QueueActivity(order.Queued, new DonateCash(self, order.Target, info.Payload, info.PlayerExperience));
 			self.ShowTargetLines();
 		}
 

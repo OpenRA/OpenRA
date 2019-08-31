@@ -95,10 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "CaptureActor" || IsTraitDisabled)
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new CaptureActor(self, order.Target));
+			self.QueueActivity(order.Queued, new CaptureActor(self, order.Target));
 			self.ShowTargetLines();
 		}
 

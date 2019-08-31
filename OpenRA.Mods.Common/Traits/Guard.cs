@@ -47,14 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void GuardTarget(Actor self, Target target, bool queued = false)
 		{
-			if (!queued)
-				self.CancelActivity();
-
 			if (target.Type != TargetType.Actor)
 				return;
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.OrangeRed)));
+			self.QueueActivity(queued, new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: Color.OrangeRed)));
 			self.ShowTargetLines();
 		}
 

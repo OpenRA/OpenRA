@@ -99,10 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanRepairAt(order.Target.Actor) || !ShouldRepair())
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new Resupply(self, order.Target.Actor, Info.CloseEnough));
+			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor, Info.CloseEnough));
 			self.ShowTargetLines();
 		}
 

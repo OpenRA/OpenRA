@@ -160,8 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 					drop.SetLZ(p, true);
 					plane.Trait<Cargo>().Load(plane, crate);
 
-					plane.CancelActivity();
-					plane.QueueActivity(new Fly(plane, Target.FromPos(finishEdge)));
+					plane.QueueActivity(false, new Fly(plane, Target.FromPos(finishEdge)));
 					plane.QueueActivity(new RemoveSelf());
 				}
 				else

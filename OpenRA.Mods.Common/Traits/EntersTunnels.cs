@@ -82,10 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (tunnel == null || !tunnel.Exit.HasValue)
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(move.MoveTo(tunnel.Entrance, tunnel.NearEnough, targetLineColor: Color.Green));
+			self.QueueActivity(order.Queued, move.MoveTo(tunnel.Entrance, tunnel.NearEnough, targetLineColor: Color.Green));
 			self.QueueActivity(move.MoveTo(tunnel.Exit.Value, tunnel.NearEnough, targetLineColor: Color.Green));
 			self.ShowTargetLines();
 		}
