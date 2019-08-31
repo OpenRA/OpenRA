@@ -39,6 +39,9 @@ namespace OpenRA.Graphics
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
 
+		readonly List<IFinalizedRenderable> preparedRenderables = new List<IFinalizedRenderable>();
+		readonly List<IFinalizedRenderable> preparedOverlayRenderables = new List<IFinalizedRenderable>();
+
 		bool lastDepthPreviewEnabled;
 
 		internal WorldRenderer(ModData modData, World world)
@@ -103,7 +106,7 @@ namespace OpenRA.Graphics
 				palettes[name].Palette = pal;
 		}
 
-		List<IFinalizedRenderable> GenerateRenderables()
+		IEnumerable<IFinalizedRenderable> GenerateRenderables()
 		{
 			var actors = onScreenActors.Append(World.WorldActor);
 			if (World.RenderPlayer != null)
@@ -122,14 +125,10 @@ namespace OpenRA.Graphics
 
 			worldRenderables = worldRenderables.OrderBy(RenderableScreenZPositionComparisonKey);
 
-			Game.Renderer.WorldModelRenderer.BeginFrame();
-			var renderables = worldRenderables.Select(r => r.PrepareRender(this)).ToList();
-			Game.Renderer.WorldModelRenderer.EndFrame();
-
-			return renderables;
+			return worldRenderables.Select(r => r.PrepareRender(this));
 		}
 
-		List<IFinalizedRenderable> GenerateOverlayRenderables()
+		IEnumerable<IFinalizedRenderable> GenerateOverlayRenderables()
 		{
 			var aboveShroud = World.ActorsWithTrait<IRenderAboveShroud>()
 				.Where(a => a.Actor.IsInWorld && !a.Actor.Disposed && (!a.Trait.SpatiallyPartitionable || onScreenActors.Contains(a.Actor)))
@@ -153,11 +152,21 @@ namespace OpenRA.Graphics
 				.Concat(aboveShroudEffects)
 				.Concat(aboveShroudOrderGenerator);
 
-			Game.Renderer.WorldModelRenderer.BeginFrame();
-			var finalOverlayRenderables = overlayRenderables.Select(r => r.PrepareRender(this)).ToList();
-			Game.Renderer.WorldModelRenderer.EndFrame();
+			return overlayRenderables.Select(r => r.PrepareRender(this));
+		}
 
-			return finalOverlayRenderables;
+		public void PrepareRenderables()
+		{
+			if (World.WorldActor.Disposed)
+				return;
+
+			RefreshPalette();
+
+			// PERF: Reuse collection to avoid allocations.
+			onScreenActors.UnionWith(World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight));
+			preparedRenderables.AddRange(GenerateRenderables());
+			preparedOverlayRenderables.AddRange(GenerateOverlayRenderables());
+			onScreenActors.Clear();
 		}
 
 		public void Draw()
@@ -171,10 +180,6 @@ namespace OpenRA.Graphics
 				Game.Renderer.WorldSpriteRenderer.SetDepthPreviewEnabled(lastDepthPreviewEnabled);
 			}
 
-			RefreshPalette();
-
-			onScreenActors.UnionWith(World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight));
-			var renderables = GenerateRenderables();
 			var bounds = Viewport.GetScissorBounds(World.Type != WorldType.Editor);
 			Game.Renderer.EnableScissor(bounds);
 
@@ -186,8 +191,8 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.Flush();
 
-			for (var i = 0; i < renderables.Count; i++)
-				renderables[i].Render(this);
+			for (var i = 0; i < preparedRenderables.Count; i++)
+				preparedRenderables[i].Render(this);
 
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
@@ -209,18 +214,16 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			var finalOverlayRenderables = GenerateOverlayRenderables();
-
 			// HACK: Keep old grouping behaviour
-			var groupedOverlayRenderables = finalOverlayRenderables.GroupBy(prs => prs.GetType());
+			var groupedOverlayRenderables = preparedOverlayRenderables.GroupBy(prs => prs.GetType());
 			foreach (var g in groupedOverlayRenderables)
 				foreach (var r in g)
 					r.Render(this);
 
 			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
 			{
-				for (var i = 0; i < renderables.Count; i++)
-					renderables[i].RenderDebugGeometry(this);
+				for (var i = 0; i < preparedRenderables.Count; i++)
+					preparedRenderables[i].RenderDebugGeometry(this);
 
 				foreach (var g in groupedOverlayRenderables)
 					foreach (var r in g)
@@ -243,9 +246,8 @@ namespace OpenRA.Graphics
 			}
 
 			Game.Renderer.Flush();
-
-			// PERF: Reuse collection to avoid allocations.
-			onScreenActors.Clear();
+			preparedRenderables.Clear();
+			preparedOverlayRenderables.Clear();
 		}
 
 		public void RefreshPalette()
