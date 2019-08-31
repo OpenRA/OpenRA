@@ -33,31 +33,32 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glGenFramebuffers(1, out framebuffer);
 			OpenGL.CheckGLError();
-			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, framebuffer);
+			OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, framebuffer);
 			OpenGL.CheckGLError();
 
 			// Color
 			this.texture = texture;
 			texture.SetEmpty(size.Width, size.Height);
-			OpenGL.glFramebufferTexture2D(OpenGL.FRAMEBUFFER_EXT, OpenGL.COLOR_ATTACHMENT0_EXT, OpenGL.GL_TEXTURE_2D, texture.ID, 0);
+			OpenGL.glFramebufferTexture2D(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_COLOR_ATTACHMENT0, OpenGL.GL_TEXTURE_2D, texture.ID, 0);
 			OpenGL.CheckGLError();
 
 			// Depth
 			OpenGL.glGenRenderbuffers(1, out depth);
 			OpenGL.CheckGLError();
 
-			OpenGL.glBindRenderbuffer(OpenGL.RENDERBUFFER_EXT, depth);
+			OpenGL.glBindRenderbuffer(OpenGL.GL_RENDERBUFFER, depth);
 			OpenGL.CheckGLError();
 
-			OpenGL.glRenderbufferStorage(OpenGL.RENDERBUFFER_EXT, OpenGL.GL_DEPTH_COMPONENT, size.Width, size.Height);
+			var glDepth = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_DEPTH_COMPONENT16 : OpenGL.GL_DEPTH_COMPONENT;
+			OpenGL.glRenderbufferStorage(OpenGL.GL_RENDERBUFFER, glDepth, size.Width, size.Height);
 			OpenGL.CheckGLError();
 
-			OpenGL.glFramebufferRenderbuffer(OpenGL.FRAMEBUFFER_EXT, OpenGL.DEPTH_ATTACHMENT_EXT, OpenGL.RENDERBUFFER_EXT, depth);
+			OpenGL.glFramebufferRenderbuffer(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_DEPTH_ATTACHMENT, OpenGL.GL_RENDERBUFFER, depth);
 			OpenGL.CheckGLError();
 
 			// Test for completeness
-			var status = OpenGL.glCheckFramebufferStatus(OpenGL.FRAMEBUFFER_EXT);
-			if (status != OpenGL.FRAMEBUFFER_COMPLETE_EXT)
+			var status = OpenGL.glCheckFramebufferStatus(OpenGL.GL_FRAMEBUFFER);
+			if (status != OpenGL.GL_FRAMEBUFFER_COMPLETE)
 			{
 				var error = "Error creating framebuffer: {0}\n{1}".F(status, new StackTrace());
 				OpenGL.WriteGraphicsLog(error);
@@ -65,19 +66,14 @@ namespace OpenRA.Platforms.Default
 			}
 
 			// Restore default buffer
-			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, 0);
+			OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, 0);
 			OpenGL.CheckGLError();
 		}
 
 		static int[] ViewportRectangle()
 		{
 			var v = new int[4];
-			unsafe
-			{
-				fixed (int* ptr = &v[0])
-					OpenGL.glGetIntegerv(OpenGL.GL_VIEWPORT, ptr);
-			}
-
+			OpenGL.glGetIntegerv(OpenGL.GL_VIEWPORT, out v[0]);
 			OpenGL.CheckGLError();
 			return v;
 		}
@@ -92,7 +88,7 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glFlush();
 			OpenGL.CheckGLError();
-			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, framebuffer);
+			OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, framebuffer);
 			OpenGL.CheckGLError();
 			OpenGL.glViewport(0, 0, size.Width, size.Height);
 			OpenGL.CheckGLError();
@@ -107,7 +103,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glFlush();
 			OpenGL.CheckGLError();
-			OpenGL.glBindFramebuffer(OpenGL.FRAMEBUFFER_EXT, 0);
+			OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, 0);
 			OpenGL.CheckGLError();
 			OpenGL.glViewport(cv[0], cv[1], cv[2], cv[3]);
 			OpenGL.CheckGLError();

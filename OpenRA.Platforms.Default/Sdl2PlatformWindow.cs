@@ -75,8 +75,6 @@ namespace OpenRA.Platforms.Default
 
 		public Sdl2PlatformWindow(Size requestWindowSize, WindowMode windowMode, int batchSize)
 		{
-			Console.WriteLine("Using SDL 2 with OpenGL renderer");
-
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
 			{
@@ -92,6 +90,25 @@ namespace OpenRA.Platforms.Default
 				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_GREEN_SIZE, 8);
 				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_BLUE_SIZE, 8);
 				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_ALPHA_SIZE, 0);
+
+				// Decide between OpenGL and OpenGL ES rendering
+				// Test whether we can use the preferred renderer and fall back to the other if that fails
+				// If neither works we will throw a graphics error later when trying to create the real window
+				bool useGLES;
+				if (Game.Settings.Graphics.PreferGLES)
+					useGLES = CanCreateGLWindow(3, 0, SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
+				else
+					useGLES = !CanCreateGLWindow(3, 2, SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_CORE);
+
+				var glMajor = 3;
+				var glMinor = useGLES ? 0 : 2;
+				var glProfile = useGLES ? SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES : SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_CORE;
+
+				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, glMajor);
+				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, glMinor);
+				SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)glProfile);
+
+				Console.WriteLine("Using SDL 2 with OpenGL{0} renderer", useGLES ? " ES" : "");
 
 				SDL.SDL_DisplayMode display;
 				SDL.SDL_GetCurrentDisplayMode(0, out display);
@@ -365,6 +382,34 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			return input.SetClipboardText(text);
+		}
+
+		static bool CanCreateGLWindow(int major, int minor, SDL.SDL_GLprofile profile)
+		{
+			// Implementation inspired by TestIndividualGLVersion from Veldrid
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, major);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, minor);
+			SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)profile);
+
+			var flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
+			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, flags);
+			if (window == IntPtr.Zero || !string.IsNullOrEmpty(SDL.SDL_GetError()))
+			{
+				SDL.SDL_ClearError();
+				return false;
+			}
+
+			var context = SDL.SDL_GL_CreateContext(window);
+			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
+			{
+				SDL.SDL_ClearError();
+				SDL.SDL_DestroyWindow(window);
+				return false;
+			}
+
+			SDL.SDL_GL_DeleteContext(context);
+			SDL.SDL_DestroyWindow(window);
+			return true;
 		}
 	}
 }

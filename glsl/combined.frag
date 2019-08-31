@@ -1,3 +1,10 @@
+#version {VERSION}
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+in vec4 vColor;
+
 uniform sampler2D Texture0;
 uniform sampler2D Texture1;
 uniform sampler2D Texture2;
@@ -10,15 +17,17 @@ uniform sampler2D Palette;
 uniform bool EnableDepthPreview;
 uniform float DepthTextureScale;
 
-varying vec4 vTexCoord;
-varying vec2 vTexMetadata;
-varying vec4 vChannelMask;
-varying vec4 vDepthMask;
-varying vec2 vTexSampler;
+in vec4 vTexCoord;
+in vec2 vTexMetadata;
+in vec4 vChannelMask;
+in vec4 vDepthMask;
+in vec2 vTexSampler;
 
-varying vec4 vColorFraction;
-varying vec4 vRGBAFraction;
-varying vec4 vPalettedFraction;
+in vec4 vColorFraction;
+in vec4 vRGBAFraction;
+in vec4 vPalettedFraction;
+
+out vec4 fragColor;
 
 float jet_r(float x)
 {
@@ -38,26 +47,26 @@ float jet_b(float x)
 vec4 Sample(float samplerIndex, vec2 pos)
 {
 	if (samplerIndex < 0.5)
-		return texture2D(Texture0, pos);
+		return texture(Texture0, pos);
 	else if (samplerIndex < 1.5)
-		return texture2D(Texture1, pos);
+		return texture(Texture1, pos);
 	else if (samplerIndex < 2.5)
-		return texture2D(Texture2, pos);
+		return texture(Texture2, pos);
 	else if (samplerIndex < 3.5)
-		return texture2D(Texture3, pos);
+		return texture(Texture3, pos);
 	else if (samplerIndex < 4.5)
-		return texture2D(Texture4, pos);
+		return texture(Texture4, pos);
 	else if (samplerIndex < 5.5)
-		return texture2D(Texture5, pos);
+		return texture(Texture5, pos);
 
-	return texture2D(Texture6, pos);
+	return texture(Texture6, pos);
 }
 
 void main()
 {
 	vec4 x = Sample(vTexSampler.s, vTexCoord.st);
 	vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
-	vec4 c = vPalettedFraction * texture2D(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
+	vec4 c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
 
 	// Discard any transparent fragments (both color and depth)
 	if (c.a == 0.0)
@@ -79,8 +88,8 @@ void main()
 		float r = clamp(jet_r(x), 0.0, 1.0);
 		float g = clamp(jet_g(x), 0.0, 1.0);
 		float b = clamp(jet_b(x), 0.0, 1.0);
-		gl_FragColor = vec4(r, g, b, 1.0);
+		fragColor = vec4(r, g, b, 1.0);
 	}
 	else
-		gl_FragColor = c;
+		fragColor = c;
 }

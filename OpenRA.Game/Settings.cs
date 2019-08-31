@@ -160,6 +160,9 @@ namespace OpenRA
 		[Desc("Disable separate OpenGL render thread on Windows operating systems.")]
 		public bool DisableWindowsRenderThread = true;
 
+		[Desc("Use OpenGL ES if both ES and regular OpenGL are available.")]
+		public bool PreferGLES = false;
+
 		public int BatchSize = 8192;
 		public int SheetSize = 2048;
 

@@ -37,6 +37,13 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.Initialize();
 
+			uint vao;
+			OpenGL.CheckGLError();
+			OpenGL.glGenVertexArrays(1, out vao);
+			OpenGL.CheckGLError();
+			OpenGL.glBindVertexArray(vao);
+			OpenGL.CheckGLError();
+
 			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
 			OpenGL.CheckGLError();
 			OpenGL.glEnableVertexAttribArray(Shader.TexCoordAttributeIndex);

@@ -85,7 +85,8 @@ namespace OpenRA.Platforms.Default
 				{
 					var intPtr = new IntPtr((void*)ptr);
 					PrepareTexture();
-					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, width, height,
+					var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
+					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
 						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
 					OpenGL.CheckGLError();
 				}
@@ -109,7 +110,8 @@ namespace OpenRA.Platforms.Default
 				{
 					var intPtr = new IntPtr((void*)ptr);
 					PrepareTexture();
-					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, width, height,
+					var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
+					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
 						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
 					OpenGL.CheckGLError();
 				}
@@ -121,19 +123,51 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			var data = new byte[4 * Size.Width * Size.Height];
 
-			OpenGL.CheckGLError();
-			OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture);
-			unsafe
+			// GLES doesn't support glGetTexImage so data must be read back via a frame buffer
+			if (OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES))
 			{
-				fixed (byte* ptr = &data[0])
+				// Query the active framebuffer so we can restore it afterwards
+				int lastFramebuffer;
+				OpenGL.glGetIntegerv(OpenGL.GL_FRAMEBUFFER_BINDING, out lastFramebuffer);
+
+				uint framebuffer;
+				OpenGL.glGenFramebuffers(1, out framebuffer);
+				OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, framebuffer);
+				OpenGL.CheckGLError();
+
+				OpenGL.glFramebufferTexture2D(OpenGL.GL_FRAMEBUFFER, OpenGL.GL_COLOR_ATTACHMENT0, OpenGL.GL_TEXTURE_2D, texture, 0);
+				OpenGL.CheckGLError();
+
+				unsafe
 				{
-					var intPtr = new IntPtr((void*)ptr);
-					OpenGL.glGetTexImage(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_BGRA,
-						OpenGL.GL_UNSIGNED_BYTE, intPtr);
+					fixed (byte* ptr = &data[0])
+					{
+						var intPtr = new IntPtr((void*)ptr);
+						OpenGL.glReadPixels(0, 0, Size.Width, Size.Height, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
+						OpenGL.CheckGLError();
+					}
 				}
+
+				OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, (uint)lastFramebuffer);
+				OpenGL.glDeleteFramebuffers(1, ref framebuffer);
+				OpenGL.CheckGLError();
+			}
+			else
+			{
+				OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture);
+				unsafe
+				{
+					fixed (byte* ptr = &data[0])
+					{
+						var intPtr = new IntPtr((void*)ptr);
+						OpenGL.glGetTexImage(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_BGRA,
+							OpenGL.GL_UNSIGNED_BYTE, intPtr);
+					}
+				}
+
+				OpenGL.CheckGLError();
 			}
 
-			OpenGL.CheckGLError();
 			return data;
 		}
 
@@ -145,7 +179,8 @@ namespace OpenRA.Platforms.Default
 
 			Size = new Size(width, height);
 			PrepareTexture();
-			OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA8, width, height,
+			var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
+			OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
 				0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, IntPtr.Zero);
 			OpenGL.CheckGLError();
 		}
