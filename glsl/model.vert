@@ -1,12 +1,14 @@
+#version {VERSION}
+
 uniform mat4 View;
 uniform mat4 TransformMatrix;
 
-attribute vec4 aVertexPosition;
-attribute vec4 aVertexTexCoord;
-attribute vec2 aVertexTexMetadata;
-varying vec4 vTexCoord;
-varying vec4 vChannelMask;
-varying vec4 vNormalsMask;
+in vec4 aVertexPosition;
+in vec4 aVertexTexCoord;
+in vec2 aVertexTexMetadata;
+out vec4 vTexCoord;
+out vec4 vChannelMask;
+out vec4 vNormalsMask;
 
 vec4 DecodeMask(float x)
 {
