@@ -20,12 +20,14 @@ namespace OpenRA.Platforms.Default
 	{
 		readonly ITexture texture;
 		readonly Size size;
+		readonly Color clearColor;
 		uint framebuffer, depth;
 		bool disposed;
 
-		public FrameBuffer(Size size, ITextureInternal texture)
+		public FrameBuffer(Size size, ITextureInternal texture, Color clearColor)
 		{
 			this.size = size;
+			this.clearColor = clearColor;
 			if (!Exts.IsPowerOf2(size.Width) || !Exts.IsPowerOf2(size.Height))
 				throw new InvalidDataException("Frame buffer size ({0}x{1}) must be a power of two".F(size.Width, size.Height));
 
@@ -94,7 +96,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glViewport(0, 0, size.Width, size.Height);
 			OpenGL.CheckGLError();
-			OpenGL.glClearColor(0, 0, 0, 0);
+			OpenGL.glClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
 			OpenGL.CheckGLError();
 			OpenGL.glClear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
 			OpenGL.CheckGLError();
