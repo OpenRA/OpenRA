@@ -504,6 +504,7 @@ OILB:
 	AppearsOnMapPreview:
 	GivesCashOnCapture:
 		Amount: 100
+	UpdatesDerrickCount:
 
 BR1:
 	Inherits: ^Bridge
