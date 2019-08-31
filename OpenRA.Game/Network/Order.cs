@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -271,7 +270,7 @@ namespace OpenRA
 				minLength += 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
 
 			if (ExtraActors != null)
-				minLength += ExtraActors.Count() * 4;
+				minLength += ExtraActors.Length * 4;
 
 			// ProtocolVersion.Orders and the associated documentation MUST be updated if the serialized format changes
 			var ret = new MemoryStream(minLength);
@@ -352,7 +351,7 @@ namespace OpenRA
 
 					if (fields.HasField(OrderFields.ExtraActors))
 					{
-						w.Write(ExtraActors.Count());
+						w.Write(ExtraActors.Length);
 						foreach (var a in ExtraActors)
 							w.Write(UIntFromActor(a));
 					}
