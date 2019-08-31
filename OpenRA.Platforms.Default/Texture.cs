@@ -72,6 +72,15 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		void SetData(IntPtr data, int width, int height)
+		{
+			PrepareTexture();
+			var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
+			OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
+				0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data);
+			OpenGL.CheckGLError();
+		}
+
 		public void SetData(byte[] colors, int width, int height)
 		{
 			VerifyThreadAffinity();
@@ -82,14 +91,7 @@ namespace OpenRA.Platforms.Default
 			unsafe
 			{
 				fixed (byte* ptr = &colors[0])
-				{
-					var intPtr = new IntPtr((void*)ptr);
-					PrepareTexture();
-					var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
-					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
-						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
-					OpenGL.CheckGLError();
-				}
+					SetData(new IntPtr(ptr), width, height);
 			}
 		}
 
@@ -107,14 +109,7 @@ namespace OpenRA.Platforms.Default
 			unsafe
 			{
 				fixed (uint* ptr = &colors[0, 0])
-				{
-					var intPtr = new IntPtr((void*)ptr);
-					PrepareTexture();
-					var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
-					OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
-						0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, intPtr);
-					OpenGL.CheckGLError();
-				}
+					SetData(new IntPtr(ptr), width, height);
 			}
 		}
 
@@ -178,11 +173,7 @@ namespace OpenRA.Platforms.Default
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
 
 			Size = new Size(width, height);
-			PrepareTexture();
-			var glInternalFormat = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
-			OpenGL.glTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, width, height,
-				0, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, IntPtr.Zero);
-			OpenGL.CheckGLError();
+			SetData(IntPtr.Zero, width, height);
 		}
 
 		public void Dispose()
