@@ -49,7 +49,6 @@ namespace OpenRA.Platforms.Default
 		Action<object> doDrawPrimitives;
 		Action<object> doEnableScissor;
 		Action<object> doSetBlendMode;
-		Action<object> doSaveScreenshot;
 
 		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int batchSize)
 		{
@@ -108,7 +107,6 @@ namespace OpenRA.Platforms.Default
 							context.EnableScissor(t.Item1, t.Item2, t.Item3, t.Item4);
 						};
 					doSetBlendMode = mode => { context.SetBlendMode((BlendMode)mode); };
-					doSaveScreenshot = path => context.SaveScreenshot((string)path);
 
 					Monitor.Pulse(syncObject);
 				}
@@ -446,11 +444,6 @@ namespace OpenRA.Platforms.Default
 		public void SetBlendMode(BlendMode mode)
 		{
 			Post(doSetBlendMode, mode);
-		}
-
-		public void SaveScreenshot(string path)
-		{
-			Post(doSaveScreenshot, path);
 		}
 	}
 
