@@ -48,23 +48,22 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		const string OrderID = "SetRallyPoint";
 
-		[Sync]
-		public CPos Location;
+		public List<CPos> Path;
 
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
 
 		const uint ForceSet = 1;
 
-		public void ResetLocation(Actor self)
+		public void ResetPath(Actor self)
 		{
-			Location = self.Location + Info.Offset;
+			Path = new List<CPos> { self.Location + Info.Offset };
 		}
 
 		public RallyPoint(Actor self, RallyPointInfo info)
 		{
 			Info = info;
-			ResetLocation(self);
+			ResetPath(self);
 			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
 		}
 
@@ -84,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.IsPlayerPalette)
 				PaletteName = Info.Palette + newOwner.InternalName;
 
-			ResetLocation(self);
+			ResetPath(self);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderID == OrderID)
 			{
-				return new Order(order.OrderID, self, target, false)
+				return new Order(order.OrderID, self, target, queued)
 				{
 					SuppressVisualFeedback = true,
 					ExtraData = ((RallyPointOrderTargeter)order).ForceSet ? ForceSet : 0
@@ -108,8 +107,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == OrderID)
-				Location = self.World.Map.CellContaining(order.Target.CenterPosition);
+			if (order.OrderString != OrderID)
+				return;
+
+			if (!order.Queued)
+				Path.Clear();
+
+			Path.Add(self.World.Map.CellContaining(order.Target.CenterPosition));
 		}
 
 		public static bool IsForceSet(Order order)
@@ -130,11 +134,14 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool ForceSet { get; private set; }
+			public bool IsQueued { get; protected set; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain)
 					return false;
+
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
 				if (self.World.Map.Contains(location))
@@ -154,8 +161,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				return false;
 			}
-
-			public bool IsQueued { get { return false; } } // unused
 		}
 	}
 }
