@@ -318,8 +318,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (moveTo.HasValue)
 			{
-				self.CancelActivity();
-				self.QueueActivity(new Move(self, moveTo.Value, WDist.Zero));
+				self.QueueActivity(false, new Move(self, moveTo.Value, WDist.Zero));
 				self.ShowTargetLines();
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
@@ -335,8 +334,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (cellInfo != null)
 				{
-					self.CancelActivity();
-					self.QueueActivity(new CallFunc(() => self.NotifyBlocker(cellInfo.Cell)));
+					self.QueueActivity(false, new CallFunc(() => self.NotifyBlocker(cellInfo.Cell)));
 					self.QueueActivity(new WaitFor(() => CanEnterCell(cellInfo.Cell)));
 					self.QueueActivity(new Move(self, cellInfo.Cell));
 
@@ -862,9 +860,6 @@ namespace OpenRA.Mods.Common.Traits
 				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
-
-				if (!order.Queued)
-					self.CancelActivity();
 
 				self.QueueActivity(order.Queued, WrapMove(new Move(self, cell, WDist.FromCells(8), null, true, Color.Green)));
 				self.ShowTargetLines();

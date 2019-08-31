@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			var transform = new Transform(self, info.IntoActor) { ForceHealthPercentage = info.ForceHealthPercentage, Faction = faction };
 			if (facing != null) transform.Facing = facing.Facing;
 			transform.SkipMakeAnims = info.SkipMakeAnims;
-			self.CancelActivity();
-			self.QueueActivity(transform);
+			self.QueueActivity(false, transform);
 		}
 	}
 }

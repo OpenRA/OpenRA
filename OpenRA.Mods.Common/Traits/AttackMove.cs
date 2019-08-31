@@ -69,9 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 			{
-				if (!order.Queued)
-					self.CancelActivity();
-
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
@@ -80,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				var assaultMoving = order.OrderString == "AssaultMove";
 
 				// TODO: this should scale with unit selection group size.
-				self.QueueActivity(new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 8, targetLineColor: Color.OrangeRed), assaultMoving));
+				self.QueueActivity(order.Queued, new AttackMoveActivity(self, () => move.MoveTo(targetLocation, 8, targetLineColor: Color.OrangeRed), assaultMoving));
 				self.ShowTargetLines();
 			}
 		}

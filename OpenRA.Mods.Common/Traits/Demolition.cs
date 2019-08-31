@@ -83,10 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new Demolish(self, order.Target, info.EnterBehaviour, info.DetonationDelay,
+			self.QueueActivity(order.Queued, new Demolish(self, order.Target, info.EnterBehaviour, info.DetonationDelay,
 				info.Flashes, info.FlashesDelay, info.FlashInterval));
 
 			self.ShowTargetLines();

@@ -159,10 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsCorrectCargoType(targetActor))
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new RideTransport(self, order.Target));
+			self.QueueActivity(order.Queued, new RideTransport(self, order.Target));
 			self.ShowTargetLines();
 		}
 

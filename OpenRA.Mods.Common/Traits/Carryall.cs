@@ -313,9 +313,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				if (!order.Queued)
-					self.CancelActivity();
-
 				self.QueueActivity(order.Queued, new PickupUnit(self, order.Target.Actor, Info.BeforeLoadDelay));
 				self.ShowTargetLines();
 			}

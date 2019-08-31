@@ -84,10 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.Target.Type != TargetType.FrozenActor)
 				return;
 
-			if (!order.Queued)
-				self.CancelActivity();
-
-			self.QueueActivity(new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience));
+			self.QueueActivity(order.Queued, new DonateExperience(self, order.Target, gainsExperience.Level, info.PlayerExperience));
 			self.ShowTargetLines();
 		}
 
