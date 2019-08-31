@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation circles;
 		readonly ExitInfo[] exits;
 
-		readonly WPos[] targetLine = new WPos[2];
-		CPos cachedLocation;
+		List<WPos> targetLineNodes = new List<WPos> { };
+		List<CPos> cachedLocations;
 
 		public RallyPointIndicator(Actor building, RallyPoint rp, ExitInfo[] exits)
 		{
@@ -52,11 +52,13 @@ namespace OpenRA.Mods.Common.Effects
 			if (circles != null)
 				circles.Tick();
 
-			if (cachedLocation != rp.Location)
+			if (cachedLocations == null || !cachedLocations.SequenceEqual(rp.Path))
 			{
-				cachedLocation = rp.Location;
+				cachedLocations = new List<CPos>(rp.Path);
+				targetLineNodes.Clear();
+				foreach (var c in cachedLocations)
+					targetLineNodes.Add(world.Map.CenterOfCell(c));
 
-				var rallyPos = world.Map.CenterOfCell(cachedLocation);
 				var exitPos = building.CenterPosition;
 
 				// Find closest exit
@@ -64,7 +66,7 @@ namespace OpenRA.Mods.Common.Effects
 				foreach (var exit in exits)
 				{
 					var ep = building.CenterPosition + exit.SpawnOffset;
-					var len = (rallyPos - ep).Length;
+					var len = (targetLineNodes[0] - ep).Length;
 					if (len < dist)
 					{
 						dist = len;
@@ -72,8 +74,7 @@ namespace OpenRA.Mods.Common.Effects
 					}
 				}
 
-				targetLine[0] = exitPos;
-				targetLine[1] = rallyPos;
+				targetLineNodes.Insert(0, exitPos);
 
 				if (circles != null)
 					circles.Play(rp.Info.CirclesSequence);
@@ -98,10 +99,10 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				var palette = wr.Palette(rp.PaletteName);
 				if (circles != null)
-					renderables = renderables.Concat(circles.Render(targetLine[1], palette));
+					renderables = renderables.Concat(circles.Render(targetLineNodes.Last(), palette));
 
 				if (flag != null)
-					renderables = renderables.Concat(flag.Render(targetLine[1], palette));
+					renderables = renderables.Concat(flag.Render(targetLineNodes.Last(), palette));
 			}
 
 			return renderables;
@@ -118,7 +119,18 @@ namespace OpenRA.Mods.Common.Effects
 			if (!building.World.Selection.Contains(building))
 				return SpriteRenderable.None;
 
-			return new IRenderable[] { new TargetLineRenderable(targetLine, building.Owner.Color, rp.Info.LineWidth) };
+			return RenderInner(wr);
+		}
+
+		IEnumerable<IRenderable> RenderInner(WorldRenderer wr)
+		{
+			var prev = targetLineNodes[0];
+			foreach (var pos in targetLineNodes.Skip(1))
+			{
+				var targetLine = new[] { prev, pos };
+				prev = pos;
+				yield return new TargetLineRenderable(targetLine, building.Owner.Color, rp.Info.LineWidth);
+			}
 		}
 	}
 }

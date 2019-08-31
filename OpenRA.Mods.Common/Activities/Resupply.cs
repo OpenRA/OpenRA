@@ -188,7 +188,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 				{
 					if (self.CurrentActivity.NextActivity == null && rp != null)
-						QueueChild(move.MoveTo(rp.Location, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
+						foreach (var cell in rp.Path)
+							QueueChild(move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
 					else
 						QueueChild(new TakeOff(self));
 
@@ -208,7 +209,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (self.CurrentActivity.NextActivity == null)
 				{
 					if (rp != null)
-						QueueChild(move.MoveTo(rp.Location, ignoreActor: repairableNear != null ? null : host.Actor));
+						foreach (var cell in rp.Path)
+							QueueChild(move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true));
 					else if (repairableNear == null)
 						QueueChild(move.MoveToTarget(self, host));
 				}
