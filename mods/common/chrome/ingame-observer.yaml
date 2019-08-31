@@ -301,7 +301,7 @@ Container@OBSERVER_WIDGETS:
 						Container@ECONOMY_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 740
+							Width: 620
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -340,16 +340,8 @@ Container@OBSERVER_WIDGETS:
 									Text: $/min
 									Align: Right
 									Shadow: True
-								Label@EARNED_THIS_MIN_HEADER:
-									X: 295
-									Width: 120
-									Height: PARENT_BOTTOM
-									Font: Bold
-									Text: Earned this min
-									Align: Right
-									Shadow: True
 								Label@ASSETS_HEADER:
-									X: 415
+									X: 295
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -357,7 +349,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@EARNED_HEADER:
-									X: 495
+									X: 375
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -365,7 +357,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@SPENT_HEADER:
-									X: 575
+									X: 455
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -373,7 +365,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS_HEADER:
-									X: 655
+									X: 535
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -675,7 +667,7 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 740
+							Width: 620
 							Height: 25
 							BaseName: scrollitem-nohover
 							Children:
@@ -715,36 +707,29 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
-								Label@EARNED_THIS_MIN:
-									X: 295
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
-									Align: Right
-									Shadow: True
 								Label@ASSETS:
-									X: 415
+									X: 295
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@EARNED:
-									X: 495
+									X: 375
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@SPENT:
-									X: 575
+									X: 455
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS:
-									X: 655
+									X: 535
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM

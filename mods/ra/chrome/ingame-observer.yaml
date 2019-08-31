@@ -333,7 +333,7 @@ Container@OBSERVER_WIDGETS:
 						Container@ECONOMY_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 745
+							Width: 715
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -372,16 +372,8 @@ Container@OBSERVER_WIDGETS:
 									Text: $/min
 									Align: Right
 									Shadow: True
-								Label@EARNED_THIS_MIN_HEADER:
-									X: 300
-									Width: 120
-									Height: PARENT_BOTTOM
-									Font: Bold
-									Text: Earned this min
-									Align: Right
-									Shadow: True
 								Label@ASSETS_HEADER:
-									X: 420
+									X: 300
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -389,7 +381,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@EARNED_HEADER:
-									X: 500
+									X: 380
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -397,7 +389,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@SPENT_HEADER:
-									X: 580
+									X: 460
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -405,11 +397,19 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS_HEADER:
-									X: 660
+									X: 540
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Harvesters
+									Align: Right
+									Shadow: True
+								Label@DERRICKS_HEADER:
+									X: 630
+									Width: 80
+									Height: PARENT_BOTTOM
+									Font: Bold
+									Text: Oil Derricks
 									Align: Right
 									Shadow: True
 						Container@PRODUCTION_STATS_HEADERS:
@@ -711,7 +711,7 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 745
+							Width: 715
 							Height: 24
 							BaseName: scrollitem-nohover
 							Children:
@@ -753,36 +753,36 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
-								Label@EARNED_THIS_MIN:
-									X: 300
-									Y: 0
-									Width: 120
-									Height: PARENT_BOTTOM
-									Align: Right
-									Shadow: True
 								Label@ASSETS:
-									X: 420
+									X: 300
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@EARNED:
-									X: 500
+									X: 380
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@SPENT:
-									X: 580
+									X: 460
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS:
-									X: 660
+									X: 540
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
+									Align: Right
+									Shadow: True
+								Label@DERRICKS:
+									X: 630
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
