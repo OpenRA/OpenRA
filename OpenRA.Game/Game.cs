@@ -550,7 +550,7 @@ namespace OpenRA
 				var path = Path.Combine(directory, string.Concat(filename, ".png"));
 				Log.Write("debug", "Taking screenshot " + path);
 
-				Renderer.Context.SaveScreenshot(path);
+				Renderer.SaveScreenshot(path);
 				Debug("Saved screenshot " + filename);
 			}
 		}

@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -306,6 +308,34 @@ namespace OpenRA
 		public void ReleaseWindowMouseFocus()
 		{
 			Window.ReleaseWindowMouseFocus();
+		}
+
+		public void SaveScreenshot(string path)
+		{
+			// Pull the data from the Texture directly to prevent the sheet from buffering it
+			var src = screenBuffer.Texture.GetData();
+			var srcWidth = screenSprite.Sheet.Size.Width;
+			var destWidth = screenSprite.Bounds.Width;
+			var destHeight = -screenSprite.Bounds.Height;
+			var channelOrder = new[] { 2, 1, 0, 3 };
+
+			ThreadPool.QueueUserWorkItem(_ =>
+			{
+				// Convert BGRA to RGBA
+				var dest = new byte[4 * destWidth * destHeight];
+				for (var y = 0; y < destHeight; y++)
+				{
+					for (var x = 0; x < destWidth; x++)
+					{
+						var destOffset = 4 * (y * destWidth + x);
+						var srcOffset = 4 * (y * srcWidth + x);
+						for (var i = 0; i < 4; i++)
+							dest[destOffset + i] = src[srcOffset + channelOrder[i]];
+					}
+				}
+
+				new Png(dest, destWidth, destHeight).Save(path);
+			});
 		}
 
 		public void Dispose()

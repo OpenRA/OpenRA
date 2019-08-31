@@ -66,7 +66,6 @@ namespace OpenRA
 		IShader CreateShader(string name);
 		void EnableScissor(int x, int y, int width, int height);
 		void DisableScissor();
-		void SaveScreenshot(string path);
 		void Present();
 		void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices);
 		void Clear();
