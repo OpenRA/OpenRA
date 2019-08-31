@@ -655,12 +655,26 @@ namespace OpenRA
 			{
 				++RenderFrame;
 
+				// Prepare renderables (i.e. render voxels) before calling BeginFrame
+				using (new PerfSample("render_prepare"))
+				{
+					Renderer.WorldModelRenderer.BeginFrame();
+
+					// World rendering is disabled while the loading screen is displayed
+					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+						worldRenderer.PrepareRenderables();
+
+					Ui.PrepareRenderables();
+					Renderer.WorldModelRenderer.EndFrame();
+				}
+
 				// worldRenderer is null during the initial install/download screen
 				if (worldRenderer != null)
 				{
 					Renderer.BeginFrame(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
 					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
 
+					// World rendering is disabled while the loading screen is displayed
 					// Use worldRenderer.World instead of OrderManager.World to avoid a rendering mismatch while processing orders
 					if (!worldRenderer.World.IsLoadingGameSave)
 						worldRenderer.Draw();
@@ -670,10 +684,6 @@ namespace OpenRA
 
 				using (new PerfSample("render_widgets"))
 				{
-					Renderer.WorldModelRenderer.BeginFrame();
-					Ui.PrepareRenderables();
-					Renderer.WorldModelRenderer.EndFrame();
-
 					Ui.Draw();
 
 					if (ModData != null && ModData.CursorProvider != null)
