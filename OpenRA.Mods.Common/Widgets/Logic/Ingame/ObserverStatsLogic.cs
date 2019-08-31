@@ -348,7 +348,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
 			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
-			template.Get<LabelWidget>("EARNED_THIS_MIN").GetText = () => "$" + stats.EarnedThisMinute;
 			template.Get<LabelWidget>("EARNED").GetText = () => "$" + res.Earned;
 			template.Get<LabelWidget>("SPENT").GetText = () => "$" + res.Spent;
 
@@ -359,6 +358,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
 			harvesters.GetText = () => world.ActorsHavingTrait<Harvester>().Count(a => a.Owner == player && !a.IsDead).ToString();
+
+			var derricks = template.GetOrNull<LabelWidget>("DERRICKS");
+			if (derricks != null)
+				derricks.GetText = () => world.ActorsHavingTrait<UpdatesDerrickCount>().Count(a => a.Owner == player && !a.IsDead).ToString();
 
 			return template;
 		}
