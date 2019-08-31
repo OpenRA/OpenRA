@@ -1,19 +1,21 @@
+#version {VERSION}
+
 uniform vec3 Scroll;
 uniform vec3 r1, r2;
 
-attribute vec4 aVertexPosition;
-attribute vec4 aVertexTexCoord;
-attribute vec2 aVertexTexMetadata;
+in vec4 aVertexPosition;
+in vec4 aVertexTexCoord;
+in vec2 aVertexTexMetadata;
 
-varying vec4 vTexCoord;
-varying vec2 vTexMetadata;
-varying vec4 vChannelMask;
-varying vec4 vDepthMask;
-varying vec2 vTexSampler;
+out vec4 vTexCoord;
+out vec2 vTexMetadata;
+out vec4 vChannelMask;
+out vec4 vDepthMask;
+out vec2 vTexSampler;
 
-varying vec4 vColorFraction;
-varying vec4 vRGBAFraction;
-varying vec4 vPalettedFraction;
+out vec4 vColorFraction;
+out vec4 vRGBAFraction;
+out vec4 vPalettedFraction;
 
 vec4 UnpackChannelAttributes(float x)
 {

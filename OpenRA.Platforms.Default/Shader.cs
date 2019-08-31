@@ -33,6 +33,9 @@ namespace OpenRA.Platforms.Default
 			var filename = Path.Combine(Platform.GameDir, "glsl", name + "." + ext);
 			var code = File.ReadAllText(filename);
 
+			var version = OpenGL.Features.HasFlag(OpenGL.GLFeatures.GLES) ? "300 es" : "140";
+			code = code.Replace("{VERSION}", version);
+
 			var shader = OpenGL.glCreateShader(type);
 			OpenGL.CheckGLError();
 			unsafe
@@ -77,6 +80,9 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glBindAttribLocation(program, TexMetadataAttributeIndex, "aVertexTexMetadata");
 			OpenGL.CheckGLError();
+			OpenGL.glBindFragDataLocation(program, 0, "fragColor");
+			OpenGL.CheckGLError();
+
 			OpenGL.glAttachShader(program, vertexShader);
 			OpenGL.CheckGLError();
 			OpenGL.glAttachShader(program, fragmentShader);
@@ -135,6 +141,7 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
+			OpenGL.CheckGLError();
 
 			// bind the textures
 			foreach (var kv in textures)

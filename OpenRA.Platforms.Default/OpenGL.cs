@@ -24,11 +24,12 @@ namespace OpenRA.Platforms.Default
 		Justification = "C-style naming is kept for consistency with the underlying native API.")]
 	internal static class OpenGL
 	{
+		[Flags]
 		public enum GLFeatures
 		{
 			None = 0,
-			GL2OrGreater = 1,
-			FramebufferExt = 4,
+			Core = 1,
+			GLES = 2,
 		}
 
 		public static GLFeatures Features { get; private set; }
@@ -105,6 +106,7 @@ namespace OpenRA.Platforms.Default
 		public const int GL_DYNAMIC_DRAW = 0x88E8;
 
 		public const int GL_TEXTURE0 = 0x84C0;
+		public const int GL_DEPTH_COMPONENT16 = 0x81A5;
 
 		// OpenGL 2
 		public const int GL_FRAGMENT_SHADER = 0x8B30;
@@ -127,14 +129,17 @@ namespace OpenRA.Platforms.Default
 		public const int GL_RENDERER = 0x1F01;
 		public const int GL_VERSION = 0x1F02;
 		public const int GL_EXTENSIONS = 0x1F03;
+		public const int GL_NUM_EXTENSIONS = 0x821D;
+
 		public const int GL_SHADING_LANGUAGE_VERSION = 0x8B8C;
 
 		// Framebuffers
-		public const int FRAMEBUFFER_EXT = 0x8D40;
-		public const int RENDERBUFFER_EXT = 0x8D41;
-		public const int COLOR_ATTACHMENT0_EXT = 0x8CE0;
-		public const int DEPTH_ATTACHMENT_EXT = 0x8D00;
-		public const int FRAMEBUFFER_COMPLETE_EXT = 0x8CD5;
+		public const int GL_FRAMEBUFFER = 0x8D40;
+		public const int GL_RENDERBUFFER = 0x8D41;
+		public const int GL_COLOR_ATTACHMENT0 = 0x8CE0;
+		public const int GL_DEPTH_ATTACHMENT = 0x8D00;
+		public const int GL_FRAMEBUFFER_COMPLETE = 0x8CD5;
+		public const int GL_FRAMEBUFFER_BINDING = 0x8CA6;
 
 		public delegate void Flush();
 		public static Flush glFlush { get; private set; }
@@ -162,7 +167,18 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public unsafe delegate int GetIntegerv(int pname, int* param);
+		delegate IntPtr GetStringi(int name, uint index);
+		static GetStringi glGetStringiInternal;
+
+		public static string glGetStringi(int name, uint index)
+		{
+			unsafe
+			{
+				return new string((sbyte*)glGetStringiInternal(name, index));
+			}
+		}
+
+		public unsafe delegate int GetIntegerv(int pname, out int param);
 		public static GetIntegerv glGetIntegerv { get; private set; }
 
 		public delegate void Finish();
@@ -241,6 +257,12 @@ namespace OpenRA.Platforms.Default
 		public delegate void BindBuffer(int target, uint buffer);
 		public static BindBuffer glBindBuffer { get; private set; }
 
+		public delegate void GenVertexArrays(int n, out uint buffers);
+		public static GenVertexArrays glGenVertexArrays { get; private set; }
+
+		public delegate void BindVertexArray(uint buffer);
+		public static BindVertexArray glBindVertexArray { get; private set; }
+
 		public delegate void BufferData(int target, IntPtr size, IntPtr data, int usage);
 		public static BufferData glBufferData { get; private set; }
 
@@ -252,6 +274,9 @@ namespace OpenRA.Platforms.Default
 
 		public delegate void BindAttribLocation(uint program, int index, string name);
 		public static BindAttribLocation glBindAttribLocation { get; private set; }
+
+		public delegate void BindFragDataLocation(uint program, int colorNumber, string name);
+		public static BindFragDataLocation glBindFragDataLocation { get; private set; }
 
 		public delegate void VertexAttribPointer(int index, int size, int type, bool normalized,
 			int stride, IntPtr pointer);
@@ -361,6 +386,7 @@ namespace OpenRA.Platforms.Default
 			{
 				glGetError = Bind<GetError>("glGetError");
 				glGetStringInternal = Bind<GetString>("glGetString");
+				glGetStringiInternal = Bind<GetStringi>("glGetStringi");
 			}
 			catch (Exception)
 			{
@@ -368,7 +394,7 @@ namespace OpenRA.Platforms.Default
 			}
 
 			DetectGLFeatures();
-			if (!Features.HasFlag(GLFeatures.GL2OrGreater) || !Features.HasFlag(GLFeatures.FramebufferExt))
+			if (!Features.HasFlag(GLFeatures.Core))
 			{
 				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
@@ -411,7 +437,10 @@ namespace OpenRA.Platforms.Default
 				glBufferData = Bind<BufferData>("glBufferData");
 				glBufferSubData = Bind<BufferSubData>("glBufferSubData");
 				glDeleteBuffers = Bind<DeleteBuffers>("glDeleteBuffers");
+				glGenVertexArrays = Bind<GenVertexArrays>("glGenVertexArrays");
+				glBindVertexArray = Bind<BindVertexArray>("glBindVertexArray");
 				glBindAttribLocation = Bind<BindAttribLocation>("glBindAttribLocation");
+				glBindFragDataLocation = Bind<BindFragDataLocation>("glBindFragDataLocation");
 				glVertexAttribPointer = Bind<VertexAttribPointer>("glVertexAttribPointer");
 				glEnableVertexAttribArray = Bind<EnableVertexAttribArray>("glEnableVertexAttribArray");
 				glDisableVertexAttribArray = Bind<DisableVertexAttribArray>("glDisableVertexAttribArray");
@@ -433,16 +462,16 @@ namespace OpenRA.Platforms.Default
 				glGetTexImage = Bind<GetTexImage>("glGetTexImage");
 				glTexParameteri = Bind<TexParameteri>("glTexParameteri");
 				glTexParameterf = Bind<TexParameterf>("glTexParameterf");
-				glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffersEXT");
-				glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebufferEXT");
-				glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2DEXT");
-				glDeleteFramebuffers = Bind<DeleteFramebuffers>("glDeleteFramebuffersEXT");
-				glGenRenderbuffers = Bind<GenRenderbuffers>("glGenRenderbuffersEXT");
-				glBindRenderbuffer = Bind<BindRenderbuffer>("glBindRenderbufferEXT");
-				glRenderbufferStorage = Bind<RenderbufferStorage>("glRenderbufferStorageEXT");
-				glDeleteRenderbuffers = Bind<DeleteRenderbuffers>("glDeleteRenderbuffersEXT");
-				glFramebufferRenderbuffer = Bind<FramebufferRenderbuffer>("glFramebufferRenderbufferEXT");
-				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatusEXT");
+				glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffers");
+				glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebuffer");
+				glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2D");
+				glDeleteFramebuffers = Bind<DeleteFramebuffers>("glDeleteFramebuffers");
+				glGenRenderbuffers = Bind<GenRenderbuffers>("glGenRenderbuffers");
+				glBindRenderbuffer = Bind<BindRenderbuffer>("glBindRenderbuffer");
+				glRenderbufferStorage = Bind<RenderbufferStorage>("glRenderbufferStorage");
+				glDeleteRenderbuffers = Bind<DeleteRenderbuffers>("glDeleteRenderbuffers");
+				glFramebufferRenderbuffer = Bind<FramebufferRenderbuffer>("glFramebufferRenderbuffer");
+				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatus");
 			}
 			catch (Exception e)
 			{
@@ -461,22 +490,24 @@ namespace OpenRA.Platforms.Default
 			try
 			{
 				Version = glGetString(GL_VERSION);
-				var version = Version.Contains(" ") ? Version.Split(' ')[0].Split('.') : Version.Split('.');
 
 				var major = 0;
-				if (version.Length > 0)
-					int.TryParse(version[0], out major);
-
 				var minor = 0;
-				if (version.Length > 1)
-					int.TryParse(version[1], out minor);
 
-				if (major >= 2 && minor >= 0)
-					Features |= GLFeatures.GL2OrGreater;
+				// Assume that the first numeric token corresponds to the GL version
+				foreach (var t in Version.Split())
+				{
+					var split = t.Split('.');
+					if (split.Length >= 2 && int.TryParse(split[0], out major) && int.TryParse(split[1], out minor))
+						break;
+				}
 
-				var hasFramebufferExt = SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_TRUE;
-				if (hasFramebufferExt)
-					Features |= GLFeatures.FramebufferExt;
+				// Core features are defined as the shared feature set of GL 3.2 and (GLES 3 + BGRA extension)
+				var hasBGRA = SDL.SDL_GL_ExtensionSupported("GL_EXT_texture_format_BGRA8888") == SDL.SDL_bool.SDL_TRUE;
+				if (Version.Contains(" ES") && hasBGRA && major >= 3)
+					Features = GLFeatures.Core | GLFeatures.GLES;
+				else if (major > 3 || (major == 3 && minor >= 2))
+					Features = GLFeatures.Core;
 			}
 			catch (Exception) { }
 		}
@@ -516,7 +547,11 @@ namespace OpenRA.Platforms.Default
 			Log.Write("graphics", "GL Version: {0}", glGetString(GL_VERSION));
 			Log.Write("graphics", "Shader Version: {0}", glGetString(GL_SHADING_LANGUAGE_VERSION));
 			Log.Write("graphics", "Available extensions:");
-			Log.Write("graphics", glGetString(GL_EXTENSIONS));
+
+			int extensionCount;
+			glGetIntegerv(GL_NUM_EXTENSIONS, out extensionCount);
+			for (var i = 0; i < extensionCount; i++)
+				Log.Write("graphics", glGetStringi(GL_EXTENSIONS, (uint)i));
 		}
 	}
 }
