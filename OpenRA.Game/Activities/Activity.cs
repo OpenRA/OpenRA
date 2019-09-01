@@ -40,9 +40,11 @@ namespace OpenRA.Activities
 	 * Things to be aware of when writing activities:
 	 *
 	 * - Use "return true" at least once somewhere in the tick method.
-	 * - Do not "reuse" (with "SequenceActivities", for example) activity objects that have already started running.
+	 * - Do not "reuse" activity objects (by queuing them as next or child, for example) that have already started running.
 	 *   Queue a new instance instead.
 	 * - Avoid calling actor.CancelActivity(). It is almost always a bug. Call activity.Cancel() instead.
+	 * - Do not evaluate dynamic state (an actor's location, health, conditions, etc.) in the activity's constructor,
+	 *   as that might change before the activity gets to tick for the first time.  Use the OnFirstRun() method instead.
 	 */
 	public abstract class Activity : IActivityInterface
 	{
