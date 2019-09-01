@@ -65,8 +65,6 @@ TENF:
 	HitShape:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-512,0, 355,512,0, -281,-512,0, -630,512,0
-	Selectable:
-		Bounds: 48,48
 
 SYRF:
 	Inherits: ^FakeBuilding
