@@ -167,7 +167,9 @@ namespace OpenRA.Mods.Cnc.Traits
 					world.CancelInputMode();
 			}
 
-			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
+			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
+
+			protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var targetUnits = power.UnitsInRange(xy).Where(a => !world.FogObscures(a));
@@ -291,7 +293,10 @@ namespace OpenRA.Mods.Cnc.Traits
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);
 				}
+			}
 
+			protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
+			{
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))

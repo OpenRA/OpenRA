@@ -222,6 +222,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				}
 			}
 
+			protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
+
 			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				return "ability";

@@ -281,6 +281,8 @@ namespace OpenRA.Mods.Common.Orders
 			return preview != null ? preview.Render(wr, topLeft, footprint) : Enumerable.Empty<IRenderable>();
 		}
 
+		IEnumerable<IRenderable> IOrderGenerator.RenderAnnotations(WorldRenderer wr, World world) { yield break; }
+
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return "default"; }
 
 		bool IOrderGenerator.HandleKeyPress(KeyInput e)
