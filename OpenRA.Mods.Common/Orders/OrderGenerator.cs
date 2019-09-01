@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Orders
 		void IOrderGenerator.Tick(World world) { Tick(world); }
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { return Render(wr, world); }
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world) { return RenderAboveShroud(wr, world); }
+		IEnumerable<IRenderable> IOrderGenerator.RenderAnnotations(WorldRenderer wr, World world) { return RenderAnnotations(wr, world); }
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi) { return GetCursor(world, cell, worldPixel, mi); }
 		void IOrderGenerator.Deactivate() { }
 		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Common.Orders
 		protected abstract void Tick(World world);
 		protected abstract IEnumerable<IRenderable> Render(WorldRenderer wr, World world);
 		protected abstract IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world);
+		protected abstract IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world);
 		protected abstract string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
 		protected abstract IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi);
 	}
