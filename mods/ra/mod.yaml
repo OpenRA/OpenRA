@@ -200,6 +200,10 @@ Fonts:
 		Font: ra|ZoodRangmah.ttf
 		Size: 48
 		Ascender: 26
+	Symbols:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
 
 Missions:
 	ra|missions.yaml

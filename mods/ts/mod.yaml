@@ -242,6 +242,10 @@ Fonts:
 		Font: common|FreeSansBold.ttf
 		Size: 32
 		Ascender: 24
+	Symbols:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
 
 SupportsMapsFrom: ts
 

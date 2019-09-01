@@ -184,6 +184,10 @@ Fonts:
 		Font: d2k|Dune2k.ttf
 		Size: 32
 		Ascender: 23
+	Symbols:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
 
 Missions:
 	d2k|missions.yaml
