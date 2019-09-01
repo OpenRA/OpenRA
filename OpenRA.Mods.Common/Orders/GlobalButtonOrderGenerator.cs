@@ -63,6 +63,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
+		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 
 		protected abstract override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
 	}
