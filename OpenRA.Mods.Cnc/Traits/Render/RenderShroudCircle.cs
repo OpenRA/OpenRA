@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Contrast color of the circle.")]
 		public readonly Color ContrastColor = Color.FromArgb(96, Color.Black);
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
+		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			var localRange = ai.TraitInfos<CreatesShroudInfo>()
 				.Where(csi => csi.EnabledByDefault)

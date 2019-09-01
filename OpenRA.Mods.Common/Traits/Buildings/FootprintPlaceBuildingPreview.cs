@@ -97,19 +97,16 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		protected IEnumerable<IRenderable> RenderDecorations(WorldRenderer wr, CPos topLeft)
+		protected virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, CPos topLeft)
 		{
 			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
 			foreach (var d in decorations)
-				foreach (var r in d.Render(wr, wr.World, actorInfo, centerPosition))
+				foreach (var r in d.RenderAnnotations(wr, wr.World, actorInfo, centerPosition))
 					yield return r;
 		}
 
 		protected virtual IEnumerable<IRenderable> RenderInner(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)
 		{
-			foreach (var r in RenderDecorations(wr, topLeft))
-				yield return r;
-
 			foreach (var r in RenderFootprint(wr, topLeft, footprint))
 				yield return r;
 		}
@@ -117,6 +114,11 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IPlaceBuildingPreview.Render(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)
 		{
 			return RenderInner(wr, topLeft, footprint);
+		}
+
+		IEnumerable<IRenderable> IPlaceBuildingPreview.RenderAnnotations(WorldRenderer wr, CPos topLeft)
+		{
+			return RenderAnnotations(wr, topLeft);
 		}
 
 		void IPlaceBuildingPreview.Tick() { TickInner(); }
