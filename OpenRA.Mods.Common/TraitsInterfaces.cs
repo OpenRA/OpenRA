@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IPlaceBuildingDecorationInfo : ITraitInfo
 	{
-		IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
+		IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
 	[RequireExplicitImplementation]
