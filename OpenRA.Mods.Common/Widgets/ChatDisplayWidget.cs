@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var textSize = font.Measure(text).Y;
 				var offset = font.TopOffset;
 
-				if (chatPos.Y < pos.Y)
+				if (chatPos.Y - font.TopOffset < pos.Y)
 					break;
 
 				var textLineHeight = lineHeight;
