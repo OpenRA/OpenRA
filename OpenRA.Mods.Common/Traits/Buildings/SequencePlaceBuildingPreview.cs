@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override IEnumerable<IRenderable> RenderInner(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)
 		{
-			foreach (var r in RenderDecorations(wr, topLeft))
+			foreach (var r in RenderAnnotations(wr, topLeft))
 				yield return r;
 
 			if (info.FootprintUnderPreview != PlaceBuildingCellType.None)

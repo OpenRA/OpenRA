@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		// Computed range
 		Lazy<WDist> range;
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
+		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			if (range == null || range.Value == WDist.Zero)
 				return SpriteRenderable.None;

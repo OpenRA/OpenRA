@@ -91,9 +91,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (palette != null)
 				previewRenderables = previewRenderables.Select(a => a.IsDecoration ? a : a.WithPalette(palette));
 
-			foreach (var r in RenderDecorations(wr, topLeft))
-				yield return r;
-
 			if (info.FootprintUnderPreview != PlaceBuildingCellType.None)
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintUnderPreview))
 					yield return r;
