@@ -60,22 +60,22 @@ fi
 if [ ! -f SDL2-CS.dll ] || [ ! -f SDL2-CS.dll.config ]; then
 	echo "Fetching SDL2-CS from GitHub."
 	if command -v curl >/dev/null 2>&1; then
-		curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20161223/SDL2-CS.dll
-		curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20161223/SDL2-CS.dll.config
+		curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20190907/SDL2-CS.dll
+		curl -s -L -O https://github.com/OpenRA/SDL2-CS/releases/download/20190907/SDL2-CS.dll.config
 	else
-		wget -cq https://github.com/OpenRA/SDL2-CS/releases/download/20161223/SDL2-CS.dll
-		wget -cq https://github.com/OpenRA/SDL2-CS/releases/download/20161223/SDL2-CS.dll.config
+		wget -cq https://github.com/OpenRA/SDL2-CS/releases/download/20190907/SDL2-CS.dll
+		wget -cq https://github.com/OpenRA/SDL2-CS/releases/download/20190907/SDL2-CS.dll.config
 	fi
 fi
 
 if [ ! -f OpenAL-CS.dll ] || [ ! -f OpenAL-CS.dll.config ]; then
 	echo "Fetching OpenAL-CS from GitHub."
 	if command -v curl >/dev/null 2>&1; then
-		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll
-		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll.config
+		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20190907/OpenAL-CS.dll
+		curl -s -L -O https://github.com/OpenRA/OpenAL-CS/releases/download/20190907/OpenAL-CS.dll.config
 	else
-		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll
-		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20180106/OpenAL-CS.dll.config
+		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20190907/OpenAL-CS.dll
+		wget -cq https://github.com/OpenRA/OpenAL-CS/releases/download/20190907/OpenAL-CS.dll.config
 	fi
 fi
 
