@@ -151,7 +151,7 @@ test: core
 all: dependencies core
 
 core:
-	@command -v $(MSBUILD) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.4."; exit 1)
+	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 5.4."; exit 1)
 ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
 	@$(MSBUILD) -t:build -p:Configuration="Release-x86"
 else
