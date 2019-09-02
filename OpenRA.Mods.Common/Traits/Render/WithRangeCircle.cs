@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
 					if (a.Trait.Info.Type == Type)
-						foreach (var r in a.Trait.RenderRangeCircle(a.Actor, wr))
+						foreach (var r in a.Trait.RenderRangeCircle(a.Actor, wr, RangeCircleVisibility.WhenSelected))
 							yield return r;
 			}
 		}
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
-	class WithRangeCircle : ConditionalTrait<WithRangeCircleInfo>, IRenderAboveShroudWhenSelected, IRenderAboveWorld
+	class WithRangeCircle : ConditionalTrait<WithRangeCircleInfo>, IRenderAboveShroudWhenSelected, IRenderAboveShroud
 	{
 		readonly Actor self;
 
@@ -84,37 +84,29 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr, RangeCircleVisibility visibility)
 		{
-			if (Info.Visible == RangeCircleVisibility.WhenSelected && Visible)
+			if (Info.Visible == visibility && Visible)
 				yield return new RangeCircleRenderable(
 					self.CenterPosition,
 					Info.Range,
 					0,
 					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
 					Color.FromArgb(96, Color.Black));
-
-			yield break;
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			return RenderRangeCircle(self, wr);
+			return RenderRangeCircle(self, wr, RangeCircleVisibility.WhenSelected);
 		}
 
 		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (Info.Visible == RangeCircleVisibility.Always && Visible)
-				RangeCircleRenderable.DrawRangeCircle(
-					wr,
-					self.CenterPosition,
-					Info.Range,
-					1,
-					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
-					3,
-					Color.FromArgb(96, Color.Black));
+			return RenderRangeCircle(self, wr, RangeCircleVisibility.Always);
 		}
+
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
 	}
 }
