@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -32,11 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
 	}
 
-	public class ExitsDebugOverlay : IRenderAboveWorld
+	public class ExitsDebugOverlay : IRenderAboveShroudWhenSelected
 	{
 		readonly ExitsDebugOverlayManager manager;
 		readonly ExitsDebugOverlayInfo info;
-		readonly RgbaColorRenderer rgbaRenderer;
 		readonly ExitInfo[] exits;
 
 		CPos[] exitCells;
@@ -47,14 +47,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			manager = self.World.WorldActor.TraitOrDefault<ExitsDebugOverlayManager>();
-			rgbaRenderer = Game.Renderer.WorldRgbaColorRenderer;
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 		}
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (manager == null || !manager.Enabled)
-				return;
+				yield break;
 
 			exitCells = exits.Select(e => self.Location + e.ExitCell).ToArray();
 
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 					var color = self.Owner.Color;
 					var vec = exitCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(exitCell);
-					new TextRenderable(manager.Font, center, 0, color, vec.ToString()).Render(wr);
+					yield return new TextRenderable(manager.Font, center, 0, color, vec.ToString());
 				}
 			}
 
@@ -82,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var vec = perimCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(perimCell);
-					new TextRenderable(manager.Font, center, 0, color, vec.ToString()).Render(wr);
+					yield return new TextRenderable(manager.Font, center, 0, color, vec.ToString());
 				}
 			}
 
@@ -97,9 +96,11 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var exitCellCenter = self.World.Map.CenterOfCell(exitCells[i]);
-					rgbaRenderer.DrawLine(wr.Screen3DPosition(spawnPos), wr.Screen3DPosition(exitCellCenter), 1f, self.Owner.Color);
+					yield return new LineAnnotationRenderable(spawnPos, exitCellCenter, 1, self.Owner.Color);
 				}
 			}
 		}
+
+		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
 	}
 }
