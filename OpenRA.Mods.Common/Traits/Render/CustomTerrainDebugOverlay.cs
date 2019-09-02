@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Commands;
 using OpenRA.Mods.Common.Graphics;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CustomTerrainDebugOverlay(init.Self, this); }
 	}
 
-	class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRenderAboveWorld
+	class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRenderAboveShroud
 	{
 		const string CommandName = "debugcustomterrain";
 		const string CommandDesc = "toggles the custom terrain debug overlay.";
@@ -56,13 +57,16 @@ namespace OpenRA.Mods.Common.Traits
 				Enabled ^= true;
 		}
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (!Enabled)
-				return;
+				yield break;
 
 			foreach (var uv in wr.Viewport.VisibleCellsInsideBounds.CandidateMapCoords)
 			{
+				if (self.World.ShroudObscures(uv))
+					continue;
+
 				var cell = uv.ToCPos(wr.World.Map);
 				var center = wr.World.Map.CenterOfCell(cell);
 				var terrainType = self.World.Map.CustomTerrain[cell];
@@ -70,9 +74,10 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var info = wr.World.Map.GetTerrainInfo(cell);
-				var render = new TextRenderable(font, center, 0, info.Color, info.Type);
-				render.Render(wr);
+				yield return new TextRenderable(font, center, 0, info.Color, info.Type);
 			}
 		}
+
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
 	}
 }
