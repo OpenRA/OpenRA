@@ -444,6 +444,8 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var actor in actors)
 				{
 					var actorBlocksPlayers = world.AllPlayersMask;
+					var actorCrushablePlayers = world.NoPlayersMask;
+
 					var crushables = actor.TraitsImplementing<ICrushable>();
 					var mobile = actor.OccupiesSpace as Mobile;
 					var isMoving = mobile != null && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
@@ -452,10 +454,8 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						cellFlag |= CellFlag.HasCrushableActor;
 						foreach (var crushable in crushables)
-							cellCrushablePlayers = cellCrushablePlayers.Intersect(crushable.CrushableBy(actor, Info.Crushes));
+							actorCrushablePlayers = actorCrushablePlayers.Union(crushable.CrushableBy(actor, Info.Crushes));
 					}
-					else
-						cellCrushablePlayers = world.NoPlayersMask;
 
 					if (isMoving)
 					{
@@ -471,6 +471,7 @@ namespace OpenRA.Mods.Common.Traits
 							cellFlag |= CellFlag.HasTemporaryBlocker;
 					}
 
+					cellCrushablePlayers = cellCrushablePlayers.Intersect(actorCrushablePlayers);
 					cellBlockedPlayers = cellBlockedPlayers.Union(actorBlocksPlayers);
 				}
 
