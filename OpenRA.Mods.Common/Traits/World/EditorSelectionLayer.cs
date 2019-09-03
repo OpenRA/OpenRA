@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
 	}
 
-	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveWorld
+	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveShroud
 	{
 		readonly EditorSelectionLayerInfo info;
 		readonly Map map;
@@ -80,20 +81,22 @@ namespace OpenRA.Mods.Common.Traits
 			CopyRegion = PasteRegion = null;
 		}
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (wr.World.Type != WorldType.Editor)
-				return;
+				yield break;
 
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)
-					new SpriteRenderable(copySprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, true).PrepareRender(wr).Render(wr);
+					yield return new SpriteRenderable(copySprite, wr.World.Map.CenterOfCell(c),
+						WVec.Zero, -511, palette, 1f, true);
 
 			if (PasteRegion != null)
 				foreach (var c in PasteRegion)
-					new SpriteRenderable(pasteSprite, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, true).PrepareRender(wr).Render(wr);
+					yield return new SpriteRenderable(pasteSprite, wr.World.Map.CenterOfCell(c),
+						WVec.Zero, -511, palette, 1f, true);
 		}
+
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
 	}
 }
