@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -93,7 +94,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-actor.Orientation));
 		}
 
-		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
 
@@ -107,18 +108,15 @@ namespace OpenRA.Mods.Common.HitShapes
 			var offset2 = new WVec(aa.Y - bb.Y, bb.X - aa.X, 0);
 			offset2 = offset2 * Radius.Length / offset2.Length;
 
-			var c = Color.Yellow;
-			RangeCircleRenderable.DrawRangeCircle(wr, a, Radius, 1, c, 0, c);
-			RangeCircleRenderable.DrawRangeCircle(wr, b, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(a - offset1), wr.Screen3DPosition(b - offset1) }, 1, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(a + offset1), wr.Screen3DPosition(b + offset1) }, 1, c);
-
-			RangeCircleRenderable.DrawRangeCircle(wr, aa, Radius, 1, c, 0, c);
-			RangeCircleRenderable.DrawRangeCircle(wr, bb, Radius, 1, c, 0, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(aa - offset2), wr.Screen3DPosition(bb - offset2) }, 1, c);
-			wcr.DrawLine(new[] { wr.Screen3DPosition(aa + offset2), wr.Screen3DPosition(bb + offset2) }, 1, c);
-
-			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
+			yield return new CircleAnnotationRenderable(a, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(b, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(aa, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(bb, Radius, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(actorPos, OuterRadius, 1,  Color.LimeGreen);
+			yield return new LineAnnotationRenderable(a - offset1, b - offset1, 1, Color.Yellow);
+			yield return new LineAnnotationRenderable(a + offset1, b + offset1, 1, Color.Yellow);
+			yield return new LineAnnotationRenderable(aa - offset2, bb - offset2, 1, Color.Yellow);
+			yield return new LineAnnotationRenderable(aa + offset2, bb + offset2, 1, Color.Yellow);
 		}
 	}
 }

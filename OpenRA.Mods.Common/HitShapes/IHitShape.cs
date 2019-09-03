@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.HitShapes
@@ -21,6 +22,6 @@ namespace OpenRA.Mods.Common.HitShapes
 		WDist DistanceFromEdge(WPos pos, Actor actor);
 
 		void Initialize();
-		void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor);
+		IEnumerable<IRenderable> RenderDebugOverlay(WorldRenderer wr, Actor actor);
 	}
 }
