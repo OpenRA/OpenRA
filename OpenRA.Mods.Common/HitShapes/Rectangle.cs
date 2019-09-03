@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -107,17 +108,17 @@ namespace OpenRA.Mods.Common.HitShapes
 			return DistanceFromEdge((pos - new WPos(actorPos.X, actorPos.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		public void DrawCombatOverlay(WorldRenderer wr, RgbaColorRenderer wcr, Actor actor)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(WorldRenderer wr, Actor actor)
 		{
 			var actorPos = actor.CenterPosition;
 			var orientation = actor.Orientation + WRot.FromYaw(LocalYaw);
 
-			var vertsTop = combatOverlayVertsTop.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-			var vertsBottom = combatOverlayVertsBottom.Select(v => wr.Screen3DPosition(actorPos + v.Rotate(orientation)));
-			wcr.DrawPolygon(vertsTop.ToArray(), 1, Color.Yellow);
-			wcr.DrawPolygon(vertsBottom.ToArray(), 1, Color.Yellow);
+			var vertsTop = combatOverlayVertsTop.Select(v => actorPos + v.Rotate(orientation)).ToArray();
+			var vertsBottom = combatOverlayVertsBottom.Select(v => actorPos + v.Rotate(orientation)).ToArray();
 
-			RangeCircleRenderable.DrawRangeCircle(wr, actorPos, OuterRadius, 1, Color.LimeGreen, 0, Color.LimeGreen);
+			yield return new PolygonAnnotationRenderable(vertsTop, actorPos, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(vertsBottom, actorPos, 1, Color.Yellow);
+			yield return new CircleAnnotationRenderable(actorPos, OuterRadius, 1, Color.LimeGreen);
 		}
 	}
 }
