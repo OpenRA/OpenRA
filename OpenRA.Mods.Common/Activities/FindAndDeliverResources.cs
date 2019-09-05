@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Activities
 
 						if (b != WVec.Zero && c != WVec.Zero)
 						{
-							var cosA = (int)(1024 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / (2 * b.Length * c.Length));
+							var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
 
 							// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
 							return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
