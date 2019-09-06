@@ -814,14 +814,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement IMove
 
-		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
+		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
+			bool evaluateNearestMovableCell = false, Color? targetLineColor = null)
 		{
 			return new Fly(self, Target.FromCell(self.World, cell), WDist.FromCells(nearEnough), targetLineColor: targetLineColor);
-		}
-
-		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
-		{
-			return new Fly(self, Target.FromCell(self.World, cell), targetLineColor: targetLineColor);
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range,

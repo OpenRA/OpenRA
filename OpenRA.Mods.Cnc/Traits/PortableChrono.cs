@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Color.LawnGreen));
 
 				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
-				self.QueueActivity(move.MoveTo(cell, 5, Color.LawnGreen));
+				self.QueueActivity(move.MoveTo(cell, 5, targetLineColor: Color.LawnGreen));
 				self.ShowTargetLines();
 			}
 		}

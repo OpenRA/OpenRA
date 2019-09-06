@@ -589,14 +589,10 @@ namespace OpenRA.Mods.Common.Traits
 			return inner;
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
+		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
+			bool evaluateNearestMovableCell = false, Color? targetLineColor = null)
 		{
-			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), targetLineColor: targetLineColor));
-		}
-
-		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
-		{
-			return WrapMove(new Move(self, cell, WDist.Zero, ignoreActor, targetLineColor: targetLineColor));
+			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), ignoreActor, evaluateNearestMovableCell, targetLineColor));
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range,
