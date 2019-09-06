@@ -1,0 +1,120 @@
+Container@SCORE_PANEL:
+	Logic: GameInfoScoreLogic
+		SupportedFormats: .shp, .tem, .des, .sno, .jun, .vqa
+	Height: PARENT_BOTTOM
+	Width: PARENT_RIGHT
+	Children:
+		LogicTicker@ANIMATION_TICKER:
+		Sprite@SPRITE_FACTION:
+			X: PARENT_RIGHT / 6
+			Y: 50
+			Width: PARENT_RIGHT / 2 - 10
+			Height: PARENT_BOTTOM / 3
+		Container@MAIN_SCORE:
+			X: PARENT_RIGHT / 2 + 10
+			Y: 17
+			Width: PARENT_RIGHT / 2
+			Height: PARENT_BOTTOM / 3 - 10
+			Children:
+				RevealingLabel@TIME:
+					X: 0
+					Y: 0
+					Text: TIME: 
+					TextColor: 00FF00
+				RevealingLabel@LEADERSHIP:
+					X: 0
+					Y: 30
+					Text: LEADERSHIP: 
+					TextColor: 00FF00
+				RevealingLabel@EFFICIENCY:
+					X: 0
+					Y: 30 * 2
+					Text: EFFICIENCY: 
+					TextColor: 00FF00
+				RevealingLabel@TOTAL_SCORE:
+					X: 0
+					Y: 30 * 3
+					Text: TOTAL SCORE: 
+					TextColor: 00FF00
+		Container@UNITS_LOST_PANEL:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM / 3
+			X: 10
+			Y: PARENT_BOTTOM / 3
+			Children:
+				RevealingLabel@UNITS_LOST:
+					X: 0
+					Y: 0
+					Text: CASUALTIES:
+					TextColor: FF0000
+				RevealingLabel@UNITS_LOST_GDI:
+					X: 25
+					Y: 30
+					Text: GDI
+					TextColor: FFFF33
+				ProgressBar@PROGRESS_UNITS_LOST_GDI:
+					X: 75
+					Y: 20
+					Width: PARENT_RIGHT - 60 - 75
+					Height: 20
+				RevealingLabel@VALUE_UNITS_LOST_GDI:
+					X: PARENT_RIGHT - 55
+					Y: 30
+					TextColor: FFFF33
+					Text: 199
+				RevealingLabel@UNITS_LOST_NOD:
+					X: 25
+					Y: 60
+					Text: NOD
+					TextColor: FF0000
+				ProgressBar@PROGRESS_UNITS_LOST_NOD:
+					X: 75
+					Y: 50
+					Width: PARENT_RIGHT - 60 - 75
+					Height: 20
+				RevealingLabel@VALUE_UNITS_LOST_NOD:
+					X: PARENT_RIGHT - 55
+					Y: 60
+					TextColor: FF0000
+					Text: 199
+		Container@BUILDINGS_LOST_PANEL:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM / 3
+			X: 10
+			Y: 2 * PARENT_BOTTOM / 3
+			Children:  			
+				RevealingLabel@BUILDINGS_LOST:
+					X: 0
+					Y: 0
+					Text: BUILDINGS LOST:
+					TextColor: 008000
+				RevealingLabel@BUILDINGS_LOST_GDI:
+					X: 25
+					Y: 30
+					Text: GDI
+					TextColor: FFFF33
+				ProgressBar@PROGRESS_BUILDINGS_LOST_GDI:
+					X: 75
+					Y: 20
+					Width: PARENT_RIGHT - 60 - 75
+					Height: 20
+				RevealingLabel@VALUE_BUILDINGS_LOST_GDI:
+					X: PARENT_RIGHT - 55
+					Y: 30
+					TextColor: FFFF33
+					Text: 199
+				RevealingLabel@BUILDINGS_LOST_NOD:
+					X: 25
+					Y: 60
+					Text: NOD
+					TextColor: FF0000
+				ProgressBar@PROGRESS_BUILDINGS_LOST_NOD:
+					X: 75
+					Y: 50
+					Width: PARENT_RIGHT - 60 - 75
+					Height: 20
+				RevealingLabel@VALUE_BUILDINGS_LOST_NOD:
+					X: PARENT_RIGHT - 55
+					Y: 60
+					TextColor: FF0000
+					Text: 199

@@ -33,6 +33,7 @@ Metrics:
 	TextContrastColorLight: 7F7F7F
 	TextFont: Regular
 	TextShadow: false
+	TextGradient: false
 	TextfieldColor: FFFFFF
 	TextfieldColorDisabled: 808080
 	TextfieldColorInvalid: FFC0C0

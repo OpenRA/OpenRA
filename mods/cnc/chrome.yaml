@@ -360,6 +360,50 @@ progressbar-thumb: chrome.png
 	corner-bl: 160,31,1,1
 	corner-br: 191,31,1,1
 
+progressbar-bg-nod: chrome.png
+	background: 520,477,30,30
+	border-r: 512,474,8,32
+	border-l: 998,474,8,32
+	border-b: 520,504,30,8
+	border-t: 520,468,30,8
+	corner-tl: 512,466,8,8
+	corner-tr: 998,466,8,8
+	corner-bl: 512,504,8,8
+	corner-br: 998,504,8,8
+
+progressbar-thumb-nod: chrome.png
+	background: 808,384,32,1
+	border-r: 0,130,8,32
+	border-l: 0,130,8,32
+	border-b: 0,130,30,6
+	border-t: 0,130,30,6
+	corner-tl: 0,130,8,8
+	corner-tr: 0,130,8,8
+	corner-bl: 0,130,8,8
+	corner-br: 0,130,8,8
+
+progressbar-bg-gdi: chrome.png
+	background: 520,477,30,30
+	border-r: 512,474,8,32
+	border-l: 998,474,8,32
+	border-b: 520,504,30,8
+	border-t: 520,468,30,8
+	corner-tl: 512,466,8,8
+	corner-tr: 998,466,8,8
+	corner-bl: 512,504,8,8
+	corner-br: 998,504,8,8
+
+progressbar-thumb-gdi: chrome.png
+	background: 808,400,32,1
+	border-r: 0,130,8,32
+	border-l: 0,130,8,32
+	border-b: 0,130,30,6
+	border-t: 0,130,30,6
+	corner-tl: 0,130,8,8
+	corner-tr: 0,130,8,8
+	corner-bl: 0,130,8,8
+	corner-br: 0,130,8,8
+
 #
 # Scroll panel
 # ===
@@ -376,6 +420,17 @@ scrollpanel-bg: chrome.png
 	corner-tr: 126,64,2,2
 	corner-bl: 64,126,2,2
 	corner-br: 126,126,2,2
+
+scrollpanel-bg-score: chrome.png
+	background: 65,1,62,62
+	border-r: 512,474,8,32
+	border-l: 998,474,8,32
+	border-b: 520,504,30,8
+	border-t: 520,468,30,8
+	corner-tl: 512,466,8,8
+	corner-tr: 998,466,8,8
+	corner-bl: 512,504,8,8
+	corner-br: 998,504,8,8
 
 scrollpanel-button: chrome.png
 	background: 129,1,30,30

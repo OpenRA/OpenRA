@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public enum IngameInfoPanel { AutoSelect, Map, Objectives, Debug, Chat }
+	public enum IngameInfoPanel { AutoSelect, Map, Objectives, Debug, Chat, Score }
 
 	class GameInfoLogic : ChromeLogic
 	{
@@ -118,6 +118,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (activePanel == IngameInfoPanel.AutoSelect)
 					chatTabButton.OnClick();
+			}
+
+			// Score tab
+			if (missionData != null)
+			{
+				numTabs++;
+				var scoreTabButton = widget.Get<ButtonWidget>(string.Concat("BUTTON", numTabs.ToString()));
+				scoreTabButton.Text = "Score";
+				scoreTabButton.IsVisible = () => numTabs > 1 && !hasError;
+				scoreTabButton.OnClick = () => activePanel = IngameInfoPanel.Score;
+				scoreTabButton.IsHighlighted = () => activePanel == IngameInfoPanel.Score;
+
+				var scorePanel = widget.Get<ContainerWidget>("SCORE_PANEL");
+				scorePanel.IsVisible = () => activePanel == IngameInfoPanel.Score;
+
+				Game.LoadWidget(world, "SCORE_PANEL", scorePanel, new WidgetArgs());
+
+				activePanel = IngameInfoPanel.Score;
 			}
 
 			// Handle empty space when tabs aren't displayed

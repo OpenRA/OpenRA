@@ -46,6 +46,18 @@
     <StartAction>Project</StartAction>
     <StartArguments>Game.Mod=ts</StartArguments>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-x86|AnyCPU' ">
+    <DefineConstants>TRACE;RELEASE_X86;NETFRAMEWORK;NET461</DefineConstants>
+    <NoWarn>1701;1702</NoWarn>
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunWithWarnings>true</RunWithWarnings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Open.Nat">
       <HintPath>..\thirdparty\download\Open.Nat.dll</HintPath>
