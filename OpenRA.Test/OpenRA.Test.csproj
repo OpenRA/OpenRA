@@ -23,12 +23,10 @@
     <Reference Include="Eluant">
       <HintPath>..\thirdparty\download\Eluant.dll</HintPath>
       <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\thirdparty\download\nunit.framework.dll</HintPath>
       <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
     </Reference>
   </ItemGroup>
   <ItemGroup>

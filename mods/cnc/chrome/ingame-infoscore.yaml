@@ -19,26 +19,30 @@ Container@SCORE_PANEL:
 				RevealingLabel@TIME:
 					X: 0
 					Y: 0
-					Text: TIME: 
+					Text: Time: {0}
 					TextColor: 00FF00
-				RevealingLabel@LEADERSHIP:
+					Visible: false
+				RevealingLabel@PRIMARY_OBJECTIVES_COUNT:
 					X: 0
 					Y: 30
-					Text: LEADERSHIP: 
+					Text: Primary Objectives: {0}/{1}
 					TextColor: 00FF00
-				RevealingLabel@EFFICIENCY:
+					Visible: false
+				RevealingLabel@SECONDARY_OBJECTIVES_COUNT:
 					X: 0
 					Y: 30 * 2
-					Text: EFFICIENCY: 
+					Text: Secondary Objectives: {0}/{1}
 					TextColor: 00FF00
+					Visible: false
 				RevealingLabel@TOTAL_SCORE:
 					X: 0
 					Y: 30 * 3
-					Text: TOTAL SCORE: 
+					Text: Total Score: {0}
 					TextColor: 00FF00
+					Visible: false
 		Container@UNITS_LOST_PANEL:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM / 3
+			Width: PARENT_RIGHT / 2
+			Height: 40
 			X: 10
 			Y: PARENT_BOTTOM / 3
 			Children:
@@ -46,75 +50,153 @@ Container@SCORE_PANEL:
 					X: 0
 					Y: 0
 					Text: CASUALTIES:
-					TextColor: FF0000
+					TextColor: F5F5F5
+					Visible: false
 				RevealingLabel@UNITS_LOST_GDI:
-					X: 25
+					X: 10
 					Y: 30
 					Text: GDI
 					TextColor: FFFF33
-				ProgressBar@PROGRESS_UNITS_LOST_GDI:
-					X: 75
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_UNITS_LOST_GDI:
+					X: 60
 					Y: 20
-					Width: PARENT_RIGHT - 60 - 75
+					Width: PARENT_RIGHT - 90
 					Height: 20
-				RevealingLabel@VALUE_UNITS_LOST_GDI:
-					X: PARENT_RIGHT - 55
-					Y: 30
-					TextColor: FFFF33
-					Text: 199
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
 				RevealingLabel@UNITS_LOST_NOD:
-					X: 25
+					X: 10
 					Y: 60
 					Text: NOD
 					TextColor: FF0000
-				ProgressBar@PROGRESS_UNITS_LOST_NOD:
-					X: 75
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_UNITS_LOST_NOD:
+					X: 60
 					Y: 50
-					Width: PARENT_RIGHT - 60 - 75
+					Width: PARENT_RIGHT - 90
 					Height: 20
-				RevealingLabel@VALUE_UNITS_LOST_NOD:
-					X: PARENT_RIGHT - 55
-					Y: 60
-					TextColor: FF0000
-					Text: 199
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
 		Container@BUILDINGS_LOST_PANEL:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM / 3
-			X: 10
-			Y: 2 * PARENT_BOTTOM / 3
+			Width: PARENT_RIGHT / 2
+			Height: 40
+			X: PARENT_RIGHT / 2 + 10
+			Y: PARENT_BOTTOM / 3
 			Children:  			
 				RevealingLabel@BUILDINGS_LOST:
 					X: 0
 					Y: 0
 					Text: BUILDINGS LOST:
-					TextColor: 008000
+					TextColor: F5F5F5
+					Visible: false
 				RevealingLabel@BUILDINGS_LOST_GDI:
-					X: 25
+					X: 10
 					Y: 30
 					Text: GDI
 					TextColor: FFFF33
-				ProgressBar@PROGRESS_BUILDINGS_LOST_GDI:
-					X: 75
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_BUILDINGS_LOST_GDI:
+					X: 60
 					Y: 20
-					Width: PARENT_RIGHT - 60 - 75
+					Width: PARENT_RIGHT - 90
 					Height: 20
-				RevealingLabel@VALUE_BUILDINGS_LOST_GDI:
-					X: PARENT_RIGHT - 55
-					Y: 30
-					TextColor: FFFF33
-					Text: 199
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
 				RevealingLabel@BUILDINGS_LOST_NOD:
-					X: 25
+					X: 10
 					Y: 60
 					Text: NOD
 					TextColor: FF0000
-				ProgressBar@PROGRESS_BUILDINGS_LOST_NOD:
-					X: 75
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_BUILDINGS_LOST_NOD:
+					X: 60
 					Y: 50
-					Width: PARENT_RIGHT - 60 - 75
+					Width: PARENT_RIGHT - 90
 					Height: 20
-				RevealingLabel@VALUE_BUILDINGS_LOST_NOD:
-					X: PARENT_RIGHT - 55
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
+		Container@RESOURCES_PANEL:
+			Width: PARENT_RIGHT / 2
+			Height: 70
+			X: 10
+			Y: PARENT_BOTTOM / 3 + 90
+			Children:
+				RevealingLabel@RESOURCES:
+					X: 0
+					Y: 0
+					Text: RESOURCES:
+					TextColor: F5F5F5
+					Visible: false
+				RevealingLabel@RESOURCES_GDI:
+					X: 10
+					Y: 45
+					Text: GDI
+					TextColor: FFFF33
+					Visible: false
+				RevealingLabel@RESOURCES_EARNED_GDI:
+					X: 50
+					Y: 30
+					Text: Earned
+					TextColor: FFFF33
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_RESOURCES_EARNED_GDI:
+					X: 100
+					Y: 20
+					Width: PARENT_RIGHT - 130
+					Height: 20
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
+				RevealingLabel@RESOURCES_SPENT_GDI:
+					X: 50
 					Y: 60
+					Text: Spent
+					TextColor: FFFF33
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_RESOURCES_SPENT_GDI:
+					X: 100
+					Y: 50
+					Width: PARENT_RIGHT - 130
+					Height: 20
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
+				RevealingLabel@RESOURCES_NOD:
+					X: 10
+					Y: 105
+					Text: NOD
 					TextColor: FF0000
-					Text: 199
+					Visible: false
+				RevealingLabel@RESOURCES_EARNED_NOD:
+					X: 50
+					Y: 90
+					Text: Earned
+					TextColor: FF0000
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_RESOURCES_EARNED_NOD:
+					X: 100
+					Y: 80
+					Width: PARENT_RIGHT - 130
+					Height: 20
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
+				RevealingLabel@RESOURCES_SPENT_NOD:
+					X: 50
+					Y: 120
+					Text: Spent
+					TextColor: FF0000
+					Visible: false
+				ProgressiveBarCounter@PROGRESS_RESOURCES_SPENT_NOD:
+					X: 100
+					Y: 110
+					Width: PARENT_RIGHT - 130
+					Height: 20
+					Visible: false
+					TextColor: FFFFFF
+					Font: Bold
