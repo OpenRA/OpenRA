@@ -252,8 +252,8 @@ InitTriggers = function()
 			AlertFirstBase()
 		end)
 	end)
-	Trigger.OnAllRemovedFromWorld(FirstUSSRBase, function()
-		if baseCamera then
+	Trigger.OnAllKilledOrCaptured(FirstUSSRBase, function()
+		if baseCamera and baseCamera.IsInWorld then
 			baseCamera.Destroy()
 		end
 	end)

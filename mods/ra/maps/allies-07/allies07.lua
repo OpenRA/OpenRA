@@ -85,7 +85,7 @@ BaseRaids = function()
 	if Map.LobbyOption("difficulty") == "easy" then
 		return
 	else
-		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay1[1], BaseRaidDelay1[2]), function()	
+		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay1[1], BaseRaidDelay1[2]), function()
 			local raiders = Reinforcements.ReinforceWithTransport(ussr, "lst", RaidingParty, RaidOnePath, { RaidOneEntry.Location })[2]
 			Utils.Do(raiders, function(a)
 				Trigger.OnAddedToWorld(a, function()
@@ -95,7 +95,7 @@ BaseRaids = function()
 			end)
 		end)
 
-		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay2[1], BaseRaidDelay2[2]), function()	
+		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay2[1], BaseRaidDelay2[2]), function()
 			local raiders = Reinforcements.ReinforceWithTransport(ussr, "lst", RaidingParty, RaidTwoPath, { RaidTwoEntry.Location })[2]
 			Utils.Do(raiders, function(a)
 				Trigger.OnAddedToWorld(a, function()
@@ -126,7 +126,7 @@ FinishTimer = function()
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
 
-BattalionWays = 
+BattalionWays =
 {
 	{ HardEntry1.Location, HardLanding1.Location },
 	{ HardEntry2.Location, HardLanding2.Location },
@@ -138,7 +138,7 @@ BattalionWays =
 
 SendArmoredBattalion = function()
 	Media.PlaySpeechNotification(greece, "EnemyUnitsApproaching")
-	Utils.Do(BattalionWays, function(way) 
+	Utils.Do(BattalionWays, function(way)
 		local units = { "3tnk", "3tnk", "3tnk", "4tnk", "4tnk" }
 		local armor = Reinforcements.ReinforceWithTransport(ussr, "lst", units , way, { way[2], way[1] })[2]
 		Utils.Do(armor, function(a)
@@ -146,7 +146,7 @@ SendArmoredBattalion = function()
 				a.AttackMove(PlayerBase.Location)
 				IdleHunt(a)
 			end)
-		end)	
+		end)
 	end)
 end
 
@@ -217,6 +217,6 @@ WorldLoaded = function()
 	Trigger.AfterDelay(ActivateAIDelay, ActivateAI)
 	Trigger.AfterDelay(StartTimerDelay, StartTimerFunction)
 
-	Trigger.OnAllRemovedFromWorld(DestroySubPensTriggerActivator, DestroySubPensCompleted)
+	Trigger.OnAllKilledOrCaptured(DestroySubPensTriggerActivator, DestroySubPensCompleted)
 	Trigger.OnAllRemovedFromWorld(ClearSubActivityTriggerActivator, ClearSubActivityCompleted)
 end
