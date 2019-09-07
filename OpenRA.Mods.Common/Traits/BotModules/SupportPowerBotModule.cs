@@ -40,9 +40,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly World world;
 		readonly Player player;
+		readonly Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
+		readonly Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
+		readonly List<SupportPowerInstance> stalePowers = new List<SupportPowerInstance>();
 		SupportPowerManager supportPowerManager;
-		Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
-		Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
 
 		public SupportPowerBotModule(Actor self, SupportPowerBotModuleInfo info)
 			: base(info)
@@ -108,6 +109,13 @@ namespace OpenRA.Mods.Common.Traits
 					bot.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true });
 				}
 			}
+
+			// Remove stale powers
+			stalePowers.AddRange(waitingPowers.Keys.Where(wp => !supportPowerManager.Powers.ContainsKey(wp.Key)));
+			foreach (var p in stalePowers)
+				waitingPowers.Remove(p);
+
+			stalePowers.Clear();
 		}
 
 		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
