@@ -292,7 +292,7 @@ Container@OBSERVER_WIDGETS:
 						Container@ECONOMY_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 625
+							Width: 645
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -323,16 +323,16 @@ Container@OBSERVER_WIDGETS:
 									Text: Cash
 									Align: Right
 									Shadow: True
-								Label@EARNED_MIN_HEADER:
+								Label@INCOME_HEADER:
 									X: 240
-									Width: 60
+									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: $/min
+									Text: Income
 									Align: Right
 									Shadow: True
 								Label@ASSETS_HEADER:
-									X: 300
+									X: 320
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -340,7 +340,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@EARNED_HEADER:
-									X: 380
+									X: 400
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -348,7 +348,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@SPENT_HEADER:
-									X: 460
+									X: 480
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -356,7 +356,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS_HEADER:
-									X: 540
+									X: 560
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
@@ -653,7 +653,7 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 625
+							Width: 645
 							Height: 24
 							BaseName: scrollitem-nohover
 							Children:
@@ -688,36 +688,36 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
-								Label@EARNED_MIN:
+								Label@INCOME:
 									X: 240
 									Y: 0
-									Width: 60
+									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@ASSETS:
-									X: 300
+									X: 320
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@EARNED:
-									X: 380
+									X: 400
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@SPENT:
-									X: 460
+									X: 480
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS:
-									X: 540
+									X: 560
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
@@ -879,7 +879,7 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
-				Container@EARNED_THIS_MIN_GRAPH_CONTAINER:
+				Container@INCOME_GRAPH_CONTAINER:
 					X: 0
 					Y: 30
 					Width: PARENT_RIGHT
@@ -892,21 +892,20 @@ Container@OBSERVER_WIDGETS:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Color: 00000090
-						LineGraph@EARNED_THIS_MIN_GRAPH:
+						LineGraph@INCOME_GRAPH:
 							X: 0
 							Y: 0
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							ValueFormat: ${0}
-							XAxisValueFormat: {0}
 							YAxisValueFormat: ${0:F0}
-							XAxisSize: 20
-							YAxisSize: 10
+							XAxisSize: 40
+							XAxisTicksPerLabel: 2
 							XAxisLabel: Game Minute
 							YAxisLabel: Earnings
 							LabelFont: TinyBold
 							AxisFont: TinyBold
-				Container@ARMY_THIS_MIN_GRAPH_CONTAINER:
+				Container@ARMY_VALUE_GRAPH_CONTAINER:
 					X: 0
 					Y: 30
 					Width: PARENT_RIGHT
@@ -919,16 +918,15 @@ Container@OBSERVER_WIDGETS:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Color: 00000090
-						LineGraph@ARMY_THIS_MIN_GRAPH:
+						LineGraph@ARMY_VALUE_GRAPH:
 							X: 0
 							Y: 0
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							ValueFormat: ${0}
-							XAxisValueFormat: {0}
 							YAxisValueFormat: ${0:F0}
-							XAxisSize: 20
-							YAxisSize: 10
+							XAxisSize: 40
+							XAxisTicksPerLabel: 2
 							XAxisLabel: Game Minute
 							YAxisLabel: Army Value
 							LabelFont: TinyBold
