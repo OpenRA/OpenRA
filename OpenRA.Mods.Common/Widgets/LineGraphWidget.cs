@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string YAxisValueFormat = "{0}";
 		public int XAxisSize = 10;
 		public int YAxisSize = 10;
+		public int XAxisTicksPerLabel = 1;
 		public string XAxisLabel = "";
 		public string YAxisLabel = "";
 		public bool DisplayFirstYAxisValue = false;
@@ -77,6 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			YAxisValueFormat = other.YAxisValueFormat;
 			XAxisSize = other.XAxisSize;
 			YAxisSize = other.YAxisSize;
+			XAxisTicksPerLabel = other.XAxisTicksPerLabel;
 			XAxisLabel = other.XAxisLabel;
 			YAxisLabel = other.YAxisLabel;
 			DisplayFirstYAxisValue = other.DisplayFirstYAxisValue;
@@ -178,7 +180,10 @@ namespace OpenRA.Mods.Common.Widgets
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
 			{
 				cr.DrawLine(graphOrigin + new float2(x, 0), graphOrigin + new float2(x, -5), 1, Color.White);
-				var xAxisText = GetXAxisValueFormat().F(n);
+				if (n % XAxisTicksPerLabel != 0)
+					continue;
+
+				var xAxisText = GetXAxisValueFormat().F(n / XAxisTicksPerLabel);
 				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
 				var xLocation = x - (xAxisTickTextWidth / 2);
 				labelFont.DrawTextWithShadow(xAxisText, graphOrigin + new float2(xLocation, 2), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
