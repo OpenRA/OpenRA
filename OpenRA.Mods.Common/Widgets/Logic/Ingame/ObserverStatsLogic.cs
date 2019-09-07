@@ -38,10 +38,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget productionPlayerTemplate;
 		readonly ScrollItemWidget supportPowersPlayerTemplate;
 		readonly ScrollItemWidget combatPlayerTemplate;
-		readonly ContainerWidget earnedThisMinuteGraphContainer;
-		readonly ContainerWidget armyThisMinuteGraphContainer;
-		readonly LineGraphWidget earnedThisMinuteGraph;
-		readonly LineGraphWidget armyThisMinuteGraph;
+		readonly ContainerWidget incomeGraphContainer;
+		readonly ContainerWidget armyValueGraphContainer;
+		readonly LineGraphWidget incomeGraph;
+		readonly LineGraphWidget armyValueGraph;
 		readonly ScrollItemWidget teamTemplate;
 		readonly IEnumerable<Player> players;
 		readonly IOrderedEnumerable<IGrouping<int, Player>> teams;
@@ -95,11 +95,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			supportPowersPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("SUPPORT_POWERS_PLAYER_TEMPLATE");
 			combatPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("COMBAT_PLAYER_TEMPLATE");
 
-			earnedThisMinuteGraphContainer = widget.Get<ContainerWidget>("EARNED_THIS_MIN_GRAPH_CONTAINER");
-			earnedThisMinuteGraph = earnedThisMinuteGraphContainer.Get<LineGraphWidget>("EARNED_THIS_MIN_GRAPH");
+			incomeGraphContainer = widget.Get<ContainerWidget>("INCOME_GRAPH_CONTAINER");
+			incomeGraph = incomeGraphContainer.Get<LineGraphWidget>("INCOME_GRAPH");
 
-			armyThisMinuteGraphContainer = widget.Get<ContainerWidget>("ARMY_THIS_MIN_GRAPH_CONTAINER");
-			armyThisMinuteGraph = armyThisMinuteGraphContainer.Get<LineGraphWidget>("ARMY_THIS_MIN_GRAPH");
+			armyValueGraphContainer = widget.Get<ContainerWidget>("ARMY_VALUE_GRAPH_CONTAINER");
+			armyValueGraph = armyValueGraphContainer.Get<LineGraphWidget>("ARMY_VALUE_GRAPH");
 
 			teamTemplate = playerStatsPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 
@@ -144,8 +144,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				createStatsOption("Production", ObserverStatsPanel.Production, productionPlayerTemplate, () => DisplayStats(ProductionStats)),
 				createStatsOption("Support Powers", ObserverStatsPanel.SupportPowers, supportPowersPlayerTemplate, () => DisplayStats(SupportPowerStats)),
 				createStatsOption("Combat", ObserverStatsPanel.Combat, combatPlayerTemplate, () => DisplayStats(CombatStats)),
-				createStatsOption("Earnings (graph)", ObserverStatsPanel.Graph, null, () => EarnedThisMinuteGraph()),
-				createStatsOption("Army (graph)", ObserverStatsPanel.ArmyGraph, null, () => ArmyThisMinuteGraph()),
+				createStatsOption("Earnings (graph)", ObserverStatsPanel.Graph, null, () => IncomeGraph()),
+				createStatsOption("Army (graph)", ObserverStatsPanel.ArmyGraph, null, () => ArmyValueGraph()),
 			};
 
 			Func<StatsDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -192,31 +192,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			supportPowerStatsHeaders.Visible = false;
 			combatStatsHeaders.Visible = false;
 
-			earnedThisMinuteGraphContainer.Visible = false;
-			armyThisMinuteGraphContainer.Visible = false;
+			incomeGraphContainer.Visible = false;
+			armyValueGraphContainer.Visible = false;
 
-			earnedThisMinuteGraph.GetSeries = null;
-			armyThisMinuteGraph.GetSeries = null;
+			incomeGraph.GetSeries = null;
+			armyValueGraph.GetSeries = null;
 		}
 
-		void EarnedThisMinuteGraph()
+		void IncomeGraph()
 		{
 			playerStatsPanel.Visible = false;
-			earnedThisMinuteGraphContainer.Visible = true;
+			incomeGraphContainer.Visible = true;
 
-			earnedThisMinuteGraph.GetSeries = () =>
+			incomeGraph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
 					p.Color,
-					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)));
+					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).IncomeSamples.Select(s => (float)s)));
 		}
 
-		void ArmyThisMinuteGraph()
+		void ArmyValueGraph()
 		{
 			playerStatsPanel.Visible = false;
-			armyThisMinuteGraphContainer.Visible = true;
+			armyValueGraphContainer.Visible = true;
 
-			armyThisMinuteGraph.GetSeries = () =>
+			armyValueGraph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
 					p.Color,
@@ -344,10 +344,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
-			if (stats == null) return template;
+			if (stats == null)
+				return template;
 
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
-			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
+			template.Get<LabelWidget>("INCOME").GetText = () => "$" + stats.DisplayIncome;
 			template.Get<LabelWidget>("EARNED").GetText = () => "$" + res.Earned;
 			template.Get<LabelWidget>("SPENT").GetText = () => "$" + res.Spent;
 
@@ -393,7 +394,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
-			if (stats == null) return template;
+			if (stats == null)
+				return template;
+
 			template.Get<LabelWidget>("KILLS").GetText = () => (stats.UnitsKilled + stats.BuildingsKilled).ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.BuildingsDead).ToString();
 			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => "$" + stats.KillsCost;
@@ -482,11 +485,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string AverageOrdersPerMinute(double orders)
 		{
 			return (world.WorldTick == 0 ? 0 : orders / (world.WorldTick / 1500.0)).ToString("F1");
-		}
-
-		string AverageEarnedPerMinute(double earned)
-		{
-			return "$" + (world.WorldTick == 0 ? 0 : earned / (world.WorldTick / 1500.0)).ToString("F0");
 		}
 
 		static Color GetPowerColor(PowerState state)
