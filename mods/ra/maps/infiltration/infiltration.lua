@@ -286,8 +286,7 @@ SovietBaseMaintenanceSetup = function()
 			and a.HasProperty("StartBuildingRepairs") and a.HasProperty("Sell")
 	end)
 
-	-- This includes killed, captured (actor is temporarily removed) and sold.
-	Trigger.OnAllRemovedFromWorld(sovietbuildings, function()
+	Trigger.OnAllKilledOrCaptured(sovietbuildings, function()
 		Utils.Do(humans, function(player)
 			player.MarkCompletedObjective(destroyBase)
 		end)
