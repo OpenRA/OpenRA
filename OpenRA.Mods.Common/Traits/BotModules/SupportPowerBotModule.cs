@@ -208,8 +208,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			var waitingPowersNode = data.FirstOrDefault(n => n.Key == "WaitingPowers");
 			if (waitingPowersNode != null)
+			{
 				foreach (var n in waitingPowersNode.Value.Nodes)
-					waitingPowers[supportPowerManager.Powers[n.Key]] = FieldLoader.GetValue<int>("WaitingPowers", n.Value.Value);
+				{
+					SupportPowerInstance instance;
+					if (supportPowerManager.Powers.TryGetValue(n.Key, out instance))
+						waitingPowers[instance] = FieldLoader.GetValue<int>("WaitingPowers", n.Value.Value);
+				}
+			}
 		}
 	}
 }
