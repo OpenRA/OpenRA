@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This won't make sense for MP saves
 			var localPlayer = worldRenderer.World.LocalPlayer;
 			if ((localPlayer != null && localPlayer.PlayerActor != self) ||
-			    self.Owner != self.World.Players.FirstOrDefault(p => p.IsBot))
+			    (localPlayer == null && self.Owner != self.World.Players.FirstOrDefault(p => p.IsBot)))
 				return null;
 
 			var nodes = new List<MiniYamlNode>()
