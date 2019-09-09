@@ -282,8 +282,7 @@ end
 
 SovietBaseMaintenanceSetup = function()
 	local sovietbuildings = Utils.Where(Map.NamedActors, function(a)
-		return a.Owner == soviets
-			and a.HasProperty("StartBuildingRepairs") and a.HasProperty("Sell")
+		return a.Owner == soviets and a.HasProperty("StartBuildingRepairs")
 	end)
 
 	Trigger.OnAllKilledOrCaptured(sovietbuildings, function()
@@ -294,14 +293,8 @@ SovietBaseMaintenanceSetup = function()
 
 	Utils.Do(sovietbuildings, function(sovietbuilding)
 		Trigger.OnDamaged(sovietbuilding, function(building)
-			if building.Owner ~= soviets then
-				return
-			end
-			if building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == soviets and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
-			end
-			if building.Health < building.MaxHealth * 1/4 then
-				building.Sell()
 			end
 		end)
 	end)
