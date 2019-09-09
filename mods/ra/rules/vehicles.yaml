@@ -68,7 +68,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 128
+		Speed: 118
 	RevealsShroud:
 		Range: 5c0
 		RevealGeneratedShroud: False

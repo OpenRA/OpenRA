@@ -8,7 +8,7 @@ BADR:
 	Aircraft:
 		CruiseAltitude: 2560
 		TurnSpeed: 5
-		Speed: 149
+		Speed: 180
 		Repulsable: False
 		MaximumPitch: 56
 	Cargo:
@@ -47,11 +47,11 @@ BADR.Bomber:
 	Aircraft:
 		CruiseAltitude: 2560
 		TurnSpeed: 5
-		Speed: 149
+		Speed: 180
 		Repulsable: False
 		MaximumPitch: 56
 	AmmoPool:
-		Ammo: 7
+		Ammo: 5
 	-Selectable:
 	SelectionDecorations:
 		RenderSelectionBars: False
@@ -111,6 +111,7 @@ MIG:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
+		AttackTurnDelay: 30
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
