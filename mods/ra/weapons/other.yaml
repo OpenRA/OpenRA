@@ -73,7 +73,7 @@ Napalm:
 
 ^TeslaWeapon:
 	ReloadDelay: 3
-	Range: 8c512
+	Range: 8c0
 	Report: tesla1.aud
 	Projectile: TeslaZap
 	Warhead@1Dam: SpreadDamage
