@@ -149,9 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			remapButton.GetColor = () =>
 			{
-				return modData.Hotkeys.GetFirstDuplicate(hd.Name, modData.Hotkeys[hd.Name].GetValue(), hd) != null ?
-					hotkeyInvalidColor :
-					hotkeyValidColor;
+				return hd.HasDuplicates ? hotkeyInvalidColor : hotkeyValidColor;
 			};
 
 			if (selectedHotkeyDefinition == hd)
@@ -492,6 +490,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								if (selectedHotkeyDefinition == null)
 									selectedHotkeyDefinition = hd;
 
+								if (modData.Hotkeys.GetFirstDuplicate(hd.Name, modData.Hotkeys[hd.Name].GetValue(), hd) != null)
+									hd.HasDuplicates = true;
+
 								BindHotkeyPref(hd, template, hotkeyList);
 							}
 						}
@@ -800,6 +801,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			WidgetUtils.TruncateButtonToTooltip(selectedHotkeyButton, hotkeyEntryWidget.Key.DisplayString());
 			modData.Hotkeys.Set(selectedHotkeyDefinition.Name, hotkeyEntryWidget.Key);
 			Game.Settings.Save();
+
+			foreach (var hd in modData.Hotkeys.Definitions)
+				hd.HasDuplicates = modData.Hotkeys.GetFirstDuplicate(hd.Name, modData.Hotkeys[hd.Name].GetValue(), hd) != null;
 		}
 
 		void ResetHotkey()
