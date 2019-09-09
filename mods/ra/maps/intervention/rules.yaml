@@ -71,11 +71,16 @@ GIVEFIX:
 	Tooltip:
 		Name: Weapons Factory or Helipad
 
-MIG:
+MIG.SCRIPTED:
+	Inherits: MIG
 	Buildable:
-		Prerequisites: ~afld
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: mig
 	AmmoPool:
 		Ammo: 2
+	Aircraft:
+		IdleBehavior: LeaveMap
 
 HELI:
 	Buildable:
