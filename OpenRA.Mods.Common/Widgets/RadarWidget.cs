@@ -57,6 +57,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite actorSprite;
 		Sprite shroudSprite;
 		Shroud renderShroud;
+		PlayerRadarTerrain playerRadarTerrain;
+		Player currentPlayer;
 
 		public string SoundUp { get; private set; }
 		public string SoundDown { get; private set; }
@@ -66,7 +68,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
+			MarkShroudDirty(world.Map.AllCells.MapCoords.Select(uv => (PPos)uv));
 
 			isRectangularIsometric = world.Map.Grid.Type == MapGridType.RectangularIsometric;
 			cellWidth = isRectangularIsometric ? 2 : 1;
@@ -74,6 +78,11 @@ namespace OpenRA.Mods.Common.Widgets
 			previewHeight = world.Map.MapSize.Y;
 			if (isRectangularIsometric)
 				previewWidth = 2 * previewWidth - 1;
+		}
+
+		void CellTerrainColorChanged(MPos puv)
+		{
+			UpdateTerrainColor(puv);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -87,12 +96,72 @@ namespace OpenRA.Mods.Common.Widgets
 
 			MapBoundsChanged();
 
-			// Set initial terrain data
-			foreach (var cell in world.Map.AllCells)
-				UpdateTerrainCell(cell);
+			if (world.Type == WorldType.Regular)
+				SetPlayer(world.LocalPlayer ?? world.RenderPlayer);
+			else
+			{
+				// Set initial terrain data
+				foreach (var uv in world.Map.AllCells.MapCoords)
+					UpdateTerrainColor(uv);
 
-			world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
-			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
+				world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
+				world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
+			}
+
+			world.RenderPlayerChanged += WorldOnRenderPlayerChanged;
+		}
+
+		void UpdateTerrainCell(CPos cell)
+		{
+			var uv = cell.ToMPos(world.Map);
+
+			UpdateTerrainColor(uv);
+		}
+
+		void WorldOnRenderPlayerChanged(Player player)
+		{
+			SetPlayer(player);
+
+			// Set initial terrain data
+			foreach (var uv in world.Map.AllCells.MapCoords)
+				UpdateTerrainColor(uv);
+		}
+
+		void SetPlayer(Player player)
+		{
+			currentPlayer = player;
+
+			var newRenderShroud = player != null ? player.Shroud : null;
+			if (newRenderShroud != renderShroud)
+			{
+				if (renderShroud != null)
+					renderShroud.CellsChanged -= MarkShroudDirty;
+
+				if (newRenderShroud != null)
+				{
+					// Redraw the full shroud sprite
+					MarkShroudDirty(world.Map.AllCells.MapCoords.Select(uv => (PPos)uv));
+
+					// Update the notification binding
+					newRenderShroud.CellsChanged += MarkShroudDirty;
+				}
+
+				renderShroud = newRenderShroud;
+			}
+
+			var newPlayerRadarTerrain =
+				currentPlayer != null ? currentPlayer.PlayerActor.TraitOrDefault<PlayerRadarTerrain>() : null;
+
+			if (newPlayerRadarTerrain != playerRadarTerrain)
+			{
+				if (playerRadarTerrain != null)
+					playerRadarTerrain.CellTerrainColorChanged -= CellTerrainColorChanged;
+
+				if (newPlayerRadarTerrain != null)
+					newPlayerRadarTerrain.CellTerrainColorChanged += CellTerrainColorChanged;
+
+				playerRadarTerrain = newPlayerRadarTerrain;
+			}
 		}
 
 		void MapBoundsChanged()
@@ -132,23 +201,11 @@ namespace OpenRA.Mods.Common.Widgets
 			actorSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(0, previewHeight), b.Size), TextureChannel.RGBA);
 		}
 
-		void UpdateTerrainCell(CPos cell)
+		void UpdateTerrainColor(MPos uv)
 		{
-			var uv = cell.ToMPos(world.Map);
-
-			if (!world.Map.CustomTerrain.Contains(uv))
-				return;
-
-			var custom = world.Map.CustomTerrain[uv];
-			int leftColor, rightColor;
-			if (custom == byte.MaxValue)
-			{
-				var type = world.Map.Rules.TileSet.GetTileInfo(world.Map.Tiles[uv]);
-				leftColor = type != null ? type.LeftColor.ToArgb() : Color.Black.ToArgb();
-				rightColor = type != null ? type.RightColor.ToArgb() : Color.Black.ToArgb();
-			}
-			else
-				leftColor = rightColor = world.Map.Rules.TileSet[custom].Color.ToArgb();
+			var colorPair = playerRadarTerrain != null && playerRadarTerrain.IsInitialized ? playerRadarTerrain[uv] : PlayerRadarTerrain.GetColor(world.Map, uv);
+			var leftColor = colorPair.First;
+			var rightColor = colorPair.Second;
 
 			var stride = radarSheet.Size.Width;
 
@@ -341,25 +398,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (enabled)
 			{
-				var rp = world.RenderPlayer;
-				var newRenderShroud = rp != null ? rp.Shroud : null;
-				if (newRenderShroud != renderShroud)
-				{
-					if (renderShroud != null)
-						renderShroud.CellsChanged -= MarkShroudDirty;
-
-					if (newRenderShroud != null)
-					{
-						// Redraw the full shroud sprite
-						MarkShroudDirty(world.Map.AllCells.MapCoords.Select(uv => (PPos)uv));
-
-						// Update the notification binding
-						newRenderShroud.CellsChanged += MarkShroudDirty;
-					}
-
-					renderShroud = newRenderShroud;
-				}
-
 				// The actor layer is updated every tick
 				var stride = radarSheet.Size.Width;
 				Array.Clear(radarData, 4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride);
@@ -451,8 +489,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Removed()
 		{
 			base.Removed();
-			world.Map.Tiles.CellEntryChanged -= UpdateTerrainCell;
-			world.Map.CustomTerrain.CellEntryChanged -= UpdateTerrainCell;
+
+			if (playerRadarTerrain != null)
+				playerRadarTerrain.CellTerrainColorChanged -= CellTerrainColorChanged;
+
+			world.RenderPlayerChanged -= WorldOnRenderPlayerChanged;
 			Dispose();
 		}
 
