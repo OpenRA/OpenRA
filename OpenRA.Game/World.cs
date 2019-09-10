@@ -48,6 +48,8 @@ namespace OpenRA
 
 		public Player[] Players = new Player[0];
 
+		public event Action<Player> RenderPlayerChanged;
+
 		public void SetPlayers(IEnumerable<Player> players, Player localPlayer)
 		{
 			if (Players.Length > 0)
@@ -84,7 +86,12 @@ namespace OpenRA
 			set
 			{
 				if (LocalPlayer == null || LocalPlayer.UnlockedRenderPlayer)
+				{
 					renderPlayer = value;
+
+					if (RenderPlayerChanged != null)
+						RenderPlayerChanged(value);
+				}
 			}
 		}
 
