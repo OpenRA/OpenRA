@@ -49,16 +49,23 @@ namespace OpenRA.Mods.Common.Graphics
 			this.zOffset = zOffset;
 		}
 
-		public void Tick() { /* not supported */ }
+		void IActorPreview.Tick() { /* not supported */ }
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
+		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
+		{
+			yield return new UIModelRenderable(components, WPos.Zero + offset, pos, zOffset, camera, scale * this.scale,
+				lightSource, lightAmbientColor, lightDiffuseColor,
+				colorPalette, normalsPalette, shadowPalette);
+		}
+
+		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
 		{
 			yield return new ModelRenderable(components, pos + offset, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
 		}
 
-		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr, WPos pos)
+		IEnumerable<Rectangle> IActorPreview.ScreenBounds(WorldRenderer wr, WPos pos)
 		{
 			foreach (var c in components)
 				yield return c.ScreenBounds(pos, wr, scale);

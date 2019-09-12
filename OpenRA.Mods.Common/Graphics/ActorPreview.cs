@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		void Tick();
 		IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos);
+		IEnumerable<IRenderable> RenderUI(WorldRenderer wr, int2 pos, float scale);
 		IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr, WPos pos);
 	}
 

@@ -33,14 +33,19 @@ namespace OpenRA.Mods.Common.Graphics
 			this.scale = scale;
 		}
 
-		public void Tick() { animation.Tick(); }
+		void IActorPreview.Tick() { animation.Tick(); }
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr, WPos pos)
+		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
+		{
+			return animation.RenderUI(pos, offset(), zOffset(), pr, scale);
+		}
+
+		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
 		{
 			return animation.Render(pos, offset(), zOffset(), pr, scale);
 		}
 
-		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr, WPos pos)
+		IEnumerable<Rectangle> IActorPreview.ScreenBounds(WorldRenderer wr, WPos pos)
 		{
 			yield return animation.ScreenBounds(wr, pos, offset(), scale);
 		}

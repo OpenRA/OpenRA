@@ -66,6 +66,22 @@ namespace OpenRA.Graphics
 			return new IRenderable[] { imageRenderable };
 		}
 
+		public IRenderable[] RenderUI(int2 pos, WVec offset, int zOffset, PaletteReference palette, float scale)
+		{
+			var imagePos = pos - new int2((int)(scale * Image.Size.X / 2), (int)(scale * Image.Size.Y / 2));
+			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos, CurrentSequence.ZOffset + zOffset, palette, scale);
+
+			if (CurrentSequence.ShadowStart >= 0)
+			{
+				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
+				var shadowPos = pos - new int2((int)(scale * shadow.Size.X / 2), (int)(scale * shadow.Size.Y / 2));
+				var shadowRenderable = new UISpriteRenderable(shadow, WPos.Zero + offset, shadowPos, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
+				return new IRenderable[] { shadowRenderable, imageRenderable };
+			}
+
+			return new IRenderable[] { imageRenderable };
+		}
+
 		public Rectangle ScreenBounds(WorldRenderer wr, WPos pos, WVec offset, float scale)
 		{
 			var xy = wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset);
