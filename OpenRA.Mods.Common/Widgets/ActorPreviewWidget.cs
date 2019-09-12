@@ -72,8 +72,11 @@ namespace OpenRA.Mods.Common.Widgets
 		IFinalizedRenderable[] renderables;
 		public override void PrepareRenderables()
 		{
+			var scale = GetScale();
+			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+
 			renderables = preview
-				.SelectMany(p => p.Render(worldRenderer, WPos.Zero))
+				.SelectMany(p => p.RenderUI(worldRenderer, origin, scale))
 				.OrderBy(WorldRenderer.RenderableScreenZPositionComparisonKey)
 				.Select(r => r.PrepareRender(worldRenderer))
 				.ToArray();
@@ -81,25 +84,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			// HACK: The split between world and UI shaders is a giant PITA because it isn't
-			// feasible to maintain two parallel sets of renderables for the two cases.
-			// Instead, we temporarily hijack the world rendering context and set the position
-			// and zoom values to give the desired screen position and size.
-			var scale = GetScale();
-			var origin = RenderOrigin + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
-
-			// The scale affects world -> screen transform, which we don't want when drawing the (fixed) UI.
-			if (scale != 1f)
-				origin = (1f / scale * origin.ToFloat2()).ToInt2();
-
-			Game.Renderer.Flush();
-			Game.Renderer.SetViewportParams(-origin - PreviewOffset, scale);
-
 			foreach (var r in renderables)
 				r.Render(worldRenderer);
-
-			Game.Renderer.Flush();
-			Game.Renderer.SetViewportParams(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
 		}
 
 		public override void Tick()
