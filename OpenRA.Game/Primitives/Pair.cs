@@ -66,17 +66,5 @@ namespace OpenRA.Primitives
 	public static class Pair
 	{
 		public static Pair<T, U> New<T, U>(T t, U u) { return new Pair<T, U>(t, u); }
-
-		static Pair()
-		{
-			Pair<char, Color>.Ucomparer = new ColorEqualityComparer();
-		}
-
-		// avoid the default crappy one
-		class ColorEqualityComparer : IEqualityComparer<Color>
-		{
-			public bool Equals(Color x, Color y) { return x.ToArgb() == y.ToArgb(); }
-			public int GetHashCode(Color obj) { return obj.GetHashCode(); }
-		}
 	}
 }

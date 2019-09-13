@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
@@ -16,7 +17,7 @@ namespace OpenRA
 {
 	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct float3
+	public struct float3 : IEquatable<float3>
 	{
 		public readonly float X, Y, Z;
 		public float2 XY { get { return new float2(X, Y); } }
@@ -46,6 +47,11 @@ namespace OpenRA
 		public static bool operator ==(float3 me, float3 other) { return me.X == other.X && me.Y == other.Y && me.Z == other.Z; }
 		public static bool operator !=(float3 me, float3 other) { return !(me == other); }
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
+
+		public bool Equals(float3 other)
+		{
+			return other == this;
+		}
 
 		public override bool Equals(object obj)
 		{

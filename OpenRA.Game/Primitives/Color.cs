@@ -15,7 +15,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Primitives
 {
-	public struct Color : IScriptBindable
+	public struct Color : IEquatable<Color>, IScriptBindable
 	{
 		readonly long argb;
 
@@ -199,6 +199,11 @@ namespace OpenRA.Primitives
 		public byte R { get { return (byte)(argb >> 16); } }
 		public byte G { get { return (byte)(argb >> 8); } }
 		public byte B { get { return (byte)argb; } }
+
+		public bool Equals(Color other)
+		{
+			return this == other;
+		}
 
 		public override bool Equals(object obj)
 		{
