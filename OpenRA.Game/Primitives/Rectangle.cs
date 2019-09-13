@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA.Primitives
 {
-	public struct Rectangle
+	public struct Rectangle : IEquatable<Rectangle>
 	{
 		// TODO: Make these readonly: this will require a lot of changes to the UI logic
 		public int X;
@@ -74,6 +74,11 @@ namespace OpenRA.Primitives
 		public bool Contains(int2 pt)
 		{
 			return Contains(pt.X, pt.Y);
+		}
+
+		public bool Equals(Rectangle other)
+		{
+			return this == other;
 		}
 
 		public override bool Equals(object obj)
