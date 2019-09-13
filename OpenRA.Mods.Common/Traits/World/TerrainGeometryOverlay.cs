@@ -9,9 +9,11 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Commands;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -20,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
 	public class TerrainGeometryOverlayInfo : TraitInfo<TerrainGeometryOverlay> { }
 
-	public class TerrainGeometryOverlay : IRenderAboveWorld, IWorldLoaded, IChatCommand
+	public class TerrainGeometryOverlay : IRenderAboveShroud, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "terrainoverlay";
 		const string CommandDesc = "toggles the terrain geometry overlay.";
@@ -45,20 +47,19 @@ namespace OpenRA.Mods.Common.Traits
 				Enabled ^= true;
 		}
 
-		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (!Enabled)
-				return;
+				yield break;
 
 			var map = wr.World.Map;
 			var tileSet = wr.World.Map.Rules.TileSet;
-			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 			var colors = tileSet.HeightDebugColors;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
-				if (!map.Height.Contains(uv))
+				if (!map.Height.Contains(uv) || self.World.ShroudObscures(uv))
 					continue;
 
 				var height = (int)map.Height[uv];
@@ -67,16 +68,18 @@ namespace OpenRA.Mods.Common.Traits
 				var ramp = ti != null ? ti.RampType : 0;
 
 				var corners = map.Grid.CellCorners[ramp];
-				var color = corners.Select(c => colors[height + c.Z / 512]).ToArray();
 				var pos = map.CenterOfCell(uv.ToCPos(map));
-				var screen = corners.Select(c => wr.Screen3DPxPosition(pos + c)).ToArray();
-				var width = (uv == mouseCell ? 3 : 1) / wr.Viewport.Zoom;
+				var width = uv == mouseCell ? 3 : 1;
 
 				// Colors change between points, so render separately
 				for (var i = 0; i < 4; i++)
 				{
 					var j = (i + 1) % 4;
-					wcr.DrawLine(screen[i], screen[j], width, color[i], color[j]);
+					var start = pos + corners[i];
+					var end = pos + corners[j];
+					var startColor = colors[height + corners[i].Z / 512];
+					var endColor = colors[height + corners[j].Z / 512];
+					yield return new LineAnnotationRenderable(start, end, width, startColor, endColor);
 				}
 			}
 
@@ -85,13 +88,16 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var puv in map.ProjectedCellsCovering(mouseCell))
 			{
 				var pos = map.CenterOfCell(((MPos)puv).ToCPos(map));
-				var screen = projectedCorners.Select(c => wr.Screen3DPxPosition(pos + c - new WVec(0, 0, pos.Z))).ToArray();
 				for (var i = 0; i < 4; i++)
 				{
 					var j = (i + 1) % 4;
-					wcr.DrawLine(screen[i], screen[j], 3 / wr.Viewport.Zoom, Color.Navy);
+					var start = pos + projectedCorners[i] - new WVec(0, 0, pos.Z);
+					var end = pos + projectedCorners[j] - new WVec(0, 0, pos.Z);
+					yield return new LineAnnotationRenderable(start, end, 3, Color.Navy);
 				}
 			}
 		}
+
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
 	}
 }
