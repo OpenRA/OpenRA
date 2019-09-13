@@ -9,9 +9,11 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
-	public struct Hotkey
+	public struct Hotkey : IEquatable<Hotkey>
 	{
 		public static Hotkey Invalid = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
 		public bool IsValid()
@@ -73,6 +75,11 @@ namespace OpenRA
 		}
 
 		public override int GetHashCode() { return Key.GetHashCode() ^ Modifiers.GetHashCode(); }
+
+		public bool Equals(Hotkey other)
+		{
+			return other == this;
+		}
 
 		public override bool Equals(object obj)
 		{

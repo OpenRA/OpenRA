@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA.Primitives
 {
-	public struct Size
+	public struct Size : IEquatable<Size>
 	{
 		public readonly int Width;
 		public readonly int Height;
@@ -45,6 +45,11 @@ namespace OpenRA.Primitives
 		}
 
 		public bool IsEmpty { get { return Width == 0 && Height == 0; } }
+
+		public bool Equals(Size other)
+		{
+			return this == other;
+		}
 
 		public override bool Equals(object obj)
 		{
