@@ -25,115 +25,115 @@ VGForceInterval = 15
 
 ProducedUnitTypes =
 {
-    { nodhand1, { "e1", "e3" } },
-    { gdibar1, { "e1", "e2" } }
+	{ nodhand1, { "e1", "e3" } },
+	{ gdibar1, { "e1", "e2" } }
 }
 
 ProduceUnits = function(t)
-    local factory = t[1]
-    if not factory.IsDead then
-        local unitType = t[2][Utils.RandomInteger(1, #t[2] + 1)]
-        factory.Wait(Actor.BuildTime(unitType))
-        factory.Produce(unitType)
-        factory.CallFunc(function() ProduceUnits(t) end)
-    end
+	local factory = t[1]
+	if not factory.IsDead then
+		local unitType = t[2][Utils.RandomInteger(1, #t[2] + 1)]
+		factory.Wait(Actor.BuildTime(unitType))
+		factory.Produce(unitType)
+		factory.CallFunc(function() ProduceUnits(t) end)
+	end
 end
 
 SetupFactories = function()
-    Utils.Do(ProducedUnitTypes, function(pair)
-        Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a) end)
-    end)
+	Utils.Do(ProducedUnitTypes, function(pair)
+		Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a) end)
+	end)
 end
 
 SetupInvulnerability = function()
    Utils.Do(Map.NamedActors, function(actor)
-        if actor.HasProperty("AcceptsCondition") and actor.AcceptsCondition("unkillable") then
-            actor.GrantCondition("unkillable")
-        end
+		if actor.HasProperty("AcceptsCondition") and actor.AcceptsCondition("unkillable") then
+			actor.GrantCondition("unkillable")
+		end
    end)
 end
 
 SendNodInfantry = function()
-    local units = Reinforcements.Reinforce(nod, NForce, NForcePath, NForceInterval)
-    Utils.Do(units, function(unit)
-        BindActorTriggers(unit)
+	local units = Reinforcements.Reinforce(nod, NForce, NForcePath, NForceInterval)
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
 
 		if unit.HasProperty("AttackMove") then
 			unit.AttackMove(GDIBase.Location)
 		else
 			unit.Move(GDIBase.Location)
 		end
-    end)
-    Trigger.AfterDelay(DateTime.Seconds(60), SendNodInfantry)
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(60), SendNodInfantry)
 end
 
 SendNodVehicles = function()
-    local units = Reinforcements.Reinforce(nod, VNForce, VNForcePath, VNForceInterval)
-    Utils.Do(units, function(unit)
-        BindActorTriggers(unit)
+	local units = Reinforcements.Reinforce(nod, VNForce, VNForcePath, VNForceInterval)
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
 
 		if unit.HasProperty("AttackMove") then
 			unit.AttackMove(GDIBase.Location)
 		else
 			unit.Move(GDIBase.Location)
 		end
-    end)
-    Trigger.AfterDelay(DateTime.Seconds(110), SendNodVehicles)
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(110), SendNodVehicles)
 end
 
 SendGDIInfantry = function()
-    local units = Reinforcements.Reinforce(gdi, GForce, GForcePath, GForceInterval)
-    Utils.Do(units, function(unit)
-        BindActorTriggers(unit)
+	local units = Reinforcements.Reinforce(gdi, GForce, GForcePath, GForceInterval)
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
 
 		if unit.HasProperty("AttackMove") then
 			unit.AttackMove(NodBase.Location)
 		else
 			unit.Move(NodBase.Location)
 		end
-    end)
-    Trigger.AfterDelay(DateTime.Seconds(60), SendGDIInfantry)
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(60), SendGDIInfantry)
 end
 
 SendGDIVehicles = function()
-    local units = Reinforcements.Reinforce(gdi, VGForce, VGForcePath, VGForceInterval)
-    Utils.Do(units, function(unit)
-        BindActorTriggers(unit)
+	local units = Reinforcements.Reinforce(gdi, VGForce, VGForcePath, VGForceInterval)
+	Utils.Do(units, function(unit)
+		BindActorTriggers(unit)
 
 		if unit.HasProperty("AttackMove") then
 			unit.AttackMove(NodBase.Location)
 		else
 			unit.Move(NodBase.Location)
 		end
-    end)
-    Trigger.AfterDelay(DateTime.Seconds(110), SendGDIVehicles)
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(110), SendGDIVehicles)
 end
 
 BindActorTriggers = function(a)
-    if a.HasProperty("Hunt") then
-        Trigger.OnIdle(a, a.Hunt)
-    end
+	if a.HasProperty("Hunt") then
+		Trigger.OnIdle(a, a.Hunt)
+	end
 
-    if a.HasProperty("HasPassengers") then
-        Trigger.OnDamaged(a, function()
-            if a.HasPassengers then
-                a.Stop()
-                a.UnloadPassengers()
-            end
-        end)
-    end
+	if a.HasProperty("HasPassengers") then
+		Trigger.OnDamaged(a, function()
+			if a.HasPassengers then
+				a.Stop()
+				a.UnloadPassengers()
+			end
+		end)
+	end
 end
 
 WorldLoaded = function()
-    nod = Player.GetPlayer("Nod")
-    gdi = Player.GetPlayer("GDI")
+	nod = Player.GetPlayer("Nod")
+	gdi = Player.GetPlayer("GDI")
 
-    SetupFactories()
-    SetupInvulnerability()
+	SetupFactories()
+	SetupInvulnerability()
 
-    Utils.Do(ProducedUnitTypes, ProduceUnits)
-    SendNodInfantry()
-    Trigger.AfterDelay(DateTime.Seconds(50), SendNodVehicles)
-    SendGDIInfantry()
-    Trigger.AfterDelay(DateTime.Seconds(70), SendGDIVehicles)
+	Utils.Do(ProducedUnitTypes, ProduceUnits)
+	SendNodInfantry()
+	Trigger.AfterDelay(DateTime.Seconds(50), SendNodVehicles)
+	SendGDIInfantry()
+	Trigger.AfterDelay(DateTime.Seconds(70), SendGDIVehicles)
 end
