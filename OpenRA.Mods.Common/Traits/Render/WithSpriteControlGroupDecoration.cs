@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
 	}
 
-	public class WithSpriteControlGroupDecoration : IRenderAboveShroudWhenSelected
+	public class WithSpriteControlGroupDecoration : IRenderAnnotationsWhenSelected
 	{
 		public readonly WithSpriteControlGroupDecorationInfo Info;
 		readonly IDecorationBounds[] decorationBounds;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			pipImages = new Animation(self.World, Info.Image);
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (self.Owner != wr.World.LocalPlayer)
 				yield break;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield return r;
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
 
 		IEnumerable<IRenderable> DrawControlGroup(Actor self, WorldRenderer wr, PaletteReference palette)
 		{
