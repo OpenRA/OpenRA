@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroudWhenSelected, INotifySelected
+	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
 		readonly List<IRenderable> renderableCache = new List<IRenderable>();
@@ -63,7 +63,29 @@ namespace OpenRA.Mods.Common.Traits
 			ShowTargetLines(self);
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		{
+			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
+				yield break;
+
+			// Players want to see the lines when in waypoint mode.
+			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
+
+			if (--lifetime <= 0 && !force)
+				yield break;
+
+			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+			var a = self.CurrentActivity;
+			for (; a != null; a = a.NextActivity)
+				if (!a.IsCanceling)
+					foreach (var n in a.TargetLineNodes(self))
+						if (n.Tile != null && n.Target.Type != TargetType.Invalid)
+							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, true);
+		}
+
+		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
+
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
 				return Enumerable.Empty<IRenderable>();
@@ -84,20 +106,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var n in a.TargetLineNodes(self))
 				{
-					if (n.Target.Type != TargetType.Invalid)
+					if (n.Target.Type != TargetType.Invalid && n.Tile == null)
 					{
 						var lineWidth = renderableCache.Any() ? info.QueuedLineWidth : info.LineWidth;
 						var markerWidth = renderableCache.Any() ? info.QueuedMarkerWidth : info.MarkerWidth;
 
-						var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
-						var tile = n.Tile;
 						var pos = n.Target.CenterPosition;
-
-						if (tile == null)
-							renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
-						else
-							renderableCache.Add(new SpriteRenderable(tile, pos, WVec.Zero, -511, pal, 1f, true));
-
+						renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
 						prev = pos;
 					}
 				}
@@ -108,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			return renderableCache;
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
 	}
 
 	public static class LineTargetExts

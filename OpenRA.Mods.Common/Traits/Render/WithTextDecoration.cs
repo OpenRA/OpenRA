@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAboveShroudWhenSelected, INotifyOwnerChanged
+	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAnnotationsWhenSelected, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
 		readonly IDecorationBounds[] decorationBounds;
@@ -84,12 +84,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			yield break;
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			return Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
 
 		IEnumerable<IRenderable> RenderInner(Actor self, WorldRenderer wr)
 		{

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		object ITraitInfo.Create(ActorInitializer init) { return new ExitsDebugOverlay(init.Self, this); }
 	}
 
-	public class ExitsDebugOverlay : IRenderAboveShroudWhenSelected
+	public class ExitsDebugOverlay : IRenderAnnotationsWhenSelected
 	{
 		readonly ExitsDebugOverlayManager manager;
 		readonly ExitsDebugOverlayInfo info;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			exits = self.Info.TraitInfos<ExitInfo>().ToArray();
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (manager == null || !manager.Enabled)
 				yield break;
@@ -101,6 +101,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return true; } }
 	}
 }

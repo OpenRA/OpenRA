@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BaseProvider(init.Self, this); }
 	}
 
-	public class BaseProvider : PausableConditionalTrait<BaseProviderInfo>, ITick, IRenderAboveShroudWhenSelected, ISelectionBar
+	public class BaseProvider : PausableConditionalTrait<BaseProviderInfo>, ITick, IRenderAnnotationsWhenSelected, ISelectionBar
 	{
 		readonly DeveloperMode devMode;
 		readonly Actor self;
@@ -89,12 +89,12 @@ namespace OpenRA.Mods.Common.Traits
 				Color.FromArgb(96, Color.Black));
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			return RangeCircleRenderables(wr);
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
 
 		float ISelectionBar.GetValue()
 		{

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new RenderNameTag(init.Self, this); }
 	}
 
-	class RenderNameTag : IRender
+	class RenderNameTag : IRenderAnnotations
 	{
 		readonly SpriteFont font;
 		readonly Color color;
@@ -48,19 +48,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 			decorationBounds = self.TraitsImplementing<IDecorationBounds>().ToArray();
 		}
 
-		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
+			if (self.World.FogObscures(self))
+				yield break;
+
 			var bounds = decorationBounds.FirstNonEmptyBounds(self, wr);
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
 
-			return new IRenderable[] { new TextRenderable(font, effectPos, 0, color, name) };
+			yield return new TextRenderable(font, effectPos, 0, color, name);
 		}
 
-		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
-		{
-			// Name tags don't contribute to actor bounds
-			yield break;
-		}
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
 	}
 }
