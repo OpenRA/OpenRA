@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new WarheadDebugOverlay(this); }
 	}
 
-	public class WarheadDebugOverlay : IRenderAboveShroud
+	public class WarheadDebugOverlay : IRenderAnnotations
 	{
 		class WHImpact
 		{
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			impacts.Add(new WHImpact(pos, range, info.DisplayDuration, color));
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			foreach (var i in impacts)
 			{
@@ -83,6 +83,6 @@ namespace OpenRA.Mods.Common.Traits
 			impacts.RemoveAll(i => i.Time == 0);
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
 	}
 }

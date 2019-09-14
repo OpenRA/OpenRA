@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Renders a debug overlay showing the terrain cells. Attach this to the world actor.")]
 	public class TerrainGeometryOverlayInfo : TraitInfo<TerrainGeometryOverlay> { }
 
-	public class TerrainGeometryOverlay : IRenderAboveShroud, IWorldLoaded, IChatCommand
+	public class TerrainGeometryOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "terrainoverlay";
 		const string CommandDesc = "toggles the terrain geometry overlay.";
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 				Enabled ^= true;
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (!Enabled)
 				yield break;
@@ -98,6 +98,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
 	}
 }

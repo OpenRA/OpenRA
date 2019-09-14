@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public object Create(ActorInitializer init) { return new SelectionDecorations(init.Self, this); }
 	}
 
-	public class SelectionDecorations : ISelectionDecorations, IRenderAboveShroud, INotifyCreated, ITick
+	public class SelectionDecorations : ISelectionDecorations, IRenderAnnotations, INotifyCreated, ITick
 	{
 		// depends on the order of pips in TraitsInterfaces.cs!
 		static readonly string[] PipStrings = { "pip-empty", "pip-green", "pip-yellow", "pip-red", "pip-gray", "pip-blue", "pip-ammo", "pip-ammoempty" };
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (self.World.FogObscures(self))
 				return Enumerable.Empty<IRenderable>();
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return DrawDecorations(self, wr);
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return true; } }
 
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{

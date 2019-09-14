@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new CombatDebugOverlay(init.Self); }
 	}
 
-	public class CombatDebugOverlay : IRenderAboveShroud, INotifyDamage, INotifyCreated
+	public class CombatDebugOverlay : IRenderAnnotations, INotifyDamage, INotifyCreated
 	{
 		static readonly WVec TargetPosHLine = new WVec(0, 128, 0);
 		static readonly WVec TargetPosVLine = new WVec(128, 0, 0);
@@ -52,13 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.CombatGeometry || self.World.FogObscures(self))
 				yield break;
-
-			var wcr = Game.Renderer.WorldRgbaColorRenderer;
-			var iz = 1 / wr.Viewport.Zoom;
 
 			var blockers = allBlockers.Where(Exts.IsTraitEnabled).ToList();
 			if (blockers.Count > 0)
@@ -80,13 +77,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			foreach (var attack in self.TraitsImplementing<AttackBase>().Where(x => !x.IsTraitDisabled))
-				foreach (var r in RenderArmaments(self, attack, wr, wcr, iz))
+				foreach (var r in RenderArmaments(self, attack))
 					yield return r;
 		}
 
-		bool IRenderAboveShroud.SpatiallyPartitionable { get { return true; } }
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return true; } }
 
-		IEnumerable<IRenderable> RenderArmaments(Actor self, AttackBase attack, WorldRenderer wr, RgbaColorRenderer wcr, float iz)
+		IEnumerable<IRenderable> RenderArmaments(Actor self, AttackBase attack)
 		{
 			// Fire ports on garrisonable structures
 			var garrison = attack as AttackGarrisoned;

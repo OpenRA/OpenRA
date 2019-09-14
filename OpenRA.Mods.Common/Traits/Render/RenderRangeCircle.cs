@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class RenderRangeCircle : IRenderAboveShroudWhenSelected
+	class RenderRangeCircle : IRenderAnnotationsWhenSelected
 	{
 		public readonly RenderRangeCircleInfo Info;
 		readonly Actor self;
@@ -108,11 +108,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				Info.BorderColor);
 		}
 
-		IEnumerable<IRenderable> IRenderAboveShroudWhenSelected.RenderAboveShroud(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			return RangeCircleRenderables(wr);
 		}
 
-		bool IRenderAboveShroudWhenSelected.SpatiallyPartitionable { get { return false; } }
+		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable { get { return false; } }
 	}
 }
