@@ -427,6 +427,18 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
+	public interface IRenderAnnotations
+	{
+		IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr);
+		bool SpatiallyPartitionable { get; }
+	}
+
+	public interface IRenderAnnotationsWhenSelected
+	{
+		IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr);
+		bool SpatiallyPartitionable { get; }
+	}
+
 	public interface ISelection
 	{
 		int Hash { get; }
