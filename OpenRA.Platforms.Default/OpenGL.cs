@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -30,11 +31,14 @@ namespace OpenRA.Platforms.Default
 			None = 0,
 			Core = 1,
 			GLES = 2,
+			DebugMessagesCallback = 4
 		}
 
 		public static GLFeatures Features { get; private set; }
 
 		public static string Version { get; private set; }
+
+		#region Constants
 
 		public const int GL_FALSE = 0;
 
@@ -49,7 +53,29 @@ namespace OpenRA.Platforms.Default
 
 		// Errors
 		public const int GL_NO_ERROR = 0;
-		public const int GL_OUT_OF_MEMORY = 0x505;
+		public const int GL_INVALID_ENUM = 0x0500;
+		public const int GL_INVALID_VALUE = 0x0501;
+		public const int GL_INVALID_OPERATION = 0x0502;
+		public const int GL_STACK_OVERFLOW = 0x0503;
+		public const int GL_STACK_UNDERFLOW = 0x0504;
+		public const int GL_OUT_OF_MEMORY = 0x0505;
+		public const int GL_INVALID_FRAMEBUFFER_OPERATION = 0x0506;
+		public const int GL_CONTEXT_LOST = 0x0507;
+		public const int GL_TABLE_TOO_LARGE = 0x8031;
+
+		static readonly Dictionary<int, string> ErrorToText = new Dictionary<int, string>
+		{
+			{ GL_NO_ERROR, "No Error" },
+			{ GL_INVALID_ENUM, "Invalid Enum" },
+			{ GL_INVALID_VALUE, "Invalid Value" },
+			{ GL_INVALID_OPERATION, "Invalid Operation" },
+			{ GL_STACK_OVERFLOW, "Stack Overflow" },
+			{ GL_STACK_UNDERFLOW, "Stack Underflow" },
+			{ GL_OUT_OF_MEMORY, "Out Of Memory" },
+			{ GL_INVALID_FRAMEBUFFER_OPERATION, "Invalid Framebuffer Operation" },
+			{ GL_CONTEXT_LOST, "Context Lost" },
+			{ GL_TABLE_TOO_LARGE, "Table Too Large" },
+		};
 
 		// BeginMode
 		public const int GL_POINTS = 0;
@@ -117,6 +143,63 @@ namespace OpenRA.Platforms.Default
 		public const int GL_INFO_LOG_LENGTH = 0x8B84;
 		public const int GL_ACTIVE_UNIFORMS = 0x8B86;
 
+		// OpenGL 4.3
+		public const int GL_DEBUG_OUTPUT = 0x92E0;
+		public const int GL_DEBUG_OUTPUT_SYNCHRONOUS = 0x8242;
+
+		public const int GL_DEBUG_SOURCE_API = 0x8246;
+		public const int GL_DEBUG_SOURCE_WINDOW_SYSTEM = 0x8247;
+		public const int GL_DEBUG_SOURCE_SHADER_COMPILER = 0x8248;
+		public const int GL_DEBUG_SOURCE_THIRD_PARTY = 0x8249;
+		public const int GL_DEBUG_SOURCE_APPLICATION = 0x824A;
+		public const int GL_DEBUG_SOURCE_OTHER = 0x824B;
+
+		static readonly Dictionary<int, string> DebugSourceToText = new Dictionary<int, string>
+		{
+			{ GL_DEBUG_SOURCE_API, "API" },
+			{ GL_DEBUG_SOURCE_WINDOW_SYSTEM, "Window System" },
+			{ GL_DEBUG_SOURCE_SHADER_COMPILER, "Shader Compiler" },
+			{ GL_DEBUG_SOURCE_THIRD_PARTY, "Third Party" },
+			{ GL_DEBUG_SOURCE_APPLICATION, "Application" },
+			{ GL_DEBUG_SOURCE_OTHER, "Other" }
+		};
+
+		public const int GL_DEBUG_TYPE_ERROR = 0x824C;
+		public const int GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D;
+		public const int GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR = 0x824E;
+		public const int GL_DEBUG_TYPE_PORTABILITY = 0x824F;
+		public const int GL_DEBUG_TYPE_PERFORMANCE = 0x8250;
+		public const int GL_DEBUG_TYPE_MARKER = 0x8268;
+		public const int GL_DEBUG_TYPE_PUSH_GROUP = 0x8269;
+		public const int GL_DEBUG_TYPE_POP_GROUP = 0x826A;
+		public const int GL_DEBUG_TYPE_OTHER = 0x8251;
+
+		static readonly Dictionary<int, string> DebugTypeToText = new Dictionary<int, string>
+		{
+			{ GL_DEBUG_TYPE_ERROR, "Error" },
+			{ GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, "Deprecated Behaviour" },
+			{ GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, "Undefined Behaviour" },
+			{ GL_DEBUG_TYPE_PORTABILITY, "Portability" },
+			{ GL_DEBUG_TYPE_PERFORMANCE, "Performance" },
+			{ GL_DEBUG_TYPE_MARKER, "Marker" },
+			{ GL_DEBUG_TYPE_PUSH_GROUP, "Push Group" },
+			{ GL_DEBUG_TYPE_POP_GROUP, "Pop Group" },
+			{ GL_DEBUG_TYPE_OTHER, "Other" }
+		};
+
+		public const int GL_DEBUG_SEVERITY_HIGH = 0x9146;
+		public const int GL_DEBUG_SEVERITY_MEDIUM = 0x9147;
+		public const int GL_DEBUG_SEVERITY_LOW = 0x9148;
+		public const int GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B;
+
+		static readonly Dictionary<int, string> DebugSeverityToText = new Dictionary<int, string>
+		{
+			{ GL_DEBUG_SEVERITY_HIGH, "High" },
+			{ GL_DEBUG_SEVERITY_MEDIUM, "Medium" },
+			{ GL_DEBUG_SEVERITY_LOW, "Low" },
+			{ GL_DEBUG_SEVERITY_NOTIFICATION, "Notification" }
+		};
+
 		// Pixel Mode / Transfer
 		public const int GL_PACK_ROW_LENGTH = 0x0D02;
 		public const int GL_PACK_ALIGNMENT = 0x0D05;
@@ -140,6 +223,20 @@ namespace OpenRA.Platforms.Default
 		public const int GL_DEPTH_ATTACHMENT = 0x8D00;
 		public const int GL_FRAMEBUFFER_COMPLETE = 0x8CD5;
 		public const int GL_FRAMEBUFFER_BINDING = 0x8CA6;
+
+		#endregion
+
+		#region GL Delegates
+
+		public delegate void DebugProc(int source, int type, uint id, int severity, int length, StringBuilder message,
+			IntPtr userParam);
+		static DebugProc DebugMessageHandle { get; set; }
+
+		public delegate void DebugMessageCallback(DebugProc callback, IntPtr userParam);
+		public static DebugMessageCallback glDebugMessageCallback { get; private set; }
+
+		public delegate void DebugMessageInsert(int source, int type, uint id, int severity, int length, string message);
+		public static DebugMessageInsert glDebugMessageInsert { get; private set; }
 
 		public delegate void Flush();
 		public static Flush glFlush { get; private set; }
@@ -378,29 +475,54 @@ namespace OpenRA.Platforms.Default
 		public delegate int CheckFramebufferStatus(int target);
 		public static CheckFramebufferStatus glCheckFramebufferStatus { get; private set; }
 
+		#endregion
+
 		public static void Initialize()
 		{
-			// glGetError and glGetString are used in our error handlers
-			// so we want these to be available early.
 			try
 			{
+				// First set up the bindings we need for error handling
+				glEnable = Bind<Enable>("glEnable");
+				glDisable = Bind<Disable>("glDisable");
 				glGetError = Bind<GetError>("glGetError");
 				glGetStringInternal = Bind<GetString>("glGetString");
 				glGetStringiInternal = Bind<GetStringi>("glGetStringi");
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				throw new InvalidProgramException("Failed to initialize low-level OpenGL bindings. GPU information is not available");
+				throw new InvalidProgramException("Failed to initialize low-level OpenGL bindings. GPU information is not available.", e);
 			}
 
 			DetectGLFeatures();
+
 			if (!Features.HasFlag(GLFeatures.Core))
 			{
 				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
 			}
-			else
-				Console.WriteLine("OpenGL version: " + glGetString(GL_VERSION));
+
+			// Setup the debug message callback handler
+			if (Features.HasFlag(GLFeatures.DebugMessagesCallback))
+			{
+				try
+				{
+					glDebugMessageCallback = Bind<DebugMessageCallback>("glDebugMessageCallback");
+					glDebugMessageInsert = Bind<DebugMessageInsert>("glDebugMessageInsert");
+
+					glEnable(GL_DEBUG_OUTPUT);
+					glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+					// Need to keep a reference to the callback so it doesn't get garbage collected
+					DebugMessageHandle = DebugMessageHandler;
+					glDebugMessageCallback(DebugMessageHandle, IntPtr.Zero);
+				}
+				catch (Exception e)
+				{
+					throw new InvalidProgramException("Failed to initialize an OpenGL debug message callback.", e);
+				}
+			}
+
+			Console.WriteLine("OpenGL version: " + glGetString(GL_VERSION));
 
 			try
 			{
@@ -445,8 +567,6 @@ namespace OpenRA.Platforms.Default
 				glEnableVertexAttribArray = Bind<EnableVertexAttribArray>("glEnableVertexAttribArray");
 				glDisableVertexAttribArray = Bind<DisableVertexAttribArray>("glDisableVertexAttribArray");
 				glDrawArrays = Bind<DrawArrays>("glDrawArrays");
-				glEnable = Bind<Enable>("glEnable");
-				glDisable = Bind<Disable>("glDisable");
 				glBlendEquation = Bind<BlendEquation>("glBlendEquation");
 				glBlendEquationSeparate = Bind<BlendEquationSeparate>("glBlendEquationSeparate");
 				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
@@ -476,7 +596,7 @@ namespace OpenRA.Platforms.Default
 			catch (Exception e)
 			{
 				WriteGraphicsLog("Failed to initialize OpenGL bindings.\nInner exception was: {0}".F(e));
-				throw new InvalidProgramException("Failed to initialize OpenGL. See graphics.log for details.");
+				throw new InvalidProgramException("Failed to initialize OpenGL. See graphics.log for details.", e);
 			}
 		}
 
@@ -508,24 +628,13 @@ namespace OpenRA.Platforms.Default
 					Features = GLFeatures.Core | GLFeatures.GLES;
 				else if (major > 3 || (major == 3 && minor >= 2))
 					Features = GLFeatures.Core;
+
+				// Debug callbacks were introduced in GL 4.3
+				var hasDebugMessagesCallback = SDL.SDL_GL_ExtensionSupported("GL_KHR_debug") == SDL.SDL_bool.SDL_TRUE;
+				if (hasDebugMessagesCallback)
+					Features |= GLFeatures.DebugMessagesCallback;
 			}
 			catch (Exception) { }
-		}
-
-		public static void CheckGLError()
-		{
-			var n = glGetError();
-			if (n != GL_NO_ERROR)
-			{
-				var errorText = n == GL_OUT_OF_MEMORY ? "Out Of Memory" : n.ToString();
-				var error = "GL Error: {0}\n{1}".F(errorText, new StackTrace());
-				WriteGraphicsLog(error);
-				const string ExceptionMessage = "OpenGL Error: See graphics.log for details.";
-				if (n == GL_OUT_OF_MEMORY)
-					throw new OutOfMemoryException(ExceptionMessage);
-				else
-					throw new InvalidOperationException(ExceptionMessage);
-			}
 		}
 
 		public static void WriteGraphicsLog(string message)
@@ -552,6 +661,62 @@ namespace OpenRA.Platforms.Default
 			glGetIntegerv(GL_NUM_EXTENSIONS, out extensionCount);
 			for (var i = 0; i < extensionCount; i++)
 				Log.Write("graphics", glGetStringi(GL_EXTENSIONS, (uint)i));
+		}
+
+		public static void CheckGLError()
+		{
+			// Let the debug message handler log the errors instead.
+			if (Features.HasFlag(GLFeatures.DebugMessagesCallback))
+				return;
+
+			var type = glGetError();
+			if (type == GL_NO_ERROR)
+				return;
+
+			string errorText;
+			errorText = ErrorToText.TryGetValue(type, out errorText) ? errorText : type.ToString("X");
+			var error = "GL Error: {0}\n{1}".F(errorText, new StackTrace());
+
+			WriteGraphicsLog(error);
+
+			const string exceptionMessage = "OpenGL Error: See graphics.log for details.";
+
+			if (type == GL_OUT_OF_MEMORY)
+				throw new OutOfMemoryException(exceptionMessage);
+
+			throw new InvalidOperationException(exceptionMessage);
+		}
+
+		static void DebugMessageHandler(int source, int type, uint id, int severity, int length, StringBuilder message, IntPtr userparam)
+		{
+			string error;
+
+			switch (severity)
+			{
+				case GL_DEBUG_SEVERITY_HIGH:
+					error = BuildErrorText(source, type, severity, message);
+					WriteGraphicsLog(error);
+					throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
+
+				case GL_DEBUG_SEVERITY_MEDIUM:
+					error = BuildErrorText(source, type, severity, message);
+					Console.WriteLine(error);
+					break;
+			}
+		}
+
+		static string BuildErrorText(int source, int type, int severity, StringBuilder message)
+		{
+			string sourceText;
+			string typeText;
+			string severityText;
+
+			sourceText = DebugSourceToText.TryGetValue(source, out sourceText) ? sourceText : source.ToString("X");
+			typeText = DebugTypeToText.TryGetValue(type, out typeText) ? typeText : type.ToString("X");
+			severityText = DebugSeverityToText.TryGetValue(severity, out severityText) ? severityText : severity.ToString("X");
+			var messageText = message.ToString();
+
+			return "{0} - GL Debug {1} Output: {2} - {3}\n{4}".F(severityText, sourceText, typeText, messageText, new StackTrace());
 		}
 	}
 }
