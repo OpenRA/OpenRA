@@ -23,24 +23,22 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation anim;
 		readonly Func<WPos> posFunc;
 		readonly bool visibleThroughFog;
-		readonly bool scaleSizeWithZoom;
 		WPos pos;
 
 		// Facing is last on these overloads partially for backwards compatibility with previous main ctor revision
 		// and partially because most effects don't need it.
-		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false, int facing = 0)
-			: this(() => pos, () => facing, world, image, sequence, palette, visibleThroughFog, scaleSizeWithZoom) { }
+		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette, bool visibleThroughFog = false, int facing = 0)
+			: this(() => pos, () => facing, world, image, sequence, palette, visibleThroughFog) { }
 
-		public SpriteEffect(Actor actor, World world, string image, string sequence, string palette, bool visibleThroughFog = false, bool scaleSizeWithZoom = false, int facing = 0)
-			: this(() => actor.CenterPosition, () => facing, world, image, sequence, palette, visibleThroughFog, scaleSizeWithZoom) { }
+		public SpriteEffect(Actor actor, World world, string image, string sequence, string palette, bool visibleThroughFog = false, int facing = 0)
+			: this(() => actor.CenterPosition, () => facing, world, image, sequence, palette, visibleThroughFog) { }
 
 		public SpriteEffect(Func<WPos> posFunc, Func<int> facingFunc, World world, string image, string sequence, string palette,
-			bool visibleThroughFog = false, bool scaleSizeWithZoom = false)
+			bool visibleThroughFog = false)
 		{
 			this.world = world;
 			this.posFunc = posFunc;
 			this.palette = palette;
-			this.scaleSizeWithZoom = scaleSizeWithZoom;
 			this.visibleThroughFog = visibleThroughFog;
 			pos = posFunc();
 			anim = new Animation(world, image, facingFunc);
@@ -61,8 +59,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!visibleThroughFog && world.FogObscures(pos))
 				return SpriteRenderable.None;
 
-			var zoom = scaleSizeWithZoom ? 1f / wr.Viewport.Zoom : 1f;
-			return anim.Render(pos, WVec.Zero, 0, wr.Palette(palette), zoom);
+			return anim.Render(pos, wr.Palette(palette));
 		}
 	}
 }
