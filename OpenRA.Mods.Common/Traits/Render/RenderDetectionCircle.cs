@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (range == WDist.Zero)
 				yield break;
 
-			yield return new DetectionCircleRenderable(
+			yield return new DetectionCircleAnnotationRenderable(
 				self.CenterPosition,
 				range,
 				0,
