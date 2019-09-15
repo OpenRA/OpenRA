@@ -47,23 +47,23 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var wcr = Game.Renderer.WorldRgbaColorRenderer;
+			var cr = Game.Renderer.RgbaColorRenderer;
 			if (filled)
 			{
 				var offset = new WVec(radius.Length, radius.Length, 0);
-				var tl = wr.Screen3DPosition(centerPosition - offset);
-				var br = wr.Screen3DPosition(centerPosition + offset);
+				var tl = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition - offset));
+				var br = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset));
 
-				wcr.FillEllipse(tl, br, color);
+				cr.FillEllipse(tl, br, color);
 			}
 			else
 			{
 				var r = radius.Length;
-				var a = wr.Screen3DPosition(centerPosition + r * FacingOffsets[CircleSegments - 1] / 1024);
+				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + r * FacingOffsets[CircleSegments - 1] / 1024));
 				for (var i = 0; i < CircleSegments; i++)
 				{
-					var b = wr.Screen3DPosition(centerPosition + r * FacingOffsets[i] / 1024);
-					wcr.DrawLine(a, b, width / wr.Viewport.Zoom, color);
+					var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + r * FacingOffsets[i] / 1024));
+					cr.DrawLine(a, b, width, color);
 					a = b;
 				}
 			}

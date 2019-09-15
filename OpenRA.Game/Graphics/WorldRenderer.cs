@@ -247,39 +247,39 @@ namespace OpenRA.Graphics
 				foreach (var r in g)
 					r.Render(this);
 
-			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
-			{
-				for (var i = 0; i < preparedRenderables.Count; i++)
-					preparedRenderables[i].RenderDebugGeometry(this);
-
-				foreach (var g in groupedOverlayRenderables)
-					foreach (var r in g)
-						r.RenderDebugGeometry(this);
-			}
-
-			if (debugVis.Value != null && debugVis.Value.ScreenMap)
-			{
-				foreach (var r in World.ScreenMap.RenderBounds(World.RenderPlayer))
-					Game.Renderer.WorldRgbaColorRenderer.DrawRect(
-						new float3(r.Left, r.Top, r.Bottom),
-						new float3(r.Right, r.Bottom, r.Bottom),
-						1 / Viewport.Zoom, Color.MediumSpringGreen);
-
-				foreach (var r in World.ScreenMap.MouseBounds(World.RenderPlayer))
-					Game.Renderer.WorldRgbaColorRenderer.DrawRect(
-						new float3(r.Left, r.Top, r.Bottom),
-						new float3(r.Right, r.Bottom, r.Bottom),
-						1 / Viewport.Zoom, Color.OrangeRed);
-			}
-
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < preparedAnnotationRenderables.Count; i++)
 				preparedAnnotationRenderables[i].Render(this);
 
 			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
+			{
+				for (var i = 0; i < preparedRenderables.Count; i++)
+					preparedRenderables[i].RenderDebugGeometry(this);
+
+				for (var i = 0; i < preparedOverlayRenderables.Count; i++)
+					preparedOverlayRenderables[i].RenderDebugGeometry(this);
+
 				for (var i = 0; i < preparedAnnotationRenderables.Count; i++)
 					preparedAnnotationRenderables[i].RenderDebugGeometry(this);
+			}
+
+			if (debugVis.Value != null && debugVis.Value.ScreenMap)
+			{
+				foreach (var r in World.ScreenMap.RenderBounds(World.RenderPlayer))
+				{
+					var tl = Viewport.WorldToViewPx(new float2(r.Left, r.Top));
+					var br = Viewport.WorldToViewPx(new float2(r.Right, r.Bottom));
+					Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.MediumSpringGreen);
+				}
+
+				foreach (var r in World.ScreenMap.MouseBounds(World.RenderPlayer))
+				{
+					var tl = Viewport.WorldToViewPx(new float2(r.Left, r.Top));
+					var br = Viewport.WorldToViewPx(new float2(r.Right, r.Bottom));
+					Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.OrangeRed);
+				}
+			}
 
 			Game.Renderer.Flush();
 			preparedRenderables.Clear();

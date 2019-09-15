@@ -56,16 +56,15 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var screenPos = wr.Viewport.Zoom * (wr.ScreenPosition(pos) - wr.Viewport.TopLeft.ToFloat2()) - 0.5f * font.Measure(text).ToFloat2();
-			var screenPxPos = new float2((float)Math.Round(screenPos.X), (float)Math.Round(screenPos.Y));
-			font.DrawTextWithContrast(text, screenPxPos, color, bgDark, bgLight, 1);
+			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(pos)) - 0.5f * font.Measure(text).ToFloat2();
+			font.DrawTextWithContrast(text, screenPos, color, bgDark, bgLight, 1);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var size = font.Measure(text).ToFloat2();
-			var offset = wr.Screen3DPxPosition(pos) - 0.5f * size;
-			Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset, offset + size, 1 / wr.Viewport.Zoom, Color.Red);
+			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(pos));
+			Game.Renderer.RgbaColorRenderer.DrawRect(screenPos - 0.5f * size, screenPos + 0.5f * size, 1, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }

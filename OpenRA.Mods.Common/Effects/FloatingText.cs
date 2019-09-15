@@ -52,8 +52,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (wr.World.FogObscures(pos) || wr.World.ShroudObscures(pos))
 				yield break;
 
-			// Arbitrary large value used for the z-offset to try and ensure the text displays above everything else.
-			yield return new TextRenderable(font, pos, 4096, color, text);
+			yield return new TextRenderable(font, pos, 0, color, text);
 		}
 
 		public static string FormatCashTick(int cashAmount)
