@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var screenPos = boundsOffset + sizeOffset + info.ScreenOffset;
 
-			yield return new TextRenderable(font, wr.ProjectedPosition(screenPos), info.ZOffset, color, number);
+			yield return new TextAnnotationRenderable(font, wr.ProjectedPosition(screenPos), info.ZOffset, color, number);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
