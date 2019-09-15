@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (wr.World.FogObscures(pos) || wr.World.ShroudObscures(pos))
 				yield break;
 
-			yield return new TextRenderable(font, pos, 0, color, text);
+			yield return new TextAnnotationRenderable(font, pos, 0, color, text);
 		}
 
 		public static string FormatCashTick(int cashAmount)

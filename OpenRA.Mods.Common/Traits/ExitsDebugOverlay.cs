@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 					var color = self.Owner.Color;
 					var vec = exitCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(exitCell);
-					yield return new TextRenderable(manager.Font, center, 0, color, vec.ToString());
+					yield return new TextAnnotationRenderable(manager.Font, center, 0, color, vec.ToString());
 				}
 			}
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var vec = perimCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(perimCell);
-					yield return new TextRenderable(manager.Font, center, 0, color, vec.ToString());
+					yield return new TextAnnotationRenderable(manager.Font, center, 0, color, vec.ToString());
 				}
 			}
 

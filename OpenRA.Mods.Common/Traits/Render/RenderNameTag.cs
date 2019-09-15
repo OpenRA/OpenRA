@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var spaceBuffer = (int)(10 / wr.Viewport.Zoom);
 			var effectPos = wr.ProjectedPosition(new int2((bounds.Left + bounds.Right) / 2, bounds.Y - spaceBuffer));
 
-			yield return new TextRenderable(font, effectPos, 0, color, name);
+			yield return new TextAnnotationRenderable(font, effectPos, 0, color, name);
 		}
 
 		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
