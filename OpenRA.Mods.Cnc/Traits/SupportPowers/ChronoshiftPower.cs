@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 					{
 						var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, wr);
-						yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+						yield return new SelectionBoxAnnotationRenderable(unit, bounds, Color.Red);
 					}
 				}
 			}
@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 					{
 						var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, wr);
-						yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+						yield return new SelectionBoxAnnotationRenderable(unit, bounds, Color.Red);
 					}
 				}
 			}

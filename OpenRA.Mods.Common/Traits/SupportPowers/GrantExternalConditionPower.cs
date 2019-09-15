@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var unit in power.UnitsInRange(xy))
 				{
 					var bounds = unit.TraitsImplementing<IDecorationBounds>().FirstNonEmptyBounds(unit, wr);
-					yield return new SelectionBoxRenderable(unit, bounds, Color.Red);
+					yield return new SelectionBoxAnnotationRenderable(unit, bounds, Color.Red);
 				}
 			}
 
