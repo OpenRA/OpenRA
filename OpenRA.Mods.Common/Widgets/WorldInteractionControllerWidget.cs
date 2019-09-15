@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 					else if (visualTarget.Type == TargetType.Terrain)
 					{
-						world.AddFrameEndTask(w => w.Add(new SpriteEffect(visualTarget.CenterPosition, world, "moveflsh", "idle", "moveflash", true, true)));
+						world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(visualTarget.CenterPosition, world, "moveflsh", "idle", "moveflash")));
 						flashed = true;
 					}
 				}
