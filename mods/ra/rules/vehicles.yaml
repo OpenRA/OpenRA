@@ -499,6 +499,7 @@ MNLY:
 		Range: 4c0
 	Minelayer:
 		Mine: MINV
+		TileUnknownName: build-valid
 	MineImmune:
 	AmmoPool:
 		Ammo: 5

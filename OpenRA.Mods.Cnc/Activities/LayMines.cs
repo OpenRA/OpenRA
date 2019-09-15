@@ -100,12 +100,17 @@ namespace OpenRA.Mods.Cnc.Activities
 			return true;
 		}
 
-		public void CleanPlacedMines(Actor self)
+		public void CleanMineField(Actor self)
 		{
 			// Remove cells that have already been mined
+			// or that are revealed to be unmineable.
 			if (minefield != null)
+			{
+				var positionable = (IPositionable)movement;
 				minefield.RemoveAll(c => self.World.ActorMap.GetActorsAt(c)
-					.Any(a => a.Info.Name == minelayer.Info.Mine.ToLowerInvariant()));
+					.Any(a => a.Info.Name == minelayer.Info.Mine.ToLowerInvariant()) ||
+						(!positionable.CanEnterCell(c, null, BlockedByActor.Immovable) && !self.World.FogObscures(c)));
+			}
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
