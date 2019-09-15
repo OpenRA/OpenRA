@@ -34,6 +34,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Voice to use when ordered to lay a minefield.")]
 		public readonly string Voice = "Action";
 
+		[Desc("Sprite overlay to use for valid minefield cells.")]
+		public readonly string TileValidName = "build-valid";
+
+		[Desc("Sprite overlay to use for invalid minefield cells.")]
+		public readonly string TileInvalidName = "build-invalid";
+
+		[Desc("Sprite overlay to use for minefield cells hidden behind fog or shroud.")]
+		public readonly string TileUnknownName = "build-unknown";
+
 		public object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
@@ -49,12 +58,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Minelayer(Actor self, MinelayerInfo info)
 		{
 			Info = info;
-
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
-			if (self.World.Map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
-				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+			if (self.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(Info.TileValidName, tileset)))
+				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(Info.TileValidName, tileset)).GetSprite(0);
 			else
-				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
+				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", Info.TileValidName).GetSprite(0);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -107,7 +115,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var movement = self.Trait<IPositionable>();
 
 				var minefield = GetMinefieldCells(minefieldStart, cell, Info.MinefieldDepth)
-					.Where(c => movement.CanEnterCell(c, null, BlockedByActor.None))
+					.Where(c => movement.CanEnterCell(c, null, BlockedByActor.Immovable) || self.World.FogObscures(c))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
 
 				self.QueueActivity(order.Queued, new LayMines(self, minefield));
@@ -119,7 +127,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (self.CurrentActivity != null)
 				foreach (var field in self.CurrentActivity.ActivitiesImplementing<LayMines>())
-					field.CleanPlacedMines(self);
+					field.CleanMineField(self);
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
@@ -153,6 +161,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			readonly List<Actor> minelayers;
 			readonly Sprite tileOk;
+			readonly Sprite tileUnknown;
 			readonly Sprite tileBlocked;
 			readonly CPos minefieldStart;
 			readonly bool queued;
@@ -163,13 +172,22 @@ namespace OpenRA.Mods.Cnc.Traits
 				minefieldStart = xy;
 				this.queued = queued;
 
+				var minelayer = a.Trait<Minelayer>();
 				var tileset = a.World.Map.Tileset.ToLowerInvariant();
-				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "build-valid-{0}".F(tileset)))
-					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid-{0}".F(tileset)).GetSprite(0);
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset)))
+					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileValidName, tileset)).GetSprite(0);
 				else
-					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
+					tileOk = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileValidName).GetSprite(0);
 
-				tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset)))
+					tileUnknown = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileUnknownName, tileset)).GetSprite(0);
+				else
+					tileUnknown = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileUnknownName).GetSprite(0);
+
+				if (a.World.Map.Rules.Sequences.HasSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset)))
+					tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", "{0}-{1}".F(minelayer.Info.TileInvalidName, tileset)).GetSprite(0);
+				else
+					tileBlocked = a.World.Map.Rules.Sequences.GetSequence("overlay", minelayer.Info.TileInvalidName).GetSprite(0);
 			}
 
 			public void AddMinelayer(Actor a, CPos xy)
@@ -216,7 +234,12 @@ namespace OpenRA.Mods.Cnc.Traits
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
-					var tile = movement.CanEnterCell(c, null, BlockedByActor.None) && !world.ShroudObscures(c) ? tileOk : tileBlocked;
+					var tile = tileOk;
+					if (world.FogObscures(c))
+						tile = tileUnknown;
+					else if (!movement.CanEnterCell(c, null, BlockedByActor.Immovable))
+						tile = tileBlocked;
+
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c),
 						WVec.Zero, -511, pal, 1f, true);
 				}
