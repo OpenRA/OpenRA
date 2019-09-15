@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield return new SelectionBoxRenderable(self, bounds, Info.SelectionBoxColor);
 
 			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
-				yield return new SelectionBarsRenderable(self, bounds, displayHealth, displayExtra);
+				yield return new SelectionBarsAnnotationRenderable(self, bounds, displayHealth, displayExtra);
 
 			// Target lines and pips are always only displayed for selected allied actors
 			if (!selected || !self.Owner.IsAlliedWith(wr.World.RenderPlayer))
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public void DrawRollover(Actor self, WorldRenderer worldRenderer)
 		{
 			var bounds = decorationBounds.FirstNonEmptyBounds(self, worldRenderer);
-			new SelectionBarsRenderable(self, bounds, true, true).Render(worldRenderer);
+			new SelectionBarsAnnotationRenderable(self, bounds, true, true).Render(worldRenderer);
 		}
 
 		IEnumerable<IRenderable> DrawPips(Actor self, Rectangle bounds, WorldRenderer wr)

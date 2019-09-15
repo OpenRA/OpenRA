@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct SelectionBarsRenderable : IRenderable, IFinalizedRenderable
+	public struct SelectionBarsAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Actor actor;
@@ -23,14 +23,14 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly bool displayExtra;
 		readonly Rectangle decorationBounds;
 
-		public SelectionBarsRenderable(Actor actor, Rectangle decorationBounds, bool displayHealth, bool displayExtra)
+		public SelectionBarsAnnotationRenderable(Actor actor, Rectangle decorationBounds, bool displayHealth, bool displayExtra)
 			: this(actor.CenterPosition, actor, decorationBounds)
 		{
 			this.displayHealth = displayHealth;
 			this.displayExtra = displayExtra;
 		}
 
-		public SelectionBarsRenderable(WPos pos, Actor actor, Rectangle decorationBounds)
+		public SelectionBarsAnnotationRenderable(WPos pos, Actor actor, Rectangle decorationBounds)
 			: this()
 		{
 			this.pos = pos;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBarsRenderable(pos + vec, actor, decorationBounds); }
+		public IRenderable OffsetBy(WVec vec) { return new SelectionBarsAnnotationRenderable(pos + vec, actor, decorationBounds); }
 		public IRenderable AsDecoration() { return this; }
 
 		void DrawExtraBars(WorldRenderer wr, float2 start, float2 end)
