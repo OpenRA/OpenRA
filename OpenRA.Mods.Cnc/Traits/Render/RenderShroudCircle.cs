@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				.DefaultIfEmpty(WDist.Zero)
 				.Max();
 
-			var localRangeRenderable = new RangeCircleRenderable(
+			var localRangeRenderable = new RangeCircleAnnotationRenderable(
 				centerPosition,
 				localRange,
 				0,
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
-			yield return new RangeCircleRenderable(
+			yield return new RangeCircleAnnotationRenderable(
 				self.CenterPosition,
 				range,
 				0,

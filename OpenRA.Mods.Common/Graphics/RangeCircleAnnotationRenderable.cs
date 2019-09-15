@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct RangeCircleRenderable : IRenderable, IFinalizedRenderable
+	public struct RangeCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int RangeCircleSegments = 32;
 		static readonly Int32Matrix4x4[] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Color color;
 		readonly Color contrastColor;
 
-		public RangeCircleRenderable(WPos centerPosition, WDist radius, int zOffset, Color color, Color contrastColor)
+		public RangeCircleAnnotationRenderable(WPos centerPosition, WDist radius, int zOffset, Color color, Color contrastColor)
 		{
 			this.centerPosition = centerPosition;
 			this.radius = radius;
@@ -40,9 +40,9 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new RangeCircleRenderable(centerPosition, radius, zOffset, color, contrastColor); }
-		public IRenderable WithZOffset(int newOffset) { return new RangeCircleRenderable(centerPosition, radius, newOffset, color, contrastColor); }
-		public IRenderable OffsetBy(WVec vec) { return new RangeCircleRenderable(centerPosition + vec, radius, zOffset, color, contrastColor); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new RangeCircleAnnotationRenderable(centerPosition, radius, zOffset, color, contrastColor); }
+		public IRenderable WithZOffset(int newOffset) { return new RangeCircleAnnotationRenderable(centerPosition, radius, newOffset, color, contrastColor); }
+		public IRenderable OffsetBy(WVec vec) { return new RangeCircleAnnotationRenderable(centerPosition + vec, radius, zOffset, color, contrastColor); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
