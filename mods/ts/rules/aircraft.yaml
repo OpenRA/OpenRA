@@ -180,6 +180,7 @@ ORCAB:
 
 ORCATRAN:
 	Inherits: ^Aircraft
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -219,6 +220,7 @@ ORCATRAN:
 
 TRNSPORT:
 	Inherits: ^Aircraft
+	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 750
 	Tooltip:
