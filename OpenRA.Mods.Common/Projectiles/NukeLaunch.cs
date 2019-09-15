@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Effects
 					: WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn - trailDelay, impactDelay - turn);
 
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(trailPos, w, trailImage, trailSequences.Random(world.SharedRandom),
-					trailPalette, false, false, 0)));
+					trailPalette)));
 
 				trailTicks = trailInterval;
 			}

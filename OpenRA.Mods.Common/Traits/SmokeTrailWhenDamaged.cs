@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
 					var pos = position + body.LocalToWorld(offset);
-					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, info.Sprite, info.Sequence, info.Palette, false, false, getFacing)));
+					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, info.Sprite, info.Sequence, info.Palette, facing: getFacing)));
 				}
 
 				ticks = info.Interval;
