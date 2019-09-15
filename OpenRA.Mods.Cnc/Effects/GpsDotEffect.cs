@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class GpsDotEffect : IEffect, IEffectAboveShroud
+	class GpsDotEffect : IEffect, IEffectAnnotation
 	{
 		readonly Actor actor;
 		readonly GpsDotInfo info;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			return SpriteRenderable.None;
 		}
 
-		IEnumerable<IRenderable> IEffectAboveShroud.RenderAboveShroud(WorldRenderer wr)
+		IEnumerable<IRenderable> IEffectAnnotation.RenderAnnotation(WorldRenderer wr)
 		{
 			if (actor.World.RenderPlayer == null || !dotStates[actor.World.RenderPlayer].Visible)
 				return SpriteRenderable.None;
