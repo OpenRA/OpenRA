@@ -165,7 +165,7 @@ LPST:
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor
 	DetectCloaked:
-		RequiresCondition: deployed
+		RequiresCondition: !empdisable && deployed
 		Range: 18c0
 	RenderDetectionCircle:
 		TrailCount: 3
