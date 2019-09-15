@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var verts = vertices.Select(wr.Screen3DPosition).ToArray();
-			Game.Renderer.WorldRgbaColorRenderer.DrawPolygon(verts, width / wr.Viewport.Zoom, color);
+			var verts = vertices.Select(v => wr.Viewport.WorldToViewPx(wr.ScreenPosition(v)).ToFloat2()).ToArray();
+			Game.Renderer.RgbaColorRenderer.DrawPolygon(verts, width, color);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

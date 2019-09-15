@@ -51,14 +51,14 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(WVec vec) { return new SelectionBarsRenderable(pos + vec, actor, decorationBounds); }
 		public IRenderable AsDecoration() { return this; }
 
-		void DrawExtraBars(WorldRenderer wr, float3 start, float3 end)
+		void DrawExtraBars(WorldRenderer wr, float2 start, float2 end)
 		{
 			foreach (var extraBar in actor.TraitsImplementing<ISelectionBar>())
 			{
 				var value = extraBar.GetValue();
 				if (value != 0 || extraBar.DisplayWhenEmpty)
 				{
-					var offset = new float3(0, (int)(4 / wr.Viewport.Zoom), 0);
+					var offset = new float2(0, 4);
 					start += offset;
 					end += offset;
 					DrawSelectionBar(wr, start, end, extraBar.GetValue(), extraBar.GetColor());
@@ -66,48 +66,46 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
-		void DrawSelectionBar(WorldRenderer wr, float3 start, float3 end, float value, Color barColor)
+		void DrawSelectionBar(WorldRenderer wr, float2 start, float2 end, float value, Color barColor)
 		{
-			var iz = 1 / wr.Viewport.Zoom;
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-			var p = new float2(0, -4 * iz);
-			var q = new float2(0, -3 * iz);
-			var r = new float2(0, -2 * iz);
+			var p = new float2(0, -4);
+			var q = new float2(0, -3);
+			var r = new float2(0, -2);
 
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
 			var z = float3.Lerp(start, end, value);
-			var wcr = Game.Renderer.WorldRgbaColorRenderer;
-			wcr.DrawLine(start + p, end + p, iz, c);
-			wcr.DrawLine(start + q, end + q, iz, c2);
-			wcr.DrawLine(start + r, end + r, iz, c);
+			var cr = Game.Renderer.RgbaColorRenderer;
+			cr.DrawLine(start + p, end + p, 1, c);
+			cr.DrawLine(start + q, end + q, 1, c2);
+			cr.DrawLine(start + r, end + r, 1, c);
 
-			wcr.DrawLine(start + p, z + p, iz, barColor2);
-			wcr.DrawLine(start + q, z + q, iz, barColor);
-			wcr.DrawLine(start + r, z + r, iz, barColor2);
+			cr.DrawLine(start + p, z + p, 1, barColor2);
+			cr.DrawLine(start + q, z + q, 1, barColor);
+			cr.DrawLine(start + r, z + r, 1, barColor2);
 		}
 
 		Color GetHealthColor(IHealth health)
 		{
 			if (Game.Settings.Game.UsePlayerStanceColors)
 				return actor.Owner.PlayerStanceColor(actor);
-			else
-				return health.DamageState == DamageState.Critical ? Color.Red :
-					health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
+
+			return health.DamageState == DamageState.Critical ? Color.Red :
+				health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
 		}
 
-		void DrawHealthBar(WorldRenderer wr, IHealth health, float3 start, float3 end)
+		void DrawHealthBar(WorldRenderer wr, IHealth health, float2 start, float2 end)
 		{
 			if (health == null || health.IsDead)
 				return;
 
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
-			var iz = 1 / wr.Viewport.Zoom;
-			var p = new float2(0, -4 * iz);
-			var q = new float2(0, -3 * iz);
-			var r = new float2(0, -2 * iz);
+			var p = new float2(0, -4);
+			var q = new float2(0, -3);
+			var r = new float2(0, -2);
 
 			var healthColor = GetHealthColor(health);
 			var healthColor2 = Color.FromArgb(
@@ -118,14 +116,14 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var z = float3.Lerp(start, end, (float)health.HP / health.MaxHP);
 
-			var wcr = Game.Renderer.WorldRgbaColorRenderer;
-			wcr.DrawLine(start + p, end + p, iz, c);
-			wcr.DrawLine(start + q, end + q, iz, c2);
-			wcr.DrawLine(start + r, end + r, iz, c);
+			var cr = Game.Renderer.RgbaColorRenderer;
+			cr.DrawLine(start + p, end + p, 1, c);
+			cr.DrawLine(start + q, end + q, 1, c2);
+			cr.DrawLine(start + r, end + r, 1, c);
 
-			wcr.DrawLine(start + p, z + p, iz, healthColor2);
-			wcr.DrawLine(start + q, z + q, iz, healthColor);
-			wcr.DrawLine(start + r, z + r, iz, healthColor2);
+			cr.DrawLine(start + p, z + p, 1, healthColor2);
+			cr.DrawLine(start + q, z + q, 1, healthColor);
+			cr.DrawLine(start + r, z + r, 1, healthColor2);
 
 			if (health.DisplayHP != health.HP)
 			{
@@ -137,9 +135,9 @@ namespace OpenRA.Mods.Common.Graphics
 					deltaColor.B / 2);
 				var zz = float3.Lerp(start, end, (float)health.DisplayHP / health.MaxHP);
 
-				wcr.DrawLine(z + p, zz + p, iz, deltaColor2);
-				wcr.DrawLine(z + q, zz + q, iz, deltaColor);
-				wcr.DrawLine(z + r, zz + r, iz, deltaColor2);
+				cr.DrawLine(z + p, zz + p, 1, deltaColor2);
+				cr.DrawLine(z + q, zz + q, 1, deltaColor);
+				cr.DrawLine(z + r, zz + r, 1, deltaColor2);
 			}
 		}
 
@@ -150,10 +148,8 @@ namespace OpenRA.Mods.Common.Graphics
 				return;
 
 			var health = actor.TraitOrDefault<IHealth>();
-
-			var screenPos = wr.Screen3DPxPosition(pos);
-			var start = new float3(decorationBounds.Left + 1, decorationBounds.Top, screenPos.Z);
-			var end = new float3(decorationBounds.Right - 1, decorationBounds.Top, screenPos.Z);
+			var start = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Left + 1, decorationBounds.Top));
+			var end = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Right - 1, decorationBounds.Top));
 
 			if (DisplayHealth)
 				DrawHealthBar(wr, health, start, end);

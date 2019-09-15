@@ -52,7 +52,10 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.WorldRgbaColorRenderer.DrawLine(wr.Screen3DPosition(start), wr.Screen3DPosition(end), width / wr.Viewport.Zoom, startColor, endColor);
+			Game.Renderer.RgbaColorRenderer.DrawLine(
+				wr.Viewport.WorldToViewPx(wr.ScreenPosition(start)),
+				wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end)),
+				width, startColor, endColor);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }
