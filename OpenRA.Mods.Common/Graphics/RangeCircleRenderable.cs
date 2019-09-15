@@ -54,18 +54,18 @@ namespace OpenRA.Mods.Common.Graphics
 		public static void DrawRangeCircle(WorldRenderer wr, WPos centerPosition, WDist radius,
 			float width, Color color, float contrastWidth, Color contrastColor)
 		{
-			var wcr = Game.Renderer.WorldRgbaColorRenderer;
+			var cr = Game.Renderer.RgbaColorRenderer;
 			var offset = new WVec(radius.Length, 0, 0);
 			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var a = wr.Screen3DPosition(centerPosition + offset.Rotate(ref RangeCircleStartRotations[i]));
-				var b = wr.Screen3DPosition(centerPosition + offset.Rotate(ref RangeCircleEndRotations[i]));
+				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleStartRotations[i])));
+				var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleEndRotations[i])));
 
 				if (contrastWidth > 0)
-					wcr.DrawLine(a, b, contrastWidth / wr.Viewport.Zoom, contrastColor);
+					cr.DrawLine(a, b, contrastWidth, contrastColor);
 
 				if (width > 0)
-					wcr.DrawLine(a, b, width / wr.Viewport.Zoom, color);
+					cr.DrawLine(a, b, width, color);
 			}
 		}
 
