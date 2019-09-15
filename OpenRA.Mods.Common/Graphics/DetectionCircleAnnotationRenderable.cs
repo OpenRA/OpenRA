@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct DetectionCircleRenderable : IRenderable, IFinalizedRenderable
+	public struct DetectionCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos centerPosition;
 		readonly WDist radius;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Color color;
 		readonly Color contrastColor;
 
-		public DetectionCircleRenderable(WPos centerPosition, WDist radius, int zOffset,
+		public DetectionCircleAnnotationRenderable(WPos centerPosition, WDist radius, int zOffset,
 			int lineTrails, WAngle trailSeparation, WAngle trailAngle, Color color, Color contrastColor)
 		{
 			this.centerPosition = centerPosition;
@@ -45,19 +45,19 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette)
 		{
-			return new DetectionCircleRenderable(centerPosition, radius, zOffset,
+			return new DetectionCircleAnnotationRenderable(centerPosition, radius, zOffset,
 				trailCount, trailSeparation, trailAngle, color, contrastColor);
 		}
 
 		public IRenderable WithZOffset(int newOffset)
 		{
-			return new DetectionCircleRenderable(centerPosition, radius, newOffset,
+			return new DetectionCircleAnnotationRenderable(centerPosition, radius, newOffset,
 				trailCount, trailSeparation, trailAngle, color, contrastColor);
 		}
 
 		public IRenderable OffsetBy(WVec vec)
 		{
-			return new DetectionCircleRenderable(centerPosition + vec, radius, zOffset,
+			return new DetectionCircleAnnotationRenderable(centerPosition + vec, radius, zOffset,
 				trailCount, trailSeparation, trailAngle, color, contrastColor);
 		}
 
