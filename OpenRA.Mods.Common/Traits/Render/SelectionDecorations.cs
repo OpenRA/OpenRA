@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
 
 			if (Info.RenderSelectionBox && selected)
-				yield return new SelectionBoxRenderable(self, bounds, Info.SelectionBoxColor);
+				yield return new SelectionBoxAnnotationRenderable(self, bounds, Info.SelectionBoxColor);
 
 			if (Info.RenderSelectionBars && (displayHealth || displayExtra))
 				yield return new SelectionBarsAnnotationRenderable(self, bounds, displayHealth, displayExtra);
