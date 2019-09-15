@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct TextRenderable : IRenderable, IFinalizedRenderable
+	public struct TextAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly SpriteFont font;
 		readonly WPos pos;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Color bgLight;
 		readonly string text;
 
-		public TextRenderable(SpriteFont font, WPos pos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
+		public TextAnnotationRenderable(SpriteFont font, WPos pos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
 		{
 			this.font = font;
 			this.pos = pos;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.text = text;
 		}
 
-		public TextRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text)
+		public TextAnnotationRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text)
 			: this(font, pos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
@@ -48,9 +48,9 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get { return zOffset; } }
 		public bool IsDecoration { get { return true; } }
 
-		public IRenderable WithPalette(PaletteReference newPalette) { return new TextRenderable(font, pos, zOffset, color, text); }
-		public IRenderable WithZOffset(int newOffset) { return new TextRenderable(font, pos, zOffset, color, text); }
-		public IRenderable OffsetBy(WVec vec) { return new TextRenderable(font, pos + vec, zOffset, color, text); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new TextAnnotationRenderable(font, pos, zOffset, color, text); }
+		public IRenderable WithZOffset(int newOffset) { return new TextAnnotationRenderable(font, pos, zOffset, color, text); }
+		public IRenderable OffsetBy(WVec vec) { return new TextAnnotationRenderable(font, pos + vec, zOffset, color, text); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

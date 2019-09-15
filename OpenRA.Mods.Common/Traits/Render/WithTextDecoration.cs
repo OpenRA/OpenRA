@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sizeOffset -= new int2(halfSize.X, 0);
 			}
 
-			return new IRenderable[] { new TextRenderable(font, wr.ProjectedPosition(boundsOffset + sizeOffset), Info.ZOffset, color, Info.Text) };
+			return new IRenderable[] { new TextAnnotationRenderable(font, wr.ProjectedPosition(boundsOffset + sizeOffset), Info.ZOffset, color, Info.Text) };
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
