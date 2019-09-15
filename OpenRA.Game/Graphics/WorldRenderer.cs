@@ -166,12 +166,17 @@ namespace OpenRA.Graphics
 					.Where(t => !t.SpatiallyPartitionable || onScreenActors.Contains(a))
 					.SelectMany(t => t.RenderAnnotations(a, this)));
 
+			var effects = World.Effects.Select(e => e as IEffectAnnotation)
+				.Where(e => e != null)
+				.SelectMany(e => e.RenderAnnotation(this));
+
 			var orderGenerator = SpriteRenderable.None;
 			if (World.OrderGenerator != null)
 				orderGenerator = World.OrderGenerator.RenderAnnotations(this, World);
 
 			return actors
 				.Concat(selected)
+				.Concat(effects)
 				.Concat(orderGenerator)
 				.Select(r => r.PrepareRender(this));
 		}
