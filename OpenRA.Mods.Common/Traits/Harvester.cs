@@ -65,9 +65,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Interval to wait between searches when there are no resources nearby.")]
 		public readonly int WaitDuration = 25;
 
-		[Desc("Find a new refinery to unload at if more than this many harvesters are already waiting.")]
-		public readonly int MaxUnloadQueue = 3;
-
 		[Desc("The pathfinding cost penalty applied for each harvester waiting to unload at a refinery.")]
 		public readonly int UnloadQueueCostModifier = 12;
 
@@ -191,10 +188,6 @@ namespace OpenRA.Mods.Common.Traits
 						return 0;
 
 					var occupancy = refs[loc].Occupancy;
-
-					// Too many harvesters clogs up the refinery's delivery location:
-					if (occupancy >= Info.MaxUnloadQueue)
-						return Constants.InvalidNode;
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 					return occupancy * Info.UnloadQueueCostModifier;
