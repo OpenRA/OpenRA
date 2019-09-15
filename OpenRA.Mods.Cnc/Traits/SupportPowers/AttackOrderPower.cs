@@ -119,14 +119,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			foreach (var a in instance.Instances.Where(i => !i.IsTraitPaused))
 			{
-				yield return new RangeCircleRenderable(
+				yield return new RangeCircleAnnotationRenderable(
 					a.Self.CenterPosition,
 					attack.GetMinimumRange(),
 					0,
 					Color.Red,
 					Color.FromArgb(96, Color.Black));
 
-				yield return new RangeCircleRenderable(
+				yield return new RangeCircleAnnotationRenderable(
 					a.Self.CenterPosition,
 					attack.GetMaximumRange(),
 					0,

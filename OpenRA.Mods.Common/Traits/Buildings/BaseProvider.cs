@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!ValidRenderPlayer())
 				yield break;
 
-			yield return new RangeCircleRenderable(
+			yield return new RangeCircleAnnotationRenderable(
 				self.CenterPosition,
 				Info.Range,
 				0,

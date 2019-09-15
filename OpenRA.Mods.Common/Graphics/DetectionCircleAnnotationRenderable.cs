@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Graphics
 				wcr.DrawLine(center, end, 1, Color.FromArgb(alpha, color));
 			}
 
-			RangeCircleRenderable.DrawRangeCircle(wr, centerPosition, radius, 1, color, 3, contrastColor);
+			RangeCircleAnnotationRenderable.DrawRangeCircle(wr, centerPosition, radius, 1, color, 3, contrastColor);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

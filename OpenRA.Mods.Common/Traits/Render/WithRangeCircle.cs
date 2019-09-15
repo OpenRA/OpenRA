@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (EnabledByDefault)
 			{
-				yield return new RangeCircleRenderable(
+				yield return new RangeCircleAnnotationRenderable(
 					centerPosition,
 					Range,
 					0,
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr, RangeCircleVisibility visibility)
 		{
 			if (Info.Visible == visibility && Visible)
-				yield return new RangeCircleRenderable(
+				yield return new RangeCircleAnnotationRenderable(
 					self.CenterPosition,
 					Info.Range,
 					0,

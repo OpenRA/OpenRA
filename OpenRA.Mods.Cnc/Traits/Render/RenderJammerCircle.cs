@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var jamsMissiles = ai.TraitInfoOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
 			{
-				yield return new RangeCircleRenderable(
+				yield return new RangeCircleAnnotationRenderable(
 					centerPosition,
 					jamsMissiles.Range,
 					0,
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var jamsMissiles = self.Info.TraitInfoOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
 			{
-				yield return new RangeCircleRenderable(
+				yield return new RangeCircleAnnotationRenderable(
 					self.CenterPosition,
 					jamsMissiles.Range,
 					0,
