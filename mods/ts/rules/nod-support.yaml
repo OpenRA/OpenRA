@@ -71,6 +71,9 @@ NAPOST:
 		Amount: -25
 	RevealsShroud:
 		Range: 4c0
+	GrantCondition@IDISABLE:
+		RequiresCondition: lowpower || powerdown || empdisable
+		Condition: disabled
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: lights
