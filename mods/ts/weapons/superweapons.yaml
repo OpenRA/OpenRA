@@ -129,3 +129,4 @@ EMPulseCannon:
 		Range: 4c0
 		Duration: 250
 		Condition: empdisable
+		ValidTargets: Ground, Water, Underground
