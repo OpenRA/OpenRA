@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 				{
-					if (rp != null)
+					if (self.CurrentActivity.NextActivity == null && rp != null)
 						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
 					else
 						QueueChild(new TakeOff(self));
