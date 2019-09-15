@@ -14,16 +14,16 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public struct SelectionBoxRenderable : IRenderable, IFinalizedRenderable
+	public struct SelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly WPos pos;
 		readonly Rectangle decorationBounds;
 		readonly Color color;
 
-		public SelectionBoxRenderable(Actor actor, Rectangle decorationBounds, Color color)
+		public SelectionBoxAnnotationRenderable(Actor actor, Rectangle decorationBounds, Color color)
 			: this(actor.CenterPosition, decorationBounds, color) { }
 
-		public SelectionBoxRenderable(WPos pos, Rectangle decorationBounds, Color color)
+		public SelectionBoxAnnotationRenderable(WPos pos, Rectangle decorationBounds, Color color)
 		{
 			this.pos = pos;
 			this.decorationBounds = decorationBounds;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public IRenderable WithPalette(PaletteReference newPalette) { return this; }
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxRenderable(pos + vec, decorationBounds, color); }
+		public IRenderable OffsetBy(WVec vec) { return new SelectionBoxAnnotationRenderable(pos + vec, decorationBounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
