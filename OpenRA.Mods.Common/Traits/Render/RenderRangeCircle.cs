@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (range == null || range.Value == WDist.Zero)
 				return SpriteRenderable.None;
 
-			var localRange = new RangeCircleRenderable(
+			var localRange = new RangeCircleAnnotationRenderable(
 				centerPosition,
 				range.Value,
 				0,
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (range == WDist.Zero)
 				yield break;
 
-			yield return new RangeCircleRenderable(
+			yield return new RangeCircleAnnotationRenderable(
 				self.CenterPosition,
 				range,
 				0,

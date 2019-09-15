@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)
 				yield break;
 
-			yield return new RangeCircleRenderable(
+			yield return new RangeCircleAnnotationRenderable(
 				self.CenterPosition,
 				WDist.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
 				0,
