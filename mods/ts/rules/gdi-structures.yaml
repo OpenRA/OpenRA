@@ -285,7 +285,7 @@ GADEPT:
 		Queue: Building
 		Description: Repairs vehicles.
 	Building:
-		Footprint: =x= xxx =x=
+		Footprint: =x= xxx xx=
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96, 64, -6, -6
