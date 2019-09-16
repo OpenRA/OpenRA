@@ -92,8 +92,9 @@ NAHAND:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 116, 60, 3, -6
 		DecorationBounds: 116, 78, 3, -8
@@ -105,8 +106,14 @@ NAHAND:
 		Range: 5c0
 		MaxHeightDelta: 3
 	Exit@1:
-		SpawnOffset: 384,768,0
-		ExitCell: 3,2
+		SpawnOffset: 248,768,0
+		ExitCell: 0,2
+	Exit@2:
+		SpawnOffset: 250,768,0
+		ExitCell: 1,2
+	Exit@3:
+		SpawnOffset: 252,768,0
+		ExitCell: 2,2
 	ExitsDebugOverlay:
 	RallyPoint:
 		Offset: 3,3

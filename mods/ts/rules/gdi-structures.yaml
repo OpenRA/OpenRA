@@ -83,8 +83,9 @@ GAPILE:
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
 	Selectable:
 		Bounds: 88, 48, 0, -8
 		DecorationBounds: 88, 56, 0, -8
@@ -101,8 +102,11 @@ GAPILE:
 		IsPlayerPalette: false
 		LineWidth: 2
 	Exit@1:
+		SpawnOffset: -1024,-256,0
+		ExitCell: 0,2
+	Exit@2:
 		SpawnOffset: -256,1024,0
-		ExitCell: 2,2
+		ExitCell: 1,2
 	ExitsDebugOverlay:
 	Production:
 		Produces: Infantry
