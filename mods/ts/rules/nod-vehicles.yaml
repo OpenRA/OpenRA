@@ -335,8 +335,10 @@ REPAIR:
 		Voice: Attack
 		PauseOnCondition: empdisable
 	AutoTarget:
+		ScanRadius: 8
+		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
-		ValidTargets: Vehicles
+		ValidTargets: Vehicle
 
 WEED:
 	Inherits: ^Tank
