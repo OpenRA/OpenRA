@@ -90,7 +90,6 @@ ORCA:
 		TakeoffSounds: orcaup1.aud
 		LandingSounds: orcadwn1.aud
 		AltitudeVelocity: 128
-		CanSlide: false
 		TakeOffOnResupply: true
 	Health:
 		HP: 20000
@@ -333,7 +332,6 @@ APACHE:
 	Aircraft:
 		TurnSpeed: 5
 		Speed: 130
-		CanSlide: false
 		TakeOffOnResupply: true
 	Health:
 		HP: 22500
