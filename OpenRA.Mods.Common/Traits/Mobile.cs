@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyMoving[] notifyMoving;
 		INotifyFinishedMoving[] notifyFinishedMoving;
 		IWrapMove[] moveWrappers;
-		bool requireForceMove;
+		public bool RequireForceMove;
 		public bool TurnToMove;
 		public bool IsBlocking { get; private set; }
 
@@ -308,11 +308,31 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.RemoveFromMaps(self, this);
 		}
 
+		protected override void TraitEnabled(Actor self)
+		{
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
+		}
+
+		protected override void TraitResumed(Actor self)
+		{
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
+		}
+
+		protected override void TraitPaused(Actor self)
+		{
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
+		}
+
 		#region Local misc stuff
 
 		public void Nudge(Actor self, Actor nudger, bool force)
 		{
-			if (IsTraitDisabled || IsTraitPaused || requireForceMove)
+			if (IsTraitDisabled || IsTraitPaused || RequireForceMove)
 				return;
 
 			// Pick an adjacent available cell.
@@ -342,8 +362,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				var cellInfo = notStupidCells
-					.SelectMany(c => self.World.ActorMap.GetActorsAt(c)
-						.Where(a => a.IsIdle && a.Info.HasTraitInfo<MobileInfo>()),
+					.SelectMany(c => self.World.ActorMap.GetActorsAt(c).Where(Ismovable),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
 
@@ -362,6 +381,18 @@ namespace OpenRA.Mods.Common.Traits
 						self.ActorID, self.Location);
 				}
 			}
+		}
+
+		public static bool Ismovable(Actor otherActor)
+		{
+			if (!otherActor.IsIdle)
+				return false;
+
+			var mobile = otherActor.TraitOrDefault<Mobile>();
+			if (mobile == null || mobile.IsTraitDisabled || mobile.IsTraitPaused || mobile.RequireForceMove)
+				return false;
+
+			return true;
 		}
 
 		public bool IsLeaving()
@@ -844,7 +875,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
-			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
+			RequireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -940,7 +971,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
-				if (rejectMove || target.Type != TargetType.Terrain || (mobile.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
+				if (rejectMove || target.Type != TargetType.Terrain || (mobile.RequireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
