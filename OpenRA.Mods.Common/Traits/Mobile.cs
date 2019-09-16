@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Nudge(Actor self, Actor nudger, bool force)
 		{
-			if (IsTraitDisabled || IsTraitPaused)
+			if (IsTraitDisabled || IsTraitPaused || requireForceMove)
 				return;
 
 			// Initial fairly braindead implementation.
