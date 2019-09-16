@@ -331,8 +331,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				var cellInfo = notStupidCells
-					.SelectMany(c => self.World.ActorMap.GetActorsAt(c)
-						.Where(a => a.IsIdle && a.Info.HasTraitInfo<MobileInfo>()),
+					.SelectMany(c => self.World.ActorMap.GetActorsAt(c).Where(Mobile.Ismovable),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
 				if (cellInfo != null)

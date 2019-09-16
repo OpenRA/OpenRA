@@ -331,9 +331,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the check allows: We are not blocked by units that we can force to move out of the way.
 			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
-				self.Owner.Stances[otherActor.Owner] == Stance.Ally &&
-				otherActor.TraitOrDefault<IMove>() != null)
-				return false;
+				self.Owner.Stances[otherActor.Owner] == Stance.Ally)
+			{
+				var mobile = otherActor.TraitOrDefault<Mobile>();
+				if (mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.RequireForceMove)
+					return false;
+			}
 
 			// If the check allows: we are not blocked by moving units.
 			if (check <= BlockedByActor.Stationary && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
@@ -484,7 +487,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var crushables = actor.TraitsImplementing<ICrushable>();
 					var mobile = actor.OccupiesSpace as Mobile;
-					var isMovable = mobile != null;
+					var isMovable = mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.RequireForceMove;
 					var isMoving = isMovable && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
 
 					if (crushables.Any())
