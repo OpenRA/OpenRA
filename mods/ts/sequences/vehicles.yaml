@@ -21,7 +21,7 @@ harv.gdi:
 	harvest: harvestr
 		Length: *
 		ZRamp: 1
-		Offset: 0, 0, 3
+		Offset: 0, -6, 3
 	icon: sidebar-gdi|harvicon
 
 harv.nod:
@@ -29,7 +29,7 @@ harv.nod:
 	harvest: harvestr
 		Length: *
 		ZRamp: 1
-		Offset: 0, 0, 3
+		Offset: 0, -6, 3
 	icon: sidebar-nod|harvicon
 
 hvr:
