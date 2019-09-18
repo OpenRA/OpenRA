@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var pilotMobile = pilot.TraitOrDefault<Mobile>();
 					if (pilotMobile != null)
-						pilotMobile.Nudge(pilot, pilot, true);
+						pilotMobile.Nudge(pilot);
 				});
 			}
 		}

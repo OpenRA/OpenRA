@@ -330,60 +330,46 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Local misc stuff
 
-		public void Nudge(Actor self, Actor nudger, bool force)
+		public void Nudge(Actor nudger)
 		{
 			if (IsTraitDisabled || IsTraitPaused || RequireForceMove)
 				return;
 
-			// Pick an adjacent available cell.
+			var cell = GetAdjacentCell(nudger.Location);
+			if (cell != null)
+				self.QueueActivity(false, MoveTo(cell.Value, 0));
+		}
+
+		public CPos? GetAdjacentCell(CPos nextCell)
+		{
 			var availCells = new List<CPos>();
 			var notStupidCells = new List<CPos>();
-
-			for (var i = -1; i < 2; i++)
-				for (var j = -1; j < 2; j++)
-				{
-					var p = ToCell + new CVec(i, j);
-					if (CanEnterCell(p))
-						availCells.Add(p);
-					else if (p != nudger.Location && p != ToCell)
-						notStupidCells.Add(p);
-				}
-
-			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) : (CPos?)null;
-
-			if (moveTo.HasValue)
+			foreach (CVec direction in CVec.Directions)
 			{
-				self.QueueActivity(false, new Move(self, moveTo.Value, WDist.Zero));
-				self.ShowTargetLines();
-
-				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
-					self.ActorID, self.Location, moveTo.Value);
+				var p = ToCell + direction;
+				if (CanEnterCell(p))
+					availCells.Add(p);
+				else if (p != nextCell && p != ToCell)
+					notStupidCells.Add(p);
 			}
+
+			CPos? newCell = null;
+			if (availCells.Count > 0)
+				newCell = availCells.Random(self.World.SharedRandom);
 			else
 			{
 				var cellInfo = notStupidCells
-					.SelectMany(c => self.World.ActorMap.GetActorsAt(c).Where(Ismovable),
+					.SelectMany(c => self.World.ActorMap.GetActorsAt(c).Where(IsMovable),
 						(c, a) => new { Cell = c, Actor = a })
 					.RandomOrDefault(self.World.SharedRandom);
-
 				if (cellInfo != null)
-				{
-					self.QueueActivity(false, new CallFunc(() => self.NotifyBlocker(cellInfo.Cell)));
-					self.QueueActivity(new WaitFor(() => CanEnterCell(cellInfo.Cell)));
-					self.QueueActivity(new Move(self, cellInfo.Cell));
-
-					Log.Write("debug", "OnNudge (notify next blocking actor, wait and move) #{0} from {1} to {2}",
-						self.ActorID, self.Location, cellInfo.Cell);
-				}
-				else
-				{
-					Log.Write("debug", "OnNudge #{0} refuses at {1}",
-						self.ActorID, self.Location);
-				}
+					newCell = cellInfo.Cell;
 			}
+
+			return newCell;
 		}
 
-		public static bool Ismovable(Actor otherActor)
+		static bool IsMovable(Actor otherActor)
 		{
 			if (!otherActor.IsIdle)
 				return false;
@@ -857,7 +843,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.IsIdle)
 			{
-				Nudge(self, blocking, true);
+				Nudge(blocking);
 				return;
 			}
 
@@ -916,7 +902,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			if (order.OrderString == "Scatter")
-				Nudge(self, self, true);
+				Nudge(self);
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)

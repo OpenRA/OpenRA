@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Panicking)
 				return;
 
-			mobile.Nudge(self, self, true);
+			mobile.Nudge(self);
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
