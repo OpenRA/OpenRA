@@ -6,6 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 CheckForBase = function()
 	baseBuildings = Map.ActorsInBox(Map.TopLeft, CFBPoint.CenterPosition, function(actor)
 		return actor.Type == "fact" or actor.Type == "powr"
@@ -75,32 +76,29 @@ RunInitialActivities = function()
 end
 
 Expand = function()
-	if ExpansionCheck then
-		return
-	elseif mcvtransport.IsDead then
-		return
-	elseif mcvGG.IsDead then
+	if ExpansionCheck or mcvtransport.IsDead or mcvGG.IsDead then
 		return
 	end
 
-	mcvGG.Move(mcvGGLoadPoint.Location)
-	mcvtransport.Move(lstBeachPoint.Location)
+	ExpansionCheck = true
+	Trigger.ClearAll(mcvGG)
+	Trigger.ClearAll(mcvtransport)
 	Media.DisplayMessage("Allied MCV detected moving to the island.")
 
 	Reinforcements.Reinforce(GoodGuy, { "dd", "dd" }, ShipArrivePath, 0, function(ddsquad)
 		ddsquad.AttackMove(NearExpPoint.Location) end)
 
-	ExpansionCheck = true
-	Trigger.ClearAll(mcvGG)
-	Trigger.ClearAll(mcvtransport)
-	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		if mcvtransport.IsDead then
-			return
-		elseif mcvGG.IsDead then
+
+	mcvtransport.Move(lstBeachPoint.Location)
+
+	mcvGG.Move(mcvGGLoadPoint.Location)
+	mcvGG.EnterTransport(mcvtransport)
+
+	Trigger.AfterDelay(DateTime.Seconds(5), function()
+		if mcvtransport.IsDead or mcvGG.IsDead then
 			return
 		end
 
-		mcvGG.EnterTransport(mcvtransport)
 		mcvtransport.Move(GGUnloadPoint.Location)
 		mcvtransport.UnloadPassengers()
 		Trigger.AfterDelay(DateTime.Seconds(12), function()
