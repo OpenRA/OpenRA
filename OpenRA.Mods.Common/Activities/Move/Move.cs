@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Activities
 				else if (mobile.IsBlocking)
 				{
 					// If there is no way around the blocker and blocker will not move and we are blocking others, back up to let others pass.
-					var newCell = GetAdjacentCell(self, nextCell);
+					var newCell = mobile.GetAdjacentCell(nextCell);
 					if (newCell != null)
 					{
 						if ((nextCell - newCell).Value.LengthSquared > 2)
@@ -307,38 +307,6 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			return true;
-		}
-
-		CPos? GetAdjacentCell(Actor self, CPos nextCell)
-		{
-			var availCells = new List<CPos>();
-			var notStupidCells = new List<CPos>();
-			for (var i = -1; i <= 1; i++)
-			{
-				for (var j = -1; j <= 1; j++)
-				{
-					var p = mobile.ToCell + new CVec(i, j);
-					if (mobile.CanEnterCell(p))
-						availCells.Add(p);
-					else if (p != nextCell && p != mobile.ToCell)
-						notStupidCells.Add(p);
-				}
-			}
-
-			CPos? newCell = null;
-			if (availCells.Count > 0)
-				newCell = availCells.Random(self.World.SharedRandom);
-			else
-			{
-				var cellInfo = notStupidCells
-					.SelectMany(c => self.World.ActorMap.GetActorsAt(c).Where(Mobile.Ismovable),
-						(c, a) => new { Cell = c, Actor = a })
-					.RandomOrDefault(self.World.SharedRandom);
-				if (cellInfo != null)
-					newCell = cellInfo.Cell;
-			}
-
-			return newCell;
 		}
 
 		public override void Cancel(Actor self, bool keepQueue = false)

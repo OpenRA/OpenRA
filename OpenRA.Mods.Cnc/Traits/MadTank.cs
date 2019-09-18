@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				});
 				var driverMobile = driver.TraitOrDefault<Mobile>();
 				if (driverMobile != null)
-					driverMobile.Nudge(driver, driver, true);
+					driverMobile.Nudge(driver);
 			}
 		}
 	}
