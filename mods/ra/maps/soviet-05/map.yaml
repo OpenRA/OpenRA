@@ -477,10 +477,6 @@ Actors:
 		Location: 58,89
 		Facing: 60
 		TurretFacing: 60
-	Helper: proc
-		Owner: Greece
-		Location: 42,42
-		FreeActor: False
 	Actor181: mine
 		Owner: Neutral
 		Location: 63,65
