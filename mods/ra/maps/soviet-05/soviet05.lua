@@ -37,7 +37,6 @@ RunInitialActivities = function()
 
 	Trigger.AfterDelay(1, function()
 		Harvester.FindResources()
-		Helper.Destroy()
 		IdlingUnits()
 		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
 
