@@ -1,6 +1,64 @@
 Player:
 	PlayerResources:
 		DefaultCash: 5000
+	ExternalCondition@luaAI:
+		Condition: ai-active
+	HarvesterBotModule:
+		RequiresCondition: ai-active
+	BuildingRepairBotModule:
+		RequiresCondition: ai-active
+	McvManagerBotModule:
+		RequiresCondition: ai-active
+	BaseBuilderBotModule@campaign:
+		RequiresCondition: ai-active
+		MinimumExcessPower: 60
+		MaximumExcessPower: 160
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr
+		BarracksTypes: tent
+		VehiclesFactoryTypes: weap
+		ProductionTypes: tent, weap
+		SiloTypes: silo
+		BuildingLimits:
+			powr: 6
+			tent: 1
+			hbox: 3
+			proc: 3
+			weap: 1
+			gun: 6
+			agun: 2
+			silo: 1
+		BuildingFractions:
+			tent: 50
+			hbox: 50
+			proc: 90
+			weap: 20
+			gun: 30
+			agun: 20
+			silo: 10
+	SquadManagerBotModule@campaign:
+		RequiresCondition: ai-active
+		SquadSize: 10
+		ExcludeFromSquadsTypes: harv, mcv
+		NavalUnitsTypes: dd, ca, lst, pt
+		ConstructionYardTypes: fact
+	UnitBuilderBotModule@campaign:
+		RequiresCondition: ai-active
+		UnitsToBuild:
+			e1: 60
+			e3: 30
+			jeep: 50
+			1tnk: 50
+			harv: 30
+		UnitLimits:
+			e1: 20
+			e3: 10
+			harv: 6
+			jeep: 10
+			1tnk: 10
 
 World:
 	LuaScript:

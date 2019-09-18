@@ -6,6 +6,7 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 SovietStartReinf = { "e2", "e2" }
 SovietStartToBasePath = { StartPoint.Location, SovietBasePoint.Location }
 SovietMCVReinf = { "mcv", "3tnk", "3tnk", "e1", "e1" }
@@ -92,7 +93,7 @@ IslandTroops1 = function()
 end
 
 IslandTroops2 = function()
-	local units = Reinforcements.ReinforceWithTransport(GoodGuy, "lst", ArmorReinfGreece, NorthReinfPath, { ReinfEastPoint.Location })[2]
+	local units = Reinforcements.ReinforceWithTransport(Greece, "lst", ArmorReinfGreece, NorthReinfPath, { ReinfEastPoint.Location })[2]
 	Utils.Do(units, function(unit)
 		Trigger.OnIdle(unit, function(patrols)
 			patrols.Patrol(GoodGuyOrefieldPatrolPath, true, 150)
@@ -114,7 +115,7 @@ IslandTroops2 = function()
 end
 
 IslandTroops3 = function()
-	local units = Reinforcements.ReinforceWithTransport(GoodGuy, "lst", SovExpansionPointGuard, SouthReinfPath, { ReinfEastPoint.Location })[2]
+	local units = Reinforcements.ReinforceWithTransport(Greece, "lst", SovExpansionPointGuard, SouthReinfPath, { ReinfEastPoint.Location })[2]
 	Utils.Do(units, function(unit)
 		Trigger.OnIdle(unit, function(guards)
 			guards.AttackMove(USSRExpansionPoint.Location)

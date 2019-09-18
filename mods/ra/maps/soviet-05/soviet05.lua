@@ -100,39 +100,31 @@ Expand = function()
 
 		mcvtransport.Move(GGUnloadPoint.Location)
 		mcvtransport.UnloadPassengers()
-		Trigger.AfterDelay(DateTime.Seconds(12), function()
+		mcvtransport.CallFunc(function()
 			if mcvGG.IsDead then
 				return
 			end
 
 			mcvGG.Move(MCVDeploy.Location)
-			Trigger.AfterDelay(DateTime.Seconds(4), function()
-				if not mcvGG.IsDead then
-					mcvGG.Deploy()
-					Trigger.AfterDelay(DateTime.Seconds(4), function()
-						local fact = Map.ActorsInBox(mcvGGLoadPoint.CenterPosition, ReinfEastPoint.CenterPosition, function(actor)
-							return actor.Type == "fact" and actor.Owner == GoodGuy end)
-						if #fact == 0 then
-							return
-						else
-							Trigger.OnDamaged(fact[1], function()
-								if fact[1].Owner == GoodGuy and fact[1].Health < fact[1].MaxHealth * 3/4 then
-									fact[1].StartBuildingRepairs()
-								end
-							end)
-						end
-					end)
+			mcvGG.CallFunc(function()
+
+				-- Avoid crashing through modifying the actor list from mcvGG's tick
+				Trigger.AfterDelay(0, function()
+					mcvGG.Owner = GoodGuy
 
 					IslandTroops1()
 					Trigger.AfterDelay(DateTime.Minutes(3), IslandTroops2)
 					Trigger.AfterDelay(DateTime.Minutes(6), IslandTroops3)
-					Trigger.AfterDelay(DateTime.Seconds(7), BuildBase)
-				end
 
-				if not mcvtransport.IsDead then
-					mcvtransport.Move(ReinfNorthPoint.Location)
-					mcvtransport.Destroy()
-				end
+					if not mcvtransport.IsDead then
+						mcvtransport.Move(ReinfNorthPoint.Location)
+						mcvtransport.Destroy()
+					end
+				end)
+
+				Trigger.AfterDelay(DateTime.Seconds(1), function()
+					GoodGuy.GrantCondition("ai-active")
+				end)
 			end)
 		end)
 	end)
@@ -263,8 +255,6 @@ WorldLoaded = function()
 			Trigger.RemoveProximityTrigger(id)
 
 			Para2()
-			ProduceInfantryGG()
-			ProduceTanksGG()
 
 			local units = Reinforcements.ReinforceWithTransport(player, "lst", SovietMCVReinf, { ReinfSouthPoint.Location, USSRlstPoint.Location }, { ReinfSouthPoint.Location })[2]
 			Utils.Do(units, function(unit)
