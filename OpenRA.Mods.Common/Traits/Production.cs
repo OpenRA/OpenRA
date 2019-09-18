@@ -73,6 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
 				td.Add(new FacingInit(initialFacing));
+				td.Add(new SubCellInit(SubCell.Any));
 				if (exitinfo != null)
 					td.Add(new MoveIntoWorldDelayInit(exitinfo.ExitDelay));
 			}
