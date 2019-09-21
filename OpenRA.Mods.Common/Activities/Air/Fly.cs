@@ -117,6 +117,13 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self);
 
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			var isLanded = dat <= aircraft.LandAltitude;
+
+			// HACK: Prevent paused (for example, EMP'd) aircraft from taking off.
+			// This is necessary until the TODOs in the IsCanceling block below are adressed.
+			if (isLanded && aircraft.IsTraitPaused)
+				return false;
+
 			if (IsCanceling)
 			{
 				// We must return the actor to a sensible height before continuing.
@@ -128,7 +135,7 @@ namespace OpenRA.Mods.Common.Activities
 				var skipHeightAdjustment = landWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
 				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
 				{
-					if (dat <= aircraft.LandAltitude)
+					if (isLanded)
 						QueueChild(new TakeOff(self));
 					else
 						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
@@ -138,7 +145,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				return true;
 			}
-			else if (dat <= aircraft.LandAltitude)
+			else if (isLanded)
 			{
 				QueueChild(new TakeOff(self));
 				return false;
