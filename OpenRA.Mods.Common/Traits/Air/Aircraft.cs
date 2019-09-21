@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 		LeaveMap,
 	}
 
-	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		IActorPreviewInitInfo, IEditorActorOptions, IObservesVariablesInfo
+	public class AircraftInfo : PausableConditionalTraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
+		IActorPreviewInitInfo, IEditorActorOptions
 	{
 		[Desc("Behavior when aircraft becomes idle. Options are Land, ReturnToBase, LeaveMap, and None.",
 			"'Land' will behave like 'None' (hover or circle) if a suitable landing site is not available.")]
@@ -139,19 +139,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
+		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
+			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
+		public readonly BooleanExpression LandOnCondition;
+
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
-		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
+		public override object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
 		}
-
-		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
-			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
-		public readonly BooleanExpression LandOnCondition;
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 
@@ -189,13 +189,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
-		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables, ICreationActivity
+	public class Aircraft : PausableConditionalTrait<AircraftInfo>, ITick, ISync, IFacing, IPositionable, IMove,
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle, ICreationActivity,
+		IActorPreviewInitModifier, IDeathActorInitModifier, IIssueDeployOrder, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
-		public readonly AircraftInfo Info;
 		readonly Actor self;
 
 		Repairable repairable;
@@ -241,8 +240,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
+			: base(info)
 		{
-			Info = info;
 			self = init.Self;
 
 			if (init.Contains<LocationInit>())
@@ -278,8 +277,11 @@ namespace OpenRA.Mods.Common.Traits
 			return pos;
 		}
 
-		public virtual IEnumerable<VariableObserver> GetVariableObservers()
+		public override IEnumerable<VariableObserver> GetVariableObservers()
 		{
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
+
 			if (Info.LandOnCondition != null)
 				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
 
@@ -297,12 +299,7 @@ namespace OpenRA.Mods.Common.Traits
 			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			Created(self);
-		}
-
-		protected virtual void Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			repairable = self.TraitOrDefault<Repairable>();
 			rearmable = self.TraitOrDefault<Rearmable>();
@@ -312,6 +309,8 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			positionOffsets = self.TraitsImplementing<IAircraftCenterPositionOffset>().ToArray();
 			overrideAircraftLanding = self.TraitOrDefault<IOverrideAircraftLanding>();
+
+			base.Created(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
