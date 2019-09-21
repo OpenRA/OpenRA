@@ -100,16 +100,21 @@
 	ExternalCondition@CRATE-SPEED:
 		Condition: crate-speed
 
+^EmpVisualEffects:
+	WithColoredOverlay@EMPDISABLE:
+		Palette: disabled
+	WithIdleOverlay@EMPDISABLE:
+		Sequence: emp-overlay
+		Palette: effect
+
 ^EmpDisable:
+	Inherits: ^EmpVisualEffects
 	WithColoredOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
-		Palette: disabled
 	TimedConditionBar@EMPDISABLE:
 		Condition: empdisable
 		Color: FFFFFF
 	WithIdleOverlay@EMPDISABLE:
-		Sequence: emp-overlay
-		Palette: effect
 		RequiresCondition: empdisable
 	PowerMultiplier@EMPDISABLE:
 		RequiresCondition: empdisable
@@ -912,6 +917,14 @@
 		BobDistance: -64
 		InitialHeight: 64
 
+^EMPableAircraft:
+	Inherits: ^Aircraft
+	Inherits@EMP: ^EmpDisable
+	Aircraft:
+		PauseOnCondition: empdisable
+	KillsSelf:
+		RequiresCondition: airborne && empdisable
+
 ^AircraftHusk:
 	RenderVoxels:
 	RenderSprites:
@@ -934,7 +947,7 @@
 	FallsToEarth:
 		Spins: true
 		Moves: true
-		Velocity: 86
+		Velocity: 112
 	HitShape:
 
 ^Visceroid:

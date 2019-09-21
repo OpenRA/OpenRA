@@ -67,10 +67,9 @@ DSHP:
 		Actor: DSHP.Husk
 
 ORCA:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -121,10 +120,9 @@ ORCA:
 		RearmActors: gahpad, nahpad
 
 ORCAB:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -179,8 +177,7 @@ ORCAB:
 		RearmActors: gahpad, nahpad
 
 ORCATRAN:
-	Inherits: ^Aircraft
-	Inherits@EMPDISABLE: ^EmpDisable
+	Inherits: ^EMPableAircraft
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -217,10 +214,13 @@ ORCATRAN:
 		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: ORCATRAN.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: ORCATRAN.Husk.EMP
+		RequiresCondition: empdisable
 
 TRNSPORT:
-	Inherits: ^Aircraft
-	Inherits@EMPDISABLE: ^EmpDisable
+	Inherits: ^EMPableAircraft
 	Valued:
 		Cost: 750
 	Tooltip:
@@ -255,12 +255,15 @@ TRNSPORT:
 		Bounds: 44,32,0,-8
 	SpawnActorOnDeath:
 		Actor: TRNSPORT.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: TRNSPORT.Husk.EMP
+		RequiresCondition: empdisable
 
 SCRIN:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -280,7 +283,6 @@ SCRIN:
 		CruiseAltitude: 5c0
 		TurnSpeed: 3
 		Speed: 168
-		AirborneCondition: airborne
 		TakeoffSounds: dropup1.aud
 		LandingSounds: dropdwn1.aud
 		CanHover: false
@@ -315,10 +317,9 @@ SCRIN:
 		RearmActors: gahpad, nahpad
 
 APACHE:
-	Inherits: ^Aircraft
+	Inherits: ^EMPableAircraft
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
-	Inherits@EMPDISABLE: ^EmpDisable
 	Valued:
 		Cost: 1000
 	Tooltip:
