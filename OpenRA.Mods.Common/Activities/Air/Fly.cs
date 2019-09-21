@@ -254,7 +254,7 @@ namespace OpenRA.Mods.Common.Activities
 			// turnSpeed -> divide into 256 to get the number of ticks per complete rotation
 			// speed -> multiply to get distance travelled per rotation (circumference)
 			// 45 -> divide by 2*pi to get the turn radius: 45==256/(2*pi), with some extra leeway
-			return 45 * speed / turnSpeed;
+			return turnSpeed > 0 ? 45 * speed / turnSpeed : 0;
 		}
 	}
 }
