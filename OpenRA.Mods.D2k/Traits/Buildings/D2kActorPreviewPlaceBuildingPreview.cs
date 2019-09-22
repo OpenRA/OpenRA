@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			buildBlocked = sequences.GetSequence("overlay", "build-invalid").GetSprite(0);
 
 			var buildingInfo = ai.TraitInfo<BuildingInfo>();
-			unpathableCells = new CachedTransform<CPos, List<CPos>>(topLeft => buildingInfo.UnpathableTiles(topLeft).ToList());
+			unpathableCells = new CachedTransform<CPos, List<CPos>>(topLeft => buildingInfo.OccupiedTiles(topLeft).ToList());
 		}
 
 		protected override IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
