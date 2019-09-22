@@ -82,6 +82,7 @@ namespace OpenRA
 		readonly INotifyIdle[] tickIdles;
 		readonly ITargetablePositions[] targetablePositions;
 		WPos[] staticTargetablePositions;
+		bool created;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -136,6 +137,35 @@ namespace OpenRA
 			});
 
 			SyncHashes = TraitsImplementing<ISync>().Select(sync => new SyncHash(sync)).ToArray();
+		}
+
+		internal void Created()
+		{
+			created = true;
+
+			foreach (var t in TraitsImplementing<INotifyCreated>())
+				t.Created(this);
+
+			// The initial activity should run before any activities queued by INotifyCreated.Created
+			// However, we need to know which traits are enabled (via conditions), so wait for after the calls and insert the activity as the first
+			ICreationActivity creationActivity = null;
+			foreach (var ica in TraitsImplementing<ICreationActivity>())
+			{
+				if (!ica.IsTraitEnabled())
+					continue;
+
+				if (creationActivity != null)
+					throw new InvalidOperationException("More than one enabled ICreationActivity trait: {0} and {1}".F(creationActivity.GetType().Name, ica.GetType().Name));
+
+				var activity = ica.GetCreationActivity();
+				if (activity == null)
+					continue;
+
+				creationActivity = ica;
+
+				activity.Queue(CurrentActivity);
+				CurrentActivity = activity;
+			}
 		}
 
 		public void Tick()
@@ -214,11 +244,15 @@ namespace OpenRA
 		{
 			if (!queued)
 				CancelActivity();
+
 			QueueActivity(nextActivity);
 		}
 
 		public void QueueActivity(Activity nextActivity)
 		{
+			if (!created)
+				throw new InvalidOperationException("An activity was queued before the actor was created. Queue it inside the INotifyCreated.Created callback instead.");
+
 			if (CurrentActivity == null)
 				CurrentActivity = nextActivity;
 			else

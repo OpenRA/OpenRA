@@ -130,8 +130,6 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 			resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
-
-			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -140,6 +138,8 @@ namespace OpenRA.Mods.Common.Traits
 			resourceMultipliers = self.TraitsImplementing<HarvesterResourceMultiplier>().ToArray();
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 			UpdateCondition(self);
+
+			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)

@@ -190,7 +190,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
 		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
-		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables
+		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables, ICreationActivity
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
@@ -309,8 +309,6 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			positionOffsets = self.TraitsImplementing<IAircraftCenterPositionOffset>().ToArray();
 			overrideAircraftLanding = self.TraitOrDefault<IOverrideAircraftLanding>();
-
-			self.QueueActivity(MoveIntoWorld(self, moveIntoWorldDelay));
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -1162,6 +1160,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
 				inits.Add(new DynamicFacingInit(() => Facing));
+		}
+
+		Activity ICreationActivity.GetCreationActivity()
+		{
+			return MoveIntoWorld(self, moveIntoWorldDelay);
 		}
 
 		public class AircraftMoveOrderTargeter : IOrderTargeter
