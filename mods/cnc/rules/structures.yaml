@@ -678,7 +678,7 @@ FIX:
 		Queue: Building.GDI, Building.Nod
 		Description: Repairs vehicles
 	Building:
-		Footprint: _X_ xxx _X_
+		Footprint: _=_ === _=_
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 64,34,0,3
