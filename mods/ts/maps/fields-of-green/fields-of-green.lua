@@ -25,8 +25,8 @@ VGForceInterval = 15
 
 ProducedUnitTypes =
 {
-	{ nodhand1, { "e1", "e3" } },
-	{ gdibar1, { "e1", "e2" } }
+	{ nodhand1, { "e1", "e3" }, GDIBase.Location },
+	{ gdibar1, { "e1", "e2" }, NodBase.Location }
 }
 
 ProduceUnits = function(t)
@@ -41,7 +41,7 @@ end
 
 SetupFactories = function()
 	Utils.Do(ProducedUnitTypes, function(pair)
-		Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a) end)
+		Trigger.OnProduction(pair[1], function(_, a) BindActorTriggers(a, pair[3]) end)
 	end)
 end
 
@@ -56,13 +56,7 @@ end
 SendNodInfantry = function()
 	local units = Reinforcements.Reinforce(nod, NForce, NForcePath, NForceInterval)
 	Utils.Do(units, function(unit)
-		BindActorTriggers(unit)
-
-		if unit.HasProperty("AttackMove") then
-			unit.AttackMove(GDIBase.Location)
-		else
-			unit.Move(GDIBase.Location)
-		end
+		BindActorTriggers(unit, GDIBase.Location)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(60), SendNodInfantry)
 end
@@ -70,13 +64,7 @@ end
 SendNodVehicles = function()
 	local units = Reinforcements.Reinforce(nod, VNForce, VNForcePath, VNForceInterval)
 	Utils.Do(units, function(unit)
-		BindActorTriggers(unit)
-
-		if unit.HasProperty("AttackMove") then
-			unit.AttackMove(GDIBase.Location)
-		else
-			unit.Move(GDIBase.Location)
-		end
+		BindActorTriggers(unit, GDIBase.Location)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(110), SendNodVehicles)
 end
@@ -84,13 +72,7 @@ end
 SendGDIInfantry = function()
 	local units = Reinforcements.Reinforce(gdi, GForce, GForcePath, GForceInterval)
 	Utils.Do(units, function(unit)
-		BindActorTriggers(unit)
-
-		if unit.HasProperty("AttackMove") then
-			unit.AttackMove(NodBase.Location)
-		else
-			unit.Move(NodBase.Location)
-		end
+		BindActorTriggers(unit, NodBase.Location)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(60), SendGDIInfantry)
 end
@@ -98,20 +80,24 @@ end
 SendGDIVehicles = function()
 	local units = Reinforcements.Reinforce(gdi, VGForce, VGForcePath, VGForceInterval)
 	Utils.Do(units, function(unit)
-		BindActorTriggers(unit)
-
-		if unit.HasProperty("AttackMove") then
-			unit.AttackMove(NodBase.Location)
-		else
-			unit.Move(NodBase.Location)
-		end
+		BindActorTriggers(unit, NodBase.Location)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(110), SendGDIVehicles)
 end
 
-BindActorTriggers = function(a)
+BindActorTriggers = function(a, loc)
+	if a.HasProperty("AttackMove") then
+		a.AttackMove(loc)
+	else
+		a.Move(loc)
+	end
+
 	if a.HasProperty("Hunt") then
 		Trigger.OnIdle(a, a.Hunt)
+	else
+		Trigger.OnIdle(a, function()
+			a.Move(loc)
+		end)
 	end
 
 	if a.HasProperty("HasPassengers") then
@@ -123,7 +109,7 @@ BindActorTriggers = function(a)
 		end)
 
 		Trigger.OnPassengerExited(a, function(_, p)
-			BindActorTriggers(p)
+			BindActorTriggers(p, loc)
 		end)
 	end
 end
