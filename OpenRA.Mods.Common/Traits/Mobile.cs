@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Mobile : PausableConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, ITick,
+	public class Mobile : PausableConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, ITick, ICreationActivity,
 		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle
 	{
 		readonly Actor self;
@@ -255,7 +255,6 @@ namespace OpenRA.Mods.Common.Traits
 			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
 				.Single(l => l.Info.Name == Info.Locomotor);
 
-			self.QueueActivity(MoveIntoWorld(self, moveIntoWorldDelay));
 			base.Created(self);
 		}
 
@@ -889,6 +888,11 @@ namespace OpenRA.Mods.Common.Traits
 				default:
 					return null;
 			}
+		}
+
+		Activity ICreationActivity.GetCreationActivity()
+		{
+			return MoveIntoWorld(self, moveIntoWorldDelay);
 		}
 
 		class MoveOrderTargeter : IOrderTargeter
