@@ -102,6 +102,16 @@ namespace OpenRA.Mods.Common.Traits
 			return locomotor.CanMoveFreelyInto(self, cell, subCell, check, ignoreActor);
 		}
 
+		public bool CanStayInCell(World world, CPos cell)
+		{
+			// PERF: Avoid repeated trait queries on the hot path
+			if (locomotor == null)
+				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
+				   .SingleOrDefault(l => l.Info.Name == Locomotor);
+
+			return locomotor.CanStayInCell(cell);
+		}
+
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
 			return new ReadOnlyDictionary<CPos, SubCell>(new Dictionary<CPos, SubCell>() { { location, subCell } });
@@ -363,7 +373,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (CVec direction in CVec.Directions)
 			{
 				var p = ToCell + direction;
-				if (CanEnterCell(p))
+				if (CanEnterCell(p) && CanStayInCell(p))
 					availCells.Add(p);
 				else if (p != nextCell && p != ToCell)
 					notStupidCells.Add(p);
@@ -505,6 +515,11 @@ namespace OpenRA.Mods.Common.Traits
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			return Info.CanEnterCell(self.World, self, cell, ToSubCell, ignoreActor, check);
+		}
+
+		public bool CanStayInCell(CPos cell)
+		{
+			return Info.CanStayInCell(self.World, cell);
 		}
 
 		#endregion
@@ -666,6 +681,16 @@ namespace OpenRA.Mods.Common.Traits
 				QueueChild(mobile.VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
 				return true;
 			}
+
+			public override void Cancel(Actor self, bool keepQueue = false)
+			{
+				// If we are forbidden from stopping in this cell, use evaluateNearestMovableCell
+				// to nudge us to the nearest cell that we can stop in.
+				if (!mobile.CanStayInCell(cell))
+					QueueChild(new Move(self, cell, WDist.Zero, null, true));
+
+				base.Cancel(self, keepQueue);
+			}
 		}
 
 		public Activity MoveToTarget(Actor self, Target target,
@@ -743,11 +768,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Layer != 0)
 				target = new CPos(target.X, target.Y);
 
-			if (CanEnterCell(target))
+			if (target == self.Location && CanStayInCell(target))
+				return target;
+
+			if (CanEnterCell(target, check: BlockedByActor.Immovable) && CanStayInCell(target))
 				return target;
 
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
-				if (CanEnterCell(tile))
+				if (CanEnterCell(tile, check: BlockedByActor.Immovable) && CanStayInCell(tile))
 					return tile;
 
 			// Couldn't find a cell
