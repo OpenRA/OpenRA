@@ -121,6 +121,10 @@ BindActorTriggers = function(a)
 				a.UnloadPassengers()
 			end
 		end)
+
+		Trigger.OnPassengerExited(a, function(_, p)
+			BindActorTriggers(p)
+		end)
 	end
 end
 
