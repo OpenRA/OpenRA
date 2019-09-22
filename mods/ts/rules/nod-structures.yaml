@@ -195,7 +195,7 @@ NAWEAP:
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
-		Footprint: xxX= xxX= xxX=
+		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 149, 80, -3, -10

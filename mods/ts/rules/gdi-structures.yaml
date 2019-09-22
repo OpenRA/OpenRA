@@ -183,7 +183,7 @@ GAWEAP:
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
-		Footprint: xxX= xxX= xxX=
+		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 154, 96, -2, -12
