@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using OpenRA.Activities;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Network;
@@ -538,4 +539,7 @@ namespace OpenRA.Traits
 
 	[RequireExplicitImplementation]
 	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
+
+	[RequireExplicitImplementation]
+	public interface ICreationActivity { Activity GetCreationActivity(); }
 }
