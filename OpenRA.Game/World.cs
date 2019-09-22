@@ -330,10 +330,10 @@ namespace OpenRA
 		public Actor CreateActor(bool addToWorld, string name, TypeDictionary initDict)
 		{
 			var a = new Actor(this, name, initDict);
-			foreach (var t in a.TraitsImplementing<INotifyCreated>())
-				t.Created(a);
+			a.Created();
 			if (addToWorld)
 				Add(a);
+
 			return a;
 		}
 
