@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Activities
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
 				if (repairableNear == null)
-					QueueChild(move.MoveTo(targetCell, ignoreActor: host.Actor));
+					QueueChild(move.MoveTo(targetCell));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				var transport = transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta);
