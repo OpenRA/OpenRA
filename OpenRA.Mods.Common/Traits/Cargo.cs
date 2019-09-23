@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal void UnreserveSpace(Actor a)
 		{
-			if (!reserves.Contains(a))
+			if (!reserves.Contains(a) || self.IsDead)
 				return;
 
 			reservedWeight -= GetWeight(a);
