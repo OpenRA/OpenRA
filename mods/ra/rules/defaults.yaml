@@ -178,7 +178,7 @@
 		InvalidTargets: NoAutoTarget, WaterStructure
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Underwater, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Water, Underwater, Structure, Defense, Mine
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetGroundAssaultMove:
