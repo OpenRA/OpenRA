@@ -743,7 +743,6 @@ CTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 200
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Armed with anti-ground missiles.\nTeleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
 	Valued:
 		Cost: 1350
@@ -829,7 +828,6 @@ STNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
-		BuildDurationModifier: 50
 		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
 	Valued:
 		Cost: 1000
