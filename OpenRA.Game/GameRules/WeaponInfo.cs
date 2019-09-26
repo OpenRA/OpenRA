@@ -38,6 +38,8 @@ namespace OpenRA.GameRules
 		public WeaponInfo Weapon;
 		public int[] DamageModifiers = { };
 		public WPos? Source;
+		public WRot ImpactOrientation;
+		public WPos ImpactPosition;
 		public Actor SourceActor;
 		public Target WeaponTarget;
 
@@ -45,6 +47,7 @@ namespace OpenRA.GameRules
 		{
 			Weapon = args.Weapon;
 			DamageModifiers = args.DamageModifiers;
+			ImpactPosition = args.PassiveTarget;
 			Source = args.Source;
 			SourceActor = args.SourceActor;
 			WeaponTarget = args.GuidedTarget;

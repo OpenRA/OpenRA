@@ -237,6 +237,12 @@ namespace OpenRA.Mods.Common.Projectiles
 
 					var warheadArgs = new WarheadArgs(args)
 					{
+						ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.CurrentMuzzleFacing()),
+
+						// Calculating an impact position is bogus for line damage.
+						// FindActorsOnLine guarantees that the beam touches the target's HitShape,
+						// so we just assume a center hit to avoid bogus warhead recalculations.
+						ImpactPosition = a.CenterPosition,
 						DamageModifiers = adjustedModifiers.ToArray(),
 					};
 

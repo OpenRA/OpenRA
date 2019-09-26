@@ -81,7 +81,13 @@ namespace OpenRA.Mods.Common.Projectiles
 					target = Target.FromPos(blockedPos);
 			}
 
-			args.Weapon.Impact(target, new WarheadArgs(args));
+			var warheadArgs = new WarheadArgs(args)
+			{
+				ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target.CenterPosition), args.Facing),
+				ImpactPosition = target.CenterPosition,
+			};
+
+			args.Weapon.Impact(target, warheadArgs);
 			world.AddFrameEndTask(w => w.Remove(this));
 		}
 
