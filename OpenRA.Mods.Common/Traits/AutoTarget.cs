@@ -243,6 +243,11 @@ namespace OpenRA.Mods.Common.Traits
 					attacker = passenger.Transport;
 			}
 
+			// Don't fire at an invisible enemy when we can't move to reveal it
+			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
+			if (!allowMove && !attacker.CanBeViewedByPlayer(self.Owner))
+				return;
+
 			// Not a lot we can do about things we can't hurt... although maybe we should automatically run away?
 			var attackerAsTarget = Target.FromActor(attacker);
 			if (!ActiveAttackBases.Any(a => a.HasAnyValidWeapons(attackerAsTarget)))
@@ -254,7 +259,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			Aggressor = attacker;
 
-			var allowMove = Info.AllowMovement && Stance > UnitStance.Defend;
 			Attack(self, Target.FromActor(Aggressor), allowMove);
 		}
 
