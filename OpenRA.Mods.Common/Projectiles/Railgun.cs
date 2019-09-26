@@ -199,12 +199,32 @@ namespace OpenRA.Mods.Common.Projectiles
 					animationComplete = true;
 
 				if (!info.DamageActorsInLine)
-					args.Weapon.Impact(Target.FromPos(target), new WarheadArgs(args));
+				{
+					var warheadArgs = new WarheadArgs(args)
+					{
+						ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.Facing),
+						ImpactPosition = target,
+					};
+
+					args.Weapon.Impact(Target.FromPos(target), warheadArgs);
+				}
 				else
 				{
 					var actors = world.FindActorsOnLine(args.Source, target, info.BeamWidth);
 					foreach (var a in actors)
-						args.Weapon.Impact(Target.FromActor(a), new WarheadArgs(args));
+					{
+						var warheadArgs = new WarheadArgs(args)
+						{
+							ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.Facing),
+
+							// Calculating an impact position is bogus for line damage.
+							// FindActorsOnLine guarantees that the beam touches the target's HitShape,
+							// so we just assume a center hit to avoid bogus warhead recalculations.
+							ImpactPosition = a.CenterPosition,
+						};
+
+						args.Weapon.Impact(Target.FromActor(a), warheadArgs);
+					}
 				}
 			}
 

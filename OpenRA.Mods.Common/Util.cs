@@ -108,6 +108,15 @@ namespace OpenRA.Mods.Common
 			return WPos.Lerp(fromPos, toPos, 1, 2);
 		}
 
+		public static WAngle GetVerticalAngle(WPos source, WPos target)
+		{
+			var delta = target - source;
+			var horizontalDelta = delta.HorizontalLength;
+			var verticalVector = new WVec(-delta.Z, -horizontalDelta, 0);
+
+			return verticalVector.Yaw;
+		}
+
 		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> ts, MersenneTwister random)
 		{
 			// Fisher-Yates

@@ -168,7 +168,13 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (ticks < info.DamageDuration && --interval <= 0)
 			{
-				args.Weapon.Impact(Target.FromPos(target), new WarheadArgs(args));
+				var warheadArgs = new WarheadArgs(args)
+				{
+					ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(source, target), args.CurrentMuzzleFacing()),
+					ImpactPosition = target,
+				};
+
+				args.Weapon.Impact(Target.FromPos(target), warheadArgs);
 				interval = info.DamageInterval;
 			}
 
