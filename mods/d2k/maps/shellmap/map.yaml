@@ -835,10 +835,10 @@ Actors:
 	Actor249: spicebloom.spawnpoint
 		Owner: Neutral
 		Location: 50,53
-	har_wind5: wind_trap
+	har_wind7: wind_trap
 		Owner: Harkonnen
 		Location: 87,21
-	har_wind6: wind_trap
+	har_wind8: wind_trap
 		Owner: Harkonnen
 		Location: 93,21
 	har_htech: high_tech_factory
@@ -850,7 +850,7 @@ Actors:
 	har_sport: starport
 		Owner: Harkonnen
 		Location: 85,24
-	har_wind7: wind_trap
+	har_wind9: wind_trap
 		Owner: Harkonnen
 		Location: 88,24
 	cor_wind7: wind_trap
