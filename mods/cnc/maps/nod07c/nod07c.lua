@@ -14,22 +14,15 @@ NodUnitsRockets = { "e3", "e3", "e3", "e3" }
 NodUnitsGunners = { "e1", "e1", "e1", "e1" }
 NodUnitsFlamers = { "e4", "e4", "e4", "e4" }
 
-GDI1 = { units = { "e1", "e1" }, waypoints = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint8.Location, waypoint2.Location, waypoint9.Location, waypoint2.Location } }
-GDI2 = { units = { "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2", "e2", "e2", "e2", "mtnk", "jeep" }, waypoints = { waypoint12.Location, waypoint15.Location, waypoint0.Location } }
-GDI3 = { units = { "jeep" }, waypoints = { waypoint0.Location, waypoint1.Location, waypoint3.Location, waypoint4.Location, waypoint3.Location, waypoint2.Location, waypoint5.Location, waypoint6.Location, waypoint2.Location, waypoint7.Location } }
-MTANK = { units = { "mtnk" }, waypoints = { waypoint14.Location, waypoint5.Location } }
+MainEntranceGuards = { JeepGuard1, JeepGuard2, MediumTank1, SideGuard1, SideGuard2, SideGuard6, SideGuard7, Guard1, Guard2, Guard3, Guard4, Guard5, Guard6, Guard7, Guard8, Guard9, Guard10 }
+InfantryPatrol = { InfantryPatrol1, InfantryPatrol2 }
+
+MainEntrancePatrolPath = { waypoint0.Location, waypoint1.Location, waypoint15.Location, waypoint12.Location }
+InfantryPatrolPath = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint8.Location, waypoint2.Location, waypoint9.Location, waypoint2.Location }
+JeepPatrolPath = { waypoint0.Location, waypoint1.Location, waypoint3.Location, waypoint4.Location, waypoint3.Location, waypoint2.Location, waypoint5.Location, waypoint6.Location, waypoint2.Location, waypoint7.Location }
+MediumTankPatrolPath = { waypoint14.Location, waypoint5.Location }
 
 TargetsKilled = 0
-
-AutoGuard = function(guards)
-	Utils.Do(guards, function(guard)
-		Trigger.OnDamaged(guard, function()
-			if not guard.IsDead then
-				IdleHunt(guard)
-			end
-		end)
-	end)
-end
 
 InsertNodUnits = function()
 	Media.PlaySpeechNotification(Nod, "Reinforce")
@@ -65,14 +58,9 @@ DiscoveredMainEntrance = function()
 
 	Nod.MarkCompletedObjective(DistractGuardsObjective)
 
-	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		for type, amount in pairs(GDI2.units) do
-			local actors = Utils.Take(amount, GDI.GetActorsByType(type))
-			Utils.Do(actors, function(actor)
-				if actor.IsIdle then
-					actor.AttackMove(waypoint0.Location)
-				end
-			end)
+	Utils.Do(MainEntranceGuards, function(guard)
+		if not guard.IsDead then
+			guard.Patrol(MainEntrancePatrolPath)
 		end
 	end)
 end
@@ -90,12 +78,19 @@ Trigger.OnKilled(GDIOrca, function()
 end)
 
 Trigger.OnDamaged(GuardTower3, function()
-	SendGuards(MTANK)
+	if not MediumTank3.IsDead then
+		MediumTank3.Patrol(MediumTankPatrolPath)
+	end
 end)
 
 Utils.Do(Map.ActorsWithTag("Village"), function(actor)
 	Trigger.OnKilled(actor, function()
 		TargetsKilled = TargetsKilled + 1
+
+		if TargetsKilled >= 15 then
+			Nod.MarkCompletedObjective(NoCaptureObjective)
+			Nod.MarkCompletedObjective(UseOrcaObjective)
+		end
 	end)
 end)
 
@@ -123,7 +118,18 @@ WorldLoaded = function()
 
 	InsertNodUnits()
 
-	AutoGuard(GDI.GetGroundAttackers())
+	Jeep.Patrol(JeepPatrolPath)
+	Utils.Do(InfantryPatrol, function(unit)
+		unit.Patrol(InfantryPatrolPath)
+	end)
+
+	Utils.Do(GDI.GetGroundAttackers(), function(guard)
+		Trigger.OnDamaged(guard, function()
+			if not guard.IsDead then
+				IdleHunt(guard)
+			end
+		end)
+	end)
 
 	InitObjectives(Nod)
 
@@ -145,11 +151,6 @@ end
 Tick = function()
 	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
 		GDI.MarkCompletedObjective(GDIObjective)
-	end
-
-	if TargetsKilled >= 15 then
-		Nod.MarkCompletedObjective(NoCaptureObjective)
-		Nod.MarkCompletedObjective(UseOrcaObjective)
 	end
 
 	if GDI.Resources >= GDI.ResourceCapacity * 0.75 then
