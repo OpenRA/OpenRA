@@ -151,6 +151,8 @@ HPAD.IN:
 
 ORCA.IN:
 	Inherits: ORCA
+	Buildable:
+		Prerequisites: ~hpad
 	RenderSprites:
 		Image: ORCA
 	-AutoTarget:
