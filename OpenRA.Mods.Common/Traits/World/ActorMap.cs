@@ -410,6 +410,15 @@ namespace OpenRA.Mods.Common.Traits
 				influenceNode = influenceNode.Next;
 		}
 
+		public void UpdateOccupiedCells(IOccupySpace ios)
+		{
+			if (CellUpdated == null)
+				return;
+
+			foreach (var c in ios.OccupiedCells())
+				CellUpdated(c.First);
+		}
+
 		void ITick.Tick(Actor self)
 		{
 			// Position updates are done in one pass

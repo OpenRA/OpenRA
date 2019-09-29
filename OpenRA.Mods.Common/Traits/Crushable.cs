@@ -90,12 +90,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitEnabled(Actor self)
 		{
-			self.World.ActorMap.UpdatePosition(self, self.OccupiesSpace);
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			self.World.ActorMap.UpdatePosition(self, self.OccupiesSpace);
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
 		}
 	}
 }
