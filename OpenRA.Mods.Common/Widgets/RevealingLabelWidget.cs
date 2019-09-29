@@ -8,18 +8,53 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public int RevealLength = 0;
 		public int RevealStep = 1;
-		public int RevealCyclesDelay = 1;
+		public int RevealCyclesDelay = 3;
 		public Color RevealColor = Color.White;
+		public enum REVEAL_TYPES { BLANK, UNDERLINE, BLOCK }
+		public REVEAL_TYPES RevealType = REVEAL_TYPES.UNDERLINE;
 		public int CycleCount = 0;
 		public bool IsAnimationComplete = false;
-		public bool PlaySound = true;
-		public Action OnAnimationDone; 
+		public bool PlaySound = false;
+		public Action OnAnimationDone;
+		ISound revealSound;
+		bool revealDraw = false;
 
-		public RevealingLabelWidget() 
+		public RevealingLabelWidget()
 			: base()
 		{
-			GetText = () => Text.Substring(0, RevealLength);
-			OnAnimationDone = () => { };
+			GetText = () =>
+			{
+				if (IsAnimationComplete)
+					return Text;
+				else
+				{
+					if (revealDraw)
+						switch (RevealType)
+						{
+							case REVEAL_TYPES.UNDERLINE:
+								return Text.Substring(0, RevealLength) + '_';
+							case REVEAL_TYPES.BLOCK:
+								return Text.Substring(0, RevealLength) + '\u2588';
+							case REVEAL_TYPES.BLANK:
+							default:
+								return Text.Substring(0, RevealLength);
+						}
+					else
+						return Text.Substring(0, RevealLength - 1 < 0 ? RevealLength : RevealLength - 1);
+				}
+			};
+			GetColor = () =>
+			{
+				if (revealDraw)
+					return RevealColor;
+				else
+					return TextColor;
+			};
+			OnAnimationDone = () =>
+			{
+				if (revealSound != null)
+					Game.Sound.StopSound(revealSound);
+			};
 		}
 
 		protected RevealingLabelWidget(RevealingLabelWidget other)
@@ -27,47 +62,58 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			RevealLength = other.RevealLength;
 			OnAnimationDone = other.OnAnimationDone;
-		}
-
-		Color GetRevealColor()
-		{
-			return RevealColor;
-		}
-
-		Color GetTextColor()
-		{
-			return TextColor;
+			IsVisible = other.IsVisible;
 		}
 
 		public override void Draw()
 		{
+			if (CycleCount == 0 && PlaySound)
+				revealSound = Game.Sound.PlayLooped(SoundType.UI, "beepy2.aud");
 			if (!IsAnimationComplete)
 			{
-				GetColor = GetRevealColor;
+				revealDraw = true;
+				base.Draw();
+				revealDraw = false;
 				CycleCount++;
-				if (PlaySound)
-					Game.Sound.Play(SoundType.UI, "keystrok.aud");
 				if (CycleCount % RevealCyclesDelay == 0)
-					RevealLength += RevealStep;
-				RevealLength++;
+					RevealLength += RevealStep + 1;
 				if (RevealLength >= Text.Length)
 				{
 					IsAnimationComplete = true;
-					RevealLength = Text.Length;
 					OnAnimationDone();
-					GetColor = GetTextColor;
+					if (revealSound != null)
+					{
+						Game.Sound.StopSound(revealSound);
+						revealSound = null;
+					}
 				}
+			}
 
-			}
 			base.Draw();
-			if (!IsAnimationComplete)
-			{
-				RevealLength--;
-				GetColor = GetTextColor;
-				base.Draw();
-			}
 		}
 
 		public override Widget Clone() { return new RevealingLabelWidget(this); }
+
+		public override void Hidden()
+		{
+			if (PlaySound && revealSound != null)
+			{
+				Game.Sound.StopSound(revealSound);
+				revealSound = null;
+			}
+
+			base.Hidden();
+		}
+
+		public override void Removed()
+		{
+			if (PlaySound && revealSound != null)
+			{
+				Game.Sound.StopSound(revealSound);
+				revealSound = null;
+			}
+
+			base.Removed();
+		}
 	}
 }

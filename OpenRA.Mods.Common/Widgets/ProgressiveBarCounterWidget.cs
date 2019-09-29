@@ -6,12 +6,33 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ProgressiveBarCounterWidget : ProgressBarWidget
 	{
-		int MaxValue = 1;
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
 		public string Font = ChromeMetrics.Get<string>("TextFont");
+		public int MaxTicks = 75;
+		public int MaxValue
+		{
+			get
+			{
+				return counter.End;
+			}
+			set
+			{
+				if (value == 0)
+					counter.PlaySound = false;
+				counter.End = value;
+				counter.Step = value > 0 ? value / MaxTicks : 1;
+			}
+		}
+
+		public Action OnAnimationDone
+		{
+			get { return counter.OnAnimationDone; }
+			set { counter.OnAnimationDone = value; }
+		}
+
 		ProgressiveCounterWidget counter;
 
-		public ProgressiveBarCounterWidget() 
+		public ProgressiveBarCounterWidget()
 			: base()
 		{
 			counter = new ProgressiveCounterWidget
@@ -35,25 +56,31 @@ namespace OpenRA.Mods.Common.Widgets
 			MaxValue = other.MaxValue;
 		}
 
-		public void SetMaxValue(int maxValue)
-		{
-			counter.End = maxValue;
-			MaxValue = maxValue;
-		}
-
 		public override void Draw()
 		{
 			base.Draw();
-			counter.Bounds = base.Bounds;
-			counter.X = base.X;
-			counter.Y = base.Y;
-			counter.Width = base.Width;
-			counter.Height = base.Height;
-			counter.Parent = base.Parent;
+			counter.Bounds = Bounds;
+			counter.X = X;
+			counter.Y = Y;
+			counter.Width = Width;
+			counter.Height = Height;
+			counter.Parent = Parent;
 			counter.Visible = Visible;
 			counter.Draw();
 		}
 
 		public override Widget Clone() { return new ProgressiveBarCounterWidget(this); }
+
+		public override void Hidden()
+		{
+			counter.Hidden();
+			base.Hidden();
+		}
+
+		public override void Removed()
+		{
+			counter.Removed();
+			base.Removed();
+		}
 	}
 }

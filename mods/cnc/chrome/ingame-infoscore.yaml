@@ -19,25 +19,49 @@ Container@SCORE_PANEL:
 				RevealingLabel@TIME:
 					X: 0
 					Y: 0
-					Text: Time: {0}
+					Text: Time:
+					TextColor: 00FF00
+					Visible: false
+				RevealingLabel@TIME_VALUE:
+					X: PARENT_RIGHT - 90
+					Y: 0
+					Text: {0}
+					TextColor: 00FF00
+					Visible: false
+				RevealingLabel@PRIMARY_OBJECTIVES:
+					X: 0
+					Y: 30
+					Text: Primary Objectives:
 					TextColor: 00FF00
 					Visible: false
 				RevealingLabel@PRIMARY_OBJECTIVES_COUNT:
-					X: 0
+					X: PARENT_RIGHT - 90
 					Y: 30
-					Text: Primary Objectives: {0}/{1}
+					Text: {0}/{1}
+					TextColor: 00FF00
+					Visible: false
+				RevealingLabel@SECONDARY_OBJECTIVES:
+					X: 0
+					Y: 30 * 2
+					Text: Secondary Objectives:
 					TextColor: 00FF00
 					Visible: false
 				RevealingLabel@SECONDARY_OBJECTIVES_COUNT:
-					X: 0
+					X: PARENT_RIGHT - 90
 					Y: 30 * 2
-					Text: Secondary Objectives: {0}/{1}
+					Text: {0}/{1}
 					TextColor: 00FF00
 					Visible: false
 				RevealingLabel@TOTAL_SCORE:
 					X: 0
 					Y: 30 * 3
-					Text: Total Score: {0}
+					Text: Total Score:
+					TextColor: 00FF00
+					Visible: false
+				RevealingLabel@TOTAL_SCORE_VALUE:
+					X: PARENT_RIGHT - 90
+					Y: 30 * 3
+					Text: {0}
 					TextColor: 00FF00
 					Visible: false
 		Container@UNITS_LOST_PANEL:
