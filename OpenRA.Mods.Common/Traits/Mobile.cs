@@ -159,8 +159,11 @@ namespace OpenRA.Mods.Common.Traits
 				var oldValue = movementTypes;
 				movementTypes = value;
 				if (value != oldValue)
+				{
+					self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
 					foreach (var n in notifyMoving)
 						n.MovementTypeChanged(self, value);
+				}
 			}
 		}
 		#endregion
