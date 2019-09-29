@@ -20,7 +20,7 @@ namespace OpenRA
 		public readonly Hotkey Default = Hotkey.Invalid;
 		public readonly string Description = "";
 		public readonly HashSet<string> Types = new HashSet<string>();
-		public bool HasDuplicates = false;
+		public bool HasDuplicates { get; internal set; }
 
 		public HotkeyDefinition(string name, MiniYaml node)
 		{
