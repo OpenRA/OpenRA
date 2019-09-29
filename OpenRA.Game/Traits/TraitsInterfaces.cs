@@ -260,6 +260,7 @@ namespace OpenRA.Traits
 		WDist LargestActorRadius { get; }
 		WDist LargestBlockingActorRadius { get; }
 
+		void UpdateOccupiedCells(IOccupySpace ios);
 		event Action<CPos> CellUpdated;
 	}
 
