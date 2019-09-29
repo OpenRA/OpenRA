@@ -38,6 +38,9 @@ namespace OpenRA
 				if (definitions.ContainsKey(kv.Key))
 					keys[kv.Key] = kv.Value;
 			}
+
+			foreach (var hd in definitions)
+				hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value.Name, this[hd.Value.Name].GetValue(), hd.Value) != null;
 		}
 
 		internal Func<Hotkey> GetHotkeyReference(string name)
@@ -65,6 +68,20 @@ namespace OpenRA
 				settings[name] = value;
 			else
 				settings.Remove(name);
+
+			var hadDuplicates = definition.HasDuplicates;
+			definition.HasDuplicates = GetFirstDuplicate(definition.Name, this[definition.Name].GetValue(), definition) != null;
+
+			if (hadDuplicates || definition.HasDuplicates)
+			{
+				foreach (var hd in definitions)
+				{
+					if (hd.Value == definition)
+						continue;
+
+					hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value.Name, this[hd.Value.Name].GetValue(), hd.Value) != null;
+				}
+			}
 		}
 
 		public HotkeyDefinition GetFirstDuplicate(string name, Hotkey value, HotkeyDefinition definition)
