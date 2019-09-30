@@ -60,6 +60,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 			set
 			{
+				if (value == null)
+					throw new LuaException("Attempted to change the owner of actor '{0}' to nil value.".F(Self));
+
 				if (Self.Owner != value)
 					Self.ChangeOwner(value);
 			}
