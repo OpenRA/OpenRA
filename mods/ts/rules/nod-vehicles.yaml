@@ -104,6 +104,7 @@ TTNK:
 	Mobile:
 		TurnSpeed: 5
 		Speed: 85
+		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
 	Health:
 		HP: 35000
@@ -232,6 +233,7 @@ ART2:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 2
+		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel

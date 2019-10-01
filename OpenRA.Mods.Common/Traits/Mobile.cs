@@ -53,6 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which this actor cannot be nudged by other actors.")]
+		public readonly BooleanExpression ImmovableCondition = null;
+
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
@@ -180,7 +184,9 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyMoving[] notifyMoving;
 		INotifyFinishedMoving[] notifyFinishedMoving;
 		IWrapMove[] moveWrappers;
-		public bool RequireForceMove;
+		bool requireForceMove;
+
+		public bool IsImmovable { get; private set; }
 		public bool TurnToMove;
 		public bool IsBlocking { get; private set; }
 
@@ -332,7 +338,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Nudge(Actor nudger)
 		{
-			if (IsTraitDisabled || IsTraitPaused || RequireForceMove)
+			if (IsTraitDisabled || IsTraitPaused || IsImmovable)
 				return;
 
 			var cell = GetAdjacentCell(nudger.Location);
@@ -375,7 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var mobile = otherActor.TraitOrDefault<Mobile>();
-			if (mobile == null || mobile.IsTraitDisabled || mobile.IsTraitPaused || mobile.RequireForceMove)
+			if (mobile == null || mobile.IsTraitDisabled || mobile.IsTraitPaused || mobile.IsImmovable)
 				return false;
 
 			return true;
@@ -857,11 +863,22 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.RequireForceMoveCondition != null)
 				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
+
+			if (Info.ImmovableCondition != null)
+				yield return new VariableObserver(ImmovableConditionChanged, Info.ImmovableCondition.Variables);
 		}
 
 		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
-			RequireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
+		}
+
+		void ImmovableConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			var wasImmovable = IsImmovable;
+			IsImmovable = Info.ImmovableCondition.Evaluate(conditions);
+			if (wasImmovable != IsImmovable)
+				self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -957,7 +974,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
-				if (rejectMove || target.Type != TargetType.Terrain || (mobile.RequireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
+				if (rejectMove || target.Type != TargetType.Terrain || (mobile.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
