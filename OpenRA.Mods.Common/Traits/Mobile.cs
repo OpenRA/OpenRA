@@ -109,6 +109,9 @@ namespace OpenRA.Mods.Common.Traits
 				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
 				   .SingleOrDefault(l => l.Info.Name == Locomotor);
 
+			if (cell.Layer == CustomMovementLayerType.Tunnel)
+				return false;
+
 			return locomotor.CanStayInCell(cell);
 		}
 

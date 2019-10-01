@@ -158,9 +158,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile.TurnToMove = false;
 
-			// If the actor is inside a tunnel then we must let them move
-			// all the way through before moving to the next activity
-			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel && mobile.CanStayInCell(mobile.ToCell))
+			if (IsCanceling && mobile.CanStayInCell(mobile.ToCell))
 			{
 				if (path != null)
 					path.Clear();
