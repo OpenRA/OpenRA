@@ -332,6 +332,7 @@ JUGG:
 	Mobile:
 		Speed: 71
 		TurnSpeed: 5
+		ImmovableCondition: !undeployed
 		RequireForceMoveCondition: !undeployed
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
