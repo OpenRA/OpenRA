@@ -334,7 +334,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.Owner.Stances[otherActor.Owner] == Stance.Ally)
 			{
 				var mobile = otherActor.TraitOrDefault<Mobile>();
-				if (mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.RequireForceMove)
+				if (mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable)
 					return false;
 			}
 
@@ -487,7 +487,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var crushables = actor.TraitsImplementing<ICrushable>();
 					var mobile = actor.OccupiesSpace as Mobile;
-					var isMovable = mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.RequireForceMove;
+					var isMovable = mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable;
 					var isMoving = isMovable && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
 
 					if (crushables.Any())
