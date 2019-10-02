@@ -10,8 +10,8 @@
 #endregion
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 				.FirstOrDefault(t => t.Info.Condition == condition && t.CanGrantCondition(Self, this));
 
 			if (external == null)
-				throw new InvalidDataException("Condition `{0}` has not been listed on an enabled ExternalCondition trait".F(condition));
+				throw new LuaException("Condition `{0}` has not been listed on an enabled ExternalCondition trait".F(condition));
 
 			return external.GrantCondition(Self, this, duration);
 		}
