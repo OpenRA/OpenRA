@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
@@ -103,6 +104,7 @@ namespace OpenRA.Mods.Common.Scripting
 		readonly IFacing facing;
 		readonly AutoTarget autotarget;
 		readonly ScriptTags scriptTags;
+		readonly Tooltip[] tooltips;
 
 		public GeneralProperties(ScriptContext context, Actor self)
 			: base(context, self)
@@ -110,6 +112,7 @@ namespace OpenRA.Mods.Common.Scripting
 			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();
 			scriptTags = self.TraitOrDefault<ScriptTags>();
+			tooltips = self.TraitsImplementing<Tooltip>().ToArray();
 		}
 
 		[Desc("The actor position in cell coordinates.")]
@@ -186,6 +189,19 @@ namespace OpenRA.Mods.Common.Scripting
 
 				autotarget.PredictedStance = stance;
 				autotarget.SetStance(Self, stance);
+			}
+		}
+
+		[Desc("The actor's tooltip name. Returns nil if the actor has no tooltip.")]
+		public string TooltipName
+		{
+			get
+			{
+				var tooltip = tooltips.FirstEnabledTraitOrDefault();
+				if (tooltip == null)
+					return null;
+
+				return tooltip.Info.Name;
 			}
 		}
 
