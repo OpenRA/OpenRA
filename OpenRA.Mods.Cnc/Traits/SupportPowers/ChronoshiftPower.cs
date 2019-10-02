@@ -313,8 +313,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			bool IsValidTarget(CPos xy)
 			{
+				// Don't teleport if there are no units in range (either all moved out of range, or none yet moved into range)
+				var unitsInRange = power.UnitsInRange(sourceLocation);
+				if (!unitsInRange.Any())
+					return false;
+
 				var canTeleport = false;
-				foreach (var unit in power.UnitsInRange(sourceLocation))
+				foreach (var unit in unitsInRange)
 				{
 					var targetCell = unit.Location + (xy - sourceLocation);
 					if (manager.Self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell))
