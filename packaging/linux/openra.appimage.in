@@ -5,7 +5,7 @@ cd "${HERE}/../lib/openra" || exit 1
 
 # APPIMAGE is an environment variable set by the runtime
 # defining the absolute path to the .AppImage file
-if [ ! -z "${APPIMAGE}" ]; then
+if [ -n "${APPIMAGE}" ]; then
   LAUNCHER=${APPIMAGE}
 
   # appimaged doesn't update the mime or icon caches when registering AppImages.
