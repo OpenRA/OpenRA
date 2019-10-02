@@ -91,6 +91,7 @@ HARV:
 	Buildable:
 		Prerequisites: ~disabled
 	Harvester:
+		SearchFromProcRadius: 24
 		SearchFromHarvesterRadius: 24
 
 FTNK:
