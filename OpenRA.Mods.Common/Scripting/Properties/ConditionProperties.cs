@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Grant an external condition on this actor and return the revocation token.",
 			"Conditions must be defined on an ExternalConditions trait on the actor.",
-			"If duration > 0 the condition will be automatically revoked after the defined number of ticks")]
+			"If duration > 0 the condition will be automatically revoked after the defined number of ticks.")]
 		public int GrantCondition(string condition, int duration = 0)
 		{
 			var external = externalConditions
