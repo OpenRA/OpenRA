@@ -140,6 +140,8 @@ build_appimage() {
 
 	install -m 0755 gtk-dialog.py "${APPDIR}/usr/bin/gtk-dialog.py"
 
+	install -m 0755 restore-environment.sh "${APPDIR}/usr/bin/restore-environment.sh"
+
 	# travis-ci doesn't support mounting FUSE filesystems so extract and run the contents manually
 	./appimagetool-x86_64.AppImage --appimage-extract
 	
