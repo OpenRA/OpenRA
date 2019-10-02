@@ -78,10 +78,6 @@ E5:
 E6:
 	-RepairsBridges:
 
-HARV:
-	Harvester:
-		SearchFromHarvesterRadius: 30
-
 MTNK:
 	Buildable:
 		Prerequisites: ~weap

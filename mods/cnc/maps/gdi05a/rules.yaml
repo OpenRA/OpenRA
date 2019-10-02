@@ -72,8 +72,6 @@ RMBO:
 		Prerequisites: ~disabled
 
 HARV:
-	Harvester:
-		SearchFromHarvesterRadius: 24
 	Buildable:
 		Prerequisites: ~disabled
 
