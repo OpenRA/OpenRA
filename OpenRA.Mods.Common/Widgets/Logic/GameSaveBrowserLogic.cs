@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			if (Directory.Exists(baseSavePath))
-				LoadGames(gameTemplate, newTemplate);
+				LoadGames(gameTemplate, newTemplate, world);
 
 			var renameButton = panel.Get<ButtonWidget>("RENAME_BUTTON");
 			renameButton.IsDisabled = () => selectedSave == null;
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SelectFirstVisible();
 		}
 
-		void LoadGames(ScrollItemWidget gameTemplate, ScrollItemWidget newTemplate)
+		void LoadGames(ScrollItemWidget gameTemplate, ScrollItemWidget newTemplate, World world)
 		{
 			gameList.RemoveChildren();
 			if (isSavePanel)
@@ -198,7 +198,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.IsVisible = () => true;
 				item.IsSelected = () => selectedSave == item.ItemKey;
 				item.OnClick = () => Select(item.ItemKey);
-				item.OnDoubleClick = Load;
+
+				if (isSavePanel)
+					item.OnDoubleClick = () => Save(world);
+				else
+					item.OnDoubleClick = Load;
 
 				var title = Path.GetFileNameWithoutExtension(savePath);
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
