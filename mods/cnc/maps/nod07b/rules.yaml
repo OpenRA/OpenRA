@@ -63,6 +63,7 @@ E5:
 
 HARV:
 	Harvester:
+		SearchFromProcRadius: 45
 		SearchFromHarvesterRadius: 45
 
 MTNK:
