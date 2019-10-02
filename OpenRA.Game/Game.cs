@@ -41,6 +41,7 @@ namespace OpenRA
 		public static ICursor Cursor;
 		public static bool HideCursor;
 		static WorldRenderer worldRenderer;
+		static string modLaunchWrapper;
 
 		internal static OrderManager OrderManager;
 		static Server.Server server;
@@ -351,6 +352,8 @@ namespace OpenRA
 			foreach (var mod in Mods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
 
+			modLaunchWrapper = args.GetValue("Engine.LaunchWrapper", null);
+
 			ExternalMods = new ExternalMods();
 
 			Manifest currentMod;
@@ -509,8 +512,15 @@ namespace OpenRA
 		{
 			try
 			{
+				var path = mod.LaunchPath;
 				var args = launchArguments != null ? mod.LaunchArgs.Append(launchArguments) : mod.LaunchArgs;
-				var p = Process.Start(mod.LaunchPath, args.Select(a => "\"" + a + "\"").JoinWith(" "));
+				if (modLaunchWrapper != null)
+				{
+					path = modLaunchWrapper;
+					args = new[] { mod.LaunchPath }.Concat(args);
+				}
+
+				var p = Process.Start(path, args.Select(a => "\"" + a + "\"").JoinWith(" "));
 				if (p == null || p.HasExited)
 					onFailed();
 				else
