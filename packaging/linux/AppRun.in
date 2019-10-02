@@ -2,11 +2,21 @@
 
 HERE="$(dirname "$(readlink -f "${0}")")"
 
-# Override runtime paths
+# Stash original environment values so they can be restored
+# when switching to other mods using restore-environment
+export OPENRA_ORIG_PATH="${PATH}"
+export OPENRA_ORIG_XDG_DATA_DIRS="${XDG_DATA_DIRS}"
+export OPENRA_ORIG_DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}"
+export OPENRA_ORIG_LD_LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export OPENRA_ORIG_MONO_PATH="${MONO_PATH}"
+export OPENRA_ORIG_MONO_CFG_DIR="${MONO_CFG_DIR}"
+export OPENRA_ORIG_MONO_CONFIG="${MONO_CONFIG}"
+
+# Override runtime paths to use bundled mono and shared libraries
 export PATH="${HERE}/usr/bin:${PATH}"
 export XDG_DATA_DIRS="${HERE}/usr/share:${XDG_DATA_DIRS}"
-export DYLD_LIBRARY_PATH="${HERE}/usr/lib:$DYLD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="${HERE}/usr/lib:$LD_LIBRARY_PATH"
+export DYLD_LIBRARY_PATH="${HERE}/usr/lib:${DYLD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
 export MONO_PATH="${HERE}/usr/lib/mono/4.5"
 export MONO_CFG_DIR="${HERE}/etc"
 export MONO_CONFIG="${HERE}/etc/mono/config"
