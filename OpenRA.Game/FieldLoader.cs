@@ -87,6 +87,7 @@ namespace OpenRA
 				{ typeof(WAngle), ParseWAngle },
 				{ typeof(WRot), ParseWRot },
 				{ typeof(CPos), ParseCPos },
+				{ typeof(CPos[]), ParseCPosArray },
 				{ typeof(CVec), ParseCVec },
 				{ typeof(CVec[]), ParseCVecArray },
 				{ typeof(BooleanExpression), ParseBooleanExpression },
@@ -278,6 +279,29 @@ namespace OpenRA
 						Exts.ParseInt32Invariant(parts[1]),
 						Exts.ParseByteInvariant(parts[2]));
 				return new CPos(Exts.ParseInt32Invariant(parts[0]), Exts.ParseInt32Invariant(parts[1]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseCPosArray(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma);
+
+				if (parts.Length % 2 != 0)
+					return InvalidValueAction(value, fieldType, fieldName);
+
+				var vecs = new CPos[parts.Length / 2];
+				for (var i = 0; i < vecs.Length; i++)
+				{
+					if (int.TryParse(parts[2 * i], out var rx)
+							&& int.TryParse(parts[2 * i + 1], out var ry))
+						vecs[i] = new CPos(rx, ry);
+				}
+
+				return vecs;
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
