@@ -222,6 +222,7 @@ end
 
 StopHunt = function(unit)
 	if not unit.IsDead then
+		unit.Stop()
 		Trigger.Clear(unit, "OnIdle")
 	end
 end
