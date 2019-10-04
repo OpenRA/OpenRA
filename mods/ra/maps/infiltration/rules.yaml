@@ -104,6 +104,11 @@ TRUK.Hijackable:
 	Voiced:
 		VoiceSet: SpyVoice
 
+HARV:
+	Harvester:
+		SearchFromProcRadius: 25
+		SearchFromHarvesterRadius: 25
+
 E7:
 	Buildable:
 		Prerequisites: ~disabled
