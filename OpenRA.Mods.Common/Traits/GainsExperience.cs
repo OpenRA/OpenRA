@@ -96,6 +96,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void GiveLevels(int numLevels, bool silent = false)
 		{
+			if (MaxLevel == 0)
+				return;
+
 			var newLevel = Math.Min(Level + numLevels, MaxLevel);
 			GiveExperience(nextLevel[newLevel - 1].First - experience, silent);
 		}
@@ -104,6 +107,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (amount < 0)
 				throw new ArgumentException("Revoking experience is not implemented.", "amount");
+
+			if (MaxLevel == 0)
+				return;
 
 			experience = (experience + amount).Clamp(0, nextLevel[MaxLevel - 1].First);
 
