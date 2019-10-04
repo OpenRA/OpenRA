@@ -357,8 +357,14 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				new MiniYamlNode("Squads", "", Squads.Select(s => new MiniYamlNode("Squad", s.Serialize())).ToList()),
 				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new MiniYamlNode("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase.Select(a => a.ActorID).ToArray())),
-				new MiniYamlNode("ActiveUnits", FieldSaver.FormatValue(activeUnits.Select(a => a.ActorID).ToArray())),
+				new MiniYamlNode("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
+					.Where(a => !unitCannotBeOrdered(a))
+					.Select(a => a.ActorID)
+					.ToArray())),
+				new MiniYamlNode("ActiveUnits", FieldSaver.FormatValue(activeUnits
+					.Where(a => !unitCannotBeOrdered(a))
+					.Select(a => a.ActorID)
+					.ToArray())),
 				new MiniYamlNode("RushTicks", FieldSaver.FormatValue(rushTicks)),
 				new MiniYamlNode("AssignRolesTicks", FieldSaver.FormatValue(assignRolesTicks)),
 				new MiniYamlNode("AttackForceTicks", FieldSaver.FormatValue(attackForceTicks)),
@@ -380,7 +386,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				unitsHangingAroundTheBase.Clear();
 				unitsHangingAroundTheBase.AddRange(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value.Value)
-					.Select(a => self.World.GetActorById(a)));
+					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
 			}
 
 			var activeUnitsNode = data.FirstOrDefault(n => n.Key == "ActiveUnits");
@@ -388,7 +394,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				activeUnits.Clear();
 				activeUnits.AddRange(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value.Value)
-					.Select(a => self.World.GetActorById(a)));
+					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
 			}
 
 			var rushTicksNode = data.FirstOrDefault(n => n.Key == "RushTicks");

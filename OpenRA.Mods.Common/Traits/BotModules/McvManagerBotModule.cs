@@ -229,7 +229,10 @@ namespace OpenRA.Mods.Common.Traits
 			return new List<MiniYamlNode>()
 			{
 				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new MiniYamlNode("ActiveMCVs", FieldSaver.FormatValue(activeMCVs.Select(a => a.ActorID).ToArray()))
+				new MiniYamlNode("ActiveMCVs", FieldSaver.FormatValue(activeMCVs
+					.Where(a => !unitCannotBeOrdered(a))
+					.Select(a => a.ActorID)
+					.ToArray()))
 			};
 		}
 
@@ -247,7 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				activeMCVs.Clear();
 				activeMCVs.AddRange(FieldLoader.GetValue<uint[]>("ActiveMCVs", activeMCVsNode.Value.Value)
-					.Select(a => world.GetActorById(a)));
+					.Select(a => world.GetActorById(a)).Where(a => a != null));
 			}
 		}
 	}
