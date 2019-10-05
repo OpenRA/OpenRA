@@ -70,7 +70,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			self.World.Add(new RallyPointIndicator(self, this, self.Info.TraitInfos<ExitInfo>().ToArray()));
+			// Display only the first level of priority
+			var priorityExits = self.Info.TraitInfos<ExitInfo>()
+				.GroupBy(e => e.Priority)
+				.FirstOrDefault();
+
+			var exits = priorityExits != null ? priorityExits.ToArray() : new ExitInfo[0];
+			self.World.Add(new RallyPointIndicator(self, this, exits));
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
