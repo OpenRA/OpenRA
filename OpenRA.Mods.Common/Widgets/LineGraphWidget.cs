@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var xStep = width / xAxisSize;
 			var yStep = height / yAxisSize;
 
-			var pointCount = series.First().Points.Count();
+			var pointCount = series.Max(s => s.Points.Count());
 			var pointStart = Math.Max(0, pointCount - xAxisSize);
 			var pointEnd = Math.Max(pointCount, xAxisSize);
 
