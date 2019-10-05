@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (underCursor != null && underCursor != SelectedActor)
 					editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
 
-				if (mapResources.Contains(cell) && mapResources[cell].Type != 0)
+				if (type != null && mapResources.Contains(cell) && mapResources[cell].Type != 0)
 					editorActionManager.Add(new RemoveResourceAction(mapResources, cell, type));
 			}
 
