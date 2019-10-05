@@ -89,14 +89,21 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (GetSeries == null || !GetSeries().Any()
-				|| GetLabelFont == null || GetLabelFont() == null)
+			if (GetSeries == null || GetLabelFont == null)
+				return;
+
+			var series = GetSeries();
+			if (!series.Any())
+				return;
+
+			var font = GetLabelFont();
+			if (font == null)
 				return;
 
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var rect = RenderBounds;
 
-			var labelFont = Game.Renderer.Fonts[GetLabelFont()];
+			var labelFont = Game.Renderer.Fonts[font];
 			var axisFont = Game.Renderer.Fonts[GetAxisFont()];
 
 			var xAxisSize = GetXAxisSize();
@@ -110,8 +117,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var graphBottomOffset = Padding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight;
 			var height = rect.Height - (graphBottomOffset + Padding);
 
-			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Concat(new[] { 0f }).Max();
-			var longestName = GetSeries().Select(s => s.Key).OrderByDescending(s => s.Length).FirstOrDefault() ?? "";
+			var maxValue = series.Select(p => p.Points).SelectMany(d => d).Concat(new[] { 0f }).Max();
+			var longestName = series.Select(s => s.Key).OrderByDescending(s => s.Length).FirstOrDefault() ?? "";
 
 			var scale = 200 / Math.Max(5000, (float)Math.Ceiling(maxValue / 1000) * 1000);
 
@@ -127,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var xStep = width / xAxisSize;
 			var yStep = height / yAxisSize;
 
-			var pointCount = GetSeries().First().Points.Count();
+			var pointCount = series.First().Points.Count();
 			var pointStart = Math.Max(0, pointCount - xAxisSize);
 			var pointEnd = Math.Max(pointCount, xAxisSize);
 
@@ -136,11 +143,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var origin = new float2(rect.Left, rect.Bottom);
 
 			var keyOffset = 0;
-			foreach (var series in GetSeries())
+			foreach (var s in series)
 			{
-				var key = series.Key;
-				var color = series.Color;
-				var points = series.Points;
+				var key = s.Key;
+				var color = s.Color;
+				var points = s.Points;
 				if (points.Any())
 				{
 					points = points.Reverse().Take(xAxisSize).Reverse();
