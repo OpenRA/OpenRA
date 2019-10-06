@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
-		readonly int moveIntoWorldDelay;
+		readonly int? moveIntoWorldDelay;
 
 		#region IMove CurrentMovementTypes
 		MovementType movementTypes;
@@ -242,7 +242,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (init.Contains<CenterPositionInit>())
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 
-			moveIntoWorldDelay = init.Contains<MoveIntoWorldDelayInit>() ? init.Get<MoveIntoWorldDelayInit, int>() : 0;
+			if (!init.Contains<SkipMoveIntoWorldInit>())
+				moveIntoWorldDelay = init.Contains<MoveIntoWorldDelayInit>() ? init.Get<MoveIntoWorldDelayInit, int>() : 0;
 		}
 
 		protected override void Created(Actor self)
@@ -892,7 +893,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			return MoveIntoWorld(self, moveIntoWorldDelay);
+			return moveIntoWorldDelay.HasValue ? MoveIntoWorld(self, moveIntoWorldDelay.Value) : null;
 		}
 
 		class MoveOrderTargeter : IOrderTargeter

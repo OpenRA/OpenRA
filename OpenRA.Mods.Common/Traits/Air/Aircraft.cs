@@ -251,6 +251,9 @@ namespace OpenRA.Mods.Common.Traits
 				SetPosition(self, init.Get<CenterPositionInit, WPos>());
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : Info.InitialFacing;
+
+			// SkipMoveIntoWorldInit is deliberately ignored for Aircraft
+			// MoveIntoWorld must run for aircraft for map-placed actors to be associated with their airfields
 			moveIntoWorldDelay = init.Contains<MoveIntoWorldDelayInit>() ? init.Get<MoveIntoWorldDelayInit, int>() : 0;
 		}
 
