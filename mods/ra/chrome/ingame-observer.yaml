@@ -202,7 +202,7 @@ Container@OBSERVER_WIDGETS:
 				StatsDropDownPanelTemplate: SPECTATOR_LABEL_DROPDOWN_TEMPLATE
 			X: 5
 			Y: 5
-			Width: 765
+			Width: 760
 			Height: 240
 			Children:
 				DropDownButton@STATS_DROPDOWN:

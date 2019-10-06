@@ -172,7 +172,7 @@ Container@OBSERVER_WIDGETS:
 				StatisticsArmyGraphKey: StatisticsArmyGraph
 			X: 5
 			Y: 5
-			Width: 765
+			Width: 760
 			Height: 240
 			Children:
 				DropDownButton@STATS_DROPDOWN:
