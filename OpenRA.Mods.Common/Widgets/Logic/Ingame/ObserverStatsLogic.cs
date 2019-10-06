@@ -488,9 +488,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			headerTemplate.Get<GradientColorBlockWidget>("HEADER_GRADIENT").Bounds.X += offset;
 
 			foreach (var headerLabel in headerTemplate.Children.OfType<LabelWidget>())
-			{
 				headerLabel.Bounds.X += offset;
-			}
 		}
 
 		static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
@@ -526,8 +524,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static Color GetPowerColor(PowerState state)
 		{
-			if (state == PowerState.Critical) return Color.Red;
-			if (state == PowerState.Low) return Color.Orange;
+			if (state == PowerState.Critical)
+				return Color.Red;
+
+			if (state == PowerState.Low)
+				return Color.Orange;
+
 			return Color.LimeGreen;
 		}
 
