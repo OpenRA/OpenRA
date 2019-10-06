@@ -233,7 +233,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					tt.IgnoreMouseOver = true;
 
 					var teamLabel = tt.Get<LabelWidget>("TEAM");
-					teamLabel.GetText = () => team.Key == 0 ? "No Team" : "Team " + team.Key;
+					var teamText = team.Key == 0 ? "No Team" : "Team " + team.Key;
+					teamLabel.GetText = () => teamText;
 					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(tt.Get<LabelWidget>("TEAM").GetText()).X;
 
 					var colorBlockWidget = tt.Get<ColorBlockWidget>("TEAM_COLOR");
@@ -273,14 +274,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupPlayerColor(player, template, playerColor, playerGradient);
 
 			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
-			if (stats == null) return template;
-			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => "$" + stats.KillsCost;
-			template.Get<LabelWidget>("ASSETS_LOST").GetText = () => "$" + stats.DeathsCost;
-			template.Get<LabelWidget>("UNITS_KILLED").GetText = () => stats.UnitsKilled.ToString();
-			template.Get<LabelWidget>("UNITS_DEAD").GetText = () => stats.UnitsDead.ToString();
-			template.Get<LabelWidget>("BUILDINGS_KILLED").GetText = () => stats.BuildingsKilled.ToString();
-			template.Get<LabelWidget>("BUILDINGS_DEAD").GetText = () => stats.BuildingsDead.ToString();
-			template.Get<LabelWidget>("ARMY_VALUE").GetText = () => "$" + stats.ArmyValue.ToString();
+			if (stats == null)
+				return template;
+
+			var destroyedText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => destroyedText.Update(stats.KillsCost);
+
+			var lostText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("ASSETS_LOST").GetText = () => lostText.Update(stats.DeathsCost);
+
+			var unitsKilledText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("UNITS_KILLED").GetText = () => unitsKilledText.Update(stats.UnitsKilled);
+
+			var unitsDeadText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("UNITS_DEAD").GetText = () => unitsDeadText.Update(stats.UnitsDead);
+
+			var buildingsKilledText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("BUILDINGS_KILLED").GetText = () => buildingsKilledText.Update(stats.BuildingsKilled);
+
+			var buildingsDeadText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("BUILDINGS_DEAD").GetText = () => buildingsDeadText.Update(stats.BuildingsDead);
+
+			var armyText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("ARMY_VALUE").GetText = () => armyText.Update(stats.ArmyValue);
 
 			return template;
 		}
@@ -347,15 +363,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (stats == null)
 				return template;
 
-			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
-			template.Get<LabelWidget>("INCOME").GetText = () => "$" + stats.DisplayIncome;
-			template.Get<LabelWidget>("EARNED").GetText = () => "$" + res.Earned;
-			template.Get<LabelWidget>("SPENT").GetText = () => "$" + res.Spent;
+			var cashText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("CASH").GetText = () => cashText.Update(res.Cash + res.Resources);
 
+			var incomeText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("INCOME").GetText = () => incomeText.Update(stats.DisplayIncome);
+
+			var earnedText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("EARNED").GetText = () => earnedText.Update(res.Earned);
+
+			var spentText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("SPENT").GetText = () => spentText.Update(res.Spent);
+
+			var assetsText = new CachedTransform<int, string>(i => "$" + i);
 			var assets = template.Get<LabelWidget>("ASSETS");
-			assets.GetText = () => "$" + world.ActorsHavingTrait<Valued>()
+			assets.GetText = () => assetsText.Update(world.ActorsHavingTrait<Valued>()
 				.Where(a => a.Owner == player && !a.IsDead)
-				.Sum(a => a.Info.TraitInfos<ValuedInfo>().First().Cost);
+				.Sum(a => a.Info.TraitInfos<ValuedInfo>().First().Cost));
 
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
 			harvesters.GetText = () => world.ActorsHavingTrait<Harvester>().Count(a => a.Owner == player && !a.IsDead).ToString();
@@ -383,13 +407,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupPlayerColor(player, template, playerColor, playerGradient);
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
+			var cashText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("CASH").GetText = () => cashText.Update(res.Cash + res.Resources);
 
 			var powerRes = player.PlayerActor.TraitOrDefault<PowerManager>();
 			if (powerRes != null)
 			{
 				var power = template.Get<LabelWidget>("POWER");
-				power.GetText = () => powerRes.PowerDrained + "/" + powerRes.PowerProvided;
+				var powerText = new CachedTransform<Pair<int, int>, string>(p => p.First + "/" + p.Second);
+				power.GetText = () => powerText.Update(new Pair<int, int>(powerRes.PowerDrained, powerRes.PowerProvided));
 				power.GetColor = () => GetPowerColor(powerRes.PowerState);
 			}
 
@@ -397,12 +423,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (stats == null)
 				return template;
 
-			template.Get<LabelWidget>("KILLS").GetText = () => (stats.UnitsKilled + stats.BuildingsKilled).ToString();
-			template.Get<LabelWidget>("DEATHS").GetText = () => (stats.UnitsDead + stats.BuildingsDead).ToString();
-			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => "$" + stats.KillsCost;
-			template.Get<LabelWidget>("ASSETS_LOST").GetText = () => "$" + stats.DeathsCost;
-			template.Get<LabelWidget>("EXPERIENCE").GetText = () => stats.Experience.ToString();
-			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => AverageOrdersPerMinute(stats.OrderCount);
+			var killsText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("KILLS").GetText = () => killsText.Update(stats.UnitsKilled + stats.BuildingsKilled);
+
+			var deathsText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("DEATHS").GetText = () => deathsText.Update(stats.UnitsDead + stats.BuildingsDead);
+
+			var destroyedText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("ASSETS_DESTROYED").GetText = () => destroyedText.Update(stats.KillsCost);
+
+			var lostText = new CachedTransform<int, string>(i => "$" + i);
+			template.Get<LabelWidget>("ASSETS_LOST").GetText = () => lostText.Update(stats.DeathsCost);
+
+			var experienceText = new CachedTransform<int, string>(i => i.ToString());
+			template.Get<LabelWidget>("EXPERIENCE").GetText = () => experienceText.Update(stats.Experience);
+
+			var actionsText = new CachedTransform<double, string>(d => AverageOrdersPerMinute(d));
+			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => actionsText.Update(stats.OrderCount);
 
 			return template;
 		}
