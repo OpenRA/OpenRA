@@ -13,6 +13,7 @@
 		UseExtendedIndex: true
 		ShroudPalette: shroud
 		FogPalette: shroud
+	LocomotorCache:
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate

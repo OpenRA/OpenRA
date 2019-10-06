@@ -15,6 +15,7 @@
 		FogVariants: typea, typeb, typec, typed
 		OverrideFullShroud: full
 		OverrideFullFog: full
+	LocomotorCache:
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate

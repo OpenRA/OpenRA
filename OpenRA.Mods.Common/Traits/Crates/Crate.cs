@@ -109,6 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyParachute.OnParachute(Actor self) { }
 		void INotifyParachute.OnLanded(Actor self)
 		{
+			self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
+
 			// Check whether the crate landed on anything
 			var landedOn = self.World.ActorMap.GetActorsAt(self.Location)
 				.Where(a => a != self);

@@ -9,6 +9,7 @@
 		DefeatMusic: map
 	TerrainGeometryOverlay:
 	DebugVisualizations:
+	LocomotorCache:
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: mine, crate

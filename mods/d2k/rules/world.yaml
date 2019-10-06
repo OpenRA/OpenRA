@@ -17,6 +17,7 @@
 		OverrideFullShroud: shroudfull
 		OverrideFullFog: fogfull
 		ShroudBlend: Multiply
+	LocomotorCache:
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate, spicebloom
