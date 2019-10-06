@@ -62,12 +62,17 @@ namespace OpenRA.Mods.Common.Traits
 		int ticks;
 		int replayTimestep;
 
+		bool armyGraphDisabled;
+		bool incomeGraphDisabled;
+
 		public PlayerStatistics(Actor self) { }
 
 		void INotifyCreated.Created(Actor self)
 		{
 			resources = self.TraitOrDefault<PlayerResources>();
 			experience = self.TraitOrDefault<PlayerExperience>();
+
+			incomeGraphDisabled = resources == null;
 		}
 
 		void ITick.Tick(Actor self)
@@ -79,11 +84,15 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				ticks = 0;
 
-				if (ArmyValue != 0 || self.Owner.WinState == WinState.Undefined)
+				if (!armyGraphDisabled && (ArmyValue != 0 || self.Owner.WinState == WinState.Undefined))
 					ArmySamples.Add(ArmyValue);
+				else
+					armyGraphDisabled = true;
 
-				if (resources != null && (Income != 0 || self.Owner.WinState == WinState.Undefined))
+				if (!incomeGraphDisabled && (Income != 0 || self.Owner.WinState == WinState.Undefined))
 					IncomeSamples.Add(Income);
+				else
+					incomeGraphDisabled = true;
 			}
 
 			if (resources == null)
@@ -134,8 +143,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (w.IsReplay)
 				replayTimestep = w.WorldActor.Trait<MapOptions>().GameSpeed.Timestep;
 
-			ArmySamples.Add(ArmyValue);
-			IncomeSamples.Add(Income);
+			if (!armyGraphDisabled)
+				ArmySamples.Add(ArmyValue);
+
+			if (!incomeGraphDisabled)
+				IncomeSamples.Add(Income);
 		}
 	}
 
