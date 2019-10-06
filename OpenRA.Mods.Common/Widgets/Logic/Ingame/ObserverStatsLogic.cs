@@ -383,7 +383,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.Cash + res.Resources);
-			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
 
 			var powerRes = player.PlayerActor.TraitOrDefault<PowerManager>();
 			if (powerRes != null)
