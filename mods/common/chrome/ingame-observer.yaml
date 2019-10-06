@@ -438,7 +438,7 @@ Container@OBSERVER_WIDGETS:
 						Container@COMBAT_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 770
+							Width: 735
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -466,32 +466,32 @@ Container@OBSERVER_WIDGETS:
 								Label@ASSETS_DESTROYED_HEADER:
 									X: 155
 									Y: 0
-									Width: 80
+									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Destroyed
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST_HEADER:
-									X: 235
+									X: 230
 									Y: 0
-									Width: 80
+									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Lost
 									Align: Right
 									Shadow: True
 								Label@UNITS_KILLED_HEADER:
-									X: 315
+									X: 305
 									Y: 0
-									Width: 100
+									Width: 90
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Units Killed
 									Align: Right
 									Shadow: True
 								Label@UNITS_DEAD_HEADER:
-									X: 415
+									X: 395
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
@@ -500,16 +500,16 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_KILLED_HEADER:
-									X: 495
+									X: 475
 									Y: 0
-									Width: 90
+									Width: 85
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Bldg Killed
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_DEAD_HEADER:
-									X: 585
+									X: 560
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
@@ -518,9 +518,9 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@ARMY_VALUE_HEADER:
-									X: 665
+									X: 640
 									Y: 0
-									Width: 100
+									Width: 90
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Army Value
@@ -792,7 +792,7 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 770
+							Width: 735
 							Height: 25
 							BaseName: scrollitem-nohover
 							Children:
@@ -821,49 +821,49 @@ Container@OBSERVER_WIDGETS:
 								Label@ASSETS_DESTROYED:
 									X: 155
 									Y: 0
-									Width: 80
+									Width: 75
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST:
-									X: 235
+									X: 230
 									Y: 0
-									Width: 80
+									Width: 75
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@UNITS_KILLED:
-									X: 315
+									X: 305
 									Y: 0
-									Width: 100
+									Width: 90
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@UNITS_DEAD:
-									X: 415
+									X: 395
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_KILLED:
-									X: 495
+									X: 475
 									Y: 0
-									Width: 90
+									Width: 85
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_DEAD:
-									X: 585
+									X: 560
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@ARMY_VALUE:
-									X: 665
+									X: 640
 									Y: 0
-									Width: 100
+									Width: 90
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
