@@ -192,7 +192,7 @@ Container@OBSERVER_WIDGETS:
 						Container@BASIC_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 765
+							Width: 705
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -226,17 +226,8 @@ Container@OBSERVER_WIDGETS:
 									Text: Cash
 									Align: Right
 									Shadow: True
-								Label@EARNED_MIN_HEADER:
-									X: 240
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
-									Font: Bold
-									Text: $/min
-									Align: Right
-									Shadow: True
 								Label@POWER_HEADER:
-									X: 300
+									X: 240
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
@@ -245,7 +236,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Center
 									Shadow: True
 								Label@KILLS_HEADER:
-									X: 380
+									X: 320
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
@@ -254,7 +245,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@DEATHS_HEADER:
-									X: 420
+									X: 360
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
@@ -263,7 +254,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@ASSETS_DESTROYED_HEADER:
-									X: 480
+									X: 420
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
@@ -272,7 +263,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST_HEADER:
-									X: 560
+									X: 500
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
@@ -281,7 +272,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@EXPERIENCE_HEADER:
-									X: 640
+									X: 580
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
@@ -290,7 +281,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@ACTIONS_MIN_HEADER:
-									X: 700
+									X: 640
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
@@ -575,7 +566,7 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@BASIC_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 765
+							Width: 705
 							Height: 24
 							BaseName: scrollitem-nohover
 							Children:
@@ -610,57 +601,50 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
-								Label@EARNED_MIN:
-									X: 240
-									Y: 0
-									Width: 60
-									Height: PARENT_BOTTOM
-									Align: Right
-									Shadow: True
 								Label@POWER:
-									X: 300
+									X: 240
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Center
 									Shadow: True
 								Label@KILLS:
-									X: 380
+									X: 320
 									Y: 0
 									Width: 40
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@DEATHS:
-									X: 420
+									X: 360
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@ASSETS_DESTROYED:
-									X: 480
+									X: 420
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST:
-									X: 560
+									X: 500
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@EXPERIENCE:
-									X: 640
+									X: 580
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@ACTIONS_MIN:
-									X: 700
+									X: 640
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
