@@ -90,6 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 					new LocationInit(sp + unitGroup.BaseActorOffset),
 					new OwnerInit(p),
 					new SkipMakeAnimsInit(),
+					new SkipMoveIntoWorldInit(),
 					new FacingInit(unitGroup.BaseActorFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.BaseActorFacing),
 				});
 			}
