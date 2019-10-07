@@ -201,6 +201,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
+		INotifyEnteredCell[] notifyEnteredCells;
+
 		public Locomotor Locomotor { get; private set; }
 
 		#region IOccupySpace
@@ -256,6 +258,8 @@ namespace OpenRA.Mods.Common.Traits
 			moveWrappers = self.TraitsImplementing<IWrapMove>().ToArray();
 			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
 				.Single(l => l.Info.Name == Info.Locomotor);
+
+			notifyEnteredCells = self.World.WorldActor.TraitsImplementing<INotifyEnteredCell>().ToArray();
 
 			base.Created(self);
 		}
@@ -493,6 +497,9 @@ namespace OpenRA.Mods.Common.Traits
 			// Only make actor crush if it is on the ground
 			if (!self.IsAtGroundLevel())
 				return;
+
+			foreach (var notifyEnteredCell in notifyEnteredCells)
+                notifyEnteredCell.EnteredCell(self, fromCell);
 
 			var actors = self.World.ActorMap.GetActorsAt(ToCell).Where(a => a != self).ToList();
 			if (!AnyCrushables(actors))

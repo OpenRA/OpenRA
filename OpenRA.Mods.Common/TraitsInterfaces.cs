@@ -76,6 +76,12 @@ namespace OpenRA.Mods.Common.Traits
 		void FinishedMoving(Actor self, byte oldLayer, byte newLayer);
 	}
 
+	[RequireExplicitImplementation]
+	public interface INotifyEnteredCell
+	{
+		void EnteredCell(Actor self, CPos cell);
+	}
+
 	public interface IDemolishableInfo : ITraitInfoInterface { bool IsValidTarget(ActorInfo actorInfo, Actor saboteur); }
 	public interface IDemolishable
 	{
