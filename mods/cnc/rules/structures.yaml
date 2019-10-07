@@ -272,7 +272,7 @@ SILO:
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	-WithSpriteBody:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
@@ -688,7 +688,7 @@ FIX:
 	RevealsShroud:
 		Range: 5c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	Reservable:
@@ -857,7 +857,7 @@ GUN:
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		TurnSpeed: 12
 		InitialFacing: 56
@@ -958,7 +958,7 @@ OBLI:
 	RevealsShroud:
 		Range: 8c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	-WithSpriteBody:
 	WithChargeSpriteBody:
 		Sequence: active
@@ -1003,7 +1003,7 @@ GTWR:
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Armament:
 		Weapon: HighV
 		LocalOffset: 256,0,256
@@ -1046,7 +1046,7 @@ ATWR:
 	RevealsShroud:
 		Range: 8c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	Turreted:
 		TurnSpeed: 255
 		Offset: 128,128,384

@@ -28,7 +28,7 @@ SovietPlatoonUnits:
 
 MINV:
 	Mine:
-		AvoidFriendly: yes
+		AvoidFriendly: true
 
 CAMERA:
 	RevealsShroud:

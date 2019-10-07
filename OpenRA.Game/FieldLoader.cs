@@ -415,7 +415,13 @@ namespace OpenRA
 				}
 			}
 			else if (fieldType == typeof(bool))
-				return ParseYesNo(value, fieldType, fieldName);
+			{
+				bool result;
+				if (bool.TryParse(value.ToLowerInvariant(), out result))
+					return result;
+
+				return InvalidValueAction(value, fieldType, fieldName);
+			}
 			else if (fieldType == typeof(int2[]))
 			{
 				if (value != null)
@@ -590,20 +596,6 @@ namespace OpenRA
 
 			UnknownFieldAction("[Type] {0}".F(value), fieldType);
 			return null;
-		}
-
-		static object ParseYesNo(string p, Type fieldType, string field)
-		{
-			if (string.IsNullOrEmpty(p))
-				return InvalidValueAction(p, fieldType, field);
-
-			p = p.ToLowerInvariant();
-			if (p == "yes") return true;
-			if (p == "true") return true;
-			if (p == "no") return false;
-			if (p == "false") return false;
-
-			return InvalidValueAction(p, fieldType, field);
 		}
 
 		public sealed class FieldLoadInfo
