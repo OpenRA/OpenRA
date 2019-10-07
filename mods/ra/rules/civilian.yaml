@@ -138,7 +138,7 @@ HOSP:
 	RevealsShroud:
 		Range: 4c0
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -531,7 +531,7 @@ BR2:
 BR3:
 	Inherits: ^Bridge
 	Bridge:
-		Long: yes
+		Long: true
 		ShorePieces: br1,br2
 		Template: 241
 		DamagedTemplate: 242

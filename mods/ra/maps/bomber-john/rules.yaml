@@ -85,7 +85,7 @@ Player:
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
-		KillCargo: yes
+		KillCargo: true
 		Range: 3
 	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln

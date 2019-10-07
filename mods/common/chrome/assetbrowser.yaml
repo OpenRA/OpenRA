@@ -145,7 +145,7 @@ Background@ASSETBROWSER_PANEL:
 							ImageCollection: music
 							ImageName: play
 				Button@BUTTON_PAUSE:
-					Visible: no
+					Visible: false
 					X: 35
 					Y: 0
 					Width: 25
