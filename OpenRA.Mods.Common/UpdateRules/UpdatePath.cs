@@ -136,7 +136,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveMoveIntoWorldFromExit(),
 			}),
 
-			new UpdatePath("playtest-20190825", new UpdateRule[0])
+			new UpdatePath("playtest-20190825", new UpdateRule[]
+			{
+				// Bleed only changes here
+				new RemoveYesNo(),
+			})
 		};
 
 		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
