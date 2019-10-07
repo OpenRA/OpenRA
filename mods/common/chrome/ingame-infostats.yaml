@@ -26,7 +26,7 @@ Container@SKIRMISH_STATS:
 					Height: 20
 					Font: Bold
 					Text: Destroy all opposition!
-					Disabled: yes
+					Disabled: true
 					TextColorDisabled: FFFFFF
 		Container@STATS_HEADERS:
 			X: 22

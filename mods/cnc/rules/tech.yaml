@@ -56,7 +56,7 @@ HOSP:
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	ProvidesPrerequisite@buildingname:
 
 HOSP.Husk:
@@ -69,7 +69,7 @@ HOSP.Husk:
 	Tooltip:
 		Name: Hospital (Destroyed)
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 
 BIO:
 	Inherits: ^TechBuilding
@@ -139,6 +139,6 @@ MISS:
 	Valued:
 		Cost: 2000
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	WithMakeAnimation:
 	ProvidesPrerequisite@buildingname:

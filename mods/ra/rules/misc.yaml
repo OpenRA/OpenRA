@@ -415,7 +415,7 @@ CTFLAG:
 	Tooltip:
 		Name: Flag
 	WithBuildingBib:
-		HasMinibib: Yes
+		HasMinibib: true
 	-HitShape:
 	-Health:
 	-Explodes:

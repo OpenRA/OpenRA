@@ -160,7 +160,7 @@ MoneyCrate:
 	Inherits: ^Crate
 	GiveCashCrateAction:
 		Amount: 2000
-		UseCashTick: yes
+		UseCashTick: true
 
 NUKEOUT.IN:
 	Inherits: NUKE

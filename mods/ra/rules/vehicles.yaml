@@ -733,7 +733,7 @@ DTRK:
 	KillsSelf:
 		RequiresCondition: invulnerability || triggered
 	Chronoshiftable:
-		ExplodeInstead: yes
+		ExplodeInstead: true
 
 CTNK:
 	Inherits: ^Vehicle

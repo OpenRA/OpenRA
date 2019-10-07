@@ -167,7 +167,7 @@ MoneyCrate:
 	Inherits: ^Crate
 	GiveCashCrateAction:
 		Amount: 500
-		UseCashTick: yes
+		UseCashTick: true
 
 airstrike.proxy:
 	AirstrikePower:
