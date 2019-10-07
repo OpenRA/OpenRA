@@ -309,6 +309,7 @@
 	HitShape:
 	MapEditorData:
 		Categories: Vehicle
+	MineDetonator:
 
 ^TrackedVehicle:
 	Inherits: ^Vehicle
@@ -438,6 +439,7 @@
 	DetectCloaked:
 		CloakTypes: Cloak
 		Range: 1c0
+	MineDetonator:
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -625,7 +627,7 @@
 		TakeOffOnResupply: true
 		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Ore, Beach, Gems
-		Crushes: crate, mine, infantry
+		Crushes: crate, infantry
 		InitialFacing: 224
 		CanSlide: True
 	GpsDot:
@@ -634,6 +636,7 @@
 		RequiresCondition: cruising
 	BodyOrientation:
 		UseClassicFacingFudge: True
+	MineDetonator:
 
 ^BasicBuilding:
 	Inherits@1: ^ExistsInWorld
@@ -1163,10 +1166,7 @@
 	WithSpriteBody:
 	HiddenUnderFog:
 	Mine:
-		CrushClasses: mine
-		DetonateClasses: mine
 		AvoidFriendly: false
-		BlockFriendly: false
 	Health:
 		HP: 10000
 		NotifyAppliedDamage: false
@@ -1183,7 +1183,7 @@
 	Targetable:
 		TargetTypes: Ground, Mine
 	Immobile:
-		OccupiesSpace: true
+		OccupiesSpace: false
 	HitShape:
 	MapEditorData:
 		Categories: System

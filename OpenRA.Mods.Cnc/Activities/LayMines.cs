@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
 		readonly RearmableInfo rearmableInfo;
+		readonly MineLocations mineLocations;
 
 		List<CPos> minefield;
 		bool returnToBase;
@@ -38,6 +39,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			mineLocations = self.World.WorldActor.TraitOrDefault<MineLocations>();
 			this.minefield = minefield;
 		}
 
@@ -124,10 +126,10 @@ namespace OpenRA.Mods.Cnc.Activities
 				yield return new TargetLineNode(Target.FromCell(self.World, c), Color.Crimson, tile: minelayer.Tile);
 		}
 
-		static bool CanLayMine(Actor self, CPos p)
+		bool CanLayMine(Actor self, CPos p)
 		{
 			// If there is no unit (other than me) here, we can place a mine here
-			return self.World.ActorMap.GetActorsAt(p).All(a => a == self);
+			return self.World.ActorMap.GetActorsAt(p).All(a => a == self) && !mineLocations.Occupied(p);
 		}
 
 		void LayMine(Actor self)
