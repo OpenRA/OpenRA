@@ -115,9 +115,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAttackSuicides(),
 			}),
 
-			new UpdatePath("release-20190314", new UpdateRule[]
+			new UpdatePath("release-20190314", "playtest-20190825", new UpdateRule[]
 			{
-				// Bleed only changes here
+				// Prep only changes here
 				new MultipleDeploySounds(),
 				new RemoveSimpleBeacon(),
 				new MakeMobilePausableConditional(),
@@ -134,7 +134,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddAircraftIdleBehavior(),
 				new RenameSearchRadius(),
 				new RemoveMoveIntoWorldFromExit(),
-			})
+			}),
+
+			new UpdatePath("playtest-20190825", new UpdateRule[0])
 		};
 
 		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
