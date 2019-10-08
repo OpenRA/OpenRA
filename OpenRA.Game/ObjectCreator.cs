@@ -74,8 +74,8 @@ namespace OpenRA
 			return assemblies.Select(a => a.First).FirstOrDefault(a => a.FullName == e.Name);
 		}
 
-		public static Action<string> MissingTypeAction =
-			s => { throw new InvalidOperationException("Cannot locate type: {0}".F(s)); };
+		// Only used by the linter to prevent exceptions from being thrown during a lint run
+		public static Action<string> MissingTypeAction = null;
 
 		public T CreateObject<T>(string className)
 		{
@@ -87,7 +87,12 @@ namespace OpenRA
 			var type = typeCache[className];
 			if (type == null)
 			{
-				MissingTypeAction(className);
+				// HACK: The linter does not want to crash but only print an error instead
+				if (MissingTypeAction != null)
+					MissingTypeAction(className);
+				else
+					throw new InvalidOperationException("Cannot locate type: {0}".F(className));
+
 				return default(T);
 			}
 
