@@ -129,9 +129,13 @@ ProduceAircraft = function()
 end
 
 TargetAndAttack = function(mig, target)
+	if mig.IsDead then
+		return
+	end
+
 	if not target or target.IsDead or (not target.IsInWorld) then
 		local enemies = Utils.Where(greece.GetActors(), function(actor)
-			return actor.HasProperty("Health") and actor.Type ~= "brik"
+			return actor.HasProperty("Health") and actor.Type ~= "brik" and mig.CanTarget(target)
 		end)
 		if #enemies > 0 then
 			target = Utils.Random(enemies)
@@ -145,7 +149,11 @@ TargetAndAttack = function(mig, target)
 	end
 
 	mig.CallFunc(function()
-		TargetAndAttack(mig, target)
+		-- TODO: Replace this with an idle trigger once that works for aircraft
+		-- Add a delay of one tick to fix an endless recursive call
+		Trigger.AfterDelay(1, function()
+			TargetAndAttack(mig, target)
+		end)
 	end)
 end
 
