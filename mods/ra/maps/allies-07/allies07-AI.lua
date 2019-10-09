@@ -134,6 +134,10 @@ ProduceAircraft = function()
 end
 
 TargetAndAttack = function(yak, target)
+	if yak.IsDead then
+		return
+	end
+
 	if not target or target.IsDead or (not target.IsInWorld) then
 		local enemies = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == greece and self.HasProperty("Health") and yak.CanTarget(self) end)
 		if #enemies > 0 then
@@ -148,7 +152,11 @@ TargetAndAttack = function(yak, target)
 	end
 
 	yak.CallFunc(function()
-		TargetAndAttack(yak, target)
+		-- TODO: Replace this with an idle trigger once that works for aircraft
+		-- Add a delay of one tick to fix an endless recursive call
+		Trigger.AfterDelay(1, function()
+			TargetAndAttack(yak, target)
+		end)
 	end)
 end
 
