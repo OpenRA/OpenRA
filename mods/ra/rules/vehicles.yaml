@@ -337,6 +337,8 @@ HARV:
 	WithHarvesterSpriteBody:
 		ImageByFullness: harvempty, harvhalf, harv
 	-WithFacingSpriteBody:
+	Targetable:
+		TargetTypes: Ground, Vehicle, Harvester
 
 MCV:
 	Inherits: ^Vehicle

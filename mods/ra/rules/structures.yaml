@@ -1264,6 +1264,26 @@ PROC:
 	SequencePlaceBuildingPreview:
 		Sequence: idle
 		SequencePalette: placebuilding
+	GrantConditionOnBotOwner@AICheaterHard:
+		Condition: AICheaterHard
+		Bots: hard
+	GrantConditionOnBotOwner@AICheaterBrutal:
+		Condition: AICheaterBrutal
+		Bots: brutal
+	CashTrickler@Hard:
+		Amount: 100
+		Interval: 100
+		RequiresCondition: AICheaterHard
+		ShowTicks: false
+		UseStorage: true
+	CashTrickler@Brutal:
+		Amount: 200
+		Interval: 100
+		RequiresCondition: AICheaterBrutal
+		ShowTicks: false
+		UseStorage: true
+	Targetable:
+		TargetTypes: Ground, C4, DetonateAttack, Structure, Refinery
 
 SILO:
 	Inherits: ^Building

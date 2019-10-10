@@ -51,7 +51,6 @@ SS:
 	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Water, Underwater
 	AutoTargetPriority@ATTACKANYTHING:
@@ -126,7 +125,6 @@ MSUB:
 	SelectionDecorations:
 	AutoTarget:
 		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	DetectCloaked:
 		CloakTypes: Underwater
 		Range: 4c0
