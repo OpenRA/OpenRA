@@ -1209,7 +1209,7 @@ PROC:
 		DecorationBounds: 72,70,0,-2
 	SelectionDecorations:
 	Targetable:
-		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate, SpyInfiltrate
+		TargetTypes: Ground, Structure, C4, DetonateAttack, ThiefInfiltrate, SpyInfiltrate, Refinery
 	Health:
 		HP: 90000
 	Armor:
@@ -1264,6 +1264,24 @@ PROC:
 	SequencePlaceBuildingPreview:
 		Sequence: idle
 		SequencePalette: placebuilding
+	GrantConditionOnBotOwner@AICheaterHard:
+		Condition: AICheaterHard
+		Bots: hard
+	GrantConditionOnBotOwner@AICheaterBrutal:
+		Condition: AICheaterBrutal
+		Bots: brutal
+	CashTrickler@Hard:
+		Amount: 100
+		Interval: 100
+		RequiresCondition: AICheaterHard
+		ShowTicks: false
+		UseResourceStorage: true
+	CashTrickler@Brutal:
+		Amount: 200
+		Interval: 100
+		RequiresCondition: AICheaterBrutal
+		ShowTicks: false
+		UseResourceStorage: true
 
 SILO:
 	Inherits: ^Building

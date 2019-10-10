@@ -21,6 +21,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
 		}
 
+		protected Actor FindClosestEnemyBuilding(Squad owner)
+		{
+			return owner.SquadManager.FindClosestEnemyBuilding(owner.Units.First().CenterPosition);
+		}
+
 		protected Actor FindClosestEnemy(Squad owner)
 		{
 			return owner.SquadManager.FindClosestEnemy(owner.Units.First().CenterPosition);
@@ -77,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			if (!owner.IsTargetValid)
 			{
-				var closestEnemy = FindClosestEnemy(owner);
+				var closestEnemy = FindClosestEnemyBuilding(owner);
 				if (closestEnemy != null)
 					owner.TargetActor = closestEnemy;
 				else
@@ -91,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (leader == null)
 				return;
 
-			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Units.Count) / 3)
+			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Units.Count) / 2)
 				.Where(a => a.Owner == owner.Units.First().Owner && owner.Units.Contains(a)).ToHashSet();
 
 			if (ownUnits.Count < owner.Units.Count)
@@ -135,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			if (!owner.IsTargetValid)
 			{
-				var closestEnemy = FindClosestEnemy(owner);
+				var closestEnemy = FindClosestEnemyBuilding(owner);
 				if (closestEnemy != null)
 					owner.TargetActor = closestEnemy;
 				else

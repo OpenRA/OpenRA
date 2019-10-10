@@ -112,38 +112,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 			}
 
-			var leader = owner.Units.ClosestTo(owner.TargetActor.CenterPosition);
-			if (leader == null)
-				return;
-
-			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.Units.Count) / 3)
-				.Where(a => a.Owner == owner.Units.First().Owner && owner.Units.Contains(a)).ToHashSet();
-
-			if (ownUnits.Count < owner.Units.Count)
-			{
-				// Since units have different movement speeds, they get separated while approaching the target.
-				// Let them regroup into tighter formation.
-				owner.Bot.QueueOrder(new Order("Stop", leader, false));
-				foreach (var unit in owner.Units.Where(a => !ownUnits.Contains(a)))
-					owner.Bot.QueueOrder(new Order("AttackMove", unit, Target.FromCell(owner.World, leader.Location), false));
-			}
-			else
-			{
-				var enemies = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(owner.SquadManager.Info.AttackScanRadius))
-					.Where(owner.SquadManager.IsEnemyUnit);
-				var target = enemies.ClosestTo(leader.CenterPosition);
-				if (target != null)
-				{
-					owner.TargetActor = target;
-					owner.FuzzyStateMachine.ChangeState(owner, new NavyUnitsAttackState(), true);
-				}
-				else
-					foreach (var a in owner.Units)
-						owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
-			}
+			foreach (var a in owner.Units)
+					owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 
 			if (ShouldFlee(owner))
+			{
 				owner.FuzzyStateMachine.ChangeState(owner, new NavyUnitsFleeState(), true);
+				hadNavalYard = false;
+			}
 		}
 
 		public void Deactivate(Squad owner) { }

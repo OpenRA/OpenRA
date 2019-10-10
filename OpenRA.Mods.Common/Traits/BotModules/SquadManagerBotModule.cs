@@ -151,6 +151,14 @@ namespace OpenRA.Mods.Common.Traits
 			AssignRolesToIdleUnits(bot);
 		}
 
+		internal Actor FindClosestEnemyBuilding(WPos pos)
+		{
+			var enemy = World.ActorsHavingTrait<Building>().Where(IsEnemyUnit).ClosestTo(pos);
+			if (enemy != null)
+				return enemy;
+			return World.Actors.Where(IsEnemyUnit).ClosestTo(pos);
+		}
+
 		internal Actor FindClosestEnemy(WPos pos)
 		{
 			return World.Actors.Where(IsEnemyUnit).ClosestTo(pos);

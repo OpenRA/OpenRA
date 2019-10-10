@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsTargetValid)
 			{
 				var a = owner.Units.Random(owner.Random);
-				var closestEnemy = owner.SquadManager.FindClosestEnemy(a.CenterPosition);
+				var closestEnemy = owner.SquadManager.FindClosestEnemyBuilding(a.CenterPosition);
 				if (closestEnemy != null)
 					owner.TargetActor = closestEnemy;
 				else
