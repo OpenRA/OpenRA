@@ -99,6 +99,17 @@ namespace OpenRA.Mods.Common.Activities
 				lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
 			}
 
+			// The target may become hidden in the same tick the FlyAttack constructor is called,
+			// causing lastVisible* to remain uninitialized.
+			// Fix the fallback values based on the frozen actor properties
+			else if (target.Type == TargetType.FrozenActor && !lastVisibleTarget.IsValidFor(self))
+			{
+				lastVisibleTarget = Target.FromTargetPositions(target);
+				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
+				lastVisibleOwner = target.FrozenActor.Owner;
+				lastVisibleTargetTypes = target.FrozenActor.TargetTypes;
+			}
+
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
