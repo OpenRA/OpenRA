@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Game.Sound.Play(SoundType.World, info.OnFireSound, order.Target.CenterPosition);
 
-			foreach (var a in UnitsInRange(self.World.Map.CellContaining(order.Target.CenterPosition)))
+			foreach (var a in order.ExtraActors)
 			{
 				var external = a.TraitsImplementing<ExternalCondition>()
 					.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
@@ -127,8 +127,13 @@ namespace OpenRA.Mods.Common.Traits
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
-				if (mi.Button == MouseButton.Left && power.UnitsInRange(cell).Any())
-					yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
+
+				if (mi.Button != MouseButton.Left)
+					yield break;
+
+				var units = power.UnitsInRange(cell);
+				if (units.Any())
+					yield return new Order(order, manager.Self, Target.FromCell(world, cell), false, units.ToArray()) { SuppressVisualFeedback = true };
 			}
 
 			protected override void Tick(World world)
