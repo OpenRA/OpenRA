@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		readonly Color? targetLineColor;
 		readonly WDist nearEnough;
+		readonly WVec offset;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -35,6 +36,12 @@ namespace OpenRA.Mods.Common.Activities
 			: this(self, t, initialTargetPosition, targetLineColor)
 		{
 			this.nearEnough = nearEnough;
+		}
+
+		public Fly(Actor self, Target t, WVec offset)
+			: this(self, t)
+		{
+			this.offset = offset;
 		}
 
 		public Fly(Actor self, Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
@@ -157,12 +164,12 @@ namespace OpenRA.Mods.Common.Activities
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var pos = aircraft.GetPosition();
-			var delta = checkTarget.CenterPosition - pos;
+			var delta = checkTarget.CenterPosition - pos + offset;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
 			// Inside the target annulus, so we're done
-			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos, maxRange);
-			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(pos, minRange);
+			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos - offset, maxRange);
+			var insideMinRange = minRange.Length > 0 && checkTarget.IsInRange(pos - offset, minRange);
 			if (insideMaxRange && !insideMinRange)
 				return true;
 

@@ -221,6 +221,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (captures == null)
 				return false;
 
+			// Make sure we are in a valid state first.
+			var enterMobile = target.TraitOrDefault<Mobile>();
+			if (enterMobile != null && enterMobile.IsMovingBetweenCells)
+				return false;
+
 			if (progressWatchers.Any() || targetManager.progressWatchers.Any())
 			{
 				currentTargetTotal = captures.Info.CaptureDelay;

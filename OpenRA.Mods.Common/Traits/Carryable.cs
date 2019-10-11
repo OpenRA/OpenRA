@@ -113,14 +113,17 @@ namespace OpenRA.Mods.Common.Traits
 		// Prepare for transport pickup
 		public virtual bool LockForPickup(Actor self, Actor carrier)
 		{
-			if (state == State.Locked)
+			if (state == State.Locked && Carrier != carrier)
 				return false;
 
-			state = State.Locked;
-			Carrier = carrier;
+			if (state != State.Locked)
+			{
+				state = State.Locked;
+				Carrier = carrier;
 
-			if (lockedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
-				lockedToken = conditionManager.GrantCondition(self, Info.LockedCondition);
+				if (lockedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
+					lockedToken = conditionManager.GrantCondition(self, Info.LockedCondition);
+			}
 
 			return true;
 		}

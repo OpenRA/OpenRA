@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Prepare for transport pickup
 		public override bool LockForPickup(Actor self, Actor carrier)
 		{
-			if (state == State.Locked || !WantsTransport)
+			if ((state == State.Locked && Carrier != carrier) || !WantsTransport)
 				return false;
 
 			// Last chance to change our mind...

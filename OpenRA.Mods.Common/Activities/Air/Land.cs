@@ -22,17 +22,21 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly WVec offset;
-		readonly int desiredFacing;
 		readonly bool assignTargetOnFirstRun;
 		readonly CPos[] clearCells;
 		readonly WDist landRange;
 		readonly Color? targetLineColor;
+		readonly Mobile targetMobile;
+		readonly BodyOrientation targetBody;
+		readonly IFacing targetFacing;
 
 		Target target;
 		WPos targetPosition;
 		CPos landingCell;
 		bool landingInitiated;
 		bool finishedApproach;
+		int desiredFacing;
+		WVec currentOffset;
 
 		public Land(Actor self, int facing = -1, Color? targetLineColor = null)
 			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, null)
@@ -64,6 +68,15 @@ namespace OpenRA.Mods.Common.Activities
 				desiredFacing = aircraft.Info.InitialFacing;
 			else
 				desiredFacing = facing;
+
+			if (target.Actor != null)
+			{
+				targetBody = target.Actor.TraitOrDefault<BodyOrientation>();
+				targetFacing = target.Actor.TraitOrDefault<IFacing>();
+				targetMobile = target.Actor.TraitOrDefault<Mobile>();
+			}
+
+			currentOffset = offset;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -103,10 +116,17 @@ namespace OpenRA.Mods.Common.Activities
 					return true;
 			}
 
+			if (targetFacing != null)
+			{
+				desiredFacing = targetFacing.Facing;
+				if (targetBody != null)
+					currentOffset = -targetBody.LocalToWorld(offset.Rotate(targetBody.QuantizeOrientation(self, target.Actor.Orientation)));
+			}
+
 			var pos = aircraft.GetPosition();
 
 			// Reevaluate target position in case the target has moved.
-			targetPosition = target.CenterPosition + offset;
+			targetPosition = target.CenterPosition + currentOffset;
 			landingCell = self.World.Map.CellContaining(targetPosition);
 
 			// We are already at the landing location.
@@ -128,7 +148,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (newLocation.Value != landingCell)
 				{
 					target = Target.FromCell(self.World, newLocation.Value);
-					targetPosition = target.CenterPosition + offset;
+					targetPosition = target.CenterPosition + currentOffset;
 					landingCell = self.World.Map.CellContaining(targetPosition);
 				}
 			}
@@ -138,10 +158,11 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if ((pos - targetPosition).HorizontalLengthSquared != 0)
 				{
-					QueueChild(new Fly(self, Target.FromPos(targetPosition)));
+					QueueChild(new Fly(self, target, currentOffset));
 					return false;
 				}
-				else if (desiredFacing != -1 && desiredFacing != aircraft.Facing)
+
+				if (desiredFacing != -1 && desiredFacing != aircraft.Facing)
 				{
 					QueueChild(new Turn(self, desiredFacing));
 					return false;
@@ -210,14 +231,23 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!landingInitiated)
 			{
+				// Make sure the landing spot is clear.
 				var blockingCells = clearCells.Append(landingCell);
-
 				if (!aircraft.CanLand(blockingCells, target.Actor))
 				{
 					// Maintain holding pattern.
 					QueueChild(new FlyIdle(self, 25));
 
 					self.NotifyBlocker(blockingCells);
+					finishedApproach = false;
+					return false;
+				}
+
+				// Make sure the docking actor is in a valid state for docking.
+				if (targetMobile != null && targetMobile.IsMovingBetweenCells)
+				{
+					// Maintain holding pattern.
+					QueueChild(new FlyIdle(self, 25));
 					finishedApproach = false;
 					return false;
 				}

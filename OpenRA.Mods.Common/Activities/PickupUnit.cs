@@ -21,38 +21,37 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor cargo;
 		readonly IMove movement;
-
 		readonly Carryall carryall;
-		readonly IFacing carryallFacing;
-
 		readonly Carryable carryable;
-		readonly IFacing carryableFacing;
-		readonly BodyOrientation carryableBody;
-
 		readonly int delay;
 
-		enum PickupState { Intercept, LockCarryable, Pickup }
-
-		PickupState state;
+		bool locked;
 
 		public PickupUnit(Actor self, Actor cargo, int delay)
 		{
 			this.cargo = cargo;
 			this.delay = delay;
 			carryable = cargo.Trait<Carryable>();
-			carryableFacing = cargo.Trait<IFacing>();
-			carryableBody = cargo.Trait<BodyOrientation>();
-
 			movement = self.Trait<IMove>();
 			carryall = self.Trait<Carryall>();
-			carryallFacing = self.Trait<IFacing>();
 
-			state = PickupState.Intercept;
+			ChildHasPriority = false;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
 			carryall.ReserveCarryable(self, cargo);
+
+			// Land at the target location
+			QueueChild(new Land(self, Target.FromActor(cargo), carryall.OffsetForCarryable(self, cargo)));
+
+			// Pause briefly before attachment for visual effect
+			if (delay > 0)
+				QueueChild(new Wait(delay, false));
+
+			// Remove our carryable from world
+			QueueChild(new AttachUnit(self, cargo));
+			QueueChild(new TakeOff(self));
 		}
 
 		public override bool Tick(Actor self)
@@ -74,41 +73,16 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (carryall.State != Carryall.CarryallState.Reserved)
-				return true;
-
-			switch (state)
+			var distance = (cargo.CenterPosition - self.CenterPosition).HorizontalLength;
+			if (distance <= 4096 && !locked)
 			{
-				case PickupState.Intercept:
-					QueueChild(movement.MoveWithinRange(Target.FromActor(cargo), WDist.FromCells(4)));
-					state = PickupState.LockCarryable;
-					return false;
+				if (!carryable.LockForPickup(cargo, self))
+					Cancel(self);
 
-				case PickupState.LockCarryable:
-					if (!carryable.LockForPickup(cargo, self))
-						Cancel(self);
-
-					state = PickupState.Pickup;
-					return false;
-
-				case PickupState.Pickup:
-				{
-					// Land at the target location
-					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
-					QueueChild(new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing));
-
-					// Pause briefly before attachment for visual effect
-					if (delay > 0)
-						QueueChild(new Wait(delay, false));
-
-					// Remove our carryable from world
-					QueueChild(new AttachUnit(self, cargo));
-					QueueChild(new TakeOff(self));
-					return false;
-				}
+				locked = true;
 			}
 
-			return true;
+			return TickChild(self);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
