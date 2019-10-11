@@ -172,6 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 		WPos oldPos;
 		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
+		SubCell moveIntoWorldSubCell;
 		INotifyCustomLayerChanged[] notifyCustomLayerChanged;
 		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
 		INotifyMoving[] notifyMoving;
@@ -226,9 +227,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			speedModifiers = Exts.Lazy(() => self.TraitsImplementing<ISpeedModifier>().ToArray().Select(x => x.GetSpeedModifier()));
 
+			// Actor can pick any free subcell when moving into the world
+			moveIntoWorldSubCell = SubCell.Any;
+
+			// Set sensible defaults for actors that don't run MoveIntoWorldActivity
 			ToSubCell = FromSubCell = info.LocomotorInfo.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
+
 			if (init.Contains<SubCellInit>())
-				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
+				FromSubCell = ToSubCell = moveIntoWorldSubCell = init.Get<SubCellInit, SubCell>();
 
 			if (init.Contains<LocationInit>())
 			{
@@ -571,22 +577,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Activity MoveIntoWorld(Actor self, int delay = 0)
 		{
-			return new MoveIntoWorldActivity(self, delay);
+			return new MoveIntoWorldActivity(self, ToCell, ToSubCell, delay);
 		}
 
 		class MoveIntoWorldActivity : Activity
 		{
-			readonly Actor self;
 			readonly Mobile mobile;
+			readonly CPos cell;
+			readonly int delay;
 
-			CPos cell;
 			SubCell subCell;
-			WPos pos;
-			int delay;
 
-			public MoveIntoWorldActivity(Actor self, int delay = 0)
+			public MoveIntoWorldActivity(Actor self, CPos cell, SubCell subCell, int delay = 0)
 			{
-				this.self = self;
+				this.cell = cell;
+				this.subCell = subCell;
 				mobile = self.Trait<Mobile>();
 				IsInterruptible = false;
 				this.delay = delay;
@@ -594,17 +599,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			protected override void OnFirstRun(Actor self)
 			{
-				pos = self.CenterPosition;
-				if (self.World.Map.DistanceAboveTerrain(pos) > WDist.Zero && self.TraitOrDefault<Parachutable>() != null)
+				if (self.World.Map.DistanceAboveTerrain(self.CenterPosition) > WDist.Zero && self.TraitOrDefault<Parachutable>() != null)
 					QueueChild(new Parachute(self));
 			}
 
 			public override bool Tick(Actor self)
 			{
-				pos = self.CenterPosition;
-				cell = mobile.ToCell;
-				subCell = mobile.ToSubCell;
-
 				if (subCell == SubCell.Any)
 					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
 
@@ -612,8 +612,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (subCell == SubCell.Invalid)
 					subCell = self.World.Map.Grid.DefaultSubCell;
 
+				var pos = self.CenterPosition;
+
 				// Reserve the exit cell
 				mobile.SetPosition(self, cell, subCell);
+
+				// Reset our visual position to where we start the visual move from
 				mobile.SetVisualPosition(self, pos);
 
 				if (delay > 0)
@@ -899,7 +903,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			return moveIntoWorldDelay.HasValue ? MoveIntoWorld(self, moveIntoWorldDelay.Value) : null;
+			return moveIntoWorldDelay.HasValue ? new MoveIntoWorldActivity(self, ToCell, moveIntoWorldSubCell, moveIntoWorldDelay.Value) : null;
 		}
 
 		class MoveOrderTargeter : IOrderTargeter
