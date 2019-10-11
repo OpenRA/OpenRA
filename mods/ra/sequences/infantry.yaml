@@ -1256,19 +1256,19 @@ zombie:
 		Tick: 120
 	die1:
 		Start: 106
-		Length: 7
+		Length: 8
 	die2:
 		Start: 106
-		Length: 7
+		Length: 8
 	die3:
 		Start: 106
-		Length: 7
+		Length: 8
 	die4:
 		Start: 106
-		Length: 7
+		Length: 8
 	die5:
 		Start: 114
-		Length: 18
+		Length: 19
 	die6: electro
 		Length: *
 		UseTilesetExtension: true
