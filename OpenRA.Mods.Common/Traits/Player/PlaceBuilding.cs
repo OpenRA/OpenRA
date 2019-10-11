@@ -144,8 +144,11 @@ namespace OpenRA.Mods.Common.Traits
 						return;
 
 					var location = host.Location;
-					var pluggable = host.TraitsImplementing<Pluggable>()
-						.FirstOrDefault(p => location + p.Info.Offset == targetLocation && p.AcceptsPlug(host, plugInfo.Type));
+					var pluggableLocations = host.TraitsImplementing<Pluggable>()
+						.Where(p => p.AcceptsPlug(host, plugInfo.Type));
+
+					var pluggable = pluggableLocations.FirstOrDefault(p => location + p.Info.Offset == targetLocation)
+						?? pluggableLocations.FirstOrDefault();
 
 					if (pluggable == null)
 						return;

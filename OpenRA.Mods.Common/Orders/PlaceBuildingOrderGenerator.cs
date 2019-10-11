@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Orders
 				return false;
 
 			var location = host.Location;
-			return host.TraitsImplementing<Pluggable>().Any(p => location + p.Info.Offset == cell && p.AcceptsPlug(host, plug.Type));
+			return host.TraitsImplementing<Pluggable>().Any(p => p.AcceptsPlug(host, plug.Type));
 		}
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
