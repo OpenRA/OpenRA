@@ -293,6 +293,17 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 
+				// The target may become hidden in the same tick the AttackActivity constructor is called,
+				// causing lastVisible* to remain uninitialized.
+				// Fix the fallback values based on the frozen actor properties
+				else if (target.Type == TargetType.FrozenActor && !lastVisibleTarget.IsValidFor(self))
+				{
+					lastVisibleTarget = Target.FromTargetPositions(target);
+					lastVisibleMaximumRange = attack.GetMaximumRangeVersusTarget(target);
+					lastVisibleOwner = target.FrozenActor.Owner;
+					lastVisibleTargetTypes = target.FrozenActor.TargetTypes;
+				}
+
 				var maxRange = lastVisibleMaximumRange;
 				var minRange = lastVisibleMinimumRange;
 				useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
