@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.NotifyBlocker(self.Location + s.ExitCell);
 
 			return mobileInfo == null ||
-				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, self);
+				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, ignoreActor: self);
 		}
 	}
 }

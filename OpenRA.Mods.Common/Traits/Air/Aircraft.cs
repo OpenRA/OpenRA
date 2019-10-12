@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
 		// Used to determine if an aircraft can spawn landed
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			if (!world.Map.Contains(cell))
 				return false;
@@ -173,6 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!checkTransientActors)
 				return true;
 
+			// Since aircraft don't share cells, we don't pass the subCell parameter
 			return !world.ActorMap.GetActorsAt(cell).Any(x => x != ignoreActor);
 		}
 

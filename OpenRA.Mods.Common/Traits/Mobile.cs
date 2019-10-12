@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		// initialized and used by CanEnterCell
 		Locomotor locomotor;
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
+		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
 			if (locomotor == null)
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var check = checkTransientActors ? CellConditions.All : CellConditions.BlockedByMovers;
-			return locomotor.CanMoveFreelyInto(self, cell, ignoreActor, check);
+			return locomotor.CanMoveFreelyInto(self, cell, subCell, ignoreActor, check);
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -470,7 +470,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors);
+			return Info.CanEnterCell(self.World, self, cell, SubCell.FullCell, ignoreActor, checkTransientActors);
 		}
 
 		#endregion
