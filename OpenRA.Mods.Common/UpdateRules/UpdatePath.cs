@@ -129,10 +129,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemovePlaceBuildingPalettes(),
 				new RenameHoversOffsetModifier(),
 				new AddAirAttackTypes(),
+				new MoveAbortOnResupply(),
 				new RenameCarryallDelays(),
 				new AddCanSlide(),
 				new AddAircraftIdleBehavior(),
 				new RenameSearchRadius(),
+				new RenameChronoshiftFootprint(),
 				new RemoveMoveIntoWorldFromExit(),
 			}),
 
