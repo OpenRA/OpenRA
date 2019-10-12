@@ -149,6 +149,7 @@ LPST:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
 		UndeployOnMove: true
+		UndeployOnPickup: true
 		Facing: 160
 		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
 		DeploySounds: place2.aud
@@ -169,7 +170,5 @@ LPST:
 		Range: 18c0
 	RenderDetectionCircle:
 		TrailCount: 3
-	Carryable:
-		RequiresCondition: undeployed
 	RenderVoxels:
 		Scale: 11.5
