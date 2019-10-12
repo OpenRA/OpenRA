@@ -37,11 +37,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
-				Console.WriteLine("# {0}:", filename);
-				var yaml = MiniYaml.FromFile(filename, false);
+				string name;
+				OpenRA.FileSystem.IReadOnlyPackage package;
+
+				modData.ModFiles.TryGetPackageContaining(filename, out package, out name);
+				name = package.Name + "/" + name;
+				Console.WriteLine("# {0}:", name);
+
+				var yaml = MiniYaml.FromFile(name, false);
 				FromChromeLayout(ref yaml, null,
 					translatableFields.Select(t => t.Name).Distinct(), null);
-				using (var file = new StreamWriter(filename))
+				using (var file = new StreamWriter(name))
 					file.WriteLine(yaml.WriteToString());
 			}
 
@@ -50,9 +56,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		internal static void FromChromeLayout(ref List<MiniYamlNode> nodes, MiniYamlNode parent, IEnumerable<string> translatables, string container)
 		{
-			var parentNode = parent != null ? parent.Key.Split('@') : null;
-			var parentType = parent != null ? parentNode.First() : null;
-			var parentLabel = parent != null ? parentNode.Last() : null;
+			var parentNode = parent != null && parent.Key != null ? parent.Key.Split('@') : null;
+			var parentType = parent != null && parent.Key != null ? parentNode.First() : null;
+			var parentLabel = parent != null && parent.Key != null ? parentNode.Last() : null;
 
 			if ((parentType == "Background" || parentType == "Container") && parentLabel.IsUppercase())
 				container = parentLabel;
@@ -62,7 +68,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var alreadyTranslated = node.Value.Value != null && node.Value.Value.Contains('@');
 				if (translatables.Contains(node.Key) && !alreadyTranslated && parentLabel != null)
 				{
-					var translationKey = "{0}-{1}-{2}".F(container.Replace('_', '-'), parentLabel.Replace('_', '-'), node.Key.ToUpper());
+					var translationKey = "{0}-{1}".F(parentLabel.Replace('_', '-'), node.Key.ToUpper());
+					if (container != null)
+						translationKey = "{0}-".F(container.Replace('_', '-')) + translationKey;
 					Console.WriteLine("\t{0}: {1}", translationKey, node.Value.Value);
 					node.Value.Value = "@{0}@".F(translationKey);
 				}
