@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Undeploy before the actor tries to move?")]
 		public readonly bool UndeployOnMove = false;
 
+		[Desc("Undeploy before the actor is picked up by a Carryall?")]
+		public readonly bool UndeployOnPickup = false;
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -87,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
 	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder,
-		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove
+		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove, IDelayCarryallPickup
 	{
 		readonly Actor self;
 		readonly bool checkTerrainType;
@@ -155,6 +158,17 @@ namespace OpenRA.Mods.Common.Traits
 			var activity = new DeployForGrantedCondition(self, this, true);
 			activity.Queue(moveInner);
 			return activity;
+		}
+
+		bool IDelayCarryallPickup.TryLockForPickup(Actor self, Actor carrier)
+		{
+			if (!Info.UndeployOnPickup || deployState == DeployState.Undeployed || IsTraitDisabled)
+				return true;
+
+			if (deployState == DeployState.Deployed && !IsTraitPaused)
+				Undeploy();
+
+			return false;
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
