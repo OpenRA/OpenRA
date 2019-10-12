@@ -9,7 +9,7 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Activities;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -37,6 +37,11 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum LockResponse { Success, Pending, Failed }
 
+	public interface IDelayCarryallPickup
+	{
+		bool TryLockForPickup(Actor self, Actor carrier);
+	}
+
 	public class Carryable : ConditionalTrait<CarryableInfo>
 	{
 		ConditionManager conditionManager;
@@ -45,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		int lockedToken = ConditionManager.InvalidConditionToken;
 
 		Mobile mobile;
+		IDelayCarryallPickup[] delayPickups;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
@@ -62,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			conditionManager = self.Trait<ConditionManager>();
 			mobile = self.TraitOrDefault<Mobile>();
+			delayPickups = self.TraitsImplementing<IDelayCarryallPickup>().ToArray();
 
 			base.Created(self);
 		}
@@ -120,6 +127,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (state == State.Locked && Carrier != carrier)
 				return LockResponse.Failed;
+
+			if (delayPickups.Any(d => d.IsTraitEnabled() && !d.TryLockForPickup(self, carrier)))
+				return LockResponse.Pending;
 
 			if (state != State.Locked)
 			{
