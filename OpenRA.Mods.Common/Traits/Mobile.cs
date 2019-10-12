@@ -470,7 +470,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, bool checkTransientActors = true)
 		{
-			return Info.CanEnterCell(self.World, self, cell, SubCell.FullCell, ignoreActor, checkTransientActors);
+			return Info.CanEnterCell(self.World, self, cell, ToSubCell, ignoreActor, checkTransientActors);
 		}
 
 		#endregion
