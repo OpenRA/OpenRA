@@ -1241,11 +1241,12 @@ zombie:
 		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	bite:
 		Start: 64
 		Length: 4
