@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (positionable.CanEnterCell(cell, self))
 				return;
 
-			if (IgnoreActor != null && self.World.ActorMap.GetActorsAt(cell).Any(a => a != IgnoreActor))
+			if (IgnoreActor != null && !self.World.ActorMap.GetActorsAt(cell).Any(a => a != IgnoreActor))
 				return;
 
 			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);
