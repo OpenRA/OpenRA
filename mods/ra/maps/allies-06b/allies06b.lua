@@ -224,10 +224,14 @@ WorldLoaded = function()
 
 	if Map.LobbyOption("difficulty") ~= "hard" then
 		Trigger.OnKilled(DefBrl1, function(a, b)
-			DefenseFlame1.Kill()
+			if not DefenseFlame1.IsDead then
+				DefenseFlame1.Kill()
+			end
 		end)
 		Trigger.OnKilled(DefBrl2, function(a, b)
-			DefenseFlame2.Kill()
+			if not DefenseFlame2.IsDead then
+				DefenseFlame2.Kill()
+			end
 		end)
 	end
 
