@@ -942,7 +942,7 @@ Container@OBSERVER_WIDGETS:
 						LineGraph@INCOME_GRAPH:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT
+							Width: PARENT_RIGHT - 5
 							Height: PARENT_BOTTOM
 							ValueFormat: ${0}
 							YAxisValueFormat: ${0:F0}
@@ -968,7 +968,7 @@ Container@OBSERVER_WIDGETS:
 						LineGraph@ARMY_VALUE_GRAPH:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT
+							Width: PARENT_RIGHT - 5
 							Height: PARENT_BOTTOM
 							ValueFormat: ${0}
 							YAxisValueFormat: ${0:F0}
