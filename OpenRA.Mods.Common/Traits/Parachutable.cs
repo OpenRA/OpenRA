@@ -86,6 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (conditionManager != null && parachutingToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(info.ParachutingCondition))
 				parachutingToken = conditionManager.GrantCondition(self, info.ParachutingCondition);
+
+			self.NotifyBlocker(self.Location);
 		}
 
 		void INotifyParachute.OnLanded(Actor self)
