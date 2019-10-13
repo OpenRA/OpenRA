@@ -113,10 +113,8 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				var exit = dest.FirstExitOrDefault(null);
 				var offset = exit != null ? exit.Info.SpawnOffset : WVec.Zero;
-				if (aircraft.Info.TurnToDock)
+				if (aircraft.Info.TurnToDock || !aircraft.Info.VTOL)
 					facing = aircraft.Info.InitialFacing;
-				if (!aircraft.Info.VTOL)
-					facing = 192;
 
 				aircraft.MakeReservation(dest);
 				QueueChild(new Land(self, Target.FromActor(dest), offset, facing, Color.Green));
