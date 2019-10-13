@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit.Info, productionType, inits));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit == null ? null : exit.Info, productionType, inits));
 					Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 				}));
@@ -117,18 +117,21 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.OccupiesSpace != null)
 			{
-				exit = self.Location + exitinfo.ExitCell;
+				exit = self.Location;
+				if (exitinfo != null)
+					exit += exitinfo.ExitCell;
+
 				var spawn = self.World.Map.CenterOfCell(exit) + new WVec(WDist.Zero, WDist.Zero, altitude);
 				var to = self.World.Map.CenterOfCell(exit);
 
-				var initialFacing = exitinfo.Facing < 0 ? (to - spawn).Yaw.Facing : exitinfo.Facing;
+				var initialFacing = exitinfo == null || exitinfo.Facing < 0 ? (to - spawn).Yaw.Facing : exitinfo.Facing;
 
 				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : new List<CPos> { exit };
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
 				td.Add(new FacingInit(initialFacing));
-				td.Add(new CreationActivityDelayInit(exitinfo.ExitDelay));
+				td.Add(new CreationActivityDelayInit(exitinfo == null ? 0 : exitinfo.ExitDelay));
 			}
 
 			self.World.AddFrameEndTask(w =>
