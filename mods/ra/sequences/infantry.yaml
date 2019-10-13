@@ -1289,9 +1289,6 @@ zombie:
 ant:
 	stand: ant1
 		Facings: 8
-	stand2: ant1
-		Start: 8
-		Length: 8
 	run: ant1
 		Start: 8
 		Length: 8
@@ -1314,9 +1311,6 @@ ant:
 fireant:
 	stand: ant2
 		Facings: 8
-	stand2: ant2
-		Start: 8
-		Length: 8
 	run: ant2
 		Start: 8
 		Length: 8
@@ -1339,9 +1333,6 @@ fireant:
 scoutant:
 	stand: ant3
 		Facings: 8
-	stand2: ant3
-		Start: 8
-		Length: 8
 	run: ant3
 		Start: 8
 		Length: 8
