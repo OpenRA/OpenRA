@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 					world.IsCellBuildable(t, ai, bi, toIgnore));
 		}
 
-		public static IEnumerable<Pair<CPos, Actor>> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi)
+		public static IEnumerable<Pair<CPos, Actor>> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi, Player owner)
 		{
 			var lbi = ai.TraitInfo<LineBuildInfo>();
 			var topLeft = cell;	// 1x1 assumption!
@@ -81,9 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 					if (dirs[d] != 0)
 						continue;
 
+					// Continue the search if the cell is empty or not visible
 					var c = topLeft + i * vecs[d];
-					if (world.IsCellBuildable(c, ai, bi))
-						continue; // Cell is empty; continue search
+					if (world.IsCellBuildable(c, ai, bi) || !owner.Shroud.IsExplored(c))
+						continue;
 
 					// Cell contains an actor. Is it the type we want?
 					connectors[d] = world.ActorMap.GetActorsAt(c)
