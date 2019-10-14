@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (string.IsNullOrEmpty(segmentType))
 						segmentType = actorInfo.Name;
 
-					foreach (var t in BuildingUtils.GetLineBuildCells(w, targetLocation, actorInfo, buildingInfo))
+					foreach (var t in BuildingUtils.GetLineBuildCells(w, targetLocation, actorInfo, buildingInfo, order.Player))
 					{
 						if (t.First == targetLocation)
 							continue;

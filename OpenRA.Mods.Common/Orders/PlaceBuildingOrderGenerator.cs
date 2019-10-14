@@ -244,6 +244,7 @@ namespace OpenRA.Mods.Common.Orders
 			var plugInfo = activeVariant.PlugInfo;
 			var lineBuildInfo = activeVariant.LineBuildInfo;
 			var preview = activeVariant.Preview;
+			var owner = queue.Actor.Owner;
 
 			if (plugInfo != null)
 			{
@@ -252,7 +253,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				footprint.Add(topLeft, MakeCellType(AcceptsPlug(topLeft, plugInfo)));
 			}
-			else if (lineBuildInfo != null)
+			else if (lineBuildInfo != null && owner.Shroud.IsExplored(topLeft))
 			{
 				// Linebuild for walls.
 				if (buildingInfo.Dimensions.X != 1 || buildingInfo.Dimensions.Y != 1)
@@ -260,7 +261,7 @@ namespace OpenRA.Mods.Common.Orders
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
 				{
-					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo))
+					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo, owner))
 					{
 						var lineBuildable = world.IsCellBuildable(t.First, actorInfo, buildingInfo);
 						var lineCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, t.First);
