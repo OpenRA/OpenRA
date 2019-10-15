@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common
 		public int Value(World world) { return value; }
 	}
 
-	public class MoveIntoWorldDelayInit : IActorInit<int>
+	public class CreationActivityDelayInit : IActorInit<int>
 	{
 		[FieldFromYamlKey]
 		readonly int value = 0;
 
-		public MoveIntoWorldDelayInit() { }
-		public MoveIntoWorldDelayInit(int init) { value = init; }
+		public CreationActivityDelayInit() { }
+		public CreationActivityDelayInit(int init) { value = init; }
 		public int Value(World world) { return value; }
 	}
 

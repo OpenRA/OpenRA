@@ -406,11 +406,11 @@ namespace OpenRA.Mods.Common.Traits
 			// If not initialized then this will be notified in the first tick
 			if (initialized)
 			{
-				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-					npe.OnPassengerEntered(self, a);
-
 				foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
 					nec.OnEnteredCargo(a, self);
+
+				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					npe.OnPassengerEntered(self, a);
 			}
 
 			var p = a.Trait<Passenger>();
@@ -507,11 +507,11 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					c.Trait<Passenger>().Transport = self;
 
-					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-						npe.OnPassengerEntered(self, c);
-
 					foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
 						nec.OnEnteredCargo(c, self);
+
+					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+						npe.OnPassengerEntered(self, c);
 				}
 
 				initialized = true;
