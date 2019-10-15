@@ -41,7 +41,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				var initDict = actorReference.InitDict;
 				initDict.Add(new SkipMakeAnimsInit());
-				initDict.Add(new SkipMoveIntoWorldInit());
 				initDict.Add(new SpawnedByMapInit(kv.Key));
 
 				if (PreventMapSpawn(world, actorReference, preventMapSpawns))
@@ -64,7 +63,6 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class SkipMakeAnimsInit : IActorInit, ISuppressInitExport { }
-	public class SkipMoveIntoWorldInit : IActorInit, ISuppressInitExport { }
 	public class SpawnedByMapInit : IActorInit<string>, ISuppressInitExport
 	{
 		public readonly string Name;
