@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				td.Add(new CenterPositionInit(spawn));
 				td.Add(new FacingInit(initialFacing));
 				if (exitinfo != null)
-					td.Add(new MoveIntoWorldDelayInit(exitinfo.ExitDelay));
+					td.Add(new CreationActivityDelayInit(exitinfo.ExitDelay));
 			}
 
 			self.World.AddFrameEndTask(w =>
