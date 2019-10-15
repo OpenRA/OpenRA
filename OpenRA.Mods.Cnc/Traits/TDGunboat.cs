@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
 		public Activity MoveFollow(Actor self, Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
-		public Activity MoveIntoWorld(Actor self, int delay = 0) { return null; }
+		public Activity ReturnToCell(Actor self) { return null; }
 		public Activity MoveToTarget(Actor self, Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
 		public Activity MoveIntoTarget(Actor self, Target target) { return null; }

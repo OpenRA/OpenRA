@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var pos = Self.CenterPosition;
 			mobile.SetPosition(Self, cell);
 			mobile.SetVisualPosition(Self, pos);
-			Self.QueueActivity(mobile.MoveIntoWorld(Self));
+			Self.QueueActivity(mobile.ReturnToCell(Self));
 		}
 
 		[ScriptActorPropertyActivity]

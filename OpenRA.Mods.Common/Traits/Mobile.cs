@@ -143,7 +143,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly Lazy<IEnumerable<int>> speedModifiers;
-		readonly int moveIntoWorldDelay;
+
+		readonly bool returnToCellOnCreation;
+		readonly bool returnToCellOnCreationRecalculateSubCell = true;
+		readonly int creationActivityDelay;
 
 		#region IMove CurrentMovementTypes
 		MovementType movementTypes;
@@ -228,7 +231,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			ToSubCell = FromSubCell = info.LocomotorInfo.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
+			{
 				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
+				returnToCellOnCreationRecalculateSubCell = false;
+			}
 
 			if (init.Contains<LocationInit>())
 			{
@@ -238,12 +244,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
-			// Sets the visual position to WPos accuracy
-			// Use LocationInit if you want to insert the actor into the ActorMap!
+			// Sets the initial visual position
+			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
 			if (init.Contains<CenterPositionInit>())
+			{
 				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
+				returnToCellOnCreation = true;
+			}
 
-			moveIntoWorldDelay = init.Contains<MoveIntoWorldDelayInit>() ? init.Get<MoveIntoWorldDelayInit, int>() : 0;
+			if (init.Contains<CreationActivityDelayInit>())
+				creationActivityDelay = init.Get<CreationActivityDelayInit, int>();
 		}
 
 		protected override void Created(Actor self)
@@ -568,27 +578,27 @@ namespace OpenRA.Mods.Common.Traits
 			return WrapMove(new Follow(self, target, minRange, maxRange, initialTargetPosition, targetLineColor));
 		}
 
-		public Activity MoveIntoWorld(Actor self, int delay = 0)
+		public Activity ReturnToCell(Actor self)
 		{
-			return new MoveIntoWorldActivity(self, delay);
+			return new ReturnToCellActivity(self);
 		}
 
-		class MoveIntoWorldActivity : Activity
+		class ReturnToCellActivity : Activity
 		{
-			readonly Actor self;
 			readonly Mobile mobile;
+			readonly bool recalculateSubCell;
 
 			CPos cell;
 			SubCell subCell;
 			WPos pos;
 			int delay;
 
-			public MoveIntoWorldActivity(Actor self, int delay = 0)
+			public ReturnToCellActivity(Actor self, int delay = 0, bool recalculateSubCell = false)
 			{
-				this.self = self;
 				mobile = self.Trait<Mobile>();
 				IsInterruptible = false;
 				this.delay = delay;
+				this.recalculateSubCell = recalculateSubCell;
 			}
 
 			protected override void OnFirstRun(Actor self)
@@ -604,7 +614,7 @@ namespace OpenRA.Mods.Common.Traits
 				cell = mobile.ToCell;
 				subCell = mobile.ToSubCell;
 
-				if (subCell == SubCell.Any)
+				if (recalculateSubCell)
 					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
 
 				// TODO: solve/reduce cell is full problem
@@ -898,7 +908,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			return MoveIntoWorld(self, moveIntoWorldDelay);
+			return returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay, returnToCellOnCreationRecalculateSubCell) : null;
 		}
 
 		class MoveOrderTargeter : IOrderTargeter
