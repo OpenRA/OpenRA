@@ -93,6 +93,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) until rechecking for new BaseProviders.")]
 		public readonly int CheckForNewBasesDelay = 1500;
 
+		[Desc("Chance that the AI will place the defenses in the direction of the closest enemy building.")]
+		public readonly int PlaceDefenseTowardsEnemyChance = 100;
+
 		[Desc("Minimum range at which to build defensive structures near a combat hotspot.")]
 		public readonly int MinimumDefenseRadius = 5;
 
