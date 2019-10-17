@@ -339,9 +339,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				hideMenu = true;
 				var editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
+				var actionManager = world.WorldActor.Trait<EditorActionManager>();
 				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
 				{
-					{ "onSave", (Action<string>)(_ => hideMenu = false) },
+					{ "onSave", (Action<string>)(_ => { hideMenu = false; actionManager.Modified = false; }) },
 					{ "onExit", () => hideMenu = false },
 					{ "map", world.Map },
 					{ "playerDefinitions", editorActorLayer.Players.ToMiniYaml() },
@@ -355,15 +356,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.Type != WorldType.Editor)
 				return;
 
+			var actionManager = world.WorldActor.Trait<EditorActionManager>();
 			var button = AddButton("EXIT_EDITOR", "Exit Map Editor");
+
+			// Show dialog only if updated since last save
 			button.OnClick = () =>
 			{
-				hideMenu = true;
-				ConfirmationDialogs.ButtonPrompt(
-					title: "Exit Map Editor",
-					text: "Exit and lose all unsaved changes?",
-					onConfirm: OnQuit,
-					onCancel: ShowMenu);
+				if (actionManager.HasUnsavedItems())
+				{
+					hideMenu = true;
+					ConfirmationDialogs.ButtonPrompt(
+						title: "Exit Map Editor",
+						text: "Exit and lose all unsaved changes?",
+						onConfirm: OnQuit,
+						onCancel: ShowMenu);
+				}
+				else
+					OnQuit();
 			};
 		}
 	}
