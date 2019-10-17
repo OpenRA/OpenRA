@@ -45,10 +45,12 @@ namespace OpenRA
 		ISound video;
 		MusicInfo currentMusic;
 		Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
+		public bool DummyEngine { get; private set; }
 
 		public Sound(IPlatform platform, SoundSettings soundSettings)
 		{
 			soundEngine = platform.CreateSound(soundSettings.Device);
+			DummyEngine = soundEngine.Dummy;
 
 			if (soundSettings.Mute)
 				MuteAudio();

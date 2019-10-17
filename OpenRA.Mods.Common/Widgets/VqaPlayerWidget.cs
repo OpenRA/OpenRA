@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!stopped && !paused)
 			{
 				var nextFrame = 0;
-				if (video.HasAudio)
+				if (video.HasAudio && !Game.Sound.DummyEngine)
 					nextFrame = (int)float2.Lerp(0, video.Frames, Game.Sound.VideoSeekPosition * invLength);
 				else
 					nextFrame = video.CurrentFrame + 1;
