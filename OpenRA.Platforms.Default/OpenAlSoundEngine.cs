@@ -23,6 +23,8 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class OpenAlSoundEngine : ISoundEngine
 	{
+		public bool Dummy { get { return false; } }
+
 		public SoundDevice[] AvailableDevices()
 		{
 			var defaultDevices = new[]
