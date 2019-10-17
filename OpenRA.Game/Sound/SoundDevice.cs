@@ -20,6 +20,7 @@ namespace OpenRA
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
 		ISound Play2D(ISoundSource sound, bool loop, bool relative, WPos pos, float volume, bool attenuateVolume);
 		ISound Play2DStream(Stream stream, int channels, int sampleBits, int sampleRate, bool loop, bool relative, WPos pos, float volume);
+		bool Dummy { get; }
 		float Volume { get; set; }
 		void PauseSound(ISound sound, bool paused);
 		void StopSound(ISound sound);

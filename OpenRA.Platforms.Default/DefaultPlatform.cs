@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Primitives;
 
 namespace OpenRA.Platforms.Default
@@ -22,7 +23,15 @@ namespace OpenRA.Platforms.Default
 
 		public ISoundEngine CreateSound(string device)
 		{
-			return new OpenAlSoundEngine(device);
+			try
+			{
+				return new OpenAlSoundEngine(device);
+			}
+			catch (InvalidOperationException e)
+			{
+				Log.Write("sound", "Failed to initialize OpenAL device. Error was {0}", e);
+				return new DummySoundEngine(device);
+			}
 		}
 
 		public IFont CreateFont(byte[] data)
