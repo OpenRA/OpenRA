@@ -35,12 +35,16 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
 	}
 
+	public enum LockResponse { Success, Pending, Failed }
+
 	public class Carryable : ConditionalTrait<CarryableInfo>
 	{
 		ConditionManager conditionManager;
 		int reservedToken = ConditionManager.InvalidConditionToken;
 		int carriedToken = ConditionManager.InvalidConditionToken;
 		int lockedToken = ConditionManager.InvalidConditionToken;
+
+		Mobile mobile;
 
 		public Actor Carrier { get; private set; }
 		public bool Reserved { get { return state != State.Free; } }
@@ -57,6 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			conditionManager = self.Trait<ConditionManager>();
+			mobile = self.TraitOrDefault<Mobile>();
 
 			base.Created(self);
 		}
@@ -111,18 +116,25 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Prepare for transport pickup
-		public virtual bool LockForPickup(Actor self, Actor carrier)
+		public virtual LockResponse LockForPickup(Actor self, Actor carrier)
 		{
-			if (state == State.Locked)
-				return false;
+			if (state == State.Locked && Carrier != carrier)
+				return LockResponse.Failed;
 
-			state = State.Locked;
-			Carrier = carrier;
+			if (state != State.Locked)
+			{
+				state = State.Locked;
+				Carrier = carrier;
 
-			if (lockedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
-				lockedToken = conditionManager.GrantCondition(self, Info.LockedCondition);
+				if (lockedToken == ConditionManager.InvalidConditionToken && !string.IsNullOrEmpty(Info.LockedCondition))
+					lockedToken = conditionManager.GrantCondition(self, Info.LockedCondition);
+			}
 
-			return true;
+			// Make sure we are not moving and at our normal position with respect to the cell grid
+			if (mobile != null && mobile.IsMovingBetweenCells)
+				return LockResponse.Pending;
+
+			return LockResponse.Success;
 		}
 	}
 }

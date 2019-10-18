@@ -183,6 +183,11 @@ namespace OpenRA.Mods.Common.Traits
 		IWrapMove[] moveWrappers;
 		bool requireForceMove;
 
+		public bool IsMovingBetweenCells
+		{
+			get { return FromCell != ToCell; }
+		}
+
 		#region IFacing
 		[Sync]
 		public int Facing

@@ -208,6 +208,13 @@ namespace OpenRA.Mods.Common.Activities
 
 			var nextCell = path[path.Count - 1];
 
+			// Something else might have moved us, so the path is no longer valid.
+			if (!Util.AreAdjacentCells(mobile.ToCell, nextCell))
+			{
+				path = EvalPath();
+				return null;
+			}
+
 			var containsTemporaryBlocker = WorldUtils.ContainsTemporaryBlocker(self.World, nextCell, self);
 
 			// Next cell in the move is blocked by another actor
@@ -331,9 +338,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			public override bool Tick(Actor self)
 			{
-				if (Move.mobile.IsTraitDisabled || Move.mobile.IsTraitPaused)
-					return false;
-
 				var ret = InnerTick(self, Move.mobile);
 
 				if (moveFraction > MoveFractionTotal)
@@ -412,7 +416,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (IsTurn(mobile, nextCell.Value.First))
+					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.First))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.Second);
 						var ret = new MoveFirstHalf(
