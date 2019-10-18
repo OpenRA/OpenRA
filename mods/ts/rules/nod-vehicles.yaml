@@ -427,6 +427,8 @@ SAPC:
 		SubterraneanTransitionImage: dig
 		SubterraneanTransitionSequence: idle
 		SubterraneanTransitionSound: subdril1.aud
+	Carryable:
+		RequiresCondition: !submerged
 
 SUBTANK:
 	Inherits: ^Tank
@@ -473,6 +475,8 @@ SUBTANK:
 		SubterraneanTransitionImage: dig
 		SubterraneanTransitionSequence: idle
 		SubterraneanTransitionSound: subdril1.aud
+	Carryable:
+		RequiresCondition: !submerged
 
 STNK:
 	Inherits: ^Tank
