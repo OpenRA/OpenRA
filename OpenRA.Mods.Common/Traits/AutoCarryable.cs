@@ -102,10 +102,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Prepare for transport pickup
-		public override bool LockForPickup(Actor self, Actor carrier)
+		public override LockResponse LockForPickup(Actor self, Actor carrier)
 		{
-			if (state == State.Locked || !WantsTransport)
-				return false;
+			if ((state == State.Locked && Carrier != carrier) || !WantsTransport)
+				return LockResponse.Failed;
 
 			// Last chance to change our mind...
 			var delta = self.World.Map.CenterOfCell(Destination.Value) - self.CenterPosition;
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Cancel pickup
 				MovementCancelled(self);
-				return false;
+				return LockResponse.Failed;
 			}
 
 			return base.LockForPickup(self, carrier);

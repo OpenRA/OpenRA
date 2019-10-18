@@ -221,6 +221,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (captures == null)
 				return false;
 
+			// HACK: Make sure the target is not moving and at its normal position with respect to the cell grid
+			var enterMobile = target.TraitOrDefault<Mobile>();
+			if (enterMobile != null && enterMobile.IsMovingBetweenCells)
+				return false;
+
 			if (progressWatchers.Any() || targetManager.progressWatchers.Any())
 			{
 				currentTargetTotal = captures.Info.CaptureDelay;

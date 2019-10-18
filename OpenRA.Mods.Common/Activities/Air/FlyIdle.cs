@@ -23,12 +23,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly int turnSpeed;
 		int remainingTicks;
 
-		public FlyIdle(Actor self, int ticks = -1)
+		public FlyIdle(Actor self, int ticks = -1, bool tickIdle = true)
 		{
 			aircraft = self.Trait<Aircraft>();
-			tickIdles = self.TraitsImplementing<INotifyIdle>().ToArray();
 			turnSpeed = aircraft.Info.IdleTurnSpeed > -1 ? aircraft.Info.IdleTurnSpeed : aircraft.TurnSpeed;
 			remainingTicks = ticks;
+
+			if (tickIdle)
+				tickIdles = self.TraitsImplementing<INotifyIdle>().ToArray();
 		}
 
 		public override bool Tick(Actor self)
@@ -42,8 +44,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (remainingTicks > 0)
 				remainingTicks--;
 
-			foreach (var tickIdle in tickIdles)
-				tickIdle.TickIdle(self);
+			if (tickIdles != null)
+				foreach (var tickIdle in tickIdles)
+					tickIdle.TickIdle(self);
 
 			if (!aircraft.Info.CanHover)
 			{
