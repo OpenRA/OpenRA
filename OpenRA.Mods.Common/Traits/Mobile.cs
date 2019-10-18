@@ -184,6 +184,11 @@ namespace OpenRA.Mods.Common.Traits
 		public bool TurnToMove;
 		public bool IsBlocking { get; private set; }
 
+		public bool IsMovingBetweenCells
+		{
+			get { return FromCell != ToCell; }
+		}
+
 		#region IFacing
 		[Sync]
 		public int Facing
