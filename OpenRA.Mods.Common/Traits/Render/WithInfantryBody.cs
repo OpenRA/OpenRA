@@ -93,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected override void Created(Actor self)
 		{
 			rsm = self.TraitOrDefault<IRenderInfantrySequenceModifier>();
+			idleDelay = self.World.SharedRandom.Next(Info.MinIdleDelay, Info.MaxIdleDelay);
 
 			base.Created(self);
 		}
