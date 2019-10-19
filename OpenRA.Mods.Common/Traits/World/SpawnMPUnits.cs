@@ -111,13 +111,10 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 				}
 
-				var subCell = ip.SharesCell ? w.ActorMap.FreeSubCell(validCell) : 0;
-
 				w.CreateActor(s.ToLowerInvariant(), new TypeDictionary
 				{
 					new OwnerInit(p),
 					new LocationInit(validCell),
-					new SubCellInit(subCell),
 					new FacingInit(unitGroup.SupportActorsFacing < 0 ? w.SharedRandom.Next(256) : unitGroup.SupportActorsFacing)
 				});
 			}

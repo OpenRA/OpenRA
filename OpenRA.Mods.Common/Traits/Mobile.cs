@@ -152,7 +152,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Lazy<IEnumerable<int>> speedModifiers;
 
 		readonly bool returnToCellOnCreation;
-		readonly bool returnToCellOnCreationRecalculateSubCell = true;
 		readonly int creationActivityDelay;
 
 		#region IMove CurrentMovementTypes
@@ -251,10 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			ToSubCell = FromSubCell = info.LocomotorInfo.SharesCell ? init.World.Map.Grid.DefaultSubCell : SubCell.FullCell;
 			if (init.Contains<SubCellInit>())
-			{
 				FromSubCell = ToSubCell = init.Get<SubCellInit, SubCell>();
-				returnToCellOnCreationRecalculateSubCell = false;
-			}
 
 			if (init.Contains<LocationInit>())
 			{
@@ -315,6 +311,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
+			// Recalculate exit subcell.
+			ToSubCell = Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(ToCell, ToSubCell) : SubCell.FullCell;
+			if (ToSubCell == SubCell.Invalid)
+				ToSubCell = self.World.Map.Grid.DefaultSubCell;
+
+			// Reserve the exit cell
+			var pos = self.CenterPosition;
+			SetPosition(self, ToCell, ToSubCell);
+			SetVisualPosition(self, pos);
+
+			// Recalculate facing
+			var toPos = self.World.Map.CenterOfSubCell(ToCell, ToSubCell);
+			Facing = (toPos - pos).LengthSquared > 0 ? (toPos - pos).Yaw.Facing : Facing;
+
+			// Move onto the grid if necessary.
+			if (self.IsIdle && toPos != pos)
+				self.QueueActivity(ReturnToCell(self));
+
 			self.World.AddToMaps(self, this);
 		}
 
@@ -620,49 +634,27 @@ namespace OpenRA.Mods.Common.Traits
 		class ReturnToCellActivity : Activity
 		{
 			readonly Mobile mobile;
-			readonly bool recalculateSubCell;
+			readonly int delay;
 
-			CPos cell;
-			SubCell subCell;
-			WPos pos;
-			int delay;
-
-			public ReturnToCellActivity(Actor self, int delay = 0, bool recalculateSubCell = false)
+			public ReturnToCellActivity(Actor self, int delay = 0)
 			{
 				mobile = self.Trait<Mobile>();
 				IsInterruptible = false;
 				this.delay = delay;
-				this.recalculateSubCell = recalculateSubCell;
 			}
 
 			protected override void OnFirstRun(Actor self)
 			{
-				pos = self.CenterPosition;
-				if (self.World.Map.DistanceAboveTerrain(pos) > WDist.Zero && self.TraitOrDefault<Parachutable>() != null)
+				if (self.World.Map.DistanceAboveTerrain(self.CenterPosition) > WDist.Zero && self.TraitOrDefault<Parachutable>() != null)
 					QueueChild(new Parachute(self));
 			}
 
 			public override bool Tick(Actor self)
 			{
-				pos = self.CenterPosition;
-				cell = mobile.ToCell;
-				subCell = mobile.ToSubCell;
-
-				if (recalculateSubCell)
-					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell) : SubCell.FullCell;
-
-				// TODO: solve/reduce cell is full problem
-				if (subCell == SubCell.Invalid)
-					subCell = self.World.Map.Grid.DefaultSubCell;
-
-				// Reserve the exit cell
-				mobile.SetPosition(self, cell, subCell);
-				mobile.SetVisualPosition(self, pos);
-
 				if (delay > 0)
 					QueueChild(new Wait(delay));
 
-				QueueChild(mobile.VisualMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
+				QueueChild(mobile.VisualMove(self, self.CenterPosition, self.World.Map.CenterOfSubCell(mobile.toCell, mobile.ToSubCell)));
 				return true;
 			}
 		}
@@ -953,7 +945,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			return returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay, returnToCellOnCreationRecalculateSubCell) : null;
+			return returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay) : null;
 		}
 
 		class MoveOrderTargeter : IOrderTargeter

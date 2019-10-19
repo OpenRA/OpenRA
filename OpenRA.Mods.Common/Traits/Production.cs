@@ -54,28 +54,15 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				exit = self.Location + exitinfo.ExitCell;
 				var spawn = self.CenterPosition + exitinfo.SpawnOffset;
-				var to = self.World.Map.CenterOfCell(exit);
-
 				var initialFacing = exitinfo.Facing;
-				if (exitinfo.Facing < 0)
-				{
-					var delta = to - spawn;
-					if (delta.HorizontalLengthSquared == 0)
-					{
-						var fi = producee.TraitInfoOrDefault<IFacingInfo>();
-						initialFacing = fi != null ? fi.GetInitialFacing() : 0;
-					}
-					else
-						initialFacing = delta.Yaw.Facing;
-				}
 
 				exitLocations = rp.Value != null ? rp.Value.Path : new List<CPos> { exit };
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
-				td.Add(new FacingInit(initialFacing));
-				if (exitinfo != null)
-					td.Add(new CreationActivityDelayInit(exitinfo.ExitDelay));
+				td.Add(new CreationActivityDelayInit(exitinfo.ExitDelay));
+				if (initialFacing >= 0)
+					td.Add(new FacingInit(initialFacing));
 			}
 
 			self.World.AddFrameEndTask(w =>
