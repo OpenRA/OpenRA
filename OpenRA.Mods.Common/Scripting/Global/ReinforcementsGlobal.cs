@@ -47,9 +47,11 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (entryLocation.HasValue)
 			{
-				var pi = ai.TraitInfoOrDefault<AircraftInfo>();
-				initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi != null ? pi.CruiseAltitude.Length : 0)));
 				initDict.Add(new LocationInit(entryLocation.Value));
+
+				var pi = ai.TraitInfoOrDefault<AircraftInfo>();
+				if (pi != null)
+					initDict.Add(new CenterPositionInit(owner.World.Map.CenterOfCell(entryLocation.Value) + new WVec(0, 0, pi.CruiseAltitude.Length)));
 			}
 
 			if (entryLocation.HasValue && nextLocation.HasValue)
