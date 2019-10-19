@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (pool == null)
 				throw new LuaException("Invalid ammopool name {0} queried on actor {1}.".F(poolName, self));
 
-			return pool.GetAmmoCount();
+			return pool.CurrentAmmoCount;
 		}
 
 		[Desc("Returns the maximum count of ammo the actor can load.")]

@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 				wasRepaired = true;
 			}
 
-			var cannotRearmAtHost = rearmable == null || !rearmable.Info.RearmActors.Contains(host.Info.Name) || rearmable.RearmableAmmoPools.All(p => p.FullAmmo());
+			var cannotRearmAtHost = rearmable == null || !rearmable.Info.RearmActors.Contains(host.Info.Name) || rearmable.RearmableAmmoPools.All(p => p.HasFullAmmo);
 			if (!cannotRearmAtHost)
 				activeResupplyTypes |= ResupplyType.Rearm;
 		}
@@ -277,7 +277,7 @@ namespace OpenRA.Mods.Common.Activities
 			var rearmComplete = true;
 			foreach (var ammoPool in rearmable.RearmableAmmoPools)
 			{
-				if (!ammoPool.FullAmmo())
+				if (!ammoPool.HasFullAmmo)
 				{
 					if (--ammoPool.RemainingTicks <= 0)
 					{
