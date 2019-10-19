@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRearm()
 		{
-			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
+			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
