@@ -540,7 +540,7 @@ namespace OpenRA.Mods.Common.Traits
 			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
 			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
 
-			var allowedToEnterRearmer = canRearmAtActor && (allowedToForceEnter || rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo()));
+			var allowedToEnterRearmer = canRearmAtActor && (allowedToForceEnter || rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo));
 			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || self.GetDamageState() != DamageState.Undamaged);
 
 			return allowedToEnterRearmer || allowedToEnterRepairer;
@@ -654,7 +654,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanRearmAt(Actor host)
 		{
-			return rearmable != null && rearmable.Info.RearmActors.Contains(host.Info.Name) && rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
+			return rearmable != null && rearmable.Info.RearmActors.Contains(host.Info.Name) && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
 		}
 
 		public bool CanRepairAt(Actor host)

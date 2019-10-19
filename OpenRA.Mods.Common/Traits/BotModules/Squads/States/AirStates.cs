@@ -114,13 +114,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		protected static bool FullAmmo(Actor a)
 		{
 			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.FullAmmo());
+			return ammoPools.All(x => x.HasFullAmmo);
 		}
 
 		protected static bool HasAmmo(Actor a)
 		{
 			var ammoPools = a.TraitsImplementing<AmmoPool>();
-			return ammoPools.All(x => x.HasAmmo());
+			return ammoPools.All(x => x.HasAmmo);
 		}
 
 		protected static bool ReloadsAutomatically(Actor a)

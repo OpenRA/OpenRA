@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			return rearmable != null && rearmable.Info.RearmActors.Contains(dest.Info.Name)
-					&& rearmable.RearmableAmmoPools.Any(p => !p.FullAmmo());
+					&& rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
 		}
 
 		public override bool Tick(Actor self)

@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
 			{
-				if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo()))
+				if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo))
 				{
 					// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
 					rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally && rearmableInfo.RearmActors.Contains(a.Info.Name))
@@ -137,6 +137,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == minelayer.Info.AmmoPoolName);
 				if (pool == null)
 					return;
+
 				pool.TakeAmmo(self, 1);
 			}
 
