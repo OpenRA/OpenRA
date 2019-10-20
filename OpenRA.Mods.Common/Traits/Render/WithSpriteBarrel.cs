@@ -45,11 +45,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == armament.Turret);
 
-			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, armament.Turret);
+			Func<int> facing = init.GetFacing();
+			var turretFacing = Turreted.TurretFacingFromInit(init, t.InitialFacing, facing, armament.Turret);
 			var anim = new Animation(init.World, image, turretFacing);
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
-			Func<int> facing = init.GetFacing();
 			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromFacing(facing()), facings);
 			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
 			Func<int> zOffset = () =>

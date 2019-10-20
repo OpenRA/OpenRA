@@ -119,26 +119,9 @@ namespace OpenRA.Mods.Common.Traits
 				},
 				(actor, value) =>
 				{
-					// TODO: This can all go away once turrets are properly defined as a relative facing
-					var turretInit = actor.Init<TurretFacingInit>();
-					var turretsInit = actor.Init<TurretFacingsInit>();
 					var facingInit = actor.Init<FacingInit>();
-
 					var oldFacing = facingInit != null ? facingInit.Value(world) : InitialFacing;
 					var newFacing = (int)value;
-
-					if (turretInit != null)
-					{
-						var newTurretFacing = (turretInit.Value(world) + newFacing - oldFacing + 255) % 255;
-						actor.ReplaceInit(new TurretFacingInit(newTurretFacing));
-					}
-
-					if (turretsInit != null)
-					{
-						var newTurretFacings = turretsInit.Value(world)
-							.ToDictionary(kv => kv.Key, kv => (kv.Value + newFacing - oldFacing + 255) % 255);
-						actor.ReplaceInit(new TurretFacingsInit(newTurretFacings));
-					}
 
 					actor.ReplaceInit(new FacingInit(newFacing));
 				});

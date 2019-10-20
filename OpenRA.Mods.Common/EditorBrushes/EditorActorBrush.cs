@@ -60,7 +60,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var td = new TypeDictionary();
 			td.Add(new FacingInit(facing));
-			td.Add(new TurretFacingInit(facing));
 			td.Add(new OwnerInit(ownerName));
 			td.Add(new FactionInit(owner.Faction));
 			preview.SetPreview(actor, td);
@@ -179,9 +178,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (actor.HasTraitInfo<IFacingInfo>())
 				initDict.Add(new FacingInit(facing));
-
-			if (actor.HasTraitInfo<TurretedInfo>())
-				initDict.Add(new TurretFacingInit(facing));
 
 			editorActorPreview = editorLayer.Add(newActorReference);
 

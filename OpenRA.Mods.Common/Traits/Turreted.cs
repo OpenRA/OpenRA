@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = "primary";
 		[Desc("Speed at which the turret turns.")]
 		public readonly int TurnSpeed = 255;
+
+		[Desc("Turret facing relative to body when the actor is idle")]
 		public readonly int InitialFacing = 0;
 
 		[Desc("Number of ticks before turret is realigned. (-1 turns off realignment)")]
@@ -31,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec Offset = WVec.Zero;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly int PreviewFacing = 96;
+		public readonly int PreviewFacing = 0;
 
 		[Desc("Display order for the turret facing slider in the map editor")]
 		public readonly int EditorTurretFacingDisplayOrder = 4;
@@ -57,10 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 					if (init != null)
 						return init.Value(world);
 
-					var facingInit = actor.Init<FacingInit>();
-					if (facingInit != null)
-						return facingInit.Value(world);
-
 					return InitialFacing;
 				},
 				(actor, value) =>
@@ -79,11 +77,16 @@ namespace OpenRA.Mods.Common.Traits
 		IFacing facing;
 		BodyOrientation body;
 
+		int facingOffset = 0;
+
 		[Sync]
 		public int QuantizedFacings = 0;
 
 		[Sync]
-		public int TurretFacing = 0;
+		public int TurretFacing
+		{
+			get { return facing == null ? facingOffset : Util.NormalizeFacing(facingOffset + facing.Facing); }
+		}
 
 		public int? DesiredFacing;
 		int realignTick = 0;
@@ -94,15 +97,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec Offset { get { return Info.Offset + localOffset; } }
 		public string Name { get { return Info.Turret; } }
 
-		public static Func<int> TurretFacingFromInit(IActorInitializer init, int def, string turret = null)
+		static Func<int> FacingOffsetFromInit(IActorInitializer init, int def, string turret = null)
 		{
-			if (turret != null && init.Contains<DynamicTurretFacingsInit>())
-			{
-				Func<int> facing;
-				if (init.Get<DynamicTurretFacingsInit, Dictionary<string, Func<int>>>().TryGetValue(turret, out facing))
-					return facing;
-			}
-
 			if (turret != null && init.Contains<TurretFacingsInit>())
 			{
 				int facing;
@@ -116,22 +112,19 @@ namespace OpenRA.Mods.Common.Traits
 				return () => facing;
 			}
 
-			if (init.Contains<DynamicFacingInit>())
-				return init.Get<DynamicFacingInit, Func<int>>();
-
-			if (init.Contains<FacingInit>())
-			{
-				var facing = init.Get<FacingInit, int>();
-				return () => facing;
-			}
-
 			return () => def;
+		}
+
+		public static Func<int> TurretFacingFromInit(IActorInitializer init, int def, Func<int> facing, string turret = null)
+		{
+			var facingOffset = FacingOffsetFromInit(init, def, turret);
+			return () => facingOffset() + facing();
 		}
 
 		public Turreted(ActorInitializer init, TurretedInfo info)
 			: base(info)
 		{
-			TurretFacing = TurretFacingFromInit(init, Info.InitialFacing, Info.Turret)();
+			facingOffset = FacingOffsetFromInit(init, Info.InitialFacing, Info.Turret)();
 		}
 
 		protected override void Created(Actor self)
@@ -175,8 +168,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void MoveTurret()
 		{
-			var df = DesiredFacing ?? (facing != null ? facing.Facing : TurretFacing);
-			TurretFacing = Util.TickFacing(TurretFacing, df, Info.TurnSpeed);
+			var df = DesiredFacing ?? Info.InitialFacing;
+			facingOffset = Util.TickFacing(facingOffset, df, Info.TurnSpeed);
 		}
 
 		public bool FaceTarget(Actor self, Target target)
@@ -187,14 +180,15 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = self.CenterPosition;
 			var targetPos = attack.GetTargetPosition(pos, target);
 			var delta = targetPos - pos;
-			DesiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
+			var df = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : TurretFacing;
+			DesiredFacing = facing == null ? df : Util.NormalizeFacing(df - facing.Facing);
 			MoveTurret();
 			return HasAchievedDesiredFacing;
 		}
 
 		public virtual bool HasAchievedDesiredFacing
 		{
-			get { return DesiredFacing == null || TurretFacing == DesiredFacing.Value; }
+			get { return DesiredFacing == null || facingOffset == DesiredFacing.Value; }
 		}
 
 		// Turret offset in world-space
@@ -207,7 +201,6 @@ namespace OpenRA.Mods.Common.Traits
 		// Orientation in world-space
 		public WRot WorldOrientation(Actor self)
 		{
-			// Hack: turretFacing is relative to the world, so subtract the body yaw
 			var world = WRot.FromYaw(WAngle.FromFacing(TurretFacing));
 
 			if (QuantizedFacings == 0)
@@ -229,29 +222,20 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (!facings.Value(self.World).ContainsKey(Name))
-				facings.Value(self.World).Add(Name, TurretFacing);
+				facings.Value(self.World).Add(Name, facingOffset);
 		}
 
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
-			var facings = inits.GetOrDefault<DynamicTurretFacingsInit>();
+			var facings = inits.GetOrDefault<TurretFacingsInit>();
 			if (facings == null)
 			{
-				facings = new DynamicTurretFacingsInit();
+				facings = new TurretFacingsInit();
 				inits.Add(facings);
 			}
 
-			Func<int> bodyFacing = () => facing.Facing;
-			var dynamicFacing = inits.GetOrDefault<DynamicFacingInit>();
-			var staticFacing = inits.GetOrDefault<FacingInit>();
-			if (dynamicFacing != null)
-				bodyFacing = dynamicFacing.Value(self.World);
-			else if (staticFacing != null)
-				bodyFacing = () => staticFacing.Value(self.World);
-
 			// Freeze the relative turret facing to its current value
-			var facingOffset = TurretFacing - bodyFacing();
-			facings.Value(self.World).Add(Name, () => bodyFacing() + facingOffset);
+			facings.Value(self.World).Add(Name, facingOffset);
 		}
 
 		protected override void TraitDisabled(Actor self)
@@ -279,13 +263,5 @@ namespace OpenRA.Mods.Common.Traits
 		public TurretFacingsInit() { }
 		public TurretFacingsInit(Dictionary<string, int> init) { value = init; }
 		public Dictionary<string, int> Value(World world) { return value; }
-	}
-
-	public class DynamicTurretFacingsInit : IActorInit<Dictionary<string, Func<int>>>
-	{
-		readonly Dictionary<string, Func<int>> value = new Dictionary<string, Func<int>>();
-		public DynamicTurretFacingsInit() { }
-		public DynamicTurretFacingsInit(Dictionary<string, Func<int>> init) { value = init; }
-		public Dictionary<string, Func<int>> Value(World world) { return value; }
 	}
 }
