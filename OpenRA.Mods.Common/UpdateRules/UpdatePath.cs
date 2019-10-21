@@ -143,6 +143,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveYesNo(),
 				new RemoveInitialFacingHardcoding(),
 				new RemoveAirdropActorTypeDefault(),
+				new RenameProneTime(),
 			})
 		};
 

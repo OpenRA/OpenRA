@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class TakeCoverInfo : TurretedInfo
 	{
 		[Desc("How long (in ticks) the actor remains prone.")]
-		public readonly int ProneTime = 100;
+		public readonly int Duration = 100;
 
 		[Desc("Prone movement speed as a percentage of the normal speed.")]
 		public readonly int SpeedModifier = 50;
@@ -32,9 +32,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
 
+		[Desc("Muzzle offset modifier to apply while prone.")]
 		public readonly WVec ProneOffset = new WVec(500, 0, 0);
 
 		[SequenceReference(null, true)]
+		[Desc("Sequence prefix to apply while prone.")]
 		public readonly string ProneSequencePrefix = "prone-";
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
@@ -45,9 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly TakeCoverInfo info;
 
 		[Sync]
-		int remainingProneTime = 0;
+		int remainingDuration = 0;
 
-		bool IsProne { get { return !IsTraitDisabled && remainingProneTime > 0; } }
+		bool IsProne { get { return !IsTraitDisabled && remainingDuration > 0; } }
 
 		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return IsProne; } }
 		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.ProneSequencePrefix; } }
@@ -69,17 +71,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsProne)
 				localOffset = info.ProneOffset;
 
-			remainingProneTime = info.ProneTime;
+			remainingDuration = info.Duration;
 		}
 
 		protected override void Tick(Actor self)
 		{
 			base.Tick(self);
 
-			if (!IsTraitPaused && remainingProneTime > 0)
-				remainingProneTime--;
+			if (!IsTraitPaused && remainingDuration > 0)
+				remainingDuration--;
 
-			if (remainingProneTime == 0)
+			if (remainingDuration == 0)
 				localOffset = WVec.Zero;
 		}
 
@@ -107,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			remainingProneTime = 0;
+			remainingDuration = 0;
 		}
 	}
 }
