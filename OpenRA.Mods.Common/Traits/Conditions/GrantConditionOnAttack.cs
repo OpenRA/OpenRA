@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -86,13 +87,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!revokeAll)
 				manager.RevokeCondition(self, tokens.Pop());
 			else
-				while (tokens.Count > 0)
+				while (tokens.Any())
 					manager.RevokeCondition(self, tokens.Pop());
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (tokens.Count > 0 && --cooldown == 0)
+			if (tokens.Any() && --cooldown == 0)
 			{
 				cooldown = info.RevokeDelay;
 				RevokeInstance(self, info.RevokeAll);

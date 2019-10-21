@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			self = init.Self;
-			checkTerrainType = info.AllowedTerrainTypes.Count > 0;
+			checkTerrainType = info.AllowedTerrainTypes.Any();
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
 			if (init.Contains<DeployStateInit>())
 				deployState = init.Get<DeployStateInit, DeployState>();

@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (totalCount >= Info.TotalCap)
 					{
 						// Prefer tokens from the same source
-						if (timedTokens.Count > 0)
+						if (timedTokens.Any())
 						{
 							var expire = timedTokens[0].Token;
 							if (conditionManager.TokenValid(self, expire))
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Watchers will be receiving notifications while the condition is enabled.
 			// They will also be provided with the number of ticks before the last timer ends,
 			// as well as the duration of the longest active instance.
-			if (timedTokens.Count > 0)
+			if (timedTokens.Any())
 			{
 				var remaining = expires - worldTick;
 				foreach (var w in watchers)
