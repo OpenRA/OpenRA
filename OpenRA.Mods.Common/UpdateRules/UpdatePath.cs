@@ -145,6 +145,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAirdropActorTypeDefault(),
 				new RenameProneTime(),
 				new ReplaceAttackTypeStrafe(),
+				new RemoveWithPermanentInjury(),
 			})
 		};
 
