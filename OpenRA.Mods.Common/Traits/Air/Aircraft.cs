@@ -1169,6 +1169,7 @@ namespace OpenRA.Mods.Common.Traits
 		public class AircraftMoveOrderTargeter : IOrderTargeter
 		{
 			readonly Aircraft aircraft;
+			readonly BuildingInfluence bi;
 
 			public string OrderID { get; protected set; }
 			public int OrderPriority { get { return 4; } }
@@ -1177,6 +1178,7 @@ namespace OpenRA.Mods.Common.Traits
 			public AircraftMoveOrderTargeter(Aircraft aircraft)
 			{
 				this.aircraft = aircraft;
+				bi = aircraft.self.World.WorldActor.TraitOrDefault<BuildingInfluence>();
 				OrderID = "Move";
 			}
 
@@ -1194,10 +1196,18 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
-				if (modifiers.HasModifier(TargetModifiers.ForceMove) && aircraft.Info.CanForceLand)
-					OrderID = "Land";
-
 				var location = self.World.Map.CellContaining(target.CenterPosition);
+
+				// Aircraft can be force-landed by issuing a force-move order on a clear terrain cell
+				// Cells that contain a blocking building are treated as regular force move orders, overriding
+				// selection for left-mouse orders
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) && aircraft.Info.CanForceLand)
+				{
+					var building = bi.GetBuildingAt(location);
+					if (building == null || building.TraitOrDefault<Selectable>() == null || aircraft.CanLand(location, blockedByMobile: false))
+						OrderID = "Land";
+				}
+
 				var explored = self.Owner.Shroud.IsExplored(location);
 				cursor = self.World.Map.Contains(location) ?
 					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
