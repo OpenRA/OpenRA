@@ -43,10 +43,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
 	{
 		readonly TakeCoverInfo info;
+
 		[Sync]
 		int remainingProneTime = 0;
 
-		bool IsProne { get { return remainingProneTime > 0; } }
+		bool IsProne { get { return !IsTraitDisabled && remainingProneTime > 0; } }
 
 		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return IsProne; } }
 		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.ProneSequencePrefix; } }
