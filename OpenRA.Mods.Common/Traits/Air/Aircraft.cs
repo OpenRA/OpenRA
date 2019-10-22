@@ -139,10 +139,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
-		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
-			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
-		public readonly BooleanExpression LandOnCondition;
-
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
@@ -237,7 +233,6 @@ namespace OpenRA.Mods.Common.Traits
 		MovementType movementTypes;
 		WPos cachedPosition;
 		int cachedFacing;
-		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
 			: base(info)
@@ -282,16 +277,8 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var observer in base.GetVariableObservers())
 				yield return observer;
 
-			if (Info.LandOnCondition != null)
-				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
-
 			if (Info.RequireForceMoveCondition != null)
 				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
-		}
-
-		void ForceLandConditionChanged(Actor self, IReadOnlyDictionary<string, int> variables)
-		{
-			landNow = Info.LandOnCondition.Evaluate(variables);
 		}
 
 		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
@@ -350,16 +337,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Tick(Actor self)
 		{
-			// Add land activity if LandOnCondition resolves to true and the actor can land at the current location.
-			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
+			// Add land activity if Aircraft trait is paused and the actor can land at the current location.
+			if (!ForceLanding && IsTraitPaused && airborne && CanLand(self.Location)
 				&& !((self.CurrentActivity is Land) || self.CurrentActivity is Turn))
 			{
 				self.QueueActivity(false, new Land(self));
 				ForceLanding = true;
 			}
 
-			// Add takeoff activity if LandOnCondition resolves to false and the actor should not land when idle.
-			if (ForceLanding && landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
+			// Add takeoff activity if Aircraft trait is not paused and the actor should not land when idle.
+			if (ForceLanding && !IsTraitPaused && !cruising && !(self.CurrentActivity is TakeOff))
 			{
 				ForceLanding = false;
 
