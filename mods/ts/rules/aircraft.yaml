@@ -116,6 +116,10 @@ ORCA:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: ORCA.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: ORCA.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
 
@@ -173,6 +177,10 @@ ORCAB:
 		RequiresCondition: cruising
 	SpawnActorOnDeath:
 		Actor: ORCAB.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: ORCAB.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
 
@@ -313,6 +321,10 @@ SCRIN:
 	DeathSounds:
 	SpawnActorOnDeath:
 		Actor: SCRIN.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: SCRIN.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
 
@@ -371,6 +383,10 @@ APACHE:
 	RenderSprites:
 	SpawnActorOnDeath:
 		Actor: APACHE.Husk
+		RequiresCondition: !empdisable
+	SpawnActorOnDeath@EMP:
+		Actor: APACHE.Husk.EMP
+		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
 
