@@ -1087,7 +1087,6 @@
 		VTOL: true
 		CanSlide: True
 	FallsToEarth:
-		Spins: True
 		Moves: False
 		Explosion: HeliCrash
 	Tooltip:
