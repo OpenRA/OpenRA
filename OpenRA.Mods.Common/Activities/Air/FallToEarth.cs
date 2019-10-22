@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -20,15 +21,16 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Aircraft aircraft;
 		readonly FallsToEarthInfo info;
-		int acceleration = 0;
-		int spin = 0;
+
+		int acceleration;
+		int spin;
 
 		public FallToEarth(Actor self, FallsToEarthInfo info)
 		{
 			this.info = info;
 			IsInterruptible = false;
 			aircraft = self.Trait<Aircraft>();
-			if (info.Spins)
+			if (info.MaximumSpinSpeed != 0)
 				acceleration = self.World.SharedRandom.Next(2) * 2 - 1;
 		}
 
@@ -47,9 +49,11 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (info.Spins)
+			if (info.MaximumSpinSpeed != 0)
 			{
-				spin += acceleration;
+				if (info.MaximumSpinSpeed < 0 || Math.Abs(spin) < info.MaximumSpinSpeed)
+					spin += acceleration; // TODO: Possibly unhardcode this
+
 				aircraft.Facing = (aircraft.Facing + spin) % 256;
 			}
 

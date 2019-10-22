@@ -945,9 +945,9 @@
 	Tooltip:
 		GenericName: Destroyed Aircraft
 	FallsToEarth:
-		Spins: true
 		Moves: true
 		Velocity: 112
+		MaximumSpinSpeed: 10
 	HitShape:
 
 ^Visceroid:

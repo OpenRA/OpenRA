@@ -30,8 +30,10 @@ ORCAB.Husk:
 	Tooltip:
 		Name: Orca Bomber
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 3
 		Speed: 96
+	FallsToEarth:
+		MaximumSpinSpeed: 6
 	RenderSprites:
 		Image: orcab
 	RenderVoxels:
@@ -78,8 +80,10 @@ SCRIN.Husk:
 	Tooltip:
 		Name: Banshee Fighter
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 3
 		Speed: 168
+	FallsToEarth:
+		MaximumSpinSpeed: 6
 	RenderSprites:
 		Image: scrin
 	RenderVoxels:

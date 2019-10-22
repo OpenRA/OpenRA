@@ -262,7 +262,7 @@
 		GenericName: Unit
 	WithShadow:
 	FallsToEarth:
-		Spins: False
+		MaximumSpinSpeed: 0
 		Moves: True
 		Explosion: UnitExplodeLarge
 	-MapEditorData:
