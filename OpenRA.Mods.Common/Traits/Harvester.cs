@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Too many harvesters clogs up the refinery's delivery location:
 					if (occupancy >= Info.MaxUnloadQueue)
-						return Constants.InvalidNode;
+						return PathGraph.CostForInvalidCell;
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 					return occupancy * Info.UnloadQueueCostModifier;

@@ -57,31 +57,23 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public static IPathSearch FromPoint(World world, Locomotor locomotor, Actor self, CPos @from, CPos target, BlockedByActor check)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check);
-			var search = new PathSearch(graph)
-			{
-				heuristic = DefaultEstimator(target)
-			};
-
-			search.isGoal = loc =>
-			{
-				var locInfo = search.Graph[loc];
-				return locInfo.EstimatedTotal - locInfo.CostSoFar == 0;
-			};
-
-			if (world.Map.Contains(from))
-				search.AddInitialCell(from);
-
-			return search;
+			return FromPoints(world, locomotor, self, new[] { from }, target, check);
 		}
 
 		public static IPathSearch FromPoints(World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, CPos target, BlockedByActor check)
 		{
 			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check);
-			var search = new PathSearch(graph)
-			{
-				heuristic = DefaultEstimator(target)
-			};
+			var search = new PathSearch(graph);
+			search.heuristic = search.DefaultEstimator(target);
+
+			// The search will aim for the shortest path by default, a weight of 100%.
+			// We can allow the search to find paths that aren't optimal by changing the weight.
+			// We provide a weight that limits the worst case length of the path,
+			// e.g. a weight of 110% will find a path no more than 10% longer than the shortest possible.
+			// The benefit of allowing the search to return suboptimal paths is faster computation time.
+			// The search can skip some areas of the search space, meaning it has less work to do.
+			// We allow paths up to 25% longer than the shortest, optimal path, to improve pathfinding time.
+			search.heuristicWeightPercentage = 125;
 
 			search.isGoal = loc =>
 			{
@@ -89,8 +81,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 				return locInfo.EstimatedTotal - locInfo.CostSoFar == 0;
 			};
 
-			foreach (var sl in froms.Where(sl => world.Map.Contains(sl)))
-				search.AddInitialCell(sl);
+			foreach (var sl in froms)
+				if (world.Map.Contains(sl))
+					search.AddInitialCell(sl);
 
 			return search;
 		}
@@ -119,7 +112,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var currentCell = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(currentCell.CostSoFar, currentCell.EstimatedTotal, currentCell.PreviousPos, CellStatus.Closed);
 
-			if (Graph.CustomCost != null && Graph.CustomCost(currentMinNode) == Constants.InvalidNode)
+			if (Graph.CustomCost != null && Graph.CustomCost(currentMinNode) == PathGraph.CostForInvalidCell)
 				return currentMinNode;
 
 			foreach (var connection in Graph.GetConnections(currentMinNode))

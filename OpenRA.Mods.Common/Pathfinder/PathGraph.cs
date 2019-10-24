@@ -75,6 +75,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 	sealed class PathGraph : IGraph<CellInfo>
 	{
+		public const int CostForInvalidCell = int.MaxValue;
+
 		public Actor Actor { get; private set; }
 		public World World { get; private set; }
 		public Func<CPos, bool> CustomBlock { get; set; }
@@ -146,7 +148,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var neighbor = position + directions[i];
 				var movementCost = GetCostToNode(neighbor, directions[i]);
-				if (movementCost != Constants.InvalidNode)
+				if (movementCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(neighbor, movementCost));
 			}
 
@@ -156,7 +158,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				{
 					var layerPosition = new CPos(position.X, position.Y, cli.First.Index);
 					var entryCost = cli.First.EntryMovementCost(Actor.Info, locomotor.Info, layerPosition);
-					if (entryCost != Constants.InvalidNode)
+					if (entryCost != CostForInvalidCell)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
 			}
@@ -164,7 +166,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var layerPosition = new CPos(position.X, position.Y, 0);
 				var exitCost = customLayerInfo[position.Layer].First.ExitMovementCost(Actor.Info, locomotor.Info, layerPosition);
-				if (exitCost != Constants.InvalidNode)
+				if (exitCost != CostForInvalidCell)
 					validNeighbors.Add(new GraphConnection(layerPosition, exitCost));
 			}
 
@@ -177,7 +179,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (movementCost != short.MaxValue && !(CustomBlock != null && CustomBlock(destNode)))
 				return CalculateCellCost(destNode, direction, movementCost);
 
-			return Constants.InvalidNode;
+			return CostForInvalidCell;
 		}
 
 		int CalculateCellCost(CPos neighborCPos, CVec direction, int movementCost)
@@ -190,8 +192,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (CustomCost != null)
 			{
 				var customCost = CustomCost(neighborCPos);
-				if (customCost == Constants.InvalidNode)
-					return Constants.InvalidNode;
+				if (customCost == CostForInvalidCell)
+					return CostForInvalidCell;
 
 				cellCost += customCost;
 			}
@@ -201,7 +203,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var from = neighborCPos - direction;
 				if (Math.Abs(World.Map.Height[neighborCPos] - World.Map.Height[from]) > 1)
-					return Constants.InvalidNode;
+					return CostForInvalidCell;
 			}
 
 			// Directional bonuses for smoother flow!
