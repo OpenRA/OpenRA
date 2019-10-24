@@ -137,7 +137,14 @@ namespace OpenRA.Mods.Common
 			// Reduce vector by it's biggest value (more calculations, but more accuracy too)
 			var vectorMax = vector.Max(vv => Math.Abs(vv));
 			if (vectorMax == 0)
-				vectorMax = 1;	// Avoid division by 0
+			{
+				vectorMax = 1;  // Avoid division by 0
+
+				// Create a tiny vector to make the while loop maths work
+				vector[0] = 1;
+				vector[1] = 1;
+				vector[2] = 1;
+			}
 
 			vector[0] /= vectorMax;
 			vector[1] /= vectorMax;
