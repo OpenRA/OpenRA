@@ -161,6 +161,7 @@ namespace OpenRA.Mods.Common
 				if (attempt >= 255)
 				{
 					color = RandomPresetColor(random, terrainColors, playerColors);
+					onError("Color could not be adjusted enough, a new color has been picked.");
 					break;
 				}
 
