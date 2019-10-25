@@ -202,12 +202,8 @@ namespace OpenRA.Mods.Common.Traits
 					cells = cells.Shuffle(world.LocalRandom);
 
 				foreach (var cell in cells)
-				{
-					if (!world.CanPlaceBuilding(cell + offset, actorInfo, bi, null))
-						continue;
-
-					return cell;
-				}
+					if (world.CanPlaceBuilding(cell + offset, actorInfo, bi, null))
+						return cell;
 
 				return null;
 			};
