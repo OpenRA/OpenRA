@@ -221,6 +221,10 @@ MADTankThump:
 		Spread: 7c0
 		Damage: 1
 		InvalidTargets: MADTank, Infantry
+	Warhead@Shake: ShakeScreen
+		Duration: 10
+		Intensity: 3
+		Multiplier: 1,0
 
 MADTankDetonate:
 	InvalidTargets: MADTank, Infantry

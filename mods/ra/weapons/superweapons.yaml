@@ -147,3 +147,7 @@ Atomic:
 		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees
 		Size: 5
 		Delay: 20
+	Warhead@21Shake: ShakeScreen
+		Duration: 20
+		Intensity: 5
+		Multiplier: 1,1

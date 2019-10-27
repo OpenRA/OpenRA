@@ -116,6 +116,10 @@ DeathHand:
 		Explosions: nuke
 		ImpactSounds: EXPLLG2.WAV
 		ImpactActors: false
+	Warhead@Shake: ShakeScreen
+		Duration: 20
+		Intensity: 5
+		Multiplier: 1,1
 
 DeathHandCluster:
 	Inherits: Debris2

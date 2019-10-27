@@ -84,6 +84,10 @@ Atomic:
 		InvalidTargets: Vehicle, Structure, Wall
 		Size: 5
 		Delay: 9
+	Warhead@13Shake: ShakeScreen
+		Duration: 20
+		Intensity: 5
+		Multiplier: 1,1
 
 IonCannon:
 	ValidTargets: Ground, Air, Trees
