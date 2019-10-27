@@ -40,8 +40,10 @@ function build_platform()
 	echo "Building core files ($1)"
 	if [ "$1" = "x86" ]; then
 		IS_WIN32="WIN32=true"
+		USE_PROGRAMFILES32="-DUSE_PROGRAMFILES32=true"
 	else
 		IS_WIN32="WIN32=false"
+		USE_PROGRAMFILES32=""
 	fi
 
 	pushd "${SRCDIR}" > /dev/null || exit 1
@@ -69,7 +71,7 @@ function build_platform()
 	markdown "${SRCDIR}/CONTRIBUTING.md" > "${BUILTDIR}/CONTRIBUTING.html"
 
 	echo "Building Windows setup.exe ($1)"
-	makensis -V2 -DSRCDIR="${BUILTDIR}" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" OpenRA.nsi
+	makensis -V2 -DSRCDIR="${BUILTDIR}" -DDEPSDIR="${SRCDIR}/thirdparty/download/windows" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" ${USE_PROGRAMFILES32} OpenRA.nsi
 	if [ $? -eq 0 ]; then
 		mv OpenRA.Setup.exe "${OUTPUTDIR}/OpenRA-$TAG-$1.exe"
 	else
