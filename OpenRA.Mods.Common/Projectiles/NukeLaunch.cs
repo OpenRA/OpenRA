@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Effects
 			this.trailSequences = trailSequences;
 			this.trailPalette = trailPalette;
 			if (trailUsePlayerPalette)
-				trailPalette += firedBy.InternalName;
+				this.trailPalette += firedBy.InternalName;
 
 			this.trailInterval = trailInterval;
 			this.trailDelay = trailDelay;
