@@ -33,12 +33,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[WeaponReference]
 		public readonly string ThumpDamageWeapon = "MADTankThump";
 
-		public readonly int ThumpShakeIntensity = 3;
-
-		public readonly float2 ThumpShakeMultiplier = new float2(1, 0);
-
-		public readonly int ThumpShakeTime = 10;
-
 		[Desc("Measured in ticks.")]
 		public readonly int ChargeDelay = 96;
 
@@ -219,8 +213,6 @@ namespace OpenRA.Mods.Cnc.Traits
 						// Use .FromPos since this weapon needs to affect more than just the MadTank actor
 						mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
 					}
-
-					screenShaker.AddEffect(mad.info.ThumpShakeTime, self.CenterPosition, mad.info.ThumpShakeIntensity, mad.info.ThumpShakeMultiplier);
 				}
 
 				if (ticks == mad.info.ChargeDelay)
