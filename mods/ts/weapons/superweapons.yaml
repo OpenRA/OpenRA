@@ -53,6 +53,10 @@ ClusterMissile:
 		RandomClusterCount: 10
 		Dimensions: 7,7
 		Footprint: __xxx__ _xxxxx_ xxxxxxx xxxxxxx xxxxxxx _xxxxx_ __xxx__
+	Warhead@Shake: ShakeScreen
+		Duration: 20
+		Intensity: 5
+		Multiplier: 1,1
 
 SuicideBomb:
 	Range: 0c512
