@@ -14,7 +14,6 @@
 ;  You should have received a copy of the GNU General Public License
 ;  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
 
-
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
 !include "WordFunc.nsh"
@@ -24,8 +23,20 @@ OutFile "OpenRA.Setup.exe"
 
 ManifestDPIAware true
 
-InstallDir "$PROGRAMFILES\OpenRA${SUFFIX}"
-InstallDirRegKey HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
+Function .onInit
+	!ifndef USE_PROGRAMFILES32
+		SetRegView 64
+	!endif
+	ReadRegStr $INSTDIR HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
+	StrCmp $INSTDIR "" unset done
+	unset:
+	!ifndef USE_PROGRAMFILES32
+		StrCpy $INSTDIR "$PROGRAMFILES64\OpenRA${SUFFIX}"
+	!else
+		StrCpy $INSTDIR "$PROGRAMFILES32\OpenRA${SUFFIX}"
+	!endif
+	done:
+FunctionEnd
 
 SetCompressor lzma
 RequestExecutionLevel admin
