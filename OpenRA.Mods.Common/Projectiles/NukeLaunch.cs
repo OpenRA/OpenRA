@@ -151,8 +151,6 @@ namespace OpenRA.Mods.Common.Effects
 
 			weapon.Impact(target, warheadArgs);
 
-			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
-
 			foreach (var flash in world.WorldActor.TraitsImplementing<FlashPaletteEffect>())
 				if (flash.Info.Type == flashType)
 					flash.Enable(-1);
