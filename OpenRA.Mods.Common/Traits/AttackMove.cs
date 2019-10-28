@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 			return prefix + "-blocked";
 		}
 
-		public override bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
+		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
 			// Custom order generators always override selection
 			return true;
