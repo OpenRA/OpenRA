@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Local misc stuff
 
-		public void Nudge(Actor self, Actor nudger, bool force)
+		public void Nudge(Actor self, Actor nudger)
 		{
 			if (IsTraitDisabled || IsTraitPaused || requireForceMove)
 				return;
@@ -319,42 +319,42 @@ namespace OpenRA.Mods.Common.Traits
 			var availCells = new List<CPos>();
 			var notStupidCells = new List<CPos>();
 
-			for (var i = -1; i < 2; i++)
-				for (var j = -1; j < 2; j++)
-				{
-					var p = ToCell + new CVec(i, j);
-					if (CanEnterCell(p))
-						availCells.Add(p);
-					else if (p != nudger.Location && p != ToCell)
-						notStupidCells.Add(p);
-				}
-
-			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) : (CPos?)null;
-
-			if (moveTo.HasValue)
+			var directions = CVec.Directions;
+			for (var i = 0; i < directions.Length; i++)
 			{
-				self.QueueActivity(false, new Move(self, moveTo.Value, WDist.Zero));
+				var p = ToCell + directions[i];
+				if (CanEnterCell(p))
+					availCells.Add(p);
+				else if (p != nudger.Location && p != ToCell)
+					notStupidCells.Add(p);
+			}
+
+			if (availCells.Count > 0)
+			{
+				var moveTo = availCells.Random(self.World.SharedRandom);
+
+				self.QueueActivity(false, new Move(self, moveTo, WDist.Zero));
 				self.ShowTargetLines();
 
 				Log.Write("debug", "OnNudge #{0} from {1} to {2}",
-					self.ActorID, self.Location, moveTo.Value);
+					self.ActorID, self.Location, moveTo);
 			}
 			else
 			{
-				var cellInfo = notStupidCells
+				var cell = notStupidCells
 					.SelectMany(c => self.World.ActorMap.GetActorsAt(c)
 						.Where(a => a.IsIdle && a.Info.HasTraitInfo<MobileInfo>()),
-						(c, a) => new { Cell = c, Actor = a })
+						(c, a) => c)
 					.RandomOrDefault(self.World.SharedRandom);
 
-				if (cellInfo != null)
+				if (cell != CPos.Zero)
 				{
-					self.QueueActivity(false, new CallFunc(() => self.NotifyBlocker(cellInfo.Cell)));
-					self.QueueActivity(new WaitFor(() => CanEnterCell(cellInfo.Cell)));
-					self.QueueActivity(new Move(self, cellInfo.Cell));
+					self.QueueActivity(false, new CallFunc(() => self.NotifyBlocker(cell)));
+					self.QueueActivity(new WaitFor(() => CanEnterCell(cell)));
+					self.QueueActivity(new Move(self, cell));
 
 					Log.Write("debug", "OnNudge (notify next blocking actor, wait and move) #{0} from {1} to {2}",
-						self.ActorID, self.Location, cellInfo.Cell);
+						self.ActorID, self.Location, cell);
 				}
 				else
 				{
@@ -826,7 +826,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.IsIdle)
 			{
-				Nudge(self, blocking, true);
+				Nudge(self, blocking);
 				return;
 			}
 
@@ -885,7 +885,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 
 			if (order.OrderString == "Scatter")
-				Nudge(self, self, true);
+				Nudge(self, self);
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
