@@ -89,7 +89,7 @@ namespace OpenRA.Orders
 		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
 
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
-		public virtual bool InputOverridesSelection(WorldRenderer wr, World world, int2 xy, MouseInput mi)
+		public virtual bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(xy)
 				.Where(a => !a.Actor.IsDead)
