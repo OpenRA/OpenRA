@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 						var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
 							x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
 
-						if (!selectableActor || uog.InputOverridesSelection(worldRenderer, World, mousePos, mi))
+						if (!selectableActor || uog.InputOverridesSelection(World, mousePos, mi))
 						{
 							// Order units instead of selecting
 							ApplyOrders(World, mi);
