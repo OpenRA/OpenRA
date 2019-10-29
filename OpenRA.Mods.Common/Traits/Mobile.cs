@@ -229,6 +229,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (FromCell == ToCell)
 				return new[] { Pair.New(FromCell, FromSubCell) };
 
+			// HACK: Should be fixed properly, see https://github.com/OpenRA/OpenRA/pull/17292 for an explanation
+			if (Info.LocomotorInfo.SharesCell)
+				return new[] { Pair.New(ToCell, ToSubCell) };
+
 			return new[] { Pair.New(FromCell, FromSubCell), Pair.New(ToCell, ToSubCell) };
 		}
 		#endregion
