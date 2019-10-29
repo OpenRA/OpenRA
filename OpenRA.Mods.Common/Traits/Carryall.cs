@@ -372,7 +372,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get { return "DeliverUnit"; } }
 			public int OrderPriority { get { return 6; } }
 			public bool IsQueued { get; protected set; }
-			public bool TargetOverridesSelection(TargetModifiers modifiers) { return true; }
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			public CarryallDeliverUnitTargeter(AircraftInfo aircraftInfo, CarryallInfo info)
 			{
