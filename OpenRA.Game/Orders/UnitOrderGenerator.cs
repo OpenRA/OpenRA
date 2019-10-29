@@ -119,7 +119,7 @@ namespace OpenRA.Orders
 			foreach (var a in world.Selection.Actors)
 			{
 				var o = OrderForUnit(a, target, actorsAt, cell, mi);
-				if (o != null && o.Order.TargetOverridesSelection(modifiers))
+				if (o != null && o.Order.TargetOverridesSelection(a, target, actorsAt, cell, modifiers))
 					return true;
 			}
 
