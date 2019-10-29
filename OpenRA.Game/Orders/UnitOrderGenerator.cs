@@ -101,22 +101,19 @@ namespace OpenRA.Orders
 			var target = Target.FromActor(actor);
 			var cell = world.Map.CellContaining(target.CenterPosition);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
-			var underCursor = world.Selection.Actors
-				.Select(a => new ActorBoundsPair(a, a.MouseBounds(wr)))
-				.WithHighestSelectionPriority(xy, mi.Modifiers);
 
-			var o = OrderForUnit(underCursor, target, actorsAt, cell, mi);
-			if (o != null)
+			var modifiers = TargetModifiers.None;
+			if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
+				modifiers |= TargetModifiers.ForceAttack;
+			if (mi.Modifiers.HasModifier(Modifiers.Shift))
+				modifiers |= TargetModifiers.ForceQueue;
+			if (mi.Modifiers.HasModifier(Modifiers.Alt))
+				modifiers |= TargetModifiers.ForceMove;
+
+			foreach (var a in world.Selection.Actors)
 			{
-				var modifiers = TargetModifiers.None;
-				if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
-					modifiers |= TargetModifiers.ForceAttack;
-				if (mi.Modifiers.HasModifier(Modifiers.Shift))
-					modifiers |= TargetModifiers.ForceQueue;
-				if (mi.Modifiers.HasModifier(Modifiers.Alt))
-					modifiers |= TargetModifiers.ForceMove;
-
-				if (o.Order.TargetOverridesSelection(modifiers))
+				var o = OrderForUnit(a, target, actorsAt, cell, mi);
+				if (o != null && o.Order.TargetOverridesSelection(modifiers))
 					return true;
 			}
 
