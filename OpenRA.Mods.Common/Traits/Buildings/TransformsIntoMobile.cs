@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly TransformsIntoMobile mobile;
 			readonly bool rejectMove;
-			public bool TargetOverridesSelection(TargetModifiers modifiers)
+			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
 			{
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
