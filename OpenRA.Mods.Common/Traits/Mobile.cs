@@ -958,6 +958,10 @@ namespace OpenRA.Mods.Common.Traits
 			readonly bool rejectMove;
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
 			{
+				// Always prioritise orders over selecting other peoples actors or own actors that are already selected
+				if (target.Type == TargetType.Actor && (target.Actor.Owner != self.Owner || self.World.Selection.Contains(target.Actor)))
+					return true;
+
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
 
