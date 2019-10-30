@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				yield return new TargetLineNode(Target.FromCell(self.World, nextCell.Value), Color.Crimson);
 
 			foreach (var c in minefield)
-				yield return new TargetLineNode(Target.FromCell(self.World, c), Color.Crimson, tile: minelayer.Tile);
+				yield return new TargetLineNode(Target.FromCell(self.World, c), Color.Crimson, tile: minelayer.TileOk);
 		}
 
 		static bool CanLayMine(Actor self, CPos p)
