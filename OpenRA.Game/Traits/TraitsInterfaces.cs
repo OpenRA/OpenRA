@@ -162,7 +162,7 @@ namespace OpenRA.Traits
 	public interface IIssueOrder
 	{
 		IEnumerable<IOrderTargeter> OrderTargeters { get; }
-		Order IssueOrder(Actor self, IOrderTargeter orderTargeter, Target target, bool queued);
+		Order IssueOrder(Actor self, IOrderTargeter orderTargeter, Target target, bool queued, CPos extraLoc);
 	}
 
 	[Flags]
@@ -181,9 +181,11 @@ namespace OpenRA.Traits
 	{
 		string OrderID { get; }
 		int OrderPriority { get; }
+		bool CanDrag { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
 		bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);
+		IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target);
 	}
 
 	public interface IResolveOrder { void ResolveOrder(Actor self, Order order); }

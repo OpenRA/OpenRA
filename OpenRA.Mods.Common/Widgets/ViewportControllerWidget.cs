@@ -345,7 +345,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button.HasFlag(MouseButton.Middle) || mi.Button.HasFlag(MouseButton.Left | MouseButton.Right))
 				scrollType = Game.Settings.Game.MiddleMouseScroll;
-			else if (mi.Button.HasFlag(MouseButton.Right))
+			else if (mi.Button.HasFlag(MouseButton.Right) && Game.Settings.Game.UseClassicMouseStyle)
 				scrollType = Game.Settings.Game.RightMouseScroll;
 
 			if (scrollType == MouseScrollType.Disabled)

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Orders
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.Common.Orders
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+		public bool CanDrag { get { return false; } }
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
@@ -44,6 +46,11 @@ namespace OpenRA.Mods.Common.Orders
 			cursor = this.cursor();
 
 			return self == target.Actor;
+		}
+
+		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+		{
+			yield break;
 		}
 
 		public bool IsQueued { get; protected set; }

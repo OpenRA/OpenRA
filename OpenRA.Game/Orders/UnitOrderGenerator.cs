@@ -18,6 +18,32 @@ namespace OpenRA.Orders
 {
 	public class UnitOrderGenerator : IOrderGenerator
 	{
+		readonly bool useClassicMouse = Game.Settings.Game.UseClassicMouseStyle;
+
+		List<UnitOrderResult> orderResults;
+		string lockedCursor;
+		bool canDrag;
+		int ticks;
+		int2 mouseStartPos;
+		CPos startCell;
+		MouseInput heldMouseInput;
+		bool actionButtonHeld;
+		public int2 MousePos;
+
+		public bool IsOrderDragging
+		{
+			get
+			{
+				if (!canDrag)
+					return false;
+
+				if (useClassicMouse)
+					return ticks >= Game.Settings.Game.LeftDragOrderDelay;
+
+				return ticks >= Game.Settings.Game.DragOrderDelay && (mouseStartPos - MousePos).Length > Game.Settings.Game.DragOrderDeadZone;
+			}
+		}
+
 		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(mi)
@@ -37,18 +63,40 @@ namespace OpenRA.Orders
 			return Target.FromCell(world, cell);
 		}
 
-		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public void HoldActionButton(int2 mousePos, CPos cell, MouseInput mi)
+		{
+			mouseStartPos = mousePos;
+			actionButtonHeld = true;
+			startCell = cell;
+			heldMouseInput = mi;
+		}
+
+		public void HoldTarget(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
-			var orderResults = world.Selection.Actors
+			orderResults = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
 				.Where(o => o != null)
 				.ToList();
+		}
 
-			var actorsInvolved = orderResults.Select(o => o.Actor).Distinct();
-			if (!actorsInvolved.Any())
+		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		{
+			if (!IsOrderDragging)
+				HoldTarget(world, cell, worldPixel, mi);
+
+			if (orderResults == null)
 				yield break;
+
+			var selection = world.Selection.Actors;
+			var actorsInvolved = orderResults.Select(o => o.Actor).Distinct();
+			if (!actorsInvolved.Intersect(selection).Any())
+			{
+				orderResults.Clear();
+				actionButtonHeld = false;
+				yield break;
+			}
 
 			// HACK: This is required by the hacky player actions-per-minute calculation
 			// TODO: Reimplement APM properly and then remove this
@@ -58,21 +106,66 @@ namespace OpenRA.Orders
 			};
 
 			foreach (var o in orderResults)
-				yield return CheckSameOrder(o.OrderTargeter, o.Trait.IssueOrder(o.Actor, o.OrderTargeter, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+			{
+				if (!o.Actor.IsInWorld || o.Actor.IsDead || !selection.Contains(o.Actor))
+					continue;
+
+				yield return CheckSameOrder(o.OrderTargeter, o.Trait.IssueOrder(o.Actor, o.OrderTargeter, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift), cell));
+			}
+
+			orderResults.Clear();
+			actionButtonHeld = false;
 		}
 
-		public virtual void Tick(World world) { }
+		public virtual void Tick(World world)
+		{
+			if (actionButtonHeld && !IsOrderDragging && canDrag)
+			{
+				if (!useClassicMouse || (mouseStartPos - MousePos).Length <= Game.Settings.Game.SelectionDeadzone)
+					ticks++;
+
+				if (ticks == (useClassicMouse ? Game.Settings.Game.LeftDragOrderDelay : Game.Settings.Game.DragOrderDelay))
+					HoldTarget(world, startCell, mouseStartPos, heldMouseInput);
+			}
+
+			if (!actionButtonHeld)
+			{
+				ticks = 0;
+				lockedCursor = null;
+			}
+		}
+
 		public virtual IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public virtual IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
-		public virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
+
+		public virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world)
+		{
+			if (orderResults == null || orderResults.Count == 0)
+				yield break;
+
+			if (!IsOrderDragging)
+				yield break;
+
+			foreach (var o in orderResults)
+			{
+				if (!o.Actor.IsInWorld || o.Actor.IsDead)
+					continue;
+
+				foreach (var r in o.OrderTargeter.RenderAnnotations(wr, world, o.Actor, o.Target))
+					yield return r;
+			}
+		}
 
 		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
+			if (IsOrderDragging && lockedCursor != null && lockedCursor.Any())
+				return lockedCursor;
+
 			var target = TargetForInput(world, cell, worldPixel, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 
 			bool useSelect;
-			if (Game.Settings.Game.UseClassicMouseStyle && !InputOverridesSelection(world, worldPixel, mi))
+			if (useClassicMouse && !InputOverridesSelection(world, worldPixel, mi))
 				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>();
 			else
 			{
@@ -82,7 +175,11 @@ namespace OpenRA.Orders
 
 				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.OrderTargeter.OrderPriority);
 				if (cursorOrder != null)
-					return cursorOrder.Cursor;
+				{
+					lockedCursor = cursorOrder.Cursor;
+					canDrag = cursorOrder.OrderTargeter.CanDrag;
+					return lockedCursor;
+				}
 
 				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
 				    (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
@@ -134,9 +231,6 @@ namespace OpenRA.Orders
 		/// </summary>
 		static UnitOrderResult OrderForUnit(Actor self, Target target, List<Actor> actorsAt, CPos xy, MouseInput mi)
 		{
-			if (mi.Button != Game.Settings.Game.MouseButtonPreference.Action)
-				return null;
-
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 

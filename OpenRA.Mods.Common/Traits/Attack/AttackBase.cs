@@ -13,10 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
-using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order is AttackOrderTargeter)
 				return new Order(order.OrderID, self, target, queued);
@@ -437,6 +437,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+			public bool CanDrag { get { return false; } }
 
 			bool CanTargetActor(Actor self, Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
@@ -526,6 +527,11 @@ namespace OpenRA.Mods.Common.Traits
 					default:
 						return false;
 				}
+			}
+
+			public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+			{
+				yield break;
 			}
 
 			public bool IsQueued { get; protected set; }

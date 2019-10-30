@@ -209,6 +209,9 @@ namespace OpenRA
 		public float UIScrollSpeed = 50f;
 		public int SelectionDeadzone = 24;
 		public int MouseScrollDeadzone = 8;
+		public int DragOrderDeadZone = 12;
+		public int DragOrderDelay = 5;
+		public int LeftDragOrderDelay = 25;
 
 		public bool UseClassicMouseStyle = false;
 		public StatusBarsType StatusBars = StatusBarsType.Standard;

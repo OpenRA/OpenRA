@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order.OrderID != "DetonateAttack" && order.OrderID != "Detonate")
 				return null;

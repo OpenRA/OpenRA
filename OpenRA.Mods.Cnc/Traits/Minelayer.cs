@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			switch (order.OrderID)
 			{
@@ -235,6 +235,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			public string OrderID { get { return "BeginMinefield"; } }
 			public int OrderPriority { get { return 5; } }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+			public bool CanDrag { get { return false; } }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
@@ -249,6 +250,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				return modifiers.HasModifier(TargetModifiers.ForceAttack);
+			}
+
+			public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+			{
+				yield break;
 			}
 
 			public bool IsQueued { get; protected set; }

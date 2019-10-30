@@ -13,10 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Pathfinder;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order.OrderID == "Deliver" || order.OrderID == "Harvest")
 				return new Order(order.OrderID, self, target, queued);
@@ -378,6 +378,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public string OrderID { get { return "Harvest"; } }
 			public int OrderPriority { get { return 10; } }
+			public bool CanDrag { get { return false; } }
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
@@ -405,6 +406,11 @@ namespace OpenRA.Mods.Common.Traits
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				return true;
+			}
+
+			public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+			{
+				yield break;
 			}
 		}
 	}
