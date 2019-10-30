@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 			gainsExperience = self.Trait<GainsExperience>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

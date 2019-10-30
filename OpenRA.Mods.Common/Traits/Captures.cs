@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			captureManager = self.Trait<CaptureManager>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

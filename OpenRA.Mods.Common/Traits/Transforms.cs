@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			};
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

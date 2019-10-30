@@ -161,8 +161,8 @@ namespace OpenRA.Traits
 
 	public interface IIssueOrder
 	{
-		IEnumerable<IOrderTargeter> Orders { get; }
-		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
+		IEnumerable<IOrderTargeter> OrderTargeters { get; }
+		Order IssueOrder(Actor self, IOrderTargeter orderTargeter, Target target, bool queued);
 	}
 
 	[Flags]

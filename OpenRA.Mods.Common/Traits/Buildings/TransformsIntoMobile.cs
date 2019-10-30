@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

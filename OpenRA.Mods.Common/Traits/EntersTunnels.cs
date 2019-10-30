@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			move = self.Trait<IMove>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				chargeTick--;
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

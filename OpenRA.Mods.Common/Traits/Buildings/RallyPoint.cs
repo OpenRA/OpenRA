@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			ResetPath(self);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get { yield return new RallyPointOrderTargeter(Info.Cursor); }
 		}

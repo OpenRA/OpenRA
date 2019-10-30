@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 				a.CheckFire(self, facing, target);
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

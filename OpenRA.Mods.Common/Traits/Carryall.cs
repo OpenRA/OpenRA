@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Carryable != null && aircraft.CanLand(targetCell, blockedByMobile: false);
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

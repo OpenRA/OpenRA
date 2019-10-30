@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public Infiltrates(InfiltratesInfo info)
 			: base(info) { }
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

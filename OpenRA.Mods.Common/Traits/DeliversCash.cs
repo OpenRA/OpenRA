@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get { yield return new DeliversCashOrderTargeter(); }
 		}

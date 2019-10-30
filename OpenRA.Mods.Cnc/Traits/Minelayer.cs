@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", "build-valid").GetSprite(0);
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{
