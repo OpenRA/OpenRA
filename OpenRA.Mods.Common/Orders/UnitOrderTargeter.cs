@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -31,6 +32,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
+		public bool CanDrag { get { return false; } }
 		public bool? ForceAttack = null;
 		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
@@ -61,6 +63,11 @@ namespace OpenRA.Mods.Common.Orders
 			return type == TargetType.FrozenActor ?
 				CanTargetFrozenActor(self, target.FrozenActor, modifiers, ref cursor) :
 				CanTargetActor(self, target.Actor, modifiers, ref cursor);
+		}
+
+		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+		{
+			yield break;
 		}
 
 		public virtual bool IsQueued { get; protected set; }

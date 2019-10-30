@@ -211,6 +211,9 @@ namespace OpenRA
 		public float ZoomSpeed = 0.04f;
 		public int SelectionDeadzone = 24;
 		public int MouseScrollDeadzone = 8;
+		public int DragOrderDeadZone = 12;
+		public int DragOrderDelay = 5;
+		public int LeftDragOrderDelay = 25;
 
 		public bool UseClassicMouseStyle = false;
 		public StatusBarsType StatusBars = StatusBarsType.Standard;

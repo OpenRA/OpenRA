@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order.OrderID == "DeployTransform")
 				return new Order(order.OrderID, self, queued);

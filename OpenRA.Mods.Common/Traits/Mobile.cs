@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
@@ -897,7 +898,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Note: Returns a valid order even if the unit can't move to the target
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order is MoveOrderTargeter)
 				return new Order("Move", self, target, queued);
@@ -980,6 +981,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string OrderID { get { return "Move"; } }
 			public int OrderPriority { get { return 4; } }
+			public bool CanDrag { get { return false; } }
 			public bool IsQueued { get; protected set; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
@@ -1000,6 +1002,11 @@ namespace OpenRA.Mods.Common.Traits
 					cursor = mobile.Info.BlockedCursor;
 
 				return true;
+			}
+
+			public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+			{
+				yield break;
 			}
 		}
 	}

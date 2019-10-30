@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order.OrderID == "EnterTransport")
 				return new Order(order.OrderID, self, target, queued);

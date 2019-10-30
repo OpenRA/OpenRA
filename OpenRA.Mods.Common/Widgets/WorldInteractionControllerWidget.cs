@@ -32,13 +32,15 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Color ctrlSelectionColor;
 
 		int2 dragStart, mousePos;
-		bool isDragging = false;
+		bool isLeftDragging;
+		bool isRightDragging;
+		UnitOrderGenerator uog;
 
 		bool IsValidDragbox
 		{
 			get
 			{
-				return isDragging && (dragStart - mousePos).Length > Game.Settings.Game.SelectionDeadzone;
+				return isLeftDragging && (dragStart - mousePos).Length > Game.Settings.Game.SelectionDeadzone;
 			}
 		}
 
@@ -69,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			var modifiers = Game.GetModifierKeys();
-			if (IsValidDragbox)
+			if (IsValidDragbox && (uog == null || !uog.IsOrderDragging))
 			{
 				var a = worldRenderer.Viewport.WorldToViewPx(dragStart);
 				var b = worldRenderer.Viewport.WorldToViewPx(mousePos);
@@ -98,33 +100,42 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			mousePos = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
 
+			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 			var useClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
 
 			var multiClick = mi.MultiTapCount >= 2;
-			var uog = World.OrderGenerator as UnitOrderGenerator;
+			uog = World.OrderGenerator as UnitOrderGenerator;
 
 			if (uog == null)
 			{
 				ApplyOrders(World, mi);
-				isDragging = false;
+				isLeftDragging = false;
 				YieldMouseFocus(mi);
 				return true;
 			}
+
+			uog.MousePos = mousePos;
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				if (!TakeMouseFocus(mi))
 					return false;
 
+				if (useClassicMouseStyle)
+					uog.HoldActionButton(mousePos, cell, mi);
+
 				dragStart = mousePos;
-				isDragging = true;
+				if (!isRightDragging)
+					isLeftDragging = true;
+
+				isRightDragging = false;
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (useClassicMouseStyle && HasMouseFocus)
+				if (useClassicMouseStyle && HasMouseFocus && isLeftDragging)
 				{
-					if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
+					if ((!IsValidDragbox || uog.IsOrderDragging) && World.Selection.Actors.Any() && !multiClick)
 					{
 						var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
 							x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
@@ -133,7 +144,7 @@ namespace OpenRA.Mods.Common.Widgets
 						{
 							// Order units instead of selecting
 							ApplyOrders(World, mi);
-							isDragging = false;
+							isLeftDragging = false;
 							YieldMouseFocus(mi);
 							return true;
 						}
@@ -174,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets
 					// World.CancelInputMode. If we did check it, actor de-selection would not be possible by just clicking somewhere,
 					// only by dragging an empty selection box.
 					*/
-					if (isDragging && (uog.ClearSelectionOnLeftClick || IsValidDragbox))
+					if (isLeftDragging && !uog.IsOrderDragging && (uog.ClearSelectionOnLeftClick || IsValidDragbox))
 					{
 						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, mi.Modifiers);
 						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
@@ -183,20 +194,35 @@ namespace OpenRA.Mods.Common.Widgets
 
 				World.CancelInputMode();
 
-				isDragging = false;
+				isLeftDragging = false;
 				YieldMouseFocus(mi);
+			}
+
+			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
+			{
+				if (!useClassicMouseStyle && !isLeftDragging)
+				{
+					isRightDragging = true;
+					uog.HoldActionButton(mousePos, cell, mi);
+				}
+
+				isLeftDragging = false;
 			}
 
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up)
 			{
 				// Don't do anything while selecting
-				if (!IsValidDragbox)
+				if (!IsValidDragbox || uog.IsOrderDragging)
 				{
-					if (useClassicMouseStyle)
+					if (useClassicMouseStyle && !uog.IsOrderDragging)
 						World.Selection.Clear();
+					else if (isRightDragging)
+						ApplyOrders(World, mi);
 
-					ApplyOrders(World, mi);
+					World.CancelInputMode();
 				}
+
+				isRightDragging = false;
 			}
 
 			return true;
@@ -248,7 +274,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, World, () =>
 			{
 				// Always show an arrow while selecting
-				if (IsValidDragbox)
+				if (IsValidDragbox && (uog == null || !uog.IsOrderDragging))
 					return null;
 
 				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);

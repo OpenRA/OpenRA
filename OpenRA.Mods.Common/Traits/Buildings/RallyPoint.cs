@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -91,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			get { yield return new RallyPointOrderTargeter(Info.Cursor); }
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order.OrderID == OrderID)
 			{
@@ -133,6 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+			public bool CanDrag { get { return false; } }
 			public bool ForceSet { get; private set; }
 			public bool IsQueued { get; protected set; }
 
@@ -160,6 +162,11 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				return false;
+			}
+
+			public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
+			{
+				yield break;
 			}
 		}
 	}
