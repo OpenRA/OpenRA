@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

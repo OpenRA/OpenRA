@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			conditionManager = self.TraitOrDefault<ConditionManager>();
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

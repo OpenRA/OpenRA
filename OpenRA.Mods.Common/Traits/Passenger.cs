@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Cargo ReservedCargo { get; private set; }
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

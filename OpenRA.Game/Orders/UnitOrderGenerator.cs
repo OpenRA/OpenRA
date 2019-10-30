@@ -41,12 +41,12 @@ namespace OpenRA.Orders
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
-			var orders = world.Selection.Actors
+			var orderResults = world.Selection.Actors
 				.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
 				.Where(o => o != null)
 				.ToList();
 
-			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
+			var actorsInvolved = orderResults.Select(o => o.Actor).Distinct();
 			if (!actorsInvolved.Any())
 				yield break;
 
@@ -57,8 +57,8 @@ namespace OpenRA.Orders
 				TargetString = actorsInvolved.Select(a => a.ActorID).JoinWith(",")
 			};
 
-			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+			foreach (var o in orderResults)
+				yield return CheckSameOrder(o.OrderTargeter, o.Trait.IssueOrder(o.Actor, o.OrderTargeter, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
 		}
 
 		public virtual void Tick(World world) { }
@@ -80,7 +80,7 @@ namespace OpenRA.Orders
 					.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
 					.Where(o => o != null && o.Cursor != null);
 
-				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
+				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.OrderTargeter.OrderPriority);
 				if (cursorOrder != null)
 					return cursorOrder.Cursor;
 
@@ -120,7 +120,7 @@ namespace OpenRA.Orders
 			foreach (var a in world.Selection.Actors)
 			{
 				var o = OrderForUnit(a, target, actorsAt, cell, mi);
-				if (o != null && o.Order.TargetOverridesSelection(a, target, actorsAt, cell, modifiers))
+				if (o != null && o.OrderTargeter.TargetOverridesSelection(a, target, actorsAt, cell, modifiers))
 					return true;
 			}
 
@@ -161,9 +161,9 @@ namespace OpenRA.Orders
 			// Other action that replace the SelectManySingleSelectorIterator with a
 			// different enumerator type (e.g. .Where(true) or .ToList()) also work.
 			var orders = self.TraitsImplementing<IIssueOrder>()
-				.SelectMany(trait => trait.Orders.Select(x => new { Trait = trait, Order = x }))
+				.SelectMany(trait => trait.OrderTargeters.Select(x => new { Trait = trait, OrderTargeter = x }))
 				.Select(x => x)
-				.OrderByDescending(x => x.Order.OrderPriority);
+				.OrderByDescending(x => x.OrderTargeter.OrderPriority);
 
 			for (var i = 0; i < 2; i++)
 			{
@@ -171,8 +171,8 @@ namespace OpenRA.Orders
 				{
 					var localModifiers = modifiers;
 					string cursor = null;
-					if (o.Order.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
-						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
+					if (o.OrderTargeter.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
+						return new UnitOrderResult(self, o.OrderTargeter, o.Trait, cursor, target);
 				}
 
 				// No valid orders, so check for orders against the cell
@@ -194,15 +194,15 @@ namespace OpenRA.Orders
 		class UnitOrderResult
 		{
 			public readonly Actor Actor;
-			public readonly IOrderTargeter Order;
+			public readonly IOrderTargeter OrderTargeter;
 			public readonly IIssueOrder Trait;
 			public readonly string Cursor;
 			public readonly Target Target;
 
-			public UnitOrderResult(Actor actor, IOrderTargeter order, IIssueOrder trait, string cursor, Target target)
+			public UnitOrderResult(Actor actor, IOrderTargeter orderTargeter, IIssueOrder trait, string cursor, Target target)
 			{
 				Actor = actor;
-				Order = order;
+				OrderTargeter = orderTargeter;
 				Trait = trait;
 				Cursor = cursor;
 				Target = target;

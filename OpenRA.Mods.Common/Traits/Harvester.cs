@@ -277,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.Resources.Contains(resType.Info.Type);
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public EngineerRepair(ActorInitializer init, EngineerRepairInfo info)
 			: base(info) { }
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{

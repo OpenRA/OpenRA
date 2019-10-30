@@ -891,7 +891,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.ActorMap.UpdateOccupiedCells(self.OccupiesSpace);
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
 		}
 
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.OrderTargeters
 		{
 			get
 			{

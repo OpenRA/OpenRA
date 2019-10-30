@@ -940,7 +940,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement order interfaces
 
-		public IEnumerable<IOrderTargeter> Orders
+		public IEnumerable<IOrderTargeter> OrderTargeters
 		{
 			get
 			{
