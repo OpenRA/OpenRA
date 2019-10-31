@@ -86,7 +86,8 @@ namespace OpenRA.Mods.Common.Traits
 		// initialized and used by CanEnterCell
 		Locomotor locomotor;
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All,
+			CPos? fromCell = null)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
 			if (locomotor == null)
@@ -96,7 +97,34 @@ namespace OpenRA.Mods.Common.Traits
 			if (locomotor.MovementCostForCell(cell) == short.MaxValue)
 				return false;
 
-			return locomotor.CanMoveFreelyInto(self, cell, check, ignoreActor);
+			if (!locomotor.CanMoveFreelyInto(self, cell, check, ignoreActor))
+				return false;
+
+			// We cannot cross diagonals if another actor is already moving orthogonaly.
+			if (fromCell.HasValue)
+			{
+				var direction = (cell - fromCell.Value);
+				if (direction.X == 0 || direction.Y == 0)
+					return true;
+
+				var diag1 = cell + new CVec(direction.X, 0);
+				var diag2 = cell + new CVec(0, direction.Y);
+				if (locomotor.CanMoveFreelyInto(self, diag1, check, ignoreActor) ||
+					locomotor.CanMoveFreelyInto(self, diag2, check, ignoreActor))
+					return true;
+
+				foreach (var actor in self.World.ActorMap.GetActorsAt(diag1))
+				{
+					if (actor == self)
+						continue;
+
+					foreach (Pair<CPos, SubCell> iCell in actor.OccupiesSpace.OccupiedCells())
+						if (iCell.First == diag2)
+							return false;
+				}
+			}
+
+			return true;
 		}
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
@@ -188,6 +216,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsImmovable { get; private set; }
 		public bool TurnToMove;
+
 		public bool IsBlocking { get; private set; }
 
 		public bool IsMovingBetweenCells
@@ -496,9 +525,10 @@ namespace OpenRA.Mods.Common.Traits
 			return Locomotor.MovementCostForCell(cell) != short.MaxValue;
 		}
 
-		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All,
+			CPos? fromCell = null)
 		{
-			return Info.CanEnterCell(self.World, self, cell, ignoreActor, check);
+			return Info.CanEnterCell(self.World, self, cell, ignoreActor, check, fromCell);
 		}
 
 		#endregion

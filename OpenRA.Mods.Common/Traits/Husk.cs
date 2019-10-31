@@ -42,7 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All,
+			CPos? fromCell = null)
 		{
 			// IPositionable*Info*.CanEnterCell is only ever used for things like exiting production facilities,
 			// all places relevant for husks check IPositionable.CanEnterCell instead, so we can safely set this to true.
@@ -119,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 				.All(x => x == ignoreActor) ? SubCell.FullCell : SubCell.Invalid;
 		}
 
-		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, check) != SubCell.Invalid;
 		}

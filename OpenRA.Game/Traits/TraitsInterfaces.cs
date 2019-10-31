@@ -324,14 +324,15 @@ namespace OpenRA.Traits
 
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{
-		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
+		bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All,
+			CPos? fromCell = null);
 	}
 
 	public interface IPositionable : IOccupySpace
 	{
 		bool CanExistInCell(CPos location);
 		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
-		bool CanEnterCell(CPos location, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
+		bool CanEnterCell(CPos location, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromcell = null);
 		SubCell GetValidSubCell(SubCell preferred = SubCell.Any);
 		SubCell GetAvailableSubCell(CPos location, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
 		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any);

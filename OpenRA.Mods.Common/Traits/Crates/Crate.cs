@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IOccupySpaceInfo.SharesCell { get { return false; } }
 
-		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			return GetAvailableSubCell(world, cell, ignoreActor, check) != SubCell.Invalid;
 		}
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(CPos cell) { return info.CanExistInCell(self.World, cell); }
 
-		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All, CPos? fromCell = null)
 		{
 			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, check) != SubCell.Invalid;
 		}
