@@ -126,11 +126,18 @@ namespace OpenRA.Mods.Common.Traits
 				&& !a.GetEnabledTargetTypes().IsEmpty;
 		}
 
+		protected override void Created(Actor self)
+		{
+			// Special case handling is required for the Player actor.
+			// Created is called before Player.PlayerActor is assigned,
+			// so we must query player traits from self, which refers
+			// for bot modules always to the Player actor.
+			notifyPositionsUpdated = self.TraitsImplementing<IBotPositionsUpdated>().ToArray();
+			notifyIdleBaseUnits = self.TraitsImplementing<IBotNotifyIdleBaseUnits>().ToArray();
+		}
+
 		protected override void TraitEnabled(Actor self)
 		{
-			notifyPositionsUpdated = Player.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
-			notifyIdleBaseUnits = Player.PlayerActor.TraitsImplementing<IBotNotifyIdleBaseUnits>().ToArray();
-
 			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
 			var smallFractionOfRushInterval = Info.RushInterval / 20;
 			rushTicks = World.LocalRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);

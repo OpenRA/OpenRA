@@ -80,11 +80,18 @@ namespace OpenRA.Mods.Common.Traits
 			unitCannotBeOrdered = a => a.Owner != player || a.IsDead || !a.IsInWorld;
 		}
 
+		protected override void Created(Actor self)
+		{
+			// Special case handling is required for the Player actor.
+			// Created is called before Player.PlayerActor is assigned,
+			// so we must query player traits from self, which refers
+			// for bot modules always to the Player actor.
+			notifyPositionsUpdated = self.TraitsImplementing<IBotPositionsUpdated>().ToArray();
+			requestUnitProduction = self.TraitsImplementing<IBotRequestUnitProduction>().ToArray();
+		}
+
 		protected override void TraitEnabled(Actor self)
 		{
-			notifyPositionsUpdated = player.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
-			requestUnitProduction = player.PlayerActor.TraitsImplementing<IBotRequestUnitProduction>().ToArray();
-
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
 			scanInterval = world.LocalRandom.Next(Info.ScanForNewMcvInterval, Info.ScanForNewMcvInterval * 2);
 		}
