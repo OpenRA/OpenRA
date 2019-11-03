@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				return;
 
 			// Draw a black screen
-			Game.Renderer.BeginFrame(int2.Zero, 1f);
+			Game.Renderer.BeginUI();
 			Game.Renderer.EndFrame(new NullInputHandler());
 		}
 

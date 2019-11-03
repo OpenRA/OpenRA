@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (r == null)
 				return;
 
-			r.BeginFrame(int2.Zero, 1f);
+			r.BeginUI();
 			WidgetUtils.FillRectWithSprite(bounds, sprite);
 			r.EndFrame(new NullInputHandler());
 		}
