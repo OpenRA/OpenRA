@@ -72,8 +72,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// e.g. a weight of 110% will find a path no more than 10% longer than the shortest possible.
 			// The benefit of allowing the search to return suboptimal paths is faster computation time.
 			// The search can skip some areas of the search space, meaning it has less work to do.
-			// We allow paths up to 25% longer than the shortest, optimal path, to improve pathfinding time.
-			search.heuristicWeightPercentage = 125;
+			// We allow paths up to 75% longer than the shortest, optimal path, to improve pathfinding time.
+			search.heuristicWeightPercentage = 175;
 
 			search.isGoal = loc =>
 			{
