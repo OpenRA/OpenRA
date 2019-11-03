@@ -454,6 +454,8 @@ namespace OpenRA.Platforms.Default
 		readonly Action bind;
 		readonly Action unbind;
 		readonly Action dispose;
+		readonly Action<object> enableScissor;
+		readonly Action disableScissor;
 
 		public ThreadedFrameBuffer(ThreadedGraphicsContext device, IFrameBuffer frameBuffer)
 		{
@@ -462,6 +464,9 @@ namespace OpenRA.Platforms.Default
 			bind = frameBuffer.Bind;
 			unbind = frameBuffer.Unbind;
 			dispose = frameBuffer.Dispose;
+
+			enableScissor = rect => frameBuffer.EnableScissor((Rectangle)rect);
+			disableScissor = frameBuffer.DisableScissor;
 		}
 
 		public ITexture Texture
@@ -480,6 +485,16 @@ namespace OpenRA.Platforms.Default
 		public void Unbind()
 		{
 			device.Post(unbind);
+		}
+
+		public void EnableScissor(Rectangle rect)
+		{
+			device.Post(enableScissor, rect);
+		}
+
+		public void DisableScissor()
+		{
+			device.Post(disableScissor);
 		}
 
 		public void Dispose()
