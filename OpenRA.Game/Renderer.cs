@@ -22,6 +22,8 @@ namespace OpenRA
 {
 	public sealed class Renderer : IDisposable
 	{
+		enum RenderType { None, World, UI }
+
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
@@ -54,6 +56,7 @@ namespace OpenRA
 		float lastZoom = -1f;
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
+		RenderType renderType = RenderType.None;
 
 		public Renderer(IPlatform platform, GraphicSettings graphicSettings)
 		{
@@ -125,7 +128,7 @@ namespace OpenRA
 			depthOffset = depthScale / 2;
 		}
 
-		public void BeginFrame(int2 scroll, float zoom)
+		void BeginFrame()
 		{
 			Context.Clear();
 
@@ -151,33 +154,50 @@ namespace OpenRA
 			}
 
 			screenBuffer.Bind();
-			SetViewportParams(scroll, zoom);
-		}
 
-		public void SetViewportParams(int2 scroll, float zoom)
-		{
 			// In HiDPI windows we follow Apple's convention of defining window coordinates as for standard resolution windows
 			// but to have a higher resolution backing surface with more than 1 texture pixel per viewport pixel.
 			// We must convert the surface buffer size to a viewport size - in general this is NOT just the window size
 			// rounded to the next power of two, as the NextPowerOf2 calculation is done in the surface pixel coordinates
 			var scale = Window.WindowScale;
-			var surfaceBufferSize = Window.SurfaceSize.NextPowerOf2();
 			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
-
-			// PERF: Calling SetViewportParams on each renderer is slow. Only call it when things change.
-			// If zoom evaluates as different due to floating point weirdness that's OK, it will be going away soon
-			if (lastBufferSize != bufferSize || lastScroll != scroll || lastZoom != zoom)
+			if (lastBufferSize != bufferSize)
 			{
-				if (lastBufferSize != bufferSize)
-					SpriteRenderer.SetViewportParams(bufferSize, 0f, 0f, 1f, int2.Zero);
+				SpriteRenderer.SetViewportParams(bufferSize, 0f, 0f, 1f, int2.Zero);
+				lastBufferSize = bufferSize;
+			}
+		}
 
+		public void BeginWorld(int2 scroll, float zoom)
+		{
+			if (renderType != RenderType.None)
+				throw new InvalidOperationException("BeginWorld called with renderType = {0}, expected RenderType.None.".F(renderType));
+
+			var oldLastBufferSize = lastBufferSize;
+			BeginFrame();
+
+			var scale = Window.WindowScale;
+			var surfaceSize = Window.SurfaceSize;
+			var surfaceBufferSize = surfaceSize.NextPowerOf2();
+			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
+			if (oldLastBufferSize != bufferSize || lastScroll != scroll || lastZoom != zoom)
+			{
 				WorldSpriteRenderer.SetViewportParams(bufferSize, depthScale, depthOffset, zoom, scroll);
 				WorldModelRenderer.SetViewportParams(bufferSize, zoom, scroll);
 
-				lastBufferSize = bufferSize;
 				lastScroll = scroll;
 				lastZoom = zoom;
 			}
+
+			renderType = RenderType.World;
+		}
+
+		public void BeginUI()
+		{
+			if (renderType == RenderType.None)
+				BeginFrame();
+
+			renderType = RenderType.UI;
 		}
 
 		public void SetPalette(HardwarePalette palette)
@@ -195,6 +215,9 @@ namespace OpenRA
 
 		public void EndFrame(IInputHandler inputHandler)
 		{
+			if (renderType != RenderType.UI)
+				throw new InvalidOperationException("EndFrame called with renderType = {0}, expected RenderType.UI.".F(renderType));
+
 			Flush();
 
 			screenBuffer.Unbind();
@@ -207,6 +230,8 @@ namespace OpenRA
 
 			Window.PumpInput(inputHandler);
 			Context.Present();
+
+			renderType = RenderType.None;
 		}
 
 		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
