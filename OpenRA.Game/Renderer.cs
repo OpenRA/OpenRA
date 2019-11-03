@@ -45,15 +45,18 @@ namespace OpenRA
 		IFrameBuffer screenBuffer;
 		Sprite screenSprite;
 
+		IFrameBuffer worldBuffer;
+		Sprite worldSprite;
+
 		SheetBuilder fontSheetBuilder;
 		readonly IPlatform platform;
 
-		float depthScale;
-		float depthOffset;
+		float depthMargin;
 
 		Size lastBufferSize = new Size(-1, -1);
-		int2 lastScroll = new int2(-1, -1);
-		float lastZoom = -1f;
+
+		Size lastWorldBufferSize = new Size(-1, -1);
+		Rectangle lastWorldViewport = Rectangle.Empty;
 		ITexture currentPaletteTexture;
 		IBatchRenderer currentBatchRenderer;
 		RenderType renderType = RenderType.None;
@@ -122,10 +125,7 @@ namespace OpenRA
 			//  - a small margin so that tiles rendered partially above the top edge of the screen aren't pushed behind the clip plane
 			// We need an offset of mapGrid.MaximumTerrainHeight * mapGrid.TileSize.Height / 2 to cover the terrain height
 			// and choose to use mapGrid.MaximumTerrainHeight * mapGrid.TileSize.Height / 4 for each of the actor and top-edge cases
-			depthScale = mapGrid == null || !mapGrid.EnableDepthBuffer ? 0 :
-				(float)Resolution.Height / (Resolution.Height + mapGrid.TileSize.Height * mapGrid.MaximumTerrainHeight);
-
-			depthOffset = depthScale / 2;
+			depthMargin = mapGrid == null || !mapGrid.EnableDepthBuffer ? 0 : mapGrid.TileSize.Height * mapGrid.MaximumTerrainHeight;
 		}
 
 		void BeginFrame()
@@ -153,8 +153,6 @@ namespace OpenRA
 				screenSprite = new Sprite(screenSheet, screenBounds, TextureChannel.RGBA);
 			}
 
-			screenBuffer.Bind();
-
 			// In HiDPI windows we follow Apple's convention of defining window coordinates as for standard resolution windows
 			// but to have a higher resolution backing surface with more than 1 texture pixel per viewport pixel.
 			// We must convert the surface buffer size to a viewport size - in general this is NOT just the window size
@@ -168,25 +166,39 @@ namespace OpenRA
 			}
 		}
 
-		public void BeginWorld(int2 scroll, float zoom)
+		public void BeginWorld(Rectangle worldViewport)
 		{
 			if (renderType != RenderType.None)
 				throw new InvalidOperationException("BeginWorld called with renderType = {0}, expected RenderType.None.".F(renderType));
 
-			var oldLastBufferSize = lastBufferSize;
 			BeginFrame();
 
-			var scale = Window.WindowScale;
-			var surfaceSize = Window.SurfaceSize;
-			var surfaceBufferSize = surfaceSize.NextPowerOf2();
-			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
-			if (oldLastBufferSize != bufferSize || lastScroll != scroll || lastZoom != zoom)
+			var worldBufferSize = worldViewport.Size.NextPowerOf2();
+			if (worldSprite == null || worldSprite.Sheet.Size != worldBufferSize)
 			{
-				WorldSpriteRenderer.SetViewportParams(bufferSize, depthScale, depthOffset, zoom, scroll);
-				WorldModelRenderer.SetViewportParams(bufferSize, zoom, scroll);
+				if (worldBuffer != null)
+					worldBuffer.Dispose();
 
-				lastScroll = scroll;
-				lastZoom = zoom;
+				// Render the world into a framebuffer at 1:1 scaling to allow the depth buffer to match the artwork at all zoom levels
+				worldBuffer = Context.CreateFrameBuffer(worldBufferSize);
+			}
+
+			if (worldSprite == null || worldViewport.Size != worldSprite.Bounds.Size)
+			{
+				var worldSheet = new Sheet(SheetType.BGRA, worldBuffer.Texture);
+				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, worldViewport.Size), TextureChannel.RGBA);
+			}
+
+			worldBuffer.Bind();
+
+			if (worldBufferSize != lastWorldBufferSize || lastWorldViewport != worldViewport)
+			{
+				var depthScale = worldBufferSize.Height / (worldBufferSize.Height + depthMargin);
+				WorldSpriteRenderer.SetViewportParams(worldBufferSize, depthScale, depthScale / 2, 1f, worldViewport.Location);
+				WorldModelRenderer.SetViewportParams(worldBufferSize, 1f, worldViewport.Location);
+
+				lastWorldViewport = worldViewport;
+				lastWorldBufferSize = worldBufferSize;
 			}
 
 			renderType = RenderType.World;
@@ -194,8 +206,26 @@ namespace OpenRA
 
 		public void BeginUI()
 		{
-			if (renderType == RenderType.None)
+			if (renderType == RenderType.World)
+			{
+				// Complete world rendering
+				Flush();
+				worldBuffer.Unbind();
+
+				// Render the world buffer into the UI buffer
+				screenBuffer.Bind();
+
+				var scale = Window.WindowScale;
+				var bufferSize = new Size((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
+				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, new float2(bufferSize));
+				Flush();
+			}
+			else
+			{
+				// World rendering was skipped
 				BeginFrame();
+				screenBuffer.Bind();
+			}
 
 			renderType = RenderType.UI;
 		}
@@ -222,7 +252,7 @@ namespace OpenRA
 
 			screenBuffer.Unbind();
 
-			// Render the compositor buffer to the screen
+			// Render the compositor buffers to the screen
 			// HACK / PERF: Fudge the coordinates to cover the actual window while keeping the buffer viewport parameters
 			// This saves us two redundant (and expensive) SetViewportParams each frame
 			RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0), new float3(lastBufferSize.Width, -lastBufferSize.Height, 0));
@@ -288,7 +318,12 @@ namespace OpenRA
 				rect = Rectangle.Intersect(rect, scissorState.Peek());
 
 			Flush();
-			Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+
+			if (renderType == RenderType.World)
+				worldBuffer.EnableScissor(rect);
+			else
+				Context.EnableScissor(rect.X, rect.Y, rect.Width, rect.Height);
+
 			scissorState.Push(rect);
 		}
 
@@ -297,14 +332,25 @@ namespace OpenRA
 			scissorState.Pop();
 			Flush();
 
-			// Restore previous scissor rect
-			if (scissorState.Any())
+			if (renderType == RenderType.World)
 			{
-				var rect = scissorState.Peek();
-				Context.EnableScissor(rect.Left, rect.Top, rect.Width, rect.Height);
+				// Restore previous scissor rect
+				if (scissorState.Any())
+					worldBuffer.EnableScissor(scissorState.Peek());
+				else
+					worldBuffer.DisableScissor();
 			}
 			else
-				Context.DisableScissor();
+			{
+				// Restore previous scissor rect
+				if (scissorState.Any())
+				{
+					var rect = scissorState.Peek();
+					Context.EnableScissor(rect.X, rect.Y, rect.Width, rect.Height);
+				}
+				else
+					Context.DisableScissor();
+			}
 		}
 
 		public void EnableDepthBuffer()
