@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			var text = messages.Random(Game.CosmeticRandom);
 			var textSize = r.Fonts["Bold"].Measure(text);
 
-			r.BeginFrame(int2.Zero, 1f);
+			r.BeginUI();
 
 			if (stripe != null)
 				WidgetUtils.FillRectWithSprite(stripeRect, stripe);
