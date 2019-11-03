@@ -683,7 +683,7 @@ namespace OpenRA
 				// Use worldRenderer.World instead of OrderManager.World to avoid a rendering mismatch while processing orders
 				if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
 				{
-					Renderer.BeginWorld(worldRenderer.Viewport.TopLeft, worldRenderer.Viewport.Zoom);
+					Renderer.BeginWorld(worldRenderer.Viewport.Rectangle);
 					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
 					worldRenderer.Draw();
 				}
@@ -691,6 +691,10 @@ namespace OpenRA
 				using (new PerfSample("render_widgets"))
 				{
 					Renderer.BeginUI();
+
+					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+						worldRenderer.DrawAnnotations();
+
 					Ui.Draw();
 
 					if (ModData != null && ModData.CursorProvider != null)

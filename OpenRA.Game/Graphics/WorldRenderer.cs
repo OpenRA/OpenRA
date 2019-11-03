@@ -248,10 +248,14 @@ namespace OpenRA.Graphics
 					r.Render(this);
 
 			Game.Renderer.Flush();
+		}
 
+		public void DrawAnnotations()
+		{
 			for (var i = 0; i < preparedAnnotationRenderables.Count; i++)
 				preparedAnnotationRenderables[i].Render(this);
 
+			// Engine debugging overlays
 			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
 			{
 				for (var i = 0; i < preparedRenderables.Count; i++)
@@ -282,6 +286,7 @@ namespace OpenRA.Graphics
 			}
 
 			Game.Renderer.Flush();
+
 			preparedRenderables.Clear();
 			preparedOverlayRenderables.Clear();
 			preparedAnnotationRenderables.Clear();
