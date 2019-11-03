@@ -23,6 +23,7 @@ namespace OpenRA.Platforms.Default
 		readonly Color clearColor;
 		uint framebuffer, depth;
 		bool disposed;
+		bool scissored;
 
 		public FrameBuffer(Size size, ITextureInternal texture, Color clearColor)
 		{
@@ -100,6 +101,9 @@ namespace OpenRA.Platforms.Default
 
 		public void Unbind()
 		{
+			if (scissored)
+				throw new InvalidOperationException("Attempting to unbind FrameBuffer with an active scissor region.");
+
 			VerifyThreadAffinity();
 			OpenGL.glFlush();
 			OpenGL.CheckGLError();
@@ -107,6 +111,25 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 			OpenGL.glViewport(cv[0], cv[1], cv[2], cv[3]);
 			OpenGL.CheckGLError();
+		}
+
+		public void EnableScissor(Rectangle rect)
+		{
+			VerifyThreadAffinity();
+
+			OpenGL.glScissor(rect.X, rect.Y, Math.Max(rect.Width, 0), Math.Max(rect.Height, 0));
+			OpenGL.CheckGLError();
+			OpenGL.glEnable(OpenGL.GL_SCISSOR_TEST);
+			OpenGL.CheckGLError();
+			scissored = true;
+		}
+
+		public void DisableScissor()
+		{
+			VerifyThreadAffinity();
+			OpenGL.glDisable(OpenGL.GL_SCISSOR_TEST);
+			OpenGL.CheckGLError();
+			scissored = false;
 		}
 
 		public ITexture Texture
