@@ -16,6 +16,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class NavyStateBase : StateBase
 	{
+		protected bool hadNavalYard = false;
 		protected virtual bool ShouldFlee(Squad owner)
 		{
 			return ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
@@ -100,7 +101,17 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.IsTargetValid)
+			// Check if we have an enemy naval yard this tick
+			var first = owner.Units.First();
+			var domainIndex = first.World.WorldActor.Trait<DomainIndex>();
+			var locomotorInfo = first.Info.TraitInfo<MobileInfo>().LocomotorInfo;
+			var navalProductions = owner.World.ActorsHavingTrait<Building>().Where(a
+				=> owner.SquadManager.Info.NavalProductionTypes.Contains(a.Info.Name)
+				&& domainIndex.IsPassable(first.Location, a.Location, locomotorInfo)
+				&& a.AppearsHostileTo(first));
+
+			// if target is dead or if we have a newly built naval yard this tick invalidate the current target and select a new one.
+			if (!owner.IsTargetValid || (navalProductions.Any() && !hadNavalYard))
 			{
 				var closestEnemy = FindClosestEnemy(owner);
 				if (closestEnemy != null)
@@ -108,9 +119,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				else
 				{
 					owner.FuzzyStateMachine.ChangeState(owner, new NavyUnitsFleeState(), true);
+					hadNavalYard = false;
 					return;
 				}
 			}
+
+			// Save whether we had an Enemy naval yard this tick.
+			hadNavalYard = navalProductions.Any();
 
 			foreach (var a in owner.Units)
 					owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
