@@ -645,7 +645,7 @@ Player:
 			ftrk: 4
 	SquadManagerBotModule@easy:
 		RequiresCondition: enable-easy-ai
-		SquadSize: 15
+		SquadSize: 10
 		SquadSizeRandomBonus: 5
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
@@ -664,7 +664,6 @@ Player:
 		MinimumAttackForceDelay: 30
 	UnitBuilderBotModule@easy:
 		RequiresCondition: enable-easy-ai
-		IdleBaseUnitsMaximum: 0
 		IdleBaseUnitsMaximum: 20
 		UnitBuilderInterval: 750
 		UnitsToBuild:
@@ -698,7 +697,7 @@ Player:
 			pt: 1
 		UnitLimits:
 			dog: 4
-			e6: 4
+			e6: 2
 			harv: 6
 			jeep: 4
 			ftrk: 4

@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When should the AI start train specific units.")]
 		public readonly Dictionary<string, int> UnitDelays = null;
 
+		[Desc("How often should the unit builder check to build more units")]
+		public readonly int UnitBuilderInterval = 0;
+
 		public override object Create(ActorInitializer init) { return new UnitBuilderBotModule(init.Self, this); }
 	}
 
@@ -77,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			ticks++;
 
-			if (ticks % FeedbackTime == 0)
+			if (ticks % (FeedbackTime + Info.UnitBuilderInterval) == 0)
 			{
 				var buildRequest = queuedBuildRequests.FirstOrDefault();
 				if (buildRequest != null)
