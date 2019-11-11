@@ -72,9 +72,6 @@ namespace OpenRA.Mods.Common.Traits
 		int scanInterval;
 		bool firstTick = true;
 
-		// MCVs that the bot already knows about. Any MCV not on this list needs to be given an order.
-		List<Actor> activeMCVs = new List<Actor>();
-
 		public McvManagerBotModule(Actor self, McvManagerBotModuleInfo info)
 			: base(info)
 		{
@@ -140,18 +137,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void DeployMcvs(IBot bot, bool chooseLocation)
 		{
-			activeMCVs.RemoveAll(unitCannotBeOrdered);
-
 			var newMCVs = world.ActorsHavingTrait<Transforms>()
-				.Where(a => a.Owner == player &&
-					a.IsIdle &&
-					Info.McvTypes.Contains(a.Info.Name) &&
-					!activeMCVs.Contains(a));
+				.Where(a => a.Owner == player && a.IsIdle && Info.McvTypes.Contains(a.Info.Name));
 
-			foreach (var a in newMCVs)
-				activeMCVs.Add(a);
-
-			foreach (var mcv in activeMCVs)
+			foreach (var mcv in newMCVs)
 				DeployMcv(bot, mcv, chooseLocation);
 		}
 
@@ -221,11 +210,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new MiniYamlNode("ActiveMCVs", FieldSaver.FormatValue(activeMCVs
-					.Where(a => !unitCannotBeOrdered(a))
-					.Select(a => a.ActorID)
-					.ToArray()))
+				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter))
 			};
 		}
 
@@ -237,14 +222,6 @@ namespace OpenRA.Mods.Common.Traits
 			var initialBaseCenterNode = data.FirstOrDefault(n => n.Key == "InitialBaseCenter");
 			if (initialBaseCenterNode != null)
 				initialBaseCenter = FieldLoader.GetValue<CPos>("InitialBaseCenter", initialBaseCenterNode.Value.Value);
-
-			var activeMCVsNode = data.FirstOrDefault(n => n.Key == "ActiveMCVs");
-			if (activeMCVsNode != null)
-			{
-				activeMCVs.Clear();
-				activeMCVs.AddRange(FieldLoader.GetValue<uint[]>("ActiveMCVs", activeMCVsNode.Value.Value)
-					.Select(a => world.GetActorById(a)).Where(a => a != null));
-			}
 		}
 	}
 }
