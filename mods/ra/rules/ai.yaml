@@ -119,6 +119,7 @@ Player:
 	HarvesterBotModule:
 		RequiresCondition: enable-rush-ai || enable-easy-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
 		HarvesterTypes: harv
+		HarvestersPerRefinery: 2
 		RefineryTypes: proc
 	BaseBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai

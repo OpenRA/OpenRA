@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Leave empty to disable harvester replacement. Currently only needed by harvester replacement system.")]
 		public readonly HashSet<string> HarvesterTypes = new HashSet<string>();
 
+		[Desc("Number of harvesters per refinery to maintain.")]
+		public readonly int HarvestersPerRefinery = 1;
+
 		[Desc("Actor types that are counted as refineries. Currently only needed by harvester replacement system.")]
 		public readonly HashSet<string> RefineryTypes = new HashSet<string>();
 
@@ -132,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (unitBuilder != null && Info.HarvesterTypes.Any())
 			{
 				var harvInfo = AIUtils.GetInfoByCommonName(Info.HarvesterTypes, player);
-				var harvCountTooLow = AIUtils.CountActorByCommonName(Info.HarvesterTypes, player) < AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player);
+				var harvCountTooLow = AIUtils.CountActorByCommonName(Info.HarvesterTypes, player) < AIUtils.CountBuildingByCommonName(Info.RefineryTypes, player) * Info.HarvestersPerRefinery;
 				if (harvCountTooLow && unitBuilder.RequestedProductionCount(bot, harvInfo.Name) == 0)
 					unitBuilder.RequestUnitProduction(bot, harvInfo.Name);
 			}
