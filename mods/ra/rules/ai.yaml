@@ -657,7 +657,7 @@ Player:
 		RushInterval: 600
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 20
-		ProtectionScanRadius: 20
+		ProtectionScanRadius: 15
 		AssignRolesInterval: 200
 		AttackForceInterval: 75
 		DangerScanRadius: 10
@@ -721,7 +721,7 @@ Player:
 		RushInterval: 600
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 20
-		ProtectionScanRadius: 20
+		ProtectionScanRadius: 15
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
@@ -784,8 +784,8 @@ Player:
 		MaxBaseRadius: 16
 		RushInterval: 600
 		RushAttackScanRadius: 25
-		ProtectUnitScanRadius: 32
-		ProtectionScanRadius: 20
+		ProtectUnitScanRadius: 20
+		ProtectionScanRadius: 15
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
@@ -847,8 +847,8 @@ Player:
 		MaxBaseRadius: 16
 		RushInterval: 600
 		RushAttackScanRadius: 25
-		ProtectUnitScanRadius: 36
-		ProtectionScanRadius: 20
+		ProtectUnitScanRadius: 20
+		ProtectionScanRadius: 15
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
