@@ -106,6 +106,14 @@ namespace OpenRA.Orders
 				return true;
 
 			var target = Target.FromActor(actor);
+
+			// Suppress any orders when the player is force-selecting actors
+			// Required to combine/remove selection when IOS would return true otherwise
+			if (mi.Modifiers.HasModifier(Modifiers.Shift) && mi.Modifiers.HasModifier(Modifiers.Ctrl) &&
+				target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
+				target.Actor.Owner == world.LocalPlayer)
+				return false;
+
 			var cell = world.Map.CellContaining(target.CenterPosition);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 
