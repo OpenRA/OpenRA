@@ -69,24 +69,28 @@ namespace OpenRA.Orders
 		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
-			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
+			var canSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>();
 
-			bool useSelect;
-			if (Game.Settings.Game.UseClassicMouseStyle && !InputOverridesSelection(world, worldPixel, mi))
-				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>();
-			else
+			// Shift-selecting works for actors owned by the rendered player
+			// and for all actors in everyone's view or when shroud is disabled
+			var viewer = world.RenderPlayer;
+			var canShiftSelect = canSelect && mi.Modifiers.HasModifier(Modifiers.Shift) &&
+				(viewer == null || viewer == target.Actor.Owner || (viewer.NonCombatant && viewer.Spectating));
+
+			if (!(Game.Settings.Game.UseClassicMouseStyle && !InputOverridesSelection(world, worldPixel, mi)))
 			{
-				var ordersWithCursor = world.Selection.Actors
+				var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
+				var cursorOrder = world.Selection.Actors
 					.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
-					.Where(o => o != null && o.Cursor != null);
+					.Where(o => o != null && o.Cursor != null)
+					.MaxByOrDefault(o => o.Order.OrderPriority);
 
-				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
-				if (cursorOrder != null)
+				// Override order cursor when the player is shift-selecting own actors in the default input mode
+				if (cursorOrder != null && (Game.Settings.Game.UseClassicMouseStyle || !canShiftSelect))
 					return cursorOrder.Cursor;
-
-				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&
-				    (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
 			}
+
+			var useSelect = canSelect && (!world.Selection.Contains(target.Actor) || canShiftSelect);
 
 			return useSelect ? "select" : "default";
 		}
