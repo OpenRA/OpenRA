@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				if (isCombine)
-					actors.UnionWith(newSelection);
+					actors.SymmetricExceptWith(newSelection);
 				else
 				{
 					actors.Clear();
