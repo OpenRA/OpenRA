@@ -83,6 +83,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var multiClick = mi.MultiTapCount >= 2;
 			var uog = World.OrderGenerator as UnitOrderGenerator;
+			var eligiblePlayers = EligiblePlayers(World);
 
 			if (uog == null)
 			{
@@ -108,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (!IsValidDragbox && World.Selection.Actors.Any() && !multiClick)
 					{
 						var selectableActor = World.ScreenMap.ActorsAtMouse(mousePos).Select(a => a.Actor).Any(x =>
-							x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(World.RenderPlayer) || !World.FogObscures(x)));
+							x.Info.HasTraitInfo<SelectableInfo>() && !World.FogObscures(x));
 
 						if (!selectableActor || uog.InputOverridesSelection(World, mousePos, mi))
 						{
@@ -124,24 +125,17 @@ namespace OpenRA.Mods.Common.Widgets
 				if (multiClick)
 				{
 					var unit = World.ScreenMap.ActorsAtMouse(mousePos)
+						.Where(a => a.Actor.Info.HasTraitInfo<SelectableInfo>())
 						.WithHighestSelectionPriority(mousePos, mi.Modifiers);
-
-					// Players to be included in the selection (the viewer or all players in "Disable shroud" / "All players" mode)
-					var viewer = World.RenderPlayer ?? World.LocalPlayer;
-					var isShroudDisabled = viewer == null || (World.RenderPlayer == null && World.LocalPlayer.Spectating);
-					var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
-					var eligiblePlayers = isShroudDisabled || isEveryone ? World.Players : new[] { viewer };
 
 					if (unit != null && eligiblePlayers.Contains(unit.Owner))
 					{
 						var s = unit.TraitOrDefault<Selectable>();
-						if (s != null)
-						{
-							// Select actors on the screen that have the same selection class as the actor under the mouse cursor
-							var newSelection = SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, eligiblePlayers);
 
-							World.Selection.Combine(World, newSelection, true, false);
-						}
+						// Select actors on the screen that have the same selection class as the actor under the mouse cursor
+						var newSelection = SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, eligiblePlayers);
+
+						World.Selection.Combine(World, newSelection, true, false);
 					}
 				}
 				else
@@ -158,7 +152,12 @@ namespace OpenRA.Mods.Common.Widgets
 					if (isDragging && (uog.ClearSelectionOnLeftClick || IsValidDragbox))
 					{
 						var newSelection = SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, mi.Modifiers);
-						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == mousePos);
+
+						// Only allow combining selections with eligible actor owners
+						var canShiftSelect = World.RenderPlayer == null || (newSelection.All(a => eligiblePlayers.Contains(a.Owner)) &&
+							World.Selection.Actors.All(a => eligiblePlayers.Contains(a.Owner)));
+
+						World.Selection.Combine(World, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift) && canShiftSelect, dragStart == mousePos);
 					}
 				}
 
@@ -250,15 +249,10 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
-				// Players to be included in the selection (the viewer or all players in "Disable shroud" / "All players" mode)
-				var viewer = World.RenderPlayer ?? World.LocalPlayer;
-				var isShroudDisabled = viewer == null || (World.RenderPlayer == null && World.LocalPlayer.Spectating);
-				var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
-				var eligiblePlayers = isShroudDisabled || isEveryone ? World.Players : new[] { viewer };
-
+				var eligiblePlayers = EligiblePlayers(World);
 				if (SelectAllKey.IsActivatedBy(e) && !World.IsGameOver)
 				{
-					// Select actors on the screen which belong to the current player(s)
+					// Select actors on the screen which belong to eligible players
 					var ownUnitsOnScreen = SelectActorsOnScreen(World, worldRenderer, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
 
 					// Check if selecting actors on the screen has selected new units
@@ -278,17 +272,12 @@ namespace OpenRA.Mods.Common.Widgets
 					if (!World.Selection.Actors.Any())
 						return false;
 
-					var ownedActors = World.Selection.Actors
-						.Where(x => !x.IsDead && eligiblePlayers.Contains(x.Owner))
-						.ToList();
+					var selectedClasses = World.Selection.Actors
+						.Where(a => !a.IsDead && eligiblePlayers.Contains(a.Owner) && a.Info.HasTraitInfo<SelectableInfo>())
+						.Select(a => a.Trait<Selectable>().Class).ToHashSet();
 
-					if (!ownedActors.Any())
+					if (!selectedClasses.Any())
 						return false;
-
-					// Get all the selected actors' selection classes
-					var selectedClasses = ownedActors
-						.Select(a => a.Trait<Selectable>().Class)
-						.ToHashSet();
 
 					// Select actors on the screen that have the same selection class as one of the already selected actors
 					var newSelection = SelectActorsOnScreen(World, worldRenderer, selectedClasses, eligiblePlayers).ToList();
@@ -310,6 +299,14 @@ namespace OpenRA.Mods.Common.Widgets
 			return false;
 		}
 
+		static IEnumerable<Player> EligiblePlayers(World world)
+		{
+			var viewer = world.RenderPlayer;
+			var isShroudDisabled = viewer == null;
+			var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
+			return isShroudDisabled || isEveryone ? world.Players : new[] { viewer };
+		}
+
 		static IEnumerable<Actor> SelectActorsOnScreen(World world, WorldRenderer wr, IEnumerable<string> selectionClasses, IEnumerable<Player> players)
 		{
 			var actors = world.ScreenMap.ActorsInMouseBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight).Select(a => a.Actor);
@@ -323,22 +320,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 		static IEnumerable<Actor> SelectActorsByOwnerAndSelectionClass(IEnumerable<Actor> actors, IEnumerable<Player> owners, IEnumerable<string> selectionClasses)
 		{
-			return actors.Where(a =>
-			{
-				if (!owners.Contains(a.Owner))
-					return false;
-
-				var s = a.TraitOrDefault<Selectable>();
-
-				// selectionClasses == null means that units, that meet all other criteria, get selected
-				return s != null && (selectionClasses == null || selectionClasses.Contains(s.Class));
-			});
+			return actors.Where(a => owners.Contains(a.Owner) && a.Info.HasTraitInfo<SelectableInfo>() &&
+				(selectionClasses == null || selectionClasses.Contains(a.TraitOrDefault<Selectable>().Class)));
 		}
 
 		static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, int2 a, Modifiers modifiers)
 		{
+			Stance stance;
 			var selected = world.ScreenMap.ActorsAtMouse(a)
-				.Where(x => x.Actor.Info.HasTraitInfo<SelectableInfo>() && (x.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x.Actor)))
+				.Where(x => x.Actor.Info.HasTraitInfo<SelectableInfo>() && (EligiblePlayers(world)
+				.Any(p => p.Stances.TryGetValue(x.Actor.Owner, out stance) && stance == Stance.Ally) || !world.FogObscures(x.Actor)))
 				.WithHighestSelectionPriority(a, modifiers);
 
 			if (selected != null)
@@ -354,9 +345,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (a == b)
 				return SelectHighestPriorityActorAtPoint(world, a, modifiers);
 
+			Stance stance;
 			return world.ScreenMap.ActorsInMouseBox(a, b)
 				.Select(x => x.Actor)
-				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (x.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x)))
+				.Where(x => x.Info.HasTraitInfo<SelectableInfo>() && (EligiblePlayers(world)
+				.Any(p => p.Stances.TryGetValue(x.Owner, out stance) && stance == Stance.Ally) || !world.FogObscures(x)))
 				.SubsetWithHighestSelectionPriority(modifiers);
 		}
 	}
