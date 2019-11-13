@@ -115,11 +115,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				if (target != null)
 				{
 					owner.TargetActor = target;
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackState(), true);
 				}
-				else
-					foreach (var a in owner.Units)
-						owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
+
+				foreach (var a in owner.Units)
+				owner.Bot.QueueOrder(new Order("AttackMove", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 			}
 
 			if (ShouldFlee(owner))
