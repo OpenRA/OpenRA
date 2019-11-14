@@ -424,7 +424,7 @@ Player:
 	BaseBuilderBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
 		MinimumExcessPower: 50
-		MaximumExcessPower: 300
+		MaximumExcessPower: 350
 		ExcessPowerIncrement: 10
 		ExcessPowerIncreaseThreshold: 1
 		ConstructionYardTypes: fact
@@ -675,11 +675,11 @@ Player:
 			dog: 1
 			shok: 30
 			harv: 50
-			apc: 5
+			apc: 3
 			jeep: 5
 			arty: 5
 			v2rl: 15
-			ftrk: 5
+			ftrk: 2
 			1tnk: 30
 			2tnk: 60
 			3tnk: 30
@@ -697,11 +697,11 @@ Player:
 			pt: 1
 		UnitLimits:
 			dog: 4
-			e6: 2
+			e6: 1
 			harv: 6
-			jeep: 4
-			ftrk: 4
-			apc: 4
+			jeep: 8
+			ftrk: 6
+			apc: 8
 			ss: 3
 			msub: 2
 			dd: 2
@@ -739,11 +739,11 @@ Player:
 			dog: 1
 			shok: 30
 			harv: 50
-			apc: 5
+			apc: 3
 			jeep: 5
 			arty: 10
 			v2rl: 25
-			ftrk: 5
+			ftrk: 2
 			1tnk: 30
 			2tnk: 60
 			3tnk: 30
@@ -763,9 +763,9 @@ Player:
 			dog: 4
 			e6: 4
 			harv: 10
-			jeep: 4
-			ftrk: 4
-			apc: 4
+			jeep: 8
+			ftrk: 6
+			apc: 8
 			ss: 4
 			msub: 5
 			dd: 3
@@ -802,11 +802,11 @@ Player:
 			dog: 1
 			shok: 30
 			harv: 50
-			apc: 5
+			apc: 3
 			jeep: 5
 			arty: 10
 			v2rl: 25
-			ftrk: 5
+			ftrk: 2
 			1tnk: 30
 			2tnk: 60
 			3tnk: 30
@@ -826,9 +826,9 @@ Player:
 			dog: 4
 			e6: 4
 			harv: 8
-			jeep: 4
-			ftrk: 4
-			apc: 4
+			jeep: 8
+			ftrk: 6
+			apc: 8
 			ss: 4
 			msub: 5
 			dd: 3
@@ -865,11 +865,11 @@ Player:
 			dog: 1
 			shok: 30
 			harv: 50
-			apc: 5
+			apc: 3
 			jeep: 5
 			arty: 15
 			v2rl: 30
-			ftrk: 5
+			ftrk: 2
 			1tnk: 30
 			2tnk: 60
 			3tnk: 30
@@ -889,9 +889,9 @@ Player:
 			dog: 4
 			e6: 4
 			harv: 8
-			jeep: 4
-			ftrk: 4
-			apc: 4
+			jeep: 8
+			ftrk: 6
+			apc: 8
 			ss: 5
 			msub: 7
 			dd: 4
@@ -919,8 +919,13 @@ Player:
 			pt: 10
 		UnitLimits:
 			harv: 8
-	CaptureManagerBotModule@AI:
-		RequiresCondition: enable-easy-ai || enable-normal-ai || enable-hard-ai || enable-brutal-ai
+	CaptureManagerBotModule@AIEasy:
+		RequiresCondition: enable-easy-ai
 		CapturingActorTypes: e6
 		CheckCaptureTargetsForVisibility: true
+		MinimumCaptureDelay: 100
+	CaptureManagerBotModule@AI:
+		RequiresCondition: enable-normal-ai || enable-hard-ai || enable-brutal-ai
+		CapturingActorTypes: e6
+		CheckCaptureTargetsForVisibility: false
 		MinimumCaptureDelay: 50
