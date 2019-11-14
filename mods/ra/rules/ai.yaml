@@ -825,7 +825,7 @@ Player:
 		UnitLimits:
 			dog: 4
 			e6: 4
-			harv: 8
+			harv: 10
 			jeep: 8
 			ftrk: 6
 			apc: 8
@@ -888,7 +888,7 @@ Player:
 		UnitLimits:
 			dog: 4
 			e6: 4
-			harv: 8
+			harv: 10
 			jeep: 8
 			ftrk: 6
 			apc: 8
