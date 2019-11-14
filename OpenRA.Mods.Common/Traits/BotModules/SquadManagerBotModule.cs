@@ -272,7 +272,15 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var a in unitsHangingAroundTheBase)
 					if (!a.Info.HasTraitInfo<AircraftInfo>() && !Info.NavalUnitsTypes.Contains(a.Info.Name))
+					{
+						var protectSq = GetSquadOfType(SquadType.Protection);
+						if (protectSq != null)
+						{
+							protectSq.Units.Remove(a);
+						}
+
 						attackForce.Units.Add(a);
+					}
 
 				unitsHangingAroundTheBase.Clear();
 				foreach (var n in notifyIdleBaseUnits)
@@ -306,7 +314,15 @@ namespace OpenRA.Mods.Common.Traits
 						rush = RegisterNewSquad(bot, SquadType.Rush, target);
 
 					foreach (var a3 in ownUnits)
+					{
+						var protectSq = GetSquadOfType(SquadType.Protection);
+						if (protectSq != null)
+						{
+							protectSq.Units.Remove(a3);
+						}
+
 						rush.Units.Add(a3);
+					}
 
 					return;
 				}
