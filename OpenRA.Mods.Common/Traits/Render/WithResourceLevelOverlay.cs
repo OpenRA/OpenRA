@@ -21,6 +21,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "resources";
 
+		[PaletteReference("IsPlayerPalette")]
+		[Desc("Custom palette name.")]
+		public readonly string Palette = null;
+
+		[Desc("Custom palette is a player palette BaseName.")]
+		public readonly bool IsPlayerPalette = false;
+
 		public override object Create(ActorInitializer init) { return new WithResourceLevelOverlay(init.Self, this); }
 	}
 
@@ -46,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				0);
 
 			anim = new AnimationWithOffset(a, null, () => IsTraitDisabled, 1024);
-			rs.Add(anim);
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
