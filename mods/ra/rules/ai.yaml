@@ -657,7 +657,7 @@ Player:
 		RushInterval: 1200
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 20
-		ProtectionScanRadius: 15
+		ProtectionScanRadius: 10
 		AssignRolesInterval: 200
 		AttackForceInterval: 75
 		DangerScanRadius: 10
@@ -721,7 +721,7 @@ Player:
 		RushInterval: 1200
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 20
-		ProtectionScanRadius: 15
+		ProtectionScanRadius: 10
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
@@ -785,7 +785,7 @@ Player:
 		RushInterval: 1200
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 24
-		ProtectionScanRadius: 15
+		ProtectionScanRadius: 10
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
@@ -848,14 +848,14 @@ Player:
 		RushInterval: 1200
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 28
-		ProtectionScanRadius: 15
+		ProtectionScanRadius: 10
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
 		MinimumAttackForceDelay: 30
 	UnitBuilderBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
-		IdleBaseUnitsMaximum: 90
+		IdleBaseUnitsMaximum: 160
 		UnitsToBuild:
 			e1: 5
 			e2: 15
