@@ -773,8 +773,8 @@ Player:
 			pt: 3
 	SquadManagerBotModule@hard:
 		RequiresCondition: enable-hard-ai
-		SquadSize: 40
-		SquadSizeRandomBonus: 20
+		SquadSize: 50
+		SquadSizeRandomBonus: 25
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
@@ -836,8 +836,8 @@ Player:
 			pt: 3
 	SquadManagerBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
-		SquadSize: 60
-		SquadSizeRandomBonus: 20
+		SquadSize: 70
+		SquadSizeRandomBonus: 30
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
