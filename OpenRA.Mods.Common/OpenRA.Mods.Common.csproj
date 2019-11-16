@@ -37,6 +37,18 @@
       <HintPath>..\thirdparty\download\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data.HashFunction.Core">
+      <HintPath>..\thirdparty\download\System.Data.HashFunction.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.HashFunction.Interfaces">
+      <HintPath>..\thirdparty\download\System.Data.HashFunction.Interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.HashFunction.xxHash">
+      <HintPath>..\thirdparty\download\System.Data.HashFunction.xxHash.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">

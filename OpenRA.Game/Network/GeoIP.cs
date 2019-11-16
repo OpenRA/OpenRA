@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using ICSharpCode.SharpZipLib.GZip;
@@ -22,12 +24,14 @@ namespace OpenRA.Network
 		public class GeoIP2Record
 		{
 			[Constructor]
-			public GeoIP2Record(GeoIP2Country country)
+			public GeoIP2Record(GeoIP2Country country, GeoIP2Continent continent)
 			{
 				Country = country;
+				Continent = continent;
 			}
 
 			public GeoIP2Country Country { get; set; }
+			public GeoIP2Continent Continent { get; set; }
 		}
 
 		public class GeoIP2Country
@@ -45,6 +49,28 @@ namespace OpenRA.Network
 		{
 			[Constructor]
 			public GeoIP2CountryNames(string en)
+			{
+				English = en;
+			}
+
+			public string English { get; set; }
+		}
+
+		public class GeoIP2Continent
+		{
+			[Constructor]
+			public GeoIP2Continent(GeoIP2ContinentNames names)
+			{
+				Names = names;
+			}
+
+			public GeoIP2ContinentNames Names { get; set; }
+		}
+
+		public class GeoIP2ContinentNames
+		{
+			[Constructor]
+			public GeoIP2ContinentNames(string en)
 			{
 				English = en;
 			}
@@ -83,6 +109,25 @@ namespace OpenRA.Network
 			catch (Exception e)
 			{
 				Log.Write("geoip", "LookupCountry failed: {0}", e);
+				return Unknown;
+			}
+		}
+
+		public static string LookupContinent(string ip)
+		{
+			const string Unknown = "Unknown Location";
+
+			try
+			{
+				var record = database.Find<GeoIP2Record>(IPAddress.Parse(ip));
+				if (record != null)
+					return record.Continent.Names.English;
+				else
+					return Unknown;
+			}
+			catch (Exception e)
+			{
+				Log.Write("geoip", "LookupContinent failed: {0}", e);
 				return Unknown;
 			}
 		}

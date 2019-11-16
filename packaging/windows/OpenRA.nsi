@@ -105,6 +105,9 @@ Section "Game" GAME
 	File "${SRCDIR}\OpenRA.Server.exe"
 	File "${SRCDIR}\OpenRA.Platforms.Default.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
+	File "${SRCDIR}\System.Data.HashFunction.Core.dll"
+	File "${SRCDIR}\System.Data.HashFunction.Interfaces.dll"
+	File "${SRCDIR}\System.Data.HashFunction.xxHash.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Open.Nat.dll"
 	File "${SRCDIR}\VERSION"
@@ -225,6 +228,9 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Server.exe
 	Delete $INSTDIR\OpenRA.Platforms.Default.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
+	Delete $INSTDIR\System.Data.HashFunction.Core.dll
+	Delete $INSTDIR\System.Data.HashFunction.Interfaces.dll
+	Delete $INSTDIR\System.Data.HashFunction.xxHash.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Open.Nat.dll
 	Delete $INSTDIR\VERSION

@@ -312,8 +312,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public AnonymousProfileTooltipLogic(Widget widget, OrderManager orderManager, Session.Client client)
 		{
-			var address = LobbyUtils.GetExternalIP(client, orderManager);
-			var cachedDescriptiveIP = address ?? "Unknown IP";
+			var addressAndHash = LobbyUtils.GetExternalIPAndHash(client, orderManager);
+			string address = addressAndHash[0], hash = addressAndHash[1];
+
+			var cachedDescriptiveIP = hash ?? "Unknown IP";
 
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
@@ -323,7 +325,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ipLabel.GetText = () => cachedDescriptiveIP;
 
 			var locationLabel = widget.Get<LabelWidget>("LOCATION");
-			var cachedCountryLookup = GeoIP.LookupCountry(address);
+			var cachedCountryLookup = GeoIP.LookupContinent(address);
 			locationLabel.GetText = () => cachedCountryLookup;
 
 			if (client.IsAdmin)

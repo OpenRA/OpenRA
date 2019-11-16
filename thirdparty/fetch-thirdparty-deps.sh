@@ -94,3 +94,25 @@ if [ ! -f rix0rrr.BeaconLib.dll ]; then
 	cp ./rix0rrr.BeaconLib/lib/net40/rix0rrr.BeaconLib.dll .
 	rm -rf rix0rrr.BeaconLib
 fi
+
+if [ ! -f System.Data.HashFunction.Core.dll ]; then
+        echo "Fetching System.Data.HashFunction.Core from NuGet."
+        ../noget.sh System.Data.HashFunction.Core 2.0.0
+        cp ./System.Data.HashFunction.Core/lib/net45/System.Data.HashFunction.Core.dll .
+        rm -rf System.Data.HashFunction.Core
+fi
+
+if [ ! -f System.Data.HashFunction.Interfaces.dll ]; then
+        echo "Fetching System.Data.HashFunction.Interfaces from NuGet."
+        ../noget.sh System.Data.HashFunction.Interfaces 2.0.0
+        cp ./System.Data.HashFunction.Interfaces/lib/net45/System.Data.HashFunction.Interfaces.dll .
+        rm -rf System.Data.HashFunction.Interfaces
+fi
+
+if [ ! -f System.Data.HashFunction.xxHash.dll ]; then
+        echo "Fetching System.Data.HashFunction.xxHash from NuGet."
+        ../noget.sh System.Data.HashFunction.xxHash 2.0.0
+        cp ./System.Data.HashFunction.xxHash/lib/net45/System.Data.HashFunction.xxHash.dll .
+        rm -rf System.Data.HashFunction.xxHash
+fi
+

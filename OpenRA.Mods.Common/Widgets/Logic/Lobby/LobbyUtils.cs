@@ -11,8 +11,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.HashFunction.xxHash;
 using System.Linq;
 using System.Net;
+using System.Text;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -593,7 +595,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "STATUS_IMAGE");
 		}
 
-		public static string GetExternalIP(Session.Client client, OrderManager orderManager)
+		public static string[] GetExternalIPAndHash(Session.Client client, OrderManager orderManager)
 		{
 			var address = client != null ? client.IpAddress : "";
 			var lc = orderManager.LocalClient;
@@ -604,7 +606,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					address = externalIP.ToString();
 			}
 
-			return address;
+			address = "77.20.212.163"; // FIXME: REMOVE
+			var factory = xxHashFactory.Instance.Create();
+			var hash = factory.ComputeHash(Encoding.UTF8.GetBytes(address));
+			return new string[]{address, hash.AsHexString()};
 		}
 
 		public static void SetupChatLine(ContainerWidget template, DateTime time, string name, Color nameColor, string text, Color textColor)

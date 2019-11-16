@@ -104,6 +104,30 @@ if (!(Test-Path "rix0rrr.BeaconLib.dll"))
 	rmdir rix0rrr.BeaconLib -Recurse
 }
 
+if (!(Test-Path "System.Data.HashFunction.Core.dll"))
+{
+	echo "Fetching System.Data.HashFunction.Core from NuGet."
+	./nuget.exe install System.Data.HashFunction.Core -Version 2.0.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
+	cp System.Data.HashFunction.Core/lib/net45/System.Data.HashFunction.Core.dll .
+	rmdir System.Data.HashFunction.Core -Recurse
+}
+
+if (!(Test-Path "System.Data.HashFunction.Interfaces.dll"))
+{
+	echo "Fetching System.Data.HashFunction.Interfaces from NuGet."
+	./nuget.exe install System.Data.HashFunction.Interfaces -Version 2.0.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
+	cp System.Data.HashFunction.Interfaces/lib/net45/System.Data.HashFunction.Interfaces.dll .
+	rmdir System.Data.HashFunction.Interfaces -Recurse
+}
+
+if (!(Test-Path "System.Data.HashFunction.xxHash.dll"))
+{
+	echo "Fetching System.Data.HashFunction.xxHash from NuGet."
+	./nuget.exe install System.Data.HashFunction.xxHash -Version 2.0.0 -ExcludeVersion -Verbosity quiet -Source nuget.org
+	cp System.Data.HashFunction.xxHash/lib/net45/System.Data.HashFunction.xxHash.dll .
+	rmdir System.Data.HashFunction.xxHash -Recurse
+}
+
 if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLite2-Country.mmdb.gz").LastWriteTime) -gt (new-timespan -days 30)))
 {
 	echo "Updating GeoIP country database from MaxMind."
