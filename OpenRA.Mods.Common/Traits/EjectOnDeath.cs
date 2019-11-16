@@ -58,47 +58,47 @@ namespace OpenRA.Mods.Common.Traits
 			if ((inAir && !Info.EjectInAir) || (!inAir && !Info.EjectOnGround))
 				return;
 
-			if (!Info.AllowUnsuitableCell)
+			self.World.AddFrameEndTask(w =>
 			{
-				var pilotInfo = self.World.Map.Rules.Actors[Info.PilotActor.ToLowerInvariant()];
-				var pilotPositionable = pilotInfo.TraitInfo<IPositionableInfo>();
-				if (!pilotPositionable.CanEnterCell(self.World, null, self.Location))
-					return;
-			}
-
-			var td = new TypeDictionary
-			{
-				new OwnerInit(self.Owner),
-				new LocationInit(self.Location),
-			};
-
-			// If airborne, offset the spawn location so the pilot doesn't drop on another infantry's head
-			var spawnPos = cp;
-			if (inAir)
-			{
-				var subCell = self.World.ActorMap.FreeSubCell(self.Location);
-				if (subCell != SubCell.Invalid)
+				if (!Info.AllowUnsuitableCell)
 				{
-					td.Add(new SubCellInit(subCell));
-					spawnPos = self.World.Map.CenterOfSubCell(self.Location, subCell) + new WVec(0, 0, spawnPos.Z);
+					var pilotInfo = self.World.Map.Rules.Actors[Info.PilotActor.ToLowerInvariant()];
+					var pilotPositionable = pilotInfo.TraitInfo<IPositionableInfo>();
+					if (!pilotPositionable.CanEnterCell(self.World, null, self.Location))
+						return;
 				}
-			}
 
-			td.Add(new CenterPositionInit(spawnPos));
+				var td = new TypeDictionary
+				{
+					new OwnerInit(self.Owner),
+					new LocationInit(self.Location),
+				};
 
-			var pilot = self.World.CreateActor(true, Info.PilotActor.ToLowerInvariant(), td);
+				// If airborne, offset the spawn location so the pilot doesn't drop on another infantry's head
+				var spawnPos = cp;
+				if (inAir)
+				{
+					var subCell = self.World.ActorMap.FreeSubCell(self.Location);
+					if (subCell != SubCell.Invalid)
+					{
+						td.Add(new SubCellInit(subCell));
+						spawnPos = self.World.Map.CenterOfSubCell(self.Location, subCell) + new WVec(0, 0, spawnPos.Z);
+					}
+				}
 
-			if (!inAir)
-			{
-				self.World.AddFrameEndTask(w =>
+				td.Add(new CenterPositionInit(spawnPos));
+
+				var pilot = self.World.CreateActor(true, Info.PilotActor.ToLowerInvariant(), td);
+
+				if (!inAir)
 				{
 					var pilotMobile = pilot.TraitOrDefault<Mobile>();
 					if (pilotMobile != null)
 						pilotMobile.Nudge(pilot);
-				});
-			}
-			else
-				Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
+				}
+				else
+					Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
+			});
 		}
 	}
 }
