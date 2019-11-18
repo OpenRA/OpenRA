@@ -14,34 +14,6 @@ using System.IO;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
-	class FastByteReader
-	{
-		readonly byte[] src;
-		int offset;
-
-		public FastByteReader(byte[] src, int offset = 0)
-		{
-			this.src = src;
-			this.offset = offset;
-		}
-
-		public bool Done() { return offset >= src.Length; }
-		public byte ReadByte() { return src[offset++]; }
-		public int ReadWord()
-		{
-			var x = ReadByte();
-			return x | (ReadByte() << 8);
-		}
-
-		public void CopyTo(byte[] dest, int offset, int count)
-		{
-			Array.Copy(src, this.offset, dest, offset, count);
-			this.offset += count;
-		}
-
-		public int Remaining() { return src.Length - offset; }
-	}
-
 	// Lempel - Castle - Welch algorithm (aka Format80)
 	public static class LCWCompression
 	{
