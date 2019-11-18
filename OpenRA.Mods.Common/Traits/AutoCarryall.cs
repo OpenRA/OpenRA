@@ -113,7 +113,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			protected override void OnFirstRun(Actor self)
 			{
-				QueueChild(new PickupUnit(self, cargo, 0));
+				if (!cargo.IsDead)
+					QueueChild(new PickupUnit(self, cargo, 0));
 			}
 
 			public override bool Tick(Actor self)
