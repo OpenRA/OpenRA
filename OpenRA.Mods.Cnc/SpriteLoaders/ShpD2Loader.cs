@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.SpriteLoaders
+namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
 	public class ShpD2Loader : ISpriteLoader
 	{
