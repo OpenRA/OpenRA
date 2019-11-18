@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	static class Glob
+	public static class Glob
 	{
 		public static bool Enabled = true;
 

@@ -18,7 +18,7 @@ using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class RemapShpCommand : IUtilityCommand
 	{
