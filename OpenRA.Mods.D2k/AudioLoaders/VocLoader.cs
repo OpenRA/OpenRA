@@ -15,7 +15,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.AudioLoaders
+namespace OpenRA.Mods.D2k.AudioLoaders
 {
 	public class VocLoader : ISoundLoader
 	{
