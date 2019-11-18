@@ -17,7 +17,7 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	class ConvertPngToShpCommand : IUtilityCommand
 	{
