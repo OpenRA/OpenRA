@@ -448,8 +448,8 @@ Player:
 			tent: 4
 			dome: 1
 			weap: 4
-			spen: 1
-			syrd: 1
+			spen: 2
+			syrd: 2
 			hpad: 4
 			afld: 4
 			afld.ukraine: 4
@@ -475,8 +475,8 @@ Player:
 			dome: 3
 			weap: 4
 			hpad: 4
-			spen: 1
-			syrd: 1
+			spen: 2
+			syrd: 2
 			afld: 4
 			afld.ukraine: 4
 			pbox: 20
@@ -736,6 +736,7 @@ Player:
 			e3: 30
 			e4: 30
 			e6: 1
+			e7: 1
 			dog: 1
 			shok: 30
 			harv: 50
@@ -762,6 +763,7 @@ Player:
 		UnitLimits:
 			dog: 4
 			e6: 4
+			e7: 1
 			harv: 10
 			jeep: 8
 			ftrk: 6
@@ -799,6 +801,7 @@ Player:
 			e3: 30
 			e4: 30
 			e6: 1
+			e7: 1
 			dog: 1
 			shok: 30
 			harv: 50
@@ -825,6 +828,7 @@ Player:
 		UnitLimits:
 			dog: 4
 			e6: 4
+			e7: 1
 			harv: 10
 			jeep: 8
 			ftrk: 6
@@ -862,6 +866,7 @@ Player:
 			e3: 30
 			e4: 30
 			e6: 1
+			e7: 1
 			dog: 1
 			shok: 30
 			harv: 50
@@ -888,6 +893,7 @@ Player:
 		UnitLimits:
 			dog: 4
 			e6: 4
+			e7: 1
 			harv: 10
 			jeep: 8
 			ftrk: 6
