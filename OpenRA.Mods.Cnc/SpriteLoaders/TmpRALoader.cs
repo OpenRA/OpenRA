@@ -13,11 +13,11 @@ using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.SpriteLoaders
+namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
-	public class TmpTDLoader : ISpriteLoader
+	public class TmpRALoader : ISpriteLoader
 	{
-		class TmpTDFrame : ISpriteFrame
+		class TmpRAFrame : ISpriteFrame
 		{
 			public Size Size { get; private set; }
 			public Size FrameSize { get; private set; }
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding { get { return false; } }
 
-			public TmpTDFrame(byte[] data, Size size)
+			public TmpRAFrame(byte[] data, Size size)
 			{
 				FrameSize = size;
 				Data = data;
@@ -37,44 +37,47 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 		}
 
-		bool IsTmpTD(Stream s)
+		bool IsTmpRA(Stream s)
 		{
 			var start = s.Position;
 
-			s.Position += 16;
+			s.Position += 20;
 			var a = s.ReadUInt32();
-			var b = s.ReadUInt32();
+			s.Position += 2;
+			var b = s.ReadUInt16();
 
 			s.Position = start;
-			return a == 0 && b == 0x0D1AFFFF;
+			return a == 0 && b == 0x2c73;
 		}
 
-		TmpTDFrame[] ParseFrames(Stream s)
+		TmpRAFrame[] ParseFrames(Stream s)
 		{
 			var start = s.Position;
 			var width = s.ReadUInt16();
 			var height = s.ReadUInt16();
 			var size = new Size(width, height);
 
-			s.Position += 8;
+			s.Position += 12;
 			var imgStart = s.ReadUInt32();
 			s.Position += 8;
 			var indexEnd = s.ReadInt32();
+			s.Position += 4;
 			var indexStart = s.ReadInt32();
 
 			s.Position = indexStart;
 			var count = indexEnd - indexStart;
-			var tiles = new TmpTDFrame[count];
+			var tiles = new TmpRAFrame[count];
+
 			var tilesIndex = 0;
 			foreach (var b in s.ReadBytes(count))
 			{
 				if (b != 255)
 				{
 					s.Position = imgStart + b * width * height;
-					tiles[tilesIndex++] = new TmpTDFrame(s.ReadBytes(width * height), size);
+					tiles[tilesIndex++] = new TmpRAFrame(s.ReadBytes(width * height), size);
 				}
 				else
-					tiles[tilesIndex++] = new TmpTDFrame(null, size);
+					tiles[tilesIndex++] = new TmpRAFrame(null, size);
 			}
 
 			s.Position = start;
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 		public bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
 			metadata = null;
-			if (!IsTmpTD(s))
+			if (!IsTmpRA(s))
 			{
 				frames = null;
 				return false;
