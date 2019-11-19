@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How often should the unit builder check to build more units")]
 		public readonly int UnitBuilderInterval = 0;
 
+		[Desc("Mininum amount of credits in reserve for the Unit Builder to be active.")]
+		public readonly int UnitBuilderMinCredits = 2000;
+
 		public override object Create(ActorInitializer init) { return new UnitBuilderBotModule(init.Self, this); }
 	}
 
@@ -89,8 +92,9 @@ namespace OpenRA.Mods.Common.Traits
 					queuedBuildRequests.Remove(buildRequest);
 				}
 
-				foreach (var q in Info.UnitQueues)
-					BuildUnit(bot, q, idleUnitCount < Info.IdleBaseUnitsMaximum);
+				if (player.PlayerActor.Trait<PlayerResources>().Cash + player.PlayerActor.Trait<PlayerResources>().Resources >= Info.UnitBuilderMinCredits)
+					foreach (var q in Info.UnitQueues)
+						BuildUnit(bot, q, idleUnitCount < Info.IdleBaseUnitsMaximum);
 			}
 		}
 
