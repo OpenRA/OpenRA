@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			foreach (var a in owner.Units)
 				if (!BusyAttack(a))
-					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
+					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromCell(owner.World, owner.TargetActor.Location), false));
 
 			if (ShouldFlee(owner))
 				owner.FuzzyStateMachine.ChangeState(owner, new NavyUnitsFleeState(), true);
