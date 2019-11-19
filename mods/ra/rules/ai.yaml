@@ -665,7 +665,7 @@ Player:
 	UnitBuilderBotModule@easy:
 		RequiresCondition: enable-easy-ai
 		IdleBaseUnitsMaximum: 20
-		UnitBuilderInterval: 750
+		UnitBuilderInterval: 200
 		UnitsToBuild:
 			e1: 5
 			e2: 15
@@ -729,7 +729,7 @@ Player:
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		IdleBaseUnitsMaximum: 45
-		UnitBuilderInterval: 500
+		UnitBuilderInterval: 100
 		UnitsToBuild:
 			e1: 5
 			e2: 15
