@@ -236,7 +236,7 @@ Player:
 		StructureProductionActiveDelay: 240
 		NewProductionCashThreshold: 7500
 		BuildingLimits:
-			proc: 3
+			proc: 2
 			barr: 1
 			tent: 1
 			dome: 1
@@ -665,7 +665,7 @@ Player:
 	UnitBuilderBotModule@easy:
 		RequiresCondition: enable-easy-ai
 		IdleBaseUnitsMaximum: 20
-		UnitBuilderInterval: 200
+		UnitBuilderInterval: 400
 		UnitsToBuild:
 			e1: 5
 			e2: 15
