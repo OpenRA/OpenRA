@@ -434,13 +434,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				MakeMouseFocusSettingsLive();
 			};
 
-			var middleMouseScrollDropdown = panel.Get<DropDownButtonWidget>("MIDDLE_MOUSE_SCROLL");
-			middleMouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(middleMouseScrollDropdown, gs, false);
-			middleMouseScrollDropdown.GetText = () => gs.MiddleMouseScroll.ToString();
+			// Reset invalid mouse scroll button setting to default.
+			var classicOrdersCheckbox = panel.Get<CheckboxWidget>("CLASSICORDERS_CHECKBOX");
+			var classicOrdersoldOnClick = classicOrdersCheckbox.OnClick;
+			classicOrdersCheckbox.OnClick = () =>
+			{
+				classicOrdersoldOnClick();
 
-			var rightMouseScrollDropdown = panel.Get<DropDownButtonWidget>("RIGHT_MOUSE_SCROLL");
-			rightMouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(rightMouseScrollDropdown, gs, true);
-			rightMouseScrollDropdown.GetText = () => gs.RightMouseScroll.ToString();
+				if (!gs.UseClassicMouseStyle && gs.ScrollButton == MouseButton.Right)
+					gs.ScrollButton = MouseButton.Middle;
+			};
+
+			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL");
+			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
+			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+
+			var scrollButtonDropdown = panel.Get<DropDownButtonWidget>("SCROLL_BUTTON");
+			scrollButtonDropdown.OnMouseDown = _ => ShowScrollButtonDropdown(scrollButtonDropdown, gs);
+			scrollButtonDropdown.GetText = () => gs.ScrollButton.ToString();
 
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
 			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
@@ -512,8 +523,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return () =>
 			{
 				gs.UseClassicMouseStyle = dgs.UseClassicMouseStyle;
-				gs.MiddleMouseScroll = dgs.MiddleMouseScroll;
-				gs.RightMouseScroll = dgs.RightMouseScroll;
+				gs.MouseScroll = dgs.MouseScroll;
+				gs.ScrollButton = dgs.ScrollButton;
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
@@ -592,7 +603,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static void ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s, bool rightMouse)
+		static void ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -605,8 +616,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => (rightMouse ? s.RightMouseScroll : s.MiddleMouseScroll) == options[o],
-					() => { if (rightMouse) s.RightMouseScroll = options[o]; else s.MiddleMouseScroll = options[o]; });
+					() => s.MouseScroll == options[o],
+					() => s.MouseScroll = options[o]);
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+		}
+
+		static void ShowScrollButtonDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		{
+			var options = new Dictionary<string, MouseButton>()
+			{
+				{ "Middle", MouseButton.Middle },
+				{ "Right", MouseButton.Right },
+				{ "XButton1", MouseButton.XButton1 },
+				{ "XButton2", MouseButton.XButton2 },
+			};
+
+			if (!s.UseClassicMouseStyle)
+				options.Remove("Right");
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.ScrollButton == options[o],
+					() => s.ScrollButton = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
