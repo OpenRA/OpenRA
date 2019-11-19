@@ -448,7 +448,7 @@ Player:
 			tent: 4
 			dome: 1
 			weap: 4
-			spen: 2
+			spen: 0
 			syrd: 2
 			hpad: 4
 			afld: 4
@@ -645,8 +645,8 @@ Player:
 			ftrk: 4
 	SquadManagerBotModule@easy:
 		RequiresCondition: enable-easy-ai
-		SquadSize: 10
-		SquadSizeRandomBonus: 5
+		SquadSize: 2
+		SquadSizeRandomBonus: 0
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
@@ -661,7 +661,7 @@ Player:
 		AssignRolesInterval: 200
 		AttackForceInterval: 75
 		DangerScanRadius: 10
-		MinimumAttackForceDelay: 30
+		MinimumAttackForceDelay: 6000
 	UnitBuilderBotModule@easy:
 		RequiresCondition: enable-easy-ai
 		IdleBaseUnitsMaximum: 20
@@ -709,8 +709,8 @@ Player:
 			pt: 2
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
-		SquadSize: 30
-		SquadSizeRandomBonus: 15
+		SquadSize: 3
+		SquadSizeRandomBonus: 0
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
@@ -718,14 +718,14 @@ Player:
 		IdleScanRadius: 18
 		AttackScanRadius: 9
 		MaxBaseRadius: 16
-		RushInterval: 1200
+		RushInterval: 600
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 20
 		ProtectionScanRadius: 10
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
-		MinimumAttackForceDelay: 30
+		MinimumAttackForceDelay: 6000
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		IdleBaseUnitsMaximum: 45
@@ -775,8 +775,8 @@ Player:
 			pt: 3
 	SquadManagerBotModule@hard:
 		RequiresCondition: enable-hard-ai
-		SquadSize: 50
-		SquadSizeRandomBonus: 25
+		SquadSize: 3
+		SquadSizeRandomBonus: 0
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
@@ -784,14 +784,14 @@ Player:
 		IdleScanRadius: 18
 		AttackScanRadius: 9
 		MaxBaseRadius: 16
-		RushInterval: 1200
+		RushInterval: 600
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 24
 		ProtectionScanRadius: 10
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
-		MinimumAttackForceDelay: 30
+		MinimumAttackForceDelay: 6000
 	UnitBuilderBotModule@hard:
 		RequiresCondition: enable-hard-ai
 		IdleBaseUnitsMaximum: 60
@@ -840,8 +840,8 @@ Player:
 			pt: 3
 	SquadManagerBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
-		SquadSize: 70
-		SquadSizeRandomBonus: 30
+		SquadSize: 3
+		SquadSizeRandomBonus: 0
 		ExcludeFromSquadsTypes: harv, mcv, dog, e6
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
@@ -849,14 +849,14 @@ Player:
 		IdleScanRadius: 18
 		AttackScanRadius: 9
 		MaxBaseRadius: 16
-		RushInterval: 1200
+		RushInterval: 600
 		RushAttackScanRadius: 25
 		ProtectUnitScanRadius: 28
 		ProtectionScanRadius: 10
 		AssignRolesInterval: 50
 		AttackForceInterval: 75
 		DangerScanRadius: 10
-		MinimumAttackForceDelay: 30
+		MinimumAttackForceDelay: 6000
 	UnitBuilderBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
 		IdleBaseUnitsMaximum: 160
