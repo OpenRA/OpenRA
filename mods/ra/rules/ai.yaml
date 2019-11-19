@@ -236,7 +236,7 @@ Player:
 		StructureProductionActiveDelay: 240
 		NewProductionCashThreshold: 7500
 		BuildingLimits:
-			proc: 2
+			proc: 3
 			barr: 1
 			tent: 1
 			dome: 1
