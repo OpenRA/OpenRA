@@ -387,23 +387,23 @@ Background@SETTINGS_PANEL:
 					Width: 160
 					Height: 20
 					Font: Regular
-					Text: Middle-mouse Scrolling:
+					Text: Mouse Scrolling Mode:
 					Align: Right
-				DropDownButton@MIDDLE_MOUSE_SCROLL:
+				DropDownButton@MOUSE_SCROLL:
 					X: PARENT_RIGHT - WIDTH - 15
 					Y: 38
 					Width: 100
 					Height: 25
 					Font: Regular
-				Label@MIDDLE_MOUSE_SCROLL_LABEL:
+				Label@MSCROLL_BUTTON_LABEL:
 					X: PARENT_RIGHT - WIDTH - 120
 					Y: 71
 					Width: 160
 					Height: 20
 					Font: Regular
-					Text: Right-mouse Scrolling:
+					Text: Mouse Scrolling Button:
 					Align: Right
-				DropDownButton@RIGHT_MOUSE_SCROLL:
+				DropDownButton@SCROLL_BUTTON:
 					X: PARENT_RIGHT - WIDTH - 15
 					Y: 68
 					Width: 100

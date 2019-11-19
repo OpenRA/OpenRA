@@ -28,6 +28,8 @@ namespace OpenRA.Platforms.Default
 			return b == SDL.SDL_BUTTON_LEFT ? MouseButton.Left
 				: b == SDL.SDL_BUTTON_RIGHT ? MouseButton.Right
 				: b == SDL.SDL_BUTTON_MIDDLE ? MouseButton.Middle
+				: b == SDL.SDL_BUTTON_X1 ? MouseButton.XButton1
+				: b == SDL.SDL_BUTTON_X2 ? MouseButton.XButton2
 				: 0;
 		}
 
