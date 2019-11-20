@@ -8,3 +8,6 @@ Metrics:
 	ClickSound: ClickSound
 	ChatMessageColor: FFFFFF
 	SystemMessageColor: FFFF00
+	NormalSelectionColor: FFFFFF
+	AltSelectionColor: 00FFFF
+	CtrlSelectionColor: FFFF00
