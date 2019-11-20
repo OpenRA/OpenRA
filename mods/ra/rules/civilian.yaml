@@ -92,6 +92,7 @@ FCOM:
 		Range: 4c0
 	WithBuildingBib:
 	CaptureManager:
+		BeingCapturedCondition: being-captured
 	Capturable:
 		Types: building
 	CapturableProgressBar:
@@ -99,6 +100,7 @@ FCOM:
 	GivesBuildableArea:
 		AreaTypes: building
 	BaseProvider:
+		PauseOnCondition: being-captured
 		Range: 8c0
 	EngineerRepairable:
 	Power:
