@@ -25,14 +25,16 @@ namespace OpenRA.Activities
 		public readonly Target Target;
 		public readonly Color Color;
 		public readonly Sprite Tile;
+		public readonly WDist? Radius;
 
-		public TargetLineNode(Target target, Color color, Sprite tile = null)
+		public TargetLineNode(Target target, Color color, Sprite tile = null, WDist? radius = null)
 		{
 			// Note: Not all activities are drawable. In that case, pass Target.Invalid as target,
 			// if "yield break" in TargetLineNode(Actor self) is not feasible.
 			Target = target;
 			Color = color;
 			Tile = tile;
+			Radius = radius;
 		}
 	}
 

@@ -15,8 +15,10 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Pathfinder;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -76,6 +78,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Does the unit queue harvesting runs instead of individual harvest actions?")]
 		public readonly bool QueueFullLoad = false;
+
+		[Desc("Can the unit be ordered to harvest within a specified radius by click-dragging?")]
+		public readonly bool AcceptsAreaHarvestOrder = true;
 
 		[GrantedConditionReference]
 		[Desc("Condition to grant while empty.")]
@@ -284,14 +289,17 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>("Deliver", 5,
 					(proc, _) => IsAcceptableProcType(proc),
 					proc => proc.Trait<IAcceptResources>().AllowDocking);
-				yield return new HarvestOrderTargeter();
+				yield return new HarvestOrderTargeter(Info);
 			}
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued, CPos extraLoc)
 		{
 			if (order.OrderID == "Deliver" || order.OrderID == "Harvest")
-				return new Order(order.OrderID, self, target, queued);
+				return new Order(order.OrderID, self, target, queued)
+				{
+					ExtraLocation = extraLoc
+				};
 
 			return null;
 		}
@@ -316,11 +324,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
-				{
-					// Find the nearest claimable cell to the order location (useful for group-select harvest):
-					var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
-					loc = mobile.NearestCell(cell, p => mobile.CanEnterCell(p) && claimLayer.TryClaimCell(self, p), 1, 6);
-				}
+					loc = self.World.Map.CellContaining(order.Target.CenterPosition);
 				else
 				{
 					// A bot order gives us a CPos.Zero TargetLocation.
@@ -328,7 +332,8 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// FindResources takes care of calling INotifyHarvesterAction
-				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, loc));
+				var range = (loc - order.ExtraLocation).Length;
+				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, loc, range));
 				self.ShowTargetLines();
 			}
 			else if (order.OrderString == "Deliver")
@@ -376,11 +381,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		class HarvestOrderTargeter : IOrderTargeter
 		{
+			readonly HarvesterInfo info;
+
 			public string OrderID { get { return "Harvest"; } }
 			public int OrderPriority { get { return 10; } }
-			public bool CanDrag { get { return false; } }
+			public bool CanDrag { get { return info.AcceptsAreaHarvestOrder; } }
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+
+			public HarvestOrderTargeter(HarvesterInfo info)
+			{
+				this.info = info;
+			}
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 			{
@@ -410,7 +422,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world, Actor self, Target target)
 			{
-				yield break;
+				var harvesters = world.Selection.Actors.Where(a => a.IsInWorld && !a.IsDead && a.TraitOrDefault<Harvester>() != null);
+				if (!harvesters.Any() || self != harvesters.First())
+					yield break;
+
+				var lastMousePos = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
+				var startPos = world.Map.CellContaining(target.CenterPosition);
+
+				yield return new RangeCircleAnnotationRenderable(
+					self.World.Map.CenterOfCell(startPos),
+					WDist.FromCells((lastMousePos - startPos).Length), 0,
+					Color.Crimson, Color.FromArgb(96, Color.Black));
 			}
 		}
 	}

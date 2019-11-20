@@ -12,7 +12,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -112,8 +114,15 @@ namespace OpenRA.Mods.Common.Traits
 						var markerWidth = renderableCache.Any() ? info.QueuedMarkerWidth : info.MarkerWidth;
 
 						var pos = n.Target.CenterPosition;
-						renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
-						prev = pos;
+
+						if (n.Radius == null)
+						{
+							renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
+							prev = pos;
+						}
+						else
+							renderableCache.Add(new RangeCircleAnnotationRenderable(pos, n.Radius.Value, 0, n.Color,
+							Color.FromArgb(96, Color.Black)));
 					}
 				}
 			}

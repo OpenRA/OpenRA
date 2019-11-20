@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 		Actor deliverActor;
 		CPos? orderLocation;
 		CPos? lastHarvestedCell;
+		int range;
 		bool hasDeliveredLoad;
 		bool hasHarvestedCell;
 		bool hasWaited;
@@ -50,10 +51,11 @@ namespace OpenRA.Mods.Common.Activities
 			this.deliverActor = deliverActor;
 		}
 
-		public FindAndDeliverResources(Actor self, CPos orderLocation)
+		public FindAndDeliverResources(Actor self, CPos orderLocation, int range = 0)
 			: this(self, null)
 		{
 			this.orderLocation = orderLocation;
+			this.range = range;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -174,13 +176,14 @@ namespace OpenRA.Mods.Common.Activities
 				if (harv.CanHarvestCell(self, orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
 					return orderLocation;
 
-				orderLocation = null;
+				if (range == 0)
+					orderLocation = null;
 			}
 
 			// Determine where to search from and how far to search:
 			var procLoc = GetSearchFromProcLocation(self);
-			var searchFromLoc = lastHarvestedCell ?? procLoc;
-			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
+			var searchFromLoc = orderLocation ?? lastHarvestedCell ?? procLoc;
+			var searchRadius = range != 0 ? range : (lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius);
 			if (!searchFromLoc.HasValue)
 			{
 				searchFromLoc = self.Location;
@@ -240,11 +243,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
+			if (NextActivity == null && range != 0)
+				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Crimson, radius: WDist.FromCells(range));
+
 			if (ChildActivity != null)
 				foreach (var n in ChildActivity.TargetLineNodes(self))
 					yield return n;
-
-			if (orderLocation != null)
+			else if (orderLocation != null)
 				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Green);
 			else if (deliverActor != null)
 				yield return new TargetLineNode(Target.FromActor(deliverActor), Color.Green);
