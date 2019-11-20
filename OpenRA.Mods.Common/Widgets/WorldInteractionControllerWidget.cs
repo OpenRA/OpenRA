@@ -27,6 +27,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		protected readonly World World;
 		readonly WorldRenderer worldRenderer;
+		readonly Color normalSelectionColor;
+		readonly Color altSelectionColor;
+		readonly Color ctrlSelectionColor;
+
 		int2 dragStart, mousePos;
 		bool isDragging = false;
 
@@ -43,6 +47,14 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			World = world;
 			this.worldRenderer = worldRenderer;
+			if (!ChromeMetrics.TryGet("AltSelectionColor", out altSelectionColor))
+				altSelectionColor = Color.White;
+
+			if (!ChromeMetrics.TryGet("CtrlSelectionColor", out ctrlSelectionColor))
+				ctrlSelectionColor = Color.White;
+
+			if (!ChromeMetrics.TryGet("NormalSelectionColor", out normalSelectionColor))
+				normalSelectionColor = Color.White;
 		}
 
 		void DrawRollover(Actor unit)
@@ -61,7 +73,14 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var a = worldRenderer.Viewport.WorldToViewPx(dragStart);
 				var b = worldRenderer.Viewport.WorldToViewPx(mousePos);
-				Game.Renderer.RgbaColorRenderer.DrawRect(a, b, 1, Color.White);
+
+				var color = normalSelectionColor;
+				if (modifiers.HasFlag(Modifiers.Alt) && !modifiers.HasFlag(Modifiers.Ctrl))
+					color = altSelectionColor;
+				else if (modifiers.HasFlag(Modifiers.Ctrl) && !modifiers.HasFlag(Modifiers.Alt))
+					color = ctrlSelectionColor;
+
+				Game.Renderer.RgbaColorRenderer.DrawRect(a, b, 1, color);
 
 				// Render actors in the dragbox
 				foreach (var u in SelectActorsInBoxWithDeadzone(World, dragStart, mousePos, modifiers))
