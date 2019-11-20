@@ -448,7 +448,7 @@ Player:
 			tent: 4
 			dome: 1
 			weap: 4
-			spen: 0
+			spen: 2
 			syrd: 2
 			hpad: 4
 			afld: 4
