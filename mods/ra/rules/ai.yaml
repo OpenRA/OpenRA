@@ -11,38 +11,26 @@ Player:
 	ModularBot@BrutalAI:
 		Name: Brutal AI
 		Type: brutal
-	ModularBot@RushAI:
-		Name: Rush AI
-		Type: rush
-	ModularBot@TurtleAI:
-		Name: Turtle AI
-		Type: turtle
 	ModularBot@NavalAI:
 		Name: Naval AI
 		Type: naval
-	GrantConditionOnBotOwner@rush:
-		Condition: enable-rush-ai
-		Bots: rush
 	GrantConditionOnBotOwner@easy:
 		Condition: enable-easy-ai
 		Bots: easy
 	GrantConditionOnBotOwner@normal:
 		Condition: enable-normal-ai
 		Bots: normal
-	GrantConditionOnBotOwner@turtle:
-		Condition: enable-turtle-ai
-		Bots: turtle
-	GrantConditionOnBotOwner@naval:
-		Condition: enable-naval-ai
-		Bots: naval
 	GrantConditionOnBotOwner@hard:
 		Condition: enable-hard-ai
 		Bots: hard
 	GrantConditionOnBotOwner@brutal:
 		Condition: enable-brutal-ai
 		Bots: brutal
+	GrantConditionOnBotOwner@naval:
+		Condition: enable-naval-ai
+		Bots: naval
 	SupportPowerBotModule:
-		RequiresCondition: enable-rush-ai || enable-easy-ai  || enable-normal-ai || enable-turtle-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
+		RequiresCondition: enable-easy-ai  || enable-normal-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
 		Decisions:
 			spyplane:
 				OrderName: SovietSpyPlane
@@ -117,103 +105,10 @@ Player:
 					TargetMetric: Value
 					CheckRadius: 1c768
 	HarvesterBotModule:
-		RequiresCondition: enable-rush-ai || enable-easy-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
+		RequiresCondition: enable-easy-ai || enable-normal-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
 		HarvesterTypes: harv
 		HarvestersPerRefinery: 2
 		RefineryTypes: proc
-	BaseBuilderBotModule@rush:
-		RequiresCondition: enable-rush-ai
-		MinimumExcessPower: 60
-		MaximumExcessPower: 160
-		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
-		ConstructionYardTypes: fact
-		RefineryTypes: proc
-		PowerTypes: powr,apwr
-		BarracksTypes: barr,tent
-		VehiclesFactoryTypes: weap
-		ProductionTypes: barr,tent,weap
-		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30
-			barr: 1
-			kenn: 1
-			tent: 1
-			weap: 1
-			pbox: 7
-			gun: 7
-			tsla: 5
-			gap: 2
-			ftur: 10
-			agun: 5
-			sam: 5
-			atek: 1
-			stek: 1
-			fix: 1
-			dome: 10
-			mslo: 1
-	BaseBuilderBotModule@turtle:
-		RequiresCondition: enable-turtle-ai
-		MinimumExcessPower: 60
-		MaximumExcessPower: 250
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
-		ConstructionYardTypes: fact
-		RefineryTypes: proc
-		PowerTypes: powr,apwr
-		BarracksTypes: barr,tent
-		VehiclesFactoryTypes: weap
-		ProductionTypes: barr,tent,weap,afld,hpad,afld.ukraine
-		NavalProductionTypes: spen,syrd
-		SiloTypes: silo
-		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
-			kenn: 1
-			dome: 1
-			weap: 1
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			afld.ukraine: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 30
-			tent: 1
-			barr: 1
-			kenn: 1
-			weap: 3
-			hpad: 2
-			afld: 2
-			afld.ukraine: 2
-			spen: 1
-			syrd: 1
-			pbox: 10
-			gun: 10
-			ftur: 10
-			tsla: 7
-			gap: 3
-			fix: 1
-			dome: 10
-			agun: 5
-			sam: 5
-			atek: 1
-			stek: 1
-			mslo: 1
 	BaseBuilderBotModule@easy:
 		RequiresCondition: enable-easy-ai
 		MinimumExcessPower: 50
@@ -509,8 +404,8 @@ Player:
 			dome: 1
 			barr: 1
 			tent: 1
-			spen: 1
-			syrd: 1
+			spen: 2
+			syrd: 2
 			hpad: 8
 			afld: 8
 			afld.ukraine: 8
@@ -527,8 +422,8 @@ Player:
 			afld.ukraine: 20
 			atek: 1
 			stek: 1
-			spen: 1
-			syrd: 1
+			spen: 2
+			syrd: 2
 			fix: 1
 			pbox: 12
 			gun: 12
@@ -538,7 +433,7 @@ Player:
 			sam: 5
 			mslo: 1
 	BuildingRepairBotModule:
-		RequiresCondition: enable-rush-ai || enable-easy-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
+		RequiresCondition: enable-easy-ai || enable-normal-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
 	SquadManagerBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
@@ -546,7 +441,7 @@ Player:
 		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
 		ConstructionYardTypes: fact
 	McvManagerBotModule:
-		RequiresCondition: enable-rush-ai || enable-easy-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		RequiresCondition: enable-easy-ai || enable-normal-ai || enable-naval-ai
 		McvTypes: mcv
 		ConstructionYardTypes: fact
 		McvFactoryTypes: weap
@@ -575,74 +470,6 @@ Player:
 		MinBaseRadius: 20
 		MaxBaseRadius: 25
 		ScanForNewMcvInterval: 80
-	UnitBuilderBotModule@rush:
-		RequiresCondition: enable-rush-ai
-		UnitsToBuild:
-			e1: 65
-			e2: 15
-			e3: 30
-			e4: 15
-			dog: 15
-			shok: 15
-			harv: 10
-			apc: 30
-			jeep: 20
-			arty: 15
-			v2rl: 40
-			ftrk: 30
-			1tnk: 50
-			2tnk: 50
-			3tnk: 50
-			4tnk: 25
-			ttnk: 25
-			stnk: 5
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
-	SquadManagerBotModule@turtle:
-		RequiresCondition: enable-turtle-ai
-		SquadSize: 10
-		ExcludeFromSquadsTypes: harv, mcv, dog
-		NavalUnitsTypes: ss,msub,dd,ca,lst,pt
-		ConstructionYardTypes: fact
-		NavalProductionTypes: spen,syrd
-	UnitBuilderBotModule@turtle:
-		RequiresCondition: enable-turtle-ai
-		UnitsToBuild:
-			e1: 65
-			e2: 15
-			e3: 30
-			e4: 15
-			dog: 15
-			shok: 15
-			harv: 15
-			apc: 30
-			jeep: 20
-			arty: 15
-			v2rl: 40
-			ftrk: 50
-			1tnk: 50
-			2tnk: 50
-			3tnk: 50
-			4tnk: 25
-			ttnk: 25
-			stnk: 10
-			heli: 30
-			mh60: 30
-			mig: 30
-			yak: 30
-			ss: 10
-			msub: 10
-			dd: 10
-			ca: 10
-			pt: 10
-		UnitLimits:
-			dog: 4
-			harv: 8
-			jeep: 4
-			ftrk: 4
 	SquadManagerBotModule@easy:
 		RequiresCondition: enable-easy-ai
 		SquadSize: 2
@@ -924,7 +751,7 @@ Player:
 			ca: 20
 			pt: 10
 		UnitLimits:
-			harv: 8
+			harv: 10
 	CaptureManagerBotModule@AIEasy:
 		RequiresCondition: enable-easy-ai
 		CapturingActorTypes: e6
