@@ -97,8 +97,14 @@ namespace OpenRA.Mods.Common.Activities
 				// Put back into world
 				self.World.AddFrameEndTask(w =>
 				{
+					if (self.IsDead)
+						return;
+
 					var cargo = carryall.Carryable;
-					var carryable = carryall.Carryable.Trait<Carryable>();
+					if (cargo == null)
+						return;
+
+					var carryable = cargo.Trait<Carryable>();
 					w.Add(cargo);
 					carryall.DetachCarryable(self);
 					carryable.UnReserve(cargo);
