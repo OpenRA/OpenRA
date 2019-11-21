@@ -797,7 +797,7 @@ Player:
 	UnitBuilderBotModule@hard:
 		RequiresCondition: enable-hard-ai
 		IdleBaseUnitsMaximum: 60
-		UnitBuilderMinCredits: 2000
+		UnitBuilderMinCredits: 1350
 		UnitsToBuild:
 			e1: 5
 			e2: 15
@@ -863,7 +863,7 @@ Player:
 	UnitBuilderBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
 		IdleBaseUnitsMaximum: 160
-		UnitBuilderMinCredits: 2000
+		UnitBuilderMinCredits: 1800
 		UnitsToBuild:
 			e1: 5
 			e2: 15
