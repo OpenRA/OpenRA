@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (leader == null)
 				return;
 
-			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(System.Math.Max(owner.Units.Count / 3, 3)))
+			var ownUnits = owner.World.FindActorsInCircle(leader.CenterPosition, WDist.FromCells(System.Math.Max(owner.Units.Count / 3, 4)))
 				.Where(a => a.Owner == owner.Units.First().Owner && owner.Units.Contains(a)).ToHashSet();
 
 			if (ownUnits.Count < owner.Units.Count)
