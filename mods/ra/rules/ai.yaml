@@ -330,7 +330,7 @@ Player:
 			syrd: 6500
 			spen: 6500
 		BuildingFractions:
-			proc: 8
+			proc: 10
 			tent: 2
 			barr: 2
 			kenn: 0
@@ -667,7 +667,7 @@ Player:
 		RequiresCondition: enable-easy-ai
 		IdleBaseUnitsMaximum: 20
 		UnitBuilderInterval: 400
-		UnitBuilderMinCredits: 1000
+		UnitBuilderMinCredits: 900
 		UnitsToBuild:
 			e1: 5
 			e2: 15
@@ -731,7 +731,7 @@ Player:
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		IdleBaseUnitsMaximum: 45
-		UnitBuilderMinCredits: 450
+		UnitBuilderMinCredits: 900
 		UnitsToBuild:
 			e1: 5
 			e2: 15
