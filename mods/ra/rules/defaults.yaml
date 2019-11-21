@@ -928,16 +928,19 @@
 	WithDamageOverlay@SmallBurn:
 		DamageTypes: Incendiary
 		Image: burn-s
+		Palette: effect
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
+		Palette: effect
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
+		Palette: effect
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
 	HiddenUnderShroud:
