@@ -667,6 +667,7 @@ Player:
 		RequiresCondition: enable-easy-ai
 		IdleBaseUnitsMaximum: 20
 		UnitBuilderInterval: 400
+		UnitBuilderMinCredits: 1000
 		UnitsToBuild:
 			e1: 5
 			e2: 15
@@ -730,7 +731,7 @@ Player:
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		IdleBaseUnitsMaximum: 45
-		UnitBuilderInterval: 100
+		UnitBuilderMinCredits: 450
 		UnitsToBuild:
 			e1: 5
 			e2: 15
@@ -796,6 +797,7 @@ Player:
 	UnitBuilderBotModule@hard:
 		RequiresCondition: enable-hard-ai
 		IdleBaseUnitsMaximum: 60
+		UnitBuilderMinCredits: 2000
 		UnitsToBuild:
 			e1: 5
 			e2: 15
@@ -861,6 +863,7 @@ Player:
 	UnitBuilderBotModule@brutal:
 		RequiresCondition: enable-brutal-ai
 		IdleBaseUnitsMaximum: 160
+		UnitBuilderMinCredits: 2000
 		UnitsToBuild:
 			e1: 5
 			e2: 15
