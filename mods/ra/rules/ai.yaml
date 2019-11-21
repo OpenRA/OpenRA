@@ -493,7 +493,7 @@ Player:
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		MinimumExcessPower: 60
-		MaximumExcessPower: 200
+		MaximumExcessPower: 300
 		ExcessPowerIncrement: 40
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: fact
@@ -504,13 +504,14 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad,afld.ukraine
 		NavalProductionTypes: spen,syrd
 		SiloTypes: silo
+		PlaceDefenseTowardsEnemyChance: 0
 		BuildingLimits:
 			proc: 4
 			dome: 1
 			barr: 1
 			tent: 1
-			spen: 1
-			syrd: 1
+			spen: 2
+			syrd: 2
 			hpad: 8
 			afld: 8
 			afld.ukraine: 8
@@ -527,15 +528,15 @@ Player:
 			afld.ukraine: 20
 			atek: 1
 			stek: 1
-			spen: 1
-			syrd: 1
+			spen: 2
+			syrd: 2
 			fix: 1
-			pbox: 12
-			gun: 12
-			ftur: 12
-			tsla: 12
-			agun: 5
-			sam: 5
+			pbox: 18
+			gun: 18
+			ftur: 21
+			tsla: 15
+			agun: 10
+			sam: 10
 			mslo: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-easy-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
@@ -924,7 +925,7 @@ Player:
 			ca: 20
 			pt: 10
 		UnitLimits:
-			harv: 8
+			harv: 10
 	CaptureManagerBotModule@AIEasy:
 		RequiresCondition: enable-easy-ai
 		CapturingActorTypes: e6
