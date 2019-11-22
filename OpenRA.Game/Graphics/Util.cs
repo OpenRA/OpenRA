@@ -121,6 +121,35 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public static void FastCopyIntoSprite(Sprite dest, ISpriteFrame src, IPalette palette)
+		{
+			var destData = dest.Sheet.GetData();
+			var destStride = dest.Sheet.Size.Width;
+			var width = src.FrameSize.Width;
+			var height = src.FrameSize.Height;
+
+			unsafe
+			{
+				// Cast the data to an int array so we can copy the src data directly
+				fixed (byte* bd = &destData[0])
+				{
+					var data = (int*)bd;
+					var x = dest.Bounds.Left;
+					var y = dest.Bounds.Top;
+
+					var k = 0;
+					for (var j = 0; j < height; j++)
+					{
+						for (var i = 0; i < width; i++)
+						{
+							Color cc = Color.FromArgb(palette[src.Data[k++]]);
+							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+						}
+					}
+				}
+			}
+		}
+
 		public static Color PremultiplyAlpha(Color c)
 		{
 			if (c.A == byte.MaxValue)

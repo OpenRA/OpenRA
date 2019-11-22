@@ -58,6 +58,16 @@ namespace OpenRA.Graphics
 			ReleaseBuffer();
 		}
 
+		public Sheet(SheetType type, ISpriteFrame frame, IPalette palette)
+		{
+			Size = new Size(frame.FrameSize.Width, frame.FrameSize.Height).NextPowerOf2();
+			data = new byte[4 * Size.Width * Size.Height];
+			Util.FastCopyIntoSprite(new Sprite(this, new Rectangle(0, 0, Size.Width, Size.Height), TextureChannel.Red), frame, palette);
+
+			Type = type;
+			ReleaseBuffer();
+		}
+
 		public ITexture GetTexture()
 		{
 			if (texture == null)

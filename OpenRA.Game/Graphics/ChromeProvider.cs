@@ -11,7 +11,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -86,7 +88,7 @@ namespace OpenRA.Graphics
 			collections.Add(name, collection);
 		}
 
-		public static Sprite GetImage(string collectionName, string imageName)
+		public static Sprite GetImage(string collectionName, string imageName, IPalette palette = null)
 		{
 			if (string.IsNullOrEmpty(collectionName))
 				return null;
@@ -109,15 +111,38 @@ namespace OpenRA.Graphics
 				return null;
 
 			// Cached sheet
-			Sheet sheet;
+			Sheet sheet = null;
 			if (cachedSheets.ContainsKey(mi.Src))
 				sheet = cachedSheets[mi.Src];
 			else
 			{
 				using (var stream = fileSystem.Open(mi.Src))
-					sheet = new Sheet(SheetType.BGRA, stream);
+				{
+					if (Png.Verify(stream))
+						sheet = new Sheet(SheetType.BGRA, stream);
+					else if (palette != null)
+					{
+						foreach (ISpriteLoader loader in Game.ModData.SpriteLoaders)
+						{
+							ISpriteFrame[] frames;
+							TypeDictionary metadata;
+							if (loader.TryParseSprite(stream, out frames, out metadata))
+							{
+								if (frames.Length > 0)
+								{
+									// will use only first frame if multiple frames available
+									sheet = new Sheet(SheetType.BGRA, frames[0], palette);
+									break;
+								}
+							}
+						}
+					}
 
-				cachedSheets.Add(mi.Src, sheet);
+					if (sheet == null)
+						return null;
+
+					cachedSheets.Add(mi.Src, sheet);
+				}
 			}
 
 			// Cache the sprite
