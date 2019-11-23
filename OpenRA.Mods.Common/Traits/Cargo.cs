@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, INotifyKilled,
-		INotifyOwnerChanged, ITick, INotifySold, INotifyActorDisposing, IIssueDeployOrder,
+		INotifyOwnerChanged, INotifySold, INotifyActorDisposing, IIssueDeployOrder,
 		ITransformActorInitModifier
 	{
 		public readonly CargoInfo Info;
@@ -159,6 +159,17 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				totalWeight = cargo.Sum(c => GetWeight(c));
+			}
+
+			foreach (var c in cargo)
+			{
+				c.Trait<Passenger>().Transport = self;
+
+				foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
+					nec.OnEnteredCargo(c, self);
+
+				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					npe.OnPassengerEntered(self, c);
 			}
 
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
@@ -408,15 +419,11 @@ namespace OpenRA.Mods.Common.Traits
 					loadingToken = conditionManager.RevokeCondition(self, loadingToken);
 			}
 
-			// If not initialized then this will be notified in the first tick
-			if (initialized)
-			{
-				foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
-					nec.OnEnteredCargo(a, self);
+			foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
+				nec.OnEnteredCargo(a, self);
 
-				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-					npe.OnPassengerEntered(self, a);
-			}
+			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+				npe.OnPassengerEntered(self, a);
 
 			var p = a.Trait<Passenger>();
 			p.Transport = self;
@@ -493,27 +500,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var p in Passengers)
 				p.ChangeOwner(newOwner);
-		}
-
-		bool initialized;
-		void ITick.Tick(Actor self)
-		{
-			// Notify initial cargo load
-			if (!initialized)
-			{
-				foreach (var c in cargo)
-				{
-					c.Trait<Passenger>().Transport = self;
-
-					foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
-						nec.OnEnteredCargo(c, self);
-
-					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-						npe.OnPassengerEntered(self, c);
-				}
-
-				initialized = true;
-			}
 		}
 
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init)
