@@ -283,10 +283,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Prepare for transport pickup
-		bool LockForPickup(Actor self)
+		void LockForPickup(Actor self)
 		{
 			if (state == State.Locked)
-				return false;
+				return;
 
 			state = State.Locked;
 
@@ -300,7 +300,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			self.QueueActivity(new WaitFor(() => state != State.Locked, false));
-			return true;
 		}
 
 		void ReleaseLock(Actor self)
@@ -315,14 +314,6 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new TakeOff(self));
 
 			takeOffAfterLoad = false;
-		}
-
-		public string CursorForOrder(Actor self, Order order)
-		{
-			if (order.OrderString != "Unload")
-				return null;
-
-			return CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
