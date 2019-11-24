@@ -30,7 +30,7 @@ namespace OpenRA.Network
 		int ordersFrame;
 		Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 
-		public int LocalClientId { get { return 0; } }
+		public int LocalClientId { get { return -1; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
 		public readonly int TickCount;
 		public readonly int FinalGameTick;
