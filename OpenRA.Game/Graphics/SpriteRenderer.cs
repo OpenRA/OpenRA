@@ -172,5 +172,10 @@ namespace OpenRA.Graphics
 		{
 			shader.SetBool("EnableDepthPreview", enabled);
 		}
+
+		public void SetAntialiasingPixelsPerTexel(float pxPerTx)
+		{
+			shader.SetVec("AntialiasPixelsPerTexel", pxPerTx);
+		}
 	}
 }
