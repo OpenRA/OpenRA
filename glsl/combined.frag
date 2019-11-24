@@ -16,6 +16,7 @@ uniform sampler2D Palette;
 
 uniform bool EnableDepthPreview;
 uniform float DepthTextureScale;
+uniform float AntialiasPixelsPerTexel;
 
 in vec4 vTexCoord;
 in vec2 vTexMetadata;
@@ -44,6 +45,24 @@ float jet_b(float x)
 	return x < 0.3 ? 4.0 * x + 0.5 : -4.0 * x + 2.5;
 }
 
+ivec2 Size(float samplerIndex)
+{
+	if (samplerIndex < 0.5)
+		return textureSize(Texture0, 0);
+	else if (samplerIndex < 1.5)
+		return textureSize(Texture1, 0);
+	else if (samplerIndex < 2.5)
+		return textureSize(Texture2, 0);
+	else if (samplerIndex < 3.5)
+		return textureSize(Texture3, 0);
+	else if (samplerIndex < 4.5)
+		return textureSize(Texture4, 0);
+	else if (samplerIndex < 5.5)
+		return textureSize(Texture5, 0);
+
+	return textureSize(Texture6, 0);
+}
+
 vec4 Sample(float samplerIndex, vec2 pos)
 {
 	if (samplerIndex < 0.5)
@@ -64,7 +83,23 @@ vec4 Sample(float samplerIndex, vec2 pos)
 
 void main()
 {
-	vec4 x = Sample(vTexSampler.s, vTexCoord.st);
+	vec2 coords = vTexCoord.st;
+
+	if (AntialiasPixelsPerTexel > 0)
+	{
+		vec2 textureSize = Size(vTexSampler.s);
+		vec2 offset = fract(coords.st * textureSize);
+
+		// Offset the sampling point to simulate bilinear intepolation in window coordinates instead of texture coordinates
+		// https://csantosbh.wordpress.com/2014/01/25/manual-texture-filtering-for-pixelated-games-in-webgl/
+		// https://csantosbh.wordpress.com/2014/02/05/automatically-detecting-the-texture-filter-threshold-for-pixelated-magnifications/
+		// ik is defined as 1/k from the articles, set to 1/0.7 because it looks good 
+		float ik = 1.43;
+		vec2 interp = clamp(offset * ik * AntialiasPixelsPerTexel, 0.0, .5) + clamp((offset - 1.0) * ik * AntialiasPixelsPerTexel + .5, 0.0, .5);
+		coords = (floor(coords.st * textureSize) + interp) / textureSize;
+	}
+
+	vec4 x = Sample(vTexSampler.s, coords);
 	vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
 	vec4 c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
 
