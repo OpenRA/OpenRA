@@ -181,6 +181,9 @@ namespace OpenRA
 
 				// Render the world into a framebuffer at 1:1 scaling to allow the depth buffer to match the artwork at all zoom levels
 				worldBuffer = Context.CreateFrameBuffer(worldBufferSize);
+
+				// Pixel art scaling mode is a customized bilinear sampling
+				worldBuffer.Texture.ScaleFilter = TextureScaleFilter.Linear;
 			}
 
 			if (worldSprite == null || worldViewport.Size != worldSprite.Bounds.Size)
@@ -217,8 +220,11 @@ namespace OpenRA
 
 				var scale = Window.WindowScale;
 				var bufferSize = new Size((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
+
+				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
 				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, new float2(bufferSize));
 				Flush();
+				SpriteRenderer.SetAntialiasingPixelsPerTexel(0);
 			}
 			else
 			{
