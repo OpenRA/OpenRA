@@ -115,9 +115,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAttackSuicides(),
 			}),
 
-			new UpdatePath("release-20190314", "playtest-20190825", new UpdateRule[]
+			new UpdatePath("release-20190314", "release-20191117", new UpdateRule[]
 			{
-				// Prep only changes here
 				new MultipleDeploySounds(),
 				new RemoveSimpleBeacon(),
 				new MakeMobilePausableConditional(),
@@ -138,7 +137,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveMoveIntoWorldFromExit(),
 			}),
 
-			new UpdatePath("playtest-20190825", new UpdateRule[]
+			new UpdatePath("release-20191117", new UpdateRule[]
 			{
 				// Bleed only changes here
 				new RemoveYesNo(),
