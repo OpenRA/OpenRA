@@ -14,11 +14,10 @@ using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
@@ -26,9 +25,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		[NotificationReference("Speech")]
 		public readonly string ReadyAudio = "Reinforce";
 
+		[FieldLoader.Require]
 		[ActorReference(typeof(AircraftInfo))]
 		[Desc("Cargo aircraft used for delivery. Must have the `Aircraft` trait.")]
-		public readonly string ActorType = "c17";
+		public readonly string ActorType = null;
 
 		[Desc("The cargo aircraft will spawn at the player baseline (map edge closest to the player spawn)")]
 		public readonly bool BaselineSpawn = false;
