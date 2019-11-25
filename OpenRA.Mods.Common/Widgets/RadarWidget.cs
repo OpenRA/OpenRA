@@ -39,8 +39,6 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int previewWidth;
 		readonly int previewHeight;
 
-		readonly HashSet<PPos> dirtyShroudCells = new HashSet<PPos>();
-
 		float radarMinimapHeight;
 		int frame;
 		bool hasRadar;
@@ -56,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite terrainSprite;
 		Sprite actorSprite;
 		Sprite shroudSprite;
-		Shroud renderShroud;
+		Shroud shroud;
 		PlayerRadarTerrain playerRadarTerrain;
 		Player currentPlayer;
 
@@ -70,7 +68,6 @@ namespace OpenRA.Mods.Common.Widgets
 			this.worldRenderer = worldRenderer;
 
 			radarPings = world.WorldActor.TraitOrDefault<RadarPings>();
-			MarkShroudDirty(world.Map.AllCells.MapCoords.Select(uv => (PPos)uv));
 
 			isRectangularIsometric = world.Map.Grid.Type == MapGridType.RectangularIsometric;
 			cellWidth = isRectangularIsometric ? 2 : 1;
@@ -131,22 +128,21 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			currentPlayer = player;
 
-			var newRenderShroud = player != null ? player.Shroud : null;
-			if (newRenderShroud != renderShroud)
+			var newShroud = player != null ? player.Shroud : null;
+
+			if (newShroud != shroud)
 			{
-				if (renderShroud != null)
-					renderShroud.CellsChanged -= MarkShroudDirty;
+				if (shroud != null)
+					shroud.OnShroudChanged -= UpdateShroudCell;
 
-				if (newRenderShroud != null)
+				if (newShroud != null)
 				{
-					// Redraw the full shroud sprite
-					MarkShroudDirty(world.Map.AllCells.MapCoords.Select(uv => (PPos)uv));
-
-					// Update the notification binding
-					newRenderShroud.CellsChanged += MarkShroudDirty;
+					newShroud.OnShroudChanged += UpdateShroudCell;
+					foreach (var puv in world.Map.ProjectedCellBounds)
+						UpdateShroudCell(puv);
 				}
 
-				renderShroud = newRenderShroud;
+				shroud = newShroud;
 			}
 
 			var newPlayerRadarTerrain =
@@ -233,14 +229,10 @@ namespace OpenRA.Mods.Common.Widgets
 		void UpdateShroudCell(PPos puv)
 		{
 			var color = 0;
-			var rp = world.RenderPlayer;
-			if (rp != null)
-			{
-				if (!rp.Shroud.IsExplored(puv))
-					color = Color.Black.ToArgb();
-				else if (!rp.Shroud.IsVisible(puv))
-					color = Color.FromArgb(128, Color.Black).ToArgb();
-			}
+			if (!currentPlayer.Shroud.IsExplored(puv))
+				color = Color.Black.ToArgb();
+			else if (!currentPlayer.Shroud.IsVisible(puv))
+				color = Color.FromArgb(128, Color.Black).ToArgb();
 
 			var stride = radarSheet.Size.Width;
 			unsafe
@@ -248,30 +240,23 @@ namespace OpenRA.Mods.Common.Widgets
 				fixed (byte* colorBytes = &radarData[0])
 				{
 					var colors = (int*)colorBytes;
-					foreach (var uv in world.Map.Unproject(puv))
+					foreach (var iuv in world.Map.Unproject(puv))
 					{
 						if (isRectangularIsometric)
 						{
 							// Odd rows are shifted right by 1px
-							var dx = uv.V & 1;
-							if (uv.U + dx > 0)
-								colors[uv.V * stride + 2 * uv.U + dx - 1 + previewWidth] = color;
+							var dx = iuv.V & 1;
+							if (iuv.U + dx > 0)
+								colors[iuv.V * stride + 2 * iuv.U + dx - 1 + previewWidth] = color;
 
-							if (2 * uv.U + dx < stride)
-								colors[uv.V * stride + 2 * uv.U + dx + previewWidth] = color;
+							if (2 * iuv.U + dx < stride)
+								colors[iuv.V * stride + 2 * iuv.U + dx + previewWidth] = color;
 						}
 						else
-							colors[uv.V * stride + uv.U + previewWidth] = color;
+							colors[iuv.V * stride + iuv.U + previewWidth] = color;
 					}
 				}
 			}
-		}
-
-		void MarkShroudDirty(IEnumerable<PPos> projectedCellsChanged)
-		{
-			// PERF: Many cells in the shroud change every tick. We only track the changes here and defer the real work
-			// we need to do until we render. This allows us to avoid wasted work.
-			dirtyShroudCells.UnionWith(projectedCellsChanged);
 		}
 
 		public override string GetCursor(int2 pos)
@@ -342,13 +327,6 @@ namespace OpenRA.Mods.Common.Widgets
 			if (world == null)
 				return;
 
-			if (renderShroud != null)
-			{
-				foreach (var cell in dirtyShroudCells)
-					UpdateShroudCell(cell);
-				dirtyShroudCells.Clear();
-			}
-
 			radarSheet.CommitBufferedData();
 
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
@@ -358,7 +336,7 @@ namespace OpenRA.Mods.Common.Widgets
 			rsr.DrawSprite(terrainSprite, o, s);
 			rsr.DrawSprite(actorSprite, o, s);
 
-			if (renderShroud != null)
+			if (shroud != null)
 				rsr.DrawSprite(shroudSprite, o, s);
 
 			// Draw viewport rect
