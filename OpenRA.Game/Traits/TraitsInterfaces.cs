@@ -410,7 +410,7 @@ namespace OpenRA.Traits
 	public interface INotifyIdle { void TickIdle(Actor self); }
 
 	public interface IRenderAboveWorld { void RenderAboveWorld(Actor self, WorldRenderer wr); }
-	public interface IRenderShroud { void RenderShroud(Shroud shroud, WorldRenderer wr); }
+	public interface IRenderShroud { void RenderShroud(WorldRenderer wr); }
 
 	[RequireExplicitImplementation]
 	public interface IRenderTerrain { void RenderTerrain(WorldRenderer wr, Viewport viewport); }

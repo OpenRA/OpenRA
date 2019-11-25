@@ -228,13 +228,11 @@ namespace OpenRA.Graphics
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
 					a.Trait.RenderAboveWorld(a.Actor, this);
 
-			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
-
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
-				a.Trait.RenderShroud(renderShroud, this);
+				a.Trait.RenderShroud(this);
 
 			if (enableDepthBuffer)
 				Game.Renderer.Context.DisableDepthBuffer();

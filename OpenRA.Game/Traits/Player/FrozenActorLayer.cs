@@ -215,9 +215,7 @@ namespace OpenRA.Traits
 		readonly Player owner;
 		readonly Dictionary<uint, FrozenActor> frozenActorsById;
 		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
-		readonly bool[] dirtyBins;
 		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
-		readonly int rows, cols;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{
@@ -226,24 +224,10 @@ namespace OpenRA.Traits
 			owner = self.Owner;
 			frozenActorsById = new Dictionary<uint, FrozenActor>();
 
-			// PERF: Partition the map into a series of coarse-grained bins and track changes in the shroud against
-			// bin - marking that bin dirty if it changes. This is fairly cheap to track and allows us to perform the
-			// expensive visibility update for frozen actors in these regions.
 			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
 				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
 
-			cols = world.Map.MapSize.X / binSize + 1;
-			rows = world.Map.MapSize.Y / binSize + 1;
-			dirtyBins = new bool[cols * rows];
-			self.Trait<Shroud>().CellsChanged += cells =>
-			{
-				foreach (var cell in cells)
-				{
-					var x = cell.U / binSize;
-					var y = cell.V / binSize;
-					dirtyBins[y * cols + x] = true;
-				}
-			};
+			self.Trait<Shroud>().OnShroudChanged += uv => dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.At(new int2(uv.U, uv.V)));
 		}
 
 		public void Add(FrozenActor fa)
@@ -285,8 +269,6 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			UpdateDirtyFrozenActorsFromDirtyBins();
-
 			var frozenActorsToRemove = new List<FrozenActor>();
 			VisibilityHash = 0;
 			FrozenHash = 0;
@@ -312,25 +294,6 @@ namespace OpenRA.Traits
 
 			foreach (var fa in frozenActorsToRemove)
 				Remove(fa);
-		}
-
-		void UpdateDirtyFrozenActorsFromDirtyBins()
-		{
-			// Check which bins on the map were dirtied due to changes in the shroud and gather the frozen actors whose
-			// footprint overlap with these bins.
-			for (var y = 0; y < rows; y++)
-			{
-				for (var x = 0; x < cols; x++)
-				{
-					if (!dirtyBins[y * cols + x])
-						continue;
-
-					var box = new Rectangle(x * binSize, y * binSize, binSize, binSize);
-					dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.InBox(box));
-				}
-			}
-
-			Array.Clear(dirtyBins, 0, dirtyBins.Length);
 		}
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)

@@ -31,7 +31,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly World world;
 		CellLayer<Pair<int, int>> terrainColor;
-		readonly HashSet<MPos> dirtyTerrainCells = new HashSet<MPos>();
 		readonly Shroud shroud;
 
 		public event Action<MPos> CellTerrainColorChanged = null;
@@ -40,33 +39,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			world = self.World;
 			shroud = self.Trait<Shroud>();
-			shroud.CellsChanged += OnShroudCellsChanged;
+			shroud.OnShroudChanged += UpdateShroudCell;
 		}
 
-		void OnShroudCellsChanged(IEnumerable<PPos> puvs)
+		void UpdateShroudCell(PPos puv)
 		{
-			foreach (var puv in puvs)
-			{
-				foreach (var uv in world.Map.Unproject(puv))
-				{
-					if (dirtyTerrainCells.Contains(uv))
-					{
-						UpdateTerrainCellColor(uv);
-						dirtyTerrainCells.Remove(uv);
-					}
-				}
-			}
+			var uvs = world.Map.Unproject(puv);
+			foreach (var uv in uvs)
+				UpdateTerrainCell(uv);
 		}
 
-		void UpdateTerrainCell(CPos cell)
+		void UpdateTerrainCell(MPos uv)
 		{
-			var uv = cell.ToMPos(world.Map);
 			if (!world.Map.CustomTerrain.Contains(uv))
 				return;
 
-			if (!shroud.IsVisible(uv))
-				dirtyTerrainCells.Add(uv);
-			else
+			if (shroud.IsVisible(uv))
 				UpdateTerrainCellColor(uv);
 		}
 
@@ -88,8 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var uv in world.Map.AllCells.MapCoords)
 					UpdateTerrainCellColor(uv);
 
-				world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
-				world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
+				world.Map.Tiles.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
+				world.Map.CustomTerrain.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
 
 				IsInitialized = true;
 			});
