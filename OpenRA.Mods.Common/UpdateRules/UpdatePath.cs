@@ -142,6 +142,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				// Bleed only changes here
 				new RemoveYesNo(),
 				new RemoveInitialFacingHardcoding(),
+				new RemoveAirdropActorTypeDefault(),
 			})
 		};
 
