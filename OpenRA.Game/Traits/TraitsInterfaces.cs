@@ -182,6 +182,7 @@ namespace OpenRA.Traits
 		string OrderID { get; }
 		int OrderPriority { get; }
 		bool CanDrag { get; }
+		bool ShowCursorOnHold { get; }
 		bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
 		bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers);

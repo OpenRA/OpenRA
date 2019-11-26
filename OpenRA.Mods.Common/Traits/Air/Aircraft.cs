@@ -1176,6 +1176,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get; protected set; }
 			public int OrderPriority { get { return 4; } }
 			public bool CanDrag { get { return false; } }
+			public bool ShowCursorOnHold { get { return false; } }
 			public bool IsQueued { get; protected set; }
 
 			public AircraftMoveOrderTargeter(Aircraft aircraft)

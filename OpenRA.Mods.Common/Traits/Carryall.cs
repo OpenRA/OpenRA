@@ -372,6 +372,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get { return "DeliverUnit"; } }
 			public int OrderPriority { get { return 6; } }
 			public bool CanDrag { get { return false; } }
+			public bool ShowCursorOnHold { get { return false; } }
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

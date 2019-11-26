@@ -158,8 +158,13 @@ namespace OpenRA.Orders
 
 		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (IsOrderDragging && lockedCursor != null && lockedCursor.Any())
-				return lockedCursor;
+			if (IsOrderDragging)
+			{
+				if (lockedCursor != null && lockedCursor.Any())
+					return lockedCursor;
+
+				return null;
+			}
 
 			var target = TargetForInput(world, cell, worldPixel, mi);
 			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
@@ -176,9 +181,9 @@ namespace OpenRA.Orders
 				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.OrderTargeter.OrderPriority);
 				if (cursorOrder != null)
 				{
-					lockedCursor = cursorOrder.Cursor;
+					lockedCursor = cursorOrder.OrderTargeter.ShowCursorOnHold ? cursorOrder.Cursor : null;
 					canDrag = cursorOrder.OrderTargeter.CanDrag;
-					return lockedCursor;
+					return cursorOrder.Cursor;
 				}
 
 				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<SelectableInfo>() &&

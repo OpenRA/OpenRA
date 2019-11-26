@@ -125,6 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority { get { return 0; } }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool CanDrag { get { return false; } }
+			public bool ShowCursorOnHold { get { return false; } }
 			public bool ForceSet { get; private set; }
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)

@@ -153,6 +153,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			public int OrderPriority { get { return 5; } }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool CanDrag { get { return true; } }
+			public bool ShowCursorOnHold { get { return true; } }
 
 			public MinefieldOrderTargeter(Minelayer minelayer)
 			{

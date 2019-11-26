@@ -386,6 +386,7 @@ namespace OpenRA.Mods.Common.Traits
 			public string OrderID { get { return "Harvest"; } }
 			public int OrderPriority { get { return 10; } }
 			public bool CanDrag { get { return info.AcceptsAreaHarvestOrder; } }
+			public bool ShowCursorOnHold { get { return false; } }
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

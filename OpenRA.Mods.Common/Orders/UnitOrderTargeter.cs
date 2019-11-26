@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Orders
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 		public bool CanDrag { get { return false; } }
+		public bool ShowCursorOnHold { get { return false; } }
 		public bool? ForceAttack = null;
 		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

@@ -159,6 +159,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public string OrderID { get { return "PortableChronoTeleport"; } }
 		public int OrderPriority { get { return 5; } }
 		public bool CanDrag { get { return false; } }
+		public bool ShowCursorOnHold { get { return false; } }
 		public bool IsQueued { get; protected set; }
 		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

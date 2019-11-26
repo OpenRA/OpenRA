@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Orders
 		public int OrderPriority { get; private set; }
 		public bool TargetOverridesSelection(Actor self, Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 		public bool CanDrag { get { return false; } }
+		public bool ShowCursorOnHold { get { return false; } }
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
 		{
