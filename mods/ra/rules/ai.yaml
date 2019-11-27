@@ -119,7 +119,7 @@ Player:
 	HarvesterBotModule:
 		RequiresCondition: enable-rush-ai || enable-easy-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai || enable-hard-ai || enable-brutal-ai
 		HarvesterTypes: harv
-		HarvestersPerRefinery: 2
+		HarvestersPerRefinery: 3
 		RefineryTypes: proc
 	BaseBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
@@ -585,7 +585,7 @@ Player:
 			e4: 15
 			dog: 15
 			shok: 15
-			harv: 10
+			harv: 12
 			apc: 30
 			jeep: 20
 			arty: 15
@@ -599,7 +599,7 @@ Player:
 			stnk: 5
 		UnitLimits:
 			dog: 4
-			harv: 8
+			harv: 12
 			jeep: 4
 			ftrk: 4
 	SquadManagerBotModule@turtle:
@@ -641,7 +641,7 @@ Player:
 			pt: 10
 		UnitLimits:
 			dog: 4
-			harv: 8
+			harv: 12
 			jeep: 4
 			ftrk: 4
 	SquadManagerBotModule@easy:
@@ -766,7 +766,7 @@ Player:
 			dog: 4
 			e6: 4
 			e7: 1
-			harv: 10
+			harv: 12
 			jeep: 8
 			ftrk: 6
 			apc: 8
@@ -832,7 +832,7 @@ Player:
 			dog: 4
 			e6: 4
 			e7: 1
-			harv: 10
+			harv: 12
 			jeep: 8
 			ftrk: 6
 			apc: 8
@@ -898,7 +898,7 @@ Player:
 			dog: 4
 			e6: 4
 			e7: 1
-			harv: 10
+			harv: 12
 			jeep: 8
 			ftrk: 6
 			apc: 8
@@ -928,7 +928,7 @@ Player:
 			ca: 20
 			pt: 10
 		UnitLimits:
-			harv: 10
+			harv: 12
 	CaptureManagerBotModule@AIEasy:
 		RequiresCondition: enable-easy-ai
 		CapturingActorTypes: e6
