@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly VisibilityType Type = VisibilityType.Footprint;
 	}
 
-	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ITick, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyMoving
+	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ISync, INotifyAddedToWorld,
+		INotifyRemovedFromWorld, INotifyMoving, INotifyVisualPositionChanged, ITick
 	{
 		static readonly PPos[] NoCells = { };
 
@@ -47,7 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		protected bool CachedTraitDisabled { get; private set; }
 
-		bool dirty;
 		WPos cachedPos;
 
 		protected abstract void AddCellsToPlayerShroud(Actor self, Player player, PPos[] uv);
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 		}
 
-		void ITick.Tick(Actor self)
+		void INotifyVisualPositionChanged.VisualPositionChanged(Actor self, byte oldLayer, byte newLayer)
 		{
 			if (!self.IsInWorld)
 				return;
@@ -94,22 +94,37 @@ namespace OpenRA.Mods.Common.Traits
 			var centerPosition = self.CenterPosition;
 			var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
 			var projectedLocation = self.World.Map.CellContaining(projectedPos);
-			var traitDisabled = IsTraitDisabled;
-			var range = Range;
 			var pos = self.CenterPosition;
 
-			if (Info.MoveRecalculationThreshold.Length > 0 && (pos - cachedPos).LengthSquared > Info.MoveRecalculationThreshold.LengthSquared)
-				dirty = true;
+			var dirty = Info.MoveRecalculationThreshold.Length > 0 && (pos - cachedPos).LengthSquared > Info.MoveRecalculationThreshold.LengthSquared;
+			if (!dirty && cachedLocation == projectedLocation)
+				return;
 
-			if (!dirty && cachedLocation == projectedLocation && cachedRange == range && traitDisabled == CachedTraitDisabled)
+			cachedLocation = projectedLocation;
+			cachedPos = pos;
+
+			UpdateShroudCells(self);
+		}
+
+		void ITick.Tick(Actor self)
+		{
+			if (!self.IsInWorld)
+				return;
+
+			var traitDisabled = IsTraitDisabled;
+			var range = Range;
+
+			if (cachedRange == range && traitDisabled == CachedTraitDisabled)
 				return;
 
 			cachedRange = range;
-			cachedLocation = projectedLocation;
 			CachedTraitDisabled = traitDisabled;
-			cachedPos = pos;
-			dirty = false;
 
+			UpdateShroudCells(self);
+		}
+
+		void UpdateShroudCells(Actor self)
+		{
 			var cells = ProjectedCells(self);
 			foreach (var p in self.World.Players)
 			{
@@ -123,6 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			var centerPosition = self.CenterPosition;
 			var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
 			cachedLocation = self.World.Map.CellContaining(projectedPos);
+			cachedPos = centerPosition;
 			CachedTraitDisabled = IsTraitDisabled;
 			var cells = ProjectedCells(self);
 
@@ -141,8 +157,18 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyMoving.MovementTypeChanged(Actor self, MovementType type)
 		{
 			// Recalculate the visiblity at our final stop position
-			if (type == MovementType.None)
-				dirty = true;
+			if (type == MovementType.None && self.IsInWorld)
+			{
+				var centerPosition = self.CenterPosition;
+				var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
+				var projectedLocation = self.World.Map.CellContaining(projectedPos);
+				var pos = self.CenterPosition;
+
+				cachedLocation = projectedLocation;
+				cachedPos = pos;
+
+				UpdateShroudCells(self);
+			}
 		}
 	}
 }
