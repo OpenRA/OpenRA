@@ -73,18 +73,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var info = (ChronoshiftPowerInfo)Info;
 			var targetDelta = self.World.Map.CellContaining(order.Target.CenterPosition) - order.ExtraLocation;
-			foreach (var target in UnitsInRange(order.ExtraLocation))
+			foreach (var target in order.ExtraActors)
 			{
 				var cs = target.TraitsImplementing<Chronoshiftable>()
 					.FirstEnabledTraitOrDefault();
-
-				if (cs == null)
-					continue;
-
 				var targetCell = target.Location + targetDelta;
 
-				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
-					cs.Teleport(target, targetCell, info.Duration, info.KillCargo, self);
+				cs.Teleport(target, targetCell, info.Duration, info.KillCargo, self);
 			}
 		}
 
@@ -249,11 +244,27 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))
-					yield return new Order(order, manager.Self, Target.FromCell(manager.Self.World, xy), false)
-					{
-						ExtraLocation = sourceLocation,
-						SuppressVisualFeedback = true
-					};
+				{
+					var units = power.UnitsInRange(sourceLocation).Where(a => IsValidTarget(xy, a, manager.Self.Owner));
+					if (units.Any())
+						yield return new Order(order, manager.Self, Target.FromCell(manager.Self.World, xy), false, units.ToArray())
+						{
+							ExtraLocation = sourceLocation,
+							SuppressVisualFeedback = true
+						};
+				}
+			}
+
+			bool IsValidTarget(CPos xy, Actor actor, Player player)
+			{
+				var cs = actor.TraitsImplementing<Chronoshiftable>()
+					.FirstEnabledTraitOrDefault();
+
+				if (cs == null)
+					return false;
+
+				var targetCell = actor.Location + (xy - sourceLocation);
+				return player.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(actor, targetCell);
 			}
 
 			protected override void Tick(World world)
@@ -281,7 +292,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 					{
-						var targetCell = unit.Location + (xy - sourceLocation);
+						var targetCell = unit.Location + delta;
 						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
 							unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
