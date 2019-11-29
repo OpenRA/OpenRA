@@ -58,10 +58,12 @@ carryall:
 		MinAirborneAltitude: 400
 	RevealsShroud@lifting_low:
 		Range: 2c512
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RequiresCondition: !airborne
 	RevealsShroud@lifting_high:
 		Range: 1c256
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 		RequiresCondition: !cruising
 	Buildable:

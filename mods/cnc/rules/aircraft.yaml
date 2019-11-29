@@ -21,6 +21,7 @@ TRAN:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,85
@@ -73,6 +74,7 @@ HELI:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
@@ -138,6 +140,7 @@ ORCA:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
@@ -242,6 +245,7 @@ TRAN.Husk:
 		Speed: 140
 	RevealsShroud:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	WithIdleOverlay@ROTOR1:
 		Offset: 597,0,85
@@ -261,6 +265,7 @@ HELI.Husk:
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	WithIdleOverlay:
 		Offset: 0,0,85
@@ -277,6 +282,7 @@ ORCA.Husk:
 		Speed: 186
 	RevealsShroud:
 		Range: 10c0
+		MoveRecalculationThreshold: 0
 		Type: GroundPosition
 	RenderSprites:
 		Image: orca
