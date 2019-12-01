@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Mods.Common.SpriteLoaders;
+using OpenRA.Mods.Cnc.SpriteLoaders;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
