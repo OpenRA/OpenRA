@@ -67,7 +67,7 @@
 
 using System;
 
-namespace OpenRA.Mods.Common.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public static class LZOCompression
 	{
