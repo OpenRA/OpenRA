@@ -14,10 +14,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.SpriteLoaders
+namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
 	public class ShpTDLoader : ISpriteLoader
 	{
