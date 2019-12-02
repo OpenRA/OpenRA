@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool HasValidTargetPriority(Actor self, Player owner, BitSet<TargetableType> targetTypes)
 		{
-			if (Stance <= UnitStance.ReturnFire)
+			if (owner == null || Stance <= UnitStance.ReturnFire)
 				return false;
 
 			return activeTargetPriorities.Any(ati =>
