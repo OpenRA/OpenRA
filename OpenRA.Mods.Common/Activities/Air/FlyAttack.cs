@@ -184,7 +184,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (newStance > oldStance || forceAttack)
 				return;
 
-			if (!autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
+			// If lastVisibleTarget is invalid we could never view the target in the first place, so we just drop it here too
+			if (!lastVisibleTarget.IsValidFor(self) || !autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
 				attackAircraft.ClearRequestedTarget();
 		}
 
