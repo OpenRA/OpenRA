@@ -24,8 +24,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Attack behavior. Currently supported types are Strafe (default) and Hover.")]
 		public readonly AirAttackType AttackType = AirAttackType.Strafe;
 
-		[Desc("Delay, in game ticks, before strafing aircraft turns to attack.")]
-		public readonly int AttackTurnDelay = 50;
+		[Desc("Distance the strafing aircraft makes to a target before turning for another pass. When set to WDist.Zero this defaults to the maximum armament range.")]
+		public readonly WDist StrafeRunLength = WDist.Zero;
 
 		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this to 'false' will make the actor resume attack after reloading.")]
 		public readonly bool AbortOnResupply = true;

@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Rearmable rearmable;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
+		readonly WDist strafeDistance;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -34,7 +35,6 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		bool hasTicked;
 		bool returnToBase;
-		int remainingTicksUntilTurn;
 
 		public FlyAttack(Actor self, Target target, bool forceAttack, Color? targetLineColor)
 		{
@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			attackAircraft = self.Trait<AttackAircraft>();
 			rearmable = self.TraitOrDefault<Rearmable>();
+
+			strafeDistance = attackAircraft.Info.StrafeRunLength;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -147,22 +149,17 @@ namespace OpenRA.Mods.Common.Activities
 
 			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
 
-			// When strafing we must move forward for a minimum number of ticks after passing the target.
-			if (remainingTicksUntilTurn > 0)
-			{
-				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-				remainingTicksUntilTurn--;
-			}
-
 			// Move into range of the target.
-			else if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
+			if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
 				QueueChild(aircraft.MoveWithinRange(target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red));
 
 			// The aircraft must keep moving forward even if it is already in an ideal position.
 			else if (!aircraft.Info.CanHover || attackAircraft.Info.AttackType == AirAttackType.Strafe)
 			{
-				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-				remainingTicksUntilTurn = attackAircraft.Info.AttackTurnDelay;
+				QueueChild(new Fly(self, target, target.CenterPosition));
+
+				// After passing the target we first increase our distance to the target before coming around for another pass.
+				QueueChild(aircraft.MoveWithinRange(target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange, WDist.MaxValue, target.CenterPosition));
 			}
 
 			// Turn to face the target if required.
