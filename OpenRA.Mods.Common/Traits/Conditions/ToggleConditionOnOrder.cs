@@ -52,6 +52,11 @@ namespace OpenRA.Mods.Common.Traits
 		public ToggleConditionOnOrder(Actor self, ToggleConditionOnOrderInfo info)
 			: base(info) { }
 
+		public bool IsEnabled()
+		{
+			return enabled;
+		}
+
 		protected override void Created(Actor self)
 		{
 			base.Created(self);

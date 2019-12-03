@@ -206,7 +206,8 @@ namespace OpenRA.Mods.Common.Widgets
 					if (visualTarget.Type == TargetType.Actor)
 					{
 						world.AddFrameEndTask(w => w.Add(new FlashTarget(visualTarget.Actor)));
-						flashed = true;
+						if (!o.OrderString.StartsWith("Repair"))
+							flashed = true;
 					}
 					else if (visualTarget.Type == TargetType.FrozenActor)
 					{
