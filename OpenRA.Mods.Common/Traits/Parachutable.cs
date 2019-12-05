@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}
 
-	class Parachutable : INotifyCreated, INotifyParachute
+	public class Parachutable : INotifyCreated, INotifyParachute
 	{
 		readonly ParachutableInfo info;
 		readonly IPositionable positionable;
