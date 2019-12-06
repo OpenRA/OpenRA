@@ -132,23 +132,22 @@ namespace OpenRA.Mods.Common.Graphics
 				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - model.pos.Z) / 1024f;
 				var pxOrigin = wr.Screen3DPosition(model.pos);
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
-				var iz = 1 / wr.Viewport.Zoom;
 
 				// Draw sprite rect
 				var offset = pxOrigin + renderProxy.Sprite.Offset - 0.5f * renderProxy.Sprite.Size;
-				Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset.XY, (offset + renderProxy.Sprite.Size).XY, iz, Color.Red);
+				Game.Renderer.WorldRgbaColorRenderer.DrawRect(offset.XY, (offset + renderProxy.Sprite.Size).XY, 1, Color.Red);
 
 				// Draw transformed shadow sprite rect
 				var c = Color.Purple;
 				var psb = renderProxy.ProjectedShadowBounds;
 
-				Game.Renderer.WorldRgbaColorRenderer.DrawPolygon(new[]
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(new float2[]
 				{
-					shadowOrigin + psb[1],
-					shadowOrigin + psb[3],
-					shadowOrigin + psb[0],
-					shadowOrigin + psb[2]
-				}, iz, c);
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[1]),
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[3]),
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[0]),
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[2])
+				}, 1, c);
 
 				// Draw bounding box
 				var draw = model.models.Where(v => v.IsVisible);
@@ -163,35 +162,35 @@ namespace OpenRA.Mods.Common.Graphics
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
 					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
-					DrawBoundsBox(pxPos, screenTransform, bounds, iz, Color.Yellow);
+					DrawBoundsBox(wr, pxPos, screenTransform, bounds, 1, Color.Yellow);
 				}
 			}
 
 			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-			static void DrawBoundsBox(float3 pxPos, float[] transform, float[] bounds, float width, Color c)
+			static void DrawBoundsBox(WorldRenderer wr, float3 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
-				var wcr = Game.Renderer.WorldRgbaColorRenderer;
-				var corners = new float3[8];
+				var cr = Game.Renderer.RgbaColorRenderer;
+				var corners = new float2[8];
 				for (var i = 0; i < 8; i++)
 				{
-					var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
+					var vec = new[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
 					var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(transform, vec);
-					corners[i] = pxPos + new float3(screen[0], screen[1], screen[2]);
+					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new float3(screen[0], screen[1], screen[2]));
 				}
 
 				// Front face
-				wcr.DrawPolygon(new[] { corners[0], corners[1], corners[3], corners[2] }, width, c);
+				cr.DrawPolygon(new[] { corners[0], corners[1], corners[3], corners[2] }, width, c);
 
 				// Back face
-				wcr.DrawPolygon(new[] { corners[4], corners[5], corners[7], corners[6] }, width, c);
+				cr.DrawPolygon(new[] { corners[4], corners[5], corners[7], corners[6] }, width, c);
 
 				// Horizontal edges
-				wcr.DrawLine(corners[0], corners[4], width, c);
-				wcr.DrawLine(corners[1], corners[5], width, c);
-				wcr.DrawLine(corners[2], corners[6], width, c);
-				wcr.DrawLine(corners[3], corners[7], width, c);
+				cr.DrawLine(corners[0], corners[4], width, c);
+				cr.DrawLine(corners[1], corners[5], width, c);
+				cr.DrawLine(corners[2], corners[6], width, c);
+				cr.DrawLine(corners[3], corners[7], width, c);
 			}
 
 			public Rectangle ScreenBounds(WorldRenderer wr)
