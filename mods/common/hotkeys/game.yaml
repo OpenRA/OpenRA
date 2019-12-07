@@ -42,10 +42,6 @@ CycleStatusBars: COMMA
 	Description: Cycle status bars display
 	Types: World, Player, Spectator
 
-ResetZoom: PERIOD
-	Description: Reset zoom
-	Types: World, Player, Spectator
-
 ToggleMute: M
 	Description: Toggle audio mute
 	Types: World, Menu, Player, Spectator

@@ -61,3 +61,15 @@ MapBookmarkSave04: R Ctrl
 MapBookmarkRestore04: R Alt
 	Description: Jump to bookmark 4
 	Types: Viewport, Player, Spectator
+
+ZoomIn: RIGHTBRACKET
+	Description: Zoom in
+	Types: Viewport, Player, Spectator
+
+ZoomOut: LEFTBRACKET
+	Description: Zoom out
+	Types: Viewport, Player, Spectator
+
+ResetZoom: PERIOD
+	Description: Reset zoom
+	Types: Viewport, Player, Spectator
