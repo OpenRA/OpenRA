@@ -228,6 +228,24 @@ namespace OpenRA.Platforms.Default
 			input = new Sdl2Input();
 		}
 
+		byte[] DoublePixelData(byte[] data, Size size)
+		{
+			var scaledData = new byte[4 * data.Length];
+			for (var y = 0; y < size.Height; y++)
+			{
+				for (var x = 0; x < size.Width; x++)
+				{
+					var a = 4 * (y * size.Width + x);
+					var b = 8 * (2 * y * size.Width + x);
+					var c = b + 8 * size.Width;
+					for (var i = 0; i < 4; i++)
+						scaledData[b + i] = scaledData[b + 4 + i] = scaledData[c + i] = scaledData[c + 4 + i] = data[a + i];
+				}
+			}
+
+			return scaledData;
+		}
+
 		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
 		{
 			VerifyThreadAffinity();
@@ -237,23 +255,9 @@ namespace OpenRA.Platforms.Default
 				// OSX does this for us automatically
 				if (Platform.CurrentPlatform != PlatformType.OSX && WindowScale > 1.5)
 				{
-					var scaledData = new byte[4 * data.Length];
-					for (var y = 0; y < size.Height * 4; y += 4)
-					{
-						for (var x = 0; x < size.Width * 4; x += 4)
-						{
-							var a = 4 * (y * size.Width + x);
-							var b = 4 * ((y + 1) * size.Width + x);
-							for (var i = 0; i < 4; i++)
-							{
-								scaledData[2 * a + i] = scaledData[2 * a + 4 + i] = data[a + i];
-								scaledData[2 * b + i] = scaledData[2 * b + 4 + i] = data[b + i];
-							}
-						}
-					}
-
+					data = DoublePixelData(data, size);
 					size = new Size(2 * size.Width, 2 * size.Height);
-					data = scaledData;
+					hotspot *= 2;
 				}
 
 				return new Sdl2HardwareCursor(size, data, hotspot);
