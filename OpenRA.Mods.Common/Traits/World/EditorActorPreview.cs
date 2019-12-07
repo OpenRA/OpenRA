@@ -112,10 +112,16 @@ namespace OpenRA.Mods.Common.Traits
 				var highlight = worldRenderer.Palette("highlight");
 				var overlay = items.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(highlight));
-				return items.Concat(overlay).Append(SelectionBox);
+				return items.Concat(overlay);
 			}
 
 			return items;
+		}
+
+		public IEnumerable<IRenderable> RenderAnnotations()
+		{
+			if (Selected)
+				yield return SelectionBox;
 		}
 
 		public void ReplaceInit<T>(T init)

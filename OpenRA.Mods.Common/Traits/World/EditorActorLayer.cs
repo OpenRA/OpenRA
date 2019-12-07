@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new EditorActorLayer(init.Self, this); }
 	}
 
-	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers
+	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
 		readonly EditorActorLayerInfo info;
 		readonly List<EditorActorPreview> previews = new List<EditorActorPreview>();
@@ -102,6 +102,17 @@ namespace OpenRA.Mods.Common.Traits
 			// World-actor render traits don't require screen bounds
 			yield break;
 		}
+
+		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
+		{
+			if (wr.World.Type != WorldType.Editor)
+				return NoRenderables;
+
+			return PreviewsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+				.SelectMany(p => p.RenderAnnotations());
+		}
+
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
 
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
