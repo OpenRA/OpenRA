@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly ModData modData;
 		readonly ResourceLayer resourceLayer;
 
+		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
+		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
+
 		public readonly HotkeyReference ScrollUpKey = new HotkeyReference();
 		public readonly HotkeyReference ScrollDownKey = new HotkeyReference();
 		public readonly HotkeyReference ScrollLeftKey = new HotkeyReference();
@@ -422,6 +425,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (e.Event != KeyInputEvent.Down)
 				return false;
+
+			if (ZoomInKey.IsActivatedBy(e))
+			{
+				worldRenderer.Viewport.AdjustZoom(0.25f);
+				return true;
+			}
+
+			if (ZoomOutKey.IsActivatedBy(e))
+			{
+				worldRenderer.Viewport.AdjustZoom(-0.25f);
+				return true;
+			}
 
 			if (JumpToTopEdgeKey.IsActivatedBy(e))
 			{

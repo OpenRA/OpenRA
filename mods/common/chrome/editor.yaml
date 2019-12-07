@@ -318,6 +318,8 @@ Container@EDITOR_WORLD_ROOT:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
+			ZoomInKey: ZoomIn
+			ZoomOutKey: ZoomOut
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft

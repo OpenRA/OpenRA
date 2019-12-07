@@ -77,6 +77,8 @@ Container@OBSERVER_WIDGETS:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
+			ZoomInKey: ZoomIn
+			ZoomOutKey: ZoomOut
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
@@ -1048,6 +1050,8 @@ Container@PLAYER_WIDGETS:
 			Height: WINDOW_BOTTOM
 			TooltipTemplate: WORLD_TOOLTIP_FACTIONSUFFIX
 			TooltipContainer: TOOLTIP_CONTAINER
+			ZoomInKey: ZoomIn
+			ZoomOutKey: ZoomOut
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
