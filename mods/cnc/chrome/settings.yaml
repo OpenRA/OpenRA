@@ -464,12 +464,6 @@ Container@SETTINGS_PANEL:
 							Ticks: 5
 							MinimumValue: 1
 							MaximumValue: 100
-						Label@HOTKEYS_TITLE:
-							Y: 166
-							Width: PARENT_RIGHT
-							Font: Bold
-							Text: Hotkeys
-							Align: Center
 				Container@HOTKEYS_PANEL:
 					X: 15
 					Y: 15
