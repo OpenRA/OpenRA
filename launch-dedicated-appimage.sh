@@ -22,11 +22,11 @@ EnableSyncReports="${EnableSyncReports:-"False"}"
 if [ "$Mod" = "d2k" ]; then
     App="OpenRA-Dune-2000-x86_64.AppImage"
 elif [ "$Mod" = "cnc" ]; then
-    App="OpenRA-Tiberium-Dawn-x86_64.AppImage"
+    App="OpenRA-Tiberian-Dawn-x86_64.AppImage"
 elif [ "$Mod" = "ra" ]; then
     App="OpenRA-Red-Alert-x86_64.AppImage"
 else
-    printf "Invalid Mod value %s provided. Allowed values are ra, cnc and d2k" $Mod
+    printf "Invalid Mod value %s provided. Allowed values are ra, cnc and d2k." $Mod
     exit 1
 fi
 
