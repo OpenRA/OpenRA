@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Effects
 		IEnumerable<IRenderable> IEffectAnnotation.RenderAnnotation(WorldRenderer wr)
 		{
 			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(pos));
-			return anim.RenderUI(screenPos, WVec.Zero, 0, wr.Palette(palette), 1f);
+			return anim.RenderUI(wr, screenPos, WVec.Zero, 0, wr.Palette(palette), 1f);
 		}
 	}
 }
