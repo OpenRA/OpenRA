@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
 		{
-			return animation.RenderUI(pos, offset(), zOffset(), pr, scale);
+			return animation.RenderUI(wr, pos, offset(), zOffset(), pr, scale);
 		}
 
 		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
