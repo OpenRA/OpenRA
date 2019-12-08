@@ -241,6 +241,8 @@ namespace OpenRA.Platforms.Default
 			else
 				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
 
+			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
+
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
 		}

@@ -231,6 +231,12 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		public void SetVSyncEnabled(bool enabled)
+		{
+			VerifyThreadAffinity();
+			SDL.SDL_GL_SetSwapInterval(enabled ? 1 : 0);
+		}
+
 		public void Dispose()
 		{
 			if (disposed)
