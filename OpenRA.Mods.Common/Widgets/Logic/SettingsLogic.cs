@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
+		static readonly bool OriginalGraphicsHardwareCursors;
+		static readonly bool OriginalGraphicsCursorDouble;
 		static readonly bool OriginalServerDiscoverNatDevices;
 
 		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
@@ -52,6 +54,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			OriginalGraphicsMode = original.Graphics.Mode;
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
+			OriginalGraphicsHardwareCursors = original.Graphics.HardwareCursors;
+			OriginalGraphicsCursorDouble = original.Graphics.CursorDouble;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
 		}
 
@@ -82,7 +86,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				    current.Graphics.Mode != OriginalGraphicsMode ||
 				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
-					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
+					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices ||
+					current.Graphics.HardwareCursors != OriginalGraphicsHardwareCursors ||
+					current.Graphics.CursorDouble != OriginalGraphicsCursorDouble)
 				{
 					Action restart = () =>
 					{
@@ -222,13 +228,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				pixelDoubleOnClick();
 				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
 			};
-
-			// Cursor doubling is only supported with software cursors and when pixel doubling is enabled
-			var cursorDoubleCheckbox = panel.Get<CheckboxWidget>("CURSORDOUBLE_CHECKBOX");
-			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble || Game.Cursor is HardwareCursor;
-
-			var cursorDoubleIsChecked = cursorDoubleCheckbox.IsChecked;
-			cursorDoubleCheckbox.IsChecked = () => !cursorDoubleCheckbox.IsDisabled() && cursorDoubleIsChecked();
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");

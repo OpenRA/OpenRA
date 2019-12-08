@@ -20,6 +20,7 @@ namespace OpenRA.Graphics
 	{
 		public readonly IReadOnlyDictionary<string, CursorSequence> Cursors;
 		public readonly IReadOnlyDictionary<string, ImmutablePalette> Palettes;
+		public readonly bool DoubleCursorSize;
 
 		public CursorProvider(ModData modData)
 		{
@@ -47,9 +48,10 @@ namespace OpenRA.Graphics
 					cursors.Add(sequence.Key, new CursorSequence(frameCache, sequence.Key, s.Key, s.Value.Value, sequence.Value));
 
 			Cursors = cursors.AsReadOnly();
-		}
 
-		public static bool CursorViewportZoomed { get { return Game.Settings.Graphics.CursorDouble && Game.Settings.Graphics.PixelDouble; } }
+			// Cursor size changes are applied on game start
+			DoubleCursorSize = Game.Settings.Graphics.CursorDouble;
+		}
 
 		public bool HasCursorSequence(string cursor)
 		{

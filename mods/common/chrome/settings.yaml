@@ -139,14 +139,21 @@ Background@SETTINGS_PANEL:
 							MaxLength: 5
 							Type: Integer
 				Checkbox@HARDWARECURSORS_CHECKBOX:
-					X: 310
+					X: 80
 					Y: 75
 					Width: 200
 					Height: 20
 					Font: Regular
 					Text: Use Hardware Cursors
+				Checkbox@CURSORDOUBLE_CHECKBOX:
+					X: 300
+					Y: 75
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Increase Command Cursor Size
 				Label@VIDEO_DESC:
-					Y: 93
+					Y: 97
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
@@ -166,13 +173,6 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Enable Pixel Doubling
-				Checkbox@CURSORDOUBLE_CHECKBOX:
-					X: 340
-					Y: 160
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Also Double Cursor
 				Label@FRAME_LIMIT_DESC_A:
 					X: 45
 					Y: 159
