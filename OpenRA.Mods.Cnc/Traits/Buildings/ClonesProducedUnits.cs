@@ -24,6 +24,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
 		public readonly BitSet<CloneableType> CloneableTypes = default(BitSet<CloneableType>);
 
+		[FieldLoader.Require]
+		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
+		public readonly string ProductionType = "";
+
 		public override object Create(ActorInitializer init) { return new ClonesProducedUnits(init, this); }
 	}
 
@@ -55,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			// Stop as soon as one production trait successfully produced
 			foreach (var p in productionTraits)
 			{
-				if (!string.IsNullOrEmpty(productionType) && !p.Info.Produces.Contains(productionType))
+				if (!string.IsNullOrEmpty(Info.ProductionType) && !p.Info.Produces.Contains(Info.ProductionType))
 					continue;
 
 				var inits = new TypeDictionary
@@ -64,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					factionInit ?? new FactionInit(BuildableInfo.GetInitialFaction(produced.Info, p.Faction))
 				};
 
-				if (p.Produce(self, produced.Info, productionType, inits))
+				if (p.Produce(self, produced.Info, Info.ProductionType, inits))
 					return;
 			}
 		}
