@@ -173,25 +173,14 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Enable Frame Limiter
-				Label@FRAME_LIMIT_DESC_A:
-					X: 340
-					Y: 159
-					Width: 50
-					Height: 25
-					Text: Limit to
-					Align: Right
-				TextField@FRAME_LIMIT_TEXTFIELD:
-					X: 395
-					Y: 158
-					Width: 45
-					Height: 25
-					MaxLength: 3
-					Type: Integer
-				Label@FRAME_LIMIT_DESC_B:
-					X: 445
-					Y: 159
-					Height: 25
-					Text: FPS
+				Slider@FRAME_LIMIT_SLIDER:
+					X: 330
+					Y: 150
+					Width: 200
+					Height: 20
+					Ticks: 20
+					MinimumValue: 50
+					MaximumValue: 240
 				Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
 					X: 310
 					Y: 195
