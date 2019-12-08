@@ -137,6 +137,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ss.OnChange += x => field.SetValue(group, x);
 		}
 
+		static void BindIntSliderPref(Widget parent, string id, object group, string pref)
+		{
+			var field = group.GetType().GetField(pref);
+			if (field == null)
+				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+
+			var ss = parent.Get<SliderWidget>(id);
+			ss.Value = (float)(int)field.GetValue(group);
+			ss.OnChange += x => field.SetValue(group, (int)x);
+		}
+
 		void BindHotkeyPref(HotkeyDefinition hd, Widget template, Widget parent)
 		{
 			var key = template.Clone() as Widget;
@@ -207,6 +218,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "VSYNC_CHECKBOX", ds, "VSync");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
+			BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", ds, "MaxFramerate");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
@@ -249,37 +261,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = ds.WindowedSize.Y.ToString();
 
-			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
-			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-			var escPressed = false;
-			frameLimitTextfield.OnLoseFocus = () =>
-			{
-				if (escPressed)
-				{
-					escPressed = false;
-					return;
-				}
-
-				int fps;
-				Exts.TryParseIntegerInvariant(frameLimitTextfield.Text, out fps);
-				ds.MaxFramerate = fps.Clamp(1, 1000);
-				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-			};
-
-			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
-			frameLimitTextfield.OnEscKey = () =>
-			{
-				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-				escPressed = true;
-				frameLimitTextfield.YieldKeyboardFocus();
-				return true;
-			};
-
-			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
+			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
+			var frameLimitOrigLabel = frameLimitCheckbox.Text;
+			var frameLimitLabel = new CachedTransform<int, string>(fps => frameLimitOrigLabel + " ({0} FPS)".F(fps));
+			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
 
 			// Player profile
 			var ps = Game.Settings.Player;
 
+			var escPressed = false;
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
 			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
@@ -324,7 +314,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
 				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
 				ds.WindowedSize = new int2(x, y);
-				frameLimitTextfield.YieldKeyboardFocus();
 				nameTextfield.YieldKeyboardFocus();
 			};
 		}
