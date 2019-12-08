@@ -774,6 +774,7 @@ namespace OpenRA
 			var nextLogic = RunTime;
 			var nextRender = RunTime;
 			var forcedNextRender = RunTime;
+			var renderBeforeNextTick = false;
 
 			while (state == RunStatus.Running)
 			{
@@ -802,9 +803,9 @@ namespace OpenRA
 				var nextUpdate = Math.Min(nextLogic, nextRender);
 				if (now >= nextUpdate)
 				{
-					var forceRender = now >= forcedNextRender;
+					var forceRender = renderBeforeNextTick || now >= forcedNextRender;
 
-					if (now >= nextLogic)
+					if (now >= nextLogic && !renderBeforeNextTick)
 					{
 						nextLogic += logicInterval;
 
@@ -812,7 +813,7 @@ namespace OpenRA
 
 						// Force at least one render per tick during regular gameplay
 						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
-							forceRender = true;
+							renderBeforeNextTick = true;
 					}
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
@@ -831,6 +832,7 @@ namespace OpenRA
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
+						renderBeforeNextTick = false;
 					}
 				}
 				else
