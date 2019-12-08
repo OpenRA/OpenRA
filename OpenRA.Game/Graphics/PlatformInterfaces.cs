@@ -73,6 +73,7 @@ namespace OpenRA
 		void DisableDepthBuffer();
 		void ClearDepthBuffer();
 		void SetBlendMode(BlendMode mode);
+		void SetVSyncEnabled(bool enabled);
 		string GLVersion { get; }
 	}
 

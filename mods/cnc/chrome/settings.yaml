@@ -145,29 +145,36 @@ Container@SETTINGS_PANEL:
 							Font: Tiny
 							Align: Center
 							Text: Mode, resolution, and cursor changes will be applied after the game is restarted
+						Checkbox@VSYNC_CHECKBOX:
+							X: 80
+							Y: 125
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: Enable VSync
 						Checkbox@FRAME_LIMIT_CHECKBOX:
-							X: 15
+							X: 310
 							Y: 125
 							Width: 200
 							Height: 20
 							Font: Regular
 							Text: Enable Frame Limiter
 						Label@FRAME_LIMIT_DESC_A:
-							X: 45
+							X: 340
 							Y: 153
 							Width: 50
 							Height: 25
 							Text: Limit to
 							Align: Right
 						TextField@FRAME_LIMIT_TEXTFIELD:
-							X: 100
+							X: 395
 							Y: 153
 							Width: 45
 							Height: 25
 							MaxLength: 3
 							Type: Integer
 						Label@FRAME_LIMIT_DESC_B:
-							X: 150
+							X: 445
 							Y: 153
 							Height: 25
 							Text: FPS
