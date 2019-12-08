@@ -277,6 +277,14 @@ namespace OpenRA.Platforms.Default
 					hotspot *= 2;
 				}
 
+				// Scale all but the "default" cursor if requested by the player
+				if (Game.Settings.Graphics.CursorDouble && name != "default")
+				{
+					data = DoublePixelData(data, size);
+					size = new Size(2 * size.Width, 2 * size.Height);
+					hotspot *= 2;
+				}
+
 				return new Sdl2HardwareCursor(size, data, hotspot);
 			}
 			catch (Exception ex)
