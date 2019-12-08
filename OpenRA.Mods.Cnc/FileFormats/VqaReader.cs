@@ -11,8 +11,9 @@
 
 using System;
 using System.IO;
+using OpenRA.Mods.Common.FileFormats;
 
-namespace OpenRA.Mods.Common.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public class VqaReader
 	{

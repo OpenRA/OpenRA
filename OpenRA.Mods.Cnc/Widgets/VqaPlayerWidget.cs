@@ -11,24 +11,21 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Common.Widgets
+namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class VqaPlayerWidget : Widget
+	public class VqaPlayerWidget : VideoPlayerWidget
 	{
-		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
-		public float AspectRatio = 1.2f;
-		public bool DrawOverlay = true;
-		public bool Skippable = true;
+		public override int VideoFrameCount { get { return video != null ? video.Frames : 0; } }
+		public override int VideoCurrentFrame { get { return video != null ? video.CurrentFrame : 0; } }
 
-		public bool Paused { get { return paused; } }
-		public VqaReader Video { get { return video; } }
-
-		Sprite videoSprite, overlaySprite;
 		VqaReader video = null;
+		Sprite videoSprite, overlaySprite;
 		string cachedVideo;
 		float invLength;
 		float2 videoOrigin, videoSize;
@@ -38,17 +35,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Action onComplete;
 
-		public void Load(string filename)
+		public override void Load(string filename)
 		{
 			if (filename == cachedVideo)
 				return;
+
 			var video = new VqaReader(Game.ModData.DefaultFileSystem.Open(filename));
 
 			cachedVideo = filename;
 			Open(video);
 		}
 
-		public void Open(VqaReader video)
+		void Open(VqaReader video)
 		{
 			this.video = video;
 
@@ -98,7 +96,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (video == null)
+			if (video == null || video.Frames == 0)
 				return;
 
 			if (!stopped && !paused)
@@ -125,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				if (skippedFrames > 1)
-					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);
+					Log.Write("perf", "VideoPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);
 			}
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(
@@ -137,31 +135,12 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(overlaySprite, videoOrigin, videoSize);
 		}
 
-		public override bool HandleKeyPress(KeyInput e)
-		{
-			if (Hotkey.FromKeyInput(e) != CancelKey || e.Event != KeyInputEvent.Down || !Skippable)
-				return false;
-
-			Stop();
-			return true;
-		}
-
-		public override bool HandleMouseInput(MouseInput mi)
-		{
-			return RenderBounds.Contains(mi.Location) && Skippable;
-		}
-
-		public override string GetCursor(int2 pos)
-		{
-			return null;
-		}
-
-		public void Play()
+		public override void Play()
 		{
 			PlayThen(() => { });
 		}
 
-		public void PlayThen(Action after)
+		public override void PlayThen(Action after)
 		{
 			if (video == null)
 				return;
@@ -175,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 			stopped = paused = false;
 		}
 
-		public void Pause()
+		public override void Pause()
 		{
 			if (stopped || paused || video == null)
 				return;
@@ -184,7 +163,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Sound.PauseVideo();
 		}
 
-		public void Stop()
+		public override void Stop()
 		{
 			if (stopped || video == null)
 				return;
@@ -197,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.RunAfterTick(onComplete);
 		}
 
-		public void CloseVideo()
+		public override void CloseVideo()
 		{
 			Stop();
 			video = null;

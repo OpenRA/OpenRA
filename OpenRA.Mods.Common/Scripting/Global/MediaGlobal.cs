@@ -176,15 +176,9 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 			}
 
-			AsyncLoader l = new AsyncLoader(Media.LoadVqa);
-			IAsyncResult ar = l.BeginInvoke(s, null, null);
-			Action onLoadComplete = () =>
-			{
-				Media.StopFMVInRadar();
-				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(world, l.EndInvoke(ar), onCompleteRadar));
-			};
+			Media.StopFMVInRadar();
+			world.AddFrameEndTask(_ => Media.PlayFMVInRadar(world, movie, onCompleteRadar));
 
-			world.AddFrameEndTask(w => w.Add(new AsyncAction(ar, onLoadComplete)));
 			return true;
 		}
 
@@ -225,7 +219,5 @@ namespace OpenRA.Mods.Common.Scripting
 			var c = color.HasValue ? color.Value : Color.White;
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
 		}
-
-		public delegate VqaReader AsyncLoader(Stream s);
 	}
 }

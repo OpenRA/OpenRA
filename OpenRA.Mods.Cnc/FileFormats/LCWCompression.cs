@@ -11,8 +11,9 @@
 
 using System;
 using System.IO;
+using OpenRA.Mods.Common.FileFormats;
 
-namespace OpenRA.Mods.Common.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	// Lempel - Castle - Welch algorithm (aka Format80)
 	public static class LCWCompression

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string currentFilename;
 		IReadOnlyPackage currentPackage;
 		Sprite[] currentSprites;
-		VqaPlayerWidget player = null;
+		VideoPlayerWidget player = null;
 		bool isVideoLoaded = false;
 		bool isLoadError = false;
 		int currentFrame;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				spriteWidget.IsVisible = () => !isVideoLoaded && !isLoadError;
 			}
 
-			var playerWidget = panel.GetOrNull<VqaPlayerWidget>("PLAYER");
+			var playerWidget = panel.GetOrNull<VideoPlayerWidget>("PLAYER");
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
 
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
 			if (frameContainer != null)
 				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
-					(isVideoLoaded && player != null && player.Video != null && player.Video.Frames > 1);
+					(isVideoLoaded && player != null && player.VideoFrameCount > 1);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			if (frameSlider != null)
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						currentFrame = (int)Math.Round(x);
 				};
 
-				frameSlider.GetValue = () => isVideoLoaded ? player.Video.CurrentFrame : currentFrame;
+				frameSlider.GetValue = () => isVideoLoaded ? player.VideoCurrentFrame : currentFrame;
 				frameSlider.IsDisabled = () => isVideoLoaded;
 			}
 
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				frameText.GetText = () =>
 					isVideoLoaded ?
-					"{0} / {1}".F(player.Video.CurrentFrame + 1, player.Video.Frames) :
+					"{0} / {1}".F(player.VideoCurrentFrame + 1, player.VideoFrameCount) :
 					"{0} / {1}".F(currentFrame, currentSprites.Length - 1);
 			}
 
@@ -337,11 +337,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (Path.GetExtension(filename.ToLowerInvariant()) == ".vqa")
 				{
-					player = panel.Get<VqaPlayerWidget>("PLAYER");
+					player = panel.Get<VideoPlayerWidget>("PLAYER");
 					player.Load(prefix + filename);
 					player.DrawOverlay = false;
 					isVideoLoaded = true;
-					frameSlider.MaximumValue = (float)player.Video.Frames - 1;
+					frameSlider.MaximumValue = (float)player.VideoFrameCount - 1;
 					frameSlider.Ticks = 0;
 					return true;
 				}
