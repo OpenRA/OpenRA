@@ -205,6 +205,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
+			BindCheckboxPref(panel, "VSYNC_CHECKBOX", ds, "VSync");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
@@ -231,6 +232,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => ViewportSizeNames[vs]);
 			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
+
+			// Update vsync immediately
+			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
+			var vsyncOnClick = vsyncCheckbox.OnClick;
+			vsyncCheckbox.OnClick = () =>
+			{
+				vsyncOnClick();
+				Game.Renderer.SetVSyncEnabled(ds.VSync);
+			};
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
