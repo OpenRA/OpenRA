@@ -11,9 +11,9 @@
 
 using System;
 using System.IO;
-using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Mods.Cnc.FileFormats;
 
-namespace OpenRA.Mods.Common.AudioLoaders
+namespace OpenRA.Mods.Cnc.AudioLoaders
 {
 	public class AudLoader : ISoundLoader
 	{
