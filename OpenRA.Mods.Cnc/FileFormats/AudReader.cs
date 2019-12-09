@@ -12,9 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.FileFormats
+namespace OpenRA.Mods.Cnc.FileFormats
 {
 	[Flags]
 	enum SoundFlags
