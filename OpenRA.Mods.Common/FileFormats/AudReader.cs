@@ -29,83 +29,11 @@ namespace OpenRA.Mods.Common.FileFormats
 		ImaAdpcm = 99,
 	}
 
-	struct Chunk
-	{
-		public int CompressedSize;
-		public int OutputSize;
-
-		public static Chunk Read(Stream s)
-		{
-			Chunk c;
-			c.CompressedSize = s.ReadUInt16();
-			c.OutputSize = s.ReadUInt16();
-
-			if (s.ReadUInt32() != 0xdeaf)
-				throw new InvalidDataException("Chunk header is bogus");
-			return c;
-		}
-	}
-
 	public static class AudReader
 	{
-		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
-		static readonly int[] StepTable =
-		{
-			7, 8, 9, 10, 11, 12, 13, 14, 16,
-			17, 19, 21, 23, 25, 28, 31, 34, 37,
-			41, 45, 50, 55, 60, 66, 73, 80, 88,
-			97, 107, 118, 130, 143, 157, 173, 190, 209,
-			230, 253, 279, 307, 337, 371, 408, 449, 494,
-			544, 598, 658, 724, 796, 876, 963, 1060, 1166,
-			1282, 1411, 1552, 1707, 1878, 2066, 2272, 2499, 2749,
-			3024, 3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484,
-			7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899, 15289,
-			16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
-		};
-
-		static short DecodeSample(byte b, ref int index, ref int current)
-		{
-			var sb = (b & 8) != 0;
-			b &= 7;
-
-			var delta = (StepTable[index] * b) / 4 + StepTable[index] / 8;
-			if (sb) delta = -delta;
-
-			current += delta;
-			if (current > short.MaxValue) current = short.MaxValue;
-			if (current < short.MinValue) current = short.MinValue;
-
-			index += IndexAdjust[b];
-			if (index < 0) index = 0;
-			if (index > 88) index = 88;
-
-			return (short)current;
-		}
-
 		public static byte[] LoadSound(byte[] raw, ref int index)
 		{
-			var s = new MemoryStream(raw);
-			var dataSize = raw.Length;
-			var outputSize = raw.Length * 4;
-
-			var output = new byte[outputSize];
-			var offset = 0;
-			var currentSample = 0;
-
-			while (dataSize-- > 0)
-			{
-				var b = s.ReadUInt8();
-
-				var t = DecodeSample(b, ref index, ref currentSample);
-				output[offset++] = (byte)t;
-				output[offset++] = (byte)(t >> 8);
-
-				t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
-				output[offset++] = (byte)t;
-				output[offset++] = (byte)(t >> 8);
-			}
-
-			return output;
+			return ImaAdpcmReader.LoadImaAdpcmSound(raw, ref index);
 		}
 
 		public static float SoundLength(Stream s)
@@ -116,8 +44,12 @@ namespace OpenRA.Mods.Common.FileFormats
 			var flags = (SoundFlags)s.ReadByte();
 
 			var samples = outputSize;
-			if ((flags & SoundFlags.Stereo) != 0) samples /= 2;
-			if ((flags & SoundFlags._16Bit) != 0) samples /= 2;
+			if ((flags & SoundFlags.Stereo) != 0)
+				samples /= 2;
+
+			if ((flags & SoundFlags._16Bit) != 0)
+				samples /= 2;
+
 			return (float)samples / sampleRate;
 		}
 
@@ -181,12 +113,12 @@ namespace OpenRA.Mods.Common.FileFormats
 				if (dataSize <= 0)
 					return true;
 
-				var chunk = Chunk.Read(baseStream);
+				var chunk = ImaAdpcmChunk.Read(baseStream);
 				for (var n = 0; n < chunk.CompressedSize; n++)
 				{
 					var b = baseStream.ReadUInt8();
 
-					var t = DecodeSample(b, ref index, ref currentSample);
+					var t = ImaAdpcmReader.DecodeImaAdpcmSample(b, ref index, ref currentSample);
 					data.Enqueue((byte)t);
 					data.Enqueue((byte)(t >> 8));
 					baseOffset += 2;
@@ -194,7 +126,7 @@ namespace OpenRA.Mods.Common.FileFormats
 					if (baseOffset < outputSize)
 					{
 						/* possible that only half of the final byte is used! */
-						t = DecodeSample((byte)(b >> 4), ref index, ref currentSample);
+						t = ImaAdpcmReader.DecodeImaAdpcmSample((byte)(b >> 4), ref index, ref currentSample);
 						data.Enqueue((byte)t);
 						data.Enqueue((byte)(t >> 8));
 						baseOffset += 2;
