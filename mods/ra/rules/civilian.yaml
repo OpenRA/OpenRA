@@ -86,6 +86,7 @@ FCOM:
 		Description: Capture to give buildable area.
 		ValidStances: Neutral, Enemy
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -401,6 +402,7 @@ MISS:
 	Health:
 		HP: 60000
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 10c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
