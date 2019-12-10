@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (range == WDist.Zero)
 				return NoCells;
 
-			return Shroud.ProjectedCellsInRange(map, pos, range)
+			return Shroud.ProjectedCellsInRange(map, pos, WDist.Zero, range)
 				.ToArray();
 		}
 
