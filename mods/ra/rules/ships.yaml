@@ -21,6 +21,7 @@ SS:
 		TurnSpeed: 4
 		Speed: 71
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -90,6 +91,7 @@ MSUB:
 		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -161,6 +163,7 @@ DD:
 		TurnSpeed: 7
 		Speed: 85
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -213,6 +216,7 @@ CA:
 		TurnSpeed: 3
 		Speed: 42
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -275,6 +279,7 @@ LST:
 		Speed: 113
 		PauseOnCondition: notmobile
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -315,6 +320,7 @@ PT:
 		TurnSpeed: 7
 		Speed: 128
 	RevealsShroud:
+		MinRange: 5c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
