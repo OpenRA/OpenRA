@@ -17,6 +17,8 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class AffectsShroudInfo : ConditionalTraitInfo
 	{
+		public readonly WDist MinRange = WDist.Zero;
+
 		public readonly WDist Range = WDist.Zero;
 
 		[Desc("If >= 0, prevent cells that are this much higher than the actor from being revealed.")]
@@ -61,15 +63,16 @@ namespace OpenRA.Mods.Common.Traits
 		PPos[] ProjectedCells(Actor self)
 		{
 			var map = self.World.Map;
-			var range = Range;
-			if (range == WDist.Zero)
+			var minRange = Info.MinRange;
+			var maxRange = Range;
+			if (maxRange <= minRange)
 				return NoCells;
 
 			if (Info.Type == VisibilityType.Footprint)
 			{
 				// PERF: Reuse collection to avoid allocations.
 				footprint.UnionWith(self.OccupiesSpace.OccupiedCells()
-					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range, Info.MaxHeightDelta)));
+					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, map.CenterOfCell(kv.First), minRange, maxRange, Info.MaxHeightDelta)));
 				var cells = footprint.ToArray();
 				footprint.Clear();
 				return cells;
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.Type == VisibilityType.GroundPosition)
 				pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
 
-			return Shroud.ProjectedCellsInRange(map, pos, range, Info.MaxHeightDelta)
+			return Shroud.ProjectedCellsInRange(map, pos, minRange, maxRange, Info.MaxHeightDelta)
 				.ToArray();
 		}
 
