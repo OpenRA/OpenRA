@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (exitinfo != null && move != null)
-					newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(exitLocation, 1, targetLineColor: Color.OrangeRed)));
+					newUnit.QueueActivity(new Move(newUnit, exitLocation, targetLineColor: Color.OrangeRed));
 
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
