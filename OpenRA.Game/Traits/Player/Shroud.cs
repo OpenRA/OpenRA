@@ -186,20 +186,22 @@ namespace OpenRA.Traits
 				Hash += 1;
 		}
 
-		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist range, int maxHeightDelta = -1)
+		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist minRange, WDist maxRange, int maxHeightDelta = -1)
 		{
 			// Account for potential extra half-cell from odd-height terrain
-			var r = (range.Length + 1023 + 512) / 1024;
-			var limit = range.LengthSquared;
+			var r = (maxRange.Length + 1023 + 512) / 1024;
+			var minLimit = minRange.LengthSquared;
+			var maxLimit = maxRange.LengthSquared;
 
 			// Project actor position into the shroud plane
 			var projectedPos = pos - new WVec(0, pos.Z, pos.Z);
 			var projectedCell = map.CellContaining(projectedPos);
 			var projectedHeight = pos.Z / 512;
 
-			foreach (var c in map.FindTilesInCircle(projectedCell, r, true))
+			foreach (var c in map.FindTilesInAnnulus(projectedCell, minRange.Length / 1024, r, true))
 			{
-				if ((map.CenterOfCell(c) - projectedPos).HorizontalLengthSquared <= limit)
+				var dist = (map.CenterOfCell(c) - projectedPos).HorizontalLengthSquared;
+				if (dist <= maxLimit && (dist == 0 || dist > minLimit))
 				{
 					var puv = (PPos)c.ToMPos(map);
 					if (maxHeightDelta < 0 || map.ProjectedHeight(puv) < projectedHeight + maxHeightDelta)
@@ -210,7 +212,7 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, CPos cell, WDist range, int maxHeightDelta = -1)
 		{
-			return ProjectedCellsInRange(map, map.CenterOfCell(cell), range, maxHeightDelta);
+			return ProjectedCellsInRange(map, map.CenterOfCell(cell), WDist.Zero, range, maxHeightDelta);
 		}
 
 		public void AddSource(object key, SourceType type, PPos[] projectedCells)
