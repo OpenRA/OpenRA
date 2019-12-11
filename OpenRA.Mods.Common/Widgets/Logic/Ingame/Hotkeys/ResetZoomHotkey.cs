@@ -16,31 +16,21 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 {
-	[ChromeLogicArgsHotkeys("TogglePixelDoubleKey")]
-	public class TogglePixelDoubleHotkeyLogic : SingleHotkeyBaseLogic
+	[ChromeLogicArgsHotkeys("ResetZoomKey")]
+	public class ResetZoomHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		readonly Viewport viewport;
 
 		[ObjectCreator.UseCtor]
-		public TogglePixelDoubleHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, modData, "TogglePixelDoubleKey", "WORLD_KEYHANDLER", logicArgs)
+		public ResetZoomHotkeyLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "ResetZoomKey", "WORLD_KEYHANDLER", logicArgs)
 		{
 			viewport = worldRenderer.Viewport;
 		}
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
-			// Zoom is currently always set directly, so we don't need to worry about floating point imprecision
-			if (viewport.Zoom == 1f)
-				viewport.Zoom = 2f;
-			else
-			{
-				// Reset zoom to regular view if it was anything else before
-				// (like a zoom level only reachable by using the scroll wheel).
-				viewport.Zoom = 1f;
-			}
-
-			Game.Settings.Graphics.PixelDouble = viewport.Zoom == 2f;
+			viewport.ToggleZoom();
 
 			return true;
 		}

@@ -190,13 +190,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			resetPanelActions.Add(type, reset(panel));
 		}
 
+		static readonly Dictionary<WorldViewport, string> ViewportSizeNames = new Dictionary<WorldViewport, string>()
+		{
+			{ WorldViewport.Close, "Close" },
+			{ WorldViewport.Medium, "Medium" },
+			{ WorldViewport.Far, "Far" },
+			{ WorldViewport.Native, "Furthest" }
+		};
+
 		Action InitDisplayPanel(Widget panel)
 		{
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
 
 			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
-			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
@@ -220,14 +227,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			targetLinesDropDown.GetText = () => gs.TargetLines == TargetLinesType.Automatic ?
 				"Automatic" : gs.TargetLines == TargetLinesType.Manual ? "Manual" : "Disabled";
 
-			// Update zoom immediately
-			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
-			var pixelDoubleOnClick = pixelDoubleCheckbox.OnClick;
-			pixelDoubleCheckbox.OnClick = () =>
-			{
-				pixelDoubleOnClick();
-				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
-			};
+			var battlefieldCameraDropDown = panel.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
+			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => ViewportSizeNames[vs]);
+			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, ds);
+			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -329,10 +332,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.Language = dds.Language;
 				ds.Mode = dds.Mode;
 				ds.WindowedSize = dds.WindowedSize;
-
-				ds.PixelDouble = dds.PixelDouble;
 				ds.CursorDouble = dds.CursorDouble;
-				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+				ds.ViewportDistance = dds.ViewportDistance;
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
@@ -417,7 +418,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
-			BindCheckboxPref(panel, "ALLOW_ZOOM_CHECKBOX", gs, "AllowZoom");
+			BindSliderPref(panel, "ZOOMSPEED_SLIDER", gs, "ZoomSpeed");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
 			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
@@ -516,8 +517,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
+				gs.ZoomSpeed = dgs.ZoomSpeed;
 				gs.UIScrollSpeed = dgs.UIScrollSpeed;
-				gs.AllowZoom = dgs.AllowZoom;
 				gs.ZoomModifier = dgs.ZoomModifier;
 
 				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gs.ViewportEdgeScrollStep;
@@ -736,6 +737,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+		}
+
+		static void ShowBattlefieldCameraDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
+		{
+			Func<WorldViewport, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => gs.ViewportDistance == o,
+					() => gs.ViewportDistance = o);
+
+				var label = ViewportSizeNames[o];
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
+				return item;
+			};
+
+			var viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
+			var windowHeight = Game.Renderer.Resolution.Height;
+
+			var validSizes = new List<WorldViewport>() { WorldViewport.Close };
+			if (viewportSizes.GetSizeRange(WorldViewport.Medium).X < windowHeight)
+				validSizes.Add(WorldViewport.Medium);
+
+			var farRange = viewportSizes.GetSizeRange(WorldViewport.Far);
+			if (farRange.X < windowHeight)
+				validSizes.Add(WorldViewport.Far);
+
+			if (farRange.Y < windowHeight)
+				validSizes.Add(WorldViewport.Native);
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validSizes, setupItem);
 		}
 
 		void MakeMouseFocusSettingsLive()
