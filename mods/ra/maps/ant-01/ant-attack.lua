@@ -13,8 +13,9 @@ SendAnts = true
 
 AttackAngles = {
 	{ waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location },
-	{ waypoint20.Location, waypoint10.Location, waypoint2.Location },
-	{ waypoint17.Location, waypoint1.Location },
+	{ waypoint20.Location, waypoint2.Location },
+	{ waypoint21.Location, waypoint10.Location, waypoint2.Location },
+	{ waypoint7.Location, waypoint17.Location, waypoint1.Location },
 	{ waypoint8.Location, waypoint9.Location, waypoint19.Location }
 }
 
