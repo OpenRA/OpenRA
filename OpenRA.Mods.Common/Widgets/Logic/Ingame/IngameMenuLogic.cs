@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateSurrenderButton()
 		{
-			if (world.Type != WorldType.Regular || world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) || world.LocalPlayer == null)
+			if (world.Type != WorldType.Regular || isSinglePlayer || world.LocalPlayer == null)
 				return;
 
 			Action onSurrender = () =>
