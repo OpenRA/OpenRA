@@ -95,7 +95,7 @@ Background@SETTINGS_PANEL:
 			Children:
 				Label@MODE_LABEL:
 					X: 110
-					Y: 41
+					Y: 40
 					Width: 45
 					Height: 25
 					Align: Right
@@ -146,7 +146,7 @@ Background@SETTINGS_PANEL:
 					Font: Regular
 					Text: Use Hardware Cursors
 				Checkbox@CURSORDOUBLE_CHECKBOX:
-					X: 300
+					X: 310
 					Y: 75
 					Width: 200
 					Height: 20
@@ -166,13 +166,6 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Enable Frame Limiter
-				Checkbox@PIXELDOUBLE_CHECKBOX:
-					X: 310
-					Y: 125
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Enable Pixel Doubling
 				Label@FRAME_LIMIT_DESC_A:
 					X: 45
 					Y: 159
@@ -223,29 +216,41 @@ Background@SETTINGS_PANEL:
 							Y: 6
 							Width: PARENT_RIGHT - 35
 							Height: PARENT_BOTTOM - 12
+				Label@BATTLEFIELD_CAMERA:
+					X: 15
+					Y: 242
+					Width: 120
+					Text: Battlefield Camera:
+					Align: Right
+				DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
+					X: 140
+					Y: 230
+					Width: 145
+					Height: 25
+					Font: Regular
 				Label@STATUS_BARS:
 					X: 250
-					Y: 278
+					Y: 277
 					Width: 145
 					Text: Status Bars:
 					Align: Right
 				DropDownButton@STATUS_BAR_DROPDOWN:
 					X: 400
 					Y: 265
-					Width: 170
+					Width: 180
 					Height: 25
 					Font: Regular
 					Text: Standard
 				Label@TARGET_LINES:
 					X: 250
-					Y: 243
+					Y: 242
 					Width: 145
 					Text: Target Lines:
 					Align: Right
 				DropDownButton@TARGET_LINES_DROPDOWN:
 					X: 400
 					Y: 230
-					Width: 170
+					Width: 180
 					Height: 25
 					Font: Regular
 				Label@LOCALIZATION_TITLE:
@@ -410,7 +415,7 @@ Background@SETTINGS_PANEL:
 					Width: 160
 					Height: 20
 					Font: Regular
-					Text: Scroll-zoom Modifier:
+					Text: Mouse Wheel Zoom Modifier:
 					Align: Right
 				DropDownButton@ZOOM_MODIFIER:
 					X: PARENT_RIGHT - WIDTH - 15
@@ -426,29 +431,22 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Edge Scrolling
-				Checkbox@ALLOW_ZOOM_CHECKBOX:
+				Checkbox@LOCKMOUSE_CHECKBOX:
 					X: 15
 					Y: 100
 					Width: 130
 					Height: 20
 					Font: Regular
-					Text: Scroll Zooming
-				Checkbox@LOCKMOUSE_CHECKBOX:
-					X: 15
-					Y: 130
-					Width: 130
-					Height: 20
-					Font: Regular
 					Text: Lock mouse to window
 				Label@SCROLL_SPEED_LABEL:
-					X: PARENT_RIGHT - WIDTH - 270
+					X: 15
 					Y: 129
-					Width: 95
+					Width: 85
 					Height: 25
 					Text: Scroll Speed:
 					Align: Right
 				Slider@SCROLLSPEED_SLIDER:
-					X: PARENT_RIGHT - WIDTH - 170
+					X: 95
 					Y: 133
 					Width: 100
 					Height: 20
@@ -456,20 +454,35 @@ Background@SETTINGS_PANEL:
 					MinimumValue: 10
 					MaximumValue: 50
 				Label@UI_SCROLL_SPEED_LABEL:
-					X: PARENT_RIGHT - WIDTH - 106
+					X: PARENT_RIGHT - WIDTH - 320
 					Y: 129
 					Width: 95
 					Height: 25
 					Text: UI Scroll:
 					Align: Right
 				Slider@UI_SCROLLSPEED_SLIDER:
-					X: PARENT_RIGHT - WIDTH - 6
+					X: PARENT_RIGHT - WIDTH - 220
 					Y: 133
 					Width: 100
 					Height: 20
 					Ticks: 5
 					MinimumValue: 1
 					MaximumValue: 100
+				Label@ZOOM_SPEED_LABEL:
+					X: PARENT_RIGHT - WIDTH - 106
+					Y: 129
+					Width: 95
+					Height: 25
+					Text: Zoom Speed:
+					Align: Right
+				ExponentialSlider@ZOOMSPEED_SLIDER:
+					X: PARENT_RIGHT - WIDTH - 6
+					Y: 133
+					Width: 95
+					Height: 20
+					Ticks: 5
+					MinimumValue: 0.01
+					MaximumValue: 0.4
 		Container@HOTKEYS_PANEL:
 			X: 5
 			Y: 50

@@ -673,7 +673,10 @@ namespace OpenRA
 
 					// World rendering is disabled while the loading screen is displayed
 					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+					{
+						worldRenderer.Viewport.Tick();
 						worldRenderer.PrepareRenderables();
+					}
 
 					Ui.PrepareRenderables();
 					Renderer.WorldModelRenderer.EndFrame();

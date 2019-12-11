@@ -42,8 +42,8 @@ CycleStatusBars: COMMA
 	Description: Cycle status bars display
 	Types: World, Player, Spectator
 
-TogglePixelDouble: PERIOD
-	Description: Toggle pixel doubling
+ResetZoom: PERIOD
+	Description: Reset zoom
 	Types: World, Player, Spectator
 
 ToggleMute: M
