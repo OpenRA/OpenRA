@@ -36,6 +36,8 @@ namespace OpenRA.Graphics
 	public class Viewport
 	{
 		readonly WorldRenderer worldRenderer;
+		readonly WorldViewportSizes viewportSizes;
+		readonly GraphicSettings graphicSettings;
 
 		// Map bounds (world-px)
 		readonly Rectangle mapBounds;
@@ -55,14 +57,16 @@ namespace OpenRA.Graphics
 
 		ProjectedCellRegion allCells;
 		bool allCellsDirty = true;
-		readonly float[] availableZoomSteps = new[] { 2f, 1f, 0.5f, 0.25f };
+
+		WorldViewport lastViewportDistance;
 
 		float zoom = 1f;
+		float minZoom = 1f;
+		float maxZoom = 2f;
 
-		public float[] AvailableZoomSteps
-		{
-			get { return availableZoomSteps; }
-		}
+		bool unlockMinZoom;
+		float unlockedMinZoomScale;
+		float unlockedMinZoom = 1f;
 
 		public float Zoom
 		{
@@ -71,14 +75,35 @@ namespace OpenRA.Graphics
 				return zoom;
 			}
 
-			set
+			private set
 			{
-				var newValue = ClosestTo(AvailableZoomSteps, value);
-				zoom = newValue;
+				zoom = value;
 				viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
 				cellsDirty = true;
 				allCellsDirty = true;
 			}
+		}
+
+		public void AdjustZoom(float dz)
+		{
+			// Exponential ensures that equal positive and negative steps have the same effect
+			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : minZoom, maxZoom);
+		}
+
+		public void ToggleZoom()
+		{
+			// Unlocked zooms always reset to the default zoom
+			if (zoom < minZoom)
+				Zoom = minZoom;
+			else
+				Zoom = zoom > minZoom ? minZoom : maxZoom;
+		}
+
+		public void UnlockMinimumZoom(float scale)
+		{
+			unlockMinZoom = true;
+			unlockedMinZoomScale = scale;
+			UpdateViewportZooms(false);
 		}
 
 		public static long LastMoveRunTime = 0;
@@ -120,6 +145,8 @@ namespace OpenRA.Graphics
 		{
 			worldRenderer = wr;
 			var grid = Game.ModData.Manifest.Get<MapGrid>();
+			viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
+			graphicSettings = Game.Settings.Graphics;
 
 			// Calculate map bounds in world-px
 			if (wr.World.Type == WorldType.Editor)
@@ -141,8 +168,75 @@ namespace OpenRA.Graphics
 				CenterLocation = (tl + br) / 2;
 			}
 
-			Zoom = Game.Settings.Graphics.PixelDouble ? 2 : 1;
 			tileSize = grid.TileSize;
+
+			UpdateViewportZooms();
+		}
+
+		public void Tick()
+		{
+			if (lastViewportDistance != graphicSettings.ViewportDistance)
+				UpdateViewportZooms();
+		}
+
+		float CalculateMinimumZoom(float minHeight, float maxHeight)
+		{
+			var h = Game.Renderer.Resolution.Height;
+
+			// Check the easy case: the native resolution is within the maximum limit
+			// Also catches the case where the user may force a resolution smaller than the minimum window size
+			if (h <= maxHeight)
+				return 1;
+
+			// Find a clean fraction that brings us within the desired range to reduce aliasing
+			var step = 1f;
+			while (true)
+			{
+				var testZoom = 1f;
+				while (true)
+				{
+					var nextZoom = testZoom + step;
+					if (h < minHeight * nextZoom)
+						break;
+
+					testZoom = nextZoom;
+				}
+
+				if (h < maxHeight * testZoom)
+					return testZoom;
+
+				step /= 2;
+			}
+		}
+
+		void UpdateViewportZooms(bool resetCurrentZoom = true)
+		{
+			lastViewportDistance = graphicSettings.ViewportDistance;
+
+			var vd = graphicSettings.ViewportDistance;
+			if (viewportSizes.AllowNativeZoom && vd == WorldViewport.Native)
+				minZoom = 1;
+			else
+			{
+				var range = viewportSizes.GetSizeRange(vd);
+				minZoom = CalculateMinimumZoom(range.X, range.Y);
+			}
+
+			maxZoom = Math.Min(minZoom * viewportSizes.MaxZoomScale, Game.Renderer.Resolution.Height * 1f / viewportSizes.MaxZoomWindowHeight);
+
+			if (unlockMinZoom)
+			{
+				// Specators and the map editor support zooming out by an extra factor of two.
+				// TODO: Allow zooming out until the full map is visible
+				// We need to improve our viewport scroll handling to center the map as we zoom out
+				// before this will work well enough to enable
+				unlockedMinZoom = minZoom * unlockedMinZoomScale;
+			}
+
+			if (resetCurrentZoom)
+				Zoom = minZoom;
+			else
+				Zoom = Zoom.Clamp(minZoom, maxZoom);
 		}
 
 		public CPos ViewToWorld(int2 view)

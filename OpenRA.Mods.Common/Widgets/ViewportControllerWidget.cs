@@ -306,38 +306,11 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool IsZoomAllowed(float zoom)
-		{
-			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer == null || world.LocalPlayer.Spectating;
-		}
-
-		void Zoom(int direction)
-		{
-			var zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
-			var currentZoom = worldRenderer.Viewport.Zoom;
-			var nextIndex = zoomSteps.IndexOf(currentZoom);
-
-			if (direction < 0)
-				nextIndex++;
-			else
-				nextIndex--;
-
-			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
-				return;
-
-			var zoom = zoomSteps.ElementAt(nextIndex);
-			if (!IsZoomAllowed(zoom))
-				return;
-
-			worldRenderer.Viewport.Zoom = zoom;
-		}
-
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event == MouseInputEvent.Scroll &&
-				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
+			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
 			{
-				Zoom(mi.Delta.Y);
+				worldRenderer.Viewport.AdjustZoom(mi.Delta.Y * Game.Settings.Game.ZoomSpeed);
 				return true;
 			}
 

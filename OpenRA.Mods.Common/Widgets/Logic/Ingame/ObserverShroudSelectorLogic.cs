@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ObserverShroudSelectorLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
+		public ObserverShroudSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 
@@ -145,6 +146,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			selected = limitViews ? groups.First().Value.First() : world.WorldActor.Owner.Shroud.ExploreMapEnabled ? combined : disableShroud;
 			selected.OnClick();
+
+			// Enable zooming out to fractional zoom levels
+			worldRenderer.Viewport.UnlockMinimumZoom(0.5f);
 		}
 
 		public bool HandleKeyPress(KeyInput e)
