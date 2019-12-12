@@ -25,7 +25,7 @@ namespace OpenRA
 	}
 
 	[Flags]
-	enum OrderFields : byte
+	enum OrderFields : short
 	{
 		None = 0x0,
 		Target = 0x01,
@@ -35,7 +35,8 @@ namespace OpenRA
 		ExtraLocation = 0x10,
 		ExtraData = 0x20,
 		TargetIsCell = 0x40,
-		Subject = 0x80
+		Subject = 0x80,
+		Grouped = 0x100
 	}
 
 	static class OrderFieldsExts
@@ -52,6 +53,8 @@ namespace OpenRA
 		public readonly Actor Subject;
 		public readonly bool Queued;
 		public readonly Target Target;
+		public readonly Actor[] GroupedActors;
+
 		public string TargetString;
 		public CPos ExtraLocation;
 		public Actor[] ExtraActors;
@@ -64,7 +67,7 @@ namespace OpenRA
 
 		public Player Player { get { return Subject != null ? Subject.Owner : null; } }
 
-		Order(string orderString, Actor subject, Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData)
+		Order(string orderString, Actor subject, Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
 		{
 			OrderString = orderString ?? "";
 			Subject = subject;
@@ -74,6 +77,7 @@ namespace OpenRA
 			ExtraActors = extraActors;
 			ExtraLocation = extraLocation;
 			ExtraData = extraData;
+			GroupedActors = groupedActors;
 		}
 
 		public static Order Deserialize(World world, BinaryReader r)
@@ -86,7 +90,7 @@ namespace OpenRA
 					case OrderType.Fields:
 					{
 						var order = r.ReadString();
-						var flags = (OrderFields)r.ReadByte();
+						var flags = (OrderFields)r.ReadInt16();
 
 						Actor subject = null;
 						if (flags.HasField(OrderFields.Subject))
@@ -164,13 +168,23 @@ namespace OpenRA
 						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? new CPos(r.ReadInt32()) : CPos.Zero;
 						var extraData = flags.HasField(OrderFields.ExtraData) ? r.ReadUInt32() : 0;
 
+						Actor[] groupedActors = null;
+						if (flags.HasField(OrderFields.Grouped))
+						{
+							var count = r.ReadInt32();
+							if (world != null)
+								groupedActors = Exts.MakeArray(count, _ => world.GetActorById(r.ReadUInt32()));
+							else
+								r.ReadBytes(4 * count);
+						}
+
 						if (world == null)
-							return new Order(order, null, target, targetString, queued, extraActors, extraLocation, extraData);
+							return new Order(order, null, target, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
 
 						if (subject == null && flags.HasField(OrderFields.Subject))
 							return null;
 
-						return new Order(order, subject, target, targetString, queued, extraActors, extraLocation, extraData);
+						return new Order(order, subject, target, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
 					}
 
 					case OrderType.Handshake:
@@ -231,6 +245,11 @@ namespace OpenRA
 			return new Order(order, null, false) { IsImmediate = isImmediate, TargetString = targetString };
 		}
 
+		public static Order FromGroupedOrder(Order grouped, Actor subject)
+		{
+			return new Order(grouped.OrderString, subject, grouped.Target, grouped.TargetString, grouped.Queued, grouped.ExtraActors, grouped.ExtraLocation, grouped.ExtraData);
+		}
+
 		public static Order Command(string text)
 		{
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
@@ -255,11 +274,11 @@ namespace OpenRA
 		public Order()
 			: this(null, null, Target.Invalid, null, false, null, CPos.Zero, 0) { }
 
-		public Order(string orderString, Actor subject, bool queued, Actor[] extraActors = null)
-			: this(orderString, subject, Target.Invalid, null, queued, extraActors, CPos.Zero, 0) { }
+		public Order(string orderString, Actor subject, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
+			: this(orderString, subject, Target.Invalid, null, queued, extraActors, CPos.Zero, 0, groupedActors) { }
 
-		public Order(string orderString, Actor subject, Target target, bool queued, Actor[] extraActors = null)
-			: this(orderString, subject, target, null, queued, extraActors, CPos.Zero, 0) { }
+		public Order(string orderString, Actor subject, Target target, bool queued, Actor[] extraActors = null, Actor[] groupedActors = null)
+			: this(orderString, subject, target, null, queued, extraActors, CPos.Zero, 0, groupedActors) { }
 
 		public byte[] Serialize()
 		{
@@ -267,7 +286,7 @@ namespace OpenRA
 			if (Type == OrderType.Handshake)
 				minLength += TargetString.Length + 1;
 			else if (Type == OrderType.Fields)
-				minLength += 4 + 1 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
+				minLength += 4 + 2 + 13 + (TargetString != null ? TargetString.Length + 1 : 0) + 4 + 4 + 4;
 
 			if (ExtraActors != null)
 				minLength += ExtraActors.Length * 4;
@@ -308,6 +327,9 @@ namespace OpenRA
 					if (Queued)
 						fields |= OrderFields.Queued;
 
+					if (GroupedActors != null)
+						fields |= OrderFields.Grouped;
+
 					if (ExtraActors != null)
 						fields |= OrderFields.ExtraActors;
 
@@ -317,7 +339,7 @@ namespace OpenRA
 					if (Target.SerializableCell != null)
 						fields |= OrderFields.TargetIsCell;
 
-					w.Write((byte)fields);
+					w.Write((short)fields);
 
 					if (fields.HasField(OrderFields.Subject))
 						w.Write(UIntFromActor(Subject));
@@ -361,6 +383,13 @@ namespace OpenRA
 
 					if (fields.HasField(OrderFields.ExtraData))
 						w.Write(ExtraData);
+
+					if (fields.HasField(OrderFields.Grouped))
+					{
+						w.Write(GroupedActors.Length);
+						foreach (var a in GroupedActors)
+							w.Write(UIntFromActor(a));
+					}
 
 					break;
 				}

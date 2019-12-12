@@ -337,7 +337,12 @@ namespace OpenRA.Network
 
 				default:
 					{
-						ResolveOrder(order);
+						if (order.GroupedActors == null)
+							ResolveOrder(order);
+						else
+							foreach (var subject in order.GroupedActors)
+								ResolveOrder(Order.FromGroupedOrder(order, subject));
+
 						break;
 					}
 			}
