@@ -66,6 +66,6 @@ namespace OpenRA.Server
 		// The protocol for server and world orders
 		// This applies after the handshake has completed, and is provided to support
 		// alternative server implementations that wish to support multiple versions in parallel
-		public const int Orders = 9;
+		public const int Orders = 10;
 	}
 }
