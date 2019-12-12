@@ -22,14 +22,11 @@ namespace OpenRA.Mods.Common.FileFormats
 			if (srcIndex > destIndex)
 				throw new NotImplementedException("srcIndex > destIndex {0} {1}".F(srcIndex, destIndex));
 
-			if (destIndex - srcIndex == 1)
+			for (var i = 0; i < count; i++)
 			{
-				for (var i = 0; i < count; i++)
+				if (destIndex - srcIndex == 1)
 					dest[destIndex + i] = dest[destIndex - 1];
-			}
-			else
-			{
-				for (var i = 0; i < count; i++)
+				else
 					dest[destIndex + i] = dest[srcIndex + i];
 			}
 		}
@@ -76,21 +73,10 @@ namespace OpenRA.Mods.Common.FileFormats
 						for (var end = destIndex + count; destIndex < end; destIndex++)
 							dest[destIndex] = color;
 					}
-					else if (count3 == 0x3F)
-					{
-						// case 5
-						var count = ctx.ReadWord();
-						var srcIndex = reverse ? destIndex - ctx.ReadWord() : ctx.ReadWord();
-						if (srcIndex >= destIndex)
-							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
-
-						for (var end = destIndex + count; destIndex < end; destIndex++)
-							dest[destIndex] = dest[srcIndex++];
-					}
 					else
 					{
-						// case 3
-						var count = count3 + 3;
+						// If count3 == 0x3F it's case 5, else case 3
+						var count = count3 == 0x3F ? ctx.ReadWord() : count3 + 3;
 						var srcIndex = reverse ? destIndex - ctx.ReadWord() : ctx.ReadWord();
 						if (srcIndex >= destIndex)
 							throw new NotImplementedException("srcIndex >= destIndex {0} {1}".F(srcIndex, destIndex));
