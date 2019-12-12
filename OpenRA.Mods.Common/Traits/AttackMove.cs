@@ -117,8 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Cells outside the playable area should be clamped to the edge for consistency with move orders
 				cell = world.Map.Clamp(cell);
-				foreach (var s in subjects)
-					yield return new Order(orderName, s.Actor, Target.FromCell(world, cell), queued);
+				yield return new Order(orderName, null, Target.FromCell(world, cell), queued, null, subjects.Select(s => s.Actor).ToArray());
 			}
 		}
 
