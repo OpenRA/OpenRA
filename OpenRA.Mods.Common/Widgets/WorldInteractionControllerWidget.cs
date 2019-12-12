@@ -213,9 +213,8 @@ namespace OpenRA.Mods.Common.Widgets
 			world.PlayVoiceForOrders(orders);
 
 			var flashed = false;
-			foreach (var order in orders)
+			foreach (var o in orders)
 			{
-				var o = order;
 				if (o == null)
 					continue;
 
