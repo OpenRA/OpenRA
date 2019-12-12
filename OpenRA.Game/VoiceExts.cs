@@ -58,7 +58,7 @@ namespace OpenRA
 					continue;
 
 				var orderSubject = o.Subject;
-				if (orderSubject.Disposed)
+				if (orderSubject == null || orderSubject.Disposed)
 					continue;
 
 				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
