@@ -338,13 +338,17 @@ namespace OpenRA.Network
 
 				default:
 					{
-						if (order.Subject != null && !order.Subject.IsDead)
-							foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
-								t.ResolveOrder(order.Subject, order);
-
+						ResolveOrder(order);
 						break;
 					}
 			}
+		}
+
+		static void ResolveOrder(Order order)
+		{
+			if (order.Subject != null && !order.Subject.IsDead)
+				foreach (var t in order.Subject.TraitsImplementing<IResolveOrder>())
+					t.ResolveOrder(order.Subject, order);
 		}
 
 		static void SetOrderLag(OrderManager o)
