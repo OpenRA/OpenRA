@@ -58,14 +58,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			ammoPool = self.TraitsImplementing<AmmoPool>().Single(ap => ap.Info.Name == Info.AmmoPool);
 			modifiers = self.TraitsImplementing<IReloadAmmoModifier>().ToArray();
-			remainingTicks = Info.Delay;
 			base.Created(self);
+
+			self.World.AddFrameEndTask(w =>
+			{
+				remainingTicks = Util.ApplyPercentageModifiers(Info.Delay, modifiers.Select(m => m.GetReloadAmmoModifier()));
+			});
 		}
 
 		void INotifyAttack.Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			if (Info.ResetOnFire)
-				remainingTicks = Info.Delay;
+				remainingTicks = Util.ApplyPercentageModifiers(Info.Delay, modifiers.Select(m => m.GetReloadAmmoModifier()));
 		}
 
 		void INotifyAttack.PreparingAttack(Actor self, Target target, Armament a, Barrel barrel) { }
