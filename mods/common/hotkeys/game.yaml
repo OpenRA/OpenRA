@@ -18,6 +18,10 @@ SelectUnitsByType: W
 	Description: Select units by type
 	Types: World, Player, Spectator
 
+CycleHarvesters: N
+	Description: Cycle Harvesters
+	Types: World, Player, Spectator
+
 RemoveFromControlGroup:
 	Description: Remove from control group
 	Types: World, Player
