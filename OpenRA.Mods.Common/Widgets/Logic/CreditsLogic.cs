@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Widgets;
 
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onExit();
 			};
 
-			engineLines = ParseLines("AUTHORS");
+			engineLines = ParseLines(File.OpenRead(Platform.ResolvePath("./AUTHORS")));
 
 			var tabContainer = panel.Get("TAB_CONTAINER");
 			var modTab = tabContainer.Get<ButtonWidget>("MOD_TAB");
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (hasModCredits)
 			{
 				var modCredits = modData.Manifest.Get<ModCredits>();
-				modLines = ParseLines(modCredits.ModCreditsFile);
+				modLines = ParseLines(modData.DefaultFileSystem.Open(modCredits.ModCreditsFile));
 				modTab.GetText = () => modCredits.ModTabTitle;
 
 				// Make space to show the tabs
@@ -82,12 +83,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		IEnumerable<string> ParseLines(string file)
+		IEnumerable<string> ParseLines(Stream file)
 		{
-			return modData.DefaultFileSystem.Open(file)
-				.ReadAllLines()
-				.Select(l => l.Replace("\t", "    ").Replace("*", "\u2022"))
-				.ToList();
+			return file.ReadAllLines().Select(l => l.Replace("\t", "    ").Replace("*", "\u2022")).ToList();
 		}
 	}
 }
