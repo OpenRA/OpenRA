@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class NukePowerInfo : SupportPowerInfo, IRulesetLoaded, Requires<BodyOrientationInfo>
+	class NukePowerInfo : SupportPowerInfo
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -124,13 +124,18 @@ namespace OpenRA.Mods.Common.Traits
 	class NukePower : SupportPower
 	{
 		readonly NukePowerInfo info;
-		readonly BodyOrientation body;
+		BodyOrientation body;
 
 		public NukePower(Actor self, NukePowerInfo info)
 			: base(self, info)
 		{
-			body = self.Trait<BodyOrientation>();
 			this.info = info;
+		}
+
+		protected override void Created(Actor self)
+		{
+			body = self.TraitOrDefault<BodyOrientation>();
+			base.Created(self);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -147,10 +152,13 @@ namespace OpenRA.Mods.Common.Traits
 				launchpad.Launching(self);
 
 			var palette = info.IsPlayerPalette ? info.MissilePalette + self.Owner.InternalName : info.MissilePalette;
+			var skipAscent = info.SkipAscent || body == null;
+			var launchPos = skipAscent ? WPos.Zero : self.CenterPosition + body.LocalToWorld(info.SpawnOffset);
+
 			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
-				self.CenterPosition + body.LocalToWorld(info.SpawnOffset),
+				launchPos,
 				targetPosition, info.DetonationAltitude, info.RemoveMissileOnDetonation,
-				info.FlightVelocity, info.MissileDelay, info.FlightDelay, info.SkipAscent,
+				info.FlightVelocity, info.MissileDelay, info.FlightDelay, skipAscent,
 				info.FlashType,
 				info.TrailImage, info.TrailSequences, info.TrailPalette, info.TrailUsePlayerPalette, info.TrailDelay, info.TrailInterval);
 
