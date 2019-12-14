@@ -42,6 +42,8 @@ namespace OpenRA.Mods.Common.Effects
 				circles = new Animation(building.World, rp.Info.Image);
 				circles.Play(rp.Info.CirclesSequence);
 			}
+
+			UpdateTargetLineNodes(building.World);
 		}
 
 		void IEffect.Tick(World world)
@@ -54,27 +56,7 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (cachedLocations == null || !cachedLocations.SequenceEqual(rp.Path))
 			{
-				cachedLocations = new List<CPos>(rp.Path);
-				targetLineNodes.Clear();
-				foreach (var c in cachedLocations)
-					targetLineNodes.Add(world.Map.CenterOfCell(c));
-
-				var exitPos = building.CenterPosition;
-
-				// Find closest exit
-				var dist = int.MaxValue;
-				foreach (var exit in exits)
-				{
-					var ep = building.CenterPosition + exit.SpawnOffset;
-					var len = (targetLineNodes[0] - ep).Length;
-					if (len < dist)
-					{
-						dist = len;
-						exitPos = ep;
-					}
-				}
-
-				targetLineNodes.Insert(0, exitPos);
+				UpdateTargetLineNodes(world);
 
 				if (circles != null)
 					circles.Play(rp.Info.CirclesSequence);
@@ -82,6 +64,31 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (!building.IsInWorld || building.IsDead)
 				world.AddFrameEndTask(w => w.Remove(this));
+		}
+
+		void UpdateTargetLineNodes(World world)
+		{
+			cachedLocations = new List<CPos>(rp.Path);
+			targetLineNodes.Clear();
+			foreach (var c in cachedLocations)
+				targetLineNodes.Add(world.Map.CenterOfCell(c));
+
+			var exitPos = building.CenterPosition;
+
+			// Find closest exit
+			var dist = int.MaxValue;
+			foreach (var exit in exits)
+			{
+				var ep = building.CenterPosition + exit.SpawnOffset;
+				var len = (targetLineNodes[0] - ep).Length;
+				if (len < dist)
+				{
+					dist = len;
+					exitPos = ep;
+				}
+			}
+
+			targetLineNodes.Insert(0, exitPos);
 		}
 
 		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr) { return SpriteRenderable.None; }
@@ -95,7 +102,7 @@ namespace OpenRA.Mods.Common.Effects
 				return SpriteRenderable.None;
 
 			var renderables = SpriteRenderable.None;
-			if (circles != null || flag != null)
+			if (targetLineNodes.Count > 0 && (circles != null || flag != null))
 			{
 				var palette = wr.Palette(rp.PaletteName);
 				if (circles != null)
@@ -117,6 +124,9 @@ namespace OpenRA.Mods.Common.Effects
 				return SpriteRenderable.None;
 
 			if (!building.World.Selection.Contains(building))
+				return SpriteRenderable.None;
+
+			if (targetLineNodes.Count == 0)
 				return SpriteRenderable.None;
 
 			return RenderInner(wr);
