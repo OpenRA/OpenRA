@@ -25,6 +25,9 @@ Container@HOTKEYS_PANEL:
 			Music Commands:
 				Template: TWO_COLUMN
 				Types: Music
+			Chat Commands:
+				Template: TWO_COLUMN
+				Types: Chat
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:
