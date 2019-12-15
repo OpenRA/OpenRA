@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				chatText.Text = tabCompletion.Complete(chatText.Text);
 				chatText.CursorPosition = chatText.Text.Length;
 
-				if (chatText.Text == previousText && !disableTeamChat)
+				if ((chatText.Text == previousText || Game.GetModifierKeys().HasModifier(Modifiers.Shift)) && !disableTeamChat)
 					teamChat ^= true;
 
 				return true;
@@ -169,6 +169,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (!chatChrome.IsVisible() && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
 					{
+						// If enabled, set to team chat without Shift modifier otherwise all chat
+						teamChat = !disableTeamChat & !Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+
 						OpenChat();
 						return true;
 					}

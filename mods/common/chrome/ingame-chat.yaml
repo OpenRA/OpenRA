@@ -25,6 +25,8 @@ Container@CHAT_PANEL:
 					Height: 25
 					Text: Team
 					Font: Bold
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipText: Enter/Shift+Enter for team/all chat
 				TextField@CHAT_TEXTFIELD:
 					X: 55
 					Y: PARENT_BOTTOM - HEIGHT
