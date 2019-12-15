@@ -423,16 +423,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatTextField.OnTabKey = _ =>
+			chatTextField.OnTabKey = e =>
 			{
-				var previousText = chatTextField.Text;
-				chatTextField.Text = tabCompletion.Complete(chatTextField.Text);
-				chatTextField.CursorPosition = chatTextField.Text.Length;
-
-				if (chatTextField.Text == previousText)
-					return SwitchTeamChat();
+				if (!chatMode.Key.IsActivatedBy(e) || chatMode.IsDisabled())
+				{
+					chatTextField.Text = tabCompletion.Complete(chatTextField.Text);
+					chatTextField.CursorPosition = chatTextField.Text.Length;
+				}
 				else
-					return true;
+					chatMode.OnKeyPress(e);
+
+				return true;
 			};
 
 			chatTextField.OnEscKey = _ => { chatTextField.Text = ""; return true; };
@@ -499,13 +500,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				lobbyChatPanel.ScrollToBottom(smooth: true);
 
 			Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
-		}
-
-		bool SwitchTeamChat()
-		{
-			if (!disableTeamChat)
-				teamChat ^= true;
-			return true;
 		}
 
 		void UpdateCurrentMap()

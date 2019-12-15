@@ -153,6 +153,7 @@ Hotkeys:
 	common|hotkeys/production-peractor.yaml
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
+	common|hotkeys/chat.yaml
 	cnc|hotkeys.yaml
 
 LoadScreen: CncLoadScreen

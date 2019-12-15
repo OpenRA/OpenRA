@@ -1,0 +1,7 @@
+OpenTeamChat: Return
+	Description: Open Team Chat
+	Types: Chat, Player, Spectator
+
+OpenGeneralChat: Return Shift
+	Description: Open General Chat
+	Types: Chat, Player, Spectator

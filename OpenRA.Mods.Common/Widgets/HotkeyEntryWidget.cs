@@ -88,7 +88,6 @@ namespace OpenRA.Mods.Common.Widgets
 			Keycode.RCTRL, Keycode.LCTRL,
 			Keycode.RALT, Keycode.LALT,
 			Keycode.RGUI, Keycode.LGUI,
-			Keycode.RETURN, Keycode.KP_ENTER
 		};
 
 		public override bool HandleKeyPress(KeyInput e)

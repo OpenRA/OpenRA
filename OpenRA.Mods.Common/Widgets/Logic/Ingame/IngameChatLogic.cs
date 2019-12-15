@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Commands;
+using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -20,6 +21,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[ChromeLogicArgsHotkeys("OpenTeamChat", "OpenGeneralChat")]
 	public class IngameChatLogic : ChromeLogic
 	{
 		readonly OrderManager orderManager;
@@ -135,14 +137,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatText.OnTabKey = _ =>
+			chatText.OnTabKey = e =>
 			{
-				var previousText = chatText.Text;
-				chatText.Text = tabCompletion.Complete(chatText.Text);
-				chatText.CursorPosition = chatText.Text.Length;
-
-				if (chatText.Text == previousText && !disableTeamChat)
-					teamChat ^= true;
+				if (!chatMode.Key.IsActivatedBy(e) || chatMode.IsDisabled())
+				{
+					chatText.Text = tabCompletion.Complete(chatText.Text);
+					chatText.CursorPosition = chatText.Text.Length;
+				}
+				else
+					chatMode.OnKeyPress(e);
 
 				return true;
 			};
@@ -159,6 +162,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (!isMenuChat)
 			{
+				var openTeamChatKey = new HotkeyReference();
+				if (logicArgs.TryGetValue("OpenTeamChatKey", out var hotkeyArg))
+					openTeamChatKey = modData.Hotkeys[hotkeyArg.Value];
+
+				var openGeneralChatKey = new HotkeyReference();
+				if (logicArgs.TryGetValue("OpenGeneralChatKey", out hotkeyArg))
+					openGeneralChatKey = modData.Hotkeys[hotkeyArg.Value];
+
 				var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
 				chatClose.OnClick += CloseChat;
 
@@ -167,8 +178,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (e.Event == KeyInputEvent.Up)
 						return false;
 
-					if (!chatChrome.IsVisible() && (e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER))
+					if (!chatChrome.IsVisible() && (openTeamChatKey.IsActivatedBy(e) || openGeneralChatKey.IsActivatedBy(e)))
 					{
+						teamChat = !disableTeamChat && !openGeneralChatKey.IsActivatedBy(e);
+
 						OpenChat();
 						return true;
 					}
@@ -229,6 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatChrome.Visible = false;
 			chatText.YieldKeyboardFocus();
 			chatOverlay.Visible = true;
+			Ui.ResetTooltips();
 		}
 
 		public void AddChatLineWrapper(string name, Color nameColor, string text, Color textColor)

@@ -15,6 +15,9 @@ Container@CHAT_CONTAINER:
 					Height: 25
 					Text: Team
 					Font: Bold
+					Key: Tab SHIFT
+					TooltipText: Toggle chat mode
+					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
 					X: 55
 					Y: PARENT_BOTTOM - HEIGHT
