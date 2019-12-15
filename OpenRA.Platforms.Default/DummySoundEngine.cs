@@ -21,7 +21,7 @@ namespace OpenRA.Platforms.Default
 		{
 			var defaultDevices = new[]
 			{
-				new SoundDevice(null, "Default Output"),
+				new SoundDevice(null, "No Sound Output"),
 			};
 
 			return defaultDevices;
