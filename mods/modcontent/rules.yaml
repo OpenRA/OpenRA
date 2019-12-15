@@ -1,5 +1,5 @@
 World:
-	PaletteFromFile:
+	PaletteFromPng:
 		Name: cursor
-		Filename: cursor.pal
+		Filename: cursor.png
 		CursorPalette: true
