@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
-	public class RallyPoint : IIssueOrder, IResolveOrder, ISync, INotifyOwnerChanged, INotifyCreated
+	public class RallyPoint : IIssueOrder, IResolveOrder, INotifyOwnerChanged, INotifyCreated
 	{
 		const string OrderID = "SetRallyPoint";
 
