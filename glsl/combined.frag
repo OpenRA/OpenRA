@@ -85,9 +85,9 @@ void main()
 {
 	vec2 coords = vTexCoord.st;
 
-	if (AntialiasPixelsPerTexel > 0)
+	if (AntialiasPixelsPerTexel > 0.0)
 	{
-		vec2 textureSize = Size(vTexSampler.s);
+		vec2 textureSize = vec2(Size(vTexSampler.s));
 		vec2 offset = fract(coords.st * textureSize);
 
 		// Offset the sampling point to simulate bilinear intepolation in window coordinates instead of texture coordinates
