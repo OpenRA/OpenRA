@@ -114,8 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				BindButtonIcon(guardButton);
 
 				guardButton.IsDisabled = () => { UpdateStateIfNecessary(); return guardDisabled; };
-				guardButton.IsHighlighted = () => world.OrderGenerator is GenericSelectTarget
-					&& ((GenericSelectTarget)world.OrderGenerator).OrderName == "Guard";
+				guardButton.IsHighlighted = () => world.OrderGenerator is GuardOrderGenerator;
 
 				Action<bool> toggle = allowCancel =>
 				{
