@@ -262,14 +262,13 @@ namespace OpenRA.Mods.Common.Traits
 				SetVisualPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
-			Facing = oldFacing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
+			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
 
 			// Sets the initial visual position
 			// Unit will move into the cell grid (defined by LocationInit) as its initial activity
 			if (init.Contains<CenterPositionInit>())
 			{
-				oldPos = init.Get<CenterPositionInit, WPos>();
-				SetVisualPosition(self, oldPos);
+				SetVisualPosition(self, init.Get<CenterPositionInit, WPos>());
 				returnToCellOnCreation = true;
 			}
 
