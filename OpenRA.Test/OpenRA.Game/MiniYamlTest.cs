@@ -246,10 +246,13 @@ TestB:
 		{
 			var yaml = @"
 # Top level comment node
+#
 Parent: # comment without value
 	# Indented comment node
 	First: value containing a \# character
 	Second: value # node with inline comment
+	Third: value #
+	Fourth: #
 ".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).WriteToString();
