@@ -225,7 +225,7 @@ namespace OpenRA
 						if (commentStart < 0 && line[i] == '#' && (i == 0 || line[i - 1] != '\\'))
 						{
 							commentStart = i + 1;
-							if (commentStart < keyLength)
+							if (commentStart <= keyLength)
 								keyLength = i - keyStart;
 							else
 								valueLength = i - valueStart;
@@ -446,7 +446,7 @@ namespace OpenRA
 		{
 			var hasKey = !string.IsNullOrEmpty(key);
 			var hasValue = !string.IsNullOrEmpty(Value);
-			var hasComment = !string.IsNullOrEmpty(comment);
+			var hasComment = comment != null;
 			yield return (hasKey ? key + ":" : "")
 				+ (hasValue ? " " + Value.Replace("#", "\\#") : "")
 				+ (hasComment ? (hasKey || hasValue ? " " : "") + "#" + comment : "");
