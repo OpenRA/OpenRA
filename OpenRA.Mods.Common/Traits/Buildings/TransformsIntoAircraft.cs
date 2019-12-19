@@ -63,7 +63,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!IsTraitDisabled)
 				{
 					yield return new EnterAlliedActorTargeter<BuildingInfo>("Enter", 5, AircraftCanEnter,
-					 target => Reservable.IsAvailableFor(target, self));
+						target => Reservable.IsAvailableFor(target, self));
+
 					yield return new AircraftMoveOrderTargeter(self, this);
 				}
 			}
