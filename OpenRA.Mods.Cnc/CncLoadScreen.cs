@@ -26,8 +26,7 @@ namespace OpenRA.Mods.Cnc
 		Dictionary<string, string> loadInfo;
 		Stopwatch loadTimer = Stopwatch.StartNew();
 		Sheet sheet;
-		Sprite borderTop, borderBottom, borderLeft, borderRight,
-			cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight;
+		Sprite[] border;
 		int loadTick;
 		float2 nodPos, gdiPos, evaPos;
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
@@ -51,14 +50,18 @@ namespace OpenRA.Mods.Cnc
 			var res = r.Resolution;
 			bounds = new Rectangle(0, 0, res.Width, res.Height);
 
-			borderTop = new Sprite(sheet, new Rectangle(161, 128, 62, 33), TextureChannel.RGBA);
-			borderBottom = new Sprite(sheet, new Rectangle(161, 223, 62, 33), TextureChannel.RGBA);
-			borderLeft = new Sprite(sheet, new Rectangle(128, 161, 33, 62), TextureChannel.RGBA);
-			borderRight = new Sprite(sheet, new Rectangle(223, 161, 33, 62), TextureChannel.RGBA);
-			cornerTopLeft = new Sprite(sheet, new Rectangle(128, 128, 33, 33), TextureChannel.RGBA);
-			cornerTopRight = new Sprite(sheet, new Rectangle(223, 128, 33, 33), TextureChannel.RGBA);
-			cornerBottomLeft = new Sprite(sheet, new Rectangle(128, 223, 33, 33), TextureChannel.RGBA);
-			cornerBottomRight = new Sprite(sheet, new Rectangle(223, 223, 33, 33), TextureChannel.RGBA);
+			border = new[]
+			{
+				new Sprite(sheet, new Rectangle(128, 128, 33, 33), TextureChannel.RGBA),
+				new Sprite(sheet, new Rectangle(161, 128, 62, 33), TextureChannel.RGBA),
+				new Sprite(sheet, new Rectangle(223, 128, 33, 33), TextureChannel.RGBA),
+				new Sprite(sheet, new Rectangle(128, 161, 33, 62), TextureChannel.RGBA),
+				null,
+				new Sprite(sheet, new Rectangle(223, 161, 33, 62), TextureChannel.RGBA),
+				new Sprite(sheet, new Rectangle(128, 223, 33, 33), TextureChannel.RGBA),
+				new Sprite(sheet, new Rectangle(161, 223, 62, 33), TextureChannel.RGBA),
+				new Sprite(sheet, new Rectangle(223, 223, 33, 33), TextureChannel.RGBA)
+			};
 
 			nodLogo = new Sprite(sheet, new Rectangle(0, 256, 256, 256), TextureChannel.RGBA);
 			gdiLogo = new Sprite(sheet, new Rectangle(256, 256, 256, 256), TextureChannel.RGBA);
@@ -91,10 +94,7 @@ namespace OpenRA.Mods.Cnc
 			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
 			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
 
-			WidgetUtils.DrawPanelPartial(bounds, PanelSides.Edges,
-				borderTop, borderBottom, borderLeft, borderRight,
-				cornerTopLeft, cornerTopRight, cornerBottomLeft, cornerBottomRight,
-				null);
+			WidgetUtils.DrawPanel(bounds, border);
 			var barY = bounds.Height - 78;
 
 			// The fonts dictionary may change when switching between the mod and content installer

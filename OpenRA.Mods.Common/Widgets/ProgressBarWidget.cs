@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var percentage = GetPercentage();
 			WidgetUtils.DrawPanel(Background, rb);
 
-			var minBarWidth = (int)(ChromeProvider.GetImage(Bar, "border-l").Size.X + ChromeProvider.GetImage(Bar, "border-r").Size.X);
+			var minBarWidth = ChromeProvider.GetMinimumPanelSize(Bar).Width;
 			var maxBarWidth = rb.Width - BarMargin.Width * 2;
 			var barWidth = wasIndeterminate ? maxBarWidth / 4 : percentage * maxBarWidth / 100;
 			barWidth = Math.Max(barWidth, minBarWidth);
