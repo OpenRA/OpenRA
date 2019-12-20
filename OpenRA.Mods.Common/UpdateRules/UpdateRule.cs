@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public virtual IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode) { yield break; }
 		public virtual IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNode chromeNode) { yield break; }
 		public virtual IEnumerable<string> UpdateTilesetNode(ModData modData, MiniYamlNode tilesetNode) { yield break; }
+		public virtual IEnumerable<string> UpdateChromeProviderNode(ModData modData, MiniYamlNode chromeProviderNode) { yield break; }
 
 		public virtual IEnumerable<string> BeforeUpdate(ModData modData) { yield break; }
 		public virtual IEnumerable<string> AfterUpdate(ModData modData) { yield break; }

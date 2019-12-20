@@ -145,6 +145,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var modWeapons = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Weapons, externalFilenames));
 			var modTilesets = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.TileSets, externalFilenames));
 			var modChromeLayout = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
+			var modChromeProvider = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Chrome, externalFilenames));
 
 			// Find and add shared map includes
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
@@ -174,12 +175,14 @@ namespace OpenRA.Mods.Common.UpdateRules
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modWeapons, rule.UpdateWeaponNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
 			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
+			manualSteps.AddRange(ApplyTopLevelTransform(modData, modChromeProvider, rule.UpdateChromeProviderNode));
 			manualSteps.AddRange(rule.AfterUpdate(modData));
 
 			files = modRules.ToList();
 			files.AddRange(modWeapons);
 			files.AddRange(modTilesets);
 			files.AddRange(modChromeLayout);
+			files.AddRange(modChromeProvider);
 
 			return manualSteps;
 		}
