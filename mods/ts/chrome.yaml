@@ -1,9 +1,21 @@
+^Chrome:
+	Image: chrome.png
+
+^Dialog:
+	Image: dialog.png
+
+^Buttons:
+	Image: buttons.png
+
+^LoadScreen:
+	Image: loadscreen.png
+
 # ----------------------------------------------------------------------
 # GDI
 # ----------------------------------------------------------------------
 
 sidebar-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		background-top: 0, 0, 235, 260
 		background-iconrow: 0, 260, 235, 52
@@ -11,111 +23,99 @@ sidebar-gdi:
 		background-commandbar: 87, 461, 425, 51
 
 sidebar-button-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 119, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-gdi-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 150, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-gdi-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 181, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-gdi-highlighted:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 212, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-gdi-highlighted-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 243, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-gdi-highlighted-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 274, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-gdi-highlighted-disabled:
-	Image: chrome.png
-	PanelRegion: 235, 305, 0, 0, 30, 31, 0, 0
-	PanelSides: Center
+	Inherits: sidebar-button-gdi-disabled
 sidebar-button-gdi-disabled:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 235, 305, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 
 scrollup-buttons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 0, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-gdi-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 34, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-gdi-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 66, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-gdi-highlighted:
-	Image: chrome.png
-	PanelRegion: 34, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrollup-buttons-gdi-hover
 scrollup-buttons-gdi-highlighted-hover:
-	Image: chrome.png
-	PanelRegion: 34, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrollup-buttons-gdi-hover
 scrollup-buttons-gdi-highlighted-pressed:
-	Image: chrome.png
-	PanelRegion: 66, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrollup-buttons-gdi-pressed
 scrollup-button-gdi-highlighted-disabled:
-	Image: chrome.png
-	PanelRegion: 0, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrollup-buttons-gdi-disabled
 scrollup-buttons-gdi-disabled:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 0, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 
 scrolldown-buttons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 102, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-gdi-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 136, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-gdi-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 170, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-gdi-highlighted:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 136, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-gdi-highlighted-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 136, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-gdi-highlighted-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 170, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-button-gdi-highlighted-disabled:
-	Image: chrome.png
-	PanelRegion: 102, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrolldown-buttons-gdi-disabled
 scrolldown-buttons-gdi-disabled:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 102, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 
 radar-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		insignia: 235, 0, 164, 119
 
 production-icons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		building: 416, 0, 16, 16
 		building-disabled: 432, 0, 16, 16
@@ -134,7 +134,7 @@ production-icons-gdi:
 		air-alert: 448, 64, 16, 16
 
 order-icons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		debug: 265, 119, 30, 31
 		debug-disabled: 295, 119, 30, 31
@@ -156,19 +156,19 @@ order-icons-gdi:
 		power-active: 265, 274, 30, 31
 
 power-icons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		power-normal: 480, 160, 16, 16
 		power-critical: 496, 160, 16, 16
 
 cash-icons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		cash-normal: 480, 144, 16, 16
 		cash-critical: 496, 144, 16, 16
 
 command-icons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		attack-move: 304, 331, 26, 26
 		attack-move-disabled: 304, 357, 26, 26
@@ -212,7 +212,7 @@ command-icons-gdi:
 		queue-orders-active-hover: 486, 435, 26, 26
 
 stance-icons-gdi:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		attack-anything: 424, 176, 22, 22
 		attack-anything-disabled: 424, 198, 22, 22
@@ -240,7 +240,7 @@ stance-icons-gdi:
 # ----------------------------------------------------------------------
 
 sidebar-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		background-top: 512, 0, 235, 260
 		background-iconrow: 512, 260, 235, 52
@@ -248,111 +248,97 @@ sidebar-nod:
 		background-commandbar: 599, 461, 425, 51
 
 sidebar-button-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 119, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-nod-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 150, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-nod-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 181, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-nod-highlighted:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 212, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-nod-highlighted-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 243, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-nod-highlighted-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 274, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 sidebar-button-nod-highlighted-disabled:
-	Image: chrome.png
-	PanelRegion: 747, 305, 0, 0, 30, 31, 0, 0
-	PanelSides: Center
+	Inherits: sidebar-button-nod-disabled
 sidebar-button-nod-disabled:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 747, 305, 0, 0, 30, 31, 0, 0
 	PanelSides: Center
 
 scrollup-buttons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 512, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-nod-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 546, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-nod-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 580, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-nod-highlighted:
-	Image: chrome.png
-	PanelRegion: 546, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrollup-buttons-nod-hover
 scrollup-buttons-nod-highlighted-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 546, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-buttons-nod-highlighted-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 580, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrollup-button-nod-highlighted-disabled:
-	Image: chrome.png
-	PanelRegion: 512, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrollup-buttons-nod-disabled
 scrollup-buttons-nod-disabled:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 512, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 
 scrolldown-buttons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 614, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-nod-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 648, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-nod-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 682, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 scrolldown-buttons-nod-highlighted:
-	Image: chrome.png
-	PanelRegion: 648, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrolldown-buttons-nod-hover
 scrolldown-buttons-nod-highlighted-hover:
-	Image: chrome.png
-	PanelRegion: 648, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrolldown-buttons-nod-hover
 scrolldown-buttons-nod-highlighted-pressed:
-	Image: chrome.png
-	PanelRegion: 682, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrolldown-buttons-nod-pressed
 scrolldown-button-nod-highlighted-disabled:
-	Image: chrome.png
-	PanelRegion: 614, 338, 0, 0, 34, 27, 0, 0
-	PanelSides: Center
+	Inherits: scrolldown-buttons-nod-disabled
 scrolldown-buttons-nod-disabled:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 614, 338, 0, 0, 34, 27, 0, 0
 	PanelSides: Center
 
 radar-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		insignia: 747, 0, 164, 119
 
 production-icons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		building: 928, 0, 16, 16
 		building-disabled: 944, 0, 16, 16
@@ -371,7 +357,7 @@ production-icons-nod:
 		air-alert: 960, 64, 16, 16
 
 order-icons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		debug: 777, 119, 30, 31
 		debug-disabled: 807, 119, 30, 31
@@ -396,19 +382,19 @@ order-icons-nod:
 		diplomacy-active: 777, 305, 30, 31
 
 power-icons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		power-normal: 992, 160, 16, 16
 		power-critical: 1008, 160, 16, 16
 
 cash-icons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		cash-normal: 992, 144, 16, 16
 		cash-critical: 1008, 144, 16, 16
 
 command-icons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		attack-move: 816, 331, 26, 26
 		attack-move-disabled: 816, 357, 26, 26
@@ -452,7 +438,7 @@ command-icons-nod:
 		queue-orders-active-hover: 998, 435, 26, 26
 
 stance-icons-nod:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		attack-anything: 936, 176, 22, 22
 		attack-anything-disabled: 936, 198, 22, 22
@@ -481,14 +467,14 @@ stance-icons-nod:
 
 # make this paragraph AddFactionSuffixLogic compatible
 sidebar-bits:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		production-tooltip-time: 464, 128, 16, 16
 		production-tooltip-power: 480, 160, 16, 16
 		production-tooltip-cost: 480, 144, 16, 16
 
 scrollbar:
-	Image: buttons.png
+	Inherits: ^Buttons
 	Regions:
 		down_arrow: 16, 140, 16, 16
 		down_pressed: 16, 140, 16, 16
@@ -496,7 +482,7 @@ scrollbar:
 		up_pressed: 32, 140, 16, 16
 
 flags:
-	Image: buttons.png
+	Inherits: ^Buttons
 	Regions:
 		gdi: 30, 112, 30, 15
 		nod: 0, 112, 30, 15
@@ -504,7 +490,7 @@ flags:
 		spectator: 60, 112, 30, 15
 
 lobby-bits:
-	Image: buttons.png
+	Inherits: ^Buttons
 	Regions:
 		spawn-unclaimed: 159, 5, 23, 22
 		spawn-claimed: 127, 5, 23, 22
@@ -521,7 +507,7 @@ lobby-bits:
 		player-anonymous: 240, 16, 16, 16
 
 reload-icon:
-	Image: dialog.png
+	Inherits: ^Dialog
 	Regions:
 		enabled: 160, 480, 16, 16
 		disabled-0: 176, 480, 16, 16
@@ -538,7 +524,7 @@ reload-icon:
 		disabled-11: 352, 480, 16, 16
 
 strategic:
-	Image: buttons.png
+	Inherits: ^Buttons
 	Regions:
 		unowned: 127, 5, 23, 22
 		critical_unowned: 127, 27, 23, 22
@@ -546,7 +532,7 @@ strategic:
 		player_owned: 159, 49, 23, 22
 
 music:
-	Image: buttons.png
+	Inherits: ^Buttons
 	Regions:
 		pause: 0, 193, 25, 25
 		stop: 25, 193, 25, 25
@@ -562,7 +548,7 @@ music:
 
 # Used for the menu
 dialog:
-	Image: dialog.png
+	Inherits: ^Dialog
 	Regions:
 		background: 0, 0, 480, 480
 		border-r: 483, 0, 9, 153
@@ -574,193 +560,124 @@ dialog:
 		corner-bl: 437, 481, 21, 21
 		corner-br: 459, 481, 21, 21
 
-# Same as a normal button
 dialog2:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
-# Same as a pressed button
 dialog3:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
 # Same as the half transparent frame used in the Asset Browser
 dialog4:
-	Image: dialog.png
-	Regions:
-		background: 517, 392, 54, 54
-		border-t: 517, 387, 54, 6
-		border-b: 517, 446, 54, 6
-		border-l: 512, 392, 6, 54
-		border-r: 571, 392, 6, 54
-		corner-tl: 512, 387, 6, 6
-		corner-tr: 571, 387, 6, 6
-		corner-bl: 512, 446, 6, 6
-		corner-br: 571, 446, 6, 6
+	Inherits: ^Dialog
+	PanelRegion: 512, 387, 6, 6, 52, 52, 6, 6
 
-tooltip-separator:
-	Image: dialog.png
-	Regions:
-		border-t: 517, 387, 54, 1
-
-# A copy of dialog3 (pressed button)
 progressbar-bg:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog2 (normal button)
 progressbar-thumb:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
-# A copy of dialog2 (normal button)
 button:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
 
-# 5% lighter than a normal button (mouseover)
 button-hover:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 512, 128, 1, 1, 126, 126, 1, 1
 
-# A copy of dialog3 (pressed button)
 button-pressed:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
 
-# 10% darker than a normal button
 button-disabled:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 512, 256, 1, 1, 126, 126, 1, 1
 
-# 10% darker than a normal button - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 768, 128, 1, 1, 126, 126, 1, 1
 
-# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted-hover:
-	Image: dialog.png
-	PanelRegion: 768, 128, 1, 1, 126, 126, 1, 1
+	Inherits: button-highlighted
 
-#  Used in Settings when you select Display Audio Input or Advanced
 button-highlighted-pressed:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 896, 128, 1, 1, 126, 126, 1, 1
 
-# A copy of button-highlighted - Used in Settings when you select Display Audio Input or Advanced
 button-highlighted-disabled:
-	Image: dialog.png
-	PanelRegion: 768, 128, 1, 1, 126, 126, 1, 1
+	Inherits: button-highlighted
 
-# vivid color - Used for the Battlefields News button
 newsbutton:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
 newsbutton-hover:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
 newsbutton-highlighted:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 768, 0, 1, 1, 126, 126, 1, 1
 
 newsbutton-highlighted-hover:
-	Image: dialog.png
-	PanelRegion: 768, 0, 1, 1, 126, 126, 1, 1
+	Inherits: newsbutton-highlighted
 
 newsbutton-highlighted-pressed:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
 newsbutton-pressed:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog3 (pressed button)
 textfield:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of checkbox-hover
 textfield-hover:
-	Image: dialog.png
-	PanelRegion: 640, 128, 1, 1, 126, 126, 1, 1
+	Inherits: checkbox-hover
 
-# A copy of dialog3 (pressed button)
 textfield-disabled:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog3 (pressed button)
 textfield-focused:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog3 (pressed button)
 scrollpanel-bg:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog2 (normal button)
 scrollpanel-button:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
-# A copy of button-hover
 scrollpanel-button-hover:
-	Image: dialog.png
-	PanelRegion: 512, 128, 1, 1, 126, 126, 1, 1
+	Inherits: button-hover
 
-# A copy of dialog3 (pressed button)
 scrollpanel-button-pressed:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog2 (normal button)
 scrollpanel-button-disabled:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
 slider:
-	Image: dialog.png
+	Inherits: ^Dialog
 	Regions:
 		tick: 512, 1, 1, 4
 
-# A copy of dialog3 (pressed button)
 slider-track:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
-	Regions:
-		
+	Inherits: button-pressed
 
 slider-thumb:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
-# A copy of button-hover
 slider-thumb-hover:
-	Image: dialog.png
-	PanelRegion: 512, 128, 1, 1, 126, 126, 1, 1
+	Inherits: button-hover
 
-# A copy of dialog3 (pressed button)
 slider-thumb-pressed:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog2 (normal button)
 slider-thumb-disabled:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
-# A copy of dialog3 (pressed button)
 checkbox:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
 checkbox-bits:
-	Image: buttons.png
+	Inherits: ^Buttons
 	Regions:
 		checked: 0, 157, 16, 16
 		checked-disabled: 0, 173, 16, 16
@@ -768,57 +685,48 @@ checkbox-bits:
 		crossed-disabled: 16, 173, 16, 16
 
 checkbox-hover:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 640, 128, 1, 1, 126, 126, 1, 1
 
-# Same as a button-disabled-pressed
 checkbox-disabled:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 640, 256, 1, 1, 126, 126, 1, 1
 
-# Same as a button-highlighted-pressed
 checkbox-highlighted:
-	Image: dialog.png
+	Inherits: ^Dialog
 	PanelRegion: 896, 0, 1, 1, 126, 126, 1, 1
 
-# A copy of dialog3 (pressed button)
 scrollitem-selected:
-	Image: dialog.png
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button-pressed
 
-# A copy of dialog2 (normal button)
 scrollitem-hover:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
 scrollitem-nohover:
-	Image: dialog.png
+	Inherits: ^Dialog
 
-# A copy of dialog2 (normal button)
 scrollheader-selected:
-	Image: dialog.png
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	Inherits: button
 
 logos:
-	Image: loadscreen.png
+	Inherits: ^LoadScreen
 	Regions:
 		logo: 0, 0, 256, 256
 
 mainmenu-border:
-	Image: dialog.png
-	PanelRegion: 648, 387, 40, 40, 40, 40, 40, 40
+	Inherits: ^Dialog
 
 dropdown:
-	Image: dialog.png
+	Inherits: ^Dialog
 	Regions:
 		separator: 512, 1, 1, 19
 
 logos:
-	Image: loadscreen.png
+	Inherits: ^LoadScreen
 	Regions:
 		logo: 0, 0, 256, 256
 
 loadscreen-stripe:
-	Image: loadscreen.png
+	Inherits: ^LoadScreen
 	PanelRegion: 256, 0, 0, 0, 256, 256, 0, 0
 	PanelSides: Center
