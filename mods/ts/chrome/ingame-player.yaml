@@ -491,6 +491,7 @@ Container@PLAYER_WIDGETS:
 					MaximumRows: 6
 					HotkeyPrefix: Production
 					HotkeyCount: 24
+					SelectProductionBuildingHotkey: SelectProductionBuilding
 				Container@PRODUCTION_TYPES:
 					X: 0
 					Y: 0 - 32

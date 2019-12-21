@@ -2,6 +2,10 @@ CycleProductionBuildings: TAB
 	Description: Next facility
 	Types: Production, Player, Spectator
 
+SelectProductionBuilding:
+	Description: Current facility
+	Types: Production, Player
+
 Production01: F1
 	Description: Slot 01
 	Types: ProductionSlot, Player

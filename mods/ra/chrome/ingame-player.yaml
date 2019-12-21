@@ -448,6 +448,7 @@ Container@PLAYER_WIDGETS:
 					IconSpriteOffset: -1, -1
 					HotkeyPrefix: Production
 					HotkeyCount: 24
+					SelectProductionBuildingHotkey: SelectProductionBuilding
 				Container@PALETTE_FOREGROUND:
 					Children:
 						Image@ROW_TEMPLATE:

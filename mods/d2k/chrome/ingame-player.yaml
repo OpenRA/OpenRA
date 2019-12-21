@@ -492,6 +492,7 @@ Container@PLAYER_WIDGETS:
 					MaximumRows: 6
 					HotkeyPrefix: Production
 					HotkeyCount: 24
+					SelectProductionBuildingHotkey: SelectProductionBuilding
 					ClickSound: TabClick
 				Container@PRODUCTION_TYPES:
 					X: 6

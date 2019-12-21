@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 		// Note: LinterHotkeyNames assumes that these are disabled by default
 		public readonly string HotkeyPrefix = null;
 		public readonly int HotkeyCount = 0;
+		public readonly HotkeyReference SelectProductionBuildingHotkey = new HotkeyReference();
 
 		public readonly string ClockAnimation = "clock";
 		public readonly string ClockSequence = "idle";
@@ -367,12 +368,37 @@ namespace OpenRA.Mods.Common.Widgets
 			if (e.Event == KeyInputEvent.Up || CurrentQueue == null)
 				return false;
 
+			if (SelectProductionBuildingHotkey.IsActivatedBy(e))
+				return SelectProductionBuilding();
+
 			var batchModifiers = e.Modifiers.HasModifier(Modifiers.Shift) ? Modifiers.Shift : Modifiers.None;
 
 			// HACK: enable production if the shift key is pressed
 			e.Modifiers &= ~Modifiers.Shift;
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
 			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
+		}
+
+		bool SelectProductionBuilding()
+		{
+			var viewport = worldRenderer.Viewport;
+			var selection = World.Selection;
+
+			if (CurrentQueue == null)
+				return true;
+
+			var facility = CurrentQueue.MostLikelyProducer().Actor;
+
+			if (facility == null)
+				return true;
+
+			if (selection.Actors.Count() == 1 && selection.Contains(facility))
+				viewport.Center(selection.Actors);
+			else
+				selection.Combine(World, new[] { facility }, false, true);
+
+			Game.Sound.PlayNotification(World.Map.Rules, null, "Sounds", ClickSound, null);
+			return true;
 		}
 
 		public void RefreshIcons()
