@@ -1,106 +1,84 @@
-panel-header:
+^Chrome:
 	Image: chrome.png
+
+panel-header:
+	Inherits: ^Chrome
 	PanelRegion: 0, 512, 3, 3, 58, 58, 3, 3
 
 panel-bg:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 64, 512, 3, 3, 58, 58, 3, 3
 
 panel-thinborder:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 1, 513, 2, 2, 58, 58, 2, 2
 
 panel-thinborder-light:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 641, 513, 2, 2, 58, 58, 2, 2
 
 button:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 128, 512, 10, 10, 44, 44, 10, 10
 
 button-hover:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 192, 512, 10, 10, 44, 44, 10, 10
 
 button-disabled:
 	Inherits: button
-	Image: chrome.png
 
 button-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 320, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 256, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted-hover:
 	Inherits: button-pressed
-	Image: chrome.png
 
 button-highlighted-pressed:
 	Inherits: button-pressed
-	Image: chrome.png
 
 button-highlighted-disabled:
 	Inherits: button-highlighted
-	Image: chrome.png
 
 button-highlighted-thin:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 512, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted-thin-hover:
 	Inherits: button-highlighted-thin-pressed
-	Image: chrome.png
 
 button-highlighted-thin-pressed:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 576, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted-thin-disabled:
 	Inherits: button-highlighted-thin
-	Image: chrome.png
-
 
 progressbar-bg:
-	Image: chrome.png
-	Regions:
-		background: 453, 565, 56, 6
-		border-r: 507, 565, 5, 6
-		border-l: 448, 565, 5, 6
-		border-b: 453, 571, 54, 5
-		border-t: 453, 560, 54, 5
-		corner-tl: 448, 560, 5, 5
-		corner-tr: 507, 560, 5, 5
-		corner-bl: 448, 571, 5, 5
-		corner-br: 507, 571, 5, 5
+	Inherits: ^Chrome
+	PanelRegion: 448, 560, 6, 6, 52, 4, 6, 6
 
 progressbar-thumb:
-	Image: chrome.png
-	Regions:
-		background: 453, 549, 56, 6
-		border-r: 507, 549, 5, 6
-		border-l: 448, 549, 5, 6
-		border-b: 453, 555, 54, 5
-		border-t: 453, 544, 54, 5
-		corner-tl: 448, 544, 5, 5
-		corner-tr: 507, 544, 5, 5
-		corner-bl: 448, 555, 5, 5
-		corner-br: 507, 555, 5, 5
+	Inherits: ^Chrome
+	PanelRegion: 448, 544, 6, 6, 52, 4, 6, 6
 
 panel-rule:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		border-t: 64, 512, 64, 2
 
 background:
-	Image: chrome.png
+	Inherits: ^Chrome
 	PanelRegion: 0, 0, 0, 0, 1024, 480, 0, 0
 	PanelSides: Center
 
 modcontent:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		logo: 0, 576, 280, 128
 		leftarrow: 384, 512, 20, 64
@@ -109,26 +87,21 @@ modcontent:
 
 scrollpanel-bg:
 	Inherits: panel-thinborder
-	Image: chrome.png
 
 scrollpanel-button:
 	Inherits: panel-thinborder
-	Image: chrome.png
 
 scrollpanel-button-hover:
 	Inherits: panel-thinborder-light
-	Image: chrome.png
 
 scrollpanel-button-disabled:
 	Inherits: panel-thinborder
-	Image: chrome.png
 
 scrollpanel-button-pressed:
 	Inherits: panel-thinborder-light
-	Image: chrome.png
 
 scrollbar:
-	Image: chrome.png
+	Inherits: ^Chrome
 	Regions:
 		down_arrow: 480, 512, 16, 16
 		down_pressed: 480, 512, 16, 16
