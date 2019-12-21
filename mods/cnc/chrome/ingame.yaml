@@ -1798,6 +1798,7 @@ Container@PLAYER_WIDGETS:
 			HoldText: On Hold
 			HotkeyPrefix: Production
 			HotkeyCount: 24
+			SelectProductionBuildingHotkey: SelectProductionBuilding
 		ProductionTabs@PRODUCTION_TABS:
 			Logic: AddFactionSuffixLogic, ProductionTabsLogic
 			PaletteWidget: PRODUCTION_PALETTE
