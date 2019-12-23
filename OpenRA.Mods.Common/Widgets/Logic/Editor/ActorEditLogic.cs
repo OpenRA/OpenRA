@@ -426,6 +426,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public bool IsDirty { get; private set; }
+		public bool ShouldDoOnSave { get { return false; } }
 	}
 
 	public interface IEditActorHandle
@@ -433,6 +434,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void Do(EditorActorPreview actor);
 		void Undo(EditorActorPreview actor);
 		bool IsDirty { get; }
+		bool ShouldDoOnSave { get; }
 	}
 
 	class EditActorEditorAction : IEditorAction
@@ -455,6 +457,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void Execute()
 		{
+			foreach (var editorActionHandle in handles.Where(h => h.ShouldDoOnSave))
+				editorActionHandle.Do(actor);
 		}
 
 		public void Do()
@@ -538,5 +542,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public bool IsDirty { get; private set; }
+		public bool ShouldDoOnSave { get { return true; } }
 	}
 }
