@@ -163,9 +163,6 @@ namespace OpenRA
 		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
 
-		[Desc("Disable high resolution DPI scaling on Windows operating systems.")]
-		public bool DisableWindowsDPIScaling = true;
-
 		[Desc("Disable separate OpenGL render thread on Windows operating systems.")]
 		public bool DisableWindowsRenderThread = true;
 
