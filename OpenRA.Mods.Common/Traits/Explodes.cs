@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Cast to long to avoid overflow when multiplying by the health
 			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
-				self.World.AddFrameEndTask(w => self.Kill(source));
+				self.World.AddFrameEndTask(w => self.Kill(source, e.Damage.DamageTypes));
 		}
 	}
 }
