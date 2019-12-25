@@ -74,8 +74,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			Game.Renderer.EnableAntialiasingFilter();
 			foreach (var r in renderables)
 				r.Render(worldRenderer);
+			Game.Renderer.DisableAntialiasingFilter();
 		}
 
 		public override void Tick()
