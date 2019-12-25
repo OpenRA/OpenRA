@@ -153,6 +153,8 @@ Hotkeys:
 
 LoadScreen: CncLoadScreen
 	Image: cnc|uibits/chrome.png
+	Image2x: cnc|uibits/chrome-2x.png
+	Image3x: cnc|uibits/chrome-3x.png
 	Text: Loading
 
 ServerTraits:

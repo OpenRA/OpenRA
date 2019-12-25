@@ -110,6 +110,8 @@ namespace OpenRA
 			{
 				Game.RunAfterTick(() =>
 				{
+					ChromeProvider.SetDPIScale(after);
+
 					foreach (var f in Fonts)
 						f.Value.SetScale(after);
 				});

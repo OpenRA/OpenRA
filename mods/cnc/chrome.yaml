@@ -1,5 +1,7 @@
 ^Chrome:
 	Image: chrome.png
+	Image2x: chrome-2x.png
+	Image3x: chrome-3x.png
 
 logos:
 	Inherits: ^Chrome
