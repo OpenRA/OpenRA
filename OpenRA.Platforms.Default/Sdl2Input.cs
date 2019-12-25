@@ -44,8 +44,19 @@ namespace OpenRA.Platforms.Default
 		{
 			// On Windows and Linux (X11) events are given in surface coordinates
 			// These must be scaled to our effective window coordinates
-			if (Platform.CurrentPlatform != PlatformType.OSX && device.WindowSize != device.SurfaceSize)
-				return new int2((int)(x / device.WindowScale), (int)(y / device.WindowScale));
+			// Round fractional components up to avoid rounding small deltas to 0
+			if (Platform.CurrentPlatform != PlatformType.OSX && device.EffectiveWindowSize != device.SurfaceSize)
+			{
+				var s = 1 / device.EffectiveWindowScale;
+				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
+			}
+
+			// On macOS we must still account for the user-requested scale modifier
+			if (Platform.CurrentPlatform == PlatformType.OSX && device.EffectiveWindowScale != device.NativeWindowScale)
+			{
+				var s = device.NativeWindowScale / device.EffectiveWindowScale;
+				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
+			}
 
 			return new int2(x, y);
 		}

@@ -156,6 +156,7 @@ namespace OpenRA
 
 		public bool CursorDouble = false;
 		public WorldViewport ViewportDistance = WorldViewport.Medium;
+		public float UIScale = 1;
 
 		[Desc("Add a frame rate limiter.")]
 		public bool CapFramerate = false;

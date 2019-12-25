@@ -66,7 +66,7 @@ namespace OpenRA
 			this.platform = platform;
 			var resolution = GetResolution(graphicSettings);
 
-			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.BatchSize);
+			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height), graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize);
 			Context = Window.Context;
 
 			TempBufferSize = graphicSettings.BatchSize;
@@ -103,17 +103,17 @@ namespace OpenRA
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
 				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
 					x => new SpriteFont(x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
-										x.Value.Size, x.Value.Ascender, Window.WindowScale, fontSheetBuilder)).AsReadOnly();
+										x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder)).AsReadOnly();
 			}
 
-			Window.OnWindowScaleChanged += (before, after) =>
+			Window.OnWindowScaleChanged += (oldNative, oldEffective, newNative, newEffective) =>
 			{
 				Game.RunAfterTick(() =>
 				{
-					ChromeProvider.SetDPIScale(after);
+					ChromeProvider.SetDPIScale(newEffective);
 
 					foreach (var f in Fonts)
-						f.Value.SetScale(after);
+						f.Value.SetScale(newEffective);
 				});
 			};
 		}
@@ -159,7 +159,7 @@ namespace OpenRA
 			// but to have a higher resolution backing surface with more than 1 texture pixel per viewport pixel.
 			// We must convert the surface buffer size to a viewport size - in general this is NOT just the window size
 			// rounded to the next power of two, as the NextPowerOf2 calculation is done in the surface pixel coordinates
-			var scale = Window.WindowScale;
+			var scale = Window.EffectiveWindowScale;
 			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
 			if (lastBufferSize != bufferSize)
 			{
@@ -220,7 +220,7 @@ namespace OpenRA
 				// Render the world buffer into the UI buffer
 				screenBuffer.Bind();
 
-				var scale = Window.WindowScale;
+				var scale = Window.EffectiveWindowScale;
 				var bufferSize = new Size((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
 
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
@@ -292,8 +292,10 @@ namespace OpenRA
 			CurrentBatchRenderer = null;
 		}
 
-		public Size Resolution { get { return Window.WindowSize; } }
-		public float WindowScale { get { return Window.WindowScale; } }
+		public Size Resolution { get { return Window.EffectiveWindowSize; } }
+		public Size NativeResolution { get { return Window.NativeWindowSize; } }
+		public float WindowScale { get { return Window.EffectiveWindowScale; } }
+		public float NativeWindowScale { get { return Window.NativeWindowScale; } }
 
 		public interface IBatchRenderer { void Flush(); }
 
@@ -385,7 +387,7 @@ namespace OpenRA
 				throw new InvalidOperationException("EndFrame called with renderType = {0}, expected RenderType.UI.".F(renderType));
 
 			Flush();
-			SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.WindowScale);
+			SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.EffectiveWindowScale);
 		}
 
 		public void DisableAntialiasingFilter()

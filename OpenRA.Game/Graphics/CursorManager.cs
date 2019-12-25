@@ -193,14 +193,13 @@ namespace OpenRA.Graphics
 
 			// Cursor is rendered in native window coordinates
 			// Apply same scaling rules as hardware cursors
-			var ws = Game.Renderer.WindowScale;
-			if (ws > 1.5f)
+			if (Game.Renderer.NativeWindowScale > 1.5f)
 				cursorSize = 2 * cursorSize;
 
 			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
 			renderer.RgbaSpriteRenderer.DrawSprite(cursorSprite,
 				mousePos,
-				cursorSize / ws);
+				cursorSize / Game.Renderer.WindowScale);
 		}
 
 		public void Lock()
