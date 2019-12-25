@@ -81,10 +81,31 @@ vec4 Sample(float samplerIndex, vec2 pos)
 	return texture(Texture6, pos);
 }
 
+vec4 SamplePalettedBilinear(float samplerIndex, vec2 coords, vec2 textureSize)
+{
+	vec2 texPos = (coords * textureSize) - vec2(0.5);
+	vec2 interp = fract(texPos);
+	vec2 tl = (floor(texPos) + vec2(0.5)) / textureSize;
+	vec2 px = 1.0 / textureSize;
+
+	vec4 x1 = Sample(samplerIndex, tl);
+	vec4 x2 = Sample(samplerIndex, tl + vec2(px.x, 0.));
+	vec4 x3 = Sample(samplerIndex, tl + vec2(0., px.y));
+	vec4 x4 = Sample(samplerIndex, tl + px);
+
+	vec4 c1 = texture(Palette, vec2(dot(x1, vChannelMask), vTexMetadata.s));
+	vec4 c2 = texture(Palette, vec2(dot(x2, vChannelMask), vTexMetadata.s));
+	vec4 c3 = texture(Palette, vec2(dot(x3, vChannelMask), vTexMetadata.s));
+	vec4 c4 = texture(Palette, vec2(dot(x4, vChannelMask), vTexMetadata.s));
+
+	return mix(mix(c1, c2, interp.x), mix(c3, c4, interp.x), interp.y);
+}
+
 void main()
 {
 	vec2 coords = vTexCoord.st;
 
+	vec4 c;
 	if (AntialiasPixelsPerTexel > 0.0)
 	{
 		vec2 textureSize = vec2(Size(vTexSampler.s));
@@ -97,11 +118,17 @@ void main()
 		float ik = 1.43;
 		vec2 interp = clamp(offset * ik * AntialiasPixelsPerTexel, 0.0, .5) + clamp((offset - 1.0) * ik * AntialiasPixelsPerTexel + .5, 0.0, .5);
 		coords = (floor(coords.st * textureSize) + interp) / textureSize;
+
+		if (vPalettedFraction.x > 0.0)
+			c = SamplePalettedBilinear(vTexSampler.s, coords, textureSize);
 	}
 
-	vec4 x = Sample(vTexSampler.s, coords);
-	vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
-	vec4 c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
+	if (!(AntialiasPixelsPerTexel > 0.0 && vPalettedFraction.x > 0.0))
+	{
+		vec4 x = Sample(vTexSampler.s, coords);
+		vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
+		c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
+	}
 
 	// Discard any transparent fragments (both color and depth)
 	if (c.a == 0.0)
