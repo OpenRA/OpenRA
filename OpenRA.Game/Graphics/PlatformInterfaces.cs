@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public interface IPlatform
 	{
-		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, int batchSize);
+		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize);
 		ISoundEngine CreateSound(string device);
 		IFont CreateFont(byte[] data);
 	}
@@ -39,11 +39,13 @@ namespace OpenRA
 	{
 		IGraphicsContext Context { get; }
 
-		Size WindowSize { get; }
-		float WindowScale { get; }
+		Size NativeWindowSize { get; }
+		Size EffectiveWindowSize { get; }
+		float NativeWindowScale { get; }
+		float EffectiveWindowScale { get; }
 		Size SurfaceSize { get; }
 
-		event Action<float, float> OnWindowScaleChanged;
+		event Action<float, float, float, float> OnWindowScaleChanged;
 
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();

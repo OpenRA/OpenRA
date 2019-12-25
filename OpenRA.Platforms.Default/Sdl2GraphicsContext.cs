@@ -98,8 +98,8 @@ namespace OpenRA.Platforms.Default
 			if (height < 0)
 				height = 0;
 
-			var windowSize = window.WindowSize;
-			var windowScale = window.WindowScale;
+			var windowSize = window.EffectiveWindowSize;
+			var windowScale = window.EffectiveWindowScale;
 			var surfaceSize = window.SurfaceSize;
 
 			if (windowSize != surfaceSize)

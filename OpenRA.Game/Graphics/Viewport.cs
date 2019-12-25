@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 			private set
 			{
 				zoom = value;
-				viewportSize = (1f / zoom * new float2(Game.Renderer.Resolution)).ToInt2();
+				viewportSize = (1f / zoom * new float2(Game.Renderer.NativeResolution)).ToInt2();
 				cellsDirty = true;
 				allCellsDirty = true;
 			}
@@ -181,7 +181,7 @@ namespace OpenRA.Graphics
 
 		float CalculateMinimumZoom(float minHeight, float maxHeight)
 		{
-			var h = Game.Renderer.Resolution.Height;
+			var h = Game.Renderer.NativeResolution.Height;
 
 			// Check the easy case: the native resolution is within the maximum limit
 			// Also catches the case where the user may force a resolution smaller than the minimum window size
@@ -222,7 +222,7 @@ namespace OpenRA.Graphics
 				minZoom = CalculateMinimumZoom(range.X, range.Y);
 			}
 
-			maxZoom = Math.Min(minZoom * viewportSizes.MaxZoomScale, Game.Renderer.Resolution.Height * 1f / viewportSizes.MaxZoomWindowHeight);
+			maxZoom = Math.Min(minZoom * viewportSizes.MaxZoomScale, Game.Renderer.NativeResolution.Height * 1f / viewportSizes.MaxZoomWindowHeight);
 
 			if (unlockMinZoom)
 			{
@@ -304,9 +304,9 @@ namespace OpenRA.Graphics
 					yield return new MPos(u, v);
 		}
 
-		public int2 ViewToWorldPx(int2 view) { return (1f / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
-		public int2 WorldToViewPx(int2 world) { return (Zoom * (world - TopLeft).ToFloat2()).ToInt2(); }
-		public int2 WorldToViewPx(float3 world) { return (Zoom * (world - TopLeft).XY).ToInt2(); }
+		public int2 ViewToWorldPx(int2 view) { return (graphicSettings.UIScale / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
+		public int2 WorldToViewPx(int2 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).ToFloat2()).ToInt2(); }
+		public int2 WorldToViewPx(float3 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).XY).ToInt2(); }
 
 		public void Center(IEnumerable<Actor> actors)
 		{

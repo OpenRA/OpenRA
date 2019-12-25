@@ -841,7 +841,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
-			var windowHeight = Game.Renderer.Resolution.Height;
+			var windowHeight = Game.Renderer.NativeResolution.Height;
 
 			var validSizes = new List<WorldViewport>() { WorldViewport.Close };
 			if (viewportSizes.GetSizeRange(WorldViewport.Medium).X < windowHeight)

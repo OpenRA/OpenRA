@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool newsOpen;
 
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 3;
+		const int SystemInformationVersion = 4;
 		Dictionary<string, Pair<string, string>> GetSystemInformation()
 		{
 			var lang = System.Globalization.CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
@@ -57,8 +57,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "x64process", Pair.New("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
 				{ "runtime", Pair.New(".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", Pair.New("OpenGL Version", Game.Renderer.GLVersion) },
-				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)) },
-				{ "windowscale", Pair.New("Window Scale", Game.Renderer.WindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
+				{ "windowsize", Pair.New("Window Size", "{0}x{1}".F(Game.Renderer.NativeResolution.Width, Game.Renderer.NativeResolution.Height)) },
+				{ "windowscale", Pair.New("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
+				{ "uiscale", Pair.New("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "lang", Pair.New("System Language", lang) }
 			};
 		}
