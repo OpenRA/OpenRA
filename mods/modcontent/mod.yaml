@@ -28,6 +28,8 @@ Notifications:
 
 LoadScreen: ModContentLoadScreen
 	Image: ./mods/modcontent/chrome.png
+	Image2x: ./mods/modcontent/chrome-2x.png
+	Image3x: ./mods/modcontent/chrome-3x.png
 
 ChromeMetrics:
 	common|metrics.yaml

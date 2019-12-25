@@ -44,6 +44,9 @@ namespace OpenRA.Graphics
 		public class Collection
 		{
 			public readonly string Image = null;
+			public readonly string Image2x = null;
+			public readonly string Image3x = null;
+
 			public readonly int[] PanelRegion = null;
 			public readonly PanelSides PanelSides = PanelSides.All;
 			public readonly Dictionary<string, Rectangle> Regions = new Dictionary<string, Rectangle>();
@@ -54,18 +57,25 @@ namespace OpenRA.Graphics
 		static Dictionary<string, Sheet> cachedSheets;
 		static Dictionary<string, Dictionary<string, Sprite>> cachedSprites;
 		static Dictionary<string, Sprite[]> cachedPanelSprites;
+		static Dictionary<Collection, Sheet> cachedCollectionSheets;
 
 		static IReadOnlyFileSystem fileSystem;
+		static float dpiScale = 1;
 
 		public static void Initialize(ModData modData)
 		{
 			Deinitialize();
+
+			// Load higher resolution images if available on HiDPI displays
+			if (Game.Renderer != null)
+				dpiScale = Game.Renderer.WindowScale;
 
 			fileSystem = modData.DefaultFileSystem;
 			collections = new Dictionary<string, Collection>();
 			cachedSheets = new Dictionary<string, Sheet>();
 			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
 			cachedPanelSprites = new Dictionary<string, Sprite[]>();
+			cachedCollectionSheets = new Dictionary<Collection, Sheet>();
 
 			Collections = new ReadOnlyDictionary<string, Collection>(collections);
 
@@ -87,6 +97,7 @@ namespace OpenRA.Graphics
 			cachedSheets = null;
 			cachedSprites = null;
 			cachedPanelSprites = null;
+			cachedCollectionSheets = null;
 		}
 
 		static void LoadCollection(string name, MiniYaml yaml)
@@ -99,16 +110,42 @@ namespace OpenRA.Graphics
 
 		static Sheet SheetForCollection(Collection c)
 		{
-			// Cached sheet
 			Sheet sheet;
-			if (cachedSheets.ContainsKey(c.Image))
-				sheet = cachedSheets[c.Image];
-			else
-			{
-				using (var stream = fileSystem.Open(c.Image))
-					sheet = new Sheet(SheetType.BGRA, stream);
 
-				cachedSheets.Add(c.Image, sheet);
+			// Outer cache avoids recalculating image names
+			if (!cachedCollectionSheets.TryGetValue(c, out sheet))
+			{
+				string sheetImage;
+				float sheetScale;
+				if (dpiScale > 2 && !string.IsNullOrEmpty(c.Image3x))
+				{
+					sheetImage = c.Image3x;
+					sheetScale = 3;
+				}
+				else if (dpiScale > 1 && !string.IsNullOrEmpty(c.Image2x))
+				{
+					sheetImage = c.Image2x;
+					sheetScale = 2;
+				}
+				else
+				{
+					sheetImage = c.Image;
+					sheetScale = 1;
+				}
+
+				// Inner cache makes sure we share sheets between collections
+				if (!cachedSheets.TryGetValue(sheetImage, out sheet))
+				{
+					using (var stream = fileSystem.Open(sheetImage))
+						sheet = new Sheet(SheetType.BGRA, stream);
+
+					sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
+					sheet.DPIScale = sheetScale;
+
+					cachedSheets.Add(sheetImage, sheet);
+				}
+
+				cachedCollectionSheets.Add(c, sheet);
 			}
 
 			return sheet;
@@ -238,6 +275,24 @@ namespace OpenRA.Graphics
 
 			var pr = collection.PanelRegion;
 			return new Size(pr[2] + pr[6], pr[3] + pr[7]);
+		}
+
+		public static void SetDPIScale(float scale)
+		{
+			if (dpiScale == scale)
+				return;
+
+			dpiScale = scale;
+
+			// Clear the sprite caches so the new artwork can be loaded
+			// Sheets are not cleared: we assume that the extra memory overhead
+			// of having the same sheet in memory in multiple DPIs is better than
+			// the overhead of having to dispose and reload everything.
+			// Changing the DPI scale is rare, but if it does happen then there
+			// is a reasonable chance that it may happen again this session.
+			cachedSprites.Clear();
+			cachedPanelSprites.Clear();
+			cachedCollectionSheets.Clear();
 		}
 	}
 }

@@ -57,6 +57,7 @@ namespace OpenRA
 				if (!spriteCache.TryGetValue(icon24Node.Value.Value, out sprite))
 				{
 					sprite = spriteCache[icon24Node.Value.Value] = sheetBuilder.Allocate(new Size(24, 24));
+					sprite.Sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
 
 					Action<DownloadDataCompletedEventArgs> onComplete = i =>
 					{

@@ -139,6 +139,8 @@ Hotkeys:
 
 LoadScreen: LogoStripeLoadScreen
 	Image: d2k|uibits/loadscreen.png
+	Image2x: d2k|uibits/loadscreen-2x.png
+	Image3x: d2k|uibits/loadscreen-3x.png
 	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing thopters..., Summoning mentats...
 
 ServerTraits:

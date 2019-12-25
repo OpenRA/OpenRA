@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		Stopwatch lastUpdate;
 
 		protected Dictionary<string, string> Info { get; private set; }
+		float dpiScale = 1;
 		Sheet sheet;
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
@@ -40,9 +41,42 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (lastUpdate == null)
 				lastUpdate = Stopwatch.StartNew();
 
+			// Check for window DPI changes
+			// We can't trust notifications to be working during initialization, so must do this manually
+			var scale = Game.Renderer.WindowScale;
+			if (dpiScale != scale)
+			{
+				dpiScale = scale;
+
+				// Force images to be reloaded on the next display
+				if (sheet != null)
+					sheet.Dispose();
+
+				sheet = null;
+			}
+
 			if (sheet == null && Info.ContainsKey("Image"))
-				using (var stream = ModData.DefaultFileSystem.Open(Info["Image"]))
+			{
+				var key = "Image";
+				float sheetScale = 1;
+				if (dpiScale > 2 && Info.ContainsKey("Image3x"))
+				{
+					key = "Image3x";
+					sheetScale = 3;
+				}
+				else if (dpiScale > 1 && Info.ContainsKey("Image2x"))
+				{
+					key = "Image2x";
+					sheetScale = 2;
+				}
+
+				using (var stream = ModData.DefaultFileSystem.Open(Info[key]))
+				{
 					sheet = new Sheet(SheetType.BGRA, stream);
+					sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
+					sheet.DPIScale = sheetScale;
+				}
+			}
 
 			Game.Renderer.BeginUI();
 			DisplayInner(Game.Renderer, sheet);

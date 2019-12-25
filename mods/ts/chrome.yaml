@@ -9,6 +9,8 @@
 
 ^Glyphs:
 	Image: glyphs.png
+	Image2x: glyphs-2x.png
+	Image3x: glyphs-3x.png
 
 ^LoadScreen:
 	Image: loadscreen.png
