@@ -453,6 +453,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var pios = currentQueue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>();
 
 			// Icons
+			Game.Renderer.EnableAntialiasingFilter();
 			foreach (var icon in icons.Values)
 			{
 				WidgetUtils.DrawSHPCentered(icon.Sprite, icon.Pos + iconOffset, icon.Palette);
@@ -476,6 +477,8 @@ namespace OpenRA.Mods.Common.Widgets
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
 					WidgetUtils.DrawSHPCentered(cantBuild.Image, icon.Pos + iconOffset, icon.IconDarkenPalette);
 			}
+
+			Game.Renderer.DisableAntialiasingFilter();
 
 			// Overlays
 			foreach (var icon in icons.Values)

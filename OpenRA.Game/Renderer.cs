@@ -377,6 +377,24 @@ namespace OpenRA
 			Context.ClearDepthBuffer();
 		}
 
+		public void EnableAntialiasingFilter()
+		{
+			if (renderType != RenderType.UI)
+				throw new InvalidOperationException("EndFrame called with renderType = {0}, expected RenderType.UI.".F(renderType));
+
+			Flush();
+			SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.WindowScale);
+		}
+
+		public void DisableAntialiasingFilter()
+		{
+			if (renderType != RenderType.UI)
+				throw new InvalidOperationException("EndFrame called with renderType = {0}, expected RenderType.UI.".F(renderType));
+
+			Flush();
+			SpriteRenderer.SetAntialiasingPixelsPerTexel(0);
+		}
+
 		public void GrabWindowMouseFocus()
 		{
 			Window.GrabWindowMouseFocus();

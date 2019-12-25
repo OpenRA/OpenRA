@@ -198,6 +198,7 @@ namespace OpenRA.Mods.Common.Widgets
 			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, worldRenderer.World.Timestep)) / 2;
 
 			// Icons
+			Game.Renderer.EnableAntialiasingFilter();
 			foreach (var p in icons.Values)
 			{
 				WidgetUtils.DrawSHPCentered(p.Sprite, p.Pos + iconOffset, p.Palette);
@@ -211,6 +212,8 @@ namespace OpenRA.Mods.Common.Widgets
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, p.Pos + iconOffset, p.IconClockPalette);
 			}
+
+			Game.Renderer.DisableAntialiasingFilter();
 
 			// Overlay
 			foreach (var p in icons.Values)

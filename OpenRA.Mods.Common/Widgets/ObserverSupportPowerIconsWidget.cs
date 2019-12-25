@@ -115,6 +115,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Bounds.Width = powers.Count() * (IconWidth + IconSpacing);
 
+			Game.Renderer.EnableAntialiasingFilter();
+
 			var iconSize = new float2(IconWidth, IconHeight);
 			foreach (var power in powers)
 			{
@@ -125,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets
 				icon.Play(item.Info.Icon);
 				var location = new float2(RenderBounds.Location) + new float2(power.i * (IconWidth + IconSpacing), 0);
 
-				supportPowerIconsIcons.Add(new SupportPowersWidget.SupportPowerIcon { Power = item });
+				supportPowerIconsIcons.Add(new SupportPowersWidget.SupportPowerIcon { Power = item, Pos = location });
 				supportPowerIconsBounds.Add(new Rectangle((int)location.X, (int)location.Y, (int)iconSize.X, (int)iconSize.Y));
 
 				WidgetUtils.DrawSHPCentered(icon.Image, location + 0.5f * iconSize, worldRenderer.Palette(item.Info.IconPalette), 0.5f);
@@ -136,11 +138,16 @@ namespace OpenRA.Mods.Common.Widgets
 						* (clock.CurrentSequence.Length - 1) / item.TotalTicks));
 				clock.Tick();
 				WidgetUtils.DrawSHPCentered(clock.Image, location + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
+			}
 
-				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(item, timestep);
+			Game.Renderer.DisableAntialiasingFilter();
+
+			var tiny = Game.Renderer.Fonts["Tiny"];
+			foreach (var icon in supportPowerIconsIcons)
+			{
+				var text = GetOverlayForItem(icon.Power, timestep);
 				tiny.DrawTextWithContrast(text,
-					location + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
+					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
 			}
 		}

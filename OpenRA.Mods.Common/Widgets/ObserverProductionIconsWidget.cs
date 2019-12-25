@@ -116,10 +116,17 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Bounds.Width = currentItemsByItem.Count * (IconWidth + IconSpacing);
 
+			Game.Renderer.EnableAntialiasingFilter();
+
 			var queueCol = 0;
 			foreach (var currentItems in currentItemsByItem)
 			{
-				var current = currentItems.OrderBy(pi => pi.Done ? 0 : (pi.Paused ? 2 : 1)).ThenBy(q => q.RemainingTimeActual).First();
+				var queued = currentItems
+					.OrderBy(pi => pi.Done ? 0 : (pi.Paused ? 2 : 1))
+					.ThenBy(q => q.RemainingTimeActual)
+					.ToList();
+
+				var current = queued.First();
 				var queue = current.Queue;
 
 				var faction = queue.Actor.Owner.Faction.InternalName;
@@ -135,18 +142,26 @@ namespace OpenRA.Mods.Common.Widgets
 				var topLeftOffset = new float2(queueCol * (IconWidth + IconSpacing), 0);
 
 				var iconTopLeft = RenderOrigin + topLeftOffset;
-				var centerPosition = iconTopLeft;
+				var centerPosition = iconTopLeft + 0.5f * iconSize;
 
-				WidgetUtils.DrawSHPCentered(icon.Image, centerPosition + 0.5f * iconSize, worldRenderer.Palette(bi.IconPalette), 0.5f);
+				WidgetUtils.DrawSHPCentered(icon.Image, centerPosition, worldRenderer.Palette(bi.IconPalette), 0.5f);
 
-				productionIcons.Add(new ProductionIcon { Actor = actor, ProductionQueue = current.Queue });
-				productionIconsBounds.Add(new Rectangle((int)iconTopLeft.X, (int)iconTopLeft.Y, (int)iconSize.X, (int)iconSize.Y));
+				var rect = new Rectangle((int)iconTopLeft.X, (int)iconTopLeft.Y, (int)iconSize.X, (int)iconSize.Y);
+				productionIcons.Add(new ProductionIcon
+				{
+					Actor = actor,
+					Pos = new float2(rect.Location),
+					Queued = queued,
+					ProductionQueue = current.Queue
+				});
+
+				productionIconsBounds.Add(rect);
 
 				var pio = queue.Actor.Owner.PlayerActor.TraitsImplementing<IProductionIconOverlay>()
 					.FirstOrDefault(p => p.IsOverlayActive(actor));
 
 				if (pio != null)
-					WidgetUtils.DrawSHPCentered(pio.Sprite, centerPosition + 0.5f * iconSize + pio.Offset(iconSize),
+					WidgetUtils.DrawSHPCentered(pio.Sprite, centerPosition + pio.Offset(iconSize),
 						worldRenderer.Palette(pio.Palette), 0.5f);
 
 				var clock = clocks[queue];
@@ -154,23 +169,29 @@ namespace OpenRA.Mods.Common.Widgets
 					(current.TotalTime - current.RemainingTime) * (clock.CurrentSequence.Length - 1) / current.TotalTime);
 
 				clock.Tick();
-				WidgetUtils.DrawSHPCentered(clock.Image, centerPosition + 0.5f * iconSize, worldRenderer.Palette(ClockPalette), 0.5f);
-
-				var tiny = Game.Renderer.Fonts["Tiny"];
-				var text = GetOverlayForItem(current, timestep);
-				tiny.DrawTextWithContrast(text,
-					centerPosition + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
-					Color.White, Color.Black, 1);
-
-				if (currentItems.Count() > 1)
-				{
-					var bold = Game.Renderer.Fonts["Small"];
-					text = currentItems.Count().ToString();
-					bold.DrawTextWithContrast(text, centerPosition + new float2(16, 0) - new float2(bold.Measure(text).X / 2, 0),
-						Color.White, Color.Black, 1);
-				}
+				WidgetUtils.DrawSHPCentered(clock.Image, centerPosition, worldRenderer.Palette(ClockPalette), 0.5f);
 
 				queueCol++;
+			}
+
+			Game.Renderer.DisableAntialiasingFilter();
+
+			var tiny = Game.Renderer.Fonts["Tiny"];
+			var bold = Game.Renderer.Fonts["Small"];
+			foreach (var icon in productionIcons)
+			{
+				var current = icon.Queued.First();
+				var text = GetOverlayForItem(current, timestep);
+				tiny.DrawTextWithContrast(text,
+					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
+					Color.White, Color.Black, 1);
+
+				if (icon.Queued.Count > 1)
+				{
+					text = icon.Queued.Count.ToString();
+					bold.DrawTextWithContrast(text, icon.Pos + new float2(16, 0) - new float2(bold.Measure(text).X / 2, 0),
+						Color.White, Color.Black, 1);
+				}
 			}
 		}
 

@@ -78,7 +78,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var size = new float2(sprite.Size.X * scale, sprite.Size.Y * scale);
+			Game.Renderer.EnableAntialiasingFilter();
 			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin + offset, pr, size);
+			Game.Renderer.DisableAntialiasingFilter();
 		}
 	}
 }
