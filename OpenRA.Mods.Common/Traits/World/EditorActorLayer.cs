@@ -263,8 +263,16 @@ namespace OpenRA.Mods.Common.Traits
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (!previews.Any(p => p.Footprint[cell] == (SubCell)i))
+			{
+				var blocked = previews.Any(p =>
+				{
+					SubCell s;
+					return p.Footprint.TryGetValue(cell, out s) && s == (SubCell)i;
+				});
+
+				if (!blocked)
 					return (SubCell)i;
+			}
 
 			return SubCell.Invalid;
 		}
