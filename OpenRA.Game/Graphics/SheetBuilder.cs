@@ -36,6 +36,7 @@ namespace OpenRA.Graphics
 		public readonly SheetType Type;
 		readonly List<Sheet> sheets = new List<Sheet>();
 		readonly Func<Sheet> allocateSheet;
+		readonly int margin;
 
 		Sheet current;
 		TextureChannel channel;
@@ -60,16 +61,17 @@ namespace OpenRA.Graphics
 		public SheetBuilder(SheetType t)
 			: this(t, Game.Settings.Graphics.SheetSize) { }
 
-		public SheetBuilder(SheetType t, int sheetSize)
-			: this(t, () => AllocateSheet(t, sheetSize)) { }
+		public SheetBuilder(SheetType t, int sheetSize, int margin = 1)
+			: this(t, () => AllocateSheet(t, sheetSize), margin) { }
 
-		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
+		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet, int margin = 1)
 		{
 			channel = t == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 			Type = t;
 			current = allocateSheet();
 			sheets.Add(current);
 			this.allocateSheet = allocateSheet;
+			this.margin = margin;
 		}
 
 		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Size, 0, frame.Offset); }
@@ -115,16 +117,16 @@ namespace OpenRA.Graphics
 		public Sprite Allocate(Size imageSize) { return Allocate(imageSize, 0, float3.Zero); }
 		public Sprite Allocate(Size imageSize, float zRamp, float3 spriteOffset)
 		{
-			if (imageSize.Width + p.X > current.Size.Width)
+			if (imageSize.Width + p.X + margin > current.Size.Width)
 			{
-				p = new int2(0, p.Y + rowHeight);
+				p = new int2(0, p.Y + rowHeight + margin);
 				rowHeight = imageSize.Height;
 			}
 
 			if (imageSize.Height > rowHeight)
 				rowHeight = imageSize.Height;
 
-			if (p.Y + imageSize.Height > current.Size.Height)
+			if (p.Y + imageSize.Height + margin > current.Size.Height)
 			{
 				var next = NextChannel(channel);
 				if (next == null)
@@ -141,8 +143,8 @@ namespace OpenRA.Graphics
 				p = int2.Zero;
 			}
 
-			var rect = new Sprite(current, new Rectangle(p.X, p.Y, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha);
-			p += new int2(imageSize.Width, 0);
+			var rect = new Sprite(current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha);
+			p += new int2(imageSize.Width + margin, 0);
 
 			return rect;
 		}
