@@ -25,6 +25,8 @@ namespace OpenRA.Graphics
 		readonly Func<string, float> lineWidth;
 		readonly IFont font;
 		readonly Cache<Pair<char, Color>, GlyphInfo> glyphs;
+		readonly Cache<Tuple<char, Color, int>, Sprite> contrastGlyphs;
+		readonly Cache<int, float[]> dilationElements;
 
 		float deviceScale;
 
@@ -40,6 +42,8 @@ namespace OpenRA.Graphics
 			font = Game.Renderer.CreateFont(data);
 
 			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, Pair<char, Color>.EqualityComparer);
+			contrastGlyphs = new Cache<Tuple<char, Color, int>, Sprite>(CreateContrastGlyph);
+			dilationElements = new Cache<int, float[]>(CreateCircularWeightMap);
 
 			// PERF: Cache these delegates for Measure calls.
 			Func<char, float> characterWidth = character => glyphs[Pair.New(character, Color.White)].Advance;
@@ -55,6 +59,7 @@ namespace OpenRA.Graphics
 		{
 			deviceScale = scale;
 			glyphs.Clear();
+			contrastGlyphs.Clear();
 		}
 
 		void PrecacheColor(Color c, string name)
@@ -63,6 +68,38 @@ namespace OpenRA.Graphics
 				for (var n = (char)0x20; n < (char)0x7f; n++)
 					if (glyphs[Pair.New(n, c)] == null)
 						throw new InvalidOperationException();
+		}
+
+		void DrawTextContrast(string text, float2 location, Color contrastColor, int contrastOffset)
+		{
+			// Offset from the baseline position to the top-left of the glyph for rendering
+			location += new float2(0, size);
+
+			var screenContrast = (int)(contrastOffset * deviceScale);
+			var p = location;
+			foreach (var s in text)
+			{
+				if (s == '\n')
+				{
+					location += new float2(0, size);
+					p = location;
+					continue;
+				}
+
+				// Color of source glyph doesn't matter, so use black
+				var g = glyphs[Pair.New(s, Color.Black)];
+				if (g.Sprite != null)
+				{
+					var contrastSprite = contrastGlyphs[Tuple.Create(s, contrastColor, screenContrast)];
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(contrastSprite,
+						new float2(
+								(int)Math.Round(p.X * deviceScale + g.Offset.X - screenContrast, 0) / deviceScale,
+								p.Y + (g.Offset.Y - screenContrast) / deviceScale),
+						contrastSprite.Size / deviceScale);
+				}
+
+				p += new float2(g.Advance / deviceScale, 0);
+			}
 		}
 
 		public void DrawText(string text, float2 location, Color c)
@@ -141,12 +178,7 @@ namespace OpenRA.Graphics
 		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
 		{
 			if (offset > 0)
-			{
-				DrawText(text, location + new float2(-offset / deviceScale, 0), bg);
-				DrawText(text, location + new float2(offset / deviceScale, 0), bg);
-				DrawText(text, location + new float2(0, -offset / deviceScale), bg);
-				DrawText(text, location + new float2(0, offset / deviceScale), bg);
-			}
+				DrawTextContrast(text, location, bg, offset);
 
 			DrawText(text, location, fg);
 		}
@@ -237,6 +269,128 @@ namespace OpenRA.Graphics
 			s.Sheet.CommitBufferedData();
 
 			return g;
+		}
+
+		float[] CreateCircularWeightMap(int r)
+		{
+			// Create circular weight maps that are used by CreateContrastGlyph for
+			// both the structuring element and to weight the resulting pixel value.
+			// The output is a 2 * r + 1 square array giving the pixel intersection
+			// with a circle of radius (r + 0.5).
+			//
+			// Example output for r=1:
+			// 0.60 1.00 0.60
+			// 1.00 1.00 1.00
+			// 0.60 1.00 0.60
+			//
+			// Example output for r=3:
+			// 0.00 0.44 0.80 1.00 0.80 0.44 0.00
+			// 0.44 1.00 1.00 1.00 1.00 1.00 0.44
+			// 0.80 1.00 1.00 1.00 1.00 1.00 0.80
+			// 1.00 1.00 1.00 1.00 1.00 1.00 1.00
+			// 0.80 1.00 1.00 1.00 1.00 1.00 0.80
+			// 0.44 1.00 1.00 1.00 1.00 1.00 0.44
+			// 0.00 0.44 0.80 1.00 0.80 0.44 0.00
+			var stride = 2 * r + 1;
+			var elem = new float[stride * stride];
+
+			for (var j = 0; j <= 2 * r; j++)
+			{
+				for (var i = 0; i <= 2 * r; i++)
+				{
+					var di = i - r;
+					var dj = j - r;
+
+					// No intersection with circle
+					if (di * di + dj * dj > (r + 1) * (r + 1))
+						continue;
+
+					// Fully contained within circle
+					if (di * di + dj * dj < (r - 1) * (r - 1))
+					{
+						elem[j * stride + i] = 1;
+						continue;
+					}
+
+					// Approximate sub-pixel intersection using a 5x5 grid
+					for (var jj = 0; jj < 5; jj++)
+					{
+						for (var ii = 0; ii < 5; ii++)
+						{
+							var si = di - (float)Math.Sign(di) * ii / 5;
+							var sj = dj - (float)Math.Sign(dj) * jj / 5;
+							if (si * si + sj * sj <= r * r)
+								elem[j * stride + i] += 0.04f;
+						}
+					}
+				}
+			}
+
+			return elem;
+		}
+
+		Sprite CreateContrastGlyph(Tuple<char, Color, int> c)
+		{
+			// Source glyph color doesn't matter, so use black
+			var glyph = glyphs[Pair.New(c.Item1, Color.Black)];
+			var color = c.Item2;
+			var r = c.Item3;
+
+			var size = new Size(glyph.Sprite.Bounds.Width + 2 * r, glyph.Sprite.Bounds.Height + 2 * r);
+
+			var s = builder.Allocate(size);
+			var dest = s.Sheet.GetData();
+			var destStride = s.Sheet.Size.Width * 4;
+
+			var glyphData = glyph.Sprite.Sheet.GetData();
+			var glyphStride = glyph.Sprite.Sheet.Size.Width * 4;
+			var glyphBounds = glyph.Sprite.Bounds;
+
+			var elem = dilationElements[r];
+			var elemStride = 2 * r + 1;
+
+			// Expand the glyph by applying the greyscale dilation operator to the source glyph's alpha channel
+			for (var j = 0; j < s.Size.Y; j++)
+			{
+				for (var i = 0; i < s.Size.X; i++)
+				{
+					// Apply the weight map to the source glyph and find the largest weighted alpha
+					var first = true;
+					var alpha = (byte)0;
+					for (var wj = 0; wj <= 2 * r; wj++)
+					{
+						for (var wi = 0; wi <= 2 * r; wi++)
+						{
+							// Ignore pixels that are outside the source glyph bounds
+							var ii = i + wi - 2 * r;
+							var jj = j + wj - 2 * r;
+							if (ii < 0 || ii >= glyphBounds.Width || jj < 0 || jj >= glyphBounds.Height)
+								continue;
+
+							// Weighted alpha for this pixel
+							var weighted = (byte)(elem[wj * elemStride + wi] * glyphData[glyphStride * (jj + glyphBounds.Top) + 4 * (ii + glyphBounds.Left) + 3]);
+							if (first || weighted > alpha)
+							{
+								alpha = weighted;
+								first = false;
+							}
+						}
+					}
+
+					if (alpha > 0)
+					{
+						var q = destStride * (j + s.Bounds.Top) + 4 * (i + s.Bounds.Left);
+						var pmc = Util.PremultiplyAlpha(Color.FromArgb(alpha, color));
+						dest[q] = pmc.B;
+						dest[q + 1] = pmc.G;
+						dest[q + 2] = pmc.R;
+						dest[q + 3] = pmc.A;
+					}
+				}
+			}
+
+			s.Sheet.CommitBufferedData();
+			return s;
 		}
 
 		static Color GetContrastColor(Color fgColor, Color bgDark, Color bgLight)
