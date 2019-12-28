@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (selectionNode != null)
 			{
 				var selected = FieldLoader.GetValue<uint[]>("Selection", selectionNode.Value.Value)
-					.Select(a => self.World.GetActorById(a));
+					.Select(a => self.World.GetActorById(a)).Where(a => a != null);
 				Combine(self.World, selected, false, false);
 			}
 
@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var n in groupsNode.Value.Nodes)
 				{
 					var group = FieldLoader.GetValue<uint[]>(n.Key, n.Value.Value)
-						.Select(a => self.World.GetActorById(a));
+						.Select(a => self.World.GetActorById(a)).Where(a => a != null);
 					controlGroups[int.Parse(n.Key)].AddRange(group);
 				}
 			}
