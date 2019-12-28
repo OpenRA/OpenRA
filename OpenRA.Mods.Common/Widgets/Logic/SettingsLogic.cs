@@ -353,6 +353,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var muteCheckbox = panel.Get<CheckboxWidget>("MUTE_SOUND");
 			var muteCheckboxOnClick = muteCheckbox.OnClick;
+			var muteCheckboxIsChecked = muteCheckbox.IsChecked;
+			muteCheckbox.IsChecked = () => muteCheckboxIsChecked() || Game.Sound.DummyEngine;
+			muteCheckbox.IsDisabled = () => Game.Sound.DummyEngine;
 			muteCheckbox.OnClick = () =>
 			{
 				muteCheckboxOnClick();
@@ -363,12 +366,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Sound.UnmuteAudio();
 			};
 
-			if (!ss.Mute)
-			{
-				panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
-				panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
-				panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
-			}
+			// Replace controls with a warning label if sound is disabled
+			var noDeviceLabel = panel.GetOrNull("NO_AUDIO_DEVICE");
+			if (noDeviceLabel != null)
+				noDeviceLabel.Visible = Game.Sound.DummyEngine;
+
+			var controlsContainer = panel.GetOrNull("AUDIO_CONTROLS");
+			if (controlsContainer != null)
+				controlsContainer.Visible = !Game.Sound.DummyEngine;
+
+			var soundVolumeSlider = panel.Get<SliderWidget>("SOUND_VOLUME");
+			soundVolumeSlider.OnChange += x => Game.Sound.SoundVolume = x;
+
+			var musicVolumeSlider = panel.Get<SliderWidget>("MUSIC_VOLUME");
+			musicVolumeSlider.OnChange += x => Game.Sound.MusicVolume = x;
+
+			var videoVolumeSlider = panel.Get<SliderWidget>("VIDEO_VOLUME");
+			videoVolumeSlider.OnChange += x => Game.Sound.VideoVolume = x;
 
 			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Device == ss.Device) ?? devices.First();
