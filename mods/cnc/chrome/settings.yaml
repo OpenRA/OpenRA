@@ -282,59 +282,68 @@ Container@SETTINGS_PANEL:
 							Font: Bold
 							Text: Audio
 							Align: Center
-						Label@SOUND_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 38
-							Width: 95
-							Height: 25
-							Align: Right
-							Text: Sound Volume:
-						ExponentialSlider@SOUND_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 43
-							Width: 250
-							Height: 20
-							Ticks: 7
-						Checkbox@CASH_TICKS:
-							X: 15
-							Y: 40
-							Width: 200
-							Height: 20
-							Font: Regular
-							Text: Cash Ticks
-						Checkbox@MUTE_SOUND:
-							X: 15
-							Y: 70
-							Width: 200
-							Height: 20
-							Font: Regular
-							Text: Mute Sound
-						Label@MUSIC_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 68
-							Width: 95
-							Height: 25
-							Align: Right
-							Text: Music Volume:
-						ExponentialSlider@MUSIC_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 73
-							Width: 250
-							Height: 20
-							Ticks: 7
-						Label@VIDEO_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 98
-							Width: 95
-							Height: 25
-							Align: Right
-							Text: Video Volume:
-						ExponentialSlider@VIDEO_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 103
-							Width: 250
-							Height: 20
-							Ticks: 7
+						Label@NO_AUDIO_DEVICE:
+							Y: 50
+							Width: PARENT_RIGHT
+							Align: Center
+							Text: Audio controls require an active sound device
+						Container@AUDIO_CONTROLS:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Label@SOUND_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 38
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Sound Volume:
+								ExponentialSlider@SOUND_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 43
+									Width: 250
+									Height: 20
+									Ticks: 7
+								Checkbox@CASH_TICKS:
+									X: 15
+									Y: 40
+									Width: 200
+									Height: 20
+									Font: Regular
+									Text: Cash Ticks
+								Checkbox@MUTE_SOUND:
+									X: 15
+									Y: 70
+									Width: 200
+									Height: 20
+									Font: Regular
+									Text: Mute Sound
+								Label@MUSIC_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 68
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Music Volume:
+								ExponentialSlider@MUSIC_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 73
+									Width: 250
+									Height: 20
+									Ticks: 7
+								Label@VIDEO_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 98
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Video Volume:
+								ExponentialSlider@VIDEO_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 103
+									Width: 250
+									Height: 20
+									Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5
 							Y: 245
