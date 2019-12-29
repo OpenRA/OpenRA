@@ -149,7 +149,7 @@ namespace OpenRA.Graphics
 
 		public void Render(Renderer renderer)
 		{
-			if (cursor.Name == null || !isLocked)
+			if (cursor == null || !isLocked)
 				return;
 
 			var cursorSequence = cursorProvider.GetCursorSequence(cursor.Name);
