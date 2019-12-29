@@ -21,8 +21,6 @@ namespace OpenRA.Graphics
 		readonly CursorProvider cursorProvider;
 		readonly Dictionary<string, Sprite[]> sprites = new Dictionary<string, Sprite[]>();
 		readonly SheetBuilder sheetBuilder;
-		readonly HardwarePalette hardwarePalette = new HardwarePalette();
-		readonly Cache<string, PaletteReference> paletteReferences;
 
 		CursorSequence cursor;
 		bool isLocked = false;
@@ -32,16 +30,11 @@ namespace OpenRA.Graphics
 		{
 			this.cursorProvider = cursorProvider;
 
-			paletteReferences = new Cache<string, PaletteReference>(CreatePaletteReference);
-			foreach (var p in cursorProvider.Palettes)
-				hardwarePalette.AddPalette(p.Key, p.Value, false);
-
-			hardwarePalette.Initialize();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed);
 			foreach (var kv in cursorProvider.Cursors)
 			{
 				var frames = kv.Value.Frames;
-				var palette = cursorProvider.Palettes[kv.Value.Palette];
+				var palette = !string.IsNullOrEmpty(kv.Value.Palette) ? cursorProvider.Palettes[kv.Value.Palette] : null;
 
 				// Hardware cursors have a number of odd platform-specific bugs/limitations.
 				// Reduce the number of edge cases by padding the individual frames such that:
@@ -67,12 +60,14 @@ namespace OpenRA.Graphics
 				for (var i = 0; i < frames.Length; i++)
 				{
 					// Software rendering is used when the cursor is locked
-					frameSprites[i] = sheetBuilder.Add(frames[i].Data, frames[i].Size, 0, frames[i].Offset);
+					// SheetBuilder expects data in BGRA
+					var data = SoftwareCursor.FrameToBGRA(kv.Key, frames[i], palette);
+					frameSprites[i] = sheetBuilder.Add(data, frames[i].Size, 0, frames[i].Offset);
 
 					// Calculate the padding to position the frame within sequenceBounds
 					var paddingTL = -(sequenceBounds.Location + frameHotspots[i]);
 					var paddingBR = paddedSize - new int2(frames[i].Size) - paddingTL;
-					cursors[i] = CreateCursor(kv.Key, frames[i], palette, paddingTL, paddingBR, -sequenceBounds.Location);
+					cursors[i] = CreateCursor(kv.Key, data, frames[i].Size, paddingTL, paddingBR, -sequenceBounds.Location);
 				}
 
 				hardwareCursors.Add(kv.Key, cursors);
@@ -84,26 +79,24 @@ namespace OpenRA.Graphics
 			Update();
 		}
 
-		PaletteReference CreatePaletteReference(string name)
-		{
-			var pal = hardwarePalette.GetPalette(name);
-			return new PaletteReference(name, hardwarePalette.GetPaletteIndex(name), pal, hardwarePalette);
-		}
-
-		IHardwareCursor CreateCursor(string name, ISpriteFrame frame, ImmutablePalette palette, int2 paddingTL, int2 paddingBR, int2 hotspot)
+		IHardwareCursor CreateCursor(string name, byte[] data, Size size, int2 paddingTL, int2 paddingBR, int2 hotspot)
 		{
 			// Pad the cursor and convert to RBGA
-			var newWidth = paddingTL.X + frame.Size.Width + paddingBR.X;
-			var newHeight = paddingTL.Y + frame.Size.Height + paddingBR.Y;
+			var newWidth = paddingTL.X + size.Width + paddingBR.X;
+			var newHeight = paddingTL.Y + size.Height + paddingBR.Y;
 			var rgbaData = new byte[4 * newWidth * newHeight];
-			for (var j = 0; j < frame.Size.Height; j++)
+			for (var j = 0; j < size.Height; j++)
 			{
-				for (var i = 0; i < frame.Size.Width; i++)
+				for (var i = 0; i < size.Width; i++)
 				{
-					var bytes = BitConverter.GetBytes(palette[frame.Data[j * frame.Size.Width + i]]);
-					var o = 4 * ((j + paddingTL.Y) * newWidth + i + paddingTL.X);
-					for (var k = 0; k < 4; k++)
-						rgbaData[o + k] = bytes[k];
+					var src = 4 * (j * size.Width + i);
+					var dest = 4 * ((j + paddingTL.Y) * newWidth + i + paddingTL.X);
+
+					// CreateHardwareCursor expects data in RGBA
+					rgbaData[dest] = data[src + 2];
+					rgbaData[dest + 1] = data[src + 1];
+					rgbaData[dest + 2] = data[src];
+					rgbaData[dest + 3] = data[src + 3];
 				}
 			}
 
@@ -158,11 +151,8 @@ namespace OpenRA.Graphics
 			var cursorSprite = sprites[cursor.Name][frame];
 
 			var cursorOffset = cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2();
-
-			renderer.SetPalette(hardwarePalette);
-			renderer.SpriteRenderer.DrawSprite(cursorSprite,
+			renderer.RgbaSpriteRenderer.DrawSprite(cursorSprite,
 				lockedPosition - cursorOffset,
-				paletteReferences[cursorSequence.Palette],
 				cursorSprite.Size);
 		}
 

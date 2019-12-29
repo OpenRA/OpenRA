@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -27,11 +26,9 @@ namespace OpenRA.Graphics
 
 	public sealed class SoftwareCursor : ICursor
 	{
-		readonly HardwarePalette palette = new HardwarePalette();
-		readonly Cache<string, PaletteReference> paletteReferences;
 		readonly Dictionary<string, Sprite[]> sprites = new Dictionary<string, Sprite[]>();
 		readonly CursorProvider cursorProvider;
-		readonly SheetBuilder sheetBuilder;
+		SheetBuilder sheetBuilder;
 
 		bool isLocked = false;
 		int2 lockedPosition;
@@ -40,16 +37,13 @@ namespace OpenRA.Graphics
 		{
 			this.cursorProvider = cursorProvider;
 
-			paletteReferences = new Cache<string, PaletteReference>(CreatePaletteReference);
-			foreach (var p in cursorProvider.Palettes)
-				palette.AddPalette(p.Key, p.Value, false);
+			sheetBuilder = new SheetBuilder(SheetType.BGRA, 1024);
 
-			palette.Initialize();
-
-			sheetBuilder = new SheetBuilder(SheetType.Indexed);
 			foreach (var kv in cursorProvider.Cursors)
 			{
-				var s = kv.Value.Frames.Select(a => sheetBuilder.Add(a)).ToArray();
+				var palette = !string.IsNullOrEmpty(kv.Value.Palette) ? cursorProvider.Palettes[kv.Value.Palette] : null;
+				var s = kv.Value.Frames.Select(f => sheetBuilder.Add(FrameToBGRA(kv.Key, f, palette), f.Size, 0, f.Offset)).ToArray();
+
 				sprites.Add(kv.Key, s);
 			}
 
@@ -58,10 +52,38 @@ namespace OpenRA.Graphics
 			Game.Renderer.Window.SetHardwareCursor(null);
 		}
 
-		PaletteReference CreatePaletteReference(string name)
+		public static byte[] FrameToBGRA(string name, ISpriteFrame frame, ImmutablePalette palette)
 		{
-			var pal = palette.GetPalette(name);
-			return new PaletteReference(name, palette.GetPaletteIndex(name), pal, palette);
+			// Data is already in BGRA format
+			if (frame.Type == SpriteFrameType.BGRA)
+				return frame.Data;
+
+			// Cursors may be either native BGRA or Indexed.
+			// Indexed sprites are converted to BGRA using the referenced palette.
+			// All palettes must be explicitly referenced, even if they are embedded in the sprite.
+			if (frame.Type == SpriteFrameType.Indexed && palette == null)
+				throw new InvalidOperationException("Cursor sequence `{0}` attempted to load an indexed sprite but does not define Palette".F(name));
+
+			var width = frame.Size.Width;
+			var height = frame.Size.Height;
+			var data = new byte[4 * width * height];
+			for (var j = 0; j < height; j++)
+			{
+				for (var i = 0; i < width; i++)
+				{
+					var bytes = BitConverter.GetBytes(palette[frame.Data[j * width + i]]);
+					var c = palette[frame.Data[j * width + i]];
+					var k = 4 * (j * width + i);
+
+					// Convert RGBA to BGRA
+					data[k] = bytes[2];
+					data[k + 1] = bytes[1];
+					data[k + 2] = bytes[0];
+					data[k + 3] = bytes[3];
+				}
+			}
+
+			return data;
 		}
 
 		string cursorName;
@@ -90,11 +112,10 @@ namespace OpenRA.Graphics
 				(2 * cursorSequence.Hotspot) + cursorSprite.Size.XY.ToInt2() :
 				cursorSequence.Hotspot + (0.5f * cursorSprite.Size.XY).ToInt2();
 
-			renderer.SetPalette(palette);
 			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
-			renderer.SpriteRenderer.DrawSprite(cursorSprite,
+
+			renderer.RgbaSpriteRenderer.DrawSprite(cursorSprite,
 				mousePos - cursorOffset,
-				paletteReferences[cursorSequence.Palette],
 				cursorSize);
 		}
 
@@ -113,7 +134,6 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
-			palette.Dispose();
 			sheetBuilder.Dispose();
 		}
 	}
