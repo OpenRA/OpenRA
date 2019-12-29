@@ -53,37 +53,15 @@ StartStationaryGuards = function()
 	end)
 end
 
-StartWaves = function()
-	SendWaves(1, AutoAttackWaves)
-end
-
 SendWaves = function(counter, Waves)
 	if counter <= #Waves then
 		local team = Waves[counter]
-		SendAttackWave(team)
+
+		for type, amount in pairs(team.units) do
+			MoveAndHunt(Utils.Take(amount, Nod.GetActorsByType(type)), team.waypoints)
+		end
+
 		Trigger.AfterDelay(DateTime.Seconds(team.delay), function() SendWaves(counter + 1, Waves) end)
-	end
-end
-
-SendAttackWave = function(team)
-	for type, amount in pairs(team.units) do
-		count = 0
-		local actors = Nod.GetActorsByType(type)
-		Utils.Do(actors, function(actor)
-			if actor.IsIdle and count < amount then
-				SetAttackWaypoints(actor, team.waypoints)
-				IdleHunt(actor)
-				count = count + 1
-			end
-		end)
-	end
-end
-
-SetAttackWaypoints = function(actor, waypoints)
-	if not actor.IsDead then
-		Utils.Do(waypoints, function(waypoint)
-			actor.AttackMove(waypoint.Location)
-		end)
 	end
 end
 
@@ -129,30 +107,6 @@ WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
-	
-	StartStationaryGuards()
-	
-	StartAI(nodconyard)
-
-	Trigger.OnObjectiveAdded(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	Trigger.OnObjectiveCompleted(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-
-	Trigger.OnObjectiveFailed(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(GDI, function()
-		Media.PlaySpeechNotification(Nod, "Win")
-	end)
-
-	Trigger.OnPlayerLost(GDI, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
-	end)
 
 	DestroyBunkers = GDI.AddObjective("Destroy the Nod bunkers to allow Carter's\nconvoy to pass through safely.")
 	Trigger.OnAllKilled(NodBunkersNorth, function()
@@ -178,9 +132,15 @@ WorldLoaded = function()
 
 	Actor.Create("flare", true, { Owner = GDI, Location = DefaultFlareLocation.Location })
 	
-	StartPatrols()
+	StartStationaryGuards()
 	
-	Trigger.AfterDelay(DateTime.Minutes(1), function() StartWaves() end)
+	StartAI()
+
+	StartPatrols()
+
+	InitObjectives(GDI)
+	
+	Trigger.AfterDelay(DateTime.Minutes(1), function() SendWaves(1, AutoAttackWaves) end)
 	Trigger.AfterDelay(DateTime.Minutes(3), function() ProduceInfantry(handofnod) end)
 	Trigger.AfterDelay(DateTime.Minutes(3), function() ProduceVehicle(nodairfield) end)
 	

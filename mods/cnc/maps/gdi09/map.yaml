@@ -24,9 +24,6 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: gdi
-		# TODO: Disabled, due to following warning. Confirmation required.
-		# OpenRA.Utility(1,1): Warning: The player Neutral owning the world should not have any allies or enemies.
-		#Enemies: Nod, GDI
 	PlayerReference@Nod:
 		Name: Nod
 		Faction: nod
@@ -42,17 +39,11 @@ Players:
 		LockFaction: True
 		Faction: gdi
 		LockColor: True
-		#Color: F6D679 # ORIGINAL COLOR FROM IMPORT
-		Color: F5D378 # openRA GDI mission color # campaign-palettes.yaml overrides it anyway
+		Color: F5D378
 		LockSpawn: True
 		LockTeam: True
 		Allies: GDI
 		Enemies: Nod
-# TODO: Remove. Creeps not existent
-#	PlayerReference@Creeps:
-#		Name: Creeps
-#		NonCombatant: True
-#		Faction: Random
 
 Actors:
 	Actor0: sbag
@@ -516,7 +507,7 @@ Actors:
 	gun6: gun
 		Location: 8,22
 		Owner: Nod
-	nodconyard: fact
+	NodCYard: fact
 		Location: 7,30
 		Owner: Nod
 	nodobelisk: obli
@@ -540,6 +531,7 @@ Actors:
 	nodrefinery: proc
 		Location: 12,25
 		Owner: Nod
+		FreeActor: False
 	nodairfield: afld
 		Location: 3,27
 		Owner: Nod
@@ -781,7 +773,7 @@ Actors:
 	waypoint1: waypoint
 		Location: 23,28
 		Owner: Neutral
-	GDIHeliLZ: waypoint #waypoint0
+	GDIHeliLZ: waypoint
 		Location: 41,44
 		Owner: Neutral
 

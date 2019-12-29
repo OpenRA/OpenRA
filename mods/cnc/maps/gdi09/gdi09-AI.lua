@@ -8,7 +8,7 @@
 ]]
 
 AttackPaths = { { waypoint7 }, { waypoint8 } }
-NodBase = { handofnod, nodairfield, nodrefinery, nodconyard, nodpower1, nodpower2, nodpower3, nodpower4, nodpower5, gun5, gun6, gun7, gun8, nodsilo1, nodsilo2, nodsilo3, nodsilo4, nodobelisk}
+NodBase = { handofnod, nodairfield, nodrefinery, NodCYard, nodpower1, nodpower2, nodpower3, nodpower4, nodpower5, gun5, gun6, gun7, gun8, nodsilo1, nodsilo2, nodsilo3, nodsilo4, nodobelisk}
 
 PatrolProductionQueue = { }
 InfantryAttackGroup = { }
@@ -22,43 +22,37 @@ VehicleProductionCooldown = DateTime.Minutes(3)
 VehicleProductionTypes = { "bggy", "bggy", "bggy", "ltnk", "ltnk", "arty" }
 StartingCash = 14000
 
-BaseRefinery = { type = "proc", pos = CPos.New(12, 25), cost = 1500, exists = true }
-BaseNuke1 = { type = "nuke", pos = CPos.New( 5, 24), cost = 500, exists = true }
-BaseNuke2 = { type = "nuke", pos = CPos.New( 3, 24), cost = 500, exists = true }
-BaseNuke3 = { type = "nuke", pos = CPos.New(16, 30), cost = 500, exists = true }
-BaseNuke4 = { type = "nuke", pos = CPos.New(14, 30), cost = 500, exists = true }
-BaseNuke5 = { type = "nuke", pos = CPos.New(12, 30), cost = 500, exists = true }
-InfantryProduction = { type = "hand", pos = CPos.New(15, 24), cost = 500, exists = true }
-VehicleProduction = { type = "afld", pos = CPos.New(3, 27), cost = 2000, exists = true }
+BaseRefinery = { type = "proc", pos = CPos.New(12, 25), cost = 1500 }
+BaseNuke1 = { type = "nuke", pos = CPos.New( 5, 24), cost = 500 }
+BaseNuke2 = { type = "nuke", pos = CPos.New( 3, 24), cost = 500 }
+BaseNuke3 = { type = "nuke", pos = CPos.New(16, 30), cost = 500 }
+BaseNuke4 = { type = "nuke", pos = CPos.New(14, 30), cost = 500 }
+BaseNuke5 = { type = "nuke", pos = CPos.New(12, 30), cost = 500 }
+InfantryProduction = { type = "hand", pos = CPos.New(15, 24), cost = 500 }
+VehicleProduction = { type = "afld", pos = CPos.New(3, 27), cost = 2000 }
 
 NodGuards = {Actor168, Actor169, Actor170, Actor171, Actor172, Actor181, Actor177, Actor188, Actor189, Actor190 }
 
 BaseBuildings = { BaseRefinery, BaseNuke1, BaseNuke2, BaseNuke3, BaseNuke4, InfantryProduction, VehicleProduction }
 
-BuildBase = function(cyard)
-	Utils.Do(BaseBuildings, function(building)
-		if not building.exists and not cyardIsBuilding then
-			BuildBuilding(building, cyard)
-			return
-		end
-	end)
-	Trigger.AfterDelay(DateTime.Seconds(10), function() BuildBase(cyard) end)
-end
-
 BuildBuilding = function(building, cyard)
-	cyardIsBuilding = true
+	if CyardIsBuilding or Nod.Cash < building.cost then
+		Trigger.AfterDelay(DateTime.Seconds(10), function() BuildBuilding(building, cyard) end)
+		return
+	end
 
+	CyardIsBuilding = true
+
+	Nod.Cash = Nod.Cash - building.cost
 	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
-		cyardIsBuilding = false
+		CyardIsBuilding = false
 
 		if cyard.IsDead or cyard.Owner ~= Nod then
+			Nod.Cash = Nod.Cash + building.cost
 			return
 		end
 
 		local actor = Actor.Create(building.type, true, { Owner = Nod, Location = building.pos })
-		Nod.Cash = Nod.Cash - building.cost
-
-		building.exists = true
 
 		if actor.Type == 'hand' or actor.Type == 'pyle' then
 			Trigger.AfterDelay(DateTime.Seconds(10), function() ProduceInfantry(actor) end)
@@ -66,46 +60,29 @@ BuildBuilding = function(building, cyard)
 			Trigger.AfterDelay(DateTime.Seconds(10), function() ProduceVehicle(actor) end)
 		end
 
-		Trigger.OnKilled(actor, function() building.exists = false end)
-
-		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == Nod and building.Health < building.MaxHealth * 3/4 then
-				building.StartBuildingRepairs()
-			end
+		Trigger.OnKilled(actor, function()
+			BuildBuilding(building, cyard)
 		end)
 
-		Trigger.AfterDelay(DateTime.Seconds(10), function() BuildBase(cyard) end)
+		RepairBuilding(Nod, actor, 0.75)
 	end)
 end
 
 CheckForHarvester = function()
 	local harv = Nod.GetActorsByType("harv")
-	return #harv > 1
+	return #harv > 0
 end
 
 GuardBase = function()
 	Utils.Do(NodBase, function(building)
-		Trigger.OnDamaged(building, function(building) --?
+		Trigger.OnDamaged(building, function()
 			Utils.Do(NodGuards, function(guard)
 				if not guard.IsDead and not building.IsDead then
+					guard.Stop()
 					guard.Guard(building)
 				end
 			end)
 		end)
-	end)
-end
-
-IdleHunt = function(unit)
-	if not unit.IsDead then 
-		Trigger.OnIdle(unit, unit.Hunt) 
-	end 
-end
-
-IdlingUnits = function(Nod)
-	local lazyUnits = Nod.GetGroundAttackers()
-
-	Utils.Do(lazyUnits, function(unit)
-		IdleHunt(unit)
 	end)
 end
 
@@ -145,14 +122,14 @@ ProduceInfantry = function(building)
 		InfantryAttackGroup[#InfantryAttackGroup + 1] = unit[1]
 
 		if #InfantryAttackGroup >= InfantryGroupSize then
-			SendUnits(InfantryAttackGroup, Path)
+			MoveAndHunt(InfantryAttackGroup, Path)
 			InfantryAttackGroup = { }
 			Trigger.AfterDelay(InfantryProductionCooldown, function() ProduceInfantry(building) end)
 		else
 			Trigger.AfterDelay(delay, function() ProduceInfantry(building) end)
 		end
 	end)
-	
+
 end
 
 ProduceVehicle = function(building)
@@ -171,7 +148,7 @@ ProduceVehicle = function(building)
 		VehicleAttackGroup[#VehicleAttackGroup + 1] = unit[1]
 
 		if #VehicleAttackGroup >= VehicleGroupSize then
-			SendUnits(VehicleAttackGroup, Path)
+			MoveAndHunt(VehicleAttackGroup, Path)
 			VehicleAttackGroup = { }
 			Trigger.AfterDelay(VehicleProductionCooldown, function() ProduceVehicle(building) end)
 		else
@@ -180,64 +157,45 @@ ProduceVehicle = function(building)
 	end)
 end
 
-SendUnits = function(units, waypoints)
-	Utils.Do(units, function(unit)
-		if not unit.IsDead then
-			Utils.Do(waypoints, function(waypoint)
-				unit.AttackMove(waypoint.Location)
-			end)
-			IdleHunt(unit)
-		end
-	end)
-end
+StartAI = function()
+	RepairNamedActors(Nod, 0.75)
 
-StartAI = function(cyard)
-	Utils.Do(Map.NamedActors, function(actor)
-		if actor.Owner == Nod and actor.HasProperty("StartBuildingRepairs") then
-			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == Nod and building.Health < 3/4 * building.MaxHealth then
-					building.StartBuildingRepairs()
-				end
-			end)
-		end
-	end)
 	Nod.Cash = StartingCash
-	BuildBase(cyard)
 	GuardBase()
 end
 
 Trigger.OnAllKilledOrCaptured(NodBase, function()
-	IdlingUnits(Nod)
+	Utils.Do(GDI.GetGroundAttackers(), IdleHunt)
 end)
 
 Trigger.OnKilled(nodrefinery, function(building)
-	BaseRefinery.exists = false
+	BuildBuilding(BaseRefinery, NodCYard)
 end)
 
 Trigger.OnKilled(nodpower1, function(building)
-	BaseNuke1.exists = false
+	BuildBuilding(BaseNuke1, NodCYard)
 end)
 
 Trigger.OnKilled(nodpower2, function(building)
-	BaseNuke2.exists = false
+	BuildBuilding(BaseNuke2, NodCYard)
 end)
 
 Trigger.OnKilled(nodpower3, function(building)
-	BaseNuke3.exists = false
+	BuildBuilding(BaseNuke3, NodCYard)
 end)
 
 Trigger.OnKilled(nodpower4, function(building)
-	BaseNuke4.exists = false
+	BuildBuilding(BaseNuke4, NodCYard)
 end)
 
 Trigger.OnKilled(nodpower5, function(building)
-	BaseNuke5.exists = false
+	BuildBuilding(BaseNuke5, NodCYard)
 end)
 
 Trigger.OnKilled(handofnod, function(building)
-	InfantryProduction.exists = false
+	BuildBuilding(InfantryProduction, NodCYard)
 end)
 
 Trigger.OnKilled(nodairfield, function(building)
-	VehicleProduction.exists = false
+	BuildBuilding(VehicleProduction, NodCYard)
 end)
