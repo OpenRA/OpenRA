@@ -37,6 +37,7 @@ namespace OpenRA.Graphics
 					pals[p.Palette] = p;
 
 			Palettes = nodesDict["Cursors"].Nodes.Select(n => n.Value.Value)
+				.Where(p => p != null)
 				.Distinct()
 				.ToDictionary(p => p, p => pals[p].ReadPalette(modData.DefaultFileSystem))
 				.AsReadOnly();
