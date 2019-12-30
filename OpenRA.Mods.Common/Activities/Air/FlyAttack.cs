@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Activities
 		bool useLastVisibleTarget;
 		bool hasTicked;
 		bool returnToBase;
-		int remainingTicksUntilTurn;
 
 		public FlyAttack(Actor self, Target target, bool forceAttack, Color? targetLineColor)
 		{
@@ -147,23 +146,13 @@ namespace OpenRA.Mods.Common.Activities
 
 			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
 
-			// When strafing we must move forward for a minimum number of ticks after passing the target.
-			if (remainingTicksUntilTurn > 0)
-			{
-				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-				remainingTicksUntilTurn--;
-			}
-
 			// Move into range of the target.
-			else if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
+			if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
 				QueueChild(aircraft.MoveWithinRange(target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red));
 
 			// The aircraft must keep moving forward even if it is already in an ideal position.
 			else if (!aircraft.Info.CanHover || attackAircraft.Info.AttackType == AirAttackType.Strafe)
-			{
-				Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
-				remainingTicksUntilTurn = attackAircraft.Info.AttackTurnDelay;
-			}
+				QueueChild(new FlyAttackRun(self, target, lastVisibleMaximumRange));
 
 			// Turn to face the target if required.
 			else if (!attackAircraft.TargetInFiringArc(self, target, attackAircraft.Info.FacingTolerance))
@@ -199,6 +188,44 @@ namespace OpenRA.Mods.Common.Activities
 				if (!returnToBase || !attackAircraft.Info.AbortOnResupply)
 					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
 			}
+		}
+	}
+
+	class FlyAttackRun : Activity
+	{
+		Target target;
+		WDist exitRange;
+		bool targetIsVisibleActor;
+
+		public FlyAttackRun(Actor self, Target t, WDist exitRange)
+		{
+			ChildHasPriority = false;
+
+			target = t;
+			this.exitRange = exitRange;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			QueueChild(new Fly(self, target, target.CenterPosition));
+			QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+		}
+
+		public override bool Tick(Actor self)
+		{
+			if (TickChild(self) || IsCanceling)
+				return true;
+
+			// Cancel the run if the target become invalid (e.g. killed) while visible
+			var targetWasVisibleActor = targetIsVisibleActor;
+			bool targetIsHiddenActor;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			targetIsVisibleActor = target.Type == TargetType.Actor && !targetIsHiddenActor;
+
+			if (targetWasVisibleActor && !target.IsValidFor(self))
+				Cancel(self);
+
+			return false;
 		}
 	}
 }
