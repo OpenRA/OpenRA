@@ -165,7 +165,6 @@ namespace OpenRA.Mods.Common.Activities
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var pos = aircraft.GetPosition();
 			var delta = checkTarget.CenterPosition - pos;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
 			// Inside the target annulus, so we're done
 			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos, maxRange);
@@ -174,12 +173,20 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var isSlider = aircraft.Info.CanSlide;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
-			// Inside the minimum range, so reverse if we CanSlide
-			if (isSlider && insideMinRange)
+			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
+			if (insideMinRange)
 			{
-				FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
+				if (isSlider)
+					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
+				else
+				{
+					desiredFacing = Util.NormalizeFacing(desiredFacing + 128);
+					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move);
+				}
+
 				return false;
 			}
 
