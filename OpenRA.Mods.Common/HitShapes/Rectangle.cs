@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		WVec[] combatOverlayVertsTop;
 		WVec[] combatOverlayVertsBottom;
+		WVec[] combatOverlayVertsSide1;
+		WVec[] combatOverlayVertsSide2;
 
 		public RectangleShape() { }
 
@@ -73,7 +75,7 @@ namespace OpenRA.Mods.Common.HitShapes
 				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
 				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
 				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset)
+				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
 			};
 
 			combatOverlayVertsBottom = new WVec[]
@@ -81,7 +83,23 @@ namespace OpenRA.Mods.Common.HitShapes
 				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
 				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
 				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset)
+				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+			};
+
+			combatOverlayVertsSide1 = new WVec[]
+			{
+				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
+				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+			};
+
+			combatOverlayVertsSide2 = new WVec[]
+			{
+				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
 			};
 		}
 
@@ -113,9 +131,13 @@ namespace OpenRA.Mods.Common.HitShapes
 
 			var vertsTop = combatOverlayVertsTop.Select(v => origin + v.Rotate(orientation)).ToArray();
 			var vertsBottom = combatOverlayVertsBottom.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var side1 = combatOverlayVertsSide1.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var side2 = combatOverlayVertsSide2.Select(v => origin + v.Rotate(orientation)).ToArray();
 
 			yield return new PolygonAnnotationRenderable(vertsTop, origin, 1, Color.Yellow);
 			yield return new PolygonAnnotationRenderable(vertsBottom, origin, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(side1, origin, 1, Color.Yellow);
+			yield return new PolygonAnnotationRenderable(side2, origin, 1, Color.Yellow);
 			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, Color.LimeGreen);
 		}
 	}
