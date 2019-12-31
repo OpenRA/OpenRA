@@ -30,6 +30,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Actor ignoreActor;
 		readonly Color? targetLineColor;
 
+		static readonly BlockedByActor[] PathSearchOrder =
+		{
+			BlockedByActor.All,
+			BlockedByActor.Immovable,
+			BlockedByActor.Stationary,
+			BlockedByActor.None
+		};
+
 		List<CPos> path;
 		CPos? destination;
 
@@ -150,9 +158,12 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// TODO: Change this to BlockedByActor.Stationary after improving the local avoidance behaviour
-			path = EvalPath(BlockedByActor.All);
-			if (path.Count == 0)
-				path = EvalPath(BlockedByActor.None);
+			foreach (var check in PathSearchOrder)
+			{
+				path = EvalPath(check);
+				if (path.Count > 0)
+					return;
+			}
 		}
 
 		public override bool Tick(Actor self)
