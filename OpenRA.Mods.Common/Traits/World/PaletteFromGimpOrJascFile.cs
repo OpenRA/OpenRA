@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Load a GIMP .gpl or JASC .pal palette file. Supports per-color alpha. Index 0 is hardcoded to be fully transparent/invisible.")]
+	[Desc("Load a GIMP .gpl or JASC .pal palette file. Supports per-color alpha.")]
 	class PaletteFromGimpOrJascFileInfo : ITraitInfo
 	{
 		[PaletteDefinition]
@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Premultiply = true;
 
 		public readonly bool AllowModifiers = true;
+
+		[Desc("Index set to be fully transparent/invisible.")]
+		public readonly int TransparentIndex = 0;
 
 		public object Create(ActorInitializer init) { return new PaletteFromGimpOrJascFile(init.World, this); }
 	}
@@ -96,8 +99,8 @@ namespace OpenRA.Mods.Common.Traits
 						// Note: We can't throw on "rgba.Length > 3 but parse failed", because in GIMP palettes the 'invalid' value is probably a color name string.
 						var noAlpha = rgba.Length > 3 ? !byte.TryParse(rgba[3], out a) : true;
 
-						// Index 0 should always be completely transparent/background color
-						if (i == 0)
+						// Index should be completely transparent/background color
+						if (i == info.TransparentIndex)
 							colors[i] = 0;
 						else if (noAlpha)
 							colors[i] = (uint)Color.FromArgb(r, g, b).ToArgb();
