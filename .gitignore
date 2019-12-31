@@ -67,3 +67,6 @@ StyleCopViolations.xml
 
 # IntelliJ files
 .idea
+
+# Vim
+.vimrc

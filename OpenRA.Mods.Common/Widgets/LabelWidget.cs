@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Widgets
 	public enum TextAlign { Left, Center, Right }
 	public enum TextVAlign { Top, Middle, Bottom }
 
-	
 	public class LabelWidget : Widget
 	{
 		[Translate]
@@ -43,13 +42,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetContrastColorDark;
 		public Func<Color> GetContrastColorLight;
 		public Func<Color> GetURLColor;
-
-		readonly Ruleset ModRules;
+		public readonly Ruleset ModRules;
 
 		[ObjectCreator.UseCtor]
 		public LabelWidget(ModData modData)
 		{
-      ModRules = modData.DefaultRules;
+			ModRules = modData.DefaultRules;
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColorDark = () => ContrastColorDark;
@@ -57,14 +55,14 @@ namespace OpenRA.Mods.Common.Widgets
 			GetURLColor = () => URLColor;
 		}
 
-		public LabelWidget(Ruleset ModRules)
+		public LabelWidget(Ruleset modRules)
 		{
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColorDark = () => ContrastColorDark;
 			GetContrastColorLight = () => ContrastColorLight;
 			GetURLColor = () => URLColor;
-			this.ModRules = ModRules;
+			ModRules = modRules;
 		}
 
 		protected LabelWidget(LabelWidget other)
@@ -87,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetURLColor = other.GetURLColor;
 			URLColor = other.URLColor;
 			ClickURL = other.ClickURL;
-			this.ModRules = other.ModRules;
+			ModRules = other.ModRules;
 		}
 
 		public override void Draw()
@@ -100,17 +98,17 @@ namespace OpenRA.Mods.Common.Widgets
 			if (text == null)
 				return;
 
-      // At first we only match whole messages that are urls. This is because this logic should
-      // be moved out of the label and into the areas of the app that allow urls.
-      // 
-      // My plan would be to have the module that manages chat to parse messages as they are
-      // recieved and decide if a piece of text within a message is a url. If it is it should
-      // split the message into first part, url and second part. Each of these parts should get
-      // it's own LabelWidget. We could then create our own URLLabelWidget to be used for links.
-      // This would need to be a repeated opperation for each text part of a message.
-      Regex urlRegex = new Regex(@"https://www.google.com");
-      if (urlRegex.IsMatch(text))
-        ClickURL = text;
+			// At first we only match whole messages that are urls. This is because this logic should
+			// be moved out of the label and into the areas of the app that allow urls.
+			//
+			// My plan would be to have the module that manages chat to parse messages as they are
+			// recieved and decide if a piece of text within a message is a url. If it is it should
+			// split the message into first part, url and second part. Each of these parts should get
+			// it's own LabelWidget. We could then create our own URLLabelWidget to be used for links.
+			// This would need to be a repeated opperation for each text part of a message.
+			Regex urlRegex = new Regex(@"https://www.google.com");
+			if (urlRegex.IsMatch(text))
+				ClickURL = text;
 
 			var textSize = font.Measure(text);
 			var position = RenderOrigin;
@@ -134,12 +132,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
-			Color color = new Color();
-      if (ClickURL != null) {
-        color = GetURLColor();
-      } else {
-        color = GetColor();
-      }
+			var color = ClickURL != null ? GetURLColor() : GetColor();
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
 
@@ -150,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets
 			else
 				font.DrawText(text, position, color);
 		}
-		
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Up)
@@ -158,39 +151,41 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
 			{
-        Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null);
+				Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null);
 
-        // Looks like Process.Start(url) won't work in Mono 6 and up because:
-        // https://github.com/mono/mono/issues/17204
-        //
-        // Instead, we'll need to check platform and implement our own solution.
-        // I'veused the code from  https://stackoverflow.com/a/43232486 as the basis
-        // for our solution. We should think about how we're going to do this more as
-        // it presents an attack vector for maliciously sending users to bad urls or
-        // running arbitrary code on their machines e.g.
-        //
-        // Process.Start("https://google.com; nc -l 8000 | sh"r
-        switch (OpenRA.Platform.CurrentPlatform) {
-          case OpenRA.PlatformType.Windows:
-            string url = ClickURL.Replace("&", "^&");
-            Process.Start(new ProcessStartInfo("cmd", "/c start " + url) { CreateNoWindow = true });
-            break;
+				// Looks like Process.Start(url) won't work in Mono 6 and up because:
+				// https://github.com/mono/mono/issues/17204
+				//
+				// Instead, we'll need to check platform and implement our own solution.
+				// I'veused the code from  https://stackoverflow.com/a/43232486 as the basis
+				// for our solution. We should think about how we're going to do this more as
+				// it presents an attack vector for maliciously sending users to bad urls or
+				// running arbitrary code on their machines e.g.
+				//
+				// Process.Start("https://google.com; nc -l 8000 | sh"r
+				switch (OpenRA.Platform.CurrentPlatform)
+				{
+					case OpenRA.PlatformType.Windows:
+						string url = ClickURL.Replace("&", "^&");
+						Process.Start(new ProcessStartInfo("cmd", "/c start " + url) { CreateNoWindow = true });
+						break;
 
-          case OpenRA.PlatformType.OSX:
-            Process.Start("open", ClickURL);
-            break;
+					case OpenRA.PlatformType.OSX:
+						Process.Start("open", ClickURL);
+						break;
 
-          case OpenRA.PlatformType.Linux:
-            Process.Start("xdg-open", ClickURL);
-            break;
+					case OpenRA.PlatformType.Linux:
+						Process.Start("xdg-open", ClickURL);
+						break;
 
-          case OpenRA.PlatformType.Unknown:
-          default:
-            throw new Exception("Cannot determine operating system while trying to open '" + ClickURL + "' in browser.");
-        }
+					case OpenRA.PlatformType.Unknown:
+					default:
+						throw new Exception("Cannot determine operating system while trying to open '" + ClickURL + "' in browser.");
+				}
 
 				return true;
 			}
+
 			return false;
 		}
 
