@@ -173,30 +173,26 @@ cli-dependencies:
 	@ $(CP_R) thirdparty/download/*.dll.config .
 	@ test -f OpenRA.Game/obj/project.assets.json || $(MSBUILD) -t:restore
 
-linux-dependencies: cli-dependencies geoip-dependencies linux-native-dependencies
+linux-dependencies: cli-dependencies linux-native-dependencies
 
 linux-native-dependencies:
 	@./thirdparty/configure-native-deps.sh
 
-windows-dependencies: cli-dependencies geoip-dependencies
+windows-dependencies: cli-dependencies
 ifeq ($(WIN32), $(filter $(WIN32),true yes y on 1))
 	@./thirdparty/fetch-thirdparty-deps-windows.sh x86
 else
 	@./thirdparty/fetch-thirdparty-deps-windows.sh x64
 endif
 
-osx-dependencies: cli-dependencies geoip-dependencies
+osx-dependencies: cli-dependencies
 	@./thirdparty/fetch-thirdparty-deps-osx.sh
 	@ $(CP_R) thirdparty/download/osx/*.dylib .
 	@ $(CP_R) thirdparty/download/osx/*.dll.config .
 
-geoip-dependencies:
-	@./thirdparty/fetch-geoip-db.sh
-	@ $(CP) thirdparty/download/GeoLite2-Country.mmdb.gz .
-
 dependencies: $(os-dependencies)
 
-all-dependencies: cli-dependencies windows-dependencies osx-dependencies geoip-dependencies
+all-dependencies: cli-dependencies windows-dependencies osx-dependencies
 
 version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
 	@echo "$(VERSION)" > VERSION
@@ -387,4 +383,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: check-scripts check nunit test all core clean distclean cli-dependencies linux-dependencies linux-native-dependencies windows-dependencies osx-dependencies geoip-dependencies dependencies all-dependencies version install install-linux-shortcuts install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help
+.PHONY: check-scripts check nunit test all core clean distclean cli-dependencies linux-dependencies linux-native-dependencies windows-dependencies osx-dependencies dependencies all-dependencies version install install-linux-shortcuts install-engine install-common-mod-files install-default-mods install-core install-linux-icons install-linux-desktop install-linux-mime install-linux-appdata install-man-page install-linux-scripts uninstall help
