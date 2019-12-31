@@ -149,7 +149,8 @@ namespace OpenRA.Mods.Common.Activities
 				destination = mobile.CanEnterCell(movableDestination, check: BlockedByActor.Immovable) ? movableDestination : (CPos?)null;
 			}
 
-			path = EvalPath(BlockedByActor.Stationary);
+			// TODO: Change this to BlockedByActor.Stationary after improving the local avoidance behaviour
+			path = EvalPath(BlockedByActor.All);
 			if (path.Count == 0)
 				path = EvalPath(BlockedByActor.None);
 		}
