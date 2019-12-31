@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Diagnostics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color ContrastColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
 		public Color URLColor = ChromeMetrics.Get<Color>("TextURLColor");
 		public string ClickURL = null;
+		public string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
@@ -43,10 +44,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetContrastColorLight;
 		public Func<Color> GetURLColor;
 
-		readonly Ruleset modRules;
+		readonly Ruleset ModRules;
 
-		public LabelWidget()
+		[ObjectCreator.UseCtor]
+		public LabelWidget(ModData modData)
 		{
+      ModRules = modData.DefaultRules;
 			GetText = () => Text;
 			GetColor = () => TextColor;
 			GetContrastColorDark = () => ContrastColorDark;
@@ -54,14 +57,14 @@ namespace OpenRA.Mods.Common.Widgets
 			GetURLColor = () => URLColor;
 		}
 
-		[ObjectCreator.UseCtor]
-		public LabelWidget(Ruleset modRules)
+		public LabelWidget(Ruleset ModRules)
 		{
 			GetText = () => Text;
 			GetColor = () => TextColor;
-			GetContrastColor = () => ContrastColor;
+			GetContrastColorDark = () => ContrastColorDark;
+			GetContrastColorLight = () => ContrastColorLight;
 			GetURLColor = () => URLColor;
-			this.modRules = modRules;
+			this.ModRules = ModRules;
 		}
 
 		protected LabelWidget(LabelWidget other)
@@ -81,9 +84,10 @@ namespace OpenRA.Mods.Common.Widgets
 			GetColor = other.GetColor;
 			GetContrastColorDark = other.GetContrastColorDark;
 			GetContrastColorLight = other.GetContrastColorLight;
+			GetURLColor = other.GetURLColor;
 			URLColor = other.URLColor;
 			ClickURL = other.ClickURL;
-			this.modRules = other.modRules;
+			this.ModRules = other.ModRules;
 		}
 
 		public override void Draw()
@@ -95,6 +99,18 @@ namespace OpenRA.Mods.Common.Widgets
 			var text = GetText();
 			if (text == null)
 				return;
+
+      // At first we only match whole messages that are urls. This is because this logic should
+      // be moved out of the label and into the areas of the app that allow urls.
+      // 
+      // My plan would be to have the module that manages chat to parse messages as they are
+      // recieved and decide if a piece of text within a message is a url. If it is it should
+      // split the message into first part, url and second part. Each of these parts should get
+      // it's own LabelWidget. We could then create our own URLLabelWidget to be used for links.
+      // This would need to be a repeated opperation for each text part of a message.
+      Regex urlRegex = new Regex(@"https://www.google.com");
+      if (urlRegex.IsMatch(text))
+        ClickURL = text;
 
 			var textSize = font.Measure(text);
 			var position = RenderOrigin;
@@ -118,9 +134,15 @@ namespace OpenRA.Mods.Common.Widgets
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
-			var color = GetColor();
+			Color color = new Color();
+      if (ClickURL != null) {
+        color = GetURLColor();
+      } else {
+        color = GetColor();
+      }
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
+
 			if (Contrast)
 				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, 2);
 			else if (Shadow)
@@ -136,10 +158,37 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Event == MouseInputEvent.Down && ClickURL != null)
 			{
-				Sound.PlayNotification(modRules, null, "Sounds", "ClickSound", null);
-				ProcessStartInfo startInfo = new ProcessStartInfo(ClickURL);
-				startInfo.WindowStyle = ProcessWindowStyle.Maximized;
-				Process.Start(startInfo);
+        Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null);
+
+        // Looks like Process.Start(url) won't work in Mono 6 and up because:
+        // https://github.com/mono/mono/issues/17204
+        //
+        // Instead, we'll need to check platform and implement our own solution.
+        // I'veused the code from  https://stackoverflow.com/a/43232486 as the basis
+        // for our solution. We should think about how we're going to do this more as
+        // it presents an attack vector for maliciously sending users to bad urls or
+        // running arbitrary code on their machines e.g.
+        //
+        // Process.Start("https://google.com; nc -l 8000 | sh"r
+        switch (OpenRA.Platform.CurrentPlatform) {
+          case OpenRA.PlatformType.Windows:
+            string url = ClickURL.Replace("&", "^&");
+            Process.Start(new ProcessStartInfo("cmd", "/c start " + url) { CreateNoWindow = true });
+            break;
+
+          case OpenRA.PlatformType.OSX:
+            Process.Start("open", ClickURL);
+            break;
+
+          case OpenRA.PlatformType.Linux:
+            Process.Start("xdg-open", ClickURL);
+            break;
+
+          case OpenRA.PlatformType.Unknown:
+          default:
+            throw new Exception("Cannot determine operating system while trying to open '" + ClickURL + "' in browser.");
+        }
+
 				return true;
 			}
 			return false;

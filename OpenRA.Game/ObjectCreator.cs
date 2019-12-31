@@ -131,7 +131,7 @@ namespace OpenRA
 			for (var i = 0; i < p.Length; i++)
 			{
 				var key = p[i].Name;
-				if (!args.ContainsKey(key)) throw new InvalidOperationException("ObjectCreator: key `{0}' not found".F(key));
+				if (!args.ContainsKey(key)) throw new InvalidOperationException("ObjectCreator: key `{0}' not found when constructing clas '{1}'".F(key, ctor.DeclaringType.Name));
 				a[i] = args[key];
 			}
 
