@@ -162,10 +162,6 @@ Trigger.OnAllKilledOrCaptured(GDIBase, function()
 	Utils.Do(GDI.GetGroundAttackers(), IdleHunt)
 end)
 
-Trigger.OnAllKilledOrCaptured(GDIBase, function()
-	Utils.Do(GDI.GetGroundAttackers(), IdleHunt)
-end)
-
 Trigger.OnKilled(GDIProc, function(building)
 	BuildBuilding(BaseProc, GDICYard)
 end)
