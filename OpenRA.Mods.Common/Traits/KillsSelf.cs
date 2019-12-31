@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Actors can be created without being added to the world
 			// We want to make sure that this only triggers once they are inserted into the world
 			if (lifetime == 0 && self.IsInWorld)
-				Kill(self);
+				self.World.AddFrameEndTask(w => Kill(self));
 		}
 
 		protected override void Created(Actor self)
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (lifetime-- <= 0)
-				Kill(self);
+				self.World.AddFrameEndTask(w => Kill(self));
 		}
 
 		void Kill(Actor self)
