@@ -49,7 +49,7 @@ pushd "${SRCDIR}" > /dev/null || exit 1
 make clean
 
 # linux-dependencies target will trigger the lua detection script, which we don't want during packaging
-make cli-dependencies geoip-dependencies
+make cli-dependencies
 sed "s/@LIBLUA51@/liblua5.1.so.0/" thirdparty/Eluant.dll.config.in > Eluant.dll.config
 
 make core
