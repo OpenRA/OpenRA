@@ -1,4 +1,4 @@
-; Copyright 2007-2019 OpenRA developers (see AUTHORS)
+; Copyright 2007-2020 OpenRA developers (see AUTHORS)
 ; This file is part of OpenRA.
 ;
 ;  OpenRA is free software: you can redistribute it and/or modify
