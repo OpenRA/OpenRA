@@ -65,7 +65,7 @@ namespace OpenRA.Server
 
 				settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
 
-				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, true);
+				var server = new Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, modData, ServerType.Dedicated);
 				GC.Collect();
 				while (true)
 				{

@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Server;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -915,7 +916,7 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, ServerType.Multiplayer);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -927,7 +928,7 @@ namespace OpenRA
 				AdvertiseOnline = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, ServerType.Local);
 
 			return server.Port;
 		}
