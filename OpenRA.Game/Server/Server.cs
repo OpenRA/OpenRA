@@ -461,7 +461,13 @@ namespace OpenRA.Server
 						SendOrderTo(newConn, "Message", "Bots have been disabled on this map.");
 				};
 
-				if (!string.IsNullOrEmpty(handshake.Fingerprint) && !string.IsNullOrEmpty(handshake.AuthSignature))
+				if (Type == ServerType.Local)
+				{
+					// Local servers can only be joined by the local client, so we can trust their identity without validation
+					client.Fingerprint = handshake.Fingerprint;
+					completeConnection();
+				}
+				else if (!string.IsNullOrEmpty(handshake.Fingerprint) && !string.IsNullOrEmpty(handshake.AuthSignature))
 				{
 					waitingForAuthenticationCallback++;
 
