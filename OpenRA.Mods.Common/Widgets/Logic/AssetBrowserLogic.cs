@@ -214,10 +214,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				prevButton.IsVisible = () => !isVideoLoaded;
 			}
 
-			if (logicArgs.ContainsKey("SupportedFormats"))
-				allowedExtensions = FieldLoader.GetValue<string[]>("SupportedFormats", logicArgs["SupportedFormats"].Value);
-			else
-				allowedExtensions = new string[0];
+			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
+			allowedExtensions = assetBrowserModData.SupportedExtensions;
 
 			acceptablePackages = modData.ModFiles.MountedPackages.Where(p =>
 				p.Contents.Any(c => allowedExtensions.Contains(Path.GetExtension(c).ToLowerInvariant())));
