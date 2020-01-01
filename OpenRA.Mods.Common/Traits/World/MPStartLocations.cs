@@ -56,6 +56,10 @@ namespace OpenRA.Mods.Common.Traits
 				SeparateTeamSpawnsCheckboxEnabled,
 				SeparateTeamSpawnsCheckboxLocked);
 		}
+
+		[Desc("Actor type used for player spawns.")]
+		[ActorReference]
+		public readonly string SpawnPointActor = "mpspawn";
 	}
 
 	public class MPStartLocations : IWorldLoaded, INotifyCreated
@@ -79,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			var spawns = world.Actors.Where(a => a.Info.Name == "mpspawn")
+			var spawns = world.Actors.Where(a => a.Info.Name == info.SpawnPointActor)
 				.Select(a => a.Location)
 				.ToArray();
 

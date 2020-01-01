@@ -62,7 +62,8 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				var playerCount = players.Count(p => p.Value.Playable);
 				var spawns = new List<CPos>();
-				foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
+				var spawnActor = worldActor.TraitInfos<MPStartLocationsInfo>().First().SpawnPointActor;
+				foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == spawnActor))
 				{
 					var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 					spawns.Add(s.InitDict.Get<LocationInit>().Value(null));

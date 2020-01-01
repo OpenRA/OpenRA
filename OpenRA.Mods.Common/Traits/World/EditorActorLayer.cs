@@ -25,6 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Size of partition bins (world pixels)")]
 		public readonly int BinSize = 250;
 
+		[Desc("Actor type used for player spawns.")]
+		[ActorReference]
+		public readonly string SpawnPointActor = "mpspawn";
+
 		public object Create(ActorInitializer init) { return new EditorActorLayer(init.Self, this); }
 	}
 
@@ -144,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				UpdateNeighbours(preview.Footprint);
 
-				if (preview.Actor.Type == "mpspawn")
+				if (preview.Actor.Type == info.SpawnPointActor)
 					SyncMultiplayerCount();
 			}
 		}
@@ -168,13 +172,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			UpdateNeighbours(preview.Footprint);
 
-			if (preview.Info.Name == "mpspawn")
+			if (preview.Info.Name == info.SpawnPointActor)
 				SyncMultiplayerCount();
 		}
 
 		void SyncMultiplayerCount()
 		{
-			var newCount = previews.Count(p => p.Info.Name == "mpspawn");
+			var newCount = previews.Count(p => p.Info.Name == info.SpawnPointActor);
 			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi")).ToList();
 			foreach (var kv in mp)
 			{
