@@ -233,6 +233,44 @@ namespace OpenRA.Graphics
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
+    public void DrawTextWithSelection(string text, float2 location, Color fg, Color bgHighlight, int selectionStart, int selectionEnd)
+    {
+      var currentIndex = 0;
+			// Offset from the baseline position to the top-left of the glyph for rendering
+			var rowLocation = location + new float2(0, size);
+      var columnLocation = rowLocation;
+
+			foreach (var character in text)
+			{
+				if (character == '\n')
+				{
+					rowLocation += new float2(0, size);
+					columnLocation = rowLocation;
+					continue;
+				}
+
+				var glyph = glyphs[Pair.New(character, fg)];
+
+        if (currentIndex >= selectionStart && selectionEnd >= currentIndex)
+			    Game.Renderer.RgbaColorRenderer.FillRect(
+              // draw highlights from the top of the line, not the baseline.
+              columnLocation - new float2(0, size),
+              columnLocation + new float2(glyph.Advance / deviceScale, TopOffset),
+              bgHighlight);
+
+        currentIndex++;
+
+				if (glyph.Sprite != null)
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(glyph.Sprite,
+						new float2(
+							(int)Math.Round(columnLocation.X * deviceScale + glyph.Offset.X, 0) / deviceScale,
+							columnLocation.Y + glyph.Offset.Y / deviceScale),
+						glyph.Sprite.Size / deviceScale);
+
+				columnLocation += new float2(glyph.Advance / deviceScale, 0);
+			}
+    }
+
 		public int2 Measure(string text)
 		{
 			if (string.IsNullOrEmpty(text))

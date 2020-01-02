@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public TextVAlign VAlign = TextVAlign.Middle;
 		public string Font = ChromeMetrics.Get<string>("TextFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextColor");
+		public Color TextColorHighlight = ChromeMetrics.Get<Color>("TextfieldColorHighlight");
 		public bool Contrast = ChromeMetrics.Get<bool>("TextContrast");
 		public bool Shadow = ChromeMetrics.Get<bool>("TextShadow");
 		public Color ContrastColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
@@ -35,13 +36,84 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
+		public Func<Color> GetColorHighlight;
 		public Func<Color> GetContrastColorDark;
 		public Func<Color> GetContrastColorLight;
+
+    class Selection
+    {
+      public enum States { Empty, Primed, Active, Inactive };
+      public States State = States.Empty;
+      public int First = -1;
+      public int Last = -1;
+
+      public int Start {
+        get {
+          return Math.Min(First, Last);
+        }
+      }
+
+      public int End {
+        get {
+          return Math.Max(First, Last);
+        }
+      }
+
+      public Selection() { }
+
+      public bool Prime()
+      {
+        if (State == States.Active && State == States.Inactive)
+          return false;
+
+        State = States.Primed;
+        return true;
+      }
+
+      public bool Activate(int first)
+      {
+        if (State == States.Primed)
+        {
+          State = States.Active;
+          First = first;
+          Last = first;
+          return true;
+        }
+
+        return false;
+      }
+
+      public bool Update(int last)
+      {
+        if (State == States.Active)
+        {
+          Last = last;
+          return true;
+        }
+
+        return false;
+      }
+
+      public bool Deactivate()
+      {
+        State = States.Inactive;
+        return true;
+      }
+
+      public bool Reset()
+      {
+        State = States.Empty;
+        return true;
+      }
+    }
+
+    Selection selection = new Selection();
 
 		public LabelWidget()
 		{
 			GetText = () => Text;
 			GetColor = () => TextColor;
+      GetColorHighlight = () => TextColorHighlight;
 			GetContrastColorDark = () => ContrastColorDark;
 			GetContrastColorLight = () => ContrastColorLight;
 		}
@@ -62,18 +134,38 @@ namespace OpenRA.Mods.Common.Widgets
 			WordWrap = other.WordWrap;
 			GetText = other.GetText;
 			GetColor = other.GetColor;
+      GetColorHighlight = other.GetColorHighlight;
 			GetContrastColorDark = other.GetContrastColorDark;
 			GetContrastColorLight = other.GetContrastColorLight;
 		}
 
-		public override void Draw()
-		{
+    // Allow same checks when ever we get thee font, should this be cached?
+    SpriteFont GetFont()
+    {
+			SpriteFont font;
 			if (!Game.Renderer.Fonts.TryGetValue(Font, out var font))
 				throw new ArgumentException("Requested font '{0}' was not found.".F(Font));
 
-			var text = GetText();
-			if (text == null)
-				return;
+      return font;
+    }
+
+    // allow getting the content with the same checks elsewhere, should this be cached?
+    string GetTextContent()
+    {
+      var text = GetText();
+      var font = GetFont();
+
+			if (WordWrap)
+				text = WidgetUtils.WrapText(text, Bounds.Width, font);
+
+      return text;
+    }
+
+    // Allow access to the position elsewhere, should this be cached?
+    int2 GetPosition()
+    {
+      var font = GetFont();
+			var text = GetTextContent();
 
 			var textSize = font.Measure(text);
 			var position = RenderOrigin;
@@ -94,18 +186,31 @@ namespace OpenRA.Mods.Common.Widgets
 			if (Align == TextAlign.Right)
 				position += new int2(Bounds.Width - textSize.X, 0);
 
-			if (WordWrap)
-				text = WidgetUtils.WrapText(text, Bounds.Width, font);
+      return position;
+    }
+
+		public override void Draw()
+		{
+      var text = GetTextContent();
+      if (text == null)
+        return;
 
 			DrawInner(text, font, GetColor(), position);
 		}
 
 		protected virtual void DrawInner(string text, SpriteFont font, Color color, int2 position)
 		{
+      var font = GetFont();
+			var color = GetColor();
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
-			if (Contrast)
-				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, ContrastRadius);
+      var bgHighlight = GetColorHighlight();
+      var position = GetPosition();
+
+      if (selection.State != Selection.States.Empty)
+        font.DrawTextWithSelection(text, position, color, bgHighlight, selection.Start, selection.End);
+			else if (Contrast)
+				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, 2);
 			else if (Shadow)
 				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
 			else
@@ -113,5 +218,50 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
+
+		public override bool HandleMouseInput(MouseInput mi)
+    {
+      switch (mi.Event)
+      {
+        case MouseInputEvent.Down:
+          if (selection.State == Selection.States.Empty)
+            return selection.Prime();
+
+          if (selection.State == Selection.States.Inactive)
+            return selection.Reset();
+
+          break;
+
+        case MouseInputEvent.Move:
+          // only calculate the nearest index if we have to.
+          if (selection.State == Selection.States.Empty || selection.State == Selection.States.Inactive)
+            return false;
+
+          var nearestIndex = WidgetUtils.FindNearestIndex(
+              GetTextContent(),
+              GetPosition(),
+              GetFont(),
+              mi.Location);
+
+          if (selection.State == Selection.States.Primed)
+            return selection.Activate(nearestIndex);
+
+          if (selection.State == Selection.States.Active)
+            return selection.Update(nearestIndex);
+
+          break;
+
+        case MouseInputEvent.Up:
+          if (selection.State == Selection.States.Active)
+            return selection.Deactivate();
+
+          break;
+
+        default:
+          throw new Exception("Unrecognized MouseEvent on Label.");
+      }
+
+      return false;
+    }
 	}
 }
