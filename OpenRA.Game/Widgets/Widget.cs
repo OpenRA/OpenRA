@@ -123,6 +123,11 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
+		public static bool HandleGestureInput(MouseInput mi)
+		{
+			return Root.HandleGestureInputOuter(mi);
+		}
+
 		/// <summary>Possibly handle keyboard input (if this widget has keyboard focus)</summary>
 		/// <returns><c>true</c>, if keyboard input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
 		/// <param name="e">Key input data</param>
@@ -398,6 +403,17 @@ namespace OpenRA.Widgets
 				Ui.MouseOverWidget = this;
 
 			return HandleMouseInput(mi);
+		}
+
+		public virtual bool HandleGestureInput(MouseInput mi) { return false; }
+
+		public bool HandleGestureInputOuter(MouseInput mi)
+		{
+			foreach (var child in Children.OfType<Widget>().Reverse())
+				if (child.HandleGestureInputOuter(mi))
+					return true;
+
+			return HandleGestureInput(mi);
 		}
 
 		public virtual bool HandleKeyPress(KeyInput e) { return false; }

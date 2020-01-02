@@ -19,9 +19,10 @@ namespace OpenRA
 		void OnKeyInput(KeyInput input);
 		void OnMouseInput(MouseInput input);
 		void OnTextInput(string text);
+		void OnGestureInput(MouseInput input);
 	}
 
-	public enum MouseInputEvent { Down, Move, Up, Scroll }
+	public enum MouseInputEvent { Down, Move, Up, Scroll, Gesture, FingerDown, FingerUp }
 	public struct MouseInput
 	{
 		public MouseInputEvent Event;
