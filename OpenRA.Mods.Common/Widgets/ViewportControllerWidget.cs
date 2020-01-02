@@ -442,6 +442,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				return true;
 			}
+
 			return false;
 		}
 
