@@ -115,9 +115,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAttackSuicides(),
 			}),
 
-			new UpdatePath("release-20190314", new UpdateRule[]
+			new UpdatePath("release-20190314", "release-20191117", new UpdateRule[]
 			{
-				// Bleed only changes here
 				new MultipleDeploySounds(),
 				new RemoveSimpleBeacon(),
 				new MakeMobilePausableConditional(),
@@ -136,7 +135,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameSearchRadius(),
 				new RenameChronoshiftFootprint(),
 				new RemoveMoveIntoWorldFromExit(),
-			})
+			}),
+
+			new UpdatePath("release-20191117", new UpdateRule[]
+			{
+				new ReplaceAttackTypeStrafe(),
+			}),
 		};
 
 		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)

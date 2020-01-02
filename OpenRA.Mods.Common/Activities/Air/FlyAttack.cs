@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Rearmable rearmable;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
+		readonly WDist strafeDistance;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -44,6 +45,8 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			attackAircraft = self.Trait<AttackAircraft>();
 			rearmable = self.TraitOrDefault<Rearmable>();
+
+			strafeDistance = attackAircraft.Info.StrafeRunLength;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -151,7 +154,9 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(aircraft.MoveWithinRange(target, minimumRange, lastVisibleMaximumRange, target.CenterPosition, Color.Red));
 
 			// The aircraft must keep moving forward even if it is already in an ideal position.
-			else if (!aircraft.Info.CanHover || attackAircraft.Info.AttackType == AirAttackType.Strafe)
+			else if (attackAircraft.Info.AttackType == AirAttackType.Strafe)
+				QueueChild(new StrafeAttackRun(self, attackAircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange));
+			else if (attackAircraft.Info.AttackType == AirAttackType.Default && !aircraft.Info.CanHover)
 				QueueChild(new FlyAttackRun(self, target, lastVisibleMaximumRange));
 
 			// Turn to face the target if required.
@@ -224,6 +229,43 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (targetWasVisibleActor && !target.IsValidFor(self))
 				Cancel(self);
+
+			return false;
+		}
+	}
+
+	class StrafeAttackRun : Activity
+	{
+		Target target;
+		WDist exitRange;
+		readonly AttackAircraft attackAircraft;
+
+		public StrafeAttackRun(Actor self, AttackAircraft attackAircraft, Target t, WDist exitRange)
+		{
+			ChildHasPriority = false;
+
+			target = t;
+			this.attackAircraft = attackAircraft;
+			this.exitRange = exitRange;
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			QueueChild(new Fly(self, target, target.CenterPosition));
+			QueueChild(new Fly(self, target, exitRange, WDist.MaxValue, target.CenterPosition));
+		}
+
+		public override bool Tick(Actor self)
+		{
+			if (TickChild(self) || IsCanceling)
+				return true;
+
+			// Strafe attacks target the ground below the original target
+			// Update the position if we seen the target move; keep the previous one if it dies or disappears
+			bool targetIsHiddenActor;
+			target = target.Recalculate(self.Owner, out targetIsHiddenActor);
+			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+				attackAircraft.SetRequestedTarget(self, Target.FromTargetPositions(target), true);
 
 			return false;
 		}
