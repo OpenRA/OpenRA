@@ -112,7 +112,6 @@ MIG:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
-		AttackTurnDelay: 30
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
