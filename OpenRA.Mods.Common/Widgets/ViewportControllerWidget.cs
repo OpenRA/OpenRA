@@ -413,6 +413,7 @@ namespace OpenRA.Mods.Common.Widgets
 					joystickScrollEnd = mi.Location;
 				}
 			}
+
 			return IsJoystickScrolling || isStandardScrolling;
 		}
 
@@ -441,7 +442,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 				return true;
 			}
-
 			return false;
 		}
 
