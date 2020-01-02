@@ -53,7 +53,7 @@ namespace OpenRA
 
 		public void OnGestureInput(MouseInput input)
 		{
-			Sync.CheckSyncUnchanged(world, () => Ui.HandleGestureInput(input));
+			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => Ui.HandleGestureInput(input));
 		}
 	}
 
