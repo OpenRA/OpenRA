@@ -425,6 +425,7 @@ namespace OpenRA.Mods.Common.Widgets
 				startScrollGesture = true;
 				return true;
 			}
+
 			if (mi.Event == MouseInputEvent.FingerUp)
 			{
 				startScrollGesture = true;
