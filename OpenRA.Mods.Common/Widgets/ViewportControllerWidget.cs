@@ -97,8 +97,8 @@ namespace OpenRA.Mods.Common.Widgets
 		HotkeyReference[] restoreBookmarkHotkeys;
 		WPos?[] bookmarkPositions;
 
-		public static bool startScrollGesture;
-		public static int2 prevGestureScroll;
+		bool startScrollGesture;
+		int2 prevGestureScroll;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -412,6 +412,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					joystickScrollEnd = mi.Location;
 				}
+
 			}
 
 			return IsJoystickScrolling || isStandardScrolling;

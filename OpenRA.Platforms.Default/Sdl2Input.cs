@@ -150,20 +150,22 @@ namespace OpenRA.Platforms.Default
 							var pos = EventPosition(device, (int)(e.tfinger.x * viewportres.Width), (int)(e.tfinger.y * viewportres.Height));
 
 							inputHandler.OnGestureInput(new MouseInput(
-								MouseInputEvent.FingerDown, MouseButton.None, 0,
-								pos, mods, 0));
+								MouseInputEvent.FingerDown, MouseButton.None,
+								pos, new int2(0, 0), mods, 0));
 							break;
 						}
+
 					case SDL.SDL_EventType.SDL_FINGERUP:
 						{
 							var viewportres = Game.Renderer.Resolution;
 							var pos = EventPosition(device, (int)(e.tfinger.x * viewportres.Width), (int)(e.tfinger.y * viewportres.Height));
 
 							inputHandler.OnGestureInput(new MouseInput(
-								MouseInputEvent.FingerUp, MouseButton.None, 0,
-								pos, mods, 0));
+								MouseInputEvent.FingerUp, MouseButton.None,
+								pos, new int2(0, 0), mods, 0));
 							break;
 						}
+
 					case SDL.SDL_EventType.SDL_MULTIGESTURE:
 						{
 							var viewportres = Game.Renderer.Resolution;
@@ -171,11 +173,12 @@ namespace OpenRA.Platforms.Default
 							var pos = EventPosition(device, (int)(e.mgesture.x * viewportres.Width), (int)(e.mgesture.y * viewportres.Height));
 
 							inputHandler.OnGestureInput(new MouseInput(
-								MouseInputEvent.Gesture, MouseButton.None, 0,
-								pos, mods, 0));
+								MouseInputEvent.Gesture, MouseButton.None,
+								pos, new int2(0, 0), mods, 0));
 
 							break;
 						}
+
 					case SDL.SDL_EventType.SDL_MOUSEWHEEL:
 						{
 							int x, y;
