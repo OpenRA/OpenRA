@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool AllowModifiers = true;
 
+		[Desc("Index set to be fully transparent/invisible.")]
+		public readonly int TransparentIndex = 0;
+
 		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.World, this); }
 	}
 
@@ -65,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			var g = (int)(a * info.G + 0.5f).Clamp(0, 255);
 			var b = (int)(a * info.B + 0.5f).Clamp(0, 255);
 			var c = (uint)Color.FromArgb(info.A, r, g, b).ToArgb();
-			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == 0) ? 0 : c)), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == info.TransparentIndex) ? 0 : c)), info.AllowModifiers);
 		}
 	}
 }
