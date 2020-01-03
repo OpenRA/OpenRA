@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -38,19 +37,46 @@ namespace OpenRA.Graphics
 				hardwarePalette.AddPalette(p.Key, p.Value, false);
 
 			hardwarePalette.Initialize();
-
 			sheetBuilder = new SheetBuilder(SheetType.Indexed);
 			foreach (var kv in cursorProvider.Cursors)
 			{
+				var frames = kv.Value.Frames;
 				var palette = cursorProvider.Palettes[kv.Value.Palette];
-				var hc = kv.Value.Frames
-					.Select(f => CreateCursor(f, palette, kv.Key, kv.Value))
-					.ToArray();
 
-				hardwareCursors.Add(kv.Key, hc);
+				// Hardware cursors have a number of odd platform-specific bugs/limitations.
+				// Reduce the number of edge cases by padding the individual frames such that:
+				// - the hotspot is inside the frame bounds (enforced by SDL)
+				// - all frames within a sequence have the same size (needed for macOS 10.15)
+				// - the frame size is a multiple of 8 (needed for Windows)
+				var sequenceBounds = Rectangle.FromLTRB(0, 0, 1, 1);
+				var frameHotspots = new int2[frames.Length];
+				for (var i = 0; i < frames.Length; i++)
+				{
+					// Hotspot relative to the center of the frame
+					frameHotspots[i] = kv.Value.Hotspot - frames[i].Offset.ToInt2() + new int2(frames[i].Size) / 2;
 
-				var s = kv.Value.Frames.Select(a => sheetBuilder.Add(a)).ToArray();
-				sprites.Add(kv.Key, s);
+					// Bounds relative to the hotspot
+					sequenceBounds = Rectangle.Union(sequenceBounds, new Rectangle(-frameHotspots[i], frames[i].Size));
+				}
+
+				// Pad bottom-right edge to make the frame size a multiple of 8
+				var paddedSize = 8 * new int2((sequenceBounds.Width + 7) / 8, (sequenceBounds.Height + 7) / 8);
+
+				var cursors = new IHardwareCursor[frames.Length];
+				var frameSprites = new Sprite[frames.Length];
+				for (var i = 0; i < frames.Length; i++)
+				{
+					// Software rendering is used when the cursor is locked
+					frameSprites[i] = sheetBuilder.Add(frames[i].Data, frames[i].Size, 0, frames[i].Offset);
+
+					// Calculate the padding to position the frame within sequenceBounds
+					var paddingTL = -(sequenceBounds.Location + frameHotspots[i]);
+					var paddingBR = paddedSize - new int2(frames[i].Size) - paddingTL;
+					cursors[i] = CreateCursor(kv.Key, frames[i], palette, paddingTL, paddingBR, -sequenceBounds.Location);
+				}
+
+				hardwareCursors.Add(kv.Key, cursors);
+				sprites.Add(kv.Key, frameSprites);
 			}
 
 			sheetBuilder.Current.ReleaseBuffer();
@@ -64,48 +90,24 @@ namespace OpenRA.Graphics
 			return new PaletteReference(name, hardwarePalette.GetPaletteIndex(name), pal, hardwarePalette);
 		}
 
-		IHardwareCursor CreateCursor(ISpriteFrame f, ImmutablePalette palette, string name, CursorSequence sequence)
+		IHardwareCursor CreateCursor(string name, ISpriteFrame frame, ImmutablePalette palette, int2 paddingTL, int2 paddingBR, int2 hotspot)
 		{
-			var hotspot = sequence.Hotspot - f.Offset.ToInt2() + new int2(f.Size) / 2;
-
-			// Expand the frame if required to include the hotspot
-			var frameWidth = f.Size.Width;
-			var dataWidth = f.Size.Width;
-			var dataX = 0;
-			if (hotspot.X < 0)
+			// Pad the cursor and convert to RBGA
+			var newWidth = paddingTL.X + frame.Size.Width + paddingBR.X;
+			var newHeight = paddingTL.Y + frame.Size.Height + paddingBR.Y;
+			var rgbaData = new byte[4 * newWidth * newHeight];
+			for (var j = 0; j < frame.Size.Height; j++)
 			{
-				dataX = -hotspot.X;
-				dataWidth += dataX;
-				hotspot = hotspot.WithX(0);
-			}
-			else if (hotspot.X >= frameWidth)
-				dataWidth = hotspot.X + 1;
-
-			var frameHeight = f.Size.Height;
-			var dataHeight = f.Size.Height;
-			var dataY = 0;
-			if (hotspot.Y < 0)
-			{
-				dataY = -hotspot.Y;
-				dataHeight += dataY;
-				hotspot = hotspot.WithY(0);
-			}
-			else if (hotspot.Y >= frameHeight)
-				dataHeight = hotspot.Y + 1;
-
-			var data = new byte[4 * dataWidth * dataHeight];
-			for (var j = 0; j < frameHeight; j++)
-			{
-				for (var i = 0; i < frameWidth; i++)
+				for (var i = 0; i < frame.Size.Width; i++)
 				{
-					var bytes = BitConverter.GetBytes(palette[f.Data[j * frameWidth + i]]);
-					var start = 4 * ((j + dataY) * dataWidth + dataX + i);
+					var bytes = BitConverter.GetBytes(palette[frame.Data[j * frame.Size.Width + i]]);
+					var o = 4 * ((j + paddingTL.Y) * newWidth + i + paddingTL.X);
 					for (var k = 0; k < 4; k++)
-						data[start + k] = bytes[k];
+						rgbaData[o + k] = bytes[k];
 				}
 			}
 
-			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(dataWidth, dataHeight), data, hotspot);
+			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(newWidth, newHeight), rgbaData, hotspot);
 		}
 
 		public void SetCursor(string cursorName)
