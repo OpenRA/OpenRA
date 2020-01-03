@@ -1,5 +1,5 @@
 Cursors:
-	cursor.png: cursor
+	cursor.png:
 		default:
 			Start: 0
 			X: -5
