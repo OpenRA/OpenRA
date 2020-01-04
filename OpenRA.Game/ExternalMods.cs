@@ -45,10 +45,15 @@ namespace OpenRA
 		{
 			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
 
-			// If the player has defined a local support directory (in the game directory)
-			// then this will override both the regular and system support dirs
-			var sources = new[] { Platform.GetSupportDir(SupportDirType.System), Platform.GetSupportDir(SupportDirType.User) };
-			foreach (var source in sources.Distinct())
+			// Several types of support directory types are available, depending on
+			// how the player has installed and launched the game.
+			// Read registration metadata from all of them
+			var sources = Enum.GetValues(typeof(SupportDirType))
+				.Cast<SupportDirType>()
+				.Select(t => Platform.GetSupportDir(t))
+				.Distinct();
+
+			foreach (var source in sources)
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 				if (!Directory.Exists(metadataPath))
@@ -115,7 +120,15 @@ namespace OpenRA
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
 			if (registration.HasFlag(ModRegistration.User))
+			{
 				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+
+				// If using the modern support dir we must also write the registration
+				// to the legacy support dir for older engine versions, but ONLY if it exists
+				var legacyPath = Platform.GetSupportDir(SupportDirType.LegacyUser);
+				if (Directory.Exists(legacyPath))
+					sources.Add(legacyPath);
+			}
 
 			// Make sure the mod is available for this session, even if saving it fails
 			LoadMod(yaml.First().Value, forceRegistration: true);
@@ -151,7 +164,13 @@ namespace OpenRA
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
 			if (registration.HasFlag(ModRegistration.User))
+			{
+				// User support dir may be using the modern or legacy value, or overridden by the user
+				// Add all the possibilities and let the .Distinct() below ignore the duplicates
 				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
+				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
+			}
 
 			var activeModKey = ExternalMod.MakeKey(activeMod);
 			foreach (var source in sources.Distinct())
@@ -210,7 +229,13 @@ namespace OpenRA
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
 			if (registration.HasFlag(ModRegistration.User))
+			{
+				// User support dir may be using the modern or legacy value, or overridden by the user
+				// Add all the possibilities and let the .Distinct() below ignore the duplicates
 				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
+				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
+			}
 
 			var key = ExternalMod.MakeKey(mod);
 			mods.Remove(key);
