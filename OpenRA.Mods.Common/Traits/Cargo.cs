@@ -107,6 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 		int loadingToken = ConditionManager.InvalidConditionToken;
 		Stack<int> loadedTokens = new Stack<int>();
 		bool takeOffAfterLoad;
+		bool initialised;
+
 		readonly CachedTransform<CPos, IEnumerable<CPos>> currentAdjacentCells;
 
 		public IEnumerable<CPos> CurrentAdjacentCells
@@ -161,17 +163,6 @@ namespace OpenRA.Mods.Common.Traits
 				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 
-			foreach (var c in cargo)
-			{
-				c.Trait<Passenger>().Transport = self;
-
-				foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
-					nec.OnEnteredCargo(c, self);
-
-				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-					npe.OnPassengerEntered(self, c);
-			}
-
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);
 		}
 
@@ -192,6 +183,23 @@ namespace OpenRA.Mods.Common.Traits
 				if (!string.IsNullOrEmpty(Info.LoadedCondition))
 					loadedTokens.Push(conditionManager.GrantCondition(self, Info.LoadedCondition));
 			}
+
+			// Defer notifications until we are certain all traits on the transport are initialised
+			self.World.AddFrameEndTask(w =>
+			{
+				foreach (var c in cargo)
+				{
+					c.Trait<Passenger>().Transport = self;
+
+					foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
+						nec.OnEnteredCargo(c, self);
+
+					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+						npe.OnPassengerEntered(self, c);
+				}
+
+				initialised = true;
+			});
 		}
 
 		static int GetWeight(Actor a) { return a.Info.TraitInfo<PassengerInfo>().Weight; }
@@ -410,14 +418,17 @@ namespace OpenRA.Mods.Common.Traits
 					loadingToken = conditionManager.RevokeCondition(self, loadingToken);
 			}
 
-			foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
-				nec.OnEnteredCargo(a, self);
+			// Don't initialise (effectively twice) if this runs before the FrameEndTask from Created
+			if (initialised)
+			{
+				a.Trait<Passenger>().Transport = self;
 
-			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
-				npe.OnPassengerEntered(self, a);
+				foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
+					nec.OnEnteredCargo(a, self);
 
-			var p = a.Trait<Passenger>();
-			p.Transport = self;
+				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					npe.OnPassengerEntered(self, a);
+			}
 
 			string passengerCondition;
 			if (conditionManager != null && Info.PassengerConditions.TryGetValue(a.Info.Name, out passengerCondition))
