@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
 
@@ -32,6 +33,13 @@ namespace OpenRA.Network
 
 		public int LocalClientId { get { return -1; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
+		public IPEndPoint EndPoint
+		{
+			get { throw new NotSupportedException("A replay connection doesn't have an endpoint"); }
+		}
+
+		public string ErrorMessage { get { return null; } }
+
 		public readonly int TickCount;
 		public readonly int FinalGameTick;
 		public readonly bool IsValid;

@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -298,22 +299,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			button.AttachPanel(newsPanel, () => newsOpen = false);
 		}
 
-		void OnRemoteDirectConnect(string host, int port)
+		void OnRemoteDirectConnect(ConnectionTarget endpoint)
 		{
 			SwitchMenu(MenuType.None);
 			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
 				{ "onStart", RemoveShellmapUI },
 				{ "onExit", () => SwitchMenu(MenuType.Main) },
-				{ "directConnectHost", host },
-				{ "directConnectPort", port },
+				{ "directConnectEndPoint", endpoint },
 			});
 		}
 
 		void LoadMapIntoEditor(string uid)
 		{
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
-				Game.CreateLocalServer(uid),
+			ConnectionLogic.Connect(Game.CreateLocalServer(uid),
 				"",
 				() => { Game.LoadEditor(uid); },
 				() => { Game.CloseServer(); SwitchMenu(MenuType.MapEditor); });
@@ -425,8 +424,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.Settings.Server.Map = map;
 			Game.Settings.Save();
 
-			ConnectionLogic.Connect(IPAddress.Loopback.ToString(),
-				Game.CreateLocalServer(map),
+			ConnectionLogic.Connect(Game.CreateLocalServer(map),
 				"",
 				OpenSkirmishLobbyPanel,
 				() => { Game.CloseServer(); SwitchMenu(MenuType.Main); });
@@ -460,8 +458,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Multiplayer; } },
 				{ "onExit", () => SwitchMenu(MenuType.Main) },
-				{ "directConnectHost", null },
-				{ "directConnectPort", 0 },
+				{ "directConnectEndPoint", null },
 			});
 		}
 

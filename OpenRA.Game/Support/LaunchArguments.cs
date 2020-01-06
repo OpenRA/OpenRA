@@ -9,6 +9,9 @@
  */
 #endregion
 
+using System;
+using OpenRA.Network;
+
 namespace OpenRA
 {
 	public class LaunchArguments
@@ -38,17 +41,28 @@ namespace OpenRA
 					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
 		}
 
-		public string GetConnectAddress()
+		public ConnectionTarget GetConnectEndPoint()
 		{
-			var connect = string.Empty;
+			try
+			{
+				Uri uri;
+				if (!string.IsNullOrEmpty(URI))
+					uri = new Uri(URI);
+				else if (!string.IsNullOrEmpty(Connect))
+					uri = new Uri("tcp://" + Connect);
+				else
+					return null;
 
-			if (!string.IsNullOrEmpty(Connect))
-				connect = Connect;
-
-			if (!string.IsNullOrEmpty(URI))
-				connect = URI.Substring(URI.IndexOf("://", System.StringComparison.Ordinal) + 3).TrimEnd('/');
-
-			return connect;
+				if (uri.IsAbsoluteUri)
+					return new ConnectionTarget(uri.Host, uri.Port);
+				else
+					return null;
+			}
+			catch (Exception ex)
+			{
+				Log.Write("client", "Failed to parse Launch.URI or Launch.Connect: {0}", ex.Message);
+				return null;
+			}
 		}
 	}
 }
