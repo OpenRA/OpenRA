@@ -177,12 +177,12 @@ Tick = function()
 	end
 
 	if atreides_main.HasNoRequiredUnits() and atreides_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Atreides have been annihilated!")
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if corrino.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Emperor have been annihilated!")
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -191,7 +191,7 @@ Tick = function()
 	end
 
 	if (AHiTechFactory.IsDead or AHiTechFactory.Owner ~= atreides_main) and not HiTechIsDead then
-		Media.DisplayMessage("High Tech Factory neutralized! Atreides cut off from Imperial reinforcement!", "Mentat")
+		Media.DisplayMessage("High Tech Factory neutralized! Atreides cut off from Imperial reinforcement!")
 		HiTechIsDead = true
 	end
 
@@ -228,7 +228,7 @@ WorldLoaded = function()
 	KillHarkonnen2 = atreides_small.AddPrimaryObjective("Kill all Harkonnen units.")
 	KillHarkonnen3 = corrino.AddPrimaryObjective("Kill all Harkonnen units.")
 
-	Media.DisplayMessage("Destroy Atreides High Tech Factory to cut off Atreides from Imperial reinforcements.", "Mentat")
+	Media.DisplayMessage("Destroy Atreides High Tech Factory to cut off Atreides from Imperial reinforcements.")
 
 	Camera.Position = HEngineer.CenterPosition
 	AtreidesAttackLocation = AConYard2.Location

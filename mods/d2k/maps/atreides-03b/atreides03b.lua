@@ -87,7 +87,7 @@ Tick = function()
 	end
 
 	if ordos.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Ordos have been annihilated!")
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
@@ -105,7 +105,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.")
 	end
 
 	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
@@ -127,7 +127,7 @@ WorldLoaded = function()
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
 			if player.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!")
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					ordos.MarkCompletedObjective(KillAtreides)
 				end)

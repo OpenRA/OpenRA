@@ -147,7 +147,7 @@ SendStarportReinforcements = function()
 			return
 		end
 
-		Media.DisplayMessage("Imperial ships penetrating defense grid!", "Mentat")
+		Media.DisplayMessage("Imperial ships penetrating defense grid!")
 	end)
 end
 
@@ -171,7 +171,7 @@ OrdosReinforcementNotification = function(currentWave, totalWaves)
 			return
 		end
 
-		Media.DisplayMessage("Enemy carryall drop detected!", "Mentat")
+		Media.DisplayMessage("Enemy carryall drop detected!")
 		
 		OrdosReinforcementNotification(currentWave, totalWaves)
 	end)
@@ -186,12 +186,12 @@ Tick = function()
 	end
 
 	if ordos_main.HasNoRequiredUnits() and ordos_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Ordos have been annihilated!")
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
 	if corrino.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor has been annihilated!", "Mentat")
+		Media.DisplayMessage("The Emperor has been annihilated!")
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -254,7 +254,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Media.DisplayMessage("Protect the Outpost from attack.", "Mentat")
+		Media.DisplayMessage("Protect the Outpost from attack.")
 	end)
 
 	local path = function() return Utils.Random(OrdosPaths) end

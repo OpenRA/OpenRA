@@ -267,7 +267,7 @@ CheckSmugglerEnemies = function()
 			if attacker.Owner == player and not message_check then
 
 				message_check = true
-				Media.DisplayMessage("The Smugglers are now hostile!", "Mentat")
+				Media.DisplayMessage("The Smugglers are now hostile!")
 			end
 		end)
 	end)
@@ -282,17 +282,17 @@ Tick = function()
 	end
 
 	if atreides_main.HasNoRequiredUnits() and atreides_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Atreides have been annihilated!")
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if corrino_main.HasNoRequiredUnits() and corrino_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor has been annihilated!", "Mentat")
+		Media.DisplayMessage("The Emperor has been annihilated!")
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
 	if smuggler_neutral.HasNoRequiredUnits() and smuggler_harkonnen.HasNoRequiredUnits() and smuggler_ai.HasNoRequiredUnits() and smuggler_both.HasNoRequiredUnits() and not SmugglersKilled then
-		Media.DisplayMessage("The Smugglers have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Smugglers have been annihilated!")
 		SmugglersKilled = true
 	end
 

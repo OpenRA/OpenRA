@@ -133,12 +133,12 @@ Tick = function()
 	end
 
 	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Atreides have been annihilated!")
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if fremen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillFremen) then
-		Media.DisplayMessage("The Fremen have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Fremen have been annihilated!")
 		player.MarkCompletedObjective(KillFremen)
 	end
 
@@ -191,7 +191,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		Media.DisplayMessage("Fremen concentrations spotted to the North and Southwest.", "Mentat")
+		Media.DisplayMessage("Fremen concentrations spotted to the North and Southwest.")
 	end)
 
 	local atreidesCondition = function() return player.IsObjectiveCompleted(KillAtreides) end

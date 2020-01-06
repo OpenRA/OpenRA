@@ -71,18 +71,18 @@ Tick = function()
 	-- player has no Wind Trap
 	if (player.PowerProvided <= 20 or player.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		HasPower = false
-		Media.DisplayMessage(Messages[2], "Mentat")
+		Media.DisplayMessage(Messages[2])
 	else
 		HasPower = true
 	end
 
 	-- player has no Refinery and no Silos
 	if HasPower and player.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[3], "Mentat")
+		Media.DisplayMessage(Messages[3])
 	end
 
 	if HasPower and player.Resources > player.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[4], "Mentat")
+		Media.DisplayMessage(Messages[4])
 	end
 
 	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
@@ -102,7 +102,7 @@ WorldLoaded = function()
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
 			if player.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!")
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					harkonnen.MarkCompletedObjective(KillAtreides)
 				end)
@@ -134,7 +134,7 @@ WorldLoaded = function()
 		end
 	end)
 
-	Media.DisplayMessage(Messages[1], "Mentat")
+	Media.DisplayMessage(Messages[1])
 
 	Trigger.AfterDelay(DateTime.Seconds(25), function()
 		Media.PlaySpeechNotification(player, "Reinforce")

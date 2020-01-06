@@ -123,7 +123,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Harkonnen have been annihilated!")
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -137,7 +137,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.")
 	end
 end
 

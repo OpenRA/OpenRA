@@ -201,7 +201,7 @@ CheckAttackToAtreides = function()
 				end)
 
 				check = true
-				Media.DisplayMessage("The Atreides are now hostile!", "Mentat")
+				Media.DisplayMessage("The Atreides are now hostile!")
 			end
 		end)
 	end)
@@ -223,17 +223,17 @@ Tick = function()
 	end
 
 	if ordos.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Ordos have been annihilated!")
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
 	if atreides_enemy.HasNoRequiredUnits() and atreides_neutral.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Atreides have been annihilated!")
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if mercenary_enemy.HasNoRequiredUnits() and mercenary_ally.HasNoRequiredUnits() and not MercenariesDestroyed then
-		Media.DisplayMessage("The Mercenaries have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Mercenaries have been annihilated!")
 		MercenariesDestroyed = true
 	end
 
@@ -280,7 +280,7 @@ WorldLoaded = function()
 
 	Trigger.OnCapture(MHeavyFactory, function()
 		player.MarkCompletedObjective(AllyWithMercenaries)
-		Media.DisplayMessage("Leader Captured. Mercenaries have been persuaded to fight with House Harkonnen.", "Mentat")
+		Media.DisplayMessage("Leader Captured. Mercenaries have been persuaded to fight with House Harkonnen.")
 		MercenaryAttackLocation = OPalace.Location
 
 		ChangeOwner(mercenary_enemy, mercenary_ally)

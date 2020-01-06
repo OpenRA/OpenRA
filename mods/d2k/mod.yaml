@@ -227,6 +227,17 @@ GameSpeeds:
 ColorValidator:
 	TeamColorPresets: ffc9ca, f53333, ffae00, fff830, 87f506, f872ad, da06f3, ddb8ff, def7b2, 39c46f, 200738, 280df6, 2f86f2, 76d2f8, 498221, 000000
 
+ChatLabels:
+	BattlefieldControl: Mentat
+	Mission: Mentat
+	Debug: Developer
+	All: Everyone
+	Spectators: Observers
+	Team: Allies
+	Ally: Friendly
+	Spectator: Observer
+	Dead: Defeated
+
 ModContent:
 	InstallPromptMessage: Dune 2000 requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without\nmusic or videos) from an online mirror of the game files.\n\nAdvanced Install includes options for copying the music, videos,\nand other content from an original game disc.
 	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the game files.

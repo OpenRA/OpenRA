@@ -70,7 +70,7 @@ Tick = function()
 	end
 
 	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Atreides have been annihilated!")
 		player.MarkCompletedObjective(KillAtreides)
 	end
 end

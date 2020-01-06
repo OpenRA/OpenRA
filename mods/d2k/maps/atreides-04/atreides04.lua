@@ -108,7 +108,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Harkonnen have been annihilated!")
 		player.MarkCompletedObjective(KillHarkonnen)
 		player.MarkCompletedObjective(ProtectFremen)
 		player.MarkCompletedObjective(KeepIntegrity)
@@ -150,7 +150,7 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Beacon.New(player, Sietch.CenterPosition + WVec.New(0, 1024, 0))
-		Media.DisplayMessage("Fremen Sietch detected to the southeast.", "Mentat")
+		Media.DisplayMessage("Fremen Sietch detected to the southeast.")
 	end)
 
 	Trigger.OnAllKilledOrCaptured(HarkonnenBase, function()
@@ -166,7 +166,7 @@ WorldLoaded = function()
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
 			Beacon.New(player, Sietch.CenterPosition + WVec.New(0, 1024, 0), DateTime.Seconds(7))
-			Media.DisplayMessage("The Fremen Sietch is under attack!", "Mentat")
+			Media.DisplayMessage("The Fremen Sietch is under attack!")
 
 			local defenders = fremen.GetGroundAttackers()
 			if #defenders > 0 then

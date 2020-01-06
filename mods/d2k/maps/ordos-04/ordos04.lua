@@ -90,7 +90,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Harkonnen have been annihilated!")
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -146,7 +146,7 @@ WorldLoaded = function()
 
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage("Don't destroy the Outpost!", "Mentat")
+			Media.DisplayMessage("Don't destroy the Outpost!")
 		end
 	end)
 
@@ -156,6 +156,6 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()
-		Media.DisplayMessage("WARNING: Large force approaching!", "Mentat")
+		Media.DisplayMessage("WARNING: Large force approaching!")
 	end)
 end

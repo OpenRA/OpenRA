@@ -186,7 +186,7 @@ SendMercenaries = function()
 	Trigger.AfterDelay(MercenaryAttackDelay[Difficulty], function()
 		mercWave = mercWave + 1
 
-		Media.DisplayMessage("Incoming hostile Mercenary force detected.", "Mentat")
+		Media.DisplayMessage("Incoming hostile Mercenary force detected.")
 
 		local units = Reinforcements.Reinforce(mercenary, MercenaryReinforcements[Difficulty][mercWave], MercenarySpawn)
 		Utils.Do(units, function(unit)
@@ -218,10 +218,10 @@ SendContraband = function(owner)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		if owner == player then
 			player.MarkCompletedObjective(CaptureStarport)
-			Media.DisplayMessage("Contraband has arrived and been confiscated.", "Mentat")
+			Media.DisplayMessage("Contraband has arrived and been confiscated.")
 		else
 			player.MarkFailedObjective(CaptureStarport)
-			Media.DisplayMessage("Smuggler contraband has arrived. It is too late to confiscate.", "Mentat")
+			Media.DisplayMessage("Smuggler contraband has arrived. It is too late to confiscate.")
 		end
 	end)
 
@@ -251,12 +251,12 @@ Tick = function()
 	end
 
 	if LastHarkonnenArrived and not player.IsObjectiveCompleted(KillHarkonnen) and harkonnen.HasNoRequiredUnits() then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Harkonnen have been annihilated!")
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
 	if LastMercenariesArrived and not player.IsObjectiveCompleted(KillSmuggler) and smuggler.HasNoRequiredUnits() and mercenary.HasNoRequiredUnits() then
-		Media.DisplayMessage("The Smugglers have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Smugglers have been annihilated!")
 		player.MarkCompletedObjective(KillSmuggler)
 	end
 
@@ -302,7 +302,7 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		TimerTicks = ContrabandTimes[Difficulty]
-		Media.DisplayMessage("The contraband is approaching the Starport to the north in " .. Utils.FormatTime(TimerTicks) .. ".", "Mentat")
+		Media.DisplayMessage("The contraband is approaching the Starport to the north in " .. Utils.FormatTime(TimerTicks) .. ".")
 	end)
 
 	Trigger.OnAllKilledOrCaptured(HarkonnenBase, function()
@@ -332,7 +332,7 @@ WorldLoaded = function()
 
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage("Don't destroy the Starport!", "Mentat")
+			Media.DisplayMessage("Don't destroy the Starport!")
 
 			local defenders = smuggler.GetGroundAttackers()
 			if #defenders > 0 then
@@ -364,11 +364,11 @@ WorldLoaded = function()
 	Trigger.OnDamaged(HarkonnenBarracks, function()
 		if AttackNotifier <= 0 and HarkonnenBarracks.Health < HarkonnenBarracks.MaxHealth * 3/4 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage("Don't destroy the Barracks!", "Mentat")
+			Media.DisplayMessage("Don't destroy the Barracks!")
 		end
 	end)
 	Trigger.OnCapture(HarkonnenBarracks, function()
-		Media.DisplayMessage("Hostages Released!", "Mentat")
+		Media.DisplayMessage("Hostages Released!")
 
 		if DefendStarport then
 			player.MarkCompletedObjective(DefendStarport)
@@ -418,7 +418,7 @@ WorldLoaded = function()
 	Trigger.OnEnteredProximityTrigger(HarkonnenBarracks.CenterPosition, WDist.New(5 * 1024), function(a, id)
 		if a.Owner == player and a.Type ~= "carryall" then
 			Trigger.RemoveProximityTrigger(id)
-			Media.DisplayMessage("Capture the Harkonnen barracks to release the hostages.", "Mentat")
+			Media.DisplayMessage("Capture the Harkonnen barracks to release the hostages.")
 			StopInfantryProduction = true
 		end
 	end)

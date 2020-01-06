@@ -125,7 +125,7 @@ SendStarportReinforcements = function()
 			IdleHunt(unit)
 		end)
 
-		Media.DisplayMessage("Ixian transports detected.", "Mentat")
+		Media.DisplayMessage("Ixian transports detected.")
 
 		SendStarportReinforcements()
 	end)
@@ -191,7 +191,7 @@ CheckSmugglerEnemies = function()
 			if attacker.Owner == player and not message_check then
 
 				message_check = true
-				Media.DisplayMessage("The Smugglers are now hostile!", "Mentat")
+				Media.DisplayMessage("The Smugglers are now hostile!")
 			end
 		end)
 	end)
@@ -204,12 +204,12 @@ Tick = function()
 	end
 
 	if ordos_main.HasNoRequiredUnits() and ordos_small.HasNoRequiredUnits() and not OrdosKilled then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Ordos have been annihilated!")
 		OrdosKilled = true
 	end
 
 	if smuggler_neutral.HasNoRequiredUnits() and smuggler_harkonnen.HasNoRequiredUnits() and smuggler_ordos.HasNoRequiredUnits() and smuggler_both.HasNoRequiredUnits() and not SmugglersKilled then
-		Media.DisplayMessage("The Smugglers have been annihilated!", "Mentat")
+		Media.DisplayMessage("The Smugglers have been annihilated!")
 		SmugglersKilled = true
 	end
 
