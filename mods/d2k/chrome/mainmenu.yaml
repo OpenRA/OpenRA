@@ -40,6 +40,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Singleplayer
 							Font: Bold
+							Key: Menu01
 						Button@MULTIPLAYER_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
@@ -47,6 +48,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Multiplayer
 							Font: Bold
+							Key: Menu02
 						Button@SETTINGS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 140
@@ -54,6 +56,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Settings
 							Font: Bold
+							Key: Menu03
 						Button@EXTRAS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 180
@@ -61,6 +64,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Extras
 							Font: Bold
+							Key: Menu04
 						Button@CONTENT_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 220
@@ -68,6 +72,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Manage Content
 							Font: Bold
+							Key: Menu05
 						Button@QUIT_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 260
@@ -94,6 +99,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Skirmish
 							Font: Bold
+							Key: Menu01
 						Button@MISSIONS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
@@ -101,6 +107,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Missions
 							Font: Bold
+							Key: Menu02
 						Button@LOAD_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 140
@@ -108,6 +115,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Load
 							Font: Bold
+							Key: Menu03
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape
@@ -135,6 +143,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Replays
 							Font: Bold
+							Key: Menu01
 						Button@MUSIC_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
@@ -142,6 +151,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Music
 							Font: Bold
+							Key: Menu02
 						Button@MAP_EDITOR_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 140
@@ -149,6 +159,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Map Editor
 							Font: Bold
+							Key: Menu03
 						Button@ASSETBROWSER_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 180
@@ -156,6 +167,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Asset Browser
 							Font: Bold
+							Key: Menu04
 						Button@CREDITS_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 220
@@ -163,6 +175,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Credits
 							Font: Bold
+							Key: Menu05
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape
@@ -190,6 +203,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: New Map
 							Font: Bold
+							Key: Menu01
 						Button@LOAD_MAP_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 100
@@ -197,6 +211,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: Load Map
 							Font: Bold
+							Key: Menu02
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape

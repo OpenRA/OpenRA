@@ -3,7 +3,7 @@ Container@SETTINGS_PANEL:
 		HotkeyGroups:
 			Game Commands:
 				Template: TWO_COLUMN
-				Types: OrderGenerator, World, Menu
+				Types: OrderGenerator, World
 			Viewport Commands:
 				Template: TWO_COLUMN
 				Types: Viewport
@@ -25,6 +25,12 @@ Container@SETTINGS_PANEL:
 			Music Commands:
 				Template: TWO_COLUMN
 				Types: Music
+			Menu Commands:
+				Template: TWO_COLUMN
+				Types: Menu
+			Global Commands:
+				Template: TWO_COLUMN
+				Types: Global
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 590
@@ -43,26 +49,31 @@ Container@SETTINGS_PANEL:
 					Width: 110
 					Height: 35
 					Text: Display
+					Key: Menu01
 				Button@AUDIO_TAB:
 					X: WIDTH + 10
 					Width: 110
 					Height: 35
 					Text: Audio
+					Key: Menu02
 				Button@INPUT_TAB:
 					X: 2 * (WIDTH + 10)
 					Width: 110
 					Height: 35
 					Text: Input
+					Key: Menu03
 				Button@HOTKEYS_TAB:
 					X: 3 * (WIDTH + 10)
 					Width: 110
 					Height: 35
 					Text: Hotkeys
+					Key: Menu04
 				Button@ADVANCED_TAB:
 					X: 4 * (WIDTH + 10)
 					Width: 110
 					Height: 35
 					Text: Advanced
+					Key: Menu05
 		Background@bg:
 			Y: 34
 			Width: 590

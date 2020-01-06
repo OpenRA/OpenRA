@@ -1,0 +1,47 @@
+Menu01: F1
+	Description: Menu Button 01
+	Types: Menu
+
+Menu02: F2
+	Description: Menu Button 02
+	Types: Menu
+
+Menu03: F3
+	Description: Menu Button 03
+	Types: Menu
+
+Menu04: F4
+	Description: Menu Button 04
+	Types: Menu
+
+Menu05: F5
+	Description: Menu Button 05
+	Types: Menu
+
+Menu06: F6
+	Description: Menu Button 06
+	Types: Menu
+
+Menu07: F7
+	Description: Menu Button 07
+	Types: Menu
+
+Menu08: F8
+	Description: Menu Button 08
+	Types: Menu
+
+Menu09: F9
+	Description: Menu Button 09
+	Types: Menu
+
+Menu10: F10
+	Description: Menu Button 10
+	Types: Menu
+
+Menu11: F11
+	Description: Menu Button 11
+	Types: Menu
+
+Menu12: F12
+	Description: Menu Button 12
+	Types: Menu

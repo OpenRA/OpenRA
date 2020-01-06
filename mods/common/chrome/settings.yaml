@@ -3,7 +3,7 @@ Background@SETTINGS_PANEL:
 		HotkeyGroups:
 			Game Commands:
 				Template: TWO_COLUMN
-				Types: OrderGenerator, World, Menu
+				Types: OrderGenerator, World
 			Viewport Commands:
 				Template: TWO_COLUMN
 				Types: Viewport
@@ -25,6 +25,12 @@ Background@SETTINGS_PANEL:
 			Music Commands:
 				Template: TWO_COLUMN
 				Types: Music
+			Menu Commands:
+				Template: TWO_COLUMN
+				Types: Menu
+			Global Commands:
+				Template: TWO_COLUMN
+				Types: Global
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM -  HEIGHT) / 2
 	Width: 600
@@ -63,30 +69,35 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Text: Display
 					Font: Bold
+					Key: Menu01
 				Button@AUDIO_TAB:
 					X: 70 + WIDTH
 					Width: 90
 					Height: 25
 					Text: Audio
 					Font: Bold
+					Key: Menu02
 				Button@INPUT_TAB:
 					X: 70 + 2 * WIDTH
 					Width: 90
 					Height: 25
 					Text: Input
 					Font: Bold
+					Key: Menu03
 				Button@HOTKEYS_TAB:
 					X: 70 + 3 * WIDTH
 					Width: 90
 					Height: 25
 					Text: Hotkeys
 					Font: Bold
+					Key: Menu04
 				Button@ADVANCED_TAB:
 					X: 70 + 4 * WIDTH
 					Width: 90
 					Height: 25
 					Text: Advanced
 					Font: Bold
+					Key: Menu05
 		Container@DISPLAY_PANEL:
 			X: 5
 			Y: 50

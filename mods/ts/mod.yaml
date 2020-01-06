@@ -193,6 +193,7 @@ Hotkeys:
 	common|hotkeys/production-common.yaml
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
+	common|hotkeys/menu.yaml
 	ts|hotkeys.yaml
 
 LoadScreen: LogoStripeLoadScreen

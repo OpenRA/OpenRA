@@ -64,30 +64,35 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Singleplayer
+							Key: Menu01
 						Button@MULTIPLAYER_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Multiplayer
+							Key: Menu02
 						Button@SETTINGS_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Settings
+							Key: Menu03
 						Button@EXTRAS_BUTTON:
 							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Extras
+							Key: Menu04
 						Button@CONTENT_BUTTON:
 							X: 600
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Manage Content
+							Key: Menu05
 						Button@QUIT_BUTTON:
 							X: 750
 							Y: 0
@@ -113,18 +118,21 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Skirmish
+							Key: Menu01
 						Button@MISSIONS_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Missions
+							Key: Menu02
 						Button@LOAD_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Load
+							Key: Menu03
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 450
@@ -151,12 +159,14 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Replays
+							Key: Menu01
 						Button@MUSIC_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Music
+							Key: Menu02
 						Button@MAP_EDITOR_BUTTON:
 							X: 300
 							Y: 0
@@ -164,18 +174,21 @@ Container@MENU_BACKGROUND:
 							Height: 35
 							Text: Map Editor
 							Font: Bold
+							Key: Menu03
 						Button@ASSETBROWSER_BUTTON:
 							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Asset Browser
+							Key: Menu04
 						Button@CREDITS_BUTTON:
 							X: 600
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: Credits
+							Key: Menu05
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 750
@@ -203,6 +216,7 @@ Container@MENU_BACKGROUND:
 							Height: 35
 							Text: New Map
 							Font: Bold
+							Key: Menu01
 						Button@LOAD_MAP_BUTTON:
 							X: 150
 							Y: 0
@@ -210,6 +224,7 @@ Container@MENU_BACKGROUND:
 							Height: 35
 							Text: Load Map
 							Font: Bold
+							Key: Menu02
 						Button@BACK_BUTTON:
 							X: 300
 							Y: 0

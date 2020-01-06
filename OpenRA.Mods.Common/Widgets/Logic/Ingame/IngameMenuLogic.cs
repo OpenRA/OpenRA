@@ -37,6 +37,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool leaving;
 		bool hideMenu;
 
+		int currentButtonNumber = 1;
+
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, ModData modData, World world, Action onExit, WorldRenderer worldRenderer,
 			IngameInfoPanel activePanel, Dictionary<string, MiniYaml> logicArgs)
@@ -175,11 +177,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			button.Id = id;
+			button.Key = modData.Hotkeys["Menu" + currentButtonNumber.ToString("D2")];
 			button.IsDisabled = () => leaving;
 			button.GetText = () => text;
 			buttonContainer.AddChild(button);
 			buttons.Add(button);
 
+			currentButtonNumber++;
 			return button;
 		}
 
