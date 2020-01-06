@@ -11,7 +11,6 @@
 
 using System;
 using OpenRA.Network;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -49,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ConnectionLogic(Widget widget, string host, int port, Action onConnect, Action onAbort, Action<string> onRetry)
+		public ConnectionLogic(Widget widget, ConnectionTarget endpoint, Action onConnect, Action onAbort, Action<string> onRetry)
 		{
 			this.onConnect = onConnect;
 			this.onAbort = onAbort;
@@ -61,18 +60,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Connecting to {0}:{1}...".F(host, port);
+				"Connecting to {0}...".F(endpoint);
 		}
 
-		public static void Connect(string host, int port, string password, Action onConnect, Action onAbort)
+		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
 		{
-			Game.JoinServer(host, port, password);
-			Action<string> onRetry = newPassword => Connect(host, port, newPassword, onConnect, onAbort);
+			Game.JoinServer(endpoint, password);
+			Action<string> onRetry = newPassword => Connect(endpoint, newPassword, onConnect, onAbort);
 
 			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
 			{
-				{ "host", host },
-				{ "port", port },
+				{ "endpoint", endpoint },
 				{ "onConnect", onConnect },
 				{ "onAbort", onAbort },
 				{ "onRetry", onRetry }
@@ -105,10 +103,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Could not connect to {0}:{1}".F(orderManager.Host, orderManager.Port);
+				"Could not connect to {0}".F(orderManager.Endpoint);
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			connectionError.GetText = () => orderManager.ServerError;
+			connectionError.GetText = () => orderManager.ServerError ?? orderManager.Connection.ErrorMessage ?? "Unknown error";
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
 			panelTitle.GetText = () => orderManager.AuthenticationFailed ? "Password Required" : "Connection Failed";
@@ -165,7 +163,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			switchButton.OnClick = () =>
 			{
-				var launchCommand = "Launch.Connect=" + orderManager.Host + ":" + orderManager.Port;
+				var launchCommand = "Launch.URI={0}".F(new UriBuilder("tcp", orderManager.Connection.EndPoint.Address.ToString(), orderManager.Connection.EndPoint.Port));
 				Game.SwitchToExternalMod(orderManager.ServerExternalMod, new[] { launchCommand }, () =>
 				{
 					orderManager.ServerError = "Failed to switch mod.";

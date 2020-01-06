@@ -53,19 +53,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 
 			// Join a server directly
-			var connect = Launch.GetConnectAddress();
-			if (!string.IsNullOrEmpty(connect))
+			var connect = Launch.GetConnectEndPoint();
+			if (connect != null)
 			{
-				var parts = connect.Split(':');
-
-				if (parts.Length == 2)
-				{
-					var host = parts[0];
-					var port = Exts.ParseIntegerInvariant(parts[1]);
-					Game.LoadShellMap();
-					Game.RemoteDirectConnect(host, port);
-					return;
-				}
+				Game.LoadShellMap();
+				Game.RemoteDirectConnect(connect);
+				return;
 			}
 
 			// Start a map directly
