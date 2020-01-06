@@ -31,7 +31,8 @@ namespace OpenRA.Platforms.Default
 			None = 0,
 			Core = 1,
 			GLES = 2,
-			DebugMessagesCallback = 4
+			DebugMessagesCallback = 4,
+			ESReadFormatBGRA = 8
 		}
 
 		public static GLFeatures Features { get; private set; }
@@ -122,6 +123,7 @@ namespace OpenRA.Platforms.Default
 
 		// OpenGL 1.1 - 1.5
 		public const int GL_CLIENT_PIXEL_STORE_BIT = 0x0001;
+		public const int GL_RGBA = 0x1908;
 		public const int GL_BGRA = 0x80E1;
 		public const int GL_RGBA8 = 0x8058;
 		public const int GL_CLAMP_TO_EDGE = 0x812F;
@@ -625,7 +627,12 @@ namespace OpenRA.Platforms.Default
 				// Core features are defined as the shared feature set of GL 3.2 and (GLES 3 + BGRA extension)
 				var hasBGRA = SDL.SDL_GL_ExtensionSupported("GL_EXT_texture_format_BGRA8888") == SDL.SDL_bool.SDL_TRUE;
 				if (Version.Contains(" ES") && hasBGRA && major >= 3)
+				{
 					Features = GLFeatures.Core | GLFeatures.GLES;
+
+					if (SDL.SDL_GL_ExtensionSupported("GL_EXT_read_format_bgra") == SDL.SDL_bool.SDL_TRUE)
+						Features |= GLFeatures.ESReadFormatBGRA;
+				}
 				else if (major > 3 || (major == 3 && minor >= 2))
 					Features = GLFeatures.Core;
 
