@@ -391,7 +391,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				disconnectButton.Text = "Back";
 
 			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
-			chatMode.GetText = () => teamChat ? "Team" : "All";
+			var chatLabels = Game.ModData.Manifest.Get<ChatLabels>();
+			chatMode.GetText = () => teamChat ? chatLabels.Team : chatLabels.All;
 			chatMode.OnClick = () => teamChat ^= true;
 			chatMode.IsDisabled = () => disableTeamChat;
 

@@ -58,6 +58,8 @@ namespace OpenRA.Network
 						if (client == null)
 							break;
 
+						var chatLabels = Game.ModData.Manifest.Get<ChatLabels>();
+
 						// Cut chat messages to the hard limit to avoid exploits
 						var message = order.TargetString;
 						if (message.Length > ChatMessageMaxLength)
@@ -67,11 +69,11 @@ namespace OpenRA.Network
 						if (order.ExtraData == 0)
 						{
 							var p = world != null ? world.FindPlayerByClient(client) : null;
-							var suffix = (p != null && p.WinState == WinState.Lost) ? " (Dead)" : "";
-							suffix = client.IsObserver ? " (Spectator)" : suffix;
+							var suffix = (p != null && p.WinState == WinState.Lost) ? " (" + chatLabels.Dead + ")" : "";
+							suffix = client.IsObserver ? " (" + chatLabels.Spectator + ")" : suffix;
 
 							if (orderManager.LocalClient != null && client != orderManager.LocalClient && client.Team > 0 && client.Team == orderManager.LocalClient.Team)
-								suffix += " (Ally)";
+								suffix += " (" + chatLabels.Ally + ")";
 
 							Game.AddChatLine(client.Name + suffix, client.Color, message);
 							break;
@@ -80,7 +82,7 @@ namespace OpenRA.Network
 						// We are still in the lobby
 						if (world == null)
 						{
-							var prefix = order.ExtraData == uint.MaxValue ? "[Spectators] " : "[Team] ";
+							var prefix = order.ExtraData == uint.MaxValue ? "[" + chatLabels.Spectators + "] " : "[" + chatLabels.Team + "] ";
 							if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
 								Game.AddChatLine(prefix + client.Name, client.Color, message);
 
@@ -96,7 +98,7 @@ namespace OpenRA.Network
 						{
 							// Validate before adding the line
 							if (client.IsObserver || (player != null && player.WinState != WinState.Undefined))
-								Game.AddChatLine("[Spectators] " + client.Name, client.Color, message);
+								Game.AddChatLine("[" + chatLabels.Spectators + "] " + client.Name, client.Color, message);
 
 							break;
 						}
@@ -106,7 +108,7 @@ namespace OpenRA.Network
 							&& world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
 
 						if (valid && (isSameTeam || world.IsReplay))
-							Game.AddChatLine("[Team" + (world.IsReplay ? " " + order.ExtraData : "") + "] " + client.Name, client.Color, message);
+							Game.AddChatLine("[" + chatLabels.Team + (world.IsReplay ? " " + order.ExtraData : "") + "] " + client.Name, client.Color, message);
 
 						break;
 					}

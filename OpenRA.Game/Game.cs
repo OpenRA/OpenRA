@@ -880,7 +880,8 @@ namespace OpenRA
 
 		public static void AddSystemLine(string text)
 		{
-			AddSystemLine("Battlefield Control", text);
+			var chatLabels = Game.ModData.Manifest.Get<ChatLabels>();
+			AddSystemLine(chatLabels.BattlefieldControl, text);
 		}
 
 		public static void AddSystemLine(string name, string text)

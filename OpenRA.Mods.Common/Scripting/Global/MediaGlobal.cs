@@ -188,21 +188,27 @@ namespace OpenRA.Mods.Common.Scripting
 			return true;
 		}
 
-		[Desc("Display a text message to the player.")]
-		public void DisplayMessage(string text, string prefix = "Mission", Color? color = null)
+		[Desc("Display a text message to the player. If 'prefix' is nil the default mission prefix from the mod data is used.")]
+		public void DisplayMessage(string text, string prefix = null, Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
+
+			if (string.IsNullOrEmpty(prefix))
+				prefix = Game.ModData.Manifest.Get<ChatLabels>().Mission;
 
 			var c = color.HasValue ? color.Value : Color.White;
 			Game.AddChatLine(prefix, c, text);
 		}
 
-		[Desc("Display a system message to the player.")]
-		public void DisplaySystemMessage(string text, string prefix = "Mission")
+		[Desc("Display a system message to the player. If 'prefix' is nil the default mission prefix from the mod data is used.")]
+		public void DisplaySystemMessage(string text, string prefix = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
+
+			if (string.IsNullOrEmpty(prefix))
+				Game.AddSystemLine(text);
 
 			Game.AddSystemLine(prefix, text);
 		}
