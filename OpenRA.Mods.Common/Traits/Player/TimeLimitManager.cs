@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (ticksRemaining == m * 60 * ticksPerSecond)
 				{
-					Game.AddSystemLine("Battlefield Control", Notification.F(m, m > 1 ? "s" : null));
+					Game.AddSystemLine(Notification.F(m, m > 1 ? "s" : null));
 
 					var faction = self.World.LocalPlayer == null ? null : self.World.LocalPlayer.Faction.InternalName;
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.TimeLimitWarnings[m], faction);
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 				countdownLabel.GetText = () => null;
 
 			if (!info.SkipTimerExpiredNotification)
-				Game.AddSystemLine("Battlefield Control", "Time limit has expired.");
+				Game.AddSystemLine("Time limit has expired.");
 		}
 	}
 }

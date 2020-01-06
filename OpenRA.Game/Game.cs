@@ -858,6 +858,11 @@ namespace OpenRA
 			state = RunStatus.Success;
 		}
 
+		public static void AddSystemLine(string text)
+		{
+			AddSystemLine("Battlefield Control", text);
+		}
+
 		public static void AddSystemLine(string name, string text)
 		{
 			OrderManager.AddChatLine(name, systemMessageColor, text, systemMessageColor);

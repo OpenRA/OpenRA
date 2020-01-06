@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			Game.AddSystemLine("Battlefield Control", player.PlayerName + " is defeated.");
+			Game.AddSystemLine(player.PlayerName + " is defeated.");
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			Game.AddSystemLine("Battlefield Control", player.PlayerName + " is victorious.");
+			Game.AddSystemLine(player.PlayerName + " is victorious.");
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
