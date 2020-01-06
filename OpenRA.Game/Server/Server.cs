@@ -18,7 +18,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -43,8 +42,6 @@ namespace OpenRA.Server
 	{
 		public readonly string TwoHumansRequiredText = "This server requires at least two human players to start a match.";
 
-		public readonly IPAddress Ip;
-		public readonly int Port;
 		public readonly MersenneTwister Random = new MersenneTwister();
 		public readonly ServerType Type;
 
@@ -64,7 +61,7 @@ namespace OpenRA.Server
 		public GameSave GameSave = null;
 
 		readonly int randomSeed;
-		readonly TcpListener listener;
+		readonly List<TcpListener> listeners = new List<TcpListener>();
 		readonly TypeDictionary serverTraits = new TypeDictionary();
 		readonly PlayerDatabase playerDatabase;
 
@@ -129,15 +126,43 @@ namespace OpenRA.Server
 				t.GameEnded(this);
 		}
 
-		public Server(IPEndPoint endpoint, ServerSettings settings, ModData modData, ServerType type)
+		public Server(List<IPEndPoint> endpoints, ServerSettings settings, ModData modData, ServerType type)
 		{
 			Log.AddChannel("server", "server.log", true);
 
-			listener = new TcpListener(endpoint);
-			listener.Start();
-			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
-			Ip = localEndpoint.Address;
-			Port = localEndpoint.Port;
+			SocketException lastException = null;
+			var checkReadServer = new List<Socket>();
+			foreach (var endpoint in endpoints)
+			{
+				var listener = new TcpListener(endpoint);
+				try
+				{
+					try
+					{
+						listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 1);
+					}
+					catch (Exception ex)
+					{
+						if (ex is SocketException || ex is ArgumentException)
+							Log.Write("server", "Failed to set socket option on {0}: {1}", endpoint.ToString(), ex.Message);
+						else
+							throw;
+					}
+
+					listener.Start();
+					listeners.Add(listener);
+					checkReadServer.Add(listener.Server);
+				}
+				catch (SocketException ex)
+				{
+					lastException = ex;
+					Log.Write("server", "Failed to listen on {0}: {1}", endpoint.ToString(), ex.Message);
+				}
+			}
+
+			if (listeners.Count == 0)
+				throw lastException;
+
 			Type = type;
 			Settings = settings;
 
@@ -186,7 +211,7 @@ namespace OpenRA.Server
 				{
 					var checkRead = new List<Socket>();
 					if (State == ServerState.WaitingPlayers)
-						checkRead.Add(listener.Server);
+						checkRead.AddRange(checkReadServer);
 
 					checkRead.AddRange(Conns.Select(c => c.Socket));
 					checkRead.AddRange(PreConns.Select(c => c.Socket));
@@ -205,9 +230,10 @@ namespace OpenRA.Server
 
 					foreach (var s in checkRead)
 					{
-						if (s == listener.Server)
+						var serverIndex = checkReadServer.IndexOf(s);
+						if (serverIndex >= 0)
 						{
-							AcceptConnection();
+							AcceptConnection(listeners[serverIndex]);
 							continue;
 						}
 
@@ -246,9 +272,14 @@ namespace OpenRA.Server
 
 				PreConns.Clear();
 				Conns.Clear();
-				try { listener.Stop(); }
-				catch { }
-			}) { IsBackground = true }.Start();
+
+				foreach (var listener in listeners)
+				{
+					try { listener.Stop(); }
+					catch { }
+				}
+			})
+			{ IsBackground = true }.Start();
 		}
 
 		int nextPlayerIndex;
@@ -257,7 +288,7 @@ namespace OpenRA.Server
 			return nextPlayerIndex++;
 		}
 
-		void AcceptConnection()
+		void AcceptConnection(TcpListener listener)
 		{
 			Socket newSocket;
 
@@ -956,7 +987,8 @@ namespace OpenRA.Server
 
 		public void StartGame()
 		{
-			listener.Stop();
+			foreach (var listener in listeners)
+				listener.Stop();
 
 			Console.WriteLine("[{0}] Game started", DateTime.Now.ToString(Settings.TimestampFormat));
 
@@ -1017,6 +1049,23 @@ namespace OpenRA.Server
 						DispatchOrdersToClient(c, client, frame, data);
 				});
 			}
+		}
+
+		public ConnectionTarget GetEndpointForLocalConnection()
+		{
+			var endpoints = new List<DnsEndPoint>();
+			foreach (var listener in listeners)
+			{
+				var endpoint = (IPEndPoint)listener.LocalEndpoint;
+				if (IPAddress.IPv6Any.Equals(endpoint.Address))
+					endpoints.Add(new DnsEndPoint(IPAddress.IPv6Loopback.ToString(), endpoint.Port));
+				else if (IPAddress.Any.Equals(endpoint.Address))
+					endpoints.Add(new DnsEndPoint(IPAddress.Loopback.ToString(), endpoint.Port));
+				else
+					endpoints.Add(new DnsEndPoint(endpoint.Address.ToString(), endpoint.Port));
+			}
+
+			return new ConnectionTarget(endpoints);
 		}
 	}
 }

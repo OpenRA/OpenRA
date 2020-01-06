@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ServerListLogic serverListLogic;
 
 		[ObjectCreator.UseCtor]
-		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, string directConnectHost, int directConnectPort)
+		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, ConnectionTarget directConnectEndPoint)
 		{
 			// MultiplayerLogic is a superset of the ServerListLogic
 			// but cannot be a direct subclass because it needs to pass object-level state to the constructor
@@ -41,8 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "openLobby", OpenLobby },
 					{ "onExit", DoNothing },
-					{ "directConnectHost", null },
-					{ "directConnectPort", 0 },
+					{ "directConnectEndPoint", null },
 				});
 			};
 
@@ -61,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			if (directConnectHost != null)
+			if (directConnectEndPoint != null)
 			{
 				// The connection window must be opened at the end of the tick for the widget hierarchy to
 				// work out, but we also want to prevent the server browser from flashing visible for one tick.
@@ -72,8 +71,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						{ "openLobby", OpenLobby },
 						{ "onExit", DoNothing },
-						{ "directConnectHost", directConnectHost },
-						{ "directConnectPort", directConnectPort },
+						{ "directConnectEndPoint", directConnectEndPoint },
 					});
 
 					widget.Visible = true;
@@ -93,8 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "onStart", onStart },
 					{ "onExit", onExit },
-					{ "directConnectHost", null },
-					{ "directConnectPort", 0 },
+					{ "directConnectEndPoint", null },
 				});
 
 				Game.Disconnect();
@@ -116,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var host = server.Address.Split(':')[0];
 			var port = Exts.ParseIntegerInvariant(server.Address.Split(':')[1]);
 
-			ConnectionLogic.Connect(host, port, "", OpenLobby, DoNothing);
+			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
 		}
 
 		bool disposed;

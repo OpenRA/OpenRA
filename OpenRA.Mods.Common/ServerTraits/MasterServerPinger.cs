@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public void ServerStarted(S server)
 		{
-			if (!server.Ip.Equals(IPAddress.Loopback) && LanGameBeacon != null)
+			if (server.Type != ServerType.Local && LanGameBeacon != null)
 				LanGameBeacon.Start();
 		}
 
