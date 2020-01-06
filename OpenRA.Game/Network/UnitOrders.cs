@@ -21,7 +21,6 @@ namespace OpenRA.Network
 	public static class UnitOrders
 	{
 		public const int ChatMessageMaxLength = 2500;
-		const string ServerChatName = "Battlefield Control";
 
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
@@ -41,7 +40,7 @@ namespace OpenRA.Network
 			{
 				// Server message
 				case "Message":
-					Game.AddSystemLine(ServerChatName, order.TargetString);
+					Game.AddSystemLine(order.TargetString);
 					break;
 
 				// Reports that the target player disconnected
@@ -137,7 +136,7 @@ namespace OpenRA.Network
 									FieldLoader.GetValue<int>("SaveSyncFrame", saveSyncFrame.Value.Value);
 						}
 						else
-							Game.AddSystemLine(ServerChatName, "The game has started.");
+							Game.AddSystemLine("The game has started.");
 
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
@@ -156,7 +155,7 @@ namespace OpenRA.Network
 
 				case "GameSaved":
 					if (!orderManager.World.IsReplay)
-						Game.AddSystemLine(ServerChatName, "Game saved");
+						Game.AddSystemLine("Game saved");
 
 					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementing<INotifyGameSaved>())
 						nsr.GameSaved(orderManager.World);
@@ -176,7 +175,7 @@ namespace OpenRA.Network
 							if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
 							{
 								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
-								Game.AddSystemLine(ServerChatName, pausetext);
+								Game.AddSystemLine(pausetext);
 							}
 
 							orderManager.World.Paused = pause;

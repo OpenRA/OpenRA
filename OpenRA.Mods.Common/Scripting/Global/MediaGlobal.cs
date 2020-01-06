@@ -198,11 +198,14 @@ namespace OpenRA.Mods.Common.Scripting
 			Game.AddChatLine(prefix, c, text);
 		}
 
-		[Desc("Display a system message to the player.")]
-		public void DisplaySystemMessage(string text, string prefix = "Mission")
+		[Desc("Display a system message to the player. If 'prefix' is nil the default system prefix is used.")]
+		public void DisplaySystemMessage(string text, string prefix = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
+
+			if (string.IsNullOrEmpty(prefix))
+				Game.AddSystemLine(text);
 
 			Game.AddSystemLine(prefix, text);
 		}
