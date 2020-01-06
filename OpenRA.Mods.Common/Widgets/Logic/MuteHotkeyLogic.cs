@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (Game.Settings.Sound.Mute)
 			{
 				Game.Sound.MuteAudio();
-				Game.AddSystemLine("Battlefield Control", "Audio muted");
+				Game.AddSystemLine("Audio muted");
 			}
 			else
 			{
 				Game.Sound.UnmuteAudio();
-				Game.AddSystemLine("Battlefield Control", "Audio unmuted");
+				Game.AddSystemLine("Audio unmuted");
 			}
 
 			return true;
