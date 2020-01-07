@@ -60,6 +60,10 @@ SendGDIReinforcements = function()
 end
 
 Build = function(unitTypes, repeats, func)
+	if HandOfNod.IsDead then
+		return
+	end
+
 	local after = function(units)
 		Utils.Do(units, func)
 		if repeats then
@@ -69,7 +73,7 @@ Build = function(unitTypes, repeats, func)
 		end
 	end
 
-	if not HandOfNod.Build(unitTypes, innerFunc) then
+	if not HandOfNod.Build(unitTypes, after) then
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			Build(unitTypes, repeats, func)
 		end)
