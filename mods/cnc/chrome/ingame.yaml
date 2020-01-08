@@ -1530,7 +1530,7 @@ Container@PLAYER_WIDGETS:
 					Height: 190
 					Children:
 						ResourceBar@POWERBAR:
-							Width: 10
+							Width: 9
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
@@ -1540,13 +1540,14 @@ Container@PLAYER_WIDGETS:
 							ImageName: power
 				Container@SILOBAR_PANEL:
 					Logic: IngameSiloBarLogic
-					X: 220
+					X: 219
 					Y: 51
 					Width: 10
 					Height: 190
 					Children:
 						ResourceBar@SILOBAR:
-							Width: 10
+							X: 1
+							Width: 9
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX

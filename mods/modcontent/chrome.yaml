@@ -3,38 +3,38 @@
 
 panel-header:
 	Inherits: ^Chrome
-	PanelRegion: 0, 512, 3, 3, 58, 58, 3, 3
+	PanelRegion: 0, 512, 4, 4, 56, 56, 4, 4
 
 panel-bg:
 	Inherits: ^Chrome
-	PanelRegion: 64, 512, 3, 3, 58, 58, 3, 3
+	PanelRegion: 65, 512, 4, 4, 56, 56, 4, 4
 
 panel-thinborder:
 	Inherits: ^Chrome
-	PanelRegion: 1, 513, 2, 2, 58, 58, 2, 2
+	PanelRegion: 1, 513, 3, 3, 56, 56, 3, 3
 
 panel-thinborder-light:
 	Inherits: ^Chrome
-	PanelRegion: 641, 513, 2, 2, 58, 58, 2, 2
+	PanelRegion: 643, 513, 3, 3, 56, 56, 3, 3
 
 button:
 	Inherits: ^Chrome
-	PanelRegion: 128, 512, 10, 10, 44, 44, 10, 10
+	PanelRegion: 130, 512, 10, 10, 44, 44, 10, 10
 
 button-hover:
 	Inherits: ^Chrome
-	PanelRegion: 192, 512, 10, 10, 44, 44, 10, 10
+	PanelRegion: 195, 512, 10, 10, 44, 44, 10, 10
 
 button-disabled:
 	Inherits: button
 
 button-pressed:
 	Inherits: ^Chrome
-	PanelRegion: 320, 512, 10, 10, 44, 44, 10, 10
+	PanelRegion: 325, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted:
 	Inherits: ^Chrome
-	PanelRegion: 256, 512, 10, 10, 44, 44, 10, 10
+	PanelRegion: 260, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted-hover:
 	Inherits: button-pressed
@@ -47,7 +47,7 @@ button-highlighted-disabled:
 
 button-highlighted-thin:
 	Inherits: ^Chrome
-	PanelRegion: 512, 512, 10, 10, 44, 44, 10, 10
+	PanelRegion: 513, 512, 10, 10, 44, 44, 10, 10
 
 button-highlighted-thin-hover:
 	Inherits: button-highlighted-thin-pressed
@@ -61,16 +61,16 @@ button-highlighted-thin-disabled:
 
 progressbar-bg:
 	Inherits: ^Chrome
-	PanelRegion: 448, 560, 6, 6, 52, 4, 6, 6
+	PanelRegion: 447, 560, 6, 6, 52, 4, 6, 6
 
 progressbar-thumb:
 	Inherits: ^Chrome
-	PanelRegion: 448, 544, 6, 6, 52, 4, 6, 6
+	PanelRegion: 447, 543, 6, 6, 52, 4, 6, 6
 
 panel-rule:
 	Inherits: ^Chrome
 	Regions:
-		border-t: 64, 512, 64, 2
+		border-t: 66, 512, 62, 2
 
 background:
 	Inherits: ^Chrome
@@ -80,10 +80,10 @@ background:
 modcontent:
 	Inherits: ^Chrome
 	Regions:
-		logo: 0, 576, 280, 128
-		leftarrow: 384, 512, 20, 64
-		rightarrow: 404, 512, 20, 64
-		cdicon: 448, 512, 20, 20
+		logo: 0, 577, 280, 128
+		leftarrow: 390, 512, 20, 64
+		rightarrow: 411, 512, 20, 64
+		cdicon: 432, 512, 20, 20
 
 scrollpanel-bg:
 	Inherits: panel-thinborder
@@ -103,7 +103,7 @@ scrollpanel-button-pressed:
 scrollbar:
 	Inherits: ^Chrome
 	Regions:
-		down_arrow: 480, 512, 16, 16
-		down_pressed: 480, 512, 16, 16
-		up_arrow: 480, 528, 16, 16
-		up_pressed: 480, 528, 16, 16
+		down_arrow: 453, 512, 16, 16
+		down_pressed: 453, 512, 16, 16
+		up_arrow: 470, 512, 16, 16
+		up_pressed: 470, 512, 16, 16
