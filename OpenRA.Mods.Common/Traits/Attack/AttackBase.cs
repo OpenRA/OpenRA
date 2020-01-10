@@ -21,6 +21,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	public enum AttackSource { Default, AutoTarget, AttackMove }
+
 	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
@@ -199,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Target.IsValidFor(self))
 					return;
 
-				AttackTarget(order.Target, order.Queued, true, forceAttack, Info.TargetLineColor);
+				AttackTarget(order.Target, AttackSource.Default, order.Queued, true, forceAttack, Info.TargetLineColor);
 				self.ShowTargetLines();
 			}
 
@@ -224,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
-		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
+		public abstract Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
 
 		public bool HasAnyValidWeapons(Target t, bool checkForCenterTargetingWeapons = false)
 		{
@@ -391,7 +393,7 @@ namespace OpenRA.Mods.Common.Traits
 				&& a.Weapon.IsValidAgainst(t, self.World, self));
 		}
 
-		public void AttackTarget(Target target, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
+		public void AttackTarget(Target target, AttackSource source, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -399,7 +401,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!target.IsValidFor(self))
 				return;
 
-			var activity = GetAttackActivity(self, target, allowMove, forceAttack, targetLineColor);
+			var activity = GetAttackActivity(self, source, target, allowMove, forceAttack, targetLineColor);
 			self.QueueActivity(queued, activity);
 			OnResolveAttackOrder(self, activity, target, queued, forceAttack);
 		}

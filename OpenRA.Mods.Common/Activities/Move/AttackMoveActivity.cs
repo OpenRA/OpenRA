@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 					ChildActivity.Cancel(self);
 					var attackBases = autoTarget.ActiveAttackBases;
 					foreach (var ab in attackBases)
-						QueueChild(ab.GetAttackActivity(self, target, false, false));
+						QueueChild(ab.GetAttackActivity(self, AttackSource.AttackMove, target, false, false));
 
 					// Make sure to continue moving when the attack activities have finished.
 					QueueChild(getInner());
