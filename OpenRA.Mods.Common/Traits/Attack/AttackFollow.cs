@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Tick(self);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}

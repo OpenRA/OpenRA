@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Scripting
 				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
 
 			foreach (var attack in attackBases)
-				attack.AttackTarget(target, true, allowMove, forceAttack);
+				attack.AttackTarget(target, AttackSource.Default, true, allowMove, forceAttack);
 		}
 
 		[Desc("Checks if the targeted actor is a valid target for this actor.")]

@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				leapToken = conditionManager.RevokeCondition(self, leapToken);
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			return new LeapAttack(self, newTarget, allowMove, forceAttack, this, info, targetLineColor);
 		}
