@@ -70,7 +70,7 @@ namespace OpenRA.Mods.D2k.Traits
 			self.QueueActivity(false, new SwallowActor(self, target, a, facing));
 		}
 
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
 			return new SwallowTarget(self, newTarget, allowMove, forceAttack);
 		}

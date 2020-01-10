@@ -89,7 +89,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			if (target.Type == TargetType.Actor)
 			{
-				attackTrait.AttackTarget(target, false, true, false);
+				attackTrait.AttackTarget(target, AttackSource.AutoTarget, false, true, false);
 				return;
 			}
 

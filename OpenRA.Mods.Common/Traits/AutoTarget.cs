@@ -321,7 +321,7 @@ namespace OpenRA.Mods.Common.Traits
 		void Attack(Actor self, Target target, bool allowMove)
 		{
 			foreach (var ab in ActiveAttackBases)
-				ab.AttackTarget(target, false, allowMove);
+				ab.AttackTarget(target, AttackSource.AutoTarget, false, allowMove);
 		}
 
 		public bool HasValidTargetPriority(Actor self, Player owner, BitSet<TargetableType> targetTypes)
