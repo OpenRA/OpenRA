@@ -54,13 +54,16 @@ namespace OpenRA.Network
 
 		static Reader database;
 
-		public static void Initialize()
+		public static void Initialize(string databasePath)
 		{
+			if (string.IsNullOrEmpty(databasePath))
+				return;
+
 			try
 			{
-				using (var fileStream = new FileStream("GeoLite2-Country.mmdb.gz", FileMode.Open, FileAccess.Read))
-					using (var gzipStream = new GZipInputStream(fileStream))
-						database = new Reader(gzipStream);
+				using (var fileStream = new FileStream(databasePath, FileMode.Open, FileAccess.Read))
+				using (var gzipStream = new GZipInputStream(fileStream))
+					database = new Reader(gzipStream);
 			}
 			catch (Exception e)
 			{
@@ -68,23 +71,23 @@ namespace OpenRA.Network
 			}
 		}
 
-		public static string LookupCountry(string ip)
+		public static string LookupCountry(IPAddress ip)
 		{
-			const string Unknown = "Unknown Location";
+			if (database != null)
+			{
+				try
+				{
+					var record = database.Find<GeoIP2Record>(ip);
+					if (record != null)
+						return record.Country.Names.English;
+				}
+				catch (Exception e)
+				{
+					Log.Write("geoip", "LookupCountry failed: {0}", e);
+				}
+			}
 
-			try
-			{
-				var record = database.Find<GeoIP2Record>(IPAddress.Parse(ip));
-				if (record != null)
-					return record.Country.Names.English;
-				else
-					return Unknown;
-			}
-			catch (Exception e)
-			{
-				Log.Write("geoip", "LookupCountry failed: {0}", e);
-				return Unknown;
-			}
+			return "Unknown Location";
 		}
 	}
 }
