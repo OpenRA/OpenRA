@@ -338,8 +338,6 @@ namespace OpenRA
 				}
 			}
 
-			GeoIP.Initialize();
-
 			if (Settings.Server.DiscoverNatDevices)
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
 
