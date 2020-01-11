@@ -149,7 +149,7 @@ namespace OpenRA.Server
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
-			GeoIP.Initialize();
+			GeoIP.Initialize(settings.GeoIPDatabase);
 
 			if (UPnP.Status == UPnPStatus.Enabled)
 				UPnP.ForwardPort(Settings.ListenPort, Settings.ListenPort).Wait();
@@ -348,7 +348,7 @@ namespace OpenRA.Server
 				{
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ipAddress.ToString(),
-					Location = GeoIP.LookupCountry(ipAddress.ToString()),
+					Location = GeoIP.LookupCountry(ipAddress),
 					Index = newConn.PlayerIndex,
 					PreferredColor = handshake.Client.PreferredColor,
 					Color = handshake.Client.Color,

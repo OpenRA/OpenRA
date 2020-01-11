@@ -82,6 +82,10 @@ namespace OpenRA
 		[Desc("Sets the timestamp format. Defaults to the ISO 8601 standard.")]
 		public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss";
 
+		[Desc("Path to a MaxMind GeoLite2 database to use for player geo-location.",
+			"Database files can be downloaded from https://dev.maxmind.com/geoip/geoip2/geolite2/")]
+		public string GeoIPDatabase = null;
+
 		public ServerSettings Clone()
 		{
 			return (ServerSettings)MemberwiseClone();
