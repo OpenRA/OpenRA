@@ -595,9 +595,9 @@ namespace OpenRA.Mods.Common.Server
 
 			if (tempBan)
 			{
-				Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IpAddress);
+				Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IPAddress);
 				server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
-				server.TempBans.Add(kickClient.IpAddress);
+				server.TempBans.Add(kickClient.IPAddress);
 			}
 
 			server.SyncLobbyClients();

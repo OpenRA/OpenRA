@@ -133,7 +133,7 @@ namespace OpenRA.Network
 			// The full IP address is required for the IP banning moderation feature
 			// but we must not share the un-anonymized address with other players.
 			[FieldLoader.Ignore]
-			public string IpAddress;
+			public string IPAddress;
 			public string AnonymizedIPAddress;
 			public string Location;
 

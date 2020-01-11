@@ -347,7 +347,7 @@ namespace OpenRA.Server
 				var client = new Session.Client
 				{
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
-					IpAddress = ipAddress.ToString(),
+					IPAddress = ipAddress.ToString(),
 					AnonymizedIPAddress = Settings.ShareAnonymizedIPs ? Session.AnonymizeIP(ipAddress) : null,
 					Location = GeoIP.LookupCountry(ipAddress),
 					Index = newConn.PlayerIndex,
@@ -391,10 +391,10 @@ namespace OpenRA.Server
 
 				// Check if IP is banned
 				var bans = Settings.Ban.Union(TempBans);
-				if (bans.Contains(client.IpAddress))
+				if (bans.Contains(client.IPAddress))
 				{
 					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.Socket.RemoteEndPoint);
-					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
+					SendOrderTo(newConn, "ServerError", "You have been {0} from the server".F(Settings.Ban.Contains(client.IPAddress) ? "banned" : "temporarily banned"));
 					DropClient(newConn);
 					return;
 				}
