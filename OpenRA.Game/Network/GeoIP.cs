@@ -87,7 +87,7 @@ namespace OpenRA.Network
 				}
 			}
 
-			return "Unknown Location";
+			return null;
 		}
 	}
 }

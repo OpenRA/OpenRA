@@ -133,32 +133,35 @@ Background@LATENCY_TOOLTIP:
 Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Logic: AnonymousProfileTooltipLogic
 	Background: dialog3
-	Height: 57
+	Height: 32
 	Width: 200
 	Children:
 		Label@NAME:
 			X: 7
-			Y: 2
+			Y: 3
 			Text: Anonymous Player
 			Height: 24
 			Font: MediumBold
 		Label@LOCATION:
 			X: 7
-			Y: 25
+			Y: 26
 			Height: 12
+			Visible: False
 			Font: TinyBold
 		Label@IP:
 			X: 7
-			Y: 38
+			Y: 26
 			Height: 12
+			Visible: False
 			Font: TinyBold
 		Container@GAME_ADMIN:
 			X: 7
-			Y: 50
+			Y: 26
 			Height: 12
 			Visible: False
 			Children:
 				Image@ICON:
+					X: 1
 					Y: 4
 					Width: 7
 					Height: 5
@@ -166,7 +169,6 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 					ImageName: admin
 				Label@LABEL:
 					X: 10
-					Y: 3
 					Height: 12
 					Text: Game Admin
 					Font: TinyBold
