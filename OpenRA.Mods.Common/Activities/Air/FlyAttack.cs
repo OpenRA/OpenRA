@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly AttackAircraft attackAircraft;
 		readonly Rearmable rearmable;
+		readonly AttackSource source;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
 		readonly WDist strafeDistance;
@@ -36,8 +37,9 @@ namespace OpenRA.Mods.Common.Activities
 		bool hasTicked;
 		bool returnToBase;
 
-		public FlyAttack(Actor self, Target target, bool forceAttack, Color? targetLineColor)
+		public FlyAttack(Actor self, AttackSource source, Target target, bool forceAttack, Color? targetLineColor)
 		{
+			this.source = source;
 			this.target = target;
 			this.forceAttack = forceAttack;
 			this.targetLineColor = targetLineColor;
@@ -122,6 +124,14 @@ namespace OpenRA.Mods.Common.Activities
 			// and resume the activity after reloading if AbortOnResupply is set to 'false'
 			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
+				// Attack moves never resupply
+				if (source == AttackSource.AttackMove)
+					return true;
+
+				// AbortOnResupply cancels the current activity (after resupplying) plus any queued activities
+				if (attackAircraft.Info.AbortOnResupply && NextActivity != null)
+					NextActivity.Cancel(self);
+
 				QueueChild(new ReturnToBase(self));
 				returnToBase = true;
 				return attackAircraft.Info.AbortOnResupply;
