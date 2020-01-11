@@ -593,20 +593,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "STATUS_IMAGE");
 		}
 
-		public static string GetExternalIP(Session.Client client, OrderManager orderManager)
-		{
-			var address = client != null ? client.IpAddress : "";
-			var lc = orderManager.LocalClient;
-			if (lc != null && lc.Index == client.Index && address == IPAddress.Loopback.ToString())
-			{
-				var externalIP = UPnP.ExternalIP;
-				if (externalIP != null)
-					address = externalIP.ToString();
-			}
-
-			return address;
-		}
-
 		public static void SetupChatLine(ContainerWidget template, DateTime time, string name, Color nameColor, string text, Color textColor)
 		{
 			var nameLabel = template.Get<LabelWidget>("NAME");

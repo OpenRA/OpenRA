@@ -116,6 +116,7 @@ namespace OpenRA.Network
 			public int SpawnPoint;
 			public string Name;
 			public string IpAddress;
+			public string Location;
 			public ClientState State = ClientState.Invalid;
 			public int Team;
 			public string Slot; // Slot ID, or null for observer
