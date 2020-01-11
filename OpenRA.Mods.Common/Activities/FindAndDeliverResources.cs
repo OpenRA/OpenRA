@@ -245,7 +245,7 @@ namespace OpenRA.Mods.Common.Activities
 					yield return n;
 
 			if (orderLocation != null)
-				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Green);
+				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), Color.Crimson);
 			else if (deliverActor != null)
 				yield return new TargetLineNode(Target.FromActor(deliverActor), Color.Green);
 		}
