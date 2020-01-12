@@ -51,7 +51,31 @@ namespace OpenRA.Activities
 		public ActivityState State { get; private set; }
 
 		protected Activity ChildActivity { get; private set; }
-		public Activity NextActivity { get; private set; }
+
+		Activity nextActivity;
+		public Activity NextActivity
+		{
+			get
+			{
+				// If Activity.NextActivity.Cancel() was called, NextActivity will be in the Canceling
+				// state rather than Queued (the activity system guarantees that it cannot be Active or Done).
+				// An unknown number of ticks may have elapsed between the Activity.NextActivity.Cancel() call
+				// and now, so we cannot make any assumptions on the value of Activity.NextActivity.NextActivity.
+				// We must not return nextActivity (ticking it would be bogus), but returning null would potentially
+				// drop valid activities queued after it. Walk the queue until we find a valid activity or
+				// (more likely) run out of activities.
+				var next = nextActivity;
+				while (next != null && next.State == ActivityState.Canceling)
+					next = next.NextActivity;
+
+				return next;
+			}
+
+			private set
+			{
+				nextActivity = value;
+			}
+		}
 
 		public bool IsInterruptible { get; protected set; }
 		public bool ChildHasPriority { get; protected set; }
