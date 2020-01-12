@@ -224,8 +224,6 @@ Container@EDITOR_WORLD_ROOT:
 					Visible: false
 				Sprite@DRAG_LAYER_PREVIEW:
 					Visible: false
-				ActorPreview@DRAG_ACTOR_PREVIEW:
-					Visible: false
 				Background@ACTOR_EDIT_PANEL:
 					Background: panel-black
 					Width: 269

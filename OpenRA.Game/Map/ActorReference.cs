@@ -71,5 +71,14 @@ namespace OpenRA
 		// for initialization syntax
 		public void Add(object o) { InitDict.Add(o); }
 		public IEnumerator GetEnumerator() { return InitDict.GetEnumerator(); }
+
+		public ActorReference Clone()
+		{
+			var clone = new ActorReference(Type);
+			foreach (var init in InitDict)
+				clone.InitDict.Add(init);
+
+			return clone;
+		}
 	}
 }
