@@ -47,7 +47,7 @@ namespace OpenRA
 
 			// If the player has defined a local support directory (in the game directory)
 			// then this will override both the regular and system support dirs
-			var sources = new[] { Platform.SystemSupportDir, Platform.SupportDir };
+			var sources = new[] { Platform.GetSupportDir(SupportDirType.System), Platform.GetSupportDir(SupportDirType.User) };
 			foreach (var source in sources.Distinct())
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
@@ -112,10 +112,10 @@ namespace OpenRA
 
 			var sources = new List<string>();
 			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.SystemSupportDir);
+				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
 			if (registration.HasFlag(ModRegistration.User))
-				sources.Add(Platform.SupportDir);
+				sources.Add(Platform.GetSupportDir(SupportDirType.User));
 
 			// Make sure the mod is available for this session, even if saving it fails
 			LoadMod(yaml.First().Value, forceRegistration: true);
@@ -148,10 +148,10 @@ namespace OpenRA
 		{
 			var sources = new List<string>();
 			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.SystemSupportDir);
+				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
 			if (registration.HasFlag(ModRegistration.User))
-				sources.Add(Platform.SupportDir);
+				sources.Add(Platform.GetSupportDir(SupportDirType.User));
 
 			var activeModKey = ExternalMod.MakeKey(activeMod);
 			foreach (var source in sources.Distinct())
@@ -207,10 +207,10 @@ namespace OpenRA
 		{
 			var sources = new List<string>();
 			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.SystemSupportDir);
+				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
 			if (registration.HasFlag(ModRegistration.User))
-				sources.Add(Platform.SupportDir);
+				sources.Add(Platform.GetSupportDir(SupportDirType.User));
 
 			var key = ExternalMod.MakeKey(mod);
 			mods.Remove(key);
