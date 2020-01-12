@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly EditorViewportControllerWidget editor;
 		readonly WorldRenderer worldRenderer;
+		readonly EditorCursorLayer editorCursor;
 
 		readonly ScrollPanelWidget layerTemplateList;
 		readonly ScrollItemWidget layerPreviewTemplate;
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.worldRenderer = worldRenderer;
 			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			editorCursor = worldRenderer.World.WorldActor.Trait<EditorCursorLayer>();
 
 			layerTemplateList = widget.Get<ScrollPanelWidget>("LAYERTEMPLATE_LIST");
 			layerTemplateList.Layout = new GridLayout(layerTemplateList);
@@ -46,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var resource in resources)
 			{
 				var newResourcePreviewTemplate = ScrollItemWidget.Setup(layerPreviewTemplate,
-					() => { var brush = editor.CurrentBrush as EditorResourceBrush; return brush != null && brush.ResourceType == resource; },
+					() => editorCursor.Type == EditorCursorType.Resource && editorCursor.Resource == resource,
 					() => editor.SetBrush(new EditorResourceBrush(editor, resource, worldRenderer)));
 
 				newResourcePreviewTemplate.Bounds.X = 0;

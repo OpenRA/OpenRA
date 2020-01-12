@@ -824,6 +824,14 @@ namespace OpenRA
 			return new WDist(delta.Z);
 		}
 
+		public WVec Offset(CVec delta, int dz)
+		{
+			if (Grid.Type == MapGridType.Rectangular)
+				return new WVec(1024 * delta.X, 1024 * delta.Y, 0);
+
+			return new WVec(724 * (delta.X - delta.Y), 724 * (delta.X + delta.Y), 724 * dz);
+		}
+
 		/// <summary>
 		/// The size of the map Height step in world units
 		/// </summary>
