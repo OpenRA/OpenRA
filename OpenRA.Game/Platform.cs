@@ -18,6 +18,8 @@ namespace OpenRA
 {
 	public enum PlatformType { Unknown, Windows, OSX, Linux }
 
+	public enum SupportDirType { System, ModernUser, LegacyUser, User }
+
 	public static class Platform
 	{
 		public const string SupportDirPrefix = "^";
@@ -25,6 +27,12 @@ namespace OpenRA
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
 		static Lazy<PlatformType> currentPlatform = Exts.Lazy(GetCurrentPlatform);
+
+		static bool supportDirInitialized;
+		static string systemSupportPath;
+		static string legacyUserSupportPath;
+		static string modernUserSupportPath;
+		static string userSupportPath;
 
 		static PlatformType GetCurrentPlatform()
 		{
@@ -66,18 +74,91 @@ namespace OpenRA
 
 		/// <summary>
 		/// Directory containing user-specific support files (settings, maps, replays, game data, etc).
-		/// The directory will automatically be created if it does not exist when this is queried.
 		/// </summary>
-		public static string SupportDir { get { return supportDir.Value; } }
-		static Lazy<string> supportDir = Exts.Lazy(GetSupportDir);
-		static string supportDirOverride;
+		public static string SupportDir { get { return GetSupportDir(SupportDirType.User); } }
+
+		public static string GetSupportDir(SupportDirType type)
+		{
+			if (!supportDirInitialized)
+				InitializeSupportDir();
+
+			switch (type)
+			{
+				case SupportDirType.System: return systemSupportPath;
+				case SupportDirType.LegacyUser: return legacyUserSupportPath;
+				case SupportDirType.ModernUser: return modernUserSupportPath;
+				default: return userSupportPath;
+			}
+		}
+
+		static void InitializeSupportDir()
+		{
+			// The preferred support dir location for Windows and Linux was changed in mid 2019 to match modern platform conventions
+			switch (CurrentPlatform)
+			{
+				case PlatformType.Windows:
+				{
+					modernUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
+					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA");
+					systemSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "OpenRA") + Path.DirectorySeparatorChar;
+					break;
+				}
+
+				case PlatformType.OSX:
+				{
+					modernUserSupportPath = legacyUserSupportPath = Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+						"Library", "Application Support", "OpenRA");
+
+					systemSupportPath = "/Library/Application Support/OpenRA/";
+					break;
+				}
+
+				case PlatformType.Linux:
+				{
+					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
+
+					var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
+					if (string.IsNullOrEmpty(xdgConfigHome))
+						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config");
+
+					modernUserSupportPath = Path.Combine(xdgConfigHome, "openra");
+					systemSupportPath = "/var/games/openra/";
+
+					break;
+				}
+
+				default:
+				{
+					modernUserSupportPath = legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
+					systemSupportPath = "/var/games/openra/";
+					break;
+				}
+			}
+
+			// Use a local directory in the game root if it exists (shared with the system support dir)
+			var localSupportDir = Path.Combine(GameDir, "Support");
+			if (Directory.Exists(localSupportDir))
+				userSupportPath = systemSupportPath = localSupportDir + Path.DirectorySeparatorChar;
+
+			// Use the fallback directory if it exists and the preferred one does not
+			else if (!Directory.Exists(modernUserSupportPath) && Directory.Exists(legacyUserSupportPath))
+				userSupportPath = legacyUserSupportPath + Path.DirectorySeparatorChar;
+			else
+				userSupportPath = modernUserSupportPath + Path.DirectorySeparatorChar;
+
+			supportDirInitialized = true;
+		}
 
 		/// <summary>
 		/// Specify a custom support directory that already exists on the filesystem.
-		/// MUST be called before Platform.SupportDir is first accessed.
+		/// Cannot be called after Platform.SupportDir / GetSupportDir have been accessed.
 		/// </summary>
 		public static void OverrideSupportDir(string path)
 		{
+			if (supportDirInitialized)
+				throw new InvalidOperationException("Attempted to override user support directory after it has already been accessed.");
+
 			if (!Directory.Exists(path))
 				throw new DirectoryNotFoundException(path);
 
@@ -85,92 +166,8 @@ namespace OpenRA
 					!path.EndsWith(Path.AltDirectorySeparatorChar.ToString(), StringComparison.Ordinal))
 				path += Path.DirectorySeparatorChar;
 
-			supportDirOverride = path;
-		}
-
-		static string GetSupportDir()
-		{
-			// Use the custom override if it has been defined
-			if (supportDirOverride != null)
-				return supportDirOverride;
-
-			// Use a local directory in the game root if it exists (shared with the system support dir)
-			var localSupportDir = Path.Combine(GameDir, "Support");
-			if (Directory.Exists(localSupportDir))
-				return localSupportDir + Path.DirectorySeparatorChar;
-
-			// The preferred support dir location for Windows and Linux was changed in mid 2019 to match modern platform conventions
-			string preferredSupportDir;
-			string fallbackSupportDir;
-			switch (CurrentPlatform)
-			{
-				case PlatformType.Windows:
-				{
-					preferredSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
-					fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "OpenRA");
-					break;
-				}
-
-				case PlatformType.OSX:
-				{
-					preferredSupportDir = fallbackSupportDir = Path.Combine(
-						Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-						"Library", "Application Support", "OpenRA");
-					break;
-				}
-
-				case PlatformType.Linux:
-				{
-					fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
-
-					var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
-					if (string.IsNullOrEmpty(xdgConfigHome))
-						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config");
-
-					preferredSupportDir = Path.Combine(xdgConfigHome, "openra");
-
-					break;
-				}
-
-				default:
-				{
-					preferredSupportDir = fallbackSupportDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra");
-					break;
-				}
-			}
-
-			// Use the fallback directory if it exists and the preferred one does not
-			if (!Directory.Exists(preferredSupportDir) && Directory.Exists(fallbackSupportDir))
-				return fallbackSupportDir + Path.DirectorySeparatorChar;
-
-			return preferredSupportDir + Path.DirectorySeparatorChar;
-		}
-
-		/// <summary>
-		/// Directory containing system-wide support files (mod metadata).
-		/// This directory is not guaranteed to exist or be writable.
-		/// Consumers are expected to check the validity of the returned value, and
-		/// fall back to the user support directory if necessary.
-		/// </summary>
-		public static string SystemSupportDir { get { return systemSupportDir.Value; } }
-		static Lazy<string> systemSupportDir = Exts.Lazy(GetSystemSupportDir);
-
-		static string GetSystemSupportDir()
-		{
-			// Use a local directory in the game root if it exists (shared with the system support dir)
-			var localSupportDir = Path.Combine(GameDir, "Support");
-			if (Directory.Exists(localSupportDir))
-				return localSupportDir + Path.DirectorySeparatorChar;
-
-			switch (CurrentPlatform)
-			{
-				case PlatformType.Windows:
-					return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "OpenRA") + Path.DirectorySeparatorChar;
-				case PlatformType.OSX:
-					return "/Library/Application Support/OpenRA/";
-				default:
-					return "/var/games/openra/";
-			}
+			InitializeSupportDir();
+			userSupportPath = path;
 		}
 
 		public static string GameDir
