@@ -370,6 +370,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							if (addressNode != null)
 								addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
 
+							game.Nodes.Add(new MiniYamlNode("Location", "Local Network"));
+
 							lanGames.Add(new GameServer(game));
 						}
 					}
@@ -658,8 +660,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (location != null)
 						{
 							var font = Game.Renderer.Fonts[location.Font];
-							var cachedServerLocation = game.Id != -1 ? GeoIP.LookupCountry(game.Address.Split(':')[0]) : "Local Network";
-							var label = WidgetUtils.TruncateText(cachedServerLocation, location.Bounds.Width, font);
+							var label = WidgetUtils.TruncateText(game.Location, location.Bounds.Width, font);
 							location.GetText = () => label;
 							location.GetColor = () => canJoin ? location.TextColor : incompatibleGameColor;
 						}

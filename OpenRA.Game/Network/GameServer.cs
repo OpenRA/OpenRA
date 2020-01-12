@@ -97,6 +97,9 @@ namespace OpenRA.Network
 		/// <summary>URL to a 32x32 px icon for the mod.</summary>
 		public readonly string ModIcon32 = "";
 
+		/// <summary>GeoIP resolved server location.</summary>
+		public readonly string Location = "";
+
 		/// <summary>Password protected</summary>
 		public readonly bool Protected = false;
 
