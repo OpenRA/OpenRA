@@ -60,9 +60,6 @@ namespace OpenRA.Mods.Common.Traits
 				var colors = new uint[Palette.Size];
 				using (var lines = s.ReadAllLines().GetEnumerator())
 				{
-					if (lines == null)
-						throw new InvalidDataException("File {0} is empty.".F(Filename));
-
 					if (!lines.MoveNext() || (lines.Current != "GIMP Palette" && lines.Current != "JASC-PAL"))
 						throw new InvalidDataException("File `{0}` is not a valid GIMP or JASC palette.".F(Filename));
 
