@@ -86,6 +86,9 @@ namespace OpenRA
 			"Database files can be downloaded from https://dev.maxmind.com/geoip/geoip2/geolite2/")]
 		public string GeoIPDatabase = null;
 
+		[Desc("Allow clients to see anonymised IPs for other clients.")]
+		public bool ShareAnonymizedIPs = true;
+
 		public ServerSettings Clone()
 		{
 			return (ServerSettings)MemberwiseClone();

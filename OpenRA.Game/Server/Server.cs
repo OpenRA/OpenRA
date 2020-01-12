@@ -348,6 +348,7 @@ namespace OpenRA.Server
 				{
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IpAddress = ipAddress.ToString(),
+					AnonymizedIPAddress = Settings.ShareAnonymizedIPs ? Session.AnonymizeIP(ipAddress) : null,
 					Location = GeoIP.LookupCountry(ipAddress),
 					Index = newConn.PlayerIndex,
 					PreferredColor = handshake.Client.PreferredColor,

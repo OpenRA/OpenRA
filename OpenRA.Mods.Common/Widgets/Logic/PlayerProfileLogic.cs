@@ -329,10 +329,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				adminLabel.Bounds.Y += locationLabel.Bounds.Height;
 			}
 
-			if (client.IpAddress != null)
+			if (client.AnonymizedIPAddress != null)
 			{
 				ipLabel.IsVisible = () => true;
-				ipLabel.GetText = () => client.IpAddress;
+				ipLabel.GetText = () => client.AnonymizedIPAddress;
 				widget.Bounds.Height += ipLabel.Bounds.Height;
 				adminLabel.Bounds.Y += locationLabel.Bounds.Height;
 			}

@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using OpenRA.Primitives;
 
 namespace OpenRA.Network
@@ -25,6 +27,18 @@ namespace OpenRA.Network
 		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
 
 		public Global GlobalSettings = new Global();
+
+		public static string AnonymizeIP(IPAddress ip)
+		{
+			if (ip.AddressFamily == AddressFamily.InterNetwork)
+			{
+				// Follow convention used by Google Analytics: remove last octet
+				var b = ip.GetAddressBytes();
+				return "{0}.{1}.{2}.*".F(b[0], b[1], b[2]);
+			}
+
+			return null;
+		}
 
 		public static Session Deserialize(string data)
 		{
@@ -115,8 +129,14 @@ namespace OpenRA.Network
 			public string Faction;
 			public int SpawnPoint;
 			public string Name;
+
+			// The full IP address is required for the IP banning moderation feature
+			// but we must not share the un-anonymized address with other players.
+			[FieldLoader.Ignore]
 			public string IpAddress;
+			public string AnonymizedIPAddress;
 			public string Location;
+
 			public ClientState State = ClientState.Invalid;
 			public int Team;
 			public string Slot; // Slot ID, or null for observer
