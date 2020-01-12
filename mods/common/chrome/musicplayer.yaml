@@ -55,68 +55,58 @@ Background@MUSIC_PANEL:
 			Width: 170
 			Children:
 				Button@BUTTON_PREV:
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PREV:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: prev
 				Button@BUTTON_PLAY:
 					X: 35
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PLAY:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: play
 				Button@BUTTON_PAUSE:
 					Visible: false
 					X: 35
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_STOP:
 					X: 70
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_STOP:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: stop
 				Button@BUTTON_NEXT:
 					X: 105
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					IgnoreChildMouseOver: true
 					Children:
 						Image@IMAGE_NEXT:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: next
 				ExponentialSlider@MUSIC_SLIDER:
