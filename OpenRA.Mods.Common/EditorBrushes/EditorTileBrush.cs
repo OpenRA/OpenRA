@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -25,32 +24,26 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
 		readonly EditorViewportControllerWidget editorWidget;
-		readonly TerrainTemplatePreviewWidget preview;
-		readonly Rectangle bounds;
 		readonly EditorActionManager editorActionManager;
+		readonly EditorCursorLayer editorCursor;
+		readonly int cursorToken;
 
 		bool painting;
 
-		public EditorTileBrush(EditorViewportControllerWidget editorWidget, ushort template, WorldRenderer wr)
+		public EditorTileBrush(EditorViewportControllerWidget editorWidget, ushort id, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
-			Template = template;
+			worldRenderer = wr;
+			world = wr.World;
+			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
+
+			Template = id;
 			worldRenderer = wr;
 			world = wr.World;
 
-			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
-
-			preview = editorWidget.Get<TerrainTemplatePreviewWidget>("DRAG_TILE_PREVIEW");
-			preview.GetScale = () => worldRenderer.Viewport.Zoom;
-			preview.IsVisible = () => editorWidget.CurrentBrush == this;
-
-			preview.Template = world.Map.Rules.TileSet.Templates.First(t => t.Value.Id == template).Value;
-			var grid = world.Map.Grid;
-			bounds = worldRenderer.Theater.TemplateBounds(preview.Template, grid.TileSize, grid.Type);
-
-			// The preview widget may be rendered by the higher-level code before it is ticked.
-			// Force a manual tick to ensure the bounds are set correctly for this first draw.
-			Tick();
+			var template = world.Map.Rules.TileSet.Templates.First(t => t.Value.Id == id).Value;
+			cursorToken = editorCursor.SetTerrainTemplate(wr, template);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -83,6 +76,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Event != MouseInputEvent.Down && mi.Event != MouseInputEvent.Move)
 				return true;
+
+			if (editorCursor.CurrentToken != cursorToken)
+				return false;
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 			var isMoving = mi.Event == MouseInputEvent.Move;
@@ -205,23 +201,12 @@ namespace OpenRA.Mods.Common.Widgets
 			return false;
 		}
 
-		public void Tick()
+		public void Tick() { }
+
+		public void Dispose()
 		{
-			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
-			var offset = WVec.Zero;
-			var location = world.Map.CenterOfCell(cell) + offset;
-
-			var cellScreenPosition = worldRenderer.ScreenPxPosition(location);
-			var cellScreenPixel = worldRenderer.Viewport.WorldToViewPx(cellScreenPosition);
-			var zoom = worldRenderer.Viewport.Zoom;
-
-			preview.Bounds.X = cellScreenPixel.X + (int)(zoom * bounds.X);
-			preview.Bounds.Y = cellScreenPixel.Y + (int)(zoom * bounds.Y);
-			preview.Bounds.Width = (int)(zoom * bounds.Width);
-			preview.Bounds.Height = (int)(zoom * bounds.Height);
+			editorCursor.Clear(cursorToken);
 		}
-
-		public void Dispose() { }
 	}
 
 	class PaintTileEditorAction : IEditorAction

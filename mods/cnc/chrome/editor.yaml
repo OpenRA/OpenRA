@@ -220,10 +220,6 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
 			Children:
-				TerrainTemplatePreview@DRAG_TILE_PREVIEW:
-					Visible: false
-				Sprite@DRAG_LAYER_PREVIEW:
-					Visible: false
 				Background@ACTOR_EDIT_PANEL:
 					Background: panel-black
 					Width: 269
