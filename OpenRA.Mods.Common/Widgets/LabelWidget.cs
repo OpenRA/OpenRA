@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool Shadow = ChromeMetrics.Get<bool>("TextShadow");
 		public Color ContrastColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 		public Color ContrastColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
+		public int ContrastRadius = ChromeMetrics.Get<int>("TextContrastRadius");
 		public bool WordWrap = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
@@ -56,6 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Contrast = other.Contrast;
 			ContrastColorDark = other.ContrastColorDark;
 			ContrastColorLight = other.ContrastColorLight;
+			ContrastRadius = other.ContrastRadius;
 			Shadow = other.Shadow;
 			WordWrap = other.WordWrap;
 			GetText = other.GetText;
@@ -100,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
 			if (Contrast)
-				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, 2);
+				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, ContrastRadius);
 			else if (Shadow)
 				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
 			else
