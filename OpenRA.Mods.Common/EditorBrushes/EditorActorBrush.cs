@@ -12,70 +12,27 @@
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
 {
 	public sealed class EditorActorBrush : IEditorBrush
 	{
-		public readonly ActorInfo Actor;
-
-		readonly WorldRenderer worldRenderer;
 		readonly World world;
 		readonly EditorActorLayer editorLayer;
+		readonly EditorCursorLayer editorCursor;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editorWidget;
-		readonly ActorPreviewWidget preview;
-		readonly WVec centerOffset;
-		readonly PlayerReference owner;
-		readonly CVec[] footprint;
-
-		int facing = 96;
+		readonly int cursorToken;
 
 		public EditorActorBrush(EditorViewportControllerWidget editorWidget, ActorInfo actor, PlayerReference owner, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
-			worldRenderer = wr;
 			world = wr.World;
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
+			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
-			Actor = actor;
-			this.owner = owner;
-			var ownerName = owner.Name;
-
-			preview = editorWidget.Get<ActorPreviewWidget>("DRAG_ACTOR_PREVIEW");
-			preview.GetScale = () => worldRenderer.Viewport.Zoom;
-			preview.IsVisible = () => editorWidget.CurrentBrush == this;
-
-			var buildingInfo = actor.TraitInfoOrDefault<BuildingInfo>();
-			if (buildingInfo != null)
-				centerOffset = buildingInfo.CenterOffset(world);
-
-			// Enforce first entry of ValidOwnerNames as owner if the actor has RequiresSpecificOwners
-			var specificOwnerInfo = actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
-			if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
-				ownerName = specificOwnerInfo.ValidOwnerNames.First();
-
-			var td = new TypeDictionary();
-			td.Add(new FacingInit(facing));
-			td.Add(new TurretFacingInit(facing));
-			td.Add(new OwnerInit(ownerName));
-			td.Add(new FactionInit(owner.Faction));
-			preview.SetPreview(actor, td);
-
-			var ios = actor.TraitInfoOrDefault<IOccupySpaceInfo>();
-			if (ios != null)
-				footprint = ios.OccupiedCells(actor, CPos.Zero)
-					.Select(c => c.Key - CPos.Zero)
-					.ToArray();
-			else
-				footprint = new CVec[0];
-
-			// The preview widget may be rendered by the higher-level code before it is ticked.
-			// Force a manual tick to ensure the bounds are set correctly for this first draw.
-			Tick();
+			cursorToken = editorCursor.SetActor(wr, actor, owner);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -95,38 +52,29 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location - worldRenderer.ScreenPxOffset(centerOffset));
+			if (editorCursor.CurrentToken != cursorToken)
+				return false;
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				// Check the actor is inside the map
-				if (!footprint.All(c => world.Map.Tiles.Contains(cell + c)))
+				var actor = editorCursor.Actor;
+				if (!actor.Footprint.All(c => world.Map.Tiles.Contains(c.Key)))
 					return true;
 
-				// Enforce first entry of ValidOwnerNames as owner if the actor has RequiresSpecificOwners
-				var action = new AddActorAction(editorLayer, Actor, cell, owner, facing);
+				var action = new AddActorAction(editorLayer, actor.Actor);
 				editorActionManager.Add(action);
 			}
 
 			return true;
 		}
 
-		public void Tick()
+		public void Tick() { }
+
+		public void Dispose()
 		{
-			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos - worldRenderer.ScreenPxOffset(centerOffset));
-			var pos = world.Map.CenterOfCell(cell) + centerOffset;
-
-			var origin = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(pos));
-
-			var zoom = worldRenderer.Viewport.Zoom;
-			var s = preview.IdealPreviewSize;
-			var o = preview.PreviewOffset;
-			preview.Bounds.X = origin.X - (int)(zoom * (o.X + s.X / 2));
-			preview.Bounds.Y = origin.Y - (int)(zoom * (o.Y + s.Y / 2));
-			preview.Bounds.Width = (int)(zoom * s.X);
-			preview.Bounds.Height = (int)(zoom * s.Y);
+			editorCursor.Clear(cursorToken);
 		}
-
-		public void Dispose() { }
 	}
 
 	class AddActorAction : IEditorAction
@@ -134,20 +82,16 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; private set; }
 
 		readonly EditorActorLayer editorLayer;
-		readonly ActorInfo actor;
-		readonly CPos cell;
-		readonly PlayerReference owner;
-		readonly int facing;
+		readonly ActorReference actor;
 
 		EditorActorPreview editorActorPreview;
 
-		public AddActorAction(EditorActorLayer editorLayer, ActorInfo actor, CPos cell, PlayerReference owner, int facing)
+		public AddActorAction(EditorActorLayer editorLayer, ActorReference actor)
 		{
 			this.editorLayer = editorLayer;
-			this.actor = actor;
-			this.cell = cell;
-			this.owner = owner;
-			this.facing = facing;
+
+			// Take an immutable copy of the reference
+			this.actor = actor.Clone();
 		}
 
 		public void Execute()
@@ -157,34 +101,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			var ownerName = owner.Name;
-			var specificOwnerInfo = actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
-			if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
-				ownerName = specificOwnerInfo.ValidOwnerNames.First();
-
-			var newActorReference = new ActorReference(actor.Name);
-			newActorReference.Add(new OwnerInit(ownerName));
-
-			newActorReference.Add(new LocationInit(cell));
-
-			var ios = actor.TraitInfoOrDefault<IOccupySpaceInfo>();
-			if (ios != null && ios.SharesCell)
-			{
-				var subcell = editorLayer.FreeSubCellAt(cell);
-				if (subcell != SubCell.Invalid)
-					newActorReference.Add(new SubCellInit(subcell));
-			}
-
-			var initDict = newActorReference.InitDict;
-
-			if (actor.HasTraitInfo<IFacingInfo>())
-				initDict.Add(new FacingInit(facing));
-
-			if (actor.HasTraitInfo<TurretedInfo>())
-				initDict.Add(new TurretFacingInit(facing));
-
-			editorActorPreview = editorLayer.Add(newActorReference);
-
+			editorActorPreview = editorLayer.Add(actor);
 			Text = "Added {0} ({1})".F(editorActorPreview.Info.Name, editorActorPreview.ID);
 		}
 

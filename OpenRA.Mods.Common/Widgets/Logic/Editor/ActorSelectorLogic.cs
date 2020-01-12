@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly Ruleset mapRules;
 		readonly ActorSelectorActor[] allActors;
+		readonly EditorCursorLayer editorCursor;
 
 		PlayerReference selectedOwner;
 
@@ -49,6 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			mapRules = world.Map.Rules;
 			ownersDropDown = widget.Get<DropDownButtonWidget>("OWNERS_DROPDOWN");
+			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 			var editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 
 			selectedOwner = editorLayer.Players.Players.Values.First();
@@ -181,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					var item = ScrollItemWidget.Setup(ItemTemplate,
-						() => { var brush = Editor.CurrentBrush as EditorActorBrush; return brush != null && brush.Actor == actor; },
+						() => editorCursor.Type == EditorCursorType.Actor && editorCursor.Actor.Info == actor,
 						() => Editor.SetBrush(new EditorActorBrush(Editor, actor, selectedOwner, WorldRenderer)));
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");

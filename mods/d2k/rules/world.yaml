@@ -240,6 +240,7 @@ World:
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	D2kEditorResourceLayer:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:

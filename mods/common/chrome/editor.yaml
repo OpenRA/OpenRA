@@ -211,8 +211,6 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
 			Children:
-				ActorPreview@DRAG_ACTOR_PREVIEW:
-					Visible: false
 				TerrainTemplatePreview@DRAG_TILE_PREVIEW:
 					Visible: false
 				Sprite@DRAG_LAYER_PREVIEW:
