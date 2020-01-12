@@ -6,6 +6,7 @@ Metrics:
 	ButtonTextContrast: false
 	ButtonTextContrastColorDark: 000000
 	ButtonTextContrastColorLight: 7F7F7F
+	ButtonTextContrastRadius: 1
 	ButtonTextShadow: false
 	CheckboxPressedState: false
 	GameStartedColor: FFA500
@@ -31,6 +32,7 @@ Metrics:
 	TextContrast: false
 	TextContrastColorDark: 000000
 	TextContrastColorLight: 7F7F7F
+	TextContrastRadius: 1
 	TextFont: Regular
 	TextShadow: false
 	TextfieldColor: FFFFFF
