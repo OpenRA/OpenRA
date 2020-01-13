@@ -21,8 +21,8 @@ Container@PLAYER_WIDGETS:
 			Y: WINDOW_BOTTOM - HEIGHT
 			Width: 416
 			Height: 43
-			ImageCollection: sidebar-bits
-			ImageName: commandbar-background
+			ImageCollection: commandbar
+			ImageName: background
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 24
@@ -262,22 +262,6 @@ Container@PLAYER_WIDGETS:
 					X: 16
 					Y: 236
 					Children:
-						MenuButton@DEBUG_BUTTON:
-							X: 4
-							Width: 34
-							Height: 35
-							Background:
-							Key: escape Shift
-							TooltipText: Debug Menu
-							TooltipContainer: TOOLTIP_CONTAINER
-							DisableWorldSounds: true
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 0
-									Y: 0
-									ImageCollection: order-icons
-									ImageName: debug
 						Button@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic
 							X: 29
