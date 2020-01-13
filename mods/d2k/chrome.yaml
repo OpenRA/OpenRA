@@ -4,8 +4,8 @@
 ^Dialog:
 	Image: dialog.png
 
-^Buttons:
-	Image: buttons.png
+^Glyphs:
+	Image: glyphs.png
 
 ^LoadScreen:
 	Image: loadscreen.png
@@ -19,11 +19,11 @@ sidebar:
 
 sidebar-button:
 	Inherits: ^Chrome
-	PanelRegion: 377, 0, 0, 0, 25, 25, 0, 0
+	PanelRegion: 381, 0, 0, 0, 25, 25, 0, 0
 	PanelSides: Center
 sidebar-button-pressed:
 	Inherits: ^Chrome
-	PanelRegion: 402, 0, 0, 0, 25, 25, 0, 0
+	PanelRegion: 407, 0, 0, 0, 25, 25, 0, 0
 	PanelSides: Center
 sidebar-button-hover:
 	Inherits: sidebar-button-pressed
@@ -35,75 +35,80 @@ sidebar-button-highlighted-pressed:
 	Inherits: sidebar-button-pressed
 sidebar-button-disabled:
 	Inherits: ^Chrome
-	PanelRegion: 427, 0, 0, 0, 25, 25, 0, 0
+	PanelRegion: 433, 0, 0, 0, 25, 25, 0, 0
 	PanelSides: Center
 sidebar-button-highlighted-disabled:
 	Inherits: sidebar-button-disabled
 
 sidebar-bits:
+	Inherits: ^Glyphs
+	Regions:
+		production-tooltip-time: 136, 51, 16, 16
+		production-tooltip-power: 102, 51, 16, 16
+		production-tooltip-cost: 68, 51, 16, 16
+		indicator-muted: 0, 119, 24, 24
+
+commandbar:
 	Inherits: ^Chrome
 	Regions:
-		production-tooltip-time: 480, 112, 16, 16
-		production-tooltip-power: 496, 112, 16, 16
-		production-tooltip-cost: 464, 112, 16, 16
-		commandbar-background: 0, 469, 454, 43
+		background: 0, 469, 454, 43
 
 minimap-overlay:
 	Inherits: ^Chrome
 	Regions:
-		top-left: 236, 15, 7, 7
-		top: 236, 0, 141, 4
-		top-right: 243, 15, 7, 7
-		left: 231, 0, 5, 22
-		right: 226, 0, 5, 22
-		bottom-left: 236, 8, 7, 7
-		bottom-right: 243, 8, 7, 7
+		top-left: 239, 15, 7, 7
+		top: 239, 0, 141, 4
+		top-right: 247, 15, 7, 7
+		left: 233, 0, 5, 22
+		right: 227, 0, 5, 22
+		bottom-left: 239, 7, 7, 7
+		bottom-right: 247, 7, 7, 7
 
 radar-atreides:
 	Inherits: ^Chrome
 	Regions:
-		insignia: 226, 25, 100, 100
+		insignia: 227, 26, 100, 100
 
 radar-ordos:
 	Inherits: ^Chrome
 	Regions:
-		insignia: 326, 25, 100, 100
+		insignia: 328, 26, 100, 100
 
 radar-harkonnen:
 	Inherits: ^Chrome
 	Regions:
-		insignia: 226, 125, 100, 100
+		insignia: 227, 127, 100, 100
 
 power-icons:
-	Inherits: ^Chrome
+	Inherits: ^Glyphs
 	Regions:
-		power-normal: 496, 112, 16, 16
-		power-critical: 496, 128, 16, 16
+		power-normal: 102, 51, 16, 16
+		power-critical: 119, 51, 16, 16
 
 production-icons:
-	Inherits: ^Chrome
+	Inherits: ^Glyphs
 	Regions:
-		building: 464, 0, 16, 16
-		building-disabled: 480, 0, 16, 16
-		building-alert: 496, 0, 16, 16
-		upgrade: 464, 16, 16, 16
-		upgrade-disabled: 480, 16, 16, 16
-		upgrade-alert: 496, 16, 16, 16
-		infantry: 464, 32, 16, 16
-		infantry-disabled: 480, 32, 16, 16
-		infantry-alert: 496, 32, 16, 16
-		vehicle: 464, 48, 16, 16
-		vehicle-disabled: 480, 48, 16, 16
-		vehicle-alert: 496, 48, 16, 16
-		armor: 464, 64, 16, 16
-		armor-disabled: 480, 64, 16, 16
-		armor-alert: 496, 64, 16, 16
-		aircraft: 464, 80, 16, 16
-		aircraft-disabled: 480, 80, 16, 16
-		aircraft-alert: 496, 80, 16, 16
-		starport: 464, 96, 16, 16
-		starport-disabled: 480, 96, 16, 16
-		starport-alert: 496, 96, 16, 16
+		building: 0, 68, 16, 16
+		building-disabled: 0, 85, 16, 16
+		building-alert: 0, 102, 16, 16
+		upgrade: 17, 68, 16, 16
+		upgrade-disabled: 17, 85, 16, 16
+		upgrade-alert: 17, 102, 16, 16
+		infantry: 34, 68, 16, 16
+		infantry-disabled: 34, 85, 16, 16
+		infantry-alert: 34, 102, 16, 16
+		vehicle: 51, 68, 16, 16
+		vehicle-disabled: 51, 85, 16, 16
+		vehicle-alert: 51, 102, 16, 16
+		armor: 68, 68, 16, 16
+		armor-disabled: 68, 85, 16, 16
+		armor-alert: 68, 102, 16, 16
+		aircraft: 85, 68, 16, 16
+		aircraft-disabled: 85, 85, 16, 16
+		aircraft-alert: 85, 102, 16, 16
+		starport: 102, 68, 16, 16
+		starport-disabled: 102, 85, 16, 16
+		starport-alert: 102, 102, 16, 16
 
 order-icons:
 	Inherits: ^Chrome
@@ -135,13 +140,13 @@ order-icons:
 
 command-button:
 	Inherits: ^Chrome
-	PanelRegion: 332, 428, 0, 0, 34, 41, 0, 0
+	PanelRegion: 331, 427, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-hover:
 	Inherits: command-button
 command-button-pressed:
 	Inherits: ^Chrome
-	PanelRegion: 400, 428, 0, 0, 34, 41, 0, 0
+	PanelRegion: 401, 427, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-highlighted:
 	Inherits: command-button-pressed
@@ -151,7 +156,7 @@ command-button-highlighted-pressed:
 	Inherits: command-button-pressed
 command-button-disabled:
 	Inherits: ^Chrome
-	PanelRegion: 366, 428, 0, 0, 34, 41, 0, 0
+	PanelRegion: 366, 427, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-highlighted-disabled:
 	Inherits: command-button-disabled
@@ -193,32 +198,32 @@ stance-icons:
 		hold-fire-active: 496, 264, 16, 16
 
 flags:
-	Inherits: ^Buttons
+	Inherits: ^Glyphs
 	Regions:
-		atreides: 0, 114, 22, 21
-		harkonnen: 22, 114, 23, 21
-		ordos: 45, 114, 22, 21
-		Random: 67, 114, 23, 21
-		spectator: 67, 114, 23, 21
-		corrino: 90, 114, 22, 21
-		smuggler: 112, 114, 22, 21
-		fremen: 134, 114, 22, 21
-		worm: 156, 114, 22, 21
-		mercenary: 178, 114, 22, 21
+		atreides: 234, 59, 22, 21
+		harkonnen: 234, 81, 22, 21
+		ordos: 234, 103, 22, 21
+		corrino: 234, 125, 22, 21
+		smuggler: 234, 147, 22, 21
+		fremen: 234, 169, 22, 21
+		worm: 234, 191, 22, 21
+		mercenary: 234, 213, 22, 21
+		spectator: 234, 235, 22, 21
+		Random: 234, 235, 22, 21
 
 # Used for the menu
 dialog:
 	Inherits: ^Dialog
 	Regions:
-		background: 0, 0, 480, 480
-		border-r: 489, 0, 9, 192
-		border-l: 480, 0, 9, 192
-		border-b: 0, 489, 191, 9
-		border-t: 0, 480, 191, 9
-		corner-tl: 191, 480, 9, 9
-		corner-tr: 200, 480, 9, 9
-		corner-bl: 191, 489, 9, 9
-		corner-br: 200, 489, 9, 9
+		background: 1, 1, 478, 478
+		border-r: 490, 1, 9, 190
+		border-l: 481, 1, 9, 190
+		border-b: 1, 490, 189, 9
+		border-t: 1, 481, 189, 9
+		corner-tl: 192, 481, 9, 9
+		corner-tr: 201, 481, 9, 9
+		corner-bl: 192, 490, 9, 9
+		corner-br: 201, 490, 9, 9
 
 dialog2:
 	Inherits: button
@@ -232,64 +237,57 @@ dialog4:
 	PanelRegion: 512, 387, 6, 6, 52, 52, 6, 6
 
 lobby-bits:
-	Inherits: ^Buttons
+	Inherits: ^Glyphs
 	Regions:
-		spawn-unclaimed: 158, 5, 23, 22
-		spawn-claimed: 126, 5, 23, 22
-		admin: 186, 5, 7, 5
-		colorpicker: 126, 5, 23, 22
-		huepicker: 193, 0, 7, 15
-		protected: 200, 0, 12, 13
-		protected-disabled: 211, 0, 12, 13
-		authentication: 199, 16, 12, 13
-		authentication-disabled: 212, 16, 12, 13
-		admin-registered: 224, 0, 16, 16
-		admin-anonymous: 240, 0, 16, 16
-		player-registered: 224, 16, 16, 16
-		player-anonymous: 240, 16, 16, 16
+		spawn-unclaimed: 91, 119, 22, 22
+		spawn-claimed: 68, 119, 22, 22
+		admin: 170, 0, 6, 5
+		colorpicker: 68, 119, 22, 22
+		huepicker: 136, 0, 7, 15
+		kick: 153, 0, 11, 11
+		protected: 0, 17, 12, 13
+		protected-disabled: 17, 17, 12, 13
+		authentication: 34, 17, 12, 13
+		authentication-disabled: 51, 17, 12, 13
+		admin-registered: 0, 51, 16, 16
+		admin-anonymous: 34, 51, 16, 16
+		player-registered: 17, 51, 16, 16
+		player-anonymous: 51, 51, 16, 16
 
 reload-icon:
-	Inherits: ^Chrome
+	Inherits: ^Glyphs
 	Regions:
-		enabled: 416, 312, 16, 16
-		disabled-0: 416, 280, 16, 16
-		disabled-1: 432, 280, 16, 16
-		disabled-2: 448, 280, 16, 16
-		disabled-3: 464, 280, 16, 16
-		disabled-4: 480, 280, 16, 16
-		disabled-5: 496, 280, 16, 16
-		disabled-6: 416, 296, 16, 16
-		disabled-7: 432, 296, 16, 16
-		disabled-8: 448, 296, 16, 16
-		disabled-9: 464, 296, 16, 16
-		disabled-10: 480, 296, 16, 16
-		disabled-11: 496, 296, 16, 16
-
-strategic:
-	Inherits: ^Buttons
-	Regions:
-		unowned: 127, 5, 23, 22
-		critical_unowned: 127, 27, 23, 22
-		enemy_owned: 159, 27, 23, 22
-		player_owned: 159, 49, 23, 22
+		enabled: 0, 34, 16, 16
+		disabled-0: 17, 34, 16, 16
+		disabled-1: 34, 34, 16, 16
+		disabled-2: 51, 34, 16, 16
+		disabled-3: 68, 34, 16, 16
+		disabled-4: 85, 34, 16, 16
+		disabled-5: 102, 34, 16, 16
+		disabled-6: 119, 34, 16, 16
+		disabled-7: 136, 34, 16, 16
+		disabled-8: 153, 34, 16, 16
+		disabled-9: 170, 34, 16, 16
+		disabled-10: 187, 34, 16, 16
+		disabled-11: 204, 34, 16, 16
 
 music:
-	Inherits: ^Buttons
+	Inherits: ^Glyphs
 	Regions:
-		pause: 5, 198, 16, 16
-		stop: 30, 198, 16, 16
-		play: 59, 198, 16, 16
-		next: 87, 198, 16, 16
-		prev: 114, 198, 16, 16
-		fastforward: 138, 198, 16, 16
+		pause: 0, 0, 16, 16
+		stop: 17, 0, 16, 16
+		play: 34, 0, 16, 16
+		next: 51, 0, 16, 16
+		prev: 68, 0, 16, 16
+		fastforward: 85, 0, 16, 16
 
 scrollbar:
-	Inherits: ^Buttons
+	Inherits: ^Glyphs
 	Regions:
-		down_arrow: 16, 140, 16, 16
-		down_pressed: 16, 140, 16, 16
-		up_arrow: 32, 140, 16, 16
-		up_pressed: 32, 140, 16, 16
+		down_arrow: 119, 0, 16, 16
+		down_pressed: 119, 0, 16, 16
+		up_arrow: 102, 0, 16, 16
+		up_pressed: 102, 0, 16, 16
 
 progressbar-bg:
 	Inherits: button-pressed
@@ -299,33 +297,33 @@ progressbar-thumb:
 
 button:
 	Inherits: ^Dialog
-	PanelRegion: 512, 0, 1, 1, 126, 126, 1, 1
+	PanelRegion: 513, 1, 2, 2, 122, 122, 2, 2
 
 # 5% lighter than a normal button
 button-hover:
 	Inherits: ^Dialog
-	PanelRegion: 512, 128, 1, 1, 126, 126, 1, 1
+	PanelRegion: 513, 129, 2, 2, 122, 122, 2, 2
 
 button-pressed:
 	Inherits: ^Dialog
-	PanelRegion: 640, 0, 1, 1, 126, 126, 1, 1
+	PanelRegion: 641, 1, 2, 2, 122, 122, 2, 2
 
 # 10% darker than a normal button
 button-disabled:
 	Inherits: ^Dialog
-	PanelRegion: 512, 256, 1, 1, 126, 126, 1, 1
+	PanelRegion: 513, 257, 2, 2, 122, 122, 2, 2
 
 # A yellow (normal) button
 button-highlighted:
 	Inherits: ^Dialog
-	PanelRegion: 768, 0, 1, 1, 126, 126, 1, 1
+	PanelRegion: 769, 1, 2, 2, 122, 122, 2, 2
 
 button-highlighted-hover:
 	Inherits: button-highlighted
 
 button-highlighted-pressed:
 	Inherits: ^Dialog
-	PanelRegion: 896, 0, 1, 1, 126, 126, 1, 1
+	PanelRegion: 897, 1, 2, 2, 122, 122, 2, 2
 
 button-highlighted-disabled:
 	Inherits: button-highlighted
@@ -360,7 +358,7 @@ scrollpanel-button-disabled:
 slider:
 	Inherits: ^Dialog
 	Regions:
-		tick: 512, 1, 2, 4
+		tick: 513, 1, 2, 4
 
 slider-track:
 	Inherits: button
@@ -381,21 +379,21 @@ checkbox:
 	Inherits: button-pressed
 
 checkbox-bits:
-	Inherits: ^Buttons
+	Inherits: ^Glyphs
 	Regions:
-		checked: 0, 157, 16, 16
-		checked-disabled: 0, 173, 16, 16
-		crossed: 16, 157, 16, 16
-		crossed-disabled: 16, 173, 16, 16
+		checked: 187, 0, 16, 16
+		checked-disabled: 204, 0, 16, 16
+		crossed: 221, 0, 16, 16
+		crossed-disabled: 238, 0, 16, 16
 
 checkbox-hover:
 	Inherits: ^Dialog
-	PanelRegion: 640, 128, 1, 1, 126, 126, 1, 1
+	PanelRegion: 641, 129, 2, 2, 122, 122, 2, 2
 
 # Same as a button-disabled-pressed
 checkbox-disabled:
 	Inherits: ^Dialog
-	PanelRegion: 640, 256, 1, 1, 126, 126, 1, 1
+	PanelRegion: 641, 257, 2, 2, 122, 122, 2, 2
 
 checkbox-highlighted:
 	Inherits: button-highlighted-pressed
@@ -415,7 +413,7 @@ scrollitem-nohover:
 dropdown:
 	Inherits: ^Dialog
 	Regions:
-		separator: 512, 1, 1, 19
+		separator: 513, 1, 1, 19
 
 logos:
 	Inherits: ^LoadScreen
