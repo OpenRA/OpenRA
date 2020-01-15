@@ -36,8 +36,7 @@ Background@BUTTON_TOOLTIP:
 			VAlign: Top
 
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
-	Logic: ButtonTooltipWithDescHighlightLogic
-		Highlight: FFFF00
+	Logic: ButtonTooltipLogic
 	Background: dialog4
 	Height: 29
 	Children:
@@ -52,7 +51,7 @@ Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
-		Label@DESC:
+		LabelWithHighlight@DESC:
 			X: 7
 			Y: 27
 			Height: 12
