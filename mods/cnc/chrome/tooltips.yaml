@@ -73,8 +73,7 @@ Background@BUTTON_TOOLTIP_FACTIONSUFFIX:
 			VAlign: Top
 
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
-	Logic: ButtonTooltipWithDescHighlightLogic
-		Highlight: FFFF00
+	Logic: ButtonTooltipLogic
 	Background: panel-black
 	Height: 26
 	Children:
@@ -89,7 +88,7 @@ Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
-		Label@DESC:
+		LabelWithHighlight@DESC:
 			X: 5
 			Y: 26
 			Height: 12
@@ -97,8 +96,7 @@ Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
 			VAlign: Top
 
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX:
-	Logic: ButtonTooltipWithDescHighlightLogic, AddFactionSuffixLogic
-		Highlight: FFFF00
+	Logic: ButtonTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black
 	Height: 26
 	Children:
@@ -113,7 +111,7 @@ Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX:
 			TextColor: FFFF00
 			Height: 23
 			Font: Bold
-		Label@DESC:
+		LabelWithHighlight@DESC:
 			X: 5
 			Y: 26
 			Height: 12

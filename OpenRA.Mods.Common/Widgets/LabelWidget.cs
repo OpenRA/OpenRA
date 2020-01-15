@@ -98,7 +98,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
-			var color = GetColor();
+			DrawInner(text, font, GetColor(), position);
+		}
+
+		protected virtual void DrawInner(string text, SpriteFont font, Color color, int2 position)
+		{
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
 			if (Contrast)

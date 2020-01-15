@@ -29,6 +29,7 @@ Metrics:
 	SpawnFont: TinyBold
 	SpawnLabelOffset: 0,1
 	TextColor: FFFFFF
+	TextHighlightColor: FFFF00
 	TextContrast: false
 	TextContrastColorDark: 000000
 	TextContrastColorLight: 7F7F7F
