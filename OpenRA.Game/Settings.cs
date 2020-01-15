@@ -216,8 +216,7 @@ namespace OpenRA
 		public int ViewportEdgeScrollMargin = 5;
 
 		public bool LockMouseWindow = false;
-		public MouseScrollType MiddleMouseScroll = MouseScrollType.Standard;
-		public MouseScrollType RightMouseScroll = MouseScrollType.Disabled;
+		public MouseScrollType MouseScroll = MouseScrollType.Joystick;
 		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
 		public float ViewportEdgeScrollStep = 30f;
 		public float UIScrollSpeed = 50f;
@@ -226,6 +225,7 @@ namespace OpenRA
 		public int MouseScrollDeadzone = 8;
 
 		public bool UseClassicMouseStyle = false;
+		public bool ClassicMouseMiddleScroll = false;
 		public StatusBarsType StatusBars = StatusBarsType.Standard;
 		public TargetLinesType TargetLines = TargetLinesType.Manual;
 		public bool UsePlayerStanceColors = false;
