@@ -317,12 +317,9 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 			}
 
-			var scrollType = MouseScrollType.Disabled;
-
-			if (mi.Button.HasFlag(MouseButton.Middle) || mi.Button.HasFlag(MouseButton.Left | MouseButton.Right))
-				scrollType = Game.Settings.Game.MiddleMouseScroll;
-			else if (mi.Button.HasFlag(MouseButton.Right))
-				scrollType = Game.Settings.Game.RightMouseScroll;
+			var gs = Game.Settings.Game;
+			var scrollButton = gs.UseClassicMouseStyle && !gs.ClassicMouseMiddleScroll ? MouseButton.Right : MouseButton.Middle;
+			var scrollType = mi.Button.HasFlag(scrollButton) ? gs.MouseScroll : MouseScrollType.Disabled;
 
 			if (scrollType == MouseScrollType.Disabled)
 				return IsJoystickScrolling || isStandardScrolling;
