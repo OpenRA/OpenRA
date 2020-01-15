@@ -60,6 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly Actor self;
 
 		IEnumerable<int> speedModifiers;
+		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
 
 		[Sync]
 		public int Facing { get; set; }
@@ -96,6 +97,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedLocation = self.Location;
+			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -178,6 +180,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				return;
 
 			self.World.UpdateMaps(self, this);
+
+			// This can be called from the constructor before notifyVisualPositionChanged is assigned.
+			if (notifyVisualPositionChanged != null)
+				foreach (var n in notifyVisualPositionChanged)
+					n.VisualPositionChanged(self, 0, 0);
 		}
 
 		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
