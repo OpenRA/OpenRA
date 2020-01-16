@@ -80,18 +80,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			move = init.Self.Trait<IMove>();
 		}
 
-		public void PlayStandAnimation(Actor self)
-		{
-			state = AnimationState.Waiting;
-
-			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
-			if (sequence != null)
-			{
-				var normalized = NormalizeInfantrySequence(self, sequence);
-				DefaultAnimation.PlayRepeating(normalized);
-			}
-		}
-
 		protected override void Created(Actor self)
 		{
 			rsm = self.TraitOrDefault<IRenderInfantrySequenceModifier>();
@@ -113,6 +101,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
 			return hasIdleSequence && !IsModifyingSequence;
+		}
+
+		public void PlayStandAnimation(Actor self)
+		{
+			state = AnimationState.Waiting;
+
+			var sequence = DefaultAnimation.GetRandomExistingSequence(Info.StandSequences, Game.CosmeticRandom);
+			if (sequence != null)
+			{
+				var normalized = NormalizeInfantrySequence(self, sequence);
+				DefaultAnimation.PlayRepeating(normalized);
+			}
 		}
 
 		public void Attacking(Actor self, Target target, Armament a)
