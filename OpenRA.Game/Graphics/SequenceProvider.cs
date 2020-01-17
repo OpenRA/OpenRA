@@ -64,7 +64,7 @@ namespace OpenRA.Graphics
 					return Load(fileSystem, additionalSequences);
 			});
 
-			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
+			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders));
 		}
 
 		public ISpriteSequence GetSequence(string unitName, string sequenceName)
@@ -130,16 +130,21 @@ namespace OpenRA.Graphics
 
 		public void Preload()
 		{
-			SpriteCache.SheetBuilder.Current.CreateBuffer();
+			foreach (var sb in SpriteCache.SheetBuilders.Values)
+				sb.Current.CreateBuffer();
+
 			foreach (var unitSeq in sequences.Value.Values)
 				foreach (var seq in unitSeq.Value.Values) { }
-			SpriteCache.SheetBuilder.Current.ReleaseBuffer();
+
+			foreach (var sb in SpriteCache.SheetBuilders.Values)
+				sb.Current.ReleaseBuffer();
 		}
 
 		public void Dispose()
 		{
 			if (spriteCache.IsValueCreated)
-				spriteCache.Value.SheetBuilder.Dispose();
+				foreach (var sb in SpriteCache.SheetBuilders.Values)
+					sb.Dispose();
 		}
 	}
 }

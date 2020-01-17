@@ -18,6 +18,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
+	public enum SpriteFrameType { Indexed, BGRA }
+
 	public interface ISpriteLoader
 	{
 		bool TryParseSprite(Stream s, out ISpriteFrame[] frames, out TypeDictionary metadata);
@@ -25,6 +27,8 @@ namespace OpenRA.Graphics
 
 	public interface ISpriteFrame
 	{
+		SpriteFrameType Type { get; }
+
 		/// <summary>
 		/// Size of the frame's `Data`.
 		/// </summary>
@@ -43,7 +47,7 @@ namespace OpenRA.Graphics
 
 	public class SpriteCache
 	{
-		public readonly SheetBuilder SheetBuilder;
+		public readonly Cache<SpriteFrameType, SheetBuilder> SheetBuilders;
 		readonly ISpriteLoader[] loaders;
 		readonly IReadOnlyFileSystem fileSystem;
 
@@ -51,9 +55,10 @@ namespace OpenRA.Graphics
 		readonly Dictionary<string, ISpriteFrame[]> unloadedFrames = new Dictionary<string, ISpriteFrame[]>();
 		readonly Dictionary<string, TypeDictionary> metadata = new Dictionary<string, TypeDictionary>();
 
-		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, SheetBuilder sheetBuilder)
+		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
 		{
-			SheetBuilder = sheetBuilder;
+			SheetBuilders = new Cache<SpriteFrameType, SheetBuilder>(t => new SheetBuilder(SheetBuilder.FrameTypeToSheetType(t)));
+
 			this.fileSystem = fileSystem;
 			this.loaders = loaders;
 		}
@@ -89,7 +94,7 @@ namespace OpenRA.Graphics
 					allSprites.Add(sprite);
 				}
 
-				// HACK: The sequency code relies on side-effects from getUsedFrames
+				// HACK: The sequence code relies on side-effects from getUsedFrames
 				var indices = getUsedFrames != null ? getUsedFrames(sprite.Length) :
 					Enumerable.Range(0, sprite.Length);
 
@@ -100,7 +105,7 @@ namespace OpenRA.Graphics
 					{
 						if (unloaded[i] != null)
 						{
-							sprite[i] = SheetBuilder.Add(unloaded[i]);
+							sprite[i] = SheetBuilders[unloaded[i].Type].Add(unloaded[i]);
 							unloaded[i] = null;
 						}
 					}

@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 	{
 		class ShpTSFrame : ISpriteFrame
 		{
+			public SpriteFrameType Type { get { return SpriteFrameType.Indexed; } }
 			public Size Size { get; private set; }
 			public Size FrameSize { get; private set; }
 			public float2 Offset { get; private set; }
