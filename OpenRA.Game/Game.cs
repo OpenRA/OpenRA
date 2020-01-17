@@ -39,7 +39,7 @@ namespace OpenRA
 
 		public static ModData ModData;
 		public static Settings Settings;
-		public static ICursor Cursor;
+		public static CursorManager Cursor;
 		public static bool HideCursor;
 		static WorldRenderer worldRenderer;
 		static string modLaunchWrapper;
@@ -435,25 +435,7 @@ namespace OpenRA
 			if (Cursor != null)
 				Cursor.Dispose();
 
-			if (Settings.Graphics.HardwareCursors)
-			{
-				try
-				{
-					Cursor = new HardwareCursor(ModData.CursorProvider);
-				}
-				catch (Exception e)
-				{
-					Log.Write("debug", "Failed to initialize hardware cursors. Falling back to software cursors.");
-					Log.Write("debug", "Error was: " + e.Message);
-
-					Console.WriteLine("Failed to initialize hardware cursors. Falling back to software cursors.");
-					Console.WriteLine("Error was: " + e.Message);
-
-					Cursor = new SoftwareCursor(ModData.CursorProvider);
-				}
-			}
-			else
-				Cursor = new SoftwareCursor(ModData.CursorProvider);
+			Cursor = new CursorManager(ModData.CursorProvider);
 
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
