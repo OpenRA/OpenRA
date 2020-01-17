@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Sprite sprite;
 		readonly WorldRenderer worldRenderer;
+		readonly GraphicSettings graphicSettings;
 		string palette;
 		int2 location;
 
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public MouseAttachmentWidget(ModData modData, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
+			graphicSettings = Game.Settings.Graphics;
 		}
 
 		public override void Draw()
@@ -34,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (sprite != null && palette != null)
 			{
 				var directionPalette = worldRenderer.Palette(palette);
-				WidgetUtils.DrawSHPCentered(sprite, ChildOrigin, directionPalette, Game.Cursor.DoubleCursorSize ? 2 : 1);
+				WidgetUtils.DrawSHPCentered(sprite, ChildOrigin, directionPalette, graphicSettings.CursorDouble ? 2 : 1);
 			}
 		}
 

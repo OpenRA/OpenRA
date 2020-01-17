@@ -30,20 +30,20 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<string, Cursor> cursors = new Dictionary<string, Cursor>();
 		readonly SheetBuilder sheetBuilder;
+		readonly GraphicSettings graphicSettings;
 
 		Cursor cursor;
 		bool isLocked = false;
 		int2 lockedPosition;
 		bool hardwareCursorsDisabled = false;
-
-		public readonly bool DoubleCursorSize;
+		bool hardwareCursorsDoubled = false;
 
 		public CursorManager(CursorProvider cursorProvider)
 		{
 			// Cursor settings are applied on game start
-			DoubleCursorSize = Game.Settings.Graphics.CursorDouble;
 			hardwareCursorsDisabled = !Game.Settings.Graphics.HardwareCursors;
 
+			graphicSettings = Game.Settings.Graphics;
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
 			foreach (var kv in cursorProvider.Cursors)
 			{
@@ -128,6 +128,8 @@ namespace OpenRA.Graphics
 
 				ClearHardwareCursors();
 			}
+
+			hardwareCursorsDoubled = graphicSettings.CursorDouble;
 		}
 
 		public void SetCursor(string cursorName)
@@ -146,6 +148,12 @@ namespace OpenRA.Graphics
 
 		public void Tick()
 		{
+			if (hardwareCursorsDoubled != graphicSettings.CursorDouble)
+			{
+				CreateOrUpdateHardwareCursors();
+				Update();
+			}
+
 			if (cursor == null || cursor.Cursors.Length == 1)
 				return;
 
@@ -180,7 +188,7 @@ namespace OpenRA.Graphics
 				return;
 
 			// Render cursor in software
-			var doubleCursor = DoubleCursorSize && cursor.Name != "default";
+			var doubleCursor = graphicSettings.CursorDouble && cursor.Name != "default";
 			var cursorSprite = cursor.Sprites[frame % cursor.Length];
 			var cursorSize = doubleCursor ? 2.0f * cursorSprite.Size : cursorSprite.Size;
 			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
@@ -247,6 +255,7 @@ namespace OpenRA.Graphics
 			var newWidth = paddingTL.X + size.Width + paddingBR.X;
 			var newHeight = paddingTL.Y + size.Height + paddingBR.Y;
 			var rgbaData = new byte[4 * newWidth * newHeight];
+
 			for (var j = 0; j < size.Height; j++)
 			{
 				for (var i = 0; i < size.Width; i++)
@@ -257,7 +266,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(newWidth, newHeight), rgbaData, hotspot);
+			return Game.Renderer.Window.CreateHardwareCursor(name, new Size(newWidth, newHeight), rgbaData, hotspot, graphicSettings.CursorDouble && cursor.Name != "default");
 		}
 
 		void ClearHardwareCursors()

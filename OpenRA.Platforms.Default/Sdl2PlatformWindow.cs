@@ -265,7 +265,7 @@ namespace OpenRA.Platforms.Default
 			return scaledData;
 		}
 
-		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot)
+		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble)
 		{
 			VerifyThreadAffinity();
 			try
@@ -280,7 +280,7 @@ namespace OpenRA.Platforms.Default
 				}
 
 				// Scale all but the "default" cursor if requested by the player
-				if (Game.Settings.Graphics.CursorDouble && name != "default")
+				if (pixelDouble)
 				{
 					data = DoublePixelData(data, size);
 					size = new Size(2 * size.Width, 2 * size.Height);
