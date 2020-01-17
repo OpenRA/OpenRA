@@ -27,7 +27,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
 		static readonly bool OriginalGraphicsHardwareCursors;
-		static readonly bool OriginalGraphicsCursorDouble;
 		static readonly bool OriginalServerDiscoverNatDevices;
 
 		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
@@ -55,7 +54,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
 			OriginalGraphicsHardwareCursors = original.Graphics.HardwareCursors;
-			OriginalGraphicsCursorDouble = original.Graphics.CursorDouble;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
 		}
 
@@ -87,8 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
 					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices ||
-					current.Graphics.HardwareCursors != OriginalGraphicsHardwareCursors ||
-					current.Graphics.CursorDouble != OriginalGraphicsCursorDouble)
+					current.Graphics.HardwareCursors != OriginalGraphicsHardwareCursors)
 				{
 					Action restart = () =>
 					{
