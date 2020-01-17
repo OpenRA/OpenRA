@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		class ShpD2Frame : ISpriteFrame
 		{
+			public SpriteFrameType Type { get { return SpriteFrameType.Indexed; } }
 			public Size Size { get; private set; }
 			public Size FrameSize { get { return Size; } }
 			public float2 Offset { get { return float2.Zero; } }

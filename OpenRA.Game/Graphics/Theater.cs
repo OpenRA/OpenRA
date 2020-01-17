@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -34,7 +35,7 @@ namespace OpenRA.Graphics
 	public sealed class Theater : IDisposable
 	{
 		readonly Dictionary<ushort, TheaterTemplate> templates = new Dictionary<ushort, TheaterTemplate>();
-		readonly SheetBuilder sheetBuilder;
+		SheetBuilder sheetBuilder;
 		readonly Sprite missingTile;
 		readonly MersenneTwister random;
 		TileSet tileset;
@@ -53,7 +54,6 @@ namespace OpenRA.Graphics
 				return new Sheet(SheetType.Indexed, new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
-			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			random = new MersenneTwister();
 
 			var frameCache = new FrameCache(Game.ModData.DefaultFileSystem, Game.ModData.SpriteLoaders);
@@ -75,6 +75,15 @@ namespace OpenRA.Graphics
 						var zOffset = tile != null ? -tile.ZOffset : 0;
 						var zRamp = tile != null ? tile.ZRamp : 1f;
 						var offset = new float3(f.Offset, zOffset);
+						var type = SheetBuilder.FrameTypeToSheetType(f.Type);
+
+						// Defer SheetBuilder creation until we know what type of frames we are loading!
+						// TODO: Support mixed indexed and BGRA frames
+						if (sheetBuilder == null)
+							sheetBuilder = new SheetBuilder(SheetBuilder.FrameTypeToSheetType(f.Type), allocate);
+						else if (type != sheetBuilder.Type)
+							throw new InvalidDataException("Sprite type mismatch. Terrain sprites must all be either Indexed or RGBA.");
+
 						var s = sheetBuilder.Allocate(f.Size, zRamp, offset);
 						Util.FastCopyIntoChannel(s, f.Data);
 
@@ -102,7 +111,7 @@ namespace OpenRA.Graphics
 			}
 
 			// 1x1px transparent tile
-			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));
+			missingTile = sheetBuilder.Add(new byte[sheetBuilder.Type == SheetType.BGRA ? 4 : 1], new Size(1, 1));
 
 			Sheet.ReleaseBuffer();
 		}

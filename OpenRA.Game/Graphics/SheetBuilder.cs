@@ -47,6 +47,16 @@ namespace OpenRA.Graphics
 			return new Sheet(type, new Size(sheetSize, sheetSize));
 		}
 
+		public static SheetType FrameTypeToSheetType(SpriteFrameType t)
+		{
+			switch (t)
+			{
+				case SpriteFrameType.Indexed: return SheetType.Indexed;
+				case SpriteFrameType.BGRA: return SheetType.BGRA;
+				default: throw new NotImplementedException("Unknown SpriteFrameType {0}".F(t));
+			}
+		}
+
 		public SheetBuilder(SheetType t)
 			: this(t, Game.Settings.Graphics.SheetSize) { }
 

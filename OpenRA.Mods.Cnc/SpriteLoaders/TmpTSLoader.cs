@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 		{
 			readonly TmpTSFrame parent;
 
+			public SpriteFrameType Type { get { return SpriteFrameType.Indexed; } }
 			public Size Size { get { return parent.Size; } }
 			public Size FrameSize { get { return Size; } }
 			public float2 Offset { get { return parent.Offset; } }
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		class TmpTSFrame : ISpriteFrame
 		{
+			public SpriteFrameType Type { get { return SpriteFrameType.Indexed; } }
 			public Size Size { get; private set; }
 			public Size FrameSize { get { return Size; } }
 			public float2 Offset { get; private set; }
