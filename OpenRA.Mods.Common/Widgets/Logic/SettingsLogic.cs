@@ -221,9 +221,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", ds, "MaxFramerate");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
-			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
-			languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
-			languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
+			var languageDropDownButton = panel.GetOrNull<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
+			if (languageDropDownButton != null)
+			{
+				languageDropDownButton.OnMouseDown = _ => ShowLanguageDropdown(languageDropDownButton, modData.Languages);
+				languageDropDownButton.GetText = () => FieldLoader.Translate(ds.Language);
+			}
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds);

@@ -234,44 +234,6 @@ Container@SETTINGS_PANEL:
 							Width: 170
 							Height: 25
 							Font: Regular
-						Label@LOCALIZATION_TITLE:
-							Y: 265
-							Width: PARENT_RIGHT
-							Font: Bold
-							Text: Localization
-							Align: Center
-							Visible: false
-						Label@LANGUAGE_LABEL:
-							X: 230 - WIDTH - 5
-							Y: 284
-							Width: 75
-							Height: 25
-							Align: Right
-							Text: Language:
-							Visible: false
-						DropDownButton@LANGUAGE_DROPDOWNBUTTON:
-							X: 230
-							Y: 285
-							Width: 200
-							Height: 25
-							Font: Regular
-							Visible: false
-						Label@LANGUAGE_DESC_A:
-							Y: 310
-							Width: PARENT_RIGHT
-							Height: 25
-							Font: Tiny
-							Align: Center
-							Text: Language changes will be applied after the game is restarted
-							Visible: false
-						Label@LANGUAGE_DESC_B:
-							Y: 325
-							Width: PARENT_RIGHT
-							Height: 25
-							Font: Tiny
-							Align: Center
-							Text: Translations apply to text strings only; Speech and build icons will remain in English
-							Visible: false
 				Container@AUDIO_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
