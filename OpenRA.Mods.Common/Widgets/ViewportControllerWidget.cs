@@ -428,7 +428,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (distancepanned < 50 && Math.Abs(startfDelta) > .04)
 					{
 						if (startGestureZoom == worldRenderer.Viewport.Zoom)
-							this.Zoom(startfDelta > 0 ? 1 : -1);
+							worldRenderer.Viewport.AdjustZoom(startfDelta > 0 ? .25f : -.25f);
 					}
 					else
 					{
