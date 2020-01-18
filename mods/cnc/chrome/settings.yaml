@@ -28,7 +28,7 @@ Container@SETTINGS_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 590
-	Height: 378
+	Height: 328
 	Children:
 		Label@TITLE:
 			Width: 590
@@ -66,7 +66,7 @@ Container@SETTINGS_PANEL:
 		Background@bg:
 			Y: 34
 			Width: 590
-			Height: 360
+			Height: 310
 			Background: panel-black
 			Children:
 				Container@DISPLAY_PANEL:
@@ -169,7 +169,7 @@ Container@SETTINGS_PANEL:
 							MaximumValue: 240
 						Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
 							X: 310
-							Y: 185
+							Y: 183
 							Width: 200
 							Height: 20
 							Font: Regular
@@ -177,18 +177,19 @@ Container@SETTINGS_PANEL:
 						Label@PLAYER:
 							Text: Player:
 							X: 15
-							Y: 197
+							Y: 180
+							Height: 25
 						TextField@PLAYERNAME:
 							Text: Name
 							X: 65
-							Y: 185
+							Y: 180
 							Width: 145
 							Height: 25
 							MaxLength: 16
 						ColorPreviewManager@COLOR_MANAGER:
 						DropDownButton@PLAYERCOLOR:
 							X: 215
-							Y: 185
+							Y: 180
 							Width: 70
 							Height: 25
 							IgnoreChildMouseOver: true
@@ -200,38 +201,41 @@ Container@SETTINGS_PANEL:
 									Height: PARENT_BOTTOM - 12
 						Label@BATTLEFIELD_CAMERA:
 							X: 15
-							Y: 227
+							Y: 210
 							Width: 120
+							Height: 25
 							Text: Battlefield Camera:
 							Align: Right
 						DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 							X: 140
-							Y: 215
+							Y: 210
 							Width: 145
-							Height: 25
-							Font: Regular
-						Label@STATUS_BARS:
-							X: 250
-							Y: 257
-							Width: 145
-							Text: Status Bars:
-							Align: Right
-						DropDownButton@STATUS_BAR_DROPDOWN:
-							X: 400
-							Y: 245
-							Width: 170
 							Height: 25
 							Font: Regular
 						Label@TARGET_LINES:
 							X: 250
-							Y: 227
+							Y: 210
 							Width: 145
+							Height: 25
 							Text: Target Lines:
 							Align: Right
 						DropDownButton@TARGET_LINES_DROPDOWN:
 							X: 400
-							Y: 215
-							Width: 170
+							Y: 210
+							Width: 175
+							Height: 25
+							Font: Regular
+						Label@STATUS_BARS:
+							X: 250
+							Y: 240
+							Width: 145
+							Height: 25
+							Text: Status Bars:
+							Align: Right
+						DropDownButton@STATUS_BAR_DROPDOWN:
+							X: 400
+							Y: 240
+							Width: 175
 							Height: 25
 							Font: Regular
 				Container@AUDIO_PANEL:
@@ -253,73 +257,73 @@ Container@SETTINGS_PANEL:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Children:
-								Label@SOUND_LABEL:
-									X: PARENT_RIGHT - WIDTH - 270
-									Y: 38
-									Width: 95
-									Height: 25
-									Align: Right
-									Text: Sound Volume:
-								ExponentialSlider@SOUND_VOLUME:
-									X: PARENT_RIGHT - WIDTH - 15
-									Y: 43
-									Width: 250
-									Height: 20
-									Ticks: 7
 								Checkbox@CASH_TICKS:
 									X: 15
-									Y: 40
+									Y: 43
 									Width: 200
 									Height: 20
 									Font: Regular
 									Text: Cash Ticks
 								Checkbox@MUTE_SOUND:
 									X: 15
-									Y: 70
+									Y: 73
 									Width: 200
 									Height: 20
 									Font: Regular
 									Text: Mute Sound
+								Label@SOUND_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 40
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Sound Volume:
+								ExponentialSlider@SOUND_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 45
+									Width: 250
+									Height: 20
+									Ticks: 7
 								Label@MUSIC_LABEL:
 									X: PARENT_RIGHT - WIDTH - 270
-									Y: 68
+									Y: 70
 									Width: 95
 									Height: 25
 									Align: Right
 									Text: Music Volume:
 								ExponentialSlider@MUSIC_VOLUME:
 									X: PARENT_RIGHT - WIDTH - 15
-									Y: 73
+									Y: 75
 									Width: 250
 									Height: 20
 									Ticks: 7
 								Label@VIDEO_LABEL:
 									X: PARENT_RIGHT - WIDTH - 270
-									Y: 98
+									Y: 100
 									Width: 95
 									Height: 25
 									Align: Right
 									Text: Video Volume:
 								ExponentialSlider@VIDEO_VOLUME:
 									X: PARENT_RIGHT - WIDTH - 15
-									Y: 103
+									Y: 105
 									Width: 250
 									Height: 20
 									Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5
-							Y: 245
+							Y: 240
 							Width: 75
 							Height: 25
 							Align: Right
 							Text: Audio Device:
 						DropDownButton@AUDIO_DEVICE:
 							X: 190
-							Y: 245
+							Y: 240
 							Width: 300
 							Height: 25
 						Label@AUDIO_DEVICE_DESC:
-							Y: 266
+							Y: 261
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
@@ -337,9 +341,9 @@ Container@SETTINGS_PANEL:
 							Align: Center
 						Label@MOUSE_CONTROL_LABEL:
 							X: 15
-							Y: 43
+							Y: 40
 							Width: 110
-							Height: 20
+							Height: 25
 							Font: Regular
 							Text: Control Scheme:
 							Align: Right
@@ -359,43 +363,43 @@ Container@SETTINGS_PANEL:
 									Font: Small
 									Text: - Select units using the {Left} mouse button
 								LabelWithHighlight@DESC_COMMANDS:
-									Y: 16
+									Y: 17
 									Height: 16
 									Font: Small
 									Text: - Command units using the {Left} mouse button
 								LabelWithHighlight@DESC_BUILDIGS:
-									Y: 32
+									Y: 34
 									Height: 16
 									Font: Small
 									Text: - Place structures using the {Left} mouse button
 								LabelWithHighlight@DESC_SUPPORT:
-									Y: 48
+									Y: 51
 									Height: 16
 									Font: Small
 									Text: - Target support powers using the {Left} mouse button
 								LabelWithHighlight@DESC_ZOOM:
-									Y: 64
+									Y: 68
 									Height: 16
 									Font: Small
 									Text: - Zoom the battlefield using the {Scroll Wheel}
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
-									Y: 64
+									Y: 68
 									Height: 16
 									Font: Small
 									Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
-									Y: 80
+									Y: 85
 									Height: 16
 									Font: Small
 									Text: - Pan the battlefield using the {Right} mouse button
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
-									Y: 80
+									Y: 85
 									Height: 16
 									Font: Small
 									Text: - Pan the battlefield using the {Middle} mouse button
 								Label@DESC_EDGESCROLL:
 									X: 9
-									Y: 96
+									Y: 102
 									Height: 16
 									Font: Small
 									Text: or by moving the cursor to the edge of the screen
@@ -409,146 +413,152 @@ Container@SETTINGS_PANEL:
 									Font: Small
 									Text: - Select units using the {Left} mouse button
 								LabelWithHighlight@DESC_COMMANDS:
-									Y: 16
+									Y: 17
 									Height: 16
 									Font: Small
 									Text: - Command units using the {Right} mouse button
 								LabelWithHighlight@DESC_BUILDIGS:
-									Y: 32
+									Y: 34
 									Height: 16
 									Font: Small
 									Text: - Place structures using the {Left} mouse button
 								LabelWithHighlight@DESC_SUPPORT:
-									Y: 48
+									Y: 51
 									Height: 16
 									Font: Small
 									Text: - Target support powers using the {Left} mouse button
 								LabelWithHighlight@DESC_ZOOM:
-									Y: 64
+									Y: 68
 									Height: 16
 									Font: Small
 									Text: - Zoom the battlefield using the {Scroll Wheel}
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
-									Y: 64
+									Y: 68
 									Height: 16
 									Font: Small
 									Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
 								LabelWithHighlight@DESC_SCROLL:
-									Y: 80
+									Y: 85
 									Height: 16
 									Font: Small
 									Text: - Pan the battlefield using the {Middle} mouse button
 								Label@DESC_EDGESCROLL:
 									X: 9
-									Y: 96
+									Y: 102
 									Height: 16
 									Font: Small
 									Text: or by moving the cursor to the edge of the screen
 						Label@MOUSE_SCROLL_TYPE_LABEL:
 							X: 15
-							Y: 201
+							Y: 210
 							Width: 110
-							Height: 20
+							Height: 25
 							Font: Regular
 							Text: Pan Behaviour:
 							Align: Right
 						DropDownButton@MOUSE_SCROLL_TYPE_DROPDOWN:
 							X: 130
-							Y: 198
+							Y: 210
 							Width: 150
 							Height: 25
 							Font: Regular
 						Checkbox@LOCKMOUSE_CHECKBOX:
 							X: 15
-							Y: 230
+							Y: 243
 							Width: 190
 							Height: 20
 							Font: Regular
 							Text: Lock Mouse to Window
 						Label@ZOOM_MODIFIER_LABEL:
 							X: 350
-							Y: 71
+							Y: 70
 							Width: 70
-							Height: 20
+							Height: 25
 							Font: Regular
 							Text: Zoom Modifier:
 							Align: Right
 						DropDownButton@ZOOM_MODIFIER:
 							X: 425
-							Y: 68
-							Width: 145
+							Y: 70
+							Width: 150
 							Height: 25
 							Font: Regular
 						Checkbox@EDGESCROLL_CHECKBOX:
 							X: 360
-							Y: 100
+							Y: 103
 							Width: 180
 							Height: 20
 							Font: Regular
 							Text: Screen Edge Panning
 						Checkbox@CLASSIC_MOUSE_MIDDLE_SCROLL_CHECKBOX:
 							X: 360
-							Y: 130
+							Y: 133
 							Width: 180
 							Height: 20
 							Font: Regular
 							Text: Middle Mouse Panning
 						Label@SCROLL_SPEED_LABEL:
 							X: 310
-							Y: 197
+							Y: 210
 							Width: 100
 							Height: 25
 							Text: Pan Speed:
 							Align: Right
 						Slider@SCROLLSPEED_SLIDER:
 							X: 415
-							Y: 202
-							Width: 165
+							Y: 215
+							Width: 160
 							Height: 20
 							Ticks: 5
 							MinimumValue: 10
 							MaximumValue: 50
 						Label@ZOOM_SPEED_LABEL:
 							X: 310
-							Y: 227
+							Y: 240
 							Width: 100
 							Height: 25
 							Text: Zoom Speed:
 							Align: Right
 						ExponentialSlider@ZOOMSPEED_SLIDER:
 							X: 415
-							Y: 232
-							Width: 165
+							Y: 245
+							Width: 160
 							Height: 20
 							Ticks: 5
 							MinimumValue: 0.01
 							MaximumValue: 0.4
 						Label@UI_SCROLL_SPEED_LABEL:
 							X: 310
-							Y: 257
+							Y: 270
 							Width: 100
 							Height: 25
 							Text: UI Scroll Speed:
 							Align: Right
 						Slider@UI_SCROLLSPEED_SLIDER:
 							X: 415
-							Y: 262
-							Width: 165
+							Y: 275
+							Width: 160
 							Height: 20
 							Ticks: 5
 							MinimumValue: 1
 							MaximumValue: 100
 				Container@HOTKEYS_PANEL:
-					X: 15
-					Y: 15
-					Width: PARENT_RIGHT - 15
-					Height: PARENT_BOTTOM - 15
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
+						Label@HOTKEY_TITLE:
+							Y: 21
+							Width: PARENT_RIGHT
+							Font: Bold
+							Text: Hotkeys
+							Align: Center
 						ScrollPanel@HOTKEY_LIST:
-							Width: PARENT_RIGHT - 15
+							X: 15
+							Y: 40
+							Width: PARENT_RIGHT - 30
 							TopBottomSpacing: 4
 							ItemSpacing: 4
-							Height: 242
+							Height: 191
 							Children:
 								ScrollItem@HEADER:
 									Width: 528
@@ -595,26 +605,27 @@ Container@SETTINGS_PANEL:
 													Align: Left
 													TooltipContainer: TOOLTIP_CONTAINER
 						Background@HOTKEY_DIALOG_ROOT:
-							Y: 255
-							Width: PARENT_RIGHT - 15
-							Height: 75
+							X: 15
+							Y: 230
+							Width: PARENT_RIGHT - 30
+							Height: 65
 							Background: panel-gray
 							Children:
 								Label@HOTKEY_LABEL:
 									X: 15
-									Y: 14
+									Y: 19
 									Width: 220 - 15 - 10
 									Height: 25
 									Font: Bold
 									Align: Right
 								HotkeyEntry@HOTKEY_ENTRY:
 									X: 220
-									Y: 15
+									Y: 20
 									Width: 254
 									Height: 25
 								Container@NOTICES:
 									X: 220
-									Y: 40
+									Y: 42
 									Width: 254
 									Height: 25
 									Children:
@@ -638,7 +649,7 @@ Container@SETTINGS_PANEL:
 											Text: This is already used for "{0}"
 								Button@CLEAR_HOTKEY_BUTTON:
 									X: PARENT_RIGHT - 25 - 15 - WIDTH - 10
-									Y: 15
+									Y: 20
 									Width: 25
 									Height: 25
 									TooltipText: Unbind the hotkey
@@ -653,7 +664,7 @@ Container@SETTINGS_PANEL:
 											IgnoreMouseOver: True
 								Button@RESET_HOTKEY_BUTTON:
 									X: PARENT_RIGHT - WIDTH - 15
-									Y: 15
+									Y: 20
 									Width: 25
 									Height: 25
 									TooltipText: Reset to default
@@ -680,62 +691,62 @@ Container@SETTINGS_PANEL:
 							Align: Center
 						Checkbox@NAT_DISCOVERY:
 							X: 15
-							Y: 40
+							Y: 43
 							Width: 200
 							Height: 20
 							Font: Regular
 							Text: Enable Network Discovery (UPnP)
 						Checkbox@PERFTEXT_CHECKBOX:
 							X: 15
-							Y: 70
+							Y: 73
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Show Performance Text
 						Checkbox@PERFGRAPH_CHECKBOX:
 							X: 15
-							Y: 100
+							Y: 103
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Show Performance Graph
 						Checkbox@FETCH_NEWS_CHECKBOX:
 							X: 310
-							Y: 40
+							Y: 43
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Fetch Community News
 						Checkbox@CHECK_VERSION_CHECKBOX:
 							X: 310
-							Y: 70
+							Y: 73
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Check for Updates
 						Checkbox@SENDSYSINFO_CHECKBOX:
 							X: 310
-							Y: 100
+							Y: 103
 							Width: 300
 							Height: 20
 							Font: Regular
 							Text: Send System Information
 						Label@SENDSYSINFO_DESC:
 							X: 310
-							Y: 116
-							Width: 250
+							Y: 118
+							Width: 255
 							Height: 30
 							Font: Tiny
 							WordWrap: True
 							Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 						Label@DEBUG_TITLE:
-							Y: 201
+							Y: 190
 							Width: PARENT_RIGHT
 							Font: Bold
 							Text: Developer
 							Align: Center
 						Container@DEBUG_HIDDEN_LABEL:
-							Y: 252
+							Y: 245
 							Width: PARENT_RIGHT
 							Children:
 								Label@A:
@@ -757,48 +768,48 @@ Container@SETTINGS_PANEL:
 							Children:
 								Checkbox@BOTDEBUG_CHECKBOX:
 									X: 15
-									Y: 220
+									Y: 213
 									Width: 300
 									Height: 20
 									Font: Regular
 									Text: Show Bot Debug Messages
 								Checkbox@CHECKUNSYNCED_CHECKBOX:
 									X: 15
-									Y: 250
+									Y: 243
 									Width: 300
 									Height: 20
 									Font: Regular
 									Text: Check Sync around Unsynced Code
 								Checkbox@CHECKBOTSYNC_CHECKBOX:
 									X: 15
-									Y: 280
+									Y: 273
 									Width: 300
 									Height: 20
 									Font: Regular
 									Text: Check Sync around BotModule Code
 								Checkbox@LUADEBUG_CHECKBOX:
 									X: 310
-									Y: 220
+									Y: 213
 									Width: 300
 									Height: 20
 									Font: Regular
 									Text: Show Map Debug Messages
 								Checkbox@REPLAY_COMMANDS_CHECKBOX:
 									X: 310
-									Y: 250
+									Y: 243
 									Width: 300
 									Height: 20
 									Font: Regular
 									Text: Enable Debug Commands in Replays
 		Button@BACK_BUTTON:
 			Key: escape
-			Y: 393
+			Y: 343
 			Width: 140
 			Height: 35
 			Text: Back
 		Button@RESET_BUTTON:
 			X: 150
-			Y: 393
+			Y: 343
 			Width: 140
 			Height: 35
 			Text: Reset
