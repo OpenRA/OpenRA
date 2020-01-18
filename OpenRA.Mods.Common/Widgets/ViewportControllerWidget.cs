@@ -430,7 +430,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (distancepanned < 50 && Math.Abs(startfDelta) > .03)
 					{
-						worldRenderer.Viewport.AdjustZoom(mi.DDist * 5);
+						worldRenderer.Viewport.AdjustZoom(mi.DDist * 80 * Game.Settings.Game.ZoomSpeed);
 					}
 					else
 					{
