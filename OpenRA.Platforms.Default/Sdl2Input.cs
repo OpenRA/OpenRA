@@ -172,11 +172,9 @@ namespace OpenRA.Platforms.Default
 
 							var pos = EventPosition(device, (int)(e.mgesture.x * viewportres.Width), (int)(e.mgesture.y * viewportres.Height));
 
-
 							inputHandler.OnGestureInput(new GestureInput(
 								GestureInputEvent.Gesture,
 								pos, mods, e.mgesture.dDist));
-
 
 							break;
 						}
