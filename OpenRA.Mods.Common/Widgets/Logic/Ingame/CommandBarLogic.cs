@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -114,8 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				BindButtonIcon(guardButton);
 
 				guardButton.IsDisabled = () => { UpdateStateIfNecessary(); return guardDisabled; };
-				guardButton.IsHighlighted = () => world.OrderGenerator is GenericSelectTarget
-					&& ((GenericSelectTarget)world.OrderGenerator).OrderName == "Guard";
+				guardButton.IsHighlighted = () => world.OrderGenerator is GuardOrderGenerator;
 
 				Action<bool> toggle = allowCancel =>
 				{
@@ -210,9 +209,6 @@ namespace OpenRA.Mods.Common.Widgets
 				var noShiftButtons = new[] { guardButton, deployButton, attackMoveButton };
 				keyOverrides.AddHandler(e =>
 				{
-					if (e.Event != KeyInputEvent.Down)
-						return false;
-
 					// HACK: allow command buttons to be triggered if the shift (queue order modifier) key is held
 					if (e.Modifiers.HasModifier(Modifiers.Shift))
 					{
@@ -229,18 +225,15 @@ namespace OpenRA.Mods.Common.Widgets
 						}
 					}
 
-					// HACK: allow attack move to be triggered if the ctrl (assault move modifier)
-					// or shift (queue order modifier) keys are pressed
-					if (e.Modifiers.HasModifier(Modifiers.Ctrl))
-					{
-						var eNoMods = e;
-						eNoMods.Modifiers &= ~(Modifiers.Ctrl | Modifiers.Shift);
+					// HACK: Attack move can be triggered if the ctrl (assault move modifier)
+					// or shift (queue order modifier) keys are pressed, on both key down and key up
+					var eNoMods = e;
+					eNoMods.Modifiers &= ~(Modifiers.Ctrl | Modifiers.Shift);
 
-						if (attackMoveButton != null && !attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(eNoMods))
-						{
-							attackMoveButton.OnKeyPress(e);
-							return true;
-						}
+					if (attackMoveButton != null && !attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(eNoMods))
+					{
+						attackMoveButton.OnKeyPress(e);
+						return true;
 					}
 
 					return false;

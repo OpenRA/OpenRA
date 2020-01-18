@@ -205,6 +205,8 @@ World:
 		Type: Crater
 		Sequence: craters
 	ResourceLayer:
+	ResourceRenderer:
+		RenderTypes: Ore, Gems
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	SpawnMapActors:
@@ -281,6 +283,7 @@ World:
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:

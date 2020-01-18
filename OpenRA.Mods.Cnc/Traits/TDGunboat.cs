@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -180,8 +180,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			self.World.UpdateMaps(self, this);
 		}
 
-		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null) { return null; }
-		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null) { return null; }
+		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
+			bool evaluateNearestMovableCell = false, Color? targetLineColor = null) { return null; }
 		public Activity MoveWithinRange(Target target, WDist range,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
 		public Activity MoveWithinRange(Target target, WDist minRange, WDist maxRange,

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,10 +19,17 @@ namespace OpenRA.Mods.Common.Traits
 	public class FallsToEarthInfo : ITraitInfo, IRulesetLoaded, Requires<AircraftInfo>
 	{
 		[WeaponReference]
+		[Desc("Explosion weapon that triggers when hitting ground.")]
 		public readonly string Explosion = "UnitExplode";
 
-		public readonly bool Spins = true;
+		[Desc("Limit the maximum spin (in facing units per tick) that can be achieved while crashing.",
+			"0 disables spinning. Negative values imply no limit.")]
+		public readonly int MaximumSpinSpeed = -1;
+
+		[Desc("Does the aircraft (husk) move forward at aircraft speed?")]
 		public readonly bool Moves = false;
+
+		[Desc("Velocity (per tick) at which aircraft falls to ground.")]
 		public readonly WDist Velocity = new WDist(43);
 
 		public WeaponInfo ExplosionWeapon { get; private set; }

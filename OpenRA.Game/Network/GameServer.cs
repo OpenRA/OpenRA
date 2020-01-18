@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -96,6 +96,9 @@ namespace OpenRA.Network
 
 		/// <summary>URL to a 32x32 px icon for the mod.</summary>
 		public readonly string ModIcon32 = "";
+
+		/// <summary>GeoIP resolved server location.</summary>
+		public readonly string Location = "";
 
 		/// <summary>Password protected</summary>
 		public readonly bool Protected = false;

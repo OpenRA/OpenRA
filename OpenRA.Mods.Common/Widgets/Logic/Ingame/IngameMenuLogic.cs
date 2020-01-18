@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 		readonly MenuPaletteEffect mpe;
+		readonly bool isSinglePlayer;
 		bool hasError;
 		bool leaving;
 		bool hideMenu;
@@ -48,6 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var buttonHandlers = new Dictionary<string, Action>
 			{
 				{ "ABORT_MISSION", CreateAbortMissionButton },
+				{ "RESTART", CreateRestartButton },
 				{ "SURRENDER", CreateSurrenderButton },
 				{ "LOAD_GAME", CreateLoadGameButton },
 				{ "SAVE_GAME", CreateSaveGameButton },
@@ -57,6 +59,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "SAVE_MAP", CreateSaveMapButton },
 				{ "EXIT_EDITOR", CreateExitEditorButton }
 			};
+
+			isSinglePlayer = !world.LobbyInfo.GlobalSettings.Dedicated && world.LobbyInfo.NonBotClients.Count() == 1;
 
 			menu = widget.Get("INGAME_MENU");
 			mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
@@ -190,46 +194,55 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				hideMenu = true;
 
-				if (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Won)
+				ConfirmationDialogs.ButtonPrompt(
+					title: "Leave Mission",
+					text: "Leave this game and return to the menu?",
+					onConfirm: OnQuit,
+					onCancel: ShowMenu,
+					confirmText: "Leave",
+					cancelText: "Stay");
+			};
+		}
+
+		void CreateRestartButton()
+		{
+			if (world.Type != WorldType.Regular || !isSinglePlayer)
+				return;
+
+			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
+			var exitDelay = iop != null ? iop.ExitDelay : 0;
+
+			Action onRestart = () =>
+			{
+				Ui.CloseWindow();
+				if (mpe != null)
 				{
-					Action restartAction = null;
-					var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
-					var exitDelay = iop != null ? iop.ExitDelay : 0;
-
-					if (!world.LobbyInfo.GlobalSettings.Dedicated && world.LobbyInfo.NonBotClients.Count() == 1)
-					{
-						restartAction = () =>
-						{
-							Ui.CloseWindow();
-							if (mpe != null)
-							{
-								if (Game.IsCurrentWorld(world))
-									mpe.Fade(MenuPaletteEffect.EffectType.Black);
-								exitDelay += 40 * mpe.Info.FadeLength;
-							}
-
-							Game.RunAfterDelay(exitDelay, Game.RestartGame);
-						};
-					}
-
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Leave Mission",
-						text: "Leave this game and return to the menu?",
-						onConfirm: OnQuit,
-						onCancel: ShowMenu,
-						confirmText: "Leave",
-						cancelText: "Stay",
-						otherText: "Restart",
-						onOther: restartAction);
+					if (Game.IsCurrentWorld(world))
+						mpe.Fade(MenuPaletteEffect.EffectType.Black);
+					exitDelay += 40 * mpe.Info.FadeLength;
 				}
-				else
-					OnQuit();
+
+				Game.RunAfterDelay(exitDelay, Game.RestartGame);
+			};
+
+			var button = AddButton("RESTART", "Restart");
+			button.IsDisabled = () => hasError || leaving;
+			button.OnClick = () =>
+			{
+				hideMenu = true;
+				ConfirmationDialogs.ButtonPrompt(
+					title: "Restart",
+					text: "Are you sure you want to restart?",
+					onConfirm: onRestart,
+					onCancel: ShowMenu,
+					confirmText: "Restart",
+					cancelText: "Stay");
 			};
 		}
 
 		void CreateSurrenderButton()
 		{
-			if (world.Type != WorldType.Regular || world.Map.Visibility.HasFlag(MapVisibility.MissionSelector) || world.LocalPlayer == null)
+			if (world.Type != WorldType.Regular || isSinglePlayer || world.LocalPlayer == null)
 				return;
 
 			Action onSurrender = () =>

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -595,9 +595,9 @@ namespace OpenRA.Mods.Common.Server
 
 			if (tempBan)
 			{
-				Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IpAddress);
+				Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IPAddress);
 				server.SendMessage("{0} temporarily banned {1} from the server.".F(client.Name, kickClient.Name));
-				server.TempBans.Add(kickClient.IpAddress);
+				server.TempBans.Add(kickClient.IPAddress);
 			}
 
 			server.SyncLobbyClients();

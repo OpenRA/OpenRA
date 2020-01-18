@@ -61,7 +61,7 @@ Fonts:
 
 SoundFormats:
 
-SpriteFormats: ShpTD
+SpriteFormats: PngSheet
 
 SpriteSequenceFormat: DefaultSpriteSequence
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 		LeaveMap,
 	}
 
-	public class AircraftInfo : ITraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
-		IActorPreviewInitInfo, IEditorActorOptions, IObservesVariablesInfo
+	public class AircraftInfo : PausableConditionalTraitInfo, IPositionableInfo, IFacingInfo, IMoveInfo, ICruiseAltitudeInfo,
+		IActorPreviewInitInfo, IEditorActorOptions
 	{
 		[Desc("Behavior when aircraft becomes idle. Options are Land, ReturnToBase, LeaveMap, and None.",
 			"'Land' will behave like 'None' (hover or circle) if a suitable landing site is not available.")]
@@ -142,16 +142,12 @@ namespace OpenRA.Mods.Common.Traits
 		public int GetInitialFacing() { return InitialFacing; }
 		public WDist GetCruiseAltitude() { return CruiseAltitude; }
 
-		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
+		public override object Create(ActorInitializer init) { return new Aircraft(init, this); }
 
 		IEnumerable<object> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
 			yield return new FacingInit(PreviewFacing);
 		}
-
-		[Desc("Condition when this aircraft should land as soon as possible and refuse to take off. ",
-			"This only applies while the aircraft is above terrain which is listed in LandableTerrainTypes.")]
-		public readonly BooleanExpression LandOnCondition;
 
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new ReadOnlyDictionary<CPos, SubCell>(); }
 
@@ -189,13 +185,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Aircraft : ITick, ISync, IFacing, IPositionable, IMove, IIssueOrder, IResolveOrder, IOrderVoice, IDeathActorInitModifier,
-		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle,
-		IActorPreviewInitModifier, IIssueDeployOrder, IObservesVariables, ICreationActivity
+	public class Aircraft : PausableConditionalTrait<AircraftInfo>, ITick, ISync, IFacing, IPositionable, IMove,
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle, ICreationActivity,
+		IActorPreviewInitModifier, IDeathActorInitModifier, IIssueDeployOrder, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		static readonly Pair<CPos, SubCell>[] NoCells = { };
 
-		public readonly AircraftInfo Info;
 		readonly Actor self;
 
 		Repairable repairable;
@@ -205,6 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
 		INotifyMoving[] notifyMoving;
+		INotifyVisualPositionChanged[] notifyVisualPositionChanged;
 		IOverrideAircraftLanding overrideAircraftLanding;
 
 		[Sync]
@@ -214,7 +210,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft { get { return self.World.Map.CellContaining(CenterPosition); } }
-		public int TurnSpeed { get { return Info.TurnSpeed; } }
+		public int TurnSpeed { get { return !IsTraitDisabled && !IsTraitPaused ? Info.TurnSpeed : 0; } }
 		public Actor ReservedActor { get; private set; }
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
@@ -222,6 +218,8 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
 		bool requireForceMove;
 		int creationActivityDelay;
+
+		bool notify = true;
 
 		public static WPos GroundPosition(Actor self)
 		{
@@ -238,11 +236,10 @@ namespace OpenRA.Mods.Common.Traits
 		MovementType movementTypes;
 		WPos cachedPosition;
 		int cachedFacing;
-		bool? landNow;
 
 		public Aircraft(ActorInitializer init, AircraftInfo info)
+			: base(info)
 		{
-			Info = info;
 			self = init.Self;
 
 			if (init.Contains<LocationInit>())
@@ -278,18 +275,13 @@ namespace OpenRA.Mods.Common.Traits
 			return pos;
 		}
 
-		public virtual IEnumerable<VariableObserver> GetVariableObservers()
+		public override IEnumerable<VariableObserver> GetVariableObservers()
 		{
-			if (Info.LandOnCondition != null)
-				yield return new VariableObserver(ForceLandConditionChanged, Info.LandOnCondition.Variables);
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
 
 			if (Info.RequireForceMoveCondition != null)
 				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
-		}
-
-		void ForceLandConditionChanged(Actor self, IReadOnlyDictionary<string, int> variables)
-		{
-			landNow = Info.LandOnCondition.Evaluate(variables);
 		}
 
 		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
@@ -297,12 +289,7 @@ namespace OpenRA.Mods.Common.Traits
 			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			Created(self);
-		}
-
-		protected virtual void Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			repairable = self.TraitOrDefault<Repairable>();
 			rearmable = self.TraitOrDefault<Rearmable>();
@@ -312,6 +299,8 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			positionOffsets = self.TraitsImplementing<IAircraftCenterPositionOffset>().ToArray();
 			overrideAircraftLanding = self.TraitOrDefault<IOverrideAircraftLanding>();
+			notifyVisualPositionChanged = self.TraitsImplementing<INotifyVisualPositionChanged>().ToArray();
+			base.Created(self);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -351,16 +340,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void Tick(Actor self)
 		{
-			// Add land activity if LandOnCondition resolves to true and the actor can land at the current location.
-			if (!ForceLanding && landNow.HasValue && landNow.Value && airborne && CanLand(self.Location)
+			// Add land activity if Aircraft trait is paused and the actor can land at the current location.
+			if (!ForceLanding && IsTraitPaused && airborne && CanLand(self.Location)
 				&& !((self.CurrentActivity is Land) || self.CurrentActivity is Turn))
 			{
 				self.QueueActivity(false, new Land(self));
 				ForceLanding = true;
 			}
 
-			// Add takeoff activity if LandOnCondition resolves to false and the actor should not land when idle.
-			if (ForceLanding && landNow.HasValue && !landNow.Value && !cruising && !(self.CurrentActivity is TakeOff))
+			// Add takeoff activity if Aircraft trait is not paused and the actor should not land when idle.
+			if (ForceLanding && !IsTraitPaused && !cruising && !(self.CurrentActivity is TakeOff))
 			{
 				ForceLanding = false;
 
@@ -396,7 +385,12 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var speed = Info.RepulsionSpeed != -1 ? Info.RepulsionSpeed : MovementSpeed;
+
+			// HACK: Prevent updating visibility twice per tick. We really shouldn't be
+			// moving twice in a tick in the first place.
+			notify = false;
 			SetPosition(self, CenterPosition + FlyStep(speed, repulsionForce.Yaw.Facing));
+			notify = true;
 		}
 
 		public virtual WVec GetRepulsionForce()
@@ -549,7 +543,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeed
 		{
-			get { return Util.ApplyPercentageModifiers(Info.Speed, speedModifiers); }
+			get { return !IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0; }
 		}
 
 		public Pair<CPos, SubCell>[] OccupiedCells()
@@ -746,6 +740,11 @@ namespace OpenRA.Mods.Common.Traits
 			else if (!isCruising && cruising)
 				OnCruisingAltitudeLeft();
 
+			// NB: This can be called from the constructor before notifyVisualPositionChanged is assigned.
+			if (notify && notifyVisualPositionChanged != null)
+				foreach (var n in notifyVisualPositionChanged)
+					n.VisualPositionChanged(self, 0, 0);
+
 			FinishedMoving(self);
 		}
 
@@ -814,14 +813,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement IMove
 
-		public Activity MoveTo(CPos cell, int nearEnough, Color? targetLineColor = null)
+		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
+			bool evaluateNearestMovableCell = false, Color? targetLineColor = null)
 		{
 			return new Fly(self, Target.FromCell(self.World, cell), WDist.FromCells(nearEnough), targetLineColor: targetLineColor);
-		}
-
-		public Activity MoveTo(CPos cell, Actor ignoreActor, Color? targetLineColor = null)
-		{
-			return new Fly(self, Target.FromCell(self.World, cell), targetLineColor: targetLineColor);
 		}
 
 		public Activity MoveWithinRange(Target target, WDist range,
@@ -958,7 +953,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land" || order.OrderID == "ForceEnter")
+			if (!IsTraitDisabled &&
+				(order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land" || order.OrderID == "ForceEnter"))
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -966,7 +962,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			if (rearmable == null || !rearmable.Info.RearmActors.Any())
+			if (IsTraitDisabled || rearmable == null || !rearmable.Info.RearmActors.Any())
 				return null;
 
 			return new Order("ReturnToBase", self, queued);
@@ -976,6 +972,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
+			if (IsTraitDisabled)
+				return null;
+
 			switch (order.OrderString)
 			{
 				case "Land":
@@ -1001,6 +1000,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (IsTraitDisabled)
+				return;
+
 			var orderString = order.OrderString;
 			if (orderString == "Move")
 			{
@@ -1090,6 +1092,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Nudge(Actor self)
 		{
+			if (IsTraitDisabled || IsTraitPaused || requireForceMove)
+				return;
+
 			// Disable nudging if the aircraft is outside the map
 			if (!self.World.Map.Contains(self.Location))
 				return;
@@ -1209,15 +1214,12 @@ namespace OpenRA.Mods.Common.Traits
 						OrderID = "Land";
 				}
 
-				var explored = self.Owner.Shroud.IsExplored(location);
-				cursor = self.World.Map.Contains(location) ?
-					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
-					"move-blocked";
-
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				if (!explored && !aircraft.Info.MoveIntoShroud)
-					cursor = "move-blocked";
+				var explored = self.Owner.Shroud.IsExplored(location);
+				cursor = !aircraft.IsTraitPaused && (explored || aircraft.Info.MoveIntoShroud) && self.World.Map.Contains(location) ?
+					(self.World.Map.GetTerrainInfo(location).CustomCursor ?? "move") :
+					"move-blocked";
 
 				return true;
 			}

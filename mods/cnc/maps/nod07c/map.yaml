@@ -398,24 +398,24 @@ Actors:
 		Owner: Civilians
 		Health: 51
 		ScriptTags: Village
-	Actor111: jeep
+	JeepGuard1: jeep
 		Location: 40,57
 		Owner: GDI
-	Actor112: jeep
+	JeepGuard2: jeep
 		Location: 39,57
 		Owner: GDI
-	Actor113: mtnk
+	MediumTank1: mtnk
 		Location: 54,52
 		Owner: GDI
-	Actor114: mtnk
+	MediumTank3: mtnk
 		Location: 44,45
 		Owner: GDI
 		Facing: 32
-	Actor115: mtnk
+	MediumTank2: mtnk
 		Location: 34,34
 		Owner: GDI
 		Facing: 224
-	Actor117: jeep
+	Jeep: jeep
 		Location: 30,41
 		Owner: GDI
 		Facing: 224
@@ -423,43 +423,43 @@ Actors:
 		Location: 26,43
 		Owner: GDI
 		Facing: 224
-	Actor125: e2
+	Guard1: e2
 		Location: 46,57
 		Owner: GDI
 		SubCell: 3
-	Actor126: e2
+	Guard2: e2
 		Location: 46,58
 		Owner: GDI
 		SubCell: 1
-	Actor127: e2
+	Guard3: e2
 		Location: 45,58
 		Owner: GDI
 		SubCell: 2
-	Actor128: e2
+	Guard4: e2
 		Location: 45,57
 		Owner: GDI
 		SubCell: 4
-	Actor129: e1
+	Guard5: e1
 		Location: 43,58
 		Owner: GDI
 		SubCell: 2
-	Actor130: e1
+	Guard6: e1
 		Location: 44,58
 		Owner: GDI
 		SubCell: 1
-	Actor131: e1
+	Guard7: e1
 		Location: 44,57
 		Owner: GDI
 		SubCell: 4
-	Actor132: e1
+	Guard8: e1
 		Location: 44,58
 		Owner: GDI
 		SubCell: 2
-	Actor133: e1
+	Guard9: e1
 		Location: 44,57
 		Owner: GDI
 		SubCell: 3
-	Actor134: e1
+	Guard10: e1
 		Location: 43,57
 		Owner: GDI
 		SubCell: 4
@@ -585,43 +585,43 @@ Actors:
 		Location: 45,7
 		Owner: GDI
 		SubCell: 4
-	Actor179: e1
+	SideGuard1: e1
 		Location: 51,52
 		Owner: GDI
 		SubCell: 2
-	Actor180: e1
+	SideGuard2: e1
 		Location: 52,52
 		Owner: GDI
 		SubCell: 1
-	Actor181: e1
+	SideGuard3: e1
 		Location: 52,52
 		Owner: GDI
 		SubCell: 3
-	Actor182: e1
+	SideGuard4: e1
 		Location: 51,52
 		Owner: GDI
 		SubCell: 4
-	Actor183: e2
+	SideGuard5: e2
 		Location: 53,52
 		Owner: GDI
 		SubCell: 1
-	Actor184: e2
+	SideGuard6: e2
 		Location: 53,52
 		Owner: GDI
 		SubCell: 2
-	Actor185: e2
+	SideGuard7: e2
 		Location: 53,52
 		Owner: GDI
 		SubCell: 4
-	Actor186: e2
+	SideGuard8: e2
 		Location: 53,52
 		Owner: GDI
 		SubCell: 3
-	Actor187: e1
+	InfantryPatrol1: e1
 		Location: 48,57
 		Owner: GDI
 		SubCell: 3
-	Actor188: e1
+	InfantryPatrol2: e1
 		Location: 47,57
 		Owner: GDI
 		SubCell: 4
@@ -644,7 +644,7 @@ Actors:
 		Location: 37,55
 		Owner: Neutral
 	waypoint14: waypoint
-		Location: 54,46
+		Location: 53,46
 		Owner: Neutral
 	waypoint13: waypoint
 		Location: 12,7
@@ -654,9 +654,6 @@ Actors:
 		Owner: Neutral
 	waypoint11: waypoint
 		Location: 52,24
-		Owner: Neutral
-	waypoint10: waypoint
-		Location: 27,33
 		Owner: Neutral
 	waypoint9: waypoint
 		Location: 21,37
@@ -727,13 +724,13 @@ Actors:
 		Location: 48,54
 		Owner: GDI
 		ScriptTags: GDIBuilding
-	GDIBuilding9: gtwr
+	GuardTower1: gtwr
 		Location: 36,51
 		Owner: GDI
-	GDIBuilding10: gtwr
+	GuardTower2: gtwr
 		Location: 36,57
 		Owner: GDI
-	GDIBuilding11: gtwr
+	GuardTower3: gtwr
 		Location: 55,48
 		Owner: GDI
 	GDIHpad: hpad.in

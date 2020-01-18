@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -33,6 +32,8 @@ namespace OpenRA
 		Started = 8,
 		Incompatible = 16
 	}
+
+	public enum WorldViewport { Native, Close, Medium, Far }
 
 	public class ServerSettings
 	{
@@ -80,6 +81,13 @@ namespace OpenRA
 
 		[Desc("Sets the timestamp format. Defaults to the ISO 8601 standard.")]
 		public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss";
+
+		[Desc("Path to a MaxMind GeoLite2 database to use for player geo-location.",
+			"Database files can be downloaded from https://dev.maxmind.com/geoip/geoip2/geolite2/")]
+		public string GeoIPDatabase = null;
+
+		[Desc("Allow clients to see anonymised IPs for other clients.")]
+		public bool ShareAnonymizedIPs = true;
 
 		public ServerSettings Clone()
 		{
@@ -137,6 +145,9 @@ namespace OpenRA
 		[Desc("This can be set to Windowed, Fullscreen or PseudoFullscreen.")]
 		public WindowMode Mode = WindowMode.PseudoFullscreen;
 
+		[Desc("Enable VSync.")]
+		public bool VSync = true;
+
 		[Desc("Screen resolution in fullscreen mode.")]
 		public int2 FullscreenSize = new int2(0, 0);
 
@@ -145,11 +156,11 @@ namespace OpenRA
 
 		public bool HardwareCursors = true;
 
-		public bool PixelDouble = false;
 		public bool CursorDouble = false;
+		public WorldViewport ViewportDistance = WorldViewport.Medium;
 
-		[Desc("Add a frame rate limiter. It is recommended to not disable this.")]
-		public bool CapFramerate = true;
+		[Desc("Add a frame rate limiter.")]
+		public bool CapFramerate = false;
 
 		[Desc("At which frames per second to cap the framerate.")]
 		public int MaxFramerate = 60;
@@ -207,6 +218,7 @@ namespace OpenRA
 		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
 		public float ViewportEdgeScrollStep = 30f;
 		public float UIScrollSpeed = 50f;
+		public float ZoomSpeed = 0.04f;
 		public int SelectionDeadzone = 24;
 		public int MouseScrollDeadzone = 8;
 
@@ -220,8 +232,7 @@ namespace OpenRA
 		[Desc("Filename of the authentication profile to use.")]
 		public string AuthProfile = "player.oraid";
 
-		public bool AllowZoom = true;
-		public Modifiers ZoomModifier = Modifiers.Ctrl;
+		public Modifiers ZoomModifier = Modifiers.None;
 
 		public bool FetchNews = true;
 

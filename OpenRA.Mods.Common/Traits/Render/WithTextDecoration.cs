@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRender, IRenderAnnotationsWhenSelected, INotifyOwnerChanged
+	public class WithTextDecoration : ConditionalTrait<WithTextDecorationInfo>, IRenderAnnotations, IRenderAnnotationsWhenSelected, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
 		readonly IDecorationBounds[] decorationBounds;
@@ -73,16 +73,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual bool ShouldRender(Actor self) { return true; }
 
-		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			return !Info.RequiresSelection ? RenderInner(self, wr) : SpriteRenderable.None;
 		}
 
-		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
-		{
-			// Text decorations don't contribute to actor bounds
-			yield break;
-		}
+		public bool SpatiallyPartitionable { get { return true; } }
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{

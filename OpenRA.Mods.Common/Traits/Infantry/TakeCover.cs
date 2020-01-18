@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,34 +19,46 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Make the unit go prone when under attack, in an attempt to reduce damage.")]
 	public class TakeCoverInfo : TurretedInfo
 	{
-		[Desc("How long (in ticks) the actor remains prone.")]
-		public readonly int ProneTime = 100;
+		[Desc("How long (in ticks) the actor remains prone.",
+			"Negative values mean actor remains prone permanently.")]
+		public readonly int Duration = 100;
 
 		[Desc("Prone movement speed as a percentage of the normal speed.")]
 		public readonly int SpeedModifier = 50;
 
-		[FieldLoader.Require]
-		[Desc("Damage types that trigger prone state. Defined on the warheads.")]
+		[Desc("Damage types that trigger prone state. Defined on the warheads.",
+			"If Duration is negative (permanent), you can leave this empty to trigger prone state immediately.")]
 		public readonly BitSet<DamageType> DamageTriggers = default(BitSet<DamageType>);
 
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
 
+		[Desc("Muzzle offset modifier to apply while prone.")]
 		public readonly WVec ProneOffset = new WVec(500, 0, 0);
 
 		[SequenceReference(null, true)]
+		[Desc("Sequence prefix to apply while prone.")]
 		public readonly string ProneSequencePrefix = "prone-";
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
+
+		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (Duration > -1 && DamageTriggers.IsEmpty)
+				throw new YamlException("TakeCover: If Duration isn't negative (permanent), DamageTriggers is required.");
+
+			base.RulesetLoaded(rules, ai);
+		}
 	}
 
 	public class TakeCover : Turreted, INotifyDamage, IDamageModifier, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
 	{
 		readonly TakeCoverInfo info;
-		[Sync]
-		int remainingProneTime = 0;
 
-		bool IsProne { get { return remainingProneTime > 0; } }
+		[Sync]
+		int remainingDuration = 0;
+
+		bool IsProne { get { return !IsTraitDisabled && remainingDuration != 0; } }
 
 		bool IRenderInfantrySequenceModifier.IsModifyingSequence { get { return IsProne; } }
 		string IRenderInfantrySequenceModifier.SequencePrefix { get { return info.ProneSequencePrefix; } }
@@ -55,6 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 			: base(init, info)
 		{
 			this.info = info;
+			if (info.Duration < 0 && info.DamageTriggers.IsEmpty)
+				remainingDuration = info.Duration;
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
@@ -68,17 +82,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsProne)
 				localOffset = info.ProneOffset;
 
-			remainingProneTime = info.ProneTime;
+			remainingDuration = info.Duration;
 		}
 
 		protected override void Tick(Actor self)
 		{
 			base.Tick(self);
 
-			if (!IsTraitPaused && remainingProneTime > 0)
-				remainingProneTime--;
+			if (!IsTraitPaused && remainingDuration > 0)
+				remainingDuration--;
 
-			if (remainingProneTime == 0)
+			if (remainingDuration == 0)
 				localOffset = WVec.Zero;
 		}
 
@@ -106,7 +120,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			remainingProneTime = 0;
+			remainingDuration = 0;
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (info.Duration < 0 && info.DamageTriggers.IsEmpty)
+			{
+				remainingDuration = info.Duration;
+				localOffset = info.ProneOffset;
+			}
 		}
 	}
 }

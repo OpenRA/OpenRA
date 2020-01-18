@@ -223,6 +223,9 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence
 
+AssetBrowser:
+	SupportedExtensions: .shp, .tmp, .tem, .des, .sno, .int, .vqa
+
 GameSpeeds:
 	slowest:
 		Name: Slowest

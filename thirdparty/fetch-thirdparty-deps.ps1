@@ -104,13 +104,6 @@ if (!(Test-Path "rix0rrr.BeaconLib.dll"))
 	rmdir rix0rrr.BeaconLib -Recurse
 }
 
-if (!(Test-Path "GeoLite2-Country.mmdb.gz") -Or (((get-date) - (get-item "GeoLite2-Country.mmdb.gz").LastWriteTime) -gt (new-timespan -days 30)))
-{
-	echo "Updating GeoIP country database from MaxMind."
-	$target = Join-Path $pwd.ToString() "GeoLite2-Country.mmdb.gz"
-	(New-Object System.Net.WebClient).DownloadFile("http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz", $target)
-}
-
 [Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 
 if (!(Test-Path "SDL2-CS.dll"))

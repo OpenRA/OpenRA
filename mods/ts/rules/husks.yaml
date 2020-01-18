@@ -21,17 +21,27 @@ ORCA.Husk:
 	RenderVoxels:
 		Image: orca
 
+ORCA.Husk.EMP:
+	Inherits: ORCA.Husk
+	Inherits@EMP: ^EmpVisualEffects
+
 ORCAB.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Orca Bomber
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 3
 		Speed: 96
+	FallsToEarth:
+		MaximumSpinSpeed: 6
 	RenderSprites:
 		Image: orcab
 	RenderVoxels:
 		Image: orcab
+
+ORCAB.Husk.EMP:
+	Inherits: ORCAB.Husk
+	Inherits@EMP: ^EmpVisualEffects
 
 ORCATRAN.Husk:
 	Inherits: ^AircraftHusk
@@ -45,6 +55,10 @@ ORCATRAN.Husk:
 	RenderVoxels:
 		Image: orcatran
 
+ORCATRAN.Husk.EMP:
+	Inherits: ORCATRAN.Husk
+	Inherits@EMP: ^EmpVisualEffects
+
 TRNSPORT.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
@@ -57,17 +71,27 @@ TRNSPORT.Husk:
 	RenderVoxels:
 		Image: trnsport
 
+TRNSPORT.Husk.EMP:
+	Inherits: TRNSPORT.Husk
+	Inherits@EMP: ^EmpVisualEffects
+
 SCRIN.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
 		Name: Banshee Fighter
 	Aircraft:
-		TurnSpeed: 5
+		TurnSpeed: 3
 		Speed: 168
+	FallsToEarth:
+		MaximumSpinSpeed: 6
 	RenderSprites:
 		Image: scrin
 	RenderVoxels:
 		Image: scrin
+
+SCRIN.Husk.EMP:
+	Inherits: SCRIN.Husk
+	Inherits@EMP: ^EmpVisualEffects
 
 APACHE.Husk:
 	Inherits: ^AircraftHusk
@@ -77,9 +101,13 @@ APACHE.Husk:
 		TurnSpeed: 5
 		Speed: 130
 	WithIdleOverlay:
-		Offset: 85,0,384
+		Offset: 85,0,598
 		Sequence: rotor
 	RenderSprites:
 		Image: apache
 	RenderVoxels:
 		Image: apache
+
+APACHE.Husk.EMP:
+	Inherits: APACHE.Husk
+	Inherits@EMP: ^EmpVisualEffects

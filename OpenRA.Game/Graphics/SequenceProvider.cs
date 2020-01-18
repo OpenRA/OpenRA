@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -64,7 +64,7 @@ namespace OpenRA.Graphics
 					return Load(fileSystem, additionalSequences);
 			});
 
-			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders, new SheetBuilder(SheetType.Indexed)));
+			spriteCache = Exts.Lazy(() => new SpriteCache(fileSystem, modData.SpriteLoaders));
 		}
 
 		public ISpriteSequence GetSequence(string unitName, string sequenceName)
@@ -130,16 +130,21 @@ namespace OpenRA.Graphics
 
 		public void Preload()
 		{
-			SpriteCache.SheetBuilder.Current.CreateBuffer();
+			foreach (var sb in SpriteCache.SheetBuilders.Values)
+				sb.Current.CreateBuffer();
+
 			foreach (var unitSeq in sequences.Value.Values)
 				foreach (var seq in unitSeq.Value.Values) { }
-			SpriteCache.SheetBuilder.Current.ReleaseBuffer();
+
+			foreach (var sb in SpriteCache.SheetBuilders.Values)
+				sb.Current.ReleaseBuffer();
 		}
 
 		public void Dispose()
 		{
 			if (spriteCache.IsValueCreated)
-				spriteCache.Value.SheetBuilder.Dispose();
+				foreach (var sb in SpriteCache.SheetBuilders.Values)
+					sb.Dispose();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Server
 				lastPing = Game.RunTime;
 
 				// Ignore client timeout in singleplayer games to make debugging easier
-				if (server.LobbyInfo.NonBotClients.Count() < 2 && !server.Dedicated)
+				if (server.LobbyInfo.NonBotClients.Count() < 2 && server.Type != ServerType.Dedicated)
 					foreach (var c in server.Conns.ToList())
 						server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 				else

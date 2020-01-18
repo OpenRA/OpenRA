@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -51,26 +51,34 @@ namespace OpenRA
 
 		public static void PlayVoiceForOrders(this World w, Order[] orders)
 		{
-			// Find an actor with a phrase to say
+			// Find the first actor with a phrase to say
 			foreach (var o in orders)
 			{
 				if (o == null)
 					continue;
 
-				var orderSubject = o.Subject;
-				if (orderSubject.Disposed)
-					continue;
+				if (PlayVoiceForOrder(o))
+					return;
+			}
+		}
 
-				foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
+		static bool PlayVoiceForOrder(Order o)
+		{
+			var orderSubject = o.Subject;
+			if (orderSubject == null || orderSubject.Disposed)
+				return false;
+
+			foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
+			{
+				foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
 				{
-					foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
-					{
-						if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
-							orderSubject.Owner.Faction.InternalName))
-							return;
-					}
+					if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
+						orderSubject.Owner.Faction.InternalName))
+						return true;
 				}
 			}
+
+			return false;
 		}
 	}
 }

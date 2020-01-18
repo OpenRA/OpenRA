@@ -198,6 +198,9 @@ SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence
 
+AssetBrowser:
+	SupportedExtensions: .shp, .r8, .vqa
+
 GameSpeeds:
 	slowest:
 		Name: Slowest

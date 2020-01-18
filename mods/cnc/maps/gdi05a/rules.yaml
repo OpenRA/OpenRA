@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi05a.lua
+		Scripts: campaign-global.lua, gdi05a.lua
 	MusicPlaylist:
 		StartingMusic: rain
 	MissionData:
@@ -34,6 +34,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 
 Player:
 	EnemyWatcher:

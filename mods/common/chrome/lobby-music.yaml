@@ -59,8 +59,8 @@ Container@LOBBY_MUSIC_BIN:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PREV:
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: prev
 						Button@BUTTON_PLAY:
@@ -70,8 +70,8 @@ Container@LOBBY_MUSIC_BIN:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PLAY:
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: play
 						Button@BUTTON_PAUSE:
@@ -82,8 +82,8 @@ Container@LOBBY_MUSIC_BIN:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PAUSE:
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: pause
 						Button@BUTTON_STOP:
@@ -93,8 +93,8 @@ Container@LOBBY_MUSIC_BIN:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_STOP:
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: stop
 						Button@BUTTON_NEXT:
@@ -104,8 +104,8 @@ Container@LOBBY_MUSIC_BIN:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_NEXT:
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: next
 				Checkbox@SHUFFLE:

@@ -12,12 +12,15 @@ ListenPort="${ListenPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
 Password="${Password:-""}"
 
+GeoIPDatabase="${GeoIPDatabase:-""}"
+
 RequireAuthentication="${RequireAuthentication:-"False"}"
 ProfileIDBlacklist="${ProfileIDBlacklist:-""}"
 ProfileIDWhitelist="${ProfileIDWhitelist:-""}"
 
 EnableSingleplayer="${EnableSingleplayer:-"False"}"
 EnableSyncReports="${EnableSyncReports:-"False"}"
+ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 
 while true; do
      mono --debug OpenRA.Server.exe Game.Mod="$Mod" \
@@ -26,8 +29,10 @@ while true; do
      Server.AdvertiseOnline="$AdvertiseOnline" \
      Server.EnableSingleplayer="$EnableSingleplayer" \
      Server.Password="$Password" \
+     Server.GeoIPDatabase="$GeoIPDatabase" \
      Server.RequireAuthentication="$RequireAuthentication" \
      Server.ProfileIDBlacklist="$ProfileIDBlacklist" \
      Server.ProfileIDWhitelist="$ProfileIDWhitelist" \
-     Server.EnableSyncReports="$EnableSyncReports"
+     Server.EnableSyncReports="$EnableSyncReports" \
+     Server.ShareAnonymizedIPs="$ShareAnonymizedIPs"
 done

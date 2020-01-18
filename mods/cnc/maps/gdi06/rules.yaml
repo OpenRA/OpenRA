@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: gdi06.lua
+		Scripts: campaign-global.lua, gdi06.lua
 	MusicPlaylist:
 		BackgroundMusic: rain-ambient
 		StartingMusic: rain
@@ -40,6 +40,7 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+		Locked: false
 
 Player:
 	PlayerResources:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -102,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo, string productionType, TypeDictionary inits)
 		{
 			var exit = CPos.Zero;
-			var exitLocation = CPos.Zero;
+			var exitLocations = new List<CPos>();
 
 			var info = (ProductionParadropInfo)Info;
 			var actorType = info.ActorType;
@@ -122,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var initialFacing = exitinfo.Facing < 0 ? (to - spawn).Yaw.Facing : exitinfo.Facing;
 
-				exitLocation = rp.Value != null ? rp.Value.Location : exit;
+				exitLocations = rp.Value != null ? rp.Value.Path : new List<CPos> { exit };
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
@@ -137,7 +138,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (move != null)
-					newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(exitLocation, 1, targetLineColor: Color.OrangeRed)));
+					foreach (var cell in exitLocations)
+						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())

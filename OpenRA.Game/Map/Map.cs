@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -822,6 +822,14 @@ namespace OpenRA
 			var cell = CellContaining(pos);
 			var delta = pos - CenterOfCell(cell);
 			return new WDist(delta.Z);
+		}
+
+		public WVec Offset(CVec delta, int dz)
+		{
+			if (Grid.Type == MapGridType.Rectangular)
+				return new WVec(1024 * delta.X, 1024 * delta.Y, 0);
+
+			return new WVec(724 * (delta.X - delta.Y), 724 * (delta.X + delta.Y), 724 * dz);
 		}
 
 		/// <summary>

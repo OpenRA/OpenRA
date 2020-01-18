@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -181,6 +181,9 @@ namespace OpenRA
 
 				// Render the world into a framebuffer at 1:1 scaling to allow the depth buffer to match the artwork at all zoom levels
 				worldBuffer = Context.CreateFrameBuffer(worldBufferSize);
+
+				// Pixel art scaling mode is a customized bilinear sampling
+				worldBuffer.Texture.ScaleFilter = TextureScaleFilter.Linear;
 			}
 
 			if (worldSprite == null || worldViewport.Size != worldSprite.Bounds.Size)
@@ -217,8 +220,11 @@ namespace OpenRA
 
 				var scale = Window.WindowScale;
 				var bufferSize = new Size((int)(screenSprite.Bounds.Width / scale), (int)(-screenSprite.Bounds.Height / scale));
+
+				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
 				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, new float2(bufferSize));
 				Flush();
+				SpriteRenderer.SetAntialiasingPixelsPerTexel(0);
 			}
 			else
 			{
@@ -419,6 +425,11 @@ namespace OpenRA
 				foreach (var font in Fonts.Values)
 					font.Dispose();
 			Window.Dispose();
+		}
+
+		public void SetVSyncEnabled(bool enabled)
+		{
+			Window.Context.SetVSyncEnabled(enabled);
 		}
 
 		public string GetClipboardText()

@@ -97,6 +97,7 @@ MIG:
 	Health:
 		HP: 7500
 	RevealsShroud:
+		MinRange: 11c0
 		Range: 13c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
@@ -111,7 +112,6 @@ MIG:
 	AttackAircraft:
 		FacingTolerance: 20
 		PersistentTargeting: false
-		AttackTurnDelay: 30
 	Aircraft:
 		CruiseAltitude: 2560
 		InitialFacing: 192
@@ -161,6 +161,7 @@ YAK:
 	Health:
 		HP: 6000
 	RevealsShroud:
+		MinRange: 9c0
 		Range: 11c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
@@ -229,6 +230,7 @@ TRAN:
 	Health:
 		HP: 14000
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 8c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
@@ -284,6 +286,7 @@ HELI:
 	Health:
 		HP: 12000
 	RevealsShroud:
+		MinRange: 10c0
 		Range: 12c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
@@ -349,6 +352,7 @@ HIND:
 	Health:
 		HP: 10000
 	RevealsShroud:
+		MinRange: 8c0
 		Range: 10c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False
@@ -449,6 +453,7 @@ MH60:
 	Health:
 		HP: 10000
 	RevealsShroud:
+		MinRange: 8c0
 		Range: 10c0
 		Type: GroundPosition
 		RevealGeneratedShroud: False

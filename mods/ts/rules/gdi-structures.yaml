@@ -183,7 +183,7 @@ GAWEAP:
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
 		Description: Produces vehicles.
 	Building:
-		Footprint: xxX= xxX= xxX=
+		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
 	Selectable:
 		Bounds: 154, 96, -2, -12
@@ -320,7 +320,7 @@ GADEPT:
 		Queue: Building
 		Description: Repairs vehicles.
 	Building:
-		Footprint: =x= xxx =x=
+		Footprint: =+= x++ x+=
 		Dimensions: 3,3
 	Selectable:
 		Bounds: 96, 64, -6, -6

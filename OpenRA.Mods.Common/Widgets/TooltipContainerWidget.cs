@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class TooltipContainerWidget : Widget
 	{
 		static readonly Action Nothing = () => { };
+		readonly CursorProvider cursorProvider;
 
 		public int2 CursorOffset = new int2(0, 20);
 		public int BottomEdgeYOffset = -5;
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public TooltipContainerWidget()
 		{
+			cursorProvider = Game.ModData.CursorProvider;
 			IsVisible = () => Game.RunTime > Viewport.LastMoveRunTime + TooltipDelayMilliseconds;
 		}
 
@@ -52,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			get
 			{
-				var pos = Viewport.LastMousePos + (CursorProvider.CursorViewportZoomed ? CursorOffset * 2 : CursorOffset);
+				var pos = Viewport.LastMousePos + (cursorProvider.DoubleCursorSize ? CursorOffset * 2 : CursorOffset);
 				if (tooltip != null)
 				{
 					// If the tooltip overlaps the right edge of the screen, move it left until it fits
@@ -61,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					// If the tooltip overlaps the bottom edge of the screen, switch tooltip above cursor
 					if (pos.Y + tooltip.Bounds.Bottom > Game.Renderer.Resolution.Height)
-						pos = pos.WithY(Viewport.LastMousePos.Y + (CursorProvider.CursorViewportZoomed ? 2 : 1) * BottomEdgeYOffset - tooltip.Bounds.Height);
+						pos = pos.WithY(Viewport.LastMousePos.Y + (cursorProvider.DoubleCursorSize ? 2 : 1) * BottomEdgeYOffset - tooltip.Bounds.Height);
 				}
 
 				return pos;

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -591,20 +591,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			HideChildWidget(parent, "STATUS_CHECKBOX");
 			HideChildWidget(parent, "STATUS_IMAGE");
-		}
-
-		public static string GetExternalIP(Session.Client client, OrderManager orderManager)
-		{
-			var address = client != null ? client.IpAddress : "";
-			var lc = orderManager.LocalClient;
-			if (lc != null && lc.Index == client.Index && address == IPAddress.Loopback.ToString())
-			{
-				var externalIP = UPnP.ExternalIP;
-				if (externalIP != null)
-					address = externalIP.ToString();
-			}
-
-			return address;
 		}
 
 		public static void SetupChatLine(ContainerWidget template, DateTime time, string name, Color nameColor, string text, Color textColor)

@@ -49,6 +49,12 @@ Container@OBSERVER_WIDGETS:
 									ImageName: options
 				Container@RADAR:
 					Children:
+						ColorBlock:
+							X: 8
+							Y: 40
+							Width: 222
+							Height: 222
+							Color: 000000
 						Radar@INGAME_RADAR:
 							WorldInteractionController: INTERACTION_CONTROLLER
 							X: 9
@@ -121,8 +127,8 @@ Container@OBSERVER_WIDGETS:
 					VisualHeight: 0
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 2
-							Y: 2
+							X: 6
+							Y: 6
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_PLAY:
@@ -137,8 +143,8 @@ Container@OBSERVER_WIDGETS:
 					VisualHeight: 0
 					Children:
 						Image@IMAGE_PLAY:
-							X: 2
-							Y: 1
+							X: 6
+							Y: 6
 							ImageCollection: music
 							ImageName: play
 				Button@BUTTON_SLOW:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -53,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence to use when the actor is killed by some non-standard means (e.g. suicide).")]
 		public readonly string FallbackSequence = null;
 
+		[Desc("Delay the spawn of the death animation by this many ticks.")]
+		public readonly int Delay = 0;
+
 		public override object Create(ActorInitializer init) { return new WithDeathAnimation(init.Self, this); }
 	}
 
@@ -81,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (e.Damage.DamageTypes.IsEmpty)
 			{
 				if (Info.FallbackSequence != null)
-					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette);
+					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette, Info.Delay);
 
 				return;
 			}
@@ -96,12 +99,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sequence += Info.DeathTypes[damageType].Random(self.World.SharedRandom);
 			}
 
-			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), sequence, palette);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), sequence, palette, Info.Delay);
 		}
 
-		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, string palette)
+		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, string palette, int delay)
 		{
-			self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, image, sequence, palette)));
+			self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, image, sequence, palette, delay: delay)));
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
@@ -115,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.CrushedPaletteIsPlayerPalette)
 				crushPalette += self.Owner.InternalName;
 
-			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.CrushedSequence, crushPalette);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.CrushedSequence, crushPalette, Info.Delay);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }

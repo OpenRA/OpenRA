@@ -29,6 +29,7 @@ Packages:
 	cnc|bits/jungle
 	cnc|bits/desert
 	cnc|bits/ss
+	cnc|bits/scripts
 	cnc|uibits
 
 MapFolders:
@@ -220,6 +221,9 @@ SpriteSequenceFormat: TilesetSpecificSpriteSequence
 		JUNGLE: .jun
 
 ModelSequenceFormat: PlaceholderModelSequence
+
+AssetBrowser:
+	SupportedExtensions: .shp, .tem, .des, .sno, .jun, .vqa
 
 GameSpeeds:
 	slowest:

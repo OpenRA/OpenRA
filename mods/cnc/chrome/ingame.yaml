@@ -10,13 +10,14 @@ Container@INGAME_ROOT:
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
 		LogicKeyListener@WORLD_KEYHANDLER:
-			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, TogglePixelDoubleHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, CycleHarvestersHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, ResetZoomHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
 				CycleBasesKey: CycleBase
 				CycleProductionActorsKey: CycleProductionBuildings
+				CycleHarvestersKey: CycleHarvesters
 				JumpToLastEventKey: ToLastEvent
 				JumpToSelectedActorsKey: ToSelection
-				TogglePixelDoubleKey: TogglePixelDouble
+				ResetZoomKey: ResetZoom
 				TogglePlayerStanceColorKey: TogglePlayerStanceColor
 				CycleStatusBarsKey: CycleStatusBars
 				PauseKey: Pause
@@ -77,6 +78,8 @@ Container@OBSERVER_WIDGETS:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
+			ZoomInKey: ZoomIn
+			ZoomOutKey: ZoomOut
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
@@ -1048,6 +1051,8 @@ Container@PLAYER_WIDGETS:
 			Height: WINDOW_BOTTOM
 			TooltipTemplate: WORLD_TOOLTIP_FACTIONSUFFIX
 			TooltipContainer: TOOLTIP_CONTAINER
+			ZoomInKey: ZoomIn
+			ZoomOutKey: ZoomOut
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
@@ -1525,7 +1530,7 @@ Container@PLAYER_WIDGETS:
 					Height: 190
 					Children:
 						ResourceBar@POWERBAR:
-							Width: 10
+							Width: 9
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
@@ -1535,13 +1540,14 @@ Container@PLAYER_WIDGETS:
 							ImageName: power
 				Container@SILOBAR_PANEL:
 					Logic: IngameSiloBarLogic
-					X: 220
+					X: 219
 					Y: 51
 					Width: 10
 					Height: 190
 					Children:
 						ResourceBar@SILOBAR:
-							Width: 10
+							X: 1
+							Width: 9
 							Height: PARENT_BOTTOM - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX

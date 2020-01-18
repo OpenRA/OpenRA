@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -228,13 +228,11 @@ namespace OpenRA.Graphics
 				if (a.Actor.IsInWorld && !a.Actor.Disposed)
 					a.Trait.RenderAboveWorld(a.Actor, this);
 
-			var renderShroud = World.RenderPlayer != null ? World.RenderPlayer.Shroud : null;
-
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
 			foreach (var a in World.ActorsWithTrait<IRenderShroud>())
-				a.Trait.RenderShroud(renderShroud, this);
+				a.Trait.RenderShroud(this);
 
 			if (enableDepthBuffer)
 				Game.Renderer.Context.DisableDepthBuffer();

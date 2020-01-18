@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,7 +25,10 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ViewportControllerWidget : Widget
 	{
 		readonly ModData modData;
-		readonly ResourceLayer resourceLayer;
+		readonly ResourceRenderer resourceRenderer;
+
+		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
+		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
 
 		public readonly HotkeyReference ScrollUpKey = new HotkeyReference();
 		public readonly HotkeyReference ScrollDownKey = new HotkeyReference();
@@ -147,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			resourceLayer = world.WorldActor.TraitOrDefault<ResourceLayer>();
+			resourceRenderer = world.WorldActor.TraitOrDefault<ResourceRenderer>();
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -269,9 +272,9 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			if (resourceLayer != null)
+			if (resourceRenderer != null)
 			{
-				var resource = resourceLayer.GetRenderedResource(cell);
+				var resource = resourceRenderer.GetRenderedResourceType(cell);
 				if (resource != null)
 				{
 					TooltipType = WorldTooltipType.Resource;
@@ -312,38 +315,11 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		bool IsZoomAllowed(float zoom)
-		{
-			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer == null || world.LocalPlayer.Spectating;
-		}
-
-		void Zoom(int direction)
-		{
-			var zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
-			var currentZoom = worldRenderer.Viewport.Zoom;
-			var nextIndex = zoomSteps.IndexOf(currentZoom);
-
-			if (direction < 0)
-				nextIndex++;
-			else
-				nextIndex--;
-
-			if (nextIndex < 0 || nextIndex >= zoomSteps.Count())
-				return;
-
-			var zoom = zoomSteps.ElementAt(nextIndex);
-			if (!IsZoomAllowed(zoom))
-				return;
-
-			worldRenderer.Viewport.Zoom = zoom;
-		}
-
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event == MouseInputEvent.Scroll &&
-				Game.Settings.Game.AllowZoom && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
+			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
 			{
-				Zoom(mi.Delta.Y);
+				worldRenderer.Viewport.AdjustZoom(mi.Delta.Y * Game.Settings.Game.ZoomSpeed);
 				return true;
 			}
 
@@ -506,6 +482,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (e.Event != KeyInputEvent.Down)
 				return false;
+
+			if (ZoomInKey.IsActivatedBy(e))
+			{
+				worldRenderer.Viewport.AdjustZoom(0.25f);
+				return true;
+			}
+
+			if (ZoomOutKey.IsActivatedBy(e))
+			{
+				worldRenderer.Viewport.AdjustZoom(-0.25f);
+				return true;
+			}
 
 			if (JumpToTopEdgeKey.IsActivatedBy(e))
 			{

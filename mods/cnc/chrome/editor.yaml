@@ -202,13 +202,15 @@ Container@EDITOR_ROOT:
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
+		LogicKeyListener@WORLD_KEYHANDLER:
+			Logic: ResetZoomHotkeyLogic
+				ResetZoomKey: ResetZoom
 		Container@WORLD_ROOT:
 		Container@MENU_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic
-		ChangeZoomKey: TogglePixelDouble
 		EditPanelPadding: 5
 	Children:
 		Container@PERF_ROOT:
@@ -218,12 +220,6 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
 			Children:
-				TerrainTemplatePreview@DRAG_TILE_PREVIEW:
-					Visible: false
-				Sprite@DRAG_LAYER_PREVIEW:
-					Visible: false
-				ActorPreview@DRAG_ACTOR_PREVIEW:
-					Visible: false
 				Background@ACTOR_EDIT_PANEL:
 					Background: panel-black
 					Width: 269
@@ -321,6 +317,8 @@ Container@EDITOR_WORLD_ROOT:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
 			IgnoreMouseOver: True
+			ZoomInKey: ZoomIn
+			ZoomOutKey: ZoomOut
 			ScrollUpKey: MapScrollUp
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
@@ -578,6 +576,28 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Text: History
 					Font: Bold
+		Button@UNDO_BUTTON:
+			X: WINDOW_RIGHT - 910
+			Y: 5
+			Height: 25
+			Width: 100
+			Text: Undo
+			Font: Bold
+			Key: z ctrl
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Undo last step
+			TooltipContainer: TOOLTIP_CONTAINER
+		Button@REDO_BUTTON:
+			X: WINDOW_RIGHT - 800
+			Y: 5
+			Height: 25
+			Width: 100
+			Text: Redo
+			Font: Bold
+			Key: y ctrl
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: Redo last step
+			TooltipContainer: TOOLTIP_CONTAINER
 		Button@GRID_BUTTON:
 			X: WINDOW_RIGHT - 690
 			Y: 5
@@ -588,25 +608,6 @@ Container@EDITOR_WORLD_ROOT:
 			Key: f1
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Toggle the terrain grid
-			TooltipContainer: TOOLTIP_CONTAINER
-		Label@ZOOM_LABEL:
-			X: WINDOW_RIGHT - 770 - 55
-			Y: 5
-			Width: 50
-			Height: 25
-			Text: Zoom:
-			Align: Right
-			Font: Bold
-			Contrast: true
-		DropDownButton@ZOOM_BUTTON:
-			X: WINDOW_RIGHT - 770
-			Y: 5
-			Width: 70
-			Height: 25
-			Font: Bold
-			Key: TogglePixelDouble
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Zoom
 			TooltipContainer: TOOLTIP_CONTAINER
 		Button@COPYPASTE_BUTTON:
 			X: WINDOW_RIGHT - 580
@@ -639,26 +640,6 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
-		Button@UNDO_BUTTON:
-			X: 200
-			Height: 25
-			Width: 100
-			Text: Undo
-			Font: Bold
-			Key: z ctrl
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Undo last step
-			TooltipContainer: TOOLTIP_CONTAINER
-		Button@REDO_BUTTON:
-			X: 305
-			Height: 25
-			Width: 100
-			Text: Redo
-			Font: Bold
-			Key: y ctrl
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Redo last step
-			TooltipContainer: TOOLTIP_CONTAINER
 
 ScrollPanel@CATEGORY_FILTER_PANEL:
 	Width: 190

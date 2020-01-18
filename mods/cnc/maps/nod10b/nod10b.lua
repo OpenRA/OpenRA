@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -7,132 +7,62 @@
    information, see COPYING.
 ]]
 
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	Rambo = "rmbo.easy"
-elseif Map.LobbyOption("difficulty") == "hard" then
+elseif Difficulty == "hard" then
 	Rambo = "rmbo.hard"
 else
 	Rambo = "rmbo"
 end
 
-GDIBuildings = {ConYard, PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4, PowerPlant5, Barracks,
-Silo1, Silo2, WeaponsFactory, CommCenter, GuardTower1, GuardTower2}
+GDIBuildings = { ConYard, PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4, PowerPlant5, Barracks, Silo1, Silo2, WeaponsFactory, CommCenter, GuardTower1, GuardTower2 }
 
+Mammoths = { Mammoth1, Mammoth2, Mammoth3 }
+Grenadiers = { Grenadier1, Grenadier2, Grenadier3, Grenadier4 }
+MediumTanks = { MediumTank1, MediumTank2 }
+Riflemen = { Rifleman1, Rifleman2, Rifleman3, Rifleman4 }
 
-function RepairBuilding(building, attacker)
-	if not building.IsDead and building.Owner == enemy then
-		building.StartBuildingRepairs(enemy)
-	end
-end
+MammothPatrolPath = { MammothWaypoint1.Location, MammothWaypoint2.Location }
+RiflemenPatrolPath = { RiflemenWaypoint1.Location, RiflemenWaypoint2.Location }
 
+InfantrySquad = { "e1", "e1", "e1", "e1", "e1" }
 
-Mammoths = {Mammoth1, Mammoth2, Mammoth3}
-Grenadiers = {Grenadier1, Grenadier2, Grenadier3, Grenadier4}
-MediumTanks = {MediumTank1, MediumTank2}
-Riflemen = {Rifleman1, Rifleman2, Rifleman3, Rifleman4}
+DeliverCommando = function()
+	Media.PlaySpeechNotification(Nod, "Reinforce")
+	local rambo = Reinforcements.ReinforceWithTransport(Nod, "tran.in", { Rambo }, { ChinookEntry.Location, ChinookTarget.Location }, { ChinookEntry.Location })[2][1]
 
-MammothPatrolPath = {MammothWaypoint1.Location, MammothWaypoint2.Location}
-RiflemenPatrolPath = {RiflemenWaypoint1.Location, RiflemenWaypoint2.Location}
-
-DamageTrigger = false
-
-
-function TankDamaged(tank, attacker)
-	if not DamageTrigger then
-		DamageTrigger = true
-		Utils.Do(Grenadiers, function(grenadier)
-			if not grenadier.IsDead then
-				grenadier.AttackMove(tank.Location)
-			end
-		end)
-	end
-end
-
-
-function GrenadierDamaged(grenadier, attacker)
-	if not DamageTrigger then
-		DamageTrigger = true
-		Utils.Do(MediumTanks, function(tank)
-			if not tank.IsDead then
-				tank.AttackMove(grenadier.Location)
-			end
-		end)
-	end
-end
-
-
-InfantrySquad = {"e1", "e1", "e1", "e1", "e1"}
-
-
-function MoveToNorthEntrance(squad)
-	Utils.Do(squad, function(unit)
-		if not unit.IsDead then
-			unit.AttackMove(NorthEntrance.Location)
-		end
-    end)
-end
-
-
-function EnteredFromNorth(actor, id)
-	if actor.Owner == player then
-		Trigger.RemoveFootprintTrigger(id)
-		if not Barracks.IsDead and Barracks.Owner == enemy then
-			Barracks.Build(InfantrySquad, MoveToNorthEntrance)
-		end
-	end
-end
-
-
-function DeliverCommando()
-	Media.PlaySpeechNotification(player, "Reinforce")
-	units = Reinforcements.ReinforceWithTransport(player, 'tran.in', {Rambo}, {ChinookEntry.Location, ChinookTarget.Location}, {ChinookEntry.Location})
-	rambo = units[2][1]
-	Trigger.OnKilled(rambo, function(a, k)
-		player.MarkFailedObjective(keepRamboAliveObjective)
+	Trigger.OnKilled(rambo, function()
+		Nod.MarkFailedObjective(KeepRamboAliveObjective)
 	end)
-	Trigger.OnPlayerWon(player, function(player)
+
+	Trigger.OnPlayerWon(Nod, function(Nod)
         if not rambo.IsDead then
-            player.MarkCompletedObjective(keepRamboAliveObjective)
+            Nod.MarkCompletedObjective(KeepRamboAliveObjective)
         end
 	end)
 end
 
+WorldLoaded = function()
+	Nod = Player.GetPlayer("Nod")
+	GDI = Player.GetPlayer("GDI")
 
-function WorldLoaded()
-	player = Player.GetPlayer("Nod")
-	enemy = Player.GetPlayer("GDI")
-
-	enemy.Cash = 10000
+	GDI.Cash = 10000
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
 
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
+	InitObjectives(Nod)
 
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	warFactoryObjective = player.AddPrimaryObjective("Destroy or capture the Weapons Factory.")
-	destroyTanksObjective = player.AddPrimaryObjective("Destroy the Mammoth tanks in the R&D base.")
-	keepRamboAliveObjective = player.AddSecondaryObjective("Keep your Commando alive.")
+	GDIObjective = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	WarFactoryObjective = Nod.AddPrimaryObjective("Destroy or capture the Weapons Factory.")
+	DestroyTanksObjective = Nod.AddPrimaryObjective("Destroy the Mammoth tanks in the R&D base.")
+	KeepRamboAliveObjective = Nod.AddObjective("Keep your Commando alive.", "Secondary", false)
 
 	Trigger.OnKilledOrCaptured(WeaponsFactory, function()
-		player.MarkCompletedObjective(warFactoryObjective)
+		Nod.MarkCompletedObjective(WarFactoryObjective)
 	end)
+
 	Trigger.OnAllKilled(Mammoths, function()
-		player.MarkCompletedObjective(destroyTanksObjective)
+		Nod.MarkCompletedObjective(DestroyTanksObjective)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), DeliverCommando)
@@ -142,18 +72,56 @@ function WorldLoaded()
     end)
 
 	Utils.Do(MediumTanks, function(tank)
-		Trigger.OnDamaged(tank, TankDamaged)
+		Trigger.OnDamaged(tank, function()
+			if DamageTrigger then
+				return
+			end
+
+			DamageTrigger = true
+			Utils.Do(Grenadiers, function(grenadier)
+				if not grenadier.IsDead then
+					grenadier.AttackMove(tank.Location)
+				end
+			end)
+		end)
     end)
 
 	Utils.Do(Grenadiers, function(grenadier)
-		Trigger.OnDamaged(grenadier, GrenadierDamaged)
+		Trigger.OnDamaged(grenadier, function()
+			if DamageTrigger then
+				return
+			end
+
+			DamageTrigger = true
+			Utils.Do(MediumTanks, function(tank)
+				if not tank.IsDead then
+					tank.AttackMove(grenadier.Location)
+				end
+			end)
+		end)
     end)
 
 	Utils.Do(GDIBuildings, function(building)
-		Trigger.OnDamaged(building, RepairBuilding)
+		RepairBuilding(GDI, building, 0.75)
     end)
 
-	Trigger.OnEnteredFootprint({NorthEntrance.Location}, EnteredFromNorth)
+	Trigger.OnEnteredFootprint({ NorthEntrance.Location }, function(a, id)
+		if a.Owner == Nod then
+			Trigger.RemoveFootprintTrigger(id)
+
+			if Barracks.IsDead or Barracks.Owner ~= GDI then
+				return
+			end
+
+			Barracks.Build(InfantrySquad, function(squad)
+				Utils.Do(squad, function(unit)
+					if not unit.IsDead then
+						unit.AttackMove(NorthEntrance.Location)
+					end
+				end)
+			end)
+		end
+	end)
 
 	Utils.Do(Riflemen, function(rifleman)
 		rifleman.Patrol(RiflemenPatrolPath)
@@ -162,11 +130,8 @@ function WorldLoaded()
 	PatrollingMammoth.Patrol(MammothPatrolPath)
 end
 
-
-function Tick()
-	if DateTime.GameTime > 2 then
-		if player.HasNoRequiredUnits() then
-			enemy.MarkCompletedObjective(gdiObjective)
-		end
+Tick = function()
+	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
+		GDI.MarkCompletedObjective(GDIObjective)
 	end
 end

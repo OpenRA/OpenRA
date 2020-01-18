@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod08a.lua, nod08a-AI.lua
+		Scripts: campaign-global.lua, nod08a.lua, nod08a-AI.lua
 	MusicPlaylist:
 		StartingMusic: linefire
 		VictoryMusic: nod_win1

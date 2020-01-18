@@ -41,13 +41,13 @@ Speech:
 		SilosNeeded: silos1
 		StartGame: 
 		GameLoaded:
-		GameSaved: scold1
+		GameSaved:
 		Training: bldging1
 		UnitDestroyed: dead1
 		UnitLost: unitlost
 		UnitReady: unitredy
 		Win: accom1
-	DisablePrefixes: AbilityInsufficientPower, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
+	DisablePrefixes: AirstrikeReady, BaseAttack, Building, BuildingCannotPlaceAudio, BuildingInProgress, BuildingLost, Cancelled, CivilianBuildingCaptured, CivilianKilled, ConstructionComplete, EnemyUnitsApproaching, EnemyStructureDestroyed, EnemyPlanesApproaching, HarvesterAttack, InsufficientPower, IonCannonCharging, IonCannonReady, Leave, Lose, LowPower, MissionAccomplished, MissionFailed, NewOptions, NoBuild, NodStructureDestroyed, NotReady, NuclearWarheadApproaching, NuclearWeaponAvailable, NuclearWeaponLaunched, OnHold, PrimaryBuildingSelected, Reinforce, Repairing, SelectTarget, SilosNeeded, Training, UnitLost, UnitReady, Win
 
 Sounds:
 	Notifications:

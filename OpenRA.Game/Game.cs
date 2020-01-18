@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Server;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -336,8 +337,6 @@ namespace OpenRA
 						Sound.Dispose();
 				}
 			}
-
-			GeoIP.Initialize();
 
 			if (Settings.Server.DiscoverNatDevices)
 				discoverNat = UPnP.DiscoverNatDevices(Settings.Server.NatDiscoveryTimeout);
@@ -673,7 +672,10 @@ namespace OpenRA
 
 					// World rendering is disabled while the loading screen is displayed
 					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+					{
+						worldRenderer.Viewport.Tick();
 						worldRenderer.PrepareRenderables();
+					}
 
 					Ui.PrepareRenderables();
 					Renderer.WorldModelRenderer.EndFrame();
@@ -771,6 +773,7 @@ namespace OpenRA
 			var nextLogic = RunTime;
 			var nextRender = RunTime;
 			var forcedNextRender = RunTime;
+			var renderBeforeNextTick = false;
 
 			while (state == RunStatus.Running)
 			{
@@ -799,9 +802,9 @@ namespace OpenRA
 				var nextUpdate = Math.Min(nextLogic, nextRender);
 				if (now >= nextUpdate)
 				{
-					var forceRender = now >= forcedNextRender;
+					var forceRender = renderBeforeNextTick || now >= forcedNextRender;
 
-					if (now >= nextLogic)
+					if (now >= nextLogic && !renderBeforeNextTick)
 					{
 						nextLogic += logicInterval;
 
@@ -809,7 +812,7 @@ namespace OpenRA
 
 						// Force at least one render per tick during regular gameplay
 						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
-							forceRender = true;
+							renderBeforeNextTick = true;
 					}
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
@@ -828,6 +831,7 @@ namespace OpenRA
 						forcedNextRender = now + maxRenderInterval;
 
 						RenderTick();
+						renderBeforeNextTick = false;
 					}
 				}
 				else
@@ -910,7 +914,7 @@ namespace OpenRA
 
 		public static void CreateServer(ServerSettings settings)
 		{
-			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, false);
+			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort), settings, ModData, ServerType.Multiplayer);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -922,7 +926,7 @@ namespace OpenRA
 				AdvertiseOnline = false
 			};
 
-			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, false);
+			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0), settings, ModData, ServerType.Local);
 
 			return server.Port;
 		}

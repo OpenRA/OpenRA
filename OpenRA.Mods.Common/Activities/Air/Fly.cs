@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -117,6 +117,13 @@ namespace OpenRA.Mods.Common.Activities
 				Cancel(self);
 
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			var isLanded = dat <= aircraft.LandAltitude;
+
+			// HACK: Prevent paused (for example, EMP'd) aircraft from taking off.
+			// This is necessary until the TODOs in the IsCanceling block below are adressed.
+			if (isLanded && aircraft.IsTraitPaused)
+				return false;
+
 			if (IsCanceling)
 			{
 				// We must return the actor to a sensible height before continuing.
@@ -128,7 +135,7 @@ namespace OpenRA.Mods.Common.Activities
 				var skipHeightAdjustment = landWhenIdle && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
 				if (aircraft.Info.CanHover && !skipHeightAdjustment && dat != aircraft.Info.CruiseAltitude)
 				{
-					if (dat <= aircraft.LandAltitude)
+					if (isLanded)
 						QueueChild(new TakeOff(self));
 					else
 						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
@@ -138,7 +145,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				return true;
 			}
-			else if (dat <= aircraft.LandAltitude)
+			else if (isLanded)
 			{
 				QueueChild(new TakeOff(self));
 				return false;
@@ -158,7 +165,6 @@ namespace OpenRA.Mods.Common.Activities
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 			var pos = aircraft.GetPosition();
 			var delta = checkTarget.CenterPosition - pos;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 
 			// Inside the target annulus, so we're done
 			var insideMaxRange = maxRange.Length > 0 && checkTarget.IsInRange(pos, maxRange);
@@ -167,12 +173,20 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var isSlider = aircraft.Info.CanSlide;
+			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw.Facing : aircraft.Facing;
 			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
-			// Inside the minimum range, so reverse if we CanSlide
-			if (isSlider && insideMinRange)
+			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
+			if (insideMinRange)
 			{
-				FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
+				if (isSlider)
+					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
+				else
+				{
+					desiredFacing = Util.NormalizeFacing(desiredFacing + 128);
+					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, move);
+				}
+
 				return false;
 			}
 
@@ -254,7 +268,7 @@ namespace OpenRA.Mods.Common.Activities
 			// turnSpeed -> divide into 256 to get the number of ticks per complete rotation
 			// speed -> multiply to get distance travelled per rotation (circumference)
 			// 45 -> divide by 2*pi to get the turn radius: 45==256/(2*pi), with some extra leeway
-			return 45 * speed / turnSpeed;
+			return turnSpeed > 0 ? 45 * speed / turnSpeed : 0;
 		}
 	}
 }

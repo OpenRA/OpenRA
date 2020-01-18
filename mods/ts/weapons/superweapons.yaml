@@ -119,14 +119,14 @@ EMPulseCannon:
 		Speed: 425
 		Blockable: false
 		Shadow: true
-		LaunchAngle: 62
+		LaunchAngle: 96
 		Image: pulsball
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion
 		ExplosionPalette: effect-ignore-lighting-alpha75
 		ImpactActors: false
 	Warhead@emp: GrantExternalCondition
-		Range: 4c0
+		Range: 6c0
 		Duration: 250
 		Condition: empdisable
-		ValidTargets: Ground, Water, Underground
+		ValidTargets: Ground, Water, Air, Underground

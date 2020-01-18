@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -13,8 +13,9 @@ SendAnts = true
 
 AttackAngles = {
 	{ waypoint4.Location, waypoint18.Location, waypoint5.Location, waypoint15.Location },
-	{ waypoint20.Location, waypoint10.Location, waypoint2.Location },
-	{ waypoint17.Location, waypoint1.Location },
+	{ waypoint20.Location, waypoint2.Location },
+	{ waypoint21.Location, waypoint10.Location, waypoint2.Location },
+	{ waypoint7.Location, waypoint17.Location, waypoint1.Location },
 	{ waypoint8.Location, waypoint9.Location, waypoint19.Location }
 }
 

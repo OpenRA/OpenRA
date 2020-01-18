@@ -1,6 +1,5 @@
 Background@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
-		SupportedFormats: .shp, .r8, .tmp, .tem, .des, .sno, .int, .vqa
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 700
@@ -119,72 +118,62 @@ Background@ASSETBROWSER_PANEL:
 				Button@BUTTON_PREV:
 					X: 0
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: LEFT
 					Children:
 						Image@IMAGE_PREV:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: prev
 				Button@BUTTON_PLAY:
 					X: 35
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: SPACE
 					Children:
 						Image@IMAGE_PLAY:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: play
 				Button@BUTTON_PAUSE:
 					Visible: false
 					X: 35
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: SPACE
 					Children:
 						Image@IMAGE_PAUSE:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_STOP:
 					X: 70
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: RETURN
 					Children:
 						Image@IMAGE_STOP:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: stop
 				Button@BUTTON_NEXT:
 					X: 105
 					Y: 0
-					Width: 25
-					Height: 25
+					Width: 26
+					Height: 26
 					Key: RIGHT
 					Children:
 						Image@IMAGE_NEXT:
-							X: 0
-							Y: 0
-							Width: 25
-							Height: 25
+							X: 5
+							Y: 5
 							ImageCollection: music
 							ImageName: next
 				Slider@FRAME_SLIDER:

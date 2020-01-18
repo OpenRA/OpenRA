@@ -20,6 +20,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -70,6 +71,7 @@ V2RL:
 	Mobile:
 		Speed: 118
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -113,6 +115,7 @@ V2RL:
 	Mobile:
 		Speed: 85
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -159,6 +162,7 @@ V2RL:
 	Mobile:
 		Speed: 71
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -206,6 +210,7 @@ V2RL:
 		Speed: 50
 		Locomotor: heavytracked
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -265,6 +270,7 @@ ARTY:
 		Speed: 85
 		Locomotor: lighttracked
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -286,7 +292,7 @@ ARTY:
 
 HARV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
@@ -298,7 +304,6 @@ HARV:
 		Name: Ore Truck
 		GenericName: Harvester
 	Selectable:
-		Priority: 7
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Harvester:
@@ -340,7 +345,7 @@ HARV:
 
 MCV:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 210
@@ -352,7 +357,6 @@ MCV:
 	Tooltip:
 		Name: Mobile Construction Vehicle
 	Selectable:
-		Priority: 4
 		DecorationBounds: 42,42
 	SelectionDecorations:
 	Health:
@@ -402,6 +406,7 @@ JEEP:
 		Speed: 170
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -447,6 +452,7 @@ APC:
 		Speed: 142
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -467,7 +473,7 @@ APC:
 
 MNLY:
 	Inherits: ^TrackedVehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 310
@@ -479,8 +485,6 @@ MNLY:
 		Name: Minelayer
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
-	Selectable:
-		Priority: 5
 	Health:
 		HP: 30000
 	Armor:
@@ -488,6 +492,7 @@ MNLY:
 	Mobile:
 		Speed: 128
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -511,7 +516,7 @@ MNLY:
 
 TRUK:
 	Inherits: ^Vehicle
-	Inherits@SELECTION_MODE: ^LowPrioritySelectionMode
+	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 410
@@ -521,8 +526,6 @@ TRUK:
 		Cost: 500
 	Tooltip:
 		Name: Supply Truck
-	Selectable:
-		Priority: 6
 	Health:
 		HP: 11000
 	Armor:
@@ -560,6 +563,7 @@ MGG:
 		Offset: -299,0,171
 		Sequence: spinner
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -630,6 +634,7 @@ TTNK:
 	Mobile:
 		Speed: 99
 	RevealsShroud:
+		MinRange: 6c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -670,6 +675,7 @@ FTRK:
 		TurnSpeed: 10
 		Speed: 118
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -760,6 +766,7 @@ CTNK:
 		Speed: 113
 		Locomotor: heavywheeled
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -805,6 +812,7 @@ QTNK:
 	Chronoshiftable:
 		RequiresCondition: !deployed && !being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 6c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
@@ -844,6 +852,7 @@ STNK:
 		Locomotor: heavywheeled
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
+		MinRange: 4c0
 		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:

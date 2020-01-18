@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,6 +20,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "resources";
+
+		[PaletteReference("IsPlayerPalette")]
+		[Desc("Custom palette name.")]
+		public readonly string Palette = null;
+
+		[Desc("Custom palette is a player palette BaseName.")]
+		public readonly bool IsPlayerPalette = false;
 
 		public override object Create(ActorInitializer init) { return new WithResourceLevelOverlay(init.Self, this); }
 	}
@@ -46,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				0);
 
 			anim = new AnimationWithOffset(a, null, () => IsTraitDisabled, 1024);
-			rs.Add(anim);
+			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)

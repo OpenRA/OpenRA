@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -40,7 +40,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void DrawPanel(string collection, Rectangle bounds)
 		{
-			DrawPanelPartial(collection, bounds, PanelSides.All);
+			var sprites = ChromeProvider.GetPanelImages(collection);
+			if (sprites != null)
+				DrawPanel(bounds, sprites);
 		}
 
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
@@ -89,95 +91,70 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.RgbaColorRenderer.FillEllipse(tl, br, c);
 		}
 
-		public static int[] GetBorderSizes(string collection)
-		{
-			var images = new[] { "border-t", "border-b", "border-l", "border-r" };
-			var ss = images.Select(i => ChromeProvider.GetImage(collection, i)).ToList();
-			return new[] { (int)ss[0].Size.Y, (int)ss[1].Size.Y, (int)ss[2].Size.X, (int)ss[3].Size.X };
-		}
-
-		static bool HasFlags(this PanelSides a, PanelSides b)
-		{
-			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (a & b) == b;
-		}
-
 		public static Rectangle InflateBy(this Rectangle rect, int l, int t, int r, int b)
 		{
 			return Rectangle.FromLTRB(rect.Left - l, rect.Top - t,
 				rect.Right + r, rect.Bottom + b);
 		}
 
-		public static void DrawPanelPartial(string collection, Rectangle bounds, PanelSides ps)
+		/// <summary>
+		/// Fill a rectangle with sprites defining a panel layout.
+		/// Draw order is center, borders, corners to allow mods to define fancy border and corner overlays.
+		/// </summary>
+		/// <param name="bounds">Rectangle to fill.</param>
+		/// <param name="sprites">Nine sprites defining the panel: TL, T, TR, L, C, R, BL, B, BR.</param>
+		public static void DrawPanel(Rectangle bounds, Sprite[] sprites)
 		{
-			DrawPanelPartial(bounds, ps,
-				ChromeProvider.GetImage(collection, "border-t"),
-				ChromeProvider.GetImage(collection, "border-b"),
-				ChromeProvider.GetImage(collection, "border-l"),
-				ChromeProvider.GetImage(collection, "border-r"),
-				ChromeProvider.GetImage(collection, "corner-tl"),
-				ChromeProvider.GetImage(collection, "corner-tr"),
-				ChromeProvider.GetImage(collection, "corner-bl"),
-				ChromeProvider.GetImage(collection, "corner-br"),
-				ChromeProvider.GetImage(collection, "background"));
-		}
+			if (sprites.Length != 9)
+				return;
 
-		public static void DrawPanelPartial(Rectangle bounds, PanelSides ps,
-			Sprite borderTop,
-			Sprite borderBottom,
-			Sprite borderLeft,
-			Sprite borderRight,
-			Sprite cornerTopLeft,
-			Sprite cornerTopRight,
-			Sprite cornerBottomLeft,
-			Sprite cornerBottomRight,
-			Sprite background)
-		{
-			var marginLeft = borderLeft == null ? 0 : (int)borderLeft.Size.X;
-			var marginTop = borderTop == null ? 0 : (int)borderTop.Size.Y;
-			var marginRight = borderRight == null ? 0 : (int)borderRight.Size.X;
-			var marginBottom = borderBottom == null ? 0 : (int)borderBottom.Size.Y;
+			var marginTop = sprites[1] == null ? 0 : (int)sprites[1].Size.Y;
+			var marginLeft = sprites[3] == null ? 0 : (int)sprites[3].Size.X;
+			var marginRight = sprites[5] == null ? 0 : (int)sprites[5].Size.X;
+			var marginBottom = sprites[7] == null ? 0 : (int)sprites[7].Size.Y;
 			var marginWidth = marginRight + marginLeft;
 			var marginHeight = marginBottom + marginTop;
 
-			// Background
-			if (ps.HasFlags(PanelSides.Center) && background != null)
+			// Center
+			if (sprites[4] != null)
 				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Top + marginTop,
-					bounds.Width - marginWidth, bounds.Height - marginHeight),
-					background);
+					bounds.Width - marginWidth, bounds.Height - marginHeight), sprites[4]);
 
-			// Left border
-			if (ps.HasFlags(PanelSides.Left) && borderLeft != null)
+			// Left edge
+			if (sprites[3] != null)
 				FillRectWithSprite(new Rectangle(bounds.Left, bounds.Top + marginTop,
-					marginLeft, bounds.Height - marginHeight),
-					borderLeft);
+						marginLeft, bounds.Height - marginHeight), sprites[3]);
 
-			// Right border
-			if (ps.HasFlags(PanelSides.Right) && borderRight != null)
+			// Right edge
+			if (sprites[5] != null)
 				FillRectWithSprite(new Rectangle(bounds.Right - marginRight, bounds.Top + marginTop,
-					marginLeft, bounds.Height - marginHeight),
-					borderRight);
+					marginLeft, bounds.Height - marginHeight), sprites[5]);
 
-			// Top border
-			if (ps.HasFlags(PanelSides.Top) && borderTop != null)
+			// Top edge
+			if (sprites[1] != null)
 				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Top,
-					bounds.Width - marginWidth, marginTop),
-					borderTop);
+					bounds.Width - marginWidth, marginTop), sprites[1]);
 
-			// Bottom border
-			if (ps.HasFlags(PanelSides.Bottom) && borderBottom != null)
+			// Bottom edge
+			if (sprites[7] != null)
 				FillRectWithSprite(new Rectangle(bounds.Left + marginLeft, bounds.Bottom - marginBottom,
-					bounds.Width - marginWidth, marginTop),
-					borderBottom);
+					bounds.Width - marginWidth, marginTop), sprites[7]);
 
-			if (ps.HasFlags(PanelSides.Left | PanelSides.Top) && cornerTopLeft != null)
-				DrawRGBA(cornerTopLeft, new float2(bounds.Left, bounds.Top));
-			if (ps.HasFlags(PanelSides.Right | PanelSides.Top) && cornerTopRight != null)
-				DrawRGBA(cornerTopRight, new float2(bounds.Right - cornerTopRight.Size.X, bounds.Top));
-			if (ps.HasFlags(PanelSides.Left | PanelSides.Bottom) && cornerBottomLeft != null)
-				DrawRGBA(cornerBottomLeft, new float2(bounds.Left, bounds.Bottom - cornerBottomLeft.Size.Y));
-			if (ps.HasFlags(PanelSides.Right | PanelSides.Bottom) && cornerBottomRight != null)
-				DrawRGBA(cornerBottomRight, new float2(bounds.Right - cornerBottomRight.Size.X, bounds.Bottom - cornerBottomRight.Size.Y));
+			// Top-left corner
+			if (sprites[0] != null)
+				DrawRGBA(sprites[0], new float2(bounds.Left, bounds.Top));
+
+			// Top-right corner
+			if (sprites[2] != null)
+				DrawRGBA(sprites[2], new float2(bounds.Right - sprites[2].Size.X, bounds.Top));
+
+			// Bottom-left corner
+			if (sprites[6] != null)
+				DrawRGBA(sprites[6], new float2(bounds.Left, bounds.Bottom - sprites[6].Size.Y));
+
+			// Bottom-right corner
+			if (sprites[8] != null)
+				DrawRGBA(sprites[8], new float2(bounds.Right - sprites[8].Size.X, bounds.Bottom - sprites[8].Size.Y));
 		}
 
 		public static string FormatTime(int ticks, int timestep)
@@ -314,18 +291,5 @@ namespace OpenRA.Mods.Common.Widgets
 
 			return lastOutput;
 		}
-	}
-
-	[Flags]
-	public enum PanelSides
-	{
-		Left = 1,
-		Top = 2,
-		Right = 4,
-		Bottom = 8,
-		Center = 16,
-
-		Edges = Left | Top | Right | Bottom,
-		All = Edges | Center,
 	}
 }

@@ -125,59 +125,48 @@ Container@SETTINGS_PANEL:
 									MaxLength: 5
 									Type: Integer
 						Checkbox@HARDWARECURSORS_CHECKBOX:
-							X: 310
+							X: 80
 							Y: 75
 							Width: 200
 							Height: 20
 							Font: Regular
 							Text: Use Hardware Cursors
+						Checkbox@CURSORDOUBLE_CHECKBOX:
+							X: 310
+							Y: 75
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: Increase Command Cursor Size
 						Label@VIDEO_DESC:
-							Y: 92
+							Y: 97
 							Width: PARENT_RIGHT
 							Height: 25
 							Font: Tiny
 							Align: Center
 							Text: Mode, resolution, and cursor changes will be applied after the game is restarted
-						Checkbox@FRAME_LIMIT_CHECKBOX:
-							X: 15
+						Checkbox@VSYNC_CHECKBOX:
+							X: 80
 							Y: 125
 							Width: 200
 							Height: 20
 							Font: Regular
-							Text: Enable Frame Limiter
-						Checkbox@PIXELDOUBLE_CHECKBOX:
+							Text: Enable VSync
+						Checkbox@FRAME_LIMIT_CHECKBOX:
 							X: 310
 							Y: 125
 							Width: 200
 							Height: 20
 							Font: Regular
-							Text: Enable Pixel Doubling
-						Checkbox@CURSORDOUBLE_CHECKBOX:
+							Text: Enable Frame Limiter
+						Slider@FRAME_LIMIT_SLIDER:
 							X: 340
-							Y: 155
+							Y: 150
 							Width: 200
 							Height: 20
-							Font: Regular
-							Text: Also Double Cursor
-						Label@FRAME_LIMIT_DESC_A:
-							X: 45
-							Y: 153
-							Width: 50
-							Height: 25
-							Text: Limit to
-							Align: Right
-						TextField@FRAME_LIMIT_TEXTFIELD:
-							X: 100
-							Y: 153
-							Width: 45
-							Height: 25
-							MaxLength: 3
-							Type: Integer
-						Label@FRAME_LIMIT_DESC_B:
-							X: 150
-							Y: 153
-							Height: 25
-							Text: FPS
+							Ticks: 20
+							MinimumValue: 50
+							MaximumValue: 240
 						Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
 							X: 310
 							Y: 185
@@ -209,6 +198,18 @@ Container@SETTINGS_PANEL:
 									Y: 6
 									Width: PARENT_RIGHT - 35
 									Height: PARENT_BOTTOM - 12
+						Label@BATTLEFIELD_CAMERA:
+							X: 15
+							Y: 227
+							Width: 120
+							Text: Battlefield Camera:
+							Align: Right
+						DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
+							X: 140
+							Y: 215
+							Width: 145
+							Height: 25
+							Font: Regular
 						Label@STATUS_BARS:
 							X: 250
 							Y: 257
@@ -223,7 +224,7 @@ Container@SETTINGS_PANEL:
 							Font: Regular
 						Label@TARGET_LINES:
 							X: 250
-							Y: 228
+							Y: 227
 							Width: 145
 							Text: Target Lines:
 							Align: Right
@@ -281,59 +282,68 @@ Container@SETTINGS_PANEL:
 							Font: Bold
 							Text: Audio
 							Align: Center
-						Label@SOUND_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 38
-							Width: 95
-							Height: 25
-							Align: Right
-							Text: Sound Volume:
-						ExponentialSlider@SOUND_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 43
-							Width: 250
-							Height: 20
-							Ticks: 7
-						Checkbox@CASH_TICKS:
-							X: 15
-							Y: 40
-							Width: 200
-							Height: 20
-							Font: Regular
-							Text: Cash Ticks
-						Checkbox@MUTE_SOUND:
-							X: 15
-							Y: 70
-							Width: 200
-							Height: 20
-							Font: Regular
-							Text: Mute Sound
-						Label@MUSIC_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 68
-							Width: 95
-							Height: 25
-							Align: Right
-							Text: Music Volume:
-						ExponentialSlider@MUSIC_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 73
-							Width: 250
-							Height: 20
-							Ticks: 7
-						Label@VIDEO_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
-							Y: 98
-							Width: 95
-							Height: 25
-							Align: Right
-							Text: Video Volume:
-						ExponentialSlider@VIDEO_VOLUME:
-							X: PARENT_RIGHT - WIDTH - 15
-							Y: 103
-							Width: 250
-							Height: 20
-							Ticks: 7
+						Label@NO_AUDIO_DEVICE:
+							Y: 50
+							Width: PARENT_RIGHT
+							Align: Center
+							Text: Audio controls require an active sound device
+						Container@AUDIO_CONTROLS:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								Label@SOUND_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 38
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Sound Volume:
+								ExponentialSlider@SOUND_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 43
+									Width: 250
+									Height: 20
+									Ticks: 7
+								Checkbox@CASH_TICKS:
+									X: 15
+									Y: 40
+									Width: 200
+									Height: 20
+									Font: Regular
+									Text: Cash Ticks
+								Checkbox@MUTE_SOUND:
+									X: 15
+									Y: 70
+									Width: 200
+									Height: 20
+									Font: Regular
+									Text: Mute Sound
+								Label@MUSIC_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 68
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Music Volume:
+								ExponentialSlider@MUSIC_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 73
+									Width: 250
+									Height: 20
+									Ticks: 7
+								Label@VIDEO_LABEL:
+									X: PARENT_RIGHT - WIDTH - 270
+									Y: 98
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: Video Volume:
+								ExponentialSlider@VIDEO_VOLUME:
+									X: PARENT_RIGHT - WIDTH - 15
+									Y: 103
+									Width: 250
+									Height: 20
+									Ticks: 7
 						Label@AUDIO_DEVICE_LABEL:
 							X: 190 - WIDTH - 5
 							Y: 245
@@ -404,7 +414,7 @@ Container@SETTINGS_PANEL:
 							Width: 160
 							Height: 20
 							Font: Regular
-							Text: Scroll-zoom Modifier:
+							Text: Mouse Wheel Zoom Modifier:
 							Align: Right
 						DropDownButton@ZOOM_MODIFIER:
 							X: PARENT_RIGHT - WIDTH - 15
@@ -420,29 +430,22 @@ Container@SETTINGS_PANEL:
 							Height: 20
 							Font: Regular
 							Text: Edge Scrolling
-						Checkbox@ALLOW_ZOOM_CHECKBOX:
+						Checkbox@LOCKMOUSE_CHECKBOX:
 							X: 15
 							Y: 100
 							Width: 130
 							Height: 20
 							Font: Regular
-							Text: Scroll Zooming
-						Checkbox@LOCKMOUSE_CHECKBOX:
-							X: 15
-							Y: 130
-							Width: 130
-							Height: 20
-							Font: Regular
 							Text: Lock Mouse to Window
 						Label@SCROLL_SPEED_LABEL:
-							X: PARENT_RIGHT - WIDTH - 270
+							X: 15
 							Y: 128
-							Width: 95
+							Width: 85
 							Height: 25
 							Text: Scroll Speed:
 							Align: Right
 						Slider@SCROLLSPEED_SLIDER:
-							X: PARENT_RIGHT - WIDTH - 170
+							X: 95
 							Y: 133
 							Width: 100
 							Height: 20
@@ -450,26 +453,35 @@ Container@SETTINGS_PANEL:
 							MinimumValue: 10
 							MaximumValue: 50
 						Label@UI_SCROLL_SPEED_LABEL:
-							X: PARENT_RIGHT - WIDTH - 106
+							X: PARENT_RIGHT - WIDTH - 320
 							Y: 128
 							Width: 95
 							Height: 25
 							Text: UI Scroll:
 							Align: Right
 						Slider@UI_SCROLLSPEED_SLIDER:
-							X: PARENT_RIGHT - WIDTH - 6
+							X: PARENT_RIGHT - WIDTH - 220
 							Y: 133
 							Width: 100
 							Height: 20
 							Ticks: 5
 							MinimumValue: 1
 							MaximumValue: 100
-						Label@HOTKEYS_TITLE:
-							Y: 166
-							Width: PARENT_RIGHT
-							Font: Bold
-							Text: Hotkeys
-							Align: Center
+						Label@ZOOM_SPEED_LABEL:
+							X: PARENT_RIGHT - WIDTH - 106
+							Y: 129
+							Width: 95
+							Height: 25
+							Text: Zoom Speed:
+							Align: Right
+						ExponentialSlider@ZOOMSPEED_SLIDER:
+							X: PARENT_RIGHT - WIDTH - 6
+							Y: 133
+							Width: 100
+							Height: 20
+							Ticks: 5
+							MinimumValue: 0.01
+							MaximumValue: 0.4
 				Container@HOTKEYS_PANEL:
 					X: 15
 					Y: 15

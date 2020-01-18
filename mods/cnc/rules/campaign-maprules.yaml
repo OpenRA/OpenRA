@@ -15,6 +15,13 @@ World:
 	MapOptions:
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Values:
+			normal: Normal
+		Default: normal
+		Locked: true
 
 Player:
 	-ConquestVictoryConditions:

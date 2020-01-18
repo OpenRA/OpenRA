@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -61,23 +61,56 @@ namespace OpenRA.Graphics
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src)
 		{
-			var data = dest.Sheet.GetData();
-			var srcStride = dest.Bounds.Width;
-			var destStride = dest.Sheet.Size.Width * 4;
-			var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel];
-			var destSkip = destStride - 4 * srcStride;
+			var destData = dest.Sheet.GetData();
+			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
-			var srcOffset = 0;
-			for (var j = 0; j < height; j++)
+			if (dest.Channel == TextureChannel.RGBA)
 			{
-				for (var i = 0; i < srcStride; i++, srcOffset++)
+				var destStride = dest.Sheet.Size.Width;
+				unsafe
 				{
-					data[destOffset] = src[srcOffset];
-					destOffset += 4;
-				}
+					// Cast the data to an int array so we can copy the src data directly
+					fixed (byte* bd = &destData[0])
+					{
+						var data = (int*)bd;
+						var x = dest.Bounds.Left;
+						var y = dest.Bounds.Top;
 
-				destOffset += destSkip;
+						var k = 0;
+						for (var j = 0; j < height; j++)
+						{
+							for (var i = 0; i < width; i++)
+							{
+								var r = src[k++];
+								var g = src[k++];
+								var b = src[k++];
+								var a = src[k++];
+								var cc = Color.FromArgb(a, r, g, b);
+
+								data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				var destStride = dest.Sheet.Size.Width * 4;
+				var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel];
+				var destSkip = destStride - 4 * width;
+
+				var srcOffset = 0;
+				for (var j = 0; j < height; j++)
+				{
+					for (var i = 0; i < width; i++, srcOffset++)
+					{
+						destData[destOffset] = src[srcOffset];
+						destOffset += 4;
+					}
+
+					destOffset += destSkip;
+				}
 			}
 		}
 

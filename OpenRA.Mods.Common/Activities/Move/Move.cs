@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (evaluateNearestMovableCell && destination.HasValue)
 			{
 				var movableDestination = mobile.NearestMoveableCell(destination.Value);
-				destination = mobile.CanEnterCell(movableDestination) ? movableDestination : (CPos?)null;
+				destination = mobile.CanEnterCell(movableDestination, check: BlockedByActor.Immovable) ? movableDestination : (CPos?)null;
 			}
 
 			path = EvalPath(BlockedByActor.Stationary);
@@ -158,10 +158,13 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			mobile.TurnToMove = false;
 
-			// If the actor is inside a tunnel then we must let them move
-			// all the way through before moving to the next activity
-			if (IsCanceling && self.Location.Layer != CustomMovementLayerType.Tunnel)
+			if (IsCanceling && mobile.CanStayInCell(mobile.ToCell))
+			{
+				if (path != null)
+					path.Clear();
+
 				return true;
+			}
 
 			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
 				return false;
@@ -225,7 +228,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Are we close enough?
 				var cellRange = nearEnough.Length / 1024;
-				if (!containsTemporaryBlocker && (mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange)
+				if (!containsTemporaryBlocker && (mobile.ToCell - destination.Value).LengthSquared <= cellRange * cellRange && mobile.CanStayInCell(mobile.ToCell))
 				{
 					path.Clear();
 					return null;
@@ -312,7 +315,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
-			if (path != null)
+			// We need to clear the path here in order to prevent MovePart queueing new instances of itself
+			// when the unit is making a turn.
+			if (path != null && mobile.CanStayInCell(mobile.ToCell))
 				path.Clear();
 
 			base.Cancel(self, keepQueue);

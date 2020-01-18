@@ -184,6 +184,8 @@ World:
 		Type: Crater
 		Sequence: craters
 	ResourceLayer:
+	ResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
 	CustomTerrainDebugOverlay:
@@ -265,6 +267,7 @@ World:
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 	LoadWidgetAtGameStart:

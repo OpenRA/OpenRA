@@ -36,8 +36,8 @@ Container@PLAYER_WIDGETS:
 			Y: WINDOW_BOTTOM - HEIGHT - 5
 			Width: 416
 			Height: 44
-			ImageCollection: sidebar-bits
-			ImageName: commandbar-background
+			ImageCollection: commandbar
+			ImageName: background
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 14
@@ -280,7 +280,7 @@ Container@PLAYER_WIDGETS:
 			X: WINDOW_RIGHT - 250
 			Y: 10
 			Width: 238
-			Height: 291
+			Height: 262
 			ImageCollection: sidebar
 			ImageName: background-top
 			ClickThrough: false
@@ -349,23 +349,6 @@ Container@PLAYER_WIDGETS:
 									X: 6
 									Y: 6
 									ImageCollection: order-icons
-						MenuButton@DEBUG_BUTTON:
-							Logic: AddFactionSuffixLogic
-							X: 128
-							Width: 28
-							Height: 28
-							Background: sidebar-button
-							Key: escape Shift
-							TooltipText: Debug Menu
-							TooltipContainer: TOOLTIP_CONTAINER
-							DisableWorldSounds: true
-							VisualHeight: 0
-							Children:
-								Image@ICON:
-									X: 6
-									Y: 6
-									ImageCollection: order-icons
-									ImageName: debug
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddFactionSuffixLogic
 							X: 192
@@ -383,65 +366,32 @@ Container@PLAYER_WIDGETS:
 									Y: 6
 									ImageCollection: order-icons
 									ImageName: options
-				Container@RADAR:
-					Logic: IngameRadarDisplayLogic
+				Image@RADAR:
+					Logic: AddFactionSuffixLogic, IngameRadarDisplayLogic
+					X: 8
+					Y: 40
+					ImageCollection: sidebar
+					ImageName: radar
 					Children:
 						LogicTicker@RADAR_TICKER:
 						ColorBlock@RADAR_FADETOBLACK:
-							X: 8
-							Y: 40
 							Width: 222
 							Height: 222
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
-							X: 9
-							Y: 41
+							X: 1
+							Y: 1
 							Width: 220
 							Height: 220
 							SoundUp: RadarUp
 							SoundDown: RadarDown
 							Children:
 						VqaPlayer@PLAYER:
-							X: 8
-							Y: 40
+							X: 1
+							Y: 1
 							Width: 220
 							Height: 220
 							Skippable: false
-				Label@GAME_TIMER:
-					Logic: GameTimerLogic
-					X: 3
-					Y: 264
-					Width: PARENT_RIGHT
-					Height: 23
-					Align: Center
-					Font: TinyBold
-				LabelWithTooltip@CASH:
-					Logic: IngameCashCounterLogic
-					X: 35
-					Y: 264
-					Width: 50
-					Height: 23
-					Font: Bold
-					Text: {0}
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
-				LabelWithTooltip@POWER:
-					Logic: IngamePowerCounterLogic
-					X: PARENT_RIGHT - WIDTH - 30
-					Y: 264
-					Width: 50
-					Height: 23
-					Align: Right
-					Font: Bold
-					Text: {0}
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
-					Children:
-						Image@POWER_ICON:
-							X: PARENT_RIGHT + 4
-							Y: 3
-							ImageCollection: power-icons
-							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
 			X: WINDOW_RIGHT - 250
@@ -453,11 +403,12 @@ Container@PLAYER_WIDGETS:
 					Children:
 						Image@ROW_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							Width: 238
+							X: 40
+							Width: 190
 							Height: 47
 							ClickThrough: false
 							ImageCollection: sidebar
-							ImageName: background-iconrow
+							ImageName: background-iconbg
 						Image@BOTTOM_CAP:
 							Logic: AddFactionSuffixLogic
 							Width: 238
@@ -478,15 +429,14 @@ Container@PLAYER_WIDGETS:
 					HotkeyPrefix: Production
 					HotkeyCount: 24
 				Container@PALETTE_FOREGROUND:
-					X: 40
-					Y: 0 - 1
 					Children:
 						Image@ROW_TEMPLATE:
+							Logic: AddFactionSuffixLogic
 							Width: 238
 							Height: 47
 							IgnoreMouseOver: true
-							ImageCollection: sidebar-bits
-							ImageName: production-iconoverlay
+							ImageCollection: sidebar
+							ImageName: background-iconrow
 				Container@PRODUCTION_TYPES:
 					X: 7
 					Y: 2
@@ -618,3 +568,54 @@ Container@PLAYER_WIDGETS:
 									Y: 3
 									ImageCollection: scrollbar
 									ImageName: down_arrow
+		Image@SIDEBAR_MONEYBIN:
+			Logic: AddFactionSuffixLogic
+			X: WINDOW_RIGHT - 250
+			Y: 272
+			Width: 238
+			Height: 27
+			ImageCollection: sidebar
+			ImageName: background-moneybin
+			ClickThrough: false
+			Children:
+				Label@GAME_TIMER:
+					Logic: GameTimerLogic
+					X: 3
+					Y: 3
+					Width: PARENT_RIGHT
+					Height: 23
+					Align: Center
+					Font: TinyBold
+				LabelWithTooltip@CASH:
+					Logic: IngameCashCounterLogic
+					X: 35
+					Y: 2
+					Width: 50
+					Height: 23
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@CASH_ICON:
+							X: 0-21
+							Y: 4
+							ImageCollection: cash-icons
+							ImageName: cash-normal
+				LabelWithTooltip@POWER:
+					Logic: IngamePowerCounterLogic
+					X: PARENT_RIGHT - WIDTH - 30
+					Y: 2
+					Width: 50
+					Height: 23
+					Align: Right
+					Font: Bold
+					Text: {0}
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+					Children:
+						Image@POWER_ICON:
+							X: PARENT_RIGHT + 4
+							Y: 4
+							ImageCollection: power-icons
+							ImageName: power-normal

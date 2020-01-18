@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,6 +20,7 @@ namespace OpenRA.Graphics
 	{
 		public readonly IReadOnlyDictionary<string, CursorSequence> Cursors;
 		public readonly IReadOnlyDictionary<string, ImmutablePalette> Palettes;
+		public readonly bool DoubleCursorSize;
 
 		public CursorProvider(ModData modData)
 		{
@@ -36,6 +37,7 @@ namespace OpenRA.Graphics
 					pals[p.Palette] = p;
 
 			Palettes = nodesDict["Cursors"].Nodes.Select(n => n.Value.Value)
+				.Where(p => p != null)
 				.Distinct()
 				.ToDictionary(p => p, p => pals[p].ReadPalette(modData.DefaultFileSystem))
 				.AsReadOnly();
@@ -47,9 +49,10 @@ namespace OpenRA.Graphics
 					cursors.Add(sequence.Key, new CursorSequence(frameCache, sequence.Key, s.Key, s.Value.Value, sequence.Value));
 
 			Cursors = cursors.AsReadOnly();
-		}
 
-		public static bool CursorViewportZoomed { get { return Game.Settings.Graphics.CursorDouble && Game.Settings.Graphics.PixelDouble; } }
+			// Cursor size changes are applied on game start
+			DoubleCursorSize = Game.Settings.Graphics.CursorDouble;
+		}
 
 		public bool HasCursorSequence(string cursor)
 		{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
+		static readonly bool OriginalGraphicsHardwareCursors;
+		static readonly bool OriginalGraphicsCursorDouble;
 		static readonly bool OriginalServerDiscoverNatDevices;
 
 		readonly Dictionary<PanelType, Action> leavePanelActions = new Dictionary<PanelType, Action>();
@@ -52,6 +54,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			OriginalGraphicsMode = original.Graphics.Mode;
 			OriginalGraphicsWindowedSize = original.Graphics.WindowedSize;
 			OriginalGraphicsFullscreenSize = original.Graphics.FullscreenSize;
+			OriginalGraphicsHardwareCursors = original.Graphics.HardwareCursors;
+			OriginalGraphicsCursorDouble = original.Graphics.CursorDouble;
 			OriginalServerDiscoverNatDevices = original.Server.DiscoverNatDevices;
 		}
 
@@ -82,7 +86,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				    current.Graphics.Mode != OriginalGraphicsMode ||
 				    current.Graphics.WindowedSize != OriginalGraphicsWindowedSize ||
 					current.Graphics.FullscreenSize != OriginalGraphicsFullscreenSize ||
-					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices)
+					current.Server.DiscoverNatDevices != OriginalServerDiscoverNatDevices ||
+					current.Graphics.HardwareCursors != OriginalGraphicsHardwareCursors ||
+					current.Graphics.CursorDouble != OriginalGraphicsCursorDouble)
 				{
 					Action restart = () =>
 					{
@@ -129,6 +135,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ss = parent.Get<SliderWidget>(id);
 			ss.Value = (float)field.GetValue(group);
 			ss.OnChange += x => field.SetValue(group, x);
+		}
+
+		static void BindIntSliderPref(Widget parent, string id, object group, string pref)
+		{
+			var field = group.GetType().GetField(pref);
+			if (field == null)
+				throw new InvalidOperationException("{0} does not contain a preference type {1}".F(group.GetType().Name, pref));
+
+			var ss = parent.Get<SliderWidget>(id);
+			ss.Value = (float)(int)field.GetValue(group);
+			ss.OnChange += x => field.SetValue(group, (int)x);
 		}
 
 		void BindHotkeyPref(HotkeyDefinition hd, Widget template, Widget parent)
@@ -184,15 +201,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			resetPanelActions.Add(type, reset(panel));
 		}
 
+		static readonly Dictionary<WorldViewport, string> ViewportSizeNames = new Dictionary<WorldViewport, string>()
+		{
+			{ WorldViewport.Close, "Close" },
+			{ WorldViewport.Medium, "Medium" },
+			{ WorldViewport.Far, "Far" },
+			{ WorldViewport.Native, "Furthest" }
+		};
+
 		Action InitDisplayPanel(Widget panel)
 		{
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
 
 			BindCheckboxPref(panel, "HARDWARECURSORS_CHECKBOX", ds, "HardwareCursors");
-			BindCheckboxPref(panel, "PIXELDOUBLE_CHECKBOX", ds, "PixelDouble");
 			BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
+			BindCheckboxPref(panel, "VSYNC_CHECKBOX", ds, "VSync");
 			BindCheckboxPref(panel, "FRAME_LIMIT_CHECKBOX", ds, "CapFramerate");
+			BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", ds, "MaxFramerate");
 			BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
 
 			var languageDropDownButton = panel.Get<DropDownButtonWidget>("LANGUAGE_DROPDOWNBUTTON");
@@ -214,21 +240,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			targetLinesDropDown.GetText = () => gs.TargetLines == TargetLinesType.Automatic ?
 				"Automatic" : gs.TargetLines == TargetLinesType.Manual ? "Manual" : "Disabled";
 
-			// Update zoom immediately
-			var pixelDoubleCheckbox = panel.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
-			var pixelDoubleOnClick = pixelDoubleCheckbox.OnClick;
-			pixelDoubleCheckbox.OnClick = () =>
+			var battlefieldCameraDropDown = panel.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
+			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => ViewportSizeNames[vs]);
+			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, ds);
+			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
+
+			// Update vsync immediately
+			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
+			var vsyncOnClick = vsyncCheckbox.OnClick;
+			vsyncCheckbox.OnClick = () =>
 			{
-				pixelDoubleOnClick();
-				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+				vsyncOnClick();
+				Game.Renderer.SetVSyncEnabled(ds.VSync);
 			};
-
-			// Cursor doubling is only supported with software cursors and when pixel doubling is enabled
-			var cursorDoubleCheckbox = panel.Get<CheckboxWidget>("CURSORDOUBLE_CHECKBOX");
-			cursorDoubleCheckbox.IsDisabled = () => !ds.PixelDouble || Game.Cursor is HardwareCursor;
-
-			var cursorDoubleIsChecked = cursorDoubleCheckbox.IsChecked;
-			cursorDoubleCheckbox.IsChecked = () => !cursorDoubleCheckbox.IsDisabled() && cursorDoubleIsChecked();
 
 			panel.Get("WINDOW_RESOLUTION").IsVisible = () => ds.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
@@ -237,37 +261,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = ds.WindowedSize.Y.ToString();
 
-			var frameLimitTextfield = panel.Get<TextFieldWidget>("FRAME_LIMIT_TEXTFIELD");
-			frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-			var escPressed = false;
-			frameLimitTextfield.OnLoseFocus = () =>
-			{
-				if (escPressed)
-				{
-					escPressed = false;
-					return;
-				}
-
-				int fps;
-				Exts.TryParseIntegerInvariant(frameLimitTextfield.Text, out fps);
-				ds.MaxFramerate = fps.Clamp(1, 1000);
-				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-			};
-
-			frameLimitTextfield.OnEnterKey = () => { frameLimitTextfield.YieldKeyboardFocus(); return true; };
-			frameLimitTextfield.OnEscKey = () =>
-			{
-				frameLimitTextfield.Text = ds.MaxFramerate.ToString();
-				escPressed = true;
-				frameLimitTextfield.YieldKeyboardFocus();
-				return true;
-			};
-
-			frameLimitTextfield.IsDisabled = () => !ds.CapFramerate;
+			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
+			var frameLimitOrigLabel = frameLimitCheckbox.Text;
+			var frameLimitLabel = new CachedTransform<int, string>(fps => frameLimitOrigLabel + " ({0} FPS)".F(fps));
+			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
 
 			// Player profile
 			var ps = Game.Settings.Player;
 
+			var escPressed = false;
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
 			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
@@ -312,7 +314,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Exts.TryParseIntegerInvariant(windowWidth.Text, out x);
 				Exts.TryParseIntegerInvariant(windowHeight.Text, out y);
 				ds.WindowedSize = new int2(x, y);
-				frameLimitTextfield.YieldKeyboardFocus();
 				nameTextfield.YieldKeyboardFocus();
 			};
 		}
@@ -330,10 +331,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ds.Language = dds.Language;
 				ds.Mode = dds.Mode;
 				ds.WindowedSize = dds.WindowedSize;
-
-				ds.PixelDouble = dds.PixelDouble;
 				ds.CursorDouble = dds.CursorDouble;
-				worldRenderer.Viewport.Zoom = ds.PixelDouble ? 2 : 1;
+				ds.ViewportDistance = dds.ViewportDistance;
 
 				ps.Color = dps.Color;
 				ps.Name = dps.Name;
@@ -353,6 +352,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var muteCheckbox = panel.Get<CheckboxWidget>("MUTE_SOUND");
 			var muteCheckboxOnClick = muteCheckbox.OnClick;
+			var muteCheckboxIsChecked = muteCheckbox.IsChecked;
+			muteCheckbox.IsChecked = () => muteCheckboxIsChecked() || Game.Sound.DummyEngine;
+			muteCheckbox.IsDisabled = () => Game.Sound.DummyEngine;
 			muteCheckbox.OnClick = () =>
 			{
 				muteCheckboxOnClick();
@@ -363,12 +365,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Sound.UnmuteAudio();
 			};
 
-			if (!ss.Mute)
-			{
-				panel.Get<SliderWidget>("SOUND_VOLUME").OnChange += x => Game.Sound.SoundVolume = x;
-				panel.Get<SliderWidget>("MUSIC_VOLUME").OnChange += x => Game.Sound.MusicVolume = x;
-				panel.Get<SliderWidget>("VIDEO_VOLUME").OnChange += x => Game.Sound.VideoVolume = x;
-			}
+			// Replace controls with a warning label if sound is disabled
+			var noDeviceLabel = panel.GetOrNull("NO_AUDIO_DEVICE");
+			if (noDeviceLabel != null)
+				noDeviceLabel.Visible = Game.Sound.DummyEngine;
+
+			var controlsContainer = panel.GetOrNull("AUDIO_CONTROLS");
+			if (controlsContainer != null)
+				controlsContainer.Visible = !Game.Sound.DummyEngine;
+
+			var soundVolumeSlider = panel.Get<SliderWidget>("SOUND_VOLUME");
+			soundVolumeSlider.OnChange += x => Game.Sound.SoundVolume = x;
+
+			var musicVolumeSlider = panel.Get<SliderWidget>("MUSIC_VOLUME");
+			musicVolumeSlider.OnChange += x => Game.Sound.MusicVolume = x;
+
+			var videoVolumeSlider = panel.Get<SliderWidget>("VIDEO_VOLUME");
+			videoVolumeSlider.OnChange += x => Game.Sound.VideoVolume = x;
 
 			var devices = Game.Sound.AvailableDevices();
 			soundDevice = devices.FirstOrDefault(d => d.Device == ss.Device) ?? devices.First();
@@ -418,7 +431,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			BindCheckboxPref(panel, "CLASSICORDERS_CHECKBOX", gs, "UseClassicMouseStyle");
 			BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gs, "ViewportEdgeScroll");
 			BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gs, "LockMouseWindow");
-			BindCheckboxPref(panel, "ALLOW_ZOOM_CHECKBOX", gs, "AllowZoom");
+			BindSliderPref(panel, "ZOOMSPEED_SLIDER", gs, "ZoomSpeed");
 			BindSliderPref(panel, "SCROLLSPEED_SLIDER", gs, "ViewportEdgeScrollStep");
 			BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
@@ -517,8 +530,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gs.LockMouseWindow = dgs.LockMouseWindow;
 				gs.ViewportEdgeScroll = dgs.ViewportEdgeScroll;
 				gs.ViewportEdgeScrollStep = dgs.ViewportEdgeScrollStep;
+				gs.ZoomSpeed = dgs.ZoomSpeed;
 				gs.UIScrollSpeed = dgs.UIScrollSpeed;
-				gs.AllowZoom = dgs.AllowZoom;
 				gs.ZoomModifier = dgs.ZoomModifier;
 
 				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gs.ViewportEdgeScrollStep;
@@ -737,6 +750,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+		}
+
+		static void ShowBattlefieldCameraDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
+		{
+			Func<WorldViewport, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => gs.ViewportDistance == o,
+					() => gs.ViewportDistance = o);
+
+				var label = ViewportSizeNames[o];
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
+				return item;
+			};
+
+			var viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
+			var windowHeight = Game.Renderer.Resolution.Height;
+
+			var validSizes = new List<WorldViewport>() { WorldViewport.Close };
+			if (viewportSizes.GetSizeRange(WorldViewport.Medium).X < windowHeight)
+				validSizes.Add(WorldViewport.Medium);
+
+			var farRange = viewportSizes.GetSizeRange(WorldViewport.Far);
+			if (farRange.X < windowHeight)
+				validSizes.Add(WorldViewport.Far);
+
+			if (farRange.Y < windowHeight)
+				validSizes.Add(WorldViewport.Native);
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validSizes, setupItem);
 		}
 
 		void MakeMouseFocusSettingsLive()

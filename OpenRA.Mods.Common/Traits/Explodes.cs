@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
-				var cells = buildingInfo.UnpathableTiles(self.Location);
+				var cells = buildingInfo.OccupiedTiles(self.Location);
 				foreach (var c in cells)
 					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c)), source, Enumerable.Empty<int>());
 
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Cast to long to avoid overflow when multiplying by the health
 			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
-				self.World.AddFrameEndTask(w => self.Kill(source));
+				self.World.AddFrameEndTask(w => self.Kill(source, e.Damage.DamageTypes));
 		}
 	}
 }

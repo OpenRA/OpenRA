@@ -100,9 +100,8 @@ Container@OBSERVER_WIDGETS:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PAUSE:
-									Y: 1
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: pause
 						Button@BUTTON_PLAY:
@@ -116,8 +115,8 @@ Container@OBSERVER_WIDGETS:
 							IgnoreChildMouseOver: true
 							Children:
 								Image@IMAGE_PLAY:
-									Width: 25
-									Height: 25
+									X: 5
+									Y: 5
 									ImageCollection: music
 									ImageName: play
 						Button@BUTTON_SLOW:

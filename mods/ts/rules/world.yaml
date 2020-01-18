@@ -279,6 +279,8 @@ World:
 		SmokeType: largesmoke
 		Sequence: largecraters
 	ResourceLayer:
+	ResourceRenderer:
+		RenderTypes: Tiberium, BlueTiberium, Veins
 	BridgeLayer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
@@ -375,6 +377,7 @@ World:
 EditorWorld:
 	Inherits: ^BaseWorld
 	EditorActorLayer:
+	EditorCursorLayer:
 	EditorResourceLayer:
 	EditorSelectionLayer:
 		Palette: placefootprint

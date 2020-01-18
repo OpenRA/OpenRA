@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: nod07c.lua
+		Scripts: campaign-global.lua, nod07c.lua
 	MusicPlaylist:
 		StartingMusic: justdoit
 		VictoryMusic: nod_win1
@@ -151,6 +151,8 @@ HPAD.IN:
 
 ORCA.IN:
 	Inherits: ORCA
+	Buildable:
+		Prerequisites: ~hpad
 	RenderSprites:
 		Image: ORCA
 	-AutoTarget:

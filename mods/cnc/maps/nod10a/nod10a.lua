@@ -1,101 +1,69 @@
 --[[
-   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-if Map.LobbyOption("difficulty") == "easy" then
+
+if Difficulty == "easy" then
 	Rambo = "rmbo.easy"
-elseif Map.LobbyOption("difficulty") == "hard" then
+elseif Difficulty == "hard" then
 	Rambo = "rmbo.hard"
 else
 	Rambo = "rmbo"
 end
 
-GDIBuildings = { ConYard, PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4,
-Barracks, CommCenter, WeaponsFactory, GuardTower1, GuardTower2, GuardTower3 }
+GDIBuildings = { ConYard, PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4, Barracks, CommCenter, WeaponsFactory, GuardTower1, GuardTower2, GuardTower3 }
 
-
-function RepairBuilding(building, attacker)
-	if not building.IsDead and building.Owner == enemy then
-		building.StartBuildingRepairs(enemy)
-	end
-end
-
-
-ChinookTrigger = false
-
-
-function ReinforceWithChinook(_, discoverer)
-	if not ChinookTrigger and discoverer == player then
+ReinforceWithChinook = function(_, discoverer)
+	if not ChinookTrigger and discoverer == Nod then
 		ChinookTrigger = true
 
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			TransportFlare = Actor.Create('flare', true, { Owner = player, Location = DefaultFlareLocation.Location })
-			Media.PlaySpeechNotification(player, "Reinforce")
-			Reinforcements.ReinforceWithTransport(player, 'tran', nil, { ChinookEntry.Location, ChinookTarget.Location })
+			Actor.Create("flare", true, { Owner = Nod, Location = DefaultFlareLocation.Location })
+			Media.PlaySpeechNotification(Nod, "Reinforce")
+			Reinforcements.ReinforceWithTransport(Nod, "tran", nil, { ChinookEntry.Location, ChinookTarget.Location })
 		end)
 	end
 end
 
+CreateScientist = function()
+	local scientist = Actor.Create("CHAN", true, { Owner = GDI, Location = ScientistLocation.Location })
 
-function CreateScientist()
-	scientist = Actor.Create('CHAN', true, { Owner = enemy, Location = ScientistLocation.Location })
-	killScientistObjective = player.AddPrimaryObjective("Kill the GDI scientist.")
+	KillScientistObjective = Nod.AddObjective("Kill the GDI scientist.")
+	Nod.MarkCompletedObjective(DestroyTechCenterObjective)
+
 	Trigger.OnKilled(scientist, function()
-		player.MarkCompletedObjective(killScientistObjective)
+		Nod.MarkCompletedObjective(KillScientistObjective)
 	end)
-	player.MarkCompletedObjective(destroyTechCenterObjective)
 end
 
+WorldLoaded = function()
+	Nod = Player.GetPlayer("Nod")
+	GDI = Player.GetPlayer("GDI")
 
-function WorldLoaded()
-	player = Player.GetPlayer("Nod")
-	enemy = Player.GetPlayer("GDI")
-
-	enemy.Cash = 10000
+	GDI.Cash = 10000
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
+	InitObjectives(Nod)
 
 	Utils.Do(GDIBuildings, function(building)
-		Trigger.OnDamaged(building, RepairBuilding)
+		RepairBuilding(GDI, building, 0.75)
 	end)
 
-	gdiObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	destroyTechCenterObjective = player.AddPrimaryObjective("Destroy the GDI R&D center.")
+	DestroyTechCenterObjective = Nod.AddObjective("Destroy the GDI R&D center.")
 
-	Actor.Create(Rambo, true, { Owner = player, Location = RamboLocation.Location })
+	Actor.Create(Rambo, true, { Owner = Nod, Location = RamboLocation.Location })
 
 	Trigger.OnDiscovered(TechCenter, ReinforceWithChinook)
-
 	Trigger.OnKilled(TechCenter, CreateScientist)
 end
 
-
-function Tick()
-	if DateTime.GameTime > 2 then
-		if player.HasNoRequiredUnits() then
-			enemy.MarkCompletedObjective(gdiObjective)
-		end
+Tick = function()
+	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
+		Nod.MarkFailedObjective(DestroyTechCenterObjective)
 	end
 end

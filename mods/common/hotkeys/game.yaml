@@ -18,6 +18,10 @@ SelectUnitsByType: W
 	Description: Select units by type
 	Types: World, Player, Spectator
 
+CycleHarvesters: N
+	Description: Cycle Harvesters
+	Types: World, Player, Spectator
+
 RemoveFromControlGroup:
 	Description: Remove from control group
 	Types: World, Player
@@ -40,10 +44,6 @@ PlaceBeacon: B
 
 CycleStatusBars: COMMA
 	Description: Cycle status bars display
-	Types: World, Player, Spectator
-
-TogglePixelDouble: PERIOD
-	Description: Toggle pixel doubling
 	Types: World, Player, Spectator
 
 ToggleMute: M

@@ -1,22 +1,23 @@
 --[[
-   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-NodUnitsBuggy = { 'bggy', 'bggy', 'bggy', 'bggy', 'bggy' }
-NodUnitsBikes = { 'bike', 'bike', 'bike' }
-NodUnitsGunner = { 'e1', 'e1', 'e1', 'e1', 'e1', 'e1' }
-NodUnitsRocket = { 'e3', 'e3', 'e3', 'e3', 'e3', 'e3' }
 
-Atk6Units = { 'c1', 'c2', 'c3' }
-Atk5Units = { 'e1', 'e1', 'e2', 'e2' }
-Atk1Units = { 'e1', 'e1' }
-XxxxUnits = { 'jeep' }
-YyyyUnits = { 'e1', 'e1', 'e2' }
-ZzzzUnits = { 'e1', 'e1', 'e2', 'e2' }
+NodUnitsBuggy = { "bggy", "bggy", "bggy", "bggy", "bggy" }
+NodUnitsBikes = { "bike", "bike", "bike" }
+NodUnitsGunner = { "e1", "e1", "e1", "e1", "e1", "e1" }
+NodUnitsRocket = { "e3", "e3", "e3", "e3", "e3", "e3" }
+
+Atk6Units = { "c1", "c2", "c3" }
+Atk5Units = { "e1", "e1", "e2", "e2" }
+Atk1Units = { "e1", "e1" }
+JeepReinforcements = { "jeep" }
+GDIUnits = { "e1", "e1", "e2" }
+ApcUnits = { "e1", "e1", "e2", "e2" }
 
 Spawnpoint = { waypoint0.Location }
 Atk6WaypointsPart1 = { waypoint1.Location, waypoint2.Location, waypoint3.Location, waypoint4.Location }
@@ -41,133 +42,40 @@ DelxCellTriggerActivator = { CPos.New(42,20), CPos.New(41,20), CPos.New(40,20), 
 DelyCellTriggerActivator = { CPos.New(31,28), CPos.New(30,28), CPos.New(31,27), CPos.New(30,27), CPos.New(31,26), CPos.New(30,26), CPos.New(31,25), CPos.New(30,25), CPos.New(31,24), CPos.New(30,24) }
 DelzCellTriggerActivator = { CPos.New(18,20), CPos.New(17,20), CPos.New(16,20), CPos.New(15,20), CPos.New(14,20), CPos.New(13,20), CPos.New(12,20), CPos.New(11,20), CPos.New(25,19), CPos.New(24,19), CPos.New(23,19), CPos.New(22,19), CPos.New(21,19), CPos.New(20,19), CPos.New(19,19), CPos.New(18,19), CPos.New(17,19), CPos.New(16,19), CPos.New(15,19), CPos.New(14,19), CPos.New(13,19), CPos.New(12,19), CPos.New(11,19), CPos.New(25,18), CPos.New(24,18), CPos.New(23,18), CPos.New(22,18), CPos.New(21,18), CPos.New(20,18), CPos.New(19,18) }
 
-Atk3TriggerCounter = 2
-
-Atk1TriggerFunctionTime = DateTime.Seconds(20)
-XxxxTriggerFunctionTime = DateTime.Seconds(50)
-YyyyTriggerFunctionTime = DateTime.Minutes(1) + DateTime.Seconds(40)
-ZzzzTriggerFunctionTime = DateTime.Minutes(2) + DateTime.Seconds(30)
-
 NodCiviliansActors = { NodCiv1, NodCiv2, NodCiv3, NodCiv4, NodCiv5, NodCiv6, NodCiv7, NodCiv8, NodCiv9 }
 
-Atk6TriggerFunction = function()
-	Reinforcements.ReinforceWithTransport(enemy, 'apc', Atk6Units, Atk6WaypointsPart1, Atk6WaypointsPart2,
-	function(transport, cargo)
-		Utils.Do(cargo, function(actor)
-			IdleHunt(actor)
-		end)
-	end,
-	function(unit)
-		IdleHunt(unit)
-	end)
+SendJeepReinforcements = function()
+	if not PreventJeepReinforcements then
+		local units = Reinforcements.Reinforce(GDI, JeepReinforcements, Spawnpoint, 15)
+		MoveAndHunt(units, Atk2Waypoints)
+	end
 end
 
-Atk5TriggerFunction = function ()
-	if not Atk5TriggerSwitch then
-		Atk5TriggerSwitch = true
-		Reinforcements.ReinforceWithTransport(enemy, 'apc', Atk5Units, Atk5Waypoints, nil,
+SendGDIReinforcements = function()
+	if not PreventGDIReinforcements then
+		local units = Reinforcements.Reinforce(GDI, GDIUnits, Spawnpoint, 15)
+		MoveAndHunt(units, Atk4Waypoints)
+	end
+end
+
+SendApcReinforcements = function()
+	if not PreventApcReinforcements then
+		Reinforcements.ReinforceWithTransport(GDI, "apc", ApcUnits, Atk5Waypoints, nil,
 		function(transport, cargo)
 			transport.UnloadPassengers()
-			Utils.Do(cargo, function(actor)
-				IdleHunt(actor)
-			end)
-		end,
-		function(unit)
-			IdleHunt(unit)
-		end)
+			Utils.Do(cargo, IdleHunt)
+		end, IdleHunt)
 	end
-end
-
-Atk1TriggerFunction = function()
-	Reinforcements.Reinforce(enemy, Atk1Units, Spawnpoint, 15,
-	function(actor)
-		Atk1Movement(actor)
-	end)
-end
-
-XxxxTriggerFunction = function()
-	if not XxxxTriggerSwitch then
-		Reinforcements.Reinforce(enemy, XxxxUnits, Spawnpoint, 15,
-		function(actor)
-			Atk2Movement(actor)
-		end)
-	end
-end
-
-YyyyTriggerFunction = function()
-	if not YyyyTriggerSwitch then
-		Reinforcements.Reinforce(enemy, YyyyUnits, Spawnpoint, 15,
-		function(actor)
-			Atk4Movement(actor)
-		end)
-	end
-end
-
-ZzzzTriggerFunction = function()
-	if not ZzzzTriggerSwitch then
-		Reinforcements.ReinforceWithTransport(enemy, 'apc', ZzzzUnits, Atk5Waypoints, nil,
-		function(transport, cargo)
-			transport.UnloadPassengers()
-			Utils.Do(cargo, function(actor)
-				IdleHunt(actor)
-			end)
-		end,
-		function(unit)
-			IdleHunt(unit)
-		end)
-	end
-end
-
-Atk3Movement = function(unit)
-	Utils.Do(Atk3Waypoints, function(waypoint)
-		unit.AttackMove(waypoint.Location)
-	end)
-	IdleHunt(unit)
-end
-
-Atk2Movement = function(unit)
-	Utils.Do(Atk2Waypoints, function(waypoint)
-		unit.AttackMove(waypoint.Location)
-	end)
-	IdleHunt(unit)
-end
-
-Atk1Movement = function(unit)
-	Utils.Do(Atk1Waypoints, function(waypoint)
-		unit.AttackMove(waypoint.Location)
-	end)
-	IdleHunt(unit)
-end
-
-GcivMovement = function(unit)
-	Utils.Do(GcivWaypoints, function(waypoint)
-		unit.AttackMove(waypoint.Location)
-	end)
-end
-
-Atk4Movement = function(unit)
-	Utils.Do(Atk4Waypoints, function(waypoint)
-		unit.AttackMove(waypoint.Location)
-	end)
-	IdleHunt(unit)
-end
-
-InsertNodUnits = function()
-	Media.PlaySpeechNotification(player, "Reinforce")
-	Reinforcements.Reinforce(player, NodUnitsBuggy, { UnitsEntryBuggy.Location, UnitsRallyBuggy.Location }, 11)
-	Reinforcements.Reinforce(player, NodUnitsBikes, { UnitsEntryBikes.Location, UnitsRallyBikes.Location }, 15)
-	Reinforcements.Reinforce(player, NodUnitsGunner, { UnitsEntryGunner.Location, UnitsRallyGunner.Location }, 15)
-	Reinforcements.Reinforce(player, NodUnitsRocket, { UnitsEntryRocket.Location, UnitsRallyRocket.Location }, 15)
 end
 
 CreateCivilians = function(actor, discoverer)
 	Utils.Do(NodCiviliansActors, function(actor)
-		actor.Owner = player
+		actor.Owner = Nod
 	end)
 
-	NodObjective2 = player.AddPrimaryObjective("Protect the civilians that support Nod.")
+	ProtectCivilians = Nod.AddPrimaryObjective("Protect the civilians that support Nod.")
 	Trigger.OnAllKilled(NodCiviliansActors, function()
-		player.MarkFailedObjective(NodObjective2)
+		Nod.MarkFailedObjective(ProtectCivilians)
 	end)
 
 	Utils.Do(GcivActors, function(actor)
@@ -180,102 +88,93 @@ CreateCivilians = function(actor, discoverer)
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Nod")
+	Nod = Player.GetPlayer("Nod")
 	NodSupporter = Player.GetPlayer("NodSupporter")
-	enemy = Player.GetPlayer("GDI")
+	GDI = Player.GetPlayer("GDI")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(Nod)
 
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
+	Trigger.OnAnyKilled(Atk6ActorTriggerActivator, function()
+		Reinforcements.ReinforceWithTransport(GDI, "apc", Atk6Units, Atk6WaypointsPart1, Atk6WaypointsPart2,
+			function(transport, cargo)
+				Utils.Do(cargo, IdleHunt)
+			end, IdleHunt)
 	end)
 
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	Trigger.OnAnyKilled(Atk6ActorTriggerActivator, Atk6TriggerFunction)
-
-	OnAnyDamaged(Atk5ActorTriggerActivator, Atk5TriggerFunction)
-
-	Trigger.OnEnteredFootprint(Atk3CellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			for type, count in pairs({ ['e1'] = 3, ['e2'] = 2, ['mtnk'] = 1 }) do
-				local myActors = Utils.Take(count, enemy.GetActorsByType(type))
-				Utils.Do(myActors, function(actor)
-					Atk3Movement(actor)
-				end)
+	Utils.Do(Atk5ActorTriggerActivator, function(actor)
+		Trigger.OnDamaged(actor, function()
+			if Atk5TriggerSwitch then
+				return
 			end
 
-			Atk3TriggerCounter = Atk3TriggerCounter - 1
-			if Atk3TriggerCounter < 0 then
-				Trigger.RemoveFootprintTrigger(id)
+			Atk5TriggerSwitch = true
+			Reinforcements.ReinforceWithTransport(GDI, "apc", Atk5Units, Atk5Waypoints, nil,
+				function(transport, cargo)
+					transport.UnloadPassengers()
+					Utils.Do(cargo, IdleHunt)
+				end, IdleHunt)
+		end)
+	end)
+
+	Trigger.OnEnteredFootprint(Atk3CellTriggerActivator, function(a, id)
+		if a.Owner == Nod then
+			Trigger.RemoveFootprintTrigger(id)
+
+			for type, count in pairs({ ["e1"] = 3, ["e2"] = 2, ["mtnk"] = 1 }) do
+				MoveAndHunt(Utils.Take(count, GDI.GetActorsByType(type)), Atk3Waypoints)
 			end
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(Atk2CellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			MyActors = Utils.Take(1, enemy.GetActorsByType('jeep'))
-			Utils.Do(MyActors, function(actor)
-				Atk2Movement(actor)
-			end)
+		if a.Owner == Nod then
+			MoveAndHunt(Utils.Take(1, GDI.GetActorsByType("jeep")), Atk2Waypoints)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(GcivCellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			Utils.Do(GcivActors, function(actor)
-				GcivMovement(actor)
-			end)
+		if a.Owner == Nod then
+			MoveAndHunt(GcivActors, GcivWaypoints)
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
-	Trigger.AfterDelay(Atk1TriggerFunctionTime, Atk1TriggerFunction)
-
 	Trigger.OnEnteredFootprint(Atk4CellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			for type, count in pairs({ ['e1'] = 2,['e2'] = 1 }) do
-				local myActors = Utils.Take(count, enemy.GetActorsByType(type))
-				Utils.Do(myActors, function(actor)
-					Atk4Movement(actor)
-				end)
+		if a.Owner == Nod then
+			for type, count in pairs({ ["e1"] = 2,["e2"] = 1 }) do
+				MoveAndHunt(Utils.Take(count, GDI.GetActorsByType(type)), Atk4Waypoints)
 			end
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
-	Trigger.AfterDelay(XxxxTriggerFunctionTime, XxxxTriggerFunction)
-	Trigger.AfterDelay(YyyyTriggerFunctionTime, YyyyTriggerFunction)
-	Trigger.AfterDelay(ZzzzTriggerFunctionTime, ZzzzTriggerFunction)
+	Trigger.AfterDelay(DateTime.Seconds(20), function()
+		local units = Reinforcements.Reinforce(GDI, Atk1Units, Spawnpoint, 15)
+		MoveAndHunt(units, Atk1Waypoints)
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(50), SendJeepReinforcements)
+	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(40), SendGDIReinforcements)
+	Trigger.AfterDelay(DateTime.Minutes(2) + DateTime.Seconds(30), SendApcReinforcements)
 
 	Trigger.OnEnteredFootprint(DelxCellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			XxxxTriggerSwitch = true
+		if a.Owner == Nod then
+			PreventJeepReinforcements = true
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(DelyCellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			YyyyTriggerSwitch = true
+		if a.Owner == Nod then
+			PreventGDIReinforcements = true
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(DelzCellTriggerActivator, function(a, id)
-		if a.Owner == player then
-			ZzzzTriggerSwitch = true
+		if a.Owner == Nod then
+			PreventApcReinforcements = true
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
@@ -283,35 +182,26 @@ WorldLoaded = function()
 	Trigger.OnPlayerDiscovered(NodSupporter, CreateCivilians)
 
 	Trigger.OnAllKilled(WinActorTriggerActivator, function()
-		player.MarkCompletedObjective(NodObjective1)
-		if NodObjective2 then
-			player.MarkCompletedObjective(NodObjective2)
+		Nod.MarkCompletedObjective(KillGDI)
+
+		if ProtectCivilians then
+			Nod.MarkCompletedObjective(ProtectCivilians)
 		end
 	end)
 
-	GDIObjective = enemy.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	NodObjective1 = player.AddPrimaryObjective("Kill all civilian GDI supporters.")
+	KillGDI = Nod.AddObjective("Kill all civilian GDI supporters.")
 
-	InsertNodUnits()
+	Media.PlaySpeechNotification(Nod, "Reinforce")
+	Reinforcements.Reinforce(Nod, NodUnitsBuggy, { UnitsEntryBuggy.Location, UnitsRallyBuggy.Location }, 11)
+	Reinforcements.Reinforce(Nod, NodUnitsBikes, { UnitsEntryBikes.Location, UnitsRallyBikes.Location }, 15)
+	Reinforcements.Reinforce(Nod, NodUnitsGunner, { UnitsEntryGunner.Location, UnitsRallyGunner.Location }, 15)
+	Reinforcements.Reinforce(Nod, NodUnitsRocket, { UnitsEntryRocket.Location, UnitsRallyRocket.Location }, 15)
+
 	Camera.Position = waypoint6.CenterPosition
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		if DateTime.GameTime > 2 then
-			enemy.MarkCompletedObjective(GDIObjective)
-		end
-	end
-end
-
-OnAnyDamaged = function(actors, func)
-	Utils.Do(actors, function(actor)
-		Trigger.OnDamaged(actor, func)
-	end)
-end
-
-IdleHunt = function(unit)
-	if not unit.IsDead then
-		Trigger.OnIdle(unit, unit.Hunt)
+	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
+		Nod.MarkFailedObjective(KillGDI)
 	end
 end

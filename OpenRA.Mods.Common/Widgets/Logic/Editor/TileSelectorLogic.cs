@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -36,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly TileSet tileset;
 		readonly TileSelectorTemplate[] allTemplates;
+		readonly EditorCursorLayer editorCursor;
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -43,6 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			tileset = world.Map.Rules.TileSet;
 			allTemplates = tileset.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
+			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
 			allCategories = allTemplates.SelectMany(t => t.Categories)
 				.Distinct()
@@ -98,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tileId = t.Template.Id;
 				var item = ScrollItemWidget.Setup(ItemTemplate,
-					() => { var brush = Editor.CurrentBrush as EditorTileBrush; return brush != null && brush.Template == tileId; },
+					() => editorCursor.Type == EditorCursorType.TerrainTemplate && editorCursor.TerrainTemplate.Id == tileId,
 					() => Editor.SetBrush(new EditorTileBrush(Editor, tileId, WorldRenderer)));
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");

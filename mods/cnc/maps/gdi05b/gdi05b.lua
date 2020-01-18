@@ -1,11 +1,12 @@
 --[[
-   Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 AllToHuntTrigger =
 {
 	Silo1, Proc1, Silo2, Silo3, Silo4, Afld1, Hand1, Nuke1, Nuke2, Nuke3, Fact1
@@ -43,16 +44,9 @@ Atk5CellTriggers =
 	CPos.New(49,53), CPos.New(48,53), CPos.New(50,52), CPos.New(49,52)
 }
 
-GdiBase = { GdiNuke1, GdiProc1, GdiWeap1, GdiNuke2, GdiPyle1, GdiSilo1, GdiSilo2, GdiHarv }
-GdiUnits = { "e2", "e2", "e2", "e2", "e1", "e1", "e1", "e1", "mtnk", "mtnk", "jeep", "jeep", "apc" }
+GDIBase = { GdiNuke1, GdiProc1, GdiWeap1, GdiNuke2, GdiPyle1, GdiSilo1, GdiSilo2, GdiHarv }
+GDIUnits = { "e2", "e2", "e2", "e2", "e1", "e1", "e1", "e1", "mtnk", "mtnk", "jeep", "jeep", "apc" }
 NodSams = { Sam1, Sam2, Sam3, Sam4 }
-
-AllToHunt = function()
-	local list = enemy.GetGroundAttackers()
-	Utils.Do(list, function(unit)
-		unit.Hunt()
-	end)
-end
 
 MoveThenHunt = function(actors, path)
 	Utils.Do(actors, function(actor)
@@ -64,139 +58,107 @@ end
 AutoCreateTeam = function()
 	local team = Utils.Random(AutoCreateTeams)
 	for type, count in pairs(team.types) do
-		MoveThenHunt(Utils.Take(count, enemy.GetActorsByType(type)), team.route)
+		MoveThenHunt(Utils.Take(count, Nod.GetActorsByType(type)), team.route)
 	end
 
 	Trigger.AfterDelay(Utils.RandomInteger(AutoAtkMinDelay, AutoAtkMaxDelay), AutoCreateTeam)
 end
 
-DiscoverGdiBase = function(actor, discoverer)
-	if baseDiscovered or not discoverer == player then
+DiscoverGDIBase = function(actor, discoverer)
+	if BaseDiscovered or not discoverer == GDI then
 		return
 	end
 
-	Utils.Do(GdiBase, function(actor)
-		actor.Owner = player
+	Utils.Do(GDIBase, function(actor)
+		actor.Owner = GDI
 	end)
 
-	baseDiscovered = true
+	BaseDiscovered = true
 
-	gdiObjective3 = player.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	player.MarkCompletedObjective(gdiObjective1)
+	EliminateNod = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	GDI.MarkCompletedObjective(FindBase)
 end
 
 Atk1TriggerFunction = function()
-	MoveThenHunt(Utils.Take(2, enemy.GetActorsByType('e1')), AtkRoute1)
-	MoveThenHunt(Utils.Take(3, enemy.GetActorsByType('e3')), AtkRoute1)
+	MoveThenHunt(Utils.Take(2, Nod.GetActorsByType('e1')), AtkRoute1)
+	MoveThenHunt(Utils.Take(3, Nod.GetActorsByType('e3')), AtkRoute1)
 end
 
 Atk2TriggerFunction = function()
-	MoveThenHunt(Utils.Take(3, enemy.GetActorsByType('e1')), AtkRoute2)
-	MoveThenHunt(Utils.Take(3, enemy.GetActorsByType('e3')), AtkRoute2)
+	MoveThenHunt(Utils.Take(3, Nod.GetActorsByType('e1')), AtkRoute2)
+	MoveThenHunt(Utils.Take(3, Nod.GetActorsByType('e3')), AtkRoute2)
 end
 
 Atk3TriggerFunction = function()
-	MoveThenHunt(Utils.Take(1, enemy.GetActorsByType('bggy')), AtkRoute1)
+	MoveThenHunt(Utils.Take(1, Nod.GetActorsByType('bggy')), AtkRoute1)
 end
 
 Atk4TriggerFunction = function()
-	MoveThenHunt(Utils.Take(1, enemy.GetActorsByType('bggy')), AtkRoute2)
+	MoveThenHunt(Utils.Take(1, Nod.GetActorsByType('bggy')), AtkRoute2)
 end
 
 Atk5TriggerFunction = function()
-	MoveThenHunt(Utils.Take(1, enemy.GetActorsByType('ltnk')), AtkRoute2)
+	MoveThenHunt(Utils.Take(1, Nod.GetActorsByType('ltnk')), AtkRoute2)
 end
 
-StartProduction = function(type)
-	if Hand1.IsInWorld and Hand1.Owner == enemy then
-		Hand1.Build(type)
-		Trigger.AfterDelay(DateTime.Seconds(30), function() StartProduction(type) end)
-	end
-end
-
-InsertGdiUnits = function()
-	Media.PlaySpeechNotification(player, "Reinforce")
-	Reinforcements.Reinforce(player, GdiUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
-end
-
-IdleHunt = function(unit)
-	if not unit.IsDead then
-		Trigger.OnIdle(unit, unit.Hunt)
-	end
+InsertGDIUnits = function()
+	Media.PlaySpeechNotification(GDI, "Reinforce")
+	Reinforcements.Reinforce(GDI, GDIUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("GDI")
-	gdiBase = Player.GetPlayer("AbandonedBase")
-	enemy = Player.GetPlayer("Nod")
+	GDI = Player.GetPlayer("GDI")
+	AbandonedBase = Player.GetPlayer("AbandonedBase")
+	Nod = Player.GetPlayer("Nod")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(GDI)
 
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
+	RepairNamedActors(Nod, RepairThreshold)
 
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	Utils.Do(Map.NamedActors, function(actor)
-		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
-			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == enemy and building.Health < RepairThreshold * building.MaxHealth then
-					building.StartBuildingRepairs()
-				end
-			end)
-		end
-	end)
-
-	gdiObjective1 = player.AddPrimaryObjective("Find the GDI base.")
-	gdiObjective2 = player.AddSecondaryObjective("Destroy all SAM sites to receive air support.")
-	nodObjective = enemy.AddPrimaryObjective("Destroy all GDI troops.")
+	FindBase = GDI.AddObjective("Find the GDI base.")
+	DestroySAMs = GDI.AddObjective("Destroy all SAM sites to receive air support.", "Secondary", false)
+	NodObjective = Nod.AddObjective("Destroy all GDI troops.")
 
 	Trigger.AfterDelay(Atk1Delay, Atk1TriggerFunction)
 	Trigger.AfterDelay(Atk2Delay, Atk2TriggerFunction)
 	Trigger.AfterDelay(Atk3Delay, Atk3TriggerFunction)
 	Trigger.AfterDelay(Atk4Delay, Atk4TriggerFunction)
 	Trigger.OnEnteredFootprint(Atk5CellTriggers, function(a, id)
-		if a.Owner == player then
+		if a.Owner == GDI then
 			Atk5TriggerFunction()
 			Trigger.RemoveFootprintTrigger(id)
 		end
 	end)
 	Trigger.AfterDelay(AutoAtkStartDelay, AutoCreateTeam)
 
-	Trigger.OnAllRemovedFromWorld(AllToHuntTrigger, AllToHunt)
+	Trigger.OnAllRemovedFromWorld(AllToHuntTrigger, function()
+		Utils.Do(Nod.GetGroundAttackers(), IdleHunt)
+	end)
 
-	Trigger.AfterDelay(DateTime.Seconds(40), function() StartProduction({ "e1" }) end)
+	Trigger.AfterDelay(DateTime.Seconds(40), function()
+		local delay = function() return DateTime.Seconds(30) end
+		local toBuild = function() return { "e1" } end
+		ProduceUnits(Nod, Hand1, delay, toBuild)
+	end)
 
-	Trigger.OnPlayerDiscovered(gdiBase, DiscoverGdiBase)
+	Trigger.OnPlayerDiscovered(AbandonedBase, DiscoverGDIBase)
 
 	Trigger.OnAllKilled(NodSams, function()
-		player.MarkCompletedObjective(gdiObjective2)
-		Actor.Create("airstrike.proxy", true, { Owner = player })
+		GDI.MarkCompletedObjective(DestroySAMs)
+		Actor.Create("airstrike.proxy", true, { Owner = GDI })
 	end)
 
 	Camera.Position = UnitsRally.CenterPosition
 
-	InsertGdiUnits()
+	InsertGDIUnits()
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		if DateTime.GameTime > 2 then
-			enemy.MarkCompletedObjective(nodObjective)
-		end
+	if DateTime.GameTime > 2 and GDI.HasNoRequiredUnits() then
+		Nod.MarkCompletedObjective(NodObjective)
 	end
-	if baseDiscovered and enemy.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(gdiObjective3)
+
+	if BaseDiscovered and Nod.HasNoRequiredUnits() then
+		GDI.MarkCompletedObjective(EliminateNod)
 	end
 end

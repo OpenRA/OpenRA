@@ -100,16 +100,21 @@
 	ExternalCondition@CRATE-SPEED:
 		Condition: crate-speed
 
+^EmpVisualEffects:
+	WithColoredOverlay@EMPDISABLE:
+		Palette: disabled
+	WithIdleOverlay@EMPDISABLE:
+		Sequence: emp-overlay
+		Palette: effect
+
 ^EmpDisable:
+	Inherits: ^EmpVisualEffects
 	WithColoredOverlay@EMPDISABLE:
 		RequiresCondition: empdisable
-		Palette: disabled
 	TimedConditionBar@EMPDISABLE:
 		Condition: empdisable
 		Color: FFFFFF
 	WithIdleOverlay@EMPDISABLE:
-		Sequence: emp-overlay
-		Palette: effect
 		RequiresCondition: empdisable
 	PowerMultiplier@EMPDISABLE:
 		RequiresCondition: empdisable
@@ -178,14 +183,6 @@
 		RequiresCondition: stance-attackanything || assault-move
 	AttackMove:
 		AssaultMoveCondition: assault-move
-
-^FlatSelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl
-
-^LowPrioritySelectionMode:
-	Selectable:
-		PriorityModifiers: Ctrl, Alt
 
 ^2x1Shape:
 	HitShape:
@@ -305,12 +302,11 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^Cloakable
+	Inherits@selection: ^SelectableBuilding
 	Huntable:
 	WithTextControlGroupDecoration:
 	SelectionDecorations:
 		Palette: pips
-	Selectable:
-		Priority: 3
 	Targetable:
 		TargetTypes: Ground, Building, C4
 	HitShape:
@@ -546,7 +542,7 @@
 	Inherits@3: ^SpriteActor
 	Inherits@4: ^Cloakable
 	Inherits@CRATESTATS: ^CrateStatModifiers
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -717,17 +713,24 @@
 	RevealsShroud:
 		Range: 4c0
 	MustBeDestroyed:
-	WithPermanentInjury:
+	TakeCover:
+		RequiresCondition: critical
+		Duration: -1
+		DamageModifiers:
+			Prone50Percent: 50
+			Prone60Percent: 60
+			Prone70Percent: 70
+			Prone100Percent: 100
+			Prone350Percent: 350
+		ProneOffset: 300,0,0
+		ProneSequencePrefix: crippled-
 	WithInfantryBody:
 		DefaultAttackSequence: attack
-		IdleSequences: idle1,idle2
+		IdleSequences: idle1, idle2
 	GrantConditionOnDamageState@CRITICAL:
-		Condition: criticalspeed
+		Condition: critical
 		ValidDamageStates: Critical
 		GrantPermanently: true
-	SpeedMultiplier@CRITICAL:
-		RequiresCondition: criticalspeed
-		Modifier: 50
 	Mobile:
 		PauseOnCondition: empdisable
 
@@ -751,7 +754,7 @@
 	Inherits@4: ^Cloakable
 	Inherits@5: ^DamagedByVeins
 	Inherits@CRATESTATS: ^CrateStatModifiers
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -856,7 +859,7 @@
 ^Aircraft:
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -921,6 +924,14 @@
 		BobDistance: -64
 		InitialHeight: 64
 
+^EMPableAircraft:
+	Inherits: ^Aircraft
+	Inherits@EMP: ^EmpDisable
+	Aircraft:
+		PauseOnCondition: empdisable
+	KillsSelf:
+		RequiresCondition: airborne && empdisable
+
 ^AircraftHusk:
 	RenderVoxels:
 	RenderSprites:
@@ -941,16 +952,16 @@
 	Tooltip:
 		GenericName: Destroyed Aircraft
 	FallsToEarth:
-		Spins: true
 		Moves: true
-		Velocity: 86
+		Velocity: 112
+		MaximumSpinSpeed: 10
 	HitShape:
 
 ^Visceroid:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@3: ^HealsOnTiberium
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	DrawLineToTarget:
 		QueuedLineWidth: 2
@@ -1085,6 +1096,7 @@
 
 ^Defense:
 	Inherits: ^Building
+	Inherits@selection: ^SelectableCombatBuilding
 	-GivesBuildableArea:
 	RenderRangeCircle:
 	RenderDetectionCircle:
@@ -1104,7 +1116,7 @@
 	Inherits@1: ^EmpDisable
 	Inherits@2: ^ExistsInWorld
 	Inherits@3: ^Cloakable
-	Inherits@SELECTION_MODE: ^FlatSelectionMode
+	Inherits@selection: ^SelectableCombatUnit
 	Huntable:
 	RenderVoxels:
 	RenderSprites:
@@ -1330,3 +1342,26 @@
 	GrantCondition@IDISABLE:
 		RequiresCondition: lowpower || powerdown
 		Condition: disabled
+
+^SelectableCombatUnit:
+	Selectable:
+		Priority: 10
+		PriorityModifiers: Ctrl
+
+^SelectableSupportUnit:
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableEconomicUnit:
+	Selectable:
+		Priority: 6
+		PriorityModifiers: Ctrl, Alt
+
+^SelectableCombatBuilding:
+	Selectable:
+		Priority: 4
+
+^SelectableBuilding:
+	Selectable:
+		Priority: 2

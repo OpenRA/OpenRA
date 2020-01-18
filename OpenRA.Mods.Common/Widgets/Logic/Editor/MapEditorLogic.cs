@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,13 +25,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapCopyFilters copyFilters = MapCopyFilters.All;
 
 		[ObjectCreator.UseCtor]
-		public MapEditorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
-			MiniYaml yaml;
-			var changeZoomKey = new HotkeyReference();
-			if (logicArgs.TryGetValue("ChangeZoomKey", out yaml))
-				changeZoomKey = modData.Hotkeys[yaml.Value];
-
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
 			var gridButton = widget.GetOrNull<ButtonWidget>("GRID_BUTTON");
@@ -41,48 +36,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				gridButton.OnClick = () => terrainGeometryTrait.Enabled ^= true;
 				gridButton.IsHighlighted = () => terrainGeometryTrait.Enabled;
-			}
-
-			var zoomDropdown = widget.GetOrNull<DropDownButtonWidget>("ZOOM_BUTTON");
-			if (zoomDropdown != null)
-			{
-				var selectedZoom = (Game.Settings.Graphics.PixelDouble ? 2f : 1f).ToString();
-
-				zoomDropdown.SelectedItem = selectedZoom;
-				Func<float, ScrollItemWidget, ScrollItemWidget> setupItem = (zoom, itemTemplate) =>
-				{
-					var item = ScrollItemWidget.Setup(
-						itemTemplate,
-						() =>
-						{
-							return float.Parse(zoomDropdown.SelectedItem) == zoom;
-						},
-						() =>
-						{
-							zoomDropdown.SelectedItem = selectedZoom = zoom.ToString();
-							worldRenderer.Viewport.Zoom = float.Parse(selectedZoom);
-						});
-
-					var label = zoom.ToString();
-					item.Get<LabelWidget>("LABEL").GetText = () => label;
-
-					return item;
-				};
-
-				var options = worldRenderer.Viewport.AvailableZoomSteps;
-				zoomDropdown.OnMouseDown = _ => zoomDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
-				zoomDropdown.GetText = () => zoomDropdown.SelectedItem;
-				zoomDropdown.OnKeyPress = e =>
-				{
-					if (!changeZoomKey.IsActivatedBy(e))
-						return;
-
-					var selected = (options.IndexOf(float.Parse(selectedZoom)) + 1) % options.Length;
-					var zoom = options[selected];
-					worldRenderer.Viewport.Zoom = zoom;
-					selectedZoom = zoom.ToString();
-					zoomDropdown.SelectedItem = zoom.ToString();
-				};
 			}
 
 			var copypasteButton = widget.GetOrNull<ButtonWidget>("COPYPASTE_BUTTON");

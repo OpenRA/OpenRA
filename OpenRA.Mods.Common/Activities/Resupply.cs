@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Activities
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
 				if (repairableNear == null)
-					QueueChild(move.MoveTo(targetCell, host.Actor));
+					QueueChild(move.MoveTo(targetCell));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				var transport = transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta);
@@ -188,7 +188,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 				{
 					if (self.CurrentActivity.NextActivity == null && rp != null)
-						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
+						foreach (var cell in rp.Path)
+							QueueChild(move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: Color.Green));
 					else
 						QueueChild(new TakeOff(self));
 
@@ -208,7 +209,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (self.CurrentActivity.NextActivity == null)
 				{
 					if (rp != null)
-						QueueChild(move.MoveTo(rp.Location, repairableNear != null ? null : host.Actor));
+						foreach (var cell in rp.Path)
+							QueueChild(move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true));
 					else if (repairableNear == null)
 						QueueChild(move.MoveToTarget(self, host));
 				}

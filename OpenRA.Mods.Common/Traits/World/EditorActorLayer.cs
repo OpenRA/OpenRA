@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2019 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2020 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public object Create(ActorInitializer init) { return new EditorActorLayer(init.Self, this); }
 	}
 
-	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers
+	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
 		readonly EditorActorLayerInfo info;
 		readonly List<EditorActorPreview> previews = new List<EditorActorPreview>();
@@ -102,6 +102,17 @@ namespace OpenRA.Mods.Common.Traits
 			// World-actor render traits don't require screen bounds
 			yield break;
 		}
+
+		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
+		{
+			if (wr.World.Type != WorldType.Editor)
+				return NoRenderables;
+
+			return PreviewsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+				.SelectMany(p => p.RenderAnnotations());
+		}
+
+		bool IRenderAnnotations.SpatiallyPartitionable { get { return false; } }
 
 		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
 
@@ -252,8 +263,16 @@ namespace OpenRA.Mods.Common.Traits
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (!previews.Any(p => p.Footprint[cell] == (SubCell)i))
+			{
+				var blocked = previews.Any(p =>
+				{
+					SubCell s;
+					return p.Footprint.TryGetValue(cell, out s) && s == (SubCell)i;
+				});
+
+				if (!blocked)
 					return (SubCell)i;
+			}
 
 			return SubCell.Invalid;
 		}

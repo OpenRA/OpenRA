@@ -7,6 +7,7 @@ orcab:
 	icon: obmbicon
 
 trnsport:
+	Inherits: ^VehicleOverlays
 	icon: otrnicon
 
 scrin:
@@ -27,4 +28,5 @@ apache:
 		ZRamp: 1
 
 orcatran:
+	Inherits: ^VehicleOverlays
 	icon: crryicon
