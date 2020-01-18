@@ -35,6 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
 
+		[Desc("Distance from the center of the repairing facility to start the repairs.")]
+		public readonly WDist NearEnough = new WDist(512);
+
 		public virtual object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
@@ -121,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
 				return;
 
-			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor, new WDist(512)));
+			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor, Info.NearEnough));
 			self.ShowTargetLines();
 		}
 
