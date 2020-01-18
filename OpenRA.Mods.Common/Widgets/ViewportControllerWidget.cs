@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer == null || world.LocalPlayer.Spectating;
 		}
 
-		public void Zoom(int direction)
+		void Zoom(int direction)
 		{
 			var zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
 			var currentZoom = worldRenderer.Viewport.Zoom;
@@ -452,7 +452,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (distancepanned < 50 && Math.Abs(startfDelta) > .04)
 					{
 						if (startGestureZoom == worldRenderer.Viewport.Zoom)
-							Zoom(startfDelta > 0 ? 1 : -1);
+							this.Zoom(startfDelta > 0 ? 1 : -1);
 					}
 					else
 					{
