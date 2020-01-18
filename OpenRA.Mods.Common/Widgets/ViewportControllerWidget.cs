@@ -438,7 +438,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event == GestureInputEvent.Gesture)
 			{
 				float2 delta = new float2(prevGestureScroll.X - mi.Location.X, prevGestureScroll.Y - mi.Location.Y);
-				startfDelta += mi.dDist;
+				startfDelta += mi.DDist;
 
 				if (startScrollGesture)
 				{

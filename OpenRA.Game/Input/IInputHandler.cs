@@ -50,14 +50,14 @@ namespace OpenRA
 	{
 		public GestureInputEvent Event;
 		public int2 Location;
-		public float dDist;
+		public float DDist;
 		public Modifiers Modifiers;
 
-		public GestureInput(GestureInputEvent ev, int2 location, Modifiers mods, float DDist)
+		public GestureInput(GestureInputEvent ev, int2 location, Modifiers mods, float dDist)
 		{
 			Event = ev;
 			Location = location;
-			dDist = DDist;
+			DDist = dDist;
 			Modifiers = mods;
 		}
 	}
