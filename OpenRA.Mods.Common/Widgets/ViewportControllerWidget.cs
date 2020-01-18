@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return world.IsGameOver || zoom >= 1.0f || world.IsReplay || world.LocalPlayer == null || world.LocalPlayer.Spectating;
 		}
 
-		void Zoom(int direction)
+		public void Zoom(int direction)
 		{
 			var zoomSteps = worldRenderer.Viewport.AvailableZoomSteps;
 			var currentZoom = worldRenderer.Viewport.Zoom;
