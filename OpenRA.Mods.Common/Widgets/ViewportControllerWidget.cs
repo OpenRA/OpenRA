@@ -99,6 +99,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool startScrollGesture;
 		int2 prevGestureScroll;
+		int2 startGestureScroll;
+		float startGestureZoom;
+		float startfDelta;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
@@ -417,25 +420,46 @@ namespace OpenRA.Mods.Common.Widgets
 			return IsJoystickScrolling || isStandardScrolling;
 		}
 
-		public override bool HandleGestureInput(MouseInput mi)
+		public override bool HandleGestureInput(GestureInput mi)
 		{
-			if (mi.Event == MouseInputEvent.FingerDown)
+			if (mi.Event == GestureInputEvent.FingerDown)
+			{
+				startScrollGesture = true;
+				startfDelta = 0;
+				return true;
+			}
+
+			if (mi.Event == GestureInputEvent.FingerUp)
 			{
 				startScrollGesture = true;
 				return true;
 			}
 
-			if (mi.Event == MouseInputEvent.FingerUp)
-			{
-				startScrollGesture = true;
-				return true;
-			}
-
-			if (mi.Event == MouseInputEvent.Gesture)
+			if (mi.Event == GestureInputEvent.Gesture)
 			{
 				float2 delta = new float2(prevGestureScroll.X - mi.Location.X, prevGestureScroll.Y - mi.Location.Y);
-				if (!startScrollGesture)
-					worldRenderer.Viewport.Scroll(delta, true);
+				startfDelta += mi.dDist;
+
+				if (startScrollGesture)
+				{
+					startGestureScroll = mi.Location;
+					startGestureZoom = worldRenderer.Viewport.Zoom;
+				}
+				else
+				{
+					var distancepanned = (startGestureScroll - mi.Location).Length;
+
+					if (distancepanned < 50 && Math.Abs(startfDelta) > .04)
+					{
+						worldRenderer.Viewport.Zoom = startGestureZoom + ((startfDelta > 0 ? 1 : -1));
+					}
+					else
+					{
+						var scrollType = Game.Settings.Game.RightMouseScroll;
+						var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
+						worldRenderer.Viewport.Scroll(delta * d, true);
+					}
+				}
 
 				prevGestureScroll = mi.Location;
 				startScrollGesture = false;

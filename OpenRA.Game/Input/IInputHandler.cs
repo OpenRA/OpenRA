@@ -19,10 +19,13 @@ namespace OpenRA
 		void OnKeyInput(KeyInput input);
 		void OnMouseInput(MouseInput input);
 		void OnTextInput(string text);
-		void OnGestureInput(MouseInput input);
+		void OnGestureInput(GestureInput input);
 	}
 
-	public enum MouseInputEvent { Down, Move, Up, Scroll, Gesture, FingerDown, FingerUp }
+	public enum MouseInputEvent { Down, Move, Up, Scroll }
+
+	public enum GestureInputEvent { Gesture, FingerDown, FingerUp }
+
 	public struct MouseInput
 	{
 		public MouseInputEvent Event;
@@ -40,6 +43,22 @@ namespace OpenRA
 			Delta = delta;
 			Modifiers = mods;
 			MultiTapCount = multiTapCount;
+		}
+	}
+
+	public struct GestureInput
+	{
+		public GestureInputEvent Event;
+		public int2 Location;
+		public float dDist;
+		public Modifiers Modifiers;
+
+		public GestureInput(GestureInputEvent ev, int2 location, Modifiers mods, float DDist)
+		{
+			Event = ev;
+			Location = location;
+			dDist = DDist;
+			Modifiers = mods;
 		}
 	}
 

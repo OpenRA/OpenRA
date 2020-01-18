@@ -123,7 +123,7 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
-		public static bool HandleGestureInput(MouseInput mi)
+		public static bool HandleGestureInput(GestureInput mi)
 		{
 			return Root.HandleGestureInputOuter(mi);
 		}
@@ -405,9 +405,9 @@ namespace OpenRA.Widgets
 			return HandleMouseInput(mi);
 		}
 
-		public virtual bool HandleGestureInput(MouseInput mi) { return false; }
+		public virtual bool HandleGestureInput(GestureInput mi) { return false; }
 
-		public bool HandleGestureInputOuter(MouseInput mi)
+		public bool HandleGestureInputOuter(GestureInput mi)
 		{
 			foreach (var child in Children.OfType<Widget>().Reverse())
 				if (child.HandleGestureInputOuter(mi))

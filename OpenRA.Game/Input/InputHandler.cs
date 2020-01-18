@@ -20,7 +20,7 @@ namespace OpenRA
 		public void OnKeyInput(KeyInput input) { }
 		public void OnTextInput(string text) { }
 		public void OnMouseInput(MouseInput input) { }
-		public void OnGestureInput(MouseInput input) { }
+		public void OnGestureInput(GestureInput input) { }
 	}
 
 	public class DefaultInputHandler : IInputHandler
@@ -51,7 +51,7 @@ namespace OpenRA
 			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => Ui.HandleInput(input));
 		}
 
-		public void OnGestureInput(MouseInput input)
+		public void OnGestureInput(GestureInput input)
 		{
 			Sync.RunUnsynced(Game.Settings.Debug.SyncCheckUnsyncedCode, world, () => Ui.HandleGestureInput(input));
 		}

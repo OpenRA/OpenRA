@@ -149,9 +149,9 @@ namespace OpenRA.Platforms.Default
 							var viewportres = Game.Renderer.Resolution;
 							var pos = EventPosition(device, (int)(e.tfinger.x * viewportres.Width), (int)(e.tfinger.y * viewportres.Height));
 
-							inputHandler.OnGestureInput(new MouseInput(
-								MouseInputEvent.FingerDown, MouseButton.None,
-								pos, new int2(0, 0), mods, 0));
+							inputHandler.OnGestureInput(new GestureInput(
+								GestureInputEvent.FingerDown,
+								pos, mods, e.mgesture.dDist));
 							break;
 						}
 
@@ -160,9 +160,9 @@ namespace OpenRA.Platforms.Default
 							var viewportres = Game.Renderer.Resolution;
 							var pos = EventPosition(device, (int)(e.tfinger.x * viewportres.Width), (int)(e.tfinger.y * viewportres.Height));
 
-							inputHandler.OnGestureInput(new MouseInput(
-								MouseInputEvent.FingerUp, MouseButton.None,
-								pos, new int2(0, 0), mods, 0));
+							inputHandler.OnGestureInput(new GestureInput(
+								GestureInputEvent.FingerUp,
+								pos, mods, e.mgesture.dDist));
 							break;
 						}
 
@@ -172,9 +172,11 @@ namespace OpenRA.Platforms.Default
 
 							var pos = EventPosition(device, (int)(e.mgesture.x * viewportres.Width), (int)(e.mgesture.y * viewportres.Height));
 
-							inputHandler.OnGestureInput(new MouseInput(
-								MouseInputEvent.Gesture, MouseButton.None,
-								pos, new int2(0, 0), mods, 0));
+
+							inputHandler.OnGestureInput(new GestureInput(
+								GestureInputEvent.Gesture,
+								pos, mods, e.mgesture.dDist));
+
 
 							break;
 						}
