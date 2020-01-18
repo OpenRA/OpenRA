@@ -103,6 +103,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool startScrollGesture;
 		int2 prevGestureScroll;
 		int2 startGestureScroll;
+		bool gesturePanning = false;
 		float startGestureZoom;
 		float startfDelta;
 
@@ -317,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
+			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier) && !gesturePanning)
 			{
 				worldRenderer.Viewport.AdjustZoom(mi.Delta.Y * Game.Settings.Game.ZoomSpeed);
 				return true;
@@ -408,11 +409,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event == GestureInputEvent.FingerUp)
 			{
 				startScrollGesture = true;
+				gesturePanning = false;
 				return true;
 			}
 
 			if (mi.Event == GestureInputEvent.Gesture)
 			{
+				gesturePanning = true;
 				float2 delta = new float2(prevGestureScroll.X - mi.Location.X, prevGestureScroll.Y - mi.Location.Y);
 				startfDelta += mi.DDist;
 
@@ -425,10 +428,9 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					var distancepanned = (startGestureScroll - mi.Location).Length;
 
-					if (distancepanned < 50 && Math.Abs(startfDelta) > .04)
+					if (distancepanned < 50 && Math.Abs(startfDelta) > .03)
 					{
-						if (startGestureZoom == worldRenderer.Viewport.Zoom)
-							worldRenderer.Viewport.AdjustZoom(startfDelta > 0 ? .25f : -.25f);
+						worldRenderer.Viewport.AdjustZoom(mi.DDist * 5);
 					}
 					else
 					{
