@@ -145,13 +145,6 @@ Background@SETTINGS_PANEL:
 					Height: 20
 					Font: Regular
 					Text: Use Hardware Cursors
-				Checkbox@CURSORDOUBLE_CHECKBOX:
-					X: 310
-					Y: 75
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Increase Command Cursor Size
 				Label@VIDEO_DESC:
 					Y: 97
 					Width: PARENT_RIGHT
@@ -246,6 +239,13 @@ Background@SETTINGS_PANEL:
 					Height: 25
 					Text: Status Bars:
 					Align: Right
+				Checkbox@CURSORDOUBLE_CHECKBOX:
+					X: 15
+					Y: 243
+					Width: 200
+					Height: 20
+					Font: Regular
+					Text: Increase Cursor Size
 				DropDownButton@STATUS_BAR_DROPDOWN:
 					X: 400
 					Y: 240
